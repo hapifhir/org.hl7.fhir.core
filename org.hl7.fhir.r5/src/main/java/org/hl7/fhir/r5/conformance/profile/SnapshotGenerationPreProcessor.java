@@ -754,7 +754,7 @@ public class SnapshotGenerationPreProcessor {
     for (int i = 0; i < allSlices.size(); i++) {
       boolean found = false;
       for (int j = startOfSlice; j <= endOfSlice; j++) {
-        if (pathsMatch(elements.get(j).getPath(), allSlices.get(i).getPath())) {
+        if (elementsMatch(elements.get(j), allSlices.get(i))) {
           found = true;
           break;
         }
@@ -769,7 +769,7 @@ public class SnapshotGenerationPreProcessor {
       // then we just merge it in
       for (int j = startOfSlice; j <= endOfSlice; j++) {
         for (int i = 0; i < allSlices.size(); i++) {
-          if (pathsMatch(elements.get(j).getPath(), allSlices.get(i).getPath())) {
+          if (elementsMatch(elements.get(j), allSlices.get(i))) {
             merge(elements.get(j), allSlices.get(i));
           }
         }
@@ -780,7 +780,7 @@ public class SnapshotGenerationPreProcessor {
       // merge the simple stuff
       for (int j = startOfSlice; j <= endOfSlice; j++) {
         for (int i = 0; i < allSlices.size(); i++) {
-          if (pathsMatch(elements.get(j).getPath(), allSlices.get(i).getPath())) {
+          if (elementsMatch(elements.get(j), allSlices.get(i))) {
             handled.add(allSlices.get(i));
             merge(elements.get(j), allSlices.get(i));
           }
@@ -805,6 +805,18 @@ public class SnapshotGenerationPreProcessor {
       }
     }   
 
+  }
+
+  private boolean elementsMatch(ElementDefinition ed1, ElementDefinition ed2) {
+    if (!pathsMatch(ed1.getPath(), ed2.getPath())) {
+      return false;
+    } else if (ed1.getSliceName() != null && ed2.getSliceName() != null) {
+      return ed1.getSliceName().equals(ed2.getSliceName());
+    } else  if (ed1.getSliceName() != null || ed2.getSliceName() != null) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   private boolean pathsMatch(String path1, String path2) {
@@ -880,6 +892,13 @@ public class SnapshotGenerationPreProcessor {
         ElementAnalysis sed = edDef.get(i-1);
         int i1 = indexOfName(sed, p1[i]);
         int i2 = indexOfName(sed, p2[i]);
+        if (i == Integer.min(p1.length,  p2.length) -1 && i1 == i2) {
+          if (!p1[i].contains(":") && p2[i].contains(":")) {
+            // launched straight into slicing without setting it up, 
+            // and now it's being set up 
+            return true;
+          }
+        }
         return i1 < i2;
       } else {
         // well, we just go on
