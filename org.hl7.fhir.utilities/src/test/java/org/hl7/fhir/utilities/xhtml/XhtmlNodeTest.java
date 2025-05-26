@@ -140,6 +140,13 @@ public class XhtmlNodeTest {
     Assertions.assertEquals("http://www.w3.org/1999/xlink", x.getChildNodes().get(0).getChildNodes().get(1).getAttributes().get("xmlns:xlink"));
   }
 
+  @Test
+  public void testParseSvgComment() throws FHIRFormatError, IOException {
+    XhtmlNode x = new XhtmlParser().parse(BaseTestingUtilities.loadTestResource("xhtml", "svg-comment.svg"), "svg");
+
+    Assertions.assertNotNull(x);
+  }
+
 
   @Test
   public void testParseSvgElements() throws FHIRFormatError, IOException {

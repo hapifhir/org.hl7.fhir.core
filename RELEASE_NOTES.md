@@ -34,5 +34,6 @@
 * vsac subsumes work for CDC Rec
 * Structural replace of this != null conditions
 * Add aliases and alternates to make cliContext fields deserialize
-
+* Add rendering Concept Domain
+* Fix parsing bug in html (comment before html couldn't contain a '<')
 
