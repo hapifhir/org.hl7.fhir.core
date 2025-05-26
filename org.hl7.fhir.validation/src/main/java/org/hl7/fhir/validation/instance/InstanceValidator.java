@@ -3604,11 +3604,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         } else {
           if (isExampleUrl(url) && isAllowExamples()) {
             // nothing - these do need to resolve
+          } else if (isExemptPathForUrlChecking(context, isAbsolute(url), eurl, e, true)) {
+            // nothing
           } else if (isKnownSpace(url) || internal) {
             ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url) && ok;;
           } else if (isExampleUrl(url)) {
             ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE, url) && ok;;
-          } else if (isExemptPathForUrlChecking(context, isAbsolute(url), eurl, e)) {
+          } else if (isExemptPathForUrlChecking(context, isAbsolute(url), eurl, e, false)) {
             // nothing
           } else if (isHintableElementForUrlChecking(path)) {
             hint(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
@@ -3691,7 +3693,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return Utilities.existsInList(url, "urn:hl7-org:v3", "urn:hl7-org:sdtc", "http://unstats.un.org/unsd/methods/m49/m49.htm");
   }
 
-  private boolean isExemptPathForUrlChecking(ElementDefinition context, boolean absolute, String eurl, Element element) {
+  private boolean isExemptPathForUrlChecking(ElementDefinition context, boolean absolute, String eurl, Element element, boolean exampleStep) {
     if (!context.hasBase()) {
       return false;
     }
@@ -3716,6 +3718,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             );
       }
     }
+    if (exampleStep) {
+      return false;
+    }
+    
     if (absolute) {
       return Utilities.existsInList(context.getBase().getPath(),
           "ImplementationGuide.definition.page.source[x]", "ImplementationGuide.definition.page.name",  "ImplementationGuide.definition.page.name[x]",
