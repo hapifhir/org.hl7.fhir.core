@@ -19,6 +19,7 @@ public class POObject {
   private String msgidPlural;
   private String comment;
   private List<String> msgstr  = new ArrayList<String>();
+  private List<String> flags = new ArrayList<>();
 
   public POObject() {
     super();
@@ -89,6 +90,10 @@ public class POObject {
       }
     }
     return msgstr.get(0);
+  }
+
+  public List<String> getFlags() {
+    return flags;
   }
 
 }
