@@ -3604,12 +3604,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         } else {
           if (isExampleUrl(url) && isAllowExamples()) {
             // nothing - these do need to resolve
-          } else if (isExemptPathForUrlChecking(context, isAbsolute(url), eurl, e)) {
-            // nothing
           } else if (isKnownSpace(url) || internal) {
             ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url) && ok;;
           } else if (isExampleUrl(url)) {
             ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE, url) && ok;;
+          } else if (isExemptPathForUrlChecking(context, isAbsolute(url), eurl, e)) {
+            // nothing
           } else if (isHintableElementForUrlChecking(path)) {
             hint(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
           } else {
@@ -3720,6 +3720,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return Utilities.existsInList(context.getBase().getPath(),
           "ImplementationGuide.definition.page.source[x]", "ImplementationGuide.definition.page.name",  "ImplementationGuide.definition.page.name[x]",
           "Requirements.statement.satisfiedBy", "Bundle.entry.request.url",
+          "Attachment.url",
           "StructureDefinition.type", "ElementDefinition.fixed[x]", "ElementDefinition.pattern[x]", "ImplementationGuide.dependsOn.uri", "StructureDefinition.mapping.uri",
           "MessageHeader.source.endpoint", "MessageHeader.source.endpoint[x]", "MessageHeader.destination.endpoint", "MessageHeader.destination.endpoint[x]"
           );
