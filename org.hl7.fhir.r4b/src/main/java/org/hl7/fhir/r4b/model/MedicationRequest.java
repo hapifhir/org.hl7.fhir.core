@@ -1445,7 +1445,7 @@ public class MedicationRequest extends DomainResource {
     }
 
     public boolean hasAllowedBooleanType() {
-      return this != null && this.allowed instanceof BooleanType;
+        return this.allowed instanceof BooleanType;
     }
 
     /**
@@ -1462,7 +1462,7 @@ public class MedicationRequest extends DomainResource {
     }
 
     public boolean hasAllowedCodeableConcept() {
-      return this != null && this.allowed instanceof CodeableConcept;
+        return this.allowed instanceof CodeableConcept;
     }
 
     public boolean hasAllowed() {
@@ -2380,7 +2380,7 @@ public class MedicationRequest extends DomainResource {
   }
 
   public boolean hasReportedBooleanType() {
-    return this != null && this.reported instanceof BooleanType;
+      return this.reported instanceof BooleanType;
   }
 
   /**
@@ -2399,7 +2399,7 @@ public class MedicationRequest extends DomainResource {
   }
 
   public boolean hasReportedReference() {
-    return this != null && this.reported instanceof Reference;
+      return this.reported instanceof Reference;
   }
 
   public boolean hasReported() {
@@ -2445,7 +2445,7 @@ public class MedicationRequest extends DomainResource {
   }
 
   public boolean hasMedicationCodeableConcept() {
-    return this != null && this.medication instanceof CodeableConcept;
+      return this.medication instanceof CodeableConcept;
   }
 
   /**
@@ -2464,7 +2464,7 @@ public class MedicationRequest extends DomainResource {
   }
 
   public boolean hasMedicationReference() {
-    return this != null && this.medication instanceof Reference;
+      return this.medication instanceof Reference;
   }
 
   public boolean hasMedication() {

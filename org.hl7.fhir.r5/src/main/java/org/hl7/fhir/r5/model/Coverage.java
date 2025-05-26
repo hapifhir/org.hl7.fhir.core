@@ -910,8 +910,8 @@ public class Coverage extends DomainResource {
           return (Quantity) this.value;
         }
 
-        public boolean hasValueQuantity() { 
-          return this != null && this.value instanceof Quantity;
+        public boolean hasValueQuantity() {
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -925,8 +925,8 @@ public class Coverage extends DomainResource {
           return (Money) this.value;
         }
 
-        public boolean hasValueMoney() { 
-          return this != null && this.value instanceof Money;
+        public boolean hasValueMoney() {
+            return this.value instanceof Money;
         }
 
         public boolean hasValue() { 

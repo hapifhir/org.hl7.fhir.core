@@ -106,8 +106,8 @@ public class Annotation extends DataType implements ICompositeType {
       return (Reference) this.author;
     }
 
-    public boolean hasAuthorReference() { 
-      return this != null && this.author instanceof Reference;
+    public boolean hasAuthorReference() {
+        return this.author instanceof Reference;
     }
 
     /**
@@ -121,8 +121,8 @@ public class Annotation extends DataType implements ICompositeType {
       return (StringType) this.author;
     }
 
-    public boolean hasAuthorStringType() { 
-      return this != null && this.author instanceof StringType;
+    public boolean hasAuthorStringType() {
+        return this.author instanceof StringType;
     }
 
     public boolean hasAuthor() { 

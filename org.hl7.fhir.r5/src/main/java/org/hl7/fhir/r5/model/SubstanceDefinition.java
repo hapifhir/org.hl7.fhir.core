@@ -335,8 +335,8 @@ public class SubstanceDefinition extends DomainResource {
           return (Quantity) this.amount;
         }
 
-        public boolean hasAmountQuantity() { 
-          return this != null && this.amount instanceof Quantity;
+        public boolean hasAmountQuantity() {
+            return this.amount instanceof Quantity;
         }
 
         /**
@@ -350,8 +350,8 @@ public class SubstanceDefinition extends DomainResource {
           return (StringType) this.amount;
         }
 
-        public boolean hasAmountStringType() { 
-          return this != null && this.amount instanceof StringType;
+        public boolean hasAmountStringType() {
+            return this.amount instanceof StringType;
         }
 
         public boolean hasAmount() { 
@@ -1088,8 +1088,8 @@ public class SubstanceDefinition extends DomainResource {
           return (CodeableConcept) this.value;
         }
 
-        public boolean hasValueCodeableConcept() { 
-          return this != null && this.value instanceof CodeableConcept;
+        public boolean hasValueCodeableConcept() {
+            return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -1103,8 +1103,8 @@ public class SubstanceDefinition extends DomainResource {
           return (Quantity) this.value;
         }
 
-        public boolean hasValueQuantity() { 
-          return this != null && this.value instanceof Quantity;
+        public boolean hasValueQuantity() {
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -1118,8 +1118,8 @@ public class SubstanceDefinition extends DomainResource {
           return (DateType) this.value;
         }
 
-        public boolean hasValueDateType() { 
-          return this != null && this.value instanceof DateType;
+        public boolean hasValueDateType() {
+            return this.value instanceof DateType;
         }
 
         /**
@@ -1133,8 +1133,8 @@ public class SubstanceDefinition extends DomainResource {
           return (BooleanType) this.value;
         }
 
-        public boolean hasValueBooleanType() { 
-          return this != null && this.value instanceof BooleanType;
+        public boolean hasValueBooleanType() {
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -1148,8 +1148,8 @@ public class SubstanceDefinition extends DomainResource {
           return (Attachment) this.value;
         }
 
-        public boolean hasValueAttachment() { 
-          return this != null && this.value instanceof Attachment;
+        public boolean hasValueAttachment() {
+            return this.value instanceof Attachment;
         }
 
         public boolean hasValue() { 
@@ -4337,8 +4337,8 @@ public class SubstanceDefinition extends DomainResource {
           return (Reference) this.substanceDefinition;
         }
 
-        public boolean hasSubstanceDefinitionReference() { 
-          return this != null && this.substanceDefinition instanceof Reference;
+        public boolean hasSubstanceDefinitionReference() {
+            return this.substanceDefinition instanceof Reference;
         }
 
         /**
@@ -4352,8 +4352,8 @@ public class SubstanceDefinition extends DomainResource {
           return (CodeableConcept) this.substanceDefinition;
         }
 
-        public boolean hasSubstanceDefinitionCodeableConcept() { 
-          return this != null && this.substanceDefinition instanceof CodeableConcept;
+        public boolean hasSubstanceDefinitionCodeableConcept() {
+            return this.substanceDefinition instanceof CodeableConcept;
         }
 
         public boolean hasSubstanceDefinition() { 
@@ -4457,8 +4457,8 @@ public class SubstanceDefinition extends DomainResource {
           return (Quantity) this.amount;
         }
 
-        public boolean hasAmountQuantity() { 
-          return this != null && this.amount instanceof Quantity;
+        public boolean hasAmountQuantity() {
+            return this.amount instanceof Quantity;
         }
 
         /**
@@ -4472,8 +4472,8 @@ public class SubstanceDefinition extends DomainResource {
           return (Ratio) this.amount;
         }
 
-        public boolean hasAmountRatio() { 
-          return this != null && this.amount instanceof Ratio;
+        public boolean hasAmountRatio() {
+            return this.amount instanceof Ratio;
         }
 
         /**
@@ -4487,8 +4487,8 @@ public class SubstanceDefinition extends DomainResource {
           return (StringType) this.amount;
         }
 
-        public boolean hasAmountStringType() { 
-          return this != null && this.amount instanceof StringType;
+        public boolean hasAmountStringType() {
+            return this.amount instanceof StringType;
         }
 
         public boolean hasAmount() { 

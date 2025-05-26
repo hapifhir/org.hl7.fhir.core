@@ -974,8 +974,8 @@ public class AuditEvent extends DomainResource {
           return (Reference) this.network;
         }
 
-        public boolean hasNetworkReference() { 
-          return this != null && this.network instanceof Reference;
+        public boolean hasNetworkReference() {
+            return this.network instanceof Reference;
         }
 
         /**
@@ -989,8 +989,8 @@ public class AuditEvent extends DomainResource {
           return (UriType) this.network;
         }
 
-        public boolean hasNetworkUriType() { 
-          return this != null && this.network instanceof UriType;
+        public boolean hasNetworkUriType() {
+            return this.network instanceof UriType;
         }
 
         /**
@@ -1004,8 +1004,8 @@ public class AuditEvent extends DomainResource {
           return (StringType) this.network;
         }
 
-        public boolean hasNetworkStringType() { 
-          return this != null && this.network instanceof StringType;
+        public boolean hasNetworkStringType() {
+            return this.network instanceof StringType;
         }
 
         public boolean hasNetwork() { 
@@ -2248,8 +2248,8 @@ public class AuditEvent extends DomainResource {
           return (Quantity) this.value;
         }
 
-        public boolean hasValueQuantity() { 
-          return this != null && this.value instanceof Quantity;
+        public boolean hasValueQuantity() {
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -2263,8 +2263,8 @@ public class AuditEvent extends DomainResource {
           return (CodeableConcept) this.value;
         }
 
-        public boolean hasValueCodeableConcept() { 
-          return this != null && this.value instanceof CodeableConcept;
+        public boolean hasValueCodeableConcept() {
+            return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -2278,8 +2278,8 @@ public class AuditEvent extends DomainResource {
           return (StringType) this.value;
         }
 
-        public boolean hasValueStringType() { 
-          return this != null && this.value instanceof StringType;
+        public boolean hasValueStringType() {
+            return this.value instanceof StringType;
         }
 
         /**
@@ -2293,8 +2293,8 @@ public class AuditEvent extends DomainResource {
           return (BooleanType) this.value;
         }
 
-        public boolean hasValueBooleanType() { 
-          return this != null && this.value instanceof BooleanType;
+        public boolean hasValueBooleanType() {
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -2308,8 +2308,8 @@ public class AuditEvent extends DomainResource {
           return (IntegerType) this.value;
         }
 
-        public boolean hasValueIntegerType() { 
-          return this != null && this.value instanceof IntegerType;
+        public boolean hasValueIntegerType() {
+            return this.value instanceof IntegerType;
         }
 
         /**
@@ -2323,8 +2323,8 @@ public class AuditEvent extends DomainResource {
           return (Range) this.value;
         }
 
-        public boolean hasValueRange() { 
-          return this != null && this.value instanceof Range;
+        public boolean hasValueRange() {
+            return this.value instanceof Range;
         }
 
         /**
@@ -2338,8 +2338,8 @@ public class AuditEvent extends DomainResource {
           return (Ratio) this.value;
         }
 
-        public boolean hasValueRatio() { 
-          return this != null && this.value instanceof Ratio;
+        public boolean hasValueRatio() {
+            return this.value instanceof Ratio;
         }
 
         /**
@@ -2353,8 +2353,8 @@ public class AuditEvent extends DomainResource {
           return (TimeType) this.value;
         }
 
-        public boolean hasValueTimeType() { 
-          return this != null && this.value instanceof TimeType;
+        public boolean hasValueTimeType() {
+            return this.value instanceof TimeType;
         }
 
         /**
@@ -2368,8 +2368,8 @@ public class AuditEvent extends DomainResource {
           return (DateTimeType) this.value;
         }
 
-        public boolean hasValueDateTimeType() { 
-          return this != null && this.value instanceof DateTimeType;
+        public boolean hasValueDateTimeType() {
+            return this.value instanceof DateTimeType;
         }
 
         /**
@@ -2383,8 +2383,8 @@ public class AuditEvent extends DomainResource {
           return (Period) this.value;
         }
 
-        public boolean hasValuePeriod() { 
-          return this != null && this.value instanceof Period;
+        public boolean hasValuePeriod() {
+            return this.value instanceof Period;
         }
 
         /**
@@ -2398,8 +2398,8 @@ public class AuditEvent extends DomainResource {
           return (Base64BinaryType) this.value;
         }
 
-        public boolean hasValueBase64BinaryType() { 
-          return this != null && this.value instanceof Base64BinaryType;
+        public boolean hasValueBase64BinaryType() {
+            return this.value instanceof Base64BinaryType;
         }
 
         public boolean hasValue() { 
@@ -2924,8 +2924,8 @@ public class AuditEvent extends DomainResource {
       return (Period) this.occurred;
     }
 
-    public boolean hasOccurredPeriod() { 
-      return this != null && this.occurred instanceof Period;
+    public boolean hasOccurredPeriod() {
+        return this.occurred instanceof Period;
     }
 
     /**
@@ -2939,8 +2939,8 @@ public class AuditEvent extends DomainResource {
       return (DateTimeType) this.occurred;
     }
 
-    public boolean hasOccurredDateTimeType() { 
-      return this != null && this.occurred instanceof DateTimeType;
+    public boolean hasOccurredDateTimeType() {
+        return this.occurred instanceof DateTimeType;
     }
 
     public boolean hasOccurred() { 

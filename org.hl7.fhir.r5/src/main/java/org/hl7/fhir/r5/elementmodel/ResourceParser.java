@@ -86,11 +86,6 @@ public class ResourceParser extends ParserBase {
           if (v.isPrimitive()) {
             if (v.fhirType().equals("xhtml")) {
               n.setXhtml(v.getXhtml());
-              try {
-                n.setValue(new XhtmlComposer(true).compose(n.getXhtml()));
-              } catch (Exception e) {
-                // won't happen here
-              }
             } else {
               n.setValue(v.primitiveValue());
             }

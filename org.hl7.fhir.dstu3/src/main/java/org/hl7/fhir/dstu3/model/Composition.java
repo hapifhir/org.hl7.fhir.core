@@ -1147,8 +1147,8 @@ public class Composition extends DomainResource {
           return (Identifier) this.target;
         }
 
-        public boolean hasTargetIdentifier() { 
-          return this != null && this.target instanceof Identifier;
+        public boolean hasTargetIdentifier() {
+            return this.target instanceof Identifier;
         }
 
         /**
@@ -1162,8 +1162,8 @@ public class Composition extends DomainResource {
           return (Reference) this.target;
         }
 
-        public boolean hasTargetReference() { 
-          return this != null && this.target instanceof Reference;
+        public boolean hasTargetReference() {
+            return this.target instanceof Reference;
         }
 
         public boolean hasTarget() { 

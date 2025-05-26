@@ -274,7 +274,7 @@ public class ElementDefinition14_30 {
       if (src.getCode().equals("Reference")) tgt.setTargetProfile(u.getValue());
       else tgt.setProfile(u.getValue());
     }
-    for (org.hl7.fhir.dstu2016may.model.Extension t : src.getExtensionsByUrl(VersionConvertorConstants.PROFILE_EXTENSION)) {
+    for (org.hl7.fhir.dstu2016may.model.Extension t : src.getExtensionsByUrl(VersionConvertorConstants.EXT_PROFILE_EXTENSION)) {
       String s = ((org.hl7.fhir.dstu2016may.model.PrimitiveType<String>) t.getValue()).getValue();
       tgt.setProfile(s);
     }
@@ -294,7 +294,7 @@ public class ElementDefinition14_30 {
       }
       if (src.hasProfile()) {
         if (src.getCode().equals("Reference")) {
-          org.hl7.fhir.dstu2016may.model.Extension t = new org.hl7.fhir.dstu2016may.model.Extension(VersionConvertorConstants.PROFILE_EXTENSION);
+          org.hl7.fhir.dstu2016may.model.Extension t = new org.hl7.fhir.dstu2016may.model.Extension(VersionConvertorConstants.EXT_PROFILE_EXTENSION);
           t.setValue(new org.hl7.fhir.dstu2016may.model.StringType(src.getProfile()));
           tgt.addExtension(t);
         } else tgt.addProfile(src.getProfile());

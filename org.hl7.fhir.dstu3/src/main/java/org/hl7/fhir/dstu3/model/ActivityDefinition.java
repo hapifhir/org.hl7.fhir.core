@@ -4190,8 +4190,8 @@ The primary difference between a medication statement and a medication administr
       return (Timing) this.timing;
     }
 
-    public boolean hasTimingTiming() { 
-      return this != null && this.timing instanceof Timing;
+    public boolean hasTimingTiming() {
+      return this.timing instanceof Timing;
     }
 
     /**
@@ -4205,8 +4205,8 @@ The primary difference between a medication statement and a medication administr
       return (DateTimeType) this.timing;
     }
 
-    public boolean hasTimingDateTimeType() { 
-      return this != null && this.timing instanceof DateTimeType;
+    public boolean hasTimingDateTimeType() {
+      return this.timing instanceof DateTimeType;
     }
 
     /**
@@ -4220,8 +4220,8 @@ The primary difference between a medication statement and a medication administr
       return (Period) this.timing;
     }
 
-    public boolean hasTimingPeriod() { 
-      return this != null && this.timing instanceof Period;
+    public boolean hasTimingPeriod() {
+      return this.timing instanceof Period;
     }
 
     /**
@@ -4235,8 +4235,8 @@ The primary difference between a medication statement and a medication administr
       return (Range) this.timing;
     }
 
-    public boolean hasTimingRange() { 
-      return this != null && this.timing instanceof Range;
+    public boolean hasTimingRange() {
+      return this.timing instanceof Range;
     }
 
     public boolean hasTiming() { 
@@ -4368,8 +4368,8 @@ The primary difference between a medication statement and a medication administr
       return (Reference) this.product;
     }
 
-    public boolean hasProductReference() { 
-      return this != null && this.product instanceof Reference;
+    public boolean hasProductReference() {
+      return this.product instanceof Reference;
     }
 
     /**
@@ -4383,8 +4383,8 @@ The primary difference between a medication statement and a medication administr
       return (CodeableConcept) this.product;
     }
 
-    public boolean hasProductCodeableConcept() { 
-      return this != null && this.product instanceof CodeableConcept;
+    public boolean hasProductCodeableConcept() {
+      return this.product instanceof CodeableConcept;
     }
 
     public boolean hasProduct() { 

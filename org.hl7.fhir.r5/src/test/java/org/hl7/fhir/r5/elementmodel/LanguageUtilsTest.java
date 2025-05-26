@@ -38,7 +38,7 @@ class LanguageUtilsTest implements ResourceLoaderTests {
     int result = languageUtils.importFromTranslations(element, res, lvm);
 
     Writer generatedResource = new StringWriter();
-    jp.compose(element, new JsonCreatorDirect(generatedResource, false, false));
+    jp.compose(element, new JsonCreatorDirect(generatedResource, true, false));
 
     Assertions.assertEquals(3, result);
 

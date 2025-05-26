@@ -3820,8 +3820,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           return (Quantity) this.value;
         }
 
-        public boolean hasValueQuantity() { 
-          return this != null && this.value instanceof Quantity;
+        public boolean hasValueQuantity() {
+          return this.value instanceof Quantity;
         }
 
         /**
@@ -3835,8 +3835,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           return (CodeableConcept) this.value;
         }
 
-        public boolean hasValueCodeableConcept() { 
-          return this != null && this.value instanceof CodeableConcept;
+        public boolean hasValueCodeableConcept() {
+          return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -3850,8 +3850,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           return (StringType) this.value;
         }
 
-        public boolean hasValueStringType() { 
-          return this != null && this.value instanceof StringType;
+        public boolean hasValueStringType() {
+          return this.value instanceof StringType;
         }
 
         /**
@@ -3865,8 +3865,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           return (BooleanType) this.value;
         }
 
-        public boolean hasValueBooleanType() { 
-          return this != null && this.value instanceof BooleanType;
+        public boolean hasValueBooleanType() {
+          return this.value instanceof BooleanType;
         }
 
         /**
@@ -3880,8 +3880,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           return (IntegerType) this.value;
         }
 
-        public boolean hasValueIntegerType() { 
-          return this != null && this.value instanceof IntegerType;
+        public boolean hasValueIntegerType() {
+          return this.value instanceof IntegerType;
         }
 
         /**
@@ -3895,8 +3895,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           return (Range) this.value;
         }
 
-        public boolean hasValueRange() { 
-          return this != null && this.value instanceof Range;
+        public boolean hasValueRange() {
+          return this.value instanceof Range;
         }
 
         /**
@@ -3910,8 +3910,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           return (Attachment) this.value;
         }
 
-        public boolean hasValueAttachment() { 
-          return this != null && this.value instanceof Attachment;
+        public boolean hasValueAttachment() {
+          return this.value instanceof Attachment;
         }
 
         public boolean hasValue() { 

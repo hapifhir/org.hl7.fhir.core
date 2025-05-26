@@ -683,7 +683,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     public boolean hasCollectedDateTimeType() {
-      return this != null && this.collected instanceof DateTimeType;
+        return this.collected instanceof DateTimeType;
     }
 
     /**
@@ -699,7 +699,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     public boolean hasCollectedPeriod() {
-      return this != null && this.collected instanceof Period;
+        return this.collected instanceof Period;
     }
 
     public boolean hasCollected() {
@@ -1107,7 +1107,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     public boolean hasTimeDateTimeType() {
-      return this != null && this.time instanceof DateTimeType;
+        return this.time instanceof DateTimeType;
     }
 
     /**
@@ -1123,7 +1123,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     public boolean hasTimePeriod() {
-      return this != null && this.time instanceof Period;
+        return this.time instanceof Period;
     }
 
     public boolean hasTime() {
@@ -1445,7 +1445,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     public boolean hasTimeDateTimeType() {
-      return this != null && this.time instanceof DateTimeType;
+        return this.time instanceof DateTimeType;
     }
 
     /**
@@ -1461,7 +1461,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     public boolean hasTimePeriod() {
-      return this != null && this.time instanceof Period;
+        return this.time instanceof Period;
     }
 
     public boolean hasTime() {

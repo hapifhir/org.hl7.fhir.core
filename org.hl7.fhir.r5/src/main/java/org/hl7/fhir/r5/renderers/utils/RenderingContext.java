@@ -26,14 +26,13 @@ import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
-
 import org.hl7.fhir.r5.renderers.utils.Resolver.IReferenceResolver;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.Utilities;
@@ -252,6 +251,9 @@ public class RenderingContext extends RenderingI18nContext {
     DESIGNATIONS,  // in addition to the locale language, render designations from other languages (eg. as found in code systems and value sets
     ALL // in addition to translations in designations, look for an render translations (WIP)
   }
+
+
+
 
   private final IWorkerContext worker;
   private MarkDownProcessor markdown;
@@ -1128,4 +1130,5 @@ public class RenderingContext extends RenderingI18nContext {
     self.oids = oids;
     return self;
   }
+
 }

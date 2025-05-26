@@ -151,8 +151,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
           return (DateTimeType) this.collected;
         }
 
-        public boolean hasCollectedDateTimeType() { 
-          return this != null && this.collected instanceof DateTimeType;
+        public boolean hasCollectedDateTimeType() {
+            return this.collected instanceof DateTimeType;
         }
 
         /**
@@ -166,8 +166,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
           return (Period) this.collected;
         }
 
-        public boolean hasCollectedPeriod() { 
-          return this != null && this.collected instanceof Period;
+        public boolean hasCollectedPeriod() {
+            return this.collected instanceof Period;
         }
 
         public boolean hasCollected() { 
@@ -427,8 +427,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
           return (BooleanType) this.value;
         }
 
-        public boolean hasValueBooleanType() { 
-          return this != null && this.value instanceof BooleanType;
+        public boolean hasValueBooleanType() {
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -442,8 +442,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
           return (IntegerType) this.value;
         }
 
-        public boolean hasValueIntegerType() { 
-          return this != null && this.value instanceof IntegerType;
+        public boolean hasValueIntegerType() {
+            return this.value instanceof IntegerType;
         }
 
         /**
@@ -457,8 +457,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
           return (CodeableConcept) this.value;
         }
 
-        public boolean hasValueCodeableConcept() { 
-          return this != null && this.value instanceof CodeableConcept;
+        public boolean hasValueCodeableConcept() {
+            return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -472,8 +472,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
           return (Period) this.value;
         }
 
-        public boolean hasValuePeriod() { 
-          return this != null && this.value instanceof Period;
+        public boolean hasValuePeriod() {
+            return this.value instanceof Period;
         }
 
         /**
@@ -487,8 +487,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
           return (Quantity) this.value;
         }
 
-        public boolean hasValueQuantity() { 
-          return this != null && this.value instanceof Quantity;
+        public boolean hasValueQuantity() {
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -502,8 +502,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
           return (Range) this.value;
         }
 
-        public boolean hasValueRange() { 
-          return this != null && this.value instanceof Range;
+        public boolean hasValueRange() {
+            return this.value instanceof Range;
         }
 
         /**
@@ -517,8 +517,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
           return (Ratio) this.value;
         }
 
-        public boolean hasValueRatio() { 
-          return this != null && this.value instanceof Ratio;
+        public boolean hasValueRatio() {
+            return this.value instanceof Ratio;
         }
 
         /**
@@ -532,8 +532,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
           return (StringType) this.value;
         }
 
-        public boolean hasValueStringType() { 
-          return this != null && this.value instanceof StringType;
+        public boolean hasValueStringType() {
+            return this.value instanceof StringType;
         }
 
         /**
@@ -547,8 +547,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
           return (Attachment) this.value;
         }
 
-        public boolean hasValueAttachment() { 
-          return this != null && this.value instanceof Attachment;
+        public boolean hasValueAttachment() {
+            return this.value instanceof Attachment;
         }
 
         public boolean hasValue() { 

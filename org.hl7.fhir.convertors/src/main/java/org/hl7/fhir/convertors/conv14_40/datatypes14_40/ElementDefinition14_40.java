@@ -64,8 +64,8 @@ public class ElementDefinition14_40 {
     if (src.hasMustSupport()) tgt.setMustSupportElement(Boolean14_40.convertBoolean(src.getMustSupportElement()));
     if (src.hasIsModifier()) tgt.setIsModifierElement(Boolean14_40.convertBoolean(src.getIsModifierElement()));
     if (tgt.getIsModifier()) {
-      String reason = org.hl7.fhir.dstu2016may.utils.ToolingExtensions.readStringExtension(src, VersionConvertorConstants.MODIFIER_REASON_EXTENSION);
-      if (Utilities.noString(reason)) reason = VersionConvertorConstants.MODIFIER_REASON_LEGACY;
+      String reason = org.hl7.fhir.dstu2016may.utils.ToolingExtensions.readStringExtension(src, VersionConvertorConstants.EXT_MODIFIER_REASON_EXTENSION);
+      if (Utilities.noString(reason)) reason = VersionConvertorConstants.EXT_MODIFIER_REASON_LEGACY;
       tgt.setIsModifierReason(reason);
     }
     if (src.hasIsSummary()) tgt.setIsSummaryElement(Boolean14_40.convertBoolean(src.getIsSummaryElement()));
@@ -117,8 +117,8 @@ public class ElementDefinition14_40 {
       tgt.addConstraint(convertElementDefinitionConstraintComponent(t));
     if (src.hasMustSupport()) tgt.setMustSupportElement(Boolean14_40.convertBoolean(src.getMustSupportElement()));
     if (src.hasIsModifier()) tgt.setIsModifierElement(Boolean14_40.convertBoolean(src.getIsModifierElement()));
-    if (src.hasIsModifierReason() && !VersionConvertorConstants.MODIFIER_REASON_LEGACY.equals(src.getIsModifierReason()))
-      org.hl7.fhir.dstu2016may.utils.ToolingExtensions.setStringExtension(tgt, VersionConvertorConstants.MODIFIER_REASON_EXTENSION, src.getIsModifierReason());
+    if (src.hasIsModifierReason() && !VersionConvertorConstants.EXT_MODIFIER_REASON_LEGACY.equals(src.getIsModifierReason()))
+      org.hl7.fhir.dstu2016may.utils.ToolingExtensions.setStringExtension(tgt, VersionConvertorConstants.EXT_MODIFIER_REASON_EXTENSION, src.getIsModifierReason());
     if (src.hasIsSummary()) tgt.setIsSummaryElement(Boolean14_40.convertBoolean(src.getIsSummaryElement()));
     if (src.hasBinding()) tgt.setBinding(convertElementDefinitionBindingComponent(src.getBinding()));
     for (org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionMappingComponent t : src.getMapping())
@@ -336,7 +336,7 @@ public class ElementDefinition14_40 {
         if (src.getCode().equals("Reference")) tgt.addTargetProfile(u.getValue());
         else tgt.addProfile(u.getValue());
       }
-      for (org.hl7.fhir.dstu2016may.model.Extension t : src.getExtensionsByUrl(VersionConvertorConstants.PROFILE_EXTENSION)) {
+      for (org.hl7.fhir.dstu2016may.model.Extension t : src.getExtensionsByUrl(VersionConvertorConstants.EXT_PROFILE_EXTENSION)) {
         String s = ((org.hl7.fhir.dstu2016may.model.PrimitiveType<String>) t.getValue()).getValue();
         tgt.addProfile(s);
       }
@@ -367,7 +367,7 @@ public class ElementDefinition14_40 {
       }
       for (org.hl7.fhir.r4.model.UriType u : src.getProfile()) {
         if (src.getCode().equals("Reference")) {
-          org.hl7.fhir.dstu2016may.model.Extension t = new org.hl7.fhir.dstu2016may.model.Extension(VersionConvertorConstants.PROFILE_EXTENSION);
+          org.hl7.fhir.dstu2016may.model.Extension t = new org.hl7.fhir.dstu2016may.model.Extension(VersionConvertorConstants.EXT_PROFILE_EXTENSION);
           t.setValue(ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().convertType(u));
           tgt.addExtension(t);
         } else tgt.addProfile(u.getValue());

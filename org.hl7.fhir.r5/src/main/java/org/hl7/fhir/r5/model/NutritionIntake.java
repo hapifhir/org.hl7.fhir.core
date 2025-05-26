@@ -1616,8 +1616,8 @@ public class NutritionIntake extends DomainResource {
       return (DateTimeType) this.occurrence;
     }
 
-    public boolean hasOccurrenceDateTimeType() { 
-      return this != null && this.occurrence instanceof DateTimeType;
+    public boolean hasOccurrenceDateTimeType() {
+        return this.occurrence instanceof DateTimeType;
     }
 
     /**
@@ -1631,8 +1631,8 @@ public class NutritionIntake extends DomainResource {
       return (Period) this.occurrence;
     }
 
-    public boolean hasOccurrencePeriod() { 
-      return this != null && this.occurrence instanceof Period;
+    public boolean hasOccurrencePeriod() {
+        return this.occurrence instanceof Period;
     }
 
     public boolean hasOccurrence() { 
@@ -1716,8 +1716,8 @@ public class NutritionIntake extends DomainResource {
       return (BooleanType) this.reported;
     }
 
-    public boolean hasReportedBooleanType() { 
-      return this != null && this.reported instanceof BooleanType;
+    public boolean hasReportedBooleanType() {
+        return this.reported instanceof BooleanType;
     }
 
     /**
@@ -1731,8 +1731,8 @@ public class NutritionIntake extends DomainResource {
       return (Reference) this.reported;
     }
 
-    public boolean hasReportedReference() { 
-      return this != null && this.reported instanceof Reference;
+    public boolean hasReportedReference() {
+        return this.reported instanceof Reference;
     }
 
     public boolean hasReported() { 

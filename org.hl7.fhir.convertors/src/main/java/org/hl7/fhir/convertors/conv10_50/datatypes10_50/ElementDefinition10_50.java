@@ -21,10 +21,11 @@ import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.utilities.Utilities;
 
 public class ElementDefinition10_50 {
+  
   public static org.hl7.fhir.r5.model.ElementDefinition convertElementDefinition(org.hl7.fhir.dstu2.model.ElementDefinition src, List<String> slicePaths, List<org.hl7.fhir.dstu2.model.ElementDefinition> context, int pos) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r5.model.ElementDefinition tgt = new org.hl7.fhir.r5.model.ElementDefinition();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt, "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.mustHaveValue", "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.valueAlternatives");
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt, VersionConvertorConstants.EXT_MUST_VALUE, VersionConvertorConstants.EXT_VALUE_ALT);
     if (src.hasPathElement()) tgt.setPathElement(String10_50.convertString(src.getPathElement()));
     tgt.setRepresentation(src.getRepresentation().stream().map(ElementDefinition10_50::convertPropertyRepresentation).collect(Collectors.toList()));
     if (src.hasName()) {
@@ -66,8 +67,8 @@ public class ElementDefinition10_50 {
     if (src.hasMustSupport()) tgt.setMustSupportElement(Boolean10_50.convertBoolean(src.getMustSupportElement()));
     if (src.hasIsModifier()) tgt.setIsModifierElement(Boolean10_50.convertBoolean(src.getIsModifierElement()));
     if (tgt.getIsModifier()) {
-      String reason = org.hl7.fhir.dstu2.utils.ToolingExtensions.readStringExtension(src, VersionConvertorConstants.MODIFIER_REASON_EXTENSION);
-      if (Utilities.noString(reason)) reason = VersionConvertorConstants.MODIFIER_REASON_LEGACY;
+      String reason = org.hl7.fhir.dstu2.utils.ToolingExtensions.readStringExtension(src, VersionConvertorConstants.EXT_MODIFIER_REASON_EXTENSION);
+      if (Utilities.noString(reason)) reason = VersionConvertorConstants.EXT_MODIFIER_REASON_LEGACY;
       tgt.setIsModifierReason(reason);
     }
     if (src.hasIsSummary()) tgt.setIsSummaryElement(Boolean10_50.convertBoolean(src.getIsSummaryElement()));
@@ -76,10 +77,10 @@ public class ElementDefinition10_50 {
       tgt.addMapping(convertElementDefinitionMappingComponent(t));
     if (!tgt.hasId()) tgt.setId(tgt.getPath());
 
-    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.mustHaveValue")) {
-      tgt.setMustHaveValueElement(Boolean10_50.convertBoolean((org.hl7.fhir.dstu2.model.BooleanType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.mustHaveValue").getValue()));
+    if (src.hasExtension(VersionConvertorConstants.EXT_MUST_VALUE)) {
+      tgt.setMustHaveValueElement(Boolean10_50.convertBoolean((org.hl7.fhir.dstu2.model.BooleanType) src.getExtensionByUrl(VersionConvertorConstants.EXT_MUST_VALUE).getValue()));
     }
-    for (org.hl7.fhir.dstu2.model.Extension ext : src.getExtensionsByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.valueAlternatives")) {
+    for (org.hl7.fhir.dstu2.model.Extension ext : src.getExtensionsByUrl(VersionConvertorConstants.EXT_VALUE_ALT)) {
       tgt.addValueAlternative(Uri10_50.convertCanonical((org.hl7.fhir.dstu2.model.UriType)ext.getValue()));
     }
     return tgt;
@@ -129,17 +130,17 @@ public class ElementDefinition10_50 {
     if (src.hasMustSupportElement())
       tgt.setMustSupportElement(Boolean10_50.convertBoolean(src.getMustSupportElement()));
     if (src.hasIsModifierElement()) tgt.setIsModifierElement(Boolean10_50.convertBoolean(src.getIsModifierElement()));
-    if (src.hasIsModifierReason() && !VersionConvertorConstants.MODIFIER_REASON_LEGACY.equals(src.getIsModifierReason()))
-      org.hl7.fhir.dstu2.utils.ToolingExtensions.setStringExtension(tgt, VersionConvertorConstants.MODIFIER_REASON_EXTENSION, src.getIsModifierReason());
+    if (src.hasIsModifierReason() && !VersionConvertorConstants.EXT_MODIFIER_REASON_LEGACY.equals(src.getIsModifierReason()))
+      org.hl7.fhir.dstu2.utils.ToolingExtensions.setStringExtension(tgt, VersionConvertorConstants.EXT_MODIFIER_REASON_EXTENSION, src.getIsModifierReason());
     if (src.hasIsSummaryElement()) tgt.setIsSummaryElement(Boolean10_50.convertBoolean(src.getIsSummaryElement()));
     if (src.hasBinding()) tgt.setBinding(convertElementDefinitionBindingComponent(src.getBinding()));
     for (org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent t : src.getMapping())
       tgt.addMapping(convertElementDefinitionMappingComponent(t));
     if (src.hasMustHaveValue()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.mustHaveValue", Boolean10_50.convertBoolean(src.getMustHaveValueElement()));
+      tgt.addExtension(VersionConvertorConstants.EXT_MUST_VALUE, Boolean10_50.convertBoolean(src.getMustHaveValueElement()));
     }
     for (org.hl7.fhir.r5.model.CanonicalType ct : src.getValueAlternatives()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.valueAlternatives", Uri10_50.convertCanonical(ct));      
+      tgt.addExtension(VersionConvertorConstants.EXT_VALUE_ALT, Uri10_50.convertCanonical(ct));      
     }
 
 

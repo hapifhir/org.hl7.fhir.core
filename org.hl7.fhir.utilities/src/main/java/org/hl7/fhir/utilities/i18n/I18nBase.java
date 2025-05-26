@@ -2,6 +2,7 @@ package org.hl7.fhir.utilities.i18n;
 
 import java.text.MessageFormat;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -26,6 +27,7 @@ public abstract class I18nBase {
   private ResourceBundle messages = null;
   private PluralRules pluralRules = null;
   private boolean warnAboutMissingMessages = true;
+  private static Set<String> warnedLocales;
 
 
   public Locale getLocale() {
@@ -58,7 +60,13 @@ public abstract class I18nBase {
   private void warnIfUnknownLocale(@Nonnull Locale locale) {
     if (Locale.ROOT == messages.getLocale()) {
       if (!locale.getLanguage().equals("en")) {
-        log.warn("The locale " + locale + " is not supported. Messages will default to en-US.");
+        if (warnedLocales == null) {
+          warnedLocales = new HashSet<String>();
+        }
+        if (!warnedLocales.contains(locale.toLanguageTag())) {
+          log.warn("The locale " + locale.toLanguageTag() + " is not supported. Messages will default to en-US.");
+          warnedLocales.add(locale.toLanguageTag());
+        }
       }
     }
   }

@@ -1329,8 +1329,8 @@ public class MedicationRequest extends DomainResource {
           return (BooleanType) this.allowed;
         }
 
-        public boolean hasAllowedBooleanType() { 
-          return this != null && this.allowed instanceof BooleanType;
+        public boolean hasAllowedBooleanType() {
+            return this.allowed instanceof BooleanType;
         }
 
         /**
@@ -1344,8 +1344,8 @@ public class MedicationRequest extends DomainResource {
           return (CodeableConcept) this.allowed;
         }
 
-        public boolean hasAllowedCodeableConcept() { 
-          return this != null && this.allowed instanceof CodeableConcept;
+        public boolean hasAllowedCodeableConcept() {
+            return this.allowed instanceof CodeableConcept;
         }
 
         public boolean hasAllowed() { 

@@ -141,6 +141,11 @@ public class XhtmlType extends PrimitiveType<String> {
   public void setPlace(Narrative place) {
     this.place = place;
   }
+
+  @Override
+  public Base setXhtml(XhtmlNode node) {
+    return place.setDiv(node);
+  }
   
 
 }

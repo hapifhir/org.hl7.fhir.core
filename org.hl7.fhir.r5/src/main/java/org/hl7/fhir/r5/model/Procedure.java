@@ -1334,8 +1334,8 @@ public class Procedure extends DomainResource {
       return (DateTimeType) this.occurrence;
     }
 
-    public boolean hasOccurrenceDateTimeType() { 
-      return this != null && this.occurrence instanceof DateTimeType;
+    public boolean hasOccurrenceDateTimeType() {
+        return this.occurrence instanceof DateTimeType;
     }
 
     /**
@@ -1349,8 +1349,8 @@ public class Procedure extends DomainResource {
       return (Period) this.occurrence;
     }
 
-    public boolean hasOccurrencePeriod() { 
-      return this != null && this.occurrence instanceof Period;
+    public boolean hasOccurrencePeriod() {
+        return this.occurrence instanceof Period;
     }
 
     /**
@@ -1364,8 +1364,8 @@ public class Procedure extends DomainResource {
       return (StringType) this.occurrence;
     }
 
-    public boolean hasOccurrenceStringType() { 
-      return this != null && this.occurrence instanceof StringType;
+    public boolean hasOccurrenceStringType() {
+        return this.occurrence instanceof StringType;
     }
 
     /**
@@ -1379,8 +1379,8 @@ public class Procedure extends DomainResource {
       return (Age) this.occurrence;
     }
 
-    public boolean hasOccurrenceAge() { 
-      return this != null && this.occurrence instanceof Age;
+    public boolean hasOccurrenceAge() {
+        return this.occurrence instanceof Age;
     }
 
     /**
@@ -1394,8 +1394,8 @@ public class Procedure extends DomainResource {
       return (Range) this.occurrence;
     }
 
-    public boolean hasOccurrenceRange() { 
-      return this != null && this.occurrence instanceof Range;
+    public boolean hasOccurrenceRange() {
+        return this.occurrence instanceof Range;
     }
 
     /**
@@ -1409,8 +1409,8 @@ public class Procedure extends DomainResource {
       return (Timing) this.occurrence;
     }
 
-    public boolean hasOccurrenceTiming() { 
-      return this != null && this.occurrence instanceof Timing;
+    public boolean hasOccurrenceTiming() {
+        return this.occurrence instanceof Timing;
     }
 
     public boolean hasOccurrence() { 
@@ -1518,8 +1518,8 @@ public class Procedure extends DomainResource {
       return (BooleanType) this.reported;
     }
 
-    public boolean hasReportedBooleanType() { 
-      return this != null && this.reported instanceof BooleanType;
+    public boolean hasReportedBooleanType() {
+        return this.reported instanceof BooleanType;
     }
 
     /**
@@ -1533,8 +1533,8 @@ public class Procedure extends DomainResource {
       return (Reference) this.reported;
     }
 
-    public boolean hasReportedReference() { 
-      return this != null && this.reported instanceof Reference;
+    public boolean hasReportedReference() {
+        return this.reported instanceof Reference;
     }
 
     public boolean hasReported() { 

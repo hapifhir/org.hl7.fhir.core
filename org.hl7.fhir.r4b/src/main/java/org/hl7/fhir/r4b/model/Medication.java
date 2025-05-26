@@ -264,7 +264,7 @@ public class Medication extends DomainResource {
     }
 
     public boolean hasItemCodeableConcept() {
-      return this != null && this.item instanceof CodeableConcept;
+        return this.item instanceof CodeableConcept;
     }
 
     /**
@@ -281,7 +281,7 @@ public class Medication extends DomainResource {
     }
 
     public boolean hasItemReference() {
-      return this != null && this.item instanceof Reference;
+        return this.item instanceof Reference;
     }
 
     public boolean hasItem() {

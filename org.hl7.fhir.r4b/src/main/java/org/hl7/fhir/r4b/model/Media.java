@@ -633,7 +633,7 @@ public class Media extends DomainResource {
   }
 
   public boolean hasCreatedDateTimeType() {
-    return this != null && this.created instanceof DateTimeType;
+      return this.created instanceof DateTimeType;
   }
 
   /**
@@ -650,7 +650,7 @@ public class Media extends DomainResource {
   }
 
   public boolean hasCreatedPeriod() {
-    return this != null && this.created instanceof Period;
+      return this.created instanceof Period;
   }
 
   public boolean hasCreated() {

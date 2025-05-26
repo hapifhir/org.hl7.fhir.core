@@ -17,63 +17,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public class MedicationRequest30_40 {
 
-  public static org.hl7.fhir.r4.model.MedicationRequest convertMedicationRequest(org.hl7.fhir.dstu3.model.MedicationRequest src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.MedicationRequest tgt = new org.hl7.fhir.r4.model.MedicationRequest();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
-    for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
-    for (org.hl7.fhir.dstu3.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference30_40.convertReference(t));
-    if (src.hasGroupIdentifier())
-      tgt.setGroupIdentifier(Identifier30_40.convertIdentifier(src.getGroupIdentifier()));
-    if (src.hasStatus())
-      tgt.setStatusElement(convertMedicationRequestStatus(src.getStatusElement()));
-    if (src.hasIntent())
-      tgt.setIntentElement(convertMedicationRequestIntent(src.getIntentElement()));
-    if (src.hasPriority())
-      tgt.setPriorityElement(convertMedicationRequestPriority(src.getPriorityElement()));
-    if (src.hasMedication())
-      tgt.setMedication(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getMedication()));
-    if (src.hasSubject())
-      tgt.setSubject(Reference30_40.convertReference(src.getSubject()));
-    if (src.hasContext())
-      tgt.setEncounter(Reference30_40.convertReference(src.getContext()));
-    for (org.hl7.fhir.dstu3.model.Reference t : src.getSupportingInformation())
-      tgt.addSupportingInformation(Reference30_40.convertReference(t));
-    if (src.hasAuthoredOn())
-      tgt.setAuthoredOnElement(DateTime30_40.convertDateTime(src.getAuthoredOnElement()));
-    if (src.hasRecorder())
-      tgt.setRecorder(Reference30_40.convertReference(src.getRecorder()));
-    for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(CodeableConcept30_40.convertCodeableConcept(t));
-    for (org.hl7.fhir.dstu3.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(Reference30_40.convertReference(t));
-    for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(Annotation30_40.convertAnnotation(t));
-    for (org.hl7.fhir.dstu3.model.Dosage t : src.getDosageInstruction())
-      tgt.addDosageInstruction(Dosage30_40.convertDosage(t));
-    if (src.hasDispenseRequest())
-      tgt.setDispenseRequest(convertMedicationRequestDispenseRequestComponent(src.getDispenseRequest()));
-    if (src.hasSubstitution())
-      tgt.setSubstitution(convertMedicationRequestSubstitutionComponent(src.getSubstitution()));
-    if (src.hasPriorPrescription())
-      tgt.setPriorPrescription(Reference30_40.convertReference(src.getPriorPrescription()));
-    for (org.hl7.fhir.dstu3.model.Reference t : src.getDetectedIssue())
-      tgt.addDetectedIssue(Reference30_40.convertReference(t));
-    for (org.hl7.fhir.dstu3.model.Reference t : src.getEventHistory())
-      tgt.addEventHistory(Reference30_40.convertReference(t));
-    if (src.hasRequester()) {
-      if (src.getRequester().hasAgent()) {
-        tgt.setRequester(Reference30_40.convertReference(src.getRequester().getAgent()));
-      }
-      if (src.getRequester().hasOnBehalfOf()) {
-        tgt.addExtension("http://hl7.org/fhir/3.0/StructureDefinition/extension-MedicationRequest.requester.onBehalfOf",
-          Reference30_40.convertReference(src.getRequester().getOnBehalfOf()));
-      }
-    }
-    return tgt;
-  }
-
   public static org.hl7.fhir.dstu3.model.MedicationRequest convertMedicationRequest(org.hl7.fhir.r4.model.MedicationRequest src) throws FHIRException {
     if (src == null)
       return null;

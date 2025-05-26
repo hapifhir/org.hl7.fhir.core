@@ -570,7 +570,7 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     public boolean hasDefinitionReference() {
-      return this != null && this.definition instanceof Reference;
+        return this.definition instanceof Reference;
     }
 
     /**
@@ -590,7 +590,7 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     public boolean hasDefinitionCanonicalType() {
-      return this != null && this.definition instanceof CanonicalType;
+        return this.definition instanceof CanonicalType;
     }
 
     /**
@@ -610,7 +610,7 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     public boolean hasDefinitionCodeableConcept() {
-      return this != null && this.definition instanceof CodeableConcept;
+        return this.definition instanceof CodeableConcept;
     }
 
     /**
@@ -630,7 +630,7 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     public boolean hasDefinitionExpression() {
-      return this != null && this.definition instanceof Expression;
+        return this.definition instanceof Expression;
     }
 
     /**
@@ -650,7 +650,7 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     public boolean hasDefinitionDataRequirement() {
-      return this != null && this.definition instanceof DataRequirement;
+        return this.definition instanceof DataRequirement;
     }
 
     /**
@@ -670,7 +670,7 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     public boolean hasDefinitionTriggerDefinition() {
-      return this != null && this.definition instanceof TriggerDefinition;
+        return this.definition instanceof TriggerDefinition;
     }
 
     public boolean hasDefinition() {
@@ -823,7 +823,7 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     public boolean hasParticipantEffectiveDateTimeType() {
-      return this != null && this.participantEffective instanceof DateTimeType;
+        return this.participantEffective instanceof DateTimeType;
     }
 
     /**
@@ -840,7 +840,7 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     public boolean hasParticipantEffectivePeriod() {
-      return this != null && this.participantEffective instanceof Period;
+        return this.participantEffective instanceof Period;
     }
 
     /**
@@ -857,7 +857,7 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     public boolean hasParticipantEffectiveDuration() {
-      return this != null && this.participantEffective instanceof Duration;
+        return this.participantEffective instanceof Duration;
     }
 
     /**
@@ -874,7 +874,7 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     public boolean hasParticipantEffectiveTiming() {
-      return this != null && this.participantEffective instanceof Timing;
+        return this.participantEffective instanceof Timing;
     }
 
     public boolean hasParticipantEffective() {

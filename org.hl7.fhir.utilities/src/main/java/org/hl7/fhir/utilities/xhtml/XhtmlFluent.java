@@ -150,6 +150,17 @@ public abstract class XhtmlFluent {
     return addText(cnt);
   }
 
+  /**
+   * used in i18n when we don't know if there'll be text, but if there is, it needs to be separated
+   * 
+   * @param cnt
+   */
+  public void stx(String cnt) {
+    if (!Utilities.noString(cnt)) {
+      addText(" "+cnt);
+    }
+  }
+
   public XhtmlNode tx(int cnt) {
     return addText(Integer.toString(cnt));
   }

@@ -40,6 +40,6 @@ public class Extension14_50 {
   }
 
   static public boolean mappedExtension(String url) {
-    return url.equals(VersionConvertorConstants.PROFILE_EXTENSION) || url.equals(VersionConvertorConstants.IG_DEPENDSON_PACKAGE_EXTENSION) || url.equals(VersionConvertorConstants.IG_DEPENDSON_VERSION_EXTENSION) || url.equals(VersionConvertorConstants.IG_CONFORMANCE_MESSAGE_EVENT);
+    return url.equals(VersionConvertorConstants.EXT_PROFILE_EXTENSION) || url.equals(VersionConvertorConstants.EXT_IG_DEPENDSON_PACKAGE_EXTENSION) || url.equals(VersionConvertorConstants.EXT_IG_DEPENDSON_VERSION_EXTENSION) || url.equals(VersionConvertorConstants.EXT_IG_CONFORMANCE_MESSAGE_EVENT);
   }
 }

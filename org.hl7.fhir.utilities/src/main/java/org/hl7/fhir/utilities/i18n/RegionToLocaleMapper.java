@@ -23,7 +23,7 @@ public class RegionToLocaleMapper {
     addLocaleForRegions(new Locale("zh", "CN"), "CN", "CHN");
     addLocaleForRegions(new Locale("es", "CO"), "CO", "COL");
     addLocaleForRegions(new Locale("hr", "HR"), "HR", "HRV");
-    addLocaleForRegions(new Locale("cz", "CZ"), "CZ", "CZE");
+    addLocaleForRegions(new Locale("cs", "CZ"), "CZ", "CZE");
     addLocaleForRegions(new Locale("da", "DK"), "DK", "DNK");
     addLocaleForRegions(new Locale("fi", "FI"), "FI", "FIN");
     addLocaleForRegions(new Locale("fr", "FR"), "FR", "FRA");

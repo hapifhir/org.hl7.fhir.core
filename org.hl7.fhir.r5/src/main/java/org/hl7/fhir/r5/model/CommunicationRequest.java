@@ -97,8 +97,8 @@ public class CommunicationRequest extends DomainResource {
           return (Attachment) this.content;
         }
 
-        public boolean hasContentAttachment() { 
-          return this != null && this.content instanceof Attachment;
+        public boolean hasContentAttachment() {
+            return this.content instanceof Attachment;
         }
 
         /**
@@ -112,8 +112,8 @@ public class CommunicationRequest extends DomainResource {
           return (Reference) this.content;
         }
 
-        public boolean hasContentReference() { 
-          return this != null && this.content instanceof Reference;
+        public boolean hasContentReference() {
+            return this.content instanceof Reference;
         }
 
         /**
@@ -127,8 +127,8 @@ public class CommunicationRequest extends DomainResource {
           return (CodeableConcept) this.content;
         }
 
-        public boolean hasContentCodeableConcept() { 
-          return this != null && this.content instanceof CodeableConcept;
+        public boolean hasContentCodeableConcept() {
+            return this.content instanceof CodeableConcept;
         }
 
         public boolean hasContent() { 
@@ -1128,8 +1128,8 @@ public class CommunicationRequest extends DomainResource {
       return (DateTimeType) this.occurrence;
     }
 
-    public boolean hasOccurrenceDateTimeType() { 
-      return this != null && this.occurrence instanceof DateTimeType;
+    public boolean hasOccurrenceDateTimeType() {
+        return this.occurrence instanceof DateTimeType;
     }
 
     /**
@@ -1143,8 +1143,8 @@ public class CommunicationRequest extends DomainResource {
       return (Period) this.occurrence;
     }
 
-    public boolean hasOccurrencePeriod() { 
-      return this != null && this.occurrence instanceof Period;
+    public boolean hasOccurrencePeriod() {
+        return this.occurrence instanceof Period;
     }
 
     public boolean hasOccurrence() { 

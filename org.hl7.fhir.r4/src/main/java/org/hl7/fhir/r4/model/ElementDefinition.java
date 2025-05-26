@@ -6742,7 +6742,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMinValueDateType() {
-    return this != null && this.minValue instanceof DateType;
+      return this.minValue instanceof DateType;
   }
 
   /**
@@ -6760,7 +6760,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMinValueDateTimeType() {
-    return this != null && this.minValue instanceof DateTimeType;
+      return this.minValue instanceof DateTimeType;
   }
 
   /**
@@ -6778,7 +6778,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMinValueInstantType() {
-    return this != null && this.minValue instanceof InstantType;
+      return this.minValue instanceof InstantType;
   }
 
   /**
@@ -6796,7 +6796,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMinValueTimeType() {
-    return this != null && this.minValue instanceof TimeType;
+      return this.minValue instanceof TimeType;
   }
 
   /**
@@ -6814,7 +6814,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMinValueDecimalType() {
-    return this != null && this.minValue instanceof DecimalType;
+      return this.minValue instanceof DecimalType;
   }
 
   /**
@@ -6832,7 +6832,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMinValueIntegerType() {
-    return this != null && this.minValue instanceof IntegerType;
+      return this.minValue instanceof IntegerType;
   }
 
   /**
@@ -6850,7 +6850,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMinValuePositiveIntType() {
-    return this != null && this.minValue instanceof PositiveIntType;
+      return this.minValue instanceof PositiveIntType;
   }
 
   /**
@@ -6868,7 +6868,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMinValueUnsignedIntType() {
-    return this != null && this.minValue instanceof UnsignedIntType;
+      return this.minValue instanceof UnsignedIntType;
   }
 
   /**
@@ -6886,7 +6886,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMinValueQuantity() {
-    return this != null && this.minValue instanceof Quantity;
+      return this.minValue instanceof Quantity;
   }
 
   public boolean hasMinValue() {
@@ -6931,7 +6931,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMaxValueDateType() {
-    return this != null && this.maxValue instanceof DateType;
+      return this.maxValue instanceof DateType;
   }
 
   /**
@@ -6949,7 +6949,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMaxValueDateTimeType() {
-    return this != null && this.maxValue instanceof DateTimeType;
+      return this.maxValue instanceof DateTimeType;
   }
 
   /**
@@ -6967,7 +6967,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMaxValueInstantType() {
-    return this != null && this.maxValue instanceof InstantType;
+      return this.maxValue instanceof InstantType;
   }
 
   /**
@@ -6985,7 +6985,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMaxValueTimeType() {
-    return this != null && this.maxValue instanceof TimeType;
+      return this.maxValue instanceof TimeType;
   }
 
   /**
@@ -7003,7 +7003,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMaxValueDecimalType() {
-    return this != null && this.maxValue instanceof DecimalType;
+      return this.maxValue instanceof DecimalType;
   }
 
   /**
@@ -7021,7 +7021,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMaxValueIntegerType() {
-    return this != null && this.maxValue instanceof IntegerType;
+      return this.maxValue instanceof IntegerType;
   }
 
   /**
@@ -7039,7 +7039,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMaxValuePositiveIntType() {
-    return this != null && this.maxValue instanceof PositiveIntType;
+      return this.maxValue instanceof PositiveIntType;
   }
 
   /**
@@ -7057,7 +7057,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMaxValueUnsignedIntType() {
-    return this != null && this.maxValue instanceof UnsignedIntType;
+      return this.maxValue instanceof UnsignedIntType;
   }
 
   /**
@@ -7075,7 +7075,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMaxValueQuantity() {
-    return this != null && this.maxValue instanceof Quantity;
+      return this.maxValue instanceof Quantity;
   }
 
   public boolean hasMaxValue() {

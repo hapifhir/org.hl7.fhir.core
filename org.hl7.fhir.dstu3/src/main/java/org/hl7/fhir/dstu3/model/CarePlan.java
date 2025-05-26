@@ -1617,8 +1617,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return (Timing) this.scheduled;
         }
 
-        public boolean hasScheduledTiming() { 
-          return this != null && this.scheduled instanceof Timing;
+        public boolean hasScheduledTiming() {
+            return this.scheduled instanceof Timing;
         }
 
         /**
@@ -1632,8 +1632,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return (Period) this.scheduled;
         }
 
-        public boolean hasScheduledPeriod() { 
-          return this != null && this.scheduled instanceof Period;
+        public boolean hasScheduledPeriod() {
+            return this.scheduled instanceof Period;
         }
 
         /**
@@ -1647,8 +1647,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return (StringType) this.scheduled;
         }
 
-        public boolean hasScheduledStringType() { 
-          return this != null && this.scheduled instanceof StringType;
+        public boolean hasScheduledStringType() {
+            return this.scheduled instanceof StringType;
         }
 
         public boolean hasScheduled() { 
@@ -1790,8 +1790,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return (CodeableConcept) this.product;
         }
 
-        public boolean hasProductCodeableConcept() { 
-          return this != null && this.product instanceof CodeableConcept;
+        public boolean hasProductCodeableConcept() {
+            return this.product instanceof CodeableConcept;
         }
 
         /**
@@ -1805,8 +1805,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return (Reference) this.product;
         }
 
-        public boolean hasProductReference() { 
-          return this != null && this.product instanceof Reference;
+        public boolean hasProductReference() {
+            return this.product instanceof Reference;
         }
 
         public boolean hasProduct() { 

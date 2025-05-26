@@ -345,7 +345,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       if (!complex)
         for (ParametersParameterComponent p : params.getParameter())
           if (p.getValue() instanceof PrimitiveType)
-            ps += p.getName() + "=" + Utilities.encodeUriParam(((PrimitiveType) p.getValue()).asStringValue()) + "&";
+            ps += Utilities.encodeUriParam(p.getName(), ((PrimitiveType) p.getValue()).asStringValue()) + "&";
       ResourceRequest<T> result;
       URI url = resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps);
       if (complex) {
@@ -473,7 +473,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     recordUse();
     org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
     try {
-      result = client.issueGetResourceRequest(resourceAddress.resolveOperationUriNoEscape(CodeSystem.class, "lookup", params),
+      result = client.issueGetResourceRequest(resourceAddress.resolveOperationUri(CodeSystem.class, "lookup", params),
         withVer(getPreferredResourceFormat(), "5.0"),
         generateHeaders(false),
         "CodeSystem/$lookup",

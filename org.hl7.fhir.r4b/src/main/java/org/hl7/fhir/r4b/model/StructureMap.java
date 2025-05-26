@@ -3952,7 +3952,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueBase64BinaryType() {
-      return this != null && this.defaultValue instanceof Base64BinaryType;
+        return this.defaultValue instanceof Base64BinaryType;
     }
 
     /**
@@ -3969,7 +3969,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueBooleanType() {
-      return this != null && this.defaultValue instanceof BooleanType;
+        return this.defaultValue instanceof BooleanType;
     }
 
     /**
@@ -3986,7 +3986,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueCanonicalType() {
-      return this != null && this.defaultValue instanceof CanonicalType;
+        return this.defaultValue instanceof CanonicalType;
     }
 
     /**
@@ -4003,7 +4003,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueCodeType() {
-      return this != null && this.defaultValue instanceof CodeType;
+        return this.defaultValue instanceof CodeType;
     }
 
     /**
@@ -4020,7 +4020,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueDateType() {
-      return this != null && this.defaultValue instanceof DateType;
+        return this.defaultValue instanceof DateType;
     }
 
     /**
@@ -4037,7 +4037,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueDateTimeType() {
-      return this != null && this.defaultValue instanceof DateTimeType;
+        return this.defaultValue instanceof DateTimeType;
     }
 
     /**
@@ -4054,7 +4054,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueDecimalType() {
-      return this != null && this.defaultValue instanceof DecimalType;
+        return this.defaultValue instanceof DecimalType;
     }
 
     /**
@@ -4071,7 +4071,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueIdType() {
-      return this != null && this.defaultValue instanceof IdType;
+        return this.defaultValue instanceof IdType;
     }
 
     /**
@@ -4088,7 +4088,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueInstantType() {
-      return this != null && this.defaultValue instanceof InstantType;
+        return this.defaultValue instanceof InstantType;
     }
 
     /**
@@ -4105,7 +4105,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueIntegerType() {
-      return this != null && this.defaultValue instanceof IntegerType;
+        return this.defaultValue instanceof IntegerType;
     }
 
     /**
@@ -4122,7 +4122,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueMarkdownType() {
-      return this != null && this.defaultValue instanceof MarkdownType;
+        return this.defaultValue instanceof MarkdownType;
     }
 
     /**
@@ -4139,7 +4139,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueOidType() {
-      return this != null && this.defaultValue instanceof OidType;
+        return this.defaultValue instanceof OidType;
     }
 
     /**
@@ -4156,7 +4156,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValuePositiveIntType() {
-      return this != null && this.defaultValue instanceof PositiveIntType;
+        return this.defaultValue instanceof PositiveIntType;
     }
 
     /**
@@ -4173,7 +4173,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueStringType() {
-      return this != null && this.defaultValue instanceof StringType;
+        return this.defaultValue instanceof StringType;
     }
 
     /**
@@ -4190,7 +4190,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueTimeType() {
-      return this != null && this.defaultValue instanceof TimeType;
+        return this.defaultValue instanceof TimeType;
     }
 
     /**
@@ -4207,7 +4207,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueUnsignedIntType() {
-      return this != null && this.defaultValue instanceof UnsignedIntType;
+        return this.defaultValue instanceof UnsignedIntType;
     }
 
     /**
@@ -4224,7 +4224,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueUriType() {
-      return this != null && this.defaultValue instanceof UriType;
+        return this.defaultValue instanceof UriType;
     }
 
     /**
@@ -4241,7 +4241,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueUrlType() {
-      return this != null && this.defaultValue instanceof UrlType;
+        return this.defaultValue instanceof UrlType;
     }
 
     /**
@@ -4258,7 +4258,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueUuidType() {
-      return this != null && this.defaultValue instanceof UuidType;
+        return this.defaultValue instanceof UuidType;
     }
 
     /**
@@ -4275,7 +4275,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueAddress() {
-      return this != null && this.defaultValue instanceof Address;
+        return this.defaultValue instanceof Address;
     }
 
     /**
@@ -4292,7 +4292,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueAge() {
-      return this != null && this.defaultValue instanceof Age;
+        return this.defaultValue instanceof Age;
     }
 
     /**
@@ -4309,7 +4309,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueAnnotation() {
-      return this != null && this.defaultValue instanceof Annotation;
+        return this.defaultValue instanceof Annotation;
     }
 
     /**
@@ -4326,7 +4326,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueAttachment() {
-      return this != null && this.defaultValue instanceof Attachment;
+        return this.defaultValue instanceof Attachment;
     }
 
     /**
@@ -4343,7 +4343,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueCodeableConcept() {
-      return this != null && this.defaultValue instanceof CodeableConcept;
+        return this.defaultValue instanceof CodeableConcept;
     }
 
     /**
@@ -4360,7 +4360,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueCoding() {
-      return this != null && this.defaultValue instanceof Coding;
+        return this.defaultValue instanceof Coding;
     }
 
     /**
@@ -4377,7 +4377,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueContactPoint() {
-      return this != null && this.defaultValue instanceof ContactPoint;
+        return this.defaultValue instanceof ContactPoint;
     }
 
     /**
@@ -4394,7 +4394,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueCount() {
-      return this != null && this.defaultValue instanceof Count;
+        return this.defaultValue instanceof Count;
     }
 
     /**
@@ -4411,7 +4411,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueDistance() {
-      return this != null && this.defaultValue instanceof Distance;
+        return this.defaultValue instanceof Distance;
     }
 
     /**
@@ -4428,7 +4428,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueDuration() {
-      return this != null && this.defaultValue instanceof Duration;
+        return this.defaultValue instanceof Duration;
     }
 
     /**
@@ -4445,7 +4445,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueHumanName() {
-      return this != null && this.defaultValue instanceof HumanName;
+        return this.defaultValue instanceof HumanName;
     }
 
     /**
@@ -4462,7 +4462,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueIdentifier() {
-      return this != null && this.defaultValue instanceof Identifier;
+        return this.defaultValue instanceof Identifier;
     }
 
     /**
@@ -4479,7 +4479,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueMoney() {
-      return this != null && this.defaultValue instanceof Money;
+        return this.defaultValue instanceof Money;
     }
 
     /**
@@ -4496,7 +4496,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValuePeriod() {
-      return this != null && this.defaultValue instanceof Period;
+        return this.defaultValue instanceof Period;
     }
 
     /**
@@ -4513,7 +4513,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueQuantity() {
-      return this != null && this.defaultValue instanceof Quantity;
+        return this.defaultValue instanceof Quantity;
     }
 
     /**
@@ -4530,7 +4530,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueRange() {
-      return this != null && this.defaultValue instanceof Range;
+        return this.defaultValue instanceof Range;
     }
 
     /**
@@ -4547,7 +4547,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueRatio() {
-      return this != null && this.defaultValue instanceof Ratio;
+        return this.defaultValue instanceof Ratio;
     }
 
     /**
@@ -4564,7 +4564,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueReference() {
-      return this != null && this.defaultValue instanceof Reference;
+        return this.defaultValue instanceof Reference;
     }
 
     /**
@@ -4581,7 +4581,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueSampledData() {
-      return this != null && this.defaultValue instanceof SampledData;
+        return this.defaultValue instanceof SampledData;
     }
 
     /**
@@ -4598,7 +4598,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueSignature() {
-      return this != null && this.defaultValue instanceof Signature;
+        return this.defaultValue instanceof Signature;
     }
 
     /**
@@ -4615,7 +4615,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueTiming() {
-      return this != null && this.defaultValue instanceof Timing;
+        return this.defaultValue instanceof Timing;
     }
 
     /**
@@ -4632,7 +4632,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueContactDetail() {
-      return this != null && this.defaultValue instanceof ContactDetail;
+        return this.defaultValue instanceof ContactDetail;
     }
 
     /**
@@ -4649,7 +4649,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueContributor() {
-      return this != null && this.defaultValue instanceof Contributor;
+        return this.defaultValue instanceof Contributor;
     }
 
     /**
@@ -4666,7 +4666,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueDataRequirement() {
-      return this != null && this.defaultValue instanceof DataRequirement;
+        return this.defaultValue instanceof DataRequirement;
     }
 
     /**
@@ -4683,7 +4683,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueExpression() {
-      return this != null && this.defaultValue instanceof Expression;
+        return this.defaultValue instanceof Expression;
     }
 
     /**
@@ -4700,7 +4700,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueParameterDefinition() {
-      return this != null && this.defaultValue instanceof ParameterDefinition;
+        return this.defaultValue instanceof ParameterDefinition;
     }
 
     /**
@@ -4717,7 +4717,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueRelatedArtifact() {
-      return this != null && this.defaultValue instanceof RelatedArtifact;
+        return this.defaultValue instanceof RelatedArtifact;
     }
 
     /**
@@ -4734,7 +4734,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueTriggerDefinition() {
-      return this != null && this.defaultValue instanceof TriggerDefinition;
+        return this.defaultValue instanceof TriggerDefinition;
     }
 
     /**
@@ -4751,7 +4751,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueUsageContext() {
-      return this != null && this.defaultValue instanceof UsageContext;
+        return this.defaultValue instanceof UsageContext;
     }
 
     /**
@@ -4768,7 +4768,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueDosage() {
-      return this != null && this.defaultValue instanceof Dosage;
+        return this.defaultValue instanceof Dosage;
     }
 
     /**
@@ -4785,7 +4785,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasDefaultValueMeta() {
-      return this != null && this.defaultValue instanceof Meta;
+        return this.defaultValue instanceof Meta;
     }
 
     public boolean hasDefaultValue() {
@@ -6684,7 +6684,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasValueIdType() {
-      return this != null && this.value instanceof IdType;
+        return this.value instanceof IdType;
     }
 
     /**
@@ -6700,7 +6700,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasValueStringType() {
-      return this != null && this.value instanceof StringType;
+        return this.value instanceof StringType;
     }
 
     /**
@@ -6716,7 +6716,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasValueBooleanType() {
-      return this != null && this.value instanceof BooleanType;
+        return this.value instanceof BooleanType;
     }
 
     /**
@@ -6732,7 +6732,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasValueIntegerType() {
-      return this != null && this.value instanceof IntegerType;
+        return this.value instanceof IntegerType;
     }
 
     /**
@@ -6748,7 +6748,7 @@ public class StructureMap extends CanonicalResource {
     }
 
     public boolean hasValueDecimalType() {
-      return this != null && this.value instanceof DecimalType;
+        return this.value instanceof DecimalType;
     }
 
     public boolean hasValue() {

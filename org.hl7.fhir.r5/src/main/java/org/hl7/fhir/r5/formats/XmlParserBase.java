@@ -68,6 +68,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.instance.model.api.IIdType;
 import org.hl7.fhir.r5.model.Base;
@@ -117,6 +118,12 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 
 	/* -- entry points --------------------------------------------------- */
 
+	protected Base parseBase(XmlPullParser xpp) throws FHIRFormatError, XmlPullParserException, IOException {
+    throw new NotImplementedException("Still to do (for openEHR)");
+    // return parseType(xpp, null);
+  }
+
+  
 	/**
 	 * Parse content that is known to be a resource
 	 * @ 
@@ -484,5 +491,20 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 	
 
 	protected abstract void composeResource(String name, Resource res) throws IOException ;
+
+
+	protected DataType parseNativePrimitive(XmlPullParser xpp) {
+    throw new NotImplementedException("Still to do (for openEHR)");
+  }
+
+
+	protected void composeNativePrimitive(String string, DataType defaultValue) {
+    throw new NotImplementedException("Still to do (for openEHR)");
+  }
+
+	protected void composeBase(String string, Base base) throws IOException {
+    throw new NotImplementedException("Still to do (for openEHR)");
+//     composeType(string, (DataType) base);
+  }
 
 }

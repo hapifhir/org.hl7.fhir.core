@@ -1346,8 +1346,8 @@ public class MessageDefinition extends CanonicalResource {
       return (StringType) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmStringType() { 
-      return this != null && this.versionAlgorithm instanceof StringType;
+    public boolean hasVersionAlgorithmStringType() {
+        return this.versionAlgorithm instanceof StringType;
     }
 
     /**
@@ -1361,8 +1361,8 @@ public class MessageDefinition extends CanonicalResource {
       return (Coding) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmCoding() { 
-      return this != null && this.versionAlgorithm instanceof Coding;
+    public boolean hasVersionAlgorithmCoding() {
+        return this.versionAlgorithm instanceof Coding;
     }
 
     public boolean hasVersionAlgorithm() { 
@@ -2205,8 +2205,8 @@ public class MessageDefinition extends CanonicalResource {
       return (Coding) this.event;
     }
 
-    public boolean hasEventCoding() { 
-      return this != null && this.event instanceof Coding;
+    public boolean hasEventCoding() {
+        return this.event instanceof Coding;
     }
 
     /**
@@ -2220,8 +2220,8 @@ public class MessageDefinition extends CanonicalResource {
       return (UriType) this.event;
     }
 
-    public boolean hasEventUriType() { 
-      return this != null && this.event instanceof UriType;
+    public boolean hasEventUriType() {
+        return this.event instanceof UriType;
     }
 
     public boolean hasEvent() { 

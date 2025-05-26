@@ -150,8 +150,8 @@ public class RiskAssessment extends DomainResource {
           return (DecimalType) this.probability;
         }
 
-        public boolean hasProbabilityDecimalType() { 
-          return this != null && this.probability instanceof DecimalType;
+        public boolean hasProbabilityDecimalType() {
+            return this.probability instanceof DecimalType;
         }
 
         /**
@@ -165,8 +165,8 @@ public class RiskAssessment extends DomainResource {
           return (Range) this.probability;
         }
 
-        public boolean hasProbabilityRange() { 
-          return this != null && this.probability instanceof Range;
+        public boolean hasProbabilityRange() {
+            return this.probability instanceof Range;
         }
 
         public boolean hasProbability() { 
@@ -292,8 +292,8 @@ public class RiskAssessment extends DomainResource {
           return (Period) this.when;
         }
 
-        public boolean hasWhenPeriod() { 
-          return this != null && this.when instanceof Period;
+        public boolean hasWhenPeriod() {
+            return this.when instanceof Period;
         }
 
         /**
@@ -307,8 +307,8 @@ public class RiskAssessment extends DomainResource {
           return (Range) this.when;
         }
 
-        public boolean hasWhenRange() { 
-          return this != null && this.when instanceof Range;
+        public boolean hasWhenRange() {
+            return this.when instanceof Range;
         }
 
         public boolean hasWhen() { 
@@ -990,8 +990,8 @@ public class RiskAssessment extends DomainResource {
       return (DateTimeType) this.occurrence;
     }
 
-    public boolean hasOccurrenceDateTimeType() { 
-      return this != null && this.occurrence instanceof DateTimeType;
+    public boolean hasOccurrenceDateTimeType() {
+        return this.occurrence instanceof DateTimeType;
     }
 
     /**
@@ -1005,8 +1005,8 @@ public class RiskAssessment extends DomainResource {
       return (Period) this.occurrence;
     }
 
-    public boolean hasOccurrencePeriod() { 
-      return this != null && this.occurrence instanceof Period;
+    public boolean hasOccurrencePeriod() {
+        return this.occurrence instanceof Period;
     }
 
     public boolean hasOccurrence() { 

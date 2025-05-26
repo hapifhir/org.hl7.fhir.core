@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
 import java.util.List;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Annotation30_40;
@@ -18,8 +19,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Coding;
 
 public class CarePlan30_40 {
-
-  private static final String CarePlanActivityDetailComponentExtension = "http://hl7.org/fhir/3.0/StructureDefinition/extension-CarePlan.activity.detail.category";
 
   public static org.hl7.fhir.dstu3.model.CarePlan convertCarePlan(org.hl7.fhir.r4.model.CarePlan src) throws FHIRException {
     if (src == null)
@@ -224,7 +223,7 @@ public class CarePlan30_40 {
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasCategory()) {
       org.hl7.fhir.r4.model.Extension t = new org.hl7.fhir.r4.model.Extension();
-      t.setUrl(CarePlanActivityDetailComponentExtension);
+      t.setUrl(VersionConvertorConstants.EXT_CarePlanActivityDetailComponentExtension);
       t.setValue(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getCategory()));
       tgt.addExtension(t);
     }
@@ -291,7 +290,7 @@ public class CarePlan30_40 {
     org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityDetailComponent tgt = new org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityDetailComponent();
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasExtension()) {
-      org.hl7.fhir.r4.model.Extension extension = src.getExtensionByUrl(CarePlanActivityDetailComponentExtension);
+      org.hl7.fhir.r4.model.Extension extension = src.getExtensionByUrl(VersionConvertorConstants.EXT_CarePlanActivityDetailComponentExtension);
       if (extension != null) {
         org.hl7.fhir.r4.model.Type value = extension.getValue();
         if (value instanceof org.hl7.fhir.r4.model.CodeableConcept) {
