@@ -524,6 +524,11 @@ public void checkNoModifiers(String noun, String verb) throws FHIRException {
           retVal.add(next);
         }
       }
+      for (Extension next : getModifierExtension()) {
+        if (theUrl.equals(next.getUrl())) {
+          retVal.add(next);
+        }
+      }
       return Collections.unmodifiableList(retVal);
     }
     
@@ -531,12 +536,12 @@ public void checkNoModifiers(String noun, String verb) throws FHIRException {
     public List<Extension> getExtensionsByUrl(String... theUrls) {
       ArrayList<Extension> retVal = new ArrayList<>();
 
-      for (Extension next : getModifierExtension()) {
+      for (Extension next : getExtension()) {
         if (Utilities.existsInList(next.getUrl(), theUrls)) {
           retVal.add(next);
         }
       }
-      for (Extension next : getExtension()) {
+      for (Extension next : getModifierExtension()) {
         if (Utilities.existsInList(next.getUrl(), theUrls)) {
           retVal.add(next);
         }
