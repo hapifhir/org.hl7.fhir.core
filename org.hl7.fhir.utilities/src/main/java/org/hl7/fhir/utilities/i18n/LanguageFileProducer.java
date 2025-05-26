@@ -96,6 +96,11 @@ public abstract class LanguageFileProducer {
       this.original = original;
       return this;
     }
+
+    @Override
+    public String toString() {
+      return "["+language+":"+id+"]"+" '"+srcText+"' -> '"+ tgtText+"' ("+context+")";
+    }
     
   }
 

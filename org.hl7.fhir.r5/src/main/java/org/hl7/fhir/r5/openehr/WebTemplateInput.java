@@ -231,8 +231,8 @@ public class WebTemplateInput extends LogicalBase implements ICompositeType {
       return (StringType) this.defaultValue;
     }
 
-    public boolean hasDefaultValueStringType() { 
-      return this.defaultValue != null && this.defaultValue instanceof StringType;
+    public boolean hasDefaultValueStringType() {
+        return this.defaultValue instanceof StringType;
     }
 
     /**
@@ -246,8 +246,8 @@ public class WebTemplateInput extends LogicalBase implements ICompositeType {
       return (IntegerType) this.defaultValue;
     }
 
-    public boolean hasDefaultValueIntegerType() { 
-      return this.defaultValue != null && this.defaultValue instanceof IntegerType;
+    public boolean hasDefaultValueIntegerType() {
+        return this.defaultValue instanceof IntegerType;
     }
 
     /**
@@ -261,8 +261,8 @@ public class WebTemplateInput extends LogicalBase implements ICompositeType {
       return (DecimalType) this.defaultValue;
     }
 
-    public boolean hasDefaultValueDecimalType() { 
-      return this.defaultValue != null && this.defaultValue instanceof DecimalType;
+    public boolean hasDefaultValueDecimalType() {
+        return this.defaultValue instanceof DecimalType;
     }
 
     /**
@@ -276,8 +276,8 @@ public class WebTemplateInput extends LogicalBase implements ICompositeType {
       return (BooleanType) this.defaultValue;
     }
 
-    public boolean hasDefaultValueBooleanType() { 
-      return this.defaultValue != null && this.defaultValue instanceof BooleanType;
+    public boolean hasDefaultValueBooleanType() {
+        return this.defaultValue instanceof BooleanType;
     }
 
     public boolean hasDefaultValue() { 

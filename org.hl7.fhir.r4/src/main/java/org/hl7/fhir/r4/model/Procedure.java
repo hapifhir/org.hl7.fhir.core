@@ -1862,7 +1862,7 @@ public class Procedure extends DomainResource {
   }
 
   public boolean hasPerformedDateTimeType() {
-    return this != null && this.performed instanceof DateTimeType;
+      return this.performed instanceof DateTimeType;
   }
 
   /**
@@ -1881,7 +1881,7 @@ public class Procedure extends DomainResource {
   }
 
   public boolean hasPerformedPeriod() {
-    return this != null && this.performed instanceof Period;
+      return this.performed instanceof Period;
   }
 
   /**
@@ -1900,7 +1900,7 @@ public class Procedure extends DomainResource {
   }
 
   public boolean hasPerformedStringType() {
-    return this != null && this.performed instanceof StringType;
+      return this.performed instanceof StringType;
   }
 
   /**
@@ -1919,7 +1919,7 @@ public class Procedure extends DomainResource {
   }
 
   public boolean hasPerformedAge() {
-    return this != null && this.performed instanceof Age;
+      return this.performed instanceof Age;
   }
 
   /**
@@ -1938,7 +1938,7 @@ public class Procedure extends DomainResource {
   }
 
   public boolean hasPerformedRange() {
-    return this != null && this.performed instanceof Range;
+      return this.performed instanceof Range;
   }
 
   public boolean hasPerformed() {

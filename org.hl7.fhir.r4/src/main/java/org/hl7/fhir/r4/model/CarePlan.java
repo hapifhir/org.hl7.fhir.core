@@ -2338,7 +2338,7 @@ public class CarePlan extends DomainResource {
     }
 
     public boolean hasScheduledTiming() {
-      return this != null && this.scheduled instanceof Timing;
+        return this.scheduled instanceof Timing;
     }
 
     /**
@@ -2355,7 +2355,7 @@ public class CarePlan extends DomainResource {
     }
 
     public boolean hasScheduledPeriod() {
-      return this != null && this.scheduled instanceof Period;
+        return this.scheduled instanceof Period;
     }
 
     /**
@@ -2372,7 +2372,7 @@ public class CarePlan extends DomainResource {
     }
 
     public boolean hasScheduledStringType() {
-      return this != null && this.scheduled instanceof StringType;
+        return this.scheduled instanceof StringType;
     }
 
     public boolean hasScheduled() {
@@ -2531,7 +2531,7 @@ public class CarePlan extends DomainResource {
     }
 
     public boolean hasProductCodeableConcept() {
-      return this != null && this.product instanceof CodeableConcept;
+        return this.product instanceof CodeableConcept;
     }
 
     /**
@@ -2548,7 +2548,7 @@ public class CarePlan extends DomainResource {
     }
 
     public boolean hasProductReference() {
-      return this != null && this.product instanceof Reference;
+        return this.product instanceof Reference;
     }
 
     public boolean hasProduct() {

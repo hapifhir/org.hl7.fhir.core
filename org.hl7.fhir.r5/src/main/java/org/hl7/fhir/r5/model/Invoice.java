@@ -529,8 +529,8 @@ public class Invoice extends DomainResource {
           return (DateType) this.serviced;
         }
 
-        public boolean hasServicedDateType() { 
-          return this != null && this.serviced instanceof DateType;
+        public boolean hasServicedDateType() {
+            return this.serviced instanceof DateType;
         }
 
         /**
@@ -544,8 +544,8 @@ public class Invoice extends DomainResource {
           return (Period) this.serviced;
         }
 
-        public boolean hasServicedPeriod() { 
-          return this != null && this.serviced instanceof Period;
+        public boolean hasServicedPeriod() {
+            return this.serviced instanceof Period;
         }
 
         public boolean hasServiced() { 
@@ -580,8 +580,8 @@ public class Invoice extends DomainResource {
           return (Reference) this.chargeItem;
         }
 
-        public boolean hasChargeItemReference() { 
-          return this != null && this.chargeItem instanceof Reference;
+        public boolean hasChargeItemReference() {
+            return this.chargeItem instanceof Reference;
         }
 
         /**
@@ -595,8 +595,8 @@ public class Invoice extends DomainResource {
           return (CodeableConcept) this.chargeItem;
         }
 
-        public boolean hasChargeItemCodeableConcept() { 
-          return this != null && this.chargeItem instanceof CodeableConcept;
+        public boolean hasChargeItemCodeableConcept() {
+            return this.chargeItem instanceof CodeableConcept;
         }
 
         public boolean hasChargeItem() { 
@@ -1338,8 +1338,8 @@ public class Invoice extends DomainResource {
       return (DateType) this.period;
     }
 
-    public boolean hasPeriodDateType() { 
-      return this != null && this.period instanceof DateType;
+    public boolean hasPeriodDateType() {
+        return this.period instanceof DateType;
     }
 
     /**
@@ -1353,8 +1353,8 @@ public class Invoice extends DomainResource {
       return (Period) this.period;
     }
 
-    public boolean hasPeriodPeriod() { 
-      return this != null && this.period instanceof Period;
+    public boolean hasPeriodPeriod() {
+        return this.period instanceof Period;
     }
 
     public boolean hasPeriod() { 

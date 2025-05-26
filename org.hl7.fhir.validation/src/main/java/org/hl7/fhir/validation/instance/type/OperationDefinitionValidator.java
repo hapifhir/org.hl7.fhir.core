@@ -108,7 +108,7 @@ public class OperationDefinitionValidator extends BaseValidator {
       for (Element at : param.getChildren("allowedType")) {
         allowedTypes.add(at.primitiveValue());
       }      
-    } else {
+    } else if (param.hasChild("type")) {
       allowedTypes.add(param.getNamedChildValue("type"));
     }
     

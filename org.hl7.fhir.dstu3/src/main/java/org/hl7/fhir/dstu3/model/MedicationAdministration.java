@@ -693,8 +693,8 @@ The dosage instructions should reflect the dosage of the medication that was adm
           return (Ratio) this.rate;
         }
 
-        public boolean hasRateRatio() { 
-          return this != null && this.rate instanceof Ratio;
+        public boolean hasRateRatio() {
+            return this.rate instanceof Ratio;
         }
 
         /**
@@ -708,8 +708,8 @@ The dosage instructions should reflect the dosage of the medication that was adm
           return (SimpleQuantity) this.rate;
         }
 
-        public boolean hasRateSimpleQuantity() { 
-          return this != null && this.rate instanceof SimpleQuantity;
+        public boolean hasRateSimpleQuantity() {
+            return this.rate instanceof SimpleQuantity;
         }
 
         public boolean hasRate() { 
@@ -1396,8 +1396,8 @@ The dosage instructions should reflect the dosage of the medication that was adm
       return (CodeableConcept) this.medication;
     }
 
-    public boolean hasMedicationCodeableConcept() { 
-      return this != null && this.medication instanceof CodeableConcept;
+    public boolean hasMedicationCodeableConcept() {
+        return this.medication instanceof CodeableConcept;
     }
 
     /**
@@ -1411,8 +1411,8 @@ The dosage instructions should reflect the dosage of the medication that was adm
       return (Reference) this.medication;
     }
 
-    public boolean hasMedicationReference() { 
-      return this != null && this.medication instanceof Reference;
+    public boolean hasMedicationReference() {
+        return this.medication instanceof Reference;
     }
 
     public boolean hasMedication() { 
@@ -1588,8 +1588,8 @@ The dosage instructions should reflect the dosage of the medication that was adm
       return (DateTimeType) this.effective;
     }
 
-    public boolean hasEffectiveDateTimeType() { 
-      return this != null && this.effective instanceof DateTimeType;
+    public boolean hasEffectiveDateTimeType() {
+        return this.effective instanceof DateTimeType;
     }
 
     /**
@@ -1603,8 +1603,8 @@ The dosage instructions should reflect the dosage of the medication that was adm
       return (Period) this.effective;
     }
 
-    public boolean hasEffectivePeriod() { 
-      return this != null && this.effective instanceof Period;
+    public boolean hasEffectivePeriod() {
+        return this.effective instanceof Period;
     }
 
     public boolean hasEffective() { 

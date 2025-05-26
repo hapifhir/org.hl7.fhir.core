@@ -224,8 +224,8 @@ public class MessageHeader extends DomainResource {
           return (UrlType) this.endpoint;
         }
 
-        public boolean hasEndpointUrlType() { 
-          return this != null && this.endpoint instanceof UrlType;
+        public boolean hasEndpointUrlType() {
+            return this.endpoint instanceof UrlType;
         }
 
         /**
@@ -239,8 +239,8 @@ public class MessageHeader extends DomainResource {
           return (Reference) this.endpoint;
         }
 
-        public boolean hasEndpointReference() { 
-          return this != null && this.endpoint instanceof Reference;
+        public boolean hasEndpointReference() {
+            return this.endpoint instanceof Reference;
         }
 
         public boolean hasEndpoint() { 
@@ -600,8 +600,8 @@ public class MessageHeader extends DomainResource {
           return (UrlType) this.endpoint;
         }
 
-        public boolean hasEndpointUrlType() { 
-          return this != null && this.endpoint instanceof UrlType;
+        public boolean hasEndpointUrlType() {
+            return this.endpoint instanceof UrlType;
         }
 
         /**
@@ -615,8 +615,8 @@ public class MessageHeader extends DomainResource {
           return (Reference) this.endpoint;
         }
 
-        public boolean hasEndpointReference() { 
-          return this != null && this.endpoint instanceof Reference;
+        public boolean hasEndpointReference() {
+            return this.endpoint instanceof Reference;
         }
 
         public boolean hasEndpoint() { 
@@ -1404,8 +1404,8 @@ public class MessageHeader extends DomainResource {
       return (Coding) this.event;
     }
 
-    public boolean hasEventCoding() { 
-      return this != null && this.event instanceof Coding;
+    public boolean hasEventCoding() {
+        return this.event instanceof Coding;
     }
 
     /**
@@ -1419,8 +1419,8 @@ public class MessageHeader extends DomainResource {
       return (CanonicalType) this.event;
     }
 
-    public boolean hasEventCanonicalType() { 
-      return this != null && this.event instanceof CanonicalType;
+    public boolean hasEventCanonicalType() {
+        return this.event instanceof CanonicalType;
     }
 
     public boolean hasEvent() { 

@@ -193,7 +193,7 @@ public interface IValidationPolicyAdvisor {
   }
 
   public enum SpecialValidationRule {
-    CODESYSTEM_METADATA_CHECKS, // check code system metadata - including count, heirarchy, etc
+    CODESYSTEM_METADATA_CHECKS, // check code system metadata - including count, hierarchy, etc
     CODESYSTEM_SUPPLEMENT_CHECKS, // check supplement integrity
     CODESYSTEM_VALUESET_CHECKS, // check that the designated value set actually is the right value set
     CODESYSTEM_PROPERTY_CHECKS, // check that the properties are defined properly

@@ -777,7 +777,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     public boolean hasItemCodeableConcept() {
-      return this != null && this.item instanceof CodeableConcept;
+        return this.item instanceof CodeableConcept;
     }
 
     /**
@@ -794,7 +794,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     public boolean hasItemReference() {
-      return this != null && this.item instanceof Reference;
+        return this.item instanceof Reference;
     }
 
     public boolean hasItem() {
@@ -1782,7 +1782,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     public boolean hasIndicationCodeableConcept() {
-      return this != null && this.indication instanceof CodeableConcept;
+        return this.indication instanceof CodeableConcept;
     }
 
     /**
@@ -1799,7 +1799,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     public boolean hasIndicationReference() {
-      return this != null && this.indication instanceof Reference;
+        return this.indication instanceof Reference;
     }
 
     public boolean hasIndication() {
@@ -2418,7 +2418,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     public boolean hasCharacteristicCodeableConcept() {
-      return this != null && this.characteristic instanceof CodeableConcept;
+        return this.characteristic instanceof CodeableConcept;
     }
 
     /**
@@ -2435,7 +2435,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     public boolean hasCharacteristicQuantity() {
-      return this != null && this.characteristic instanceof Quantity;
+        return this.characteristic instanceof Quantity;
     }
 
     public boolean hasCharacteristic() {
@@ -3300,7 +3300,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     public boolean hasValueCodeableConcept() {
-      return this != null && this.value instanceof CodeableConcept;
+        return this.value instanceof CodeableConcept;
     }
 
     /**
@@ -3316,7 +3316,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     public boolean hasValueStringType() {
-      return this != null && this.value instanceof StringType;
+        return this.value instanceof StringType;
     }
 
     /**
@@ -3332,7 +3332,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     public boolean hasValueQuantity() {
-      return this != null && this.value instanceof Quantity;
+        return this.value instanceof Quantity;
     }
 
     /**
@@ -3348,7 +3348,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     public boolean hasValueBase64BinaryType() {
-      return this != null && this.value instanceof Base64BinaryType;
+        return this.value instanceof Base64BinaryType;
     }
 
     public boolean hasValue() {

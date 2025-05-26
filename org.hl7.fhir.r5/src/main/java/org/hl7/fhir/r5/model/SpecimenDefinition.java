@@ -1182,8 +1182,8 @@ public class SpecimenDefinition extends DomainResource {
           return (Quantity) this.minimumVolume;
         }
 
-        public boolean hasMinimumVolumeQuantity() { 
-          return this != null && this.minimumVolume instanceof Quantity;
+        public boolean hasMinimumVolumeQuantity() {
+            return this.minimumVolume instanceof Quantity;
         }
 
         /**
@@ -1197,8 +1197,8 @@ public class SpecimenDefinition extends DomainResource {
           return (StringType) this.minimumVolume;
         }
 
-        public boolean hasMinimumVolumeStringType() { 
-          return this != null && this.minimumVolume instanceof StringType;
+        public boolean hasMinimumVolumeStringType() {
+            return this.minimumVolume instanceof StringType;
         }
 
         public boolean hasMinimumVolume() { 
@@ -1616,8 +1616,8 @@ public class SpecimenDefinition extends DomainResource {
           return (CodeableConcept) this.additive;
         }
 
-        public boolean hasAdditiveCodeableConcept() { 
-          return this != null && this.additive instanceof CodeableConcept;
+        public boolean hasAdditiveCodeableConcept() {
+            return this.additive instanceof CodeableConcept;
         }
 
         /**
@@ -1631,8 +1631,8 @@ public class SpecimenDefinition extends DomainResource {
           return (Reference) this.additive;
         }
 
-        public boolean hasAdditiveReference() { 
-          return this != null && this.additive instanceof Reference;
+        public boolean hasAdditiveReference() {
+            return this.additive instanceof Reference;
         }
 
         public boolean hasAdditive() { 
@@ -2474,8 +2474,8 @@ public class SpecimenDefinition extends DomainResource {
       return (StringType) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmStringType() { 
-      return this != null && this.versionAlgorithm instanceof StringType;
+    public boolean hasVersionAlgorithmStringType() {
+        return this.versionAlgorithm instanceof StringType;
     }
 
     /**
@@ -2489,8 +2489,8 @@ public class SpecimenDefinition extends DomainResource {
       return (Coding) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmCoding() { 
-      return this != null && this.versionAlgorithm instanceof Coding;
+    public boolean hasVersionAlgorithmCoding() {
+        return this.versionAlgorithm instanceof Coding;
     }
 
     public boolean hasVersionAlgorithm() { 
@@ -2835,8 +2835,8 @@ public class SpecimenDefinition extends DomainResource {
       return (CodeableConcept) this.subject;
     }
 
-    public boolean hasSubjectCodeableConcept() { 
-      return this != null && this.subject instanceof CodeableConcept;
+    public boolean hasSubjectCodeableConcept() {
+        return this.subject instanceof CodeableConcept;
     }
 
     /**
@@ -2850,8 +2850,8 @@ public class SpecimenDefinition extends DomainResource {
       return (Reference) this.subject;
     }
 
-    public boolean hasSubjectReference() { 
-      return this != null && this.subject instanceof Reference;
+    public boolean hasSubjectReference() {
+        return this.subject instanceof Reference;
     }
 
     public boolean hasSubject() { 

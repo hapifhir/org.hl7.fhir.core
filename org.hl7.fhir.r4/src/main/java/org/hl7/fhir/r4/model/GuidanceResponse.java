@@ -571,7 +571,7 @@ public class GuidanceResponse extends DomainResource {
   }
 
   public boolean hasModuleUriType() {
-    return this != null && this.module instanceof UriType;
+      return this.module instanceof UriType;
   }
 
   /**
@@ -588,7 +588,7 @@ public class GuidanceResponse extends DomainResource {
   }
 
   public boolean hasModuleCanonicalType() {
-    return this != null && this.module instanceof CanonicalType;
+      return this.module instanceof CanonicalType;
   }
 
   /**
@@ -605,7 +605,7 @@ public class GuidanceResponse extends DomainResource {
   }
 
   public boolean hasModuleCodeableConcept() {
-    return this != null && this.module instanceof CodeableConcept;
+      return this.module instanceof CodeableConcept;
   }
 
   public boolean hasModule() {

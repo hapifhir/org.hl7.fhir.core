@@ -948,7 +948,7 @@ public class DataRequirement extends DataType implements ICompositeType {
     }
 
     public boolean hasValueDateTimeType() {
-      return this != null && this.value instanceof DateTimeType;
+        return this.value instanceof DateTimeType;
     }
 
     /**
@@ -970,7 +970,7 @@ public class DataRequirement extends DataType implements ICompositeType {
     }
 
     public boolean hasValuePeriod() {
-      return this != null && this.value instanceof Period;
+        return this.value instanceof Period;
     }
 
     /**
@@ -992,7 +992,7 @@ public class DataRequirement extends DataType implements ICompositeType {
     }
 
     public boolean hasValueDuration() {
-      return this != null && this.value instanceof Duration;
+        return this.value instanceof Duration;
     }
 
     public boolean hasValue() {
@@ -1772,7 +1772,7 @@ public class DataRequirement extends DataType implements ICompositeType {
   }
 
   public boolean hasSubjectCodeableConcept() {
-    return this != null && this.subject instanceof CodeableConcept;
+      return this.subject instanceof CodeableConcept;
   }
 
   /**
@@ -1789,7 +1789,7 @@ public class DataRequirement extends DataType implements ICompositeType {
   }
 
   public boolean hasSubjectReference() {
-    return this != null && this.subject instanceof Reference;
+      return this.subject instanceof Reference;
   }
 
   public boolean hasSubject() {
