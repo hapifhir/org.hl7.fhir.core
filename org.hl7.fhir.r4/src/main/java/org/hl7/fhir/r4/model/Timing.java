@@ -1290,7 +1290,7 @@ public class Timing extends BackboneType implements ICompositeType {
     }
 
     public boolean hasBoundsDuration() {
-      return this != null && this.bounds instanceof Duration;
+        return this.bounds instanceof Duration;
     }
 
     /**
@@ -1308,7 +1308,7 @@ public class Timing extends BackboneType implements ICompositeType {
     }
 
     public boolean hasBoundsRange() {
-      return this != null && this.bounds instanceof Range;
+        return this.bounds instanceof Range;
     }
 
     /**
@@ -1326,7 +1326,7 @@ public class Timing extends BackboneType implements ICompositeType {
     }
 
     public boolean hasBoundsPeriod() {
-      return this != null && this.bounds instanceof Period;
+        return this.bounds instanceof Period;
     }
 
     public boolean hasBounds() {

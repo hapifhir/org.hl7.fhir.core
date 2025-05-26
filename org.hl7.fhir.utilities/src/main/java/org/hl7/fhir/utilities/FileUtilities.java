@@ -139,6 +139,11 @@ public class FileUtilities {
     return LINE_SEP_PATTERN.split(fileToString(file));
   }
 
+  public static String[] streamToLines(InputStream stream) throws FileNotFoundException, IOException {
+    Pattern LINE_SEP_PATTERN = Pattern.compile("\\R");
+    return LINE_SEP_PATTERN.split(streamToString(stream));
+  }
+
   public static String streamToString(final InputStream input) throws IOException  {
     return new String(input.readAllBytes(), StandardCharsets.UTF_8).replace("\uFEFF", "");
   }

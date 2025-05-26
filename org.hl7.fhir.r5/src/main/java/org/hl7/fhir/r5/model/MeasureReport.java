@@ -617,8 +617,8 @@ public class MeasureReport extends DomainResource {
           return (Quantity) this.measureScore;
         }
 
-        public boolean hasMeasureScoreQuantity() { 
-          return this != null && this.measureScore instanceof Quantity;
+        public boolean hasMeasureScoreQuantity() {
+            return this.measureScore instanceof Quantity;
         }
 
         /**
@@ -632,8 +632,8 @@ public class MeasureReport extends DomainResource {
           return (DateTimeType) this.measureScore;
         }
 
-        public boolean hasMeasureScoreDateTimeType() { 
-          return this != null && this.measureScore instanceof DateTimeType;
+        public boolean hasMeasureScoreDateTimeType() {
+            return this.measureScore instanceof DateTimeType;
         }
 
         /**
@@ -647,8 +647,8 @@ public class MeasureReport extends DomainResource {
           return (CodeableConcept) this.measureScore;
         }
 
-        public boolean hasMeasureScoreCodeableConcept() { 
-          return this != null && this.measureScore instanceof CodeableConcept;
+        public boolean hasMeasureScoreCodeableConcept() {
+            return this.measureScore instanceof CodeableConcept;
         }
 
         /**
@@ -662,8 +662,8 @@ public class MeasureReport extends DomainResource {
           return (Period) this.measureScore;
         }
 
-        public boolean hasMeasureScorePeriod() { 
-          return this != null && this.measureScore instanceof Period;
+        public boolean hasMeasureScorePeriod() {
+            return this.measureScore instanceof Period;
         }
 
         /**
@@ -677,8 +677,8 @@ public class MeasureReport extends DomainResource {
           return (Range) this.measureScore;
         }
 
-        public boolean hasMeasureScoreRange() { 
-          return this != null && this.measureScore instanceof Range;
+        public boolean hasMeasureScoreRange() {
+            return this.measureScore instanceof Range;
         }
 
         /**
@@ -692,8 +692,8 @@ public class MeasureReport extends DomainResource {
           return (Duration) this.measureScore;
         }
 
-        public boolean hasMeasureScoreDuration() { 
-          return this != null && this.measureScore instanceof Duration;
+        public boolean hasMeasureScoreDuration() {
+            return this.measureScore instanceof Duration;
         }
 
         public boolean hasMeasureScore() { 
@@ -1866,8 +1866,8 @@ public class MeasureReport extends DomainResource {
           return (CodeableConcept) this.value;
         }
 
-        public boolean hasValueCodeableConcept() { 
-          return this != null && this.value instanceof CodeableConcept;
+        public boolean hasValueCodeableConcept() {
+            return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -1881,8 +1881,8 @@ public class MeasureReport extends DomainResource {
           return (BooleanType) this.value;
         }
 
-        public boolean hasValueBooleanType() { 
-          return this != null && this.value instanceof BooleanType;
+        public boolean hasValueBooleanType() {
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -1896,8 +1896,8 @@ public class MeasureReport extends DomainResource {
           return (Quantity) this.value;
         }
 
-        public boolean hasValueQuantity() { 
-          return this != null && this.value instanceof Quantity;
+        public boolean hasValueQuantity() {
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -1911,8 +1911,8 @@ public class MeasureReport extends DomainResource {
           return (Range) this.value;
         }
 
-        public boolean hasValueRange() { 
-          return this != null && this.value instanceof Range;
+        public boolean hasValueRange() {
+            return this.value instanceof Range;
         }
 
         /**
@@ -1926,8 +1926,8 @@ public class MeasureReport extends DomainResource {
           return (Reference) this.value;
         }
 
-        public boolean hasValueReference() { 
-          return this != null && this.value instanceof Reference;
+        public boolean hasValueReference() {
+            return this.value instanceof Reference;
         }
 
         public boolean hasValue() { 
@@ -2068,8 +2068,8 @@ public class MeasureReport extends DomainResource {
           return (Quantity) this.measureScore;
         }
 
-        public boolean hasMeasureScoreQuantity() { 
-          return this != null && this.measureScore instanceof Quantity;
+        public boolean hasMeasureScoreQuantity() {
+            return this.measureScore instanceof Quantity;
         }
 
         /**
@@ -2083,8 +2083,8 @@ public class MeasureReport extends DomainResource {
           return (DateTimeType) this.measureScore;
         }
 
-        public boolean hasMeasureScoreDateTimeType() { 
-          return this != null && this.measureScore instanceof DateTimeType;
+        public boolean hasMeasureScoreDateTimeType() {
+            return this.measureScore instanceof DateTimeType;
         }
 
         /**
@@ -2098,8 +2098,8 @@ public class MeasureReport extends DomainResource {
           return (CodeableConcept) this.measureScore;
         }
 
-        public boolean hasMeasureScoreCodeableConcept() { 
-          return this != null && this.measureScore instanceof CodeableConcept;
+        public boolean hasMeasureScoreCodeableConcept() {
+            return this.measureScore instanceof CodeableConcept;
         }
 
         /**
@@ -2113,8 +2113,8 @@ public class MeasureReport extends DomainResource {
           return (Period) this.measureScore;
         }
 
-        public boolean hasMeasureScorePeriod() { 
-          return this != null && this.measureScore instanceof Period;
+        public boolean hasMeasureScorePeriod() {
+            return this.measureScore instanceof Period;
         }
 
         /**
@@ -2128,8 +2128,8 @@ public class MeasureReport extends DomainResource {
           return (Range) this.measureScore;
         }
 
-        public boolean hasMeasureScoreRange() { 
-          return this != null && this.measureScore instanceof Range;
+        public boolean hasMeasureScoreRange() {
+            return this.measureScore instanceof Range;
         }
 
         /**
@@ -2143,8 +2143,8 @@ public class MeasureReport extends DomainResource {
           return (Duration) this.measureScore;
         }
 
-        public boolean hasMeasureScoreDuration() { 
-          return this != null && this.measureScore instanceof Duration;
+        public boolean hasMeasureScoreDuration() {
+            return this.measureScore instanceof Duration;
         }
 
         public boolean hasMeasureScore() { 
@@ -2527,8 +2527,8 @@ public class MeasureReport extends DomainResource {
           return (CodeableConcept) this.value;
         }
 
-        public boolean hasValueCodeableConcept() { 
-          return this != null && this.value instanceof CodeableConcept;
+        public boolean hasValueCodeableConcept() {
+            return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -2542,8 +2542,8 @@ public class MeasureReport extends DomainResource {
           return (BooleanType) this.value;
         }
 
-        public boolean hasValueBooleanType() { 
-          return this != null && this.value instanceof BooleanType;
+        public boolean hasValueBooleanType() {
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -2557,8 +2557,8 @@ public class MeasureReport extends DomainResource {
           return (Quantity) this.value;
         }
 
-        public boolean hasValueQuantity() { 
-          return this != null && this.value instanceof Quantity;
+        public boolean hasValueQuantity() {
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -2572,8 +2572,8 @@ public class MeasureReport extends DomainResource {
           return (Range) this.value;
         }
 
-        public boolean hasValueRange() { 
-          return this != null && this.value instanceof Range;
+        public boolean hasValueRange() {
+            return this.value instanceof Range;
         }
 
         /**
@@ -2587,8 +2587,8 @@ public class MeasureReport extends DomainResource {
           return (Reference) this.value;
         }
 
-        public boolean hasValueReference() { 
-          return this != null && this.value instanceof Reference;
+        public boolean hasValueReference() {
+            return this.value instanceof Reference;
         }
 
         public boolean hasValue() { 

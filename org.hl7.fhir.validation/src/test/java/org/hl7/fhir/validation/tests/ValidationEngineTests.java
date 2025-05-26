@@ -272,7 +272,7 @@ public class ValidationEngineTests {
     List<String> profiles = new ArrayList<>();
     OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "observation401_ucum.json"), profiles);
     Assertions.assertTrue(checkOutcomes("test401USCore", op, 
-      "error/invalid @ Observation.meta.source: URL value '#iLFSV7OLv0KF8dmQ' does not resolve\n"
+      "error/invalid @ Observation.meta.source: No definition could be found for URL value '#iLFSV7OLv0KF8dmQ'\n"
       + "information/informational @ Observation: Validate Observation against the Body weight profile (http://hl7.org/fhir/StructureDefinition/bodyweight) which is required by the FHIR specification because the LOINC code 29463-7 was found\n"
       + "warning/business-rule @ Observation.value.ofType(Quantity): Unable to validate code 'kg' in system 'http://unitsofmeasure.org' because the validator is running without terminology services\n"
       + "warning/informational @ Observation.value.ofType(Quantity).code: Unable to validate code without using server because: Resolved system http://unitsofmeasure.org (v3.0.1), but the definition doesn't include any codes, so the code has not been validated\n"

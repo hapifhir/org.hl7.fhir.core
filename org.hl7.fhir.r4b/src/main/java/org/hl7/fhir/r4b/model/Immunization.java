@@ -1458,7 +1458,7 @@ public class Immunization extends DomainResource {
     }
 
     public boolean hasDoseNumberPositiveIntType() {
-      return this != null && this.doseNumber instanceof PositiveIntType;
+        return this.doseNumber instanceof PositiveIntType;
     }
 
     /**
@@ -1474,7 +1474,7 @@ public class Immunization extends DomainResource {
     }
 
     public boolean hasDoseNumberStringType() {
-      return this != null && this.doseNumber instanceof StringType;
+        return this.doseNumber instanceof StringType;
     }
 
     public boolean hasDoseNumber() {
@@ -1513,7 +1513,7 @@ public class Immunization extends DomainResource {
     }
 
     public boolean hasSeriesDosesPositiveIntType() {
-      return this != null && this.seriesDoses instanceof PositiveIntType;
+        return this.seriesDoses instanceof PositiveIntType;
     }
 
     /**
@@ -1530,7 +1530,7 @@ public class Immunization extends DomainResource {
     }
 
     public boolean hasSeriesDosesStringType() {
-      return this != null && this.seriesDoses instanceof StringType;
+        return this.seriesDoses instanceof StringType;
     }
 
     public boolean hasSeriesDoses() {
@@ -2301,7 +2301,7 @@ public class Immunization extends DomainResource {
   }
 
   public boolean hasOccurrenceDateTimeType() {
-    return this != null && this.occurrence instanceof DateTimeType;
+      return this.occurrence instanceof DateTimeType;
   }
 
   /**
@@ -2318,7 +2318,7 @@ public class Immunization extends DomainResource {
   }
 
   public boolean hasOccurrenceStringType() {
-    return this != null && this.occurrence instanceof StringType;
+      return this.occurrence instanceof StringType;
   }
 
   public boolean hasOccurrence() {

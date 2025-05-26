@@ -2046,8 +2046,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return (DateTimeType) this.timing;
         }
 
-        public boolean hasTimingDateTimeType() { 
-          return this != null && this.timing instanceof DateTimeType;
+        public boolean hasTimingDateTimeType() {
+            return this.timing instanceof DateTimeType;
         }
 
         /**
@@ -2061,8 +2061,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return (Period) this.timing;
         }
 
-        public boolean hasTimingPeriod() { 
-          return this != null && this.timing instanceof Period;
+        public boolean hasTimingPeriod() {
+            return this.timing instanceof Period;
         }
 
         /**
@@ -2076,8 +2076,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return (Duration) this.timing;
         }
 
-        public boolean hasTimingDuration() { 
-          return this != null && this.timing instanceof Duration;
+        public boolean hasTimingDuration() {
+            return this.timing instanceof Duration;
         }
 
         /**
@@ -2091,8 +2091,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return (Range) this.timing;
         }
 
-        public boolean hasTimingRange() { 
-          return this != null && this.timing instanceof Range;
+        public boolean hasTimingRange() {
+            return this.timing instanceof Range;
         }
 
         /**
@@ -2106,8 +2106,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return (Timing) this.timing;
         }
 
-        public boolean hasTimingTiming() { 
-          return this != null && this.timing instanceof Timing;
+        public boolean hasTimingTiming() {
+            return this.timing instanceof Timing;
         }
 
         public boolean hasTiming() { 
@@ -3513,8 +3513,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return (Duration) this.offset;
         }
 
-        public boolean hasOffsetDuration() { 
-          return this != null && this.offset instanceof Duration;
+        public boolean hasOffsetDuration() {
+            return this.offset instanceof Duration;
         }
 
         /**
@@ -3528,8 +3528,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return (Range) this.offset;
         }
 
-        public boolean hasOffsetRange() { 
-          return this != null && this.offset instanceof Range;
+        public boolean hasOffsetRange() {
+            return this.offset instanceof Range;
         }
 
         public boolean hasOffset() { 
@@ -4441,8 +4441,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       return (CodeableConcept) this.reason;
     }
 
-    public boolean hasReasonCodeableConcept() { 
-      return this != null && this.reason instanceof CodeableConcept;
+    public boolean hasReasonCodeableConcept() {
+        return this.reason instanceof CodeableConcept;
     }
 
     /**
@@ -4456,8 +4456,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       return (Reference) this.reason;
     }
 
-    public boolean hasReasonReference() { 
-      return this != null && this.reason instanceof Reference;
+    public boolean hasReasonReference() {
+        return this.reason instanceof Reference;
     }
 
     public boolean hasReason() { 

@@ -845,8 +845,8 @@ public class SubstanceReferenceInformation extends DomainResource {
           return (Quantity) this.amount;
         }
 
-        public boolean hasAmountQuantity() { 
-          return this != null && this.amount instanceof Quantity;
+        public boolean hasAmountQuantity() {
+            return this.amount instanceof Quantity;
         }
 
         /**
@@ -860,8 +860,8 @@ public class SubstanceReferenceInformation extends DomainResource {
           return (Range) this.amount;
         }
 
-        public boolean hasAmountRange() { 
-          return this != null && this.amount instanceof Range;
+        public boolean hasAmountRange() {
+            return this.amount instanceof Range;
         }
 
         /**
@@ -875,8 +875,8 @@ public class SubstanceReferenceInformation extends DomainResource {
           return (StringType) this.amount;
         }
 
-        public boolean hasAmountStringType() { 
-          return this != null && this.amount instanceof StringType;
+        public boolean hasAmountStringType() {
+            return this.amount instanceof StringType;
         }
 
         public boolean hasAmount() { 

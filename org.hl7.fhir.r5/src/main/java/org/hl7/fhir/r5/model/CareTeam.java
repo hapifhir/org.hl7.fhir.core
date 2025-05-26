@@ -329,8 +329,8 @@ public class CareTeam extends DomainResource {
           return (Period) this.coverage;
         }
 
-        public boolean hasCoveragePeriod() { 
-          return this != null && this.coverage instanceof Period;
+        public boolean hasCoveragePeriod() {
+            return this.coverage instanceof Period;
         }
 
         /**
@@ -344,8 +344,8 @@ public class CareTeam extends DomainResource {
           return (Timing) this.coverage;
         }
 
-        public boolean hasCoverageTiming() { 
-          return this != null && this.coverage instanceof Timing;
+        public boolean hasCoverageTiming() {
+            return this.coverage instanceof Timing;
         }
 
         public boolean hasCoverage() { 

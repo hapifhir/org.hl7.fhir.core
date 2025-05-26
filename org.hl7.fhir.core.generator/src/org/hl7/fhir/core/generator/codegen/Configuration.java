@@ -26,7 +26,7 @@ public class Configuration {
     ini = new IniFile(Utilities.path(path, "configuration.ini"));
     for (File jfn : ManagedFileAccess.file(path).listFiles()) {
       if (jfn.getName().endsWith(".java")) {
-        adornments.put(Utilities.changeFileExt(jfn.getName(), ""), FileUtilities.fileToString(jfn));
+        adornments.put(FileUtilities.changeFileExt(jfn.getName(), ""), FileUtilities.fileToString(jfn));
       }
     }
   }

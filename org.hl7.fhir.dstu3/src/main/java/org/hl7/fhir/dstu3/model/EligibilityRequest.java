@@ -521,8 +521,8 @@ public class EligibilityRequest extends DomainResource {
       return (DateType) this.serviced;
     }
 
-    public boolean hasServicedDateType() { 
-      return this != null && this.serviced instanceof DateType;
+    public boolean hasServicedDateType() {
+        return this.serviced instanceof DateType;
     }
 
     /**
@@ -536,8 +536,8 @@ public class EligibilityRequest extends DomainResource {
       return (Period) this.serviced;
     }
 
-    public boolean hasServicedPeriod() { 
-      return this != null && this.serviced instanceof Period;
+    public boolean hasServicedPeriod() {
+        return this.serviced instanceof Period;
     }
 
     public boolean hasServiced() { 

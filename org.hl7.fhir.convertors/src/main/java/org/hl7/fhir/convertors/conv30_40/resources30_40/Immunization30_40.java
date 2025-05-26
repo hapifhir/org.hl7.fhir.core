@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Annotation30_40;
@@ -19,10 +20,8 @@ import org.hl7.fhir.r4.model.Immunization;
 
 public class Immunization30_40 {
 
-  public static final String NOT_GIVEN_EXTENSION_URL = "http://hl7.org/fhir/3.0/StructureDefinition/extension-Immunization.notGiven";
-
   private static final String[] IGNORED_EXTENSION_URLS = new String[]{
-    NOT_GIVEN_EXTENSION_URL
+    VersionConvertorConstants.EXT_NOT_GIVEN_EXTENSION_URL
   };
 
   public static org.hl7.fhir.r4.model.Immunization convertImmunization(org.hl7.fhir.dstu3.model.Immunization src) throws FHIRException {
@@ -78,7 +77,7 @@ public class Immunization30_40 {
 
   public static org.hl7.fhir.r4.model.Extension getExtensionForNotGiven(boolean notGiven) {
     org.hl7.fhir.r4.model.Extension extension = new  org.hl7.fhir.r4.model.Extension();
-    extension.setUrl(NOT_GIVEN_EXTENSION_URL);
+    extension.setUrl(VersionConvertorConstants.EXT_NOT_GIVEN_EXTENSION_URL);
     extension.setValue(new org.hl7.fhir.r4.model.BooleanType(notGiven));
     return extension;
   }
@@ -98,8 +97,8 @@ public class Immunization30_40 {
        else
          tgt.setNotGivenElement(new org.hl7.fhir.dstu3.model.BooleanType(false));
     }
-    if (src.hasExtension(NOT_GIVEN_EXTENSION_URL)) {
-      Extension notGivenExtension = src.getExtensionByUrl(NOT_GIVEN_EXTENSION_URL);
+    if (src.hasExtension(VersionConvertorConstants.EXT_NOT_GIVEN_EXTENSION_URL)) {
+      Extension notGivenExtension = src.getExtensionByUrl(VersionConvertorConstants.EXT_NOT_GIVEN_EXTENSION_URL);
       if (notGivenExtension.hasValue() && notGivenExtension.getValueAsPrimitive() instanceof org.hl7.fhir.r4.model.BooleanType)
         tgt.setNotGivenElement(new org.hl7.fhir.dstu3.model.BooleanType(((org.hl7.fhir.r4.model.BooleanType)notGivenExtension.getValueAsPrimitive()).getValue()));
     }

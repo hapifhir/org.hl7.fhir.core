@@ -35,7 +35,7 @@ import lombok.experimental.Accessors;
 public abstract class BaseLoaderR5 implements IContextResourceLoader {
 
   protected final String URL_BASE = "http://hl7.org/fhir/";
-  protected final String URL_ELEMENT_DEF_NAMESPACE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace";
+
   protected boolean patchUrls;
   @Getter @Setter protected boolean killPrimitives;
   @Getter protected Set<String> types = new HashSet<>();
@@ -125,7 +125,7 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
         StructureDefinition sd = (StructureDefinition) cr;
         sd.setBaseDefinition(patchUrl(sd.getBaseDefinition(), sd.fhirType()));
         new ProfileUtilities(null, null, null, null).setIds(sd, false);
-        sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
+        sd.addExtension().setUrl(ToolingExtensions.EXT_XML_NAMESPACE).setValue(new UriType(URL_BASE));
         for (ElementDefinition ed : sd.getSnapshot().getElement())
           patchUrl(ed);
         for (ElementDefinition ed : sd.getDifferential().getElement())

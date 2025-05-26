@@ -1996,8 +1996,8 @@ public class MedicationRequest extends DomainResource {
       return (CodeableConcept) this.medication;
     }
 
-    public boolean hasMedicationCodeableConcept() { 
-      return this != null && this.medication instanceof CodeableConcept;
+    public boolean hasMedicationCodeableConcept() {
+        return this.medication instanceof CodeableConcept;
     }
 
     /**
@@ -2011,8 +2011,8 @@ public class MedicationRequest extends DomainResource {
       return (Reference) this.medication;
     }
 
-    public boolean hasMedicationReference() { 
-      return this != null && this.medication instanceof Reference;
+    public boolean hasMedicationReference() {
+        return this.medication instanceof Reference;
     }
 
     public boolean hasMedication() { 

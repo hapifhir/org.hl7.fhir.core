@@ -11330,8 +11330,8 @@ public class ImplementationGuide extends CanonicalResource {
       return (UrlType) this.source;
     }
 
-    public boolean hasSourceUrlType() { 
-      return this != null && this.source instanceof UrlType;
+    public boolean hasSourceUrlType() {
+        return this.source instanceof UrlType;
     }
 
     /**
@@ -11345,8 +11345,8 @@ public class ImplementationGuide extends CanonicalResource {
       return (StringType) this.source;
     }
 
-    public boolean hasSourceStringType() { 
-      return this != null && this.source instanceof StringType;
+    public boolean hasSourceStringType() {
+        return this.source instanceof StringType;
     }
 
     /**
@@ -11360,8 +11360,8 @@ public class ImplementationGuide extends CanonicalResource {
       return (MarkdownType) this.source;
     }
 
-    public boolean hasSourceMarkdownType() { 
-      return this != null && this.source instanceof MarkdownType;
+    public boolean hasSourceMarkdownType() {
+        return this.source instanceof MarkdownType;
     }
 
     public boolean hasSource() { 
@@ -14006,8 +14006,8 @@ public class ImplementationGuide extends CanonicalResource {
     return (StringType) this.versionAlgorithm;
   }
 
-  public boolean hasVersionAlgorithmStringType() { 
-    return this != null && this.versionAlgorithm instanceof StringType;
+  public boolean hasVersionAlgorithmStringType() {
+      return this.versionAlgorithm instanceof StringType;
   }
 
   /**
@@ -14021,8 +14021,8 @@ public class ImplementationGuide extends CanonicalResource {
     return (Coding) this.versionAlgorithm;
   }
 
-  public boolean hasVersionAlgorithmCoding() { 
-    return this != null && this.versionAlgorithm instanceof Coding;
+  public boolean hasVersionAlgorithmCoding() {
+      return this.versionAlgorithm instanceof Coding;
   }
 
   public boolean hasVersionAlgorithm() { 

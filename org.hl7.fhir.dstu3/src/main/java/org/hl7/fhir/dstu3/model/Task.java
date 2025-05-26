@@ -2249,8 +2249,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       return (UriType) this.definition;
     }
 
-    public boolean hasDefinitionUriType() { 
-      return this != null && this.definition instanceof UriType;
+    public boolean hasDefinitionUriType() {
+        return this.definition instanceof UriType;
     }
 
     /**
@@ -2264,8 +2264,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       return (Reference) this.definition;
     }
 
-    public boolean hasDefinitionReference() { 
-      return this != null && this.definition instanceof Reference;
+    public boolean hasDefinitionReference() {
+        return this.definition instanceof Reference;
     }
 
     public boolean hasDefinition() { 

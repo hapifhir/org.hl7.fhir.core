@@ -2521,8 +2521,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (BooleanType) this.answer;
         }
 
-        public boolean hasAnswerBooleanType() { 
-          return this != null && this.answer instanceof BooleanType;
+        public boolean hasAnswerBooleanType() {
+            return this.answer instanceof BooleanType;
         }
 
         /**
@@ -2536,8 +2536,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (DecimalType) this.answer;
         }
 
-        public boolean hasAnswerDecimalType() { 
-          return this != null && this.answer instanceof DecimalType;
+        public boolean hasAnswerDecimalType() {
+            return this.answer instanceof DecimalType;
         }
 
         /**
@@ -2551,8 +2551,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (IntegerType) this.answer;
         }
 
-        public boolean hasAnswerIntegerType() { 
-          return this != null && this.answer instanceof IntegerType;
+        public boolean hasAnswerIntegerType() {
+            return this.answer instanceof IntegerType;
         }
 
         /**
@@ -2566,8 +2566,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (DateType) this.answer;
         }
 
-        public boolean hasAnswerDateType() { 
-          return this != null && this.answer instanceof DateType;
+        public boolean hasAnswerDateType() {
+            return this.answer instanceof DateType;
         }
 
         /**
@@ -2581,8 +2581,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (DateTimeType) this.answer;
         }
 
-        public boolean hasAnswerDateTimeType() { 
-          return this != null && this.answer instanceof DateTimeType;
+        public boolean hasAnswerDateTimeType() {
+            return this.answer instanceof DateTimeType;
         }
 
         /**
@@ -2596,8 +2596,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (TimeType) this.answer;
         }
 
-        public boolean hasAnswerTimeType() { 
-          return this != null && this.answer instanceof TimeType;
+        public boolean hasAnswerTimeType() {
+            return this.answer instanceof TimeType;
         }
 
         /**
@@ -2611,8 +2611,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (StringType) this.answer;
         }
 
-        public boolean hasAnswerStringType() { 
-          return this != null && this.answer instanceof StringType;
+        public boolean hasAnswerStringType() {
+            return this.answer instanceof StringType;
         }
 
         /**
@@ -2626,8 +2626,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (Coding) this.answer;
         }
 
-        public boolean hasAnswerCoding() { 
-          return this != null && this.answer instanceof Coding;
+        public boolean hasAnswerCoding() {
+            return this.answer instanceof Coding;
         }
 
         /**
@@ -2641,8 +2641,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (Quantity) this.answer;
         }
 
-        public boolean hasAnswerQuantity() { 
-          return this != null && this.answer instanceof Quantity;
+        public boolean hasAnswerQuantity() {
+            return this.answer instanceof Quantity;
         }
 
         /**
@@ -2656,8 +2656,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (Reference) this.answer;
         }
 
-        public boolean hasAnswerReference() { 
-          return this != null && this.answer instanceof Reference;
+        public boolean hasAnswerReference() {
+            return this.answer instanceof Reference;
         }
 
         public boolean hasAnswer() { 
@@ -2933,8 +2933,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (IntegerType) this.value;
         }
 
-        public boolean hasValueIntegerType() { 
-          return this != null && this.value instanceof IntegerType;
+        public boolean hasValueIntegerType() {
+            return this.value instanceof IntegerType;
         }
 
         /**
@@ -2948,8 +2948,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (DateType) this.value;
         }
 
-        public boolean hasValueDateType() { 
-          return this != null && this.value instanceof DateType;
+        public boolean hasValueDateType() {
+            return this.value instanceof DateType;
         }
 
         /**
@@ -2963,8 +2963,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (TimeType) this.value;
         }
 
-        public boolean hasValueTimeType() { 
-          return this != null && this.value instanceof TimeType;
+        public boolean hasValueTimeType() {
+            return this.value instanceof TimeType;
         }
 
         /**
@@ -2978,8 +2978,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (StringType) this.value;
         }
 
-        public boolean hasValueStringType() { 
-          return this != null && this.value instanceof StringType;
+        public boolean hasValueStringType() {
+            return this.value instanceof StringType;
         }
 
         /**
@@ -2993,8 +2993,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (Coding) this.value;
         }
 
-        public boolean hasValueCoding() { 
-          return this != null && this.value instanceof Coding;
+        public boolean hasValueCoding() {
+            return this.value instanceof Coding;
         }
 
         /**
@@ -3008,8 +3008,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (Reference) this.value;
         }
 
-        public boolean hasValueReference() { 
-          return this != null && this.value instanceof Reference;
+        public boolean hasValueReference() {
+            return this.value instanceof Reference;
         }
 
         public boolean hasValue() { 
@@ -3283,8 +3283,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (BooleanType) this.value;
         }
 
-        public boolean hasValueBooleanType() { 
-          return this != null && this.value instanceof BooleanType;
+        public boolean hasValueBooleanType() {
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -3298,8 +3298,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (DecimalType) this.value;
         }
 
-        public boolean hasValueDecimalType() { 
-          return this != null && this.value instanceof DecimalType;
+        public boolean hasValueDecimalType() {
+            return this.value instanceof DecimalType;
         }
 
         /**
@@ -3313,8 +3313,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (IntegerType) this.value;
         }
 
-        public boolean hasValueIntegerType() { 
-          return this != null && this.value instanceof IntegerType;
+        public boolean hasValueIntegerType() {
+            return this.value instanceof IntegerType;
         }
 
         /**
@@ -3328,8 +3328,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (DateType) this.value;
         }
 
-        public boolean hasValueDateType() { 
-          return this != null && this.value instanceof DateType;
+        public boolean hasValueDateType() {
+            return this.value instanceof DateType;
         }
 
         /**
@@ -3343,8 +3343,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (DateTimeType) this.value;
         }
 
-        public boolean hasValueDateTimeType() { 
-          return this != null && this.value instanceof DateTimeType;
+        public boolean hasValueDateTimeType() {
+            return this.value instanceof DateTimeType;
         }
 
         /**
@@ -3358,8 +3358,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (TimeType) this.value;
         }
 
-        public boolean hasValueTimeType() { 
-          return this != null && this.value instanceof TimeType;
+        public boolean hasValueTimeType() {
+            return this.value instanceof TimeType;
         }
 
         /**
@@ -3373,8 +3373,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (StringType) this.value;
         }
 
-        public boolean hasValueStringType() { 
-          return this != null && this.value instanceof StringType;
+        public boolean hasValueStringType() {
+            return this.value instanceof StringType;
         }
 
         /**
@@ -3388,8 +3388,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (UriType) this.value;
         }
 
-        public boolean hasValueUriType() { 
-          return this != null && this.value instanceof UriType;
+        public boolean hasValueUriType() {
+            return this.value instanceof UriType;
         }
 
         /**
@@ -3403,8 +3403,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (Attachment) this.value;
         }
 
-        public boolean hasValueAttachment() { 
-          return this != null && this.value instanceof Attachment;
+        public boolean hasValueAttachment() {
+            return this.value instanceof Attachment;
         }
 
         /**
@@ -3418,8 +3418,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (Coding) this.value;
         }
 
-        public boolean hasValueCoding() { 
-          return this != null && this.value instanceof Coding;
+        public boolean hasValueCoding() {
+            return this.value instanceof Coding;
         }
 
         /**
@@ -3433,8 +3433,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (Quantity) this.value;
         }
 
-        public boolean hasValueQuantity() { 
-          return this != null && this.value instanceof Quantity;
+        public boolean hasValueQuantity() {
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -3448,8 +3448,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return (Reference) this.value;
         }
 
-        public boolean hasValueReference() { 
-          return this != null && this.value instanceof Reference;
+        public boolean hasValueReference() {
+            return this.value instanceof Reference;
         }
 
         public boolean hasValue() { 
@@ -4005,8 +4005,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
       return (StringType) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmStringType() { 
-      return this != null && this.versionAlgorithm instanceof StringType;
+    public boolean hasVersionAlgorithmStringType() {
+        return this.versionAlgorithm instanceof StringType;
     }
 
     /**
@@ -4020,8 +4020,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
       return (Coding) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmCoding() { 
-      return this != null && this.versionAlgorithm instanceof Coding;
+    public boolean hasVersionAlgorithmCoding() {
+        return this.versionAlgorithm instanceof Coding;
     }
 
     public boolean hasVersionAlgorithm() { 

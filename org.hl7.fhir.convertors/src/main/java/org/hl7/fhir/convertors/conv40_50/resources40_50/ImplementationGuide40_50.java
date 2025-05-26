@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
 import java.util.stream.Collectors;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.ContactDetail40_50;
@@ -55,13 +56,6 @@ import org.hl7.fhir.utilities.Utilities;
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
 public class ImplementationGuide40_50 {
-
-  static final String EXT_IG_DEFINITION_PAGE_NAME = "http://hl7.org/fhir/tools/StructureDefinition/ig-page-name";
-  static final String EXT_IG_DEFINITION_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/ig-parameter";
-  static final String EXT_IG_DEFINITION_PARAM_URL_EXT = "http://hl7.org/fhir/tools/CodeSystem/ig-parameters";
-  static final String EXT_IG_DEFINITION_PARAM_URL_BASE = "http://hl7.org/fhir/guide-parameter-code";
-  static final String EXT_IG_DEFINITION_RESOURCE_PROFILE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ImplementationGuide.definition.resource.profile";
-  static final String EXT_IG_DEPENDSON_REASON = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ImplementationGuide.dependsOn.reason";
 
   public static org.hl7.fhir.r5.model.ImplementationGuide convertImplementationGuide(org.hl7.fhir.r4.model.ImplementationGuide src) throws FHIRException {
     if (src == null)
@@ -183,15 +177,15 @@ public class ImplementationGuide40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt, EXT_IG_DEPENDSON_REASON);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt, VersionConvertorConstants.EXT_IG_DEPENDSON_REASON);
     if (src.hasUri())
       tgt.setUriElement(Canonical40_50.convertCanonical(src.getUriElement()));
     if (src.hasPackageId())
       tgt.setPackageIdElement(Id40_50.convertId(src.getPackageIdElement()));
     if (src.hasVersion())
       tgt.setVersionElement(String40_50.convertString(src.getVersionElement()));
-    if (src.hasExtension(EXT_IG_DEPENDSON_REASON))
-      tgt.setReasonElement(MarkDown40_50.convertMarkdown((org.hl7.fhir.r4.model.MarkdownType)src.getExtensionByUrl(EXT_IG_DEPENDSON_REASON).getValue()));
+    if (src.hasExtension(VersionConvertorConstants.EXT_IG_DEPENDSON_REASON))
+      tgt.setReasonElement(MarkDown40_50.convertMarkdown((org.hl7.fhir.r4.model.MarkdownType)src.getExtensionByUrl(VersionConvertorConstants.EXT_IG_DEPENDSON_REASON).getValue()));
     return tgt;
   }
 
@@ -207,7 +201,7 @@ public class ImplementationGuide40_50 {
     if (src.hasVersion())
       tgt.setVersionElement(String40_50.convertString(src.getVersionElement()));
     if (src.hasReason())
-      tgt.addExtension(EXT_IG_DEPENDSON_REASON, MarkDown40_50.convertMarkdown(src.getReasonElement()));
+      tgt.addExtension(VersionConvertorConstants.EXT_IG_DEPENDSON_REASON, MarkDown40_50.convertMarkdown(src.getReasonElement()));
     return tgt;
   }
 
@@ -248,10 +242,10 @@ public class ImplementationGuide40_50 {
       tgt.setPage(convertImplementationGuideDefinitionPageComponent(src.getPage()));
     for (org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent t : src.getParameter())
       tgt.addParameter(convertImplementationGuideDefinitionParameterComponent(t));
-    for (org.hl7.fhir.r4.model.Extension e : org.hl7.fhir.r4.utils.ToolingExtensions.getExtensions(src, EXT_IG_DEFINITION_PARAMETER)) {
+    for (org.hl7.fhir.r4.model.Extension e : org.hl7.fhir.r4.utils.ToolingExtensions.getExtensions(src, VersionConvertorConstants.EXT_IG_DEFINITION_PARAMETER)) {
       org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent p = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent();
       p.getCode().setCode(org.hl7.fhir.r4.utils.ToolingExtensions.readStringExtension(e, "code"));
-      p.getCode().setSystem(EXT_IG_DEFINITION_PARAM_URL_EXT);
+      p.getCode().setSystem(VersionConvertorConstants.EXT_IG_DEFINITION_PARAM_URL_EXT);
       p.setValue(org.hl7.fhir.r4.utils.ToolingExtensions.readStringExtension(e, "value"));
       tgt.addParameter(p);
     }
@@ -275,7 +269,7 @@ public class ImplementationGuide40_50 {
         if (produceIllegalParameters || Utilities.existsInList(t.getCode().getCode(), "apply", "path-resource", "path-pages", "path-tx-cache", "expansion-parameter", "rule-broken-links", "generate-xml", "generate-json", "generate-turtle", "html-template")) {
           tgt.addParameter(convertImplementationGuideDefinitionParameterComponent(t));
         } else {
-          org.hl7.fhir.r4.model.Extension e = new org.hl7.fhir.r4.model.Extension(EXT_IG_DEFINITION_PARAMETER);
+          org.hl7.fhir.r4.model.Extension e = new org.hl7.fhir.r4.model.Extension(VersionConvertorConstants.EXT_IG_DEFINITION_PARAMETER);
           org.hl7.fhir.r4.model.Extension eCode = new org.hl7.fhir.r4.model.Extension("code", new org.hl7.fhir.r4.model.CodeType(t.getCode().getCode()));
           org.hl7.fhir.r4.model.Extension eValue = new org.hl7.fhir.r4.model.Extension("value", new org.hl7.fhir.r4.model.StringType(t.getValue()));
           e.addExtension(eCode);
@@ -332,7 +326,7 @@ public class ImplementationGuide40_50 {
       tgt.setIsExample(true);
       tgt.getProfile().add(Canonical40_50.convertCanonical(src.getExampleCanonicalType()));
     }
-    for (Extension ext: src.getExtensionsByUrl(EXT_IG_DEFINITION_RESOURCE_PROFILE)) {
+    for (Extension ext: src.getExtensionsByUrl(VersionConvertorConstants.EXT_IG_DEFINITION_RESOURCE_PROFILE)) {
       tgt.getProfile().add(Canonical40_50.convertCanonical((org.hl7.fhir.r4.model.CanonicalType)ext.getValue()));
     }
     if (src.hasGroupingId())
@@ -358,7 +352,7 @@ public class ImplementationGuide40_50 {
     }
     if (src.getProfile().size() > 1) {
       for (CanonicalType p: src.getProfile().subList(1, src.getProfile().size())) {
-        tgt.addExtension(EXT_IG_DEFINITION_RESOURCE_PROFILE, Canonical40_50.convertCanonical(p));
+        tgt.addExtension(VersionConvertorConstants.EXT_IG_DEFINITION_RESOURCE_PROFILE, Canonical40_50.convertCanonical(p));
       }
     }
     if (src.hasGroupingId())
@@ -370,9 +364,9 @@ public class ImplementationGuide40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionPageComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionPageComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt, EXT_IG_DEFINITION_PAGE_NAME);
-    if (src.hasExtension(EXT_IG_DEFINITION_PAGE_NAME)) {
-      tgt.setNameElement(Url40_50.convertUrl((UrlType) src.getExtensionByUrl(EXT_IG_DEFINITION_PAGE_NAME).getValue()));
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt, VersionConvertorConstants.EXT_IG_DEFINITION_PAGE_NAME);
+    if (src.hasExtension(VersionConvertorConstants.EXT_IG_DEFINITION_PAGE_NAME)) {
+      tgt.setNameElement(Url40_50.convertUrl((UrlType) src.getExtensionByUrl(VersionConvertorConstants.EXT_IG_DEFINITION_PAGE_NAME).getValue()));
     }
     if (src.hasNameReference()) {
       tgt.setSource(new org.hl7.fhir.r5.model.UrlType(src.getNameReference().getReference()));
@@ -401,7 +395,7 @@ public class ImplementationGuide40_50 {
     org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionPageComponent tgt = new org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionPageComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasName()) {
-      tgt.addExtension().setUrl(EXT_IG_DEFINITION_PAGE_NAME).setValue(Url40_50.convertUrl(src.getNameElement()));
+      tgt.addExtension().setUrl(VersionConvertorConstants.EXT_IG_DEFINITION_PAGE_NAME).setValue(Url40_50.convertUrl(src.getNameElement()));
     }
     if (src.hasSourceUrlType()) {
       tgt.setName(Url40_50.convertUrl(src.getSourceUrlType()));
@@ -481,9 +475,9 @@ public class ImplementationGuide40_50 {
     if (src.hasCode()) {
       tgt.getCode().setCode(src.getCode());
       if (Utilities.existsInList(tgt.getCode().getCode(), "apply", "path-resource", "path-pages", "path-tx-cache", "expansion-parameter", "rule-broken-links", "generate-xml", "generate-json", "generate-turtle", "html-template")) {
-        tgt.getCode().setSystem(EXT_IG_DEFINITION_PARAM_URL_BASE);
+        tgt.getCode().setSystem(VersionConvertorConstants.EXT_IG_DEFINITION_PARAM_URL_BASE);
       } else {
-        tgt.getCode().setSystem(EXT_IG_DEFINITION_PARAM_URL_EXT);  
+        tgt.getCode().setSystem(VersionConvertorConstants.EXT_IG_DEFINITION_PARAM_URL_EXT);  
       }
     }
     if (src.hasValue())

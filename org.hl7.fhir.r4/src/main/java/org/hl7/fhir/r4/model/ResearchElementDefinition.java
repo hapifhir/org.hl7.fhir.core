@@ -698,7 +698,7 @@ public class ResearchElementDefinition extends MetadataResource {
     }
 
     public boolean hasDefinitionCodeableConcept() {
-      return this != null && this.definition instanceof CodeableConcept;
+        return this.definition instanceof CodeableConcept;
     }
 
     /**
@@ -718,7 +718,7 @@ public class ResearchElementDefinition extends MetadataResource {
     }
 
     public boolean hasDefinitionCanonicalType() {
-      return this != null && this.definition instanceof CanonicalType;
+        return this.definition instanceof CanonicalType;
     }
 
     /**
@@ -738,7 +738,7 @@ public class ResearchElementDefinition extends MetadataResource {
     }
 
     public boolean hasDefinitionExpression() {
-      return this != null && this.definition instanceof Expression;
+        return this.definition instanceof Expression;
     }
 
     /**
@@ -758,7 +758,7 @@ public class ResearchElementDefinition extends MetadataResource {
     }
 
     public boolean hasDefinitionDataRequirement() {
-      return this != null && this.definition instanceof DataRequirement;
+        return this.definition instanceof DataRequirement;
     }
 
     public boolean hasDefinition() {
@@ -992,7 +992,7 @@ public class ResearchElementDefinition extends MetadataResource {
     }
 
     public boolean hasStudyEffectiveDateTimeType() {
-      return this != null && this.studyEffective instanceof DateTimeType;
+        return this.studyEffective instanceof DateTimeType;
     }
 
     /**
@@ -1009,7 +1009,7 @@ public class ResearchElementDefinition extends MetadataResource {
     }
 
     public boolean hasStudyEffectivePeriod() {
-      return this != null && this.studyEffective instanceof Period;
+        return this.studyEffective instanceof Period;
     }
 
     /**
@@ -1026,7 +1026,7 @@ public class ResearchElementDefinition extends MetadataResource {
     }
 
     public boolean hasStudyEffectiveDuration() {
-      return this != null && this.studyEffective instanceof Duration;
+        return this.studyEffective instanceof Duration;
     }
 
     /**
@@ -1043,7 +1043,7 @@ public class ResearchElementDefinition extends MetadataResource {
     }
 
     public boolean hasStudyEffectiveTiming() {
-      return this != null && this.studyEffective instanceof Timing;
+        return this.studyEffective instanceof Timing;
     }
 
     public boolean hasStudyEffective() {
@@ -1229,7 +1229,7 @@ public class ResearchElementDefinition extends MetadataResource {
     }
 
     public boolean hasParticipantEffectiveDateTimeType() {
-      return this != null && this.participantEffective instanceof DateTimeType;
+        return this.participantEffective instanceof DateTimeType;
     }
 
     /**
@@ -1246,7 +1246,7 @@ public class ResearchElementDefinition extends MetadataResource {
     }
 
     public boolean hasParticipantEffectivePeriod() {
-      return this != null && this.participantEffective instanceof Period;
+        return this.participantEffective instanceof Period;
     }
 
     /**
@@ -1263,7 +1263,7 @@ public class ResearchElementDefinition extends MetadataResource {
     }
 
     public boolean hasParticipantEffectiveDuration() {
-      return this != null && this.participantEffective instanceof Duration;
+        return this.participantEffective instanceof Duration;
     }
 
     /**
@@ -1280,7 +1280,7 @@ public class ResearchElementDefinition extends MetadataResource {
     }
 
     public boolean hasParticipantEffectiveTiming() {
-      return this != null && this.participantEffective instanceof Timing;
+        return this.participantEffective instanceof Timing;
     }
 
     public boolean hasParticipantEffective() {
@@ -2723,7 +2723,7 @@ public class ResearchElementDefinition extends MetadataResource {
   }
 
   public boolean hasSubjectCodeableConcept() {
-    return this != null && this.subject instanceof CodeableConcept;
+      return this.subject instanceof CodeableConcept;
   }
 
   /**
@@ -2742,7 +2742,7 @@ public class ResearchElementDefinition extends MetadataResource {
   }
 
   public boolean hasSubjectReference() {
-    return this != null && this.subject instanceof Reference;
+      return this.subject instanceof Reference;
   }
 
   public boolean hasSubject() {

@@ -1274,9 +1274,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Bundle batch = new Bundle();
     batch.setType(BundleType.BATCH);
     Set<String> systems = findRelevantSystems(vs);
+    ValueSet lastvs = null;
     for (CodingValidationRequest codingValidationRequest : codes) {
       if (!codingValidationRequest.hasResult()) {
-        Parameters pIn = constructParameters(options, codingValidationRequest, vs == null ? codingValidationRequest.getVsObj() : vs);
+        Parameters pIn;
+        ValueSet wvs = vs == null ? codingValidationRequest.getVsObj() : vs;
+        if (lastvs == null || wvs == null || lastvs != wvs) {
+          pIn = constructParameters(options, codingValidationRequest, wvs);
+          lastvs = wvs;
+        } else {
+          pIn = constructParameters(options, codingValidationRequest, lastvs.getVersionedUrl());          
+        }
         setTerminologyOptions(options, pIn);
         BundleEntryComponent be = batch.addEntry();
         be.setResource(pIn);

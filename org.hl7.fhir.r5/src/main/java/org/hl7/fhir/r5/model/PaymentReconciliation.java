@@ -490,8 +490,8 @@ public class PaymentReconciliation extends DomainResource {
           return (StringType) this.targetItem;
         }
 
-        public boolean hasTargetItemStringType() { 
-          return this != null && this.targetItem instanceof StringType;
+        public boolean hasTargetItemStringType() {
+            return this.targetItem instanceof StringType;
         }
 
         /**
@@ -505,8 +505,8 @@ public class PaymentReconciliation extends DomainResource {
           return (Identifier) this.targetItem;
         }
 
-        public boolean hasTargetItemIdentifier() { 
-          return this != null && this.targetItem instanceof Identifier;
+        public boolean hasTargetItemIdentifier() {
+            return this.targetItem instanceof Identifier;
         }
 
         /**
@@ -520,8 +520,8 @@ public class PaymentReconciliation extends DomainResource {
           return (PositiveIntType) this.targetItem;
         }
 
-        public boolean hasTargetItemPositiveIntType() { 
-          return this != null && this.targetItem instanceof PositiveIntType;
+        public boolean hasTargetItemPositiveIntType() {
+            return this.targetItem instanceof PositiveIntType;
         }
 
         public boolean hasTargetItem() { 

@@ -4752,7 +4752,7 @@ public class FHIRPathEngine {
       }
       for (String an : node.getAttributes().keySet()) {
         boolean ok = an.startsWith("xmlns") || Utilities.existsInList(an,
-            "title", "style", "class", "id", "idref", "lang", "xml:lang", "xml:space", "dir", "accesskey", "tabindex",
+            "title", "style", "class", "id", "lang", "xml:lang", "xml:space", "dir", "accesskey", "tabindex",
             // tables
             "span", "width", "align", "valign", "char", "charoff", "abbr", "axis", "headers", "scope", "rowspan", "colspan") ||
 

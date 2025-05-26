@@ -301,7 +301,7 @@ public class ObligationsRenderer extends Renderer {
     if (obligations.isEmpty()) {
       return;
     } else {
-      Piece piece = gen.new Piece("table").attr("class", "grid");
+      Piece piece = gen.new Piece("obligation", "table").setClass("grid");
       c.getPieces().add(piece);
       renderTable(status, res, piece.getChildren(), false, gen.getDefPath(), gen.getUniqueLocalPrefix(), inScopeElements);
     }

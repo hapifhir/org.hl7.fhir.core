@@ -614,7 +614,7 @@ public class Invoice extends DomainResource {
     }
 
     public boolean hasChargeItemReference() {
-      return this != null && this.chargeItem instanceof Reference;
+        return this.chargeItem instanceof Reference;
     }
 
     /**
@@ -633,7 +633,7 @@ public class Invoice extends DomainResource {
     }
 
     public boolean hasChargeItemCodeableConcept() {
-      return this != null && this.chargeItem instanceof CodeableConcept;
+        return this.chargeItem instanceof CodeableConcept;
     }
 
     public boolean hasChargeItem() {

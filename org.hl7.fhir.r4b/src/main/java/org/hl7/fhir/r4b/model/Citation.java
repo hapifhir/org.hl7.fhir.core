@@ -785,7 +785,7 @@ public class Citation extends CanonicalResource {
     }
 
     public boolean hasTargetUriType() {
-      return this != null && this.target instanceof UriType;
+        return this.target instanceof UriType;
     }
 
     /**
@@ -802,7 +802,7 @@ public class Citation extends CanonicalResource {
     }
 
     public boolean hasTargetIdentifier() {
-      return this != null && this.target instanceof Identifier;
+        return this.target instanceof Identifier;
     }
 
     /**
@@ -819,7 +819,7 @@ public class Citation extends CanonicalResource {
     }
 
     public boolean hasTargetReference() {
-      return this != null && this.target instanceof Reference;
+        return this.target instanceof Reference;
     }
 
     /**
@@ -836,7 +836,7 @@ public class Citation extends CanonicalResource {
     }
 
     public boolean hasTargetAttachment() {
-      return this != null && this.target instanceof Attachment;
+        return this.target instanceof Attachment;
     }
 
     public boolean hasTarget() {
@@ -4211,7 +4211,7 @@ public class Citation extends CanonicalResource {
     }
 
     public boolean hasTargetUriType() {
-      return this != null && this.target instanceof UriType;
+        return this.target instanceof UriType;
     }
 
     /**
@@ -4228,7 +4228,7 @@ public class Citation extends CanonicalResource {
     }
 
     public boolean hasTargetIdentifier() {
-      return this != null && this.target instanceof Identifier;
+        return this.target instanceof Identifier;
     }
 
     /**
@@ -4245,7 +4245,7 @@ public class Citation extends CanonicalResource {
     }
 
     public boolean hasTargetReference() {
-      return this != null && this.target instanceof Reference;
+        return this.target instanceof Reference;
     }
 
     /**
@@ -4262,7 +4262,7 @@ public class Citation extends CanonicalResource {
     }
 
     public boolean hasTargetAttachment() {
-      return this != null && this.target instanceof Attachment;
+        return this.target instanceof Attachment;
     }
 
     public boolean hasTarget() {

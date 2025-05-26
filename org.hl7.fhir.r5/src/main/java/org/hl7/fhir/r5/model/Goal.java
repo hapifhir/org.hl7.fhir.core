@@ -338,8 +338,8 @@ public class Goal extends DomainResource {
           return (Quantity) this.detail;
         }
 
-        public boolean hasDetailQuantity() { 
-          return this != null && this.detail instanceof Quantity;
+        public boolean hasDetailQuantity() {
+            return this.detail instanceof Quantity;
         }
 
         /**
@@ -353,8 +353,8 @@ public class Goal extends DomainResource {
           return (Range) this.detail;
         }
 
-        public boolean hasDetailRange() { 
-          return this != null && this.detail instanceof Range;
+        public boolean hasDetailRange() {
+            return this.detail instanceof Range;
         }
 
         /**
@@ -368,8 +368,8 @@ public class Goal extends DomainResource {
           return (CodeableConcept) this.detail;
         }
 
-        public boolean hasDetailCodeableConcept() { 
-          return this != null && this.detail instanceof CodeableConcept;
+        public boolean hasDetailCodeableConcept() {
+            return this.detail instanceof CodeableConcept;
         }
 
         /**
@@ -383,8 +383,8 @@ public class Goal extends DomainResource {
           return (StringType) this.detail;
         }
 
-        public boolean hasDetailStringType() { 
-          return this != null && this.detail instanceof StringType;
+        public boolean hasDetailStringType() {
+            return this.detail instanceof StringType;
         }
 
         /**
@@ -398,8 +398,8 @@ public class Goal extends DomainResource {
           return (BooleanType) this.detail;
         }
 
-        public boolean hasDetailBooleanType() { 
-          return this != null && this.detail instanceof BooleanType;
+        public boolean hasDetailBooleanType() {
+            return this.detail instanceof BooleanType;
         }
 
         /**
@@ -413,8 +413,8 @@ public class Goal extends DomainResource {
           return (IntegerType) this.detail;
         }
 
-        public boolean hasDetailIntegerType() { 
-          return this != null && this.detail instanceof IntegerType;
+        public boolean hasDetailIntegerType() {
+            return this.detail instanceof IntegerType;
         }
 
         /**
@@ -428,8 +428,8 @@ public class Goal extends DomainResource {
           return (Ratio) this.detail;
         }
 
-        public boolean hasDetailRatio() { 
-          return this != null && this.detail instanceof Ratio;
+        public boolean hasDetailRatio() {
+            return this.detail instanceof Ratio;
         }
 
         public boolean hasDetail() { 
@@ -464,8 +464,8 @@ public class Goal extends DomainResource {
           return (DateType) this.due;
         }
 
-        public boolean hasDueDateType() { 
-          return this != null && this.due instanceof DateType;
+        public boolean hasDueDateType() {
+            return this.due instanceof DateType;
         }
 
         /**
@@ -479,8 +479,8 @@ public class Goal extends DomainResource {
           return (Duration) this.due;
         }
 
-        public boolean hasDueDuration() { 
-          return this != null && this.due instanceof Duration;
+        public boolean hasDueDuration() {
+            return this.due instanceof Duration;
         }
 
         public boolean hasDue() { 
@@ -1143,8 +1143,8 @@ public class Goal extends DomainResource {
       return (DateType) this.start;
     }
 
-    public boolean hasStartDateType() { 
-      return this != null && this.start instanceof DateType;
+    public boolean hasStartDateType() {
+        return this.start instanceof DateType;
     }
 
     /**
@@ -1158,8 +1158,8 @@ public class Goal extends DomainResource {
       return (CodeableConcept) this.start;
     }
 
-    public boolean hasStartCodeableConcept() { 
-      return this != null && this.start instanceof CodeableConcept;
+    public boolean hasStartCodeableConcept() {
+        return this.start instanceof CodeableConcept;
     }
 
     public boolean hasStart() { 

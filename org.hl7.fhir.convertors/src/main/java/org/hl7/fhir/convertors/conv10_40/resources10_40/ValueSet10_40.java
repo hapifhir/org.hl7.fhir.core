@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_40.resources10_40;
 
 import java.util.List;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
 import org.hl7.fhir.convertors.context.ConversionContext10_40;
 import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
@@ -253,7 +254,7 @@ public class ValueSet10_40 {
     if (src.hasCopyright())
       tgt.setCopyright(src.getCopyright());
     if (src.hasExtensible())
-      tgt.addExtension("http://hl7.org/fhir/StructureDefinition/valueset-extensible", new BooleanType(src.getExtensible()));
+      tgt.addExtension(VersionConvertorConstants.EXT_VS_EXTENSIBLE, new BooleanType(src.getExtensible()));
     if (src.hasCompose()) {
       if (src.hasCompose())
         tgt.setCompose(convertValueSetComposeComponent(src.getCompose()));
@@ -331,8 +332,8 @@ public class ValueSet10_40 {
       tgt.setRequirements(src.getPurpose());
     if (src.hasCopyright())
       tgt.setCopyright(src.getCopyright());
-    if (src.hasExtension("http://hl7.org/fhir/StructureDefinition/valueset-extensible"))
-      tgt.setExtensible(((BooleanType) src.getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/valueset-extensible").getValue()).booleanValue());
+    if (src.hasExtension(VersionConvertorConstants.EXT_VS_EXTENSIBLE))
+      tgt.setExtensible(((BooleanType) src.getExtensionByUrl(VersionConvertorConstants.EXT_VS_EXTENSIBLE).getValue()).booleanValue());
     org.hl7.fhir.r4.model.CodeSystem srcCS = (CodeSystem) src.getUserData("r2-cs");
     if (srcCS == null)
       srcCS = advisor.getCodeSystem(src);

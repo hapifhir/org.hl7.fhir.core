@@ -25,9 +25,9 @@ public class Element14_30 {
     if (src.hasId()) tgt.setId(src.getId());
     src.getExtension().stream()
       .filter(e -> !isExemptExtension(e.getUrl(), extensionUrlsToIgnore)
-        && (!(e.getUrl().equals(VersionConvertorConstants.PROFILE_EXTENSION)
-        || e.getUrl().equals(VersionConvertorConstants.IG_DEPENDSON_PACKAGE_EXTENSION)
-        || e.getUrl().equals(VersionConvertorConstants.IG_DEPENDSON_VERSION_EXTENSION))))
+        && (!(e.getUrl().equals(VersionConvertorConstants.EXT_PROFILE_EXTENSION)
+        || e.getUrl().equals(VersionConvertorConstants.EXT_IG_DEPENDSON_PACKAGE_EXTENSION)
+        || e.getUrl().equals(VersionConvertorConstants.EXT_IG_DEPENDSON_VERSION_EXTENSION))))
       .forEach(e -> {
         if (advisor.useAdvisorForExtension(path, e)) {
           org.hl7.fhir.dstu3.model.Extension convertedExtension = new org.hl7.fhir.dstu3.model.Extension();

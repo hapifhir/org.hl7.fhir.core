@@ -1091,7 +1091,7 @@ public class ServiceRequest extends DomainResource {
   }
 
   public boolean hasQuantityQuantity() {
-    return this != null && this.quantity instanceof Quantity;
+      return this.quantity instanceof Quantity;
   }
 
   /**
@@ -1110,7 +1110,7 @@ public class ServiceRequest extends DomainResource {
   }
 
   public boolean hasQuantityRatio() {
-    return this != null && this.quantity instanceof Ratio;
+      return this.quantity instanceof Ratio;
   }
 
   /**
@@ -1129,7 +1129,7 @@ public class ServiceRequest extends DomainResource {
   }
 
   public boolean hasQuantityRange() {
-    return this != null && this.quantity instanceof Range;
+      return this.quantity instanceof Range;
   }
 
   public boolean hasQuantity() {
@@ -1229,7 +1229,7 @@ public class ServiceRequest extends DomainResource {
   }
 
   public boolean hasOccurrenceDateTimeType() {
-    return this != null && this.occurrence instanceof DateTimeType;
+      return this.occurrence instanceof DateTimeType;
   }
 
   /**
@@ -1246,7 +1246,7 @@ public class ServiceRequest extends DomainResource {
   }
 
   public boolean hasOccurrencePeriod() {
-    return this != null && this.occurrence instanceof Period;
+      return this.occurrence instanceof Period;
   }
 
   /**
@@ -1263,7 +1263,7 @@ public class ServiceRequest extends DomainResource {
   }
 
   public boolean hasOccurrenceTiming() {
-    return this != null && this.occurrence instanceof Timing;
+      return this.occurrence instanceof Timing;
   }
 
   public boolean hasOccurrence() {
@@ -1305,7 +1305,7 @@ public class ServiceRequest extends DomainResource {
   }
 
   public boolean hasAsNeededBooleanType() {
-    return this != null && this.asNeeded instanceof BooleanType;
+      return this.asNeeded instanceof BooleanType;
   }
 
   /**
@@ -1323,7 +1323,7 @@ public class ServiceRequest extends DomainResource {
   }
 
   public boolean hasAsNeededCodeableConcept() {
-    return this != null && this.asNeeded instanceof CodeableConcept;
+      return this.asNeeded instanceof CodeableConcept;
   }
 
   public boolean hasAsNeeded() {

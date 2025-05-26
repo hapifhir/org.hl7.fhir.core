@@ -2334,7 +2334,7 @@ public class DeviceDefinition extends DomainResource {
   }
 
   public boolean hasManufacturerStringType() {
-    return this != null && this.manufacturer instanceof StringType;
+      return this.manufacturer instanceof StringType;
   }
 
   /**
@@ -2350,7 +2350,7 @@ public class DeviceDefinition extends DomainResource {
   }
 
   public boolean hasManufacturerReference() {
-    return this != null && this.manufacturer instanceof Reference;
+      return this.manufacturer instanceof Reference;
   }
 
   public boolean hasManufacturer() {

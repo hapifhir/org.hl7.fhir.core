@@ -245,11 +245,9 @@ public class I18nConstants {
   public static final String EXTENSION_EXTM_CONTEXT_WRONG = "Extension_EXTM_Context_Wrong";
   public static final String EXTENSION_EXTM_CONTEXT_WRONG_VER = "Extension_EXTM_Context_Wrong_VER";
   public static final String EXTENSION_EXTM_CONTEXT_WRONG_XVER = "EXTENSION_EXTM_CONTEXT_WRONG_XVER";
-  public static final String EXTENSION_EXTM_CONTEXT_WRONG_XVER_VER = "EXTENSION_EXTM_CONTEXT_WRONG_XVER_VER";
   public static final String EXTENSION_EXTP_CONTEXT_WRONG = "Extension_EXTP_Context_Wrong";
   public static final String EXTENSION_EXTP_CONTEXT_WRONG_VER = "Extension_EXTP_Context_Wrong_VER";
   public static final String EXTENSION_EXTP_CONTEXT_WRONG_XVER = "EXTENSION_EXTP_CONTEXT_WRONG_XVER";
-  public static final String EXTENSION_EXTP_CONTEXT_WRONG_XVER_VER = "EXTENSION_EXTP_CONTEXT_WRONG_XVER_VER";
   public static final String EXTENSION_EXT_COUNT_MISMATCH = "Extension_EXT_Count_Mismatch";
   public static final String EXTENSION_EXT_COUNT_NOTFOUND = "Extension_EXT_Count_NotFound";
   public static final String EXTENSION_EXT_FIXED_BANNED = "Extension_EXT_Fixed_Banned";
@@ -1255,8 +1253,8 @@ public class I18nConstants {
   public static final String VS_EXP_IMPORT_UNK_X = "VS_EXP_IMPORT_UNK_X";
   public static final String WRONG_NAMESPACE__EXPECTED_ = "Wrong_namespace__expected_";
   public static final String WRONG_TYPE_FOR_RESOURCE = "Wrong_type_for_resource";
-  public static final String XHTML_IDREF_NOT_FOUND = "XHTML_IDREF_NOT_FOUND";
-  public static final String XHTML_IDREF_NOT_MULTIPLE_MATCHES = "XHTML_IDREF_NOT_MULTIPLE_MATCHES";
+  public static final String TEXT_LINK_DATA_NOT_FOUND = "TEXT_LINK_DATA_NOT_FOUND";
+  public static final String TEXT_LINK_DATA_MULTIPLE_MATCHES = "TEXT_LINK_DATA_MULTIPLE_MATCHES";
   public static final String XHTML_URL_DATA_DATA_INVALID = "XHTML_URL_DATA_DATA_INVALID"; 
   public static final String XHTML_URL_DATA_DATA_INVALID_COMMA = "XHTML_URL_DATA_DATA_INVALID_COMMA"; 
   public static final String XHTML_URL_DATA_MIMETYPE = "XHTML_URL_DATA_MIMETYPE";  
@@ -1334,4 +1332,11 @@ public class I18nConstants {
   public static final String QUESTIONNAIRE_QR_ITEM_REF_INVALID_GENERAL = "QUESTIONNAIRE_QR_ITEM_REF_INVALID_GENERAL";
   public static final String QUESTIONNAIRE_QR_AUTHOR_END = "QUESTIONNAIRE_QR_AUTHOR_END";
   public static final String QUESTIONNAIRE_QR_AUTHOR_START = "QUESTIONNAIRE_QR_AUTHOR_START";
+  public static final String CONCEPTMAP_GROUP_TARGET_DUPLICATION_DIFFERENT = "CONCEPTMAP_GROUP_TARGET_DUPLICATION_DIFFERENT";
+  public static final String CONCEPTMAP_GROUP_TARGET_DUPLICATION = "CONCEPTMAP_GROUP_TARGET_DUPLICATION";
+  public static final String TEXT_LINK_NO_DIV = "TEXT_LINK_NO_DIV";
+  public static final String TEXT_LINK_NO_ID = "TEXT_LINK_NO_ID";
+  public static final String TEXT_LINK_NO_DATA = "TEXT_LINK_NO_DATA";
+  public static final String TEXT_LINK_SELECTOR_INVALID = "TEXT_LINK_SELECTOR_INVALID";
+
 }

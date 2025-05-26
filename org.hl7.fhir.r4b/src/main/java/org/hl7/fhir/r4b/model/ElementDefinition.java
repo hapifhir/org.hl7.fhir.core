@@ -3101,7 +3101,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueBase64BinaryType() {
-      return this != null && this.value instanceof Base64BinaryType;
+        return this.value instanceof Base64BinaryType;
     }
 
     /**
@@ -3118,7 +3118,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueBooleanType() {
-      return this != null && this.value instanceof BooleanType;
+        return this.value instanceof BooleanType;
     }
 
     /**
@@ -3135,7 +3135,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueCanonicalType() {
-      return this != null && this.value instanceof CanonicalType;
+        return this.value instanceof CanonicalType;
     }
 
     /**
@@ -3152,7 +3152,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueCodeType() {
-      return this != null && this.value instanceof CodeType;
+        return this.value instanceof CodeType;
     }
 
     /**
@@ -3169,7 +3169,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueDateType() {
-      return this != null && this.value instanceof DateType;
+        return this.value instanceof DateType;
     }
 
     /**
@@ -3186,7 +3186,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueDateTimeType() {
-      return this != null && this.value instanceof DateTimeType;
+        return this.value instanceof DateTimeType;
     }
 
     /**
@@ -3203,7 +3203,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueDecimalType() {
-      return this != null && this.value instanceof DecimalType;
+        return this.value instanceof DecimalType;
     }
 
     /**
@@ -3220,7 +3220,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueIdType() {
-      return this != null && this.value instanceof IdType;
+        return this.value instanceof IdType;
     }
 
     /**
@@ -3237,7 +3237,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueInstantType() {
-      return this != null && this.value instanceof InstantType;
+        return this.value instanceof InstantType;
     }
 
     /**
@@ -3254,7 +3254,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueIntegerType() {
-      return this != null && this.value instanceof IntegerType;
+        return this.value instanceof IntegerType;
     }
 
     /**
@@ -3271,7 +3271,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueMarkdownType() {
-      return this != null && this.value instanceof MarkdownType;
+        return this.value instanceof MarkdownType;
     }
 
     /**
@@ -3288,7 +3288,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueOidType() {
-      return this != null && this.value instanceof OidType;
+        return this.value instanceof OidType;
     }
 
     /**
@@ -3305,7 +3305,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValuePositiveIntType() {
-      return this != null && this.value instanceof PositiveIntType;
+        return this.value instanceof PositiveIntType;
     }
 
     /**
@@ -3322,7 +3322,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueStringType() {
-      return this != null && this.value instanceof StringType;
+        return this.value instanceof StringType;
     }
 
     /**
@@ -3339,7 +3339,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueTimeType() {
-      return this != null && this.value instanceof TimeType;
+        return this.value instanceof TimeType;
     }
 
     /**
@@ -3356,7 +3356,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueUnsignedIntType() {
-      return this != null && this.value instanceof UnsignedIntType;
+        return this.value instanceof UnsignedIntType;
     }
 
     /**
@@ -3373,7 +3373,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueUriType() {
-      return this != null && this.value instanceof UriType;
+        return this.value instanceof UriType;
     }
 
     /**
@@ -3390,7 +3390,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueUrlType() {
-      return this != null && this.value instanceof UrlType;
+        return this.value instanceof UrlType;
     }
 
     /**
@@ -3407,7 +3407,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueUuidType() {
-      return this != null && this.value instanceof UuidType;
+        return this.value instanceof UuidType;
     }
 
     /**
@@ -3424,7 +3424,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueAddress() {
-      return this != null && this.value instanceof Address;
+        return this.value instanceof Address;
     }
 
     /**
@@ -3441,7 +3441,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueAge() {
-      return this != null && this.value instanceof Age;
+        return this.value instanceof Age;
     }
 
     /**
@@ -3458,7 +3458,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueAnnotation() {
-      return this != null && this.value instanceof Annotation;
+        return this.value instanceof Annotation;
     }
 
     /**
@@ -3475,7 +3475,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueAttachment() {
-      return this != null && this.value instanceof Attachment;
+        return this.value instanceof Attachment;
     }
 
     /**
@@ -3492,7 +3492,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueCodeableConcept() {
-      return this != null && this.value instanceof CodeableConcept;
+        return this.value instanceof CodeableConcept;
     }
 
     /**
@@ -3509,7 +3509,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueCodeableReference() {
-      return this != null && this.value instanceof CodeableReference;
+        return this.value instanceof CodeableReference;
     }
 
     /**
@@ -3526,7 +3526,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueCoding() {
-      return this != null && this.value instanceof Coding;
+        return this.value instanceof Coding;
     }
 
     /**
@@ -3543,7 +3543,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueContactPoint() {
-      return this != null && this.value instanceof ContactPoint;
+        return this.value instanceof ContactPoint;
     }
 
     /**
@@ -3560,7 +3560,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueCount() {
-      return this != null && this.value instanceof Count;
+        return this.value instanceof Count;
     }
 
     /**
@@ -3577,7 +3577,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueDistance() {
-      return this != null && this.value instanceof Distance;
+        return this.value instanceof Distance;
     }
 
     /**
@@ -3594,7 +3594,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueDuration() {
-      return this != null && this.value instanceof Duration;
+        return this.value instanceof Duration;
     }
 
     /**
@@ -3611,7 +3611,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueHumanName() {
-      return this != null && this.value instanceof HumanName;
+        return this.value instanceof HumanName;
     }
 
     /**
@@ -3628,7 +3628,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueIdentifier() {
-      return this != null && this.value instanceof Identifier;
+        return this.value instanceof Identifier;
     }
 
     /**
@@ -3645,7 +3645,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueMoney() {
-      return this != null && this.value instanceof Money;
+        return this.value instanceof Money;
     }
 
     /**
@@ -3662,7 +3662,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValuePeriod() {
-      return this != null && this.value instanceof Period;
+        return this.value instanceof Period;
     }
 
     /**
@@ -3679,7 +3679,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueQuantity() {
-      return this != null && this.value instanceof Quantity;
+        return this.value instanceof Quantity;
     }
 
     /**
@@ -3696,7 +3696,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueRange() {
-      return this != null && this.value instanceof Range;
+        return this.value instanceof Range;
     }
 
     /**
@@ -3713,7 +3713,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueRatio() {
-      return this != null && this.value instanceof Ratio;
+        return this.value instanceof Ratio;
     }
 
     /**
@@ -3730,7 +3730,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueRatioRange() {
-      return this != null && this.value instanceof RatioRange;
+        return this.value instanceof RatioRange;
     }
 
     /**
@@ -3747,7 +3747,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueReference() {
-      return this != null && this.value instanceof Reference;
+        return this.value instanceof Reference;
     }
 
     /**
@@ -3764,7 +3764,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueSampledData() {
-      return this != null && this.value instanceof SampledData;
+        return this.value instanceof SampledData;
     }
 
     /**
@@ -3781,7 +3781,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueSignature() {
-      return this != null && this.value instanceof Signature;
+        return this.value instanceof Signature;
     }
 
     /**
@@ -3798,7 +3798,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueTiming() {
-      return this != null && this.value instanceof Timing;
+        return this.value instanceof Timing;
     }
 
     /**
@@ -3815,7 +3815,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueContactDetail() {
-      return this != null && this.value instanceof ContactDetail;
+        return this.value instanceof ContactDetail;
     }
 
     /**
@@ -3832,7 +3832,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueContributor() {
-      return this != null && this.value instanceof Contributor;
+        return this.value instanceof Contributor;
     }
 
     /**
@@ -3849,7 +3849,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueDataRequirement() {
-      return this != null && this.value instanceof DataRequirement;
+        return this.value instanceof DataRequirement;
     }
 
     /**
@@ -3866,7 +3866,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueExpression() {
-      return this != null && this.value instanceof Expression;
+        return this.value instanceof Expression;
     }
 
     /**
@@ -3883,7 +3883,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueParameterDefinition() {
-      return this != null && this.value instanceof ParameterDefinition;
+        return this.value instanceof ParameterDefinition;
     }
 
     /**
@@ -3900,7 +3900,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueRelatedArtifact() {
-      return this != null && this.value instanceof RelatedArtifact;
+        return this.value instanceof RelatedArtifact;
     }
 
     /**
@@ -3917,7 +3917,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueTriggerDefinition() {
-      return this != null && this.value instanceof TriggerDefinition;
+        return this.value instanceof TriggerDefinition;
     }
 
     /**
@@ -3934,7 +3934,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueUsageContext() {
-      return this != null && this.value instanceof UsageContext;
+        return this.value instanceof UsageContext;
     }
 
     /**
@@ -3951,7 +3951,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueDosage() {
-      return this != null && this.value instanceof Dosage;
+        return this.value instanceof Dosage;
     }
 
     /**
@@ -3968,7 +3968,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public boolean hasValueMeta() {
-      return this != null && this.value instanceof Meta;
+        return this.value instanceof Meta;
     }
 
     public boolean hasValue() {
@@ -7508,7 +7508,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueBase64BinaryType() {
-    return this != null && this.defaultValue instanceof Base64BinaryType;
+      return this.defaultValue instanceof Base64BinaryType;
   }
 
   /**
@@ -7526,7 +7526,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueBooleanType() {
-    return this != null && this.defaultValue instanceof BooleanType;
+      return this.defaultValue instanceof BooleanType;
   }
 
   /**
@@ -7544,7 +7544,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueCanonicalType() {
-    return this != null && this.defaultValue instanceof CanonicalType;
+      return this.defaultValue instanceof CanonicalType;
   }
 
   /**
@@ -7562,7 +7562,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueCodeType() {
-    return this != null && this.defaultValue instanceof CodeType;
+      return this.defaultValue instanceof CodeType;
   }
 
   /**
@@ -7580,7 +7580,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueDateType() {
-    return this != null && this.defaultValue instanceof DateType;
+      return this.defaultValue instanceof DateType;
   }
 
   /**
@@ -7598,7 +7598,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueDateTimeType() {
-    return this != null && this.defaultValue instanceof DateTimeType;
+      return this.defaultValue instanceof DateTimeType;
   }
 
   /**
@@ -7616,7 +7616,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueDecimalType() {
-    return this != null && this.defaultValue instanceof DecimalType;
+      return this.defaultValue instanceof DecimalType;
   }
 
   /**
@@ -7634,7 +7634,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueIdType() {
-    return this != null && this.defaultValue instanceof IdType;
+      return this.defaultValue instanceof IdType;
   }
 
   /**
@@ -7652,7 +7652,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueInstantType() {
-    return this != null && this.defaultValue instanceof InstantType;
+      return this.defaultValue instanceof InstantType;
   }
 
   /**
@@ -7670,7 +7670,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueIntegerType() {
-    return this != null && this.defaultValue instanceof IntegerType;
+      return this.defaultValue instanceof IntegerType;
   }
 
   /**
@@ -7688,7 +7688,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueMarkdownType() {
-    return this != null && this.defaultValue instanceof MarkdownType;
+      return this.defaultValue instanceof MarkdownType;
   }
 
   /**
@@ -7706,7 +7706,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueOidType() {
-    return this != null && this.defaultValue instanceof OidType;
+      return this.defaultValue instanceof OidType;
   }
 
   /**
@@ -7724,7 +7724,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValuePositiveIntType() {
-    return this != null && this.defaultValue instanceof PositiveIntType;
+      return this.defaultValue instanceof PositiveIntType;
   }
 
   /**
@@ -7742,7 +7742,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueStringType() {
-    return this != null && this.defaultValue instanceof StringType;
+      return this.defaultValue instanceof StringType;
   }
 
   /**
@@ -7760,7 +7760,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueTimeType() {
-    return this != null && this.defaultValue instanceof TimeType;
+      return this.defaultValue instanceof TimeType;
   }
 
   /**
@@ -7778,7 +7778,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueUnsignedIntType() {
-    return this != null && this.defaultValue instanceof UnsignedIntType;
+      return this.defaultValue instanceof UnsignedIntType;
   }
 
   /**
@@ -7796,7 +7796,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueUriType() {
-    return this != null && this.defaultValue instanceof UriType;
+      return this.defaultValue instanceof UriType;
   }
 
   /**
@@ -7814,7 +7814,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueUrlType() {
-    return this != null && this.defaultValue instanceof UrlType;
+      return this.defaultValue instanceof UrlType;
   }
 
   /**
@@ -7832,7 +7832,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueUuidType() {
-    return this != null && this.defaultValue instanceof UuidType;
+      return this.defaultValue instanceof UuidType;
   }
 
   /**
@@ -7850,7 +7850,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueAddress() {
-    return this != null && this.defaultValue instanceof Address;
+      return this.defaultValue instanceof Address;
   }
 
   /**
@@ -7868,7 +7868,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueAge() {
-    return this != null && this.defaultValue instanceof Age;
+      return this.defaultValue instanceof Age;
   }
 
   /**
@@ -7886,7 +7886,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueAnnotation() {
-    return this != null && this.defaultValue instanceof Annotation;
+      return this.defaultValue instanceof Annotation;
   }
 
   /**
@@ -7904,7 +7904,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueAttachment() {
-    return this != null && this.defaultValue instanceof Attachment;
+      return this.defaultValue instanceof Attachment;
   }
 
   /**
@@ -7922,7 +7922,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueCodeableConcept() {
-    return this != null && this.defaultValue instanceof CodeableConcept;
+      return this.defaultValue instanceof CodeableConcept;
   }
 
   /**
@@ -7940,7 +7940,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueCodeableReference() {
-    return this != null && this.defaultValue instanceof CodeableReference;
+      return this.defaultValue instanceof CodeableReference;
   }
 
   /**
@@ -7958,7 +7958,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueCoding() {
-    return this != null && this.defaultValue instanceof Coding;
+      return this.defaultValue instanceof Coding;
   }
 
   /**
@@ -7976,7 +7976,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueContactPoint() {
-    return this != null && this.defaultValue instanceof ContactPoint;
+      return this.defaultValue instanceof ContactPoint;
   }
 
   /**
@@ -7994,7 +7994,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueCount() {
-    return this != null && this.defaultValue instanceof Count;
+      return this.defaultValue instanceof Count;
   }
 
   /**
@@ -8012,7 +8012,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueDistance() {
-    return this != null && this.defaultValue instanceof Distance;
+      return this.defaultValue instanceof Distance;
   }
 
   /**
@@ -8030,7 +8030,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueDuration() {
-    return this != null && this.defaultValue instanceof Duration;
+      return this.defaultValue instanceof Duration;
   }
 
   /**
@@ -8048,7 +8048,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueHumanName() {
-    return this != null && this.defaultValue instanceof HumanName;
+      return this.defaultValue instanceof HumanName;
   }
 
   /**
@@ -8066,7 +8066,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueIdentifier() {
-    return this != null && this.defaultValue instanceof Identifier;
+      return this.defaultValue instanceof Identifier;
   }
 
   /**
@@ -8084,7 +8084,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueMoney() {
-    return this != null && this.defaultValue instanceof Money;
+      return this.defaultValue instanceof Money;
   }
 
   /**
@@ -8102,7 +8102,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValuePeriod() {
-    return this != null && this.defaultValue instanceof Period;
+      return this.defaultValue instanceof Period;
   }
 
   /**
@@ -8120,7 +8120,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueQuantity() {
-    return this != null && this.defaultValue instanceof Quantity;
+      return this.defaultValue instanceof Quantity;
   }
 
   /**
@@ -8138,7 +8138,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueRange() {
-    return this != null && this.defaultValue instanceof Range;
+      return this.defaultValue instanceof Range;
   }
 
   /**
@@ -8156,7 +8156,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueRatio() {
-    return this != null && this.defaultValue instanceof Ratio;
+      return this.defaultValue instanceof Ratio;
   }
 
   /**
@@ -8174,7 +8174,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueRatioRange() {
-    return this != null && this.defaultValue instanceof RatioRange;
+      return this.defaultValue instanceof RatioRange;
   }
 
   /**
@@ -8192,7 +8192,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueReference() {
-    return this != null && this.defaultValue instanceof Reference;
+      return this.defaultValue instanceof Reference;
   }
 
   /**
@@ -8210,7 +8210,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueSampledData() {
-    return this != null && this.defaultValue instanceof SampledData;
+      return this.defaultValue instanceof SampledData;
   }
 
   /**
@@ -8228,7 +8228,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueSignature() {
-    return this != null && this.defaultValue instanceof Signature;
+      return this.defaultValue instanceof Signature;
   }
 
   /**
@@ -8246,7 +8246,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueTiming() {
-    return this != null && this.defaultValue instanceof Timing;
+      return this.defaultValue instanceof Timing;
   }
 
   /**
@@ -8264,7 +8264,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueContactDetail() {
-    return this != null && this.defaultValue instanceof ContactDetail;
+      return this.defaultValue instanceof ContactDetail;
   }
 
   /**
@@ -8282,7 +8282,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueContributor() {
-    return this != null && this.defaultValue instanceof Contributor;
+      return this.defaultValue instanceof Contributor;
   }
 
   /**
@@ -8300,7 +8300,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueDataRequirement() {
-    return this != null && this.defaultValue instanceof DataRequirement;
+      return this.defaultValue instanceof DataRequirement;
   }
 
   /**
@@ -8318,7 +8318,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueExpression() {
-    return this != null && this.defaultValue instanceof Expression;
+      return this.defaultValue instanceof Expression;
   }
 
   /**
@@ -8336,7 +8336,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueParameterDefinition() {
-    return this != null && this.defaultValue instanceof ParameterDefinition;
+      return this.defaultValue instanceof ParameterDefinition;
   }
 
   /**
@@ -8354,7 +8354,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueRelatedArtifact() {
-    return this != null && this.defaultValue instanceof RelatedArtifact;
+      return this.defaultValue instanceof RelatedArtifact;
   }
 
   /**
@@ -8372,7 +8372,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueTriggerDefinition() {
-    return this != null && this.defaultValue instanceof TriggerDefinition;
+      return this.defaultValue instanceof TriggerDefinition;
   }
 
   /**
@@ -8390,7 +8390,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueUsageContext() {
-    return this != null && this.defaultValue instanceof UsageContext;
+      return this.defaultValue instanceof UsageContext;
   }
 
   /**
@@ -8408,7 +8408,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueDosage() {
-    return this != null && this.defaultValue instanceof Dosage;
+      return this.defaultValue instanceof Dosage;
   }
 
   /**
@@ -8426,7 +8426,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasDefaultValueMeta() {
-    return this != null && this.defaultValue instanceof Meta;
+      return this.defaultValue instanceof Meta;
   }
 
   public boolean hasDefaultValue() {
@@ -8612,7 +8612,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedBase64BinaryType() {
-    return this != null && this.fixed instanceof Base64BinaryType;
+      return this.fixed instanceof Base64BinaryType;
   }
 
   /**
@@ -8632,7 +8632,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedBooleanType() {
-    return this != null && this.fixed instanceof BooleanType;
+      return this.fixed instanceof BooleanType;
   }
 
   /**
@@ -8652,7 +8652,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedCanonicalType() {
-    return this != null && this.fixed instanceof CanonicalType;
+      return this.fixed instanceof CanonicalType;
   }
 
   /**
@@ -8672,7 +8672,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedCodeType() {
-    return this != null && this.fixed instanceof CodeType;
+      return this.fixed instanceof CodeType;
   }
 
   /**
@@ -8692,7 +8692,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedDateType() {
-    return this != null && this.fixed instanceof DateType;
+      return this.fixed instanceof DateType;
   }
 
   /**
@@ -8712,7 +8712,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedDateTimeType() {
-    return this != null && this.fixed instanceof DateTimeType;
+      return this.fixed instanceof DateTimeType;
   }
 
   /**
@@ -8732,7 +8732,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedDecimalType() {
-    return this != null && this.fixed instanceof DecimalType;
+      return this.fixed instanceof DecimalType;
   }
 
   /**
@@ -8752,7 +8752,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedIdType() {
-    return this != null && this.fixed instanceof IdType;
+      return this.fixed instanceof IdType;
   }
 
   /**
@@ -8772,7 +8772,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedInstantType() {
-    return this != null && this.fixed instanceof InstantType;
+      return this.fixed instanceof InstantType;
   }
 
   /**
@@ -8792,7 +8792,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedIntegerType() {
-    return this != null && this.fixed instanceof IntegerType;
+      return this.fixed instanceof IntegerType;
   }
 
   /**
@@ -8812,7 +8812,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedMarkdownType() {
-    return this != null && this.fixed instanceof MarkdownType;
+      return this.fixed instanceof MarkdownType;
   }
 
   /**
@@ -8832,7 +8832,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedOidType() {
-    return this != null && this.fixed instanceof OidType;
+      return this.fixed instanceof OidType;
   }
 
   /**
@@ -8852,7 +8852,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedPositiveIntType() {
-    return this != null && this.fixed instanceof PositiveIntType;
+      return this.fixed instanceof PositiveIntType;
   }
 
   /**
@@ -8872,7 +8872,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedStringType() {
-    return this != null && this.fixed instanceof StringType;
+      return this.fixed instanceof StringType;
   }
 
   /**
@@ -8892,7 +8892,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedTimeType() {
-    return this != null && this.fixed instanceof TimeType;
+      return this.fixed instanceof TimeType;
   }
 
   /**
@@ -8912,7 +8912,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedUnsignedIntType() {
-    return this != null && this.fixed instanceof UnsignedIntType;
+      return this.fixed instanceof UnsignedIntType;
   }
 
   /**
@@ -8932,7 +8932,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedUriType() {
-    return this != null && this.fixed instanceof UriType;
+      return this.fixed instanceof UriType;
   }
 
   /**
@@ -8952,7 +8952,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedUrlType() {
-    return this != null && this.fixed instanceof UrlType;
+      return this.fixed instanceof UrlType;
   }
 
   /**
@@ -8972,7 +8972,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedUuidType() {
-    return this != null && this.fixed instanceof UuidType;
+      return this.fixed instanceof UuidType;
   }
 
   /**
@@ -8992,7 +8992,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedAddress() {
-    return this != null && this.fixed instanceof Address;
+      return this.fixed instanceof Address;
   }
 
   /**
@@ -9012,7 +9012,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedAge() {
-    return this != null && this.fixed instanceof Age;
+      return this.fixed instanceof Age;
   }
 
   /**
@@ -9032,7 +9032,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedAnnotation() {
-    return this != null && this.fixed instanceof Annotation;
+      return this.fixed instanceof Annotation;
   }
 
   /**
@@ -9052,7 +9052,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedAttachment() {
-    return this != null && this.fixed instanceof Attachment;
+      return this.fixed instanceof Attachment;
   }
 
   /**
@@ -9072,7 +9072,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedCodeableConcept() {
-    return this != null && this.fixed instanceof CodeableConcept;
+      return this.fixed instanceof CodeableConcept;
   }
 
   /**
@@ -9092,7 +9092,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedCodeableReference() {
-    return this != null && this.fixed instanceof CodeableReference;
+      return this.fixed instanceof CodeableReference;
   }
 
   /**
@@ -9112,7 +9112,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedCoding() {
-    return this != null && this.fixed instanceof Coding;
+      return this.fixed instanceof Coding;
   }
 
   /**
@@ -9132,7 +9132,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedContactPoint() {
-    return this != null && this.fixed instanceof ContactPoint;
+      return this.fixed instanceof ContactPoint;
   }
 
   /**
@@ -9152,7 +9152,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedCount() {
-    return this != null && this.fixed instanceof Count;
+      return this.fixed instanceof Count;
   }
 
   /**
@@ -9172,7 +9172,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedDistance() {
-    return this != null && this.fixed instanceof Distance;
+      return this.fixed instanceof Distance;
   }
 
   /**
@@ -9192,7 +9192,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedDuration() {
-    return this != null && this.fixed instanceof Duration;
+      return this.fixed instanceof Duration;
   }
 
   /**
@@ -9212,7 +9212,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedHumanName() {
-    return this != null && this.fixed instanceof HumanName;
+      return this.fixed instanceof HumanName;
   }
 
   /**
@@ -9232,7 +9232,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedIdentifier() {
-    return this != null && this.fixed instanceof Identifier;
+      return this.fixed instanceof Identifier;
   }
 
   /**
@@ -9252,7 +9252,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedMoney() {
-    return this != null && this.fixed instanceof Money;
+      return this.fixed instanceof Money;
   }
 
   /**
@@ -9272,7 +9272,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedPeriod() {
-    return this != null && this.fixed instanceof Period;
+      return this.fixed instanceof Period;
   }
 
   /**
@@ -9292,7 +9292,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedQuantity() {
-    return this != null && this.fixed instanceof Quantity;
+      return this.fixed instanceof Quantity;
   }
 
   /**
@@ -9312,7 +9312,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedRange() {
-    return this != null && this.fixed instanceof Range;
+      return this.fixed instanceof Range;
   }
 
   /**
@@ -9332,7 +9332,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedRatio() {
-    return this != null && this.fixed instanceof Ratio;
+      return this.fixed instanceof Ratio;
   }
 
   /**
@@ -9352,7 +9352,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedRatioRange() {
-    return this != null && this.fixed instanceof RatioRange;
+      return this.fixed instanceof RatioRange;
   }
 
   /**
@@ -9372,7 +9372,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedReference() {
-    return this != null && this.fixed instanceof Reference;
+      return this.fixed instanceof Reference;
   }
 
   /**
@@ -9392,7 +9392,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedSampledData() {
-    return this != null && this.fixed instanceof SampledData;
+      return this.fixed instanceof SampledData;
   }
 
   /**
@@ -9412,7 +9412,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedSignature() {
-    return this != null && this.fixed instanceof Signature;
+      return this.fixed instanceof Signature;
   }
 
   /**
@@ -9432,7 +9432,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedTiming() {
-    return this != null && this.fixed instanceof Timing;
+      return this.fixed instanceof Timing;
   }
 
   /**
@@ -9452,7 +9452,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedContactDetail() {
-    return this != null && this.fixed instanceof ContactDetail;
+      return this.fixed instanceof ContactDetail;
   }
 
   /**
@@ -9472,7 +9472,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedContributor() {
-    return this != null && this.fixed instanceof Contributor;
+      return this.fixed instanceof Contributor;
   }
 
   /**
@@ -9492,7 +9492,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedDataRequirement() {
-    return this != null && this.fixed instanceof DataRequirement;
+      return this.fixed instanceof DataRequirement;
   }
 
   /**
@@ -9512,7 +9512,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedExpression() {
-    return this != null && this.fixed instanceof Expression;
+      return this.fixed instanceof Expression;
   }
 
   /**
@@ -9532,7 +9532,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedParameterDefinition() {
-    return this != null && this.fixed instanceof ParameterDefinition;
+      return this.fixed instanceof ParameterDefinition;
   }
 
   /**
@@ -9552,7 +9552,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedRelatedArtifact() {
-    return this != null && this.fixed instanceof RelatedArtifact;
+      return this.fixed instanceof RelatedArtifact;
   }
 
   /**
@@ -9572,7 +9572,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedTriggerDefinition() {
-    return this != null && this.fixed instanceof TriggerDefinition;
+      return this.fixed instanceof TriggerDefinition;
   }
 
   /**
@@ -9592,7 +9592,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedUsageContext() {
-    return this != null && this.fixed instanceof UsageContext;
+      return this.fixed instanceof UsageContext;
   }
 
   /**
@@ -9612,7 +9612,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedDosage() {
-    return this != null && this.fixed instanceof Dosage;
+      return this.fixed instanceof Dosage;
   }
 
   /**
@@ -9632,7 +9632,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasFixedMeta() {
-    return this != null && this.fixed instanceof Meta;
+      return this.fixed instanceof Meta;
   }
 
   public boolean hasFixed() {
@@ -9728,7 +9728,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternBase64BinaryType() {
-    return this != null && this.pattern instanceof Base64BinaryType;
+      return this.pattern instanceof Base64BinaryType;
   }
 
   /**
@@ -9763,7 +9763,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternBooleanType() {
-    return this != null && this.pattern instanceof BooleanType;
+      return this.pattern instanceof BooleanType;
   }
 
   /**
@@ -9798,7 +9798,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternCanonicalType() {
-    return this != null && this.pattern instanceof CanonicalType;
+      return this.pattern instanceof CanonicalType;
   }
 
   /**
@@ -9833,7 +9833,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternCodeType() {
-    return this != null && this.pattern instanceof CodeType;
+      return this.pattern instanceof CodeType;
   }
 
   /**
@@ -9868,7 +9868,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternDateType() {
-    return this != null && this.pattern instanceof DateType;
+      return this.pattern instanceof DateType;
   }
 
   /**
@@ -9903,7 +9903,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternDateTimeType() {
-    return this != null && this.pattern instanceof DateTimeType;
+      return this.pattern instanceof DateTimeType;
   }
 
   /**
@@ -9938,7 +9938,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternDecimalType() {
-    return this != null && this.pattern instanceof DecimalType;
+      return this.pattern instanceof DecimalType;
   }
 
   /**
@@ -9973,7 +9973,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternIdType() {
-    return this != null && this.pattern instanceof IdType;
+      return this.pattern instanceof IdType;
   }
 
   /**
@@ -10008,7 +10008,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternInstantType() {
-    return this != null && this.pattern instanceof InstantType;
+      return this.pattern instanceof InstantType;
   }
 
   /**
@@ -10043,7 +10043,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternIntegerType() {
-    return this != null && this.pattern instanceof IntegerType;
+      return this.pattern instanceof IntegerType;
   }
 
   /**
@@ -10078,7 +10078,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternMarkdownType() {
-    return this != null && this.pattern instanceof MarkdownType;
+      return this.pattern instanceof MarkdownType;
   }
 
   /**
@@ -10113,7 +10113,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternOidType() {
-    return this != null && this.pattern instanceof OidType;
+      return this.pattern instanceof OidType;
   }
 
   /**
@@ -10148,7 +10148,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternPositiveIntType() {
-    return this != null && this.pattern instanceof PositiveIntType;
+      return this.pattern instanceof PositiveIntType;
   }
 
   /**
@@ -10183,7 +10183,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternStringType() {
-    return this != null && this.pattern instanceof StringType;
+      return this.pattern instanceof StringType;
   }
 
   /**
@@ -10218,7 +10218,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternTimeType() {
-    return this != null && this.pattern instanceof TimeType;
+      return this.pattern instanceof TimeType;
   }
 
   /**
@@ -10253,7 +10253,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternUnsignedIntType() {
-    return this != null && this.pattern instanceof UnsignedIntType;
+      return this.pattern instanceof UnsignedIntType;
   }
 
   /**
@@ -10288,7 +10288,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternUriType() {
-    return this != null && this.pattern instanceof UriType;
+      return this.pattern instanceof UriType;
   }
 
   /**
@@ -10323,7 +10323,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternUrlType() {
-    return this != null && this.pattern instanceof UrlType;
+      return this.pattern instanceof UrlType;
   }
 
   /**
@@ -10358,7 +10358,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternUuidType() {
-    return this != null && this.pattern instanceof UuidType;
+      return this.pattern instanceof UuidType;
   }
 
   /**
@@ -10393,7 +10393,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternAddress() {
-    return this != null && this.pattern instanceof Address;
+      return this.pattern instanceof Address;
   }
 
   /**
@@ -10428,7 +10428,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternAge() {
-    return this != null && this.pattern instanceof Age;
+      return this.pattern instanceof Age;
   }
 
   /**
@@ -10463,7 +10463,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternAnnotation() {
-    return this != null && this.pattern instanceof Annotation;
+      return this.pattern instanceof Annotation;
   }
 
   /**
@@ -10498,7 +10498,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternAttachment() {
-    return this != null && this.pattern instanceof Attachment;
+      return this.pattern instanceof Attachment;
   }
 
   /**
@@ -10533,7 +10533,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternCodeableConcept() {
-    return this != null && this.pattern instanceof CodeableConcept;
+      return this.pattern instanceof CodeableConcept;
   }
 
   /**
@@ -10568,7 +10568,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternCodeableReference() {
-    return this != null && this.pattern instanceof CodeableReference;
+      return this.pattern instanceof CodeableReference;
   }
 
   /**
@@ -10603,7 +10603,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternCoding() {
-    return this != null && this.pattern instanceof Coding;
+      return this.pattern instanceof Coding;
   }
 
   /**
@@ -10638,7 +10638,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternContactPoint() {
-    return this != null && this.pattern instanceof ContactPoint;
+      return this.pattern instanceof ContactPoint;
   }
 
   /**
@@ -10673,7 +10673,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternCount() {
-    return this != null && this.pattern instanceof Count;
+      return this.pattern instanceof Count;
   }
 
   /**
@@ -10708,7 +10708,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternDistance() {
-    return this != null && this.pattern instanceof Distance;
+      return this.pattern instanceof Distance;
   }
 
   /**
@@ -10743,7 +10743,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternDuration() {
-    return this != null && this.pattern instanceof Duration;
+      return this.pattern instanceof Duration;
   }
 
   /**
@@ -10778,7 +10778,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternHumanName() {
-    return this != null && this.pattern instanceof HumanName;
+      return this.pattern instanceof HumanName;
   }
 
   /**
@@ -10813,7 +10813,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternIdentifier() {
-    return this != null && this.pattern instanceof Identifier;
+      return this.pattern instanceof Identifier;
   }
 
   /**
@@ -10848,7 +10848,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternMoney() {
-    return this != null && this.pattern instanceof Money;
+      return this.pattern instanceof Money;
   }
 
   /**
@@ -10883,7 +10883,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternPeriod() {
-    return this != null && this.pattern instanceof Period;
+      return this.pattern instanceof Period;
   }
 
   /**
@@ -10918,7 +10918,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternQuantity() {
-    return this != null && this.pattern instanceof Quantity;
+      return this.pattern instanceof Quantity;
   }
 
   /**
@@ -10953,7 +10953,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternRange() {
-    return this != null && this.pattern instanceof Range;
+      return this.pattern instanceof Range;
   }
 
   /**
@@ -10988,7 +10988,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternRatio() {
-    return this != null && this.pattern instanceof Ratio;
+      return this.pattern instanceof Ratio;
   }
 
   /**
@@ -11023,7 +11023,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternRatioRange() {
-    return this != null && this.pattern instanceof RatioRange;
+      return this.pattern instanceof RatioRange;
   }
 
   /**
@@ -11058,7 +11058,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternReference() {
-    return this != null && this.pattern instanceof Reference;
+      return this.pattern instanceof Reference;
   }
 
   /**
@@ -11093,7 +11093,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternSampledData() {
-    return this != null && this.pattern instanceof SampledData;
+      return this.pattern instanceof SampledData;
   }
 
   /**
@@ -11128,7 +11128,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternSignature() {
-    return this != null && this.pattern instanceof Signature;
+      return this.pattern instanceof Signature;
   }
 
   /**
@@ -11163,7 +11163,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternTiming() {
-    return this != null && this.pattern instanceof Timing;
+      return this.pattern instanceof Timing;
   }
 
   /**
@@ -11198,7 +11198,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternContactDetail() {
-    return this != null && this.pattern instanceof ContactDetail;
+      return this.pattern instanceof ContactDetail;
   }
 
   /**
@@ -11233,7 +11233,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternContributor() {
-    return this != null && this.pattern instanceof Contributor;
+      return this.pattern instanceof Contributor;
   }
 
   /**
@@ -11268,7 +11268,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternDataRequirement() {
-    return this != null && this.pattern instanceof DataRequirement;
+      return this.pattern instanceof DataRequirement;
   }
 
   /**
@@ -11303,7 +11303,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternExpression() {
-    return this != null && this.pattern instanceof Expression;
+      return this.pattern instanceof Expression;
   }
 
   /**
@@ -11338,7 +11338,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternParameterDefinition() {
-    return this != null && this.pattern instanceof ParameterDefinition;
+      return this.pattern instanceof ParameterDefinition;
   }
 
   /**
@@ -11373,7 +11373,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternRelatedArtifact() {
-    return this != null && this.pattern instanceof RelatedArtifact;
+      return this.pattern instanceof RelatedArtifact;
   }
 
   /**
@@ -11408,7 +11408,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternTriggerDefinition() {
-    return this != null && this.pattern instanceof TriggerDefinition;
+      return this.pattern instanceof TriggerDefinition;
   }
 
   /**
@@ -11443,7 +11443,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternUsageContext() {
-    return this != null && this.pattern instanceof UsageContext;
+      return this.pattern instanceof UsageContext;
   }
 
   /**
@@ -11478,7 +11478,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternDosage() {
-    return this != null && this.pattern instanceof Dosage;
+      return this.pattern instanceof Dosage;
   }
 
   /**
@@ -11513,7 +11513,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPatternMeta() {
-    return this != null && this.pattern instanceof Meta;
+      return this.pattern instanceof Meta;
   }
 
   public boolean hasPattern() {
@@ -11645,7 +11645,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMinValueDateType() {
-    return this != null && this.minValue instanceof DateType;
+      return this.minValue instanceof DateType;
   }
 
   /**
@@ -11663,7 +11663,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMinValueDateTimeType() {
-    return this != null && this.minValue instanceof DateTimeType;
+      return this.minValue instanceof DateTimeType;
   }
 
   /**
@@ -11681,7 +11681,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMinValueInstantType() {
-    return this != null && this.minValue instanceof InstantType;
+      return this.minValue instanceof InstantType;
   }
 
   /**
@@ -11699,7 +11699,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMinValueTimeType() {
-    return this != null && this.minValue instanceof TimeType;
+      return this.minValue instanceof TimeType;
   }
 
   /**
@@ -11717,7 +11717,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMinValueDecimalType() {
-    return this != null && this.minValue instanceof DecimalType;
+      return this.minValue instanceof DecimalType;
   }
 
   /**
@@ -11735,7 +11735,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMinValueIntegerType() {
-    return this != null && this.minValue instanceof IntegerType;
+      return this.minValue instanceof IntegerType;
   }
 
   /**
@@ -11753,7 +11753,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMinValuePositiveIntType() {
-    return this != null && this.minValue instanceof PositiveIntType;
+      return this.minValue instanceof PositiveIntType;
   }
 
   /**
@@ -11771,7 +11771,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMinValueUnsignedIntType() {
-    return this != null && this.minValue instanceof UnsignedIntType;
+      return this.minValue instanceof UnsignedIntType;
   }
 
   /**
@@ -11789,7 +11789,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMinValueQuantity() {
-    return this != null && this.minValue instanceof Quantity;
+      return this.minValue instanceof Quantity;
   }
 
   public boolean hasMinValue() {
@@ -11834,7 +11834,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMaxValueDateType() {
-    return this != null && this.maxValue instanceof DateType;
+      return this.maxValue instanceof DateType;
   }
 
   /**
@@ -11852,7 +11852,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMaxValueDateTimeType() {
-    return this != null && this.maxValue instanceof DateTimeType;
+      return this.maxValue instanceof DateTimeType;
   }
 
   /**
@@ -11870,7 +11870,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMaxValueInstantType() {
-    return this != null && this.maxValue instanceof InstantType;
+      return this.maxValue instanceof InstantType;
   }
 
   /**
@@ -11888,7 +11888,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMaxValueTimeType() {
-    return this != null && this.maxValue instanceof TimeType;
+      return this.maxValue instanceof TimeType;
   }
 
   /**
@@ -11906,7 +11906,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMaxValueDecimalType() {
-    return this != null && this.maxValue instanceof DecimalType;
+      return this.maxValue instanceof DecimalType;
   }
 
   /**
@@ -11924,7 +11924,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMaxValueIntegerType() {
-    return this != null && this.maxValue instanceof IntegerType;
+      return this.maxValue instanceof IntegerType;
   }
 
   /**
@@ -11942,7 +11942,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMaxValuePositiveIntType() {
-    return this != null && this.maxValue instanceof PositiveIntType;
+      return this.maxValue instanceof PositiveIntType;
   }
 
   /**
@@ -11960,7 +11960,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMaxValueUnsignedIntType() {
-    return this != null && this.maxValue instanceof UnsignedIntType;
+      return this.maxValue instanceof UnsignedIntType;
   }
 
   /**
@@ -11978,7 +11978,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
   public boolean hasMaxValueQuantity() {
-    return this != null && this.maxValue instanceof Quantity;
+      return this.maxValue instanceof Quantity;
   }
 
   public boolean hasMaxValue() {
