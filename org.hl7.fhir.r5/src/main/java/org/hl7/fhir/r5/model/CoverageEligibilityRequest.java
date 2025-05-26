@@ -260,8 +260,8 @@ public class CoverageEligibilityRequest extends DomainResource {
           return (DateTimeType) this.when;
         }
 
-        public boolean hasWhenDateTimeType() { 
-          return this != null && this.when instanceof DateTimeType;
+        public boolean hasWhenDateTimeType() {
+            return this.when instanceof DateTimeType;
         }
 
         /**
@@ -275,8 +275,8 @@ public class CoverageEligibilityRequest extends DomainResource {
           return (Period) this.when;
         }
 
-        public boolean hasWhenPeriod() { 
-          return this != null && this.when instanceof Period;
+        public boolean hasWhenPeriod() {
+            return this.when instanceof Period;
         }
 
         public boolean hasWhen() { 
@@ -1845,8 +1845,8 @@ public class CoverageEligibilityRequest extends DomainResource {
           return (CodeableConcept) this.diagnosis;
         }
 
-        public boolean hasDiagnosisCodeableConcept() { 
-          return this != null && this.diagnosis instanceof CodeableConcept;
+        public boolean hasDiagnosisCodeableConcept() {
+            return this.diagnosis instanceof CodeableConcept;
         }
 
         /**
@@ -1860,8 +1860,8 @@ public class CoverageEligibilityRequest extends DomainResource {
           return (Reference) this.diagnosis;
         }
 
-        public boolean hasDiagnosisReference() { 
-          return this != null && this.diagnosis instanceof Reference;
+        public boolean hasDiagnosisReference() {
+            return this.diagnosis instanceof Reference;
         }
 
         public boolean hasDiagnosis() { 
@@ -2415,8 +2415,8 @@ public class CoverageEligibilityRequest extends DomainResource {
       return (DateType) this.serviced;
     }
 
-    public boolean hasServicedDateType() { 
-      return this != null && this.serviced instanceof DateType;
+    public boolean hasServicedDateType() {
+        return this.serviced instanceof DateType;
     }
 
     /**
@@ -2430,8 +2430,8 @@ public class CoverageEligibilityRequest extends DomainResource {
       return (Period) this.serviced;
     }
 
-    public boolean hasServicedPeriod() { 
-      return this != null && this.serviced instanceof Period;
+    public boolean hasServicedPeriod() {
+        return this.serviced instanceof Period;
     }
 
     public boolean hasServiced() { 

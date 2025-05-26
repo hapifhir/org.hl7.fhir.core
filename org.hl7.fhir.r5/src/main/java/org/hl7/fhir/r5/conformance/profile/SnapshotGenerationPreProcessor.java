@@ -397,7 +397,7 @@ public class SnapshotGenerationPreProcessor {
     ElementDefinition merged = new ElementDefinition();
     merged.setPath(source.getPath());
     if (source.hasSlicing()) {
-     merged.setSlicing(source.getSlicing());
+      merged.setSlicing(source.getSlicing());
     }
     
     merged.setLabelElement(chooseProp(source.getLabelElement(),  base.getLabelElement()));
@@ -753,7 +753,7 @@ public class SnapshotGenerationPreProcessor {
     for (int i = 0; i < allSlices.size(); i++) {
       boolean found = false;
       for (int j = startOfSlice; j <= endOfSlice; j++) {
-        if (elements.get(j).getPath().equals(allSlices.get(i).getPath())) {
+        if (elementsMatch(elements.get(j), allSlices.get(i))) {
           found = true;
           break;
         }
@@ -768,7 +768,7 @@ public class SnapshotGenerationPreProcessor {
       // then we just merge it in
       for (int j = startOfSlice; j <= endOfSlice; j++) {
         for (int i = 0; i < allSlices.size(); i++) {
-          if (elements.get(j).getPath().equals(allSlices.get(i).getPath())) {
+          if (elementsMatch(elements.get(j), allSlices.get(i))) {
             merge(elements.get(j), allSlices.get(i));
           }
         }
@@ -779,7 +779,7 @@ public class SnapshotGenerationPreProcessor {
       // merge the simple stuff
       for (int j = startOfSlice; j <= endOfSlice; j++) {
         for (int i = 0; i < allSlices.size(); i++) {
-          if (elements.get(j).getPath().equals(allSlices.get(i).getPath())) {
+          if (elementsMatch(elements.get(j), allSlices.get(i))) {
             handled.add(allSlices.get(i));
             merge(elements.get(j), allSlices.get(i));
           }
@@ -804,6 +804,41 @@ public class SnapshotGenerationPreProcessor {
       }
     }   
 
+  }
+
+  private boolean elementsMatch(ElementDefinition ed1, ElementDefinition ed2) {
+    if (!pathsMatch(ed1.getPath(), ed2.getPath())) {
+      return false;
+    } else if (ed1.getSliceName() != null && ed2.getSliceName() != null) {
+      return ed1.getSliceName().equals(ed2.getSliceName());
+    } else  if (ed1.getSliceName() != null || ed2.getSliceName() != null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  private boolean pathsMatch(String path1, String path2) {
+    if (path1.equals(path2)) {
+      return true;
+    }
+    if (path1.endsWith("[x]")) {
+      path1 = path1.substring(0, path1.length()-3);
+      if (path2.startsWith(path1)) {
+        if (!path2.substring(path1.length()).contains(".")) {
+          return true;
+        }
+      }
+    }
+    if (path2.endsWith("[x]")) {
+      path2 = path2.substring(0, path2.length()-3);
+      if (path1.startsWith(path2)) {
+        if (!path1.substring(path2.length()).contains(".")) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   private int determineInsertionPoint(List<ElementDefinition> elements, int startOfSlice, int endOfSlice, String id, String path, List<ElementAnalysis> edDef) {
@@ -856,6 +891,13 @@ public class SnapshotGenerationPreProcessor {
         ElementAnalysis sed = edDef.get(i-1);
         int i1 = indexOfName(sed, p1[i]);
         int i2 = indexOfName(sed, p2[i]);
+        if (i == Integer.min(p1.length,  p2.length) -1 && i1 == i2) {
+          if (!p1[i].contains(":") && p2[i].contains(":")) {
+            // launched straight into slicing without setting it up, 
+            // and now it's being set up 
+            return true;
+          }
+        }
         return i1 < i2;
       } else {
         // well, we just go on

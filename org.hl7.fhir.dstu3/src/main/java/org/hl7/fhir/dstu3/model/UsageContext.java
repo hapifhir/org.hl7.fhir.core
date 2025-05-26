@@ -123,8 +123,8 @@ public class UsageContext extends Type implements ICompositeType {
       return (CodeableConcept) this.value;
     }
 
-    public boolean hasValueCodeableConcept() { 
-      return this != null && this.value instanceof CodeableConcept;
+    public boolean hasValueCodeableConcept() {
+        return this.value instanceof CodeableConcept;
     }
 
     /**
@@ -138,8 +138,8 @@ public class UsageContext extends Type implements ICompositeType {
       return (Quantity) this.value;
     }
 
-    public boolean hasValueQuantity() { 
-      return this != null && this.value instanceof Quantity;
+    public boolean hasValueQuantity() {
+        return this.value instanceof Quantity;
     }
 
     /**
@@ -153,8 +153,8 @@ public class UsageContext extends Type implements ICompositeType {
       return (Range) this.value;
     }
 
-    public boolean hasValueRange() { 
-      return this != null && this.value instanceof Range;
+    public boolean hasValueRange() {
+        return this.value instanceof Range;
     }
 
     public boolean hasValue() { 

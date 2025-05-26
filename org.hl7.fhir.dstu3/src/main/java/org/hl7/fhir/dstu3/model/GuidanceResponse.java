@@ -715,8 +715,8 @@ public class GuidanceResponse extends DomainResource {
       return (CodeableConcept) this.reason;
     }
 
-    public boolean hasReasonCodeableConcept() { 
-      return this != null && this.reason instanceof CodeableConcept;
+    public boolean hasReasonCodeableConcept() {
+        return this.reason instanceof CodeableConcept;
     }
 
     /**
@@ -730,8 +730,8 @@ public class GuidanceResponse extends DomainResource {
       return (Reference) this.reason;
     }
 
-    public boolean hasReasonReference() { 
-      return this != null && this.reason instanceof Reference;
+    public boolean hasReasonReference() {
+        return this.reason instanceof Reference;
     }
 
     public boolean hasReason() { 

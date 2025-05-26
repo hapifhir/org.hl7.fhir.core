@@ -131,8 +131,8 @@ public class ClaimResponse extends DomainResource {
           return (DateTimeType) this.when;
         }
 
-        public boolean hasWhenDateTimeType() { 
-          return this != null && this.when instanceof DateTimeType;
+        public boolean hasWhenDateTimeType() {
+            return this.when instanceof DateTimeType;
         }
 
         /**
@@ -146,8 +146,8 @@ public class ClaimResponse extends DomainResource {
           return (Period) this.when;
         }
 
-        public boolean hasWhenPeriod() { 
-          return this != null && this.when instanceof Period;
+        public boolean hasWhenPeriod() {
+            return this.when instanceof Period;
         }
 
         public boolean hasWhen() { 
@@ -3352,8 +3352,8 @@ public class ClaimResponse extends DomainResource {
           return (DateType) this.serviced;
         }
 
-        public boolean hasServicedDateType() { 
-          return this != null && this.serviced instanceof DateType;
+        public boolean hasServicedDateType() {
+            return this.serviced instanceof DateType;
         }
 
         /**
@@ -3367,8 +3367,8 @@ public class ClaimResponse extends DomainResource {
           return (Period) this.serviced;
         }
 
-        public boolean hasServicedPeriod() { 
-          return this != null && this.serviced instanceof Period;
+        public boolean hasServicedPeriod() {
+            return this.serviced instanceof Period;
         }
 
         public boolean hasServiced() { 
@@ -3403,8 +3403,8 @@ public class ClaimResponse extends DomainResource {
           return (CodeableConcept) this.location;
         }
 
-        public boolean hasLocationCodeableConcept() { 
-          return this != null && this.location instanceof CodeableConcept;
+        public boolean hasLocationCodeableConcept() {
+            return this.location instanceof CodeableConcept;
         }
 
         /**
@@ -3418,8 +3418,8 @@ public class ClaimResponse extends DomainResource {
           return (Address) this.location;
         }
 
-        public boolean hasLocationAddress() { 
-          return this != null && this.location instanceof Address;
+        public boolean hasLocationAddress() {
+            return this.location instanceof Address;
         }
 
         /**
@@ -3433,8 +3433,8 @@ public class ClaimResponse extends DomainResource {
           return (Reference) this.location;
         }
 
-        public boolean hasLocationReference() { 
-          return this != null && this.location instanceof Reference;
+        public boolean hasLocationReference() {
+            return this.location instanceof Reference;
         }
 
         public boolean hasLocation() { 

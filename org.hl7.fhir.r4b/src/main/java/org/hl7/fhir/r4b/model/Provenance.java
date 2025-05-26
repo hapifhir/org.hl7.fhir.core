@@ -1192,7 +1192,7 @@ public class Provenance extends DomainResource {
   }
 
   public boolean hasOccurredPeriod() {
-    return this != null && this.occurred instanceof Period;
+      return this.occurred instanceof Period;
   }
 
   /**
@@ -1208,7 +1208,7 @@ public class Provenance extends DomainResource {
   }
 
   public boolean hasOccurredDateTimeType() {
-    return this != null && this.occurred instanceof DateTimeType;
+      return this.occurred instanceof DateTimeType;
   }
 
   public boolean hasOccurred() {

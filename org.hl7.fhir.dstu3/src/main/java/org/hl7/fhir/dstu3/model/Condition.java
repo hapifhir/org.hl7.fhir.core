@@ -1432,8 +1432,8 @@ public class Condition extends DomainResource {
       return (DateTimeType) this.onset;
     }
 
-    public boolean hasOnsetDateTimeType() { 
-      return this != null && this.onset instanceof DateTimeType;
+    public boolean hasOnsetDateTimeType() {
+        return this.onset instanceof DateTimeType;
     }
 
     /**
@@ -1447,8 +1447,8 @@ public class Condition extends DomainResource {
       return (Age) this.onset;
     }
 
-    public boolean hasOnsetAge() { 
-      return this != null && this.onset instanceof Age;
+    public boolean hasOnsetAge() {
+        return this.onset instanceof Age;
     }
 
     /**
@@ -1462,8 +1462,8 @@ public class Condition extends DomainResource {
       return (Period) this.onset;
     }
 
-    public boolean hasOnsetPeriod() { 
-      return this != null && this.onset instanceof Period;
+    public boolean hasOnsetPeriod() {
+        return this.onset instanceof Period;
     }
 
     /**
@@ -1477,8 +1477,8 @@ public class Condition extends DomainResource {
       return (Range) this.onset;
     }
 
-    public boolean hasOnsetRange() { 
-      return this != null && this.onset instanceof Range;
+    public boolean hasOnsetRange() {
+        return this.onset instanceof Range;
     }
 
     /**
@@ -1492,8 +1492,8 @@ public class Condition extends DomainResource {
       return (StringType) this.onset;
     }
 
-    public boolean hasOnsetStringType() { 
-      return this != null && this.onset instanceof StringType;
+    public boolean hasOnsetStringType() {
+        return this.onset instanceof StringType;
     }
 
     public boolean hasOnset() { 
@@ -1528,8 +1528,8 @@ public class Condition extends DomainResource {
       return (DateTimeType) this.abatement;
     }
 
-    public boolean hasAbatementDateTimeType() { 
-      return this != null && this.abatement instanceof DateTimeType;
+    public boolean hasAbatementDateTimeType() {
+        return this.abatement instanceof DateTimeType;
     }
 
     /**
@@ -1543,8 +1543,8 @@ public class Condition extends DomainResource {
       return (Age) this.abatement;
     }
 
-    public boolean hasAbatementAge() { 
-      return this != null && this.abatement instanceof Age;
+    public boolean hasAbatementAge() {
+        return this.abatement instanceof Age;
     }
 
     /**
@@ -1558,8 +1558,8 @@ public class Condition extends DomainResource {
       return (BooleanType) this.abatement;
     }
 
-    public boolean hasAbatementBooleanType() { 
-      return this != null && this.abatement instanceof BooleanType;
+    public boolean hasAbatementBooleanType() {
+        return this.abatement instanceof BooleanType;
     }
 
     /**
@@ -1573,8 +1573,8 @@ public class Condition extends DomainResource {
       return (Period) this.abatement;
     }
 
-    public boolean hasAbatementPeriod() { 
-      return this != null && this.abatement instanceof Period;
+    public boolean hasAbatementPeriod() {
+        return this.abatement instanceof Period;
     }
 
     /**
@@ -1588,8 +1588,8 @@ public class Condition extends DomainResource {
       return (Range) this.abatement;
     }
 
-    public boolean hasAbatementRange() { 
-      return this != null && this.abatement instanceof Range;
+    public boolean hasAbatementRange() {
+        return this.abatement instanceof Range;
     }
 
     /**
@@ -1603,8 +1603,8 @@ public class Condition extends DomainResource {
       return (StringType) this.abatement;
     }
 
-    public boolean hasAbatementStringType() { 
-      return this != null && this.abatement instanceof StringType;
+    public boolean hasAbatementStringType() {
+        return this.abatement instanceof StringType;
     }
 
     public boolean hasAbatement() { 

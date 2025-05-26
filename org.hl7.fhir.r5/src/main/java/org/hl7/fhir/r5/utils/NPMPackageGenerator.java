@@ -243,7 +243,11 @@ public class NPMPackageGenerator {
         }
       }
       for (ImplementationGuideDependsOnComponent d : ig.getDependsOn()) {
-        dep.add(d.getPackageId(), d.getVersion());
+        if (d.getPackageIdElement().hasUserData(UserDataNames.IG_DEP_ALIASED)) {
+          dep.add(d.getId()+"@npm:"+d.getPackageId(), d.getVersion());          
+        } else {
+          dep.add(d.getPackageId(), d.getVersion());
+        }
       }
     }
     if (ig.hasPublisher()) {
