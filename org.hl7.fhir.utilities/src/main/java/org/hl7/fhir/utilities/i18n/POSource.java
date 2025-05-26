@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -67,6 +68,12 @@ public class POSource {
         }
       } else if (obj == null) {
         res.prefixes.add(line);  
+      } else if (line.startsWith("#,")) {
+        // retired use of #| because it caused problems with the tools
+        String s = line.substring(2).trim();
+        for (String f : s.split("\\,")) {
+          obj.getFlags().add(f.trim());
+        }
       } else if (line.startsWith("#|")) {
         // retired use of #| because it caused problems with the tools
         String s = line.substring(2).trim();
@@ -159,6 +166,9 @@ public class POSource {
         b.append("# "+o.getComment()+"\r\n");
       }
       b.append("#: "+o.getId()+"\r\n");
+      if (!o.getFlags().isEmpty()) {
+        b.append("#, "+CommaSeparatedStringBuilder.join(",", o.getFlags()));
+      }
       if (o.isDuplicate()) {
         b.append("msgctxt \""+o.getId()+"\"\r\n");        
       } 

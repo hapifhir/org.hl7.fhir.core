@@ -124,6 +124,7 @@ public class HierarchicalTableGenerator {
   private static final String BACKGROUND_ALT_COLOR = "#F7F7F7";
   public static boolean ACTIVE_TABLES = false;
   public static String uuid = UUIDUtilities.makeUuidLC();
+  private static Set<String> KNOWN_ROLES = Set.of("binding", "constraint", "obligation");;
 
   public enum TextAlignment {
     LEFT, CENTER, RIGHT;  
@@ -196,7 +197,16 @@ public class HierarchicalTableGenerator {
     }
 
     public String getRole() {
-      return attributes == null ? null : attributes.get("data-role");
+      if (attributes == null) {
+        return null;
+      } else {
+        for (String s : attributes.get("class").split("\\ ")) {
+          if (KNOWN_ROLES.contains(s)) {
+            return s;
+          }
+        }
+        return null;
+      }
     }
 
     public Piece setTag(String tag) {
@@ -214,10 +224,22 @@ public class HierarchicalTableGenerator {
     }
 
     public void setRole(String role) {
-      if (attributes == null) {
-        attributes = new HashMap<>();
+      if (!KNOWN_ROLES.contains(role)) {
+        throw new Error("Unknown role "+role);
       }
-      attributes.put("data-role", role);
+      setClass(role);
+    }
+
+    public Piece setClass(String role) {
+      if (attributes == null) {
+        attributes = new HashMap<String, String>();
+      }
+      if (attributes.containsKey("class")) {
+        attributes.put("class", attributes.get("class") + " "+ role);
+      } else {
+        attributes.put("class", role);
+      }
+      return this;
     }
 
     public Piece setStyle(String style) {
