@@ -130,7 +130,7 @@ public class UMLRenderingTests {
       }
     }
     sd.setWebPath("http://test/path/"+sd.getId());
-    ClassDiagramRenderer cdr = new ClassDiagramRenderer(source, dest, sd.getId(), null, rc);
+    ClassDiagramRenderer cdr = new ClassDiagramRenderer(source, dest, sd.getId(), null, rc, null);
     return cdr.buildClassDiagram(sd);
   }
 
@@ -151,7 +151,7 @@ public class UMLRenderingTests {
 
     rc.getProfileUtilities().generateSnapshot(sdBase, sd, sd.getUrl(), "http://hl7.org/fhir/test", sd.getName());
     
-    ClassDiagramRenderer cdr = new ClassDiagramRenderer(source, dest, sd.getId(), null, rc);
+    ClassDiagramRenderer cdr = new ClassDiagramRenderer(source, dest, sd.getId(), null, rc, null);
     return cdr.buildConstraintDiagram(sd);
   }
 
@@ -171,7 +171,7 @@ public class UMLRenderingTests {
         throw new FHIRException("Unknown input name '"+input.getName()+"'");
       }
     }
-    ClassDiagramRenderer cdr = new ClassDiagramRenderer(source, dest, ctl.asString("id"), null, rc);
+    ClassDiagramRenderer cdr = new ClassDiagramRenderer(source, dest, ctl.asString("id"), null, rc, null);
     return cdr.buildClassDiagram(ctl);
   }
  

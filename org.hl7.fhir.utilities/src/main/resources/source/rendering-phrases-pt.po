@@ -2900,6 +2900,11 @@ msgstr ""
 msgid "Comply with this profile {0}"
 msgstr "Cumpre com este perfil {0}"
 
+# SDR_CONCEPT_DOMAIN
+#: SDR_CONCEPT_DOMAIN
+msgid "Concept Domain"
+msgstr ""
+
 # SDR_CONT_CH_DET_CS
 #: SDR_CONT_CH_DET_CS
 msgid "The list of codes defined by the code system has changed"

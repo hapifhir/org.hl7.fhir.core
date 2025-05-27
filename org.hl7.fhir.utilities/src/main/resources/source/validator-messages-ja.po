@@ -1727,6 +1727,11 @@ msgstr "FHIRPath式の評価エラー: タイプ ''{0}'' は {1}で未知また�
 msgid "Error evaluating FHIRPath expression: The parameter type {2} is not legal for {0} parameter {1}. expecting {3}"
 msgstr "FHIRPath式の評価エラー: パラメータタイプ {2} は {0} パラメータ {1} に対して合法ではありません。{3}を期待します"
 
+# FILTER_NOT_UNDERSTOOD
+#: FILTER_NOT_UNDERSTOOD
+msgid "The filter \"{0} {1} {2}\" from the value set {3} was not understood in the context of {4}"
+msgstr ""
+
 # Fixed_Type_Checks_DT_Address_Line
 #: Fixed_Type_Checks_DT_Address_Line
 msgid "Expected {0} but found {1} line elements"
@@ -3639,6 +3644,11 @@ msgstr "種類 {0} は基本構造 {3} の種類 {1} と同じでなければな
 #: SD_CONSTRAINED_TYPE_NO_MATCH
 msgid "The type {0} must be the same as the type in the base structure {1} that is being constrained"
 msgstr "タイプ {0} は、制約対象の基本構造 {1} のタイプと同じでなければなりません"
+
+# SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND
+#: SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND
+msgid "The element {0} is not valid"
+msgstr ""
 
 # SD_CONTEXT_SHOULD_NOT_BE_ELEMENT
 #: SD_CONTEXT_SHOULD_NOT_BE_ELEMENT
