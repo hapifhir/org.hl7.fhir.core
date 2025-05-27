@@ -1,8 +1,7 @@
 package org.hl7.fhir.utilities.i18n;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -433,8 +432,8 @@ public class POGenerator {
   private List<PropertyValue> loadProperties(String source, boolean checking) throws IOException {
     List<PropertyValue> res = new ArrayList<>();
     File src = ManagedFileAccess.file(source);
-    List<String> lines = Files.readAllLines(src.toPath());
-    for (String line : lines) {
+    BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(src), StandardCharsets.UTF_8));
+    for (String line = reader.readLine(); line != null; line = reader.readLine()) {
       if (!line.startsWith("#") && line.contains("=")) {
         String n = line.substring(0, line.indexOf("=")).trim();
         String v = line.substring(line.indexOf("=")+1).trim();
