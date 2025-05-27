@@ -12,7 +12,7 @@
 * Fix terminology cache hashing (#2006) and Add fhir-types entries to txCache
 * improve tx log performance and readability, and avoid logging excessively large requests
 * Fix early processing of markdown in definition status checks (#2004)
-* Add check for headless mode before accessing desktop featues (#2000)
+* Add check for headless mode before accessing desktop features (#2000)
 * fix outsize batch validation request problem
 * fix: ensure non-null return for slices and handle missing slicing details for extensions
 
