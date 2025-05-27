@@ -3728,8 +3728,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           "Requirements.statement.satisfiedBy", "Bundle.entry.request.url",
           "Attachment.url",
           "StructureDefinition.type", "ElementDefinition.fixed[x]", "ElementDefinition.pattern[x]", "ImplementationGuide.dependsOn.uri", "StructureDefinition.mapping.uri",
-          "MessageHeader.source.endpoint", "MessageHeader.source.endpoint[x]", "MessageHeader.destination.endpoint", "MessageHeader.destination.endpoint[x]"
-          );
+          "MessageHeader.source.endpoint", "MessageHeader.source.endpoint[x]", "MessageHeader.destination.endpoint", "MessageHeader.destination.endpoint[x]",
+          "QuestionnaireResponse.item.definition");
       
     } else {
       return Utilities.existsInList(context.getBase().getPath(),
