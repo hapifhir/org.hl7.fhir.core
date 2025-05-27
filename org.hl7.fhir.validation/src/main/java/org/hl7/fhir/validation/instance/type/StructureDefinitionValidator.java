@@ -17,6 +17,8 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.CompliesWithChecker;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
@@ -39,6 +41,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.SourcedElementDefinition;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -49,6 +52,8 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.json.model.JsonArray;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -451,7 +456,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     return ok;
   }
 
-  private boolean checkExtensionContext(List<ValidationMessage> errors, Element src, NodeStack stack) {
+  private boolean checkExtensionContext(List<ValidationMessage> errors, Element src, NodeStack stack) throws IOException {
     boolean ok = true;
     String type = src.getNamedChildValue("type", false);
     List<Element> eclist = src.getChildren("context");
@@ -468,6 +473,11 @@ public class StructureDefinitionValidator extends BaseValidator {
         } else {
           ct = src.getNamedChildValue("contextType", false); /// todo - this doesn't have the right value
           cv = ec.primitiveValue();
+        }
+        if ("element".equals(ct)) {
+          SourcedElementDefinition ed = findElementDefinition(ec, cv);
+          rule(errors, "2025-07-25", IssueType.INVALID, n.getLiteralPath(), ed != null, I18nConstants.SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND, cv);
+          
         }
         if ("element".equals(ct) && "Element".equals(cv)) {
           warning(errors, "2023-04-23", IssueType.BUSINESSRULE, n.getLiteralPath(), false, I18nConstants.SD_CONTEXT_SHOULD_NOT_BE_ELEMENT, cv, src.getNamedChildValue("id", false));
@@ -488,6 +498,41 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
     }
     return ok;
+  }
+
+  private SourcedElementDefinition findElementDefinition(Element ec, String path) throws IOException {
+    IWorkerContext ctxt;
+    if (!ec.hasExtension(ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE)) {
+      ctxt = context;
+    } else {
+      Element ext = ec.getExtension(ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE);
+      String v;
+      if (ext.hasExtension(ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE_START)) {
+        v = ext.getExtensionString(ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE_START);
+      } else {
+        v = "1.0";
+      }
+      if (VersionUtilities.versionsMatch(context.getVersion(), v)) {
+        ctxt = context;
+      } else {
+        if (!session.getOtherVersions().containsKey(v)) {
+          FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
+          NpmPackage npm = pcm.loadPackage(VersionUtilities.packageForVersion(v));
+          SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(npm);
+          session.getOtherVersions().put(v, swc);
+        }
+        ctxt = session.getOtherVersions().get(v);
+      }
+    }
+    
+    StructureDefinition sd = ctxt.fetchResource(StructureDefinition.class, path.contains(".") ? path.substring(0, path.indexOf(".")) : path);
+    if (sd != null) {
+      ElementDefinition ed = sd.getSnapshot().getElementByPath(path);
+      if (ed != null) {
+        return new SourcedElementDefinition(sd, ed);
+      }
+    }
+    return null;
   }
 
   private boolean hasJsonName(Element sd) {

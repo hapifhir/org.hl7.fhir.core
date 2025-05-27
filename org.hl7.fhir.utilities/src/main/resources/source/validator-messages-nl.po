@@ -1729,6 +1729,11 @@ msgstr "Fout bij evalueren FHIRPath-expressie: het type ''{0}'' is onbekend of w
 msgid "Error evaluating FHIRPath expression: The parameter type {2} is not legal for {0} parameter {1}. expecting {3}"
 msgstr "Fout bij evalueren FHIRPath expressie: Het parametertype {2} is niet geldig voor {0} parameter {1}. verwacht {3}"
 
+# FILTER_NOT_UNDERSTOOD
+#: FILTER_NOT_UNDERSTOOD
+msgid "The filter \"{0} {1} {2}\" from the value set {3} was not understood in the context of {4}"
+msgstr ""
+
 # Fixed_Type_Checks_DT_Address_Line
 #: Fixed_Type_Checks_DT_Address_Line
 msgid "Expected {0} but found {1} line elements"
@@ -3641,6 +3646,11 @@ msgstr "Het soort {0} (kind) moet hetzelfde zijn als de soort {1} in de basisstr
 #: SD_CONSTRAINED_TYPE_NO_MATCH
 msgid "The type {0} must be the same as the type in the base structure {1} that is being constrained"
 msgstr "Het type {0} moet hetzelfde zijn als het type in de basisstructuur {1} die wordt ingeperkt"
+
+# SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND
+#: SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND
+msgid "The element {0} is not valid"
+msgstr ""
 
 # SD_CONTEXT_SHOULD_NOT_BE_ELEMENT
 #: SD_CONTEXT_SHOULD_NOT_BE_ELEMENT
