@@ -20,6 +20,7 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.SnapshotGenerationPreProcessor;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.LanguageUtils;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
@@ -28,6 +29,7 @@ import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
+import org.hl7.fhir.r5.model.MarkdownType;
 import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
@@ -41,6 +43,7 @@ import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -103,6 +106,7 @@ public class ClassDiagramRenderer {
   private int nc = 0;
   private List<Link> links = new ArrayList<Link>();
   private List<String> classNames = new ArrayList<String>();  
+  String lang;
 
   /**
    * 
@@ -111,11 +115,12 @@ public class ClassDiagramRenderer {
    * @param diagramId - the id of the diagram (goes in the filenames and the diagram itself)
    * @param prefix - a prefix to put on all ids to ensure anchor names don't clash. 
    * @param rc - rendering context
+   * @param lang 
    * @param json - json control file with diagram details
    * 
    * @throws IOException
    */
-  public ClassDiagramRenderer(String sourceFolder, String destFolder, String diagramId, String prefix, RenderingContext rc) throws IOException {
+  public ClassDiagramRenderer(String sourceFolder, String destFolder, String diagramId, String prefix, RenderingContext rc, String lang) throws IOException {
     this.sourceFolder = sourceFolder;
     this.destFolder = destFolder;
     this.rc = rc;
@@ -133,6 +138,7 @@ public class ClassDiagramRenderer {
     }
     this.diagramId = diagramId;
     this.prefix = (prefix == null ? "" : prefix);
+    this.lang = lang;
   }
 
   public boolean hasSource() {
@@ -1119,16 +1125,20 @@ public class ClassDiagramRenderer {
   }
 
   private String getEnhancedDefinition(ElementDefinition e) {
-
+    String defn = pvt(e.getDefinitionElement());
     if (e.getIsModifier() && e.getMustSupport()) {
-      return Utilities.removePeriod(e.getDefinition()) + " (this element modifies the meaning of other elements, and must be supported)";
+      return Utilities.removePeriod(defn) + " "+rc.formatPhrase(RenderingI18nContext.SDR_MOD_SUPP);
     } else if (e.getIsModifier()) {
-      return Utilities.removePeriod(e.getDefinition()) + " (this element modifies the meaning of other elements)";
+      return Utilities.removePeriod(defn) + " "+rc.formatPhrase(RenderingI18nContext.SDR_MOD);
     } else if (e.getMustSupport()) {
-      return Utilities.removePeriod(e.getDefinition()) + " (this element must be supported)";
+      return Utilities.removePeriod(defn) + " "+rc.formatPhrase(RenderingI18nContext.SDR_SUPP);
     } else {
-      return Utilities.removePeriod(e.getDefinition());
+      return Utilities.removePeriod(defn);
     }
+  }   
+
+  private String pvt(DataType ed) {
+    return ed.getTranslation(lang);
   }
 
   private String baseUrl(StructureDefinition sd, String path) throws FHIRException, IOException {

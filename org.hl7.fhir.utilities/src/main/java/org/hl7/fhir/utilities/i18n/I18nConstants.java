@@ -1338,5 +1338,6 @@ public class I18nConstants {
   public static final String TEXT_LINK_NO_ID = "TEXT_LINK_NO_ID";
   public static final String TEXT_LINK_NO_DATA = "TEXT_LINK_NO_DATA";
   public static final String TEXT_LINK_SELECTOR_INVALID = "TEXT_LINK_SELECTOR_INVALID";
+  public static final String SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND = "SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND";
 
 }
