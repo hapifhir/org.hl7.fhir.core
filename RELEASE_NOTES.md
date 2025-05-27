@@ -39,5 +39,6 @@
 * Add rendering Concept Domain
 * Fix incorrect language code for Czech (#2020)
 * Fix parsing bug in html (comment before html couldn't contain a '<')
+* Fix rendering phrase support for multi-byte characters (#2023)
 
 
