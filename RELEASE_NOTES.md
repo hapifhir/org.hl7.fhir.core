@@ -1,6 +1,6 @@
 ## Validator Changes
 
-* change URL wording in warning about unknown URLS after discussion in committee and fix error validating URLs + don't check Attachment.url + Bundle.entry.request.url
+* change URL wording in warning about unknown URLS after discussion in committee and fix error validating URLs + don't check Attachment.url + Bundle.entry.request.url + QuestionnaireResponse.item.definition
 * implement new agreement about how IPS narrative linking works
 * Check extension contexts are valid paths
 * Properly handle not-present code systems in yet another place
@@ -15,6 +15,7 @@
 * Add check for headless mode before accessing desktop features (#2000)
 * fix outsize batch validation request problem
 * fix: ensure non-null return for slices and handle missing slicing details for extensions
+* fix loading issue for openEHR IG
 
 ## I18nWork
 
@@ -40,5 +41,6 @@
 * Fix incorrect language code for Czech (#2020)
 * Fix parsing bug in html (comment before html couldn't contain a '<')
 * Fix rendering phrase support for multi-byte characters (#2023)
-
+* Remove generated narrative header in IG pages
+* fix type heirarchy for XhtmlType (#1800)
 
