@@ -872,7 +872,11 @@ public class ResourceFactory extends Factory {
     case 3601339:
       return new UuidType();
     default:
-      throw new FHIRException("Unknown Resource or Type Name '" + name + "'");
+        if (name.equals("xhtml")) {
+          return new XhtmlType();
+        } else {
+          throw new FHIRException("Unknown Resource or Type Name '"+name+"'");
+        }
     }
   }
 

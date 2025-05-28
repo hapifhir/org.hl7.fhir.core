@@ -106,6 +106,13 @@ public class RenderingContext extends RenderingI18nContext {
         return langs.get(lang);
       }
     }
+
+    public void setNoHeader(boolean b) {
+      defLangRC.setNoHeader(b);
+      for (RenderingContext rc : langs.values()) {
+        rc.setNoHeader(b);
+      }
+    }
   }
 
   // provides liquid templates, if they are available for the content
@@ -319,6 +326,7 @@ public class RenderingContext extends RenderingI18nContext {
   private IResourceLinkResolver resolveLinkResolver;
   private boolean debug;
   private DesignationMode designationMode;
+  private boolean noHeader;
   
   /**
    * 
@@ -391,6 +399,7 @@ public class RenderingContext extends RenderingI18nContext {
     res.unknownLocalReferencesNotLinks = unknownLocalReferencesNotLinks;
     res.resolveLinkResolver = resolveLinkResolver;
     res.debug = debug;
+    res.noHeader = noHeader;
     return res;
   }
   
@@ -1130,5 +1139,14 @@ public class RenderingContext extends RenderingI18nContext {
     self.oids = oids;
     return self;
   }
+
+  public boolean isNoHeader() {
+    return noHeader;
+  }
+
+  public void setNoHeader(boolean noHeader) {
+    this.noHeader = noHeader;
+  }
+
 
 }
