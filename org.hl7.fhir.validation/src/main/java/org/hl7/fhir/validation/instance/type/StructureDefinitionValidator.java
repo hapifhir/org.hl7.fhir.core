@@ -463,8 +463,8 @@ public class StructureDefinitionValidator extends BaseValidator {
     String type = src.getNamedChildValue("type", false);
     List<Element> eclist = src.getChildren("context");
     List<Element> cilist = src.getChildren("contextInvariant");
+    int i = 0;
     for (Element ec : eclist) {
-      int i = src.getChildren().indexOf(ec);
       NodeStack n = stack.push(ec, i, null, null);
       if ("Extension".equals(type)) {
         String ct = null;
@@ -489,8 +489,9 @@ public class StructureDefinitionValidator extends BaseValidator {
       } else if (!hasJsonName(src)) { // special case: if there's a json name, it can be used as an extension
         ok = rule(errors, "2023-04-23", IssueType.INVALID, n.getLiteralPath(), false, I18nConstants.SD_NO_CONTEXT_WHEN_NOT_EXTENSION, type) && ok;
       }
+      i++;
     }
-    int i = 0;
+    i = 0;
     for (Element ci : cilist) {
       NodeStack n = stack.push(ci, i, null, null);
       if ("Extension".equals(type)) {
