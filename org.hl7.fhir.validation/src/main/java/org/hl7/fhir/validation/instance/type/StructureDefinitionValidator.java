@@ -17,6 +17,7 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.CompliesWithChecker;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
@@ -44,6 +45,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.SourcedElementDefinition;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.r5.utils.DefinitionNavigator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -487,6 +489,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       } else if (!hasJsonName(src)) { // special case: if there's a json name, it can be used as an extension
         ok = rule(errors, "2023-04-23", IssueType.INVALID, n.getLiteralPath(), false, I18nConstants.SD_NO_CONTEXT_WHEN_NOT_EXTENSION, type) && ok;
       }
+      i++;
     }
     i = 0;
     for (Element ci : cilist) {
@@ -525,14 +528,15 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
     }
     
+    String[] p = path.split("\\.");
     StructureDefinition sd = ctxt.fetchResource(StructureDefinition.class, path.contains(".") ? path.substring(0, path.indexOf(".")) : path);
-    if (sd != null) {
-      ElementDefinition ed = sd.getSnapshot().getElementByPath(path);
-      if (ed != null) {
-        return new SourcedElementDefinition(sd, ed);
+    DefinitionNavigator dn = new DefinitionNavigator(ctxt, sd, false, true);
+    for (int i = 1; i < p.length; i++) {
+      if (dn != null) {
+        dn = dn.childByName(p[i]);
       }
     }
-    return null;
+    return dn == null ? null : new SourcedElementDefinition(dn.getStructure(), dn.current());
   }
 
   private boolean hasJsonName(Element sd) {
