@@ -61,6 +61,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
@@ -521,22 +522,30 @@ public class StructureDefinitionValidator extends BaseValidator {
         if (!session.getOtherVersions().containsKey(v)) {
           FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
           NpmPackage npm = pcm.loadPackage(VersionUtilities.packageForVersion(v));
-          SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(npm);
+          SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true)
+              .fromPackage(npm, ValidatorUtils.loaderForVersion(v), false);
           session.getOtherVersions().put(v, swc);
         }
         ctxt = session.getOtherVersions().get(v);
       }
     }
     
-    String[] p = path.split("\\.");
-    StructureDefinition sd = ctxt.fetchResource(StructureDefinition.class, path.contains(".") ? path.substring(0, path.indexOf(".")) : path);
-    DefinitionNavigator dn = new DefinitionNavigator(ctxt, sd, false, true);
-    for (int i = 1; i < p.length; i++) {
-      if (dn != null) {
-        dn = dn.childByName(p[i]);
+    try {
+      String[] p = path.split("\\.");
+      StructureDefinition sd = ctxt.fetchResource(StructureDefinition.class, path.contains(".") ? path.substring(0, path.indexOf(".")) : path);
+      if (sd == null) {
+        return null;
       }
+      DefinitionNavigator dn = new DefinitionNavigator(ctxt, sd, false, true);
+      for (int i = 1; i < p.length; i++) {
+        if (dn != null) {
+          dn = dn.childByName(p[i]);
+        }
+      }
+      return dn == null ? null : new SourcedElementDefinition(dn.getStructure(), dn.current());
+    } catch (Exception e) {
+      return null;
     }
-    return dn == null ? null : new SourcedElementDefinition(dn.getStructure(), dn.current());
   }
 
   private boolean hasJsonName(Element sd) {
