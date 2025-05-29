@@ -41,7 +41,6 @@ import java.util.Set;
 
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.UcumException;
-import org.hl7.fhir.dstu2016may.metamodel.ParserBase;
 import org.hl7.fhir.dstu2016may.model.Base;
 import org.hl7.fhir.dstu2016may.model.BooleanType;
 import org.hl7.fhir.dstu2016may.model.DateTimeType;
@@ -2761,7 +2760,7 @@ public class FHIRPathEngine {
           && path.startsWith(ed.getPath().substring(0, ed.getPath().length() - 3))
           && path.length() > ed.getPath().length() - 3) {
         String s = Utilities.uncapitalize(path.substring(ed.getPath().length() - 3));
-        if (ParserBase.isPrimitive(s))
+        if (isPrimitive(s))
           return new ElementDefinitionMatch(ed, s);
         else
           return new ElementDefinitionMatch(ed, path.substring(ed.getPath().length() - 3));
@@ -2782,6 +2781,12 @@ public class FHIRPathEngine {
       }
     }
     return null;
+  }
+
+  private static boolean isPrimitive(String code) {
+    return Utilities.existsInList(code, "xhtml", "boolean", "integer", "string", "decimal", "uri", "base64Binary",
+        "instant", "date", "dateTime", "time", "code", "oid", "id", "markdown", "unsignedInt", "positiveInt", "xhtml",
+        "base64Binary");
   }
 
   private boolean isAbstractType(List<TypeRefComponent> list) {
