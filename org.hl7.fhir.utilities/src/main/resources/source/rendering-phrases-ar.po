@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
-"Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
 "X-Crowdin-Project: orghl7fhircore\n"
 "X-Crowdin-Project-ID: 792848\n"
-"X-Crowdin-Language: ru\n"
+"X-Crowdin-Language: ar\n"
 "X-Crowdin-File: /org.hl7.fhir.utilities/src/main/resources/source/rendering-phrases-en.po\n"
 "X-Crowdin-File-ID: 236\n"
 "Project-Id-Version: orghl7fhircore\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Language-Team: Russian\n"
-"Language: ru_RU\n"
+"Language-Team: Arabic\n"
+"Language: ar_SA\n"
 "PO-Revision-Date: 2025-05-30 15:29\n"
 
 # ACTOR_DEF_ACT
@@ -145,7 +145,7 @@ msgstr ""
 # BUNDLE_ETAG
 #: BUNDLE_ETAG
 msgid "ETag = {0}"
-msgstr "ETag = {0}"
+msgstr ""
 
 # BUNDLE_HEADER_DOCUMENT_CONTENTS
 #: BUNDLE_HEADER_DOCUMENT_CONTENTS
@@ -170,32 +170,32 @@ msgstr ""
 # BUNDLE_IF_MATCH
 #: BUNDLE_IF_MATCH
 msgid "If-Match = {0}"
-msgstr "If-Match = {0}"
+msgstr ""
 
 # BUNDLE_IF_MOD
 #: BUNDLE_IF_MOD
 msgid "If-Modified-Since = {0}"
-msgstr "If-Modified-Since = {0}"
+msgstr ""
 
 # BUNDLE_IF_NONE
 #: BUNDLE_IF_NONE
 msgid "If-None-Exist = {0}"
-msgstr "If-None-Exist = {0}"
+msgstr ""
 
 # BUNDLE_IF_NON_MATCH
 #: BUNDLE_IF_NON_MATCH
 msgid "If-None-Match = {0}"
-msgstr "If-None-Match = {0}"
+msgstr ""
 
 # BUNDLE_LAST_MOD
 #: BUNDLE_LAST_MOD
 msgid "LastModified = {0}"
-msgstr "LastModified = {0}"
+msgstr ""
 
 # BUNDLE_LOCATION
 #: BUNDLE_LOCATION
 msgid "Location = {0}"
-msgstr "Location = {0}"
+msgstr ""
 
 # BUNDLE_REQUEST
 #: BUNDLE_REQUEST
@@ -225,12 +225,12 @@ msgstr ""
 # BUNDLE_SEARCH_MODE
 #: BUNDLE_SEARCH_MODE
 msgid "Mode = {0}"
-msgstr "Mode = {0}"
+msgstr ""
 
 # BUNDLE_SEARCH_SCORE
 #: BUNDLE_SEARCH_SCORE
 msgid "Score = {0}"
-msgstr "Score = {0}"
+msgstr ""
 
 # BUNDLE_SUMMARY
 #: BUNDLE_SUMMARY
@@ -250,7 +250,7 @@ msgstr ""
 # CANON_REND_JSON
 #: CANON_REND_JSON
 msgid "JSON"
-msgstr "JSON"
+msgstr ""
 
 # CANON_REND_MATURITY
 #: CANON_REND_MATURITY
@@ -270,7 +270,7 @@ msgstr ""
 # CANON_REND_TURTLE
 #: CANON_REND_TURTLE
 msgid "Turtle"
-msgstr "Turtle"
+msgstr ""
 
 # CAPABILITY_ADD_SUPP_PROF
 #: CAPABILITY_ADD_SUPP_PROF
@@ -315,7 +315,7 @@ msgstr ""
 # CAPABILITY_ENDPOINTS
 #: CAPABILITY_ENDPOINTS
 msgid "Endpoint(s)"
-msgstr "Endpoint(s)"
+msgstr ""
 
 # CAPABILITY_ERR_DET
 #: CAPABILITY_ERR_DET
@@ -460,7 +460,7 @@ msgstr ""
 # CAPABILITY_REST_CAPS
 #: CAPABILITY_REST_CAPS
 msgid "FHIR RESTful Capabilities"
-msgstr "FHIR RESTful Capabilities"
+msgstr ""
 
 # CAPABILITY_REST_CONFIG
 #: CAPABILITY_REST_CONFIG
@@ -645,7 +645,7 @@ msgstr ""
 # CODESYSTEM_FILTER_OP
 #: CODESYSTEM_FILTER_OP
 msgid "Op"
-msgstr "Op"
+msgstr ""
 
 # CODESYSTEM_PROPS_DESC
 #: CODESYSTEM_PROPS_DESC
@@ -862,12 +862,12 @@ msgstr ""
 #: DATA_REND_ATT_DATA
 msgctxt "DATA_REND_ATT_DATA"
 msgid "{0}: {1}"
-msgstr "{0}: {1}"
+msgstr ""
 
 # DATA_REND_ATT_URL
 #: DATA_REND_ATT_URL
 msgid "{0} @ {1}"
-msgstr "{0} @ {1}"
+msgstr ""
 
 # DATA_REND_BASE64
 #: DATA_REND_BASE64
@@ -912,7 +912,7 @@ msgstr ""
 # DATA_REND_COND
 #: DATA_REND_COND
 msgid "Condition"
-msgstr "Condition"
+msgstr ""
 
 # DATA_REND_COUNT
 #: DATA_REND_COUNT
@@ -922,7 +922,7 @@ msgstr ""
 # DATA_REND_CURRENCY
 #: DATA_REND_CURRENCY
 msgid "{1} {0}"
-msgstr "{1} {0}"
+msgstr ""
 
 # DATA_REND_DATA
 #: DATA_REND_DATA
@@ -947,7 +947,7 @@ msgstr ""
 # DATA_REND_DICOM
 #: DATA_REND_DICOM
 msgid "DICOM"
-msgstr "DICOM"
+msgstr ""
 
 # DATA_REND_DIM
 #: DATA_REND_DIM
@@ -1027,7 +1027,7 @@ msgstr ""
 # DATA_REND_LOINC
 #: DATA_REND_LOINC
 msgid "LOINC"
-msgstr "LOINC"
+msgstr ""
 
 # DATA_REND_LOWER
 #: DATA_REND_LOWER
@@ -1112,7 +1112,7 @@ msgstr ""
 # DATA_REND_RXNORM
 #: DATA_REND_RXNORM
 msgid "RxNorm"
-msgstr "RxNorm"
+msgstr ""
 
 # DATA_REND_SEARCH
 #: DATA_REND_SEARCH
@@ -1122,7 +1122,7 @@ msgstr ""
 # DATA_REND_SNOMED
 #: DATA_REND_SNOMED
 msgid "SNOMED CT"
-msgstr "SNOMED CT"
+msgstr ""
 
 # DATA_REND_SORT
 #: DATA_REND_SORT
@@ -1212,7 +1212,7 @@ msgstr ""
 # DIAG_REP_REND_IDENTIFIER
 #: DIAG_REP_REND_IDENTIFIER
 msgid "Identifier"
-msgstr "Identifier"
+msgstr ""
 
 # DIAG_REP_REND_NOTRES
 #: DIAG_REP_REND_NOTRES
@@ -1222,7 +1222,7 @@ msgstr ""
 # DIAG_REP_REND_OBS
 #: DIAG_REP_REND_OBS
 msgid "Observation"
-msgstr "Observation"
+msgstr ""
 
 # DIAG_REP_REND_PER
 #: DIAG_REP_REND_PER
@@ -1273,7 +1273,7 @@ msgstr ""
 # DOCUMENT_SUMMARY
 #: DOCUMENT_SUMMARY
 msgid "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
-msgstr "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
+msgstr ""
 
 # EXAMPLE_SCEN_STEP_SCEN
 #: EXAMPLE_SCEN_STEP_SCEN
@@ -1480,7 +1480,7 @@ msgstr ""
 #: GENERAL_DATA_DISPLAY_PROPERTY
 msgctxt "GENERAL_DATA_DISPLAY_PROPERTY"
 msgid "{0}: {1}"
-msgstr "{0}: {1}"
+msgstr ""
 
 # GENERAL_DEFINING_URL
 #: GENERAL_DEFINING_URL
@@ -1547,7 +1547,7 @@ msgstr ""
 # GENERAL_LOCATION
 #: GENERAL_LOCATION
 msgid "Location"
-msgstr "Location"
+msgstr ""
 
 # GENERAL_LOGICAL_NAME
 #: GENERAL_LOGICAL_NAME
@@ -1599,7 +1599,7 @@ msgstr ""
 # GENERAL_OID
 #: GENERAL_OID
 msgid "OID"
-msgstr "OID"
+msgstr ""
 
 # GENERAL_PAR
 #: GENERAL_PAR
@@ -1706,7 +1706,7 @@ msgstr ""
 # GENERAL_SUMM
 #: GENERAL_SUMM
 msgid "Summary"
-msgstr "Summary"
+msgstr ""
 
 # GENERAL_TITLE
 #: GENERAL_TITLE
@@ -1736,17 +1736,17 @@ msgstr ""
 # GENERAL_UCUM
 #: GENERAL_UCUM
 msgid "UCUM"
-msgstr "UCUM"
+msgstr ""
 
 # GENERAL_URI
 #: GENERAL_URI
 msgid "URI"
-msgstr "URI"
+msgstr ""
 
 # GENERAL_URL
 #: GENERAL_URL
 msgid "URL"
-msgstr "URL"
+msgstr ""
 
 # GENERAL_USAGE
 #: GENERAL_USAGE
@@ -1791,7 +1791,7 @@ msgstr ""
 # GENERAL_XML
 #: GENERAL_XML
 msgid "XML"
-msgstr "XML"
+msgstr ""
 
 # IMP_GUIDE_URL
 #: IMP_GUIDE_URL
@@ -1906,7 +1906,7 @@ msgstr ""
 # LIST_REND_ENC
 #: LIST_REND_ENC
 msgid "Encounter:"
-msgstr "Encounter:"
+msgstr ""
 
 # LIST_REND_FLAG
 #: LIST_REND_FLAG
@@ -2028,12 +2028,12 @@ msgstr ""
 # OP_DEF_URL
 #: OP_DEF_URL
 msgid "URL: [base]/{0}"
-msgstr "URL: [base]/{0}"
+msgstr ""
 
 # OP_DEF_URLS
 #: OP_DEF_URLS
 msgid "URL: [base]/${0}"
-msgstr "URL: [base]/${0}"
+msgstr ""
 
 # OP_DEF_USE
 #: OP_DEF_USE
@@ -2124,6 +2124,8 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 # PAT_DECEASED
 #: PAT_DECEASED
@@ -2158,6 +2160,8 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 # PAT_LANG_HINT
 #: PAT_LANG_HINT
@@ -2167,6 +2171,8 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 # PAT_LANG_PREFERRED
 #: PAT_LANG_PREFERRED
@@ -2267,6 +2273,8 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 # PAT_OTHER_ID_HINT
 #: PAT_OTHER_ID_HINT
@@ -2276,6 +2284,8 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 # PAT_PERIOD
 #: PAT_PERIOD
@@ -2310,7 +2320,7 @@ msgstr ""
 # PROF_DRIV_GEN_NARR
 #: PROF_DRIV_GEN_NARR
 msgid "{0} {1}"
-msgstr "{0} {1}"
+msgstr ""
 
 # PROF_DRIV_GEN_NARR_TECH
 #: PROF_DRIV_GEN_NARR_TECH
@@ -2321,12 +2331,12 @@ msgstr ""
 #: PROF_DRIV_SUMM
 msgctxt "PROF_DRIV_SUMM"
 msgid "{0}: {1}"
-msgstr "{0}: {1}"
+msgstr ""
 
 # PROF_DRIV_SUMM_PROP
 #: PROF_DRIV_SUMM_PROP
 msgid "{0} = {1}"
-msgstr "{0} = {1}"
+msgstr ""
 
 # PROV_ACT
 #: PROV_ACT
@@ -2491,12 +2501,12 @@ msgstr ""
 # QUEST_HIDDEN_ITEM
 #: QUEST_HIDDEN_ITEM
 msgid "Hidden Item"
-msgstr "Hidden Item"
+msgstr ""
 
 # QUEST_ID
 #: QUEST_ID
 msgid "Link Id"
-msgstr "Link Id"
+msgstr ""
 
 # QUEST_INITIAL
 #: QUEST_INITIAL
@@ -2541,7 +2551,7 @@ msgstr ""
 # QUEST_LINKID
 #: QUEST_LINKID
 msgid "LinkID"
-msgstr "LinkID"
+msgstr ""
 
 # QUEST_MAND
 #: QUEST_MAND
@@ -2596,12 +2606,12 @@ msgstr ""
 # QUEST_QUEST
 #: QUEST_QUEST
 msgid "Questionnaire"
-msgstr "Questionnaire"
+msgstr ""
 
 # QUEST_QUESTION
 #: QUEST_QUESTION
 msgid "Questionnaire:"
-msgstr "Questionnaire:"
+msgstr ""
 
 # QUEST_READONLY
 #: QUEST_READONLY
@@ -2621,7 +2631,7 @@ msgstr ""
 # QUEST_RESP_ROOT
 #: QUEST_RESP_ROOT
 msgid "QuestionnaireResponseRoot"
-msgstr "QuestionnaireResponseRoot"
+msgstr ""
 
 # QUEST_REV_DATE
 #: QUEST_REV_DATE
@@ -2631,7 +2641,7 @@ msgstr ""
 # QUEST_ROOT
 #: QUEST_ROOT
 msgid "QuestionnaireRoot"
-msgstr "QuestionnaireRoot"
+msgstr ""
 
 # QUEST_STRUCT
 #: QUEST_STRUCT
@@ -3554,6 +3564,8 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 # SD_SUMMARY_SLICES
 #: SD_SUMMARY_SLICES
@@ -4067,7 +4079,7 @@ msgstr ""
 # STRUC_DEF_ID
 #: STRUC_DEF_ID
 msgid "Id"
-msgstr "Id"
+msgstr ""
 
 # STRUC_DEF_ID_EXPECT
 #: STRUC_DEF_ID_EXPECT
@@ -4137,7 +4149,7 @@ msgstr ""
 # STRUC_DEF_JSON_FORM
 #: STRUC_DEF_JSON_FORM
 msgid "JSON Format"
-msgstr "JSON Format"
+msgstr ""
 
 # STRUC_DEF_JSON_IF
 #: STRUC_DEF_JSON_IF
@@ -4274,7 +4286,7 @@ msgstr ""
 # STRUC_DEF_MODIF
 #: STRUC_DEF_MODIF
 msgid "Modifier"
-msgstr "Modifier"
+msgstr ""
 
 # STRUC_DEF_MODIFIER
 #: STRUC_DEF_MODIFIER
@@ -4585,7 +4597,7 @@ msgstr ""
 # STRUC_DEF_SNOMED
 #: STRUC_DEF_SNOMED
 msgid "SNOMED-CT"
-msgstr "SNOMED-CT"
+msgstr ""
 
 # STRUC_DEF_SNOMED_CODE
 #: STRUC_DEF_SNOMED_CODE
@@ -4676,7 +4688,7 @@ msgstr ""
 #: STRUC_DEF_UI
 msgctxt "STRUC_DEF_UI"
 msgid "UI"
-msgstr "UI"
+msgstr ""
 
 # STRUC_DEF_UI_CONT
 #: STRUC_DEF_UI_CONT
@@ -4716,7 +4728,7 @@ msgstr ""
 # STRUC_DEF_URLS
 #: STRUC_DEF_URLS
 msgid "URL:"
-msgstr "URL:"
+msgstr ""
 
 # STRUC_DEF_VALID
 #: STRUC_DEF_VALID
@@ -4726,7 +4738,7 @@ msgstr ""
 # STRUC_DEF_VALUESET
 #: STRUC_DEF_VALUESET
 msgid "ValueSet"
-msgstr "ValueSet"
+msgstr ""
 
 # STRUC_DEF_VALUESET_CODE
 #: STRUC_DEF_VALUESET_CODE
@@ -5252,6 +5264,8 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 # VALUE_SET_IN
 #: VALUE_SET_IN
@@ -5286,12 +5300,12 @@ msgstr ""
 # VALUE_SET_ISA
 #: VALUE_SET_ISA
 msgid "is-a"
-msgstr "is-a"
+msgstr ""
 
 # VALUE_SET_ISNOTA
 #: VALUE_SET_ISNOTA
 msgid "is-not-a"
-msgstr "is-not-a"
+msgstr ""
 
 # VALUE_SET_KR
 #: VALUE_SET_KR
@@ -5306,7 +5320,7 @@ msgstr ""
 # VALUE_SET_LOINCV
 #: VALUE_SET_LOINCV
 msgid "Loinc v"
-msgstr "Loinc v"
+msgstr ""
 
 # VALUE_SET_NO
 #: VALUE_SET_NO
@@ -5351,7 +5365,7 @@ msgstr ""
 # VALUE_SET_NULLS
 #: VALUE_SET_NULLS
 msgid "?ngen-13?"
-msgstr "?ngen-13?"
+msgstr ""
 
 # VALUE_SET_NUMBER_CONCEPTS
 #: VALUE_SET_NUMBER_CONCEPTS
