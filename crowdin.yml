@@ -6,11 +6,11 @@
 
 "files": [
   {
-    "source": "src/main/resources/source/rendering-phrases-en.po",
-    "translation": "src/main/resources/source/rendering-phrases-%two_letters_code%.po"
+    "source": "org.hl7.fhir.utilities/src/main/resources/source/rendering-phrases-en.po",
+    "translation": "org.hl7.fhir.utilities/src/main/resources/source/rendering-phrases-%two_letters_code%.po"
   },
   {
-    "source": "src/main/resources/source/validator-messages-en.po",
-    "translation": "src/main/resources/source/validator-messages-%two_letters_code%.po"
+    "source": "org.hl7.fhir.utilities/src/main/resources/source/validator-messages-en.po",
+    "translation": "org.hl7.fhir.utilities/src/main/resources/source/validator-messages-%two_letters_code%.po"
   }
 ]
