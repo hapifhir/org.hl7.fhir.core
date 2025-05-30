@@ -48,9 +48,11 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.filesystem.CSFile;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@Slf4j
 public class ZipGenerator {
 
   private Set<String> names = new HashSet<String>();
@@ -129,7 +131,7 @@ public class ZipGenerator {
 
     String files[] = f.list();
     if (files == null) {
-      System.out.println("no files found in "+f.getName());
+      log.info("no files found in "+f.getName());
     } else {
       for (int i = 0; i < files.length; i++) {
         if (!".DS_Store".equals(files[i])) {

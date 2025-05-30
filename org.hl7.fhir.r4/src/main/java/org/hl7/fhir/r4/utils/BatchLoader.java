@@ -53,6 +53,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 @Deprecated
+@SuppressWarnings("checkstyle:systemout")
 public class BatchLoader {
 
   public static void main(String[] args) throws IOException, Exception {

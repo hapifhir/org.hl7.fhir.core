@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.units.qual.cd;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -63,6 +64,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  *  importFromTranslations =  -langTransform import -src {src} -tgt {tgt} -dest {dest}
  */
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class LanguageUtils {
 
   public static final List<String> TRANSLATION_SUPPLEMENT_RESOURCE_TYPES = Arrays.asList("CodeSystem", "StructureDefinition", "Questionnaire");
@@ -287,7 +289,7 @@ public class LanguageUtils {
             if (translation.getTgtText() != null) {
               ToolingExtensions.setLanguageTranslation(e, translation.getLanguage(), translation.getTgtText());
             } else {
-              System.out.println("?");              
+              log.warn("?");
             }
           }
         }

@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -89,6 +90,7 @@ import org.hl7.fhir.utilities.Utilities;
  * 
  * @author Claude Nanjo
  */
+@Slf4j
 public class ClientUtils {
 
   public static final String DEFAULT_CHARSET = "UTF-8";
@@ -301,7 +303,7 @@ public class ClientUtils {
         response = httpclient.execute(request);
         ok = true;
       } catch (IOException ioe) {
-        System.out.println(ioe.getMessage() + " (" + (System.currentTimeMillis() - t) + "ms / "
+        log.warn(ioe.getMessage() + " (" + (System.currentTimeMillis() - t) + "ms / "
             + Utilities.describeSize(payload.length) + ")");
         if (tryCount <= retryCount || (tryCount < 3 && ioe instanceof org.apache.http.conn.ConnectTimeoutException)) {
           ok = false;
@@ -648,7 +650,7 @@ public class ClientUtils {
     String value = null;
     try {
       value = IOUtils.toString(instream, "UTF-8");
-      System.out.println(value);
+      log.debug(value);
 
     } catch (IOException ioe) {
       // Do nothing

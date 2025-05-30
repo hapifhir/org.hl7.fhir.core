@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.context.IWorkerContext.ValidationResult;
@@ -80,6 +81,7 @@ import com.google.gson.JsonPrimitive;
  *
  */
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class TerminologyCache {
   public static final boolean TRANSIENT = false;
   public static final boolean PERMANENT = true;
@@ -379,7 +381,7 @@ public class TerminologyCache {
       }
       sw.close();
     } catch (Exception e) {
-      System.out.println("error saving " + nc.name + ": " + e.getMessage());
+      log.error("error saving " + nc.name + ": " + e.getMessage());
     }
   }
 
@@ -387,19 +389,18 @@ public class TerminologyCache {
     for (String fn : ManagedFileAccess.file(folder).list()) {
       if (fn.endsWith(".cache") && !fn.equals("validation.cache")) {
         try {
-          // System.out.println("Load "+fn);
           String title = fn.substring(0, fn.lastIndexOf("."));
           NamedCache nc = new NamedCache();
           nc.name = title;
           caches.put(title, nc);
-          System.out.print(" - load " + title + ".cache");
+          log.info(" - load " + title + ".cache");
           String src = FileUtilities.fileToString(Utilities.path(folder, fn));
           if (src.startsWith("?"))
             src = src.substring(1);
           int i = src.indexOf(ENTRY_MARKER);
           while (i > -1) {
             String s = src.substring(0, i);
-            System.out.print(".");
+            log.info(".");
             src = src.substring(i + ENTRY_MARKER.length() + 1);
             i = src.indexOf(ENTRY_MARKER);
             if (!Utilities.noString(s)) {
@@ -429,7 +430,7 @@ public class TerminologyCache {
               nc.list.add(ce);
             }
           }
-          System.out.println("done");
+          log.info("done");
         } catch (Exception e) {
           throw new FHIRException("Error loading " + fn + ": " + e.getMessage(), e);
         }

@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.dstu2016may.model.Base;
 import org.hl7.fhir.dstu2016may.model.BooleanType;
 import org.hl7.fhir.dstu2016may.model.CodeType;
@@ -71,6 +72,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 
 @Deprecated
+@Slf4j
 public class StructureMapUtilities {
 
   public static final String MAP_WHERE_CHECK = "map.where.check";
@@ -743,10 +745,6 @@ public class StructureMapUtilities {
 
   }
 
-  private void log(String cnt) {
-    System.out.println(cnt);
-  }
-
   /**
    * Given an item, return all the children that conform to the pattern described
    * in name
@@ -781,7 +779,7 @@ public class StructureMapUtilities {
 
   private void executeGroup(String indent, TransformContext context, StructureMap map, Variables vars,
       StructureMapGroupComponent group) throws Exception {
-    log(indent + "Group : " + group.getName());
+    log.info(indent + "Group : " + group.getName());
     // todo: extends
     // todo: check inputs
     for (StructureMapGroupRuleComponent r : group.getRule()) {
@@ -791,7 +789,7 @@ public class StructureMapUtilities {
 
   private void executeRule(String indent, TransformContext context, StructureMap map, Variables vars,
       StructureMapGroupComponent group, StructureMapGroupRuleComponent rule) throws Exception {
-    log(indent + "rule : " + rule.getName());
+    log.info(indent + "rule : " + rule.getName());
     Variables srcVars = vars.copy();
     if (rule.getSource().size() != 1)
       throw new Exception("not handled yet");

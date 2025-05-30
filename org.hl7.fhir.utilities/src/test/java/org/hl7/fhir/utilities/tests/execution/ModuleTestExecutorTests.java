@@ -4,10 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.tests.execution.junit4.JUnit4TestExecutor;
 import org.hl7.fhir.utilities.tests.execution.junit5.JUnit5ModuleTestExecutor;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 public class ModuleTestExecutorTests {
 
   @Test
@@ -16,7 +18,7 @@ public class ModuleTestExecutorTests {
 
     assertEquals("org.hl7.fhir.utilities (JUnit4)", junit4ModuleTestExecutor.getModuleName());
 
-    CliTestSummary cliTestSummary = junit4ModuleTestExecutor.executeTests(System.out, null);
+    CliTestSummary cliTestSummary = junit4ModuleTestExecutor.executeTests(log, null);
 
     assertEquals(1, cliTestSummary.getTestsFoundCount());
     assertEquals(0, cliTestSummary.getExceptions().size());
@@ -32,7 +34,7 @@ public class ModuleTestExecutorTests {
 
     assertEquals("org.hl7.fhir.utilities", junit5ModuleTestExecutor.getModuleName());
 
-    CliTestSummary cliTestSummary = junit5ModuleTestExecutor.executeTests(System.out, ".*DummyJUnit5Test");
+    CliTestSummary cliTestSummary = junit5ModuleTestExecutor.executeTests(log, ".*DummyJUnit5Test");
 
     assertEquals(1, cliTestSummary.getTestsFoundCount());
     assertEquals(0, cliTestSummary.getExceptions().size());

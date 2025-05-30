@@ -33,8 +33,10 @@ package org.hl7.fhir.validation.instance;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -42,6 +44,7 @@ import java.util.*;
 
 import javax.annotation.Nonnull;
 
+import lombok.extern.slf4j.Slf4j;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.NotImplementedException;
@@ -223,6 +226,7 @@ import org.hl7.fhir.validation.instance.utils.ResourceValidationTracker;
 import org.hl7.fhir.validation.instance.utils.StructureDefinitionSorterByUrl;
 import org.hl7.fhir.validation.instance.utils.UrlUtil;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
+import org.slf4j.Logger;
 import org.w3c.dom.Document;
 
 
@@ -240,7 +244,7 @@ import org.w3c.dom.Document;
  * check urn's don't start oid: or uuid:
  * check MetadataResource.url is absolute
  */
-
+@Slf4j
 public class InstanceValidator extends BaseValidator implements IResourceValidator {
   
   public enum MatchetypeStatus {
@@ -856,7 +860,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       tgt = Utilities.path(tgt, "content-"+index+"-"+ne.getFilename());
       FileUtilities.bytesToFile(ne.getContent(), tgt);
     } catch (Exception e) {
-      System.out.println("Error saving internal content to '"+tgt+"': "+e.getLocalizedMessage());
+      log.error("Error saving internal content to '"+tgt+"': "+e.getLocalizedMessage());
     }
     
   }
@@ -1067,11 +1071,21 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     
     if (settings.isDebug()) {
-      element.printToOutput();
+      try {
+        debugElement(element, log);
+      } catch (IOException e) {
+       log.error(e.getMessage(), e);
+      }
     }
   }
 
+  protected void debugElement(Element element, Logger log) throws IOException {
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
 
+    element.printToOutput(printStream);
+    log.debug(outputStream.toString());
+  }
   private void checkElementUsage(List<ValidationMessage> errors, Element element, NodeStack stack) {
     if (element.getPath()==null
       || (element.getName().equals("id")  && !element.getPath().substring(0, element.getPath().length()-3).contains("."))
@@ -2454,7 +2468,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return ok;
   }
 
-  private boolean checkExtension(ValidationContext valContext, List<ValidationMessage> errors, String path, Element resource, Element container, Element element, ElementDefinition def, StructureDefinition profile, NodeStack stack, NodeStack containerStack, String extensionUrl, PercentageTracker pct, ValidationMode mode) throws FHIRException {
+  private boolean checkExtension(ValidationContext valContext, List<ValidationMessage> errors, String path, Element resource, Element container, Element element, ElementDefinition def, StructureDefinition profile, NodeStack stack, NodeStack containerStack, String extensionUrl, ResourcePercentageLogger pct, ValidationMode mode) throws FHIRException {
     boolean ok = true;
     String url = element.getNamedChildValue("url", false);
     String u = url.contains("|") ? url.substring(0, url.indexOf("|")) : url;
@@ -4344,7 +4358,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private boolean checkNarrative(ValidationContext valContext, List<ValidationMessage> errors, String path,Element element, Element resource, StructureDefinition profile,
-      ElementDefinition container, String parentType, NodeStack stack, PercentageTracker pct, ValidationMode vmode) throws FHIRException {
+      ElementDefinition container, String parentType, NodeStack stack, ResourcePercentageLogger pct, ValidationMode vmode) throws FHIRException {
     boolean ok = true;
     if (element.hasExtension(ToolingExtensions.EXT_TEXT_LINK)) {
       XhtmlNode div = element.hasChild("div") ? element.getNamedChild("div").getXhtml() : null;
@@ -4444,13 +4458,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private boolean checkReference(ValidationContext valContext,
-                              List<ValidationMessage> errors,
-                              String path,
-                              Element element,
-                              StructureDefinition profile,
-                              ElementDefinition container,
-                              String parentType,
-                              NodeStack stack, PercentageTracker pct, ValidationMode vmode) throws FHIRException {
+                                 List<ValidationMessage> errors,
+                                 String path,
+                                 Element element,
+                                 StructureDefinition profile,
+                                 ElementDefinition container,
+                                 String parentType,
+                                 NodeStack stack, ResourcePercentageLogger pct, ValidationMode vmode) throws FHIRException {
     boolean ok = true;
     Reference reference = ObjectConverter.readAsReference(element);
 
@@ -5255,8 +5269,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             rr.setFocus(focus);
             rr.setExternal(false);
             rr.setStack(nstack);
-//            rr.getStack().qualifyPath(".ofType("+nstack.getElement().fhirType()+")");
-//            System.out.println("-->"+nstack.getLiteralPath());
             return rr;            
           }
           if (focus.getSpecial() == SpecialElement.CONTAINED) {
@@ -6044,7 +6056,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   // checkSpecials = we're only going to run these tests if we are actually validating this content (as opposed to we looked it up)
-  private boolean start(ValidationContext valContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack, PercentageTracker pct, ValidationMode mode, boolean fromContained) throws FHIRException {
+  private boolean start(ValidationContext valContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack, ResourcePercentageLogger pct, ValidationMode mode, boolean fromContained) throws FHIRException {
     boolean ok = !hasErrors(errors);
     
     checkLang(resource, stack);
@@ -6056,12 +6068,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       // this method is reentrant, but also the right place to tell the user what is going on if it's the root. 
       // if we're not at the root, we don't report progress
       pctOwned = true;
-      pct = new PercentageTracker(resource.countDescendents()+1, resource.fhirType(), defn.getVersionedUrl(), logProgress);
+      pct = new ResourcePercentageLogger(log, resource.countDescendents(), resource.fhirType(), defn.getVersionedUrl(), logProgress);
     }
     if (BUNDLE.equals(element.fhirType())) {
-      if (settings.isDebug()) {
-        System.out.println("Resolve Bundle Entries "+time());
-      }
+      log.debug("Resolve Bundle Entries "+time());
       resolveBundleReferences(element, new ArrayList<Element>());
     }
     ok = startInner(valContext, errors, resource, element, defn, stack, valContext.isCheckSpecials(), pct, mode, fromContained) && ok;
@@ -6081,7 +6091,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
           stack.resetIds();
           if (pctOwned) {
-            pct = new PercentageTracker(resource.countDescendents(), resource.fhirType(), sdi.getUrl(), logProgress);
+            pct = new ResourcePercentageLogger(log, resource.countDescendents(), resource.fhirType(), sdi.getUrl(), logProgress);
           }
           ok = startInner(valContext, errors, resource, element, sdi, stack, false, pct, mode.withSource(ProfileSource.ProfileDependency), fromContained) && ok;
           if (pctOwned) {
@@ -6129,7 +6139,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               }
               stack.resetIds();
               if (pctOwned) {
-                pct = new PercentageTracker(resource.countDescendents(), resource.fhirType(), sd.getUrl(), logProgress);
+                pct = new ResourcePercentageLogger(log, resource.countDescendents(), resource.fhirType(), sd.getUrl(), logProgress);
               }
               ok = startInner(valContext, errors, resource, element, sd, stack, false, pct, mode.withSource(ProfileSource.MetaProfile), fromContained) && ok;
               if (pctOwned) {
@@ -6146,7 +6156,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     }
                     stack.resetIds();
                     if (pctOwned) {
-                      pct = new PercentageTracker(resource.countDescendents(), resource.fhirType(), sdi.getUrl(), logProgress);
+                      pct = new ResourcePercentageLogger(log, resource.countDescendents(), resource.fhirType(), sdi.getUrl(), logProgress);
                     }
                     ok = startInner(valContext, errors, resource, element, sdi, stack, false, pct, mode.withSource(ProfileSource.ProfileDependency), fromContained) && ok;
                     if (pctOwned) {
@@ -6173,7 +6183,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
             stack.resetIds();
             if (pctOwned) {
-              pct = new PercentageTracker(resource.countDescendents(), resource.fhirType(), sd.getVersionedUrl(), logProgress);
+              pct = new ResourcePercentageLogger(log, resource.countDescendents(), resource.fhirType(), sd.getVersionedUrl(), logProgress);
             }
             ok = startInner(valContext, errors, resource, element, sd, stack, false, pct, mode.withSource(ProfileSource.GlobalProfile), fromContained) && ok;
             if (pctOwned) {
@@ -6183,7 +6193,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
     }
-//    System.out.println("start: "+(System.currentTimeMillis()-st)+" ("+resource.fhirType()+")");
     return ok;
   }
 
@@ -6220,14 +6229,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     return sd;
   }
-
-//  private void plog(String msg) {
-//    long n = System.currentTimeMillis();
-//    String elapsed = Utilities.padLeft(Long.toString(n-start), ' ', 5);
-//    String delta = Utilities.padLeft(lastlog == 0 ? "0" : Long.toString(n-lastlog), ' ', 5);
-//    lastlog = n;
-//    System.out.println("-- "+elapsed+" "+delta+" "+msg);
-//  }
 
   private void resolveBundleReferences(Element element, List<Element> bundles) {
     if (!element.hasUserData(UserDataNames.validator_bundle_resolved)) {
@@ -6301,7 +6302,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return -1;
   }
 
-  public boolean startInner(ValidationContext valContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack, boolean checkSpecials, PercentageTracker pct, ValidationMode mode, boolean fromContained) {    
+  public boolean startInner(ValidationContext valContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack, boolean checkSpecials, ResourcePercentageLogger pct, ValidationMode mode, boolean fromContained) {
     // the first piece of business is to see if we've validated this resource against this profile before.
     // if we have (*or if we still are*), then we'll just return our existing errors
     boolean ok = true;
@@ -6333,7 +6334,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return ok;
   }
 
-  public boolean checkSpecials(ValidationContext valContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean checkSpecials, PercentageTracker pct, ValidationMode mode, boolean contained, boolean isOk) {
+  public boolean checkSpecials(ValidationContext valContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean checkSpecials, ResourcePercentageLogger pct, ValidationMode mode, boolean contained, boolean isOk) {
     boolean ok = true;
     
     // first, does the policy advisor have profiles it wants us to check? 
@@ -6598,8 +6599,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
  
   private boolean validateContains(ValidationContext valContext, List<ValidationMessage> errors, String path,
-                                ElementDefinition child, ElementDefinition context, Element resource,
-                                Element element, NodeStack stack, IdStatus idstatus, StructureDefinition parentProfile, PercentageTracker pct, ValidationMode mode) throws FHIRException {
+                                   ElementDefinition child, ElementDefinition context, Element resource,
+                                   Element element, NodeStack stack, IdStatus idstatus, StructureDefinition parentProfile, ResourcePercentageLogger pct, ValidationMode mode) throws FHIRException {
     boolean ok = true;
 
     if (element.isNull()) {
@@ -6809,7 +6810,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
 
   private boolean validateElement(ValidationContext valContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition, StructureDefinition cprofile, ElementDefinition context,
-    Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, String extensionUrl, PercentageTracker pct, ValidationMode mode) throws FHIRException {
+                                  Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, String extensionUrl, ResourcePercentageLogger pct, ValidationMode mode) throws FHIRException {
     boolean ok = true;
     
     pct.seeElement(element);
@@ -6931,23 +6932,21 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public boolean checkChild(ValidationContext valContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition,
-    Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, ElementInfo ei, String extensionUrl, PercentageTracker pct, ValidationMode mode)
+                            Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, ElementInfo ei, String extensionUrl, ResourcePercentageLogger pct, ValidationMode mode)
     throws FHIRException, DefinitionException {
     boolean ok = true;
 
-    if (settings.isDebug() && ei.getDefinition() != null && ei.getSlice() != null) {
-      System.out.println(Utilities.padLeft("", ' ', stack.depth())+ "Check "+ei.getPath()+" against both "+ei.getDefinition().getId()+" and "+ei.getSlice().getId());
+    if (ei.getDefinition() != null && ei.getSlice() != null) {
+      log.debug(Utilities.padLeft("", ' ', stack.depth())+ "Check "+ei.getPath()+" against both "+ei.getDefinition().getId()+" and "+ei.getSlice().getId());
     }
     if (ei.getDefinition() != null) {
-      if (settings.isDebug()) {
-        System.out.println(Utilities.padLeft("", ' ', stack.depth())+ "Check "+ei.getPath()+" against defn "+ei.getDefinition().getId()+" from "+profile.getVersionedUrl()+time());
-      }
+      log.debug(Utilities.padLeft("", ' ', stack.depth())+ "Check "+ei.getPath()+" against defn "+ei.getDefinition().getId()+" from "+profile.getVersionedUrl()+time());
       ok = checkChildByDefinition(valContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, ei, extensionUrl, ei.getDefinition(), false, pct, mode) && ok;
     }
     if (ei.getSlice() != null) {
-      if (settings.isDebug()) {
-        System.out.println(Utilities.padLeft("", ' ', stack.depth())+ "Check "+ei.getPath()+" against slice "+ei.getSlice().getId()+time());
-      }
+
+      log.debug(Utilities.padLeft("", ' ', stack.depth())+ "Check "+ei.getPath()+" against slice "+ei.getSlice().getId()+time());
+
       ok = checkChildByDefinition(valContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, ei, extensionUrl, ei.getSlice(), true, pct, mode) && ok;
     }
     return ok;
@@ -6961,8 +6960,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public boolean checkChildByDefinition(ValidationContext valContext, List<ValidationMessage> errors, StructureDefinition profile,
-      ElementDefinition definition, Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept,
-      boolean checkDisplayInContext, ElementInfo ei, String extensionUrl, ElementDefinition checkDefn, boolean isSlice, PercentageTracker pct, ValidationMode mode) {
+                                        ElementDefinition definition, Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept,
+                                        boolean checkDisplayInContext, ElementInfo ei, String extensionUrl, ElementDefinition checkDefn, boolean isSlice, ResourcePercentageLogger pct, ValidationMode mode) {
     boolean ok = true;
     List<String> profiles = new ArrayList<String>();
     String type = null;
@@ -6998,11 +6997,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             (Utilities.existsInList(type, "string", "id") && Utilities.existsInList(stype, "string", "id")), // work around a r4 problem with id/string
             I18nConstants.EXTENSION_PROF_TYPE, profile.getVersionedUrl(), type, stype) && ok;
         } else if (!isResource(type)) {
-//          System.out.println("update type "+type+" to "+stype+"?");
           type = stype;
           typeName = type;
         } else {
-          // this will be sorted out in contains ... System.out.println("update type "+type+" to "+stype+"?");
+          // this will be sorted out in contains ...
         }
       }
 
@@ -7085,9 +7083,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     NodeStack localStack = stack.push(ei.getElement(), "*".equals(ei.getDefinition().getBase().getMax()) && ei.getCount() == -1 ? 0 : ei.getCount(), checkDefn, type == null ? typeDefn : resolveType(type, checkDefn.getType()));
-    if (settings.isDebug()) {
-      System.out.println("  check " + localStack.getLiteralPath()+" against "+ei.getDefinition().getId()+" in profile "+profile.getVersionedUrl()+time());
-    }
+
+    log.debug("  check " + localStack.getLiteralPath()+" against "+ei.getDefinition().getId()+" in profile "+profile.getVersionedUrl()+time());
+
     EnumSet<ElementValidationAction> actionSet = policyAdvisor.policyForElement(this, valContext.getAppContext(), profile, ei.getDefinition(), localStack.getLiteralPath());
     
     String localStackLiteralPath = localStack.getLiteralPath();
@@ -7718,7 +7716,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       if (nameMatches(ei.getName(), tail(ed.getPath())))
         try {
-//          System.out.println("match slices for "+stack.getLiteralPath()+": "+slicer.getId()+" = "+slicingSummary(slicer.getSlicing()));
           match = sliceMatches(valContext, ei.getElement(), ei.getPath(), slicer, slicerSlices, ed, profile, errors, sliceInfo, stack, profile);
           if (match) {
             ei.setSlice(slicer);
@@ -8012,7 +8009,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
    * The actual base entry point for internal use (re-entrant)
    */
   private boolean validateResource(ValidationContext valContext, List<ValidationMessage> errors, Element resource,
-                                Element element, StructureDefinition defn, IdStatus idstatus, NodeStack stack, PercentageTracker pct, ValidationMode mode, boolean forReference, boolean fromContained) throws FHIRException {
+                                   Element element, StructureDefinition defn, IdStatus idstatus, NodeStack stack, ResourcePercentageLogger pct, ValidationMode mode, boolean forReference, boolean fromContained) throws FHIRException {
     boolean ok = true;    
     // check here if we call validation policy here, and then change it to the new interface
     assert stack != null;
@@ -8167,13 +8164,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         b.append(vm.getMessageId());
       }
     }
-    String s = b.toString();
-//    if (settings.issettings.isDebug) {
-//      System.out.println("OK = "+ok+" for "+path);
-//      System.out.println("Errs = "+errors.toString());
-//      System.out.println("Ids = "+s);
-//    }
-    return s;
+    return b.toString();
   }
 
   private boolean typeMatchesDefn(String name, StructureDefinition defn) {
@@ -8271,7 +8262,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 }
                 fpe.check(null, "Resource", sd.getKind() == StructureDefinitionKind.RESOURCE ? sd.getType() : "DomainResource", ed.getPath(), n);
               } catch (Exception e) {
-                System.out.println("Error processing structure [" + sd.getId() + "] path " + ed.getPath() + ":" + inv.getKey() + " ('" + inv.getExpression() + "'): " + e.getMessage());
+                log.error("Error processing structure [" + sd.getId() + "] path " + ed.getPath() + ":" + inv.getKey() + " ('" + inv.getExpression() + "'): " + e.getMessage(), e);
               }
             }
           }

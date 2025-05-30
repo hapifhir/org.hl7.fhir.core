@@ -1,5 +1,6 @@
 package org.hl7.fhir.r4b.utils.structuremap;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
 
 /*
@@ -99,6 +100,7 @@ import java.util.*;
  * @author Grahame Grieve
  */
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class StructureMapUtilities {
 
   public class ResolvedGroup {
@@ -1255,7 +1257,7 @@ public class StructureMapUtilities {
     if (getServices() != null)
       getServices().log(cnt);
     else
-      System.out.println(cnt);
+      log.info(cnt);
   }
 
   /**
@@ -1346,7 +1348,7 @@ public class StructureMapUtilities {
             && rule.getTargetFirstRep().getTransform() == StructureMapTransform.CREATE
             && !rule.getTargetFirstRep().hasParameter()) {
           // simple inferred, map by type
-          System.out.println(v.summary());
+          log.info(v.summary());
           Base src = v.get(VariableMode.INPUT, rule.getSourceFirstRep().getVariable());
           Base tgt = v.get(VariableMode.OUTPUT, rule.getTargetFirstRep().getVariable());
           String srcType = src.fhirType();

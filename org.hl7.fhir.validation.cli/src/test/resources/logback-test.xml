@@ -1,24 +1,18 @@
 <configuration>
 	<statusListener class="ch.qos.logback.core.status.NopStatusListener" />
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>INFO</level>
-		</filter>
-		<encoder>
-			<pattern>%msg%n</pattern>
-		</encoder>
-	</appender>
+
+	<conversionRule conversionWord="highlightc" converterClass="org.hl7.fhir.validation.cli.logging.LogColorConverter" />
+
 
 	<appender name="COLOR" class="ch.qos.logback.core.ConsoleAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
 		</filter>
 		<encoder>
-			<pattern>%highlight(%msg%n)</pattern>
+			<pattern>%highlightc(%msg%n)</pattern>
 			<immediateFlush>true</immediateFlush>
 		</encoder>
 	</appender>
-
 
 	<root level="info">
 		<appender-ref ref="COLOR" />

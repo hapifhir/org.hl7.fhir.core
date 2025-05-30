@@ -1,9 +1,7 @@
 package org.hl7.fhir.validation.special;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -13,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -53,6 +52,7 @@ import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 
+@Slf4j
 public class R4R5MapTester implements IValidatorResourceFetcher {
 
   public class Stats {
@@ -157,7 +157,7 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
 
   private InstanceValidator validator;
 
-  private StringBuilder log;
+  private StringBuilder validationLog;
 
   public static void main(String[] args) throws JsonException, IOException {
     
@@ -166,7 +166,7 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
   }
 
   public void testMaps(String src, String maps, String filter) throws JsonException, IOException {
-    log = new StringBuilder();
+    validationLog = new StringBuilder();
     log("Load Test Outcomes");
     JsonObject json = JsonParser.parseObjectFromFile(Utilities.path(src, "input", "_data", "conversions.json"));
     log("Load R5");
@@ -224,10 +224,10 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
           changed = checkMaps(sd, o.getJsonObject("r4b"), "r4b", "http://hl7.org/fhir/4.3", mapSrc, mapTgt, r4bExamples) || changed;
           JsonParser.compose(json, ManagedFileAccess.outStream(Utilities.path(src, "input", "_data", "conversions.json")), true);
         }
-        System.out.println("   .. done");
+        log("   .. done");
       }
     }
-    FileUtilities.stringToFile(log.toString(), Utilities.path(src, "input", "_data", "validation.log"));
+    FileUtilities.stringToFile(validationLog.toString(), Utilities.path(src, "input", "_data", "validation.log"));
     log("Done!");
 //    load R4
 //    load R4B
@@ -321,12 +321,13 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
   private void testRoundTrips(StructureDefinition sd, JsonObject json, ResolvedGroup tgtG, ResolvedGroup srcG, StructureDefinition tsd, NpmPackage examples, String code) throws IOException {
     Stats stats = new Stats();
     for (String s : examples.listResources(tsd.getType())) {
-      log("  Test "+examples.id()+"::"+s, false);
+      String testId = examples.id() + "::" + s;
+      log("  Testing " + testId);
       try {
-        log("  "+testRoundTrip(json, sd, tsd, tgtG, srcG, stats, examples.load("package", s), code)+"%");
+        log("  Tested "+ testId + " " +testRoundTrip(json, sd, tsd, tgtG, srcG, stats, examples.load("package", s), code)+"%");
       } catch (Exception e) {
-        log("error: "+e.getMessage());
-        e.printStackTrace();
+        log("  Tested "+ testId + " error: "+e.getMessage());
+        log.error("Error testing " + testId, e);
         stats.error("Error: "+e.getMessage());
       }
     }
@@ -375,15 +376,15 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
       boolean valid = true;
       for (ValidationMessage vm : r5validationErrors) {
         if (vm.isError()) {
-          log.append(vm.summary());
-          log.append("\r\n");
+          validationLog.append(vm.summary());
+          validationLog.append("\r\n");
           valid = false;
         }
       }
       if (valid) {
-        log.append("All OK\r\n");
+        validationLog.append("All OK\r\n");
       }
-      log.append("\r\n");
+      validationLog.append("\r\n");
       stats.valid(valid);
     } catch (Exception e) {
       json.forceObject(id).set("validation-error", e.getMessage());
@@ -419,15 +420,8 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
   }
   
   private void log(String msg) {
-    log(msg, true);
-  }
-  private void log(String msg, boolean ln) {
-    log.append(msg+"\r\n");
-    if (ln) {
-      System.out.println(msg);
-    } else {
-      System.out.print(msg+" ");
-    }
+    validationLog.append(msg).append("\r\n");
+    log.info(msg);
   }
 
   @Override

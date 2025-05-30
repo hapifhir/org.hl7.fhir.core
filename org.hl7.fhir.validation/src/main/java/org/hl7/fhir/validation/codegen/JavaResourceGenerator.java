@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CompartmentDefinition;
 import org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent;
@@ -66,6 +67,7 @@ changes for James
 - add hasX
   
 */
+@Slf4j
 public class JavaResourceGenerator extends JavaBaseGenerator {
 
   public enum JavaGenClass { Type, Resource, Constraint }
@@ -1281,7 +1283,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		  }
 		}
     if (vse == null) {
-      System.out.println("Unable to expand enum value set "+vs.getVersionedUrl());
+      log.info("Unable to expand enum value set "+vs.getVersionedUrl());
       return;
     }
     
@@ -1989,7 +1991,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		  } else {
 		    if (!definitions.hasResource(tn)) {
 		      if (abstractTarget) {
-		        System.out.println(e.getPath()+" is abstract");
+		        log.info(e.getPath()+" is abstract");
 		      } else {
 		        /*
 		         * addXXX() for repeatable composite
@@ -2402,7 +2404,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
   }
 
   private void generateUnimplementedAccessors(Analysis analysis, TypeInfo ti, ElementDefinition e, String indent) throws Exception {
-    System.out.println("   .. unimplemented: "+e.getPath());
+    log.info("   .. unimplemented: "+e.getPath());
     String tn = e.getUserString("java.type");
     String className = ti.getName();
 

@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
@@ -55,6 +56,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 // see also org.hl7.fhir.validation.instance.type.ViewDefinitionValidator
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class Validator {
 
   public enum TrueFalseOrUnknown {
@@ -691,7 +693,7 @@ public class Validator {
 
   public void dump() {
     for (ValidationMessage vm : issues) {
-      System.out.println(vm.summary());
+      log.info(vm.summary());
     }
 
   }

@@ -583,7 +583,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
   private FhirFormat determineFormat(JsonObject config, byte[] cnt) throws IOException {
     String name = JsonUtilities.str(config, "file");
-    return org.hl7.fhir.validation.ResourceChecker.checkIsResource(vCurr.getContext(), true, cnt, name, !JsonUtilities.bool(config, "guess-format")); 
+    return org.hl7.fhir.validation.ResourceChecker.checkIsResource(vCurr.getContext(), cnt, name, !JsonUtilities.bool(config, "guess-format"));
   }
 
   private List<StructureDefinition> asSdList(StructureDefinition sd) {

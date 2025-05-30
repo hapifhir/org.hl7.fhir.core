@@ -33,6 +33,7 @@ package org.hl7.fhir.r5.utils.structuremap;
 // remember group resolution
 // trace - account for which wasn't transformed in the source
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -95,6 +96,7 @@ import java.util.*;
  * @author Grahame Grieve
  */
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class StructureMapUtilities {
 
   public static final String MAP_WHERE_CHECK = "map.where.check";
@@ -1236,9 +1238,8 @@ public class StructureMapUtilities {
     if (debug) {
       if (getServices() != null)
         getServices().log(cnt);
-      else
-        System.out.println(cnt);
     }
+    log.debug(cnt);
   }
 
   /**

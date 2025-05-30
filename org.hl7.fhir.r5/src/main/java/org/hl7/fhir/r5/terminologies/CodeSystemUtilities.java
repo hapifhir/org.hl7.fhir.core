@@ -40,6 +40,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -74,6 +75,7 @@ import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
+@Slf4j
 public class CodeSystemUtilities extends TerminologyUtilities {
 
   public static class CodeSystemSorter implements Comparator<CodeSystem> {
@@ -595,7 +597,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
           cs.setUserData(UserDataNames.kindling_ballot_package, pckage);
         else if (!pckage.equals(cs.getUserString(UserDataNames.kindling_ballot_package)))
           if (!"infrastructure".equals(cs.getUserString(UserDataNames.kindling_ballot_package)))
-            System.out.println("Code System "+cs.getUrl()+": ownership clash "+pckage+" vs "+cs.getUserString(UserDataNames.kindling_ballot_package));
+            log.warn("Code System "+cs.getUrl()+": ownership clash "+pckage+" vs "+cs.getUserString(UserDataNames.kindling_ballot_package));
       }
       if (status == StandardsStatus.NORMATIVE) {
         cs.setStatus(PublicationStatus.ACTIVE);

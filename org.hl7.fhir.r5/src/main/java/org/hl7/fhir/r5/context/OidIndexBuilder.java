@@ -10,11 +10,13 @@ import java.sql.Types;
 import java.util.HashSet;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class OidIndexBuilder {
 
   private File folder;
@@ -27,7 +29,7 @@ public class OidIndexBuilder {
   }
 
   public void build() {
-    System.out.println("Generate OID index for "+folder.getAbsolutePath());
+    log.info("Generate OID index for "+folder.getAbsolutePath());
     target.delete();
     try {
       Set<String> matches = new HashSet<String>();
@@ -49,14 +51,13 @@ public class OidIndexBuilder {
             JsonObject json = JsonParser.parseObject(f);
             processFile(psql, matches, json);
           } catch (Exception e) {
-            System.out.println("Error processing "+f.getAbsolutePath()+" while generating OIDs: "+e.getMessage());
+            log.error("Error processing "+f.getAbsolutePath()+" while generating OIDs: "+e.getMessage(), e);
           }
         }
       }
       db.close();
     } catch (Exception e) {
-      System.out.println("Error processing "+folder.getAbsolutePath()+" while generating OIDs: "+e.getMessage());
-//      e.printStackTrace();
+      log.error("Error processing "+folder.getAbsolutePath()+" while generating OIDs: "+e.getMessage(), e);
     }
   }  
 

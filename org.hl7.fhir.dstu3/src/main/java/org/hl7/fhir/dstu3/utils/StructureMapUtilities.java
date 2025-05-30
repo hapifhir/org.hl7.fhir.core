@@ -44,6 +44,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.dstu3.conformance.ProfileUtilities;
 import org.hl7.fhir.dstu3.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.dstu3.context.IWorkerContext;
@@ -134,6 +135,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  *
  */
 @Deprecated
+@Slf4j
 public class StructureMapUtilities {
 
 	public class ResolvedGroup {
@@ -1266,7 +1268,7 @@ public class StructureMapUtilities {
 	private void executeRule(String indent, TransformContext context, StructureMap map, Variables vars, StructureMapGroupComponent group, StructureMapGroupRuleComponent rule) throws FHIRException {
 		log(indent+"rule : "+rule.getName());
 		if (rule.getName().contains("CarePlan.participant-unlink"))
-		  System.out.println("debug");
+		  log.debug("debug");
 		Variables srcVars = vars.copy();
 		if (rule.getSource().size() != 1)
 			throw new FHIRException("Rule \""+rule.getName()+"\": not handled yet");

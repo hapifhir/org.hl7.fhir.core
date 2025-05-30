@@ -7,12 +7,17 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 
+/**
+ *
+ */
+@Slf4j
 public class AITests {
 
   public class StatsRecord {
@@ -113,6 +118,7 @@ public class AITests {
     new AITests().execute(args[0], args.length == 1 ? null : args[1], args.length == 2 ? true : "true".equals(args[2]));
   }
 
+  @SuppressWarnings("checkstyle:systemout")
   public void execute(String testFilename, String config, boolean useServers) throws IOException {
     ManagedWebAccess.loadFromFHIRSettings();
 
@@ -136,41 +142,43 @@ public class AITests {
         c++;
       }
     }
-    System.out.println("Found "+requests.size()+" tests, "+c+" should be valid");
+    log.info("Found "+requests.size()+" tests, "+c+" should be valid");
 
     long t;
     if (useServers) {
 
       System.out.print("Ollama");
+      log.debug("Ollama");
       t = System.currentTimeMillis();
       List<CodeAndTextValidationResult> resOllama = new Ollama(jcfg.forceObject("ollama"), null).validateCodings(requests);
-      System.out.println(": "+Utilities.describeDuration(System.currentTimeMillis() - t));
-
+      log.info(": "+Utilities.describeDuration(System.currentTimeMillis() - t));
       
       System.out.print("ChatGPT");
+      log.debug("ChatGPT");
       t = System.currentTimeMillis();
       List<CodeAndTextValidationResult> resChatGPT = new ChatGPTAPI(jcfg.forceObject("chatGPT")).validateCodings(requests);
-      System.out.println(": "+Utilities.describeDuration(System.currentTimeMillis() - t));
+      log.info(": "+Utilities.describeDuration(System.currentTimeMillis() - t));
 
       System.out.print("Claude");
+      log.debug("Claude");
       t = System.currentTimeMillis();
       List<CodeAndTextValidationResult> resClaude = new ClaudeAPI(jcfg.forceObject("claude")).validateCodings(requests);
-      System.out.println(": "+Utilities.describeDuration(System.currentTimeMillis() - t));
+      log.info(": "+Utilities.describeDuration(System.currentTimeMillis() - t));
 
 
-      System.out.println("");
+      log.info("");
 
       for (int i = 0; i < requests.size(); i++) {
         CodeAndTextValidationRequest req = requests.get(i);
         JsonObject test = (JsonObject) req.getData();
-        System.out.println("Case "+req.getSystem()+"#"+req.getCode()+" ('"+req.getDisplay()+"') :: '"+req.getText()+"'");
+        log.info("Case "+req.getSystem()+"#"+req.getCode()+" ('"+req.getDisplay()+"') :: '"+req.getText()+"'");
         CodeAndTextValidationResult res = resClaude.get(i);
-        System.out.println("  Claude : "+check(test, res, "claude")+"; "+res.summary());
+        log.info("  Claude : "+check(test, res, "claude")+"; "+res.summary());
         res = resChatGPT.get(i);
-        System.out.println("  ChatGPT: "+check(test, res, "chatgpt")+"; "+res.summary());
+        log.info("  ChatGPT: "+check(test, res, "chatgpt")+"; "+res.summary());
         res = resOllama.get(i);
-        System.out.println("  Ollama : "+check(test, res, "ollama")+"; "+res.summary());
-        System.out.println("");    
+        log.info("  Ollama : "+check(test, res, "ollama")+"; "+res.summary());
+        log.info("");
       }
     }
 
@@ -202,13 +210,13 @@ public class AITests {
     }
 //    JsonParser.compose(tests, new File(testFilename), true);
 
-    System.out.println("");
-    System.out.println("        | Number tests correct | %False results  | Classic Diagnostic Statistics    |"); 
-    System.out.println("        | #All  | #Neg  | #Pos | %F.Pos | %F.Neg | sensitivity | specificity | PPV  |"); 
-    System.out.println("-------------------------------------------------------------------------------------");
-    System.out.println("Claude  "+claude.summary());
-    System.out.println("ChatGPT "+chatGPT.summary());
-    System.out.println("Ollama  "+ollama.summary());
+    log.info("");
+    log.info("        | Number tests correct | %False results  | Classic Diagnostic Statistics    |");
+    log.info("        | #All  | #Neg  | #Pos | %F.Pos | %F.Neg | sensitivity | specificity | PPV  |");
+    log.info("-------------------------------------------------------------------------------------");
+    log.info("Claude  "+claude.summary());
+    log.info("ChatGPT "+chatGPT.summary());
+    log.info("Ollama  "+ollama.summary());
 
     doTable("Claude", claude);
     doTable("ChatGPT", chatGPT);
@@ -216,12 +224,12 @@ public class AITests {
   }
 
   private void doTable(String name, StatsRecord rec) {
-    System.out.println("");
-    System.out.println("");
-    System.out.println(Utilities.padRight(name, ' ', 7)+" | Valid | Invalid |"); 
-    System.out.println("--------------------------|");
-    System.out.println("Correct | "+Utilities.padRight(rec.correctPos, ' ', 5)+" | "+Utilities.padRight(rec.correctNeg, ' ', 7)+" |");
-    System.out.println("Wrong   | "+Utilities.padRight(rec.falsePositive, ' ', 5)+" | "+Utilities.padRight(rec.falseNegative, ' ', 7)+" |");
+    log.info("");
+    log.info("");
+    log.info(Utilities.padRight(name, ' ', 7)+" | Valid | Invalid |");
+    log.info("--------------------------|");
+    log.info("Correct | "+Utilities.padRight(rec.correctPos, ' ', 5)+" | "+Utilities.padRight(rec.correctNeg, ' ', 7)+" |");
+    log.info("Wrong   | "+Utilities.padRight(rec.falsePositive, ' ', 5)+" | "+Utilities.padRight(rec.falseNegative, ' ', 7)+" |");
   }
 
   private String check(JsonObject test, CodeAndTextValidationResult res, String code) {

@@ -25,6 +25,7 @@ import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
+@SuppressWarnings("checkstyle:systemout")
 public class Scanner {
 
   public static void main(String[] args) throws IOException {

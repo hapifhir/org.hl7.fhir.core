@@ -1,7 +1,5 @@
 package org.hl7.fhir.convertors.misc.searchparam;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,6 +49,7 @@ import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@SuppressWarnings("checkstyle:systemout")
 public class SearchParameterProcessor {
 
   private static final String ROOT = "C:\\work\\org.hl7.fhir\\org.fhir.interversion\\package";

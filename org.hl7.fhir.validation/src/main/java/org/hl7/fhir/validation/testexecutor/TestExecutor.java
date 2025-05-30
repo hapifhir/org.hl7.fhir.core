@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.tests.TestConfig;
 import org.hl7.fhir.utilities.tests.execution.CliTestSummary;
@@ -26,8 +27,8 @@ import org.hl7.fhir.utilities.tests.execution.junit5.JUnit5ModuleTestExecutor;
 
 import lombok.Getter;
 
+@Slf4j
 public class TestExecutor {
-
 
   @Getter private final List<ModuleTestExecutor> jUnit4TestExecutors;
 
@@ -98,7 +99,7 @@ public class TestExecutor {
     final List<ModuleTestExecutor> orderedModuleTestExecutors = Stream.concat(jUnit5TestExecutors.stream(), jUnit4TestExecutors.stream()).collect(Collectors.toList());
 
     for (ModuleTestExecutor moduleTestExecutor : orderedModuleTestExecutors) {
-      final CliTestSummary testExecutionSummary = moduleTestExecutor.executeTests(System.out, classNameFilterArg);
+      final CliTestSummary testExecutionSummary = moduleTestExecutor.executeTests(log, classNameFilterArg);
       testsFoundCount += testExecutionSummary.getTestsFoundCount();
       testsFailedCount += testExecutionSummary.getTestsFailedCount();
       testsAbortedCount += testExecutionSummary.getTestsAbortedCount();
@@ -106,21 +107,21 @@ public class TestExecutor {
       moduleResultMap.put(moduleTestExecutor.getModuleName(), testExecutionSummary);
     }
 
-    System.out.println("\n\nAll Tests completed.");
+    log.info("\n\nAll Tests completed.");
 
     for (ModuleTestExecutor moduleTestExecutor : orderedModuleTestExecutors) {
-      ModuleTestExecutor.printSummmary(System.out, moduleResultMap.get(moduleTestExecutor.getModuleName()), moduleTestExecutor.getModuleName());
+      ModuleTestExecutor.logSummary(log, moduleResultMap.get(moduleTestExecutor.getModuleName()), moduleTestExecutor.getModuleName());
     }
 
-    System.out.println("\nModule Results:\n");
+    log.info("\nModule Results:\n");
 
     for (ModuleTestExecutor moduleTestExecutor : orderedModuleTestExecutors) {
-      System.out.println(getModuleResultLine(moduleTestExecutor.getModuleName(), moduleResultMap.get(moduleTestExecutor.getModuleName())));
+      log.info(getModuleResultLine(moduleTestExecutor.getModuleName(), moduleResultMap.get(moduleTestExecutor.getModuleName())));
     }
 
-    System.out.println();
-    System.out.println(String.format(SUMMARY_TEMPLATE, testsFoundCount, testsFailedCount, testsAbortedCount, testsSkippedCount));
-    System.out.println("\nCompleted in " + (System.currentTimeMillis() - start) + "ms");
+    log.info("");
+    log.info(String.format(SUMMARY_TEMPLATE, testsFoundCount, testsFailedCount, testsAbortedCount, testsSkippedCount));
+    log.info("\nCompleted in " + (System.currentTimeMillis() - start) + "ms");
 
   }
 

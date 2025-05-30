@@ -21,6 +21,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.xml.sax.SAXException;
 
+@SuppressWarnings("checkstyle:systemout")
 public class SearchParameterAnalysis implements IPackageVisitorProcessor {
 
   public static class SearchParameterTypeUsage {
