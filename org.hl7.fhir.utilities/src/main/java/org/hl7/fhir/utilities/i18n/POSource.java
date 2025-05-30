@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -168,7 +169,7 @@ public class POSource {
       }
       b.append("#: "+o.getId()+"\r\n");
       if (!o.getFlags().isEmpty()) {
-        b.append("#, "+CommaSeparatedStringBuilder.join(",", o.getFlags()));
+        b.append("#, "+ CommaSeparatedStringBuilder.join(",", o.getFlags()));
       }
       if (o.isDuplicate()) {
         b.append("msgctxt \""+o.getId()+"\"\r\n");        
