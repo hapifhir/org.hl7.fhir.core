@@ -71,12 +71,12 @@ public class ComparisonService {
       try {
         Desktop.getDesktop().browse(htmlFile.toURI());
       } catch (UnsupportedOperationException | IOException e) {
-        System.err.println("Unable to open browser: " + e.getMessage());
+        log.error("Unable to open browser: " + e.getMessage());
       }
     } else {
-      System.out.println("Headless environment detected; skipping browser launch.");
+      log.info("Headless environment detected; skipping browser launch.");
     }
-    System.out.println("Done: " + htmlFile.toURI());
+    log.info("Done: " + htmlFile.toURI());
   }
 
 }
