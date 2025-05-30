@@ -1727,6 +1727,11 @@ msgstr ""
 msgid "Error evaluating FHIRPath expression: The parameter type {2} is not legal for {0} parameter {1}. expecting {3}"
 msgstr ""
 
+# FILTER_NOT_UNDERSTOOD
+#: FILTER_NOT_UNDERSTOOD
+msgid "The filter \"{0} {1} {2}\" from the value set {3} was not understood in the context of {4}"
+msgstr ""
+
 # Fixed_Type_Checks_DT_Address_Line
 #: Fixed_Type_Checks_DT_Address_Line
 msgid "Expected {0} but found {1} line elements"
@@ -3638,6 +3643,11 @@ msgstr ""
 # SD_CONSTRAINED_TYPE_NO_MATCH
 #: SD_CONSTRAINED_TYPE_NO_MATCH
 msgid "The type {0} must be the same as the type in the base structure {1} that is being constrained"
+msgstr ""
+
+# SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND
+#: SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND
+msgid "The element {0} is not valid"
 msgstr ""
 
 # SD_CONTEXT_SHOULD_NOT_BE_ELEMENT

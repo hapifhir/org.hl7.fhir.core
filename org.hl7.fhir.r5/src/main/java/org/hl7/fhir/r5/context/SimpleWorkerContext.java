@@ -898,7 +898,16 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   @Override
   public boolean hasPackage(String id, String ver) {
-    return loadedPackages.contains(id+"#"+ver);
+    if (ver == null) {
+      for (String p : loadedPackages) {
+        if (p.startsWith(id+"#")) {
+          return true;
+        }
+      }
+      return false;
+    } else {    
+      return loadedPackages.contains(id+"#"+ver);
+    }
   }
 
   public boolean hasPackage(String idAndver) {

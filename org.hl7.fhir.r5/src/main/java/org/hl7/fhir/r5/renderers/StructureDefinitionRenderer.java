@@ -2614,7 +2614,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) { 
               c.getPieces().add(gen.new Piece(null, ": ", null)); 
               c.addMarkdownNoPara(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue()); 
-            } 
+            }
+            if (binding.hasExtension(ToolingExtensions.EXT_CONCEPT_DOMAIN)) { 
+              c.getPieces().add(gen.new Piece(null, ". ", null));  
+              c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.SDR_CONCEPT_DOMAIN), null));  
+              c.getPieces().add(gen.new Piece(null, ": ", null));  
+              c.getPieces().add(describeCoded(gen, binding.getExtensionByUrl(ToolingExtensions.EXT_CONCEPT_DOMAIN).getValue()));  
+            }
           } 
           for (ElementDefinitionConstraintComponent inv : definition.getConstraint()) { 
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
@@ -3360,6 +3366,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         c.getPieces().add(gen.new Piece(null, ": ", null)); 
         c.addMarkdownNoPara(PublicationHacker.fixBindingDescriptions(context.getWorker(), ved.getBinding().getDescriptionElement()).asStringValue()); 
       } 
+
+      if (ved.getBinding().hasExtension(ToolingExtensions.EXT_CONCEPT_DOMAIN)) { 
+        c.getPieces().add(gen.new Piece(null, ". ", null));  
+        c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.SDR_CONCEPT_DOMAIN), null));  
+        c.getPieces().add(gen.new Piece(null, ": ", null));  
+        c.getPieces().add(describeCoded(gen, ved.getBinding().getExtensionByUrl(ToolingExtensions.EXT_CONCEPT_DOMAIN).getValue()));  
+      }
     } 
     c.addPiece(gen.new Piece("br")).addPiece(gen.new Piece(null, ProfileUtilities.describeExtensionContext(ed), null)); 
     r.getCells().add(c); 
@@ -4686,6 +4699,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           x.copyAllContent(bindingDesc); 
         } 
       } 
+      if (binding.hasExtension(ToolingExtensions.EXT_CONCEPT_DOMAIN)) { 
+        x.tx(". "); 
+        x.tx(context.formatPhrase(RenderingI18nContext.SDR_CONCEPT_DOMAIN));  
+        x.tx(": ");  
+        renderCoding(new RenderingStatus(), x, ResourceWrapper.forType(context.getContextUtilities(), binding.getExtensionByUrl(ToolingExtensions.EXT_CONCEPT_DOMAIN).getValue()));  
+      }
  
       AdditionalBindingsRenderer abr = new AdditionalBindingsRenderer(context.getPkp(), corePath, sd, d.getPath(), context, hostMd, this); 
  
