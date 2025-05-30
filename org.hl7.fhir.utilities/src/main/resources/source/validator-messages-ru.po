@@ -1,3 +1,16 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
+"X-Crowdin-Project: orghl7fhircore\n"
+"X-Crowdin-Project-ID: 792848\n"
+"X-Crowdin-Language: ru\n"
+"X-Crowdin-File: /org.hl7.fhir.utilities/src/main/resources/source/validator-messages-en.po\n"
+"X-Crowdin-File-ID: 238\n"
+"Project-Id-Version: orghl7fhircore\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: Russian\n"
+"Language: ru_RU\n"
+"PO-Revision-Date: 2025-05-30 15:20\n"
 
 # ABSTRACT_CODE_NOT_ALLOWED
 #: ABSTRACT_CODE_NOT_ALLOWED
@@ -126,6 +139,7 @@ msgid_plural "Can''t find ''{1}'' in the bundle ({2}). Note that there are {0} r
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
@@ -376,6 +390,7 @@ msgid_plural "The type ''{1}'' is not valid - must be one of {0} types: {2}"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Bundle_BUNDLE_FullUrl_Missing
 #: Bundle_BUNDLE_FullUrl_Missing
@@ -944,6 +959,7 @@ msgid_plural "Could not match any of the {0} discriminators for slice {2} in pro
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # DISCRIMINATOR_BAD_PATH
 #: DISCRIMINATOR_BAD_PATH
@@ -1022,6 +1038,7 @@ msgid_plural "Wrong whitespace in Display Name ''{4}'' for {1}#{2}. Valid displa
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Display_Name_for__should_be_one_of__instead_of
 #: Display_Name_for__should_be_one_of__instead_of
@@ -1030,6 +1047,7 @@ msgid_plural "Wrong Display Name ''{4}'' for {1}#{2}. Valid display is one of {0
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Does_not_match_slice_
 #: Does_not_match_slice_
@@ -1494,20 +1512,22 @@ msgstr ""
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES"
-msgid "-- no content: do not translate #100 --"
+msgid "-- no content: do not translate #4 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} type profiles"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES"
-msgid "-- no content: do not translate #101 --"
+msgid "-- no content: do not translate #5 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} types"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # FHIRPATH_DISCRIMINATOR_NAME_ALREADY_SLICED
 #: FHIRPATH_DISCRIMINATOR_NAME_ALREADY_SLICED
@@ -1527,11 +1547,12 @@ msgstr ""
 # FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES"
-msgid "-- no content: do not translate #102 --"
+msgid "-- no content: do not translate #6 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE
@@ -1551,11 +1572,12 @@ msgstr ""
 # FHIRPATH_FOCUS
 #: FHIRPATH_FOCUS
 msgctxt "FHIRPATH_FOCUS"
-msgid "-- no content: do not translate #103 --"
+msgid "-- no content: do not translate #7 --"
 msgid_plural "Error evaluating FHIRPath expression: focus for {0} can only have one value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # FHIRPATH_HO_HOST_SERVICES
 #: FHIRPATH_HO_HOST_SERVICES
@@ -1570,11 +1592,12 @@ msgstr ""
 # FHIRPATH_LEFT_VALUE
 #: FHIRPATH_LEFT_VALUE
 msgctxt "FHIRPATH_LEFT_VALUE"
-msgid "-- no content: do not translate #104 --"
+msgid "-- no content: do not translate #8 --"
 msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # FHIRPATH_LEFT_VALUE_WRONG_TYPE
 #: FHIRPATH_LEFT_VALUE_WRONG_TYPE
@@ -1669,20 +1692,22 @@ msgstr ""
 # FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 #: FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 msgctxt "FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET"
-msgid "-- no content: do not translate #105 --"
+msgid "-- no content: do not translate #9 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # FHIRPATH_RIGHT_VALUE
 #: FHIRPATH_RIGHT_VALUE
 msgctxt "FHIRPATH_RIGHT_VALUE"
-msgid "-- no content: do not translate #106 --"
+msgid "-- no content: do not translate #10 --"
 msgid_plural "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # FHIRPATH_RIGHT_VALUE_WRONG_TYPE
 #: FHIRPATH_RIGHT_VALUE_WRONG_TYPE
@@ -1781,7 +1806,7 @@ msgstr ""
 
 # HTA_LOINC_MESSAGE
 #: HTA_LOINC_MESSAGE
-msgid "This material contains content from <a href=\\"http://loinc.org\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\"http://loinc.org/license\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
+msgid "This material contains content from <a href=\\\"http://loinc.org\\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\\"http://loinc.org/license\\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
 msgstr ""
 
 # HTA_SCT_DESC
@@ -1791,7 +1816,7 @@ msgstr ""
 
 # HTA_SCT_MESSAGE
 #: HTA_SCT_MESSAGE
-msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\"https://www.snomed.org/get-snomed\\">https://www.snomed.org/get-snomed</a> or <a href=\\"mailto:info@snomed.org\\">info@snomed.org</a>."
+msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> or <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
 msgstr ""
 
 # IG_DEPENDENCY_CAN_VERSION_ALONE
@@ -2502,11 +2527,12 @@ msgstr ""
 # MULTIPLE_LOGICAL_MODELS
 #: MULTIPLE_LOGICAL_MODELS
 msgctxt "MULTIPLE_LOGICAL_MODELS"
-msgid "-- no content: do not translate #107 --"
+msgid "-- no content: do not translate #11 --"
 msgid_plural "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Measure_MR_M_None
 #: Measure_MR_M_None
@@ -2545,6 +2571,7 @@ msgid_plural "No valid Display Names found for {1}#{2} in the languages {4}"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # NO_VALID_DISPLAY_FOUND_LANG_NONE
 #: NO_VALID_DISPLAY_FOUND_LANG_NONE
@@ -2553,6 +2580,7 @@ msgid_plural "''{5}'' is the default display; the code system {1} has no Display
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # NO_VALID_DISPLAY_FOUND_LANG_SOME
 #: NO_VALID_DISPLAY_FOUND_LANG_SOME
@@ -2561,6 +2589,7 @@ msgid_plural "''{5}'' is the default display; no valid Display Names found for {
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR
 #: NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR
@@ -2639,6 +2668,7 @@ msgid_plural "None of the provided codes [{2}] are in the value set ''{1}''"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Not_done_yet
 #: Not_done_yet
@@ -2782,6 +2812,7 @@ msgid_plural "The element definition ``{0}`` in the profile ''{1}'' requires tha
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # PROFILE_COMPLIES_WITH_BAD_ELEMENT
 #: PROFILE_COMPLIES_WITH_BAD_ELEMENT
@@ -3381,11 +3412,12 @@ msgstr ""
 # Questionnaire_QR_Item_OnlyOneI
 #: Questionnaire_QR_Item_OnlyOneI
 msgctxt "Questionnaire_QR_Item_OnlyOneI"
-msgid "-- no content: do not translate #108 --"
+msgid "-- no content: do not translate #12 --"
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Questionnaire_QR_Item_Order
 #: Questionnaire_QR_Item_Order
@@ -3414,6 +3446,7 @@ msgid_plural "Answer value must be one of the {0} types {1} not {2}"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Questionnaire_QR_Q_None
 #: Questionnaire_QR_Q_None
@@ -3782,6 +3815,7 @@ msgid_plural "The type {0} is not in the list of allowed types {1} in the profil
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # SD_ELEMENT_FIXED_WRONG_TYPE
 #: SD_ELEMENT_FIXED_WRONG_TYPE
@@ -5465,6 +5499,7 @@ msgid_plural "This content includes the characters {1} (hex values). These chara
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # UNKNOWN_CODESYSTEM
 #: UNKNOWN_CODESYSTEM
@@ -6275,6 +6310,7 @@ msgid_plural "Required supplements not found: {1}"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # VALUESET_TOO_COSTLY
 #: VALUESET_TOO_COSTLY
@@ -6493,6 +6529,7 @@ msgid_plural "{3}: max allowed = {7}, but found {0} (from {1})"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Validation_VAL_Profile_Minimum
 #: Validation_VAL_Profile_Minimum
@@ -6501,6 +6538,7 @@ msgid_plural "{3}: minimum required = {7}, but only found {0} (from {1})"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Validation_VAL_Profile_Minimum_SLICE
 #: Validation_VAL_Profile_Minimum_SLICE
@@ -6509,6 +6547,7 @@ msgid_plural "Slice ''{3}'': minimum required = {0}, but only found {7} (from {1
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Validation_VAL_Profile_MultipleMatches
 #: Validation_VAL_Profile_MultipleMatches
@@ -6517,6 +6556,7 @@ msgid_plural "Found multiple matching profiles among {0} choices: {1}"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Validation_VAL_Profile_NoCheckMax
 #: Validation_VAL_Profile_NoCheckMax
@@ -6525,6 +6565,7 @@ msgid_plural "{3}: Found {0} matches, but unable to check max allowed ({2}) due 
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Validation_VAL_Profile_NoCheckMin
 #: Validation_VAL_Profile_NoCheckMin
@@ -6533,6 +6574,7 @@ msgid_plural "{3}: Found {0} matches, but unable to check minimum required ({2})
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Validation_VAL_Profile_NoDefinition
 #: Validation_VAL_Profile_NoDefinition
@@ -6646,6 +6688,7 @@ msgid_plural "URL contains {0} Invalid Characters: {1}"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # XHTML_XHTML_ATTRIBUTE_XML_SPACE
 #: XHTML_XHTML_ATTRIBUTE_XML_SPACE
