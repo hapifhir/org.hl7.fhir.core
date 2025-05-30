@@ -3,6 +3,7 @@ name: Crowdin Action
 on:
   push: # instantly push new source strings to Crowdin for translators
     branches: [ master ]
+    paths: '**.po'
 
   schedule: # check for translations from Crowdin every 12h
     - cron: '0 */12 * * *'
