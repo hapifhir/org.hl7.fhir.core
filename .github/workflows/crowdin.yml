@@ -9,7 +9,7 @@ on:
     - cron: '0 */12 * * *'
 
 permissions:
-  contents: write
+  contents: read
   pull-requests: write
 
 jobs:
