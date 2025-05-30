@@ -463,7 +463,7 @@ public class Params {
         File f = ManagedFileAccess.file(validationContext.getAdvisorFile());
         if (!f.exists()) {
           throw new Error("Cannot find advisor file "+ validationContext.getAdvisorFile());
-        } else if (!Utilities.existsInList(Utilities.getFileExtension(f.getName()), "json", "txt")) {
+        } else if (!Utilities.existsInList(Utilities.getFileExtension(f.getName()), "json", "txt", "json5")) {
           throw new Error("Advisor file "+ validationContext.getAdvisorFile()+" must be a .json or a .txt file");
         }
       } else if (args[i].equals(SCAN)) {
