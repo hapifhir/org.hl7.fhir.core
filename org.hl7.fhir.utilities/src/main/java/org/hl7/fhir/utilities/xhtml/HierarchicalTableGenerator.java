@@ -370,6 +370,9 @@ public class HierarchicalTableGenerator {
         HtmlRenderer renderer = HtmlRenderer.builder().escapeHtml(true).build();
         String html = renderer.render(document);  
         List<Piece> hp = htmlToParagraphPieces(html, style);
+        // Trim unwanted trailing line-breaks
+        while (!hp.isEmpty() && hp.get(hp.size()-1).getTag() != null && hp.get(hp.size()-1).getTag().equals("br"))
+          hp.remove(hp.size()-1);
         for (Piece p : hp) {
           p.setRole(role);
         }
