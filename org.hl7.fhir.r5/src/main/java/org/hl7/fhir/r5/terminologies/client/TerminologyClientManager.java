@@ -258,6 +258,24 @@ public class TerminologyClientManager {
       }
     }
 
+
+    // no agreement - take the one that is must authoritative
+    Map<String, Integer> counts = new HashMap<>();
+    for (ServerOptionList ol : choices) {
+      for (String s : ol.authoritative) {
+        counts.put(s, counts.getOrDefault(s, 0) + 1);
+      }
+    }
+    // Find the maximum
+    String max = counts.entrySet().stream()
+        .max(Map.Entry.comparingByValue())
+        .map(Map.Entry::getKey)
+        .orElse(null);
+    if (max != null) {
+      log(vs, max, systems, choices, "Found most authoritative server "+max);
+      return findClient(max, systems, expand);
+    }
+
     // no agreement? Then what we do depends     
     if (vs != null) {
       if (vs.hasUserData(UserDataNames.render_external_link)) {
