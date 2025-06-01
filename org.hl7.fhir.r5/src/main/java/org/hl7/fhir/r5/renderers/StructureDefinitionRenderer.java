@@ -1695,14 +1695,21 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               abr.seeAdditionalBindings(binding.getExtensionsByUrl(ToolingExtensions.EXT_BINDING_ADDITIONAL)); 
             } 
             abr.render(gen, c); 
-          } 
+          }
+          
+          boolean firstConstraint = true;
           for (ElementDefinitionConstraintComponent inv : definition.getConstraint()) { 
 //            if (!inv.hasSource() || profile == null || inv.getSource().equals(profile.getUrl()) || allInvariants) { 
-            if (!inv.hasSource() || profile == null || allInvariants || (!isAbstractBaseProfile(inv.getSource()) && !"http://hl7.org/fhir/StructureDefinition/Extension".equals(inv.getSource()))) { 
-              if (!c.getPieces().isEmpty())  
-                c.addPiece(gen.new Piece("constraint", "br")); 
-              c.getPieces().add(checkForNoChange(inv, gen.new Piece("constraint", null, inv.getKey()+": ", null).addStyle("font-weight:bold"))); 
-              c.getPieces().add(checkForNoChange(inv, gen.new Piece("constraint", null, gt(inv.getHumanElement()), null))); 
+            if (!inv.hasSource() || profile == null || inv.getSource().equals(profile.getUrl()) || (allInvariants && !isAbstractBaseProfile(inv.getSource()) && !"http://hl7.org/fhir/StructureDefinition/Extension".equals(inv.getSource()) && !"http://hl7.org/fhir/StructureDefinition/Element".equals(inv.getSource()))) {
+              if (firstConstraint) {
+                if (!c.getPieces().isEmpty())  
+                  c.addPiece(gen.new Piece("constraint", "br"));
+                c.addPiece(gen.new Piece("constraint", null, "Constraints: ", null));
+                firstConstraint = false;
+                
+              } else
+                c.addPiece(gen.new Piece("constraint", null, ", ", null)); 
+              c.getPieces().add(checkForNoChange(inv, gen.new Piece("constraint", null, inv.getKey(), gt(inv.getHumanElement())).addStyle("font-weight:bold"))); 
             } 
           } 
           if ((definition.hasBase() && "*".equals(definition.getBase().getMax())) || (definition.hasMax() && "*".equals(definition.getMax()))) { 
