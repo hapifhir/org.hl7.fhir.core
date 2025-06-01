@@ -1085,6 +1085,8 @@ public class RenderingI18nContext extends I18nBase {
   public static final String VSR_TRIGGER = "VSR_TRIGGER";
   public static final String VSR_NO_DEF = "VSR_NO_DEF";
   public static final String SDR_CONCEPT_DOMAIN = "SDR_CONCEPT_DOMAIN";
+  public static final String BUNDLE_DOCUMENT_DETAILS = "BUNDLE_DOCUMENT_DETAILS";
+  public static final String BUNDLE_DOCUMENT_CONTENT = "BUNDLE_DOCUMENT_CONTENT";
 
   
 
