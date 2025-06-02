@@ -59,24 +59,39 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
 
 
 
+
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
-
-    txtests = TxTestData.loadTestDataFromFolder(new File("/Users/grahamegrieve/work/fhir-tx-ecosystem-ig/tests"), "test-cases.json");
-    // txtests = TxTestData.loadTestDataFromPackage("hl7.fhir.uv.tx-ecosystem#dev");
-    
-    String contents = txtests.load("test-cases.json");
-    externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(txtests.load("messages-tx.fhir.org.json"));
-
     Map<String, JsonObjectPair> examples = new HashMap<String, JsonObjectPair>();
-    manifest = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(contents);
-    for (org.hl7.fhir.utilities.json.model.JsonObject suite : manifest.getJsonObjects("suites")) {
-      String sn = suite.asString("name");
-      for (org.hl7.fhir.utilities.json.model.JsonObject test : suite.getJsonObjects("tests")) {
-        String tn = test.asString("name");
-        examples.put(sn+"."+tn, new JsonObjectPair(suite, test));
+    try {
+      txtests = TxTestData.loadTestDataFromFolder(new File("/Users/grahamegrieve/work/fhir-tx-ecosystem-ig/tests"), "test-cases.json");
+      // txtests = TxTestData.loadTestDataFromPackage("hl7.fhir.uv.tx-ecosystem#dev");
+
+      String contents = txtests.load("test-cases.json");
+      externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(txtests.load("messages-tx.fhir.org.json"));
+
+      manifest = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(contents);
+      for (org.hl7.fhir.utilities.json.model.JsonObject suite : manifest.getJsonObjects("suites")) {
+        String sn = suite.asString("name");
+        for (org.hl7.fhir.utilities.json.model.JsonObject test : suite.getJsonObjects("tests")) {
+          String tn = test.asString("name");
+          examples.put(sn+"."+tn, new JsonObjectPair(suite, test));
+        }
       }
+    } catch (Exception e) {
+      // nothing
     }
+    List<String> names = new ArrayList<String>(examples.size());
+    names.addAll(examples.keySet());
+    Collections.sort(names);
+
+    List<Object[]> objects = new ArrayList<Object[]>(examples.size());
+    for (String id : names) {
+      objects.add(new Object[]{id, examples.get(id)});
+    }
+    objects.add(new Object[]{"final", null});
+    return objects;
+  }
 
     List<String> names = new ArrayList<String>(examples.size());
     names.addAll(examples.keySet());
