@@ -3670,7 +3670,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private boolean isCommunicationsUrl(String url) {
-    return Utilities.startsWithInList(url, "tel:");
+    return Utilities.startsWithInList(url, "tel:", "mailto:");
   }
 
   private boolean isKnownMappingUri(String url) {

@@ -633,13 +633,13 @@ public class TxTester {
       TxTesterScrubbers.scrubOO(oo, tight);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
       FileUtilities.stringToFile(pj, fp);        
+    }
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
     return diff;
   }
@@ -664,13 +664,13 @@ public class TxTester {
       TxTesterScrubbers.scrubOO(oo, tight);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
       FileUtilities.stringToFile(pj, fp);        
+    }
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
     return diff;
   }
@@ -695,13 +695,13 @@ public class TxTester {
       TxTesterScrubbers.scrubOO(oo, tight);
       vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, vsj, false);
     if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
       FileUtilities.stringToFile(vsj, fp);        
+    }
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
     return diff;
   }
@@ -738,13 +738,13 @@ public class TxTester {
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
       FileUtilities.stringToFile(pj, fp);        
+    }
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
     return diff;
   }
@@ -769,13 +769,13 @@ public class TxTester {
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
       FileUtilities.stringToFile(pj, fp);        
+    }
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
     return diff;
   }
