@@ -57,8 +57,7 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
     return ManagedFileAccess.file("/Users/grahamegrieve/work/server/server").exists();
   }
 
-
-
+ 
 
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
@@ -81,18 +80,6 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
     } catch (Exception e) {
       // nothing
     }
-    List<String> names = new ArrayList<String>(examples.size());
-    names.addAll(examples.keySet());
-    Collections.sort(names);
-
-    List<Object[]> objects = new ArrayList<Object[]>(examples.size());
-    for (String id : names) {
-      objects.add(new Object[]{id, examples.get(id)});
-    }
-    objects.add(new Object[]{"final", null});
-    return objects;
-  }
-
     List<String> names = new ArrayList<String>(examples.size());
     names.addAll(examples.keySet());
     Collections.sort(names);
