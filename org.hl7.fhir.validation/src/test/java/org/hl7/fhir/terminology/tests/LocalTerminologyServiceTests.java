@@ -62,7 +62,8 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
 
-    txtests = TxTestData.loadTestDataFromPackage("hl7.fhir.uv.tx-ecosystem#dev");
+    txtests = TxTestData.loadTestDataFromFolder(new File("/Users/grahamegrieve/work/fhir-tx-ecosystem-ig/tests"), "test-cases.json");
+    // txtests = TxTestData.loadTestDataFromPackage("hl7.fhir.uv.tx-ecosystem#dev");
     
     String contents = txtests.load("test-cases.json");
     externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(txtests.load("messages-tx.fhir.org.json"));
@@ -128,11 +129,16 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
         if (tester == null) {
           tester = new TxTester(this, SERVER, true, externals);
         }
-        String err = tester.executeTest(this, setup.suite, setup.test, modes);
-        if (err != null) {
-          error++;
+        if (setup.suite.asString("name").contains("omop") || true) {
+
+          String err = tester.executeTest(this, setup.suite, setup.test, modes);
+          if (err != null) {
+            error++;
+          }
+          Assertions.assertTrue(err == null, err);
+        } else {
+          Assertions.assertTrue(true);
         }
-        Assertions.assertTrue(err == null, err);
       } else {
         Assertions.assertTrue(true);
       }
