@@ -8,10 +8,6 @@ on:
   schedule: # check for translations from Crowdin every 12h
     - cron: '0 */12 * * *'
 
-permissions:
-  contents: write
-  pull-requests: write
-
 jobs:
   crowdin:
     runs-on: ubuntu-latest
