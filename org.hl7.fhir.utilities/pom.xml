@@ -41,6 +41,7 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <!-- dump ? -->
             <groupId>com.github.rjeschke</groupId>
             <artifactId>txtmark</artifactId>
             <optional>true</optional>
@@ -112,6 +113,7 @@
         </dependency>
 
         <dependency>
+            <!-- move ? -->
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <scope>provided</scope>
@@ -119,6 +121,7 @@
         </dependency>
 
         <dependency>
+            <!-- move ? -->
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <scope>provided</scope>
@@ -126,6 +129,7 @@
         </dependency>
 
         <dependency>
+            <!-- move ? -->
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
             <version>${junit_jupiter_version}</version>
@@ -134,6 +138,7 @@
         </dependency>
 
         <dependency>
+            <!-- move ? -->
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <scope>provided</scope>
@@ -141,6 +146,7 @@
         </dependency>
 
         <dependency>
+            <!-- move ? -->
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-launcher</artifactId>
             <version>${junit_platform_launcher_version}</version>
@@ -149,6 +155,7 @@
         </dependency>
 
         <dependency>
+            <!-- move ? -->
             <groupId>org.hl7.fhir.testcases</groupId>
             <artifactId>fhir-test-cases</artifactId>
             <version>${validator_test_case_version}</version>
