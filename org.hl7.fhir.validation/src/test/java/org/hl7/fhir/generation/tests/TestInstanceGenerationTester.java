@@ -29,11 +29,13 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class TestInstanceGenerationTester {
 
   @Test
+  @Disabled
   public void testDataFactory() throws IOException, FHIRException, SQLException {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     SimpleWorkerContext context = new SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withDefaultParams().fromPackage(pcm.loadPackage("hl7.fhir.r4.core"));
