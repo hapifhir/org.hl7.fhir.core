@@ -1,6 +1,6 @@
 ## Validator Changes
 
-* Fix for counting server load wrong when validating codes
+* no changes
 
 ## Other code changes
 
