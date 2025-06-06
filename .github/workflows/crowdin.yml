@@ -22,6 +22,7 @@ jobs:
           upload_sources: true
           upload_translations: true
           download_translations: true
+          export_only_approved: true
           localization_branch_name: l10n_crowdin_translations
 
           create_pull_request: true
