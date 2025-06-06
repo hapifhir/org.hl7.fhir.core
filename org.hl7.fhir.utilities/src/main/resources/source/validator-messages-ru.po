@@ -1,18 +1,31 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
+"X-Crowdin-Project: orghl7fhircore\n"
+"X-Crowdin-Project-ID: 792848\n"
+"X-Crowdin-Language: ru\n"
+"X-Crowdin-File: /org.hl7.fhir.utilities/src/main/resources/source/validator-messages-en.po\n"
+"X-Crowdin-File-ID: 238\n"
+"Project-Id-Version: orghl7fhircore\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: Russian\n"
+"Language: ru_RU\n"
+"PO-Revision-Date: 2025-06-04 11:08\n"
 
 # ABSTRACT_CODE_NOT_ALLOWED
 #: ABSTRACT_CODE_NOT_ALLOWED
 msgid "Code ''{0}#{1}'' is abstract, and not allowed in this context"
-msgstr ""
+msgstr "Код ''{0}#{1}'' является абстрактным и не допускается в данном контексте"
 
 # ALL_OK
 #: ALL_OK
 msgid "All OK"
-msgstr ""
+msgstr "Все ОК"
 
 # ARRAY_CANNOT_BE_EMPTY
 #: ARRAY_CANNOT_BE_EMPTY
 msgid "Array cannot be empty - the property should not be present if it has no values"
-msgstr ""
+msgstr "Array cannot be empty - свойство не должно присутствовать, если у него нет значений"
 
 # ATTEMPT_TO_CHANGE_SLICING
 #: ATTEMPT_TO_CHANGE_SLICING
@@ -22,57 +35,57 @@ msgstr ""
 # Adding_wrong_path
 #: Adding_wrong_path
 msgid "Adding wrong path"
-msgstr ""
+msgstr "Добавление неправильного пути"
 
 # Adding_wrong_path__outcomegetPath___resultPathBase__
 #: Adding_wrong_path__outcomegetPath___resultPathBase__
 msgid "Adding wrong path - outcome.getPath() = {0}, resultPathBase = {1}"
-msgstr ""
+msgstr "Добавление неправильного пути - outcome.getPath() = {0}, resultPathBase = {1}"
 
 # Adding_wrong_path_in_profile___vs_
 #: Adding_wrong_path_in_profile___vs_
 msgid "Adding wrong path in profile {0}: {1} vs {2}"
-msgstr ""
+msgstr "Добавление неправильного пути в профиль {0}: {1} против {2}"
 
 # All_observations_should_have_a_performer
 #: All_observations_should_have_a_performer
 msgid "Best Practice Recommendation: In general, all observations should have a performer"
-msgstr ""
+msgstr "Рекомендация по передовой практике: В целом, у всех наблюдений должен быть исполнитель"
 
 # All_observations_should_have_a_subject
 #: All_observations_should_have_a_subject
 msgid "Best Practice Recommendation: In general, all observations should have a subject"
-msgstr ""
+msgstr "Рекомендация по передовой практике: В целом, все наблюдения должны иметь тему"
 
 # All_observations_should_have_an_effectiveDateTime_or_an_effectivePeriod
 #: All_observations_should_have_an_effectiveDateTime_or_an_effectivePeriod
 msgid "Best Practice Recommendation: In general, all observations should have an effective[x] ({0})"
-msgstr ""
+msgstr "Рекомендация по передовой практике: В целом, все наблюдения должны иметь effective[x] ({0})"
 
 # Attempt_to_a_slice_an_element_that_does_not_repeat__from__in_
 #: Attempt_to_a_slice_an_element_that_does_not_repeat__from__in_
 msgid "Attempt to a slice an element that does not repeat: {0}/{1} from {2} in {3}, at element {4} (slice = {5})"
-msgstr ""
+msgstr "Попытайтесь разрезать элемент, который не повторяется: {0}/{1} От {2} в {3}, в элементе {4} (срез = {5})"
 
 # Attempt_to_replace_element_name_for_a_nonchoice_type
 #: Attempt_to_replace_element_name_for_a_nonchoice_type
 msgid "Attempt to replace element name for a non-choice type"
-msgstr ""
+msgstr "Попытка заменить имя элемента для типа, не являющегося выбором"
 
 # Attempt_to_use_Terminology_server_when_no_Terminology_server_is_available
 #: Attempt_to_use_Terminology_server_when_no_Terminology_server_is_available
 msgid "Attempt to use Terminology server when no Terminology server is available"
-msgstr ""
+msgstr "Попытка использования терминологического сервера при отсутствии доступного терминологического сервера"
 
 # Attempt_to_use_a_snapshot_on_profile__as__before_it_is_generated
 #: Attempt_to_use_a_snapshot_on_profile__as__before_it_is_generated
 msgid "Attempt to use a snapshot on profile ''{0}'' as {1} before it is generated"
-msgstr ""
+msgstr "Попытка использовать снимок в профиле ''{0}'' как {1} до того, как он будет сгенерирован"
 
 # BINDING_ADDITIONAL_D
 #: BINDING_ADDITIONAL_D
 msgid "{0} specified in an additional binding"
-msgstr ""
+msgstr "{0} указывается в дополнительной привязке"
 
 # BINDING_ADDITIONAL_UC
 #: BINDING_ADDITIONAL_UC
@@ -82,17 +95,17 @@ msgstr ""
 # BINDING_ADDITIONAL_USAGE
 #: BINDING_ADDITIONAL_USAGE
 msgid "{0} = {1}"
-msgstr ""
+msgstr "{0} = {1}"
 
 # BINDING_MAX
 #: BINDING_MAX
 msgid "{0} specified in the max binding"
-msgstr ""
+msgstr "{0} указывается в привязке max"
 
 # BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE
 #: BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE
 msgid "Found {0} matches for ''{1}'' in the bundle ({2})"
-msgstr ""
+msgstr "Найдено {0} совпадений для ''{1}'' в наборе ({2})"
 
 # BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE_FRAGMENT
 #: BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE_FRAGMENT
@@ -117,7 +130,7 @@ msgstr ""
 # BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH_REASON
 #: BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH_REASON
 msgid "The {1} resource did not match the profile {2} because: {3}"
-msgstr ""
+msgstr "Тем {1} ресурс не соответствует профилю {2} потому что: {3}"
 
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT
@@ -126,12 +139,13 @@ msgid_plural "Can''t find ''{1}'' in the bundle ({2}). Note that there are {0} r
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
 msgctxt "BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT"
 msgid "Can''t find ''{0}'' in the bundle ({1})"
-msgstr ""
+msgstr "Не удалось найти \"{0}'' в связке ({1})"
 
 # BUNDLE_BUNDLE_ENTRY_REVERSE_MSG
 #: BUNDLE_BUNDLE_ENTRY_REVERSE_MSG
@@ -161,7 +175,7 @@ msgstr ""
 # BUNDLE_ENTRY_URL_ABSOLUTE
 #: BUNDLE_ENTRY_URL_ABSOLUTE
 msgid "The fullUrl must be an absolute URL (not ''{0}'')"
-msgstr ""
+msgstr "fullUrl должен быть абсолютным URL (а не ''{0}'')"
 
 # BUNDLE_ENTRY_URL_MATCHES_NO_ID
 #: BUNDLE_ENTRY_URL_MATCHES_NO_ID
@@ -221,27 +235,27 @@ msgstr ""
 # BUNDLE_RULE_NONE
 #: BUNDLE_RULE_NONE
 msgid "No Rule"
-msgstr ""
+msgstr "Нет правил"
 
 # BUNDLE_RULE_PROFILE_UNKNOWN
 #: BUNDLE_RULE_PROFILE_UNKNOWN
 msgid "Bundle Rules profile {1} is unknown for {0}"
-msgstr ""
+msgstr "Профиль пакетных правил {1} неизвестно для {0}"
 
 # BUNDLE_RULE_UNKNOWN
 #: BUNDLE_RULE_UNKNOWN
 msgid "Bundle Rule refers to invalid resource {0}"
-msgstr ""
+msgstr "Правило пакета относится к недопустимому ресурсу {0}"
 
 # BUNDLE_SEARCH_ENTRY_NO_RESOURCE
 #: BUNDLE_SEARCH_ENTRY_NO_RESOURCE
 msgid "SearchSet Bundle Entries must have resources"
-msgstr ""
+msgstr "SearchSet Bundle Entries должны иметь ресурсы"
 
 # BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID
 #: BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID
 msgid "Search results must have ids"
-msgstr ""
+msgstr "Результаты поиска должны иметь идентификаторы"
 
 # BUNDLE_SEARCH_ENTRY_TYPE_NOT_SURE
 #: BUNDLE_SEARCH_ENTRY_TYPE_NOT_SURE
@@ -261,7 +275,7 @@ msgstr ""
 # BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_OUTCOME
 #: BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_OUTCOME
 msgid "This is not an OperationOutcome ({0})"
-msgstr ""
+msgstr "Это не OperationOutcome ({0})"
 
 # BUNDLE_SEARCH_NOSELF
 #: BUNDLE_SEARCH_NOSELF
@@ -291,7 +305,7 @@ msgstr ""
 # Base_profile__has_no_type
 #: Base_profile__has_no_type
 msgid "Base profile {0} has no type"
-msgstr ""
+msgstr "Базовый профиль {0} не имеет типа"
 
 # Bundle_BUNDLE_Entry_Canonical
 #: Bundle_BUNDLE_Entry_Canonical
@@ -301,7 +315,7 @@ msgstr ""
 # Bundle_BUNDLE_Entry_Document
 #: Bundle_BUNDLE_Entry_Document
 msgid "The first entry in a document must be a composition"
-msgstr ""
+msgstr "Первая запись в документе должна быть композицией"
 
 # Bundle_BUNDLE_Entry_IdUrlMismatch
 #: Bundle_BUNDLE_Entry_IdUrlMismatch
@@ -321,17 +335,17 @@ msgstr ""
 # Bundle_BUNDLE_Entry_NoFirst
 #: Bundle_BUNDLE_Entry_NoFirst
 msgid "Documents or Messages must contain at least one entry"
-msgstr ""
+msgstr "Документы или Сообщения должны содержать хотя бы одну запись"
 
 # Bundle_BUNDLE_Entry_NoFirstResource
 #: Bundle_BUNDLE_Entry_NoFirstResource
 msgid "No resource on first entry"
-msgstr ""
+msgstr "Нет ресурсов при первом входе"
 
 # Bundle_BUNDLE_Entry_NoFullUrl
 #: Bundle_BUNDLE_Entry_NoFullUrl
 msgid "Bundle entry missing fullUrl"
-msgstr ""
+msgstr "В записи пакета отсутствует fullUrl"
 
 # Bundle_BUNDLE_Entry_NoProfile_EXPL
 #: Bundle_BUNDLE_Entry_NoProfile_EXPL
@@ -341,13 +355,13 @@ msgstr ""
 # Bundle_BUNDLE_Entry_NoProfile_TYPE
 #: Bundle_BUNDLE_Entry_NoProfile_TYPE
 msgid "No profile found for {0} resource of type ''{1}''"
-msgstr ""
+msgstr "Не найден профиль для {0} ресурса типа ''{1}''"
 
 # Bundle_BUNDLE_Entry_NotFound
 #: Bundle_BUNDLE_Entry_NotFound
 msgctxt "Bundle_BUNDLE_Entry_NotFound"
 msgid "Can''t find ''{0}'' in the bundle ({1})"
-msgstr ""
+msgstr "Не удалось найти \"{0}'' в связке ({1})"
 
 # Bundle_BUNDLE_Entry_Orphan_DOCUMENT
 #: Bundle_BUNDLE_Entry_Orphan_DOCUMENT
@@ -373,9 +387,10 @@ msgstr ""
 #: Bundle_BUNDLE_Entry_Type3
 msgid "The type ''{1}'' is not valid - must be of type {2}"
 msgid_plural "The type ''{1}'' is not valid - must be one of {0} types: {2}"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Тип ''{1}'' не валидный - должен иметь тип {2}"
+msgstr[1] "Тип ''{1}'' не валидный - должен иметь тип {2}"
+msgstr[2] "Тип ''{1}'' не валидный - должен иметь тип {2}"
+msgstr[3] "Тип ''{1}'' не валидный - должен иметь тип {2}"
 
 # Bundle_BUNDLE_FullUrl_Missing
 #: Bundle_BUNDLE_FullUrl_Missing
@@ -390,7 +405,7 @@ msgstr ""
 # Bundle_BUNDLE_MultipleMatches
 #: Bundle_BUNDLE_MultipleMatches
 msgid "Multiple matches in bundle for reference {0}"
-msgstr ""
+msgstr "Несколько совпадений в пакете для справки {0}"
 
 # Bundle_BUNDLE_Not_Local
 #: Bundle_BUNDLE_Not_Local
@@ -400,7 +415,7 @@ msgstr ""
 # Bundle_Document_Date_Missing
 #: Bundle_Document_Date_Missing
 msgid "A document must have a date (Bundle.timestamp)"
-msgstr ""
+msgstr "Документ должен иметь дату (Bundle.timestamp)"
 
 # Bundle_Document_Date_Missing_html
 #: Bundle_Document_Date_Missing_html
@@ -410,7 +425,7 @@ msgstr ""
 # Bundle_MSG_Event_Count
 #: Bundle_MSG_Event_Count
 msgid "Expected {0} but found {1} event elements"
-msgstr ""
+msgstr "Ожидалось {0}, но найдено элементов события {1}"
 
 # CANONICAL_MULTIPLE_VERSIONS_KNOWN
 #: CANONICAL_MULTIPLE_VERSIONS_KNOWN
@@ -420,17 +435,17 @@ msgstr ""
 # CDATA_is_not_allowed
 #: CDATA_is_not_allowed
 msgid "CDATA is not allowed"
-msgstr ""
+msgstr "CDATA не допускается"
 
 # CDA_UNKNOWN_TEMPLATE
 #: CDA_UNKNOWN_TEMPLATE
 msgid "The CDA Template {0} is not known"
-msgstr ""
+msgstr "Шаблон CDA {0} неизвестно"
 
 # CDA_UNKNOWN_TEMPLATE_EXT
 #: CDA_UNKNOWN_TEMPLATE_EXT
 msgid "The CDA Template {0} / {1} is not known"
-msgstr ""
+msgstr "CDA шаблон {0} / {1} неизвестен"
 
 # CODESYSTEM_CONCEPT_NO_DEFINITION
 #: CODESYSTEM_CONCEPT_NO_DEFINITION
@@ -565,7 +580,7 @@ msgstr ""
 # CODESYSTEM_DUPLICATE_CODE
 #: CODESYSTEM_DUPLICATE_CODE
 msgid "The code ''{0}'' has already been defined"
-msgstr ""
+msgstr "Код ''{0}'' уже определён"
 
 # CODESYSTEM_NOT_CONTAINED
 #: CODESYSTEM_NOT_CONTAINED
@@ -610,12 +625,12 @@ msgstr ""
 # CODESYSTEM_PROPERTY_DUPLICATE_CODE
 #: CODESYSTEM_PROPERTY_DUPLICATE_CODE
 msgid "A property is already defined with the code ''{0}''"
-msgstr ""
+msgstr "Свойство уже определено с кодом ''{0}''"
 
 # CODESYSTEM_PROPERTY_DUPLICATE_URI
 #: CODESYSTEM_PROPERTY_DUPLICATE_URI
 msgid "A property is already defined with the URI ''{0}''"
-msgstr ""
+msgstr "Свойство уже определено с URI ''{0}''"
 
 # CODESYSTEM_PROPERTY_KNOWN_CODE_SUGGESTIVE
 #: CODESYSTEM_PROPERTY_KNOWN_CODE_SUGGESTIVE
@@ -795,7 +810,7 @@ msgstr ""
 # CONCEPTMAP_GROUP_TARGET_PROPERTY_CODE_INVALID
 #: CONCEPTMAP_GROUP_TARGET_PROPERTY_CODE_INVALID
 msgid "The code {0} is invalid in the system {1}"
-msgstr ""
+msgstr "Код {0} недопустим в системе {1}"
 
 # CONCEPTMAP_GROUP_TARGET_PROPERTY_INVALID
 #: CONCEPTMAP_GROUP_TARGET_PROPERTY_INVALID
@@ -805,7 +820,7 @@ msgstr ""
 # CONCEPTMAP_GROUP_TARGET_PROPERTY_TYPE_MISMATCH
 #: CONCEPTMAP_GROUP_TARGET_PROPERTY_TYPE_MISMATCH
 msgid "The type of this property should be {1} not {0}"
-msgstr ""
+msgstr "Тип этого свойства должен быть {1} не {0}"
 
 # CONCEPTMAP_GROUP_TARGET_PROPERTY_TYPE_NO_SYSTEM
 #: CONCEPTMAP_GROUP_TARGET_PROPERTY_TYPE_NO_SYSTEM
@@ -875,7 +890,7 @@ msgstr ""
 # CONCEPTMAP_VS_TOO_MANY_CODES
 #: CONCEPTMAP_VS_TOO_MANY_CODES
 msgid "The concept map has too many codes to validate ({0})"
-msgstr ""
+msgstr "Концептуальная карта содержит слишком много кодов для проверки ({0})"
 
 # CONTAINED_ORPHAN_DOM3
 #: CONTAINED_ORPHAN_DOM3
@@ -890,7 +905,7 @@ msgstr ""
 # Can_only_specify_profile_in_the_context
 #: Can_only_specify_profile_in_the_context
 msgid "Can only specify profile in the context"
-msgstr ""
+msgstr "Можно указать профиль только в контексте"
 
 # Cant_have_children_on_an_element_with_a_polymorphic_type__you_must_slice_and_constrain_the_types_first_sortElements_
 #: Cant_have_children_on_an_element_with_a_polymorphic_type__you_must_slice_and_constrain_the_types_first_sortElements_
@@ -925,7 +940,7 @@ msgstr ""
 # Code_found_in_expansion_however_
 #: Code_found_in_expansion_however_
 msgid "Code found in expansion, however: {0}"
-msgstr ""
+msgstr "Однако код, найденный в расширении: {0}"
 
 # Coding_has_no_system__cannot_validate
 #: Coding_has_no_system__cannot_validate
@@ -944,6 +959,7 @@ msgid_plural "Could not match any of the {0} discriminators for slice {2} in pro
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # DISCRIMINATOR_BAD_PATH
 #: DISCRIMINATOR_BAD_PATH
@@ -958,7 +974,7 @@ msgstr ""
 # DUPLICATE_ID
 #: DUPLICATE_ID
 msgid "Duplicate id value ''{0}''"
-msgstr ""
+msgstr "Повторяющееся значение id ''{0}''"
 
 # DUPLICATE_JSON_PROPERTY_KEY
 #: DUPLICATE_JSON_PROPERTY_KEY
@@ -988,12 +1004,12 @@ msgstr ""
 # Did_not_find_single_slice_
 #: Did_not_find_single_slice_
 msgid "Did not find single slice: {0}"
-msgstr ""
+msgstr "Не нашел ни одного разреза: {0}"
 
 # Did_not_find_type_root_
 #: Did_not_find_type_root_
 msgid "Did not find type root: {0}"
-msgstr ""
+msgstr "Не нашел тип root: {0}"
 
 # Differential_does_not_have_a_slice__b_of_____in_profile_
 #: Differential_does_not_have_a_slice__b_of_____in_profile_
@@ -1022,6 +1038,7 @@ msgid_plural "Wrong whitespace in Display Name ''{4}'' for {1}#{2}. Valid displa
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Display_Name_for__should_be_one_of__instead_of
 #: Display_Name_for__should_be_one_of__instead_of
@@ -1030,11 +1047,12 @@ msgid_plural "Wrong Display Name ''{4}'' for {1}#{2}. Valid display is one of {0
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Does_not_match_slice_
 #: Does_not_match_slice_
 msgid "Does not match slice ''{0}'' (discriminator: {1})"
-msgstr ""
+msgstr "Не совпадает с разрезом ''{0}'' (дискриминатор: {1})"
 
 # Duplicate_Resource_
 #: Duplicate_Resource_
@@ -1044,7 +1062,7 @@ msgstr ""
 # ED_CONTEXT_INVARIANT_EXPRESSION_ERROR
 #: ED_CONTEXT_INVARIANT_EXPRESSION_ERROR
 msgid "Error in constraint ''{0}'': {1}"
-msgstr ""
+msgstr "Ошибка в ограничении ''{0}'': {1}"
 
 # ED_INVARIANT_DIFF_NO_SOURCE
 #: ED_INVARIANT_DIFF_NO_SOURCE
@@ -1084,12 +1102,12 @@ msgstr ""
 # ED_SEARCH_EXPRESSION_ERROR
 #: ED_SEARCH_EXPRESSION_ERROR
 msgid "Error in search expression ''{0}'': {1}"
-msgstr ""
+msgstr "Ошибка в поисковом выражении ''{0}'': {1}"
 
 # ELEMENT_CANNOT_BE_NULL
 #: ELEMENT_CANNOT_BE_NULL
 msgid "The element is not allowed to be ''null''"
-msgstr ""
+msgstr "Элемент не может быть ''null''"
 
 # ERROR_GENERATING_SNAPSHOT
 #: ERROR_GENERATING_SNAPSHOT
@@ -1144,7 +1162,7 @@ msgstr ""
 # EXT_VER_URL_NOT_ALLOWED
 #: EXT_VER_URL_NOT_ALLOWED
 msgid "The extension URL must not contain a version"
-msgstr ""
+msgstr "URL расширения не должен содержать версию"
 
 # EXT_VER_URL_NO_MATCH
 #: EXT_VER_URL_NO_MATCH
@@ -1159,7 +1177,7 @@ msgstr ""
 # Element_must_have_some_content
 #: Element_must_have_some_content
 msgid "Element must have some content"
-msgstr ""
+msgstr "Элемент должен иметь какое-то содержимое"
 
 # Error_at__The_target_profile__is_not__valid_constraint_on_the_base_
 #: Error_at__The_target_profile__is_not__valid_constraint_on_the_base_
@@ -1209,7 +1227,7 @@ msgstr ""
 # Error_generating_table_for_profile__
 #: Error_generating_table_for_profile__
 msgid "Error generating table for profile {0}: {1}"
-msgstr ""
+msgstr "Ошибка создания таблицы для профиля {0}: {1}"
 
 # Error_in_profile__at__Base_isSummary___derived_isSummary__
 #: Error_in_profile__at__Base_isSummary___derived_isSummary__
@@ -1219,12 +1237,12 @@ msgstr ""
 # Error_parsing_
 #: Error_parsing_
 msgid "Error parsing {0}:{1}"
-msgstr ""
+msgstr "Ошибка при анализе {0}:{1}"
 
 # Error_parsing_JSON_
 #: Error_parsing_JSON_
 msgid "Error parsing JSON: {0}"
-msgstr ""
+msgstr "Ошибка парсинга JSON: {0}"
 
 # Error_parsing_JSON_the_primitive_value_must_be_a_boolean
 #: Error_parsing_JSON_the_primitive_value_must_be_a_boolean
@@ -1244,17 +1262,17 @@ msgstr ""
 # Error_parsing_Turtle_
 #: Error_parsing_Turtle_
 msgid "Error parsing Turtle: {0}"
-msgstr ""
+msgstr "Ошибка разбора Turtle: {0}"
 
 # Error_parsing_XHTML_
 #: Error_parsing_XHTML_
 msgid "Error parsing XHTML: {0}"
-msgstr ""
+msgstr "Ошибка парсинга XHTML: {0}"
 
 # Error_reading__from_package__
 #: Error_reading__from_package__
 msgid "Error reading {0} from package {1}#{2}: {3}"
-msgstr ""
+msgstr "Ошибка чтения {0} из пакета {1}#{2}: {3}"
 
 # Error_validating_code_running_without_terminology_services
 #: Error_validating_code_running_without_terminology_services
@@ -1284,7 +1302,7 @@ msgstr ""
 # Extension_EXT_Count_Mismatch
 #: Extension_EXT_Count_Mismatch
 msgid "Extensions count mismatch: expected {0} but found {1}"
-msgstr ""
+msgstr "Несоответствие количества расширений: ожидаемое {0} но нашли {1}"
 
 # Extension_EXT_Count_NotFound
 #: Extension_EXT_Count_NotFound
@@ -1339,12 +1357,12 @@ msgstr ""
 # Extension_EXT_URL_Absolute
 #: Extension_EXT_URL_Absolute
 msgid "Extension.url must be an absolute URL"
-msgstr ""
+msgstr "Extension.url должен быть абсолютным URL"
 
 # Extension_EXT_Unknown
 #: Extension_EXT_Unknown
 msgid "Unknown extension {0}"
-msgstr ""
+msgstr "Неизвестное расширение {0}"
 
 # Extension_EXT_Unknown_NotHere
 #: Extension_EXT_Unknown_NotHere
@@ -1399,7 +1417,7 @@ msgstr ""
 # FHIRPATH_ARITHMETIC_UNIT
 #: FHIRPATH_ARITHMETIC_UNIT
 msgid "Error in date arithmetic: unrecognized time unit {0}"
-msgstr ""
+msgstr "Ошибка в арифметике даты: нераспознанная единица времени {0}"
 
 # FHIRPATH_AS_COLLECTION
 #: FHIRPATH_AS_COLLECTION
@@ -1469,7 +1487,7 @@ msgstr ""
 # FHIRPATH_DISCRIMINATOR_BAD_NAME
 #: FHIRPATH_DISCRIMINATOR_BAD_NAME
 msgid "Invalid function name {0}() in discriminator"
-msgstr ""
+msgstr "Неверное имя функции {0}() в дискриминаторе"
 
 # FHIRPATH_DISCRIMINATOR_BAD_SYNTAX_CONST
 #: FHIRPATH_DISCRIMINATOR_BAD_SYNTAX_CONST
@@ -1494,20 +1512,22 @@ msgstr ""
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES"
-msgid "-- no content: do not translate #100 --"
+msgid "-- no content: do not translate #4 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} type profiles"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "-- no content: do not translate #4 --"
+msgstr[1] "-- no content: do not translate #64 --"
+msgstr[2] "Ошибка в дискриминаторе при {1}: детей нет, {0} Тип профилей"
+msgstr[3] "Ошибка в дискриминаторе при {1}: детей нет, {0} Тип профилей"
 
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES"
-msgid "-- no content: do not translate #101 --"
+msgid "-- no content: do not translate #5 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} types"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "-- no content: do not translate #5 --"
+msgstr[1] "-- no content: do not translate #65 --"
+msgstr[2] "Ошибка в дискриминаторе при {1}: детей нет, {0} Типы"
+msgstr[3] "Ошибка в дискриминаторе при {1}: детей нет, {0} Типы"
 
 # FHIRPATH_DISCRIMINATOR_NAME_ALREADY_SLICED
 #: FHIRPATH_DISCRIMINATOR_NAME_ALREADY_SLICED
@@ -1517,7 +1537,7 @@ msgstr ""
 # FHIRPATH_DISCRIMINATOR_NOTYPE
 #: FHIRPATH_DISCRIMINATOR_NOTYPE
 msgid "Error in discriminator at {0}: no children, no type"
-msgstr ""
+msgstr "Ошибка в дискриминаторе при {0}: без детей, без типа"
 
 # FHIRPATH_DISCRIMINATOR_NO_CODE
 #: FHIRPATH_DISCRIMINATOR_NO_CODE
@@ -1527,11 +1547,12 @@ msgstr ""
 # FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES"
-msgid "-- no content: do not translate #102 --"
+msgid "-- no content: do not translate #6 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "-- no content: do not translate #6 --"
+msgstr[1] "-- no content: do not translate #66 --"
+msgstr[2] "Недопустимое использование resolve() в дискриминаторе - {0} Возможные типы на {1} (может быть только один)"
+msgstr[3] "Недопустимое использование resolve() в дискриминаторе - {0} Возможные типы на {1} (может быть только один)"
 
 # FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE
@@ -1551,11 +1572,12 @@ msgstr ""
 # FHIRPATH_FOCUS
 #: FHIRPATH_FOCUS
 msgctxt "FHIRPATH_FOCUS"
-msgid "-- no content: do not translate #103 --"
+msgid "-- no content: do not translate #7 --"
 msgid_plural "Error evaluating FHIRPath expression: focus for {0} can only have one value, but has {0} values"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "-- no content: do not translate #7 --"
+msgstr[1] "-- no content: do not translate #67 --"
+msgstr[2] "Ошибка в вычислении выражения FHIRPath: focus for {0} может иметь только одно значение, но имеет {0} Значения"
+msgstr[3] "Ошибка в вычислении выражения FHIRPath: focus for {0} может иметь только одно значение, но имеет {0} Значения"
 
 # FHIRPATH_HO_HOST_SERVICES
 #: FHIRPATH_HO_HOST_SERVICES
@@ -1565,16 +1587,17 @@ msgstr ""
 # FHIRPATH_INVALID_TYPE
 #: FHIRPATH_INVALID_TYPE
 msgid "The type {0} is not valid"
-msgstr ""
+msgstr "Тип {0} не действителен"
 
 # FHIRPATH_LEFT_VALUE
 #: FHIRPATH_LEFT_VALUE
 msgctxt "FHIRPATH_LEFT_VALUE"
-msgid "-- no content: do not translate #104 --"
+msgid "-- no content: do not translate #8 --"
 msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "-- no content: do not translate #8 --"
+msgstr[1] "-- no content: do not translate #68 --"
+msgstr[2] "Ошибка вычисления выражения FHIRPath: левый операнд в {1} может иметь только 1 значение, но имеет {0} Значения"
+msgstr[3] "Ошибка вычисления выражения FHIRPath: левый операнд в {1} может иметь только 1 значение, но имеет {0} Значения"
 
 # FHIRPATH_LEFT_VALUE_WRONG_TYPE
 #: FHIRPATH_LEFT_VALUE_WRONG_TYPE
@@ -1584,7 +1607,7 @@ msgstr ""
 # FHIRPATH_LOCATION
 #: FHIRPATH_LOCATION
 msgid "(at {0})"
-msgstr ""
+msgstr "(на {0})"
 
 # FHIRPATH_MUTIPLE_SORT_TYPE_PROBLEM
 #: FHIRPATH_MUTIPLE_SORT_TYPE_PROBLEM
@@ -1654,7 +1677,7 @@ msgstr ""
 # FHIRPATH_REDEFINE_VARIABLE
 #: FHIRPATH_REDEFINE_VARIABLE
 msgid "The variable ''{0}'' cannot be redefined"
-msgstr ""
+msgstr "Переменная ''{0}'' не может быть изменена"
 
 # FHIRPATH_REFERENCE_ONLY
 #: FHIRPATH_REFERENCE_ONLY
@@ -1669,20 +1692,22 @@ msgstr ""
 # FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 #: FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 msgctxt "FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET"
-msgid "-- no content: do not translate #105 --"
+msgid "-- no content: do not translate #9 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "-- no content: do not translate #9 --"
+msgstr[1] "-- no content: do not translate #69 --"
+msgstr[2] "Недопустимое использование resolve() в дискриминаторе - {0} Возможные профили типов целей на {1} (может быть только один)"
+msgstr[3] "Недопустимое использование resolve() в дискриминаторе - {0} Возможные профили типов целей на {1} (может быть только один)"
 
 # FHIRPATH_RIGHT_VALUE
 #: FHIRPATH_RIGHT_VALUE
 msgctxt "FHIRPATH_RIGHT_VALUE"
-msgid "-- no content: do not translate #106 --"
+msgid "-- no content: do not translate #10 --"
 msgid_plural "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "-- no content: do not translate #10 --"
+msgstr[1] "-- no content: do not translate #70 --"
+msgstr[2] "Ошибка при вычислении выражения FHIRPath: правый операнд на {1} может иметь только 1 значение, но имеет {0} Значения"
+msgstr[3] "Ошибка при вычислении выражения FHIRPath: правый операнд на {1} может иметь только 1 значение, но имеет {0} Значения"
 
 # FHIRPATH_RIGHT_VALUE_WRONG_TYPE
 #: FHIRPATH_RIGHT_VALUE_WRONG_TYPE
@@ -1702,7 +1727,7 @@ msgstr ""
 # FHIRPATH_UNABLE_BOOLEAN
 #: FHIRPATH_UNABLE_BOOLEAN
 msgid "Unable to evaluate as a boolean: {0}"
-msgstr ""
+msgstr "Невозможно оценить как логическое значение: {0}"
 
 # FHIRPATH_UNKNOWN_CONSTANT
 #: FHIRPATH_UNKNOWN_CONSTANT
@@ -1712,7 +1737,7 @@ msgstr ""
 # FHIRPATH_UNKNOWN_CONTEXT
 #: FHIRPATH_UNKNOWN_CONTEXT
 msgid "Unknown context evaluating FHIRPath expression: {0}"
-msgstr ""
+msgstr "Неизвестный контекст, оценивающий выражение FHIRPath: {0}"
 
 # FHIRPATH_UNKNOWN_CONTEXT_ELEMENT
 #: FHIRPATH_UNKNOWN_CONTEXT_ELEMENT
@@ -1752,12 +1777,12 @@ msgstr ""
 # Fixed_Type_Checks_DT_Name_Family
 #: Fixed_Type_Checks_DT_Name_Family
 msgid "Expected {0} but found {1} family elements"
-msgstr ""
+msgstr "Ожидалось {0}, но найдено {1} данных элементов"
 
 # Fixed_Type_Checks_DT_Name_Given
 #: Fixed_Type_Checks_DT_Name_Given
 msgid "Expected {0} but found {1} given elements"
-msgstr ""
+msgstr "Ожидалось {0}, но найдено {1} данных элементов"
 
 # Fixed_Type_Checks_DT_Name_Prefix
 #: Fixed_Type_Checks_DT_Name_Prefix
@@ -1767,7 +1792,7 @@ msgstr ""
 # Fixed_Type_Checks_DT_Name_Suffix
 #: Fixed_Type_Checks_DT_Name_Suffix
 msgid "Expected {0} but found {1} suffix elements"
-msgstr ""
+msgstr "Ожидаемый {0} но нашли {1} элементов суффикса"
 
 # Found__items_for__resolving_discriminator__from_
 #: Found__items_for__resolving_discriminator__from_
@@ -1777,21 +1802,21 @@ msgstr ""
 # HTA_LOINC_DESC
 #: HTA_LOINC_DESC
 msgid "LOINC"
-msgstr ""
+msgstr "LOINC"
 
 # HTA_LOINC_MESSAGE
 #: HTA_LOINC_MESSAGE
-msgid "This material contains content from <a href=\\"http://loinc.org\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\"http://loinc.org/license\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
+msgid "This material contains content from <a href=\\\"http://loinc.org\\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\\"http://loinc.org/license\\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
 msgstr ""
 
 # HTA_SCT_DESC
 #: HTA_SCT_DESC
 msgid "SNOMED Clinical Terms&reg; (SNOMED CT&reg;)"
-msgstr ""
+msgstr "Клинические термины SNOMED&reg; (SNOMED-CT&reg;)"
 
 # HTA_SCT_MESSAGE
 #: HTA_SCT_MESSAGE
-msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\"https://www.snomed.org/get-snomed\\">https://www.snomed.org/get-snomed</a> or <a href=\\"mailto:info@snomed.org\\">info@snomed.org</a>."
+msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> or <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
 msgstr ""
 
 # IG_DEPENDENCY_CAN_VERSION_ALONE
@@ -1807,7 +1832,7 @@ msgstr ""
 # IG_DEPENDENCY_CAN_VERSION_NONE
 #: IG_DEPENDENCY_CAN_VERSION_NONE
 msgid "The canonical URL cannot end in ''|''"
-msgstr ""
+msgstr "Канонический URL-адрес не может заканчиваться на ''|''"
 
 # IG_DEPENDENCY_CLASH_CANONICAL
 #: IG_DEPENDENCY_CLASH_CANONICAL
@@ -1832,12 +1857,12 @@ msgstr ""
 # IG_DEPENDENCY_INVALID_PACKAGEID
 #: IG_DEPENDENCY_INVALID_PACKAGEID
 msgid "The packageId {0} is not valid"
-msgstr ""
+msgstr "Идентификатор пакета {0} не действителен"
 
 # IG_DEPENDENCY_INVALID_PACKAGE_VERSION
 #: IG_DEPENDENCY_INVALID_PACKAGE_VERSION
 msgid "The version {0} is not a valid NPM package version"
-msgstr ""
+msgstr "Версия {0} не является допустимой версией пакета NPM"
 
 # IG_DEPENDENCY_INVALID_URL
 #: IG_DEPENDENCY_INVALID_URL
@@ -1902,17 +1927,17 @@ msgstr ""
 # ILLEGAL_PROPERTY
 #: ILLEGAL_PROPERTY
 msgid "The property ''{0}'' is invalid"
-msgstr ""
+msgstr "Свойство ''{0}'' неверно"
 
 # INVALID_DISPLAY_NAME
 #: INVALID_DISPLAY_NAME
 msgid "Invalid displayLanguage: ''{0}''"
-msgstr ""
+msgstr "Недопустимый displayLanguage: ''{0}''"
 
 # INV_FAILED
 #: INV_FAILED
 msgid "Constraint failed: {0}"
-msgstr ""
+msgstr "Ошибка ограничения: {0}"
 
 # INV_FAILED_SOURCE
 #: INV_FAILED_SOURCE
@@ -1957,7 +1982,7 @@ msgstr ""
 # Internal_error___type_not_known_
 #: Internal_error___type_not_known_
 msgid "Internal error - type not known {0}"
-msgstr ""
+msgstr "Внутренняя ошибка - тип неизвестен {0}"
 
 # Invalid_slicing__there_is_more_than_one_type_slice_at__but_one_of_them__has_min__1_so_the_other_slices_cannot_exist
 #: Invalid_slicing__there_is_more_than_one_type_slice_at__but_one_of_them__has_min__1_so_the_other_slices_cannot_exist
@@ -1972,12 +1997,12 @@ msgstr ""
 # JSON_COMMA_MISSING
 #: JSON_COMMA_MISSING
 msgid "A Comma is missing in the JSON"
-msgstr ""
+msgstr "В JSON отсутствует запятая"
 
 # JSON_COMMENTS_NOT_ALLOWED
 #: JSON_COMMENTS_NOT_ALLOWED
 msgid "Comments are not allowed in JSON"
-msgstr ""
+msgstr "Комментарии в формате JSON запрещены"
 
 # JSON_PROPERTY_NO_QUOTES
 #: JSON_PROPERTY_NO_QUOTES
@@ -2027,12 +2052,12 @@ msgstr ""
 # LIQUID_SYNTAX_UNTERMINATED
 #: LIQUID_SYNTAX_UNTERMINATED
 msgid "Script {0}: Found unterminated string parsing cycle"
-msgstr ""
+msgstr "Сценарий {0}: Найден незавершённый цикл разбора строки"
 
 # LIQUID_UNKNOWN_FILTER
 #: LIQUID_UNKNOWN_FILTER
 msgid "Unknown Liquid filter ''{0}''"
-msgstr ""
+msgstr "Неизвестный фильтр Liquid ''{0}''"
 
 # LIQUID_UNKNOWN_FLOW_STMT
 #: LIQUID_UNKNOWN_FLOW_STMT
@@ -2152,7 +2177,7 @@ msgstr ""
 # MEASURE_MR_GRP_POP_COUNT_MISMATCH
 #: MEASURE_MR_GRP_POP_COUNT_MISMATCH
 msgid "Mismatch between count {0} and number of subjects {1}"
-msgstr ""
+msgstr "Несоответствие между количеством {0} и количеством предметов {1}"
 
 # MEASURE_MR_GRP_POP_COUNT_NO_REF
 #: MEASURE_MR_GRP_POP_COUNT_NO_REF
@@ -2302,22 +2327,22 @@ msgstr ""
 # MEASURE_MR_SCORE_VALUE_INVALID_01
 #: MEASURE_MR_SCORE_VALUE_INVALID_01
 msgid "The value is invalid - it must be between 0 and 1"
-msgstr ""
+msgstr "Значение недопустимо - оно должно быть в диапазоне от 0 до 1"
 
 # MEASURE_MR_SCORE_VALUE_REQUIRED
 #: MEASURE_MR_SCORE_VALUE_REQUIRED
 msgid "A value is required when the Measure.scoring = {0}"
-msgstr ""
+msgstr "Значение требуется, когда Measure.scoring = {0}"
 
 # MEASURE_M_CRITERIA_CQL_ELM_NOT_VALID
 #: MEASURE_M_CRITERIA_CQL_ELM_NOT_VALID
 msgid "= Error in {0}: Compiled version of CQL is not valid"
-msgstr ""
+msgstr "= Ошибка в {0}: Скомпилированная версия CQL недействительна"
 
 # MEASURE_M_CRITERIA_CQL_ERROR
 #: MEASURE_M_CRITERIA_CQL_ERROR
 msgid "Error in {0}: ''{1}''"
-msgstr ""
+msgstr "Ошибка в {0}: ''{1}''"
 
 # MEASURE_M_CRITERIA_CQL_LIB_DUPL
 #: MEASURE_M_CRITERIA_CQL_LIB_DUPL
@@ -2332,7 +2357,7 @@ msgstr ""
 # MEASURE_M_CRITERIA_CQL_NOT_FOUND
 #: MEASURE_M_CRITERIA_CQL_NOT_FOUND
 msgid "The function {1} does not exist in the library {0}"
-msgstr ""
+msgstr "Функция {1} не существует в библиотеке {0}"
 
 # MEASURE_M_CRITERIA_CQL_NO_ELM
 #: MEASURE_M_CRITERIA_CQL_NO_ELM
@@ -2342,7 +2367,7 @@ msgstr ""
 # MEASURE_M_CRITERIA_CQL_NO_LIB
 #: MEASURE_M_CRITERIA_CQL_NO_LIB
 msgid "No CQL Libraries found on this Measure"
-msgstr ""
+msgstr "По этому показателю не найдено библиотек CQL"
 
 # MEASURE_M_CRITERIA_CQL_ONLY_ONE_LIB
 #: MEASURE_M_CRITERIA_CQL_ONLY_ONE_LIB
@@ -2362,7 +2387,7 @@ msgstr ""
 # MEASURE_M_GROUP_POP
 #: MEASURE_M_GROUP_POP
 msgid "Measure Groups should have at least one population"
-msgstr ""
+msgstr "Группы мер должны иметь хотя бы одну популяцию"
 
 # MEASURE_M_GROUP_POP_NO_CODE
 #: MEASURE_M_GROUP_POP_NO_CODE
@@ -2387,7 +2412,7 @@ msgstr ""
 # MEASURE_M_NO_GROUPS
 #: MEASURE_M_NO_GROUPS
 msgid "A measure should contain at least one group"
-msgstr ""
+msgstr "Мера должна содержать хотя бы одну группу"
 
 # MEASURE_SHAREABLE_EXTRA_MISSING
 #: MEASURE_SHAREABLE_EXTRA_MISSING
@@ -2412,32 +2437,32 @@ msgstr ""
 # MSG_DEPENDS_ON_DEPRECATED
 #: MSG_DEPENDS_ON_DEPRECATED
 msgid "The {0} {1} is deprecated"
-msgstr ""
+msgstr "Тем {0} {1} является устаревшим"
 
 # MSG_DEPENDS_ON_DEPRECATED_NOTE
 #: MSG_DEPENDS_ON_DEPRECATED_NOTE
 msgid "The {0} {1} is deprecated with the note {2}"
-msgstr ""
+msgstr "{0} {1} устарел с примечанием {2}"
 
 # MSG_DEPENDS_ON_DRAFT
 #: MSG_DEPENDS_ON_DRAFT
 msgid "The {0} {1} is a draft resource"
-msgstr ""
+msgstr "Тем {0} {1} является черновым ресурсом"
 
 # MSG_DEPENDS_ON_EXPERIMENTAL
 #: MSG_DEPENDS_ON_EXPERIMENTAL
 msgid "The {0} {1} is an experimental resource"
-msgstr ""
+msgstr "Тем {0} {1} является экспериментальным ресурсом"
 
 # MSG_DEPENDS_ON_EXTENSION
 #: MSG_DEPENDS_ON_EXTENSION
 msgid "extension"
-msgstr ""
+msgstr "расширение"
 
 # MSG_DEPENDS_ON_PROFILE
 #: MSG_DEPENDS_ON_PROFILE
 msgid "profile"
-msgstr ""
+msgstr "профиль"
 
 # MSG_DEPENDS_ON_RETIRED
 #: MSG_DEPENDS_ON_RETIRED
@@ -2447,12 +2472,12 @@ msgstr ""
 # MSG_DEPENDS_ON_WITHDRAWN
 #: MSG_DEPENDS_ON_WITHDRAWN
 msgid "The {0} {1} is withdrawn"
-msgstr ""
+msgstr "Тем {0} {1} отзывается"
 
 # MSG_DEPRECATED
 #: MSG_DEPRECATED
 msgid "Reference to deprecated {2} {0}"
-msgstr ""
+msgstr "Ссылка на устаревшие {2} {0}"
 
 # MSG_DEPRECATED_SRC
 #: MSG_DEPRECATED_SRC
@@ -2462,22 +2487,22 @@ msgstr ""
 # MSG_DRAFT
 #: MSG_DRAFT
 msgid "Reference to draft {2} {0}"
-msgstr ""
+msgstr "Ссылка на черновик {2} {0}"
 
 # MSG_DRAFT_SRC
 #: MSG_DRAFT_SRC
 msgid "Reference to draft {2} {0} from {1}"
-msgstr ""
+msgstr "Ссылка на проект {2} {0} От {1}"
 
 # MSG_EXPERIMENTAL
 #: MSG_EXPERIMENTAL
 msgid "Reference to experimental {2} {0}"
-msgstr ""
+msgstr "Отсылка к экспериментальным {2} {0}"
 
 # MSG_EXPERIMENTAL_SRC
 #: MSG_EXPERIMENTAL_SRC
 msgid "Reference to experimental {2} {0} from {1}"
-msgstr ""
+msgstr "Ссылка на экспериментальный {2} {0} от {1}"
 
 # MSG_RETIRED
 #: MSG_RETIRED
@@ -2502,11 +2527,12 @@ msgstr ""
 # MULTIPLE_LOGICAL_MODELS
 #: MULTIPLE_LOGICAL_MODELS
 msgctxt "MULTIPLE_LOGICAL_MODELS"
-msgid "-- no content: do not translate #107 --"
+msgid "-- no content: do not translate #11 --"
 msgid_plural "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "-- no content: do not translate #11 --"
+msgstr[1] "-- no content: do not translate #71 --"
+msgstr[2] "-- no content: do not translate #71 --"
+msgstr[3] "-- no content: do not translate #71 --"
 
 # Measure_MR_M_None
 #: Measure_MR_M_None
@@ -2545,6 +2571,7 @@ msgid_plural "No valid Display Names found for {1}#{2} in the languages {4}"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # NO_VALID_DISPLAY_FOUND_LANG_NONE
 #: NO_VALID_DISPLAY_FOUND_LANG_NONE
@@ -2553,6 +2580,7 @@ msgid_plural "''{5}'' is the default display; the code system {1} has no Display
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # NO_VALID_DISPLAY_FOUND_LANG_SOME
 #: NO_VALID_DISPLAY_FOUND_LANG_SOME
@@ -2561,6 +2589,7 @@ msgid_plural "''{5}'' is the default display; no valid Display Names found for {
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR
 #: NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR
@@ -2575,22 +2604,22 @@ msgstr ""
 # Named_items_are_out_of_order_in_the_slice
 #: Named_items_are_out_of_order_in_the_slice
 msgid "Named items are out of order in the slice"
-msgstr ""
+msgstr "Именованные элементы находятся вне порядка в разрезе"
 
 # No_ExpansionProfile_provided
 #: No_ExpansionProfile_provided
 msgid "No ExpansionProfile provided"
-msgstr ""
+msgstr "ExpansionProfile не предоставляется"
 
 # No_Expansion_Parameters_provided
 #: No_Expansion_Parameters_provided
 msgid "No Expansion Parameters provided"
-msgstr ""
+msgstr "Параметры расширения не заданы"
 
 # No_Parameters_provided_to_expandVS
 #: No_Parameters_provided_to_expandVS
 msgid "No Parameters provided to expandVS"
-msgstr ""
+msgstr "Параметры для expandVS не предоставлены"
 
 # No_path_on_element_Definition__in_
 #: No_path_on_element_Definition__in_
@@ -2600,7 +2629,7 @@ msgstr ""
 # No_path_on_element_in_differential_in_
 #: No_path_on_element_in_differential_in_
 msgid "No path on element in differential in {0}"
-msgstr ""
+msgstr "Нет пути на элементе в дифференциале в {0}"
 
 # No_path_value_on_element_in_differential_in_
 #: No_path_value_on_element_in_differential_in_
@@ -2610,7 +2639,7 @@ msgstr ""
 # No_processing_instructions_allowed_in_resources
 #: No_processing_instructions_allowed_in_resources
 msgid "No processing instructions allowed in resources"
-msgstr ""
+msgstr "В ресурсах не допускаются инструкции по обработке"
 
 # No_reference_resolving_discriminator__from_
 #: No_reference_resolving_discriminator__from_
@@ -2620,12 +2649,12 @@ msgstr ""
 # No_type_found_on_
 #: No_type_found_on_
 msgid "No type found on ''{0}''"
-msgstr ""
+msgstr "Тип не найден на ''{0}''"
 
 # No_validator_configured
 #: No_validator_configured
 msgid "No validator configured"
-msgstr ""
+msgstr "Валидатор не настроен"
 
 # Node_type__is_not_allowed
 #: Node_type__is_not_allowed
@@ -2639,16 +2668,17 @@ msgid_plural "None of the provided codes [{2}] are in the value set ''{1}''"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Not_done_yet
 #: Not_done_yet
 msgid "Not done yet"
-msgstr ""
+msgstr "Ещё не завершено"
 
 # Not_done_yet_ValidatorHostServicescheckFunction
 #: Not_done_yet_ValidatorHostServicescheckFunction
 msgid "Not done yet (ValidatorHostServices.checkFunction)"
-msgstr ""
+msgstr "Еще не сделано (ValidatorHostServices.checkFunction)"
 
 # Not_done_yet_ValidatorHostServicesconformsToProfile_when_item_is_not_an_element
 #: Not_done_yet_ValidatorHostServicesconformsToProfile_when_item_is_not_an_element
@@ -2658,7 +2688,7 @@ msgstr ""
 # Not_done_yet_ValidatorHostServicesexecuteFunction
 #: Not_done_yet_ValidatorHostServicesexecuteFunction
 msgid "Not done yet (ValidatorHostServices.executeFunction)"
-msgstr ""
+msgstr "Еще не сделано (ValidatorHostServices.executeFunction)"
 
 # Not_done_yet__resolve__locally_2
 #: Not_done_yet__resolve__locally_2
@@ -2668,7 +2698,7 @@ msgstr ""
 # Not_handled_yet_sortElements_
 #: Not_handled_yet_sortElements_
 msgid "Not handled yet (sortElements: {0}:{1})"
-msgstr ""
+msgstr "Еще не обработано (sortElements: {0}:{1})"
 
 # OBJECT_CANNOT_BE_KEYED_ARRAY_CHILD_COUNT
 #: OBJECT_CANNOT_BE_KEYED_ARRAY_CHILD_COUNT
@@ -2698,7 +2728,7 @@ msgstr ""
 # OPDEF_PROFILE_NOT_FOUND
 #: OPDEF_PROFILE_NOT_FOUND
 msgid "The {0} profile ''{1}'' can not be resolved"
-msgstr ""
+msgstr "Профиль {0} ''{1}'' не может быть разрешен"
 
 # OPDEF_PROFILE_NOT_IN_PARAM
 #: OPDEF_PROFILE_NOT_IN_PARAM
@@ -2753,7 +2783,7 @@ msgstr ""
 # Object_must_have_some_content
 #: Object_must_have_some_content
 msgid "Object must have some content"
-msgstr ""
+msgstr "Объект должен иметь какое-то содержимое"
 
 # PACKAGE_VERSION_MISMATCH
 #: PACKAGE_VERSION_MISMATCH
@@ -2782,11 +2812,12 @@ msgid_plural "The element definition ``{0}`` in the profile ''{1}'' requires tha
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # PROFILE_COMPLIES_WITH_BAD_ELEMENT
 #: PROFILE_COMPLIES_WITH_BAD_ELEMENT
 msgid "The {0} ''{1}'' is not allowed in the claimed profile"
-msgstr ""
+msgstr "Тем {0} ''{1}'' не допускается в заявленном профиле"
 
 # PROFILE_COMPLIES_WITH_BAD_TYPE
 #: PROFILE_COMPLIES_WITH_BAD_TYPE
@@ -2861,7 +2892,7 @@ msgstr ""
 # Parser_Type__not_supported
 #: Parser_Type__not_supported
 msgid "Parser Type {0} not supported"
-msgstr ""
+msgstr "Тип парсера {0} Не поддерживается"
 
 # Problem_evaluating_slicing_expression_for_element_in_profile__path__fhirPath___
 #: Problem_evaluating_slicing_expression_for_element_in_profile__path__fhirPath___
@@ -2891,12 +2922,12 @@ msgstr ""
 # Profile___Error_generating_snapshot
 #: Profile___Error_generating_snapshot
 msgid "Profile {0} ({1}). Error generating snapshot"
-msgstr ""
+msgstr "Профиль {0} ({1}). Ошибка создания снимка"
 
 # Profile___base__could_not_be_resolved
 #: Profile___base__could_not_be_resolved
 msgid "Profile {0} ({1}) base {2} could not be resolved"
-msgstr ""
+msgstr "Профиль {0} ({1}) база {2} не удалось найти"
 
 # Profile___element__Error_generating_snapshot_
 #: Profile___element__Error_generating_snapshot_
@@ -2906,7 +2937,7 @@ msgstr ""
 # Profile___has_no_base_and_no_snapshot
 #: Profile___has_no_base_and_no_snapshot
 msgid "Profile {0} ({1}) has no base and no snapshot"
-msgstr ""
+msgstr "Профиль {0} ({1}) не имеет базы и снимка"
 
 # Profile__does_not_match_for__because_of_the_following_profile_issues__
 #: Profile__does_not_match_for__because_of_the_following_profile_issues__
@@ -2963,7 +2994,7 @@ msgstr ""
 # QUESTIONNAIRE_QR_ITEM_DATE_VALUE_EXCEPTION
 #: QUESTIONNAIRE_QR_ITEM_DATE_VALUE_EXCEPTION
 msgid "An error occurred checking the date: {0}"
-msgstr ""
+msgstr "Произошла ошибка при проверке даты: {0}"
 
 # QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MAX
 #: QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MAX
@@ -3021,12 +3052,12 @@ msgstr ""
 #: QUESTIONNAIRE_QR_ITEM_DECIMAL_VALUE_EXCEPTION
 msgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_VALUE_EXCEPTION"
 msgid "An error occurred checking the value: {0}"
-msgstr ""
+msgstr "При проверке значения произошла ошибка: {0}"
 
 # QUESTIONNAIRE_QR_ITEM_DISPLAY_NO_VALUE
 #: QUESTIONNAIRE_QR_ITEM_DISPLAY_NO_VALUE
 msgid "Items of type ''display'' cannot have answers"
-msgstr ""
+msgstr "Элементы типа ''display'' не могут иметь ответов"
 
 # QUESTIONNAIRE_QR_ITEM_EXCLUSIVE
 #: QUESTIONNAIRE_QR_ITEM_EXCLUSIVE
@@ -3036,7 +3067,7 @@ msgstr ""
 # QUESTIONNAIRE_QR_ITEM_GROUP_REQUIRED
 #: QUESTIONNAIRE_QR_ITEM_GROUP_REQUIRED
 msgid "No sub-items found for required group"
-msgstr ""
+msgstr "Для нужной группы не найдено подэлементов"
 
 # QUESTIONNAIRE_QR_ITEM_INTEGER_MAX
 #: QUESTIONNAIRE_QR_ITEM_INTEGER_MAX
@@ -3054,7 +3085,7 @@ msgstr ""
 #: QUESTIONNAIRE_QR_ITEM_INTEGER_VALUE_EXCEPTION
 msgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_VALUE_EXCEPTION"
 msgid "An error occurred checking the value: {0}"
-msgstr ""
+msgstr "При проверке значения произошла ошибка: {0}"
 
 # QUESTIONNAIRE_QR_ITEM_MAX_OCCURS
 #: QUESTIONNAIRE_QR_ITEM_MAX_OCCURS
@@ -3069,7 +3100,7 @@ msgstr ""
 # QUESTIONNAIRE_QR_ITEM_NODECIMAL
 #: QUESTIONNAIRE_QR_ITEM_NODECIMAL
 msgid "The value {0} is not in the set of permitted values"
-msgstr ""
+msgstr "Значение {0} не входит в набор разрешенных значений"
 
 # QUESTIONNAIRE_QR_ITEM_NOOPTIONSDECIMAL
 #: QUESTIONNAIRE_QR_ITEM_NOOPTIONSDECIMAL
@@ -3079,7 +3110,7 @@ msgstr ""
 # QUESTIONNAIRE_QR_ITEM_NOT_ATTACHMENT_MIMETYPE
 #: QUESTIONNAIRE_QR_ITEM_NOT_ATTACHMENT_MIMETYPE
 msgid "A mime type is required for this answer"
-msgstr ""
+msgstr "Для этого ответа требуется тип mime"
 
 # QUESTIONNAIRE_QR_ITEM_QUANTITY_MAX
 #: QUESTIONNAIRE_QR_ITEM_QUANTITY_MAX
@@ -3109,7 +3140,7 @@ msgstr ""
 # QUESTIONNAIRE_QR_ITEM_STRING_ILLEGAL_CHARS
 #: QUESTIONNAIRE_QR_ITEM_STRING_ILLEGAL_CHARS
 msgid "The answer should not contain new line characters"
-msgstr ""
+msgstr "Ответ не должен содержать символов новой строки"
 
 # QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING
 #: QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING
@@ -3151,12 +3182,12 @@ msgstr ""
 # QUESTIONNAIRE_QR_ITEM_TIME_VALUE_EXCEPTION
 #: QUESTIONNAIRE_QR_ITEM_TIME_VALUE_EXCEPTION
 msgid "An error occurred checking the time: {0}"
-msgstr ""
+msgstr "Произошла ошибка при проверке времени: {0}"
 
 # QUESTIONNAIRE_QR_ITEM_VS_BAD
 #: QUESTIONNAIRE_QR_ITEM_VS_BAD
 msgid "The value set ''{1}'' could not be found"
-msgstr ""
+msgstr "Набор значений ''{1}\" не найден"
 
 # QUESTIONNAIRE_QR_ITEM_VS_FAIL
 #: QUESTIONNAIRE_QR_ITEM_VS_FAIL
@@ -3301,7 +3332,7 @@ msgstr ""
 # Questionnaire_QR_Item_NoDate
 #: Questionnaire_QR_Item_NoDate
 msgid "The date {0} is not in the set of permitted values"
-msgstr ""
+msgstr "Дата {0} не входит в набор разрешенных значений"
 
 # Questionnaire_QR_Item_NoInteger
 #: Questionnaire_QR_Item_NoInteger
@@ -3311,7 +3342,7 @@ msgstr ""
 # Questionnaire_QR_Item_NoLinkId
 #: Questionnaire_QR_Item_NoLinkId
 msgid "No LinkId, so can''t be validated"
-msgstr ""
+msgstr "Нет LinkId, поэтому не может быть проверен"
 
 # Questionnaire_QR_Item_NoOptions
 #: Questionnaire_QR_Item_NoOptions
@@ -3326,12 +3357,12 @@ msgstr ""
 # Questionnaire_QR_Item_NoOptionsDate
 #: Questionnaire_QR_Item_NoOptionsDate
 msgid "Option list has no option values of type date"
-msgstr ""
+msgstr "Список опций не имеет значений опций типа date"
 
 # Questionnaire_QR_Item_NoOptionsInteger
 #: Questionnaire_QR_Item_NoOptionsInteger
 msgid "Option list has no option values of type integer"
-msgstr ""
+msgstr "Список опций не имеет значений опций типа integer"
 
 # Questionnaire_QR_Item_NoOptionsString
 #: Questionnaire_QR_Item_NoOptionsString
@@ -3341,7 +3372,7 @@ msgstr ""
 # Questionnaire_QR_Item_NoOptionsTime
 #: Questionnaire_QR_Item_NoOptionsTime
 msgid "Option list has no option values of type time"
-msgstr ""
+msgstr "Список опций не имеет значений опций типа time"
 
 # Questionnaire_QR_Item_NoString
 #: Questionnaire_QR_Item_NoString
@@ -3351,12 +3382,12 @@ msgstr ""
 # Questionnaire_QR_Item_NoTime
 #: Questionnaire_QR_Item_NoTime
 msgid "The time {0} is not in the set of permitted values"
-msgstr ""
+msgstr "Время {0} не входит в набор разрешенных значений"
 
 # Questionnaire_QR_Item_NoType
 #: Questionnaire_QR_Item_NoType
 msgid "Definition for item {0} does not contain a type"
-msgstr ""
+msgstr "Определение элемента {0} не содержит типа"
 
 # Questionnaire_QR_Item_NotEnabled
 #: Questionnaire_QR_Item_NotEnabled
@@ -3371,7 +3402,7 @@ msgstr ""
 # Questionnaire_QR_Item_NotFound
 #: Questionnaire_QR_Item_NotFound
 msgid "LinkId ''{0}'' not found in questionnaire"
-msgstr ""
+msgstr "LinkId ''{0}'' не найдено в анкете"
 
 # Questionnaire_QR_Item_OnlyOneA
 #: Questionnaire_QR_Item_OnlyOneA
@@ -3381,16 +3412,17 @@ msgstr ""
 # Questionnaire_QR_Item_OnlyOneI
 #: Questionnaire_QR_Item_OnlyOneI
 msgctxt "Questionnaire_QR_Item_OnlyOneI"
-msgid "-- no content: do not translate #108 --"
+msgid "-- no content: do not translate #12 --"
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "-- no content: do not translate #12 --"
+msgstr[1] "-- no content: do not translate #12 --"
+msgstr[2] "-- no content: do not translate #12 --"
+msgstr[3] "-- no content: do not translate #12 --"
 
 # Questionnaire_QR_Item_Order
 #: Questionnaire_QR_Item_Order
 msgid "Structural Error: items are out of order"
-msgstr ""
+msgstr "Структурная ошибка: элементы вышли из строя"
 
 # Questionnaire_QR_Item_StringNoOptions
 #: Questionnaire_QR_Item_StringNoOptions
@@ -3414,6 +3446,7 @@ msgid_plural "Answer value must be one of the {0} types {1} not {2}"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Questionnaire_QR_Q_None
 #: Questionnaire_QR_Q_None
@@ -3453,7 +3486,7 @@ msgstr ""
 # REFERENCE_REF_INVALID_REF
 #: REFERENCE_REF_INVALID_REF
 msgid "The reference ''{0}'' is not a valid reference"
-msgstr ""
+msgstr "Ссылка ''{0}'' не является действительной ссылкой"
 
 # REFERENCE_REF_QUERY_INVALID
 #: REFERENCE_REF_QUERY_INVALID
@@ -3493,7 +3526,7 @@ msgstr ""
 # RESOURCE_DUPLICATE_CONTAINED_ID
 #: RESOURCE_DUPLICATE_CONTAINED_ID
 msgid "Duplicate ID for contained resource: {0}"
-msgstr ""
+msgstr "Повторяющийся идентификатор для содержащегося в нем ресурса: {0}"
 
 # RESOURCE_MATCHETYPE_DISALLOWED
 #: RESOURCE_MATCHETYPE_DISALLOWED
@@ -3513,7 +3546,7 @@ msgstr ""
 # RESOURCE_MATCHETYPE_UNKNOWN_PATTERN
 #: RESOURCE_MATCHETYPE_UNKNOWN_PATTERN
 msgid "The matchetype pattern value ''{1}'' is not valid"
-msgstr ""
+msgstr "Значение шаблона matchetype ''{1}'' не действителен"
 
 # RESOURCE_NOT_MATCHETYPE_EXTENSION
 #: RESOURCE_NOT_MATCHETYPE_EXTENSION
@@ -3548,12 +3581,12 @@ msgstr ""
 # Reference_REF_CantResolve
 #: Reference_REF_CantResolve
 msgid "Unable to resolve resource with reference ''{0}''"
-msgstr ""
+msgstr "Не удается разрешить ресурс со ссылкой ''{0}''"
 
 # Reference_REF_CantResolveProfile
 #: Reference_REF_CantResolveProfile
 msgid "Unable to resolve the profile reference ''{0}''"
-msgstr ""
+msgstr "Не удается разрешить ссылку профиля ''{0}''"
 
 # Reference_REF_Format1
 #: Reference_REF_Format1
@@ -3598,27 +3631,27 @@ msgstr ""
 # Reference__refers_to_a__not_a_ValueSet
 #: Reference__refers_to_a__not_a_ValueSet
 msgid "Reference {0} refers to a {1} not a ValueSet"
-msgstr ""
+msgstr "Ссылка {0} относится к {1} не к набору значений"
 
 # Resource_RES_ID_Malformed_Chars
 #: Resource_RES_ID_Malformed_Chars
 msgid "Invalid Resource id: Invalid Characters (''{0}'')"
-msgstr ""
+msgstr "Неверный идентификатор ресурса: недопустимые символы (''{0}'')"
 
 # Resource_RES_ID_Malformed_Length
 #: Resource_RES_ID_Malformed_Length
 msgid "Invalid Resource id: Too long ({0} chars)"
-msgstr ""
+msgstr "Неверный идентификатор ресурса: Слишком длинный ({0} символов)"
 
 # Resource_RES_ID_Missing
 #: Resource_RES_ID_Missing
 msgid "Resource requires an id, but none is present"
-msgstr ""
+msgstr "Ресурс требует идентификатора, но его нет"
 
 # Resource_RES_ID_Prohibited
 #: Resource_RES_ID_Prohibited
 msgid "Resource has an id, but none is allowed"
-msgstr ""
+msgstr "У ресурса есть идентификатор, но он не разрешен"
 
 # Resource_resolution_services_not_provided
 #: Resource_resolution_services_not_provided
@@ -3628,7 +3661,7 @@ msgstr ""
 # Resource_type_mismatch_for___
 #: Resource_type_mismatch_for___
 msgid "Resource type mismatch for {0} / {1}"
-msgstr ""
+msgstr "Несоответствие типов ресурса для {0} / {1}"
 
 # SCT_NO_MRCM
 #: SCT_NO_MRCM
@@ -3668,7 +3701,7 @@ msgstr ""
 # SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND
 #: SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND
 msgid "The element {0} is not valid"
-msgstr ""
+msgstr "Элемент {0} не действителен"
 
 # SD_CONTEXT_SHOULD_NOT_BE_ELEMENT
 #: SD_CONTEXT_SHOULD_NOT_BE_ELEMENT
@@ -3698,7 +3731,7 @@ msgstr ""
 # SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_TYPE
 #: SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_TYPE
 msgid "The Usage Context value must be of type {1} not {0}"
-msgstr ""
+msgstr "Значение Usage Context должно иметь тип {1} не {0}"
 
 # SD_ED_ADDITIONAL_BINDING_USAGE_UNKNOWN
 #: SD_ED_ADDITIONAL_BINDING_USAGE_UNKNOWN
@@ -3763,7 +3796,7 @@ msgstr ""
 # SD_ED_TYPE_PROFILE_UNKNOWN
 #: SD_ED_TYPE_PROFILE_UNKNOWN
 msgid "Unable to resolve profile {0}"
-msgstr ""
+msgstr "Не удалось определить профиль {0}"
 
 # SD_ED_TYPE_PROFILE_WRONG
 #: SD_ED_TYPE_PROFILE_WRONG
@@ -3782,6 +3815,7 @@ msgid_plural "The type {0} is not in the list of allowed types {1} in the profil
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # SD_ELEMENT_FIXED_WRONG_TYPE
 #: SD_ELEMENT_FIXED_WRONG_TYPE
@@ -3866,7 +3900,7 @@ msgstr ""
 # SD_NO_SLICING_ON_ROOT
 #: SD_NO_SLICING_ON_ROOT
 msgid "Slicing is not allowed at the root of a profile"
-msgstr ""
+msgstr "Нарезка не допускается в корне профиля"
 
 # SD_NO_TYPES_OR_CONTENTREF
 #: SD_NO_TYPES_OR_CONTENTREF
@@ -3891,12 +3925,12 @@ msgstr ""
 # SD_OBGLIGATION_INHERITS_PROFILE_NO_TARGET
 #: SD_OBGLIGATION_INHERITS_PROFILE_NO_TARGET
 msgid "Unable to read a value from this extension"
-msgstr ""
+msgstr "Не удается прочитать значение из этого расширения"
 
 # SD_OBGLIGATION_INHERITS_PROFILE_TARGET_NOT_FOUND
 #: SD_OBGLIGATION_INHERITS_PROFILE_TARGET_NOT_FOUND
 msgid "The profile ''{0}'' could not be found"
-msgstr ""
+msgstr "Профиль ''{0}'' не найден"
 
 # SD_OBGLIGATION_PROFILE_DERIVATION
 #: SD_OBGLIGATION_PROFILE_DERIVATION
@@ -3956,7 +3990,7 @@ msgstr ""
 # SD_PATH_NO_SLICING
 #: SD_PATH_NO_SLICING
 msgid "Slicing is not allowed at ''{0}''"
-msgstr ""
+msgstr "Разрезание не допускается в ''{0}''"
 
 # SD_PATH_SLICE_INCONSISTENT_MS
 #: SD_PATH_SLICE_INCONSISTENT_MS
@@ -4001,7 +4035,7 @@ msgstr ""
 # SD_TYPE_MISSING
 #: SD_TYPE_MISSING
 msgid "No type found"
-msgstr ""
+msgstr "Тип не найден"
 
 # SD_TYPE_NOT_DERIVED
 #: SD_TYPE_NOT_DERIVED
@@ -4116,7 +4150,7 @@ msgstr ""
 # SLICING_CANNOT_BE_EVALUATED
 #: SLICING_CANNOT_BE_EVALUATED
 msgid "Slicing cannot be evaluated: {0}"
-msgstr ""
+msgstr "Разрез не может быть вычислен: {0}"
 
 # SM_DEPENDENT_PARAM_MODE_MISMATCH
 #: SM_DEPENDENT_PARAM_MODE_MISMATCH
@@ -4141,12 +4175,12 @@ msgstr ""
 # SM_GROUP_INPUT_DUPLICATE
 #: SM_GROUP_INPUT_DUPLICATE
 msgid "The name {0} is already used"
-msgstr ""
+msgstr "Название {0} уже используется"
 
 # SM_GROUP_INPUT_MODE_INVALID
 #: SM_GROUP_INPUT_MODE_INVALID
 msgid "The group parameter {0} mode {1} isn''t valid"
-msgstr ""
+msgstr "Параметр group {0} режим {1} не действителен"
 
 # SM_GROUP_INPUT_MODE_MISMATCH
 #: SM_GROUP_INPUT_MODE_MISMATCH
@@ -4161,7 +4195,7 @@ msgstr ""
 # SM_GROUP_INPUT_TYPE_NOT_DECLARED
 #: SM_GROUP_INPUT_TYPE_NOT_DECLARED
 msgid "The type {0} is not declared and is unknown"
-msgstr ""
+msgstr "Тип {0} не объявлен и неизвестен"
 
 # SM_GROUP_INPUT_TYPE_UNKNOWN_STRUCTURE
 #: SM_GROUP_INPUT_TYPE_UNKNOWN_STRUCTURE
@@ -4176,7 +4210,7 @@ msgstr ""
 # SM_GROUP_NAME_DUPLICATE
 #: SM_GROUP_NAME_DUPLICATE
 msgid "The Group name ''{0}'' is already used"
-msgstr ""
+msgstr "Название группы ''{0}'' уже используется"
 
 # SM_IMPORT_NOT_FOUND
 #: SM_IMPORT_NOT_FOUND
@@ -4196,7 +4230,7 @@ msgstr ""
 # SM_NAME_INVALID
 #: SM_NAME_INVALID
 msgid "The name {0} is not valid"
-msgstr ""
+msgstr "Название {0} не действителен"
 
 # SM_NO_LIST_MODE_NEEDED
 #: SM_NO_LIST_MODE_NEEDED
@@ -4216,7 +4250,7 @@ msgstr ""
 # SM_RULEGROUP_NOT_FOUND
 #: SM_RULEGROUP_NOT_FOUND
 msgid "The group {0} could not be resolved"
-msgstr ""
+msgstr "Группа {0} не может быть разрешена"
 
 # SM_RULEGROUP_PARAM_COUNT_MISMATCH
 #: SM_RULEGROUP_PARAM_COUNT_MISMATCH
@@ -4241,7 +4275,7 @@ msgstr ""
 # SM_SOURCE_CONTEXT_UNKNOWN
 #: SM_SOURCE_CONTEXT_UNKNOWN
 msgid "The source context {0} is not known at this point"
-msgstr ""
+msgstr "Исходный контекст {0} не известен в данный момент"
 
 # SM_SOURCE_PATH_INVALID
 #: SM_SOURCE_PATH_INVALID
@@ -4331,17 +4365,17 @@ msgstr ""
 # SM_TARGET_TRANSFORM_TRANSLATE_NO_PARAM
 #: SM_TARGET_TRANSFORM_TRANSLATE_NO_PARAM
 msgid "No value for the {0} parameter found"
-msgstr ""
+msgstr "Нет значения для параметра {0} найденный параметр"
 
 # SM_TARGET_TRANSFORM_TRANSLATE_UNKNOWN_SOURCE
 #: SM_TARGET_TRANSFORM_TRANSLATE_UNKNOWN_SOURCE
 msgid "The source variable {0} is unknown"
-msgstr ""
+msgstr "Исходная переменная {0} неизвестно"
 
 # SM_TARGET_TRANSFORM_TYPE_UNKNOWN
 #: SM_TARGET_TRANSFORM_TYPE_UNKNOWN
 msgid "The type ''{0}'' is not known"
-msgstr ""
+msgstr "Тип ''{0}'' неизвестно"
 
 # SM_TARGET_TRANSFORM_TYPE_UNPROCESSIBLE
 #: SM_TARGET_TRANSFORM_TYPE_UNPROCESSIBLE
@@ -4416,27 +4450,27 @@ msgstr ""
 # STATUS_CODE_HINT
 #: STATUS_CODE_HINT
 msgid "The code is {0}"
-msgstr ""
+msgstr "Код имеет вид {0}"
 
 # STATUS_CODE_HINT_CODE
 #: STATUS_CODE_HINT_CODE
 msgid "The code ''{1}'' is {0}"
-msgstr ""
+msgstr "Код ''{1}'' — это {0}"
 
 # STATUS_CODE_WARNING
 #: STATUS_CODE_WARNING
 msgid "The code is valid but is {0}"
-msgstr ""
+msgstr "Код действителен, но {0}"
 
 # STATUS_CODE_WARNING_CODE
 #: STATUS_CODE_WARNING_CODE
 msgid "The code ''{1}'' is valid but is {0}"
-msgstr ""
+msgstr "Код ''{1}'' действителен, но является {0}"
 
 # Same_id_on_multiple_elements__in_
 #: Same_id_on_multiple_elements__in_
 msgid "Same id ''{0}'' on multiple elements {1}/{2} in {3}"
-msgstr ""
+msgstr "Тот же идентификатор ''{0}'' на нескольких элементах {1}/{2} в {3}"
 
 # Slice_encountered_midway_through_set_path___id___
 #: Slice_encountered_midway_through_set_path___id___
@@ -4476,7 +4510,7 @@ msgstr ""
 # TERMINOLOGY_TX_OID_MULTIPLE_MATCHES
 #: TERMINOLOGY_TX_OID_MULTIPLE_MATCHES
 msgid "The OID ''{0}'' matches multiple resources ({1})"
-msgstr ""
+msgstr "OID ''{0}'' совпадает с несколькими ресурсами ({1})"
 
 # TERMINOLOGY_TX_OID_MULTIPLE_MATCHES_CHOSEN
 #: TERMINOLOGY_TX_OID_MULTIPLE_MATCHES_CHOSEN
@@ -4536,12 +4570,12 @@ msgstr ""
 # TEXT_LINK_NO_ID
 #: TEXT_LINK_NO_ID
 msgid "The html id ''{0}'' was not found in the xhtml"
-msgstr ""
+msgstr "Идентификатор html ''{0}'' не был найден в xhtml"
 
 # TEXT_LINK_SELECTOR_INVALID
 #: TEXT_LINK_SELECTOR_INVALID
 msgid "The textLink selector ''{0}'' is invalid: {1}"
-msgstr ""
+msgstr "Селектор textLink ''{0}'' недействителен: {1}"
 
 # TX_GENERAL_CC_ERROR_MESSAGE
 #: TX_GENERAL_CC_ERROR_MESSAGE
@@ -4841,7 +4875,7 @@ msgstr ""
 # TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE
 #: TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE
 msgid "Example URLs are not allowed in this context ({0})"
-msgstr ""
+msgstr "Примеры URL не допускаются в этом контексте ({0})"
 
 # TYPE_SPECIFIC_CHECKS_DT_XHTML_ACTIVE_HREF
 #: TYPE_SPECIFIC_CHECKS_DT_XHTML_ACTIVE_HREF
@@ -4851,7 +4885,7 @@ msgstr ""
 # TYPE_SPECIFIC_CHECKS_DT_XHTML_EMPTY_HREF
 #: TYPE_SPECIFIC_CHECKS_DT_XHTML_EMPTY_HREF
 msgid "Hyperlink at ''{0}'' for ''{1}'' is empty"
-msgstr ""
+msgstr "Гиперссылка на ''{0}'' для ''{1}'' пуста"
 
 # TYPE_SPECIFIC_CHECKS_DT_XHTML_LITERAL_HREF
 #: TYPE_SPECIFIC_CHECKS_DT_XHTML_LITERAL_HREF
@@ -4876,7 +4910,7 @@ msgstr ""
 # TYPE_SPECIFIER_ILLEGAL_TYPE
 #: TYPE_SPECIFIER_ILLEGAL_TYPE
 msgid "The Type specifier {1} specified an invalid type {0}"
-msgstr ""
+msgstr "Спецификатор типа {1} указал недопустимый тип {0}"
 
 # TYPE_SPECIFIER_NM_ABSTRACT_TYPE
 #: TYPE_SPECIFIER_NM_ABSTRACT_TYPE
@@ -4891,17 +4925,17 @@ msgstr ""
 # Terminology_PassThrough_TX_Message
 #: Terminology_PassThrough_TX_Message
 msgid "{0} (for ''{1}#{2}'')"
-msgstr ""
+msgstr "{0} (для ''{1}#{2}'')"
 
 # Terminology_TX_Binding_CantCheck
 #: Terminology_TX_Binding_CantCheck
 msgid "Binding by URI reference cannot be checked"
-msgstr ""
+msgstr "Привязка по ссылке URI не может быть проверена"
 
 # Terminology_TX_Binding_Missing
 #: Terminology_TX_Binding_Missing
 msgid "Binding for CodeableConcept {0} missing"
-msgstr ""
+msgstr "Привязка для CodeableConcept {0} отсутствует"
 
 # Terminology_TX_Binding_Missing2
 #: Terminology_TX_Binding_Missing2
@@ -4921,7 +4955,7 @@ msgstr ""
 # Terminology_TX_Binding_NoSource2
 #: Terminology_TX_Binding_NoSource2
 msgid "Binding has no source, so can''t be checked"
-msgstr ""
+msgstr "Привязка не имеет источника, поэтому не может быть проверена"
 
 # Terminology_TX_Code_ValueSet
 #: Terminology_TX_Code_ValueSet
@@ -4946,7 +4980,7 @@ msgstr ""
 # Terminology_TX_Coding_Count
 #: Terminology_TX_Coding_Count
 msgid "Expected {0} but found {1} coding elements"
-msgstr ""
+msgstr "Ожидалось {0}, но найдено элементов кодирования {1}"
 
 # Terminology_TX_Confirm_1_CC
 #: Terminology_TX_Confirm_1_CC
@@ -4981,12 +5015,12 @@ msgstr ""
 # Terminology_TX_Display_Wrong
 #: Terminology_TX_Display_Wrong
 msgid "Display should be ''{0}''"
-msgstr ""
+msgstr "Дисплей должен быть ''{0}''"
 
 # Terminology_TX_Error_CodeableConcept
 #: Terminology_TX_Error_CodeableConcept
 msgid "Error {0} validating CodeableConcept"
-msgstr ""
+msgstr "Ошибка {0} валидация CodeableConcept"
 
 # Terminology_TX_Error_CodeableConcept_Max
 #: Terminology_TX_Error_CodeableConcept_Max
@@ -4996,12 +5030,12 @@ msgstr ""
 # Terminology_TX_Error_Coding1
 #: Terminology_TX_Error_Coding1
 msgid "Error {0} validating Coding"
-msgstr ""
+msgstr "Ошибка {0} валидация кодирования"
 
 # Terminology_TX_Error_Coding2
 #: Terminology_TX_Error_Coding2
 msgid "Error {0} validating Coding: {1}"
-msgstr ""
+msgstr "Ошибка {0} валидация кодирования: {1}"
 
 # Terminology_TX_NoValid_10
 #: Terminology_TX_NoValid_10
@@ -5096,7 +5130,7 @@ msgstr ""
 # Terminology_TX_System_Invalid
 #: Terminology_TX_System_Invalid
 msgid "Invalid System URI: {0}"
-msgstr ""
+msgstr "Недопустимый системный URI: {0}"
 
 # Terminology_TX_System_Relative
 #: Terminology_TX_System_Relative
@@ -5106,7 +5140,7 @@ msgstr ""
 # Terminology_TX_System_Unknown
 #: Terminology_TX_System_Unknown
 msgid "Unknown Code System ''{0}''"
-msgstr ""
+msgstr "Неизвестная система кодов ''{0}''"
 
 # Terminology_TX_System_ValueSet
 #: Terminology_TX_System_ValueSet
@@ -5121,7 +5155,7 @@ msgstr ""
 # Terminology_TX_ValueSet_NotFound
 #: Terminology_TX_ValueSet_NotFound
 msgid "ValueSet ''{0}'' not found"
-msgstr ""
+msgstr "Набор значений ''{0}\" не найден"
 
 # Terminology_TX_ValueSet_NotFound_CS
 #: Terminology_TX_ValueSet_NotFound_CS
@@ -5131,7 +5165,7 @@ msgstr ""
 # Text_should_not_be_present
 #: Text_should_not_be_present
 msgid "Text should not be present (''{0}'')"
-msgstr ""
+msgstr "Текста не должно быть («'{0}'')"
 
 # The_base_snapshot_marks_a_slicing_as_closed_but_the_differential_tries_to_extend_it_in__at__
 #: The_base_snapshot_marks_a_slicing_as_closed_but_the_differential_tries_to_extend_it_in__at__
@@ -5146,12 +5180,12 @@ msgstr ""
 # This_base_property_must_be_an_Array_not_
 #: This_base_property_must_be_an_Array_not_
 msgid "This base property must be an Array, not {0}"
-msgstr ""
+msgstr "Это базовое свойство должно быть массивом, а не {0}"
 
 # This_cannot_be_parsed_as_a_FHIR_object_no_name
 #: This_cannot_be_parsed_as_a_FHIR_object_no_name
 msgid "This content cannot be parsed (no name)"
-msgstr ""
+msgstr "Это содержимое не может быть проанализировано (без имени)"
 
 # This_does_not_appear_to_be_a_FHIR_resource_unknown_name_
 #: This_does_not_appear_to_be_a_FHIR_resource_unknown_name_
@@ -5171,17 +5205,17 @@ msgstr ""
 # This_property_must_be__not_
 #: This_property_must_be__not_
 msgid "The property {2} must be {0}, not {1} (at {3})"
-msgstr ""
+msgstr "Свойство {2} должно быть {0}, а не {1} (на {3})"
 
 # This_property_must_be_a_Literal_not_
 #: This_property_must_be_a_Literal_not_
 msgid "This property must be a Literal, not {0}"
-msgstr ""
+msgstr "Это свойство должно быть буквальным, а не {0}"
 
 # This_property_must_be_a_URI_or_bnode_not_
 #: This_property_must_be_a_URI_or_bnode_not_
 msgid "This property must be a URI or bnode, not {0}"
-msgstr ""
+msgstr "Это свойство должно быть URI или bnode, а не {0}"
 
 # This_property_must_be_an_Array_not_
 #: This_property_must_be_an_Array_not_
@@ -5201,17 +5235,17 @@ msgstr ""
 # Type_Specific_Checks_DT_Base64_Valid
 #: Type_Specific_Checks_DT_Base64_Valid
 msgid "The value ''{0}'' is not a valid Base64 value"
-msgstr ""
+msgstr "Значение ''{0}'' не является допустимым значением Base64"
 
 # Type_Specific_Checks_DT_Boolean_Value
 #: Type_Specific_Checks_DT_Boolean_Value
 msgid "Boolean values must be ''true'' or ''false''"
-msgstr ""
+msgstr "Булевы должны быть ''true'' или ''false''"
 
 # Type_Specific_Checks_DT_Code_WS
 #: Type_Specific_Checks_DT_Code_WS
 msgid "The code ''{0}'' is not valid (whitespace rules)"
-msgstr ""
+msgstr "Код ''{0}'' не действителен (правила пробелов)"
 
 # Type_Specific_Checks_DT_DateTime_Reasonable
 #: Type_Specific_Checks_DT_DateTime_Reasonable
@@ -5226,17 +5260,17 @@ msgstr ""
 # Type_Specific_Checks_DT_DateTime_TZ
 #: Type_Specific_Checks_DT_DateTime_TZ
 msgid "If a date has a time, it must have a timezone"
-msgstr ""
+msgstr "Если у даты есть время, у нее должен быть часовой пояс"
 
 # Type_Specific_Checks_DT_DateTime_Valid
 #: Type_Specific_Checks_DT_DateTime_Valid
 msgid "Not a valid date/time ({0})"
-msgstr ""
+msgstr "Недопустимая дата/время ({0})"
 
 # Type_Specific_Checks_DT_Date_Valid
 #: Type_Specific_Checks_DT_Date_Valid
 msgid "Not a valid date ({0})"
-msgstr ""
+msgstr "Недействительная дата ({0})"
 
 # Type_Specific_Checks_DT_Decimal_GT
 #: Type_Specific_Checks_DT_Decimal_GT
@@ -5256,12 +5290,12 @@ msgstr ""
 # Type_Specific_Checks_DT_Decimal_Valid
 #: Type_Specific_Checks_DT_Decimal_Valid
 msgid "The value ''{0}'' is not a valid decimal"
-msgstr ""
+msgstr "Значение ''{0}'' не является допустимой десятичной"
 
 # Type_Specific_Checks_DT_ID_Valid
 #: Type_Specific_Checks_DT_ID_Valid
 msgid "id value ''{0}'' is not valid"
-msgstr ""
+msgstr "Значение идентификатора ''{0}'' не действителен"
 
 # Type_Specific_Checks_DT_Identifier_System
 #: Type_Specific_Checks_DT_Identifier_System
@@ -5271,12 +5305,12 @@ msgstr ""
 # Type_Specific_Checks_DT_Instant_Valid
 #: Type_Specific_Checks_DT_Instant_Valid
 msgid "Not a valid instant ({0})"
-msgstr ""
+msgstr "Не является действительным instant ({0})"
 
 # Type_Specific_Checks_DT_Integer64_Valid
 #: Type_Specific_Checks_DT_Integer64_Valid
 msgid "The value ''{0}'' is not a valid integer64"
-msgstr ""
+msgstr "Значение ''{0}'' не является допустимым integer64"
 
 # Type_Specific_Checks_DT_Integer_GT
 #: Type_Specific_Checks_DT_Integer_GT
@@ -5291,42 +5325,42 @@ msgstr ""
 # Type_Specific_Checks_DT_Integer_LT0
 #: Type_Specific_Checks_DT_Integer_LT0
 msgid "value is less than permitted minimum value of 0"
-msgstr ""
+msgstr "значение меньше, чем допустимое минимальное значение 0"
 
 # Type_Specific_Checks_DT_Integer_LT1
 #: Type_Specific_Checks_DT_Integer_LT1
 msgid "value is less than permitted minimum value of 1"
-msgstr ""
+msgstr "значение меньше, чем допустимое минимальное значение 1"
 
 # Type_Specific_Checks_DT_Integer_Valid
 #: Type_Specific_Checks_DT_Integer_Valid
 msgid "The value ''{0}'' is not a valid integer"
-msgstr ""
+msgstr "Значение ''{0}'' не является допустимым целым числом"
 
 # Type_Specific_Checks_DT_OID_Start
 #: Type_Specific_Checks_DT_OID_Start
 msgid "OIDs must start with urn:oid:"
-msgstr ""
+msgstr "OID должны начинаться с urn:oid:"
 
 # Type_Specific_Checks_DT_OID_Valid
 #: Type_Specific_Checks_DT_OID_Valid
 msgid "OIDs must be valid ({0})"
-msgstr ""
+msgstr "OID должны быть действительными ({0})"
 
 # Type_Specific_Checks_DT_Primitive_Length
 #: Type_Specific_Checks_DT_Primitive_Length
 msgid "value is longer than permitted maximum length of {0}"
-msgstr ""
+msgstr "значение длиннее, чем допустимая максимальная длина {0}"
 
 # Type_Specific_Checks_DT_Primitive_NotEmpty
 #: Type_Specific_Checks_DT_Primitive_NotEmpty
 msgid "value cannot be empty"
-msgstr ""
+msgstr "Значение не может быть пустым"
 
 # Type_Specific_Checks_DT_Primitive_Regex
 #: Type_Specific_Checks_DT_Primitive_Regex
 msgid "Element value ''{0}'' does not meet regex ''{1}''"
-msgstr ""
+msgstr "Значение элемента ''{0}'' не соответствует regex ''{1}''"
 
 # Type_Specific_Checks_DT_Primitive_Regex_Type
 #: Type_Specific_Checks_DT_Primitive_Regex_Type
@@ -5341,7 +5375,7 @@ msgstr ""
 # Type_Specific_Checks_DT_Primitive_WS
 #: Type_Specific_Checks_DT_Primitive_WS
 msgid "Primitive types should not only be whitespace"
-msgstr ""
+msgstr "Примитивные типы должны быть не только пробелами"
 
 # Type_Specific_Checks_DT_String_Length
 #: Type_Specific_Checks_DT_String_Length
@@ -5356,42 +5390,42 @@ msgstr ""
 # Type_Specific_Checks_DT_String_WS_ALL
 #: Type_Specific_Checks_DT_String_WS_ALL
 msgid "value should not be all whitespace ''{0}''"
-msgstr ""
+msgstr "значение не должно быть сплошным пробелом ''{0}''"
 
 # Type_Specific_Checks_DT_Time_Valid
 #: Type_Specific_Checks_DT_Time_Valid
 msgid "Not a valid time ({0})"
-msgstr ""
+msgstr "Недопустимое время ({0})"
 
 # Type_Specific_Checks_DT_URI_OID
 #: Type_Specific_Checks_DT_URI_OID
 msgid "URI values cannot start with oid:"
-msgstr ""
+msgstr "Значения URI не могут начинаться с oid:"
 
 # Type_Specific_Checks_DT_URI_UUID
 #: Type_Specific_Checks_DT_URI_UUID
 msgid "URI values cannot start with uuid:"
-msgstr ""
+msgstr "Значения URI не могут начинаться с uuid:"
 
 # Type_Specific_Checks_DT_URI_WS
 #: Type_Specific_Checks_DT_URI_WS
 msgid "URI values cannot have whitespace(''{0}'')"
-msgstr ""
+msgstr "Значения URI не могут содержать пробелы (''{0}'')"
 
 # Type_Specific_Checks_DT_URL_Resolve
 #: Type_Specific_Checks_DT_URL_Resolve
 msgid "No definition could be found for URL value ''{0}''"
-msgstr ""
+msgstr "Не удалось найти определение для значения URL ''{0}''"
 
 # Type_Specific_Checks_DT_UUID_Strat
 #: Type_Specific_Checks_DT_UUID_Strat
 msgid "UUIDs must start with urn:uuid:"
-msgstr ""
+msgstr "UUID должны начинаться с urn:uuid:"
 
 # Type_Specific_Checks_DT_UUID_Valid
 #: Type_Specific_Checks_DT_UUID_Valid
 msgid "UUIDs must be valid and lowercase ({0})"
-msgstr ""
+msgstr "UUID должны быть допустимыми и строчными ({0})"
 
 # Type_Specific_Checks_DT_XHTML_Resolve
 #: Type_Specific_Checks_DT_XHTML_Resolve
@@ -5401,7 +5435,7 @@ msgstr ""
 # Type_Specific_Checks_DT_XHTML_Resolve_Img
 #: Type_Specific_Checks_DT_XHTML_Resolve_Img
 msgid "Image source ''{0}'' at ''{1}'' does not resolve"
-msgstr ""
+msgstr "Источник изображения ''{0}'' в ''{1}'' не работает"
 
 # UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_
 #: UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_
@@ -5465,6 +5499,7 @@ msgid_plural "This content includes the characters {1} (hex values). These chara
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # UNKNOWN_CODESYSTEM
 #: UNKNOWN_CODESYSTEM
@@ -5484,7 +5519,7 @@ msgstr ""
 # UNKNOWN_PROPERTY
 #: UNKNOWN_PROPERTY
 msgid "Unknown property name {0} in path {1}2"
-msgstr ""
+msgstr "Неизвестное имя свойства {0} в пути {1}2"
 
 # UNRECOGNISED_PROPERTY_TYPE
 #: UNRECOGNISED_PROPERTY_TYPE
@@ -5539,7 +5574,7 @@ msgstr ""
 # Unable_to_find_element_
 #: Unable_to_find_element_
 msgid "Unable to find element {0}"
-msgstr ""
+msgstr "Не удается найти элемент {0}"
 
 # Unable_to_find_element__in_
 #: Unable_to_find_element__in_
@@ -5719,12 +5754,12 @@ msgstr ""
 # Unknown_Data_format_
 #: Unknown_Data_format_
 msgid "Unknown Data format ''{0}''"
-msgstr ""
+msgstr "Неизвестный формат данных ''{0}''"
 
 # Unknown_Date_format_
 #: Unknown_Date_format_
 msgid "Unknown Date format ''{0}''"
-msgstr ""
+msgstr "Неизвестный формат даты ''{0}''"
 
 # Unknown_resource_type_missing_rdfstype
 #: Unknown_resource_type_missing_rdfstype
@@ -5804,7 +5839,7 @@ msgstr ""
 # VALIDATION_AI_FAILED
 #: VALIDATION_AI_FAILED
 msgid "Consulting AI failed: {0}"
-msgstr ""
+msgstr "Вопрос у ИИ не удался: {0}"
 
 # VALIDATION_AI_FAILED_LOG
 #: VALIDATION_AI_FAILED_LOG
@@ -5854,7 +5889,7 @@ msgstr ""
 # VALIDATION_NO_EXPERIMENTAL_CONTENT
 #: VALIDATION_NO_EXPERIMENTAL_CONTENT
 msgid "Experimental content is not allowed in this context"
-msgstr ""
+msgstr "Экспериментальный контент в этом контексте не допускается"
 
 # VALIDATION_VAL_GLOBAL_PROFILE_UNKNOWN
 #: VALIDATION_VAL_GLOBAL_PROFILE_UNKNOWN
@@ -6169,7 +6204,7 @@ msgstr ""
 # VALUESET_INCLUDE_WRONG_VS
 #: VALUESET_INCLUDE_WRONG_VS
 msgid "The system ''{0}'' is actually a value set"
-msgstr ""
+msgstr "Система ''{0}'' на самом деле является набором значений"
 
 # VALUESET_INCLUDE_WRONG_VS_HINT
 #: VALUESET_INCLUDE_WRONG_VS_HINT
@@ -6204,7 +6239,7 @@ msgstr ""
 # VALUESET_PARAMETER_NOT_USED
 #: VALUESET_PARAMETER_NOT_USED
 msgid "The value set parameter ''{0}'' is not used"
-msgstr ""
+msgstr "Параметр набора значений ''{0}'' не используется"
 
 # VALUESET_PARAMETER_NO_DOCO
 #: VALUESET_PARAMETER_NO_DOCO
@@ -6275,6 +6310,7 @@ msgid_plural "Required supplements not found: {1}"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # VALUESET_TOO_COSTLY
 #: VALUESET_TOO_COSTLY
@@ -6339,17 +6375,17 @@ msgstr ""
 # VIEWDEFINITION_DUPL_COL_NAME
 #: VIEWDEFINITION_DUPL_COL_NAME
 msgid "Duplicate Column Name ''{0}''"
-msgstr ""
+msgstr "Повторяющееся имя столбца ''{0}''"
 
 # VIEWDEFINITION_NAME_INVALID
 #: VIEWDEFINITION_NAME_INVALID
 msgid "The {0} name ''{1}'' is not valid"
-msgstr ""
+msgstr "Недопустимое имя {0} ''{1}''"
 
 # VIEWDEFINITION_NAME_REQUIRED
 #: VIEWDEFINITION_NAME_REQUIRED
 msgid "A column name is required"
-msgstr ""
+msgstr "Имя столбца является обязательным"
 
 # VIEWDEFINITION_NAME_REQUIRED_HINT
 #: VIEWDEFINITION_NAME_REQUIRED_HINT
@@ -6359,12 +6395,12 @@ msgstr ""
 # VIEWDEFINITION_PATH_ERROR
 #: VIEWDEFINITION_PATH_ERROR
 msgid "Expression Error: {0}{1}"
-msgstr ""
+msgstr "Ошибка выражения: {0}{1}"
 
 # VIEWDEFINITION_PATH_WARNING
 #: VIEWDEFINITION_PATH_WARNING
 msgid "Expression Warning: {0}"
-msgstr ""
+msgstr "Предупреждение о выражении: {0}"
 
 # VIEWDEFINITION_PATH_WRONG_RETURN
 #: VIEWDEFINITION_PATH_WRONG_RETURN
@@ -6384,12 +6420,12 @@ msgstr ""
 # VIEWDEFINITION_UNABLE_TO_TYPE
 #: VIEWDEFINITION_UNABLE_TO_TYPE
 msgid "Unable to determine a type (found ''{0}''){1}"
-msgstr ""
+msgstr "Не удается определить тип (обнаружено ''{0}''){1}"
 
 # VIEWDEFINITION_UNKNOWN_RESOURCE
 #: VIEWDEFINITION_UNKNOWN_RESOURCE
 msgid "The name ''{0}'' is not a valid resource{1}"
-msgstr ""
+msgstr "Название ''{0}'' не является действительным ресурсом{1}"
 
 # VS_EXP_FILTER_UNK
 #: VS_EXP_FILTER_UNK
@@ -6419,7 +6455,7 @@ msgstr ""
 # VS_EXP_IMPORT_ERROR
 #: VS_EXP_IMPORT_ERROR
 msgid "Unable to expand included value set ''{0}'': {1}"
-msgstr ""
+msgstr "Не удается развернуть включенный набор значений ''{0}'': {1}"
 
 # VS_EXP_IMPORT_ERROR_X
 #: VS_EXP_IMPORT_ERROR_X
@@ -6439,7 +6475,7 @@ msgstr ""
 # VS_EXP_IMPORT_NULL
 #: VS_EXP_IMPORT_NULL
 msgid "Unable to find included value set with no identity"
-msgstr ""
+msgstr "Не удается найти включенный набор значений без личности"
 
 # VS_EXP_IMPORT_NULL_X
 #: VS_EXP_IMPORT_NULL_X
@@ -6449,7 +6485,7 @@ msgstr ""
 # VS_EXP_IMPORT_UNK
 #: VS_EXP_IMPORT_UNK
 msgid "Unable to find included value set ''{0}''"
-msgstr ""
+msgstr "Не удается найти включенный набор значений ''{0}''"
 
 # VS_EXP_IMPORT_UNK_PINNED
 #: VS_EXP_IMPORT_UNK_PINNED
@@ -6464,7 +6500,7 @@ msgstr ""
 # VS_EXP_IMPORT_UNK_X
 #: VS_EXP_IMPORT_UNK_X
 msgid "Unable to find excluded value set ''{0}''"
-msgstr ""
+msgstr "Не удается найти набор исключенных значений ''{0}''"
 
 # Validation_BUNDLE_Message
 #: Validation_BUNDLE_Message
@@ -6493,6 +6529,7 @@ msgid_plural "{3}: max allowed = {7}, but found {0} (from {1})"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Validation_VAL_Profile_Minimum
 #: Validation_VAL_Profile_Minimum
@@ -6501,6 +6538,7 @@ msgid_plural "{3}: minimum required = {7}, but only found {0} (from {1})"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Validation_VAL_Profile_Minimum_SLICE
 #: Validation_VAL_Profile_Minimum_SLICE
@@ -6509,6 +6547,7 @@ msgid_plural "Slice ''{3}'': minimum required = {0}, but only found {7} (from {1
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Validation_VAL_Profile_MultipleMatches
 #: Validation_VAL_Profile_MultipleMatches
@@ -6517,6 +6556,7 @@ msgid_plural "Found multiple matching profiles among {0} choices: {1}"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Validation_VAL_Profile_NoCheckMax
 #: Validation_VAL_Profile_NoCheckMax
@@ -6525,6 +6565,7 @@ msgid_plural "{3}: Found {0} matches, but unable to check max allowed ({2}) due 
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Validation_VAL_Profile_NoCheckMin
 #: Validation_VAL_Profile_NoCheckMin
@@ -6533,6 +6574,7 @@ msgid_plural "{3}: Found {0} matches, but unable to check minimum required ({2})
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # Validation_VAL_Profile_NoDefinition
 #: Validation_VAL_Profile_NoDefinition
@@ -6627,7 +6669,7 @@ msgstr ""
 # XHTML_URL_DATA_NO_DATA
 #: XHTML_URL_DATA_NO_DATA
 msgid "No data found in data: URL"
-msgstr ""
+msgstr "Данные не найдены в data: URL"
 
 # XHTML_URL_EMPTY
 #: XHTML_URL_EMPTY
@@ -6646,6 +6688,7 @@ msgid_plural "URL contains {0} Invalid Characters: {1}"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 # XHTML_XHTML_ATTRIBUTE_XML_SPACE
 #: XHTML_XHTML_ATTRIBUTE_XML_SPACE
@@ -6820,5 +6863,5 @@ msgstr ""
 # xml_encoding_invalid
 #: xml_encoding_invalid
 msgid "The XML encoding is invalid (must be UTF-8)"
-msgstr ""
+msgstr "Кодировка XML недопустима (должна быть UTF-8)"
 

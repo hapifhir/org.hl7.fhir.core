@@ -1,21 +1,21 @@
 msgid ""
 msgstr ""
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Crowdin-Project: orghl7fhircore\n"
 "X-Crowdin-Project-ID: 792848\n"
-"X-Crowdin-Language: es-ES\n"
+"X-Crowdin-Language: uk\n"
 "X-Crowdin-File: /org.hl7.fhir.utilities/src/main/resources/source/rendering-phrases-en.po\n"
 "X-Crowdin-File-ID: 236\n"
 "Project-Id-Version: orghl7fhircore\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Language-Team: Spanish\n"
-"Language: es_ES\n"
-"PO-Revision-Date: 2025-06-04 11:08\n"
+"Language-Team: Ukrainian\n"
+"Language: uk_UA\n"
+"PO-Revision-Date: 2025-06-05 11:13\n"
 
 # ACTOR_DEF_ACT
 #: ACTOR_DEF_ACT
 msgid "Actor: {0}"
-msgstr ""
+msgstr "Актор: {0}"
 
 # ACTOR_DEF_CAP
 #: ACTOR_DEF_CAP
@@ -145,7 +145,7 @@ msgstr ""
 # BUNDLE_ETAG
 #: BUNDLE_ETAG
 msgid "ETag = {0}"
-msgstr "ETag = {0}"
+msgstr ""
 
 # BUNDLE_HEADER_DOCUMENT_CONTENTS
 #: BUNDLE_HEADER_DOCUMENT_CONTENTS
@@ -2122,6 +2122,8 @@ msgid "Contained Resource"
 msgid_plural "Contained Resources"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # PAT_DECEASED
 #: PAT_DECEASED
@@ -2154,6 +2156,8 @@ msgid "Language:"
 msgid_plural "Languages:"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # PAT_LANG_HINT
 #: PAT_LANG_HINT
@@ -2161,6 +2165,8 @@ msgid "Language spoken"
 msgid_plural "Languages spoken"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # PAT_LANG_PREFERRED
 #: PAT_LANG_PREFERRED
@@ -2259,6 +2265,8 @@ msgid "Other Id:"
 msgid_plural "Other Ids:"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # PAT_OTHER_ID_HINT
 #: PAT_OTHER_ID_HINT
@@ -2266,6 +2274,8 @@ msgid "Other Id (see the one above)"
 msgid_plural "Other Ids (see the one above)"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # PAT_PERIOD
 #: PAT_PERIOD
@@ -3542,6 +3552,8 @@ msgid "The element {0} is sliced based on the value of {1}"
 msgid_plural "The element {0} is sliced based on the values of {1}"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # SD_SUMMARY_SLICES
 #: SD_SUMMARY_SLICES
@@ -5238,6 +5250,8 @@ msgid "Import all the codes that are contained in"
 msgid_plural "Import all the codes that are contained in the intersection of"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # VALUE_SET_IN
 #: VALUE_SET_IN

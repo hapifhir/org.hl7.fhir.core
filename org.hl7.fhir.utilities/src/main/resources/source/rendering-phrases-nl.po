@@ -1,3 +1,16 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: orghl7fhircore\n"
+"X-Crowdin-Project-ID: 792848\n"
+"X-Crowdin-Language: nl\n"
+"X-Crowdin-File: /org.hl7.fhir.utilities/src/main/resources/source/rendering-phrases-en.po\n"
+"X-Crowdin-File-ID: 236\n"
+"Project-Id-Version: orghl7fhircore\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: Dutch\n"
+"Language: nl_NL\n"
+"PO-Revision-Date: 2025-06-04 11:08\n"
 
 # ACTOR_DEF_ACT
 #: ACTOR_DEF_ACT
@@ -322,7 +335,7 @@ msgstr "Core FHIR resource"
 # CAPABILITY_FHIR_VER
 #: CAPABILITY_FHIR_VER
 msgid "FHIR Version: {0}"
-msgstr "FHIR versie: {0}"
+msgstr "FHIR-versie: {0}"
 
 # CAPABILITY_HISTORY_INT
 #: CAPABILITY_HISTORY_INT
@@ -1360,7 +1373,7 @@ msgstr "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versi
 # GENERAL_ADDITIONAL_BINDING
 #: GENERAL_ADDITIONAL_BINDING
 msgid "This element has additional bindings"
-msgstr ""
+msgstr "Dit element heeft additionele bindings"
 
 # GENERAL_ADD_LANG
 #: GENERAL_ADD_LANG
@@ -1375,7 +1388,7 @@ msgstr "Binding"
 # GENERAL_BINDINGS
 #: GENERAL_BINDINGS
 msgid "Bindings"
-msgstr ""
+msgstr "Bindings"
 
 # GENERAL_BINDING_NO_DESC
 #: GENERAL_BINDING_NO_DESC
@@ -1385,12 +1398,12 @@ msgstr "Omschrijving ontbreekt"
 # GENERAL_BINDING_NO_VS_1
 #: GENERAL_BINDING_NO_VS_1
 msgid "Binding Description"
-msgstr ""
+msgstr "Binding omschrijving"
 
 # GENERAL_BINDING_NO_VS_2
 #: GENERAL_BINDING_NO_VS_2
 msgid "This binding doesn''t define a testable ValueSet"
-msgstr ""
+msgstr "Deze binding definieert geen testbare waardelijst"
 
 # GENERAL_BIND_MIN_ALLOW
 #: GENERAL_BIND_MIN_ALLOW
@@ -1441,7 +1454,7 @@ msgstr "Conformance"
 #: GENERAL_CONSTRAINTS
 msgctxt "GENERAL_CONSTRAINTS"
 msgid "Constraints"
-msgstr ""
+msgstr "Constrains"
 
 # GENERAL_CONTACT
 #: GENERAL_CONTACT
@@ -1524,7 +1537,7 @@ msgstr "Filter"
 #: GENERAL_FIXED_VALUE
 msgctxt "GENERAL_FIXED_VALUE"
 msgid "Fixed Value: {0}"
-msgstr ""
+msgstr "Vaste waarde: {0}"
 
 # GENERAL_FLAGS
 #: GENERAL_FLAGS
@@ -1581,7 +1594,7 @@ msgstr "Verplichtingen"
 #: GENERAL_OBLIGATIONS
 msgctxt "GENERAL_OBLIGATIONS"
 msgid "Obligations"
-msgstr ""
+msgstr "Verplichtingen"
 
 # GENERAL_OID
 #: GENERAL_OID
@@ -1602,7 +1615,7 @@ msgstr "Parameters"
 #: GENERAL_PATTERN_VALUE
 msgctxt "GENERAL_PATTERN_VALUE"
 msgid "Pattern Value: {0}"
-msgstr ""
+msgstr "Patternwaarde: {0}"
 
 # GENERAL_PREFERRED
 #: GENERAL_PREFERRED
@@ -1650,7 +1663,7 @@ msgstr "Verplicht"
 # GENERAL_REQUIRED_BINDING
 #: GENERAL_REQUIRED_BINDING
 msgid "Required Binding to ValueSet {0}"
-msgstr ""
+msgstr "Verplichte binding met waardelijst {0}"
 
 # GENERAL_RESOURCE
 #: GENERAL_RESOURCE
@@ -1667,7 +1680,7 @@ msgstr "Veiligheidslabel"
 #: GENERAL_SOURCE
 msgctxt "GENERAL_SOURCE"
 msgid "Source"
-msgstr ""
+msgstr "Bron"
 
 # GENERAL_SRC
 #: GENERAL_SRC
@@ -1713,12 +1726,12 @@ msgstr "Type"
 # GENERAL_TYPE_PROFILE
 #: GENERAL_TYPE_PROFILE
 msgid "This element has profiles on it's type: {0}"
-msgstr ""
+msgstr "Dit element heeft profielen op zijn type: {0}"
 
 # GENERAL_TYPE_TARGET_PROFILE
 #: GENERAL_TYPE_TARGET_PROFILE
 msgid "This element has restrictions/profiles on it's targets: {0}"
-msgstr ""
+msgstr "Dit element heeft beperkingen/profielen op zijn doelen: {0}"
 
 # GENERAL_UCUM
 #: GENERAL_UCUM
@@ -1753,17 +1766,17 @@ msgstr "Waardelijst"
 # GENERAL_VALUE_BOUNDED
 #: GENERAL_VALUE_BOUNDED
 msgid "The value must be between {0} and {1} (or equal)"
-msgstr ""
+msgstr "De waarde moet liggen tussen {0} en {1} (of gelijk zijn aan)"
 
 # GENERAL_VALUE_MAX
 #: GENERAL_VALUE_MAX
 msgid "The value must be less or equal to {0}"
-msgstr ""
+msgstr "De waarde moet kleiner of gelijk zijn aan {0}"
 
 # GENERAL_VALUE_MIN
 #: GENERAL_VALUE_MIN
 msgid "The value must be greater or equal to {0}"
-msgstr ""
+msgstr "De waarde moet groter of gelijk zijn aan {0}"
 
 # GENERAL_VER
 #: GENERAL_VER
@@ -1980,7 +1993,7 @@ msgstr "Periode"
 # OBLIGATION_SOURCE
 #: OBLIGATION_SOURCE
 msgid "This obligation is defined in the profile {0}"
-msgstr ""
+msgstr "Deze verplichting is gedefinieerd in het profiel {0}"
 
 # OBLIG_ACT
 #: OBLIG_ACT
@@ -2850,492 +2863,492 @@ msgstr "versie: {0}"
 # SDR_ALL_ELEM
 #: SDR_ALL_ELEM
 msgid "**ALL** elements"
-msgstr ""
+msgstr "**ALLE** elementen"
 
 # SDR_ALL_EXT
 #: SDR_ALL_EXT
 msgid "**ALL** extensions"
-msgstr ""
+msgstr "**ALLE** extensies"
 
 # SDR_ANY_ORDER
 #: SDR_ANY_ORDER
 msgid "// sliced by {0} in any order"
-msgstr ""
+msgstr "// opgedeeld op {0} in willekeurige volgorde"
 
 # SDR_BP
 #: SDR_BP
 msgid "best practice"
-msgstr ""
+msgstr "best practice"
 
 # SDR_CAPSTMT
 #: SDR_CAPSTMT
 msgid "CapabilityStatements using this {0}"
-msgstr ""
+msgstr "CapabilityStatements met deze {0}"
 
 # SDR_CH_DET
 #: SDR_CH_DET
 msgid "New Content"
-msgstr ""
+msgstr "Nieuwe content"
 
 # SDR_CH_NO
 #: SDR_CH_NO
 msgid "No changes"
-msgstr ""
+msgstr "Geen wijzigingen"
 
 # SDR_CLICK_COPY
 #: SDR_CLICK_COPY
 msgid "Click to copy URL"
-msgstr ""
+msgstr "Klik om de url te kopiëren"
 
 # SDR_CODE_FROM
 #: SDR_CODE_FROM
 msgid "(a valid code from {0})"
-msgstr ""
+msgstr "(een geldige code uit {0})"
 
 # SDR_COMPLY
 #: SDR_COMPLY
 msgid "Comply with this profile {0}"
-msgstr ""
+msgstr "Conform dit profiel {0}"
 
 # SDR_CONCEPT_DOMAIN
 #: SDR_CONCEPT_DOMAIN
 msgid "Concept Domain"
-msgstr ""
+msgstr "Conceptdomein"
 
 # SDR_CONT_CH_DET_CS
 #: SDR_CONT_CH_DET_CS
 msgid "The list of codes defined by the code system has changed"
-msgstr ""
+msgstr "De lijst met codes gedefinieerd door het codesysteem is gewijzigd"
 
 # SDR_CONT_CH_DET_SD
 #: SDR_CONT_CH_DET_SD
 msgid "The data elements list has changed"
-msgstr ""
+msgstr "De lijst met dataelementen is gewijzigd"
 
 # SDR_CONT_CH_DET_VS
 #: SDR_CONT_CH_DET_VS
 msgid "The logical definition of the value set has changed"
-msgstr ""
+msgstr "De logische definitie van de waardelijst is gewijzigd"
 
 # SDR_CONT_CH_NO
 #: SDR_CONT_CH_NO
 msgid "Unable to evaluate changes to content"
-msgstr ""
+msgstr "Kan geen wijzigingen aan de content controleren"
 
 # SDR_DEFN_CH_DET_CS
 #: SDR_DEFN_CH_DET_CS
 msgctxt "SDR_DEFN_CH_DET_CS"
 msgid "One or more text definitions/displays have changed"
-msgstr ""
+msgstr "Eén of meer tekstdefinities/weergaven zijn gewijzigd"
 
 # SDR_DEFN_CH_DET_SD
 #: SDR_DEFN_CH_DET_SD
 msgid "One or more text definitions, invariants or bindings have changed"
-msgstr ""
+msgstr "Eén of meer tekstdefinities, invarianten of bindings zijn gewijzigd"
 
 # SDR_DEFN_CH_DET_VS
 #: SDR_DEFN_CH_DET_VS
 msgctxt "SDR_DEFN_CH_DET_VS"
 msgid "One or more text definitions/displays have changed"
-msgstr ""
+msgstr "Eén of meer tekstdefinities zijn gewijzigd"
 
 # SDR_DEFN_CH_NO
 #: SDR_DEFN_CH_NO
 msgid "Unable to evaluate changes to definitions"
-msgstr ""
+msgstr "Kan geen wijzigingen aan de defnities controleren"
 
 # SDR_DERIVED
 #: SDR_DERIVED
 msgid "Derived from this {0}"
-msgstr ""
+msgstr "Afgeleid van {0}"
 
 # SDR_DRAW_IN
 #: SDR_DRAW_IN
 msgid "Draw in Obligations & Additional Bindings from this {0}"
-msgstr ""
+msgstr "Haal Verplichtingen & Additionele bindings uit {0}"
 
 # SDR_EXAMPLE
 #: SDR_EXAMPLE
 msgid "Examples for this {0}"
-msgstr ""
+msgstr "Voorbeelden voor {0}"
 
 # SDR_EXPERIMENTAL
 #: SDR_EXPERIMENTAL
 msgid "This is an experimental extension definition; the committee is seeking implementation feedback, and the definition or contents of the extension may change in future versions"
-msgstr ""
+msgstr "Dit is een experimentele extensiedefinitie; de commissie zoekt implementatiefeedback en de definitie of content van de extensie kan in volgende versies wijzigen"
 
 # SDR_EXTENSION_SUMMARY
 #: SDR_EXTENSION_SUMMARY
 msgid "Simple Extension with the type {0}: {1}"
-msgstr ""
+msgstr "Eenvoudige extensie met type {0}: {1}"
 
 # SDR_EXT_ANY
 #: SDR_EXT_ANY
 msgid "This extension does not specify which elements it should be used on"
-msgstr ""
+msgstr "Deze extensie definieert niet welke elementen deze op is bedoeld"
 
 # SDR_EXT_CHANGED
 #: SDR_EXT_CHANGED
 msgid "The extension is represented a little differently in {0}"
-msgstr ""
+msgstr "De extensie wordt lichtelijk anders weergegeven in {0}"
 
 # SDR_EXT_CTXT_PATH
 #: SDR_EXT_CTXT_PATH
 msgid "In addition, the extension can only be used when this FHIRPath expression is true"
-msgstr ""
+msgstr "Daarbij kan de extensie alleen worden gebruikt wanneer deze FHIRPath-expressie waar is"
 
 # SDR_EXT_CTXT_PATHS
 #: SDR_EXT_CTXT_PATHS
 msgid "In addition, the extension can only be used when these FHIRPath expressions are true"
-msgstr ""
+msgstr "Daarbij kan de extensie alleen worden gebruikt wanneer deze FHIRPath-expressies waar zijn"
 
 # SDR_EXT_DEPR
 #: SDR_EXT_DEPR
 msgid "This extension is deprecated and should no longer be used"
-msgstr ""
+msgstr "Deze extensie is verouderd en zou niet meer moeten worden gebruikt"
 
 # SDR_EXT_ELEM
 #: SDR_EXT_ELEM
 msgid "This extension may be used on the following element(s)"
-msgstr ""
+msgstr "Deze extensie kan worden gebruikt op de volgende element(en)"
 
 # SDR_EXT_ELEM_ID
 #: SDR_EXT_ELEM_ID
 msgid "Element ID"
-msgstr ""
+msgstr "Element-id"
 
 # SDR_EXT_EXT
 #: SDR_EXT_EXT
 msgctxt "SDR_EXT_EXT"
 msgid "Extension"
-msgstr ""
+msgstr "Extensie"
 
 # SDR_EXT_PATH
 #: SDR_EXT_PATH
 msgctxt "SDR_EXT_PATH"
 msgid "Path"
-msgstr ""
+msgstr "Pad"
 
 # SDR_EXT_UNCHANGED
 #: SDR_EXT_UNCHANGED
 msgid "The extension is unchanged in {0}"
-msgstr ""
+msgstr "De extensie is ongewijzigd in {0}"
 
 # SDR_EXT_VER_PFX
 #: SDR_EXT_VER_PFX
 msgid "This extension is allowed for use with"
-msgstr ""
+msgstr "Deze extensie is toegestaan voor gebruik met"
 
 # SDR_EXT_VER_SFX
 #: SDR_EXT_VER_SFX
 msgid "."
-msgstr ""
+msgstr "."
 
 # SDR_FIXED_VALUE
 #: SDR_FIXED_VALUE
 msgctxt "SDR_FIXED_VALUE"
 msgid "Fixed Value: {0}"
-msgstr ""
+msgstr "Vaste waarde: {0}"
 
 # SDR_FROM
 #: SDR_FROM
 msgid "From {0}"
-msgstr ""
+msgstr "Van {0}"
 
 # SDR_FROM_ELEM
 #: SDR_FROM_ELEM
 msgid "// from Element: <a href=\"{0}\">extension</a>"
-msgstr ""
+msgstr "// van Element: <a href=\"{0}\">extensie</a>"
 
 # SDR_GUIDANCE_HERE
 #: SDR_GUIDANCE_HERE
 msgid "here"
-msgstr ""
+msgstr "hier"
 
 # SDR_GUIDANCE_PFX
 #: SDR_GUIDANCE_PFX
 msgid "Guidance on how to interpret the contents of this table can be found"
-msgstr ""
+msgstr "Richtlijnen over hoe je deze tabel moet lezen vind je"
 
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
-msgid "-- no content: do not translate #61 --"
-msgstr ""
+msgid "-- no content: do not translate #1 --"
+msgstr "-- geen inhoud: #1 niet vertalen --"
 
 # SDR_IMPOSE
 #: SDR_IMPOSE
 msgid "Impose this profile {0}"
-msgstr ""
+msgstr "Veronderstel dit profiel {0}"
 
 # SDR_INTRP_CH_DET_VS
 #: SDR_INTRP_CH_DET_VS
 msgid "The expansion has changed"
-msgstr ""
+msgstr "De expansie is gewijzigd"
 
 # SDR_INTRP_CH_NO_VS
 #: SDR_INTRP_CH_NO_VS
 msgid "Unable to evaluate changes to the expansion"
-msgstr ""
+msgstr "Kan wijzigingen in de expansie niet controleren"
 
 # SDR_LIMITED_ONE
 #: SDR_LIMITED_ONE
 msgid "This element is an array in the base standard, but the profile only allows one element"
-msgstr ""
+msgstr "Dit element is een array in de basisstandaard, maar het profiel staat maar 1 element toe."
 
 # SDR_META_CH_DET
 #: SDR_META_CH_DET
 msgid "The resource metadata has changed ({0})"
-msgstr ""
+msgstr "De resource-metadata is gewijzigd ({0})"
 
 # SDR_META_CH_NO
 #: SDR_META_CH_NO
 msgid "Unable to evaluate changes to metadata"
-msgstr ""
+msgstr "Kan wijzigingen aan de metadata niet controleren"
 
 # SDR_MOD
 #: SDR_MOD
 msgid "(this element modifies the meaning of other elements)"
-msgstr ""
+msgstr "(dit element wijzigt de betekenis van andere elementen)"
 
 # SDR_MOD_SUPP
 #: SDR_MOD_SUPP
 msgid "(this element modifies the meaning of other elements, and must be supported)"
-msgstr ""
+msgstr "(dit element wijzigt de betekenis van andere elementen en moet worden ondersteund)"
 
 # SDR_MULTIPLE_PROFILES
 #: SDR_MULTIPLE_PROFILES
 msgid "Multiple profiles are not supported at this time"
-msgstr ""
+msgstr "Meerdere profielen worden momenteel niet ondersteund"
 
 # SDR_NOT_DONE_CC
 #: SDR_NOT_DONE_CC
 msgid "Error describing concept - not done yet (no codings, no text)"
-msgstr ""
+msgstr "Fout bij beschrijven van concept - nog niet gedaan (geen codings, geen text)"
 
 # SDR_NOT_GEN
 #: SDR_NOT_GEN
 msgid "Generating text summary of fixed value not yet done for type {0}"
-msgstr ""
+msgstr "Genereren van tekstsamenvatting van vaste waarde nog niet gedaan voor type {0}"
 
 # SDR_NOT_HANDLED_EXT
 #: SDR_NOT_HANDLED_EXT
 msgid "Not handled yet: complex extension ''{0}''"
-msgstr ""
+msgstr "Nog niet ondersteund: complexe extensie ''{0}''"
 
 # SDR_NOT_USED
 #: SDR_NOT_USED
 msgid "This {0} is not used by any profiles in this Implementation Guide"
-msgstr ""
+msgstr "{0} wordt niet gebruikt in enig profiel in deze Implementatiegids"
 
 # SDR_OFF_URL
 #: SDR_OFF_URL
 msgid "The official URL for this profile is"
-msgstr ""
+msgstr "De officiële url voor dit profiel is"
 
 # SDR_ONE_OF
 #: SDR_ONE_OF
 msgid "One of these {0}"
-msgstr ""
+msgstr "Een van deze {0}"
 
 # SDR_ONLY_ONE
 #: SDR_ONLY_ONE
 msgid "Only One!"
-msgstr ""
+msgstr "Slechts één!"
 
 # SDR_PATTERN_VALUE
 #: SDR_PATTERN_VALUE
 msgctxt "SDR_PATTERN_VALUE"
 msgid "Pattern Value: {0}"
-msgstr ""
+msgstr "Patternwaarde: {0}"
 
 # SDR_PRIM_VALUE
 #: SDR_PRIM_VALUE
 msgid "Primitive Value {0}"
-msgstr ""
+msgstr "Primitieve waarde {0}"
 
 # SDR_REFER
 #: SDR_REFER
 msgid "Refer to this {0}"
-msgstr ""
+msgstr "Zie {0}"
 
 # SDR_REQUIRED
 #: SDR_REQUIRED
 msgid "This element is required"
-msgstr ""
+msgstr "Dit element is verplicht"
 
 # SDR_SEARCH
 #: SDR_SEARCH
 msgid "Search Parameters using this {0}"
-msgstr ""
+msgstr "Zoekparameters met {0}"
 
 # SDR_SORTED
 #: SDR_SORTED
 msgid "// sliced by {0} in the specified order {1}"
-msgstr ""
+msgstr "// verdeeld op {0} in de gedefinieerde volgorde {1}"
 
 # SDR_SRC_FHIR
 #: SDR_SRC_FHIR
 msgid "the FHIR Standard"
-msgstr ""
+msgstr "de FHIR-standaard"
 
 # SDR_SRC_IG
 #: SDR_SRC_IG
 msgid "this IG"
-msgstr ""
+msgstr "deze IG"
 
 # SDR_SRC_PACK
 #: SDR_SRC_PACK
 msgid "Package: {0}"
-msgstr ""
+msgstr "Package: {0}"
 
 # SDR_SUPP
 #: SDR_SUPP
 msgid "(this element must be supported)"
-msgstr ""
+msgstr "(dit element moet worden ondersteund)"
 
 # SDR_UNK_EXT
 #: SDR_UNK_EXT
 msgid "Not handled yet: unknown extension ''{0}''"
-msgstr ""
+msgstr "Nog niet ondersteund: onbekende extensie ''{0}''"
 
 # SDR_USAGE
 #: SDR_USAGE
 msgid "Usages"
-msgstr ""
+msgstr "Gebruik"
 
 # SDR_USE
 #: SDR_USE
 msgid "Use this {0}"
-msgstr ""
+msgstr "Gebruik {0}"
 
 # SDR_VER_BEF
 #: SDR_VER_BEF
 msgid "For versions until {0}"
-msgstr ""
+msgstr "Voor versies tot {0}"
 
 # SDR_VER_FOR
 #: SDR_VER_FOR
 msgid "For version {0}"
-msgstr ""
+msgstr "Voor versie {0}"
 
 # SDR_VER_FROM_PFX
 #: SDR_VER_FROM_PFX
 msgid "\"FHIR versions"
-msgstr ""
+msgstr "FHIR-versies"
 
 # SDR_VER_FROM_SFX
 #: SDR_VER_FROM_SFX
 msgid "and after"
-msgstr ""
+msgstr "en na"
 
 # SDR_VER_ON
 #: SDR_VER_ON
 msgid "For versions {0} onwards"
-msgstr ""
+msgstr "Voor versies {0} vanaf"
 
 # SDR_VER_RANGE
 #: SDR_VER_RANGE
 msgid "For versions {0} to {1}"
-msgstr ""
+msgstr "Voor versies {0} tot {1}"
 
 # SDR_VER_RANGE_MID
 #: SDR_VER_RANGE_MID
 msgctxt "SDR_VER_RANGE_MID"
 msgid "to"
-msgstr ""
+msgstr "naar"
 
 # SDR_VER_RANGE_PFX
 #: SDR_VER_RANGE_PFX
 msgid "FHIR versions"
-msgstr ""
+msgstr "FHIR-versies"
 
 # SDR_VER_RANGE_SFX
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
-msgid "-- no content: do not translate #62 --"
-msgstr ""
+msgid "-- no content: do not translate #2 --"
+msgstr "-- geen inhoud: #2 niet vertalen --"
 
 # SDR_VER_TO_PFX
 #: SDR_VER_TO_PFX
 msgid "FHIR versions up to"
-msgstr ""
+msgstr "FHIR versies tot"
 
 # SDR_VER_TO_SFX
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
-msgid "-- no content: do not translate #63 --"
-msgstr ""
+msgid "-- no content: do not translate #3 --"
+msgstr "-- geen inhoud: #3 niet vertalen --"
 
 # SDR_VER_UNK
 #: SDR_VER_UNK
 msgid "For unknown versions"
-msgstr ""
+msgstr "Voor onbekende versies"
 
 # SDT_DEF
 #: SDT_DEF
 msgctxt "SDT_DEF"
 msgid "Definition"
-msgstr ""
+msgstr "Definitie"
 
 # SDT_DT
 #: SDT_DT
 msgid "DataType"
-msgstr ""
+msgstr "Datatype"
 
 # SDT_DT_PROF
 #: SDT_DT_PROF
 msgid "DataType Profile"
-msgstr ""
+msgstr "Datatype-profiel"
 
 # SDT_EXTENSION
 #: SDT_EXTENSION
 msgctxt "SDT_EXTENSION"
 msgid "Extension"
-msgstr ""
+msgstr "Extensie"
 
 # SDT_LM
 #: SDT_LM
 msgctxt "SDT_LM"
 msgid "Logical Model"
-msgstr ""
+msgstr "Logisch model"
 
 # SDT_LM_PROF
 #: SDT_LM_PROF
 msgid "Logical Model Profile"
-msgstr ""
+msgstr "Logisch model-profiel"
 
 # SDT_OBLIGATION_PROFILE
 #: SDT_OBLIGATION_PROFILE
 msgid "Obligation Profile"
-msgstr ""
+msgstr "Verplichtingen profiel"
 
 # SDT_ORIGINAL_SOURCE
 #: SDT_ORIGINAL_SOURCE
 msgid "Original Source"
-msgstr ""
+msgstr "Originele bron"
 
 # SDT_PT
 #: SDT_PT
 msgid "Primitive Type"
-msgstr ""
+msgstr "Primitief type"
 
 # SDT_PT_PROF
 #: SDT_PT_PROF
 msgid "Primitive Type Profile"
-msgstr ""
+msgstr "Primitief type-profiel"
 
 # SDT_RES
 #: SDT_RES
 msgctxt "SDT_RES"
 msgid "Resource"
-msgstr ""
+msgstr "Resource"
 
 # SDT_RES_PROF
 #: SDT_RES_PROF
 msgctxt "SDT_RES_PROF"
 msgid "Profile"
-msgstr ""
+msgstr "Profiel"
 
 # SD_COMP_HEAD_CARD_L
 #: SD_COMP_HEAD_CARD_L
@@ -3613,17 +3626,17 @@ msgstr "Alle resources"
 # STATUS_MSG_AUTOBUILD
 #: STATUS_MSG_AUTOBUILD
 msgid "{0}, published by {1}. This guide is not an authorized publication; it is the continuous build for version {2}  built by the FHIR (HL7&reg; FHIR&reg; Standard) CI Build. This version is based on the current content of <a href=''{3}''>{3}</a> and changes regularly. See the <a href=''{4}/history.html''>Directory of published versions</a>"
-msgstr ""
+msgstr "{0}, gepubliceerd door {1}. Deze gids is geen geautoriseerde publicatie; het is de continue build voor versie {2}  gebouwd door FHIR (HL7&reg; FHIR&reg; Standaard) CI Build. Deze versie is gebaseerd op de huidige inhoud van <a href=''{3}''>{3}</a> en wijzigt regelmatig. Zie het <a href=''{4}/history.html''>overzicht van gepubliceerde versies</a>"
 
 # STATUS_MSG_LOCAL_BUILD
 #: STATUS_MSG_LOCAL_BUILD
 msgid "{0} - Local Development build (v{1}) built by the FHIR (HL7&reg; FHIR&reg; Standard) Build Tools. See the <a href=''{2}/history.html''>Directory of published versions</a>"
-msgstr ""
+msgstr "{0} - Lokale ontwikkelversie (v{1}) gebouwd door FHIR (HL7&reg; FHIR&reg; Standard) Build Tools. Zie het <a href=''{2}/history.html''>overzicht van gepubliceerde versies</a>"
 
 # STATUS_MSG_PUBLICATION_HOLDER
 #: STATUS_MSG_PUBLICATION_HOLDER
 msgid "Publication Build: This will be filled in by the publication tooling"
-msgstr ""
+msgstr "Publicatie Build: Deze zal ingevuld worden door de publicatietooling"
 
 # STRUC_DEF_ABSTRACT
 #: STRUC_DEF_ABSTRACT
@@ -5027,7 +5040,7 @@ msgstr "Oostenrijkse editie"
 # VALUE_SET_AUS
 #: VALUE_SET_AUS
 msgid "Australian Edition"
-msgstr "!!Australisch"
+msgstr "Australische editie"
 
 # VALUE_SET_BE
 #: VALUE_SET_BE
@@ -5037,7 +5050,7 @@ msgstr "Belgische editie"
 # VALUE_SET_CA
 #: VALUE_SET_CA
 msgid "Canadian Edition"
-msgstr ""
+msgstr "Canadese Editie"
 
 # VALUE_SET_CA_EN
 #: VALUE_SET_CA_EN
@@ -5449,17 +5462,17 @@ msgstr ". waar de codes staan in"
 # VSR_LOGICAL
 #: VSR_LOGICAL
 msgid "Logical Definition (CLD)"
-msgstr ""
+msgstr "Logische definitie (CLD)"
 
 # VSR_NO_DEF
 #: VSR_NO_DEF
 msgid "No formal definition provided for this value set"
-msgstr ""
+msgstr "Er is geen formele definitie voor deze waardelijst opgegeven"
 
 # VSR_TRIGGER
 #: VSR_TRIGGER
 msgid "Used as a trigger criteria in"
-msgstr ""
+msgstr "Gebruikt als triggercriterium in"
 
 # VS_ABSTRACT_CODE_HINT
 #: VS_ABSTRACT_CODE_HINT
