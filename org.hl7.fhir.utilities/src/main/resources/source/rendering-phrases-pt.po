@@ -1418,7 +1418,7 @@ msgstr "Ecrãs de idiomas adicionais"
 # GENERAL_BINDING
 #: GENERAL_BINDING
 msgid "Binding"
-msgstr "Encadernação"
+msgstr "Vínculo"
 
 # GENERAL_BINDINGS
 #: GENERAL_BINDINGS
@@ -3742,12 +3742,12 @@ msgstr "porque"
 # STRUC_DEF_BINDINGS
 #: STRUC_DEF_BINDINGS
 msgid "Binding:"
-msgstr "Encadernação:"
+msgstr "Vínculo:"
 
 # STRUC_DEF_BINDING_STYLE
 #: STRUC_DEF_BINDING_STYLE
 msgid "binding style"
-msgstr "estilo de encadernação"
+msgstr "estilo de vínculo"
 
 # STRUC_DEF_BLACK
 #: STRUC_DEF_BLACK

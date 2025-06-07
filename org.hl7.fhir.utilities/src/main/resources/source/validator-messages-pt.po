@@ -12,7 +12,7 @@ msgstr "Tudo OK"
 # ARRAY_CANNOT_BE_EMPTY
 #: ARRAY_CANNOT_BE_EMPTY
 msgid "Array cannot be empty - the property should not be present if it has no values"
-msgstr "A matriz não pode estar vazia - a propriedade não deve estar presente se não tiver valores"
+msgstr "A lista não pode estar vazia - a propriedade não deve estar presente se não tiver valores"
 
 # ATTEMPT_TO_CHANGE_SLICING
 #: ATTEMPT_TO_CHANGE_SLICING
