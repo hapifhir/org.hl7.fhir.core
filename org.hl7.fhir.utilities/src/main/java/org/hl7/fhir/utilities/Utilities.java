@@ -1922,6 +1922,15 @@ public class Utilities {
     return newList;
   }
 
+  public static String limitString(String text, int length) {
+    text = text.trim();
+    if (text.length() > length) {
+      return text.substring(0, length-1)+"...";
+    } else {
+      return text;
+    }
+  }
+
 
   
 }
