@@ -687,10 +687,12 @@ public class ValueSetValidator extends BaseValidator {
             I18nConstants.VALUESET_BAD_FILTER_VALUE_CODE, property, value) && ok;
         if (!noTerminologyChecks && (rules.getCodeValidation() == CodeValidationRule.Error || rules.getCodeValidation() == CodeValidationRule.Warning)) {
           ValidationResult vr = context.validateCode(settings, system, version, value, null);
-          if (rules.getCodeValidation() == CodeValidationRule.Error) {
-            ok = rule(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), vr.isOk(), rules.isChange() ? I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_CHANGE : I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage()) && ok;
+          if (vr.isOk()) {
+            warning(errors, "2025-06-04", IssueType.INVALID, stack.getLiteralPath(), !vr.isInactive(), I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_INACTIVE, property, value, system);            
+          } else if (rules.getCodeValidation() == CodeValidationRule.Error) {
+            ok = rule(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), false, rules.isChange() ? I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_CHANGE : I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage()) && ok;
           } else {
-            warning(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), vr.isOk(), rules.isChange() ? I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_CHANGE : I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage());
+            warning(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), false, rules.isChange() ? I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_CHANGE : I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage());
           }
         }
         break;
