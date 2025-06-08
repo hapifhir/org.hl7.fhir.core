@@ -296,6 +296,7 @@ public class TestDataFactory {
           if (rowPasses(factory)) {
             byte[] data = factory.generateFormat(profile, format);
             String fn = Utilities.path(rootFolder, getFileName(details.asString( "filename"), tbl.columns(), tbl.cells()));
+            FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fn));
             FileUtilities.bytesToFile(data, fn);
             profileMap.put(FileUtilities.changeFileExt(fn, ""), profile.getVersionedUrl());
           }
