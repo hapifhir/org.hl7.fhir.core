@@ -698,10 +698,15 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
   private boolean hasMarkdownInDefinitions(CodeSystem cs) {
     if (doMarkdown == null) {
+      if (cs.hasUserData(UserDataNames.CS_MARKDOWN_FLAG)) {
+        doMarkdown = (Boolean) cs.getUserData(UserDataNames.CS_MARKDOWN_FLAG);
+      } else {
       if (cs.hasExtension("http://hl7.org/fhir/StructureDefinition/codesystem-use-markdown")) {
         doMarkdown  = ToolingExtensions.readBoolExtension(cs, "http://hl7.org/fhir/StructureDefinition/codesystem-use-markdown");
       } else {
         doMarkdown = CodeSystemUtilities.hasMarkdownInDefinitions(cs, context.getMarkdown());
+      }
+        cs.setUserData(UserDataNames.CS_MARKDOWN_FLAG, doMarkdown);
       }
     }
     return doMarkdown;
