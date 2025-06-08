@@ -1297,4 +1297,19 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return x;
   }
 
+
+  public boolean hasContent() {
+    if (nodeType == NodeType.Text) {
+      return content != null && content.trim().length() > 0;
+    }
+    if (nodeType == NodeType.Element) {
+      for (XhtmlNode n : getChildNodes()) {
+        if (n.hasContent()) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
 }
