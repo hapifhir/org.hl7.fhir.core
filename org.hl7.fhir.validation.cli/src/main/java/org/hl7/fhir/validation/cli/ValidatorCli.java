@@ -123,6 +123,7 @@ public class ValidatorCli {
       new FhirpathTask(),
       new InstallTask(),
       new LangTransformTask(),
+      new LangRegenerateTask(),
       new NarrativeTask(),
       new PreloadCacheTask(),
       new ScanTask(),
