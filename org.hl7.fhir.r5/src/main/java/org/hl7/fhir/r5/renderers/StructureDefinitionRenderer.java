@@ -1032,6 +1032,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           switch (context.getStructureMode()) { 
           case BINDINGS: 
           case OBLIGATIONS: 
+          case MAPPINGS:
             for (Column col : columns) { 
               hrow.getCells().add(gen.new Cell());               
             } 
@@ -1041,7 +1042,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             hrow.getCells().add(gen.new Cell()); 
             hrow.getCells().add(gen.new Cell()); 
             hrow.getCells().add(gen.new Cell(null, null, context.formatPhrase(RenderingContext.STRUC_DEF_CONT_RULE), "", null)); 
-            break;             
+            break;            
           } 
           row.getSubRows().add(hrow); 
           row = hrow; 
@@ -1060,6 +1061,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           switch (context.getStructureMode()) { 
           case BINDINGS: 
           case OBLIGATIONS: 
+          case MAPPINGS:
             for (Column col : columns) { 
               hrow.getCells().add(gen.new Cell());               
             } 
@@ -1094,7 +1096,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 parent.getCells().add(gen.new Cell(null, null, context.formatPhrase(RenderingContext.STRUC_DEF_SLICE_FOR, child.getName()), "", null)); 
                 switch (context.getStructureMode()) { 
                 case BINDINGS: 
-                case OBLIGATIONS: 
+                case OBLIGATIONS:
+                case MAPPINGS: 
                   for (Column col : columns) { 
                     parent.getCells().add(gen.new Cell());               
                   } 
