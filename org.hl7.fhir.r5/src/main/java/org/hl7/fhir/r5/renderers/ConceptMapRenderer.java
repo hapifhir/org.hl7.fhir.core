@@ -448,15 +448,15 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     if (hasComment)
       tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMMENT));
     for (SourceElementComponent ccl : grp.getElement()) {
-      tr = tbl.tr();
-      ElementDefinition edSrc = sdSrc.getSnapshot().getElementById(ccl.getCode());
-      if (edSrc == null) {        
-        tr.td().colspan(3).addText(ccl.getCode());
-      } else {
-        tr.td().ah(sdSrc.getWebPath()+"#"+ccl.getCode()).tx(ccl.getCode());
-        tr.td().tx(""+edSrc.getMin()+".."+edSrc.getMax());
-        tr.td().tx("todo");
-      }
+        tr = tbl.tr();
+        ElementDefinition edSrc = sdSrc.getSnapshot().getElementById(ccl.getCode());
+        if (edSrc == null) {        
+          tr.td().colspan(3).addText(ccl.getCode());
+        } else {
+          tr.td().ah(sdSrc.getWebPath()+"#"+ccl.getCode()).tx(ccl.getCode());
+          tr.td().tx(""+edSrc.getMin()+".."+edSrc.getMax());
+          tr.td().tx("todo");
+        }
 
       if (ccl.getNoMap()) {
         if (!hasComment) {
@@ -468,28 +468,36 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           tr.td().colspan("4").style("background-color: #efefef").tx("(not mapped)");
         }
       } else {
-        TargetElementComponent ccm = ccl.getTarget().get(0);
-        if (!ccm.hasRelationship()) {
-          tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
-        } else {
-          if (ccm.hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
-            String code = ToolingExtensions.readStringExtension(ccm, ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-            tr.td().ah(context.prefixLocalHref(eqpath+"#"+code), code).tx(presentEquivalenceCode(code));                
+        boolean first = true;
+        for (TargetElementComponent ccm : ccl.getTarget()) {
+          if (first) {
+            first = false;
           } else {
-            tr.td().ah(context.prefixLocalHref(eqpath+"#"+ccm.getRelationship().toCode()), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+            tr = tbl.tr();
+            tr.td().colspan(3).style("opacity: 0.5").addText("\"");
           }
+          if (!ccm.hasRelationship()) {
+            tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
+          } else {
+            if (ccm.hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
+              String code = ToolingExtensions.readStringExtension(ccm, ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
+              tr.td().ah(context.prefixLocalHref(eqpath+"#"+code), code).tx(presentEquivalenceCode(code));                
+            } else {
+              tr.td().ah(context.prefixLocalHref(eqpath+"#"+ccm.getRelationship().toCode()), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+            }
+          }
+          ElementDefinition edTgt = sdTgt.getSnapshot().getElementById(ccm.getCode());
+          if (edTgt == null) {        
+            tr.td().colspan(3).addText(ccm.getCode());
+          } else {
+            tr.td().ah(sdTgt.getWebPath()+"#"+ccm.getCode()).tx(ccm.getCode());
+            tr.td().tx(""+edTgt.getMin()+".."+edTgt.getMax());
+            tr.td().tx("todo");
+          }
+  
+          if (hasComment)
+            tr.td().addText(ccm.getComment());
         }
-        ElementDefinition edTgt = sdTgt.getSnapshot().getElementById(ccm.getCode());
-        if (edTgt == null) {        
-          tr.td().colspan(3).addText(ccm.getCode());
-        } else {
-          tr.td().ah(sdTgt.getWebPath()+"#"+ccm.getCode()).tx(ccm.getCode());
-          tr.td().tx(""+edTgt.getMin()+".."+edTgt.getMax());
-          tr.td().tx("todo");
-        }
-
-        if (hasComment)
-          tr.td().addText(ccm.getComment());
       }
     }
   }
