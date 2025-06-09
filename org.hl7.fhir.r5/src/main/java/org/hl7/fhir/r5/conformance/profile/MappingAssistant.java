@@ -45,7 +45,9 @@ public class MappingAssistant {
     this.base = base;
     this.derived = derived;
     this.version = version;
-    this.suppressedMappings = suppressedMappings;
+    if (suppressedMappings != null) {
+      this.suppressedMappings = suppressedMappings;
+    }
     
     // figure out where we're going to be: 
     // mappings declared in derived get priority; we do not change them either 
