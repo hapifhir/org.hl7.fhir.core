@@ -129,6 +129,12 @@ public class NarrativeGenerationTests {
       return null;
     }
 
+    @Override
+    public String getDefinitionsName(Resource r) {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
   }
 
   public static class TestTypeParser implements ITypeParser {

@@ -4867,4 +4867,21 @@ public class ProfileUtilities {
     return false;
   }
 
+  public static String getCSUrl(StructureDefinition profile) {
+    if (profile.hasExtension(ToolingExtensions.EXT_SD_CS_URL)) {
+      return ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_SD_CS_URL);
+    } else {
+      return profile.getUrl()+"?codesystem";
+    }
+    
+  }
+
+  public static String getUrlFromCSUrl(String url) {
+    if (url.endsWith("?codesystem")) {
+      return url.replace("?codesystem", "");
+    } else {
+      return null;
+    }
+  }
+
 }

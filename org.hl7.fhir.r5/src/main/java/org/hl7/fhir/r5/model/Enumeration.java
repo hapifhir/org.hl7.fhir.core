@@ -147,7 +147,7 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
     Enumeration dst= new Enumeration(this.myEnumFactory, (Enum)this.getValue());
     //Copy the Extension
     if (extension != null) {
-      dst.extension = new ArrayList();
+      dst.extension = new ArrayList<>();
       for (Extension i : extension)
         dst.extension.add(i.copy());
     };
