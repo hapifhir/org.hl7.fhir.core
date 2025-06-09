@@ -119,6 +119,11 @@ import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 @MarkedToMoveToAdjunctPackage
 public class StructureDefinitionRenderer extends ResourceRenderer { 
  
+  public enum MapStructureMode {
+    IN_LIST, NOT_IN_LIST, OTHER
+    
+  }
+  
   public StructureDefinitionRenderer(RenderingContext context) { 
     super(context); 
     hostMd = new InternalMarkdownProcessor(); 
@@ -399,6 +404,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private boolean useTableForFixedValues = true; 
   private String corePath;
   private JsonObject resourceGroupings; 
+  private MapStructureMode mappingsMode;
+  private List<StructureDefinition> mappingTargets = new ArrayList<>();
  
   public static class UnusedTracker { 
     private boolean used; 
@@ -589,6 +596,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       break;  
     case MAPPINGS: 
       mappings = scanForMappings(profile, list, columns); 
+      if (mappings.isEmpty()) {
+        return null;
+      }
       model = initCustomTable(gen, corePath, false, true, profile.getId()+idSfx, rc.getRules() == GenerationRules.IG_PUBLISHER, columns);     
       break; 
     case SUMMARY: 
@@ -613,14 +623,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private List<ModelMappingProvider> scanForMappings(StructureDefinition profile, List<ElementDefinition> list, List<Column> columns) {
     List<ModelMappingProvider> res = new ArrayList<ModelMappingProvider>();
     List<StructureDefinition> items = new ArrayList<StructureDefinition>();
-    
+
     // first, does this have mappings to other models?
     for (StructureDefinitionMappingComponent map : profile.getMapping()) {
       if (map.hasUri()) {
         StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, map.getUri());
-        if (sd != null) {
+        if (includeSDForMap(sd, true)) {
           items.add(sd);
-          res.add(new StructureDefinitionMappingProvider(context, sd, false, profile, map));
+          res.add(new StructureDefinitionMappingProvider(context, sd, false, profile, map, context.getProfileUtilities().getFpe()));
         }
       }
     }
@@ -631,7 +641,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           String url = ProfileUtilities.getUrlFromCSUrl(grp.getTarget());
           if (url != null) {
             StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, url);
-            if (sd != null && !items.contains(sd)) {
+            if (includeSDForMap(sd, false) && !items.contains(sd)) {
               matched = true;
               items.add(sd);
               res.add(new ConceptMapMappingProvider(context, sd, false, cm, grp));
@@ -639,24 +649,28 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           }
           if (!matched) {
             for (StructureDefinition sd : context.getContextUtilities().allStructures()) {
-              String url2 = ProfileUtilities.getCSUrl(sd);
-              if (url2.equals(grp.getTarget()) && !items.contains(sd)) {
-                items.add(sd);
-                res.add(new ConceptMapMappingProvider(context, sd, false, cm, grp));
-                break;
+              if (includeSDForMap(sd, false)) {
+                String url2 = ProfileUtilities.getCSUrl(sd);
+                if (url2.equals(grp.getTarget()) && !items.contains(sd)) {
+                  items.add(sd);
+                  res.add(new ConceptMapMappingProvider(context, sd, false, cm, grp));
+                  break;
+                }
               }
             }
           }
         }
       }
     }
-    
+
     // now look for reverse mappings but only to things we haven't already got forward mappings too
     for (StructureDefinition src : context.getContextUtilities().allStructures()) {
-      for (StructureDefinitionMappingComponent map : src.getMapping()) {
-        if (map.hasUri() && map.getUri().equals(profile.getUrl()) && !items.contains(src)) {
-          items.add(src);
-          res.add(new StructureDefinitionMappingProvider(context, src, true, profile, map));
+      if (includeSDForMap(src, true)) {
+        for (StructureDefinitionMappingComponent map : src.getMapping()) {
+          if (map.hasUri() && map.getUri().equals(profile.getUrl()) && !items.contains(src)) {
+            items.add(src);
+            res.add(new StructureDefinitionMappingProvider(context, src, true, profile, map, context.getProfileUtilities().getFpe()));
+          }
         }
       }
     }
@@ -668,7 +682,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           String url = ProfileUtilities.getUrlFromCSUrl(grp.getSource());
           if (url != null) {
             StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, url);
-            if (sd != null && !items.contains(sd)) {
+            if (includeSDForMap(sd, false) && !items.contains(sd)) {
               matched = true;
               items.add(sd);
               res.add(new ConceptMapMappingProvider(context, sd, true, cm, grp));
@@ -676,11 +690,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           }
           if (!matched) {
             for (StructureDefinition sd : context.getContextUtilities().allStructures()) {
-              String url2 = ProfileUtilities.getCSUrl(sd);
-              if (url2.equals(grp.getSource()) && !items.contains(sd)) {
-                items.add(sd);
-                res.add(new ConceptMapMappingProvider(context, sd, true, cm, grp));
-                break;
+              if (includeSDForMap(sd, false)) {
+                String url2 = ProfileUtilities.getCSUrl(sd);
+                if (url2.equals(grp.getSource()) && !items.contains(sd)) {
+                  items.add(sd);
+                  res.add(new ConceptMapMappingProvider(context, sd, true, cm, grp));
+                  break;
+                }
               }
             }
           }
@@ -693,6 +709,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }
     profile.setUserData(UserDataNames.PROFILE_RENDERED_MAPPINGS, res.size() >= 0);
     return res;
+  }
+
+  private boolean includeSDForMap(StructureDefinition sd, boolean okForNull) {
+    switch (mappingsMode) {
+    case IN_LIST: return mappingTargets.contains(sd);
+    case NOT_IN_LIST: return sd != null && !mappingTargets.contains(sd);
+    case OTHER: return sd == null && okForNull;
+    default: return false;
+    }
   }
 
   private void scanBindings(List<Column> columns, List<ElementDefinition> list) { 
@@ -5399,6 +5424,18 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       return "icon_resource.png"; 
     } 
     
+  }
+
+  public MapStructureMode getMappingsMode() {
+    return mappingsMode;
+  }
+
+  public void setMappingsMode(MapStructureMode mappingsMode) {
+    this.mappingsMode = mappingsMode;
+  }
+
+  public List<StructureDefinition> getMappingTargets() {
+    return mappingTargets;
   }
   
 } 
