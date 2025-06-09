@@ -32,6 +32,7 @@ package org.hl7.fhir.r5.utils;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -156,7 +157,8 @@ public class DefinitionNavigator {
     if (children == null) {
       loadChildren();
     }
-    return slices;
+    // never return null: if no slices were found, give back an empty list
+    return slices != null ? slices : Collections.emptyList();
   }
   
   public List<DefinitionNavigator> children() throws DefinitionException {
@@ -184,9 +186,15 @@ public class DefinitionNavigator {
 
           if (nameMap.containsKey(path)) {
             DefinitionNavigator master = nameMap.get(path);
-            ElementDefinition cm = master.current();           
+            ElementDefinition cm = master.current();
+            // Skip missing slicing error for extensions: they are implicitly sliced by url
             if (!cm.hasSlicing()) {
-              throw new DefinitionException("Found slices with no slicing details at "+dn.current().getPath());
+              String cmPath = cm.getPath();
+              boolean isExtension = cmPath.endsWith(".extension")
+                                 || cmPath.endsWith(".modifierExtension");
+              if (!isExtension) {
+                throw new DefinitionException("Found slices with no slicing details at " + dn.current().getPath());
+              }
             }
             if (master.slices == null) {
               master.slices = new ArrayList<DefinitionNavigator>();
