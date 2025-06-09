@@ -16,7 +16,6 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.Column;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -31,9 +30,6 @@ public class StructureDefinitionMappingProvider extends ModelMappingProvider {
     this.sd = sd;
     this.map = map;
     this.fpe = fpe;
-    if (dest == null) {
-      DebugUtilities.breakpoint();
-    }
   }
 
   @Override
@@ -115,7 +111,7 @@ public class StructureDefinitionMappingProvider extends ModelMappingProvider {
     if (s.contains(":")) {
       String l = s.substring(0, s.indexOf(":"));
       String r = s.substring(s.indexOf(":")+1);
-      if (dest.getSnapshot().getElementById(l) != null) {
+      if (dest != null && dest.getSnapshot().getElementById(l) != null) {
         x.ah(ref()+"#"+l, l).tx(r);
       } else {
         x.tx(r);        
