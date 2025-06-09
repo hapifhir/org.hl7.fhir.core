@@ -549,5 +549,11 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     return sd;
   }
 
+  @Override
+  public String getDefinitionsName(Resource r) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
 }
 
