@@ -81,8 +81,8 @@ class CapabilityStatementUtilitiesTests {
 
   @Test
   void testMergeList() {
-    List l1 = new ArrayList();
-    List l2 = new ArrayList();
+    List<CanonicalType> l1 = new ArrayList<>();
+    List<CanonicalType> l2 = new ArrayList<>();
     l1.add(makeCanonical("http://foo.bar/1", null));
     l1.add(makeCanonical("http://foo.bar/2", SHALL));
     l1.add(makeCanonical("http://foo.bar/3", SHOULD));
@@ -97,7 +97,7 @@ class CapabilityStatementUtilitiesTests {
     l2.add(makeCanonical("http://foo.bar/5", null));
     l2.add(makeCanonical("http://foo.bar/7", null));
 
-    List l = l1.subList(0, l1.size());
+    List<CanonicalType> l = l1.subList(0, l1.size());
     mergeIntrospect(l1, l2, "test");
     Assertions.assertTrue(l1.size() == 7);
     Assertions.assertTrue(hasConformanceElement(l1, new CanonicalType("http://foo.bar/1"), SHOULD));
