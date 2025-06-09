@@ -359,6 +359,8 @@ public class ValidationContext {
   @SerializedName("r5BundleRelativeReferencePolicy")
   private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy;
   
+  private List<String> langRegenParam = new ArrayList<>();
+  
   @SerializedName("baseEngine")
   @JsonProperty("baseEngine")
   public String getBaseEngine() {
@@ -1468,6 +1470,14 @@ public class ValidationContext {
   @JsonProperty("format")
   public void setFormat(FhirFormat format) {
     this.format = format;
+  }
+
+  public void addLangRegenParam(String value) {
+    langRegenParam .add(value);    
+  }
+
+  public List<String> getLangRegenParam() {
+    return langRegenParam;
   }
 
 }

@@ -1279,8 +1279,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (!codingValidationRequest.hasResult()) {
         Parameters pIn;
         ValueSet wvs = vs == null ? codingValidationRequest.getVsObj() : vs;
-        if (lastvs == null || wvs == null || lastvs != wvs) {
-          pIn = constructParameters(options, codingValidationRequest, wvs);
+        if (wvs == null) {
+          pIn = constructParameters(options, codingValidationRequest, wvs);          
+        } else if (lastvs != wvs) {
+          pIn = constructParameters(options, codingValidationRequest, wvs.getVersionedUrl());
+          pIn.addParameter().setName("tx-resource").setResource(wvs);
           lastvs = wvs;
         } else {
           pIn = constructParameters(options, codingValidationRequest, lastvs.getVersionedUrl());          
@@ -1720,7 +1723,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       pIn.addParameter().setName("coding").setValue(codingValidationRequest.getCoding());
     }
     if (vsUrl != null) {
-      pIn.addParameter().setName("url").setValue(new CanonicalType(vsUrl));
+      pIn.addParameter().setName("url").setValue(new UriType(vsUrl));
     }
     pIn.addParameters(expParameters);
     return pIn;

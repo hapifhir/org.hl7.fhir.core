@@ -424,8 +424,11 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
   }
 
   private String stepPrefix(String prefix, ExampleScenarioProcessStepComponent step, int stepCount) {
-    String num = step.hasNumber() ? step.getNumber() : Integer.toString(stepCount);
-    return (!prefix.isEmpty() ? prefix + "." : "") + num;
+    if (step.hasNumber()) {
+      return (!prefix.isEmpty() ? prefix + "." : "") + step.getNumber();
+    } else {
+      return (!prefix.isEmpty() ? prefix + "." : "") + "i-"+ Integer.toString(stepCount);
+    }
   }
 
   private String altStepPrefix(String prefix, ExampleScenarioProcessStepComponent step, int altNum, int stepCount) {
@@ -450,62 +453,66 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
 
   private boolean renderStep(RenderingStatus status, XhtmlNode tbl, ExampleScenarioProcessStepComponent step, String stepLabel, Map<String, ExampleScenarioActorComponent> actors, Map<String, ExampleScenarioInstanceComponent> instances) throws IOException {
     XhtmlNode row = tbl.tr();
-    XhtmlNode prefixCell = row.td();
-    prefixCell.an(context.prefixAnchor("s_" + stepLabel));
-    prefixCell.tx(stepLabel.substring(stepLabel.indexOf(".") + 1));
-    if (step.hasProcess()) {
-      XhtmlNode n = row.td().colspan(6);
-      n.tx(context.formatPhrase(RenderingContext.EX_SCEN_SEE));
-      n.ah(context.prefixLocalHref("#p_" + stepLabel)).tx(step.getProcess().getTitle());
-      n.tx(" "+ context.formatPhrase(RenderingContext.EX_SCEN_BEL));
-
-    } else if (step.hasWorkflow()) {
-      XhtmlNode n = row.td().colspan(6);
-      n.tx(context.formatPhrase(RenderingContext.EX_SCEN_OTH));
-      String link = new ContextUtilities(context.getWorker()).getLinkForUrl(context.getLink(KnownLinkType.SPEC, true), step.getWorkflow());
-      String title = "Unknown title";
-      if (step.getWorkflowElement().hasExtension(ExtensionConstants.EXT_DISPLAY_NAME)) {
-        title = step.getWorkflowElement().getExtensionString(ExtensionConstants.EXT_DISPLAY_NAME);
-      } else {
-        Resolver.ResourceWithReference rres = context.getResolver().resolve(context, step.getWorkflow(), null);
-        if (rres != null && rres.getResource() != null && rres.getResource().has("title"))
-          title = rres.getResource().primitiveValue("title");
-      }
-      if (link!= null)
-        n.ah(context.prefixLocalHref(link)).tx(title);
-      else
-        n.addText(title);
-
+    if (step.getPause()) {
+      row.td().colspan(7).style("opacity: 0.7").tx("Pause");
     } else {
-      // Must be an operation
-      ExampleScenarioProcessStepOperationComponent op = step.getOperation();
-      XhtmlNode name = row.td();
-      name.tx(op.getTitle());
-      if (op.hasType()) {
-        name.tx(" - ");
-        renderCoding(status, name, wrapNC(op.getType()));
-      }
-      XhtmlNode descCell = row.td();
-      addMarkdown(descCell, op.getDescription());
+      XhtmlNode prefixCell = row.td();
+      prefixCell.an(context.prefixAnchor("s_" + stepLabel));
+      prefixCell.tx(stepLabel.substring(stepLabel.indexOf(".") + 1));
+      if (step.hasProcess()) {
+        XhtmlNode n = row.td().colspan(6);
+        n.tx(context.formatPhrase(RenderingContext.EX_SCEN_SEE));
+        n.ah(context.prefixLocalHref("#p_" + stepLabel)).tx(step.getProcess().getTitle());
+        n.tx(" "+ context.formatPhrase(RenderingContext.EX_SCEN_BEL));
 
-      addActor(row, op.getInitiator(), actors);
-      addActor(row, op.getReceiver(), actors);
-      addInstance(row, op.getRequest(), instances);
-      addInstance(row, op.getResponse(), instances);
-    }
+      } else if (step.hasWorkflow()) {
+        XhtmlNode n = row.td().colspan(6);
+        n.tx(context.formatPhrase(RenderingContext.EX_SCEN_OTH));
+        String link = new ContextUtilities(context.getWorker()).getLinkForUrl(context.getLink(KnownLinkType.SPEC, true), step.getWorkflow());
+        String title = "Unknown title";
+        if (step.getWorkflowElement().hasExtension(ExtensionConstants.EXT_DISPLAY_NAME)) {
+          title = step.getWorkflowElement().getExtensionString(ExtensionConstants.EXT_DISPLAY_NAME);
+        } else {
+          Resolver.ResourceWithReference rres = context.getResolver().resolve(context, step.getWorkflow(), null);
+          if (rres != null && rres.getResource() != null && rres.getResource().has("title"))
+            title = rres.getResource().primitiveValue("title");
+        }
+        if (link!= null)
+          n.ah(context.prefixLocalHref(link)).tx(title);
+        else
+          n.addText(title);
 
-    int altNum = 1;
-    for (ExampleScenarioProcessStepAlternativeComponent alt : step.getAlternative()) {
-      XhtmlNode altHeading = tbl.tr().colspan(7).td();
-      altHeading.para().i().tx(context.formatPhrase(RenderingContext.EX_SCEN_ALT, alt.getTitle())+" ");
-      if (alt.hasDescription())
-        addMarkdown(altHeading, alt.getDescription());
-      int stepCount = 1;
-      for (ExampleScenarioProcessStepComponent subStep : alt.getStep()) {
-        renderStep(status, tbl, subStep, altStepPrefix(stepLabel, step, altNum, stepCount), actors, instances);
-        stepCount++;
+      } else {
+        // Must be an operation
+        ExampleScenarioProcessStepOperationComponent op = step.getOperation();
+        XhtmlNode name = row.td();
+        name.tx(op.getTitle());
+        if (op.hasType()) {
+          name.tx(" - ");
+          renderCoding(status, name, wrapNC(op.getType()));
+        }
+        XhtmlNode descCell = row.td();
+        addMarkdown(descCell, op.getDescription());
+
+        addActor(row, op.getInitiator(), actors);
+        addActor(row, op.getReceiver(), actors);
+        addInstance(row, op.getRequest(), instances);
+        addInstance(row, op.getResponse(), instances);
       }
-      altNum++;
+
+      int altNum = 1;
+      for (ExampleScenarioProcessStepAlternativeComponent alt : step.getAlternative()) {
+        XhtmlNode altHeading = tbl.tr().colspan(7).td();
+        altHeading.para().i().tx(context.formatPhrase(RenderingContext.EX_SCEN_ALT, alt.getTitle())+" ");
+        if (alt.hasDescription())
+          addMarkdown(altHeading, alt.getDescription());
+        int stepCount = 1;
+        for (ExampleScenarioProcessStepComponent subStep : alt.getStep()) {
+          renderStep(status, tbl, subStep, altStepPrefix(stepLabel, step, altNum, stepCount), actors, instances);
+          stepCount++;
+        }
+        altNum++;
+      }
     }
 
     return true;
