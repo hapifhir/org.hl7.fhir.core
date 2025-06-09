@@ -311,6 +311,8 @@ public class ToolingExtensions {
   public static final String EXT_ENTRY_FORMAT = "http://hl7.org/fhir/StructureDefinition/entryFormat";
   public static final String EXT_TEXT_LINK = "http://hl7.org/fhir/StructureDefinition/textLink";
   public static final String EXT_CONCEPT_DOMAIN = "http://hl7.org/fhir/StructureDefinition/binding-conceptDomain";
+  public static final String EXT_NARRATIVE_SOURCE_CONTROL = "http://hl7.org/fhir/StructureDefinition/narrative-source-control";
+  public static final String EXT_NARRATIVE_LANGUAGE_CONTROL = "http://hl7.org/fhir/StructureDefinition/narrative-language-control";
   public static final String EXT_SD_CS_URL = "todo";
   
   // specific extension helpers

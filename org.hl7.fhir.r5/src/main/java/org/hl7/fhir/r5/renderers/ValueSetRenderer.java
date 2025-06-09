@@ -142,7 +142,6 @@ public class ValueSetRenderer extends TerminologyRenderer {
   private List<ConceptMapRenderInstructions> renderingMaps = new ArrayList<ConceptMapRenderInstructions>();
 
   private Map<String, String> oidMap;
-  
 
   public void render(RenderingStatus status, XhtmlNode x, ValueSet vs, boolean header) throws FHIRFormatError, DefinitionException, IOException {
     
@@ -986,7 +985,11 @@ public class ValueSetRenderer extends TerminologyRenderer {
       CodeSystem cs = getContext().getWorker().fetchCodeSystem(c.getSystem());
       if (cs != null) {
         String defn = CodeSystemUtilities.getCodeDefinition(cs, c.getCode());
-        addMarkdown(td, defn, cs.getWebPath());
+        if (hasMarkdownInDefinitions(cs)) {
+          addMarkdown(td, defn, cs.getWebPath());
+        } else {
+          td.tx(defn);
+        }
       }
     }
     for (String n  : Utilities.sorted(properties.keySet())) {
@@ -1020,6 +1023,18 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
   }
 
+
+  private boolean hasMarkdownInDefinitions(CodeSystem cs) {
+    if (!cs.hasUserData(UserDataNames.CS_MARKDOWN_FLAG)) {
+      if (cs.hasExtension("http://hl7.org/fhir/StructureDefinition/codesystem-use-markdown")) {
+        cs.setUserData(UserDataNames.CS_MARKDOWN_FLAG, ToolingExtensions.readBoolExtension(cs, "http://hl7.org/fhir/StructureDefinition/codesystem-use-markdown"));
+      } else {
+        cs.setUserData(UserDataNames.CS_MARKDOWN_FLAG, CodeSystemUtilities.hasMarkdownInDefinitions(cs, context.getMarkdown()));
+      }
+    }
+    return (Boolean) cs.getUserData(UserDataNames.CS_MARKDOWN_FLAG);
+  }
+  
   private String getOid(String system) {
     if (oidMap == null) {
       oidMap = new HashMap<>();

@@ -1204,6 +1204,7 @@ public class SnapshotGenerationPreProcessor {
         res.getSnapshot().getElement().add(ed);
       }
     }
+    res.setWebPath(profile.getWebPath());
     return res;
   } 
 

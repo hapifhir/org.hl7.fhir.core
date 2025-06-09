@@ -7,11 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
@@ -20,7 +19,6 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.i18n.I18nConstants;
 
 @MarkedToMoveToAdjunctPackage
 public class MappingAssistant {
@@ -29,7 +27,7 @@ public class MappingAssistant {
   public enum MappingMergeModeOption {
     DUPLICATE, // if there's more than one mapping for the same URI, just keep them all
     IGNORE, // if there's more than one, keep the first 
-    OVERWRITE, // if there's opre than, keep the last 
+    OVERWRITE, // if there's more than one, keep the last 
     APPEND, // if there's more than one, append them with ';' 
   }
   
@@ -40,12 +38,16 @@ public class MappingAssistant {
   private List<StructureDefinitionMappingComponent> masterList= new ArrayList<StructureDefinition.StructureDefinitionMappingComponent>();
   private Map<String, String> renames = new HashMap<>();
   private String version;
-
-  public MappingAssistant(MappingMergeModeOption mappingMergeMode, StructureDefinition base, StructureDefinition derived, String version) {
+  private List<String> suppressedMappings= new ArrayList<>();
+  
+  public MappingAssistant(MappingMergeModeOption mappingMergeMode, StructureDefinition base, StructureDefinition derived, String version, List<String> suppressedMappings) {
     this.mappingMergeMode = mappingMergeMode;
     this.base = base;
     this.derived = derived;
     this.version = version;
+    if (suppressedMappings != null) {
+      this.suppressedMappings = suppressedMappings;
+    }
     
     // figure out where we're going to be: 
     // mappings declared in derived get priority; we do not change them either 
@@ -58,37 +60,64 @@ public class MappingAssistant {
     
     // now, look at the base profile. If mappings in there match one in the derived, then we use that, otherwise, we add it to the list 
     for (StructureDefinitionMappingComponent m : base.getMapping()) {
-      StructureDefinitionMappingComponent md = findMatchInDerived(m);
-      if (md == null) {
-        if (nameExists(m.getIdentity())) {
-          int i = 1;
-          String n = m.getIdentity() + i;
-          while (nameExists(n)) {
-            i++;
-            n = m.getIdentity() + i;
+      if (notExcluded(m)) {
+        StructureDefinitionMappingComponent md = findMatchInDerived(m);
+        if (md == null) {
+          if (nameExists(m.getIdentity())) {
+            int i = 1;
+            String n = m.getIdentity() + i;
+            while (nameExists(n)) {
+              i++;
+              n = m.getIdentity() + i;
+            }
+            renames.put(m.getIdentity(), n);
+            masterList.add(m.copy().setName(n));
+          } else {
+            masterList.add(m.copy());
           }
-          renames.put(m.getIdentity(), n);
-          masterList.add(m.copy().setName(n));
         } else {
-          masterList.add(m.copy());
-        }
-      } else {
-        if (!md.hasName() && m.hasName()) {
-          md.setName(m.getName());
-        }
-        if (!md.hasUri() && m.hasUri()) {
-          md.setUri(m.getUri());
-        }
-        if (!md.hasComment() && m.hasComment()) {
-          md.setComment(m.getComment());
-        }
-        if (!m.getIdentity().equals(md.getIdentity())) {
-          renames.put(m.getIdentity(), md.getIdentity());
+          if (!md.hasName() && m.hasName()) {
+            md.setName(m.getName());
+          }
+          if (!md.hasUri() && m.hasUri()) {
+            md.setUri(m.getUri());
+          }
+          if (!md.hasComment() && m.hasComment()) {
+            md.setComment(m.getComment());
+          }
+          if (!m.getIdentity().equals(md.getIdentity())) {
+            renames.put(m.getIdentity(), md.getIdentity());
+          }
         }
       }
     }
   }
 
+  private boolean notExcluded(StructureDefinitionMappingComponent m) {
+    if (!m.hasUri()) {
+      return true;
+    }
+    return !Utilities.existsInList(m.getUri(), suppressedMappings);
+  }
+
+  private boolean notExcluded(ElementDefinitionMappingComponent m) {
+    if (!m.hasIdentity()) {
+      return false;
+    }
+    StructureDefinitionMappingComponent mm = null;
+    for (StructureDefinitionMappingComponent t : base.getMapping()) {
+      if (m.getIdentity().equals(t.getIdentity())) {
+        mm = t;
+        break;
+      }
+    }
+    if (mm == null) {
+      return false;
+    } else {
+      return notExcluded(mm);
+    }
+  }
+  
   private boolean nameExists(String n) {
     for (StructureDefinitionMappingComponent md : masterList) {
       if (n.equals(md.getIdentity())) {
@@ -122,7 +151,7 @@ public class MappingAssistant {
     for (ElementDefinition ed : derived.getSnapshot().getElement()) {
       for (ElementDefinitionMappingComponent m : ed.getMapping()) {
         StructureDefinitionMappingComponent def = findDefinition(m.getIdentity());
-        if (def != null) {
+        if (def != null && notExcluded(m)) {
           usedList.add(def);
         } else {
           // not sure what to do?
@@ -137,6 +166,7 @@ public class MappingAssistant {
       }
     }
   }
+
 
   public void merge(ElementDefinition base, ElementDefinition derived) {
     List<ElementDefinitionMappingComponent> list = new ArrayList<>();
@@ -243,5 +273,5 @@ public class MappingAssistant {
     }
     return b.toString();
   }
-  
+
 }

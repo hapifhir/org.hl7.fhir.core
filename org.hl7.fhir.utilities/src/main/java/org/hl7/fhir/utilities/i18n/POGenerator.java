@@ -75,7 +75,7 @@ public class POGenerator {
 
   private int noTrans = 0;
 
-  private void execute(String core, String igpub, String pascal) throws IOException {
+  public void execute(String core, String igpub, String pascal) throws IOException {
     String source = Utilities.path(core, "/org.hl7.fhir.utilities/src/main/resources");
     if (checkState(source, core, igpub, pascal)) {
       IniFile ini = new IniFile(Utilities.path(source, "translations-control.ini"));

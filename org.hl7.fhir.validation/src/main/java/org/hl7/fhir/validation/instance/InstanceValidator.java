@@ -3448,6 +3448,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (true) {
             ok = checkImageSources(valContext, errors, e, path, "div", xhtml, resource) && ok;
           }
+          checkMixedLangs(errors, e, path, xhtml.getChildNodes());
         }
       }
 
@@ -4028,6 +4029,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return ok;
   }
 
+  private void checkMixedLangs(List<ValidationMessage> errors, Element e, String path, List<XhtmlNode> list) {
+    Set<String>langs = new HashSet<>();
+    boolean nonLangContent = false;
+    for (XhtmlNode node : list) {
+      if (node.getNodeType() == NodeType.Element && "div".equals(node.getName()) && isLangDiv(node)) {
+        langs.add(node.getAttribute("xml:lang"));
+      } else if(node.hasContent()) {
+        nonLangContent = true;
+      }
+    }
+    warning(errors, "2025-06-07", IssueType.BUSINESSRULE, e.line(), e.col(), path, langs.isEmpty() ||!nonLangContent, I18nConstants.XHTML_XHTML_MIXED_LANG, CommaSeparatedStringBuilder.join(", ", langs));
+  }
+
+  private boolean isLangDiv(XhtmlNode node) {
+    return node.hasAttribute("xml:lang");
+  }
+
   private boolean checkPrimitiveBinding(ValidationContext valContext, List<ValidationMessage> errors, String path, String type, ElementDefinition elementContext, Element element, StructureDefinition profile, NodeStack stack) {
     // We ignore bindings that aren't on string, uri or code
     if (!element.hasPrimitiveValue() || !("code".equals(type) || "string".equals(type) || "uri".equals(type) || "url".equals(type) || "canonical".equals(type))) {
@@ -4344,15 +4362,83 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private boolean checkNarrative(ValidationContext valContext, List<ValidationMessage> errors, String path,Element element, Element resource, StructureDefinition profile,
-      ElementDefinition container, String parentType, NodeStack stack, PercentageTracker pct, ValidationMode vmode) throws FHIRException {
+      ElementDefinition definition, String parentType, NodeStack stack, PercentageTracker pct, ValidationMode vmode) throws FHIRException {
     boolean ok = true;
+    XhtmlNode div = element.hasChild("div") ? element.getNamedChild("div").getXhtml() : null;
+    if (definition.hasExtension(ToolingExtensions.EXT_NARRATIVE_SOURCE_CONTROL)) {
+      String level = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_NARRATIVE_SOURCE_CONTROL);
+      if (div != null) {
+        for (XhtmlNode x : div.getChildNodes()) {
+          if (x.hasContent()) {
+            if (!hasClass(x.getAttribute("class"), "generated", "boilerplate", "original")) {
+              switch (level) {
+              case "hint" : 
+              case "information" : 
+                hint(errors, "2025-06-07", IssueType.BUSINESSRULE, element.line(), element.col(), path,
+                    false, I18nConstants.XHTML_CONTROL_NO_SOURCE, Utilities.limitString(x.allText(), 30), profile);      
+              case "warning" : 
+                warning(errors, "2025-06-07", IssueType.BUSINESSRULE, element.line(), element.col(), path,
+                    false, I18nConstants.XHTML_CONTROL_NO_SOURCE, Utilities.limitString(x.allText(), 30), profile);      
+              case "error" :
+                ok = rule(errors, "2025-06-07", IssueType.BUSINESSRULE, element.line(), element.col(), path,
+                    false, I18nConstants.XHTML_CONTROL_NO_SOURCE, Utilities.limitString(x.allText(), 30), profile) && ok;      
+              }
+            }
+          }
+        }
+      }
+    }
+    if (definition.hasExtension(ToolingExtensions.EXT_NARRATIVE_LANGUAGE_CONTROL)) {
+      Set<String> langs = new HashSet<>();
+      for (XhtmlNode node : div.getChildNodes()) {
+        if (node.getNodeType() == NodeType.Element && "div".equals(node.getName()) && isLangDiv(node)) {
+          langs.add(node.getAttribute("xml:lang"));
+        }
+      }
+      for (Extension ext : definition.getExtensionsByUrl(ToolingExtensions.EXT_NARRATIVE_LANGUAGE_CONTROL)) {
+        if (ext.hasValue() && ext.getValue().primitiveValue() != null) {
+          String code = ext.getValue().primitiveValue();
+          switch (code) {
+          case "#no" : 
+            ok = rule(errors, "2025-06-07", IssueType.BUSINESSRULE, element.line(), element.col(), path,
+                langs.isEmpty(), I18nConstants.XHTML_CONTROL_NO_LANGS, CommaSeparatedStringBuilder.join(", ", langs), profile) && ok;
+            break;
+          case "#yes" : 
+            ok = rule(errors, "2025-06-07", IssueType.BUSINESSRULE, element.line(), element.col(), path,
+                !langs.isEmpty(), I18nConstants.XHTML_CONTROL_LANGS_REQUIRED, CommaSeparatedStringBuilder.join(", ", langs), profile) && ok;
+            break;
+          case "#resource" : 
+            String rl = resource.getNamedChildValue("language");
+            if (langs.isEmpty()) {
+              warning(errors, "2025-06-07", IssueType.BUSINESSRULE, element.line(), element.col(), path,
+                  !langs.isEmpty(), rl == null ? I18nConstants.XHTML_CONTROL_LANGS_NONE_NO_DEFAULT : I18nConstants.XHTML_CONTROL_LANGS_NONE, rl, profile);
+            } else if (rl == null) {
+              warning(errors, "2025-06-07", IssueType.BUSINESSRULE, element.line(), element.col(), path,
+                  !langs.isEmpty(), I18nConstants.XHTML_CONTROL_LANGS_NO_DEFAULT, CommaSeparatedStringBuilder.join(", ", langs), profile);
+              
+            } else {
+              ok = rule(errors, "2025-06-07", IssueType.BUSINESSRULE, element.line(), element.col(), path,
+                langs.contains(rl), I18nConstants.XHTML_CONTROL_LANGS_REQUIRED_DEF, rl, CommaSeparatedStringBuilder.join(", ", langs), profile) && ok;
+            }
+            break;
+         default : 
+            if (langs.isEmpty()) {
+              warning(errors, "2025-06-07", IssueType.BUSINESSRULE, element.line(), element.col(), path,
+                  !langs.isEmpty(), I18nConstants.XHTML_CONTROL_LANGS_NONE2, code, profile);
+            } else {
+              ok = rule(errors, "2025-06-07", IssueType.BUSINESSRULE, element.line(), element.col(), path,
+                langs.contains(code), I18nConstants.XHTML_CONTROL_LANGS_REQUIRED_LANG, code, CommaSeparatedStringBuilder.join(", ", langs), profile) && ok;
+            }
+          }
+        }
+      }
+    }
     if (element.hasExtension(ToolingExtensions.EXT_TEXT_LINK)) {
-      XhtmlNode div = element.hasChild("div") ? element.getNamedChild("div").getXhtml() : null;
       if (div == null) {
         ok = rule(errors, "2025-05-17", IssueType.STRUCTURE, element.line(), element.col(), path,
             !Utilities.noString(element.getNamedChildValue("display", false)), I18nConstants.TEXT_LINK_NO_DIV) && ok;      
       } else for (Element ex : element.getExtensions(ToolingExtensions.EXT_TEXT_LINK)) {
-        NodeStack estack = stack.push(ex, ex.getIndex(), container, container);  
+        NodeStack estack = stack.push(ex, ex.getIndex(), definition, definition);  
         for (Element htmlid : ex.getExtensions("htmlid")) {
           String id = htmlid.getNamedChildValue("value");
           if (!divHasId(div, id)) {
@@ -4429,6 +4515,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     selector: string: FHIRPath that selects a subset of the identified data. This sub-extension exists because in some circumstances, the specific data items are in resources where the constructor of the narrative can't introduce specific ids on the relevent elements
     */
     return ok;
+  }
+
+
+  private boolean hasClass(String clss, String string, String string2, String string3) {
+    if (clss == null) {
+      return false;
+    }
+    String[] s = clss.split("\\ ");
+    return Utilities.existsInList(clss, s);
   }
 
   private boolean divHasId(XhtmlNode node, String id) {
@@ -6537,6 +6632,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (xhtml != null) {
           String l = xhtml.getAttribute("lang");
           String xl = xhtml.getAttribute("xml:lang");
+          if (l == null && xl == null && allChildrenAreLangDivs(xhtml)) {
+            XhtmlNode ld = firstLangDiv(xhtml);
+            l = ld.getAttribute("lang");
+            xl = ld.getAttribute("xml:lang");
+          }
           if (l == null && xl == null) {
             warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_MISSING1);
           } else {
@@ -6569,6 +6669,24 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     return ok;
+  }
+
+  private XhtmlNode firstLangDiv(XhtmlNode xhtml) {
+    for (XhtmlNode n : xhtml.getChildNodes()) {
+      if (isLangDiv(n)) {
+        return n;
+      }
+    }
+    return null;
+  }
+
+  private boolean allChildrenAreLangDivs(XhtmlNode xhtml) {
+    for (XhtmlNode n : xhtml.getChildNodes()) {
+      if (!isLangDiv(n) && n.hasContent()) {
+        return false;
+      }
+    }
+    return xhtml.getChildNodes().size() > 0;
   }
 
   private boolean validateCapabilityStatement(List<ValidationMessage> errors, Element cs, NodeStack stack) {
