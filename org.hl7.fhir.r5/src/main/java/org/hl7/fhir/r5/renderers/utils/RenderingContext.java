@@ -166,6 +166,7 @@ public class RenderingContext extends RenderingI18nContext {
     SUMMARY, // 5 cells: tree/name | flags | cardinality | type | details
     BINDINGS, // tree/name + column for each kind of binding found, cells are lists of bindings 
     OBLIGATIONS, // tree/name + column for each actor that has obligations
+    MAPPINGS, // tree/name + column for each other structure definition there is mappings for
     DATA_DICT,  // detailed element view 
   }
 

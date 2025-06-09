@@ -4875,5 +4875,28 @@ public class ProfileUtilities {
   public void setSuppressedMappings(List<String> suppressedMappings) {
     this.suppressedMappings = suppressedMappings;
   }
+  
+  public static String getCSUrl(StructureDefinition profile) {
+    if (profile.hasExtension(ToolingExtensions.EXT_SD_CS_URL)) {
+      return ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_SD_CS_URL);
+    } else {
+      return profile.getUrl()+"?codesystem";
+    }    
+  }
+
+  public static String getUrlFromCSUrl(String url) {
+    if (url == null) {
+      return null;
+    }
+    if (url.endsWith("?codesystem")) {
+      return url.replace("?codesystem", "");
+    } else {
+      return null;
+    }
+  }
+
+  public FHIRPathEngine getFpe() {
+    return fpe;
+  }
 
 }
