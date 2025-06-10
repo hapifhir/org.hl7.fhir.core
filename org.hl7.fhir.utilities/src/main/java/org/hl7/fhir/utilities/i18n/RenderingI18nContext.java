@@ -550,7 +550,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String SD_SLICING_INFO = "SD_SLICING_INFO";
   public static final String SD_SUMMARY_FIXED = "SD_SUMMARY_FIXED";
   public static final String SD_SUMMARY_MANDATORY = "SD_SUMMARY_MANDATORY";
-  public static final String SD_SUMMARY_MAPPINGS = "SD_SUMMARY_MAPPINGS";
   public static final String SD_SUMMARY_MISSING_EXTENSION = "SD_SUMMARY_MISSING_EXTENSION";
   public static final String SD_SUMMARY_MISSING_PROFILE = "SD_SUMMARY_MISSING_PROFILE";
   public static final String SD_SUMMARY_MUST_SUPPORT = "SD_SUMMARY_MUST_SUPPORT";
@@ -581,7 +580,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String STRUC_DEF_AFFECT_CONSTRAINTS = "STRUC_DEF_AFFECT_CONSTRAINTS";
   public static final String STRUC_DEF_ALLOWED = "STRUC_DEF_ALLOWED";
   public static final String STRUC_DEF_ALL_ACTORS = "STRUC_DEF_ALL_ACTORS";
-  public static final String STRUC_DEF_ALL_MAP_KEY = "STRUC_DEF_ALL_MAP_KEY";
   public static final String STRUC_DEF_ALL_SLICES = "STRUC_DEF_ALL_SLICES";
   public static final String STRUC_DEF_ALL_TYPES = "STRUC_DEF_ALL_TYPES";
   public static final String STRUC_DEF_ALT_NAME = "STRUC_DEF_ALT_NAME";

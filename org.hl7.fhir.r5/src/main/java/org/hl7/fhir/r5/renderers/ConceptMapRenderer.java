@@ -548,24 +548,32 @@ public class ConceptMapRenderer extends TerminologyRenderer {
             tr.td().colspan("3").style("background-color: #efefef").tx("(not mapped)");
           }
         } else {
-          TargetElementComponent ccm = ccl.getTarget().get(0);
-          if (!ccm.hasRelationship())
-            tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
-          else {
-            if (ccm.hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
-              String code = ToolingExtensions.readStringExtension(ccm, ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-              tr.td().ah(context.prefixLocalHref(eqpath+"#"+code), code).tx(presentEquivalenceCode(code));                
+          boolean first = true;
+          for (TargetElementComponent ccm : ccl.getTarget()) {
+            if (first) {
+              first = false;
             } else {
-              tr.td().ah(context.prefixLocalHref(eqpath+"#"+ccm.getRelationship().toCode()), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+              tr = tbl.tr();
+              tr.td().style("opacity: 0.5").tx("\"");
             }
+            if (!ccm.hasRelationship())
+              tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
+            else {
+              if (ccm.hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
+                String code = ToolingExtensions.readStringExtension(ccm, ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
+                tr.td().ah(context.prefixLocalHref(eqpath+"#"+code), code).tx(presentEquivalenceCode(code));                
+              } else {
+                tr.td().ah(context.prefixLocalHref(eqpath+"#"+ccm.getRelationship().toCode()), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+              }
+            }
+            td = tr.td();
+            td.addText(ccm.getCode());
+            display = ccm.hasDisplay() ? ccm.getDisplay() : getDisplayForConcept(grp.getTarget(), ccm.getCode());
+            if (display != null && !isSameCodeAndDisplay(ccm.getCode(), display))
+              td.tx(" ("+display+")");
+            if (hasComment)
+              tr.td().addText(ccm.getComment());
           }
-          td = tr.td();
-          td.addText(ccm.getCode());
-          display = ccm.hasDisplay() ? ccm.getDisplay() : getDisplayForConcept(grp.getTarget(), ccm.getCode());
-          if (display != null && !isSameCodeAndDisplay(ccm.getCode(), display))
-            td.tx(" ("+display+")");
-          if (hasComment)
-            tr.td().addText(ccm.getComment());
         }
         addUnmapped(tbl, grp);
       }      
