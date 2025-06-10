@@ -2303,7 +2303,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           if (this.targetProfile == null)
             return false;
           for (CanonicalType v : this.targetProfile)
-            if (v.getValue().equals(value)) // canonical
+            if (v.getValue().equals(value) || v.getValue().startsWith(value+"|")) // canonical
               return true;
           return false;
         }
