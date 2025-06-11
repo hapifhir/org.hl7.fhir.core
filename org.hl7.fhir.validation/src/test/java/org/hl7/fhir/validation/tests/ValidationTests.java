@@ -664,7 +664,10 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       focus.addProperty("java", "java/"+name.replace("/", "-")+"-"+mode+".json");
     }
 
-    OperationOutcome goal = (OperationOutcome) new JsonParser().parse(TestingUtilities.loadTestResource("validator", "outcomes", "java", name.replace("/", "-")+"-"+mode+".json"));
+    byte[] cnt = TestingUtilities.findTestResource("validator", "outcomes", "java", name.replace("/", "-")+"-"+mode+".json") ?
+        TestingUtilities.loadTestResourceBytes("validator", "outcomes", "java", name.replace("/", "-")+"-"+mode+".json") :
+        " { \"resourceType\" : \"OperationOutcome\" }".getBytes();
+    OperationOutcome goal = (OperationOutcome) new JsonParser().parse(cnt);
     OperationOutcome actual = OperationOutcomeUtilities.createOutcomeSimple(errors);
     actual.setText(null);
     actual.getIssue().forEach(iss -> iss.removeExtension(ToolingExtensions.EXT_ISSUE_SLICE_INFO));

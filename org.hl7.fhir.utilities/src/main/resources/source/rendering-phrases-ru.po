@@ -142,6 +142,16 @@ msgstr "Валидаторы проверяют эту привязку (сил�
 msgid "This value set is a component of the base value set"
 msgstr "Этот набор значений является компонентом базового набора кодов"
 
+# BUNDLE_DOCUMENT_CONTENT
+#: BUNDLE_DOCUMENT_CONTENT
+msgid "Document Content"
+msgstr ""
+
+# BUNDLE_DOCUMENT_DETAILS
+#: BUNDLE_DOCUMENT_DETAILS
+msgid "Document Details"
+msgstr ""
+
 # BUNDLE_ETAG
 #: BUNDLE_ETAG
 msgid "ETag = {0}"
@@ -777,6 +787,18 @@ msgstr "Отношения"
 msgid "Source Code"
 msgstr "Исходный код"
 
+# CONC_MAP_SOURCE_CARD
+#: CONC_MAP_SOURCE_CARD
+msgctxt "CONC_MAP_SOURCE_CARD"
+msgid "Card."
+msgstr ""
+
+# CONC_MAP_SOURCE_TYPE
+#: CONC_MAP_SOURCE_TYPE
+msgctxt "CONC_MAP_SOURCE_TYPE"
+msgid "Type"
+msgstr ""
+
 # CONC_MAP_SRC_DET
 #: CONC_MAP_SRC_DET
 msgid "Source Concept Details"
@@ -793,10 +815,22 @@ msgstr "до"
 msgid "Target Code"
 msgstr "Целевой код"
 
+# CONC_MAP_TRGT_CARD
+#: CONC_MAP_TRGT_CARD
+msgctxt "CONC_MAP_TRGT_CARD"
+msgid "Card."
+msgstr ""
+
 # CONC_MAP_TRGT_DET
 #: CONC_MAP_TRGT_DET
 msgid "Target Concept Details"
 msgstr "Подробности Целевого Концепции"
+
+# CONC_MAP_TRGT_TYPE
+#: CONC_MAP_TRGT_TYPE
+msgctxt "CONC_MAP_TRGT_TYPE"
+msgid "Type"
+msgstr ""
 
 # DATA_REND_AFTERNOON
 #: DATA_REND_AFTERNOON
@@ -1412,6 +1446,7 @@ msgstr "Минимально допустимый набор значений - 
 
 # GENERAL_CARD
 #: GENERAL_CARD
+msgctxt "GENERAL_CARD"
 msgid "Card."
 msgstr "Карта."
 
@@ -1720,6 +1755,7 @@ msgstr "Ещё не завершено"
 
 # GENERAL_TYPE
 #: GENERAL_TYPE
+msgctxt "GENERAL_TYPE"
 msgid "Type"
 msgstr "Тип"
 
@@ -2709,6 +2745,61 @@ msgstr "Неуказанная тема"
 msgid "Value Set:"
 msgstr "Набор значений:"
 
+# R44B_DERIVES_FROM
+#: R44B_DERIVES_FROM
+msgid "derives from"
+msgstr ""
+
+# R44B_HAS_TARGET
+#: R44B_HAS_TARGET
+msgid "has target"
+msgstr ""
+
+# R44B_HAS_TYPE
+#: R44B_HAS_TYPE
+msgid "has type"
+msgstr ""
+
+# R44B_NOT_COMP
+#: R44B_NOT_COMP
+msgid "This is an {0} IG that is not compatible with {1}\" because"
+msgstr ""
+
+# R44B_NOT_IN
+#: R44B_NOT_IN
+msgid "The following resources are not in the {0} version"
+msgstr ""
+
+# R44B_ONLY_IN
+#: R44B_ONLY_IN
+msgid "The following resources are only in the {0} version"
+msgstr ""
+
+# R44B_PACKAGE_REF
+#: R44B_PACKAGE_REF
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
+msgstr ""
+
+# R44B_PROBLEMS
+#: R44B_PROBLEMS
+msgid "While checking for {0} compatibility, the following {1} problems were found"
+msgstr ""
+
+# R44B_REFERS_TO
+#: R44B_REFERS_TO
+msgid "<a href=\"{0}\">{1}}</a> refers to the canonical type at {2}"
+msgstr ""
+
+# R44B_USE_OK
+#: R44B_USE_OK
+msgid "This is an {0} IG. None of the features it uses are changed in {1}, so it can be used as is with {1}} systems."
+msgstr ""
+
+# R44B_WRONG_MSG
+#: R44B_WRONG_MSG
+msgid "Something went wrong with the cross-version analysis because"
+msgstr ""
+
 # REND_ADDED
 #: REND_ADDED
 msgid "Added:"
@@ -3084,7 +3175,7 @@ msgstr "Рекомендации по толкованию содержимог�
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
 msgid "-- no content: do not translate #97 --"
-msgstr "-- no content: do not translate #97 --"
+msgstr "!!-- no content: do not translate #97 --"
 
 # SDR_IMPOSE
 #: SDR_IMPOSE
@@ -3244,8 +3335,9 @@ msgstr "Для версии {0}"
 
 # SDR_VER_FROM_PFX
 #: SDR_VER_FROM_PFX
-msgid "\"FHIR versions"
-msgstr "\"Версии FHIR"
+msgctxt "SDR_VER_FROM_PFX"
+msgid "FHIR versions"
+msgstr "!!\"Версии FHIR"
 
 # SDR_VER_FROM_SFX
 #: SDR_VER_FROM_SFX
@@ -3270,6 +3362,7 @@ msgstr "до"
 
 # SDR_VER_RANGE_PFX
 #: SDR_VER_RANGE_PFX
+msgctxt "SDR_VER_RANGE_PFX"
 msgid "FHIR versions"
 msgstr "Версии FHIR"
 
@@ -3277,7 +3370,7 @@ msgstr "Версии FHIR"
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
 msgid "-- no content: do not translate #98 --"
-msgstr "-- no content: do not translate #98 --"
+msgstr "!!-- no content: do not translate #98 --"
 
 # SDR_VER_TO_PFX
 #: SDR_VER_TO_PFX
@@ -3288,7 +3381,7 @@ msgstr "Версии FHIR до"
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
 msgid "-- no content: do not translate #99 --"
-msgstr "-- no content: do not translate #99 --"
+msgstr "!!-- no content: do not translate #99 --"
 
 # SDR_VER_UNK
 #: SDR_VER_UNK
@@ -3511,11 +3604,6 @@ msgstr "Неподвижный: {0} {1}"
 msgid "Mandatory: {0} {1}"
 msgstr "Обязательный: {0} {1}"
 
-# SD_SUMMARY_MAPPINGS
-#: SD_SUMMARY_MAPPINGS
-msgid "Mappings for {0} ({2}{1}{3})"
-msgstr "Сопоставления для {0} ({2}{1}{3})"
-
 # SD_SUMMARY_MISSING_EXTENSION
 #: SD_SUMMARY_MISSING_EXTENSION
 msgid "Unable to summarise extension {0} (no extension found)"
@@ -3642,8 +3730,8 @@ msgstr "{0}, опубликовано {1}. Это руководство не я
 
 # STATUS_MSG_LOCAL_BUILD
 #: STATUS_MSG_LOCAL_BUILD
-msgid "{0} - Local Development build (v{1}) built by the FHIR (HL7&reg; FHIR&reg; Standard) Build Tools. See the <a href=''{2}/history.html''>Directory of published versions</a>"
-msgstr "{0} - Локальная сборка (v{1}), построенная FHIR (HL7&reg; FHIR&reg; Стандартные инструменты сборки. Смотрите каталог <a href=''{2}/history.html''>опубликованных версий</a>"
+msgid "{0} - Local Development build (v{1}) built by the FHIR (HL7® FHIR® Standard) Build Tools. See the <a href=''{2}/history.html''>Directory of published versions</a>"
+msgstr "!!{0} - Локальная сборка (v{1}), построенная FHIR (HL7&reg; FHIR&reg; Стандартные инструменты сборки. Смотрите каталог <a href=''{2}/history.html''>опубликованных версий</a>"
 
 # STATUS_MSG_PUBLICATION_HOLDER
 #: STATUS_MSG_PUBLICATION_HOLDER
@@ -3674,11 +3762,6 @@ msgstr "Разрешенные единицы"
 #: STRUC_DEF_ALL_ACTORS
 msgid "All Actors"
 msgstr "Все актеры"
-
-# STRUC_DEF_ALL_MAP_KEY
-#: STRUC_DEF_ALL_MAP_KEY
-msgid "All Mappings are Empty"
-msgstr "Все сопоставления пусты"
 
 # STRUC_DEF_ALL_SLICES
 #: STRUC_DEF_ALL_SLICES
@@ -5497,3 +5580,4 @@ msgstr "Этот код нельзя выбрать (''Abstract'')"
 #: _NA
 msgid "n/a"
 msgstr "н/д"
+

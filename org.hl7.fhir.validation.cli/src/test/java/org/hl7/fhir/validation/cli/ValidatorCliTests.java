@@ -52,6 +52,9 @@ public class ValidatorCliTests {
   LangTransformTask langTransformTask;
 
   @Spy
+  LangRegenerateTask langRegenTask;
+
+  @Spy
   NarrativeTask narrativeTask;
 
   @Spy
@@ -124,6 +127,7 @@ public class ValidatorCliTests {
           fhirpathTask,
           installTask,
           langTransformTask,
+          langRegenTask,
           narrativeTask,
           preloadCacheTask,
           scanTask,

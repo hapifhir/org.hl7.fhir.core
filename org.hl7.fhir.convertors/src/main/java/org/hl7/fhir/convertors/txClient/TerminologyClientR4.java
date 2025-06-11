@@ -22,6 +22,7 @@ import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
@@ -30,6 +31,29 @@ import org.hl7.fhir.utilities.http.HTTPHeader;
 
 public class TerminologyClientR4 implements ITerminologyClient {
 
+
+  public static class TerminologyClientR4Factory implements ITerminologyClientFactory {
+
+    @Override
+    public ITerminologyClient makeClient(String id, String url, String userAgent, ToolingClientLogger logger) throws URISyntaxException {
+      return new TerminologyClientR4(id, checkEndsWith("/r4", url), userAgent);
+    }
+
+    private String checkEndsWith(String term, String url) {
+      if (url.endsWith(term))
+        return url;
+      if (Utilities.isTxFhirOrgServer(url)) {
+        return Utilities.pathURL(url, term);
+      }
+      return url;
+    }
+
+    @Override
+    public String getVersion() {
+      return "4.0.1";
+    }
+  }
+  
   private final FHIRToolingClient client; 
   private ClientHeaders clientHeaders;
   private String id;

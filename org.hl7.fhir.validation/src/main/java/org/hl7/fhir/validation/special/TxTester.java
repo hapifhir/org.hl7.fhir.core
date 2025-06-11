@@ -23,6 +23,8 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.Parameters;
@@ -471,7 +473,7 @@ public class TxTester {
         conversionLogger.suiteName = suite.asString("name");
         conversionLogger.testName = testName;
         String reqFile = chooseParam(test, "request", modes);
-        Parameters req = reqFile == null ? null : (Parameters) loader.loadResource(reqFile);
+        Resource req = reqFile == null ? null : loader.loadResource(reqFile);
 
         String fn = chooseParam(test, "response", modes);
         String resp = FileUtilities.bytesToString(loader.loadContent(fn));
@@ -489,15 +491,17 @@ public class TxTester {
         } else if (test.asString("operation").equals("term-caps")) {
           msg = termcaps(test.str("name"), setup, resp, fp, lang, profile, ext, modes);
         } else if (test.asString("operation").equals("expand")) {
-          msg = expand(test.str("name"), setup, req, resp, fp, lang, profile, ext, getResponseCode(test), modes);
+          msg = expand(test.str("name"), setup, (Parameters) req, resp, fp, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("validate-code")) {
-          msg = validate(test.str("name"), setup, req, resp, fp, lang, profile, ext, getResponseCode(test), modes);      
+          msg = validate(test.str("name"), setup, (Parameters) req, resp, fp, lang, profile, ext, getResponseCode(test), modes);      
         } else if (test.asString("operation").equals("cs-validate-code")) {
-          msg = validateCS(test.str("name"), setup, req, resp, fp, lang, profile, ext, getResponseCode(test), modes);      
+          msg = validateCS(test.str("name"), setup, (Parameters) req, resp, fp, lang, profile, ext, getResponseCode(test), modes);      
         } else if (test.asString("operation").equals("lookup")) {
-          msg = lookup(test.str("name"), setup, req, resp, fp, lang, profile, ext, getResponseCode(test), modes);      
+          msg = lookup(test.str("name"), setup, (Parameters) req, resp, fp, lang, profile, ext, getResponseCode(test), modes);      
         } else if (test.asString("operation").equals("translate")) {
-          msg = translate(test.str("name"), setup, req, resp, fp, lang, profile, ext, getResponseCode(test), modes);      
+          msg = translate(test.str("name"), setup, (Parameters) req, resp, fp, lang, profile, ext, getResponseCode(test), modes);      
+        } else if (test.asString("operation").equals("batch")) {
+          msg = batch(test.str("name"), setup, (Bundle) req, resp, fp, lang, profile, ext, getResponseCode(test), modes);      
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
@@ -613,13 +617,13 @@ public class TxTester {
       TxTesterScrubbers.scrubOO(oo, tight);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
       FileUtilities.stringToFile(pj, fp);        
+    }
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
     return diff;
   }
@@ -644,13 +648,13 @@ public class TxTester {
       TxTesterScrubbers.scrubOO(oo, tight);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
       FileUtilities.stringToFile(pj, fp);        
+    }
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
     return diff;
   }
@@ -675,13 +679,13 @@ public class TxTester {
       TxTesterScrubbers.scrubOO(oo, tight);
       vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, vsj, false);
     if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
       FileUtilities.stringToFile(vsj, fp);        
+    }
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
     return diff;
   }
@@ -718,13 +722,13 @@ public class TxTester {
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
       FileUtilities.stringToFile(pj, fp);        
+    }
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
     return diff;
   }
@@ -749,13 +753,56 @@ public class TxTester {
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
       FileUtilities.stringToFile(pj, fp);        
+    }
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
+    }
+    return diff;
+  }
+
+  private String batch(String id, List<Resource> setup, Bundle bnd, String resp, String fp, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
+    for (Resource r : setup) {
+      Parameters p = (Parameters) bnd.getEntryFirstRep().getResource();
+      p.addParameter().setName("tx-resource").setResource(r);
+    }
+    terminologyClient.setAcceptLanguage(lang);
+    for (BundleEntryComponent be : bnd.getEntry()) {
+      ((Parameters) be.getResource()).getParameter().addAll(profile.getParameter());
+    }
+    int code = 0;
+    String bj;
+    try {
+      Bundle bo = terminologyClient.validateBatch(bnd);
+      for (BundleEntryComponent be : bo.getEntry()) {
+        if (be.getResource() instanceof Parameters) {
+          Parameters po = ((Parameters) be.getResource());
+          TxTesterScrubbers.scrubParams(po);
+          TxTesterSorters.sortParameters(po);
+        }
+        if (be.getResource() instanceof OperationOutcome) {
+          OperationOutcome oo = ((OperationOutcome) be.getResource());
+          TxTesterScrubbers.scrubOO(oo, tight);          
+        }
+      }
+      bj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(bo);
+      code = 200;
+    } catch (EFhirClientException e) {
+      code = e.getCode();
+      OperationOutcome oo = e.getServerError(); 
+      TxTesterScrubbers.scrubOO(oo, tight);
+      bj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+    }
+    String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, bj, false);
+    if (diff != null) {
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
+      FileUtilities.stringToFile(bj, fp);        
+    }
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
     return diff;
   }
