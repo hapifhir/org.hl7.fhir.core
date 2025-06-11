@@ -325,7 +325,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     
     String igVersion = conf.getVersion();
 
-    x.h(2,"title").addText(conf.getTitle());
+    x.h(2,context.prefixAnchor("title")).addText(conf.getTitle());
     XhtmlNode uList = x.ul();
     uList.li().addText(context.formatPhrase(RenderingContext.CAPABILITY_IMP_VER, igVersion) + " ");
     uList.li().addText(context.formatPhrase(RenderingContext.CAPABILITY_FHIR_VER, currentVersion.toCode()) + " ");
@@ -346,11 +346,11 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     int restNum = conf.getRest().size();
     int nextLevel = 3;
     if (restNum > 0) {
-      x.h(2,"rest").addText((context.formatPhrase(RenderingContext.CAPABILITY_REST_CAPS)));
+      x.h(2,context.prefixAnchor("rest")).addText((context.formatPhrase(RenderingContext.CAPABILITY_REST_CAPS)));
       int count=1;
       for (CapabilityStatementRestComponent rest : conf.getRest()) {
         if (restNum > 1) {
-          x.h(3,"rest"+Integer.toString(count)).addText(context.formatPhrase(RenderingContext.CAPABILITY_REST_CONFIG, Integer.toString(count)) + " ");
+          x.h(3,context.prefixAnchor("rest"+Integer.toString(count))).addText(context.formatPhrase(RenderingContext.CAPABILITY_REST_CONFIG, Integer.toString(count)) + " ");
           nextLevel = 4;
         }
         addRestConfigPanel(x, rest, nextLevel, count);
@@ -368,8 +368,8 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
           hasUpdates = hasUpdates || hasOp(r, TypeRestfulInteraction.HISTORYINSTANCE);
         }
         if (rest.getResource().size() >0) {
-          x.h(nextLevel,"resourcesCap" + Integer.toString(count)).addText(context.formatPhrase(RenderingContext.CAPABILITY_RES_PRO));
-          x.h(nextLevel+1,"resourcesSummary" + Integer.toString(count)).addText(context.formatPhrase(RenderingContext.GENERAL_SUMM));
+          x.h(nextLevel,context.prefixAnchor("resourcesCap" + Integer.toString(count))).addText(context.formatPhrase(RenderingContext.CAPABILITY_RES_PRO));
+          x.h(nextLevel+1,context.prefixAnchor("resourcesSummary" + Integer.toString(count))).addText(context.formatPhrase(RenderingContext.GENERAL_SUMM));
           addSummaryIntro(x);
           addSummaryTable(status, res, x, rest, hasVRead, hasPatch, hasDelete, hasHistory, hasUpdates, count);
           x.addTag("hr");
@@ -382,8 +382,8 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         }
         if (rest.getOperation().size() > 0) {
           //TODO Figure out what should come out of this
-          x.h(nextLevel,"operationsCap" + Integer.toString(count)).addText(context.formatPhrase(RenderingContext.CAPABILITY_OP));
-          x.h(nextLevel+1,"operationsSummary" + Integer.toString(count)).addText(context.formatPhrase(RenderingContext.OP_DEF_USE));
+          x.h(nextLevel,context.prefixAnchor("operationsCap" + Integer.toString(count))).addText(context.formatPhrase(RenderingContext.CAPABILITY_OP));
+          x.h(nextLevel+1,context.prefixAnchor("operationsSummary" + Integer.toString(count))).addText(context.formatPhrase(RenderingContext.OP_DEF_USE));
         }
         count++;
       }
@@ -392,7 +392,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     int messagingNum = conf.getMessaging().size();
     nextLevel = 3;
     if (messagingNum > 0) {
-      x.h(2,"messaging").addText((context.formatPhrase(RenderingContext.CAPABILITY_MESSAGING_CAPS)));
+      x.h(2,context.prefixAnchor("messaging")).addText((context.formatPhrase(RenderingContext.CAPABILITY_MESSAGING_CAPS)));
       int count=1;
       for (CapabilityStatementMessagingComponent msg : conf.getMessaging()) 
       {
@@ -405,7 +405,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     int documentNum = conf.getDocument().size();
     nextLevel = 3;
     if (documentNum > 0) {
-      x.h(2,"document").addText((context.formatPhrase(RenderingContext.CAPABILITY_DOCUMENT_CAPS)));
+      x.h(2,context.prefixAnchor("document")).addText((context.formatPhrase(RenderingContext.CAPABILITY_DOCUMENT_CAPS)));
       addDocumentTable(status, res, x, conf, nextLevel);
     }
 
@@ -524,7 +524,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       }
       XhtmlNode ul = null;
       if (igShalls.size() > 0) {
-        x.h(3,"shallIGs").addText(context.formatPhrase(RenderingContext.CAPABILTY_SHALL_SUPP));
+        x.h(3,context.prefixAnchor("shallIGs")).addText(context.formatPhrase(RenderingContext.CAPABILTY_SHALL_SUPP));
         ul = x.ul();
         for (String url : igShalls) {
           addResourceLink(ul.li(), url, url);
@@ -532,7 +532,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         }
       }
       if (igShoulds.size() > 0) {
-        x.h(3,"shouldIGs").addText(context.formatPhrase(RenderingContext.CAPABILITY_SHOULD_SUPP));
+        x.h(3,context.prefixAnchor("shouldIGs")).addText(context.formatPhrase(RenderingContext.CAPABILITY_SHOULD_SUPP));
         ul = x.ul();
         for (String url : igShoulds) {
           addResourceLink(ul.li(), url, url);
@@ -540,7 +540,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         }
       }
       if (igMays.size() > 0) {
-        x.h(3,"mayIGs").addText(context.formatPhrase(RenderingContext.CAPABILITY_MAY_SUPP));
+        x.h(3,context.prefixAnchor("mayIGs")).addText(context.formatPhrase(RenderingContext.CAPABILITY_MAY_SUPP));
         ul = x.ul();
         for (String url : igMays) {
           addResourceLink(ul.li(), url, url);
@@ -592,7 +592,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     XhtmlNode cell = null;
     XhtmlNode heading = null;
     panel = x.div().attribute("class", "panel panel-default");
-    heading = panel.div().attribute("class", "panel-heading").h(nextLevel,"mode" + Integer.toString(count)).attribute("class", "panel-title");
+    heading = panel.div().attribute("class", "panel-heading").h(nextLevel,context.prefixAnchor("mode" + Integer.toString(count))).attribute("class", "panel-title");
     heading.addText("Mode: ");
     heading.code().addText(rest.getMode().toCode());
     body = panel.div().attribute("class", "panel-body");
@@ -631,7 +631,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     XhtmlNode tr;
 
     panel = x.div().attribute("class", "panel panel-default");
-    heading = panel.div().attribute("class", "panel-heading").h(nextLevel,"messaging_" + Integer.toString(index)).attribute("class", "panel-title");
+    heading = panel.div().attribute("class", "panel-heading").h(nextLevel,context.prefixAnchor("messaging_" + Integer.toString(index))).attribute("class", "panel-title");
     if(total == 1)
     {
       heading.addText(context.formatPhrase(RenderingContext.CAPABILITY_MESSAGING_CAP));
@@ -653,7 +653,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
 
     if(msg.hasEndpoint())
     {
-      body.h(nextLevel+1,"msg_end_"+Integer.toString(index)).addText(context.formatPhrase(RenderingContext.CAPABILITY_ENDPOINTS));
+      body.h(nextLevel+1,context.prefixAnchor("msg_end_"+Integer.toString(index))).addText(context.formatPhrase(RenderingContext.CAPABILITY_ENDPOINTS));
       table = body.table("table table-condensed table-hover", false);
       tr = table.addTag("thead").tr();
       tr.th().addText("Protocol");
@@ -671,7 +671,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
 
     if(msg.hasSupportedMessage())
     {
-      body.h(nextLevel+1,"msg_end_"+Integer.toString(index)).addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPP_MSGS));
+      body.h(nextLevel+1,context.prefixAnchor("msg_sm_"+Integer.toString(index))).addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPP_MSGS));
       table = body.table("table table-condensed table-hover", false);
       tr = table.addTag("thead").tr();
       tr.th().addText("Mode");
@@ -913,7 +913,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     for (CapabilityStatementRestResourceComponent r : rest.getResource()) {
       tr = tbody.tr();
       countString = Integer.toString(count) + "-" + Integer.toString(resCount);
-      tr.td().ah("#" + r.getType() + countString).addText(r.getType());
+      tr.td().ah("#" + context.prefixAnchor(r.getType() + countString)).addText(r.getType());
       resCount++;
       //Show profiles
       profCell = tr.td();
@@ -1138,7 +1138,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     String countString = Integer.toString(count) + "-" + Integer.toString(resCount);
     panel = x.div().attribute("class", "panel panel-default");
     if (igRenderingMode) {
-      panelHead = panel.div().attribute("class", "panel-heading").attribute("role", "tab").attribute("id","heading" + countString).h(nextLevel,r.getType() + countString).attribute("class", "panel-title");
+      panelHead = panel.div().attribute("class", "panel-heading").attribute("role", "tab").attribute("id","heading" + countString).h(nextLevel,context.prefixAnchor(r.getType() + countString)).attribute("class", "panel-title");
       panelRef = panelHead.ah("#collapse" + countString).attribute("role","button").attribute("data-toggle", "collapse").attribute("aria-expanded","true").attribute("aria-controls","collapse" + countString);
       //panelRef = panelHead.addTag("button").attribute("href","#collapse" + countString).attribute("role","button").attribute("data-toggle", "collapse").attribute("aria-expanded","false").attribute("aria-controls","collapse" + countString);
       //panelRef.span("float: right;","").attribute("class", "lead").addText("Resource Conformance: " + getResourceExpectation(r));
@@ -1147,7 +1147,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       body = panel.div().attribute("class", collapseClass).attribute("id","collapse" + countString).attribute("role","tabpanel").attribute("aria-labelledby","heading" + countString).div().attribute("class", "panel-body").div().attribute("class", "container");
     }
     else {
-      panelHead = panel.div().attribute("class", "panel-heading").h(nextLevel,r.getType() + countString).attribute("class", "panel-title");
+      panelHead = panel.div().attribute("class", "panel-heading").h(nextLevel,context.prefixAnchor(r.getType() + countString)).attribute("class", "panel-title");
       panelHead.span("float: right;","").addText(context.formatPhrase(RenderingContext.CAPABILITY_RES_CONF, getResourceExpectation(r)) + " ");
       panelHead.addText(r.getType());
       body = panel.div().attribute("class", "panel-body").div().attribute("class", "container");
