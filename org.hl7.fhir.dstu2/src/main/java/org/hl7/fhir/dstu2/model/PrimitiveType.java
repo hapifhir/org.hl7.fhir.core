@@ -127,7 +127,7 @@ public abstract class PrimitiveType<T> extends Type implements IPrimitiveType<T>
     fromStringValue(theValue);
   }
 
-  protected Type typedCopy() {
+  public Type typedCopy() {
     return copy();
   }
 

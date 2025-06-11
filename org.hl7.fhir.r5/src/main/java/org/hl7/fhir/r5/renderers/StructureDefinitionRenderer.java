@@ -35,6 +35,8 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.ConceptMap;
+import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DecimalType;
 import org.hl7.fhir.r5.model.Element;
@@ -67,6 +69,10 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingCompo
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.Column;
+import org.hl7.fhir.r5.renderers.mappings.ConceptMapMappingProvider;
+import org.hl7.fhir.r5.renderers.mappings.ModelMappingProvider;
+import org.hl7.fhir.r5.renderers.mappings.StructureDefinitionMappingProvider;
 import org.hl7.fhir.r5.renderers.utils.ElementTable;
 import org.hl7.fhir.r5.renderers.utils.ElementTable.ElementTableGrouping;
 import org.hl7.fhir.r5.renderers.utils.ElementTable.ElementTableGroupingEngine;
@@ -115,6 +121,11 @@ import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 @Slf4j
 public class StructureDefinitionRenderer extends ResourceRenderer { 
  
+  public enum MapStructureMode {
+    IN_LIST, NOT_IN_LIST, OTHER
+    
+  }
+  
   public StructureDefinitionRenderer(RenderingContext context) { 
     super(context); 
     hostMd = new InternalMarkdownProcessor(); 
@@ -395,6 +406,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private boolean useTableForFixedValues = true; 
   private String corePath;
   private JsonObject resourceGroupings; 
+  private MapStructureMode mappingsMode;
+  private List<StructureDefinition> mappingTargets = new ArrayList<>();
  
   public static class UnusedTracker { 
     private boolean used; 
@@ -534,19 +547,19 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
  
-  private static class Column { 
+  public static class Column { 
     String id; 
     String title; 
     String hint; 
     private String link; 
  
-    protected Column(String id, String title, String hint) { 
+    public Column(String id, String title, String hint) { 
       super(); 
       this.id = id; 
       this.title = title; 
       this.hint = hint; 
     } 
-    protected Column(String id, String title, String hint, String link) { 
+    public Column(String id, String title, String hint, String link) { 
       super(); 
       this.id = id; 
       this.title = title; 
@@ -569,8 +582,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       list = new ArrayList<>(); 
       list.addAll(profile.getSnapshot().getElement()); 
     } 
- 
-    List<Column> columns = new ArrayList<>(); 
+
+    List<Column> columns = new ArrayList<>();
+    List<ModelMappingProvider> mappings = new ArrayList<>(); 
     TableModel model; 
     boolean obLists = false;
     switch (context.getStructureMode()) { 
@@ -580,6 +594,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       break; 
     case OBLIGATIONS: 
       obLists = scanObligations(columns, list); 
+      model = initCustomTable(gen, corePath, false, true, profile.getId()+idSfx, rc.getRules() == GenerationRules.IG_PUBLISHER, columns);     
+      break;  
+    case MAPPINGS: 
+      mappings = scanForMappings(profile, list, columns); 
+      if (mappings.isEmpty()) {
+        return null;
+      }
       model = initCustomTable(gen, corePath, false, true, profile.getId()+idSfx, rc.getRules() == GenerationRules.IG_PUBLISHER, columns);     
       break; 
     case SUMMARY: 
@@ -593,14 +614,114 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     profiles.add(profile); 
     keyRows.clear(); 
  
-    genElement(status, defFile == null ? null : defFile+"#", gen, model.getRows(), list.get(0), list, profiles, diff, profileBaseFileName, null, snapshot, corePath, imagePath, true, logicalModel, profile.getDerivation() == TypeDerivationRule.CONSTRAINT && usesMustSupport(list), allInvariants, null, mustSupport, rc, anchorPrefix, profile, columns, res, obLists); 
+    genElement(status, defFile == null ? null : defFile+"#", gen, model.getRows(), list.get(0), list, profiles, diff, profileBaseFileName, null, snapshot, corePath, imagePath, true, logicalModel, profile.getDerivation() == TypeDerivationRule.CONSTRAINT && usesMustSupport(list), allInvariants, null, mustSupport, rc, anchorPrefix, profile, columns, res, obLists, mappings); 
     try { 
       return gen.generate(model, imagePath, 0, outputTracker); 
     } catch (org.hl7.fhir.exceptions.FHIRException e) { 
       throw new FHIRException(context.getWorker().formatMessage(I18nConstants.ERROR_GENERATING_TABLE_FOR_PROFILE__, profile.getUrl(), e.getMessage()), e); 
     } 
   } 
- 
+
+  private List<ModelMappingProvider> scanForMappings(StructureDefinition profile, List<ElementDefinition> list, List<Column> columns) {
+    List<ModelMappingProvider> res = new ArrayList<ModelMappingProvider>();
+    List<StructureDefinition> items = new ArrayList<StructureDefinition>();
+
+    // first, does this have mappings to other models?
+    for (StructureDefinitionMappingComponent map : profile.getMapping()) {
+      if (map.hasUri()) {
+        StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, map.getUri());
+        if (includeSDForMap(sd, true)) {
+          items.add(sd);
+          res.add(new StructureDefinitionMappingProvider(context, sd, false, profile, map, context.getProfileUtilities().getFpe()));
+        }
+      }
+    }
+    for (ConceptMap cm : context.getContext().fetchResourcesByType(ConceptMap.class)) {
+      for (ConceptMapGroupComponent grp : cm.getGroup()) {
+        if (grp.hasSource() && grp.getSource().equals(ProfileUtilities.getCSUrl(profile))) {
+          boolean matched = true;
+          String url = ProfileUtilities.getUrlFromCSUrl(grp.getTarget());
+          if (url != null) {
+            StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, url);
+            if (includeSDForMap(sd, false) && !items.contains(sd)) {
+              matched = true;
+              items.add(sd);
+              res.add(new ConceptMapMappingProvider(context, sd, false, cm, grp));
+            }
+          }
+          if (!matched) {
+            for (StructureDefinition sd : context.getContextUtilities().allStructures()) {
+              if (includeSDForMap(sd, false)) {
+                String url2 = ProfileUtilities.getCSUrl(sd);
+                if (url2.equals(grp.getTarget()) && !items.contains(sd)) {
+                  items.add(sd);
+                  res.add(new ConceptMapMappingProvider(context, sd, false, cm, grp));
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // now look for reverse mappings but only to things we haven't already got forward mappings too
+    for (StructureDefinition src : context.getContextUtilities().allStructures()) {
+      if (includeSDForMap(src, true)) {
+        for (StructureDefinitionMappingComponent map : src.getMapping()) {
+          if (map.hasUri() && map.getUri().equals(profile.getUrl()) && !items.contains(src)) {
+            items.add(src);
+            res.add(new StructureDefinitionMappingProvider(context, src, true, profile, map, context.getProfileUtilities().getFpe()));
+          }
+        }
+      }
+    }
+
+    for (ConceptMap cm : context.getContext().fetchResourcesByType(ConceptMap.class)) {
+      for (ConceptMapGroupComponent grp : cm.getGroup()) {
+        if (grp.hasTarget() && grp.getTarget().equals(ProfileUtilities.getCSUrl(profile))) {
+          boolean matched = true;
+          String url = ProfileUtilities.getUrlFromCSUrl(grp.getSource());
+          if (url != null) {
+            StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, url);
+            if (includeSDForMap(sd, false) && !items.contains(sd)) {
+              matched = true;
+              items.add(sd);
+              res.add(new ConceptMapMappingProvider(context, sd, true, cm, grp));
+            }
+          }
+          if (!matched) {
+            for (StructureDefinition sd : context.getContextUtilities().allStructures()) {
+              if (includeSDForMap(sd, false)) {
+                String url2 = ProfileUtilities.getCSUrl(sd);
+                if (url2.equals(grp.getSource()) && !items.contains(sd)) {
+                  items.add(sd);
+                  res.add(new ConceptMapMappingProvider(context, sd, true, cm, grp));
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    int i = 0;
+    for (ModelMappingProvider mm : res) {
+      columns.add(mm.makeColumn("m"+ ++i));
+    }
+    profile.setUserData(UserDataNames.PROFILE_RENDERED_MAPPINGS, res.size() >= 0);
+    return res;
+  }
+
+  private boolean includeSDForMap(StructureDefinition sd, boolean okForNull) {
+    switch (mappingsMode) {
+    case IN_LIST: return mappingTargets.contains(sd);
+    case NOT_IN_LIST: return sd != null && !mappingTargets.contains(sd);
+    case OTHER: return sd == null && okForNull;
+    default: return false;
+    }
+  }
+
   private void scanBindings(List<Column> columns, List<ElementDefinition> list) { 
     Set<String> cols = new HashSet<>(); 
     scanBindings(cols, list, list.get(0)); 
@@ -760,7 +881,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
   
   private Row genElement(RenderingStatus status, String defPath, HierarchicalTableGenerator gen, List<Row> rows, ElementDefinition element, List<ElementDefinition> all, List<StructureDefinition> profiles, boolean showMissing, String profileBaseFileName, Boolean extensions,  
-      boolean snapshot, String corePath, String imagePath, boolean root, boolean logicalModel, boolean isConstraintMode, boolean allInvariants, Row slicingRow, boolean mustSupport, RenderingContext rc, String anchorPrefix, Resource srcSD, List<Column> columns, ResourceWrapper res, boolean obLists) throws IOException, FHIRException { 
+      boolean snapshot, String corePath, String imagePath, boolean root, boolean logicalModel, boolean isConstraintMode, boolean allInvariants, Row slicingRow, boolean mustSupport, RenderingContext rc, String anchorPrefix, Resource srcSD, List<Column> columns, ResourceWrapper res, boolean obLists, List<ModelMappingProvider> mappings) throws IOException, FHIRException { 
     Row originalRow = slicingRow; 
     StructureDefinition profile = profiles == null ? null : profiles.get(profiles.size()-1); 
     Row typesRow = null; 
@@ -868,6 +989,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       case OBLIGATIONS: 
         genElementObligations(gen, element, columns, row, corePath, profile, obLists); 
         break; 
+      case MAPPINGS: 
+        genElementMappings(gen, element, columns, row, corePath, profile, mappings); 
+        break;         
       case SUMMARY: 
         genElementCells(status, gen, element, profileBaseFileName, snapshot, corePath, imagePath, root, logicalModel, allInvariants, profile, typesRow, row, hasDef, ext, used, ref, nc, mustSupport, true, rc, children.size() > 0, defPath, anchorPrefix, all, res);
         break; 
@@ -910,6 +1034,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           switch (context.getStructureMode()) { 
           case BINDINGS: 
           case OBLIGATIONS: 
+          case MAPPINGS:
             for (Column col : columns) { 
               hrow.getCells().add(gen.new Cell());               
             } 
@@ -919,7 +1044,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             hrow.getCells().add(gen.new Cell()); 
             hrow.getCells().add(gen.new Cell()); 
             hrow.getCells().add(gen.new Cell(null, null, context.formatPhrase(RenderingContext.STRUC_DEF_CONT_RULE), "", null)); 
-            break;             
+            break;            
           } 
           row.getSubRows().add(hrow); 
           row = hrow; 
@@ -938,6 +1063,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           switch (context.getStructureMode()) { 
           case BINDINGS: 
           case OBLIGATIONS: 
+          case MAPPINGS:
             for (Column col : columns) { 
               hrow.getCells().add(gen.new Cell());               
             } 
@@ -972,7 +1098,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 parent.getCells().add(gen.new Cell(null, null, context.formatPhrase(RenderingContext.STRUC_DEF_SLICE_FOR, child.getName()), "", null)); 
                 switch (context.getStructureMode()) { 
                 case BINDINGS: 
-                case OBLIGATIONS: 
+                case OBLIGATIONS:
+                case MAPPINGS: 
                   for (Column col : columns) { 
                     parent.getCells().add(gen.new Cell());               
                   } 
@@ -994,7 +1121,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             } 
  
             if (logicalModel || !child.getPath().endsWith(".id") || (child.getPath().endsWith(".id") && (profile != null) && (profile.getDerivation() == TypeDerivationRule.CONSTRAINT))) {   
-              slicer = genElement(status, defPath, gen, parent.getSubRows(), child, all, profiles, showMissing, profileBaseFileName, isExtension, snapshot, corePath, imagePath, false, logicalModel, isConstraintMode, allInvariants, slicer, mustSupport, rc, anchorPrefix, srcSD, columns, res, false); 
+              slicer = genElement(status, defPath, gen, parent.getSubRows(), child, all, profiles, showMissing, profileBaseFileName, isExtension, snapshot, corePath, imagePath, false, logicalModel, isConstraintMode, allInvariants, slicer, mustSupport, rc, anchorPrefix, srcSD, columns, res, false, mappings); 
             } 
           } 
         } 
@@ -1065,6 +1192,17 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       ObligationsRenderer obr = new ObligationsRenderer(corePath, profile, element.getPath(), context, null, this, obLists); 
       obr.seeObligations(element, col.id); 
       obr.renderList(gen, gc);       
+    } 
+  } 
+
+  private void genElementMappings(HierarchicalTableGenerator gen, ElementDefinition element, List<Column> columns, Row row, String corePath, StructureDefinition profile, List<ModelMappingProvider> mappings) throws IOException { 
+    for (ModelMappingProvider mm : mappings) {  
+      Cell gc = gen.new Cell(); 
+      row.getCells().add(gc); 
+      Piece p = gc.addText("");
+      XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
+      mm.render(element, div);
+      p.addHtml(div);
     } 
   } 
  
@@ -1697,14 +1835,21 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               abr.seeAdditionalBindings(binding.getExtensionsByUrl(ToolingExtensions.EXT_BINDING_ADDITIONAL)); 
             } 
             abr.render(gen, c); 
-          } 
+          }
+          
+          boolean firstConstraint = true;
           for (ElementDefinitionConstraintComponent inv : definition.getConstraint()) { 
 //            if (!inv.hasSource() || profile == null || inv.getSource().equals(profile.getUrl()) || allInvariants) { 
-            if (!inv.hasSource() || profile == null || allInvariants || (!isAbstractBaseProfile(inv.getSource()) && !"http://hl7.org/fhir/StructureDefinition/Extension".equals(inv.getSource()))) { 
-              if (!c.getPieces().isEmpty())  
-                c.addPiece(gen.new Piece("constraint", "br")); 
-              c.getPieces().add(checkForNoChange(inv, gen.new Piece("constraint", null, inv.getKey()+": ", null).addStyle("font-weight:bold"))); 
-              c.getPieces().add(checkForNoChange(inv, gen.new Piece("constraint", null, gt(inv.getHumanElement()), null))); 
+            if (!inv.hasSource() || profile == null || inv.getSource().equals(profile.getUrl()) || (allInvariants && !isAbstractBaseProfile(inv.getSource()) && !"http://hl7.org/fhir/StructureDefinition/Extension".equals(inv.getSource()) && !"http://hl7.org/fhir/StructureDefinition/Element".equals(inv.getSource()))) {
+              if (firstConstraint) {
+                if (!c.getPieces().isEmpty())  
+                  c.addPiece(gen.new Piece("constraint", "br"));
+                c.addPiece(gen.new Piece("constraint", null, "Constraints: ", null));
+                firstConstraint = false;
+                
+              } else
+                c.addPiece(gen.new Piece("constraint", null, ", ", null)); 
+              c.getPieces().add(checkForNoChange(inv, gen.new Piece("constraint", null, inv.getKey(), gt(inv.getHumanElement())).addStyle("font-weight:bold"))); 
             } 
           } 
           if ((definition.hasBase() && "*".equals(definition.getBase().getMax())) || (definition.hasMax() && "*".equals(definition.getMax()))) { 
@@ -3310,7 +3455,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (!child.getPath().endsWith(".id")) { 
           List<StructureDefinition> sdl = new ArrayList<>(); 
           sdl.add(ed); 
-          genElement(status, defFile == null ? "" : defFile+"-definitions.html#extension.", gen, r.getSubRows(), child, ed.getSnapshot().getElement(), sdl, true, defFile, true, full, corePath, imagePath, true, false, false, false, null, false, rc, "", ed, null, res, false); 
+          genElement(status, defFile == null ? "" : defFile+"-definitions.html#extension.", gen, r.getSubRows(), child, ed.getSnapshot().getElement(), sdl, true, defFile, true, full, corePath, imagePath, true, false, false, false, null, false, rc, "", ed, null, res, false, null); 
         } 
     } else if (deep) { 
       List<ElementDefinition> children = new ArrayList<ElementDefinition>(); 
@@ -5284,6 +5429,18 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       return "icon_resource.png"; 
     } 
     
+  }
+
+  public MapStructureMode getMappingsMode() {
+    return mappingsMode;
+  }
+
+  public void setMappingsMode(MapStructureMode mappingsMode) {
+    this.mappingsMode = mappingsMode;
+  }
+
+  public List<StructureDefinition> getMappingTargets() {
+    return mappingTargets;
   }
   
 } 

@@ -263,6 +263,12 @@ public class SnapShotGenerationXTests {
       return null;
     }
 
+    @Override
+    public String getDefinitionsName(Resource r) {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
   }
 
   private static class SnapShotGenerationTestsContext implements IEvaluationContext {

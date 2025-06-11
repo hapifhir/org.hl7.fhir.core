@@ -5,6 +5,7 @@ public enum EngineMode {
   COMPILE,
   TRANSFORM,
   LANG_TRANSFORM,
+  LANG_REGEN,
   NARRATIVE,
   SNAPSHOT,
   SCAN,

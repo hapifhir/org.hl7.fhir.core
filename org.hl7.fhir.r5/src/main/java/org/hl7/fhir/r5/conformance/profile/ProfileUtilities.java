@@ -439,7 +439,8 @@ public class ProfileUtilities {
   private boolean forPublication;
   private List<StructureDefinition> obligationProfiles = new ArrayList<>();
   private boolean wantThrowExceptions;
- 
+  private List<String> suppressedMappings= new ArrayList<>();
+  
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp, FHIRPathEngine fpe) {
     super();
     this.context = context;
@@ -804,7 +805,7 @@ public class ProfileUtilities {
         //        debug = true;
         //      }
 
-        MappingAssistant mappingDetails = new MappingAssistant(mappingMergeMode, base, derived, context.getVersion());
+        MappingAssistant mappingDetails = new MappingAssistant(mappingMergeMode, base, derived, context.getVersion(), suppressedMappings);
         
         ProfilePathProcessor.processPaths(this, base, derived, url, webUrl, diff, baseSnapshot, mappingDetails);
 
@@ -4858,6 +4859,37 @@ public class ProfileUtilities {
       }
     }
     return false;
+  }
+
+  public List<String> getSuppressedMappings() {
+    return suppressedMappings;
+  }
+
+  public void setSuppressedMappings(List<String> suppressedMappings) {
+    this.suppressedMappings = suppressedMappings;
+  }
+  
+  public static String getCSUrl(StructureDefinition profile) {
+    if (profile.hasExtension(ToolingExtensions.EXT_SD_CS_URL)) {
+      return ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_SD_CS_URL);
+    } else {
+      return profile.getUrl()+"?codesystem";
+    }    
+  }
+
+  public static String getUrlFromCSUrl(String url) {
+    if (url == null) {
+      return null;
+    }
+    if (url.endsWith("?codesystem")) {
+      return url.replace("?codesystem", "");
+    } else {
+      return null;
+    }
+  }
+
+  public FHIRPathEngine getFpe() {
+    return fpe;
   }
 
 }

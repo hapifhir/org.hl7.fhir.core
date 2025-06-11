@@ -459,9 +459,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
       ValueSetValidator vsv = getVs(url, info);
       serverCount += vsv.getServerLoad(info);
     }
-    CodeSystem cs = resolveCodeSystem(inc.getSystem(), inc.getVersion());
-    if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)) {
-      serverCount++;
+    if (inc.hasSystem()) {
+      CodeSystem cs = resolveCodeSystem(inc.getSystem(), inc.getVersion());
+      if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)) {
+        serverCount++;
+      }
     }
     return serverCount;
   }

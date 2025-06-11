@@ -1043,7 +1043,7 @@ msgstr ""
 
 # ED_INVARIANT_DIFF_NO_SOURCE
 #: ED_INVARIANT_DIFF_NO_SOURCE
-msgid "The invariant {0} defined in the differential must have no source, or the source must be the same as the profile"
+msgid "The invariant {0} defined in the differential must have no source, or the source must be the same as the profile ({1} vs {2})"
 msgstr ""
 
 # ED_INVARIANT_EXPRESSION_CONFLICT
@@ -3442,7 +3442,7 @@ msgstr "Der Abfrageteil der bedingten Referenz ist kein g\u00fcltiger Abfrage-St
 
 # REFERENCE_REF_REL_UNSOLVEABLE
 #: REFERENCE_REF_REL_UNSOLVEABLE
-msgid "The URL ''{0}'' cannot be resolved unless the fullURL is a RESTFul base URL, or a baseURL has been provided and the Bundle is a batch or transction"
+msgid "The URL ''{0}'' cannot be resolved unless the fullURL is a RESTFul base URL, or a baseURL has been provided and the Bundle is a batch or transaction"
 msgstr ""
 
 # REFERENCE_REF_SUSPICIOUS
@@ -6034,6 +6034,11 @@ msgstr ""
 msgid "The value for a filter based on property ''{0}'' must be a valid code from the system ''{2}'', and ''{1}'' is not ({3}). Note that this is change from the past; terminology servers are expected to still continue to support this filter"
 msgstr ""
 
+# VALUESET_BAD_FILTER_VALUE_VALID_CODE_INACTIVE
+#: VALUESET_BAD_FILTER_VALUE_VALID_CODE_INACTIVE
+msgid "The code for the filter ''{0}'' is inactive (''{1}'')"
+msgstr ""
+
 # VALUESET_BAD_FILTER_VALUE_VALID_REGEX
 #: VALUESET_BAD_FILTER_VALUE_VALID_REGEX
 msgid "The value for a filter based on property ''{0}'' should be a valid regex, not ''{1}'' (err = ''{2}'')"
@@ -6580,6 +6585,51 @@ msgstr "Falscher Namensraum - erwartet ''{0}''"
 msgid "Wrong type for resource"
 msgstr "Falscher Typ f\u00fcr Ressource"
 
+# XHTML_CONTROL_LANGS_NONE
+#: XHTML_CONTROL_LANGS_NONE
+msgid "The profile {1} requires a section in the narrative for the resource language {0}, but there is no sections"
+msgstr ""
+
+# XHTML_CONTROL_LANGS_NONE2
+#: XHTML_CONTROL_LANGS_NONE2
+msgid "The profile {1} requires a section in the narrative for the language {0}, but there is no sections"
+msgstr ""
+
+# XHTML_CONTROL_LANGS_NONE_NO_DEFAULT
+#: XHTML_CONTROL_LANGS_NONE_NO_DEFAULT
+msgid "The profile {1} requires a section in the narrative for the resource language, but there is no sections and no resource language"
+msgstr ""
+
+# XHTML_CONTROL_LANGS_NO_DEFAULT
+#: XHTML_CONTROL_LANGS_NO_DEFAULT
+msgid "The profile {1} requires a section in the narrative for the resource language, but there is no language"
+msgstr ""
+
+# XHTML_CONTROL_LANGS_REQUIRED
+#: XHTML_CONTROL_LANGS_REQUIRED
+msgid "The xhtml has no language sections, but language sections are required in this context by the profile {1}"
+msgstr ""
+
+# XHTML_CONTROL_LANGS_REQUIRED_DEF
+#: XHTML_CONTROL_LANGS_REQUIRED_DEF
+msgid "The profile {2} requires a section in the narrative for the resource language ({0}), but it was not found (found {1})"
+msgstr ""
+
+# XHTML_CONTROL_LANGS_REQUIRED_LANG
+#: XHTML_CONTROL_LANGS_REQUIRED_LANG
+msgid "The profile {2} requires a section in the narrative for the language ''{0}'', but it was not found (found {1})"
+msgstr ""
+
+# XHTML_CONTROL_NO_LANGS
+#: XHTML_CONTROL_NO_LANGS
+msgid "The xhtml has some language sections ({0}), but language sections are prohibited in this context by the profile {1}"
+msgstr ""
+
+# XHTML_CONTROL_NO_SOURCE
+#: XHTML_CONTROL_NO_SOURCE
+msgid "The xhtml node at ''{0}'' does not have a class attribute to indicate it''s source (boilerplate, generated, or original) and this is required by the profile {1}"
+msgstr ""
+
 # XHTML_URL_DATA_DATA_INVALID
 #: XHTML_URL_DATA_DATA_INVALID
 msgid "The data should be valid base64 content for a data: URL: {0}"
@@ -6651,6 +6701,11 @@ msgstr "Ung\u00fcltige Entit\u00e4t in XHTML (''{0}'')"
 #: XHTML_XHTML_Image_Reference_Illegal
 msgid "Invalid Image Reference in the XHTML (''{0}'')"
 msgstr "Ung\u00fcltiger Bildverweis in XHTML (''{0}'')"
+
+# XHTML_XHTML_MIXED_LANG
+#: XHTML_XHTML_MIXED_LANG
+msgid "The xhtml has some language sections ({0}), and also has content that is not in a language section"
+msgstr ""
 
 # XHTML_XHTML_NS_InValid
 #: XHTML_XHTML_NS_InValid
@@ -6789,6 +6844,6 @@ msgstr "Das XML-Attribut {0} enth\u00e4lt ein ung\u00fcltiges Zeichen"
 
 # xml_encoding_invalid
 #: xml_encoding_invalid
-msgid "The XML encoding is invalid (must be UTF-8)"
-msgstr "Die XML-Kodierung ist ung\u00fcltig (muss UTF-8 sein)"
+msgid "The XML encoding is invalid (must be UTF-8, not ''{0}'')"
+msgstr "!!Die XML-Kodierung ist ung\u00fcltig (muss UTF-8 sein)"
 
