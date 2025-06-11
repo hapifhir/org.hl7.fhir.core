@@ -79,7 +79,7 @@
       "text": "written"
     }
   ],
-  "encounter": {
+  "context": {
     "reference": "Encounter/example"
   },
   "payload": [
