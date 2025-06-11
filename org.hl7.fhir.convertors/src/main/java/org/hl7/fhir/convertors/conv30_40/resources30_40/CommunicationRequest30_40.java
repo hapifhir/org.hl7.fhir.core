@@ -1,14 +1,141 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
+import org.hl7.fhir.convertors.context.ConversionContext30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Annotation30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
+
+/**
+ * Conversion mapping for communication request, mapping is based on conversion map found at:
+ * https://hl7.org/fhir/R4/communicationrequest-version-maps.html
+ */
 public class CommunicationRequest30_40 {
 
   public static org.hl7.fhir.dstu3.model.CommunicationRequest convertCommunication(org.hl7.fhir.r4.model.CommunicationRequest src) throws FHIRException {
-    return null;
+    if (src == null)
+      return null;
+
+    org.hl7.fhir.dstu3.model.CommunicationRequest tgt = new org.hl7.fhir.dstu3.model.CommunicationRequest();
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
+
+    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) {
+      tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
+    }
+    for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) {
+      tgt.addBasedOn(Reference30_40.convertReference(t));
+    }
+    for (org.hl7.fhir.r4.model.Reference t : src.getReplaces()) {
+      tgt.addReplaces(Reference30_40.convertReference(t));
+    }
+
+    if (src.hasGroupIdentifier()) {
+      tgt.setGroupIdentifier(Identifier30_40.convertIdentifier(src.getGroupIdentifier()));
+    }
+    if (src.hasStatus()) {
+      tgt.setStatus(org.hl7.fhir.dstu3.model.CommunicationRequest.CommunicationRequestStatus.fromCode(src.getStatus().toCode()));
+    }
+
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) {
+      tgt.addCategory(CodeableConcept30_40.convertCodeableConcept(t));
+    }
+
+    if (src.hasPriority()) {
+      tgt.setPriority(org.hl7.fhir.dstu3.model.CommunicationRequest.CommunicationPriority.fromCode(src.getPriority().toCode()));
+    }
+
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getMedium()) {
+      tgt.addMedium(CodeableConcept30_40.convertCodeableConcept(t));
+    }
+
+    if (src.hasSubject()) {
+      tgt.setSubject(Reference30_40.convertReference(src.getSubject()));
+    }
+
+    for (org.hl7.fhir.r4.model.Reference t : src.getRecipient()) {
+      tgt.addRecipient(Reference30_40.convertReference(t));
+    }
+
+    for (org.hl7.fhir.r4.model.Reference t : src.getAbout()) {
+      tgt.addTopic(Reference30_40.convertReference(t));
+    }
+
+    if (src.hasEncounter()) {
+      tgt.setContext(Reference30_40.convertReference(src.getEncounter()));
+    }
+
+    for (org.hl7.fhir.r4.model.CommunicationRequest.CommunicationRequestPayloadComponent t : src.getPayload()) {
+      tgt.addPayload(convertPayloadComponent(t));
+    }
+
+    if (src.hasOccurrence()) {
+      tgt.setOccurrence(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getOccurrence()));
+    }
+
+    if (src.hasAuthoredOn()) {
+      tgt.setAuthoredOnElement(DateTime30_40.convertDateTime(src.getAuthoredOnElement()));
+    }
+
+    if (src.hasSender()) {
+      tgt.setSender(Reference30_40.convertReference(src.getSender()));
+    }
+
+    //  src where requester.exists() or
+    //  extension.where(url = 'http://hl7.org/fhir/3.0/StructureDefinition/extension-CommunicationRequest.requester.onBehalfOf').exists()
+    //  -> tgt.requester as vt0 then agent(src, vt0) "requester";
+
+    //TODO exlude extension in default mapping, and include it here for mapping
+//    if(src.hasRequester()) {
+//      tgt.setRequester()
+//    }
+
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) {
+      tgt.addReasonCode(CodeableConcept30_40.convertCodeableConcept(t));
+    }
+    for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) {
+      tgt.addReasonReference(Reference30_40.convertReference(t));
+    }
+
+    for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) {
+      tgt.addNote(Annotation30_40.convertAnnotation(t));
+    }
+
+
+    return tgt;
   }
 
   public static org.hl7.fhir.r4.model.CommunicationRequest convertCommunication(org.hl7.fhir.dstu3.model.CommunicationRequest src) throws FHIRException {
     return null;
+  }
+
+  public static org.hl7.fhir.r4.model.CommunicationRequest.CommunicationRequestPayloadComponent convertPayloadComponent(org.hl7.fhir.dstu3.model.CommunicationRequest.CommunicationRequestPayloadComponent src) {
+    if (src == null)
+      return null;
+
+    org.hl7.fhir.r4.model.CommunicationRequest.CommunicationRequestPayloadComponent tgt = new org.hl7.fhir.r4.model.CommunicationRequest.CommunicationRequestPayloadComponent();
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src, tgt);
+
+    if (src.hasContent()) {
+      tgt.setContent(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getContent()));
+    }
+
+    return tgt;
+  }
+
+  public static org.hl7.fhir.dstu3.model.CommunicationRequest.CommunicationRequestPayloadComponent convertPayloadComponent(org.hl7.fhir.r4.model.CommunicationRequest.CommunicationRequestPayloadComponent src) {
+    if (src == null)
+      return null;
+
+    org.hl7.fhir.dstu3.model.CommunicationRequest.CommunicationRequestPayloadComponent tgt = new org.hl7.fhir.dstu3.model.CommunicationRequest.CommunicationRequestPayloadComponent();
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src, tgt);
+
+    if (src.hasContent()) {
+      tgt.setContent(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getContent()));
+    }
+
+    return tgt;
   }
 }
