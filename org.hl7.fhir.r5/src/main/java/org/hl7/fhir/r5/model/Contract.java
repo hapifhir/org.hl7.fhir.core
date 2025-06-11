@@ -1377,8 +1377,8 @@ public class Contract extends DomainResource {
           return (CodeableConcept) this.topic;
         }
 
-        public boolean hasTopicCodeableConcept() { 
-          return this != null && this.topic instanceof CodeableConcept;
+        public boolean hasTopicCodeableConcept() {
+          return this.topic instanceof CodeableConcept;
         }
 
         /**
@@ -1392,8 +1392,8 @@ public class Contract extends DomainResource {
           return (Reference) this.topic;
         }
 
-        public boolean hasTopicReference() { 
-          return this != null && this.topic instanceof Reference;
+        public boolean hasTopicReference() {
+          return this.topic instanceof Reference;
         }
 
         public boolean hasTopic() { 
@@ -3634,8 +3634,8 @@ public class Contract extends DomainResource {
           return (BooleanType) this.value;
         }
 
-        public boolean hasValueBooleanType() { 
-          return this != null && this.value instanceof BooleanType;
+        public boolean hasValueBooleanType() {
+          return this.value instanceof BooleanType;
         }
 
         /**
@@ -3649,8 +3649,8 @@ public class Contract extends DomainResource {
           return (DecimalType) this.value;
         }
 
-        public boolean hasValueDecimalType() { 
-          return this != null && this.value instanceof DecimalType;
+        public boolean hasValueDecimalType() {
+          return this.value instanceof DecimalType;
         }
 
         /**
@@ -3664,8 +3664,8 @@ public class Contract extends DomainResource {
           return (IntegerType) this.value;
         }
 
-        public boolean hasValueIntegerType() { 
-          return this != null && this.value instanceof IntegerType;
+        public boolean hasValueIntegerType() {
+          return this.value instanceof IntegerType;
         }
 
         /**
@@ -3679,8 +3679,8 @@ public class Contract extends DomainResource {
           return (DateType) this.value;
         }
 
-        public boolean hasValueDateType() { 
-          return this != null && this.value instanceof DateType;
+        public boolean hasValueDateType() {
+          return this.value instanceof DateType;
         }
 
         /**
@@ -3694,8 +3694,8 @@ public class Contract extends DomainResource {
           return (DateTimeType) this.value;
         }
 
-        public boolean hasValueDateTimeType() { 
-          return this != null && this.value instanceof DateTimeType;
+        public boolean hasValueDateTimeType() {
+          return this.value instanceof DateTimeType;
         }
 
         /**
@@ -3709,8 +3709,8 @@ public class Contract extends DomainResource {
           return (TimeType) this.value;
         }
 
-        public boolean hasValueTimeType() { 
-          return this != null && this.value instanceof TimeType;
+        public boolean hasValueTimeType() {
+          return this.value instanceof TimeType;
         }
 
         /**
@@ -3724,8 +3724,8 @@ public class Contract extends DomainResource {
           return (StringType) this.value;
         }
 
-        public boolean hasValueStringType() { 
-          return this != null && this.value instanceof StringType;
+        public boolean hasValueStringType() {
+          return this.value instanceof StringType;
         }
 
         /**
@@ -3739,8 +3739,8 @@ public class Contract extends DomainResource {
           return (UriType) this.value;
         }
 
-        public boolean hasValueUriType() { 
-          return this != null && this.value instanceof UriType;
+        public boolean hasValueUriType() {
+          return this.value instanceof UriType;
         }
 
         /**
@@ -3754,8 +3754,8 @@ public class Contract extends DomainResource {
           return (Attachment) this.value;
         }
 
-        public boolean hasValueAttachment() { 
-          return this != null && this.value instanceof Attachment;
+        public boolean hasValueAttachment() {
+          return this.value instanceof Attachment;
         }
 
         /**
@@ -3769,8 +3769,8 @@ public class Contract extends DomainResource {
           return (Coding) this.value;
         }
 
-        public boolean hasValueCoding() { 
-          return this != null && this.value instanceof Coding;
+        public boolean hasValueCoding() {
+          return this.value instanceof Coding;
         }
 
         /**
@@ -3784,8 +3784,8 @@ public class Contract extends DomainResource {
           return (Quantity) this.value;
         }
 
-        public boolean hasValueQuantity() { 
-          return this != null && this.value instanceof Quantity;
+        public boolean hasValueQuantity() {
+          return this.value instanceof Quantity;
         }
 
         /**
@@ -3799,8 +3799,8 @@ public class Contract extends DomainResource {
           return (Reference) this.value;
         }
 
-        public boolean hasValueReference() { 
-          return this != null && this.value instanceof Reference;
+        public boolean hasValueReference() {
+          return this.value instanceof Reference;
         }
 
         public boolean hasValue() { 
@@ -5707,8 +5707,8 @@ public class Contract extends DomainResource {
           return (CodeableConcept) this.entity;
         }
 
-        public boolean hasEntityCodeableConcept() { 
-          return this != null && this.entity instanceof CodeableConcept;
+        public boolean hasEntityCodeableConcept() {
+          return this.entity instanceof CodeableConcept;
         }
 
         /**
@@ -5722,8 +5722,8 @@ public class Contract extends DomainResource {
           return (Reference) this.entity;
         }
 
-        public boolean hasEntityReference() { 
-          return this != null && this.entity instanceof Reference;
+        public boolean hasEntityReference() {
+          return this.entity instanceof Reference;
         }
 
         public boolean hasEntity() { 
@@ -7143,8 +7143,8 @@ public class Contract extends DomainResource {
           return (DateTimeType) this.occurrence;
         }
 
-        public boolean hasOccurrenceDateTimeType() { 
-          return this != null && this.occurrence instanceof DateTimeType;
+        public boolean hasOccurrenceDateTimeType() {
+          return this.occurrence instanceof DateTimeType;
         }
 
         /**
@@ -7158,8 +7158,8 @@ public class Contract extends DomainResource {
           return (Period) this.occurrence;
         }
 
-        public boolean hasOccurrencePeriod() { 
-          return this != null && this.occurrence instanceof Period;
+        public boolean hasOccurrencePeriod() {
+          return this.occurrence instanceof Period;
         }
 
         /**
@@ -7173,8 +7173,8 @@ public class Contract extends DomainResource {
           return (Timing) this.occurrence;
         }
 
-        public boolean hasOccurrenceTiming() { 
-          return this != null && this.occurrence instanceof Timing;
+        public boolean hasOccurrenceTiming() {
+          return this.occurrence instanceof Timing;
         }
 
         public boolean hasOccurrence() { 
@@ -8782,8 +8782,8 @@ public class Contract extends DomainResource {
           return (Attachment) this.content;
         }
 
-        public boolean hasContentAttachment() { 
-          return this != null && this.content instanceof Attachment;
+        public boolean hasContentAttachment() {
+          return this.content instanceof Attachment;
         }
 
         /**
@@ -8797,8 +8797,8 @@ public class Contract extends DomainResource {
           return (Reference) this.content;
         }
 
-        public boolean hasContentReference() { 
-          return this != null && this.content instanceof Reference;
+        public boolean hasContentReference() {
+          return this.content instanceof Reference;
         }
 
         public boolean hasContent() { 
@@ -8989,8 +8989,8 @@ public class Contract extends DomainResource {
           return (Attachment) this.content;
         }
 
-        public boolean hasContentAttachment() { 
-          return this != null && this.content instanceof Attachment;
+        public boolean hasContentAttachment() {
+          return this.content instanceof Attachment;
         }
 
         /**
@@ -9004,8 +9004,8 @@ public class Contract extends DomainResource {
           return (Reference) this.content;
         }
 
-        public boolean hasContentReference() { 
-          return this != null && this.content instanceof Reference;
+        public boolean hasContentReference() {
+          return this.content instanceof Reference;
         }
 
         public boolean hasContent() { 
@@ -9196,8 +9196,8 @@ public class Contract extends DomainResource {
           return (Attachment) this.content;
         }
 
-        public boolean hasContentAttachment() { 
-          return this != null && this.content instanceof Attachment;
+        public boolean hasContentAttachment() {
+          return this.content instanceof Attachment;
         }
 
         /**
@@ -9211,8 +9211,8 @@ public class Contract extends DomainResource {
           return (Reference) this.content;
         }
 
-        public boolean hasContentReference() { 
-          return this != null && this.content instanceof Reference;
+        public boolean hasContentReference() {
+          return this.content instanceof Reference;
         }
 
         public boolean hasContent() { 
@@ -10510,8 +10510,8 @@ public class Contract extends DomainResource {
       return (CodeableConcept) this.topic;
     }
 
-    public boolean hasTopicCodeableConcept() { 
-      return this != null && this.topic instanceof CodeableConcept;
+    public boolean hasTopicCodeableConcept() {
+      return this.topic instanceof CodeableConcept;
     }
 
     /**
@@ -10525,8 +10525,8 @@ public class Contract extends DomainResource {
       return (Reference) this.topic;
     }
 
-    public boolean hasTopicReference() { 
-      return this != null && this.topic instanceof Reference;
+    public boolean hasTopicReference() {
+      return this.topic instanceof Reference;
     }
 
     public boolean hasTopic() { 
@@ -11033,8 +11033,8 @@ public class Contract extends DomainResource {
       return (Attachment) this.legallyBinding;
     }
 
-    public boolean hasLegallyBindingAttachment() { 
-      return this != null && this.legallyBinding instanceof Attachment;
+    public boolean hasLegallyBindingAttachment() {
+      return this.legallyBinding instanceof Attachment;
     }
 
     /**
@@ -11048,8 +11048,8 @@ public class Contract extends DomainResource {
       return (Reference) this.legallyBinding;
     }
 
-    public boolean hasLegallyBindingReference() { 
-      return this != null && this.legallyBinding instanceof Reference;
+    public boolean hasLegallyBindingReference() {
+      return this.legallyBinding instanceof Reference;
     }
 
     public boolean hasLegallyBinding() { 

@@ -873,13 +873,15 @@ public abstract class ResourceRenderer extends DataRenderer {
     return renderResourceTechDetails(r, x, (context.isContained() && r.getId() != null ? "#"+r.getId() : r.getId()));
   }
   
-  protected XhtmlNode renderResourceTechDetails(ResourceWrapper r, XhtmlNode x, String desc) throws UnsupportedEncodingException, FHIRException, IOException {
+  protected XhtmlNode renderResourceTechDetails(ResourceWrapper r, XhtmlNode x, String id) throws UnsupportedEncodingException, FHIRException, IOException {
     XhtmlNode p = x.para().attribute("class", "res-header-id");
-    String ft = context.getTranslatedCode(r.fhirType(), "http://hl7.org/fhir/fhir-types");
-    if (desc == null) { 
-      p.b().tx(context.formatPhrase(context.isTechnicalMode() && !isInner() ? RenderingContext.PROF_DRIV_GEN_NARR_TECH : RenderingContext.PROF_DRIV_GEN_NARR, ft, ""));      
-    } else {
-      p.b().tx(context.formatPhrase(context.isTechnicalMode() && !isInner() ? RenderingContext.PROF_DRIV_GEN_NARR_TECH : RenderingContext.PROF_DRIV_GEN_NARR, ft, desc));
+    if (!context.isNoHeader()) {
+      String ft = context.getTranslatedCode(r.fhirType(), "http://hl7.org/fhir/fhir-types");
+      if (id == null) { 
+        p.b().tx(context.formatPhrase(context.isTechnicalMode() && !isInner() ? RenderingContext.PROF_DRIV_GEN_NARR_TECH : RenderingContext.PROF_DRIV_GEN_NARR, ft, ""));      
+      } else {
+        p.b().tx(context.formatPhrase(context.isTechnicalMode() && !isInner() ? RenderingContext.PROF_DRIV_GEN_NARR_TECH : RenderingContext.PROF_DRIV_GEN_NARR, ft, id));
+      }
     }
 
     // first thing we do is lay down the resource anchors. 

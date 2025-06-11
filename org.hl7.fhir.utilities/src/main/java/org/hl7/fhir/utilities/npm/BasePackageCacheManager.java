@@ -112,6 +112,7 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
 
   @Override
   public String getPackageUrl(String packageId) throws IOException {
+    packageId = stripAlias(packageId);
     String result = null;
     NpmPackage npm = loadPackageFromCacheOnly(packageId);
     if (npm != null) {
@@ -189,9 +190,33 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
 
   @Override
   public NpmPackage loadPackage(String idAndVer) throws FHIRException, IOException {
+    idAndVer = stripAlias(idAndVer);
     return loadPackage(idAndVer, null);
   }
 
+
+  /**
+   * The NPM Alias format is:
+   *   npm install <alias>@npm:<name>:
+   *   
+   * (see https://docs.npmjs.com/cli/v8/commands/npm-install)
+   * 
+   * We're using that format to allow us to use more than one version of the same package in packages.json,
+   * but what the prefix actually is is irrelevant here - we just load the actual package the user 
+   * is interested in
+   * 
+   * Corollary: you will get a different package name than you asked for when using aliases
+   * 
+   * @param id
+   * @return
+   */
+  protected String stripAlias(String id) {
+    if (id != null && id.contains("@npm:")) {
+      return id.substring(id.indexOf("@npm:")+5);
+    } else {
+      return id;
+    }
+  }
 
   public void setSilent(boolean silent) {
     this.silent = silent;    

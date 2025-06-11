@@ -17,6 +17,8 @@ parameters:
         - org.hl7.fhir.r4
         - org.hl7.fhir.r4b
         - org.hl7.fhir.r5
+        - org.hl7.fhir.model
+        - org.hl7.fhir.support
         - org.hl7.fhir.convertors
         - org.hl7.fhir.validation
         - org.hl7.fhir.validation.cli
@@ -33,6 +35,8 @@ parameters:
         - r4
         - r4b
         - r5
+        - model
+        - support
         - convertors
         - validation
         - validation_cli

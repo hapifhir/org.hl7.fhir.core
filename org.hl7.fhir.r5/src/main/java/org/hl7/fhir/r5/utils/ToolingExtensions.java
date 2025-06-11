@@ -309,6 +309,11 @@ public class ToolingExtensions {
   public static final String EXT_MAX_QUANTITY = "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-maxQuantity";
   public static final String EXT_Q_UNIT_VALUESET = "http://hl7.org/fhir/StructureDefinition/questionnaire-unitValueSet";
   public static final String EXT_ENTRY_FORMAT = "http://hl7.org/fhir/StructureDefinition/entryFormat";
+  public static final String EXT_TEXT_LINK = "http://hl7.org/fhir/StructureDefinition/textLink";
+  public static final String EXT_CONCEPT_DOMAIN = "http://hl7.org/fhir/StructureDefinition/binding-conceptDomain";
+  public static final String EXT_NARRATIVE_SOURCE_CONTROL = "http://hl7.org/fhir/StructureDefinition/narrative-source-control";
+  public static final String EXT_NARRATIVE_LANGUAGE_CONTROL = "http://hl7.org/fhir/StructureDefinition/narrative-language-control";
+  public static final String EXT_SD_CS_URL = "todo";
   
   // specific extension helpers
 
@@ -901,7 +906,9 @@ public class ToolingExtensions {
 
         if (e1 != null && e1.getValue() != null && e1.getValue() instanceof CodeType && ((CodeType) e1.getValue()).getValue().equals(lang)) {
           e1 = ExtensionHelper.getExtension(e, "content");
-          return ((StringType) e1.getValue()).getValue();
+          if (e1 != null && e1.hasValue()) {
+            return e1.getValue().primitiveValue();
+          }
         }
       }
     }

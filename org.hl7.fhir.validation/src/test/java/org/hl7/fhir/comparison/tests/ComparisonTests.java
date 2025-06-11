@@ -73,6 +73,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -118,6 +119,7 @@ public class ComparisonTests {
   @ParameterizedTest(name = "{index}: id {0}")
   @MethodSource("data")
   public void test(String name, JsonObject content) throws Exception {
+    HierarchicalTableGenerator.forTesting();
     TestingUtilities.injectCorePackageLoader();
     this.content = content;
 
@@ -235,7 +237,7 @@ public class ComparisonTests {
   }
 
   private void checkOutput(String id, String name, CanonicalResource right) throws Exception {
-    String output = prefix+ new XhtmlComposer(false, true).compose(right.getText().getDiv()) + suffix;
+    String output = prefix+ new XhtmlComposer(true, true).compose(right.getText().getDiv()) + suffix;
     String an = Utilities.path("[tmp]", "comparison", name);
     FileUtilities.stringToFile(output, an);
     String expected = loadResource(name);
@@ -412,6 +414,12 @@ public class ComparisonTests {
 
     @Override
     public String getCanonicalForDefaultContext() {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    @Override
+    public String getDefinitionsName(Resource r) {
       // TODO Auto-generated method stub
       return null;
     }

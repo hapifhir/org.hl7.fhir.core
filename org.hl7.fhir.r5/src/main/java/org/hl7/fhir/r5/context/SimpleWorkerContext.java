@@ -189,6 +189,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private boolean canNoTS;
   private XVerExtensionManager xverManager;
   private boolean allowLazyLoading = true;
+  private List<String> suppressedMappings;
 
   private SimpleWorkerContext() throws IOException, FHIRException {
     super();
@@ -826,7 +827,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     if (r instanceof StructureDefinition) {
       StructureDefinition p = (StructureDefinition)r;
       try {
-        new ContextUtilities(this).generateSnapshot(p);
+        new ContextUtilities(this, suppressedMappings).generateSnapshot(p);
       } catch (Exception e) {
         // not sure what to do in this case?
         System.out.println("Unable to generate snapshot @3 for "+uri+": "+e.getMessage());
@@ -894,7 +895,16 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   @Override
   public boolean hasPackage(String id, String ver) {
-    return loadedPackages.contains(id+"#"+ver);
+    if (ver == null) {
+      for (String p : loadedPackages) {
+        if (p.startsWith(id+"#")) {
+          return true;
+        }
+      }
+      return false;
+    } else {    
+      return loadedPackages.contains(id+"#"+ver);
+    }
   }
 
   public boolean hasPackage(String idAndver) {
@@ -940,6 +950,14 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   @Override
   public String getSpecUrl() {
     return VersionUtilities.getSpecUrl(getVersion())+"/";
+  }
+
+  public List<String> getSuppressedMappings() {
+    return suppressedMappings;
+  }
+
+  public void setSuppressedMappings(List<String> suppressedMappings) {
+    this.suppressedMappings = suppressedMappings;
   }
 
 

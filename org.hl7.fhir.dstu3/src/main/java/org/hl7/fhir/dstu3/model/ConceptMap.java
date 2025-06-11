@@ -3133,8 +3133,8 @@ public class ConceptMap extends MetadataResource {
       return (UriType) this.source;
     }
 
-    public boolean hasSourceUriType() { 
-      return this != null && this.source instanceof UriType;
+    public boolean hasSourceUriType() {
+      return this.source instanceof UriType;
     }
 
     /**
@@ -3148,8 +3148,8 @@ public class ConceptMap extends MetadataResource {
       return (Reference) this.source;
     }
 
-    public boolean hasSourceReference() { 
-      return this != null && this.source instanceof Reference;
+    public boolean hasSourceReference() {
+      return this.source instanceof Reference;
     }
 
     public boolean hasSource() { 
@@ -3184,8 +3184,8 @@ public class ConceptMap extends MetadataResource {
       return (UriType) this.target;
     }
 
-    public boolean hasTargetUriType() { 
-      return this != null && this.target instanceof UriType;
+    public boolean hasTargetUriType() {
+      return this.target instanceof UriType;
     }
 
     /**
@@ -3199,8 +3199,8 @@ public class ConceptMap extends MetadataResource {
       return (Reference) this.target;
     }
 
-    public boolean hasTargetReference() { 
-      return this != null && this.target instanceof Reference;
+    public boolean hasTargetReference() {
+      return this.target instanceof Reference;
     }
 
     public boolean hasTarget() { 

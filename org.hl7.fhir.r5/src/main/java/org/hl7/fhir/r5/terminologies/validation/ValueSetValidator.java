@@ -457,9 +457,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
       ValueSetValidator vsv = getVs(url, info);
       serverCount += vsv.getServerLoad(info);
     }
-    CodeSystem cs = resolveCodeSystem(inc.getSystem(), inc.getVersion());
-    if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)) {
-      serverCount++;
+    if (inc.hasSystem()) {
+      CodeSystem cs = resolveCodeSystem(inc.getSystem(), inc.getVersion());
+      if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)) {
+        serverCount++;
+      }
     }
     return serverCount;
   }
@@ -672,6 +674,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
             break;
           }
           warningMessage = warningMessage + ", so the code has not been validated";
+          if (cs.getContent() == CodeSystemContentMode.NOTPRESENT) {
+            throw new VSCheckerException(warningMessage, null, TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
+          }
           if (!options.isExampleOK() && !inExpansion && cs.getContent() != CodeSystemContentMode.FRAGMENT) { // we're going to give it a go if it's a fragment
             throw new VSCheckerException(warningMessage, null, true);
           }
@@ -792,7 +797,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   private void checkValueSetOptions() {
     if (valueset != null) {
-      for (Extension ext : valueset.getCompose().getExtensionsByUrl("http://hl7.org/fhir/tools/StructureDefinion/valueset-expansion-param")) {
+      for (Extension ext : valueset.getCompose().getExtensionsByUrl("http://hl7.org/fhir/tools/StructureDefinition/valueset-expansion-parameter")) {
         var name = ext.getExtensionString("name");
         var value = ext.getExtensionByUrl("value").getValue();
         if ("displayLanguage".equals(name)) {

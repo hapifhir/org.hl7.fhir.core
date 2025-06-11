@@ -570,6 +570,15 @@ public abstract class Base implements Serializable, IBase, IElement {
   }
 
 
+  /**
+   * return set XHTML if this is an XHTML node, else error
+   * 
+   * @return
+   */
+  public Base setXhtml(XhtmlNode node) {
+    throw new Error("This node does not support xhtml");
+  }
+
   public boolean hasValidationInfo() {
     return validationInfo != null;
   }

@@ -46,7 +46,7 @@ import org.hl7.fhir.dstu2016may.model.StructureDefinition;
 import org.hl7.fhir.dstu2016may.model.ValueSet;
 import org.hl7.fhir.dstu2016may.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.dstu2016may.model.ValueSet.ValueSetExpansionComponent;
-import org.hl7.fhir.dstu2016may.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
+import org.hl7.fhir.dstu2016may.utils.ValueSetExpander.ValueSetExpansionOutcome;
 
 /**
  * This is the standard interface used for access to underlying FHIR services
@@ -105,13 +105,6 @@ public interface IWorkerContext {
    * @return
    */
   public IParser newXmlParser();
-
-  /**
-   * Get a generator that can generate narrative for the instance
-   * 
-   * @return a prepared generator
-   */
-  public INarrativeGenerator getNarrativeGenerator(String prefix, String basePath);
 
   // -- resource fetchers ---------------------------------------------------
 

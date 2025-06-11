@@ -258,6 +258,24 @@ public class Utilities {
     return b.toString();
   }
 
+  public static String escapeXmlText(String doco) {
+    if (doco == null)
+      return "";
+
+    StringBuilder b = new StringBuilder();
+    for (char c : doco.toCharArray()) {
+      if (c == '<')
+        b.append("&lt;");
+      else if (c == '>')
+        b.append("&gt;");
+      else if (c == '&')
+        b.append("&amp;");
+      else
+        b.append(c);
+    }
+    return b.toString();
+  }
+
   public static String titleize(String s) {
     StringBuilder b = new StringBuilder();
     boolean up = true;
@@ -1902,6 +1920,15 @@ public class Utilities {
     List<String> newList = new ArrayList<>(oldList);
     newList.add(newItem);
     return newList;
+  }
+
+  public static String limitString(String text, int length) {
+    text = text.trim();
+    if (text.length() > length) {
+      return text.substring(0, length-1)+"...";
+    } else {
+      return text;
+    }
   }
 
 

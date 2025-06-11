@@ -519,7 +519,7 @@ public class Communication extends DomainResource {
     }
 
     public boolean hasContentStringType() {
-      return this != null && this.content instanceof StringType;
+        return this.content instanceof StringType;
     }
 
     /**
@@ -536,7 +536,7 @@ public class Communication extends DomainResource {
     }
 
     public boolean hasContentAttachment() {
-      return this != null && this.content instanceof Attachment;
+        return this.content instanceof Attachment;
     }
 
     /**
@@ -553,7 +553,7 @@ public class Communication extends DomainResource {
     }
 
     public boolean hasContentReference() {
-      return this != null && this.content instanceof Reference;
+        return this.content instanceof Reference;
     }
 
     public boolean hasContent() {

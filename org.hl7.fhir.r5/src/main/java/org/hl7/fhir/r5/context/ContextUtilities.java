@@ -52,10 +52,18 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   private List<String> canonicalResourceNames;
   private List<String> concreteResourceNames;
   private Set<String> concreteResourceNameSet;
-  
+  private List<String> suppressedMappings;
+
   public ContextUtilities(IWorkerContext context) {
     super();
     this.context = context;
+    this.suppressedMappings = new ArrayList<String>();
+  }
+
+  public ContextUtilities(IWorkerContext context, List<String> suppressedMappings) {
+    super();
+    this.context = context;
+    this.suppressedMappings = suppressedMappings;
   }
 
   public boolean isSuppressDebugMessages() {
@@ -271,6 +279,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       pu.setAutoFixSliceNames(true);
       pu.setThrowException(false);
       pu.setForPublication(context.isForPublication());
+      pu.setSuppressedMappings(suppressedMappings);
       if (xverManager == null) {
         xverManager = new XVerExtensionManager(context);
       }
@@ -538,6 +547,12 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       }
     }
     return sd;
+  }
+
+  @Override
+  public String getDefinitionsName(Resource r) {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }

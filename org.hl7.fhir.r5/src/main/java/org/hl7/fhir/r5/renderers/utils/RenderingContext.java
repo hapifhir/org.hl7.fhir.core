@@ -26,14 +26,13 @@ import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
-
 import org.hl7.fhir.r5.renderers.utils.Resolver.IReferenceResolver;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.Utilities;
@@ -107,6 +106,13 @@ public class RenderingContext extends RenderingI18nContext {
         return langs.get(lang);
       }
     }
+
+    public void setNoHeader(boolean b) {
+      defLangRC.setNoHeader(b);
+      for (RenderingContext rc : langs.values()) {
+        rc.setNoHeader(b);
+      }
+    }
   }
 
   // provides liquid templates, if they are available for the content
@@ -160,6 +166,7 @@ public class RenderingContext extends RenderingI18nContext {
     SUMMARY, // 5 cells: tree/name | flags | cardinality | type | details
     BINDINGS, // tree/name + column for each kind of binding found, cells are lists of bindings 
     OBLIGATIONS, // tree/name + column for each actor that has obligations
+    MAPPINGS, // tree/name + column for each other structure definition there is mappings for
     DATA_DICT,  // detailed element view 
   }
 
@@ -253,6 +260,9 @@ public class RenderingContext extends RenderingI18nContext {
     ALL // in addition to translations in designations, look for an render translations (WIP)
   }
 
+
+
+
   private final IWorkerContext worker;
   private MarkDownProcessor markdown;
   private ResourceRendererMode mode;
@@ -317,6 +327,7 @@ public class RenderingContext extends RenderingI18nContext {
   private IResourceLinkResolver resolveLinkResolver;
   private boolean debug;
   private DesignationMode designationMode;
+  private boolean noHeader;
   
   /**
    * 
@@ -389,6 +400,7 @@ public class RenderingContext extends RenderingI18nContext {
     res.unknownLocalReferencesNotLinks = unknownLocalReferencesNotLinks;
     res.resolveLinkResolver = resolveLinkResolver;
     res.debug = debug;
+    res.noHeader = noHeader;
     return res;
   }
   
@@ -1128,4 +1140,14 @@ public class RenderingContext extends RenderingI18nContext {
     self.oids = oids;
     return self;
   }
+
+  public boolean isNoHeader() {
+    return noHeader;
+  }
+
+  public void setNoHeader(boolean noHeader) {
+    this.noHeader = noHeader;
+  }
+
+
 }

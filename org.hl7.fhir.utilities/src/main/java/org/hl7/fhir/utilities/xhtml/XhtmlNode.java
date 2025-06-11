@@ -743,7 +743,9 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     XhtmlNode p = new XhtmlNode(NodeType.Element, "input");
     p.attribute("name", name);
     p.attribute("type", type);
-    p.attribute("placeholder", placeholder);
+    if (placeholder != null) {
+      p.attribute("placeholder", placeholder);
+    }
     p.attribute("size", Integer.toString(size));
     addChildNode(p);
     return p;
@@ -1293,6 +1295,21 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   public XhtmlNode svgPath(XhtmlNode insertionPoint) {
     var x = addTag("path", insertionPoint);
     return x;
+  }
+
+
+  public boolean hasContent() {
+    if (nodeType == NodeType.Text) {
+      return content != null && content.trim().length() > 0;
+    }
+    if (nodeType == NodeType.Element) {
+      for (XhtmlNode n : getChildNodes()) {
+        if (n.hasContent()) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
 }

@@ -2027,7 +2027,7 @@ public class ActivityDefinition extends CanonicalResource {
   }
 
   public boolean hasSubjectCodeableConcept() {
-    return this != null && this.subject instanceof CodeableConcept;
+    return this.subject instanceof CodeableConcept;
   }
 
   /**
@@ -2050,7 +2050,7 @@ public class ActivityDefinition extends CanonicalResource {
   }
 
   public boolean hasSubjectReference() {
-    return this != null && this.subject instanceof Reference;
+    return this.subject instanceof Reference;
   }
 
   /**
@@ -2073,7 +2073,7 @@ public class ActivityDefinition extends CanonicalResource {
   }
 
   public boolean hasSubjectCanonicalType() {
-    return this != null && this.subject instanceof CanonicalType;
+    return this.subject instanceof CanonicalType;
   }
 
   public boolean hasSubject() {
@@ -3524,7 +3524,7 @@ public class ActivityDefinition extends CanonicalResource {
   }
 
   public boolean hasTimingTiming() {
-    return this != null && this.timing instanceof Timing;
+    return this.timing instanceof Timing;
   }
 
   /**
@@ -3541,7 +3541,7 @@ public class ActivityDefinition extends CanonicalResource {
   }
 
   public boolean hasTimingDateTimeType() {
-    return this != null && this.timing instanceof DateTimeType;
+    return this.timing instanceof DateTimeType;
   }
 
   /**
@@ -3558,7 +3558,7 @@ public class ActivityDefinition extends CanonicalResource {
   }
 
   public boolean hasTimingAge() {
-    return this != null && this.timing instanceof Age;
+    return this.timing instanceof Age;
   }
 
   /**
@@ -3575,7 +3575,7 @@ public class ActivityDefinition extends CanonicalResource {
   }
 
   public boolean hasTimingPeriod() {
-    return this != null && this.timing instanceof Period;
+    return this.timing instanceof Period;
   }
 
   /**
@@ -3592,7 +3592,7 @@ public class ActivityDefinition extends CanonicalResource {
   }
 
   public boolean hasTimingRange() {
-    return this != null && this.timing instanceof Range;
+    return this.timing instanceof Range;
   }
 
   /**
@@ -3609,7 +3609,7 @@ public class ActivityDefinition extends CanonicalResource {
   }
 
   public boolean hasTimingDuration() {
-    return this != null && this.timing instanceof Duration;
+    return this.timing instanceof Duration;
   }
 
   public boolean hasTiming() {
@@ -3731,7 +3731,7 @@ public class ActivityDefinition extends CanonicalResource {
   }
 
   public boolean hasProductReference() {
-    return this != null && this.product instanceof Reference;
+    return this.product instanceof Reference;
   }
 
   /**
@@ -3748,7 +3748,7 @@ public class ActivityDefinition extends CanonicalResource {
   }
 
   public boolean hasProductCodeableConcept() {
-    return this != null && this.product instanceof CodeableConcept;
+    return this.product instanceof CodeableConcept;
   }
 
   public boolean hasProduct() {
