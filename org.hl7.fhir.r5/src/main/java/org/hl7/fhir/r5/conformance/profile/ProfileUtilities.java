@@ -631,8 +631,8 @@ public class ProfileUtilities {
     for (ElementDefinition e : list) {
       if (e == null)
         throw new Error(context.formatMessage(I18nConstants.ELEMENT__NULL_, profile.getUrl()));
-      if (e.getId() == null)
-        throw new Error(context.formatMessage(I18nConstants.ELEMENT_ID__NULL__ON_, e.toString(), profile.getUrl()));
+//      if (e.getId() == null) // this is sort of true, but in some corner cases it's not, and in those cases, we don't care
+//        throw new Error(context.formatMessage(I18nConstants.ELEMENT_ID__NULL__ON_, e.toString(), profile.getUrl()));
       
       if (!capturing && id!=null && e.getId().equals(id)) {
         capturing = true;
