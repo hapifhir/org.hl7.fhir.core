@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Annotation30_40;
@@ -20,7 +21,7 @@ public class CommunicationRequest30_40 {
       return null;
 
     org.hl7.fhir.dstu3.model.CommunicationRequest tgt = new org.hl7.fhir.dstu3.model.CommunicationRequest();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_COM_REQ_ONBEHALF);
 
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) {
       tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
@@ -83,14 +84,18 @@ public class CommunicationRequest30_40 {
       tgt.setSender(Reference30_40.convertReference(src.getSender()));
     }
 
-    //  src where requester.exists() or
-    //  extension.where(url = 'http://hl7.org/fhir/3.0/StructureDefinition/extension-CommunicationRequest.requester.onBehalfOf').exists()
-    //  -> tgt.requester as vt0 then agent(src, vt0) "requester";
-
-    //TODO exlude extension in default mapping, and include it here for mapping
-//    if(src.hasRequester()) {
-//      tgt.setRequester()
-//    }
+    if (src.hasRequester()) {
+      tgt.setRequester(new org.hl7.fhir.dstu3.model.CommunicationRequest.CommunicationRequestRequesterComponent());
+      if (src.hasRequester()) {
+        tgt.getRequester().setAgent(Reference30_40.convertReference(src.getRequester()));
+      }
+      if (src.hasExtension(VersionConvertorConstants.EXT_COM_REQ_ONBEHALF)) {
+        org.hl7.fhir.r4.model.Extension extension = src.getExtensionByUrl(VersionConvertorConstants.EXT_COM_REQ_ONBEHALF);
+        if (extension.getValue() instanceof org.hl7.fhir.r4.model.Reference) {
+          tgt.getRequester().setOnBehalfOf(Reference30_40.convertReference((org.hl7.fhir.r4.model.Reference) extension.getValue()));
+        }
+      }
+    }
 
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) {
       tgt.addReasonCode(CodeableConcept30_40.convertCodeableConcept(t));
@@ -137,5 +142,9 @@ public class CommunicationRequest30_40 {
     }
 
     return tgt;
+  }
+
+  public static void convertRequesterComponent(org.hl7.fhir.dstu3.model.CommunicationRequest.CommunicationRequestRequesterComponent src) {
+
   }
 }
