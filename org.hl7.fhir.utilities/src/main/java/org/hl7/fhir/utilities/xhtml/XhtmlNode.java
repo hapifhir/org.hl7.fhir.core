@@ -1312,4 +1312,36 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return false;
   }
 
+  public String getPathName() {
+    if (getName() == null) {
+      return getNodeType().toCode();      
+    } else {
+      return getName();
+    }
+  }
+
+
+  public int countByPathName(XhtmlNode node) {
+    int count = 0;
+    for (XhtmlNode t : getChildNodes()) {
+      if (t.getPathName().equals(node.getPathName())) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  public int indexByPathName(XhtmlNode node) {
+    int count = 0;
+    for (XhtmlNode t : getChildNodes()) {
+      if (t == node) {
+        return count;        
+      }
+      if (t.getPathName().equals(node.getPathName())) {
+        count++;
+      }
+    }
+    return count;
+  }
+
 }

@@ -769,5 +769,13 @@ public class VersionUtilities {
     return version.contains("-") ? version.substring(0, version.indexOf("-")) : version;
   }
 
+  public static String getResourceTypesUrl(String version) {
+    if (VersionUtilities.isR5Plus(version)) {
+      return "http://hl7.org/fhir/fhir-types";
+    } else {
+      return "http://hl7.org/fhir/resource-types";
+    }
+  }
+
 
 }

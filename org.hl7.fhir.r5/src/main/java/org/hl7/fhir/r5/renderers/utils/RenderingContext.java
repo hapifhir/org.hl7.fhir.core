@@ -401,6 +401,21 @@ public class RenderingContext extends RenderingI18nContext {
     res.resolveLinkResolver = resolveLinkResolver;
     res.debug = debug;
     res.noHeader = noHeader;
+    res.uniqueLocalPrefix = uniqueLocalPrefix;
+    res.secondaryLang = secondaryLang;
+    res.fixedFormat = fixedFormat;
+    res.oids = oids;
+    res.base64Limit = base64Limit;
+    res.shortPatientForm = shortPatientForm;
+    res.designationMode = designationMode;
+    res.addName = addName;
+    res.typeMap = typeMap;
+
+// not sure about these    
+//    private List<String> files = new ArrayList<String>(); // files created as by-products in destDir
+//    private Map<KnownLinkType, String> links = new HashMap<>();
+//    private Map<String, StringPair> namedLinks = new HashMap<>();
+
     return res;
   }
   
