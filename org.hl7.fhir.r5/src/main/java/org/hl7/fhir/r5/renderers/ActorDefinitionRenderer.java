@@ -60,10 +60,11 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
       renderCanonical(status, td, acd.child("capabilities"));      
     }
     if (acd.has("derivedFrom")) {
-      tbl.tr().td().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_DER));
+      tr = tbl.tr();
+      tr.td().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_DER));
       td = tr.td().colspan("2");
       boolean first = true;
-      for (ResourceWrapper t : acd.children("reference")) {
+      for (ResourceWrapper t : acd.children("derivedFrom")) {
         if (first) first = false; else x.br();
         renderUri(status, td, t);
       }      
