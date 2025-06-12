@@ -13,7 +13,6 @@ import org.fhir.ucum.Pair;
 import org.fhir.ucum.UcumException;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.model.Contract.AnswerComponent;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
@@ -40,7 +39,6 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
-import org.hl7.fhir.utilities.Base64;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
@@ -1108,16 +1106,16 @@ public class QuestionnaireValidator extends BaseValidator {
     return ok;
   }
 
-  private boolean checkUcumEquality(List<ValidationMessage> errors, NodeStack vns, Quantity vdt, Quantity dt) throws UcumException {
+  private boolean checkUcumEquality(List<ValidationMessage> errors, NodeStack vns, Quantity vdt, Quantity dt, String quantityErrorKey, String cannotCompareErrorKey) throws UcumException {
     UcumService ucum = context.getUcumService();
     Pair vp = new Pair(new Decimal(vdt.getValue().toPlainString()), vdt.getCode());
     Pair dp = new Pair(new Decimal(dt.getValue().toPlainString()), dt.getCode());
     vp = ucum.getCanonicalForm(vp);
     dp = ucum.getCanonicalForm(dp);
     if (dp.getCode().equals(vp.getCode())) {
-      return rule(errors, "2024-05-07", IssueType.INVARIANT, vns, vp.getValue().comparesTo(dp.getValue()) <= 0, I18nConstants.QUESTIONNAIRE_QR_ITEM_QUANTITY_MAX, genDisplay(vdt), genDisplay(dt));
+      return rule(errors, "2024-05-07", IssueType.INVARIANT, vns, vp.getValue().comparesTo(dp.getValue()) <= 0, quantityErrorKey, genDisplay(vdt), genDisplay(dt));
     } else {
-      return  rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MAX, genDisplay(dt), genDisplay(vdt));
+      return  rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, cannotCompareErrorKey, genDisplay(dt), genDisplay(vdt));
     }
   }
 
@@ -1144,7 +1142,7 @@ public class QuestionnaireValidator extends BaseValidator {
           } else if (dt.getSystem().equals(vdt.getSystem()) &&  dt.getCode().equals(vdt.getCode())) {
             ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, dt.getValue().compareTo(vdt.getValue()) >= 0, I18nConstants.QUESTIONNAIRE_QR_ITEM_QUANTITY_MIN, genDisplay(vdt), genDisplay(dt)) && ok;
           } else if ("http://unitsofmeasure.org".equals(dt.getSystem()) && "http://unitsofmeasure.org".equals(vdt.getSystem())) {
-            ok = checkUcumEquality(errors, vns, vdt, dt);
+            ok = checkUcumEquality(errors, vns, vdt, dt, I18nConstants.QUESTIONNAIRE_QR_ITEM_QUANTITY_MIN, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MIN);
           } else {
             ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MIN, genDisplay(dt), genDisplay(vdt)) && ok;                        
           }
@@ -1157,7 +1155,7 @@ public class QuestionnaireValidator extends BaseValidator {
           } else if (dt.getSystem().equals(vdt.getSystem()) &&  dt.getCode().equals(vdt.getCode())) {
             ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, dt.getValue().compareTo(vdt.getValue()) >= 0, I18nConstants.QUESTIONNAIRE_QR_ITEM_QUANTITY_MAX, genDisplay(vdt), genDisplay(dt)) && ok;
           } else if ("http://unitsofmeasure.org".equals(dt.getSystem()) && "http://unitsofmeasure.org".equals(vdt.getSystem())) {
-            ok = checkUcumEquality(errors, vns, vdt, dt);
+            ok = checkUcumEquality(errors, vns, vdt, dt, I18nConstants.QUESTIONNAIRE_QR_ITEM_QUANTITY_MAX, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MAX);
           } else {
             ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MAX, genDisplay(dt), genDisplay(vdt)) && ok;                        
           }
