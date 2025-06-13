@@ -1,3 +1,16 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: orghl7fhircore\n"
+"X-Crowdin-Project-ID: 792848\n"
+"X-Crowdin-Language: de\n"
+"X-Crowdin-File: /org.hl7.fhir.utilities/src/main/resources/source/rendering-phrases-en.po\n"
+"X-Crowdin-File-ID: 236\n"
+"Project-Id-Version: orghl7fhircore\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: German\n"
+"Language: de_DE\n"
+"PO-Revision-Date: 2025-06-13 15:40\n"
 
 # ACTOR_DEF_ACT
 #: ACTOR_DEF_ACT
@@ -177,7 +190,7 @@ msgstr ""
 # BUNDLE_IF_NONE
 #: BUNDLE_IF_NONE
 msgid "If-None-Exist = {0}"
-msgstr "If-None= {0}"
+msgstr ""
 
 # BUNDLE_IF_NON_MATCH
 #: BUNDLE_IF_NON_MATCH
@@ -192,7 +205,7 @@ msgstr ""
 # BUNDLE_LOCATION
 #: BUNDLE_LOCATION
 msgid "Location = {0}"
-msgstr "Locatio"
+msgstr ""
 
 # BUNDLE_REQUEST
 #: BUNDLE_REQUEST
@@ -202,7 +215,7 @@ msgstr ""
 # BUNDLE_RESOURCE
 #: BUNDLE_RESOURCE
 msgid "Resource {0}:"
-msgstr "Resso}:"
+msgstr ""
 
 # BUNDLE_RESPONSE
 #: BUNDLE_RESPONSE
@@ -217,7 +230,7 @@ msgstr ""
 # BUNDLE_SEARCH
 #: BUNDLE_SEARCH
 msgid "Search:"
-msgstr "Suche:"
+msgstr ""
 
 # BUNDLE_SEARCH_MODE
 #: BUNDLE_SEARCH_MODE
@@ -2754,7 +2767,7 @@ msgstr ""
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\"{2}\">R4B ({3}.r4b)</a> are available."
 msgstr ""
 
 # R44B_PROBLEMS
@@ -3151,7 +3164,7 @@ msgstr ""
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
-msgid "-- no content: do not translate #13 --"
+msgid "-- no content: do not translate #1 --"
 msgstr ""
 
 # SDR_IMPOSE
@@ -3346,7 +3359,7 @@ msgstr ""
 # SDR_VER_RANGE_SFX
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
-msgid "-- no content: do not translate #14 --"
+msgid "-- no content: do not translate #2 --"
 msgstr ""
 
 # SDR_VER_TO_PFX
@@ -3357,7 +3370,7 @@ msgstr ""
 # SDR_VER_TO_SFX
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
-msgid "-- no content: do not translate #15 --"
+msgid "-- no content: do not translate #3 --"
 msgstr ""
 
 # SDR_VER_UNK

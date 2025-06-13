@@ -4,13 +4,13 @@ msgstr ""
 "X-Crowdin-Project: orghl7fhircore\n"
 "X-Crowdin-Project-ID: 792848\n"
 "X-Crowdin-Language: ru\n"
-"X-Crowdin-File: rendering-phrases.po\n"
-"X-Crowdin-File-ID: 222\n"
+"X-Crowdin-File: /org.hl7.fhir.utilities/src/main/resources/source/rendering-phrases-en.po\n"
+"X-Crowdin-File-ID: 236\n"
 "Project-Id-Version: orghl7fhircore\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2025-05-28 15:28\n"
+"PO-Revision-Date: 2025-06-13 15:40\n"
 
 # ACTOR_DEF_ACT
 #: ACTOR_DEF_ACT
@@ -145,12 +145,12 @@ msgstr "Этот набор значений является компонент
 # BUNDLE_DOCUMENT_CONTENT
 #: BUNDLE_DOCUMENT_CONTENT
 msgid "Document Content"
-msgstr ""
+msgstr "Содержание документа"
 
 # BUNDLE_DOCUMENT_DETAILS
 #: BUNDLE_DOCUMENT_DETAILS
 msgid "Document Details"
-msgstr ""
+msgstr "Сведения о документе"
 
 # BUNDLE_ETAG
 #: BUNDLE_ETAG
@@ -791,13 +791,13 @@ msgstr "Исходный код"
 #: CONC_MAP_SOURCE_CARD
 msgctxt "CONC_MAP_SOURCE_CARD"
 msgid "Card."
-msgstr ""
+msgstr "Кард."
 
 # CONC_MAP_SOURCE_TYPE
 #: CONC_MAP_SOURCE_TYPE
 msgctxt "CONC_MAP_SOURCE_TYPE"
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 # CONC_MAP_SRC_DET
 #: CONC_MAP_SRC_DET
@@ -819,7 +819,7 @@ msgstr "Целевой код"
 #: CONC_MAP_TRGT_CARD
 msgctxt "CONC_MAP_TRGT_CARD"
 msgid "Card."
-msgstr ""
+msgstr "Кард."
 
 # CONC_MAP_TRGT_DET
 #: CONC_MAP_TRGT_DET
@@ -830,7 +830,7 @@ msgstr "Подробности Целевого Концепции"
 #: CONC_MAP_TRGT_TYPE
 msgctxt "CONC_MAP_TRGT_TYPE"
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 # DATA_REND_AFTERNOON
 #: DATA_REND_AFTERNOON
@@ -1662,7 +1662,7 @@ msgstr "Предпочтение"
 #: GENERAL_PROF
 msgctxt "GENERAL_PROF"
 msgid "Profile"
-msgstr "Профиль"
+msgstr "Профиля"
 
 # GENERAL_PROPS
 #: GENERAL_PROPS
@@ -2748,17 +2748,17 @@ msgstr "Набор значений:"
 # R44B_DERIVES_FROM
 #: R44B_DERIVES_FROM
 msgid "derives from"
-msgstr ""
+msgstr "происходит от"
 
 # R44B_HAS_TARGET
 #: R44B_HAS_TARGET
 msgid "has target"
-msgstr ""
+msgstr "имеет цель"
 
 # R44B_HAS_TYPE
 #: R44B_HAS_TYPE
 msgid "has type"
-msgstr ""
+msgstr "имеет тип"
 
 # R44B_NOT_COMP
 #: R44B_NOT_COMP
@@ -2768,22 +2768,22 @@ msgstr ""
 # R44B_NOT_IN
 #: R44B_NOT_IN
 msgid "The following resources are not in the {0} version"
-msgstr ""
+msgstr "Следующие ресурсы не в версии {0}"
 
 # R44B_ONLY_IN
 #: R44B_ONLY_IN
 msgid "The following resources are only in the {0} version"
-msgstr ""
+msgstr "Эти ресурсы только в версии {0}"
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\"{2}\">R4B ({3}.r4b)</a> are available."
 msgstr ""
 
 # R44B_PROBLEMS
 #: R44B_PROBLEMS
 msgid "While checking for {0} compatibility, the following {1} problems were found"
-msgstr ""
+msgstr "При проверке совместимости {0} были найдены следующие проблемы {1}"
 
 # R44B_REFERS_TO
 #: R44B_REFERS_TO
@@ -2798,7 +2798,7 @@ msgstr ""
 # R44B_WRONG_MSG
 #: R44B_WRONG_MSG
 msgid "Something went wrong with the cross-version analysis because"
-msgstr ""
+msgstr "Что-то пошло не так с кросс-версионным анализом, потому что"
 
 # REND_ADDED
 #: REND_ADDED
@@ -3174,8 +3174,8 @@ msgstr "Рекомендации по толкованию содержимог�
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
-msgid "-- no content: do not translate #97 --"
-msgstr "!!-- no content: do not translate #97 --"
+msgid "-- no content: do not translate #1 --"
+msgstr "-- no content: do not translate #1 --"
 
 # SDR_IMPOSE
 #: SDR_IMPOSE
@@ -3337,7 +3337,7 @@ msgstr "Для версии {0}"
 #: SDR_VER_FROM_PFX
 msgctxt "SDR_VER_FROM_PFX"
 msgid "FHIR versions"
-msgstr "!!\"Версии FHIR"
+msgstr "FHIR версии"
 
 # SDR_VER_FROM_SFX
 #: SDR_VER_FROM_SFX
@@ -3369,8 +3369,8 @@ msgstr "Версии FHIR"
 # SDR_VER_RANGE_SFX
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
-msgid "-- no content: do not translate #98 --"
-msgstr "!!-- no content: do not translate #98 --"
+msgid "-- no content: do not translate #2 --"
+msgstr "-- no content: do not translate #2 --"
 
 # SDR_VER_TO_PFX
 #: SDR_VER_TO_PFX
@@ -3380,8 +3380,8 @@ msgstr "Версии FHIR до"
 # SDR_VER_TO_SFX
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
-msgid "-- no content: do not translate #99 --"
-msgstr "!!-- no content: do not translate #99 --"
+msgid "-- no content: do not translate #3 --"
+msgstr "-- no content: do not translate #3 --"
 
 # SDR_VER_UNK
 #: SDR_VER_UNK
@@ -3731,7 +3731,7 @@ msgstr "{0}, опубликовано {1}. Это руководство не я
 # STATUS_MSG_LOCAL_BUILD
 #: STATUS_MSG_LOCAL_BUILD
 msgid "{0} - Local Development build (v{1}) built by the FHIR (HL7® FHIR® Standard) Build Tools. See the <a href=''{2}/history.html''>Directory of published versions</a>"
-msgstr "!!{0} - Локальная сборка (v{1}), построенная FHIR (HL7&reg; FHIR&reg; Стандартные инструменты сборки. Смотрите каталог <a href=''{2}/history.html''>опубликованных версий</a>"
+msgstr "{0} - Локальная сборка (v{1}), построенная FHIR (HL7&reg; FHIR&reg;) стандартным инструментам сборки. Смотрите каталог <a href=''{2}/history.html''>опубликованных версий</a>"
 
 # STATUS_MSG_PUBLICATION_HOLDER
 #: STATUS_MSG_PUBLICATION_HOLDER

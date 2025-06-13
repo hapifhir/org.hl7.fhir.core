@@ -1,6 +1,16 @@
-#
 msgid ""
 msgstr ""
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: orghl7fhircore\n"
+"X-Crowdin-Project-ID: 792848\n"
+"X-Crowdin-Language: pt-PT\n"
+"X-Crowdin-File: /org.hl7.fhir.utilities/src/main/resources/source/rendering-phrases-en.po\n"
+"X-Crowdin-File-ID: 236\n"
+"Project-Id-Version: orghl7fhircore\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: Portuguese\n"
+"Language: pt_PT\n"
+"PO-Revision-Date: 2025-06-13 15:40\n"
 
 # ACTOR_DEF_ACT
 #: ACTOR_DEF_ACT
@@ -10,141 +20,127 @@ msgstr "Actor: {0}"
 # ACTOR_DEF_CAP
 #: ACTOR_DEF_CAP
 msgid "Capabilities:"
-msgstr "Capabilidades:"
+msgstr ""
 
 # ACTOR_DEF_DER
 #: ACTOR_DEF_DER
 msgid "Derived from:"
-msgstr "Derivado de:"
+msgstr ""
 
 # ACTOR_DEF_TYP
 #: ACTOR_DEF_TYP
 msgid "Type: {0}"
-msgstr "Tipo: {0}"
+msgstr ""
 
 # ADD_BIND_ADD_BIND
 #: ADD_BIND_ADD_BIND
 msgid "Additional Bindings"
-msgstr "Vínculos adicionais"
+msgstr ""
 
 # ADD_BIND_ALL_REP
 #: ADD_BIND_ALL_REP
-#, fuzzy
 msgid "All repeats"
-msgstr "Todas as repetições"
+msgstr ""
 
 # ADD_BIND_ANY
 #: ADD_BIND_ANY
 msgid "Any"
-msgstr "Qualquer"
+msgstr ""
 
 # ADD_BIND_ANY_REP
 #: ADD_BIND_ANY_REP
 msgid "any repeat"
-msgstr "qualquer repetição"
+msgstr ""
 
 # ADD_BIND_CURR_BIND
 #: ADD_BIND_CURR_BIND
-#, fuzzy
 msgctxt "ADD_BIND_CURR_BIND"
 msgid "Current"
-msgstr "Actual"
+msgstr ""
 
 # ADD_BIND_DESIG_SYS
 #: ADD_BIND_DESIG_SYS
 msgid "This value set is a good set of codes to start with when designing your system"
-msgstr "Esse conjunto de valores é um bom conjunto de códigos para começar a conceber o seu sistema"
+msgstr ""
 
 # ADD_BIND_EXT_PREF
 #: ADD_BIND_EXT_PREF
 msgid "A required binding, for use when the binding strength is ''extensible'' or ''preferred''"
-msgstr "Um vínculo obrigatório, para utilização quando a força do vínculo é ''extensível'' ou ''preferido''"
+msgstr ""
 
 # ADD_BIND_EX_BIND
 #: ADD_BIND_EX_BIND
 msgctxt "ADD_BIND_EX_BIND"
 msgid "Extensible"
-msgstr "Extensível"
+msgstr ""
 
 # ADD_BIND_GIVEN_CONT
 #: ADD_BIND_GIVEN_CONT
 msgid "This value set is provided to user look up in a given context"
-msgstr "O conjunto de valores é"
+msgstr ""
 
 # ADD_BIND_MAX
 #: ADD_BIND_MAX
-#, fuzzy
 msgid "Max Binding"
-msgstr "Vínculo máximo"
+msgstr ""
 
 # ADD_BIND_MIN
 #: ADD_BIND_MIN
-#, fuzzy
 msgid "Min Binding"
-msgstr "Vínculo mínimo"
+msgstr ""
 
 # ADD_BIND_NEW_REC
 #: ADD_BIND_NEW_REC
-#, fuzzy
 msgid "New records are required to use this value set, but legacy records may use other codes"
-msgstr "Novos registos têm de utilizar este conjunto de valores, mas os registos antigos podem utilizar outros códigos"
+msgstr ""
 
 # ADD_BIND_PREF_BIND
 #: ADD_BIND_PREF_BIND
-#, fuzzy
 msgctxt "ADD_BIND_PREF_BIND"
 msgid "Preferred"
-msgstr "Preferido"
+msgstr ""
 
 # ADD_BIND_RECOM_VALUE_SET
 #: ADD_BIND_RECOM_VALUE_SET
-#, fuzzy
 msgid "This is the value set that is recommended (documentation should explain why)"
-msgstr "Este é o conjunto de valores recomendado (a documentação deve explicar porquê)"
+msgstr ""
 
 # ADD_BIND_REQ_BIND
 #: ADD_BIND_REQ_BIND
-#, fuzzy
 msgctxt "ADD_BIND_REQ_BIND"
 msgid "Required"
-msgstr "Obrigatório"
+msgstr ""
 
 # ADD_BIND_UI
 #: ADD_BIND_UI
-#, fuzzy
 msgctxt "ADD_BIND_UI"
 msgid "UI"
-msgstr "IU"
+msgstr ""
 
 # ADD_BIND_UI_BIND
 #: ADD_BIND_UI_BIND
-#, fuzzy
 msgid "UI Binding"
-msgstr "Vínculo IU"
+msgstr ""
 
 # ADD_BIND_UNKNOWN_PUR
 #: ADD_BIND_UNKNOWN_PUR
-#, fuzzy
 msgid "Unknown code for purpose"
-msgstr "Código desconhecido para o propósito"
+msgstr ""
 
 # ADD_BIND_VALID_EXT
 #: ADD_BIND_VALID_EXT
-#, fuzzy
 msgid "Validators will check this binding (strength = extensible)"
-msgstr "Os validadores verificarão esta ligação (força = extensível)"
+msgstr ""
 
 # ADD_BIND_VALID_REQ
 #: ADD_BIND_VALID_REQ
-#, fuzzy
 msgid "Validators will check this binding (strength = required)"
-msgstr "Os validadores verificarão esta ligação (força = obrigatório)"
+msgstr ""
 
 # ADD_BIND_VALUE_COMP
 #: ADD_BIND_VALUE_COMP
-#, fuzzy
 msgid "This value set is a component of the base value set"
-msgstr "Este conjunto de valores é um componente do conjunto de valores de base"
+msgstr ""
 
 # BUNDLE_DOCUMENT_CONTENT
 #: BUNDLE_DOCUMENT_CONTENT
@@ -158,765 +154,638 @@ msgstr ""
 
 # BUNDLE_ETAG
 #: BUNDLE_ETAG
-#, fuzzy
 msgid "ETag = {0}"
 msgstr "ETag = {0}"
 
 # BUNDLE_HEADER_DOCUMENT_CONTENTS
 #: BUNDLE_HEADER_DOCUMENT_CONTENTS
-#, fuzzy
 msgid "Additional Resources Included in Document"
-msgstr "Recursos adicionais incluídos no documento"
+msgstr ""
 
 # BUNDLE_HEADER_ENTRY
 #: BUNDLE_HEADER_ENTRY
-#, fuzzy
 msgid "Entry {0}"
-msgstr "Entrada {0}"
+msgstr ""
 
 # BUNDLE_HEADER_ENTRY_URL
 #: BUNDLE_HEADER_ENTRY_URL
-#, fuzzy
 msgid "Entry {0} - fullUrl = {1}"
-msgstr "Entrada {0} - fullUrl = {1}"
+msgstr ""
 
 # BUNDLE_HEADER_ROOT
 #: BUNDLE_HEADER_ROOT
-#, fuzzy
 msgid "Bundle {0} of type {1}"
-msgstr "Pacote {0} do tipo {1}"
+msgstr ""
 
 # BUNDLE_IF_MATCH
 #: BUNDLE_IF_MATCH
-#, fuzzy
 msgid "If-Match = {0}"
-msgstr "Se-Correspondência = {0}"
+msgstr ""
 
 # BUNDLE_IF_MOD
 #: BUNDLE_IF_MOD
-#, fuzzy
 msgid "If-Modified-Since = {0}"
-msgstr "Se-Modificado-Desde = {0}"
+msgstr ""
 
 # BUNDLE_IF_NONE
 #: BUNDLE_IF_NONE
-#, fuzzy
 msgid "If-None-Exist = {0}"
-msgstr "Se-Não-Existir = {0}"
+msgstr ""
 
 # BUNDLE_IF_NON_MATCH
 #: BUNDLE_IF_NON_MATCH
-#, fuzzy
 msgid "If-None-Match = {0}"
-msgstr "Se-Nenhuma-Correspondência = {0}"
+msgstr ""
 
 # BUNDLE_LAST_MOD
 #: BUNDLE_LAST_MOD
-#, fuzzy
 msgid "LastModified = {0}"
 msgstr "LastModified = {0}"
 
 # BUNDLE_LOCATION
 #: BUNDLE_LOCATION
-#, fuzzy
 msgid "Location = {0}"
-msgstr "Localização = {0}"
+msgstr ""
 
 # BUNDLE_REQUEST
 #: BUNDLE_REQUEST
-#, fuzzy
 msgid "Request:"
-msgstr "Pedido:"
+msgstr ""
 
 # BUNDLE_RESOURCE
 #: BUNDLE_RESOURCE
-#, fuzzy
 msgid "Resource {0}:"
-msgstr "Recurso {0}:"
+msgstr ""
 
 # BUNDLE_RESPONSE
 #: BUNDLE_RESPONSE
-#, fuzzy
 msgid "Response:"
-msgstr "Resposta:"
+msgstr ""
 
 # BUNDLE_REV_EXCP
 #: BUNDLE_REV_EXCP
-#, fuzzy
 msgid "Exception generating narrative: {0}"
-msgstr "Excepção ao gerar narrativa: {0}"
+msgstr ""
 
 # BUNDLE_SEARCH
 #: BUNDLE_SEARCH
-#, fuzzy
 msgid "Search:"
-msgstr "Procurar:"
+msgstr ""
 
 # BUNDLE_SEARCH_MODE
 #: BUNDLE_SEARCH_MODE
-#, fuzzy
 msgid "Mode = {0}"
-msgstr "Modo = {0}"
+msgstr ""
 
 # BUNDLE_SEARCH_SCORE
 #: BUNDLE_SEARCH_SCORE
-#, fuzzy
 msgid "Score = {0}"
-msgstr "Pontuação = {0}"
+msgstr ""
 
 # BUNDLE_SUMMARY
 #: BUNDLE_SUMMARY
-#, fuzzy
 msgid "{0} Bundle, {1} Entries"
-msgstr "{0} Conjunto, {1} Entradas"
+msgstr ""
 
 # BUND_REND_INVALID_DOC
 #: BUND_REND_INVALID_DOC
-#, fuzzy
 msgid "Invalid document ''{0}'' - first entry is not a Composition ({0})"
-msgstr "Documento inválido ''{0}'' - a primeira entrada não é uma Composição ({0})"
+msgstr ""
 
 # CANON_REND_COMMITTEE
 #: CANON_REND_COMMITTEE
-#, fuzzy
 msgid "Committee"
-msgstr "Comité"
+msgstr ""
 
 # CANON_REND_JSON
 #: CANON_REND_JSON
-#, fuzzy
 msgid "JSON"
 msgstr "JSON"
 
 # CANON_REND_MATURITY
 #: CANON_REND_MATURITY
-#, fuzzy
 msgid "Maturity"
-msgstr "Maturidade"
+msgstr ""
 
 # CANON_REND_PUBLISHER
 #: CANON_REND_PUBLISHER
-#, fuzzy
 msgid "Publisher"
-msgstr "Editor"
+msgstr ""
 
 # CANON_REND_SOURCE_RES
 #: CANON_REND_SOURCE_RES
-#, fuzzy
 msgid "Source Resource"
-msgstr "Fonte de recursos"
+msgstr ""
 
 # CANON_REND_TURTLE
 #: CANON_REND_TURTLE
-#, fuzzy
 msgid "Turtle"
-msgstr "Turtle"
+msgstr ""
 
 # CAPABILITY_ADD_SUPP_PROF
 #: CAPABILITY_ADD_SUPP_PROF
-#, fuzzy
 msgid "Additional supported profiles:"
-msgstr "Perfis adicionais suportados:"
+msgstr ""
 
 # CAPABILITY_BASE_SYS
 #: CAPABILITY_BASE_SYS
-#, fuzzy
 msgid "Base System Profile"
-msgstr "Perfil do sistema de base"
+msgstr ""
 
 # CAPABILITY_COMB_SEARCH_PAR
 #: CAPABILITY_COMB_SEARCH_PAR
-#, fuzzy
 msgid "Combined Search Parameters"
-msgstr "Parâmetros de pesquisa combinados"
+msgstr ""
 
 # CAPABILITY_CORS_NO
 #: CAPABILITY_CORS_NO
-#, fuzzy
 msgid "Enable CORS: no"
-msgstr "Ativar CORS: não"
+msgstr ""
 
 # CAPABILITY_CORS_YES
 #: CAPABILITY_CORS_YES
-#, fuzzy
 msgid "Enable CORS: yes"
-msgstr "Ativar CORS: sim"
+msgstr ""
 
 # CAPABILITY_CREATE_INT
 #: CAPABILITY_CREATE_INT
-#, fuzzy
 msgid "POST a new resource (create interaction)"
-msgstr "POST um novo recurso (criar interação)"
+msgstr ""
 
 # CAPABILITY_DELETE_INT
 #: CAPABILITY_DELETE_INT
-#, fuzzy
 msgid "DELETE a resource (delete interaction)"
-msgstr "ELIMINAR um recurso (eliminar interação)"
+msgstr ""
 
 # CAPABILITY_DOCUMENT_CAPS
 #: CAPABILITY_DOCUMENT_CAPS
-#, fuzzy
 msgid "FHIR Document Capabilities"
-msgstr "Capacidades de documentos FHIR"
+msgstr ""
 
 # CAPABILITY_ENDPOINTS
 #: CAPABILITY_ENDPOINTS
-#, fuzzy
 msgid "Endpoint(s)"
-msgstr "Ponto(s) final(ais)"
+msgstr ""
 
 # CAPABILITY_ERR_DET
 #: CAPABILITY_ERR_DET
-#, fuzzy
 msgid "Error detected"
-msgstr "Erro detectado"
+msgstr ""
 
 # CAPABILITY_EXT_OP
 #: CAPABILITY_EXT_OP
-#, fuzzy
 msgid "Extended Operations"
-msgstr "Operações alargadas"
+msgstr ""
 
 # CAPABILITY_FHIR
 #: CAPABILITY_FHIR
-#, fuzzy
 msgid "Core FHIR Resource"
-msgstr "Recurso FHIR principal"
+msgstr ""
 
 # CAPABILITY_FHIR_VER
 #: CAPABILITY_FHIR_VER
-#, fuzzy
 msgid "FHIR Version: {0}"
-msgstr "Versão FHIR: {0}"
+msgstr ""
 
 # CAPABILITY_HISTORY_INT
 #: CAPABILITY_HISTORY_INT
-#, fuzzy
 msgid "GET changes to a resource (history interaction on instance)"
-msgstr "Obter alterações a um recurso (interação do histórico na instância)"
+msgstr ""
 
 # CAPABILITY_HISTORY_TYPE
 #: CAPABILITY_HISTORY_TYPE
-#, fuzzy
 msgid "GET changes for all resources of the type (history interaction on type)"
-msgstr "Obter alterações para todos os recursos do tipo (interação do histórico no tipo)"
+msgstr ""
 
 # CAPABILITY_IMP_VER
 #: CAPABILITY_IMP_VER
-#, fuzzy
 msgid "Implementation Guide Version: {0}"
-msgstr "Guia de implementação Versão: {0}"
+msgstr ""
 
 # CAPABILITY_INT
 #: CAPABILITY_INT
-#, fuzzy
 msgid "interaction."
-msgstr "interação."
+msgstr ""
 
 # CAPABILITY_INTER_SUPP
 #: CAPABILITY_INTER_SUPP
-#, fuzzy
 msgid "The interactions supported by each resource ("
-msgstr "As interações suportadas por cada recurso ("
+msgstr ""
 
 # CAPABILITY_INT_DESC
 #: CAPABILITY_INT_DESC
-#, fuzzy
 msgid "interaction described as follows:"
-msgstr "interação descrita da seguinte forma:"
+msgstr ""
 
 # CAPABILITY_INT_SUMM
 #: CAPABILITY_INT_SUMM
-#, fuzzy
 msgid "Interaction summary"
-msgstr "Resumo da interação"
+msgstr ""
 
 # CAPABILITY_MAY_SUPP
 #: CAPABILITY_MAY_SUPP
-#, fuzzy
 msgid "MAY Support the Following Implementation Guides"
-msgstr "PODE apoiar os seguintes guias de implementação"
+msgstr ""
 
 # CAPABILITY_MESSAGING_CAP
 #: CAPABILITY_MESSAGING_CAP
-#, fuzzy
 msgid "Messaging Capability"
-msgstr "Capacidade de envio de mensagens"
+msgstr ""
 
 # CAPABILITY_MESSAGING_CAPS
 #: CAPABILITY_MESSAGING_CAPS
-#, fuzzy
 msgid "FHIR Messaging Capabilities"
-msgstr "Capacidades de mensagens FHIR"
+msgstr ""
 
 # CAPABILITY_MULT_EXT
 #: CAPABILITY_MULT_EXT
-#, fuzzy
 msgid "this mark indicates that there are more than one expectation extensions present"
-msgstr "esta marca indica que há mais do que uma extensão de expectativa presente"
+msgstr ""
 
 # CAPABILITY_NOTE_CAP
 #: CAPABILITY_NOTE_CAP
-#, fuzzy
 msgid "Note to Implementers: FHIR Capabilities"
-msgstr "Nota para os implementadores: Capacidades FHIR"
+msgstr ""
 
 # CAPABILITY_OP
 #: CAPABILITY_OP
-#, fuzzy
 msgid "Operations"
-msgstr "Operações"
+msgstr ""
 
 # CAPABILITY_OPER
 #: CAPABILITY_OPER
-#, fuzzy
 msgid "Operation"
-msgstr "Funcionamento"
+msgstr ""
 
 # CAPABILITY_OTH_RES_ENB
 #: CAPABILITY_OTH_RES_ENB
-#, fuzzy
 msgid "The other resources enabled for"
-msgstr "Os outros recursos activados para"
+msgstr ""
 
 # CAPABILITY_PATCH_INT
 #: CAPABILITY_PATCH_INT
-#, fuzzy
 msgid "PATCH a new resource version (patch interaction)"
-msgstr "PATCH uma nova versão de recurso (interação de patches)"
+msgstr ""
 
 # CAPABILITY_PROF_CONF
 #: CAPABILITY_PROF_CONF
-#, fuzzy
 msgid "Profile Conformance"
-msgstr "Conformidade do perfil"
+msgstr ""
 
 # CAPABILITY_PROF_MAP
 #: CAPABILITY_PROF_MAP
-#, fuzzy
 msgid "Profile Mapping"
-msgstr "Mapeamento de perfis"
+msgstr ""
 
 # CAPABILITY_PROF_RES_DOC
 #: CAPABILITY_PROF_RES_DOC
-#, fuzzy
 msgid "Document Resource Profile"
-msgstr "Perfil do recurso de documento"
+msgstr ""
 
 # CAPABILITY_PUB_BY
 #: CAPABILITY_PUB_BY
-#, fuzzy
 msgid "Published by: {0}"
-msgstr "Publicado por: {0}"
+msgstr ""
 
 # CAPABILITY_PUB_ON
 #: CAPABILITY_PUB_ON
-#, fuzzy
 msgid "Published on: {0}"
-msgstr "Publicado em: {0}"
+msgstr ""
 
 # CAPABILITY_READ_INT
 #: CAPABILITY_READ_INT
-#, fuzzy
 msgid "GET a resource (read interaction)"
-msgstr "GET um recurso (interação de leitura)"
+msgstr ""
 
 # CAPABILITY_REF_PROF
 #: CAPABILITY_REF_PROF
-#, fuzzy
 msgid "Reference Policy"
-msgstr "Política de referência"
+msgstr ""
 
 # CAPABILITY_REQ_RECOM
 #: CAPABILITY_REQ_RECOM
-#, fuzzy
 msgid "Required and recommended search parameters"
-msgstr "Parâmetros de pesquisa necessários e recomendados"
+msgstr ""
 
 # CAPABILITY_REST_CAPS
 #: CAPABILITY_REST_CAPS
-#, fuzzy
 msgid "FHIR RESTful Capabilities"
-msgstr "Capacidades FHIR RESTful"
+msgstr ""
 
 # CAPABILITY_REST_CONFIG
 #: CAPABILITY_REST_CONFIG
-#, fuzzy
 msgid "REST Configuration: {0}"
-msgstr "Configuração REST: {0}"
+msgstr ""
 
 # CAPABILITY_RES_CONF
 #: CAPABILITY_RES_CONF
-#, fuzzy
 msgid "Resource Conformance: {0}"
-msgstr "Conformidade do recurso: {0}"
+msgstr ""
 
 # CAPABILITY_RES_ENB
 #: CAPABILITY_RES_ENB
-#, fuzzy
 msgid "The linked resources enabled for"
-msgstr "Os recursos ligados activados para"
+msgstr ""
 
 # CAPABILITY_RES_OPER
 #: CAPABILITY_RES_OPER
-#, fuzzy
 msgid "The operations on the resource (if any)"
-msgstr "As operações sobre o recurso (se existirem)"
+msgstr ""
 
 # CAPABILITY_RES_PRO
 #: CAPABILITY_RES_PRO
-#, fuzzy
 msgid "Capabilities by Resource/Profile"
-msgstr "Capacidades por recurso/perfil"
+msgstr ""
 
 # CAPABILITY_RES_TYP
 #: CAPABILITY_RES_TYP
-#, fuzzy
 msgid "Resource Type"
-msgstr "Tipo de recurso"
+msgstr ""
 
 # CAPABILITY_REV_PROF
 #: CAPABILITY_REV_PROF
-#, fuzzy
 msgid "The relevant profiles (if any)"
-msgstr "Os perfis relevantes (se existirem)"
+msgstr ""
 
 # CAPABILITY_SEARCHES
 #: CAPABILITY_SEARCHES
-#, fuzzy
 msgid "Searches"
-msgstr "Pesquisas"
+msgstr ""
 
 # CAPABILITY_SEARCH_INT
 #: CAPABILITY_SEARCH_INT
-#, fuzzy
 msgid "GET all set of resources of the type (search interaction)"
-msgstr "GET todo o conjunto de recursos do tipo (interação de pesquisa)"
+msgstr ""
 
 # CAPABILITY_SEARCH_PAR
 #: CAPABILITY_SEARCH_PAR
-#, fuzzy
 msgid "The required, recommended, and some optional search parameters (if any)."
-msgstr "Os parâmetros de pesquisa obrigatórios, recomendados e alguns opcionais (se existirem)."
+msgstr ""
 
 # CAPABILITY_SEARCH_PARS
 #: CAPABILITY_SEARCH_PARS
-#, fuzzy
 msgid "Search Parameters"
-msgstr "Parâmetros de pesquisa"
+msgstr ""
 
 # CAPABILITY_SHOULD_SUPP
 #: CAPABILITY_SHOULD_SUPP
-#, fuzzy
 msgid "SHOULD Support the Following Implementation Guides"
-msgstr "DEVERÁ suportar os seguintes guias de implementação"
+msgstr ""
 
 # CAPABILITY_SUMM_RES
 #: CAPABILITY_SUMM_RES
-#, fuzzy
 msgid "The summary table lists the resources that are part of this configuration, and for each resource it lists:"
-msgstr "A tabela de resumo enumera os recursos que fazem parte desta configuração e, para cada recurso, enumera-os:"
+msgstr ""
 
 # CAPABILITY_SUMM_SYS_INT
 #: CAPABILITY_SUMM_SYS_INT
-#, fuzzy
 msgid "Summary of System-wide Interactions"
-msgstr "Resumo das interações a nível do sistema"
+msgstr ""
 
 # CAPABILITY_SUPP
 #: CAPABILITY_SUPP
-#, fuzzy
 msgid "support"
-msgstr "apoio"
+msgstr ""
 
 # CAPABILITY_SUPPS
 #: CAPABILITY_SUPPS
-#, fuzzy
 msgid "Supports"
-msgstr "Apoios"
+msgstr ""
 
 # CAPABILITY_SUPPS_THE
 #: CAPABILITY_SUPPS_THE
-#, fuzzy
 msgid "Supports the"
-msgstr "Apoia o"
+msgstr ""
 
 # CAPABILITY_SUPP_FORM
 #: CAPABILITY_SUPP_FORM
-#, fuzzy
 msgid "Supported Formats:"
-msgstr "Formatos suportados:"
+msgstr ""
 
 # CAPABILITY_SUPP_MSGS
 #: CAPABILITY_SUPP_MSGS
-#, fuzzy
 msgid "Supported Message(s)"
-msgstr "Mensagem(s) suportada(s)"
+msgstr ""
 
 # CAPABILITY_SUPP_PATCH_FORM
 #: CAPABILITY_SUPP_PATCH_FORM
-#, fuzzy
 msgid "Supported Patch Formats:"
-msgstr "Formatos de patch suportados:"
+msgstr ""
 
 # CAPABILITY_SUPP_PROFS
 #: CAPABILITY_SUPP_PROFS
-#, fuzzy
 msgid "Supported Profiles"
-msgstr "Perfis suportados"
+msgstr ""
 
 # CAPABILITY_SUPP_THE
 #: CAPABILITY_SUPP_THE
-#, fuzzy
 msgid "support the"
-msgstr "apoiar o"
+msgstr ""
 
 # CAPABILITY_TYPS
 #: CAPABILITY_TYPS
-#, fuzzy
 msgid "Types"
-msgstr "Tipos"
+msgstr ""
 
 # CAPABILITY_TYP_PRES
 #: CAPABILITY_TYP_PRES
-#, fuzzy
 msgid "ype are only present if at least one of the resources has support for them."
-msgstr "só estão presentes se pelo menos um dos recursos os suportar."
+msgstr ""
 
 # CAPABILITY_UPDATE_INT
 #: CAPABILITY_UPDATE_INT
-#, fuzzy
 msgid "PUT a new resource version (update interaction)"
-msgstr "PUT uma nova versão do recurso (interação de atualização)"
+msgstr ""
 
 # CAPABILITY_VREAD_INT
 #: CAPABILITY_VREAD_INT
-#, fuzzy
 msgid "GET past versions of resources (vread interaction)"
-msgstr "OBTER versões anteriores de recursos (interação vread)"
+msgstr ""
 
 # CAPABILTY_ALLOW_CAP
 #: CAPABILTY_ALLOW_CAP
-#, fuzzy
 msgid "Any FHIR capability may be ''allowed'' by the system unless explicitly marked as ''SHALL NOT''. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case."
-msgstr "Qualquer capacidade FHIR pode ser \"permitida\" pelo sistema, exceto se for explicitamente assinalada como \"NÃO DEVE\". Alguns itens são marcados como MAY no Guia de Implementação para destacar a sua potencial relevância para o caso de utilização."
+msgstr ""
 
 # CAPABILTY_SHALL_SUPP
 #: CAPABILTY_SHALL_SUPP
-#, fuzzy
 msgid "SHALL Support the Following Implementation Guides"
-msgstr "DEVERÁ suportar os seguintes guias de implementação"
+msgstr ""
 
 # CODESYSTEM_CONCEPTS
 #: CODESYSTEM_CONCEPTS
-#, fuzzy
 msgid "Concepts"
-msgstr "Conceitos"
+msgstr ""
 
 # CODESYSTEM_CONTENT_COMPLETE
 #: CODESYSTEM_CONTENT_COMPLETE
-#, fuzzy
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines the following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr "Este <param name=\"cased\"/> sistema de código <param name=\"cs\"/> define o seguinte código<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgstr ""
 
 # CODESYSTEM_CONTENT_EXAMPLE
 #: CODESYSTEM_CONTENT_EXAMPLE
-#, fuzzy
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides some code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>that are example only</b>:"
-msgstr "Este <param name=\"cased\"/> sistema de código <param name=\"cs\"/> fornece alguns códigos<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>que são apenas exemplos</b>:"
+msgstr ""
 
 # CODESYSTEM_CONTENT_FRAGMENT
 #: CODESYSTEM_CONTENT_FRAGMENT
-#, fuzzy
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides <b>a fragment</b> that includes following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr "Este <param name=\"cased\"/> sistema de código <param name=\"cs\"/> fornece <b>um fragmento</b> que inclui o seguinte código<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgstr ""
 
 # CODESYSTEM_CONTENT_NOTPRESENT
 #: CODESYSTEM_CONTENT_NOTPRESENT
-#, fuzzy
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines codes<param name=\"h\"/>, but no codes are represented here"
-msgstr "Este <param name=\"cased\"/> sistema de código <param name=\"cs\"/> define códigos<param name=\"h\"/>, mas nenhum código é representado aqui"
+msgstr ""
 
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
-#, fuzzy
 msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
-msgstr "Este suplemento do sistema de código <param name=\"cs\"/> define {0} no seguinte código<if test=\"code-count != 1\">s</if>:"
+msgstr ""
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
-#, fuzzy
 msgid "Deprecated"
-msgstr "Depreciado"
+msgstr ""
 
 # CODESYSTEM_FILTERS
 #: CODESYSTEM_FILTERS
-#, fuzzy
 msgid "Filters"
-msgstr "Filtros"
+msgstr ""
 
 # CODESYSTEM_FILTER_OP
 #: CODESYSTEM_FILTER_OP
-#, fuzzy
 msgid "Op"
 msgstr "Op"
 
 # CODESYSTEM_PROPS_DESC
 #: CODESYSTEM_PROPS_DESC
-#, fuzzy
 msgid "This code system defines the following properties for its concepts"
-msgstr "Este sistema de códigos define as seguintes propriedades para os seus conceitos"
+msgstr ""
 
 # CODE_SYS_CODE_NOT_HERE
 #: CODE_SYS_CODE_NOT_HERE
-#, fuzzy
 msgid "This CodeSystem is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr "Este CodeSystem não é utilizado aqui; pode ser utilizado noutro local (por exemplo, em especificações e/ou implementações que utilizem este conteúdo)"
+msgstr ""
 
 # CODE_SYS_COMPLETE
 #: CODE_SYS_COMPLETE
-#, fuzzy
 msgid "All the concepts defined by the code system are included in the code system resource"
-msgstr "Todos os conceitos definidos pelo sistema de códigos estão incluídos no recurso do sistema de códigos"
+msgstr ""
 
 # CODE_SYS_COPY
 #: CODE_SYS_COPY
-#, fuzzy
 msgid "Copy"
-msgstr "Cópia"
+msgstr ""
 
 # CODE_SYS_DISP
 #: CODE_SYS_DISP
-#, fuzzy
 msgid "displays"
-msgstr "ecrãs"
+msgstr ""
 
 # CODE_SYS_DISP_PROP
 #: CODE_SYS_DISP_PROP
-#, fuzzy
 msgid "displays and properties"
-msgstr "ecrãs e propriedades"
+msgstr ""
 
 # CODE_SYS_EXAMPLE
 #: CODE_SYS_EXAMPLE
-#, fuzzy
 msgid "A few representative concepts are included in the code system resource"
-msgstr "Alguns conceitos representativos estão incluídos no recurso do sistema de códigos"
+msgstr ""
 
 # CODE_SYS_FEAT
 #: CODE_SYS_FEAT
-#, fuzzy
 msgid "features"
-msgstr "caraterísticas"
+msgstr ""
 
 # CODE_SYS_FOR_OID
 #: CODE_SYS_FOR_OID
-#, fuzzy
 msgid "{0} (for OID based terminology systems)"
-msgstr "{0} (para sistemas terminológicos baseados em OID)"
+msgstr ""
 
 # CODE_SYS_FRAGMENT
 #: CODE_SYS_FRAGMENT
-#, fuzzy
 msgid "A subset of the code system concepts are included in the code system resource"
-msgstr "Um subconjunto dos conceitos do sistema de códigos está incluído no recurso do sistema de códigos"
+msgstr ""
 
 # CODE_SYS_IN_A_HIERARCHY
 #: CODE_SYS_IN_A_HIERARCHY
-#, fuzzy
 msgid "in a {0} hierarchy"
-msgstr "numa hierarquia {0}"
+msgstr ""
 
 # CODE_SYS_NOTPRESENT
 #: CODE_SYS_NOTPRESENT
-#, fuzzy
 msgid "None of the concepts defined by the code system are included in the code system resource"
-msgstr "Nenhum dos conceitos definidos pelo sistema de códigos está incluído no recurso do sistema de códigos"
+msgstr ""
 
 # CODE_SYS_PROP
 #: CODE_SYS_PROP
-#, fuzzy
 msgid "properties"
-msgstr "propriedades"
+msgstr ""
 
 # CODE_SYS_REPLACED_BY
 #: CODE_SYS_REPLACED_BY
-#, fuzzy
 msgid "(replaced by"
-msgstr "(substituído por"
+msgstr ""
 
 # CODE_SYS_SUPPLEMENT
 #: CODE_SYS_SUPPLEMENT
-#, fuzzy
 msgid "This code system resource is a supplement to"
-msgstr "Este recurso do sistema de códigos é um suplemento ao"
+msgstr ""
 
 # CODE_SYS_THE_VALUE_SET
 #: CODE_SYS_THE_VALUE_SET
-#, fuzzy
 msgid "{0} is the value set for all codes in this code system"
-msgstr "{0} é o valor definido para todos os códigos deste sistema de códigos"
+msgstr ""
 
 # CODE_SYS_UNDEF_HIER
 #: CODE_SYS_UNDEF_HIER
-#, fuzzy
 msgid "in an undefined hierarchy"
-msgstr "numa hierarquia indefinida"
+msgstr ""
 
 # CODE_SYS_UNKN_MODE
 #: CODE_SYS_UNKN_MODE
-#, fuzzy
 msgid "Unknown CodeSystemContentMode mode"
-msgstr "Modo CodeSystemContentMode desconhecido"
+msgstr ""
 
 # CONC_MAP_CODES
 #: CONC_MAP_CODES
-#, fuzzy
 msgid "Codes"
-msgstr "Códigos"
+msgstr ""
 
 # CONC_MAP_CODE_SYS_UNSPEC
 #: CONC_MAP_CODE_SYS_UNSPEC
-#, fuzzy
 msgid "unspecified code system"
-msgstr "sistema de códigos não especificado"
+msgstr ""
 
 # CONC_MAP_FRM
 #: CONC_MAP_FRM
-#, fuzzy
 msgid "from"
-msgstr "de"
+msgstr ""
 
 # CONC_MAP_FROM
 #: CONC_MAP_FROM
-#, fuzzy
 msgid "Mapping from"
-msgstr "Mapeamento de"
+msgstr ""
 
 # CONC_MAP_GRP
 #: CONC_MAP_GRP
-#, fuzzy
 msgid "Group {0}"
-msgstr "Grupo {0}"
+msgstr ""
 
 # CONC_MAP_NOT_SPEC
 #: CONC_MAP_NOT_SPEC
-#, fuzzy
 msgid "(not specified)"
-msgstr "(não especificado)"
+msgstr ""
 
 # CONC_MAP_REL
 #: CONC_MAP_REL
-#, fuzzy
 msgid "Relationship"
-msgstr "Relacionamento"
+msgstr ""
 
 # CONC_MAP_SOURCE
 #: CONC_MAP_SOURCE
-#, fuzzy
 msgid "Source Code"
-msgstr "Código fonte"
+msgstr ""
 
 # CONC_MAP_SOURCE_CARD
 #: CONC_MAP_SOURCE_CARD
@@ -932,22 +801,19 @@ msgstr ""
 
 # CONC_MAP_SRC_DET
 #: CONC_MAP_SRC_DET
-#, fuzzy
 msgid "Source Concept Details"
-msgstr "Fonte Detalhes do conceito"
+msgstr ""
 
 # CONC_MAP_TO
 #: CONC_MAP_TO
-#, fuzzy
 msgctxt "CONC_MAP_TO"
 msgid "to"
-msgstr "para"
+msgstr ""
 
 # CONC_MAP_TRGT
 #: CONC_MAP_TRGT
-#, fuzzy
 msgid "Target Code"
-msgstr "Código de destino"
+msgstr ""
 
 # CONC_MAP_TRGT_CARD
 #: CONC_MAP_TRGT_CARD
@@ -957,9 +823,8 @@ msgstr ""
 
 # CONC_MAP_TRGT_DET
 #: CONC_MAP_TRGT_DET
-#, fuzzy
 msgid "Target Concept Details"
-msgstr "Detalhes do conceito-alvo"
+msgstr ""
 
 # CONC_MAP_TRGT_TYPE
 #: CONC_MAP_TRGT_TYPE
@@ -969,719 +834,600 @@ msgstr ""
 
 # DATA_REND_AFTERNOON
 #: DATA_REND_AFTERNOON
-#, fuzzy
 msgid "Afternoon"
-msgstr "Tarde"
+msgstr ""
 
 # DATA_REND_AFTERNOON_EARLY
 #: DATA_REND_AFTERNOON_EARLY
-#, fuzzy
 msgid "Early Afternoon"
-msgstr "Início da tarde"
+msgstr ""
 
 # DATA_REND_AFTERNOON_LATE
 #: DATA_REND_AFTERNOON_LATE
-#, fuzzy
 msgid "Late Afternoon"
-msgstr "Fim da tarde"
+msgstr ""
 
 # DATA_REND_AFTER_SLEEP
 #: DATA_REND_AFTER_SLEEP
-#, fuzzy
 msgid "After Sleep"
-msgstr "Depois de dormir"
+msgstr ""
 
 # DATA_REND_AFTRBKFST
 #: DATA_REND_AFTRBKFST
-#, fuzzy
 msgid "after breakfast"
-msgstr "depois do pequeno-almoço"
+msgstr ""
 
 # DATA_REND_AFTRDINR
 #: DATA_REND_AFTRDINR
-#, fuzzy
 msgid "after dinner"
-msgstr "depois do jantar"
+msgstr ""
 
 # DATA_REND_AFTRLUNCH
 #: DATA_REND_AFTRLUNCH
-#, fuzzy
 msgid "after lunch"
-msgstr "depois do almoço"
+msgstr ""
 
 # DATA_REND_AFTRMEALS
 #: DATA_REND_AFTRMEALS
-#, fuzzy
 msgid "after meals"
-msgstr "após as refeições"
+msgstr ""
 
 # DATA_REND_AFTRWKNG
 #: DATA_REND_AFTRWKNG
-#, fuzzy
 msgid "after waking"
-msgstr "depois de acordar"
+msgstr ""
 
 # DATA_REND_ATBKFST
 #: DATA_REND_ATBKFST
-#, fuzzy
 msgid "at breakfast"
-msgstr "ao pequeno-almoço"
+msgstr ""
 
 # DATA_REND_ATDINR
 #: DATA_REND_ATDINR
-#, fuzzy
 msgid "at dinner"
-msgstr "ao jantar"
+msgstr ""
 
 # DATA_REND_ATLUNCH
 #: DATA_REND_ATLUNCH
-#, fuzzy
 msgid "at lunch"
-msgstr "ao almoço"
+msgstr ""
 
 # DATA_REND_ATT_DATA
 #: DATA_REND_ATT_DATA
-#, fuzzy
 msgctxt "DATA_REND_ATT_DATA"
 msgid "{0}: {1}"
 msgstr "{0}: {1}"
 
 # DATA_REND_ATT_URL
 #: DATA_REND_ATT_URL
-#, fuzzy
 msgid "{0} @ {1}"
 msgstr "{0} @ {1}"
 
 # DATA_REND_BASE64
 #: DATA_REND_BASE64
-#, fuzzy
 msgid "(base64 data - {0} base64 chars)"
-msgstr "(dados base64 - {0} caracteres base64)"
+msgstr ""
 
 # DATA_REND_BFBKFST
 #: DATA_REND_BFBKFST
-#, fuzzy
 msgid "before breakfast"
-msgstr "antes do pequeno-almoço"
+msgstr ""
 
 # DATA_REND_BFDINR
 #: DATA_REND_BFDINR
-#, fuzzy
 msgid "before dinner"
-msgstr "antes do jantar"
+msgstr ""
 
 # DATA_REND_BFLUNCH
 #: DATA_REND_BFLUNCH
-#, fuzzy
 msgid "before lunch"
-msgstr "antes do almoço"
+msgstr ""
 
 # DATA_REND_BFMEALS
 #: DATA_REND_BFMEALS
-#, fuzzy
 msgid "before meals"
-msgstr "antes das refeições"
+msgstr ""
 
 # DATA_REND_BFSLEEP
 #: DATA_REND_BFSLEEP
-#, fuzzy
 msgid "before sleeping"
-msgstr "antes de dormir"
+msgstr ""
 
 # DATA_REND_BY
 #: DATA_REND_BY
-#, fuzzy
 msgid "By"
-msgstr "Por"
+msgstr ""
 
 # DATA_REND_CODES
 #: DATA_REND_CODES
-#, fuzzy
 msgid "Codes:"
-msgstr "Códigos:"
+msgstr ""
 
 # DATA_REND_COND
 #: DATA_REND_COND
-#, fuzzy
 msgid "Condition"
-msgstr "Estado"
+msgstr ""
 
 # DATA_REND_COUNT
 #: DATA_REND_COUNT
-#, fuzzy
 msgid "Count {0}"
-msgstr "Contagem {0}"
+msgstr ""
 
 # DATA_REND_CURRENCY
 #: DATA_REND_CURRENCY
-#, fuzzy
 msgid "{1} {0}"
 msgstr "{1} {0}"
 
 # DATA_REND_DATA
 #: DATA_REND_DATA
-#, fuzzy
 msgid "Data: {0}"
-msgstr "Dados: {0}"
+msgstr ""
 
 # DATA_REND_DETAILS
 #: DATA_REND_DETAILS
-#, fuzzy
 msgid "(Details: {0}  code"
-msgstr "(Detalhes: {0} código"
+msgstr ""
 
 # DATA_REND_DETAILS_STATED
 #: DATA_REND_DETAILS_STATED
-#, fuzzy
 msgid "(Details: {0} code {1} = ''{2}'')"
-msgstr "(Pormenores: {0} código {1} = ''{2}'')"
+msgstr ""
 
 # DATA_REND_DETAILS_STATED_ND
 #: DATA_REND_DETAILS_STATED_ND
-#, fuzzy
 msgid "(Details: {0} code {1})"
-msgstr "(Detalhes: {0} código {1})"
+msgstr ""
 
 # DATA_REND_DICOM
 #: DATA_REND_DICOM
-#, fuzzy
 msgid "DICOM"
 msgstr "DICOM"
 
 # DATA_REND_DIM
 #: DATA_REND_DIM
-#, fuzzy
 msgid "Dimensions: {0}"
-msgstr "Dimensões: {0}"
+msgstr ""
 
 # DATA_REND_DURATION
 #: DATA_REND_DURATION
-#, fuzzy
 msgid "Duration {0}"
-msgstr "Duração {0}"
+msgstr ""
 
 # DATA_REND_ERROR
 #: DATA_REND_ERROR
-#, fuzzy
 msgid "Error: {0}"
-msgstr "Erro: {0}"
+msgstr ""
 
 # DATA_REND_EVENING
 #: DATA_REND_EVENING
-#, fuzzy
 msgid "Evening"
-msgstr "Noite"
+msgstr ""
 
 # DATA_REND_EVENING_EARLY
 #: DATA_REND_EVENING_EARLY
-#, fuzzy
 msgid "Early Evening"
-msgstr "Início da noite"
+msgstr ""
 
 # DATA_REND_EVENING_LATE
 #: DATA_REND_EVENING_LATE
-#, fuzzy
 msgid "Late Evening"
-msgstr "Tarde da noite"
+msgstr ""
 
 # DATA_REND_EVENTS
 #: DATA_REND_EVENTS
-#, fuzzy
 msgid "Events: {0}"
-msgstr "Eventos: {0}"
+msgstr ""
 
 # DATA_REND_EXCEPTION
 #: DATA_REND_EXCEPTION
-#, fuzzy
 msgid "Exception"
-msgstr "Exceção"
+msgstr ""
 
 # DATA_REND_FACT
 #: DATA_REND_FACT
-#, fuzzy
 msgid "Factor: {0}"
-msgstr "Fator: {0}"
+msgstr ""
 
 # DATA_REND_FAX
 #: DATA_REND_FAX
-#, fuzzy
 msgid "Fax: {0}"
 msgstr "Fax: {0}"
 
 # DATA_REND_GLN
 #: DATA_REND_GLN
-#, fuzzy
 msgid "Global Location Number"
-msgstr "Número de localização global"
+msgstr ""
 
 # DATA_REND_ICD
 #: DATA_REND_ICD
-#, fuzzy
 msgid "ICD-9"
-msgstr "CID-9"
+msgstr ""
 
 # DATA_REND_IMMEDIATE
 #: DATA_REND_IMMEDIATE
-#, fuzzy
 msgid "Immediate"
-msgstr "Imediato"
+msgstr ""
 
 # DATA_REND_INT
 #: DATA_REND_INT
-#, fuzzy
 msgid "Interval: {0}"
-msgstr "Intervalo: {0}"
+msgstr ""
 
 # DATA_REND_LIMIT
 #: DATA_REND_LIMIT
-#, fuzzy
 msgid "Limit"
-msgstr "Limite"
+msgstr ""
 
 # DATA_REND_LOINC
 #: DATA_REND_LOINC
-#, fuzzy
 msgid "LOINC"
 msgstr "LOINC"
 
 # DATA_REND_LOWER
 #: DATA_REND_LOWER
-#, fuzzy
 msgid "Lower: {0}"
-msgstr "Inferior: {0}"
+msgstr ""
 
 # DATA_REND_MEALS
 #: DATA_REND_MEALS
-#, fuzzy
 msgid "at meals"
-msgstr "nas refeições"
+msgstr ""
 
 # DATA_REND_MKDWN_LNK
 #: DATA_REND_MKDWN_LNK
-#, fuzzy
 msgid "Unable to resolve markdown link"
-msgstr "Não é possível resolver a ligação markdown"
+msgstr ""
 
 # DATA_REND_MORNING
 #: DATA_REND_MORNING
-#, fuzzy
 msgid "Morning"
-msgstr "Manhã"
+msgstr ""
 
 # DATA_REND_MORNING_EARLY
 #: DATA_REND_MORNING_EARLY
-#, fuzzy
 msgid "Early Morning"
-msgstr "Manhã cedo"
+msgstr ""
 
 # DATA_REND_MORNING_LATE
 #: DATA_REND_MORNING_LATE
-#, fuzzy
 msgid "Late Morning"
-msgstr "Final da manhã"
+msgstr ""
 
 # DATA_REND_NIGHT
 #: DATA_REND_NIGHT
-#, fuzzy
 msgid "Night"
-msgstr "Noite"
+msgstr ""
 
 # DATA_REND_NOON
 #: DATA_REND_NOON
-#, fuzzy
 msgid "Noon"
-msgstr "Meio-dia"
+msgstr ""
 
 # DATA_REND_NOT_STAT
 #: DATA_REND_NOT_STAT
-#, fuzzy
 msgid "[not stated]"
-msgstr "[não indicado]."
+msgstr ""
 
 # DATA_REND_NO_DISP
 #: DATA_REND_NO_DISP
-#, fuzzy
 msgid "No display for {0}"
-msgstr "Nenhum ecrã para {0}"
+msgstr ""
 
 # DATA_REND_ONCE
 #: DATA_REND_ONCE
-#, fuzzy
 msgid "Once"
-msgstr "Uma vez"
+msgstr ""
 
 # DATA_REND_ONGOING
 #: DATA_REND_ONGOING
-#, fuzzy
 msgid "(ongoing)"
-msgstr "(em curso)"
+msgstr ""
 
 # DATA_REND_ORIGIN
 #: DATA_REND_ORIGIN
-#, fuzzy
 msgid "Origin: {0}"
-msgstr "Origem: {0}"
+msgstr ""
 
 # DATA_REND_PER
 #: DATA_REND_PER
-#, fuzzy
 msgid "per"
-msgstr "por"
+msgstr ""
 
 # DATA_REND_PERIOD
 #: DATA_REND_PERIOD
-#, fuzzy
 msgid "period:"
-msgstr "período:"
+msgstr ""
 
 # DATA_REND_PHONE
 #: DATA_REND_PHONE
-#, fuzzy
 msgid "Phone: {0}"
-msgstr "Telefone: {0}"
+msgstr ""
 
 # DATA_REND_RXNORM
 #: DATA_REND_RXNORM
-#, fuzzy
 msgid "RxNorm"
 msgstr "RxNorm"
 
 # DATA_REND_SEARCH
 #: DATA_REND_SEARCH
-#, fuzzy
 msgid "Search on: {0}"
-msgstr "Pesquisar em: {0}"
+msgstr ""
 
 # DATA_REND_SNOMED
 #: DATA_REND_SNOMED
-#, fuzzy
 msgid "SNOMED CT"
 msgstr "SNOMED CT"
 
 # DATA_REND_SORT
 #: DATA_REND_SORT
-#, fuzzy
 msgid "Sort"
-msgstr "Ordenar"
+msgstr ""
 
 # DATA_REND_SOURCE
 #: DATA_REND_SOURCE
-#, fuzzy
 msgid "source"
-msgstr "fonte"
+msgstr ""
 
 # DATA_REND_STARTING
 #: DATA_REND_STARTING
-#, fuzzy
 msgid "Starting {0}"
-msgstr "A partir de {0}"
+msgstr ""
 
 # DATA_REND_THESE_CODES
 #: DATA_REND_THESE_CODES
-#, fuzzy
 msgid "One of these codes:"
-msgstr "Um destes códigos:"
+msgstr ""
 
 # DATA_REND_TIMING
 #: DATA_REND_TIMING
-#, fuzzy
 msgid "Timing"
-msgstr "Calendário"
+msgstr ""
 
 # DATA_REND_TO_DO
 #: DATA_REND_TO_DO
-#, fuzzy
 msgid "to do: {0}"
-msgstr "para fazer: {0}"
+msgstr ""
 
 # DATA_REND_UNKNWN
 #: DATA_REND_UNKNWN
-#, fuzzy
 msgid "unknown"
-msgstr "desconhecido"
+msgstr ""
 
 # DATA_REND_UNRD_EX
 #: DATA_REND_UNRD_EX
-#, fuzzy
 msgid "WARNING: Unrenderable Modifier Extension!"
-msgstr "AVISO: Extensão de modificador não renderizável!"
+msgstr ""
 
 # DATA_REND_UNTIL
 #: DATA_REND_UNTIL
-#, fuzzy
 msgid "Until {0}"
-msgstr "Até {0}"
+msgstr ""
 
 # DATA_REND_UP
 #: DATA_REND_UP
-#, fuzzy
 msgid "Upper: {0}"
-msgstr "Superior: {0}"
+msgstr ""
 
 # DATA_REND_USE
 #: DATA_REND_USE
-#, fuzzy
 msgid "use:"
-msgstr "utilização:"
+msgstr ""
 
 # DATA_REND_VALUESET
 #: DATA_REND_VALUESET
-#, fuzzy
 msgid "In ValueSet"
-msgstr "Em ValueSet"
+msgstr ""
 
 # DATA_REND_VERSION
 #: DATA_REND_VERSION
-#, fuzzy
 msgid "(version = {0} {1}"
-msgstr "(versão = {0} {1}"
+msgstr ""
 
 # DIAG_REP_REND_AGE
 #: DIAG_REP_REND_AGE
-#, fuzzy
 msgid "Age"
-msgstr "Idade"
+msgstr ""
 
 # DIAG_REP_REND_CODECON
 #: DIAG_REP_REND_CODECON
-#, fuzzy
 msgid "Coded Conclusions:"
-msgstr "Conclusões codificadas:"
+msgstr ""
 
 # DIAG_REP_REND_ERR
 #: DIAG_REP_REND_ERR
-#, fuzzy
 msgid "Error:"
-msgstr "Erro:"
+msgstr ""
 
 # DIAG_REP_REND_FOR
 #: DIAG_REP_REND_FOR
-#, fuzzy
 msgid "for"
-msgstr "para"
+msgstr ""
 
 # DIAG_REP_REND_IDENTIFIER
 #: DIAG_REP_REND_IDENTIFIER
-#, fuzzy
 msgid "Identifier"
-msgstr "Identificador"
+msgstr ""
 
 # DIAG_REP_REND_NOTRES
 #: DIAG_REP_REND_NOTRES
-#, fuzzy
 msgid "The observation ''{0}'' could not be resolved"
-msgstr "A observação ''{0}'' não pôde ser resolvida"
+msgstr ""
 
 # DIAG_REP_REND_OBS
 #: DIAG_REP_REND_OBS
-#, fuzzy
 msgid "Observation"
-msgstr "Observação"
+msgstr ""
 
 # DIAG_REP_REND_PER
 #: DIAG_REP_REND_PER
-#, fuzzy
 msgid "Performer"
-msgstr "Intérprete"
+msgstr ""
 
 # DIAG_REP_REND_REFRAN
 #: DIAG_REP_REND_REFRAN
-#, fuzzy
 msgid "Reference Range"
-msgstr "Intervalo de referência"
+msgstr ""
 
 # DIAG_REP_REND_REP
 #: DIAG_REP_REND_REP
-#, fuzzy
 msgid "Reported"
-msgstr "Comunicado"
+msgstr ""
 
 # DIAG_REP_REND_REPDET
 #: DIAG_REP_REND_REPDET
-#, fuzzy
 msgid "Report Details"
-msgstr "Detalhes do relatório"
+msgstr ""
 
 # DIAG_REP_REND_UNABLE
 #: DIAG_REP_REND_UNABLE
-#, fuzzy
 msgid "Unable to get Patient Details"
-msgstr "Não é possível obter os dados do doente"
+msgstr ""
 
 # DIAG_REP_REND_WHEN
 #: DIAG_REP_REND_WHEN
-#, fuzzy
 msgid "When For"
-msgstr "Quando Para"
+msgstr ""
 
 # DIAG_REP_SUMMARY
 #: DIAG_REP_SUMMARY
-#, fuzzy
 msgid "Diagnostic Report for ''{0}'' for ''{1}''"
-msgstr "Relatório de diagnóstico para ''{0}'' para ''{1}''"
+msgstr ""
 
 # DIAG_REP_UNSPECIFIED_CODE
 #: DIAG_REP_UNSPECIFIED_CODE
-#, fuzzy
 msgid "Unspecified Report Type"
-msgstr "Tipo de relatório não especificado"
+msgstr ""
 
 # DIAG_REP_UNSPECIFIED_SUBJECT
 #: DIAG_REP_UNSPECIFIED_SUBJECT
-#, fuzzy
 msgctxt "DIAG_REP_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
-msgstr "Assunto não especificado"
+msgstr ""
 
 # DOCUMENT_SUMMARY
 #: DOCUMENT_SUMMARY
-#, fuzzy
 msgid "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
-msgstr "<param name=\"status\"/> Documento em <param name=\"date\"/> por <param name=\"author\"/> para <param name=\"subject\"/> <if test=\"has-encounter = true\"> no encontro <param name=\"encounter\"/></if>"
+msgstr ""
 
 # EXAMPLE_SCEN_STEP_SCEN
 #: EXAMPLE_SCEN_STEP_SCEN
-#, fuzzy
 msgid "Step {0}  - See scenario {1}"
-msgstr "Etapa {0} - Ver cenário {1}"
+msgstr ""
 
 # EX_SCEN_ALT
 #: EX_SCEN_ALT
-#, fuzzy
 msgid "Alternative {0}"
-msgstr "Alternativa {0}"
+msgstr ""
 
 # EX_SCEN_BEL
 #: EX_SCEN_BEL
-#, fuzzy
 msgid "below"
-msgstr "abaixo"
+msgstr ""
 
 # EX_SCEN_CONTA
 #: EX_SCEN_CONTA
-#, fuzzy
 msgid "Contains:"
-msgstr "Contém:"
+msgstr ""
 
 # EX_SCEN_ERR_REN
 #: EX_SCEN_ERR_REN
-#, fuzzy
 msgid "Error rendering ExampleScenario {0}"
-msgstr "Erro ao renderizar ExampleScenario {0}"
+msgstr ""
 
 # EX_SCEN_FVER
 #: EX_SCEN_FVER
-#, fuzzy
 msgid "FHIR version"
-msgstr "Versão FHIR"
+msgstr ""
 
 # EX_SCEN_IN
 #: EX_SCEN_IN
-#, fuzzy
 msgid "Initiator"
-msgstr "Iniciador"
+msgstr ""
 
 # EX_SCEN_OTH
 #: EX_SCEN_OTH
-#, fuzzy
 msgid "See other scenario"
-msgstr "Ver outro cenário"
+msgstr ""
 
 # EX_SCEN_POSTCON
 #: EX_SCEN_POSTCON
-#, fuzzy
 msgid "Post-conditions:"
-msgstr "Pós-condições:"
+msgstr ""
 
 # EX_SCEN_PRECON
 #: EX_SCEN_PRECON
-#, fuzzy
 msgid "Pre-conditions:"
-msgstr "Condições prévias:"
+msgstr ""
 
 # EX_SCEN_PROC
 #: EX_SCEN_PROC
-#, fuzzy
 msgid "Process: {0}"
-msgstr "Processo: {0}"
+msgstr ""
 
 # EX_SCEN_REC
 #: EX_SCEN_REC
-#, fuzzy
 msgid "Receiver"
-msgstr "Recetor"
+msgstr ""
 
 # EX_SCEN_RES
 #: EX_SCEN_RES
-#, fuzzy
 msgid "Response"
-msgstr "Resposta"
+msgstr ""
 
 # EX_SCEN_SEE
 #: EX_SCEN_SEE
-#, fuzzy
 msgid "See subprocess"
-msgstr "Ver subprocesso"
+msgstr ""
 
 # EX_SCEN_STEP
 #: EX_SCEN_STEP
-#, fuzzy
 msgid "Step"
-msgstr "Etapa"
+msgstr ""
 
 # EX_SCEN_TIME
 #: EX_SCEN_TIME
-#, fuzzy
 msgid "... time passes ..."
-msgstr "... o tempo passa ..."
+msgstr ""
 
 # EX_SCEN_UN
 #: EX_SCEN_UN
-#, fuzzy
 msgid "Unknown ExampleScenario Renderer Mode {0}"
-msgstr "Desconhecido ExampleScenario Renderer Mode {0}"
+msgstr ""
 
 # EX_SCEN_UN_ACT
 #: EX_SCEN_UN_ACT
-#, fuzzy
 msgid "Unable to find referenced actor {0}"
-msgstr "Não foi possível encontrar o ator referenciado {0}"
+msgstr ""
 
 # FMM_TABLE
 #: FMM_TABLE
-#, fuzzy
 msgid "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
-msgstr "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Nível de maturidade</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Estado normalizado\">{2}</a></td></tr></tbody></table>"
+msgstr ""
 
 # GENERAL_ADDITIONAL_BINDING
 #: GENERAL_ADDITIONAL_BINDING
-#, fuzzy
 msgid "This element has additional bindings"
-msgstr "Este elemento tem ligações adicionais"
+msgstr ""
 
 # GENERAL_ADD_LANG
 #: GENERAL_ADD_LANG
-#, fuzzy
 msgid "Additional Language Displays"
-msgstr "Ecrãs de idiomas adicionais"
+msgstr ""
 
 # GENERAL_BINDING
 #: GENERAL_BINDING
-#, fuzzy
 msgid "Binding"
-msgstr "Vínculo"
+msgstr ""
 
 # GENERAL_BINDINGS
 #: GENERAL_BINDINGS
-#, fuzzy
 msgid "Bindings"
-msgstr "Vínculos"
+msgstr ""
 
 # GENERAL_BINDING_NO_DESC
 #: GENERAL_BINDING_NO_DESC
-#, fuzzy
 msgid "No description provided"
-msgstr "Nenhuma descrição fornecida"
+msgstr ""
 
 # GENERAL_BINDING_NO_VS_1
 #: GENERAL_BINDING_NO_VS_1
@@ -1690,861 +1436,721 @@ msgstr ""
 
 # GENERAL_BINDING_NO_VS_2
 #: GENERAL_BINDING_NO_VS_2
-#, fuzzy
 msgid "This binding doesn''t define a testable ValueSet"
-msgstr "Este vínculo não define um conjunto de valores que possa ser testado."
+msgstr ""
 
 # GENERAL_BIND_MIN_ALLOW
 #: GENERAL_BIND_MIN_ALLOW
-#, fuzzy
 msgid "The minimum allowable value set - any conformant system SHALL support all these codes"
-msgstr "O conjunto mínimo de valores admissíveis - qualquer sistema conforme DEVERÁ suportar todos estes códigos"
+msgstr ""
 
 # GENERAL_CARD
 #: GENERAL_CARD
-#, fuzzy
 msgctxt "GENERAL_CARD"
 msgid "Card."
-msgstr "Card."
+msgstr ""
 
 # GENERAL_CARDINALITY
 #: GENERAL_CARDINALITY
-#, fuzzy
 msgid "Cardinality"
-msgstr "Cardinalidade"
+msgstr ""
 
 # GENERAL_CODE
 #: GENERAL_CODE
-#, fuzzy
 msgid "Code"
-msgstr "Código"
+msgstr ""
 
 # GENERAL_COMMENT
 #: GENERAL_COMMENT
-#, fuzzy
 msgid "Comment"
-msgstr "Comentário"
+msgstr ""
 
 # GENERAL_COMMENTS
 #: GENERAL_COMMENTS
-#, fuzzy
 msgid "Comments"
-msgstr "Comentários"
+msgstr ""
 
 # GENERAL_COMPARATORS
 #: GENERAL_COMPARATORS
-#, fuzzy
 msgid "Comparators"
-msgstr "Comparadores"
+msgstr ""
 
 # GENERAL_COMPONENT
 #: GENERAL_COMPONENT
-#, fuzzy
 msgid "Component"
-msgstr "Componente"
+msgstr ""
 
 # GENERAL_CONFORMANCE
 #: GENERAL_CONFORMANCE
-#, fuzzy
 msgid "Conformance"
-msgstr "Conformidade"
+msgstr ""
 
 # GENERAL_CONSTRAINTS
 #: GENERAL_CONSTRAINTS
-#, fuzzy
 msgctxt "GENERAL_CONSTRAINTS"
 msgid "Constraints"
-msgstr "Condicionantes"
+msgstr ""
 
 # GENERAL_CONTACT
 #: GENERAL_CONTACT
-#, fuzzy
 msgid "Contact:"
-msgstr "Contacto:"
+msgstr ""
 
 # GENERAL_CONTENT
 #: GENERAL_CONTENT
-#, fuzzy
 msgid "Content"
-msgstr "Conteúdo"
+msgstr ""
 
 # GENERAL_COPYRIGHT
 #: GENERAL_COPYRIGHT
-#, fuzzy
 msgid "Copyright"
-msgstr "Direitos de autor"
+msgstr ""
 
 # GENERAL_CRIT
 #: GENERAL_CRIT
-#, fuzzy
 msgid "Criteria"
-msgstr "Critérios"
+msgstr ""
 
 # GENERAL_DATA_DISPLAY_PROPERTY
 #: GENERAL_DATA_DISPLAY_PROPERTY
-#, fuzzy
 msgctxt "GENERAL_DATA_DISPLAY_PROPERTY"
 msgid "{0}: {1}"
 msgstr "{0}: {1}"
 
 # GENERAL_DEFINING_URL
 #: GENERAL_DEFINING_URL
-#, fuzzy
 msgid "Defining URL"
-msgstr "Definição de URL"
+msgstr ""
 
 # GENERAL_DEFINITION
 #: GENERAL_DEFINITION
-#, fuzzy
 msgctxt "GENERAL_DEFINITION"
 msgid "Definition"
-msgstr "Definição"
+msgstr ""
 
 # GENERAL_DEFINITION_COLON
 #: GENERAL_DEFINITION_COLON
-#, fuzzy
 msgid "Definition:"
-msgstr "Definição:"
+msgstr ""
 
 # GENERAL_DESC
 #: GENERAL_DESC
-#, fuzzy
 msgid "Description"
-msgstr "Descrição"
+msgstr ""
 
 # GENERAL_DESC_CONST
 #: GENERAL_DESC_CONST
-#, fuzzy
 msgid "Description & Constraints"
-msgstr "Descrição e condicionalismos"
+msgstr ""
 
 # GENERAL_DETAILS
 #: GENERAL_DETAILS
-#, fuzzy
 msgid "Details"
-msgstr "Detalhes"
+msgstr ""
 
 # GENERAL_DOCUMENTATION
 #: GENERAL_DOCUMENTATION
-#, fuzzy
 msgid "Documentation"
-msgstr "Documentação"
+msgstr ""
 
 # GENERAL_EXAMPLE
 #: GENERAL_EXAMPLE
-#, fuzzy
 msgid "Example"
-msgstr "Exemplo"
+msgstr ""
 
 # GENERAL_EXPER
 #: GENERAL_EXPER
-#, fuzzy
 msgid "Experimental"
 msgstr "Experimental"
 
 # GENERAL_FILTER
 #: GENERAL_FILTER
-#, fuzzy
 msgid "Filter"
-msgstr "Filtro"
+msgstr ""
 
 # GENERAL_FIXED_VALUE
 #: GENERAL_FIXED_VALUE
-#, fuzzy
 msgctxt "GENERAL_FIXED_VALUE"
 msgid "Fixed Value: {0}"
-msgstr "Valor fixo: {0}"
+msgstr ""
 
 # GENERAL_FLAGS
 #: GENERAL_FLAGS
-#, fuzzy
 msgid "Flags"
-msgstr "Bandeiras"
+msgstr ""
 
 # GENERAL_LOCATION
 #: GENERAL_LOCATION
-#, fuzzy
 msgid "Location"
-msgstr "Localização"
+msgstr ""
 
 # GENERAL_LOGICAL_NAME
 #: GENERAL_LOGICAL_NAME
-#, fuzzy
 msgid "The logical name of the element"
-msgstr "O nome lógico do elemento"
+msgstr ""
 
 # GENERAL_MAX_LENGTH
 #: GENERAL_MAX_LENGTH
-#, fuzzy
 msgid "Max Length:"
-msgstr "Comprimento máximo:"
+msgstr ""
 
 # GENERAL_MIN_LENGTH
 #: GENERAL_MIN_LENGTH
-#, fuzzy
 msgid "Min Length:"
-msgstr "Comprimento mínimo:"
+msgstr ""
 
 # GENERAL_MODIFIERS
 #: GENERAL_MODIFIERS
-#, fuzzy
 msgid "Modifiers"
-msgstr "Modificadores"
+msgstr ""
 
 # GENERAL_NAME
 #: GENERAL_NAME
-#, fuzzy
 msgid "Name"
-msgstr "Nome"
+msgstr ""
 
 # GENERAL_NCI_THES
 #: GENERAL_NCI_THES
-#, fuzzy
 msgid "NCI Thesaurus"
-msgstr "Tesauro NCI"
+msgstr ""
 
 # GENERAL_NOTE
 #: GENERAL_NOTE
-#, fuzzy
 msgid "Note"
-msgstr "Nota"
+msgstr ""
 
 # GENERAL_OBLIG
 #: GENERAL_OBLIG
-#, fuzzy
 msgctxt "GENERAL_OBLIG"
 msgid "Obligations"
-msgstr "Obrigações"
+msgstr ""
 
 # GENERAL_OBLIGATIONS
 #: GENERAL_OBLIGATIONS
-#, fuzzy
 msgctxt "GENERAL_OBLIGATIONS"
 msgid "Obligations"
-msgstr "Obrigações"
+msgstr ""
 
 # GENERAL_OID
 #: GENERAL_OID
-#, fuzzy
 msgid "OID"
 msgstr "OID"
 
 # GENERAL_PAR
 #: GENERAL_PAR
-#, fuzzy
 msgid "Parameter"
-msgstr "Parâmetro"
+msgstr ""
 
 # GENERAL_PARS
 #: GENERAL_PARS
-#, fuzzy
 msgid "Parameters"
-msgstr "Parâmetros"
+msgstr ""
 
 # GENERAL_PATTERN_VALUE
 #: GENERAL_PATTERN_VALUE
-#, fuzzy
 msgctxt "GENERAL_PATTERN_VALUE"
 msgid "Pattern Value: {0}"
-msgstr "Valor do padrão: {0}"
+msgstr ""
 
 # GENERAL_PREFERRED
 #: GENERAL_PREFERRED
-#, fuzzy
 msgctxt "GENERAL_PREFERRED"
 msgid "Preferred"
-msgstr "Preferenciais"
+msgstr ""
 
 # GENERAL_PROF
 #: GENERAL_PROF
-#, fuzzy
 msgctxt "GENERAL_PROF"
 msgid "Profile"
-msgstr "Perfil"
+msgstr ""
 
 # GENERAL_PROPS
 #: GENERAL_PROPS
-#, fuzzy
 msgid "Properties"
-msgstr "Propriedades"
+msgstr ""
 
 # GENERAL_PURPOSE
 #: GENERAL_PURPOSE
-#, fuzzy
 msgid "Purpose"
-msgstr "Objetivo"
+msgstr ""
 
 # GENERAL_REFS
 #: GENERAL_REFS
-#, fuzzy
 msgid "References:"
-msgstr "Referências:"
+msgstr ""
 
 # GENERAL_REMOVED_SINCE
 #: GENERAL_REMOVED_SINCE
-#, fuzzy
 msgid "This content has been removed since {0}"
-msgstr "Este conteúdo foi removido desde {0}"
+msgstr ""
 
 # GENERAL_REQUEST
 #: GENERAL_REQUEST
-#, fuzzy
 msgid "Request"
-msgstr "Pedido"
+msgstr ""
 
 # GENERAL_REQUIRED
 #: GENERAL_REQUIRED
-#, fuzzy
 msgctxt "GENERAL_REQUIRED"
 msgid "Required"
-msgstr "Necessário"
+msgstr ""
 
 # GENERAL_REQUIRED_BINDING
 #: GENERAL_REQUIRED_BINDING
-#, fuzzy
 msgid "Required Binding to ValueSet {0}"
-msgstr "Ligação obrigatória ao ValueSet {0}"
+msgstr ""
 
 # GENERAL_RESOURCE
 #: GENERAL_RESOURCE
-#, fuzzy
 msgctxt "GENERAL_RESOURCE"
 msgid "Resource"
-msgstr "Recursos"
+msgstr ""
 
 # GENERAL_SECURITY_LABEL
 #: GENERAL_SECURITY_LABEL
-#, fuzzy
 msgid "Security Label"
-msgstr "Etiqueta de segurança"
+msgstr ""
 
 # GENERAL_SOURCE
 #: GENERAL_SOURCE
-#, fuzzy
 msgctxt "GENERAL_SOURCE"
 msgid "Source"
-msgstr "Fonte"
+msgstr ""
 
 # GENERAL_SRC
 #: GENERAL_SRC
-#, fuzzy
 msgid "Source:"
-msgstr "Fonte:"
+msgstr ""
 
 # GENERAL_STARTER
 #: GENERAL_STARTER
-#, fuzzy
 msgid "Starter"
-msgstr "Arranque"
+msgstr ""
 
 # GENERAL_STATUS
 #: GENERAL_STATUS
-#, fuzzy
 msgctxt "GENERAL_STATUS"
 msgid "Status"
-msgstr "Estado"
+msgstr ""
 
 # GENERAL_SUBJ
 #: GENERAL_SUBJ
-#, fuzzy
 msgid "Subject"
-msgstr "Assunto"
+msgstr ""
 
 # GENERAL_SUMM
 #: GENERAL_SUMM
-#, fuzzy
 msgid "Summary"
-msgstr "Resumo"
+msgstr ""
 
 # GENERAL_TITLE
 #: GENERAL_TITLE
-#, fuzzy
 msgid "Title"
-msgstr "Título"
+msgstr ""
 
 # GENERAL_TODO
 #: GENERAL_TODO
-#, fuzzy
 msgid "Not done yet"
-msgstr "Ainda não foi feito"
+msgstr ""
 
 # GENERAL_TYPE
 #: GENERAL_TYPE
-#, fuzzy
 msgctxt "GENERAL_TYPE"
 msgid "Type"
-msgstr "Tipo"
+msgstr ""
 
 # GENERAL_TYPE_PROFILE
 #: GENERAL_TYPE_PROFILE
-#, fuzzy
 msgid "This element has profiles on it's type: {0}"
-msgstr "Este elemento tem perfis no seu tipo: {0}"
+msgstr ""
 
 # GENERAL_TYPE_TARGET_PROFILE
 #: GENERAL_TYPE_TARGET_PROFILE
-#, fuzzy
 msgid "This element has restrictions/profiles on it's targets: {0}"
-msgstr "Este elemento tem restrições/perfis nos seus alvos: {0}"
+msgstr ""
 
 # GENERAL_UCUM
 #: GENERAL_UCUM
-#, fuzzy
 msgid "UCUM"
 msgstr "UCUM"
 
 # GENERAL_URI
 #: GENERAL_URI
-#, fuzzy
 msgid "URI"
 msgstr "URI"
 
 # GENERAL_URL
 #: GENERAL_URL
-#, fuzzy
 msgid "URL"
 msgstr "URL"
 
 # GENERAL_USAGE
 #: GENERAL_USAGE
-#, fuzzy
 msgid "Usage"
-msgstr "Utilização"
+msgstr ""
 
 # GENERAL_VALUE
 #: GENERAL_VALUE
-#, fuzzy
 msgid "Value"
-msgstr "Valor"
+msgstr ""
 
 # GENERAL_VALUESET
 #: GENERAL_VALUESET
-#, fuzzy
 msgid "Value Set"
-msgstr "Conjunto de valores"
+msgstr ""
 
 # GENERAL_VALUE_BOUNDED
 #: GENERAL_VALUE_BOUNDED
-#, fuzzy
 msgid "The value must be between {0} and {1} (or equal)"
-msgstr "O valor deve estar compreendido entre {0} e {1} (ou ser igual)"
+msgstr ""
 
 # GENERAL_VALUE_MAX
 #: GENERAL_VALUE_MAX
-#, fuzzy
 msgid "The value must be less or equal to {0}"
-msgstr "O valor deve ser menor ou igual a {0}"
+msgstr ""
 
 # GENERAL_VALUE_MIN
 #: GENERAL_VALUE_MIN
-#, fuzzy
 msgid "The value must be greater or equal to {0}"
-msgstr "O valor tem de ser maior ou igual a {0}"
+msgstr ""
 
 # GENERAL_VER
 #: GENERAL_VER
-#, fuzzy
 msgid "Version"
-msgstr "Versão"
+msgstr ""
 
 # GENERAL_VER_LOW
 #: GENERAL_VER_LOW
-#, fuzzy
 msgid "version"
-msgstr "versão"
+msgstr ""
 
 # GENERAL_XML
 #: GENERAL_XML
-#, fuzzy
 msgid "XML"
 msgstr "XML"
 
 # IMP_GUIDE_URL
 #: IMP_GUIDE_URL
-#, fuzzy
 msgid "The official URL for this implementation guide is:"
-msgstr "O URL oficial para este guia de implementação é:"
+msgstr ""
 
 # IP_INTRO
 #: IP_INTRO
-#, fuzzy
 msgid "This {0} includes IP covered under the following statements."
-msgstr "Este {0} inclui o IP abrangido pelas seguintes declarações."
+msgstr ""
 
 # IP_NONE
 #: IP_NONE
-#, fuzzy
 msgid "No use of external IP"
-msgstr "Não utilização de IP externo"
+msgstr ""
 
 # IP_NONE_EXT
 #: IP_NONE_EXT
-#, fuzzy
 msgid "No use of external IP (other than from the FHIR specification)"
-msgstr "Não utilização de IP externo (para além da especificação FHIR)"
+msgstr ""
 
 # KIND_EXTENSION
 #: KIND_EXTENSION
-#, fuzzy
 msgid "extension"
-msgstr "extensão"
+msgstr ""
 
 # KIND_LOGICAL
 #: KIND_LOGICAL
-#, fuzzy
 msgid "logical model"
-msgstr "modelo lógico"
+msgstr ""
 
 # KIND_PROFILE
 #: KIND_PROFILE
-#, fuzzy
 msgid "profile"
-msgstr "perfil"
+msgstr ""
 
 # LIB_REND_ART
 #: LIB_REND_ART
-#, fuzzy
 msgid "Related Artifacts"
-msgstr "Artefactos relacionados"
+msgstr ""
 
 # LIB_REND_AUT
 #: LIB_REND_AUT
-#, fuzzy
 msgid "Author"
-msgstr "Autor"
+msgstr ""
 
 # LIB_REND_CONT
 #: LIB_REND_CONT
-#, fuzzy
 msgid "Contents"
-msgstr "Conteúdo"
+msgstr ""
 
 # LIB_REND_ED
 #: LIB_REND_ED
-#, fuzzy
 msgid "Editor"
 msgstr "Editor"
 
 # LIB_REND_END
 #: LIB_REND_END
-#, fuzzy
 msgid "Endorser"
-msgstr "Endossante"
+msgstr ""
 
 # LIB_REND_NOCONT
 #: LIB_REND_NOCONT
-#, fuzzy
 msgid "No Content"
-msgstr "Sem conteúdo"
+msgstr ""
 
 # LIB_REND_PAR
 #: LIB_REND_PAR
-#, fuzzy
 msgid "Participants"
-msgstr "Participantes"
+msgstr ""
 
 # LIB_REND_REQ
 #: LIB_REND_REQ
-#, fuzzy
 msgid "Data Requirements"
-msgstr "Requisitos de dados"
+msgstr ""
 
 # LIB_REND_REV
 #: LIB_REND_REV
-#, fuzzy
 msgid "Reviewer"
-msgstr "Revisor"
+msgstr ""
 
 # LIB_REND_SHOW
 #: LIB_REND_SHOW
-#, fuzzy
 msgid "Content not shown - ("
-msgstr "Conteúdo não mostrado - ("
+msgstr ""
 
 # LIB_REND_SIZE
 #: LIB_REND_SIZE
-#, fuzzy
 msgid ", size = {0}"
-msgstr ", tamanho = {0}"
+msgstr ""
 
 # LIST_REND_CODE
 #: LIST_REND_CODE
-#, fuzzy
 msgid "Code: {0}"
-msgstr "Código: {0}"
+msgstr ""
 
 # LIST_REND_DAT
 #: LIST_REND_DAT
-#, fuzzy
 msgid "Date"
-msgstr "Data"
+msgstr ""
 
 # LIST_REND_DATE
 #: LIST_REND_DATE
-#, fuzzy
 msgid "Date: {0}"
-msgstr "Data: {0}"
+msgstr ""
 
 # LIST_REND_DEL
 #: LIST_REND_DEL
-#, fuzzy
 msgid "Deleted"
-msgstr "Eliminado"
+msgstr ""
 
 # LIST_REND_ENC
 #: LIST_REND_ENC
-#, fuzzy
 msgid "Encounter:"
-msgstr "Encontro:"
+msgstr ""
 
 # LIST_REND_FLAG
 #: LIST_REND_FLAG
-#, fuzzy
 msgid "Flag"
-msgstr "Bandeira"
+msgstr ""
 
 # LIST_REND_ITEM
 #: LIST_REND_ITEM
-#, fuzzy
 msgid "Items"
-msgstr "Artigos"
+msgstr ""
 
 # LIST_REND_MODE
 #: LIST_REND_MODE
-#, fuzzy
 msgid "Mode: {0}"
-msgstr "Modo: {0}"
+msgstr ""
 
 # LIST_REND_ORD
 #: LIST_REND_ORD
-#, fuzzy
 msgid "Order: {0}"
-msgstr "Encomendar: {0}"
+msgstr ""
 
 # LIST_REND_STAT
 #: LIST_REND_STAT
-#, fuzzy
 msgid "Status: {0}"
-msgstr "Estado: {0}"
+msgstr ""
 
 # LIST_REND_SUB
 #: LIST_REND_SUB
-#, fuzzy
 msgid "Subject:"
-msgstr "Assunto:"
+msgstr ""
 
 # LIST_SUMMARY
 #: LIST_SUMMARY
-#, fuzzy
 msgid "List for ''{0}'' for ''{1}''"
-msgstr "Lista para ''{0}'' para ''{1}''"
+msgstr ""
 
 # LIST_UNSPECIFIED_CODE
 #: LIST_UNSPECIFIED_CODE
-#, fuzzy
 msgid "Unspecified List Type"
-msgstr "Tipo de lista não especificado"
+msgstr ""
 
 # LIST_UNSPECIFIED_SUBJECT
 #: LIST_UNSPECIFIED_SUBJECT
-#, fuzzy
 msgctxt "LIST_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
-msgstr "Assunto não especificado"
+msgstr ""
 
 # MAP_DEFAULT_COMMENT
 #: MAP_DEFAULT_COMMENT
-#, fuzzy
 msgid "This element was not defined prior to R5"
-msgstr "Este elemento não foi definido antes da R5"
+msgstr ""
 
 # MATURITY_MATURITY
 #: MATURITY_MATURITY
-#, fuzzy
 msgid "Maturity Level: {0}"
-msgstr "Nível de maturidade: {0}"
+msgstr ""
 
 # MATURITY_PUBLISHER
 #: MATURITY_PUBLISHER
-#, fuzzy
 msgid "Publisher: {0}"
-msgstr "Editora: {0}"
+msgstr ""
 
 # MATURITY_STATUS
 #: MATURITY_STATUS
-#, fuzzy
 msgctxt "MATURITY_STATUS"
 msgid "Status"
-msgstr "Estado"
+msgstr ""
 
 # MATURITY_STDS_STATUS
 #: MATURITY_STDS_STATUS
-#, fuzzy
 msgid "Standards Status: {0}"
-msgstr "Estado das normas: {0}"
+msgstr ""
 
 # NAME_SYS_IDEN
 #: NAME_SYS_IDEN
-#, fuzzy
 msgid "Identifiers"
-msgstr "Identificadores"
+msgstr ""
 
 # NAME_SYS_PER
 #: NAME_SYS_PER
-#, fuzzy
 msgid "Period"
-msgstr "Período"
+msgstr ""
 
 # OBLIGATION_SOURCE
 #: OBLIGATION_SOURCE
-#, fuzzy
 msgid "This obligation is defined in the profile {0}"
-msgstr "Esta obrigação é definida no perfil {0}"
+msgstr ""
 
 # OBLIG_ACT
 #: OBLIG_ACT
-#, fuzzy
 msgid "Actor"
-msgstr "Ator"
+msgstr ""
 
 # OBLIG_ELE
 #: OBLIG_ELE
-#, fuzzy
 msgid "Elements"
-msgstr "Elementos"
+msgstr ""
 
 # OP_DEF_INPAR
 #: OP_DEF_INPAR
-#, fuzzy
 msgid "Input parameters Profile:"
-msgstr "Parâmetros de entrada Perfil:"
+msgstr ""
 
 # OP_DEF_OFFIC
 #: OP_DEF_OFFIC
-#, fuzzy
 msgid "The official URL for this operation definition is:"
-msgstr "O URL oficial para esta definição de operação é:"
+msgstr ""
 
 # OP_DEF_OUTPAR
 #: OP_DEF_OUTPAR
-#, fuzzy
 msgid "Output parameters Profile:"
-msgstr "Perfil de Parâmetros de saída:"
+msgstr ""
 
 # OP_DEF_SCO
 #: OP_DEF_SCO
-#, fuzzy
 msgid "Scope"
-msgstr "Âmbito de aplicação"
+msgstr ""
 
 # OP_DEF_URL
 #: OP_DEF_URL
-#, fuzzy
 msgid "URL: [base]/{0}"
 msgstr "URL: [base]/{0}"
 
 # OP_DEF_URLS
 #: OP_DEF_URLS
-#, fuzzy
 msgid "URL: [base]/${0}"
 msgstr "URL: [base]/${0}"
 
 # OP_DEF_USE
 #: OP_DEF_USE
-#, fuzzy
 msgid "Use"
-msgstr "Utilização"
+msgstr ""
 
 # OP_OUT_DIAG
 #: OP_OUT_DIAG
-#, fuzzy
 msgid "Diagnostics"
-msgstr "Diagnóstico"
+msgstr ""
 
 # OP_OUT_OK
 #: OP_OUT_OK
-#, fuzzy
 msgid "All OK"
-msgstr "Tudo OK"
+msgstr ""
 
 # OP_OUT_SEV
 #: OP_OUT_SEV
-#, fuzzy
 msgid "Severity"
-msgstr "Gravidade"
+msgstr ""
 
 # OP_OUT_SRC
 #: OP_OUT_SRC
-#, fuzzy
 msgctxt "OP_OUT_SRC"
 msgid "Source"
-msgstr "Fonte"
+msgstr ""
 
 # OP_OUT_SUMM
 #: OP_OUT_SUMM
-#, fuzzy
 msgid "OperationOutcome ({0} Error(s), {1} Warning(s), {2} Hint(s))"
-msgstr "OperationOutcome ({0} Erro(s), {1} Aviso(s), {2} Dica(s))"
+msgstr ""
 
 # OP_OUT_SUMM_ALL_OK
 #: OP_OUT_SUMM_ALL_OK
-#, fuzzy
 msgid "OperationOutcome (ALL OK)"
 msgstr "OperationOutcome (ALL OK)"
 
 # OP_OUT_SUMM_NOHINT
 #: OP_OUT_SUMM_NOHINT
-#, fuzzy
 msgid "OperationOutcome ({0} Error(s), {1} Warning(s))"
-msgstr "OperationOutcome ({0} Error(s), {1} Aviso(s))"
+msgstr ""
 
 # PARS_SUMMARY_LIST
 #: PARS_SUMMARY_LIST
-#, fuzzy
 msgid "Parameters: {0}"
-msgstr "Parâmetros: {0}"
+msgstr ""
 
 # PARS_SUMMARY_SIZE
 #: PARS_SUMMARY_SIZE
-#, fuzzy
 msgid "Parameters ({0} parameters)"
-msgstr "Parâmetros ({0} parâmetros)"
+msgstr ""
 
 # PAT_ACTIVE
 #: PAT_ACTIVE
-#, fuzzy
 msgid "Active:"
-msgstr "Ativo:"
+msgstr ""
 
 # PAT_ACTIVE_HINT
 #: PAT_ACTIVE_HINT
-#, fuzzy
 msgid "Record is active"
-msgstr "O registo está ativo"
+msgstr ""
 
 # PAT_ALT_NAME
 #: PAT_ALT_NAME
-#, fuzzy
 msgid "Alt. Name:"
-msgstr "Alt. Nome:"
+msgstr ""
 
 # PAT_ALT_NAME_HINT
 #: PAT_ALT_NAME_HINT
-#, fuzzy
 msgid "Alternate names (see the one above)"
-msgstr "Nomes alternativos (ver o nome acima)"
+msgstr ""
 
 # PAT_CONTACT
 #: PAT_CONTACT
-#, fuzzy
 msgid "Contact Detail"
-msgstr "Detalhes do contacto"
+msgstr ""
 
 # PAT_CONTACT_HINT
 #: PAT_CONTACT_HINT
-#, fuzzy
 msgid "Ways to contact the Patient"
-msgstr "Formas de contactar o doente"
+msgstr ""
 
 # PAT_CONTAINED
 #: PAT_CONTAINED
@@ -2555,33 +2161,28 @@ msgstr[1] ""
 
 # PAT_DECEASED
 #: PAT_DECEASED
-#, fuzzy
 msgid "Deceased:"
-msgstr "Falecido:"
+msgstr ""
 
 # PAT_DECEASED_HINT
 #: PAT_DECEASED_HINT
-#, fuzzy
 msgid "Known status of Patient"
-msgstr "Estado conhecido do doente"
+msgstr ""
 
 # PAT_DOB
 #: PAT_DOB
-#, fuzzy
 msgid "DoB: {0}"
 msgstr "DoB: {0}"
 
 # PAT_GENDER
 #: PAT_GENDER
-#, fuzzy
 msgid "Gender: {0}"
-msgstr "Género: {0}"
+msgstr ""
 
 # PAT_GP
 #: PAT_GP
-#, fuzzy
 msgid "General Practitioner"
-msgstr "Médico de clínica geral"
+msgstr ""
 
 # PAT_LANG
 #: PAT_LANG
@@ -2599,110 +2200,94 @@ msgstr[1] ""
 
 # PAT_LANG_PREFERRED
 #: PAT_LANG_PREFERRED
-#, fuzzy
 msgid "(preferred)"
-msgstr "(preferencial)"
+msgstr ""
 
 # PAT_LINKS
 #: PAT_LINKS
-#, fuzzy
 msgctxt "PAT_LINKS"
 msgid "Links:"
-msgstr "Ligações:"
+msgstr ""
 
 # PAT_LINKS_HINT
 #: PAT_LINKS_HINT
-#, fuzzy
 msgid "Patient Links"
-msgstr "Ligações para doentes"
+msgstr ""
 
 # PAT_LINK_REFER
 #: PAT_LINK_REFER
-#, fuzzy
 msgid "Please refer to"
-msgstr "Consultar"
+msgstr ""
 
 # PAT_LINK_REPL
 #: PAT_LINK_REPL
-#, fuzzy
 msgid "This record replaces"
-msgstr "Este registo substitui"
+msgstr ""
 
 # PAT_LINK_REPLBY
 #: PAT_LINK_REPLBY
-#, fuzzy
 msgid "This record replaced by"
-msgstr "Este registo foi substituído por"
+msgstr ""
 
 # PAT_LINK_SEE
 #: PAT_LINK_SEE
-#, fuzzy
 msgid "Also see"
-msgstr "Ver também"
+msgstr ""
 
 # PAT_MARITAL
 #: PAT_MARITAL
-#, fuzzy
 msgid "Marital Status:"
-msgstr "Estado civil:"
+msgstr ""
 
 # PAT_MARITAL_HINT
 #: PAT_MARITAL_HINT
-#, fuzzy
 msgid "Known Marital status of Patient"
-msgstr "Estado civil conhecido do doente"
+msgstr ""
 
 # PAT_MO
 #: PAT_MO
-#, fuzzy
 msgid "Managing Organization"
-msgstr "Organização de gestão"
+msgstr ""
 
 # PAT_MUL_BIRTH
 #: PAT_MUL_BIRTH
-#, fuzzy
 msgid "Multiple Birth:"
-msgstr "Nascimento múltiplo:"
+msgstr ""
 
 # PAT_MUL_BIRTH_HINT
 #: PAT_MUL_BIRTH_HINT
-#, fuzzy
 msgid "Known multipleBirth status of Patient"
-msgstr "Estado conhecido de nascimento múltiplo do doente"
+msgstr ""
 
 # PAT_NOK_CONTACT_HINT
 #: PAT_NOK_CONTACT_HINT
-#, fuzzy
 msgid "Patient contact"
-msgstr "Contacto do doente"
+msgstr ""
 
 # PAT_NOM_CONTACT
 #: PAT_NOM_CONTACT
-#, fuzzy
 msgid "Nominated Contact:"
-msgstr "Contacto nomeado:"
+msgstr ""
 
 # PAT_NO_DOB
 #: PAT_NO_DOB
 msgid "DoB Unknown"
-msgstr "DN Desconhecida"
+msgstr ""
 
 # PAT_NO_GENDER
 #: PAT_NO_GENDER
-#, fuzzy
 msgid "(no stated gender)"
-msgstr "(sem género declarado)"
+msgstr ""
 
 # PAT_NO_NAME
 #: PAT_NO_NAME
-#, fuzzy
 msgid "Anonymous Patient"
-msgstr "Doente anónimo"
+msgstr ""
 
 # PAT_ORG
 #: PAT_ORG
 msgid "Organization:"
-msgstr "Organização:"
+msgstr ""
 
 # PAT_OTHER_ID
 #: PAT_OTHER_ID
@@ -2720,37 +2305,33 @@ msgstr[1] ""
 
 # PAT_PERIOD
 #: PAT_PERIOD
-#, fuzzy
 msgid "Valid Period:"
-msgstr "Período de validade:"
+msgstr ""
 
 # PAT_PHOTO
 #: PAT_PHOTO
-#, fuzzy
 msgid "Patient Photo"
-msgstr "Fotografia do doente"
+msgstr ""
 
 # PAT_RELN
 #: PAT_RELN
-#, fuzzy
 msgid "Relationships:"
-msgstr "Relações:"
+msgstr ""
 
 # PROF_DRIV_ERR_GEN_NARR
 #: PROF_DRIV_ERR_GEN_NARR
-#, fuzzy
 msgid "Error Generating Narrative for"
-msgstr "Erro ao gerar uma narrativa para"
+msgstr ""
 
 # PROF_DRIV_EXCP
 #: PROF_DRIV_EXCP
 msgid "Exception Generating Narrative: {0}"
-msgstr "Exceção ao gerar narrativa: {0}"
+msgstr ""
 
 # PROF_DRIV_FEXCP
 #: PROF_DRIV_FEXCP
 msgid "Cannot find definition for {0}"
-msgstr "Não é possível encontrar a definição para {0}"
+msgstr ""
 
 # PROF_DRIV_GEN_NARR
 #: PROF_DRIV_GEN_NARR
@@ -2759,477 +2340,400 @@ msgstr "{0} {1}"
 
 # PROF_DRIV_GEN_NARR_TECH
 #: PROF_DRIV_GEN_NARR_TECH
-#, fuzzy
 msgid "Generated Narrative: {0} {1}"
-msgstr "Narrativa gerada: {0} {1}"
+msgstr ""
 
 # PROF_DRIV_SUMM
 #: PROF_DRIV_SUMM
-#, fuzzy
 msgctxt "PROF_DRIV_SUMM"
 msgid "{0}: {1}"
 msgstr "{0}: {1}"
 
 # PROF_DRIV_SUMM_PROP
 #: PROF_DRIV_SUMM_PROP
-#, fuzzy
 msgid "{0} = {1}"
 msgstr "{0} = {1}"
 
 # PROV_ACT
 #: PROV_ACT
 msgid "Activity"
-msgstr "Atividade"
+msgstr ""
 
 # PROV_AGE
 #: PROV_AGE
-#, fuzzy
 msgid "Agents"
-msgstr "Agentes"
+msgstr ""
 
 # PROV_BEHALF
 #: PROV_BEHALF
-#, fuzzy
 msgid "On Behalf Of"
-msgstr "Em nome de"
+msgstr ""
 
 # PROV_FOR
 #: PROV_FOR
-#, fuzzy
 msgid "Provenance for {0}"
-msgstr "Proveniência para {0}"
+msgstr ""
 
 # PROV_OCC
 #: PROV_OCC
 msgid "Occurrence"
-msgstr "Ocorrência"
+msgstr ""
 
 # PROV_POL
 #: PROV_POL
-#, fuzzy
 msgid "Policy"
-msgstr "Política"
+msgstr ""
 
 # PROV_PROV
 #: PROV_PROV
-#, fuzzy
 msgid "Provenance for"
-msgstr "Proveniência para"
+msgstr ""
 
 # PROV_PROVE
 #: PROV_PROVE
-#, fuzzy
 msgid "Provenance for:"
-msgstr "Proveniência de:"
+msgstr ""
 
 # PROV_REC
 #: PROV_REC
-#, fuzzy
 msgid "Recorded"
-msgstr "Gravado"
+msgstr ""
 
 # PROV_ROLE
 #: PROV_ROLE
-#, fuzzy
 msgid "Role"
-msgstr "Papel"
+msgstr ""
 
 # PROV_WHO
 #: PROV_WHO
-#, fuzzy
 msgid "who"
-msgstr "que"
+msgstr ""
 
 # QUEST_ADD_INFO
 #: QUEST_ADD_INFO
-#, fuzzy
 msgid "Additional information about the item"
-msgstr "Informações adicionais sobre o artigo"
+msgstr ""
 
 # QUEST_ALLOWED
 #: QUEST_ALLOWED
-#, fuzzy
 msgid "Allowed Answers"
-msgstr "Respostas permitidas"
+msgstr ""
 
 # QUEST_ANSW
 #: QUEST_ANSW
-#, fuzzy
 msgid "Answer options for {0}"
-msgstr "Opções de resposta para {0}"
+msgstr ""
 
 # QUEST_ANSWER
 #: QUEST_ANSWER
-#, fuzzy
 msgid "Answer"
-msgstr "Resposta"
+msgstr ""
 
 # QUEST_ANSWERS
 #: QUEST_ANSWERS
-#, fuzzy
 msgid "Answers"
-msgstr "Respostas"
+msgstr ""
 
 # QUEST_APP
 #: QUEST_APP
-#, fuzzy
 msgid "Approval Date"
-msgstr "Data de aprovação"
+msgstr ""
 
 # QUEST_ARE_TRUE
 #: QUEST_ARE_TRUE
-#, fuzzy
 msgid "?? are true:"
-msgstr "são verdadeiras:"
+msgstr ""
 
 # QUEST_ATTRIBUTES
 #: QUEST_ATTRIBUTES
-#, fuzzy
 msgid "Other attributes of the item"
-msgstr "Outros atributos do item"
+msgstr ""
 
 # QUEST_CALC
 #: QUEST_CALC
-#, fuzzy
 msgid "Calculated Value"
-msgstr "Valor calculado"
+msgstr ""
 
 # QUEST_CAND
 #: QUEST_CAND
-#, fuzzy
 msgid "Candidates"
-msgstr "Candidatos"
+msgstr ""
 
 # QUEST_CAT
 #: QUEST_CAT
-#, fuzzy
 msgid "Category: {0}"
-msgstr "Categoria: {0}"
+msgstr ""
 
 # QUEST_CONT
 #: QUEST_CONT
-#, fuzzy
 msgid "Context"
-msgstr "Contexto"
+msgstr ""
 
 # QUEST_DERIVED
 #: QUEST_DERIVED
-#, fuzzy
 msgid "Derived From"
-msgstr "Derivado de"
+msgstr ""
 
 # QUEST_DISPLAY
 #: QUEST_DISPLAY
-#, fuzzy
 msgid "Is optional to display"
-msgstr "É opcional para exibir"
+msgstr ""
 
 # QUEST_DISPLAY_CAT
 #: QUEST_DISPLAY_CAT
-#, fuzzy
 msgid "Display Category"
-msgstr "Categoria de visualização"
+msgstr ""
 
 # QUEST_EFF_PERIOD
 #: QUEST_EFF_PERIOD
-#, fuzzy
 msgid "Effective Period"
-msgstr "Período efetivo"
+msgstr ""
 
 # QUEST_EN
 #: QUEST_EN
-#, fuzzy
 msgid "Enable When"
-msgstr "Ativar quando"
+msgstr ""
 
 # QUEST_ENABLE
 #: QUEST_ENABLE
-#, fuzzy
 msgid "Enable When:"
-msgstr "Ativar quando:"
+msgstr ""
 
 # QUEST_EXP
 #: QUEST_EXP
-#, fuzzy
 msgid "Expressions:"
-msgstr "Expressões:"
+msgstr ""
 
 # QUEST_GROUP
 #: QUEST_GROUP
-#, fuzzy
 msgid "Group"
-msgstr "Grupo"
+msgstr ""
 
 # QUEST_HIDDEN
 #: QUEST_HIDDEN
-#, fuzzy
 msgid "Is a hidden item"
-msgstr "É um item oculto"
+msgstr ""
 
 # QUEST_HIDDEN_ITEM
 #: QUEST_HIDDEN_ITEM
-#, fuzzy
 msgid "Hidden Item"
-msgstr "Item escondido"
+msgstr ""
 
 # QUEST_ID
 #: QUEST_ID
-#, fuzzy
 msgid "Link Id"
-msgstr "Ligação Id"
+msgstr ""
 
 # QUEST_INITIAL
 #: QUEST_INITIAL
-#, fuzzy
 msgid "Initial Value:"
-msgstr "Valor inicial:"
+msgstr ""
 
 # QUEST_INITIALLY
 #: QUEST_INITIALLY
-#, fuzzy
 msgid "(initially selected)"
-msgstr "(inicialmente selecionado)"
+msgstr ""
 
 # QUEST_INITIAL_ANSWER
 #: QUEST_INITIAL_ANSWER
-#, fuzzy
 msgid "Initial Answer"
-msgstr "Resposta inicial"
+msgstr ""
 
 # QUEST_INT
 #: QUEST_INT
-#, fuzzy
 msgid "Initial Values"
-msgstr "Valores iniciais"
+msgstr ""
 
 # QUEST_ITEM
 #: QUEST_ITEM
-#, fuzzy
 msgid "Item"
 msgstr "Item"
 
 # QUEST_ITEM_CONT
 #: QUEST_ITEM_CONT
-#, fuzzy
 msgid "Item Context"
-msgstr "Contexto do item"
+msgstr ""
 
 # QUEST_LINK
 #: QUEST_LINK
-#, fuzzy
 msgid "The linkID for the item"
-msgstr "O linkID do item"
+msgstr ""
 
 # QUEST_LINKED
 #: QUEST_LINKED
-#, fuzzy
 msgid "Is linked to an observation"
-msgstr "Está ligado a uma observação"
+msgstr ""
 
 # QUEST_LINKID
 #: QUEST_LINKID
-#, fuzzy
 msgid "LinkID"
-msgstr "ID da ligação"
+msgstr ""
 
 # QUEST_MAND
 #: QUEST_MAND
-#, fuzzy
 msgid "Mandatory"
-msgstr "Obrigatório"
+msgstr ""
 
 # QUEST_MAX_LENGTH
 #: QUEST_MAX_LENGTH
-#, fuzzy
 msgid "Max Length"
-msgstr "Comprimento máximo"
+msgstr ""
 
 # QUEST_NLM
 #: QUEST_NLM
-#, fuzzy
 msgid "NLM Forms Library"
-msgstr "Biblioteca de formulários da NLM"
+msgstr ""
 
 # QUEST_NONE_SPEC
 #: QUEST_NONE_SPEC
-#, fuzzy
 msgid "None specified"
-msgstr "Não especificado"
+msgstr ""
 
 # QUEST_OBSERVATION
 #: QUEST_OBSERVATION
-#, fuzzy
 msgid "Observation Link Period"
-msgstr "Observação Período de ligação"
+msgstr ""
 
 # QUEST_OPT
 #: QUEST_OPT
-#, fuzzy
 msgid "Options Sets"
-msgstr "Conjuntos de opções"
+msgstr ""
 
 # QUEST_OPTIONS
 #: QUEST_OPTIONS
-#, fuzzy
 msgid "Options:"
-msgstr "Opções:"
+msgstr ""
 
 # QUEST_ORIENTATION
 #: QUEST_ORIENTATION
-#, fuzzy
 msgid "Orientation: {0}"
-msgstr "Orientação: {0}"
+msgstr ""
 
 # QUEST_PREFIX
 #: QUEST_PREFIX
-#, fuzzy
 msgid "Prefix"
-msgstr "Prefixo"
+msgstr ""
 
 # QUEST_PUB
 #: QUEST_PUB
-#, fuzzy
 msgid "Publication Date"
-msgstr "Data de publicação"
+msgstr ""
 
 # QUEST_QUEST
 #: QUEST_QUEST
-#, fuzzy
 msgid "Questionnaire"
-msgstr "Questionário"
+msgstr ""
 
 # QUEST_QUESTION
 #: QUEST_QUESTION
-#, fuzzy
 msgid "Questionnaire:"
-msgstr "Questionário:"
+msgstr ""
 
 # QUEST_READONLY
 #: QUEST_READONLY
-#, fuzzy
 msgid "Is Read Only"
-msgstr "É só de leitura"
+msgstr ""
 
 # QUEST_READ_ONLY
 #: QUEST_READ_ONLY
-#, fuzzy
 msgid "Read Only"
-msgstr "Apenas leitura"
+msgstr ""
 
 # QUEST_REP
 #: QUEST_REP
-#, fuzzy
 msgid "Repeats"
-msgstr "Repetições"
+msgstr ""
 
 # QUEST_RESP_ROOT
 #: QUEST_RESP_ROOT
-#, fuzzy
 msgid "QuestionnaireResponseRoot"
 msgstr "QuestionnaireResponseRoot"
 
 # QUEST_REV_DATE
 #: QUEST_REV_DATE
-#, fuzzy
 msgid "Last Review Date"
-msgstr "Data da última revisão"
+msgstr ""
 
 # QUEST_ROOT
 #: QUEST_ROOT
-#, fuzzy
 msgid "QuestionnaireRoot"
-msgstr "QuestionárioRaiz"
+msgstr ""
 
 # QUEST_STRUCT
 #: QUEST_STRUCT
-#, fuzzy
 msgid "Structure"
-msgstr "Estrutura"
+msgstr ""
 
 # QUEST_SUBJECT
 #: QUEST_SUBJECT
-#, fuzzy
 msgid "Can change the subject of the questionnaire"
-msgstr "Pode mudar o tema do questionário"
+msgstr ""
 
 # QUEST_SUB_TYPE
 #: QUEST_SUB_TYPE
-#, fuzzy
 msgid "Subject Type"
-msgstr "Tipo de assunto"
+msgstr ""
 
 # QUEST_SUMMARY
 #: QUEST_SUMMARY
-#, fuzzy
 msgid "Response to Questionnaire ''{0}'' about ''{1}''"
-msgstr "Resposta ao questionário ''{0}'' sobre ''{1}''"
+msgstr ""
 
 # QUEST_TEXT
 #: QUEST_TEXT
-#, fuzzy
 msgid "Text"
-msgstr "Texto"
+msgstr ""
 
 # QUEST_TEXTFOR
 #: QUEST_TEXTFOR
-#, fuzzy
 msgid "Text for the item"
-msgstr "Texto para o item"
+msgstr ""
 
 # QUEST_TIMES
 #: QUEST_TIMES
-#, fuzzy
 msgid "Minimum and Maximum # of times the item can appear in the instance"
-msgstr "Número mínimo e máximo de vezes que o item pode aparecer na instância"
+msgstr ""
 
 # QUEST_TRUE
 #: QUEST_TRUE
-#, fuzzy
 msgid "are true:"
-msgstr "são verdadeiras:"
+msgstr ""
 
 # QUEST_TRY
 #: QUEST_TRY
-#, fuzzy
 msgid "Try this questionnaire out:"
-msgstr "Experimente este questionário:"
+msgstr ""
 
 # QUEST_TRY_QUEST
 #: QUEST_TRY_QUEST
-#, fuzzy
 msgid "Try this QuestionnaireResponse out:"
-msgstr "Experimente este QuestionnaireResponse:"
+msgstr ""
 
 # QUEST_TYPE_ITEM
 #: QUEST_TYPE_ITEM
-#, fuzzy
 msgid "The type of the item"
-msgstr "O tipo do item"
+msgstr ""
 
 # QUEST_UNKNOWN_MODE
 #: QUEST_UNKNOWN_MODE
-#, fuzzy
 msgid "Unknown QuestionnaireResponse Renderer Mode"
-msgstr "Modo de renderização QuestionnaireResponse desconhecido"
+msgstr ""
 
 # QUEST_UNSPECIFIED_QUESTIONNAIRE
 #: QUEST_UNSPECIFIED_QUESTIONNAIRE
-#, fuzzy
 msgid "Unspecified Questionnaire"
-msgstr "Questionário não especificado"
+msgstr ""
 
 # QUEST_UNSPECIFIED_SUBJECT
 #: QUEST_UNSPECIFIED_SUBJECT
-#, fuzzy
 msgctxt "QUEST_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
-msgstr "Assunto não especificado"
+msgstr ""
 
 # QUEST_VALUE
 #: QUEST_VALUE
-#, fuzzy
 msgid "Value Set:"
-msgstr "Conjunto de valores:"
+msgstr ""
 
 # R44B_DERIVES_FROM
 #: R44B_DERIVES_FROM
@@ -3288,196 +2792,164 @@ msgstr ""
 
 # REND_ADDED
 #: REND_ADDED
-#, fuzzy
 msgid "Added:"
-msgstr "Adicionado:"
+msgstr ""
 
 # REND_CHANGED
 #: REND_CHANGED
-#, fuzzy
 msgid "Changed:"
-msgstr "Alterado:"
+msgstr ""
 
 # REND_REMOVED
 #: REND_REMOVED
-#, fuzzy
 msgid "Removed:"
-msgstr "Removido:"
+msgstr ""
 
 # REND_ROW_CHANGED_SINCE_WAS
 #: REND_ROW_CHANGED_SINCE_WAS
-#, fuzzy
 msgid "This row of content has been changed since {0} (was ''{1}'')"
-msgstr "Esta linha de conteúdo foi alterada desde {0} (era ''{1}'')"
+msgstr ""
 
 # REND_ROW_SINCE
 #: REND_ROW_SINCE
-#, fuzzy
 msgid "This row of content has been added since {0}"
-msgstr "Esta linha de conteúdo foi adicionada desde {0}"
+msgstr ""
 
 # REND_SINCE_ADDED
 #: REND_SINCE_ADDED
-#, fuzzy
 msgid "This content has been added since {0}"
-msgstr "Este conteúdo foi adicionado desde {0}"
+msgstr ""
 
 # REND_SINCE_CHANGED
 #: REND_SINCE_CHANGED
-#, fuzzy
 msgid "This content has been changed since {0}"
-msgstr "Este conteúdo foi alterado desde {0}"
+msgstr ""
 
 # REND_SINCE_CHANGED_WAS
 #: REND_SINCE_CHANGED_WAS
-#, fuzzy
 msgid "This content has been changed since {0} (was ''{1}'')"
-msgstr "Este conteúdo foi alterado desde {0} (era ''{1}'')"
+msgstr ""
 
 # REND_STANDARDS
 #: REND_STANDARDS
-#, fuzzy
 msgid "Standards Status = {0}"
-msgstr "Estado das normas = {0}"
+msgstr ""
 
 # REQ_ACTOR
 #: REQ_ACTOR
-#, fuzzy
 msgid "These requirements apply to the actor"
-msgstr "Estas exigências aplicam-se ao ator"
+msgstr ""
 
 # REQ_DERIVE
 #: REQ_DERIVE
-#, fuzzy
 msgid "These requirements derive from"
-msgstr "Estes requisitos decorrem de"
+msgstr ""
 
 # REQ_DERIVED
 #: REQ_DERIVED
-#, fuzzy
 msgid "Derived From:"
-msgstr "Derivado de:"
+msgstr ""
 
 # REQ_FOLLOWING_ACTOR
 #: REQ_FOLLOWING_ACTOR
-#, fuzzy
 msgid "These requirements apply to the following actors:"
-msgstr "Estes requisitos aplicam-se aos seguintes actores:"
+msgstr ""
 
 # REQ_FOLLOWING_REQ
 #: REQ_FOLLOWING_REQ
-#, fuzzy
 msgid "These requirements are derived from the following requirements:"
-msgstr "Estes requisitos são derivados dos seguintes requisitos:"
+msgstr ""
 
 # REQ_LINKS
 #: REQ_LINKS
-#, fuzzy
 msgctxt "REQ_LINKS"
 msgid "Links:"
-msgstr "Ligações:"
+msgstr ""
 
 # REQ_SATISFIED
 #: REQ_SATISFIED
-#, fuzzy
 msgid "Satisfied By:"
-msgstr "Satisfeito por:"
+msgstr ""
 
 # RESOURCE_COPYRIGHT
 #: RESOURCE_COPYRIGHT
-#, fuzzy
 msgid "Copyright Statement:"
-msgstr "Declaração de direitos de autor:"
+msgstr ""
 
 # RES_REND_ACT
 #: RES_REND_ACT
-#, fuzzy
 msgid "Active"
-msgstr "Ativo"
+msgstr ""
 
 # RES_REND_COND_REF
 #: RES_REND_COND_REF
-#, fuzzy
 msgid "Conditional Reference:"
-msgstr "Referência condicional:"
+msgstr ""
 
 # RES_REND_DESC
 #: RES_REND_DESC
-#, fuzzy
 msgid ". Description: (todo)"
-msgstr ". Descrição: (todo)"
+msgstr ""
 
 # RES_REND_DRAFT
 #: RES_REND_DRAFT
-#, fuzzy
 msgid "draft"
-msgstr "projeto"
+msgstr ""
 
 # RES_REND_ERROR
 #: RES_REND_ERROR
-#, fuzzy
 msgid "Error rendering: {0}"
-msgstr "Erro de renderização: {0}"
+msgstr ""
 
 # RES_REND_INFO_SOURCE
 #: RES_REND_INFO_SOURCE
-#, fuzzy
 msgid "Information Source: <param name=\"source\"/>"
-msgstr "Fonte de informação: <param name=\"source\"/>"
+msgstr ""
 
 # RES_REND_LANGUAGE
 #: RES_REND_LANGUAGE
-#, fuzzy
 msgid "Language: {0}"
-msgstr "Língua: {0}"
+msgstr ""
 
 # RES_REND_RET
 #: RES_REND_RET
-#, fuzzy
 msgid "retired"
-msgstr "reformado"
+msgstr ""
 
 # RES_REND_SEE_ON_THIS_PAGE
 #: RES_REND_SEE_ON_THIS_PAGE
-#, fuzzy
 msgid "See on this page:"
-msgstr "Ver nesta página:"
+msgstr ""
 
 # RES_REND_SPEC_RULES
 #: RES_REND_SPEC_RULES
-#, fuzzy
 msgid "Special rules apply: {0}!"
-msgstr "Aplicam-se regras especiais: {0}!"
+msgstr ""
 
 # RES_REND_TAG
 #: RES_REND_TAG
-#, fuzzy
 msgid "Tag"
-msgstr "Etiqueta"
+msgstr ""
 
 # RES_REND_TEMPLATE_ID
 #: RES_REND_TEMPLATE_ID
-#, fuzzy
 msgid "templateId: {0}"
 msgstr "templateId: {0}"
 
 # RES_REND_UNKNOWN
 #: RES_REND_UNKNOWN
-#, fuzzy
 msgid "Unknown"
-msgstr "Desconhecido"
+msgstr ""
 
 # RES_REND_UPDATED
 #: RES_REND_UPDATED
-#, fuzzy
 msgid "Last updated: {0}"
-msgstr "Última atualização: {0}"
+msgstr ""
 
 # RES_REND_VER
 #: RES_REND_VER
-#, fuzzy
 msgid "version: {0}"
-msgstr "versão: {0}"
+msgstr ""
 
 # SDR_ALL_ELEM
 #: SDR_ALL_ELEM
@@ -3501,9 +2973,8 @@ msgstr ""
 
 # SDR_CAPSTMT
 #: SDR_CAPSTMT
-#, fuzzy
 msgid "CapabilityStatements using this {0}"
-msgstr "Declarações de capacidade usando este {0}"
+msgstr ""
 
 # SDR_CH_DET
 #: SDR_CH_DET
@@ -3527,9 +2998,8 @@ msgstr ""
 
 # SDR_COMPLY
 #: SDR_COMPLY
-#, fuzzy
 msgid "Comply with this profile {0}"
-msgstr "Cumpre com este perfil {0}"
+msgstr ""
 
 # SDR_CONCEPT_DOMAIN
 #: SDR_CONCEPT_DOMAIN
@@ -3539,22 +3009,22 @@ msgstr ""
 # SDR_CONT_CH_DET_CS
 #: SDR_CONT_CH_DET_CS
 msgid "The list of codes defined by the code system has changed"
-msgstr "A lista de códigos definida pelo sistema de códigos foi alterada"
+msgstr ""
 
 # SDR_CONT_CH_DET_SD
 #: SDR_CONT_CH_DET_SD
 msgid "The data elements list has changed"
-msgstr "A lista de elementos de dados foi alterada"
+msgstr ""
 
 # SDR_CONT_CH_DET_VS
 #: SDR_CONT_CH_DET_VS
 msgid "The logical definition of the value set has changed"
-msgstr "A definição lógica do conjunto de valores foi alterada"
+msgstr ""
 
 # SDR_CONT_CH_NO
 #: SDR_CONT_CH_NO
 msgid "Unable to evaluate changes to content"
-msgstr "Impossível avaliar alterações ao conteúdo"
+msgstr ""
 
 # SDR_DEFN_CH_DET_CS
 #: SDR_DEFN_CH_DET_CS
@@ -3576,25 +3046,22 @@ msgstr ""
 # SDR_DEFN_CH_NO
 #: SDR_DEFN_CH_NO
 msgid "Unable to evaluate changes to definitions"
-msgstr "Impossível avaliar alterações às definições"
+msgstr ""
 
 # SDR_DERIVED
 #: SDR_DERIVED
-#, fuzzy
 msgid "Derived from this {0}"
-msgstr "Derivado deste {0}"
+msgstr ""
 
 # SDR_DRAW_IN
 #: SDR_DRAW_IN
-#, fuzzy
 msgid "Draw in Obligations & Additional Bindings from this {0}"
-msgstr "Obtém obrigações e vinculações adicionais a partir deste {0}"
+msgstr ""
 
 # SDR_EXAMPLE
 #: SDR_EXAMPLE
-#, fuzzy
 msgid "Examples for this {0}"
-msgstr "Exemplos para este {0}"
+msgstr ""
 
 # SDR_EXPERIMENTAL
 #: SDR_EXPERIMENTAL
@@ -3603,9 +3070,8 @@ msgstr ""
 
 # SDR_EXTENSION_SUMMARY
 #: SDR_EXTENSION_SUMMARY
-#, fuzzy
 msgid "Simple Extension with the type {0}: {1}"
-msgstr "Extensão simples com o tipo {0}: {1}"
+msgstr ""
 
 # SDR_EXT_ANY
 #: SDR_EXT_ANY
@@ -3625,17 +3091,17 @@ msgstr ""
 # SDR_EXT_CTXT_PATHS
 #: SDR_EXT_CTXT_PATHS
 msgid "In addition, the extension can only be used when these FHIRPath expressions are true"
-msgstr "Ademais, a extensão só pode ser usada quando estas expressões FHIRPath forem verdadeiras"
+msgstr ""
 
 # SDR_EXT_DEPR
 #: SDR_EXT_DEPR
 msgid "This extension is deprecated and should no longer be used"
-msgstr "Esta extensão está obsoleta e não deve mais ser usada"
+msgstr ""
 
 # SDR_EXT_ELEM
 #: SDR_EXT_ELEM
 msgid "This extension may be used on the following element(s)"
-msgstr "Esta extensão pode ser usada nos seguintes elementos"
+msgstr ""
 
 # SDR_EXT_ELEM_ID
 #: SDR_EXT_ELEM_ID
@@ -3662,12 +3128,12 @@ msgstr ""
 # SDR_EXT_VER_PFX
 #: SDR_EXT_VER_PFX
 msgid "This extension is allowed for use with"
-msgstr "Esta extensão é permitida para uso com"
+msgstr ""
 
 # SDR_EXT_VER_SFX
 #: SDR_EXT_VER_SFX
 msgid "."
-msgstr "."
+msgstr ""
 
 # SDR_FIXED_VALUE
 #: SDR_FIXED_VALUE
@@ -3693,19 +3159,18 @@ msgstr ""
 # SDR_GUIDANCE_PFX
 #: SDR_GUIDANCE_PFX
 msgid "Guidance on how to interpret the contents of this table can be found"
-msgstr "Instruções sobre como interpretar o conteúdo desta tabela podem ser encontradas"
+msgstr ""
 
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
-msgid "-- no content: do not translate #73 --"
+msgid "-- no content: do not translate #1 --"
 msgstr ""
 
 # SDR_IMPOSE
 #: SDR_IMPOSE
-#, fuzzy
 msgid "Impose this profile {0}"
-msgstr "Impõe este perfil {0}"
+msgstr ""
 
 # SDR_INTRP_CH_DET_VS
 #: SDR_INTRP_CH_DET_VS
@@ -3715,12 +3180,12 @@ msgstr ""
 # SDR_INTRP_CH_NO_VS
 #: SDR_INTRP_CH_NO_VS
 msgid "Unable to evaluate changes to the expansion"
-msgstr "Impossível avaliar alterações à expansão"
+msgstr ""
 
 # SDR_LIMITED_ONE
 #: SDR_LIMITED_ONE
 msgid "This element is an array in the base standard, but the profile only allows one element"
-msgstr "Este elemento é uma lista na norma base, mas o perfil só permite um elemento"
+msgstr ""
 
 # SDR_META_CH_DET
 #: SDR_META_CH_DET
@@ -3764,14 +3229,13 @@ msgstr ""
 
 # SDR_NOT_USED
 #: SDR_NOT_USED
-#, fuzzy
 msgid "This {0} is not used by any profiles in this Implementation Guide"
-msgstr "Este {0} não é utilizado por nenhum perfil neste guia de implementação"
+msgstr ""
 
 # SDR_OFF_URL
 #: SDR_OFF_URL
 msgid "The official URL for this profile is"
-msgstr "O URL oficial para este perfil é"
+msgstr ""
 
 # SDR_ONE_OF
 #: SDR_ONE_OF
@@ -3781,7 +3245,7 @@ msgstr ""
 # SDR_ONLY_ONE
 #: SDR_ONLY_ONE
 msgid "Only One!"
-msgstr "Apenas um!"
+msgstr ""
 
 # SDR_PATTERN_VALUE
 #: SDR_PATTERN_VALUE
@@ -3796,20 +3260,18 @@ msgstr ""
 
 # SDR_REFER
 #: SDR_REFER
-#, fuzzy
 msgid "Refer to this {0}"
-msgstr "Refere a este {0}"
+msgstr ""
 
 # SDR_REQUIRED
 #: SDR_REQUIRED
 msgid "This element is required"
-msgstr "Este elemento é obrigatório"
+msgstr ""
 
 # SDR_SEARCH
 #: SDR_SEARCH
-#, fuzzy
 msgid "Search Parameters using this {0}"
-msgstr "Parametros de pesquisa usando este {0}"
+msgstr ""
 
 # SDR_SORTED
 #: SDR_SORTED
@@ -3819,12 +3281,12 @@ msgstr ""
 # SDR_SRC_FHIR
 #: SDR_SRC_FHIR
 msgid "the FHIR Standard"
-msgstr "a norma FHIR"
+msgstr ""
 
 # SDR_SRC_IG
 #: SDR_SRC_IG
 msgid "this IG"
-msgstr "este IG"
+msgstr ""
 
 # SDR_SRC_PACK
 #: SDR_SRC_PACK
@@ -3834,7 +3296,7 @@ msgstr ""
 # SDR_SUPP
 #: SDR_SUPP
 msgid "(this element must be supported)"
-msgstr "(este elemento deve ser suportado)"
+msgstr ""
 
 # SDR_UNK_EXT
 #: SDR_UNK_EXT
@@ -3843,25 +3305,23 @@ msgstr ""
 
 # SDR_USAGE
 #: SDR_USAGE
-#, fuzzy
 msgid "Usages"
-msgstr "Usos"
+msgstr ""
 
 # SDR_USE
 #: SDR_USE
-#, fuzzy
 msgid "Use this {0}"
-msgstr "Usa este {0}"
+msgstr ""
 
 # SDR_VER_BEF
 #: SDR_VER_BEF
 msgid "For versions until {0}"
-msgstr "Para versões até {0}"
+msgstr ""
 
 # SDR_VER_FOR
 #: SDR_VER_FOR
 msgid "For version {0}"
-msgstr "Para a versão {0}"
+msgstr ""
 
 # SDR_VER_FROM_PFX
 #: SDR_VER_FROM_PFX
@@ -3899,7 +3359,7 @@ msgstr ""
 # SDR_VER_RANGE_SFX
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
-msgid "-- no content: do not translate #74 --"
+msgid "-- no content: do not translate #2 --"
 msgstr ""
 
 # SDR_VER_TO_PFX
@@ -3910,7 +3370,7 @@ msgstr ""
 # SDR_VER_TO_SFX
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
-msgid "-- no content: do not translate #75 --"
+msgid "-- no content: do not translate #3 --"
 msgstr ""
 
 # SDR_VER_UNK
@@ -3922,290 +3382,247 @@ msgstr ""
 #: SDT_DEF
 msgctxt "SDT_DEF"
 msgid "Definition"
-msgstr "Definição"
+msgstr ""
 
 # SDT_DT
 #: SDT_DT
-#, fuzzy
 msgid "DataType"
-msgstr "Tipo de dados"
+msgstr ""
 
 # SDT_DT_PROF
 #: SDT_DT_PROF
-#, fuzzy
 msgid "DataType Profile"
-msgstr "Perfil de tipo de dados"
+msgstr ""
 
 # SDT_EXTENSION
 #: SDT_EXTENSION
 msgctxt "SDT_EXTENSION"
 msgid "Extension"
-msgstr "Extensão"
+msgstr ""
 
 # SDT_LM
 #: SDT_LM
 msgctxt "SDT_LM"
 msgid "Logical Model"
-msgstr "Modelo lógico"
+msgstr ""
 
 # SDT_LM_PROF
 #: SDT_LM_PROF
-#, fuzzy
 msgid "Logical Model Profile"
-msgstr "Perfil de modelo lógico"
+msgstr ""
 
 # SDT_OBLIGATION_PROFILE
 #: SDT_OBLIGATION_PROFILE
-#, fuzzy
 msgid "Obligation Profile"
-msgstr "Perfil de obrigação"
+msgstr ""
 
 # SDT_ORIGINAL_SOURCE
 #: SDT_ORIGINAL_SOURCE
-#, fuzzy
 msgid "Original Source"
-msgstr "Fonte original"
+msgstr ""
 
 # SDT_PT
 #: SDT_PT
-#, fuzzy
 msgid "Primitive Type"
-msgstr "Tipo primitivo"
+msgstr ""
 
 # SDT_PT_PROF
 #: SDT_PT_PROF
-#, fuzzy
 msgid "Primitive Type Profile"
-msgstr "Perfil de tipo primitivo"
+msgstr ""
 
 # SDT_RES
 #: SDT_RES
 msgctxt "SDT_RES"
 msgid "Resource"
-msgstr "Recurso"
+msgstr ""
 
 # SDT_RES_PROF
 #: SDT_RES_PROF
 msgctxt "SDT_RES_PROF"
 msgid "Profile"
-msgstr "Perfil"
+msgstr ""
 
 # SD_COMP_HEAD_CARD_L
 #: SD_COMP_HEAD_CARD_L
-#, fuzzy
 msgid "L Card."
-msgstr "Cartão L."
+msgstr ""
 
 # SD_COMP_HEAD_CARD_L_DESC
 #: SD_COMP_HEAD_CARD_L_DESC
-#, fuzzy
 msgid "Minimum and Maximum # of times the element can appear in the instance - Left Structure"
-msgstr "Número mínimo e máximo de vezes que o elemento pode aparecer na instância - Estrutura esquerda"
+msgstr ""
 
 # SD_COMP_HEAD_CARD_R
 #: SD_COMP_HEAD_CARD_R
-#, fuzzy
 msgid "R Card."
-msgstr "Cartão R."
+msgstr ""
 
 # SD_COMP_HEAD_CARD_R_DESC
 #: SD_COMP_HEAD_CARD_R_DESC
-#, fuzzy
 msgid "Minimum and Maximum # of times the element can appear in the instance - Right Structure"
-msgstr "Número mínimo e máximo de vezes que o elemento pode aparecer na instância - Estrutura direita"
+msgstr ""
 
 # SD_COMP_HEAD_COMP_DESC
 #: SD_COMP_HEAD_COMP_DESC
-#, fuzzy
 msgid "Comments about the comparison"
-msgstr "Comentários sobre a comparação"
+msgstr ""
 
 # SD_COMP_HEAD_DESC_L
 #: SD_COMP_HEAD_DESC_L
-#, fuzzy
 msgid "L Description & Constraints"
-msgstr "L Descrição e condicionalismos"
+msgstr ""
 
 # SD_COMP_HEAD_DESC_L_DESC
 #: SD_COMP_HEAD_DESC_L_DESC
-#, fuzzy
 msgid "Additional information about the element - Left Structure"
-msgstr "Informações adicionais sobre o elemento - Estrutura esquerda"
+msgstr ""
 
 # SD_COMP_HEAD_DESC_R
 #: SD_COMP_HEAD_DESC_R
-#, fuzzy
 msgid "R Description & Constraints"
-msgstr "R Descrição e condicionalismos"
+msgstr ""
 
 # SD_COMP_HEAD_DESC_R_DESC
 #: SD_COMP_HEAD_DESC_R_DESC
-#, fuzzy
 msgid "Additional information about the element - Right Structure"
-msgstr "Informações adicionais sobre o elemento - Estrutura direita"
+msgstr ""
 
 # SD_COMP_HEAD_FLAGS_L
 #: SD_COMP_HEAD_FLAGS_L
-#, fuzzy
 msgid "L Flags"
-msgstr "Bandeiras L"
+msgstr ""
 
 # SD_COMP_HEAD_FLAGS_L_DESC
 #: SD_COMP_HEAD_FLAGS_L_DESC
-#, fuzzy
 msgid "Information about the use of the element - Left Structure"
-msgstr "Informações sobre a utilização do elemento - Estrutura esquerda"
+msgstr ""
 
 # SD_COMP_HEAD_FLAGS_R
 #: SD_COMP_HEAD_FLAGS_R
-#, fuzzy
 msgid "R Flags"
-msgstr "Bandeiras R"
+msgstr ""
 
 # SD_COMP_HEAD_FLAGS_R_DESC
 #: SD_COMP_HEAD_FLAGS_R_DESC
-#, fuzzy
 msgid "Information about the use of the element - Right Structure"
-msgstr "Informações sobre a utilização do elemento - Estrutura correta"
+msgstr ""
 
 # SD_COMP_HEAD_TYPE_L
 #: SD_COMP_HEAD_TYPE_L
-#, fuzzy
 msgid "L Type"
-msgstr "Tipo L"
+msgstr ""
 
 # SD_COMP_HEAD_TYPE_L_DESC
 #: SD_COMP_HEAD_TYPE_L_DESC
-#, fuzzy
 msgid "Reference to the type of the element - Left Structure"
-msgstr "Referência ao tipo do elemento - Estrutura esquerda"
+msgstr ""
 
 # SD_COMP_HEAD_TYPE_R
 #: SD_COMP_HEAD_TYPE_R
-#, fuzzy
 msgid "R Type"
-msgstr "Tipo R"
+msgstr ""
 
 # SD_COMP_HEAD_TYPE_R_DESC
 #: SD_COMP_HEAD_TYPE_R_DESC
-#, fuzzy
 msgid "Reference to the type of the element - Right Structure"
-msgstr "Referência ao tipo do elemento - Estrutura correta"
+msgstr ""
 
 # SD_DOCO
 #: SD_DOCO
-#, fuzzy
 msgid "Documentation for this format"
-msgstr "Documentação para este formato"
+msgstr ""
 
 # SD_GRID_HEAD_CARD_DESC
 #: SD_GRID_HEAD_CARD_DESC
-#, fuzzy
 msgid "Minimum and Maximum # of times the element can appear in the instance. Super-scripts indicate additional constraints on appearance"
-msgstr "Número mínimo e máximo de vezes que o elemento pode aparecer na instância. Os sobrescritos indicam restrições adicionais à aparência"
+msgstr ""
 
 # SD_GRID_HEAD_DESC
 #: SD_GRID_HEAD_DESC
-#, fuzzy
 msgid "Constraints and Usage"
-msgstr "Restrições e utilização"
+msgstr ""
 
 # SD_GRID_HEAD_DESC_DESC
 #: SD_GRID_HEAD_DESC_DESC
-#, fuzzy
 msgid "Fixed values, length limits, vocabulary bindings and other usage notes"
-msgstr "Valores fixos, limites de comprimento, ligações de vocabulário e outras notas de utilização"
+msgstr ""
 
 # SD_GRID_HEAD_NAME_DESC
 #: SD_GRID_HEAD_NAME_DESC
-#, fuzzy
 msgid "The name of the element (Slice name in brackets).  Mouse-over provides definition"
-msgstr "O nome do elemento (nome da fatia entre parêntesis).  O rato em cima fornece a definição"
+msgstr ""
 
 # SD_GRID_HEAD_TYPE_DESC
 #: SD_GRID_HEAD_TYPE_DESC
-#, fuzzy
 msgid "Reference to the type of the element"
-msgstr "Referência ao tipo do elemento"
+msgstr ""
 
 # SD_HEAD_CARD_DESC
 #: SD_HEAD_CARD_DESC
-#, fuzzy
 msgctxt "SD_HEAD_CARD_DESC"
 msgid "Minimum and Maximum # of times the element can appear in the instance"
-msgstr "Número mínimo e máximo de vezes que o elemento pode aparecer na instância"
+msgstr ""
 
 # SD_HEAD_DESC_DESC
 #: SD_HEAD_DESC_DESC
-#, fuzzy
 msgid "Additional information about the element"
-msgstr "Informações adicionais sobre o elemento"
+msgstr ""
 
 # SD_HEAD_FLAGS_DESC
 #: SD_HEAD_FLAGS_DESC
-#, fuzzy
 msgid "Information about the use of the element"
-msgstr "Informações sobre a utilização do elemento"
+msgstr ""
 
 # SD_LEGEND
 #: SD_LEGEND
-#, fuzzy
 msgid "Legend for this format"
-msgstr "Legenda para este formato"
+msgstr ""
 
 # SD_SLICING_INFO
 #: SD_SLICING_INFO
-#, fuzzy
 msgid "{0}, {1} by {2}"
-msgstr "{0}, {1} por {2}"
+msgstr ""
 
 # SD_SUMMARY_FIXED
 #: SD_SUMMARY_FIXED
-#, fuzzy
 msgid "Fixed: {0} {1}"
-msgstr "Fixo: {0} {1}"
+msgstr ""
 
 # SD_SUMMARY_MANDATORY
 #: SD_SUMMARY_MANDATORY
-#, fuzzy
 msgid "Mandatory: {0} {1}"
-msgstr "Obrigatório: {0} {1}"
+msgstr ""
 
 # SD_SUMMARY_MISSING_EXTENSION
 #: SD_SUMMARY_MISSING_EXTENSION
-#, fuzzy
 msgid "Unable to summarise extension {0} (no extension found)"
-msgstr "Não foi possível resumir a extensão {0} (não foi encontrada nenhuma extensão)"
+msgstr ""
 
 # SD_SUMMARY_MISSING_PROFILE
 #: SD_SUMMARY_MISSING_PROFILE
-#, fuzzy
 msgid "Unable to summarise profile {0} (no profile found)"
-msgstr "Não foi possível resumir o perfil {0} (não foi encontrado nenhum perfil)"
+msgstr ""
 
 # SD_SUMMARY_MUST_SUPPORT
 #: SD_SUMMARY_MUST_SUPPORT
-#, fuzzy
 msgid "Must-Support: {0} {1}"
-msgstr "Deve ser suportado: {0} {1}"
+msgstr ""
 
 # SD_SUMMARY_NESTED_MANDATORY
 #: SD_SUMMARY_NESTED_MANDATORY
-#, fuzzy
 msgid "({0} nested mandatory {1})"
-msgstr "({0} aninhado obrigatoriamente {1})"
+msgstr ""
 
 # SD_SUMMARY_PROHIBITED
 #: SD_SUMMARY_PROHIBITED
-#, fuzzy
 msgid "Prohibited: {0} {1}"
-msgstr "Proibido: {0} {1}"
+msgstr ""
 
 # SD_SUMMARY_PUBLICATION
 #: SD_SUMMARY_PUBLICATION
-#, fuzzy
 msgid "This profile was published on {0} as a {1} by {2}"
-msgstr "Este perfil foi publicado em {0} como um {1} por {2}"
+msgstr ""
 
 # SD_SUMMARY_SLICE
 #: SD_SUMMARY_SLICE
@@ -4216,2019 +3633,1687 @@ msgstr[1] ""
 
 # SD_SUMMARY_SLICES
 #: SD_SUMMARY_SLICES
-#, fuzzy
 msgid "This structure defines the following {0}Slices{1}"
-msgstr "Esta estrutura define os seguintes {0}Slices{1}"
+msgstr ""
 
 # SD_SUMMARY_SLICE_NONE
 #: SD_SUMMARY_SLICE_NONE
-#, fuzzy
 msgid "There is a slice with no discriminator at {0}"
-msgstr "Existe um corte sem discriminador em {0}"
+msgstr ""
 
 # SEARCH_PAR_ALLOWED
 #: SEARCH_PAR_ALLOWED
-#, fuzzy
 msgid "Allowed:"
-msgstr "Permitido:"
+msgstr ""
 
 # SEARCH_PAR_CHAIN
 #: SEARCH_PAR_CHAIN
-#, fuzzy
 msgid "Chains"
-msgstr "Correntes"
+msgstr ""
 
 # SEARCH_PAR_EXP
 #: SEARCH_PAR_EXP
-#, fuzzy
 msgid "Expression"
-msgstr "Expressão"
+msgstr ""
 
 # SEARCH_PAR_MULTIPLES
 #: SEARCH_PAR_MULTIPLES
-#, fuzzy
 msgid "Multiples"
-msgstr "Múltiplos"
+msgstr ""
 
 # SEARCH_PAR_MULTIPLE_AND_APPEAR
 #: SEARCH_PAR_MULTIPLE_AND_APPEAR
-#, fuzzy
 msgid "multipleAnd: The parameter may only appear once"
-msgstr "multipleAnd: O parâmetro só pode aparecer uma vez"
+msgstr ""
 
 # SEARCH_PAR_MULTIPLE_AND_REPEAT
 #: SEARCH_PAR_MULTIPLE_AND_REPEAT
-#, fuzzy
 msgid "multipleAnd: The parameter may repeat in order to specify multiple values that must all be true"
-msgstr "multipleAnd: O parâmetro pode repetir-se para especificar valores múltiplos que devem ser todos verdadeiros"
+msgstr ""
 
 # SEARCH_PAR_MULTIPLE_AND_SERVER
 #: SEARCH_PAR_MULTIPLE_AND_SERVER
-#, fuzzy
 msgid "multipleAnd: It''s up to the server whether the parameter may repeat in order to specify multiple values that must all be true"
-msgstr "multipleAnd: Cabe ao servidor decidir se o parâmetro pode ser repetido para especificar valores múltiplos que devem ser todos verdadeiros"
+msgstr ""
 
 # SEARCH_PAR_MULTIPLE_OR_MULTIPLE
 #: SEARCH_PAR_MULTIPLE_OR_MULTIPLE
-#, fuzzy
 msgid "multipleOr: The parameter may have multiple values (separated by comma) where at least one must be true"
-msgstr "multipleOr: O parâmetro pode ter vários valores (separados por vírgula) em que pelo menos um tem de ser verdadeiro"
+msgstr ""
 
 # SEARCH_PAR_MULTIPLE_OR_ONE
 #: SEARCH_PAR_MULTIPLE_OR_ONE
-#, fuzzy
 msgid "multipleOr: The parameter may only have one value (no comma separators)"
-msgstr "multipleOr: O parâmetro só pode ter um valor (sem separadores de vírgula)"
+msgstr ""
 
 # SEARCH_PAR_MULTIPLE_OR_SERVER
 #: SEARCH_PAR_MULTIPLE_OR_SERVER
-#, fuzzy
 msgid "multipleOr: It''s up to the server whether the parameter can have multiple values (separated by comma) where at least one must be true"
-msgstr "multipleOr: Cabe ao servidor decidir se o parâmetro pode ter vários valores (separados por vírgula) em que pelo menos um tem de ser verdadeiro"
+msgstr ""
 
 # SEARCH_PAR_NONE
 #: SEARCH_PAR_NONE
-#, fuzzy
 msgid "(none)"
-msgstr "(nenhum)"
+msgstr ""
 
 # SEARCH_PAR_PROC
 #: SEARCH_PAR_PROC
-#, fuzzy
 msgid "Processing Mode"
-msgstr "Modo de processamento"
+msgstr ""
 
 # SEARCH_PAR_REND_TARGET
 #: SEARCH_PAR_REND_TARGET
-#, fuzzy
 msgid "Target Resources"
-msgstr "Recursos-alvo"
+msgstr ""
 
 # SEARCH_PAR_RES
 #: SEARCH_PAR_RES
-#, fuzzy
 msgid "All Resources"
-msgstr "Todos os recursos"
+msgstr ""
 
 # STATUS_MSG_AUTOBUILD
 #: STATUS_MSG_AUTOBUILD
-#, fuzzy
 msgid "{0}, published by {1}. This guide is not an authorized publication; it is the continuous build for version {2}  built by the FHIR (HL7&reg; FHIR&reg; Standard) CI Build. This version is based on the current content of <a href=''{3}''>{3}</a> and changes regularly. See the <a href=''{4}/history.html''>Directory of published versions</a>"
-msgstr "{0}, publicado por {1}. Este guia não é uma publicação autorizada; é a compilação contínua para a versão {2} construída pela FHIR (HL7&reg; FHIR&reg; Standard) CI Build. Esta versão é baseada no conteúdo atual de <a href=''{3}''>{3}</a> e muda regularmente. Veja o <a href=''{4}/history.html''>Diretório de versões publicadas</a>"
+msgstr ""
 
 # STATUS_MSG_LOCAL_BUILD
 #: STATUS_MSG_LOCAL_BUILD
-#, fuzzy
 msgid "{0} - Local Development build (v{1}) built by the FHIR (HL7® FHIR® Standard) Build Tools. See the <a href=''{2}/history.html''>Directory of published versions</a>"
-msgstr "!!{0} - Compilação de desenvolvimento local (v{1}) construída pelas ferramentas de compilação FHIR (HL7&reg; FHIR&reg; Standard). Veja o <a href=''{2}/history.html''>Diretório de versões publicadas</a>"
+msgstr ""
 
 # STATUS_MSG_PUBLICATION_HOLDER
 #: STATUS_MSG_PUBLICATION_HOLDER
-#, fuzzy
 msgid "Publication Build: This will be filled in by the publication tooling"
-msgstr "Compilação de publicação: isto será preenchido pelas ferramentas de publicação"
+msgstr ""
 
 # STRUC_DEF_ABSTRACT
 #: STRUC_DEF_ABSTRACT
-#, fuzzy
 msgid "This is an abstract"
-msgstr "Este é um resumo"
+msgstr ""
 
 # STRUC_DEF_ACT
 #: STRUC_DEF_ACT
-#, fuzzy
 msgid "Obligations that apply to the actor {0}"
-msgstr "Obrigações que se aplicam ao ator {0}"
+msgstr ""
 
 # STRUC_DEF_AFFECT_CONSTRAINTS
 #: STRUC_DEF_AFFECT_CONSTRAINTS
-#, fuzzy
 msgid "This element has or is affected by constraints ("
-msgstr "Este elemento tem ou é afetado por restrições ("
+msgstr ""
 
 # STRUC_DEF_ALLOWED
 #: STRUC_DEF_ALLOWED
-#, fuzzy
 msgid "Allowed Units"
-msgstr "Unidades permitidas"
+msgstr ""
 
 # STRUC_DEF_ALL_ACTORS
 #: STRUC_DEF_ALL_ACTORS
-#, fuzzy
 msgid "All Actors"
-msgstr "Todos os actores"
+msgstr ""
 
 # STRUC_DEF_ALL_SLICES
 #: STRUC_DEF_ALL_SLICES
-#, fuzzy
 msgid ":All Slices"
-msgstr ":Todas as fatias"
+msgstr ""
 
 # STRUC_DEF_ALL_TYPES
 #: STRUC_DEF_ALL_TYPES
-#, fuzzy
 msgid "All Types"
-msgstr "Todos os tipos"
+msgstr ""
 
 # STRUC_DEF_ALT_NAME
 #: STRUC_DEF_ALT_NAME
-#, fuzzy
 msgid "Alternate Names"
-msgstr "Nomes alternativos"
+msgstr ""
 
 # STRUC_DEF_AND
 #: STRUC_DEF_AND
-#, fuzzy
 msgctxt "STRUC_DEF_AND"
 msgid "and"
-msgstr "e"
+msgstr ""
 
 # STRUC_DEF_APPROP_CON
 #: STRUC_DEF_APPROP_CON
-#, fuzzy
 msgid "Concepts must come from this value set if appropriate concept is in this value set"
-msgstr "Os conceitos devem provir deste conjunto de valores se o conceito apropriado estiver neste conjunto de valores"
+msgstr ""
 
 # STRUC_DEF_AS_SHOWN
 #: STRUC_DEF_AS_SHOWN
-#, fuzzy
 msgid "As shown"
-msgstr "Como mostrado"
+msgstr ""
 
 # STRUC_DEF_BECAUSE
 #: STRUC_DEF_BECAUSE
-#, fuzzy
 msgid "because"
-msgstr "porque"
+msgstr ""
 
 # STRUC_DEF_BINDINGS
 #: STRUC_DEF_BINDINGS
-#, fuzzy
 msgid "Binding:"
-msgstr "Vínculo:"
+msgstr ""
 
 # STRUC_DEF_BINDING_STYLE
 #: STRUC_DEF_BINDING_STYLE
-#, fuzzy
 msgid "binding style"
-msgstr "estilo de vínculo"
+msgstr ""
 
 # STRUC_DEF_BLACK
 #: STRUC_DEF_BLACK
-#, fuzzy
 msgid "black"
-msgstr "preto"
+msgstr ""
 
 # STRUC_DEF_BUSINESS_ID
 #: STRUC_DEF_BUSINESS_ID
-#, fuzzy
 msgid "This is a business identifier, not a resource identifier (see"
-msgstr "Trata-se de um identificador de empresa e não de um identificador de recurso (ver"
+msgstr ""
 
 # STRUC_DEF_BUSINESS_VERID
 #: STRUC_DEF_BUSINESS_VERID
-#, fuzzy
 msgid "This is a business version Id, not a resource version Id (see"
-msgstr "Este é um ID de versão comercial, não um ID de versão de recurso (ver"
+msgstr ""
 
 # STRUC_DEF_CAND
 #: STRUC_DEF_CAND
-#, fuzzy
 msgid "Candidate"
-msgstr "Candidato"
+msgstr ""
 
 # STRUC_DEF_CAND_SUB
 #: STRUC_DEF_CAND_SUB
-#, fuzzy
 msgid "This value set is a candidate to substitute for the overall conformance value set in some situations; usually these are defined in the documentation"
-msgstr "Este conjunto de valores é um candidato para substituir o conjunto de valores de conformidade global em algumas situações; normalmente, estes são definidos na documentação"
+msgstr ""
 
 # STRUC_DEF_CANNOT_TARGET
 #: STRUC_DEF_CANNOT_TARGET
-#, fuzzy
 msgid "Instances of this logical model cannot be the target of a Reference"
-msgstr "As instâncias deste modelo lógico não podem ser objeto de uma referência"
+msgstr ""
 
 # STRUC_DEF_CANT_FIND
 #: STRUC_DEF_CANT_FIND
-#, fuzzy
 msgid "getElementByName: can''t find {0} in {1} from {2}"
-msgstr "getElementByName: não é possível encontrar {0} em {1} de {2}"
+msgstr ""
 
 # STRUC_DEF_CAN_TARGET
 #: STRUC_DEF_CAN_TARGET
-#, fuzzy
 msgid "Instances of this logical model can be the target of a Reference"
-msgstr "As instâncias deste modelo lógico podem ser objeto de uma referência"
+msgstr ""
 
 # STRUC_DEF_CAP
 #: STRUC_DEF_CAP
-#, fuzzy
 msgid "CAP Code"
-msgstr "Código CAP"
+msgstr ""
 
 # STRUC_DEF_CDA
 #: STRUC_DEF_CDA
-#, fuzzy
 msgid "This property is represented as CDA Text in the XML."
-msgstr "Esta propriedade é representada como Texto CDA no XML."
+msgstr ""
 
 # STRUC_DEF_CHILD
 #: STRUC_DEF_CHILD
-#, fuzzy
 msgid "Child"
-msgstr "Criança"
+msgstr ""
 
 # STRUC_DEF_CHOICE
 #: STRUC_DEF_CHOICE
-#, fuzzy
 msgid "(Choice of one)"
-msgstr "(Escolha de um)"
+msgstr ""
 
 # STRUC_DEF_CHOICE_DATA_TYPE
 #: STRUC_DEF_CHOICE_DATA_TYPE
-#, fuzzy
 msgid "Choice of Data Types"
-msgstr "Escolha de tipos de dados"
+msgstr ""
 
 # STRUC_DEF_CHOICE_GRP
 #: STRUC_DEF_CHOICE_GRP
-#, fuzzy
 msgid "Choice Group"
-msgstr "Grupo Choice"
+msgstr ""
 
 # STRUC_DEF_CHOICE_OF
 #: STRUC_DEF_CHOICE_OF
-#, fuzzy
 msgid "Choice of:"
-msgstr "Escolha de:"
+msgstr ""
 
 # STRUC_DEF_CLOSED
 #: STRUC_DEF_CLOSED
-#, fuzzy
 msgid "Closed"
-msgstr "Fechado"
+msgstr ""
 
 # STRUC_DEF_COMMENT
 #: STRUC_DEF_COMMENT
-#, fuzzy
 msgid "Comments:"
-msgstr "Comentários:"
+msgstr ""
 
 # STRUC_DEF_COMPLEX
 #: STRUC_DEF_COMPLEX
-#, fuzzy
 msgid "Complex"
-msgstr "Complexo"
+msgstr ""
 
 # STRUC_DEF_COMPLEXBRACK
 #: STRUC_DEF_COMPLEXBRACK
-#, fuzzy
 msgid "(complex)"
-msgstr "(complexo)"
+msgstr ""
 
 # STRUC_DEF_COMP_DOC
 #: STRUC_DEF_COMP_DOC
-#, fuzzy
 msgid "This value set is a component of the base value set. Usually this is called out so that documentation can be written about a portion of the value set"
-msgstr "Esse conjunto de valores é um componente do conjunto de valores básico. Normalmente, isso é chamado para que a documentação possa ser escrita sobre uma parte do conjunto de valores"
+msgstr ""
 
 # STRUC_DEF_COMP_EX
 #: STRUC_DEF_COMP_EX
-#, fuzzy
 msgid "(Complex Extension)"
-msgstr "(Extensão complexa)"
+msgstr ""
 
 # STRUC_DEF_COMP_PROF
 #: STRUC_DEF_COMP_PROF
-#, fuzzy
 msgid "Complies with Profile"
-msgstr "Em conformidade com o perfil"
+msgstr ""
 
 # STRUC_DEF_CONC_SET
 #: STRUC_DEF_CONC_SET
-#, fuzzy
 msgid "Concepts must come from this value set"
-msgstr "Os conceitos devem provir deste conjunto de valores"
+msgstr ""
 
 # STRUC_DEF_CONSTRAINING
 #: STRUC_DEF_CONSTRAINING
-#, fuzzy
 msgid "Slice Constraining"
-msgstr "Restrição de fatias"
+msgstr ""
 
 # STRUC_DEF_CONSTRAINTS
 #: STRUC_DEF_CONSTRAINTS
-#, fuzzy
 msgctxt "STRUC_DEF_CONSTRAINTS"
 msgid "Constraints"
-msgstr "Restrições"
+msgstr ""
 
 # STRUC_DEF_CONTROL
 #: STRUC_DEF_CONTROL
-#, fuzzy
 msgid "Control"
-msgstr "Controlo"
+msgstr ""
 
 # STRUC_DEF_CONT_RULE
 #: STRUC_DEF_CONT_RULE
-#, fuzzy
 msgid "Content/Rules for all slices"
-msgstr "Conteúdo/regras para todas as fatias"
+msgstr ""
 
 # STRUC_DEF_CONT_TYPE
 #: STRUC_DEF_CONT_TYPE
-#, fuzzy
 msgid "Content/Rules for all Types"
-msgstr "Conteúdo/regras para todos os tipos"
+msgstr ""
 
 # STRUC_DEF_COPY_URL
 #: STRUC_DEF_COPY_URL
-#, fuzzy
 msgid "Click to Copy URL"
-msgstr "Clique para copiar o URL"
+msgstr ""
 
 # STRUC_DEF_CURR
 #: STRUC_DEF_CURR
-#, fuzzy
 msgctxt "STRUC_DEF_CURR"
 msgid "Current"
-msgstr "Atual"
+msgstr ""
 
 # STRUC_DEF_CURR_RULE
 #: STRUC_DEF_CURR_RULE
-#, fuzzy
 msgid "New records are required to use this value set, but legacy records may use other codes. The definition of ''new record'' is difficult, since systems often create new records based on pre-existing data. Usually ''current'' bindings are mandated by an external authority that makes clear rules around this"
-msgstr "Os novos registos têm de utilizar este conjunto de valores, mas os registos antigos podem utilizar outros códigos. A definição de \"novo registo\" é difícil, uma vez que os sistemas criam frequentemente novos registos com base em dados pré-existentes. Normalmente, as ligações \"actuais\" são impostas por uma autoridade externa que estabelece regras claras sobre esta matéria"
+msgstr ""
 
 # STRUC_DEF_DATE
 #: STRUC_DEF_DATE
-#, fuzzy
 msgid "Date Format: {0}"
-msgstr "Formato da data: {0}"
+msgstr ""
 
 # STRUC_DEF_DATE_FORM
 #: STRUC_DEF_DATE_FORM
-#, fuzzy
 msgid "Date Format"
-msgstr "Formato da data"
+msgstr ""
 
 # STRUC_DEF_DEFAULT_TYPE
 #: STRUC_DEF_DEFAULT_TYPE
-#, fuzzy
 msgid "Default Type"
-msgstr "Tipo por defeito"
+msgstr ""
 
 # STRUC_DEF_DEFAULT_VALUE
 #: STRUC_DEF_DEFAULT_VALUE
-#, fuzzy
 msgid "Default Value"
-msgstr "Valor por defeito"
+msgstr ""
 
 # STRUC_DEF_DEF_CODES
 #: STRUC_DEF_DEF_CODES
-#, fuzzy
 msgid "Definitional Codes"
-msgstr "Códigos de definição"
+msgstr ""
 
 # STRUC_DEF_DERIVED_PROFILE
 #: STRUC_DEF_DERIVED_PROFILE
-#, fuzzy
 msgid "In this IG, the following structures are derived from this profile:"
-msgstr "Neste IG, as seguintes estruturas são derivadas deste perfil:"
+msgstr ""
 
 # STRUC_DEF_DESCRIM
 #: STRUC_DEF_DESCRIM
-#, fuzzy
 msgid ", and can be differentiated using the following discriminators:"
-msgstr "e pode ser diferenciado utilizando os seguintes discriminadores:"
+msgstr ""
 
 # STRUC_DEF_DESC_PROF
 #: STRUC_DEF_DESC_PROF
-#, fuzzy
 msgid "Description of the profile"
-msgstr "Descrição do perfil"
+msgstr ""
 
 # STRUC_DEF_DISCUSSION
 #: STRUC_DEF_DISCUSSION
-#, fuzzy
 msgid "discussion"
-msgstr "discussão"
+msgstr ""
 
 # STRUC_DEF_ELE
 #: STRUC_DEF_ELE
-#, fuzzy
 msgid "This primitive element must have a value"
-msgstr "Este elemento primitivo deve ter um valor"
+msgstr ""
 
 # STRUC_DEF_ELEMENT
 #: STRUC_DEF_ELEMENT
-#, fuzzy
 msgid "element"
-msgstr "elemento"
+msgstr ""
 
 # STRUC_DEF_ELEMENTS
 #: STRUC_DEF_ELEMENTS
-#, fuzzy
 msgid "Elements defined in Ancestors:"
-msgstr "Elementos definidos em Ancestrais:"
+msgstr ""
 
 # STRUC_DEF_ELE_AFFECTED
 #: STRUC_DEF_ELE_AFFECTED
-#, fuzzy
 msgid "This element has or is affected by constraints ( {0} {1}"
-msgstr "Este elemento tem ou é afetado por restrições ( {0} {1}"
+msgstr ""
 
 # STRUC_DEF_ELE_INCLUDED
 #: STRUC_DEF_ELE_INCLUDED
-#, fuzzy
 msgid "This element is included in summaries"
-msgstr "Este elemento está incluído nos resumos"
+msgstr ""
 
 # STRUC_DEF_ELE_MUST_SUPP
 #: STRUC_DEF_ELE_MUST_SUPP
-#, fuzzy
 msgid "This element must be supported"
-msgstr "Este elemento deve ser suportado"
+msgstr ""
 
 # STRUC_DEF_ELE_READ
 #: STRUC_DEF_ELE_READ
-#, fuzzy
 msgid "When this element is read"
-msgstr "Quando este elemento é lido"
+msgstr ""
 
 # STRUC_DEF_ERROR
 #: STRUC_DEF_ERROR
-#, fuzzy
 msgid "Unknown structure mode"
-msgstr "Modo de estrutura desconhecido"
+msgstr ""
 
 # STRUC_DEF_ERR_DESC
 #: STRUC_DEF_ERR_DESC
-#, fuzzy
 msgid "Error describing concept- not done yet (no codings, no text)"
-msgstr "Erro na descrição do conceito - ainda não foi feito (sem codificações, sem texto)"
+msgstr ""
 
 # STRUC_DEF_EXAM
 #: STRUC_DEF_EXAM
-#, fuzzy
 msgid "example"
-msgstr "exemplo"
+msgstr ""
 
 # STRUC_DEF_EXT
 #: STRUC_DEF_EXT
-#, fuzzy
 msgctxt "STRUC_DEF_EXT"
 msgid "Extensible"
-msgstr "Extensível"
+msgstr ""
 
 # STRUC_DEF_EXTENSIBLE
 #: STRUC_DEF_EXTENSIBLE
-#, fuzzy
 msgid "extensible"
-msgstr "extensível"
+msgstr ""
 
 # STRUC_DEF_EXTENSIONS
 #: STRUC_DEF_EXTENSIONS
-#, fuzzy
 msgid "Extensions"
-msgstr "Extensões"
+msgstr ""
 
 # STRUC_DEF_EXT_JSON
 #: STRUC_DEF_EXT_JSON
-#, fuzzy
 msgid "This element can be extended by named JSON elements"
-msgstr "Este elemento pode ser alargado por elementos JSON designados"
+msgstr ""
 
 # STRUC_DEF_EXT_STYLE
 #: STRUC_DEF_EXT_STYLE
-#, fuzzy
 msgid "Extension Style"
-msgstr "Estilo de extensão"
+msgstr ""
 
 # STRUC_DEF_EX_CODE
 #: STRUC_DEF_EX_CODE
-#, fuzzy
 msgid "For example codes, see"
-msgstr "Para exemplos de códigos, ver"
+msgstr ""
 
 # STRUC_DEF_EX_DESC
 #: STRUC_DEF_EX_DESC
-#, fuzzy
 msgid "Instances are not expected or even encouraged to draw from the specified value set. The value set merely provides examples of the types of concepts intended to be included."
-msgstr "Não se espera nem se incentiva que as instâncias se baseiem no conjunto de valores especificado. O conjunto de valores apenas fornece exemplos dos tipos de conceitos que se pretende incluir."
+msgstr ""
 
 # STRUC_DEF_EX_TYPE
 #: STRUC_DEF_EX_TYPE
-#, fuzzy
 msgid "(Extension Type:"
-msgstr "(Tipo de extensão:"
+msgstr ""
 
 # STRUC_DEF_EX_URL
 #: STRUC_DEF_EX_URL
-#, fuzzy
 msgid "Extension URL = {0}"
-msgstr "URL de extensão = {0}"
+msgstr ""
 
 # STRUC_DEF_FHIR
 #: STRUC_DEF_FHIR
-#, fuzzy
 msgid "Base FHIR {0}"
 msgstr "Base FHIR {0}"
 
 # STRUC_DEF_FHIR_EXCEP
 #: STRUC_DEF_FHIR_EXCEP
-#, fuzzy
 msgid "Unable to retrieve StructureDefinition with URL {0}"
-msgstr "Não foi possível recuperar StructureDefinition com URL {0}"
+msgstr ""
 
 # STRUC_DEF_FII
 #: STRUC_DEF_FII
-#, fuzzy
 msgid "Formal Invariant Identifier"
-msgstr "Identificador formal de invariante"
+msgstr ""
 
 # STRUC_DEF_FIXED
 #: STRUC_DEF_FIXED
-#, fuzzy
 msgid "Fixed Value"
-msgstr "Valor fixo"
+msgstr ""
 
 # STRUC_DEF_FIXED_VALUE
 #: STRUC_DEF_FIXED_VALUE
-#, fuzzy
 msgid "Fixed Value:"
-msgstr "Valor fixo:"
+msgstr ""
 
 # STRUC_DEF_FOR_CODE
 #: STRUC_DEF_FOR_CODE
-#, fuzzy
 msgid "For codes, see"
-msgstr "Para códigos, ver"
+msgstr ""
 
 # STRUC_DEF_FURTHER_INFO
 #: STRUC_DEF_FURTHER_INFO
-#, fuzzy
 msgid "for further information about how to use [x]"
-msgstr "para mais informações sobre como utilizar [x]"
+msgstr ""
 
 # STRUC_DEF_GRADE
 #: STRUC_DEF_GRADE
-#, fuzzy
 msgid "Grade"
-msgstr "Grau"
+msgstr ""
 
 # STRUC_DEF_ID
 #: STRUC_DEF_ID
-#, fuzzy
 msgid "Id"
 msgstr "Id"
 
 # STRUC_DEF_ID_EXPECT
 #: STRUC_DEF_ID_EXPECT
-#, fuzzy
 msgid "ID Expectation"
-msgstr "Expectativa de ID"
+msgstr ""
 
 # STRUC_DEF_ID_IS
 #: STRUC_DEF_ID_IS
-#, fuzzy
 msgid "Id may or not be present (this is the default for elements but not resources)"
-msgstr "Id pode ou não estar presente (esta é a predefinição para elementos mas não para recursos)"
+msgstr ""
 
 # STRUC_DEF_ID_MAY
 #: STRUC_DEF_ID_MAY
-#, fuzzy
 msgid "Id is required to be present (this is the default for resources but not elements)"
-msgstr "É necessário que o Id esteja presente (esta é a predefinição para recursos mas não para elementos)"
+msgstr ""
 
 # STRUC_DEF_ID_NOT_ALLOW
 #: STRUC_DEF_ID_NOT_ALLOW
-#, fuzzy
 msgid "An id is not allowed in this context"
-msgstr "Não é permitido um id neste contexto"
+msgstr ""
 
 # STRUC_DEF_IF
 #: STRUC_DEF_IF
-#, fuzzy
 msgid "If"
-msgstr "Se"
+msgstr ""
 
 # STRUC_DEF_IMPOSE_PROFILE
 #: STRUC_DEF_IMPOSE_PROFILE
-#, fuzzy
 msgid "Impose Profile"
-msgstr "Impor perfil"
+msgstr ""
 
 # STRUC_DEF_INFERRED_JSON
 #: STRUC_DEF_INFERRED_JSON
-#, fuzzy
 msgid "The type of this element is inferred from the JSON type in the instance"
-msgstr "O tipo deste elemento é inferido a partir do tipo JSON na instância"
+msgstr ""
 
 # STRUC_DEF_INVAR
 #: STRUC_DEF_INVAR
-#, fuzzy
 msgid "Invariants"
-msgstr "Invariantes"
+msgstr ""
 
 # STRUC_DEF_INVARIANT
 #: STRUC_DEF_INVARIANT
-#, fuzzy
 msgid "This element is affected by the following invariants:"
-msgstr "Este elemento é afetado pelas seguintes invariantes:"
+msgstr ""
 
 # STRUC_DEF_JSON_ARRAY
 #: STRUC_DEF_JSON_ARRAY
-#, fuzzy
 msgid "JSON: This element may be present as a JSON Array even when there are no items in the instance"
-msgstr "JSON: Este elemento pode estar presente como uma matriz JSON mesmo quando não existem itens na instância"
+msgstr ""
 
 # STRUC_DEF_JSON_CAN_NAME
 #: STRUC_DEF_JSON_CAN_NAME
-#, fuzzy
 msgid "This type can appear in JSON with the property name"
-msgstr "Este tipo pode aparecer em JSON com o nome da propriedade"
+msgstr ""
 
 # STRUC_DEF_JSON_CHILD
 #: STRUC_DEF_JSON_CHILD
-#, fuzzy
 msgid "child"
-msgstr "criança"
+msgstr ""
 
 # STRUC_DEF_JSON_EXT
 #: STRUC_DEF_JSON_EXT
-#, fuzzy
 msgid "(in elements using named extensions)"
-msgstr "(em elementos que utilizam extensões nomeadas)"
+msgstr ""
 
 # STRUC_DEF_JSON_FORM
 #: STRUC_DEF_JSON_FORM
-#, fuzzy
 msgid "JSON Format"
-msgstr "Formato JSON"
+msgstr ""
 
 # STRUC_DEF_JSON_IF
 #: STRUC_DEF_JSON_IF
-#, fuzzy
 msgid "JSON: If"
-msgstr "JSON: Se"
+msgstr ""
 
 # STRUC_DEF_JSON_INFERRED
 #: STRUC_DEF_JSON_INFERRED
-#, fuzzy
 msgid "JSON: The type of this element is inferred from the JSON type in the instance"
-msgstr "JSON: O tipo deste elemento é inferido a partir do tipo JSON na instância"
+msgstr ""
 
 # STRUC_DEF_JSON_IS
 #: STRUC_DEF_JSON_IS
-#, fuzzy
 msgid "This element is present as a JSON Array even when there are no items in the instance"
-msgstr "Este elemento está presente como uma matriz JSON mesmo quando não existem itens na instância"
+msgstr ""
 
 # STRUC_DEF_JSON_MAY
 #: STRUC_DEF_JSON_MAY
-#, fuzzy
 msgid "This element may be present as a JSON Array even when there are no items in the instance"
-msgstr "Este elemento pode estar presente como uma matriz JSON mesmo quando não existem itens na instância"
+msgstr ""
 
 # STRUC_DEF_JSON_MAY_PRESENT
 #: STRUC_DEF_JSON_MAY_PRESENT
-#, fuzzy
 msgid "The JSON Array for this property may be present even when there are no items in the instance (e.g. may be present as an empty array)"
-msgstr "A matriz JSON para esta propriedade pode estar presente mesmo quando não existem itens na instância (por exemplo, pode estar presente como uma matriz vazia)"
+msgstr ""
 
 # STRUC_DEF_JSON_NAME
 #: STRUC_DEF_JSON_NAME
-#, fuzzy
 msgid "JSON Property Name"
-msgstr "Nome da propriedade JSON"
+msgstr ""
 
 # STRUC_DEF_JSON_NOT_PRESENT
 #: STRUC_DEF_JSON_NOT_PRESENT
-#, fuzzy
 msgid "The JSON Array for this property is not present when there are no items in the instance (e.g. never as an empty array)"
-msgstr "A matriz JSON para esta propriedade não está presente quando não existem itens na instância (por exemplo, nunca como uma matriz vazia)"
+msgstr ""
 
 # STRUC_DEF_JSON_NULL
 #: STRUC_DEF_JSON_NULL
-#, fuzzy
 msgid "JSON: This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
-msgstr "JSON: Este objeto pode ser representado como nulo na estrutura JSON (que conta como \"presente\" para efeitos de cardinalidade)"
+msgstr ""
 
 # STRUC_DEF_JSON_PRESENT
 #: STRUC_DEF_JSON_PRESENT
-#, fuzzy
 msgid "The JSON Array for this property is present even when there are no items in the instance (e.g. as an empty array)"
-msgstr "A matriz JSON para esta propriedade está presente mesmo quando não existem itens na instância (por exemplo, como uma matriz vazia)"
+msgstr ""
 
 # STRUC_DEF_JSON_PROPERTY_NAME
 #: STRUC_DEF_JSON_PROPERTY_NAME
-#, fuzzy
 msgid "This property appears in JSON with the property name"
-msgstr "Esta propriedade aparece em JSON com o nome da propriedade"
+msgstr ""
 
 # STRUC_DEF_JSON_SINGLE
 #: STRUC_DEF_JSON_SINGLE
-#, fuzzy
 msgid "This repeating object is represented as a single JSON object with named properties. The name of the property (key) is the value of the"
-msgstr "Este objeto de repetição é representado como um único objeto JSON com propriedades nomeadas. O nome da propriedade (chave) é o valor do parâmetro"
+msgstr ""
 
 # STRUC_DEF_JSON_TYPE
 #: STRUC_DEF_JSON_TYPE
-#, fuzzy
 msgid "JSON Property Name for Type"
-msgstr "Nome da propriedade JSON para o tipo"
+msgstr ""
 
 # STRUC_DEF_LABEL
 #: STRUC_DEF_LABEL
-#, fuzzy
 msgid "Label"
-msgstr "Etiqueta"
+msgstr ""
 
 # STRUC_DEF_LEAST_FOLLOW
 #: STRUC_DEF_LEAST_FOLLOW
-#, fuzzy
 msgid "At least the following"
-msgstr "Pelo menos os seguintes elementos"
+msgstr ""
 
 # STRUC_DEF_LOGICAL
 #: STRUC_DEF_LOGICAL
-#, fuzzy
 msgctxt "STRUC_DEF_LOGICAL"
 msgid "Logical Model"
-msgstr "Modelo lógico"
+msgstr ""
 
 # STRUC_DEF_LOGICAL_CONT
 #: STRUC_DEF_LOGICAL_CONT
-#, fuzzy
 msgid "Logical Container"
-msgstr "Contentor lógico"
+msgstr ""
 
 # STRUC_DEF_LOINC
 #: STRUC_DEF_LOINC
-#, fuzzy
 msgid "LOINC Code"
-msgstr "Código LOINC"
+msgstr ""
 
 # STRUC_DEF_LOINC_CODE
 #: STRUC_DEF_LOINC_CODE
-#, fuzzy
 msgid "LOINC code"
-msgstr "Código LOINC"
+msgstr ""
 
 # STRUC_DEF_MAX
 #: STRUC_DEF_MAX
-#, fuzzy
 msgid "Maximum"
-msgstr "Máximo"
+msgstr ""
 
 # STRUC_DEF_MAX_MIN
 #: STRUC_DEF_MAX_MIN
-#, fuzzy
 msgctxt "STRUC_DEF_MAX_MIN"
 msgid "Minimum and Maximum # of times the element can appear in the instance"
-msgstr "Número mínimo e máximo de vezes que o elemento pode aparecer na instância"
+msgstr ""
 
 # STRUC_DEF_MAX_VALUE
 #: STRUC_DEF_MAX_VALUE
-#, fuzzy
 msgid "Max Value"
-msgstr "Valor máximo"
+msgstr ""
 
 # STRUC_DEF_MEAN_MISS
 #: STRUC_DEF_MEAN_MISS
-#, fuzzy
 msgid "Meaning if Missing"
-msgstr "Significado em caso de falta"
+msgstr ""
 
 # STRUC_DEF_MIN
 #: STRUC_DEF_MIN
-#, fuzzy
 msgid "Minimum"
-msgstr "Mínimo"
+msgstr ""
 
 # STRUC_DEF_MIN_VALUE
 #: STRUC_DEF_MIN_VALUE
-#, fuzzy
 msgid "Min Value"
-msgstr "Valor mínimo"
+msgstr ""
 
 # STRUC_DEF_MISSING_LINK
 #: STRUC_DEF_MISSING_LINK
-#, fuzzy
 msgid "missing link"
-msgstr "elo perdido"
+msgstr ""
 
 # STRUC_DEF_MOD
 #: STRUC_DEF_MOD
-#, fuzzy
 msgid "This element is a modifier element"
-msgstr "Este elemento é um elemento modificador"
+msgstr ""
 
 # STRUC_DEF_MODIF
 #: STRUC_DEF_MODIF
-#, fuzzy
 msgid "Modifier"
-msgstr "Modificador"
+msgstr ""
 
 # STRUC_DEF_MODIFIER
 #: STRUC_DEF_MODIFIER
-#, fuzzy
 msgid "Is Modifier"
-msgstr "É modificador"
+msgstr ""
 
 # STRUC_DEF_MUST_SUPPORT
 #: STRUC_DEF_MUST_SUPPORT
-#, fuzzy
 msgid "Must Support"
-msgstr "Deve apoiar"
+msgstr ""
 
 # STRUC_DEF_MUST_SUPPORT_TYPES
 #: STRUC_DEF_MUST_SUPPORT_TYPES
-#, fuzzy
 msgid "Must Support Types"
-msgstr "Tipos de suporte obrigatório"
+msgstr ""
 
 # STRUC_DEF_NAMESPACE
 #: STRUC_DEF_NAMESPACE
-#, fuzzy
 msgid "In the XML format, this property has the namespace"
-msgstr "No formato XML, esta propriedade tem o espaço de nomes"
+msgstr ""
 
 # STRUC_DEF_NOTE_X
 #: STRUC_DEF_NOTE_X
-#, fuzzy
 msgid "[x] Note"
-msgstr "[x] Nota"
+msgstr ""
 
 # STRUC_DEF_NOT_MARK
 #: STRUC_DEF_NOT_MARK
-#, fuzzy
 msgid "Instances of this logical model are not marked to be the target of a Reference"
-msgstr "As instâncias deste modelo lógico não estão marcadas para serem alvo de uma referência"
+msgstr ""
 
 # STRUC_DEF_NO_DESCRIM
 #: STRUC_DEF_NO_DESCRIM
-#, fuzzy
 msgid ", and defines no disciminators to differentiate the slices"
-msgstr "e não define quaisquer disciminadores para diferenciar as fatias"
+msgstr ""
 
 # STRUC_DEF_NO_MAPPINGS
 #: STRUC_DEF_NO_MAPPINGS
-#, fuzzy
 msgid "No Mappings"
-msgstr "Nenhum mapeamento"
+msgstr ""
 
 # STRUC_DEF_NO_MUST_SUPPORT
 #: STRUC_DEF_NO_MUST_SUPPORT
-#, fuzzy
 msgid "No must-support rules about the choice of types/profiles"
-msgstr "Não há regras de suporte obrigatório sobre a escolha de tipos/perfis"
+msgstr ""
 
 # STRUC_DEF_NO_SUMMARY
 #: STRUC_DEF_NO_SUMMARY
-#, fuzzy
 msgid "No Summary, as this profile has no differential"
-msgstr "Não há Resumo, pois este perfil não tem diferencial"
+msgstr ""
 
 # STRUC_DEF_NULL_JSON
 #: STRUC_DEF_NULL_JSON
-#, fuzzy
 msgid "This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
-msgstr "Este objeto pode ser representado como nulo na estrutura JSON (que conta como \"presente\" para efeitos de cardinalidade)"
+msgstr ""
 
 # STRUC_DEF_OBLIG
 #: STRUC_DEF_OBLIG
-#, fuzzy
 msgid "This element has obligations"
-msgstr "Este elemento tem obrigações"
+msgstr ""
 
 # STRUC_DEF_OBLIG_ADD
 #: STRUC_DEF_OBLIG_ADD
-#, fuzzy
 msgid "This is an obligation profile that only contains obligations and additional bindings"
-msgstr "Trata-se de um perfil de obrigações que contém apenas obrigações e ligações adicionais"
+msgstr ""
 
 # STRUC_DEF_OBLIG_ALL
 #: STRUC_DEF_OBLIG_ALL
-#, fuzzy
 msgid "Obligations that apply to all actors"
-msgstr "Obrigações que se aplicam a todos os actores"
+msgstr ""
 
 # STRUC_DEF_OBLIG_FROM
 #: STRUC_DEF_OBLIG_FROM
-#, fuzzy
 msgid "This profile picks up obligations and additional bindings from"
-msgstr "Este perfil retoma obrigações e ligações adicionais de"
+msgstr ""
 
 # STRUC_DEF_OBLIG_SUPP
 #: STRUC_DEF_OBLIG_SUPP
-#, fuzzy
 msgid "This element has obligations and must be supported"
-msgstr "Este elemento tem obrigações e deve ser apoiado"
+msgstr ""
 
 # STRUC_DEF_ONE_OF
 #: STRUC_DEF_ONE_OF
-#, fuzzy
 msgid "One of:"
-msgstr "Um de:"
+msgstr ""
 
 # STRUC_DEF_OPEN
 #: STRUC_DEF_OPEN
-#, fuzzy
 msgid "Open"
-msgstr "Aberto"
+msgstr ""
 
 # STRUC_DEF_OPEN_END
 #: STRUC_DEF_OPEN_END
-#, fuzzy
 msgid "Open At End"
-msgstr "Abrir no fim"
+msgstr ""
 
 # STRUC_DEF_ORDERED
 #: STRUC_DEF_ORDERED
-#, fuzzy
 msgid "Ordered"
-msgstr "Encomendado"
+msgstr ""
 
 # STRUC_DEF_PATH
 #: STRUC_DEF_PATH
-#, fuzzy
 msgctxt "STRUC_DEF_PATH"
 msgid "Path"
-msgstr "Caminho"
+msgstr ""
 
 # STRUC_DEF_PATHS
 #: STRUC_DEF_PATHS
-#, fuzzy
 msgid "Path(s)"
-msgstr "Caminho(s)"
+msgstr ""
 
 # STRUC_DEF_PATT_VALUE
 #: STRUC_DEF_PATT_VALUE
-#, fuzzy
 msgid "Pattern Value"
-msgstr "Valor do padrão"
+msgstr ""
 
 # STRUC_DEF_PREFERRED
 #: STRUC_DEF_PREFERRED
-#, fuzzy
 msgid "preferred"
-msgstr "preferido"
+msgstr ""
 
 # STRUC_DEF_PREFIXED
 #: STRUC_DEF_PREFIXED
-#, fuzzy
 msgid "is prefixed to the value before validation"
-msgstr "é prefixado ao valor antes da validação"
+msgstr ""
 
 # STRUC_DEF_PREF_CONT
 #: STRUC_DEF_PREF_CONT
-#, fuzzy
 msgid "This is the value set that is preferred in a given context (documentation should explain why)"
-msgstr "Este é o conjunto de valores preferido num determinado contexto (a documentação deve explicar porquê)"
+msgstr ""
 
 # STRUC_DEF_PRIMITIVE
 #: STRUC_DEF_PRIMITIVE
-#, fuzzy
 msgid "Primitive Value"
-msgstr "Valor primitivo"
+msgstr ""
 
 # STRUC_DEF_PRIM_ELE
 #: STRUC_DEF_PRIM_ELE
-#, fuzzy
 msgid "This primitive element may be present, or absent, or replaced by an extension"
-msgstr "Este elemento primitivo pode estar presente, ausente ou ser substituído por uma extensão"
+msgstr ""
 
 # STRUC_DEF_PRIM_TYPE_PRESENT
 #: STRUC_DEF_PRIM_TYPE_PRESENT
-#, fuzzy
 msgid "This primitive type may be present, or absent if replaced by one of the following extensions:"
-msgstr "Este tipo primitivo pode estar presente ou ausente se for substituído por uma das seguintes extensões:"
+msgstr ""
 
 # STRUC_DEF_PRIM_TYPE_VALUE
 #: STRUC_DEF_PRIM_TYPE_VALUE
-#, fuzzy
 msgid "This primitive type must have a value (the value must be present, and cannot be replaced by an extension)"
-msgstr "Este tipo primitivo deve ter um valor (o valor deve estar presente e não pode ser substituído por uma extensão)"
+msgstr ""
 
 # STRUC_DEF_PROFILED
 #: STRUC_DEF_PROFILED
-#, fuzzy
 msgid "profiled by"
-msgstr "perfilado por"
+msgstr ""
 
 # STRUC_DEF_PROFILE_BUILDS
 #: STRUC_DEF_PROFILE_BUILDS
-#, fuzzy
 msgid "This profile builds on"
-msgstr "Este perfil baseia-se em"
+msgstr ""
 
 # STRUC_DEF_PROF_COMP
 #: STRUC_DEF_PROF_COMP
-#, fuzzy
 msgid "This profile complies with the profile"
-msgstr "Este perfil está em conformidade com o perfil"
+msgstr ""
 
 # STRUC_DEF_PROF_REQ
 #: STRUC_DEF_PROF_REQ
-#, fuzzy
 msgid "This profile also requires that the instance also conform this additional profile:"
-msgstr "Este perfil também exige que a instância esteja em conformidade com este perfil adicional:"
+msgstr ""
 
 # STRUC_DEF_PROF_RES
 #: STRUC_DEF_PROF_RES
-#, fuzzy
 msgid "A profiled resource"
-msgstr "Um recurso perfilado"
+msgstr ""
 
 # STRUC_DEF_PROF_SUPP
 #: STRUC_DEF_PROF_SUPP
-#, fuzzy
 msgid "This profile must be supported"
-msgstr "Este perfil deve ser suportado"
+msgstr ""
 
 # STRUC_DEF_PROPERTY
 #: STRUC_DEF_PROPERTY
-#, fuzzy
 msgid "Property"
-msgstr "Imóveis"
+msgstr ""
 
 # STRUC_DEF_REFERS_EXT
 #: STRUC_DEF_REFERS_EXT
-#, fuzzy
 msgid "This structure refers to these extensions"
-msgstr "Esta estrutura refere-se a estas extensões"
+msgstr ""
 
 # STRUC_DEF_REFER_PROFILE
 #: STRUC_DEF_REFER_PROFILE
-#, fuzzy
 msgid "In this IG, the following structures refer to this profile:"
-msgstr "Neste GI, as estruturas seguintes referem-se a este perfil:"
+msgstr ""
 
 # STRUC_DEF_REND_UNABLE_RES
 #: STRUC_DEF_REND_UNABLE_RES
-#, fuzzy
 msgid "Unable to resolve StructureDefinition {0} resolving content reference {1}"
-msgstr "Não foi possível resolver a StructureDefinition {0} que está a resolver a referência de conteúdo {1}"
+msgstr ""
 
 # STRUC_DEF_REPEAT
 #: STRUC_DEF_REPEAT
-#, fuzzy
 msgid "This is a repeating choice group that does not appear directly in the instance"
-msgstr "Este é um grupo de opções repetitivo que não aparece diretamente na instância"
+msgstr ""
 
 # STRUC_DEF_REPEAT_ELE
 #: STRUC_DEF_REPEAT_ELE
-#, fuzzy
 msgid "This repeating element order: {0}"
-msgstr "Esta ordem de repetição de elementos: {0}"
+msgstr ""
 
 # STRUC_DEF_REQUIRED
 #: STRUC_DEF_REQUIRED
-#, fuzzy
 msgid "required"
-msgstr "necessário"
+msgstr ""
 
 # STRUC_DEF_REQUIRED_PATT
 #: STRUC_DEF_REQUIRED_PATT
-#, fuzzy
 msgid "Required Pattern:"
-msgstr "Padrão necessário:"
+msgstr ""
 
 # STRUC_DEF_REQUIREMENTS
 #: STRUC_DEF_REQUIREMENTS
-#, fuzzy
 msgid "Requirements"
-msgstr "Requisitos"
+msgstr ""
 
 # STRUC_DEF_REQ_BIND
 #: STRUC_DEF_REQ_BIND
-#, fuzzy
 msgid "A required binding for additional codes, for us when the binding strength is ''extensible'' or ''preferred''"
-msgstr "Uma ligação necessária para códigos adicionais, por exemplo, quando a força da ligação é \"extensível\" ou \"preferida"
+msgstr ""
 
 # STRUC_DEF_REQ_PATT
 #: STRUC_DEF_REQ_PATT
-#, fuzzy
 msgid "Required Pattern"
-msgstr "Padrão necessário"
+msgstr ""
 
 # STRUC_DEF_ROOT
 #: STRUC_DEF_ROOT
-#, fuzzy
 msgid "The root class that contains instances of this class"
-msgstr "A classe de raiz que contém as instâncias desta classe"
+msgstr ""
 
 # STRUC_DEF_SEE
 #: STRUC_DEF_SEE
-#, fuzzy
 msgid "See"
-msgstr "Ver"
+msgstr ""
 
 # STRUC_DEF_SET_ARE
 #: STRUC_DEF_SET_ARE
-#, fuzzy
 msgid ". The slices are"
-msgstr ". As fatias são"
+msgstr ""
 
 # STRUC_DEF_SET_SLICES
 #: STRUC_DEF_SET_SLICES
-#, fuzzy
 msgid "This element introduces a set of slices on"
-msgstr "Este elemento introduz um conjunto de fatias em"
+msgstr ""
 
 # STRUC_DEF_SHALL_CODE
 #: STRUC_DEF_SHALL_CODE
-#, fuzzy
 msgid "The codes SHALL be taken from"
-msgstr "Os códigos DEVERÃO ser retirados de"
+msgstr ""
 
 # STRUC_DEF_SHORT
 #: STRUC_DEF_SHORT
-#, fuzzy
 msgid "Short"
-msgstr "Curto"
+msgstr ""
 
 # STRUC_DEF_SHOULD_CODE
 #: STRUC_DEF_SHOULD_CODE
-#, fuzzy
 msgid "The codes SHOULD be taken from"
-msgstr "Os códigos DEVERÃO ser retirados de"
+msgstr ""
 
 # STRUC_DEF_SINGLE_JSON_OBJECTS
 #: STRUC_DEF_SINGLE_JSON_OBJECTS
-#, fuzzy
 msgid "JSON: Represented as a single JSON Object with named properties using the value of the {0} child as the key"
-msgstr "JSON: Representado como um único objeto JSON com propriedades nomeadas utilizando o valor do filho {0} como chave"
+msgstr ""
 
 # STRUC_DEF_SLIC
 #: STRUC_DEF_SLIC
-#, fuzzy
 msgid "Slices"
-msgstr "Fatias"
+msgstr ""
 
 # STRUC_DEF_SLICE
 #: STRUC_DEF_SLICE
-#, fuzzy
 msgid "Slice"
-msgstr "Fatia"
+msgstr ""
 
 # STRUC_DEF_SLICES
 #: STRUC_DEF_SLICES
-#, fuzzy
 msgid "Slice:"
-msgstr "Fatia:"
+msgstr ""
 
 # STRUC_DEF_SLICE_FOR
 #: STRUC_DEF_SLICE_FOR
-#, fuzzy
 msgid "Slices for {0}"
-msgstr "Fatias para {0}"
+msgstr ""
 
 # STRUC_DEF_SLICE_NAME
 #: STRUC_DEF_SLICE_NAME
-#, fuzzy
 msgid "Slice Name"
-msgstr "Nome da fatia"
+msgstr ""
 
 # STRUC_DEF_SLICE_PAR
 #: STRUC_DEF_SLICE_PAR
-#, fuzzy
 msgid "Slice {0}"
-msgstr "Fatia {0}"
+msgstr ""
 
 # STRUC_DEF_SNOMED
 #: STRUC_DEF_SNOMED
-#, fuzzy
 msgid "SNOMED-CT"
 msgstr "SNOMED-CT"
 
 # STRUC_DEF_SNOMED_CODE
 #: STRUC_DEF_SNOMED_CODE
-#, fuzzy
 msgid "SNOMED-CT Code"
-msgstr "Código SNOMED-CT"
+msgstr ""
 
 # STRUC_DEF_STAND_STAT
 #: STRUC_DEF_STAND_STAT
-#, fuzzy
 msgid "Standard Status"
-msgstr "Estado padrão"
+msgstr ""
 
 # STRUC_DEF_STAND_STATUS
 #: STRUC_DEF_STAND_STATUS
-#, fuzzy
 msgid "Standards Status ="
-msgstr "Estado das normas ="
+msgstr ""
 
 # STRUC_DEF_STRING_FORM
 #: STRUC_DEF_STRING_FORM
-#, fuzzy
 msgid "String Format"
-msgstr "Formato da cadeia de caracteres"
+msgstr ""
 
 # STRUC_DEF_STRUCTURES
 #: STRUC_DEF_STRUCTURES
-#, fuzzy
 msgid "Structures"
-msgstr "Estruturas"
+msgstr ""
 
 # STRUC_DEF_SUIT_SHALL_CODE
 #: STRUC_DEF_SUIT_SHALL_CODE
-#, fuzzy
 msgid "Unless not suitable, these codes SHALL be taken from"
-msgstr "A menos que não sejam adequados, estes códigos DEVERÃO ser retirados de"
+msgstr ""
 
 # STRUC_DEF_TARG_SUPP
 #: STRUC_DEF_TARG_SUPP
-#, fuzzy
 msgid "This target must be supported"
-msgstr "Este objetivo deve ser suportado"
+msgstr ""
 
 # STRUC_DEF_TEMPLATEID
 #: STRUC_DEF_TEMPLATEID
-#, fuzzy
 msgid "Instance of this type are validated by templateId"
-msgstr "As instâncias deste tipo são validadas por templateId"
+msgstr ""
 
 # STRUC_DEF_TERM_BIND
 #: STRUC_DEF_TERM_BIND
-#, fuzzy
 msgid "Terminology Bindings (Differential)"
-msgstr "Terminologia Ligações (Diferencial)"
+msgstr ""
 
 # STRUC_DEF_TERM_BINDS
 #: STRUC_DEF_TERM_BINDS
-#, fuzzy
 msgid "Terminology Bindings"
-msgstr "Terminologia Ligações"
+msgstr ""
 
 # STRUC_DEF_THEN_TYPE
 #: STRUC_DEF_THEN_TYPE
-#, fuzzy
 msgid "then the type is"
-msgstr "então o tipo é"
+msgstr ""
 
 # STRUC_DEF_THIS_REFERS
 #: STRUC_DEF_THIS_REFERS
-#, fuzzy
 msgid "This structure refers to these other structures"
-msgstr "Esta estrutura refere-se a estas outras estruturas"
+msgstr ""
 
 # STRUC_DEF_TYPE_BOUND
 #: STRUC_DEF_TYPE_BOUND
-#, fuzzy
 msgid "This type can be bound to a value set using the {0}"
-msgstr "Este tipo pode ser ligado a um conjunto de valores utilizando o {0}"
+msgstr ""
 
 # STRUC_DEF_TYPE_PARAMETER
 #: STRUC_DEF_TYPE_PARAMETER
-#, fuzzy
 msgid "Type Parameter"
-msgstr "Tipo Parâmetro"
+msgstr ""
 
 # STRUC_DEF_TYPE_SET
 #: STRUC_DEF_TYPE_SET
-#, fuzzy
 msgid "This type can be bound to a value set using the"
-msgstr "Este tipo pode ser ligado a um conjunto de valores utilizando a função"
+msgstr ""
 
 # STRUC_DEF_TYPE_SPEC
 #: STRUC_DEF_TYPE_SPEC
-#, fuzzy
 msgid "Type Specifier"
-msgstr "Especificador de tipo"
+msgstr ""
 
 # STRUC_DEF_TYPE_SUPP
 #: STRUC_DEF_TYPE_SUPP
-#, fuzzy
 msgid "This type must be supported"
-msgstr "Este tipo deve ser suportado"
+msgstr ""
 
 # STRUC_DEF_UI
 #: STRUC_DEF_UI
-#, fuzzy
 msgctxt "STRUC_DEF_UI"
 msgid "UI"
-msgstr "IU"
+msgstr ""
 
 # STRUC_DEF_UI_CONT
 #: STRUC_DEF_UI_CONT
-#, fuzzy
 msgid "This value set is provided for user look up in a given context. Typically, these valuesets only include a subset of codes relevant for input in a context"
-msgstr "Este conjunto de valores é fornecido para ser consultado pelo utilizador num determinado contexto. Normalmente, estes conjuntos de valores incluem apenas um subconjunto de códigos relevantes para entrada num contexto"
+msgstr ""
 
 # STRUC_DEF_UNADORNED
 #: STRUC_DEF_UNADORNED
-#, fuzzy
 msgid "In the XML format, this property is represented as unadorned text."
-msgstr "No formato XML, esta propriedade é representada como texto sem adornos."
+msgstr ""
 
 # STRUC_DEF_UNDEF_ACT
 #: STRUC_DEF_UNDEF_ACT
-#, fuzzy
 msgid "Obligations that apply to the undefined actor {0}"
-msgstr "Obrigações que se aplicam ao ator indefinido {0}"
+msgstr ""
 
 # STRUC_DEF_UNKNOWN_APPROACH
 #: STRUC_DEF_UNKNOWN_APPROACH
-#, fuzzy
 msgid "Instances of this type are validated using an unknown approach: {0}"
-msgstr "As instâncias deste tipo são validadas utilizando uma abordagem desconhecida: {0}"
+msgstr ""
 
 # STRUC_DEF_UNKNOWN_REF
 #: STRUC_DEF_UNKNOWN_REF
-#, fuzzy
 msgid "Unknown reference to {0}"
-msgstr "Referência desconhecida a {0}"
+msgstr ""
 
 # STRUC_DEF_UNORDERED
 #: STRUC_DEF_UNORDERED
-#, fuzzy
 msgid "Unordered"
-msgstr "Não ordenado"
+msgstr ""
 
 # STRUC_DEF_UNSPECIFIED
 #: STRUC_DEF_UNSPECIFIED
-#, fuzzy
 msgid "Unspecified"
-msgstr "Não especificado"
+msgstr ""
 
 # STRUC_DEF_URLS
 #: STRUC_DEF_URLS
-#, fuzzy
 msgid "URL:"
 msgstr "URL:"
 
 # STRUC_DEF_VALID
 #: STRUC_DEF_VALID
-#, fuzzy
 msgid "Validation"
-msgstr "Validação"
+msgstr ""
 
 # STRUC_DEF_VALUESET
 #: STRUC_DEF_VALUESET
-#, fuzzy
 msgid "ValueSet"
-msgstr "Conjunto de valores"
+msgstr ""
 
 # STRUC_DEF_VALUESET_CODE
 #: STRUC_DEF_VALUESET_CODE
-#, fuzzy
 msgid "ValueSet / Code"
-msgstr "ValueSet / Código"
+msgstr ""
 
 # STRUC_DEF_VALUE_ALT
 #: STRUC_DEF_VALUE_ALT
-#, fuzzy
 msgid "Value Alternatives"
-msgstr "Alternativas de valor"
+msgstr ""
 
 # STRUC_DEF_VALUE_REQ
 #: STRUC_DEF_VALUE_REQ
-#, fuzzy
 msgid "Value Required"
-msgstr "Valor requerido"
+msgstr ""
 
 # STRUC_DEF_WHAT
 #: STRUC_DEF_WHAT
-#, fuzzy
 msgid "What goes here"
-msgstr "O que vai aqui"
+msgstr ""
 
 # STRUC_DEF_XHTML
 #: STRUC_DEF_XHTML
-#, fuzzy
 msgid "This property is represented as XHTML Text in the XML."
-msgstr "Esta propriedade é representada como Texto XHTML no XML."
+msgstr ""
 
 # STRUC_DEF_XML_ACTUAL
 #: STRUC_DEF_XML_ACTUAL
-#, fuzzy
 msgid "In the XML format, this property has the actual name"
-msgstr "No formato XML, esta propriedade tem o nome atual"
+msgstr ""
 
 # STRUC_DEF_XML_ATTRIBUTE
 #: STRUC_DEF_XML_ATTRIBUTE
-#, fuzzy
 msgid "In the XML format, this property is represented as an attribute."
-msgstr "No formato XML, esta propriedade é representada como um atributo."
+msgstr ""
 
 # STRUC_DEF_XML_ELE
 #: STRUC_DEF_XML_ELE
-#, fuzzy
 msgid "XML Element Name"
-msgstr "Nome do elemento XML"
+msgstr ""
 
 # STRUC_DEF_XML_FORM
 #: STRUC_DEF_XML_FORM
-#, fuzzy
 msgid "XML Format"
-msgstr "Formato XML"
+msgstr ""
 
 # STRUC_DEF_XML_NAME
 #: STRUC_DEF_XML_NAME
-#, fuzzy
 msgid "XML Namespace"
-msgstr "Espaço de nomes XML"
+msgstr ""
 
 # STRUC_DEF_XSI
 #: STRUC_DEF_XSI
-#, fuzzy
 msgid "The type of this property is determined using the"
-msgstr "O tipo desta propriedade é determinado utilizando o"
+msgstr ""
 
 # SUB_TOPIC_CREATE
 #: SUB_TOPIC_CREATE
-#, fuzzy
 msgid "* create result = {0}"
-msgstr "* criar resultado = {0}"
+msgstr ""
 
 # SUB_TOPIC_CURR
 #: SUB_TOPIC_CURR
-#, fuzzy
 msgid "* current = {0}"
-msgstr "* atual = {0}"
+msgstr ""
 
 # SUB_TOPIC_DELETE
 #: SUB_TOPIC_DELETE
-#, fuzzy
 msgid "* delete result = {0}"
-msgstr "* eliminar resultado = {0}"
+msgstr ""
 
 # SUB_TOPIC_EVENT
 #: SUB_TOPIC_EVENT
-#, fuzzy
 msgid "Event"
-msgstr "Evento"
+msgstr ""
 
 # SUB_TOPIC_FHIR_PATH
 #: SUB_TOPIC_FHIR_PATH
-#, fuzzy
 msgid "FHIR Path"
-msgstr "Caminho FHIR"
+msgstr ""
 
 # SUB_TOPIC_FILT_DEF
 #: SUB_TOPIC_FILT_DEF
-#, fuzzy
 msgid "Filter Definition"
-msgstr "Definição de filtro"
+msgstr ""
 
 # SUB_TOPIC_FILT_PAR
 #: SUB_TOPIC_FILT_PAR
-#, fuzzy
 msgid "Filter Parameter"
-msgstr "Parâmetro do filtro"
+msgstr ""
 
 # SUB_TOPIC_INCL
 #: SUB_TOPIC_INCL
-#, fuzzy
 msgid "Includes"
-msgstr "Inclui"
+msgstr ""
 
 # SUB_TOPIC_INT
 #: SUB_TOPIC_INT
-#, fuzzy
 msgid "Interactions"
-msgstr "Interações"
+msgstr ""
 
 # SUB_TOPIC_PREV
 #: SUB_TOPIC_PREV
 msgid "* previous = {0}"
-msgstr "* anterior = {0}"
+msgstr ""
 
 # SUB_TOPIC_REQ
 #: SUB_TOPIC_REQ
-#, fuzzy
 msgid "* require both = {0}"
 msgstr "* require both = {0}"
 
 # SUB_TOPIC_RES_TRIG
 #: SUB_TOPIC_RES_TRIG
-#, fuzzy
 msgid "Resource Triggers"
-msgstr "Accionadores de recursos"
+msgstr ""
 
 # SUB_TOPIC_REV_INCL
 #: SUB_TOPIC_REV_INCL
 msgid "Reverse Includes"
-msgstr "Inclusão reversa"
+msgstr ""
 
 # TERMINOLOGY_LVL
 #: TERMINOLOGY_LVL
-#, fuzzy
 msgid "Lvl"
-msgstr "Nível"
+msgstr ""
 
 # TERM_REND_COPY
 #: TERM_REND_COPY
-#, fuzzy
 msgid "Copy {0} Format to clipboard"
-msgstr "Copiar {0} Formato para a área de transferência"
+msgstr ""
 
 # TEST_PLAN_ASS
 #: TEST_PLAN_ASS
-#, fuzzy
 msgid "Assertion"
-msgstr "Asserção"
+msgstr ""
 
 # TEST_PLAN_ASSERTION
 #: TEST_PLAN_ASSERTION
-#, fuzzy
 msgid "Assertion {0}"
-msgstr "Asserção {0}"
+msgstr ""
 
 # TEST_PLAN_CASE
 #: TEST_PLAN_CASE
 msgid "Test Case"
-msgstr "Caso de teste"
+msgstr ""
 
 # TEST_PLAN_CASE_SEQ
 #: TEST_PLAN_CASE_SEQ
-#, fuzzy
 msgid "Test Case - Sequence {0}"
-msgstr "Caso de teste - Sequência {0}"
+msgstr ""
 
 # TEST_PLAN_CATEGORY
 #: TEST_PLAN_CATEGORY
-#, fuzzy
 msgid "Category:"
-msgstr "Categoria:"
+msgstr ""
 
 # TEST_PLAN_DATA
 #: TEST_PLAN_DATA
-#, fuzzy
 msgid "Test Data"
-msgstr "Dados de teste"
+msgstr ""
 
 # TEST_PLAN_DEP
 #: TEST_PLAN_DEP
-#, fuzzy
 msgid "Test Plan Dependency:"
-msgstr "Dependência do plano de teste:"
+msgstr ""
 
 # TEST_PLAN_DEPEN
 #: TEST_PLAN_DEPEN
-#, fuzzy
 msgid "Test Plan Dependencies:"
-msgstr "Dependências do plano de teste:"
+msgstr ""
 
 # TEST_PLAN_DESC
 #: TEST_PLAN_DESC
-#, fuzzy
 msgid "Dependency - no description"
-msgstr "Dependência - sem descrição"
+msgstr ""
 
 # TEST_PLAN_LANG
 #: TEST_PLAN_LANG
-#, fuzzy
 msgid "Language"
-msgstr "Língua"
+msgstr ""
 
 # TEST_PLAN_RESULT
 #: TEST_PLAN_RESULT
-#, fuzzy
 msgid "Result"
-msgstr "Resultado"
+msgstr ""
 
 # TEST_PLAN_RUN
 #: TEST_PLAN_RUN
-#, fuzzy
 msgid "Test Run"
-msgstr "Teste de funcionamento"
+msgstr ""
 
 # TEST_PLAN_SCOPE
 #: TEST_PLAN_SCOPE
-#, fuzzy
 msgid "Test Plan Scope:"
-msgstr "Âmbito do plano de teste:"
+msgstr ""
 
 # TEST_PLAN_SCOPES
 #: TEST_PLAN_SCOPES
-#, fuzzy
 msgid "Test Plan Scopes:"
-msgstr "Âmbitos dos planos de teste:"
+msgstr ""
 
 # TEST_PLAN_SOURCE
 #: TEST_PLAN_SOURCE
-#, fuzzy
 msgid "Source[x]"
-msgstr "Fonte[x]"
+msgstr ""
 
 # TEST_PLAN_TEST_DATA
 #: TEST_PLAN_TEST_DATA
-#, fuzzy
 msgid "Test Data {0}"
-msgstr "Dados de teste {0}"
+msgstr ""
 
 # TEST_PLAN_TEST_RUN
 #: TEST_PLAN_TEST_RUN
-#, fuzzy
 msgid "Test Run {0}"
-msgstr "Teste de funcionamento {0}"
+msgstr ""
 
 # TEXT_ICON_CHOICE
 #: TEXT_ICON_CHOICE
-#, fuzzy
 msgid "Choice of Types"
-msgstr "Escolha de tipos"
+msgstr ""
 
 # TEXT_ICON_DATATYPE
 #: TEXT_ICON_DATATYPE
-#, fuzzy
 msgid "Data Type"
-msgstr "Tipo de dados"
+msgstr ""
 
 # TEXT_ICON_ELEMENT
 #: TEXT_ICON_ELEMENT
-#, fuzzy
 msgid "Element"
-msgstr "Elemento"
+msgstr ""
 
 # TEXT_ICON_EXTENSION_COMPLEX
 #: TEXT_ICON_EXTENSION_COMPLEX
-#, fuzzy
 msgid "Complex Extension"
-msgstr "Extensão complexa"
+msgstr ""
 
 # TEXT_ICON_EXTENSION_SIMPLE
 #: TEXT_ICON_EXTENSION_SIMPLE
-#, fuzzy
 msgid "Simple Extension"
-msgstr "Extensão simples"
+msgstr ""
 
 # TEXT_ICON_KEY
 #: TEXT_ICON_KEY
-#, fuzzy
 msgid "JSON Key Value"
-msgstr "Valor chave JSON"
+msgstr ""
 
 # TEXT_ICON_OBJECT_BOX
 #: TEXT_ICON_OBJECT_BOX
-#, fuzzy
 msgid "Object"
-msgstr "Objeto"
+msgstr ""
 
 # TEXT_ICON_PRIMITIVE
 #: TEXT_ICON_PRIMITIVE
-#, fuzzy
 msgid "Primitive Data Type"
-msgstr "Tipo de dados primitivos"
+msgstr ""
 
 # TEXT_ICON_REFERENCE
 #: TEXT_ICON_REFERENCE
-#, fuzzy
 msgid "Reference to another Resource"
-msgstr "Referência a outro recurso"
+msgstr ""
 
 # TEXT_ICON_REUSE
 #: TEXT_ICON_REUSE
-#, fuzzy
 msgid "Reference to another Element"
-msgstr "Referência a outro elemento"
+msgstr ""
 
 # TEXT_ICON_SLICE
 #: TEXT_ICON_SLICE
-#, fuzzy
 msgid "Slice Definition"
-msgstr "Definição de fatia"
+msgstr ""
 
 # TEXT_ICON_SLICE_ITEM
 #: TEXT_ICON_SLICE_ITEM
-#, fuzzy
 msgid "Slice Item"
-msgstr "Item de fatia"
+msgstr ""
 
 # TX_DISPLAY
 #: TX_DISPLAY
-#, fuzzy
 msgid "Display"
-msgstr "Ecrã"
+msgstr ""
 
 # TX_DISPLAY_LANG
 #: TX_DISPLAY_LANG
-#, fuzzy
 msgid "Display ({0})"
-msgstr "Ecrã ({0})"
+msgstr ""
 
 # VALUE_ES_ES
 #: VALUE_ES_ES
-#, fuzzy
 msgid "Spanish National Edition"
-msgstr "Edição nacional espanhola"
+msgstr ""
 
 # VALUE_SET_ADD_DESIG
 #: VALUE_SET_ADD_DESIG
-#, fuzzy
 msgid "Additional Designations and Language Displays"
-msgstr "Designações adicionais e ecrãs de idiomas"
+msgstr ""
 
 # VALUE_SET_ALL_CODE
 #: VALUE_SET_ALL_CODE
-#, fuzzy
 msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains all the codes, and also this structure:"
-msgstr "Este include especifica uma hierarquia para quando os conjuntos de valores são gerados para utilização numa interface de utilizador. A expansão contém todos os códigos e também essa estrutura:"
+msgstr ""
 
 # VALUE_SET_ALL_CODES_DEF
 #: VALUE_SET_ALL_CODES_DEF
-#, fuzzy
 msgid "all codes defined in"
-msgstr "todos os códigos definidos em"
+msgstr ""
 
 # VALUE_SET_AND
 #: VALUE_SET_AND
-#, fuzzy
 msgctxt "VALUE_SET_AND"
 msgid "and"
-msgstr "e"
+msgstr ""
 
 # VALUE_SET_AR
 #: VALUE_SET_AR
-#, fuzzy
 msgid "Argentinian Edition"
-msgstr "Edição argentina"
+msgstr ""
 
 # VALUE_SET_AT
 #: VALUE_SET_AT
-#, fuzzy
 msgid "Austrian Edition"
-msgstr "Edição austríaca"
+msgstr ""
 
 # VALUE_SET_AUS
 #: VALUE_SET_AUS
-#, fuzzy
 msgid "Australian Edition"
-msgstr "Edição australiana"
+msgstr ""
 
 # VALUE_SET_BE
 #: VALUE_SET_BE
-#, fuzzy
 msgid "Belgian Edition"
-msgstr "Edição belga"
+msgstr ""
 
 # VALUE_SET_CA
 #: VALUE_SET_CA
-#, fuzzy
 msgid "Canadian Edition"
-msgstr "Edição canadiana"
+msgstr ""
 
 # VALUE_SET_CA_EN
 #: VALUE_SET_CA_EN
-#, fuzzy
 msgid "Canadian English Edition"
-msgstr "Edição em inglês canadiano"
+msgstr ""
 
 # VALUE_SET_CH
 #: VALUE_SET_CH
-#, fuzzy
 msgid "Swiss Edition"
-msgstr "Edição suíça"
+msgstr ""
 
 # VALUE_SET_CODES_FROM
 #: VALUE_SET_CODES_FROM
-#, fuzzy
 msgid "codes from"
-msgstr "códigos de"
+msgstr ""
 
 # VALUE_SET_CODE_ITEM
 #: VALUE_SET_CODE_ITEM
-#, fuzzy
 msgid "The code for the item"
-msgstr "O código do item"
+msgstr ""
 
 # VALUE_SET_CODE_SELEC
 #: VALUE_SET_CODE_SELEC
-#, fuzzy
 msgid "This value set cannot be fully expanded, but a selection ({0} codes) of the whole set of codes is shown here."
-msgstr "Este conjunto de valores não pode ser totalmente expandido, mas é aqui apresentada uma seleção (códigos {0}) de todo o conjunto de códigos."
+msgstr ""
 
 # VALUE_SET_COMMA
 #: VALUE_SET_COMMA
-#, fuzzy
 msgid ","
-msgstr ","
+msgstr ""
 
 # VALUE_SET_CONT
 #: VALUE_SET_CONT
-#, fuzzy
 msgid "Value Set Contents"
-msgstr "Conteúdo do conjunto de valores"
+msgstr ""
 
 # VALUE_SET_CONTAINS
 #: VALUE_SET_CONTAINS
-#, fuzzy
 msgid "This value set contains {0} concepts"
-msgstr "Este conjunto de valores contém {0} conceitos"
+msgstr ""
 
 # VALUE_SET_CONTAINS_AT_LEAST
 #: VALUE_SET_CONTAINS_AT_LEAST
-#, fuzzy
 msgid "This value set contains at least {0} concepts"
-msgstr "Este conjunto de valores contém pelo menos {0} conceitos"
+msgstr ""
 
 # VALUE_SET_CONT_STRUC
 #: VALUE_SET_CONT_STRUC
-#, fuzzy
 msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure:"
-msgstr "Esse include especifica uma hierarquia para quando os conjuntos de valores são gerados para utilização em uma interface de usuário. A expansão contém essa estrutura:"
+msgstr ""
 
 # VALUE_SET_DANISH
 #: VALUE_SET_DANISH
-#, fuzzy
 msgid "Danish"
-msgstr "Dinamarquesa"
+msgstr ""
 
 # VALUE_SET_DE
 #: VALUE_SET_DE
-#, fuzzy
 msgid "German Edition"
-msgstr "Edição alemã"
+msgstr ""
 
 # VALUE_SET_DESCENDENTOF
 #: VALUE_SET_DESCENDENTOF
-#, fuzzy
 msgid "descends from"
-msgstr "descende de"
+msgstr ""
 
 # VALUE_SET_DESIG
 #: VALUE_SET_DESIG
-#, fuzzy
 msgid "Additional Designations"
-msgstr "Designações adicionais"
+msgstr ""
 
 # VALUE_SET_DISPLAY_ITEM
 #: VALUE_SET_DISPLAY_ITEM
-#, fuzzy
 msgid "The display for the item"
-msgstr "A visualização do item"
+msgstr ""
 
 # VALUE_SET_DOESNT_EXIST
 #: VALUE_SET_DOESNT_EXIST
-#, fuzzy
 msgid "doesn''t exist"
-msgstr "não existe"
+msgstr ""
 
 # VALUE_SET_DUTCH
 #: VALUE_SET_DUTCH
-#, fuzzy
 msgid "Dutch"
-msgstr "holandês"
+msgstr ""
 
 # VALUE_SET_EE
 #: VALUE_SET_EE
-#, fuzzy
 msgid "Estonian Edition"
-msgstr "Edição estónia"
+msgstr ""
 
 # VALUE_SET_EQUAL
 #: VALUE_SET_EQUAL
-#, fuzzy
 msgid "="
-msgstr "="
+msgstr ""
 
 # VALUE_SET_ERROR
 #: VALUE_SET_ERROR
-#, fuzzy
 msgid "Error Expanding ValueSet: {0}"
-msgstr "Erro ao expandir o ValueSet: {0}"
+msgstr ""
 
 # VALUE_SET_EXCL
 #: VALUE_SET_EXCL
-#, fuzzy
 msgid "Exclude"
-msgstr "Excluir"
+msgstr ""
 
 # VALUE_SET_EXCLUDED_FROM
 #: VALUE_SET_EXCLUDED_FROM
-#, fuzzy
 msgid "Excluded from"
-msgstr "Excluído de"
+msgstr ""
 
 # VALUE_SET_EXISTS
 #: VALUE_SET_EXISTS
-#, fuzzy
 msgid "exists"
-msgstr "existe"
+msgstr ""
 
 # VALUE_SET_EXP
 #: VALUE_SET_EXP
-#, fuzzy
 msgid "Expansion based on example code system"
-msgstr "Expansão baseada num sistema de códigos de exemplo"
+msgstr ""
 
 # VALUE_SET_EXPANSION
 #: VALUE_SET_EXPANSION
-#, fuzzy
 msgid "Expansion based on"
-msgstr "Expansão com base em"
+msgstr ""
 
 # VALUE_SET_EXPANSIONS
 #: VALUE_SET_EXPANSIONS
-#, fuzzy
 msgid "Expansion based on:"
-msgstr "Expansão baseada em:"
+msgstr ""
 
 # VALUE_SET_EXPANSIONS_INTERNAL
 #: VALUE_SET_EXPANSIONS_INTERNAL
-#, fuzzy
 msgid "Expansion performed internally based on:"
-msgstr "Expansão efectuada internamente com base em:"
+msgstr ""
 
 # VALUE_SET_EXPANSIONS_SRVR
 #: VALUE_SET_EXPANSIONS_SRVR
-#, fuzzy
 msgid "Expansion from {0} based on:"
-msgstr "Expansão a partir de {0} com base em:"
+msgstr ""
 
 # VALUE_SET_EXPANSION_INTERNAL
 #: VALUE_SET_EXPANSION_INTERNAL
-#, fuzzy
 msgid "Expansion performed internally based on"
-msgstr "Expansão efectuada internamente com base em"
+msgstr ""
 
 # VALUE_SET_EXPANSION_SRVR
 #: VALUE_SET_EXPANSION_SRVR
-#, fuzzy
 msgid "Expansion from {0} based on"
-msgstr "Expansão a partir de {0} com base em"
+msgstr ""
 
 # VALUE_SET_EXP_FRAG
 #: VALUE_SET_EXP_FRAG
-#, fuzzy
 msgid "Expansion based on code system fragment"
-msgstr "Expansão baseada num fragmento de sistema de códigos"
+msgstr ""
 
 # VALUE_SET_FI
 #: VALUE_SET_FI
-#, fuzzy
 msgid "Finnish Edition"
-msgstr "Edição finlandesa"
+msgstr ""
 
 # VALUE_SET_GENERALIZES
 #: VALUE_SET_GENERALIZES
-#, fuzzy
 msgid "generalizes"
-msgstr "generaliza"
+msgstr ""
 
 # VALUE_SET_HAS
 #: VALUE_SET_HAS
-#, fuzzy
 msgid "This value set has {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
-msgstr "Este conjunto de valores contém {0} códigos. A fim de manter o tamanho da publicação gerível, é apresentada apenas uma seleção ({1} códigos) de todo o conjunto de códigos."
+msgstr ""
 
 # VALUE_SET_HAS_AT_LEAST
 #: VALUE_SET_HAS_AT_LEAST
-#, fuzzy
 msgid "This value set has at least {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
-msgstr "Este conjunto de valores contém pelo menos {0} códigos. A fim de manter o tamanho da publicação gerível, é apresentada apenas uma seleção ({1} códigos) de todo o conjunto de códigos."
+msgstr ""
 
 # VALUE_SET_IE
 #: VALUE_SET_IE
-#, fuzzy
 msgid "Irish Edition"
-msgstr "Edição irlandesa"
+msgstr ""
 
 # VALUE_SET_IMPORT
 #: VALUE_SET_IMPORT
@@ -6239,267 +5324,223 @@ msgstr[1] ""
 
 # VALUE_SET_IN
 #: VALUE_SET_IN
-#, fuzzy
 msgid "in"
-msgstr "em"
+msgstr ""
 
 # VALUE_SET_INACT
 #: VALUE_SET_INACT
-#, fuzzy
 msgid "inactive"
-msgstr "inativo"
+msgstr ""
 
 # VALUE_SET_INACTIVE
 #: VALUE_SET_INACTIVE
-#, fuzzy
 msgid "Inactive"
-msgstr "Inativo"
+msgstr ""
 
 # VALUE_SET_INC
 #: VALUE_SET_INC
-#, fuzzy
 msgid "Include"
-msgstr "Incluir"
+msgstr ""
 
 # VALUE_SET_INCLUDED_INTO
 #: VALUE_SET_INCLUDED_INTO
-#, fuzzy
 msgid "Included into"
-msgstr "Incluído em"
+msgstr ""
 
 # VALUE_SET_INT
 #: VALUE_SET_INT
-#, fuzzy
 msgid "International"
-msgstr "Internacional"
+msgstr ""
 
 # VALUE_SET_ISA
 #: VALUE_SET_ISA
-#, fuzzy
 msgid "is-a"
-msgstr "é um"
+msgstr ""
 
 # VALUE_SET_ISNOTA
 #: VALUE_SET_ISNOTA
-#, fuzzy
 msgid "is-not-a"
-msgstr "não é um"
+msgstr ""
 
 # VALUE_SET_KR
 #: VALUE_SET_KR
-#, fuzzy
 msgid "Republic of Korea Edition (South Korea)"
-msgstr "Edição da República da Coreia (Coreia do Sul)"
+msgstr ""
 
 # VALUE_SET_LEVEL
 #: VALUE_SET_LEVEL
-#, fuzzy
 msgid "Level"
-msgstr "Nível"
+msgstr ""
 
 # VALUE_SET_LOINCV
 #: VALUE_SET_LOINCV
-#, fuzzy
 msgid "Loinc v"
 msgstr "Loinc v"
 
 # VALUE_SET_NO
 #: VALUE_SET_NO
-#, fuzzy
 msgid "Norwegian Edition"
-msgstr "Edição norueguesa"
+msgstr ""
 
 # VALUE_SET_NOTE
 #: VALUE_SET_NOTE
-#, fuzzy
 msgid "Note: {0}"
-msgstr "Nota: {0}"
+msgstr ""
 
 # VALUE_SET_NOTIN
 #: VALUE_SET_NOTIN
-#, fuzzy
 msgid "not in"
-msgstr "não em"
+msgstr ""
 
 # VALUE_SET_NOT_DEF
 #: VALUE_SET_NOT_DEF
-#, fuzzy
 msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface, but the rules are not properly defined"
-msgstr "Este include especifica uma hierarquia para quando os conjuntos de valores são gerados para utilização numa interface de utilizador, mas as regras não estão corretamente definidas"
+msgstr ""
 
 # VALUE_SET_NOT_FOUND
 #: VALUE_SET_NOT_FOUND
-#, fuzzy
 msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure, and any codes not found in the structure:"
-msgstr "Esse include especifica uma hierarquia para quando os conjuntos de valores são gerados para utilização em uma interface de usuário. A expansão contém essa estrutura e quaisquer códigos não encontrados na estrutura:"
+msgstr ""
 
 # VALUE_SET_NO_VER
 #: VALUE_SET_NO_VER
-#, fuzzy
 msgid "(no version)"
-msgstr "(sem versão)"
+msgstr ""
 
 # VALUE_SET_NO_VERSION
 #: VALUE_SET_NO_VERSION
-#, fuzzy
 msgid "(no version) ("
-msgstr "(sem versão) ("
+msgstr ""
 
 # VALUE_SET_NULL
 #: VALUE_SET_NULL
-#, fuzzy
 msgid "null"
-msgstr "nulo"
+msgstr ""
 
 # VALUE_SET_NULLS
 #: VALUE_SET_NULLS
-#, fuzzy
 msgid "?ngen-13?"
 msgstr "?ngen-13?"
 
 # VALUE_SET_NUMBER_CONCEPTS
 #: VALUE_SET_NUMBER_CONCEPTS
-#, fuzzy
 msgid "This value set expansion contains {0} concepts."
-msgstr "Esta expansão do conjunto de valores contém {0} conceitos."
+msgstr ""
 
 # VALUE_SET_NZ
 #: VALUE_SET_NZ
-#, fuzzy
 msgid "New Zealand Edition"
-msgstr "Edição da Nova Zelândia"
+msgstr ""
 
 # VALUE_SET_OTHER_DISPLAY
 #: VALUE_SET_OTHER_DISPLAY
-#, fuzzy
 msgid "Other Display ({0})"
-msgstr "Outro ecrã ({0})"
+msgstr ""
 
 # VALUE_SET_REGEX
 #: VALUE_SET_REGEX
-#, fuzzy
 msgid "matches (by regex)"
-msgstr "correspondências (por regex)"
+msgstr ""
 
 # VALUE_SET_RULES_EXC
 #: VALUE_SET_RULES_EXC
-#, fuzzy
 msgid "This value set excludes codes based on the following rules:"
-msgstr "Este conjunto de valores exclui códigos com base nas seguintes regras:"
+msgstr ""
 
 # VALUE_SET_RULES_INC
 #: VALUE_SET_RULES_INC
-#, fuzzy
 msgid "This value set includes codes based on the following rules:"
-msgstr "Este conjunto de valores inclui códigos baseados nas seguintes regras:"
+msgstr ""
 
 # VALUE_SET_SEL
 #: VALUE_SET_SEL
-#, fuzzy
 msgid "This value set has >1000 codes in it. In order to keep the publication size manageable, only a selection (1000 codes) of the whole set of codes is shown"
-msgstr "Este conjunto de valores contém mais de 1000 códigos. A fim de manter o tamanho da publicação gerível, é apresentada apenas uma seleção (1000 códigos) de todo o conjunto de códigos"
+msgstr ""
 
 # VALUE_SET_SNOMED
 #: VALUE_SET_SNOMED
-#, fuzzy
 msgid "SNOMED CT {0} edition"
-msgstr "Edição SNOMED CT {0}"
+msgstr ""
 
 # VALUE_SET_SNOMED_ADD
 #: VALUE_SET_SNOMED_ADD
-#, fuzzy
 msgid "SNOMED CT {0} edition {1}"
-msgstr "SNOMED CT {0} edição {1}"
+msgstr ""
 
 # VALUE_SET_SPAN
 #: VALUE_SET_SPAN
-#, fuzzy
 msgid "Spanish"
-msgstr "espanhol"
+msgstr ""
 
 # VALUE_SET_SPEC_NAME
 #: VALUE_SET_SPEC_NAME
-#, fuzzy
 msgid "Fully specified name"
-msgstr "Nome totalmente especificado"
+msgstr ""
 
 # VALUE_SET_SWEDISH
 #: VALUE_SET_SWEDISH
-#, fuzzy
 msgid "Swedish"
-msgstr "Sueco"
+msgstr ""
 
 # VALUE_SET_SYNONYM
 #: VALUE_SET_SYNONYM
-#, fuzzy
 msgid "Synonym"
-msgstr "Sinónimo"
+msgstr ""
 
 # VALUE_SET_SYSTEM
 #: VALUE_SET_SYSTEM
-#, fuzzy
 msgid "System"
-msgstr "Sistema"
+msgstr ""
 
 # VALUE_SET_THESE_CODES_DEF
 #: VALUE_SET_THESE_CODES_DEF
-#, fuzzy
 msgid "these codes as defined in"
-msgstr "estes códigos, tal como definidos em"
+msgstr ""
 
 # VALUE_SET_TOO_COSTLY
 #: VALUE_SET_TOO_COSTLY
-#, fuzzy
 msgid "This value set cannot be expanded because the terminology server(s) deemed it too costly to do so"
-msgstr "Este conjunto de valores não pode ser expandido porque o(s) servidor(es) terminológico(s) considerou(aram) demasiado dispendioso fazê-lo"
+msgstr ""
 
 # VALUE_SET_UK
 #: VALUE_SET_UK
-#, fuzzy
 msgid "United Kingdom"
-msgstr "Reino Unido"
+msgstr ""
 
 # VALUE_SET_UK_CLIN
 #: VALUE_SET_UK_CLIN
-#, fuzzy
 msgid "UK Clinical Edition"
-msgstr "Edição clínica no Reino Unido"
+msgstr ""
 
 # VALUE_SET_US
 #: VALUE_SET_US
-#, fuzzy
 msgid "United States"
-msgstr "Estados Unidos"
+msgstr ""
 
 # VALUE_SET_USED_ELSEWHERE
 #: VALUE_SET_USED_ELSEWHERE
-#, fuzzy
 msgid "This value set is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr "Este conjunto de valores não é utilizado aqui; pode ser utilizado noutro local (por exemplo, especificações e/ou implementações que utilizem este conteúdo)"
+msgstr ""
 
 # VALUE_SET_US_ICD10CM
 #: VALUE_SET_US_ICD10CM
-#, fuzzy
 msgid "US Edition (with ICD-10-CM maps)"
-msgstr "Edição americana (com mapas ICD-10-CM)"
+msgstr ""
 
 # VALUE_SET_UY
 #: VALUE_SET_UY
-#, fuzzy
 msgid "Uruguay Edition"
-msgstr "Edição do Uruguai"
+msgstr ""
 
 # VALUE_SET_WHERE
 #: VALUE_SET_WHERE
-#, fuzzy
 msgid "where"
-msgstr "onde"
+msgstr ""
 
 # VALUE_SET_WHERE_CODES
 #: VALUE_SET_WHERE_CODES
-#, fuzzy
 msgid ", where the codes are contained in"
-msgstr ", onde os códigos estão contidos em"
+msgstr ""
 
 # VSR_LOGICAL
 #: VSR_LOGICAL
@@ -6518,13 +5559,11 @@ msgstr ""
 
 # VS_ABSTRACT_CODE_HINT
 #: VS_ABSTRACT_CODE_HINT
-#, fuzzy
 msgid "This code is not selectable (''Abstract'')"
-msgstr "Este código não é selecionável (''Abstrato'')"
+msgstr ""
 
 # _NA
 #: _NA
-#, fuzzy
 msgid "n/a"
 msgstr "n/a"
 
