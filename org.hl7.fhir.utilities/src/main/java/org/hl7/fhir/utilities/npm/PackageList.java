@@ -72,8 +72,8 @@ public class PackageList {
       json.set("date", date);      
     }
 
-    public String name() {
-      return json.asString("name");
+    public String milestoneName() {
+      return json.asString("milestoneName");
     }
     
     public List<String> subPackages() {
@@ -355,7 +355,7 @@ public class PackageList {
   public List<PackageListEntry> milestones() {
     List<PackageListEntry> list = new ArrayList<>();
     for (PackageListEntry t : versions) {
-      if (t.name() != null) {
+      if (t.milestoneName() != null) {
         list.add(t);
       }
     }
