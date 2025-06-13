@@ -67,7 +67,7 @@ public class ListRenderer extends ResourceRenderer {
       td.tx(context.formatPhrase(RenderingContext.LIST_REND_ORD, displayDataType(list.child("orderedBy")))+" "); 
     } 
     for (ResourceWrapper a : list.children("note")) { 
-      renderAnnotation(status, x, a); 
+      renderAnnotation(status, x, x.para().tx("note"), a); 
     } 
     boolean flag = false; 
     boolean deleted = false; 

@@ -474,7 +474,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
 
       String url = r.getUrl();
-      if (!allowLoadingDuplicates && hasResourceVersion(r.getType(), url, r.getVersion()) && !packageInfo.isHTO()) {
+      if (!allowLoadingDuplicates && hasResourceVersion(r.getType(), url, r.getVersion()) && !packageInfo.isTHO()) {
         // special workaround for known problems with existing packages
         if (Utilities.existsInList(url, "http://hl7.org/fhir/SearchParameter/example")) {
           return;
@@ -2247,6 +2247,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     res.setStatus(inactive, status);
     res.setUnknownSystems(unknownSystems);
     res.setServer(server);
+    res.setParameters(pOut);
     return res;
   }
 
