@@ -98,8 +98,14 @@
     "reference": "#payor"
   },
   "requester": {
-    "agent": {
-      "reference": "#requester"
+    "reference": "#requester"
+  },
+  "extension": [
+    {
+      "url": "http://hl7.org/fhir/3.0/StructureDefinition/extension-CommunicationRequest.requester.onBehalfOf",
+      "valueReference": {
+        "reference": "#requester2"
+      }
     }
-  }
+  ]
 }
