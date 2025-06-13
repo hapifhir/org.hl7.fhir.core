@@ -1094,7 +1094,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     checkRenderExtensions(status, x, uri);
   } 
   
-  protected void renderAnnotation(RenderingStatus status, XhtmlNode x, ResourceWrapper a) throws FHIRException { 
+  protected void renderAnnotation(RenderingStatus status, XhtmlNode x, ResourceWrapper a) throws FHIRException, IOException { 
     StringBuilder b = new StringBuilder(); 
     if (a.has("text")) { 
       b.append(context.getTranslated(a.child("text"))); 
@@ -1126,8 +1126,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
 
 
-    x.addText(b.toString()); 
-  } 
+    addMarkdown(x, b.toString());
+  }
 
   public String displayCoding(ResourceWrapper c) { 
     String s = ""; 

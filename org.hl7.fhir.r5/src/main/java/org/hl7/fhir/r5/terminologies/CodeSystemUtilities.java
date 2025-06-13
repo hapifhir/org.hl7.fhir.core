@@ -61,6 +61,7 @@ import org.hl7.fhir.r5.model.DecimalType;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptDefinitionComponentSorter;
+import org.hl7.fhir.r5.terminologies.providers.SpecialCodeSystem;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Meta;
@@ -442,6 +443,10 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
   
   public static boolean isInactive(CodeSystem cs, String code) throws FHIRException {
+    if (cs.hasUserData(UserDataNames.tx_cs_special)) {
+      SpecialCodeSystem scs = (SpecialCodeSystem) cs.getUserData(UserDataNames.tx_cs_special);
+      return scs.inactive(code);
+    }
     ConceptDefinitionComponent def = findCode(cs.getConcept(), code);
     if (def == null)
       return true;

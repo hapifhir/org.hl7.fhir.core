@@ -3463,6 +3463,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             ok = checkImageSources(valContext, errors, e, path, "div", xhtml, resource) && ok;
           }
           checkMixedLangs(errors, e, path, xhtml.getChildNodes());
+          checkForDuplicateIds(errors, e, path, xhtml.getChildNodes());
         }
       }
 
@@ -3589,7 +3590,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       boolean found;
       try {
         if (url.startsWith("#")) {
-          Set<String> refs = new HashSet<>();
+          List<String> refs = new ArrayList<>();
           int count = countTargetMatches(valContext.getRootResource(), url.substring(1), true, "$", refs);
           found = count > 0;
         } else {
@@ -3685,7 +3686,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private boolean isCommunicationsUrl(String url) {
-    return Utilities.startsWithInList(url, "tel:", "mailto:");
+    return Utilities.startsWithInList(url, "tel:", "mailto:", "llp:");
   }
 
   private boolean isKnownMappingUri(String url) {
@@ -3757,7 +3758,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private boolean isKnownSpace(String url) {
-    return url.startsWith("http://hl7.org/fhir") || url.startsWith("http://terminology.hl7.org") || url.startsWith("http://fhir.org/guides");
+    return url.startsWith("http://hl7.org/fhir") || url.startsWith("http://terminology.hl7.org/") || url.startsWith("http://fhir.org/guides");
   }
 
   private Set<String> listExpectedCanonicalTypes(ElementDefinition context) {
@@ -3860,7 +3861,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         
         "http://hl7.org/fhirpath/System.Boolean", "http://hl7.org/fhirpath/System.String", "http://hl7.org/fhirpath/System.Integer", "http://hl7.org/fhirpath/System.Decimal", 
         "http://hl7.org/fhirpath/System.Date", "http://hl7.org/fhirpath/System.Time", "http://hl7.org/fhirpath/System.DateTime", "http://hl7.org/fhirpath/System.Quantity",
-        
+        "http://hl7.org/fhir/CompartmentDefinition/Patient", "http://hl7.org/fhir/CompartmentDefinition/Practitioner", "http://hl7.org/fhir/CompartmentDefinition/Group",
+        "http://hl7.org/fhir/CompartmentDefinition/Device", "http://hl7.org/fhir/CompartmentDefinition/Patient", "http://hl7.org/fhir/CompartmentDefinition/Encounter", 
         "http://hl7.org/fhir/SearchParameter/Resource-filter");
   }
 
@@ -3897,10 +3899,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (node.getNodeType() == NodeType.Element & "a".equals(node.getName()) && node.getAttribute("href") != null) {
       String href = node.getAttribute("href");
       if (rule(errors, "2024-07-20", IssueType.INVALID, e.line(), e.col(), path, !Utilities.noString(href), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_XHTML_EMPTY_HREF, xpath, Utilities.stripEoln(node.allText()))) {
-        if ( href.startsWith("#") && !href.equals("#")) {
+        if (href.startsWith("#") && !href.equals("#")) {
           String ref = href.substring(1);
           valContext.getInternalRefs().add(ref);
-          Set<String> refs = new HashSet<>();
+          List<String> refs = new ArrayList<>();
           int count = countTargetMatches(resource, ref, true, "$", refs);
           if (count == 0) {
             rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_XHTML_RESOLVE, href, xpath, Utilities.stripEoln(node.allText()).trim());
@@ -3944,7 +3946,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return Utilities.existsInList(scheme, "http", "https", "tel", "mailto", "data");
   }
 
-  protected int countTargetMatches(Element element, String fragment, boolean checkBundle, String path,Set<String> refs) {
+  protected int countTargetMatches(Element element, String fragment, boolean checkBundle, String path, List<String> refs) {
     int count = 0;
     if (fragment.equals(element.getIdBase())) {
       count++;
@@ -3962,7 +3964,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       Element e = element.getParentForValidator();
       while (e != null) {
         if (e.fhirType().equals("Bundle")) {
-          return countTargetMatches(e, fragment, false, path+"/..", refs);
+          count = count + countTargetMatches(e, fragment, false, path+"/..", refs);
         }
         e = e.getParentForValidator();
       }
@@ -3970,7 +3972,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return count;
   }
 
-  private int countTargetMatches(XhtmlNode node, String fragment, String path,Set<String> refs) {
+  private int countTargetMatches(XhtmlNode node, String fragment, String path, List<String> refs) {
     int count = 0;
     if (fragment.equals(node.getAttribute("id"))) {
       count++;
@@ -3981,8 +3983,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       refs.add(path+"/@name");
     }
     if (node.hasChildren()) {
-      for (XhtmlNode child : node.getChildNodes()) {
-        count = count + countTargetMatches(child, fragment, path+"/"+child.getName(), refs);
+      for (int i = 0; i < node.getChildNodes().size(); i++) {
+        XhtmlNode child = node.getChildNodes().get(i);
+        String cn = child.getPathName();
+        int total = node.countByPathName(child);
+        int index = node.indexByPathName(child);
+        count = count + countTargetMatches(child, fragment, path+"/"+cn+(total > 1 ? "["+index+"]" : ""), refs);
       }
     }
     return count;
@@ -4043,8 +4049,50 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return ok;
   }
 
+  private void checkForDuplicateIds(List<ValidationMessage> errors, Element e, String path, List<XhtmlNode> list) {
+    Set<String> ids = new HashSet<>();
+    Map<String, Integer> duplicates = new HashMap<>();
+    scanXhtmlIds(list, ids, duplicates);
+    if (!duplicates.isEmpty()) {
+      List<String> summary = new ArrayList<>();
+      for (String k : Utilities.sorted(duplicates.keySet())) {
+        summary.add(k+" ("+duplicates.get(k)+"x)");      
+      }
+      warning(errors, "2025-06-12", IssueType.BUSINESSRULE, e.line(), e.col(), path, false, I18nConstants.XHTML_XHTML_DUPLICATE_IDS, CommaSeparatedStringBuilder.join(", ", summary));
+    }
+  }
+  
+  
+  
+  private void scanXhtmlIds(List<XhtmlNode> list, Set<String> ids, Map<String, Integer> duplicates) {
+    for (XhtmlNode node : list) {
+      String id = null;
+      if (node.hasAttribute("id")) {
+        id = node.getAttribute("id");
+         if (!ids.contains(id)) {
+           ids.add(id);
+         } else {
+           duplicates.put(id, duplicates.getOrDefault(id, 1)+1);
+         }
+      }
+      if ("a".equals(node.getName()) && node.hasAttribute("name")) {
+        String name = node.getAttribute("name");
+        if (!name.equals(id)) { // it's fine to have the same name and id on the one element
+          if (!ids.contains(name)) {
+            ids.add(name);
+          } else {
+            duplicates.put(name, duplicates.getOrDefault(name, 1)+1);
+          }
+        }
+     }
+      if (node.hasChildren()) {
+        scanXhtmlIds(node.getChildNodes(), ids, duplicates);
+      }
+    }    
+  }
+
   private void checkMixedLangs(List<ValidationMessage> errors, Element e, String path, List<XhtmlNode> list) {
-    Set<String>langs = new HashSet<>();
+    Set<String> langs = new HashSet<>();
     boolean nonLangContent = false;
     for (XhtmlNode node : list) {
       if (node.getNodeType() == NodeType.Element && "div".equals(node.getName()) && isLangDiv(node)) {
