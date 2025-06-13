@@ -84,7 +84,7 @@
       "reference": "#provider"
     }
   ],
-  "context": {
+  "encounter": {
     "reference": "Encounter/example"
   },
   "payload": [
