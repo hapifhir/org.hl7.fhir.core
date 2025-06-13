@@ -757,6 +757,10 @@ public class TerminologyCache {
             if (first) first = false; else sw.write(",\r\n");
             sw.write("  \"unknown-systems\" : \""+Utilities.escapeJson(CommaSeparatedStringBuilder.join(",", ce.v.getUnknownSystems())).trim()+"\"");
           }
+          if (ce.v.getParameters() != null) {
+            if (first) first = false; else sw.write(",\r\n");
+            sw.write("  \"parameters\" : "+json.composeString(ce.v.getParameters()).trim()+"\r\n");
+          }
           if (ce.v.getIssues() != null) {
             if (first) first = false; else sw.write(",\r\n");
             OperationOutcome oo = new OperationOutcome();
@@ -844,6 +848,7 @@ public class TerminologyCache {
       boolean inactive = "true".equals(loadJS(o.get("inactive")));
       String unknownSystems = loadJS(o.get("unknown-systems"));
       OperationOutcome oo = o.has("issues") ? (OperationOutcome) new JsonParser().parse(o.getAsJsonObject("issues")) : null;
+      Parameters p = o.has("parameters") ? (Parameters) new JsonParser().parse(o.getAsJsonObject("parameters")) : null;
       t = loadJS(o.get("class")); 
       TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t) ;
       ce.v = new ValidationResult(severity, error, system, version, new ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code), display, null).setErrorClass(errorClass);
@@ -852,6 +857,9 @@ public class TerminologyCache {
       ce.v.setStatus(inactive, status);
       if (oo != null) {
         ce.v.setIssues(oo.getIssue());
+      }
+      if (p != null) {
+        ce.v.setParameters(p);
       }
     }
     return ce;
