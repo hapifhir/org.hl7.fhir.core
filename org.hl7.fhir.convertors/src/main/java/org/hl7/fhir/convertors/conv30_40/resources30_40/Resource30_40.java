@@ -75,7 +75,7 @@ public class Resource30_40 {
     if (src instanceof org.hl7.fhir.dstu3.model.Communication)
       return Communication30_40.convertCommunication((org.hl7.fhir.dstu3.model.Communication) src);
     if (src instanceof org.hl7.fhir.dstu3.model.CommunicationRequest)
-      return CommunicationRequest30_40.convertCommunication((org.hl7.fhir.dstu3.model.CommunicationRequest) src);
+      return CommunicationRequest30_40.convertCommunicationRequest((org.hl7.fhir.dstu3.model.CommunicationRequest) src);
     if (src instanceof org.hl7.fhir.dstu3.model.CompartmentDefinition)
       return CompartmentDefinition30_40.convertCompartmentDefinition((org.hl7.fhir.dstu3.model.CompartmentDefinition) src);
     if (src instanceof org.hl7.fhir.dstu3.model.Composition)
@@ -258,7 +258,7 @@ public class Resource30_40 {
     if (src instanceof org.hl7.fhir.r4.model.Communication)
       return Communication30_40.convertCommunication((org.hl7.fhir.r4.model.Communication) src);
     if (src instanceof org.hl7.fhir.r4.model.CommunicationRequest)
-      return CommunicationRequest30_40.convertCommunication((org.hl7.fhir.r4.model.CommunicationRequest) src);
+      return CommunicationRequest30_40.convertCommunicationRequest((org.hl7.fhir.r4.model.CommunicationRequest) src);
     if (src instanceof org.hl7.fhir.r4.model.CompartmentDefinition)
       return CompartmentDefinition30_40.convertCompartmentDefinition((org.hl7.fhir.r4.model.CompartmentDefinition) src);
     if (src instanceof org.hl7.fhir.r4.model.Composition)
