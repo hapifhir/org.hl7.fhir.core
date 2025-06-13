@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Arabic\n"
 "Language: ar_SA\n"
-"PO-Revision-Date: 2025-06-13 14:03\n"
+"PO-Revision-Date: 2025-06-13 15:40\n"
 
 # ACTOR_DEF_ACT
 #: ACTOR_DEF_ACT
@@ -675,7 +675,7 @@ msgstr ""
 # CODE_SYS_COPY
 #: CODE_SYS_COPY
 msgid "Copy"
-msgstr "نسخ"
+msgstr ""
 
 # CODE_SYS_DISP
 #: CODE_SYS_DISP
@@ -720,7 +720,7 @@ msgstr ""
 # CODE_SYS_PROP
 #: CODE_SYS_PROP
 msgid "properties"
-msgstr "الخصائص"
+msgstr ""
 
 # CODE_SYS_REPLACED_BY
 #: CODE_SYS_REPLACED_BY
@@ -1667,7 +1667,7 @@ msgstr ""
 # GENERAL_PROPS
 #: GENERAL_PROPS
 msgid "Properties"
-msgstr "الخصائص"
+msgstr ""
 
 # GENERAL_PURPOSE
 #: GENERAL_PURPOSE
@@ -2787,7 +2787,7 @@ msgstr ""
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\\"{2}\\\">R4B ({3}.r4b)</a> are available."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\"{2}\">R4B ({3}.r4b)</a> are available."
 msgstr ""
 
 # R44B_PROBLEMS
@@ -5353,7 +5353,7 @@ msgstr[5] ""
 # VALUE_SET_IN
 #: VALUE_SET_IN
 msgid "in"
-msgstr "للداخل"
+msgstr ""
 
 # VALUE_SET_INACT
 #: VALUE_SET_INACT
