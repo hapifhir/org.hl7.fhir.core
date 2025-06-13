@@ -823,7 +823,6 @@ public class FHIRPathEngine {
   }
 
 	private List<Base> execute(ExecutionContext context, List<Base> focus, ExpressionNode exp, boolean atEntry) throws FHIRException {
-//    System.out.println("Evaluate {'"+exp.toString()+"'} on "+focus.toString());
     List<Base> work = new ArrayList<Base>();
     switch (exp.getKind()) {
     case Name:
@@ -867,13 +866,11 @@ public class FHIRPathEngine {
         } else {
           work2 = execute(context, focus, next, true);
           work = operate(work, last.getOperation(), work2);
-//          System.out.println("Result of {'"+last.toString()+" "+last.getOperation().toCode()+" "+next.toString()+"'}: "+focus.toString());
         }
         last = next;
         next = next.getOpNext();
       }
     }
-//    System.out.println("Result of {'"+exp.toString()+"'}: "+work.toString());
     return work;
   }
 

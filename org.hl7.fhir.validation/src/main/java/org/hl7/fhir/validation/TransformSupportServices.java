@@ -3,6 +3,7 @@ package org.hl7.fhir.validation;
 import java.io.PrintWriter;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
@@ -13,6 +14,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.ConceptMapEngine;
 import org.hl7.fhir.r5.utils.structuremap.ITransformerServices;
 
+@Slf4j
 public class TransformSupportServices implements ITransformerServices {
 
   private final PrintWriter mapLog;
@@ -31,7 +33,7 @@ public class TransformSupportServices implements ITransformerServices {
   public void log(String message) {
     if (mapLog != null)
       mapLog.println(message);
-    System.out.println(message);
+    log.info(message);
   }
 
   @Override

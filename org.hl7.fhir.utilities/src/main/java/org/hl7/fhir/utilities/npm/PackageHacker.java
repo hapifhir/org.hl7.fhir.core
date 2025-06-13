@@ -25,6 +25,7 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
  * @author grahame
  *
  */
+@SuppressWarnings("checkstyle:systemout")
 public class PackageHacker {
 
   private static boolean useSecureReferences = false;

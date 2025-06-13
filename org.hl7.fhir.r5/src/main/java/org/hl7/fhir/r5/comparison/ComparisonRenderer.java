@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -45,6 +46,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class ComparisonRenderer implements IEvaluationContext {
 
   private IWorkerContext contextLeft;
@@ -119,8 +121,7 @@ public class ComparisonRenderer implements IEvaluationContext {
         try {
           renderComparison(id, comp);
         } catch (Exception e) {
-          System.out.println("Exception rendering "+id+": "+e.getMessage());          
-          e.printStackTrace();
+          log.error("Exception rendering "+id+": "+e.getMessage(), e);
         }
         b.append(comp.toTable());
         //"<li><a href=\""+comp.getId()+".html\">"+Utilities.escapeXml(comp.summary())+"</a></li>\r\n"

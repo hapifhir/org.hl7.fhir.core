@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -31,6 +32,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 @Deprecated
+@Slf4j
 public class ElementWrappers {
 
   public static class BaseWrapperMetaElement extends WrapperBaseImpl implements BaseWrapper {
@@ -65,7 +67,7 @@ public class ElementWrappers {
         throw new FHIRException(e.getMessage(), e);
       }
       if (context.getParser() == null) {
-        System.out.println("No version specific parser provided");
+        log.error("No version specific parser provided");
       }
       if (context.getParser() == null) {
         throw new Error("No type parser provided to renderer context");
