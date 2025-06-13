@@ -79,7 +79,7 @@ public class ConceptMapMappingProvider extends ModelMappingProvider {
 
   private String rel(ConceptMapRelationship rel) {
     switch (rel) {
-    case EQUIVALENT: return "Equivalant To";
+    case EQUIVALENT: return "Equivalent To";
     case NOTRELATEDTO: return "Not Related To";
     case RELATEDTO: return "Related To";
     case SOURCEISBROADERTHANTARGET: return "Broader than";
