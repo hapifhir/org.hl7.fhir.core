@@ -9,3 +9,5 @@ Editors for the various languages (git tags):
 * PT:  Jose Costa Teixeira (costateixeira)
 * PT_BR: ?
 * RU: Vadim Peretokin ()
+* UK: ?
+* AR: ?
