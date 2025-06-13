@@ -790,7 +790,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   }
 
   public boolean renderDataType(RenderingStatus status, XhtmlNode x, ResourceWrapper type) throws FHIRFormatError, DefinitionException, IOException {
-    return renderDataType(status, null, x, type);
+    return renderDataType(status, x, x, type);
   }
   
   public boolean renderDataType(RenderingStatus status, XhtmlNode parent, XhtmlNode x, ResourceWrapper type) throws FHIRFormatError, DefinitionException, IOException { 
