@@ -2020,8 +2020,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         }
       }
     } catch (Exception e) {
-      System.out.println("Error checking Narrative Status: "+e.getMessage());
-      e.printStackTrace();
+      log.error("Error checking Narrative Status: "+e.getMessage(), e);
     }
     return set;
   }
