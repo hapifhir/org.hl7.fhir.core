@@ -109,7 +109,6 @@ public class CommunicationRequest30_40 {
       tgt.addNote(Annotation30_40.convertAnnotation(t));
     }
 
-
     return tgt;
   }
 
@@ -188,6 +187,14 @@ public class CommunicationRequest30_40 {
 //      src.agent -> tgt.requester;
 //      src.onBehalfOf as v ->  tgt.extension as vt,  vt.url = 'http://hl7.org/fhir/3.0/StructureDefinition/extension-CommunicationRequest.requester.onBehalfOf',  vt.value = v;
 //    }
+    if (src.hasRequester()) {
+      if (src.getRequester().hasAgent()) {
+        tgt.setRequester(Reference30_40.convertReference(src.getRequester().getAgent()));
+      }
+      if (src.getRequester().hasOnBehalfOf()) {
+        tgt.addExtension(VersionConvertorConstants.EXT_COM_REQ_ONBEHALF, Reference30_40.convertReference(src.getRequester().getOnBehalfOf()));
+      }
+    }
 
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonCode()) {
       tgt.addReasonCode(CodeableConcept30_40.convertCodeableConcept(t));
