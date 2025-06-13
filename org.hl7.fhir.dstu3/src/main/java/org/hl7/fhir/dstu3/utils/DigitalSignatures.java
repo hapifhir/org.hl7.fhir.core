@@ -68,6 +68,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 @Deprecated
+@SuppressWarnings("checkstyle:systemout")
 public class DigitalSignatures {
 
 

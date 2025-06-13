@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -119,6 +120,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
  
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class StructureDefinitionRenderer extends ResourceRenderer { 
  
   public enum MapStructureMode {
@@ -2018,8 +2020,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         }
       }
     } catch (Exception e) {
-      System.out.println("Error checking Narrative Status: "+e.getMessage());
-      e.printStackTrace();
+      log.error("Error checking Narrative Status: "+e.getMessage(), e);
     }
     return set;
   }
@@ -3117,9 +3118,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         } else { 
           StructureDefinition sd = context.getWorker().fetchTypeDefinition(tu); 
           if (sd == null) { 
-            if (DEBUG) {
-              System.out.println("Unable to find "+tu);
-            }
+
+            log.debug("Unable to find "+tu);
+
             sd = context.getWorker().fetchTypeDefinition(tu); 
           } else if (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) { 
             used = true; 

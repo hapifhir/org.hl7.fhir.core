@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.renderers.spreadsheets;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -71,6 +72,7 @@ import org.openxmlformats.schemas.spreadsheetml.x2006.main.STFilterOperator;
 
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadsheetGenerator {
   private XmlParser xml = new XmlParser();
   private JsonParser json = new JsonParser();
@@ -93,7 +95,7 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
 
   public StructureDefinitionSpreadsheetGenerator renderStructureDefinition(StructureDefinition sd, boolean forMultiple) throws Exception {
     if (sd == null) {
-      System.out.println("no structure!");
+      log.warn("no structure!");
     }
     if (!sd.hasSnapshot()) {
       throw new DefinitionException(context.formatMessage(I18nConstants.NEEDS_A_SNAPSHOT));

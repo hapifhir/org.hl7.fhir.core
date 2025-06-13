@@ -37,6 +37,7 @@ import java.util.Set;
  */
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -75,6 +76,7 @@ import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
+@Slf4j
 public class ValueSetUtilities extends TerminologyUtilities {
 
 
@@ -189,7 +191,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
           vs.setUserData(UserDataNames.kindling_ballot_package, pckage);
         else if (!pckage.equals(vs.getUserString(UserDataNames.kindling_ballot_package)))
           if (!"infrastructure".equals(vs.getUserString(UserDataNames.kindling_ballot_package)))
-          System.out.println("Value Set "+vs.getUrl()+": ownership clash "+pckage+" vs "+vs.getUserString(UserDataNames.kindling_ballot_package));
+          log.warn("Value Set "+vs.getUrl()+": ownership clash "+pckage+" vs "+vs.getUserString(UserDataNames.kindling_ballot_package));
       }
       if (status == StandardsStatus.NORMATIVE) {
         vs.setStatus(PublicationStatus.ACTIVE);

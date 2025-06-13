@@ -77,6 +77,7 @@ import org.hl7.fhir.utilities.npm.ToolsVersion;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+@SuppressWarnings("checkstyle:systemout")
 public class ExtensionDefinitionGenerator {
 
   private FHIRVersion sourceVersion;

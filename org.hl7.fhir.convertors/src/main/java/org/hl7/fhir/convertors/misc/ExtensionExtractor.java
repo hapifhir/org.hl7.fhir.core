@@ -31,6 +31,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Element;
 
+@SuppressWarnings("checkstyle:systemout")
 public class ExtensionExtractor {
 
   public static void main(String[] args) throws FHIRFormatError, FileNotFoundException, IOException {

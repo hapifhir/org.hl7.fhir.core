@@ -76,10 +76,9 @@ public class BasePackageCacheManagerTests {
   }
 
   private static void assertCorrectPackageContent(BasePackageCacheManager.InputStreamWithSrc inputWithSrc) throws IOException {
-    NpmPackage npmPackage = NpmPackage.fromPackage(inputWithSrc.stream, inputWithSrc.url, false);
+    NpmPackage npmPackage = NpmPackage.fromPackage(inputWithSrc.stream, inputWithSrc.url, true);
 
-    assertEquals("Dummy IG For Testing", npmPackage.title())
-    ;
+    assertEquals("Dummy IG For Testing", npmPackage.title());
     assertEquals("Dummy IG description (built Thu, Jul 6, 2023 15:16-0400-04:00)", npmPackage.description());
   }
 
