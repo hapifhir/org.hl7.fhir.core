@@ -11,6 +11,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.convertors.loaders.loaderR5.BaseLoaderR5;
 import org.hl7.fhir.convertors.loaders.loaderR5.ILoaderKnowledgeProviderR5;
 import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
@@ -45,6 +46,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 //TODO find a home for these and clean it up
+@Slf4j
 public class ValidatorUtils {
 
   public static class SourceFile {
@@ -146,7 +148,7 @@ public class ValidatorUtils {
       try {
         fpe.parse(vm.getLocation());
       } catch (Exception e) {
-        System.out.println("Internal error in location for message: '" + e.getMessage() + "', loc = '" + vm.getLocation() + "', err = '" + vm.getMessage() + "'");
+        log.error("Internal error in location for message: '" + e.getMessage() + "', loc = '" + vm.getLocation() + "', err = '" + vm.getMessage() + "'");
       }
       op.getIssue().add(OperationOutcomeUtilities.convertToIssue(vm, op));
     }
@@ -180,7 +182,7 @@ public class ValidatorUtils {
         if (System.console() != null) {
           System.console().printf(context.formatMessage(I18nConstants.BAD_FILE_PATH_ERROR, name));
         } else {
-          System.out.println(context.formatMessage(I18nConstants.BAD_FILE_PATH_ERROR, name));
+          log.error(context.formatMessage(I18nConstants.BAD_FILE_PATH_ERROR, name));
         }
         throw new IOException("File " + name + " does not exist");
       }

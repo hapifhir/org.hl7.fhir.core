@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.fhir.ucum.UcumEssenceService;
 import org.hl7.fhir.r5.Constants;
 import org.hl7.fhir.r5.context.IContextResourceLoader;
@@ -24,6 +25,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
 import org.hl7.fhir.utilities.tests.TestConfig;
 
+@Slf4j
 public class TestingUtilities extends BaseTestingUtilities {
 
   public static class PackageProvider implements IPackageProvider {
@@ -91,12 +93,12 @@ public class TestingUtilities extends BaseTestingUtilities {
       fcontext.setExpansionParameters(new Parameters());
       if (!fcontext.hasPackage("hl7.terminology.r5", null)) {
         NpmPackage utg = pcm.loadPackage("hl7.terminology.r5");
-        System.out.println("Loading THO: "+utg.name()+"#"+utg.version());
+        log.info("Loading THO: "+utg.name()+"#"+utg.version());
         fcontext.loadFromPackage(utg, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet")));
       } 
       if (!fcontext.hasPackage("hl7.fhir.uv.extensions", null)) {
         NpmPackage ext = pcm.loadPackage("hl7.fhir.uv.extensions", Constants.EXTENSIONS_WORKING_VERSION);
-        System.out.println("Loading Extensions: "+ext.name()+"#"+ext.version());
+        log.info("Loading Extensions: "+ext.name()+"#"+ext.version());
         fcontext.loadFromPackage(ext, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet", "StructureDefinition")));
       } 
       return fcontext;

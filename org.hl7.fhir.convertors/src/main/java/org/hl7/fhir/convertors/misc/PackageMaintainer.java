@@ -39,7 +39,7 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
   POSSIBILITY OF SUCH DAMAGE.
   
  */
-
+@SuppressWarnings("checkstyle:systemout")
 public class PackageMaintainer {
 
 

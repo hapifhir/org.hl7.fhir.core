@@ -62,6 +62,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.text.WordUtils;
 import org.hl7.fhir.r5.formats.ParserFactory;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
@@ -76,10 +77,11 @@ import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccess.WebAccessPolicy;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.logging.Level;
+import org.hl7.fhir.validation.cli.logging.LogbackUtilities;
 import org.hl7.fhir.validation.cli.tasks.*;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
-import org.hl7.fhir.validation.service.utils.Display;
 import org.hl7.fhir.validation.cli.param.Params;
 
 
@@ -101,6 +103,7 @@ import org.hl7.fhir.validation.cli.param.Params;
  *
  * @author Grahame
  */
+@Slf4j
 public class ValidatorCli {
 
   private final static ValidationService validationService = new ValidationService();
@@ -148,6 +151,9 @@ public class ValidatorCli {
     if (validationContext.getLocale() != null) {
       Locale.setDefault(validationContext.getLocale());
     }
+
+    setLogbackConfiguration(args);
+
     if (Params.hasParam(args, Params.NO_HTTP_ACCESS)) {
       ManagedWebAccess.setAccessPolicy(WebAccessPolicy.PROHIBITED);
     }
@@ -158,15 +164,15 @@ public class ValidatorCli {
     TerminologyClientContext.setCanAllowNonConformantServers(true);
     setJavaSystemProxyParamsFromParams(args);
 
-    Display.displayVersion(System.out);
-    Display.displaySystemInfo(System.out);
+    Display.displayVersion(log);
+    Display.displaySystemInfo(log);
 
     if (validationContext.getFhirSettingsFile() != null) {
       FhirSettings.setExplicitFilePath(validationContext.getFhirSettingsFile());
     }
     ManagedWebAccess.loadFromFHIRSettings();
 
-    FileFormat.checkCharsetAndWarnIfNotUTF8(System.out);
+    FileFormat.checkCharsetAndWarnIfNotUTF8(log);
 
     if (shouldDisplayHelpToUser(args)) {
       String helpTarget = Params.getParam(args, "-" + Params.HELP);
@@ -186,31 +192,48 @@ public class ValidatorCli {
     readParamsAndExecuteTask(tt, tts, validationContext, args);
   }
 
-  private void displayHelpForDefaultTask() {
-    System.out.println();
-    System.out.println(WordUtils.wrap("This is the help text for default usage of the validator. Help for other modes of operation is available by using the parameter '-help [mode]' for one of the following modes:", 80));
-    System.out.println();
-    for (CliTask cliTask : cliTasks) {
-      if (!cliTask.isHidden()) {
-        System.out.println("  " + cliTask.getName());
+  private static void setLogbackConfiguration(String[] args) {
+    setLogbackConfiguration(args, Params.DEBUG_LOG, Level.DEBUG);
+    setLogbackConfiguration(args, Params.TRACE_LOG, Level.TRACE);
+    //log.debug("Test debug log");
+    //log.trace("Test trace log");
+    //log.info(MarkerFactory.getMarker("marker"), "Test marker interface");
+  }
+
+  private static void setLogbackConfiguration(String[] args, String logParam, Level logLevel) {
+    if (Params.hasParam(args, logParam)) {
+      String logFile = Params.getParam(args, logParam);
+      if (logFile != null) {
+        LogbackUtilities.setLogToFileAndConsole(logLevel, logFile);
       }
     }
-    System.out.println();
-    System.out.println(defaultCliTask.getDisplayName() + " (default usage)");
-    System.out.println("=".repeat(defaultCliTask.getDisplayName().length()));
-    System.out.println();
-    defaultCliTask.printHelp(System.out);
+  }
+
+  private void displayHelpForDefaultTask() {
+    log.info("");
+    log.info(WordUtils.wrap("This is the help text for default usage of the validator. Help for other modes of operation is available by using the parameter '-help [mode]' for one of the following modes:", 80));
+    log.info("");
+    for (CliTask cliTask : cliTasks) {
+      if (!cliTask.isHidden()) {
+        log.info("  " + cliTask.getName());
+      }
+    }
+    log.info("");
+    log.info(defaultCliTask.getDisplayName() + " (default usage)");
+    log.info("=".repeat(defaultCliTask.getDisplayName().length()));
+    log.info("");
+    defaultCliTask.logHelp(log);
   }
 
   private void displayHelpForTask(CliTask cliTask) {
-    System.out.println();
+    log.info("");
 
-    System.out.println("This is the help text for '" + cliTask.getName() + "'. To display all available help options, use the '-help' or 'help' parameter.");
-    System.out.println();
-    System.out.println(cliTask.getDisplayName());
-    System.out.println("=".repeat(cliTask.getDisplayName().length()));
-    System.out.println();
-    cliTask.printHelp(System.out);
+    log.info("This is the help text for '" + cliTask.getName() + "'. To display all available help options, use the '-help' or 'help' parameter.");
+    log.info("");
+    log.info(cliTask.getDisplayName());
+    log.info("=".repeat(cliTask.getDisplayName().length()));
+    log.info("");
+    cliTask.logHelp(log);
   }
 
   public static void main(String[] args) throws Exception {
@@ -225,7 +248,7 @@ public class ValidatorCli {
     try {
       validatorCli.readParamsAndExecuteTask(validationContext, args);
     } catch (ENoDump e) {
-      System.out.println(e.getMessage());
+      log.info(e.getMessage());
     }
   }
 
@@ -330,7 +353,7 @@ public class ValidatorCli {
   }
 
   private void readParamsAndExecuteTask(TimeTracker tt, TimeTracker.Session tts, ValidationContext validationContext, String[] params) throws Exception {
-    Display.printCliParamsAndInfo(params);
+    Display.printCliParamsAndInfo(log, params);
 
     final CliTask cliTask = selectCliTask(validationContext, params);
 
@@ -346,9 +369,9 @@ public class ValidatorCli {
     }
 
     if (validationContext.getAdvisorFile() != null) {
-      System.out.println("Note: Some validation issues might be hidden by the advisor settings in the file "+ validationContext.getAdvisorFile());
+      log.info("Note: Some validation issues might be hidden by the advisor settings in the file "+ validationContext.getAdvisorFile());
     }
-    System.out.println("Done. " + tt.report()+". Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
+    log.info("Done. " + tt.report()+". Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
     SystemExitManager.finish();
   }
 
@@ -366,15 +389,15 @@ public class ValidatorCli {
 
   private ValidationEngine getValidationEngine(TimeTracker tt, ValidationContext validationContext) throws Exception {
     ValidationEngine validationEngine;
-    System.out.println("  Locale: "+Locale.getDefault().getDisplayCountry()+"/"+Locale.getDefault().getCountry());
+    log.info("  Locale: "+Locale.getDefault().getDisplayCountry()+"/"+Locale.getDefault().getCountry());
     if (validationContext.getJurisdiction() == null) {
-      System.out.println("  Jurisdiction: None specified (locale = "+Locale.getDefault().getCountry()+")");
-      System.out.println("  Note that exceptions and validation failures may happen in the absense of a locale");
+      log.info("  Jurisdiction: None specified (locale = "+Locale.getDefault().getCountry()+")");
+      log.info("  Note that exceptions and validation failures may happen in the absense of a locale");
     } else {
-      System.out.println("  Jurisdiction: "+JurisdictionUtilities.displayJurisdiction(validationContext.getJurisdiction()));
+      log.info("  Jurisdiction: "+JurisdictionUtilities.displayJurisdiction(validationContext.getJurisdiction()));
     }
 
-    System.out.println("Loading");
+    log.info("Loading");
     String definitions = "dev".equals(validationContext.getSv()) ? "hl7.fhir.r5.core#current" : VersionUtilities.packageForVersion(validationContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(validationContext.getSv());
     validationEngine = myValidationService.initializeValidator(validationContext, definitions, tt);
     return validationEngine;

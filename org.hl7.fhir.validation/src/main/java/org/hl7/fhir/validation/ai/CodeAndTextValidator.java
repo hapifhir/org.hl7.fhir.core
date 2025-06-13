@@ -1,7 +1,5 @@
 package org.hl7.fhir.validation.ai;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -14,12 +12,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 
+@Slf4j
 public class CodeAndTextValidator {
 
   private String aiService;
@@ -77,21 +77,21 @@ public class CodeAndTextValidator {
       if (query.size() > 0) {
         switch (aiService.toLowerCase()) {
         case "claude" :
-          System.out.println("Consulting Claude about "+query.size()+" code/text combinations");
+          log.info("Consulting Claude about "+query.size()+" code/text combinations");
           outcomes = new ClaudeAPI(jcfg.forceObject("claude")).validateCodings(query);
           break;
         case "chatgpt" : 
-          System.out.println("Consulting ChatGPT about "+query.size()+" code/text combinations");
+          log.info("Consulting ChatGPT about "+query.size()+" code/text combinations");
           outcomes = new ChatGPTAPI(jcfg.forceObject("chatGPT")).validateCodings(query);
           break;
         case "ollama" : 
-          System.out.println("Consulting Ollama about "+query.size()+" code/text combinations");
+          log.info("Consulting Ollama about "+query.size()+" code/text combinations");
           outcomes = new Ollama(jcfg.forceObject("ollama"), null).validateCodings(query);
           break;
         default: 
           if (aiService.toLowerCase().startsWith("ollama:")) {
             Ollama ollama = new Ollama(jcfg.forceObject("ollama"), aiService.substring(7));
-            System.out.println("Consulting Ollama at "+ollama.details()+" "+query.size()+" code/text combinations");
+            log.info("Consulting Ollama at "+ollama.details()+" "+query.size()+" code/text combinations");
             outcomes = ollama.validateCodings(query);            
           } else {
             throw new FHIRException("Unknown AI Service "+aiService);

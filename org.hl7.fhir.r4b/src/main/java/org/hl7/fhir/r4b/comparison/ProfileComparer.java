@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -44,6 +45,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class ProfileComparer extends CanonicalResourceComparer {
 
   public class ProfileComparison extends CanonicalResourceComparison<StructureDefinition> {
@@ -183,9 +185,9 @@ public class ProfileComparer extends CanonicalResourceComparer {
     assert (right != null);
     assert (left.path().equals(right.path()));
 
-    if (session.isDebug()) {
-      System.out.println("Compare elements at " + path);
-    }
+
+      log.debug("Compare elements at " + path);
+
 
     // not allowed to be different:
 //    ruleEqual(comp, res, left.current().getDefaultValue(), right.current().getDefaultValue(), "defaultValue", path);

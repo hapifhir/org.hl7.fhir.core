@@ -1,7 +1,5 @@
 package org.hl7.fhir.convertors.misc;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -70,6 +68,7 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@SuppressWarnings("checkstyle:systemout")
 public class IEEE11073Convertor {
 
   public static final String UCUM_PATH = "c:\\work\\org.hl7.fhir\\build\\implementations\\java\\org.hl7.fhir.convertors\\samples\\ucum-essence.xml";

@@ -42,6 +42,7 @@ import java.util.Map;
 import java.util.Set;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.r5.context.ContextUtilities;
@@ -97,6 +98,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class ValueSetValidator extends ValueSetProcessBase {
 
   public static final String NO_TRY_THE_SERVER = "The local terminology server cannot handle this request";
@@ -1554,7 +1556,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     } else if (isKnownProperty(f.getProperty())) {
       return codeInKnownPropertyFilter(cs, f, code);
     } else {
-      System.out.println("todo: handle filters with property = "+f.getProperty()+" "+f.getOp().toCode()); 
+      log.error("todo: handle filters with property = "+f.getProperty()+" "+f.getOp().toCode());
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__FILTER_WITH_PROPERTY__, cs.getUrl(), f.getProperty(), f.getOp().toCode()));
     }
   }
@@ -1610,7 +1612,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
       return true;
     default:
-      System.out.println("todo: handle property filters with op = "+f.getOp()); 
+      log.error("todo: handle property filters with op = "+f.getOp());
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__PROPERTY_FILTER_WITH_OP__, cs.getUrl(), f.getOp()));
     }
   }
@@ -1633,7 +1635,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
       return d != null && d.primitiveValue() != null && d.primitiveValue().matches(f.getValue());
     default:
-      System.out.println("todo: handle known property filters with op = "+f.getOp()); 
+      log.error("todo: handle known property filters with op = "+f.getOp());
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__PROPERTY_FILTER_WITH_OP__, cs.getUrl(), f.getOp()));
     }
   }
@@ -1648,7 +1650,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     case ISNOTA: return !codeInConceptIsAFilter(cs, f, code, false);
     case DESCENDENTOF: return codeInConceptIsAFilter(cs, f, code, true); 
     default:
-      System.out.println("todo: handle concept filters with op = "+f.getOp()); 
+      log.error("todo: handle concept filters with op = "+f.getOp());
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__CONCEPT_FILTER_WITH_OP__, cs.getUrl(), f.getOp()));
     }
   }

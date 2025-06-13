@@ -64,6 +64,7 @@ import org.xmlpull.v1.XmlPullParserException;
  *
  */
 @MarkedToMoveToAdjunctPackage
+@SuppressWarnings("checkstyle:systemout")
 public class LoincToDEConvertor {
 
   public static void main(String[] args)
