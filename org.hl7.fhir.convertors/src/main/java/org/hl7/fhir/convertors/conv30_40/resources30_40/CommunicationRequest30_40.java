@@ -181,12 +181,7 @@ public class CommunicationRequest30_40 {
     if (src.hasSender()) {
       tgt.setSender(Reference30_40.convertReference(src.getSender()));
     }
-
-    //src.requester as vs0 -> tgt then agent(vs0, tgt);
-//    group agent(source src, target tgt) {
-//      src.agent -> tgt.requester;
-//      src.onBehalfOf as v ->  tgt.extension as vt,  vt.url = 'http://hl7.org/fhir/3.0/StructureDefinition/extension-CommunicationRequest.requester.onBehalfOf',  vt.value = v;
-//    }
+    
     if (src.hasRequester()) {
       if (src.getRequester().hasAgent()) {
         tgt.setRequester(Reference30_40.convertReference(src.getRequester().getAgent()));
