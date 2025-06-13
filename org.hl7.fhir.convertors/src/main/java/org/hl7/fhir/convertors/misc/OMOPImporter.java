@@ -19,6 +19,7 @@ import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@SuppressWarnings("checkstyle:systemout")
 public class OMOPImporter {
 
   public class Tracker {

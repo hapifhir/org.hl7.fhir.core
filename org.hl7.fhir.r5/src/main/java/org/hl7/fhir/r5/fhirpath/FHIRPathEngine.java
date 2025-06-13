@@ -1551,7 +1551,6 @@ public class FHIRPathEngine {
   }
 
   private List<Base> execute(ExecutionContext inContext, List<Base> focus, ExpressionNode exp, boolean atEntry) throws FHIRException {
-    //    System.out.println("Evaluate {'"+exp.toString()+"'} on "+focus.toString());
     ExecutionContext context = contextForParameter(inContext);
     List<Base> work = new ArrayList<Base>();
     switch (exp.getKind()) {
@@ -1607,13 +1606,11 @@ public class FHIRPathEngine {
         } else {
           work2 = execute(context, focus, next, true);
           work = operate(context, work, last.getOperation(), work2, last);
-          //          System.out.println("Result of {'"+last.toString()+" "+last.getOperation().toCode()+" "+next.toString()+"'}: "+focus.toString());
         }
         last = next;
         next = next.getOpNext();
       }
     }
-    //    System.out.println("Result of {'"+exp.toString()+"'}: "+work.toString());
     return work;
   }
 
@@ -2701,12 +2698,11 @@ public class FHIRPathEngine {
         } else if (l.fhirType().equals("CodeableConcept")) {
           CodeableConcept cc = TypeConvertor.castToCodeableConcept(l);
           ValidationResult vr = worker.validateCode(terminologyServiceOptions, cc, vs);
-          // System.out.println("~~~ "+DataRenderer.display(worker, cc)+ " memberOf "+url+": "+vr.toString());
           if (vr.isOk()) {
             ans = true;
           }
         } else {
-          //	        System.out.println("unknown type in opMemberOf: "+l.fhirType());
+         // DO NOTHING
         }
       }
     }
@@ -4886,7 +4882,6 @@ public class FHIRPathEngine {
     } else if (l.fhirType().equals("CodeableConcept")) {
       return makeBoolean(worker.validateCode(terminologyServiceOptions, TypeConvertor.castToCodeableConcept(l), vs).isOk());
     } else {
-      //      System.out.println("unknown type in funcMemberOf: "+l.fhirType());
       return new ArrayList<Base>();
     }
   }

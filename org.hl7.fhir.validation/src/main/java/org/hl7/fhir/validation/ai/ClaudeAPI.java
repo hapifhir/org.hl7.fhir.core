@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.http.HTTPResult;
@@ -12,6 +13,7 @@ import org.hl7.fhir.utilities.http.ManagedWebAccessor;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
+@Slf4j
 public class ClaudeAPI extends AIAPI {
 
   private static final String API_URL = "https://api.anthropic.com/v1/messages";
@@ -24,6 +26,7 @@ public class ClaudeAPI extends AIAPI {
   }
 
   @Override
+  @SuppressWarnings("checkstyle:systemout")
   public List<CodeAndTextValidationResult> validateCodings(List<CodeAndTextValidationRequest> requests) throws IOException {
     // limit to 5 in a batch 
     List<List<CodeAndTextValidationRequest>> chunks = new ArrayList<>();
@@ -32,7 +35,7 @@ public class ClaudeAPI extends AIAPI {
     }
     List<CodeAndTextValidationResult> results = new ArrayList<CodeAndTextValidationResult>();
     int c = 0;
-    System.out.print(" ");
+
     for (List<CodeAndTextValidationRequest> chunk : chunks) {
 
       StringBuilder prompt = new StringBuilder();
@@ -55,6 +58,7 @@ public class ClaudeAPI extends AIAPI {
       }
 
       System.out.print(".");
+      log.debug("  processed request");
       JsonObject json = getResponse(prompt.toString(), systemPrompt.toString());
 
       parseValidationResponse(json, chunk, results);

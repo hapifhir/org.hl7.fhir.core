@@ -1,26 +1,16 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
-import java.util.Arrays;
-
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
 import org.hl7.fhir.convertors.context.ConversionContext30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Dosage30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Extension30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Meta30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Narrative30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.*;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Annotation30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
-import org.hl7.fhir.dstu3.model.Annotation;
-import org.hl7.fhir.dstu3.model.CodeableConcept;
-import org.hl7.fhir.dstu3.model.Dosage;
-import org.hl7.fhir.dstu3.model.Identifier;
-import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.model.MedicationRequest;
+
+import java.util.Arrays;
 
 public class Resource30_40 {
 
@@ -84,6 +74,8 @@ public class Resource30_40 {
       return CodeSystem30_40.convertCodeSystem((org.hl7.fhir.dstu3.model.CodeSystem) src);
     if (src instanceof org.hl7.fhir.dstu3.model.Communication)
       return Communication30_40.convertCommunication((org.hl7.fhir.dstu3.model.Communication) src);
+    if (src instanceof org.hl7.fhir.dstu3.model.CommunicationRequest)
+      return CommunicationRequest30_40.convertCommunicationRequest((org.hl7.fhir.dstu3.model.CommunicationRequest) src);
     if (src instanceof org.hl7.fhir.dstu3.model.CompartmentDefinition)
       return CompartmentDefinition30_40.convertCompartmentDefinition((org.hl7.fhir.dstu3.model.CompartmentDefinition) src);
     if (src instanceof org.hl7.fhir.dstu3.model.Composition)
@@ -265,6 +257,8 @@ public class Resource30_40 {
       return CodeSystem30_40.convertCodeSystem((org.hl7.fhir.r4.model.CodeSystem) src);
     if (src instanceof org.hl7.fhir.r4.model.Communication)
       return Communication30_40.convertCommunication((org.hl7.fhir.r4.model.Communication) src);
+    if (src instanceof org.hl7.fhir.r4.model.CommunicationRequest)
+      return CommunicationRequest30_40.convertCommunicationRequest((org.hl7.fhir.r4.model.CommunicationRequest) src);
     if (src instanceof org.hl7.fhir.r4.model.CompartmentDefinition)
       return CompartmentDefinition30_40.convertCompartmentDefinition((org.hl7.fhir.r4.model.CompartmentDefinition) src);
     if (src instanceof org.hl7.fhir.r4.model.Composition)

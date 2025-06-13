@@ -1,16 +1,22 @@
 <configuration>
 	<statusListener class="ch.qos.logback.core.status.NopStatusListener" />
 
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+	<logger name="org.sqlite.core.NativeDB" level="off" />
+
+	<conversionRule conversionWord="highlightc" converterClass="org.hl7.fhir.validation.cli.logging.LogColorConverter" />
+
+	<appender name="COLOR" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
 		<encoder>
-			<pattern>%msg%n</pattern>
+			<pattern>%highlightc(%msg%n)</pattern>
 		</encoder>
+		<immediateFlush>true</immediateFlush>
 	</appender>
 
 	<root level="info">
-		<appender-ref ref="STDOUT" />
+		<appender-ref ref="COLOR" />
 	</root>
-
-
 
 </configuration>

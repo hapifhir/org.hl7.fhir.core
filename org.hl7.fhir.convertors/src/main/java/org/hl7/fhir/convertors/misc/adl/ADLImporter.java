@@ -48,6 +48,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Element;
 
+@SuppressWarnings("checkstyle:systemout")
 public class ADLImporter {
 
   private final Map<String, TextSet> texts = new HashMap<String, TextSet>();

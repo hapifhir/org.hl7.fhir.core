@@ -99,7 +99,7 @@ public abstract class I18nBase {
     if (!messageKeyExistsForLocale(message)) {
       if (!message.contains(" ")) {
         if (warnAboutMissingMessages && (hasArgs || !message.contains(" "))) {
-          System.out.println("Attempting to localize "+typeOfString()+" " + message + ", but no such equivalent message exists for" +
+          log.warn("Attempting to localize "+typeOfString()+" " + message + ", but no such equivalent message exists for" +
               " the locale " + getLocale());
         }
       }

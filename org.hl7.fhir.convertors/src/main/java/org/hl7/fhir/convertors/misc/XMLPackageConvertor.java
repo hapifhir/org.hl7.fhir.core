@@ -9,6 +9,7 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 
+@SuppressWarnings("checkstyle:systemout")
 public class XMLPackageConvertor {
 
   public static void main(String[] args) throws IOException {
