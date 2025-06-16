@@ -356,5 +356,21 @@ public class TerminologyClientR4 implements ITerminologyClient {
   public void setConversionLogger(ITerminologyConversionLogger logger) {
     this.logger = logger;    
   }
+
+  @Override
+  public OperationOutcome validateResource(org.hl7.fhir.r5.model.Resource res) {
+    try {
+      org.hl7.fhir.r4.model.Resource r2 = convertResource("validate.request", res);
+      Resource p2 = client.validate(r2, null);
+      return (OperationOutcome) convertResource("validateVS.response", p2);
+    } catch (EFhirClientException e) {
+      if (e.getServerErrors().size() == 1) {
+        OperationOutcome op =  (OperationOutcome) convertResource("validateVS.error", e.getServerErrors().get(0));
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
+      } else {
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), e);        
+      }
+    }
+  }
   
 }
