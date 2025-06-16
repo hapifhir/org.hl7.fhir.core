@@ -1,3 +1,16 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: orghl7fhircore\n"
+"X-Crowdin-Project-ID: 792848\n"
+"X-Crowdin-Language: ja\n"
+"X-Crowdin-File: /org.hl7.fhir.utilities/src/main/resources/source/rendering-phrases-en.po\n"
+"X-Crowdin-File-ID: 236\n"
+"Project-Id-Version: orghl7fhircore\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: Japanese\n"
+"Language: ja_JP\n"
+"PO-Revision-Date: 2025-06-13 15:40\n"
 
 # ACTOR_DEF_ACT
 #: ACTOR_DEF_ACT
@@ -152,17 +165,17 @@ msgstr ""
 # BUNDLE_HEADER_ENTRY
 #: BUNDLE_HEADER_ENTRY
 msgid "Entry {0}"
-msgstr "エントリ {0}"
+msgstr ""
 
 # BUNDLE_HEADER_ENTRY_URL
 #: BUNDLE_HEADER_ENTRY_URL
 msgid "Entry {0} - fullUrl = {1}"
-msgstr "エントリ {0} - fullUrl = {1}"
+msgstr ""
 
 # BUNDLE_HEADER_ROOT
 #: BUNDLE_HEADER_ROOT
 msgid "Bundle {0} of type {1}"
-msgstr "タイプ {1} のバンドル {0}"
+msgstr ""
 
 # BUNDLE_IF_MATCH
 #: BUNDLE_IF_MATCH
@@ -612,22 +625,22 @@ msgstr ""
 # CODESYSTEM_CONTENT_EXAMPLE
 #: CODESYSTEM_CONTENT_EXAMPLE
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides some code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>that are example only</b>:"
-msgstr "この<param name=\"cased\"/>コードシステム <param name=\"cs\"/> はいくつかの例コード<if test=\"code-count != 1\">たち</if><param name=\"h\"/>を提供します:"
+msgstr ""
 
 # CODESYSTEM_CONTENT_FRAGMENT
 #: CODESYSTEM_CONTENT_FRAGMENT
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides <b>a fragment</b> that includes following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr "この<param name=\"cased\"/>コードシステム <param name=\"cs\"/> は以下のコード<param name=\"h\"/>を含むフラグメントを提供します:"
+msgstr ""
 
 # CODESYSTEM_CONTENT_NOTPRESENT
 #: CODESYSTEM_CONTENT_NOTPRESENT
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines codes<param name=\"h\"/>, but no codes are represented here"
-msgstr "このコードシステム <param name=\"cs\"/> はコード<param name=\"h\"/>を定義しますが、ここではコードは表現されていません"
+msgstr ""
 
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
 msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
-msgstr "!!このコードシステム <param name=\"cs\"/> は次のコードに {0} を定義します:"
+msgstr ""
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
@@ -2144,7 +2157,6 @@ msgstr ""
 msgid "Contained Resource"
 msgid_plural "Contained Resources"
 msgstr[0] ""
-msgstr[1] ""
 
 # PAT_DECEASED
 #: PAT_DECEASED
@@ -2176,14 +2188,12 @@ msgstr ""
 msgid "Language:"
 msgid_plural "Languages:"
 msgstr[0] ""
-msgstr[1] ""
 
 # PAT_LANG_HINT
 #: PAT_LANG_HINT
 msgid "Language spoken"
 msgid_plural "Languages spoken"
 msgstr[0] ""
-msgstr[1] ""
 
 # PAT_LANG_PREFERRED
 #: PAT_LANG_PREFERRED
@@ -2281,14 +2291,12 @@ msgstr ""
 msgid "Other Id:"
 msgid_plural "Other Ids:"
 msgstr[0] ""
-msgstr[1] ""
 
 # PAT_OTHER_ID_HINT
 #: PAT_OTHER_ID_HINT
 msgid "Other Id (see the one above)"
 msgid_plural "Other Ids (see the one above)"
 msgstr[0] ""
-msgstr[1] ""
 
 # PAT_PERIOD
 #: PAT_PERIOD
@@ -2754,7 +2762,7 @@ msgstr ""
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\"{2}\">R4B ({3}.r4b)</a> are available."
 msgstr ""
 
 # R44B_PROBLEMS
@@ -3151,7 +3159,7 @@ msgstr ""
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
-msgid "-- no content: do not translate #37 --"
+msgid "-- no content: do not translate #1 --"
 msgstr ""
 
 # SDR_IMPOSE
@@ -3346,7 +3354,7 @@ msgstr ""
 # SDR_VER_RANGE_SFX
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
-msgid "-- no content: do not translate #38 --"
+msgid "-- no content: do not translate #2 --"
 msgstr ""
 
 # SDR_VER_TO_PFX
@@ -3357,7 +3365,7 @@ msgstr ""
 # SDR_VER_TO_SFX
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
-msgid "-- no content: do not translate #39 --"
+msgid "-- no content: do not translate #3 --"
 msgstr ""
 
 # SDR_VER_UNK
@@ -3616,7 +3624,6 @@ msgstr ""
 msgid "The element {0} is sliced based on the value of {1}"
 msgid_plural "The element {0} is sliced based on the values of {1}"
 msgstr[0] ""
-msgstr[1] ""
 
 # SD_SUMMARY_SLICES
 #: SD_SUMMARY_SLICES
@@ -5307,7 +5314,6 @@ msgstr ""
 msgid "Import all the codes that are contained in"
 msgid_plural "Import all the codes that are contained in the intersection of"
 msgstr[0] ""
-msgstr[1] ""
 
 # VALUE_SET_IN
 #: VALUE_SET_IN
