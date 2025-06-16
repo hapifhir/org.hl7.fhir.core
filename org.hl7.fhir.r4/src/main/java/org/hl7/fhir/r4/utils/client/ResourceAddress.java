@@ -101,7 +101,11 @@ public class ResourceAddress {
   }
 
   public <T extends Resource> URI resolveValidateUri(Class<T> resourceClass, String id) {
-    return baseServiceUri.resolve(nameForClassWithSlash(resourceClass) + "$validate/" + id);
+    return baseServiceUri.resolve(nameForClassWithSlash(resourceClass) + "$validate"+(id == null ? "" : "/" + id));
+  }
+
+  public <T extends Resource> URI resolveValidateUri(String resourceType, String id) {
+    return baseServiceUri.resolve(resourceType + "/$validate"+(id == null ? "" : "/" + id));
   }
 
   public <T extends Resource> URI resolveGetUriFromResourceClass(Class<T> resourceClass) {
