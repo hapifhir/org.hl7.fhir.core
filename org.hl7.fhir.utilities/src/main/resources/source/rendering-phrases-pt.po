@@ -45,8 +45,8 @@ msgstr "qualquer repetição"
 
 # ADD_BIND_CURR_BIND
 #: ADD_BIND_CURR_BIND
-msgctxt "ADD_BIND_CURR_BIND"
 #, fuzzy
+msgctxt "ADD_BIND_CURR_BIND"
 msgid "Current"
 msgstr "Actual"
 
@@ -91,8 +91,8 @@ msgstr "Novos registos têm de utilizar este conjunto de valores, mas os registo
 
 # ADD_BIND_PREF_BIND
 #: ADD_BIND_PREF_BIND
-msgctxt "ADD_BIND_PREF_BIND"
 #, fuzzy
+msgctxt "ADD_BIND_PREF_BIND"
 msgid "Preferred"
 msgstr "Preferido"
 
@@ -104,8 +104,8 @@ msgstr "Este é o conjunto de valores recomendado (a documentação deve explica
 
 # ADD_BIND_REQ_BIND
 #: ADD_BIND_REQ_BIND
-msgctxt "ADD_BIND_REQ_BIND"
 #, fuzzy
+msgctxt "ADD_BIND_REQ_BIND"
 msgid "Required"
 msgstr "Obrigatório"
 
@@ -361,7 +361,6 @@ msgstr "Ponto(s) final(ais)"
 #, fuzzy
 msgid "Error detected"
 msgstr "Erro detectado"
-
 
 # CAPABILITY_EXT_OP
 #: CAPABILITY_EXT_OP
@@ -917,8 +916,8 @@ msgstr "Fonte Detalhes do conceito"
 
 # CONC_MAP_TO
 #: CONC_MAP_TO
-msgctxt "CONC_MAP_TO"
 #, fuzzy
+msgctxt "CONC_MAP_TO"
 msgid "to"
 msgstr "para"
 
@@ -1008,8 +1007,8 @@ msgstr "ao almoço"
 
 # DATA_REND_ATT_DATA
 #: DATA_REND_ATT_DATA
-msgctxt "DATA_REND_ATT_DATA"
 #, fuzzy
+msgctxt "DATA_REND_ATT_DATA"
 msgid "{0}: {1}"
 msgstr "{0}: {1}"
 
@@ -1495,8 +1494,8 @@ msgstr "Tipo de relatório não especificado"
 
 # DIAG_REP_UNSPECIFIED_SUBJECT
 #: DIAG_REP_UNSPECIFIED_SUBJECT
-msgctxt "DIAG_REP_UNSPECIFIED_SUBJECT"
 #, fuzzy
+msgctxt "DIAG_REP_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
 msgstr "Assunto não especificado"
 
@@ -1717,8 +1716,8 @@ msgstr "Conformidade"
 
 # GENERAL_CONSTRAINTS
 #: GENERAL_CONSTRAINTS
-msgctxt "GENERAL_CONSTRAINTS"
 #, fuzzy
+msgctxt "GENERAL_CONSTRAINTS"
 msgid "Constraints"
 msgstr "Condicionantes"
 
@@ -1748,8 +1747,8 @@ msgstr "Critérios"
 
 # GENERAL_DATA_DISPLAY_PROPERTY
 #: GENERAL_DATA_DISPLAY_PROPERTY
-msgctxt "GENERAL_DATA_DISPLAY_PROPERTY"
 #, fuzzy
+msgctxt "GENERAL_DATA_DISPLAY_PROPERTY"
 msgid "{0}: {1}"
 msgstr "{0}: {1}"
 
@@ -1761,8 +1760,8 @@ msgstr "Definição de URL"
 
 # GENERAL_DEFINITION
 #: GENERAL_DEFINITION
-msgctxt "GENERAL_DEFINITION"
 #, fuzzy
+msgctxt "GENERAL_DEFINITION"
 msgid "Definition"
 msgstr "Definição"
 
@@ -1816,8 +1815,8 @@ msgstr "Filtro"
 
 # GENERAL_FIXED_VALUE
 #: GENERAL_FIXED_VALUE
-msgctxt "GENERAL_FIXED_VALUE"
 #, fuzzy
+msgctxt "GENERAL_FIXED_VALUE"
 msgid "Fixed Value: {0}"
 msgstr "Valor fixo: {0}"
 
@@ -1877,15 +1876,15 @@ msgstr "Nota"
 
 # GENERAL_OBLIG
 #: GENERAL_OBLIG
-msgctxt "GENERAL_OBLIG"
 #, fuzzy
+msgctxt "GENERAL_OBLIG"
 msgid "Obligations"
 msgstr "Obrigações"
 
 # GENERAL_OBLIGATIONS
 #: GENERAL_OBLIGATIONS
-msgctxt "GENERAL_OBLIGATIONS"
 #, fuzzy
+msgctxt "GENERAL_OBLIGATIONS"
 msgid "Obligations"
 msgstr "Obrigações"
 
@@ -1909,22 +1908,22 @@ msgstr "Parâmetros"
 
 # GENERAL_PATTERN_VALUE
 #: GENERAL_PATTERN_VALUE
-msgctxt "GENERAL_PATTERN_VALUE"
 #, fuzzy
+msgctxt "GENERAL_PATTERN_VALUE"
 msgid "Pattern Value: {0}"
 msgstr "Valor do padrão: {0}"
 
 # GENERAL_PREFERRED
 #: GENERAL_PREFERRED
-msgctxt "GENERAL_PREFERRED"
 #, fuzzy
+msgctxt "GENERAL_PREFERRED"
 msgid "Preferred"
 msgstr "Preferenciais"
 
 # GENERAL_PROF
 #: GENERAL_PROF
-msgctxt "GENERAL_PROF"
 #, fuzzy
+msgctxt "GENERAL_PROF"
 msgid "Profile"
 msgstr "Perfil"
 
@@ -1960,8 +1959,8 @@ msgstr "Pedido"
 
 # GENERAL_REQUIRED
 #: GENERAL_REQUIRED
-msgctxt "GENERAL_REQUIRED"
 #, fuzzy
+msgctxt "GENERAL_REQUIRED"
 msgid "Required"
 msgstr "Necessário"
 
@@ -1973,8 +1972,8 @@ msgstr "Ligação obrigatória ao ValueSet {0}"
 
 # GENERAL_RESOURCE
 #: GENERAL_RESOURCE
-msgctxt "GENERAL_RESOURCE"
 #, fuzzy
+msgctxt "GENERAL_RESOURCE"
 msgid "Resource"
 msgstr "Recursos"
 
@@ -1986,8 +1985,8 @@ msgstr "Etiqueta de segurança"
 
 # GENERAL_SOURCE
 #: GENERAL_SOURCE
-msgctxt "GENERAL_SOURCE"
 #, fuzzy
+msgctxt "GENERAL_SOURCE"
 msgid "Source"
 msgstr "Fonte"
 
@@ -2005,8 +2004,8 @@ msgstr "Arranque"
 
 # GENERAL_STATUS
 #: GENERAL_STATUS
-msgctxt "GENERAL_STATUS"
 #, fuzzy
+msgctxt "GENERAL_STATUS"
 msgid "Status"
 msgstr "Estado"
 
@@ -2312,8 +2311,8 @@ msgstr "Tipo de lista não especificado"
 
 # LIST_UNSPECIFIED_SUBJECT
 #: LIST_UNSPECIFIED_SUBJECT
-msgctxt "LIST_UNSPECIFIED_SUBJECT"
 #, fuzzy
+msgctxt "LIST_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
 msgstr "Assunto não especificado"
 
@@ -2337,8 +2336,8 @@ msgstr "Editora: {0}"
 
 # MATURITY_STATUS
 #: MATURITY_STATUS
-msgctxt "MATURITY_STATUS"
 #, fuzzy
+msgctxt "MATURITY_STATUS"
 msgid "Status"
 msgstr "Estado"
 
@@ -2440,8 +2439,8 @@ msgstr "Gravidade"
 
 # OP_OUT_SRC
 #: OP_OUT_SRC
-msgctxt "OP_OUT_SRC"
 #, fuzzy
+msgctxt "OP_OUT_SRC"
 msgid "Source"
 msgstr "Fonte"
 
@@ -2570,8 +2569,8 @@ msgstr "(preferencial)"
 
 # PAT_LINKS
 #: PAT_LINKS
-msgctxt "PAT_LINKS"
 #, fuzzy
+msgctxt "PAT_LINKS"
 msgid "Links:"
 msgstr "Ligações:"
 
@@ -2731,8 +2730,8 @@ msgstr "Narrativa gerada: {0} {1}"
 
 # PROF_DRIV_SUMM
 #: PROF_DRIV_SUMM
-msgctxt "PROF_DRIV_SUMM"
 #, fuzzy
+msgctxt "PROF_DRIV_SUMM"
 msgid "{0}: {1}"
 msgstr "{0}: {1}"
 
@@ -3186,8 +3185,8 @@ msgstr "Questionário não especificado"
 
 # QUEST_UNSPECIFIED_SUBJECT
 #: QUEST_UNSPECIFIED_SUBJECT
-msgctxt "QUEST_UNSPECIFIED_SUBJECT"
 #, fuzzy
+msgctxt "QUEST_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
 msgstr "Assunto não especificado"
 
@@ -3283,8 +3282,8 @@ msgstr "Estes requisitos são derivados dos seguintes requisitos:"
 
 # REQ_LINKS
 #: REQ_LINKS
-msgctxt "REQ_LINKS"
 #, fuzzy
+msgctxt "REQ_LINKS"
 msgid "Links:"
 msgstr "Ligações:"
 
@@ -4039,8 +4038,8 @@ msgstr "Referência ao tipo do elemento"
 
 # SD_HEAD_CARD_DESC
 #: SD_HEAD_CARD_DESC
-msgctxt "SD_HEAD_CARD_DESC"
 #, fuzzy
+msgctxt "SD_HEAD_CARD_DESC"
 msgid "Minimum and Maximum # of times the element can appear in the instance"
 msgstr "Número mínimo e máximo de vezes que o elemento pode aparecer na instância"
 
@@ -4299,8 +4298,8 @@ msgstr "Nomes alternativos"
 
 # STRUC_DEF_AND
 #: STRUC_DEF_AND
-msgctxt "STRUC_DEF_AND"
 #, fuzzy
+msgctxt "STRUC_DEF_AND"
 msgid "and"
 msgstr "e"
 
@@ -4480,8 +4479,8 @@ msgstr "Restrição de fatias"
 
 # STRUC_DEF_CONSTRAINTS
 #: STRUC_DEF_CONSTRAINTS
-msgctxt "STRUC_DEF_CONSTRAINTS"
 #, fuzzy
+msgctxt "STRUC_DEF_CONSTRAINTS"
 msgid "Constraints"
 msgstr "Restrições"
 
@@ -4511,8 +4510,8 @@ msgstr "Clique para copiar o URL"
 
 # STRUC_DEF_CURR
 #: STRUC_DEF_CURR
-msgctxt "STRUC_DEF_CURR"
 #, fuzzy
+msgctxt "STRUC_DEF_CURR"
 msgid "Current"
 msgstr "Atual"
 
@@ -4638,8 +4637,8 @@ msgstr "exemplo"
 
 # STRUC_DEF_EXT
 #: STRUC_DEF_EXT
-msgctxt "STRUC_DEF_EXT"
 #, fuzzy
+msgctxt "STRUC_DEF_EXT"
 msgid "Extensible"
 msgstr "Extensível"
 
@@ -4915,8 +4914,8 @@ msgstr "Pelo menos os seguintes elementos"
 
 # STRUC_DEF_LOGICAL
 #: STRUC_DEF_LOGICAL
-msgctxt "STRUC_DEF_LOGICAL"
 #, fuzzy
+msgctxt "STRUC_DEF_LOGICAL"
 msgid "Logical Model"
 msgstr "Modelo lógico"
 
@@ -4946,8 +4945,8 @@ msgstr "Máximo"
 
 # STRUC_DEF_MAX_MIN
 #: STRUC_DEF_MAX_MIN
-msgctxt "STRUC_DEF_MAX_MIN"
 #, fuzzy
+msgctxt "STRUC_DEF_MAX_MIN"
 msgid "Minimum and Maximum # of times the element can appear in the instance"
 msgstr "Número mínimo e máximo de vezes que o elemento pode aparecer na instância"
 
@@ -5115,8 +5114,8 @@ msgstr "Encomendado"
 
 # STRUC_DEF_PATH
 #: STRUC_DEF_PATH
-msgctxt "STRUC_DEF_PATH"
 #, fuzzy
+msgctxt "STRUC_DEF_PATH"
 msgid "Path"
 msgstr "Caminho"
 
@@ -5470,8 +5469,8 @@ msgstr "Este tipo deve ser suportado"
 
 # STRUC_DEF_UI
 #: STRUC_DEF_UI
-msgctxt "STRUC_DEF_UI"
 #, fuzzy
+msgctxt "STRUC_DEF_UI"
 msgid "UI"
 msgstr "IU"
 
@@ -5900,8 +5899,8 @@ msgstr "todos os códigos definidos em"
 
 # VALUE_SET_AND
 #: VALUE_SET_AND
-msgctxt "VALUE_SET_AND"
 #, fuzzy
+msgctxt "VALUE_SET_AND"
 msgid "and"
 msgstr "e"
 
