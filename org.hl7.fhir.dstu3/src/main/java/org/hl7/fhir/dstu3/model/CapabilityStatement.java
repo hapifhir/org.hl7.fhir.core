@@ -9029,28 +9029,6 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<StructureDefinition> getProfileTarget() { 
-      if (this.profileTarget == null)
-        this.profileTarget = new ArrayList<StructureDefinition>();
-      return this.profileTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public StructureDefinition addProfileTarget() { 
-      StructureDefinition r = new StructureDefinition();
-      if (this.profileTarget == null)
-        this.profileTarget = new ArrayList<StructureDefinition>();
-      this.profileTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #rest} (A definition of the restful capabilities of the solution, if any.)
      */
     public List<CapabilityStatementRestComponent> getRest() { 

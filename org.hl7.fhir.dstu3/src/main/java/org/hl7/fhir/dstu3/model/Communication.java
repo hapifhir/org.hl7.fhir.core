@@ -757,16 +757,6 @@ public class Communication extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getDefinitionTarget() { 
-      if (this.definitionTarget == null)
-        this.definitionTarget = new ArrayList<Resource>();
-      return this.definitionTarget;
-    }
-
-    /**
      * @return {@link #basedOn} (An order, proposal or plan fulfilled in whole or in part by this Communication.)
      */
     public List<Reference> getBasedOn() { 
@@ -820,16 +810,6 @@ public class Communication extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<Resource>();
-      return this.basedOnTarget;
-    }
-
-    /**
      * @return {@link #partOf} (Part of this action.)
      */
     public List<Reference> getPartOf() { 
@@ -880,16 +860,6 @@ public class Communication extends DomainResource {
         addPartOf();
       }
       return getPartOf().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getPartOfTarget() { 
-      if (this.partOfTarget == null)
-        this.partOfTarget = new ArrayList<Resource>();
-      return this.partOfTarget;
     }
 
     /**
@@ -1205,16 +1175,6 @@ public class Communication extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getRecipientTarget() { 
-      if (this.recipientTarget == null)
-        this.recipientTarget = new ArrayList<Resource>();
-      return this.recipientTarget;
-    }
-
-    /**
      * @return {@link #topic} (The resources which were responsible for or related to producing this communication.)
      */
     public List<Reference> getTopic() { 
@@ -1265,16 +1225,6 @@ public class Communication extends DomainResource {
         addTopic();
       }
       return getTopic().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getTopicTarget() { 
-      if (this.topicTarget == null)
-        this.topicTarget = new ArrayList<Resource>();
-      return this.topicTarget;
     }
 
     /**
@@ -1557,16 +1507,6 @@ public class Communication extends DomainResource {
         addReasonReference();
       }
       return getReasonReference().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
     }
 
     /**

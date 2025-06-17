@@ -2925,16 +2925,6 @@ public class Consent extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getConsentingPartyTarget() { 
-      if (this.consentingPartyTarget == null)
-        this.consentingPartyTarget = new ArrayList<Resource>();
-      return this.consentingPartyTarget;
-    }
-
-    /**
      * @return {@link #actor} (Who or what is controlled by this consent. Use group to identify a set of actors by some property they share (e.g. 'admitting officers').)
      */
     public List<ConsentActorComponent> getActor() { 
@@ -3091,28 +3081,6 @@ public class Consent extends DomainResource {
         addOrganization();
       }
       return getOrganization().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Organization> getOrganizationTarget() { 
-      if (this.organizationTarget == null)
-        this.organizationTarget = new ArrayList<Organization>();
-      return this.organizationTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Organization addOrganizationTarget() { 
-      Organization r = new Organization();
-      if (this.organizationTarget == null)
-        this.organizationTarget = new ArrayList<Organization>();
-      this.organizationTarget.add(r);
-      return r;
     }
 
     /**
