@@ -1433,16 +1433,6 @@ public class Appointment extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getIndicationTarget() { 
-      if (this.indicationTarget == null)
-        this.indicationTarget = new ArrayList<Resource>();
-      return this.indicationTarget;
-    }
-
-    /**
      * @return {@link #priority} (The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority).). This is the underlying object with id, value and extensions. The accessor "getPriority" gives direct access to the value
      */
     public UnsignedIntType getPriorityElement() { 
@@ -1587,16 +1577,6 @@ public class Appointment extends DomainResource {
         addSupportingInformation();
       }
       return getSupportingInformation().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getSupportingInformationTarget() { 
-      if (this.supportingInformationTarget == null)
-        this.supportingInformationTarget = new ArrayList<Resource>();
-      return this.supportingInformationTarget;
     }
 
     /**
@@ -1796,28 +1776,6 @@ public class Appointment extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Slot> getSlotTarget() { 
-      if (this.slotTarget == null)
-        this.slotTarget = new ArrayList<Slot>();
-      return this.slotTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Slot addSlotTarget() { 
-      Slot r = new Slot();
-      if (this.slotTarget == null)
-        this.slotTarget = new ArrayList<Slot>();
-      this.slotTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #created} (The date that this appointment was initially created. This could be different to the meta.lastModified value on the initial entry, as this could have been before the resource was created on the FHIR server, and should remain unchanged over the lifespan of the appointment.). This is the underlying object with id, value and extensions. The accessor "getCreated" gives direct access to the value
      */
     public DateTimeType getCreatedElement() { 
@@ -1966,28 +1924,6 @@ public class Appointment extends DomainResource {
         addIncomingReferral();
       }
       return getIncomingReferral().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<ReferralRequest> getIncomingReferralTarget() { 
-      if (this.incomingReferralTarget == null)
-        this.incomingReferralTarget = new ArrayList<ReferralRequest>();
-      return this.incomingReferralTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public ReferralRequest addIncomingReferralTarget() { 
-      ReferralRequest r = new ReferralRequest();
-      if (this.incomingReferralTarget == null)
-        this.incomingReferralTarget = new ArrayList<ReferralRequest>();
-      this.incomingReferralTarget.add(r);
-      return r;
     }
 
     /**
