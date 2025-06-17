@@ -13,7 +13,7 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 
-
+@SuppressWarnings("checkstyle:systemout")
 public class CorePackageTools {
 
   public static void main(String[] args) throws FHIRFormatError, IOException {

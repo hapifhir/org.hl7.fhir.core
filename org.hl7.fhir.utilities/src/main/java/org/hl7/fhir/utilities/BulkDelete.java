@@ -37,8 +37,8 @@ import java.io.IOException;
 
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@SuppressWarnings("checkstyle:systemout")
 public class BulkDelete {
-
 
   private static final String DIR2 = "C:\\work\\org.hl7.fhir\\build\\vscache";
   private static final String DIR1 = "C:\\work\\org.hl7.fhir\\build\\vscache\\validation.cache";

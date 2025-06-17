@@ -246,12 +246,12 @@ public class ValidationOptions {
     return this;
   }
 
-  public ValidationOptions setNoServer(boolean useServer) {
+  public ValidationOptions setUseServer(boolean useServer) {
     this.useServer = useServer;
     return this;
   }
   
-  public ValidationOptions setNoClient(boolean useClient) {
+  public ValidationOptions setUseClient(boolean useClient) {
     this.useClient = useClient;
     return this;
   }

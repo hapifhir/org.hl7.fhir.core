@@ -153,6 +153,8 @@ public class UserDataNames {
   public static final String DN_TRANSIENT = "DN_TRANSIENT";
   public static final String JGEN_ALL_PRIMITIVE = "JGEN_ALL_PRIMITIVE";
   public static final String IG_DEP_ALIASED = "IG_DEP_ALIASED";
+  public static final String CS_MARKDOWN_FLAG = "CS_MARKDOWN_FLAG";
   public static final String PROFILE_RENDERED_MAPPINGS = "PROFILE_RENDERED_MAPPINGS";
+  public static final String EXP_REVIEWED = "EXP_REVIEWED";
   
 }  

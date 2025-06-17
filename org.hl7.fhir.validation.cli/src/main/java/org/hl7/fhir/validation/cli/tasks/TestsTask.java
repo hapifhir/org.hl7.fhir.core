@@ -1,14 +1,15 @@
 package org.hl7.fhir.validation.cli.tasks;
 
-import java.io.PrintStream;
-
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.service.model.ValidationContext;
-import org.hl7.fhir.validation.service.utils.Display;
+import org.hl7.fhir.validation.cli.Display;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.testexecutor.TestExecutor;
 import org.hl7.fhir.validation.testexecutor.TestExecutorParams;
+import org.slf4j.Logger;
 
+@Slf4j
 public class TestsTask extends StandaloneTask{
   @Override
   public String getName() {
@@ -31,8 +32,8 @@ public class TestsTask extends StandaloneTask{
   }
 
   @Override
-  public void printHelp(PrintStream out) {
-    Display.displayHelpDetails(out,"help/tests.txt");
+  public void logHelp(Logger logger) {
+    Display.displayHelpDetails(logger,"help/tests.txt");
   }
 
   @Override
@@ -41,7 +42,7 @@ public class TestsTask extends StandaloneTask{
       final String testClassnameFilter = Params.getParam(args, Params.TEST_NAME_FILTER);
       final String testCasesDirectory = Params.getParam(args, Params.TEST);
       if (testCasesDirectory == null) {
-        System.out.println("No fhir-test-cases directory provided. Required usage: -tests <fhir-test-cases-directory>");
+        log.error("No fhir-test-cases directory provided. Required usage: -tests <fhir-test-cases-directory>");
         System.exit(1);
       }
 

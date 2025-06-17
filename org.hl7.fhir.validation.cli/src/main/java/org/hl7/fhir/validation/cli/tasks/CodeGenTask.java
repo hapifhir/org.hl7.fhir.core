@@ -1,12 +1,11 @@
 package org.hl7.fhir.validation.cli.tasks;
 
-import java.io.PrintStream;
-
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.service.utils.EngineMode;
+import org.slf4j.Logger;
 
 public class CodeGenTask extends ValidationEngineTask {
 
@@ -31,7 +30,7 @@ public class CodeGenTask extends ValidationEngineTask {
   }
 
   @Override
-  public void printHelp(PrintStream out) {
+  public void logHelp(Logger logger) {
 
   }
 

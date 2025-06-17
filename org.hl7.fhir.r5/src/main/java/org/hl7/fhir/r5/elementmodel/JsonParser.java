@@ -177,8 +177,6 @@ public class JsonParser extends ParserBase {
     List<ValidatedFragment> res = new ArrayList<>();
     res.add(focusFragment);
 
-//    long  t =System.currentTimeMillis()-start;
-//    System.out.println("json parser: "+(t)+"ms, "+(content.length/1024)+"kb "+(t == 0 ? "" : " @ "+(content.length / t)+"kb/s"));
     return res;
   }
 

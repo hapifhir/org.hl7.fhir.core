@@ -4,9 +4,6 @@ package org.hl7.fhir.convertors.misc;
 
 
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -47,6 +44,7 @@ import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@SuppressWarnings("checkstyle:systemout")
 public class Test {
   public final static String DEF_TS_SERVER = "http://fhir-dev.healthintersections.com.au/open";
   public final static String DEV_TS_SERVER = "http://local.fhir.org:8080/open";

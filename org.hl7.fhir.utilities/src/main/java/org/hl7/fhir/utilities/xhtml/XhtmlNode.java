@@ -1297,4 +1297,51 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return x;
   }
 
+
+  public boolean hasContent() {
+    if (nodeType == NodeType.Text) {
+      return content != null && content.trim().length() > 0;
+    }
+    if (nodeType == NodeType.Element) {
+      for (XhtmlNode n : getChildNodes()) {
+        if (n.hasContent()) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public String getPathName() {
+    if (getName() == null) {
+      return getNodeType().toCode();      
+    } else {
+      return getName();
+    }
+  }
+
+
+  public int countByPathName(XhtmlNode node) {
+    int count = 0;
+    for (XhtmlNode t : getChildNodes()) {
+      if (t.getPathName().equals(node.getPathName())) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  public int indexByPathName(XhtmlNode node) {
+    int count = 0;
+    for (XhtmlNode t : getChildNodes()) {
+      if (t == node) {
+        return count;        
+      }
+      if (t.getPathName().equals(node.getPathName())) {
+        count++;
+      }
+    }
+    return count;
+  }
+
 }

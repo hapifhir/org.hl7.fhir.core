@@ -200,10 +200,10 @@ public class StructureDefinitionValidator extends BaseValidator {
         boolean logical = "logical".equals(src.getNamedChildValue("kind", false));
         boolean constraint = "constraint".equals(src.getNamedChildValue("derivation", false));
         for (Element differential : differentials) {
-          ok = validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0, sd, typeName, logical, constraint, src.getNamedChildValue("type", false), src.getNamedChildValue("url", false), src.getNamedChildValue("type", false), base, experimental) && ok;
+          ok = validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0, sd, typeName, logical, constraint, src.getNamedChildValue("type", false), src.getNamedChildValue("url", false), src.getNamedChildValue("version", false), src.getNamedChildValue("type", false), base, experimental) && ok;
         }
         for (Element snapshotE : snapshots) {
-          ok = validateElementList(errors, snapshotE, stack.push(snapshotE, -1, null, null), true, true, sd, typeName, logical, constraint, src.getNamedChildValue("type", false), src.getNamedChildValue("url", false), src.getNamedChildValue("type", false), base, experimental) && ok;
+          ok = validateElementList(errors, snapshotE, stack.push(snapshotE, -1, null, null), true, true, sd, typeName, logical, constraint, src.getNamedChildValue("type", false), src.getNamedChildValue("url", false), src.getNamedChildValue("version", false), src.getNamedChildValue("type", false), base, experimental) && ok;
         }
         if (!(differentials.isEmpty()  && snapshots.isEmpty())) {
           for (ElementDefinition ed : sd.getSnapshot().getElement()) {
@@ -579,19 +579,20 @@ public class StructureDefinitionValidator extends BaseValidator {
     }
   }
 
-  private boolean validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, String rootPath, String profileUrl, String profileType, StructureDefinition base, boolean experimental) {
+  private boolean validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, String rootPath, 
+      String profileUrl, String profileVersion, String profileType, StructureDefinition base, boolean experimental) {
     Map<String, SourcedInvariant> invariantMap = new HashMap<>();
     boolean ok = true;
     List<Element> elements = elementList.getChildrenByName("element");
     int cc = 0;
     for (Element element : elements) {
-      ok = validateElementDefinition(errors, elements, element, stack.push(element, cc, null, null), snapshot, hasSnapshot, sd, typeName, logical, constraint, invariantMap, rootPath, profileUrl, profileType, base, experimental) && ok;
+      ok = validateElementDefinition(errors, elements, element, stack.push(element, cc, null, null), snapshot, hasSnapshot, sd, typeName, logical, constraint, invariantMap, rootPath, profileUrl, profileVersion, profileType, base, experimental) && ok;
       cc++;
     }    
     return ok;
   }
 
-  private boolean validateElementDefinition(List<ValidationMessage> errors, List<Element> elements, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, Map<String, SourcedInvariant> invariantMap, String rootPath, String profileUrl, String profileType, StructureDefinition base, boolean experimental) {
+  private boolean validateElementDefinition(List<ValidationMessage> errors, List<Element> elements, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, Map<String, SourcedInvariant> invariantMap, String rootPath, String profileUrl, String profileVersion, String profileType, StructureDefinition base, boolean experimental) {
     boolean ok = true;
     boolean typeMustSupport = false;
     String path = element.getNamedChildValue("path", false);
@@ -800,7 +801,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     List<Element> constraints = element.getChildrenByName("constraint");
     int cc = 0;
     for (Element invariant : constraints) {
-      ok = validateElementDefinitionInvariant(errors, invariant, stack.push(invariant, cc, null, null), invariantMap, elements, element, element.getNamedChildValue("path", false), rootPath, profileUrl, profileType, snapshot, base) && ok;
+      ok = validateElementDefinitionInvariant(errors, invariant, stack.push(invariant, cc, null, null), invariantMap, elements, element, element.getNamedChildValue("path", false), rootPath, profileUrl, profileVersion, profileType, snapshot, base) && ok;
       cc++;
     }    
     if (snapshot) {
@@ -956,7 +957,7 @@ public class StructureDefinitionValidator extends BaseValidator {
   }
 
   private boolean validateElementDefinitionInvariant(List<ValidationMessage> errors, Element invariant, NodeStack stack, Map<String, SourcedInvariant> invariantMap, List<Element> elements, Element element, 
-      String path, String rootPath, String profileUrl, String profileType, boolean snapshot, StructureDefinition base) {
+      String path, String rootPath, String profileUrl, String profileVersion, String profileType, boolean snapshot, StructureDefinition base) {
     boolean ok = true;
     String key = invariant.getNamedChildValue("key", false); 
     String expression = invariant.getNamedChildValue("expression", false);
@@ -1017,7 +1018,7 @@ public class StructureDefinitionValidator extends BaseValidator {
             }        
           }
         } else {   
-          if (rule(errors, "2023-07-27", IssueType.INVALID, stack, source == null || source.equals(profileUrl), I18nConstants.ED_INVARIANT_DIFF_NO_SOURCE, key, source)) {
+          if (rule(errors, "2023-07-27", IssueType.INVALID, stack, source == null || matchesCanonical(source, profileUrl, profileVersion), I18nConstants.ED_INVARIANT_DIFF_NO_SOURCE, key, source, profileUrl)) {
             SourcedInvariant inv = findInvariantInBase(base, key);
             if (rule(errors, "2023-07-27", IssueType.INVALID, stack, inv == null || inv.getInv().equals(expression), I18nConstants.ED_INVARIANT_KEY_ALREADY_USED, key, inv == null ? "??" : inv.getSd(), inv == null  ? "??" : inv.getInv())) {
               if (invariantMap.containsKey(key)) { 
@@ -1038,6 +1039,10 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
     }
     return ok;
+  }
+
+  private boolean matchesCanonical(String source, String profileUrl, String profileVersion) {
+    return source.equals(profileUrl) || (profileVersion != null && source.equals(profileUrl+"|"+profileVersion));
   }
 
   private boolean validateContextInvariant(List<ValidationMessage> errors, Element invariant, Element sd, NodeStack stack) {
@@ -1274,9 +1279,6 @@ public class StructureDefinitionValidator extends BaseValidator {
     case "Element" :return  addCharacteristicsForType(set);
     case "Base" :return  addCharacteristicsForType(set);
     default:
-      //      if (!context.getResourceNames().contains(tc)) {
-      //        System.out.println("Unhandled data type in addCharacteristics: "+tc);        
-      //      }
       return addCharacteristicsForType(set);
     }
   }

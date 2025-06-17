@@ -19,6 +19,7 @@ import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@SuppressWarnings("checkstyle:systemout")
 public class OMOPImporter {
 
   public class Tracker {
@@ -512,7 +513,7 @@ public class OMOPImporter {
         "INSERT INTO `Concepts` (`concept_id`, `concept_name`, `domain_id`, `vocabulary_id`, `concept_class_id`, `standard_concept`, `concept_code`, `valid_start_date`, `valid_end_date`, `invalid_reason`) "+
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"); 
     while (csv.line()) {
-      if (conceptFilter == null || conceptFilter.contains(csv.cell("concept_id")) || isMetaConcept(csv.cell("concept_id"))) {
+      if (conceptFilter == null || conceptFilter.contains(csv.cell("concept_id")) || isMetaConcept(csv.cell("concept_id"), csv.cell("domain_id"))) {
         try {
           pstmt.setString(1, csv.cell("concept_id"));
           pstmt.setString(2, csv.cell("concept_name"));
@@ -535,8 +536,8 @@ public class OMOPImporter {
     t.done();
   }
 
-  private boolean isMetaConcept(String cell) {
-    return domains.containsValue(cell) || vocabularies.containsValue(cell);
+  private boolean isMetaConcept(String cell, String domain) {
+    return domains.containsValue(cell) || vocabularies.containsValue(cell) || "Language".equals(domain); 
   }
 
   private void processConceptSynonyms(String folder, boolean process) throws FHIRException, FileNotFoundException, IOException, SQLException {
@@ -576,7 +577,7 @@ public class OMOPImporter {
     
     PreparedStatement pstmt = con.prepareStatement("INSERT INTO `ConceptSynonyms` (`concept_id`, `concept_synonym_name`, `language_concept_id`) VALUES (?, ?, ?)");
     while (csv.line()) {
-      if (conceptFilter == null || conceptFilter.contains(csv.cell("concept_id")) || isMetaConcept(csv.cell("concept_id"))) {
+      if (conceptFilter == null || conceptFilter.contains(csv.cell("concept_id")) || isMetaConcept(csv.cell("concept_id"), null)) {
         try {
           pstmt.setString(1, csv.cell("concept_id"));
           pstmt.setString(2, csv.cell("concept_synonym_name"));
@@ -674,7 +675,7 @@ public class OMOPImporter {
 
     PreparedStatement pstmt = con.prepareStatement("INSERT INTO `ConceptRelationships` (`concept_id_1`, `concept_id_2`, `relationship_id`, `valid_start_date`, `valid_end_date`, `invalid_reason`) VALUES (?, ?, ?, ?, ?, ?)");
     while (csv.line()) {
-      if (conceptFilter == null || ((conceptFilter.contains(csv.cell("concept_id_1")) || isMetaConcept(csv.cell("concept_id_1"))) && (conceptFilter.contains(csv.cell("concept_id_2")) || isMetaConcept(csv.cell("concept_id_2"))))) {
+      if (conceptFilter == null || ((conceptFilter.contains(csv.cell("concept_id_1")) || isMetaConcept(csv.cell("concept_id_1"), null)) && (conceptFilter.contains(csv.cell("concept_id_2")) || isMetaConcept(csv.cell("concept_id_2"), null)))) {
         try {
           pstmt.setString(1, csv.cell("concept_id_1"));
           pstmt.setString(2, csv.cell("concept_id_2"));

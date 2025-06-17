@@ -790,7 +790,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   }
 
   public boolean renderDataType(RenderingStatus status, XhtmlNode x, ResourceWrapper type) throws FHIRFormatError, DefinitionException, IOException {
-    return renderDataType(status, null, x, type);
+    return renderDataType(status, x, x, type);
   }
   
   public boolean renderDataType(RenderingStatus status, XhtmlNode parent, XhtmlNode x, ResourceWrapper type) throws FHIRFormatError, DefinitionException, IOException { 
@@ -811,7 +811,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       renderCanonical(status, x, type); 
       break;
     case "Annotation": 
-      renderAnnotation(status, x, type); 
+      renderAnnotation(status, parent, x, type); 
       break;
     case "Coding": 
       renderCodingWithDetails(status, x, type); 
@@ -1094,40 +1094,31 @@ public class DataRenderer extends Renderer implements CodeResolver {
     checkRenderExtensions(status, x, uri);
   } 
   
-  protected void renderAnnotation(RenderingStatus status, XhtmlNode x, ResourceWrapper a) throws FHIRException { 
-    StringBuilder b = new StringBuilder(); 
+  protected void renderAnnotation(RenderingStatus status, XhtmlNode parent, XhtmlNode x, ResourceWrapper a) throws FHIRException, IOException { 
     if (a.has("text")) { 
-      b.append(context.getTranslated(a.child("text"))); 
-    } 
-
-    if (a.has("text") && (a.has("author") || a.has("time"))) { 
-      b.append(" ("); 
+      addMarkdown(parent.blockquote(), context.getTranslated(a.child("text")));
     } 
 
     if (a.has("author")) { 
-      b.append(context.formatPhrase(RenderingContext.DATA_REND_BY) + " "); 
+      x.tx(context.formatPhrase(RenderingContext.DATA_REND_BY) + " "); 
       ResourceWrapper auth = a.child("author");
       if (auth.fhirType().equals("Reference")) { 
-        b.append(auth.primitiveValue("reference")); 
+        x.tx(auth.primitiveValue("reference")); 
       } else if (auth.fhirType().equals("string")) { 
-        b.append(context.getTranslated(auth)); 
+        x.tx(context.getTranslated(auth)); 
       } 
     } 
 
 
     if (a.has("time")) { 
-      if (b.length() > 0) { 
-        b.append(" "); 
+      if (a.has("author")) { 
+        x.tx(" "); 
       } 
-      b.append("@").append(displayDateTime(a.child("time"))); 
+      x.tx("@");
+      x.tx(displayDateTime(a.child("time"))); 
     } 
-    if (a.has("text") && (a.has("author") || a.has("time"))) { 
-      b.append(")"); 
-    } 
-
-
-    x.addText(b.toString()); 
-  } 
+    
+  }
 
   public String displayCoding(ResourceWrapper c) { 
     String s = ""; 

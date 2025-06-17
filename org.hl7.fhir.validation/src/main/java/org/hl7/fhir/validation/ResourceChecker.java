@@ -3,6 +3,7 @@ package org.hl7.fhir.validation;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
@@ -14,6 +15,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
+@Slf4j
 public class ResourceChecker {
 
 //  protected static Manager.FhirFormat checkIsResource(SimpleWorkerContext context, boolean debug, String path) throws IOException {
@@ -29,10 +31,10 @@ public class ResourceChecker {
 //
 //    return checkIsResource(context, debug, FileUtilities.fileToBytes(path), path);
 //  }
-  public static Manager.FhirFormat checkIsResource(SimpleWorkerContext context, boolean debug, byte[] cnt, String filename, boolean guessFromExtension) {
-//    System.out.println("   ..Detect format for " + filename);
+  public static Manager.FhirFormat checkIsResource(SimpleWorkerContext context, byte[] cnt, String filename, boolean guessFromExtension) {
+
     if (cnt.length == 0) {
-      System.out.println("Loader: " + filename+" is empty");
+      log.info("Loader: " + filename+" is empty");
       return null;
     }
     if (guessFromExtension) {
@@ -85,33 +87,25 @@ public class ResourceChecker {
       Manager.parse(context, new ByteArrayInputStream(cnt), Manager.FhirFormat.JSON);
       return Manager.FhirFormat.JSON;
     } catch (Exception e) {
-      if (debug) {
-        System.out.println("Not JSON: " + e.getMessage());
-      }
+        log.debug("Not JSON: " + e.getMessage());
     }
     try {
       Manager.parse(context, new ByteArrayInputStream(cnt), Manager.FhirFormat.NDJSON);
       return Manager.FhirFormat.NDJSON;
     } catch (Exception e) {
-      if (debug) {
-        System.out.println("Not NDJSON: " + e.getMessage());
-      }
+       log.debug("Not NDJSON: " + e.getMessage());
     }
     try {
       ValidatorUtils.parseXml(cnt);
       return Manager.FhirFormat.XML;
     } catch (Exception e) {
-      if (debug) {
-        System.out.println("Not XML: " + e.getMessage());
-      }
+      log.debug("Not XML: " + e.getMessage());
     }
     try {
       Manager.parse(context, new ByteArrayInputStream(cnt), Manager.FhirFormat.TURTLE);
       return Manager.FhirFormat.TURTLE;
     } catch (Exception e) {
-      if (debug) {
-        System.out.println("Not Turtle: " + e.getMessage());
-      }
+      log.debug("Not Turtle: " + e.getMessage());
     }
     try {
       String s = new String(cnt, StandardCharsets.UTF_8);
@@ -124,20 +118,15 @@ public class ResourceChecker {
       JWT jwt = new SHCParser(context).decodeJWT(null, s);
       return Manager.FhirFormat.SHC;
     } catch (Exception e) {
-      if (debug) {
-        System.out.println("Not a smart health card: " + e.getMessage());
-      }
+      log.debug("Not a smart health card: " + e.getMessage());
     }
     try {
       new StructureMapUtilities(context, null, null).parse(FileUtilities.bytesToString(cnt), null);
       return Manager.FhirFormat.TEXT;
     } catch (Exception e) {
-      if (debug) {
-        System.out.println("Not Text: " + e.getMessage());
-      }
+      log.debug("Not Text: " + e.getMessage());
     }
-    if (debug)
-      System.out.println("     .. not a resource: " + filename);
+    log.debug("     .. not a resource: " + filename);
     return null;
   }
 

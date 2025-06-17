@@ -33,6 +33,7 @@ import org.xml.sax.SAXException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+@SuppressWarnings("checkstyle:systemout")
 public class DicomPackageBuilder {
   
   private String version;
