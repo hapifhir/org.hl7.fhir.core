@@ -1406,6 +1406,8 @@ public class FHIRPathEngine {
       if (focus.getOperation() != null) {
         group.setOperation(focus.getOperation());
         group.setOpNext(focus.getOpNext());
+        group.setOpStart(focus.getOpStart());
+        group.setOpEnd(focus.getOpEnd());
         focus.setOperation(null);
         focus.setOpNext(null);
         // now look for another sequence, and start it
@@ -1618,7 +1620,6 @@ public class FHIRPathEngine {
     case Group:
       work2 = execute(context, focus, exp.getGroup(), atEntry);
       work.addAll(work2);
-      if (tracer != null) tracer.traceExpression(context, focus, work, exp);
       break;
     }
 
