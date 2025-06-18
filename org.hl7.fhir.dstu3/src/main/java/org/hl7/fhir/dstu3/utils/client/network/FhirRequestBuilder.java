@@ -179,14 +179,14 @@ public class FhirRequestBuilder {
           error = (OperationOutcome) resource;
         }
       } catch (IOException ioe) {
-        throw new EFhirClientException("Error reading Http Response from "+source+": " + ioe.getMessage(), ioe);
+        throw new EFhirClientException(0, "Error reading Http Response from "+source+": " + ioe.getMessage(), ioe);
       } catch (Exception e) {
-        throw new EFhirClientException("Error parsing response message from "+source+": " + e.getMessage(), e);
+        throw new EFhirClientException(0, "Error parsing response message from "+source+": " + e.getMessage(), e);
       }
     }
 
     if (error != null) {
-      throw new EFhirClientException("Error from server: " + ResourceUtilities.getErrorDescription(error), error);
+      throw new EFhirClientException(0, "Error from server: " + ResourceUtilities.getErrorDescription(error), error);
     }
 
     return resource;
@@ -215,12 +215,12 @@ public class FhirRequestBuilder {
         }
       }
     } catch (IOException ioe) {
-      throw new EFhirClientException("Error reading Http Response from "+source+": "+ioe.getMessage(), ioe);
+      throw new EFhirClientException(0, "Error reading Http Response from "+source+": "+ioe.getMessage(), ioe);
     } catch (Exception e) {
-      throw new EFhirClientException("Error parsing response message from "+source+":"+e.getMessage(), e);
+      throw new EFhirClientException(0, "Error parsing response message from "+source+":"+e.getMessage(), e);
     }
     if (error != null) {
-      throw new EFhirClientException("Error from "+source+": " + ResourceUtilities.getErrorDescription(error), error);
+      throw new EFhirClientException(0, "Error from "+source+": " + ResourceUtilities.getErrorDescription(error), error);
     }
     return feed;
   }

@@ -1122,6 +1122,7 @@ public class I18nConstants {
   public static final String VALIDATION_VAL_PROFILE_MINIMUM = "Validation_VAL_Profile_Minimum";
   public static final String VALIDATION_VAL_PROFILE_MINIMUM_MAGIC = "VALIDATION_VAL_PROFILE_MINIMUM_MAGIC";
   public static final String VALIDATION_VAL_PROFILE_MINIMUM_SLICE = "Validation_VAL_Profile_Minimum_SLICE";
+  public static final String VALIDATION_VAL_PROFILE_MINIMUM_SLICE_EXT = "Validation_VAL_Profile_Minimum_SLICE_EXT";
   public static final String VALIDATION_VAL_PROFILE_MULTIPLEMATCHES = "Validation_VAL_Profile_MultipleMatches";
   public static final String VALIDATION_VAL_PROFILE_NOCHECKMAX = "Validation_VAL_Profile_NoCheckMax";
   public static final String VALIDATION_VAL_PROFILE_NOCHECKMIN = "Validation_VAL_Profile_NoCheckMin";
@@ -1351,5 +1352,13 @@ public class I18nConstants {
   public static final String XHTML_CONTROL_LANGS_REQUIRED_DEF = "XHTML_CONTROL_LANGS_REQUIRED_DEF";
   public static final String XHTML_CONTROL_LANGS_REQUIRED_LANG = "XHTML_CONTROL_LANGS_REQUIRED_LANG";
   public static final String XHTML_XHTML_DUPLICATE_IDS = "XHTML_XHTML_DUPLICATE_IDS";
+  public static final String XHTML_XHTML_BLOCK_IN_PARA = "XHTML_XHTML_BLOCK_IN_PARA";
+  public static final String XHTML_XHTML_NO_RECURSION = "XHTML_XHTML_NO_RECURSION";
+  public static final String XHTML_XHTML_NO_CHILDREN = "XHTML_XHTML_NO_CHILDREN";
+  public static final String XHTML_XHTML_ILLEGAL_CHILDREN = "XHTML_XHTML_ILLEGAL_CHILDREN";
+  public static final String XHTML_XHTML_BAD_ELEMENT_TYPE = "XHTML_XHTML_BAD_ELEMENT_TYPE";
+  public static final String XHTML_XHTML_OUT_OF_PLACE = "XHTML_XHTML_OUT_OF_PLACE";
+  public static final String VALUESET_BAD_FILTER_VALUE_INVALID = "VALUESET_BAD_FILTER_VALUE_INVALID";
+  public static final String VALUESET_BAD_FILTER_VALUE_CANT_CHECK = "VALUESET_BAD_FILTER_VALUE_CANT_CHECK";
 
 }

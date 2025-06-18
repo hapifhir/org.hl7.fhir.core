@@ -13178,6 +13178,10 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     return res;
   }
   
+  public boolean isProfiledExtension() {
+    return getType().size() == 1 && "Extension".equals(getTypeFirstRep().getCode()) && 
+        getTypeFirstRep().getProfile().size() == 1;
+  }
 // end addition
 
 }

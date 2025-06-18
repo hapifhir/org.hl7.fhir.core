@@ -1431,6 +1431,15 @@ For resource issues, this will be a simple XPath limited to element names, repet
         }
       }  
 
+      public String getText() {
+        if (getDetails().hasText()) {
+          return getDetails().getText();
+        }
+        if (hasDiagnostics()) {
+          return getDiagnostics();
+        }
+        return null;
+      }
       // end addition
     }
 

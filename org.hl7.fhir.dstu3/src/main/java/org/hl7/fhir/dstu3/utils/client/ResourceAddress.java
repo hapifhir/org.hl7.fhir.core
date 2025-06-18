@@ -96,11 +96,15 @@ public class ResourceAddress {
   public <T extends Resource> URI resolveOperationUri(Class<T> resourceClass, String opName, Map<String,String> parameters) {
     return appendHttpParameters(baseServiceUri.resolve(nameForClassWithSlash(resourceClass) +"$"+opName), parameters);
   }
+
+  public <T extends Resource> URI resolveValidateUri(Class<T> resourceClass, String id) {
+    return baseServiceUri.resolve(nameForClassWithSlash(resourceClass) +"$validate"+(id == null ? "" : "/"+id));
+  }
+
+  public <T extends Resource> URI resolveValidateUri(String resourceType, String id) {
+    return baseServiceUri.resolve(resourceType +"/$validate"+(id == null ? "" : "/"+id));
+  }
   
-	public <T extends Resource> URI resolveValidateUri(Class<T> resourceClass, String id) {
-		return baseServiceUri.resolve(nameForClassWithSlash(resourceClass) +"$validate/"+id);
-	}
-	
 	public <T extends Resource> URI resolveGetUriFromResourceClass(Class<T> resourceClass) {
 		return baseServiceUri.resolve(nameForClass(resourceClass));
 	}
@@ -244,7 +248,7 @@ public class ResourceAddress {
 	public static URI buildAbsoluteURI(String absoluteURI) {
 		
 		if(StringUtils.isBlank(absoluteURI)) {
-			throw new EFhirClientException("Invalid URI", new URISyntaxException(absoluteURI, "URI/URL cannot be blank"));
+			throw new EFhirClientException(0, "Invalid URI", new URISyntaxException(absoluteURI, "URI/URL cannot be blank"));
 		} 
 		
 		String endpoint = appendForwardSlashToPath(absoluteURI);
@@ -273,7 +277,7 @@ public class ResourceAddress {
 				throw new EFhirClientException("host cannot be blank: " + uri);
 			}
 		} catch(URISyntaxException e) {
-			throw new EFhirClientException("Invalid URI", e);
+			throw new EFhirClientException(0, "Invalid URI", e);
 		}
 		return uri;
 	}
@@ -285,7 +289,7 @@ public class ResourceAddress {
 			uriBuilder.setQuery(parameterName + "=" + parameterValue);
 			modifiedUri = uriBuilder.build();
 		} catch(Exception e) {
-			throw new EFhirClientException("Unable to append query parameter '" + parameterName + "=" + parameterValue + " to URI " + uri, e);
+			throw new EFhirClientException(0, "Unable to append query parameter '" + parameterName + "=" + parameterValue + " to URI " + uri, e);
 		}
 		return modifiedUri;
 	}
@@ -424,7 +428,7 @@ public class ResourceAddress {
 
           return uriBuilder.build();
         } catch(Exception e) {
-        	throw new EFhirClientException("Error appending http parameter", e);
+        	throw new EFhirClientException(0, "Error appending http parameter", e);
         }
     }
 	

@@ -82,4 +82,5 @@ public interface ITerminologyClient {
     void log(String name, String resourceType, String version, byte[] cnt);
   }
   void setConversionLogger(ITerminologyConversionLogger logger);
+  OperationOutcome validateResource(Resource vs);
 }

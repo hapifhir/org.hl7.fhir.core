@@ -37,9 +37,9 @@ public class ByteUtils {
       try {
         baos.close();
       } catch (Exception ex) {
-        throw new EFhirClientException("Error closing output stream", ex);
+        throw new EFhirClientException(0, "Error closing output stream", ex);
       }
-      throw new EFhirClientException("Error converting output stream to byte array", e);
+      throw new EFhirClientException(0, "Error converting output stream to byte array", e);
     }
     return byteArray;
   }

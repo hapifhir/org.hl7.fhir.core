@@ -62,6 +62,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.NamingSystem;
+import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
@@ -643,7 +644,7 @@ public interface IWorkerContext {
    */
   public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs);
   public void validateCodeBatchByRef(ValidationOptions options, List<? extends CodingValidationRequest> codes, String vsUrl);
-
+  public OperationOutcome validateTxResource(ValidationOptions options, Resource resource);
 
   // todo: figure these out
   public Map<String, NamingSystem> getNSUrlMap();

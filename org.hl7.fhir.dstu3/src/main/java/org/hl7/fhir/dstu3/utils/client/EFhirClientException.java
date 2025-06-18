@@ -57,13 +57,14 @@ import org.hl7.fhir.dstu3.model.OperationOutcome;
  */
 public class EFhirClientException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
+  private int code;
 	private List<OperationOutcome> errors = new ArrayList<OperationOutcome>();
 	 
 	public EFhirClientException(String message) {
 		super(message);
 	}
 	
-	public EFhirClientException(String message, List<OperationOutcome> serverErrors) {
+	public EFhirClientException(int code, String message, List<OperationOutcome> serverErrors) {
 		super(message);
 		if(serverErrors != null && serverErrors.size() > 0) {
 			errors.addAll(serverErrors);
@@ -74,7 +75,7 @@ public class EFhirClientException extends RuntimeException {
 		super(cause);
 	}
 	
-	public EFhirClientException(String message, Exception cause) {
+	public EFhirClientException(int code, String message, Exception cause) {
 		super(message, cause);
 	}
 	
@@ -85,7 +86,7 @@ public class EFhirClientException extends RuntimeException {
 	 * @param message
 	 * @param serverError
 	 */
-	public EFhirClientException(String message, OperationOutcome serverError) {
+	public EFhirClientException(int code, String message, OperationOutcome serverError) {
 		super(message);
 		if(serverError != null) {
 			errors.add(serverError);
@@ -126,5 +127,9 @@ public class EFhirClientException extends RuntimeException {
 	public boolean hasServerErrors() {
 		return errors.size() > 0;
 	}
+
+  public int getCode() {
+    return code;
+  }
 
 }
