@@ -839,6 +839,12 @@ Added: 2005-10-16
 Suppress-Script: Latn
 %%
 Type: language
+Subtag: pt_BR
+Description: Brazilian Portuguese
+Added: 2025-06-17
+Suppress-Script: Latn
+%%
+Type: language
 Subtag: qu
 Description: Quechua
 Added: 2005-10-16
