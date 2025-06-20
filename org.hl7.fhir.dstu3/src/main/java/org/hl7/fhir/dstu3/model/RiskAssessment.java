@@ -1455,16 +1455,6 @@ public class RiskAssessment extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getBasisTarget() { 
-      if (this.basisTarget == null)
-        this.basisTarget = new ArrayList<Resource>();
-      return this.basisTarget;
-    }
-
-    /**
      * @return {@link #prediction} (Describes the expected outcome for the subject.)
      */
     public List<RiskAssessmentPredictionComponent> getPrediction() { 

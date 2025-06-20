@@ -11590,16 +11590,6 @@ public class TestScript extends MetadataResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getProfileTarget() { 
-      if (this.profileTarget == null)
-        this.profileTarget = new ArrayList<Resource>();
-      return this.profileTarget;
-    }
-
-    /**
      * @return {@link #variable} (Variable is set based either on element value in response body or on header field value in the response headers.)
      */
     public List<TestScriptVariableComponent> getVariable() { 

@@ -609,28 +609,6 @@ public class SupplyDelivery extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<SupplyRequest> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<SupplyRequest>();
-      return this.basedOnTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public SupplyRequest addBasedOnTarget() { 
-      SupplyRequest r = new SupplyRequest();
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<SupplyRequest>();
-      this.basedOnTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #partOf} (A larger event of which this particular event is a component or step.)
      */
     public List<Reference> getPartOf() { 
@@ -681,16 +659,6 @@ public class SupplyDelivery extends DomainResource {
         addPartOf();
       }
       return getPartOf().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getPartOfTarget() { 
-      if (this.partOfTarget == null)
-        this.partOfTarget = new ArrayList<Resource>();
-      return this.partOfTarget;
     }
 
     /**
@@ -1034,28 +1002,6 @@ public class SupplyDelivery extends DomainResource {
         addReceiver();
       }
       return getReceiver().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Practitioner> getReceiverTarget() { 
-      if (this.receiverTarget == null)
-        this.receiverTarget = new ArrayList<Practitioner>();
-      return this.receiverTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Practitioner addReceiverTarget() { 
-      Practitioner r = new Practitioner();
-      if (this.receiverTarget == null)
-        this.receiverTarget = new ArrayList<Practitioner>();
-      this.receiverTarget.add(r);
-      return r;
     }
 
       protected void listChildren(List<Property> children) {

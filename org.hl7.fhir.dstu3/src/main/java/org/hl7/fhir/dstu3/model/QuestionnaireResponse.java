@@ -1417,16 +1417,6 @@ public class QuestionnaireResponse extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<Resource>();
-      return this.basedOnTarget;
-    }
-
-    /**
      * @return {@link #parent} (A procedure or observation that this questionnaire was performed as part of the execution of.  For example, the surgery a checklist was executed as part of.)
      */
     public List<Reference> getParent() { 
@@ -1477,16 +1467,6 @@ public class QuestionnaireResponse extends DomainResource {
         addParent();
       }
       return getParent().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getParentTarget() { 
-      if (this.parentTarget == null)
-        this.parentTarget = new ArrayList<Resource>();
-      return this.parentTarget;
     }
 
     /**
