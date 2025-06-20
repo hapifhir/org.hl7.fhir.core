@@ -413,16 +413,6 @@ public class MedicinalProductInteraction extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getSubjectTarget() {
-    if (this.subjectTarget == null)
-      this.subjectTarget = new ArrayList<Resource>();
-    return this.subjectTarget;
-  }
-
-  /**
    * @return {@link #description} (The interaction described.). This is the
    *         underlying object with id, value and extensions. The accessor
    *         "getDescription" gives direct access to the value

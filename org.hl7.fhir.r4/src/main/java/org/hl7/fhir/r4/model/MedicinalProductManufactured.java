@@ -266,28 +266,6 @@ public class MedicinalProductManufactured extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Organization> getManufacturerTarget() {
-    if (this.manufacturerTarget == null)
-      this.manufacturerTarget = new ArrayList<Organization>();
-    return this.manufacturerTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Organization addManufacturerTarget() {
-    Organization r = new Organization();
-    if (this.manufacturerTarget == null)
-      this.manufacturerTarget = new ArrayList<Organization>();
-    this.manufacturerTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #ingredient} (Ingredient.)
    */
   public List<Reference> getIngredient() {
@@ -339,28 +317,6 @@ public class MedicinalProductManufactured extends DomainResource {
       addIngredient();
     }
     return getIngredient().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<MedicinalProductIngredient> getIngredientTarget() {
-    if (this.ingredientTarget == null)
-      this.ingredientTarget = new ArrayList<MedicinalProductIngredient>();
-    return this.ingredientTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public MedicinalProductIngredient addIngredientTarget() {
-    MedicinalProductIngredient r = new MedicinalProductIngredient();
-    if (this.ingredientTarget == null)
-      this.ingredientTarget = new ArrayList<MedicinalProductIngredient>();
-    this.ingredientTarget.add(r);
-    return r;
   }
 
   /**

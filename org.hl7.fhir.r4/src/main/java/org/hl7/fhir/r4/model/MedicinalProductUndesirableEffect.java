@@ -155,16 +155,6 @@ public class MedicinalProductUndesirableEffect extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getSubjectTarget() {
-    if (this.subjectTarget == null)
-      this.subjectTarget = new ArrayList<Resource>();
-    return this.subjectTarget;
-  }
-
-  /**
    * @return {@link #symptomConditionEffect} (The symptom, condition or
    *         undesirable effect.)
    */

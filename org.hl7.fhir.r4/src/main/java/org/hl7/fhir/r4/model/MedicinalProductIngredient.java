@@ -2078,28 +2078,6 @@ public class MedicinalProductIngredient extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Organization> getManufacturerTarget() {
-    if (this.manufacturerTarget == null)
-      this.manufacturerTarget = new ArrayList<Organization>();
-    return this.manufacturerTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Organization addManufacturerTarget() {
-    Organization r = new Organization();
-    if (this.manufacturerTarget == null)
-      this.manufacturerTarget = new ArrayList<Organization>();
-    this.manufacturerTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #specifiedSubstance} (A specified substance that comprises
    *         this ingredient.)
    */
