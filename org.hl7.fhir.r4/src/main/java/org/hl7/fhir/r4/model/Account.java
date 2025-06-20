@@ -1285,16 +1285,6 @@ public class Account extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getSubjectTarget() {
-    if (this.subjectTarget == null)
-      this.subjectTarget = new ArrayList<Resource>();
-    return this.subjectTarget;
-  }
-
-  /**
    * @return {@link #servicePeriod} (The date range of services associated with
    *         this account.)
    */
