@@ -1314,16 +1314,6 @@ public class Goal extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getAddressesTarget() { 
-      if (this.addressesTarget == null)
-        this.addressesTarget = new ArrayList<Resource>();
-      return this.addressesTarget;
-    }
-
-    /**
      * @return {@link #note} (Any comments related to the goal.)
      */
     public List<Annotation> getNote() { 
@@ -1480,28 +1470,6 @@ public class Goal extends DomainResource {
         addOutcomeReference();
       }
       return getOutcomeReference().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Observation> getOutcomeReferenceTarget() { 
-      if (this.outcomeReferenceTarget == null)
-        this.outcomeReferenceTarget = new ArrayList<Observation>();
-      return this.outcomeReferenceTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Observation addOutcomeReferenceTarget() { 
-      Observation r = new Observation();
-      if (this.outcomeReferenceTarget == null)
-        this.outcomeReferenceTarget = new ArrayList<Observation>();
-      this.outcomeReferenceTarget.add(r);
-      return r;
     }
 
       protected void listChildren(List<Property> children) {

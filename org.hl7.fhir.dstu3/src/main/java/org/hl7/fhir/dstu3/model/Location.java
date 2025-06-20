@@ -1396,28 +1396,6 @@ public class Location extends DomainResource {
       return getEndpoint().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Endpoint> getEndpointTarget() { 
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      return this.endpointTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Endpoint addEndpointTarget() { 
-      Endpoint r = new Endpoint();
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      this.endpointTarget.add(r);
-      return r;
-    }
-
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Unique code or number identifying the location to its users.", 0, java.lang.Integer.MAX_VALUE, identifier));

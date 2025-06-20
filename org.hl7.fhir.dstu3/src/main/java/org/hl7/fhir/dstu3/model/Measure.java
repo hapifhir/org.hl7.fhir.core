@@ -2920,28 +2920,6 @@ public class Measure extends MetadataResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Library> getLibraryTarget() { 
-      if (this.libraryTarget == null)
-        this.libraryTarget = new ArrayList<Library>();
-      return this.libraryTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Library addLibraryTarget() { 
-      Library r = new Library();
-      if (this.libraryTarget == null)
-        this.libraryTarget = new ArrayList<Library>();
-      this.libraryTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #disclaimer} (Notices and disclaimers regarding the use of the measure, or related to intellectual property (such as code systems) referenced by the measure.). This is the underlying object with id, value and extensions. The accessor "getDisclaimer" gives direct access to the value
      */
     public MarkdownType getDisclaimerElement() { 
