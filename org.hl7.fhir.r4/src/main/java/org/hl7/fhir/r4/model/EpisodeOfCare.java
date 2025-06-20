@@ -1523,28 +1523,6 @@ public class EpisodeOfCare extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<ServiceRequest> getReferralRequestTarget() {
-    if (this.referralRequestTarget == null)
-      this.referralRequestTarget = new ArrayList<ServiceRequest>();
-    return this.referralRequestTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public ServiceRequest addReferralRequestTarget() {
-    ServiceRequest r = new ServiceRequest();
-    if (this.referralRequestTarget == null)
-      this.referralRequestTarget = new ArrayList<ServiceRequest>();
-    this.referralRequestTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #careManager} (The practitioner that is the care manager/care
    *         coordinator for this patient.)
    */
@@ -1647,28 +1625,6 @@ public class EpisodeOfCare extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<CareTeam> getTeamTarget() {
-    if (this.teamTarget == null)
-      this.teamTarget = new ArrayList<CareTeam>();
-    return this.teamTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public CareTeam addTeamTarget() {
-    CareTeam r = new CareTeam();
-    if (this.teamTarget == null)
-      this.teamTarget = new ArrayList<CareTeam>();
-    this.teamTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #account} (The set of accounts that may be used for billing
    *         for this EpisodeOfCare.)
    */
@@ -1721,28 +1677,6 @@ public class EpisodeOfCare extends DomainResource {
       addAccount();
     }
     return getAccount().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Account> getAccountTarget() {
-    if (this.accountTarget == null)
-      this.accountTarget = new ArrayList<Account>();
-    return this.accountTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Account addAccountTarget() {
-    Account r = new Account();
-    if (this.accountTarget == null)
-      this.accountTarget = new ArrayList<Account>();
-    this.accountTarget.add(r);
-    return r;
   }
 
   protected void listChildren(List<Property> children) {
