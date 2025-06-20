@@ -7,5 +7,5 @@ Editors for the various languages (git tags):
 * JA: ?
 * NL: Alexander Henket (ahenket)
 * PT:  Jose Costa Teixeira (costateixeira)
-* PT_BR: ?
+* PT_BR: Italo Macêdo (italomacedo)
 * RU: Vadim Peretokin ()
