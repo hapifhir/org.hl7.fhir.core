@@ -1917,28 +1917,6 @@ public class HealthcareService extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Location> getLocationTarget() {
-    if (this.locationTarget == null)
-      this.locationTarget = new ArrayList<Location>();
-    return this.locationTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Location addLocationTarget() {
-    Location r = new Location();
-    if (this.locationTarget == null)
-      this.locationTarget = new ArrayList<Location>();
-    this.locationTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #name} (Further description of the service as it would be
    *         presented to a consumer while searching.). This is the underlying
    *         object with id, value and extensions. The accessor "getName" gives
@@ -2250,28 +2228,6 @@ public class HealthcareService extends DomainResource {
       addCoverageArea();
     }
     return getCoverageArea().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Location> getCoverageAreaTarget() {
-    if (this.coverageAreaTarget == null)
-      this.coverageAreaTarget = new ArrayList<Location>();
-    return this.coverageAreaTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Location addCoverageAreaTarget() {
-    Location r = new Location();
-    if (this.coverageAreaTarget == null)
-      this.coverageAreaTarget = new ArrayList<Location>();
-    this.coverageAreaTarget.add(r);
-    return r;
   }
 
   /**
@@ -2899,28 +2855,6 @@ public class HealthcareService extends DomainResource {
       addEndpoint();
     }
     return getEndpoint().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Endpoint> getEndpointTarget() {
-    if (this.endpointTarget == null)
-      this.endpointTarget = new ArrayList<Endpoint>();
-    return this.endpointTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Endpoint addEndpointTarget() {
-    Endpoint r = new Endpoint();
-    if (this.endpointTarget == null)
-      this.endpointTarget = new ArrayList<Endpoint>();
-    this.endpointTarget.add(r);
-    return r;
   }
 
   protected void listChildren(List<Property> children) {

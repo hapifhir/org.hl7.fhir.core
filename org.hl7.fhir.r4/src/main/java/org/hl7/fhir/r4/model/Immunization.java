@@ -3159,16 +3159,6 @@ public class Immunization extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getReasonReferenceTarget() {
-    if (this.reasonReferenceTarget == null)
-      this.reasonReferenceTarget = new ArrayList<Resource>();
-    return this.reasonReferenceTarget;
-  }
-
-  /**
    * @return {@link #isSubpotent} (Indication if a dose is considered to be
    *         subpotent. By default, a dose should be considered to be potent.).
    *         This is the underlying object with id, value and extensions. The
