@@ -2439,28 +2439,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<ServiceRequest> getRequestTarget() {
-    if (this.requestTarget == null)
-      this.requestTarget = new ArrayList<ServiceRequest>();
-    return this.requestTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public ServiceRequest addRequestTarget() {
-    ServiceRequest r = new ServiceRequest();
-    if (this.requestTarget == null)
-      this.requestTarget = new ArrayList<ServiceRequest>();
-    this.requestTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #quantity} (Number of discrete units within this product.).
    *         This is the underlying object with id, value and extensions. The
    *         accessor "getQuantity" gives direct access to the value
@@ -2562,28 +2540,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
       addParent();
     }
     return getParent().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<BiologicallyDerivedProduct> getParentTarget() {
-    if (this.parentTarget == null)
-      this.parentTarget = new ArrayList<BiologicallyDerivedProduct>();
-    return this.parentTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public BiologicallyDerivedProduct addParentTarget() {
-    BiologicallyDerivedProduct r = new BiologicallyDerivedProduct();
-    if (this.parentTarget == null)
-      this.parentTarget = new ArrayList<BiologicallyDerivedProduct>();
-    this.parentTarget.add(r);
-    return r;
   }
 
   /**
