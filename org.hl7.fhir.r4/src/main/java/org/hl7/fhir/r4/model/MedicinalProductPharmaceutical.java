@@ -1740,28 +1740,6 @@ public class MedicinalProductPharmaceutical extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<MedicinalProductIngredient> getIngredientTarget() {
-    if (this.ingredientTarget == null)
-      this.ingredientTarget = new ArrayList<MedicinalProductIngredient>();
-    return this.ingredientTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public MedicinalProductIngredient addIngredientTarget() {
-    MedicinalProductIngredient r = new MedicinalProductIngredient();
-    if (this.ingredientTarget == null)
-      this.ingredientTarget = new ArrayList<MedicinalProductIngredient>();
-    this.ingredientTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #device} (Accompanying device.)
    */
   public List<Reference> getDevice() {
@@ -1813,28 +1791,6 @@ public class MedicinalProductPharmaceutical extends DomainResource {
       addDevice();
     }
     return getDevice().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<DeviceDefinition> getDeviceTarget() {
-    if (this.deviceTarget == null)
-      this.deviceTarget = new ArrayList<DeviceDefinition>();
-    return this.deviceTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public DeviceDefinition addDeviceTarget() {
-    DeviceDefinition r = new DeviceDefinition();
-    if (this.deviceTarget == null)
-      this.deviceTarget = new ArrayList<DeviceDefinition>();
-    this.deviceTarget.add(r);
-    return r;
   }
 
   /**
