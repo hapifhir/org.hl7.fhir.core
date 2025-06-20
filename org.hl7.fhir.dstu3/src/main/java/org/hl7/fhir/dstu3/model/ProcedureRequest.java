@@ -1173,16 +1173,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getDefinitionTarget() { 
-      if (this.definitionTarget == null)
-        this.definitionTarget = new ArrayList<Resource>();
-      return this.definitionTarget;
-    }
-
-    /**
      * @return {@link #basedOn} (Plan/proposal/order fulfilled by this request.)
      */
     public List<Reference> getBasedOn() { 
@@ -1236,16 +1226,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<Resource>();
-      return this.basedOnTarget;
-    }
-
-    /**
      * @return {@link #replaces} (The request takes the place of the referenced completed or terminated request(s).)
      */
     public List<Reference> getReplaces() { 
@@ -1296,16 +1276,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         addReplaces();
       }
       return getReplaces().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReplacesTarget() { 
-      if (this.replacesTarget == null)
-        this.replacesTarget = new ArrayList<Resource>();
-      return this.replacesTarget;
     }
 
     /**
@@ -2031,16 +2001,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
-    }
-
-    /**
      * @return {@link #supportingInfo} (Additional clinical information about the patient or specimen that may influence the procedure or diagnostics or their interpretations.     This information includes diagnosis, clinical findings and other observations.  In laboratory ordering these are typically referred to as "ask at order entry questions (AOEs)".  This includes observations explicitly requested by the producer (filler) to provide context or supporting information needed to complete the order. For example,  reporting the amount of inspired oxygen for blood gas measurements.)
      */
     public List<Reference> getSupportingInfo() { 
@@ -2094,16 +2054,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getSupportingInfoTarget() { 
-      if (this.supportingInfoTarget == null)
-        this.supportingInfoTarget = new ArrayList<Resource>();
-      return this.supportingInfoTarget;
-    }
-
-    /**
      * @return {@link #specimen} (One or more specimens that the laboratory procedure will use.)
      */
     public List<Reference> getSpecimen() { 
@@ -2154,28 +2104,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         addSpecimen();
       }
       return getSpecimen().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Specimen> getSpecimenTarget() { 
-      if (this.specimenTarget == null)
-        this.specimenTarget = new ArrayList<Specimen>();
-      return this.specimenTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Specimen addSpecimenTarget() { 
-      Specimen r = new Specimen();
-      if (this.specimenTarget == null)
-        this.specimenTarget = new ArrayList<Specimen>();
-      this.specimenTarget.add(r);
-      return r;
     }
 
     /**
@@ -2335,28 +2263,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         addRelevantHistory();
       }
       return getRelevantHistory().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Provenance> getRelevantHistoryTarget() { 
-      if (this.relevantHistoryTarget == null)
-        this.relevantHistoryTarget = new ArrayList<Provenance>();
-      return this.relevantHistoryTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Provenance addRelevantHistoryTarget() { 
-      Provenance r = new Provenance();
-      if (this.relevantHistoryTarget == null)
-        this.relevantHistoryTarget = new ArrayList<Provenance>();
-      this.relevantHistoryTarget.add(r);
-      return r;
     }
 
       protected void listChildren(List<Property> children) {
