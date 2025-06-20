@@ -1780,16 +1780,6 @@ public class Composition extends DomainResource {
       return getDetail().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getDetailTarget() {
-      if (this.detailTarget == null)
-        this.detailTarget = new ArrayList<Resource>();
-      return this.detailTarget;
-    }
-
     protected void listChildren(List<Property> children) {
       super.listChildren(children);
       children.add(new Property("code", "CodeableConcept",
@@ -2259,16 +2249,6 @@ public class Composition extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getAuthorTarget() {
-      if (this.authorTarget == null)
-        this.authorTarget = new ArrayList<Resource>();
-      return this.authorTarget;
-    }
-
-    /**
      * @return {@link #focus} (The actual focus of the section when it is not the
      *         subject of the composition, but instead represents something or
      *         someone associated with the subject such as (for a patient subject) a
@@ -2528,16 +2508,6 @@ public class Composition extends DomainResource {
         addEntry();
       }
       return getEntry().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getEntryTarget() {
-      if (this.entryTarget == null)
-        this.entryTarget = new ArrayList<Resource>();
-      return this.entryTarget;
     }
 
     /**
@@ -3549,16 +3519,6 @@ public class Composition extends DomainResource {
       addAuthor();
     }
     return getAuthor().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getAuthorTarget() {
-    if (this.authorTarget == null)
-      this.authorTarget = new ArrayList<Resource>();
-    return this.authorTarget;
   }
 
   /**

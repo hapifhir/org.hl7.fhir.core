@@ -176,16 +176,6 @@ public class Condition extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getAssessmentTarget() {
-      if (this.assessmentTarget == null)
-        this.assessmentTarget = new ArrayList<Resource>();
-      return this.assessmentTarget;
-    }
-
-    /**
      * @return {@link #type} (The kind of staging, such as pathological or clinical
      *         staging.)
      */
@@ -538,16 +528,6 @@ public class Condition extends DomainResource {
         addDetail();
       }
       return getDetail().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getDetailTarget() {
-      if (this.detailTarget == null)
-        this.detailTarget = new ArrayList<Resource>();
-      return this.detailTarget;
     }
 
     protected void listChildren(List<Property> children) {

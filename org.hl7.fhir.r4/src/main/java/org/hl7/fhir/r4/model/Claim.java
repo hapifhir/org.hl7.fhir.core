@@ -2998,28 +2998,6 @@ public class Claim extends DomainResource {
       return getUdi().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Device> getUdiTarget() {
-      if (this.udiTarget == null)
-        this.udiTarget = new ArrayList<Device>();
-      return this.udiTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Device addUdiTarget() {
-      Device r = new Device();
-      if (this.udiTarget == null)
-        this.udiTarget = new ArrayList<Device>();
-      this.udiTarget.add(r);
-      return r;
-    }
-
     protected void listChildren(List<Property> children) {
       super.listChildren(children);
       children.add(
@@ -5471,28 +5449,6 @@ public class Claim extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Device> getUdiTarget() {
-      if (this.udiTarget == null)
-        this.udiTarget = new ArrayList<Device>();
-      return this.udiTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Device addUdiTarget() {
-      Device r = new Device();
-      if (this.udiTarget == null)
-        this.udiTarget = new ArrayList<Device>();
-      this.udiTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #bodySite} (Physical service site on the patient (limb, tooth,
      *         etc.).)
      */
@@ -5627,28 +5583,6 @@ public class Claim extends DomainResource {
         addEncounter();
       }
       return getEncounter().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Encounter> getEncounterTarget() {
-      if (this.encounterTarget == null)
-        this.encounterTarget = new ArrayList<Encounter>();
-      return this.encounterTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Encounter addEncounterTarget() {
-      Encounter r = new Encounter();
-      if (this.encounterTarget == null)
-        this.encounterTarget = new ArrayList<Encounter>();
-      this.encounterTarget.add(r);
-      return r;
     }
 
     /**
@@ -6988,28 +6922,6 @@ public class Claim extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Device> getUdiTarget() {
-      if (this.udiTarget == null)
-        this.udiTarget = new ArrayList<Device>();
-      return this.udiTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Device addUdiTarget() {
-      Device r = new Device();
-      if (this.udiTarget == null)
-        this.udiTarget = new ArrayList<Device>();
-      this.udiTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #subDetail} (A claim detail line. Either a simple (a product
      *         or service) or a 'group' of sub-details which are simple items.)
      */
@@ -8060,28 +7972,6 @@ public class Claim extends DomainResource {
         addUdi();
       }
       return getUdi().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Device> getUdiTarget() {
-      if (this.udiTarget == null)
-        this.udiTarget = new ArrayList<Device>();
-      return this.udiTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Device addUdiTarget() {
-      Device r = new Device();
-      if (this.udiTarget == null)
-        this.udiTarget = new ArrayList<Device>();
-      this.udiTarget.add(r);
-      return r;
     }
 
     protected void listChildren(List<Property> children) {
