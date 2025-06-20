@@ -313,28 +313,6 @@ public class MedicationKnowledge extends DomainResource {
       return getReference().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<MedicationKnowledge> getReferenceTarget() {
-      if (this.referenceTarget == null)
-        this.referenceTarget = new ArrayList<MedicationKnowledge>();
-      return this.referenceTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public MedicationKnowledge addReferenceTarget() {
-      MedicationKnowledge r = new MedicationKnowledge();
-      if (this.referenceTarget == null)
-        this.referenceTarget = new ArrayList<MedicationKnowledge>();
-      this.referenceTarget.add(r);
-      return r;
-    }
-
     protected void listChildren(List<Property> children) {
       super.listChildren(children);
       children.add(new Property("type", "CodeableConcept",
@@ -5727,28 +5705,6 @@ public class MedicationKnowledge extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Medication> getAssociatedMedicationTarget() {
-    if (this.associatedMedicationTarget == null)
-      this.associatedMedicationTarget = new ArrayList<Medication>();
-    return this.associatedMedicationTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Medication addAssociatedMedicationTarget() {
-    Medication r = new Medication();
-    if (this.associatedMedicationTarget == null)
-      this.associatedMedicationTarget = new ArrayList<Medication>();
-    this.associatedMedicationTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #productType} (Category of the medication or product (e.g.
    *         branded product, therapeutic moeity, generic product, innovator
    *         product, etc.).)
@@ -6383,28 +6339,6 @@ public class MedicationKnowledge extends DomainResource {
       addContraindication();
     }
     return getContraindication().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<DetectedIssue> getContraindicationTarget() {
-    if (this.contraindicationTarget == null)
-      this.contraindicationTarget = new ArrayList<DetectedIssue>();
-    return this.contraindicationTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public DetectedIssue addContraindicationTarget() {
-    DetectedIssue r = new DetectedIssue();
-    if (this.contraindicationTarget == null)
-      this.contraindicationTarget = new ArrayList<DetectedIssue>();
-    this.contraindicationTarget.add(r);
-    return r;
   }
 
   /**
