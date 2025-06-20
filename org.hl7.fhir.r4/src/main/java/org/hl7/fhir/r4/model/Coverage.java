@@ -1888,16 +1888,6 @@ public class Coverage extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getPayorTarget() {
-    if (this.payorTarget == null)
-      this.payorTarget = new ArrayList<Resource>();
-    return this.payorTarget;
-  }
-
-  /**
    * @return {@link #class_} (A suite of underwriter specific classifiers.)
    */
   public List<ClassComponent> getClass_() {
@@ -2245,28 +2235,6 @@ public class Coverage extends DomainResource {
       addContract();
     }
     return getContract().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Contract> getContractTarget() {
-    if (this.contractTarget == null)
-      this.contractTarget = new ArrayList<Contract>();
-    return this.contractTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Contract addContractTarget() {
-    Contract r = new Contract();
-    if (this.contractTarget == null)
-      this.contractTarget = new ArrayList<Contract>();
-    this.contractTarget.add(r);
-    return r;
   }
 
   protected void listChildren(List<Property> children) {
