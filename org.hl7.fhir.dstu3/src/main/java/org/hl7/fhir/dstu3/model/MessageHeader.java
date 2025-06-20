@@ -1833,16 +1833,6 @@ public class MessageHeader extends DomainResource {
       return getFocus().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getFocusTarget() { 
-      if (this.focusTarget == null)
-        this.focusTarget = new ArrayList<Resource>();
-      return this.focusTarget;
-    }
-
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("event", "Coding", "Code that identifies the event this message represents and connects it with its definition. Events defined as part of the FHIR specification have the system value \"http://hl7.org/fhir/message-events\".", 0, 1, event));

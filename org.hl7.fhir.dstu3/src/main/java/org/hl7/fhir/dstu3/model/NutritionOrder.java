@@ -3019,28 +3019,6 @@ public class NutritionOrder extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<AllergyIntolerance> getAllergyIntoleranceTarget() { 
-      if (this.allergyIntoleranceTarget == null)
-        this.allergyIntoleranceTarget = new ArrayList<AllergyIntolerance>();
-      return this.allergyIntoleranceTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public AllergyIntolerance addAllergyIntoleranceTarget() { 
-      AllergyIntolerance r = new AllergyIntolerance();
-      if (this.allergyIntoleranceTarget == null)
-        this.allergyIntoleranceTarget = new ArrayList<AllergyIntolerance>();
-      this.allergyIntoleranceTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #foodPreferenceModifier} (This modifier is used to convey order-specific modifiers about the type of food that should be given. These can be derived from patient allergies, intolerances, or preferences such as Halal, Vegan or Kosher. This modifier applies to the entire nutrition order inclusive of the oral diet, nutritional supplements and enteral formula feedings.)
      */
     public List<CodeableConcept> getFoodPreferenceModifier() { 

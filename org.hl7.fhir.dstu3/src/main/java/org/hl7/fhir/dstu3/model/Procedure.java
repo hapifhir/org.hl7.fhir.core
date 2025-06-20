@@ -1125,16 +1125,6 @@ public class Procedure extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getDefinitionTarget() { 
-      if (this.definitionTarget == null)
-        this.definitionTarget = new ArrayList<Resource>();
-      return this.definitionTarget;
-    }
-
-    /**
      * @return {@link #basedOn} (A reference to a resource that contains details of the request for this procedure.)
      */
     public List<Reference> getBasedOn() { 
@@ -1188,16 +1178,6 @@ public class Procedure extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<Resource>();
-      return this.basedOnTarget;
-    }
-
-    /**
      * @return {@link #partOf} (A larger event of which this particular procedure is a component or step.)
      */
     public List<Reference> getPartOf() { 
@@ -1248,16 +1228,6 @@ public class Procedure extends DomainResource {
         addPartOf();
       }
       return getPartOf().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getPartOfTarget() { 
-      if (this.partOfTarget == null)
-        this.partOfTarget = new ArrayList<Resource>();
-      return this.partOfTarget;
     }
 
     /**
@@ -1755,16 +1725,6 @@ public class Procedure extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
-    }
-
-    /**
      * @return {@link #bodySite} (Detailed and structured anatomical location information. Multiple locations are allowed - e.g. multiple punch biopsies of a lesion.)
      */
     public List<CodeableConcept> getBodySite() { 
@@ -1895,28 +1855,6 @@ public class Procedure extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<DiagnosticReport> getReportTarget() { 
-      if (this.reportTarget == null)
-        this.reportTarget = new ArrayList<DiagnosticReport>();
-      return this.reportTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public DiagnosticReport addReportTarget() { 
-      DiagnosticReport r = new DiagnosticReport();
-      if (this.reportTarget == null)
-        this.reportTarget = new ArrayList<DiagnosticReport>();
-      this.reportTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #complication} (Any complications that occurred during the procedure, or in the immediate post-performance period. These are generally tracked separately from the notes, which will typically describe the procedure itself rather than any 'post procedure' issues.)
      */
     public List<CodeableConcept> getComplication() { 
@@ -2020,28 +1958,6 @@ public class Procedure extends DomainResource {
         addComplicationDetail();
       }
       return getComplicationDetail().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Condition> getComplicationDetailTarget() { 
-      if (this.complicationDetailTarget == null)
-        this.complicationDetailTarget = new ArrayList<Condition>();
-      return this.complicationDetailTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Condition addComplicationDetailTarget() { 
-      Condition r = new Condition();
-      if (this.complicationDetailTarget == null)
-        this.complicationDetailTarget = new ArrayList<Condition>();
-      this.complicationDetailTarget.add(r);
-      return r;
     }
 
     /**
@@ -2254,16 +2170,6 @@ public class Procedure extends DomainResource {
         addUsedReference();
       }
       return getUsedReference().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getUsedReferenceTarget() { 
-      if (this.usedReferenceTarget == null)
-        this.usedReferenceTarget = new ArrayList<Resource>();
-      return this.usedReferenceTarget;
     }
 
     /**
