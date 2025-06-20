@@ -3920,28 +3920,6 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Device> getUdiTarget() { 
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          return this.udiTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Device addUdiTarget() { 
-          Device r = new Device();
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          this.udiTarget.add(r);
-          return r;
-        }
-
-        /**
          * @return {@link #bodySite} (Physical service site on the patient (limb, tooth, etc).)
          */
         public CodeableConcept getBodySite() { 
@@ -4069,28 +4047,6 @@ public class ExplanationOfBenefit extends DomainResource {
             addEncounter();
           }
           return getEncounter().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Encounter> getEncounterTarget() { 
-          if (this.encounterTarget == null)
-            this.encounterTarget = new ArrayList<Encounter>();
-          return this.encounterTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Encounter addEncounterTarget() { 
-          Encounter r = new Encounter();
-          if (this.encounterTarget == null)
-            this.encounterTarget = new ArrayList<Encounter>();
-          this.encounterTarget.add(r);
-          return r;
         }
 
         /**
@@ -5687,28 +5643,6 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Device> getUdiTarget() { 
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          return this.udiTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Device addUdiTarget() { 
-          Device r = new Device();
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          this.udiTarget.add(r);
-          return r;
-        }
-
-        /**
          * @return {@link #noteNumber} (A list of note references to the notes provided below.)
          */
         public List<PositiveIntType> getNoteNumber() { 
@@ -6784,28 +6718,6 @@ public class ExplanationOfBenefit extends DomainResource {
             addUdi();
           }
           return getUdi().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Device> getUdiTarget() { 
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          return this.udiTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Device addUdiTarget() { 
-          Device r = new Device();
-          if (this.udiTarget == null)
-            this.udiTarget = new ArrayList<Device>();
-          this.udiTarget.add(r);
-          return r;
         }
 
         /**
