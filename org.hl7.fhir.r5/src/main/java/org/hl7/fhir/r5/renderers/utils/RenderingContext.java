@@ -20,6 +20,7 @@ import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumeration;
@@ -328,6 +329,8 @@ public class RenderingContext extends RenderingI18nContext {
   private boolean debug;
   private DesignationMode designationMode;
   private boolean noHeader;
+  private Set<ActorDefinition> actorWhiteList = new HashSet<>();
+  private boolean trackNarrativeSource;
   
   /**
    * 
@@ -410,6 +413,9 @@ public class RenderingContext extends RenderingI18nContext {
     res.designationMode = designationMode;
     res.addName = addName;
     res.typeMap = typeMap;
+    res.trackNarrativeSource = trackNarrativeSource;
+    
+    res.getActorWhiteList().addAll(actorWhiteList);
 
 // not sure about these    
 //    private List<String> files = new ArrayList<String>(); // files created as by-products in destDir
@@ -1162,6 +1168,18 @@ public class RenderingContext extends RenderingI18nContext {
 
   public void setNoHeader(boolean noHeader) {
     this.noHeader = noHeader;
+  }
+
+  public Set<ActorDefinition> getActorWhiteList() {
+    return actorWhiteList;
+  }
+
+  public boolean isTrackNarrativeSource() {
+    return trackNarrativeSource;
+  }
+
+  public void setTrackNarrativeSource(boolean trackNarrativeSource) {
+    this.trackNarrativeSource = trackNarrativeSource;
   }
 
 
