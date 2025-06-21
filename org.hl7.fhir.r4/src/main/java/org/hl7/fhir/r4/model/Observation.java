@@ -2101,16 +2101,6 @@ public class Observation extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getBasedOnTarget() {
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<Resource>();
-    return this.basedOnTarget;
-  }
-
-  /**
    * @return {@link #partOf} (A larger event of which this particular Observation
    *         is a component or step. For example, an observation as part of a
    *         procedure.)
@@ -2164,16 +2154,6 @@ public class Observation extends DomainResource {
       addPartOf();
     }
     return getPartOf().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getPartOfTarget() {
-    if (this.partOfTarget == null)
-      this.partOfTarget = new ArrayList<Resource>();
-    return this.partOfTarget;
   }
 
   /**
@@ -2431,16 +2411,6 @@ public class Observation extends DomainResource {
       addFocus();
     }
     return getFocus().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getFocusTarget() {
-    if (this.focusTarget == null)
-      this.focusTarget = new ArrayList<Resource>();
-    return this.focusTarget;
   }
 
   /**
@@ -2729,16 +2699,6 @@ public class Observation extends DomainResource {
       addPerformer();
     }
     return getPerformer().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getPerformerTarget() {
-    if (this.performerTarget == null)
-      this.performerTarget = new ArrayList<Resource>();
-    return this.performerTarget;
   }
 
   /**
@@ -3354,16 +3314,6 @@ public class Observation extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getHasMemberTarget() {
-    if (this.hasMemberTarget == null)
-      this.hasMemberTarget = new ArrayList<Resource>();
-    return this.hasMemberTarget;
-  }
-
-  /**
    * @return {@link #derivedFrom} (The target resource that represents a
    *         measurement from which this observation value is derived. For
    *         example, a calculated anion gap or a fetal measurement based on an
@@ -3418,16 +3368,6 @@ public class Observation extends DomainResource {
       addDerivedFrom();
     }
     return getDerivedFrom().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getDerivedFromTarget() {
-    if (this.derivedFromTarget == null)
-      this.derivedFromTarget = new ArrayList<Resource>();
-    return this.derivedFromTarget;
   }
 
   /**
