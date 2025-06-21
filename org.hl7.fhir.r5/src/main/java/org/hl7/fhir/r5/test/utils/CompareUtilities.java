@@ -164,7 +164,7 @@ public class CompareUtilities extends BaseTestingUtilities {
     return compareElements(id, "", loadXml(expected).getDocumentElement(), loadXml(actual).getDocumentElement());
   }
 
-  private String compareElements(String id, String path, Element expectedElement, Element actualElement) {
+  public String compareElements(String id, String path, Element expectedElement, Element actualElement) {
     if (!namespacesMatch(expectedElement.getNamespaceURI(), actualElement.getNamespaceURI()))
       return createNotEqualMessage(id, "Namespaces differ at " + path, expectedElement.getNamespaceURI(), actualElement.getNamespaceURI());
     if (!expectedElement.getLocalName().equals(actualElement.getLocalName()))
@@ -338,7 +338,7 @@ public class CompareUtilities extends BaseTestingUtilities {
     return compareObjects(id, "", expectedJsonObject, actualJsonObject);
   }
 
-  private String compareObjects(String id, String path, JsonObject expectedJsonObject, JsonObject actualJsonObject) {
+  public String compareObjects(String id, String path, JsonObject expectedJsonObject, JsonObject actualJsonObject) {
     List<String> optionals = listOptionals(expectedJsonObject);
     List<String> countOnlys = listCountOnlys(expectedJsonObject);
     for (JsonProperty en : actualJsonObject.getProperties()) {

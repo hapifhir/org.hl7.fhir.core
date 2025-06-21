@@ -725,8 +725,14 @@ public class XmlParser extends ParserBase {
   public void compose(Element e, OutputStream stream, OutputStyle style, String base) throws IOException, FHIRException {
     markedXhtml = false;
     XMLWriter xml = new XMLWriter(stream, "UTF-8");
-    xml.setSortAttributes(false);
     xml.setPretty(style == OutputStyle.PRETTY);
+    if (style == OutputStyle.CANONICAL) {
+      xml.setXmlHeader(false);
+      xml.setIgnoreComments(true);
+      xml.setSortAttributes(true);
+    } else {
+      xml.setSortAttributes(false);
+    }
     xml.start();
     if (e.getPath() == null) {
       e.populatePaths(null);
@@ -809,6 +815,9 @@ public class XmlParser extends ParserBase {
   }
 
   private void composeElement(IXMLWriter xml, Element element, String elementName, boolean root) throws IOException, FHIRException {
+    if (canonicalFilter.contains(element.getPath())) {
+      return;
+    }
     if (!(isElideElements() && element.isElided())) {
       if (showDecorations) {
         @SuppressWarnings("unchecked")

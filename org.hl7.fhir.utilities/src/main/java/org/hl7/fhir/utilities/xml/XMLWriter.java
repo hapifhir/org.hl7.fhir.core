@@ -57,6 +57,7 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
 	private boolean sortAttributes;
 	private int attributeLineWrap;
   private boolean xml1_1;
+  private boolean ignoreComments;
 	
 	public final static int LINE_UNIX = 0;
 	public final static int LINE_WINDOWS = 1;
@@ -470,6 +471,9 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
 	 */
 	@Override
 	public void comment(String comment, boolean doPretty) throws IOException {
+	  if (ignoreComments) {
+	    return;
+	  }
 		checkStarted();
 		if (pendingClose) { 
 			write('>');
@@ -923,6 +927,12 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
   @Override
   public void elide() throws IOException {
     // ignore this
+  }
+  public boolean isIgnoreComments() {
+    return ignoreComments;
+  }
+  public void setIgnoreComments(boolean ignoreComments) {
+    this.ignoreComments = ignoreComments;
   }
 
 }

@@ -852,6 +852,9 @@ public class JsonParser extends ParserBase {
   }
 
   private void compose(String path, Element e, Set<String> done, Element child) throws IOException {
+    if (canonicalFilter.contains(child.getPath())) {
+      return;
+    }
     checkComposeComments(child);
     if (wantCompose(path, child)) {
       boolean isList = child.hasElementProperty() ? child.getElementProperty().isList() : child.getProperty().isList();
