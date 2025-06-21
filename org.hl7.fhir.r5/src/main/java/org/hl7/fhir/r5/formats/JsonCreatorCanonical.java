@@ -39,9 +39,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
-import org.hl7.fhir.utilities.math.RoundingMode;
-import org.hl7.fhir.utilities.math.RyuDouble;
-
 
 public class JsonCreatorCanonical implements JsonCreator {
 
