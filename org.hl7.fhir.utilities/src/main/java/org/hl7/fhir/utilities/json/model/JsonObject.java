@@ -483,6 +483,10 @@ public class JsonObject extends JsonElement {
     return has(name) && get(name).type() == JsonElementType.BOOLEAN;
   }
 
+  public boolean isJsonNumber(String name) {
+    return has(name) && get(name).type() == JsonElementType.NUMBER;
+  }
+  
   public String compareTo(JsonObject j2) {
     String path = "$";
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();

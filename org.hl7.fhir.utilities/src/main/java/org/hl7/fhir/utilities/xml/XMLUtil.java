@@ -32,11 +32,13 @@ package org.hl7.fhir.utilities.xml;
 
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -316,9 +318,13 @@ public class XMLUtil {
 
   public static Element getNamedChild(Element e, String name) {
     Element c = getFirstChild(e);
-    while (c != null && !name.equals(c.getLocalName()) && !name.equals(c.getNodeName()))
+    while (c != null && !name.equals(c.getLocalName()) && !name.equals(getLocalName(c.getNodeName())) && !name.equals(c.getNodeName()))
       c = getNextSibling(c);
     return c;
+  }
+
+  private static String getLocalName(String name) {
+    return name.contains(":") ? name.substring(name.indexOf(":")+1) : name;
   }
 
   public static Element getNamedChildByAttribute(Element e, String name, String nname, String nvalue) {
@@ -450,6 +456,13 @@ public class XMLUtil {
     factory.setNamespaceAware(false);
     DocumentBuilder builder = factory.newDocumentBuilder();
     return builder.parse(new ByteArrayInputStream(content));
+  }
+
+  public static Document parseToDom(String content, boolean ns) throws ParserConfigurationException, SAXException, IOException  {
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
+    factory.setNamespaceAware(ns);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    return builder.parse(new ByteArrayInputStream(content.getBytes()));
   }
 
   public static Document parseToDom(byte[] content, boolean ns) throws ParserConfigurationException, SAXException, IOException  {
@@ -720,6 +733,5 @@ public class XMLUtil {
       node.removeChild(item);
     };
   }
-
 
 }

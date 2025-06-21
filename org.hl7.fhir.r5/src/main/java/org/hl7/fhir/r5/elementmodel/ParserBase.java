@@ -34,7 +34,10 @@ package org.hl7.fhir.r5.elementmodel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -95,6 +98,7 @@ public abstract class ParserBase {
   protected IDigitalSignatureServices signatureServices;
   private ProfileUtilities profileUtilities;
   private ContextUtilities contextUtilities;
+  protected Set<String> canonicalFilter = new HashSet<>();
 
 	public ParserBase(IWorkerContext context, ProfileUtilities utilities) {
 		super();
@@ -336,6 +340,13 @@ public abstract class ParserBase {
   public ContextUtilities getContextUtilities() {
     return contextUtilities;
   }
+
+  public void setCanonicalFilter(String... paths) {
+    canonicalFilter.clear();
+    for (String p : paths) {
+      canonicalFilter.add(p);
+    }
+  }
   
-  
+
 }
