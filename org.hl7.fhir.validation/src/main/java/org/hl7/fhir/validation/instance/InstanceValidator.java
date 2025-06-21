@@ -3604,7 +3604,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         found = false;
       }
       if (!found) {
-        if (type.equals("canonical")) {
+        if (internal) {
+          if (isNotHardErrorPathForInternal(context.getBase().getPath())) {
+            warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_INTERNAL, url);
+          } else {
+            ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_INTERNAL, url) && ok;
+          }
+        } else if (type.equals("canonical")) {
           if (isExampleUrl(url) && isAllowExamples()) {
             // nothing - these do need to resolve
           } else {
@@ -3622,7 +3628,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             // nothing - these do need to resolve
           } else if (isExemptPathForUrlChecking(context, isAbsolute(url), eurl, e, true)) {
             // nothing
-          } else if (isKnownSpace(url) || internal) {
+          } else if (isKnownSpace(url)) {
             ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url) && ok;;
           } else if (isExampleUrl(url)) {
             ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE, url) && ok;;
@@ -3675,6 +3681,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     return ok;
+  }
+
+  private boolean isNotHardErrorPathForInternal(String path) {
+    return Utilities.existsInList(path, "Meta.source"); // exemption for HAPI
   }
 
   private boolean isHintableElementForUrlChecking(String path) {
@@ -6219,7 +6229,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       pct.done();
     }
  
-
     if (defn.hasExtension(ToolingExtensions.EXT_SD_IMPOSE_PROFILE)) {
       for (Extension ext : defn.getExtensionsByUrl(ToolingExtensions.EXT_SD_IMPOSE_PROFILE)) {
         StructureDefinition sdi = context.fetchResource(StructureDefinition.class, ext.getValue().primitiveValue());
@@ -6443,6 +6452,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public boolean startInner(ValidationContext valContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack, boolean checkSpecials, ResourcePercentageLogger pct, ValidationMode mode, boolean fromContained) {
+    
+    
     // the first piece of business is to see if we've validated this resource against this profile before.
     // if we have (*or if we still are*), then we'll just return our existing errors
     boolean ok = true;
