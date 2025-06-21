@@ -25,6 +25,15 @@ public class Base64 {
 
     return true;
   }
+  public static boolean isBase64(String content) {
+    for (char ch : content.toCharArray()) {
+      if (!isBase64((byte) ch) && !isWhiteSpace((byte) ch)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 
   protected static boolean isWhiteSpace(byte byteToCheck) {
     switch (byteToCheck) {
