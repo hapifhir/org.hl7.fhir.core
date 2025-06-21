@@ -56,6 +56,8 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   private List<String> concreteResourceNames;
   private Set<String> concreteResourceNameSet;
   private List<String> suppressedMappings;
+  private Set<String> localFileNames;
+  private Set<String> masterSourceNames;
 
   public ContextUtilities(IWorkerContext context) {
     super();
@@ -281,6 +283,8 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       pu.setThrowException(false);
       pu.setForPublication(context.isForPublication());
       pu.setSuppressedMappings(suppressedMappings);
+      pu.setLocalFileNames(localFileNames);
+      pu.setMasterSourceFileNames(masterSourceNames);
       if (xverManager == null) {
         xverManager = new XVerExtensionManager(context);
       }
@@ -554,6 +558,22 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   public String getDefinitionsName(Resource r) {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  public Set<String> getLocalFileNames() {
+    return localFileNames;
+  }
+
+  public void setLocalFileNames(Set<String> localFileNames) {
+    this.localFileNames = localFileNames;
+  }
+
+  public Set<String> getMasterSourceNames() {
+    return masterSourceNames;
+  }
+
+  public void setMasterSourceNames(Set<String> masterSourceNames) {
+    this.masterSourceNames = masterSourceNames;
   }
 
 }
