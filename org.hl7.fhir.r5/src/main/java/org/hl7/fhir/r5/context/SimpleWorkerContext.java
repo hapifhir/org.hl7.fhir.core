@@ -541,11 +541,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     
     
   }
-
-  @Override
-  public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, Set<String> types) throws IOException, FHIRException {
-    return loadFromPackageInt(pi, loader, types);
-  }
  
   @Override
   public int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws IOException, FHIRException {
