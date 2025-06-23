@@ -201,6 +201,13 @@ public class ResourceWrapperR4 extends ResourceWrapper {
   public String getId() {
     return element.getIdBase();
   }
+  public boolean hasId() {
+    return element.getIdBase() != null;
+  }
+  public ResourceWrapper setId(String id) {
+    element.setIdBase(id);
+    return this;
+  }
 
   @Override
   public String toString() {

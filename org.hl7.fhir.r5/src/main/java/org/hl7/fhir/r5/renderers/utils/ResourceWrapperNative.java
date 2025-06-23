@@ -189,6 +189,15 @@ public class ResourceWrapperNative extends ResourceWrapper {
     return element.getIdBase();
   }
 
+  public boolean hasId() {
+    return element.getIdBase() != null;
+  }
+
+  public ResourceWrapper setId(String id) {
+    element.setIdBase(id);
+    return this;
+  }
+
   @Override
   public String toString() {
     return name + (index == -1 ? "" : "["+index+"]")+": "+fhirType()+" ("+kind+"/"+path()+"): native = "+element.fhirType()+" -> "+element.toString();      

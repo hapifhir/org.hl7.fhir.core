@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -47,6 +49,8 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 @MarkedToMoveToAdjunctPackage
 public abstract class ResourceRenderer extends DataRenderer {
+
+  private static final String EXT_NS_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.url";
 
   public enum RendererType {
     NATIVE, PROFILE, LIQUID
@@ -97,9 +101,34 @@ public abstract class ResourceRenderer extends DataRenderer {
   public XhtmlNode buildNarrative(ResourceWrapper dr) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     buildNarrative(new RenderingStatus(), x, dr);
+    checkForDuplicateIds(x);
     return x;
   }
   
+  private void checkForDuplicateIds(XhtmlNode x) {
+    if (context.isTrackNarrativeSource()) {
+      Set<String> ids = new HashSet<>();
+      checkForDuplicateIds(ids, x);
+    }
+  }
+
+  private void checkForDuplicateIds(Set<String> ids, XhtmlNode x) {
+    if (x.hasAttribute("id")) {
+      String id = x.getAttribute("id");
+      if (ids.contains(id)) {
+        throw new Error("Duplicate id '"+id+"' on "+x.allText());
+      } else {
+        ids.add(id);
+      }
+    }
+    if (x.hasChildren()) {
+      for (XhtmlNode c : x.getChildNodes()) {
+        checkForDuplicateIds(ids, c);
+      }
+    }
+    
+  }
+
   /**
    * given a resource, update it's narrative with the best rendering available. 
    * 
@@ -337,6 +366,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     if (type == null) {
       return;
     }
+    xlinkNarrative(x, type);
     ResourceWrapper display = null;
     ResourceWrapper actual = null;
     ResourceWrapper id = null;
@@ -876,6 +906,7 @@ public abstract class ResourceRenderer extends DataRenderer {
   
   protected XhtmlNode renderResourceTechDetails(ResourceWrapper r, XhtmlNode x, String id) throws UnsupportedEncodingException, FHIRException, IOException {
     XhtmlNode p = x.para().attribute("class", "res-header-id");
+    markGenerated(p);
     if (!context.isNoHeader()) {
       String ft = context.getTranslatedCode(r.fhirType(), VersionUtilities.getResourceTypesUrl(context.getContext().getVersion()));
       if (id == null) { 
@@ -1118,10 +1149,13 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
   
 
-  public void genSummaryTable(RenderingStatus status, XhtmlNode x, ResourceWrapper cr) throws IOException {
+  public boolean genSummaryTable(RenderingStatus status, XhtmlNode x, ResourceWrapper cr) throws IOException {
     if (context.isShowSummaryTable() && cr != null) {
       XhtmlNode tbl = x.table("grid", false);
       genSummaryTableContent(status, tbl, cr);
+      return true;
+    } else {
+      return false;
     }
   }
   
@@ -1130,26 +1164,26 @@ public abstract class ResourceRenderer extends DataRenderer {
     XhtmlNode tr;
     if (cr.has("url")) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)+":");
-      tr.td().code().tx(cr.primitiveValue("url"));
-    } else if (cr.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.url")) {
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)+":");
+      xlinkNarrative(tr.td(), cr.child("url")).code().tx(cr.primitiveValue("url"));
+    } else if (cr.hasExtension(EXT_NS_URL)) {
       status.setExtensions(true);
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)+":");
-      tr.td().code().tx(cr.extensionString("http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.url"));
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)+":");
+      xlinkNarrative(tr.td(), cr.extension(EXT_NS_URL)).code().tx(cr.extensionString(EXT_NS_URL));
     } else if (!context.isContained()) {                                          
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL));
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL));
       tr.td();      
     }
     if (cr.has("version")) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
       renderDataType(status, tr.td(), cr.child("version"));
     } else if (cr.hasExtension("http://terminology.hl7.org/StructureDefinition/ext-namingsystem-version")) {
       status.setExtensions(true);
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
       renderDataType(status, tr.td(), cr.extensionValue("http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.version"));
     }
 
@@ -1158,52 +1192,52 @@ public abstract class ResourceRenderer extends DataRenderer {
     
     if (name != null) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_NAME)+":");
-      tr.td().tx(name);
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_NAME)+":");
+      xlinkNarrative(tr.td(), cr.child("name")).tx(name);
     }
     
     if (title != null && !title.equalsIgnoreCase(name)) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_TITLE)+":");
-      tr.td().tx(title);
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_TITLE)+":");
+      xlinkNarrative(tr.td(), cr.child("title")).tx(title);
     }
 
     if (cr.has("status") && !context.isContained()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_STATUS)+":");
-      tr.td().tx(describeStatus(status, cr));
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_STATUS)+":");
+      xlinkNarrative(tr.td(), cr.child("status")).tx(describeStatus(status, cr));
     }
 
     if (cr.has("description")) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_DEFINITION)+":");
-      tr.td().markdown(context.getTranslated(cr.child("description")), "description");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINITION)+":");
+      xlinkNarrative(tr.td(), cr.child("description")).markdown(context.getTranslated(cr.child("description")), "description");
     }
 
     if (cr.has("publisher")) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.CANON_REND_PUBLISHER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.CANON_REND_PUBLISHER)+":");
       buildPublisherLinks( tr.td(), cr);
     }
     
     if (cr.hasExtension(ToolingExtensions.EXT_WORKGROUP)) {
       status.setExtensions(true);
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
       renderCommitteeLink(tr.td(), cr);
     }
 
     if (cr.has("copyright")) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_COPYRIGHT)+":");
-      tr.td().markdown(context.getTranslated(cr.child("copyright")), "copyright");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_COPYRIGHT)+":");
+      xlinkNarrative(tr.td(), cr.child("copyright")).markdown(context.getTranslated(cr.child("copyright")), "copyright");
     }
     
     if (cr.hasExtension(ToolingExtensions.EXT_FMM_LEVEL)) {
       status.setExtensions(true);
       // Use hard-coded spec link to point to current spec because DSTU2 had maturity listed on a different page
       tr = tbl.tr();
-      tr.td().ah("http://hl7.org/fhir/versions.html#maturity", "Maturity Level").attribute("class", "fmm").tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
+      markBoilerplate(tr.td()).ah("http://hl7.org/fhir/versions.html#maturity", "Maturity Level").attribute("class", "fmm").tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
       renderDataType(status, tr.td(), cr.extensionValue(ToolingExtensions.EXT_FMM_LEVEL));
     }    
   }
@@ -1222,26 +1256,26 @@ public abstract class ResourceRenderer extends DataRenderer {
     XhtmlNode tr;
     if (cr.hasUrl()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)+":");
       tr.td().code().tx(cr.getUrl());
-    } else if (cr.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.url")) {
+    } else if (cr.hasExtension(EXT_NS_URL)) {
       status.setExtensions(true);
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL));
-      tr.td().code().tx(ToolingExtensions.readStringExtension(cr, "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.url")+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL));
+      tr.td().code().tx(ToolingExtensions.readStringExtension(cr, EXT_NS_URL)+":");
     } else if (!context.isContained()) {                                          
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL));
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL));
       tr.td();      
     }
     if (cr.hasVersion()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
       tr.td().tx(cr.getVersion());
     } else if (cr.hasExtension("http://terminology.hl7.org/StructureDefinition/ext-namingsystem-version")) {
       status.setExtensions(true);
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
       tr.td().tx(ToolingExtensions.readStringExtension(cr, "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.version"));
     }
 
@@ -1250,44 +1284,44 @@ public abstract class ResourceRenderer extends DataRenderer {
     
     if (name != null) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_NAME)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_NAME)+":");
       tr.td().tx(name);
     }
     
     if (title != null && !title.equalsIgnoreCase(name)) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_TITLE)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_TITLE)+":");
       tr.td().tx(title);
     }
 
     if (cr.hasStatus() && !context.isContained()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_STATUS)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_STATUS)+":");
       tr.td().tx(describeStatus(status, cr));
     }
 
     if (cr.hasDescription()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_DEFINITION)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINITION)+":");
       tr.td().markdown(cr.getDescription(), "description");
     }
 
     if (cr.hasPublisher()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.CANON_REND_PUBLISHER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.CANON_REND_PUBLISHER)+":");
       buildPublisherLinks(tr.td(), cr);
     }
     
     if (cr.hasExtension(ToolingExtensions.EXT_WORKGROUP)) {
       status.setExtensions(true);
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
       renderCommitteeLink(tr.td(), cr);
     }
 
     if (cr.hasCopyright()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_COPYRIGHT)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_COPYRIGHT)+":");
       tr.td().markdown(cr.getDescription(), "copyright");      
     }
     
@@ -1295,7 +1329,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       status.setExtensions(true);
       // Use hard-coded spec link to point to current spec because DSTU2 had maturity listed on a different page
       tr = tbl.tr();
-      tr.td().ah("http://hl7.org/fhir/versions.html#maturity", "Maturity Level").attribute("class", "fmm").tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
+      markBoilerplate(tr.td()).ah("http://hl7.org/fhir/versions.html#maturity", "Maturity Level").attribute("class", "fmm").tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
       tr.td().tx(ToolingExtensions.readStringExtension(cr, ToolingExtensions.EXT_FMM_LEVEL));
     }    
   }
@@ -1353,7 +1387,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       String name = cd.has("name") ? cd.primitiveValue("name") : cr.primitiveValue("publisher");
       if (cd.has("telecom")) {
         if (first) first = false; else x.tx(". ");
-        renderContactW(x, name, cd.children("telecom"));
+        renderContactW(spanIfTracking(x, cd), name, cd.children("telecom"));
       }
     }
   }

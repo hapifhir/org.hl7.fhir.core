@@ -231,6 +231,16 @@ public class CompareUtilities extends BaseTestingUtilities {
         }
       }
     }
+    for (int i = 0; i < actual.getLength(); i++) {
+      Node actualNode = actual.item(i);
+      String actualNodeName = actualNode.getNodeName();
+      if (!(actualNodeName.equals("xmlns") || actualNodeName.startsWith("xmlns:"))) {
+        Node expectedNode = expected.getNamedItem(actualNodeName);
+        if (expectedNode == null) {
+          return "Attributes differ at " + path + ": unexpected attribute " + actualNodeName;
+        }
+      }
+    }
     return null;
   }
 

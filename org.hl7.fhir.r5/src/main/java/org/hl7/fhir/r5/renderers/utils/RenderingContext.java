@@ -31,6 +31,7 @@ import org.hl7.fhir.r5.renderers.utils.Resolver.IReferenceResolver;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.KeyIssuer;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
@@ -39,6 +40,8 @@ import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.xhtml.XhtmlFluent;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 /**
  * Managing Language when rendering 
@@ -264,6 +267,18 @@ public class RenderingContext extends RenderingI18nContext {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
   private final IWorkerContext worker;
   private MarkDownProcessor markdown;
   private ResourceRendererMode mode;
@@ -331,6 +346,7 @@ public class RenderingContext extends RenderingI18nContext {
   private boolean noHeader;
   private Set<ActorDefinition> actorWhiteList = new HashSet<>();
   private boolean trackNarrativeSource;
+  private KeyIssuer crossLinkKeyGen;
   
   /**
    * 
@@ -353,6 +369,7 @@ public class RenderingContext extends RenderingI18nContext {
     if (terminologyServiceOptions != null) {
       this.terminologyServiceOptions = terminologyServiceOptions;
     }
+    crossLinkKeyGen = new KeyIssuer("xn");
   }
   
   public RenderingContext copy(boolean copyAnchors) {
@@ -414,6 +431,7 @@ public class RenderingContext extends RenderingI18nContext {
     res.addName = addName;
     res.typeMap = typeMap;
     res.trackNarrativeSource = trackNarrativeSource;
+    res.crossLinkKeyGen = crossLinkKeyGen;
     
     res.getActorWhiteList().addAll(actorWhiteList);
 
@@ -1182,5 +1200,8 @@ public class RenderingContext extends RenderingI18nContext {
     this.trackNarrativeSource = trackNarrativeSource;
   }
 
+  public String nextXNKey() {
+    return crossLinkKeyGen.issueKey();
+  }
 
 }
