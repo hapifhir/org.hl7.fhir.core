@@ -186,7 +186,7 @@ public class DigitalSignatureSupport {
     }
 
     // Parse XML
-    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory dbf = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     dbf.setNamespaceAware(true);
     DocumentBuilder db = dbf.newDocumentBuilder();
     Document doc = db.parse(new ByteArrayInputStream(xmlString.getBytes("UTF-8")));

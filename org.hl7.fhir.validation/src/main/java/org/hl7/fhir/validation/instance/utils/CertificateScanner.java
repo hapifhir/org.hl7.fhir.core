@@ -11,7 +11,9 @@ import java.util.stream.Stream;
 import com.nimbusds.jose.jwk.*;
 import com.nimbusds.jose.util.X509CertUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class CertificateScanner {
     
     /**
@@ -79,7 +81,7 @@ public class CertificateScanner {
             }
             
         } catch (Exception e) {
-            System.err.println("Error scanning folder: " + e.getMessage());
+            log.error("Error scanning folder: " + e.getMessage());
             return null;
         }
     }
@@ -99,7 +101,7 @@ public class CertificateScanner {
         String fileName = filePath.getFileName().toString().toLowerCase();
         String extension = getFileExtension(fileName);
         
-        System.out.println("Scanning file: " + filePath);
+        log.info("Scanning file: " + filePath);
         
         try {
             // Try different formats based on file extension and content
@@ -129,7 +131,7 @@ public class CertificateScanner {
             }
             
         } catch (Exception e) {
-            System.err.println("Error reading file " + filePath + ": " + e.getMessage());
+            log.error("Error reading file " + filePath + ": " + e.getMessage());
             return null;
         }
     }
@@ -145,7 +147,7 @@ public class CertificateScanner {
             JWKSet jwkSet = JWKSet.parse(content);
             JWK jwk = jwkSet.getKeyByKeyId(targetKid);
             if (jwk != null) {
-                System.out.println("Found matching JWK in JWKS file: " + filePath);
+                log.info("Found matching JWK in JWKS file: " + filePath);
                 // Try to extract certificate from JWK if it has x5c
                 X509Certificate cert = extractCertificateFromJWK(jwk);
                 return new CertificateResult(jwk, cert, filePath.toString());
@@ -155,7 +157,7 @@ public class CertificateScanner {
             try {
                 JWK jwk = JWK.parse(content);
                 if (targetKid.equals(jwk.getKeyID())) {
-                    System.out.println("Found matching JWK in JSON file: " + filePath);
+                    log.info("Found matching JWK in JSON file: " + filePath);
                     X509Certificate cert = extractCertificateFromJWK(jwk);
                     return new CertificateResult(jwk, cert, filePath.toString());
                 }
@@ -198,7 +200,7 @@ public class CertificateScanner {
         for (X509Certificate cert : certificates) {
             JWK jwk = createJWKFromCertificate(cert, targetKid);
             if (jwk != null) {
-                System.out.println("Found matching certificate in PEM file: " + filePath);
+                log.info("Found matching certificate in PEM file: " + filePath);
                 return new CertificateResult(jwk, cert, filePath.toString());
             }
         }
@@ -229,7 +231,7 @@ public class CertificateScanner {
                     certificates.add(cert);
                 }
             } catch (Exception e) {
-                System.err.println("Failed to parse certificate block: " + e.getMessage());
+                log.info("Failed to parse certificate block: " + e.getMessage());
                 // Continue with next certificate
             }
         }
@@ -247,7 +249,7 @@ public class CertificateScanner {
             X509Certificate cert = (X509Certificate) certificateFactory.generateCertificate(bis);
             JWK jwk = createJWKFromCertificate(cert, targetKid);
             if (jwk != null) {
-                System.out.println("Found matching certificate in DER file: " + filePath);
+                log.info("Found matching certificate in DER file: " + filePath);
                 return new CertificateResult(jwk, cert, filePath.toString());
             }
         }
@@ -271,7 +273,7 @@ public class CertificateScanner {
                 
                 CertificateResult result = scanKeyStore(keyStore, targetKid, filePath.toString());
                 if (result != null) {
-                    System.out.println("Found matching certificate in PKCS12 file: " + filePath);
+                    log.info("Found matching certificate in PKCS12 file: " + filePath);
                     return result;
                 }
                 
@@ -299,7 +301,7 @@ public class CertificateScanner {
                 
                 CertificateResult result = scanKeyStore(keyStore, targetKid, filePath.toString());
                 if (result != null) {
-                    System.out.println("Found matching certificate in JKS file: " + filePath);
+                    log.info("Found matching certificate in JKS file: " + filePath);
                     return result;
                 }
                 
@@ -438,7 +440,7 @@ public class CertificateScanner {
             }
             
         } catch (Exception e) {
-            System.err.println("Error creating JWK from certificate: " + e.getMessage());
+            log.error("Error creating JWK from certificate: " + e.getMessage());
         }
         
         return null;
@@ -502,7 +504,7 @@ public class CertificateScanner {
      */
     public static void main(String[] args) {
         if (args.length != 2) {
-            System.out.println("Usage: java CertificateScanner <folder_path> <kid>");
+            log.info("Usage: java CertificateScanner <folder_path> <kid>");
             return;
         }
         
@@ -514,34 +516,33 @@ public class CertificateScanner {
             CertificateResult result = scanner.findCertificateByKid(folderPath, targetKid);
             
             if (result != null) {
-                System.out.println("\nFound matching certificate!");
-                System.out.println("Source: " + result.getSource());
+                log.info("\nFound matching certificate!");
+                log.info("Source: " + result.getSource());
                 
                 if (result.hasJwk()) {
                     JWK jwk = result.getJwk();
-                    System.out.println("Key ID: " + jwk.getKeyID());
-                    System.out.println("Key Type: " + jwk.getKeyType());
-                    System.out.println("Algorithm: " + jwk.getAlgorithm());
-                    System.out.println("JWK: " + jwk.toJSONString());
+                    log.info("Key ID: " + jwk.getKeyID());
+                    log.info("Key Type: " + jwk.getKeyType());
+                    log.info("Algorithm: " + jwk.getAlgorithm());
+                    log.info("JWK: " + jwk.toJSONString());
                 }
                 
                 if (result.hasCertificate()) {
                     X509Certificate cert = result.getCertificate();
-                    System.out.println("\nX509 Certificate Details:");
-                    System.out.println("Subject: " + cert.getSubjectX500Principal().getName());
-                    System.out.println("Issuer: " + cert.getIssuerX500Principal().getName());
-                    System.out.println("Serial Number: " + cert.getSerialNumber().toString(16));
-                    System.out.println("Valid From: " + cert.getNotBefore());
-                    System.out.println("Valid Until: " + cert.getNotAfter());
-                    System.out.println("Signature Algorithm: " + cert.getSigAlgName());
+                    log.info("\nX509 Certificate Details:");
+                    log.info("Subject: " + cert.getSubjectX500Principal().getName());
+                    log.info("Issuer: " + cert.getIssuerX500Principal().getName());
+                    log.info("Serial Number: " + cert.getSerialNumber().toString(16));
+                    log.info("Valid From: " + cert.getNotBefore());
+                    log.info("Valid Until: " + cert.getNotAfter());
+                    log.info("Signature Algorithm: " + cert.getSigAlgName());
                 }
             } else {
-                System.out.println("\nNo matching certificate found for kid: " + targetKid);
+              log.info("\nNo matching certificate found for kid: " + targetKid);
             }
             
         } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
-            e.printStackTrace();
+           log.error("Error: " + e.getMessage(), e);
         }
     }
 }

@@ -24,6 +24,7 @@ import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.xml.security.c14n.CanonicalizationException;
@@ -74,7 +75,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.util.Base64URL;
 import com.nimbusds.jwt.SignedJWT;
 
-
+@Slf4j
 public class BundleValidator extends BaseValidator {
   public class StringWithSource {
 
@@ -1603,7 +1604,7 @@ public class BundleValidator extends BaseValidator {
         break;
       default:
         rule(errors, "2025-06-13", IssueType.VALUE, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIG_FAIL_CERT); 
-        System.err.println("Unsupported signature algorithm: " + alg);
+        log.error("Unsupported signature algorithm: " + alg);
         return false;
       }
       // Verify the signature
