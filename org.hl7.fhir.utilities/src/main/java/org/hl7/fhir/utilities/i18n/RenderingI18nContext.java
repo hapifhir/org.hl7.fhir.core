@@ -1100,7 +1100,8 @@ public class RenderingI18nContext extends I18nBase {
   public static final String R44B_NOT_IN = "R44B_NOT_IN";
   public static final String R44B_ONLY_IN = "R44B_ONLY_IN";
   public static final String R44B_PROBLEMS = "R44B_PROBLEMS";
-
+  public static final String ACTOR_DERIVED_FROM = "ACTOR_DERIVED_FROM";
+  public static final String ACTOR_DERIVED_FROM_NONE = "ACTOR_DERIVED_FROM_NONE";
   
 
   protected String getMessagesSourceFileName() {
