@@ -978,11 +978,7 @@ public abstract class Base implements Serializable, IBase, IElement {
     if (b instanceof Element) {
       return ((Element) b).getValue();
     } else if (b instanceof XhtmlType) {
-      try {
-        return new XhtmlComposer(true).compose(((XhtmlType) b).getXhtml());
-      } catch (IOException e) {
-        return null;
-      }
+      return new XhtmlComposer(true).compose(((XhtmlType) b).getXhtml());
     } else if (b instanceof StringType) {
       return ((StringType) b).asStringValue();
     } else

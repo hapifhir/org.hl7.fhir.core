@@ -296,4 +296,9 @@ public class JsonCreatorCanonical implements JsonCreator {
     // not used
   }
 
+  @Override
+  public boolean isCanonical() {
+    return true;
+  }
+
 }

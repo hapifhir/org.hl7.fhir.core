@@ -229,6 +229,9 @@ public class Element extends Base implements NamedItem {
 	}
 
 	public String getValue() {
+	  if (xhtml != null) {
+	    throw new Error("Don't use getValue() for xhtml");
+	  }
 		return value;
 	}
 
@@ -677,9 +680,11 @@ public class Element extends Base implements NamedItem {
 
 	@Override
 	public String primitiveValue() {
-		if (isPrimitive() || value != null)
-		  return value;
-		else {
+    if (isPrimitive() || value != null)
+      return value;
+    else if (hasXhtml()) {
+      return new XhtmlComposer(XhtmlComposer.XML, false).setCanonical(false).compose(xhtml);
+    } else {
 			if (canHavePrimitiveValue() && children != null) {
 				for (Element c : children) {
 					if (c.getName().equals("value"))
@@ -800,16 +805,16 @@ public class Element extends Base implements NamedItem {
   }
 
   public void getNamedChildrenWithWildcard(String string, List<Element> values) {
-	  Validate.isTrue(string.endsWith("[x]"));
-	  
-	  String start = string.substring(0, string.length() - 3);
-	  	if (children != null) {
-	  		for (Element child : children) { 
-	  			if (child.getName().startsWith(start)) {
-	  				values.add(child);
-	  			}
-	  		}
-	  	}
+    Validate.isTrue(string.endsWith("[x]"));
+
+    String start = string.substring(0, string.length() - 3);
+    if (children != null) {
+      for (Element child : children) { 
+        if (child.getName().startsWith(start)) {
+          values.add(child);
+        }
+      }
+    }
   }
 
   
@@ -819,11 +824,7 @@ public class Element extends Base implements NamedItem {
 
 	public Element setXhtml(XhtmlNode xhtml) {
 		this.xhtml = xhtml;
-		try {
-      value = new XhtmlComposer(true, false).compose(xhtml);
-    } catch (IOException e) {
-      // can't happen here
-    }
+    value = new XhtmlComposer(true, false).compose(xhtml);
 		return this;
  	}
 
@@ -1735,5 +1736,9 @@ public class Element extends Base implements NamedItem {
       }
     }
     return null;
+  }
+
+  public boolean hasXhtml() {
+    return xhtml != null;
   }
 }
