@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.profilemodel.gen;
+package org.hl7.fhir.r4.profilemodel.gen;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -28,9 +28,9 @@ package org.hl7.fhir.r5.profilemodel.gen;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.profilemodel.PEInstance;
+import org.hl7.fhir.r4.context.IWorkerContext;
+import org.hl7.fhir.r4.model.Base;
+import org.hl7.fhir.r4.profilemodel.PEInstance;
 
 public class PEGeneratedBase {
   
@@ -38,7 +38,7 @@ public class PEGeneratedBase {
 
   @Deprecated
   protected PEInstance instance;
-
+  
   @Deprecated
   protected void removeChild(String name) {
     PEInstance child = instance.child(name);
@@ -58,11 +58,11 @@ public class PEGeneratedBase {
   public PEInstance getInstance() {
     return instance;
   }
-
+  
   @Deprecated
   public Base getData() {
     return instance.getBase();
   }
-
+  
 }
 
