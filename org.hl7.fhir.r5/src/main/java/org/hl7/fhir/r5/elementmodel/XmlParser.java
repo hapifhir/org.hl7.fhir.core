@@ -729,9 +729,9 @@ public class XmlParser extends ParserBase {
     if (style == OutputStyle.CANONICAL) {
       xml.setXmlHeader(false);
       xml.setIgnoreComments(true);
-      xml.setSortAttributes(true);
+      xml.setCanonical(true);
     } else {
-      xml.setSortAttributes(false);
+      xml.setCanonical(false);
     }
     xml.start();
     if (e.getPath() == null) {
@@ -846,7 +846,7 @@ public class XmlParser extends ParserBase {
         xml.text(element.getValue());
         xml.exit(element.getProperty().getXmlNamespace(),elementName);
       }
-    } else if (!element.hasChildren() && !element.hasValue()) {
+    } else if (!element.hasChildren() && !element.hasValue() && !element.hasXhtml()) {
       if (isElideElements() && element.isElided() && xml.canElide())
         xml.elide();
       else {
@@ -859,11 +859,11 @@ public class XmlParser extends ParserBase {
         if (isElideElements() && element.isElided() && xml.canElide())
           xml.elide();
         else {
-          String rawXhtml = element.getValue();
           if (isCdaText(element.getProperty())) {
-            new CDANarrativeFormat().convert(xml, new XhtmlParser().parseFragment(rawXhtml));
+            new CDANarrativeFormat().convert(xml, element.getXhtml());
           } else {
-            xml.escapedText(rawXhtml);
+            String xhtml = new XhtmlComposer(XhtmlComposer.XML, false).setCanonical(xml.isCanonical()).compose(element.getXhtml());
+            xml.escapedText(xhtml);
             if (!markedXhtml) {
               xml.anchor("end-xhtml");
               markedXhtml = true;
