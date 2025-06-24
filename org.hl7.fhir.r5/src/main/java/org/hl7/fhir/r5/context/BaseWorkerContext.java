@@ -3734,6 +3734,31 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
   
+  @Override
+  public OperationOutcome validateTxResource(ValidationOptions options, Resource resource) {
+    if (resource instanceof ValueSet) {
+      ValueSet vs = (ValueSet) resource;
+      Set<String> systems = findRelevantSystems(vs);
+      TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false);
+      if (tc == null) {
+        throw new FHIRException(formatMessage(I18nConstants.ATTEMPT_TO_USE_TERMINOLOGY_SERVER_WHEN_NO_TERMINOLOGY_SERVER_IS_AVAILABLE));
+      }
+      for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
+        codeSystemsUsed.add(inc.getSystem());
+      }
+      for (ConceptSetComponent inc : vs.getCompose().getExclude()) {
+        codeSystemsUsed.add(inc.getSystem());
+      }
+
+      txLog("$validate ValueSet on "+tc.getAddress());
+      if (txLog != null) {
+        txLog.clearLastId();
+      }
+      return tc.getClient().validateResource(vs);
+    }
+    return null;
+  }
+
 
   public List<String> getSuppressedMappings() {
     return suppressedMappings;
