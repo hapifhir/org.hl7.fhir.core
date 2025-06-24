@@ -1123,6 +1123,7 @@ public class I18nConstants {
   public static final String VALIDATION_VAL_PROFILE_MINIMUM = "Validation_VAL_Profile_Minimum";
   public static final String VALIDATION_VAL_PROFILE_MINIMUM_MAGIC = "VALIDATION_VAL_PROFILE_MINIMUM_MAGIC";
   public static final String VALIDATION_VAL_PROFILE_MINIMUM_SLICE = "Validation_VAL_Profile_Minimum_SLICE";
+  public static final String VALIDATION_VAL_PROFILE_MINIMUM_SLICE_EXT = "Validation_VAL_Profile_Minimum_SLICE_EXT";
   public static final String VALIDATION_VAL_PROFILE_MULTIPLEMATCHES = "Validation_VAL_Profile_MultipleMatches";
   public static final String VALIDATION_VAL_PROFILE_NOCHECKMAX = "Validation_VAL_Profile_NoCheckMax";
   public static final String VALIDATION_VAL_PROFILE_NOCHECKMIN = "Validation_VAL_Profile_NoCheckMin";
