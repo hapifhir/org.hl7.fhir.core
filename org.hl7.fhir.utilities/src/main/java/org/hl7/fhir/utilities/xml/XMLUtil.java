@@ -445,10 +445,7 @@ public class XMLUtil {
   }
 
   public static Document parseToDom(String content) throws ParserConfigurationException, SAXException, IOException  {
-    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
-    factory.setNamespaceAware(false);
-    DocumentBuilder builder = factory.newDocumentBuilder();
-    return builder.parse(new ByteArrayInputStream(content.getBytes()));
+    return parseToDom(content.getBytes(StandardCharsets.UTF_8));
   }
 
   public static Document parseToDom(byte[] content) throws ParserConfigurationException, SAXException, IOException  {
@@ -459,10 +456,7 @@ public class XMLUtil {
   }
 
   public static Document parseToDom(String content, boolean ns) throws ParserConfigurationException, SAXException, IOException  {
-    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
-    factory.setNamespaceAware(ns);
-    DocumentBuilder builder = factory.newDocumentBuilder();
-    return builder.parse(new ByteArrayInputStream(content.getBytes()));
+    return parseToDom(content.getBytes(), ns);
   }
 
   public static Document parseToDom(byte[] content, boolean ns) throws ParserConfigurationException, SAXException, IOException  {
@@ -525,6 +519,7 @@ public class XMLUtil {
    *
    * @return A TransformerFactory instance external processing features configured securely.
    */
+  @SuppressWarnings("checkstyle:transformerFactoryNewInstance")
   public static TransformerFactory newXXEProtectedTransformerFactory() {
     final TransformerFactory transformerFactory = TransformerFactory.newInstance();
     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
@@ -541,6 +536,7 @@ public class XMLUtil {
    * @return A DocumentBuilderFactory instance external processing features configured securely.
    * @throws ParserConfigurationException If a DocumentBuilder cannot be configured with the requested features.
    */
+  @SuppressWarnings("checkstyle:documentBuilderFactoryNewInstance")
   public static DocumentBuilderFactory newXXEProtectedDocumentBuilderFactory() throws ParserConfigurationException {
     final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
     documentBuilderFactory.setFeature(APACHE_XML_FEATURES_DISALLOW_DOCTYPE_DECL, true);
@@ -560,6 +556,7 @@ public class XMLUtil {
    * @throws SAXNotRecognizedException When the underlying XMLReader does not recognize the property name.
    * @throws ParserConfigurationException If a SAXParser cannot be configured with the requested features.
    */
+  @SuppressWarnings("checkstyle:saxParserFactoryNewInstance")
   public static SAXParserFactory newXXEProtectedSaxParserFactory() throws SAXNotSupportedException, SAXNotRecognizedException, ParserConfigurationException {
     final SAXParserFactory spf = SAXParserFactory.newInstance();
     spf.setFeature(SAX_FEATURES_EXTERNAL_GENERAL_ENTITIES, false);
@@ -571,12 +568,15 @@ public class XMLUtil {
   /**
    * This method is used to create a new XMLReader instance from a passed SAXParserFactory with external processing
    * features configured securely.
+   * <p/>
+   * <b>IMPORTANT</b> This method should be the only place where getXMLReader() is called in this project.
    *
    * @param spf The SAXParserFactory to create the XMLReader from.
    * @return A XMLReader instance external processing features configured securely.
    * @throws ParserConfigurationException If a SAXParser cannot be configured with the requested features.
    * @throws SAXException If any SAX exceptions occur during the creation of the XMLReader.
    */
+  @SuppressWarnings("checkstyle:getXMLReader")
   public static XMLReader getXXEProtectedXMLReader(SAXParserFactory spf) throws ParserConfigurationException, SAXException {
     final SAXParser saxParser = spf.newSAXParser();
     final XMLReader xmlReader = saxParser.getXMLReader();
