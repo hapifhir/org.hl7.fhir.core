@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Kind;
@@ -47,6 +48,7 @@ import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
+@Slf4j
 public class ValueSetValidator extends BaseValidator {
 
   public class ParameterDeclaration {
@@ -462,13 +464,9 @@ public class ValueSetValidator extends BaseValidator {
       String version, List<VSCodingValidationRequest> batch) {
     if (batch.size() > 0) {
       long t = System.currentTimeMillis();
-      if (settings.isDebug()) {
-        System.out.println("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
-      }
+      log.debug("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
       context.validateCodeBatch(ValidationOptions.defaults().withExampleOK(), batch, null);
-      if (settings.isDebug()) {
-        System.out.println("  :   .. "+(System.currentTimeMillis()-t)+"ms");
-      }
+      log.debug("  :   .. "+(System.currentTimeMillis()-t)+"ms");
       for (VSCodingValidationRequest cv : batch) {
         if (version == null) {
           warningOrError(!retired, errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode(), cv.getResult().getMessage());

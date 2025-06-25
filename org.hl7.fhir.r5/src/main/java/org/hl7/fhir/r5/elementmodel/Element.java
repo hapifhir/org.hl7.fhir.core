@@ -1351,9 +1351,9 @@ public class Element extends Base implements NamedItem {
     this.source = source;
   }
 
+  @SuppressWarnings("checkstyle:systemout")
   public void printToOutput() {
     printToOutput(System.out, "");
-    
   }
 
   public void printToOutput(PrintStream stream) {

@@ -49,7 +49,7 @@ public class StructureDefinitionMappingProvider extends ModelMappingProvider {
           }
         }
         if (m != null) {
-          String[] maps = m.getMap().split("\\,");
+          String[] maps = (m.getMap() == null ? "" : m.getMap()).split("\\,");
           for (String s : maps) {
             String tgt = processMap(s);
             if (tgt != null && tgt.equals(element.getId()) ||  tgt.equals(element.getPath())) {
@@ -74,7 +74,7 @@ public class StructureDefinitionMappingProvider extends ModelMappingProvider {
         }
       }
       if (m != null) {
-        String[] maps = m.getMap().split("\\,");
+        String[] maps = (m.getMap() == null ? "" : m.getMap()).split("\\,");
         if (maps.length == 1) {
           renderMap(div, maps[0]);
         } else {
@@ -82,6 +82,9 @@ public class StructureDefinitionMappingProvider extends ModelMappingProvider {
           for (String s : maps) {
             renderMap(ul.li(), s);
           }
+        }
+        if (m.hasComment()) {
+          div.i().tx(m.getComment());
         }
       }
     }

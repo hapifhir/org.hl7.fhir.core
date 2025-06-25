@@ -373,32 +373,31 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   }
 
   private boolean showPropertyInTable(PropertyComponent cp) {
-    if (cp.hasCode()) {
-      if (cp.hasExtension(ToolingExtensions.EXT_RENDERED_VALUE)) {
-        return true;
-      }
-      if (cp.getCodeElement().hasExtension(ToolingExtensions.EXT_RENDERED_VALUE)) {
-        return true;
-      }
-      String uri = cp.getUri();
-      if (Utilities.noString(uri)){
-        return true; // do we always want to render properties in this case? Not sure...
-      }
-      String code = null;
-      if (uri.contains("#")) {
-        code = uri.substring(uri.indexOf("#")+1);
-        uri = uri.substring(0, uri.indexOf("#"));
-      }
-      if (Utilities.existsInList(uri, "http://hl7.org/fhir/concept-properties") || context.getCodeSystemPropList().contains(uri)) {
-        return true;
-      };
-      CodeSystem cs = getContext().getWorker().fetchCodeSystem(uri);
-      if (cs == null) {
-        return false;
-      }
-      return code == null ? false : CodeSystemUtilities.hasCode(cs, code);
-    }
-    return false;
+    return cp.hasCode();
+//      if (cp.hasExtension(ToolingExtensions.EXT_RENDERED_VALUE)) {
+//        return true;
+//      }
+//      if (cp.getCodeElement().hasExtension(ToolingExtensions.EXT_RENDERED_VALUE)) {
+//        return true;
+//      }
+//      String uri = cp.getUri();
+//      if (Utilities.noString(uri)){
+//        return true; // do we always want to render properties in this case? Not sure...
+//      }
+//      String code = null;
+//      if (uri.contains("#")) {
+//        code = uri.substring(uri.indexOf("#")+1);
+//        uri = uri.substring(0, uri.indexOf("#"));
+//      }
+//      if (Utilities.existsInList(uri, "http://hl7.org/fhir/concept-properties") || context.getCodeSystemPropList().contains(uri)) {
+//        return true;
+//      };
+//      CodeSystem cs = getContext().getWorker().fetchCodeSystem(uri);
+//      if (cs == null) {
+//        return false;
+//      }
+//      switch ()
+//      return code == null ? false : CodeSystemUtilities.hasCode(cs, code);
   }
 
 

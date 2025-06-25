@@ -285,7 +285,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
 
     r.setIcon("icon-q-"+type.toLowerCase()+".png", type); 
     Cell c1 = gen.new Cell(null, context.getDefinitionsTarget() == null ? "" : context.getDefinitionsTarget()+"#item."+i.primitiveValue("linkId"), i.primitiveValue("linkId"), null, null); 
-    c1.setId("item."+i.primitiveValue("linkId")); 
+    c1.setId(context.prefixAnchor("item."+i.primitiveValue("linkId"))); 
     r.getCells().add(c1); 
     String txt = (i.has("prefix") ? i.primitiveValue("prefix") + ". " : "") + i.primitiveValue("text"); 
     r.getCells().add(gen.new Cell(null, null, txt, null, null)); 

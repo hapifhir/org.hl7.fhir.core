@@ -49,6 +49,7 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
@@ -72,9 +73,14 @@ import org.hl7.fhir.utilities.json.model.JsonString;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class NPMPackageGenerator {
 
   public enum Category {
@@ -159,6 +165,19 @@ public class NPMPackageGenerator {
     this.destFile = destFile;
     start();
     buildPackageJson(ig.getPackageId(), canonical, kind, url, date, ig, fhirVersion, notForPublication, relatedIgs);
+  }
+
+  public NPMPackageGenerator(String destFile, JsonObject npm) throws FHIRException, IOException {
+    super();
+    log.info("create package file at " + destFile);
+    this.destFile = destFile;
+    start();
+    String json =JsonParser.compose(npm, true);
+    try {
+      addFile(Category.RESOURCE, "package.json", json.getBytes("UTF-8"));
+    } catch (UnsupportedEncodingException e) {
+    }
+    packageJ = npm;
   }
 
   public NPMPackageGenerator(String destFile, JsonObject npm, Date date, boolean notForPublication) throws FHIRException, IOException {
@@ -382,7 +401,7 @@ public class NPMPackageGenerator {
     }
       
     if (created.contains(path)) {
-      System.out.println("Duplicate package file "+path);
+      log.warn("Duplicate package file "+path);
     } else {
       created.add(path);
       TarArchiveEntry entry = new TarArchiveEntry(path);
@@ -407,7 +426,7 @@ public class NPMPackageGenerator {
     }
       
     if (created.contains(path)) {
-      System.out.println("Duplicate package file "+path);
+      log.warn("Duplicate package file "+path);
     } else {
       created.add(path);
       TarArchiveEntry entry = new TarArchiveEntry(path);
@@ -459,7 +478,7 @@ public class NPMPackageGenerator {
           String path = f.getAbsolutePath().substring(root.length()+1);
           byte[] content = FileUtilities.fileToBytes(f);
           if (created.contains(path)) 
-            System.out.println("Duplicate package file "+path);
+            log.warn("Duplicate package file "+path);
           else {
             created.add(path);
             TarArchiveEntry entry = new TarArchiveEntry(path);

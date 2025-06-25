@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.Comparator;
 
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 
 public class PackageInfo {
   private final String id;
@@ -65,7 +66,7 @@ public class PackageInfo {
   public String toString() {
     return id + "#" + (version == null ? "?pc-pi?" : version) + (fhirVersion == null ? "" : " (" + canonical + ") for FHIR " + fhirVersion) + (url == null ? "" : " @" + url) + (description == null ? "" : " '" + description + "'");
   }
-  
+
   public static class PackageInfoSorter implements Comparator<PackageInfo> {
 
 
@@ -83,6 +84,14 @@ public class PackageInfo {
       } else {
         return o1.id.compareTo(o2.id);
       }
+    }
+
+  }
+  public static class PackageInfoVersionSorter implements Comparator<PackageInfo> {
+
+    @Override
+    public int compare(PackageInfo o1, PackageInfo o2) {
+      return VersionUtilities.compareVersions(o1.version, o2.version);
     }
 
   }

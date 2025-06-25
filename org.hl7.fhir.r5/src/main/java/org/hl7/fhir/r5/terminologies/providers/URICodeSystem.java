@@ -17,4 +17,9 @@ public class URICodeSystem extends SpecialCodeSystem {
     }
   }
 
+  @Override
+  public boolean inactive(String code) {
+    return false;
+  }
+
 }

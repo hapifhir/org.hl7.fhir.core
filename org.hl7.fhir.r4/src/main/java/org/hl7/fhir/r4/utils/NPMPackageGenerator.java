@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
@@ -66,6 +67,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 @Deprecated
+@Slf4j
 public class NPMPackageGenerator {
 
   public enum Category {
@@ -107,7 +109,7 @@ public class NPMPackageGenerator {
   public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig,
       String genDate) throws FHIRException, IOException {
     super();
-    System.out.println("create package file at " + destFile);
+    log.info("create package file at " + destFile);
     this.destFile = destFile;
     start();
     List<String> fhirVersion = new ArrayList<>();
@@ -131,7 +133,7 @@ public class NPMPackageGenerator {
   public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig,
       String genDate, List<String> fhirVersion) throws FHIRException, IOException {
     super();
-    System.out.println("create package file at " + destFile);
+    log.info("create package file at " + destFile);
     this.destFile = destFile;
     start();
     buildPackageJson(canonical, kind, url, genDate, ig, fhirVersion);
@@ -139,7 +141,7 @@ public class NPMPackageGenerator {
 
   public NPMPackageGenerator(String destFile, JsonObject npm) throws FHIRException, IOException {
     super();
-    System.out.println("create package file at " + destFile);
+    log.info("create package file at " + destFile);
     this.destFile = destFile;
     start();
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -262,7 +264,7 @@ public class NPMPackageGenerator {
   public void addFile(Category cat, String name, byte[] content) throws IOException {
     String path = cat.getDirectory() + name;
     if (created.contains(path))
-      System.out.println("Duplicate package file " + path);
+      log.warn("Duplicate package file " + path);
     else {
       created.add(path);
       TarArchiveEntry entry = new TarArchiveEntry(path);
@@ -299,7 +301,7 @@ public class NPMPackageGenerator {
           String path = f.getAbsolutePath().substring(root.length() + 1);
           byte[] content = FileUtilities.fileToBytes(f);
           if (created.contains(path))
-            System.out.println("Duplicate package file " + path);
+            log.warn("Duplicate package file " + path);
           else {
             created.add(path);
             TarArchiveEntry entry = new TarArchiveEntry(path);

@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.packages;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.convertors.analytics.PackageVisitor;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
@@ -20,6 +21,7 @@ import java.util.List;
  * It targets the secondary server to avoid loading the primary server.
  *
  */
+@Slf4j
 public class PackageCacheDownloader extends PackageVisitor implements PackageVisitor.IPackageVisitorProcessor{
 
   public PackageCacheDownloader() throws IOException {
@@ -37,7 +39,7 @@ public class PackageCacheDownloader extends PackageVisitor implements PackageVis
 
   @Override
   public Object startPackage(PackageVisitor.PackageContext context) throws FHIRException {
-    System.out.println("Currently loading " + context.getPid());
+    log.info("Currently loading " + context.getPid());
     return null;
   }
 

@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.JsonParser;
 import org.hl7.fhir.utilities.http.HTTPResult;
@@ -25,6 +26,7 @@ import org.hl7.fhir.validation.instance.InstanceValidator;
  * @author grahamegrieve
  *
  */
+@Slf4j
 public class IPAValidator {
 
   public class ValidationNode {
@@ -115,7 +117,7 @@ public class IPAValidator {
 
   private List<Element> searchPatients() {
     ValidationNode vn = new ValidationNode("Patient Search");
-    log("Searching Patients");
+    log.info("Searching Patients");
     Element bundle = makeRequest(vn, "/Patient");
     List<Element> list = new ArrayList<>();
     if (bundle != null) {
@@ -181,9 +183,5 @@ public class IPAValidator {
       return null;
     }
     
-  }
-
-  private void log(String msg) {
-    System.out.println(msg);
   }
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
@@ -46,8 +47,8 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
  * and also the merging logic might need to be sophisticated.
  * 
  */
+@Slf4j
 public class SnapshotGenerationPreProcessor {
-
 
   public class ElementAnalysis {
     private StructureDefinition structure;
@@ -712,7 +713,7 @@ public class SnapshotGenerationPreProcessor {
         for (ElementDefinition ed : si.sliceStuff) {
           if (ed.hasSlicing() && !isExtensionSlicing(ed)) {
             String message = context.formatMessage(I18nConstants.UNSUPPORTED_SLICING_COMPLEXITY, si.slicer.getPath(), ed.getPath(), ed.getSlicing().summary());
-            System.out.println(message);
+            log.warn(message);
             return;
           }
         }

@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.instance.type;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hl7.fhir.r5.elementmodel.Element;
@@ -108,7 +109,9 @@ public class ImplementationGuideValidator extends BaseValidator {
           try {
             PackageClient pc = new PackageClient(PackageServer.primaryServer());
             List<PackageInfo> list = pc.getVersions(packageId);
+            Collections.sort(list, new org.hl7.fhir.utilities.npm.PackageInfo.PackageInfoVersionSorter());
             String lver = pcm.getLatestVersion(packageId);
+            String date = null;
             for (PackageInfo t : list) {
               if (!t.getVersion().contains("-")) {
                 lver = t.getVersion();

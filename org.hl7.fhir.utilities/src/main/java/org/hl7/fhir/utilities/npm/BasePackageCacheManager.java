@@ -9,18 +9,18 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Slf4j
 public abstract class BasePackageCacheManager implements IPackageCacheManager {
 
-  private static final Logger ourLog = LoggerFactory.getLogger(BasePackageCacheManager.class);
   protected final List<PackageServer> myPackageServers;
   private Function<PackageServer, PackageClient> myClientFactory = server -> new PackageClient(server);
-  protected boolean silent;
 
   /**
    * Constructor
@@ -88,9 +88,7 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
           String url = packageClient.url(id, version);
           return new InputStreamWithSrc(stream, url, version);
         } catch (IOException e) {
-          if (!silent) {
-            ourLog.info("Failed to resolve package {}#{} from server: {} ({})", id, version, nextPackageServer, e.getMessage());
-          }
+          log.debug("Failed to resolve package {}#{} from server: {} ({})", id, version, nextPackageServer, e.getMessage());
         }
       }
     }
@@ -187,7 +185,6 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
     }
   }
 
-
   @Override
   public NpmPackage loadPackage(String idAndVer) throws FHIRException, IOException {
     idAndVer = stripAlias(idAndVer);
@@ -217,9 +214,4 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
       return id;
     }
   }
-
-  public void setSilent(boolean silent) {
-    this.silent = silent;    
-  }
-
 }

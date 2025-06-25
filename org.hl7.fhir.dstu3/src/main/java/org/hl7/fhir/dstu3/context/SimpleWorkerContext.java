@@ -47,6 +47,7 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.dstu3.conformance.ProfileUtilities;
 import org.hl7.fhir.dstu3.conformance.ProfileUtilities.ProfileKnowledgeProvider;
@@ -94,6 +95,8 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
 import ca.uhn.fhir.parser.DataFormatException;
+import org.slf4j.MarkerFactory;
+import org.slf4j.event.Level;
 
 /*
  * This is a stand alone implementation of worker context for use inside a tool.
@@ -102,6 +105,7 @@ import ca.uhn.fhir.parser.DataFormatException;
  */
 
 @Deprecated
+@Slf4j
 public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerContext, ProfileKnowledgeProvider {
 
   public interface IContextResourceLoader {
@@ -206,7 +210,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       try {
         res.loadDefinitionItem(name, new ByteArrayInputStream(source.get(name)), loader);
       } catch (Exception e) {
-        System.out.println("Error loading "+name+": "+e.getMessage());
+        log.error("Error loading "+name+": "+e.getMessage());
         throw new FHIRException("Error loading "+name+": "+e.getMessage(), e);
       }
     }
@@ -247,7 +251,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 		  Bundle bnd = (Bundle) f;
 		  for (BundleEntryComponent e : bnd.getEntry()) {
 		    if (e.getFullUrl() == null) {
-		      logger.logDebugMessage(LogCategory.CONTEXT, "unidentified resource in " + name+" (no fullUrl)");
+              logContextDebugMessage("unidentified resource in " + name+" (no fullUrl)");
 		    }
 		    seeResource(e.getFullUrl(), e.getResource());
 		  }
@@ -257,6 +261,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 		}
 	}
 
+  private void logContextDebugMessage(String message) {
+    log.makeLoggingEventBuilder(Level.DEBUG)
+      .addMarker(MarkerFactory.getMarker(LogCategory.CONTEXT.name().toLowerCase()))
+      .setMessage(message)
+      .log();
+  }
   private void loadFromFileJson(InputStream stream, String name, IContextResourceLoader loader) throws IOException, FHIRException {
     Bundle f;
     try {
@@ -276,8 +286,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       throw new org.hl7.fhir.exceptions.FHIRFormatError(e1.getMessage(), e1);
     }
     for (BundleEntryComponent e : f.getEntry()) {
-      if (e.getFullUrl() == null && logger != null) {
-        logger.logDebugMessage(LogCategory.CONTEXT, "unidentified resource in " + name+" (no fullUrl)");
+      if (e.getFullUrl() == null) {
+        logContextDebugMessage("unidentified resource in " + name+" (no fullUrl)");
       }
       seeResource(e.getFullUrl(), e.getResource());
     }

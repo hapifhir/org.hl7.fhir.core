@@ -42,8 +42,6 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  */
 @MarkedToMoveToAdjunctPackage
 public class Renderer  {
-
-  protected static final boolean DEBUG = false;
   
   public static class RenderingStatus {
     private boolean extensions;

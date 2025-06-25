@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -68,6 +69,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingCompo
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.Column;
 import org.hl7.fhir.r5.renderers.mappings.ConceptMapMappingProvider;
 import org.hl7.fhir.r5.renderers.mappings.ModelMappingProvider;
@@ -90,6 +92,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.StructureDefinitionRendererMode;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.PublicationHacker;
@@ -117,6 +120,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
  
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class StructureDefinitionRenderer extends ResourceRenderer { 
  
   public enum MapStructureMode {
@@ -129,7 +133,17 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     hostMd = new InternalMarkdownProcessor(); 
     corePath = context.getContext().getSpecUrl(); 
   } 
- 
+  
+  @Override
+  protected boolean willRenderId(ResourceWrapper r) {
+    if (r.isDirect()) {
+      StructureDefinition sd = (StructureDefinition) r.getBase();
+      return sd.getIdBase().equals(sd.getSnapshot().getElementFirstRep().getPath());
+    }
+    return false;
+  }
+
+
   @Override
   public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     if (!r.isDirect()) {
@@ -893,8 +907,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       // in deeply sliced things, there can be duplicate paths that are not usefully differentiated by id, and anyway, we want path
       String anchor = element.getPath();
       anchor = makeAnchorUnique(anchor);
-      row.setId(anchor); 
-      row.setAnchor(anchor); 
+      row.setId(context.prefixAnchor(anchor)); 
+      row.setAnchor(context.prefixAnchor(anchor)); 
       row.setColor(context.getProfileUtilities().getRowColor(element, isConstraintMode)); 
       if (element.hasSlicing()) 
         row.setLineColor(1); 
@@ -1023,8 +1037,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           // we've entered a slice; we're going to create a holder row for the slice children 
           Row hrow = gen.new Row();
           String anchorE = makeAnchorUnique(element.getPath());
-          hrow.setId(anchorE); 
-          hrow.setAnchor(anchorE); 
+          hrow.setId(context.prefixAnchor(anchorE)); 
+          hrow.setAnchor(context.prefixAnchor(anchorE)); 
           hrow.setColor(context.getProfileUtilities().getRowColor(element, isConstraintMode)); 
           hrow.setLineColor(1); 
           hrow.setIcon("icon_element.gif", context.formatPhrase(RenderingContext.TEXT_ICON_ELEMENT)); 
@@ -1052,8 +1066,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           Row hrow = gen.new Row(); 
           String anchorE = element.getPath();
           anchorE = makeAnchorUnique(anchorE);
-          hrow.setId(anchorE); 
-          hrow.setAnchor(anchorE); 
+          hrow.setId(context.prefixAnchor(anchorE)); 
+          hrow.setAnchor(context.prefixAnchor(anchorE)); 
           hrow.setColor(context.getProfileUtilities().getRowColor(element, isConstraintMode)); 
           hrow.setLineColor(1); 
           hrow.setIcon("icon_element.gif", context.formatPhrase(RenderingContext.TEXT_ICON_ELEMENT)); 
@@ -1088,8 +1102,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 parent = gen.new Row(); 
                 String anchorE = child.getPath();
                 anchorE = makeAnchorUnique(anchorE);
-                parent.setId(anchorE); 
-                parent.setAnchor(anchorE); 
+                parent.setId(context.prefixAnchor(anchorE)); 
+                parent.setAnchor(context.prefixAnchor(anchorE)); 
                 parent.setColor(context.getProfileUtilities().getRowColor(child, isConstraintMode)); 
                 parent.setLineColor(1); 
                 parent.setIcon("icon_slice.png", context.formatPhrase(RenderingContext.TEXT_ICON_SLICE)); 
@@ -1460,8 +1474,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       return prow; 
     } 
     Row row = gen.new Row(); 
-    row.setId(parent.getPath()+"-"+grp.getName()); 
-    row.setAnchor(parent.getPath()+"-"+grp.getName()); 
+    row.setId(context.prefixAnchor(parent.getPath()+"-"+grp.getName())); 
+    row.setAnchor(context.prefixAnchor(parent.getPath()+"-"+grp.getName())); 
     row.setColor(context.getProfileUtilities().getRowColor(parent, isConstraintMode)); 
     row.setLineColor(1); 
     row.setIcon("icon_choice.gif", context.formatPhrase(RenderingContext.TEXT_ICON_CHOICE)); 
@@ -1636,6 +1650,56 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             } 
           } 
         } 
+        if (definition.typeSummary().equals("Narrative")) {
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
+          Set<String> statusCodes = determineNarrativeStatus(definition, profile, snapshot);
+          List<String> langCtrl = ToolingExtensions.readStringExtensions(definition, ToolingExtensions.EXT_NARRATIVE_LANGUAGE_CONTROL);
+          String level = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_NARRATIVE_SOURCE_CONTROL);
+          // what do we want to do here? 
+          // the narrative might be constrained in these ways: 
+          //  extension http://hl7.org/fhir/StructureDefinition/narrative-language-control 
+          //  extension http://hl7.org/fhir/StructureDefinition/narrative-source-control
+          //  restrictions on status 
+          // direct linkage to data requirements 
+          if ((statusCodes.isEmpty() || statusCodes.size() == 4) && level == null && langCtrl.isEmpty()) {
+            c.getPieces().add(gen.new Piece(null, "This profile does not constrain the narrative in regard to content, language, or traceability to data elements", null).addStyle("font-weight:bold")); 
+          } else { 
+            if ((statusCodes.isEmpty() || statusCodes.size() == 4)) {
+              c.getPieces().add(gen.new Piece(null, "This profile does not constrain the narrative content by fixing the status codes", null).addStyle("font-weight:bold"));               
+            } else {
+              c.getPieces().add(gen.new Piece(null, "This profile constrains the narrative content by fixing the status codes to "+CommaSeparatedStringBuilder.join2(", ", " and ", statusCodes), null).addStyle("font-weight:bold")); 
+            }
+            c.addPiece(gen.new Piece("br")); 
+            String ltx = null;
+            if (langCtrl.isEmpty()) {
+              ltx = "This profile does not constrain the narrative in regard to language specific sections";               
+            } else if (langCtrl.size() == 1 && langCtrl.get(0).equals("#no")) {
+              ltx = "This profile constrains the narrative to not contain any language specific sections";               
+            } else if (langCtrl.size() == 1 && langCtrl.get(0).equals("#yes")) {
+              ltx = "This profile constrains the narrative to contain language sections, but doesn't make rules about them";  
+            } else {
+              int i = langCtrl.indexOf("#resource");
+              if (i == -1) {
+                ltx = "This profile constrains the narrative to contain language sections for the languages "+CommaSeparatedStringBuilder.join2(", ", " and ", langCtrl);                  
+              } else {
+                langCtrl.remove(i);
+                if (langCtrl.size() == 0) {
+                  ltx = "This profile constrains the narrative to contain a language sections in the same language as the resource";
+                } else {
+                  ltx = "This profile constrains the narrative to contain a language sections in the same language as the resource, and also for the languages "+CommaSeparatedStringBuilder.join2(", ", " and ", langCtrl);
+                }
+              }
+            }
+            c.getPieces().add(gen.new Piece(null, ltx, null).addStyle("font-weight:bold"));
+            c.addPiece(gen.new Piece("br")); 
+            
+            if (level == null) {
+              c.getPieces().add(gen.new Piece(null, "This profile does not constrain the narrative in regard to traceability to data elements", null).addStyle("font-weight:bold"));               
+            } else {
+              c.getPieces().add(gen.new Piece(null, "This profile indicates that if there are elements in the narrative without a source-type class, and "+level+" will be emitted", null).addStyle("font-weight:bold"));               
+            }
+          }
+        }
         if (definition.hasExtension(ToolingExtensions.EXT_DATE_FORMAT)) { 
           String df = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_DATE_FORMAT); 
           if (df != null) { 
@@ -1936,7 +2000,31 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
     return c; 
   } 
- 
+
+  private Set<String> determineNarrativeStatus(ElementDefinition definition, StructureDefinition profile, boolean snapshot) {
+    Set<String> set = new HashSet<>();
+    try {
+      List<ElementDefinition> children = context.getProfileUtilities().getChildList(profile, definition, !snapshot);
+      ElementDefinition status = null;
+      for (ElementDefinition t : children) {
+        if (t.getName().equals("status")) {
+          status = t;
+        }
+      }
+      if (status != null && status.getBinding().hasValueSet()) {
+        ValueSetExpansionOutcome exp = context.getContext().expandVS(status.getBinding().getValueSet(), true, false, -1);
+        if (exp.isOk()) {
+          for (ValueSetExpansionContainsComponent cc : exp.getValueset().getExpansion().getContains()) {
+            set.add(cc.getCode());
+          }
+        }
+      }
+    } catch (Exception e) {
+      log.error("Error checking Narrative Status: "+e.getMessage(), e);
+    }
+    return set;
+  }
+
   private Boolean checkCanBeTarget(Extension lt, List<Extension> tc) {
     Boolean res = null;
     if (lt == null || !lt.hasValueBooleanType() || lt.getValue().hasExtension(ToolingExtensions.EXT_DAR)) {                  
@@ -2353,10 +2441,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
     if (!onlyInformationIsMapping(all, element)) { 
       Row row = gen.new Row(); 
-      row.setId(s); 
+      row.setId(context.prefixAnchor(s)); 
       String anchor = element.getPath();
       anchor = makeAnchorUnique(anchor);
-      row.setAnchor(anchor); 
+      row.setAnchor(context.prefixAnchor(anchor)); 
       row.setColor(context.getProfileUtilities().getRowColor(element, isConstraintMode)); 
       if (element.hasSlicing()) 
         row.setLineColor(1); 
@@ -2517,7 +2605,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (t.getValues().size() == 0 || (t.getValues().size() == 1 && t.getValues().get(0).isEmpty())) { 
             if (!skipnoValue) { 
               Row row = gen.new Row(); 
-              row.setId(ed.getPath()); 
+              row.setId(context.prefixAnchor(ed.getPath())); 
               erow.getSubRows().add(row); 
               Cell c = gen.new Cell(); 
               row.getCells().add(c); 
@@ -2562,7 +2650,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           } else { 
             for (Base b : t.getValues()) { 
               Row row = gen.new Row(); 
-              row.setId(ed.getPath()); 
+              row.setId(context.prefixAnchor(ed.getPath())); 
               erow.getSubRows().add(row); 
               row.setIcon("icon_fixed.gif", context.formatPhrase(RenderingContext.STRUC_DEF_FIXED) /*context.formatPhrase(RenderingContext.TEXT_ICON_FIXED*/); 
  
@@ -2975,7 +3063,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (!mustSupportMode || allTypesMustSupport(element) || isMustSupport(tr)) { 
         boolean used = false; 
         Row choicerow = gen.new Row(); 
-        choicerow.setId(element.getPath()); 
+        choicerow.setId(context.prefixAnchor(element.getPath())); 
         String ts = tr.getWorkingCode();
         String tu = tr.getWorkingCode();
         if (Utilities.isAbsoluteUrl(ts)) {
@@ -3030,9 +3118,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         } else { 
           StructureDefinition sd = context.getWorker().fetchTypeDefinition(tu); 
           if (sd == null) { 
-            if (DEBUG) {
-              System.out.println("Unable to find "+tu);
-            }
+
+            log.debug("Unable to find "+tu);
+
             sd = context.getWorker().fetchTypeDefinition(tu); 
           } else if (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) { 
             used = true; 
@@ -3205,7 +3293,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     StructureDefinition base = context.getWorker().fetchResource(StructureDefinition.class, res.getResType()); 
     if (base != null) 
       res.setResLink(base.getWebPath()); 
-    res.setId(profile.getId()); 
+    res.setId(context.prefixAnchor(profile.getId())); 
     res.setProfile(profile.getDerivation() == TypeDerivationRule.CONSTRAINT); 
     StringBuilder b = new StringBuilder(); 
     b.append(res.getResType()); 
@@ -3288,9 +3376,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
   private void genSpanEntry(HierarchicalTableGenerator gen, List<Row> rows, SpanEntry span) throws IOException { 
     Row row = gen.new Row(); 
-    row.setId("??"); 
+    row.setId(context.prefixAnchor("??")); 
     rows.add(row); 
-    row.setAnchor(span.getId()); 
+    row.setAnchor(context.prefixAnchor(span.getId())); 
     //row.setColor(..?); 
     if (span.isProfile()) { 
       row.setIcon("icon_profile.png", context.formatPhrase(RenderingContext.GENERAL_PROF)); 
@@ -3429,7 +3517,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       vdeep = vdeep || eld.getPath().contains("Extension.extension.extension."); 
     } 
     Row r = gen.new Row(); 
-    r.setId("Extension"); 
+    r.setId(context.prefixAnchor("Extension")); 
     model.getRows().add(r); 
     String en; 
     if (!full) 
@@ -3470,7 +3558,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         ElementDefinition ued = getUrlFor(ed, c); 
         if (ved != null && ued != null) { 
           Row r1 = gen.new Row(); 
-          r1.setId(ued.getPath()); 
+          r1.setId(context.prefixAnchor(ued.getPath())); 
           r.getSubRows().add(r1); 
           r1.getCells().add(gen.new Cell(null, defFile == null ? "" : defFile+"-definitions.html#"+ed.getId()+"."+c.getId(), ((UriType) ued.getFixed()).getValue(), null, null)); 
           r1.getCells().add(gen.new Cell()); 

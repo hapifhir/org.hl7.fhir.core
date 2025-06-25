@@ -21,6 +21,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.fhir.ucum.UcumEssenceService;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
@@ -34,7 +36,7 @@ import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.ILoggingService;
 import org.hl7.fhir.r5.context.IWorkerContextManager;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.context.SystemOutLoggingService;
+
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
@@ -113,6 +115,7 @@ import org.hl7.fhir.validation.service.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import lombok.Getter;
@@ -190,6 +193,7 @@ POSSIBILITY OF SUCH DAMAGE.
  *
  * @author Grahame Grieve
  */
+@Slf4j
 @Accessors(chain = true)
 public class ValidationEngine implements IValidatorResourceFetcher, IValidationPolicyAdvisor, IPackageInstaller, IWorkerContextManager.IPackageLoadingTracker {
 
@@ -368,7 +372,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       timeTracker = null;
       canRunWithoutTerminologyServer = false;
       useEcosystem = USE_ECOSYSTEM_DEFAULT;
-      loggingService = new SystemOutLoggingService();
+      loggingService = new org.hl7.fhir.r5.context.Slf4JLoggingService(LoggerFactory.getLogger(ValidationEngine.class));
       thoVersion = null;
       extensionsVersion = null;
     }
@@ -664,9 +668,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
           try {
             loader.load(ref.getCnt());
           } catch (Throwable t) {
-            if (debug) {
-               System.out.println("Error during round 1 scanning: "+t.getMessage());
-            }
+            log.debug("Error during round 1 scanning: "+t.getMessage());
           }
         }
       }
@@ -676,16 +678,16 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       if ((ref.isProcess() || all) && ref.getCnt() != null) {
         TimeTracker.Session tts = context.clock().start("validation");
         context.clock().milestone();
-        System.out.println("  Validate " + ref.getRef());
+        log.info("  Validate " + ref.getRef());
         
         try {
           OperationOutcome outcome = validate(ref.getRef(), ref.getCnt().getFocus(), ref.getCnt().getCntType(), profiles, record);
           ToolingExtensions.addStringExtension(outcome, ToolingExtensions.EXT_OO_FILE, ref.getRef());
-          System.out.println(" " + context.clock().milestone());
+          log.info(" " + context.clock().milestone());
           results.addEntry().setResource(outcome);
           tts.end();
         } catch (Exception e) {
-          System.out.println("Validation Infrastructure fail validating " + ref + ": " + e.getMessage());
+          log.error("Validation Infrastructure fail validating " + ref + ": " + e.getMessage());
           tts.end();
           throw new FHIRException(e);
         }
@@ -721,7 +723,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     InstanceValidator validator = getValidator(cntType);
     validator.validate(null, messages, new ByteArrayInputStream(source.getBytes()), cntType, asSdList(profiles));
     if (showTimes) {
-      System.out.println(location + ": " + validator.reportTimes());
+      log.info(location + ": " + validator.reportTimes());
     }
     if (record != null) {
       boolean found = false;
@@ -957,10 +959,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       try {
         makeSnapshot(sd);
       } catch (Exception e) {
-        System.out.println("Process Note: Unable to generate snapshot for " + sd.present() + ": " + e.getMessage());
-        if (context.getLogger().isDebugLogging()) {
-          e.printStackTrace();
-        }
+        log.info("Process Note: Unable to generate snapshot for " + sd.present() + ": " + e.getMessage());
+        context.getLogger().logDebugMessage(ILoggingService.LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
       }
     }
   }
@@ -1064,11 +1064,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
           throw new FHIRException("Source version not supported yet: " + version);
         }
       } catch (Exception e) {
-        System.out.println("Conversion failed using Java convertor: " + e.getMessage());
+        log.error("Conversion failed using Java convertor: " + e.getMessage());
       }
     }
     // ok, we try converting using the structure maps
-    System.out.println("Loading hl7.fhir.xver.r4");
+    log.info("Loading hl7.fhir.xver.r4");
     igLoader.loadIg(getIgs(), getBinaries(), "hl7.fhir.xver.r4", false);
     String type = src.fhirType();
     String url = getMapId(type, targetVer);
@@ -1128,7 +1128,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   public FilesystemPackageCacheManager getPcm() throws IOException {
     if (pcm == null) {
-      //System.out.println("Creating Package manager?");
       pcm = new FilesystemPackageCacheManager.Builder().build();
     }
     return pcm;
@@ -1336,7 +1335,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public void loadExpansionParameters(String expansionParameters) {
-    System.out.println("Load Expansion Parameters: "+expansionParameters);
+    log.info("Load Expansion Parameters: "+expansionParameters);
     Parameters p = null;
     try {
       p = (Parameters) new XmlParser().parse(new FileInputStream(expansionParameters));
@@ -1346,7 +1345,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       try {
         p = (Parameters) new JsonParser().parse(new FileInputStream(expansionParameters));
       } catch (Exception e) {
-        System.out.println("Unable to load expansion parameters '"+expansionParameters+"' as either xml or json: "+e.getMessage());
+        log.error("Unable to load expansion parameters '"+expansionParameters+"' as either xml or json: "+e.getMessage());
         throw new FHIRException("Unable to load expansion parameters '"+expansionParameters+"' as either xml or json: "+e.getMessage());
       }
     }

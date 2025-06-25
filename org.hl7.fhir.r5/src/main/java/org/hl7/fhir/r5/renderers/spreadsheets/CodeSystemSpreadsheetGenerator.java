@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -30,6 +31,7 @@ import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class CodeSystemSpreadsheetGenerator extends CanonicalSpreadsheetGenerator {
 
   public CodeSystemSpreadsheetGenerator(IWorkerContext context) {
@@ -42,7 +44,7 @@ public class CodeSystemSpreadsheetGenerator extends CanonicalSpreadsheetGenerato
 
   public CodeSystemSpreadsheetGenerator renderCodeSystem(CodeSystem cs) throws IOException {
     if (cs == null) {
-      System.out.println("no code system!");
+      log.warn("no code system!");
     }
     addCodeSystemMetadata(renderCanonicalResource(cs, false), cs);
     

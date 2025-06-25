@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -49,6 +50,7 @@ import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class ResourceDependencyWalker {
 
   public interface IResourceDependencyNotifier {
@@ -60,12 +62,12 @@ public class ResourceDependencyWalker {
 
     @Override
     public void seeResource(Resource resource, String summaryId) {
-      System.out.println(summaryId);
+      log.info(summaryId);
     }
 
     @Override
     public void brokenLink(String link) {
-      System.err.println("Broken Link: " +link);      
+      log.error("Broken Link: " +link);
     }
   }
   

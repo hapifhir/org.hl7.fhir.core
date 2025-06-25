@@ -1,36 +1,43 @@
 package org.hl7.fhir.validation.instance;
 
+import lombok.Getter;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.slf4j.Logger;
 
-public class PercentageTracker {
+@SuppressWarnings("checkstyle:systemout")
+public class ResourcePercentageLogger {
 
-  private int total;
+  private final Logger logger;
+  private final int total;
+  private final String fhirType;
   private int last; 
   private int current;
-  private boolean log;
-  private String url;
+  private final boolean log;
+  @Getter
+  private final String url;
   
   private static int instance;
   
-  public PercentageTracker(int total, String fhirType, String url, boolean log) {
+  public ResourcePercentageLogger(Logger logger, int total, String fhirType, String url, boolean log) {
+    this.logger = logger;
     this.total = total;
+    this.fhirType = fhirType;
     instance++;
     last = 0;
     this.log = log;
     this.url = url;
     if (log) {
-      System.out.print("Validate "+fhirType+" against "+url);
+      String startString = "Validate " + fhirType + " against " + url;
+      System.out.print(startString);
+      this.logger.debug(startString);
     }
   }
 
   public void done() {
     if (log) {
       System.out.println("|");
+      this.logger.debug("Done validating " + fhirType + " against " + url);
     }
-  }
-  
-  public String getUrl() {
-    return url;
   }
 
   public void seeElement(Element e) {
@@ -47,6 +54,7 @@ public class PercentageTracker {
           if (last % 20 == 0) {
             if (log) {
               System.out.print(""+last);
+              logger.debug(last + "% complete");
             }
           }
         }

@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>6.5.26-SNAPSHOT</version>
+        <version>6.5.27-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -322,7 +322,7 @@
                             <goal>unpack-dependencies</goal>
                         </goals>
                         <configuration>
-                            <excludes>**/module-info.class,META-INF/*,logback-test.xml</excludes>
+                            <excludes>**/module-info.class,META-INF/*,**/logback-test.xml</excludes>
                             <outputDirectory>${project.build.directory}/classes</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>

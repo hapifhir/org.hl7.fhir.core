@@ -1,5 +1,8 @@
 package org.hl7.fhir.utilities.xhtml;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class XhtmlUtils {
 
   public static String convertHtmlToText(String source, String desc) {
@@ -8,9 +11,8 @@ public class XhtmlUtils {
       return doc.getDocumentElement().allText();
     } catch (Exception e) {
       // todo - should we try another way?
-      System.err.println("XHTML content could not be parsed from "+desc);
-      e.printStackTrace();
-      System.err.println(source);
+      log.error("XHTML content could not be parsed from "+desc, e);
+      log.error(source);
       return "Unparseable HTML";
     }
   }

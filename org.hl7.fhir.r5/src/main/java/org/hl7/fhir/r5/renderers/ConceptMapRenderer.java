@@ -707,12 +707,10 @@ public class ConceptMapRenderer extends TerminologyRenderer {
             for (String s : sources.keySet()) {
               if (s != null && !s.equals("code")) {
                 td = tr.td();
-                if (first) {
-                  td.addText(getValue(ccm.getDependsOn(), s, sources.get(s).size() != 1));
-                  display = getDisplay(ccm.getDependsOn(), s);
-                  if (display != null)
-                    td.tx(" ("+display+")");
-                }
+                td.addText(getValue(ccm.getDependsOn(), s, sources.get(s).size() != 1));
+                display = getDisplay(ccm.getDependsOn(), s);
+                if (display != null)
+                  td.tx(" ("+display+")");
               }
             }
             first = false;
@@ -849,7 +847,13 @@ public class ConceptMapRenderer extends TerminologyRenderer {
 
 
   private String getValue(List<MappingPropertyComponent> list, String s) {
-    return "todo";
+    StringBuilder b = new StringBuilder();
+    for (MappingPropertyComponent m : list) {
+      if (s.equals(m.getCode())) {
+        b.append(displayBase(m.getValue()));
+      }
+    }
+    return b.toString();
   }
 
   private String getValue(List<OtherElementComponent> list, String s, boolean withSystem) {

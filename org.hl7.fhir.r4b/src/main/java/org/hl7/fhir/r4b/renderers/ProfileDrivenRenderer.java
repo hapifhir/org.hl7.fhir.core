@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -90,6 +91,7 @@ import org.w3c.dom.Element;
  * 
  */
 @Deprecated
+@Slf4j
 public class ProfileDrivenRenderer extends ResourceRenderer {
 
   private Set<String> containedIds = new HashSet<>();
@@ -136,8 +138,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
             context.getProfileUtilities().getChildList(sd, ed), x, r.fhirType(), context.isTechnicalMode(), 0);
       }
     } catch (Exception e) {
-      System.out.println("Error Generating Narrative for " + r.fhirType() + "/" + r.getId() + ": " + e.getMessage());
-      e.printStackTrace();
+      log.error("Error Generating Narrative for " + r.fhirType() + "/" + r.getId() + ": " + e.getMessage(), e);
       x.para().b().style("color: maroon").tx("Exception generating Narrative: " + e.getMessage());
     }
     return hasExtensions;
@@ -971,7 +972,6 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
                 if (url.startsWith("http://hl7.org/fhir") && !url.startsWith("http://hl7.org/fhir/us")) {
                   throw new DefinitionException("unknown extension " + url);
                 }
-                // System.out.println("unknown extension "+url);
                 pe = new PropertyWrapperDirect(this.context, new Property(p.getName() + "[" + url + "]",
                     p.getTypeCode(), p.getDefinition(), p.getMinCardinality(), p.getMaxCardinality(), ex), null);
               } else {

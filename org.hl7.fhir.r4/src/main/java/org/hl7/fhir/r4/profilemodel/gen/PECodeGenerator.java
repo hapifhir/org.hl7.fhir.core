@@ -77,7 +77,7 @@ import org.hl7.fhir.utilities.Utilities;
  *     contained: generate code for contained resources 
  *     all-elements: generate code for all elements, not just the key elements (makes the code verbose)
  */
-
+@SuppressWarnings("checkstyle:systemout")
 public class PECodeGenerator {
 
 

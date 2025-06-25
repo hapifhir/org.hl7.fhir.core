@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r4.model.BooleanType;
@@ -56,6 +57,7 @@ import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 
+@Slf4j
 public class CodeSystemUtilities {
 
   public static boolean isNotSelectable(CodeSystem cs, ConceptDefinitionComponent def) {
@@ -269,7 +271,7 @@ public class CodeSystemUtilities {
           cs.setUserData("ballot.package", pckage);
         else if (!pckage.equals(cs.getUserString("ballot.package")))
           if (!"infrastructure".equals(cs.getUserString("ballot.package")))
-            System.out.println("Code System " + cs.getUrl() + ": ownership clash " + pckage + " vs "
+            log.warn("Code System " + cs.getUrl() + ": ownership clash " + pckage + " vs "
                 + cs.getUserString("ballot.package"));
       }
       if (status == StandardsStatus.NORMATIVE) {

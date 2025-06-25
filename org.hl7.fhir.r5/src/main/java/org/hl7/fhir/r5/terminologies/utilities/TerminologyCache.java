@@ -40,6 +40,7 @@ import java.util.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -72,6 +73,7 @@ import com.google.gson.JsonPrimitive;
  *
  */
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class TerminologyCache {
   
   public static class SourcedCodeSystem {
@@ -326,7 +328,7 @@ public class TerminologyCache {
     if (verFile.exists()) {
       String ver = FileUtilities.fileToString(verFile);
       if (!ver.equals(FIXED_CACHE_VERSION)) {
-        System.out.println("Terminology Cache Version has changed from 1 to "+FIXED_CACHE_VERSION+", so clearing txCache");
+        log.info("Terminology Cache Version has changed from 1 to "+FIXED_CACHE_VERSION+", so clearing txCache");
         clear();
       }
       FileUtilities.stringToFile(FIXED_CACHE_VERSION, verFile);
@@ -676,7 +678,7 @@ public class TerminologyCache {
       sw.write(json.composeString(resource).trim());
       sw.close();
     } catch (Exception e) {
-      System.out.println("error saving capability statement "+e.getMessage());
+      log.error("error saving capability statement "+e.getMessage(), e);
     }
   }
 
@@ -757,6 +759,10 @@ public class TerminologyCache {
             if (first) first = false; else sw.write(",\r\n");
             sw.write("  \"unknown-systems\" : \""+Utilities.escapeJson(CommaSeparatedStringBuilder.join(",", ce.v.getUnknownSystems())).trim()+"\"");
           }
+          if (ce.v.getParameters() != null) {
+            if (first) first = false; else sw.write(",\r\n");
+            sw.write("  \"parameters\" : "+json.composeString(ce.v.getParameters()).trim()+"\r\n");
+          }
           if (ce.v.getIssues() != null) {
             if (first) first = false; else sw.write(",\r\n");
             OperationOutcome oo = new OperationOutcome();
@@ -769,7 +775,7 @@ public class TerminologyCache {
       }      
       sw.close();
     } catch (Exception e) {
-      System.out.println("error saving "+nc.name+": "+e.getMessage());
+      log.error("error saving "+nc.name+": "+e.getMessage(), e);
     }
   }
 
@@ -844,6 +850,7 @@ public class TerminologyCache {
       boolean inactive = "true".equals(loadJS(o.get("inactive")));
       String unknownSystems = loadJS(o.get("unknown-systems"));
       OperationOutcome oo = o.has("issues") ? (OperationOutcome) new JsonParser().parse(o.getAsJsonObject("issues")) : null;
+      Parameters p = o.has("parameters") ? (Parameters) new JsonParser().parse(o.getAsJsonObject("parameters")) : null;
       t = loadJS(o.get("class")); 
       TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t) ;
       ce.v = new ValidationResult(severity, error, system, version, new ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code), display, null).setErrorClass(errorClass);
@@ -852,6 +859,9 @@ public class TerminologyCache {
       ce.v.setStatus(inactive, status);
       if (oo != null) {
         ce.v.setIssues(oo.getIssue());
+      }
+      if (p != null) {
+        ce.v.setParameters(p);
       }
     }
     return ce;
@@ -887,8 +897,7 @@ public class TerminologyCache {
         caches.put(nc.name, nc);
       }        
     } catch (Exception e) {
-      System.out.println("Error loading "+fn+": "+e.getMessage()+" entry "+c+" - ignoring it");
-      e.printStackTrace();
+      log.error("Error loading "+fn+": "+e.getMessage()+" entry "+c+" - ignoring it", e);
     }
   }
 
@@ -927,7 +936,7 @@ public class TerminologyCache {
         }
       }
     } catch (Exception e) {
-      System.out.println("Error loading vs external cache: "+e.getMessage());
+      log.error("Error loading vs external cache: "+e.getMessage(), e);
     }
     try {
       File f = ManagedFileAccess.file(Utilities.path(folder, "cs-externals.json"));
@@ -943,7 +952,7 @@ public class TerminologyCache {
         }
       }
     } catch (Exception e) {
-      System.out.println("Error loading vs external cache: "+e.getMessage());
+      log.error("Error loading vs external cache: "+e.getMessage(), e);
     }
   }
 

@@ -65,6 +65,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+@SuppressWarnings("checkstyle:systemout")
 public class ISO21090Importer {
 
   private final Map<String, EnumValueSet> bindings = new HashMap<>();

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -37,6 +38,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Title;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class WebTemplateRenderer extends ResourceRenderer {
   
   public WebTemplateRenderer(RenderingContext context) { 
@@ -219,7 +221,7 @@ public class WebTemplateRenderer extends ResourceRenderer {
         // what is this?
         break;
       default: 
-        System.out.println("?");
+        log.warn("?");
       }
       cell.addPiece(gen.new Piece(null, " ", null));
       cell.addPiece(gen.new Piece(link, pfx+value, hint));      
