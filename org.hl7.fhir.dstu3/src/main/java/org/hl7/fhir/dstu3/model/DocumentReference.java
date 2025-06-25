@@ -2107,16 +2107,6 @@ public class DocumentReference extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getAuthorTarget() { 
-      if (this.authorTarget == null)
-        this.authorTarget = new ArrayList<Resource>();
-      return this.authorTarget;
-    }
-
-    /**
      * @return {@link #authenticator} (Which person or organization authenticates that this document is valid.)
      */
     public Reference getAuthenticator() { 

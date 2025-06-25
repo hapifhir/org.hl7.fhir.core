@@ -5702,28 +5702,6 @@ public class ClaimResponse extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<CommunicationRequest> getCommunicationRequestTarget() { 
-      if (this.communicationRequestTarget == null)
-        this.communicationRequestTarget = new ArrayList<CommunicationRequest>();
-      return this.communicationRequestTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public CommunicationRequest addCommunicationRequestTarget() { 
-      CommunicationRequest r = new CommunicationRequest();
-      if (this.communicationRequestTarget == null)
-        this.communicationRequestTarget = new ArrayList<CommunicationRequest>();
-      this.communicationRequestTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #insurance} (Financial instrument by which payment information for health care.)
      */
     public List<InsuranceComponent> getInsurance() { 

@@ -2756,16 +2756,6 @@ public class RequestGroup extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getParticipantTarget() {
-      if (this.participantTarget == null)
-        this.participantTarget = new ArrayList<Resource>();
-      return this.participantTarget;
-    }
-
-    /**
      * @return {@link #type} (The type of action to perform (create, update,
      *         remove).)
      */
@@ -4914,16 +4904,6 @@ public class RequestGroup extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getBasedOnTarget() {
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<Resource>();
-    return this.basedOnTarget;
-  }
-
-  /**
    * @return {@link #replaces} (Completed or terminated request(s) whose function
    *         is taken by this new request.)
    */
@@ -4976,16 +4956,6 @@ public class RequestGroup extends DomainResource {
       addReplaces();
     }
     return getReplaces().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getReplacesTarget() {
-    if (this.replacesTarget == null)
-      this.replacesTarget = new ArrayList<Resource>();
-    return this.replacesTarget;
   }
 
   /**
@@ -5517,16 +5487,6 @@ public class RequestGroup extends DomainResource {
       addReasonReference();
     }
     return getReasonReference().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getReasonReferenceTarget() {
-    if (this.reasonReferenceTarget == null)
-      this.reasonReferenceTarget = new ArrayList<Resource>();
-    return this.reasonReferenceTarget;
   }
 
   /**

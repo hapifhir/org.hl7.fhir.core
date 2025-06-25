@@ -467,16 +467,6 @@ public class Condition extends DomainResource {
           return getAssessment().get(0);
         }
 
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getAssessmentTarget() { 
-          if (this.assessmentTarget == null)
-            this.assessmentTarget = new ArrayList<Resource>();
-          return this.assessmentTarget;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("summary", "CodeableConcept", "A simple summary of the stage such as \"Stage 3\". The determination of the stage is disease-specific.", 0, 1, summary));
@@ -739,16 +729,6 @@ public class Condition extends DomainResource {
             addDetail();
           }
           return getDetail().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getDetailTarget() { 
-          if (this.detailTarget == null)
-            this.detailTarget = new ArrayList<Resource>();
-          return this.detailTarget;
         }
 
         protected void listChildren(List<Property> children) {
