@@ -1237,16 +1237,6 @@ The dosage instructions should reflect the dosage of the medication that was adm
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getDefinitionTarget() { 
-      if (this.definitionTarget == null)
-        this.definitionTarget = new ArrayList<Resource>();
-      return this.definitionTarget;
-    }
-
-    /**
      * @return {@link #partOf} (A larger event of which this particular event is a component or step.)
      */
     public List<Reference> getPartOf() { 
@@ -1297,16 +1287,6 @@ The dosage instructions should reflect the dosage of the medication that was adm
         addPartOf();
       }
       return getPartOf().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getPartOfTarget() { 
-      if (this.partOfTarget == null)
-        this.partOfTarget = new ArrayList<Resource>();
-      return this.partOfTarget;
     }
 
     /**
@@ -1558,16 +1538,6 @@ The dosage instructions should reflect the dosage of the medication that was adm
         addSupportingInformation();
       }
       return getSupportingInformation().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getSupportingInformationTarget() { 
-      if (this.supportingInformationTarget == null)
-        this.supportingInformationTarget = new ArrayList<Resource>();
-      return this.supportingInformationTarget;
     }
 
     /**
@@ -1879,16 +1849,6 @@ The dosage instructions should reflect the dosage of the medication that was adm
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
-    }
-
-    /**
      * @return {@link #prescription} (The original request, instruction or authority to perform the administration.)
      */
     public Reference getPrescription() { 
@@ -1983,28 +1943,6 @@ The dosage instructions should reflect the dosage of the medication that was adm
         addDevice();
       }
       return getDevice().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Device> getDeviceTarget() { 
-      if (this.deviceTarget == null)
-        this.deviceTarget = new ArrayList<Device>();
-      return this.deviceTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Device addDeviceTarget() { 
-      Device r = new Device();
-      if (this.deviceTarget == null)
-        this.deviceTarget = new ArrayList<Device>();
-      this.deviceTarget.add(r);
-      return r;
     }
 
     /**
@@ -2135,28 +2073,6 @@ The dosage instructions should reflect the dosage of the medication that was adm
         addEventHistory();
       }
       return getEventHistory().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Provenance> getEventHistoryTarget() { 
-      if (this.eventHistoryTarget == null)
-        this.eventHistoryTarget = new ArrayList<Provenance>();
-      return this.eventHistoryTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Provenance addEventHistoryTarget() { 
-      Provenance r = new Provenance();
-      if (this.eventHistoryTarget == null)
-        this.eventHistoryTarget = new ArrayList<Provenance>();
-      this.eventHistoryTarget.add(r);
-      return r;
     }
 
       protected void listChildren(List<Property> children) {

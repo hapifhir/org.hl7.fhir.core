@@ -2815,16 +2815,6 @@ public class ChargeItemDefinition extends MetadataResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getInstanceTarget() {
-    if (this.instanceTarget == null)
-      this.instanceTarget = new ArrayList<Resource>();
-    return this.instanceTarget;
-  }
-
-  /**
    * @return {@link #applicability} (Expressions that describe applicability
    *         criteria for the billing code.)
    */

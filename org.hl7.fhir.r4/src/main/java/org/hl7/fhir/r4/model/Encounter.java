@@ -3693,28 +3693,6 @@ public class Encounter extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<EpisodeOfCare> getEpisodeOfCareTarget() {
-    if (this.episodeOfCareTarget == null)
-      this.episodeOfCareTarget = new ArrayList<EpisodeOfCare>();
-    return this.episodeOfCareTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public EpisodeOfCare addEpisodeOfCareTarget() {
-    EpisodeOfCare r = new EpisodeOfCare();
-    if (this.episodeOfCareTarget == null)
-      this.episodeOfCareTarget = new ArrayList<EpisodeOfCare>();
-    this.episodeOfCareTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #basedOn} (The request this encounter satisfies (e.g. incoming
    *         referral or procedure request).)
    */
@@ -3767,28 +3745,6 @@ public class Encounter extends DomainResource {
       addBasedOn();
     }
     return getBasedOn().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<ServiceRequest> getBasedOnTarget() {
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<ServiceRequest>();
-    return this.basedOnTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public ServiceRequest addBasedOnTarget() {
-    ServiceRequest r = new ServiceRequest();
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<ServiceRequest>();
-    this.basedOnTarget.add(r);
-    return r;
   }
 
   /**
@@ -3898,28 +3854,6 @@ public class Encounter extends DomainResource {
       addAppointment();
     }
     return getAppointment().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Appointment> getAppointmentTarget() {
-    if (this.appointmentTarget == null)
-      this.appointmentTarget = new ArrayList<Appointment>();
-    return this.appointmentTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Appointment addAppointmentTarget() {
-    Appointment r = new Appointment();
-    if (this.appointmentTarget == null)
-      this.appointmentTarget = new ArrayList<Appointment>();
-    this.appointmentTarget.add(r);
-    return r;
   }
 
   /**
@@ -4085,16 +4019,6 @@ public class Encounter extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getReasonReferenceTarget() {
-    if (this.reasonReferenceTarget == null)
-      this.reasonReferenceTarget = new ArrayList<Resource>();
-    return this.reasonReferenceTarget;
-  }
-
-  /**
    * @return {@link #diagnosis} (The list of diagnosis relevant to this
    *         encounter.)
    */
@@ -4202,28 +4126,6 @@ public class Encounter extends DomainResource {
       addAccount();
     }
     return getAccount().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Account> getAccountTarget() {
-    if (this.accountTarget == null)
-      this.accountTarget = new ArrayList<Account>();
-    return this.accountTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Account addAccountTarget() {
-    Account r = new Account();
-    if (this.accountTarget == null)
-      this.accountTarget = new ArrayList<Account>();
-    this.accountTarget.add(r);
-    return r;
   }
 
   /**

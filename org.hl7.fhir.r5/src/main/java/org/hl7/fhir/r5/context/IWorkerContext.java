@@ -735,21 +735,6 @@ public interface IWorkerContext {
    * 
    * note that the package system uses lazy loading; the loader will be called later when the classes that use the context need the relevant resource
    *
-   * Deprecated - use the simpler method where the types come from the loader.
-   * 
-   * @param pi - the package to load
-   * @param loader - an implemenation of IContextResourceLoader that knows how to read the resources in the package (e.g. for the appropriate version).
-   * @param types - which types of resources to load
-   * @return the number of resources loaded
-   */
-  @Deprecated
-  int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, Set<String> types) throws FileNotFoundException, IOException, FHIRException;
-
-  /**
-   * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package
-   * 
-   * note that the package system uses lazy loading; the loader will be called later when the classes that use the context need the relevant resource
-   *
    * This method also loads all the packages that the package depends on (recursively)
    * 
    * @param pi - the package to load
