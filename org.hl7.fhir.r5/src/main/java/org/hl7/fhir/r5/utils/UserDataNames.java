@@ -20,6 +20,7 @@ public class UserDataNames {
   public static final String SNAPSHOT_DERIVATION_DIFF = "profileutilities.snapshot.diffsource";
   public static final String SNAPSHOT_GENERATED_MESSAGES = "profileutils.snapshot.generated.messages";
   public static final String SNAPSHOT_ERRORS = "profileutils.snapshot.errors";
+  public static final String SNAPSHOT_DETAILS = "profileutils.snapshot.details";
   public static final String SNAPSHOT_auto_added_slicing = "auto-added-slicing";
   public static final String SNAPSHOT_messages = "profileutils.snapshot.messages";
   public static final String SNAPSHOT_slice_name = "slice-name";
@@ -141,5 +142,19 @@ public class UserDataNames {
   public static final String auto_added_parameter = "auto_added_parameter";
   public static final String SNAPSHOT_PREPROCESS_INJECTED = "SNAPSHOT_PREPROCESS_INJECTED";
   public static final String renderer_title = "renderer_title";
+  public static final String matchingParameter = "matchingParameter";
+  public static final String SNAPSHOT_SOURCE = "SNAPSHOT_SOURCE";
+  public static final String SvgLeft = "SvgLeft";
+  public static final String SvgTop = "SvgTop";
+  public static final String UmlDir = "UmlDir";
+  public static final String SNAPSHOT_FROM_DIFF = "SNAPSHOT_FROM_DIFF";
+  public static final String SNAPSHOT_EXTENSION_SOURCE = "SNAPSHOT_EXTENSION_SOURCE";
+  public static final String IG_FAKE = "IG_FAKE";
+  public static final String DN_TRANSIENT = "DN_TRANSIENT";
+  public static final String JGEN_ALL_PRIMITIVE = "JGEN_ALL_PRIMITIVE";
+  public static final String IG_DEP_ALIASED = "IG_DEP_ALIASED";
+  public static final String CS_MARKDOWN_FLAG = "CS_MARKDOWN_FLAG";
+  public static final String PROFILE_RENDERED_MAPPINGS = "PROFILE_RENDERED_MAPPINGS";
+  public static final String EXP_REVIEWED = "EXP_REVIEWED";
   
 }  

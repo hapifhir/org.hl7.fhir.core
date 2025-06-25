@@ -248,6 +248,8 @@ public class Resource43_50 {
       return StructureDefinition43_50.convertStructureDefinition((org.hl7.fhir.r4b.model.StructureDefinition) src);
     if (src instanceof org.hl7.fhir.r4b.model.StructureMap)
       return StructureMap43_50.convertStructureMap((org.hl7.fhir.r4b.model.StructureMap) src);
+    if (src instanceof org.hl7.fhir.r4b.model.Subscription)
+      return Subscription43_50.convertSubscription((org.hl7.fhir.r4b.model.Subscription) src);
     if (src instanceof org.hl7.fhir.r4b.model.SubscriptionStatus)
       return SubscriptionStatus43_50.convertSubscriptionStatus((org.hl7.fhir.r4b.model.SubscriptionStatus)src);
     if (src instanceof org.hl7.fhir.r4b.model.SubscriptionTopic)
@@ -486,6 +488,8 @@ public class Resource43_50 {
       return StructureDefinition43_50.convertStructureDefinition((org.hl7.fhir.r5.model.StructureDefinition) src);
     if (src instanceof org.hl7.fhir.r5.model.StructureMap)
       return StructureMap43_50.convertStructureMap((org.hl7.fhir.r5.model.StructureMap) src);
+    if (src instanceof org.hl7.fhir.r5.model.Subscription)
+      return Subscription43_50.convertSubscription((org.hl7.fhir.r5.model.Subscription) src);
     if (src instanceof org.hl7.fhir.r5.model.SubscriptionStatus)
       return SubscriptionStatus43_50.convertSubscriptionStatus((org.hl7.fhir.r5.model.SubscriptionStatus)src);
     if (src instanceof org.hl7.fhir.r5.model.SubscriptionTopic)

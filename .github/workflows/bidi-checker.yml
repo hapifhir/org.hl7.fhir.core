@@ -13,8 +13,10 @@ on:
 
 jobs:
   bidi_checker_job:
-    runs-on: ubuntu-latest
     name: Check for bidi unicode characters in repo
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read  # Only read access to repository contents
     steps:
       # Checkout the repo code. IMPORTANT, this step is needed to populate the directory defined by GITHUB_WORKSPACE
       - name: Checkout repo

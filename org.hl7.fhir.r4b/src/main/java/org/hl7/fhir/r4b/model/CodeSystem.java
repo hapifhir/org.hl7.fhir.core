@@ -2753,7 +2753,7 @@ public class CodeSystem extends CanonicalResource {
     }
 
     public boolean hasValueCodeType() {
-      return this != null && this.value instanceof CodeType;
+        return this.value instanceof CodeType;
     }
 
     /**
@@ -2769,7 +2769,7 @@ public class CodeSystem extends CanonicalResource {
     }
 
     public boolean hasValueCoding() {
-      return this != null && this.value instanceof Coding;
+        return this.value instanceof Coding;
     }
 
     /**
@@ -2785,7 +2785,7 @@ public class CodeSystem extends CanonicalResource {
     }
 
     public boolean hasValueStringType() {
-      return this != null && this.value instanceof StringType;
+        return this.value instanceof StringType;
     }
 
     /**
@@ -2801,7 +2801,7 @@ public class CodeSystem extends CanonicalResource {
     }
 
     public boolean hasValueIntegerType() {
-      return this != null && this.value instanceof IntegerType;
+        return this.value instanceof IntegerType;
     }
 
     /**
@@ -2817,7 +2817,7 @@ public class CodeSystem extends CanonicalResource {
     }
 
     public boolean hasValueBooleanType() {
-      return this != null && this.value instanceof BooleanType;
+        return this.value instanceof BooleanType;
     }
 
     /**
@@ -2833,7 +2833,7 @@ public class CodeSystem extends CanonicalResource {
     }
 
     public boolean hasValueDateTimeType() {
-      return this != null && this.value instanceof DateTimeType;
+        return this.value instanceof DateTimeType;
     }
 
     /**
@@ -2849,7 +2849,7 @@ public class CodeSystem extends CanonicalResource {
     }
 
     public boolean hasValueDecimalType() {
-      return this != null && this.value instanceof DecimalType;
+        return this.value instanceof DecimalType;
     }
 
     public boolean hasValue() {

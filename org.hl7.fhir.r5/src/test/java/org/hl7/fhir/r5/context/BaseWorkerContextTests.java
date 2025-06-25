@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -78,7 +79,7 @@ public class BaseWorkerContextTests {
     }
 
     @Override
-    public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, List<String> types) throws FileNotFoundException, IOException, FHIRException {
+    public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, Set<String> types) throws FileNotFoundException, IOException, FHIRException {
       return 0;
     }
 
@@ -253,7 +254,7 @@ public class BaseWorkerContextTests {
       }
 
       @Override
-      public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, List<String> types) throws FileNotFoundException, IOException, FHIRException {
+      public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, Set<String> types) throws FileNotFoundException, IOException, FHIRException {
         return 0;
       }
 

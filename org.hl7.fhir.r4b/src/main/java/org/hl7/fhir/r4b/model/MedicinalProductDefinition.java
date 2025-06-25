@@ -2024,7 +2024,7 @@ public class MedicinalProductDefinition extends DomainResource {
     }
 
     public boolean hasValueCodeableConcept() {
-      return this != null && this.value instanceof CodeableConcept;
+        return this.value instanceof CodeableConcept;
     }
 
     /**
@@ -2040,7 +2040,7 @@ public class MedicinalProductDefinition extends DomainResource {
     }
 
     public boolean hasValueQuantity() {
-      return this != null && this.value instanceof Quantity;
+        return this.value instanceof Quantity;
     }
 
     /**
@@ -2056,7 +2056,7 @@ public class MedicinalProductDefinition extends DomainResource {
     }
 
     public boolean hasValueDateType() {
-      return this != null && this.value instanceof DateType;
+        return this.value instanceof DateType;
     }
 
     /**
@@ -2072,7 +2072,7 @@ public class MedicinalProductDefinition extends DomainResource {
     }
 
     public boolean hasValueBooleanType() {
-      return this != null && this.value instanceof BooleanType;
+        return this.value instanceof BooleanType;
     }
 
     /**
@@ -2088,7 +2088,7 @@ public class MedicinalProductDefinition extends DomainResource {
     }
 
     public boolean hasValueAttachment() {
-      return this != null && this.value instanceof Attachment;
+        return this.value instanceof Attachment;
     }
 
     public boolean hasValue() {

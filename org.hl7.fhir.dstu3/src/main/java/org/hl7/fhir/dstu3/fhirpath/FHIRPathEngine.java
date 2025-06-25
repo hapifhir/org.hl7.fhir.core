@@ -537,7 +537,7 @@ public class FHIRPathEngine {
   private ExpressionNode parseExpression(FHIRLexer lexer, boolean proximal) throws FHIRLexerException {
     ExpressionNode result = new ExpressionNode(lexer.nextId());
     SourceLocation c = lexer.getCurrentStartLocation();
-    result.setStart(lexer.getCurrentLocation());
+    result.setStart(lexer.getCurrentLocation().copy());
     // special:
     if (lexer.getCurrent().equals("-")) {
       lexer.take();
@@ -551,14 +551,14 @@ public class FHIRPathEngine {
       checkConstant(lexer.getCurrent(), lexer);
       result.setConstant(lexer.take());
       result.setKind(Kind.Constant);
-      result.setEnd(lexer.getCurrentLocation());
+      result.setEnd(lexer.getCurrentLocation().copy());
     } else if ("(".equals(lexer.getCurrent())) {
       lexer.next();
       result.setKind(Kind.Group);
       result.setGroup(parseExpression(lexer, true));
       if (!")".equals(lexer.getCurrent()))
         throw lexer.error("Found "+lexer.getCurrent()+" expecting a \")\"");
-      result.setEnd(lexer.getCurrentLocation());
+      result.setEnd(lexer.getCurrentLocation().copy());
       lexer.next();
     } else {
       if (!lexer.isToken() && !lexer.getCurrent().startsWith("\""))
@@ -567,7 +567,7 @@ public class FHIRPathEngine {
         result.setName(lexer.readConstant("Path Name"));
       else
         result.setName(lexer.take());
-      result.setEnd(lexer.getCurrentLocation());
+      result.setEnd(lexer.getCurrentLocation().copy());
       if (!result.checkName())
         throw lexer.error("Found "+result.getName()+" expecting a valid token name");
       if ("(".equals(lexer.getCurrent())) {
@@ -590,7 +590,7 @@ public class FHIRPathEngine {
           else if (!")".equals(lexer.getCurrent()))
             throw lexer.error("The token "+lexer.getCurrent()+" is not expected here - either a \",\" or a \")\" expected");
         }
-        result.setEnd(lexer.getCurrentLocation());
+        result.setEnd(lexer.getCurrentLocation().copy());
         lexer.next();
         checkParameters(lexer, c, result, details);
       } else
@@ -629,12 +629,13 @@ public class FHIRPathEngine {
   }
 
   private ExpressionNode organisePrecedence(FHIRLexer lexer, ExpressionNode node) {
-    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Times, Operation.DivideBy, Operation.Div, Operation.Mod));
-    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Plus, Operation.Minus, Operation.Concatenate));
-    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Union));
+    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Times, Operation.DivideBy, Operation.Div, Operation.Mod)); 
+    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Plus, Operation.Minus, Operation.Concatenate)); 
+    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Union)); 
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.LessThen, Operation.Greater, Operation.LessOrEqual, Operation.GreaterOrEqual));
-    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Is));
+    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Is, Operation.As));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Equals, Operation.Equivalent, Operation.NotEquals, Operation.NotEquivalent));
+    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.In, Operation.Contains));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.And));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Xor, Operation.Or));
     // last: implies
@@ -822,7 +823,6 @@ public class FHIRPathEngine {
   }
 
 	private List<Base> execute(ExecutionContext context, List<Base> focus, ExpressionNode exp, boolean atEntry) throws FHIRException {
-//    System.out.println("Evaluate {'"+exp.toString()+"'} on "+focus.toString());
     List<Base> work = new ArrayList<Base>();
     switch (exp.getKind()) {
     case Name:
@@ -866,13 +866,11 @@ public class FHIRPathEngine {
         } else {
           work2 = execute(context, focus, next, true);
           work = operate(work, last.getOperation(), work2);
-//          System.out.println("Result of {'"+last.toString()+" "+last.getOperation().toCode()+" "+next.toString()+"'}: "+focus.toString());
         }
         last = next;
         next = next.getOpNext();
       }
     }
-//    System.out.println("Result of {'"+exp.toString()+"'}: "+work.toString());
     return work;
   }
 
@@ -2382,25 +2380,44 @@ public class FHIRPathEngine {
   private List<Base> funcResolve(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
     for (Base item : focus) {
-        String s = convertToString(item);
-        if (item.fhirType().equals("Reference")) {
-          Property p = item.getChildByName("reference");
-        if (p.hasValues())
-            s = convertToString(p.getValues().get(0));
+      String s = convertToString(item);
+      if (item.fhirType().equals("Reference")) {
+        Property p = item.getChildByName("reference");
+        if (p != null && p.hasValues()) {
+          s = convertToString(p.getValues().get(0));
+        } else {
+          s = null; // a reference without any valid actual reference (just identifier or display, but we can't resolve it)
         }
+      }
+      if (item.fhirType().equals("canonical")) {
+        s = item.primitiveValue();
+      }
+      if (s != null) {
         Base res = null;
         if (s.startsWith("#")) {
+          String t = s.substring(1);
           Property p = context.getResource().getChildByName("contained");
-          for (Base c : p.getValues()) {
-          if (s.equals(c.getIdBase()))
-              res = c;
+          if (p != null) {
+            for (Base c : p.getValues()) {
+              if (t.equals(c.getIdBase())) {
+                res = c;
+                break;
+              }
+            }
+          }
+        } else if (hostServices != null) {
+          try {
+            res = hostServices.resolveReference(this, s);
+          } catch (Exception e) {
+            res = null;
+          }
         }
-      } else if (hostServices != null) {
-         res = hostServices.resolveReference(context.getAppInfo(), s);
-      }
-        if (res != null)
+        if (res != null) {
           result.add(res);
+        }
       }
+    }
+
     return result;
   }
 

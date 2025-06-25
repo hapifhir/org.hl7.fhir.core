@@ -166,7 +166,7 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
       return this;
     }
 
-    public boolean hasExtension() { 
+    public boolean hasExtension() {
       if (this.extension == null)
         return false;
       for (Extension item : this.extension)
@@ -451,6 +451,11 @@ public void checkNoModifiers(String noun, String verb) throws FHIRException {
   }
   
   public boolean hasExtension(String... theUrls) {
+    for (Extension next : getModifierExtension()) {
+      if (Utilities.existsInList(next.getUrl(), theUrls)) {
+        return true;
+      }
+    }
     for (Extension next : getExtension()) {
       if (Utilities.existsInList(next.getUrl(), theUrls)) {
         return true;
@@ -460,27 +465,39 @@ public void checkNoModifiers(String noun, String verb) throws FHIRException {
   }
 
   public boolean hasExtension(String url) {
+    for (Extension next : getModifierExtension()) {
+      if (url.equals(next.getUrl())) {
+        return true;
+      }
+    }
     for (Extension e : getExtension())
       if (url.equals(e.getUrl()))
         return true;
     return false;
+}
+
+  public Extension getExtensionByUrl(String theUrl) {
+    org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
+    ArrayList<Extension> retVal = new ArrayList<Extension>();
+
+    for (Extension next : getExtension()) {
+      if (theUrl.equals(next.getUrl())) {
+        retVal.add(next);
+      }
     }
-    
-       public Extension getExtensionByUrl(String theUrl) {
-     org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
-     ArrayList<Extension> retVal = new ArrayList<Extension>();
-     for (Extension next : getExtension()) {
-       if (theUrl.equals(next.getUrl())) {
-         retVal.add(next);
-       }
-     }
-     if (retVal.size() == 0)
-       return null;
-     else {
-       org.apache.commons.lang3.Validate.isTrue(retVal.size() == 1, "Url "+theUrl+" must have only one match");
-       return retVal.get(0);
-     }
-   }
+
+    for (Extension next : getModifierExtension()) {
+      if (theUrl.equals(next.getUrl())) {
+        retVal.add(next);
+      }
+    }
+    if (retVal.size() == 0)
+      return null;
+    else {
+      org.apache.commons.lang3.Validate.isTrue(retVal.size() == 1, "Url " + theUrl + " must have only one match");
+      return retVal.get(0);
+    }
+  }
   
       public Resource getContained(String ref) {
         if (ref == null)
@@ -507,14 +524,24 @@ public void checkNoModifiers(String noun, String verb) throws FHIRException {
           retVal.add(next);
         }
       }
+      for (Extension next : getModifierExtension()) {
+        if (theUrl.equals(next.getUrl())) {
+          retVal.add(next);
+        }
+      }
       return Collections.unmodifiableList(retVal);
     }
     
 
     public List<Extension> getExtensionsByUrl(String... theUrls) {
-      
       ArrayList<Extension> retVal = new ArrayList<>();
+
       for (Extension next : getExtension()) {
+        if (Utilities.existsInList(next.getUrl(), theUrls)) {
+          retVal.add(next);
+        }
+      }
+      for (Extension next : getModifierExtension()) {
         if (Utilities.existsInList(next.getUrl(), theUrls)) {
           retVal.add(next);
         }

@@ -82,7 +82,7 @@ public abstract class DataType extends Element implements IBaseDatatype, IElemen
           return e.getExtensionString("content");
       }
     }
-    return null;
+    return primitiveValue();
   }
   
   public boolean isTranslatable() {

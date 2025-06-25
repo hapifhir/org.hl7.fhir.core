@@ -8643,8 +8643,8 @@ public class TestScript extends CanonicalResource {
           return (UriType) this.link;
         }
 
-        public boolean hasLinkUriType() { 
-          return this != null && this.link instanceof UriType;
+        public boolean hasLinkUriType() {
+            return this.link instanceof UriType;
         }
 
         /**
@@ -8658,8 +8658,8 @@ public class TestScript extends CanonicalResource {
           return (CanonicalType) this.link;
         }
 
-        public boolean hasLinkCanonicalType() { 
-          return this != null && this.link instanceof CanonicalType;
+        public boolean hasLinkCanonicalType() {
+            return this.link instanceof CanonicalType;
         }
 
         public boolean hasLink() { 
@@ -10123,8 +10123,8 @@ public class TestScript extends CanonicalResource {
       return (StringType) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmStringType() { 
-      return this != null && this.versionAlgorithm instanceof StringType;
+    public boolean hasVersionAlgorithmStringType() {
+        return this.versionAlgorithm instanceof StringType;
     }
 
     /**
@@ -10138,8 +10138,8 @@ public class TestScript extends CanonicalResource {
       return (Coding) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmCoding() { 
-      return this != null && this.versionAlgorithm instanceof Coding;
+    public boolean hasVersionAlgorithmCoding() {
+        return this.versionAlgorithm instanceof Coding;
     }
 
     public boolean hasVersionAlgorithm() { 

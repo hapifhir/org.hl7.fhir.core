@@ -183,7 +183,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     if (p.hasSearchType()) { 
       td.br(); 
       td.tx("("); 
-      td.ah(context.prefixLocalHref(context.getLink(KnownLinkType.SPEC) == null ? "search.html#"+p.getSearchType().toCode() : Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "search.html#"+p.getSearchType().toCode()))).tx(p.getSearchType().toCode());        
+      td.ah(context.prefixLocalHref(context.getLink(KnownLinkType.SPEC, true) == null ? "search.html#"+p.getSearchType().toCode() : Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), "search.html#"+p.getSearchType().toCode()))).tx(p.getSearchType().toCode());        
       td.tx(")"); 
     } 
     td = tr.td(); 

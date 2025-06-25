@@ -14,7 +14,7 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>6.5.16-SNAPSHOT</version>
+    <version>6.5.27-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -23,7 +23,7 @@
         <commons_io_version>2.17.0</commons_io_version>
         <guava_version>32.0.1-jre</guava_version>
         <hapi_fhir_version>6.4.1</hapi_fhir_version>
-        <validator_test_case_version>1.7.13</validator_test_case_version>
+        <validator_test_case_version>1.7.25</validator_test_case_version>
         <jackson_version>2.17.0</jackson_version>
         <junit_jupiter_version>5.9.2</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
@@ -33,7 +33,7 @@
         <jacoco_version>0.8.12</jacoco_version>
         <lombok_version>1.18.32</lombok_version>
         <byte_buddy_version>1.14.8</byte_buddy_version>
-        <apache_poi_version>5.2.1</apache_poi_version>
+        <apache_poi_version>5.4.1</apache_poi_version>
         <saxon_he_version>11.6</saxon_he_version>
         <maven.compiler.release>11</maven.compiler.release>
         <maven.compiler.source>11</maven.compiler.source>
@@ -67,9 +67,22 @@
         <module>org.hl7.fhir.validation.cli</module>
         <!-- The report project exists only to aggregate the test results from the other projects into a central report. -->
         <module>org.hl7.fhir.report</module>
+        <module>org.hl7.fhir.model</module>
+        <module>org.hl7.fhir.support</module>
     </modules>
 
     <repositories>
+        <repository>
+            <name>Central Portal Snapshots</name>
+            <id>central-portal-snapshots</id>
+            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
@@ -187,7 +200,7 @@
             <dependency>
                 <groupId>org.fhir</groupId>
                 <artifactId>ucum</artifactId>
-                <version>1.0.9</version>
+                <version>1.0.10</version>
             </dependency>
 
             <!-- Apache POI -->
@@ -309,7 +322,7 @@
             <dependency>
                 <groupId>org.xerial</groupId>
                 <artifactId>sqlite-jdbc</artifactId>
-                <version>3.45.1.0</version>
+                <version>3.49.1.0</version>
             </dependency>
 
             <dependency>
@@ -340,6 +353,10 @@
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>${jacoco_version}</version>
                     <configuration>
+                        <includes>
+                            <include>org/hl7/fhir/**/*</include>
+                        </includes>
+
                         <excludes>
                             <!-- These are auto-generated files that will exceed the JVM limit on file size.
                                  If these are not excluded Jacoco complains and won't run the validator tests. -->
@@ -594,11 +611,6 @@
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-            </plugin>
-
-            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>animal-sniffer-maven-plugin</artifactId>
                 <version>1.22</version>
@@ -708,34 +720,26 @@
             </build>
         </profile>
         <profile>
-            <id>ossrh-repo</id>
+            <id>maven-central-repo</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
                 <property>
-                    <name>deployToSonatype</name>
+                    <name>deployToMavenCentral</name>
                 </property>
             </activation>
-            <distributionManagement>
-                <snapshotRepository>
-                    <id>ossrh</id>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-                </snapshotRepository>
-                <repository>
-                    <id>ossrh</id>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-                </repository>
-            </distributionManagement>
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.7.0</version>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.8.0</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <publishingServerId>central</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                            <waitUntil>published</waitUntil>
+                            <centralBaseUrl>https://central.sonatype.com</centralBaseUrl>
+                            <centralSnapshotsUrl>https://central.sonatype.com/repository/maven-snapshots/</centralSnapshotsUrl>
                         </configuration>
                     </plugin>
                     <plugin>

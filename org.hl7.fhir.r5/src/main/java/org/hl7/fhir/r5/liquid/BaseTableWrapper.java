@@ -263,7 +263,7 @@ public class BaseTableWrapper extends Base {
               try {
                 list.add(new StringType(convertToFhirDateTime(cell, format)));
               } catch (DateTimeParseException e) {
-                throw new IllegalArgumentException("Invalid date-time format: " + cell, e);
+                throw new IllegalArgumentException("Invalid date-time format: " + cell+" for format "+format, e);
               }
             }
           }

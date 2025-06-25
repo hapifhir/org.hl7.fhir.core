@@ -14,12 +14,23 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
 
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.message.BasicNameValuePair;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.settings.FhirSettings;
@@ -241,6 +252,24 @@ public class Utilities {
         b.append("&amp;");
       else if (c == '"')
         b.append("&quot;");
+      else
+        b.append(c);
+    }
+    return b.toString();
+  }
+
+  public static String escapeXmlText(String doco) {
+    if (doco == null)
+      return "";
+
+    StringBuilder b = new StringBuilder();
+    for (char c : doco.toCharArray()) {
+      if (c == '<')
+        b.append("&lt;");
+      else if (c == '>')
+        b.append("&gt;");
+      else if (c == '&')
+        b.append("&amp;");
       else
         b.append(c);
     }
@@ -713,8 +742,17 @@ public class Utilities {
     return encodeUriParam(string);
   }
 
+  public static String encodeUriParam(String key, String value) {
+    new BasicNameValuePair(key, value);
+    return URLEncodedUtils.format(Collections.singletonList(new BasicNameValuePair(key, value)), StandardCharsets.UTF_8);
+  }
+
+  @Deprecated
+  /* The following should not be used, as encodeUriParam automatically adds the key. The implementation below is a hack
+  * that ensures both methods are using apache utils to do the encoding. */
   public static String encodeUriParam(String param) {
-    return URLEncoder.encode(param, StandardCharsets.UTF_8);
+    String dummyEncode = encodeUriParam("dummy", param);
+    return dummyEncode.substring("dummy=".length());
   }
 
   public static String normalize(String s) {
@@ -953,6 +991,20 @@ public class Utilities {
     return res;
   }
 
+
+  public static int startCharCount(String s, char c) {
+    int res = 0;
+    for (char ch : s.toCharArray()) {
+      if (ch == c) {
+        res++;
+      } else {
+        break;
+      }
+    } 
+    return res;
+  }
+
+  
   public static boolean equals(String one, String two) {
     if (one == null && two == null)
       return true;
@@ -1168,7 +1220,11 @@ public class Utilities {
 
   public static List<String> sortedCaseInsensitive(Collection<String> set) {
     List<String> list = new ArrayList<>();
-    list.addAll(set);
+    for (String s : set) {
+      if (s != null) {
+        list.add(s);
+      }
+    }
     Collections.sort(list, new CaseInsensitiveSorter());
     return list;
   }
@@ -1176,14 +1232,22 @@ public class Utilities {
   
   public static List<String> sorted(Collection<String> set) {
     List<String> list = new ArrayList<>();
-    list.addAll(set);
+    for (String s : set) {
+      if (s != null) {
+        list.add(s);
+      }
+    }
     Collections.sort(list);
     return list;
   }
 
   public static List<String> sortedReverse(Collection<String> set) {
     List<String> list = new ArrayList<>();
-    list.addAll(set);
+    for (String s : set) {
+      if (s != null) {
+        list.add(s);
+      }
+    }
     Collections.sort(list);
     List<String> rlist = new ArrayList<>();
     for (int i = list.size()-1; i >= 0; i--) {
@@ -1195,7 +1259,9 @@ public class Utilities {
   public static List<String> sorted(String[] set) {
     List<String> list = new ArrayList<>();
     for (String s : set) {
-      list.add(s);
+      if (s != null) {
+        list.add(s);
+      }
     }
     Collections.sort(list);
     return list;
@@ -1204,7 +1270,11 @@ public class Utilities {
 
   public static List<String> reverseSorted(Collection<String> set) {
     List<String> list = new ArrayList<>();
-    list.addAll(set);
+    for (String s : set) {
+      if (s != null) {
+        list.add(s);
+      }
+    }
     Collections.sort(list, Collections.reverseOrder());
     return list;
   }
@@ -1212,7 +1282,9 @@ public class Utilities {
   public static List<String> reverseSorted(String[] set) {
     List<String> list = new ArrayList<>();
     for (String s : set) {
-      list.add(s);
+      if (s != null) {
+        list.add(s);
+      }
     }
     Collections.sort(list, Collections.reverseOrder());
     return list;
@@ -1647,6 +1719,14 @@ public class Utilities {
     return ret;
   }
 
+  public static Set<String> stringSet(String... members) {
+    Set<String> ret = new HashSet<>();
+    for (String m : members) {
+      ret.add(m);
+    }
+    return ret;
+  }
+
   public static List<String> splitStrings(String src, String regex) {
     List<String> ret = new ArrayList<>();
     for (String m : src.split(regex)) {
@@ -1840,6 +1920,15 @@ public class Utilities {
     List<String> newList = new ArrayList<>(oldList);
     newList.add(newItem);
     return newList;
+  }
+
+  public static String limitString(String text, int length) {
+    text = text.trim();
+    if (text.length() > length) {
+      return text.substring(0, length-1)+"...";
+    } else {
+      return text;
+    }
   }
 
 

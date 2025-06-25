@@ -868,8 +868,8 @@ Normal practice is to use the 'mo' code as a calendar month when calculating the
           return (Duration) this.bounds;
         }
 
-        public boolean hasBoundsDuration() { 
-          return this != null && this.bounds instanceof Duration;
+        public boolean hasBoundsDuration() {
+            return this.bounds instanceof Duration;
         }
 
         /**
@@ -883,8 +883,8 @@ Normal practice is to use the 'mo' code as a calendar month when calculating the
           return (Range) this.bounds;
         }
 
-        public boolean hasBoundsRange() { 
-          return this != null && this.bounds instanceof Range;
+        public boolean hasBoundsRange() {
+            return this.bounds instanceof Range;
         }
 
         /**
@@ -898,8 +898,8 @@ Normal practice is to use the 'mo' code as a calendar month when calculating the
           return (Period) this.bounds;
         }
 
-        public boolean hasBoundsPeriod() { 
-          return this != null && this.bounds instanceof Period;
+        public boolean hasBoundsPeriod() {
+            return this.bounds instanceof Period;
         }
 
         public boolean hasBounds() { 

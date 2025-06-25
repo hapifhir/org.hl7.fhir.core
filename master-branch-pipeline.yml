@@ -18,6 +18,8 @@ parameters:
         - org.hl7.fhir.r4
         - org.hl7.fhir.r4b
         - org.hl7.fhir.r5
+        - org.hl7.fhir.model
+        - org.hl7.fhir.support
         - org.hl7.fhir.convertors
         - org.hl7.fhir.validation
         - org.hl7.fhir.validation.cli
@@ -34,12 +36,14 @@ parameters:
         - r4
         - r4b
         - r5
+        - model
+        - support
         - convertors
         - validation
 
 variables:
   - group: PGP_VAR_GROUP
-  - group: SONATYPE_VAR_GROUP
+  - group: MAVEN_CENTRAL_VAR_GROUP
   - group: GIT_VAR_GROUP
   - name: MAVEN_CACHE_FOLDER
     value: $(Pipeline.Workspace)/.m2/repository
@@ -86,11 +90,11 @@ jobs:
         displayName: 'Deploy to Sonatype staging'
         inputs:
           mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
-          goals: jar:jar deploy:deploy
+          goals: jar:jar jar:test-jar deploy:deploy
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
-          options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --settings $(Agent.TempDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -Dmaven.test.skip -DdeployToSonatype'
+          options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --settings $(Agent.TempDirectory)/settings.xml -pl "!org.hl7.fhir.report" -DskipTests -DdeployToMavenCentral'
           mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
           publishJUnitResults: false
 
@@ -124,7 +128,7 @@ jobs:
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
-          options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --settings $(Agent.TempDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -Dmaven.test.skip -DdeployToGitHub'
+          options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --settings $(Agent.TempDirectory)/settings.xml -pl "!org.hl7.fhir.report" -DskipTests -DdeployToGitHub'
           mavenOptions: '-Xmx768m  -Dmaven.resolver.transport=wagon'
           publishJUnitResults: false
 

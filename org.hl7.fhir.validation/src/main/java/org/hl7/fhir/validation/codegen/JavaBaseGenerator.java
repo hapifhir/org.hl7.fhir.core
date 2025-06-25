@@ -32,16 +32,17 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -192,6 +193,9 @@ public class JavaBaseGenerator extends OutputStreamWriter {
     } else if (isPrimitive(tn)) {
       return getTitle(tn)+"Type";
 		} else {
+		  if (tn.contains("-")) {
+		    tn = tn.replace("-", "_");
+		  }
 			return getTitle(tn);
 		}
 	}
@@ -312,8 +316,30 @@ public class JavaBaseGenerator extends OutputStreamWriter {
     return null;
   }
 
-  
+  protected boolean isNamedElementExtensions(ElementDefinition ed) {
+    return "named-elements".equals(ed.getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE));
+  }
 
+  protected Map<String, String> getConcreteDescendents(Analysis analysis, TypeInfo ti) {
+    Map<String, String> types = new HashMap<String, String>();
+    List<StructureDefinition> list = new ArrayList<>();
+    for (StructureDefinition sd : definitions.getStructures().getList()) {
+      // todo: do we need to check for transitive children?
+      if (analysis.getStructure().getUrl().equals(sd.getBaseDefinition()) && !sd.getAbstract()) {
+        list.add(sd);
+      }
+    }
+    for (StructureDefinition sd : list) {
+      if (sd.getName().contains("_")) {
+        // temporary openEHR hack?
+        types.put(sd.getName().replace("_", "-"), sd.getName());
+      } else {
+        types.put(sd.getName(), sd.getName());
+      }
+    }
+    return types;
+  }
+  
   protected boolean isCoreType(StructureDefinition sd) {
     return sd != null && sd.hasUrl() && sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition");
   }

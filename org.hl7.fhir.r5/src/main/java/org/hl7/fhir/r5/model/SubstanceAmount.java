@@ -320,8 +320,8 @@ public class SubstanceAmount extends BackboneType implements ICompositeType {
       return (Quantity) this.amount;
     }
 
-    public boolean hasAmountQuantity() { 
-      return this != null && this.amount instanceof Quantity;
+    public boolean hasAmountQuantity() {
+        return this.amount instanceof Quantity;
     }
 
     /**
@@ -335,8 +335,8 @@ public class SubstanceAmount extends BackboneType implements ICompositeType {
       return (Range) this.amount;
     }
 
-    public boolean hasAmountRange() { 
-      return this != null && this.amount instanceof Range;
+    public boolean hasAmountRange() {
+        return this.amount instanceof Range;
     }
 
     /**
@@ -350,8 +350,8 @@ public class SubstanceAmount extends BackboneType implements ICompositeType {
       return (StringType) this.amount;
     }
 
-    public boolean hasAmountStringType() { 
-      return this != null && this.amount instanceof StringType;
+    public boolean hasAmountStringType() {
+        return this.amount instanceof StringType;
     }
 
     public boolean hasAmount() { 

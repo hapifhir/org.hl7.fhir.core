@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.elementmodel;
 
+import java.io.IOException;
 import java.io.PrintStream;
 
 /*
@@ -67,6 +68,7 @@ import org.hl7.fhir.utilities.NamedItemList.NamedItem;
 import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 /**
@@ -494,7 +496,7 @@ public class Element extends Base implements NamedItem {
     }
 
     int i = 0;
-    if (childForValue == null)
+    if (childForValue == null) {
       for (Property p : property.getChildProperties(this.name, type)) {
         int t = -1;
         for (int c =0; c < children.size(); c++) {
@@ -516,6 +518,7 @@ public class Element extends Base implements NamedItem {
           break;
         }
       }
+    }
     
     if (childForValue == null)
       throw new Error("Cannot set property "+name+" on "+this.name);
@@ -816,6 +819,11 @@ public class Element extends Base implements NamedItem {
 
 	public Element setXhtml(XhtmlNode xhtml) {
 		this.xhtml = xhtml;
+		try {
+      value = new XhtmlComposer(true, false).compose(xhtml);
+    } catch (IOException e) {
+      // can't happen here
+    }
 		return this;
  	}
 
@@ -851,6 +859,17 @@ public class Element extends Base implements NamedItem {
     return getNamedChild(name, exception) != null;
   }
 
+  public boolean canHaveChild(String name) {
+    for (Property p : property.getChildProperties(this.name, type)) {
+      if (name.equals(p.getName())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  
+  
   public boolean hasChildren(String name) {
     if (children != null)
       for (Element child : children) 
@@ -1332,9 +1351,9 @@ public class Element extends Base implements NamedItem {
     this.source = source;
   }
 
+  @SuppressWarnings("checkstyle:systemout")
   public void printToOutput() {
     printToOutput(System.out, "");
-    
   }
 
   public void printToOutput(PrintStream stream) {
@@ -1654,13 +1673,15 @@ public class Element extends Base implements NamedItem {
   }
 
   public void removeExtension(String url) {
-    List<Element> rem = new ArrayList<>();
-    for (Element e : children) {
-      if ("extension".equals(e.getName()) && url.equals(e.getChildValue("url"))) {
-        rem.add(e);
+    if (children != null) {
+      List<Element> rem = new ArrayList<>();
+      for (Element e : children) {
+        if ("extension".equals(e.getName()) && url.equals(e.getChildValue("url"))) {
+          rem.add(e);
+        }
       }
+      children.removeAll(rem);
     }
-    children.removeAll(rem);
   }
 
   public void addSliceDefinition(StructureDefinition profile, ElementDefinition definition, ElementDefinition slice) {

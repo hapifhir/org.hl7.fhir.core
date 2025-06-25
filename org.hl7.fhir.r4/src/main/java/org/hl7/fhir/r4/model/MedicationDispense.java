@@ -1577,7 +1577,7 @@ public class MedicationDispense extends DomainResource {
   }
 
   public boolean hasStatusReasonCodeableConcept() {
-    return this != null && this.statusReason instanceof CodeableConcept;
+      return this.statusReason instanceof CodeableConcept;
   }
 
   /**
@@ -1594,7 +1594,7 @@ public class MedicationDispense extends DomainResource {
   }
 
   public boolean hasStatusReasonReference() {
-    return this != null && this.statusReason instanceof Reference;
+      return this.statusReason instanceof Reference;
   }
 
   public boolean hasStatusReason() {
@@ -1666,7 +1666,7 @@ public class MedicationDispense extends DomainResource {
   }
 
   public boolean hasMedicationCodeableConcept() {
-    return this != null && this.medication instanceof CodeableConcept;
+      return this.medication instanceof CodeableConcept;
   }
 
   /**
@@ -1685,7 +1685,7 @@ public class MedicationDispense extends DomainResource {
   }
 
   public boolean hasMedicationReference() {
-    return this != null && this.medication instanceof Reference;
+      return this.medication instanceof Reference;
   }
 
   public boolean hasMedication() {

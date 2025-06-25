@@ -12,7 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
+import org.hl7.fhir.dstu2016may.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -67,7 +69,7 @@ import org.hl7.fhir.validation.special.PackageReGenerator.TerminologyResourceEnt
  * - expansions: true | false
  * - output type: folder | zip | tgz
  */
-
+@Slf4j
 public class PackageReGenerator {
 
   public static class TerminologyResourceEntry {
@@ -199,19 +201,19 @@ public class PackageReGenerator {
     var list = load();
     for (NpmPackage npm : list) {
       if (modeParams.contains("api")) {
-        System.out.println("Processing CapabilityStatements");
+        log.info("Processing CapabilityStatements");
         for (String res : npm.listResources("CapabilityStatement")) {
           CapabilityStatement cs = (CapabilityStatement) new JsonParser().parse(npm.loadResource(res));
           cs.setSourcePackage(new PackageInformation(npm));
           processResource(cs);
         }
-        System.out.println("Processing OperationDefinitions");
+        log.info("Processing OperationDefinitions");
         for (String res : npm.listResources("OperationDefinition")) {
           OperationDefinition op = (OperationDefinition) new JsonParser().parse(npm.loadResource(res));
           op.setSourcePackage(new PackageInformation(npm));
           processResource(op);
         }
-        System.out.println("Processing SearchParameters");
+        log.info("Processing SearchParameters");
         for (String res : npm.listResources("SearchParameter")) {
           SearchParameter sp = (SearchParameter) new JsonParser().parse(npm.loadResource(res));
           sp.setSourcePackage(new PackageInformation(npm));
@@ -219,19 +221,19 @@ public class PackageReGenerator {
         }        
       }
       if (modeParams.contains("tx")) {
-        System.out.println("Processing CodeSystems");
+        log.info("Processing CodeSystems");
         for (String res : npm.listResources("CodeSystem")) {
           CodeSystem cs = (CodeSystem) new JsonParser().parse(npm.loadResource(res));
           cs.setSourcePackage(new PackageInformation(npm));
           processResource(cs);
         }
-        System.out.println("Processing ValueSets");
+        log.info("Processing ValueSets");
         for (String res : npm.listResources("ValueSet")) {
           ValueSet vs = (ValueSet) new JsonParser().parse(npm.loadResource(res));
           vs.setSourcePackage(new PackageInformation(npm));
           processResource(vs);
         }
-        System.out.println("Processing NamingSystems");
+        log.info("Processing NamingSystems");
         for (String res : npm.listResources("NamingSystem")) {
           NamingSystem ns = (NamingSystem) new JsonParser().parse(npm.loadResource(res));
           ns.setSourcePackage(new PackageInformation(npm));
@@ -239,35 +241,35 @@ public class PackageReGenerator {
         }        
       }
       if (modeParams.contains("cnt")) {
-        System.out.println("Processing StructureDefinitions");
+        log.info("Processing StructureDefinitions");
         for (String res : npm.listResources("StructureDefinition")) {
           StructureDefinition sd = (StructureDefinition) new JsonParser().parse(npm.loadResource(res));
           sd.setSourcePackage(new PackageInformation(npm));
           processResource(sd);
         }  
       }
-      System.out.println("Processing Bindings");
+      log.info("Processing Bindings");
       for (String res : npm.listResources("StructureDefinition")) {
         StructureDefinition sd = (StructureDefinition) new JsonParser().parse(npm.loadResource(res));
         processSD(sd, npm.id());
       }
       if (modeParams.contains("expansions")) {
-        System.out.println("Generating Expansions");
+        log.info("Generating Expansions");
         for (String n : Utilities.sorted(entries.keySet())) {
           TerminologyResourceEntry e = entries.get(n);
           try {
-            System.out.print("Generate Expansion for "+n+" ... ");
+            log.info("Generating Expansion for "+n+" ... ");
             ValueSetExpansionOutcome exp = context.expandVS(e.valueSet, true, hierarchical);
             if (exp.isOk()) {
               e.valueSet.setExpansion(exp.getValueset().getExpansion());
-              System.out.println("OK");
+              log.info("Generated Expansion for "+n);
             } else {
               e.valueSet.setExpansion(null);
               e.error = exp.getError();
-              System.out.println(exp.getError());
+              log.warn(exp.getError());
             }
           } catch (Exception ex) {
-            System.out.println("Error= "+ex.getMessage());
+            log.warn("Error= "+ex.getMessage());
             e.error = ex.getMessage();
           }
         }
@@ -288,7 +290,7 @@ public class PackageReGenerator {
       break;
     
     }
-    System.out.println("Done");
+    log.info("Done");
   }
 
   private void processResource(CanonicalResource res) {
@@ -301,13 +303,12 @@ public class PackageReGenerator {
     set.add(res.getVersionedUrl());
     
     if (scope == ExpansionPackageGeneratorScope.EVERYTHING || !isCore(res.getSourcePackage())) {
-      // System.out.println("  .."+res.getVersionedUrl()+" ("+res.getSourcePackage().getVID()+")");    
       resources.add(res);
       if (res.hasSourcePackage()) {
         sourcePackages.add(res.getSourcePackage().getVID());
       }
       if (modeParams.contains("pin")) {
-        processBase(res, res);
+        processBase(res, res, res.fhirType());
       }
       if (scope != ExpansionPackageGeneratorScope.IG_ONLY) {
         chaseDependencies(res);
@@ -480,10 +481,10 @@ public class PackageReGenerator {
     }
   }
 
-  private void processBase(CanonicalResource src, Base b) {
+  private void processBase(CanonicalResource src, Base b, String path) {
     for (Property p : b.children()) {
       for (Base v : p.getValues()) {
-        processBase(src, v);
+        processBase(src, v,  path+"."+p.getName());
       }
     }
     if (b instanceof CanonicalType) {
@@ -496,10 +497,20 @@ public class PackageReGenerator {
         }          
       }
     }
+    if (b instanceof ConceptSetComponent) {
+      ConceptSetComponent cs = (ConceptSetComponent) b;
+      if (!cs.hasVersion()) {
+        Resource res = context.fetchResource(Resource.class, cs.getSystem(), src);
+        if (res != null && res instanceof CanonicalResource) {
+          CanonicalResource cr = (CanonicalResource) res;
+          cs.setVersion(cr.getVersion());
+        }          
+      }
+    }
   }
   
   private void produceZip() throws IOException {
-    System.out.println("Producing Output in Zip "+output);
+    log.info("Producing Output in Zip "+output);
     ZipGenerator zip = new ZipGenerator(output);
     Set<String> names = new HashSet<>();
     names.add("manifest");
@@ -536,7 +547,7 @@ public class PackageReGenerator {
   }
 
   private void producePackage() throws FHIRException, IOException {
-    System.out.println("Producing Output Package in "+output);
+    log.info("Producing Output Package in "+output);
     JsonObject j = new JsonObject();
     String id = npmId == null ? "custom.generated" : npmId.contains("#") ? npmId.substring(0, npmId.indexOf("#")) : npmId;
     String ver = npmId  != null && npmId.contains("#") ? npmId.substring(npmId.indexOf("#")+1) : "0.1.0";
@@ -601,7 +612,7 @@ public class PackageReGenerator {
   }
 
   private void produceFolder() throws IOException {
-    System.out.println("Producing Output in folder "+output);
+    log.info("Producing Output in folder "+output);
     FileUtilities.createDirectory(output);
     FileUtilities.clearDirectory(output);
     Set<String> names = new HashSet<>();
@@ -692,7 +703,7 @@ public class PackageReGenerator {
       }
       
     } else {
-      System.out.println("Unable to resolve value set "+valueSet);
+      log.info("Unable to resolve value set "+valueSet);
     }
     
   }
@@ -706,7 +717,7 @@ public class PackageReGenerator {
         String v = npm.fhirVersion();
         NpmPackage core = pcm.loadPackage(VersionUtilities.packageForVersion(v));
         NpmPackage tho = pcm.loadPackage("hl7.terminology");
-        System.out.println("Load FHIR from "+core.name()+"#"+core.version());
+        log.info("Load FHIR from "+core.name()+"#"+core.version());
         SimpleWorkerContext ctxt = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(core);
         TerminologyClientFactory factory = new TerminologyClientFactory(ctxt.getVersion());
         ctxt.connectToTSServer(factory, "http://tx.fhir.org", ctxt.getUserAgent(), null, true);

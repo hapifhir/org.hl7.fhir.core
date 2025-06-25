@@ -64,14 +64,19 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.instance.model.api.IIdType;
+import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.IdType;
+import org.hl7.fhir.r5.model.NamedElementExtension;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
@@ -82,12 +87,12 @@ import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
+import org.hl7.fhir.utilities.xml.IXMLWriter;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import org.slf4j.LoggerFactory;
 
 /**
  * General parser for JSON content. You instantiate an JsonParser of these, but you 
@@ -121,6 +126,10 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
 
   /* -- entry points --------------------------------------------------- */
 
+  protected Base parseBase(JsonObject json) throws IOException, FHIRFormatError {
+    throw new NotImplementedException("Still to do (for openEHR)");
+//    return parseType(json, null);
+  }
   /**
    * @throws FHIRFormatError 
    * Parse content that is known to be a resource
@@ -208,6 +217,34 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
     osw.flush();
   }
 
+  protected boolean customCompose(Resource resource) throws IOException {
+    if (customResourceHandlers.containsKey(resource.fhirType())) {
+      customResourceHandlers.get(resource.fhirType()).composerJson(json).composeResource(resource);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  protected boolean customCompose(String name, Resource resource) {
+    if (customResourceHandlers.containsKey(resource.fhirType())) {
+      throw new Error("Not sorted yet");
+      // customResourceHandlers.get(resource.fhirType()).parser().composeResource(name, resource);
+      // return true;
+    } else {
+      return false;
+    }
+  }
+
+  protected Resource parseCustomResource(String t, JsonObject json) throws FHIRFormatError, IOException {
+    if (customResourceHandlers.containsKey(t)) {
+      return customResourceHandlers.get(t).parserJson(allowComments, allowUnknownContent).parse(json);
+    } else {
+      return null;
+    }
+  }
+
+    
   /**
    * Compose a resource using a pre-existing JsonWriter
    * @throws IOException 
@@ -386,7 +423,11 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
 
   protected abstract void composeType(String prefix, DataType type) throws IOException;
 
-  
+  protected void composeBase(String prefix, Base type) throws IOException {
+    throw new NotImplementedException("Still to do (for openEHR)");
+    // composeType(prefix, (DataType) type);
+  }
+
   abstract void composeStringCore(String name, StringType value, boolean inArray) throws IOException;
 
   protected void composeStringCore(String name, IIdType value, boolean inArray) throws IOException {
@@ -405,6 +446,15 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
 
   protected void parseElementProperties(JsonObject theAsJsonObject, IdType theReferenceElement) throws FHIRFormatError, IOException {
 	  parseElementProperties(theAsJsonObject, (Element)theReferenceElement);
+  }
+
+
+  protected DataType parseNativePrimitive(JsonObject json, String string) {
+    throw new NotImplementedException("Still to do (for openEHR)");   
+  }
+  
+  protected void composeNativePrimitive(String string, DataType defaultValue) {
+    throw new NotImplementedException("Still to do (for openEHR)");
   }
 
 }

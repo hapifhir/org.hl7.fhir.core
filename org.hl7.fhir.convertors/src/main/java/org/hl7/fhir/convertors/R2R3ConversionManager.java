@@ -66,6 +66,7 @@ import org.hl7.fhir.dstu3.model.UriType;
 import org.hl7.fhir.dstu3.utils.StructureMapUtilities;
 import org.hl7.fhir.dstu3.utils.StructureMapUtilities.ITransformerServices;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
@@ -82,6 +83,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
  *
  * @author Grahame Grieve
  */
+@SuppressWarnings("checkstyle:systemout")
 public class R2R3ConversionManager implements ITransformerServices {
 
   private final Map<String, StructureMap> library = new HashMap<String, StructureMap>();
@@ -252,7 +254,7 @@ public class R2R3ConversionManager implements ITransformerServices {
           contextR2.seeResource(sd.getUrl(), sd);
           StructureDefinition sdn = sd.copy();
           sdn.setUrl(sdn.getUrl().replace("http://hl7.org/fhir/", "http://hl7.org/fhir/DSTU2/"));
-          sdn.addExtension().setUrl("http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace").setValue(new UriType("http://hl7.org/fhir"));
+          sdn.addExtension().setUrl(ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED).setValue(new UriType("http://hl7.org/fhir"));
           contextR2.seeResource(sdn.getUrl(), sdn);
           contextR3.seeResource(sdn.getUrl(), sdn);
         }

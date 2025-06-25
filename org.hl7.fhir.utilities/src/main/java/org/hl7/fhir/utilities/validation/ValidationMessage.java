@@ -2,6 +2,7 @@ package org.hl7.fhir.utilities.validation;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -188,6 +189,16 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
         return l2 == INFORMATION ? WARNING : l2;
       }
       return null;
+    }
+    public String toShortCode() {
+      switch (this) {
+      case FATAL: return "fatal";
+      case ERROR: return "error";
+      case WARNING: return "warn";
+      case INFORMATION: return "info";
+      case NULL: return null;
+      default: return "?";
+      }
     }
   }
 
@@ -534,7 +545,6 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   private String locationLink;
   private String txLink;
   public String sliceHtml;
-  public String[] sliceText;
   private boolean slicingHint;
   private boolean signpost;
   private boolean criticalSignpost;
@@ -728,6 +738,10 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     return level.toString()+" @ "+location+(line>= 0 && col >= 0 ? " (line "+Integer.toString(line)+", col"+Integer.toString(col)+"): " : ": ") +message+showCount() +(server != null ? " (src = "+server+")" : "");
   }
 
+  public String summaryNoLevel() {
+    return location+(line>= 0 && col >= 0 ? " (line "+Integer.toString(line)+", col"+Integer.toString(col)+"): " : ": ") +message+showCount() +(server != null ? " (src = "+server+")" : "");
+  }
+
 
   public String toXML() {
     return "<message source=\"" + source + "\" line=\"" + line + "\" col=\"" + col + "\" location=\"" + Utilities.escapeXml(location) + "\" type=\"" + type + "\" level=\"" + level + "\" display=\"" + Utilities.escapeXml(getDisplay()) + "\" ><plain>" + Utilities.escapeXml(message)+showCount() + "</plain><html>" + html + "</html></message>";
@@ -810,9 +824,14 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     return sliceHtml;
   }
 
-  public ValidationMessage setSliceHtml(String sliceHtml, String[] text) {
+  public ValidationMessage setSliceHtml(String sliceHtml, List<ValidationMessage> info) {
     this.sliceHtml = sliceHtml;
-    this.sliceText = text;
+    if (info != null) {
+      if (this.sliceInfo == null) {
+        this.sliceInfo = new ArrayList<ValidationMessage>();
+      }
+      this.sliceInfo.addAll(info);
+    }
     return this;
   }
 
@@ -976,6 +995,10 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
       }
     }
     return false;
+  }
+
+  public boolean hasSliceInfo() {
+    return sliceInfo != null && !sliceInfo.isEmpty();
   }  
   
 }

@@ -39,10 +39,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.UcumException;
-import org.hl7.fhir.dstu2016may.metamodel.ParserBase;
 import org.hl7.fhir.dstu2016may.model.Base;
 import org.hl7.fhir.dstu2016may.model.BooleanType;
 import org.hl7.fhir.dstu2016may.model.DateTimeType;
@@ -71,6 +69,8 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.utilities.Utilities;
+
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 
 /**
  * 
@@ -519,7 +519,7 @@ public class FHIRPathEngine {
   private ExpressionNode parseExpression(FHIRLexer lexer, boolean proximal) throws FHIRLexerException {
     ExpressionNode result = new ExpressionNode(lexer.nextId());
     SourceLocation c = lexer.getCurrentStartLocation();
-    result.setStart(lexer.getCurrentLocation());
+    result.setStart(lexer.getCurrentLocation().copy());
     // special:
     if (lexer.getCurrent().equals("-")) {
       lexer.take();
@@ -529,14 +529,14 @@ public class FHIRPathEngine {
       checkConstant(lexer.getCurrent(), lexer);
       result.setConstant(lexer.take());
       result.setKind(Kind.Constant);
-      result.setEnd(lexer.getCurrentLocation());
+      result.setEnd(lexer.getCurrentLocation().copy());
     } else if ("(".equals(lexer.getCurrent())) {
       lexer.next();
       result.setKind(Kind.Group);
       result.setGroup(parseExpression(lexer, true));
       if (!")".equals(lexer.getCurrent()))
         throw lexer.error("Found " + lexer.getCurrent() + " expecting a \")\"");
-      result.setEnd(lexer.getCurrentLocation());
+      result.setEnd(lexer.getCurrentLocation().copy());
       lexer.next();
     } else {
       if (!lexer.isToken() && !lexer.getCurrent().startsWith("\""))
@@ -545,7 +545,7 @@ public class FHIRPathEngine {
         result.setName(lexer.readConstant("Path Name"));
       else
         result.setName(lexer.take());
-      result.setEnd(lexer.getCurrentLocation());
+      result.setEnd(lexer.getCurrentLocation().copy());
       if (!result.checkName())
         throw lexer.error("Found " + result.getName() + " expecting a valid token name");
       if ("(".equals(lexer.getCurrent())) {
@@ -568,7 +568,7 @@ public class FHIRPathEngine {
             throw lexer.error(
                 "The token " + lexer.getCurrent() + " is not expected here - either a \",\" or a \")\" expected");
         }
-        result.setEnd(lexer.getCurrentLocation());
+        result.setEnd(lexer.getCurrentLocation().copy());
         lexer.next();
         checkParameters(lexer, c, result, details);
       } else
@@ -2760,7 +2760,7 @@ public class FHIRPathEngine {
           && path.startsWith(ed.getPath().substring(0, ed.getPath().length() - 3))
           && path.length() > ed.getPath().length() - 3) {
         String s = Utilities.uncapitalize(path.substring(ed.getPath().length() - 3));
-        if (ParserBase.isPrimitive(s))
+        if (isPrimitive(s))
           return new ElementDefinitionMatch(ed, s);
         else
           return new ElementDefinitionMatch(ed, path.substring(ed.getPath().length() - 3));
@@ -2781,6 +2781,12 @@ public class FHIRPathEngine {
       }
     }
     return null;
+  }
+
+  private static boolean isPrimitive(String code) {
+    return Utilities.existsInList(code, "xhtml", "boolean", "integer", "string", "decimal", "uri", "base64Binary",
+        "instant", "date", "dateTime", "time", "code", "oid", "id", "markdown", "unsignedInt", "positiveInt", "xhtml",
+        "base64Binary");
   }
 
   private boolean isAbstractType(List<TypeRefComponent> list) {

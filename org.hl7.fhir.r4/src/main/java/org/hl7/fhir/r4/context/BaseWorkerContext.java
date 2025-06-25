@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -101,7 +102,9 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import com.google.gson.JsonObject;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
+
 
   private Object lock = new Object(); // used as a lock for the data that follows
 
@@ -133,7 +136,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private boolean canRunWithoutTerminology;
   protected boolean noTerminologyServer;
   private int expandCodesLimit = 1000;
-  protected ILoggingService logger;
+
   protected Parameters expParameters;
   private TranslationServices translator = new NullTranslator();
   protected TerminologyCache txCache;
@@ -188,7 +191,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (other.txCache != null)
         txCache = other.txCache.copy();
       expandCodesLimit = other.expandCodesLimit;
-      logger = other.logger;
+
       expParameters = other.expParameters;
     }
   }
@@ -330,17 +333,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           return false;
         if (txcaps == null) {
           try {
-            log("Terminology server: Check for supported code systems for " + system);
+            log.info("Terminology server: Check for supported code systems for " + system);
             txcaps = txClient.getTerminologyCapabilities();
           } catch (Exception e) {
             if (canRunWithoutTerminology) {
               noTerminologyServer = true;
-              log("==============!! Running without terminology server !! ==============");
+              log.info("==============!! Running without terminology server !! ==============");
               if (txClient != null) {
-                log("txServer = " + txClient.getAddress());
-                log("Error = " + e.getMessage() + "");
+                log.info("txServer = " + txClient.getAddress());
+                log.info("Error = " + e.getMessage() + "");
               }
-              log("=====================================================================");
+              log.info("=====================================================================");
               return false;
             } else
               throw new TerminologyServiceException(e);
@@ -358,16 +361,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  private void log(String message) {
-    if (logger != null)
-      logger.logMessage(message);
-    else
-      System.out.println(message);
-  }
-
   protected void tlog(String msg) {
     if (tlogging)
-      System.out.println("-tx cache miss: " + msg);
+      log.info("-tx cache miss: " + msg);
   }
 
   // --- expansion support
@@ -416,7 +412,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     tlog("$expand on " + txCache.summary(vs));
     try {
       ValueSet result = txClient.expandValueset(vs, p);
-      res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());
+      res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());
     } catch (Exception e) {
       res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(),
           TerminologyServiceErrorClass.UNKNOWN);
@@ -483,7 +479,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (!result.hasUrl())
           throw new Error("no url in expand value set 2");
       }
-      res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());
+      res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());
     } catch (Exception e) {
       res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(),
           TerminologyServiceErrorClass.UNKNOWN).setTxLink(txLog == null ? null : txLog.getLastId());
@@ -612,7 +608,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       res = validateOnServer(vs, pIn);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage())
-          .setTxLink(txLog.getLastId());
+          .setTxLink(txLog == null ? null : txLog.getLastId());
     }
     txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
@@ -656,17 +652,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     if (!ok)
-      return new ValidationResult(IssueSeverity.ERROR, message, err).setTxLink(txLog.getLastId())
-          .setTxLink(txLog.getLastId());
+      return new ValidationResult(IssueSeverity.ERROR, message, err).setTxLink(txLog == null ? null : txLog.getLastId());
     else if (message != null && !message.equals("No Message returned"))
-      return new ValidationResult(IssueSeverity.WARNING, message, new ConceptDefinitionComponent().setDisplay(display))
-          .setTxLink(txLog.getLastId()).setTxLink(txLog.getLastId());
+      return new ValidationResult(IssueSeverity.WARNING, message, new ConceptDefinitionComponent().setDisplay(display)).setTxLink(txLog == null ? null : txLog.getLastId());
     else if (display != null)
-      return new ValidationResult(new ConceptDefinitionComponent().setDisplay(display)).setTxLink(txLog.getLastId())
-          .setTxLink(txLog.getLastId());
+      return new ValidationResult(new ConceptDefinitionComponent().setDisplay(display)).setTxLink(txLog == null ? null : txLog.getLastId());
     else
-      return new ValidationResult(new ConceptDefinitionComponent()).setTxLink(txLog.getLastId())
-          .setTxLink(txLog.getLastId());
+      return new ValidationResult(new ConceptDefinitionComponent()).setTxLink(txLog == null ? null : txLog.getLastId());
   }
 
   // --------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -694,8 +686,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.canRunWithoutTerminology = canRunWithoutTerminology;
   }
 
+  @Deprecated
   public void setLogger(ILoggingService logger) {
-    this.logger = logger;
+
   }
 
   public Parameters getExpansionParameters() {
@@ -1170,8 +1163,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
+  @Deprecated
   public ILoggingService getLogger() {
-    return logger;
+    return null;
   }
 
   @Override

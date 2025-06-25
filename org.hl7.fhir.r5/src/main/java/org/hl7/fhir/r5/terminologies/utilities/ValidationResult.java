@@ -6,6 +6,7 @@ import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -27,6 +28,7 @@ public class ValidationResult {
   private String status;
   private String server;
   private boolean errorIsDisplayIssue;
+  private Parameters parameters;
   
   @Override
   public String toString() {
@@ -418,6 +420,15 @@ public class ValidationResult {
   public ValidationResult setErrorIsDisplayIssue(boolean errorIsDisplayIssue) {
     this.errorIsDisplayIssue = errorIsDisplayIssue;
     return this;
+  }
+
+  public Parameters getParameters() {
+    return parameters;
+  }
+
+  public void setParameters(Parameters parameters) {
+    this.parameters = parameters;
+    
   }
   
   

@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities.npm;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -18,6 +19,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+@Slf4j
 public class CIBuildClient {
 
   private static final String DEFAULT_ROOT_URL = "https://build.fhir.org";
@@ -39,8 +41,6 @@ public class CIBuildClient {
    **/
   private final Map<String, String> ciPackageUrls = new HashMap<>();
 
-  private final boolean silent;
-
   public CIBuildClient() {
    this(DEFAULT_ROOT_URL, DEFAULT_CI_QUERY_INTERVAL, false);
   }
@@ -48,7 +48,6 @@ public class CIBuildClient {
   public CIBuildClient(String rootUrl, long ciQueryInterval, boolean silent) {
     this.rootUrl = rootUrl;
     this.ciQueryInterval = ciQueryInterval;
-    this.silent = silent;
   }
 
   String getPackageId(String canonical) {
@@ -112,9 +111,16 @@ public class CIBuildClient {
     } else if (id.startsWith("hl7.fhir.r6")) {
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(rootUrl, id + ".tgz"));
       return new BasePackageCacheManager.InputStreamWithSrc(stream, Utilities.pathURL(rootUrl, id + ".tgz"), "current");
-    } else if (id.startsWith("hl7.fhir.uv.extensions.")) {
-      InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(rootUrl + "/ig/HL7/fhir-extensions/", id + ".tgz"));
-      return new BasePackageCacheManager.InputStreamWithSrc(stream, Utilities.pathURL(rootUrl + "/ig/HL7/fhir-extensions/", id + ".tgz"), "current");
+    } else if (Utilities.endsWithInList(id, ".r3", ".r4", ".r4b", ".r5", ".r6")) {
+      String npid = id.substring(0, id.lastIndexOf("."));
+      String url = ciPackageUrls.get(npid);
+      if (url == null) {
+        throw new FHIRException("The package '" + id + "' has no entry on the current build server (" + ciPackageUrls + ")");        
+      } else {
+        url = Utilities.pathURL(url, id+".tgz");
+        InputStream stream = fetchFromUrlSpecific(url);
+        return new BasePackageCacheManager.InputStreamWithSrc(stream, url, "current");
+      }
     } else {
       throw new FHIRException("The package '" + id + "' has no entry on the current build server (" + ciPackageUrls + ")");
     }
@@ -140,9 +146,7 @@ public class CIBuildClient {
           Thread.sleep(1000);
           updateFromCIServer();
         } catch (Exception e2) {
-          if (!silent) {
-            System.out.println("Error connecting to build server - running without build (" + e2.getMessage() + ")");
-          }
+          log.debug("Error connecting to build server - running without build (" + e2.getMessage() + ")");
         }
       }
     }

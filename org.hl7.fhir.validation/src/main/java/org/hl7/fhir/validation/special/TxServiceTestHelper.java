@@ -1,6 +1,7 @@
 package org.hl7.fhir.validation.special;
 
 import com.google.gson.JsonSyntaxException;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser;
@@ -22,9 +23,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Set;
 
+@Slf4j
 public class TxServiceTestHelper {
-
-
   public static String getDiffForValidation(String id, IWorkerContext context, String name, Resource requestParameters, String expectedResponse, String lang, String fp, JsonObject externals, boolean isCodeSystem, Set<String> modes) throws JsonSyntaxException, FileNotFoundException, IOException {
     org.hl7.fhir.r5.model.Parameters p = (org.hl7.fhir.r5.model.Parameters) requestParameters;
     ValueSet valueSet = null;
@@ -120,7 +120,7 @@ public class TxServiceTestHelper {
       if (diff != null) {
         FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
         FileUtilities.stringToFile(actualResponse, fp);
-        System.out.println("Test "+name+"failed: "+diff);
+        log.error("Test "+name+"failed: "+diff);
       }
       return diff;
     } else {
@@ -194,7 +194,7 @@ public class TxServiceTestHelper {
       if (diff != null) {
          FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
         FileUtilities.stringToFile(actualResponse, fp);
-        System.out.println("Test "+name+"failed: "+diff);
+        log.error("Test "+name+"failed: "+diff);
       }
       return diff;
     }

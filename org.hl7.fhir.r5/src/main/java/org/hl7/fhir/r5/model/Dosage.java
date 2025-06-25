@@ -126,8 +126,8 @@ public class Dosage extends BackboneType implements ICompositeType {
           return (Range) this.dose;
         }
 
-        public boolean hasDoseRange() { 
-          return this != null && this.dose instanceof Range;
+        public boolean hasDoseRange() {
+            return this.dose instanceof Range;
         }
 
         /**
@@ -141,8 +141,8 @@ public class Dosage extends BackboneType implements ICompositeType {
           return (Quantity) this.dose;
         }
 
-        public boolean hasDoseQuantity() { 
-          return this != null && this.dose instanceof Quantity;
+        public boolean hasDoseQuantity() {
+            return this.dose instanceof Quantity;
         }
 
         public boolean hasDose() { 
@@ -177,8 +177,8 @@ public class Dosage extends BackboneType implements ICompositeType {
           return (Ratio) this.rate;
         }
 
-        public boolean hasRateRatio() { 
-          return this != null && this.rate instanceof Ratio;
+        public boolean hasRateRatio() {
+            return this.rate instanceof Ratio;
         }
 
         /**
@@ -192,8 +192,8 @@ public class Dosage extends BackboneType implements ICompositeType {
           return (Range) this.rate;
         }
 
-        public boolean hasRateRange() { 
-          return this != null && this.rate instanceof Range;
+        public boolean hasRateRange() {
+            return this.rate instanceof Range;
         }
 
         /**
@@ -207,8 +207,8 @@ public class Dosage extends BackboneType implements ICompositeType {
           return (Quantity) this.rate;
         }
 
-        public boolean hasRateQuantity() { 
-          return this != null && this.rate instanceof Quantity;
+        public boolean hasRateQuantity() {
+            return this.rate instanceof Quantity;
         }
 
         public boolean hasRate() { 

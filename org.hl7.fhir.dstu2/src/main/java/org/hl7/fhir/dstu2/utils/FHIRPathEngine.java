@@ -39,7 +39,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.dstu2.model.Base;
@@ -67,6 +66,8 @@ import org.hl7.fhir.dstu2.utils.FHIRPathEngine.IEvaluationContext.FunctionDetail
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.utilities.Utilities;
+
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 
 /**
  * 
@@ -531,7 +532,7 @@ public class FHIRPathEngine {
   private ExpressionNode parseExpression(FHIRLexer lexer, boolean proximal) throws FHIRLexerException {
     ExpressionNode result = new ExpressionNode(lexer.nextId());
     SourceLocation c = lexer.getCurrentStartLocation();
-    result.setStart(lexer.getCurrentLocation());
+    result.setStart(lexer.getCurrentLocation().copy());
     // special:
     if (lexer.getCurrent().equals("-")) {
       lexer.take();
@@ -545,14 +546,14 @@ public class FHIRPathEngine {
       checkConstant(lexer.getCurrent(), lexer);
       result.setConstant(lexer.take());
       result.setKind(Kind.Constant);
-      result.setEnd(lexer.getCurrentLocation());
+      result.setEnd(lexer.getCurrentLocation().copy());
     } else if ("(".equals(lexer.getCurrent())) {
       lexer.next();
       result.setKind(Kind.Group);
       result.setGroup(parseExpression(lexer, true));
       if (!")".equals(lexer.getCurrent()))
         throw lexer.error("Found " + lexer.getCurrent() + " expecting a \")\"");
-      result.setEnd(lexer.getCurrentLocation());
+      result.setEnd(lexer.getCurrentLocation().copy());
       lexer.next();
     } else {
       if (!lexer.isToken() && !lexer.getCurrent().startsWith("\""))
@@ -561,7 +562,7 @@ public class FHIRPathEngine {
         result.setName(lexer.readConstant("Path Name"));
       else
         result.setName(lexer.take());
-      result.setEnd(lexer.getCurrentLocation());
+      result.setEnd(lexer.getCurrentLocation().copy());
       if (!result.checkName())
         throw lexer.error("Found " + result.getName() + " expecting a valid token name");
       if ("(".equals(lexer.getCurrent())) {
@@ -584,7 +585,7 @@ public class FHIRPathEngine {
             throw lexer.error(
                 "The token " + lexer.getCurrent() + " is not expected here - either a \",\" or a \")\" expected");
         }
-        result.setEnd(lexer.getCurrentLocation());
+        result.setEnd(lexer.getCurrentLocation().copy());
         lexer.next();
         checkParameters(lexer, c, result, details);
       } else
@@ -863,7 +864,6 @@ public class FHIRPathEngine {
 
   private List<Base> execute(ExecutionContext context, List<Base> focus, ExpressionNode exp, boolean atEntry)
       throws PathEngineException {
-//    System.out.println("Evaluate {'"+exp.toString()+"'} on "+focus.toString());
     List<Base> work = new ArrayList<Base>();
     switch (exp.getKind()) {
     case Name:
@@ -907,13 +907,11 @@ public class FHIRPathEngine {
         } else {
           work2 = execute(context, focus, next, true);
           work = operate(work, last.getOperation(), work2);
-//          System.out.println("Result of {'"+last.toString()+" "+last.getOperation().toCode()+" "+next.toString()+"'}: "+focus.toString());
         }
         last = next;
         next = next.getOpNext();
       }
     }
-//    System.out.println("Result of {'"+exp.toString()+"'}: "+work.toString());
     return work;
   }
 
@@ -949,7 +947,6 @@ public class FHIRPathEngine {
 
   private TypeDetails executeType(ExecutionTypeContext context, TypeDetails focus, ExpressionNode exp, boolean atEntry)
       throws PathEngineException, DefinitionException {
-//    System.out.println("Evaluate {'"+exp.toString()+"'} on "+focus.toString());
     TypeDetails result = new TypeDetails(null);
     switch (exp.getKind()) {
     case Name:

@@ -1530,6 +1530,9 @@ public class Enumerations {
             default: return "?";
           }
         }
+        public boolean testable() {
+          return this == REQUIRED || this == EXTENSIBLE;
+        }
     }
 
   public static class BindingStrengthEnumFactory implements EnumFactory<BindingStrength> {
@@ -12114,6 +12117,7 @@ The primary difference between a medicationstatement and a medicationadministrat
         _6_0_0, 
         _6_0_0_BALLOT1, 
         _6_0_0_BALLOT2, 
+        _6_0_0_BALLOT3, 
         /**
          * added to help the parsers
          */
@@ -12243,6 +12247,8 @@ The primary difference between a medicationstatement and a medicationadministrat
           return _6_0_0_BALLOT1;
         if ("6.0.0-ballot2".equals(codeString))
           return _6_0_0_BALLOT2;
+        if ("6.0.0-ballot3".equals(codeString))
+          return _6_0_0_BALLOT3;
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public static boolean isValidCode(String codeString) {
@@ -12313,6 +12319,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case _6_0_0: return "6.0.0";
             case _6_0_0_BALLOT1: return "6.0.0-ballot1";
             case _6_0_0_BALLOT2: return "6.0.0-ballot2";
+            case _6_0_0_BALLOT3: return "6.0.0-ballot3";
             case NULL: return null;
             default: return "?";
           }
@@ -12512,6 +12519,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case _6_0_0: return "6.0.0";
             case _6_0_0_BALLOT1: return "6.0.0-ballot1";
             case _6_0_0_BALLOT2: return "6.0.0-ballot2";
+            case _6_0_0_BALLOT3: return "6.0.0-ballot3";
             case NULL: return null;
             default: return "?";
           }
@@ -12662,6 +12670,8 @@ The primary difference between a medicationstatement and a medicationadministrat
           return FHIRVersion._6_0_0_BALLOT1;
         if ("6.0.0-ballot2".equals(codeString))
           return FHIRVersion._6_0_0_BALLOT2;
+        if ("6.0.0-ballot3".equals(codeString))
+          return FHIRVersion._6_0_0_BALLOT3;
         throw new IllegalArgumentException("Unknown FHIRVersion code '"+codeString+"'");
         }
 
@@ -12795,6 +12805,8 @@ The primary difference between a medicationstatement and a medicationadministrat
           return new Enumeration<FHIRVersion>(this, FHIRVersion._6_0_0_BALLOT1, code);
         if ("6.0.0-ballot2".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._6_0_0_BALLOT2, code);
+        if ("6.0.0-ballot3".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._6_0_0_BALLOT3, code);
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");        
         }
     public String toCode(FHIRVersion code) {
@@ -12923,6 +12935,9 @@ The primary difference between a medicationstatement and a medicationadministrat
       }
       if (code == FHIRVersion._6_0_0_BALLOT2) {
         return "6.0.0-ballot2";
+      }
+      if (code == FHIRVersion._6_0_0_BALLOT3) {
+        return "6.0.0-ballot3";
       }
       return "?";
    }
@@ -17861,6 +17876,7 @@ The primary difference between a medicationstatement and a medicationadministrat
          * Special logic applies to this parameter per the description of the search parameter.
          */
         SPECIAL, 
+        RESOURCE, // R6 hack
         /**
          * added to help the parsers
          */
@@ -17886,12 +17902,14 @@ The primary difference between a medicationstatement and a medicationadministrat
           return URI;
         if ("special".equals(codeString))
           return SPECIAL;
+        if ("resource".equals(codeString))
+          return RESOURCE;
         throw new FHIRException("Unknown SearchParamType code '"+codeString+"'");
         }
         public static boolean isValidCode(String codeString) {
             if (codeString == null || "".equals(codeString))
                 return false;
-          return Utilities.existsInList(codeString, "number", "date", "string", "token", "reference", "composite", "quantity", "uri", "special");
+          return Utilities.existsInList(codeString, "number", "date", "string", "token", "reference", "composite", "quantity", "uri", "special", "resource");
         }
         public String toCode() {
           switch (this) {
@@ -17904,6 +17922,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case QUANTITY: return "quantity";
             case URI: return "uri";
             case SPECIAL: return "special";
+            case RESOURCE: return "resource";
             case NULL: return null;
             default: return "?";
           }
@@ -17919,6 +17938,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case QUANTITY: return "http://hl7.org/fhir/search-param-type";
             case URI: return "http://hl7.org/fhir/search-param-type";
             case SPECIAL: return "http://hl7.org/fhir/search-param-type";
+            case RESOURCE: return "http://hl7.org/fhir/search-param-type";
             case NULL: return null;
             default: return "?";
           }
@@ -17934,6 +17954,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case QUANTITY: return "A search parameter that searches on a quantity.";
             case URI: return "A search parameter that searches on a URI (RFC 3986).";
             case SPECIAL: return "Special logic applies to this parameter per the description of the search parameter.";
+            case RESOURCE: return "Special logic applies to this parameter per the description of the search parameter.";
             case NULL: return null;
             default: return "?";
           }
@@ -17949,6 +17970,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case QUANTITY: return "Quantity";
             case URI: return "URI";
             case SPECIAL: return "Special";
+            case RESOURCE: return "Resource";
             case NULL: return null;
             default: return "?";
           }
@@ -17978,6 +18000,8 @@ The primary difference between a medicationstatement and a medicationadministrat
           return SearchParamType.URI;
         if ("special".equals(codeString))
           return SearchParamType.SPECIAL;
+        if ("resource".equals(codeString))
+          return SearchParamType.RESOURCE;
         throw new IllegalArgumentException("Unknown SearchParamType code '"+codeString+"'");
         }
 
@@ -18007,6 +18031,8 @@ The primary difference between a medicationstatement and a medicationadministrat
           return new Enumeration<SearchParamType>(this, SearchParamType.URI, code);
         if ("special".equals(codeString))
           return new Enumeration<SearchParamType>(this, SearchParamType.SPECIAL, code);
+        if ("resource".equals(codeString))
+          return new Enumeration<SearchParamType>(this, SearchParamType.RESOURCE, code);
         throw new FHIRException("Unknown SearchParamType code '"+codeString+"'");
         }
     public String toCode(SearchParamType code) {
@@ -18030,6 +18056,8 @@ The primary difference between a medicationstatement and a medicationadministrat
         return "uri";
       if (code == SearchParamType.SPECIAL)
         return "special";
+      if (code == SearchParamType.RESOURCE)
+        return "resource";
       return "?";
    }
     public String toSystem(SearchParamType code) {
@@ -19123,6 +19151,10 @@ The primary difference between a medicationstatement and a medicationadministrat
          */
         MOLECULARDEFINITION,
         /**
+         * Added in R6
+         */
+        CLINICALASSESSMENT,
+        /**
            * added to help the parsers
          */
         NULL;
@@ -19537,6 +19569,9 @@ The primary difference between a medicationstatement and a medicationadministrat
             return SUBSTANCESPECIFICATION;
           if ("MolecularDefinition".equals(codeString))
             return MOLECULARDEFINITION;
+          if ("ClinicalAssessment".equals(codeString))
+            return CLINICALASSESSMENT;
+          
         throw new FHIRException("Unknown VersionIndependentResourceTypesAll code '"+codeString+"'");
         }
         public static boolean isValidCode(String codeString) {
@@ -19750,6 +19785,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case SERVICEDEFINITION: return "ServiceDefinition";
             case SUBSTANCESPECIFICATION: return "SubstanceSpecification";
             case MOLECULARDEFINITION: return "MolecularDefinition";
+            case CLINICALASSESSMENT: return "ClinicalAssessment";
             case NULL: return null;
             default: return "?";
           }
@@ -19960,6 +19996,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case SERVICEDEFINITION: return "http://hl7.org/fhir/fhir-old-types";
             case SUBSTANCESPECIFICATION: return "http://hl7.org/fhir/fhir-old-types";
             case MOLECULARDEFINITION: return "http://hl7.org/fhir/fhir-old-types";
+            case CLINICALASSESSMENT: return "http://hl7.org/fhir/fhir-types";
             case NULL: return null;
             default: return "?";
           }
@@ -20170,6 +20207,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case SERVICEDEFINITION: return "";
             case SUBSTANCESPECIFICATION: return "";
             case MOLECULARDEFINITION: return "";
+            case CLINICALASSESSMENT: return "";
             case NULL: return null;
             default: return "?";
           }
@@ -20380,6 +20418,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case SERVICEDEFINITION: return "ServiceDefinition";
             case SUBSTANCESPECIFICATION: return "SubstanceSpecification";
             case MOLECULARDEFINITION: return "MolecularDefinition";
+            case CLINICALASSESSMENT: return "ClinicalAssessment";
             case NULL: return null;
             default: return "?";
           }
@@ -20799,6 +20838,8 @@ The primary difference between a medicationstatement and a medicationadministrat
         return VersionIndependentResourceTypesAll.SUBSTANCESPECIFICATION;
       if ("MolecularDefinition".equals(codeString))
         return VersionIndependentResourceTypesAll.MOLECULARDEFINITION;
+      if ("ClinicalAssessment".equals(codeString))
+        return VersionIndependentResourceTypesAll.CLINICALASSESSMENT;
         throw new IllegalArgumentException("Unknown VersionIndependentResourceTypesAll code '"+codeString+"'");
         }
 
@@ -21218,6 +21259,8 @@ The primary difference between a medicationstatement and a medicationadministrat
             return new Enumeration<VersionIndependentResourceTypesAll>(this, VersionIndependentResourceTypesAll.SUBSTANCESPECIFICATION, code);
           if ("MolecularDefinition".equals(codeString))
             return new Enumeration<VersionIndependentResourceTypesAll>(this, VersionIndependentResourceTypesAll.MOLECULARDEFINITION, code);
+          if ("ClinicalAssessment".equals(codeString))
+            return new Enumeration<VersionIndependentResourceTypesAll>(this, VersionIndependentResourceTypesAll.CLINICALASSESSMENT, code);
         throw new FHIRException("Unknown VersionIndependentResourceTypesAll code '"+codeString+"'");
         }
     public String toCode(VersionIndependentResourceTypesAll code) {

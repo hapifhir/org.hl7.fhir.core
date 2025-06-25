@@ -3133,8 +3133,8 @@ public class Consent extends DomainResource {
       return (Attachment) this.source;
     }
 
-    public boolean hasSourceAttachment() { 
-      return this != null && this.source instanceof Attachment;
+    public boolean hasSourceAttachment() {
+        return this.source instanceof Attachment;
     }
 
     /**
@@ -3148,8 +3148,8 @@ public class Consent extends DomainResource {
       return (Identifier) this.source;
     }
 
-    public boolean hasSourceIdentifier() { 
-      return this != null && this.source instanceof Identifier;
+    public boolean hasSourceIdentifier() {
+        return this.source instanceof Identifier;
     }
 
     /**
@@ -3163,8 +3163,8 @@ public class Consent extends DomainResource {
       return (Reference) this.source;
     }
 
-    public boolean hasSourceReference() { 
-      return this != null && this.source instanceof Reference;
+    public boolean hasSourceReference() {
+        return this.source instanceof Reference;
     }
 
     public boolean hasSource() { 

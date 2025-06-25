@@ -77,7 +77,7 @@ import org.hl7.fhir.utilities.Utilities;
  *     contained: generate code for contained resources 
  *     all-elements: generate code for all elements, not just the key elements (makes the code verbose)
  */
-
+@SuppressWarnings("checkstyle:systemout")
 public class PECodeGenerator {
 
 
@@ -164,7 +164,10 @@ public class PECodeGenerator {
         w(b, "  }");
         w(b);
         jdoc(b, "Populate an instance of the object based on this source object ", 2, true);
-        w(b, "  public static "+name+" fromSource(IWorkerContext context, "+base+" source) {");
+        if(base.equalsIgnoreCase("List"))
+            w(b, "  public static "+name+" fromSource(IWorkerContext context, "+base+"Resource source) {");
+        else
+            w(b, "  public static "+name+" fromSource(IWorkerContext context, "+base+" source) {");
         w(b, "    "+name+" theThing = new "+name+"();");
         w(b, "    theThing.workerContext = context;");
         w(b, "    PEBuilder builder = new PEBuilder(context, PEElementPropertiesPolicy.EXTENSION, true);");
@@ -191,14 +194,23 @@ public class PECodeGenerator {
 
       if (isResource) {
         jdoc(b, "Build a instance of the underlying object based on this wrapping object ", 2, true);
-        w(b, "  public "+base+" build(IWorkerContext context) {");
+        if(base.equalsIgnoreCase("List"))
+            w(b, "  public "+base+"Resource build(IWorkerContext context) {");
+        else
+            w(b, "  public "+base+" build(IWorkerContext context) {");
         w(b, "    workerContext = context;");
         w(b, "    return build();");
         w(b, "  }");
         w(b);
         jdoc(b, "Build a instance of the underlying object based on this wrapping object ", 2, true);
-        w(b, "  public "+base+" build() {");
-        w(b, "    "+base+" theThing = new "+base+"();");
+        if(base.equalsIgnoreCase("List"))
+            w(b, "  public "+base+"Resource build() {");
+        else
+            w(b, "  public "+base+" build() {");
+        if(base.equalsIgnoreCase("List"))
+            w(b, "    "+base+"Resource theThing = new "+base+"Resource();");
+        else
+            w(b, "    "+base+" theThing = new "+base+"();");
         w(b, "    PEBuilder builder = new PEBuilder(workerContext, PEElementPropertiesPolicy.EXTENSION, true);");
         w(b, "    PEInstance tgt = builder.buildPEInstance(CANONICAL_URL, theThing);");      
         w(b, "    save(tgt, false);");
@@ -206,7 +218,10 @@ public class PECodeGenerator {
         w(b, "  }");
         w(b);
         jdoc(b, "Save this profile class into an existing resource (overwriting anything that exists in the profile) ", 2, true);
-        w(b, "  public void save(IWorkerContext context, "+base+" dest, boolean nulls) {");
+        if(base.equalsIgnoreCase("List"))
+            w(b, "  public void save(IWorkerContext context, "+base+"Resource dest, boolean nulls) {");
+        else
+            w(b, "  public void save(IWorkerContext context, "+base+" dest, boolean nulls) {");
         w(b, "    workerContext = context;");
         w(b, "    PEBuilder builder = new PEBuilder(context, PEElementPropertiesPolicy.EXTENSION, true);");
         w(b, "    PEInstance tgt = builder.buildPEInstance(CANONICAL_URL, dest);");
@@ -499,7 +514,11 @@ public class PECodeGenerator {
             w(save, "      tgt.addChild(\""+fname+"\", item.toCode());");
           }  
         } else {
-          w(save, "      tgt.addChild(\""+fname+"\", item);");
+            if(typeInfo.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition"))
+                w(save, "      tgt.addChild(\""+fname+"\", item);");
+            else
+                w(save, "      tgt.addChild(\""+fname+"\",(Type) item.getData());");
+
         }
         w(save, "    }");
       } else if (isEnum) {
@@ -599,10 +618,9 @@ public class PECodeGenerator {
           w(accessors);
           if (!isAbstract) { 
             if (!isEnum) {
-              w(accessors, "  public "+type+" add"+csname+"() {");
-              w(accessors, "    "+type+" theThing = new "+type+"();");
+              w(accessors, "  public "+this.name+" add"+csname+"("+type+ " theThing) {");
               w(accessors, "    get"+cname+"().add(theThing);");
-              w(accessors, "    return theThing;");
+              w(accessors, "    return this;");
               w(accessors, "  }");
               w(accessors); 
             } else {

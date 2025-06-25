@@ -39,6 +39,7 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -873,39 +874,29 @@ public abstract class ResourceRenderer extends DataRenderer {
     return renderResourceTechDetails(r, x, (context.isContained() && r.getId() != null ? "#"+r.getId() : r.getId()));
   }
   
-  protected XhtmlNode renderResourceTechDetails(ResourceWrapper r, XhtmlNode x, String desc) throws UnsupportedEncodingException, FHIRException, IOException {
+  protected XhtmlNode renderResourceTechDetails(ResourceWrapper r, XhtmlNode x, String id) throws UnsupportedEncodingException, FHIRException, IOException {
     XhtmlNode p = x.para().attribute("class", "res-header-id");
-    String ft = context.getTranslatedCode(r.fhirType(), "http://hl7.org/fhir/fhir-types");
-    if (desc == null) { 
-      p.b().tx(context.formatPhrase(context.isTechnicalMode() && !isInner() ? RenderingContext.PROF_DRIV_GEN_NARR_TECH : RenderingContext.PROF_DRIV_GEN_NARR, ft, ""));      
-    } else {
-      p.b().tx(context.formatPhrase(context.isTechnicalMode() && !isInner() ? RenderingContext.PROF_DRIV_GEN_NARR_TECH : RenderingContext.PROF_DRIV_GEN_NARR, ft, desc));
+    if (!context.isNoHeader()) {
+      String ft = context.getTranslatedCode(r.fhirType(), VersionUtilities.getResourceTypesUrl(context.getContext().getVersion()));
+      if (id == null) { 
+        p.b().tx(context.formatPhrase(context.isTechnicalMode() && !isInner() ? RenderingContext.PROF_DRIV_GEN_NARR_TECH : RenderingContext.PROF_DRIV_GEN_NARR, ft, ""));      
+      } else {
+        p.b().tx(context.formatPhrase(context.isTechnicalMode() && !isInner() ? RenderingContext.PROF_DRIV_GEN_NARR_TECH : RenderingContext.PROF_DRIV_GEN_NARR, ft, id));
+      }
     }
 
     // first thing we do is lay down the resource anchors. 
     if (!Utilities.noString(r.getId())) {
-      if (!context.isSecondaryLang()) {
-        String sid = r.getScopedId();
-        if (sid != null) {
-          if (!context.hasAnchor(sid)) {
-            context.addAnchor(sid);
-            x.an(context.prefixAnchor(sid));
-          }
-          sid = "hc"+sid;
-          if (!context.hasAnchor(sid)) {
-            context.addAnchor(sid);
-            x.an(context.prefixAnchor(sid));
-          }
+      String sid = r.getScopedId();
+      if (sid != null && !willRenderId(r)) {
+        if (!context.hasAnchor(sid)) {
+          context.addAnchor(sid);
+          x.an(context.prefixAnchor(sid));
         }
-      }
-      if (context.getLocale() != null) {
-        String langSuffix = "-"+context.getLocale().toLanguageTag();
-        if (r.getScopedId() != null) {
-          String sid = r.getScopedId()+langSuffix;
-          if (!context.hasAnchor(sid)) {
-            context.addAnchor(sid);
-            x.an(context.prefixAnchor(sid));
-          }
+        sid = "hc"+sid;
+        if (!context.hasAnchor(sid)) {
+          context.addAnchor(sid);
+          x.an(context.prefixAnchor(sid));
         }
       }
     }
@@ -999,6 +990,10 @@ public abstract class ResourceRenderer extends DataRenderer {
       }
     }
     return null;
+  }
+
+  protected boolean willRenderId(ResourceWrapper r) {
+    return false;
   }
 
   protected XhtmlNode plateStyle(XhtmlNode para) {

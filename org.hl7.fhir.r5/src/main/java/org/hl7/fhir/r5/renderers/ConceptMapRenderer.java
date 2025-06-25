@@ -13,6 +13,7 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
@@ -24,8 +25,10 @@ import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
 import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
+import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
@@ -94,7 +97,6 @@ public class ConceptMapRenderer extends TerminologyRenderer {
   }
   
   public static class MultipleMappingRowSorter implements Comparator<MultipleMappingRow> {
-
     private boolean first;
     
     protected MultipleMappingRowSorter(boolean first) {
@@ -111,7 +113,6 @@ public class ConceptMapRenderer extends TerminologyRenderer {
   }
 
   public static class Cell {
-
     private String system;
     private String code;
     private String display;
@@ -335,7 +336,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       if (cm.hasCopyright())
         generateCopyright(x, res);
     }
-    
+
     XhtmlNode p = x.para();
     p.tx(context.formatPhrase(RenderingContext.CONC_MAP_FROM) + " ");
     if (cm.hasSourceScope())
@@ -350,15 +351,15 @@ public class ConceptMapRenderer extends TerminologyRenderer {
 
     x.br();
     int gc = 0;
-    
+
     CodeSystem cs = getContext().getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-relationship");
     if (cs == null)
       cs = getContext().getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-equivalence");
     String eqpath = cs == null ? null : cs.getWebPath();
 
     for (ConceptMapGroupComponent grp : cm.getGroup()) {
-      String src = grp.getSource();
-      boolean comment = false;
+      boolean hasComment = false;
+      boolean hasProperties = false;
       boolean ok = true;
       Map<String, HashSet<String>> props = new HashMap<String, HashSet<String>>();
       Map<String, HashSet<String>> sources = new HashMap<String, HashSet<String>>();
@@ -369,8 +370,11 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       targets.get("code").add(grp.getTarget());
       for (SourceElementComponent ccl : grp.getElement()) {
         ok = ok && (ccl.getNoMap() || (ccl.getTarget().size() == 1 && ccl.getTarget().get(0).getDependsOn().isEmpty() && ccl.getTarget().get(0).getProduct().isEmpty()));
+        if (ccl.hasExtension(ToolingExtensions.EXT_CM_NOMAP_COMMENT)) {
+          hasComment = true;
+        }
         for (TargetElementComponent ccm : ccl.getTarget()) {
-          comment = comment || !Utilities.noString(ccm.getComment());
+          hasComment = hasComment || !Utilities.noString(ccm.getComment());
           for (MappingPropertyComponent pp : ccm.getProperty()) {
             if (!props.containsKey(pp.getCode()))
               props.put(pp.getCode(), new HashSet<String>());            
@@ -385,47 +389,173 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           }
         }
       }
-
+      if (props.size() > 0) {
+        hasProperties = true;
+      }
       gc++;
       if (gc > 1) {
         x.hr();
       }
-      XhtmlNode pp = x.para();
-      pp.b().tx(context.formatPhrase(RenderingContext.CONC_MAP_GRP, gc) + " ");
-      pp.tx(context.formatPhrase(RenderingContext.CONC_MAP_FROM) + " ");
-      if (grp.hasSource()) {
-        renderCanonical(status, res, pp, CodeSystem.class, grp.getSourceElement());
+      StructureDefinition sdSrc = findSourceStructure(grp.getSource());
+      StructureDefinition sdTgt = findSourceStructure(grp.getTarget());
+      if (sdSrc != null && sdTgt != null) {
+        renderModelMap(sdSrc, sdTgt, status, res, x, gc, eqpath, grp, hasComment, hasProperties, ok, props, sources, targets);
       } else {
-        pp.code(context.formatPhrase(RenderingContext.CONC_MAP_CODE_SYS_UNSPEC));
+        renderCodeSystemMap(status, res, x, gc, eqpath, grp, hasComment, hasProperties, ok, props, sources, targets);
       }
-      pp.tx(" to ");
-      if (grp.hasTarget()) {
-        renderCanonical(status, res, pp, CodeSystem.class, grp.getTargetElement());
+    }
+  }
+
+  private StructureDefinition findSourceStructure(String source) {
+    if (source == null) {
+      return null;
+    }
+    String url = ProfileUtilities.getUrlFromCSUrl(source);
+    StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, url);
+    if (sd != null) {
+      return sd;
+    }
+    for (StructureDefinition t : context.getContextUtilities().allStructures()) {
+      String u = ProfileUtilities.getCSUrl(t);
+      if (source.equals(u)) {
+        return t;
+      }
+    }
+    return null;
+  }
+
+  private void renderModelMap(StructureDefinition sdSrc, StructureDefinition sdTgt, RenderingStatus status, ResourceWrapper res, XhtmlNode x, int gc, String eqpath,
+      ConceptMapGroupComponent grp, boolean hasComment, boolean hasProperties, boolean ok,
+      Map<String, HashSet<String>> props, Map<String, HashSet<String>> sources, Map<String, HashSet<String>> targets)
+      throws UnsupportedEncodingException, IOException {
+    
+    XhtmlNode pp = x.para();
+    pp.b().tx(context.formatPhrase(RenderingContext.CONC_MAP_GRP, gc) + " ");
+    pp.tx(context.formatPhrase(RenderingContext.CONC_MAP_FROM) + " ");
+    pp.ah(sdSrc.getWebPath()).tx(sdSrc.present(context.getLocale().toLanguageTag()));
+    pp.tx(" to ");
+    pp.ah(sdTgt.getWebPath()).tx(sdTgt.present(context.getLocale().toLanguageTag()));
+    
+    XhtmlNode tbl = x.table( "grid", false);
+    XhtmlNode tr = tbl.tr();
+    tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_SOURCE));
+    tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_SOURCE_CARD));
+    tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_SOURCE_TYPE));
+    tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_REL));
+    tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_TRGT));
+    tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_TRGT_CARD));
+    tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_TRGT_TYPE));
+    if (hasComment)
+      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMMENT));
+    for (SourceElementComponent ccl : grp.getElement()) {
+        tr = tbl.tr();
+        ElementDefinition edSrc = sdSrc.getSnapshot().getElementById(ccl.getCode());
+        if (edSrc == null) {        
+          tr.td().colspan(3).addText(ccl.getCode());
+        } else {
+          tr.td().ah(sdSrc.getWebPath()+"#"+ccl.getCode()).tx(ccl.getCode());
+          tr.td().tx(""+edSrc.getMin()+".."+edSrc.getMax());
+          tr.td().tx("todo");
+        }
+
+      if (ccl.getNoMap()) {
+        if (!hasComment) {
+          tr.td().colspan("5").style("background-color: #efefef").tx("(not mapped)");
+        } else if (ccl.hasExtension(ToolingExtensions.EXT_CM_NOMAP_COMMENT)) {
+          tr.td().colspan("5").style("background-color: #efefef").tx("(not mapped)");
+          tr.td().style("background-color: #efefef").tx(ccl.getExtensionString(ToolingExtensions.EXT_CM_NOMAP_COMMENT));
+        } else {
+          tr.td().colspan("4").style("background-color: #efefef").tx("(not mapped)");
+        }
       } else {
-        pp.code(context.formatPhrase(RenderingContext.CONC_MAP_CODE_SYS_UNSPEC));
-      }
-      
-      String display;
-      if (ok) {
-        // simple
-        XhtmlNode tbl = x.table( "grid", false);
-        XhtmlNode tr = tbl.tr();
-        tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_SOURCE));
-        tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_REL));
-        tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_TRGT));
-        if (comment)
-          tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMMENT));
-        for (SourceElementComponent ccl : grp.getElement()) {
-          tr = tbl.tr();
-          XhtmlNode td = tr.td();
-          td.addText(ccl.getCode());
-          display = ccl.hasDisplay() ? ccl.getDisplay() : getDisplayForConcept(grp.getSource(), ccl.getCode());
-          if (display != null && !isSameCodeAndDisplay(ccl.getCode(), display))
-            td.tx(" ("+display+")");
-          if (ccl.getNoMap()) {
-            tr.td().colspan(comment ? "3" : "2").style("background-color: #efefef").tx("(not mapped)");
+        boolean first = true;
+        for (TargetElementComponent ccm : ccl.getTarget()) {
+          if (first) {
+            first = false;
           } else {
-            TargetElementComponent ccm = ccl.getTarget().get(0);
+            tr = tbl.tr();
+            tr.td().colspan(3).style("opacity: 0.5").addText("\"");
+          }
+          if (!ccm.hasRelationship()) {
+            tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
+          } else {
+            if (ccm.hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
+              String code = ToolingExtensions.readStringExtension(ccm, ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
+              tr.td().ah(context.prefixLocalHref(eqpath+"#"+code), code).tx(presentEquivalenceCode(code));                
+            } else {
+              tr.td().ah(context.prefixLocalHref(eqpath+"#"+ccm.getRelationship().toCode()), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+            }
+          }
+          ElementDefinition edTgt = sdTgt.getSnapshot().getElementById(ccm.getCode());
+          if (edTgt == null) {        
+            tr.td().colspan(3).addText(ccm.getCode());
+          } else {
+            tr.td().ah(sdTgt.getWebPath()+"#"+ccm.getCode()).tx(ccm.getCode());
+            tr.td().tx(""+edTgt.getMin()+".."+edTgt.getMax());
+            tr.td().tx("todo");
+          }
+  
+          if (hasComment)
+            tr.td().addText(ccm.getComment());
+        }
+      }
+    }
+  }
+  
+  private void renderCodeSystemMap(RenderingStatus status, ResourceWrapper res, XhtmlNode x, int gc, String eqpath,
+      ConceptMapGroupComponent grp, boolean hasComment, boolean hasProperties, boolean ok,
+      Map<String, HashSet<String>> props, Map<String, HashSet<String>> sources, Map<String, HashSet<String>> targets)
+      throws UnsupportedEncodingException, IOException {
+    XhtmlNode pp = x.para();
+    pp.b().tx(context.formatPhrase(RenderingContext.CONC_MAP_GRP, gc) + " ");
+    pp.tx(context.formatPhrase(RenderingContext.CONC_MAP_FROM) + " ");
+    if (grp.hasSource()) {
+      renderCanonical(status, res, pp, CodeSystem.class, grp.getSourceElement());
+    } else {
+      pp.code(context.formatPhrase(RenderingContext.CONC_MAP_CODE_SYS_UNSPEC));
+    }
+    pp.tx(" to ");
+    if (grp.hasTarget()) {
+      renderCanonical(status, res, pp, CodeSystem.class, grp.getTargetElement());
+    } else {
+      pp.code(context.formatPhrase(RenderingContext.CONC_MAP_CODE_SYS_UNSPEC));
+    }
+
+    String display;
+    if (ok) {
+      // simple
+      XhtmlNode tbl = x.table( "grid", false);
+      XhtmlNode tr = tbl.tr();
+      tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_SOURCE));
+      tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_REL));
+      tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_TRGT));
+      if (hasComment)
+        tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMMENT));
+      for (SourceElementComponent ccl : grp.getElement()) {
+        tr = tbl.tr();
+        XhtmlNode td = tr.td();
+        td.addText(ccl.getCode());
+        display = ccl.hasDisplay() ? ccl.getDisplay() : getDisplayForConcept(grp.getSource(), ccl.getCode());
+        if (display != null && !isSameCodeAndDisplay(ccl.getCode(), display))
+          td.tx(" ("+display+")");
+        if (ccl.getNoMap()) {
+          if (!hasComment) {
+            tr.td().colspan("2").style("background-color: #efefef").tx("(not mapped)");
+          } else if (ccl.hasExtension(ToolingExtensions.EXT_CM_NOMAP_COMMENT)) {
+            tr.td().colspan("2").style("background-color: #efefef").tx("(not mapped)");
+            tr.td().style("background-color: #efefef").tx(ccl.getExtensionString(ToolingExtensions.EXT_CM_NOMAP_COMMENT));
+          } else {
+            tr.td().colspan("3").style("background-color: #efefef").tx("(not mapped)");
+          }
+        } else {
+          boolean first = true;
+          for (TargetElementComponent ccm : ccl.getTarget()) {
+            if (first) {
+              first = false;
+            } else {
+              tr = tbl.tr();
+              tr.td().style("opacity: 0.5").tx("\"");
+            }
             if (!ccm.hasRelationship())
               tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
             else {
@@ -441,184 +571,190 @@ public class ConceptMapRenderer extends TerminologyRenderer {
             display = ccm.hasDisplay() ? ccm.getDisplay() : getDisplayForConcept(grp.getTarget(), ccm.getCode());
             if (display != null && !isSameCodeAndDisplay(ccm.getCode(), display))
               td.tx(" ("+display+")");
-            if (comment)
+            if (hasComment)
               tr.td().addText(ccm.getComment());
           }
-          addUnmapped(tbl, grp);
-        }      
-      } else {
-        boolean hasRelationships = false;
-        for (int si = 0; si < grp.getElement().size(); si++) {
-          SourceElementComponent ccl = grp.getElement().get(si);
-          for (int ti = 0; ti < ccl.getTarget().size(); ti++) {
-            TargetElementComponent ccm = ccl.getTarget().get(ti);
-            if (ccm.hasRelationship()) {
-              hasRelationships = true;
-            }  
-          }
         }
-        
-        XhtmlNode tbl = x.table("grid", false);
-        XhtmlNode tr = tbl.tr();
-        XhtmlNode td;
-        tr.td().colspan(Integer.toString(1+sources.size())).b().tx(context.formatPhrase(RenderingContext.CONC_MAP_SRC_DET));
-        if (hasRelationships) {
-          tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_REL));
+        addUnmapped(tbl, grp);
+      }      
+    } else {
+      boolean hasRelationships = false;
+      for (int si = 0; si < grp.getElement().size(); si++) {
+        SourceElementComponent ccl = grp.getElement().get(si);
+        for (int ti = 0; ti < ccl.getTarget().size(); ti++) {
+          TargetElementComponent ccm = ccl.getTarget().get(ti);
+          if (ccm.hasRelationship()) {
+            hasRelationships = true;
+          }  
         }
-        tr.td().colspan(Integer.toString(1+targets.size())).b().tx(context.formatPhrase(RenderingContext.CONC_MAP_TRGT_DET));
-        if (comment) {
-          tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMMENT));
-        }
+      }
+
+      XhtmlNode tbl = x.table("grid", false);
+      XhtmlNode tr = tbl.tr();
+      XhtmlNode td;
+      tr.td().colspan(Integer.toString(1+sources.size())).b().tx(context.formatPhrase(RenderingContext.CONC_MAP_SRC_DET));
+      if (hasRelationships) {
+        tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_REL));
+      }
+      tr.td().colspan(Integer.toString(1+targets.size())).b().tx(context.formatPhrase(RenderingContext.CONC_MAP_TRGT_DET));
+      if (hasComment) {
+        tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMMENT));
+      }
+      if (hasProperties) {
         tr.td().colspan(Integer.toString(1+targets.size())).b().tx(context.formatPhrase(RenderingContext.GENERAL_PROPS));
-        tr = tbl.tr();
-        if (sources.get("code").size() == 1) {
-          String url = sources.get("code").iterator().next();
-          renderCSDetailsLink(tr, url, true);           
-        } else
-          tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
-        for (String s : sources.keySet()) {
-          if (s != null && !s.equals("code")) {
-            if (sources.get(s).size() == 1) {
-              String url = sources.get(s).iterator().next();
-              renderCSDetailsLink(tr, url, false);           
-            } else
-              tr.td().b().addText(getDescForConcept(s));
-          }
+      }
+      tr = tbl.tr();
+      if (sources.get("code").size() == 1) {
+        String url = sources.get("code").iterator().next();
+        renderCSDetailsLink(tr, url, true);           
+      } else
+        tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
+      for (String s : sources.keySet()) {
+        if (s != null && !s.equals("code")) {
+          if (sources.get(s).size() == 1) {
+            String url = sources.get(s).iterator().next();
+            renderCSDetailsLink(tr, url, false);           
+          } else
+            tr.td().b().addText(getDescForConcept(s));
         }
-        if (hasRelationships) {
-          tr.td();
+      }
+      if (hasRelationships) {
+        tr.td();
+      }
+      if (targets.get("code").size() == 1) {
+        String url = targets.get("code").iterator().next();
+        renderCSDetailsLink(tr, url, true);           
+      } else
+        tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
+      for (String s : targets.keySet()) {
+        if (s != null && !s.equals("code")) {
+          if (targets.get(s).size() == 1) {
+            String url = targets.get(s).iterator().next();
+            renderCSDetailsLink(tr, url, false);           
+          } else
+            tr.td().b().addText(getDescForConcept(s));
         }
-        if (targets.get("code").size() == 1) {
-          String url = targets.get("code").iterator().next();
-          renderCSDetailsLink(tr, url, true);           
-        } else
-          tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
-        for (String s : targets.keySet()) {
-          if (s != null && !s.equals("code")) {
-            if (targets.get(s).size() == 1) {
-              String url = targets.get(s).iterator().next();
-              renderCSDetailsLink(tr, url, false);           
-            } else
-              tr.td().b().addText(getDescForConcept(s));
-          }
-        }
-        if (comment) {
-          tr.td();
-        }
+      }
+      if (hasComment) {
+        tr.td();
+      }
+      if (hasProperties) {
         for (String s : props.keySet()) {
           if (s != null) {
             if (props.get(s).size() == 1) {
               String url = props.get(s).iterator().next();
-              renderCSDetailsLink(tr, url, false);           
+              renderCSDetailsLink(tr.td(), url, false);           
             } else
               tr.td().b().addText(getDescForConcept(s));
           }
         }
+      }
 
-        for (int si = 0; si < grp.getElement().size(); si++) {
-          SourceElementComponent ccl = grp.getElement().get(si);
-          boolean slast = si == grp.getElement().size()-1;
-          boolean first = true;
-          if (ccl.hasNoMap() && ccl.getNoMap()) {
+      for (int si = 0; si < grp.getElement().size(); si++) {
+        SourceElementComponent ccl = grp.getElement().get(si);
+        boolean slast = si == grp.getElement().size()-1;
+        boolean first = true;
+        if (ccl.hasNoMap() && ccl.getNoMap()) {
+          tr = tbl.tr();
+          td = tr.td().style("border-right-width: 0px");
+          if (!first)
+            td.style("border-top-style: none");
+          else 
+            td.style("border-bottom-style: none");
+          if (sources.get("code").size() == 1)
+            td.addText(ccl.getCode());
+          else
+            td.addText(grp.getSource()+" / "+ccl.getCode());
+          display = ccl.hasDisplay() ? ccl.getDisplay() : getDisplayForConcept(grp.getSource(), ccl.getCode());
+          tr.td().style("border-left-width: 0px").tx(display == null ? "" : display);
+          if (ccl.hasExtension(ToolingExtensions.EXT_CM_NOMAP_COMMENT)) {
+            tr.td().colspan("3").style("background-color: #efefef").tx("(not mapped)");
+            tr.td().style("background-color: #efefef").tx(ccl.getExtensionString(ToolingExtensions.EXT_CM_NOMAP_COMMENT));             
+          } else {
+            tr.td().colspan("4").style("background-color: #efefef").tx("(not mapped)");
+          }
+        } else {
+          for (int ti = 0; ti < ccl.getTarget().size(); ti++) {
+            TargetElementComponent ccm = ccl.getTarget().get(ti);
+            boolean last = ti == ccl.getTarget().size()-1;
             tr = tbl.tr();
             td = tr.td().style("border-right-width: 0px");
-            if (!first)
+            if (!first && !last)
+              td.style("border-top-style: none; border-bottom-style: none");
+            else if (!first)
               td.style("border-top-style: none");
-            else 
+            else if (!last)
               td.style("border-bottom-style: none");
-            if (sources.get("code").size() == 1)
-              td.addText(ccl.getCode());
-            else
-              td.addText(grp.getSource()+" / "+ccl.getCode());
-            display = ccl.hasDisplay() ? ccl.getDisplay() : getDisplayForConcept(grp.getSource(), ccl.getCode());
-            tr.td().style("border-left-width: 0px").tx(display == null ? "" : display);
-            tr.td().colspan("4").style("background-color: #efefef").tx("(not mapped)");
-
-          } else {
-            for (int ti = 0; ti < ccl.getTarget().size(); ti++) {
-              TargetElementComponent ccm = ccl.getTarget().get(ti);
-              boolean last = ti == ccl.getTarget().size()-1;
-              tr = tbl.tr();
-              td = tr.td().style("border-right-width: 0px");
-              if (!first && !last)
-                td.style("border-top-style: none; border-bottom-style: none");
-              else if (!first)
-                td.style("border-top-style: none");
-              else if (!last)
-                td.style("border-bottom-style: none");
-              if (first) {
-                if (sources.get("code").size() == 1)
-                  td.addText(ccl.getCode());
-                else
-                  td.addText(grp.getSource()+" / "+ccl.getCode());
-                display = ccl.hasDisplay() ? ccl.getDisplay() : getDisplayForConcept(grp.getSource(), ccl.getCode());
-                td = tr.td();
-                if (!last)
-                  td.style("border-left-width: 0px; border-bottom-style: none");
-                else
-                  td.style("border-left-width: 0px");
-                td.tx(display == null ? "" : display);
-              } else {
-                td = tr.td(); // for display
-                if (!last)
-                  td.style("border-left-width: 0px; border-top-style: none; border-bottom-style: none");
-                else
-                  td.style("border-top-style: none; border-left-width: 0px");
-              }
-              for (String s : sources.keySet()) {
-                if (s != null && !s.equals("code")) {
-                  td = tr.td();
-                  if (first) {
-                    td.addText(getValue(ccm.getDependsOn(), s, sources.get(s).size() != 1));
-                    display = getDisplay(ccm.getDependsOn(), s);
-                    if (display != null)
-                      td.tx(" ("+display+")");
-                  }
-                }
-              }
-              first = false;
-              if (hasRelationships) {
-                if (!ccm.hasRelationship())
-                  tr.td();
-                else {
-                  if (ccm.hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
-                    String code = ToolingExtensions.readStringExtension(ccm, ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-                    tr.td().ah(context.prefixLocalHref(eqpath+"#"+code), code).tx(presentEquivalenceCode(code));                
-                  } else {
-                    tr.td().ah(context.prefixLocalHref(eqpath+"#"+ccm.getRelationship().toCode()), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
-                  }
-                }
-              }
-              td = tr.td().style("border-right-width: 0px");
-              if (targets.get("code").size() == 1)
-                td.addText(ccm.getCode());
+            if (first) {
+              if (sources.get("code").size() == 1)
+                td.addText(ccl.getCode());
               else
-                td.addText(grp.getTarget()+" / "+ccm.getCode());
-              display = ccm.hasDisplay() ? ccm.getDisplay() : getDisplayForConcept(grp.getSource(), ccm.getCode());
-              tr.td().style("border-left-width: 0px").tx(display == null ? "" : display);
-
-              for (String s : targets.keySet()) {
-                if (s != null && !s.equals("code")) {
-                  td = tr.td();
-                  td.addText(getValue(ccm.getProduct(), s, targets.get(s).size() != 1));
-                  display = getDisplay(ccm.getProduct(), s);
-                  if (display != null)
-                    td.tx(" ("+display+")");
-                }
+                td.addText(grp.getSource()+" / "+ccl.getCode());
+              display = ccl.hasDisplay() ? ccl.getDisplay() : getDisplayForConcept(grp.getSource(), ccl.getCode());
+              td = tr.td();
+              if (!last)
+                td.style("border-left-width: 0px; border-bottom-style: none");
+              else
+                td.style("border-left-width: 0px");
+              td.tx(display == null ? "" : display);
+            } else {
+              td = tr.td(); // for display
+              if (!last)
+                td.style("border-left-width: 0px; border-top-style: none; border-bottom-style: none");
+              else
+                td.style("border-top-style: none; border-left-width: 0px");
+            }
+            for (String s : sources.keySet()) {
+              if (s != null && !s.equals("code")) {
+                td = tr.td();
+                td.addText(getValue(ccm.getDependsOn(), s, sources.get(s).size() != 1));
+                display = getDisplay(ccm.getDependsOn(), s);
+                if (display != null)
+                  td.tx(" ("+display+")");
               }
-              if (comment)
-                tr.td().addText(ccm.getComment());
-
-              for (String s : props.keySet()) {
-                if (s != null) {
-                  td = tr.td();
-                  td.addText(getValue(ccm.getProperty(), s));
+            }
+            first = false;
+            if (hasRelationships) {
+              if (!ccm.hasRelationship())
+                tr.td();
+              else {
+                if (ccm.hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
+                  String code = ToolingExtensions.readStringExtension(ccm, ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
+                  tr.td().ah(context.prefixLocalHref(eqpath+"#"+code), code).tx(presentEquivalenceCode(code));                
+                } else {
+                  tr.td().ah(context.prefixLocalHref(eqpath+"#"+ccm.getRelationship().toCode()), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
                 }
               }
             }
+            td = tr.td().style("border-right-width: 0px");
+            if (targets.get("code").size() == 1)
+              td.addText(ccm.getCode());
+            else
+              td.addText(grp.getTarget()+" / "+ccm.getCode());
+            display = ccm.hasDisplay() ? ccm.getDisplay() : getDisplayForConcept(grp.getSource(), ccm.getCode());
+            tr.td().style("border-left-width: 0px").tx(display == null ? "" : display);
+
+            for (String s : targets.keySet()) {
+              if (s != null && !s.equals("code")) {
+                td = tr.td();
+                td.addText(getValue(ccm.getProduct(), s, targets.get(s).size() != 1));
+                display = getDisplay(ccm.getProduct(), s);
+                if (display != null)
+                  td.tx(" ("+display+")");
+              }
+            }
+            if (hasComment)
+              tr.td().addText(ccm.getComment());
+
+            for (String s : props.keySet()) {
+              if (s != null) {
+                td = tr.td();
+                td.addText(getValue(ccm.getProperty(), s));
+              }
+            }
           }
-          addUnmapped(tbl, grp);
         }
+        addUnmapped(tbl, grp);
       }
     }
   }
@@ -711,7 +847,13 @@ public class ConceptMapRenderer extends TerminologyRenderer {
 
 
   private String getValue(List<MappingPropertyComponent> list, String s) {
-    return "todo";
+    StringBuilder b = new StringBuilder();
+    for (MappingPropertyComponent m : list) {
+      if (s.equals(m.getCode())) {
+        b.append(displayBase(m.getValue()));
+      }
+    }
+    return b.toString();
   }
 
   private String getValue(List<OtherElementComponent> list, String s, boolean withSystem) {
@@ -745,7 +887,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       Collections.sort(rowSets, new MultipleMappingRowSorter(advisor.sortPolicy(rmmContext) == RenderMultiRowSortPolicy.FIRST_COL));
     }
     XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
-    XhtmlNode tbl = div.table("none", false).style("text-align: left; border-spacing: 0; padding: 5px");
+    XhtmlNode tbl = div.table("none", false).style("text-align: var(--ig-left,left); border-spacing: 0; padding: 5px");
     XhtmlNode tr = tbl.tr();
     styleCell(tr.td(), false, true, 5).b().tx(start);
     for (ConceptMap map : maps) {

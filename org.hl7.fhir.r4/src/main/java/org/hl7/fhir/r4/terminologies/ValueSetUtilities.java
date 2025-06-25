@@ -29,6 +29,7 @@ package org.hl7.fhir.r4.terminologies;
   
  */
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.context.IWorkerContext;
 import org.hl7.fhir.r4.model.CanonicalType;
@@ -43,6 +44,7 @@ import org.hl7.fhir.r4.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 
+@Slf4j
 public class ValueSetUtilities {
 
   public static ValueSet makeShareable(ValueSet vs) {
@@ -110,7 +112,7 @@ public class ValueSetUtilities {
           vs.setUserData("ballot.package", pckage);
         else if (!pckage.equals(vs.getUserString("ballot.package")))
           if (!"infrastructure".equals(vs.getUserString("ballot.package")))
-            System.out.println("Value Set " + vs.getUrl() + ": ownership clash " + pckage + " vs "
+            log.warn("Value Set " + vs.getUrl() + ": ownership clash " + pckage + " vs "
                 + vs.getUserString("ballot.package"));
       }
       if (status == StandardsStatus.NORMATIVE) {

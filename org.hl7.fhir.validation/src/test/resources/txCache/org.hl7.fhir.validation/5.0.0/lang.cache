@@ -18,7 +18,6 @@ v: {
   "code" : "fr-CA",
   "system" : "urn:ietf:bcp:47",
   "server" : "http://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -44,10 +43,23 @@ v: {
   "code" : "fr-CA",
   "system" : "urn:ietf:bcp:47",
   "server" : "http://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
 
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "urn:ietf:bcp:47"
+    }]
+  }
+}}####
+e: {
+  "from-server" : true,
+  "error" : "Error from http://tx-dev.fhir.org/r5: The code System \"urn:ietf:bcp:47\" has a grammar, and cannot be enumerated directly"
 }
 -------------------------------------------------------------------------------------

@@ -39,6 +39,6 @@ public class Device30_40Test {
     org.hl7.fhir.dstu3.model.Resource dstu3_expected = dstu3_parser.parse(dstu3_expected_output);
 
     Assertions.assertTrue(dstu3_expected.equalsDeep(dstu3_conv),
-      "Failed comparing\n" + dstu3_parser.composeString(dstu3_expected) + "\nand\n" + dstu3_parser.composeString(dstu3_expected));
+      "Failed comparing\n" + dstu3_parser.composeString(dstu3_expected) + "\nand\n" + dstu3_parser.composeString(dstu3_conv));
   }
 }

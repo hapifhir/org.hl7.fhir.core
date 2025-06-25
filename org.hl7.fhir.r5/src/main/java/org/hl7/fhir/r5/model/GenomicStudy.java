@@ -1772,8 +1772,8 @@ public class GenomicStudy extends DomainResource {
           return (Identifier) this.generatedBy;
         }
 
-        public boolean hasGeneratedByIdentifier() { 
-          return this != null && this.generatedBy instanceof Identifier;
+        public boolean hasGeneratedByIdentifier() {
+            return this.generatedBy instanceof Identifier;
         }
 
         /**
@@ -1787,8 +1787,8 @@ public class GenomicStudy extends DomainResource {
           return (Reference) this.generatedBy;
         }
 
-        public boolean hasGeneratedByReference() { 
-          return this != null && this.generatedBy instanceof Reference;
+        public boolean hasGeneratedByReference() {
+            return this.generatedBy instanceof Reference;
         }
 
         public boolean hasGeneratedBy() { 

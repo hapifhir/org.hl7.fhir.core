@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
@@ -19,8 +20,12 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 
+import lombok.NonNull;
+
+@Slf4j
 public class CodingsObserver extends BaseValidator {
 
   private class CodingUsage {
@@ -34,8 +39,8 @@ public class CodingsObserver extends BaseValidator {
     }
   }
 
-  public CodingsObserver(@Nonnull IWorkerContext context, @Nonnull XVerExtensionManager xverManager, boolean debug, ValidatorSession session) {
-    super(context, xverManager, debug, session);
+  public CodingsObserver(@Nonnull IWorkerContext context, @Nonnull ValidatorSettings settings, @Nonnull XVerExtensionManager xverManager, ValidatorSession session) {
+    super(context, settings, xverManager, session);
     this.context = context;
   }
 
@@ -69,8 +74,8 @@ public class CodingsObserver extends BaseValidator {
 
   public void finish(List<ValidationMessage> errors, NodeStack rootStack) {
     if (checkIPSCodes) {
-      System.out.println("");
-      System.out.println("Checking SCT codes for IPS");
+      log.info("");
+      log.info("Checking SCT codes for IPS");
 
       Set<String> snomedCTCodes = new HashSet<>();
       for (CodingUsage c : list) {
@@ -86,7 +91,7 @@ public class CodingsObserver extends BaseValidator {
           }
         }
       }
-      System.out.println("Done Checking SCT codes for IPS");
+      log.info("Done Checking SCT codes for IPS");
     }
   }
 

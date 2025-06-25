@@ -1,16 +1,36 @@
 package org.hl7.fhir.utilities.validation;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
 
-import com.google.gson.JsonElement;
-
 public class ValidationOptions {
   
+  public enum R5BundleRelativeReferencePolicy {
+    DEFAULT,
+    NEVER,
+    ALWAYS;
+
+    public String toCode() {
+      switch (this) {
+      case ALWAYS: return "always";
+      case DEFAULT: return "default";
+      case NEVER: return "never";
+      }
+      return null;
+    }
+
+    public static R5BundleRelativeReferencePolicy fromCode(String code) {
+      switch (code) {
+      case "always": return ALWAYS;
+      case "default": return DEFAULT;
+      case "never": return NEVER;
+      }
+      throw new FHIRException("bad code "+code);
+    }
+  }
+
   private AcceptLanguageHeader langs = null;
   private boolean useServer = true;
   private boolean useClient = true;
@@ -24,7 +44,9 @@ public class ValidationOptions {
   private boolean activeOnly = false;
   private boolean exampleOK = false;
   private FhirPublication fhirVersion;
-
+  private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy = R5BundleRelativeReferencePolicy.DEFAULT;
+  private boolean isDefaultLang = false;
+  
   public ValidationOptions() { this(FhirPublication.R5); }
 
   public ValidationOptions(FhirPublication fhirVersion) {
@@ -36,11 +58,14 @@ public class ValidationOptions {
     super();
     if (!Utilities.noString(language)) {
       langs = new AcceptLanguageHeader(language, false);
+      isDefaultLang = false;
     }
   }
 
   public static ValidationOptions defaults() {
-    return new ValidationOptions(FhirPublication.R5, "en, en-US");
+    ValidationOptions vo = new ValidationOptions(FhirPublication.R5, "en, en-US");
+    vo.isDefaultLang  = true;
+    return vo;
   }
   
   /**
@@ -206,25 +231,27 @@ public class ValidationOptions {
   }
 
   public ValidationOptions addLanguage(String language) {
-    if (this.langs == null) {
+    if (this.langs == null || isDefaultLang) {
       langs = new AcceptLanguageHeader(language, false);
     } else {
       langs.add(language);
+      isDefaultLang = false;
     }
     return this;
   }
 
   public ValidationOptions setLanguages(String language) {
     langs = new AcceptLanguageHeader(language, false);
+    isDefaultLang = false;
     return this;
   }
 
-  public ValidationOptions setNoServer(boolean useServer) {
+  public ValidationOptions setUseServer(boolean useServer) {
     this.useServer = useServer;
     return this;
   }
   
-  public ValidationOptions setNoClient(boolean useClient) {
+  public ValidationOptions setUseClient(boolean useClient) {
     this.useClient = useClient;
     return this;
   }
@@ -286,9 +313,27 @@ public class ValidationOptions {
     return setExampleOK(true);
   }
 
+  
+  public R5BundleRelativeReferencePolicy getR5BundleRelativeReferencePolicy() {
+    return r5BundleRelativeReferencePolicy;
+  }
+
+  public void setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
+    if (r5BundleRelativeReferencePolicy == null) {
+      r5BundleRelativeReferencePolicy = R5BundleRelativeReferencePolicy.DEFAULT;
+    } 
+    this.r5BundleRelativeReferencePolicy = r5BundleRelativeReferencePolicy;
+  }
+
+  public ValidationOptions withR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
+    setR5BundleRelativeReferencePolicy(r5BundleRelativeReferencePolicy);
+    return this;
+  }
+
   public ValidationOptions copy() {
     ValidationOptions n = new ValidationOptions(fhirVersion);
     n.langs = langs == null ? null : langs.copy();
+    n.isDefaultLang = isDefaultLang;
     n.useServer = useServer;
     n.useClient = useClient;
     n.guessSystem = guessSystem; 
@@ -299,13 +344,17 @@ public class ValidationOptions {
     n.useValueSetDisplays = useValueSetDisplays;   
     n.displayWarningMode = displayWarningMode;
     n.exampleOK = exampleOK;
+    n.r5BundleRelativeReferencePolicy = r5BundleRelativeReferencePolicy;
     return n;
   }
   
 
   public String toJson() {
     return "\"langs\":\""+( langs == null ? "" : langs.toString())+"\", \"useServer\":\""+Boolean.toString(useServer)+"\", \"useClient\":\""+Boolean.toString(useClient)+"\", "+
-       "\"guessSystem\":\""+Boolean.toString(guessSystem)+"\", \"activeOnly\":\""+Boolean.toString(activeOnly)+(exampleOK ? "\", \"exampleOK\":\""+Boolean.toString(exampleOK) : "")+"\", \"membershipOnly\":\""+Boolean.toString(membershipOnly)+"\", \"displayWarningMode\":\""+Boolean.toString(displayWarningMode)+"\", \"versionFlexible\":\""+Boolean.toString(versionFlexible)+"\"";
+       "\"guessSystem\":\""+Boolean.toString(guessSystem)+"\", \"activeOnly\":\""+Boolean.toString(activeOnly)+(exampleOK ? "\", \"exampleOK\":\""+Boolean.toString(exampleOK) : "")+
+       "\", \"membershipOnly\":\""+Boolean.toString(membershipOnly)+"\", \"displayWarningMode\":\""+Boolean.toString(displayWarningMode)+
+       "\", \"versionFlexible\":\""+Boolean.toString(versionFlexible)+"\""+
+       (r5BundleRelativeReferencePolicy != R5BundleRelativeReferencePolicy.DEFAULT ? ", \"r5BundleRelativeReferencePolicy\":\""+r5BundleRelativeReferencePolicy.toCode()+"\"" : "");
   }
 
   public String langSummary() {

@@ -806,7 +806,6 @@ v: {
   "error" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.78'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -855,7 +854,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.78",
   "server" : "http://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -883,7 +881,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.78",
   "server" : "http://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -910,7 +907,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.78",
   "server" : "http://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -940,7 +936,6 @@ v: {
   "error" : "The provided code 'http://loinc.org#3141-9' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0|5.0.0'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -989,7 +984,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.78",
   "server" : "http://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1017,7 +1011,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.78",
   "server" : "http://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1045,7 +1038,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.78",
   "server" : "http://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1076,7 +1068,6 @@ v: {
   "error" : "Wrong whitespace in Display Name 'Active motion ' for http://loinc.org#LA6715-2. Valid display is 'Active motion' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1128,7 +1119,6 @@ v: {
   "error" : "Wrong whitespace in Display Name 'Good, strong cry; normal rate and effort of breathing    ' for http://loinc.org#LA6727-7. Valid display is 'Good, strong cry; normal rate and effort of breathing' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1152,6 +1142,86 @@ v: {
     "location" : ["Coding.display"],
     "expression" : ["Coding.display"]
   }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "104207-6"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "displayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Medication administration list [Identifier] Episode Pharmacy",
+  "code" : "104207-6",
+  "system" : "http://loinc.org",
+  "version" : "2.80",
+  "server" : "http://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "104207-6"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "r5BundleRelativeReferencePolicy":"never", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "displayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Medication administration list [Identifier] Episode Pharmacy",
+  "code" : "104207-6",
+  "system" : "http://loinc.org",
+  "version" : "2.80",
+  "server" : "http://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "11524-6",
+  "display" : "EKG study"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "displayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "EKG study",
+  "code" : "11524-6",
+  "system" : "http://loinc.org",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
 }
 
 }

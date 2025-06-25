@@ -493,7 +493,7 @@ public class XhtmlParser {
     XhtmlDocument result = new XhtmlDocument();
     skipWhiteSpaceAndComments(result);
     if (peekChar() != '<')
-      throw new FHIRFormatError("Unable to Parse HTML - does not start with tag. Found "+peekChar()+descLoc());
+      throw new FHIRFormatError("Unable to Parse HTML - does not start with tag. Found '"+peekChar()+"' "+descLoc());
     readChar();
     markLocation();
     ElementName n = new ElementName(readName().toLowerCase());
@@ -599,7 +599,7 @@ public class XhtmlParser {
         addTextNode(node, s);
         readChar();
         if (peekChar() == '!') {
-          String sc = readToCommentEnd();
+          String sc = readToCommentEnd(true);
           // moved the validator
           //          if (sc.startsWith("DOCTYPE"))
           //            throw new FHIRFormatError("Malformed XHTML: Found a DocType declaration, and these are not allowed (XXE security vulnerability protection)");
@@ -767,7 +767,7 @@ public class XhtmlParser {
             readChar();
             if (peekChar() == ' ')
               readChar();
-            focus.addComment(readToCommentEnd());
+            focus.addComment(readToCommentEnd(false));
           } else 
             throw new FHIRFormatError("unrecognised element type <!"+peekChar()+descLoc());
         } else
@@ -871,13 +871,11 @@ public class XhtmlParser {
     return s.toString();
   }
 
-  private String readToCommentEnd() throws IOException, FHIRFormatError 
+  private String readToCommentEnd(boolean simple) throws IOException, FHIRFormatError 
   {
     if (peekChar() == '!')
       readChar();
     StringBuilder s = new StringBuilder();
-
-    boolean simple = true;
     if (peekChar() == '-') {
       readChar();
       simple = peekChar() != '-';

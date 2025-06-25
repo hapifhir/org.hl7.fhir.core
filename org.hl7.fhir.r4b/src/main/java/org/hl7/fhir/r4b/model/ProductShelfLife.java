@@ -157,7 +157,7 @@ public class ProductShelfLife extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPeriodDuration() {
-    return this != null && this.period instanceof Duration;
+      return this.period instanceof Duration;
   }
 
   /**
@@ -177,7 +177,7 @@ public class ProductShelfLife extends BackboneType implements ICompositeType {
   }
 
   public boolean hasPeriodStringType() {
-    return this != null && this.period instanceof StringType;
+      return this.period instanceof StringType;
   }
 
   public boolean hasPeriod() {

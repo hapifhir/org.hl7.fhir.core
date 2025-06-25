@@ -13715,7 +13715,7 @@ public class ImplementationGuide extends MetadataResource {
     }
 
     public boolean hasExampleBooleanType() {
-      return this != null && this.example instanceof BooleanType;
+        return this.example instanceof BooleanType;
     }
 
     /**
@@ -13733,7 +13733,7 @@ public class ImplementationGuide extends MetadataResource {
     }
 
     public boolean hasExampleCanonicalType() {
-      return this != null && this.example instanceof CanonicalType;
+        return this.example instanceof CanonicalType;
     }
 
     public boolean hasExample() {
@@ -14158,7 +14158,7 @@ public class ImplementationGuide extends MetadataResource {
     }
 
     public boolean hasNameUrlType() {
-      return this != null && this.name instanceof UrlType;
+        return this.name instanceof UrlType;
     }
 
     /**
@@ -14174,7 +14174,7 @@ public class ImplementationGuide extends MetadataResource {
     }
 
     public boolean hasNameReference() {
-      return this != null && this.name instanceof Reference;
+        return this.name instanceof Reference;
     }
 
     public boolean hasName() {
@@ -15949,7 +15949,7 @@ public class ImplementationGuide extends MetadataResource {
     }
 
     public boolean hasExampleBooleanType() {
-      return this != null && this.example instanceof BooleanType;
+        return this.example instanceof BooleanType;
     }
 
     /**
@@ -15967,7 +15967,7 @@ public class ImplementationGuide extends MetadataResource {
     }
 
     public boolean hasExampleCanonicalType() {
-      return this != null && this.example instanceof CanonicalType;
+        return this.example instanceof CanonicalType;
     }
 
     public boolean hasExample() {

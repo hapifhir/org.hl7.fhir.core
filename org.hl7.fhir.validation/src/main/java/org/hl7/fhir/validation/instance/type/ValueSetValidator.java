@@ -1,20 +1,20 @@
 package org.hl7.fhir.validation.instance.type;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.CodeSystem.CodeSystemFilterComponent;
-import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.fhirpath.ExpressionNode;
+import org.hl7.fhir.r5.fhirpath.ExpressionNode.Kind;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
@@ -23,6 +23,7 @@ import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationAction;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationRule;
@@ -44,12 +45,34 @@ import org.hl7.fhir.validation.codesystem.RxNormChecker;
 import org.hl7.fhir.validation.codesystem.SnomedCTChecker;
 import org.hl7.fhir.validation.codesystem.UcumChecker;
 import org.hl7.fhir.validation.instance.InstanceValidator;
-import org.hl7.fhir.validation.instance.type.ValueSetValidator.PropertyOperation;
-import org.hl7.fhir.validation.instance.type.ValueSetValidator.PropertyValidationRules;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
+@Slf4j
 public class ValueSetValidator extends BaseValidator {
+
+  public class ParameterDeclaration {
+    private Element ext;
+    private String name;
+    private String doco;
+    private boolean used;
+    public ParameterDeclaration(Element ext, String name, String doco) {
+      super();
+      this.ext = ext;
+      this.name = name;
+      this.doco = doco;
+    }
+    public String getName() {
+      return name;
+    }
+    public String getDoco() {
+      return doco;
+    }
+    public boolean isUsed() {
+      return used;
+    }
+  }
+
   public enum PropertyOperation {
     Equals, IsA, DescendentOf, IsNotA, RegEx, In, NotIn, Generalizes, ChildOf, DescendentLeaf, Exists;
 
@@ -71,7 +94,7 @@ public class ValueSetValidator extends BaseValidator {
     }
 
   }
-  
+
   public enum CodeValidationRule {
     Warning, Error, None
 
@@ -83,7 +106,7 @@ public class ValueSetValidator extends BaseValidator {
     private EnumSet<PropertyOperation> ops;
     private List<String> codeList = new ArrayList<>();
     private boolean change;
-    
+
     protected PropertyValidationRules(PropertyFilterType type, CodeValidationRule codeValidation, PropertyOperation... ops) {
       super();
       this.type = type;
@@ -103,11 +126,11 @@ public class ValueSetValidator extends BaseValidator {
     public PropertyFilterType getType() {
       return type;
     }
-    
+
     public EnumSet<PropertyOperation> getOps() {
       return ops;
     }
-    
+
     public CodeValidationRule getCodeValidation() {
       return codeValidation;
     }
@@ -137,23 +160,24 @@ public class ValueSetValidator extends BaseValidator {
   private static final int TOO_MANY_CODES_TO_VALIDATE = 1000;
   private static final int VALIDATION_BATCH_SIZE = 300;
 
+
   private CodeSystemChecker getSystemValidator(String system, List<ValidationMessage> errors) {
     if (system == null) {
-      return new GeneralCodeSystemChecker(context, xverManager, debug, errors, session);
+      return new GeneralCodeSystemChecker(context, settings, xverManager, errors, session);
     }
     switch (system) {
-    case "http://snomed.info/sct" :return new SnomedCTChecker(context, xverManager, debug, errors, session);
-    case "http://loinc.org": return new LoincChecker(context, xverManager, debug, errors, session);
-    case "http://www.nlm.nih.gov/research/umls/rxnorm": return new RxNormChecker(context, xverManager, debug, errors, session); 
-    case "http://unitsofmeasure.org": return new UcumChecker(context, xverManager, debug, errors, session); 
-    case "http://www.ama-assn.org/go/cpt": return new CPTChecker(context, xverManager, debug, errors, session); 
-    case "urn:ietf:bcp:47": return new BCP47Checker(context, xverManager, debug, errors, session);  
+    case "http://snomed.info/sct" :return new SnomedCTChecker(context, settings, xverManager, errors, session);
+    case "http://loinc.org": return new LoincChecker(context, settings, xverManager, errors, session);
+    case "http://www.nlm.nih.gov/research/umls/rxnorm": return new RxNormChecker(context, settings, xverManager, errors, session); 
+    case "http://unitsofmeasure.org": return new UcumChecker(context, settings, xverManager, errors, session); 
+    case "http://www.ama-assn.org/go/cpt": return new CPTChecker(context, settings, xverManager, errors, session); 
+    case "urn:ietf:bcp:47": return new BCP47Checker(context, settings, xverManager, errors, session);  
     default: 
       CodeSystem cs = context.fetchCodeSystem(system);
       if (cs != null) {
-        return new CodeSystemBasedChecker(context, xverManager, debug, errors, cs, session);
+        return new CodeSystemBasedChecker(context, settings, xverManager, errors, cs, session);
       } else {
-        return new GeneralCodeSystemChecker(context, xverManager, debug, errors, session);
+        return new GeneralCodeSystemChecker(context, settings, xverManager, errors, session);
       }
     }
   }
@@ -173,18 +197,42 @@ public class ValueSetValidator extends BaseValidator {
 
   }
 
+  private FHIRPathEngine fpe;
+
   public ValueSetValidator(InstanceValidator parent) {
     super(parent);
+    fpe = parent.getFHIRPathEngine();
   }
 
   public boolean validateValueSet(ValidationContext valContext, List<ValidationMessage> errors, Element vs, NodeStack stack) {
     boolean ok = true;
     if (!VersionUtilities.isR2Ver(context.getVersion())) {
+      List<ParameterDeclaration> parameters = new ArrayList<ValueSetValidator.ParameterDeclaration>(); 
+      int i = 0;
+      for (Element ext : vs.getExtensions(ToolingExtensions.EXT_VALUESET_PARAMETER)) {
+        Element n = ext.getExtension("name");
+        if (n != null) {
+          Element d = ext.getExtension("documentation");
+          NodeStack estack = stack.push(ext, i, null, null);
+          String name = n.getNamedChildValue("value");
+          if (d == null) {                     
+            warning(errors, "2025-03-22", IssueType.BUSINESSRULE, estack, name.startsWith("p-"), I18nConstants.VALUESET_PARAMETER_NO_DOCO, name);               
+            parameters.add(new ParameterDeclaration(ext, n.primitiveValue(), null));            
+          } else {
+            parameters.add(new ParameterDeclaration(ext, name, d == null ? null : d.getNamedChildValue("value")));
+          }
+          hint(errors, "2025-03-22", IssueType.BUSINESSRULE, estack, name.startsWith("p-"), I18nConstants.VALUESET_PARAMETER_NAME_WARNING, name);               
+        }
+        i++;
+      }
       List<Element> composes = vs.getChildrenByName("compose");
-      int cc = 0;
+      int cc = 0;     
       for (Element compose : composes) {
-        ok = validateValueSetCompose(valContext, errors, compose, stack.push(compose, composes.size() > 1 ? cc : -1, null, null), vs.getNamedChildValue("url", false), "retired".equals(vs.getNamedChildValue("url", false)), vs) & ok;
+        ok = validateValueSetCompose(valContext, errors, compose, stack.push(compose, composes.size() > 1 ? cc : -1, null, null), vs.getNamedChildValue("url", false), "retired".equals(vs.getNamedChildValue("url", false)), vs, parameters) & ok;
         cc++;
+      }
+      for (ParameterDeclaration p : parameters) {
+        warning(errors, "2025-03-21", IssueType.BUSINESSRULE, stack.push(p.ext, i, null, null), p.used, I18nConstants.VALUESET_PARAMETER_NOT_USED, p.name);     
       }
     }
     if (!stack.isContained()) {
@@ -195,7 +243,7 @@ public class ValueSetValidator extends BaseValidator {
 
   private boolean checkShareableValueSet(ValidationContext valContext, List<ValidationMessage> errors, Element vs, NodeStack stack) {
     if (policyAdvisor.policyForSpecialValidation((IResourceValidator) parent, valContext.getAppContext(), SpecialValidationRule.VALUESET_METADATA_CHECKS, stack.getLiteralPath(), vs, null) == SpecialValidationAction.CHECK_RULE) {
-      if (parent.isForPublication()) { 
+      if (settings.isForPublication()) { 
         if (isHL7(vs)) {
           boolean ok = true;
           ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("url", false), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "url") && ok;                      
@@ -221,56 +269,69 @@ public class ValueSetValidator extends BaseValidator {
   }
 
 
-  private boolean validateValueSetCompose(ValidationContext valContext, List<ValidationMessage> errors, Element compose, NodeStack stack, String vsid, boolean retired, Element vsSrc) {
+  private boolean validateValueSetCompose(ValidationContext valContext, List<ValidationMessage> errors, Element compose, NodeStack stack, String vsid, boolean retired, Element vsSrc, List<ParameterDeclaration> parameters) {
     boolean ok = true;
     List<Element> includes = compose.getChildrenByName("include");
     int ci = 0;
     for (Element include : includes) {
-      ok = validateValueSetInclude(valContext, errors, include, stack.push(include, ci, null, null), vsid, retired, vsSrc) && ok;
+      ok = validateValueSetInclude(valContext, errors, include, stack.push(include, ci, null, null), vsid, retired, vsSrc, parameters) && ok;
       ci++;
     }    
     List<Element> excludes = compose.getChildrenByName("exclude");
     int ce = 0;
     for (Element exclude : excludes) {
-      ok = validateValueSetInclude(valContext, errors, exclude, stack.push(exclude, ce, null, null), vsid, retired, vsSrc) && ok;
+      ok = validateValueSetInclude(valContext, errors, exclude, stack.push(exclude, ce, null, null), vsid, retired, vsSrc, parameters) && ok;
       ce++;
     }    
     return ok;
   }
 
-  private boolean validateValueSetInclude(ValidationContext valContext, List<ValidationMessage> errors, Element include, NodeStack stack, String vsid, boolean retired,  Element vsSrc) {
+  private boolean validateValueSetInclude(ValidationContext valContext, List<ValidationMessage> errors, Element include, NodeStack stack, String vsid, boolean retired,  Element vsSrc, List<ParameterDeclaration> parameters) {
     boolean ok = true;
     String system = include.getChildValue("system");
     String version = include.getChildValue("version");
-    
+    if (system != null && system.contains("|")) {
+      String uver = system.substring(system.indexOf("|")+1);
+      system = system.substring(0, system.indexOf("|"));
+      if (Utilities.noString(uver)) {
+         warning(errors, "2024-06-13", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_0, system);                   
+      } else if (version == null) {
+        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_1, uver) && ok;                   
+      } else if (!uver.equals(version)) {
+        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2, uver, version) && ok;                   
+      } else {
+        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_3, uver) && ok;                             
+      }
+    }      
+
     if (policyAdvisor.policyForSpecialValidation((IResourceValidator) parent, valContext.getAppContext(), SpecialValidationRule.VALUESET_IMPORT_CHECKS, stack.getLiteralPath(), vsSrc, include) == SpecialValidationAction.CHECK_RULE) {
 
-    List<Element> valuesets = include.getChildrenByName("valueSet");
-    int i = 0;
-    for (Element ve : valuesets) {
-      String v = ve.getValue();
-      ValueSet vs = context.findTxResource(ValueSet.class, v);
-      if (vs == null) {
-        // we couldn't find it, but it might be an implicit value set 
-        ValueSetExpansionOutcome vse = context.expandVS(v, true, false, 0);
-        if (!vse.isOk() ) {
-          NodeStack ns = stack.push(ve, i, ve.getProperty().getDefinition(), ve.getProperty().getDefinition());
+      List<Element> valuesets = include.getChildrenByName("valueSet");
+      int i = 0;
+      for (Element ve : valuesets) {
+        String v = ve.getValue();
+        ValueSet vs = context.findTxResource(ValueSet.class, v);
+        if (vs == null) {
+          // we couldn't find it, but it might be an implicit value set 
+          ValueSetExpansionOutcome vse = context.expandVS(v, true, false, 0);
+          if (!vse.isOk() ) {
+            NodeStack ns = stack.push(ve, i, ve.getProperty().getDefinition(), ve.getProperty().getDefinition());
 
-          Resource rs = context.fetchResource(Resource.class, v);
-          if (rs != null) {
-            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE, v, rs.fhirType());                      
-          } else { 
-            // todo: it's possible, at this point, that the txx server knows the value set, but it's not in scope
-            // should we handle this case?
-            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.VALUESET_REFERENCE_UNKNOWN, v);            
+            Resource rs = context.fetchResource(Resource.class, v);
+            if (rs != null) {
+              warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE, v, rs.fhirType());                      
+            } else { 
+              // todo: it's possible, at this point, that the txx server knows the value set, but it's not in scope
+              // should we handle this case?
+              warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.VALUESET_REFERENCE_UNKNOWN, v);            
+            }
           }
         }
+        i++;
       }
-      i++;
-    }
-    if (valuesets.size() > 1) {
-      warning(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, stack, false, I18nConstants.VALUESET_IMPORT_UNION_INTERSECTION);                  
-    }
+      if (valuesets.size() > 1) {
+        warning(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, stack, false, I18nConstants.VALUESET_IMPORT_UNION_INTERSECTION);                  
+      }
     }
     if (system != null) {
       rule(errors, "2024-03-06", IssueType.INVALID, stack, Utilities.isAbsoluteUrl(system), system.startsWith("#") ? I18nConstants.VALUESET_INCLUDE_SYSTEM_ABSOLUTE_FRAG : I18nConstants.VALUESET_INCLUDE_SYSTEM_ABSOLUTE, system);
@@ -334,6 +395,10 @@ public class ValueSetValidator extends BaseValidator {
           }
         }
       } else {
+        if (system.startsWith("urn:oid:")) {
+          List<CodeSystem> csl = cu.fetchByIdentifier(CodeSystem.class, system);
+          ok = rule(errors, "2025-01-09", IssueType.INVALID, stack, csl.isEmpty(), I18nConstants.VALUESET_INCLUDE_WRONG_CS_OID, system) && ok;
+        }
         ValueSet vs = context.findTxResource(ValueSet.class, system, version);
         if (vs != null) {
           validateConcepts = false;
@@ -384,7 +449,7 @@ public class ValueSetValidator extends BaseValidator {
         }
         int cf = 0;
         for (Element filter : filters) {
-          ok = validateValueSetIncludeFilter(errors, filter, stack.push(filter, cf, null, null), system, version, cs, csChecker) & ok;
+          ok = validateValueSetIncludeFilter(errors, filter, stack.push(filter, cf, null, null), system, version, cs, csChecker, parameters) & ok;
           cf++;
         }    
       }
@@ -399,18 +464,14 @@ public class ValueSetValidator extends BaseValidator {
       String version, List<VSCodingValidationRequest> batch) {
     if (batch.size() > 0) {
       long t = System.currentTimeMillis();
-      if (parent.isDebug()) {
-        System.out.println("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
-      }
+      log.debug("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
       context.validateCodeBatch(ValidationOptions.defaults().withExampleOK(), batch, null);
-      if (parent.isDebug()) {
-        System.out.println("  :   .. "+(System.currentTimeMillis()-t)+"ms");
-      }
+      log.debug("  :   .. "+(System.currentTimeMillis()-t)+"ms");
       for (VSCodingValidationRequest cv : batch) {
         if (version == null) {
-          warningOrHint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode(), cv.getResult().getMessage());
+          warningOrError(!retired, errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode(), cv.getResult().getMessage());
         } else {
-          warningOrHint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, cv.getCoding().getCode(), cv.getResult().getMessage());
+          warningOrError(!retired, errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, cv.getCoding().getCode(), cv.getResult().getMessage());
         }
       }
     }
@@ -427,7 +488,7 @@ public class ValueSetValidator extends BaseValidator {
         ValidationResult vv = context.validateCode(ValidationOptions.defaults().withExampleOK(), new Coding(system, code, null), null);
         if (vv.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
           if (isExampleUrl(system)) {
-            if (isAllowExamples()) {
+            if (settings.isAllowExamples()) {
               hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stackInc.getLiteralPath(), false, I18nConstants.VALUESET_EXAMPLE_SYSTEM_HINT, system);
             } else {
               rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stackInc.getLiteralPath(), false, I18nConstants.VALUESET_EXAMPLE_SYSTEM_ERROR, system);
@@ -438,7 +499,7 @@ public class ValueSetValidator extends BaseValidator {
           return false;
         } else {
           boolean ok = vv.isOk();
-          warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack, ok, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, code, vv.getMessage());
+          rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack, ok, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, code, vv.getMessage());
           if (vv.getMessage() != null) {
             hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack, false, vv.getMessage());
           }
@@ -450,7 +511,7 @@ public class ValueSetValidator extends BaseValidator {
           return false;        
         } else {
           boolean ok = vv.isOk();
-          warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack, ok, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, code, vv.getMessage());
+          rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack, ok, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, code, vv.getMessage());
           if (vv.getMessage() != null) {
             hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack, false, vv.getMessage());
           }
@@ -472,16 +533,18 @@ public class ValueSetValidator extends BaseValidator {
     return new VSCodingValidationRequest(stack, c);
   }
 
-  private boolean validateValueSetIncludeFilter(List<ValidationMessage> errors, Element filter, NodeStack stack, String system, String version, CodeSystem cs, CodeSystemChecker csChecker) {
+  private boolean validateValueSetIncludeFilter(List<ValidationMessage> errors, Element filter, NodeStack stack, String system, String version, CodeSystem cs, CodeSystemChecker csChecker, List<ParameterDeclaration> params) {
     boolean ok = true;
     String property = filter.getChildValue("property");
     String op = filter.getChildValue("op");
-    String value = filter.getChildValue("value");
+    Element ve = filter.getNamedChild("value");
+    String value = ve == null ? null : ve.primitiveValue();
+    Element expr = ve == null ? null : ve.getExtension(ToolingExtensions.EXT_CQF_EXP);
     
     if (property != null) {
       List<String> knownNames = new ArrayList<String>();
       csChecker.listPropertyNames(knownNames);
-   
+
       boolean pok = false;
       if (cs == null) {
         pok = hint(errors, "2024-03-09", IssueType.INVALID, stack, knownNames.contains(property), I18nConstants.VALUESET_UNKNOWN_FILTER_PROPERTY_NO_CS, property, system, CommaSeparatedStringBuilder.join(",", knownNames));        
@@ -495,29 +558,94 @@ public class ValueSetValidator extends BaseValidator {
             ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, opInSet(op, rules.getOps()), I18nConstants.VALUESET_BAD_FILTER_OP, op, property, CommaSeparatedStringBuilder.join(",", rules.getOps()), system) && ok;
           }
 
-          if ("exists".equals(op)) {
-            ok = checkFilterValue(errors, stack, system, version, ok, property, op, value, new PropertyValidationRules(PropertyFilterType.Boolean, null)) && ok;
-          } else if ("regex".equals(op)) {
-            String err = null;
-            try {
-              Pattern.compile(value);
-            } catch (PatternSyntaxException e) {
-              err = e.getMessage();
-            }            
-            ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, err == null, I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_REGEX, property, value, err) && ok;
-            ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, !"concept".equals(property), I18nConstants.VALUESET_BAD_PROPERTY_NO_REGEX, property) && ok;
-          } else if (Utilities.existsInList(op, "in", "not-in")) {
-            for (String v : value.split("\\,")) {
-              ok = checkFilterValue(errors, stack, system, version, ok, property, op, v, rules) && ok;
+          if (value == null) {
+            if (rule(errors, "2024-03-09", IssueType.INVALID, stack, expr != null && expr.hasChild("value"), I18nConstants.VALUESET_BAD_FILTER_EXPR_OR_VALUE)) {
+              NodeStack estack = stack.push(expr, -1, null, null);  
+              expr = expr.getNamedChild("value"); 
+              estack = estack.push(expr, -1, null, null);  
+              String lang = expr.getNamedChildValue("language");
+              if (rule(errors, "2024-03-09", IssueType.INVALID, estack, "text/fhirpath".equals(lang), I18nConstants.VALUESET_BAD_FILTER_EXPR_LANG, lang)) {
+                String expression = expr.getNamedChildValue("expression");
+                ExpressionNode node = null;
+                try {
+                  node = fpe.parse(expression);
+                } catch (Exception e) {
+                  rule(errors, "2024-03-09", IssueType.EXCEPTION, estack, false, I18nConstants.VALUESET_BAD_FILTER_EXPR_VALUE, expression, e.getMessage());
+                  ok = false;
+                }
+                if (node != null) {
+                  Set<String> constants = new HashSet<>();
+                  scanForConstants(constants, node);
+                  for (String s : constants) {
+                    String pn = s.substring(1);
+                    ParameterDeclaration p = null;
+                    for (ParameterDeclaration pd : params) {
+                      if (pd.getName().equals(pn)) {
+                        p = pd;
+                      }
+                    }
+                    if (p == null) {
+                      rule(errors, "2024-03-09", IssueType.EXCEPTION, estack, false, I18nConstants.VALUESET_BAD_FILTER_EXPR_PARAM_NAME, expression, pn);
+                      ok = false;                    
+                    } else {
+                      p.used = true;
+                    }
+                  }
+                }
+              } else {
+                ok = false;
+              }
+            } else {
+              ok = false;
             }
+
           } else {
-            ok = checkFilterValue(errors, stack, system, version, ok, property, op, value, rules) && ok;
+            ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, expr == null, I18nConstants.VALUESET_BAD_FILTER_EXPR_AND_VALUE) && ok;
+            
+            if ("exists".equals(op)) {
+              ok = checkFilterValue(errors, stack, system, version, ok, property, op, value,  new PropertyValidationRules(PropertyFilterType.Boolean, null)) && ok;
+            } else if ("regex".equals(op)) {
+              String err = null;
+              try {
+                Pattern.compile(value);
+              } catch (PatternSyntaxException e) {
+                err = e.getMessage();
+              }            
+              ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, err == null, I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_REGEX, property, value, err) && ok;
+              ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, !"concept".equals(property), I18nConstants.VALUESET_BAD_PROPERTY_NO_REGEX, property) && ok;
+            } else if (Utilities.existsInList(op, "in", "not-in")) {
+              for (String v : value.split("\\,")) {
+                ok = checkFilterValue(errors, stack, system, version, ok, property, op, v, rules) && ok;
+              }
+            } else {
+              ok = checkFilterValue(errors, stack, system, version, ok, property, op, value, rules) && ok;
+            }
           }
         }
       }
     }
 
     return ok;
+  }
+
+  private void scanForConstants(Set<String> constants, ExpressionNode node) {
+    if (node.getKind() == Kind.Constant) {
+      constants.add(node.getConstant().primitiveValue());
+    }
+    if (node.getOpNext() != null) {
+      scanForConstants(constants, node.getOpNext());
+    }
+    if (node.getInner() != null) {
+      scanForConstants(constants, node.getInner());
+    }
+    if (node.getGroup() != null) {
+      scanForConstants(constants, node.getGroup());
+    }
+    if (node.getParameters() != null) {
+      for (ExpressionNode p : node.getParameters()) {
+        scanForConstants(constants, p);
+      }
+    }
   }
 
   private boolean opInSet(String op, EnumSet<PropertyOperation> ops) {
@@ -556,11 +684,13 @@ public class ValueSetValidator extends BaseValidator {
             value.trim().equals(value), 
             I18nConstants.VALUESET_BAD_FILTER_VALUE_CODE, property, value) && ok;
         if (!noTerminologyChecks && (rules.getCodeValidation() == CodeValidationRule.Error || rules.getCodeValidation() == CodeValidationRule.Warning)) {
-          ValidationResult vr = context.validateCode(baseOptions, system, version, value, null);
-          if (rules.getCodeValidation() == CodeValidationRule.Error) {
-            ok = rule(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), vr.isOk(), rules.isChange() ? I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_CHANGE : I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage()) && ok;
+          ValidationResult vr = context.validateCode(settings, system, version, value, null);
+          if (vr.isOk()) {
+            warning(errors, "2025-06-04", IssueType.INVALID, stack.getLiteralPath(), !vr.isInactive(), I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_INACTIVE, property, value, system);            
+          } else if (rules.getCodeValidation() == CodeValidationRule.Error) {
+            ok = rule(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), false, rules.isChange() ? I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_CHANGE : I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage()) && ok;
           } else {
-            warning(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), vr.isOk(), rules.isChange() ? I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_CHANGE : I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage());
+            warning(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), false, rules.isChange() ? I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_CHANGE : I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage());
           }
         }
         break;
@@ -596,7 +726,7 @@ public class ValueSetValidator extends BaseValidator {
         if (code == null) {
           ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, false, I18nConstants.VALUESET_BAD_FILTER_VALUE_CODED, property, value) && ok;
         } else if (!noTerminologyChecks) {
-          ValidationResult vr = context.validateCode(baseOptions, code, null);
+          ValidationResult vr = context.validateCode(settings, code, null);
           ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, vr.isOk(), I18nConstants.VALUESET_BAD_FILTER_VALUE_CODED_INVALID, property, value, vr.getMessage()) && ok;
         }
         break;
@@ -607,5 +737,5 @@ public class ValueSetValidator extends BaseValidator {
     return ok;
   }
 
-  
+
 }

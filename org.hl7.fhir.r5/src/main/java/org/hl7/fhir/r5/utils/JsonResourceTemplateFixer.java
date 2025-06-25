@@ -17,6 +17,7 @@ import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
 @MarkedToMoveToAdjunctPackage
+@SuppressWarnings("checkstyle:systemout")
 public class JsonResourceTemplateFixer {
 
   public static void main(String[] args) throws JsonException, IOException {
@@ -123,7 +124,7 @@ public class JsonResourceTemplateFixer {
       checkJsonPrimitive(parent, name, value.asString());
     } else {
       // ignore?
-      System.out.println("What?");
+      // System.out.println("What?");
     }
   }
 

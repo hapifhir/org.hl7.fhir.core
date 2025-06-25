@@ -2076,8 +2076,8 @@ public class Immunization extends DomainResource {
       return (DateTimeType) this.occurrence;
     }
 
-    public boolean hasOccurrenceDateTimeType() { 
-      return this != null && this.occurrence instanceof DateTimeType;
+    public boolean hasOccurrenceDateTimeType() {
+        return this.occurrence instanceof DateTimeType;
     }
 
     /**
@@ -2091,8 +2091,8 @@ public class Immunization extends DomainResource {
       return (StringType) this.occurrence;
     }
 
-    public boolean hasOccurrenceStringType() { 
-      return this != null && this.occurrence instanceof StringType;
+    public boolean hasOccurrenceStringType() {
+        return this.occurrence instanceof StringType;
     }
 
     public boolean hasOccurrence() { 

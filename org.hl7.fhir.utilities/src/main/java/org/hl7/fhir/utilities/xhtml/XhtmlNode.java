@@ -78,6 +78,8 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   public static final String NBSP = Character.toString((char)0xa0);
   public static final String XMLNS = "http://www.w3.org/1999/xhtml";
   private static final String DECL_XMLNS = " xmlns=\""+XMLNS+"\"";
+  private static final String NS_SVG = "http://www.w3.org/2000/svg";
+  private static final String NS_XLINK = "http://www.w3.org/1999/xlink";
 
   private Location location;
   private NodeType nodeType;
@@ -238,6 +240,16 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   public XhtmlNode addTag(String name) {
     XhtmlNode node = makeTag(name);
     addChildNode(node);
+    return node;
+  }
+  
+  public XhtmlNode addTag(String name, XhtmlNode insertionPoint) {
+    XhtmlNode node = makeTag(name);
+    if (insertionPoint != null) {
+      addChildNode(getChildNodes().indexOf(insertionPoint), node);
+    } else {
+      addChildNode(node);
+    }
     return node;
   }
   
@@ -731,7 +743,9 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     XhtmlNode p = new XhtmlNode(NodeType.Element, "input");
     p.attribute("name", name);
     p.attribute("type", type);
-    p.attribute("placeholder", placeholder);
+    if (placeholder != null) {
+      p.attribute("placeholder", placeholder);
+    }
     p.attribute("size", Integer.toString(size));
     addChildNode(p);
     return p;
@@ -955,7 +969,10 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
 
   public XhtmlNode svg() {
-    return addTag("svg");
+    XhtmlNode svg = addTag("svg");
+    svg.setAttribute("xmlns", NS_SVG);
+    svg.setAttribute("xmlns:xlink", NS_XLINK);
+    return svg;
   }
 
 
@@ -1086,6 +1103,14 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return x;
   }
 
+  public XhtmlNode ahOrNot(String href, String title) {
+    if (href == null) {
+      return addTag("span").attributeNN("title", title);
+    } else {
+      return addTag("a").attribute("href", href).attributeNN("title", title);
+    }
+  }
+
 
   public void wbr() {
     addTag("wbr");
@@ -1095,8 +1120,6 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   protected int indexOfNode(XhtmlNode node) {
     return getChildNodes().indexOf(node);
   }
-  
-
   
   public int compareTo(XhtmlNode other) {
     return compare(this, other);
@@ -1203,6 +1226,122 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
   public void setCheckParaTree(boolean checkParaTree) {
     this.checkParaTree = checkParaTree;
+  }
+
+
+  public XhtmlNode id(String id) {
+    attribute("id", id);
+    return this;
+  }
+
+
+  public XhtmlNode supr(String tx) {
+    addTag("sup").tx(tx);
+    return this;
+  }
+
+  // -- SVG functions ------------
+
+  public XhtmlNode svgG(XhtmlNode insertionPoint) {
+    return addTag("g", insertionPoint);
+  }
+
+
+  public XhtmlNode svgRect(XhtmlNode insertionPoint) {
+    return addTag("rect", insertionPoint);
+  }
+
+
+  public XhtmlNode svgLine(XhtmlNode insertionPoint) {
+    return addTag("line", insertionPoint);
+  }
+
+
+  public XhtmlNode svgText(XhtmlNode insertionPoint) {
+    return addTag("text", insertionPoint).attribute("text-anchor", "middle"); // cause browsers just do that, but Inkscape doesn't
+  }
+
+
+  public XhtmlNode svgAx(String link) {
+    if (link == null) {
+      return this;
+    }
+    var a = addTag("a");
+    a.attribute("xlink:href", link);
+    return a;
+  }
+
+
+  public XhtmlNode svgTspan() {
+    return addTag("tspan");
+  }
+
+
+  public XhtmlNode svgPolygon(XhtmlNode insertionPoint) {
+    return addTag("polygon", insertionPoint);
+  }
+
+
+  public XhtmlNode htmlObject(double left, double top, double width, double height) {
+    var x = addTag("foreignObject");
+    x.attribute("x", Double.toString(left));
+    x.attribute("y", Double.toString(top));
+    x.attribute("width", Double.toString(width));
+    x.attribute("height", Double.toString(height));
+    return x;
+  }
+
+
+  public XhtmlNode svgPath(XhtmlNode insertionPoint) {
+    var x = addTag("path", insertionPoint);
+    return x;
+  }
+
+
+  public boolean hasContent() {
+    if (nodeType == NodeType.Text) {
+      return content != null && content.trim().length() > 0;
+    }
+    if (nodeType == NodeType.Element) {
+      for (XhtmlNode n : getChildNodes()) {
+        if (n.hasContent()) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public String getPathName() {
+    if (getName() == null) {
+      return getNodeType().toCode();      
+    } else {
+      return getName();
+    }
+  }
+
+
+  public int countByPathName(XhtmlNode node) {
+    int count = 0;
+    for (XhtmlNode t : getChildNodes()) {
+      if (t.getPathName().equals(node.getPathName())) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  public int indexByPathName(XhtmlNode node) {
+    int count = 0;
+    for (XhtmlNode t : getChildNodes()) {
+      if (t == node) {
+        return count;        
+      }
+      if (t.getPathName().equals(node.getPathName())) {
+        count++;
+      }
+    }
+    return count;
   }
 
 }

@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.With;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.*;
@@ -66,6 +67,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Grahame Grieve
  */
+@Slf4j
 public class FilesystemPackageCacheManager extends BasePackageCacheManager implements IPackageCacheManager {
 
   private final FilesystemPackageCacheManagerLocks locks;
@@ -244,7 +246,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       if (file.getName().endsWith(".lock")) {
         if (locks.getCacheLock().canLockFileBeHeldByThisProcess(file)) {
           String packageDirectoryName = file.getName().substring(0, file.getName().length() - 5);
-          log("Detected potential incomplete package installed in cache: " + packageDirectoryName + ". Attempting to delete");
+          log.info("Detected potential incomplete package installed in cache: " + packageDirectoryName + ". Attempting to delete");
 
           File packageDirectory = ManagedFileAccess.file(Utilities.path(cacheFolder, packageDirectoryName));
           if (packageDirectory.exists()) {
@@ -252,7 +254,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
             packageDirectory.delete();
           }
           file.delete();
-          log("Deleted potential incomplete package: " + packageDirectoryName);
+          log.info("Deleted potential incomplete package: " + packageDirectoryName);
         }
       }
     }
@@ -340,6 +342,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   public String getLatestVersion(String id) throws IOException {
+    id = stripAlias(id);
     for (PackageServer nextPackageServer : getPackageServers()) {
       // special case:
       if (!(Utilities.existsInList(id, CommonPackages.ID_PUBPACK, "hl7.terminology.r5") && PackageServer.SECONDARY_SERVER.equals(nextPackageServer.getUrl()))) {
@@ -366,6 +369,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   public String getLatestVersionFromCache(String id) throws IOException {
+    id = stripAlias(id);
     for (String f : Utilities.reverseSorted(cacheFolder.list())) {
       File cf = ManagedFileAccess.file(Utilities.path(cacheFolder, f));
       if (cf.isDirectory()) {
@@ -416,9 +420,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    * @throws IOException If the package cannot be removed
    */
   public void removePackage(String id, String version) throws IOException {
-    locks.getPackageLock(id + "#" + version).doWriteWithLock(() -> {
+    String sid = stripAlias(id);
+    locks.getPackageLock(sid + "#" + version).doWriteWithLock(() -> {
 
-      String f = Utilities.path(cacheFolder, id + "#" + version);
+      String f = Utilities.path(cacheFolder, sid + "#" + version);
         File ff = ManagedFileAccess.file(f);
         if (ff.exists()) {
           FileUtilities.atomicDeleteDirectory(f);
@@ -441,6 +446,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    */
   @Override
   public NpmPackage loadPackageFromCacheOnly(String id, @Nullable String version) throws IOException {
+    id = stripAlias(id);
 
     if (!Utilities.noString(version) && version.startsWith("file:")) {
       return loadPackageFromFile(id, version.substring(5));
@@ -526,31 +532,32 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    * Add an already fetched package to the cache
    */
   @Override
-  public NpmPackage addPackageToCache(final String id, final String version, final InputStream packageTgzInputStream, final String sourceDesc) throws IOException {
-    checkValidVersionString(version, id);
-    return locks.getPackageLock(id + "#" + version).doWriteWithLock(() -> {
+  public NpmPackage addPackageToCache(String id, final String version, final InputStream packageTgzInputStream, final String sourceDesc) throws IOException {
+    String sid = stripAlias(id);
+    checkValidVersionString(version, sid);
+    return locks.getPackageLock(sid + "#" + version).doWriteWithLock(() -> {
 
       String tempDir = Utilities.generateUniqueRandomUUIDPath(cacheFolder.getAbsolutePath());
 
       NpmPackage extractedNpm = NpmPackage.extractFromTgz(packageTgzInputStream, sourceDesc, tempDir, minimalMemory);
 
-      log("");
-      log("Installing " + id + "#" + version);
+      log.info("");
+      log.info("Installing " + sid + "#" + version);
 
-      if ((extractedNpm.name() != null && id != null && !id.equalsIgnoreCase(extractedNpm.name()))) {
-        if (!suppressErrors && (!id.equals("hl7.fhir.r5.core") && !id.equals("hl7.fhir.us.immds"))) {// temporary work around
-          throw new IOException("Attempt to import a mis-identified package. Expected " + id + ", got " + extractedNpm.name());
+      if ((extractedNpm.name() != null && sid != null && !sid.equalsIgnoreCase(extractedNpm.name()) && !sid.equalsIgnoreCase(extractedNpm.name()+"."+VersionUtilities.getNameForVersion(extractedNpm.fhirVersion())))) {
+        if (!suppressErrors && (!sid.equals("hl7.fhir.r5.core") && !sid.equals("hl7.fhir.us.immds"))) {// temporary work around
+          throw new IOException("Attempt to import a mis-identified package. Expected " + sid + ", got " + extractedNpm.name());
         }
       }
 
       NpmPackage npmPackage;
-      String packageRoot = Utilities.path(cacheFolder, id + "#" + version);
+      String packageRoot = Utilities.path(cacheFolder, sid + "#" + version);
       try {
-        if (!id.equals(extractedNpm.getNpm().asString("name")) || !version.equals(extractedNpm.getNpm().asString("version"))) {
-          if (!id.equals(extractedNpm.getNpm().asString("name"))) {
+        if (!sid.equals(extractedNpm.getNpm().asString("name")) || !version.equals(extractedNpm.getNpm().asString("version"))) {
+          if (!sid.equals(extractedNpm.getNpm().asString("name"))) {
             extractedNpm.getNpm().add("original-name", extractedNpm.getNpm().asString("name"));
             extractedNpm.getNpm().remove("name");
-            extractedNpm.getNpm().add("name", id);
+            extractedNpm.getNpm().add("name", sid);
           }
           if (!version.equals(extractedNpm.getNpm().asString("version"))) {
             extractedNpm.getNpm().add("original-version", extractedNpm.getNpm().asString("version"));
@@ -570,13 +577,13 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           try {
             FileUtilities.clearDirectory(packageRoot);
           } catch (Throwable t) {
-            log("Unable to clear directory: " + packageRoot + ": " + t.getMessage() + " - this may cause problems later");
+            log.info("Unable to clear directory: " + packageRoot + ": " + t.getMessage() + " - this may cause problems later");
           }
           FileUtilities.renameDirectory(tempDir, packageRoot);
 
           npmPackage = loadPackageInfo(packageRoot);
 
-          log(" done.");
+          log.info(" done.");
         } else {
           FileUtilities.clearDirectory(tempDir);
           ManagedFileAccess.file(tempDir).delete();
@@ -586,7 +593,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       } catch (Exception e) {
         try {
           // don't leave a half extracted package behind
-          log("Clean up package " + packageRoot + " because installation failed: " + e.getMessage());
+          log.info("Clean up package " + packageRoot + " because installation failed: " + e.getMessage());
           e.printStackTrace();
           FileUtilities.clearDirectory(packageRoot);
           ManagedFileAccess.file(packageRoot).delete();
@@ -599,14 +606,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }, lockParameters);
   }
 
-  private void log(String s) {
-    if (!silent) {
-      System.out.println(s);
-    }
-  }
-
   @Override
   public String getPackageUrl(String packageId) throws IOException {
+    packageId = stripAlias(packageId);
     String result = super.getPackageUrl(packageId);
     if (result == null) {
       result = ciBuildClient.getPackageUrl(packageId);
@@ -639,6 +641,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   @Override
   public NpmPackage loadPackage(String id, String version) throws FHIRException, IOException {
+    id = stripAlias(id);
     //ok, try to resolve locally
     if (!Utilities.noString(version) && version.startsWith("file:")) {
       return loadPackageFromFile(id, version.substring(5));
@@ -673,8 +676,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       version = "current";
     }
 
-    log("Installing " + id + "#" + (version == null ? "?" : version) + " to the package cache");
-    log("  Fetching:");
+    log.info("Installing " + id + "#" + (version == null ? "?" : version) + " to the package cache");
+    log.info("  Fetching:");
 
     // nup, don't have it locally (or it's expired)
     FilesystemPackageCacheManager.InputStreamWithSrc source;
@@ -758,7 +761,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     try {
       return ciBuildClient.isCurrent(id, npmPackage) ? npmPackage : null;
     } catch (Exception e) {
-      log("Unable to check package currency: " + id + ": " + id);
+      log.info("Unable to check package currency: " + id + ": " + id);
     }
     return npmPackage;
   }
@@ -858,6 +861,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
 
   public boolean packageExists(String id, String ver) throws IOException {
+    id = stripAlias(id);
     if (packageInstalled(id, ver)) {
       return true;
     }
@@ -870,6 +874,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   public boolean packageInstalled(String id, String version) {
+    id = stripAlias(id);
     for (NpmPackage p : temporaryPackages) {
       if (p.name().equals(id) && ("current".equals(version) || "dev".equals(version) || p.version().equals(version))) {
         return true;

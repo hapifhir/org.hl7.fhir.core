@@ -3,6 +3,8 @@ package org.hl7.fhir.validation.codesystem;
 import java.util.EnumSet;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
@@ -13,6 +15,7 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator.CodeValidationRule;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator.PropertyFilterType;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator.PropertyOperation;
@@ -25,8 +28,8 @@ public abstract class CodeSystemChecker extends BaseValidator {
   private boolean hasDisplay = false;
   protected List<ValidationMessage> errors;
   
-  protected CodeSystemChecker(IWorkerContext context, XVerExtensionManager xverManager, boolean debug, List<ValidationMessage> errors, ValidatorSession session) {
-    super(context, xverManager, debug, session);
+  protected CodeSystemChecker(IWorkerContext context, @Nonnull ValidatorSettings settings, XVerExtensionManager xverManager, List<ValidationMessage> errors, ValidatorSession session) {
+    super(context, settings, xverManager, session);
     this.errors = errors;
   }
   

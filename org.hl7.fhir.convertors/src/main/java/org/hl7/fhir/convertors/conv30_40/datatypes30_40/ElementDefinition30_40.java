@@ -66,8 +66,8 @@ public class ElementDefinition30_40 {
     if (src.hasMustSupport()) tgt.setMustSupportElement(Boolean30_40.convertBoolean(src.getMustSupportElement()));
     if (src.hasIsModifier()) tgt.setIsModifierElement(Boolean30_40.convertBoolean(src.getIsModifierElement()));
     if (tgt.getIsModifier()) {
-      String reason = org.hl7.fhir.dstu3.utils.ToolingExtensions.readStringExtension(src, VersionConvertorConstants.MODIFIER_REASON_EXTENSION);
-      if (Utilities.noString(reason)) reason = VersionConvertorConstants.MODIFIER_REASON_LEGACY;
+      String reason = org.hl7.fhir.dstu3.utils.ToolingExtensions.readStringExtension(src, VersionConvertorConstants.EXT_MODIFIER_REASON_EXTENSION);
+      if (Utilities.noString(reason)) reason = VersionConvertorConstants.EXT_MODIFIER_REASON_LEGACY;
       tgt.setIsModifierReason(reason);
     }
     if (src.hasIsSummary()) tgt.setIsSummaryElement(Boolean30_40.convertBoolean(src.getIsSummaryElement()));
@@ -120,8 +120,8 @@ public class ElementDefinition30_40 {
       tgt.addConstraint(convertElementDefinitionConstraintComponent(t));
     if (src.hasMustSupport()) tgt.setMustSupportElement(Boolean30_40.convertBoolean(src.getMustSupportElement()));
     if (src.hasIsModifier()) tgt.setIsModifierElement(Boolean30_40.convertBoolean(src.getIsModifierElement()));
-    if (src.hasIsModifierReason() && !VersionConvertorConstants.MODIFIER_REASON_LEGACY.equals(src.getIsModifierReason()))
-      org.hl7.fhir.dstu3.utils.ToolingExtensions.setStringExtension(tgt, VersionConvertorConstants.MODIFIER_REASON_EXTENSION, src.getIsModifierReason());
+    if (src.hasIsModifierReason() && !VersionConvertorConstants.EXT_MODIFIER_REASON_LEGACY.equals(src.getIsModifierReason()))
+      org.hl7.fhir.dstu3.utils.ToolingExtensions.setStringExtension(tgt, VersionConvertorConstants.EXT_MODIFIER_REASON_EXTENSION, src.getIsModifierReason());
     if (src.hasIsSummary()) tgt.setIsSummaryElement(Boolean30_40.convertBoolean(src.getIsSummaryElement()));
     if (src.hasBinding()) tgt.setBinding(convertElementDefinitionBindingComponent(src.getBinding()));
     for (org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionMappingComponent t : src.getMapping())

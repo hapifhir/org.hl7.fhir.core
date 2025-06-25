@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -37,6 +38,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Title;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class WebTemplateRenderer extends ResourceRenderer {
   
   public WebTemplateRenderer(RenderingContext context) { 
@@ -63,7 +65,7 @@ public class WebTemplateRenderer extends ResourceRenderer {
     if (context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics()) { 
       model.setDocoImg(HierarchicalTableGenerator.help16AsData());     
     } else { 
-      model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "help16.png")); 
+      model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), "help16.png")); 
     }  
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Name"), (context.formatPhrase(RenderingContext.QUEST_LINK)), null, 0)); 
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Card."), (context.formatPhrase(RenderingContext.QUEST_TEXTFOR)), null, 0)); 
@@ -219,7 +221,7 @@ public class WebTemplateRenderer extends ResourceRenderer {
         // what is this?
         break;
       default: 
-        System.out.println("?");
+        log.warn("?");
       }
       cell.addPiece(gen.new Piece(null, " ", null));
       cell.addPiece(gen.new Piece(link, pfx+value, hint));      

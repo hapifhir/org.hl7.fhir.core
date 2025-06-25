@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.elementmodel;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -8,9 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.units.qual.cd;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -45,6 +48,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 /**
  * in here:
@@ -60,6 +64,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
  *  importFromTranslations =  -langTransform import -src {src} -tgt {tgt} -dest {dest}
  */
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class LanguageUtils {
 
   public static final List<String> TRANSLATION_SUPPLEMENT_RESOURCE_TYPES = Arrays.asList("CodeSystem", "StructureDefinition", "Questionnaire");
@@ -217,25 +222,25 @@ public class LanguageUtils {
    * */
   private int importFromTranslationsForSD(Object object, Element resource, List<TranslationUnit> translations, Set<TranslationUnit> usedUnits) {
     int r = 0;
-    r = r + checkForTranslations(translations, usedUnits, resource, "name", "name");
-    r = r + checkForTranslations(translations, usedUnits, resource, "title", "title");
-    r = r + checkForTranslations(translations, usedUnits, resource, "publisher", "publisher");
+    r = r + checkForTranslations(translations, usedUnits, resource, "StructureDefinition.name", "name");
+    r = r + checkForTranslations(translations, usedUnits, resource, "StructureDefinition.title", "title");
+    r = r + checkForTranslations(translations, usedUnits, resource, "StructureDefinition.publisher", "publisher");
     for (Element cd : resource.getChildrenByName("contact")) {
-      r = r + checkForTranslations(translations, usedUnits, cd, "contact.name", "name");
+      r = r + checkForTranslations(translations, usedUnits, cd, "StructureDefinition.contact.name", "name");
     }
-    r = r + checkForTranslations(translations, usedUnits, resource, "purpose", "purpose");
-    r = r + checkForTranslations(translations, usedUnits, resource, "copyright", "copyright");
+    r = r + checkForTranslations(translations, usedUnits, resource, "StructureDefinition.purpose", "purpose");
+    r = r + checkForTranslations(translations, usedUnits, resource, "StructureDefinition.copyright", "copyright");
     Element diff = resource.getNamedChild("differential");
     if (diff != null) {
       for (Element ed : diff.getChildrenByName("element")) {
         String id = ed.getNamedChildValue("id");
-        r = r + checkForTranslations(translations, usedUnits, ed, id+"/label", "label");
-        r = r + checkForTranslations(translations, usedUnits, ed, id+"/short", "short");
-        r = r + checkForTranslations(translations, usedUnits, ed, id+"/definition", "definition");
-        r = r + checkForTranslations(translations, usedUnits, ed, id+"/comment", "comment");
-        r = r + checkForTranslations(translations, usedUnits, ed, id+"/requirements", "requirements");
-        r = r + checkForTranslations(translations, usedUnits, ed, id+"/meaningWhenMissing", "meaningWhenMissing");
-        r = r + checkForTranslations(translations, usedUnits, ed, id+"/orderMeaning", "orderMeaning");
+        r = r + checkForTranslations(translations, usedUnits, ed, "StructureDefinition.element."+id+"/label", "label");
+        r = r + checkForTranslations(translations, usedUnits, ed, "StructureDefinition.element."+id+"/short", "short");
+        r = r + checkForTranslations(translations, usedUnits, ed, "StructureDefinition.element."+id+"/definition", "definition");
+        r = r + checkForTranslations(translations, usedUnits, ed, "StructureDefinition.element."+id+"/comment", "comment");
+        r = r + checkForTranslations(translations, usedUnits, ed, "StructureDefinition.element."+id+"/requirements", "requirements");
+        r = r + checkForTranslations(translations, usedUnits, ed, "StructureDefinition.element."+id+"/meaningWhenMissing", "meaningWhenMissing");
+        r = r + checkForTranslations(translations, usedUnits, ed, "StructureDefinition.element."+id+"/orderMeaning", "orderMeaning");
         //      for (ElementDefinitionConstraintComponent con : ed.getConstraint()) {
         //        addToList(list, lang, con, ed.getId()+"/constraint", "human", con.getHumanElement());
         //      }
@@ -280,20 +285,46 @@ public class LanguageUtils {
         for (TranslationUnit translation : tlist) {
           t++;
           if (!handleAsSpecial(parent, element, translation)) {
-            ToolingExtensions.setLanguageTranslation(e, translation.getLanguage(), translation.getTgtText());
             usedUnits.add(translation);
+            if (translation.getTgtText() != null) {
+              ToolingExtensions.setLanguageTranslation(e, translation.getLanguage(), translation.getTgtText());
+            } else {
+              log.warn("?");
+            }
           }
         }
       }
     }
     for (Property c : element.children()) {
       for (Base v : c.getValues()) {
-        if (!c.getName().equals("designation")) {
-          t = t + importResourceFromTranslations(element, v, translations, usedUnits, path+"."+c.getName());
+        if (!c.getName().equals("designation") && !isTranslation(v)) {
+          t = t + importResourceFromTranslations(element, v, translations, usedUnits, genPath(c, v, path, c.getName()));
         }
       }
     }
     return t;
+  }
+
+  private String genPath(Property c, Base v, String path, String name) {
+    // special cases: recursion
+    if ("ImplementationGuide.definition.page".equals(path) && "page".equals(name)) {
+      return path;
+    }
+    if ("ValueSet.expansion.contains".equals(path) && "contains".equals(name)) {
+      return path;
+    }
+    if ("ValueSet.expansion.contains".equals(path) && "contains".equals(name)) {
+      return path;
+    }
+    if (v.isResource() && !"contained".equals(name)) {
+      return v.fhirType();
+    } else {
+      return path+"."+name;
+    }
+  }
+
+  private boolean isTranslation(Base element) {
+    return "Extension".equals(element.fhirType()) && element.getChildByName("url").hasValues()  && ToolingExtensions.EXT_TRANSLATION.equals(element.getChildByName("url").getValues().get(0).primitiveValue());
   }
 
   private boolean handleAsSpecial(Base parent, Base element, TranslationUnit translation) {
@@ -301,13 +332,14 @@ public class LanguageUtils {
   }
 
   private boolean isTranslatable(Base element, String path) {
-    return Utilities.existsInList(element.fhirType(), "string", "markdown");
+    return (Utilities.existsInList(element.fhirType(), "string", "markdown") 
+        || isTranslatable(path)) && !isExemptFromTranslations(path);
   }
 
   private int importFromTranslations(String path, Element parent, Element element, List<TranslationUnit> translations, Set<TranslationUnit> usedUnits) {
     String npath = pathForElement(path, element);
     int t = 0;
-    if (element.isPrimitive() && isTranslatable(element)) {
+    if (element.isPrimitive() && isTranslatable(element) && !isExemptFromTranslations(npath)) {
       String base = element.primitiveValue();
       if (base != null) {
         Set<TranslationUnit> tlist = findTranslations(npath, base, translations);
@@ -415,7 +447,7 @@ public class LanguageUtils {
   }
 
   public static boolean langsMatch(String dstLang, String srcLang) {
-    return dstLang == null || srcLang == null ? false : dstLang.startsWith(srcLang) || "*".equals(srcLang);
+    return dstLang == null || srcLang == null ? Utilities.existsInList(srcLang, "en", "en-US") : dstLang.startsWith(srcLang) || "*".equals(srcLang);
   }
 
   public void fillSupplement(CodeSystem csSrc, CodeSystem csDst, List<TranslationUnit> list) {
@@ -522,7 +554,9 @@ public class LanguageUtils {
       if (res.hasUserData(UserDataNames.LANGUTILS_ORPHAN)) {
         List<TranslationUnit> orphans = (List<TranslationUnit>) res.getUserData(UserDataNames.LANGUTILS_ORPHAN);
         for (TranslationUnit t : orphans) {
-          list.add(new TranslationUnit(lang, "!!"+t.getId(), t.getContext(), t.getSrcText(), t.getTgtText()));
+          if (!hasInList(list, t.getId(), t.getSrcText())) {
+            list.add(new TranslationUnit(lang, "!!"+t.getId(), t.getContext(), t.getSrcText(), t.getTgtText()));
+          }
         }
       }
     } else {
@@ -534,7 +568,9 @@ public class LanguageUtils {
       if (cs.hasUserData(UserDataNames.LANGUTILS_ORPHAN)) {
         List<TranslationUnit> orphans = (List<TranslationUnit>) cs.getUserData(UserDataNames.LANGUTILS_ORPHAN);
         for (TranslationUnit t : orphans) {
-          list.add(new TranslationUnit(lang, "!!"+t.getId(), t.getContext(), t.getSrcText(), t.getTgtText()));
+          if (!hasInList(list, t.getId(), t.getSrcText())) {
+            list.add(new TranslationUnit(lang, "!!"+t.getId(), t.getContext(), t.getSrcText(), t.getTgtText()));
+          }
         }
       }
     }
@@ -542,30 +578,30 @@ public class LanguageUtils {
   }
 
   private void generateTranslations(List<TranslationUnit> list, StructureDefinition sd, String lang) {
-    addToList(list, lang, sd, "name", "name", sd.getNameElement());
-    addToList(list, lang, sd, "title", "title", sd.getTitleElement());
-    addToList(list, lang, sd, "publisher", "publisher", sd.getPublisherElement());
+    addToList(list, lang, sd, "StructureDefinition.name", "name", sd.getNameElement());
+    addToList(list, lang, sd, "StructureDefinition.title", "title", sd.getTitleElement());
+    addToList(list, lang, sd, "StructureDefinition.publisher", "publisher", sd.getPublisherElement());
     for (ContactDetail cd : sd.getContact()) {
-      addToList(list, lang, cd, "contact.name", "name", cd.getNameElement());
+      addToList(list, lang, cd, "StructureDefinition.contact.name", "name", cd.getNameElement());
     }
-    addToList(list, lang, sd, "purpose", "purpose", sd.getPurposeElement());
-    addToList(list, lang, sd, "copyright", "copyright", sd.getCopyrightElement());
+    addToList(list, lang, sd, "StructureDefinition.purpose", "purpose", sd.getPurposeElement());
+    addToList(list, lang, sd, "StructureDefinition.copyright", "copyright", sd.getCopyrightElement());
     for (ElementDefinition ed : sd.getDifferential().getElement()) {
-      addToList(list, lang, ed, ed.getId()+"/label", "label", ed.getLabelElement());
-      addToList(list, lang, ed, ed.getId()+"/short", "short", ed.getShortElement());
-      addToList(list, lang, ed, ed.getId()+"/definition", "definition", ed.getDefinitionElement());
-      addToList(list, lang, ed, ed.getId()+"/comment", "comment", ed.getCommentElement());
-      addToList(list, lang, ed, ed.getId()+"/requirements", "requirements", ed.getRequirementsElement());
-      addToList(list, lang, ed, ed.getId()+"/meaningWhenMissing", "meaningWhenMissing", ed.getMeaningWhenMissingElement());
-      addToList(list, lang, ed, ed.getId()+"/orderMeaning", "orderMeaning", ed.getOrderMeaningElement());
+      addToList(list, lang, ed, "StructureDefinition.element."+ed.getId()+"/label", "label", ed.getLabelElement());
+      addToList(list, lang, ed, "StructureDefinition.element."+ed.getId()+"/short", "short", ed.getShortElement());
+      addToList(list, lang, ed, "StructureDefinition.element."+ed.getId()+"/definition", "definition", ed.getDefinitionElement());
+      addToList(list, lang, ed, "StructureDefinition.element."+ed.getId()+"/comment", "comment", ed.getCommentElement());
+      addToList(list, lang, ed, "StructureDefinition.element."+ed.getId()+"/requirements", "requirements", ed.getRequirementsElement());
+      addToList(list, lang, ed, "StructureDefinition.element."+ed.getId()+"/meaningWhenMissing", "meaningWhenMissing", ed.getMeaningWhenMissingElement());
+      addToList(list, lang, ed, "StructureDefinition.element."+ed.getId()+"/orderMeaning", "orderMeaning", ed.getOrderMeaningElement());
       for (ElementDefinitionConstraintComponent con : ed.getConstraint()) {
-        addToList(list, lang, con, ed.getId()+"/constraint", "human", con.getHumanElement());
+        addToList(list, lang, con, "StructureDefinition.element."+ed.getId()+"/constraint", "human", con.getHumanElement());
       }
       if (ed.hasBinding()) {
-        addToList(list, lang, ed.getBinding(), ed.getId()+"/b/desc", "description", ed.getBinding().getDescriptionElement());
+        addToList(list, lang, ed.getBinding(), "StructureDefinition.element."+ed.getId()+"/b/desc", "description", ed.getBinding().getDescriptionElement());
         for (ElementDefinitionBindingAdditionalComponent ab : ed.getBinding().getAdditional()) {
-          addToList(list, lang, ab, ed.getId()+"/ab/doco", "documentation", ab.getDocumentationElement());
-          addToList(list, lang, ab, ed.getId()+"/ab/short", "shortDoco", ab.getShortDocoElement());
+          addToList(list, lang, ab, "StructureDefinition.element."+ed.getId()+"/ab/doco", "documentation", ab.getDocumentationElement());
+          addToList(list, lang, ab, "StructureDefinition.element."+ed.getId()+"/ab/short", "shortDoco", ab.getShortDocoElement());
         }
       }
     }
@@ -573,7 +609,9 @@ public class LanguageUtils {
 
   private void addToList(List<TranslationUnit> list, String lang, Base ctxt, String name, String propName, DataType value) {
     if (value != null && value.hasPrimitiveValue()) {
-      list.add(new TranslationUnit(lang, name, ctxt.getNamedProperty(propName).getDefinition(), value.primitiveValue(), value.getTranslation(lang)));
+      if (!hasInList(list, name, value.primitiveValue())) {
+        list.add(new TranslationUnit(lang, name, ctxt.getNamedProperty(propName).getDefinition(), value.primitiveValue(), value.getTranslation(lang)));
+      }
     }
     
   }
@@ -603,14 +641,16 @@ public class LanguageUtils {
         break;
       }
     }
-    // not sure what to do with context?
-    if (existing == null) {
-      list.add(new TranslationUnit(lang, id, null, srcText, null));
-    } else if (srcText.equals(existing.getSrcText())) {
-      list.add(new TranslationUnit(lang, id, null, srcText, existing.getTgtText()));
-    } else {
-      list.add(new TranslationUnit(lang, id, null, srcText, "!!"+existing.getTgtText()).setOriginal(existing.getSrcText()));
-    }    
+    if (!hasInList(list, id, srcText)) {
+      // not sure what to do with context?
+      if (existing == null) {
+        list.add(new TranslationUnit(lang, id, null, srcText, null));
+      } else if (srcText.equals(existing.getSrcText())) {
+        list.add(new TranslationUnit(lang, id, null, srcText, existing.getTgtText()));
+      } else {
+        list.add(new TranslationUnit(lang, id, null, srcText, "!!"+existing.getTgtText()).setOriginal(existing.getSrcText()));
+      }
+    }
   }
   
   private String getDefinition(ConceptDefinitionComponent cd) {
@@ -630,19 +670,84 @@ public class LanguageUtils {
 
   private void generateTranslations(Element e, String lang, TranslationUnitCollection list, String path) {
     String npath = pathForElement(path, e);
-    if (e.getProperty().isTranslatable()) {
-      String id = npath; // .getProperty().getDefinition().getPath();
+    if ((e.getProperty().isTranslatable() || isTranslatable(e.getProperty().getDefinition().getBase().getPath())) 
+        && !isExemptFromTranslations(e.getProperty().getDefinition().getBase().getPath())) {
+      String id = e.getProperty().getDefinition().getBase().getPath(); // .getProperty().getDefinition().getPath();
       String context = e.getProperty().getDefinition().getDefinition();
       String src = e.primitiveValue();
       String tgt = getTranslation(e, lang);
-      list.add(new TranslationUnit(lang, id, context, src, tgt));
+      if (!hasInList(list.list, id, src)) {
+        list.add(new TranslationUnit(lang, id, context, src, tgt));
+      }
     }
     if (e.hasChildren()) {
       for (Element c : e.getChildren()) {
         generateTranslations(c, lang, list, npath);
       }
     }
-    
+  }
+
+  private boolean hasInList(List<TranslationUnit> list, String id, String src) {
+    for (TranslationUnit t : list) {
+      if (t.getId() != null && t.getId().equals(id) && t.getSrcText()!= null && t.getSrcText().equals(src)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * override specifications
+   * 
+   * @param path
+   * @return
+   */
+  private boolean isTranslatable(String path) {
+    return Utilities.existsInList(path, "TestCases.publisher",
+        "TestCases.contact.telecom.value",
+        "TestCases.definition",
+        "TestCases.parameter.name",
+        "TestCases.parameter.description",
+        "TestCases.scope.description ",
+        "TestCases.dependency.description",
+        "TestCases.mode.description",
+        "TestCases.suite",
+        "TestCases.suite.name",
+        "TestCases.suite.description",
+        "TestCases.suite.test",
+        "TestCases.suite.test.name",
+        "TestCases.suite.test.description",
+        "TestCases.suite.test.assert.human",
+        "ActorDefinition.title",
+        "ActorDefinition.description",
+        "ActorDefinition.purpose",
+        "ActorDefinition.copyright",
+        "ActorDefinition.copyrightLabel",
+        "ActorDefinition.documentation",
+        "Requirements.title",
+        "Requirements.publisher",
+        "Requirements.description",
+        "Requirements.purpose",
+        "Requirements.copyright",
+        "Requirements.copyrightLabel",
+        "Requirements.statement.label",
+        "Requirements.statement.requirement");    
+  }
+
+  private boolean isExemptFromTranslations(String path) {
+    if (path.endsWith(".reference")) {
+      return true;
+    }
+    return Utilities.existsInList(path, 
+        "ImplementationGuide.definition.parameter.value", "ImplementationGuide.dependsOn.version", "ImplementationGuide.dependsOn.id",
+        "CanonicalResource.name", 
+        "CapabilityStatement.rest.resource.searchRevInclude", "CapabilityStatement.rest.resource.searchInclude", "CapabilityStatement.rest.resource.searchParam.name",
+        "SearchParameter.expression", "SearchParameter.xpath",
+        "ExampleScenario.actor.actorId", "ExampleScenario.instance.resourceId", "ExampleScenario.instance.containedInstance.resourceId", "ExampleScenario.instance.version.versionId", 
+          "ExampleScenario.process.step.operation.number", "ExampleScenario.process.step.operation.initiator", "ExampleScenario.process.step.operation.receiver",
+        "ExampleScenario.process.step.operation.number", "ExampleScenario.process.step.operation.initiator", "ExampleScenario.process.step.operation.receiver",
+        "OperationDefinition.parameter.max", "OperationDefinition.overload.parameterName",
+        "StructureMap.group.rule.source.type", "StructureMap.group.rule.source.element", "StructureMap.group.rule.target.element");
   }
 
   private String getTranslation(Element e, String lang) {
@@ -669,22 +774,101 @@ public class LanguageUtils {
     return null;
   }
  
-  public boolean switchLanguage(Element e, String lang) {
+  public boolean switchLanguage(Base r, String lang, boolean markLanguage, boolean contained) {
+    boolean changed = false;
+    if (r.isPrimitive()) {
+
+      PrimitiveType<?> dt = (PrimitiveType<?>) r;
+      String cnt = ToolingExtensions.getLanguageTranslation(dt, lang); 
+      dt.removeExtension(ToolingExtensions.EXT_TRANSLATION);
+      if (cnt != null) {
+        dt.setValueAsString(cnt);
+        changed = true;
+      }
+    }
+
+    if (r.fhirType().equals("Narrative")) {
+      Base div = r.getChildValueByName("div");
+      Base status = r.getChildValueByName("status");
+
+      XhtmlNode xhtml = div.getXhtml();
+      xhtml = adjustToLang(xhtml, lang, status == null ? null : status.primitiveValue());
+      if (xhtml == null) {
+        r.removeChild("div", div);
+      } else {
+        div.setXhtml(xhtml);
+      }
+    }
+    for (Property p : r.children()) {
+      for (Base c : p.getValues()) {
+        changed = switchLanguage(c, lang, markLanguage, p.getName().equals("contained")) || changed;
+      }
+    }
+    if (markLanguage && r.isResource() && !contained) {
+      Resource res = (Resource) r;
+      res.setLanguage(lang);
+      changed = true;
+    }
+    return changed;
+  }
+
+  private XhtmlNode adjustToLang(XhtmlNode xhtml, String lang, String status) {
+    if (xhtml == null) {
+      return null;
+    }
+    //see if there's a language specific section
+    for (XhtmlNode div : xhtml.getChildNodes()) {
+      if ("div".equals(div.getName())) {
+        String l = div.hasAttribute("lang") ? div.getAttribute("lang") : div.getAttribute("xml:lang");
+        if (lang.equals(l)) {
+          return div;
+        }       
+      }
+    }
+    // if the root language is correct
+    // this isn't first because a narrative marked for one language might have other language subsections
+    String l = xhtml.hasAttribute("lang") ? xhtml.getAttribute("lang") : xhtml.getAttribute("xml:lang");
+    if (lang.equals(l)) {
+      return xhtml;
+    }
+    // if the root language is null and the status is not additional
+    // it can be regenerated
+    if (l == null && Utilities.existsInList(status, "generated", "extensions")) {
+      return null;
+    }    
+    // well, really, not much we can do...
+    return xhtml;
+  }
+
+  public boolean switchLanguage(Element e, String lang, boolean markLanguage) throws IOException {
+    boolean changed = false;
     if (e.getProperty().isTranslatable()) {
       String cnt = getTranslation(e, lang);
       e.removeExtension(ToolingExtensions.EXT_TRANSLATION);
       if (cnt != null) {
         e.setValue(cnt);
+        changed = true;
+      }
+    }
+    if (e.fhirType().equals("Narrative") && e.hasChild("div")) {
+      XhtmlNode xhtml = e.getNamedChild("div").getXhtml();
+      xhtml = adjustToLang(xhtml, lang, e.getNamedChildValue("status"));
+      if (xhtml == null) {
+        e.removeChild("div");
+      } else {
+        e.getNamedChild("div").setXhtml(xhtml);
       }
     }
     if (e.hasChildren()) {
       for (Element c : e.getChildren()) {
-        if (!switchLanguage(c, lang)) {
-          return false;
-        }
+        changed = switchLanguage(c, lang, markLanguage) || changed;
       }
     }
-    return true;
+    if (markLanguage && e.isResource() && e.getSpecial() != SpecialElement.CONTAINED) {
+      e.setChildValue("language", lang);
+      changed = true;
+    }
+    return changed;
   }
 
   public boolean hasTranslation(org.hl7.fhir.r5.model.Element e, String lang) {
@@ -711,5 +895,20 @@ public class LanguageUtils {
       }
     }
     return e.primitiveValue();
+  }
+
+  public Element copyToLanguage(Element element, String lang, boolean markLanguage) throws IOException {
+    Element result = (Element) element.copy();
+    switchLanguage(result, lang, markLanguage);
+    return result;
+  }
+
+  public Resource copyToLanguage(Resource res, String lang, boolean markLanguage) {
+    if (res == null) {
+      return null;
+    }
+    Resource r = res.copy();
+    switchLanguage(r, lang, markLanguage, false);    
+    return r;
   }
 }

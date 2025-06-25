@@ -7,9 +7,11 @@ import java.io.IOException;
 
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.utilities.IniFile;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@SuppressWarnings("checkstyle:systemout")
 public class OIDAssigner {
 
 
@@ -26,7 +28,9 @@ public class OIDAssigner {
   private void process(IniFile oids, File folder, String version) {
     for (File f : folder.listFiles()) {
       if (f.isDirectory()) {
-        process(oids, f, version);
+        if (!Utilities.existsInList(f.getName(), "invariant-tests")) {
+          process(oids, f, version);
+        }
       } else if (f.getName().endsWith(".xml")) {
         processFile(oids, f, version, FhirFormat.XML);
       } else if (f.getName().endsWith(".json")) {
@@ -86,7 +90,10 @@ public class OIDAssigner {
         parser.setOutputStyle(org.hl7.fhir.dstu2.formats.IParser.OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), r);
       }
     } catch (Exception e) {
-      System.out.println("Erro processing "+f.getAbsolutePath()+": "+e.getMessage());
+      if (!e.getMessage().contains("wrong namespace")) {
+        System.out.println("Error processing "+f.getAbsolutePath()+": "+e.getMessage());
+        e.printStackTrace();
+      }
     }    
   }
 
@@ -146,7 +153,10 @@ public class OIDAssigner {
         parser.setOutputStyle(org.hl7.fhir.dstu3.formats.IParser.OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), r);
       }
     } catch (Exception e) {
-      System.out.println("Erro processing "+f.getAbsolutePath()+": "+e.getMessage());
+      if (!e.getMessage().contains("wrong namespace")) {
+        System.out.println("Error processing "+f.getAbsolutePath()+": "+e.getMessage());
+        e.printStackTrace();
+      }
     }    
   }
 
@@ -211,7 +221,10 @@ public class OIDAssigner {
         parser.setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), r);
       }
     } catch (Exception e) {
-      System.out.println("Erro processing "+f.getAbsolutePath()+": "+e.getMessage());
+      if (!e.getMessage().contains("wrong namespace")) {
+        System.out.println("Error processing "+f.getAbsolutePath()+": "+e.getMessage());
+        e.printStackTrace();
+      }
     }    
   }
 
@@ -238,7 +251,10 @@ public class OIDAssigner {
         parser.setOutputStyle(org.hl7.fhir.r4b.formats.IParser.OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), r);
       }
     } catch (Exception e) {
-      System.out.println("Erro processing "+f.getAbsolutePath()+": "+e.getMessage());
+      if (!e.getMessage().contains("wrong namespace")) {
+        System.out.println("Error processing "+f.getAbsolutePath()+": "+e.getMessage());
+        e.printStackTrace();
+      }
     }    
   }
 
@@ -250,14 +266,28 @@ public class OIDAssigner {
       org.hl7.fhir.r5.model.Resource r = parser.parse(ManagedFileAccess.inStream(f));
       if (r instanceof org.hl7.fhir.r5.model.CanonicalResource) { 
         org.hl7.fhir.r5.model.CanonicalResource cs = (org.hl7.fhir.r5.model.CanonicalResource) r;
+        cs.getIdentifier().removeIf(id -> Utilities.existsInList(id.getValue(), 
+            "urn:oid:2.16.840.1.113883.4.642.3.3343","urn:oid:2.16.840.1.113883.4.642.8.4","urn:oid:2.16.840.1.113883.4.642.10.7","urn:oid:2.16.840.1.113883.4.642.11.11","urn:oid:2.16.840.1.113883.4.642.17.4","urn:oid:2.16.840.1.113883.4.642.30.5","urn:oid:2.16.840.1.113883.4.642.34.1"));
         boolean hasOid = false;
         for (org.hl7.fhir.r5.model.Identifier id : cs.getIdentifier()) {
           if (isOid(id)) {
             hasOid = true;
           }
         }
-        if (!hasOid) {
-          String oid = getOid(oids, r.fhirType(), cs.getUrl());
+        String url = cs.getUrl();
+        if (url == null) {
+          String id = cs.getId();
+          if (id == null && Utilities.existsInList(cs.fhirType(), "CodeSystem", "ValueSet")) {
+            id = f.getName();
+            id = id.substring(0, id.lastIndexOf("."));
+            id = id.replace(cs.fhirType().toLowerCase()+"-", "");
+          }
+          if (id != null) {
+            url = "http://hl7.org/fhir/"+cs.fhirType()+"/"+id;
+          }
+        }
+        if (!hasOid && url != null) {
+          String oid = getOid(oids, r.fhirType(), url);
           cs.getIdentifier().add(new org.hl7.fhir.r5.model.Identifier().setSystem("urn:ietf:rfc:3986").setValue("urn:oid:"+oid));
           save = true;
         }
@@ -266,7 +296,10 @@ public class OIDAssigner {
         parser.setOutputStyle(org.hl7.fhir.r5.formats.IParser.OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), r);
       }
     } catch (Exception e) {
-      System.out.println("Erro processing "+f.getAbsolutePath()+": "+e.getMessage());
+      if (!e.getMessage().contains("wrong namespace")) {
+        System.out.println("Error processing "+f.getAbsolutePath()+": "+e.getMessage());
+        e.printStackTrace();
+      }
     }    
   }
  
@@ -299,7 +332,7 @@ public class OIDAssigner {
     if (oid != null) {
       return oid;
     }
-    int key = oids.getIntegerProperty("Key", rt);
+    int key = oids.hasProperty("Key", rt) ? oids.getIntegerProperty("Key", rt) : 0;
     key++;
     oid = root+"."+key;
     oids.setIntegerProperty("Key", rt, key, null);

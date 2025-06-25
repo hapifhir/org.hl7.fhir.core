@@ -1,13 +1,10 @@
 package org.hl7.fhir.convertors.misc;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,26 +16,27 @@ import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.model.CapabilityStatement;
 import org.hl7.fhir.r4.model.CodeSystem;
+import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r4.model.IntegerType;
 import org.hl7.fhir.r4.model.OperationOutcome;
 import org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r4.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r4.model.Parameters;
+import org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r4.model.UriType;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionComponent;
-import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
 import org.hl7.fhir.r4.terminologies.JurisdictionUtilities;
+import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
 import org.hl7.fhir.utilities.CSVReader;
+import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
-import org.hl7.fhir.utilities.json.model.JsonArray;
-import org.hl7.fhir.utilities.json.model.JsonObject;
-import org.hl7.fhir.utilities.json.model.JsonProperty;
 
+@SuppressWarnings("checkstyle:systemout")
 public class VSACImporter extends OIDBasedValueSetImporter {
-  
+
   public VSACImporter() throws FHIRException, IOException {
     super();
     init();
@@ -64,15 +62,16 @@ public class VSACImporter extends OIDBasedValueSetImporter {
     json.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "vsac-capability-statement.json")), cs);
 
     System.out.println("CodeSystems");
-    CodeSystem css = fhirToolingClient.fetchResource(CodeSystem.class, "CDCNHSN");
-    json.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "CodeSystem-CDCNHSN.json")), css);
-    css = fhirToolingClient.fetchResource(CodeSystem.class, "CDCREC");
+    CodeSystem css = fhirToolingClient.fetchResource(CodeSystem.class, "CDCREC");
+    checkHierarchy(fhirToolingClient, css);
     json.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "CodeSystem-CDCREC.json")), css);
+    css = fhirToolingClient.fetchResource(CodeSystem.class, "CDCNHSN");
+    json.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "CodeSystem-CDCNHSN.json")), css);
     css = fhirToolingClient.fetchResource(CodeSystem.class, "HSLOC");
     json.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "CodeSystem-HSLOC.json")), css);
     css = fhirToolingClient.fetchResource(CodeSystem.class, "SOP");
     json.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "CodeSystem-SOP.json")), css);
-    
+
     System.out.println("Loading");
     List<String> oids = new ArrayList<>();
     List<String> allOids = new ArrayList<>();
@@ -106,7 +105,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
           long elapsed = System.currentTimeMillis() - t;
           System.out.println("");
           System.out.println(i+": "+j+" ("+((j * 100) / i)+"%) @ "+Utilities.describeDuration(elapsed)
-              +", "+(elapsed/100000)+"sec/vs, estimated "+Utilities.describeDuration(estimate(i, oids.size(), tt))+" remaining");
+          +", "+(elapsed/100000)+"sec/vs, estimated "+Utilities.describeDuration(estimate(i, oids.size(), tt))+" remaining");
           t = System.currentTimeMillis();
         }
       } catch (Exception e) {
@@ -115,7 +114,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
         errs.put(oid, e.getMessage());
       }
     }
-    
+
     OperationOutcome oo = new OperationOutcome();
     for (String oid : errs.keySet()) {
       oo.addIssue().setSeverity(IssueSeverity.ERROR).setCode(IssueType.EXCEPTION).setDiagnostics(errs.get(oid)).addLocation(oid);
@@ -123,6 +122,86 @@ public class VSACImporter extends OIDBasedValueSetImporter {
     new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "other", "OperationOutcome-vsac-errors.json")), oo);
     System.out.println();
     System.out.println("Done. " + i + " ValueSets in "+Utilities.describeDuration(System.currentTimeMillis() - tt));
+  }
+
+  private void checkHierarchy(FHIRToolingClient client, CodeSystem css) {
+    IniFile ini = new IniFile("/Users/grahamegrieve/temp/vsac-cdc-rec.ini");
+    System.out.println("hierarchy:");
+    List<ConceptDefinitionComponent> codes = new ArrayList<>();
+    int c = 0;
+    List<ConceptDefinitionComponent> list = new ArrayList<>();
+    Map<String,ConceptDefinitionComponent> map = new HashMap<>();
+    for (ConceptDefinitionComponent cc : css.getConcept()) {
+      list.add(cc);
+      map.put(cc.getCode(), cc);
+    }
+    css.getConcept().clear();
+    for (ConceptDefinitionComponent cc : list) {
+      String code = cc.getCode();
+      ConceptDefinitionComponent parent = map.get(ini.getStringProperty("parents-"+css.getVersion(), code));
+      if (parent == null) {
+        parent = findParent(client, css, css.getConcept(), code);
+        if (parent == null) {
+          ini.setStringProperty("parents-"+css.getVersion(), code, "null", null);
+        } else {
+          ini.setStringProperty("parents-"+css.getVersion(), code, parent.getCode(), null);
+        }
+        ini.save();
+      }
+      if (parent == null) {
+        css.getConcept().add(cc);
+      } else {
+        parent.getConcept().add(cc);        
+      }
+
+      codes.add(0, cc);
+      c++;
+      if (c % 20 == 0) {
+        System.out.print("."+c);
+      }
+    }    
+    System.out.println("Done. "+c+" concepts");
+  }
+
+  private ConceptDefinitionComponent findParent(FHIRToolingClient client, CodeSystem css, List<ConceptDefinitionComponent> concepts, String code) {
+    if (concepts.size() == 0) {
+      return null;
+    }
+    ConceptDefinitionComponent last = concepts.get(concepts.size() -1);
+    if (last.hasConcept()) {
+      ConceptDefinitionComponent parent = findParent(client, css, last.getConcept(), code);
+      if (parent != null) {
+        return parent;
+      }      
+    } 
+
+    String reln = getRelationship(client, css, code, last.getCode());
+    if ("subsumes".equals(reln)) {
+      return last;
+    } else {
+      for (ConceptDefinitionComponent cc : concepts) {
+        reln = getRelationship(client, css, code, cc.getCode());
+        if ("subsumes".equals(reln)) {
+          return cc;        
+        }
+      }
+      return null;
+    }
+  }
+
+      
+  private String getRelationship(FHIRToolingClient client, CodeSystem css, String codeA, String codeB) {
+    Map<String, String> params = new HashMap<>();
+    params.put("system", css.getUrl());
+    params.put("codeA", codeB);
+    params.put("codeB", codeA);    
+    Parameters p = client.subsumes(params);
+    for (ParametersParameterComponent pp : p.getParameter()) {
+      if ("outcome".equals(pp.getName())) {
+        return pp.getValue().primitiveValue();
+      }
+    }
+    return null;
   }
 
   private void cleanValueSets(List<String> allOids, String dest) throws IOException {
@@ -138,7 +217,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
         }
       }
     }
-    
+
   }
 
   private long estimate(int i, int size, long tt) {
@@ -149,7 +228,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
 
   private boolean processOid(String dest, boolean onlyNew, Map<String, String> errs, FHIRToolingClient fhirToolingClient, String oid)
       throws IOException, InterruptedException, FileNotFoundException {
-    
+
     while (true) {
       boolean ok = true;
       long t = System.currentTimeMillis();
@@ -262,7 +341,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
         upper = true;
       }
     }
-//    System.out.println(b.toString()+" from "+name);
+    //    System.out.println(b.toString()+" from "+name);
     return b.toString();
   }
 }

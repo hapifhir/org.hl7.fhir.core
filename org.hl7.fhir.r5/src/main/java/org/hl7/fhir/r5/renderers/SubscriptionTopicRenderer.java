@@ -65,7 +65,7 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
             md.append(context.formatPhrase(RenderingContext.SUB_TOPIC_CREATE, qc.primitiveValue("resultForCreate")+"\r\n")+" ");
           }
           if (qc.has("current")) {
-            md.append(context.formatPhrase(RenderingContext.SUB_TOPIC_CREATE, qc.primitiveValue("current")+"\r\n")+" ");
+            md.append(context.formatPhrase(RenderingContext.SUB_TOPIC_CURR, qc.primitiveValue("current")+"\r\n")+" ");
           }
           if (qc.has("previous")) {
             md.append(context.formatPhrase(RenderingContext.SUB_TOPIC_DELETE, qc.primitiveValue("resultForDelete")+"\r\n")+" ");

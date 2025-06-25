@@ -125,7 +125,24 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       this.version = version;
       this.hacked = true;
 
-    }      
+    }
+    
+    /** 
+     * used in cross version settings by the package loaders.
+     */
+    public void updateInfo() {
+      type = resource.fhirType();
+      id = resource.getId();
+      url = resource.getUrl();
+      version = resource.getVersion();
+      if (resource instanceof CodeSystem) {
+        supplements = ((CodeSystem) resource).getSupplements();
+        content = ((CodeSystem) resource).getContentElement().asStringValue();
+      }
+      if (resource instanceof StructureDefinition) {
+        derivation = ((StructureDefinition) resource).getDerivationElement().asStringValue();
+      }
+    }    
   }
 
   public static class CanonicalListSorter implements Comparator<CanonicalResource> {
@@ -187,7 +204,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       return resource != null ? resource.hasVersion() : proxy.getVersion() != null;
     }
     public String getContent() {
-      if (resource != null && resource instanceof CodeSystem) {
+      if (this.resource instanceof CodeSystem) {
         CodeSystemContentMode cnt = ((CodeSystem) resource).getContent();
         return cnt == null ? null : cnt.toCode();
       } else if (proxy != null) {

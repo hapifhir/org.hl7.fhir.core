@@ -615,8 +615,8 @@ public class Claim extends DomainResource {
           return (DateTimeType) this.when;
         }
 
-        public boolean hasWhenDateTimeType() { 
-          return this != null && this.when instanceof DateTimeType;
+        public boolean hasWhenDateTimeType() {
+          return this.when instanceof DateTimeType;
         }
 
         /**
@@ -630,8 +630,8 @@ public class Claim extends DomainResource {
           return (Period) this.when;
         }
 
-        public boolean hasWhenPeriod() { 
-          return this != null && this.when instanceof Period;
+        public boolean hasWhenPeriod() {
+          return this.when instanceof Period;
         }
 
         public boolean hasWhen() { 
@@ -1381,8 +1381,8 @@ public class Claim extends DomainResource {
           return (DateType) this.timing;
         }
 
-        public boolean hasTimingDateType() { 
-          return this != null && this.timing instanceof DateType;
+        public boolean hasTimingDateType() {
+          return this.timing instanceof DateType;
         }
 
         /**
@@ -1396,8 +1396,8 @@ public class Claim extends DomainResource {
           return (Period) this.timing;
         }
 
-        public boolean hasTimingPeriod() { 
-          return this != null && this.timing instanceof Period;
+        public boolean hasTimingPeriod() {
+          return this.timing instanceof Period;
         }
 
         public boolean hasTiming() { 
@@ -1432,8 +1432,8 @@ public class Claim extends DomainResource {
           return (BooleanType) this.value;
         }
 
-        public boolean hasValueBooleanType() { 
-          return this != null && this.value instanceof BooleanType;
+        public boolean hasValueBooleanType() {
+          return this.value instanceof BooleanType;
         }
 
         /**
@@ -1447,8 +1447,8 @@ public class Claim extends DomainResource {
           return (StringType) this.value;
         }
 
-        public boolean hasValueStringType() { 
-          return this != null && this.value instanceof StringType;
+        public boolean hasValueStringType() {
+          return this.value instanceof StringType;
         }
 
         /**
@@ -1462,8 +1462,8 @@ public class Claim extends DomainResource {
           return (Quantity) this.value;
         }
 
-        public boolean hasValueQuantity() { 
-          return this != null && this.value instanceof Quantity;
+        public boolean hasValueQuantity() {
+          return this.value instanceof Quantity;
         }
 
         /**
@@ -1477,8 +1477,8 @@ public class Claim extends DomainResource {
           return (Attachment) this.value;
         }
 
-        public boolean hasValueAttachment() { 
-          return this != null && this.value instanceof Attachment;
+        public boolean hasValueAttachment() {
+          return this.value instanceof Attachment;
         }
 
         /**
@@ -1492,8 +1492,8 @@ public class Claim extends DomainResource {
           return (Reference) this.value;
         }
 
-        public boolean hasValueReference() { 
-          return this != null && this.value instanceof Reference;
+        public boolean hasValueReference() {
+          return this.value instanceof Reference;
         }
 
         /**
@@ -1507,8 +1507,8 @@ public class Claim extends DomainResource {
           return (Identifier) this.value;
         }
 
-        public boolean hasValueIdentifier() { 
-          return this != null && this.value instanceof Identifier;
+        public boolean hasValueIdentifier() {
+          return this.value instanceof Identifier;
         }
 
         public boolean hasValue() { 
@@ -1908,8 +1908,8 @@ public class Claim extends DomainResource {
           return (CodeableConcept) this.diagnosis;
         }
 
-        public boolean hasDiagnosisCodeableConcept() { 
-          return this != null && this.diagnosis instanceof CodeableConcept;
+        public boolean hasDiagnosisCodeableConcept() {
+          return this.diagnosis instanceof CodeableConcept;
         }
 
         /**
@@ -1923,8 +1923,8 @@ public class Claim extends DomainResource {
           return (Reference) this.diagnosis;
         }
 
-        public boolean hasDiagnosisReference() { 
-          return this != null && this.diagnosis instanceof Reference;
+        public boolean hasDiagnosisReference() {
+          return this.diagnosis instanceof Reference;
         }
 
         public boolean hasDiagnosis() { 
@@ -2425,8 +2425,8 @@ public class Claim extends DomainResource {
           return (CodeableConcept) this.procedure;
         }
 
-        public boolean hasProcedureCodeableConcept() { 
-          return this != null && this.procedure instanceof CodeableConcept;
+        public boolean hasProcedureCodeableConcept() {
+          return this.procedure instanceof CodeableConcept;
         }
 
         /**
@@ -2440,8 +2440,8 @@ public class Claim extends DomainResource {
           return (Reference) this.procedure;
         }
 
-        public boolean hasProcedureReference() { 
-          return this != null && this.procedure instanceof Reference;
+        public boolean hasProcedureReference() {
+          return this.procedure instanceof Reference;
         }
 
         public boolean hasProcedure() { 
@@ -3414,8 +3414,8 @@ public class Claim extends DomainResource {
           return (Address) this.location;
         }
 
-        public boolean hasLocationAddress() { 
-          return this != null && this.location instanceof Address;
+        public boolean hasLocationAddress() {
+          return this.location instanceof Address;
         }
 
         /**
@@ -3429,8 +3429,8 @@ public class Claim extends DomainResource {
           return (Reference) this.location;
         }
 
-        public boolean hasLocationReference() { 
-          return this != null && this.location instanceof Reference;
+        public boolean hasLocationReference() {
+          return this.location instanceof Reference;
         }
 
         public boolean hasLocation() { 
@@ -4427,8 +4427,8 @@ public class Claim extends DomainResource {
           return (DateType) this.serviced;
         }
 
-        public boolean hasServicedDateType() { 
-          return this != null && this.serviced instanceof DateType;
+        public boolean hasServicedDateType() {
+          return this.serviced instanceof DateType;
         }
 
         /**
@@ -4442,8 +4442,8 @@ public class Claim extends DomainResource {
           return (Period) this.serviced;
         }
 
-        public boolean hasServicedPeriod() { 
-          return this != null && this.serviced instanceof Period;
+        public boolean hasServicedPeriod() {
+          return this.serviced instanceof Period;
         }
 
         public boolean hasServiced() { 
@@ -4478,8 +4478,8 @@ public class Claim extends DomainResource {
           return (CodeableConcept) this.location;
         }
 
-        public boolean hasLocationCodeableConcept() { 
-          return this != null && this.location instanceof CodeableConcept;
+        public boolean hasLocationCodeableConcept() {
+          return this.location instanceof CodeableConcept;
         }
 
         /**
@@ -4493,8 +4493,8 @@ public class Claim extends DomainResource {
           return (Address) this.location;
         }
 
-        public boolean hasLocationAddress() { 
-          return this != null && this.location instanceof Address;
+        public boolean hasLocationAddress() {
+          return this.location instanceof Address;
         }
 
         /**
@@ -4508,8 +4508,8 @@ public class Claim extends DomainResource {
           return (Reference) this.location;
         }
 
-        public boolean hasLocationReference() { 
-          return this != null && this.location instanceof Reference;
+        public boolean hasLocationReference() {
+          return this.location instanceof Reference;
         }
 
         public boolean hasLocation() { 

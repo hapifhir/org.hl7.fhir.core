@@ -849,7 +849,7 @@ public class MedicationAdministration extends DomainResource {
     }
 
     public boolean hasRateRatio() {
-      return this != null && this.rate instanceof Ratio;
+        return this.rate instanceof Ratio;
     }
 
     /**
@@ -869,7 +869,7 @@ public class MedicationAdministration extends DomainResource {
     }
 
     public boolean hasRateQuantity() {
-      return this != null && this.rate instanceof Quantity;
+        return this.rate instanceof Quantity;
     }
 
     public boolean hasRate() {
@@ -1767,7 +1767,7 @@ public class MedicationAdministration extends DomainResource {
   }
 
   public boolean hasMedicationCodeableConcept() {
-    return this != null && this.medication instanceof CodeableConcept;
+      return this.medication instanceof CodeableConcept;
   }
 
   /**
@@ -1786,7 +1786,7 @@ public class MedicationAdministration extends DomainResource {
   }
 
   public boolean hasMedicationReference() {
-    return this != null && this.medication instanceof Reference;
+      return this.medication instanceof Reference;
   }
 
   public boolean hasMedication() {
@@ -1999,7 +1999,7 @@ public class MedicationAdministration extends DomainResource {
   }
 
   public boolean hasEffectiveDateTimeType() {
-    return this != null && this.effective instanceof DateTimeType;
+      return this.effective instanceof DateTimeType;
   }
 
   /**
@@ -2018,7 +2018,7 @@ public class MedicationAdministration extends DomainResource {
   }
 
   public boolean hasEffectivePeriod() {
-    return this != null && this.effective instanceof Period;
+      return this.effective instanceof Period;
   }
 
   public boolean hasEffective() {

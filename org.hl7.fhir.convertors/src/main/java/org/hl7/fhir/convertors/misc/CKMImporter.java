@@ -50,6 +50,7 @@ import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+@SuppressWarnings("checkstyle:systemout")
 public class CKMImporter {
 
   private String ckm;

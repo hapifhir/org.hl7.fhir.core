@@ -1,9 +1,12 @@
 package org.hl7.fhir.convertors.loaders.loaderR5;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /*
@@ -42,9 +45,11 @@ import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.formats.XmlParser;
+import org.hl7.fhir.r4.model.Basic;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r5.conformance.StructureDefinitionHacker;
 import org.hl7.fhir.r5.context.IContextResourceLoader;
+import org.hl7.fhir.r5.context.SimpleWorkerContext.PackageResourceLoader;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
@@ -53,14 +58,16 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
-import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.r5.utils.R5Hacker;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader {
 
   private final BaseAdvisor_40_50 advisor = new BaseAdvisor_40_50();
   private String version;
 
-  public R4ToR5Loader(List<String> types, ILoaderKnowledgeProviderR5 lkp, String version) { // might be 4B
+  public R4ToR5Loader(Set<String> types, ILoaderKnowledgeProviderR5 lkp, String version) { // might be 4B
     super(types, lkp);
     this.version = version;
   }
@@ -151,4 +158,41 @@ public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
     return new TerminologyClientFactory(versionString());
   }
 
+  @Override
+  public Set<String> reviewActualTypes(Set<String> types) {
+    Set<String> set = new HashSet<String>();
+    for (String t : types) {
+      if (Utilities.existsInList(t, "ActorDefinition", "Requirements", "SubscriptionTopic", "TestPlan")) {
+        set.add("Basic");
+      } else {
+        set.add(t);
+      }      
+    }    
+    return set;
+  }
+
+  @Override
+  public PackageResourceLoader editInfo(PackageResourceLoader pri) {
+    if (pri.getType().equals("Basic")) {
+      try {
+        InputStream f = pri.getStream();
+        try {
+          Basic b = (Basic) new JsonParser().parse(f);
+          org.hl7.fhir.r5.model.Resource r5 = VersionConvertorFactory_40_50.convertResource(b);
+          if (r5 instanceof CanonicalResource) {
+            pri.setResource((CanonicalResource) r5);
+            pri.updateInfo();
+            setPath(r5);
+          } else {
+            return null;
+          }
+        } finally {
+          f.close();
+        }
+      } catch (Exception e) {
+        throw new FHIRException("Error loading Resource Basic/"+pri.getId()+": "+e.getMessage(), e);
+      }
+    }
+    return pri;
+  }
 }

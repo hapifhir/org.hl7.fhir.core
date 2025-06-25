@@ -155,7 +155,7 @@ public class ViewDefinitionRenderer extends ResourceRenderer {
     if (context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics()) { 
       model.setDocoImg(HierarchicalTableGenerator.help16AsData());     
     } else { 
-      model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "help16.png")); 
+      model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), "help16.png")); 
     }  
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Item"), (context.formatPhrase(RenderingContext.QUEST_LINK)), null, 0)); 
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Coll"), (context.formatPhrase(RenderingContext.QUEST_TEXTFOR)), null, 0)); 

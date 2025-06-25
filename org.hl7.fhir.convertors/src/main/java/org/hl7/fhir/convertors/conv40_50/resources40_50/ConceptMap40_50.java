@@ -205,10 +205,10 @@ public class ConceptMap40_50 {
       if (t.getEquivalence() == org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.UNMATCHED) {
         tgt.setNoMap(true);
         if (t.hasComment()) {
-          if (tgt.hasExtension("http://hl7.org/fhir/4.0/StructureDefinition/extension-ConceptMap.group.element.target.comment")) {
+          if (tgt.hasExtension(ToolingExtensions.EXT_CM_NOMAP_COMMENT)) {
             throw new FHIRException("A source can only have one 'unmatched' relationship. Consider using 'disjoint' ");
           }
-          tgt.addExtension("http://hl7.org/fhir/4.0/StructureDefinition/extension-ConceptMap.group.element.target.comment", ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(t.getCommentElement()));
+          tgt.addExtension(ToolingExtensions.EXT_CM_NOMAP_COMMENT, ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(t.getCommentElement()));
         }
       } else {
         tgt.addTarget(convertTargetElementComponent(t, tgtMap));
@@ -221,7 +221,7 @@ public class ConceptMap40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent tgt = new org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt, "http://hl7.org/fhir/4.0/StructureDefinition/extension-ConceptMap.group.element.target.comment");
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt, ToolingExtensions.EXT_CM_NOMAP_COMMENT);
     if (src.hasCode())
       tgt.setCodeElement(Code40_50.convertCode(src.getCodeElement()));
     if (src.hasDisplay())
@@ -229,8 +229,8 @@ public class ConceptMap40_50 {
     if (src.hasNoMap() && src.getNoMap() == true) {
       org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent t = new org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent();
       t.setEquivalence(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.UNMATCHED);
-      if (src.hasExtension("http://hl7.org/fhir/4.0/StructureDefinition/extension-ConceptMap.group.element.target.comment")) {
-        t.setCommentElement((org.hl7.fhir.r4.model.StringType) ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getExtensionByUrl("http://hl7.org/fhir/4.0/StructureDefinition/extension-ConceptMap.group.element.target.comment").getValue()));
+      if (src.hasExtension(ToolingExtensions.EXT_CM_NOMAP_COMMENT)) {
+        t.setCommentElement((org.hl7.fhir.r4.model.StringType) ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getExtensionByUrl(ToolingExtensions.EXT_CM_NOMAP_COMMENT).getValue()));
       }
       tgt.addTarget(t);
     } else {

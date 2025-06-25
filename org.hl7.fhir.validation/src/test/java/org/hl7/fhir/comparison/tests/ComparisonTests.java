@@ -1,17 +1,15 @@
 package org.hl7.fhir.comparison.tests;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 import java.util.stream.Stream;
 
 import org.apache.commons.io.IOUtils;
@@ -46,41 +44,41 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Constants;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.renderers.CodeSystemRenderer;
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer;
 import org.hl7.fhir.r5.renderers.ValueSetRenderer;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.StructureDefinitionRendererMode;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
-import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
-import org.hl7.fhir.utilities.json.model.*;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import java.nio.charset.StandardCharsets;
 
 
 public class ComparisonTests {
@@ -121,6 +119,7 @@ public class ComparisonTests {
   @ParameterizedTest(name = "{index}: id {0}")
   @MethodSource("data")
   public void test(String name, JsonObject content) throws Exception {
+    HierarchicalTableGenerator.forTesting();
     TestingUtilities.injectCorePackageLoader();
     this.content = content;
 
@@ -137,7 +136,7 @@ public class ComparisonTests {
       BaseWorkerContext bc = (BaseWorkerContext) context;
       boolean dupl = bc.isAllowLoadingDuplicates();
       bc.setAllowLoadingDuplicates(true);
-      context.loadFromPackage(npm, new R4ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"),
+      context.loadFromPackage(npm, new R4ToR5Loader(Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"),
           new NullLoaderKnowledgeProviderR5(), context.getVersion()));
       bc.setAllowLoadingDuplicates(dupl);
     }
@@ -238,7 +237,7 @@ public class ComparisonTests {
   }
 
   private void checkOutput(String id, String name, CanonicalResource right) throws Exception {
-    String output = prefix+ new XhtmlComposer(false, true).compose(right.getText().getDiv()) + suffix;
+    String output = prefix+ new XhtmlComposer(true, true).compose(right.getText().getDiv()) + suffix;
     String an = Utilities.path("[tmp]", "comparison", name);
     FileUtilities.stringToFile(output, an);
     String expected = loadResource(name);
@@ -415,6 +414,12 @@ public class ComparisonTests {
 
     @Override
     public String getCanonicalForDefaultContext() {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    @Override
+    public String getDefinitionsName(Resource r) {
       // TODO Auto-generated method stub
       return null;
     }

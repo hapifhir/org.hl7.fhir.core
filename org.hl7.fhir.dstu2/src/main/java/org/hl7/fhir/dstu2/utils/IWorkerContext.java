@@ -30,8 +30,8 @@ package org.hl7.fhir.dstu2.utils;
  */
 
 import java.util.List;
-
 import java.util.Locale;
+
 import org.hl7.fhir.dstu2.formats.IParser;
 import org.hl7.fhir.dstu2.formats.ParserType;
 import org.hl7.fhir.dstu2.model.CodeableConcept;
@@ -43,8 +43,6 @@ import org.hl7.fhir.dstu2.model.ValueSet;
 import org.hl7.fhir.dstu2.model.ValueSet.ConceptDefinitionComponent;
 import org.hl7.fhir.dstu2.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.dstu2.model.ValueSet.ValueSetExpansionComponent;
-import org.hl7.fhir.dstu2.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
-import org.hl7.fhir.dstu2.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
 /**
@@ -104,20 +102,6 @@ public interface IWorkerContext {
    * @return
    */
   public IParser newXmlParser();
-
-  /**
-   * Get a generator that can generate narrative for the instance
-   * 
-   * @return a prepared generator
-   */
-  public INarrativeGenerator getNarrativeGenerator(String prefix, String basePath);
-
-  /**
-   * Get a validator that can check whether a resource is valid
-   * 
-   * @return a prepared generator @
-   */
-  public IResourceValidator newValidator();
 
   // -- resource fetchers ---------------------------------------------------
 
@@ -196,14 +180,6 @@ public interface IWorkerContext {
   public List<ConceptMap> findMapsForSource(String url);
 
   /**
-   * ValueSet Expansion - see $expand
-   * 
-   * @param source
-   * @return
-   */
-  public ValueSetExpansionOutcome expandVS(ValueSet source, boolean cacheOk);
-
-  /**
    * Value set expanion inside the internal expansion engine - used for references
    * to supported system (see "supportsSystem") for which there is no value set.
    * 
@@ -218,6 +194,7 @@ public interface IWorkerContext {
 
   String formatMessage(String theMessage, Object... theMessageArguments);
 
+  @Deprecated
   void setValidationMessageLanguage(Locale locale);
 
   public class ValidationResult {

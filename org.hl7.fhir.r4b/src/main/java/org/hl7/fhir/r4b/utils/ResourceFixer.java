@@ -21,6 +21,7 @@ import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 @MarkedToMoveToAdjunctPackage
+@SuppressWarnings("checkstyle:systemout")
 public class ResourceFixer {
 
   public static void main(String[] args) throws IOException {

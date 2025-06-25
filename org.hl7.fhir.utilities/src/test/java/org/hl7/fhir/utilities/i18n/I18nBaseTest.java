@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import com.ibm.icu.text.PluralRules;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +23,38 @@ class I18nBaseTest {
 
   public static final String BAD_STRING_ARG = "THIS_DOES_NOT_EXIST";
   public static final String ARG_1 = "test arg";
+
+  @Test
+  void testDefaultLocale() {
+    I18nTestClass testClass = new I18nTestClass();
+    assertEquals(Locale.getDefault(), testClass.getLocale());
+    // Intuitively, this is expected to be Locale.getDefault(), BUT Messages.properties has no locale, thus resolves to
+    // Locale.ROOT, which is the "" locale.
+    assertEquals(Locale.ROOT, testClass.getMessages().getLocale());
+    assertEquals(PluralRules.forLocale(Locale.getDefault()), testClass.getPluralRules());
+  }
+
+  @Test
+  void testSetLocale() {
+    I18nTestClass testClass = new I18nTestClass();
+    testClass.setLocale(Locale.GERMAN);
+    assertEquals(Locale.GERMAN, testClass.getLocale());
+    assertEquals(Locale.GERMAN, testClass.getMessages().getLocale());
+    assertEquals( PluralRules.forLocale(Locale.GERMAN), testClass.getPluralRules());
+  }
+
+  @Test
+  void setUnknownLocale() {
+    I18nTestClass testClass = new I18nTestClass();
+    Locale locale = Locale.forLanguageTag("lv-LV");
+    testClass.setLocale(locale);
+    assertEquals(locale, testClass.getLocale());
+    // Intuitively, this is expected to be Locale.getDefault(), BUT Messages.properties has no locale, thus resolves to
+    // Locale.ROOT, which is the "" locale.
+    assertEquals(Locale.ROOT, testClass.getMessages().getLocale());
+    assertEquals(PluralRules.forLocale(Locale.getDefault()), testClass.getPluralRules());
+
+  }
 
   @Test
   @DisplayName("Test argument substitution with initializing Locale.")

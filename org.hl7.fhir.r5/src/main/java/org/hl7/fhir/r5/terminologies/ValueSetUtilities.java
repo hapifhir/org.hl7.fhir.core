@@ -37,6 +37,7 @@ import java.util.Set;
  */
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -75,6 +76,7 @@ import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
+@Slf4j
 public class ValueSetUtilities extends TerminologyUtilities {
 
 
@@ -189,10 +191,9 @@ public class ValueSetUtilities extends TerminologyUtilities {
           vs.setUserData(UserDataNames.kindling_ballot_package, pckage);
         else if (!pckage.equals(vs.getUserString(UserDataNames.kindling_ballot_package)))
           if (!"infrastructure".equals(vs.getUserString(UserDataNames.kindling_ballot_package)))
-          System.out.println("Value Set "+vs.getUrl()+": ownership clash "+pckage+" vs "+vs.getUserString(UserDataNames.kindling_ballot_package));
+          log.warn("Value Set "+vs.getUrl()+": ownership clash "+pckage+" vs "+vs.getUserString(UserDataNames.kindling_ballot_package));
       }
       if (status == StandardsStatus.NORMATIVE) {
-        vs.setExperimental(false);
         vs.setStatus(PublicationStatus.ACTIVE);
       }
     }
@@ -200,9 +201,6 @@ public class ValueSetUtilities extends TerminologyUtilities {
       String sfmm = ToolingExtensions.readStringExtension(vs, ToolingExtensions.EXT_FMM_LEVEL);
       if (Utilities.noString(sfmm) || Integer.parseInt(sfmm) < Integer.parseInt(fmm))  {
         ToolingExtensions.setIntegerExtension(vs, ToolingExtensions.EXT_FMM_LEVEL, Integer.parseInt(fmm));
-      }
-      if (Integer.parseInt(fmm) <= 1) {
-        vs.setExperimental(true);
       }
     }
     if (vs.hasUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM))
@@ -582,18 +580,52 @@ public class ValueSetUtilities extends TerminologyUtilities {
       ValueSet vs = new ValueSet();
       vs.setUrl(url);
       vs.setVersion(version);
-      vs.getCompose().addInclude().setSystem("http://loinc.org").addFilter().setProperty("ancestor").setOp(FilterOperator.EQUAL).setValue(url.substring(21));
+      vs.getCompose().addInclude().setSystem("http://loinc.org").addFilter().setProperty("ancestor").setOp(FilterOperator.EQUAL).setValue(url.substring("http://loinc.org/vs/".length()));
       return vs;      
     } else if (url.startsWith("http://loinc.org/vs/LL")) {
       ValueSet vs = new ValueSet();
       vs.setUrl(url);
       vs.setVersion(version);
       // this isn't the actual definition, but it won't matter to us internally
-      vs.getCompose().addInclude().setSystem("http://loinc.org").addFilter().setProperty("answer-list").setOp(FilterOperator.EQUAL).setValue(url.substring(21));      
+      vs.getCompose().addInclude().setSystem("http://loinc.org").addFilter().setProperty("answer-list").setOp(FilterOperator.EQUAL).setValue(url.substring("http://loinc.org/vs/".length()));      
       return vs;
     } else {
       throw new FHIRException("Unknown implicit LOINC value set URL "+url);
     }
+  }
+
+  public static Set<String> checkExpansionSubset(ValueSet vs1, ValueSet vs2) {
+    Set<String> codes = new HashSet<>();
+    checkCodes(codes, vs2.getExpansion().getContains(), vs1.getExpansion().getContains());
+    return codes;
+  }
+
+  private static void checkCodes(Set<String> codes, List<ValueSetExpansionContainsComponent> listS, List<ValueSetExpansionContainsComponent> listT) {
+    for (ValueSetExpansionContainsComponent c : listS) {
+      ValueSetExpansionContainsComponent t = findContained(c, listT);
+      if (t == null) {
+        codes.add(c.getCode());
+      }
+      if (c.hasContains()) {
+        checkCodes(codes, c.getContains(), listT);
+      }
+    }
+    
+  }
+
+  private static ValueSetExpansionContainsComponent findContained(ValueSetExpansionContainsComponent c, List<ValueSetExpansionContainsComponent> listT) {
+    for (ValueSetExpansionContainsComponent t : listT) {
+      if (t.getSystem().equals(c.getSystem()) && t.getCode().equals(c.getCode())) {
+        return t;
+      }
+      if (t.hasContains()) {
+        ValueSetExpansionContainsComponent tt = findContained(c, t.getContains());
+        if (tt != null) {
+          return tt;
+        }
+      }
+    }
+    return null;
   }
 
   

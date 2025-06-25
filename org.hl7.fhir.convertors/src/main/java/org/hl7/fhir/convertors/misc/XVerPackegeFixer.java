@@ -27,6 +27,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+@SuppressWarnings("checkstyle:systemout")
 public class XVerPackegeFixer {
   
   public static class References {

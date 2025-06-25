@@ -2,6 +2,7 @@ package org.hl7.fhir.utilities.npm;
 
 import lombok.Getter;
 import lombok.With;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
@@ -21,6 +22,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+@Slf4j
 public class FilesystemPackageCacheManagerLocks {
 
   private static final ConcurrentHashMap<File, FilesystemPackageCacheManagerLocks> cacheFolderLockManagers = new ConcurrentHashMap<>();
@@ -149,7 +151,7 @@ public class FilesystemPackageCacheManagerLocks {
             channel.close();
             throw new IOException("Lock file exists, but is not locked by a process: " + lockFile.getName());
           }
-          System.out.println("File is locked ('"+lockFile.getAbsolutePath()+"').");
+          log.debug("File is locked ('"+lockFile.getAbsolutePath()+"').");
         }
       }
       try {

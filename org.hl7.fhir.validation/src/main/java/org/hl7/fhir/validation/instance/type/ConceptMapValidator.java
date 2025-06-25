@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -26,11 +27,46 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.instance.type.ConceptMapValidator.RelationshipTracker;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
+@Slf4j
+public class ConceptMapValidator extends BaseValidator {
 
-public class ConceptMapValidator  extends BaseValidator {
+  public class RelationshipTracker {
+
+    Map<String, String> map = new HashMap<>();
+    
+    public boolean has(String source) {
+      return map.containsKey(source);
+    }
+
+    public void see(String source, String reln) {
+      map.put(source, reln);      
+    }
+
+    public String get(String source) {
+      return map.get(source);
+    }
+
+    public boolean has(String source, String target) {
+      return map.containsKey(key(source, target));
+    }
+
+    public Object get(String source, String target) {
+      return map.get(key(source, target));
+    }
+
+    public void see(String source, String target, String reln) {
+      map.put(key(source, target), reln);
+    }
+
+    private String key(String source, String target) {
+      return "|"+source+"|"+target+"|";
+    }
+
+  }
 
   private static final int TOO_MANY_CODES_TO_VALIDATE = 500;
   
@@ -168,9 +204,7 @@ public class ConceptMapValidator  extends BaseValidator {
         try {
           long t = System.currentTimeMillis();
           context.validateCodeBatch(ValidationOptions.defaults(), batch, null);
-          if (isDebug()) {
-            System.out.println("  :   .. "+(System.currentTimeMillis()-t)+"ms");
-          }
+          log.debug("  :   .. "+(System.currentTimeMillis()-t)+"ms");
           for (CMCodingValidationRequest cv : batch) {
             if (cv.getResult().getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
               warning(errors, "2023-09-06", IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM, cv.getCoding().getSystem(), cv.getCoding().getCode(), cv.getVsObj().getUrl());                
@@ -262,7 +296,7 @@ public class ConceptMapValidator  extends BaseValidator {
       } else {
         warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), sourceScope != null, I18nConstants.CONCEPTMAP_GROUP_SOURCE_UNKNOWN, e.getValue());
       }
-      if (ctxt.source.version == null && ctxt.source.cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(ctxt.source.url) && fetcher != null) {
+      if (fetcher != null && ctxt.source.version == null && ctxt.source.cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(ctxt.source.url) && fetcher != null) {
           Set<String> possibleVersions = fetcher.fetchCanonicalResourceVersions(null, valContext.getAppContext(), ctxt.source.url);
           warning(errors, NO_RULE_DATE, IssueType.INVALID, grp.line(), grp.col(), stack.getLiteralPath(), possibleVersions.size() <= 1, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS, 
               ctxt.source.url,  ctxt.source.cs.getVersion(), CommaSeparatedStringBuilder.join(", ", Utilities.sorted(possibleVersions)));
@@ -282,16 +316,18 @@ public class ConceptMapValidator  extends BaseValidator {
         warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), targetScope != null, I18nConstants.CONCEPTMAP_GROUP_TARGET_UNKNOWN, e.getValue());                              
         
       }
-      if (ctxt.target.version == null && ctxt.target.cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(ctxt.target.url)) {
+      if (fetcher != null && ctxt.target.version == null && ctxt.target.cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(ctxt.target.url)) {
         Set<String> possibleVersions = fetcher.fetchCanonicalResourceVersions(null, valContext.getAppContext(), ctxt.target.url);
         warning(errors, NO_RULE_DATE, IssueType.INVALID, grp.line(), grp.col(), stack.getLiteralPath(), possibleVersions.size() <= 1, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS, 
             ctxt.target.url,  ctxt.target.cs.getVersion(), CommaSeparatedStringBuilder.join(", ", Utilities.sorted(possibleVersions)));
       }
     }
+    
+    RelationshipTracker relationships = new RelationshipTracker();
     List<Element> elements = grp.getChildrenByName("element");
     int ci = 0;
     for (Element element : elements) {
-      ok = validateGroupElement(errors, element, stack.push(element, ci, null, null), props, attribs, options, ctxt) && ok;
+      ok = validateGroupElement(errors, element, stack.push(element, ci, null, null), props, attribs, options, ctxt, relationships) && ok;
       ci++;
     }    
     return ok;
@@ -324,10 +360,11 @@ public class ConceptMapValidator  extends BaseValidator {
     return tgtCS.getContent() != CodeSystemContentMode.NOTPRESENT && tgtCS.getContent() != CodeSystemContentMode.EXAMPLE && tgtCS.getContent() != CodeSystemContentMode.FRAGMENT;
   }
 
-  private boolean validateGroupElement(List<ValidationMessage> errors, Element src, NodeStack stack, Map<String, PropertyDefinition> props, Map<String, String> attribs, ValidationOptions options, GroupContext ctxt) {
+  private boolean validateGroupElement(List<ValidationMessage> errors, Element src, NodeStack stack, Map<String, PropertyDefinition> props, Map<String, String> attribs, ValidationOptions options, GroupContext ctxt, RelationshipTracker relationships) {
     boolean ok = true;
     
     Element code = src.getNamedChild("code", false);
+    String source =  code != null ? code.primitiveValue() : null;
     if (code != null) {
       NodeStack cstack = stack.push(code, -1, null, null);
       if (ctxt.hasSourceCS()) {
@@ -355,14 +392,26 @@ public class ConceptMapValidator  extends BaseValidator {
     List<Element> targets = src.getChildrenByName("target");
     int ci = 0;
     for (Element target : targets) {
-      ok = validateGroupElementTarget(errors, target, stack.push(target, ci, null, null), props, attribs, options, ctxt) && ok;
+      ok = validateGroupElementTarget(errors, target, stack.push(target, ci, null, null), props, attribs, options, ctxt, relationships, source) && ok;
       ci++;
     }    
+    boolean noMap = "true".equals(src.getNamedChildValue("noMap"));
+    if (noMap) {
+      if (!relationships.has(source)) {
+        relationships.see(source, "unmapped");
+      } else if (!relationships.get(source).equals("unmapped")) {
+        warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION_DIFFERENT, source, code.primitiveValue());            
+      } else {
+        warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION, source, code.primitiveValue());            
+      }
+    }
     return ok;
   }
   
-  private boolean validateGroupElementTarget(List<ValidationMessage> errors, Element tgt, NodeStack stack, Map<String, PropertyDefinition> props, Map<String, String> attribs, ValidationOptions options, GroupContext ctxt) {
+  private boolean validateGroupElementTarget(List<ValidationMessage> errors, Element tgt, NodeStack stack, Map<String, PropertyDefinition> props,
+      Map<String, String> attribs, ValidationOptions options, GroupContext ctxt, RelationshipTracker relationships, String source) {
     boolean ok = true;
+
 
     Element code = tgt.getNamedChild("code", false);
     if (code != null) {
@@ -386,6 +435,35 @@ public class ConceptMapValidator  extends BaseValidator {
         }
       } else {
         addToBatch(code, cstack, ctxt.target, ctxt.targetScope);
+      }
+      
+    }
+    
+    String target = tgt.getNamedChildValue("code");
+    String reln = tgt.getNamedChildValue(VersionUtilities.isR5Plus(context.getVersion()) ? "relationship" : "equivalence");
+    
+    if (source != null && reln != null) {
+      if (target == null) {
+        if (!relationships.has(source)) {
+          relationships.see(source, reln);
+        } else if (relationships.get(source).equals(reln)) {
+          warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION, source, code.primitiveValue());            
+        } else {
+          warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION_DIFFERENT, source, code.primitiveValue(), reln, relationships.get(source));            
+        }
+      } else {
+        if (relationships.has(source)) {
+          warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION_DIFFERENT, source, code.primitiveValue(), reln, relationships.get(source));            
+        }
+        if (relationships.has(source, target)) {
+          if (relationships.get(source, target).equals(reln)) {
+            warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION_DIFFERENT, source, code.primitiveValue(), reln, relationships.get(source, target));
+          } else {
+            warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION, source, code.primitiveValue());            
+          }
+        } else {
+          relationships.see(source, target, reln);
+        }
       }
     }
 
@@ -454,7 +532,7 @@ public class ConceptMapValidator  extends BaseValidator {
   }
 
   private boolean checkShareableConceptMap(List<ValidationMessage> errors, Element cs, NodeStack stack) {
-    if (parent.isForPublication()) { 
+    if (settings.isForPublication()) { 
       if (isHL7(cs)) {
         boolean ok = true;
         ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("url", false), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING_HL7, "url") && ok;                      

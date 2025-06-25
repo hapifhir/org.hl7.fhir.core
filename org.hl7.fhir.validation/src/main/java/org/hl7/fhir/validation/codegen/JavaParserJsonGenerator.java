@@ -33,6 +33,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Operation;
@@ -43,6 +44,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.tools.CDSHookContext;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 
 public class JavaParserJsonGenerator extends JavaBaseGenerator {
@@ -70,6 +72,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     
   }
 
+  private StringBuilder register = new StringBuilder();
   private StringBuilder parser = new StringBuilder();
   private StringBuilder pregt = new StringBuilder();
   private StringBuilder pregt2 = new StringBuilder();
@@ -84,11 +87,12 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
   private StringBuilder cregti = new StringBuilder();
   private List<TypeSpecifier> typeSpecifiers  = new ArrayList<>();
   FHIRPathEngine fpe;
+  private String jname;
 
-  public JavaParserJsonGenerator(OutputStream out, Definitions definitions, Configuration configuration, String genDate, String version, String packageName) throws UnsupportedEncodingException {
+  public JavaParserJsonGenerator(OutputStream out, Definitions definitions, Configuration configuration, String genDate, String version, String packageName, String jname) throws UnsupportedEncodingException {
     super(out, definitions, configuration, version, genDate, packageName);
     fpe = new FHIRPathEngine(definitions.getContext());
-    
+    this.jname = jname;
   }
 
   public void seeClass(Analysis analysis) throws Exception {
@@ -117,7 +121,9 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
 
+    template = template.replace("{{jname}}", jname);
     template = template.replace("{{parser}}", parser.toString());
+    template = template.replace("{{register}}", register.toString());
     template = template.replace("{{parse-resource}}", pregf.toString());
     template = template.replace("{{parse-type-pfx}}", pregt.toString());
     template = template.replace("{{parse-type}}", pregt2.toString());
@@ -149,8 +155,14 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
 
   private void generateParser(Analysis analysis) throws Exception {
 
+    if (analysis.getAncestor().getName().equals("Resource")) {
+      register.append("    org.hl7.fhir.r5.formats.JsonParser.customResourceHandlers.put(\""+analysis.getName()+"\", new "+jname+"JsonParserFactory());\r\n");
+      pregf.append("    } else if (t.equals(\""+analysis.getName()+"\")) {\r\n      return parse"+analysis.getClassName()+"(json);\r\n");
+      creg.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(\""+analysis.getName()+"\", ("+analysis.getClassName()+")resource);\r\n");
+      cregn.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(name, ("+analysis.getClassName()+")resource);\r\n");
+    }
     if (analysis.isAbstract()) {
-      genInnerAbstract(analysis);
+      genInnerAbstract(analysis, analysis.getRootType());
     } else {
       genInner(analysis, analysis.getRootType());
     }
@@ -244,10 +256,27 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     return b.toString();
   }
 
-  private void genInnerAbstract(Analysis analysis) throws IOException, Exception {
+  private void genInnerAbstract(Analysis analysis, TypeInfo ti) throws IOException, Exception {
     String tn = analysis.getRootType().getName();
+    String stn = (ti == analysis.getRootType() ? tn : analysis.getClassName()+"."+tn);
+    String pn = "parse"+tn;
+    if (stn.contains(".") && !pn.startsWith("parse"+analysis.getClassName())) {
+      pn = "parse"+analysis.getClassName()+tn;
+    }
     boolean bUseOwner = false;
+    
 
+    parser.append("  protected "+stn+" "+pn+"(JsonObject json) throws IOException, FHIRFormatError {\r\n");
+    parser.append("    if (json.has(\"_type\")) { throw new FHIRException(\"'_type' property not found\"); }\r\n");
+    parser.append("    String type = json.get(\"_type\").getAsString();\r\n");  
+    parser.append("    switch (type) {\r\n");            
+    for (Entry<String, String> e : getConcreteDescendents(analysis, ti).entrySet()) {
+      parser.append("    case \""+e.getKey()+"\": return parse"+e.getValue()+"(json);\r\n");      
+    }
+    parser.append("    default: throw new FHIRException(\"Unsupported type '\"+type+\"'\");\r\n");      
+    parser.append("    }\r\n");    
+    parser.append("  }\r\n\r\n");
+    
     parser.append("  protected void parse"+upFirst(tn).replace(".", "")+"Properties(JsonObject json, "+tn+" res) throws IOException, FHIRFormatError {\r\n");
 
     if (!"Element".equals(tn) && analysis.getAncestor() != null) {
@@ -264,7 +293,9 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
   private void genElementParser(Analysis analysis, TypeInfo ti, ElementDefinition ed, boolean bUseOwner, ElementDefinition inh) throws Exception {
     String name = ed.getName();
     String tn = ed.getUserString("java.type");
-    if (name.endsWith("[x]") || name.equals("[type]")) {
+    if (isNamedElementExtensions(ed)) {
+      parser.append("    // todo: Named Element Extensions\r\n"); 
+    } else if (name.endsWith("[x]") || name.equals("[type]")) {
       String en = name.endsWith("[x]") && !name.equals("[x]") ? name.replace("[x]", "") : "value";
       String pfx = name.endsWith("[x]") ? name.replace("[x]", "") : "";
       parser.append("    DataType "+getElementName(en, false)+" = parseType(\""+en+"\", json);\r\n");
@@ -288,6 +319,8 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
         aprsr = "parseEnumeration(array.get(i).getAsString(), "+en+".NULL, new "+en.substring(0, en.indexOf("."))+"."+en.substring(en.indexOf(".")+1)+"EnumFactory())"; // en+".fromCode(parseString(xpp))";
         anprsr = "parseEnumeration(null, "+en+".NULL, new "+en.substring(0, en.indexOf("."))+"."+en.substring(en.indexOf(".")+1)+"EnumFactory())"; // en+".fromCode(parseString(xpp))";
         // parseEnumeration(xpp, Narratived.NarrativeStatus.additional, new Narratived.NarrativeStatusEnumFactory())
+      } else if (ed.hasUserData(UserDataNames.JGEN_ALL_PRIMITIVE)) {
+        prsr = "parseNativePrimitive(json, \""+name+"\")";
       } else {
         if (ed.hasExtension(ToolingExtensions.EXT_TYPE_SPEC)) {
           prsr = "parse"+tn+"(json, getJObject(json, \""+name+"\"))";
@@ -329,30 +362,30 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
           parser.append("      for (int i = 0; i < array.size(); i++) {\r\n");
           parser.append("        if (array.get(i).isJsonNull()) {\r\n");
           if (en == null) {
-            parser.append("          res.get"+upFirst(name)+"().add(new "+tn+"Type());\r\n");
+            parser.append("          res.get"+upFirst(name)+"List().add(new "+tn+"Type());\r\n");
           } else {
-            parser.append("          res.get"+upFirst(name)+"().add(new Enumeration<"+en+">(new "+en+"EnumFactory(), "+en+".NULL));\r\n");
+            parser.append("          res.get"+upFirst(name)+"List().add(new Enumeration<"+en+">(new "+en+"EnumFactory(), "+en+".NULL));\r\n");
           }
 
           parser.append("        } else {;\r\n");
-          parser.append("          res.get"+upFirst(name)+"().add("+aprsr+");\r\n");
+          parser.append("          res.get"+upFirst(name)+"List().add("+aprsr+");\r\n");
           parser.append("        }\r\n");
           parser.append("      }\r\n");
           parser.append("    };\r\n");
           parser.append("    if (json.has(\"_"+name+"\")) {\r\n");
           parser.append("      JsonArray array = getJArray(json, \"_"+name+"\");\r\n");
           parser.append("      for (int i = 0; i < array.size(); i++) {\r\n");
-          parser.append("        if (i == res.get"+upFirst(name)+"().size())\r\n");
-          parser.append("          res.get"+upFirst(name)+"().add("+anprsr+");\r\n");
+          parser.append("        if (i == res.get"+upFirst(name)+"List().size())\r\n");
+          parser.append("          res.get"+upFirst(name)+"List().add("+anprsr+");\r\n");
           parser.append("        if (array.get(i) instanceof JsonObject) \r\n");
-          parser.append("          parseElementProperties(array.get(i).getAsJsonObject(), res.get"+upFirst(name)+"().get(i));\r\n");
+          parser.append("          parseElementProperties(array.get(i).getAsJsonObject(), res.get"+upFirst(name)+"List().get(i));\r\n");
           parser.append("      }\r\n");
           parser.append("    };\r\n");
         } else {
           parser.append("    if (json.has(\""+name+"\")) {\r\n");
           parser.append("      JsonArray array = getJArray(json, \""+name+"\");\r\n");
           parser.append("      for (int i = 0; i < array.size(); i++) {\r\n");
-          parser.append("        res.get"+upFirst(getElementName(name, false))+"().add("+aprsr+");\r\n");
+          parser.append("        res.get"+upFirst(getElementName(name, false))+"List().add("+aprsr+");\r\n");
           parser.append("      }\r\n");
           parser.append("    };\r\n");
         }
@@ -384,7 +417,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
 
   private void generateComposer(Analysis analysis) throws Exception {
     if (analysis.isAbstract())
-      genInnerAbstractComposer(analysis);
+      genInnerAbstractComposer(analysis, analysis.getRootType());
     else
       genInnerComposer(analysis, analysis.getRootType());
 
@@ -393,8 +426,27 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     }
   }
   
-  private void genInnerAbstractComposer(Analysis analysis) throws IOException, Exception {
+  private void genInnerAbstractComposer(Analysis analysis, TypeInfo ti) throws IOException, Exception {
     String tn = analysis.getRootType().getName();
+    
+    String stn = (ti == analysis.getRootType() ? tn : analysis.getClassName()+"."+tn);
+
+    composer.append("  protected void compose"+tn+"(String name, "+stn+" element) throws IOException {\r\n");
+    composer.append("    if (element != null) {\r\n");
+    composer.append("      open(name);\r\n");      
+    composer.append("      prop(\"_type\", element.fhirType());\r\n");
+    composer.append("      switch (element.fhirType()) {\r\n");            
+    for (Entry<String, String> e : getConcreteDescendents(analysis, ti).entrySet()) {
+      composer.append("      case \""+e.getKey()+"\":\r\n");      
+      composer.append("        compose"+e.getValue()+"Properties(("+e.getValue()+") element);\r\n");      
+      composer.append("        close();\r\n");      
+      composer.append("        break;\r\n");      
+    }
+    composer.append("      default: throw new FHIRException(\"Unsupported type '\"+element.fhirType()+\"'\");\r\n");      
+    composer.append("      }\r\n");    
+    composer.append("    }\r\n");
+    composer.append("  }\r\n\r\n");
+
 
     composer.append("  protected void compose"+tn+"Properties("+tn+" element) throws IOException {\r\n");
     if (!"Element".equals(tn) && analysis.getAncestor() != null) {
@@ -416,13 +468,14 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     composer.append("  protected void compose"+tn+"(String name, "+stn+" element) throws IOException {\r\n");
     composer.append("    if (element != null) {\r\n");
     boolean isResource = ti == analysis.getRootType() && analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE;
-    if (isResource) {
-      composer.append("      prop(\"resourceType\", name);\r\n");
+    if (ti.getAncestorName().equals("Resource")) {
+      composer.append("      prop(\"resourceType\", \""+analysis.getName()+"\");\r\n");
     } else {
-      composer.append("      open(name);\r\n");
+      composer.append("      open(name);\r\n");      
     }
+
     composer.append("      compose"+upFirst(tn).replace(".", "")+"Properties(element);\r\n");
-    if (!isResource) {
+    if (!ti.getAncestorName().equals("Resource")) {
       composer.append("      close();\r\n");
     }
     composer.append("    }\r\n");
@@ -468,7 +521,10 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
 
   private void genElementComposer(Analysis analysis, TypeInfo ti, ElementDefinition ed, ElementDefinition inh) throws Exception {
     String name = ed.getName();
-    if (name.endsWith("[x]") || name.equals("[type]")) {
+    if (isNamedElementExtensions(ed)) {
+      composer.append("     // todo: Named Element Extensions\r\n");
+      
+    } else if (name.endsWith("[x]") || name.equals("[type]")) {
       String en = name.endsWith("[x]") && !name.equals("[x]") ? name.replace("[x]", "") : "value";
       String pfx = name.endsWith("[x]") ? name.replace("[x]", "") : "";
       composer.append("      if (element.has"+upFirst(en)+"()) {\r\n");
@@ -488,6 +544,9 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
         } else {
           en = analysis.getClassName()+"."+ei.getName();
         }
+      } else if (ed.hasUserData(UserDataNames.JGEN_ALL_PRIMITIVE)) {
+        tn = ed.getUserString("java.type");
+        comp = "composeNativePrimitive";
       } else { 
         if (tn.equals("XhtmlNode")) {
           tn = "xhtml";
@@ -541,21 +600,21 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
           }
 
           if (isPrimitive(ed) || ed.typeSummary().startsWith("canonical(")) {
-            composer.append("        if (anyHasValue(element.get"+upFirst(getElementName(name, false))+"())) {\r\n");
+            composer.append("        if (anyHasValue(element.get"+upFirst(getElementName(name, false))+"List())) {\r\n");
             composer.append("          openArray(\""+name+"\");\r\n");
-            composer.append("          for ("+(tn.contains("(") ? stn : upFirst(tn))+" e : element.get"+upFirst(getElementName(name, false))+"()) \r\n");
-            composer.append("            "+comp+"Core(null, e, e != element.get"+upFirst(getElementName(name, false))+"().get(element.get"+upFirst(getElementName(name, false))+"().size()-1));\r\n");
+            composer.append("          for ("+(tn.contains("(") ? stn : upFirst(tn))+" e : element.get"+upFirst(getElementName(name, false))+"List()) \r\n");
+            composer.append("            "+comp+"Core(null, e, e != element.get"+upFirst(getElementName(name, false))+"List().get(element.get"+upFirst(getElementName(name, false))+"List().size()-1));\r\n");
             composer.append("          closeArray();\r\n");
             composer.append("        }\r\n");
-            composer.append("        if (anyHasExtras(element.get"+upFirst(getElementName(name, false))+"())) {\r\n");
+            composer.append("        if (anyHasExtras(element.get"+upFirst(getElementName(name, false))+"List())) {\r\n");
             composer.append("          openArray(\"_"+name+"\");\r\n");
-            composer.append("          for ("+(stn.contains("(") ? stn : upFirst(stn))+" e : element.get"+upFirst(getElementName(name, false))+"()) \r\n");
+            composer.append("          for ("+(stn.contains("(") ? stn : upFirst(stn))+" e : element.get"+upFirst(getElementName(name, false))+"List()) \r\n");
             composer.append("            "+comp+"Extras(null, e, true);\r\n");
             composer.append("          closeArray();\r\n");
             composer.append("        }\r\n");
           } else if (ed.typeSummary().equals("Resource")){
             composer.append("        openArray(\""+name+"\");\r\n");
-            composer.append("        for ("+(stn.contains("(") ? tn : upFirst(tn))+" e : element.get"+upFirst(getElementName(name, false))+"()) {\r\n");
+            composer.append("        for ("+(stn.contains("(") ? tn : upFirst(tn))+" e : element.get"+upFirst(getElementName(name, false))+"List()) {\r\n");
             composer.append("          open(null);\r\n");
             composer.append("          "+comp+"(e);\r\n");
             composer.append("          close();\r\n");
@@ -565,21 +624,21 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
           } else {
             composer.append("        openArray(\""+name+"\");\r\n");
             if (stn.contains(".") || !stn.contains("Component")) {
-              composer.append("        for ("+(stn.contains("(") ? stn : upFirst(stn))+" e : element.get"+upFirst(getElementName(name, false))+"()) \r\n");
+              composer.append("        for ("+(stn.contains("(") ? stn : upFirst(stn))+" e : element.get"+upFirst(getElementName(name, false))+"List()) \r\n");
             } else {
-              composer.append("        for ("+ti.getName()+"."+(stn.contains("(") ? stn : upFirst(stn))+" e : element.get"+upFirst(getElementName(name, false))+"()) \r\n");
+              composer.append("        for ("+ti.getName()+"."+(stn.contains("(") ? stn : upFirst(stn))+" e : element.get"+upFirst(getElementName(name, false))+"List()) \r\n");
             }
             composer.append("          "+comp+"(null, e);\r\n");
             composer.append("        closeArray();\r\n");
           }
         } else {
           composer.append("        openArray(\""+name+"\");\r\n");
-          composer.append("        for (Enumeration<"+prepEnumName(en)+"> e : element.get"+upFirst(getElementName(name, false))+"()) \r\n");
+          composer.append("        for (Enumeration<"+prepEnumName(en)+"> e : element.get"+upFirst(getElementName(name, false))+"List()) \r\n");
           composer.append("          composeEnumerationCore(null, e, new "+prepEnumName(en)+"EnumFactory(), true);\r\n");
           composer.append("        closeArray();\r\n");
           composer.append("        if (anyHasExtras(element.get"+upFirst(getElementName(name, false))+"())) {\r\n");
           composer.append("          openArray(\"_"+name+"\");\r\n");
-          composer.append("          for (Enumeration<"+prepEnumName(en)+"> e : element.get"+upFirst(getElementName(name, false))+"()) \r\n");
+          composer.append("          for (Enumeration<"+prepEnumName(en)+"> e : element.get"+upFirst(getElementName(name, false))+"List()) \r\n");
           composer.append("            composeEnumerationExtras(null, e, new "+prepEnumName(en)+"EnumFactory(), true);\r\n");
           composer.append("          closeArray();\r\n");
           composer.append("        }\r\n");

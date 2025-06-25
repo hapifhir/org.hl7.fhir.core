@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -57,6 +58,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import kotlin.NotImplementedError;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class StructureDefinitionComparer extends CanonicalResourceComparer implements ProfileKnowledgeProvider {
 
   public class ProfileComparison extends CanonicalResourceComparison<StructureDefinition> {
@@ -167,14 +169,16 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     ch = comparePrimitives("type", left.getTypeElement(), right.getTypeElement(), res.getMetadata(), IssueSeverity.ERROR, res) || ch;
     ch = comparePrimitives("baseDefinition", left.getBaseDefinitionElement(), right.getBaseDefinitionElement(), res.getMetadata(), IssueSeverity.ERROR, res) || ch;
     if (left.getType().equals(right.getType())) {
-      DefinitionNavigator ln = new DefinitionNavigator(session.getContextLeft(), left, false);
-      DefinitionNavigator rn = new DefinitionNavigator(session.getContextRight(), right, false);
+      DefinitionNavigator ln = new DefinitionNavigator(session.getContextLeft(), left, false, false);
+      DefinitionNavigator rn = new DefinitionNavigator(session.getContextRight(), right, false, false);
       StructuralMatch<ElementDefinitionNode> sm = new StructuralMatch<ElementDefinitionNode>(new ElementDefinitionNode(left, ln.current()), new ElementDefinitionNode(right, rn.current()));
       compareElements(res, sm, ln.path(), null, ln, rn);
       res.combined = sm;
-      ln = new DefinitionNavigator(session.getContextLeft(), left, true);
-      rn = new DefinitionNavigator(session.getContextRight(), right, true);
-      ch = compareDiff(ln.path(), null, ln, rn, res, right) || ch;
+      ln = new DefinitionNavigator(session.getContextLeft(), left, true, false);
+      rn = new DefinitionNavigator(session.getContextRight(), right, true, false);
+      List<Base> parents = new ArrayList<Base>();
+      parents.add(right);
+      ch = compareDiff(ln.path(), null, ln, rn, res, parents) || ch;
       // we don't preserve the differences - we only want the annotations
     }
     res.updateDefinitionsState(ch);
@@ -204,9 +208,9 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
 
     boolean def = false;
     
-    if (session.isDebug()) {
-      System.out.println("Compare elements at "+path);
-    }
+
+      log.debug("Compare elements at "+path);
+
     
     // not allowed to be different:   
 //    ruleEqual(comp, res, left.current().getDefaultValue(), right.current().getDefaultValue(), "defaultValue", path);
@@ -390,12 +394,13 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
   }
 
 
-  private boolean compareDiff(String path, String sliceName, DefinitionNavigator left, DefinitionNavigator right, ProfileComparison res, Base parent) throws DefinitionException, FHIRFormatError, IOException {
+  private boolean compareDiff(String path, String sliceName, DefinitionNavigator left, DefinitionNavigator right, ProfileComparison res, List<Base> parents) throws DefinitionException, FHIRFormatError, IOException {
     assert(path != null);  
     assert(left != null);
     assert(right != null);
     assert(left.path().equals(right.path()));
-
+    assert(parents.size() > 0);
+    
     boolean def = false;
     boolean ch = false;
     
@@ -469,7 +474,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     if (ch) {
       res.updateContentState(true);
     }
-    def = compareDiffChildren(path, left, right, edr == null ? parent : edr, res) || def;
+    def = compareDiffChildren(path, left, right, edr == null ? parents : newParents(parents, edr), res) || def;
 //
 //    // now process the slices
 //    if (left.current().hasSlicing() || right.current().hasSlicing()) {
@@ -532,9 +537,38 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     return def;
   }
 
-  private boolean compareDiffChildren(String path, DefinitionNavigator left, DefinitionNavigator right, Base parent, ProfileComparison res) throws DefinitionException, IOException, FHIRFormatError {
+  private List<Base> newParents(List<Base> parents, ElementDefinition edr) {
+    List<Base> list = new ArrayList<Base>();
+    list.addAll(parents);
+    list.add(edr);
+    return list;
+  }
+
+  private boolean compareDiffChildren(String path, DefinitionNavigator left, DefinitionNavigator right, List<Base> parents, ProfileComparison res) throws DefinitionException, IOException, FHIRFormatError {
     boolean def = false;
     
+    if (left.hasSlices() || right.hasSlices()) {
+      List<DefinitionNavigator> lc = left.slices();
+      List<DefinitionNavigator> rc = right.slices();
+
+      List<DefinitionNavigator> matchR = new ArrayList<>();
+      for (DefinitionNavigator l : lc) {
+        DefinitionNavigator r = findInSliceList(rc, l);
+        if (r == null) {
+          session.markDeleted(realParent(parents), "element", l.current());
+          res.updateContentState(true);
+        } else {
+          matchR.add(r);
+          def = compareDiff(l.path(), null, l, r, res, parents) || def;
+        }
+      }
+      for (DefinitionNavigator r : rc) {
+        if (!matchR.contains(r)) {
+          session.markAdded(r.current());
+          res.updateContentState(true);
+        }
+      }
+    }
     List<DefinitionNavigator> lc = left.children();
     List<DefinitionNavigator> rc = right.children();
 
@@ -542,11 +576,11 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     for (DefinitionNavigator l : lc) {
       DefinitionNavigator r = findInList(rc, l);
       if (r == null) {
-        session.markDeleted(parent, "element", l.current());
+        session.markDeleted(realParent(parents), "element", l.current());
         res.updateContentState(true);
       } else {
         matchR.add(r);
-        def = compareDiff(l.path(), null, l, r, res, parent) || def;
+        def = compareDiff(l.path(), null, l, r, res, parents) || def;
       }
     }
     for (DefinitionNavigator r : rc) {
@@ -558,6 +592,25 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     return def;
   }
 
+  private Base realParent(List<Base> list) {
+   for (int i = list.size() - 1; i >= 1; i--) {
+     if (!list.get(i).hasUserData(UserDataNames.DN_TRANSIENT)) {
+       return list.get(i);
+     }
+   }
+   return list.get(0);
+  }
+
+  private DefinitionNavigator findInSliceList(List<DefinitionNavigator> rc, DefinitionNavigator l) {
+    String s = l.current().getSliceName(); 
+    for (DefinitionNavigator t : rc) {
+      String ts = t.current().getSliceName(); 
+      if (ts.equals(s)) {
+        return t;
+      }
+    }
+    return null;
+  }
   private DefinitionNavigator findInList(List<DefinitionNavigator> rc, DefinitionNavigator l) {
     String s = l.getId(); 
     for (DefinitionNavigator t : rc) {
@@ -1262,14 +1315,14 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
   }
 
   public XhtmlNode renderUnion(ProfileComparison comp, String id, String prefix, String corePath) throws FHIRException, IOException {    
-    StructureDefinitionRenderer sdr = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, null, ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
-    return sdr.generateTable(new RenderingStatus(), corePath, comp.union, false, prefix, false, id, true, corePath, prefix, false, true, null, false, sdr.getContext().withUniqueLocalPrefix("u"), "u", null);
+    StructureDefinitionRenderer sdr = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, utilsLeft.getContext().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
+    return sdr.generateTable(new RenderingStatus(), corePath, comp.union, false, prefix, false, id, true, corePath, prefix, false, true, null, false, sdr.getContext().withUniqueLocalPrefix("u"), "u", null, "C1");
   }
       
 
   public XhtmlNode renderIntersection(ProfileComparison comp, String id, String prefix, String corePath) throws FHIRException, IOException {
-    StructureDefinitionRenderer sdr = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, null, ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
-    return sdr.generateTable(new RenderingStatus(), corePath, comp.intersection, false, prefix, false, id, true, corePath, prefix, false, true, null, false, sdr.getContext().withUniqueLocalPrefix("i"), "i", null);
+    StructureDefinitionRenderer sdr = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, utilsLeft.getContext().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
+    return sdr.generateTable(new RenderingStatus(), corePath, comp.intersection, false, prefix, false, id, true, corePath, prefix, false, true, null, false, sdr.getContext().withUniqueLocalPrefix("i"), "i", null, "C2");
   }
 
   private void genElementComp(String defPath, String anchorPrefix, HierarchicalTableGenerator gen, List<Row> rows, StructuralMatch<ElementDefinitionNode> combined, String corePath, String prefix, Row slicingRow, boolean root) throws IOException {
@@ -1324,8 +1377,8 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
       if (sn != null)
         sName = sName +":"+sn;
       StructureDefinitionRenderer.UnusedTracker used = new StructureDefinitionRenderer.UnusedTracker();
-      StructureDefinitionRenderer sdrLeft = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, null, ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
-      StructureDefinitionRenderer sdrRight= new StructureDefinitionRenderer(new RenderingContext(utilsRight.getContext(), null, utilsRight.getTerminologyServiceOptions(), corePath, prefix, null, ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
+      StructureDefinitionRenderer sdrLeft = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, utilsLeft.getContext().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
+      StructureDefinitionRenderer sdrRight= new StructureDefinitionRenderer(new RenderingContext(utilsRight.getContext(), null, utilsRight.getTerminologyServiceOptions(), corePath, prefix, utilsRight.getContext().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
 
 
         
@@ -1485,6 +1538,12 @@ public String getLinkForUrl(String corePath, String s) {
 
 @Override
 public String getCanonicalForDefaultContext() {
+  // TODO Auto-generated method stub
+  return null;
+}
+
+@Override
+public String getDefinitionsName(Resource r) {
   // TODO Auto-generated method stub
   return null;
 }

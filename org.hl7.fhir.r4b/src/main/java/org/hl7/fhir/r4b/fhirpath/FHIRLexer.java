@@ -16,22 +16,14 @@ public class FHIRLexer {
   public class FHIRLexerException extends FHIRException {
 
     private SourceLocation location;
-
-//    public FHIRLexerException() {
-//      super();
-//    }
-//
-//    public FHIRLexerException(String message, Throwable cause) {
-//      super(message, cause);
-//    }
-//
-//    public FHIRLexerException(String message) {
-//      super(message);
-//    }
-//
-//    public FHIRLexerException(Throwable cause) {
-//      super(cause);
-//    }
+    
+    public FHIRLexerException(String message) {
+      super(message);
+    }
+    
+    public FHIRLexerException(String message, Throwable cause) {
+      super(message, cause);
+    }
 
     public FHIRLexerException(String message, SourceLocation location) {
       super(message);
@@ -43,6 +35,7 @@ public class FHIRLexer {
     }
 
   }
+
   private String source;
   private int cursor;
   private int currentStart;
@@ -63,6 +56,7 @@ public class FHIRLexer {
     currentLocation = new SourceLocation(1, 1);
     next();
   }
+
   public FHIRLexer(String source, int i) throws FHIRLexerException {
     this.source = Utilities.stripBOM(source);
     this.cursor = i;
@@ -87,6 +81,7 @@ public class FHIRLexer {
   public String getCurrent() {
     return current;
   }
+
   public SourceLocation getCurrentLocation() {
     return currentLocation;
   }
@@ -149,7 +144,7 @@ public class FHIRLexer {
     skipWhitespaceAndComments();
     current = null;
     currentStart = cursor;
-    currentStartLocation = currentLocation;
+    currentStartLocation = currentLocation.copy();
     if (cursor < source.length()) {
       char ch = source.charAt(cursor);
       if (ch == '!' || ch == '>' || ch == '<' || ch == ':' || ch == '-' || ch == '=')  {
@@ -287,6 +282,7 @@ public class FHIRLexer {
         current = source.substring(currentStart, cursor);
       }
     }
+    currentLocation.incColumn(cursor - currentStart);
   }
 
   private void skipWhitespaceAndComments() {
@@ -302,6 +298,7 @@ public class FHIRLexer {
         int start = cursor+2;
         while (cursor < source.length() && !((source.charAt(cursor) == '\r') || source.charAt(cursor) == '\n')) { 
           cursor++;        
+          currentLocation.incColumn();
         }
         comments.add(source.substring(start, cursor).trim());
       } else if (cursor < source.length() - 1 && "/*".equals(source.substring(cursor, cursor+2))) {
@@ -312,16 +309,19 @@ public class FHIRLexer {
         while (cursor < source.length() - 1 && !"*/".equals(source.substring(cursor, cursor+2))) { 
           last13 = currentLocation.checkChar(source.charAt(cursor), last13);
           cursor++;        
+          currentLocation.incColumn();
         }
         if (cursor >= source.length() -1) {
           error("Unfinished comment");
         } else {
           comments.add(source.substring(start, cursor).trim());
           cursor = cursor + 2;
+          currentLocation.incColumn(2);
         }
       } else if (Utilities.isWhitespace(source.charAt(cursor))) {
         last13 = currentLocation.checkChar(source.charAt(cursor), last13);
         cursor++;
+        currentLocation.incColumn();
       } else {
         done = true;
       }
@@ -337,28 +337,37 @@ public class FHIRLexer {
     
     return ch == '-' || ch == ':' || ch == 'T' || ch == '+' || ch == 'Z' || Character.isDigit(ch) || (cursor-start == eot && ch == '.' && cursor < source.length()-1&& Character.isDigit(source.charAt(cursor+1)));
   }
+
   public boolean isOp() {
     return ExpressionNode.Operation.fromCode(current) != null;
   }
+
   public boolean done() {
     return currentStart >= source.length();
   }
+
   public int nextId() {
     id++;
     return id;
   }
+
   public SourceLocation getCurrentStartLocation() {
     return currentStartLocation;
   }
-  
+
   // special case use
   public void setCurrent(String current) {
     this.current = current;
   }
 
+  public boolean hasComment() {
+    return !done() && current.startsWith("//");
+  }
+
   public boolean hasComments() {
     return comments.size() > 0;
   }
+
 
   public List<String> getComments() {
     return comments;
@@ -519,6 +528,7 @@ public class FHIRLexer {
       next();
     
   }
+  
   public String takeDottedToken() throws FHIRLexerException {
     StringBuilder b = new StringBuilder();
     b.append(take());
@@ -528,7 +538,12 @@ public class FHIRLexer {
     }
     return b.toString();
   }
-  
+
+  public void skipComments() throws FHIRLexerException {
+    while (!done() && hasComment())
+      next();
+  }
+
   public int getCurrentStart() {
     return currentStart;
   }

@@ -12,27 +12,27 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.hl7.fhir.r4.formats.IParser.OutputStyle;
-import org.hl7.fhir.r4.formats.JsonParser;
-import org.hl7.fhir.r4.model.CodeSystem;
-import org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode;
-import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r4.model.Identifier;
-import org.hl7.fhir.r4.model.ValueSet;
-import org.hl7.fhir.r4.utils.NPMPackageGenerator;
-import org.hl7.fhir.r4.utils.NPMPackageGenerator.Category;
+import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.Identifier;
+import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.utils.NPMPackageGenerator;
+import org.hl7.fhir.r5.utils.NPMPackageGenerator.Category;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.json.model.JsonArray;
+import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
+@SuppressWarnings("checkstyle:systemout")
 public class DicomPackageBuilder {
   
   private String version;
@@ -75,7 +75,7 @@ public class DicomPackageBuilder {
     Set<String> ids = new HashSet<>();
     ids.add(vs.getId());
     
-    for (File f : ManagedFileAccess.file(Utilities.path(source, "Resources", "valuesets", "fhir", "json")).listFiles()) {
+    for (File f : ManagedFileAccess.file(Utilities.path(source, "valuesets", "fhir", "json")).listFiles()) {
       vs = (ValueSet) JsonParser.loadFile(ManagedFileAccess.inStream(f));
       vs.setVersion(version);
       if (vs.getId().length() > 64) {
@@ -114,20 +114,20 @@ public class DicomPackageBuilder {
 
   private JsonObject buildPackage() {
     JsonObject npm = new JsonObject();
-    npm.addProperty("tools-version", 3);
-    npm.addProperty("type", "Conformance");
-    npm.addProperty("license", "free");
-    npm.addProperty("author", "FHIR Project for DICOM");
-    npm.addProperty("name", "fhir.dicom");
-    npm.addProperty("url", "http://fhir.org/packages/fhir.dicom");
-    npm.addProperty("canonical", "http://fhir.org/packages/fhir.dicom");
-    npm.addProperty("version", version);
+    npm.add("tools-version", 3);
+    npm.add("type", "Conformance");
+    npm.add("license", "free");
+    npm.add("author", "FHIR Project for DICOM");
+    npm.add("name", "fhir.dicom");
+    npm.add("url", "http://fhir.org/packages/fhir.dicom");
+    npm.add("canonical", "http://fhir.org/packages/fhir.dicom");
+    npm.add("version", version);
     JsonArray fv = new JsonArray();
     npm.add("fhirVersions", fv);
     fv.add("4.0.1");
     JsonObject dep = new JsonObject();
     npm.add("dependencies", dep);
-    dep.addProperty("hl7.fhir.r4.core", "4.0.1");
+    dep.add("hl7.fhir.r4.core", "4.0.1");
     return npm;
   }
 
@@ -135,7 +135,7 @@ public class DicomPackageBuilder {
     DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     factory.setNamespaceAware(true);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    Document doc = builder.parse(ManagedFileAccess.inStream(Utilities.path(source, "Resources", "Ontology", "DCM", "dcm.owl")));
+    Document doc = builder.parse(ManagedFileAccess.inStream(Utilities.path(source, "Ontology", "DCM", "dcm.owl")));
     Element rdf = doc.getDocumentElement();
     Element d = XMLUtil.getFirstChild(rdf);
     version = processVersion(XMLUtil.getNamedChildText(d, "versionInfo"));

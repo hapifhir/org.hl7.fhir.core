@@ -30,7 +30,6 @@ public class VersionComparisonAnnotation {
   }
 
   public void added() {
-    assert type == AnotationType.NoChange;
     type = AnotationType.Added;    
   }
 

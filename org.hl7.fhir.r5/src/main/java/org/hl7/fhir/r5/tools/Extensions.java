@@ -44,7 +44,7 @@ import java.math.BigDecimal;
 public class Extensions {
   
 // -- BindingDefinition -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/binding-definition|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/binding-definition|0.6.0-cibuild
 // Binding Definition
 
   public static Extension makeBindingDefinition(String value) {
@@ -52,7 +52,7 @@ public class Extensions {
   }
 
 // -- TerminologyBindingStyleEXT -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-binding-style|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-binding-style|0.6.0-cibuild
 // Terminology Binding Style Extension
 
   public static Extension makeTerminologyBindingStyleEXT(String value) {
@@ -69,7 +69,7 @@ public class Extensions {
   }
 
 // -- DateFormat -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-date-format|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-date-format|0.6.0-cibuild
 // Date Format String
 
   public static Extension makeDateFormat(String value) {
@@ -86,7 +86,7 @@ public class Extensions {
   }
 
 // -- DateRulesControl -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-date-rules|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-date-rules|0.6.0-cibuild
 // Date Validation Rules control
 
   public static Extension makeDateRulesControl(String value) {
@@ -103,7 +103,7 @@ public class Extensions {
   }
 
 // -- ExtensionStylesEXT -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/extension-style|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/extension-style|0.6.0-cibuild
 // Extension Style Extension
 
   public static Extension makeExtensionStylesEXT(String value) {
@@ -120,7 +120,7 @@ public class Extensions {
   }
 
 // -- IdExpectationExt -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/id-expectation|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/id-expectation|0.6.0-cibuild
 // Id Expectation Extension
 
   public static Extension makeIdExpectationExt(String value) {
@@ -137,7 +137,7 @@ public class Extensions {
   }
 
 // -- ActorExampleURL -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/ig-actor-example-url|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/ig-actor-example-url|0.6.0-cibuild
 // Actor Example URL
 
   public static Extension makeActorExampleURL(String value) {
@@ -154,7 +154,7 @@ public class Extensions {
   }
 
 // -- ActorForExample -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/ig-example-actor|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/ig-example-actor|0.6.0-cibuild
 // Actor For Example
 
   public static Extension makeActorForExample(String value) {
@@ -162,7 +162,7 @@ public class Extensions {
   }
 
 // -- IGInternalDependency -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/ig-internal-dependency|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/ig-internal-dependency|0.6.0-cibuild
 // IG Internal Dependency
 
   public static Extension makeIGInternalDependency(String value) {
@@ -170,7 +170,7 @@ public class Extensions {
   }
 
 // -- IGLinkDependency -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/ig-link-dependency|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/ig-link-dependency|0.6.0-cibuild
 // IG Link Dependency
 
   public static Extension makeIGLinkDependency(String value) {
@@ -178,7 +178,7 @@ public class Extensions {
   }
 
 // -- IGPublisherLoadAsResource -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/ig-load-as-resource|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/ig-load-as-resource|0.6.0-cibuild
 // IGPublisher Load As Resource
 
   public static Extension makeIGPublisherLoadAsResource(boolean value) {
@@ -195,7 +195,7 @@ public class Extensions {
   }
 
 // -- IGPageName -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/ig-page-name|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/ig-page-name|0.6.0-cibuild
 // IG Page Name
 
   public static Extension makeIGPageName(String value) {
@@ -203,7 +203,7 @@ public class Extensions {
   }
 
 // -- IGPublisherUseAsResourceId -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/ig-use-as-resource-id|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/ig-use-as-resource-id|0.6.0-cibuild
 // IGPublisher Use As Resource Id
 
   public static Extension makeIGPublisherUseAsResourceId(boolean value) {
@@ -220,7 +220,7 @@ public class Extensions {
   }
 
 // -- IGPublisherBundle -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/igpublisher-bundle|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/igpublisher-bundle|0.6.0-cibuild
 // IG Publisher Bundle
 
   public static Extension makeIGPublisherBundle(String value) {
@@ -228,7 +228,7 @@ public class Extensions {
   }
 
 // -- IGDependencyComment -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/implementationguide-dependency-comment|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/implementationguide-dependency-comment|0.6.0-cibuild
 // IG Dependency Comment
 
   public static Extension makeIGDependencyComment(String value) {
@@ -236,7 +236,7 @@ public class Extensions {
   }
 
 // -- BinaryResourceFormat -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/implementationguide-resource-format|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/implementationguide-resource-format|0.6.0-cibuild
 // Binary Resource Format
 
   public static Extension makeBinaryResourceFormat(String value) {
@@ -244,7 +244,7 @@ public class Extensions {
   }
 
 // -- BinaryResourceLogical -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/implementationguide-resource-logical|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/implementationguide-resource-logical|0.6.0-cibuild
 // Binary Resource Logical
 
   public static Extension makeBinaryResourceLogical(String value) {
@@ -252,7 +252,7 @@ public class Extensions {
   }
 
 // -- ImpliedStringPrefix -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/implied-string-prefix|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/implied-string-prefix|0.6.0-cibuild
 // Implied String Prefix
 
   public static Extension makeImpliedStringPrefix(String value) {
@@ -269,7 +269,7 @@ public class Extensions {
   }
 
 // -- InheritObligations -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/inherit-obligations|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/inherit-obligations|0.6.0-cibuild
 // Inherit Obligations
 
   public static Extension makeInheritObligations(String value) {
@@ -286,7 +286,7 @@ public class Extensions {
   }
 
 // -- JsonEmptyBehavior -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/json-empty-behavior|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/json-empty-behavior|0.6.0-cibuild
 // Json Empty Behavior Extension
 
   public static Extension makeJsonEmptyBehavior(String value) {
@@ -303,7 +303,7 @@ public class Extensions {
   }
 
 // -- JsonPropertyName -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/json-name|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/json-name|0.6.0-cibuild
 // Json Property Name Extension
 
   public static Extension makeJsonPropertyName(String value) {
@@ -320,7 +320,7 @@ public class Extensions {
   }
 
 // -- JsonNullableExt -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/json-nullable|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/json-nullable|0.6.0-cibuild
 // Json Nullable Extension
 
   public static Extension makeJsonNullableExt(boolean value) {
@@ -337,7 +337,7 @@ public class Extensions {
   }
 
 // -- JsonPrimitiveChoiceExt -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/json-primitive-choice|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/json-primitive-choice|0.6.0-cibuild
 // Json Primitive Choice Extension
 
   public static Extension makeJsonPrimitiveChoiceExt(boolean value) {
@@ -354,7 +354,7 @@ public class Extensions {
   }
 
 // -- JsonPropertyKey -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/json-property-key|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/json-property-key|0.6.0-cibuild
 // Json Property Key Extension
 
   public static Extension makeJsonPropertyKey(String value) {
@@ -371,7 +371,7 @@ public class Extensions {
   }
 
 // -- JsonSuppressResourceType -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/json-suppress-resourcetype|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/json-suppress-resourcetype|0.6.0-cibuild
 // Json Suppress resourceType Property
 
   public static Extension makeJsonSuppressResourceType(boolean value) {
@@ -388,7 +388,7 @@ public class Extensions {
   }
 
 // -- LogicalContainer -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/logical-container|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/logical-container|0.6.0-cibuild
 // Logical Container
 
   public static Extension makeLogicalContainer(String value) {
@@ -405,7 +405,7 @@ public class Extensions {
   }
 
 // -- LogicalTarget -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/logical-target|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/logical-target|0.6.0-cibuild
 // Logical Target
 
   public static Extension makeLogicalTarget(boolean value) {
@@ -422,7 +422,7 @@ public class Extensions {
   }
 
 // -- MatchetypeFlag -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/matchetype|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/matchetype|0.6.0-cibuild
 // Matchetype Flag
 
   public static Extension makeMatchetypeFlag(String value) {
@@ -439,7 +439,7 @@ public class Extensions {
   }
 
 // -- MatchetypeCountFlag -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/matchetype-count|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/matchetype-count|0.6.0-cibuild
 // Matchetype Count Flag
 
   public static Extension makeMatchetypeCountFlag(String value) {
@@ -456,7 +456,7 @@ public class Extensions {
   }
 
 // -- MatchetypeOptionalFlag -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/matchetype-optional|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/matchetype-optional|0.6.0-cibuild
 // Matchetype Optional Flag
 
   public static Extension makeMatchetypeOptionalFlag(String value) {
@@ -486,7 +486,7 @@ public class Extensions {
   }
 
 // -- NoBinding -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/no-binding|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/no-binding|0.6.0-cibuild
 // No Binding Extension
 
   public static Extension makeNoBinding(boolean value) {
@@ -503,7 +503,7 @@ public class Extensions {
   }
 
 // -- ObligationProfile -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/obligation-profile|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/obligation-profile|0.6.0-cibuild
 // Obligation Profile Flag
 
   public static Extension makeObligationProfile(boolean value) {
@@ -520,7 +520,7 @@ public class Extensions {
   }
 
 // -- PackageScope -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/package-scope|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/package-scope|0.6.0-cibuild
 // Package Scope
 
   public static Extension makePackageScope(String value) {
@@ -537,7 +537,7 @@ public class Extensions {
   }
 
 // -- ProfileMapping -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/profile-mapping|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/profile-mapping|0.6.0-cibuild
 // Profile Mapping Extension
 
   public static Extension makeProfileMapping(DataType value) {
@@ -545,7 +545,7 @@ public class Extensions {
   }
 
 // -- ResourceSortExt -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/resource-sort|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/resource-sort|0.6.0-cibuild
 // Resource Sort Extension
 
   public static Extension makeResourceSortExt(int value) {
@@ -553,7 +553,7 @@ public class Extensions {
   }
 
 // -- SearchParameterBaseType -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/searchparameter-base-type|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/searchparameter-base-type|0.6.0-cibuild
 // Search Parameter Base Type
 
   public static Extension makeSearchParameterBaseType(String value) {
@@ -561,7 +561,7 @@ public class Extensions {
   }
 
 // -- SnapshotBaseVersion -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/snapshot-base-version|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/snapshot-base-version|0.6.0-cibuild
 // Snapshot Base Version
 
   public static Extension makeSnapshotBaseVersion(String value) {
@@ -569,7 +569,7 @@ public class Extensions {
   }
 
 // -- ExtensionSnapshotBehavior -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/snapshot-behavior|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/snapshot-behavior|0.6.0-cibuild
 // Extension Snapshot Behavior
 
   public static Extension makeExtensionSnapshotBehavior(String value) {
@@ -585,8 +585,25 @@ public class Extensions {
     return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_EXTENSION_SNAPSHOT_BEHAVIOR);
   }
 
+// -- ExtensionSnapshotSource -------------------------------------
+// http://hl7.org/fhir/tools/StructureDefinition/snapshot-source|0.6.0-cibuild
+// Extension Snapshot Source
+
+  public static Extension makeExtensionSnapshotSource(String value) {
+    return new Extension(ExtensionConstants.EXT_EXTENSION_SNAPSHOT_SOURCE).setValue(new CanonicalType(value));
+  }
+
+  public static StructureDefinition addExtensionSnapshotSource(StructureDefinition context, String value) {
+    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_EXTENSION_SNAPSHOT_SOURCE, new CanonicalType(value));
+    return context;
+  }
+
+  public static List<String> getExtensionSnapshotSourceList(StructureDefinition context) {
+    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_EXTENSION_SNAPSHOT_SOURCE);
+  }
+
 // -- RenderingEngineViewHintsExt -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/view-hint|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/view-hint|0.6.0-cibuild
 // Viewing Hints for Rendering Engines (Extension)
 
   public static Extension makeRenderingEngineViewHintsExt(String value) {
@@ -612,7 +629,7 @@ public class Extensions {
   }
 
 // -- WebSource -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/web-source|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/web-source|0.6.0-cibuild
 // Web Source
 
   public static Extension makeWebSource(String value) {
@@ -629,7 +646,7 @@ public class Extensions {
   }
 
 // -- XMLChoiceGroup -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/xml-choice-group|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/xml-choice-group|0.6.0-cibuild
 // XML Choice Group
 
   public static Extension makeXMLChoiceGroup(boolean value) {
@@ -646,7 +663,7 @@ public class Extensions {
   }
 
 // -- XmlElementName -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/xml-name|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/xml-name|0.6.0-cibuild
 // Xml Element Name Extension
 
   public static Extension makeXmlElementName(String value) {
@@ -672,7 +689,7 @@ public class Extensions {
   }
 
 // -- Namespace -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/xml-namespace|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/xml-namespace|0.6.0-cibuild
 // Namespace
 
   public static Extension makeNamespace(String value) {
@@ -698,7 +715,7 @@ public class Extensions {
   }
 
 // -- XmlNoOrder -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/xml-no-order|0.3.0
+// http://hl7.org/fhir/tools/StructureDefinition/xml-no-order|0.6.0-cibuild
 // No Order in XML
 
   public static Extension makeXmlNoOrder(boolean value) {
