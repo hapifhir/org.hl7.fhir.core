@@ -34,6 +34,7 @@ package org.hl7.fhir.r5.tools;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.r5.tools.Enumerations.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.instance.model.api.ICompositeType;
@@ -44,12 +45,19 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * This is a concrete subtype of Element that has extensions (though the format in JSON is different)
+ * This is a concrete subtype of Base that has extensions (though the format in JSON is different)
  */
 @DatatypeDef(name="CDSHooksExtensions")
-public class CDSHooksExtensions extends Element implements ICompositeType {
+public class CDSHooksExtensions extends LogicalBase implements ICompositeType {
 
-    private static final long serialVersionUID = 0L;
+    /**
+     * An extension where the name is defined by the extension definition, and the extension definition is of any type (including primitives, though the 'id' element cannot be represented for primitives)
+     */
+    @Child(name = "extension", type = {Base.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="An extension of any type", formalDefinition="An extension where the name is defined by the extension definition, and the extension definition is of any type (including primitives, though the 'id' element cannot be represented for primitives)" )
+    protected List<NamedElementExtension> extensionList;
+
+    private static final long serialVersionUID = 163508525L;
 
   /**
    * Constructor
@@ -57,6 +65,112 @@ public class CDSHooksExtensions extends Element implements ICompositeType {
     public CDSHooksExtensions() {
       super();
     }
+
+    /**
+     * @return {@link #extension} (An extension where the name is defined by the extension definition, and the extension definition is of any type (including primitives, though the 'id' element cannot be represented for primitives))
+     */
+    public List<NamedElementExtension> getExtensionList() { 
+      if (this.extensionList == null)
+        this.extensionList = new ArrayList<NamedElementExtension>();
+      return this.extensionList;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public CDSHooksExtensions setExtensionList(List<NamedElementExtension> theExtension) { 
+      this.extensionList = theExtension;
+      return this;
+    }
+
+    public boolean hasExtension() { 
+      if (this.extensionList == null)
+        return false;
+      for (NamedElementExtension item : this.extensionList)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CDSHooksExtensions addExtension(NamedElementExtension t) { //3b
+      if (t == null)
+        return this;
+      if (this.extensionList == null)
+        this.extensionList = new ArrayList<NamedElementExtension>();
+      this.extensionList.add(t);
+      return this;
+    }
+
+      protected void listChildren(List<Property> children) {
+        super.listChildren(children);
+        children.add(new Property("extension", "Base", "An extension where the name is defined by the extension definition, and the extension definition is of any type (including primitives, though the 'id' element cannot be represented for primitives)", 0, java.lang.Integer.MAX_VALUE, extensionList));
+      }
+
+      @Override
+      public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+        switch (_hash) {
+        case -612557761: /*extension*/  return new Property("extension", "Base", "An extension where the name is defined by the extension definition, and the extension definition is of any type (including primitives, though the 'id' element cannot be represented for primitives)", 0, java.lang.Integer.MAX_VALUE, extensionList);
+        default: return super.getNamedProperty(_hash, _name, _checkValid);
+        }
+
+      }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -612557761: /*extension*/ return this.extensionList == null ? new Base[0] : this.extensionList.toArray(new Base[this.extensionList.size()]); // NamedElementExtension
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -612557761: // extension
+          this.getExtensionList().add((NamedElementExtension) value); // NamedElementExtension
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("extension")) {
+          this.getExtensionList().add((NamedElementExtension) value); // NamedElementExtension
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -612557761: /*div*/
+          throw new Error("Unable to make an instance of the abstract property 'extension'");
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -612557761: /*extension*/ return new String[] {"Base"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("extension")) {
+          throw new FHIRException("Cannot call addChild on an abstract type CDSHooksExtensions.extension");
+        }
+        else
+          return super.addChild(name);
+      }
 
   public String fhirType() {
     return "CDSHooksExtensions";
@@ -71,10 +185,39 @@ public class CDSHooksExtensions extends Element implements ICompositeType {
 
       public void copyValues(CDSHooksExtensions dst) {
         super.copyValues(dst);
+        if (extensionList != null) {
+          dst.extensionList = new ArrayList<NamedElementExtension>();
+          for (NamedElementExtension i : extensionList)
+            dst.extensionList.add(i.copy());
+        };
       }
 
       protected CDSHooksExtensions typedCopy() {
         return copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof CDSHooksExtensions))
+          return false;
+        CDSHooksExtensions o = (CDSHooksExtensions) other_;
+        return compareDeep(extensionList, o.extensionList, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof CDSHooksExtensions))
+          return false;
+        CDSHooksExtensions o = (CDSHooksExtensions) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(extensionList);
       }
 
 

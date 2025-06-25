@@ -960,7 +960,7 @@ public abstract class Base implements Serializable, IBase, IElement {
     if (b instanceof Element) {
       return ((Element) b).getXhtml();
     } else if (b instanceof XhtmlType) {
-      return ((XhtmlType) b).getValue();
+      return ((XhtmlType) b).getXhtml();
     } else if (b instanceof StringType) {
       try {
         return new XhtmlParser().parseFragment(((StringType) b).asStringValue());
@@ -979,7 +979,7 @@ public abstract class Base implements Serializable, IBase, IElement {
       return ((Element) b).getValue();
     } else if (b instanceof XhtmlType) {
       try {
-        return new XhtmlComposer(true).compose(((XhtmlType) b).getValue());
+        return new XhtmlComposer(true).compose(((XhtmlType) b).getXhtml());
       } catch (IOException e) {
         return null;
       }
@@ -1046,5 +1046,15 @@ public abstract class Base implements Serializable, IBase, IElement {
 
   public void copyValues(Base dst) {
   }
+
+  /**
+   * return set XHTML if this is an XHTML node, else error
+   * 
+   * @return
+   */
+  public Base setXhtml(XhtmlNode node) {
+    throw new Error("This node does not support xhtml");
+  }
+
 
 }

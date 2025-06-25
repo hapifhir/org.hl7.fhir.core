@@ -39,10 +39,12 @@ public class NodeStack {
     this.element = element;
     literalPath = (initialPath == null ? "" : initialPath+".") + buildPathForElement(element, true);
     workingLang = validationLanguage;
-    if (!element.getName().equals(element.fhirType())) {
-      logicalPaths = new HashSet<>();
-      logicalPaths.add(element.fhirType());
-    }
+    logicalPaths = new HashSet<>();
+    logicalPaths.add(urlTail(element.fhirType()));
+  }
+
+  private String urlTail(String fhirType) {
+    return Utilities.isAbsoluteUrl(fhirType) ? fhirType.substring(fhirType.lastIndexOf("/") + 1) : fhirType;
   }
 
   private String buildPathForElement(Element e, boolean first) {

@@ -85,11 +85,11 @@ public class PackageInformation {
   }
 
   public boolean isExamplesPackage() {
-    boolean b = id.startsWith("hl7.fhir.") && id.endsWith(".examples");
+    boolean b = id.startsWith("hl7.fhir.r") && id.endsWith(".examples");
     return b;
   }
 
-  public boolean isHTO() {
+  public boolean isTHO() {
     boolean b = id.startsWith("hl7.terminology.r");
     return b;
   }
@@ -104,5 +104,10 @@ public class PackageInformation {
 
   public String toString() {
     return getVID();
+  }
+
+  public boolean isCore() {
+    boolean b = id.startsWith("hl7.fhir.r") && id.endsWith(".core");
+    return b;
   }
 }

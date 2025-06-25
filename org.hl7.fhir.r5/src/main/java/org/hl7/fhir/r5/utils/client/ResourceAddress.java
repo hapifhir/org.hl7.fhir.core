@@ -36,19 +36,16 @@ package org.hl7.fhir.r5.utils.client;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ResourceType;
 import org.hl7.fhir.utilities.Utilities;
@@ -92,7 +89,7 @@ public class ResourceAddress {
 	}
 	
 	public <T extends Resource> URI resolveSearchUri(Class<T> resourceClass, Map<String,String> parameters) {
-		return appendHttpParameters(baseServiceUri.resolve(nameForClassWithSlash(resourceClass) +"_search"), parameters, true);
+		return appendHttpParameters(baseServiceUri.resolve(nameForClassWithSlash(resourceClass) +"_search"), parameters);
 	}
 	
   private <T extends Resource> String nameForClassWithSlash(Class<T> resourceClass) {
@@ -105,11 +102,12 @@ public class ResourceAddress {
   }
 
   public <T extends Resource> URI resolveOperationUri(Class<T> resourceClass, String opName, Map<String,String> parameters) {
-    return appendHttpParameters(baseServiceUri.resolve(nameForClassWithSlash(resourceClass) +"$"+opName), parameters, true);
+    return appendHttpParameters(baseServiceUri.resolve(nameForClassWithSlash(resourceClass) +"$"+opName), parameters);
   }
-  
+
+  @Deprecated
   public <T extends Resource> URI resolveOperationUriNoEscape(Class<T> resourceClass, String opName, Map<String,String> parameters) {
-    return appendHttpParameters(baseServiceUri.resolve(nameForClassWithSlash(resourceClass) +"$"+opName), parameters, false);
+    return appendHttpParameters(baseServiceUri.resolve(nameForClassWithSlash(resourceClass) +"$"+opName), parameters);
   }
   
 	public <T extends Resource> URI resolveValidateUri(Class<T> resourceClass, String id) {
@@ -149,27 +147,27 @@ public class ResourceAddress {
 	
 	protected <T extends Resource> URI resolveGetHistoryUriForResourceId(Class<T> resourceClass, String id, Object since, int count) {
 		Map<String,String>  parameters = getHistoryParameters(since, count);
-		return appendHttpParameters(baseServiceUri.resolve(nameForClass(resourceClass) + "/" + id + "/_history"), parameters, true);
+		return appendHttpParameters(baseServiceUri.resolve(nameForClass(resourceClass) + "/" + id + "/_history"), parameters);
 	}
 	
 	public <T extends Resource> URI resolveGetHistoryForResourceType(Class<T> resourceClass, int count) {
 		Map<String,String>  parameters = getHistoryParameters(null, count);
-		return appendHttpParameters(baseServiceUri.resolve(nameForClass(resourceClass) + "/_history"), parameters, true);
+		return appendHttpParameters(baseServiceUri.resolve(nameForClass(resourceClass) + "/_history"), parameters);
 	}
 	
 	public <T extends Resource> URI resolveGetHistoryForResourceType(Class<T> resourceClass, Object since, int count) {
 		Map<String,String>  parameters = getHistoryParameters(since, count);
-		return appendHttpParameters(baseServiceUri.resolve(nameForClass(resourceClass) + "/_history"), parameters, true);
+		return appendHttpParameters(baseServiceUri.resolve(nameForClass(resourceClass) + "/_history"), parameters);
 	}
 	
 	public URI resolveGetHistoryForAllResources(Calendar since, int count) {
 		Map<String,String>  parameters = getHistoryParameters(since, count);
-		return appendHttpParameters(baseServiceUri.resolve("_history"), parameters, true);
+		return appendHttpParameters(baseServiceUri.resolve("_history"), parameters);
 	}
 	
 	public URI resolveGetHistoryForAllResources(Date since, int count) {
 		Map<String,String>  parameters = getHistoryParameters(since, count);
-		return appendHttpParameters(baseServiceUri.resolve("_history"), parameters, true);
+		return appendHttpParameters(baseServiceUri.resolve("_history"), parameters);
 	}
 	
 	public Map<String,String> getHistoryParameters(Object since, int count) {
@@ -416,24 +414,28 @@ public class ResourceAddress {
 	public static URI appendHttpParameter(URI basePath, String httpParameterName, String httpParameterValue) {
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put(httpParameterName, httpParameterValue);
-		return appendHttpParameters(basePath, parameters, true);
+		return appendHttpParameters(basePath, parameters);
 	}
 	
-	public static URI appendHttpParameters(URI basePath, Map<String,String> parameters, boolean escape) {
+	public static URI appendHttpParameters(URI basePath, Map<String,String> parameters) {
         try {
-        	Set<String> httpParameterNames = parameters.keySet();
-        	String query = basePath.getQuery();
-        	
-        	for(String httpParameterName : httpParameterNames) {
-		        if(query != null) {
-			        query += "&";
-		        } else {
-		        	query = "";
-		        }
-		        query += httpParameterName + "=" + (escape ? Utilities.encodeUriParam(parameters.get(httpParameterName)) : parameters.get(httpParameterName));
-        	}
-	
-	        return new URI(basePath.getScheme(), basePath.getUserInfo(), basePath.getHost(),basePath.getPort(), basePath.getPath(), query, basePath.getFragment());
+          List<NameValuePair> existingParams = URLEncodedUtils.parse(basePath.getQuery(), StandardCharsets.UTF_8);
+
+          URIBuilder uriBuilder = new URIBuilder()
+            .setScheme(basePath.getScheme())
+            .setHost(basePath.getHost())
+            .setPort(basePath.getPort())
+            .setUserInfo(basePath.getUserInfo())
+            .setFragment(basePath.getFragment());
+          for (NameValuePair pair : existingParams) {
+            uriBuilder.addParameter(pair.getName(), pair.getValue());
+          }
+          for (Map.Entry<String, String> entry : parameters.entrySet()) {
+            uriBuilder.addParameter(entry.getKey(), entry.getValue());
+          }
+          uriBuilder.setPath(basePath.getPath());
+
+          return uriBuilder.build();
         } catch(Exception e) {
         	throw new EFhirClientException(0, "Error appending http parameter", e);
         }

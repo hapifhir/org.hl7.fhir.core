@@ -46,6 +46,7 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
@@ -74,6 +75,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class NPMPackageGenerator {
 
   public enum Category {
@@ -342,7 +344,7 @@ public class NPMPackageGenerator {
     }
 
     if (created.contains(path)) {
-      System.out.println("Duplicate package file " + path);
+      log.warn("Duplicate package file " + path);
     } else {
       created.add(path);
       TarArchiveEntry entry = new TarArchiveEntry(path);
@@ -395,7 +397,7 @@ public class NPMPackageGenerator {
           String path = f.getAbsolutePath().substring(root.length() + 1);
           byte[] content = FileUtilities.fileToBytes(f);
           if (created.contains(path))
-            System.out.println("Duplicate package file " + path);
+            log.warn("Duplicate package file " + path);
           else {
             created.add(path);
             TarArchiveEntry entry = new TarArchiveEntry(path);

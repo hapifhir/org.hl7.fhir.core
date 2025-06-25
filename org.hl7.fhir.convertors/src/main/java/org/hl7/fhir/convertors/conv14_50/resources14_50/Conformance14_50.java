@@ -22,10 +22,8 @@ import org.hl7.fhir.r5.model.Enumerations;
 
 public class Conformance14_50 {
 
-  public static final String ACCEPT_UNKNOWN_EXTENSION_URL = "http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown";
-
   private static final String[] IGNORED_EXTENSION_URLS = new String[]{
-    ACCEPT_UNKNOWN_EXTENSION_URL
+    VersionConvertorConstants.EXT_ACCEPT_UNKNOWN_EXTENSION_URL
   };
 
   static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Conformance.ConditionalDeleteStatus> convertConditionalDeleteStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CapabilityStatement.ConditionalDeleteStatus> src) throws FHIRException {
@@ -121,7 +119,7 @@ public class Conformance14_50 {
     if (src.hasFhirVersion())
       tgt.setFhirVersion(org.hl7.fhir.r5.model.Enumerations.FHIRVersion.fromCode(src.getFhirVersion()));
     if (src.hasAcceptUnknown())
-      tgt.addExtension().setUrl(ACCEPT_UNKNOWN_EXTENSION_URL).setValue(new org.hl7.fhir.r5.model.CodeType(src.getAcceptUnknownElement().asStringValue()));
+      tgt.addExtension().setUrl(VersionConvertorConstants.EXT_ACCEPT_UNKNOWN_EXTENSION_URL).setValue(new org.hl7.fhir.r5.model.CodeType(src.getAcceptUnknownElement().asStringValue()));
     for (org.hl7.fhir.dstu2016may.model.CodeType t : src.getFormat()) tgt.addFormat(t.getValue());
     for (org.hl7.fhir.dstu2016may.model.Conformance.ConformanceRestComponent t : src.getRest())
       tgt.addRest(convertConformanceRestComponent(t));
@@ -171,8 +169,8 @@ public class Conformance14_50 {
     if (src.hasImplementation())
       tgt.setImplementation(convertConformanceImplementationComponent(src.getImplementation()));
     tgt.setFhirVersion(src.getFhirVersion().toCode());
-    if (src.hasExtension(ACCEPT_UNKNOWN_EXTENSION_URL))
-      tgt.setAcceptUnknown(org.hl7.fhir.dstu2016may.model.Conformance.UnknownContentCode.fromCode(src.getExtensionByUrl(ACCEPT_UNKNOWN_EXTENSION_URL).getValue().primitiveValue()));
+    if (src.hasExtension(VersionConvertorConstants.EXT_ACCEPT_UNKNOWN_EXTENSION_URL))
+      tgt.setAcceptUnknown(org.hl7.fhir.dstu2016may.model.Conformance.UnknownContentCode.fromCode(src.getExtensionByUrl(VersionConvertorConstants.EXT_ACCEPT_UNKNOWN_EXTENSION_URL).getValue().primitiveValue()));
     for (org.hl7.fhir.r5.model.CodeType t : src.getFormat()) tgt.addFormat(t.getValue());
     for (CapabilityStatementRestComponent r : src.getRest())
       for (CapabilityStatementRestResourceComponent rr : r.getResource())
@@ -274,7 +272,7 @@ public class Conformance14_50 {
       tgt.setReliableCacheElement(UnsignedInt14_50.convertUnsignedInt(src.getReliableCacheElement()));
     if (src.hasDocumentation())
       tgt.setDocumentation(src.getDocumentation());
-    for (org.hl7.fhir.r5.model.Extension e : src.getExtensionsByUrl(VersionConvertorConstants.IG_CONFORMANCE_MESSAGE_EVENT)) {
+    for (org.hl7.fhir.r5.model.Extension e : src.getExtensionsByUrl(VersionConvertorConstants.EXT_IG_CONFORMANCE_MESSAGE_EVENT)) {
       org.hl7.fhir.dstu2016may.model.Conformance.ConformanceMessagingEventComponent event = new org.hl7.fhir.dstu2016may.model.Conformance.ConformanceMessagingEventComponent();
       tgt.addEvent(event);
       event.setCode(Coding14_50.convertCoding((org.hl7.fhir.r5.model.Coding) e.getExtensionByUrl("code").getValue()));
@@ -308,7 +306,7 @@ public class Conformance14_50 {
     if (src.hasDocumentation())
       tgt.setDocumentation(src.getDocumentation());
     for (org.hl7.fhir.dstu2016may.model.Conformance.ConformanceMessagingEventComponent t : src.getEvent()) {
-      org.hl7.fhir.r5.model.Extension e = new org.hl7.fhir.r5.model.Extension(VersionConvertorConstants.IG_CONFORMANCE_MESSAGE_EVENT);
+      org.hl7.fhir.r5.model.Extension e = new org.hl7.fhir.r5.model.Extension(VersionConvertorConstants.EXT_IG_CONFORMANCE_MESSAGE_EVENT);
       e.addExtension(new org.hl7.fhir.r5.model.Extension("code", Coding14_50.convertCoding(t.getCode())));
       if (t.hasCategory())
         e.addExtension(new org.hl7.fhir.r5.model.Extension("category", new org.hl7.fhir.r5.model.CodeType(t.getCategory().toCode())));

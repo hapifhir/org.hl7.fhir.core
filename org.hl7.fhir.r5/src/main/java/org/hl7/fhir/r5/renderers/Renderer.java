@@ -42,8 +42,6 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  */
 @MarkedToMoveToAdjunctPackage
 public class Renderer  {
-
-  protected static final boolean DEBUG = false;
   
   public static class RenderingStatus {
     private boolean extensions;
@@ -69,7 +67,7 @@ public class Renderer  {
   }
 
   public Renderer(IWorkerContext worker) {
-    this.context = new RenderingContext(worker, new MarkDownProcessor(Dialect.COMMON_MARK), ValidationOptions.defaults(), "http://hl7.org/fhir/R5", "", null, ResourceRendererMode.END_USER, GenerationRules.IG_PUBLISHER);
+    this.context = new RenderingContext(worker, new MarkDownProcessor(Dialect.COMMON_MARK), ValidationOptions.defaults(), "http://hl7.org/fhir/R5", "", worker.getLocale(), ResourceRendererMode.END_USER, GenerationRules.IG_PUBLISHER);
   }
 
 
@@ -80,7 +78,7 @@ public class Renderer  {
   public void genStandardsStatus(XhtmlNode td, StandardsStatus ss) {
     if (ss != null) {
       td.tx(" ");
-      XhtmlNode a = td.ah(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "versions.html#std-process"), (context.formatPhrase(RenderingContext.REND_STANDARDS, ss.toDisplay())));
+      XhtmlNode a = td.ah(Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), "versions.html#std-process"), (context.formatPhrase(RenderingContext.REND_STANDARDS, ss.toDisplay())));
       a.style("padding-left: 3px; padding-right: 3px; border: 1px grey solid; font-weight: bold; color: black; background-color: "+ss.getColor());
       a.tx(ss.getAbbrev());
     }

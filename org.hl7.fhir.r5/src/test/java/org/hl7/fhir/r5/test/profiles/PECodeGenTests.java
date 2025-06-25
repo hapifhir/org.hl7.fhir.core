@@ -40,7 +40,7 @@ public class PECodeGenTests {
     if (ctxt == null) {
       ctxt = TestingUtilities.getSharedWorkerContext();
       FilesystemPackageCacheManager pc = new FilesystemPackageCacheManager.Builder().build();
-      TestPackageLoader loader = new TestPackageLoader(Utilities.strings("StructureDefinition", "ValueSet", "CodeSystem"));
+      TestPackageLoader loader = new TestPackageLoader(Utilities.stringSet("StructureDefinition", "ValueSet", "CodeSystem"));
       dkcore = pc.loadPackage("hl7.fhir.dk.core", "3.2.0");
       ctxt.loadFromPackage(dkcore, loader);
       emed = pc.loadPackage("hl7.fhir.uv.emedicinal-product-info", "1.0.0");

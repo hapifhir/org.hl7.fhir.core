@@ -3379,8 +3379,8 @@ public class ElementDefinition extends Type implements ICompositeType {
           return (UriType) this.valueSet;
         }
 
-        public boolean hasValueSetUriType() { 
-          return this != null && this.valueSet instanceof UriType;
+        public boolean hasValueSetUriType() {
+            return this.valueSet instanceof UriType;
         }
 
         /**
@@ -3394,8 +3394,8 @@ public class ElementDefinition extends Type implements ICompositeType {
           return (Reference) this.valueSet;
         }
 
-        public boolean hasValueSetReference() { 
-          return this != null && this.valueSet instanceof Reference;
+        public boolean hasValueSetReference() {
+            return this.valueSet instanceof Reference;
         }
 
         public boolean hasValueSet() { 
@@ -5178,8 +5178,8 @@ public class ElementDefinition extends Type implements ICompositeType {
       return (DateType) this.minValue;
     }
 
-    public boolean hasMinValueDateType() { 
-      return this != null && this.minValue instanceof DateType;
+    public boolean hasMinValueDateType() {
+        return this.minValue instanceof DateType;
     }
 
     /**
@@ -5193,8 +5193,8 @@ public class ElementDefinition extends Type implements ICompositeType {
       return (DateTimeType) this.minValue;
     }
 
-    public boolean hasMinValueDateTimeType() { 
-      return this != null && this.minValue instanceof DateTimeType;
+    public boolean hasMinValueDateTimeType() {
+        return this.minValue instanceof DateTimeType;
     }
 
     /**
@@ -5208,8 +5208,8 @@ public class ElementDefinition extends Type implements ICompositeType {
       return (InstantType) this.minValue;
     }
 
-    public boolean hasMinValueInstantType() { 
-      return this != null && this.minValue instanceof InstantType;
+    public boolean hasMinValueInstantType() {
+        return this.minValue instanceof InstantType;
     }
 
     /**
@@ -5223,8 +5223,8 @@ public class ElementDefinition extends Type implements ICompositeType {
       return (TimeType) this.minValue;
     }
 
-    public boolean hasMinValueTimeType() { 
-      return this != null && this.minValue instanceof TimeType;
+    public boolean hasMinValueTimeType() {
+        return this.minValue instanceof TimeType;
     }
 
     /**
@@ -5238,8 +5238,8 @@ public class ElementDefinition extends Type implements ICompositeType {
       return (DecimalType) this.minValue;
     }
 
-    public boolean hasMinValueDecimalType() { 
-      return this != null && this.minValue instanceof DecimalType;
+    public boolean hasMinValueDecimalType() {
+        return this.minValue instanceof DecimalType;
     }
 
     /**
@@ -5253,8 +5253,8 @@ public class ElementDefinition extends Type implements ICompositeType {
       return (IntegerType) this.minValue;
     }
 
-    public boolean hasMinValueIntegerType() { 
-      return this != null && this.minValue instanceof IntegerType;
+    public boolean hasMinValueIntegerType() {
+        return this.minValue instanceof IntegerType;
     }
 
     /**
@@ -5268,8 +5268,8 @@ public class ElementDefinition extends Type implements ICompositeType {
       return (PositiveIntType) this.minValue;
     }
 
-    public boolean hasMinValuePositiveIntType() { 
-      return this != null && this.minValue instanceof PositiveIntType;
+    public boolean hasMinValuePositiveIntType() {
+        return this.minValue instanceof PositiveIntType;
     }
 
     /**
@@ -5283,8 +5283,8 @@ public class ElementDefinition extends Type implements ICompositeType {
       return (UnsignedIntType) this.minValue;
     }
 
-    public boolean hasMinValueUnsignedIntType() { 
-      return this != null && this.minValue instanceof UnsignedIntType;
+    public boolean hasMinValueUnsignedIntType() {
+        return this.minValue instanceof UnsignedIntType;
     }
 
     /**
@@ -5298,8 +5298,8 @@ public class ElementDefinition extends Type implements ICompositeType {
       return (Quantity) this.minValue;
     }
 
-    public boolean hasMinValueQuantity() { 
-      return this != null && this.minValue instanceof Quantity;
+    public boolean hasMinValueQuantity() {
+        return this.minValue instanceof Quantity;
     }
 
     public boolean hasMinValue() { 
@@ -5334,8 +5334,8 @@ public class ElementDefinition extends Type implements ICompositeType {
       return (DateType) this.maxValue;
     }
 
-    public boolean hasMaxValueDateType() { 
-      return this != null && this.maxValue instanceof DateType;
+    public boolean hasMaxValueDateType() {
+        return this.maxValue instanceof DateType;
     }
 
     /**
@@ -5349,8 +5349,8 @@ public class ElementDefinition extends Type implements ICompositeType {
       return (DateTimeType) this.maxValue;
     }
 
-    public boolean hasMaxValueDateTimeType() { 
-      return this != null && this.maxValue instanceof DateTimeType;
+    public boolean hasMaxValueDateTimeType() {
+        return this.maxValue instanceof DateTimeType;
     }
 
     /**
@@ -5364,8 +5364,8 @@ public class ElementDefinition extends Type implements ICompositeType {
       return (InstantType) this.maxValue;
     }
 
-    public boolean hasMaxValueInstantType() { 
-      return this != null && this.maxValue instanceof InstantType;
+    public boolean hasMaxValueInstantType() {
+        return this.maxValue instanceof InstantType;
     }
 
     /**
@@ -5379,8 +5379,8 @@ public class ElementDefinition extends Type implements ICompositeType {
       return (TimeType) this.maxValue;
     }
 
-    public boolean hasMaxValueTimeType() { 
-      return this != null && this.maxValue instanceof TimeType;
+    public boolean hasMaxValueTimeType() {
+        return this.maxValue instanceof TimeType;
     }
 
     /**
@@ -5394,8 +5394,8 @@ public class ElementDefinition extends Type implements ICompositeType {
       return (DecimalType) this.maxValue;
     }
 
-    public boolean hasMaxValueDecimalType() { 
-      return this != null && this.maxValue instanceof DecimalType;
+    public boolean hasMaxValueDecimalType() {
+        return this.maxValue instanceof DecimalType;
     }
 
     /**
@@ -5409,8 +5409,8 @@ public class ElementDefinition extends Type implements ICompositeType {
       return (IntegerType) this.maxValue;
     }
 
-    public boolean hasMaxValueIntegerType() { 
-      return this != null && this.maxValue instanceof IntegerType;
+    public boolean hasMaxValueIntegerType() {
+        return this.maxValue instanceof IntegerType;
     }
 
     /**
@@ -5424,8 +5424,8 @@ public class ElementDefinition extends Type implements ICompositeType {
       return (PositiveIntType) this.maxValue;
     }
 
-    public boolean hasMaxValuePositiveIntType() { 
-      return this != null && this.maxValue instanceof PositiveIntType;
+    public boolean hasMaxValuePositiveIntType() {
+        return this.maxValue instanceof PositiveIntType;
     }
 
     /**
@@ -5439,8 +5439,8 @@ public class ElementDefinition extends Type implements ICompositeType {
       return (UnsignedIntType) this.maxValue;
     }
 
-    public boolean hasMaxValueUnsignedIntType() { 
-      return this != null && this.maxValue instanceof UnsignedIntType;
+    public boolean hasMaxValueUnsignedIntType() {
+        return this.maxValue instanceof UnsignedIntType;
     }
 
     /**
@@ -5454,8 +5454,8 @@ public class ElementDefinition extends Type implements ICompositeType {
       return (Quantity) this.maxValue;
     }
 
-    public boolean hasMaxValueQuantity() { 
-      return this != null && this.maxValue instanceof Quantity;
+    public boolean hasMaxValueQuantity() {
+        return this.maxValue instanceof Quantity;
     }
 
     public boolean hasMaxValue() { 

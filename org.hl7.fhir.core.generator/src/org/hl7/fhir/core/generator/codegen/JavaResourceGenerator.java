@@ -2114,7 +2114,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
             write(indent+"}\r\n");
             write("\r\n");
             write(indent+"public boolean has"+getTitle(getElementName(e.getName(), false))+ttn+"() { \r\n");
-            write(indent+"  return this != null && this."+getElementName(e.getName(), true)+" instanceof "+ttn+";\r\n");
+            write(indent+"  return this."+getElementName(e.getName(), true)+" != null && this."+getElementName(e.getName(), true)+" instanceof "+ttn+";\r\n");
             write(indent+"}\r\n");
             write("\r\n");
           }

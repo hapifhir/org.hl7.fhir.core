@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.fhir.ucum.UcumEssenceService;
+import org.hl7.fhir.r5.Constants;
 import org.hl7.fhir.r5.context.IContextResourceLoader;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
@@ -23,6 +25,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
 import org.hl7.fhir.utilities.tests.TestConfig;
 
+@Slf4j
 public class TestingUtilities extends BaseTestingUtilities {
 
   public static class PackageProvider implements IPackageProvider {
@@ -39,7 +42,7 @@ public class TestingUtilities extends BaseTestingUtilities {
 
   }
 
-  static public Map<String, IWorkerContext> fcontexts;
+  static public Map<String, SimpleWorkerContext> fcontexts;
 
   final static public String DEFAULT_CONTEXT_VERSION = "5.0.0";
 
@@ -47,7 +50,7 @@ public class TestingUtilities extends BaseTestingUtilities {
    *
    * This uses the DEFAULT_CONTEXT_VERSION
    * */
-  public static IWorkerContext getSharedWorkerContext() {
+  public static SimpleWorkerContext getSharedWorkerContext() {
     return getSharedWorkerContext(DEFAULT_CONTEXT_VERSION);
   }
 
@@ -57,7 +60,7 @@ public class TestingUtilities extends BaseTestingUtilities {
    * @param version FHIR Version to get context for
    * @return
    */
-  public static IWorkerContext getSharedWorkerContext(String version) {
+  public static SimpleWorkerContext getSharedWorkerContext(String version) {
     if (!Utilities.existsInList(version, "1.0.2", "3.0.1", "4.0.1", "4.3.0", "5.0.0")) {
       throw new Error("illegal version: "+version);
       
@@ -68,18 +71,18 @@ public class TestingUtilities extends BaseTestingUtilities {
       fcontexts = new HashMap<>();
     }
     if (!fcontexts.containsKey(v)) {
-        IWorkerContext fcontext = getWorkerContext(version);
+      SimpleWorkerContext fcontext = getWorkerContext(version);
         fcontexts.put(v, fcontext);
     }
     return fcontexts.get(v);
   }
 
-  public static IWorkerContext getWorkerContext(String version) {
+  public static SimpleWorkerContext getWorkerContext(String version) {
 
     FilesystemPackageCacheManager pcm;
     try {
       pcm = new FilesystemPackageCacheManager.Builder().build();
-      IWorkerContext fcontext = null;
+      SimpleWorkerContext fcontext = null;
       if (VersionUtilities.isR5Ver(version)) {
         // for purposes of stability, the R5 core package comes from the test case repository
         fcontext = getWorkerContext(loadR5CorePackage());
@@ -90,13 +93,13 @@ public class TestingUtilities extends BaseTestingUtilities {
       fcontext.setExpansionParameters(new Parameters());
       if (!fcontext.hasPackage("hl7.terminology.r5", null)) {
         NpmPackage utg = pcm.loadPackage("hl7.terminology.r5");
-        System.out.println("Loading THO: "+utg.name()+"#"+utg.version());
-        fcontext.loadFromPackage(utg, new TestPackageLoader(Utilities.strings("CodeSystem", "ValueSet")));
+        log.info("Loading THO: "+utg.name()+"#"+utg.version());
+        fcontext.loadFromPackage(utg, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet")));
       } 
       if (!fcontext.hasPackage("hl7.fhir.uv.extensions", null)) {
-        NpmPackage ext = pcm.loadPackage("hl7.fhir.uv.extensions", "1.0.0");
-        System.out.println("Loading Extensions: "+ext.name()+"#"+ext.version());
-        fcontext.loadFromPackage(ext, new TestPackageLoader(Utilities.strings("CodeSystem", "ValueSet", "StructureDefinition")));
+        NpmPackage ext = pcm.loadPackage("hl7.fhir.uv.extensions", Constants.EXTENSIONS_WORKING_VERSION);
+        log.info("Loading Extensions: "+ext.name()+"#"+ext.version());
+        fcontext.loadFromPackage(ext, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet", "StructureDefinition")));
       } 
       return fcontext;
     } catch (Exception e) {

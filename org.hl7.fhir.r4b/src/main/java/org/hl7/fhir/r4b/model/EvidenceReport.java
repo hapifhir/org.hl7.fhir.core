@@ -694,7 +694,7 @@ public class EvidenceReport extends DomainResource {
     }
 
     public boolean hasValueReference() {
-      return this != null && this.value instanceof Reference;
+        return this.value instanceof Reference;
     }
 
     /**
@@ -710,7 +710,7 @@ public class EvidenceReport extends DomainResource {
     }
 
     public boolean hasValueCodeableConcept() {
-      return this != null && this.value instanceof CodeableConcept;
+        return this.value instanceof CodeableConcept;
     }
 
     /**
@@ -726,7 +726,7 @@ public class EvidenceReport extends DomainResource {
     }
 
     public boolean hasValueBooleanType() {
-      return this != null && this.value instanceof BooleanType;
+        return this.value instanceof BooleanType;
     }
 
     /**
@@ -742,7 +742,7 @@ public class EvidenceReport extends DomainResource {
     }
 
     public boolean hasValueQuantity() {
-      return this != null && this.value instanceof Quantity;
+        return this.value instanceof Quantity;
     }
 
     /**
@@ -758,7 +758,7 @@ public class EvidenceReport extends DomainResource {
     }
 
     public boolean hasValueRange() {
-      return this != null && this.value instanceof Range;
+        return this.value instanceof Range;
     }
 
     public boolean hasValue() {
@@ -1183,7 +1183,7 @@ public class EvidenceReport extends DomainResource {
     }
 
     public boolean hasTargetIdentifier() {
-      return this != null && this.target instanceof Identifier;
+        return this.target instanceof Identifier;
     }
 
     /**
@@ -1200,7 +1200,7 @@ public class EvidenceReport extends DomainResource {
     }
 
     public boolean hasTargetReference() {
-      return this != null && this.target instanceof Reference;
+        return this.target instanceof Reference;
     }
 
     public boolean hasTarget() {
@@ -2979,7 +2979,7 @@ public class EvidenceReport extends DomainResource {
   }
 
   public boolean hasCiteAsReference() {
-    return this != null && this.citeAs instanceof Reference;
+      return this.citeAs instanceof Reference;
   }
 
   /**
@@ -2996,7 +2996,7 @@ public class EvidenceReport extends DomainResource {
   }
 
   public boolean hasCiteAsMarkdownType() {
-    return this != null && this.citeAs instanceof MarkdownType;
+      return this.citeAs instanceof MarkdownType;
   }
 
   public boolean hasCiteAs() {

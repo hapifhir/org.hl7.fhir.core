@@ -11,6 +11,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.convertors.loaders.loaderR5.BaseLoaderR5;
 import org.hl7.fhir.convertors.loaders.loaderR5.ILoaderKnowledgeProviderR5;
 import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
@@ -39,12 +40,13 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xml.XMLUtil;
-import org.hl7.fhir.validation.cli.utils.AsteriskFilter;
-import org.hl7.fhir.validation.cli.utils.Common;
+import org.hl7.fhir.validation.service.utils.AsteriskFilter;
+import org.hl7.fhir.validation.service.utils.Common;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 //TODO find a home for these and clean it up
+@Slf4j
 public class ValidatorUtils {
 
   public static class SourceFile {
@@ -93,25 +95,25 @@ public class ValidatorUtils {
       return null;
     }
     if (VersionUtilities.isR2Ver(version)) { 
-      return new R2ToR5Loader(Utilities.strings("Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
+      return new R2ToR5Loader(Utilities.stringSet("Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
     } 
     if (VersionUtilities.isR2BVer(version)) {
-      return new R2016MayToR5Loader(Utilities.strings("Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader); // special case
+      return new R2016MayToR5Loader(Utilities.stringSet("Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader); // special case
     }
     if (VersionUtilities.isR3Ver(version)) {
-      return new R3ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
+      return new R3ToR5Loader(Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
     }
     if (VersionUtilities.isR4Ver(version)) {
-      return new R4ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader, version);
+      return new R4ToR5Loader(Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader, version);
     }
     if (VersionUtilities.isR4BVer(version)) {
-      return new R4BToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader, version);
+      return new R4BToR5Loader(Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader, version);
     }
     if (VersionUtilities.isR5Ver(version)) {
-      return new R5ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
+      return new R5ToR5Loader(Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
     }
     if (VersionUtilities.isR6Ver(version)) {
-      return new R6ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
+      return new R6ToR5Loader(Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
     }
     return null;
   }
@@ -146,14 +148,14 @@ public class ValidatorUtils {
       try {
         fpe.parse(vm.getLocation());
       } catch (Exception e) {
-        System.out.println("Internal error in location for message: '" + e.getMessage() + "', loc = '" + vm.getLocation() + "', err = '" + vm.getMessage() + "'");
+        log.error("Internal error in location for message: '" + e.getMessage() + "', loc = '" + vm.getLocation() + "', err = '" + vm.getMessage() + "'");
       }
       op.getIssue().add(OperationOutcomeUtilities.convertToIssue(vm, op));
     }
     if (!op.hasIssue()) {
       op.addIssue().setSeverity(OperationOutcome.IssueSeverity.INFORMATION).setCode(OperationOutcome.IssueType.INFORMATIONAL).getDetails().setText(context.formatMessage(I18nConstants.ALL_OK));
     }
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", context.getLocale(), RenderingContext.ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     RendererFactory.factory(op, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), op));
     return op;
   }
@@ -180,7 +182,7 @@ public class ValidatorUtils {
         if (System.console() != null) {
           System.console().printf(context.formatMessage(I18nConstants.BAD_FILE_PATH_ERROR, name));
         } else {
-          System.out.println(context.formatMessage(I18nConstants.BAD_FILE_PATH_ERROR, name));
+          log.error(context.formatMessage(I18nConstants.BAD_FILE_PATH_ERROR, name));
         }
         throw new IOException("File " + name + " does not exist");
       }

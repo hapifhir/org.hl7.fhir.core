@@ -297,8 +297,8 @@ public class Specimen extends DomainResource {
           return (DateTimeType) this.collected;
         }
 
-        public boolean hasCollectedDateTimeType() { 
-          return this != null && this.collected instanceof DateTimeType;
+        public boolean hasCollectedDateTimeType() {
+            return this.collected instanceof DateTimeType;
         }
 
         /**
@@ -312,8 +312,8 @@ public class Specimen extends DomainResource {
           return (Period) this.collected;
         }
 
-        public boolean hasCollectedPeriod() { 
-          return this != null && this.collected instanceof Period;
+        public boolean hasCollectedPeriod() {
+            return this.collected instanceof Period;
         }
 
         public boolean hasCollected() { 
@@ -792,8 +792,8 @@ public class Specimen extends DomainResource {
           return (DateTimeType) this.time;
         }
 
-        public boolean hasTimeDateTimeType() { 
-          return this != null && this.time instanceof DateTimeType;
+        public boolean hasTimeDateTimeType() {
+            return this.time instanceof DateTimeType;
         }
 
         /**
@@ -807,8 +807,8 @@ public class Specimen extends DomainResource {
           return (Period) this.time;
         }
 
-        public boolean hasTimePeriod() { 
-          return this != null && this.time instanceof Period;
+        public boolean hasTimePeriod() {
+            return this.time instanceof Period;
         }
 
         public boolean hasTime() { 
@@ -1238,8 +1238,8 @@ public class Specimen extends DomainResource {
           return (CodeableConcept) this.additive;
         }
 
-        public boolean hasAdditiveCodeableConcept() { 
-          return this != null && this.additive instanceof CodeableConcept;
+        public boolean hasAdditiveCodeableConcept() {
+            return this.additive instanceof CodeableConcept;
         }
 
         /**
@@ -1253,8 +1253,8 @@ public class Specimen extends DomainResource {
           return (Reference) this.additive;
         }
 
-        public boolean hasAdditiveReference() { 
-          return this != null && this.additive instanceof Reference;
+        public boolean hasAdditiveReference() {
+            return this.additive instanceof Reference;
         }
 
         public boolean hasAdditive() { 

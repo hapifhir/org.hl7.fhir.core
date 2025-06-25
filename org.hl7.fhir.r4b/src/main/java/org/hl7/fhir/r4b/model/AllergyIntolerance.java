@@ -1961,7 +1961,7 @@ public class AllergyIntolerance extends DomainResource {
   }
 
   public boolean hasOnsetDateTimeType() {
-    return this != null && this.onset instanceof DateTimeType;
+      return this.onset instanceof DateTimeType;
   }
 
   /**
@@ -1978,7 +1978,7 @@ public class AllergyIntolerance extends DomainResource {
   }
 
   public boolean hasOnsetAge() {
-    return this != null && this.onset instanceof Age;
+      return this.onset instanceof Age;
   }
 
   /**
@@ -1995,7 +1995,7 @@ public class AllergyIntolerance extends DomainResource {
   }
 
   public boolean hasOnsetPeriod() {
-    return this != null && this.onset instanceof Period;
+      return this.onset instanceof Period;
   }
 
   /**
@@ -2012,7 +2012,7 @@ public class AllergyIntolerance extends DomainResource {
   }
 
   public boolean hasOnsetRange() {
-    return this != null && this.onset instanceof Range;
+      return this.onset instanceof Range;
   }
 
   /**
@@ -2029,7 +2029,7 @@ public class AllergyIntolerance extends DomainResource {
   }
 
   public boolean hasOnsetStringType() {
-    return this != null && this.onset instanceof StringType;
+      return this.onset instanceof StringType;
   }
 
   public boolean hasOnset() {

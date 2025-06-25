@@ -8,7 +8,11 @@ public class StructureDefinitionSorterByUrl implements Comparator<StructureDefin
 
   @Override
   public int compare(StructureDefinition o1, StructureDefinition o2) {
-    return o1.getUrl().compareTo(o2.getUrl());
+    if (o1.getUrl().equals(o2.getUrl())) {
+      return o1.getVersion().compareTo(o2.getVersion());      
+    } else {
+      return o1.getUrl().compareTo(o2.getUrl());
+    }
   }
 
 }

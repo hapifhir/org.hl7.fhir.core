@@ -3127,8 +3127,8 @@ public class ConceptMap extends MetadataResource {
           return (Coding) this.value;
         }
 
-        public boolean hasValueCoding() { 
-          return this != null && this.value instanceof Coding;
+        public boolean hasValueCoding() {
+            return this.value instanceof Coding;
         }
 
         /**
@@ -3142,8 +3142,8 @@ public class ConceptMap extends MetadataResource {
           return (StringType) this.value;
         }
 
-        public boolean hasValueStringType() { 
-          return this != null && this.value instanceof StringType;
+        public boolean hasValueStringType() {
+            return this.value instanceof StringType;
         }
 
         /**
@@ -3157,8 +3157,8 @@ public class ConceptMap extends MetadataResource {
           return (IntegerType) this.value;
         }
 
-        public boolean hasValueIntegerType() { 
-          return this != null && this.value instanceof IntegerType;
+        public boolean hasValueIntegerType() {
+            return this.value instanceof IntegerType;
         }
 
         /**
@@ -3172,8 +3172,8 @@ public class ConceptMap extends MetadataResource {
           return (BooleanType) this.value;
         }
 
-        public boolean hasValueBooleanType() { 
-          return this != null && this.value instanceof BooleanType;
+        public boolean hasValueBooleanType() {
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -3187,8 +3187,8 @@ public class ConceptMap extends MetadataResource {
           return (DateTimeType) this.value;
         }
 
-        public boolean hasValueDateTimeType() { 
-          return this != null && this.value instanceof DateTimeType;
+        public boolean hasValueDateTimeType() {
+            return this.value instanceof DateTimeType;
         }
 
         /**
@@ -3202,8 +3202,8 @@ public class ConceptMap extends MetadataResource {
           return (DecimalType) this.value;
         }
 
-        public boolean hasValueDecimalType() { 
-          return this != null && this.value instanceof DecimalType;
+        public boolean hasValueDecimalType() {
+            return this.value instanceof DecimalType;
         }
 
         /**
@@ -3217,8 +3217,8 @@ public class ConceptMap extends MetadataResource {
           return (CodeType) this.value;
         }
 
-        public boolean hasValueCodeType() { 
-          return this != null && this.value instanceof CodeType;
+        public boolean hasValueCodeType() {
+            return this.value instanceof CodeType;
         }
 
         public boolean hasValue() { 
@@ -3509,8 +3509,8 @@ public class ConceptMap extends MetadataResource {
           return (CodeType) this.value;
         }
 
-        public boolean hasValueCodeType() { 
-          return this != null && this.value instanceof CodeType;
+        public boolean hasValueCodeType() {
+            return this.value instanceof CodeType;
         }
 
         /**
@@ -3524,8 +3524,8 @@ public class ConceptMap extends MetadataResource {
           return (Coding) this.value;
         }
 
-        public boolean hasValueCoding() { 
-          return this != null && this.value instanceof Coding;
+        public boolean hasValueCoding() {
+            return this.value instanceof Coding;
         }
 
         /**
@@ -3539,8 +3539,8 @@ public class ConceptMap extends MetadataResource {
           return (StringType) this.value;
         }
 
-        public boolean hasValueStringType() { 
-          return this != null && this.value instanceof StringType;
+        public boolean hasValueStringType() {
+            return this.value instanceof StringType;
         }
 
         /**
@@ -3554,8 +3554,8 @@ public class ConceptMap extends MetadataResource {
           return (BooleanType) this.value;
         }
 
-        public boolean hasValueBooleanType() { 
-          return this != null && this.value instanceof BooleanType;
+        public boolean hasValueBooleanType() {
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -3569,8 +3569,8 @@ public class ConceptMap extends MetadataResource {
           return (Quantity) this.value;
         }
 
-        public boolean hasValueQuantity() { 
-          return this != null && this.value instanceof Quantity;
+        public boolean hasValueQuantity() {
+            return this.value instanceof Quantity;
         }
 
         public boolean hasValue() { 
@@ -4787,8 +4787,8 @@ public class ConceptMap extends MetadataResource {
       return (StringType) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmStringType() { 
-      return this != null && this.versionAlgorithm instanceof StringType;
+    public boolean hasVersionAlgorithmStringType() {
+        return this.versionAlgorithm instanceof StringType;
     }
 
     /**
@@ -4802,8 +4802,8 @@ public class ConceptMap extends MetadataResource {
       return (Coding) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmCoding() { 
-      return this != null && this.versionAlgorithm instanceof Coding;
+    public boolean hasVersionAlgorithmCoding() {
+        return this.versionAlgorithm instanceof Coding;
     }
 
     public boolean hasVersionAlgorithm() { 
@@ -6025,8 +6025,8 @@ public class ConceptMap extends MetadataResource {
       return (UriType) this.sourceScope;
     }
 
-    public boolean hasSourceScopeUriType() { 
-      return this != null && this.sourceScope instanceof UriType;
+    public boolean hasSourceScopeUriType() {
+        return this.sourceScope instanceof UriType;
     }
 
     /**
@@ -6040,8 +6040,8 @@ public class ConceptMap extends MetadataResource {
       return (CanonicalType) this.sourceScope;
     }
 
-    public boolean hasSourceScopeCanonicalType() { 
-      return this != null && this.sourceScope instanceof CanonicalType;
+    public boolean hasSourceScopeCanonicalType() {
+        return this.sourceScope instanceof CanonicalType;
     }
 
     public boolean hasSourceScope() { 
@@ -6076,8 +6076,8 @@ public class ConceptMap extends MetadataResource {
       return (UriType) this.targetScope;
     }
 
-    public boolean hasTargetScopeUriType() { 
-      return this != null && this.targetScope instanceof UriType;
+    public boolean hasTargetScopeUriType() {
+        return this.targetScope instanceof UriType;
     }
 
     /**
@@ -6091,8 +6091,8 @@ public class ConceptMap extends MetadataResource {
       return (CanonicalType) this.targetScope;
     }
 
-    public boolean hasTargetScopeCanonicalType() { 
-      return this != null && this.targetScope instanceof CanonicalType;
+    public boolean hasTargetScopeCanonicalType() {
+        return this.targetScope instanceof CanonicalType;
     }
 
     public boolean hasTargetScope() { 

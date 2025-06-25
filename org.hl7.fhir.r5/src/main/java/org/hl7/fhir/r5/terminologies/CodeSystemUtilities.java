@@ -40,6 +40,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -60,6 +61,7 @@ import org.hl7.fhir.r5.model.DecimalType;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptDefinitionComponentSorter;
+import org.hl7.fhir.r5.terminologies.providers.SpecialCodeSystem;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Meta;
@@ -74,6 +76,7 @@ import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
+@Slf4j
 public class CodeSystemUtilities extends TerminologyUtilities {
 
   public static class CodeSystemSorter implements Comparator<CodeSystem> {
@@ -440,6 +443,10 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
   
   public static boolean isInactive(CodeSystem cs, String code) throws FHIRException {
+    if (cs.hasUserData(UserDataNames.tx_cs_special)) {
+      SpecialCodeSystem scs = (SpecialCodeSystem) cs.getUserData(UserDataNames.tx_cs_special);
+      return scs.inactive(code);
+    }
     ConceptDefinitionComponent def = findCode(cs.getConcept(), code);
     if (def == null)
       return true;
@@ -516,7 +523,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
   public static String getOID(CanonicalResource cs) {
-    if (cs.hasIdentifier() && "urn:ietf:rfc:3986".equals(cs.getIdentifierFirstRep().getSystem()) && cs.getIdentifierFirstRep().hasValue() && cs.getIdentifierFirstRep().getValue().startsWith("urn:oid:"))
+    if (cs != null && cs.hasIdentifier() && "urn:ietf:rfc:3986".equals(cs.getIdentifierFirstRep().getSystem()) && cs.getIdentifierFirstRep().hasValue() && cs.getIdentifierFirstRep().getValue().startsWith("urn:oid:"))
         return cs.getIdentifierFirstRep().getValue().substring(8);
     return null;
   }
@@ -595,10 +602,9 @@ public class CodeSystemUtilities extends TerminologyUtilities {
           cs.setUserData(UserDataNames.kindling_ballot_package, pckage);
         else if (!pckage.equals(cs.getUserString(UserDataNames.kindling_ballot_package)))
           if (!"infrastructure".equals(cs.getUserString(UserDataNames.kindling_ballot_package)))
-            System.out.println("Code System "+cs.getUrl()+": ownership clash "+pckage+" vs "+cs.getUserString(UserDataNames.kindling_ballot_package));
+            log.warn("Code System "+cs.getUrl()+": ownership clash "+pckage+" vs "+cs.getUserString(UserDataNames.kindling_ballot_package));
       }
       if (status == StandardsStatus.NORMATIVE) {
-        cs.setExperimental(false);
         cs.setStatus(PublicationStatus.ACTIVE);
       }
     }
@@ -606,9 +612,6 @@ public class CodeSystemUtilities extends TerminologyUtilities {
       String sfmm = ToolingExtensions.readStringExtension(cs, ToolingExtensions.EXT_FMM_LEVEL);
       if (Utilities.noString(sfmm) || Integer.parseInt(sfmm) < Integer.parseInt(fmm)) { 
         ToolingExtensions.setIntegerExtension(cs, ToolingExtensions.EXT_FMM_LEVEL, Integer.parseInt(fmm));
-      }
-      if (Integer.parseInt(fmm) <= 1) {
-        cs.setExperimental(true);
       }
     }
   }

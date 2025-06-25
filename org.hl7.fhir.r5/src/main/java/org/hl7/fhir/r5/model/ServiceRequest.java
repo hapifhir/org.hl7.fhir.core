@@ -384,8 +384,8 @@ public class ServiceRequest extends DomainResource {
           return (Quantity) this.value;
         }
 
-        public boolean hasValueQuantity() { 
-          return this != null && this.value instanceof Quantity;
+        public boolean hasValueQuantity() {
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -399,8 +399,8 @@ public class ServiceRequest extends DomainResource {
           return (Ratio) this.value;
         }
 
-        public boolean hasValueRatio() { 
-          return this != null && this.value instanceof Ratio;
+        public boolean hasValueRatio() {
+            return this.value instanceof Ratio;
         }
 
         /**
@@ -414,8 +414,8 @@ public class ServiceRequest extends DomainResource {
           return (Range) this.value;
         }
 
-        public boolean hasValueRange() { 
-          return this != null && this.value instanceof Range;
+        public boolean hasValueRange() {
+            return this.value instanceof Range;
         }
 
         /**
@@ -429,8 +429,8 @@ public class ServiceRequest extends DomainResource {
           return (BooleanType) this.value;
         }
 
-        public boolean hasValueBooleanType() { 
-          return this != null && this.value instanceof BooleanType;
+        public boolean hasValueBooleanType() {
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -444,8 +444,8 @@ public class ServiceRequest extends DomainResource {
           return (CodeableConcept) this.value;
         }
 
-        public boolean hasValueCodeableConcept() { 
-          return this != null && this.value instanceof CodeableConcept;
+        public boolean hasValueCodeableConcept() {
+            return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -459,8 +459,8 @@ public class ServiceRequest extends DomainResource {
           return (StringType) this.value;
         }
 
-        public boolean hasValueStringType() { 
-          return this != null && this.value instanceof StringType;
+        public boolean hasValueStringType() {
+            return this.value instanceof StringType;
         }
 
         /**
@@ -474,8 +474,8 @@ public class ServiceRequest extends DomainResource {
           return (Period) this.value;
         }
 
-        public boolean hasValuePeriod() { 
-          return this != null && this.value instanceof Period;
+        public boolean hasValuePeriod() {
+            return this.value instanceof Period;
         }
 
         public boolean hasValue() { 
@@ -700,8 +700,8 @@ public class ServiceRequest extends DomainResource {
           return (MarkdownType) this.instruction;
         }
 
-        public boolean hasInstructionMarkdownType() { 
-          return this != null && this.instruction instanceof MarkdownType;
+        public boolean hasInstructionMarkdownType() {
+            return this.instruction instanceof MarkdownType;
         }
 
         /**
@@ -715,8 +715,8 @@ public class ServiceRequest extends DomainResource {
           return (Reference) this.instruction;
         }
 
-        public boolean hasInstructionReference() { 
-          return this != null && this.instruction instanceof Reference;
+        public boolean hasInstructionReference() {
+            return this.instruction instanceof Reference;
         }
 
         public boolean hasInstruction() { 
@@ -1760,8 +1760,8 @@ public class ServiceRequest extends DomainResource {
       return (Quantity) this.quantity;
     }
 
-    public boolean hasQuantityQuantity() { 
-      return this != null && this.quantity instanceof Quantity;
+    public boolean hasQuantityQuantity() {
+        return this.quantity instanceof Quantity;
     }
 
     /**
@@ -1775,8 +1775,8 @@ public class ServiceRequest extends DomainResource {
       return (Ratio) this.quantity;
     }
 
-    public boolean hasQuantityRatio() { 
-      return this != null && this.quantity instanceof Ratio;
+    public boolean hasQuantityRatio() {
+        return this.quantity instanceof Ratio;
     }
 
     /**
@@ -1790,8 +1790,8 @@ public class ServiceRequest extends DomainResource {
       return (Range) this.quantity;
     }
 
-    public boolean hasQuantityRange() { 
-      return this != null && this.quantity instanceof Range;
+    public boolean hasQuantityRange() {
+        return this.quantity instanceof Range;
     }
 
     public boolean hasQuantity() { 
@@ -1927,8 +1927,8 @@ public class ServiceRequest extends DomainResource {
       return (DateTimeType) this.occurrence;
     }
 
-    public boolean hasOccurrenceDateTimeType() { 
-      return this != null && this.occurrence instanceof DateTimeType;
+    public boolean hasOccurrenceDateTimeType() {
+        return this.occurrence instanceof DateTimeType;
     }
 
     /**
@@ -1942,8 +1942,8 @@ public class ServiceRequest extends DomainResource {
       return (Period) this.occurrence;
     }
 
-    public boolean hasOccurrencePeriod() { 
-      return this != null && this.occurrence instanceof Period;
+    public boolean hasOccurrencePeriod() {
+        return this.occurrence instanceof Period;
     }
 
     /**
@@ -1957,8 +1957,8 @@ public class ServiceRequest extends DomainResource {
       return (Timing) this.occurrence;
     }
 
-    public boolean hasOccurrenceTiming() { 
-      return this != null && this.occurrence instanceof Timing;
+    public boolean hasOccurrenceTiming() {
+        return this.occurrence instanceof Timing;
     }
 
     public boolean hasOccurrence() { 
@@ -1993,8 +1993,8 @@ public class ServiceRequest extends DomainResource {
       return (BooleanType) this.asNeeded;
     }
 
-    public boolean hasAsNeededBooleanType() { 
-      return this != null && this.asNeeded instanceof BooleanType;
+    public boolean hasAsNeededBooleanType() {
+        return this.asNeeded instanceof BooleanType;
     }
 
     /**
@@ -2008,8 +2008,8 @@ public class ServiceRequest extends DomainResource {
       return (CodeableConcept) this.asNeeded;
     }
 
-    public boolean hasAsNeededCodeableConcept() { 
-      return this != null && this.asNeeded instanceof CodeableConcept;
+    public boolean hasAsNeededCodeableConcept() {
+        return this.asNeeded instanceof CodeableConcept;
     }
 
     public boolean hasAsNeeded() { 

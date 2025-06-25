@@ -341,7 +341,7 @@ public class SubstanceSpecification extends DomainResource {
     }
 
     public boolean hasAmountQuantity() {
-      return this != null && this.amount instanceof Quantity;
+        return this.amount instanceof Quantity;
     }
 
     /**
@@ -357,7 +357,7 @@ public class SubstanceSpecification extends DomainResource {
     }
 
     public boolean hasAmountStringType() {
-      return this != null && this.amount instanceof StringType;
+        return this.amount instanceof StringType;
     }
 
     public boolean hasAmount() {
@@ -831,7 +831,7 @@ public class SubstanceSpecification extends DomainResource {
     }
 
     public boolean hasDefiningSubstanceReference() {
-      return this != null && this.definingSubstance instanceof Reference;
+        return this.definingSubstance instanceof Reference;
     }
 
     /**
@@ -848,7 +848,7 @@ public class SubstanceSpecification extends DomainResource {
     }
 
     public boolean hasDefiningSubstanceCodeableConcept() {
-      return this != null && this.definingSubstance instanceof CodeableConcept;
+        return this.definingSubstance instanceof CodeableConcept;
     }
 
     public boolean hasDefiningSubstance() {
@@ -887,7 +887,7 @@ public class SubstanceSpecification extends DomainResource {
     }
 
     public boolean hasAmountQuantity() {
-      return this != null && this.amount instanceof Quantity;
+        return this.amount instanceof Quantity;
     }
 
     /**
@@ -903,7 +903,7 @@ public class SubstanceSpecification extends DomainResource {
     }
 
     public boolean hasAmountStringType() {
-      return this != null && this.amount instanceof StringType;
+        return this.amount instanceof StringType;
     }
 
     public boolean hasAmount() {
@@ -4943,7 +4943,7 @@ public class SubstanceSpecification extends DomainResource {
     }
 
     public boolean hasSubstanceReference() {
-      return this != null && this.substance instanceof Reference;
+        return this.substance instanceof Reference;
     }
 
     /**
@@ -4960,7 +4960,7 @@ public class SubstanceSpecification extends DomainResource {
     }
 
     public boolean hasSubstanceCodeableConcept() {
-      return this != null && this.substance instanceof CodeableConcept;
+        return this.substance instanceof CodeableConcept;
     }
 
     public boolean hasSubstance() {
@@ -5085,7 +5085,7 @@ public class SubstanceSpecification extends DomainResource {
     }
 
     public boolean hasAmountQuantity() {
-      return this != null && this.amount instanceof Quantity;
+        return this.amount instanceof Quantity;
     }
 
     /**
@@ -5103,7 +5103,7 @@ public class SubstanceSpecification extends DomainResource {
     }
 
     public boolean hasAmountRange() {
-      return this != null && this.amount instanceof Range;
+        return this.amount instanceof Range;
     }
 
     /**
@@ -5121,7 +5121,7 @@ public class SubstanceSpecification extends DomainResource {
     }
 
     public boolean hasAmountRatio() {
-      return this != null && this.amount instanceof Ratio;
+        return this.amount instanceof Ratio;
     }
 
     /**
@@ -5139,7 +5139,7 @@ public class SubstanceSpecification extends DomainResource {
     }
 
     public boolean hasAmountStringType() {
-      return this != null && this.amount instanceof StringType;
+        return this.amount instanceof StringType;
     }
 
     public boolean hasAmount() {

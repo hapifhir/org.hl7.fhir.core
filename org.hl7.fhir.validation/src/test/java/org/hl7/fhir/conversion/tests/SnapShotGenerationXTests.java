@@ -104,9 +104,6 @@ public class SnapShotGenerationXTests {
     private List<Rule> rules = new ArrayList<>();
     private StructureDefinition source;
     private List<StructureDefinition> included = new ArrayList<StructureDefinition>();
-    private StructureDefinition expected;
-    private StructureDefinition output;
-    public boolean outputIsJson;
 
     public TestDetails(Element test) {
       super();
@@ -164,35 +161,12 @@ public class SnapShotGenerationXTests {
       this.source = source;
     }
 
-    public StructureDefinition getExpected() {
-      return expected;
-    }
-
-    public void setExpected(StructureDefinition expected) {
-      this.expected = expected;
-    }
-
-    public StructureDefinition getOutput() {
-      return output;
-    }
-
-    public void setOutput(StructureDefinition output) {
-      this.output = output;
-    }
 
     public void load(String version) throws FHIRFormatError, FileNotFoundException, IOException {
       if (TestingUtilities.findTestResource("rX", "snapshot-generation", id + "-input.json"))
         source = (StructureDefinition) XVersionLoader.loadJson(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-input.json"));
       else
-        source = (StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-input.xml"));
-      if (!fail) {
-        if (TestingUtilities.findTestResource("rX", "snapshot-generation", id + "-output.json")) {
-          outputIsJson = true;
-          expected = (StructureDefinition) XVersionLoader.loadJson(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-output.json"));
-        } else
-          expected = (StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-output.xml"));
-        
-      }
+        source = (StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-input.xml"));      
       if (!Utilities.noString(include))
         included.add((StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", include + ".xml")));
       if (!Utilities.noString(register)) {
@@ -289,6 +263,12 @@ public class SnapShotGenerationXTests {
       return null;
     }
 
+    @Override
+    public String getDefinitionsName(Resource r) {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
   }
 
   private static class SnapShotGenerationTestsContext implements IEvaluationContext {
@@ -321,10 +301,7 @@ public class SnapShotGenerationXTests {
             case INPUT:
               return td.getSource();
             case OUTPUT:
-              if (td.getOutput() == null)
-                throw new FHIRException("Not generated yet");
-              else
-                return td.getOutput();
+              throw new FHIRException("Not supported");
             case INCLUDE:
               return td.getIncluded().get(0);
             default:
@@ -404,8 +381,6 @@ public class SnapShotGenerationXTests {
       if (url == null)
         return null;
       for (TestDetails t : tests) {
-        if (t.expected != null && url.equals(t.expected.getUrl()))
-          return t.expected;
         for (StructureDefinition sd : t.included) {
           if (url.equals(sd.getUrl())) {
             return sd;
@@ -461,10 +436,7 @@ public class SnapShotGenerationXTests {
 
     if (test.isFail()) {
       try {
-        if (test.isGen())
-          testGen(true, test);
-        else
-          testSort(test);
+        testGen(true, test);
         Assertions.assertTrue(false, "Should have failed");
       } catch (Throwable e) {
         System.out.println("Error running test: " + e.getMessage());
@@ -477,29 +449,15 @@ public class SnapShotGenerationXTests {
         }
 
       }
-    } else if (test.isGen())
+    } else { 
       testGen(false, test);
-    else
-      testSort(test);
+    }
+
     for (Rule r : test.getRules()) {
       StructureDefinition sdn = new StructureDefinition();
       boolean ok = fp.evaluateToBoolean(sdn, sdn, sdn, r.expression);
       Assertions.assertTrue(ok, r.description);
     }
-  }
-
-
-  private void testSort(TestDetails test) throws DefinitionException, FHIRException, IOException {
-    StructureDefinition base = getSD(test.getSource().getBaseDefinition());
-    test.setOutput(test.getSource().copy());
-    ProfileUtilities pu = new ProfileUtilities(UtilitiesXTests.context(version), null, null);
-    pu.setIds(test.getSource(), false);
-    List<String> errors = new ArrayList<String>();
-    pu.sortDifferential(base, test.getOutput(), test.getOutput().getUrl(), errors, false);
-    if (!errors.isEmpty())
-      throw new FHIRException(errors.get(0));
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-output.xml")), test.getOutput());
-    Assertions.assertTrue(test.expected.equalsDeep(test.output), "Output does not match expected");
   }
 
   private void testGen(boolean fail, TestDetails test) throws Exception {
@@ -569,27 +527,29 @@ public class SnapShotGenerationXTests {
       RendererFactory.factory(output, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), output));
     }
     if (!fail) {
-      test.output = output;
-      UtilitiesXTests.context(version).cacheResource(output);
-      File dst = ManagedFileAccess.file(UtilitiesXTests.tempFile("snapshot", test.getId() + "-output" + (test.outputIsJson ? ".json" : ".xml")));
-      if (dst.exists())
-        dst.delete();
-      if (test.outputIsJson) {
-        XVersionLoader.saveJson(version, output, ManagedFileAccess.outStream(dst.getAbsolutePath()));
+      String folder = Utilities.path("[tmp]", "snapshotX");
+      FileUtilities.createDirectory(folder);
+      StructureDefinition actual = null;
+      StructureDefinition expected = null;
+      boolean json = false;
+      if (TestingUtilities.findTestResource("rX", "snapshot-generation", test.getId() + "-output.json")) {
+        json = true;
+        expected = (StructureDefinition) XVersionLoader.loadJson(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", test.getId() + "-output.json"));
       } else {
-        XVersionLoader.saveXml(version, output, ManagedFileAccess.outStream(dst.getAbsolutePath()));
+        expected = (StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", test.getId() + "-output.xml"));      
       }
-      if (test.outputIsJson) {
-        XVersionLoader.saveJson(version, test.expected, ManagedFileAccess.outStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-expected" + (test.outputIsJson ? ".json" : ".xml"))));
+    
+      if (json) {
+        XVersionLoader.saveJson(version, output, ManagedFileAccess.outStream(Utilities.path(folder, test.getId() + "-output.json")));
+        actual = (StructureDefinition) XVersionLoader.loadJson(version, ManagedFileAccess.inStream(Utilities.path(folder, test.getId() + "-output.json")));
       } else {
-        XVersionLoader.saveXml(version, test.expected, ManagedFileAccess.outStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-expected" + (test.outputIsJson ? ".json" : ".xml"))));
+        XVersionLoader.saveXml(version, output, ManagedFileAccess.outStream(Utilities.path(folder, test.getId() + "-output.xml")));
+        actual = (StructureDefinition) XVersionLoader.loadXml(version, ManagedFileAccess.inStream(Utilities.path(folder, test.getId() + "-output.xml")));
       }
-      StructureDefinition t1 = test.expected.copy();
-      t1.setText(null);
-      StructureDefinition t2 = test.output.copy();
-      t2.setText(null);
-      t1.setIdBase(t2.getIdBase());
-      Assertions.assertTrue(t1.equalsDeep(t2), "Output does not match expected");
+      actual.setText(null);
+      expected.setText(null);
+      actual.setIdBase(expected.getIdBase());
+      Assertions.assertTrue(actual.equalsDeep(expected), "Output does not match expected");
     }
   }
 

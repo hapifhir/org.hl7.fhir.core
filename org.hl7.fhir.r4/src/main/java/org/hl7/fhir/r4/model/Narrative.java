@@ -229,7 +229,7 @@ public class Narrative extends BaseNarrative implements INarrative {
   /**
    * The actual narrative content, a stripped down version of XHTML.
    */
-  @Child(name = "div", type = {}, order = 1, min = 1, max = 1, modifier = false, summary = false)
+    @Child(name = "div", type = {XhtmlType.class}, order=1, min=1, max=1, modifier=false, summary=false)
   @Description(shortDefinition = "Limited xhtml content", formalDefinition = "The actual narrative content, a stripped down version of XHTML.")
   protected XhtmlNode div;
 
@@ -379,6 +379,7 @@ public class Narrative extends BaseNarrative implements INarrative {
       return value;
     case 99473: // div
       this.div = castToXhtml(value); // XhtmlNode
+          ((XhtmlType) value).setPlace(this);
       return value;
     default:
       return super.setProperty(hash, name, value);

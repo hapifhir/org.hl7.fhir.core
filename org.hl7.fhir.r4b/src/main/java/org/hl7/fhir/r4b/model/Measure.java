@@ -2999,7 +2999,7 @@ public class Measure extends CanonicalResource {
   }
 
   public boolean hasSubjectCodeableConcept() {
-    return this != null && this.subject instanceof CodeableConcept;
+      return this.subject instanceof CodeableConcept;
   }
 
   /**
@@ -3017,7 +3017,7 @@ public class Measure extends CanonicalResource {
   }
 
   public boolean hasSubjectReference() {
-    return this != null && this.subject instanceof Reference;
+      return this.subject instanceof Reference;
   }
 
   public boolean hasSubject() {

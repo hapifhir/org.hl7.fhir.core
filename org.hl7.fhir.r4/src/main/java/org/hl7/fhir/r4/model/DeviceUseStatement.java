@@ -740,7 +740,7 @@ public class DeviceUseStatement extends DomainResource {
   }
 
   public boolean hasTimingTiming() {
-    return this != null && this.timing instanceof Timing;
+      return this.timing instanceof Timing;
   }
 
   /**
@@ -756,7 +756,7 @@ public class DeviceUseStatement extends DomainResource {
   }
 
   public boolean hasTimingPeriod() {
-    return this != null && this.timing instanceof Period;
+      return this.timing instanceof Period;
   }
 
   /**
@@ -772,7 +772,7 @@ public class DeviceUseStatement extends DomainResource {
   }
 
   public boolean hasTimingDateTimeType() {
-    return this != null && this.timing instanceof DateTimeType;
+      return this.timing instanceof DateTimeType;
   }
 
   public boolean hasTiming() {

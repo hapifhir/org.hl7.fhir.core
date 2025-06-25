@@ -55,7 +55,7 @@ import org.xml.sax.SAXException;
 
 public class NarrativeGenerationTests {
 
-  public class TestProfileKnowledgeProvider implements ProfileKnowledgeProvider {
+  public static class TestProfileKnowledgeProvider implements ProfileKnowledgeProvider {
 
     private IWorkerContext context;
 
@@ -129,9 +129,15 @@ public class NarrativeGenerationTests {
       return null;
     }
 
+    @Override
+    public String getDefinitionsName(Resource r) {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
   }
 
-  public class TestTypeParser implements ITypeParser {
+  public static class TestTypeParser implements ITypeParser {
 
     @Override
     public Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException {
@@ -227,7 +233,7 @@ public class NarrativeGenerationTests {
     context = TestingUtilities.getSharedWorkerContext("5.0.0");
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     NpmPackage ips = pcm.loadPackage("hl7.fhir.uv.ips#1.1.0");
-    context.loadFromPackage(ips,  new TestPackageLoader(Utilities.strings("StructureDefinition", "ValueSet" )));
+    context.loadFromPackage(ips,  new TestPackageLoader(Utilities.stringSet("StructureDefinition", "ValueSet" )));
   }
 
   @ParameterizedTest(name = "{index}: file {0}")

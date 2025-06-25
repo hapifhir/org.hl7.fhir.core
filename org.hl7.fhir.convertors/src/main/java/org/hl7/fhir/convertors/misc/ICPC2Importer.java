@@ -64,7 +64,7 @@ import org.w3c.dom.Element;
  *
  * @author Grahame
  */
-
+@SuppressWarnings("checkstyle:systemout")
 public class ICPC2Importer {
 
   private String sourceFileName; // the ICPC2 ClaML file

@@ -1768,7 +1768,7 @@ public class MedicinalProduct extends DomainResource {
     }
 
     public boolean hasIndicationCodeableConcept() {
-      return this != null && this.indication instanceof CodeableConcept;
+        return this.indication instanceof CodeableConcept;
     }
 
     /**
@@ -1784,7 +1784,7 @@ public class MedicinalProduct extends DomainResource {
     }
 
     public boolean hasIndicationReference() {
-      return this != null && this.indication instanceof Reference;
+        return this.indication instanceof Reference;
     }
 
     public boolean hasIndication() {

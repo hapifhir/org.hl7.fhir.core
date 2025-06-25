@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Address30_40;
@@ -35,7 +36,7 @@ public class Patient30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Extension tgt = new org.hl7.fhir.r4.model.Extension();
-    tgt.setUrl("http://hl7.org/fhir/StructureDefinition/patient-animal");
+    tgt.setUrl(VersionConvertorConstants.EXT_PAT_ANIMAL);
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.hasSpecies())
       tgt.addExtension("species", CodeableConcept30_40.convertCodeableConcept(src.getSpecies()));
@@ -174,8 +175,8 @@ public class Patient30_40 {
     for (org.hl7.fhir.r4.model.Attachment t : src.getPhoto()) tgt.addPhoto(Attachment30_40.convertAttachment(t));
     for (org.hl7.fhir.r4.model.Patient.ContactComponent t : src.getContact())
       tgt.addContact(convertContactComponent(t));
-    if (src.hasExtension("http://hl7.org/fhir/StructureDefinition/patient-animal"))
-      tgt.setAnimal(convertAnimalComponent(src.getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/patient-animal")));
+    if (src.hasExtension(VersionConvertorConstants.EXT_PAT_ANIMAL))
+      tgt.setAnimal(convertAnimalComponent(src.getExtensionByUrl(VersionConvertorConstants.EXT_PAT_ANIMAL)));
     for (org.hl7.fhir.r4.model.Patient.PatientCommunicationComponent t : src.getCommunication())
       tgt.addCommunication(convertPatientCommunicationComponent(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getGeneralPractitioner())

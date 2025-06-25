@@ -9,21 +9,23 @@ package {{pid}};
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.formats.*;
 import org.xmlpull.v1.*;
+import org.hl7.fhir.utilities.xml.IXMLWriter;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.FHIRException;
 import java.io.IOException;
 import java.util.Enumeration;
 
-public class XmlParser extends org.hl7.fhir.r5.formats.XmlParser {
+public class {{jname}}XmlParser extends org.hl7.fhir.r5.formats.XmlParser {
 
-  public XmlParser() {
-    super();
-  }
-
-  public XmlParser(boolean allowUnknownContent) {
+  public {{jname}}XmlParser(boolean allowUnknownContent) {
     super();
     setAllowUnknownContent(allowUnknownContent);
+  }
+
+  public {{jname}}XmlParser(IXMLWriter xml) {
+    super();
+    this.xml = xml;
   }
 
 {{parser}}

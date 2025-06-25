@@ -93,9 +93,9 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     if (context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics()) { 
       model.setDocoImg(HierarchicalTableGenerator.help16AsData());     
     } else { 
-      model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "help16.png")); 
+      model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), "help16.png")); 
     } 
-    model.setDocoRef(context.getLink(KnownLinkType.SPEC)+"formats.html#table"); 
+    model.setDocoRef(context.getLink(KnownLinkType.SPEC, true)+"formats.html#table"); 
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.QUEST_LINKID)), (context.formatPhrase(RenderingContext.QUEST_LINK)), null, 0)); 
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.QUEST_TEXT)), (context.formatPhrase(RenderingContext.QUEST_TEXTFOR)), null, 0)); 
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.GENERAL_CARDINALITY)), (context.formatPhrase(RenderingContext.QUEST_TIMES)), null, 0)); 
@@ -177,7 +177,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         if (v.isPrimitive()) { 
           li.tx(v.primitiveValue()); 
         } else if (v.fhirType().equals("Coding")) { 
-          String link = v.has("system") ? new ContextUtilities(context.getWorker()).getLinkForUrl(context.getLink(KnownLinkType.SPEC), v.primitiveValue("system")) : null; 
+          String link = v.has("system") ? new ContextUtilities(context.getWorker()).getLinkForUrl(context.getLink(KnownLinkType.SPEC, true), v.primitiveValue("system")) : null; 
           if (link == null) { 
             li.tx(v.primitiveValue("system")+"#"+v.primitiveValue("code")); 
           } else { 
@@ -259,7 +259,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
   } 
 
   private String getSpecLink(String path) { 
-    return Utilities.pathURL(context.getLink(KnownLinkType.SPEC), path); 
+    return Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), path); 
   } 
 
   private String getSDCLink(String url, String path) { 
@@ -285,7 +285,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
 
     r.setIcon("icon-q-"+type.toLowerCase()+".png", type); 
     Cell c1 = gen.new Cell(null, context.getDefinitionsTarget() == null ? "" : context.getDefinitionsTarget()+"#item."+i.primitiveValue("linkId"), i.primitiveValue("linkId"), null, null); 
-    c1.setId("item."+i.primitiveValue("linkId")); 
+    c1.setId(context.prefixAnchor("item."+i.primitiveValue("linkId"))); 
     r.getCells().add(c1); 
     String txt = (i.has("prefix") ? i.primitiveValue("prefix") + ". " : "") + i.primitiveValue("text"); 
     r.getCells().add(gen.new Cell(null, null, txt, null, null)); 
@@ -293,9 +293,9 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     if (i.child("type").hasExtension(ToolingExtensions.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL)) { 
       status.setExtensions(true);
       String t = i.child("type").extensionString(ToolingExtensions.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL); 
-      r.getCells().add(gen.new Cell(null, context.getLink(KnownLinkType.SPEC)+"codesystem-item-type.html#item-type-"+t, t, null, null)); 
+      r.getCells().add(gen.new Cell(null, context.getLink(KnownLinkType.SPEC, true)+"codesystem-item-type.html#item-type-"+t, t, null, null)); 
     } else { 
-      r.getCells().add(gen.new Cell(null, context.getLink(KnownLinkType.SPEC)+"codesystem-item-type.html#item-type-"+type, type, null, null)); 
+      r.getCells().add(gen.new Cell(null, context.getLink(KnownLinkType.SPEC, true)+"codesystem-item-type.html#item-type-"+type, type, null, null)); 
     } 
 
     if (hasFlags) { 
@@ -303,7 +303,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       Cell flags = gen.new Cell(); 
       r.getCells().add(flags); 
       if ("true".equals(i.primitiveValue("readOnly"))) { 
-        flags.addPiece(gen.new Piece(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "questionnaire-definitions.html#Questionnaire.item.readOnly"), null, context.formatPhrase(RenderingContext.QUEST_READONLY)).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("alt", "icon").attribute("src", getImgPath("icon-qi-readonly.png")))); 
+        flags.addPiece(gen.new Piece(Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), "questionnaire-definitions.html#Questionnaire.item.readOnly"), null, context.formatPhrase(RenderingContext.QUEST_READONLY)).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("alt", "icon").attribute("src", getImgPath("icon-qi-readonly.png")))); 
       } 
       if ("true".equals(i.extensionString("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-Questionnaire-isSubject"))) { 
         status.setExtensions(true);
@@ -522,9 +522,9 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     if (context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics()) { 
       model.setDocoImg(HierarchicalTableGenerator.help16AsData());     
     } else { 
-      model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "help16.png")); 
+      model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), "help16.png")); 
     } 
-    model.setDocoRef(context.getLink(KnownLinkType.SPEC)+"formats.html#table"); 
+    model.setDocoRef(context.getLink(KnownLinkType.SPEC, true)+"formats.html#table"); 
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_LINKID), context.formatPhrase(RenderingContext.QUEST_LINK), null, 0)); 
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.GENERAL_DESC_CONST), context.formatPhrase(RenderingContext.QUEST_ADD_INFO), null, 0)); 
 
@@ -777,7 +777,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     } 
     if ("true".equals(i.extensionString(ToolingExtensions.EXT_Q_HIDDEN))) { 
       hasFlag = true; 
-      flags.ah(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "extension-questionnaire-hidden.html"), context.formatPhrase(RenderingContext.QUEST_HIDDEN)).img(getImgPath("icon-qi-hidden.png"), "icon"); 
+      flags.ah(Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), "extension-questionnaire-hidden.html"), context.formatPhrase(RenderingContext.QUEST_HIDDEN)).img(getImgPath("icon-qi-hidden.png"), "icon"); 
       d.style("background-color: #eeeeee"); 
     } 
     if ("true".equals(i.extensionString(ToolingExtensions.EXT_Q_OTP_DISP))) { 
@@ -938,7 +938,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
   private void renderLinks(RenderingStatus status, XhtmlNode x, ResourceWrapper q) { 
     x.para().tx(context.formatPhrase(RenderingContext.QUEST_TRY)); 
     XhtmlNode ul = x.ul(); 
-    ul.li().ah("http://todo.nlm.gov/path?mode=ig&src="+Utilities.pathURL(context.getLink(KnownLinkType.SELF), "package.tgz")+"&q="+q.getId()+".json").tx(context.formatPhrase(RenderingContext.QUEST_NLM)); 
+    ul.li().ah("http://todo.nlm.gov/path?mode=ig&src="+Utilities.pathURL(context.getLink(KnownLinkType.SELF, false), "package.tgz")+"&q="+q.getId()+".json").tx(context.formatPhrase(RenderingContext.QUEST_NLM)); 
   } 
 
   private void renderDefns(RenderingStatus status, XhtmlNode x, ResourceWrapper q) throws IOException { 

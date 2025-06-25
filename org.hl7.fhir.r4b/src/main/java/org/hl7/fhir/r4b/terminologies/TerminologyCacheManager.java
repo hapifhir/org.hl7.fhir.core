@@ -15,6 +15,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.FileUtilities;
@@ -25,6 +26,7 @@ import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class TerminologyCacheManager {
 
   // if either the CACHE_VERSION of the stated maj/min server versions change, the
@@ -80,13 +82,13 @@ public class TerminologyCacheManager {
 
   private void fillCache(String source) throws IOException {
     try {
-      System.out.println("Initialise terminology cache from " + source);
+      log.info("Initialise terminology cache from " + source);
 
       HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), source + "?nocache=" + System.currentTimeMillis());
       res.checkThrowException();
       unzip(new ByteArrayInputStream(res.getContent()), cacheFolder);
     } catch (Exception e) {
-      System.out.println("No - can't initialise cache from " + source + ": " + e.getMessage());
+      log.error("No - can't initialise cache from " + source + ": " + e.getMessage());
     }
   }
 
@@ -136,7 +138,7 @@ public class TerminologyCacheManager {
             zs.closeEntry();
           }
         } catch (IOException e) {
-          System.err.println(e);
+          log.error(e.getMessage(), e);
         }
       });
     }
@@ -149,15 +151,15 @@ public class TerminologyCacheManager {
 
     // post it to
     String url = "https://tx.fhir.org/post/tx-cache/" + ghOrg + "/" + ghRepo + "/" + ghBranch + ".zip";
-    System.out.println("Sending tx-cache to " + url + " (" + Utilities.describeSize(bs.toByteArray().length) + ")");
+    log.info("Sending tx-cache to " + url + " (" + Utilities.describeSize(bs.toByteArray().length) + ")");
 
     HTTPResult res = ManagedWebAccess.accessor(Arrays.asList("web"))
      .withBasicAuth(token.substring(0, token.indexOf(':')), token.substring(token.indexOf(':') + 1))
      .put(url, bs.toByteArray(), null, "application/zip");
     if (res.getCode() >= 300) {
-      System.out.println("sending cache failed: " + res.getCode());
+      log.error("sending cache failed: " + res.getCode());
     } else {
-      System.out.println("Sent cache");
+      log.info("Sent cache");
     }
   }
 

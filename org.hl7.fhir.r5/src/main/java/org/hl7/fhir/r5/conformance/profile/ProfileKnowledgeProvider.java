@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.conformance.profile;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.r5.model.StructureDefinition;
 
@@ -19,4 +20,5 @@ public interface ProfileKnowledgeProvider {
   boolean prependLinks();
   String getLinkForUrl(String corePath, String s);
   String getCanonicalForDefaultContext();
+  public String getDefinitionsName(Resource r);
 }

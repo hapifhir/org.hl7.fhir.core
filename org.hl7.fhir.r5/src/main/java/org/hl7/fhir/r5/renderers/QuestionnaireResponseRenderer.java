@@ -73,9 +73,9 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     if (context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics()) {
       model.setDocoImg(HierarchicalTableGenerator.help16AsData());   
     } else {
-      model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "help16.png"));
+      model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), "help16.png"));
     }
-    model.setDocoRef(context.getLink(KnownLinkType.SPEC)+"formats.html#table");
+    model.setDocoRef(context.getLink(KnownLinkType.SPEC, true)+"formats.html#table");
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_LINKID), context.formatPhrase(RenderingContext.QUEST_LINK), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_TEXT), context.formatPhrase(RenderingContext.QUEST_TEXTFOR), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.GENERAL_DEFINITION), context.formatPhrase(RenderingContext.QUEST_TIMES), null, 0));
@@ -566,7 +566,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
   private boolean renderLinks(RenderingStatus status, XhtmlNode x, ResourceWrapper q) {
     x.para().tx(context.formatPhrase(RenderingContext.QUEST_TRY_QUEST));
     XhtmlNode ul = x.ul();
-    ul.li().ah("http://todo.nlm.gov/path?mode=ig&src="+Utilities.pathURL(context.getLink(KnownLinkType.SELF), "package.tgz")+"&q="+q.getId()+".json").tx(context.formatPhrase(RenderingContext.QUEST_NLM));
+    ul.li().ah("http://todo.nlm.gov/path?mode=ig&src="+Utilities.pathURL(context.getLink(KnownLinkType.SELF, false), "package.tgz")+"&q="+q.getId()+".json").tx(context.formatPhrase(RenderingContext.QUEST_NLM));
     return false;
   }
 

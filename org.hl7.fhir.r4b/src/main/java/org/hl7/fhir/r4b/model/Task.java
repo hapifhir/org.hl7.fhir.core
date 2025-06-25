@@ -1097,7 +1097,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueBase64BinaryType() {
-      return this != null && this.value instanceof Base64BinaryType;
+        return this.value instanceof Base64BinaryType;
     }
 
     /**
@@ -1113,7 +1113,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueBooleanType() {
-      return this != null && this.value instanceof BooleanType;
+        return this.value instanceof BooleanType;
     }
 
     /**
@@ -1129,7 +1129,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueCanonicalType() {
-      return this != null && this.value instanceof CanonicalType;
+        return this.value instanceof CanonicalType;
     }
 
     /**
@@ -1145,7 +1145,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueCodeType() {
-      return this != null && this.value instanceof CodeType;
+        return this.value instanceof CodeType;
     }
 
     /**
@@ -1161,7 +1161,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueDateType() {
-      return this != null && this.value instanceof DateType;
+        return this.value instanceof DateType;
     }
 
     /**
@@ -1177,7 +1177,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueDateTimeType() {
-      return this != null && this.value instanceof DateTimeType;
+        return this.value instanceof DateTimeType;
     }
 
     /**
@@ -1193,7 +1193,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueDecimalType() {
-      return this != null && this.value instanceof DecimalType;
+        return this.value instanceof DecimalType;
     }
 
     /**
@@ -1209,7 +1209,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueIdType() {
-      return this != null && this.value instanceof IdType;
+        return this.value instanceof IdType;
     }
 
     /**
@@ -1225,7 +1225,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueInstantType() {
-      return this != null && this.value instanceof InstantType;
+        return this.value instanceof InstantType;
     }
 
     /**
@@ -1241,7 +1241,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueIntegerType() {
-      return this != null && this.value instanceof IntegerType;
+        return this.value instanceof IntegerType;
     }
 
     /**
@@ -1257,7 +1257,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueMarkdownType() {
-      return this != null && this.value instanceof MarkdownType;
+        return this.value instanceof MarkdownType;
     }
 
     /**
@@ -1273,7 +1273,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueOidType() {
-      return this != null && this.value instanceof OidType;
+        return this.value instanceof OidType;
     }
 
     /**
@@ -1289,7 +1289,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValuePositiveIntType() {
-      return this != null && this.value instanceof PositiveIntType;
+        return this.value instanceof PositiveIntType;
     }
 
     /**
@@ -1305,7 +1305,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueStringType() {
-      return this != null && this.value instanceof StringType;
+        return this.value instanceof StringType;
     }
 
     /**
@@ -1321,7 +1321,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueTimeType() {
-      return this != null && this.value instanceof TimeType;
+        return this.value instanceof TimeType;
     }
 
     /**
@@ -1337,7 +1337,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueUnsignedIntType() {
-      return this != null && this.value instanceof UnsignedIntType;
+        return this.value instanceof UnsignedIntType;
     }
 
     /**
@@ -1353,7 +1353,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueUriType() {
-      return this != null && this.value instanceof UriType;
+        return this.value instanceof UriType;
     }
 
     /**
@@ -1369,7 +1369,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueUrlType() {
-      return this != null && this.value instanceof UrlType;
+        return this.value instanceof UrlType;
     }
 
     /**
@@ -1385,7 +1385,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueUuidType() {
-      return this != null && this.value instanceof UuidType;
+        return this.value instanceof UuidType;
     }
 
     /**
@@ -1401,7 +1401,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueAddress() {
-      return this != null && this.value instanceof Address;
+        return this.value instanceof Address;
     }
 
     /**
@@ -1417,7 +1417,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueAge() {
-      return this != null && this.value instanceof Age;
+        return this.value instanceof Age;
     }
 
     /**
@@ -1433,7 +1433,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueAnnotation() {
-      return this != null && this.value instanceof Annotation;
+        return this.value instanceof Annotation;
     }
 
     /**
@@ -1449,7 +1449,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueAttachment() {
-      return this != null && this.value instanceof Attachment;
+        return this.value instanceof Attachment;
     }
 
     /**
@@ -1465,7 +1465,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueCodeableConcept() {
-      return this != null && this.value instanceof CodeableConcept;
+        return this.value instanceof CodeableConcept;
     }
 
     /**
@@ -1481,7 +1481,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueCoding() {
-      return this != null && this.value instanceof Coding;
+        return this.value instanceof Coding;
     }
 
     /**
@@ -1497,7 +1497,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueContactPoint() {
-      return this != null && this.value instanceof ContactPoint;
+        return this.value instanceof ContactPoint;
     }
 
     /**
@@ -1513,7 +1513,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueCount() {
-      return this != null && this.value instanceof Count;
+        return this.value instanceof Count;
     }
 
     /**
@@ -1529,7 +1529,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueDistance() {
-      return this != null && this.value instanceof Distance;
+        return this.value instanceof Distance;
     }
 
     /**
@@ -1545,7 +1545,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueDuration() {
-      return this != null && this.value instanceof Duration;
+        return this.value instanceof Duration;
     }
 
     /**
@@ -1561,7 +1561,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueHumanName() {
-      return this != null && this.value instanceof HumanName;
+        return this.value instanceof HumanName;
     }
 
     /**
@@ -1577,7 +1577,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueIdentifier() {
-      return this != null && this.value instanceof Identifier;
+        return this.value instanceof Identifier;
     }
 
     /**
@@ -1593,7 +1593,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueMoney() {
-      return this != null && this.value instanceof Money;
+        return this.value instanceof Money;
     }
 
     /**
@@ -1609,7 +1609,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValuePeriod() {
-      return this != null && this.value instanceof Period;
+        return this.value instanceof Period;
     }
 
     /**
@@ -1625,7 +1625,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueQuantity() {
-      return this != null && this.value instanceof Quantity;
+        return this.value instanceof Quantity;
     }
 
     /**
@@ -1641,7 +1641,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueRange() {
-      return this != null && this.value instanceof Range;
+        return this.value instanceof Range;
     }
 
     /**
@@ -1657,7 +1657,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueRatio() {
-      return this != null && this.value instanceof Ratio;
+        return this.value instanceof Ratio;
     }
 
     /**
@@ -1673,7 +1673,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueReference() {
-      return this != null && this.value instanceof Reference;
+        return this.value instanceof Reference;
     }
 
     /**
@@ -1689,7 +1689,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueSampledData() {
-      return this != null && this.value instanceof SampledData;
+        return this.value instanceof SampledData;
     }
 
     /**
@@ -1705,7 +1705,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueSignature() {
-      return this != null && this.value instanceof Signature;
+        return this.value instanceof Signature;
     }
 
     /**
@@ -1721,7 +1721,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueTiming() {
-      return this != null && this.value instanceof Timing;
+        return this.value instanceof Timing;
     }
 
     /**
@@ -1737,7 +1737,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueContactDetail() {
-      return this != null && this.value instanceof ContactDetail;
+        return this.value instanceof ContactDetail;
     }
 
     /**
@@ -1753,7 +1753,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueContributor() {
-      return this != null && this.value instanceof Contributor;
+        return this.value instanceof Contributor;
     }
 
     /**
@@ -1769,7 +1769,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueDataRequirement() {
-      return this != null && this.value instanceof DataRequirement;
+        return this.value instanceof DataRequirement;
     }
 
     /**
@@ -1785,7 +1785,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueExpression() {
-      return this != null && this.value instanceof Expression;
+        return this.value instanceof Expression;
     }
 
     /**
@@ -1801,7 +1801,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueParameterDefinition() {
-      return this != null && this.value instanceof ParameterDefinition;
+        return this.value instanceof ParameterDefinition;
     }
 
     /**
@@ -1817,7 +1817,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueRelatedArtifact() {
-      return this != null && this.value instanceof RelatedArtifact;
+        return this.value instanceof RelatedArtifact;
     }
 
     /**
@@ -1833,7 +1833,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueTriggerDefinition() {
-      return this != null && this.value instanceof TriggerDefinition;
+        return this.value instanceof TriggerDefinition;
     }
 
     /**
@@ -1849,7 +1849,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueUsageContext() {
-      return this != null && this.value instanceof UsageContext;
+        return this.value instanceof UsageContext;
     }
 
     /**
@@ -1865,7 +1865,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueDosage() {
-      return this != null && this.value instanceof Dosage;
+        return this.value instanceof Dosage;
     }
 
     /**
@@ -1881,7 +1881,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueMeta() {
-      return this != null && this.value instanceof Meta;
+        return this.value instanceof Meta;
     }
 
     public boolean hasValue() {
@@ -2470,7 +2470,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueBase64BinaryType() {
-      return this != null && this.value instanceof Base64BinaryType;
+        return this.value instanceof Base64BinaryType;
     }
 
     /**
@@ -2486,7 +2486,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueBooleanType() {
-      return this != null && this.value instanceof BooleanType;
+        return this.value instanceof BooleanType;
     }
 
     /**
@@ -2502,7 +2502,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueCanonicalType() {
-      return this != null && this.value instanceof CanonicalType;
+        return this.value instanceof CanonicalType;
     }
 
     /**
@@ -2518,7 +2518,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueCodeType() {
-      return this != null && this.value instanceof CodeType;
+        return this.value instanceof CodeType;
     }
 
     /**
@@ -2534,7 +2534,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueDateType() {
-      return this != null && this.value instanceof DateType;
+        return this.value instanceof DateType;
     }
 
     /**
@@ -2550,7 +2550,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueDateTimeType() {
-      return this != null && this.value instanceof DateTimeType;
+        return this.value instanceof DateTimeType;
     }
 
     /**
@@ -2566,7 +2566,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueDecimalType() {
-      return this != null && this.value instanceof DecimalType;
+        return this.value instanceof DecimalType;
     }
 
     /**
@@ -2582,7 +2582,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueIdType() {
-      return this != null && this.value instanceof IdType;
+        return this.value instanceof IdType;
     }
 
     /**
@@ -2598,7 +2598,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueInstantType() {
-      return this != null && this.value instanceof InstantType;
+        return this.value instanceof InstantType;
     }
 
     /**
@@ -2614,7 +2614,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueIntegerType() {
-      return this != null && this.value instanceof IntegerType;
+        return this.value instanceof IntegerType;
     }
 
     /**
@@ -2630,7 +2630,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueMarkdownType() {
-      return this != null && this.value instanceof MarkdownType;
+        return this.value instanceof MarkdownType;
     }
 
     /**
@@ -2646,7 +2646,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueOidType() {
-      return this != null && this.value instanceof OidType;
+        return this.value instanceof OidType;
     }
 
     /**
@@ -2662,7 +2662,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValuePositiveIntType() {
-      return this != null && this.value instanceof PositiveIntType;
+        return this.value instanceof PositiveIntType;
     }
 
     /**
@@ -2678,7 +2678,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueStringType() {
-      return this != null && this.value instanceof StringType;
+        return this.value instanceof StringType;
     }
 
     /**
@@ -2694,7 +2694,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueTimeType() {
-      return this != null && this.value instanceof TimeType;
+        return this.value instanceof TimeType;
     }
 
     /**
@@ -2710,7 +2710,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueUnsignedIntType() {
-      return this != null && this.value instanceof UnsignedIntType;
+        return this.value instanceof UnsignedIntType;
     }
 
     /**
@@ -2726,7 +2726,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueUriType() {
-      return this != null && this.value instanceof UriType;
+        return this.value instanceof UriType;
     }
 
     /**
@@ -2742,7 +2742,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueUrlType() {
-      return this != null && this.value instanceof UrlType;
+        return this.value instanceof UrlType;
     }
 
     /**
@@ -2758,7 +2758,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueUuidType() {
-      return this != null && this.value instanceof UuidType;
+        return this.value instanceof UuidType;
     }
 
     /**
@@ -2774,7 +2774,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueAddress() {
-      return this != null && this.value instanceof Address;
+        return this.value instanceof Address;
     }
 
     /**
@@ -2790,7 +2790,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueAge() {
-      return this != null && this.value instanceof Age;
+        return this.value instanceof Age;
     }
 
     /**
@@ -2806,7 +2806,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueAnnotation() {
-      return this != null && this.value instanceof Annotation;
+        return this.value instanceof Annotation;
     }
 
     /**
@@ -2822,7 +2822,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueAttachment() {
-      return this != null && this.value instanceof Attachment;
+        return this.value instanceof Attachment;
     }
 
     /**
@@ -2838,7 +2838,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueCodeableConcept() {
-      return this != null && this.value instanceof CodeableConcept;
+        return this.value instanceof CodeableConcept;
     }
 
     /**
@@ -2854,7 +2854,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueCoding() {
-      return this != null && this.value instanceof Coding;
+        return this.value instanceof Coding;
     }
 
     /**
@@ -2870,7 +2870,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueContactPoint() {
-      return this != null && this.value instanceof ContactPoint;
+        return this.value instanceof ContactPoint;
     }
 
     /**
@@ -2886,7 +2886,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueCount() {
-      return this != null && this.value instanceof Count;
+        return this.value instanceof Count;
     }
 
     /**
@@ -2902,7 +2902,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueDistance() {
-      return this != null && this.value instanceof Distance;
+        return this.value instanceof Distance;
     }
 
     /**
@@ -2918,7 +2918,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueDuration() {
-      return this != null && this.value instanceof Duration;
+        return this.value instanceof Duration;
     }
 
     /**
@@ -2934,7 +2934,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueHumanName() {
-      return this != null && this.value instanceof HumanName;
+        return this.value instanceof HumanName;
     }
 
     /**
@@ -2950,7 +2950,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueIdentifier() {
-      return this != null && this.value instanceof Identifier;
+        return this.value instanceof Identifier;
     }
 
     /**
@@ -2966,7 +2966,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueMoney() {
-      return this != null && this.value instanceof Money;
+        return this.value instanceof Money;
     }
 
     /**
@@ -2982,7 +2982,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValuePeriod() {
-      return this != null && this.value instanceof Period;
+        return this.value instanceof Period;
     }
 
     /**
@@ -2998,7 +2998,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueQuantity() {
-      return this != null && this.value instanceof Quantity;
+        return this.value instanceof Quantity;
     }
 
     /**
@@ -3014,7 +3014,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueRange() {
-      return this != null && this.value instanceof Range;
+        return this.value instanceof Range;
     }
 
     /**
@@ -3030,7 +3030,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueRatio() {
-      return this != null && this.value instanceof Ratio;
+        return this.value instanceof Ratio;
     }
 
     /**
@@ -3046,7 +3046,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueReference() {
-      return this != null && this.value instanceof Reference;
+        return this.value instanceof Reference;
     }
 
     /**
@@ -3062,7 +3062,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueSampledData() {
-      return this != null && this.value instanceof SampledData;
+        return this.value instanceof SampledData;
     }
 
     /**
@@ -3078,7 +3078,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueSignature() {
-      return this != null && this.value instanceof Signature;
+        return this.value instanceof Signature;
     }
 
     /**
@@ -3094,7 +3094,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueTiming() {
-      return this != null && this.value instanceof Timing;
+        return this.value instanceof Timing;
     }
 
     /**
@@ -3110,7 +3110,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueContactDetail() {
-      return this != null && this.value instanceof ContactDetail;
+        return this.value instanceof ContactDetail;
     }
 
     /**
@@ -3126,7 +3126,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueContributor() {
-      return this != null && this.value instanceof Contributor;
+        return this.value instanceof Contributor;
     }
 
     /**
@@ -3142,7 +3142,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueDataRequirement() {
-      return this != null && this.value instanceof DataRequirement;
+        return this.value instanceof DataRequirement;
     }
 
     /**
@@ -3158,7 +3158,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueExpression() {
-      return this != null && this.value instanceof Expression;
+        return this.value instanceof Expression;
     }
 
     /**
@@ -3174,7 +3174,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueParameterDefinition() {
-      return this != null && this.value instanceof ParameterDefinition;
+        return this.value instanceof ParameterDefinition;
     }
 
     /**
@@ -3190,7 +3190,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueRelatedArtifact() {
-      return this != null && this.value instanceof RelatedArtifact;
+        return this.value instanceof RelatedArtifact;
     }
 
     /**
@@ -3206,7 +3206,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueTriggerDefinition() {
-      return this != null && this.value instanceof TriggerDefinition;
+        return this.value instanceof TriggerDefinition;
     }
 
     /**
@@ -3222,7 +3222,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueUsageContext() {
-      return this != null && this.value instanceof UsageContext;
+        return this.value instanceof UsageContext;
     }
 
     /**
@@ -3238,7 +3238,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueDosage() {
-      return this != null && this.value instanceof Dosage;
+        return this.value instanceof Dosage;
     }
 
     /**
@@ -3254,7 +3254,7 @@ public class Task extends DomainResource {
     }
 
     public boolean hasValueMeta() {
-      return this != null && this.value instanceof Meta;
+        return this.value instanceof Meta;
     }
 
     public boolean hasValue() {

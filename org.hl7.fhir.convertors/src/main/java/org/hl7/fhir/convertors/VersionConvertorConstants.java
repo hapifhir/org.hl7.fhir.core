@@ -1,6 +1,5 @@
 package org.hl7.fhir.convertors;
 
-import org.hl7.fhir.r5.renderers.QuestionnaireRenderer;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 
 /*
@@ -35,20 +34,46 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 
 public class VersionConvertorConstants {
 
-  public final static String IG_DEPENDSON_PACKAGE_EXTENSION = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ImplementationGuide.dependsOn.packageId";
-  public final static String IG_DEPENDSON_VERSION_EXTENSION = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ImplementationGuide.dependsOn.version";
-  public final static String MODIFIER_REASON_EXTENSION = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ElementDefinition.isModifierReason";
-  public final static String MODIFIER_TAKEN = "http://hl7.org/fhir/4.0/StructureDefinition/extension-MedicationStatment.taken";
-  public final static String MODIFIER_REASON_LEGACY = "No Modifier Reason provideed in previous versions of FHIR";
-  public final static String PROFILE_EXTENSION = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ElementDefinition.type.profile";
-  public final static String IG_CONFORMANCE_MESSAGE_EVENT = "http://hl7.org/fhir/1.0/StructureDefinition/extension-Conformance.messaging.event";
-  public static final String EXT_OLD_CONCEPTMAP_EQUIVALENCE = "http://hl7.org/fhir/1.0/StructureDefinition/extension-ConceptMap.element.target.equivalence";
+  public final static String EXT_PAYLOAD_CONTENT = "http://hl7.org/fhir/4.0/StructureDefinition/extension-CommunicationRequest.payload.content";
+  public final static String EXT_IG_CONFORMANCE_MESSAGE_EVENT = "http://hl7.org/fhir/1.0/StructureDefinition/extension-Conformance.messaging.event";
+  public final static String EXT_IG_DEPENDSON_VERSION_EXTENSION = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ImplementationGuide.dependsOn.version";
+  public final static String EXT_MODIFIER_REASON_EXTENSION = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ElementDefinition.isModifierReason";
+  public final static String EXT_MODIFIER_REASON_LEGACY = "No Modifier Reason provideed in previous versions of FHIR";
+  public final static String EXT_MODIFIER_TAKEN = "http://hl7.org/fhir/4.0/StructureDefinition/extension-MedicationStatment.taken";
+  public final static String EXT_PROFILE_EXTENSION = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ElementDefinition.type.profile";
+  public static final String EXT_ACCEPT_UNKNOWN_EXTENSION_URL = "http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown";
+  public static final String EXT_CarePlanActivityDetailComponentExtension = "http://hl7.org/fhir/3.0/StructureDefinition/extension-CarePlan.activity.detail.category";
+  public static final String EXT_EXP_VS_CONT_PROP = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property";
+  public static final String EXT_TESTSCRIPT_SCOPE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-TestScript.scope";
   public static final String EXT_ACTUAL_RESOURCE_NAME = "http://hl7.org/fhir/tools/StructureDefinition/original-resource-name";
-  public static final String EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL = ToolingExtensions.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL;
+  public static final String EXT_ADDITIONAL_BINDING = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.binding.additional";
+  public static final String EXT_CS_PROFILE = "http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.profile";
+  public static final String EXT_IG_DEFINITION_PAGE_NAME = "http://hl7.org/fhir/tools/StructureDefinition/ig-page-name";
+  public static final String EXT_IG_DEFINITION_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/ig-parameter";
+  public static final String EXT_IG_DEFINITION_PARAM_URL_BASE = "http://hl7.org/fhir/guide-parameter-code";
+  public static final String EXT_IG_DEFINITION_PARAM_URL_EXT = "http://hl7.org/fhir/tools/CodeSystem/ig-parameters";
+  public static final String EXT_IG_DEFINITION_RESOURCE_PROFILE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ImplementationGuide.definition.resource.profile";
+  public static final String EXT_IG_DEPENDSON_REASON = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ImplementationGuide.dependsOn.reason";
+  public static final String EXT_MED_CONT = "http://hl7.org/fhir/3.0/StructureDefinition/extension-Medication.package.container";
+  public static final String EXT_MED_ISBRAND = "http://hl7.org/fhir/3.0/StructureDefinition/extension-Medication.isBrand";
+  public static final String EXT_MED_PACK_AMOUNT = "http://hl7.org/fhir/3.0/StructureDefinition/extension-Medication.package.content.amount";
+  public static final String EXT_MED_PACK_CONT = "http://hl7.org/fhir/3.0/StructureDefinition/extension-Medication.package.content";
+  public static final String EXT_MUST_VALUE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.mustHaveValue";
   public static final String EXT_NAMINGSYSTEM_TITLE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.title";
   public static final String EXT_NAMINGSYSTEM_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.url";
   public static final String EXT_NAMINGSYSTEM_VERSION = "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.version";
+  public static final String EXT_OLD_CONCEPTMAP_EQUIVALENCE = "http://hl7.org/fhir/1.0/StructureDefinition/extension-ConceptMap.element.target.equivalence";
   public static final String EXT_OPDEF_ORIGINAL_TYPE = "http://hl7.org/fhir/4.0/StructureDefinition/extension-OperationDefinition.parameter.type";
+  public static final String EXT_PAT_ANIMAL = "http://hl7.org/fhir/StructureDefinition/patient-animal";
+  public static final String EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL = ToolingExtensions.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL;
+  public static final String EXT_VALUE_ALT = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.valueAlternatives";
+  public static final String EXT_VS_EXP_PROP = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.property";
+  public static final String EXT_VS_EXTENSIBLE = "http://hl7.org/fhir/1.0/StructureDefinition/extension-ValueSet.extensible";
+  public static final String EXT_NOT_GIVEN_EXTENSION_URL = "http://hl7.org/fhir/3.0/StructureDefinition/extension-Immunization.notGiven";
+  public static final String EXT_IG_DEPENDSON_PACKAGE_EXTENSION = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ImplementationGuide.dependsOn.packageId";
+  public static final String EXT_MED_REQ_ONBEHALF = "http://hl7.org/fhir/3.0/StructureDefinition/extension-MedicationRequest.requester.onBehalfOf";
+  public static final String EXT_COM_REQ_ONBEHALF = "http://hl7.org/fhir/3.0/StructureDefinition/extension-CommunicationRequest.requester.onBehalfOf";
+  public static final String EXT_DOC_REF_CREATED = "http://hl7.org/fhir/3.0/StructureDefinition/extension-DocumentReference.created";
 
   public static String refToVS(String url) {
     if (url == null)
@@ -107,4 +132,6 @@ public class VersionConvertorConstants {
     else
       return null;
   }
+
+
 }

@@ -36,7 +36,6 @@ package org.hl7.fhir.r5.formats;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -49,11 +48,20 @@ import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.SearchParameter;
+import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.xml.IXMLWriter;
 
 public abstract class ParserBase extends FormatUtilities implements IParser {
 
+  protected static Map<String, IParserFactory> customResourceHandlers = new HashMap<>();
+
+  public interface IParserFactory {
+    public JsonParserBase composerJson(JsonCreator json);
+    public JsonParserBase parserJson(boolean allowUnknownContent, boolean allowComments);
+    public XmlParserBase composerXml(IXMLWriter xml);
+    public XmlParserBase parserXml(boolean allowUnknownContent);
+  }
   // -- implementation of variant type methods from the interface --------------------------------
   
   public Resource parse(String input) throws FHIRFormatError, IOException {
@@ -247,5 +255,8 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
     }
   }
 
+  public static Map<String, IParserFactory> getCustomResourceHandlers() {
+    return customResourceHandlers;
+  }
 
 }

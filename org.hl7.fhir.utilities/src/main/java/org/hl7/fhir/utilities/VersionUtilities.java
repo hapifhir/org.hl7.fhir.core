@@ -78,6 +78,8 @@ public class VersionUtilities {
     private int compareString(String s1, String s2) {
       if (s1 == null) {
         return s2 == null ? 0 : 1;
+      } else if (s2 == null) {
+        return -1;
       } else {
         return s1.compareTo(s2);
       }
@@ -234,19 +236,19 @@ public class VersionUtilities {
   }
 
   public static boolean isR5Ver(String ver) {
-    return ver != null && (ver.startsWith("5.0"));
+    return ver != null && (ver.startsWith("5.0") || Utilities.existsInList(ver.toUpperCase(), "R5"));
   }
 
   public static boolean isR4BVer(String ver) {
-    return ver != null && (ver.startsWith("4.1") || ver.startsWith("4.3"));
+    return ver != null && (ver.startsWith("4.1") || ver.startsWith("4.3") || Utilities.existsInList(ver.toUpperCase(), "R4B"));
   }
 
   public static boolean isR4Ver(String ver) {
-    return ver != null && ver.startsWith("4.0");
+    return ver != null && (ver.startsWith("4.0") || Utilities.existsInList(ver.toUpperCase(), "R4"));
   }
 
   public static boolean isR3Ver(String ver) {
-    return ver != null && ver.startsWith("3.0");
+    return ver != null && (ver.startsWith("3.0") || Utilities.existsInList(ver.toUpperCase(), "STU3", "R3"));
   }
 
   public static boolean isR2BVer(String ver) {
@@ -254,7 +256,7 @@ public class VersionUtilities {
   }
 
   public static boolean isR2Ver(String ver) {
-    return ver != null && ver.startsWith("1.0");
+    return ver != null && (ver.startsWith("1.0") || Utilities.existsInList(ver.toUpperCase(), "STU1", "R1"));
   }
 
   public static boolean versionsCompatible(String v1, String v2) {
@@ -761,6 +763,18 @@ public class VersionUtilities {
       return true;
     }
     return startVer.compareTo(ver) < 0 && stopVer.compareTo(ver) > 0;
+  }
+
+  public static String getNoPatch(String version) {
+    return version.contains("-") ? version.substring(0, version.indexOf("-")) : version;
+  }
+
+  public static String getResourceTypesUrl(String version) {
+    if (VersionUtilities.isR5Plus(version)) {
+      return "http://hl7.org/fhir/fhir-types";
+    } else {
+      return "http://hl7.org/fhir/resource-types";
+    }
   }
 
 

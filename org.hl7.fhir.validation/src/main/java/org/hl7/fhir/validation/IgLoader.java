@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
@@ -41,15 +42,15 @@ import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.turtle.Turtle;
-import org.hl7.fhir.validation.IgLoader.IDirectPackageProvider;
 import org.hl7.fhir.validation.ValidationEngine.IValidationEngineLoader;
 import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
-import org.hl7.fhir.validation.cli.utils.Common;
-import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
+import org.hl7.fhir.validation.service.utils.Common;
+import org.hl7.fhir.validation.service.utils.VersionSourceInformation;
 
 import lombok.Getter;
 import lombok.Setter;
 
+@Slf4j
 public class IgLoader implements IValidationEngineLoader {
 
   /**
@@ -134,16 +135,18 @@ public class IgLoader implements IValidationEngineLoader {
           }
         }
       }
-      System.out.print("  Load " + srcPackage);
+      StringBuilder packageLoadLine = new StringBuilder();
+      packageLoadLine.append("  Load " + srcPackage);
       if (!srcPackage.contains("#")) {
-        System.out.print("#" + npm.version());
+        packageLoadLine.append("#" + npm.version());
       }
       IContextResourceLoader loader = ValidatorUtils.loaderForVersion(npm.fhirVersion());
       loader.setPatchUrls(VersionUtilities.isCorePackage(npm.id()));
       int count = getContext().loadFromPackage(npm, loader);
-      System.out.println(" - " + count + " resources (" + getContext().clock().milestone() + ")");
+      log.info(packageLoadLine + " - " + count + " resources (" + getContext().clock().milestone() + ")");
     } else {
-      System.out.print("  Load " + srcPackage);
+      StringBuilder packageLoadLine = new StringBuilder();
+      packageLoadLine.append("  Load " + srcPackage);
       String canonical = null;
       int count = 0;
       Map<String, ByteProvider> source = loadIgSource(srcPackage, recursive, true);
@@ -180,7 +183,7 @@ public class IgLoader implements IValidationEngineLoader {
       if (canonical != null) {
         ValidatorUtils.grabNatives(binaries, source, canonical);
       }
-      System.out.println(" - " + count + " resources (" + getContext().clock().milestone() + ")");
+      log.info(packageLoadLine + " - " + count + " resources (" + getContext().clock().milestone() + ")");
     }
   }
 
@@ -302,7 +305,7 @@ public class IgLoader implements IValidationEngineLoader {
         stream.close();
       }
 
-      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), FileUtilities.fileToBytes(f), src, true);
+      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), FileUtilities.fileToBytes(f), src, true);
       if (fmt != null) {
         Map<String, ByteProvider> res = new HashMap<String, ByteProvider>();
         res.put(FileUtilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forFile(src));
@@ -480,7 +483,7 @@ public class IgLoader implements IValidationEngineLoader {
         return readZip(ManagedFileAccess.inStream(src));
       if (src.endsWith("igpack.zip"))
         return readZip(ManagedFileAccess.inStream(src));
-      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), FileUtilities.fileToBytes(f), src, true);
+      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), FileUtilities.fileToBytes(f), src, true);
       if (fmt != null) {
         Map<String, ByteProvider> res = new HashMap<String, ByteProvider>();
         res.put(FileUtilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forFile(src));
@@ -516,7 +519,7 @@ public class IgLoader implements IValidationEngineLoader {
     if (version == null) {
       pi = getPackageCacheManager().loadPackageFromCacheOnly(id);
       if (pi != null)
-        System.out.println("   ... Using version " + pi.version());
+        log.info("   ... Using version " + pi.version());
     } else
       pi = getPackageCacheManager().loadPackage(id, version);
     if (pi == null) {
@@ -546,7 +549,7 @@ public class IgLoader implements IValidationEngineLoader {
       }
       if (!getContext().getLoadedPackages().contains(s)) {
         if (!VersionUtilities.isCorePackage(s)) {
-          System.out.println("+  .. load IG from " + s);
+          log.info("+  .. load IG from " + s);
           res.putAll(fetchByPackage(s, loadInContext));
         }
       }
@@ -569,7 +572,7 @@ public class IgLoader implements IValidationEngineLoader {
   private Map<String, ByteProvider> resolvePackage(String id, String v, boolean loadInContext) throws FHIRException, IOException {
     NpmPackage pi = getPackageCacheManager().loadPackage(id, v);
     if (pi != null && v == null)
-      System.out.println("   ... Using version " + pi.version());
+      log.info("   ... Using version " + pi.version());
     return loadPackage(pi,  loadInContext);
   }
 
@@ -640,7 +643,7 @@ public class IgLoader implements IValidationEngineLoader {
     else
       cnt = FileUtilities.streamToBytes(stream);
 
-    Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), cnt, src, true);
+    Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), cnt, src, true);
     if (fmt != null) {
       Map<String, ByteProvider> res = new HashMap<String, ByteProvider>();
       res.put(FileUtilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forBytes(cnt));
@@ -648,9 +651,9 @@ public class IgLoader implements IValidationEngineLoader {
     }
     String fn = Utilities.path("[tmp]", "fetch-resource-error-content.bin");
     FileUtilities.bytesToFile(cnt, fn);
-    System.out.println("Error Fetching " + src);
-    System.out.println("Some content was found, saved to " + fn);
-    System.out.println("1st 100 bytes = " + presentForDebugging(cnt));
+    log.error("Error Fetching " + src);
+    log.error("Some content was found, saved to " + fn);
+    log.error("1st 100 bytes = " + presentForDebugging(cnt));
     throw new FHIRException("Unable to find/resolve/read " + (explore ? "-ig " : "") + src);
   }
 
@@ -668,7 +671,7 @@ public class IgLoader implements IValidationEngineLoader {
     if (version == null) {
       pi = getPackageCacheManager().loadPackageFromCacheOnly(id);
       if (pi != null)
-        System.out.println("   ... Using version " + pi.version());
+        log.info("   ... Using version " + pi.version());
     } else
       pi = getPackageCacheManager().loadPackage(id, version);
     if (pi == null) {
@@ -731,7 +734,7 @@ public class IgLoader implements IValidationEngineLoader {
       if (ff.isDirectory() && recursive) {
         res.putAll(scanDirectory(ff, true));
       } else if (!ff.isDirectory() && !isIgnoreFile(ff)) {
-        Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), FileUtilities.fileToBytes(ff), ff.getAbsolutePath(), true);
+        Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), FileUtilities.fileToBytes(ff), ff.getAbsolutePath(), true);
         if (fmt != null) {
           res.put(FileUtilities.changeFileExt(ff.getName(), "." + fmt.getExtension()), ByteProvider.forFile(ff));
         }
@@ -755,32 +758,32 @@ public class IgLoader implements IValidationEngineLoader {
 
   private Manager.FhirFormat checkFormat(byte[] cnt, String filename) throws IOException {
     String text = FileUtilities.bytesToString(cnt);
-    System.out.println("   ..Detect format for " + filename);
+    log.info("   ..Detect format for " + filename);
     try {
       org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(cnt);
       return Manager.FhirFormat.JSON;
     } catch (Exception e) {
-      log("Not JSON: " + e.getMessage());
+      log.debug("Not JSON: " + e.getMessage());
     }
     try {
       ValidatorUtils.parseXml(cnt);
       return Manager.FhirFormat.XML;
     } catch (Exception e) {
-      log("Not XML: " + e.getMessage());
+      log.debug("Not XML: " + e.getMessage());
     }
     try {
       new Turtle().parse(FileUtilities.bytesToString(cnt));
       return Manager.FhirFormat.TURTLE;
     } catch (Exception e) {
-      log("Not Turtle: " + e.getMessage());
+      log.debug("Not Turtle: " + e.getMessage());
     }
     try {
       new StructureMapUtilities(getContext(), null, null).parse(FileUtilities.bytesToString(cnt), null);
       return Manager.FhirFormat.TEXT;
     } catch (Exception e) {
-      log("Not Text: " + e.getMessage());
+      log.debug("Not Text: " + e.getMessage());
     }
-    log("     .. not a resource: " + filename);
+    log.debug("     .. not a resource: " + filename);
     return null;
   }
 
@@ -789,20 +792,17 @@ public class IgLoader implements IValidationEngineLoader {
   }
 
   protected Resource loadFileWithErrorChecking(String version, Map.Entry<String, ByteProvider> t, String fn) {
-    log("* load file: " + fn);
+    log.debug("* load file: " + fn);
     Resource r = null;
     try {
       r = loadResourceByVersion(version, t.getValue().getBytes(), fn);
-      log(" .. success");
+      log.debug(" .. success");
     } catch (Exception e) {
-      if (!isDebug()) {
-        System.out.print("* load file: " + fn);
-      }
-      System.out.println(" - ignored due to error: " + (e.getMessage() == null ? " (null - NPE)" : e.getMessage()));
+      log.error("* load file: " + fn + " - ignored due to error: " + (e.getMessage() == null ? " (null - NPE)" : e.getMessage()));
       if (isDebug() || ((e.getMessage() != null && e.getMessage().contains("cannot be cast")))) {
-        e.printStackTrace();
+       log.debug(e.getMessage(), e);
       }
-      e.printStackTrace();
+      log.error(e.getMessage(), e);
     }
     return r;
   }
@@ -874,12 +874,6 @@ public class IgLoader implements IValidationEngineLoader {
     } else
       throw new FHIRException("Unsupported version " + fhirVersion);
     return r;
-  }
-
-  private void log(String s) {
-    if (isDebug()) {
-      System.out.println(s);
-    }
   }
 
   @Override

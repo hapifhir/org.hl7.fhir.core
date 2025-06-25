@@ -40,6 +40,7 @@ import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 
 @MarkedToMoveToAdjunctPackage
+@SuppressWarnings("checkstyle:systemout")
 public class CmdLineApp {
 
   private FHIRToolingClient client;

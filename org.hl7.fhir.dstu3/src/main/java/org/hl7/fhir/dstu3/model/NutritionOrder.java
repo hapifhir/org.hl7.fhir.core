@@ -2379,8 +2379,8 @@ public class NutritionOrder extends DomainResource {
           return (SimpleQuantity) this.rate;
         }
 
-        public boolean hasRateSimpleQuantity() { 
-          return this != null && this.rate instanceof SimpleQuantity;
+        public boolean hasRateSimpleQuantity() {
+            return this.rate instanceof SimpleQuantity;
         }
 
         /**
@@ -2394,8 +2394,8 @@ public class NutritionOrder extends DomainResource {
           return (Ratio) this.rate;
         }
 
-        public boolean hasRateRatio() { 
-          return this != null && this.rate instanceof Ratio;
+        public boolean hasRateRatio() {
+            return this.rate instanceof Ratio;
         }
 
         public boolean hasRate() { 

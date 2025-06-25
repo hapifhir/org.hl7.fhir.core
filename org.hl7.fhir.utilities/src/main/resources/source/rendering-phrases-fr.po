@@ -17,7 +17,7 @@ msgstr "Dérivé de :"
 # ACTOR_DEF_TYP
 #: ACTOR_DEF_TYP
 msgid "Type: {0}"
-msgstr "Type :"
+msgstr "Type : {0}"
 
 # ADD_BIND_ADD_BIND
 #: ADD_BIND_ADD_BIND
@@ -129,6 +129,16 @@ msgstr "Les validateurs vont vérifier ce binding (strength = requis)"
 msgid "This value set is a component of the base value set"
 msgstr ""
 
+# BUNDLE_DOCUMENT_CONTENT
+#: BUNDLE_DOCUMENT_CONTENT
+msgid "Document Content"
+msgstr ""
+
+# BUNDLE_DOCUMENT_DETAILS
+#: BUNDLE_DOCUMENT_DETAILS
+msgid "Document Details"
+msgstr ""
+
 # BUNDLE_ETAG
 #: BUNDLE_ETAG
 msgid "ETag = {0}"
@@ -152,7 +162,7 @@ msgstr ""
 # BUNDLE_HEADER_ROOT
 #: BUNDLE_HEADER_ROOT
 msgid "Bundle {0} of type {1}"
-msgstr ""
+msgstr "Bundle {0} de type {1}"
 
 # BUNDLE_IF_MATCH
 #: BUNDLE_IF_MATCH
@@ -362,7 +372,7 @@ msgstr "Résumé des interactions"
 # CAPABILITY_MAY_SUPP
 #: CAPABILITY_MAY_SUPP
 msgid "MAY Support the Following Implementation Guides"
-msgstr ""
+msgstr "PEUT prendre en charge les guides d'implémentation suivants"
 
 # CAPABILITY_MESSAGING_CAP
 #: CAPABILITY_MESSAGING_CAP
@@ -497,7 +507,7 @@ msgstr ""
 # CAPABILITY_SEARCH_PAR
 #: CAPABILITY_SEARCH_PAR
 msgid "The required, recommended, and some optional search parameters (if any)."
-msgstr ""
+msgstr "Les paramètres de recherche (SearchParameters) requis, recommandés, optionnels (le cas échéant)."
 
 # CAPABILITY_SEARCH_PARS
 #: CAPABILITY_SEARCH_PARS
@@ -512,7 +522,7 @@ msgstr "Doit (SHOULD) supporter les guides d'implémentation suivants"
 # CAPABILITY_SUMM_RES
 #: CAPABILITY_SUMM_RES
 msgid "The summary table lists the resources that are part of this configuration, and for each resource it lists:"
-msgstr ""
+msgstr "Le tableau récapitulatif liste les ressources faisant partie de cette configuration, et pour chaque ressource, il liste :"
 
 # CAPABILITY_SUMM_SYS_INT
 #: CAPABILITY_SUMM_SYS_INT
@@ -567,7 +577,7 @@ msgstr ""
 # CAPABILITY_TYP_PRES
 #: CAPABILITY_TYP_PRES
 msgid "ype are only present if at least one of the resources has support for them."
-msgstr ""
+msgstr "!!les types sont seulement présents si au moins une des ressources les prend en charge."
 
 # CAPABILITY_UPDATE_INT
 #: CAPABILITY_UPDATE_INT
@@ -587,12 +597,12 @@ msgstr ""
 # CAPABILTY_SHALL_SUPP
 #: CAPABILTY_SHALL_SUPP
 msgid "SHALL Support the Following Implementation Guides"
-msgstr ""
+msgstr "DOIT prendre en charge les guides d’implémentation suivants."
 
 # CODESYSTEM_CONCEPTS
 #: CODESYSTEM_CONCEPTS
 msgid "Concepts"
-msgstr ""
+msgstr "Concepts"
 
 # CODESYSTEM_CONTENT_COMPLETE
 #: CODESYSTEM_CONTENT_COMPLETE
@@ -616,7 +626,7 @@ msgstr ""
 
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
-msgid "This code system <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
+msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
 msgstr ""
 
 # CODESYSTEM_DEPRECATED
@@ -627,7 +637,7 @@ msgstr "Déprécié"
 # CODESYSTEM_FILTERS
 #: CODESYSTEM_FILTERS
 msgid "Filters"
-msgstr ""
+msgstr "Filtres"
 
 # CODESYSTEM_FILTER_OP
 #: CODESYSTEM_FILTER_OP
@@ -764,6 +774,18 @@ msgstr "relation"
 msgid "Source Code"
 msgstr ""
 
+# CONC_MAP_SOURCE_CARD
+#: CONC_MAP_SOURCE_CARD
+msgctxt "CONC_MAP_SOURCE_CARD"
+msgid "Card."
+msgstr ""
+
+# CONC_MAP_SOURCE_TYPE
+#: CONC_MAP_SOURCE_TYPE
+msgctxt "CONC_MAP_SOURCE_TYPE"
+msgid "Type"
+msgstr ""
+
 # CONC_MAP_SRC_DET
 #: CONC_MAP_SRC_DET
 msgid "Source Concept Details"
@@ -771,6 +793,7 @@ msgstr ""
 
 # CONC_MAP_TO
 #: CONC_MAP_TO
+msgctxt "CONC_MAP_TO"
 msgid "to"
 msgstr ""
 
@@ -779,9 +802,21 @@ msgstr ""
 msgid "Target Code"
 msgstr ""
 
+# CONC_MAP_TRGT_CARD
+#: CONC_MAP_TRGT_CARD
+msgctxt "CONC_MAP_TRGT_CARD"
+msgid "Card."
+msgstr ""
+
 # CONC_MAP_TRGT_DET
 #: CONC_MAP_TRGT_DET
 msgid "Target Concept Details"
+msgstr ""
+
+# CONC_MAP_TRGT_TYPE
+#: CONC_MAP_TRGT_TYPE
+msgctxt "CONC_MAP_TRGT_TYPE"
+msgid "Type"
 msgstr ""
 
 # DATA_REND_AFTERNOON
@@ -1356,6 +1391,11 @@ msgstr ""
 msgid "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
 msgstr ""
 
+# GENERAL_ADDITIONAL_BINDING
+#: GENERAL_ADDITIONAL_BINDING
+msgid "This element has additional bindings"
+msgstr ""
+
 # GENERAL_ADD_LANG
 #: GENERAL_ADD_LANG
 msgid "Additional Language Displays"
@@ -1366,14 +1406,24 @@ msgstr "Affichages en langues supplémentaires"
 msgid "Binding"
 msgstr ""
 
+# GENERAL_BINDINGS
+#: GENERAL_BINDINGS
+msgid "Bindings"
+msgstr ""
+
 # GENERAL_BINDING_NO_DESC
 #: GENERAL_BINDING_NO_DESC
 msgid "No description provided"
 msgstr ""
 
-# GENERAL_BINDING_NO_VS
-#: GENERAL_BINDING_NO_VS
-msgid "Binding Description (No ValueSet)"
+# GENERAL_BINDING_NO_VS_1
+#: GENERAL_BINDING_NO_VS_1
+msgid "Binding Description"
+msgstr ""
+
+# GENERAL_BINDING_NO_VS_2
+#: GENERAL_BINDING_NO_VS_2
+msgid "This binding doesn''t define a testable ValueSet"
 msgstr ""
 
 # GENERAL_BIND_MIN_ALLOW
@@ -1383,6 +1433,7 @@ msgstr ""
 
 # GENERAL_CARD
 #: GENERAL_CARD
+msgctxt "GENERAL_CARD"
 msgid "Card."
 msgstr "Card."
 
@@ -1421,6 +1472,12 @@ msgstr "Composant"
 msgid "Conformance"
 msgstr "Conformité"
 
+# GENERAL_CONSTRAINTS
+#: GENERAL_CONSTRAINTS
+msgctxt "GENERAL_CONSTRAINTS"
+msgid "Constraints"
+msgstr ""
+
 # GENERAL_CONTACT
 #: GENERAL_CONTACT
 msgid "Contact:"
@@ -1454,6 +1511,7 @@ msgstr ""
 
 # GENERAL_DEFINITION
 #: GENERAL_DEFINITION
+msgctxt "GENERAL_DEFINITION"
 msgid "Definition"
 msgstr "Définition"
 
@@ -1496,6 +1554,12 @@ msgstr "Expérimental"
 #: GENERAL_FILTER
 msgid "Filter"
 msgstr "Filtre"
+
+# GENERAL_FIXED_VALUE
+#: GENERAL_FIXED_VALUE
+msgctxt "GENERAL_FIXED_VALUE"
+msgid "Fixed Value: {0}"
+msgstr ""
 
 # GENERAL_FLAGS
 #: GENERAL_FLAGS
@@ -1544,8 +1608,15 @@ msgstr "Note"
 
 # GENERAL_OBLIG
 #: GENERAL_OBLIG
+msgctxt "GENERAL_OBLIG"
 msgid "Obligations"
 msgstr "Obligations"
+
+# GENERAL_OBLIGATIONS
+#: GENERAL_OBLIGATIONS
+msgctxt "GENERAL_OBLIGATIONS"
+msgid "Obligations"
+msgstr ""
 
 # GENERAL_OID
 #: GENERAL_OID
@@ -1562,6 +1633,12 @@ msgstr "Paramètre"
 msgid "Parameters"
 msgstr "Paramètres"
 
+# GENERAL_PATTERN_VALUE
+#: GENERAL_PATTERN_VALUE
+msgctxt "GENERAL_PATTERN_VALUE"
+msgid "Pattern Value: {0}"
+msgstr ""
+
 # GENERAL_PREFERRED
 #: GENERAL_PREFERRED
 msgctxt "GENERAL_PREFERRED"
@@ -1570,6 +1647,7 @@ msgstr "Préféré"
 
 # GENERAL_PROF
 #: GENERAL_PROF
+msgctxt "GENERAL_PROF"
 msgid "Profile"
 msgstr "Profil"
 
@@ -1604,8 +1682,14 @@ msgctxt "GENERAL_REQUIRED"
 msgid "Required"
 msgstr "Requis"
 
+# GENERAL_REQUIRED_BINDING
+#: GENERAL_REQUIRED_BINDING
+msgid "Required Binding to ValueSet {0}"
+msgstr ""
+
 # GENERAL_RESOURCE
 #: GENERAL_RESOURCE
+msgctxt "GENERAL_RESOURCE"
 msgid "Resource"
 msgstr "Ressource"
 
@@ -1613,6 +1697,12 @@ msgstr "Ressource"
 #: GENERAL_SECURITY_LABEL
 msgid "Security Label"
 msgstr "Label de sécurité"
+
+# GENERAL_SOURCE
+#: GENERAL_SOURCE
+msgctxt "GENERAL_SOURCE"
+msgid "Source"
+msgstr ""
 
 # GENERAL_SRC
 #: GENERAL_SRC
@@ -1652,8 +1742,19 @@ msgstr "Pas encore fait"
 
 # GENERAL_TYPE
 #: GENERAL_TYPE
+msgctxt "GENERAL_TYPE"
 msgid "Type"
 msgstr "Type"
+
+# GENERAL_TYPE_PROFILE
+#: GENERAL_TYPE_PROFILE
+msgid "This element has profiles on it's type: {0}"
+msgstr ""
+
+# GENERAL_TYPE_TARGET_PROFILE
+#: GENERAL_TYPE_TARGET_PROFILE
+msgid "This element has restrictions/profiles on it's targets: {0}"
+msgstr ""
 
 # GENERAL_UCUM
 #: GENERAL_UCUM
@@ -1685,6 +1786,21 @@ msgstr "Valeur"
 msgid "Value Set"
 msgstr "Jeu de valeurs (Value Set)"
 
+# GENERAL_VALUE_BOUNDED
+#: GENERAL_VALUE_BOUNDED
+msgid "The value must be between {0} and {1} (or equal)"
+msgstr ""
+
+# GENERAL_VALUE_MAX
+#: GENERAL_VALUE_MAX
+msgid "The value must be less or equal to {0}"
+msgstr ""
+
+# GENERAL_VALUE_MIN
+#: GENERAL_VALUE_MIN
+msgid "The value must be greater or equal to {0}"
+msgstr ""
+
 # GENERAL_VER
 #: GENERAL_VER
 msgid "Version"
@@ -1708,7 +1824,7 @@ msgstr "L'URL officielle pour ce guide d'implémentation est :"
 # IP_INTRO
 #: IP_INTRO
 msgid "This {0} includes IP covered under the following statements."
-msgstr "Ce • cet {0} inclut la propriété intellectuelle couverte par les déclarations suivantes."
+msgstr "Certaines ressources sémantiques de ce guide sont protégées par des droits de propriété intellectuelle couverte par les déclarations ci-dessous. L’utilisation de ces ressources est soumise à l’acceptation et au respect des conditions précisées dans la licence d’utilisation de chacune d’entre elle."
 
 # IP_NONE
 #: IP_NONE
@@ -1897,6 +2013,11 @@ msgstr "Identifiants"
 msgid "Period"
 msgstr "Période"
 
+# OBLIGATION_SOURCE
+#: OBLIGATION_SOURCE
+msgid "This obligation is defined in the profile {0}"
+msgstr ""
+
 # OBLIG_ACT
 #: OBLIG_ACT
 msgid "Actor"
@@ -1959,6 +2080,7 @@ msgstr ""
 
 # OP_OUT_SRC
 #: OP_OUT_SRC
+msgctxt "OP_OUT_SRC"
 msgid "Source"
 msgstr ""
 
@@ -2206,7 +2328,7 @@ msgstr ""
 # PROF_DRIV_GEN_NARR_TECH
 #: PROF_DRIV_GEN_NARR_TECH
 msgid "Generated Narrative: {0} {1}"
-msgstr ""
+msgstr "Narratif généré : {0} {1}"
 
 # PROF_DRIV_SUMM
 #: PROF_DRIV_SUMM
@@ -2482,7 +2604,7 @@ msgstr ""
 # QUEST_PUB
 #: QUEST_PUB
 msgid "Publication Date"
-msgstr ""
+msgstr "Date de publication"
 
 # QUEST_QUEST
 #: QUEST_QUEST
@@ -2600,6 +2722,61 @@ msgstr ""
 msgid "Value Set:"
 msgstr ""
 
+# R44B_DERIVES_FROM
+#: R44B_DERIVES_FROM
+msgid "derives from"
+msgstr ""
+
+# R44B_HAS_TARGET
+#: R44B_HAS_TARGET
+msgid "has target"
+msgstr ""
+
+# R44B_HAS_TYPE
+#: R44B_HAS_TYPE
+msgid "has type"
+msgstr ""
+
+# R44B_NOT_COMP
+#: R44B_NOT_COMP
+msgid "This is an {0} IG that is not compatible with {1}\" because"
+msgstr ""
+
+# R44B_NOT_IN
+#: R44B_NOT_IN
+msgid "The following resources are not in the {0} version"
+msgstr ""
+
+# R44B_ONLY_IN
+#: R44B_ONLY_IN
+msgid "The following resources are only in the {0} version"
+msgstr ""
+
+# R44B_PACKAGE_REF
+#: R44B_PACKAGE_REF
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
+msgstr ""
+
+# R44B_PROBLEMS
+#: R44B_PROBLEMS
+msgid "While checking for {0} compatibility, the following {1} problems were found"
+msgstr ""
+
+# R44B_REFERS_TO
+#: R44B_REFERS_TO
+msgid "<a href=\"{0}\">{1}}</a> refers to the canonical type at {2}"
+msgstr ""
+
+# R44B_USE_OK
+#: R44B_USE_OK
+msgid "This is an {0} IG. None of the features it uses are changed in {1}, so it can be used as is with {1}} systems."
+msgstr ""
+
+# R44B_WRONG_MSG
+#: R44B_WRONG_MSG
+msgid "Something went wrong with the cross-version analysis because"
+msgstr ""
+
 # REND_ADDED
 #: REND_ADDED
 msgid "Added:"
@@ -2618,27 +2795,27 @@ msgstr ""
 # REND_ROW_CHANGED_SINCE_WAS
 #: REND_ROW_CHANGED_SINCE_WAS
 msgid "This row of content has been changed since {0} (was ''{1}'')"
-msgstr ""
+msgstr "Cette ligne a été changé depuis {0} (valeur précédente : ''{1}'')"
 
 # REND_ROW_SINCE
 #: REND_ROW_SINCE
 msgid "This row of content has been added since {0}"
-msgstr ""
+msgstr "Cette ligne a été ajouté depuis {0}"
 
 # REND_SINCE_ADDED
 #: REND_SINCE_ADDED
 msgid "This content has been added since {0}"
-msgstr ""
+msgstr "Ce contenu a été ajouté depuis {0}"
 
 # REND_SINCE_CHANGED
 #: REND_SINCE_CHANGED
 msgid "This content has been changed since {0}"
-msgstr ""
+msgstr "Ce contenu a été changé depuis {0}"
 
 # REND_SINCE_CHANGED_WAS
 #: REND_SINCE_CHANGED_WAS
 msgid "This content has been changed since {0} (was ''{1}'')"
-msgstr ""
+msgstr "Ce contenu a été changé depuis {0} (valeur précédente : ''{1}'')"
 
 # REND_STANDARDS
 #: REND_STANDARDS
@@ -2658,7 +2835,7 @@ msgstr ""
 # REQ_DERIVED
 #: REQ_DERIVED
 msgid "Derived From:"
-msgstr ""
+msgstr "Dérive de :"
 
 # REQ_FOLLOWING_ACTOR
 #: REQ_FOLLOWING_ACTOR
@@ -2689,7 +2866,7 @@ msgstr ""
 # RES_REND_ACT
 #: RES_REND_ACT
 msgid "Active"
-msgstr ""
+msgstr "Actif"
 
 # RES_REND_COND_REF
 #: RES_REND_COND_REF
@@ -2704,7 +2881,7 @@ msgstr ""
 # RES_REND_DRAFT
 #: RES_REND_DRAFT
 msgid "draft"
-msgstr ""
+msgstr "brouillon"
 
 # RES_REND_ERROR
 #: RES_REND_ERROR
@@ -2719,17 +2896,17 @@ msgstr ""
 # RES_REND_LANGUAGE
 #: RES_REND_LANGUAGE
 msgid "Language: {0}"
-msgstr ""
+msgstr "Langue : {0}"
 
 # RES_REND_RET
 #: RES_REND_RET
 msgid "retired"
-msgstr ""
+msgstr "retiré"
 
 # RES_REND_SEE_ON_THIS_PAGE
 #: RES_REND_SEE_ON_THIS_PAGE
 msgid "See on this page:"
-msgstr ""
+msgstr "Voir sur cette page :"
 
 # RES_REND_SPEC_RULES
 #: RES_REND_SPEC_RULES
@@ -2754,11 +2931,503 @@ msgstr ""
 # RES_REND_UPDATED
 #: RES_REND_UPDATED
 msgid "Last updated: {0}"
-msgstr ""
+msgstr "Dernière mise à jour : {0}"
 
 # RES_REND_VER
 #: RES_REND_VER
 msgid "version: {0}"
+msgstr ""
+
+# SDR_ALL_ELEM
+#: SDR_ALL_ELEM
+msgid "**ALL** elements"
+msgstr ""
+
+# SDR_ALL_EXT
+#: SDR_ALL_EXT
+msgid "**ALL** extensions"
+msgstr ""
+
+# SDR_ANY_ORDER
+#: SDR_ANY_ORDER
+msgid "// sliced by {0} in any order"
+msgstr ""
+
+# SDR_BP
+#: SDR_BP
+msgid "best practice"
+msgstr ""
+
+# SDR_CAPSTMT
+#: SDR_CAPSTMT
+msgid "CapabilityStatements using this {0}"
+msgstr ""
+
+# SDR_CH_DET
+#: SDR_CH_DET
+msgid "New Content"
+msgstr ""
+
+# SDR_CH_NO
+#: SDR_CH_NO
+msgid "No changes"
+msgstr ""
+
+# SDR_CLICK_COPY
+#: SDR_CLICK_COPY
+msgid "Click to copy URL"
+msgstr ""
+
+# SDR_CODE_FROM
+#: SDR_CODE_FROM
+msgid "(a valid code from {0})"
+msgstr ""
+
+# SDR_COMPLY
+#: SDR_COMPLY
+msgid "Comply with this profile {0}"
+msgstr ""
+
+# SDR_CONCEPT_DOMAIN
+#: SDR_CONCEPT_DOMAIN
+msgid "Concept Domain"
+msgstr ""
+
+# SDR_CONT_CH_DET_CS
+#: SDR_CONT_CH_DET_CS
+msgid "The list of codes defined by the code system has changed"
+msgstr ""
+
+# SDR_CONT_CH_DET_SD
+#: SDR_CONT_CH_DET_SD
+msgid "The data elements list has changed"
+msgstr ""
+
+# SDR_CONT_CH_DET_VS
+#: SDR_CONT_CH_DET_VS
+msgid "The logical definition of the value set has changed"
+msgstr ""
+
+# SDR_CONT_CH_NO
+#: SDR_CONT_CH_NO
+msgid "Unable to evaluate changes to content"
+msgstr ""
+
+# SDR_DEFN_CH_DET_CS
+#: SDR_DEFN_CH_DET_CS
+msgctxt "SDR_DEFN_CH_DET_CS"
+msgid "One or more text definitions/displays have changed"
+msgstr ""
+
+# SDR_DEFN_CH_DET_SD
+#: SDR_DEFN_CH_DET_SD
+msgid "One or more text definitions, invariants or bindings have changed"
+msgstr ""
+
+# SDR_DEFN_CH_DET_VS
+#: SDR_DEFN_CH_DET_VS
+msgctxt "SDR_DEFN_CH_DET_VS"
+msgid "One or more text definitions/displays have changed"
+msgstr ""
+
+# SDR_DEFN_CH_NO
+#: SDR_DEFN_CH_NO
+msgid "Unable to evaluate changes to definitions"
+msgstr ""
+
+# SDR_DERIVED
+#: SDR_DERIVED
+msgid "Derived from this {0}"
+msgstr ""
+
+# SDR_DRAW_IN
+#: SDR_DRAW_IN
+msgid "Draw in Obligations & Additional Bindings from this {0}"
+msgstr ""
+
+# SDR_EXAMPLE
+#: SDR_EXAMPLE
+msgid "Examples for this {0}"
+msgstr ""
+
+# SDR_EXPERIMENTAL
+#: SDR_EXPERIMENTAL
+msgid "This is an experimental extension definition; the committee is seeking implementation feedback, and the definition or contents of the extension may change in future versions"
+msgstr ""
+
+# SDR_EXTENSION_SUMMARY
+#: SDR_EXTENSION_SUMMARY
+msgid "Simple Extension with the type {0}: {1}"
+msgstr ""
+
+# SDR_EXT_ANY
+#: SDR_EXT_ANY
+msgid "This extension does not specify which elements it should be used on"
+msgstr ""
+
+# SDR_EXT_CHANGED
+#: SDR_EXT_CHANGED
+msgid "The extension is represented a little differently in {0}"
+msgstr ""
+
+# SDR_EXT_CTXT_PATH
+#: SDR_EXT_CTXT_PATH
+msgid "In addition, the extension can only be used when this FHIRPath expression is true"
+msgstr ""
+
+# SDR_EXT_CTXT_PATHS
+#: SDR_EXT_CTXT_PATHS
+msgid "In addition, the extension can only be used when these FHIRPath expressions are true"
+msgstr ""
+
+# SDR_EXT_DEPR
+#: SDR_EXT_DEPR
+msgid "This extension is deprecated and should no longer be used"
+msgstr ""
+
+# SDR_EXT_ELEM
+#: SDR_EXT_ELEM
+msgid "This extension may be used on the following element(s)"
+msgstr ""
+
+# SDR_EXT_ELEM_ID
+#: SDR_EXT_ELEM_ID
+msgid "Element ID"
+msgstr ""
+
+# SDR_EXT_EXT
+#: SDR_EXT_EXT
+msgctxt "SDR_EXT_EXT"
+msgid "Extension"
+msgstr ""
+
+# SDR_EXT_PATH
+#: SDR_EXT_PATH
+msgctxt "SDR_EXT_PATH"
+msgid "Path"
+msgstr ""
+
+# SDR_EXT_UNCHANGED
+#: SDR_EXT_UNCHANGED
+msgid "The extension is unchanged in {0}"
+msgstr ""
+
+# SDR_EXT_VER_PFX
+#: SDR_EXT_VER_PFX
+msgid "This extension is allowed for use with"
+msgstr ""
+
+# SDR_EXT_VER_SFX
+#: SDR_EXT_VER_SFX
+msgid "."
+msgstr ""
+
+# SDR_FIXED_VALUE
+#: SDR_FIXED_VALUE
+msgctxt "SDR_FIXED_VALUE"
+msgid "Fixed Value: {0}"
+msgstr ""
+
+# SDR_FROM
+#: SDR_FROM
+msgid "From {0}"
+msgstr ""
+
+# SDR_FROM_ELEM
+#: SDR_FROM_ELEM
+msgid "// from Element: <a href=\"{0}\">extension</a>"
+msgstr ""
+
+# SDR_GUIDANCE_HERE
+#: SDR_GUIDANCE_HERE
+msgid "here"
+msgstr ""
+
+# SDR_GUIDANCE_PFX
+#: SDR_GUIDANCE_PFX
+msgid "Guidance on how to interpret the contents of this table can be found"
+msgstr ""
+
+# SDR_GUIDANCE_SFX
+#: SDR_GUIDANCE_SFX
+msgctxt "SDR_GUIDANCE_SFX"
+msgid "-- no content: do not translate #49 --"
+msgstr ""
+
+# SDR_IMPOSE
+#: SDR_IMPOSE
+msgid "Impose this profile {0}"
+msgstr ""
+
+# SDR_INTRP_CH_DET_VS
+#: SDR_INTRP_CH_DET_VS
+msgid "The expansion has changed"
+msgstr ""
+
+# SDR_INTRP_CH_NO_VS
+#: SDR_INTRP_CH_NO_VS
+msgid "Unable to evaluate changes to the expansion"
+msgstr ""
+
+# SDR_LIMITED_ONE
+#: SDR_LIMITED_ONE
+msgid "This element is an array in the base standard, but the profile only allows one element"
+msgstr ""
+
+# SDR_META_CH_DET
+#: SDR_META_CH_DET
+msgid "The resource metadata has changed ({0})"
+msgstr ""
+
+# SDR_META_CH_NO
+#: SDR_META_CH_NO
+msgid "Unable to evaluate changes to metadata"
+msgstr ""
+
+# SDR_MOD
+#: SDR_MOD
+msgid "(this element modifies the meaning of other elements)"
+msgstr ""
+
+# SDR_MOD_SUPP
+#: SDR_MOD_SUPP
+msgid "(this element modifies the meaning of other elements, and must be supported)"
+msgstr ""
+
+# SDR_MULTIPLE_PROFILES
+#: SDR_MULTIPLE_PROFILES
+msgid "Multiple profiles are not supported at this time"
+msgstr ""
+
+# SDR_NOT_DONE_CC
+#: SDR_NOT_DONE_CC
+msgid "Error describing concept - not done yet (no codings, no text)"
+msgstr ""
+
+# SDR_NOT_GEN
+#: SDR_NOT_GEN
+msgid "Generating text summary of fixed value not yet done for type {0}"
+msgstr ""
+
+# SDR_NOT_HANDLED_EXT
+#: SDR_NOT_HANDLED_EXT
+msgid "Not handled yet: complex extension ''{0}''"
+msgstr ""
+
+# SDR_NOT_USED
+#: SDR_NOT_USED
+msgid "This {0} is not used by any profiles in this Implementation Guide"
+msgstr ""
+
+# SDR_OFF_URL
+#: SDR_OFF_URL
+msgid "The official URL for this profile is"
+msgstr ""
+
+# SDR_ONE_OF
+#: SDR_ONE_OF
+msgid "One of these {0}"
+msgstr ""
+
+# SDR_ONLY_ONE
+#: SDR_ONLY_ONE
+msgid "Only One!"
+msgstr ""
+
+# SDR_PATTERN_VALUE
+#: SDR_PATTERN_VALUE
+msgctxt "SDR_PATTERN_VALUE"
+msgid "Pattern Value: {0}"
+msgstr ""
+
+# SDR_PRIM_VALUE
+#: SDR_PRIM_VALUE
+msgid "Primitive Value {0}"
+msgstr ""
+
+# SDR_REFER
+#: SDR_REFER
+msgid "Refer to this {0}"
+msgstr ""
+
+# SDR_REQUIRED
+#: SDR_REQUIRED
+msgid "This element is required"
+msgstr ""
+
+# SDR_SEARCH
+#: SDR_SEARCH
+msgid "Search Parameters using this {0}"
+msgstr ""
+
+# SDR_SORTED
+#: SDR_SORTED
+msgid "// sliced by {0} in the specified order {1}"
+msgstr ""
+
+# SDR_SRC_FHIR
+#: SDR_SRC_FHIR
+msgid "the FHIR Standard"
+msgstr ""
+
+# SDR_SRC_IG
+#: SDR_SRC_IG
+msgid "this IG"
+msgstr ""
+
+# SDR_SRC_PACK
+#: SDR_SRC_PACK
+msgid "Package: {0}"
+msgstr ""
+
+# SDR_SUPP
+#: SDR_SUPP
+msgid "(this element must be supported)"
+msgstr ""
+
+# SDR_UNK_EXT
+#: SDR_UNK_EXT
+msgid "Not handled yet: unknown extension ''{0}''"
+msgstr ""
+
+# SDR_USAGE
+#: SDR_USAGE
+msgid "Usages"
+msgstr ""
+
+# SDR_USE
+#: SDR_USE
+msgid "Use this {0}"
+msgstr ""
+
+# SDR_VER_BEF
+#: SDR_VER_BEF
+msgid "For versions until {0}"
+msgstr ""
+
+# SDR_VER_FOR
+#: SDR_VER_FOR
+msgid "For version {0}"
+msgstr ""
+
+# SDR_VER_FROM_PFX
+#: SDR_VER_FROM_PFX
+msgctxt "SDR_VER_FROM_PFX"
+msgid "FHIR versions"
+msgstr ""
+
+# SDR_VER_FROM_SFX
+#: SDR_VER_FROM_SFX
+msgid "and after"
+msgstr ""
+
+# SDR_VER_ON
+#: SDR_VER_ON
+msgid "For versions {0} onwards"
+msgstr ""
+
+# SDR_VER_RANGE
+#: SDR_VER_RANGE
+msgid "For versions {0} to {1}"
+msgstr ""
+
+# SDR_VER_RANGE_MID
+#: SDR_VER_RANGE_MID
+msgctxt "SDR_VER_RANGE_MID"
+msgid "to"
+msgstr ""
+
+# SDR_VER_RANGE_PFX
+#: SDR_VER_RANGE_PFX
+msgctxt "SDR_VER_RANGE_PFX"
+msgid "FHIR versions"
+msgstr ""
+
+# SDR_VER_RANGE_SFX
+#: SDR_VER_RANGE_SFX
+msgctxt "SDR_VER_RANGE_SFX"
+msgid "-- no content: do not translate #50 --"
+msgstr ""
+
+# SDR_VER_TO_PFX
+#: SDR_VER_TO_PFX
+msgid "FHIR versions up to"
+msgstr ""
+
+# SDR_VER_TO_SFX
+#: SDR_VER_TO_SFX
+msgctxt "SDR_VER_TO_SFX"
+msgid "-- no content: do not translate #51 --"
+msgstr ""
+
+# SDR_VER_UNK
+#: SDR_VER_UNK
+msgid "For unknown versions"
+msgstr ""
+
+# SDT_DEF
+#: SDT_DEF
+msgctxt "SDT_DEF"
+msgid "Definition"
+msgstr ""
+
+# SDT_DT
+#: SDT_DT
+msgid "DataType"
+msgstr ""
+
+# SDT_DT_PROF
+#: SDT_DT_PROF
+msgid "DataType Profile"
+msgstr ""
+
+# SDT_EXTENSION
+#: SDT_EXTENSION
+msgctxt "SDT_EXTENSION"
+msgid "Extension"
+msgstr ""
+
+# SDT_LM
+#: SDT_LM
+msgctxt "SDT_LM"
+msgid "Logical Model"
+msgstr ""
+
+# SDT_LM_PROF
+#: SDT_LM_PROF
+msgid "Logical Model Profile"
+msgstr ""
+
+# SDT_OBLIGATION_PROFILE
+#: SDT_OBLIGATION_PROFILE
+msgid "Obligation Profile"
+msgstr ""
+
+# SDT_ORIGINAL_SOURCE
+#: SDT_ORIGINAL_SOURCE
+msgid "Original Source"
+msgstr ""
+
+# SDT_PT
+#: SDT_PT
+msgid "Primitive Type"
+msgstr ""
+
+# SDT_PT_PROF
+#: SDT_PT_PROF
+msgid "Primitive Type Profile"
+msgstr ""
+
+# SDT_RES
+#: SDT_RES
+msgctxt "SDT_RES"
+msgid "Resource"
+msgstr ""
+
+# SDT_RES_PROF
+#: SDT_RES_PROF
+msgctxt "SDT_RES_PROF"
+msgid "Profile"
 msgstr ""
 
 # SD_COMP_HEAD_CARD_L
@@ -2912,11 +3581,6 @@ msgstr ""
 msgid "Mandatory: {0} {1}"
 msgstr ""
 
-# SD_SUMMARY_MAPPINGS
-#: SD_SUMMARY_MAPPINGS
-msgid "Mappings for {0} ({2}{1}{3})"
-msgstr ""
-
 # SD_SUMMARY_MISSING_EXTENSION
 #: SD_SUMMARY_MISSING_EXTENSION
 msgid "Unable to summarise extension {0} (no extension found)"
@@ -3034,6 +3698,21 @@ msgstr ""
 msgid "All Resources"
 msgstr ""
 
+# STATUS_MSG_AUTOBUILD
+#: STATUS_MSG_AUTOBUILD
+msgid "{0}, published by {1}. This guide is not an authorized publication; it is the continuous build for version {2}  built by the FHIR (HL7&reg; FHIR&reg; Standard) CI Build. This version is based on the current content of <a href=''{3}''>{3}</a> and changes regularly. See the <a href=''{4}/history.html''>Directory of published versions</a>"
+msgstr ""
+
+# STATUS_MSG_LOCAL_BUILD
+#: STATUS_MSG_LOCAL_BUILD
+msgid "{0} - Local Development build (v{1}) built by the FHIR (HL7® FHIR® Standard) Build Tools. See the <a href=''{2}/history.html''>Directory of published versions</a>"
+msgstr ""
+
+# STATUS_MSG_PUBLICATION_HOLDER
+#: STATUS_MSG_PUBLICATION_HOLDER
+msgid "Publication Build: This will be filled in by the publication tooling"
+msgstr ""
+
 # STRUC_DEF_ABSTRACT
 #: STRUC_DEF_ABSTRACT
 msgid "This is an abstract"
@@ -3057,11 +3736,6 @@ msgstr ""
 # STRUC_DEF_ALL_ACTORS
 #: STRUC_DEF_ALL_ACTORS
 msgid "All Actors"
-msgstr ""
-
-# STRUC_DEF_ALL_MAP_KEY
-#: STRUC_DEF_ALL_MAP_KEY
-msgid "All Mappings are Empty"
 msgstr ""
 
 # STRUC_DEF_ALL_SLICES
@@ -3232,6 +3906,7 @@ msgstr ""
 
 # STRUC_DEF_CONSTRAINTS
 #: STRUC_DEF_CONSTRAINTS
+msgctxt "STRUC_DEF_CONSTRAINTS"
 msgid "Constraints"
 msgstr ""
 
@@ -3594,6 +4269,7 @@ msgstr ""
 
 # STRUC_DEF_LOGICAL
 #: STRUC_DEF_LOGICAL
+msgctxt "STRUC_DEF_LOGICAL"
 msgid "Logical Model"
 msgstr ""
 
@@ -3760,6 +4436,7 @@ msgstr ""
 
 # STRUC_DEF_PATH
 #: STRUC_DEF_PATH
+msgctxt "STRUC_DEF_PATH"
 msgid "Path"
 msgstr ""
 
@@ -3820,7 +4497,7 @@ msgstr ""
 
 # STRUC_DEF_PROF_COMP
 #: STRUC_DEF_PROF_COMP
-msgid "This profile compiles with the profile"
+msgid "This profile complies with the profile"
 msgstr ""
 
 # STRUC_DEF_PROF_REQ
@@ -4169,6 +4846,11 @@ msgstr ""
 msgid "* create result = {0}"
 msgstr ""
 
+# SUB_TOPIC_CURR
+#: SUB_TOPIC_CURR
+msgid "* current = {0}"
+msgstr ""
+
 # SUB_TOPIC_DELETE
 #: SUB_TOPIC_DELETE
 msgid "* delete result = {0}"
@@ -4427,22 +5109,22 @@ msgstr ""
 
 # VALUE_SET_AUS
 #: VALUE_SET_AUS
-msgid "Australian"
-msgstr "Australien"
+msgid "Australian Edition"
+msgstr "!!Australien"
 
 # VALUE_SET_BE
 #: VALUE_SET_BE
 msgid "Belgian Edition"
 msgstr ""
 
+# VALUE_SET_CA
+#: VALUE_SET_CA
+msgid "Canadian Edition"
+msgstr ""
+
 # VALUE_SET_CA_EN
 #: VALUE_SET_CA_EN
 msgid "Canadian English Edition"
-msgstr ""
-
-# VALUE_SET_CA_FR
-#: VALUE_SET_CA_FR
-msgid "Canadian Canadian French Edition"
 msgstr ""
 
 # VALUE_SET_CH
@@ -4645,7 +5327,7 @@ msgstr "Inactif"
 # VALUE_SET_INC
 #: VALUE_SET_INC
 msgid "Include"
-msgstr ""
+msgstr "Inclut"
 
 # VALUE_SET_INCLUDED_INTO
 #: VALUE_SET_INCLUDED_INTO
@@ -4737,6 +5419,11 @@ msgstr "L'expension de ce jeu de valeurs (ValueSet) contient {0} concepts."
 msgid "New Zealand Edition"
 msgstr ""
 
+# VALUE_SET_OTHER_DISPLAY
+#: VALUE_SET_OTHER_DISPLAY
+msgid "Other Display ({0})"
+msgstr ""
+
 # VALUE_SET_REGEX
 #: VALUE_SET_REGEX
 msgid "matches (by regex)"
@@ -4795,7 +5482,7 @@ msgstr "Système"
 # VALUE_SET_THESE_CODES_DEF
 #: VALUE_SET_THESE_CODES_DEF
 msgid "these codes as defined in"
-msgstr "ces codes sont définis dans"
+msgstr "les codes sont définis dans"
 
 # VALUE_SET_TOO_COSTLY
 #: VALUE_SET_TOO_COSTLY
@@ -4820,7 +5507,7 @@ msgstr "Etats-Unis"
 # VALUE_SET_USED_ELSEWHERE
 #: VALUE_SET_USED_ELSEWHERE
 msgid "This value set is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr ""
+msgstr "Ce jeu de valeurs n'est pas utilisé ici ; il peut être utilisé autre part (par exemple dans les spécifications et / ou implémentations qui utilisent ce contenu)"
 
 # VALUE_SET_US_ICD10CM
 #: VALUE_SET_US_ICD10CM
@@ -4840,6 +5527,21 @@ msgstr "où"
 # VALUE_SET_WHERE_CODES
 #: VALUE_SET_WHERE_CODES
 msgid ", where the codes are contained in"
+msgstr ""
+
+# VSR_LOGICAL
+#: VSR_LOGICAL
+msgid "Logical Definition (CLD)"
+msgstr ""
+
+# VSR_NO_DEF
+#: VSR_NO_DEF
+msgid "No formal definition provided for this value set"
+msgstr ""
+
+# VSR_TRIGGER
+#: VSR_TRIGGER
+msgid "Used as a trigger criteria in"
 msgstr ""
 
 # VS_ABSTRACT_CODE_HINT

@@ -165,8 +165,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Base64BinaryType) this.value;
         }
 
-        public boolean hasValueBase64BinaryType() { 
-          return this != null && this.value instanceof Base64BinaryType;
+        public boolean hasValueBase64BinaryType() {
+            return this.value instanceof Base64BinaryType;
         }
 
         /**
@@ -180,8 +180,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (BooleanType) this.value;
         }
 
-        public boolean hasValueBooleanType() { 
-          return this != null && this.value instanceof BooleanType;
+        public boolean hasValueBooleanType() {
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -195,8 +195,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (CanonicalType) this.value;
         }
 
-        public boolean hasValueCanonicalType() { 
-          return this != null && this.value instanceof CanonicalType;
+        public boolean hasValueCanonicalType() {
+            return this.value instanceof CanonicalType;
         }
 
         /**
@@ -210,8 +210,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (CodeType) this.value;
         }
 
-        public boolean hasValueCodeType() { 
-          return this != null && this.value instanceof CodeType;
+        public boolean hasValueCodeType() {
+            return this.value instanceof CodeType;
         }
 
         /**
@@ -225,8 +225,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (DateType) this.value;
         }
 
-        public boolean hasValueDateType() { 
-          return this != null && this.value instanceof DateType;
+        public boolean hasValueDateType() {
+            return this.value instanceof DateType;
         }
 
         /**
@@ -240,8 +240,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (DateTimeType) this.value;
         }
 
-        public boolean hasValueDateTimeType() { 
-          return this != null && this.value instanceof DateTimeType;
+        public boolean hasValueDateTimeType() {
+            return this.value instanceof DateTimeType;
         }
 
         /**
@@ -255,8 +255,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (DecimalType) this.value;
         }
 
-        public boolean hasValueDecimalType() { 
-          return this != null && this.value instanceof DecimalType;
+        public boolean hasValueDecimalType() {
+            return this.value instanceof DecimalType;
         }
 
         /**
@@ -270,8 +270,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (IdType) this.value;
         }
 
-        public boolean hasValueIdType() { 
-          return this != null && this.value instanceof IdType;
+        public boolean hasValueIdType() {
+            return this.value instanceof IdType;
         }
 
         /**
@@ -285,8 +285,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (InstantType) this.value;
         }
 
-        public boolean hasValueInstantType() { 
-          return this != null && this.value instanceof InstantType;
+        public boolean hasValueInstantType() {
+            return this.value instanceof InstantType;
         }
 
         /**
@@ -300,8 +300,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (IntegerType) this.value;
         }
 
-        public boolean hasValueIntegerType() { 
-          return this != null && this.value instanceof IntegerType;
+        public boolean hasValueIntegerType() {
+            return this.value instanceof IntegerType;
         }
 
         /**
@@ -315,8 +315,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Integer64Type) this.value;
         }
 
-        public boolean hasValueInteger64Type() { 
-          return this != null && this.value instanceof Integer64Type;
+        public boolean hasValueInteger64Type() {
+            return this.value instanceof Integer64Type;
         }
 
         /**
@@ -330,8 +330,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (MarkdownType) this.value;
         }
 
-        public boolean hasValueMarkdownType() { 
-          return this != null && this.value instanceof MarkdownType;
+        public boolean hasValueMarkdownType() {
+            return this.value instanceof MarkdownType;
         }
 
         /**
@@ -345,8 +345,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (OidType) this.value;
         }
 
-        public boolean hasValueOidType() { 
-          return this != null && this.value instanceof OidType;
+        public boolean hasValueOidType() {
+            return this.value instanceof OidType;
         }
 
         /**
@@ -360,8 +360,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (PositiveIntType) this.value;
         }
 
-        public boolean hasValuePositiveIntType() { 
-          return this != null && this.value instanceof PositiveIntType;
+        public boolean hasValuePositiveIntType() {
+            return this.value instanceof PositiveIntType;
         }
 
         /**
@@ -375,8 +375,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (StringType) this.value;
         }
 
-        public boolean hasValueStringType() { 
-          return this != null && this.value instanceof StringType;
+        public boolean hasValueStringType() {
+            return this.value instanceof StringType;
         }
 
         /**
@@ -390,8 +390,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (TimeType) this.value;
         }
 
-        public boolean hasValueTimeType() { 
-          return this != null && this.value instanceof TimeType;
+        public boolean hasValueTimeType() {
+            return this.value instanceof TimeType;
         }
 
         /**
@@ -405,8 +405,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (UnsignedIntType) this.value;
         }
 
-        public boolean hasValueUnsignedIntType() { 
-          return this != null && this.value instanceof UnsignedIntType;
+        public boolean hasValueUnsignedIntType() {
+            return this.value instanceof UnsignedIntType;
         }
 
         /**
@@ -420,8 +420,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (UriType) this.value;
         }
 
-        public boolean hasValueUriType() { 
-          return this != null && this.value instanceof UriType;
+        public boolean hasValueUriType() {
+            return this.value instanceof UriType;
         }
 
         /**
@@ -435,8 +435,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (UrlType) this.value;
         }
 
-        public boolean hasValueUrlType() { 
-          return this != null && this.value instanceof UrlType;
+        public boolean hasValueUrlType() {
+            return this.value instanceof UrlType;
         }
 
         /**
@@ -450,8 +450,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (UuidType) this.value;
         }
 
-        public boolean hasValueUuidType() { 
-          return this != null && this.value instanceof UuidType;
+        public boolean hasValueUuidType() {
+            return this.value instanceof UuidType;
         }
 
         /**
@@ -465,8 +465,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Address) this.value;
         }
 
-        public boolean hasValueAddress() { 
-          return this != null && this.value instanceof Address;
+        public boolean hasValueAddress() {
+            return this.value instanceof Address;
         }
 
         /**
@@ -480,8 +480,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Age) this.value;
         }
 
-        public boolean hasValueAge() { 
-          return this != null && this.value instanceof Age;
+        public boolean hasValueAge() {
+            return this.value instanceof Age;
         }
 
         /**
@@ -495,8 +495,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Annotation) this.value;
         }
 
-        public boolean hasValueAnnotation() { 
-          return this != null && this.value instanceof Annotation;
+        public boolean hasValueAnnotation() {
+            return this.value instanceof Annotation;
         }
 
         /**
@@ -510,8 +510,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Attachment) this.value;
         }
 
-        public boolean hasValueAttachment() { 
-          return this != null && this.value instanceof Attachment;
+        public boolean hasValueAttachment() {
+            return this.value instanceof Attachment;
         }
 
         /**
@@ -525,8 +525,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (CodeableConcept) this.value;
         }
 
-        public boolean hasValueCodeableConcept() { 
-          return this != null && this.value instanceof CodeableConcept;
+        public boolean hasValueCodeableConcept() {
+            return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -540,8 +540,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (CodeableReference) this.value;
         }
 
-        public boolean hasValueCodeableReference() { 
-          return this != null && this.value instanceof CodeableReference;
+        public boolean hasValueCodeableReference() {
+            return this.value instanceof CodeableReference;
         }
 
         /**
@@ -555,8 +555,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Coding) this.value;
         }
 
-        public boolean hasValueCoding() { 
-          return this != null && this.value instanceof Coding;
+        public boolean hasValueCoding() {
+            return this.value instanceof Coding;
         }
 
         /**
@@ -570,8 +570,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (ContactPoint) this.value;
         }
 
-        public boolean hasValueContactPoint() { 
-          return this != null && this.value instanceof ContactPoint;
+        public boolean hasValueContactPoint() {
+            return this.value instanceof ContactPoint;
         }
 
         /**
@@ -585,8 +585,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Count) this.value;
         }
 
-        public boolean hasValueCount() { 
-          return this != null && this.value instanceof Count;
+        public boolean hasValueCount() {
+            return this.value instanceof Count;
         }
 
         /**
@@ -600,8 +600,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Distance) this.value;
         }
 
-        public boolean hasValueDistance() { 
-          return this != null && this.value instanceof Distance;
+        public boolean hasValueDistance() {
+            return this.value instanceof Distance;
         }
 
         /**
@@ -615,8 +615,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Duration) this.value;
         }
 
-        public boolean hasValueDuration() { 
-          return this != null && this.value instanceof Duration;
+        public boolean hasValueDuration() {
+            return this.value instanceof Duration;
         }
 
         /**
@@ -630,8 +630,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (HumanName) this.value;
         }
 
-        public boolean hasValueHumanName() { 
-          return this != null && this.value instanceof HumanName;
+        public boolean hasValueHumanName() {
+            return this.value instanceof HumanName;
         }
 
         /**
@@ -645,8 +645,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Identifier) this.value;
         }
 
-        public boolean hasValueIdentifier() { 
-          return this != null && this.value instanceof Identifier;
+        public boolean hasValueIdentifier() {
+            return this.value instanceof Identifier;
         }
 
         /**
@@ -660,8 +660,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Money) this.value;
         }
 
-        public boolean hasValueMoney() { 
-          return this != null && this.value instanceof Money;
+        public boolean hasValueMoney() {
+            return this.value instanceof Money;
         }
 
         /**
@@ -675,8 +675,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Period) this.value;
         }
 
-        public boolean hasValuePeriod() { 
-          return this != null && this.value instanceof Period;
+        public boolean hasValuePeriod() {
+            return this.value instanceof Period;
         }
 
         /**
@@ -690,8 +690,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Quantity) this.value;
         }
 
-        public boolean hasValueQuantity() { 
-          return this != null && this.value instanceof Quantity;
+        public boolean hasValueQuantity() {
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -705,8 +705,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Range) this.value;
         }
 
-        public boolean hasValueRange() { 
-          return this != null && this.value instanceof Range;
+        public boolean hasValueRange() {
+            return this.value instanceof Range;
         }
 
         /**
@@ -720,8 +720,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Ratio) this.value;
         }
 
-        public boolean hasValueRatio() { 
-          return this != null && this.value instanceof Ratio;
+        public boolean hasValueRatio() {
+            return this.value instanceof Ratio;
         }
 
         /**
@@ -735,8 +735,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (RatioRange) this.value;
         }
 
-        public boolean hasValueRatioRange() { 
-          return this != null && this.value instanceof RatioRange;
+        public boolean hasValueRatioRange() {
+            return this.value instanceof RatioRange;
         }
 
         /**
@@ -750,8 +750,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Reference) this.value;
         }
 
-        public boolean hasValueReference() { 
-          return this != null && this.value instanceof Reference;
+        public boolean hasValueReference() {
+            return this.value instanceof Reference;
         }
 
         /**
@@ -765,8 +765,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (SampledData) this.value;
         }
 
-        public boolean hasValueSampledData() { 
-          return this != null && this.value instanceof SampledData;
+        public boolean hasValueSampledData() {
+            return this.value instanceof SampledData;
         }
 
         /**
@@ -780,8 +780,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Signature) this.value;
         }
 
-        public boolean hasValueSignature() { 
-          return this != null && this.value instanceof Signature;
+        public boolean hasValueSignature() {
+            return this.value instanceof Signature;
         }
 
         /**
@@ -795,8 +795,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Timing) this.value;
         }
 
-        public boolean hasValueTiming() { 
-          return this != null && this.value instanceof Timing;
+        public boolean hasValueTiming() {
+            return this.value instanceof Timing;
         }
 
         /**
@@ -810,8 +810,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (ContactDetail) this.value;
         }
 
-        public boolean hasValueContactDetail() { 
-          return this != null && this.value instanceof ContactDetail;
+        public boolean hasValueContactDetail() {
+            return this.value instanceof ContactDetail;
         }
 
         /**
@@ -825,8 +825,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (DataRequirement) this.value;
         }
 
-        public boolean hasValueDataRequirement() { 
-          return this != null && this.value instanceof DataRequirement;
+        public boolean hasValueDataRequirement() {
+            return this.value instanceof DataRequirement;
         }
 
         /**
@@ -840,8 +840,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Expression) this.value;
         }
 
-        public boolean hasValueExpression() { 
-          return this != null && this.value instanceof Expression;
+        public boolean hasValueExpression() {
+            return this.value instanceof Expression;
         }
 
         /**
@@ -855,8 +855,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (ParameterDefinition) this.value;
         }
 
-        public boolean hasValueParameterDefinition() { 
-          return this != null && this.value instanceof ParameterDefinition;
+        public boolean hasValueParameterDefinition() {
+            return this.value instanceof ParameterDefinition;
         }
 
         /**
@@ -870,8 +870,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (RelatedArtifact) this.value;
         }
 
-        public boolean hasValueRelatedArtifact() { 
-          return this != null && this.value instanceof RelatedArtifact;
+        public boolean hasValueRelatedArtifact() {
+            return this.value instanceof RelatedArtifact;
         }
 
         /**
@@ -885,8 +885,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (TriggerDefinition) this.value;
         }
 
-        public boolean hasValueTriggerDefinition() { 
-          return this != null && this.value instanceof TriggerDefinition;
+        public boolean hasValueTriggerDefinition() {
+            return this.value instanceof TriggerDefinition;
         }
 
         /**
@@ -900,8 +900,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (UsageContext) this.value;
         }
 
-        public boolean hasValueUsageContext() { 
-          return this != null && this.value instanceof UsageContext;
+        public boolean hasValueUsageContext() {
+            return this.value instanceof UsageContext;
         }
 
         /**
@@ -915,8 +915,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Availability) this.value;
         }
 
-        public boolean hasValueAvailability() { 
-          return this != null && this.value instanceof Availability;
+        public boolean hasValueAvailability() {
+            return this.value instanceof Availability;
         }
 
         /**
@@ -930,8 +930,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (ExtendedContactDetail) this.value;
         }
 
-        public boolean hasValueExtendedContactDetail() { 
-          return this != null && this.value instanceof ExtendedContactDetail;
+        public boolean hasValueExtendedContactDetail() {
+            return this.value instanceof ExtendedContactDetail;
         }
 
         /**
@@ -945,8 +945,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Dosage) this.value;
         }
 
-        public boolean hasValueDosage() { 
-          return this != null && this.value instanceof Dosage;
+        public boolean hasValueDosage() {
+            return this.value instanceof Dosage;
         }
 
         /**
@@ -960,8 +960,8 @@ public class Parameters extends Resource implements IBaseParameters {
           return (Meta) this.value;
         }
 
-        public boolean hasValueMeta() { 
-          return this != null && this.value instanceof Meta;
+        public boolean hasValueMeta() {
+            return this.value instanceof Meta;
         }
 
         public boolean hasValue() { 
@@ -1597,6 +1597,23 @@ public String toString() {
       if (this.parameter == null)
         this.parameter = new ArrayList<ParametersParameterComponent>();
       this.parameter.add(t);
+      return this;
+    }
+
+    public Parameters setParameter(ParametersParameterComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.parameter == null)
+        this.parameter = new ArrayList<ParametersParameterComponent>();
+      ParametersParameterComponent p = getParameter(t.getName());
+      if (p == null) {
+        this.parameter.add(t);
+      } else {
+        p.setValue(t.getValue());
+        p.setResource(t.getResource());
+        p.getPart().clear();
+        p.getPart().addAll(t.getPart());
+      }
       return this;
     }
 

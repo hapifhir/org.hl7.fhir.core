@@ -7,9 +7,12 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonException;
 
@@ -478,5 +481,64 @@ public class JsonObject extends JsonElement {
   
   public boolean isJsonBoolean(String name) {
     return has(name) && get(name).type() == JsonElementType.BOOLEAN;
+  }
+
+  public String compareTo(JsonObject j2) {
+    String path = "$";
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    compare(path, b, this, j2);
+    return b.length() == 0 ? null : b.toString();
+  }
+
+  private void compare(String path, CommaSeparatedStringBuilder b, JsonObject j1, JsonObject j2) {
+    for (JsonProperty p : j1.getProperties()) {
+      String np = path+"."+p.getName();
+      JsonElement p2 = j2.get(p.getName());
+      if (p2 == null) {
+        b.append("Missing at "+np);
+      } else if (p.getValue().type() != p2.type()) {
+        b.append("Wrong type at "+np+": "+p2.type().toName()+" instead of "+p.getValue().type().toName());        
+      } else if (p2.isJsonPrimitive()) {
+        String s2 = p2.asString();
+        String s1 = p.getValue().asString();
+        if (!s2.equals(s1)) {
+          b.append("Value Mismatch at "+np+": '"+s2+"' instead of '"+s1+"'");                  
+        }
+      } else if (p2.isJsonArray()) {
+        compare(np, b, p.getValue().asJsonArray(), p2.asJsonArray());
+      } else {
+        compare(np, b, p.getValue().asJsonObject(), p2.asJsonObject());        
+      }
+    }
+    for (JsonProperty p : j2.getProperties()) {
+      String np = path+"."+p.getName();
+      if (!j1.has(p.getName())) {
+        b.append("Unexpected "+p.getValue().type().toName()+" at "+np);        
+      }
+    }
+  }
+  
+  private void compare(String path, CommaSeparatedStringBuilder b, JsonArray j1, JsonArray j2) {
+    for (int i = 0; i < Integer.min(j1.size(), j2.size()); i++) {
+      String np = path+"["+i+"]";
+      JsonElement i1 = j1.get(i);
+      JsonElement i2 = j2.get(i);
+      if (i1.type() != i2.type()) {
+        b.append("Wrong type at "+np+": "+i2.type().toName()+" instead of "+i1.type().toName());        
+      } else if (i2.isJsonPrimitive()) {
+        if (!i2.toString().equals(i1.asString())) {
+          b.append("Value Mismatch at "+np+": '"+i1.toString()+"' instead of '"+i1.toString()+"'");                  
+        }
+      } else if (i2.isJsonArray()) {
+        compare(np, b, i1.asJsonArray(), i2.asJsonArray());
+      } else {
+        compare(np, b, i1.asJsonObject(), i2.asJsonObject());        
+      }
+    }
+    if (j1.size() > j2.size()) {
+      b.append("Missing Element "+j2.size()+" at "+path);  
+    } else if (j1.size() < j2.size()) {
+      b.append("Unexpected Element "+j1.size()+" at "+path);  
+    }
   }
 }

@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.formats.IParser;
 import org.hl7.fhir.r4.formats.JsonParser;
@@ -24,6 +25,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.http.*;
 import org.hl7.fhir.utilities.xhtml.XhtmlUtils;
 
+@Slf4j
 public class FhirRequestBuilder {
 
   protected static final String LOCATION_HEADER = "location";
@@ -36,8 +38,7 @@ public class FhirRequestBuilder {
   private String message = null;
   private int retryCount = 1;
   /**
-   * The timeout quantity. Used in combination with
-   * {@link FhirRequestBuilder#timeoutUnit}.
+   * The timeout quantity. Used in combination with {@link FhirRequestBuilder#timeoutUnit}.
    */
   private long timeout = 5000;
   /**
@@ -76,6 +77,12 @@ public class FhirRequestBuilder {
     return request.withHeaders(allHeaders);
   }
 
+  /**
+   * Adds necessary headers for the given resource format provided.
+   *
+   * @param httpRequest {@link HTTPRequest} to add default headers to.
+   * @param format     Expected {@link Resource} format.
+   */
   protected static Iterable<HTTPHeader> getResourceFormatHeaders(HTTPRequest httpRequest, String format) {
     List<HTTPHeader> headers = new ArrayList<>();
     headers.add(new HTTPHeader("Accept", format));
@@ -89,12 +96,10 @@ public class FhirRequestBuilder {
   }
 
   /**
-   * Returns true if any of the
-   * {@link org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent}
-   * within the provided {@link OperationOutcome} have an
-   * {@link org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity} of
-   * {@link org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity#ERROR} or
-   * {@link org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity#FATAL}
+   * Returns true if any of the {@link OperationOutcome.OperationOutcomeIssueComponent} within the
+   * provided {@link OperationOutcome} have an {@link OperationOutcome.IssueSeverity} of
+   * {@link OperationOutcome.IssueSeverity#ERROR} or
+   * {@link OperationOutcome.IssueSeverity#FATAL}
    *
    * @param oo {@link OperationOutcome} to evaluate.
    * @return {@link Boolean#TRUE} if an error exists.
@@ -181,9 +186,9 @@ public class FhirRequestBuilder {
     if (response.getContent() == null) {
       if (!ok) {
         if (Utilities.noString(response.getMessage())) {
-          throw new EFhirClientException(response.getMessagefromCode());
+          throw new EFhirClientException(code, response.getMessagefromCode());
         } else {
-          throw new EFhirClientException(response.getMessage());
+          throw new EFhirClientException(code, response.getMessage());
         }
       } else {
         return null;
@@ -199,8 +204,8 @@ public class FhirRequestBuilder {
         if (ok) {
           resource = getParser(format).parse(body);
         } else {
-          System.out.println("Got error response with no Content-Type from "+source+" with status "+code);
-          System.out.println(body);
+          log.warn("Got error response with no Content-Type from "+source+" with status "+code);
+          log.warn(body);
           resource = OperationOutcomeUtilities.outcomeFromTextError(body);
         }
       } else {
@@ -211,7 +216,7 @@ public class FhirRequestBuilder {
         case "application/json":
         case "application/fhir+json":
           if (!format.contains("json")) {
-            System.out.println("Got json response expecting "+format+" from "+source+" with status "+code);            
+            log.warn("Got json response expecting "+format+" from "+source+" with status "+code);
           }
           resource = getParser(ResourceFormat.RESOURCE_JSON.getHeader()).parse(body);
           break;
@@ -219,9 +224,9 @@ public class FhirRequestBuilder {
         case "application/fhir+xml":
         case "text/xml":
           if (!format.contains("xml")) {
-            System.out.println("Got xml response expecting "+format+" from "+source+" with status "+code);            
+            log.warn("Got xml response expecting "+format+" from "+source+" with status "+code);
           }
-          resource = getParser(ResourceFormat.RESOURCE_XML.getHeader()).parse(response.getContent());
+          resource = getParser(ResourceFormat.RESOURCE_XML.getHeader()).parse(body);
           break;
         case "text/plain":
           resource = OperationOutcomeUtilities.outcomeFromTextError(body);
@@ -230,8 +235,8 @@ public class FhirRequestBuilder {
           resource = OperationOutcomeUtilities.outcomeFromTextError(XhtmlUtils.convertHtmlToText(response.getContentAsString(), source));
           break;
         default: // not sure what else to do? 
-          System.out.println("Got content-type '"+contentType+"' from "+source);
-          System.out.println(body);
+          log.info("Got content-type '"+contentType+"' from "+source);
+          log.info(body);
           resource = OperationOutcomeUtilities.outcomeFromTextError(body);
         }
       }
@@ -246,14 +251,14 @@ public class FhirRequestBuilder {
         throw new EFhirClientException(code, "Error from "+source+": " + ResourceUtilities.getErrorDescription(error), error);
       } else {
         // umm, weird...
-        System.out.println("Got OperationOutcome with no error from "+source+" with status "+code);            
-        System.out.println(body);
+        log.warn("Got OperationOutcome with no error from "+source+" with status "+code);
+        log.warn(body);
         return null;
       }
     }
     if (resource == null) {
-      System.out.println("No resource from "+source+" with status "+code);   
-      System.out.println(body);         
+      log.warn("No resource from "+source+" with status "+code);
+      log.warn(body);
       return null; // shouldn't get here?
     }
     if (resourceType != null && !resource.fhirType().equals(resourceType)) {

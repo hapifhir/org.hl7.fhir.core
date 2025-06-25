@@ -1358,8 +1358,8 @@ public class DetectedIssue extends DomainResource {
       return (DateTimeType) this.identified;
     }
 
-    public boolean hasIdentifiedDateTimeType() { 
-      return this != null && this.identified instanceof DateTimeType;
+    public boolean hasIdentifiedDateTimeType() {
+        return this.identified instanceof DateTimeType;
     }
 
     /**
@@ -1373,8 +1373,8 @@ public class DetectedIssue extends DomainResource {
       return (Period) this.identified;
     }
 
-    public boolean hasIdentifiedPeriod() { 
-      return this != null && this.identified instanceof Period;
+    public boolean hasIdentifiedPeriod() {
+        return this.identified instanceof Period;
     }
 
     public boolean hasIdentified() { 

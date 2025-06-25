@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>6.5.16-SNAPSHOT</version>
+        <version>6.5.27-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -38,12 +38,27 @@
         </dependency>
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>org.hl7.fhir.model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>org.hl7.fhir.support</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>org.hl7.fhir.utilities</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>org.hl7.fhir.validation</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>org.hl7.fhir.validation.cli</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
@@ -65,7 +80,7 @@
                             <footer>Code Coverage Report for FHIR core libs ${project.version}</footer>
                             <includes>
                                 <!-- Analyze class files only to exclude shaded agent JAR from report -->
-                                <include>**/*.class</include>
+                                <include>org/hl7/fhir/**/*.class</include>
                             </includes>
                         </configuration>
                     </execution>
@@ -79,6 +94,14 @@
                     <!-- The report project pulls in resources from all the other packages, which results in some duplicate
                      classes being pulled in. This will need to be fixed eventually, but for now, we can just disable the
                      check on this package. It's only purpose is to aggregate the reports.-->
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <configuration>
+                    <!-- -->
                     <skip>true</skip>
                 </configuration>
             </plugin>

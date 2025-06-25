@@ -472,8 +472,8 @@ public class ClinicalImpression extends DomainResource {
           return (CodeableConcept) this.item;
         }
 
-        public boolean hasItemCodeableConcept() { 
-          return this != null && this.item instanceof CodeableConcept;
+        public boolean hasItemCodeableConcept() {
+            return this.item instanceof CodeableConcept;
         }
 
         /**
@@ -487,8 +487,8 @@ public class ClinicalImpression extends DomainResource {
           return (Reference) this.item;
         }
 
-        public boolean hasItemReference() { 
-          return this != null && this.item instanceof Reference;
+        public boolean hasItemReference() {
+            return this.item instanceof Reference;
         }
 
         public boolean hasItem() { 
@@ -1140,8 +1140,8 @@ public class ClinicalImpression extends DomainResource {
       return (DateTimeType) this.effective;
     }
 
-    public boolean hasEffectiveDateTimeType() { 
-      return this != null && this.effective instanceof DateTimeType;
+    public boolean hasEffectiveDateTimeType() {
+        return this.effective instanceof DateTimeType;
     }
 
     /**
@@ -1155,8 +1155,8 @@ public class ClinicalImpression extends DomainResource {
       return (Period) this.effective;
     }
 
-    public boolean hasEffectivePeriod() { 
-      return this != null && this.effective instanceof Period;
+    public boolean hasEffectivePeriod() {
+        return this.effective instanceof Period;
     }
 
     public boolean hasEffective() { 

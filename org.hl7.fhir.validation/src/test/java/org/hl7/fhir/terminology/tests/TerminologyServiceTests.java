@@ -156,46 +156,50 @@ private static TxTestData testData;
       }
     } else {
       OperationOutcome oo = new OperationOutcome();
-      OperationOutcomeIssueComponent e = new OperationOutcomeIssueComponent();
-      e.setSeverity(IssueSeverity.ERROR);
-      switch (vse.getErrorClass()) {
-      case BLOCKED_BY_OPTIONS:
-        e.setCode(IssueType.FORBIDDEN);
-        break;
-      case BUSINESS_RULE:
-        e.setCode(IssueType.BUSINESSRULE);
-        break;
-      case CODESYSTEM_UNSUPPORTED:
-        e.setCode(IssueType.CODEINVALID);
-        break;
-      case INTERNAL_ERROR:
-        e.setCode(IssueType.EXCEPTION);
-        break;
-      case NOSERVICE:
-        e.setCode(IssueType.CONFLICT);
-        break;
-      case SERVER_ERROR:
-        e.setCode(IssueType.EXCEPTION);
-        break;
-      case TOO_COSTLY:
-        e.setCode(IssueType.TOOCOSTLY);
-        break;
-      case PROCESSING:
-        e.setCode(IssueType.PROCESSING);
-        break;
-      case UNKNOWN:
-        e.setCode(IssueType.UNKNOWN);
-        break;
-      case VALUESET_UNKNOWN:
-        e.setCode(IssueType.NOTFOUND);
-        e.getDetails().addCoding().setSystem("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type").setCode("not-found");
-        break;
-      case VALUESET_UNSUPPORTED:
-        e.setCode(IssueType.NOTSUPPORTED);
-        break;
+      if (vse.getIssues() != null) {
+        oo.getIssue().addAll(vse.getIssues());
+      } else {
+        OperationOutcomeIssueComponent e = new OperationOutcomeIssueComponent();
+        e.setSeverity(IssueSeverity.ERROR);
+        switch (vse.getErrorClass()) {
+        case BLOCKED_BY_OPTIONS:
+          e.setCode(IssueType.FORBIDDEN);
+          break;
+        case BUSINESS_RULE:
+          e.setCode(IssueType.BUSINESSRULE);
+          break;
+        case CODESYSTEM_UNSUPPORTED:
+          e.setCode(IssueType.CODEINVALID);
+          break;
+        case INTERNAL_ERROR:
+          e.setCode(IssueType.EXCEPTION);
+          break;
+        case NOSERVICE:
+          e.setCode(IssueType.CONFLICT);
+          break;
+        case SERVER_ERROR:
+          e.setCode(IssueType.EXCEPTION);
+          break;
+        case TOO_COSTLY:
+          e.setCode(IssueType.TOOCOSTLY);
+          break;
+        case PROCESSING:
+          e.setCode(IssueType.PROCESSING);
+          break;
+        case UNKNOWN:
+          e.setCode(IssueType.UNKNOWN);
+          break;
+        case VALUESET_UNKNOWN:
+          e.setCode(IssueType.NOTFOUND);
+          e.getDetails().addCoding().setSystem("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type").setCode("not-found");
+          break;
+        case VALUESET_UNSUPPORTED:
+          e.setCode(IssueType.NOTSUPPORTED);
+          break;
+        }
+        e.getDetails().setText(vse.getError());
+        oo.addIssue(e);
       }
-      e.getDetails().setText(vse.getError());
-      oo.addIssue(e);
       TxTesterSorters.sortOperationOutcome(oo);
       TxTesterScrubbers.scrubOO(oo, false);
 

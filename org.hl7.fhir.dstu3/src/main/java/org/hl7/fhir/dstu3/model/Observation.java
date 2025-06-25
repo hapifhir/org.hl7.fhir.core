@@ -1202,8 +1202,8 @@ public class Observation extends DomainResource {
           return (Quantity) this.value;
         }
 
-        public boolean hasValueQuantity() { 
-          return this != null && this.value instanceof Quantity;
+        public boolean hasValueQuantity() {
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -1217,8 +1217,8 @@ public class Observation extends DomainResource {
           return (CodeableConcept) this.value;
         }
 
-        public boolean hasValueCodeableConcept() { 
-          return this != null && this.value instanceof CodeableConcept;
+        public boolean hasValueCodeableConcept() {
+            return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -1232,8 +1232,8 @@ public class Observation extends DomainResource {
           return (StringType) this.value;
         }
 
-        public boolean hasValueStringType() { 
-          return this != null && this.value instanceof StringType;
+        public boolean hasValueStringType() {
+            return this.value instanceof StringType;
         }
 
         /**
@@ -1247,8 +1247,8 @@ public class Observation extends DomainResource {
           return (Range) this.value;
         }
 
-        public boolean hasValueRange() { 
-          return this != null && this.value instanceof Range;
+        public boolean hasValueRange() {
+            return this.value instanceof Range;
         }
 
         /**
@@ -1262,8 +1262,8 @@ public class Observation extends DomainResource {
           return (Ratio) this.value;
         }
 
-        public boolean hasValueRatio() { 
-          return this != null && this.value instanceof Ratio;
+        public boolean hasValueRatio() {
+            return this.value instanceof Ratio;
         }
 
         /**
@@ -1277,8 +1277,8 @@ public class Observation extends DomainResource {
           return (SampledData) this.value;
         }
 
-        public boolean hasValueSampledData() { 
-          return this != null && this.value instanceof SampledData;
+        public boolean hasValueSampledData() {
+            return this.value instanceof SampledData;
         }
 
         /**
@@ -1292,8 +1292,8 @@ public class Observation extends DomainResource {
           return (Attachment) this.value;
         }
 
-        public boolean hasValueAttachment() { 
-          return this != null && this.value instanceof Attachment;
+        public boolean hasValueAttachment() {
+            return this.value instanceof Attachment;
         }
 
         /**
@@ -1307,8 +1307,8 @@ public class Observation extends DomainResource {
           return (TimeType) this.value;
         }
 
-        public boolean hasValueTimeType() { 
-          return this != null && this.value instanceof TimeType;
+        public boolean hasValueTimeType() {
+            return this.value instanceof TimeType;
         }
 
         /**
@@ -1322,8 +1322,8 @@ public class Observation extends DomainResource {
           return (DateTimeType) this.value;
         }
 
-        public boolean hasValueDateTimeType() { 
-          return this != null && this.value instanceof DateTimeType;
+        public boolean hasValueDateTimeType() {
+            return this.value instanceof DateTimeType;
         }
 
         /**
@@ -1337,8 +1337,8 @@ public class Observation extends DomainResource {
           return (Period) this.value;
         }
 
-        public boolean hasValuePeriod() { 
-          return this != null && this.value instanceof Period;
+        public boolean hasValuePeriod() {
+            return this.value instanceof Period;
         }
 
         public boolean hasValue() { 
@@ -2215,8 +2215,8 @@ public class Observation extends DomainResource {
       return (DateTimeType) this.effective;
     }
 
-    public boolean hasEffectiveDateTimeType() { 
-      return this != null && this.effective instanceof DateTimeType;
+    public boolean hasEffectiveDateTimeType() {
+        return this.effective instanceof DateTimeType;
     }
 
     /**
@@ -2230,8 +2230,8 @@ public class Observation extends DomainResource {
       return (Period) this.effective;
     }
 
-    public boolean hasEffectivePeriod() { 
-      return this != null && this.effective instanceof Period;
+    public boolean hasEffectivePeriod() {
+        return this.effective instanceof Period;
     }
 
     public boolean hasEffective() { 
@@ -2378,8 +2378,8 @@ public class Observation extends DomainResource {
       return (Quantity) this.value;
     }
 
-    public boolean hasValueQuantity() { 
-      return this != null && this.value instanceof Quantity;
+    public boolean hasValueQuantity() {
+        return this.value instanceof Quantity;
     }
 
     /**
@@ -2393,8 +2393,8 @@ public class Observation extends DomainResource {
       return (CodeableConcept) this.value;
     }
 
-    public boolean hasValueCodeableConcept() { 
-      return this != null && this.value instanceof CodeableConcept;
+    public boolean hasValueCodeableConcept() {
+        return this.value instanceof CodeableConcept;
     }
 
     /**
@@ -2408,8 +2408,8 @@ public class Observation extends DomainResource {
       return (StringType) this.value;
     }
 
-    public boolean hasValueStringType() { 
-      return this != null && this.value instanceof StringType;
+    public boolean hasValueStringType() {
+        return this.value instanceof StringType;
     }
 
     /**
@@ -2423,8 +2423,8 @@ public class Observation extends DomainResource {
       return (BooleanType) this.value;
     }
 
-    public boolean hasValueBooleanType() { 
-      return this != null && this.value instanceof BooleanType;
+    public boolean hasValueBooleanType() {
+        return this.value instanceof BooleanType;
     }
 
     /**
@@ -2438,8 +2438,8 @@ public class Observation extends DomainResource {
       return (Range) this.value;
     }
 
-    public boolean hasValueRange() { 
-      return this != null && this.value instanceof Range;
+    public boolean hasValueRange() {
+        return this.value instanceof Range;
     }
 
     /**
@@ -2453,8 +2453,8 @@ public class Observation extends DomainResource {
       return (Ratio) this.value;
     }
 
-    public boolean hasValueRatio() { 
-      return this != null && this.value instanceof Ratio;
+    public boolean hasValueRatio() {
+        return this.value instanceof Ratio;
     }
 
     /**
@@ -2468,8 +2468,8 @@ public class Observation extends DomainResource {
       return (SampledData) this.value;
     }
 
-    public boolean hasValueSampledData() { 
-      return this != null && this.value instanceof SampledData;
+    public boolean hasValueSampledData() {
+        return this.value instanceof SampledData;
     }
 
     /**
@@ -2483,8 +2483,8 @@ public class Observation extends DomainResource {
       return (Attachment) this.value;
     }
 
-    public boolean hasValueAttachment() { 
-      return this != null && this.value instanceof Attachment;
+    public boolean hasValueAttachment() {
+        return this.value instanceof Attachment;
     }
 
     /**
@@ -2498,8 +2498,8 @@ public class Observation extends DomainResource {
       return (TimeType) this.value;
     }
 
-    public boolean hasValueTimeType() { 
-      return this != null && this.value instanceof TimeType;
+    public boolean hasValueTimeType() {
+        return this.value instanceof TimeType;
     }
 
     /**
@@ -2513,8 +2513,8 @@ public class Observation extends DomainResource {
       return (DateTimeType) this.value;
     }
 
-    public boolean hasValueDateTimeType() { 
-      return this != null && this.value instanceof DateTimeType;
+    public boolean hasValueDateTimeType() {
+        return this.value instanceof DateTimeType;
     }
 
     /**
@@ -2528,8 +2528,8 @@ public class Observation extends DomainResource {
       return (Period) this.value;
     }
 
-    public boolean hasValuePeriod() { 
-      return this != null && this.value instanceof Period;
+    public boolean hasValuePeriod() {
+        return this.value instanceof Period;
     }
 
     public boolean hasValue() { 

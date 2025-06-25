@@ -25,9 +25,9 @@ jobs:
         inputs:
           mavenPomFile: 'pom.xml'
           ${{ if eq(parameters.signArtifacts, true) }}:
-            options: '--settings $(Agent.TempDirectory)/settings.xml -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -DskipTests -DdeployToSonatype -P CHECKSTYLE'
+            options: '--settings $(Agent.TempDirectory)/settings.xml -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -DskipTests -DdeployToMavenCentral -P CHECKSTYLE -Djacoco.skip=true'
           ${{ else }}:
-            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -DskipTests -P CHECKSTYLE'
+            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -DskipTests -P CHECKSTYLE -Djacoco.skip=true'
           mavenOptions: '-Xmx1G'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'

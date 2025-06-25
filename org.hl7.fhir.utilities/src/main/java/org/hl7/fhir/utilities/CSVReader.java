@@ -1,5 +1,7 @@
 package org.hl7.fhir.utilities;
 
+import java.io.ByteArrayInputStream;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +36,9 @@ package org.hl7.fhir.utilities;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -84,6 +88,7 @@ public class CSVReader extends InputStreamReader {
     return false;
   }
   
+
   public String cell(String name) {
     int index = -1;
     for (int i = 0; i < cols.length; i++) {
@@ -94,6 +99,10 @@ public class CSVReader extends InputStreamReader {
     }
     if (index == -1)
       throw new FHIRException("no cell "+name+" in "+cols);
+    return cell(index);
+  }
+
+  public String cell(int index) {
     String s = cells.length > index ? cells[index] : null;
     if (Utilities.noString(s))
       return null;
@@ -252,6 +261,18 @@ public class CSVReader extends InputStreamReader {
   public String[] getCells() {
     return cells;
   }
+
+  public static List<String> splitString(String text) {
+    InputStream inputStream = new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8));
+    CSVReader csv;
+    try {
+      csv = new CSVReader(inputStream);
+      return Arrays.asList(csv.readHeaders());
+    } catch (FHIRException | IOException e) {
+     return new ArrayList<>();
+    }    
+  }
+
 
 
 }

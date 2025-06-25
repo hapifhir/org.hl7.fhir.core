@@ -428,8 +428,8 @@ public class GuidanceResponse extends DomainResource {
       return (UriType) this.module;
     }
 
-    public boolean hasModuleUriType() { 
-      return this != null && this.module instanceof UriType;
+    public boolean hasModuleUriType() {
+        return this.module instanceof UriType;
     }
 
     /**
@@ -443,8 +443,8 @@ public class GuidanceResponse extends DomainResource {
       return (CanonicalType) this.module;
     }
 
-    public boolean hasModuleCanonicalType() { 
-      return this != null && this.module instanceof CanonicalType;
+    public boolean hasModuleCanonicalType() {
+        return this.module instanceof CanonicalType;
     }
 
     /**
@@ -458,8 +458,8 @@ public class GuidanceResponse extends DomainResource {
       return (CodeableConcept) this.module;
     }
 
-    public boolean hasModuleCodeableConcept() { 
-      return this != null && this.module instanceof CodeableConcept;
+    public boolean hasModuleCodeableConcept() {
+        return this.module instanceof CodeableConcept;
     }
 
     public boolean hasModule() { 

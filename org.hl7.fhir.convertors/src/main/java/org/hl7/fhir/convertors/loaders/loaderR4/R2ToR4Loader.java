@@ -48,6 +48,7 @@ import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.r4.model.MetadataResource;
 import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r4.model.UriType;
 
 public class R2ToR4Loader extends BaseLoaderR4 {
@@ -100,7 +101,7 @@ public class R2ToR4Loader extends BaseLoaderR4 {
         .map(be -> (StructureDefinition) be.getResource())
         .forEach(sd -> {
           sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU2));
-          sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
+          sd.addExtension().setUrl(ToolingExtensions.EXT_XML_NAMESPACE).setValue(new UriType(URL_BASE));
         });
     }
     return b;

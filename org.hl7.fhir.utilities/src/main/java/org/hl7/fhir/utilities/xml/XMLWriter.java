@@ -555,7 +555,7 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
 		checkStarted();
 		if (levels.empty())
 			throw new IOException("Unable to close null|"+name+", nothing to close");
-		if (levels.current().getNamespace() != null || !levels.current().getName().equals(name))
+		if (levels.current().getNamespace() != null || !name.equals(levels.current().getName()))
 			throw new IOException("Unable to close null|"+name+", found "+levels.current().getNamespace()+"|"+levels.current().getName());
 		exit();
 	}

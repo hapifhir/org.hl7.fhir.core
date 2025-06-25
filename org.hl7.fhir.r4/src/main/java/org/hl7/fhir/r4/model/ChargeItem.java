@@ -1312,7 +1312,7 @@ public class ChargeItem extends DomainResource {
   }
 
   public boolean hasOccurrenceDateTimeType() {
-    return this != null && this.occurrence instanceof DateTimeType;
+      return this.occurrence instanceof DateTimeType;
   }
 
   /**
@@ -1329,7 +1329,7 @@ public class ChargeItem extends DomainResource {
   }
 
   public boolean hasOccurrencePeriod() {
-    return this != null && this.occurrence instanceof Period;
+      return this.occurrence instanceof Period;
   }
 
   /**
@@ -1346,7 +1346,7 @@ public class ChargeItem extends DomainResource {
   }
 
   public boolean hasOccurrenceTiming() {
-    return this != null && this.occurrence instanceof Timing;
+      return this.occurrence instanceof Timing;
   }
 
   public boolean hasOccurrence() {
@@ -2062,7 +2062,7 @@ public class ChargeItem extends DomainResource {
   }
 
   public boolean hasProductReference() {
-    return this != null && this.product instanceof Reference;
+      return this.product instanceof Reference;
   }
 
   /**
@@ -2079,7 +2079,7 @@ public class ChargeItem extends DomainResource {
   }
 
   public boolean hasProductCodeableConcept() {
-    return this != null && this.product instanceof CodeableConcept;
+      return this.product instanceof CodeableConcept;
   }
 
   public boolean hasProduct() {

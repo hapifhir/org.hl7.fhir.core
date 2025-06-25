@@ -63,6 +63,11 @@ public class EFhirClientException extends RuntimeException {
     super(message);
   }
 
+  public EFhirClientException(int code, String message) {
+    super(message);
+    this.code = code;
+  }
+
   public EFhirClientException(int code, String message, List<OperationOutcome> serverErrors) {
     super(message);
     this.code = code;

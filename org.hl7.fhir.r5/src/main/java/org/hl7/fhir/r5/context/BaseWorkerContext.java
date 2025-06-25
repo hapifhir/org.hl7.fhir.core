@@ -50,7 +50,11 @@ import java.util.Set;
 import java.util.UUID;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import javax.annotation.Nonnull;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -61,13 +65,15 @@ import org.hl7.fhir.r5.context.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.r5.model.Bundle.BundleType;
+import org.hl7.fhir.r5.model.Bundle.HTTPVerb;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
@@ -75,12 +81,13 @@ import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.Identifier;
-import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.ImplementationGuide;
+import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Library;
 import org.hl7.fhir.r5.model.Measure;
 import org.hl7.fhir.r5.model.NamingSystem;
@@ -103,43 +110,46 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap;
-
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.r5.model.Bundle.BundleType;
-import org.hl7.fhir.r5.model.Bundle.HTTPVerb;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
-import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
 import org.hl7.fhir.r5.profilemodel.PEBuilder;
+import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
 import org.hl7.fhir.r5.renderers.OperationOutcomeRenderer;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.CacheToken;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedCodeSystem;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
-import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.CacheToken;
-import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedCodeSystem;
-import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
-import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.utils.PackageHackerR5;
 import org.hl7.fhir.r5.utils.ResourceUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
-import org.hl7.fhir.utilities.*;
+import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.TimeTracker;
+import org.hl7.fhir.utilities.ToolingClientLogger;
+import org.hl7.fhir.utilities.UUIDUtilities;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.I18nBase;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -152,8 +162,9 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import com.google.gson.JsonObject;
 
-import javax.annotation.Nonnull;
+import lombok.Getter;
 
+@Slf4j
 @MarkedToMoveToAdjunctPackage
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
@@ -332,7 +343,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected boolean canRunWithoutTerminology;
   protected boolean noTerminologyServer;
   private int expandCodesLimit = 1000;
-  protected org.hl7.fhir.r5.context.ILoggingService logger = new SystemOutLoggingService();
+  protected org.hl7.fhir.r5.context.ILoggingService logger = new Slf4JLoggingService(log);
   protected final TerminologyClientManager terminologyClientManager = new TerminologyClientManager(new TerminologyClientR5.TerminologyClientR5Factory(), UUID.randomUUID().toString(), logger);
   protected Parameters expParameters;
   private Map<String, PackageInformation> packages = new HashMap<>();
@@ -351,7 +362,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   protected BaseWorkerContext(Locale locale) throws FileNotFoundException, IOException, FHIRException {
-    setValidationMessageLanguage(locale);
+    this.setLocale(locale);
     clock = new TimeTracker();
     initLang();
   }
@@ -401,7 +412,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       guides.copy(other.guides);
       capstmts.copy(other.capstmts);
       measures.copy(other.measures);
-      libraries.copy(libraries);
+      libraries.copy(other.libraries);
 
       allowLoadingDuplicates = other.allowLoadingDuplicates;
       name = other.name;
@@ -463,7 +474,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
 
       String url = r.getUrl();
-      if (!allowLoadingDuplicates && hasResourceVersion(r.getType(), url, r.getVersion()) && !packageInfo.isHTO()) {
+      if (!allowLoadingDuplicates && hasResourceVersion(r.getType(), url, r.getVersion()) && !packageInfo.isTHO()) {
         // special workaround for known problems with existing packages
         if (Utilities.existsInList(url, "http://hl7.org/fhir/SearchParameter/example")) {
           return;
@@ -647,7 +658,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           requirements.see((Requirements) m, packageInfo);
         } else if (r instanceof ActorDefinition) {
           actors.see((ActorDefinition) m, packageInfo);
-          systemUrlMap = null;
         }
       }
     }
@@ -978,14 +988,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     try {
       ValueSet result = tc.getClient().expandValueset(vs, p);
-      res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());
+      res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());
       if (res != null && res.getValueset() != null) { 
         res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
       }
     } catch (Exception e) {
       res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, true);
       if (txLog != null) {
-        res.setTxLink(txLog.getLastId());
+        res.setTxLink(txLog == null ? null : txLog.getLastId());
       }
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
@@ -1051,7 +1061,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET_2));
         }
       }
-      res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId()); 
+      res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId()); 
       if (res != null && res.getValueset() != null) { 
         res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
       } 
@@ -1144,7 +1154,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return res;
     }
     if (res.getErrorClass() == TerminologyServiceErrorClass.INTERNAL_ERROR || isNoTerminologyServer() || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNKNOWN) { // this class is created specifically to say: don't consult the server
-      return new ValueSetExpansionOutcome(res.getError(), res.getErrorClass(), false);
+      return res;
     }
 
     // if that failed, we try to expand on the server
@@ -1170,7 +1180,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET_2));
         }
       }
-      res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
+      res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());  
     } catch (Exception e) {
       if (res != null && !res.isFromServer()) {
         res = new ValueSetExpansionOutcome(res.getError()+" (and "+e.getMessage()+")", res.getErrorClass(), false);
@@ -1268,9 +1278,20 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Bundle batch = new Bundle();
     batch.setType(BundleType.BATCH);
     Set<String> systems = findRelevantSystems(vs);
+    ValueSet lastvs = null;
     for (CodingValidationRequest codingValidationRequest : codes) {
       if (!codingValidationRequest.hasResult()) {
-        Parameters pIn = constructParameters(options, codingValidationRequest, vs == null ? codingValidationRequest.getVsObj() : vs);
+        Parameters pIn;
+        ValueSet wvs = vs == null ? codingValidationRequest.getVsObj() : vs;
+        if (wvs == null) {
+          pIn = constructParameters(options, codingValidationRequest, wvs);          
+        } else if (lastvs != wvs) {
+          pIn = constructParameters(options, codingValidationRequest, wvs.getVersionedUrl());
+          pIn.addParameter().setName("tx-resource").setResource(wvs);
+          lastvs = wvs;
+        } else {
+          pIn = constructParameters(options, codingValidationRequest, lastvs.getVersionedUrl());          
+        }
         setTerminologyOptions(options, pIn);
         BundleEntryComponent be = batch.addEntry();
         be.setResource(pIn);
@@ -1480,7 +1501,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           return res;
         }
       } catch (VSCheckerException e) {
-        if (e.isWarning()) {
+        if (e.isWarning() || e.getType() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
           localWarning = e.getMessage();
         } else {  
           localError = e.getMessage();
@@ -1496,7 +1517,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         issues.add(iss);
         return new ValidationResult(IssueSeverity.FATAL, e.getMessage(), e.getError(), issues);
       } catch (Exception e) {
-//        e.printStackTrace();
+//        e.printStackTrace();!
         localError = e.getMessage();
       }
     }
@@ -1504,6 +1525,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (localError != null && !terminologyClientManager.hasClient()) {
       if (unknownSystems.size() > 0) {
         return new ValidationResult(IssueSeverity.ERROR, localError, TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, issues).setUnknownSystems(unknownSystems);
+      } else if (type == TerminologyServiceErrorClass.INTERNAL_ERROR) {
+        return new ValidationResult(IssueSeverity.FATAL, localError, TerminologyServiceErrorClass.INTERNAL_ERROR, issues);
       } else {
         return new ValidationResult(IssueSeverity.ERROR, localError, TerminologyServiceErrorClass.UNKNOWN, issues);
       }
@@ -1639,7 +1662,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   protected ValueSetExpander constructValueSetExpanderSimple(ValidationOptions options) {
-    return new ValueSetExpander(this, new TerminologyOperationContext(this, options, "expansion")).setDebug(logger.isDebugLogging());
+    return new ValueSetExpander(this, new TerminologyOperationContext(this, options, "expansion"));
   }
 
   protected ValueSetValidator constructValueSetCheckerSimple(ValidationOptions options,  ValueSet vs,  ValidationContextCarrier ctxt) {
@@ -1704,7 +1727,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       pIn.addParameter().setName("coding").setValue(codingValidationRequest.getCoding());
     }
     if (vsUrl != null) {
-      pIn.addParameter().setName("url").setValue(new CanonicalType(vsUrl));
+      pIn.addParameter().setName("url").setValue(new UriType(vsUrl));
     }
     pIn.addParameters(expParameters);
     return pIn;
@@ -1907,7 +1930,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
     addServerValidationParameters(null, tc, vs, pin, options, systems);
-
+    
     if (txLog != null) {
       txLog.clearLastId();
     }
@@ -1967,6 +1990,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     for (ParametersParameterComponent pp : expParameters.getParameter()) {
       if (!pin.hasParameter(pp.getName())) {
         pin.addParameter(pp);
+      } else if (isOverridingParameterName(pp.getName())) {
+        pin.setParameter(pp);
       }
     }
 
@@ -1974,6 +1999,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       pin.addParameter("mode","lenient-display-validation");
     }
     pin.addParameter("diagnostics", true);
+  }
+
+  private boolean isOverridingParameterName(String pname) {
+    return Utilities.existsInList(pname, "displayLanguage");
   }
 
   private boolean addDependentResources(ITerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, ValueSet vs) {
@@ -2072,15 +2101,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (tc.usingCache()) {
       if (!tc.alreadyCached(cr)) {
         tc.addToCache(cr);
-        if (logger.isDebugLogging()) {
-          logger.logMessage("add to cache: "+cr.getVUrl());
-        }
+
+        logger.logDebugMessage(LogCategory.CONTEXT, "add to cache: "+cr.getVUrl());
+
         addToParams = true;
         cache = true;
       } else {
-        if (logger.isDebugLogging()) {
-          logger.logMessage("already cached: "+cr.getVUrl());
-        }
+        logger.logDebugMessage(LogCategory.CONTEXT,"already cached: "+cr.getVUrl());
       }
     } else {
       addToParams = true;
@@ -2198,7 +2225,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     ValidationResult res = null;
     if (!ok) {
-      res = new ValidationResult(IssueSeverity.ERROR, message, err, null).setTxLink(txLog.getLastId());
+      res = new ValidationResult(IssueSeverity.ERROR, message, err, null).setTxLink(txLog == null ? null : txLog.getLastId());
       if (code != null) {
         res.setDefinition(new ConceptDefinitionComponent().setDisplay(display).setCode(code));
         res.setDisplay(display);
@@ -2210,16 +2237,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         res.setVersion(version);
       }
     } else if (message != null && !message.equals("No Message returned")) { 
-      res = new ValidationResult(IssueSeverity.WARNING, message, system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display, null).setTxLink(txLog.getLastId());
+      res = new ValidationResult(IssueSeverity.WARNING, message, system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display, null).setTxLink(txLog == null ? null : txLog.getLastId());
     } else if (display != null) {
-      res = new ValidationResult(system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display).setTxLink(txLog.getLastId());
+      res = new ValidationResult(system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display).setTxLink(txLog == null ? null : txLog.getLastId());
     } else {
-      res = new ValidationResult(system, version, new ConceptDefinitionComponent().setCode(code), null).setTxLink(txLog.getLastId());
+      res = new ValidationResult(system, version, new ConceptDefinitionComponent().setCode(code), null).setTxLink(txLog == null ? null : txLog.getLastId());
     }
     res.setIssues(issues);
     res.setStatus(inactive, status);
     res.setUnknownSystems(unknownSystems);
     res.setServer(server);
+    res.setParameters(pOut);
     return res;
   }
 
@@ -2355,8 +2383,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       // correct (but it's slow)
       if (sourceForReference != null && uri.contains("ValueSet")) {
         if (!ResourceUtilities.hasURL(uri, sourceForReference)) {
-          System.out.print("Claimed source doesn't have url in it: "+sourceForReference.fhirType()+"/"+sourceForReference.getIdPart()+" -> "+uri);
-          System.out.println();
+          log.warn("Claimed source doesn't have url in it: "+sourceForReference.fhirType()+"/"+sourceForReference.getIdPart()+" -> "+uri);
         }
       }
     }
@@ -3116,9 +3143,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         throw new FHIRException("Attempt to fetch the profile "+ structureDefinition.getVersionedUrl()+" while generating the snapshot for it");
       }
       try {
-        if (logger.isDebugLogging()) {
-          System.out.println("Generating snapshot for "+ structureDefinition.getVersionedUrl());
-        }
+
+        logger.logDebugMessage(LogCategory.GENERATE,"Generating snapshot for "+ structureDefinition.getVersionedUrl());
+
        // structureDefinition.setGeneratingSnapshot(true);
         try {
           new ContextUtilities(this).generateSnapshot(structureDefinition);
@@ -3127,10 +3154,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
       } catch (Exception e) {
         // not sure what to do in this case?
-        System.out.println("Unable to generate snapshot in @" + breadcrumb + " for " + structureDefinition.getVersionedUrl()+": "+e.getMessage());
-        if (logger.isDebugLogging()) {
-          e.printStackTrace();
-        }
+        log.error("Unable to generate snapshot in @" + breadcrumb + " for " + structureDefinition.getVersionedUrl()+": "+e.getMessage());
+        logger.logDebugMessage(ILoggingService.LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
       }
     }
   }
@@ -3283,10 +3308,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
             //          new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
           }
         } catch (Exception e) {
-          System.out.println("Unable to generate snapshot @1 for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
-          if (logger.isDebugLogging()) {
-            e.printStackTrace();          
-          }
+          log.error("Unable to generate snapshot @1 for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
+          logger.logDebugMessage(LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
         }
       }  
     }
@@ -3591,7 +3614,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (class_ == StructureDefinition.class) {
         uri = ProfileUtilities.sdNs(uri, null);
       }
-      assert !uri.contains("|");
+      if (uri.contains("|")) {
+        throw new Error("at fetchResourcesByUrl, but a version is found in the uri - should not happen ('"+uri+"')");
+      }
       if (uri.contains("#")) {
         uri = uri.substring(0, uri.indexOf("#"));
       } 
@@ -3675,24 +3700,31 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     return res;
   }
+  
   public void setLocale(Locale locale) {
     super.setLocale(locale);
-    if (expParameters != null && locale != null) {
-      for (ParametersParameterComponent p : expParameters.getParameter()) {
-        if ("displayLanguage".equals(p.getName())) {
-          if (p.hasUserData(UserDataNames.auto_added_parameter)) {
-            p.setValue(new CodeType(locale.toLanguageTag()));
-            return;
-          } else {
-            // user supplied, we leave it alone
-            return ;
+    if (locale != null) {
+      String lt = locale.toLanguageTag();
+      if ("und".equals(lt)) {
+        throw new FHIRException("The locale "+locale.toString()+" is not valid");
+      }
+      if (expParameters != null) {
+        for (ParametersParameterComponent p : expParameters.getParameter()) {
+          if ("displayLanguage".equals(p.getName())) {
+            if (p.hasUserData(UserDataNames.auto_added_parameter)) {
+              p.setValue(new CodeType(lt));
+              return;
+            } else {
+              // user supplied, we leave it alone
+              return ;
+            }
           }
         }
+        ParametersParameterComponent p = expParameters.addParameter();
+        p.setName("displayLanguage");
+        p.setValue(new CodeType(lt));
+        p.setUserData(UserDataNames.auto_added_parameter, true);
       }
-      ParametersParameterComponent p = expParameters.addParameter();
-      p.setName("displayLanguage");
-      p.setValue(new CodeType(locale.toLanguageTag()));
-      p.setUserData(UserDataNames.auto_added_parameter, true);
     }
   }
 }

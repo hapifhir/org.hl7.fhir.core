@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
@@ -12,6 +14,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator.CodeValidationRule;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator.PropertyFilterType;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator.PropertyOperation;
@@ -24,8 +27,8 @@ public class SnomedCTChecker extends CodeSystemChecker {
   private boolean hasTag = false;
   private List<String> tags = new ArrayList<>();
   
-  public SnomedCTChecker(IWorkerContext context, XVerExtensionManager xverManager, boolean debug, List<ValidationMessage> errors, ValidatorSession session) {
-    super(context, xverManager, debug, errors, session);
+  public SnomedCTChecker(IWorkerContext context, @Nonnull ValidatorSettings settings, XVerExtensionManager xverManager, List<ValidationMessage> errors, ValidatorSession session) {
+    super(context, settings, xverManager, errors, session);
   }
   
   public void checkConcept(String code, String display) {
@@ -58,6 +61,7 @@ public class SnomedCTChecker extends CodeSystemChecker {
     addName(knownNames, "concept");
     addName(knownNames, "constraint");
     addName(knownNames, "expressions");
+    addName(knownNames, "inactive");
     addName(knownNames, "410662002");
     addName(knownNames, "42752001");
     addName(knownNames, "47429007");
@@ -203,6 +207,7 @@ public class SnomedCTChecker extends CodeSystemChecker {
     switch (property) {
     case "constraint": return null; // for now 
     case "expressions": return new PropertyValidationRules(PropertyFilterType.Boolean, null, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In));
+    case "inactive": return new PropertyValidationRules(PropertyFilterType.Boolean, null, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In));
     case "concept": return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, addToOps(ops, PropertyOperation.IsA, PropertyOperation.IsNotA, PropertyOperation.In, PropertyOperation.DescendentOf, PropertyOperation.DescendentLeaf));
     default:
       return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In));

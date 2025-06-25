@@ -2701,7 +2701,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasAnswerBooleanType() {
-      return this != null && this.answer instanceof BooleanType;
+        return this.answer instanceof BooleanType;
     }
 
     /**
@@ -2718,7 +2718,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasAnswerDecimalType() {
-      return this != null && this.answer instanceof DecimalType;
+        return this.answer instanceof DecimalType;
     }
 
     /**
@@ -2735,7 +2735,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasAnswerIntegerType() {
-      return this != null && this.answer instanceof IntegerType;
+        return this.answer instanceof IntegerType;
     }
 
     /**
@@ -2752,7 +2752,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasAnswerDateType() {
-      return this != null && this.answer instanceof DateType;
+        return this.answer instanceof DateType;
     }
 
     /**
@@ -2769,7 +2769,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasAnswerDateTimeType() {
-      return this != null && this.answer instanceof DateTimeType;
+        return this.answer instanceof DateTimeType;
     }
 
     /**
@@ -2786,7 +2786,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasAnswerTimeType() {
-      return this != null && this.answer instanceof TimeType;
+        return this.answer instanceof TimeType;
     }
 
     /**
@@ -2803,7 +2803,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasAnswerStringType() {
-      return this != null && this.answer instanceof StringType;
+        return this.answer instanceof StringType;
     }
 
     /**
@@ -2820,7 +2820,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasAnswerCoding() {
-      return this != null && this.answer instanceof Coding;
+        return this.answer instanceof Coding;
     }
 
     /**
@@ -2837,7 +2837,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasAnswerQuantity() {
-      return this != null && this.answer instanceof Quantity;
+        return this.answer instanceof Quantity;
     }
 
     /**
@@ -2854,7 +2854,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasAnswerReference() {
-      return this != null && this.answer instanceof Reference;
+        return this.answer instanceof Reference;
     }
 
     public boolean hasAnswer() {
@@ -3193,7 +3193,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasValueIntegerType() {
-      return this != null && this.value instanceof IntegerType;
+        return this.value instanceof IntegerType;
     }
 
     /**
@@ -3210,7 +3210,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasValueDateType() {
-      return this != null && this.value instanceof DateType;
+        return this.value instanceof DateType;
     }
 
     /**
@@ -3227,7 +3227,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasValueTimeType() {
-      return this != null && this.value instanceof TimeType;
+        return this.value instanceof TimeType;
     }
 
     /**
@@ -3244,7 +3244,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasValueStringType() {
-      return this != null && this.value instanceof StringType;
+        return this.value instanceof StringType;
     }
 
     /**
@@ -3261,7 +3261,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasValueCoding() {
-      return this != null && this.value instanceof Coding;
+        return this.value instanceof Coding;
     }
 
     /**
@@ -3278,7 +3278,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasValueReference() {
-      return this != null && this.value instanceof Reference;
+        return this.value instanceof Reference;
     }
 
     public boolean hasValue() {
@@ -3593,7 +3593,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasValueBooleanType() {
-      return this != null && this.value instanceof BooleanType;
+        return this.value instanceof BooleanType;
     }
 
     /**
@@ -3609,7 +3609,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasValueDecimalType() {
-      return this != null && this.value instanceof DecimalType;
+        return this.value instanceof DecimalType;
     }
 
     /**
@@ -3625,7 +3625,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasValueIntegerType() {
-      return this != null && this.value instanceof IntegerType;
+        return this.value instanceof IntegerType;
     }
 
     /**
@@ -3641,7 +3641,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasValueDateType() {
-      return this != null && this.value instanceof DateType;
+        return this.value instanceof DateType;
     }
 
     /**
@@ -3657,7 +3657,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasValueDateTimeType() {
-      return this != null && this.value instanceof DateTimeType;
+        return this.value instanceof DateTimeType;
     }
 
     /**
@@ -3673,7 +3673,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasValueTimeType() {
-      return this != null && this.value instanceof TimeType;
+        return this.value instanceof TimeType;
     }
 
     /**
@@ -3689,7 +3689,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasValueStringType() {
-      return this != null && this.value instanceof StringType;
+        return this.value instanceof StringType;
     }
 
     /**
@@ -3705,7 +3705,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasValueUriType() {
-      return this != null && this.value instanceof UriType;
+        return this.value instanceof UriType;
     }
 
     /**
@@ -3721,7 +3721,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasValueAttachment() {
-      return this != null && this.value instanceof Attachment;
+        return this.value instanceof Attachment;
     }
 
     /**
@@ -3737,7 +3737,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasValueCoding() {
-      return this != null && this.value instanceof Coding;
+        return this.value instanceof Coding;
     }
 
     /**
@@ -3753,7 +3753,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasValueQuantity() {
-      return this != null && this.value instanceof Quantity;
+        return this.value instanceof Quantity;
     }
 
     /**
@@ -3769,7 +3769,7 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public boolean hasValueReference() {
-      return this != null && this.value instanceof Reference;
+        return this.value instanceof Reference;
     }
 
     public boolean hasValue() {

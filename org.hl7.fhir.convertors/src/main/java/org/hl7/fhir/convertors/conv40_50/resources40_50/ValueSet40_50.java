@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Coding40_50;
@@ -385,7 +386,7 @@ public class ValueSet40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent tgt = new org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt, "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.property");
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt, VersionConvertorConstants.EXT_VS_EXP_PROP);
     if (src.hasIdentifier())
       tgt.setIdentifierElement(Uri40_50.convertUri(src.getIdentifierElement()));
     if (src.hasTimestamp())
@@ -397,7 +398,7 @@ public class ValueSet40_50 {
     for (org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionParameterComponent t : src.getParameter())
       tgt.addParameter(convertValueSetExpansionParameterComponent(t));
     for (org.hl7.fhir.r4.model.Extension t : src.getExtension()) {
-      if ("http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.property".equals(t.getUrl())) {
+      if (VersionConvertorConstants.EXT_VS_EXP_PROP.equals(t.getUrl())) {
         tgt.addProperty().setCode(t.getExtensionString("code")).setUri(t.getExtensionString("uri"));
       }
     }
@@ -422,7 +423,7 @@ public class ValueSet40_50 {
     for (org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent t : src.getParameter())
       tgt.addParameter(convertValueSetExpansionParameterComponent(t));
     for (ValueSetExpansionPropertyComponent t : src.getProperty()) {
-      org.hl7.fhir.r4.model.Extension ext = tgt.addExtension().setUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.property");
+      org.hl7.fhir.r4.model.Extension ext = tgt.addExtension().setUrl(VersionConvertorConstants.EXT_VS_EXP_PROP);
       ext.addExtension().setUrl("code").setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(t.getCodeElement()));
       ext.addExtension().setUrl("uri").setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(t.getUriElement()));
     }
@@ -459,7 +460,7 @@ public class ValueSet40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent tgt = new org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt, "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property");
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt, VersionConvertorConstants.EXT_EXP_VS_CONT_PROP);
     if (src.hasSystem())
       tgt.setSystemElement(Uri40_50.convertUri(src.getSystemElement()));
     if (src.hasAbstract())
@@ -475,7 +476,7 @@ public class ValueSet40_50 {
     for (org.hl7.fhir.r4.model.ValueSet.ConceptReferenceDesignationComponent t : src.getDesignation())
       tgt.addDesignation(convertConceptReferenceDesignationComponent(t));
     for (org.hl7.fhir.r4.model.Extension t : src.getExtension()) {
-      if ("http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property".equals(t.getUrl())) {
+      if (VersionConvertorConstants.EXT_EXP_VS_CONT_PROP.equals(t.getUrl())) {
         ConceptPropertyComponent prop = tgt.addProperty();
         ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(t, prop, "code", "value[x]", "value");
         prop.setCode(t.getExtensionString("code"));
@@ -511,7 +512,7 @@ public class ValueSet40_50 {
     for (org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent t : src.getDesignation())
       tgt.addDesignation(convertConceptReferenceDesignationComponent(t));
     for (org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent t : src.getProperty()) {
-      org.hl7.fhir.r4.model.Extension ext = tgt.addExtension().setUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property");
+      org.hl7.fhir.r4.model.Extension ext = tgt.addExtension().setUrl(VersionConvertorConstants.EXT_EXP_VS_CONT_PROP);
       ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(t, ext, "code", "value[x]");
       ext.addExtension().setUrl("code").setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(t.getCodeElement()));
       ext.addExtension().setUrl("value[x]").setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(t.getValue()));

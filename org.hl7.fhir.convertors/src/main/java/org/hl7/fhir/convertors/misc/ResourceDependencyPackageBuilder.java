@@ -1,9 +1,7 @@
 package org.hl7.fhir.convertors.misc;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
@@ -22,6 +20,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.utils.ResourceDependencyWalker;
 import org.hl7.fhir.r5.utils.ResourceDependencyWalker.IResourceDependencyNotifier;
 import org.hl7.fhir.r5.utils.ResourceMinifier;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.JsonException;
@@ -29,10 +28,11 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 
+@SuppressWarnings("checkstyle:systemout")
 public class ResourceDependencyPackageBuilder {
 
-  private static final List<String> LOADED_TYPES =
-      Arrays.asList("StructureDefinition", "CodeSystem", "ValueSet", "CapabilityStatement", "ConceptMap", "NamingSystem", "OperationDefinition", "SearchParameter", "Questionnaire");
+  private static final Set<String> LOADED_TYPES =
+      Utilities.stringSet("StructureDefinition", "CodeSystem", "ValueSet", "CapabilityStatement", "ConceptMap", "NamingSystem", "OperationDefinition", "SearchParameter", "Questionnaire");
   
   public static void main(String[] args) throws IOException {
 

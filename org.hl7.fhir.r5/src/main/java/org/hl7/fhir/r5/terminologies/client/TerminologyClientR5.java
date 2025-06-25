@@ -110,7 +110,7 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
   
   public FhirPublication getActualVersion() {
-    return FhirPublication.STU3;
+    return FhirPublication.R5;
   }
   
   

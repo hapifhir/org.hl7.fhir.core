@@ -1,4 +1,5 @@
 {
   "http://hl7.org/fhir/tools/CodeSystem/obligation|null" : null,
+  "http://snomed.info/sct|null" : null,
   "http://cancer.questionnaire.org/system/code/yesno|null" : null
 }

@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.List;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
@@ -1938,8 +1939,8 @@ public class StructureDefinition extends CanonicalResource {
       return (StringType) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmStringType() { 
-      return this != null && this.versionAlgorithm instanceof StringType;
+    public boolean hasVersionAlgorithmStringType() {
+        return this.versionAlgorithm instanceof StringType;
     }
 
     /**
@@ -1953,8 +1954,8 @@ public class StructureDefinition extends CanonicalResource {
       return (Coding) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmCoding() { 
-      return this != null && this.versionAlgorithm instanceof Coding;
+    public boolean hasVersionAlgorithmCoding() {
+        return this.versionAlgorithm instanceof Coding;
     }
 
     public boolean hasVersionAlgorithm() { 
@@ -5342,18 +5343,6 @@ public class StructureDefinition extends CanonicalResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_VALUESET = new ca.uhn.fhir.model.api.Include("StructureDefinition:valueset").toLocked();
 
 // Manual code (from Configuration.txt):
-public String describeType() {
-    if ("Extension".equals(getType()))
-      return "Extension" ;
-    switch (getKind()) {
-    case COMPLEXTYPE: return getDerivation() == TypeDerivationRule.CONSTRAINT ? "DataType Constraint" : "DataType" ;
-    case LOGICAL: return getDerivation() == TypeDerivationRule.CONSTRAINT ? "Logical Model" : "Logical Model Profile";
-    case PRIMITIVETYPE: return getDerivation() == TypeDerivationRule.CONSTRAINT ? "PrimitiveType Constraint" : "PrimitiveType";
-    case RESOURCE: return getDerivation() == TypeDerivationRule.CONSTRAINT ? "Resource Profile" : "Resource";
-    default:
-      return "Definition";
-    }
-  }
 
 
   public String getTypeName() { 
@@ -5372,6 +5361,8 @@ public String describeType() {
   private boolean generatedSnapshot;
   private boolean generatingSnapshot;
 
+  private List<String> baseDefinitions;
+
   public boolean isGeneratedSnapshot() {
     return generatedSnapshot;
   }
@@ -5386,6 +5377,19 @@ public String describeType() {
 
   public void setGeneratingSnapshot(boolean generatingSnapshot) {
     this.generatingSnapshot = generatingSnapshot;
+  }
+
+  public List<String> getBaseDefinitions() {
+    if (baseDefinitions == null) {
+      baseDefinitions = new ArrayList<>();
+      baseDefinitions.add(getBaseDefinition());
+      for (Extension ex : getExtensionsByUrl(ToolingExtensions.EXT_ADDITIONAL_BASE)) {
+        if (ex.hasValue() && ex.getValue().hasPrimitiveValue()) {
+          baseDefinitions.add(ex.getValue().primitiveValue());
+        }
+      }
+    }
+    return baseDefinitions;
   }
 
 // end addition

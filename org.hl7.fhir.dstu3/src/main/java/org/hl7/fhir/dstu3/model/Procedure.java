@@ -1518,8 +1518,8 @@ public class Procedure extends DomainResource {
       return (DateTimeType) this.performed;
     }
 
-    public boolean hasPerformedDateTimeType() { 
-      return this != null && this.performed instanceof DateTimeType;
+    public boolean hasPerformedDateTimeType() {
+        return this.performed instanceof DateTimeType;
     }
 
     /**
@@ -1533,8 +1533,8 @@ public class Procedure extends DomainResource {
       return (Period) this.performed;
     }
 
-    public boolean hasPerformedPeriod() { 
-      return this != null && this.performed instanceof Period;
+    public boolean hasPerformedPeriod() {
+        return this.performed instanceof Period;
     }
 
     public boolean hasPerformed() { 

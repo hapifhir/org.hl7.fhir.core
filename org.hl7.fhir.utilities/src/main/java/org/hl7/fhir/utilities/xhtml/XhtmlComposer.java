@@ -90,7 +90,7 @@ public class XhtmlComposer {
       XhtmlNode node = list.get(i);
       if (node.getNodeType() == NodeType.Element && BLOCK_NAMES.contains(node.getName())) {
         XhtmlNode prev = list.get(i-1);
-        if (prev.getNodeType() != NodeType.Text || prev.getContent() == null || !(prev.getContent().endsWith("\r") || prev.getValue().endsWith("\n"))) {
+        if (prev.getNodeType() != NodeType.Text || prev.getContent() == null || !(prev.getContent().endsWith("\r") || prev.getContent().endsWith("\n"))) {
           list.add(i, new XhtmlNode(NodeType.Text).setContent("\r\n"));
         }        
       }

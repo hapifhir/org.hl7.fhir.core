@@ -723,6 +723,16 @@ public class JsonTrackingParser {
       return gson.toJson(json).getBytes(StandardCharsets.UTF_8);    
     }    
   }
+
+  public static byte[] writeBytes(JsonArray json, boolean pretty) {
+    if (pretty) {
+      Gson gson = new GsonBuilder().setPrettyPrinting().create();
+      return gson.toJson(json).getBytes(StandardCharsets.UTF_8);    
+    } else {
+      Gson gson = new GsonBuilder().create();
+      return gson.toJson(json).getBytes(StandardCharsets.UTF_8);    
+    }    
+  }
   
   public static JsonObject fetchJson(String source) throws IOException {
     HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), source+"?nocache=" + System.currentTimeMillis(), "application/json, application/fhir+json");
