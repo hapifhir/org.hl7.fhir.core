@@ -172,7 +172,7 @@ public class ValidatorCli {
     }
     ManagedWebAccess.loadFromFHIRSettings();
 
-    FileFormat.checkCharsetAndWarnIfNotUTF8(log);
+    checkCharsetAndWarnIfNotUTF8();
 
     if (shouldDisplayHelpToUser(args)) {
       String helpTarget = Params.getParam(args, "-" + Params.HELP);
@@ -190,6 +190,11 @@ public class ValidatorCli {
     }
 
     readParamsAndExecuteTask(tt, tts, validationContext, args);
+  }
+
+  @SuppressWarnings("checkstyle:systemout")
+  private static void checkCharsetAndWarnIfNotUTF8() {
+    FileFormat.checkCharsetAndWarnIfNotUTF8(System.out);
   }
 
   private static void setLogbackConfiguration(String[] args) {
