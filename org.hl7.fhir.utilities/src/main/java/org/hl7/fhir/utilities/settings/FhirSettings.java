@@ -240,4 +240,9 @@ public class FhirSettings {
     }
     return Arrays.asList(instance.fhirSettings.getServers().toArray(new ServerDetailsPOJO[]{}));
   }
+
+  public static List<String> getCertificateSources() {
+    getInstance();
+    return instance.fhirSettings.getCertificateSources();
+  }
 }
