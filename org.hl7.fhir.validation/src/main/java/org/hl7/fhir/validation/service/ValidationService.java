@@ -610,6 +610,7 @@ public class ValidationService {
         validationEngine.getExtensionDomains().add(s);
       }
     }
+    validationEngine.getCertSources().addAll(validationContext.getCertSources());
     validationEngine.setLanguage(validationContext.getLang());
     validationEngine.setLocale(validationContext.getLocale());
     validationEngine.setSnomedExtension(validationContext.getSnomedCTCode());

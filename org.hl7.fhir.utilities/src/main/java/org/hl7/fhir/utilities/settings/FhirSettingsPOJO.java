@@ -46,6 +46,7 @@ public class FhirSettingsPOJO {
   private Boolean ignoreDefaultPackageServers;
 
   private List<ServerDetailsPOJO> servers;
+  private List<String> certificateSources;
 
   protected FhirSettingsPOJO() {
     apiKeys = null;
@@ -60,5 +61,6 @@ public class FhirSettingsPOJO {
     txFhirDevelopment = TX_SERVER_DEV;
     txFhirLocal = TX_SERVER_LOCAL;
     servers = new ArrayList<>();
+    certificateSources = new ArrayList<>();
   }
 }
