@@ -60,21 +60,74 @@ public class CertificateScanner {
     }
     
     /**
-     * Scans a folder for certificates matching the specified key ID
-     * @param folderPath Path to scan for certificate files
+     * Scans loaded certificates and folders for certificates matching the specified key ID
+     * @param loadedCertificates Map of filename to certificate bytes (will be updated with newly loaded files)
+     * @param foldersToScan List of folder paths to scan for certificate files
      * @param targetKid Key ID to match
      * @return CertificateResult if found, null otherwise
      */
-    public CertificateResult findCertificateByKid(String folderPath, String targetKid) {
+    public CertificateResult findCertificateByKid(Map<String, byte[]> loadedCertificates, 
+                                                 List<String> foldersToScan, 
+                                                 String targetKid) {
+        // First, scan the already loaded certificates
+        CertificateResult result = scanLoadedCertificates(loadedCertificates, targetKid);
+        if (result != null) {
+            return result;
+        }
+        
+        // Then scan folders, loading files as we go
+        if (foldersToScan != null) {
+            for (String folderPath : foldersToScan) {
+                result = scanFolderWithCaching(folderPath, loadedCertificates, targetKid);
+                if (result != null) {
+                    return result;
+                }
+            }
+        }
+        
+        return null;
+    }
+    
+    
+    /**
+     * Scans already loaded certificates in memory
+     */
+    private CertificateResult scanLoadedCertificates(Map<String, byte[]> loadedCertificates, String targetKid) {
+        if (loadedCertificates == null || loadedCertificates.isEmpty()) {
+            return null;
+        }
+        
+        for (Map.Entry<String, byte[]> entry : loadedCertificates.entrySet()) {
+            String filename = entry.getKey();
+            byte[] fileBytes = entry.getValue();
+            
+            log.info("Scanning loaded certificate: " + filename);
+            
+            CertificateResult result = scanFileBytes(filename, fileBytes, targetKid);
+            if (result != null) {
+                return result;
+            }
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Scans a folder for certificates, caching loaded files
+     */
+    private CertificateResult scanFolderWithCaching(String folderPath, 
+                                                   Map<String, byte[]> loadedCertificates, 
+                                                   String targetKid) {
         try {
             Path folder = Paths.get(folderPath);
             if (!Files.exists(folder) || !Files.isDirectory(folder)) {
-                throw new IllegalArgumentException("Invalid folder path: " + folderPath);
+                log.warn("Invalid folder path: " + folderPath);
+                return null;
             }
             
             try (Stream<Path> files = Files.walk(folder)) {
                 return files.filter(Files::isRegularFile)
-                           .map(file -> scanFile(file, targetKid))
+                           .map(file -> scanFileWithCaching(file, loadedCertificates, targetKid))
                            .filter(Objects::nonNull)
                            .findFirst()
                            .orElse(null);
@@ -87,79 +140,96 @@ public class CertificateScanner {
     }
     
     /**
-     * Legacy method that returns only JWK for backward compatibility
+     * Scans a single file, caching its contents
      */
-    public JWK findJwkByKid(String folderPath, String targetKid) {
-        CertificateResult result = findCertificateByKid(folderPath, targetKid);
-        return result != null ? result.getJwk() : null;
+    private CertificateResult scanFileWithCaching(Path filePath, 
+                                                 Map<String, byte[]> loadedCertificates, 
+                                                 String targetKid) {
+        String filename = filePath.toString();
+        
+        // Check if we've already loaded this file
+        byte[] fileBytes = loadedCertificates.get(filename);
+        if (fileBytes == null) {
+            // Load the file and cache it
+            try {
+                fileBytes = Files.readAllBytes(filePath);
+                loadedCertificates.put(filename, fileBytes);
+                log.info("Loaded and cached file: " + filename);
+            } catch (Exception e) {
+                log.error("Error reading file " + filename + ": " + e.getMessage());
+                return null;
+            }
+        }
+        
+        return scanFileBytes(filename, fileBytes, targetKid);
     }
     
     /**
-     * Scans a single file for certificates matching the target kid
+     * Scans file bytes for certificates matching the target kid
      */
-    private CertificateResult scanFile(Path filePath, String targetKid) {
-        String fileName = filePath.getFileName().toString().toLowerCase();
+    private CertificateResult scanFileBytes(String filename, byte[] fileBytes, String targetKid) {
+        String fileName = Paths.get(filename).getFileName().toString().toLowerCase();
         String extension = getFileExtension(fileName);
         
-        log.info("Scanning file: " + filePath);
+        log.info("Scanning file: " + filename);
         
         try {
             // Try different formats based on file extension and content
             switch (extension) {
                 case "json":
                 case "jwks":
-                    return scanJWKS(filePath, targetKid);
+                    return scanJWKSBytes(filename, fileBytes, targetKid);
                     
                 case "pem":
                 case "crt":
                 case "cer":
-                    return scanPEM(filePath, targetKid);
+                    return scanPEMBytes(filename, fileBytes, targetKid);
                     
                 case "der":
-                    return scanDER(filePath, targetKid);
+                    return scanDERBytes(filename, fileBytes, targetKid);
                     
                 case "p12":
                 case "pfx":
-                    return scanPKCS12(filePath, targetKid);
+                    return scanPKCS12Bytes(filename, fileBytes, targetKid);
                     
                 case "jks":
-                    return scanJKS(filePath, targetKid);
+                    return scanJKSBytes(filename, fileBytes, targetKid);
                     
                 default:
                     // Try to auto-detect format
-                    return autoDetectAndScan(filePath, targetKid);
+                    return autoDetectAndScanBytes(filename, fileBytes, targetKid);
             }
             
         } catch (Exception e) {
-            log.error("Error reading file " + filePath + ": " + e.getMessage());
+            log.error("Error processing file " + filename + ": " + e.getMessage());
             return null;
         }
     }
     
     /**
-     * Scan JWKS JSON file using Nimbus
+     * Scan JWKS JSON bytes using Nimbus
      */
-    private CertificateResult scanJWKS(Path filePath, String targetKid) throws Exception {
-        String content = Files.readString(filePath);
+    private CertificateResult scanJWKSBytes(String filename, byte[] fileBytes, String targetKid) throws Exception {
+        String content = new String(fileBytes);
         
         try {
             // Try as JWKS first
             JWKSet jwkSet = JWKSet.parse(content);
             JWK jwk = jwkSet.getKeyByKeyId(targetKid);
             if (jwk != null) {
-                log.info("Found matching JWK in JWKS file: " + filePath);
+                log.info("Found matching JWK in JWKS file: " + filename);
                 // Try to extract certificate from JWK if it has x5c
                 X509Certificate cert = extractCertificateFromJWK(jwk);
-                return new CertificateResult(jwk, cert, filePath.toString());
+                return new CertificateResult(jwk, cert, filename);
             }
         } catch (Exception e) {
             // Try as single JWK
             try {
                 JWK jwk = JWK.parse(content);
                 if (targetKid.equals(jwk.getKeyID())) {
-                    log.info("Found matching JWK in JSON file: " + filePath);
+                    log.info("Found matching JWK in JSON file: " + filename);
                     X509Certificate cert = extractCertificateFromJWK(jwk);
-                    return new CertificateResult(jwk, cert, filePath.toString());
+                    return new CertificateResult(jwk, cert, filename);
                 }
             } catch (Exception e2) {
                 // Not a valid JWK/JWKS
@@ -189,10 +259,10 @@ public class CertificateScanner {
     }
     
     /**
-     * Scan PEM format file using only Nimbus
+     * Scan PEM format bytes using only Nimbus
      */
-    private CertificateResult scanPEM(Path filePath, String targetKid) throws Exception {
-        String pemContent = Files.readString(filePath);
+    private CertificateResult scanPEMBytes(String filename, byte[] fileBytes, String targetKid) throws Exception {
+        String pemContent = new String(fileBytes);
         
         // Extract all certificate blocks from PEM content
         List<X509Certificate> certificates = extractCertificatesFromPEM(pemContent);
@@ -200,8 +270,8 @@ public class CertificateScanner {
         for (X509Certificate cert : certificates) {
             JWK jwk = createJWKFromCertificate(cert, targetKid);
             if (jwk != null) {
-                log.info("Found matching certificate in PEM file: " + filePath);
-                return new CertificateResult(jwk, cert, filePath.toString());
+                log.info("Found matching certificate in PEM file: " + filename);
+                return new CertificateResult(jwk, cert, filename);
             }
         }
         
@@ -240,17 +310,15 @@ public class CertificateScanner {
     }
     
     /**
-     * Scan DER format file using standard Java libraries
+     * Scan DER format bytes using standard Java libraries
      */
-    private CertificateResult scanDER(Path filePath, String targetKid) throws Exception {
-        byte[] certBytes = Files.readAllBytes(filePath);
-        
-        try (ByteArrayInputStream bis = new ByteArrayInputStream(certBytes)) {
+    private CertificateResult scanDERBytes(String filename, byte[] fileBytes, String targetKid) throws Exception {
+        try (ByteArrayInputStream bis = new ByteArrayInputStream(fileBytes)) {
             X509Certificate cert = (X509Certificate) certificateFactory.generateCertificate(bis);
             JWK jwk = createJWKFromCertificate(cert, targetKid);
             if (jwk != null) {
-                log.info("Found matching certificate in DER file: " + filePath);
-                return new CertificateResult(jwk, cert, filePath.toString());
+                log.info("Found matching certificate in DER file: " + filename);
+                return new CertificateResult(jwk, cert, filename);
             }
         }
         
@@ -258,22 +326,22 @@ public class CertificateScanner {
     }
     
     /**
-     * Scan PKCS#12 format file
+     * Scan PKCS#12 format bytes
      */
-    private CertificateResult scanPKCS12(Path filePath, String targetKid) throws Exception {
+    private CertificateResult scanPKCS12Bytes(String filename, byte[] fileBytes, String targetKid) throws Exception {
         // Try common passwords
         String[] passwords = {"", "password", "changeit", "123456"};
         
         for (String password : passwords) {
             try {
                 KeyStore keyStore = KeyStore.getInstance("PKCS12");
-                try (FileInputStream fis = new FileInputStream(filePath.toFile())) {
-                    keyStore.load(fis, password.toCharArray());
+                try (ByteArrayInputStream bis = new ByteArrayInputStream(fileBytes)) {
+                    keyStore.load(bis, password.toCharArray());
                 }
                 
-                CertificateResult result = scanKeyStore(keyStore, targetKid, filePath.toString());
+                CertificateResult result = scanKeyStore(keyStore, targetKid, filename);
                 if (result != null) {
-                    log.info("Found matching certificate in PKCS12 file: " + filePath);
+                    log.info("Found matching certificate in PKCS12 file: " + filename);
                     return result;
                 }
                 
@@ -286,22 +354,22 @@ public class CertificateScanner {
     }
     
     /**
-     * Scan JKS (Java KeyStore) format file
+     * Scan JKS (Java KeyStore) format bytes
      */
-    private CertificateResult scanJKS(Path filePath, String targetKid) throws Exception {
+    private CertificateResult scanJKSBytes(String filename, byte[] fileBytes, String targetKid) throws Exception {
         // Try common passwords
         String[] passwords = {"", "password", "changeit", "123456"};
         
         for (String password : passwords) {
             try {
                 KeyStore keyStore = KeyStore.getInstance("JKS");
-                try (FileInputStream fis = new FileInputStream(filePath.toFile())) {
-                    keyStore.load(fis, password.toCharArray());
+                try (ByteArrayInputStream bis = new ByteArrayInputStream(fileBytes)) {
+                    keyStore.load(bis, password.toCharArray());
                 }
                 
-                CertificateResult result = scanKeyStore(keyStore, targetKid, filePath.toString());
+                CertificateResult result = scanKeyStore(keyStore, targetKid, filename);
                 if (result != null) {
-                    log.info("Found matching certificate in JKS file: " + filePath);
+                    log.info("Found matching certificate in JKS file: " + filename);
                     return result;
                 }
                 
@@ -335,32 +403,30 @@ public class CertificateScanner {
     }
     
     /**
-     * Auto-detect file format and scan
+     * Auto-detect file format and scan bytes
      */
-    private CertificateResult autoDetectAndScan(Path filePath, String targetKid) throws Exception {
-        byte[] fileBytes = Files.readAllBytes(filePath);
-        
+    private CertificateResult autoDetectAndScanBytes(String filename, byte[] fileBytes, String targetKid) throws Exception {
         // Check if it's text (PEM/JSON)
         if (isProbablyText(fileBytes)) {
             String content = new String(fileBytes);
             
             // Try JSON/JWKS
             if (content.trim().startsWith("{") || content.trim().startsWith("[")) {
-                return scanJWKS(filePath, targetKid);
+                return scanJWKSBytes(filename, fileBytes, targetKid);
             }
             
             // Try PEM
             if (content.contains("-----BEGIN")) {
-                return scanPEM(filePath, targetKid);
+                return scanPEMBytes(filename, fileBytes, targetKid);
             }
         } else {
             // Try DER
             try {
-                return scanDER(filePath, targetKid);
+                return scanDERBytes(filename, fileBytes, targetKid);
             } catch (Exception e) {
                 // Not DER, try PKCS12
                 try {
-                    return scanPKCS12(filePath, targetKid);
+                    return scanPKCS12Bytes(filename, fileBytes, targetKid);
                 } catch (Exception e2) {
                     // Not PKCS12 either
                 }
@@ -503,17 +569,24 @@ public class CertificateScanner {
      * Main method for testing
      */
     public static void main(String[] args) {
-        if (args.length != 2) {
-            log.info("Usage: java CertificateScanner <folder_path> <kid>");
+        if (args.length < 2) {
+            log.info("Usage: java CertificateScanner <folder_path1> [folder_path2...] <kid>");
             return;
         }
         
-        String folderPath = args[0];
-        String targetKid = args[1];
+        // Last argument is the kid
+        String targetKid = args[args.length - 1];
+        
+        // All other arguments are folder paths
+        List<String> folderPaths = new ArrayList<>();
+        for (int i = 0; i < args.length - 1; i++) {
+            folderPaths.add(args[i]);
+        }
         
         try {
             CertificateScanner scanner = new CertificateScanner();
-            CertificateResult result = scanner.findCertificateByKid(folderPath, targetKid);
+            Map<String, byte[]> loadedCertificates = new HashMap<>();
+            CertificateResult result = scanner.findCertificateByKid(loadedCertificates, folderPaths, targetKid);
             
             if (result != null) {
                 log.info("\nFound matching certificate!");
@@ -537,12 +610,15 @@ public class CertificateScanner {
                     log.info("Valid Until: " + cert.getNotAfter());
                     log.info("Signature Algorithm: " + cert.getSigAlgName());
                 }
+                
+                log.info("\nLoaded certificates cache now contains " + loadedCertificates.size() + " files");
             } else {
-              log.info("\nNo matching certificate found for kid: " + targetKid);
+                log.info("\nNo matching certificate found for kid: " + targetKid);
+                log.info("Scanned " + loadedCertificates.size() + " files total");
             }
             
         } catch (Exception e) {
-           log.error("Error: " + e.getMessage(), e);
+            log.error("Error: " + e.getMessage(), e);
         }
     }
 }

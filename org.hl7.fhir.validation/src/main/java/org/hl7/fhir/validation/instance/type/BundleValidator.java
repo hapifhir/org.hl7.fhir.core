@@ -1130,7 +1130,7 @@ public class BundleValidator extends BaseValidator {
         kid = header.asString("kid");
         try {
           CertificateScanner scanner = new CertificateScanner();
-          CertificateResult find = scanner.findCertificateByKid(Utilities.path("[tmp]", "validator", "certs"), kid);
+          CertificateResult find = scanner.findCertificateByKid(settings.getCertificates(), settings.getCertificateFolders(), kid);
           if (find == null) {
             warning(errors, "2025-06-13", IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_SIGNATURE_HEADER_CERT_NOT_FOUND, kid);
           } else {
