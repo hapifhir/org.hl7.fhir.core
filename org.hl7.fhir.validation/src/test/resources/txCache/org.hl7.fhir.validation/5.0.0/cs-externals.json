@@ -30,6 +30,7 @@
   "http://snomed.info/sct|null" : null,
   "http://hl7.org/fhir/ValueSet/account-type|null" : null,
   "http://acme.ped/apgarmuscletone|null" : null,
+  "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode|null" : null,
   "http://acme.ped/apgarheartrate|null" : null,
   "urn:iso:std:iso:6710:2017|null" : null,
   "http://ihe.net/qrph/madx/|null" : null,
