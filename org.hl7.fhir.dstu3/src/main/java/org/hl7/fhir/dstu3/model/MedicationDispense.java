@@ -693,28 +693,6 @@ public class MedicationDispense extends DomainResource {
           return getResponsibleParty().get(0);
         }
 
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Practitioner> getResponsiblePartyTarget() { 
-          if (this.responsiblePartyTarget == null)
-            this.responsiblePartyTarget = new ArrayList<Practitioner>();
-          return this.responsiblePartyTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Practitioner addResponsiblePartyTarget() { 
-          Practitioner r = new Practitioner();
-          if (this.responsiblePartyTarget == null)
-            this.responsiblePartyTarget = new ArrayList<Practitioner>();
-          this.responsiblePartyTarget.add(r);
-          return r;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("wasSubstituted", "boolean", "True if the dispenser dispensed a different drug or product from what was prescribed.", 0, 1, wasSubstituted));
@@ -1217,28 +1195,6 @@ public class MedicationDispense extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Procedure> getPartOfTarget() { 
-      if (this.partOfTarget == null)
-        this.partOfTarget = new ArrayList<Procedure>();
-      return this.partOfTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Procedure addPartOfTarget() { 
-      Procedure r = new Procedure();
-      if (this.partOfTarget == null)
-        this.partOfTarget = new ArrayList<Procedure>();
-      this.partOfTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #status} (A code specifying the state of the set of dispense events.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public Enumeration<MedicationDispenseStatus> getStatusElement() { 
@@ -1494,16 +1450,6 @@ public class MedicationDispense extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getSupportingInformationTarget() { 
-      if (this.supportingInformationTarget == null)
-        this.supportingInformationTarget = new ArrayList<Resource>();
-      return this.supportingInformationTarget;
-    }
-
-    /**
      * @return {@link #performer} (Indicates who or what performed the event.  It should be assumed that the performer is the dispenser of the medication.)
      */
     public List<MedicationDispensePerformerComponent> getPerformer() { 
@@ -1607,28 +1553,6 @@ public class MedicationDispense extends DomainResource {
         addAuthorizingPrescription();
       }
       return getAuthorizingPrescription().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<MedicationRequest> getAuthorizingPrescriptionTarget() { 
-      if (this.authorizingPrescriptionTarget == null)
-        this.authorizingPrescriptionTarget = new ArrayList<MedicationRequest>();
-      return this.authorizingPrescriptionTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public MedicationRequest addAuthorizingPrescriptionTarget() { 
-      MedicationRequest r = new MedicationRequest();
-      if (this.authorizingPrescriptionTarget == null)
-        this.authorizingPrescriptionTarget = new ArrayList<MedicationRequest>();
-      this.authorizingPrescriptionTarget.add(r);
-      return r;
     }
 
     /**
@@ -1899,16 +1823,6 @@ public class MedicationDispense extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReceiverTarget() { 
-      if (this.receiverTarget == null)
-        this.receiverTarget = new ArrayList<Resource>();
-      return this.receiverTarget;
-    }
-
-    /**
      * @return {@link #note} (Extra information about the dispense that could not be conveyed in the other attributes.)
      */
     public List<Annotation> getNote() { 
@@ -2092,28 +2006,6 @@ public class MedicationDispense extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<DetectedIssue> getDetectedIssueTarget() { 
-      if (this.detectedIssueTarget == null)
-        this.detectedIssueTarget = new ArrayList<DetectedIssue>();
-      return this.detectedIssueTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public DetectedIssue addDetectedIssueTarget() { 
-      DetectedIssue r = new DetectedIssue();
-      if (this.detectedIssueTarget == null)
-        this.detectedIssueTarget = new ArrayList<DetectedIssue>();
-      this.detectedIssueTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #notDone} (True if the dispense was not performed for some reason.). This is the underlying object with id, value and extensions. The accessor "getNotDone" gives direct access to the value
      */
     public BooleanType getNotDoneElement() { 
@@ -2260,28 +2152,6 @@ public class MedicationDispense extends DomainResource {
         addEventHistory();
       }
       return getEventHistory().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Provenance> getEventHistoryTarget() { 
-      if (this.eventHistoryTarget == null)
-        this.eventHistoryTarget = new ArrayList<Provenance>();
-      return this.eventHistoryTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Provenance addEventHistoryTarget() { 
-      Provenance r = new Provenance();
-      if (this.eventHistoryTarget == null)
-        this.eventHistoryTarget = new ArrayList<Provenance>();
-      this.eventHistoryTarget.add(r);
-      return r;
     }
 
       protected void listChildren(List<Property> children) {

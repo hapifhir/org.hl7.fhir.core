@@ -1146,16 +1146,6 @@ public class CarePlan extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getOutcomeReferenceTarget() {
-      if (this.outcomeReferenceTarget == null)
-        this.outcomeReferenceTarget = new ArrayList<Resource>();
-      return this.outcomeReferenceTarget;
-    }
-
-    /**
      * @return {@link #progress} (Notes about the adherence/status/progress of the
      *         activity.)
      */
@@ -2091,16 +2081,6 @@ public class CarePlan extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() {
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
-    }
-
-    /**
      * @return {@link #goal} (Internal reference that identifies the goals that this
      *         activity is intended to contribute towards meeting.)
      */
@@ -2153,28 +2133,6 @@ public class CarePlan extends DomainResource {
         addGoal();
       }
       return getGoal().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Goal> getGoalTarget() {
-      if (this.goalTarget == null)
-        this.goalTarget = new ArrayList<Goal>();
-      return this.goalTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Goal addGoalTarget() {
-      Goal r = new Goal();
-      if (this.goalTarget == null)
-        this.goalTarget = new ArrayList<Goal>();
-      this.goalTarget.add(r);
-      return r;
     }
 
     /**
@@ -2497,16 +2455,6 @@ public class CarePlan extends DomainResource {
         addPerformer();
       }
       return getPerformer().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getPerformerTarget() {
-      if (this.performerTarget == null)
-        this.performerTarget = new ArrayList<Resource>();
-      return this.performerTarget;
     }
 
     /**
@@ -3814,28 +3762,6 @@ public class CarePlan extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<CarePlan> getBasedOnTarget() {
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<CarePlan>();
-    return this.basedOnTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public CarePlan addBasedOnTarget() {
-    CarePlan r = new CarePlan();
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<CarePlan>();
-    this.basedOnTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #replaces} (Completed or terminated care plan whose function
    *         is taken by this new care plan.)
    */
@@ -3891,28 +3817,6 @@ public class CarePlan extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<CarePlan> getReplacesTarget() {
-    if (this.replacesTarget == null)
-      this.replacesTarget = new ArrayList<CarePlan>();
-    return this.replacesTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public CarePlan addReplacesTarget() {
-    CarePlan r = new CarePlan();
-    if (this.replacesTarget == null)
-      this.replacesTarget = new ArrayList<CarePlan>();
-    this.replacesTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #partOf} (A larger care plan of which this particular care
    *         plan is a component or step.)
    */
@@ -3965,28 +3869,6 @@ public class CarePlan extends DomainResource {
       addPartOf();
     }
     return getPartOf().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<CarePlan> getPartOfTarget() {
-    if (this.partOfTarget == null)
-      this.partOfTarget = new ArrayList<CarePlan>();
-    return this.partOfTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public CarePlan addPartOfTarget() {
-    CarePlan r = new CarePlan();
-    if (this.partOfTarget == null)
-      this.partOfTarget = new ArrayList<CarePlan>();
-    this.partOfTarget.add(r);
-    return r;
   }
 
   /**
@@ -4554,16 +4436,6 @@ public class CarePlan extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getContributorTarget() {
-    if (this.contributorTarget == null)
-      this.contributorTarget = new ArrayList<Resource>();
-    return this.contributorTarget;
-  }
-
-  /**
    * @return {@link #careTeam} (Identifies all people and organizations who are
    *         expected to be involved in the care envisioned by this plan.)
    */
@@ -4616,28 +4488,6 @@ public class CarePlan extends DomainResource {
       addCareTeam();
     }
     return getCareTeam().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<CareTeam> getCareTeamTarget() {
-    if (this.careTeamTarget == null)
-      this.careTeamTarget = new ArrayList<CareTeam>();
-    return this.careTeamTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public CareTeam addCareTeamTarget() {
-    CareTeam r = new CareTeam();
-    if (this.careTeamTarget == null)
-      this.careTeamTarget = new ArrayList<CareTeam>();
-    this.careTeamTarget.add(r);
-    return r;
   }
 
   /**
@@ -4694,28 +4544,6 @@ public class CarePlan extends DomainResource {
       addAddresses();
     }
     return getAddresses().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Condition> getAddressesTarget() {
-    if (this.addressesTarget == null)
-      this.addressesTarget = new ArrayList<Condition>();
-    return this.addressesTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Condition addAddressesTarget() {
-    Condition r = new Condition();
-    if (this.addressesTarget == null)
-      this.addressesTarget = new ArrayList<Condition>();
-    this.addressesTarget.add(r);
-    return r;
   }
 
   /**
@@ -4776,16 +4604,6 @@ public class CarePlan extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getSupportingInfoTarget() {
-    if (this.supportingInfoTarget == null)
-      this.supportingInfoTarget = new ArrayList<Resource>();
-    return this.supportingInfoTarget;
-  }
-
-  /**
    * @return {@link #goal} (Describes the intended objective(s) of carrying out
    *         the care plan.)
    */
@@ -4838,28 +4656,6 @@ public class CarePlan extends DomainResource {
       addGoal();
     }
     return getGoal().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Goal> getGoalTarget() {
-    if (this.goalTarget == null)
-      this.goalTarget = new ArrayList<Goal>();
-    return this.goalTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Goal addGoalTarget() {
-    Goal r = new Goal();
-    if (this.goalTarget == null)
-      this.goalTarget = new ArrayList<Goal>();
-    this.goalTarget.add(r);
-    return r;
   }
 
   /**

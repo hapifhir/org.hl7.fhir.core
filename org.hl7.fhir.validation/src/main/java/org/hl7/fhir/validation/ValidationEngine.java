@@ -377,21 +377,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       extensionsVersion = null;
     }
 
-    /**
-     * @deprecated This method will be removed in a future release, and should not be used outside of this class.
-     * Use {@link #ValidationEngineBuilder()} instead.
-     */
-    @Deprecated
-    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, String thoVersion, String extensionsVersion) {
-      this(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, USE_ECOSYSTEM_DEFAULT, timeTracker, canRunWithoutTerminologyServer, loggingService, thoVersion, extensionsVersion);
-    }
-
-    /**
-     * @deprecated This method will be made private in a future release, and should not be used outside of this class.
-     * Use {@link #ValidationEngineBuilder()} instead.
-     */
-    @Deprecated
-    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, boolean useEcosystem, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, String thoVersion, String extensionsVersion) {
+    private ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, boolean useEcosystem, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, String thoVersion, String extensionsVersion) {
       this.terminologyCachePath = terminologyCachePath;
       this.userAgent = userAgent;
       this.version = version;

@@ -1906,16 +1906,6 @@ public class Appointment extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getReasonReferenceTarget() {
-    if (this.reasonReferenceTarget == null)
-      this.reasonReferenceTarget = new ArrayList<Resource>();
-    return this.reasonReferenceTarget;
-  }
-
-  /**
    * @return {@link #priority} (The priority of the appointment. Can be used to
    *         make informed decisions if needing to re-prioritize appointments.
    *         (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as
@@ -2092,16 +2082,6 @@ public class Appointment extends DomainResource {
       addSupportingInformation();
     }
     return getSupportingInformation().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getSupportingInformationTarget() {
-    if (this.supportingInformationTarget == null)
-      this.supportingInformationTarget = new ArrayList<Resource>();
-    return this.supportingInformationTarget;
   }
 
   /**
@@ -2339,28 +2319,6 @@ public class Appointment extends DomainResource {
       addSlot();
     }
     return getSlot().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Slot> getSlotTarget() {
-    if (this.slotTarget == null)
-      this.slotTarget = new ArrayList<Slot>();
-    return this.slotTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Slot addSlotTarget() {
-    Slot r = new Slot();
-    if (this.slotTarget == null)
-      this.slotTarget = new ArrayList<Slot>();
-    this.slotTarget.add(r);
-    return r;
   }
 
   /**
@@ -2604,28 +2562,6 @@ public class Appointment extends DomainResource {
       addBasedOn();
     }
     return getBasedOn().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<ServiceRequest> getBasedOnTarget() {
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<ServiceRequest>();
-    return this.basedOnTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public ServiceRequest addBasedOnTarget() {
-    ServiceRequest r = new ServiceRequest();
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<ServiceRequest>();
-    this.basedOnTarget.add(r);
-    return r;
   }
 
   /**

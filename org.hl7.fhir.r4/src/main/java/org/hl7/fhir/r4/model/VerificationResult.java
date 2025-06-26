@@ -2239,16 +2239,6 @@ public class VerificationResult extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getTargetTarget() {
-    if (this.targetTarget == null)
-      this.targetTarget = new ArrayList<Resource>();
-    return this.targetTarget;
-  }
-
-  /**
    * @return {@link #targetLocation} (The fhirpath location(s) within the resource
    *         that was validated.)
    */

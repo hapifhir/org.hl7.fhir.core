@@ -38,7 +38,7 @@ public class PEGeneratedBase {
 
   @Deprecated
   protected PEInstance instance;
-  
+
   @Deprecated
   protected void removeChild(String name) {
     PEInstance child = instance.child(name);
@@ -58,11 +58,11 @@ public class PEGeneratedBase {
   public PEInstance getInstance() {
     return instance;
   }
-  
+
   @Deprecated
   public Base getData() {
     return instance.getBase();
   }
-  
+
 }
 

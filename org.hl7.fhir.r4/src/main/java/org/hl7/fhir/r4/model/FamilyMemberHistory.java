@@ -1931,16 +1931,6 @@ public class FamilyMemberHistory extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getReasonReferenceTarget() {
-    if (this.reasonReferenceTarget == null)
-      this.reasonReferenceTarget = new ArrayList<Resource>();
-    return this.reasonReferenceTarget;
-  }
-
-  /**
    * @return {@link #note} (This property allows a non condition-specific note to
    *         the made about the related person. Ideally, the note would be in the
    *         condition property, but this is not always possible.)

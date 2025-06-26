@@ -1408,28 +1408,6 @@ public class ResearchStudy extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<PlanDefinition> getProtocolTarget() {
-    if (this.protocolTarget == null)
-      this.protocolTarget = new ArrayList<PlanDefinition>();
-    return this.protocolTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public PlanDefinition addProtocolTarget() {
-    PlanDefinition r = new PlanDefinition();
-    if (this.protocolTarget == null)
-      this.protocolTarget = new ArrayList<PlanDefinition>();
-    this.protocolTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #partOf} (A larger research study of which this particular
    *         study is a component or step.)
    */
@@ -1482,28 +1460,6 @@ public class ResearchStudy extends DomainResource {
       addPartOf();
     }
     return getPartOf().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<ResearchStudy> getPartOfTarget() {
-    if (this.partOfTarget == null)
-      this.partOfTarget = new ArrayList<ResearchStudy>();
-    return this.partOfTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public ResearchStudy addPartOfTarget() {
-    ResearchStudy r = new ResearchStudy();
-    if (this.partOfTarget == null)
-      this.partOfTarget = new ArrayList<ResearchStudy>();
-    this.partOfTarget.add(r);
-    return r;
   }
 
   /**
@@ -2113,28 +2069,6 @@ public class ResearchStudy extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Group> getEnrollmentTarget() {
-    if (this.enrollmentTarget == null)
-      this.enrollmentTarget = new ArrayList<Group>();
-    return this.enrollmentTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Group addEnrollmentTarget() {
-    Group r = new Group();
-    if (this.enrollmentTarget == null)
-      this.enrollmentTarget = new ArrayList<Group>();
-    this.enrollmentTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #period} (Identifies the start date and the expected (or
    *         actual, depending on status) end date for the study.)
    */
@@ -2326,28 +2260,6 @@ public class ResearchStudy extends DomainResource {
       addSite();
     }
     return getSite().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Location> getSiteTarget() {
-    if (this.siteTarget == null)
-      this.siteTarget = new ArrayList<Location>();
-    return this.siteTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Location addSiteTarget() {
-    Location r = new Location();
-    if (this.siteTarget == null)
-      this.siteTarget = new ArrayList<Location>();
-    this.siteTarget.add(r);
-    return r;
   }
 
   /**

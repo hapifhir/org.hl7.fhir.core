@@ -994,16 +994,6 @@ public class DiagnosticReport extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getBasedOnTarget() {
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<Resource>();
-    return this.basedOnTarget;
-  }
-
-  /**
    * @return {@link #status} (The status of the diagnostic report.). This is the
    *         underlying object with id, value and extensions. The accessor
    *         "getStatus" gives direct access to the value
@@ -1429,16 +1419,6 @@ public class DiagnosticReport extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getPerformerTarget() {
-    if (this.performerTarget == null)
-      this.performerTarget = new ArrayList<Resource>();
-    return this.performerTarget;
-  }
-
-  /**
    * @return {@link #resultsInterpreter} (The practitioner or organization that is
    *         responsible for the report's conclusions and interpretations.)
    */
@@ -1491,16 +1471,6 @@ public class DiagnosticReport extends DomainResource {
       addResultsInterpreter();
     }
     return getResultsInterpreter().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getResultsInterpreterTarget() {
-    if (this.resultsInterpreterTarget == null)
-      this.resultsInterpreterTarget = new ArrayList<Resource>();
-    return this.resultsInterpreterTarget;
   }
 
   /**
@@ -1559,28 +1529,6 @@ public class DiagnosticReport extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Specimen> getSpecimenTarget() {
-    if (this.specimenTarget == null)
-      this.specimenTarget = new ArrayList<Specimen>();
-    return this.specimenTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Specimen addSpecimenTarget() {
-    Specimen r = new Specimen();
-    if (this.specimenTarget == null)
-      this.specimenTarget = new ArrayList<Specimen>();
-    this.specimenTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #result} ([Observations](observation.html) that are part of
    *         this diagnostic report.)
    */
@@ -1633,28 +1581,6 @@ public class DiagnosticReport extends DomainResource {
       addResult();
     }
     return getResult().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Observation> getResultTarget() {
-    if (this.resultTarget == null)
-      this.resultTarget = new ArrayList<Observation>();
-    return this.resultTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Observation addResultTarget() {
-    Observation r = new Observation();
-    if (this.resultTarget == null)
-      this.resultTarget = new ArrayList<Observation>();
-    this.resultTarget.add(r);
-    return r;
   }
 
   /**
@@ -1713,28 +1639,6 @@ public class DiagnosticReport extends DomainResource {
       addImagingStudy();
     }
     return getImagingStudy().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<ImagingStudy> getImagingStudyTarget() {
-    if (this.imagingStudyTarget == null)
-      this.imagingStudyTarget = new ArrayList<ImagingStudy>();
-    return this.imagingStudyTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public ImagingStudy addImagingStudyTarget() {
-    ImagingStudy r = new ImagingStudy();
-    if (this.imagingStudyTarget == null)
-      this.imagingStudyTarget = new ArrayList<ImagingStudy>();
-    this.imagingStudyTarget.add(r);
-    return r;
   }
 
   /**

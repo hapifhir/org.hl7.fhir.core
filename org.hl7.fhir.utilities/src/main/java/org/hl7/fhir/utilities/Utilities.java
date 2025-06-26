@@ -521,26 +521,28 @@ public class Utilities {
   }
 
   /**
-   * Composes a path string using by concatenating the passed arguments.
-   *
-   * This method does not check for unintentional access to areas of the file
-   * system outside of the first entry. ONLY USE THIS METHOD IN CASES WHERE YOU
-   * ARE CERTAIN THE COMPOSED PATH IS NOT MALICIOUS.
-   *
-   * @param args
-   * @return
-   * @throws IOException
-   *
-   * @see PathBuilder#buildPath(String...)
-   */
-  @Deprecated
-  public static String uncheckedPath(String... args) throws IOException {
-    return PathBuilder.getPathBuilder()
-        .withRequireNonRootFirstEntry(false)
-        .withRequireNonNullNonEmptyFirstEntry(false)
-        .withRequirePathIsChildOfTarget(false)
-        .buildPath(args);
-  }
+     * Composes a path string using by concatenating the passed arguments.
+     *
+     * This method does not check for unintentional access to areas of the file
+     * system outside of the first entry. ONLY USE THIS METHOD IN CASES WHERE YOU
+     * ARE CERTAIN THE COMPOSED PATH IS NOT MALICIOUS.
+     *
+     * @param args
+     * @return
+     * @throws IOException
+     *
+     * @see PathBuilder#buildPath(String...)
+     */
+    @Deprecated
+    public static String uncheckedPath(String... args) throws IOException {
+      return PathBuilder.getPathBuilder()
+          .withRequireNonRootFirstEntry(false)
+          .withRequireNonNullNonEmptyFirstEntry(false)
+          .withRequirePathIsChildOfTarget(false)
+          .buildPath(args);
+    }
+
+
 
 
   public static String pathURL(String... args) {

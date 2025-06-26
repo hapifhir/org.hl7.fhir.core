@@ -117,18 +117,6 @@ public interface IWorkerContext {
 
     public void seeSupplement(CodeSystem supp);
   }
-  /**
-   @deprecated This interface only exists to provide backward compatibility for the following two projects:
-   <a href="https://github.com/cqframework/clinical-reasoning">clinical-reasoning</a>
-   <a href="https://github.com/cqframework/clinical_quality_language/">clinical_quality-language</a>
-
-   Due to a circular dependency, they cannot be updated without a release of HAPI, which requires backwards
-   compatibility with core version 6.1.2.2
-   **/
-  @Deprecated(forRemoval = true)
-  public interface ILoggingService extends org.hl7.fhir.r5.context.ILoggingService{
-
-  }
   public class OIDDefinitionComparer implements Comparator<OIDDefinition> {
 
     @Override
@@ -742,21 +730,6 @@ public interface IWorkerContext {
    * @return the number of resources loaded
    */
   int loadFromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException;
-
-  /**
-   * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package
-   * 
-   * note that the package system uses lazy loading; the loader will be called later when the classes that use the context need the relevant resource
-   *
-   * Deprecated - use the simpler method where the types come from the loader.
-   * 
-   * @param pi - the package to load
-   * @param loader - an implemenation of IContextResourceLoader that knows how to read the resources in the package (e.g. for the appropriate version).
-   * @param types - which types of resources to load
-   * @return the number of resources loaded
-   */
-  @Deprecated
-  int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, Set<String> types) throws FileNotFoundException, IOException, FHIRException;
 
   /**
    * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package

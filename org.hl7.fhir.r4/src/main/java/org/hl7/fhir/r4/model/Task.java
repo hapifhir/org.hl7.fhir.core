@@ -978,16 +978,6 @@ public class Task extends DomainResource {
       return getRecipient().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getRecipientTarget() {
-      if (this.recipientTarget == null)
-        this.recipientTarget = new ArrayList<Resource>();
-      return this.recipientTarget;
-    }
-
     protected void listChildren(List<Property> children) {
       super.listChildren(children);
       children.add(new Property("repetitions", "positiveInt",
@@ -2752,16 +2742,6 @@ public class Task extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getBasedOnTarget() {
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<Resource>();
-    return this.basedOnTarget;
-  }
-
-  /**
    * @return {@link #groupIdentifier} (An identifier that links together multiple
    *         tasks and other requests that were created in the same context.)
    */
@@ -2840,28 +2820,6 @@ public class Task extends DomainResource {
       addPartOf();
     }
     return getPartOf().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Task> getPartOfTarget() {
-    if (this.partOfTarget == null)
-      this.partOfTarget = new ArrayList<Task>();
-    return this.partOfTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Task addPartOfTarget() {
-    Task r = new Task();
-    if (this.partOfTarget == null)
-      this.partOfTarget = new ArrayList<Task>();
-    this.partOfTarget.add(r);
-    return r;
   }
 
   /**
@@ -3776,16 +3734,6 @@ public class Task extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getInsuranceTarget() {
-    if (this.insuranceTarget == null)
-      this.insuranceTarget = new ArrayList<Resource>();
-    return this.insuranceTarget;
-  }
-
-  /**
    * @return {@link #note} (Free-text information captured about the task as it
    *         progresses.)
    */
@@ -3895,28 +3843,6 @@ public class Task extends DomainResource {
       addRelevantHistory();
     }
     return getRelevantHistory().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Provenance> getRelevantHistoryTarget() {
-    if (this.relevantHistoryTarget == null)
-      this.relevantHistoryTarget = new ArrayList<Provenance>();
-    return this.relevantHistoryTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Provenance addRelevantHistoryTarget() {
-    Provenance r = new Provenance();
-    if (this.relevantHistoryTarget == null)
-      this.relevantHistoryTarget = new ArrayList<Provenance>();
-    this.relevantHistoryTarget.add(r);
-    return r;
   }
 
   /**

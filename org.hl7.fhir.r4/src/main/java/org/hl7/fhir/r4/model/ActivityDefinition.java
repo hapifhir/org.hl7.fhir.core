@@ -4442,28 +4442,6 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<SpecimenDefinition> getSpecimenRequirementTarget() {
-    if (this.specimenRequirementTarget == null)
-      this.specimenRequirementTarget = new ArrayList<SpecimenDefinition>();
-    return this.specimenRequirementTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public SpecimenDefinition addSpecimenRequirementTarget() {
-    SpecimenDefinition r = new SpecimenDefinition();
-    if (this.specimenRequirementTarget == null)
-      this.specimenRequirementTarget = new ArrayList<SpecimenDefinition>();
-    this.specimenRequirementTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #observationRequirement} (Defines observation requirements for
    *         the action to be performed, such as body weight or surface area.)
    */
@@ -4520,28 +4498,6 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<ObservationDefinition> getObservationRequirementTarget() {
-    if (this.observationRequirementTarget == null)
-      this.observationRequirementTarget = new ArrayList<ObservationDefinition>();
-    return this.observationRequirementTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public ObservationDefinition addObservationRequirementTarget() {
-    ObservationDefinition r = new ObservationDefinition();
-    if (this.observationRequirementTarget == null)
-      this.observationRequirementTarget = new ArrayList<ObservationDefinition>();
-    this.observationRequirementTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #observationResultRequirement} (Defines the observations that
    *         are expected to be produced by the action.)
    */
@@ -4595,28 +4551,6 @@ public class ActivityDefinition extends MetadataResource {
       addObservationResultRequirement();
     }
     return getObservationResultRequirement().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<ObservationDefinition> getObservationResultRequirementTarget() {
-    if (this.observationResultRequirementTarget == null)
-      this.observationResultRequirementTarget = new ArrayList<ObservationDefinition>();
-    return this.observationResultRequirementTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public ObservationDefinition addObservationResultRequirementTarget() {
-    ObservationDefinition r = new ObservationDefinition();
-    if (this.observationResultRequirementTarget == null)
-      this.observationResultRequirementTarget = new ArrayList<ObservationDefinition>();
-    this.observationResultRequirementTarget.add(r);
-    return r;
   }
 
   /**

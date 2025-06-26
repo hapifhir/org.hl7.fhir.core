@@ -1263,16 +1263,6 @@ public class Provenance extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getTargetTarget() {
-    if (this.targetTarget == null)
-      this.targetTarget = new ArrayList<Resource>();
-    return this.targetTarget;
-  }
-
-  /**
    * @return {@link #occurred} (The period during which the activity occurred.)
    */
   public Type getOccurred() {

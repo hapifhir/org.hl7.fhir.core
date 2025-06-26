@@ -440,28 +440,6 @@ public class ImmunizationRecommendation extends DomainResource {
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Immunization> getSupportingImmunizationTarget() { 
-          if (this.supportingImmunizationTarget == null)
-            this.supportingImmunizationTarget = new ArrayList<Immunization>();
-          return this.supportingImmunizationTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Immunization addSupportingImmunizationTarget() { 
-          Immunization r = new Immunization();
-          if (this.supportingImmunizationTarget == null)
-            this.supportingImmunizationTarget = new ArrayList<Immunization>();
-          this.supportingImmunizationTarget.add(r);
-          return r;
-        }
-
-        /**
          * @return {@link #supportingPatientInformation} (Patient Information that supports the status and recommendation.  This includes patient observations, adverse reactions and allergy/intolerance information.)
          */
         public List<Reference> getSupportingPatientInformation() { 
@@ -512,16 +490,6 @@ public class ImmunizationRecommendation extends DomainResource {
             addSupportingPatientInformation();
           }
           return getSupportingPatientInformation().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getSupportingPatientInformationTarget() { 
-          if (this.supportingPatientInformationTarget == null)
-            this.supportingPatientInformationTarget = new ArrayList<Resource>();
-          return this.supportingPatientInformationTarget;
         }
 
         protected void listChildren(List<Property> children) {

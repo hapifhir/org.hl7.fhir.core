@@ -1326,28 +1326,6 @@ public class SupplyRequest extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Organization> getSupplierTarget() { 
-      if (this.supplierTarget == null)
-        this.supplierTarget = new ArrayList<Organization>();
-      return this.supplierTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Organization addSupplierTarget() { 
-      Organization r = new Organization();
-      if (this.supplierTarget == null)
-        this.supplierTarget = new ArrayList<Organization>();
-      this.supplierTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #reason} (Why the supply item was requested.)
      */
     public Type getReason() { 

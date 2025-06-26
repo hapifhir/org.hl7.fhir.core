@@ -610,28 +610,6 @@ public class ImagingStudy extends DomainResource {
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Endpoint> getEndpointTarget() { 
-          if (this.endpointTarget == null)
-            this.endpointTarget = new ArrayList<Endpoint>();
-          return this.endpointTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Endpoint addEndpointTarget() { 
-          Endpoint r = new Endpoint();
-          if (this.endpointTarget == null)
-            this.endpointTarget = new ArrayList<Endpoint>();
-          this.endpointTarget.add(r);
-          return r;
-        }
-
-        /**
          * @return {@link #bodySite} (The anatomic structures examined. See DICOM Part 16 Annex L (http://dicom.nema.org/medical/dicom/current/output/chtml/part16/chapter_L.html) for DICOM to SNOMED-CT mappings. The bodySite may indicate the laterality of body part imaged; if so, it shall be consistent with any content of ImagingStudy.series.laterality.)
          */
         public Coding getBodySite() { 
@@ -779,28 +757,6 @@ public class ImagingStudy extends DomainResource {
             addPerformer();
           }
           return getPerformer().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Practitioner> getPerformerTarget() { 
-          if (this.performerTarget == null)
-            this.performerTarget = new ArrayList<Practitioner>();
-          return this.performerTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Practitioner addPerformerTarget() { 
-          Practitioner r = new Practitioner();
-          if (this.performerTarget == null)
-            this.performerTarget = new ArrayList<Practitioner>();
-          this.performerTarget.add(r);
-          return r;
         }
 
         /**
@@ -2128,16 +2084,6 @@ public class ImagingStudy extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<Resource>();
-      return this.basedOnTarget;
-    }
-
-    /**
      * @return {@link #referrer} (The requesting/referring physician.)
      */
     public Reference getReferrer() { 
@@ -2235,28 +2181,6 @@ public class ImagingStudy extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Practitioner> getInterpreterTarget() { 
-      if (this.interpreterTarget == null)
-        this.interpreterTarget = new ArrayList<Practitioner>();
-      return this.interpreterTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Practitioner addInterpreterTarget() { 
-      Practitioner r = new Practitioner();
-      if (this.interpreterTarget == null)
-        this.interpreterTarget = new ArrayList<Practitioner>();
-      this.interpreterTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #endpoint} (The network service providing access (e.g., query, view, or retrieval) for the study. See implementation notes for information about using DICOM endpoints. A study-level endpoint applies to each series in the study, unless overridden by a series-level endpoint with the same Endpoint.type.)
      */
     public List<Reference> getEndpoint() { 
@@ -2307,28 +2231,6 @@ public class ImagingStudy extends DomainResource {
         addEndpoint();
       }
       return getEndpoint().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Endpoint> getEndpointTarget() { 
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      return this.endpointTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Endpoint addEndpointTarget() { 
-      Endpoint r = new Endpoint();
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      this.endpointTarget.add(r);
-      return r;
     }
 
     /**
@@ -2472,28 +2374,6 @@ public class ImagingStudy extends DomainResource {
         addProcedureReference();
       }
       return getProcedureReference().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Procedure> getProcedureReferenceTarget() { 
-      if (this.procedureReferenceTarget == null)
-        this.procedureReferenceTarget = new ArrayList<Procedure>();
-      return this.procedureReferenceTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Procedure addProcedureReferenceTarget() { 
-      Procedure r = new Procedure();
-      if (this.procedureReferenceTarget == null)
-        this.procedureReferenceTarget = new ArrayList<Procedure>();
-      this.procedureReferenceTarget.add(r);
-      return r;
     }
 
     /**

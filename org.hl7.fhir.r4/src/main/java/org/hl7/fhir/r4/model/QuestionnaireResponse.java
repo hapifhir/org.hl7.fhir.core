@@ -1610,16 +1610,6 @@ public class QuestionnaireResponse extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getBasedOnTarget() {
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<Resource>();
-    return this.basedOnTarget;
-  }
-
-  /**
    * @return {@link #partOf} (A procedure or observation that this questionnaire
    *         was performed as part of the execution of. For example, the surgery a
    *         checklist was executed as part of.)
@@ -1673,16 +1663,6 @@ public class QuestionnaireResponse extends DomainResource {
       addPartOf();
     }
     return getPartOf().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getPartOfTarget() {
-    if (this.partOfTarget == null)
-      this.partOfTarget = new ArrayList<Resource>();
-    return this.partOfTarget;
   }
 
   /**

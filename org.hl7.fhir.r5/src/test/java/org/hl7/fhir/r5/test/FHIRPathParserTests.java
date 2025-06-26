@@ -155,4 +155,41 @@ public class FHIRPathParserTests {
       Assertions.assertEquals(26, opString.getStart().getColumn());
 
   }
+
+  @Test
+  void testFhirPathParserLexerGroupedOr() {
+      var parseTree = fp.parse("id='official' or id='example'");
+
+      // Check all the line numbering from the parse tree
+      // the or
+      var opOr = parseTree;
+      Assertions.assertEquals(1, opOr.getOpStart().getLine());
+      Assertions.assertEquals(15, opOr.getOpStart().getColumn());
+      Assertions.assertEquals("or", opOr.getOperation().toCode());
+
+      var opLeftEquals = opOr.getGroup();
+      var opRightEquals = opOr.getOpNext().getGroup();
+
+      Assertions.assertEquals(1, opLeftEquals.getOpStart().getLine());
+      Assertions.assertEquals(3, opLeftEquals.getOpStart().getColumn());
+      Assertions.assertEquals("=", opLeftEquals.getOperation().toCode());
+
+      Assertions.assertEquals(1, opRightEquals.getOpStart().getLine());
+      Assertions.assertEquals(20, opRightEquals.getOpStart().getColumn());
+      Assertions.assertEquals("=", opRightEquals.getOperation().toCode());
+
+      // the left side "id='official'""
+      Assertions.assertEquals("id", opLeftEquals.getName());
+      var opLeftValue = opLeftEquals.getOpNext();
+      Assertions.assertEquals(1, opLeftValue.getStart().getLine());
+      Assertions.assertEquals(4, opLeftValue.getStart().getColumn());
+      Assertions.assertEquals("official", opLeftValue.getConstant().toString());
+
+      // the right side "id='example'"
+      Assertions.assertEquals("id", opRightEquals.getName());
+      var opRightValue = opRightEquals.getOpNext();
+      Assertions.assertEquals(1, opRightValue.getStart().getLine());
+      Assertions.assertEquals(21, opRightValue.getStart().getColumn());
+      Assertions.assertEquals("example", opRightValue.getConstant().toString());
+  }
 }

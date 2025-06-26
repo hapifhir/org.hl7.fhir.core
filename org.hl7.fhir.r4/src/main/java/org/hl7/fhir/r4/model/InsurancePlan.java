@@ -557,28 +557,6 @@ public class InsurancePlan extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Organization> getNetworkTarget() {
-      if (this.networkTarget == null)
-        this.networkTarget = new ArrayList<Organization>();
-      return this.networkTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Organization addNetworkTarget() {
-      Organization r = new Organization();
-      if (this.networkTarget == null)
-        this.networkTarget = new ArrayList<Organization>();
-      this.networkTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #benefit} (Specific benefits under this type of coverage.)
      */
     public List<CoverageBenefitComponent> getBenefit() {
@@ -1615,28 +1593,6 @@ public class InsurancePlan extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Location> getCoverageAreaTarget() {
-      if (this.coverageAreaTarget == null)
-        this.coverageAreaTarget = new ArrayList<Location>();
-      return this.coverageAreaTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Location addCoverageAreaTarget() {
-      Location r = new Location();
-      if (this.coverageAreaTarget == null)
-        this.coverageAreaTarget = new ArrayList<Location>();
-      this.coverageAreaTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #network} (Reference to the network that providing the type of
      *         coverage.)
      */
@@ -1689,28 +1645,6 @@ public class InsurancePlan extends DomainResource {
         addNetwork();
       }
       return getNetwork().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Organization> getNetworkTarget() {
-      if (this.networkTarget == null)
-        this.networkTarget = new ArrayList<Organization>();
-      return this.networkTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Organization addNetworkTarget() {
-      Organization r = new Organization();
-      if (this.networkTarget == null)
-        this.networkTarget = new ArrayList<Organization>();
-      this.networkTarget.add(r);
-      return r;
     }
 
     /**
@@ -4081,28 +4015,6 @@ public class InsurancePlan extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Location> getCoverageAreaTarget() {
-    if (this.coverageAreaTarget == null)
-      this.coverageAreaTarget = new ArrayList<Location>();
-    return this.coverageAreaTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Location addCoverageAreaTarget() {
-    Location r = new Location();
-    if (this.coverageAreaTarget == null)
-      this.coverageAreaTarget = new ArrayList<Location>();
-    this.coverageAreaTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #contact} (The contact for the health insurance product for a
    *         certain purpose.)
    */
@@ -4213,28 +4125,6 @@ public class InsurancePlan extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Endpoint> getEndpointTarget() {
-    if (this.endpointTarget == null)
-      this.endpointTarget = new ArrayList<Endpoint>();
-    return this.endpointTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Endpoint addEndpointTarget() {
-    Endpoint r = new Endpoint();
-    if (this.endpointTarget == null)
-      this.endpointTarget = new ArrayList<Endpoint>();
-    this.endpointTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #network} (Reference to the network included in the health
    *         insurance product.)
    */
@@ -4287,28 +4177,6 @@ public class InsurancePlan extends DomainResource {
       addNetwork();
     }
     return getNetwork().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Organization> getNetworkTarget() {
-    if (this.networkTarget == null)
-      this.networkTarget = new ArrayList<Organization>();
-    return this.networkTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Organization addNetworkTarget() {
-    Organization r = new Organization();
-    if (this.networkTarget == null)
-      this.networkTarget = new ArrayList<Organization>();
-    this.networkTarget.add(r);
-    return r;
   }
 
   /**

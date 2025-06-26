@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Add FhirPath Debug Tracer interface and hooks from FhirPath engine (permitting debug tracing live execution of expression evaluation)

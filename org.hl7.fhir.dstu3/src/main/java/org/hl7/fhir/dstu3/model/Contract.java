@@ -1856,16 +1856,6 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getTopicTarget() { 
-          if (this.topicTarget == null)
-            this.topicTarget = new ArrayList<Resource>();
-          return this.topicTarget;
-        }
-
-        /**
          * @return {@link #action} (Action stipulated by this Contract Provision.)
          */
         public List<CodeableConcept> getAction() { 
@@ -4404,16 +4394,6 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getSubjectTarget() { 
-      if (this.subjectTarget == null)
-        this.subjectTarget = new ArrayList<Resource>();
-      return this.subjectTarget;
-    }
-
-    /**
      * @return {@link #topic} (The matter of concern in the context of this agreement.)
      */
     public List<Reference> getTopic() { 
@@ -4464,16 +4444,6 @@ public class Contract extends DomainResource {
         addTopic();
       }
       return getTopic().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getTopicTarget() { 
-      if (this.topicTarget == null)
-        this.topicTarget = new ArrayList<Resource>();
-      return this.topicTarget;
     }
 
     /**
@@ -4530,28 +4500,6 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Organization> getAuthorityTarget() { 
-      if (this.authorityTarget == null)
-        this.authorityTarget = new ArrayList<Organization>();
-      return this.authorityTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Organization addAuthorityTarget() { 
-      Organization r = new Organization();
-      if (this.authorityTarget == null)
-        this.authorityTarget = new ArrayList<Organization>();
-      this.authorityTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #domain} (Recognized governance framework or system operating with a circumscribed scope in accordance with specified principles, policies, processes or procedures for managing rights, actions, or behaviors of parties or principals relative to resources.)
      */
     public List<Reference> getDomain() { 
@@ -4602,28 +4550,6 @@ public class Contract extends DomainResource {
         addDomain();
       }
       return getDomain().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Location> getDomainTarget() { 
-      if (this.domainTarget == null)
-        this.domainTarget = new ArrayList<Location>();
-      return this.domainTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Location addDomainTarget() { 
-      Location r = new Location();
-      if (this.domainTarget == null)
-        this.domainTarget = new ArrayList<Location>();
-      this.domainTarget.add(r);
-      return r;
     }
 
     /**

@@ -871,16 +871,6 @@ public class DocumentManifest extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getAuthorTarget() { 
-      if (this.authorTarget == null)
-        this.authorTarget = new ArrayList<Resource>();
-      return this.authorTarget;
-    }
-
-    /**
      * @return {@link #recipient} (A patient, practitioner, or organization for which this set of documents is intended.)
      */
     public List<Reference> getRecipient() { 
@@ -931,16 +921,6 @@ public class DocumentManifest extends DomainResource {
         addRecipient();
       }
       return getRecipient().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getRecipientTarget() { 
-      if (this.recipientTarget == null)
-        this.recipientTarget = new ArrayList<Resource>();
-      return this.recipientTarget;
     }
 
     /**

@@ -682,28 +682,6 @@ public class ImagingStudy extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Endpoint> getEndpointTarget() {
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      return this.endpointTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Endpoint addEndpointTarget() {
-      Endpoint r = new Endpoint();
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      this.endpointTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #bodySite} (The anatomic structures examined. See DICOM Part
      *         16 Annex L
      *         (http://dicom.nema.org/medical/dicom/current/output/chtml/part16/chapter_L.html)
@@ -821,28 +799,6 @@ public class ImagingStudy extends DomainResource {
         addSpecimen();
       }
       return getSpecimen().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Specimen> getSpecimenTarget() {
-      if (this.specimenTarget == null)
-        this.specimenTarget = new ArrayList<Specimen>();
-      return this.specimenTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Specimen addSpecimenTarget() {
-      Specimen r = new Specimen();
-      if (this.specimenTarget == null)
-        this.specimenTarget = new ArrayList<Specimen>();
-      this.specimenTarget.add(r);
-      return r;
     }
 
     /**
@@ -2723,16 +2679,6 @@ public class ImagingStudy extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getBasedOnTarget() {
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<Resource>();
-    return this.basedOnTarget;
-  }
-
-  /**
    * @return {@link #referrer} (The requesting/referring physician.)
    */
   public Reference getReferrer() {
@@ -2833,16 +2779,6 @@ public class ImagingStudy extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getInterpreterTarget() {
-    if (this.interpreterTarget == null)
-      this.interpreterTarget = new ArrayList<Resource>();
-    return this.interpreterTarget;
-  }
-
-  /**
    * @return {@link #endpoint} (The network service providing access (e.g., query,
    *         view, or retrieval) for the study. See implementation notes for
    *         information about using DICOM endpoints. A study-level endpoint
@@ -2898,28 +2834,6 @@ public class ImagingStudy extends DomainResource {
       addEndpoint();
     }
     return getEndpoint().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Endpoint> getEndpointTarget() {
-    if (this.endpointTarget == null)
-      this.endpointTarget = new ArrayList<Endpoint>();
-    return this.endpointTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Endpoint addEndpointTarget() {
-    Endpoint r = new Endpoint();
-    if (this.endpointTarget == null)
-      this.endpointTarget = new ArrayList<Endpoint>();
-    this.endpointTarget.add(r);
-    return r;
   }
 
   /**
@@ -3313,16 +3227,6 @@ public class ImagingStudy extends DomainResource {
       addReasonReference();
     }
     return getReasonReference().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getReasonReferenceTarget() {
-    if (this.reasonReferenceTarget == null)
-      this.reasonReferenceTarget = new ArrayList<Resource>();
-    return this.reasonReferenceTarget;
   }
 
   /**

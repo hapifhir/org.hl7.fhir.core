@@ -1560,28 +1560,6 @@ public class SubstanceSpecification extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<DocumentReference> getSourceTarget() {
-      if (this.sourceTarget == null)
-        this.sourceTarget = new ArrayList<DocumentReference>();
-      return this.sourceTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public DocumentReference addSourceTarget() {
-      DocumentReference r = new DocumentReference();
-      if (this.sourceTarget == null)
-        this.sourceTarget = new ArrayList<DocumentReference>();
-      this.sourceTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #representation} (Molecular structural representation.)
      */
     public List<SubstanceSpecificationStructureRepresentationComponent> getRepresentation() {
@@ -3246,28 +3224,6 @@ public class SubstanceSpecification extends DomainResource {
       return getSource().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<DocumentReference> getSourceTarget() {
-      if (this.sourceTarget == null)
-        this.sourceTarget = new ArrayList<DocumentReference>();
-      return this.sourceTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public DocumentReference addSourceTarget() {
-      DocumentReference r = new DocumentReference();
-      if (this.sourceTarget == null)
-        this.sourceTarget = new ArrayList<DocumentReference>();
-      this.sourceTarget.add(r);
-      return r;
-    }
-
     protected void listChildren(List<Property> children) {
       super.listChildren(children);
       children.add(new Property("code", "CodeableConcept", "The specific code.", 0, 1, code));
@@ -4127,28 +4083,6 @@ public class SubstanceSpecification extends DomainResource {
         addSource();
       }
       return getSource().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<DocumentReference> getSourceTarget() {
-      if (this.sourceTarget == null)
-        this.sourceTarget = new ArrayList<DocumentReference>();
-      return this.sourceTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public DocumentReference addSourceTarget() {
-      DocumentReference r = new DocumentReference();
-      if (this.sourceTarget == null)
-        this.sourceTarget = new ArrayList<DocumentReference>();
-      this.sourceTarget.add(r);
-      return r;
     }
 
     protected void listChildren(List<Property> children) {
@@ -5263,28 +5197,6 @@ public class SubstanceSpecification extends DomainResource {
       return getSource().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<DocumentReference> getSourceTarget() {
-      if (this.sourceTarget == null)
-        this.sourceTarget = new ArrayList<DocumentReference>();
-      return this.sourceTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public DocumentReference addSourceTarget() {
-      DocumentReference r = new DocumentReference();
-      if (this.sourceTarget == null)
-        this.sourceTarget = new ArrayList<DocumentReference>();
-      this.sourceTarget.add(r);
-      return r;
-    }
-
     protected void listChildren(List<Property> children) {
       super.listChildren(children);
       children.add(new Property("substance[x]", "Reference(SubstanceSpecification)|CodeableConcept",
@@ -6006,28 +5918,6 @@ public class SubstanceSpecification extends DomainResource {
       addSource();
     }
     return getSource().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<DocumentReference> getSourceTarget() {
-    if (this.sourceTarget == null)
-      this.sourceTarget = new ArrayList<DocumentReference>();
-    return this.sourceTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public DocumentReference addSourceTarget() {
-    DocumentReference r = new DocumentReference();
-    if (this.sourceTarget == null)
-      this.sourceTarget = new ArrayList<DocumentReference>();
-    this.sourceTarget.add(r);
-    return r;
   }
 
   /**

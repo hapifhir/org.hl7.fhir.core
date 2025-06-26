@@ -403,16 +403,6 @@ public class Schedule extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getActorTarget() { 
-      if (this.actorTarget == null)
-        this.actorTarget = new ArrayList<Resource>();
-      return this.actorTarget;
-    }
-
-    /**
      * @return {@link #planningHorizon} (The period of time that the slots that are attached to this Schedule resource cover (even if none exist). These  cover the amount of time that an organization's planning horizon; the interval for which they are currently accepting appointments. This does not define a "template" for planning outside these dates.)
      */
     public Period getPlanningHorizon() { 

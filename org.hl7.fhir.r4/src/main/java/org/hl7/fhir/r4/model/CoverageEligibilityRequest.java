@@ -1722,16 +1722,6 @@ public class CoverageEligibilityRequest extends DomainResource {
       return getDetail().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getDetailTarget() {
-      if (this.detailTarget == null)
-        this.detailTarget = new ArrayList<Resource>();
-      return this.detailTarget;
-    }
-
     protected void listChildren(List<Property> children) {
       super.listChildren(children);
       children.add(new Property("supportingInfoSequence", "positiveInt",

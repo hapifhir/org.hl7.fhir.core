@@ -3375,16 +3375,6 @@ public class Consent extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getPerformerTarget() {
-    if (this.performerTarget == null)
-      this.performerTarget = new ArrayList<Resource>();
-    return this.performerTarget;
-  }
-
-  /**
    * @return {@link #organization} (The organization that manages the consent, and
    *         the framework within which it is executed.)
    */
@@ -3437,28 +3427,6 @@ public class Consent extends DomainResource {
       addOrganization();
     }
     return getOrganization().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Organization> getOrganizationTarget() {
-    if (this.organizationTarget == null)
-      this.organizationTarget = new ArrayList<Organization>();
-    return this.organizationTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Organization addOrganizationTarget() {
-    Organization r = new Organization();
-    if (this.organizationTarget == null)
-      this.organizationTarget = new ArrayList<Organization>();
-    this.organizationTarget.add(r);
-    return r;
   }
 
   /**

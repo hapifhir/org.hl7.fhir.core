@@ -505,16 +505,6 @@ public class MedicinalProductIndication extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getSubjectTarget() {
-    if (this.subjectTarget == null)
-      this.subjectTarget = new ArrayList<Resource>();
-    return this.subjectTarget;
-  }
-
-  /**
    * @return {@link #diseaseSymptomProcedure} (The disease, symptom or procedure
    *         that is the indication for treatment.)
    */
@@ -783,28 +773,6 @@ public class MedicinalProductIndication extends DomainResource {
       addUndesirableEffect();
     }
     return getUndesirableEffect().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<MedicinalProductUndesirableEffect> getUndesirableEffectTarget() {
-    if (this.undesirableEffectTarget == null)
-      this.undesirableEffectTarget = new ArrayList<MedicinalProductUndesirableEffect>();
-    return this.undesirableEffectTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public MedicinalProductUndesirableEffect addUndesirableEffectTarget() {
-    MedicinalProductUndesirableEffect r = new MedicinalProductUndesirableEffect();
-    if (this.undesirableEffectTarget == null)
-      this.undesirableEffectTarget = new ArrayList<MedicinalProductUndesirableEffect>();
-    this.undesirableEffectTarget.add(r);
-    return r;
   }
 
   /**

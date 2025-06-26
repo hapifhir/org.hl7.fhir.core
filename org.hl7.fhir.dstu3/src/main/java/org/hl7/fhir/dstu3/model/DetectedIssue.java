@@ -1101,16 +1101,6 @@ public class DetectedIssue extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getImplicatedTarget() { 
-      if (this.implicatedTarget == null)
-        this.implicatedTarget = new ArrayList<Resource>();
-      return this.implicatedTarget;
-    }
-
-    /**
      * @return {@link #detail} (A textual explanation of the detected issue.). This is the underlying object with id, value and extensions. The accessor "getDetail" gives direct access to the value
      */
     public StringType getDetailElement() { 

@@ -697,28 +697,6 @@ public class MedicinalProductPackaged extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<DeviceDefinition> getDeviceTarget() {
-      if (this.deviceTarget == null)
-        this.deviceTarget = new ArrayList<DeviceDefinition>();
-      return this.deviceTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public DeviceDefinition addDeviceTarget() {
-      DeviceDefinition r = new DeviceDefinition();
-      if (this.deviceTarget == null)
-        this.deviceTarget = new ArrayList<DeviceDefinition>();
-      this.deviceTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #manufacturedItem} (The manufactured item as contained in the
      *         packaged medicinal product.)
      */
@@ -771,28 +749,6 @@ public class MedicinalProductPackaged extends DomainResource {
         addManufacturedItem();
       }
       return getManufacturedItem().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<MedicinalProductManufactured> getManufacturedItemTarget() {
-      if (this.manufacturedItemTarget == null)
-        this.manufacturedItemTarget = new ArrayList<MedicinalProductManufactured>();
-      return this.manufacturedItemTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public MedicinalProductManufactured addManufacturedItemTarget() {
-      MedicinalProductManufactured r = new MedicinalProductManufactured();
-      if (this.manufacturedItemTarget == null)
-        this.manufacturedItemTarget = new ArrayList<MedicinalProductManufactured>();
-      this.manufacturedItemTarget.add(r);
-      return r;
     }
 
     /**
@@ -1038,28 +994,6 @@ public class MedicinalProductPackaged extends DomainResource {
         addManufacturer();
       }
       return getManufacturer().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Organization> getManufacturerTarget() {
-      if (this.manufacturerTarget == null)
-        this.manufacturerTarget = new ArrayList<Organization>();
-      return this.manufacturerTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Organization addManufacturerTarget() {
-      Organization r = new Organization();
-      if (this.manufacturerTarget == null)
-        this.manufacturerTarget = new ArrayList<Organization>();
-      this.manufacturerTarget.add(r);
-      return r;
     }
 
     protected void listChildren(List<Property> children) {
@@ -1699,28 +1633,6 @@ public class MedicinalProductPackaged extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<MedicinalProduct> getSubjectTarget() {
-    if (this.subjectTarget == null)
-      this.subjectTarget = new ArrayList<MedicinalProduct>();
-    return this.subjectTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public MedicinalProduct addSubjectTarget() {
-    MedicinalProduct r = new MedicinalProduct();
-    if (this.subjectTarget == null)
-      this.subjectTarget = new ArrayList<MedicinalProduct>();
-    this.subjectTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #description} (Textual description.). This is the underlying
    *         object with id, value and extensions. The accessor "getDescription"
    *         gives direct access to the value
@@ -1956,28 +1868,6 @@ public class MedicinalProductPackaged extends DomainResource {
       addManufacturer();
     }
     return getManufacturer().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Organization> getManufacturerTarget() {
-    if (this.manufacturerTarget == null)
-      this.manufacturerTarget = new ArrayList<Organization>();
-    return this.manufacturerTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Organization addManufacturerTarget() {
-    Organization r = new Organization();
-    if (this.manufacturerTarget == null)
-      this.manufacturerTarget = new ArrayList<Organization>();
-    this.manufacturerTarget.add(r);
-    return r;
   }
 
   /**

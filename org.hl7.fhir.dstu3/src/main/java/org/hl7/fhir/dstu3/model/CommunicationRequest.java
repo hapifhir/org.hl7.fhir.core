@@ -1132,16 +1132,6 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<Resource>();
-      return this.basedOnTarget;
-    }
-
-    /**
      * @return {@link #replaces} (Completed or terminated request(s) whose function is taken by this new request.)
      */
     public List<Reference> getReplaces() { 
@@ -1192,28 +1182,6 @@ public class CommunicationRequest extends DomainResource {
         addReplaces();
       }
       return getReplaces().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<CommunicationRequest> getReplacesTarget() { 
-      if (this.replacesTarget == null)
-        this.replacesTarget = new ArrayList<CommunicationRequest>();
-      return this.replacesTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public CommunicationRequest addReplacesTarget() { 
-      CommunicationRequest r = new CommunicationRequest();
-      if (this.replacesTarget == null)
-        this.replacesTarget = new ArrayList<CommunicationRequest>();
-      this.replacesTarget.add(r);
-      return r;
     }
 
     /**
@@ -1533,16 +1501,6 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getRecipientTarget() { 
-      if (this.recipientTarget == null)
-        this.recipientTarget = new ArrayList<Resource>();
-      return this.recipientTarget;
-    }
-
-    /**
      * @return {@link #topic} (The resources which were related to producing this communication request.)
      */
     public List<Reference> getTopic() { 
@@ -1593,16 +1551,6 @@ public class CommunicationRequest extends DomainResource {
         addTopic();
       }
       return getTopic().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getTopicTarget() { 
-      if (this.topicTarget == null)
-        this.topicTarget = new ArrayList<Resource>();
-      return this.topicTarget;
     }
 
     /**
@@ -1964,16 +1912,6 @@ public class CommunicationRequest extends DomainResource {
         addReasonReference();
       }
       return getReasonReference().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
     }
 
     /**

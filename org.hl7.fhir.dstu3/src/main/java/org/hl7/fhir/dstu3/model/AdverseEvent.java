@@ -1185,28 +1185,6 @@ public class AdverseEvent extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Condition> getReactionTarget() { 
-      if (this.reactionTarget == null)
-        this.reactionTarget = new ArrayList<Condition>();
-      return this.reactionTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Condition addReactionTarget() { 
-      Condition r = new Condition();
-      if (this.reactionTarget == null)
-        this.reactionTarget = new ArrayList<Condition>();
-      this.reactionTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #location} (The information about where the adverse event occurred.)
      */
     public Reference getLocation() { 
@@ -1532,16 +1510,6 @@ public class AdverseEvent extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getSubjectMedicalHistoryTarget() { 
-      if (this.subjectMedicalHistoryTarget == null)
-        this.subjectMedicalHistoryTarget = new ArrayList<Resource>();
-      return this.subjectMedicalHistoryTarget;
-    }
-
-    /**
      * @return {@link #referenceDocument} (AdverseEvent.referenceDocument.)
      */
     public List<Reference> getReferenceDocument() { 
@@ -1595,28 +1563,6 @@ public class AdverseEvent extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<DocumentReference> getReferenceDocumentTarget() { 
-      if (this.referenceDocumentTarget == null)
-        this.referenceDocumentTarget = new ArrayList<DocumentReference>();
-      return this.referenceDocumentTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public DocumentReference addReferenceDocumentTarget() { 
-      DocumentReference r = new DocumentReference();
-      if (this.referenceDocumentTarget == null)
-        this.referenceDocumentTarget = new ArrayList<DocumentReference>();
-      this.referenceDocumentTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #study} (AdverseEvent.study.)
      */
     public List<Reference> getStudy() { 
@@ -1667,28 +1613,6 @@ public class AdverseEvent extends DomainResource {
         addStudy();
       }
       return getStudy().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<ResearchStudy> getStudyTarget() { 
-      if (this.studyTarget == null)
-        this.studyTarget = new ArrayList<ResearchStudy>();
-      return this.studyTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public ResearchStudy addStudyTarget() { 
-      ResearchStudy r = new ResearchStudy();
-      if (this.studyTarget == null)
-        this.studyTarget = new ArrayList<ResearchStudy>();
-      this.studyTarget.add(r);
-      return r;
     }
 
       protected void listChildren(List<Property> children) {

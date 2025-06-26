@@ -2780,16 +2780,6 @@ public class ClaimResponse extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getProviderTarget() {
-      if (this.providerTarget == null)
-        this.providerTarget = new ArrayList<Resource>();
-      return this.providerTarget;
-    }
-
-    /**
      * @return {@link #productOrService} (When the value is a group code then this
      *         item collects a set of related claim details, otherwise this contains
      *         the product, service, drug or other billing code for the item.)
@@ -9395,28 +9385,6 @@ public class ClaimResponse extends DomainResource {
       addCommunicationRequest();
     }
     return getCommunicationRequest().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<CommunicationRequest> getCommunicationRequestTarget() {
-    if (this.communicationRequestTarget == null)
-      this.communicationRequestTarget = new ArrayList<CommunicationRequest>();
-    return this.communicationRequestTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public CommunicationRequest addCommunicationRequestTarget() {
-    CommunicationRequest r = new CommunicationRequest();
-    if (this.communicationRequestTarget == null)
-      this.communicationRequestTarget = new ArrayList<CommunicationRequest>();
-    this.communicationRequestTarget.add(r);
-    return r;
   }
 
   /**

@@ -1054,28 +1054,6 @@ public class Specimen extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Substance> getAdditiveTarget() {
-      if (this.additiveTarget == null)
-        this.additiveTarget = new ArrayList<Substance>();
-      return this.additiveTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Substance addAdditiveTarget() {
-      Substance r = new Substance();
-      if (this.additiveTarget == null)
-        this.additiveTarget = new ArrayList<Substance>();
-      this.additiveTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #time} (A record of the time or period when the specimen
      *         processing occurred. For example the time of sample fixation or the
      *         period of time the sample was in formalin.)
@@ -2402,28 +2380,6 @@ public class Specimen extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Specimen> getParentTarget() {
-    if (this.parentTarget == null)
-      this.parentTarget = new ArrayList<Specimen>();
-    return this.parentTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Specimen addParentTarget() {
-    Specimen r = new Specimen();
-    if (this.parentTarget == null)
-      this.parentTarget = new ArrayList<Specimen>();
-    this.parentTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #request} (Details concerning a service request that required
    *         a specimen to be collected.)
    */
@@ -2476,28 +2432,6 @@ public class Specimen extends DomainResource {
       addRequest();
     }
     return getRequest().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<ServiceRequest> getRequestTarget() {
-    if (this.requestTarget == null)
-      this.requestTarget = new ArrayList<ServiceRequest>();
-    return this.requestTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public ServiceRequest addRequestTarget() {
-    ServiceRequest r = new ServiceRequest();
-    if (this.requestTarget == null)
-      this.requestTarget = new ArrayList<ServiceRequest>();
-    this.requestTarget.add(r);
-    return r;
   }
 
   /**

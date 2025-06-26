@@ -4,8 +4,8 @@ Editors for the various languages (git tags):
 * DE: ?
 * ES: Diego Kaminker ()
 * FR: Nicolas Riss (nriss)
-* JA: ?
+* JA: Hisashi Osanai (hosanai)
 * NL: Alexander Henket (ahenket)
 * PT:  Jose Costa Teixeira (costateixeira)
 * PT_BR: ?
-* RU: Vadim Peretokin ()
+* RU: Vadim Peretokin (vadi2)

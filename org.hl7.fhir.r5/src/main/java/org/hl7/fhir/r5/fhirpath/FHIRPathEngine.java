@@ -171,6 +171,7 @@ public class FHIRPathEngine {
   
   private IWorkerContext worker;
   private IEvaluationContext hostServices;
+  private IDebugTracer tracer;
   private StringBuilder log = new StringBuilder();
   private Set<String> primitiveTypes = new HashSet<String>();
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
@@ -270,6 +271,27 @@ public class FHIRPathEngine {
     public boolean paramIsType(String name, int index);
   }
 
+  public interface IDebugTracer {
+
+    /**
+     * When an expression node is evaluated during execution
+     * 
+     * @param argument
+     * @param focus
+     * @return
+     */
+    public void traceExpression(ExecutionContext context, List<Base> focus, List<Base> result, ExpressionNode exp);
+
+    /**
+     * When an Operation expression node is evaluated during execution
+     * 
+     * @param argument
+     * @param focus
+     * @return
+     */
+    public void traceOperationExpression(ExecutionContext context, List<Base> focus, List<Base> result, ExpressionNode exp);
+  }
+
   /**
    * @param worker - used when validating paths (@check), and used doing value set membership when executing tests (once that's defined)
    */
@@ -311,6 +333,14 @@ public class FHIRPathEngine {
 
   public void setHostServices(IEvaluationContext constantResolver) {
     this.hostServices = constantResolver;
+  }
+
+  public IDebugTracer getTracer() {
+    return tracer;
+  }
+
+  public void setTracer(IDebugTracer tracer) {
+    this.tracer = tracer;
   }
 
   public String getLocation() {
@@ -1036,7 +1066,7 @@ public class FHIRPathEngine {
     }
   }
 
-  private class ExecutionContext {
+  public class ExecutionContext {
     private Object appInfo;
     private Base focusResource;
     private Base rootResource;
@@ -1376,6 +1406,8 @@ public class FHIRPathEngine {
       if (focus.getOperation() != null) {
         group.setOperation(focus.getOperation());
         group.setOpNext(focus.getOpNext());
+        group.setOpStart(focus.getOpStart());
+        group.setOpEnd(focus.getOpEnd());
         focus.setOperation(null);
         focus.setOpNext(null);
         // now look for another sequence, and start it
@@ -1574,17 +1606,21 @@ public class FHIRPathEngine {
           }
         }     
       }
+      if (tracer != null) tracer.traceExpression(context, focus, work, exp);
       break;
     case Function:
       List<Base> work2 = evaluateFunction(context, focus, exp);
       work.addAll(work2);
+      if (tracer != null) tracer.traceExpression(context, focus, work, exp);
       break;
     case Constant:
       work.addAll(resolveConstant(context, exp.getConstant(), false, exp, true));
+      if (tracer != null) tracer.traceExpression(context, focus, work, exp);
       break;
     case Group:
       work2 = execute(context, focus, exp.getGroup(), atEntry);
       work.addAll(work2);
+      break;
     }
 
     if (exp.getInner() != null) {
@@ -1603,9 +1639,11 @@ public class FHIRPathEngine {
         else if (last.getOperation() == Operation.Is || last.getOperation() == Operation.As) {
           work2 = executeTypeName(context, focus, next, false);
           work = operate(context, work, last.getOperation(), work2, last);
+          if (tracer != null) tracer.traceOperationExpression(context, focus, work, last);
         } else {
           work2 = execute(context, focus, next, true);
           work = operate(context, work, last.getOperation(), work2, last);
+          if (tracer != null) tracer.traceOperationExpression(context, focus, work, last);
         }
         last = next;
         next = next.getOpNext();

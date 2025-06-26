@@ -1791,16 +1791,6 @@ public class RiskAssessment extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getReasonReferenceTarget() {
-    if (this.reasonReferenceTarget == null)
-      this.reasonReferenceTarget = new ArrayList<Resource>();
-    return this.reasonReferenceTarget;
-  }
-
-  /**
    * @return {@link #basis} (Indicates the source data considered as part of the
    *         assessment (for example, FamilyHistory, Observations, Procedures,
    *         Conditions, etc.).)
@@ -1854,16 +1844,6 @@ public class RiskAssessment extends DomainResource {
       addBasis();
     }
     return getBasis().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getBasisTarget() {
-    if (this.basisTarget == null)
-      this.basisTarget = new ArrayList<Resource>();
-    return this.basisTarget;
   }
 
   /**

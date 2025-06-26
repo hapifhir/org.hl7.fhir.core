@@ -2178,16 +2178,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getParticipantTarget() { 
-          if (this.participantTarget == null)
-            this.participantTarget = new ArrayList<Resource>();
-          return this.participantTarget;
-        }
-
-        /**
          * @return {@link #type} (The type of action to perform (create, update, remove).)
          */
         public Coding getType() { 
@@ -3959,16 +3949,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getDefinitionTarget() { 
-      if (this.definitionTarget == null)
-        this.definitionTarget = new ArrayList<Resource>();
-      return this.definitionTarget;
-    }
-
-    /**
      * @return {@link #basedOn} (A plan, proposal or order that is fulfilled in whole or in part by this request.)
      */
     public List<Reference> getBasedOn() { 
@@ -4022,16 +4002,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<Resource>();
-      return this.basedOnTarget;
-    }
-
-    /**
      * @return {@link #replaces} (Completed or terminated request(s) whose function is taken by this new request.)
      */
     public List<Reference> getReplaces() { 
@@ -4082,16 +4052,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         addReplaces();
       }
       return getReplaces().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReplacesTarget() { 
-      if (this.replacesTarget == null)
-        this.replacesTarget = new ArrayList<Resource>();
-      return this.replacesTarget;
     }
 
     /**

@@ -1817,28 +1817,6 @@ public class Evidence extends MetadataResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<EvidenceVariable> getExposureVariantTarget() {
-    if (this.exposureVariantTarget == null)
-      this.exposureVariantTarget = new ArrayList<EvidenceVariable>();
-    return this.exposureVariantTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public EvidenceVariable addExposureVariantTarget() {
-    EvidenceVariable r = new EvidenceVariable();
-    if (this.exposureVariantTarget == null)
-      this.exposureVariantTarget = new ArrayList<EvidenceVariable>();
-    this.exposureVariantTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #outcome} (A reference to a EvidenceVariable resomece that
    *         defines the outcome for the research.)
    */
@@ -1891,28 +1869,6 @@ public class Evidence extends MetadataResource {
       addOutcome();
     }
     return getOutcome().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<EvidenceVariable> getOutcomeTarget() {
-    if (this.outcomeTarget == null)
-      this.outcomeTarget = new ArrayList<EvidenceVariable>();
-    return this.outcomeTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public EvidenceVariable addOutcomeTarget() {
-    EvidenceVariable r = new EvidenceVariable();
-    if (this.outcomeTarget == null)
-      this.outcomeTarget = new ArrayList<EvidenceVariable>();
-    this.outcomeTarget.add(r);
-    return r;
   }
 
   protected void listChildren(List<Property> children) {

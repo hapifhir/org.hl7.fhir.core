@@ -855,28 +855,6 @@ public class GuidanceResponse extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<OperationOutcome> getEvaluationMessageTarget() { 
-      if (this.evaluationMessageTarget == null)
-        this.evaluationMessageTarget = new ArrayList<OperationOutcome>();
-      return this.evaluationMessageTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public OperationOutcome addEvaluationMessageTarget() { 
-      OperationOutcome r = new OperationOutcome();
-      if (this.evaluationMessageTarget == null)
-        this.evaluationMessageTarget = new ArrayList<OperationOutcome>();
-      this.evaluationMessageTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #outputParameters} (The output parameters of the evaluation, if any. Many modules will result in the return of specific resources such as procedure or communication requests that are returned as part of the operation result. However, modules may define specific outputs that would be returned as the result of the evaluation, and these would be returned in this element.)
      */
     public Reference getOutputParameters() { 

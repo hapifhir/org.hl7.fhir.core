@@ -251,15 +251,6 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
     }
   }
 
-  /**
-   * @deprecated Use {@link #getIdPartAsBigDecimal()} instead (this method was
-   * deprocated because its name is ambiguous)
-   */
-  @Deprecated
-  public BigDecimal asBigDecimal() {
-    return getIdPartAsBigDecimal();
-  }
-
   @Override
   public IdType copy() {
     IdType ret = new IdType(getValue());

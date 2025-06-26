@@ -4099,28 +4099,6 @@ public class Sequence extends DomainResource {
       return getPointer().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Sequence> getPointerTarget() { 
-      if (this.pointerTarget == null)
-        this.pointerTarget = new ArrayList<Sequence>();
-      return this.pointerTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Sequence addPointerTarget() { 
-      Sequence r = new Sequence();
-      if (this.pointerTarget == null)
-        this.pointerTarget = new ArrayList<Sequence>();
-      this.pointerTarget.add(r);
-      return r;
-    }
-
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "A unique identifier for this particular sequence instance. This is a FHIR-defined id.", 0, java.lang.Integer.MAX_VALUE, identifier));
