@@ -1634,28 +1634,6 @@ public class AdverseEvent extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Condition> getResultingConditionTarget() {
-    if (this.resultingConditionTarget == null)
-      this.resultingConditionTarget = new ArrayList<Condition>();
-    return this.resultingConditionTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Condition addResultingConditionTarget() {
-    Condition r = new Condition();
-    if (this.resultingConditionTarget == null)
-      this.resultingConditionTarget = new ArrayList<Condition>();
-    this.resultingConditionTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #location} (The information about where the adverse event
    *         occurred.)
    */
@@ -1897,16 +1875,6 @@ public class AdverseEvent extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getContributorTarget() {
-    if (this.contributorTarget == null)
-      this.contributorTarget = new ArrayList<Resource>();
-    return this.contributorTarget;
-  }
-
-  /**
    * @return {@link #suspectEntity} (Describes the entity that is suspected to
    *         have caused the adverse event.)
    */
@@ -2017,16 +1985,6 @@ public class AdverseEvent extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getSubjectMedicalHistoryTarget() {
-    if (this.subjectMedicalHistoryTarget == null)
-      this.subjectMedicalHistoryTarget = new ArrayList<Resource>();
-    return this.subjectMedicalHistoryTarget;
-  }
-
-  /**
    * @return {@link #referenceDocument} (AdverseEvent.referenceDocument.)
    */
   public List<Reference> getReferenceDocument() {
@@ -2081,28 +2039,6 @@ public class AdverseEvent extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<DocumentReference> getReferenceDocumentTarget() {
-    if (this.referenceDocumentTarget == null)
-      this.referenceDocumentTarget = new ArrayList<DocumentReference>();
-    return this.referenceDocumentTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public DocumentReference addReferenceDocumentTarget() {
-    DocumentReference r = new DocumentReference();
-    if (this.referenceDocumentTarget == null)
-      this.referenceDocumentTarget = new ArrayList<DocumentReference>();
-    this.referenceDocumentTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #study} (AdverseEvent.study.)
    */
   public List<Reference> getStudy() {
@@ -2154,28 +2090,6 @@ public class AdverseEvent extends DomainResource {
       addStudy();
     }
     return getStudy().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<ResearchStudy> getStudyTarget() {
-    if (this.studyTarget == null)
-      this.studyTarget = new ArrayList<ResearchStudy>();
-    return this.studyTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public ResearchStudy addStudyTarget() {
-    ResearchStudy r = new ResearchStudy();
-    if (this.studyTarget == null)
-      this.studyTarget = new ArrayList<ResearchStudy>();
-    this.studyTarget.add(r);
-    return r;
   }
 
   protected void listChildren(List<Property> children) {

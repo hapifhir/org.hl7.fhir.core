@@ -43,7 +43,7 @@ parameters:
 
 variables:
   - group: PGP_VAR_GROUP
-  - group: SONATYPE_VAR_GROUP
+  - group: MAVEN_CENTRAL_VAR_GROUP
   - group: GIT_VAR_GROUP
   - name: MAVEN_CACHE_FOLDER
     value: $(Pipeline.Workspace)/.m2/repository
@@ -87,14 +87,14 @@ jobs:
       # Deploy the SNAPSHOT artifact to sonatype nexus.
       # This is done for the master branch merges only.
       - task: Maven@4
-        displayName: 'Deploy to Sonatype staging'
+        displayName: 'Deploy to Maven Central'
         inputs:
           mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
-          goals: jar:jar jar:test-jar deploy:deploy
+          goals: jar:jar jar:test-jar deploy
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
-          options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --settings $(Agent.TempDirectory)/settings.xml -pl "!org.hl7.fhir.report" -DskipTests -DdeployToSonatype'
+          options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --settings $(Agent.TempDirectory)/settings.xml -pl "!org.hl7.fhir.report" -DskipTests -DdeployToMavenCentral'
           mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
           publishJUnitResults: false
 
@@ -124,7 +124,7 @@ jobs:
         enabled: false
         inputs:
           mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
-          goals: jar:jar deploy:deploy
+          goals: jar:jar deploy
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'

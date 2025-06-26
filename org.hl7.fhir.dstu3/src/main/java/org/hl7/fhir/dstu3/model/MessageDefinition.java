@@ -1734,16 +1734,6 @@ public class MessageDefinition extends MetadataResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getParentTarget() { 
-      if (this.parentTarget == null)
-        this.parentTarget = new ArrayList<Resource>();
-      return this.parentTarget;
-    }
-
-    /**
      * @return {@link #replaces} (A MessageDefinition that is superseded by this definition.)
      */
     public List<Reference> getReplaces() { 
@@ -1794,28 +1784,6 @@ public class MessageDefinition extends MetadataResource {
         addReplaces();
       }
       return getReplaces().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<MessageDefinition> getReplacesTarget() { 
-      if (this.replacesTarget == null)
-        this.replacesTarget = new ArrayList<MessageDefinition>();
-      return this.replacesTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public MessageDefinition addReplacesTarget() { 
-      MessageDefinition r = new MessageDefinition();
-      if (this.replacesTarget == null)
-        this.replacesTarget = new ArrayList<MessageDefinition>();
-      this.replacesTarget.add(r);
-      return r;
     }
 
     /**

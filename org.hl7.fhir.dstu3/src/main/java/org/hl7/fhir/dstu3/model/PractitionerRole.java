@@ -1361,28 +1361,6 @@ public class PractitionerRole extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Location> getLocationTarget() { 
-      if (this.locationTarget == null)
-        this.locationTarget = new ArrayList<Location>();
-      return this.locationTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Location addLocationTarget() { 
-      Location r = new Location();
-      if (this.locationTarget == null)
-        this.locationTarget = new ArrayList<Location>();
-      this.locationTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #healthcareService} (The list of healthcare services that this worker provides for this role's Organization/Location(s).)
      */
     public List<Reference> getHealthcareService() { 
@@ -1433,28 +1411,6 @@ public class PractitionerRole extends DomainResource {
         addHealthcareService();
       }
       return getHealthcareService().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<HealthcareService> getHealthcareServiceTarget() { 
-      if (this.healthcareServiceTarget == null)
-        this.healthcareServiceTarget = new ArrayList<HealthcareService>();
-      return this.healthcareServiceTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public HealthcareService addHealthcareServiceTarget() { 
-      HealthcareService r = new HealthcareService();
-      if (this.healthcareServiceTarget == null)
-        this.healthcareServiceTarget = new ArrayList<HealthcareService>();
-      this.healthcareServiceTarget.add(r);
-      return r;
     }
 
     /**
@@ -1716,28 +1672,6 @@ public class PractitionerRole extends DomainResource {
         addEndpoint();
       }
       return getEndpoint().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Endpoint> getEndpointTarget() { 
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      return this.endpointTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Endpoint addEndpointTarget() { 
-      Endpoint r = new Endpoint();
-      if (this.endpointTarget == null)
-        this.endpointTarget = new ArrayList<Endpoint>();
-      this.endpointTarget.add(r);
-      return r;
     }
 
       protected void listChildren(List<Property> children) {

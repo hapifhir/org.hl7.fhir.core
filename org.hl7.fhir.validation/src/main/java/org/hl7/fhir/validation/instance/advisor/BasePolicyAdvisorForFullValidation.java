@@ -126,22 +126,22 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
     } else if (hasSctCode(code, codes, "46680005")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/vitalspanel", "Vital Signs Panel", "SNOMED CT", codes);
     } else if (hasSctCode(code, codes, "86290005", "271625008", "271306003")) {
-      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bp", "Blood pressure systolic and diastolic", "SNOMED CT", codes);
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/resprate", "Respiratory Rate", "SNOMED CT", codes);
     } else if (hasSctCode(code, codes, "271306003", "249043002", "444981005", "399017001", "251670001", "429525003", "429614003")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/heartrate", "Heart rate", "SNOMED CT", codes);
-    } else if (hasSctCode(code, codes, "103228002", "103228002", "442349007", "442476006", "442440005", "431314004", "442734002", "713194001")) {
+    } else if (hasSctCode(code, codes, "442476006", "431314004")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/oxygensat", "Oxygen saturation", "SNOMED CT", codes);
-    } else if (hasSctCode(code, codes, "386725007", "276885007", "300076005", "1222808002", "364246006", "307047009", "708499008", "708499008", "431598003", "698831002", "698832009", "415882003", "415974002", "415929009", "415945006")) {
+    } else if (hasSctCode(code, codes, "386725007", "276885007", "300076005", "1222808002", "364246006", "307047009", "708499008", "431598003", "698831002", "698832009", "415882003", "415974002", "415929009", "415945006")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bodytemp", "Body temperature", "SNOMED CT", codes);
     } else if (hasSctCode(code, codes, "1153637007", "1162419008", "50373000", "1162418000", "1230278008", "1162392001", "1162417005")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bodyheight", "Body height", "SNOMED CT", codes);
     } else if (hasSctCode(code, codes, "363812007", "169876006", "1269262007", "363811000")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/headcircum", "Head circumference", "SNOMED CT", codes);
-    } else if (hasSctCode(code, codes, "363811000", "60621009", "735395000", "425024002", "424927000", "784399000", "1162416001", "1162415002")) {
+    } else if (hasSctCode(code, codes, "735395000", "425024002", "424927000", "784399000", "1162416001", "1162415002")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bodyweight", "Body weight", "SNOMED CT", codes);
     } else if (hasSctCode(code, codes, "60621009")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bmi", "Body mass index", "SNOMED CT", codes);
-    } else if (hasSctCode(code, codes, "75367002", "251076008", "163033001", "163035008", "386534000", "386536003", "271649006", "271649006", "271650006", "407556006", "407554009", "716579001", "399304008")) {
+    } else if (hasSctCode(code, codes, "251076008", "163033001", "163035008", "386534000", "386536003", "271649006", "271650006", "407556006", "407554009", "716579001", "399304008")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bp", "Blood pressure systolic and diastolic", "SNOMED CT", codes);
     }  
     
