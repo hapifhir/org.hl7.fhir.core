@@ -34,13 +34,17 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.Base64;
 
 import javax.annotation.Nonnull;
 
@@ -4220,19 +4224,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean checkAttachment(List<ValidationMessage> errors, String path, Element element, StructureDefinition theProfile, ElementDefinition definition, boolean theInCodeableConcept, boolean theCheckDisplayInContext, NodeStack theStack) {
     boolean ok = true;
     long size = -1;
-    // first check size
+    long max = -1;
+    byte[] cnt = null;
+    byte[] hash = null;
     String fetchError = null;
-    if (element.hasChild("data", false)) {
-      String b64 = element.getChildValue("data");
-      // Note: If the value isn't valid, we're not adding an error here, as the test to the
-      // child Base64Binary will catch it and we don't want to log it twice
-      boolean bok = Base64Util.isValidBase64(b64);
-      if (bok && element.hasChild("size", false)) {
-        size = Base64Util.countBase64DecodedBytes(b64);
-        String sz = element.getChildValue("size");
-        ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, Long.toString(size).equals(sz), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_CORRECT, sz, size) && ok;
-      }
-    } else if (element.hasChild("size", false)) {
+    
+    if (element.hasChild("size", false)) {
       String sz = element.getChildValue("size");
       if (rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, Utilities.isLong(sz), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_INVALID, sz)) {
         size = Long.parseLong(sz);
@@ -4240,19 +4237,41 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else {
         ok = false;
       }
+    }
+    if (element.hasChild("hash")) {
+      String h64 = element.getChildValue("hash");
+      hash = readBase64Data(errors, theStack, "hash", h64);
+      if (hash == null) {
+        ok = false;
+      }
+    }
+    if (definition.hasExtension(ToolingExtensions.EXT_MAX_SIZE)) {
+      max = Long.parseLong(ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_MAX_SIZE));
+    }
+    
+    if (element.hasChild("data", false)) {
+      String b64 = element.getChildValue("data");
+      // Note: If the value isn't valid, we're not adding an error here, as the test to the
+      // child Base64Binary will catch it and we don't want to log it twice
+      boolean bok = Base64Util.isValidBase64(b64);
+      if (bok) {
+        cnt = readBase64Data(errors, theStack, "data", b64);
+        if (cnt == null) {
+          ok = false;
+        }
+      }
     } else if (element.hasChild("url", false)) {
       String url = element.getChildValue("url"); 
-      if (definition.hasExtension(ToolingExtensions.EXT_MAX_SIZE)) {
+      if (size > -1 || max > -1 || hash != null) {
         try {
           if (url.startsWith("http://") || url.startsWith("https://")) {
             if (fetcher == null) {
               fetchError = context.formatMessage(I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_NO_FETCHER, url);  
             } else {
-              byte[] cnt = fetcher.fetchRaw(this, url);
-              size = cnt.length;
+              cnt = fetcher.fetchRaw(this, url);
             }
           } else if (url.startsWith("file:")) {
-            size = ManagedFileAccess.file(url.substring(5)).length();
+            cnt = FileUtilities.streamToBytes(new FileInputStream(ManagedFileAccess.file(url.substring(5))));
           } else {
             fetchError = context.formatMessage(I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_UNKNOWN_URL_SCHEME, url);          }
         } catch (Exception e) {
@@ -4261,15 +4280,38 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
     }
-    if (definition.hasExtension(ToolingExtensions.EXT_MAX_SIZE)) {
-      if (warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, size >= 0, fetchError)) {
-        long def = Long.parseLong(ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_MAX_SIZE));
-        ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, size <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_TOO_LONG, size, def) && ok;
-      }
-    }
     warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, (element.hasChild("data", false) || element.hasChild("url", false)) || (element.hasChild("contentType", false) || element.hasChild("language", false)), 
-          I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_NO_CONTENT);
+        I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_NO_CONTENT);
+    
+    if (max > -1 && cnt != null) {
+      ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, cnt.length <= max, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_TOO_LONG, cnt.length, max) && ok;
+    }
+
+    if (size > -1 && cnt != null) {
+      ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, cnt.length == size, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_CORRECT, size, cnt.length) && ok;
+    }
+
+    if (hash != null && cnt != null) {
+      try {
+        MessageDigest sha1 = MessageDigest.getInstance("SHA-1");
+        byte[] c = sha1.digest(cnt); 
+        ok = rule(errors, "2025-06-25", IssueType.STRUCTURE, theStack, Arrays.equals(c, hash), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH) && ok;
+      } catch (NoSuchAlgorithmException e) {
+      }
+    } else {
+      ok = false;
+    }
+
     return ok;
+  }
+
+  private byte[] readBase64Data(List<ValidationMessage> errors, NodeStack theStack, String name, String b64) {
+    try {
+      return Base64.getDecoder().decode(b64);
+    } catch (Exception e) {
+      rule(errors, "2025-06-25", IssueType.STRUCTURE, theStack, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_B64_DECODE_FAIL, name, e.getMessage());
+    }
+    return null;
   }
 
   // implementation
