@@ -1,7 +1,9 @@
 package org.hl7.fhir.validation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.UsageContext;
@@ -22,6 +24,8 @@ public class ValidatorSettings extends ValidationOptions {
   private BestPracticeWarningLevel bpWarnings = BestPracticeWarningLevel.Warning; // @configuration
   private List<UsageContext> usageContexts = new ArrayList<UsageContext>(); // @configuration
   private boolean assumeValidRestReferences;
+  private Map<String, byte[]> certificates = new HashMap<>();
+  private List<String> certificateFolders = new ArrayList<>();
   
   public Source getSource() {
     return source;
@@ -88,6 +92,17 @@ public class ValidatorSettings extends ValidationOptions {
   public List<UsageContext> getUsageContexts() {
     return usageContexts;
   }
-  
+  public Map<String, byte[]> getCertificates() {
+    return certificates;
+  }
+  public void setCertificates(Map<String, byte[]> certificates) {
+    this.certificates = certificates;
+  }
+  public List<String> getCertificateFolders() {
+    return certificateFolders;
+  }
+  public void setCertificateFolders(List<String> certificateFolders) {
+    this.certificateFolders = certificateFolders;
+  }
   
 }
