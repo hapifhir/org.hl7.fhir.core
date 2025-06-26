@@ -3579,10 +3579,19 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       if (!found) {
         if (internal) {
-          if (isNotHardErrorPathForInternal(context.getBase().getPath())) {
-            warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_INTERNAL, url);
+          boolean extMatters = isExtensionThatMatters(parent);
+          if (isNotHardErrorPathForInternal(context.getBase().getPath()) && Utilities.existsInList(type, "uri", "url") && !extMatters) {
+            if (isForPublication()) {
+              warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_INTERNAL_WARN, url);
+            } else {
+              hint(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_INTERNAL_WARN, url);              
+            }
           } else {
-            ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_INTERNAL, url) && ok;
+            if (isForPublication() || Utilities.existsInList(type, "canonical", "Reference") || isHardErrorPathForInternal(context.getBase().getPath()) || extMatters) {
+              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_INTERNAL, url) && ok;
+            } else {
+              warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_INTERNAL_WARN, url);
+            }
           }
         } else if (type.equals("canonical")) {
           if (isExampleUrl(url) && isAllowExamples()) {
@@ -3655,6 +3664,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     return ok;
+  }
+
+  private boolean isExtensionThatMatters(Element element) {
+    String url = null;
+    while (url == null || !Utilities.isAbsoluteUrl(url)) {
+      if (element == null || !element.fhirType().equals("Extension")) {
+        return false;
+      }
+      url = element.getNamedChildValue("url"); 
+      element = element.getParentForValidator();
+    }
+      
+    return Utilities.existsInList(url, ToolingExtensions.EXT_TEXT_LINK);
+  }
+
+  private boolean isHardErrorPathForInternal(String path) {
+    return Utilities.existsInList(path, "ValueSet.compose.include.system", "ValueSet.compose.exclude.system");
   }
 
   private boolean isNotHardErrorPathForInternal(String path) {
