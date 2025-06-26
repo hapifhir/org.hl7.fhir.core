@@ -494,28 +494,6 @@ public class OrganizationAffiliation extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Organization> getNetworkTarget() {
-    if (this.networkTarget == null)
-      this.networkTarget = new ArrayList<Organization>();
-    return this.networkTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Organization addNetworkTarget() {
-    Organization r = new Organization();
-    if (this.networkTarget == null)
-      this.networkTarget = new ArrayList<Organization>();
-    this.networkTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #code} (Definition of the role the participatingOrganization
    *         plays in the association.)
    */
@@ -680,28 +658,6 @@ public class OrganizationAffiliation extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Location> getLocationTarget() {
-    if (this.locationTarget == null)
-      this.locationTarget = new ArrayList<Location>();
-    return this.locationTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Location addLocationTarget() {
-    Location r = new Location();
-    if (this.locationTarget == null)
-      this.locationTarget = new ArrayList<Location>();
-    this.locationTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #healthcareService} (Healthcare services provided through the
    *         role.)
    */
@@ -754,28 +710,6 @@ public class OrganizationAffiliation extends DomainResource {
       addHealthcareService();
     }
     return getHealthcareService().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<HealthcareService> getHealthcareServiceTarget() {
-    if (this.healthcareServiceTarget == null)
-      this.healthcareServiceTarget = new ArrayList<HealthcareService>();
-    return this.healthcareServiceTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public HealthcareService addHealthcareServiceTarget() {
-    HealthcareService r = new HealthcareService();
-    if (this.healthcareServiceTarget == null)
-      this.healthcareServiceTarget = new ArrayList<HealthcareService>();
-    this.healthcareServiceTarget.add(r);
-    return r;
   }
 
   /**
@@ -886,28 +820,6 @@ public class OrganizationAffiliation extends DomainResource {
       addEndpoint();
     }
     return getEndpoint().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Endpoint> getEndpointTarget() {
-    if (this.endpointTarget == null)
-      this.endpointTarget = new ArrayList<Endpoint>();
-    return this.endpointTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Endpoint addEndpointTarget() {
-    Endpoint r = new Endpoint();
-    if (this.endpointTarget == null)
-      this.endpointTarget = new ArrayList<Endpoint>();
-    this.endpointTarget.add(r);
-    return r;
   }
 
   protected void listChildren(List<Property> children) {

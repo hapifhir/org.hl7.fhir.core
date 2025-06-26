@@ -1248,28 +1248,6 @@ public class MedicinalProduct extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Organization> getManufacturerTarget() {
-      if (this.manufacturerTarget == null)
-        this.manufacturerTarget = new ArrayList<Organization>();
-      return this.manufacturerTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Organization addManufacturerTarget() {
-      Organization r = new Organization();
-      if (this.manufacturerTarget == null)
-        this.manufacturerTarget = new ArrayList<Organization>();
-      this.manufacturerTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #regulator} (A regulator which oversees the operation.)
      */
     public Reference getRegulator() {
@@ -2837,28 +2815,6 @@ public class MedicinalProduct extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<MedicinalProductPharmaceutical> getPharmaceuticalProductTarget() {
-    if (this.pharmaceuticalProductTarget == null)
-      this.pharmaceuticalProductTarget = new ArrayList<MedicinalProductPharmaceutical>();
-    return this.pharmaceuticalProductTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public MedicinalProductPharmaceutical addPharmaceuticalProductTarget() {
-    MedicinalProductPharmaceutical r = new MedicinalProductPharmaceutical();
-    if (this.pharmaceuticalProductTarget == null)
-      this.pharmaceuticalProductTarget = new ArrayList<MedicinalProductPharmaceutical>();
-    this.pharmaceuticalProductTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #packagedMedicinalProduct} (Package representation for the
    *         product.)
    */
@@ -2912,28 +2868,6 @@ public class MedicinalProduct extends DomainResource {
       addPackagedMedicinalProduct();
     }
     return getPackagedMedicinalProduct().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<MedicinalProductPackaged> getPackagedMedicinalProductTarget() {
-    if (this.packagedMedicinalProductTarget == null)
-      this.packagedMedicinalProductTarget = new ArrayList<MedicinalProductPackaged>();
-    return this.packagedMedicinalProductTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public MedicinalProductPackaged addPackagedMedicinalProductTarget() {
-    MedicinalProductPackaged r = new MedicinalProductPackaged();
-    if (this.packagedMedicinalProductTarget == null)
-      this.packagedMedicinalProductTarget = new ArrayList<MedicinalProductPackaged>();
-    this.packagedMedicinalProductTarget.add(r);
-    return r;
   }
 
   /**
@@ -2992,28 +2926,6 @@ public class MedicinalProduct extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<DocumentReference> getAttachedDocumentTarget() {
-    if (this.attachedDocumentTarget == null)
-      this.attachedDocumentTarget = new ArrayList<DocumentReference>();
-    return this.attachedDocumentTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public DocumentReference addAttachedDocumentTarget() {
-    DocumentReference r = new DocumentReference();
-    if (this.attachedDocumentTarget == null)
-      this.attachedDocumentTarget = new ArrayList<DocumentReference>();
-    this.attachedDocumentTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #masterFile} (A master file for to the medicinal product (e.g.
    *         Pharmacovigilance System Master File).)
    */
@@ -3066,28 +2978,6 @@ public class MedicinalProduct extends DomainResource {
       addMasterFile();
     }
     return getMasterFile().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<DocumentReference> getMasterFileTarget() {
-    if (this.masterFileTarget == null)
-      this.masterFileTarget = new ArrayList<DocumentReference>();
-    return this.masterFileTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public DocumentReference addMasterFileTarget() {
-    DocumentReference r = new DocumentReference();
-    if (this.masterFileTarget == null)
-      this.masterFileTarget = new ArrayList<DocumentReference>();
-    this.masterFileTarget.add(r);
-    return r;
   }
 
   /**
@@ -3146,16 +3036,6 @@ public class MedicinalProduct extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getContactTarget() {
-    if (this.contactTarget == null)
-      this.contactTarget = new ArrayList<Resource>();
-    return this.contactTarget;
-  }
-
-  /**
    * @return {@link #clinicalTrial} (Clinical trials or studies that this product
    *         is involved in.)
    */
@@ -3208,28 +3088,6 @@ public class MedicinalProduct extends DomainResource {
       addClinicalTrial();
     }
     return getClinicalTrial().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<ResearchStudy> getClinicalTrialTarget() {
-    if (this.clinicalTrialTarget == null)
-      this.clinicalTrialTarget = new ArrayList<ResearchStudy>();
-    return this.clinicalTrialTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public ResearchStudy addClinicalTrialTarget() {
-    ResearchStudy r = new ResearchStudy();
-    if (this.clinicalTrialTarget == null)
-      this.clinicalTrialTarget = new ArrayList<ResearchStudy>();
-    this.clinicalTrialTarget.add(r);
-    return r;
   }
 
   /**

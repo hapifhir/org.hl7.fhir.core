@@ -3008,28 +3008,6 @@ This would be used for a case where an admission starts of as an emergency encou
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<EpisodeOfCare> getEpisodeOfCareTarget() { 
-      if (this.episodeOfCareTarget == null)
-        this.episodeOfCareTarget = new ArrayList<EpisodeOfCare>();
-      return this.episodeOfCareTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public EpisodeOfCare addEpisodeOfCareTarget() { 
-      EpisodeOfCare r = new EpisodeOfCare();
-      if (this.episodeOfCareTarget == null)
-        this.episodeOfCareTarget = new ArrayList<EpisodeOfCare>();
-      this.episodeOfCareTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #incomingReferral} (The referral request this encounter satisfies (incoming referral).)
      */
     public List<Reference> getIncomingReferral() { 
@@ -3080,28 +3058,6 @@ This would be used for a case where an admission starts of as an emergency encou
         addIncomingReferral();
       }
       return getIncomingReferral().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<ReferralRequest> getIncomingReferralTarget() { 
-      if (this.incomingReferralTarget == null)
-        this.incomingReferralTarget = new ArrayList<ReferralRequest>();
-      return this.incomingReferralTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public ReferralRequest addIncomingReferralTarget() { 
-      ReferralRequest r = new ReferralRequest();
-      if (this.incomingReferralTarget == null)
-        this.incomingReferralTarget = new ArrayList<ReferralRequest>();
-      this.incomingReferralTarget.add(r);
-      return r;
     }
 
     /**
@@ -3406,28 +3362,6 @@ This would be used for a case where an admission starts of as an emergency encou
         addAccount();
       }
       return getAccount().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Account> getAccountTarget() { 
-      if (this.accountTarget == null)
-        this.accountTarget = new ArrayList<Account>();
-      return this.accountTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Account addAccountTarget() { 
-      Account r = new Account();
-      if (this.accountTarget == null)
-        this.accountTarget = new ArrayList<Account>();
-      this.accountTarget.add(r);
-      return r;
     }
 
     /**

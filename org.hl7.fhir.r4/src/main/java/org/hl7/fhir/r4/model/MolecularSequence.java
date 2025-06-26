@@ -7455,28 +7455,6 @@ public class MolecularSequence extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<MolecularSequence> getPointerTarget() {
-    if (this.pointerTarget == null)
-      this.pointerTarget = new ArrayList<MolecularSequence>();
-    return this.pointerTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public MolecularSequence addPointerTarget() {
-    MolecularSequence r = new MolecularSequence();
-    if (this.pointerTarget == null)
-      this.pointerTarget = new ArrayList<MolecularSequence>();
-    this.pointerTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #structureVariant} (Information about chromosome structure
    *         variation.)
    */

@@ -16,12 +16,8 @@ public class FileFormat {
 
   public static void checkCharsetAndWarnIfNotUTF8(PrintStream out) {
     if (fileEncodingIsUtf8()) return;
-    out.println("");
+    out.println();
     out.print(WARNING);
-    out.println("");
-  }
-
-  public static void checkCharsetAndWarnIfNotUTF8(org.slf4j.Logger log) {
-    log.warn(WARNING);
+    out.println();
   }
 }
