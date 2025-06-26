@@ -1045,16 +1045,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return getRecipient().get(0);
         }
 
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getRecipientTarget() { 
-          if (this.recipientTarget == null)
-            this.recipientTarget = new ArrayList<Resource>();
-          return this.recipientTarget;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("repetitions", "positiveInt", "Indicates the number of times the requested action should occur.", 0, 1, repetitions));
@@ -2336,16 +2326,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<Resource>();
-      return this.basedOnTarget;
-    }
-
-    /**
      * @return {@link #groupIdentifier} (An identifier that links together multiple tasks and other requests that were created in the same context.)
      */
     public Identifier getGroupIdentifier() { 
@@ -2420,28 +2400,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         addPartOf();
       }
       return getPartOf().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Task> getPartOfTarget() { 
-      if (this.partOfTarget == null)
-        this.partOfTarget = new ArrayList<Task>();
-      return this.partOfTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Task addPartOfTarget() { 
-      Task r = new Task();
-      if (this.partOfTarget == null)
-        this.partOfTarget = new ArrayList<Task>();
-      this.partOfTarget.add(r);
-      return r;
     }
 
     /**
@@ -3187,28 +3145,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         addRelevantHistory();
       }
       return getRelevantHistory().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Provenance> getRelevantHistoryTarget() { 
-      if (this.relevantHistoryTarget == null)
-        this.relevantHistoryTarget = new ArrayList<Provenance>();
-      return this.relevantHistoryTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Provenance addRelevantHistoryTarget() { 
-      Provenance r = new Provenance();
-      if (this.relevantHistoryTarget == null)
-        this.relevantHistoryTarget = new ArrayList<Provenance>();
-      this.relevantHistoryTarget.add(r);
-      return r;
     }
 
     /**

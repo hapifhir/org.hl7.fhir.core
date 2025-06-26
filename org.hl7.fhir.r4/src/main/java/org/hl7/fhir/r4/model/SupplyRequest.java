@@ -1498,16 +1498,6 @@ public class SupplyRequest extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getSupplierTarget() {
-    if (this.supplierTarget == null)
-      this.supplierTarget = new ArrayList<Resource>();
-    return this.supplierTarget;
-  }
-
-  /**
    * @return {@link #reasonCode} (The reason why the supply item was requested.)
    */
   public List<CodeableConcept> getReasonCode() {
@@ -1614,16 +1604,6 @@ public class SupplyRequest extends DomainResource {
       addReasonReference();
     }
     return getReasonReference().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getReasonReferenceTarget() {
-    if (this.reasonReferenceTarget == null)
-      this.reasonReferenceTarget = new ArrayList<Resource>();
-    return this.reasonReferenceTarget;
   }
 
   /**

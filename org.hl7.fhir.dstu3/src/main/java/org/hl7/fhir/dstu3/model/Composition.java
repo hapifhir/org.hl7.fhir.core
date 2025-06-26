@@ -1481,16 +1481,6 @@ public class Composition extends DomainResource {
           return getDetail().get(0);
         }
 
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getDetailTarget() { 
-          if (this.detailTarget == null)
-            this.detailTarget = new ArrayList<Resource>();
-          return this.detailTarget;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("code", "CodeableConcept", "This list of codes represents the main clinical acts, such as a colonoscopy or an appendectomy, being documented. In some cases, the event is inherent in the typeCode, such as a \"History and Physical Report\" in which the procedure being documented is necessarily a \"History and Physical\" act.", 0, java.lang.Integer.MAX_VALUE, code));
@@ -1934,16 +1924,6 @@ public class Composition extends DomainResource {
             addEntry();
           }
           return getEntry().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getEntryTarget() { 
-          if (this.entryTarget == null)
-            this.entryTarget = new ArrayList<Resource>();
-          return this.entryTarget;
         }
 
         /**
@@ -2692,16 +2672,6 @@ public class Composition extends DomainResource {
         addAuthor();
       }
       return getAuthor().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getAuthorTarget() { 
-      if (this.authorTarget == null)
-        this.authorTarget = new ArrayList<Resource>();
-      return this.authorTarget;
     }
 
     /**
