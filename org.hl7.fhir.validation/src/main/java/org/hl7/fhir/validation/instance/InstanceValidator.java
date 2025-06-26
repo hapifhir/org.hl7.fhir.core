@@ -1855,6 +1855,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (issueComponent.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "cannot-infer") || ignoreCantInfer) {
         return true;
     }
+    if (!isForPublication() && "MSG_EXPERIMENTAL".equals(ToolingExtensions.readStringExtension(issueComponent, ToolingExtensions.EXT_ISSUE_MSG_ID))) {
+      return true;
+    }
     return false;
   }
 
