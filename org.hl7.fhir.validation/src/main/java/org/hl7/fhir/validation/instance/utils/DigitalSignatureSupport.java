@@ -11,7 +11,10 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -260,5 +263,95 @@ public class DigitalSignatureSupport {
     }
   }
 
+  public static Set<String> getNamesFromCertificate(X509Certificate cert, boolean debug) {
+    Set<String> names = new HashSet<>();
+    names.add(cert.getSubjectX500Principal().getName());
+    names.add(cert.getSubjectX500Principal().getName("RFC1779"));
+    names.add(cert.getSubjectX500Principal().getName("RFC2253"));
+    names.add(cert.getSubjectX500Principal().getName("CANONICAL"));
+    try {
+      if (cert.getSubjectAlternativeNames() != null) {
+        for (List<?> t : cert.getSubjectAlternativeNames()) {
+          int valueType = -1;
+          for (Object tt : t) {
+            if (tt instanceof Integer) {
+              valueType = (Integer) tt;
+            }
+            if (tt instanceof String) {
+              if (valueType == 0 || valueType == 6) {
+                names.add(tt.toString());
+              }
+            }
+
+            if (tt instanceof byte[]) {
+              try {
+                ByteArrayInputStream input = new ByteArrayInputStream((byte[]) tt);
+                input.read();
+                input.read();
+                input.read();
+                int oidLength = input.read();
+                byte[] oidBytes = new byte[oidLength];
+                input.read(oidBytes);
+                String oid = parseOID(oidBytes); // nothing with the OID?
+                input.read();
+                input.read();
+                // Check if there's another nested context tag (depends on Java version)
+                int nextByte = input.read() & 0xFF;
+                if (nextByte == 160) { // 0xA0 = Context [0]
+                    input.read();
+                    nextByte = input.read() & 0xFF;
+                }
+                int stringLength = input.read();
+                byte[] stringBytes = new byte[stringLength];
+                input.read(stringBytes);
+                String value = new String(stringBytes, "UTF-8");
+                names.add(value.trim());
+              } catch (Exception e) {
+                if (debug) {
+                  e.printStackTrace();
+                }
+              }
+            }
+          }
+        }
+      }
+    } catch (Exception e) {
+      if (debug) {
+        e.printStackTrace();
+      }
+    }
+    return names;
+  }
+
+  private static String parseOID(byte[] oidBytes) {
+    if (oidBytes.length == 0) return "";
+
+    List<Long> components = new ArrayList<>();
+
+    // First byte encodes first two components: (40 * first) + second
+    int firstByte = oidBytes[0] & 0xFF;
+    components.add((long)(firstByte / 40));
+    components.add((long)(firstByte % 40));
+
+    // Parse remaining components
+    long value = 0;
+    for (int i = 1; i < oidBytes.length; i++) {
+        int b = oidBytes[i] & 0xFF;
+        value = (value << 7) | (b & 0x7F);
+
+        if ((b & 0x80) == 0) {
+            components.add(value);
+            value = 0;
+        }
+    }
+
+    StringBuilder result = new StringBuilder();
+    for (int i = 0; i < components.size(); i++) {
+        if (i > 0) result.append(".");
+        result.append(components.get(i));
+    }
+
+    return result.toString();
+  }
 
 }
