@@ -14,11 +14,11 @@
 * Adjust errors for broken internal links in Resource.meta.source for HAPI users
 * Improved validation for attachments
 * Do not pass experimental warning on from terminology server unless doing publishing
-* Add `-matchetype` parameter to validator 
+* Add `-matchetype` parameter to validator
+* Fix eager loading of UCUM service in validator
 
 ## Other code changes
 
-* Disable old maven deploy + explicitly override distributionManagement: Use maven central snapshots repo for dependencies (replace Sonatype)
 * Improved canonical support for JSON and XML + refactor xhtml handling to fix canonical issues
 * Fix errors handling paths when generating snapshots
 * Add support for tracking data/narrative relationship (beta)
@@ -32,4 +32,5 @@
 * update pt translations (#2055)
 * Remove lots of deprecated classes and methods
 * migrate DICOM package builder to R5
+* Support conversion of CommunicationRequest between DSTU3 and R4 
 
