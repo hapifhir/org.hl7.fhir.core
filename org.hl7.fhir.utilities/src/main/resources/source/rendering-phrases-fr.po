@@ -1,3 +1,16 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Crowdin-Project: orghl7fhircore\n"
+"X-Crowdin-Project-ID: 792848\n"
+"X-Crowdin-Language: fr\n"
+"X-Crowdin-File: /org.hl7.fhir.utilities/src/main/resources/source/rendering-phrases-en.po\n"
+"X-Crowdin-File-ID: 236\n"
+"Project-Id-Version: orghl7fhircore\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: French\n"
+"Language: fr_FR\n"
+"PO-Revision-Date: 2025-06-23 13:14\n"
 
 # ACTOR_DEF_ACT
 #: ACTOR_DEF_ACT
@@ -928,7 +941,7 @@ msgstr ""
 # DATA_REND_CODES
 #: DATA_REND_CODES
 msgid "Codes:"
-msgstr ""
+msgstr "Codes:"
 
 # DATA_REND_COND
 #: DATA_REND_COND
@@ -1289,7 +1302,7 @@ msgstr ""
 #: DIAG_REP_UNSPECIFIED_SUBJECT
 msgctxt "DIAG_REP_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
-msgstr ""
+msgstr "Sujet Non Soécifié"
 
 # DOCUMENT_SUMMARY
 #: DOCUMENT_SUMMARY
@@ -1435,7 +1448,7 @@ msgstr ""
 #: GENERAL_CARD
 msgctxt "GENERAL_CARD"
 msgid "Card."
-msgstr "Card."
+msgstr ""
 
 # GENERAL_CARDINALITY
 #: GENERAL_CARDINALITY
@@ -1616,7 +1629,7 @@ msgstr "Obligations"
 #: GENERAL_OBLIGATIONS
 msgctxt "GENERAL_OBLIGATIONS"
 msgid "Obligations"
-msgstr ""
+msgstr "Obligations"
 
 # GENERAL_OID
 #: GENERAL_OID
@@ -1744,7 +1757,7 @@ msgstr "Pas encore fait"
 #: GENERAL_TYPE
 msgctxt "GENERAL_TYPE"
 msgid "Type"
-msgstr "Type"
+msgstr ""
 
 # GENERAL_TYPE_PROFILE
 #: GENERAL_TYPE_PROFILE
@@ -2112,7 +2125,7 @@ msgstr "Paramètres ({0} paramètres)"
 # PAT_ACTIVE
 #: PAT_ACTIVE
 msgid "Active:"
-msgstr ""
+msgstr "Actif:"
 
 # PAT_ACTIVE_HINT
 #: PAT_ACTIVE_HINT
@@ -2589,7 +2602,7 @@ msgstr ""
 # QUEST_OPTIONS
 #: QUEST_OPTIONS
 msgid "Options:"
-msgstr ""
+msgstr "Options:"
 
 # QUEST_ORIENTATION
 #: QUEST_ORIENTATION
@@ -2715,7 +2728,7 @@ msgstr ""
 #: QUEST_UNSPECIFIED_SUBJECT
 msgctxt "QUEST_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
-msgstr ""
+msgstr "Sujet Non Soécifié"
 
 # QUEST_VALUE
 #: QUEST_VALUE
@@ -2754,7 +2767,7 @@ msgstr ""
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\\"{2}\\\">R4B ({3}.r4b)</a> are available."
 msgstr ""
 
 # R44B_PROBLEMS
@@ -2851,7 +2864,7 @@ msgstr ""
 #: REQ_LINKS
 msgctxt "REQ_LINKS"
 msgid "Links:"
-msgstr ""
+msgstr "Liens :"
 
 # REQ_SATISFIED
 #: REQ_SATISFIED
@@ -2926,7 +2939,7 @@ msgstr ""
 # RES_REND_UNKNOWN
 #: RES_REND_UNKNOWN
 msgid "Unknown"
-msgstr ""
+msgstr "Inconnu(e)"
 
 # RES_REND_UPDATED
 #: RES_REND_UPDATED
@@ -3151,7 +3164,7 @@ msgstr ""
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
-msgid "-- no content: do not translate #49 --"
+msgid "-- no content: do not translate #1 --"
 msgstr ""
 
 # SDR_IMPOSE
@@ -3346,7 +3359,7 @@ msgstr ""
 # SDR_VER_RANGE_SFX
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
-msgid "-- no content: do not translate #50 --"
+msgid "-- no content: do not translate #2 --"
 msgstr ""
 
 # SDR_VER_TO_PFX
@@ -3357,7 +3370,7 @@ msgstr ""
 # SDR_VER_TO_SFX
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
-msgid "-- no content: do not translate #51 --"
+msgid "-- no content: do not translate #3 --"
 msgstr ""
 
 # SDR_VER_UNK
@@ -3369,7 +3382,7 @@ msgstr ""
 #: SDT_DEF
 msgctxt "SDT_DEF"
 msgid "Definition"
-msgstr ""
+msgstr "Définition"
 
 # SDT_DT
 #: SDT_DT
@@ -3422,13 +3435,13 @@ msgstr ""
 #: SDT_RES
 msgctxt "SDT_RES"
 msgid "Resource"
-msgstr ""
+msgstr "Ressource"
 
 # SDT_RES_PROF
 #: SDT_RES_PROF
 msgctxt "SDT_RES_PROF"
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 # SD_COMP_HEAD_CARD_L
 #: SD_COMP_HEAD_CARD_L
@@ -3757,7 +3770,7 @@ msgstr ""
 #: STRUC_DEF_AND
 msgctxt "STRUC_DEF_AND"
 msgid "and"
-msgstr ""
+msgstr "et"
 
 # STRUC_DEF_APPROP_CON
 #: STRUC_DEF_APPROP_CON
@@ -3787,7 +3800,7 @@ msgstr ""
 # STRUC_DEF_BLACK
 #: STRUC_DEF_BLACK
 msgid "black"
-msgstr ""
+msgstr "noir "
 
 # STRUC_DEF_BUSINESS_ID
 #: STRUC_DEF_BUSINESS_ID
@@ -3867,7 +3880,7 @@ msgstr ""
 # STRUC_DEF_COMMENT
 #: STRUC_DEF_COMMENT
 msgid "Comments:"
-msgstr ""
+msgstr "Commentaires:"
 
 # STRUC_DEF_COMPLEX
 #: STRUC_DEF_COMPLEX
@@ -3887,7 +3900,7 @@ msgstr ""
 # STRUC_DEF_COMP_EX
 #: STRUC_DEF_COMP_EX
 msgid "(Complex Extension)"
-msgstr ""
+msgstr "(Extension complexe)"
 
 # STRUC_DEF_COMP_PROF
 #: STRUC_DEF_COMP_PROF
@@ -3994,7 +4007,7 @@ msgstr "Cet élément primitif doit avoir une valeur"
 # STRUC_DEF_ELEMENT
 #: STRUC_DEF_ELEMENT
 msgid "element"
-msgstr ""
+msgstr "element"
 
 # STRUC_DEF_ELEMENTS
 #: STRUC_DEF_ELEMENTS
@@ -4040,12 +4053,12 @@ msgstr "exemple"
 #: STRUC_DEF_EXT
 msgctxt "STRUC_DEF_EXT"
 msgid "Extensible"
-msgstr ""
+msgstr "Extensible"
 
 # STRUC_DEF_EXTENSIBLE
 #: STRUC_DEF_EXTENSIBLE
 msgid "extensible"
-msgstr ""
+msgstr "extensible"
 
 # STRUC_DEF_EXTENSIONS
 #: STRUC_DEF_EXTENSIONS
@@ -4453,7 +4466,7 @@ msgstr ""
 # STRUC_DEF_PREFERRED
 #: STRUC_DEF_PREFERRED
 msgid "preferred"
-msgstr ""
+msgstr "préféré"
 
 # STRUC_DEF_PREFIXED
 #: STRUC_DEF_PREFIXED
@@ -4548,7 +4561,7 @@ msgstr ""
 # STRUC_DEF_REQUIRED
 #: STRUC_DEF_REQUIRED
 msgid "required"
-msgstr ""
+msgstr "requis"
 
 # STRUC_DEF_REQUIRED_PATT
 #: STRUC_DEF_REQUIRED_PATT
@@ -4774,7 +4787,7 @@ msgstr ""
 # STRUC_DEF_URLS
 #: STRUC_DEF_URLS
 msgid "URL:"
-msgstr ""
+msgstr "URL:"
 
 # STRUC_DEF_VALID
 #: STRUC_DEF_VALID
@@ -5150,7 +5163,7 @@ msgstr "Ce jeu de valeur (ValueSet) ne peut pas être totalement étendu, mais u
 # VALUE_SET_COMMA
 #: VALUE_SET_COMMA
 msgid ","
-msgstr ","
+msgstr ""
 
 # VALUE_SET_CONT
 #: VALUE_SET_CONT
@@ -5215,7 +5228,7 @@ msgstr ""
 # VALUE_SET_EQUAL
 #: VALUE_SET_EQUAL
 msgid "="
-msgstr "="
+msgstr ""
 
 # VALUE_SET_ERROR
 #: VALUE_SET_ERROR
