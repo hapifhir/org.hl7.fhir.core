@@ -2,6 +2,7 @@ package org.hl7.fhir.validation;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -99,6 +100,7 @@ import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -240,6 +242,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private Locale locale;
   @Getter @Setter private List<ImplementationGuide> igs = new ArrayList<>();
   @Getter @Setter private List<String> extensionDomains = new ArrayList<>();
+  @Getter @Setter private List<String> certSources = new ArrayList<>();
 
   @Getter @Setter private boolean showTimes;
   @Getter @Setter private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
@@ -295,6 +298,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     locale = other.locale;
     igs.addAll(other.igs);
     extensionDomains.addAll(other.extensionDomains);
+    certSources.addAll(other.certSources);
     showTimes = other.showTimes;
     bundleValidationRules.addAll(other.bundleValidationRules);
     questionnaireMode = other.questionnaireMode;
@@ -894,6 +898,18 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
     validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
     validator.getExtensionDomains().clear();
+    validator.getExtensionDomains().addAll(extensionDomains);
+    validator.getSettings().getCertificateFolders().clear(); // they should be empty though
+    validator.getSettings().getCertificates().clear();
+    validator.getSettings().getCertificateFolders().addAll(FhirSettings.getCertificateSources());
+    for (String s : certSources) {
+      File f = ManagedFileAccess.file(s);
+      if (f.isDirectory()) {
+        validator.getSettings().getCertificateFolders().add(s);
+      } else {
+        validator.getSettings().getCertificates().put(s, FileUtilities.fileToBytes(f));
+      }
+    }
     validator.getExtensionDomains().addAll(extensionDomains);
     validator.setNoInvariantChecks(isNoInvariantChecks());
     validator.setWantInvariantInMessage(isWantInvariantInMessage());

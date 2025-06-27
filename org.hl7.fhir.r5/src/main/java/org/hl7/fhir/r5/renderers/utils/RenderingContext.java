@@ -20,6 +20,7 @@ import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumeration;
@@ -30,6 +31,7 @@ import org.hl7.fhir.r5.renderers.utils.Resolver.IReferenceResolver;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.KeyIssuer;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
@@ -38,6 +40,8 @@ import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.xhtml.XhtmlFluent;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 /**
  * Managing Language when rendering 
@@ -263,6 +267,18 @@ public class RenderingContext extends RenderingI18nContext {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
   private final IWorkerContext worker;
   private MarkDownProcessor markdown;
   private ResourceRendererMode mode;
@@ -328,6 +344,9 @@ public class RenderingContext extends RenderingI18nContext {
   private boolean debug;
   private DesignationMode designationMode;
   private boolean noHeader;
+  private Set<ActorDefinition> actorWhiteList = new HashSet<>();
+  private boolean trackNarrativeSource;
+  private KeyIssuer crossLinkKeyGen;
   
   /**
    * 
@@ -350,6 +369,7 @@ public class RenderingContext extends RenderingI18nContext {
     if (terminologyServiceOptions != null) {
       this.terminologyServiceOptions = terminologyServiceOptions;
     }
+    crossLinkKeyGen = new KeyIssuer("xn");
   }
   
   public RenderingContext copy(boolean copyAnchors) {
@@ -410,6 +430,10 @@ public class RenderingContext extends RenderingI18nContext {
     res.designationMode = designationMode;
     res.addName = addName;
     res.typeMap = typeMap;
+    res.trackNarrativeSource = trackNarrativeSource;
+    res.crossLinkKeyGen = crossLinkKeyGen;
+    
+    res.getActorWhiteList().addAll(actorWhiteList);
 
 // not sure about these    
 //    private List<String> files = new ArrayList<String>(); // files created as by-products in destDir
@@ -1164,5 +1188,20 @@ public class RenderingContext extends RenderingI18nContext {
     this.noHeader = noHeader;
   }
 
+  public Set<ActorDefinition> getActorWhiteList() {
+    return actorWhiteList;
+  }
+
+  public boolean isTrackNarrativeSource() {
+    return trackNarrativeSource;
+  }
+
+  public void setTrackNarrativeSource(boolean trackNarrativeSource) {
+    this.trackNarrativeSource = trackNarrativeSource;
+  }
+
+  public String nextXNKey() {
+    return crossLinkKeyGen.issueKey();
+  }
 
 }

@@ -73,4 +73,6 @@ public interface JsonCreator {
   void externalLink(String string);
   void elide();
   boolean canElide();
+  
+  boolean isCanonical();
 }

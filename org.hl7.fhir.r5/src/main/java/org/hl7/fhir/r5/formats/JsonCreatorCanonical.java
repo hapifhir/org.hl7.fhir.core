@@ -39,6 +39,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
+
 public class JsonCreatorCanonical implements JsonCreator {
 
   public class JsonCanValue {
@@ -49,10 +50,10 @@ public class JsonCreatorCanonical implements JsonCreator {
   }
 
   private class JsonCanNumberValue extends JsonCanValue {
-    private BigDecimal value;
+    private String value;
     private JsonCanNumberValue(String name, BigDecimal value) {
       super(name);
-      this.value = value;  
+      this.value = canonicaliseDecimal(value.toPlainString());  
     }
   }
 
@@ -60,10 +61,15 @@ public class JsonCreatorCanonical implements JsonCreator {
     private String value;
     private JsonCanPresentedNumberValue(String name, String value) {
       super(name);
-      this.value = value;  
+      this.value = canonicaliseDecimal(value);  
     }
+    
   }
 
+  private String canonicaliseDecimal(String v) {
+    return JsonNumberCanonicalizer.toCanonicalJson(v);
+  }
+  
   private class JsonCanIntegerValue extends JsonCanValue {
     private Integer value;
     private JsonCanIntegerValue(String name, Integer value) {
@@ -205,7 +211,7 @@ public class JsonCreatorCanonical implements JsonCreator {
       jj.name(n);
       JsonCanValue v = getPropForName(n, obj.children);
       if (v instanceof JsonCanNumberValue)
-        jj.value(((JsonCanNumberValue) v).value);
+        jj.valueNum(((JsonCanNumberValue) v).value);
       else if (v instanceof JsonCanPresentedNumberValue)
         jj.valueNum(((JsonCanPresentedNumberValue) v).value);
       else if (v instanceof JsonCanIntegerValue)
@@ -239,7 +245,9 @@ public class JsonCreatorCanonical implements JsonCreator {
     jj.beginArray();
     for (JsonCanValue v : arr.children) { 
       if (v instanceof JsonCanNumberValue)
-        jj.value(((JsonCanNumberValue) v).value);
+        jj.valueNum(((JsonCanNumberValue) v).value);
+      else if (v instanceof JsonCanPresentedNumberValue)
+        jj.valueNum(((JsonCanPresentedNumberValue) v).value);
       else if (v instanceof JsonCanIntegerValue)
           jj.value(((JsonCanIntegerValue) v).value);
       else if (v instanceof JsonCanBooleanValue)
@@ -286,6 +294,11 @@ public class JsonCreatorCanonical implements JsonCreator {
   @Override
   public void elide() {
     // not used
+  }
+
+  @Override
+  public boolean isCanonical() {
+    return true;
   }
 
 }

@@ -6,6 +6,7 @@
     "server" : "http://tx-dev.fhir.org/r4",
     "filename" : "vs-a6766da8-f531-40ef-bc46-53f65761e0a8.json"
   },
+  "http://snomed.info/sct|http://snomed.info/sct/32506021000036107" : null,
   "http://fhir.ch/ig/ch-ig/ValueSet/ch-ig-example" : null,
   "http://hl7.org/fhir/us/qicore/ValueSet/qicore-negation-reason" : null,
   "http://fhir.ch/ig/ch-ig/ValueSet/OrganizationType" : null,
@@ -22,6 +23,7 @@
     "server" : "http://tx-dev.fhir.org/r4",
     "filename" : "vs-e2c27dea-76bc-4208-9ee1-ea137a7bf901.json"
   },
+  "http://snomed.info/sct|http://snomed.info/sct/731000124108" : null,
   "#f3b2bd36-199b-4591-b4db-f49db0912b6|null" : null,
   "#c1|null" : null,
   "http://example.org/invalid-valueset-canonical" : null,

@@ -133,6 +133,7 @@ public class Params {
   public static final String TEST_MODULES = "-test-modules";
 
   public static final String TEST_NAME_FILTER = "-test-classname-filter";
+  public static final String CERT = "-cert";
   public static final String SPECIAL = "-special";
   public static final String TARGET = "-target";
   public static final String SOURCE = "-source";
@@ -500,6 +501,17 @@ public class Params {
           throw new Error("Specified -txCache without indicating file");
         else
           validationContext.setTxCache(args[++i]);
+      } else if (args[i].equals(CERT)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -txCache without indicating file");
+        else {
+          String s = args[++i];
+          if (!(new File(s).exists())) {
+            throw new Error("Certificate source '"+s+"'  not found");            
+          } else {
+            validationContext.getCertSources().add(s);
+          }
+        }
       } else if (args[i].equals(LOG)) {
         if (i + 1 == args.length)
           throw new Error("Specified -log without indicating file");

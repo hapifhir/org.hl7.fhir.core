@@ -278,6 +278,290 @@ msgstr ""
 msgid "No types could be determined from the search string, so the types can''t be checked"
 msgstr ""
 
+# BUNDLE_SIGNATURE_CANON_DIFF
+#: BUNDLE_SIGNATURE_CANON_DIFF
+msgid "The canonicalization in the digital signature is {0} which doesn't match the value {1} found in the targetFormat"
+msgstr ""
+
+# BUNDLE_SIGNATURE_CANON_ERROR
+#: BUNDLE_SIGNATURE_CANON_ERROR
+msgid "Error parsing the targetFormat ''{0}'': {1}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_CHECKED_DATA_B64
+#: BUNDLE_SIGNATURE_CHECKED_DATA_B64
+msgid "The signature data is not valid base64 content, but it looks like native application/jose, so it will be checked anyway"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_INVALID
+#: BUNDLE_SIGNATURE_DIGSIG_INVALID
+msgid "The digital signature is invalid XML: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_NO_CERT
+#: BUNDLE_SIGNATURE_DIGSIG_NO_CERT
+msgid "Didn''t find a provided X509 certificate in the digital signature, so can''t verify the signature"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_NO_REFERENCES
+#: BUNDLE_SIGNATURE_DIGSIG_NO_REFERENCES
+msgid "No references found in the digital signature SignedInfo"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_NO_SIG_TIME
+#: BUNDLE_SIGNATURE_DIGSIG_NO_SIG_TIME
+msgid "No SigningTime element found in the digital signature"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_NO_SV
+#: BUNDLE_SIGNATURE_DIGSIG_NO_SV
+msgid "Didn''t find a provided signedValue in the digital signature, so can''t verify the signature"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_REFERENCES_TOO_MANY
+#: BUNDLE_SIGNATURE_DIGSIG_REFERENCES_TOO_MANY
+msgid "Too many references found in the digital signature SignedInfo - not understood"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_REFERENCE_NOT_UNDERSTOOD
+#: BUNDLE_SIGNATURE_DIGSIG_REFERENCE_NOT_UNDERSTOOD
+msgid "The reference in the SignedInfo in the digital signature is ''{0}'' which is not understood (or correct?)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_REFERENCE_TYPE_NOT_UNDERSTOOD
+#: BUNDLE_SIGNATURE_DIGSIG_REFERENCE_TYPE_NOT_UNDERSTOOD
+msgid "The second reference in the SignedInfo in the digital signature has type ''{0}'' which is not understood (or correct?)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_SIGNED_INVALID
+#: BUNDLE_SIGNATURE_DIGSIG_SIGNED_INVALID
+msgid "The digital signature is not valid XML: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_SIGNED_INVALID_XML
+#: BUNDLE_SIGNATURE_DIGSIG_SIGNED_INVALID_XML
+msgid "The signed bytes provided could not be read - invalid XML Structure ({0})"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_SIGNED_MISMATCH
+#: BUNDLE_SIGNATURE_DIGSIG_SIGNED_MISMATCH
+msgctxt "BUNDLE_SIGNATURE_DIGSIG_SIGNED_MISMATCH"
+msgid "The signature cannot be valid because the content to sign ({0} bytes} is not the same as the signed content ({1} bytes)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_SIGNED_SAME
+#: BUNDLE_SIGNATURE_DIGSIG_SIGNED_SAME
+msgid "The signed bytes are identical, so the signature failure is not because the content changed. Check Canonicalization carefully (including whitespace)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_SIGNED_XML_MATCHES
+#: BUNDLE_SIGNATURE_DIGSIG_SIGNED_XML_MATCHES
+msgid "The actual XML structures of payload and canonicalized form do match, so the issue is in the canonicalization"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_SIGNED_XML_NO_MATCH
+#: BUNDLE_SIGNATURE_DIGSIG_SIGNED_XML_NO_MATCH
+msgid "The actual XML structures of payload and canonicalized form do not match: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_SIG_ERROR
+#: BUNDLE_SIGNATURE_DIGSIG_SIG_ERROR
+msgid "Error verifying the signature: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_WHEN_MISMATCH
+#: BUNDLE_SIGNATURE_DIGSIG_WHEN_MISMATCH
+msgid "The time in the digital signature {0} is not the same as the stated time {1}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_X509_ERROR
+#: BUNDLE_SIGNATURE_DIGSIG_X509_ERROR
+msgctxt "BUNDLE_SIGNATURE_DIGSIG_X509_ERROR"
+msgid "Unable to parse X509 Certificate: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_HEADER_CERT_NOT_FOUND
+#: BUNDLE_SIGNATURE_HEADER_CERT_NOT_FOUND
+msgid "Didn''t find a matching certificate for the ''kid'' {0} in the header, so can''t verify the signature"
+msgstr ""
+
+# BUNDLE_SIGNATURE_HEADER_CERT_NOT_FOUND_ERROR
+#: BUNDLE_SIGNATURE_HEADER_CERT_NOT_FOUND_ERROR
+msgid "Error scanning for certificate to match kid {0}: {1}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_HEADER_NO_KID_OR_CERT
+#: BUNDLE_SIGNATURE_HEADER_NO_KID_OR_CERT
+msgid "Didn''t find a provided certificate or a ''kid'' in the header, so can''t verify the signature"
+msgstr ""
+
+# BUNDLE_SIGNATURE_HEADER_NO_SIG_TIME
+#: BUNDLE_SIGNATURE_HEADER_NO_SIG_TIME
+msgid "The signature does not have a signing time (sigT in the header)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_HEADER_PARSE
+#: BUNDLE_SIGNATURE_HEADER_PARSE
+msgid "Error parsing the digital signature header: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH
+#: BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH
+msgid "The time in the signature {0} is not the same as the stated time {1}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_HEADER_X509_ERROR
+#: BUNDLE_SIGNATURE_HEADER_X509_ERROR
+msgctxt "BUNDLE_SIGNATURE_HEADER_X509_ERROR"
+msgid "Unable to parse X509 Certificate: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_NOT_CHECKED_DATA
+#: BUNDLE_SIGNATURE_NOT_CHECKED_DATA
+msgid "There is no actual signature data, so the {0} signature cannot be checked"
+msgstr ""
+
+# BUNDLE_SIGNATURE_NOT_CHECKED_DATA_B64
+#: BUNDLE_SIGNATURE_NOT_CHECKED_DATA_B64
+msgid "The signature data is not valid base64 content, so the signature cannot be checked"
+msgstr ""
+
+# BUNDLE_SIGNATURE_NOT_CHECKED_KIND
+#: BUNDLE_SIGNATURE_NOT_CHECKED_KIND
+msgid "The signature format ''{0}'' is not checked (known formats: application/jose and application/pkcs7-signature)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_NO_SIG_FORMAT
+#: BUNDLE_SIGNATURE_NO_SIG_FORMAT
+msgid "There is no value for sigFormat. In the absence of a stated signature format, the signature cannot be interpreted reliably (or validated)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_BASE64_DIFF
+#: BUNDLE_SIGNATURE_PAYLOAD_BASE64_DIFF
+msgid "The signed bytes are identical, but the base64 representations differ"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_CANON_DEFAULT
+#: BUNDLE_SIGNATURE_PAYLOAD_CANON_DEFAULT
+msgid "No canonicalization found, so using {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_INVALID
+#: BUNDLE_SIGNATURE_PAYLOAD_INVALID
+msgid "The payload provided could not be read - invalid Base64 content ({0})"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_INVALID_JSON
+#: BUNDLE_SIGNATURE_PAYLOAD_INVALID_JSON
+msgid "The payload provided could not be read - invalid JSON Structure ({0})"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_JSON_MATCHES
+#: BUNDLE_SIGNATURE_PAYLOAD_JSON_MATCHES
+msgid "The actual JSON structures of payload and canonicalized form do match, so the issue is in the canonicalization"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_JSON_NO_MATCH
+#: BUNDLE_SIGNATURE_PAYLOAD_JSON_NO_MATCH
+msgid "The actual JSON structures of payload and canonicalized form do not match: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_MISMATCH
+#: BUNDLE_SIGNATURE_PAYLOAD_MISMATCH
+msgctxt "BUNDLE_SIGNATURE_PAYLOAD_MISMATCH"
+msgid "The signature cannot be valid because the content to sign ({0} bytes} is not the same as the signed content ({1} bytes)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_PRESENT
+#: BUNDLE_SIGNATURE_PAYLOAD_PRESENT
+msgid "The signature has a payload, but the signature should be a detached signature with no payload"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIGNED_AT
+#: BUNDLE_SIGNATURE_SIGNED_AT
+msgid "The content claims to have been signed at {0}, but this has not been verified"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIGNED_AT_VERIFIED
+#: BUNDLE_SIGNATURE_SIGNED_AT_VERIFIED
+msgid "The content was signed at {0} (and this has been verified by the signature)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIGNED_BY
+#: BUNDLE_SIGNATURE_SIGNED_BY
+msgid "The content claims to have been signed by {0}, but this has not been verified"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIGNED_BY_VERIFIED
+#: BUNDLE_SIGNATURE_SIGNED_BY_VERIFIED
+msgid "The content was signed by {0} (and this has been verified by the signature)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_DIGEST_MISMATCH
+#: BUNDLE_SIGNATURE_SIG_DIGEST_MISMATCH
+msgid "The digest value for the signed content doesn''t match the provided content ({0} vs {1}). The signature is not valid"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_DIGEST_MISMATCH_XADES
+#: BUNDLE_SIGNATURE_SIG_DIGEST_MISMATCH_XADES
+msgid "The digest value for the XaDeS signed content doesn''t match the provided content ({0} vs {1}). The signature is not valid. Check XML canonicalization carefully, particularly with regard to whitespace and namespaces"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_ERROR
+#: BUNDLE_SIGNATURE_SIG_ERROR
+msgid "Error verifying the signature against the certificate: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_FAIL_CERT
+#: BUNDLE_SIGNATURE_SIG_FAIL_CERT
+msgid "The signature did not verify against the provided certificate"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_FAIL_CERT_ID
+#: BUNDLE_SIGNATURE_SIG_FAIL_CERT_ID
+msgid "The signature did not verify against the provided certificate (key id = {0})"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_FAIL_KID
+#: BUNDLE_SIGNATURE_SIG_FAIL_KID
+msgid "The signature did not verify against the certificate using the key with id {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_FORMAT_JOSE
+#: BUNDLE_SIGNATURE_SIG_FORMAT_JOSE
+msgid "Signature looks like application/jose, so validating accordingly"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_INVALID
+#: BUNDLE_SIGNATURE_SIG_INVALID
+msgid "The actual signature is not valid base64: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_OK
+#: BUNDLE_SIGNATURE_SIG_OK
+msgid "The signature verified OK"
+msgstr ""
+
+# BUNDLE_SIGNATURE_WHO_MISMATCH
+#: BUNDLE_SIGNATURE_WHO_MISMATCH
+msgid "The  Signature.who.identifier ''{0}'' does not match a subject value from the certificate (one of {1})"
+msgstr ""
+
+# BUNDLE_SIGNATURE_WHO_NOT_IN_CERT
+#: BUNDLE_SIGNATURE_WHO_NOT_IN_CERT
+msgid "The Signature.who value is not found in the digital signature"
+msgstr ""
+
+# BUNDLE_SIGNATURE_WHO_NO_INFO
+#: BUNDLE_SIGNATURE_WHO_NO_INFO
+msgid "Neither the digital signature nor Signature.who are provided to identify the signer"
+msgstr ""
+
+# BUNDLE_SIGNATURE_WHO_RECOMMENDED
+#: BUNDLE_SIGNATURE_WHO_RECOMMENDED
+msgid "A certificate subject identifier should also be found in Signature.who.identifier (one of {0})"
+msgstr ""
+
 # Bad_file_path_error
 #: Bad_file_path_error
 msgid "** Error: The file name you passed in, ''{0}'', doesn''t exist on the local filesystem. Please verify that this is valid file location **"
@@ -4843,6 +5127,11 @@ msgstr ""
 msgid "Example URLs are not allowed in this context ({0})"
 msgstr ""
 
+# TYPE_SPECIFIC_CHECKS_DT_URL_INTERNAL
+#: TYPE_SPECIFIC_CHECKS_DT_URL_INTERNAL
+msgid "The URL value ''{0}'' is invalid because there is no matching target"
+msgstr ""
+
 # TYPE_SPECIFIC_CHECKS_DT_XHTML_ACTIVE_HREF
 #: TYPE_SPECIFIC_CHECKS_DT_XHTML_ACTIVE_HREF
 msgid "Hyperlink scheme ''{3}'' in ''{0}'' at ''{1}'' for ''{2}'' has active content, which is a security risk and not allowed"
@@ -6710,6 +6999,11 @@ msgstr ""
 # XHTML_XHTML_DOCTYPE_ILLEGAL
 #: XHTML_XHTML_DOCTYPE_ILLEGAL
 msgid "Malformed XHTML: Found a DocType declaration, and these are not allowed (XXE security vulnerability protection)"
+msgstr ""
+
+# XHTML_XHTML_DUPLICATE_IDS
+#: XHTML_XHTML_DUPLICATE_IDS
+msgid "The XHTML  the resource contains more than one node for each of the following node ids and anchor names: {0}"
 msgstr ""
 
 # XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA

@@ -253,6 +253,10 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     } else {
       val.getSettings().setLanguages(null);      
     }
+
+    if (content.has("certificate")) {
+      val.getSettings().getCertificates().put(content.get("certificate").getAsString(), TestingUtilities.loadTestResourceBytes("validator", content.get("certificate").getAsString()));
+    }
     
     if (content.has("fetcher") && "standalone".equals(JsonUtilities.str(content, "fetcher"))) {
       val.setFetcher(vCurr);
