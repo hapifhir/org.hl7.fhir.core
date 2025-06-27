@@ -12,6 +12,8 @@
     <artifactId>org.hl7.fhir.dstu2</artifactId>
     <packaging>bundle</packaging>
 
+    <name>HL7 Core Artifact - DSTU2</name>
+
     <properties>
         <checkstyle_config_location>${project.parent.basedir}</checkstyle_config_location>
     </properties>

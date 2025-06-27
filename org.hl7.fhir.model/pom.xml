@@ -10,8 +10,9 @@
     </parent>
 
     <artifactId>org.hl7.fhir.model</artifactId>
-
     <packaging>bundle</packaging>
+
+    <name>HL7 Core Artifact - Model</name>
 
     <properties>
         <checkstyle_config_location>${project.parent.basedir}</checkstyle_config_location>

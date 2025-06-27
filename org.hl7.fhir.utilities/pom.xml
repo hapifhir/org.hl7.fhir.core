@@ -12,6 +12,8 @@
     <artifactId>org.hl7.fhir.utilities</artifactId>
     <packaging>bundle</packaging>
 
+    <name>HL7 Core Artifact - Utilities</name>
+
     <properties>
         <checkstyle_config_location>${project.parent.basedir}</checkstyle_config_location>
     </properties>

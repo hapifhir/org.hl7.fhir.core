@@ -12,6 +12,8 @@
     <artifactId>org.hl7.fhir.validation</artifactId>
     <packaging>bundle</packaging>
 
+    <name>HL7 Core Artifact - Validation</name>
+
     <properties>
         <checkstyle_config_location>${project.parent.basedir}</checkstyle_config_location>
         <info_cqframework_version>2.11.0</info_cqframework_version>

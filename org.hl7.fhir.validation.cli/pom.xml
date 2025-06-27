@@ -12,6 +12,8 @@
     <artifactId>org.hl7.fhir.validation.cli</artifactId>
     <packaging>jar</packaging>
 
+    <name>HL7 Core Artifact - Validation CLI</name>
+
     <properties>
         <checkstyle_config_location>${project.parent.basedir}</checkstyle_config_location>
     </properties>
