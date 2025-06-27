@@ -292,7 +292,8 @@ public class DigitalSignatureSupport {
                 int oidLength = input.read();
                 byte[] oidBytes = new byte[oidLength];
                 input.read(oidBytes);
-                String oid = parseOID(oidBytes); // nothing with the OID?
+                String oid = parseOID(oidBytes); 
+                names.add(oid.trim()); // todo: this isn't really valid? Have to figure out what's going on here when more data is collected
                 input.read();
                 input.read();
                 // Check if there's another nested context tag (depends on Java version)
