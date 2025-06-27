@@ -27,7 +27,7 @@ public class MedicationRequest30_40Test {
   }
 
   @Test
-  void testMedicationRequestConversion40To30() throws IOException {
+  public void testMedicationRequestConversion40To30() throws IOException {
     InputStream r4InputJson = this.getClass().getResourceAsStream("/medication_request_40.json");
     InputStream dstu3ExpectedOutputJson = this.getClass().getResourceAsStream("/medication_request_40_converted_to_30.json");
 
