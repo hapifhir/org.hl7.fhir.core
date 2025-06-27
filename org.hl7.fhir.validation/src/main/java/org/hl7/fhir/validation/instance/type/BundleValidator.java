@@ -1179,11 +1179,9 @@ public class BundleValidator extends BaseValidator {
       if (jwk != null && canon != null) {
         // try and verify
       
-        byte[] toSignWith = null;
-        byte[] toSignWithout = null;
+        byte[] toSign = null;
         try {
-          toSignWith = makeSignableBundle(bundle, canon, xml, true);
-          toSignWithout = makeSignableBundle(bundle, canon, xml, false);
+          toSign = makeSignableBundle(bundle, canon, xml);
         } catch (Exception e) {
           // nothing - this won't happen
         }
@@ -1197,14 +1195,8 @@ public class BundleValidator extends BaseValidator {
           rule(errors, "2025-06-13", IssueType.INVALID, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIG_INVALID, e.getMessage());                            
         }            
         try {
-          boolean with = true;
-          String reconstituted = parts[0]+"."+Base64URL.encode(toSignWith)+"."+parts[2];
+          String reconstituted = parts[0]+"."+Base64URL.encode(toSign)+"."+parts[2];
           boolean verified = verifyJWT(reconstituted, jwk);
-          if (!verified) {
-            with = false;
-            reconstituted = parts[0]+"."+Base64URL.encode(toSignWithout)+"."+parts[2];
-            verified = verifyJWT(reconstituted, jwk);
-          }
           if (!verified) {
             ok = false;
             if (kid != null) {
@@ -1223,12 +1215,12 @@ public class BundleValidator extends BaseValidator {
                 rule(errors, "2025-06-13", IssueType.VALUE, stack, false, I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_INVALID, e.getMessage());                            
               }
               if (signed != null) {
-                if (!Arrays.equals(toSignWith, signed)) {
-                  rule(errors, "2025-06-13", IssueType.VALUE, stack, false, I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_MISMATCH, toSignWith.length, signed.length);
+                if (!Arrays.equals(toSign, signed)) {
+                  rule(errors, "2025-06-13", IssueType.VALUE, stack, false, I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_MISMATCH, toSign.length, signed.length);
                   String diff;
                   try { 
                     JsonObject signedJ = parseJsonOrError(errors, stack, signed, I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_INVALID_JSON);
-                    JsonObject toSignJ = parseJsonOrError(errors, stack, toSignWith, I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_INVALID_JSON);
+                    JsonObject toSignJ = parseJsonOrError(errors, stack, toSign, I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_INVALID_JSON);
                     diff = new CompareUtilities().compareObjects("payload", "$", toSignJ, signedJ);
                     if (diff == null) {
                       hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_JSON_MATCHES);                
@@ -1240,7 +1232,7 @@ public class BundleValidator extends BaseValidator {
                     rule(errors, "2025-06-13", IssueType.EXCEPTION, stack, false, I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_INVALID_JSON, e.getMessage());                
                   }
                 } else {
-                  String b64 = Base64URL.encode(toSignWith).toString();
+                  String b64 = Base64URL.encode(toSign).toString();
                   ok = rule(errors, "2025-06-13", IssueType.VALUE, stack, parts[1].equals(b64), I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_BASE64_DIFF) & ok;
                 }
               } 
@@ -1249,16 +1241,18 @@ public class BundleValidator extends BaseValidator {
             hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIG_OK);   
           }
           if (cert != null) {
-            if (whoMatches) {
-              hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIGNED_BY_VERIFIED, cert.getSubjectX500Principal().getName());
+            if (verified) {
+              hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIGNED_BY_VERIFIED, CommaSeparatedStringBuilder.join(",", Utilities.sorted(DigitalSignatureSupport.getNamesFromCertificate(cert, false))));              
             } else {
-              hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIGNED_BY, cert.getSubjectX500Principal().getName());              
+              hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIGNED_BY, CommaSeparatedStringBuilder.join(",", Utilities.sorted(DigitalSignatureSupport.getNamesFromCertificate(cert, false))));
             }
           }
-          if (when != null && with) {
-            hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIGNED_AT_VERIFIED, when.primitiveValue());
-          } else if (sigT != null) {
-            hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIGNED_AT, sigT);                
+          if (sigT != null) {
+            if (verified) {
+              hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIGNED_AT_VERIFIED, sigT);              
+            } else {
+              hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIGNED_AT, sigT);
+            }
           }
 
         } catch (Exception e) {
@@ -1272,15 +1266,15 @@ public class BundleValidator extends BaseValidator {
   }
 
   
-  private byte[] makeSignableBundle(Element bundle, String canon, boolean xml, boolean withData) throws IOException, InvalidCanonicalizerException, CanonicalizationException, ParserConfigurationException, SAXException {
+  private byte[] makeSignableBundle(Element bundle, String canon, boolean xml) throws IOException, InvalidCanonicalizerException, CanonicalizationException, ParserConfigurationException, SAXException {
     byte[] toSign;
     ByteArrayOutputStream ba = new ByteArrayOutputStream();
     // 1. signed with signature data
     ParserBase p = Manager.makeParser(context, xml ? FhirFormat.XML :  FhirFormat.JSON);
     if (canon.endsWith("#document")) {
-      p.setCanonicalFilter("Bundle.id", "Bundle.meta", withData ? "Bundle.signature.data" : "Bundle.signature");
+      p.setCanonicalFilter("Bundle.id", "Bundle.meta", "Bundle.signature");
     } else {
-      p.setCanonicalFilter(withData ? "Bundle.signature.data" : "Bundle.signature");
+      p.setCanonicalFilter("Bundle.signature");
     }
     p.compose(bundle, ba, OutputStyle.CANONICAL, null);
     toSign = ba.toByteArray();
@@ -1460,11 +1454,9 @@ public class BundleValidator extends BaseValidator {
       if (jwk != null && canon != null) {
         // try and verify
       
-        byte[] toSignWith = null;
-        byte[] toSignWithout = null;
+        byte[] toSign = null;
         try {
-          toSignWith = makeSignableBundle(bundle, canon, xml, true);
-          toSignWithout = makeSignableBundle(bundle, canon, xml, false);
+          toSign = makeSignableBundle(bundle, canon, xml);
         } catch (Exception e) {
           // nothing - this won't happen
         }
@@ -1479,12 +1471,7 @@ public class BundleValidator extends BaseValidator {
           rule(errors, "2025-06-13", IssueType.INVALID, stack, false, I18nConstants.BUNDLE_SIGNATURE_DIGSIG_INVALID, e.getMessage());                            
         }            
         try {
-          boolean with = true;
-          boolean verified = verifyDigSig(errors, stack, cert, jwk, dsig.getDigSigAlg(), canon, toSignWith, signatureBytes, instant, dsig, "with");
-          if (!verified) {
-//            with = false;
-//            verified = verifyDigSig(errors, stack,cert, jwk, dsig.getDigSigAlg(), canon, toSignWithout, signatureBytes, instant, dsig, "without");
-          }
+          boolean verified = verifyDigSig(errors, stack, cert, jwk, dsig.getDigSigAlg(), canon, toSign, signatureBytes, instant, dsig, "with");
           if (!verified) {
             ok = false;
             rule(errors, "2025-06-13", IssueType.VALUE, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIG_FAIL_CERT); 
@@ -1499,12 +1486,12 @@ public class BundleValidator extends BaseValidator {
                 rule(errors, "2025-06-13", IssueType.VALUE, stack, false, I18nConstants.BUNDLE_SIGNATURE_DIGSIG_SIGNED_INVALID, e.getMessage());                            
               }
               if (signed != null) {
-                if (!Arrays.equals(toSignWith, signed)) {
-                  rule(errors, "2025-06-13", IssueType.VALUE, stack, false, I18nConstants.BUNDLE_SIGNATURE_DIGSIG_SIGNED_MISMATCH, toSignWith.length, signed.length);
+                if (!Arrays.equals(toSign, signed)) {
+                  rule(errors, "2025-06-13", IssueType.VALUE, stack, false, I18nConstants.BUNDLE_SIGNATURE_DIGSIG_SIGNED_MISMATCH, toSign.length, signed.length);
                   String diff;
                   try { 
                     Document signedX = parseXmlOrError(errors, stack, signed, I18nConstants.BUNDLE_SIGNATURE_DIGSIG_SIGNED_INVALID_XML);
-                    Document toSignX = parseXmlOrError(errors, stack, toSignWith, I18nConstants.BUNDLE_SIGNATURE_DIGSIG_SIGNED_INVALID_XML);
+                    Document toSignX = parseXmlOrError(errors, stack, toSign, I18nConstants.BUNDLE_SIGNATURE_DIGSIG_SIGNED_INVALID_XML);
                     diff = new CompareUtilities().compareElements("payload", "$", toSignX.getDocumentElement(), signedX.getDocumentElement());
                     if (diff == null) {
                       hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_DIGSIG_SIGNED_XML_MATCHES);                
@@ -1532,7 +1519,7 @@ public class BundleValidator extends BaseValidator {
               hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIGNED_BY, idv);
             }
           }
-          if ((when != null && with) || (instant != null && dsig.getXadesReference() != null)) {
+          if ((when != null) || (instant != null && dsig.getXadesReference() != null)) {
             hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIGNED_AT_VERIFIED, when.primitiveValue());
           } else if (sigT != null) {
             hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIGNED_AT, sigT);                
