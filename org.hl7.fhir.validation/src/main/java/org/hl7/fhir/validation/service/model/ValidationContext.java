@@ -188,6 +188,10 @@ public class ValidationContext {
   @SerializedName("extensions")
   private
   List<String> extensions = new ArrayList<String>();
+  @JsonProperty("certSources")
+  @SerializedName("certSources")
+  private
+  List<String> certSources = new ArrayList<String>();
   @JsonProperty("igs")
   @SerializedName("igs")
   private
@@ -535,6 +539,19 @@ public class ValidationContext {
   @JsonProperty("extensions")
   public ValidationContext setExtensions(List<String> extensions) {
     this.extensions = extensions;
+    return this;
+  }
+
+  @SerializedName("certSources")
+  @JsonProperty("certSources")
+  public List<String> getCertSources() {
+    return certSources;
+  }
+
+  @SerializedName("certSources")
+  @JsonProperty("certSources")
+  public ValidationContext setCertSources(List<String> certSources) {
+    this.certSources = certSources;
     return this;
   }
 
@@ -1221,6 +1238,7 @@ public class ValidationContext {
       allowDoubleQuotesInFHIRPath == that.allowDoubleQuotesInFHIRPath &&
       checkIPSCodes == that.checkIPSCodes &&
       Objects.equals(extensions, that.extensions) &&
+      Objects.equals(certSources, that.certSources) &&
       Objects.equals(map, that.map) &&
       Objects.equals(resolutionContext, that.resolutionContext) &&
       Objects.equals(htmlInMarkdownCheck, that.htmlInMarkdownCheck) &&
@@ -1269,7 +1287,7 @@ public class ValidationContext {
 
   @Override
   public int hashCode() {
-    return Objects.hash(baseEngine, doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, checkReferences,canDoNative, noInternalCaching, resolutionContext, aiService,
+    return Objects.hash(baseEngine, doNative, extensions, certSources, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, checkReferences,canDoNative, noInternalCaching, resolutionContext, aiService,
       noExtensibleBindingMessages, noInvariants, displayWarnings, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
       targetVer, packageName, igs, questionnaireMode, level, profiles, options, sources, inputs, mode, locale, locations, crumbTrails, showMessageIds, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars,
       watchMode, watchScanDelay, watchSettleTime, bestPracticeLevel, unknownCodeSystemsCauseErrors, noExperimentalContent, advisorFile, expansionParameters, format, htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
@@ -1281,6 +1299,7 @@ public class ValidationContext {
       "baseEngine=" + baseEngine +
       ", doNative=" + doNative +
       ", extensions=" + extensions +
+      ", certSources=" + certSources +
       ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +
       ", recursive=" + recursive +
       ", doDebug=" + doDebug +

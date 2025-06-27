@@ -13,6 +13,7 @@ import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.OperationDefinition;
 import org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent;
+import org.hl7.fhir.r5.model.OperationDefinition.OperationKind;
 import org.hl7.fhir.r5.model.OperationDefinition.OperationParameterScope;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -60,15 +61,28 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
       x.pre().tx(opd.getUrl()); 
       addMarkdown(x, opd.getDescription());} 
  
-    if (opd.getSystem()) 
-      x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URLS, opd.getCode())); 
-    for (Enumeration<VersionIndependentResourceTypesAll> c : opd.getResource()) { 
-      if (opd.getType()) 
-        x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, c.getCode()+"/$"+opd.getCode())); 
-      if (opd.getInstance()) 
-        x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, c.getCode()+"/[id]/$"+opd.getCode())); 
-    } 
- 
+    if (opd.getKind() == OperationKind.QUERY) {
+      if (opd.getSystem()) {
+        x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URLS, "?_query="+opd.getCode()+"&..."));
+      }
+      for (Enumeration<VersionIndependentResourceTypesAll> c : opd.getResource()) { 
+        if (opd.getType()) 
+          x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, c.getCode()+"?_query="+opd.getCode()+"&...")); 
+        if (opd.getInstance()) 
+          x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, c.getCode()+"/[id]?_query="+opd.getCode()+"&...")); 
+      } 
+    } else {
+      if (opd.getSystem()) {
+        x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URLS, "$"+opd.getCode()));
+      }
+      for (Enumeration<VersionIndependentResourceTypesAll> c : opd.getResource()) { 
+        if (opd.getType()) 
+          x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, c.getCode()+"/$"+opd.getCode())); 
+        if (opd.getInstance()) 
+          x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, c.getCode()+"/[id]/$"+opd.getCode())); 
+      } 
+    }
+
     if (opd.hasInputProfile()) { 
       XhtmlNode p = x.para(); 
       p.tx(context.formatPhrase(RenderingContext.OP_DEF_INPAR)); 

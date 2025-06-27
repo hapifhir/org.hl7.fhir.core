@@ -345,12 +345,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
              name = name.substring(0, name.length() - 3);
            if (showCodeDetails || !isDefaultValue(displayHints, p.getValues())) {
 
-             para.b().addText(name);
+             markBoilerplate(para.b()).addText(name);
              para.tx(": ");
              if (renderAsList(child) && p.getValues().size() > 1) {
                XhtmlNode list = x.ul();
                for (ResourceWrapper v : p.getValues())
-                 renderLeaf(status, res, v, profile, child, x, list.li(), false, showCodeDetails, displayHints, indent);
+                 renderLeaf(status, res, v, profile, child, x, xlinkNarrative(list.li(), v), false, showCodeDetails, displayHints, indent);
              } else {
                boolean first = true;
                for (ResourceWrapper v : p.getValues()) {
@@ -359,7 +359,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
                  } else {
                    para.tx(", ");
                  }
-                 renderLeaf(status, res, v, profile, child, x, para, false, showCodeDetails, displayHints, indent);
+                 renderLeaf(status, res, v, profile, child, x, spanIfTracking(para, v), false, showCodeDetails, displayHints, indent);
                }
              }
            }

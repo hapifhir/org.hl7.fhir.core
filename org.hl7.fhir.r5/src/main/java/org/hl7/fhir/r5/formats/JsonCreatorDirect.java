@@ -251,4 +251,11 @@ public class JsonCreatorDirect implements JsonCreator {
   public void elide() {
     // not used
   }
+  
+  @Override
+  public boolean isCanonical() {
+    return false;
+  }
+
+  
 }

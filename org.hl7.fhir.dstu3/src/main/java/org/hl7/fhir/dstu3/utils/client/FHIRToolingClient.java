@@ -197,7 +197,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
         "Read " + resourceClass.getName() + "/" + id,
         timeoutNormal);
       if (result.isUnsuccessfulRequest()) {
-        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+        throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
       }
     } catch (Exception e) {
       throw new FHIRException(e);
@@ -215,7 +215,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
         "VRead " + resourceClass.getName() + "/" + id + "/?_history/" + version,
         timeoutNormal);
       if (result.isUnsuccessfulRequest()) {
-        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+        throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
       }
     } catch (Exception e) {
       throw new FHIRException("Error trying to read this version of the resource", e);
@@ -233,7 +233,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
         "Read " + resourceClass.getName() + "?url=" + canonicalURL,
         timeoutNormal);
       if (result.isUnsuccessfulRequest()) {
-        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+        throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
       }
     } catch (Exception e) {
       handleException("An error has occurred while trying to read this version of the resource", e);
@@ -257,10 +257,10 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
         "Update " + resource.fhirType() + "/" + resource.getId(),
         timeoutOperation);
       if (result.isUnsuccessfulRequest()) {
-        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+        throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
       }
     } catch (Exception e) {
-      throw new EFhirClientException("An error has occurred while trying to update this resource", e);
+      throw new EFhirClientException(result.getHttpStatus(), "An error has occurred while trying to update this resource", e);
     }
     // TODO oe 26.1.2015 could be made nicer if only OperationOutcome locationheader is returned with an operationOutcome would be returned (and not  the resource also) we make another read
     try {
@@ -285,10 +285,10 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
         "Update " + resource.fhirType() + "/" + id,
         timeoutOperation);
       if (result.isUnsuccessfulRequest()) {
-        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+        throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
       }
     } catch (Exception e) {
-      throw new EFhirClientException("An error has occurred while trying to update this resource", e);
+      throw new EFhirClientException(result.getHttpStatus(), "An error has occurred while trying to update this resource", e);
     }
     // TODO oe 26.1.2015 could be made nicer if only OperationOutcome	locationheader is returned with an operationOutcome would be returned (and not	the resource also) we make another read
     try {
@@ -329,7 +329,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       result = client.issueGetResourceRequest(url, withVer(getPreferredResourceFormat(), "3.0"), generateHeaders(false), "GET " + resourceClass.getName() + "/$" + name, timeoutLong);
     }
     if (result.isUnsuccessfulRequest()) {
-      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+      throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
     }
     if (result.getPayload() instanceof Parameters) {
       return (Parameters) result.getPayload();
@@ -366,7 +366,25 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
         withVer(getPreferredResourceFormat(), "3.0"), generateHeaders(true),
         "POST " + resourceClass.getName() + (id != null ? "/" + id : "") + "/$validate", timeoutLong);
       if (result.isUnsuccessfulRequest()) {
-        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+        throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+      }
+    } catch (Exception e) {
+      handleException("An error has occurred while trying to validate this resource", e);
+    }
+    return (OperationOutcome) result.getPayload();
+  }
+  
+  @SuppressWarnings("unchecked")
+  public <T extends Resource> OperationOutcome validate(Resource resource, String id) {
+    recordUse();
+    ResourceRequest<T> result = null;
+    try {
+      result = client.issuePostRequest(resourceAddress.resolveValidateUri(resource.fhirType(), id),
+        ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat()), false),
+        withVer(getPreferredResourceFormat(), "3.0"), generateHeaders(true),
+        "POST " + resource.fhirType() + (id != null ? "/" + id : "") + "/$validate", timeoutLong);
+      if (result.isUnsuccessfulRequest()) {
+        throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
       }
     } catch (Exception e) {
       handleException("An error has occurred while trying to validate this resource", e);
@@ -388,7 +406,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     if (e instanceof EFhirClientException) {
       throw (EFhirClientException) e;
     } else {
-      throw new EFhirClientException(message, e);
+      throw new EFhirClientException(0, message, e);
     }
   }
 
@@ -431,7 +449,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       e.printStackTrace();
     }
     if (result.isUnsuccessfulRequest()) {
-      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+      throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
     }
     return (Parameters) result.getPayload();
   }
@@ -450,7 +468,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       e.printStackTrace();
     }
     if (result.isUnsuccessfulRequest()) {
-      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+      throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
     }
     return (Parameters) result.getPayload();
   }
@@ -469,7 +487,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       e.printStackTrace();
     }
     if (result.isUnsuccessfulRequest()) {
-      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+      throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
     }
     return (Parameters) result.getPayload();
   }
@@ -487,7 +505,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
         "ValueSet/$expand?url=" + source.getUrl(),
         timeoutExpand);
       if (result.isUnsuccessfulRequest()) {
-        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+        throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
       }
     } catch (IOException e) {
       e.printStackTrace();
@@ -512,7 +530,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
         "Closure?name=" + name,
         timeoutNormal);
       if (result.isUnsuccessfulRequest()) {
-        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+        throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
       }
     } catch (IOException e) {
       e.printStackTrace();
@@ -534,7 +552,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
         "UpdateClosure?name=" + name,
         timeoutOperation);
       if (result.isUnsuccessfulRequest()) {
-        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+        throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
       }
     } catch (IOException e) {
       e.printStackTrace();

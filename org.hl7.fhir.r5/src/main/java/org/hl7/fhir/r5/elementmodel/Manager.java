@@ -121,6 +121,21 @@ public class Manager {
       } 
       return fmt;
     }
+
+    public String toMimeType() {
+      switch (this) {
+      case FML: return "text/fhir+fml";
+      case JSON: return "application/fhir+json";
+      case NDJSON: return "application/fhir+ndjson";
+      case SHC: return "application/shc";
+      case SHL: return "application/shl";
+      case TEXT: return "text/plain";
+      case TURTLE: return "application/fhir+turtle";
+      case VBAR: return "application/x-hl7-v2";
+      case XML: return "application/fhir+xml";
+      }
+      return "??";
+    }
   }
   
   public static List<ValidatedFragment> parse(IWorkerContext context, InputStream source, FhirFormat inputFormat) throws FHIRFormatError, DefinitionException, IOException, FHIRException {

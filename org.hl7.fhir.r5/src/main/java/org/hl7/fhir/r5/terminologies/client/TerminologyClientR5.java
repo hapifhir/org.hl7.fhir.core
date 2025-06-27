@@ -39,6 +39,7 @@ import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
@@ -281,5 +282,7 @@ public class TerminologyClientR5 implements ITerminologyClient {
     
   }
 
-
+  public OperationOutcome validateResource(Resource res) {
+    return client.validate(res, res.getId());
+  }
 }

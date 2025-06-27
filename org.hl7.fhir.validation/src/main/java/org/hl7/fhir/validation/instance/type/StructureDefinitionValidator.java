@@ -1406,7 +1406,8 @@ public class StructureDefinitionValidator extends BaseValidator {
     } 
     if (binding.hasChildren("usage")) {
       for (Element usage : binding.getChildren("usage")) {
-        warning(errors, "2024-09-20", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, "test");        
+        // warning(errors, "2024-09-20", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, "test");    
+        // TODO
       }
     }
     return ok;

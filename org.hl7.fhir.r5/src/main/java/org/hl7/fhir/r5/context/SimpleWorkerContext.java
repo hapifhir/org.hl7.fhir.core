@@ -64,6 +64,7 @@ import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.ImplementationGuide;
+import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Questionnaire;
@@ -99,6 +100,7 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import ca.uhn.fhir.parser.DataFormatException;
 import lombok.AccessLevel;
@@ -195,7 +197,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private boolean canNoTS;
   private XVerExtensionManager xverManager;
   private boolean allowLazyLoading = true;
-  private List<String> suppressedMappings;
 
   private SimpleWorkerContext() throws IOException, FHIRException {
     super();
@@ -828,7 +829,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     if (r instanceof StructureDefinition) {
       StructureDefinition p = (StructureDefinition)r;
       try {
-        new ContextUtilities(this, suppressedMappings).generateSnapshot(p);
+        cutils.generateSnapshot(p);
       } catch (Exception e) {
         // not sure what to do in this case?
         log.error("Unable to generate snapshot @3 for "+uri+": "+e.getMessage());
@@ -949,14 +950,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   @Override
   public String getSpecUrl() {
     return VersionUtilities.getSpecUrl(getVersion())+"/";
-  }
-
-  public List<String> getSuppressedMappings() {
-    return suppressedMappings;
-  }
-
-  public void setSuppressedMappings(List<String> suppressedMappings) {
-    this.suppressedMappings = suppressedMappings;
   }
 
 
