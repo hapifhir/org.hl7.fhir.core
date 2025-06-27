@@ -50,6 +50,7 @@
     "server" : "http://tx-dev.fhir.org/r4",
     "filename" : "cs-3e1cda47-ba94-4931-95fb-ba08f9900b75.json"
   },
+  "http://snomed.info/sct|http://snomed.info/sct/32506021000036107" : null,
   "http://standardterms.edqm.eu|null" : null,
   "http://fkcfhir.org/fhir/CodeSystem/FMCOrderSubType|null" : null,
   "http://example.org/mySystem|null" : null,

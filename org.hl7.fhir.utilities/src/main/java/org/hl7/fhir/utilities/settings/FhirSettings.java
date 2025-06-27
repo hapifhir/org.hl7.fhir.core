@@ -243,6 +243,9 @@ public class FhirSettings {
 
   public static List<String> getCertificateSources() {
     getInstance();
+    if (instance.fhirSettings.getCertificateSources() == null) {
+      return Collections.emptyList();
+    }
     return instance.fhirSettings.getCertificateSources();
   }
 }
