@@ -165,7 +165,7 @@ public class OperationDefinitionValidator extends BaseValidator {
     if (list.isEmpty()) {
       return "(none)";
     } else {
-      return CommaSeparatedStringBuilder.join2(",", " and ", list);
+      return CommaSeparatedStringBuilder.join2(",", " and ", Utilities.sorted(list));
     }
   }
 
