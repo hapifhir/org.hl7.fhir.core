@@ -1,156 +1,156 @@
 msgid ""
 msgstr ""
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Crowdin-Project: orghl7fhircore\n"
 "X-Crowdin-Project-ID: 792848\n"
-"X-Crowdin-Language: pt-PT\n"
+"X-Crowdin-Language: uk\n"
 "X-Crowdin-File: /org.hl7.fhir.utilities/src/main/resources/source/rendering-phrases-en.po\n"
 "X-Crowdin-File-ID: 236\n"
 "Project-Id-Version: orghl7fhircore\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Language-Team: Portuguese\n"
-"Language: pt_PT\n"
+"Language-Team: Ukrainian\n"
+"Language: uk_UA\n"
 "PO-Revision-Date: 2025-06-23 13:14\n"
 
 # ACTOR_DEF_ACT
 #: ACTOR_DEF_ACT
 msgid "Actor: {0}"
-msgstr "Actor: {0}"
+msgstr "Актор: {0}"
 
 # ACTOR_DEF_CAP
 #: ACTOR_DEF_CAP
 msgid "Capabilities:"
-msgstr "Capabilidades:"
+msgstr "Можливості:"
 
 # ACTOR_DEF_DER
 #: ACTOR_DEF_DER
 msgid "Derived from:"
-msgstr "Derivado de:"
+msgstr "Походить з:"
 
 # ACTOR_DEF_TYP
 #: ACTOR_DEF_TYP
 msgid "Type: {0}"
-msgstr "Tipo: {0}"
+msgstr "Тип: {0}"
 
 # ADD_BIND_ADD_BIND
 #: ADD_BIND_ADD_BIND
 msgid "Additional Bindings"
-msgstr "Vínculos adicionais"
+msgstr "Додаткові прив'язки"
 
 # ADD_BIND_ALL_REP
 #: ADD_BIND_ALL_REP
 msgid "All repeats"
-msgstr "Todas as repetições"
+msgstr "Всі повтори"
 
 # ADD_BIND_ANY
 #: ADD_BIND_ANY
 msgid "Any"
-msgstr "Qualquer"
+msgstr "Будь-які"
 
 # ADD_BIND_ANY_REP
 #: ADD_BIND_ANY_REP
 msgid "any repeat"
-msgstr "qualquer repetição"
+msgstr "будь-які повторення"
 
 # ADD_BIND_CURR_BIND
 #: ADD_BIND_CURR_BIND
 msgctxt "ADD_BIND_CURR_BIND"
 msgid "Current"
-msgstr "Actual"
+msgstr "Поточний"
 
 # ADD_BIND_DESIG_SYS
 #: ADD_BIND_DESIG_SYS
 msgid "This value set is a good set of codes to start with when designing your system"
-msgstr "Esse conjunto de valores é um bom conjunto de códigos para começar a conceber o seu sistema"
+msgstr "Цей набір значень є хорошими кодами для початку проєктування вашої системи"
 
 # ADD_BIND_EXT_PREF
 #: ADD_BIND_EXT_PREF
 msgid "A required binding, for use when the binding strength is ''extensible'' or ''preferred''"
-msgstr "Um vínculo obrigatório, para utilização quando a força do vínculo é ''extensível'' ou ''preferido''"
+msgstr "Обов'язкове звʼязування для використання, коли міцність зв'язування є «розширюваною» або «бажаною»"
 
 # ADD_BIND_EX_BIND
 #: ADD_BIND_EX_BIND
 msgctxt "ADD_BIND_EX_BIND"
 msgid "Extensible"
-msgstr "Extensível"
+msgstr "Розширюваний"
 
 # ADD_BIND_GIVEN_CONT
 #: ADD_BIND_GIVEN_CONT
 msgid "This value set is provided to user look up in a given context"
-msgstr "O conjunto de valores é"
+msgstr "Цей набір значень надається для пошуку користувача в заданому контексті"
 
 # ADD_BIND_MAX
 #: ADD_BIND_MAX
 msgid "Max Binding"
-msgstr "Vínculo máximo"
+msgstr "Максимальна прив'язка"
 
 # ADD_BIND_MIN
 #: ADD_BIND_MIN
 msgid "Min Binding"
-msgstr "Vínculo mínimo"
+msgstr "Мінімальна прив'язка"
 
 # ADD_BIND_NEW_REC
 #: ADD_BIND_NEW_REC
 msgid "New records are required to use this value set, but legacy records may use other codes"
-msgstr "Novos registos têm de utilizar este conjunto de valores, mas os registos antigos podem utilizar outros códigos"
+msgstr "Нові записи повинні використовувати цей набір значень, але старі записи можуть використовувати інші коди"
 
 # ADD_BIND_PREF_BIND
 #: ADD_BIND_PREF_BIND
 msgctxt "ADD_BIND_PREF_BIND"
 msgid "Preferred"
-msgstr "Preferido"
+msgstr "Бажані"
 
 # ADD_BIND_RECOM_VALUE_SET
 #: ADD_BIND_RECOM_VALUE_SET
 msgid "This is the value set that is recommended (documentation should explain why)"
-msgstr "Este é o conjunto de valores recomendado (a documentação deve explicar porquê)"
+msgstr "Це набір значень, рекомендований (документація повинна пояснити, чому)"
 
 # ADD_BIND_REQ_BIND
 #: ADD_BIND_REQ_BIND
 msgctxt "ADD_BIND_REQ_BIND"
 msgid "Required"
-msgstr "Obrigatório"
+msgstr "Необхідний"
 
 # ADD_BIND_UI
 #: ADD_BIND_UI
 msgctxt "ADD_BIND_UI"
 msgid "UI"
-msgstr "IU"
+msgstr "Інтерфейс користувача"
 
 # ADD_BIND_UI_BIND
 #: ADD_BIND_UI_BIND
 msgid "UI Binding"
-msgstr "Vínculo IU"
+msgstr "Прив'язка інтерфейсу користувача"
 
 # ADD_BIND_UNKNOWN_PUR
 #: ADD_BIND_UNKNOWN_PUR
 msgid "Unknown code for purpose"
-msgstr "Código desconhecido para o propósito"
+msgstr "Невідомий код за призначенням"
 
 # ADD_BIND_VALID_EXT
 #: ADD_BIND_VALID_EXT
 msgid "Validators will check this binding (strength = extensible)"
-msgstr "Os validadores verificarão esta ligação (força = extensível)"
+msgstr "Валідатори перевірять це зв'язування (міцність = розширюваний)"
 
 # ADD_BIND_VALID_REQ
 #: ADD_BIND_VALID_REQ
 msgid "Validators will check this binding (strength = required)"
-msgstr "Os validadores verificarão esta ligação (força = obrigatório)"
+msgstr "Валідатори перевірять цю прив'язку (міцність = обов'язковий)"
 
 # ADD_BIND_VALUE_COMP
 #: ADD_BIND_VALUE_COMP
 msgid "This value set is a component of the base value set"
-msgstr "Este conjunto de valores é um componente do conjunto de valores de base"
+msgstr "Цей набір значень є компонентом базового набору значень"
 
 # BUNDLE_DOCUMENT_CONTENT
 #: BUNDLE_DOCUMENT_CONTENT
 msgid "Document Content"
-msgstr ""
+msgstr "Вміст документу"
 
 # BUNDLE_DOCUMENT_DETAILS
 #: BUNDLE_DOCUMENT_DETAILS
 msgid "Document Details"
-msgstr ""
+msgstr "Деталі документу"
 
 # BUNDLE_ETAG
 #: BUNDLE_ETAG
@@ -160,42 +160,42 @@ msgstr "ETag = {0}"
 # BUNDLE_HEADER_DOCUMENT_CONTENTS
 #: BUNDLE_HEADER_DOCUMENT_CONTENTS
 msgid "Additional Resources Included in Document"
-msgstr "Recursos adicionais incluídos no documento"
+msgstr "Додаткові ресурси, включені в документ"
 
 # BUNDLE_HEADER_ENTRY
 #: BUNDLE_HEADER_ENTRY
 msgid "Entry {0}"
-msgstr "Entrada {0}"
+msgstr "Запис {0}"
 
 # BUNDLE_HEADER_ENTRY_URL
 #: BUNDLE_HEADER_ENTRY_URL
 msgid "Entry {0} - fullUrl = {1}"
-msgstr "Entrada {0} - fullUrl = {1}"
+msgstr "Запис {0} - fullUrl = {1}"
 
 # BUNDLE_HEADER_ROOT
 #: BUNDLE_HEADER_ROOT
 msgid "Bundle {0} of type {1}"
-msgstr "Pacote {0} do tipo {1}"
+msgstr "Bundle {0} типу {1}"
 
 # BUNDLE_IF_MATCH
 #: BUNDLE_IF_MATCH
 msgid "If-Match = {0}"
-msgstr "Se-Correspondência = {0}"
+msgstr "If-Match = {0}"
 
 # BUNDLE_IF_MOD
 #: BUNDLE_IF_MOD
 msgid "If-Modified-Since = {0}"
-msgstr "Se-Modificado-Desde = {0}"
+msgstr "If-Modified-Since = {0}"
 
 # BUNDLE_IF_NONE
 #: BUNDLE_IF_NONE
 msgid "If-None-Exist = {0}"
-msgstr "Se-Não-Existir = {0}"
+msgstr "If-None-Exist = {0}"
 
 # BUNDLE_IF_NON_MATCH
 #: BUNDLE_IF_NON_MATCH
 msgid "If-None-Match = {0}"
-msgstr "Se-Nenhuma-Correspondência = {0}"
+msgstr "If-None-Match = {0}"
 
 # BUNDLE_LAST_MOD
 #: BUNDLE_LAST_MOD
@@ -205,57 +205,57 @@ msgstr "LastModified = {0}"
 # BUNDLE_LOCATION
 #: BUNDLE_LOCATION
 msgid "Location = {0}"
-msgstr "Localização = {0}"
+msgstr "Розташування = {0}"
 
 # BUNDLE_REQUEST
 #: BUNDLE_REQUEST
 msgid "Request:"
-msgstr "Pedido:"
+msgstr "Запит:"
 
 # BUNDLE_RESOURCE
 #: BUNDLE_RESOURCE
 msgid "Resource {0}:"
-msgstr "Recurso {0}:"
+msgstr "Ресурс {0}:"
 
 # BUNDLE_RESPONSE
 #: BUNDLE_RESPONSE
 msgid "Response:"
-msgstr "Resposta:"
+msgstr "Відповідь:"
 
 # BUNDLE_REV_EXCP
 #: BUNDLE_REV_EXCP
 msgid "Exception generating narrative: {0}"
-msgstr "Narrativa geradora de exceção: {0}"
+msgstr "Виняток генерації наративу: {0}"
 
 # BUNDLE_SEARCH
 #: BUNDLE_SEARCH
 msgid "Search:"
-msgstr "Procurar:"
+msgstr "Пошук:"
 
 # BUNDLE_SEARCH_MODE
 #: BUNDLE_SEARCH_MODE
 msgid "Mode = {0}"
-msgstr "Modo = {0}"
+msgstr "Режим = {0}"
 
 # BUNDLE_SEARCH_SCORE
 #: BUNDLE_SEARCH_SCORE
 msgid "Score = {0}"
-msgstr "Pontuação = {0}"
+msgstr "Оцінка = {0}"
 
 # BUNDLE_SUMMARY
 #: BUNDLE_SUMMARY
 msgid "{0} Bundle, {1} Entries"
-msgstr "{0} Conjunto, {1} Entradas"
+msgstr "Bundle {0}, {1} записи"
 
 # BUND_REND_INVALID_DOC
 #: BUND_REND_INVALID_DOC
 msgid "Invalid document ''{0}'' - first entry is not a Composition ({0})"
-msgstr "Documento inválido ''{0}'' - a primeira entrada não é uma Composição ({0})"
+msgstr "Невірний документ ''{0}'' - перший запис не є композицією ({0})"
 
 # CANON_REND_COMMITTEE
 #: CANON_REND_COMMITTEE
 msgid "Committee"
-msgstr "Comité"
+msgstr "Комітет"
 
 # CANON_REND_JSON
 #: CANON_REND_JSON
@@ -265,632 +265,632 @@ msgstr "JSON"
 # CANON_REND_MATURITY
 #: CANON_REND_MATURITY
 msgid "Maturity"
-msgstr "Maturidade"
+msgstr "Зрілість"
 
 # CANON_REND_PUBLISHER
 #: CANON_REND_PUBLISHER
 msgid "Publisher"
-msgstr "Editora"
+msgstr "Видавець"
 
 # CANON_REND_SOURCE_RES
 #: CANON_REND_SOURCE_RES
 msgid "Source Resource"
-msgstr "Fonte de recursos"
+msgstr "Джерело ресурсу"
 
 # CANON_REND_TURTLE
 #: CANON_REND_TURTLE
 msgid "Turtle"
-msgstr "Tartaruga"
+msgstr "Turtle"
 
 # CAPABILITY_ADD_SUPP_PROF
 #: CAPABILITY_ADD_SUPP_PROF
 msgid "Additional supported profiles:"
-msgstr "Perfis adicionais suportados:"
+msgstr "Додаткові підтримувані профілі:"
 
 # CAPABILITY_BASE_SYS
 #: CAPABILITY_BASE_SYS
 msgid "Base System Profile"
-msgstr "Perfil do sistema de base"
+msgstr "Основний системний профіль"
 
 # CAPABILITY_COMB_SEARCH_PAR
 #: CAPABILITY_COMB_SEARCH_PAR
 msgid "Combined Search Parameters"
-msgstr "Parâmetros de pesquisa combinados"
+msgstr "Комбіновані параметри пошуку"
 
 # CAPABILITY_CORS_NO
 #: CAPABILITY_CORS_NO
 msgid "Enable CORS: no"
-msgstr "Ativar CORS: não"
+msgstr "Увімкнути CORS: ні"
 
 # CAPABILITY_CORS_YES
 #: CAPABILITY_CORS_YES
 msgid "Enable CORS: yes"
-msgstr "Ativar CORS: sim"
+msgstr "Увімкнути CORS: так"
 
 # CAPABILITY_CREATE_INT
 #: CAPABILITY_CREATE_INT
 msgid "POST a new resource (create interaction)"
-msgstr "POST um novo recurso (criar interação)"
+msgstr "ОПУБЛІКУВАТИ новий ресурс (створити взаємодію)"
 
 # CAPABILITY_DELETE_INT
 #: CAPABILITY_DELETE_INT
 msgid "DELETE a resource (delete interaction)"
-msgstr "ELIMINAR um recurso (eliminar interação)"
+msgstr "ВИДАЛИТИ ресурс (видалити взаємодію)"
 
 # CAPABILITY_DOCUMENT_CAPS
 #: CAPABILITY_DOCUMENT_CAPS
 msgid "FHIR Document Capabilities"
-msgstr "Capacidades de documentos FHIR"
+msgstr "Можливості документів FHIR"
 
 # CAPABILITY_ENDPOINTS
 #: CAPABILITY_ENDPOINTS
 msgid "Endpoint(s)"
-msgstr "Ponto(s) final(ais)"
+msgstr "Endpoint(s)"
 
 # CAPABILITY_ERR_DET
 #: CAPABILITY_ERR_DET
 msgid "Error detected"
-msgstr "Erro detectado"
+msgstr "Виявлена помилка"
 
 # CAPABILITY_EXT_OP
 #: CAPABILITY_EXT_OP
 msgid "Extended Operations"
-msgstr "Operações alargadas"
+msgstr "Розширені операції"
 
 # CAPABILITY_FHIR
 #: CAPABILITY_FHIR
 msgid "Core FHIR Resource"
-msgstr "Recurso FHIR principal"
+msgstr "Основний ресурс FHIR"
 
 # CAPABILITY_FHIR_VER
 #: CAPABILITY_FHIR_VER
 msgid "FHIR Version: {0}"
-msgstr "Versão FHIR: {0}"
+msgstr "FHIR версія: {0}"
 
 # CAPABILITY_HISTORY_INT
 #: CAPABILITY_HISTORY_INT
 msgid "GET changes to a resource (history interaction on instance)"
-msgstr "Obter alterações a um recurso (interação do histórico na instância)"
+msgstr "Отримаити зміни до ресурсу (історія взаємодії з інстансом)"
 
 # CAPABILITY_HISTORY_TYPE
 #: CAPABILITY_HISTORY_TYPE
 msgid "GET changes for all resources of the type (history interaction on type)"
-msgstr "Obter alterações para todos os recursos do tipo (interação do histórico no tipo)"
+msgstr "ОТРИМАТИ зміни для всіх ресурсів типу (історія взаємодії за типом)"
 
 # CAPABILITY_IMP_VER
 #: CAPABILITY_IMP_VER
 msgid "Implementation Guide Version: {0}"
-msgstr "Guia de implementação Versão: {0}"
+msgstr "Версія керівництва по впровадженню: {0}"
 
 # CAPABILITY_INT
 #: CAPABILITY_INT
 msgid "interaction."
-msgstr "interação."
+msgstr "взаємодія."
 
 # CAPABILITY_INTER_SUPP
 #: CAPABILITY_INTER_SUPP
 msgid "The interactions supported by each resource ("
-msgstr "As interações suportadas por cada recurso ("
+msgstr "Взаємодії, що підтримуються кожним ресурсом ("
 
 # CAPABILITY_INT_DESC
 #: CAPABILITY_INT_DESC
 msgid "interaction described as follows:"
-msgstr "interação descrita da seguinte forma:"
+msgstr "Взаємодія описується наступним чином:"
 
 # CAPABILITY_INT_SUMM
 #: CAPABILITY_INT_SUMM
 msgid "Interaction summary"
-msgstr "Resumo da interação"
+msgstr "Підсумки взаємодії"
 
 # CAPABILITY_MAY_SUPP
 #: CAPABILITY_MAY_SUPP
 msgid "MAY Support the Following Implementation Guides"
-msgstr "PODE apoiar os seguintes guias de implementação"
+msgstr "МОЖЕ підтримувати наступні керівництва по впровадженню"
 
 # CAPABILITY_MESSAGING_CAP
 #: CAPABILITY_MESSAGING_CAP
 msgid "Messaging Capability"
-msgstr "Capacidade de envio de mensagens"
+msgstr "Можливості обміну повідомленнями"
 
 # CAPABILITY_MESSAGING_CAPS
 #: CAPABILITY_MESSAGING_CAPS
 msgid "FHIR Messaging Capabilities"
-msgstr "Capacidades de mensagens FHIR"
+msgstr "Можливості обміну повідомленнями FHIR"
 
 # CAPABILITY_MULT_EXT
 #: CAPABILITY_MULT_EXT
 msgid "this mark indicates that there are more than one expectation extensions present"
-msgstr "esta marca indica que há mais do que uma extensão de expectativa presente"
+msgstr "Ця позначка вказує на те, що існує більше одного розширення очікувань"
 
 # CAPABILITY_NOTE_CAP
 #: CAPABILITY_NOTE_CAP
 msgid "Note to Implementers: FHIR Capabilities"
-msgstr "Nota para os implementadores: Capacidades FHIR"
+msgstr "Примітка для виконавців: можливості FHIR"
 
 # CAPABILITY_OP
 #: CAPABILITY_OP
 msgid "Operations"
-msgstr "Operações"
+msgstr "Операції"
 
 # CAPABILITY_OPER
 #: CAPABILITY_OPER
 msgid "Operation"
-msgstr "Funcionamento"
+msgstr "Операція"
 
 # CAPABILITY_OTH_RES_ENB
 #: CAPABILITY_OTH_RES_ENB
 msgid "The other resources enabled for"
-msgstr "Os outros recursos activados para"
+msgstr "Інші ресурси увімкнені для"
 
 # CAPABILITY_PATCH_INT
 #: CAPABILITY_PATCH_INT
 msgid "PATCH a new resource version (patch interaction)"
-msgstr "PATCH uma nova versão de recurso (interação de patches)"
+msgstr "PATCH: нова версія ресурсу (патч-взаємодія)"
 
 # CAPABILITY_PROF_CONF
 #: CAPABILITY_PROF_CONF
 msgid "Profile Conformance"
-msgstr "Conformidade do perfil"
+msgstr "Відповідність профілю"
 
 # CAPABILITY_PROF_MAP
 #: CAPABILITY_PROF_MAP
 msgid "Profile Mapping"
-msgstr "Mapeamento de perfis"
+msgstr "Співставлення профілю"
 
 # CAPABILITY_PROF_RES_DOC
 #: CAPABILITY_PROF_RES_DOC
 msgid "Document Resource Profile"
-msgstr "Perfil do recurso de documento"
+msgstr "Профіль ресурсу документа"
 
 # CAPABILITY_PUB_BY
 #: CAPABILITY_PUB_BY
 msgid "Published by: {0}"
-msgstr "Publicado por: {0}"
+msgstr "Опубліковано: {0}"
 
 # CAPABILITY_PUB_ON
 #: CAPABILITY_PUB_ON
 msgid "Published on: {0}"
-msgstr "Publicado em: {0}"
+msgstr "Опубліковано на: {0}"
 
 # CAPABILITY_READ_INT
 #: CAPABILITY_READ_INT
 msgid "GET a resource (read interaction)"
-msgstr "GET um recurso (interação de leitura)"
+msgstr "ОТРИМАТИ ресурс (читати взаємодію)"
 
 # CAPABILITY_REF_PROF
 #: CAPABILITY_REF_PROF
 msgid "Reference Policy"
-msgstr "Política de referência"
+msgstr "Довідкова політика"
 
 # CAPABILITY_REQ_RECOM
 #: CAPABILITY_REQ_RECOM
 msgid "Required and recommended search parameters"
-msgstr "Parâmetros de pesquisa necessários e recomendados"
+msgstr "Обов'язкові та рекомендовані параметри пошуку"
 
 # CAPABILITY_REST_CAPS
 #: CAPABILITY_REST_CAPS
 msgid "FHIR RESTful Capabilities"
-msgstr "Capacidades FHIR RESTful"
+msgstr "Можливості FHIR RESTful"
 
 # CAPABILITY_REST_CONFIG
 #: CAPABILITY_REST_CONFIG
 msgid "REST Configuration: {0}"
-msgstr "Configuração REST: {0}"
+msgstr "Конфігурація REST: {0}"
 
 # CAPABILITY_RES_CONF
 #: CAPABILITY_RES_CONF
 msgid "Resource Conformance: {0}"
-msgstr "Conformidade do recurso: {0}"
+msgstr "Відповідність ресурсам: {0}"
 
 # CAPABILITY_RES_ENB
 #: CAPABILITY_RES_ENB
 msgid "The linked resources enabled for"
-msgstr "Os recursos ligados activados para"
+msgstr "Пов'язані ресурси ввімкнено для"
 
 # CAPABILITY_RES_OPER
 #: CAPABILITY_RES_OPER
 msgid "The operations on the resource (if any)"
-msgstr "As operações sobre o recurso (se existirem)"
+msgstr "Операції на ресурсі (за наявності)"
 
 # CAPABILITY_RES_PRO
 #: CAPABILITY_RES_PRO
 msgid "Capabilities by Resource/Profile"
-msgstr "Capacidades por recurso/perfil"
+msgstr "Можливості за ресурсом/профілем"
 
 # CAPABILITY_RES_TYP
 #: CAPABILITY_RES_TYP
 msgid "Resource Type"
-msgstr "Tipo de recurso"
+msgstr "Тип ресурсу"
 
 # CAPABILITY_REV_PROF
 #: CAPABILITY_REV_PROF
 msgid "The relevant profiles (if any)"
-msgstr "Os perfis relevantes (se existirem)"
+msgstr "Відповідні профілі (за наявності)"
 
 # CAPABILITY_SEARCHES
 #: CAPABILITY_SEARCHES
 msgid "Searches"
-msgstr "Pesquisas"
+msgstr "Пошук"
 
 # CAPABILITY_SEARCH_INT
 #: CAPABILITY_SEARCH_INT
 msgid "GET all set of resources of the type (search interaction)"
-msgstr "GET todo o conjunto de recursos do tipo (interação de pesquisa)"
+msgstr "ОТРИМАТИ весь набір ресурсів типу (пошукова взаємодія)"
 
 # CAPABILITY_SEARCH_PAR
 #: CAPABILITY_SEARCH_PAR
 msgid "The required, recommended, and some optional search parameters (if any)."
-msgstr "Os parâmetros de pesquisa obrigatórios, recomendados e alguns opcionais (se existirem)."
+msgstr "Обов'язкові, рекомендовані та деякі необов'язкові параметри пошуку (за наявності)."
 
 # CAPABILITY_SEARCH_PARS
 #: CAPABILITY_SEARCH_PARS
 msgid "Search Parameters"
-msgstr "Parâmetros de pesquisa"
+msgstr "Параметри пошуку"
 
 # CAPABILITY_SHOULD_SUPP
 #: CAPABILITY_SHOULD_SUPP
 msgid "SHOULD Support the Following Implementation Guides"
-msgstr "DEVERÁ suportar os seguintes guias de implementação"
+msgstr "ПОВИНЕН підтримувати наступні керівництва з впровадження"
 
 # CAPABILITY_SUMM_RES
 #: CAPABILITY_SUMM_RES
 msgid "The summary table lists the resources that are part of this configuration, and for each resource it lists:"
-msgstr "A tabela de resumo enumera os recursos que fazem parte desta configuração e, para cada recurso, enumera-os:"
+msgstr "У зведеній таблиці перелічено ресурси, які входять до цієї конфігурації, і для кожного ресурсу перелічено:"
 
 # CAPABILITY_SUMM_SYS_INT
 #: CAPABILITY_SUMM_SYS_INT
 msgid "Summary of System-wide Interactions"
-msgstr "Resumo das interações a nível do sistema"
+msgstr "Підсумок загальносистемних взаємодій"
 
 # CAPABILITY_SUPP
 #: CAPABILITY_SUPP
 msgid "support"
-msgstr "apoio"
+msgstr "підтримка"
 
 # CAPABILITY_SUPPS
 #: CAPABILITY_SUPPS
 msgid "Supports"
-msgstr "Apoios"
+msgstr "Підтримує"
 
 # CAPABILITY_SUPPS_THE
 #: CAPABILITY_SUPPS_THE
 msgid "Supports the"
-msgstr "Apoia o"
+msgstr "Підтримує"
 
 # CAPABILITY_SUPP_FORM
 #: CAPABILITY_SUPP_FORM
 msgid "Supported Formats:"
-msgstr "Formatos suportados:"
+msgstr "Підтримувані формати:"
 
 # CAPABILITY_SUPP_MSGS
 #: CAPABILITY_SUPP_MSGS
 msgid "Supported Message(s)"
-msgstr "Mensagem(s) suportada(s)"
+msgstr "Підтримувані повідомлення"
 
 # CAPABILITY_SUPP_PATCH_FORM
 #: CAPABILITY_SUPP_PATCH_FORM
 msgid "Supported Patch Formats:"
-msgstr "Formatos de patch suportados:"
+msgstr "Підтримувані формати патчів:"
 
 # CAPABILITY_SUPP_PROFS
 #: CAPABILITY_SUPP_PROFS
 msgid "Supported Profiles"
-msgstr "Perfis suportados"
+msgstr "Підтримувані профілі"
 
 # CAPABILITY_SUPP_THE
 #: CAPABILITY_SUPP_THE
 msgid "support the"
-msgstr "apoiar o"
+msgstr "Підтримайте"
 
 # CAPABILITY_TYPS
 #: CAPABILITY_TYPS
 msgid "Types"
-msgstr "Tipos"
+msgstr "Типи"
 
 # CAPABILITY_TYP_PRES
 #: CAPABILITY_TYP_PRES
 msgid "ype are only present if at least one of the resources has support for them."
-msgstr "só estão presentes se pelo menos um dos recursos os suportar."
+msgstr "Типи присутні лише в тому випадку, якщо хоча б один з ресурсів має підтримку для них."
 
 # CAPABILITY_UPDATE_INT
 #: CAPABILITY_UPDATE_INT
 msgid "PUT a new resource version (update interaction)"
-msgstr "PUT uma nova versão do recurso (interação de atualização)"
+msgstr " Оновити (PUT) нову версію ресурсу (взаємодія з оновленнями)"
 
 # CAPABILITY_VREAD_INT
 #: CAPABILITY_VREAD_INT
 msgid "GET past versions of resources (vread interaction)"
-msgstr "OBTER versões anteriores de recursos (interação vread)"
+msgstr "ОТРИМАТИ (GET) минулі версії ресурсів (взаємодія з vread)"
 
 # CAPABILTY_ALLOW_CAP
 #: CAPABILTY_ALLOW_CAP
 msgid "Any FHIR capability may be ''allowed'' by the system unless explicitly marked as ''SHALL NOT''. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case."
-msgstr "Qualquer capacidade FHIR pode ser \"permitida\" pelo sistema, exceto se for explicitamente assinalada como \"NÃO DEVE\". Alguns itens são marcados como MAY no Guia de Implementação para destacar a sua potencial relevância para o caso de utilização."
+msgstr "Будь-яка можливість FHIR може бути «дозволена» системою, якщо вона не позначена явно як «НЕ ДОЗВОЛЕНА». Деякі пункти позначені як МОЖЛИВО у Керівництві з впровадження, щоб підкреслити їх потенційну актуальність для випадку використання."
 
 # CAPABILTY_SHALL_SUPP
 #: CAPABILTY_SHALL_SUPP
 msgid "SHALL Support the Following Implementation Guides"
-msgstr "DEVERÁ suportar os seguintes guias de implementação"
+msgstr "НЕОБХІДНО підтримувати наступні керівництва по впровадженню"
 
 # CODESYSTEM_CONCEPTS
 #: CODESYSTEM_CONCEPTS
 msgid "Concepts"
-msgstr "Conceitos"
+msgstr "Концепції"
 
 # CODESYSTEM_CONTENT_COMPLETE
 #: CODESYSTEM_CONTENT_COMPLETE
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines the following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr "Este <param name=\"cased\"/> sistema de código <param name=\"cs\"/> define o seguinte código<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgstr "Цей <param name=\"cased\"/> Системи кодів <param name=\"cs\"/> визначає наступний код<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
 
 # CODESYSTEM_CONTENT_EXAMPLE
 #: CODESYSTEM_CONTENT_EXAMPLE
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides some code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>that are example only</b>:"
-msgstr "Este <param name=\"cased\"/> sistema de código <param name=\"cs\"/> fornece alguns códigos<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>que são apenas exemplos</b>:"
+msgstr "Цей <param name=\"cased\"/> Системи кодів <param name=\"cs\"/> надає деякий код<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>який є лише прикладом</b>:"
 
 # CODESYSTEM_CONTENT_FRAGMENT
 #: CODESYSTEM_CONTENT_FRAGMENT
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides <b>a fragment</b> that includes following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr "Este <param name=\"cased\"/> sistema de código <param name=\"cs\"/> fornece <b>um fragmento</b> que inclui o seguinte código<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgstr "Цей <param name=\"cased\"/> Системи кодів <param name=\"cs\"/> Забезпечує <b>фрагмент</b> що включає в себе наступний код<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
 
 # CODESYSTEM_CONTENT_NOTPRESENT
 #: CODESYSTEM_CONTENT_NOTPRESENT
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines codes<param name=\"h\"/>, but no codes are represented here"
-msgstr "Este <param name=\"cased\"/> sistema de código <param name=\"cs\"/> define códigos<param name=\"h\"/>, mas nenhum código é representado aqui"
+msgstr "Цей <param name=\"cased\"/> Системи кодів <param name=\"cs\"/> визначає коди<param name=\"h\"/>, але ніякі коди тут не представлені"
 
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
 msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
-msgstr "Este suplemento do sistema de código <param name=\"cs\"/> define {0} no seguinte código<if test=\"code-count != 1\">s</if>:"
+msgstr "Ця кодова система доповнює <param name=\"cs\"/> визначає {0} за наступним кодом<if test=\"code-count != 1\">с</if>:"
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
 msgid "Deprecated"
-msgstr "Depreciado"
+msgstr "Застарілий"
 
 # CODESYSTEM_FILTERS
 #: CODESYSTEM_FILTERS
 msgid "Filters"
-msgstr "Filtros"
+msgstr "Фільтри"
 
 # CODESYSTEM_FILTER_OP
 #: CODESYSTEM_FILTER_OP
 msgid "Op"
-msgstr "Op"
+msgstr "Оп"
 
 # CODESYSTEM_PROPS_DESC
 #: CODESYSTEM_PROPS_DESC
 msgid "This code system defines the following properties for its concepts"
-msgstr "Este sistema de códigos define as seguintes propriedades para os seus conceitos"
+msgstr "Ця система кодів визначає такі властивості для своїх концептів"
 
 # CODE_SYS_CODE_NOT_HERE
 #: CODE_SYS_CODE_NOT_HERE
 msgid "This CodeSystem is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr "Este CodeSystem não é utilizado aqui; pode ser utilizado noutro local (por exemplo, em especificações e/ou implementações que utilizem este conteúdo)"
+msgstr "Ця код система тут не використовується; вона може використовуватися в інших місцях (наприклад, у специфікаціях та/або реалізаціях, які використовують цей контент)"
 
 # CODE_SYS_COMPLETE
 #: CODE_SYS_COMPLETE
 msgid "All the concepts defined by the code system are included in the code system resource"
-msgstr "Todos os conceitos definidos pelo sistema de códigos estão incluídos no recurso do sistema de códigos"
+msgstr "Всі поняття, що визначаються код системою, включені в ресурс код системи"
 
 # CODE_SYS_COPY
 #: CODE_SYS_COPY
 msgid "Copy"
-msgstr "Cópia"
+msgstr "Копіювати"
 
 # CODE_SYS_DISP
 #: CODE_SYS_DISP
 msgid "displays"
-msgstr "ecrãs"
+msgstr "Відображає"
 
 # CODE_SYS_DISP_PROP
 #: CODE_SYS_DISP_PROP
 msgid "displays and properties"
-msgstr "ecrãs e propriedades"
+msgstr "Відображення та властивості"
 
 # CODE_SYS_EXAMPLE
 #: CODE_SYS_EXAMPLE
 msgid "A few representative concepts are included in the code system resource"
-msgstr "Alguns conceitos representativos estão incluídos no recurso do sistema de códigos"
+msgstr "Декілька репрезентативних концептів включені в ресурс код системи"
 
 # CODE_SYS_FEAT
 #: CODE_SYS_FEAT
 msgid "features"
-msgstr "caraterísticas"
+msgstr "Функції"
 
 # CODE_SYS_FOR_OID
 #: CODE_SYS_FOR_OID
 msgid "{0} (for OID based terminology systems)"
-msgstr "{0} (para sistemas terminológicos baseados em OID)"
+msgstr "{0} (для термінологічних систем на основі OID)"
 
 # CODE_SYS_FRAGMENT
 #: CODE_SYS_FRAGMENT
 msgid "A subset of the code system concepts are included in the code system resource"
-msgstr "Um subconjunto dos conceitos do sistema de códigos está incluído no recurso do sistema de códigos"
+msgstr "Підмножина понять код системи включена в ресурс код системи"
 
 # CODE_SYS_IN_A_HIERARCHY
 #: CODE_SYS_IN_A_HIERARCHY
 msgid "in a {0} hierarchy"
-msgstr "numa hierarquia {0}"
+msgstr "У {0} Ієрархії"
 
 # CODE_SYS_NOTPRESENT
 #: CODE_SYS_NOTPRESENT
 msgid "None of the concepts defined by the code system are included in the code system resource"
-msgstr "Nenhum dos conceitos definidos pelo sistema de códigos está incluído no recurso do sistema de códigos"
+msgstr "Жодне з понять, визначених код системою, не входить в ресурс код системи"
 
 # CODE_SYS_PROP
 #: CODE_SYS_PROP
 msgid "properties"
-msgstr "propriedades"
+msgstr "Властивості"
 
 # CODE_SYS_REPLACED_BY
 #: CODE_SYS_REPLACED_BY
 msgid "(replaced by"
-msgstr "(substituído por"
+msgstr "(замінено на"
 
 # CODE_SYS_SUPPLEMENT
 #: CODE_SYS_SUPPLEMENT
 msgid "This code system resource is a supplement to"
-msgstr "Este recurso do sistema de códigos é um suplemento ao"
+msgstr "Цей кодовий ресурс є доповненням до"
 
 # CODE_SYS_THE_VALUE_SET
 #: CODE_SYS_THE_VALUE_SET
 msgid "{0} is the value set for all codes in this code system"
-msgstr "{0} é o valor definido para todos os códigos deste sistema de códigos"
+msgstr "{0} — значення, встановлене для всіх кодів у цій системі кодів"
 
 # CODE_SYS_UNDEF_HIER
 #: CODE_SYS_UNDEF_HIER
 msgid "in an undefined hierarchy"
-msgstr "numa hierarquia indefinida"
+msgstr "в невизначеній ієрархії"
 
 # CODE_SYS_UNKN_MODE
 #: CODE_SYS_UNKN_MODE
 msgid "Unknown CodeSystemContentMode mode"
-msgstr "Modo CodeSystemContentMode desconhecido"
+msgstr "Режим Unknown CodeSystemContentMode"
 
 # CONC_MAP_CODES
 #: CONC_MAP_CODES
 msgid "Codes"
-msgstr "Códigos"
+msgstr "Коди"
 
 # CONC_MAP_CODE_SYS_UNSPEC
 #: CONC_MAP_CODE_SYS_UNSPEC
 msgid "unspecified code system"
-msgstr "sistema de códigos não especificado"
+msgstr "Система невизначених кодів"
 
 # CONC_MAP_FRM
 #: CONC_MAP_FRM
 msgid "from"
-msgstr "de"
+msgstr "від"
 
 # CONC_MAP_FROM
 #: CONC_MAP_FROM
 msgid "Mapping from"
-msgstr "Mapeamento de"
+msgstr "Зіставлення з"
 
 # CONC_MAP_GRP
 #: CONC_MAP_GRP
 msgid "Group {0}"
-msgstr "Grupo {0}"
+msgstr "Група {0}"
 
 # CONC_MAP_NOT_SPEC
 #: CONC_MAP_NOT_SPEC
 msgid "(not specified)"
-msgstr "(não especificado)"
+msgstr "(не вказано)"
 
 # CONC_MAP_REL
 #: CONC_MAP_REL
 msgid "Relationship"
-msgstr "Relacionamento"
+msgstr "Відносини"
 
 # CONC_MAP_SOURCE
 #: CONC_MAP_SOURCE
 msgid "Source Code"
-msgstr "Código fonte"
+msgstr "Вихідний код"
 
 # CONC_MAP_SOURCE_CARD
 #: CONC_MAP_SOURCE_CARD
 msgctxt "CONC_MAP_SOURCE_CARD"
 msgid "Card."
-msgstr ""
+msgstr "Картка."
 
 # CONC_MAP_SOURCE_TYPE
 #: CONC_MAP_SOURCE_TYPE
 msgctxt "CONC_MAP_SOURCE_TYPE"
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 # CONC_MAP_SRC_DET
 #: CONC_MAP_SRC_DET
 msgid "Source Concept Details"
-msgstr "Fonte Detalhes do conceito"
+msgstr "Деталі концепції джерела"
 
 # CONC_MAP_TO
 #: CONC_MAP_TO
 msgctxt "CONC_MAP_TO"
 msgid "to"
-msgstr "para"
+msgstr "до"
 
 # CONC_MAP_TRGT
 #: CONC_MAP_TRGT
 msgid "Target Code"
-msgstr "Código de destino"
+msgstr "Цільовий код"
 
 # CONC_MAP_TRGT_CARD
 #: CONC_MAP_TRGT_CARD
 msgctxt "CONC_MAP_TRGT_CARD"
 msgid "Card."
-msgstr ""
+msgstr "Картка."
 
 # CONC_MAP_TRGT_DET
 #: CONC_MAP_TRGT_DET
 msgid "Target Concept Details"
-msgstr "Detalhes do conceito-alvo"
+msgstr "Деталі цільової концепції"
 
 # CONC_MAP_TRGT_TYPE
 #: CONC_MAP_TRGT_TYPE
 msgctxt "CONC_MAP_TRGT_TYPE"
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 # DATA_REND_AFTERNOON
 #: DATA_REND_AFTERNOON
 msgid "Afternoon"
-msgstr "Tarde"
+msgstr "Пообіді"
 
 # DATA_REND_AFTERNOON_EARLY
 #: DATA_REND_AFTERNOON_EARLY
 msgid "Early Afternoon"
-msgstr "Início da tarde"
+msgstr "Ранній день"
 
 # DATA_REND_AFTERNOON_LATE
 #: DATA_REND_AFTERNOON_LATE
 msgid "Late Afternoon"
-msgstr "Fim da tarde"
+msgstr "Пізній день"
 
 # DATA_REND_AFTER_SLEEP
 #: DATA_REND_AFTER_SLEEP
 msgid "After Sleep"
-msgstr "Depois de dormir"
+msgstr "Після сну"
 
 # DATA_REND_AFTRBKFST
 #: DATA_REND_AFTRBKFST
 msgid "after breakfast"
-msgstr "depois do pequeno-almoço"
+msgstr "після сніданку"
 
 # DATA_REND_AFTRDINR
 #: DATA_REND_AFTRDINR
 msgid "after dinner"
-msgstr "depois do jantar"
+msgstr "Після вечері"
 
 # DATA_REND_AFTRLUNCH
 #: DATA_REND_AFTRLUNCH
 msgid "after lunch"
-msgstr "depois do almoço"
+msgstr "після обіду"
 
 # DATA_REND_AFTRMEALS
 #: DATA_REND_AFTRMEALS
 msgid "after meals"
-msgstr "após as refeições"
+msgstr "після їжі"
 
 # DATA_REND_AFTRWKNG
 #: DATA_REND_AFTRWKNG
 msgid "after waking"
-msgstr "depois de acordar"
+msgstr "після пробудження"
 
 # DATA_REND_ATBKFST
 #: DATA_REND_ATBKFST
 msgid "at breakfast"
-msgstr "ao pequeno-almoço"
+msgstr "за сніданком"
 
 # DATA_REND_ATDINR
 #: DATA_REND_ATDINR
 msgid "at dinner"
-msgstr "ao jantar"
+msgstr "за вечерею"
 
 # DATA_REND_ATLUNCH
 #: DATA_REND_ATLUNCH
 msgid "at lunch"
-msgstr "ao almoço"
+msgstr "в обід"
 
 # DATA_REND_ATT_DATA
 #: DATA_REND_ATT_DATA
@@ -906,52 +906,52 @@ msgstr "{0} @ {1}"
 # DATA_REND_BASE64
 #: DATA_REND_BASE64
 msgid "(base64 data - {0} base64 chars)"
-msgstr "(dados base64 - {0} caracteres base64)"
+msgstr "(дані base64 - {0} base64 символи)"
 
 # DATA_REND_BFBKFST
 #: DATA_REND_BFBKFST
 msgid "before breakfast"
-msgstr "antes do pequeno-almoço"
+msgstr "перед сніданком"
 
 # DATA_REND_BFDINR
 #: DATA_REND_BFDINR
 msgid "before dinner"
-msgstr "antes do jantar"
+msgstr "перед вечерею"
 
 # DATA_REND_BFLUNCH
 #: DATA_REND_BFLUNCH
 msgid "before lunch"
-msgstr "antes do almoço"
+msgstr "до обіду"
 
 # DATA_REND_BFMEALS
 #: DATA_REND_BFMEALS
 msgid "before meals"
-msgstr "antes das refeições"
+msgstr "до їжі"
 
 # DATA_REND_BFSLEEP
 #: DATA_REND_BFSLEEP
 msgid "before sleeping"
-msgstr "antes de dormir"
+msgstr "Перед сном"
 
 # DATA_REND_BY
 #: DATA_REND_BY
 msgid "By"
-msgstr "Por"
+msgstr "Від"
 
 # DATA_REND_CODES
 #: DATA_REND_CODES
 msgid "Codes:"
-msgstr "Códigos:"
+msgstr "Коди:"
 
 # DATA_REND_COND
 #: DATA_REND_COND
 msgid "Condition"
-msgstr "Estado"
+msgstr "Умова"
 
 # DATA_REND_COUNT
 #: DATA_REND_COUNT
 msgid "Count {0}"
-msgstr "Contagem {0}"
+msgstr "Кількість: {0}"
 
 # DATA_REND_CURRENCY
 #: DATA_REND_CURRENCY
@@ -961,22 +961,22 @@ msgstr "{1} {0}"
 # DATA_REND_DATA
 #: DATA_REND_DATA
 msgid "Data: {0}"
-msgstr "Dados: {0}"
+msgstr "Дані: {0}"
 
 # DATA_REND_DETAILS
 #: DATA_REND_DETAILS
 msgid "(Details: {0}  code"
-msgstr "(Detalhes: {0} código"
+msgstr "(Детальніше: {0}  код"
 
 # DATA_REND_DETAILS_STATED
 #: DATA_REND_DETAILS_STATED
 msgid "(Details: {0} code {1} = ''{2}'')"
-msgstr "(Pormenores: {0} código {1} = ''{2}'')"
+msgstr "(Детальніше: {0} код {1} = ''{2}'')"
 
 # DATA_REND_DETAILS_STATED_ND
 #: DATA_REND_DETAILS_STATED_ND
 msgid "(Details: {0} code {1})"
-msgstr "(Detalhes: {0} código {1})"
+msgstr "(Детальніше: {0} код {1})"
 
 # DATA_REND_DICOM
 #: DATA_REND_DICOM
@@ -986,77 +986,77 @@ msgstr "DICOM"
 # DATA_REND_DIM
 #: DATA_REND_DIM
 msgid "Dimensions: {0}"
-msgstr "Dimensões: {0}"
+msgstr "Розміри: {0}"
 
 # DATA_REND_DURATION
 #: DATA_REND_DURATION
 msgid "Duration {0}"
-msgstr "Duração {0}"
+msgstr "Тривалість {0}"
 
 # DATA_REND_ERROR
 #: DATA_REND_ERROR
 msgid "Error: {0}"
-msgstr "Erro: {0}"
+msgstr "Помилка: {0}"
 
 # DATA_REND_EVENING
 #: DATA_REND_EVENING
 msgid "Evening"
-msgstr "Noite"
+msgstr "Вечір"
 
 # DATA_REND_EVENING_EARLY
 #: DATA_REND_EVENING_EARLY
 msgid "Early Evening"
-msgstr "Início da noite"
+msgstr "Ранній вечір"
 
 # DATA_REND_EVENING_LATE
 #: DATA_REND_EVENING_LATE
 msgid "Late Evening"
-msgstr "Tarde da noite"
+msgstr "Пізній вечір"
 
 # DATA_REND_EVENTS
 #: DATA_REND_EVENTS
 msgid "Events: {0}"
-msgstr "Eventos: {0}"
+msgstr "Події: {0}"
 
 # DATA_REND_EXCEPTION
 #: DATA_REND_EXCEPTION
 msgid "Exception"
-msgstr "Exceção"
+msgstr "Виняток"
 
 # DATA_REND_FACT
 #: DATA_REND_FACT
 msgid "Factor: {0}"
-msgstr "Fator: {0}"
+msgstr "Чинник: {0}"
 
 # DATA_REND_FAX
 #: DATA_REND_FAX
 msgid "Fax: {0}"
-msgstr "Fax: {0}"
+msgstr "Факс: {0}"
 
 # DATA_REND_GLN
 #: DATA_REND_GLN
 msgid "Global Location Number"
-msgstr "Número de localização global"
+msgstr "Глобальний номер місцезнаходження"
 
 # DATA_REND_ICD
 #: DATA_REND_ICD
 msgid "ICD-9"
-msgstr "CID-9"
+msgstr "МКХ-9"
 
 # DATA_REND_IMMEDIATE
 #: DATA_REND_IMMEDIATE
 msgid "Immediate"
-msgstr "Imediato"
+msgstr "Негайного"
 
 # DATA_REND_INT
 #: DATA_REND_INT
 msgid "Interval: {0}"
-msgstr "Intervalo: {0}"
+msgstr "Інтервал: {0}"
 
 # DATA_REND_LIMIT
 #: DATA_REND_LIMIT
 msgid "Limit"
-msgstr "Limite"
+msgstr "Ліміт"
 
 # DATA_REND_LOINC
 #: DATA_REND_LOINC
@@ -1066,82 +1066,82 @@ msgstr "LOINC"
 # DATA_REND_LOWER
 #: DATA_REND_LOWER
 msgid "Lower: {0}"
-msgstr "Inferior: {0}"
+msgstr "Нижче: {0}"
 
 # DATA_REND_MEALS
 #: DATA_REND_MEALS
 msgid "at meals"
-msgstr "nas refeições"
+msgstr "під час їжі"
 
 # DATA_REND_MKDWN_LNK
 #: DATA_REND_MKDWN_LNK
 msgid "Unable to resolve markdown link"
-msgstr "Não é possível resolver a ligação markdown"
+msgstr "Не вдається вирішити посилання на markdown"
 
 # DATA_REND_MORNING
 #: DATA_REND_MORNING
 msgid "Morning"
-msgstr "Manhã"
+msgstr "Ранок"
 
 # DATA_REND_MORNING_EARLY
 #: DATA_REND_MORNING_EARLY
 msgid "Early Morning"
-msgstr "Manhã cedo"
+msgstr "Рано вранці"
 
 # DATA_REND_MORNING_LATE
 #: DATA_REND_MORNING_LATE
 msgid "Late Morning"
-msgstr "Final da manhã"
+msgstr "Пізній ранок"
 
 # DATA_REND_NIGHT
 #: DATA_REND_NIGHT
 msgid "Night"
-msgstr "Noite"
+msgstr "Ніч"
 
 # DATA_REND_NOON
 #: DATA_REND_NOON
 msgid "Noon"
-msgstr "Meio-dia"
+msgstr "Полудень"
 
 # DATA_REND_NOT_STAT
 #: DATA_REND_NOT_STAT
 msgid "[not stated]"
-msgstr "[não indicado]."
+msgstr "[не вказано]"
 
 # DATA_REND_NO_DISP
 #: DATA_REND_NO_DISP
 msgid "No display for {0}"
-msgstr "Nenhum ecrã para {0}"
+msgstr "Немає відображення для {0}"
 
 # DATA_REND_ONCE
 #: DATA_REND_ONCE
 msgid "Once"
-msgstr "Uma vez"
+msgstr "Раз"
 
 # DATA_REND_ONGOING
 #: DATA_REND_ONGOING
 msgid "(ongoing)"
-msgstr "(em curso)"
+msgstr "(триває)"
 
 # DATA_REND_ORIGIN
 #: DATA_REND_ORIGIN
 msgid "Origin: {0}"
-msgstr "Origem: {0}"
+msgstr "Походження: {0}"
 
 # DATA_REND_PER
 #: DATA_REND_PER
 msgid "per"
-msgstr "por"
+msgstr "за"
 
 # DATA_REND_PERIOD
 #: DATA_REND_PERIOD
 msgid "period:"
-msgstr "período:"
+msgstr "період:"
 
 # DATA_REND_PHONE
 #: DATA_REND_PHONE
 msgid "Phone: {0}"
-msgstr "Telefone: {0}"
+msgstr "Телефон: {0}"
 
 # DATA_REND_RXNORM
 #: DATA_REND_RXNORM
@@ -1151,7 +1151,7 @@ msgstr "RxNorm"
 # DATA_REND_SEARCH
 #: DATA_REND_SEARCH
 msgid "Search on: {0}"
-msgstr "Pesquisar em: {0}"
+msgstr "Пошук на: {0}"
 
 # DATA_REND_SNOMED
 #: DATA_REND_SNOMED
@@ -1161,355 +1161,355 @@ msgstr "SNOMED CT"
 # DATA_REND_SORT
 #: DATA_REND_SORT
 msgid "Sort"
-msgstr "Ordenar"
+msgstr "Сортувати"
 
 # DATA_REND_SOURCE
 #: DATA_REND_SOURCE
 msgid "source"
-msgstr "fonte"
+msgstr "джерело"
 
 # DATA_REND_STARTING
 #: DATA_REND_STARTING
 msgid "Starting {0}"
-msgstr "A partir de {0}"
+msgstr "Починаючи {0}"
 
 # DATA_REND_THESE_CODES
 #: DATA_REND_THESE_CODES
 msgid "One of these codes:"
-msgstr "Um destes códigos:"
+msgstr "Один з цих кодів:"
 
 # DATA_REND_TIMING
 #: DATA_REND_TIMING
 msgid "Timing"
-msgstr "Calendário"
+msgstr "Терміни"
 
 # DATA_REND_TO_DO
 #: DATA_REND_TO_DO
 msgid "to do: {0}"
-msgstr "para fazer: {0}"
+msgstr "Що потрібно зробити: {0}"
 
 # DATA_REND_UNKNWN
 #: DATA_REND_UNKNWN
 msgid "unknown"
-msgstr "desconhecido"
+msgstr "невідомий"
 
 # DATA_REND_UNRD_EX
 #: DATA_REND_UNRD_EX
 msgid "WARNING: Unrenderable Modifier Extension!"
-msgstr "AVISO: Extensão de modificador não renderizável!"
+msgstr "УВАГА: Невідтворюване розширення модифікатора!"
 
 # DATA_REND_UNTIL
 #: DATA_REND_UNTIL
 msgid "Until {0}"
-msgstr "Até {0}"
+msgstr "Поки {0}"
 
 # DATA_REND_UP
 #: DATA_REND_UP
 msgid "Upper: {0}"
-msgstr "Superior: {0}"
+msgstr "Верхній: {0}"
 
 # DATA_REND_USE
 #: DATA_REND_USE
 msgid "use:"
-msgstr "utilização:"
+msgstr "використання:"
 
 # DATA_REND_VALUESET
 #: DATA_REND_VALUESET
 msgid "In ValueSet"
-msgstr "Em ValueSet"
+msgstr "У ValueSet"
 
 # DATA_REND_VERSION
 #: DATA_REND_VERSION
 msgid "(version = {0} {1}"
-msgstr "(versão = {0} {1}"
+msgstr "(версія = {0} {1}"
 
 # DIAG_REP_REND_AGE
 #: DIAG_REP_REND_AGE
 msgid "Age"
-msgstr "Idade"
+msgstr "Вік"
 
 # DIAG_REP_REND_CODECON
 #: DIAG_REP_REND_CODECON
 msgid "Coded Conclusions:"
-msgstr "Conclusões codificadas:"
+msgstr "Кодовані висновки:"
 
 # DIAG_REP_REND_ERR
 #: DIAG_REP_REND_ERR
 msgid "Error:"
-msgstr "Erro:"
+msgstr "Помилка:"
 
 # DIAG_REP_REND_FOR
 #: DIAG_REP_REND_FOR
 msgid "for"
-msgstr "para"
+msgstr "для"
 
 # DIAG_REP_REND_IDENTIFIER
 #: DIAG_REP_REND_IDENTIFIER
 msgid "Identifier"
-msgstr "Identificador"
+msgstr "Ідентифікатор"
 
 # DIAG_REP_REND_NOTRES
 #: DIAG_REP_REND_NOTRES
 msgid "The observation ''{0}'' could not be resolved"
-msgstr "A observação ''{0}'' não pôde ser resolvida"
+msgstr "Спостереження ''{0}'' не може бути вирішено"
 
 # DIAG_REP_REND_OBS
 #: DIAG_REP_REND_OBS
 msgid "Observation"
-msgstr "Observação"
+msgstr "Спостереження"
 
 # DIAG_REP_REND_PER
 #: DIAG_REP_REND_PER
 msgid "Performer"
-msgstr "Intérprete"
+msgstr "Виконавець"
 
 # DIAG_REP_REND_REFRAN
 #: DIAG_REP_REND_REFRAN
 msgid "Reference Range"
-msgstr "Intervalo de referência"
+msgstr "Референтний діапазон"
 
 # DIAG_REP_REND_REP
 #: DIAG_REP_REND_REP
 msgid "Reported"
-msgstr "Comunicado"
+msgstr "Повідомили"
 
 # DIAG_REP_REND_REPDET
 #: DIAG_REP_REND_REPDET
 msgid "Report Details"
-msgstr "Detalhes do relatório"
+msgstr "Деталі звіту"
 
 # DIAG_REP_REND_UNABLE
 #: DIAG_REP_REND_UNABLE
 msgid "Unable to get Patient Details"
-msgstr "Não é possível obter os dados do doente"
+msgstr "Не вдається отримати деталі пацієнта"
 
 # DIAG_REP_REND_WHEN
 #: DIAG_REP_REND_WHEN
 msgid "When For"
-msgstr "Quando Para"
+msgstr "Коли для"
 
 # DIAG_REP_SUMMARY
 #: DIAG_REP_SUMMARY
 msgid "Diagnostic Report for ''{0}'' for ''{1}''"
-msgstr "Relatório de diagnóstico para ''{0}'' para ''{1}''"
+msgstr "Діагностичний звіт для ''{0}'' для ''{1}''"
 
 # DIAG_REP_UNSPECIFIED_CODE
 #: DIAG_REP_UNSPECIFIED_CODE
 msgid "Unspecified Report Type"
-msgstr "Tipo de relatório não especificado"
+msgstr "Невизначений тип звіту"
 
 # DIAG_REP_UNSPECIFIED_SUBJECT
 #: DIAG_REP_UNSPECIFIED_SUBJECT
 msgctxt "DIAG_REP_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
-msgstr "Assunto não especificado"
+msgstr "Тема не вказана"
 
 # DOCUMENT_SUMMARY
 #: DOCUMENT_SUMMARY
 msgid "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
-msgstr "<param name=\"status\"/> Documento em <param name=\"date\"/> por <param name=\"author\"/> para <param name=\"subject\"/> <if test=\"has-encounter = true\"> no encontro <param name=\"encounter\"/></if>"
+msgstr "<param name=\"status\"/> Документ на <param name=\"date\"/> від <param name=\"author\"/> для <param name=\"subject\"/> <if test=\"has-encounter = true\"> У взаємодії <param name=\"encounter\"/></if>"
 
 # EXAMPLE_SCEN_STEP_SCEN
 #: EXAMPLE_SCEN_STEP_SCEN
 msgid "Step {0}  - See scenario {1}"
-msgstr "Etapa {0} - Ver cenário {1}"
+msgstr "Крок {0}  - Дивитись сценарій {1}"
 
 # EX_SCEN_ALT
 #: EX_SCEN_ALT
 msgid "Alternative {0}"
-msgstr "Alternativa {0}"
+msgstr "Альтернативні {0}"
 
 # EX_SCEN_BEL
 #: EX_SCEN_BEL
 msgid "below"
-msgstr "abaixo"
+msgstr "нижче"
 
 # EX_SCEN_CONTA
 #: EX_SCEN_CONTA
 msgid "Contains:"
-msgstr "Contém:"
+msgstr "Містить:"
 
 # EX_SCEN_ERR_REN
 #: EX_SCEN_ERR_REN
 msgid "Error rendering ExampleScenario {0}"
-msgstr "Erro ao renderizar ExampleScenario {0}"
+msgstr "Помилка рендерингу ExampleScenario {0}"
 
 # EX_SCEN_FVER
 #: EX_SCEN_FVER
 msgid "FHIR version"
-msgstr "Versão FHIR"
+msgstr "Версія FHIR"
 
 # EX_SCEN_IN
 #: EX_SCEN_IN
 msgid "Initiator"
-msgstr "Iniciador"
+msgstr "Ініціатор"
 
 # EX_SCEN_OTH
 #: EX_SCEN_OTH
 msgid "See other scenario"
-msgstr "Ver outro cenário"
+msgstr "Переглянути інший сценарій"
 
 # EX_SCEN_POSTCON
 #: EX_SCEN_POSTCON
 msgid "Post-conditions:"
-msgstr "Pós-condições:"
+msgstr "Постумови:"
 
 # EX_SCEN_PRECON
 #: EX_SCEN_PRECON
 msgid "Pre-conditions:"
-msgstr "Condições prévias:"
+msgstr "Передумови:"
 
 # EX_SCEN_PROC
 #: EX_SCEN_PROC
 msgid "Process: {0}"
-msgstr "Processo: {0}"
+msgstr "Процес: {0}"
 
 # EX_SCEN_REC
 #: EX_SCEN_REC
 msgid "Receiver"
-msgstr "Recetor"
+msgstr "Отримувач"
 
 # EX_SCEN_RES
 #: EX_SCEN_RES
 msgid "Response"
-msgstr "Resposta"
+msgstr "Відповідь"
 
 # EX_SCEN_SEE
 #: EX_SCEN_SEE
 msgid "See subprocess"
-msgstr "Ver subprocesso"
+msgstr "Дивись підпроцес"
 
 # EX_SCEN_STEP
 #: EX_SCEN_STEP
 msgid "Step"
-msgstr "Etapa"
+msgstr "Крок"
 
 # EX_SCEN_TIME
 #: EX_SCEN_TIME
 msgid "... time passes ..."
-msgstr "... o tempo passa ..."
+msgstr "... час проходить..."
 
 # EX_SCEN_UN
 #: EX_SCEN_UN
 msgid "Unknown ExampleScenario Renderer Mode {0}"
-msgstr "Desconhecido ExampleScenario Renderer Mode {0}"
+msgstr "Режим рендерера Unknown ExampleScenario {0}"
 
 # EX_SCEN_UN_ACT
 #: EX_SCEN_UN_ACT
 msgid "Unable to find referenced actor {0}"
-msgstr "Não foi possível encontrar o ator referenciado {0}"
+msgstr "Неможливо знайти посилання на виконавця {0}"
 
 # FMM_TABLE
 #: FMM_TABLE
 msgid "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
-msgstr "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Nível de maturidade</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Estado normalizado\">{2}</a></td></tr></tbody></table>"
+msgstr "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Рівень зрілості</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
 
 # GENERAL_ADDITIONAL_BINDING
 #: GENERAL_ADDITIONAL_BINDING
 msgid "This element has additional bindings"
-msgstr "Este elemento tem ligações adicionais"
+msgstr "Цей елемент має додаткові прив'язки"
 
 # GENERAL_ADD_LANG
 #: GENERAL_ADD_LANG
 msgid "Additional Language Displays"
-msgstr "Ecrãs de idiomas adicionais"
+msgstr "Додаткові мовні дисплеї"
 
 # GENERAL_BINDING
 #: GENERAL_BINDING
 msgid "Binding"
-msgstr "Encadernação"
+msgstr "Прив'язка"
 
 # GENERAL_BINDINGS
 #: GENERAL_BINDINGS
 msgid "Bindings"
-msgstr "Vínculos"
+msgstr "Прив'язки"
 
 # GENERAL_BINDING_NO_DESC
 #: GENERAL_BINDING_NO_DESC
 msgid "No description provided"
-msgstr "Nenhuma descrição fornecida"
+msgstr "Опис не надано"
 
 # GENERAL_BINDING_NO_VS_1
 #: GENERAL_BINDING_NO_VS_1
 msgid "Binding Description"
-msgstr ""
+msgstr "Опис палітурки"
 
 # GENERAL_BINDING_NO_VS_2
 #: GENERAL_BINDING_NO_VS_2
 msgid "This binding doesn''t define a testable ValueSet"
-msgstr ""
+msgstr "Ця прив'язка не визначає тестований набір значень"
 
 # GENERAL_BIND_MIN_ALLOW
 #: GENERAL_BIND_MIN_ALLOW
 msgid "The minimum allowable value set - any conformant system SHALL support all these codes"
-msgstr "O conjunto mínimo de valores admissíveis - qualquer sistema conforme DEVERÁ suportar todos estes códigos"
+msgstr "Мінімально допустимий набір значень - будь-яка відповідна система ПОВИННА підтримувати всі ці коди"
 
 # GENERAL_CARD
 #: GENERAL_CARD
 msgctxt "GENERAL_CARD"
 msgid "Card."
-msgstr ""
+msgstr "Картка."
 
 # GENERAL_CARDINALITY
 #: GENERAL_CARDINALITY
 msgid "Cardinality"
-msgstr "Cardinalidade"
+msgstr "Кардинальність"
 
 # GENERAL_CODE
 #: GENERAL_CODE
 msgid "Code"
-msgstr "Código"
+msgstr "Код"
 
 # GENERAL_COMMENT
 #: GENERAL_COMMENT
 msgid "Comment"
-msgstr "Comentário"
+msgstr "Коментар"
 
 # GENERAL_COMMENTS
 #: GENERAL_COMMENTS
 msgid "Comments"
-msgstr "Comentários"
+msgstr "Коментарі"
 
 # GENERAL_COMPARATORS
 #: GENERAL_COMPARATORS
 msgid "Comparators"
-msgstr "Comparadores"
+msgstr "Компаратори"
 
 # GENERAL_COMPONENT
 #: GENERAL_COMPONENT
 msgid "Component"
-msgstr "Componente"
+msgstr "Компонент"
 
 # GENERAL_CONFORMANCE
 #: GENERAL_CONFORMANCE
 msgid "Conformance"
-msgstr "Conformidade"
+msgstr "Відповідності"
 
 # GENERAL_CONSTRAINTS
 #: GENERAL_CONSTRAINTS
 msgctxt "GENERAL_CONSTRAINTS"
 msgid "Constraints"
-msgstr "Condicionantes"
+msgstr "Обмеження"
 
 # GENERAL_CONTACT
 #: GENERAL_CONTACT
 msgid "Contact:"
-msgstr "Contacto:"
+msgstr "Контакт:"
 
 # GENERAL_CONTENT
 #: GENERAL_CONTENT
 msgid "Content"
-msgstr "Conteúdo"
+msgstr "Вміст"
 
 # GENERAL_COPYRIGHT
 #: GENERAL_COPYRIGHT
 msgid "Copyright"
-msgstr "Direitos de autor"
+msgstr "Авторське право"
 
 # GENERAL_CRIT
 #: GENERAL_CRIT
 msgid "Criteria"
-msgstr "Critérios"
+msgstr "Критерії"
 
 # GENERAL_DATA_DISPLAY_PROPERTY
 #: GENERAL_DATA_DISPLAY_PROPERTY
@@ -1520,116 +1520,116 @@ msgstr "{0}: {1}"
 # GENERAL_DEFINING_URL
 #: GENERAL_DEFINING_URL
 msgid "Defining URL"
-msgstr "Definição de URL"
+msgstr "Визначення URL-адреси"
 
 # GENERAL_DEFINITION
 #: GENERAL_DEFINITION
 msgctxt "GENERAL_DEFINITION"
 msgid "Definition"
-msgstr "Definição"
+msgstr "Визначення"
 
 # GENERAL_DEFINITION_COLON
 #: GENERAL_DEFINITION_COLON
 msgid "Definition:"
-msgstr "Definição:"
+msgstr "Визначення:"
 
 # GENERAL_DESC
 #: GENERAL_DESC
 msgid "Description"
-msgstr "Descrição"
+msgstr "Опис"
 
 # GENERAL_DESC_CONST
 #: GENERAL_DESC_CONST
 msgid "Description & Constraints"
-msgstr "Descrição e condicionalismos"
+msgstr "Опис та обмеження"
 
 # GENERAL_DETAILS
 #: GENERAL_DETAILS
 msgid "Details"
-msgstr "Detalhes"
+msgstr "Деталі"
 
 # GENERAL_DOCUMENTATION
 #: GENERAL_DOCUMENTATION
 msgid "Documentation"
-msgstr "Documentação"
+msgstr "Документація"
 
 # GENERAL_EXAMPLE
 #: GENERAL_EXAMPLE
 msgid "Example"
-msgstr "Exemplo"
+msgstr "Приклад"
 
 # GENERAL_EXPER
 #: GENERAL_EXPER
 msgid "Experimental"
-msgstr "Experimental"
+msgstr "Експериментальний"
 
 # GENERAL_FILTER
 #: GENERAL_FILTER
 msgid "Filter"
-msgstr "Filtro"
+msgstr "Фільтр"
 
 # GENERAL_FIXED_VALUE
 #: GENERAL_FIXED_VALUE
 msgctxt "GENERAL_FIXED_VALUE"
 msgid "Fixed Value: {0}"
-msgstr "Valor fixo: {0}"
+msgstr "Фіксоване значення: {0}"
 
 # GENERAL_FLAGS
 #: GENERAL_FLAGS
 msgid "Flags"
-msgstr "Bandeiras"
+msgstr "Прапори"
 
 # GENERAL_LOCATION
 #: GENERAL_LOCATION
 msgid "Location"
-msgstr "Localização"
+msgstr "Місцезнаходження"
 
 # GENERAL_LOGICAL_NAME
 #: GENERAL_LOGICAL_NAME
 msgid "The logical name of the element"
-msgstr "O nome lógico do elemento"
+msgstr "Логічне ім'я елемента"
 
 # GENERAL_MAX_LENGTH
 #: GENERAL_MAX_LENGTH
 msgid "Max Length:"
-msgstr "Comprimento máximo:"
+msgstr "Максимальна довжина:"
 
 # GENERAL_MIN_LENGTH
 #: GENERAL_MIN_LENGTH
 msgid "Min Length:"
-msgstr "Comprimento mínimo:"
+msgstr "Мінімальна довжина:"
 
 # GENERAL_MODIFIERS
 #: GENERAL_MODIFIERS
 msgid "Modifiers"
-msgstr "Modificadores"
+msgstr "Модифікатори"
 
 # GENERAL_NAME
 #: GENERAL_NAME
 msgid "Name"
-msgstr "Nome"
+msgstr "Ім'я"
 
 # GENERAL_NCI_THES
 #: GENERAL_NCI_THES
 msgid "NCI Thesaurus"
-msgstr "Tesauro NCI"
+msgstr "Тезаурус NCI"
 
 # GENERAL_NOTE
 #: GENERAL_NOTE
 msgid "Note"
-msgstr "Nota"
+msgstr "Примітка"
 
 # GENERAL_OBLIG
 #: GENERAL_OBLIG
 msgctxt "GENERAL_OBLIG"
 msgid "Obligations"
-msgstr "Obrigações"
+msgstr "Зобов'язання"
 
 # GENERAL_OBLIGATIONS
 #: GENERAL_OBLIGATIONS
 msgctxt "GENERAL_OBLIGATIONS"
 msgid "Obligations"
-msgstr "Obrigações"
+msgstr "Зобов'язання"
 
 # GENERAL_OID
 #: GENERAL_OID
@@ -1639,140 +1639,140 @@ msgstr "OID"
 # GENERAL_PAR
 #: GENERAL_PAR
 msgid "Parameter"
-msgstr "Parâmetro"
+msgstr "Параметр"
 
 # GENERAL_PARS
 #: GENERAL_PARS
 msgid "Parameters"
-msgstr "Parâmetros"
+msgstr "Параметри"
 
 # GENERAL_PATTERN_VALUE
 #: GENERAL_PATTERN_VALUE
 msgctxt "GENERAL_PATTERN_VALUE"
 msgid "Pattern Value: {0}"
-msgstr "Valor do padrão: {0}"
+msgstr "Шаблонне значення {0}"
 
 # GENERAL_PREFERRED
 #: GENERAL_PREFERRED
 msgctxt "GENERAL_PREFERRED"
 msgid "Preferred"
-msgstr "Preferenciais"
+msgstr "Бажаний"
 
 # GENERAL_PROF
 #: GENERAL_PROF
 msgctxt "GENERAL_PROF"
 msgid "Profile"
-msgstr "Perfil"
+msgstr "Профіль"
 
 # GENERAL_PROPS
 #: GENERAL_PROPS
 msgid "Properties"
-msgstr "Propriedades"
+msgstr "Властивості"
 
 # GENERAL_PURPOSE
 #: GENERAL_PURPOSE
 msgid "Purpose"
-msgstr "Objetivo"
+msgstr "Мета"
 
 # GENERAL_REFS
 #: GENERAL_REFS
 msgid "References:"
-msgstr "Referências:"
+msgstr "Посилання:"
 
 # GENERAL_REMOVED_SINCE
 #: GENERAL_REMOVED_SINCE
 msgid "This content has been removed since {0}"
-msgstr "Este conteúdo foi removido desde {0}"
+msgstr "З того часу цей контент було видалено {0}"
 
 # GENERAL_REQUEST
 #: GENERAL_REQUEST
 msgid "Request"
-msgstr "Pedido"
+msgstr "Просити"
 
 # GENERAL_REQUIRED
 #: GENERAL_REQUIRED
 msgctxt "GENERAL_REQUIRED"
 msgid "Required"
-msgstr "Necessário"
+msgstr "Необхідний"
 
 # GENERAL_REQUIRED_BINDING
 #: GENERAL_REQUIRED_BINDING
 msgid "Required Binding to ValueSet {0}"
-msgstr "Ligação obrigatória ao ValueSet {0}"
+msgstr "Обов'язкова прив'язка до ValueSet {0}"
 
 # GENERAL_RESOURCE
 #: GENERAL_RESOURCE
 msgctxt "GENERAL_RESOURCE"
 msgid "Resource"
-msgstr "Recursos"
+msgstr "Ресурс"
 
 # GENERAL_SECURITY_LABEL
 #: GENERAL_SECURITY_LABEL
 msgid "Security Label"
-msgstr "Etiqueta de segurança"
+msgstr "Захисна етикетка"
 
 # GENERAL_SOURCE
 #: GENERAL_SOURCE
 msgctxt "GENERAL_SOURCE"
 msgid "Source"
-msgstr "Fonte"
+msgstr "Джерело"
 
 # GENERAL_SRC
 #: GENERAL_SRC
 msgid "Source:"
-msgstr "Fonte:"
+msgstr "Джерело:"
 
 # GENERAL_STARTER
 #: GENERAL_STARTER
 msgid "Starter"
-msgstr "Arranque"
+msgstr "Стартер"
 
 # GENERAL_STATUS
 #: GENERAL_STATUS
 msgctxt "GENERAL_STATUS"
 msgid "Status"
-msgstr "Estado"
+msgstr "Статус"
 
 # GENERAL_SUBJ
 #: GENERAL_SUBJ
 msgid "Subject"
-msgstr "Assunto"
+msgstr "Суб'єкт"
 
 # GENERAL_SUMM
 #: GENERAL_SUMM
 msgid "Summary"
-msgstr "Resumo"
+msgstr "Зведення"
 
 # GENERAL_TITLE
 #: GENERAL_TITLE
 msgid "Title"
-msgstr "Título"
+msgstr "Назва"
 
 # GENERAL_TODO
 #: GENERAL_TODO
 msgid "Not done yet"
-msgstr "Ainda não foi feito"
+msgstr "Ще не виконано"
 
 # GENERAL_TYPE
 #: GENERAL_TYPE
 msgctxt "GENERAL_TYPE"
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 # GENERAL_TYPE_PROFILE
 #: GENERAL_TYPE_PROFILE
 msgid "This element has profiles on it's type: {0}"
-msgstr "Este elemento tem perfis no seu tipo: {0}"
+msgstr "Цей елемент має профілі за своїм типом: {0}"
 
 # GENERAL_TYPE_TARGET_PROFILE
 #: GENERAL_TYPE_TARGET_PROFILE
 msgid "This element has restrictions/profiles on it's targets: {0}"
-msgstr "Este elemento tem restrições/perfis nos seus alvos: {0}"
+msgstr "Цей елемент має обмеження/профілі за своїми цілями: {0}"
 
 # GENERAL_UCUM
 #: GENERAL_UCUM
 msgid "UCUM"
-msgstr "UCUM"
+msgstr "УКУМ"
 
 # GENERAL_URI
 #: GENERAL_URI
@@ -1782,47 +1782,47 @@ msgstr "URI"
 # GENERAL_URL
 #: GENERAL_URL
 msgid "URL"
-msgstr "URL"
+msgstr "URL-адреса"
 
 # GENERAL_USAGE
 #: GENERAL_USAGE
 msgid "Usage"
-msgstr "Utilização"
+msgstr "Використання"
 
 # GENERAL_VALUE
 #: GENERAL_VALUE
 msgid "Value"
-msgstr "Valor"
+msgstr "Цінність"
 
 # GENERAL_VALUESET
 #: GENERAL_VALUESET
 msgid "Value Set"
-msgstr "Conjunto de valores"
+msgstr "Набір значень"
 
 # GENERAL_VALUE_BOUNDED
 #: GENERAL_VALUE_BOUNDED
 msgid "The value must be between {0} and {1} (or equal)"
-msgstr "O valor deve estar compreendido entre {0} e {1} (ou ser igual)"
+msgstr "Значення має бути між {0} і {1} (або дорівнює)"
 
 # GENERAL_VALUE_MAX
 #: GENERAL_VALUE_MAX
 msgid "The value must be less or equal to {0}"
-msgstr "O valor deve ser menor ou igual a {0}"
+msgstr "Значення має бути менше або дорівнювати {0}"
 
 # GENERAL_VALUE_MIN
 #: GENERAL_VALUE_MIN
 msgid "The value must be greater or equal to {0}"
-msgstr "O valor tem de ser maior ou igual a {0}"
+msgstr "Значення має бути більше або дорівнювати {0}"
 
 # GENERAL_VER
 #: GENERAL_VER
 msgid "Version"
-msgstr "Versão"
+msgstr "Версія"
 
 # GENERAL_VER_LOW
 #: GENERAL_VER_LOW
 msgid "version"
-msgstr "versão"
+msgstr "версія"
 
 # GENERAL_XML
 #: GENERAL_XML
@@ -1832,234 +1832,234 @@ msgstr "XML"
 # IMP_GUIDE_URL
 #: IMP_GUIDE_URL
 msgid "The official URL for this implementation guide is:"
-msgstr "O URL oficial para este guia de implementação é:"
+msgstr "Офіційна URL-адреса цього посібника з впровадження:"
 
 # IP_INTRO
 #: IP_INTRO
 msgid "This {0} includes IP covered under the following statements."
-msgstr "Este {0} inclui o IP abrangido pelas seguintes declarações."
+msgstr "Цей {0} включає в себе ІВ, що підпадають під наступні заяви."
 
 # IP_NONE
 #: IP_NONE
 msgid "No use of external IP"
-msgstr "Não utilização de IP externo"
+msgstr "Відсутність використання зовнішнього IP"
 
 # IP_NONE_EXT
 #: IP_NONE_EXT
 msgid "No use of external IP (other than from the FHIR specification)"
-msgstr "Não utilização de IP externo (para além da especificação FHIR)"
+msgstr "Забороняється використання зовнішніх IP (крім тих, що вказані в специфікації FHIR)"
 
 # KIND_EXTENSION
 #: KIND_EXTENSION
 msgid "extension"
-msgstr "extensão"
+msgstr "збільшення"
 
 # KIND_LOGICAL
 #: KIND_LOGICAL
 msgid "logical model"
-msgstr "modelo lógico"
+msgstr "Логічна модель"
 
 # KIND_PROFILE
 #: KIND_PROFILE
 msgid "profile"
-msgstr "perfil"
+msgstr "профіль"
 
 # LIB_REND_ART
 #: LIB_REND_ART
 msgid "Related Artifacts"
-msgstr "Artefactos relacionados"
+msgstr "Пов'язані артефакти"
 
 # LIB_REND_AUT
 #: LIB_REND_AUT
 msgid "Author"
-msgstr "Autor"
+msgstr "Автор"
 
 # LIB_REND_CONT
 #: LIB_REND_CONT
 msgid "Contents"
-msgstr "Conteúdo"
+msgstr "Вміст"
 
 # LIB_REND_ED
 #: LIB_REND_ED
 msgid "Editor"
-msgstr "Editor"
+msgstr "Редактор"
 
 # LIB_REND_END
 #: LIB_REND_END
 msgid "Endorser"
-msgstr "Endossante"
+msgstr "Індосант"
 
 # LIB_REND_NOCONT
 #: LIB_REND_NOCONT
 msgid "No Content"
-msgstr "Sem conteúdo"
+msgstr "Немає контенту"
 
 # LIB_REND_PAR
 #: LIB_REND_PAR
 msgid "Participants"
-msgstr "Participantes"
+msgstr "Учасники"
 
 # LIB_REND_REQ
 #: LIB_REND_REQ
 msgid "Data Requirements"
-msgstr "Requisitos de dados"
+msgstr "Вимоги до даних"
 
 # LIB_REND_REV
 #: LIB_REND_REV
 msgid "Reviewer"
-msgstr "Revisor"
+msgstr "Рецензент"
 
 # LIB_REND_SHOW
 #: LIB_REND_SHOW
 msgid "Content not shown - ("
-msgstr "Conteúdo não mostrado - ("
+msgstr "Контент не відображається - ("
 
 # LIB_REND_SIZE
 #: LIB_REND_SIZE
 msgid ", size = {0}"
-msgstr ", tamanho = {0}"
+msgstr ", розмір = {0}"
 
 # LIST_REND_CODE
 #: LIST_REND_CODE
 msgid "Code: {0}"
-msgstr "Código: {0}"
+msgstr "Код: {0}"
 
 # LIST_REND_DAT
 #: LIST_REND_DAT
 msgid "Date"
-msgstr "Data"
+msgstr "Дата"
 
 # LIST_REND_DATE
 #: LIST_REND_DATE
 msgid "Date: {0}"
-msgstr "Data: {0}"
+msgstr "Дата: {0}"
 
 # LIST_REND_DEL
 #: LIST_REND_DEL
 msgid "Deleted"
-msgstr "Eliminado"
+msgstr "Видалений"
 
 # LIST_REND_ENC
 #: LIST_REND_ENC
 msgid "Encounter:"
-msgstr "Encontro:"
+msgstr "Взаємодія:"
 
 # LIST_REND_FLAG
 #: LIST_REND_FLAG
 msgid "Flag"
-msgstr "Bandeira"
+msgstr "Прапор"
 
 # LIST_REND_ITEM
 #: LIST_REND_ITEM
 msgid "Items"
-msgstr "Artigos"
+msgstr "Елементи"
 
 # LIST_REND_MODE
 #: LIST_REND_MODE
 msgid "Mode: {0}"
-msgstr "Modo: {0}"
+msgstr "Режим: {0}"
 
 # LIST_REND_ORD
 #: LIST_REND_ORD
 msgid "Order: {0}"
-msgstr "Encomendar: {0}"
+msgstr "Замовлення: {0}"
 
 # LIST_REND_STAT
 #: LIST_REND_STAT
 msgid "Status: {0}"
-msgstr "Estado: {0}"
+msgstr "Статус: {0}"
 
 # LIST_REND_SUB
 #: LIST_REND_SUB
 msgid "Subject:"
-msgstr "Assunto:"
+msgstr "Тема:"
 
 # LIST_SUMMARY
 #: LIST_SUMMARY
 msgid "List for ''{0}'' for ''{1}''"
-msgstr "Lista para ''{0}'' para ''{1}''"
+msgstr "Список для ''{0}'' для ''{1}''"
 
 # LIST_UNSPECIFIED_CODE
 #: LIST_UNSPECIFIED_CODE
 msgid "Unspecified List Type"
-msgstr "Tipo de lista não especificado"
+msgstr "Невизначений тип списку"
 
 # LIST_UNSPECIFIED_SUBJECT
 #: LIST_UNSPECIFIED_SUBJECT
 msgctxt "LIST_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
-msgstr "Assunto não especificado"
+msgstr "Невизначена тема"
 
 # MAP_DEFAULT_COMMENT
 #: MAP_DEFAULT_COMMENT
 msgid "This element was not defined prior to R5"
-msgstr "Este elemento não foi definido antes da R5"
+msgstr "Цей елемент не був визначений до R5"
 
 # MATURITY_MATURITY
 #: MATURITY_MATURITY
 msgid "Maturity Level: {0}"
-msgstr "Nível de maturidade: {0}"
+msgstr "Рівень зрілості: {0}"
 
 # MATURITY_PUBLISHER
 #: MATURITY_PUBLISHER
 msgid "Publisher: {0}"
-msgstr "Editora: {0}"
+msgstr "Видавець: {0}"
 
 # MATURITY_STATUS
 #: MATURITY_STATUS
 msgctxt "MATURITY_STATUS"
 msgid "Status"
-msgstr "Estado"
+msgstr "Статус"
 
 # MATURITY_STDS_STATUS
 #: MATURITY_STDS_STATUS
 msgid "Standards Status: {0}"
-msgstr "Estado das normas: {0}"
+msgstr "Статус стандартів: {0}"
 
 # NAME_SYS_IDEN
 #: NAME_SYS_IDEN
 msgid "Identifiers"
-msgstr "Identificadores"
+msgstr "Ідентифікатори"
 
 # NAME_SYS_PER
 #: NAME_SYS_PER
 msgid "Period"
-msgstr "Período"
+msgstr "Період"
 
 # OBLIGATION_SOURCE
 #: OBLIGATION_SOURCE
 msgid "This obligation is defined in the profile {0}"
-msgstr "Esta obrigação é definida no perfil {0}"
+msgstr "Це зобов'язання визначено в профілі {0}"
 
 # OBLIG_ACT
 #: OBLIG_ACT
 msgid "Actor"
-msgstr "Ator"
+msgstr "Актор"
 
 # OBLIG_ELE
 #: OBLIG_ELE
 msgid "Elements"
-msgstr "Elementos"
+msgstr "Елементи"
 
 # OP_DEF_INPAR
 #: OP_DEF_INPAR
 msgid "Input parameters Profile:"
-msgstr "Parâmetros de entrada Perfil:"
+msgstr "Профіль вхідних параметрів:"
 
 # OP_DEF_OFFIC
 #: OP_DEF_OFFIC
 msgid "The official URL for this operation definition is:"
-msgstr "O URL oficial para esta definição de operação é:"
+msgstr "Офіційна URL-адреса для визначення цієї операції:"
 
 # OP_DEF_OUTPAR
 #: OP_DEF_OUTPAR
 msgid "Output parameters Profile:"
-msgstr "Parâmetros de saída Perfil:"
+msgstr "Профіль вихідних параметрів:"
 
 # OP_DEF_SCO
 #: OP_DEF_SCO
 msgid "Scope"
-msgstr "Âmbito de aplicação"
+msgstr "Область використання"
 
 # OP_DEF_URL
 #: OP_DEF_URL
@@ -2074,264 +2074,274 @@ msgstr "URL: [base]/${0}"
 # OP_DEF_USE
 #: OP_DEF_USE
 msgid "Use"
-msgstr "Utilização"
+msgstr "Використання"
 
 # OP_OUT_DIAG
 #: OP_OUT_DIAG
 msgid "Diagnostics"
-msgstr "Diagnóstico"
+msgstr "Діагностика"
 
 # OP_OUT_OK
 #: OP_OUT_OK
 msgid "All OK"
-msgstr "Tudo OK"
+msgstr "Все ОК"
 
 # OP_OUT_SEV
 #: OP_OUT_SEV
 msgid "Severity"
-msgstr "Gravidade"
+msgstr "Серйозність"
 
 # OP_OUT_SRC
 #: OP_OUT_SRC
 msgctxt "OP_OUT_SRC"
 msgid "Source"
-msgstr "Fonte"
+msgstr "Джерело"
 
 # OP_OUT_SUMM
 #: OP_OUT_SUMM
 msgid "OperationOutcome ({0} Error(s), {1} Warning(s), {2} Hint(s))"
-msgstr "OperationOutcome ({0} Erro(s), {1} Aviso(s), {2} Dica(s))"
+msgstr "OperationOutcome ({0} Помилка(и), {1} Попередження (застереження), {2} Підказка(и))"
 
 # OP_OUT_SUMM_ALL_OK
 #: OP_OUT_SUMM_ALL_OK
 msgid "OperationOutcome (ALL OK)"
-msgstr "OperationOutcome (ALL OK)"
+msgstr "OperationOutcome (ВСЕ OK)"
 
 # OP_OUT_SUMM_NOHINT
 #: OP_OUT_SUMM_NOHINT
 msgid "OperationOutcome ({0} Error(s), {1} Warning(s))"
-msgstr "OperationOutcome ({0} Error(s), {1} Aviso(s))"
+msgstr "РезультатОперація ({0} Помилка(и), {1} Попередження(и))"
 
 # PARS_SUMMARY_LIST
 #: PARS_SUMMARY_LIST
 msgid "Parameters: {0}"
-msgstr "Parâmetros: {0}"
+msgstr "Параметри: {0}"
 
 # PARS_SUMMARY_SIZE
 #: PARS_SUMMARY_SIZE
 msgid "Parameters ({0} parameters)"
-msgstr "Parâmetros ({0} parâmetros)"
+msgstr "Параметри ({0} параметрів)"
 
 # PAT_ACTIVE
 #: PAT_ACTIVE
 msgid "Active:"
-msgstr "Ativo:"
+msgstr "Активний:"
 
 # PAT_ACTIVE_HINT
 #: PAT_ACTIVE_HINT
 msgid "Record is active"
-msgstr "O registo está ativo"
+msgstr "Запис активний"
 
 # PAT_ALT_NAME
 #: PAT_ALT_NAME
 msgid "Alt. Name:"
-msgstr "Alt. Nome:"
+msgstr "Альт. назва:"
 
 # PAT_ALT_NAME_HINT
 #: PAT_ALT_NAME_HINT
 msgid "Alternate names (see the one above)"
-msgstr "Nomes alternativos (ver o nome acima)"
+msgstr "Альтернативні назви (див. наведену вище)"
 
 # PAT_CONTACT
 #: PAT_CONTACT
 msgid "Contact Detail"
-msgstr "Detalhes do contacto"
+msgstr "Контактна інформація"
 
 # PAT_CONTACT_HINT
 #: PAT_CONTACT_HINT
 msgid "Ways to contact the Patient"
-msgstr "Formas de contactar o doente"
+msgstr "Способи зв'язку з Пацієнтом"
 
 # PAT_CONTAINED
 #: PAT_CONTAINED
 msgid "Contained Resource"
 msgid_plural "Contained Resources"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ресурс, що міститься"
+msgstr[1] "Ресурси, що містяться"
+msgstr[2] "Ресурси, що містяться"
+msgstr[3] "Ресурси, що містяться"
 
 # PAT_DECEASED
 #: PAT_DECEASED
 msgid "Deceased:"
-msgstr "Falecido:"
+msgstr "Померлих:"
 
 # PAT_DECEASED_HINT
 #: PAT_DECEASED_HINT
 msgid "Known status of Patient"
-msgstr "Estado conhecido do doente"
+msgstr "Відомий статус пацієнта"
 
 # PAT_DOB
 #: PAT_DOB
 msgid "DoB: {0}"
-msgstr "DoB: {0}"
+msgstr "ДН: {0}"
 
 # PAT_GENDER
 #: PAT_GENDER
 msgid "Gender: {0}"
-msgstr "Género: {0}"
+msgstr "Стать: {0}"
 
 # PAT_GP
 #: PAT_GP
 msgid "General Practitioner"
-msgstr "Médico de clínica geral"
+msgstr "Сімейний лікар"
 
 # PAT_LANG
 #: PAT_LANG
 msgid "Language:"
 msgid_plural "Languages:"
-msgstr[0] "Língua:"
-msgstr[1] ""
+msgstr[0] "Мова:"
+msgstr[1] "Мова:"
+msgstr[2] "Мови:"
+msgstr[3] "Мови:"
 
 # PAT_LANG_HINT
 #: PAT_LANG_HINT
 msgid "Language spoken"
 msgid_plural "Languages spoken"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Мова, якою розмовляють"
+msgstr[1] "Мови, якими розмовляють"
+msgstr[2] "Мови, якими розмовляють"
+msgstr[3] "Мови, якими розмовляють"
 
 # PAT_LANG_PREFERRED
 #: PAT_LANG_PREFERRED
 msgid "(preferred)"
-msgstr "(preferencial)"
+msgstr "(бажаний)"
 
 # PAT_LINKS
 #: PAT_LINKS
 msgctxt "PAT_LINKS"
 msgid "Links:"
-msgstr "Ligações:"
+msgstr "Посилання:"
 
 # PAT_LINKS_HINT
 #: PAT_LINKS_HINT
 msgid "Patient Links"
-msgstr "Ligações para doentes"
+msgstr "Посилання на пацієнта"
 
 # PAT_LINK_REFER
 #: PAT_LINK_REFER
 msgid "Please refer to"
-msgstr "Consultar"
+msgstr "Будь ласка, зверніться до"
 
 # PAT_LINK_REPL
 #: PAT_LINK_REPL
 msgid "This record replaces"
-msgstr "Este registo substitui"
+msgstr "Цей запис замінює"
 
 # PAT_LINK_REPLBY
 #: PAT_LINK_REPLBY
 msgid "This record replaced by"
-msgstr "Este registo foi substituído por"
+msgstr "Цей запис замінено на"
 
 # PAT_LINK_SEE
 #: PAT_LINK_SEE
 msgid "Also see"
-msgstr "Ver também"
+msgstr "Також див."
 
 # PAT_MARITAL
 #: PAT_MARITAL
 msgid "Marital Status:"
-msgstr "Estado civil:"
+msgstr "Сімейний стан:"
 
 # PAT_MARITAL_HINT
 #: PAT_MARITAL_HINT
 msgid "Known Marital status of Patient"
-msgstr "Estado civil conhecido do doente"
+msgstr "Відомий сімейний стан пацієнта"
 
 # PAT_MO
 #: PAT_MO
 msgid "Managing Organization"
-msgstr "Organização de gestão"
+msgstr "Керуюча організація"
 
 # PAT_MUL_BIRTH
 #: PAT_MUL_BIRTH
 msgid "Multiple Birth:"
-msgstr "Nascimento múltiplo:"
+msgstr "Багатоплідні пологи:"
 
 # PAT_MUL_BIRTH_HINT
 #: PAT_MUL_BIRTH_HINT
 msgid "Known multipleBirth status of Patient"
-msgstr "Múltiplos conhecidosEstado civil do doente"
+msgstr "Відомий статус багатоплідних пологів пацієнта"
 
 # PAT_NOK_CONTACT_HINT
 #: PAT_NOK_CONTACT_HINT
 msgid "Patient contact"
-msgstr "Contacto com o doente"
+msgstr "Контакт пацієнта"
 
 # PAT_NOM_CONTACT
 #: PAT_NOM_CONTACT
 msgid "Nominated Contact:"
-msgstr "Contacto nomeado:"
+msgstr "Номінована контактна особа:"
 
 # PAT_NO_DOB
 #: PAT_NO_DOB
 msgid "DoB Unknown"
-msgstr "DN Desconhecida"
+msgstr "Дата народження невідома"
 
 # PAT_NO_GENDER
 #: PAT_NO_GENDER
 msgid "(no stated gender)"
-msgstr "(sem género declarado)"
+msgstr "(стать не вказана)"
 
 # PAT_NO_NAME
 #: PAT_NO_NAME
 msgid "Anonymous Patient"
-msgstr "Doente anónimo"
+msgstr "Анонімний пацієнт"
 
 # PAT_ORG
 #: PAT_ORG
 msgid "Organization:"
-msgstr "Organização:"
+msgstr "Організація:"
 
 # PAT_OTHER_ID
 #: PAT_OTHER_ID
 msgid "Other Id:"
 msgid_plural "Other Ids:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Інший ідентифікатор:"
+msgstr[1] "Інші ідентифікатори:"
+msgstr[2] "Інші ідентифікатори:"
+msgstr[3] "Інші ідентифікатори:"
 
 # PAT_OTHER_ID_HINT
 #: PAT_OTHER_ID_HINT
 msgid "Other Id (see the one above)"
 msgid_plural "Other Ids (see the one above)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Інший ідентифікатор (див. той, що вище)"
+msgstr[1] "Інші ідентифікатори (див. той, що вище)"
+msgstr[2] "Інші ідентифікатори (див. той, що вище)"
+msgstr[3] "Інші ідентифікатори (див. той, що вище)"
 
 # PAT_PERIOD
 #: PAT_PERIOD
 msgid "Valid Period:"
-msgstr "Período de validade:"
+msgstr "Термін дії:"
 
 # PAT_PHOTO
 #: PAT_PHOTO
 msgid "Patient Photo"
-msgstr "Fotografia do doente"
+msgstr "Фото пацієнта"
 
 # PAT_RELN
 #: PAT_RELN
 msgid "Relationships:"
-msgstr "Relações:"
+msgstr "Відносини:"
 
 # PROF_DRIV_ERR_GEN_NARR
 #: PROF_DRIV_ERR_GEN_NARR
 msgid "Error Generating Narrative for"
-msgstr "Erro ao gerar uma narrativa para"
+msgstr "Помилка при генерації наративу для"
 
 # PROF_DRIV_EXCP
 #: PROF_DRIV_EXCP
 msgid "Exception Generating Narrative: {0}"
-msgstr "Exceção ao gerar narrativa: {0}"
+msgstr "Виняток генерації наративу: {0}"
 
 # PROF_DRIV_FEXCP
 #: PROF_DRIV_FEXCP
 msgid "Cannot find definition for {0}"
-msgstr "Não é possível encontrar a definição para {0}"
+msgstr "Неможливо знайти визначення для {0}"
 
 # PROF_DRIV_GEN_NARR
 #: PROF_DRIV_GEN_NARR
@@ -2341,7 +2351,7 @@ msgstr "{0} {1}"
 # PROF_DRIV_GEN_NARR_TECH
 #: PROF_DRIV_GEN_NARR_TECH
 msgid "Generated Narrative: {0} {1}"
-msgstr "Narrativa gerada: {0} {1}"
+msgstr "Згенерований наратив: {0} {1}"
 
 # PROF_DRIV_SUMM
 #: PROF_DRIV_SUMM
@@ -2357,292 +2367,292 @@ msgstr "{0} = {1}"
 # PROV_ACT
 #: PROV_ACT
 msgid "Activity"
-msgstr "Atividade"
+msgstr "Діяльність"
 
 # PROV_AGE
 #: PROV_AGE
 msgid "Agents"
-msgstr "Agentes"
+msgstr "Агенти"
 
 # PROV_BEHALF
 #: PROV_BEHALF
 msgid "On Behalf Of"
-msgstr "Em nome de"
+msgstr "За дорученням"
 
 # PROV_FOR
 #: PROV_FOR
 msgid "Provenance for {0}"
-msgstr "Proveniência para {0}"
+msgstr "Походження для {0}"
 
 # PROV_OCC
 #: PROV_OCC
 msgid "Occurrence"
-msgstr "Ocorrência"
+msgstr "Випадок"
 
 # PROV_POL
 #: PROV_POL
 msgid "Policy"
-msgstr "Política"
+msgstr "Політика"
 
 # PROV_PROV
 #: PROV_PROV
 msgid "Provenance for"
-msgstr "Proveniência para"
+msgstr "Походження для"
 
 # PROV_PROVE
 #: PROV_PROVE
 msgid "Provenance for:"
-msgstr "Proveniência de:"
+msgstr "Походження для:"
 
 # PROV_REC
 #: PROV_REC
 msgid "Recorded"
-msgstr "Gravado"
+msgstr "Записано"
 
 # PROV_ROLE
 #: PROV_ROLE
 msgid "Role"
-msgstr "Papel"
+msgstr "Роль"
 
 # PROV_WHO
 #: PROV_WHO
 msgid "who"
-msgstr "que"
+msgstr "Хто"
 
 # QUEST_ADD_INFO
 #: QUEST_ADD_INFO
 msgid "Additional information about the item"
-msgstr "Informações adicionais sobre o artigo"
+msgstr "Додаткова інформація про елемент"
 
 # QUEST_ALLOWED
 #: QUEST_ALLOWED
 msgid "Allowed Answers"
-msgstr "Respostas permitidas"
+msgstr "Дозволені відповіді"
 
 # QUEST_ANSW
 #: QUEST_ANSW
 msgid "Answer options for {0}"
-msgstr "Opções de resposta para {0}"
+msgstr "Варіанти відповідей на {0}"
 
 # QUEST_ANSWER
 #: QUEST_ANSWER
 msgid "Answer"
-msgstr "Resposta"
+msgstr "Відповідь"
 
 # QUEST_ANSWERS
 #: QUEST_ANSWERS
 msgid "Answers"
-msgstr "Respostas"
+msgstr "Відповіді"
 
 # QUEST_APP
 #: QUEST_APP
 msgid "Approval Date"
-msgstr "Data de aprovação"
+msgstr "Дата затвердження"
 
 # QUEST_ARE_TRUE
 #: QUEST_ARE_TRUE
 msgid "?? are true:"
-msgstr "são verdadeiras:"
+msgstr "?? є правдою:"
 
 # QUEST_ATTRIBUTES
 #: QUEST_ATTRIBUTES
 msgid "Other attributes of the item"
-msgstr "Outros atributos do item"
+msgstr "Інші атрибути предмета"
 
 # QUEST_CALC
 #: QUEST_CALC
 msgid "Calculated Value"
-msgstr "Valor calculado"
+msgstr "Обчислюване значення"
 
 # QUEST_CAND
 #: QUEST_CAND
 msgid "Candidates"
-msgstr "Candidatos"
+msgstr "Кандидати"
 
 # QUEST_CAT
 #: QUEST_CAT
 msgid "Category: {0}"
-msgstr "Categoria: {0}"
+msgstr "Категорія: {0}"
 
 # QUEST_CONT
 #: QUEST_CONT
 msgid "Context"
-msgstr "Contexto"
+msgstr "Контекст"
 
 # QUEST_DERIVED
 #: QUEST_DERIVED
 msgid "Derived From"
-msgstr "Derivado de"
+msgstr "Походить з"
 
 # QUEST_DISPLAY
 #: QUEST_DISPLAY
 msgid "Is optional to display"
-msgstr "É opcional para exibir"
+msgstr "Є необов'язковим для відображення"
 
 # QUEST_DISPLAY_CAT
 #: QUEST_DISPLAY_CAT
 msgid "Display Category"
-msgstr "Categoria de visualização"
+msgstr "Показати категорію"
 
 # QUEST_EFF_PERIOD
 #: QUEST_EFF_PERIOD
 msgid "Effective Period"
-msgstr "Período efetivo"
+msgstr "Період дії"
 
 # QUEST_EN
 #: QUEST_EN
 msgid "Enable When"
-msgstr "Ativar quando"
+msgstr "Увімкнути, якщо"
 
 # QUEST_ENABLE
 #: QUEST_ENABLE
 msgid "Enable When:"
-msgstr "Ativar quando:"
+msgstr "Увімкнути, якщо:"
 
 # QUEST_EXP
 #: QUEST_EXP
 msgid "Expressions:"
-msgstr "Expressões:"
+msgstr "Вирази:"
 
 # QUEST_GROUP
 #: QUEST_GROUP
 msgid "Group"
-msgstr "Grupo"
+msgstr "Група"
 
 # QUEST_HIDDEN
 #: QUEST_HIDDEN
 msgid "Is a hidden item"
-msgstr "É um item oculto"
+msgstr "Є прихованим предметом"
 
 # QUEST_HIDDEN_ITEM
 #: QUEST_HIDDEN_ITEM
 msgid "Hidden Item"
-msgstr "Item escondido"
+msgstr "Прихований предмет"
 
 # QUEST_ID
 #: QUEST_ID
 msgid "Link Id"
-msgstr "Ligação Id"
+msgstr "Ідентифікатор посилання"
 
 # QUEST_INITIAL
 #: QUEST_INITIAL
 msgid "Initial Value:"
-msgstr "Valor inicial:"
+msgstr "Початкове значення:"
 
 # QUEST_INITIALLY
 #: QUEST_INITIALLY
 msgid "(initially selected)"
-msgstr "(inicialmente selecionado)"
+msgstr "(спочатку вибраний)"
 
 # QUEST_INITIAL_ANSWER
 #: QUEST_INITIAL_ANSWER
 msgid "Initial Answer"
-msgstr "Resposta inicial"
+msgstr "Початкова відповідь"
 
 # QUEST_INT
 #: QUEST_INT
 msgid "Initial Values"
-msgstr "Valores iniciais"
+msgstr "Початкові значення"
 
 # QUEST_ITEM
 #: QUEST_ITEM
 msgid "Item"
-msgstr "Item"
+msgstr "Елемент"
 
 # QUEST_ITEM_CONT
 #: QUEST_ITEM_CONT
 msgid "Item Context"
-msgstr "Contexto do item"
+msgstr "Контекст елемента"
 
 # QUEST_LINK
 #: QUEST_LINK
 msgid "The linkID for the item"
-msgstr "O linkID do item"
+msgstr "Ідентифікатор посилання для елементу"
 
 # QUEST_LINKED
 #: QUEST_LINKED
 msgid "Is linked to an observation"
-msgstr "Está ligado a uma observação"
+msgstr "Пов'язане зі спостереженням"
 
 # QUEST_LINKID
 #: QUEST_LINKID
 msgid "LinkID"
-msgstr "ID da ligação"
+msgstr "Ідентифікатор посилання"
 
 # QUEST_MAND
 #: QUEST_MAND
 msgid "Mandatory"
-msgstr "Obrigatório"
+msgstr "Обов'язковий"
 
 # QUEST_MAX_LENGTH
 #: QUEST_MAX_LENGTH
 msgid "Max Length"
-msgstr "Comprimento máximo"
+msgstr "Максимальна довжина"
 
 # QUEST_NLM
 #: QUEST_NLM
 msgid "NLM Forms Library"
-msgstr "Biblioteca de formulários da NLM"
+msgstr "Бібліотека форм NLM"
 
 # QUEST_NONE_SPEC
 #: QUEST_NONE_SPEC
 msgid "None specified"
-msgstr "Não especificado"
+msgstr "Не вказано"
 
 # QUEST_OBSERVATION
 #: QUEST_OBSERVATION
 msgid "Observation Link Period"
-msgstr "Observação Período de ligação"
+msgstr "Пов'язаний період спостереження"
 
 # QUEST_OPT
 #: QUEST_OPT
 msgid "Options Sets"
-msgstr "Conjuntos de opções"
+msgstr "Набори опцій"
 
 # QUEST_OPTIONS
 #: QUEST_OPTIONS
 msgid "Options:"
-msgstr "Opções:"
+msgstr "Параметри:"
 
 # QUEST_ORIENTATION
 #: QUEST_ORIENTATION
 msgid "Orientation: {0}"
-msgstr "Orientação: {0}"
+msgstr "Орієнтація: {0}"
 
 # QUEST_PREFIX
 #: QUEST_PREFIX
 msgid "Prefix"
-msgstr "Prefixo"
+msgstr "Префікс"
 
 # QUEST_PUB
 #: QUEST_PUB
 msgid "Publication Date"
-msgstr "Data de publicação"
+msgstr "Дата публікації"
 
 # QUEST_QUEST
 #: QUEST_QUEST
 msgid "Questionnaire"
-msgstr "Questionário"
+msgstr "Опитувальник"
 
 # QUEST_QUESTION
 #: QUEST_QUESTION
 msgid "Questionnaire:"
-msgstr "Questionário:"
+msgstr "Опитувальник:"
 
 # QUEST_READONLY
 #: QUEST_READONLY
 msgid "Is Read Only"
-msgstr "É só de leitura"
+msgstr "Лише для читання"
 
 # QUEST_READ_ONLY
 #: QUEST_READ_ONLY
 msgid "Read Only"
-msgstr "Apenas leitura"
+msgstr "Тільки читання"
 
 # QUEST_REP
 #: QUEST_REP
 msgid "Repeats"
-msgstr "Repetições"
+msgstr "Повторює"
 
 # QUEST_RESP_ROOT
 #: QUEST_RESP_ROOT
@@ -2652,118 +2662,118 @@ msgstr "QuestionnaireResponseRoot"
 # QUEST_REV_DATE
 #: QUEST_REV_DATE
 msgid "Last Review Date"
-msgstr "Data da última revisão"
+msgstr "Дата останнього перегляду"
 
 # QUEST_ROOT
 #: QUEST_ROOT
 msgid "QuestionnaireRoot"
-msgstr "QuestionárioRaiz"
+msgstr "QuestionnaireRoot"
 
 # QUEST_STRUCT
 #: QUEST_STRUCT
 msgid "Structure"
-msgstr "Estrutura"
+msgstr "Структура"
 
 # QUEST_SUBJECT
 #: QUEST_SUBJECT
 msgid "Can change the subject of the questionnaire"
-msgstr "Pode mudar o tema do questionário"
+msgstr "Може змінити тему опитувальника"
 
 # QUEST_SUB_TYPE
 #: QUEST_SUB_TYPE
 msgid "Subject Type"
-msgstr "Tipo de assunto"
+msgstr "Тип предмета"
 
 # QUEST_SUMMARY
 #: QUEST_SUMMARY
 msgid "Response to Questionnaire ''{0}'' about ''{1}''"
-msgstr "Resposta ao questionário ''{0}'' sobre ''{1}''"
+msgstr "Відповідь на анкету ''{0}'' про ''{1}''"
 
 # QUEST_TEXT
 #: QUEST_TEXT
 msgid "Text"
-msgstr "Texto"
+msgstr "Текст"
 
 # QUEST_TEXTFOR
 #: QUEST_TEXTFOR
 msgid "Text for the item"
-msgstr "Texto para o item"
+msgstr "Текст для елемента"
 
 # QUEST_TIMES
 #: QUEST_TIMES
 msgid "Minimum and Maximum # of times the item can appear in the instance"
-msgstr "Número mínimo e máximo de vezes que o item pode aparecer na instância"
+msgstr "Мінімум і Максимум # разів, коли елемент може з'явитися в екземплярі"
 
 # QUEST_TRUE
 #: QUEST_TRUE
 msgid "are true:"
-msgstr "são verdadeiras:"
+msgstr "Вірно:"
 
 # QUEST_TRY
 #: QUEST_TRY
 msgid "Try this questionnaire out:"
-msgstr "Experimente este questionário:"
+msgstr "Спробуйте цю анкету:"
 
 # QUEST_TRY_QUEST
 #: QUEST_TRY_QUEST
 msgid "Try this QuestionnaireResponse out:"
-msgstr "Experimente este QuestionnaireResponse:"
+msgstr "Спробуйте цю QuestionnaireResponse:"
 
 # QUEST_TYPE_ITEM
 #: QUEST_TYPE_ITEM
 msgid "The type of the item"
-msgstr "O tipo do item"
+msgstr "Тип предмета"
 
 # QUEST_UNKNOWN_MODE
 #: QUEST_UNKNOWN_MODE
 msgid "Unknown QuestionnaireResponse Renderer Mode"
-msgstr "Modo de renderização QuestionnaireResponse desconhecido"
+msgstr "Режим рендерера невідомої QuestionnaireResponse"
 
 # QUEST_UNSPECIFIED_QUESTIONNAIRE
 #: QUEST_UNSPECIFIED_QUESTIONNAIRE
 msgid "Unspecified Questionnaire"
-msgstr "Questionário não especificado"
+msgstr "Неуточнена анкета"
 
 # QUEST_UNSPECIFIED_SUBJECT
 #: QUEST_UNSPECIFIED_SUBJECT
 msgctxt "QUEST_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
-msgstr "Assunto não especificado"
+msgstr "Тема не вказана"
 
 # QUEST_VALUE
 #: QUEST_VALUE
 msgid "Value Set:"
-msgstr "Conjunto de valores:"
+msgstr "Набір значень:"
 
 # R44B_DERIVES_FROM
 #: R44B_DERIVES_FROM
 msgid "derives from"
-msgstr ""
+msgstr "походить з"
 
 # R44B_HAS_TARGET
 #: R44B_HAS_TARGET
 msgid "has target"
-msgstr ""
+msgstr "має ціль"
 
 # R44B_HAS_TYPE
 #: R44B_HAS_TYPE
 msgid "has type"
-msgstr ""
+msgstr "має тип"
 
 # R44B_NOT_COMP
 #: R44B_NOT_COMP
 msgid "This is an {0} IG that is not compatible with {1}\" because"
-msgstr ""
+msgstr "Це {0} IG, несумісний з {1}\" тому що"
 
 # R44B_NOT_IN
 #: R44B_NOT_IN
 msgid "The following resources are not in the {0} version"
-msgstr ""
+msgstr "Наступні ресурси не в {0} версії"
 
 # R44B_ONLY_IN
 #: R44B_ONLY_IN
 msgid "The following resources are only in the {0} version"
-msgstr ""
+msgstr "Наступні ресурси знаходяться тільки в {0} версія"
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
@@ -2773,163 +2783,163 @@ msgstr ""
 # R44B_PROBLEMS
 #: R44B_PROBLEMS
 msgid "While checking for {0} compatibility, the following {1} problems were found"
-msgstr ""
+msgstr "Під час перевірки сумісності {0}, були знайдені наступні {1} проблеми"
 
 # R44B_REFERS_TO
 #: R44B_REFERS_TO
 msgid "<a href=\"{0}\">{1}}</a> refers to the canonical type at {2}"
-msgstr ""
+msgstr "<a href=\"{0}\">{1}}</a> посилається на канонічний тип на {2}"
 
 # R44B_USE_OK
 #: R44B_USE_OK
 msgid "This is an {0} IG. None of the features it uses are changed in {1}, so it can be used as is with {1}} systems."
-msgstr ""
+msgstr "Це {0} IG. Жодна з функцій, які він використовує, не змінюється в {1} і тому він може бути використаний, з {1}} системами."
 
 # R44B_WRONG_MSG
 #: R44B_WRONG_MSG
 msgid "Something went wrong with the cross-version analysis because"
-msgstr ""
+msgstr "Щось пішло не так з крос-версійним аналізом, тому що"
 
 # REND_ADDED
 #: REND_ADDED
 msgid "Added:"
-msgstr "Adicionado:"
+msgstr "Додано:"
 
 # REND_CHANGED
 #: REND_CHANGED
 msgid "Changed:"
-msgstr "Alterado:"
+msgstr "Змінений:"
 
 # REND_REMOVED
 #: REND_REMOVED
 msgid "Removed:"
-msgstr "Removido:"
+msgstr "Видалені:"
 
 # REND_ROW_CHANGED_SINCE_WAS
 #: REND_ROW_CHANGED_SINCE_WAS
 msgid "This row of content has been changed since {0} (was ''{1}'')"
-msgstr "Esta linha de conteúdo foi alterada desde {0} (era ''{1}'')"
+msgstr "З тих пір цей рядок контенту був змінений {0} (було ''{1}'')"
 
 # REND_ROW_SINCE
 #: REND_ROW_SINCE
 msgid "This row of content has been added since {0}"
-msgstr "Esta linha de conteúdo foi adicionada desde {0}"
+msgstr "Цей рядок контенту був доданий з того часу {0}"
 
 # REND_SINCE_ADDED
 #: REND_SINCE_ADDED
 msgid "This content has been added since {0}"
-msgstr "Este conteúdo foi adicionado desde {0}"
+msgstr "Цей контент був доданий з того часу {0}"
 
 # REND_SINCE_CHANGED
 #: REND_SINCE_CHANGED
 msgid "This content has been changed since {0}"
-msgstr "Este conteúdo foi alterado desde {0}"
+msgstr "З тих пір цей контент був змінений {0}"
 
 # REND_SINCE_CHANGED_WAS
 #: REND_SINCE_CHANGED_WAS
 msgid "This content has been changed since {0} (was ''{1}'')"
-msgstr "Este conteúdo foi alterado desde {0} (era ''{1}'')"
+msgstr "З тих пір цей контент був змінений {0} (було ''{1}'')"
 
 # REND_STANDARDS
 #: REND_STANDARDS
 msgid "Standards Status = {0}"
-msgstr "Estado das normas = {0}"
+msgstr "Статус стандартів = {0}"
 
 # REQ_ACTOR
 #: REQ_ACTOR
 msgid "These requirements apply to the actor"
-msgstr "Estas exigências aplicam-se ao ator"
+msgstr "Ці вимоги поширюються і на актора"
 
 # REQ_DERIVE
 #: REQ_DERIVE
 msgid "These requirements derive from"
-msgstr "Estes requisitos decorrem de"
+msgstr "Ці вимоги випливають з"
 
 # REQ_DERIVED
 #: REQ_DERIVED
 msgid "Derived From:"
-msgstr "Derivado de:"
+msgstr "Отримано з:"
 
 # REQ_FOLLOWING_ACTOR
 #: REQ_FOLLOWING_ACTOR
 msgid "These requirements apply to the following actors:"
-msgstr "Estes requisitos aplicam-se aos seguintes actores:"
+msgstr "Ці вимоги поширюються на таких суб'єктів:"
 
 # REQ_FOLLOWING_REQ
 #: REQ_FOLLOWING_REQ
 msgid "These requirements are derived from the following requirements:"
-msgstr "Estes requisitos são derivados dos seguintes requisitos:"
+msgstr "Ці вимоги випливають з таких вимог:"
 
 # REQ_LINKS
 #: REQ_LINKS
 msgctxt "REQ_LINKS"
 msgid "Links:"
-msgstr "Ligações:"
+msgstr "Посилання:"
 
 # REQ_SATISFIED
 #: REQ_SATISFIED
 msgid "Satisfied By:"
-msgstr "Satisfeito por:"
+msgstr "Задоволені:"
 
 # RESOURCE_COPYRIGHT
 #: RESOURCE_COPYRIGHT
 msgid "Copyright Statement:"
-msgstr "Declaração de direitos de autor:"
+msgstr "Заява про авторські права:"
 
 # RES_REND_ACT
 #: RES_REND_ACT
 msgid "Active"
-msgstr "Ativo"
+msgstr "Активний"
 
 # RES_REND_COND_REF
 #: RES_REND_COND_REF
 msgid "Conditional Reference:"
-msgstr "Referência condicional:"
+msgstr "Умовна довідка:"
 
 # RES_REND_DESC
 #: RES_REND_DESC
 msgid ". Description: (todo)"
-msgstr ". Descrição: (todo)"
+msgstr ". Опис: (todo)"
 
 # RES_REND_DRAFT
 #: RES_REND_DRAFT
 msgid "draft"
-msgstr "projeto"
+msgstr "проект"
 
 # RES_REND_ERROR
 #: RES_REND_ERROR
 msgid "Error rendering: {0}"
-msgstr "Erro de renderização: {0}"
+msgstr "Рендеринг помилок: {0}"
 
 # RES_REND_INFO_SOURCE
 #: RES_REND_INFO_SOURCE
 msgid "Information Source: <param name=\"source\"/>"
-msgstr "Fonte de informação: <param name=\"source\"/>"
+msgstr "Джерело інформації: <param name=\"source\"/>"
 
 # RES_REND_LANGUAGE
 #: RES_REND_LANGUAGE
 msgid "Language: {0}"
-msgstr "Língua: {0}"
+msgstr "Мова: {0}"
 
 # RES_REND_RET
 #: RES_REND_RET
 msgid "retired"
-msgstr "reformado"
+msgstr "Пенсію"
 
 # RES_REND_SEE_ON_THIS_PAGE
 #: RES_REND_SEE_ON_THIS_PAGE
 msgid "See on this page:"
-msgstr "Ver nesta página:"
+msgstr "Дивіться на цій сторінці:"
 
 # RES_REND_SPEC_RULES
 #: RES_REND_SPEC_RULES
 msgid "Special rules apply: {0}!"
-msgstr "Aplicam-se regras especiais: {0}!"
+msgstr "Діють спеціальні правила: {0}!"
 
 # RES_REND_TAG
 #: RES_REND_TAG
 msgid "Tag"
-msgstr "Etiqueta"
+msgstr "Тег"
 
 # RES_REND_TEMPLATE_ID
 #: RES_REND_TEMPLATE_ID
@@ -2939,2483 +2949,2487 @@ msgstr "templateId: {0}"
 # RES_REND_UNKNOWN
 #: RES_REND_UNKNOWN
 msgid "Unknown"
-msgstr "Desconhecido"
+msgstr "Невідомий"
 
 # RES_REND_UPDATED
 #: RES_REND_UPDATED
 msgid "Last updated: {0}"
-msgstr "Última atualização: {0}"
+msgstr "Останнє оновлення: {0}"
 
 # RES_REND_VER
 #: RES_REND_VER
 msgid "version: {0}"
-msgstr "versão: {0}"
+msgstr "версія: {0}"
 
 # SDR_ALL_ELEM
 #: SDR_ALL_ELEM
 msgid "**ALL** elements"
-msgstr ""
+msgstr "**ВСІ** елементи"
 
 # SDR_ALL_EXT
 #: SDR_ALL_EXT
 msgid "**ALL** extensions"
-msgstr ""
+msgstr "**ВСІ** розширення"
 
 # SDR_ANY_ORDER
 #: SDR_ANY_ORDER
 msgid "// sliced by {0} in any order"
-msgstr ""
+msgstr "нарізаний {0} в будь-якому порядку"
 
 # SDR_BP
 #: SDR_BP
 msgid "best practice"
-msgstr ""
+msgstr "Практичні поради"
 
 # SDR_CAPSTMT
 #: SDR_CAPSTMT
 msgid "CapabilityStatements using this {0}"
-msgstr "Declarações de capacidade usando este {0}"
+msgstr "CapabilityStatements з використанням цього {0}"
 
 # SDR_CH_DET
 #: SDR_CH_DET
 msgid "New Content"
-msgstr ""
+msgstr "Новий контент"
 
 # SDR_CH_NO
 #: SDR_CH_NO
 msgid "No changes"
-msgstr ""
+msgstr "Без змін"
 
 # SDR_CLICK_COPY
 #: SDR_CLICK_COPY
 msgid "Click to copy URL"
-msgstr ""
+msgstr "Натисніть, щоб скопіювати URL-адресу"
 
 # SDR_CODE_FROM
 #: SDR_CODE_FROM
 msgid "(a valid code from {0})"
-msgstr ""
+msgstr "(дійсний код від {0})"
 
 # SDR_COMPLY
 #: SDR_COMPLY
 msgid "Comply with this profile {0}"
-msgstr "Cumpre com este perfil {0}"
+msgstr "Відповідати цьому профілю {0}"
 
 # SDR_CONCEPT_DOMAIN
 #: SDR_CONCEPT_DOMAIN
 msgid "Concept Domain"
-msgstr ""
+msgstr "Поняття домену"
 
 # SDR_CONT_CH_DET_CS
 #: SDR_CONT_CH_DET_CS
 msgid "The list of codes defined by the code system has changed"
-msgstr "A lista de códigos definida pelo sistema de códigos foi alterada"
+msgstr "Змінився перелік кодів, визначених кодовою системою"
 
 # SDR_CONT_CH_DET_SD
 #: SDR_CONT_CH_DET_SD
 msgid "The data elements list has changed"
-msgstr "A lista de elementos de dados foi alterada"
+msgstr "Змінився перелік елементів даних"
 
 # SDR_CONT_CH_DET_VS
 #: SDR_CONT_CH_DET_VS
 msgid "The logical definition of the value set has changed"
-msgstr "A definição lógica do conjunto de valores foi alterada"
+msgstr "Змінилося логічне визначення набору значень"
 
 # SDR_CONT_CH_NO
 #: SDR_CONT_CH_NO
 msgid "Unable to evaluate changes to content"
-msgstr "Impossível avaliar alterações ao conteúdo"
+msgstr "Не можу оцінити зміни в контенті"
 
 # SDR_DEFN_CH_DET_CS
 #: SDR_DEFN_CH_DET_CS
 msgctxt "SDR_DEFN_CH_DET_CS"
 msgid "One or more text definitions/displays have changed"
-msgstr ""
+msgstr "Змінено одне або декілька текстових визначень/відображень"
 
 # SDR_DEFN_CH_DET_SD
 #: SDR_DEFN_CH_DET_SD
 msgid "One or more text definitions, invariants or bindings have changed"
-msgstr ""
+msgstr "Змінено одне або декілька текстових визначень, інваріантів або прив'язок"
 
 # SDR_DEFN_CH_DET_VS
 #: SDR_DEFN_CH_DET_VS
 msgctxt "SDR_DEFN_CH_DET_VS"
 msgid "One or more text definitions/displays have changed"
-msgstr ""
+msgstr "Змінено одне або декілька текстових визначень/відображень"
 
 # SDR_DEFN_CH_NO
 #: SDR_DEFN_CH_NO
 msgid "Unable to evaluate changes to definitions"
-msgstr "Impossível avaliar alterações às definições"
+msgstr "Неможливо оцінити зміни у визначеннях"
 
 # SDR_DERIVED
 #: SDR_DERIVED
 msgid "Derived from this {0}"
-msgstr "Derivado deste {0}"
+msgstr "Похідні від цього {0}"
 
 # SDR_DRAW_IN
 #: SDR_DRAW_IN
 msgid "Draw in Obligations & Additional Bindings from this {0}"
-msgstr "Obtém obrigações e vinculações adicionais a partir deste {0}"
+msgstr "Втягування зобов'язань та додаткових зобов'язань з цього {0}"
 
 # SDR_EXAMPLE
 #: SDR_EXAMPLE
 msgid "Examples for this {0}"
-msgstr "Exemplos para este {0}"
+msgstr "Приклади для цього {0}"
 
 # SDR_EXPERIMENTAL
 #: SDR_EXPERIMENTAL
 msgid "This is an experimental extension definition; the committee is seeking implementation feedback, and the definition or contents of the extension may change in future versions"
-msgstr ""
+msgstr "Це експериментальне визначення розширення; Комітет очікує зворотного зв'язку щодо впровадження, і визначення або зміст розширення можуть змінитися в майбутніх версіях"
 
 # SDR_EXTENSION_SUMMARY
 #: SDR_EXTENSION_SUMMARY
 msgid "Simple Extension with the type {0}: {1}"
-msgstr "Extensão simples com o tipo {0}: {1}"
+msgstr "Просте розширення з типом {0}: {1}"
 
 # SDR_EXT_ANY
 #: SDR_EXT_ANY
 msgid "This extension does not specify which elements it should be used on"
-msgstr ""
+msgstr "Це розширення не визначає, на яких елементах воно повинно використовуватися"
 
 # SDR_EXT_CHANGED
 #: SDR_EXT_CHANGED
 msgid "The extension is represented a little differently in {0}"
-msgstr ""
+msgstr "Розширення представлено трохи інакше в {0}"
 
 # SDR_EXT_CTXT_PATH
 #: SDR_EXT_CTXT_PATH
 msgid "In addition, the extension can only be used when this FHIRPath expression is true"
-msgstr ""
+msgstr "Крім того, розширення може використовуватися лише тоді, коли цей вираз FHIRPath вірний"
 
 # SDR_EXT_CTXT_PATHS
 #: SDR_EXT_CTXT_PATHS
 msgid "In addition, the extension can only be used when these FHIRPath expressions are true"
-msgstr "Ademais, a extensão só pode ser usada quando estas expressões FHIRPath forem verdadeiras"
+msgstr "Крім того, розширення може використовуватися лише тоді, коли ці вирази FHIRPath істинні"
 
 # SDR_EXT_DEPR
 #: SDR_EXT_DEPR
 msgid "This extension is deprecated and should no longer be used"
-msgstr "Esta extensão está obsoleta e não deve mais ser usada"
+msgstr "Це розширення вважається застарілим і більше не повинно використовуватися"
 
 # SDR_EXT_ELEM
 #: SDR_EXT_ELEM
 msgid "This extension may be used on the following element(s)"
-msgstr "Esta extensão pode ser usada nos seguintes elementos"
+msgstr "Це розширення може використовуватися на наступних елементах"
 
 # SDR_EXT_ELEM_ID
 #: SDR_EXT_ELEM_ID
 msgid "Element ID"
-msgstr ""
+msgstr "ID елемента"
 
 # SDR_EXT_EXT
 #: SDR_EXT_EXT
 msgctxt "SDR_EXT_EXT"
 msgid "Extension"
-msgstr "Extensão"
+msgstr "Збільшення"
 
 # SDR_EXT_PATH
 #: SDR_EXT_PATH
 msgctxt "SDR_EXT_PATH"
 msgid "Path"
-msgstr "Caminho"
+msgstr "Шлях"
 
 # SDR_EXT_UNCHANGED
 #: SDR_EXT_UNCHANGED
 msgid "The extension is unchanged in {0}"
-msgstr ""
+msgstr "Розширення залишається незмінним у {0}"
 
 # SDR_EXT_VER_PFX
 #: SDR_EXT_VER_PFX
 msgid "This extension is allowed for use with"
-msgstr "Esta extensão é permitida para uso com"
+msgstr "Це розширення дозволено використовувати з"
 
 # SDR_EXT_VER_SFX
 #: SDR_EXT_VER_SFX
 msgid "."
-msgstr ""
+msgstr "."
 
 # SDR_FIXED_VALUE
 #: SDR_FIXED_VALUE
 msgctxt "SDR_FIXED_VALUE"
 msgid "Fixed Value: {0}"
-msgstr "Valor fixo: {0}"
+msgstr "Фіксована вартість: {0}"
 
 # SDR_FROM
 #: SDR_FROM
 msgid "From {0}"
-msgstr ""
+msgstr "Від {0}"
 
 # SDR_FROM_ELEM
 #: SDR_FROM_ELEM
 msgid "// from Element: <a href=\"{0}\">extension</a>"
-msgstr ""
+msgstr "від Element: <a href=\"{0}\">збільшення</a>"
 
 # SDR_GUIDANCE_HERE
 #: SDR_GUIDANCE_HERE
 msgid "here"
-msgstr ""
+msgstr "Тут"
 
 # SDR_GUIDANCE_PFX
 #: SDR_GUIDANCE_PFX
 msgid "Guidance on how to interpret the contents of this table can be found"
-msgstr "Instruções sobre como interpretar o conteúdo desta tabela podem ser encontradas"
+msgstr "Рекомендації щодо тлумачення вмісту цієї таблиці можна знайти"
 
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
 msgid "-- no content: do not translate #1 --"
-msgstr ""
+msgstr "-- немає вмісту: не перекладати #1 --"
 
 # SDR_IMPOSE
 #: SDR_IMPOSE
 msgid "Impose this profile {0}"
-msgstr "Impõe este perfil {0}"
+msgstr "Накласти цей профіль {0}"
 
 # SDR_INTRP_CH_DET_VS
 #: SDR_INTRP_CH_DET_VS
 msgid "The expansion has changed"
-msgstr ""
+msgstr "Розширення змінилося"
 
 # SDR_INTRP_CH_NO_VS
 #: SDR_INTRP_CH_NO_VS
 msgid "Unable to evaluate changes to the expansion"
-msgstr "Impossível avaliar alterações à expansão"
+msgstr "Не вдається оцінити зміни в розширенні"
 
 # SDR_LIMITED_ONE
 #: SDR_LIMITED_ONE
 msgid "This element is an array in the base standard, but the profile only allows one element"
-msgstr "Este elemento é uma lista na norma base, mas o perfil só permite um elemento"
+msgstr "Цей елемент є масивом у базовому стандарті, але профіль допускає лише один елемент"
 
 # SDR_META_CH_DET
 #: SDR_META_CH_DET
 msgid "The resource metadata has changed ({0})"
-msgstr ""
+msgstr "Змінилися метадані ресурсу ({0})"
 
 # SDR_META_CH_NO
 #: SDR_META_CH_NO
 msgid "Unable to evaluate changes to metadata"
-msgstr ""
+msgstr "Не вдається оцінити зміни в метаданих"
 
 # SDR_MOD
 #: SDR_MOD
 msgid "(this element modifies the meaning of other elements)"
-msgstr ""
+msgstr "(цей елемент змінює значення інших елементів)"
 
 # SDR_MOD_SUPP
 #: SDR_MOD_SUPP
 msgid "(this element modifies the meaning of other elements, and must be supported)"
-msgstr ""
+msgstr "(цей елемент змінює значення інших елементів, і його потрібно підтримувати)"
 
 # SDR_MULTIPLE_PROFILES
 #: SDR_MULTIPLE_PROFILES
 msgid "Multiple profiles are not supported at this time"
-msgstr ""
+msgstr "Наразі кілька профілів не підтримуються"
 
 # SDR_NOT_DONE_CC
 #: SDR_NOT_DONE_CC
 msgid "Error describing concept - not done yet (no codings, no text)"
-msgstr ""
+msgstr "Помилка в описі концепції - ще не виконано (немає кодування, немає тексту)"
 
 # SDR_NOT_GEN
 #: SDR_NOT_GEN
 msgid "Generating text summary of fixed value not yet done for type {0}"
-msgstr ""
+msgstr "Генерація текстового резюме з фіксованим значенням, яке ще не виконано для типу {0}"
 
 # SDR_NOT_HANDLED_EXT
 #: SDR_NOT_HANDLED_EXT
 msgid "Not handled yet: complex extension ''{0}''"
-msgstr ""
+msgstr "Ще не оброблено: складне розширення ''{0}''"
 
 # SDR_NOT_USED
 #: SDR_NOT_USED
 msgid "This {0} is not used by any profiles in this Implementation Guide"
-msgstr "Este {0} não é utilizado por nenhum perfil neste guia de implementação"
+msgstr "Цей {0} не використовується жодними профілями в цьому Посібнику з впровадження"
 
 # SDR_OFF_URL
 #: SDR_OFF_URL
 msgid "The official URL for this profile is"
-msgstr "O URL oficial para este perfil é"
+msgstr "Офіційна URL-адреса цього профілю:"
 
 # SDR_ONE_OF
 #: SDR_ONE_OF
 msgid "One of these {0}"
-msgstr ""
+msgstr "Один з таких {0}"
 
 # SDR_ONLY_ONE
 #: SDR_ONLY_ONE
 msgid "Only One!"
-msgstr "Apenas um!"
+msgstr "Тільки одне!"
 
 # SDR_PATTERN_VALUE
 #: SDR_PATTERN_VALUE
 msgctxt "SDR_PATTERN_VALUE"
 msgid "Pattern Value: {0}"
-msgstr "Valor do padrão: {0}"
+msgstr "Значення шаблону: {0}"
 
 # SDR_PRIM_VALUE
 #: SDR_PRIM_VALUE
 msgid "Primitive Value {0}"
-msgstr ""
+msgstr "Примітивне значення {0}"
 
 # SDR_REFER
 #: SDR_REFER
 msgid "Refer to this {0}"
-msgstr "Refere a este {0}"
+msgstr "Зверніться до цього {0}"
 
 # SDR_REQUIRED
 #: SDR_REQUIRED
 msgid "This element is required"
-msgstr "Este elemento é obrigatório"
+msgstr "Цей елемент є обов'язковим"
 
 # SDR_SEARCH
 #: SDR_SEARCH
 msgid "Search Parameters using this {0}"
-msgstr "Parametros de pesquisa usando este {0}"
+msgstr "Параметри пошуку за допомогою цього {0}"
 
 # SDR_SORTED
 #: SDR_SORTED
 msgid "// sliced by {0} in the specified order {1}"
-msgstr ""
+msgstr "нарізаний {0} у вказаному порядку {1}"
 
 # SDR_SRC_FHIR
 #: SDR_SRC_FHIR
 msgid "the FHIR Standard"
-msgstr "a norma FHIR"
+msgstr "Стандарт FHIR"
 
 # SDR_SRC_IG
 #: SDR_SRC_IG
 msgid "this IG"
-msgstr "este IG"
+msgstr "цей ІГ"
 
 # SDR_SRC_PACK
 #: SDR_SRC_PACK
 msgid "Package: {0}"
-msgstr ""
+msgstr "Пакунок: {0}"
 
 # SDR_SUPP
 #: SDR_SUPP
 msgid "(this element must be supported)"
-msgstr "(este elemento deve ser suportado)"
+msgstr "(цей елемент повинен бути підтриманий)"
 
 # SDR_UNK_EXT
 #: SDR_UNK_EXT
 msgid "Not handled yet: unknown extension ''{0}''"
-msgstr ""
+msgstr "Ще не оброблено: невідоме розширення ''{0}''"
 
 # SDR_USAGE
 #: SDR_USAGE
 msgid "Usages"
-msgstr "Usos"
+msgstr "Звичаї"
 
 # SDR_USE
 #: SDR_USE
 msgid "Use this {0}"
-msgstr "Usa este {0}"
+msgstr "Використовуйте це {0}"
 
 # SDR_VER_BEF
 #: SDR_VER_BEF
 msgid "For versions until {0}"
-msgstr "Para versões até {0}"
+msgstr "Для версій до {0}"
 
 # SDR_VER_FOR
 #: SDR_VER_FOR
 msgid "For version {0}"
-msgstr "Para a versão {0}"
+msgstr "Для версії {0}"
 
 # SDR_VER_FROM_PFX
 #: SDR_VER_FROM_PFX
 msgctxt "SDR_VER_FROM_PFX"
 msgid "FHIR versions"
-msgstr ""
+msgstr "Версія FHIR"
 
 # SDR_VER_FROM_SFX
 #: SDR_VER_FROM_SFX
 msgid "and after"
-msgstr ""
+msgstr "і після"
 
 # SDR_VER_ON
 #: SDR_VER_ON
 msgid "For versions {0} onwards"
-msgstr ""
+msgstr "Для версій {0} далі"
 
 # SDR_VER_RANGE
 #: SDR_VER_RANGE
 msgid "For versions {0} to {1}"
-msgstr ""
+msgstr "Для версій {0} до {1}"
 
 # SDR_VER_RANGE_MID
 #: SDR_VER_RANGE_MID
 msgctxt "SDR_VER_RANGE_MID"
 msgid "to"
-msgstr "para"
+msgstr "до"
 
 # SDR_VER_RANGE_PFX
 #: SDR_VER_RANGE_PFX
 msgctxt "SDR_VER_RANGE_PFX"
 msgid "FHIR versions"
-msgstr ""
+msgstr "Версія FHIR"
 
 # SDR_VER_RANGE_SFX
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
 msgid "-- no content: do not translate #2 --"
-msgstr ""
+msgstr "-- немає вмісту: не перекладати #2 --"
 
 # SDR_VER_TO_PFX
 #: SDR_VER_TO_PFX
 msgid "FHIR versions up to"
-msgstr ""
+msgstr "Версії FHIR до"
 
 # SDR_VER_TO_SFX
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
 msgid "-- no content: do not translate #3 --"
-msgstr ""
+msgstr "-- немає вмісту: не перекладати #3 --"
 
 # SDR_VER_UNK
 #: SDR_VER_UNK
 msgid "For unknown versions"
-msgstr ""
+msgstr "Для невідомих версій"
 
 # SDT_DEF
 #: SDT_DEF
 msgctxt "SDT_DEF"
 msgid "Definition"
-msgstr "Definição"
+msgstr "Визначення"
 
 # SDT_DT
 #: SDT_DT
 msgid "DataType"
-msgstr "Tipo de dados"
+msgstr "Тип даних"
 
 # SDT_DT_PROF
 #: SDT_DT_PROF
 msgid "DataType Profile"
-msgstr "Perfil de tipo de dados"
+msgstr "Профіль DataType"
 
 # SDT_EXTENSION
 #: SDT_EXTENSION
 msgctxt "SDT_EXTENSION"
 msgid "Extension"
-msgstr "Extensão"
+msgstr "Збільшення"
 
 # SDT_LM
 #: SDT_LM
 msgctxt "SDT_LM"
 msgid "Logical Model"
-msgstr "Modelo lógico"
+msgstr "Логічна модель"
 
 # SDT_LM_PROF
 #: SDT_LM_PROF
 msgid "Logical Model Profile"
-msgstr "Perfil de modelo lógico"
+msgstr "Логічний профіль моделі"
 
 # SDT_OBLIGATION_PROFILE
 #: SDT_OBLIGATION_PROFILE
 msgid "Obligation Profile"
-msgstr "Perfil de obrigação"
+msgstr "Профіль зобов'язань"
 
 # SDT_ORIGINAL_SOURCE
 #: SDT_ORIGINAL_SOURCE
 msgid "Original Source"
-msgstr "Fonte original"
+msgstr "Першоджерело"
 
 # SDT_PT
 #: SDT_PT
 msgid "Primitive Type"
-msgstr "Tipo primitivo"
+msgstr "Примітивний тип"
 
 # SDT_PT_PROF
 #: SDT_PT_PROF
 msgid "Primitive Type Profile"
-msgstr "Perfil de tipo primitivo"
+msgstr "Профіль примітивного типу"
 
 # SDT_RES
 #: SDT_RES
 msgctxt "SDT_RES"
 msgid "Resource"
-msgstr "Recurso"
+msgstr "Ресурс"
 
 # SDT_RES_PROF
 #: SDT_RES_PROF
 msgctxt "SDT_RES_PROF"
 msgid "Profile"
-msgstr "Perfil"
+msgstr "Профіль"
 
 # SD_COMP_HEAD_CARD_L
 #: SD_COMP_HEAD_CARD_L
 msgid "L Card."
-msgstr "Cartão L."
+msgstr "Л картка."
 
 # SD_COMP_HEAD_CARD_L_DESC
 #: SD_COMP_HEAD_CARD_L_DESC
 msgid "Minimum and Maximum # of times the element can appear in the instance - Left Structure"
-msgstr "Número mínimo e máximo de vezes que o elemento pode aparecer na instância - Estrutura esquerda"
+msgstr "Мінімум і Максимум # разів, коли елемент може з'явитися в екземплярі - Left Structure"
 
 # SD_COMP_HEAD_CARD_R
 #: SD_COMP_HEAD_CARD_R
 msgid "R Card."
-msgstr "Cartão R."
+msgstr "Картка Р."
 
 # SD_COMP_HEAD_CARD_R_DESC
 #: SD_COMP_HEAD_CARD_R_DESC
 msgid "Minimum and Maximum # of times the element can appear in the instance - Right Structure"
-msgstr "Número mínimo e máximo de vezes que o elemento pode aparecer na instância - Estrutura direita"
+msgstr "Мінімум і Максимум # разів елемент може з'являтися в екземплярі - Правильна структура"
 
 # SD_COMP_HEAD_COMP_DESC
 #: SD_COMP_HEAD_COMP_DESC
 msgid "Comments about the comparison"
-msgstr "Comentários sobre a comparação"
+msgstr "Коментарі до порівняння"
 
 # SD_COMP_HEAD_DESC_L
 #: SD_COMP_HEAD_DESC_L
 msgid "L Description & Constraints"
-msgstr "L Descrição e condicionalismos"
+msgstr "L Опис та обмеження"
 
 # SD_COMP_HEAD_DESC_L_DESC
 #: SD_COMP_HEAD_DESC_L_DESC
 msgid "Additional information about the element - Left Structure"
-msgstr "Informações adicionais sobre o elemento - Estrutura esquerda"
+msgstr "Додаткова інформація про елемент - Ліва структура"
 
 # SD_COMP_HEAD_DESC_R
 #: SD_COMP_HEAD_DESC_R
 msgid "R Description & Constraints"
-msgstr "R Descrição e condicionalismos"
+msgstr "R Опис та обмеження"
 
 # SD_COMP_HEAD_DESC_R_DESC
 #: SD_COMP_HEAD_DESC_R_DESC
 msgid "Additional information about the element - Right Structure"
-msgstr "Informações adicionais sobre o elemento - Estrutura direita"
+msgstr "Додаткова інформація про елемент - Правильна структура"
 
 # SD_COMP_HEAD_FLAGS_L
 #: SD_COMP_HEAD_FLAGS_L
 msgid "L Flags"
-msgstr "Bandeiras L"
+msgstr "Прапори L"
 
 # SD_COMP_HEAD_FLAGS_L_DESC
 #: SD_COMP_HEAD_FLAGS_L_DESC
 msgid "Information about the use of the element - Left Structure"
-msgstr "Informações sobre a utilização do elemento - Estrutura esquerda"
+msgstr "Інформація про використання елемента - Left Structure"
 
 # SD_COMP_HEAD_FLAGS_R
 #: SD_COMP_HEAD_FLAGS_R
 msgid "R Flags"
-msgstr "Bandeiras R"
+msgstr "Прапори R"
 
 # SD_COMP_HEAD_FLAGS_R_DESC
 #: SD_COMP_HEAD_FLAGS_R_DESC
 msgid "Information about the use of the element - Right Structure"
-msgstr "Informações sobre a utilização do elemento - Estrutura correta"
+msgstr "Інформація про використання елемента - Правильна структура"
 
 # SD_COMP_HEAD_TYPE_L
 #: SD_COMP_HEAD_TYPE_L
 msgid "L Type"
-msgstr "Tipo L"
+msgstr "Тип L"
 
 # SD_COMP_HEAD_TYPE_L_DESC
 #: SD_COMP_HEAD_TYPE_L_DESC
 msgid "Reference to the type of the element - Left Structure"
-msgstr "Referência ao tipo do elemento - Estrutura esquerda"
+msgstr "Посилання на тип елемента - Left Structure"
 
 # SD_COMP_HEAD_TYPE_R
 #: SD_COMP_HEAD_TYPE_R
 msgid "R Type"
-msgstr "Tipo R"
+msgstr "Тип R"
 
 # SD_COMP_HEAD_TYPE_R_DESC
 #: SD_COMP_HEAD_TYPE_R_DESC
 msgid "Reference to the type of the element - Right Structure"
-msgstr "Referência ao tipo do elemento - Estrutura correta"
+msgstr "Посилання на тип елемента - Правильна структура"
 
 # SD_DOCO
 #: SD_DOCO
 msgid "Documentation for this format"
-msgstr "Documentação para este formato"
+msgstr "Документація для цього формату"
 
 # SD_GRID_HEAD_CARD_DESC
 #: SD_GRID_HEAD_CARD_DESC
 msgid "Minimum and Maximum # of times the element can appear in the instance. Super-scripts indicate additional constraints on appearance"
-msgstr "Número mínimo e máximo de vezes que o elemento pode aparecer na instância. Os sobrescritos indicam restrições adicionais à aparência"
+msgstr "Мінімум і Максимум # разів елемент може з'явитися в екземплярі. Надрядкові індекси вказують на додаткові обмеження на зовнішній вигляд"
 
 # SD_GRID_HEAD_DESC
 #: SD_GRID_HEAD_DESC
 msgid "Constraints and Usage"
-msgstr "Restrições e utilização"
+msgstr "Обмеження та використання"
 
 # SD_GRID_HEAD_DESC_DESC
 #: SD_GRID_HEAD_DESC_DESC
 msgid "Fixed values, length limits, vocabulary bindings and other usage notes"
-msgstr "Valores fixos, limites de comprimento, ligações de vocabulário e outras notas de utilização"
+msgstr "Фіксовані значення, обмеження довжини, прив'язка словника та інші примітки щодо використання"
 
 # SD_GRID_HEAD_NAME_DESC
 #: SD_GRID_HEAD_NAME_DESC
 msgid "The name of the element (Slice name in brackets).  Mouse-over provides definition"
-msgstr "O nome do elemento (nome da fatia entre parêntesis).  O rato em cima fornece a definição"
+msgstr "Ім'я елемента (Назва зрізу в дужках).  Наведення вказівника миші дає визначення"
 
 # SD_GRID_HEAD_TYPE_DESC
 #: SD_GRID_HEAD_TYPE_DESC
 msgid "Reference to the type of the element"
-msgstr "Referência ao tipo do elemento"
+msgstr "Посилання на тип елемента"
 
 # SD_HEAD_CARD_DESC
 #: SD_HEAD_CARD_DESC
 msgctxt "SD_HEAD_CARD_DESC"
 msgid "Minimum and Maximum # of times the element can appear in the instance"
-msgstr "Número mínimo e máximo de vezes que o elemento pode aparecer na instância"
+msgstr "Мінімум і Максимум # разів, коли елемент може з'явитися в екземплярі"
 
 # SD_HEAD_DESC_DESC
 #: SD_HEAD_DESC_DESC
 msgid "Additional information about the element"
-msgstr "Informações adicionais sobre o elemento"
+msgstr "Додаткова інформація про елемент"
 
 # SD_HEAD_FLAGS_DESC
 #: SD_HEAD_FLAGS_DESC
 msgid "Information about the use of the element"
-msgstr "Informações sobre a utilização do elemento"
+msgstr "Інформація про використання елемента"
 
 # SD_LEGEND
 #: SD_LEGEND
 msgid "Legend for this format"
-msgstr "Legenda para este formato"
+msgstr "Умовні позначення для цього формату"
 
 # SD_SLICING_INFO
 #: SD_SLICING_INFO
 msgid "{0}, {1} by {2}"
-msgstr "{0}, {1} por {2}"
+msgstr "{0}, {1} від {2}"
 
 # SD_SUMMARY_FIXED
 #: SD_SUMMARY_FIXED
 msgid "Fixed: {0} {1}"
-msgstr "Fixo: {0} {1}"
+msgstr "Фіксована: {0} {1}"
 
 # SD_SUMMARY_MANDATORY
 #: SD_SUMMARY_MANDATORY
 msgid "Mandatory: {0} {1}"
-msgstr "Obrigatório: {0} {1}"
+msgstr "Обов'язковий: {0} {1}"
 
 # SD_SUMMARY_MISSING_EXTENSION
 #: SD_SUMMARY_MISSING_EXTENSION
 msgid "Unable to summarise extension {0} (no extension found)"
-msgstr "Não foi possível resumir a extensão {0} (não foi encontrada nenhuma extensão)"
+msgstr "Не вдається підсумувати розширення {0} (розширення не знайдено)"
 
 # SD_SUMMARY_MISSING_PROFILE
 #: SD_SUMMARY_MISSING_PROFILE
 msgid "Unable to summarise profile {0} (no profile found)"
-msgstr "Não foi possível resumir o perfil {0} (não foi encontrado nenhum perfil)"
+msgstr "Не вдається підсумувати профіль {0} (профіль не знайдено)"
 
 # SD_SUMMARY_MUST_SUPPORT
 #: SD_SUMMARY_MUST_SUPPORT
 msgid "Must-Support: {0} {1}"
-msgstr "Deve ser suportado: {0} {1}"
+msgstr "Обов'язкова підтримка: {0} {1}"
 
 # SD_SUMMARY_NESTED_MANDATORY
 #: SD_SUMMARY_NESTED_MANDATORY
 msgid "({0} nested mandatory {1})"
-msgstr "({0} aninhado obrigatoriamente {1})"
+msgstr "({0} вкладений обов'язковий {1})"
 
 # SD_SUMMARY_PROHIBITED
 #: SD_SUMMARY_PROHIBITED
 msgid "Prohibited: {0} {1}"
-msgstr "Proibido: {0} {1}"
+msgstr "Заборонено: {0} {1}"
 
 # SD_SUMMARY_PUBLICATION
 #: SD_SUMMARY_PUBLICATION
 msgid "This profile was published on {0} as a {1} by {2}"
-msgstr "Este perfil foi publicado em {0} como um {1} por {2}"
+msgstr "Цей профіль був опублікований на {0} Як {1} від {2}"
 
 # SD_SUMMARY_SLICE
 #: SD_SUMMARY_SLICE
 msgid "The element {0} is sliced based on the value of {1}"
 msgid_plural "The element {0} is sliced based on the values of {1}"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Елемент {0} нарізається на основі значення {1}"
+msgstr[1] "Елемент {0} нарізається на основі значень {1}"
+msgstr[2] "Елемент {0} нарізається на основі значень {1}"
+msgstr[3] "Елемент {0} нарізається на основі значень {1}"
 
 # SD_SUMMARY_SLICES
 #: SD_SUMMARY_SLICES
 msgid "This structure defines the following {0}Slices{1}"
-msgstr "Esta estrutura define os seguintes {0}Slices{1}"
+msgstr "Ця структура визначає наступне {0}Фрагменти{1}"
 
 # SD_SUMMARY_SLICE_NONE
 #: SD_SUMMARY_SLICE_NONE
 msgid "There is a slice with no discriminator at {0}"
-msgstr "Existe um corte sem discriminador em {0}"
+msgstr "Є зріз без дискримінатора на {0}"
 
 # SEARCH_PAR_ALLOWED
 #: SEARCH_PAR_ALLOWED
 msgid "Allowed:"
-msgstr "Permitido:"
+msgstr "Дозволило:"
 
 # SEARCH_PAR_CHAIN
 #: SEARCH_PAR_CHAIN
 msgid "Chains"
-msgstr "Correntes"
+msgstr "Ланцюги"
 
 # SEARCH_PAR_EXP
 #: SEARCH_PAR_EXP
 msgid "Expression"
-msgstr "Expressão"
+msgstr "Вираз"
 
 # SEARCH_PAR_MULTIPLES
 #: SEARCH_PAR_MULTIPLES
 msgid "Multiples"
-msgstr "Múltiplos"
+msgstr "Кратні"
 
 # SEARCH_PAR_MULTIPLE_AND_APPEAR
 #: SEARCH_PAR_MULTIPLE_AND_APPEAR
 msgid "multipleAnd: The parameter may only appear once"
-msgstr "multipleAnd: O parâmetro só pode aparecer uma vez"
+msgstr "multipleAnd: параметр може з'явитися лише один раз"
 
 # SEARCH_PAR_MULTIPLE_AND_REPEAT
 #: SEARCH_PAR_MULTIPLE_AND_REPEAT
 msgid "multipleAnd: The parameter may repeat in order to specify multiple values that must all be true"
-msgstr "multipleAnd: O parâmetro pode repetir-se para especificar valores múltiplos que devem ser todos verdadeiros"
+msgstr "multipleAnd: параметр може повторюватися, щоб вказати кілька значень, які повинні бути істинними"
 
 # SEARCH_PAR_MULTIPLE_AND_SERVER
 #: SEARCH_PAR_MULTIPLE_AND_SERVER
 msgid "multipleAnd: It''s up to the server whether the parameter may repeat in order to specify multiple values that must all be true"
-msgstr "multipleAnd: Cabe ao servidor decidir se o parâmetro pode ser repetido para especificar valores múltiplos que devem ser todos verdadeiros"
+msgstr "multipleAnd: Сервер вирішує, чи може параметр повторюватися, щоб вказати кілька значень, які повинні бути істинними."
 
 # SEARCH_PAR_MULTIPLE_OR_MULTIPLE
 #: SEARCH_PAR_MULTIPLE_OR_MULTIPLE
 msgid "multipleOr: The parameter may have multiple values (separated by comma) where at least one must be true"
-msgstr "multipleOr: O parâmetro pode ter vários valores (separados por vírgula) em que pelo menos um tem de ser verdadeiro"
+msgstr "multipleOr: параметр може мати кілька значень (розділених комою), де принаймні одне має бути істинним"
 
 # SEARCH_PAR_MULTIPLE_OR_ONE
 #: SEARCH_PAR_MULTIPLE_OR_ONE
 msgid "multipleOr: The parameter may only have one value (no comma separators)"
-msgstr "multipleOr: O parâmetro só pode ter um valor (sem separadores de vírgula)"
+msgstr "multipleOr: параметр може мати лише одне значення (без роздільників ком)"
 
 # SEARCH_PAR_MULTIPLE_OR_SERVER
 #: SEARCH_PAR_MULTIPLE_OR_SERVER
 msgid "multipleOr: It''s up to the server whether the parameter can have multiple values (separated by comma) where at least one must be true"
-msgstr "multipleOr: Cabe ao servidor decidir se o parâmetro pode ter vários valores (separados por vírgula) em que pelo menos um tem de ser verdadeiro"
+msgstr "multipleOr: Сервер вирішує, чи може параметр мати кілька значень (розділених комою), де принаймні одне має бути істинним."
 
 # SEARCH_PAR_NONE
 #: SEARCH_PAR_NONE
 msgid "(none)"
-msgstr "(nenhum)"
+msgstr "(немає)"
 
 # SEARCH_PAR_PROC
 #: SEARCH_PAR_PROC
 msgid "Processing Mode"
-msgstr "Modo de processamento"
+msgstr "Режим обробки"
 
 # SEARCH_PAR_REND_TARGET
 #: SEARCH_PAR_REND_TARGET
 msgid "Target Resources"
-msgstr "Recursos-alvo"
+msgstr "Цільові ресурси"
 
 # SEARCH_PAR_RES
 #: SEARCH_PAR_RES
 msgid "All Resources"
-msgstr "Todos os recursos"
+msgstr "Всі ресурси"
 
 # STATUS_MSG_AUTOBUILD
 #: STATUS_MSG_AUTOBUILD
 msgid "{0}, published by {1}. This guide is not an authorized publication; it is the continuous build for version {2}  built by the FHIR (HL7&reg; FHIR&reg; Standard) CI Build. This version is based on the current content of <a href=''{3}''>{3}</a> and changes regularly. See the <a href=''{4}/history.html''>Directory of published versions</a>"
-msgstr "{0}, publicado por {1}. Este guia não é uma publicação autorizada; é a compilação contínua para a versão {2} construída pela FHIR (HL7&reg; FHIR&reg; Standard) CI Build. Esta versão é baseada no conteúdo atual de <a href=''{3}''>{3}</a> e muda regularmente. Veja o <a href=''{4}/history.html''>Diretório de versões publicadas</a>"
+msgstr "{0}, Опублікував {1}. Цей посібник не є авторизованою публікацією; Це безперервна збірка для версії {2}  побудований FHIR (HL7&reg; ФІР&reg; Standard) Збірка CI. Ця версія ґрунтується на поточному змісті <a href=''{3}''>{3}</a> і регулярно змінюється. Дивись <a href=''{4}/history.html''>Довідник опублікованих версій</a>"
 
 # STATUS_MSG_LOCAL_BUILD
 #: STATUS_MSG_LOCAL_BUILD
 msgid "{0} - Local Development build (v{1}) built by the FHIR (HL7® FHIR® Standard) Build Tools. See the <a href=''{2}/history.html''>Directory of published versions</a>"
-msgstr ""
+msgstr "{0} - Локальна збірка (v{1}) створена за допомогою інструментів збірки FHIR (стандарт HL7® FHIR®). Дивись <a href=''{2}/history.html''>Довідник опублікованих версій</a>"
 
 # STATUS_MSG_PUBLICATION_HOLDER
 #: STATUS_MSG_PUBLICATION_HOLDER
 msgid "Publication Build: This will be filled in by the publication tooling"
-msgstr "Compilação de publicação: isto será preenchido pelas ferramentas de publicação"
+msgstr "Збірка публікації: Це буде заповнено інструментарієм публікації"
 
 # STRUC_DEF_ABSTRACT
 #: STRUC_DEF_ABSTRACT
 msgid "This is an abstract"
-msgstr "Este é um resumo"
+msgstr "Це анотація"
 
 # STRUC_DEF_ACT
 #: STRUC_DEF_ACT
 msgid "Obligations that apply to the actor {0}"
-msgstr "Obrigações que se aplicam ao ator {0}"
+msgstr "Обов'язки, які поширюються на актора {0}"
 
 # STRUC_DEF_AFFECT_CONSTRAINTS
 #: STRUC_DEF_AFFECT_CONSTRAINTS
 msgid "This element has or is affected by constraints ("
-msgstr "Este elemento tem ou é afetado por restrições ("
+msgstr "Цей елемент має або зазнає впливу обмежень ("
 
 # STRUC_DEF_ALLOWED
 #: STRUC_DEF_ALLOWED
 msgid "Allowed Units"
-msgstr "Unidades permitidas"
+msgstr "Дозволені одиниці виміру"
 
 # STRUC_DEF_ALL_ACTORS
 #: STRUC_DEF_ALL_ACTORS
 msgid "All Actors"
-msgstr "Todos os actores"
+msgstr "Всі актори"
 
 # STRUC_DEF_ALL_SLICES
 #: STRUC_DEF_ALL_SLICES
 msgid ":All Slices"
-msgstr ":Todas as fatias"
+msgstr ":Всі зрізи"
 
 # STRUC_DEF_ALL_TYPES
 #: STRUC_DEF_ALL_TYPES
 msgid "All Types"
-msgstr "Todos os tipos"
+msgstr "Всі типи"
 
 # STRUC_DEF_ALT_NAME
 #: STRUC_DEF_ALT_NAME
 msgid "Alternate Names"
-msgstr "Nomes alternativos"
+msgstr "Альтернативні назви"
 
 # STRUC_DEF_AND
 #: STRUC_DEF_AND
 msgctxt "STRUC_DEF_AND"
 msgid "and"
-msgstr "e"
+msgstr "і"
 
 # STRUC_DEF_APPROP_CON
 #: STRUC_DEF_APPROP_CON
 msgid "Concepts must come from this value set if appropriate concept is in this value set"
-msgstr "Os conceitos devem provir deste conjunto de valores se o conceito apropriado estiver neste conjunto de valores"
+msgstr "Поняття повинні виходити з цього набору значень, якщо в цьому наборі значень є відповідне поняття"
 
 # STRUC_DEF_AS_SHOWN
 #: STRUC_DEF_AS_SHOWN
 msgid "As shown"
-msgstr "Como mostrado"
+msgstr "Як показано"
 
 # STRUC_DEF_BECAUSE
 #: STRUC_DEF_BECAUSE
 msgid "because"
-msgstr "porque"
+msgstr "бо"
 
 # STRUC_DEF_BINDINGS
 #: STRUC_DEF_BINDINGS
 msgid "Binding:"
-msgstr "Encadernação:"
+msgstr "Обов'язковим:"
 
 # STRUC_DEF_BINDING_STYLE
 #: STRUC_DEF_BINDING_STYLE
 msgid "binding style"
-msgstr "estilo de encadernação"
+msgstr "Стиль палітурки"
 
 # STRUC_DEF_BLACK
 #: STRUC_DEF_BLACK
 msgid "black"
-msgstr "preto"
+msgstr "чорний"
 
 # STRUC_DEF_BUSINESS_ID
 #: STRUC_DEF_BUSINESS_ID
 msgid "This is a business identifier, not a resource identifier (see"
-msgstr "Trata-se de um identificador de empresa e não de um identificador de recurso (ver"
+msgstr "Це бізнес-ідентифікатор, а не ідентифікатор ресурсу (див."
 
 # STRUC_DEF_BUSINESS_VERID
 #: STRUC_DEF_BUSINESS_VERID
 msgid "This is a business version Id, not a resource version Id (see"
-msgstr "Este é um ID de versão comercial, não um ID de versão de recurso (ver"
+msgstr "Це ідентифікатор бізнес-версії, а не ідентифікатор версії ресурсу (див."
 
 # STRUC_DEF_CAND
 #: STRUC_DEF_CAND
 msgid "Candidate"
-msgstr "Candidato"
+msgstr "Кандидат"
 
 # STRUC_DEF_CAND_SUB
 #: STRUC_DEF_CAND_SUB
 msgid "This value set is a candidate to substitute for the overall conformance value set in some situations; usually these are defined in the documentation"
-msgstr "Este conjunto de valores é um candidato para substituir o conjunto de valores de conformidade global em algumas situações; normalmente, estes são definidos na documentação"
+msgstr "Цей набір значень є кандидатом на заміну загальному набору значень відповідності в деяких ситуаціях; Зазвичай вони визначаються в документації"
 
 # STRUC_DEF_CANNOT_TARGET
 #: STRUC_DEF_CANNOT_TARGET
 msgid "Instances of this logical model cannot be the target of a Reference"
-msgstr "As instâncias deste modelo lógico não podem ser objeto de uma referência"
+msgstr "Екземпляри цієї логічної моделі не можуть бути об'єктом посилання"
 
 # STRUC_DEF_CANT_FIND
 #: STRUC_DEF_CANT_FIND
 msgid "getElementByName: can''t find {0} in {1} from {2}"
-msgstr "getElementByName: não é possível encontrar {0} em {1} de {2}"
+msgstr "getElementByName: не можу знайти {0} В {1} від {2}"
 
 # STRUC_DEF_CAN_TARGET
 #: STRUC_DEF_CAN_TARGET
 msgid "Instances of this logical model can be the target of a Reference"
-msgstr "As instâncias deste modelo lógico podem ser objeto de uma referência"
+msgstr "Екземпляри цієї логічної моделі можуть бути ціллю Reference"
 
 # STRUC_DEF_CAP
 #: STRUC_DEF_CAP
 msgid "CAP Code"
-msgstr "Código CAP"
+msgstr "Код CAP"
 
 # STRUC_DEF_CDA
 #: STRUC_DEF_CDA
 msgid "This property is represented as CDA Text in the XML."
-msgstr "Esta propriedade é representada como Texto CDA no XML."
+msgstr "Ця властивість представлена у вигляді тексту CDA в XML."
 
 # STRUC_DEF_CHILD
 #: STRUC_DEF_CHILD
 msgid "Child"
-msgstr "Criança"
+msgstr "Дитина"
 
 # STRUC_DEF_CHOICE
 #: STRUC_DEF_CHOICE
 msgid "(Choice of one)"
-msgstr "(Escolha de um)"
+msgstr "(На вибір один з них)"
 
 # STRUC_DEF_CHOICE_DATA_TYPE
 #: STRUC_DEF_CHOICE_DATA_TYPE
 msgid "Choice of Data Types"
-msgstr "Escolha de tipos de dados"
+msgstr "Вибір типів даних"
 
 # STRUC_DEF_CHOICE_GRP
 #: STRUC_DEF_CHOICE_GRP
 msgid "Choice Group"
-msgstr "Grupo Choice"
+msgstr "Група вибору"
 
 # STRUC_DEF_CHOICE_OF
 #: STRUC_DEF_CHOICE_OF
 msgid "Choice of:"
-msgstr "Escolha de:"
+msgstr "На вибір:"
 
 # STRUC_DEF_CLOSED
 #: STRUC_DEF_CLOSED
 msgid "Closed"
-msgstr "Fechado"
+msgstr "Закриті"
 
 # STRUC_DEF_COMMENT
 #: STRUC_DEF_COMMENT
 msgid "Comments:"
-msgstr "Comentários:"
+msgstr "Коментарі:"
 
 # STRUC_DEF_COMPLEX
 #: STRUC_DEF_COMPLEX
 msgid "Complex"
-msgstr "Complexo"
+msgstr "Комплекс"
 
 # STRUC_DEF_COMPLEXBRACK
 #: STRUC_DEF_COMPLEXBRACK
 msgid "(complex)"
-msgstr "(complexo)"
+msgstr "(комплексні)"
 
 # STRUC_DEF_COMP_DOC
 #: STRUC_DEF_COMP_DOC
 msgid "This value set is a component of the base value set. Usually this is called out so that documentation can be written about a portion of the value set"
-msgstr "Esse conjunto de valores é um componente do conjunto de valores básico. Normalmente, isso é chamado para que a documentação possa ser escrita sobre uma parte do conjunto de valores"
+msgstr "Цей набір значень є компонентом набору базових значень. Зазвичай це викликається для того, щоб можна було написати документацію про частину набору значень"
 
 # STRUC_DEF_COMP_EX
 #: STRUC_DEF_COMP_EX
 msgid "(Complex Extension)"
-msgstr "(Extensão complexa)"
+msgstr "(Комплексне розширення)"
 
 # STRUC_DEF_COMP_PROF
 #: STRUC_DEF_COMP_PROF
 msgid "Complies with Profile"
-msgstr "Em conformidade com o perfil"
+msgstr "Відповідає профілю"
 
 # STRUC_DEF_CONC_SET
 #: STRUC_DEF_CONC_SET
 msgid "Concepts must come from this value set"
-msgstr "Os conceitos devem provir deste conjunto de valores"
+msgstr "Поняття повинні виходити з цього набору значень"
 
 # STRUC_DEF_CONSTRAINING
 #: STRUC_DEF_CONSTRAINING
 msgid "Slice Constraining"
-msgstr "Restrição de fatias"
+msgstr "Обмеження зрізів"
 
 # STRUC_DEF_CONSTRAINTS
 #: STRUC_DEF_CONSTRAINTS
 msgctxt "STRUC_DEF_CONSTRAINTS"
 msgid "Constraints"
-msgstr "Restrições"
+msgstr "Обмежень"
 
 # STRUC_DEF_CONTROL
 #: STRUC_DEF_CONTROL
 msgid "Control"
-msgstr "Controlo"
+msgstr "Контроль"
 
 # STRUC_DEF_CONT_RULE
 #: STRUC_DEF_CONT_RULE
 msgid "Content/Rules for all slices"
-msgstr "Conteúdo/regras para todas as fatias"
+msgstr "Зміст/Правила для всіх зрізів"
 
 # STRUC_DEF_CONT_TYPE
 #: STRUC_DEF_CONT_TYPE
 msgid "Content/Rules for all Types"
-msgstr "Conteúdo/regras para todos os tipos"
+msgstr "Контент/Правила для всіх типів"
 
 # STRUC_DEF_COPY_URL
 #: STRUC_DEF_COPY_URL
 msgid "Click to Copy URL"
-msgstr "Clique para copiar o URL"
+msgstr "Натисніть, щоб скопіювати URL"
 
 # STRUC_DEF_CURR
 #: STRUC_DEF_CURR
 msgctxt "STRUC_DEF_CURR"
 msgid "Current"
-msgstr "Atual"
+msgstr "Струм"
 
 # STRUC_DEF_CURR_RULE
 #: STRUC_DEF_CURR_RULE
 msgid "New records are required to use this value set, but legacy records may use other codes. The definition of ''new record'' is difficult, since systems often create new records based on pre-existing data. Usually ''current'' bindings are mandated by an external authority that makes clear rules around this"
-msgstr "Os novos registos têm de utilizar este conjunto de valores, mas os registos antigos podem utilizar outros códigos. A definição de \"novo registo\" é difícil, uma vez que os sistemas criam frequentemente novos registos com base em dados pré-existentes. Normalmente, as ligações \"actuais\" são impostas por uma autoridade externa que estabelece regras claras sobre esta matéria"
+msgstr "Для використання цього набору значень потрібні нові записи, але для застарілих записів можуть використовуватися інші коди. Визначення \"нового запису\" є складним, оскільки системи часто створюють нові записи на основі вже існуючих даних. Зазвичай \"поточні\" зобов'язання встановлюються зовнішнім органом, який встановлює чіткі правила щодо цього"
 
 # STRUC_DEF_DATE
 #: STRUC_DEF_DATE
 msgid "Date Format: {0}"
-msgstr "Formato da data: {0}"
+msgstr "Формат дати: {0}"
 
 # STRUC_DEF_DATE_FORM
 #: STRUC_DEF_DATE_FORM
 msgid "Date Format"
-msgstr "Formato da data"
+msgstr "Формат дати"
 
 # STRUC_DEF_DEFAULT_TYPE
 #: STRUC_DEF_DEFAULT_TYPE
 msgid "Default Type"
-msgstr "Tipo por defeito"
+msgstr "Тип за замовчуванням"
 
 # STRUC_DEF_DEFAULT_VALUE
 #: STRUC_DEF_DEFAULT_VALUE
 msgid "Default Value"
-msgstr "Valor por defeito"
+msgstr "Значення за замовчуванням"
 
 # STRUC_DEF_DEF_CODES
 #: STRUC_DEF_DEF_CODES
 msgid "Definitional Codes"
-msgstr "Códigos de definição"
+msgstr "Коди визначень"
 
 # STRUC_DEF_DERIVED_PROFILE
 #: STRUC_DEF_DERIVED_PROFILE
 msgid "In this IG, the following structures are derived from this profile:"
-msgstr "Neste IG, as seguintes estruturas são derivadas deste perfil:"
+msgstr "У цьому ІГ з цього профілю виведені такі структури:"
 
 # STRUC_DEF_DESCRIM
 #: STRUC_DEF_DESCRIM
 msgid ", and can be differentiated using the following discriminators:"
-msgstr "e pode ser diferenciado utilizando os seguintes discriminadores:"
+msgstr ", і можуть бути диференційовані за допомогою таких дискримінаторів:"
 
 # STRUC_DEF_DESC_PROF
 #: STRUC_DEF_DESC_PROF
 msgid "Description of the profile"
-msgstr "Descrição do perfil"
+msgstr "Опис профілю"
 
 # STRUC_DEF_DISCUSSION
 #: STRUC_DEF_DISCUSSION
 msgid "discussion"
-msgstr "discussão"
+msgstr "обговорення"
 
 # STRUC_DEF_ELE
 #: STRUC_DEF_ELE
 msgid "This primitive element must have a value"
-msgstr "Este elemento primitivo deve ter um valor"
+msgstr "Цей примітивний елемент повинен мати значення"
 
 # STRUC_DEF_ELEMENT
 #: STRUC_DEF_ELEMENT
 msgid "element"
-msgstr "elemento"
+msgstr "елемент"
 
 # STRUC_DEF_ELEMENTS
 #: STRUC_DEF_ELEMENTS
 msgid "Elements defined in Ancestors:"
-msgstr "Elementos definidos em Ancestrais:"
+msgstr "Елементи, визначені у пращурів:"
 
 # STRUC_DEF_ELE_AFFECTED
 #: STRUC_DEF_ELE_AFFECTED
 msgid "This element has or is affected by constraints ( {0} {1}"
-msgstr "Este elemento tem ou é afetado por restrições ( {0} {1}"
+msgstr "Цей елемент має або зазнає впливу обмежень ( {0} {1}"
 
 # STRUC_DEF_ELE_INCLUDED
 #: STRUC_DEF_ELE_INCLUDED
 msgid "This element is included in summaries"
-msgstr "Este elemento está incluído nos resumos"
+msgstr "Цей елемент включається в резюме"
 
 # STRUC_DEF_ELE_MUST_SUPP
 #: STRUC_DEF_ELE_MUST_SUPP
 msgid "This element must be supported"
-msgstr "Este elemento deve ser suportado"
+msgstr "Цей елемент повинен бути підтриманий"
 
 # STRUC_DEF_ELE_READ
 #: STRUC_DEF_ELE_READ
 msgid "When this element is read"
-msgstr "Quando este elemento é lido"
+msgstr "Коли зчитується цей елемент"
 
 # STRUC_DEF_ERROR
 #: STRUC_DEF_ERROR
 msgid "Unknown structure mode"
-msgstr "Modo de estrutura desconhecido"
+msgstr "Режим невідомої структури"
 
 # STRUC_DEF_ERR_DESC
 #: STRUC_DEF_ERR_DESC
 msgid "Error describing concept- not done yet (no codings, no text)"
-msgstr "Erro na descrição do conceito - ainda não foi feito (sem codificações, sem texto)"
+msgstr "Помилка в описі концепції - ще не виконано (немає кодування, немає тексту)"
 
 # STRUC_DEF_EXAM
 #: STRUC_DEF_EXAM
 msgid "example"
-msgstr "exemplo"
+msgstr "приклад"
 
 # STRUC_DEF_EXT
 #: STRUC_DEF_EXT
 msgctxt "STRUC_DEF_EXT"
 msgid "Extensible"
-msgstr "Extensível"
+msgstr "Розширюваний"
 
 # STRUC_DEF_EXTENSIBLE
 #: STRUC_DEF_EXTENSIBLE
 msgid "extensible"
-msgstr "extensível"
+msgstr "Розширюваний"
 
 # STRUC_DEF_EXTENSIONS
 #: STRUC_DEF_EXTENSIONS
 msgid "Extensions"
-msgstr "Extensões"
+msgstr "Розширення"
 
 # STRUC_DEF_EXT_JSON
 #: STRUC_DEF_EXT_JSON
 msgid "This element can be extended by named JSON elements"
-msgstr "Este elemento pode ser alargado por elementos JSON designados"
+msgstr "Цей елемент може бути розширений іменними елементами JSON"
 
 # STRUC_DEF_EXT_STYLE
 #: STRUC_DEF_EXT_STYLE
 msgid "Extension Style"
-msgstr "Estilo de extensão"
+msgstr "Стиль розширення"
 
 # STRUC_DEF_EX_CODE
 #: STRUC_DEF_EX_CODE
 msgid "For example codes, see"
-msgstr "Para exemplos de códigos, ver"
+msgstr "Наприклад, коди див."
 
 # STRUC_DEF_EX_DESC
 #: STRUC_DEF_EX_DESC
 msgid "Instances are not expected or even encouraged to draw from the specified value set. The value set merely provides examples of the types of concepts intended to be included."
-msgstr "Não se espera nem se incentiva que as instâncias se baseiem no conjunto de valores especificado. O conjunto de valores apenas fornece exemplos dos tipos de conceitos que se pretende incluir."
+msgstr "Екземпляри не очікуються і навіть не заохочуються до використання з вказаного набору значень. Набір значень лише наводить приклади типів понять, які мають намір бути включені."
 
 # STRUC_DEF_EX_TYPE
 #: STRUC_DEF_EX_TYPE
 msgid "(Extension Type:"
-msgstr "(Tipo de extensão:"
+msgstr "(Тип розширення:"
 
 # STRUC_DEF_EX_URL
 #: STRUC_DEF_EX_URL
 msgid "Extension URL = {0}"
-msgstr "URL de extensão = {0}"
+msgstr "URL-адреса розширення = {0}"
 
 # STRUC_DEF_FHIR
 #: STRUC_DEF_FHIR
 msgid "Base FHIR {0}"
-msgstr "Base FHIR {0}"
+msgstr "База FHIR {0}"
 
 # STRUC_DEF_FHIR_EXCEP
 #: STRUC_DEF_FHIR_EXCEP
 msgid "Unable to retrieve StructureDefinition with URL {0}"
-msgstr "Não foi possível recuperar StructureDefinition com URL {0}"
+msgstr "Не вдається отримати StructureDefinition з URL {0}"
 
 # STRUC_DEF_FII
 #: STRUC_DEF_FII
 msgid "Formal Invariant Identifier"
-msgstr "Identificador formal de invariante"
+msgstr "Формальний інваріантний ідентифікатор"
 
 # STRUC_DEF_FIXED
 #: STRUC_DEF_FIXED
 msgid "Fixed Value"
-msgstr "Valor fixo"
+msgstr "Фіксована вартість"
 
 # STRUC_DEF_FIXED_VALUE
 #: STRUC_DEF_FIXED_VALUE
 msgid "Fixed Value:"
-msgstr "Valor fixo:"
+msgstr "Фіксована вартість:"
 
 # STRUC_DEF_FOR_CODE
 #: STRUC_DEF_FOR_CODE
 msgid "For codes, see"
-msgstr "Para códigos, ver"
+msgstr "Щодо кодів див."
 
 # STRUC_DEF_FURTHER_INFO
 #: STRUC_DEF_FURTHER_INFO
 msgid "for further information about how to use [x]"
-msgstr "para mais informações sobre como utilizar [x]"
+msgstr "для отримання додаткової інформації про те, як використовувати [x]"
 
 # STRUC_DEF_GRADE
 #: STRUC_DEF_GRADE
 msgid "Grade"
-msgstr "Grau"
+msgstr "Клас"
 
 # STRUC_DEF_ID
 #: STRUC_DEF_ID
 msgid "Id"
-msgstr "Id"
+msgstr "Ід"
 
 # STRUC_DEF_ID_EXPECT
 #: STRUC_DEF_ID_EXPECT
 msgid "ID Expectation"
-msgstr "Expectativa de ID"
+msgstr "Очікування ID"
 
 # STRUC_DEF_ID_IS
 #: STRUC_DEF_ID_IS
 msgid "Id may or not be present (this is the default for elements but not resources)"
-msgstr "Id pode ou não estar presente (esta é a predefinição para elementos mas não para recursos)"
+msgstr "Id може бути присутнім або не бути (це за замовчуванням для елементів, але не ресурсів)"
 
 # STRUC_DEF_ID_MAY
 #: STRUC_DEF_ID_MAY
 msgid "Id is required to be present (this is the default for resources but not elements)"
-msgstr "É necessário que o Id esteja presente (esta é a predefinição para recursos mas não para elementos)"
+msgstr "Id повинен бути присутнім (це за замовчуванням для ресурсів, але не для елементів)"
 
 # STRUC_DEF_ID_NOT_ALLOW
 #: STRUC_DEF_ID_NOT_ALLOW
 msgid "An id is not allowed in this context"
-msgstr "Não é permitido um id neste contexto"
+msgstr "У цьому контексті ідентифікатор не допускається"
 
 # STRUC_DEF_IF
 #: STRUC_DEF_IF
 msgid "If"
-msgstr "Se"
+msgstr "Якщо"
 
 # STRUC_DEF_IMPOSE_PROFILE
 #: STRUC_DEF_IMPOSE_PROFILE
 msgid "Impose Profile"
-msgstr "Impor perfil"
+msgstr "Накласти профіль"
 
 # STRUC_DEF_INFERRED_JSON
 #: STRUC_DEF_INFERRED_JSON
 msgid "The type of this element is inferred from the JSON type in the instance"
-msgstr "O tipo deste elemento é inferido a partir do tipo JSON na instância"
+msgstr "Тип цього елемента виводиться з типу JSON у екземплярі"
 
 # STRUC_DEF_INVAR
 #: STRUC_DEF_INVAR
 msgid "Invariants"
-msgstr "Invariantes"
+msgstr "Інваріанти"
 
 # STRUC_DEF_INVARIANT
 #: STRUC_DEF_INVARIANT
 msgid "This element is affected by the following invariants:"
-msgstr "Este elemento é afetado pelas seguintes invariantes:"
+msgstr "На цей елемент впливають такі інваріанти:"
 
 # STRUC_DEF_JSON_ARRAY
 #: STRUC_DEF_JSON_ARRAY
 msgid "JSON: This element may be present as a JSON Array even when there are no items in the instance"
-msgstr "JSON: Este elemento pode estar presente como uma matriz JSON mesmo quando não existem itens na instância"
+msgstr "JSON: Цей елемент може бути присутнім як масив JSON, навіть якщо в екземплярі немає елементів"
 
 # STRUC_DEF_JSON_CAN_NAME
 #: STRUC_DEF_JSON_CAN_NAME
 msgid "This type can appear in JSON with the property name"
-msgstr "Este tipo pode aparecer em JSON com o nome da propriedade"
+msgstr "Цей тип може з'являтися в JSON з іменем властивості"
 
 # STRUC_DEF_JSON_CHILD
 #: STRUC_DEF_JSON_CHILD
 msgid "child"
-msgstr "criança"
+msgstr "дитина"
 
 # STRUC_DEF_JSON_EXT
 #: STRUC_DEF_JSON_EXT
 msgid "(in elements using named extensions)"
-msgstr "(em elementos que utilizam extensões nomeadas)"
+msgstr "(в елементах, що використовують іменні розширення)"
 
 # STRUC_DEF_JSON_FORM
 #: STRUC_DEF_JSON_FORM
 msgid "JSON Format"
-msgstr "Formato JSON"
+msgstr "Формат JSON"
 
 # STRUC_DEF_JSON_IF
 #: STRUC_DEF_JSON_IF
 msgid "JSON: If"
-msgstr "JSON: Se"
+msgstr "JSON: Якщо"
 
 # STRUC_DEF_JSON_INFERRED
 #: STRUC_DEF_JSON_INFERRED
 msgid "JSON: The type of this element is inferred from the JSON type in the instance"
-msgstr "JSON: O tipo deste elemento é inferido a partir do tipo JSON na instância"
+msgstr "JSON: тип цього елемента виводиться з типу JSON у екземплярі"
 
 # STRUC_DEF_JSON_IS
 #: STRUC_DEF_JSON_IS
 msgid "This element is present as a JSON Array even when there are no items in the instance"
-msgstr "Este elemento está presente como uma matriz JSON mesmo quando não existem itens na instância"
+msgstr "Цей елемент присутній у вигляді JSON масиву навіть тоді, коли в екземплярі немає елементів"
 
 # STRUC_DEF_JSON_MAY
 #: STRUC_DEF_JSON_MAY
 msgid "This element may be present as a JSON Array even when there are no items in the instance"
-msgstr "Este elemento pode estar presente como uma matriz JSON mesmo quando não existem itens na instância"
+msgstr "Цей елемент може бути присутнім у вигляді JSON масиву, навіть якщо в екземплярі немає елементів"
 
 # STRUC_DEF_JSON_MAY_PRESENT
 #: STRUC_DEF_JSON_MAY_PRESENT
 msgid "The JSON Array for this property may be present even when there are no items in the instance (e.g. may be present as an empty array)"
-msgstr "A matriz JSON para esta propriedade pode estar presente mesmo quando não existem itens na instância (por exemplo, pode estar presente como uma matriz vazia)"
+msgstr "Масив JSON для цієї властивості може бути присутнім навіть тоді, коли в екземплярі немає елементів (наприклад, може бути присутнім у вигляді порожнього масиву)"
 
 # STRUC_DEF_JSON_NAME
 #: STRUC_DEF_JSON_NAME
 msgid "JSON Property Name"
-msgstr "Nome da propriedade JSON"
+msgstr "Ім'я властивості JSON"
 
 # STRUC_DEF_JSON_NOT_PRESENT
 #: STRUC_DEF_JSON_NOT_PRESENT
 msgid "The JSON Array for this property is not present when there are no items in the instance (e.g. never as an empty array)"
-msgstr "A matriz JSON para esta propriedade não está presente quando não existem itens na instância (por exemplo, nunca como uma matriz vazia)"
+msgstr "Масив JSON для цієї властивості відсутній, коли в екземплярі немає елементів (наприклад, ніколи як порожній масив)"
 
 # STRUC_DEF_JSON_NULL
 #: STRUC_DEF_JSON_NULL
 msgid "JSON: This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
-msgstr "JSON: Este objeto pode ser representado como nulo na estrutura JSON (que conta como \"presente\" para efeitos de cardinalidade)"
+msgstr "JSON: Цей об'єкт може бути представлений як null у структурі JSON (яка вважається ''present'' для цілей кардинальності)"
 
 # STRUC_DEF_JSON_PRESENT
 #: STRUC_DEF_JSON_PRESENT
 msgid "The JSON Array for this property is present even when there are no items in the instance (e.g. as an empty array)"
-msgstr "A matriz JSON para esta propriedade está presente mesmo quando não existem itens na instância (por exemplo, como uma matriz vazia)"
+msgstr "Масив JSON для цієї властивості присутній навіть тоді, коли в екземплярі немає елементів (наприклад, у вигляді порожнього масиву)"
 
 # STRUC_DEF_JSON_PROPERTY_NAME
 #: STRUC_DEF_JSON_PROPERTY_NAME
 msgid "This property appears in JSON with the property name"
-msgstr "Esta propriedade aparece em JSON com o nome da propriedade"
+msgstr "Ця властивість відображається в JSON з іменем властивості"
 
 # STRUC_DEF_JSON_SINGLE
 #: STRUC_DEF_JSON_SINGLE
 msgid "This repeating object is represented as a single JSON object with named properties. The name of the property (key) is the value of the"
-msgstr "Este objeto de repetição é representado como um único objeto JSON com propriedades nomeadas. O nome da propriedade (chave) é o valor do parâmetro"
+msgstr "Цей повторюваний об'єкт представлений як єдиний об'єкт JSON з іменованими властивостями. Ім'я властивості (ключ) є значенням"
 
 # STRUC_DEF_JSON_TYPE
 #: STRUC_DEF_JSON_TYPE
 msgid "JSON Property Name for Type"
-msgstr "Nome da propriedade JSON para o tipo"
+msgstr "Ім'я властивості JSON для типу"
 
 # STRUC_DEF_LABEL
 #: STRUC_DEF_LABEL
 msgid "Label"
-msgstr "Etiqueta"
+msgstr "Мітка"
 
 # STRUC_DEF_LEAST_FOLLOW
 #: STRUC_DEF_LEAST_FOLLOW
 msgid "At least the following"
-msgstr "Pelo menos os seguintes elementos"
+msgstr "Як мінімум наступне"
 
 # STRUC_DEF_LOGICAL
 #: STRUC_DEF_LOGICAL
 msgctxt "STRUC_DEF_LOGICAL"
 msgid "Logical Model"
-msgstr "Modelo lógico"
+msgstr "Логічна модель"
 
 # STRUC_DEF_LOGICAL_CONT
 #: STRUC_DEF_LOGICAL_CONT
 msgid "Logical Container"
-msgstr "Contentor lógico"
+msgstr "Логічний контейнер"
 
 # STRUC_DEF_LOINC
 #: STRUC_DEF_LOINC
 msgid "LOINC Code"
-msgstr "Código LOINC"
+msgstr "Код LOINC"
 
 # STRUC_DEF_LOINC_CODE
 #: STRUC_DEF_LOINC_CODE
 msgid "LOINC code"
-msgstr "Código LOINC"
+msgstr "Код LOINC"
 
 # STRUC_DEF_MAX
 #: STRUC_DEF_MAX
 msgid "Maximum"
-msgstr "Máximo"
+msgstr "Максимум"
 
 # STRUC_DEF_MAX_MIN
 #: STRUC_DEF_MAX_MIN
 msgctxt "STRUC_DEF_MAX_MIN"
 msgid "Minimum and Maximum # of times the element can appear in the instance"
-msgstr "Número mínimo e máximo de vezes que o elemento pode aparecer na instância"
+msgstr "Мінімум і Максимум # разів, коли елемент може з'явитися в екземплярі"
 
 # STRUC_DEF_MAX_VALUE
 #: STRUC_DEF_MAX_VALUE
 msgid "Max Value"
-msgstr "Valor máximo"
+msgstr "Максимальне значення"
 
 # STRUC_DEF_MEAN_MISS
 #: STRUC_DEF_MEAN_MISS
 msgid "Meaning if Missing"
-msgstr "Significado em caso de falta"
+msgstr "Значення, якщо відсутній"
 
 # STRUC_DEF_MIN
 #: STRUC_DEF_MIN
 msgid "Minimum"
-msgstr "Mínimo"
+msgstr "Мінімальний"
 
 # STRUC_DEF_MIN_VALUE
 #: STRUC_DEF_MIN_VALUE
 msgid "Min Value"
-msgstr "Valor mínimo"
+msgstr "Мінімальне значення"
 
 # STRUC_DEF_MISSING_LINK
 #: STRUC_DEF_MISSING_LINK
 msgid "missing link"
-msgstr "elo perdido"
+msgstr "Відсутнє посилання"
 
 # STRUC_DEF_MOD
 #: STRUC_DEF_MOD
 msgid "This element is a modifier element"
-msgstr "Este elemento é um elemento modificador"
+msgstr "Цей елемент є елементом-модифікатором"
 
 # STRUC_DEF_MODIF
 #: STRUC_DEF_MODIF
 msgid "Modifier"
-msgstr "Modificador"
+msgstr "Модифікатор"
 
 # STRUC_DEF_MODIFIER
 #: STRUC_DEF_MODIFIER
 msgid "Is Modifier"
-msgstr "É modificador"
+msgstr "є модифікатором"
 
 # STRUC_DEF_MUST_SUPPORT
 #: STRUC_DEF_MUST_SUPPORT
 msgid "Must Support"
-msgstr "Deve apoiar"
+msgstr "Обов'язкова підтримка"
 
 # STRUC_DEF_MUST_SUPPORT_TYPES
 #: STRUC_DEF_MUST_SUPPORT_TYPES
 msgid "Must Support Types"
-msgstr "Tipos de suporte obrigatório"
+msgstr "Типи обов'язкових опор"
 
 # STRUC_DEF_NAMESPACE
 #: STRUC_DEF_NAMESPACE
 msgid "In the XML format, this property has the namespace"
-msgstr "No formato XML, esta propriedade tem o espaço de nomes"
+msgstr "У форматі XML ця властивість має простір імен"
 
 # STRUC_DEF_NOTE_X
 #: STRUC_DEF_NOTE_X
 msgid "[x] Note"
-msgstr "[x] Nota"
+msgstr "[x] Примітка"
 
 # STRUC_DEF_NOT_MARK
 #: STRUC_DEF_NOT_MARK
 msgid "Instances of this logical model are not marked to be the target of a Reference"
-msgstr "As instâncias deste modelo lógico não estão marcadas para serem alvo de uma referência"
+msgstr "Екземпляри цієї логічної моделі не позначені як об'єкт Посилання"
 
 # STRUC_DEF_NO_DESCRIM
 #: STRUC_DEF_NO_DESCRIM
 msgid ", and defines no disciminators to differentiate the slices"
-msgstr "e não define quaisquer disciminadores para diferenciar as fatias"
+msgstr ", і не визначає жодних дискимінаторів для диференціації зрізів"
 
 # STRUC_DEF_NO_MAPPINGS
 #: STRUC_DEF_NO_MAPPINGS
 msgid "No Mappings"
-msgstr "Nenhum mapeamento"
+msgstr "Без відображень"
 
 # STRUC_DEF_NO_MUST_SUPPORT
 #: STRUC_DEF_NO_MUST_SUPPORT
 msgid "No must-support rules about the choice of types/profiles"
-msgstr "Não há regras de suporte obrigatório sobre a escolha de tipos/perfis"
+msgstr "Немає обов'язкових правил щодо вибору типів/профілів"
 
 # STRUC_DEF_NO_SUMMARY
 #: STRUC_DEF_NO_SUMMARY
 msgid "No Summary, as this profile has no differential"
-msgstr "Não há Resumo, pois este perfil não tem diferencial"
+msgstr "Без резюме, оскільки цей профіль не має диференціала"
 
 # STRUC_DEF_NULL_JSON
 #: STRUC_DEF_NULL_JSON
 msgid "This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
-msgstr "Este objeto pode ser representado como nulo na estrutura JSON (que conta como \"presente\" para efeitos de cardinalidade)"
+msgstr "Цей об'єкт може бути представлений як null у структурі JSON (яка вважається ''present'' для цілей кардинальності)"
 
 # STRUC_DEF_OBLIG
 #: STRUC_DEF_OBLIG
 msgid "This element has obligations"
-msgstr "Este elemento tem obrigações"
+msgstr "Цей елемент має обов'язки"
 
 # STRUC_DEF_OBLIG_ADD
 #: STRUC_DEF_OBLIG_ADD
 msgid "This is an obligation profile that only contains obligations and additional bindings"
-msgstr "Trata-se de um perfil de obrigações que contém apenas obrigações e ligações adicionais"
+msgstr "Це профіль зобов'язань, який містить лише зобов'язання та додаткові прив'язки"
 
 # STRUC_DEF_OBLIG_ALL
 #: STRUC_DEF_OBLIG_ALL
 msgid "Obligations that apply to all actors"
-msgstr "Obrigações que se aplicam a todos os actores"
+msgstr "Зобов'язання, які поширюються на всіх суб'єктів"
 
 # STRUC_DEF_OBLIG_FROM
 #: STRUC_DEF_OBLIG_FROM
 msgid "This profile picks up obligations and additional bindings from"
-msgstr "Este perfil retoma obrigações e ligações adicionais de"
+msgstr "Цей профіль бере на себе зобов'язання та додаткові прив'язки від"
 
 # STRUC_DEF_OBLIG_SUPP
 #: STRUC_DEF_OBLIG_SUPP
 msgid "This element has obligations and must be supported"
-msgstr "Este elemento tem obrigações e deve ser apoiado"
+msgstr "Цей елемент має зобов'язання і його потрібно підтримувати"
 
 # STRUC_DEF_ONE_OF
 #: STRUC_DEF_ONE_OF
 msgid "One of:"
-msgstr "Um de:"
+msgstr "Одним з:"
 
 # STRUC_DEF_OPEN
 #: STRUC_DEF_OPEN
 msgid "Open"
-msgstr "Aberto"
+msgstr "Відкривати"
 
 # STRUC_DEF_OPEN_END
 #: STRUC_DEF_OPEN_END
 msgid "Open At End"
-msgstr "Abrir no fim"
+msgstr "Відкрити в кінці"
 
 # STRUC_DEF_ORDERED
 #: STRUC_DEF_ORDERED
 msgid "Ordered"
-msgstr "Encomendado"
+msgstr "Наказав"
 
 # STRUC_DEF_PATH
 #: STRUC_DEF_PATH
 msgctxt "STRUC_DEF_PATH"
 msgid "Path"
-msgstr "Caminho"
+msgstr "Шлях"
 
 # STRUC_DEF_PATHS
 #: STRUC_DEF_PATHS
 msgid "Path(s)"
-msgstr "Caminho(s)"
+msgstr "Шлях (шляхи)"
 
 # STRUC_DEF_PATT_VALUE
 #: STRUC_DEF_PATT_VALUE
 msgid "Pattern Value"
-msgstr "Valor do padrão"
+msgstr "Значення шаблону"
 
 # STRUC_DEF_PREFERRED
 #: STRUC_DEF_PREFERRED
 msgid "preferred"
-msgstr "preferido"
+msgstr "Кращим"
 
 # STRUC_DEF_PREFIXED
 #: STRUC_DEF_PREFIXED
 msgid "is prefixed to the value before validation"
-msgstr "é prefixado ao valor antes da validação"
+msgstr "має префікс до значення перед перевіркою"
 
 # STRUC_DEF_PREF_CONT
 #: STRUC_DEF_PREF_CONT
 msgid "This is the value set that is preferred in a given context (documentation should explain why)"
-msgstr "Este é o conjunto de valores preferido num determinado contexto (a documentação deve explicar porquê)"
+msgstr "Це набір значень, якому надається перевага в даному контексті (документація повинна пояснювати чому)"
 
 # STRUC_DEF_PRIMITIVE
 #: STRUC_DEF_PRIMITIVE
 msgid "Primitive Value"
-msgstr "Valor primitivo"
+msgstr "Примітивне значення"
 
 # STRUC_DEF_PRIM_ELE
 #: STRUC_DEF_PRIM_ELE
 msgid "This primitive element may be present, or absent, or replaced by an extension"
-msgstr "Este elemento primitivo pode estar presente, ausente ou ser substituído por uma extensão"
+msgstr "Цей примітивний елемент може бути присутнім, або відсутнім, або заміненим розширенням"
 
 # STRUC_DEF_PRIM_TYPE_PRESENT
 #: STRUC_DEF_PRIM_TYPE_PRESENT
 msgid "This primitive type may be present, or absent if replaced by one of the following extensions:"
-msgstr "Este tipo primitivo pode estar presente ou ausente se for substituído por uma das seguintes extensões:"
+msgstr "Цей примітивний тип може бути присутнім або відсутнім, якщо його замінити одним з наступних розширень:"
 
 # STRUC_DEF_PRIM_TYPE_VALUE
 #: STRUC_DEF_PRIM_TYPE_VALUE
 msgid "This primitive type must have a value (the value must be present, and cannot be replaced by an extension)"
-msgstr "Este tipo primitivo deve ter um valor (o valor deve estar presente e não pode ser substituído por uma extensão)"
+msgstr "Цей примітивний тип повинен мати значення (значення має бути присутнім і не може бути замінене розширенням)"
 
 # STRUC_DEF_PROFILED
 #: STRUC_DEF_PROFILED
 msgid "profiled by"
-msgstr "perfilado por"
+msgstr "Профіль"
 
 # STRUC_DEF_PROFILE_BUILDS
 #: STRUC_DEF_PROFILE_BUILDS
 msgid "This profile builds on"
-msgstr "Este perfil baseia-se em"
+msgstr "Цей профіль ґрунтується на"
 
 # STRUC_DEF_PROF_COMP
 #: STRUC_DEF_PROF_COMP
 msgid "This profile complies with the profile"
-msgstr "Este perfil está em conformidade com o perfil"
+msgstr "Цей профіль відповідає профілю"
 
 # STRUC_DEF_PROF_REQ
 #: STRUC_DEF_PROF_REQ
 msgid "This profile also requires that the instance also conform this additional profile:"
-msgstr "Este perfil também exige que a instância esteja em conformidade com este perfil adicional:"
+msgstr "Цей профіль також вимагає, щоб екземпляр також відповідав цьому додатковому профілю:"
 
 # STRUC_DEF_PROF_RES
 #: STRUC_DEF_PROF_RES
 msgid "A profiled resource"
-msgstr "Um recurso perfilado"
+msgstr "Профільований ресурс"
 
 # STRUC_DEF_PROF_SUPP
 #: STRUC_DEF_PROF_SUPP
 msgid "This profile must be supported"
-msgstr "Este perfil deve ser suportado"
+msgstr "Цей профіль повинен бути підтриманий"
 
 # STRUC_DEF_PROPERTY
 #: STRUC_DEF_PROPERTY
 msgid "Property"
-msgstr "Imóveis"
+msgstr "Власність"
 
 # STRUC_DEF_REFERS_EXT
 #: STRUC_DEF_REFERS_EXT
 msgid "This structure refers to these extensions"
-msgstr "Esta estrutura refere-se a estas extensões"
+msgstr "Ця структура відноситься до таких розширень"
 
 # STRUC_DEF_REFER_PROFILE
 #: STRUC_DEF_REFER_PROFILE
 msgid "In this IG, the following structures refer to this profile:"
-msgstr "Neste GI, as estruturas seguintes referem-se a este perfil:"
+msgstr "У цьому ІГ до цього профілю відносяться такі структури:"
 
 # STRUC_DEF_REND_UNABLE_RES
 #: STRUC_DEF_REND_UNABLE_RES
 msgid "Unable to resolve StructureDefinition {0} resolving content reference {1}"
-msgstr "Não foi possível resolver a StructureDefinition {0} que está a resolver a referência de conteúdo {1}"
+msgstr "Не вдається вирішити StructureDefinition {0} Вирішення посилань на контент {1}"
 
 # STRUC_DEF_REPEAT
 #: STRUC_DEF_REPEAT
 msgid "This is a repeating choice group that does not appear directly in the instance"
-msgstr "Este é um grupo de opções repetitivo que não aparece diretamente na instância"
+msgstr "Це повторювана група вибору, яка не відображається безпосередньо в екземплярі"
 
 # STRUC_DEF_REPEAT_ELE
 #: STRUC_DEF_REPEAT_ELE
 msgid "This repeating element order: {0}"
-msgstr "Esta ordem de repetição de elementos: {0}"
+msgstr "Цей порядок повторюваних елементів: {0}"
 
 # STRUC_DEF_REQUIRED
 #: STRUC_DEF_REQUIRED
 msgid "required"
-msgstr "necessário"
+msgstr "необхідний"
 
 # STRUC_DEF_REQUIRED_PATT
 #: STRUC_DEF_REQUIRED_PATT
 msgid "Required Pattern:"
-msgstr "Padrão necessário:"
+msgstr "Необхідна форма:"
 
 # STRUC_DEF_REQUIREMENTS
 #: STRUC_DEF_REQUIREMENTS
 msgid "Requirements"
-msgstr "Requisitos"
+msgstr "Вимоги"
 
 # STRUC_DEF_REQ_BIND
 #: STRUC_DEF_REQ_BIND
 msgid "A required binding for additional codes, for us when the binding strength is ''extensible'' or ''preferred''"
-msgstr "Uma ligação necessária para códigos adicionais, por exemplo, quando a força da ligação é \"extensível\" ou \"preferida"
+msgstr "Обов'язкова прив'язка для додаткових кодів, для нас, коли міцність зв'язування ''розширювана'' або ''бажана''"
 
 # STRUC_DEF_REQ_PATT
 #: STRUC_DEF_REQ_PATT
 msgid "Required Pattern"
-msgstr "Padrão necessário"
+msgstr "Необхідний візерунок"
 
 # STRUC_DEF_ROOT
 #: STRUC_DEF_ROOT
 msgid "The root class that contains instances of this class"
-msgstr "A classe de raiz que contém as instâncias desta classe"
+msgstr "Кореневий клас, який містить екземпляри цього класу"
 
 # STRUC_DEF_SEE
 #: STRUC_DEF_SEE
 msgid "See"
-msgstr "Ver"
+msgstr "Бачити"
 
 # STRUC_DEF_SET_ARE
 #: STRUC_DEF_SET_ARE
 msgid ". The slices are"
-msgstr ". As fatias são"
+msgstr ". Зрізи є"
 
 # STRUC_DEF_SET_SLICES
 #: STRUC_DEF_SET_SLICES
 msgid "This element introduces a set of slices on"
-msgstr "Este elemento introduz um conjunto de fatias em"
+msgstr "Цей елемент вводить набір зрізів на"
 
 # STRUC_DEF_SHALL_CODE
 #: STRUC_DEF_SHALL_CODE
 msgid "The codes SHALL be taken from"
-msgstr "Os códigos DEVERÃO ser retirados de"
+msgstr "Коди ПОВИННІ бути взяті з"
 
 # STRUC_DEF_SHORT
 #: STRUC_DEF_SHORT
 msgid "Short"
-msgstr "Curto"
+msgstr "Короткий"
 
 # STRUC_DEF_SHOULD_CODE
 #: STRUC_DEF_SHOULD_CODE
 msgid "The codes SHOULD be taken from"
-msgstr "Os códigos DEVERÃO ser retirados de"
+msgstr "Коди ПОВИННІ бути взяті з"
 
 # STRUC_DEF_SINGLE_JSON_OBJECTS
 #: STRUC_DEF_SINGLE_JSON_OBJECTS
 msgid "JSON: Represented as a single JSON Object with named properties using the value of the {0} child as the key"
-msgstr "JSON: Representado como um único objeto JSON com propriedades nomeadas utilizando o valor do filho {0} como chave"
+msgstr "JSON: представлений як єдиний об'єкт JSON з іменованими властивостями з використанням значення {0} Дитина як ключ"
 
 # STRUC_DEF_SLIC
 #: STRUC_DEF_SLIC
 msgid "Slices"
-msgstr "Fatias"
+msgstr "Фрагменти"
 
 # STRUC_DEF_SLICE
 #: STRUC_DEF_SLICE
 msgid "Slice"
-msgstr "Fatia"
+msgstr "Фрагмент"
 
 # STRUC_DEF_SLICES
 #: STRUC_DEF_SLICES
 msgid "Slice:"
-msgstr "Fatia:"
+msgstr "Фрагмент:"
 
 # STRUC_DEF_SLICE_FOR
 #: STRUC_DEF_SLICE_FOR
 msgid "Slices for {0}"
-msgstr "Fatias para {0}"
+msgstr "Скибочки для {0}"
 
 # STRUC_DEF_SLICE_NAME
 #: STRUC_DEF_SLICE_NAME
 msgid "Slice Name"
-msgstr "Nome da fatia"
+msgstr "Назва зрізу"
 
 # STRUC_DEF_SLICE_PAR
 #: STRUC_DEF_SLICE_PAR
 msgid "Slice {0}"
-msgstr "Fatia {0}"
+msgstr "Фрагмент {0}"
 
 # STRUC_DEF_SNOMED
 #: STRUC_DEF_SNOMED
 msgid "SNOMED-CT"
-msgstr "SNOMED-CT"
+msgstr "СНОМЕД-КТ"
 
 # STRUC_DEF_SNOMED_CODE
 #: STRUC_DEF_SNOMED_CODE
 msgid "SNOMED-CT Code"
-msgstr "Código SNOMED-CT"
+msgstr "Код SNOMED-CT"
 
 # STRUC_DEF_STAND_STAT
 #: STRUC_DEF_STAND_STAT
 msgid "Standard Status"
-msgstr "Estado padrão"
+msgstr "Стандартний статус"
 
 # STRUC_DEF_STAND_STATUS
 #: STRUC_DEF_STAND_STATUS
 msgid "Standards Status ="
-msgstr "Estado das normas ="
+msgstr "Статус стандартів ="
 
 # STRUC_DEF_STRING_FORM
 #: STRUC_DEF_STRING_FORM
 msgid "String Format"
-msgstr "Formato da cadeia de caracteres"
+msgstr "Формат рядка"
 
 # STRUC_DEF_STRUCTURES
 #: STRUC_DEF_STRUCTURES
 msgid "Structures"
-msgstr "Estruturas"
+msgstr "Структур"
 
 # STRUC_DEF_SUIT_SHALL_CODE
 #: STRUC_DEF_SUIT_SHALL_CODE
 msgid "Unless not suitable, these codes SHALL be taken from"
-msgstr "A menos que não sejam adequados, estes códigos DEVERÃO ser retirados de"
+msgstr "Якщо вони не підходять, ці коди ПОВИННІ бути взяті з"
 
 # STRUC_DEF_TARG_SUPP
 #: STRUC_DEF_TARG_SUPP
 msgid "This target must be supported"
-msgstr "Este objetivo deve ser suportado"
+msgstr "Ця ціль має бути підтримана"
 
 # STRUC_DEF_TEMPLATEID
 #: STRUC_DEF_TEMPLATEID
 msgid "Instance of this type are validated by templateId"
-msgstr "As instâncias deste tipo são validadas por templateId"
+msgstr "Екземпляри цього типу перевіряються за допомогою templateId"
 
 # STRUC_DEF_TERM_BIND
 #: STRUC_DEF_TERM_BIND
 msgid "Terminology Bindings (Differential)"
-msgstr "Terminologia Ligações (Diferencial)"
+msgstr "Термінологічні прив'язки (диференціальні)"
 
 # STRUC_DEF_TERM_BINDS
 #: STRUC_DEF_TERM_BINDS
 msgid "Terminology Bindings"
-msgstr "Terminologia Ligações"
+msgstr "Термінологічні прив'язки"
 
 # STRUC_DEF_THEN_TYPE
 #: STRUC_DEF_THEN_TYPE
 msgid "then the type is"
-msgstr "então o tipo é"
+msgstr "то тип"
 
 # STRUC_DEF_THIS_REFERS
 #: STRUC_DEF_THIS_REFERS
 msgid "This structure refers to these other structures"
-msgstr "Esta estrutura refere-se a estas outras estruturas"
+msgstr "Ця структура відноситься до цих інших структур"
 
 # STRUC_DEF_TYPE_BOUND
 #: STRUC_DEF_TYPE_BOUND
 msgid "This type can be bound to a value set using the {0}"
-msgstr "Este tipo pode ser ligado a um conjunto de valores utilizando o {0}"
+msgstr "Цей тип може бути прив'язаний до набору значень за допомогою {0}"
 
 # STRUC_DEF_TYPE_PARAMETER
 #: STRUC_DEF_TYPE_PARAMETER
 msgid "Type Parameter"
-msgstr "Tipo Parâmetro"
+msgstr "Параметр типу"
 
 # STRUC_DEF_TYPE_SET
 #: STRUC_DEF_TYPE_SET
 msgid "This type can be bound to a value set using the"
-msgstr "Este tipo pode ser ligado a um conjunto de valores utilizando a função"
+msgstr "Цей тип може бути прив'язаний до набору значень за допомогою"
 
 # STRUC_DEF_TYPE_SPEC
 #: STRUC_DEF_TYPE_SPEC
 msgid "Type Specifier"
-msgstr "Especificador de tipo"
+msgstr "Специфікатор типу"
 
 # STRUC_DEF_TYPE_SUPP
 #: STRUC_DEF_TYPE_SUPP
 msgid "This type must be supported"
-msgstr "Este tipo deve ser suportado"
+msgstr "Цей тип повинен бути підтриманий"
 
 # STRUC_DEF_UI
 #: STRUC_DEF_UI
 msgctxt "STRUC_DEF_UI"
 msgid "UI"
-msgstr "IU"
+msgstr "ІНТЕРФЕЙСУ"
 
 # STRUC_DEF_UI_CONT
 #: STRUC_DEF_UI_CONT
 msgid "This value set is provided for user look up in a given context. Typically, these valuesets only include a subset of codes relevant for input in a context"
-msgstr "Este conjunto de valores é fornecido para ser consultado pelo utilizador num determinado contexto. Normalmente, estes conjuntos de valores incluem apenas um subconjunto de códigos relevantes para entrada num contexto"
+msgstr "Цей набір значень надається для пошуку користувача в заданому контексті. Як правило, ці набори значень включають лише підмножину кодів, релевантних для введення в контексті"
 
 # STRUC_DEF_UNADORNED
 #: STRUC_DEF_UNADORNED
 msgid "In the XML format, this property is represented as unadorned text."
-msgstr "No formato XML, esta propriedade é representada como texto sem adornos."
+msgstr "У форматі XML ця властивість представлена у вигляді тексту без прикрас."
 
 # STRUC_DEF_UNDEF_ACT
 #: STRUC_DEF_UNDEF_ACT
 msgid "Obligations that apply to the undefined actor {0}"
-msgstr "Obrigações que se aplicam ao ator indefinido {0}"
+msgstr "Зобов'язання, які застосовуються до невизначеного актора {0}"
 
 # STRUC_DEF_UNKNOWN_APPROACH
 #: STRUC_DEF_UNKNOWN_APPROACH
 msgid "Instances of this type are validated using an unknown approach: {0}"
-msgstr "As instâncias deste tipo são validadas utilizando uma abordagem desconhecida: {0}"
+msgstr "Екземпляри цього типу перевіряються за допомогою невідомого підходу: {0}"
 
 # STRUC_DEF_UNKNOWN_REF
 #: STRUC_DEF_UNKNOWN_REF
 msgid "Unknown reference to {0}"
-msgstr "Referência desconhecida a {0}"
+msgstr "Невідоме посилання на {0}"
 
 # STRUC_DEF_UNORDERED
 #: STRUC_DEF_UNORDERED
 msgid "Unordered"
-msgstr "Não ordenado"
+msgstr "Неупорядкований"
 
 # STRUC_DEF_UNSPECIFIED
 #: STRUC_DEF_UNSPECIFIED
 msgid "Unspecified"
-msgstr "Não especificado"
+msgstr "Невідома"
 
 # STRUC_DEF_URLS
 #: STRUC_DEF_URLS
 msgid "URL:"
-msgstr "URL:"
+msgstr "Посилання:"
 
 # STRUC_DEF_VALID
 #: STRUC_DEF_VALID
 msgid "Validation"
-msgstr "Validação"
+msgstr "Перевірки"
 
 # STRUC_DEF_VALUESET
 #: STRUC_DEF_VALUESET
 msgid "ValueSet"
-msgstr "Conjunto de valores"
+msgstr "Набір значень"
 
 # STRUC_DEF_VALUESET_CODE
 #: STRUC_DEF_VALUESET_CODE
 msgid "ValueSet / Code"
-msgstr "ValueSet / Código"
+msgstr "Набір значень / Код"
 
 # STRUC_DEF_VALUE_ALT
 #: STRUC_DEF_VALUE_ALT
 msgid "Value Alternatives"
-msgstr "Alternativas de valor"
+msgstr "Ціннісні альтернативи"
 
 # STRUC_DEF_VALUE_REQ
 #: STRUC_DEF_VALUE_REQ
 msgid "Value Required"
-msgstr "Valor requerido"
+msgstr "Обов'язкове значення"
 
 # STRUC_DEF_WHAT
 #: STRUC_DEF_WHAT
 msgid "What goes here"
-msgstr "O que vai aqui"
+msgstr "Що сюди йде"
 
 # STRUC_DEF_XHTML
 #: STRUC_DEF_XHTML
 msgid "This property is represented as XHTML Text in the XML."
-msgstr "Esta propriedade é representada como Texto XHTML no XML."
+msgstr "Ця властивість представлена у вигляді XHTML тексту в XML."
 
 # STRUC_DEF_XML_ACTUAL
 #: STRUC_DEF_XML_ACTUAL
 msgid "In the XML format, this property has the actual name"
-msgstr "No formato XML, esta propriedade tem o nome atual"
+msgstr "У форматі XML ця властивість має фактичне ім'я"
 
 # STRUC_DEF_XML_ATTRIBUTE
 #: STRUC_DEF_XML_ATTRIBUTE
 msgid "In the XML format, this property is represented as an attribute."
-msgstr "No formato XML, esta propriedade é representada como um atributo."
+msgstr "У форматі XML ця властивість представлена у вигляді атрибута."
 
 # STRUC_DEF_XML_ELE
 #: STRUC_DEF_XML_ELE
 msgid "XML Element Name"
-msgstr "Nome do elemento XML"
+msgstr "Ім'я елемента XML"
 
 # STRUC_DEF_XML_FORM
 #: STRUC_DEF_XML_FORM
 msgid "XML Format"
-msgstr "Formato XML"
+msgstr "Формат XML"
 
 # STRUC_DEF_XML_NAME
 #: STRUC_DEF_XML_NAME
 msgid "XML Namespace"
-msgstr "Espaço de nomes XML"
+msgstr "Простір імен XML"
 
 # STRUC_DEF_XSI
 #: STRUC_DEF_XSI
 msgid "The type of this property is determined using the"
-msgstr "O tipo desta propriedade é determinado utilizando o"
+msgstr "Тип цієї властивості визначається за допомогою"
 
 # SUB_TOPIC_CREATE
 #: SUB_TOPIC_CREATE
 msgid "* create result = {0}"
-msgstr "* criar resultado = {0}"
+msgstr "* створити результат = {0}"
 
 # SUB_TOPIC_CURR
 #: SUB_TOPIC_CURR
 msgid "* current = {0}"
-msgstr "* atual = {0}"
+msgstr "* струм = {0}"
 
 # SUB_TOPIC_DELETE
 #: SUB_TOPIC_DELETE
 msgid "* delete result = {0}"
-msgstr "* eliminar resultado = {0}"
+msgstr "* видалити результат = {0}"
 
 # SUB_TOPIC_EVENT
 #: SUB_TOPIC_EVENT
 msgid "Event"
-msgstr "Evento"
+msgstr "Подія"
 
 # SUB_TOPIC_FHIR_PATH
 #: SUB_TOPIC_FHIR_PATH
 msgid "FHIR Path"
-msgstr "Caminho FHIR"
+msgstr "Шлях FHIR"
 
 # SUB_TOPIC_FILT_DEF
 #: SUB_TOPIC_FILT_DEF
 msgid "Filter Definition"
-msgstr "Definição de filtro"
+msgstr "Визначення фільтра"
 
 # SUB_TOPIC_FILT_PAR
 #: SUB_TOPIC_FILT_PAR
 msgid "Filter Parameter"
-msgstr "Parâmetro do filtro"
+msgstr "Параметр фільтра"
 
 # SUB_TOPIC_INCL
 #: SUB_TOPIC_INCL
 msgid "Includes"
-msgstr "Inclui"
+msgstr "Включає"
 
 # SUB_TOPIC_INT
 #: SUB_TOPIC_INT
 msgid "Interactions"
-msgstr "Interações"
+msgstr "Взаємодії"
 
 # SUB_TOPIC_PREV
 #: SUB_TOPIC_PREV
 msgid "* previous = {0}"
-msgstr "* anterior = {0}"
+msgstr "* попередній = {0}"
 
 # SUB_TOPIC_REQ
 #: SUB_TOPIC_REQ
 msgid "* require both = {0}"
-msgstr "* require both = {0}"
+msgstr "* Потрібно і те, і інше = {0}"
 
 # SUB_TOPIC_RES_TRIG
 #: SUB_TOPIC_RES_TRIG
 msgid "Resource Triggers"
-msgstr "Accionadores de recursos"
+msgstr "Тригери ресурсів"
 
 # SUB_TOPIC_REV_INCL
 #: SUB_TOPIC_REV_INCL
 msgid "Reverse Includes"
-msgstr "Inclusão reversa"
+msgstr "Реверс включає в себе"
 
 # TERMINOLOGY_LVL
 #: TERMINOLOGY_LVL
 msgid "Lvl"
-msgstr "Nível"
+msgstr "Лвл"
 
 # TERM_REND_COPY
 #: TERM_REND_COPY
 msgid "Copy {0} Format to clipboard"
-msgstr "Copiar {0} Formato para a área de transferência"
+msgstr "Копіювати {0} Форматування в буфер обміну"
 
 # TEST_PLAN_ASS
 #: TEST_PLAN_ASS
 msgid "Assertion"
-msgstr "Afirmação"
+msgstr "Твердження"
 
 # TEST_PLAN_ASSERTION
 #: TEST_PLAN_ASSERTION
 msgid "Assertion {0}"
-msgstr "Asserção {0}"
+msgstr "Твердження {0}"
 
 # TEST_PLAN_CASE
 #: TEST_PLAN_CASE
 msgid "Test Case"
-msgstr "Caso de teste"
+msgstr "Тестовий приклад"
 
 # TEST_PLAN_CASE_SEQ
 #: TEST_PLAN_CASE_SEQ
 msgid "Test Case - Sequence {0}"
-msgstr "Caso de teste - Sequência {0}"
+msgstr "Тест-кейс - послідовність {0}"
 
 # TEST_PLAN_CATEGORY
 #: TEST_PLAN_CATEGORY
 msgid "Category:"
-msgstr "Categoria:"
+msgstr "Категорія:"
 
 # TEST_PLAN_DATA
 #: TEST_PLAN_DATA
 msgid "Test Data"
-msgstr "Dados de teste"
+msgstr "Дані тесту"
 
 # TEST_PLAN_DEP
 #: TEST_PLAN_DEP
 msgid "Test Plan Dependency:"
-msgstr "Dependência do plano de teste:"
+msgstr "Залежність тестового плану:"
 
 # TEST_PLAN_DEPEN
 #: TEST_PLAN_DEPEN
 msgid "Test Plan Dependencies:"
-msgstr "Dependências do plano de teste:"
+msgstr "Залежності тестового плану:"
 
 # TEST_PLAN_DESC
 #: TEST_PLAN_DESC
 msgid "Dependency - no description"
-msgstr "Dependência - sem descrição"
+msgstr "Залежність - немає опису"
 
 # TEST_PLAN_LANG
 #: TEST_PLAN_LANG
 msgid "Language"
-msgstr "Língua"
+msgstr "Мова"
 
 # TEST_PLAN_RESULT
 #: TEST_PLAN_RESULT
 msgid "Result"
-msgstr "Resultado"
+msgstr "Результат"
 
 # TEST_PLAN_RUN
 #: TEST_PLAN_RUN
 msgid "Test Run"
-msgstr "Teste de funcionamento"
+msgstr "Тестовий запуск"
 
 # TEST_PLAN_SCOPE
 #: TEST_PLAN_SCOPE
 msgid "Test Plan Scope:"
-msgstr "Âmbito do plano de teste:"
+msgstr "Обсяг тестового плану:"
 
 # TEST_PLAN_SCOPES
 #: TEST_PLAN_SCOPES
 msgid "Test Plan Scopes:"
-msgstr "Âmbitos dos planos de teste:"
+msgstr "Обсяги тест-плану:"
 
 # TEST_PLAN_SOURCE
 #: TEST_PLAN_SOURCE
 msgid "Source[x]"
-msgstr "Fonte[x]"
+msgstr "Джерело[x]"
 
 # TEST_PLAN_TEST_DATA
 #: TEST_PLAN_TEST_DATA
 msgid "Test Data {0}"
-msgstr "Dados de teste {0}"
+msgstr "Дані тесту {0}"
 
 # TEST_PLAN_TEST_RUN
 #: TEST_PLAN_TEST_RUN
 msgid "Test Run {0}"
-msgstr "Teste de funcionamento {0}"
+msgstr "Тестовий запуск {0}"
 
 # TEXT_ICON_CHOICE
 #: TEXT_ICON_CHOICE
 msgid "Choice of Types"
-msgstr "Escolha de tipos"
+msgstr "Вибір видів"
 
 # TEXT_ICON_DATATYPE
 #: TEXT_ICON_DATATYPE
 msgid "Data Type"
-msgstr "Tipo de dados"
+msgstr "Тип даних"
 
 # TEXT_ICON_ELEMENT
 #: TEXT_ICON_ELEMENT
 msgid "Element"
-msgstr "Elemento"
+msgstr "Елемент"
 
 # TEXT_ICON_EXTENSION_COMPLEX
 #: TEXT_ICON_EXTENSION_COMPLEX
 msgid "Complex Extension"
-msgstr "Extensão complexa"
+msgstr "Комплексне розширення"
 
 # TEXT_ICON_EXTENSION_SIMPLE
 #: TEXT_ICON_EXTENSION_SIMPLE
 msgid "Simple Extension"
-msgstr "Extensão simples"
+msgstr "Просте розширення"
 
 # TEXT_ICON_KEY
 #: TEXT_ICON_KEY
 msgid "JSON Key Value"
-msgstr "Valor chave JSON"
+msgstr "Значення ключа JSON"
 
 # TEXT_ICON_OBJECT_BOX
 #: TEXT_ICON_OBJECT_BOX
 msgid "Object"
-msgstr "Objeto"
+msgstr "Об'єкт"
 
 # TEXT_ICON_PRIMITIVE
 #: TEXT_ICON_PRIMITIVE
 msgid "Primitive Data Type"
-msgstr "Tipo de dados primitivos"
+msgstr "Примітивний тип даних"
 
 # TEXT_ICON_REFERENCE
 #: TEXT_ICON_REFERENCE
 msgid "Reference to another Resource"
-msgstr "Referência a outro recurso"
+msgstr "Посилання на інший ресурс"
 
 # TEXT_ICON_REUSE
 #: TEXT_ICON_REUSE
 msgid "Reference to another Element"
-msgstr "Referência a outro elemento"
+msgstr "Посилання на інший елемент"
 
 # TEXT_ICON_SLICE
 #: TEXT_ICON_SLICE
 msgid "Slice Definition"
-msgstr "Definição de fatia"
+msgstr "Визначення зрізу"
 
 # TEXT_ICON_SLICE_ITEM
 #: TEXT_ICON_SLICE_ITEM
 msgid "Slice Item"
-msgstr "Item de fatia"
+msgstr "Елемент для скибочки"
 
 # TX_DISPLAY
 #: TX_DISPLAY
 msgid "Display"
-msgstr "Ecrã"
+msgstr "Відображення"
 
 # TX_DISPLAY_LANG
 #: TX_DISPLAY_LANG
 msgid "Display ({0})"
-msgstr "Ecrã ({0})"
+msgstr "Дисплей ({0})"
 
 # VALUE_ES_ES
 #: VALUE_ES_ES
 msgid "Spanish National Edition"
-msgstr "Edição nacional espanhola"
+msgstr "Іспанське національне видання"
 
 # VALUE_SET_ADD_DESIG
 #: VALUE_SET_ADD_DESIG
 msgid "Additional Designations and Language Displays"
-msgstr "Designações adicionais e ecrãs de idiomas"
+msgstr "Додаткові позначення та відображення мови"
 
 # VALUE_SET_ALL_CODE
 #: VALUE_SET_ALL_CODE
 msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains all the codes, and also this structure:"
-msgstr "Este include especifica uma hierarquia para quando os conjuntos de valores são gerados para utilização numa interface de utilizador. A expansão contém todos os códigos e também essa estrutura:"
+msgstr "Це включає ієрархію, коли генеруються набори значень для використання в інтерфейсі користувача. У доповненні присутні всі коди, а також така структура:"
 
 # VALUE_SET_ALL_CODES_DEF
 #: VALUE_SET_ALL_CODES_DEF
 msgid "all codes defined in"
-msgstr "todos os códigos definidos em"
+msgstr "Всі коди, визначені в"
 
 # VALUE_SET_AND
 #: VALUE_SET_AND
 msgctxt "VALUE_SET_AND"
 msgid "and"
-msgstr "e"
+msgstr "і"
 
 # VALUE_SET_AR
 #: VALUE_SET_AR
 msgid "Argentinian Edition"
-msgstr "Edição argentina"
+msgstr "Аргентинське видання"
 
 # VALUE_SET_AT
 #: VALUE_SET_AT
 msgid "Austrian Edition"
-msgstr "Edição austríaca"
+msgstr "Австрійське видання"
 
 # VALUE_SET_AUS
 #: VALUE_SET_AUS
 msgid "Australian Edition"
-msgstr "Edição australiana"
+msgstr "Австралійське видання"
 
 # VALUE_SET_BE
 #: VALUE_SET_BE
 msgid "Belgian Edition"
-msgstr "Edição belga"
+msgstr "Бельгійське видання"
 
 # VALUE_SET_CA
 #: VALUE_SET_CA
 msgid "Canadian Edition"
-msgstr "Edição canadiana"
+msgstr "Канадське видання"
 
 # VALUE_SET_CA_EN
 #: VALUE_SET_CA_EN
 msgid "Canadian English Edition"
-msgstr "Edição em inglês canadiano"
+msgstr "Канадське англійське видання"
 
 # VALUE_SET_CH
 #: VALUE_SET_CH
 msgid "Swiss Edition"
-msgstr "Edição suíça"
+msgstr "Швейцарське видання"
 
 # VALUE_SET_CODES_FROM
 #: VALUE_SET_CODES_FROM
 msgid "codes from"
-msgstr "códigos de"
+msgstr "коди з"
 
 # VALUE_SET_CODE_ITEM
 #: VALUE_SET_CODE_ITEM
 msgid "The code for the item"
-msgstr "O código do item"
+msgstr "Код товару"
 
 # VALUE_SET_CODE_SELEC
 #: VALUE_SET_CODE_SELEC
 msgid "This value set cannot be fully expanded, but a selection ({0} codes) of the whole set of codes is shown here."
-msgstr "Este conjunto de valores não pode ser totalmente expandido, mas é aqui apresentada uma seleção (códigos {0}) de todo o conjunto de códigos."
+msgstr "Цей набір значень не може бути повністю розгорнутий, але вибірка ({0} кодів) всього набору кодів показаний тут."
 
 # VALUE_SET_COMMA
 #: VALUE_SET_COMMA
 msgid ","
-msgstr ""
+msgstr ","
 
 # VALUE_SET_CONT
 #: VALUE_SET_CONT
 msgid "Value Set Contents"
-msgstr "Conteúdo do conjunto de valores"
+msgstr "Зміст набору значень"
 
 # VALUE_SET_CONTAINS
 #: VALUE_SET_CONTAINS
 msgid "This value set contains {0} concepts"
-msgstr "Este conjunto de valores contém {0} conceitos"
+msgstr "Цей набір значень містить {0} Концепції"
 
 # VALUE_SET_CONTAINS_AT_LEAST
 #: VALUE_SET_CONTAINS_AT_LEAST
 msgid "This value set contains at least {0} concepts"
-msgstr "Este conjunto de valores contém pelo menos {0} conceitos"
+msgstr "Цей набір значень містить не менше {0} Концепції"
 
 # VALUE_SET_CONT_STRUC
 #: VALUE_SET_CONT_STRUC
 msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure:"
-msgstr "Esse include especifica uma hierarquia para quando os conjuntos de valores são gerados para utilização em uma interface de usuário. A expansão contém essa estrutura:"
+msgstr "Це включає ієрархію, коли генеруються набори значень для використання в інтерфейсі користувача. Розширення містить таку структуру:"
 
 # VALUE_SET_DANISH
 #: VALUE_SET_DANISH
 msgid "Danish"
-msgstr "Dinamarquesa"
+msgstr "Датська"
 
 # VALUE_SET_DE
 #: VALUE_SET_DE
 msgid "German Edition"
-msgstr "Edição alemã"
+msgstr "Німецьке видання"
 
 # VALUE_SET_DESCENDENTOF
 #: VALUE_SET_DESCENDENTOF
 msgid "descends from"
-msgstr "descende de"
+msgstr "походить від"
 
 # VALUE_SET_DESIG
 #: VALUE_SET_DESIG
 msgid "Additional Designations"
-msgstr "Designações adicionais"
+msgstr "Додаткові позначення"
 
 # VALUE_SET_DISPLAY_ITEM
 #: VALUE_SET_DISPLAY_ITEM
 msgid "The display for the item"
-msgstr "A visualização do item"
+msgstr "Дисплей для товару"
 
 # VALUE_SET_DOESNT_EXIST
 #: VALUE_SET_DOESNT_EXIST
 msgid "doesn''t exist"
-msgstr "não existe"
+msgstr "не існує"
 
 # VALUE_SET_DUTCH
 #: VALUE_SET_DUTCH
 msgid "Dutch"
-msgstr "holandês"
+msgstr "Нідерландська"
 
 # VALUE_SET_EE
 #: VALUE_SET_EE
 msgid "Estonian Edition"
-msgstr "Edição estónia"
+msgstr "Естонське видання"
 
 # VALUE_SET_EQUAL
 #: VALUE_SET_EQUAL
 msgid "="
-msgstr ""
+msgstr "="
 
 # VALUE_SET_ERROR
 #: VALUE_SET_ERROR
 msgid "Error Expanding ValueSet: {0}"
-msgstr "Erro ao expandir o ValueSet: {0}"
+msgstr "Помилка при розширенні ValueSet: {0}"
 
 # VALUE_SET_EXCL
 #: VALUE_SET_EXCL
 msgid "Exclude"
-msgstr "Excluir"
+msgstr "Виключати"
 
 # VALUE_SET_EXCLUDED_FROM
 #: VALUE_SET_EXCLUDED_FROM
 msgid "Excluded from"
-msgstr "Excluído de"
+msgstr "Виключається з"
 
 # VALUE_SET_EXISTS
 #: VALUE_SET_EXISTS
 msgid "exists"
-msgstr "existe"
+msgstr "Існує"
 
 # VALUE_SET_EXP
 #: VALUE_SET_EXP
 msgid "Expansion based on example code system"
-msgstr "Expansão baseada num sistema de códigos de exemplo"
+msgstr "Розширення на основі прикладу системи кодів"
 
 # VALUE_SET_EXPANSION
 #: VALUE_SET_EXPANSION
 msgid "Expansion based on"
-msgstr "Expansão com base em"
+msgstr "Розширення на основі"
 
 # VALUE_SET_EXPANSIONS
 #: VALUE_SET_EXPANSIONS
 msgid "Expansion based on:"
-msgstr "Expansão baseada em:"
+msgstr "Розширення на основі:"
 
 # VALUE_SET_EXPANSIONS_INTERNAL
 #: VALUE_SET_EXPANSIONS_INTERNAL
 msgid "Expansion performed internally based on:"
-msgstr "Expansão efectuada internamente com base em:"
+msgstr "Розширення, що виконується внутрішніми засобами на основі:"
 
 # VALUE_SET_EXPANSIONS_SRVR
 #: VALUE_SET_EXPANSIONS_SRVR
 msgid "Expansion from {0} based on:"
-msgstr "Expansão a partir de {0} com base em:"
+msgstr "Розширення з {0} на підставі:"
 
 # VALUE_SET_EXPANSION_INTERNAL
 #: VALUE_SET_EXPANSION_INTERNAL
 msgid "Expansion performed internally based on"
-msgstr "Expansão efectuada internamente com base em"
+msgstr "Розширення, що виконується внутрішньо на основі"
 
 # VALUE_SET_EXPANSION_SRVR
 #: VALUE_SET_EXPANSION_SRVR
 msgid "Expansion from {0} based on"
-msgstr "Expansão a partir de {0} com base em"
+msgstr "Розширення з {0} на основі"
 
 # VALUE_SET_EXP_FRAG
 #: VALUE_SET_EXP_FRAG
 msgid "Expansion based on code system fragment"
-msgstr "Expansão baseada num fragmento de sistema de códigos"
+msgstr "Розширення на основі фрагмента системи коду"
 
 # VALUE_SET_FI
 #: VALUE_SET_FI
 msgid "Finnish Edition"
-msgstr "Edição finlandesa"
+msgstr "Фінське видання"
 
 # VALUE_SET_GENERALIZES
 #: VALUE_SET_GENERALIZES
 msgid "generalizes"
-msgstr "generaliza"
+msgstr "Узагальнює"
 
 # VALUE_SET_HAS
 #: VALUE_SET_HAS
 msgid "This value set has {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
-msgstr "Este conjunto de valores contém {0} códigos. A fim de manter o tamanho da publicação gerível, é apresentada apenas uma seleção ({1} códigos) de todo o conjunto de códigos."
+msgstr "Цей набір значень має {0} кодів у ньому. Для того, щоб розмір публікації залишався керованим, лише вибір ({1} кодів) всього набору кодів."
 
 # VALUE_SET_HAS_AT_LEAST
 #: VALUE_SET_HAS_AT_LEAST
 msgid "This value set has at least {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
-msgstr "Este conjunto de valores contém pelo menos {0} códigos. A fim de manter o tamanho da publicação gerível, é apresentada apenas uma seleção ({1} códigos) de todo o conjunto de códigos."
+msgstr "Цей набір значень має не менше {0} кодів у ньому. Для того, щоб розмір публікації залишався керованим, лише вибір ({1} кодів) всього набору кодів."
 
 # VALUE_SET_IE
 #: VALUE_SET_IE
 msgid "Irish Edition"
-msgstr "Edição irlandesa"
+msgstr "Ірландське видання"
 
 # VALUE_SET_IMPORT
 #: VALUE_SET_IMPORT
 msgid "Import all the codes that are contained in"
 msgid_plural "Import all the codes that are contained in the intersection of"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Імпортуйте всі коди, які містяться в"
+msgstr[1] "Імпортуйте всі коди, які містяться на перетині"
+msgstr[2] "Імпортуйте всі коди, які містяться на перетині"
+msgstr[3] "Імпортуйте всі коди, які містяться на перетині"
 
 # VALUE_SET_IN
 #: VALUE_SET_IN
 msgid "in"
-msgstr "em"
+msgstr "В"
 
 # VALUE_SET_INACT
 #: VALUE_SET_INACT
 msgid "inactive"
-msgstr "inativo"
+msgstr "Неактивні"
 
 # VALUE_SET_INACTIVE
 #: VALUE_SET_INACTIVE
 msgid "Inactive"
-msgstr "Inativo"
+msgstr "Неактивні"
 
 # VALUE_SET_INC
 #: VALUE_SET_INC
 msgid "Include"
-msgstr "Incluir"
+msgstr "Включити"
 
 # VALUE_SET_INCLUDED_INTO
 #: VALUE_SET_INCLUDED_INTO
 msgid "Included into"
-msgstr "Incluído em"
+msgstr "Входить до складу"
 
 # VALUE_SET_INT
 #: VALUE_SET_INT
 msgid "International"
-msgstr "Internacional"
+msgstr "Міжнародний"
 
 # VALUE_SET_ISA
 #: VALUE_SET_ISA
 msgid "is-a"
-msgstr "é um"
+msgstr "Іс-а"
 
 # VALUE_SET_ISNOTA
 #: VALUE_SET_ISNOTA
 msgid "is-not-a"
-msgstr "não é um"
+msgstr "є-не-а"
 
 # VALUE_SET_KR
 #: VALUE_SET_KR
 msgid "Republic of Korea Edition (South Korea)"
-msgstr "Edição da República da Coreia (Coreia do Sul)"
+msgstr "Видання Республіки Корея (Південна Корея)"
 
 # VALUE_SET_LEVEL
 #: VALUE_SET_LEVEL
 msgid "Level"
-msgstr "Nível"
+msgstr "Рівень"
 
 # VALUE_SET_LOINCV
 #: VALUE_SET_LOINCV
 msgid "Loinc v"
-msgstr "Loinc v"
+msgstr "Рішення у справі «Лоінк проти Німеччини» (Lo"
 
 # VALUE_SET_NO
 #: VALUE_SET_NO
 msgid "Norwegian Edition"
-msgstr "Edição norueguesa"
+msgstr "Норвезьке видання"
 
 # VALUE_SET_NOTE
 #: VALUE_SET_NOTE
 msgid "Note: {0}"
-msgstr "Nota: {0}"
+msgstr "Примітка: {0}"
 
 # VALUE_SET_NOTIN
 #: VALUE_SET_NOTIN
 msgid "not in"
-msgstr "não em"
+msgstr "Не в"
 
 # VALUE_SET_NOT_DEF
 #: VALUE_SET_NOT_DEF
 msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface, but the rules are not properly defined"
-msgstr "Este include especifica uma hierarquia para quando os conjuntos de valores são gerados para utilização numa interface de utilizador, mas as regras não estão corretamente definidas"
+msgstr "Це включає ієрархію, коли набори значень генеруються для використання в інтерфейсі користувача, але правила не визначені належним чином"
 
 # VALUE_SET_NOT_FOUND
 #: VALUE_SET_NOT_FOUND
 msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure, and any codes not found in the structure:"
-msgstr "Esse include especifica uma hierarquia para quando os conjuntos de valores são gerados para utilização em uma interface de usuário. A expansão contém essa estrutura e quaisquer códigos não encontrados na estrutura:"
+msgstr "Це включає ієрархію, коли генеруються набори значень для використання в інтерфейсі користувача. Розширення містить цю структуру, а також будь-які коди, яких немає в структурі:"
 
 # VALUE_SET_NO_VER
 #: VALUE_SET_NO_VER
 msgid "(no version)"
-msgstr "(sem versão)"
+msgstr "(без версії)"
 
 # VALUE_SET_NO_VERSION
 #: VALUE_SET_NO_VERSION
 msgid "(no version) ("
-msgstr "(sem versão) ("
+msgstr "(без версії) ("
 
 # VALUE_SET_NULL
 #: VALUE_SET_NULL
 msgid "null"
-msgstr "nulo"
+msgstr "нуль"
 
 # VALUE_SET_NULLS
 #: VALUE_SET_NULLS
@@ -5425,145 +5439,145 @@ msgstr "?ngen-13?"
 # VALUE_SET_NUMBER_CONCEPTS
 #: VALUE_SET_NUMBER_CONCEPTS
 msgid "This value set expansion contains {0} concepts."
-msgstr "Esta expansão do conjunto de valores contém {0} conceitos."
+msgstr "Розширення цього набору значень містить {0} Концепції."
 
 # VALUE_SET_NZ
 #: VALUE_SET_NZ
 msgid "New Zealand Edition"
-msgstr "Edição da Nova Zelândia"
+msgstr "Новозеландське видання"
 
 # VALUE_SET_OTHER_DISPLAY
 #: VALUE_SET_OTHER_DISPLAY
 msgid "Other Display ({0})"
-msgstr "Outro ecrã ({0})"
+msgstr "Інший дисплей ({0})"
 
 # VALUE_SET_REGEX
 #: VALUE_SET_REGEX
 msgid "matches (by regex)"
-msgstr "correspondências (por regex)"
+msgstr "матчі (за регулярним виразом)"
 
 # VALUE_SET_RULES_EXC
 #: VALUE_SET_RULES_EXC
 msgid "This value set excludes codes based on the following rules:"
-msgstr "Este conjunto de valores exclui códigos com base nas seguintes regras:"
+msgstr "Цей набір значень виключає коди на основі таких правил:"
 
 # VALUE_SET_RULES_INC
 #: VALUE_SET_RULES_INC
 msgid "This value set includes codes based on the following rules:"
-msgstr "Este conjunto de valores inclui códigos baseados nas seguintes regras:"
+msgstr "Цей набір значень включає коди, засновані на наступних правилах:"
 
 # VALUE_SET_SEL
 #: VALUE_SET_SEL
 msgid "This value set has >1000 codes in it. In order to keep the publication size manageable, only a selection (1000 codes) of the whole set of codes is shown"
-msgstr "Este conjunto de valores contém mais de 1000 códigos. A fim de manter o tamanho da publicação gerível, é apresentada apenas uma seleção (1000 códigos) de todo o conjunto de códigos"
+msgstr "Цей набір значень налічує >1000 кодів. Для того, щоб розмір публікації залишався керованим, відображається лише вибірка (1000 кодів) з усього набору кодів"
 
 # VALUE_SET_SNOMED
 #: VALUE_SET_SNOMED
 msgid "SNOMED CT {0} edition"
-msgstr "Edição SNOMED CT {0}"
+msgstr "КТ СНОМЕДА {0} видання"
 
 # VALUE_SET_SNOMED_ADD
 #: VALUE_SET_SNOMED_ADD
 msgid "SNOMED CT {0} edition {1}"
-msgstr "SNOMED CT {0} edição {1}"
+msgstr "КТ СНОМЕДА {0} видання {1}"
 
 # VALUE_SET_SPAN
 #: VALUE_SET_SPAN
 msgid "Spanish"
-msgstr "espanhol"
+msgstr "Іспанська"
 
 # VALUE_SET_SPEC_NAME
 #: VALUE_SET_SPEC_NAME
 msgid "Fully specified name"
-msgstr "Nome totalmente especificado"
+msgstr "Повністю вказане ім'я"
 
 # VALUE_SET_SWEDISH
 #: VALUE_SET_SWEDISH
 msgid "Swedish"
-msgstr "Sueco"
+msgstr "Шведська"
 
 # VALUE_SET_SYNONYM
 #: VALUE_SET_SYNONYM
 msgid "Synonym"
-msgstr "Sinónimo"
+msgstr "Синонім"
 
 # VALUE_SET_SYSTEM
 #: VALUE_SET_SYSTEM
 msgid "System"
-msgstr "Sistema"
+msgstr "Система"
 
 # VALUE_SET_THESE_CODES_DEF
 #: VALUE_SET_THESE_CODES_DEF
 msgid "these codes as defined in"
-msgstr "estes códigos, tal como definidos em"
+msgstr "ці коди, як визначено в"
 
 # VALUE_SET_TOO_COSTLY
 #: VALUE_SET_TOO_COSTLY
 msgid "This value set cannot be expanded because the terminology server(s) deemed it too costly to do so"
-msgstr "Este conjunto de valores não pode ser expandido porque o(s) servidor(es) terminológico(s) considerou(aram) demasiado dispendioso fazê-lo"
+msgstr "Цей набір значень не може бути розширений, оскільки термінологічний сервер (сервери) визнали його занадто дорогим для цього"
 
 # VALUE_SET_UK
 #: VALUE_SET_UK
 msgid "United Kingdom"
-msgstr "Reino Unido"
+msgstr "Великобританія"
 
 # VALUE_SET_UK_CLIN
 #: VALUE_SET_UK_CLIN
 msgid "UK Clinical Edition"
-msgstr "Edição clínica no Reino Unido"
+msgstr "Клінічне видання Великої Британії"
 
 # VALUE_SET_US
 #: VALUE_SET_US
 msgid "United States"
-msgstr "Estados Unidos"
+msgstr "США"
 
 # VALUE_SET_USED_ELSEWHERE
 #: VALUE_SET_USED_ELSEWHERE
 msgid "This value set is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr "Este conjunto de valores não é utilizado aqui; pode ser utilizado noutro local (por exemplo, especificações e/ou implementações que utilizem este conteúdo)"
+msgstr "Цей набір значень тут не використовується; він може використовуватися в інших місцях (наприклад, у специфікаціях та/або реалізаціях, які використовують цей контент)"
 
 # VALUE_SET_US_ICD10CM
 #: VALUE_SET_US_ICD10CM
 msgid "US Edition (with ICD-10-CM maps)"
-msgstr "Edição americana (com mapas ICD-10-CM)"
+msgstr "Видання для США (з картами МКХ-10-СМ)"
 
 # VALUE_SET_UY
 #: VALUE_SET_UY
 msgid "Uruguay Edition"
-msgstr "Edição do Uruguai"
+msgstr "Уругвайське видання"
 
 # VALUE_SET_WHERE
 #: VALUE_SET_WHERE
 msgid "where"
-msgstr "onde"
+msgstr "де"
 
 # VALUE_SET_WHERE_CODES
 #: VALUE_SET_WHERE_CODES
 msgid ", where the codes are contained in"
-msgstr ", onde os códigos estão contidos em"
+msgstr ", де коди містяться в"
 
 # VSR_LOGICAL
 #: VSR_LOGICAL
 msgid "Logical Definition (CLD)"
-msgstr ""
+msgstr "Логічне визначення (CLD)"
 
 # VSR_NO_DEF
 #: VSR_NO_DEF
 msgid "No formal definition provided for this value set"
-msgstr ""
+msgstr "Формального визначення цього набору значень не передбачено"
 
 # VSR_TRIGGER
 #: VSR_TRIGGER
 msgid "Used as a trigger criteria in"
-msgstr ""
+msgstr "Використовується як критерій тригера в"
 
 # VS_ABSTRACT_CODE_HINT
 #: VS_ABSTRACT_CODE_HINT
 msgid "This code is not selectable (''Abstract'')"
-msgstr "Este código não é selecionável (''Abstrato'')"
+msgstr "Цей код не можна вибрати (''Abstract'')"
 
 # _NA
 #: _NA
 msgid "n/a"
-msgstr "n/a"
+msgstr "Н/Д"
 
