@@ -8,15 +8,15 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class CommunicationRequest30_40Test {
+public class MedicationRequest30_40Test {
 
   @Test
-  public void convertCommunicationRequest30to40() throws IOException {
+  public void convertMedicationRequest30to40() throws IOException {
 
-    InputStream dstu3InputJson = this.getClass().getResourceAsStream("/communication_request_30.json");
-    InputStream r4ExpectedOutputJson = this.getClass().getResourceAsStream("/communication_request_30_converted_to_40.json");
+    InputStream dstu3InputJson = this.getClass().getResourceAsStream("/medication_request_30.json");
+    InputStream r4ExpectedOutputJson = this.getClass().getResourceAsStream("/medication_request_30_converted_to_40.json");
 
-    org.hl7.fhir.dstu3.model.CommunicationRequest dstu3Actual = (org.hl7.fhir.dstu3.model.CommunicationRequest) new org.hl7.fhir.dstu3.formats.JsonParser().parse(dstu3InputJson);
+    org.hl7.fhir.dstu3.model.MedicationRequest dstu3Actual = (org.hl7.fhir.dstu3.model.MedicationRequest) new org.hl7.fhir.dstu3.formats.JsonParser().parse(dstu3InputJson);
     org.hl7.fhir.r4.model.Resource r4Converted = VersionConvertorFactory_30_40.convertResource(dstu3Actual);
 
     org.hl7.fhir.r4.formats.JsonParser r4Parser = new org.hl7.fhir.r4.formats.JsonParser();
@@ -27,11 +27,11 @@ public class CommunicationRequest30_40Test {
   }
 
   @Test
-  void testCommunicationRequestConversion40To30() throws IOException {
-    InputStream r4InputJson = this.getClass().getResourceAsStream("/communication_request_40.json");
-    InputStream dstu3ExpectedOutputJson = this.getClass().getResourceAsStream("/communication_request_40_converted_to_30.json");
+  void testMedicationRequestConversion40To30() throws IOException {
+    InputStream r4InputJson = this.getClass().getResourceAsStream("/medication_request_40.json");
+    InputStream dstu3ExpectedOutputJson = this.getClass().getResourceAsStream("/medication_request_40_converted_to_30.json");
 
-    org.hl7.fhir.r4.model.CommunicationRequest r4Actual = (org.hl7.fhir.r4.model.CommunicationRequest) new org.hl7.fhir.r4.formats.JsonParser().parse(r4InputJson);
+    org.hl7.fhir.r4.model.MedicationRequest r4Actual = (org.hl7.fhir.r4.model.MedicationRequest) new org.hl7.fhir.r4.formats.JsonParser().parse(r4InputJson);
     org.hl7.fhir.dstu3.model.Resource dstu3Converted = VersionConvertorFactory_30_40.convertResource(r4Actual);
 
     org.hl7.fhir.dstu3.formats.JsonParser dstu3Parser = new org.hl7.fhir.dstu3.formats.JsonParser();
