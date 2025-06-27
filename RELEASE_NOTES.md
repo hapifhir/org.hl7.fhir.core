@@ -11,7 +11,7 @@
 * Provisional support for validating Bundle signatures in validator
   * `-cert` parameter for certificate sources, and add certificates folder to fhir-settings.json
 * Allow subclassing in structureMaps
-* Adjusts errors for broken internal links in Resource.meta.source for HAPI users
+* Adjust errors for broken internal links in Resource.meta.source for HAPI users
 * Improved validation for attachments
 * Do not pass experimental warning on from terminology server unless doing publishing
 * Add `-matchetype` parameter to validator 
