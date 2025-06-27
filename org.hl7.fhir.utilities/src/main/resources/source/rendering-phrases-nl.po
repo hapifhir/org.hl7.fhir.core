@@ -19,6 +19,18 @@ msgstr "Afgeleid van:"
 msgid "Type: {0}"
 msgstr "Type: {0}"
 
+# ACTOR_DERIVED_FROM
+#: ACTOR_DERIVED_FROM
+msgctxt "ACTOR_DERIVED_FROM"
+msgid "Derived From"
+msgstr ""
+
+# ACTOR_DERIVED_FROM_NONE
+#: ACTOR_DERIVED_FROM_NONE
+msgctxt "ACTOR_DERIVED_FROM_NONE"
+msgid "(none)"
+msgstr ""
+
 # ADD_BIND_ADD_BIND
 #: ADD_BIND_ADD_BIND
 msgid "Additional Bindings"
@@ -2458,6 +2470,7 @@ msgstr "Context"
 
 # QUEST_DERIVED
 #: QUEST_DERIVED
+msgctxt "QUEST_DERIVED"
 msgid "Derived From"
 msgstr "Afgeleid van"
 
@@ -3680,6 +3693,7 @@ msgstr "multipleOr: Het is aan de server of de parameter meerdere waarden kan be
 
 # SEARCH_PAR_NONE
 #: SEARCH_PAR_NONE
+msgctxt "SEARCH_PAR_NONE"
 msgid "(none)"
 msgstr "(geen)"
 
