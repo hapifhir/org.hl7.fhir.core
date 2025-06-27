@@ -148,6 +148,7 @@ public class Params {
   public static final String NO_HTTP_ACCESS = "-no-http-access";
   public static final String AUTH_NONCONFORMANT_SERVERS = "-authorise-non-conformant-tx-servers";
   public static final String R5_REF_POLICY = "r5-bundle-relative-reference-policy";
+  public static final String MATCHETYPE = "-matchetype";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -512,7 +513,17 @@ public class Params {
             validationContext.getCertSources().add(s);
           }
         }
-      } else if (args[i].equals(LOG)) {
+      } else if (args[i].equals(MATCHETYPE)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -matchetype without indicating file");
+        else {
+          String s = args[++i];
+          if (!(new File(s).exists())) {
+            throw new Error("-matchetype source '"+s+"'  not found");            
+          } else {
+            validationContext.getMatchetypes().add(s);
+          }
+        }} else if (args[i].equals(LOG)) {
         if (i + 1 == args.length)
           throw new Error("Specified -log without indicating file");
         else
