@@ -70,6 +70,7 @@ import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
+import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -115,6 +116,7 @@ import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.SchemaValidator;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.InstanceValidator;
+import org.hl7.fhir.validation.instance.MatchetypeValidator;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 import org.slf4j.LoggerFactory;
@@ -243,6 +245,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private List<ImplementationGuide> igs = new ArrayList<>();
   @Getter @Setter private List<String> extensionDomains = new ArrayList<>();
   @Getter @Setter private List<String> certSources = new ArrayList<>();
+  @Getter @Setter private List<String> matchetypes = new ArrayList<>();
 
   @Getter @Setter private boolean showTimes;
   @Getter @Setter private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
@@ -299,6 +302,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     igs.addAll(other.igs);
     extensionDomains.addAll(other.extensionDomains);
     certSources.addAll(other.certSources);
+    matchetypes.addAll(other.matchetypes);
     showTimes = other.showTimes;
     bundleValidationRules.addAll(other.bundleValidationRules);
     questionnaireMode = other.questionnaireMode;
@@ -711,7 +715,15 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       SchemaValidator.validateSchema(location, cntType, messages);
     }
     InstanceValidator validator = getValidator(cntType);
-    validator.validate(null, messages, new ByteArrayInputStream(source.getBytes()), cntType, asSdList(profiles));
+    Element res = validator.validate(null, messages, new ByteArrayInputStream(source.getBytes()), cntType, asSdList(profiles));
+    for (String fn : matchetypes) {
+      byte[] cnt = FileUtilities.fileToBytes(fn);
+      Element exp = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt), FormatUtilities.determineFormat(cnt));
+      MatchetypeValidator mv = new MatchetypeValidator(validator.getFHIRPathEngine());
+      List<ValidationMessage> mtErrors = new ArrayList<ValidationMessage>();
+      mv.compare(mtErrors, "$", exp, res);
+    }
+    
     if (showTimes) {
       log.info(location + ": " + validator.reportTimes());
     }

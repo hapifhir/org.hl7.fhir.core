@@ -611,6 +611,7 @@ public class ValidationService {
       }
     }
     validationEngine.getCertSources().addAll(validationContext.getCertSources());
+    validationEngine.getMatchetypes().addAll(validationContext.getMatchetypes());
     validationEngine.setLanguage(validationContext.getLang());
     validationEngine.setLocale(validationContext.getLocale());
     validationEngine.setSnomedExtension(validationContext.getSnomedCTCode());
