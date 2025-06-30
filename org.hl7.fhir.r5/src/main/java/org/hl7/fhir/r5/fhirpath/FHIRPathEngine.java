@@ -1606,7 +1606,7 @@ public class FHIRPathEngine {
           }
         }     
       }
-      if (tracer != null) tracer.traceExpression(context, focus, work, exp);
+      if (tracer != null) { tracer.traceExpression(context, focus, work, exp); }
       break;
     case Function:
       List<Base> work2 = evaluateFunction(context, focus, exp);
