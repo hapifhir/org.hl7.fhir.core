@@ -4078,28 +4078,6 @@ The primary difference between a medication statement and a medication administr
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Library> getLibraryTarget() { 
-      if (this.libraryTarget == null)
-        this.libraryTarget = new ArrayList<Library>();
-      return this.libraryTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Library addLibraryTarget() { 
-      Library r = new Library();
-      if (this.libraryTarget == null)
-        this.libraryTarget = new ArrayList<Library>();
-      this.libraryTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #kind} (A description of the kind of resource the activity definition is representing. For example, a MedicationRequest, a ProcedureRequest, or a CommunicationRequest. Typically, but not always, this is a Request resource.). This is the underlying object with id, value and extensions. The accessor "getKind" gives direct access to the value
      */
     public Enumeration<ActivityDefinitionKind> getKindElement() { 

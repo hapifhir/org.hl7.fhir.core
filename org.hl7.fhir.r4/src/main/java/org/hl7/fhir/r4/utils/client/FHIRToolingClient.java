@@ -344,6 +344,25 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     return (OperationOutcome) result.getPayload();
   }
 
+  @SuppressWarnings("unchecked")
+  public <T extends Resource> OperationOutcome validate(Resource resource, String id) {
+    recordUse();
+    ResourceRequest<T> result = null;
+    try {
+      result = client.issuePostRequest(resourceAddress.resolveValidateUri(resource.fhirType(), id),
+          ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat()), false),
+          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(true),
+          "POST " + resource.fhirType() + (id != null ? "/" + id : "") + "/$validate", timeoutLong);
+      if (result.isUnsuccessfulRequest()) {
+        throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(),
+            (OperationOutcome) result.getPayload());
+      }
+    } catch (Exception e) {
+      handleException(0, "An error has occurred while trying to validate this resource", e);
+    }
+    return (OperationOutcome) result.getPayload();
+  }
+
   /**
    * Helper method to prevent nesting of previously thrown EFhirClientExceptions. If the e param is an instance of
    * EFhirClientException, it will be rethrown. Otherwise, a new EFhirClientException will be thrown with e as the

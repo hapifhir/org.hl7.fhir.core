@@ -1344,28 +1344,6 @@ public class CareTeam extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Condition> getReasonReferenceTarget() {
-    if (this.reasonReferenceTarget == null)
-      this.reasonReferenceTarget = new ArrayList<Condition>();
-    return this.reasonReferenceTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Condition addReasonReferenceTarget() {
-    Condition r = new Condition();
-    if (this.reasonReferenceTarget == null)
-      this.reasonReferenceTarget = new ArrayList<Condition>();
-    this.reasonReferenceTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #managingOrganization} (The organization responsible for the
    *         care team.)
    */
@@ -1419,28 +1397,6 @@ public class CareTeam extends DomainResource {
       addManagingOrganization();
     }
     return getManagingOrganization().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Organization> getManagingOrganizationTarget() {
-    if (this.managingOrganizationTarget == null)
-      this.managingOrganizationTarget = new ArrayList<Organization>();
-    return this.managingOrganizationTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Organization addManagingOrganizationTarget() {
-    Organization r = new Organization();
-    if (this.managingOrganizationTarget == null)
-      this.managingOrganizationTarget = new ArrayList<Organization>();
-    this.managingOrganizationTarget.add(r);
-    return r;
   }
 
   /**

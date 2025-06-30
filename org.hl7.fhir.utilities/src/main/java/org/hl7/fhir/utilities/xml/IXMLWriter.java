@@ -86,8 +86,9 @@ public interface IXMLWriter {
 
 	public abstract void writeBytes(byte[] bytes) throws IOException;
 
-	public abstract boolean isPretty() throws IOException;
-	public abstract void setPretty(boolean pretty) throws IOException;
+  public abstract boolean isPretty() throws IOException;
+  public abstract void setPretty(boolean pretty) throws IOException;
+  public abstract boolean isCanonical() throws IOException;
 
 	/**
 	 * Start comment inserts a <!-- in the stream, but allows the user to 

@@ -2,6 +2,7 @@ package org.hl7.fhir.validation;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -69,6 +70,7 @@ import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
+import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -99,6 +101,7 @@ import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -113,6 +116,7 @@ import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.SchemaValidator;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.InstanceValidator;
+import org.hl7.fhir.validation.instance.MatchetypeValidator;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 import org.slf4j.LoggerFactory;
@@ -240,6 +244,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private Locale locale;
   @Getter @Setter private List<ImplementationGuide> igs = new ArrayList<>();
   @Getter @Setter private List<String> extensionDomains = new ArrayList<>();
+  @Getter @Setter private List<String> certSources = new ArrayList<>();
+  @Getter @Setter private List<String> matchetypes = new ArrayList<>();
 
   @Getter @Setter private boolean showTimes;
   @Getter @Setter private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
@@ -295,6 +301,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     locale = other.locale;
     igs.addAll(other.igs);
     extensionDomains.addAll(other.extensionDomains);
+    certSources.addAll(other.certSources);
+    matchetypes.addAll(other.matchetypes);
     showTimes = other.showTimes;
     bundleValidationRules.addAll(other.bundleValidationRules);
     questionnaireMode = other.questionnaireMode;
@@ -377,21 +385,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       extensionsVersion = null;
     }
 
-    /**
-     * @deprecated This method will be removed in a future release, and should not be used outside of this class.
-     * Use {@link #ValidationEngineBuilder()} instead.
-     */
-    @Deprecated
-    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, String thoVersion, String extensionsVersion) {
-      this(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, USE_ECOSYSTEM_DEFAULT, timeTracker, canRunWithoutTerminologyServer, loggingService, thoVersion, extensionsVersion);
-    }
-
-    /**
-     * @deprecated This method will be made private in a future release, and should not be used outside of this class.
-     * Use {@link #ValidationEngineBuilder()} instead.
-     */
-    @Deprecated
-    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, boolean useEcosystem, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, String thoVersion, String extensionsVersion) {
+    private ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, boolean useEcosystem, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, String thoVersion, String extensionsVersion) {
       this.terminologyCachePath = terminologyCachePath;
       this.userAgent = userAgent;
       this.version = version;
@@ -721,7 +715,15 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       SchemaValidator.validateSchema(location, cntType, messages);
     }
     InstanceValidator validator = getValidator(cntType);
-    validator.validate(null, messages, new ByteArrayInputStream(source.getBytes()), cntType, asSdList(profiles));
+    Element res = validator.validate(null, messages, new ByteArrayInputStream(source.getBytes()), cntType, asSdList(profiles));
+    for (String fn : matchetypes) {
+      byte[] cnt = FileUtilities.fileToBytes(fn);
+      Element exp = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt), FormatUtilities.determineFormat(cnt));
+      MatchetypeValidator mv = new MatchetypeValidator(validator.getFHIRPathEngine());
+      List<ValidationMessage> mtErrors = new ArrayList<ValidationMessage>();
+      mv.compare(mtErrors, "$", exp, res);
+    }
+    
     if (showTimes) {
       log.info(location + ": " + validator.reportTimes());
     }
@@ -908,6 +910,18 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
     validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
     validator.getExtensionDomains().clear();
+    validator.getExtensionDomains().addAll(extensionDomains);
+    validator.getSettings().getCertificateFolders().clear(); // they should be empty though
+    validator.getSettings().getCertificates().clear();
+    validator.getSettings().getCertificateFolders().addAll(FhirSettings.getCertificateSources());
+    for (String s : certSources) {
+      File f = ManagedFileAccess.file(s);
+      if (f.isDirectory()) {
+        validator.getSettings().getCertificateFolders().add(s);
+      } else {
+        validator.getSettings().getCertificates().put(s, FileUtilities.fileToBytes(f));
+      }
+    }
     validator.getExtensionDomains().addAll(extensionDomains);
     validator.setNoInvariantChecks(isNoInvariantChecks());
     validator.setWantInvariantInMessage(isWantInvariantInMessage());

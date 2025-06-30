@@ -18,7 +18,21 @@ public class Base64 {
 
   public static boolean isBase64(byte[] arrayOctet) {
     for(int i = 0; i < arrayOctet.length; ++i) {
-      if (!isBase64(arrayOctet[i]) && !isWhiteSpace(arrayOctet[i])) {
+      if (!isBase64Char(arrayOctet[i])) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  private static boolean isBase64Char(byte b) {
+    return isBase64(b) || isWhiteSpace(b);
+  }
+  
+  public static boolean isBase64(String content) {
+    for (char ch : content.toCharArray()) {
+      if (!isBase64Char((byte) ch)) {
         return false;
       }
     }

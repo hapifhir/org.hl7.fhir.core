@@ -277,6 +277,290 @@ msgstr "SearchSet bundles zouden search.mode op de entries moeten hebben"
 msgid "No types could be determined from the search string, so the types can''t be checked"
 msgstr "Er kunnen geen typen worden bepaald vanuit de zoekstring, dus de typen kunnen niet worden gecontroleerd"
 
+# BUNDLE_SIGNATURE_CANON_DIFF
+#: BUNDLE_SIGNATURE_CANON_DIFF
+msgid "The canonicalization in the digital signature is {0} which doesn't match the value {1} found in the targetFormat"
+msgstr ""
+
+# BUNDLE_SIGNATURE_CANON_ERROR
+#: BUNDLE_SIGNATURE_CANON_ERROR
+msgid "Error parsing the targetFormat ''{0}'': {1}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_CHECKED_DATA_B64
+#: BUNDLE_SIGNATURE_CHECKED_DATA_B64
+msgid "The signature data is not valid base64 content, but it looks like native application/jose, so it will be checked anyway"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_INVALID
+#: BUNDLE_SIGNATURE_DIGSIG_INVALID
+msgid "The digital signature is invalid XML: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_NO_CERT
+#: BUNDLE_SIGNATURE_DIGSIG_NO_CERT
+msgid "Didn''t find a provided X509 certificate in the digital signature, so can''t verify the signature"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_NO_REFERENCES
+#: BUNDLE_SIGNATURE_DIGSIG_NO_REFERENCES
+msgid "No references found in the digital signature SignedInfo"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_NO_SIG_TIME
+#: BUNDLE_SIGNATURE_DIGSIG_NO_SIG_TIME
+msgid "No SigningTime element found in the digital signature"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_NO_SV
+#: BUNDLE_SIGNATURE_DIGSIG_NO_SV
+msgid "Didn''t find a provided signedValue in the digital signature, so can''t verify the signature"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_REFERENCES_TOO_MANY
+#: BUNDLE_SIGNATURE_DIGSIG_REFERENCES_TOO_MANY
+msgid "Too many references found in the digital signature SignedInfo - not understood"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_REFERENCE_NOT_UNDERSTOOD
+#: BUNDLE_SIGNATURE_DIGSIG_REFERENCE_NOT_UNDERSTOOD
+msgid "The reference in the SignedInfo in the digital signature is ''{0}'' which is not understood (or correct?)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_REFERENCE_TYPE_NOT_UNDERSTOOD
+#: BUNDLE_SIGNATURE_DIGSIG_REFERENCE_TYPE_NOT_UNDERSTOOD
+msgid "The second reference in the SignedInfo in the digital signature has type ''{0}'' which is not understood (or correct?)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_SIGNED_INVALID
+#: BUNDLE_SIGNATURE_DIGSIG_SIGNED_INVALID
+msgid "The digital signature is not valid XML: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_SIGNED_INVALID_XML
+#: BUNDLE_SIGNATURE_DIGSIG_SIGNED_INVALID_XML
+msgid "The signed bytes provided could not be read - invalid XML Structure ({0})"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_SIGNED_MISMATCH
+#: BUNDLE_SIGNATURE_DIGSIG_SIGNED_MISMATCH
+msgctxt "BUNDLE_SIGNATURE_DIGSIG_SIGNED_MISMATCH"
+msgid "The signature cannot be valid because the content to sign ({0} bytes} is not the same as the signed content ({1} bytes)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_SIGNED_SAME
+#: BUNDLE_SIGNATURE_DIGSIG_SIGNED_SAME
+msgid "The signed bytes are identical, so the signature failure is not because the content changed. Check Canonicalization carefully (including whitespace)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_SIGNED_XML_MATCHES
+#: BUNDLE_SIGNATURE_DIGSIG_SIGNED_XML_MATCHES
+msgid "The actual XML structures of payload and canonicalized form do match, so the issue is in the canonicalization"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_SIGNED_XML_NO_MATCH
+#: BUNDLE_SIGNATURE_DIGSIG_SIGNED_XML_NO_MATCH
+msgid "The actual XML structures of payload and canonicalized form do not match: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_SIG_ERROR
+#: BUNDLE_SIGNATURE_DIGSIG_SIG_ERROR
+msgid "Error verifying the signature: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_WHEN_MISMATCH
+#: BUNDLE_SIGNATURE_DIGSIG_WHEN_MISMATCH
+msgid "The time in the digital signature {0} is not the same as the stated time {1}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_X509_ERROR
+#: BUNDLE_SIGNATURE_DIGSIG_X509_ERROR
+msgctxt "BUNDLE_SIGNATURE_DIGSIG_X509_ERROR"
+msgid "Unable to parse X509 Certificate: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_HEADER_CERT_NOT_FOUND
+#: BUNDLE_SIGNATURE_HEADER_CERT_NOT_FOUND
+msgid "Didn''t find a matching certificate for the ''kid'' {0} in the header, so can''t verify the signature"
+msgstr ""
+
+# BUNDLE_SIGNATURE_HEADER_CERT_NOT_FOUND_ERROR
+#: BUNDLE_SIGNATURE_HEADER_CERT_NOT_FOUND_ERROR
+msgid "Error scanning for certificate to match kid {0}: {1}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_HEADER_NO_KID_OR_CERT
+#: BUNDLE_SIGNATURE_HEADER_NO_KID_OR_CERT
+msgid "Didn''t find a provided certificate or a ''kid'' in the header, so can''t verify the signature"
+msgstr ""
+
+# BUNDLE_SIGNATURE_HEADER_NO_SIG_TIME
+#: BUNDLE_SIGNATURE_HEADER_NO_SIG_TIME
+msgid "The signature does not have a signing time (sigT in the header)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_HEADER_PARSE
+#: BUNDLE_SIGNATURE_HEADER_PARSE
+msgid "Error parsing the digital signature header: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH
+#: BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH
+msgid "The time in the signature {0} is not the same as the stated time {1}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_HEADER_X509_ERROR
+#: BUNDLE_SIGNATURE_HEADER_X509_ERROR
+msgctxt "BUNDLE_SIGNATURE_HEADER_X509_ERROR"
+msgid "Unable to parse X509 Certificate: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_NOT_CHECKED_DATA
+#: BUNDLE_SIGNATURE_NOT_CHECKED_DATA
+msgid "There is no actual signature data, so the {0} signature cannot be checked"
+msgstr ""
+
+# BUNDLE_SIGNATURE_NOT_CHECKED_DATA_B64
+#: BUNDLE_SIGNATURE_NOT_CHECKED_DATA_B64
+msgid "The signature data is not valid base64 content, so the signature cannot be checked"
+msgstr ""
+
+# BUNDLE_SIGNATURE_NOT_CHECKED_KIND
+#: BUNDLE_SIGNATURE_NOT_CHECKED_KIND
+msgid "The signature format ''{0}'' is not checked (known formats: application/jose and application/pkcs7-signature)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_NO_SIG_FORMAT
+#: BUNDLE_SIGNATURE_NO_SIG_FORMAT
+msgid "There is no value for sigFormat. In the absence of a stated signature format, the signature cannot be interpreted reliably (or validated)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_BASE64_DIFF
+#: BUNDLE_SIGNATURE_PAYLOAD_BASE64_DIFF
+msgid "The signed bytes are identical, but the base64 representations differ"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_CANON_DEFAULT
+#: BUNDLE_SIGNATURE_PAYLOAD_CANON_DEFAULT
+msgid "No canonicalization found, so using {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_INVALID
+#: BUNDLE_SIGNATURE_PAYLOAD_INVALID
+msgid "The payload provided could not be read - invalid Base64 content ({0})"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_INVALID_JSON
+#: BUNDLE_SIGNATURE_PAYLOAD_INVALID_JSON
+msgid "The payload provided could not be read - invalid JSON Structure ({0})"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_JSON_MATCHES
+#: BUNDLE_SIGNATURE_PAYLOAD_JSON_MATCHES
+msgid "The actual JSON structures of payload and canonicalized form do match, so the issue is in the canonicalization"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_JSON_NO_MATCH
+#: BUNDLE_SIGNATURE_PAYLOAD_JSON_NO_MATCH
+msgid "The actual JSON structures of payload and canonicalized form do not match: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_MISMATCH
+#: BUNDLE_SIGNATURE_PAYLOAD_MISMATCH
+msgctxt "BUNDLE_SIGNATURE_PAYLOAD_MISMATCH"
+msgid "The signature cannot be valid because the content to sign ({0} bytes} is not the same as the signed content ({1} bytes)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_PRESENT
+#: BUNDLE_SIGNATURE_PAYLOAD_PRESENT
+msgid "The signature has a payload, but the signature should be a detached signature with no payload"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIGNED_AT
+#: BUNDLE_SIGNATURE_SIGNED_AT
+msgid "The content claims to have been signed at {0}, but this has not been verified"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIGNED_AT_VERIFIED
+#: BUNDLE_SIGNATURE_SIGNED_AT_VERIFIED
+msgid "The content was signed at {0} (and this has been verified by the signature)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIGNED_BY
+#: BUNDLE_SIGNATURE_SIGNED_BY
+msgid "The content claims to have been signed by {0}, but this has not been verified"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIGNED_BY_VERIFIED
+#: BUNDLE_SIGNATURE_SIGNED_BY_VERIFIED
+msgid "The content was signed by {0} (and this has been verified by the signature)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_DIGEST_MISMATCH
+#: BUNDLE_SIGNATURE_SIG_DIGEST_MISMATCH
+msgid "The digest value for the signed content doesn''t match the provided content ({0} vs {1}). The signature is not valid"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_DIGEST_MISMATCH_XADES
+#: BUNDLE_SIGNATURE_SIG_DIGEST_MISMATCH_XADES
+msgid "The digest value for the XaDeS signed content doesn''t match the provided content ({0} vs {1}). The signature is not valid. Check XML canonicalization carefully, particularly with regard to whitespace and namespaces"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_ERROR
+#: BUNDLE_SIGNATURE_SIG_ERROR
+msgid "Error verifying the signature against the certificate: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_FAIL_CERT
+#: BUNDLE_SIGNATURE_SIG_FAIL_CERT
+msgid "The signature did not verify against the provided certificate"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_FAIL_CERT_ID
+#: BUNDLE_SIGNATURE_SIG_FAIL_CERT_ID
+msgid "The signature did not verify against the provided certificate (key id = {0})"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_FAIL_KID
+#: BUNDLE_SIGNATURE_SIG_FAIL_KID
+msgid "The signature did not verify against the certificate using the key with id {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_FORMAT_JOSE
+#: BUNDLE_SIGNATURE_SIG_FORMAT_JOSE
+msgid "Signature looks like application/jose, so validating accordingly"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_INVALID
+#: BUNDLE_SIGNATURE_SIG_INVALID
+msgid "The actual signature is not valid base64: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_OK
+#: BUNDLE_SIGNATURE_SIG_OK
+msgid "The signature verified OK"
+msgstr ""
+
+# BUNDLE_SIGNATURE_WHO_MISMATCH
+#: BUNDLE_SIGNATURE_WHO_MISMATCH
+msgid "The  Signature.who.identifier ''{0}'' does not match a subject value from the certificate (one of {1})"
+msgstr ""
+
+# BUNDLE_SIGNATURE_WHO_NOT_IN_CERT
+#: BUNDLE_SIGNATURE_WHO_NOT_IN_CERT
+msgid "The Signature.who value is not found in the digital signature"
+msgstr ""
+
+# BUNDLE_SIGNATURE_WHO_NO_INFO
+#: BUNDLE_SIGNATURE_WHO_NO_INFO
+msgid "Neither the digital signature nor Signature.who are provided to identify the signer"
+msgstr ""
+
+# BUNDLE_SIGNATURE_WHO_RECOMMENDED
+#: BUNDLE_SIGNATURE_WHO_RECOMMENDED
+msgid "A certificate subject identifier should also be found in Signature.who.identifier (one of {0})"
+msgstr ""
+
 # Bad_file_path_error
 #: Bad_file_path_error
 msgid "** Error: The file name you passed in, ''{0}'', doesn''t exist on the local filesystem. Please verify that this is valid file location **"
@@ -2680,27 +2964,27 @@ msgstr "Dit object is gedefinieerd als keyed Array in Json maar de key eigenscha
 
 # OPDEF_PROFILE_NOT_FOUND
 #: OPDEF_PROFILE_NOT_FOUND
-msgid "The {0} profile ''{1}'' can not be resolved"
+msgid "The ''{0}'' profile ''{1}'' can not be resolved"
 msgstr ""
 
 # OPDEF_PROFILE_NOT_IN_PARAM
 #: OPDEF_PROFILE_NOT_IN_PARAM
-msgid "The {0} profile defines a parameter ''{1}'' but this is not in the parameters list"
+msgid "The ''{0}'' profile {2} defines a parameter ''{1}'' but this is not in the parameters list in the operation definition"
 msgstr ""
 
 # OPDEF_PROFILE_NOT_IN_PROFILE
 #: OPDEF_PROFILE_NOT_IN_PROFILE
-msgid "The {0} profile does not have a parameter ''{1}'' but it is in the parameters list"
+msgid "The ''{0}'' profile does not have a parameter ''{1}'' but it is in the parameters list in the operation definition"
 msgstr ""
 
 # OPDEF_PROFILE_NOT_PARAMETERS
 #: OPDEF_PROFILE_NOT_PARAMETERS
-msgid "The {0} profile ''{1}'' is not a profile on the ''Parameters'' resource"
+msgid "The ''{0}'' profile ''{1}'' is not a profile on the ''Parameters'' resource"
 msgstr ""
 
 # OPDEF_PROFILE_NOT_VALUE_MISMATCH
 #: OPDEF_PROFILE_NOT_VALUE_MISMATCH
-msgid "The parameter ''{1}'' has a value for ''{2}'' of ''{4}'' in the {0} profile that is different to ''{3}'' which is the value in the parameter definition"
+msgid "The parameter ''{1}'' has a value for ''{2}'' of ''{4}'' in the ''{0}'' profile {4} that is different to ''{3}'' which is the value in the parameter definition in the operation definition"
 msgstr ""
 
 # OPDEF_PROFILE_NO_FIXED
@@ -2710,27 +2994,27 @@ msgstr ""
 
 # OPDEF_PROFILE_NO_SLICE
 #: OPDEF_PROFILE_NO_SLICE
-msgid "The slice ''{1}'' in the {0} profile does not have an entry for the parameter name"
+msgid "The slice ''{1}'' in the {0} profile does not have a sub-slice for the parameter name"
 msgstr ""
 
 # OPDEF_PROFILE_PROFILE_NOT_IN_PARAMS
 #: OPDEF_PROFILE_PROFILE_NOT_IN_PARAMS
-msgid "The target profile ''{2}'' is allowed for the parameter ''{1}'' in the  {0} profile but not in the list of target profiles for the parameter: {3}"
+msgid "The target profile ''{2}'' is allowed for the parameter ''{1}'' in the ''{0}'' profile {4} but is not in the list of target profiles for the parameter in the operation definition: {3}"
 msgstr ""
 
 # OPDEF_PROFILE_PROFILE_NOT_IN_PROFILE
 #: OPDEF_PROFILE_PROFILE_NOT_IN_PROFILE
-msgid "The target profile ''{2}'' is not allowed for the parameter ''{1}'' in the  {0} profile but is in the list of target profiles for the parameter (target profiles = {3})"
+msgid "The target profile ''{2}'' is not allowed for the parameter ''{1}'' in the ''{0}'' profile but is in the list of target profiles for the parameter in the operation definition (profile target profiles = {3})"
 msgstr ""
 
 # OPDEF_PROFILE_TYPE_NOT_IN_PARAMS
 #: OPDEF_PROFILE_TYPE_NOT_IN_PARAMS
-msgid "The type ''{2}'' is allowed for the parameter ''{1}'' in the  {0} profile but is not in the list of allowed types for the parameter: {3}"
+msgid "The type ''{2}'' is allowed for the parameter ''{1}'' in the ''{0}'' profile {4} but is not in the list of allowed types for the parameter in the operation definition: {3}"
 msgstr ""
 
 # OPDEF_PROFILE_TYPE_NOT_IN_PROFILE
 #: OPDEF_PROFILE_TYPE_NOT_IN_PROFILE
-msgid "The type ''{2}'' is not allowed for the parameter ''{1}'' in the  {0} profile but is in the list of allowed types for the parameter (profile types = {3})"
+msgid "The type ''{2}'' is not allowed for the parameter ''{1}'' in the ''{0}'' profile {4} but is in the list of allowed types for the parameter in the operation definition (allowed types = {3})"
 msgstr ""
 
 # Object_must_have_some_content
@@ -4567,6 +4851,16 @@ msgstr "Canonical url''s moeten absolute url''s zijn, als het geen fragmentverwi
 msgid "Canonical URLs in contained resources must be absolute URLs if present ({0})"
 msgstr "Canonical url''s in contained resources moeten absolute url''s zijn indien aanwezig ({0})"
 
+# TYPE_SPECIFIC_CHECKS_DT_ATT_B64_DECODE_FAIL
+#: TYPE_SPECIFIC_CHECKS_DT_ATT_B64_DECODE_FAIL
+msgid "The base64 content in the {0} element is not valid base64: {1}"
+msgstr ""
+
+# TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH
+#: TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH
+msgid "The hash of the data did not match the data"
+msgstr ""
+
 # TYPE_SPECIFIC_CHECKS_DT_ATT_NO_CONTENT
 #: TYPE_SPECIFIC_CHECKS_DT_ATT_NO_CONTENT
 msgid "Attachments have data and/or url, or else SHOULD have either contentType and/or language"
@@ -4821,6 +5115,16 @@ msgstr "UCUM-codes met menselijk leesbare annotaties zoals {0} kunnen misleidend
 #: TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE
 msgid "Example URLs are not allowed in this context ({0})"
 msgstr "Voorbeeld URL''s zijn niet toegestaan in deze context ({0})"
+
+# TYPE_SPECIFIC_CHECKS_DT_URL_INTERNAL
+#: TYPE_SPECIFIC_CHECKS_DT_URL_INTERNAL
+msgid "The URL value ''{0}'' is invalid because there is no matching target"
+msgstr ""
+
+# TYPE_SPECIFIC_CHECKS_DT_URL_INTERNAL_WARN
+#: TYPE_SPECIFIC_CHECKS_DT_URL_INTERNAL_WARN
+msgid "The URL value ''{0}'' might be wrong because it appears to point to an internal target, but there is no matching target"
+msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_XHTML_ACTIVE_HREF
 #: TYPE_SPECIFIC_CHECKS_DT_XHTML_ACTIVE_HREF
@@ -5989,6 +6293,11 @@ msgstr "De operation ''{0}'' is niet toegestaan voor eigenschap ''{1}'' in syste
 msgid "The value for a filter based on property ''{0}'' must be either ''true'' or ''false'', not ''{1}''"
 msgstr "De waarde voor een filter gebaseerd op eigenschap ''{0}'' moet ''true'' of ''false'' zijn, niet ''{1}''"
 
+# VALUESET_BAD_FILTER_VALUE_CANT_CHECK
+#: VALUESET_BAD_FILTER_VALUE_CANT_CHECK
+msgid "The value ''{1}'' for the filter {0} can''t be checked: {2}"
+msgstr ""
+
 # VALUESET_BAD_FILTER_VALUE_CODED
 #: VALUESET_BAD_FILTER_VALUE_CODE
 msgid "The value for a filter based on property ''{0}'' must be a valid code, not ''{1}''"
@@ -6023,6 +6332,11 @@ msgstr "De filterwaarde heeft een komma maar de operation is anders dan ''in'' e
 #: VALUESET_BAD_FILTER_VALUE_INTEGER
 msgid "The value for a filter based on property ''{0}'' must be integer value, not ''{1}''"
 msgstr "De waarde voor een filter gebaseerd op eigenschap ''{0}'' moet een integer zijn, niet ''{1}''"
+
+# VALUESET_BAD_FILTER_VALUE_INVALID
+#: VALUESET_BAD_FILTER_VALUE_INVALID
+msgid "The value ''{1}'' for the filter {0} is invalid: {2}"
+msgstr ""
 
 # VALUESET_BAD_FILTER_VALUE_VALID_CODE_CHANGE
 #: VALUESET_BAD_FILTER_VALUE_VALID_CODE
@@ -6489,6 +6803,13 @@ msgid_plural "Slice ''{3}'': minimum required = {0}, but only found {7} (from {1
 msgstr[0] "Slice ''{3}'': een matching slice is verplicht, maar niet gevonden (van {1}). Merk op dat andere slices zijn toegestaan naast de verplichte slice"
 msgstr[1] "Slice ''{3}'': minimum vereist = {0}, maar slechts {7} gevonden (van {1})"
 
+# Validation_VAL_Profile_Minimum_SLICE_EXT
+#: Validation_VAL_Profile_Minimum_SLICE_EXT
+msgid "Slice ''{3}'' for extension ''{8}'': a matching slice is required, but not found (from {1}). Note that other slices are allowed in addition to this required slice"
+msgid_plural "Slice ''{3}'' for extension ''{8}'': minimum required = {0}, but only found {7} (from {1})"
+msgstr[0] ""
+msgstr[1] ""
+
 # Validation_VAL_Profile_NoCheckMax
 #: Validation_VAL_Profile_MultipleMatches
 msgid "Found multiple matching profiles among {0} choice: {1}"
@@ -6677,10 +6998,25 @@ msgstr "!!Het attribuut ''xml:space'' is geldig maar heeft vaste waarde ''preser
 msgid "Invalid attribute name in the XHTML (''{0}'' on ''{1}'')"
 msgstr "Ongeldig attribuut in de XHTML (''{0}'' op ''{1}'')"
 
+# XHTML_XHTML_BAD_ELEMENT_TYPE
+#: XHTML_XHTML_BAD_ELEMENT_TYPE
+msgid "Elements of type [{0}] cannot appear at {1}"
+msgstr ""
+
+# XHTML_XHTML_BLOCK_IN_PARA
+#: XHTML_XHTML_BLOCK_IN_PARA
+msgid "Found block structures inside a paragraph/text element {0} at {1}: {2}"
+msgstr ""
+
 # XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA
 #: XHTML_XHTML_DOCTYPE_ILLEGAL
 msgid "Malformed XHTML: Found a DocType declaration, and these are not allowed (XXE security vulnerability protection)"
 msgstr "Misvormde XHTML: DocType declaratie gevonden en deze zijn niet toegestaan (bescherming tegen XXE veiligheidsrisico)"
+
+# XHTML_XHTML_DUPLICATE_IDS
+#: XHTML_XHTML_DUPLICATE_IDS
+msgid "The XHTML  the resource contains more than one node for each of the following node ids and anchor names: {0}"
+msgstr ""
 
 # XHTML_XHTML_Element_Illegal
 #: XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA
@@ -6697,6 +7033,11 @@ msgstr "Ongeldig element in de XHTML (''{0}'')"
 msgid "Invalid entity in the XHTML (''{0}'')"
 msgstr "Ongeldige entity in de XHTML (''{0}'')"
 
+# XHTML_XHTML_ILLEGAL_CHILDREN
+#: XHTML_XHTML_ILLEGAL_CHILDREN
+msgid "Elements of type {0} at {1} cannot have the following children: {2}"
+msgstr ""
+
 # XHTML_XHTML_NS_InValid
 #: XHTML_XHTML_Image_Reference_Illegal
 msgid "Invalid Image Reference in the XHTML (''{0}'')"
@@ -6705,6 +7046,16 @@ msgstr "Ongeldige afbeeldingreferentie in de XHTML (''{0}'')"
 # XHTML_XHTML_MIXED_LANG
 #: XHTML_XHTML_MIXED_LANG
 msgid "The xhtml has some language sections ({0}), and also has content that is not in a language section"
+msgstr ""
+
+# XHTML_XHTML_NO_CHILDREN
+#: XHTML_XHTML_NO_CHILDREN
+msgid "Elements of type {0} cannot have children"
+msgstr ""
+
+# XHTML_XHTML_NO_RECURSION
+#: XHTML_XHTML_NO_RECURSION
+msgid "Elements of type {0} at {1} cannot contain nested {0} at {2}"
 msgstr ""
 
 # XHTML_XHTML_Name_Invalid
@@ -6716,6 +7067,11 @@ msgstr "Verkeerde namespace op de XHTML (''{0}'', moet zijn ''{1}'')"
 #: XHTML_XHTML_Name_Invalid
 msgid "Wrong name on the XHTML (''{0}'') - must start with div"
 msgstr "Verkeerde naam in de XHTML (''{0}'') - moet beginnen met div"
+
+# XHTML_XHTML_OUT_OF_PLACE
+#: XHTML_XHTML_OUT_OF_PLACE
+msgid "Elements of type {0} must be in a {1}, not a {2} at {3}"
+msgstr ""
 
 # XSI_TYPE_WRONG
 #: XSI_TYPE_UNNECESSARY

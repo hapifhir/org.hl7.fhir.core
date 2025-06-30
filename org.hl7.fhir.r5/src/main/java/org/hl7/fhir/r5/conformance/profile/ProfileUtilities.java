@@ -2203,6 +2203,9 @@ public class ProfileUtilities {
                 if (processRelatives && webUrl != null && !issLocalFileName(url, localFilenames)) {
 
                   b.append(webUrl);
+                  if (!Utilities.noString(webUrl) && !webUrl.endsWith("/")) {
+                    b.append("/");
+                  }
                 } else {
                   //DO NOTHING
                 }

@@ -2209,16 +2209,6 @@ public class MessageHeader extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getFocusTarget() {
-    if (this.focusTarget == null)
-      this.focusTarget = new ArrayList<Resource>();
-    return this.focusTarget;
-  }
-
-  /**
    * @return {@link #definition} (Permanent link to the MessageDefinition for this
    *         message.). This is the underlying object with id, value and
    *         extensions. The accessor "getDefinition" gives direct access to the

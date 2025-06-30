@@ -656,11 +656,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     switch (nodeType) {
     case Document: 
     case Element:
-      try {
-        return new XhtmlComposer(XhtmlComposer.HTML).compose(this);
-      } catch (IOException e) {
-        return super.toString();
-      }
+      return new XhtmlComposer(XhtmlComposer.HTML).compose(this);
     case Text:
       return this.content;
     case Comment:
@@ -994,6 +990,14 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return hasAttribute("class", name);
   }
 
+  public XhtmlNode clss(String name) {
+    if (hasAttribute("class")) {
+      setAttribute("class", getAttribute("class")+" "+name);      
+    } else {
+      setAttribute("class", name);
+    }
+    return this;
+  }
 
   public void styleCells(XhtmlNode x) {
     setUserData("cells", x);    

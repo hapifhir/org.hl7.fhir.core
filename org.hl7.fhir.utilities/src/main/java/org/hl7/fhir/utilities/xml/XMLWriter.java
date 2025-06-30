@@ -54,9 +54,10 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
 	private OutputStream stream;
 	private boolean started = false;
 	private String[] specialAttributeNames = new String[] {"id", "name" };
-	private boolean sortAttributes;
+	private boolean canonical;
 	private int attributeLineWrap;
   private boolean xml1_1;
+  private boolean ignoreComments;
 	
 	public final static int LINE_UNIX = 0;
 	public final static int LINE_WINDOWS = 1;
@@ -205,7 +206,7 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
 	
 	private void writeAttributes(int col) throws IOException {
 		commitAttributes();
-		if (attributes != null && sortAttributes)
+		if (attributes != null && canonical)
 			sortAttributes();	
 		int c = col;
 		c = writeAttributeSet(true, c, col);
@@ -470,6 +471,9 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
 	 */
 	@Override
 	public void comment(String comment, boolean doPretty) throws IOException {
+	  if (ignoreComments) {
+	    return;
+	  }
 		checkStarted();
 		if (pendingClose) { 
 			write('>');
@@ -806,16 +810,12 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
 		levels.current().setInComment(false);
 	}
 
-	public boolean isSortAttributes() {
-		return sortAttributes;
-	}
-
-	public void setSortAttributes(boolean sortAttributes) {
-		this.sortAttributes = sortAttributes;
-	}
 
 
-	public boolean isPrettyHeader() {
+	public void setCanonical(boolean canonical) {
+    this.canonical = canonical;
+  }
+  public boolean isPrettyHeader() {
 		return prettyHeader;
 	}
 
@@ -923,6 +923,17 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
   @Override
   public void elide() throws IOException {
     // ignore this
+  }
+  public boolean isIgnoreComments() {
+    return ignoreComments;
+  }
+  public void setIgnoreComments(boolean ignoreComments) {
+    this.ignoreComments = ignoreComments;
+  }
+  @Override
+  public boolean isCanonical() throws IOException {
+    // TODO Auto-generated method stub
+    return false;
   }
 
 }

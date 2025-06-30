@@ -5,12 +5,14 @@
 	<parent>
 		<groupId>ca.uhn.hapi.fhir</groupId>
 		<artifactId>org.hl7.fhir.core</artifactId>
-		<version>6.5.27-SNAPSHOT</version>
+		<version>6.5.28-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
     <artifactId>org.hl7.fhir.dstu2016may</artifactId>
     <packaging>bundle</packaging>
+
+    <name>HL7 Core Artifact - DSTU2016May</name>
 
     <properties>
         <checkstyle_config_location>${project.parent.basedir}</checkstyle_config_location>

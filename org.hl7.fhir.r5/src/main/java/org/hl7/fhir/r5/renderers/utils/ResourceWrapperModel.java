@@ -205,6 +205,14 @@ public class ResourceWrapperModel extends ResourceWrapper {
   public String getId() {
     return model.getIdBase(); 
   }
+  public boolean hasId() {
+    return model.getIdBase() != null; 
+  }
+  
+  public ResourceWrapper setId(String id) {
+    model.setIdBase(id);
+    return this;
+  }
   
   @Override
   public String toString() {

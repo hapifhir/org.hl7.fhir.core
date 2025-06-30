@@ -62,6 +62,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.NamingSystem;
+import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
@@ -643,7 +644,7 @@ public interface IWorkerContext {
    */
   public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs);
   public void validateCodeBatchByRef(ValidationOptions options, List<? extends CodingValidationRequest> codes, String vsUrl);
-
+  public OperationOutcome validateTxResource(ValidationOptions options, Resource resource);
 
   // todo: figure these out
   public Map<String, NamingSystem> getNSUrlMap();
@@ -729,21 +730,6 @@ public interface IWorkerContext {
    * @return the number of resources loaded
    */
   int loadFromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException;
-
-  /**
-   * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package
-   * 
-   * note that the package system uses lazy loading; the loader will be called later when the classes that use the context need the relevant resource
-   *
-   * Deprecated - use the simpler method where the types come from the loader.
-   * 
-   * @param pi - the package to load
-   * @param loader - an implemenation of IContextResourceLoader that knows how to read the resources in the package (e.g. for the appropriate version).
-   * @param types - which types of resources to load
-   * @return the number of resources loaded
-   */
-  @Deprecated
-  int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, Set<String> types) throws FileNotFoundException, IOException, FHIRException;
 
   /**
    * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package
