@@ -37,18 +37,22 @@ import org.hl7.fhir.r5.elementmodel.ParserBase;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base.ValidationMode;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MimeType;
+import org.hl7.fhir.utilities.OIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.InstanceValidator;
@@ -1017,7 +1021,6 @@ public class BundleValidator extends BaseValidator {
           if (d != null) {
             hint(errors, null, IssueType.INFORMATIONAL, stack, false, "Signature Verification is a work in progress. Feedback welcome at https://chat.fhir.org/#narrow/channel/179247-Security-and-Privacy/topic/Signature/with/524324965");                
             ok = validateSignatureDigSig(errors, bundle, stack, signature, d) && ok;
-
           }
         }
       } else if ("application/jose".equals(sigFormat)) {
@@ -1070,7 +1073,11 @@ public class BundleValidator extends BaseValidator {
       
       // 1. Signature time
       Element when = signature.getNamedChild("when");
-      String sigT = header.asString("sigT"); // JAdes signature time 
+      String sigT = header.asString("sigT"); // JAdes signature time
+      if (sigT != null && Utilities.isInteger(sigT)) {
+        warning(errors, "2025-06-13", IssueType.INVALID, stack, false, I18nConstants.BUNDLE_SIGNATURE_HEADER_SIG_TIME_WRONG_FORMAT, sigT); 
+        sigT = DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochSecond(Long.valueOf(sigT)));
+      }
       if (sigT == null && header.has("iat")) {
         sigT = DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochSecond(Long.valueOf(header.asString("iat"))));
       }
@@ -1111,7 +1118,41 @@ public class BundleValidator extends BaseValidator {
         xml = canon.contains("xml");
       }
       
-      // 3. certificate 
+      // 3. purpose
+      String purpose = getPurpose(header);
+      String purposeDesc = getPurposeDesc(header);
+      boolean purposeOk = false;
+      List<Element> types = signature.getChildren("type");
+      for (Element type : types) {
+        String p = null;
+        String system = type.getNamedChildValue("system");
+        String code = type.getNamedChildValue("code"); 
+        if (OIDUtilities.isValidOID(code)) {
+          p = "urn:oid:"+code;
+        } else {
+          p = system+"#"+code;
+        }
+        if (purpose == null) {
+          purpose = p;
+          ValidationResult vr = context.validateCode(settings, system, null, code, null);
+          if (vr.isOk()) {
+            purposeDesc = vr.getDisplay();
+          }
+          break;
+        } else if (purpose.equals(p)) {
+          purposeOk = true;
+          if (purposeDesc == null) {
+            ValidationResult vr = context.validateCode(settings, system, null, code, null);
+            if (vr.isOk()) {
+              purposeDesc = vr.getDisplay();
+            }
+          }
+          break;
+        }
+      }
+      
+      
+      // 4. certificate 
       // first, we try to extract the certificate from the signature 
       X509Certificate cert = null;
       JWK jwk = null;
@@ -1254,6 +1295,13 @@ public class BundleValidator extends BaseValidator {
               hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIGNED_AT, sigT);
             }
           }
+          if (purpose != null) {
+            if (verified && purposeOk) {
+              hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIGNED_FOR_VERIFIED, purpose, purposeDesc);              
+            } else {
+              hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIGNED_FOR, purpose, purposeDesc);
+            }
+          }
 
         } catch (Exception e) {
           ok = false;
@@ -1266,6 +1314,28 @@ public class BundleValidator extends BaseValidator {
   }
 
   
+  private String getPurpose(JsonObject header) {
+    if (header.has("srCms")) {
+      JsonArray srCms = header.getJsonArray("srCms");
+      if (srCms.size() > 0 && srCms.get(0).isJsonObject()) {
+        JsonObject commId = srCms.get(0).asJsonObject().getJsonObject("commId");
+        return commId.asString("id");
+      }
+    }
+    return null;
+  }
+
+  private String getPurposeDesc(JsonObject header) {
+    if (header.has("srCms")) {
+      JsonArray srCms = header.getJsonArray("srCms");
+      if (srCms.size() > 0 && srCms.get(0).isJsonObject()) {
+        JsonObject commId = srCms.get(0).asJsonObject().getJsonObject("commId");
+        return commId.asString("desc");
+      }
+    }
+    return null;
+  }
+
   private byte[] makeSignableBundle(Element bundle, String canon, boolean xml) throws IOException, InvalidCanonicalizerException, CanonicalizationException, ParserConfigurationException, SAXException {
     byte[] toSign;
     ByteArrayOutputStream ba = new ByteArrayOutputStream();
@@ -1393,8 +1463,41 @@ public class BundleValidator extends BaseValidator {
         }
         xml = canon.contains("xml");
       }
+
+      // 3. purpose
+      String purpose = dsig.getPurpose();
+      String purposeDesc = dsig.getPurposeDesc();
+      boolean purposeOk = false;
+      List<Element> types = signature.getChildren("type");
+      for (Element type : types) {
+        String p = null;
+        String system = type.getNamedChildValue("system");
+        String code = type.getNamedChildValue("code"); 
+        if (OIDUtilities.isValidOID(code)) {
+          p = "urn:oid:"+code;
+        } else {
+          p = system+"#"+code;
+        }
+        if (purpose == null) {
+          purpose = p;
+          ValidationResult vr = context.validateCode(settings, system, null, code, null);
+          if (vr.isOk()) {
+            purposeDesc = vr.getDisplay();
+          }
+          break;
+        } else if (purpose.equals(p)) {
+          purposeOk = true;
+          if (purposeDesc == null) {
+            ValidationResult vr = context.validateCode(settings, system, null, code, null);
+            if (vr.isOk()) {
+              purposeDesc = vr.getDisplay();
+            }
+          }
+          break;
+        }
+      }
       
-      // 3. certificate 
+      // 4. certificate 
       // first, we try to extract the certificate from the signature 
       X509Certificate cert = null;
       JWK jwk = null;
@@ -1524,6 +1627,13 @@ public class BundleValidator extends BaseValidator {
           } else if (sigT != null) {
             hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIGNED_AT, sigT);                
           }
+          if (purpose != null) {
+            if (verified && purposeOk) {
+              hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIGNED_FOR_VERIFIED, purpose, purposeDesc);              
+            } else {
+              hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIGNED_FOR, purpose, purposeDesc);
+            }
+          }
 
         } catch (Exception e) {
           ok = false;
@@ -1548,7 +1658,7 @@ public class BundleValidator extends BaseValidator {
         expectedDigest = XMLUtil.getNamedChildText(dsig.getXadesReference(), "DigestValue");            
         rule(errors, "2025-06-13", IssueType.VALUE, stack, actualDigest.equals(expectedDigest), I18nConstants.BUNDLE_SIGNATURE_SIG_DIGEST_MISMATCH_XADES, actualDigest, expectedDigest); 
       }
-      byte[] signedInfoBytes = DigitalSignatureSupport.buildSignInfoXades(cert, toSign, canon, xc, "check-"+name).getSignable();
+      byte[] signedInfoBytes = DigitalSignatureSupport.buildSignInfoXades(cert, toSign, canon, xc, "check-"+name, null, null).getSignable();
 
       // Map XML DSig algorithm to Java algorithm
       String javaAlgorithm;
