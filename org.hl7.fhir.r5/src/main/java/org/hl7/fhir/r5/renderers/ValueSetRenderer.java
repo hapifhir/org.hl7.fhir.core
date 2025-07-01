@@ -1505,15 +1505,15 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (hasDefinition) {
       td = tr.td();
       if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION)) {
-        smartAddText(td, ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_DEFINITION));
+        td.addTextWithLineBreaks(ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_DEFINITION));
       } else if (cc != null && !Utilities.noString(cc.getDefinition())) {
-        smartAddText(td, cc.getDefinition());
+        td.addTextWithLineBreaks(cc.getDefinition());
       }
     }
     if (hasComments) {
       td = tr.td();
       if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_VS_COMMENT)) {
-        smartAddText(td, context.formatPhrase(RenderingContext.VALUE_SET_NOTE, ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_VS_COMMENT)+" "));
+        td.addTextWithLineBreaks(context.formatPhrase(RenderingContext.VALUE_SET_NOTE, ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_VS_COMMENT)+" "));
       }
     }
     if (doDesignations) {
