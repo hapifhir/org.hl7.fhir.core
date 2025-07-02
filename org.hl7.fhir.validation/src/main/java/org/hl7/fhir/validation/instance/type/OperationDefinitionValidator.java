@@ -155,7 +155,7 @@ public class OperationDefinitionValidator extends BaseValidator {
         ok = rule(errors, "2025-04-08", IssueType.INVALID, nsp, allowedTargets.contains(t), I18nConstants.OPDEF_PROFILE_PROFILE_NOT_IN_PARAMS, use, paramName, t, presentProfilesList(allowedTargets), sdt.getVersionedUrl()) && ok;        
       }
     }
-    
+
 //    type / allowedType / extension
 //    targetProfile
 //    binding
