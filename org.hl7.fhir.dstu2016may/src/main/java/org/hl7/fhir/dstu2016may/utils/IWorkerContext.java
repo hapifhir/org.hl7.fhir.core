@@ -46,7 +46,6 @@ import org.hl7.fhir.dstu2016may.model.StructureDefinition;
 import org.hl7.fhir.dstu2016may.model.ValueSet;
 import org.hl7.fhir.dstu2016may.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.dstu2016may.model.ValueSet.ValueSetExpansionComponent;
-import org.hl7.fhir.dstu2016may.utils.ValueSetExpander.ValueSetExpansionOutcome;
 
 /**
  * This is the standard interface used for access to underlying FHIR services
