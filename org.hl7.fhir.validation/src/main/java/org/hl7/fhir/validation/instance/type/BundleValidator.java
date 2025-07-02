@@ -1224,7 +1224,9 @@ public class BundleValidator extends BaseValidator {
         try {
           toSign = makeSignableBundle(bundle, canon, xml);
         } catch (Exception e) {
-          // nothing - this won't happen
+          if (settings.isDebug()) {
+            e.printStackTrace();
+          }
         }
 
         // finally, we get to verifying the signature
@@ -1302,17 +1304,25 @@ public class BundleValidator extends BaseValidator {
               hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIGNED_FOR, purpose, purposeDesc);
             }
           }
+          if (cert != null) {
+            hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_CERT_DETAILS, cert.getSubjectX500Principal().getName(), cert.getIssuerX500Principal().getName(), cert.getSerialNumber().toString(16).toUpperCase());
+            hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_CERT_SOURCE, certificateToPEMSingleLine(cert));
+          }
 
         } catch (Exception e) {
           ok = false;
           rule(errors, "2025-06-13", IssueType.EXCEPTION, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIG_ERROR, e.getMessage());                            
         }            
       } 
-
     }
     return ok;
   }
 
+  public String certificateToPEMSingleLine(X509Certificate cert) throws Exception {
+    byte[] encoded = cert.getEncoded();
+    String base64 = java.util.Base64.getEncoder().encodeToString(encoded);
+    return "-----BEGIN CERTIFICATE-----" + base64 + "-----END CERTIFICATE-----";
+}
   
   private String getPurpose(JsonObject header) {
     if (header.has("srCms")) {
