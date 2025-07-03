@@ -618,27 +618,27 @@ msgstr "Concepts"
 
 # CODESYSTEM_CONTENT_COMPLETE
 #: CODESYSTEM_CONTENT_COMPLETE
-msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines the following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgid "This <param name=\\\"cased\\\"/> code system <param name=\\\"cs\\\"/> defines the following code<if test=\\\"code-count != 1\\\">s</if><param name=\\\"h\\\"/>:"
 msgstr ""
 
 # CODESYSTEM_CONTENT_EXAMPLE
 #: CODESYSTEM_CONTENT_EXAMPLE
-msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides some code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>that are example only</b>:"
+msgid "This <param name=\\\"cased\\\"/> code system <param name=\\\"cs\\\"/> provides some code<if test=\\\"code-count != 1\\\">s</if><param name=\\\"h\\\"/> <b>that are example only</b>:"
 msgstr ""
 
 # CODESYSTEM_CONTENT_FRAGMENT
 #: CODESYSTEM_CONTENT_FRAGMENT
-msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides <b>a fragment</b> that includes following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgid "This <param name=\\\"cased\\\"/> code system <param name=\\\"cs\\\"/> provides <b>a fragment</b> that includes following code<if test=\\\"code-count != 1\\\">s</if><param name=\\\"h\\\"/>:"
 msgstr ""
 
 # CODESYSTEM_CONTENT_NOTPRESENT
 #: CODESYSTEM_CONTENT_NOTPRESENT
-msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines codes<param name=\"h\"/>, but no codes are represented here"
+msgid "This <param name=\\\"cased\\\"/> code system <param name=\\\"cs\\\"/> defines codes<param name=\\\"h\\\"/>, but no codes are represented here"
 msgstr ""
 
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
-msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
+msgid "This code system supplement <param name=\\\"cs\\\"/> defines {0} on the following code<if test=\\\"code-count != 1\\\">s</if>:"
 msgstr ""
 
 # CODESYSTEM_DEPRECATED
@@ -1305,7 +1305,7 @@ msgstr ""
 
 # DOCUMENT_SUMMARY
 #: DOCUMENT_SUMMARY
-msgid "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
+msgid "<param name=\\\"status\\\"/> Document at <param name=\\\"date\\\"/> by <param name=\\\"author\\\"/> for <param name=\\\"subject\\\"/> <if test=\\\"has-encounter = true\\\"> in encounter <param name=\\\"encounter\\\"/></if>"
 msgstr ""
 
 # EXAMPLE_SCEN_STEP_SCEN
@@ -1400,7 +1400,7 @@ msgstr ""
 
 # FMM_TABLE
 #: FMM_TABLE
-msgid "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
+msgid "<table class=\\\"cols\\\"><tbody><tr><td><a href=\\\"http://hl7.org/fhir/versions.html#maturity\\\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\\\"{1}versions.html#std-process\\\" title=\\\"Standard Status\\\">{2}</a></td></tr></tbody></table>"
 msgstr ""
 
 # GENERAL_ADDITIONAL_BINDING
@@ -2752,7 +2752,7 @@ msgstr ""
 
 # R44B_NOT_COMP
 #: R44B_NOT_COMP
-msgid "This is an {0} IG that is not compatible with {1}\" because"
+msgid "This is an {0} IG that is not compatible with {1}\\\" because"
 msgstr ""
 
 # R44B_NOT_IN
@@ -2777,7 +2777,7 @@ msgstr ""
 
 # R44B_REFERS_TO
 #: R44B_REFERS_TO
-msgid "<a href=\"{0}\">{1}}</a> refers to the canonical type at {2}"
+msgid "<a href=\\\"{0}\\\">{1}}</a> refers to the canonical type at {2}"
 msgstr ""
 
 # R44B_USE_OK
@@ -2903,7 +2903,7 @@ msgstr ""
 
 # RES_REND_INFO_SOURCE
 #: RES_REND_INFO_SOURCE
-msgid "Information Source: <param name=\"source\"/>"
+msgid "Information Source: <param name=\\\"source\\\"/>"
 msgstr ""
 
 # RES_REND_LANGUAGE
@@ -3148,7 +3148,7 @@ msgstr ""
 
 # SDR_FROM_ELEM
 #: SDR_FROM_ELEM
-msgid "// from Element: <a href=\"{0}\">extension</a>"
+msgid "// from Element: <a href=\\\"{0}\\\">extension</a>"
 msgstr ""
 
 # SDR_GUIDANCE_HERE
