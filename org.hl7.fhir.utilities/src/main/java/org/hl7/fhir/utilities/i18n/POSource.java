@@ -169,7 +169,7 @@ public class POSource {
       }
       b.append("#: "+o.getId()+"\r\n");
       if (!o.getFlags().isEmpty()) {
-        b.append("#, "+ CommaSeparatedStringBuilder.join(",", o.getFlags()));
+        b.append("#, "+ CommaSeparatedStringBuilder.join(",", o.getFlags()) + "\r\n");
       }
       if (o.isDuplicate()) {
         b.append("msgctxt \""+o.getId()+"\"\r\n");        
@@ -200,7 +200,6 @@ public class POSource {
     FileUtilities.stringToFile(b.toString(), dest);
     return noTrans;
   }
-
 
   private static String wrapQuotes(String s) {
     return s.replace("\"", "\\\"");
