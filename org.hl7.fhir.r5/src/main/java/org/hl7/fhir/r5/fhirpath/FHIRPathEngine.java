@@ -1606,16 +1606,16 @@ public class FHIRPathEngine {
           }
         }     
       }
-      if (tracer != null) { tracer.traceExpression(context, focus, work, exp); }
+      traceExpression(focus, exp, context, work);
       break;
     case Function:
       List<Base> work2 = evaluateFunction(context, focus, exp);
       work.addAll(work2);
-      if (tracer != null) tracer.traceExpression(context, focus, work, exp);
+      traceExpression(focus, exp, context, work);
       break;
     case Constant:
       work.addAll(resolveConstant(context, exp.getConstant(), false, exp, true));
-      if (tracer != null) tracer.traceExpression(context, focus, work, exp);
+      traceExpression(focus, exp, context, work);
       break;
     case Group:
       work2 = execute(context, focus, exp.getGroup(), atEntry);
@@ -1639,17 +1639,22 @@ public class FHIRPathEngine {
         else if (last.getOperation() == Operation.Is || last.getOperation() == Operation.As) {
           work2 = executeTypeName(context, focus, next, false);
           work = operate(context, work, last.getOperation(), work2, last);
-          if (tracer != null) tracer.traceOperationExpression(context, focus, work, last);
+          if (tracer != null) { tracer.traceOperationExpression(context, focus, work, last); }
         } else {
           work2 = execute(context, focus, next, true);
           work = operate(context, work, last.getOperation(), work2, last);
-          if (tracer != null) tracer.traceOperationExpression(context, focus, work, last);
+          if (tracer != null) { tracer.traceOperationExpression(context, focus, work, last); }
         }
         last = next;
         next = next.getOpNext();
       }
     }
     return work;
+  }
+
+  private void traceExpression(List<Base> focus, ExpressionNode exp, ExecutionContext context, List<Base> work) {
+    if (tracer == null) { return; }
+    tracer.traceExpression(context, focus, work, exp);
   }
 
   private List<Base> executeTypeName(ExecutionContext context, List<Base> focus, ExpressionNode next, boolean atEntry) {
