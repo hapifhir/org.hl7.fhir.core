@@ -1400,7 +1400,7 @@ msgstr ""
 
 # FMM_TABLE
 #: FMM_TABLE
-msgid "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
+msgid "<table class=\\\"cols\\\"><tbody><tr><td><a href=\\\"http://hl7.org/fhir/versions.html#maturity\\\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\\\"{1}versions.html#std-process\\\" title=\\\"Standard Status\\\">{2}</a></td></tr></tbody></table>"
 msgstr ""
 
 # GENERAL_ADDITIONAL_BINDING
@@ -2752,7 +2752,7 @@ msgstr ""
 
 # R44B_NOT_COMP
 #: R44B_NOT_COMP
-msgid "This is an {0} IG that is not compatible with {1}\" because"
+msgid "This is an {0} IG that is not compatible with {1}\\\" because"
 msgstr ""
 
 # R44B_NOT_IN
@@ -2767,7 +2767,7 @@ msgstr ""
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
+msgid "Packages for both <a href=\\\"{0}\\\">R4 ({1}.r4)</a> and <a href=\\\"{2}\\\">R4B ({3}.r4b)</a> are available."
 msgstr ""
 
 # R44B_PROBLEMS
@@ -2777,7 +2777,7 @@ msgstr ""
 
 # R44B_REFERS_TO
 #: R44B_REFERS_TO
-msgid "<a href=\"{0}\">{1}}</a> refers to the canonical type at {2}"
+msgid "<a href=\\\"{0}\\\">{1}}</a> refers to the canonical type at {2}"
 msgstr ""
 
 # R44B_USE_OK
@@ -2903,7 +2903,7 @@ msgstr ""
 
 # RES_REND_INFO_SOURCE
 #: RES_REND_INFO_SOURCE
-msgid "Information Source: <param name=\"source\"/>"
+msgid "Information Source: <param name=\\\"source\\\"/>"
 msgstr ""
 
 # RES_REND_LANGUAGE
@@ -3148,7 +3148,7 @@ msgstr ""
 
 # SDR_FROM_ELEM
 #: SDR_FROM_ELEM
-msgid "// from Element: <a href=\"{0}\">extension</a>"
+msgid "// from Element: <a href=\\\"{0}\\\">extension</a>"
 msgstr ""
 
 # SDR_GUIDANCE_HERE
