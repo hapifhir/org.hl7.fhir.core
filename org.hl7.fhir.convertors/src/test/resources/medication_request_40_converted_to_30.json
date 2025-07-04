@@ -31,8 +31,22 @@
       "reference": "ActivityDefinition/heart-valve-replacement"
     }
   ],
+  "basedOn": [
+    {
+      "reference": "CarePlan/gpvisit"
+    }
+  ],
   "status": "active",
   "intent": "order",
+  "category": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/medicationrequest-category",
+        "code": "inpatient",
+        "display": "Inpatient"
+      }
+    ]
+  },
   "medicationReference": {
     "reference": "#med0320"
   },

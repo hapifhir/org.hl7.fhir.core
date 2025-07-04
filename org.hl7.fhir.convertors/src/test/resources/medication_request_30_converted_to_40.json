@@ -41,6 +41,22 @@
   "instantiatesCanonical": [
     "ActivityDefinition/heart-valve-replacement"
   ],
+  "basedOn": [
+    {
+      "reference": "CarePlan/gpvisit"
+    }
+  ],
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://hl7.org/fhir/medication-request-category",
+          "code": "inpatient",
+          "display": "Inpatient"
+        }
+      ]
+    }
+  ],
   "status": "active",
   "intent": "order",
   "medicationReference": {
