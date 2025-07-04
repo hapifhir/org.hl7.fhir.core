@@ -34,6 +34,9 @@
       "value": "12345689"
     }
   ],
+  "instantiatesCanonical": [
+    "ActivityDefinition/heart-valve-replacement"
+  ],
   "status": "active",
   "intent": "order",
   "medicationReference": {
