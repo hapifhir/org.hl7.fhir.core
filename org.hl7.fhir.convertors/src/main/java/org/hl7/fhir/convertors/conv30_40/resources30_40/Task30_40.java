@@ -78,8 +78,7 @@ public class Task30_40 {
       tgt.setLastModifiedElement(DateTime30_40.convertDateTime(src.getLastModifiedElement()));
     }
     if (src.hasRequester()) {
-      tgt.setRequester(new org.hl7.fhir.dstu3.model.Task.TaskRequesterComponent());
-      tgt.getRequester().setAgent(Reference30_40.convertReference(src.getRequester()));
+      tgt.setRequester(new org.hl7.fhir.dstu3.model.Task.TaskRequesterComponent(Reference30_40.convertReference(src.getRequester())));
     }
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPerformerType()) {
       tgt.addPerformerType(CodeableConcept30_40.convertCodeableConcept(t));
