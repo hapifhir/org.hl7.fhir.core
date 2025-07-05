@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.Getter;import lombok.Setter;import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -48,16 +48,15 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 public class ContextUtilities implements ProfileKnowledgeProvider {
 
   private IWorkerContext context;
-  private boolean suppressDebugMessages;
   private XVerExtensionManager xverManager;
   private Map<String, String> oidCache = new HashMap<>();
   private List<StructureDefinition> allStructuresList = new ArrayList<StructureDefinition>();
   private List<String> canonicalResourceNames;
   private List<String> concreteResourceNames;
   private Set<String> concreteResourceNameSet;
-  private List<String> suppressedMappings;
-  private Set<String> localFileNames;
-  private Set<String> masterSourceNames;
+  @Setter private List<String> suppressedMappings;
+  @Getter@Setter private Set<String> localFileNames;
+  @Getter@Setter private Set<String> masterSourceNames;
 
   public ContextUtilities(IWorkerContext context) {
     super();
@@ -560,21 +559,5 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     return null;
   }
 
-  public Set<String> getLocalFileNames() {
-    return localFileNames;
   }
-
-  public void setLocalFileNames(Set<String> localFileNames) {
-    this.localFileNames = localFileNames;
-  }
-
-  public Set<String> getMasterSourceNames() {
-    return masterSourceNames;
-  }
-
-  public void setMasterSourceNames(Set<String> masterSourceNames) {
-    this.masterSourceNames = masterSourceNames;
-  }
-
-}
 
