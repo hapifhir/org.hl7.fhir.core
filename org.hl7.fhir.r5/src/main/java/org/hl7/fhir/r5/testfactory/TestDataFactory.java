@@ -163,7 +163,7 @@ public class TestDataFactory {
 
     @Override
     public FunctionDetails details() {
-      return new FunctionDetails("Lookup a value in a table", 4, 4);
+      return new FunctionDetails("Lookup a value in a table", 3, 4);
     }
 
     @Override
@@ -183,6 +183,20 @@ public class TestDataFactory {
         String rcol = parameters.get(3).get(0).primitiveValue();
         if (table != null && lcol != null && val != null && rcol != null) {
           DataTable tbl = dt.getTables().get(table);
+          if (tbl != null) {
+            String s = tbl.lookup(lcol, val, rcol);
+            if (!Utilities.noString(s)) {
+              res.add(new StringType(s));
+            }
+          }
+        }
+      }
+      if (focus.get(0)!=null && focus.get(0) instanceof DataTable && parameters.size() == 3 && parameters.get(0).size() == 1 && parameters.get(1).size() == 1 && parameters.get(2).size() == 1) {
+        String lcol = parameters.get(0).get(0).primitiveValue();
+        String val = parameters.get(1).get(0).primitiveValue();
+        String rcol = parameters.get(2).get(0).primitiveValue();
+        DataTable tbl = (DataTable) focus.get(0);
+        if (lcol != null && val != null && rcol != null) {
           if (tbl != null) {
             String s = tbl.lookup(lcol, val, rcol);
             if (!Utilities.noString(s)) {
