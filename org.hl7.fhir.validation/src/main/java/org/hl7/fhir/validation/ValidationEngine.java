@@ -766,8 +766,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public org.hl7.fhir.r5.elementmodel.Element transform(ByteProvider source, FhirFormat cntType, String mapUri) throws FHIRException, IOException {
+    InstanceValidator validator = getValidator(cntType);
     List<Base> outputs = new ArrayList<>();
-    StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs, mapLog, context));
+    StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs, mapLog, context, validator.getValidatorHostServies()));
     StructureMap map = context.fetchResource(StructureMap.class, mapUri);
     if (map == null) throw new Error("Unable to find map " + mapUri + " (Known Maps = " + context.listMapUrls() + ")");
     org.hl7.fhir.r5.elementmodel.Element resource = getTargetResourceFromStructureMap(map);
@@ -776,7 +777,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     if (sourceSD.getKind() == StructureDefinition.StructureDefinitionKind.LOGICAL) {
       parser.setLogical(sourceSD);
     }
-    org.hl7.fhir.r5.elementmodel.Element src = parser.parseSingle(new ByteArrayInputStream(source.getBytes()), null);    
+    org.hl7.fhir.r5.elementmodel.Element src = parser.parseSingle(new ByteArrayInputStream(source.getBytes()), null);
+    validator.resolveReferencesInBundle(src);
     scu.transform(null, src, map, resource);
     resource.populatePaths(null);
     return resource;
@@ -1087,11 +1089,13 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     String type = src.fhirType();
     String url = getMapId(type, targetVer);
     List<Base> outputs = new ArrayList<Base>();
-    StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs, mapLog, context));
+    InstanceValidator validator = getValidator(format);
+    StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs, mapLog, context, validator.getValidatorHostServies()));
     StructureMap map = context.fetchResource(StructureMap.class, url);
     if (map == null)
       throw new Error("Unable to find map " + url + " (Known Maps = " + context.listMapUrls() + ")");
     org.hl7.fhir.r5.elementmodel.Element resource = getTargetResourceFromStructureMap(map);
+    validator.resolveReferencesInBundle(src);
     scu.transform(null, src, map, resource);
     ByteArrayOutputStream bs = new ByteArrayOutputStream();
     Manager.compose(context, resource, bs, format, OutputStyle.PRETTY, null);
