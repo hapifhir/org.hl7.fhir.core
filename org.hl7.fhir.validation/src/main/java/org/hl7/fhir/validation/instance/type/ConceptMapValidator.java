@@ -436,10 +436,10 @@ public class ConceptMapValidator extends BaseValidator {
       } else {
         addToBatch(code, cstack, ctxt.target, ctxt.targetScope);
       }
-      
-    }
+    } 
     
     String target = tgt.getNamedChildValue("code");
+    String tgtForMsg = target == null ? "--" : target;
     String reln = tgt.getNamedChildValue(VersionUtilities.isR5Plus(context.getVersion()) ? "relationship" : "equivalence");
     
     if (source != null && reln != null) {
@@ -447,19 +447,19 @@ public class ConceptMapValidator extends BaseValidator {
         if (!relationships.has(source)) {
           relationships.see(source, reln);
         } else if (relationships.get(source).equals(reln)) {
-          warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION, source, code.primitiveValue());            
+          warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION, source, tgtForMsg);            
         } else {
-          warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION_DIFFERENT, source, code.primitiveValue(), reln, relationships.get(source));            
+          warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION_DIFFERENT, source, tgtForMsg, reln, relationships.get(source));            
         }
       } else {
         if (relationships.has(source)) {
-          warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION_DIFFERENT, source, code.primitiveValue(), reln, relationships.get(source));            
+          warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION_DIFFERENT, source, tgtForMsg, reln, relationships.get(source));            
         }
         if (relationships.has(source, target)) {
           if (relationships.get(source, target).equals(reln)) {
-            warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION_DIFFERENT, source, code.primitiveValue(), reln, relationships.get(source, target));
+            warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION_DIFFERENT, source, tgtForMsg, reln, relationships.get(source, target));
           } else {
-            warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION, source, code.primitiveValue());            
+            warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION, source, tgtForMsg);            
           }
         } else {
           relationships.see(source, target, reln);

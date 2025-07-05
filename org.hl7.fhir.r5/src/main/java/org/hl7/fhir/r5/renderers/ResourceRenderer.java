@@ -838,13 +838,13 @@ public abstract class ResourceRenderer extends DataRenderer {
   protected void generateCopyright(XhtmlNode x, ResourceWrapper cs) {
     XhtmlNode p = x.para();
     p.b().tx(getContext().formatPhrase(RenderingContext.RESOURCE_COPYRIGHT));
-    smartAddText(p, " " + context.getTranslated(cs.child("copyright")));
+    p.addTextWithLineBreaks(" " + context.getTranslated(cs.child("copyright")));
   }
   
   protected void generateCopyrightTableRow(XhtmlNode tbl, ResourceWrapper cs) {
     XhtmlNode tr = tbl.tr();
     tr.td().b().tx(getContext().formatPhrase(RenderingContext.RESOURCE_COPYRIGHT));
-    smartAddText(tr.td(), " " + context.getTranslated(cs.child("copyright")));
+    tr.td().addTextWithLineBreaks(" " + context.getTranslated(cs.child("copyright")));
   }
 
   public String displayReference(Resource res, Reference r) throws UnsupportedEncodingException, IOException {

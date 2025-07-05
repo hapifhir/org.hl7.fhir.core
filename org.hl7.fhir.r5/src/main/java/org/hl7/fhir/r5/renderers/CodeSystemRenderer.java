@@ -531,7 +531,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       td = tr.td();
       Boolean b = CodeSystemUtilities.isDeprecated(cs, c, false);
       if (b !=  null && b) {
-        smartAddText(td, formatPhrase(RenderingContext.CODESYSTEM_DEPRECATED));
+        td.addTextWithLineBreaks(formatPhrase(RenderingContext.CODESYSTEM_DEPRECATED));
         hasExtensions = true;
         if (ToolingExtensions.hasExtension(c, ToolingExtensions.EXT_REPLACED_BY)) {
           Coding cc = (Coding) ToolingExtensions.getExtension(c, ToolingExtensions.EXT_REPLACED_BY).getValue();

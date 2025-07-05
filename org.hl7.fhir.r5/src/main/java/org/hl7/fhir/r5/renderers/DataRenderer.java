@@ -172,17 +172,6 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
   } 
 
-  protected void smartAddText(XhtmlNode p, String text) { 
-    if (text == null) 
-      return; 
-
-    String[] lines = text.split("\\r\\n"); 
-    for (int i = 0; i < lines.length; i++) { 
-      if (i > 0) 
-        p.br(); 
-      p.addText(lines[i]); 
-    } 
-  } 
 
   // -- 3. General Purpose Terminology Support ----------------------------------------- 
 
@@ -1443,7 +1432,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
 
     if (status.isShowCodeDetails()) { 
-      x.addText(s+" "); 
+      x.addTextWithLineBreaks(s+" "); 
       XhtmlNode sp = x.span("background: LightGoldenRodYellow; margin: 4px; border: 1px solid khaki", null); 
       sp.tx(" ("); 
       boolean first = true; 
@@ -1482,7 +1471,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         } 
       } 
 
-      x.span(null, context.formatPhrase(RenderingContext.DATA_REND_CODES) +b.toString()).addText(s); 
+      x.span(null, context.formatPhrase(RenderingContext.DATA_REND_CODES) +b.toString()).addTextWithLineBreaks(s); 
     }       
     checkRenderExtensions(status, x, cc);
   } 
@@ -1618,7 +1607,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (name.has("use") && !"usual".equals(name.primitiveValue("use"))) { 
       s.append("("+context.getTranslatedCode(name.primitiveValue("use"), "http://hl7.org/fhir/name-use")+")");
     }
-    x.addText(s.toString());       
+    x.addTextWithLineBreaks(s.toString());       
     checkRenderExtensions(status, x, name);
   } 
 
@@ -1657,7 +1646,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
   protected void renderAddress(RenderingStatus status, XhtmlNode x, ResourceWrapper address) throws FHIRFormatError, DefinitionException, IOException { 
-    x.addText(displayAddress(address));       
+    x.addTextWithLineBreaks(displayAddress(address));       
     checkRenderExtensions(status, x, address);
   } 
 

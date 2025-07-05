@@ -487,7 +487,7 @@ public class MatchetypeValidator {
         String[] cmd = expected.substring(1, expected.length() - 1).split(":");
         if (externals != null) {
           String s = externals.asString(cmd[1]);
-          return "\""+s+"\" (Ext)";
+          return "'"+s+"' (Ext)";
         } else {
           List<String> fragments = readChoices(cmd[2]);
           return "Contains all of "+fragments.toString()+" (because no external string provided for "+cmd[1]+")";
@@ -508,7 +508,7 @@ public class MatchetypeValidator {
         }
       }
     } else {
-      return "\""+expected+"\"";
+      return "'"+expected+"'";
     }
   }
 }
