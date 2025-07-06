@@ -3726,6 +3726,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (!context.hasBase()) {
       return false;
     }
+    
     if (Utilities.existsInList(eurl, "http://hl7.org/fhir/tools/StructureDefinition/ig-page-name")) {
       return true;
     }
@@ -3753,6 +3754,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     
     if (absolute) {
       return Utilities.existsInList(context.getBase().getPath(),
+          "Coding.system",
           "ImplementationGuide.definition.page.source[x]", "ImplementationGuide.definition.page.name",  "ImplementationGuide.definition.page.name[x]",
           "Requirements.statement.satisfiedBy", "Bundle.entry.request.url",
           "Attachment.url",
