@@ -82,6 +82,16 @@ class I18nBaseTest {
   }
 
   @Test
+  void testFormatMessageWithEscapedQuotes() {
+    I18nTestClass testClass = new I18nTestClass();
+    ResourceBundle loadedBundle = ResourceBundle.getBundle("Messages", new Locale("pt"));
+    testClass.setLocale(new Locale("pt"));
+    String result = testClass.formatMessage(I18nConstants.HTA_SCT_MESSAGE, "test");
+    MessageFormat form = new MessageFormat(loadedBundle.getString(I18nConstants.HTA_SCT_MESSAGE));
+
+  }
+
+  @Test
   @DisplayName("Test argument substitution without initializing Locale.")
   void testFormatMessageWithoutInitLocale() {
     I18nTestClass testClass = new I18nTestClass();

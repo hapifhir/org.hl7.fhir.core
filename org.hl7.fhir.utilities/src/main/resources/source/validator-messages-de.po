@@ -772,12 +772,12 @@ msgstr "CodeSysteme SOLLTEN KEINEN angegebenen Wert f\u00fcr das Element {0} hab
 # CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_MISSING
 #: CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_MISSING
 msgid "CodeSystem Supplements with a content value of ''supplement'' SHALL have a supplements element that specifies which code system is being supplemented"
-msgstr "!!CodeSystem-Erg\u00e4nzungen mit dem Content-Wert \"supplement\" M\u00dcSSEN ein supplements-Element haben, das angibt, welches Codesystem erg\u00e4nzt wird."
+msgstr "!!CodeSystem-Erg\u00e4nzungen mit dem Content-Wert \\\"supplement\\\" M\u00dcSSEN ein supplements-Element haben, das angibt, welches Codesystem erg\u00e4nzt wird."
 
 # CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_WRONG
 #: CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_WRONG
 msgid "CodeSystem Supplements SHALL have a content value of ''supplement''"
-msgstr "!!CodeSystem Supplements M\u00dcSSEN einen Content-Wert von \"supplement\" haben."
+msgstr "!!CodeSystem Supplements M\u00dcSSEN einen Content-Wert von \\\"supplement\\\" haben."
 
 # CODESYSTEM_CS_NONHL7_MISSING_ELEMENT
 #: CODESYSTEM_CS_NONHL7_MISSING_ELEMENT
@@ -2013,7 +2013,7 @@ msgstr "Fehler bei der Auswertung des FHIRPath-Ausdrucks: Der Parametertyp {2} i
 
 # FILTER_NOT_UNDERSTOOD
 #: FILTER_NOT_UNDERSTOOD
-msgid "The filter \"{0} {1} {2}\" from the value set {3} was not understood in the context of {4}"
+msgid "The filter \\\"{0} {1} {2}\\\" from the value set {3} was not understood in the context of {4}"
 msgstr ""
 
 # Fixed_Type_Checks_DT_Address_Line
@@ -2053,7 +2053,7 @@ msgstr ""
 
 # HTA_LOINC_MESSAGE
 #: HTA_LOINC_MESSAGE
-msgid "This material contains content from <a href=\\"http://loinc.org\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\"http://loinc.org/license\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
+msgid "This material contains content from <a href=\\\"http://loinc.org\\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\\"http://loinc.org/license\\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
 msgstr ""
 
 # HTA_SCT_DESC
@@ -2063,7 +2063,7 @@ msgstr ""
 
 # HTA_SCT_MESSAGE
 #: HTA_SCT_MESSAGE
-msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\"https://www.snomed.org/get-snomed\\">https://www.snomed.org/get-snomed</a> or <a href=\\"mailto:info@snomed.org\\">info@snomed.org</a>."
+msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> or <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
 msgstr ""
 
 # IG_DEPENDENCY_CAN_VERSION_ALONE
@@ -4114,7 +4114,7 @@ msgstr "Das Element {0} hat Typen/Profile/Ziele, die als must-support markiert s
 # SD_NESTED_MUST_SUPPORT_SNAPSHOT
 #: SD_NESTED_MUST_SUPPORT_SNAPSHOT
 msgid "The element {0} has types/profiles/targets that are marked as must support, but the element itself is not marked as must-support"
-msgstr "Das Element {0} hat Typen/Profile/Ziele, die als \"must support\" gekennzeichnet sind, aber das Element selbst ist nicht als \"must support\" gekennzeichnet"
+msgstr "Das Element {0} hat Typen/Profile/Ziele, die als \\\"must support\\\" gekennzeichnet sind, aber das Element selbst ist nicht als \\\"must support\\\" gekennzeichnet"
 
 # SD_NO_CONTEXT_INV_WHEN_NOT_EXTENSION
 #: SD_NO_CONTEXT_INV_WHEN_NOT_EXTENSION
