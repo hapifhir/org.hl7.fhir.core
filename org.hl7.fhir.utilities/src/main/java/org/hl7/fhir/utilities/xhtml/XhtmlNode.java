@@ -305,7 +305,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   public void addTextWithLineBreaks(String content) {
     if (content != null) {
       boolean first = true;
-      for (String line : content.split("\\r\\n")) {
+      for (String line : content.split("\\r?\\n")) {
         if (first) {
           first = false;
         } else {
