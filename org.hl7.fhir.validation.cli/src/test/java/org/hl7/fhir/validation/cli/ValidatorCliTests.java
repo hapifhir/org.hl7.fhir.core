@@ -39,6 +39,8 @@ public class ValidatorCliTests {
   ConvertTask convertTask;
   @Spy
   CompareTask compareTask;
+  @Spy
+  HTTPServerTask serverTask;
 
   @Spy
   CompileTask compileTask;
@@ -142,6 +144,7 @@ public class ValidatorCliTests {
           codeGenTask,
           txPackTask,
           instanceFactoryTask,
+          serverTask,
           //validate is the default
           validateTask
         );

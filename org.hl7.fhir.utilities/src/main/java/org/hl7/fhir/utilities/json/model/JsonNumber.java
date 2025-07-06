@@ -43,6 +43,14 @@ public class JsonNumber extends JsonPrimitive {
     }
   }
 
+  public Long getLong() {
+    if (Utilities.isLong(value)) {
+      return Long.parseLong(value);
+    } else {
+      return null;
+    }
+  }
+
   public Double getDouble() {
     if (Utilities.isDecimal(value, false)) {
       return Double.parseDouble(value); 
