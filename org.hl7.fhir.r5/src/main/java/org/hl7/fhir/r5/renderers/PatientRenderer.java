@@ -7,12 +7,10 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.Attachment;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
@@ -146,7 +144,7 @@ public class PatientRenderer extends ResourceRenderer {
       x.hr();
       XhtmlNode tbl;
       if (hasRenderablePhoto(pat)) {
-        tbl = x.table("none", true);
+        tbl = x.table(null, true);
         XhtmlNode tr = tbl.tr();
         tbl = tr.td().table("grid", false);
         renderPhoto(tr.td(), pat);
@@ -662,7 +660,7 @@ public class PatientRenderer extends ResourceRenderer {
           if (context.isInlineGraphics() || Utilities.noString(context.getDestDir()) || ext == null) {
             td.img("data:"+ct+";base64,"+att.primitiveValue("data"), "patient photo");
           } else {
-            String n = UUID.randomUUID().toString().toLowerCase()+ext;
+            String n = context.getRandomName(r.getId())+ext;
             FileUtilities.bytesToFile(cnt, ManagedFileAccess.file(Utilities.path(context.getDestDir(), n)));
             context.registerFile(n);
             td.img(n, context.formatPhrase(RenderingContext.PAT_PHOTO));            

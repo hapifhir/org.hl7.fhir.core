@@ -61,6 +61,7 @@ import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.LoincLinker;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
@@ -95,16 +96,27 @@ public class ValueSetRenderer extends TerminologyRenderer {
           generateCopyright(x, r);
       }
       if (vs.hasExtension(ToolingExtensions.EXT_VS_CS_SUPPL_NEEDED)) {
+        List<Extension> exts = vs.getExtensionsByUrl(ToolingExtensions.EXT_VS_CS_SUPPL_NEEDED);
         var p = x.para();
-        p.tx("This ValueSet requires the Code system Supplement ");
-        String u = ToolingExtensions.readStringExtension(vs, ToolingExtensions.EXT_VS_CS_SUPPL_NEEDED);
-        CodeSystem cs = context.getContext().fetchResource(CodeSystem.class, u);
-        if (cs == null) {
-          p.code().tx(u);
-        } else if (!cs.hasWebPath()) {
-          p.ah(u).tx(cs.present());
-        } else {
-          p.ah(cs.getWebPath()).tx(cs.present());          
+        p.tx(context.formatPhrasePlural(exts.size(), RenderingI18nContext.VALUE_SET_NEEDS_SUPPL));
+        p.tx(" ");
+        for (int i = 0; i < exts.size(); i++) { 
+          if (i > 0) {
+            if (i == exts.size() - 1) {
+              p.tx(" and ");
+            } else {
+              p.tx(", ");
+            }
+          }
+          String u = exts.get(i).getValue().primitiveValue();
+          CodeSystem cs = context.getContext().fetchResource(CodeSystem.class, u);
+          if (cs == null) {
+            p.code().tx(u);
+          } else if (!cs.hasWebPath()) {
+            p.ah(u).tx(cs.present());
+          } else {
+            p.ah(cs.getWebPath()).tx(cs.present());          
+          }
         }
         p.tx(".");
       }
