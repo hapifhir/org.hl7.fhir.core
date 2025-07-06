@@ -1142,12 +1142,12 @@ msgstr ""
 # CONCEPTMAP_VS_INVALID_CONCEPT_CODE
 #: CONCEPTMAP_VS_INVALID_CONCEPT_CODE
 msgid "The code ''{1}'' in the system {0} is not valid in the value set ''{2}''"
-msgstr "システム {0}におけるcode \"{1}\"は value set \"{2}\"で有効ではありません"
+msgstr "システム {0}におけるcode \\\"{1}\\\"は value set \\\"{2}\\\"で有効ではありません"
 
 # CONCEPTMAP_VS_INVALID_CONCEPT_CODE_VER
 #: CONCEPTMAP_VS_INVALID_CONCEPT_CODE_VER
 msgid "The code ''{2}'' in the system {0} version {1} is not valid in the value set ''{3}''"
-msgstr "バージョン {1}のシステム {0}におけるcode \"{2}\"は value set \"{3}\"で有効ではありません"
+msgstr "バージョン {1}のシステム {0}におけるcode \\\"{2}\\\"は value set \\\"{3}\\\"で有効ではありません"
 
 # CONCEPTMAP_VS_NOT_A_VS
 #: CONCEPTMAP_VS_NOT_A_VS
@@ -2013,7 +2013,7 @@ msgstr "FHIRPath式の評価エラー: パラメータタイプ {2} は {0} パ�
 
 # FILTER_NOT_UNDERSTOOD
 #: FILTER_NOT_UNDERSTOOD
-msgid "The filter \"{0} {1} {2}\" from the value set {3} was not understood in the context of {4}"
+msgid "The filter \\\"{0} {1} {2}\\\" from the value set {3} was not understood in the context of {4}"
 msgstr ""
 
 # Fixed_Type_Checks_DT_Address_Line
@@ -2053,7 +2053,7 @@ msgstr ""
 
 # HTA_LOINC_MESSAGE
 #: HTA_LOINC_MESSAGE
-msgid "This material contains content from <a href=\\"http://loinc.org\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\"http://loinc.org/license\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
+msgid "This material contains content from <a href=\\\"http://loinc.org\\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\\"http://loinc.org/license\\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
 msgstr ""
 
 # HTA_SCT_DESC
@@ -2063,7 +2063,7 @@ msgstr ""
 
 # HTA_SCT_MESSAGE
 #: HTA_SCT_MESSAGE
-msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\"https://www.snomed.org/get-snomed\\">https://www.snomed.org/get-snomed</a> or <a href=\\"mailto:info@snomed.org\\">info@snomed.org</a>."
+msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> or <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
 msgstr ""
 
 # IG_DEPENDENCY_CAN_VERSION_ALONE
@@ -6246,12 +6246,12 @@ msgstr "!!プロファイル参照''{0}''は未知のため、確認されてい
 # VALIDATION_VAL_STATUS_INCONSISTENT
 #: VALIDATION_VAL_STATUS_INCONSISTENT
 msgid "The resource status ''{0}'' and the standards status ''{1}'' are not consistent"
-msgstr "リソースのステータス \"{0}\"は標準のステータス \"{1}\"と一貫していません"
+msgstr "リソースのステータス \\\"{0}\\\"は標準のステータス \\\"{1}\\\"と一貫していません"
 
 # VALIDATION_VAL_STATUS_INCONSISTENT_HINT
 #: VALIDATION_VAL_STATUS_INCONSISTENT_HINT
 msgid "The resource status ''{0}'' and the standards status ''{1}'' may not be consistent and should be reviewed"
-msgstr "リソースのステータス \"{0}\"は標準のステータス \"{1}\"と一貫しないため、確認すべきです"
+msgstr "リソースのステータス \\\"{0}\\\"は標準のステータス \\\"{1}\\\"と一貫しないため、確認すべきです"
 
 # VALIDATION_VAL_VERSION_NOHASH
 #: VALIDATION_VAL_VERSION_NOHASH

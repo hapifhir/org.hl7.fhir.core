@@ -618,28 +618,28 @@ msgstr "Concepten"
 
 # CODESYSTEM_CONTENT_COMPLETE
 #: CODESYSTEM_CONTENT_COMPLETE
-msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines the following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr "Dit <param name=\"cased\"/> codesysteem <param name=\"cs\"/> definieert de volgende code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgid "This <param name=\\\"cased\\\"/> code system <param name=\\\"cs\\\"/> defines the following code<if test=\\\"code-count != 1\\\">s</if><param name=\\\"h\\\"/>:"
+msgstr "Dit <param name=\\\"cased\\\"/> codesysteem <param name=\\\"cs\\\"/> definieert de volgende code<if test=\\\"code-count != 1\\\">s</if><param name=\\\"h\\\"/>:"
 
 # CODESYSTEM_CONTENT_EXAMPLE
 #: CODESYSTEM_CONTENT_EXAMPLE
-msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides some code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>that are example only</b>:"
-msgstr "Dit <param name=\"cased\"/> codesysteem <param name=\"cs\"/> definieert de volgende code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>die alleen als voorbeeld dienen</b>:"
+msgid "This <param name=\\\"cased\\\"/> code system <param name=\\\"cs\\\"/> provides some code<if test=\\\"code-count != 1\\\">s</if><param name=\\\"h\\\"/> <b>that are example only</b>:"
+msgstr "Dit <param name=\\\"cased\\\"/> codesysteem <param name=\\\"cs\\\"/> definieert de volgende code<if test=\\\"code-count != 1\\\">s</if><param name=\\\"h\\\"/> <b>die alleen als voorbeeld dienen</b>:"
 
 # CODESYSTEM_CONTENT_FRAGMENT
 #: CODESYSTEM_CONTENT_FRAGMENT
-msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides <b>a fragment</b> that includes following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr "Dit <param name=\"cased\"/> codesysteem <param name=\"cs\"/> heeft <b>een fragment</b> met de volgende code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgid "This <param name=\\\"cased\\\"/> code system <param name=\\\"cs\\\"/> provides <b>a fragment</b> that includes following code<if test=\\\"code-count != 1\\\">s</if><param name=\\\"h\\\"/>:"
+msgstr "Dit <param name=\\\"cased\\\"/> codesysteem <param name=\\\"cs\\\"/> heeft <b>een fragment</b> met de volgende code<if test=\\\"code-count != 1\\\">s</if><param name=\\\"h\\\"/>:"
 
 # CODESYSTEM_CONTENT_NOTPRESENT
 #: CODESYSTEM_CONTENT_NOTPRESENT
-msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines codes<param name=\"h\"/>, but no codes are represented here"
-msgstr "Dit <param name=\"cased\"/> codesysteem <param name=\"cs\"/> bevat codes<param name=\"h\"/>, maar geen van die codes staan hier"
+msgid "This <param name=\\\"cased\\\"/> code system <param name=\\\"cs\\\"/> defines codes<param name=\\\"h\\\"/>, but no codes are represented here"
+msgstr "Dit <param name=\\\"cased\\\"/> codesysteem <param name=\\\"cs\\\"/> bevat codes<param name=\\\"h\\\"/>, maar geen van die codes staan hier"
 
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
-msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
-msgstr "Dit codesysteem supplement <param name=\"cs\"/> definieert {0} op de volgende code<if test=\"code-count != 1\">s</if>:"
+msgid "This code system supplement <param name=\\\"cs\\\"/> defines {0} on the following code<if test=\\\"code-count != 1\\\">s</if>:"
+msgstr "Dit codesysteem supplement <param name=\\\"cs\\\"/> definieert {0} op de volgende code<if test=\\\"code-count != 1\\\">s</if>:"
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
@@ -1305,8 +1305,8 @@ msgstr "Ongespecificeerd subject"
 
 # DOCUMENT_SUMMARY
 #: DOCUMENT_SUMMARY
-msgid "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
-msgstr "<param name=\"status\"/> Document van <param name=\"date\"/> door <param name=\"author\"/> voor <param name=\"subject\"/> <if test=\"has-encounter = true\"> in contactmoment <param name=\"encounter\"/></if>"
+msgid "<param name=\\\"status\\\"/> Document at <param name=\\\"date\\\"/> by <param name=\\\"author\\\"/> for <param name=\\\"subject\\\"/> <if test=\\\"has-encounter = true\\\"> in encounter <param name=\\\"encounter\\\"/></if>"
+msgstr "<param name=\\\"status\\\"/> Document van <param name=\\\"date\\\"/> door <param name=\\\"author\\\"/> voor <param name=\\\"subject\\\"/> <if test=\\\"has-encounter = true\\\"> in contactmoment <param name=\\\"encounter\\\"/></if>"
 
 # EXAMPLE_SCEN_STEP_SCEN
 #: EXAMPLE_SCEN_STEP_SCEN
@@ -1400,8 +1400,8 @@ msgstr "Kan gerefereerde actor {0} niet vinden"
 
 # FMM_TABLE
 #: FMM_TABLE
-msgid "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
-msgstr "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Volwassenheidsniveau</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standaard status\">{2}</a></td></tr></tbody></table>"
+msgid "<table class=\\\"cols\\\"><tbody><tr><td><a href=\\\"http://hl7.org/fhir/versions.html#maturity\\\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\\\"{1}versions.html#std-process\\\" title=\\\"Standard Status\\\">{2}</a></td></tr></tbody></table>"
+msgstr "<table class=\\\"cols\\\"><tbody><tr><td><a href=\\\"http://hl7.org/fhir/versions.html#maturity\\\">Volwassenheidsniveau</a>: {0}</td><td>&nbsp;<a href=\\\"{1}versions.html#std-process\\\" title=\\\"Standaard status\\\">{2}</a></td></tr></tbody></table>"
 
 # GENERAL_ADDITIONAL_BINDING
 #: GENERAL_ADDITIONAL_BINDING
@@ -2752,7 +2752,7 @@ msgstr ""
 
 # R44B_NOT_COMP
 #: R44B_NOT_COMP
-msgid "This is an {0} IG that is not compatible with {1}\" because"
+msgid "This is an {0} IG that is not compatible with {1}\\\" because"
 msgstr ""
 
 # R44B_NOT_IN
@@ -2767,7 +2767,7 @@ msgstr ""
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
+msgid "Packages for both <a href=\\\"{0}\\\">R4 ({1}.r4)</a> and <a href=\\\"{2}\\\">R4B ({3}.r4b)</a> are available."
 msgstr ""
 
 # R44B_PROBLEMS
@@ -2777,7 +2777,7 @@ msgstr ""
 
 # R44B_REFERS_TO
 #: R44B_REFERS_TO
-msgid "<a href=\"{0}\">{1}}</a> refers to the canonical type at {2}"
+msgid "<a href=\\\"{0}\\\">{1}}</a> refers to the canonical type at {2}"
 msgstr ""
 
 # R44B_USE_OK
@@ -2903,8 +2903,8 @@ msgstr "Fout bij weergave: {0}"
 
 # RES_REND_INFO_SOURCE
 #: RES_REND_INFO_SOURCE
-msgid "Information Source: <param name=\"source\"/>"
-msgstr "Informatiebron: <param name=\"source\"/>"
+msgid "Information Source: <param name=\\\"source\\\"/>"
+msgstr "Informatiebron: <param name=\\\"source\\\"/>"
 
 # RES_REND_LANGUAGE
 #: RES_REND_LANGUAGE
@@ -3148,7 +3148,7 @@ msgstr ""
 
 # SDR_FROM_ELEM
 #: SDR_FROM_ELEM
-msgid "// from Element: <a href=\"{0}\">extension</a>"
+msgid "// from Element: <a href=\\\"{0}\\\">extension</a>"
 msgstr ""
 
 # SDR_GUIDANCE_HERE
