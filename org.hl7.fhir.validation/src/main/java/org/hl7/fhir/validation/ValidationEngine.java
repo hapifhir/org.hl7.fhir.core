@@ -722,7 +722,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     boolean first = true;
     for (String fn : matchetypes) {
       if (first) {
-        messages.clear();
+        messages.removeIf(msg -> msg.getLevel() != IssueSeverity.FATAL);
         first = false;
       }
       byte[] cnt = FileUtilities.fileToBytes(fn);
