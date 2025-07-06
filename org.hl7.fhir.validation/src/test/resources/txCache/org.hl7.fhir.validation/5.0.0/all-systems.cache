@@ -1024,7 +1024,6 @@ v: {
   "code" : "en",
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1049,7 +1048,6 @@ v: {
   "code" : "en",
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1075,6 +1073,62 @@ v: {
   "code" : "urn:ihe:iti:xds-sd:text:2008",
   "system" : "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode",
   "version" : "1.4.0",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "image/jpeg"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:13"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "displayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "image/jpeg",
+  "code" : "image/jpeg",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "image/jpeg"
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "displayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "image/jpeg",
+  "code" : "image/jpeg",
+  "system" : "urn:ietf:bcp:13",
   "server" : "https://tx-dev.fhir.org/r5",
   "unknown-systems" : "",
   "issues" : {

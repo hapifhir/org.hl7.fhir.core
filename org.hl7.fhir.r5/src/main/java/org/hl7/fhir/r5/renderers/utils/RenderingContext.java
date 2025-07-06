@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -347,6 +348,8 @@ public class RenderingContext extends RenderingI18nContext {
   private Set<ActorDefinition> actorWhiteList = new HashSet<>();
   private boolean trackNarrativeSource;
   private KeyIssuer crossLinkKeyGen;
+  private int randomTracker;
+  private boolean testing;
   
   /**
    * 
@@ -1204,4 +1207,26 @@ public class RenderingContext extends RenderingI18nContext {
     return crossLinkKeyGen.issueKey();
   }
 
+  public String getRandomName(String id) {
+    if (testing) {
+      return id+"-"+(++randomTracker);
+    } else {
+      return UUID.randomUUID().toString().toLowerCase();
+    }
+  }
+
+  public boolean isTesting() {
+    return testing;
+  }
+
+  /**
+   * testing is used to turn off production of random UUIDs and produce something known and predictable but
+   * likely to produce name clashes in production - for the sake of test case reproducibility
+   * @param testing
+   */
+  public void setTesting(boolean testing) {
+    this.testing = testing;
+  }
+
+  
 }
