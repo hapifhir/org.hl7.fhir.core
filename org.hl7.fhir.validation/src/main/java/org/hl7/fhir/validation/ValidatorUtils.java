@@ -133,13 +133,13 @@ public class ValidatorUtils {
   }
 
   protected static List<ValidationMessage> removeDuplicates(List<ValidationMessage> messages) {
-    List<ValidationMessage> filteredValidation = new ArrayList<ValidationMessage>();
+    List<ValidationMessage> uniqueMessages = new ArrayList<ValidationMessage>();
     for (ValidationMessage e : messages) {
-      if (!filteredValidation.contains(e))
-        filteredValidation.add(e);
+      if (!uniqueMessages.contains(e))
+        uniqueMessages.add(e);
     }
     //filteredValidation.sort(null);
-    return filteredValidation;
+    return uniqueMessages;
   }
 
   protected static OperationOutcome messagesToOutcome(List<ValidationMessage> messages, SimpleWorkerContext context, FHIRPathEngine fpe) throws IOException, FHIRException, EOperationOutcome {
