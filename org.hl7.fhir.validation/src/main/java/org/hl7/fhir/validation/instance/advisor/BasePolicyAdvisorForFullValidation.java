@@ -118,7 +118,7 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/headcircum", "Head circumference", "LOINC", codes);
     } else if (hasLoincCode(code, codes, "29463-7", "29463-7", "3141-9", "3142-7", "75292-3", "79348-9", "8350-1", "8351-9")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bodyweight", "Body weight", "LOINC", codes);
-    } else if (hasLoincCode(code, codes, "39156-5", "39156-5", "59574-4", "89270-3")) {
+    } else if (hasLoincCode(code, codes, "39156-5", "39156-5", "89270-3")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bmi", "Body mass index", "LOINC", codes);
     } else if (hasLoincCode(code, codes, "85354-9", "35094-2", "8459-0", "85354-9", "76534-7", "55284-4", "8480-6")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bp", "Blood pressure systolic and diastolic", "LOINC", codes);
