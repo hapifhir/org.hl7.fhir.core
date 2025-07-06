@@ -1351,10 +1351,11 @@ public class BundleValidator extends BaseValidator {
     ByteArrayOutputStream ba = new ByteArrayOutputStream();
     // 1. signed with signature data
     ParserBase p = Manager.makeParser(context, xml ? FhirFormat.XML :  FhirFormat.JSON);
+    String root = bundle.getPath();
     if (canon.endsWith("#document")) {
-      p.setCanonicalFilter("Bundle.id", "Bundle.meta", "Bundle.signature");
+      p.setCanonicalFilter(root+".id", root+".meta", root+".signature");
     } else {
-      p.setCanonicalFilter("Bundle.signature");
+      p.setCanonicalFilter(root+".signature");
     }
     p.compose(bundle, ba, OutputStyle.CANONICAL, null);
     toSign = ba.toByteArray();
