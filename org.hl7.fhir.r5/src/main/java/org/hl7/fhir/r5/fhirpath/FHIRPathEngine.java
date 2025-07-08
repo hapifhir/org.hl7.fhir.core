@@ -2813,7 +2813,7 @@ public class FHIRPathEngine {
     if (right.size() > 1) {
       throw makeExceptionPlural(right.size(), expr, I18nConstants.FHIRPATH_RIGHT_VALUE, "+");
     }
-    if (!right.get(0).isPrimitive() &&  !((left.get(0).isDateTime() || left.get(0).hasType("date", "dateTime", "instant") || "0".equals(left.get(0).primitiveValue()) || left.get(0).hasType("Quantity")) && right.get(0).hasType("Quantity"))) {
+    if (!right.get(0).isPrimitive() &&  !((left.get(0).isDateTime() || left.get(0).hasType("date", "dateTime", "instant", "time") || "0".equals(left.get(0).primitiveValue()) || left.get(0).hasType("Quantity")) && right.get(0).hasType("Quantity"))) {
       throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_WRONG_TYPE, "+", right.get(0).fhirType());
     }
 
@@ -2832,6 +2832,10 @@ public class FHIRPathEngine {
     } else if ((l.isDateTime() || l.hasType("dateTime") || l.hasType("instant")) && r.hasType("Quantity")) {
       DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue()); 
       result.add(dateAdd(dl, (Quantity) r, false, expr));
+    } else if (l.hasType("time") && r.hasType("Quantity")) {
+      TimeType dl = l instanceof TimeType ? (TimeType) l : new TimeType(l.primitiveValue()); 
+      var rdt = timeAdd(dl, (Quantity) r, false, expr);
+      result.add(rdt); // we only want the time part
     } else {
       throw makeException(expr, I18nConstants.FHIRPATH_OP_INCOMPATIBLE, "+", left.get(0).fhirType(), right.get(0).fhirType());
     }
@@ -2879,6 +2883,49 @@ public class FHIRPathEngine {
     case "second": 
     case "s":
       result.add(Calendar.SECOND, value);
+      double decValue = negate ? 0 - q.getValue().doubleValue() : q.getValue().doubleValue();
+      decValue = decValue - value; // remove the integer part, so we can add it in milliseconds
+      int ms = (int) (decValue * 1000);
+      if (ms != 0) {
+        result.add(Calendar.MILLISECOND, ms);
+      }
+      break;
+    case "milliseconds": 
+    case "millisecond": 
+    case "ms": 
+      result.add(Calendar.MILLISECOND, value);
+      break;
+    default:
+      throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_ARITHMETIC_UNIT, q.getCode()), I18nConstants.FHIRPATH_ARITHMETIC_UNIT, holder.getOpStart(), holder.toString());
+    }
+    return result;
+  }
+
+private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode holder) {
+    TimeType result = (TimeType) d.copy();
+
+    int value = negate ? 0 - q.getValue().intValue() : q.getValue().intValue();
+    switch (q.hasCode() ? q.getCode() : q.getUnit()) {
+    case "hours": 
+    case "hour": 
+    case "h":
+      result.add(Calendar.HOUR, value);
+      break;
+    case "minutes": 
+    case "minute": 
+    case "min":
+      result.add(Calendar.MINUTE, value);
+      break;
+    case "seconds": 
+    case "second": 
+    case "s":
+      result.add(Calendar.SECOND, value);
+      double decValue = negate ? 0 - q.getValue().doubleValue() : q.getValue().doubleValue();
+      decValue = decValue - value; // remove the integer part, so we can add it in milliseconds
+      int ms = (int) (decValue * 1000);
+      if (ms != 0) {
+        result.add(Calendar.MILLISECOND, ms);
+      }
       break;
     case "milliseconds": 
     case "millisecond": 
@@ -3076,7 +3123,7 @@ public class FHIRPathEngine {
     if (right.size() > 1) {
       throw makeExceptionPlural(right.size(), expr, I18nConstants.FHIRPATH_RIGHT_VALUE, "-");
     }
-    if (!right.get(0).isPrimitive() &&  !((left.get(0).isDateTime() || left.get(0).hasType("date", "dateTime", "instant") || "0".equals(left.get(0).primitiveValue()) || left.get(0).hasType("Quantity")) && right.get(0).hasType("Quantity"))) {
+    if (!right.get(0).isPrimitive() &&  !((left.get(0).isDateTime() || left.get(0).hasType("date", "dateTime", "instant", "time") || "0".equals(left.get(0).primitiveValue()) || left.get(0).hasType("Quantity")) && right.get(0).hasType("Quantity"))) {
       throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_WRONG_TYPE, "-", right.get(0).fhirType());
     }
 
@@ -3100,6 +3147,10 @@ public class FHIRPathEngine {
     } else if ((l.isDateTime() || l.hasType("dateTime") || l.hasType("instant")) && r.hasType("Quantity")) {
       DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue()); 
       result.add(dateAdd(dl, (Quantity) r, true, expr));
+    } else if (l.hasType("time") && r.hasType("Quantity")) {
+      TimeType dl = l instanceof TimeType ? (TimeType) l : new TimeType(l.primitiveValue()); 
+      var rdt = timeAdd(dl, (Quantity) r, true, expr);
+      result.add(rdt); // we only want the time part
     } else {
       throw makeException(expr, I18nConstants.FHIRPATH_OP_INCOMPATIBLE, "-", left.get(0).fhirType(), right.get(0).fhirType());
     }
