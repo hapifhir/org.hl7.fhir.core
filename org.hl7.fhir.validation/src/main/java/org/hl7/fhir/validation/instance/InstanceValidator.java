@@ -4399,15 +4399,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (ext.hasValue() && ext.getValue().primitiveValue() != null) {
           String code = ext.getValue().primitiveValue();
           switch (code) {
-          case "#no" :
+          case "_no" :
             ok = rule(errors, "2025-06-07", IssueType.BUSINESSRULE, element.line(), element.col(), path,
                 langs.isEmpty(), I18nConstants.XHTML_CONTROL_NO_LANGS, CommaSeparatedStringBuilder.join(", ", langs), profile) && ok;
             break;
-          case "#yes" :
+          case "_yes" :
             ok = rule(errors, "2025-06-07", IssueType.BUSINESSRULE, element.line(), element.col(), path,
                 !langs.isEmpty(), I18nConstants.XHTML_CONTROL_LANGS_REQUIRED, CommaSeparatedStringBuilder.join(", ", langs), profile) && ok;
             break;
-          case "#resource" :
+          case "_resource" :
             String rl = resource.getNamedChildValue("language");
             if (langs.isEmpty()) {
               warning(errors, "2025-06-07", IssueType.BUSINESSRULE, element.line(), element.col(), path,
