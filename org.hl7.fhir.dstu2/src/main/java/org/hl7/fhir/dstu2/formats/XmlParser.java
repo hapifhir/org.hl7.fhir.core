@@ -11758,7 +11758,7 @@ public class XmlParser extends XmlParserBase {
       xml.enter(FHIR_NS, name);
       composeElementElements(element);
       if (element.hasReferenceElement()) {
-        composeString("reference", element.getReferenceElement());
+        composeString("reference", element.getReferenceElement_());
       }
       if (element.hasDisplayElement()) {
         composeString("display", element.getDisplayElement());
