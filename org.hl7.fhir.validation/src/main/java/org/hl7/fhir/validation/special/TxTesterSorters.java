@@ -66,6 +66,9 @@ public class TxTesterSorters {
       if (p.getResource() != null && p.getResource() instanceof OperationOutcome) {
         Collections.sort(((OperationOutcome) p.getResource()).getIssue(), new TxTesterSorters.OperationIssueSorter());
       }
+      if (p.getResource() != null && p.getResource() instanceof Parameters) {
+        sortParameters(((Parameters) p.getResource()));
+      }
       if ("message".equals(p.getName()) && p.hasValuePrimitive()) {
         String pv = p.getValue().primitiveValue();
         if (pv.contains("; ")) {

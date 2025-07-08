@@ -55,6 +55,8 @@ public interface ITerminologyClient {
   ValueSet expandValueset(ValueSet vs, Parameters p) throws FHIRException;
   Parameters validateCS(Parameters pin) throws FHIRException;
   Parameters validateVS(Parameters pin) throws FHIRException;
+  Parameters batchValidateCS(Parameters pin) throws FHIRException;
+  Parameters batchValidateVS(Parameters pin) throws FHIRException;
   Parameters subsumes(Parameters pin) throws FHIRException;
   ITerminologyClient setTimeoutFactor(int i) throws FHIRException;
   ToolingClientLogger getLogger();

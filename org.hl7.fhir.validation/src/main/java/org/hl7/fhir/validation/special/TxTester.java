@@ -499,9 +499,11 @@ public class TxTester {
         } else if (test.asString("operation").equals("lookup")) {
           msg = lookup(test.str("name"), setup, (Parameters) req, resp, fp, lang, profile, ext, getResponseCode(test), modes);      
         } else if (test.asString("operation").equals("translate")) {
-          msg = translate(test.str("name"), setup, (Parameters) req, resp, fp, lang, profile, ext, getResponseCode(test), modes);      
+          msg = translate(test.str("name"), setup, (Parameters) req, resp, fp, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("batch")) {
-          msg = batch(test.str("name"), setup, (Bundle) req, resp, fp, lang, profile, ext, getResponseCode(test), modes);      
+          msg = batch(test.str("name"), setup, (Bundle) req, resp, fp, lang, profile, ext, getResponseCode(test), modes);
+        } else if (test.asString("operation").equals("batch-validate")) {
+          msg = batchValidate(test.str("name"), setup, (Parameters) req, resp, fp, lang, profile, ext, getResponseCode(test), modes);
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
@@ -699,6 +701,38 @@ public class TxTester {
     default:
       throw new Error("unknown code string "+tcode);
     }
+  }
+
+  private String batchValidate(String id, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
+    for (Resource r : setup) {
+      p.addParameter().setName("tx-resource").setResource(r);
+    }
+    p.getParameter().addAll(profile.getParameter());
+    terminologyClient.setAcceptLanguage(lang);
+    int code = 0;
+    String pj;
+    try {
+      Parameters po = terminologyClient.batchValidateVS(p);
+      TxTesterScrubbers.scrubParams(po);
+      TxTesterSorters.sortParameters(po);
+      pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
+      code = 200;
+    } catch (EFhirClientException e) {
+      code = e.getCode();
+      OperationOutcome oo = e.getServerError();
+      TxTesterScrubbers.scrubOO(oo, tight);
+      oo.setText(null);
+      pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+    }
+    String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
+    if (diff != null) {
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
+      FileUtilities.stringToFile(pj, fp);
+    }
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
+    }
+    return diff;
   }
 
   private String validate(String id, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
