@@ -3437,11 +3437,11 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private void evaluateParameters(ExecutionTypeContext context, TypeDetails focus, ExpressionNode exp, Set<ElementDefinition> elementDependencies, List<TypeDetails> paramTypes, boolean canBeNone) {
     int i = 0;
-    for (ExpressionNode expr : exp.getParameters()) {
+    for (ExpressionNode exprParam : exp.getParameters()) {
       if (isExpressionParameter(exp, i)) {
-        paramTypes.add(executeType(changeThis(context, focus), focus, expr, elementDependencies, true, canBeNone, expr));
+        paramTypes.add(executeType(changeThis(context, focus), focus, exprParam, elementDependencies, true, canBeNone, exp));
       } else {
-        paramTypes.add(executeType(context, context.thisItem, expr, elementDependencies, true, canBeNone, expr));
+        paramTypes.add(executeType(context, focus, exprParam, elementDependencies, true, canBeNone, exp));
       }
       i++;
     }
@@ -5246,7 +5246,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         result.add(item);
       }
     }
-    for (Base item : execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true)) {
+    for (Base item : execute(context, focus, exp.getParameters().get(0), true)) {
       if (!doContains(result, item)) {
         result.add(item);
       }
@@ -5259,7 +5259,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     for (Base item : focus) {
       result.add(item);
     }
-    for (Base item : execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true)) {
+    for (Base item : execute(context, focus, exp.getParameters().get(0), true)) {
       result.add(item);
     }
     return result;
@@ -5267,7 +5267,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcIntersect(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> other = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
+    List<Base> other = execute(context, focus, exp.getParameters().get(0), true);
 
     for (Base item : focus) {
       if (!doContains(result, item) && doContains(other, item)) {
