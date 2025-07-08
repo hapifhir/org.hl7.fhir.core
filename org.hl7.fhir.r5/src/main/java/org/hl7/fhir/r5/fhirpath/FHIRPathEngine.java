@@ -1215,6 +1215,7 @@ public class FHIRPathEngine {
         wrapper.setStart(lexer.getCurrentLocation().copy());
         lexer.setCurrent(lexer.getCurrent().substring(1));
       }
+      result.setEnd(lexer.getCurrentLocation().copy());
       result.setConstant(processConstant(lexer));
       result.setKind(Kind.Constant);
       if (!isString && !lexer.done() && (result.getConstant() instanceof IntegerType || result.getConstant() instanceof DecimalType) && (lexer.isStringConstant() || lexer.hasToken("year", "years", "month", "months", "week", "weeks", "day", "days", "hour", "hours", "minute", "minutes", "second", "seconds", "millisecond", "milliseconds"))) {
@@ -1242,11 +1243,11 @@ public class FHIRPathEngine {
             ucum = "ms";
           } 
         } else {
+          result.setEnd(lexer.getCurrentLocation().copy());
           ucum = lexer.readConstant("units");
         }
         result.setConstant(new Quantity().setValue(new BigDecimal(result.getConstant().primitiveValue())).setUnit(unit).setSystem(ucum == null ? null : "http://unitsofmeasure.org").setCode(ucum));
       }
-      result.setEnd(lexer.getCurrentStartLocation().copy());
     } else if ("(".equals(lexer.getCurrent())) {
       lexer.next();
       result.setKind(Kind.Group);
@@ -1261,11 +1262,12 @@ public class FHIRPathEngine {
         throw lexer.error("Found "+lexer.getCurrent()+" expecting a token name");
       }
       if (lexer.isFixedName()) {
+        result.setEnd(lexer.getCurrentLocation().copy());
         result.setName(lexer.readFixedName("Path Name"));
       } else {
+        result.setEnd(lexer.getCurrentLocation().copy());
         result.setName(lexer.take());
       }
-      result.setEnd(lexer.getCurrentStartLocation().copy());
       if (!result.checkName()) {
         throw lexer.error("Found "+result.getName()+" expecting a valid token name");
       }
@@ -1301,14 +1303,16 @@ public class FHIRPathEngine {
     }
     ExpressionNode focus = result;
     if ("[".equals(lexer.getCurrent())) {
-      lexer.next();
       ExpressionNode item = new ExpressionNode(lexer.nextId());
       item.setKind(Kind.Function);
       item.setFunction(ExpressionNode.Function.Item);
+      item.setStart(lexer.getCurrentStartLocation().copy());
+      lexer.next();
       item.getParameters().add(parseExpression(lexer, true));
       if (!lexer.getCurrent().equals("]")) {
         throw lexer.error("The token "+lexer.getCurrent()+" is not expected here - a \"]\" expected");
       }
+      item.setEnd(lexer.getCurrentLocation().copy());
       lexer.next();
       result.setInner(item);
       focus = item;
@@ -1321,8 +1325,8 @@ public class FHIRPathEngine {
     if (proximal) {
       while (lexer.isOp()) {
         focus.setOperation(ExpressionNode.Operation.fromCode(lexer.getCurrent()));
-        focus.setOpStart(lexer.getCurrentStartLocation());
-        focus.setOpEnd(lexer.getCurrentLocation());
+        focus.setOpStart(lexer.getCurrentStartLocation().copy());
+        focus.setOpEnd(lexer.getCurrentLocation().copy());
         lexer.next();
         focus.setOpNext(parseExpression(lexer, false));
         focus = focus.getOpNext();
