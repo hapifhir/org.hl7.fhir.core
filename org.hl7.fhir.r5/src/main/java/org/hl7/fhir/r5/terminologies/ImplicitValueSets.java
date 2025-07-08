@@ -191,6 +191,7 @@ public class ImplicitValueSets {
       vs.setTitle("HL7 Attachment Requests");
       vs.setCopyright("This content LOINC® is copyright © 1995 Regenstrief Institute, Inc. and the LOINC Committee, and available at no cost under the license at http://loinc.org/terms-of-use");
       vs.getCompose().addInclude().setSystem("http://loinc.org").addFilter().setProperty("ValidHL7AttachmentRequest").setOp(Enumerations.FilterOperator.EQUAL).setValue("Y");
+      vs.setWebPath("https://fhir.loinc.org/ValueSet/valid-hl7-attachment-requests/");
       return vs;
     } else {
       return null;

@@ -119,6 +119,7 @@ import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
 import org.hl7.fhir.r5.renderers.OperationOutcomeRenderer;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.ImplicitValueSets;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
@@ -3531,6 +3532,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private <T extends Resource> T doFindTxResource(Class<T> class_, String canonical) {
     // well, we haven't found it locally. We're going look it up
     if (class_ == ValueSet.class) {
+      ValueSet ivs = ImplicitValueSets.generateImplicitValueSet(canonical);
+      if (ivs != null) {
+        return (T) ivs;
+      }
       SourcedValueSet svs = null;
       if (txCache.hasValueSet(canonical)) {
         svs = txCache.getValueSet(canonical);
