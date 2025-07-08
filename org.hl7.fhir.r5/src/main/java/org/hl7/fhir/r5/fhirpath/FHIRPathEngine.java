@@ -5926,7 +5926,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcContains(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> swb = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
+    List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
     String sw = convertToString(swb);
 
     if (focus.size() != 1) {
