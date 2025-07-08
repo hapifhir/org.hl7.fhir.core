@@ -4367,6 +4367,10 @@ public class FHIRPathEngine {
     List<Base> result = new ArrayList<Base>();
     if (base.hasType("integer", "decimal", "unsignedInt", "positiveInt")) {
       List<Base> n1 = execute(context, focus, expr.getParameters().get(0), true);
+      if (n1.size() == 0) {
+        // no base, so we just return nothing (as per the spec)
+        return new ArrayList<Base>();
+      }
       if (n1.size() != 1) {
         throw makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "log", "0", "Multiple Values", "integer or decimal");
       }
@@ -4398,6 +4402,10 @@ public class FHIRPathEngine {
     List<Base> result = new ArrayList<Base>();
     if (base.hasType("integer", "decimal", "unsignedInt", "positiveInt")) {
       List<Base> n1 = execute(context, focus, expr.getParameters().get(0), true);
+      if (n1.size() == 0) {
+        // no base, so we just return nothing (as per the spec)
+        return new ArrayList<Base>();
+      }
       if (n1.size() != 1) {
         throw makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "power", "0", "Multiple Values", "integer or decimal");
       }
