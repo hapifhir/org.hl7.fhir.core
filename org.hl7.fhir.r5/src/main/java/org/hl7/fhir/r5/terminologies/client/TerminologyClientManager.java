@@ -23,6 +23,7 @@ import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.ImplicitValueSets;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext.TerminologyClientContextUseType;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
@@ -577,7 +578,7 @@ public class TerminologyClientManager {
     String request = null;
     boolean isImplicit = false;
     String iVersion = null;
-    if (ValueSetUtilities.isImplicitSCTValueSet(canonical)) {
+    if (ImplicitValueSets.isImplicitSCTValueSet(canonical)) {
       isImplicit = true;
       iVersion = canonical.substring(0, canonical.indexOf("?fhir_vs"));
       if ("http://snomed.info/sct".equals(iVersion) && canonical.contains("|")) {
@@ -585,7 +586,7 @@ public class TerminologyClientManager {
       } 
       iVersion = ValueSetUtilities.versionFromExpansionParams(expParameters, "http://snomed.info/sct", iVersion); 
       request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&url="+Utilities.URLEncode("http://snomed.info/sct"+(iVersion == null ? "": "|"+iVersion)));
-    } else if (ValueSetUtilities.isImplicitLoincValueSet(canonical)) {
+    } else if (ImplicitValueSets.isImplicitLoincValueSet(canonical)) {
       isImplicit = true;
       iVersion = null;
       if (canonical.contains("|")) {
@@ -668,7 +669,7 @@ public class TerminologyClientManager {
           try {
             ValueSet vs = client.getClient().expandValueset(null, p);
             if (vs != null) {
-              return new SourcedValueSet(server, ValueSetUtilities.makeImplicitValueSet(canonical, iVersion));
+              return new SourcedValueSet(server, ImplicitValueSets.generateImplicitValueSet(canonical, iVersion));
             }
           } catch (Exception e) {
             return null;
