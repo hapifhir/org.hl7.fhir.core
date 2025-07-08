@@ -529,10 +529,12 @@ public class StructureDefinitionValidator extends BaseValidator {
         ctxt = session.getOtherVersions().get(v);
       }
     }
-    
+
     try {
-      String[] p = path.split("\\.");
-      StructureDefinition sd = ctxt.fetchResource(StructureDefinition.class, path.contains(".") ? path.substring(0, path.indexOf(".")) : path);
+      String[] p = (path.contains("#")  ? path.substring(path.indexOf("#")+1) : path).split("\\.");
+      String url = path.contains("#") ? path.substring(0, path.indexOf("#")) : "http://hl7.org/fhir/StructureDefinition/"+p[0];
+
+      StructureDefinition sd = ctxt.fetchResource(StructureDefinition.class, url);
       if (sd == null) {
         return null;
       }
