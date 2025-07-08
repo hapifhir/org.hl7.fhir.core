@@ -2754,6 +2754,9 @@ public class FHIRPathEngine {
     if (right.size() == 0) { 
       return makeBoolean(false);
     }
+    if (left.size() > 1) {
+      throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "in");
+    }
     boolean ans = true;
     for (Base l : left) {
       boolean f = false;
@@ -2773,8 +2776,11 @@ public class FHIRPathEngine {
   }
 
   private List<Base> opContains(List<Base> left, List<Base> right, ExpressionNode expr) {
-    if (left.size() == 0 || right.size() == 0) { 
+    if (right.size() == 0) { 
       return new ArrayList<Base>();
+    }
+    if (left.size() == 0) { 
+      return makeBoolean(false);
     }
     boolean ans = true;
     for (Base r : right) {
@@ -4211,6 +4217,9 @@ public class FHIRPathEngine {
   }
   
   private List<Base> funcSqrt(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    if (focus.size() == 0) {
+      return new ArrayList<Base>();
+    }
     if (focus.size() != 1) {
       throw makeExceptionPlural(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS, "sqrt", focus.size());
     }
@@ -4231,6 +4240,9 @@ public class FHIRPathEngine {
 
 
   private List<Base> funcAbs(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    if (focus.size() == 0) {
+      return new ArrayList<Base>();
+    }
     if (focus.size() != 1) {
       throw makeExceptionPlural(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS, "abs", focus.size());
     }
@@ -4254,6 +4266,9 @@ public class FHIRPathEngine {
 
 
   private List<Base> funcCeiling(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    if (focus.size() == 0) {
+      return new ArrayList<Base>();
+    }
     if (focus.size() != 1) {
       throw makeExceptionPlural(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS, "ceiling", focus.size());
     }
@@ -4272,6 +4287,9 @@ public class FHIRPathEngine {
   }
 
   private List<Base> funcFloor(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    if (focus.size() == 0) {
+      return new ArrayList<Base>();
+    }
     if (focus.size() != 1) {
       throw makeExceptionPlural(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS, "floor", focus.size());
     }
@@ -4316,6 +4334,9 @@ public class FHIRPathEngine {
 
 
   private List<Base> funcLn(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    if (focus.size() == 0) {
+      return new ArrayList<Base>();
+    }
     if (focus.size() != 1) {
       throw makeExceptionPlural(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS, "ln", focus.size());
     }
@@ -4336,6 +4357,9 @@ public class FHIRPathEngine {
 
 
   private List<Base> funcLog(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    if (focus.size() == 0) {
+      return new ArrayList<Base>();
+    }
     if (focus.size() != 1) {
       throw makeExceptionPlural(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS, "log", focus.size());
     }
@@ -4364,6 +4388,9 @@ public class FHIRPathEngine {
   }
 
   private List<Base> funcPower(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    if (focus.size() == 0) {
+      return new ArrayList<Base>();
+    }
     if (focus.size() != 1) {
       throw makeExceptionPlural(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS, "power", focus.size());
     }
@@ -4388,6 +4415,9 @@ public class FHIRPathEngine {
   }
 
   private List<Base> funcTruncate(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    if (focus.size() == 0) {
+      return new ArrayList<Base>();
+    }
     if (focus.size() != 1) {
       throw makeExceptionPlural(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS, "truncate", focus.size());
     }
@@ -4494,6 +4524,9 @@ public class FHIRPathEngine {
   }
   
   private List<Base> funcPrecision(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    if (focus.size() == 0) {
+      return new ArrayList<Base>();
+    }
     if (focus.size() != 1) {
       throw makeExceptionPlural(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS, "highBoundary", focus.size());
     }
@@ -4512,6 +4545,9 @@ public class FHIRPathEngine {
   }
 
   private List<Base> funcRound(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    if (focus.size() == 0) {
+      return new ArrayList<Base>();
+    }
     if (focus.size() != 1) {
       throw makeExceptionPlural(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS, "round", focus.size());
     }
@@ -5930,12 +5966,14 @@ public class FHIRPathEngine {
 
   private List<Base> funcIndexOf(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
+    if (focus.size() == 0) { 
+      // no result, and don't need to do anything (including evaluate the parameter)
+      return result;
+    }
 
     List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
     String sw = convertToString(swb);
-    if (focus.size() == 0) {
-      // no result
-    } else if (swb.size() == 0) {
+    if (swb.size() == 0) {
       // no result
     } else if (Utilities.noString(sw)) {
       result.add(new IntegerType(0).noExtensions());
@@ -5952,7 +5990,16 @@ public class FHIRPathEngine {
 
   private List<Base> funcSubstring(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
+    if (focus.size() == 0) {
+      // if there is no focus, then we don't need to do anything (including evaluate the parameter(s))
+      return result;
+    }
+
     List<Base> n1 = execute(context, focus, exp.getParameters().get(0), true);
+    if (n1.size() == 0) {
+      // the start parameter is not present, so return an empty list)
+      return result;
+    }
     int i1 = Integer.parseInt(n1.get(0).primitiveValue());
     int i2 = -1;
     if (exp.parameterCount() == 2) {
