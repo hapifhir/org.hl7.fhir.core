@@ -29752,7 +29752,7 @@ public class XmlParser extends XmlParserBase {
   protected void composeReferenceElements(Reference element) throws IOException {
     composeDataTypeElements(element);
     if (element.hasReferenceElement()) {
-      composeString("reference", element.getReferenceElement());
+      composeString("reference", element.getReferenceElement_());
     }
     if (element.hasTypeElement()) {
       composeUri("type", element.getTypeElement());
