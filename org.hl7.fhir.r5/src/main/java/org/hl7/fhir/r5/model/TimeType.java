@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.model;
 
+import java.util.Calendar;
+
 import org.hl7.fhir.utilities.Utilities;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
@@ -36,6 +38,7 @@ import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import ca.uhn.fhir.parser.DataFormatException;
 
 /**
  * Represents a Time datatype, per the FHIR specification. A time is a specification of hours and minutes (and optionally milliseconds), with NO date and NO timezone information attached. It is
@@ -143,6 +146,69 @@ public class TimeType extends PrimitiveType<String> {
       setValue(getValue().substring(0, 8));
     }
   }
+
+	/**
+	 * Adds the given amount to the field specified by theField
+	 *
+	 * @param theField
+	 *           The field, uses constants from {@link Calendar} such as {@link Calendar#YEAR}
+	 * @param theValue
+	 *           The number to add (or subtract for a negative number)
+	 */
+	public void add(int theField, int theValue) {
+    int hours = getHour();
+    int minutes = getMinute();
+    float seconds = getSecond();
+    boolean hasMillis = getPrecision() == TemporalPrecisionEnum.MILLI;
+
+		switch (theField) {
+		case Calendar.HOUR:
+			hours += theValue;
+			break;
+		case Calendar.MINUTE:
+      minutes += theValue;
+			break;
+		case Calendar.SECOND:
+      seconds += theValue;
+			break;
+		case Calendar.MILLISECOND:
+      // Convert milliseconds to seconds
+      seconds += theValue / 1000.0f;
+      hasMillis = true;
+			break;
+		default:
+			throw new DataFormatException("Unknown field constant: " + theField);
+		}
+
+    // Handle overflow of seconds into minutes
+    if (seconds >= 60) {
+      minutes += (int) seconds / 60;
+      seconds = seconds % 60;
+    } else if (seconds < 0) {
+      minutes += ((int) seconds / 60) - 1;
+      seconds = 60 + (seconds % 60);
+    }
+    // Handle overflow of minutes into hours
+    if (minutes >= 60) {
+      hours += minutes / 60;
+      minutes = minutes % 60;
+    } else if (minutes < 0) {
+      hours += (minutes / 60) - 1;
+      minutes = 60 + (minutes % 60);
+    }
+    // truncate hours to 24-hour format
+    if (hours >= 24) {
+      hours = hours % 24;
+    } else if (hours < 0) {
+      hours = 24 + (hours % 24);
+    }
+
+    if (hasMillis) {
+      setValue(String.format("%02d:%02d:%06.3f", hours, minutes, seconds));
+    } else {
+      setValue(String.format("%02d:%02d:%02d", hours, minutes, (int) seconds));
+    }
+	}
 
   @Override
   public String fpValue() {
