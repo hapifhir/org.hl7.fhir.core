@@ -129,6 +129,20 @@ public class TerminologyClientR3 implements ITerminologyClient {
   }
 
   @Override
+  public Parameters batchValidateCS(Parameters pin) throws FHIRException {
+    org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(pin);
+    p2 = client.operateType(org.hl7.fhir.dstu3.model.CodeSystem.class, "batch-validate-code", p2);
+    return (Parameters) VersionConvertorFactory_30_50.convertResource(p2);
+  }
+
+  @Override
+  public Parameters batchValidateVS(Parameters pin) throws FHIRException {
+    org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(pin);
+    p2 = client.operateType(org.hl7.fhir.dstu3.model.ValueSet.class, "batch-validate-code", p2);
+    return (Parameters) VersionConvertorFactory_30_50.convertResource(p2);
+  }
+
+  @Override
   public ITerminologyClient setTimeoutFactor(int i) {
     client.setTimeoutFactor(i);
     return this;
