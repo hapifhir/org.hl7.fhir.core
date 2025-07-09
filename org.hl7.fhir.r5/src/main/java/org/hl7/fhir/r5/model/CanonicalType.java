@@ -76,6 +76,7 @@ public class CanonicalType extends UriType {
     }
   }
 
+
   /**
 	 * Constructor
 	 */
@@ -119,5 +120,9 @@ public class CanonicalType extends UriType {
       setValue(getValue()+"|"+version);
     }
   }
-	
+
+  public static String urlWithVersion(String system, String version) {
+    return system+(version == null ? "" : "|"+version);
+  }
+
 }
