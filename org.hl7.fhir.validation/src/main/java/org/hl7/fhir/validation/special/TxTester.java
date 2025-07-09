@@ -810,7 +810,7 @@ public class TxTester {
     int code = 0;
     String bj;
     try {
-      Bundle bo = terminologyClient.validateBatch(bnd);
+      Bundle bo = terminologyClient.batch(bnd);
       for (BundleEntryComponent be : bo.getEntry()) {
         if (be.getResource() instanceof Parameters) {
           Parameters po = ((Parameters) be.getResource());

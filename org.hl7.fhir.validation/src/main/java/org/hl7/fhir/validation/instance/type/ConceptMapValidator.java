@@ -1,21 +1,16 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
@@ -133,8 +128,8 @@ public class ConceptMapValidator extends BaseValidator {
 
     private final NodeStack stack;
 
-    public CMCodingValidationRequest(NodeStack stack, Coding code, ValueSet vs) {
-      super(code, vs);
+    public CMCodingValidationRequest(NodeStack stack, Coding code) {
+      super(code);
       this.stack = stack;
     }
 
@@ -143,6 +138,7 @@ public class ConceptMapValidator extends BaseValidator {
     }
   }
 
+  private Map<String, Boolean> checkServerURLs = new HashMap<>();
   private final List<CMCodingValidationRequest> batch = new ArrayList<>();
   
   public ConceptMapValidator(BaseValidator parent) {
@@ -203,17 +199,17 @@ public class ConceptMapValidator extends BaseValidator {
       } else if (!noTerminologyChecks) {
         try {
           long t = System.currentTimeMillis();
-          context.validateCodeBatch(ValidationOptions.defaults(), batch, null);
+          context.validateCodeBatch(ValidationOptions.defaults(), batch, null, false);
           log.debug("  :   .. "+(System.currentTimeMillis()-t)+"ms");
           for (CMCodingValidationRequest cv : batch) {
             if (cv.getResult().getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
-              warning(errors, "2023-09-06", IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM, cv.getCoding().getSystem(), cv.getCoding().getCode(), cv.getVsObj().getUrl());                
+              warning(errors, "2023-09-06", IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM, cv.getCoding().getSystem(), cv.getCoding().getCode(), null);
             } else if (cv.getResult().getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED_VERSION) {
-              warning(errors, "2023-09-06", IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM_VERSION, cv.getCoding().getSystem(), cv.getCoding().getCode(), cv.getVsObj().getUrl(), cv.getResult().getVersion());                
+              warning(errors, "2023-09-06", IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM_VERSION, cv.getCoding().getSystem(), cv.getCoding().getCode(), null, cv.getResult().getVersion());
             } else if (cv.getCoding().getVersion() == null) {
-              ok = rule(errors, "2023-09-06", IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.CONCEPTMAP_VS_INVALID_CONCEPT_CODE, cv.getCoding().getSystem(), cv.getCoding().getCode(), cv.getVsObj().getUrl()) && ok;                
+              ok = rule(errors, "2023-09-06", IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.CONCEPTMAP_VS_INVALID_CONCEPT_CODE, cv.getCoding().getSystem(), cv.getCoding().getCode(), null) && ok;
             } else {
-              ok = rule(errors, "2023-09-06", IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.CONCEPTMAP_VS_INVALID_CONCEPT_CODE_VER, cv.getCoding().getSystem(), cv.getCoding().getVersion(), cv.getCoding().getCode(), cv.getVsObj().getUrl()) && ok;
+              ok = rule(errors, "2023-09-06", IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.CONCEPTMAP_VS_INVALID_CONCEPT_CODE_VER, cv.getCoding().getSystem(), cv.getCoding().getVersion(), cv.getCoding().getCode(), null) && ok;
             }
           }
         } catch (Exception e) {
@@ -327,7 +323,7 @@ public class ConceptMapValidator extends BaseValidator {
     List<Element> elements = grp.getChildrenByName("element");
     int ci = 0;
     for (Element element : elements) {
-      ok = validateGroupElement(errors, element, stack.push(element, ci, null, null), props, attribs, options, ctxt, relationships) && ok;
+      ok = validateGroupElement(errors, stack, element, stack.push(element, ci, null, null), props, attribs, options, ctxt, relationships) && ok;
       ci++;
     }    
     return ok;
@@ -360,7 +356,7 @@ public class ConceptMapValidator extends BaseValidator {
     return tgtCS.getContent() != CodeSystemContentMode.NOTPRESENT && tgtCS.getContent() != CodeSystemContentMode.EXAMPLE && tgtCS.getContent() != CodeSystemContentMode.FRAGMENT;
   }
 
-  private boolean validateGroupElement(List<ValidationMessage> errors, Element src, NodeStack stack, Map<String, PropertyDefinition> props, Map<String, String> attribs, ValidationOptions options, GroupContext ctxt, RelationshipTracker relationships) {
+  private boolean validateGroupElement(List<ValidationMessage> errors, NodeStack baseStack, Element src, NodeStack stack, Map<String, PropertyDefinition> props, Map<String, String> attribs, ValidationOptions options, GroupContext ctxt, RelationshipTracker relationships) {
     boolean ok = true;
     
     Element code = src.getNamedChild("code", false);
@@ -385,14 +381,14 @@ public class ConceptMapValidator extends BaseValidator {
           ok = (ctxt.source.cs.getContent() != CodeSystemContentMode.COMPLETE) & ok;
         }
       } else {
-        addToBatch(code, cstack, ctxt.source, ctxt.sourceScope);
+        addToBatch(errors, baseStack, code, cstack, ctxt.source, ctxt.sourceScope);
       }
     }
     
     List<Element> targets = src.getChildrenByName("target");
     int ci = 0;
     for (Element target : targets) {
-      ok = validateGroupElementTarget(errors, target, stack.push(target, ci, null, null), props, attribs, options, ctxt, relationships, source) && ok;
+      ok = validateGroupElementTarget(errors, baseStack, target, stack.push(target, ci, null, null), props, attribs, options, ctxt, relationships, source) && ok;
       ci++;
     }    
     boolean noMap = "true".equals(src.getNamedChildValue("noMap"));
@@ -408,7 +404,7 @@ public class ConceptMapValidator extends BaseValidator {
     return ok;
   }
   
-  private boolean validateGroupElementTarget(List<ValidationMessage> errors, Element tgt, NodeStack stack, Map<String, PropertyDefinition> props,
+  private boolean validateGroupElementTarget(List<ValidationMessage> errors, NodeStack baseStack, Element tgt, NodeStack stack, Map<String, PropertyDefinition> props,
       Map<String, String> attribs, ValidationOptions options, GroupContext ctxt, RelationshipTracker relationships, String source) {
     boolean ok = true;
 
@@ -434,7 +430,7 @@ public class ConceptMapValidator extends BaseValidator {
           ok = (ctxt.target.cs.getContent() != CodeSystemContentMode.COMPLETE) & ok;
         }
       } else {
-        addToBatch(code, cstack, ctxt.target, ctxt.targetScope);
+        addToBatch(errors, baseStack, code, cstack, ctxt.target, ctxt.targetScope);
       }
     } 
     
@@ -557,12 +553,24 @@ public class ConceptMapValidator extends BaseValidator {
   }
 
 
-
-  private void addToBatch(Element code, NodeStack stack, CSReference system, VSReference scope) {
+  private void addToBatch(List<ValidationMessage> errors, NodeStack baseStack, Element code, NodeStack stack, CSReference system, VSReference scope) {
     if (scope != null && scope.vs != null && system != null) {
-      Coding c = new Coding(system.url, code.primitiveValue(), null).setVersion(system.version);
-      batch.add(new CMCodingValidationRequest(stack, c, scope.vs));
-    }    
+      boolean supported;
+      String key = CanonicalType.urlWithVersion(system.url, system.version);
+      if (!checkServerURLs.containsKey(key)) {
+        IWorkerContext.SystemSupportInformation txInfo = context.getTxSupportInfo(system.url, system.version);
+        supported = VersionUtilities.isThisOrLater(TerminologyClientContext.TX_BATCH_VERSION, txInfo.getTestVersion());
+        checkServerURLs.put(key, supported);
+        if (!supported) {
+          warning(errors, "2025-07-07", IssueType.NOTSUPPORTED, baseStack, false, I18nConstants.VALUESET_TXVER_BATCH_NOT_SUPPORTED, (txInfo.getTestVersion() == null ? "Not Known" : txInfo.getTestVersion()), system.url + (system.version == null ? "" : "|" + system.version), txInfo.getServer());
+        }
+      } else {
+        supported = checkServerURLs.get(key);
+      }
+      if (supported) {
+        Coding c = new Coding(system.url, code.primitiveValue(), null).setVersion(system.version);
+        batch.add(new CMCodingValidationRequest(stack, c));
+      }
+    }
   }
-
 }

@@ -191,7 +191,7 @@ public class TerminologyClientR3 implements ITerminologyClient {
   }
 
   @Override
-  public Bundle validateBatch(Bundle batch) {
+  public Bundle batch(Bundle batch) {
     return (Bundle) VersionConvertorFactory_30_50.convertResource(client.transaction((org.hl7.fhir.dstu3.model.Bundle) VersionConvertorFactory_30_50.convertResource(batch)));
   }
 

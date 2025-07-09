@@ -696,7 +696,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       }
 
       CodeSystem cs = context.fetchSupplementedCodeSystem(exc.getSystem());
-      if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) && context.supportsSystem(exc.getSystem(), opContext.getOptions().getFhirVersion())) {
+      if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) && context.supportsSystem(exc.getSystem())) {
         ValueSetExpansionOutcome vse = context.expandVS(new TerminologyOperationDetails(requiredSupplements), exc, false, false);
         ValueSet valueset = vse.getValueset();
         if (valueset.hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {

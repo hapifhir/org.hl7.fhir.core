@@ -968,7 +968,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
           }
         }
         if (fr == null) {
-          fr = ImplicitValueSets.generateImplicitValueSet(reference);
+          fr = new ImplicitValueSets(context.getExpansionParameters()).generateImplicitValueSet(reference);
         } 
        
         timeTracker.tx(t, "vs "+uri);

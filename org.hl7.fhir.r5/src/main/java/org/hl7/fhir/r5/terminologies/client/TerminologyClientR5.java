@@ -204,7 +204,7 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
 
   @Override
-  public Bundle validateBatch(Bundle batch) {
+  public Bundle batch(Bundle batch) {
     return client.transaction(batch);
   }
 

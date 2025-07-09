@@ -29,9 +29,11 @@ package org.hl7.fhir.r5.terminologies;
  */
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.Enumerations;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
@@ -41,16 +43,22 @@ import java.util.List;
 @MarkedToMoveToAdjunctPackage
 public class ImplicitValueSets {
 
-  public static ValueSet generateImplicitValueSet(String url) {
+  private Parameters expParameters;
+
+  public ImplicitValueSets(Parameters expParameters) {
+    this.expParameters = expParameters;
+  }
+
+  public ValueSet generateImplicitValueSet(String url) {
     if (Utilities.noString(url)) {
       return null;
     }
     
     if (url.startsWith("http://snomed.info/sct")) {
-      return generateImplicitSnomedValueSet(url, null);
+      return generateImplicitSnomedValueSet(url, defaultVersion("http://snomed.info/sct"));
     }
     if (url.startsWith("http://loinc.org/vs")) {
-      return generateImplicitLoincValueSet(url, null);
+      return generateImplicitLoincValueSet(url, defaultVersion("http://loinc.org"));
     }
     if (url.equals("http://unitsofmeasure.org/vs")) {
       return allUcumValueSet();
@@ -61,7 +69,19 @@ public class ImplicitValueSets {
     return null;
   }
 
-  public static ValueSet generateImplicitValueSet(String url, String version) {
+  private String defaultVersion(String url) {
+    for (Parameters.ParametersParameterComponent p : expParameters.getParameter()) {
+      if ("default-version".equals(p.getName())) {
+        String u = p.getValue().primitiveValue();
+        if (u.startsWith(url+"|")) {
+          return u.substring(u.indexOf(1)+1);
+        }
+      }
+    }
+    return null;
+  }
+
+  public ValueSet generateImplicitValueSet(String url, String version) {
     if (Utilities.noString(url)) {
       return null;
     }
@@ -79,26 +99,26 @@ public class ImplicitValueSets {
     }
   }
 
-  public static boolean isImplicitValueSet(String url) {
+  public boolean isImplicitValueSet(String url) {
     return isImplicitSCTValueSet(url) || isImplicitLoincValueSet(url) || isImplicitUcumValueSet(url) || isImplicitMimeTypesValueSet(url);
   }
 
 
   //-- SCT -------------------
 
-  public static boolean isImplicitSCTValueSet(String url) {
+  public boolean isImplicitSCTValueSet(String url) {
     return url.startsWith("http://snomed.info/sct") && url.contains("?fhir_vs");
   }
 
-  private static ValueSet generateImplicitSnomedValueSet(String url, String version) {
+  private ValueSet generateImplicitSnomedValueSet(String url, String version) {
     String query = url.substring(url.indexOf("?")+1);
     if ("fhir_vs".equals(query)) {
       ValueSet vs = new ValueSet();
       vs.setUrl(url);
       vs.setVersion(version);
-      vs.setName("SCTValueSet");
-      vs.setTitle("SCT ValueSet");
-      vs.setDescription("All SNOMED CT Concepts");
+      vs.setName("SCTValueSetAll");
+      vs.setTitle("All Codes SCT ValueSet");
+      vs.setDescription("Value Set for All SNOMED CT Concepts");
       vs.setCopyright("This value set includes content from SNOMED CT, which is copyright © 2002+ International Health Terminology Standards Development Organisation (SNOMED International), and distributed by agreement between SNOMED International and HL7. Implementer use of SNOMED CT is not covered by this agreement");
       vs.setStatus(PublicationStatus.ACTIVE);
       vs.getCompose().addInclude().setSystem("http://snomed.info/sct");
@@ -114,6 +134,7 @@ public class ImplicitValueSets {
       vs.setCopyright("This value set includes content from SNOMED CT, which is copyright © 2002+ International Health Terminology Standards Development Organisation (SNOMED International), and distributed by agreement between SNOMED International and HL7. Implementer use of SNOMED CT is not covered by this agreement");
       vs.setStatus(PublicationStatus.ACTIVE);
       vs.getCompose().addInclude().setSystem("http://snomed.info/sct").addFilter().setProperty("concept").setOp(Enumerations.FilterOperator.ISA).setValue(sct);
+      vs.setWebPath("https://browser.ihtsdotools.org/?perspective=full&conceptId1="+sct);
       return vs;
     } else if (query.equals("fhir_vs=refset")) {
       ValueSet vs = new ValueSet();
@@ -137,6 +158,7 @@ public class ImplicitValueSets {
       vs.setCopyright("This value set includes content from SNOMED CT, which is copyright © 2002+ International Health Terminology Standards Development Organisation (SNOMED International), and distributed by agreement between SNOMED International and HL7. Implementer use of SNOMED CT is not covered by this agreement");
       vs.setStatus(PublicationStatus.ACTIVE);
       vs.getCompose().addInclude().setSystem("http://snomed.info/sct").addFilter().setProperty("concept").setOp(Enumerations.FilterOperator.IN).setValue(srt);
+      vs.setWebPath("https://browser.ihtsdotools.org/?perspective=full&conceptId1="+srt);
       return vs;
     } else {
       return null;
@@ -145,11 +167,11 @@ public class ImplicitValueSets {
 
   // -- LOINC -----------------
 
-  public static boolean isImplicitLoincValueSet(String url) {
+  public boolean isImplicitLoincValueSet(String url) {
     return url.startsWith("http://loinc.org/vs");
   }
 
-  private static ValueSet generateImplicitLoincValueSet(String url, String version) {
+  private ValueSet generateImplicitLoincValueSet(String url, String version) {
     if (url.startsWith("http://loinc.org/vs/LL")) {
       String c = url.substring(20);
       ValueSet vs = new ValueSet();
@@ -159,7 +181,7 @@ public class ImplicitValueSets {
       vs.setTitle("LOINC Answer Codes for "+c);
       vs.setStatus(PublicationStatus.ACTIVE);
       vs.setCopyright("This content LOINC® is copyright © 1995 Regenstrief Institute, Inc. and the LOINC Committee, and available at no cost under the license at http://loinc.org/terms-of-use");
-      vs.getCompose().addInclude().setSystem("http://loinc.org").addFilter().setProperty("answer-list").setOp(Enumerations.FilterOperator.EQUAL).setValue(c);
+      vs.getCompose().addInclude().setSystem("http://loinc.org").addFilter().setProperty("LIST").setOp(Enumerations.FilterOperator.EQUAL).setValue(c);
       return vs;
     } else if (url.startsWith("http://loinc.org/vs/LP")) {
       String c = url.substring("http://loinc.org/vs/".length());
@@ -200,11 +222,11 @@ public class ImplicitValueSets {
 
   // -- UCUM ---------
 
-  private static boolean isImplicitUcumValueSet(String url) {
+  private boolean isImplicitUcumValueSet(String url) {
     return "http://unitsofmeasure.org/vs".equals(url);
   }
 
-  private static ValueSet allUcumValueSet() {
+  private ValueSet allUcumValueSet() {
     ValueSet vs = new ValueSet();
     vs.setUrl("http://unitsofmeasure.org/vs");
     vs.setStatus(PublicationStatus.ACTIVE);
@@ -216,11 +238,11 @@ public class ImplicitValueSets {
 
   // -- MIME Types -------
 
-  private static boolean isImplicitMimeTypesValueSet(String url) {
+  private boolean isImplicitMimeTypesValueSet(String url) {
     return "http://hl7.org/fhir/ValueSet/mimetypes".equals(url);
   }
 
-  private static ValueSet generateImplicitMimetypesValueSet(String theUri) {
+  private ValueSet generateImplicitMimetypesValueSet(String theUri) {
     ValueSet valueSet = new ValueSet();
     valueSet.setStatus(PublicationStatus.ACTIVE);
     valueSet.setUrl(theUri);

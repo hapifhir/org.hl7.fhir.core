@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.validation.ValidatorSession;
@@ -100,9 +101,11 @@ public class CodingsObserver extends BaseValidator {
     for (String s : codes) {      
       serverList.add(new CodingValidationRequest(new Coding("http://snomed.info/sct", s, null)));
     }
-    
-    context.validateCodeBatchByRef(null, serverList, "http://terminology.hl7.org/ValueSet/snomed-intl-ips");
-    
+
+    ValueSet vsTemp = new ValueSet();
+    vsTemp.setUrl("http://terminology.hl7.org/ValueSet/snomed-intl-ips");
+    context.validateCodeBatch(null, serverList, vsTemp, false);
+    // #FIXME
     Map<String, String> results = new HashMap<>();
     
     for (CodingValidationRequest vr : serverList) {
