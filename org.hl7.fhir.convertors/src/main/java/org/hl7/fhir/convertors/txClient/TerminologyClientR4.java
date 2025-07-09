@@ -264,7 +264,7 @@ public class TerminologyClientR4 implements ITerminologyClient {
   }
 
   @Override
-  public Bundle validateBatch(Bundle batch) {
+  public Bundle batch(Bundle batch) {
     org.hl7.fhir.r4.model.Bundle result = client.transaction((org.hl7.fhir.r4.model.Bundle) convertResource("validateBatch.request", batch));
     return result == null ? null : (Bundle) convertResource("validateBatch.response", result);
   }

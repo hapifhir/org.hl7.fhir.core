@@ -1641,7 +1641,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           int len = Integer.min(serverList.size(), MAX_BATCH_VALIDATION_SIZE);
           List<CodingValidationRequest> list = serverList.subList(i, i+len);
           i += len;
-          getContext().getWorker().validateCodeBatch(getContext().getTerminologyServiceOptions(), list, null);
+          getContext().getWorker().validateCodeBatch(getContext().getTerminologyServiceOptions(), list, null, true);
           for (CodingValidationRequest vr : list) {
             ConceptDefinitionComponent v = vr.getResult().asConceptDefinition();
             if (v != null) {
