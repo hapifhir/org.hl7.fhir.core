@@ -1427,4 +1427,7 @@ public class I18nConstants {
   public static final String BUNDLE_SIGNATURE_CERT_DETAILS = "BUNDLE_SIGNATURE_CERT_DETAILS";
   public static final String BUNDLE_SIGNATURE_CERT_SOURCE = "BUNDLE_SIGNATURE_CERT_SOURCE";
   public static final String VALUESET_TXVER_BATCH_NOT_SUPPORTED = "VALUESET_TXVER_BATCH_NOT_SUPPORTED";
+  public static final String SD_ED_BIND_ALL_LOINC_CODES = "SD_ED_BIND_ALL_LOINC_CODES";
+  public static final String SD_ED_BIND_ALLSCT_CODES = "SD_ED_BIND_ALLSCT_CODES";
+  public static final String SD_ED_BIND_ALL_CPT_CODES = "SD_ED_BIND_ALL_CPT_CODES";
 }
