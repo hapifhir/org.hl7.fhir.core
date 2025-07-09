@@ -204,7 +204,7 @@ public class BaseWorkerContextTests {
   }
 
   @BeforeEach
-  public void beforeEach() {
+  public void beforeEach() throws IOException {
 
     Mockito.doReturn(DUMMY_URL).when(terminologyClient).getAddress();
     context.initTxCache(terminologyCache);

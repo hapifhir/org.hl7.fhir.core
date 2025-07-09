@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.Getter;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.*;
@@ -68,10 +69,11 @@ public class TerminologyClientContext {
   private static boolean canUseCacheId;
 
   private ITerminologyClient client;
-  private boolean initialised = false;
+
   private CapabilityStatement capabilitiesStatement;
   private TerminologyCapabilities txcaps;
-  private TerminologyCache txCache;
+  @Getter
+  private final TerminologyCache txCache;
   private String testVersion;
   
   private Map<String, TerminologyClientContextUseCount> useCounts = new HashMap<>();
@@ -80,9 +82,10 @@ public class TerminologyClientContext {
   private boolean master;
   private String cacheId;
 
-  protected TerminologyClientContext(ITerminologyClient client, String cacheId, boolean master) {
+  protected TerminologyClientContext(ITerminologyClient client, TerminologyCache txCache, String cacheId, boolean master) throws IOException {
     super();
     this.client = client;
+    this.txCache = txCache;
     this.cacheId = cacheId;
     this.master = master;
     initialize();
@@ -181,16 +184,8 @@ public class TerminologyClientContext {
     return cacheId;
   }
 
-  public TerminologyCache getTxCache() {
-    return txCache;
-  }
+  private void initialize() throws IOException {
 
-  public void setTxCache(TerminologyCache txCache) {
-    this.txCache = txCache;
-  }
-
-  public void initialize() {
-    if (!initialised) {
       // we don't cache the quick CS - we want to know that the server is with us. 
       capabilitiesStatement = client.getCapabilitiesStatement();
       checkFeature();
@@ -211,7 +206,7 @@ public class TerminologyClientContext {
           try {
             txCache.cacheTerminologyCapabilities(getAddress(), txcaps);
           } catch (IOException e) {
-            // debug?
+            e.printStackTrace();
           }
         }
       }
@@ -223,8 +218,7 @@ public class TerminologyClientContext {
           }
         }
       }
-      initialised = true;
-    }    
+
   }
 
   private void checkFeature() {
@@ -267,8 +261,6 @@ public class TerminologyClientContext {
   }
 
   public boolean supportsSystem(String system) throws IOException {
-    initialize();
-
     try {
       new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).compose(new FileOutputStream("/Users/grahamegrieve/temp/txcaps.json"), txcaps);
     } catch (IOException e) {
@@ -293,7 +285,6 @@ public class TerminologyClientContext {
 
   public String getTxTestVersion() {
     try {
-      initialize();
       return testVersion;
     } catch (Exception e) {
       // debug?

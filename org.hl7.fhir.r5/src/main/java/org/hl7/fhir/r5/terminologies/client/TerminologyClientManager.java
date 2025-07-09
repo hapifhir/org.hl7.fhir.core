@@ -354,11 +354,11 @@ public class TerminologyClientManager {
     TerminologyClientContext client = serverMap.get(server);
     if (client == null) {
       try {
-        client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cacheId, false);
-      } catch (URISyntaxException e) {
+        client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, cacheId, false);
+      } catch (URISyntaxException | IOException e) {
         throw new TerminologyServiceException(e);
       }
-      client.setTxCache(cache);
+      //client.setTxCache(cache);
       serverList.add(client);
       serverMap.put(server, client);
     }
@@ -475,15 +475,14 @@ public class TerminologyClientManager {
     }
   }
 
-  public TerminologyClientContext setMasterClient(ITerminologyClient client, boolean useEcosystem) {
+  public TerminologyClientContext setMasterClient(ITerminologyClient client, boolean useEcosystem) throws IOException {
     this.useEcosystem = useEcosystem;
-    TerminologyClientContext details = new TerminologyClientContext(client, cacheId, true);
-    details.setTxCache(cache);
+    TerminologyClientContext terminologyClientContext = new TerminologyClientContext(client, cache, cacheId,true);
     serverList.clear();
-    serverList.add(details);
-    serverMap.put(client.getAddress(), details);  
+    serverList.add(terminologyClientContext);
+    serverMap.put(client.getAddress(), terminologyClientContext);
     monitorServiceURL = Utilities.pathURL(Utilities.getDirectoryForURL(client.getAddress()), "tx-reg");
-    return details;
+    return terminologyClientContext;
   }
   
   public TerminologyClientContext getMaster() {
@@ -649,11 +648,11 @@ public class TerminologyClientManager {
       TerminologyClientContext client = serverMap.get(server);
       if (client == null) {
         try {
-          client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cacheId, false);
-        } catch (URISyntaxException e) {
+          client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, cacheId, false);
+        } catch (URISyntaxException | IOException e) {
           throw new TerminologyServiceException(e);
         }
-        client.setTxCache(cache);
+
         serverList.add(client);
         serverMap.put(server, client);
       }
@@ -743,11 +742,10 @@ public class TerminologyClientManager {
       TerminologyClientContext client = serverMap.get(server);
       if (client == null) {
         try {
-          client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cacheId, false);
-        } catch (URISyntaxException e) {
+          client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, cacheId, false);
+        } catch (URISyntaxException | IOException e) {
           throw new TerminologyServiceException(e);
         }
-        client.setTxCache(cache);
         serverList.add(client);
         serverMap.put(server, client);
       }
