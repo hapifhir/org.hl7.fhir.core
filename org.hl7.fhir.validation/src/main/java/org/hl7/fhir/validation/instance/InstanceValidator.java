@@ -3876,6 +3876,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         
         "http://hl7.org/fhirpath/System.Boolean", "http://hl7.org/fhirpath/System.String", "http://hl7.org/fhirpath/System.Integer", "http://hl7.org/fhirpath/System.Decimal", 
         "http://hl7.org/fhirpath/System.Date", "http://hl7.org/fhirpath/System.Time", "http://hl7.org/fhirpath/System.DateTime", "http://hl7.org/fhirpath/System.Quantity",
+
+        "urn:ietf:bcp:13",
+
         "http://hl7.org/fhir/CompartmentDefinition/Patient", "http://hl7.org/fhir/CompartmentDefinition/Practitioner", "http://hl7.org/fhir/CompartmentDefinition/Group",
         "http://hl7.org/fhir/CompartmentDefinition/Device", "http://hl7.org/fhir/CompartmentDefinition/Patient", "http://hl7.org/fhir/CompartmentDefinition/Encounter", 
         "http://hl7.org/fhir/SearchParameter/Resource-filter");
