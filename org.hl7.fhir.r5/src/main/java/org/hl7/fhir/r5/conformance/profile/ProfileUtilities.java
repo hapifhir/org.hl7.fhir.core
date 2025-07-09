@@ -3014,7 +3014,7 @@ public class ProfileUtilities {
         if (!Base.compareDeep(derived.getType(), base.getType(), false)) {
           if (base.hasType()) {
             for (TypeRefComponent ts : derived.getType()) {
-              checkTypeDerivation(purl, derivedSrc, base, derived, ts, path);
+              checkTypeDerivation(purl, derivedSrc, base, derived, ts, path, derivedSrc.getDerivation() == TypeDerivationRule.SPECIALIZATION);
             }
           }
           base.getType().clear();
@@ -3160,7 +3160,7 @@ public class ProfileUtilities {
      tgt.getExtension().addAll(src.getExtension());
   }
 
-  private void checkTypeDerivation(String purl, StructureDefinition srcSD, ElementDefinition base, ElementDefinition derived, TypeRefComponent ts, String path) {
+  private void checkTypeDerivation(String purl, StructureDefinition srcSD, ElementDefinition base, ElementDefinition derived, TypeRefComponent ts, String path, boolean specialising) {
     boolean ok = false;
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     String t = ts.getWorkingCode();
@@ -3197,6 +3197,8 @@ public class ProfileUtilities {
             String url = u.getValue();
             boolean tgtOk = !td.hasTargetProfile() || sdConformsToTargets(path, derived.getPath(), url, td);            
             if (tgtOk) {
+              ok = true;
+            } else if (specialising) {
               ok = true;
             } else {
               addMessage(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, derived.getPath(), context.formatMessage(I18nConstants.ERROR_AT__THE_TARGET_PROFILE__IS_NOT__VALID_CONSTRAINT_ON_THE_BASE_, purl, derived.getPath(), url, td.getTargetProfile()), IssueSeverity.ERROR));
