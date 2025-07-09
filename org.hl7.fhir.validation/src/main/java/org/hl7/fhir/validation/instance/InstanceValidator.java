@@ -4333,7 +4333,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } catch (NoSuchAlgorithmException e) {
       }
     } else {
-      ok = false;
+      ok = true;
     }
 
     return ok;
@@ -6824,6 +6824,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               b.append(u.asStringValue());
               long t = System.nanoTime();
               StructureDefinition profile = this.context.fetchResource(StructureDefinition.class, u.asStringValue());
+              if ("http://hl7.org/fhir/us/consent-management/StructureDefinition/FASTDocumentReference".equals(profile.getUrl())) {
+                DebugUtilities.breakpoint();;
+              }
               timeTracker.sd(t);
               if (rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
                   profile != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOPROFILE_TYPE, special == null ? "??" : special.toHuman(), u.asStringValue())) {
@@ -6833,6 +6836,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 if (validateResource(hc, perrors, resource, element, profile, idstatus, stack, pct, mode, false, special == SpecialElement.CONTAINED)) {
                   bm.append(u.asStringValue());
                   matched++;
+                } else {
+                  int errCount = 0;
+                  for (ValidationMessage vm : perrors) {
+                    if (vm.isError()) {
+                      errCount++;
+                    }
+                  }
+                  if (errCount == 0) {
+                    DebugUtilities.breakpoint();
+                  }
                 }
               } else {
                 ok = false;
