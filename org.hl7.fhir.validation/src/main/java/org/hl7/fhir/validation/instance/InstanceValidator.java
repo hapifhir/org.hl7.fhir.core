@@ -6835,10 +6835,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   matched++;
                 } else {
                   CommaSeparatedStringBuilder bb = new CommaSeparatedStringBuilder();
+                  int errorCount = 0;
                   for (ValidationMessage vm : perrors) {
                     bb.append(vm.summary());
+                    if (vm.isError()) {
+                      errorCount++;
+                    }
                   }
-                  throw new Error("failed to validate, but no errors. profile = "+profile.getVersionedUrl()+", issues = "+bb.toString());
+                  if (errorCount == 0) {
+                     throw new Error("failed to validate, but no errors. profile = " + profile.getVersionedUrl() + ", issues = " + bb.toString());
+                  }
                 }
               } else {
                 ok = false;
