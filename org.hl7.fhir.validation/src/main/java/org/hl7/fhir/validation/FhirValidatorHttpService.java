@@ -63,7 +63,7 @@ public class FhirValidatorHttpService {
     server.setExecutor(null); // Use default executor
     server.start();
 
-    System.out.println("FHIR Validator HTTP Service started on port " + port);
+    // System.out.println("FHIR Validator HTTP Service started on port " + port);
   }
 
   /**
@@ -88,7 +88,7 @@ public class FhirValidatorHttpService {
   public void stop() {
     if (server != null) {
       server.stop(0);
-      System.out.println("FHIR Validator HTTP Service stopped");
+      // System.out.println("FHIR Validator HTTP Service stopped");
     }
   }
 
@@ -332,7 +332,7 @@ public class FhirValidatorHttpService {
       Runtime.getRuntime().addShutdownHook(new Thread(service::stop));
 
       // Keep the service running
-      System.out.println("Press Ctrl+C to stop the service");
+      // System.out.println("Press Ctrl+C to stop the service");
       Thread.currentThread().join();
 
     } catch (Exception e) {
