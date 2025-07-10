@@ -313,8 +313,8 @@ public class FhirValidatorHttpService {
    */
   public static void main(String[] args) {
     if (args.length < 3) {
-      System.err.println("Usage: java FhirValidatorHttpService <version> <txServer> <log> [port]");
-      System.err.println("Example: java FhirValidatorHttpService 5.0.0 http://tx.fhir.org/r5 /tmp/txlog.txt 8080");
+      //System.//err.println("Usage: java FhirValidatorHttpService <version> <txServer> <log> [port]");
+      //System.//err.println("Example: java FhirValidatorHttpService 5.0.0 http://tx.fhir.org/r5 /tmp/txlog.txt 8080");
       System.exit(1);
     }
 
@@ -336,7 +336,7 @@ public class FhirValidatorHttpService {
       Thread.currentThread().join();
 
     } catch (Exception e) {
-      System.err.println("Failed to start service: " + e.getMessage());
+      //System.//err.println("Failed to start service: " + e.getMessage());
       e.printStackTrace();
       System.exit(1);
     }
