@@ -2,32 +2,18 @@ package org.hl7.fhir.validation.tests;
 
 import org.junit.jupiter.api.*;
 
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
-import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
-import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.FhirValidatorHttpService;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
 
 class FhirValidatorHttpServiceTest {
 
@@ -56,8 +42,14 @@ class FhirValidatorHttpServiceTest {
 
   @BeforeEach
   void setUp() throws Exception {
-    service = new FhirValidatorHttpService(TEST_PORT);
-    service.start("r4", "https://tx.fhir.org/r4", null);
+    // Initialize ValidationEngine
+    ValidationEngine validationEngine = new ValidationEngine.ValidationEngineBuilder().fromSource(VersionUtilities.packageForVersion("r4"));
+    validationEngine.getContext().setAllowLoadingDuplicates(true);
+
+    // Connect to terminology server
+    validationEngine.connectToTSServer("https://tx.fhir.org/r4", null, FhirPublication.fromCode(validationEngine.getVersion()), true);
+    service = new FhirValidatorHttpService(validationEngine, TEST_PORT);
+    service.startServer();
     httpClient = HttpClient.newBuilder()
       .connectTimeout(Duration.ofSeconds(10))
       .build();

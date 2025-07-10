@@ -4,7 +4,6 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.functors.CatchAndRethrowClosure;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
@@ -14,10 +13,7 @@ import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.validation.IgLoader;
-import org.hl7.fhir.validation.ValidationEngine;
 
-import javax.crypto.interfaces.DHKey;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,27 +29,18 @@ import java.util.*;
 @Slf4j
 public class FhirValidatorHttpService {
 
-  private ValidationEngine validator;
+  private final ValidationEngine validationEngine;
   private IgLoader igLoader;
   private HttpServer server;
   private final int port;
 
-  public FhirValidatorHttpService(int port) {
+  public FhirValidatorHttpService(ValidationEngine validationEngine, int port) {
+    this.validationEngine = validationEngine;
+    this.igLoader = validationEngine.getIgLoader();
     this.port = port;
   }
 
-
-  /**
-   * Start the HTTP server on an existing loaded validator
-   */
-  public void bind(ValidationEngine validationEngine, IgLoader igLoader) throws IOException {
-    // Initialize ValidationEngine
-    validator = validationEngine;
-    igLoader = igLoader;
-    startServer();
-  }
-
-  private void startServer() throws IOException {
+  public void startServer() throws IOException {
     // Create HTTP server
     server = HttpServer.create(new InetSocketAddress(port), 0);
 
@@ -66,22 +53,6 @@ public class FhirValidatorHttpService {
     server.start();
 
     log.info("FHIR Validator HTTP Service started on port " + port);
-  }
-
-  /**
-   * Start the HTTP server and load the validator
-   */
-  public void start(String version, String txServer, String log) throws Exception {
-    // Initialize ValidationEngine
-    validator = new ValidationEngine.ValidationEngineBuilder().fromSource(VersionUtilities.packageForVersion(version));
-    validator.getContext().setAllowLoadingDuplicates(true);
-
-    // Initialize IGLoader
-    igLoader = new IgLoader(validator.getPcm(), validator.getContext(), validator.getVersion(), validator.isDebug());
-
-    // Connect to terminology server
-    validator.connectToTSServer(txServer, log, FhirPublication.fromCode(validator.getVersion()), true);
-    startServer();
   }
 
   /**
@@ -118,7 +89,7 @@ public class FhirValidatorHttpService {
 
         // Load the IG using IGLoader
         String igPackage = packageId + "#" + version;
-        igLoader.loadIg(validator.getIgs(), validator.getBinaries(), igPackage, false);
+        igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), igPackage, false);
 
         // Create success OperationOutcome
         OperationOutcome outcome = createSuccessOperationOutcome("Successfully loaded IG: " + igPackage);
@@ -173,7 +144,7 @@ public class FhirValidatorHttpService {
       }
       try {
         // Validate the resource using ValidationEngine
-        OperationOutcome outcome = validator.validate("http-request", resourceBytes, format, profiles,
+        OperationOutcome outcome = validationEngine.validate("http-request", resourceBytes, format, profiles,
           resourceIdRule, anyExtensionsAllowed, bpWarnings, displayOption);
 
         sendOperationOutcome(exchange, 200, outcome, getAcceptHeader(exchange));

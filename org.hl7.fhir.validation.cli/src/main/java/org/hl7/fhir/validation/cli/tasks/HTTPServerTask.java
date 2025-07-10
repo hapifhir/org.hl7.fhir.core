@@ -43,9 +43,9 @@ public class HTTPServerTask extends ValidationEngineTask {
 
   @Override
   public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
-    FhirValidatorHttpService service = new FhirValidatorHttpService(Integer.parseInt(Params.getParam(args, Params.SERVER)));
-    service.bind(validationEngine, validationEngine.getIgLoader());
-    log.info("Press enter to stop the server...");
+    FhirValidatorHttpService service = new FhirValidatorHttpService(validationEngine, Integer.parseInt(Params.getParam(args, Params.SERVER)));
+    service.startServer();
+    log.info("Press any key to stop the server...");
     System.in.read();
     service.stop();
   }
