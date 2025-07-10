@@ -6824,9 +6824,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               b.append(u.asStringValue());
               long t = System.nanoTime();
               StructureDefinition profile = this.context.fetchResource(StructureDefinition.class, u.asStringValue());
-              if ("http://hl7.org/fhir/us/consent-management/StructureDefinition/FASTDocumentReference".equals(profile.getUrl())) {
-                DebugUtilities.breakpoint();;
-              }
               timeTracker.sd(t);
               if (rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
                   profile != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOPROFILE_TYPE, special == null ? "??" : special.toHuman(), u.asStringValue())) {
@@ -6837,15 +6834,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   bm.append(u.asStringValue());
                   matched++;
                 } else {
-                  int errCount = 0;
+                  CommaSeparatedStringBuilder bb = new CommaSeparatedStringBuilder();
                   for (ValidationMessage vm : perrors) {
-                    if (vm.isError()) {
-                      errCount++;
-                    }
+                    bb.append(vm.summary());
                   }
-                  if (errCount == 0) {
-                    DebugUtilities.breakpoint();
-                  }
+                  throw new Error("failed to validate, but no errors. profile = "+profile.getVersionedUrl()+", issues = "+bb.toString());
                 }
               } else {
                 ok = false;
