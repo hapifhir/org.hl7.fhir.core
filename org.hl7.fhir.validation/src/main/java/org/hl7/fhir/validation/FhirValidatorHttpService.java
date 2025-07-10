@@ -3,6 +3,7 @@ package org.hl7.fhir.validation;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.functors.CatchAndRethrowClosure;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -29,6 +30,7 @@ import java.util.*;
 /**
  * HTTP service wrapper for the FHIR validator using ValidationEngine and IGLoader directly
  */
+@Slf4j
 public class FhirValidatorHttpService {
 
   private ValidationEngine validator;
@@ -63,7 +65,7 @@ public class FhirValidatorHttpService {
     server.setExecutor(null); // Use default executor
     server.start();
 
-    // System//.out.println("FHIR Validator HTTP Service started on port " + port);
+    log.info("FHIR Validator HTTP Service started on port " + port);
   }
 
   /**
@@ -88,7 +90,7 @@ public class FhirValidatorHttpService {
   public void stop() {
     if (server != null) {
       server.stop(0);
-      // System//.out.println("FHIR Validator HTTP Service stopped");
+      log.info("FHIR Validator HTTP Service stopped");
     }
   }
 
@@ -305,40 +307,6 @@ public class FhirValidatorHttpService {
     exchange.sendResponseHeaders(statusCode, responseBytes.length);
     try (OutputStream os = exchange.getResponseBody()) {
       os.write(responseBytes);
-    }
-  }
-
-  /**
-   * Main method to start the service
-   */
-  public static void main(String[] args) {
-    if (args.length < 3) {
-      //System.//err.println("Usage: java FhirValidatorHttpService <version> <txServer> <log> [port]");
-      //System.//err.println("Example: java FhirValidatorHttpService 5.0.0 http://tx.fhir.org/r5 /tmp/txlog.txt 8080");
-      System.exit(1);
-    }
-
-    String version = args[0];
-    String txServer = args[1];
-    String log = args[2];
-    int port = args.length > 3 ? Integer.parseInt(args[3]) : 8080;
-
-    FhirValidatorHttpService service = new FhirValidatorHttpService(port);
-
-    try {
-      service.start(version, txServer, log);
-
-      // Add shutdown hook
-      Runtime.getRuntime().addShutdownHook(new Thread(service::stop));
-
-      // Keep the service running
-      // System//.out.println("Press Ctrl+C to stop the service");
-      Thread.currentThread().join();
-
-    } catch (Exception e) {
-      //System.//err.println("Failed to start service: " + e.getMessage());
-      e.printStackTrace();
-      System.exit(1);
     }
   }
 }
