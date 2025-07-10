@@ -169,6 +169,7 @@ public class FhirValidatorHttpService {
       } catch (Exception e) {
         OperationOutcome outcome = createErrorOperationOutcome("Operation failed: " + e.getMessage());
         sendOperationOutcome(exchange, 400, outcome, getAcceptHeader(exchange));
+        return;
       }
       try {
         // Validate the resource using ValidationEngine
