@@ -36,6 +36,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -284,21 +285,26 @@ public class TerminologyCache {
   @Getter private int requestCount;
   @Getter private int hitCount;
   @Getter private int networkCount;
-  private Map<String, CapabilityStatement> capabilityStatementCache = new HashMap<>();
-  private Map<String, TerminologyCapabilities> terminologyCapabilitiesCache = new HashMap<>();
+
+  private final static long CAPABILITY_CACHE_EXPIRATION_HOURS = 24;
+  private final static long CAPABILITY_CACHE_EXPIRATION_MILLISECONDS = CAPABILITY_CACHE_EXPIRATION_HOURS * 60 * 60 * 1000;
+  private final long capabilityCacheExpirationMilliseconds;
+  private final TerminologyCapabilitiesCache<CapabilityStatement> capabilityStatementCache;
+  private final TerminologyCapabilitiesCache<TerminologyCapabilities> terminologyCapabilitiesCache;
   private Map<String, NamedCache> caches = new HashMap<String, NamedCache>();
   private Map<String, SourcedValueSetEntry> vsCache = new HashMap<>();
   private Map<String, SourcedCodeSystemEntry> csCache = new HashMap<>();
   private Map<String, String> serverMap = new HashMap<>();
-  @Getter @Setter private static boolean noCaching;
 
+  @Getter @Setter private static boolean noCaching;
   @Getter @Setter private static boolean cacheErrors;
 
-
-  // use lock from the context
-  public TerminologyCache(Object lock, String folder) throws FileNotFoundException, IOException, FHIRException {
+  protected TerminologyCache(Object lock, String folder, Long capabilityCacheExpirationMilliseconds) throws FileNotFoundException, IOException, FHIRException {
     super();
-    this.lock = lock;
+   this.lock = lock;
+   this.capabilityCacheExpirationMilliseconds = capabilityCacheExpirationMilliseconds;
+   capabilityStatementCache = new CommonsTerminologyCapabilitiesCache<>(capabilityCacheExpirationMilliseconds, TimeUnit.MILLISECONDS);
+   terminologyCapabilitiesCache = new CommonsTerminologyCapabilitiesCache<>(capabilityCacheExpirationMilliseconds, TimeUnit.MILLISECONDS);
     if (folder == null) {
       folder = Utilities.path("[tmp]", "default-tx-cache");
     } else if ("n/a".equals(folder)) {
@@ -318,9 +324,14 @@ public class TerminologyCache {
       if (!f.exists()) {
         throw new IOException("Unable to create terminology cache at "+folder);
       }
-      checkVersion();      
+      checkVersion();
       load();
     }
+  }
+
+  // use lock from the context
+  public TerminologyCache(Object lock, String folder) throws IOException, FHIRException {
+    this(lock, folder, CAPABILITY_CACHE_EXPIRATION_MILLISECONDS);
   }
 
   private void checkVersion() throws IOException {
@@ -786,7 +797,10 @@ public class TerminologyCache {
     return fn.startsWith(CAPABILITY_STATEMENT_TITLE) || fn.startsWith(TERMINOLOGY_CAPABILITIES_TITLE);
   }
 
-  private void loadCapabilityCache(String fn) {
+  private void loadCapabilityCache(String fn) throws IOException {
+    if (TerminologyCapabilitiesCache.cacheFileHasExpired(Utilities.path(folder, fn), capabilityCacheExpirationMilliseconds)) {
+      return;
+    }
     try {
       String src = FileUtilities.fileToString(Utilities.path(folder, fn));
       String serverId = Utilities.getFileNameForName(fn).replace(CACHE_FILE_EXTENSION, "");
@@ -867,7 +881,7 @@ public class TerminologyCache {
     return ce;
   }
 
-  private void loadNamedCache(String fn) {
+  private void loadNamedCache(String fn) throws IOException {
     int c = 0;
     try {
       String src = FileUtilities.fileToString(Utilities.path(folder, fn));

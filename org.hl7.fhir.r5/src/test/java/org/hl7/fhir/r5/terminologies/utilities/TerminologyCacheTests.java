@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.context;
+package org.hl7.fhir.r5.terminologies.utilities;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +15,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.IOUtils;
+import org.hl7.fhir.r5.context.CacheTestUtils;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
@@ -24,11 +25,10 @@ import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
-import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -38,6 +38,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TerminologyCacheTests implements ResourceLoaderTests {
@@ -88,52 +89,106 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     }
   }
 
-  @Test
-  public void testCachePersistence() throws IOException {
-    String address = "/...";
-    
-    Object lock = new Object();
-    Path tempCacheDirectory = createTempCacheDirectory();
-    ValueSet valueSet = new ValueSet();
-    valueSet.setUrl("dummyValueSetURL");
+  @Nested
+  class PersistenceTests {
+    final Path tempCacheDirectory;
+    final ValueSet valueSet = new ValueSet();
+    final String address = "my.dummy.server";
 
-    TerminologyCapabilities terminologyCapabilities = new TerminologyCapabilities();
-    terminologyCapabilities.getExpansion().setParameter(Arrays.asList());
-
-    CapabilityStatement.CapabilityStatementSoftwareComponent software = new CapabilityStatement.CapabilityStatementSoftwareComponent();
-    software.setVersion("dummyVersion");
-
-    CapabilityStatement capabilityStatement = new CapabilityStatement();
-    capabilityStatement.setSoftware(software);
-
+    final TerminologyCapabilities terminologyCapabilities = new TerminologyCapabilities();
+    final CapabilityStatement.CapabilityStatementSoftwareComponent software = new CapabilityStatement.CapabilityStatementSoftwareComponent();
+    final CapabilityStatement capabilityStatement = new CapabilityStatement();
     Coding coding = new Coding();
-    coding.setCode("dummyCode");
-
     CodeableConcept concept = new CodeableConcept();
-    concept.addCoding(new Coding().setCode("dummyCode"));
 
-    // Add dummy results to the cache
-    TerminologyCache terminologyCacheA = new TerminologyCache(lock, tempCacheDirectory.toString());
+    final Object lock = new Object();
 
-    terminologyCacheA.cacheTerminologyCapabilities(address, terminologyCapabilities);
-    terminologyCacheA.cacheCapabilityStatement(address, capabilityStatement);
+    final TerminologyCache terminologyCacheA;
+    final ValidationResult codingResultA = new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo", null);
+    final TerminologyCache.CacheToken codingTokenA;
 
-    ValidationResult codingResultA = new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo", null);
-    TerminologyCache.CacheToken codingTokenA = terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions,
-      coding, valueSet, new Parameters());
-    terminologyCacheA.cacheValidation(codingTokenA, codingResultA, true);
+    final ValidationResult codeableConceptResultA = new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo", null);
+    final TerminologyCache.CacheToken codeableConceptTokenA;
 
-    ValidationResult codeableConceptResultA = new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo", null);
-    TerminologyCache.CacheToken codeableConceptTokenA = terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions,
-      concept, valueSet, new Parameters());
-    terminologyCacheA.cacheValidation(codeableConceptTokenA, codeableConceptResultA, true);
+    final TerminologyCache.CacheToken expansionTokenA;
+    final ValueSetExpansionOutcome expansionOutcomeA;
 
-    TerminologyCache.CacheToken expansionTokenA = terminologyCacheA.generateExpandToken(valueSet, true);
-    ValueSetExpansionOutcome expansionOutcomeA = new ValueSetExpansionOutcome(valueSet);
+    PersistenceTests() throws IOException {
+      tempCacheDirectory = createTempCacheDirectory();
+      valueSet.setUrl("dummyValueSetURL");
+      terminologyCapabilities.getExpansion().setParameter(Arrays.asList());
+      software.setVersion("dummyVersion");
+      capabilityStatement.setSoftware(software);
+      coding.setCode("dummyCode");
+      concept.addCoding(new Coding().setCode("dummyCode"));
 
-    terminologyCacheA.cacheExpansion(expansionTokenA, expansionOutcomeA, true);
-    // Check that the in-memory cache is returning what we put in
-    {
+      terminologyCacheA = new TerminologyCache(lock, tempCacheDirectory.toString());
+
+      terminologyCacheA.cacheTerminologyCapabilities(address, terminologyCapabilities);
+      terminologyCacheA.cacheCapabilityStatement(address, capabilityStatement);
+
+      codingTokenA = terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions,
+        coding, valueSet, new Parameters());
+
+      terminologyCacheA.cacheValidation(codingTokenA, codingResultA, true);
+
+      codeableConceptTokenA = terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions,
+        concept, valueSet, new Parameters());
+
+      terminologyCacheA.cacheValidation(codeableConceptTokenA, codeableConceptResultA, true);
+
+      expansionTokenA = terminologyCacheA.generateExpandToken(valueSet, true);
+      expansionOutcomeA = new ValueSetExpansionOutcome(valueSet);
+
+      terminologyCacheA.cacheExpansion(expansionTokenA, expansionOutcomeA, true);
+    }
+
+    @Test
+    public void testCachePersistence() throws IOException {
+      assertInMemoryCacheContents();
+
+      //Create another cache using the same directory, and check that it gives the same results.
+
+        TerminologyCache terminologyCacheB = new TerminologyCache(lock, tempCacheDirectory.toString());
+
+        assertCanonicalResourceEquals(terminologyCapabilities, terminologyCacheB.getTerminologyCapabilities(address));
+        assertCanonicalResourceEquals(capabilityStatement, terminologyCacheB.getCapabilityStatement(address));
+
+        ValidationResult retrievedCodingResultA = terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions, coding, valueSet, new Parameters()));
+        assertNotSame(codingResultA, retrievedCodingResultA);
+        assertValidationResultEquals(codingResultA, retrievedCodingResultA);
+
+        ValidationResult retrievedCodeableConceptResultA = terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions, concept, valueSet, new Parameters()));
+        assertNotSame(codeableConceptResultA, retrievedCodeableConceptResultA);
+        assertValidationResultEquals(codeableConceptResultA, retrievedCodeableConceptResultA);
+        assertExpansionOutcomeEquals(expansionOutcomeA, terminologyCacheB.getExpansion(terminologyCacheA.generateExpandToken(valueSet, true)));
+
+        deleteTempCacheDirectory(tempCacheDirectory);
+    }
+
+    @Test
+    public void testCacheExpiresCapabilitiesFiles() throws IOException, InterruptedException {
+      assertInMemoryCacheContents();
+
+      Thread.sleep(200L);
+      TerminologyCache terminologyCacheB = new TerminologyCache(lock, tempCacheDirectory.toString(), 100L);
+
+      assertThat(terminologyCacheB.getTerminologyCapabilities(address)).isNull();
+      assertThat(terminologyCacheB.getCapabilityStatement(address)).isNull();
+
+      ValidationResult retrievedCodingResultA = terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions, coding, valueSet, new Parameters()));
+      assertNotSame(codingResultA, retrievedCodingResultA);
+      assertValidationResultEquals(codingResultA, retrievedCodingResultA);
+
+      ValidationResult retrievedCodeableConceptResultA = terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions, concept, valueSet, new Parameters()));
+      assertNotSame(codeableConceptResultA, retrievedCodeableConceptResultA);
+      assertValidationResultEquals(codeableConceptResultA, retrievedCodeableConceptResultA);
+      assertExpansionOutcomeEquals(expansionOutcomeA, terminologyCacheB.getExpansion(terminologyCacheA.generateExpandToken(valueSet, true)));
+
+      deleteTempCacheDirectory(tempCacheDirectory);
+    }
+
+    private void assertInMemoryCacheContents() {
       assertEquals(terminologyCapabilities, terminologyCacheA.getTerminologyCapabilities(address));
       assertEquals(capabilityStatement, terminologyCacheA.getCapabilityStatement(address));
 
@@ -144,27 +199,10 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       ValidationResult retrievedCodeableConceptResultA = terminologyCacheA.getValidation(codeableConceptTokenA);
       assertNotSame(codeableConceptResultA, retrievedCodeableConceptResultA);
       assertValidationResultEquals(codeableConceptResultA, retrievedCodeableConceptResultA);
-      assertExpansionOutcomeEquals(expansionOutcomeA,terminologyCacheA.getExpansion(expansionTokenA));
+      assertExpansionOutcomeEquals(expansionOutcomeA, terminologyCacheA.getExpansion(expansionTokenA));
     }
-
-    //Create another cache using the same directory, and check that it gives the same results.
-    {
-    TerminologyCache terminologyCacheB = new TerminologyCache(lock, tempCacheDirectory.toString());
-
-      assertCanonicalResourceEquals(terminologyCapabilities, terminologyCacheB.getTerminologyCapabilities(address));
-      assertCanonicalResourceEquals(capabilityStatement, terminologyCacheB.getCapabilityStatement(address));
-
-      ValidationResult retrievedCodingResultA = terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions, coding, valueSet, new Parameters()));
-      assertNotSame(codingResultA, retrievedCodingResultA);
-      assertValidationResultEquals(codingResultA, retrievedCodingResultA);
-
-      ValidationResult retrievedCodeableConceptResultA = terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions, concept, valueSet, new Parameters()));
-      assertNotSame(codeableConceptResultA, retrievedCodeableConceptResultA);
-      assertValidationResultEquals(codeableConceptResultA, retrievedCodeableConceptResultA);
-      assertExpansionOutcomeEquals(expansionOutcomeA,terminologyCacheB.getExpansion(terminologyCacheA.generateExpandToken(valueSet, true)));
-    }
-    deleteTempCacheDirectory(tempCacheDirectory);
   }
+
 
   @Test
   public void testCacheMakesCopiesOfResults() throws IOException{
