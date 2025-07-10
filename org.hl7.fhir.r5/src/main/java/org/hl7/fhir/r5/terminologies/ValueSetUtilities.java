@@ -459,7 +459,6 @@ public class ValueSetUtilities extends TerminologyUtilities {
         checkCodes(codes, c.getContains(), listT);
       }
     }
-    
   }
 
   private static ValueSetExpansionContainsComponent findContained(ValueSetExpansionContainsComponent c, List<ValueSetExpansionContainsComponent> listT) {
@@ -487,5 +486,5 @@ public class ValueSetUtilities extends TerminologyUtilities {
     vsProp.add(new ValueSet.ValueSetExpansionPropertyComponent().setCode("status").setUri("http://hl7.org/fhir/concept-properties#status"));
   }
 
-  
+
 }

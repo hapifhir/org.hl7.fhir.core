@@ -745,9 +745,16 @@ public class ValueSetValidator extends BaseValidator {
             I18nConstants.VALUESET_BAD_FILTER_VALUE_INTEGER, property, value) && ok;
         break;
       case Coding :
-        Coding code = Coding.fromLiteral(value);
+        Coding code;
+        if (value.matches("[a-zA-Z][a-zA-Z0-9+.-]*:[^\\s|]+\\|\\S+")) {
+          warning(errors, "2025-07-10", IssueType.INVALID, stack, false, I18nConstants.VALUESET_BAD_FILTER_VALUE_CODED_LEGACY, property, value);
+          code = new Coding().setSystem(value.substring(0, value.lastIndexOf("|"))).setCode(value.substring(value.lastIndexOf("|") + 1));
+        } else {
+          code = Coding.fromLiteral(value);
+        }
+
         if (code == null) {
-          ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, false, I18nConstants.VALUESET_BAD_FILTER_VALUE_CODED, property, value) && ok;
+          ok = rule(errors, "2025-07-10", IssueType.INVALID, stack, false, I18nConstants.VALUESET_BAD_FILTER_VALUE_CODED, property, value) && ok;
         } else if (!noTerminologyChecks) {
           ValidationResult vr = context.validateCode(settings, code, null);
           ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, vr.isOk(), I18nConstants.VALUESET_BAD_FILTER_VALUE_CODED_INVALID, property, value, vr.getMessage()) && ok;

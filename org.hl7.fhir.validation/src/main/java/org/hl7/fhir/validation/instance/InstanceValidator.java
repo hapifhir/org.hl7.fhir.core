@@ -4333,7 +4333,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } catch (NoSuchAlgorithmException e) {
       }
     } else {
-      ok = false;
+      ok = true;
     }
 
     return ok;
@@ -6833,6 +6833,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 if (validateResource(hc, perrors, resource, element, profile, idstatus, stack, pct, mode, false, special == SpecialElement.CONTAINED)) {
                   bm.append(u.asStringValue());
                   matched++;
+                } else {
+                  CommaSeparatedStringBuilder bb = new CommaSeparatedStringBuilder();
+                  int errorCount = 0;
+                  for (ValidationMessage vm : perrors) {
+                    bb.append(vm.summary());
+                    if (vm.isError()) {
+                      errorCount++;
+                    }
+                  }
+                  if (errorCount == 0) {
+                     throw new Error("failed to validate, but no errors. profile = " + profile.getVersionedUrl() + ", issues = " + bb.toString());
+                  }
                 }
               } else {
                 ok = false;
