@@ -617,22 +617,4 @@ public class VCLParser {
     return vs;
   }
 
-  public static void main(String[] args) {
-    String[] tests = {
-      "(http://snomed.info/sct)*",
-      "COMPONENT/\".*Dichloroethane.*\"",
-      "has_ingredient = 1886",
-      "(10007-3;10008-1)",
-      "ancestor=LP185676-6"
-    };
-
-    for (String test : tests) {
-      try {
-        ValueSet vs = parse(test);
-        System.out.println("✓ " + test);
-      } catch (Exception e) {
-        System.out.println("✗ " + test + " - " + e.getMessage());
-      }
-    }
-  }
 }
