@@ -445,6 +445,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       terminologyClientManager.copy(other.terminologyClientManager);
       cachingAllowed = other.cachingAllowed;
       suppressedMappings = other.suppressedMappings;
+      cutils.setSuppressedMappings(other.suppressedMappings);
     }
   }
   
@@ -3754,6 +3755,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void setSuppressedMappings(List<String> suppressedMappings) {
     this.suppressedMappings = suppressedMappings;
+    this.cutils.setSuppressedMappings(suppressedMappings);
   }
 
   public ContextUtilities getCutils() {
