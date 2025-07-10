@@ -133,7 +133,28 @@ public class ManagedFileAccess {
   public static File file(File root, String filepath) throws IOException {
     return file(root.getAbsolutePath(), filepath);
   }
-  /** 
+
+  public static File csfile(String path, String filepath) throws IOException {
+    switch (accessPolicy) {
+      case DIRECT:
+        if (!inAllowedPaths(path)) {
+          throw new IOException("The path '"+path+"' cannot be accessed by policy");
+        }
+        return new CSFile(path, filepath);
+      case MANAGED:
+        return accessor.csfile(Utilities.path(path, filepath));
+      case PROHIBITED:
+        throw new IOException("Access to files is not allowed by local security policy");
+      default:
+        throw new IOException("Internal Error");
+    }
+  }
+
+  public static File csfile(File root, String filepath) throws IOException {
+    return csfile(root.getAbsolutePath(), filepath);
+  }
+
+  /**
    * Open a FileInputStream, conforming to local security policy 
    **/
   public static FileInputStream inStream(String pathname) throws IOException {

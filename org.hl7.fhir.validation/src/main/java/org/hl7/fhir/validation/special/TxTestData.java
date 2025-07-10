@@ -58,7 +58,7 @@ public class TxTestData {
   public static TxTestData loadTestDataFromFolder(File folder, String name) throws IOException {
     
     String contents = FileUtilities.streamToString(loadFile(folder, name));
-    String externalSource = ManagedFileAccess.csfile(folder.getAbsolutePath(), "messages-tx.fhir.org.json").exists() ?
+    String externalSource = ManagedFileAccess.file(folder.getAbsolutePath(), "messages-tx.fhir.org.json").exists() ?
         FileUtilities.streamToString(loadFile(folder, "messages-tx.fhir.org.json")) : null;
     JsonObject externals = externalSource == null ? new JsonObject() : org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(externalSource);
 
