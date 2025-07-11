@@ -130,7 +130,7 @@ jobs:
   - job: publish_codecov
     dependsOn:
       - ${{ each module in parameters.modulesToTest.modules }}:
-          - ubuntu_java_11_${{ module }}
+          - ubuntu_java_17_${{ module }}
     displayName: Publish Test Results and Coverage
 
     pool:

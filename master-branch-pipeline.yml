@@ -57,10 +57,10 @@ jobs:
   - template: test-unit-jobs-template.yml
     parameters:
       testUnits:
-        - name: ubuntu_java_11
+        - name: ubuntu_java_17
           vmImage: "ubuntu-latest"
           javaToolOptions:
-          jdkVersion: 1.11
+          jdkVersion: 1.17
           skipJaCoCo: true
           modules:
             ${{ parameters.modulesToTest.modules }}
@@ -68,7 +68,7 @@ jobs:
   - job: deploy_to_sonatype
     dependsOn:
       - ${{ each module in parameters.modulesToTest.modules }}:
-          - ubuntu_java_11_${{ module }}
+          - ubuntu_java_17_${{ module }}
     pool:
       vmImage: "ubuntu-latest"
     steps:
@@ -92,7 +92,7 @@ jobs:
           mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
           goals: jar:jar jar:test-jar deploy
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
+          jdkVersionOption: '17'
           jdkArchitectureOption: 'x64'
           options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --settings $(Agent.TempDirectory)/settings.xml -pl "!org.hl7.fhir.report" -DskipTests -DdeployToMavenCentral'
           mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
@@ -101,7 +101,7 @@ jobs:
   - job: deploy_to_github
     dependsOn:
       - ${{ each module in parameters.modulesToTest.modules }}:
-          - ubuntu_java_11_${{ module }}
+          - ubuntu_java_17_${{ module }}
     pool:
       vmImage: "ubuntu-latest"
     steps:
@@ -135,7 +135,7 @@ jobs:
   - job: generate_i8n_csv_png_and_commit
     dependsOn: setup
       #- ${{ each module in parameters.modulesToTest.modules }}:
-      #    - ubuntu_java_11_${{ module }}
+      #    - ubuntu_java_17_${{ module }}
     variables:
       # Normally this test outputs to console. This variable appears as env param
       # I18N_COVERAGE_FILE, which tells the test to write the output to a file
