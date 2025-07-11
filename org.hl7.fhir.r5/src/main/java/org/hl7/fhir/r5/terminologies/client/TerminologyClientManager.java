@@ -351,10 +351,11 @@ public class TerminologyClientManager {
   }
 
   private TerminologyClientContext findClient(String server, Set<String> systems, boolean expand) {
+    server = ManagedWebAccess.makeSecureRef(server);
     TerminologyClientContext client = serverMap.get(server);
     if (client == null) {
       try {
-        client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, cacheId, false);
+        client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), server, getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, cacheId, false);
       } catch (URISyntaxException | IOException e) {
         throw new TerminologyServiceException(e);
       }
