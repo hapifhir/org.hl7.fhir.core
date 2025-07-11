@@ -8083,8 +8083,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       msg = fpe.forLog();
     } catch (Exception ex) {
       invOK = false;
-      msg = ex.getClass().getName()+": "+ex.getMessage();
-      ex.printStackTrace();
+      msg = /*ex.getClass().getName()+": "+*/ ex.getMessage();
+      if (settings.isDebug()) {
+          ex.printStackTrace();
+      }
     }
     if (!invOK) {
       if (wantInvariantInMessage) {
