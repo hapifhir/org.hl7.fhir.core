@@ -109,7 +109,7 @@ jobs:
               vmImage: ${{ configuration.image }}
               javaToolOptions:  ${{ configuration.javaToolOptions }}
               jdkVersion: ${{ configuration.jdk }}
-              ${{ if eq(configuration.name, 'ubuntu_java_11') }}:
+              ${{ if eq(configuration.name, 'ubuntu_java_17') }}:
                 skipJaCoCo: false
                 modules:
                   ${{ parameters.modulesToTest.modules }}
