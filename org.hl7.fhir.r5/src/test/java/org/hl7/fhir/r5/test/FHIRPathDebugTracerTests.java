@@ -195,7 +195,8 @@ public class FHIRPathDebugTracerTests {
     assertEquals(20, tracer.traceOutput.size());
     assertEquals("0,4,name: focus=1 result=3", tracer.traceOutput.get(0));
     assertEquals("11,3,use: focus=1 result=1", tracer.traceOutput.get(1));
-    assertEquals("15,11,constant: focus=1 result=1", tracer.traceOutput.get(2));
+    assertEquals("15,10,constant: focus=1 result=1", tracer.traceOutput.get(2));
+    assertEquals("15,10,constant: focus=1 result=1", tracer.traceOutput.get(2));
     assertEquals("14,1,=: focus=1 result=1", tracer.traceOutput.get(3));
 
     assertEquals("5,36,where: focus=3 result=2", tracer.traceOutput.get(18));
@@ -236,7 +237,7 @@ public class FHIRPathDebugTracerTests {
 
     assertEquals(7, tracer.traceOutput.size());
     assertEquals("0,2,id: focus=1 result=1", tracer.traceOutput.get(0));
-    assertEquals("3,11,constant: focus=1 result=1", tracer.traceOutput.get(1));
+    assertEquals("3,10,constant: focus=1 result=1", tracer.traceOutput.get(1));
     assertEquals("2,1,=: focus=1 result=1", tracer.traceOutput.get(2));
     assertEquals("17,2,id: focus=1 result=1", tracer.traceOutput.get(3));
     assertEquals("20,9,constant: focus=1 result=1", tracer.traceOutput.get(4));
