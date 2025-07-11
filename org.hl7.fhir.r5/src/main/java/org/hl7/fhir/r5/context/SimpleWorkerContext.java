@@ -197,6 +197,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private boolean canNoTS;
   private XVerExtensionManager xverManager;
   private boolean allowLazyLoading = true;
+  private String defaultLang = null;
 
   private SimpleWorkerContext() throws IOException, FHIRException {
     super();
@@ -795,6 +796,15 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   @Override
   public String getVersion() {
     return version;
+  }
+
+  @Override
+  public String getDefaultLang() {
+    return defaultLang;
+  }
+
+  public void setDefaultLang(String defaultLang) {
+    this.defaultLang = defaultLang;
   }
 
   

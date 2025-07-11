@@ -136,6 +136,7 @@ public interface IWorkerContext {
     private String version;
     private String packageSrc;
     private String status;
+    private String defaultLang;
     protected OIDDefinition(String type, String oid, String url, String version, String status, String packageSrc) {
       super();
       this.type = type;
@@ -246,6 +247,13 @@ public interface IWorkerContext {
    * @return
    */
   public String getVersion();
+  
+  /**
+   *  Get/Set the default language for the current build (if any)
+   */
+  public String getDefaultLang();
+
+  public void setDefaultLang(String defaultLang);
 
   /**
    * Get the UCUM service that provides access to units of measure reasoning services 

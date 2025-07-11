@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,6 +22,7 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.DataType;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
@@ -31,6 +33,7 @@ import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
@@ -43,6 +46,7 @@ import org.hl7.fhir.utilities.i18n.LanguageFileProducer;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerLanguageSession;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TextUnit;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TranslationUnit;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -67,8 +71,12 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 @Slf4j
 public class LanguageUtils {
 
+  public static final int NARRATIVE_NONE = 0;
+  public static final int NARRATIVE_ROOT = 1;
+  public static final int NARRATIVE_CHILD = 2;
+  
   public static final List<String> TRANSLATION_SUPPLEMENT_RESOURCE_TYPES = Arrays.asList("CodeSystem", "StructureDefinition", "Questionnaire");
-
+  
   public static class TranslationUnitCollection {
     List<TranslationUnit> list= new ArrayList<>();
     Map<String, TranslationUnit> map = new HashMap<>();
@@ -774,7 +782,7 @@ public class LanguageUtils {
     return null;
   }
  
-  public boolean switchLanguage(Base r, String lang, boolean markLanguage, boolean contained) {
+  public boolean switchLanguage(Base r, String lang, boolean markLanguage, boolean contained, String resourceLang, List<ValidationMessage> errors) {
     boolean changed = false;
     if (r.isPrimitive()) {
 
@@ -792,7 +800,7 @@ public class LanguageUtils {
       Base status = r.getChildValueByName("status");
 
       XhtmlNode xhtml = div.getXhtml();
-      xhtml = adjustToLang(xhtml, lang, status == null ? null : status.primitiveValue());
+      xhtml = adjustToLang(xhtml, lang, status == null ? null : status.primitiveValue(), resourceLang, errors);
       if (xhtml == null) {
         r.removeChild("div", div);
       } else {
@@ -801,7 +809,7 @@ public class LanguageUtils {
     }
     for (Property p : r.children()) {
       for (Base c : p.getValues()) {
-        changed = switchLanguage(c, lang, markLanguage, p.getName().equals("contained")) || changed;
+        changed = switchLanguage(c, lang, markLanguage, p.getName().equals("contained"), resourceLang, errors) || changed;
       }
     }
     if (markLanguage && r.isResource() && !contained) {
@@ -812,35 +820,113 @@ public class LanguageUtils {
     return changed;
   }
 
-  private XhtmlNode adjustToLang(XhtmlNode xhtml, String lang, String status) {
-    if (xhtml == null) {
+  public int narrativeForLangStatus(DomainResource r, String lang) {
+    if (!r.hasText() || !r.getText().hasDiv())
+      return NARRATIVE_NONE;
+    else
+      return narrativeForLangStatus(r.getText().getDiv(), lang, r.getLanguage());
+  }
+  
+  public int narrativeForLangStatus(XhtmlNode xhtml, String lang, String resourceLang) {
+    XhtmlNode div = divForLang(xhtml, lang, resourceLang, null);
+    if (div == null)
+      return NARRATIVE_NONE;
+    else if (div.equals(xhtml))
+      return NARRATIVE_ROOT;
+    else
+      return NARRATIVE_CHILD;
+  }
+  
+  public XhtmlNode divForLang(DomainResource r, String lang, List<ValidationMessage> errors) {
+    if (!r.hasText() || !r.getText().hasDiv())
       return null;
-    }
-    //see if there's a language specific section
+    else
+      return divForLang(r.getText().getDiv(), lang, r.getLanguage(), errors);
+  }
+  
+  public XhtmlNode divForLang(XhtmlNode xhtml, String lang, String resourceLang, List<ValidationMessage> errors) {
+    if (xhtml==null)
+      return null;
+   
+    boolean foundLangDivs = false;
     for (XhtmlNode div : xhtml.getChildNodes()) {
       if ("div".equals(div.getName())) {
         String l = div.hasAttribute("lang") ? div.getAttribute("lang") : div.getAttribute("xml:lang");
+        if (l!=null)
+          foundLangDivs = true;
         if (lang.equals(l)) {
           return div;
         }       
       }
     }
-    // if the root language is correct
-    // this isn't first because a narrative marked for one language might have other language subsections
+
+    // If the base div declares a language that matches, then the whole div is the content 
     String l = xhtml.hasAttribute("lang") ? xhtml.getAttribute("lang") : xhtml.getAttribute("xml:lang");
     if (lang.equals(l)) {
       return xhtml;
     }
+    
+    // If there's no language declared at all, then the narrative is presumed to be the language the resource declares
+    // (if there is one), or the default language for the IG if the resource doesn't have a language.
+    if (!foundLangDivs && (resourceLang!=null ? lang.equals(resourceLang) : lang.equals(context.getDefaultLang()))) {
+      return xhtml;
+    }
+    
+    // If we didn't find a div for the requested language, then we'll either use narrative div for the default language
+    // (if it wasn't generated) or will leave the narrative as null, which will force it to be generated for this language
+    if (!lang.equals(context.getDefaultLang())) {
+      XhtmlNode defaultDiv = divForLang(xhtml, context.getDefaultLang(), resourceLang, null);
+      if (scanForGeneratedNarrative(defaultDiv, context.getDefaultLang())) {
+        return null;
+      }
+      
+      if (errors != null)
+        errors.add(new ValidationMessage(Source.Publisher, IssueType.BUSINESSRULE, "IG", "The narrative includes custom content for the default language (" + context.getDefaultLang() + "), but does not include translated content for the " + lang + " language, so the default language has been used", IssueSeverity.WARNING));
+      return defaultDiv;
+    }
+    
+    return null;
+  }
+  
+  public static boolean scanForGeneratedNarrative(XhtmlNode x, String lang) {
+    RenderingI18nContext rc = new RenderingI18nContext();
+    rc.setLocale(Locale.forLanguageTag(lang));
+    return scanForGeneratedNarrative(x, lang, rc);
+  }
+    
+  private static boolean scanForGeneratedNarrative(XhtmlNode x, String lang, RenderingI18nContext rc) {
+    
+    if (x.getContent() != null && x.getContent().contains( rc.formatPhrase(RenderingContext.PROF_DRIV_GEN_NARR_TECH, "", "").trim())) {
+      return true;
+    }
+    for (XhtmlNode c : x.getChildNodes()) {
+      if (scanForGeneratedNarrative(c, lang)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private XhtmlNode adjustToLang(XhtmlNode xhtml, String lang, String status, String resourceLang, List<ValidationMessage> errors) {
+    if (xhtml == null) {
+      return null;
+    }
+    xhtml = divForLang(xhtml, lang, resourceLang, errors);
+    
+    if (xhtml!=null)
+      return xhtml;
+
     // if the root language is null and the status is not additional
     // it can be regenerated
-    if (l == null && Utilities.existsInList(status, "generated", "extensions")) {
+    if (Utilities.existsInList(status, "generated", "extensions")) {
       return null;
-    }    
+    }
+    
     // well, really, not much we can do...
     return xhtml;
   }
 
-  public boolean switchLanguage(Element e, String lang, boolean markLanguage) throws IOException {
+  public boolean switchLanguage(Element e, String lang, boolean markLanguage, String resourceLang, List<ValidationMessage> errors) throws IOException {
     boolean changed = false;
     if (e.getProperty().isTranslatable()) {
       String cnt = getTranslation(e, lang);
@@ -852,7 +938,7 @@ public class LanguageUtils {
     }
     if (e.fhirType().equals("Narrative") && e.hasChild("div")) {
       XhtmlNode xhtml = e.getNamedChild("div").getXhtml();
-      xhtml = adjustToLang(xhtml, lang, e.getNamedChildValue("status"));
+      xhtml = adjustToLang(xhtml, lang, e.getNamedChildValue("status"), resourceLang, errors);
       if (xhtml == null) {
         e.removeChild("div");
       } else {
@@ -861,7 +947,7 @@ public class LanguageUtils {
     }
     if (e.hasChildren()) {
       for (Element c : e.getChildren()) {
-        changed = switchLanguage(c, lang, markLanguage) || changed;
+        changed = switchLanguage(c, lang, markLanguage, resourceLang, errors) || changed;
       }
     }
     if (markLanguage && e.isResource() && e.getSpecial() != SpecialElement.CONTAINED) {
@@ -897,18 +983,18 @@ public class LanguageUtils {
     return e.primitiveValue();
   }
 
-  public Element copyToLanguage(Element element, String lang, boolean markLanguage) throws IOException {
+  public Element copyToLanguage(Element element, String lang, boolean markLanguage, String resourceLang, List<ValidationMessage> errors) throws IOException {
     Element result = (Element) element.copy();
-    switchLanguage(result, lang, markLanguage);
+    switchLanguage(result, lang, markLanguage, resourceLang, errors);
     return result;
   }
 
-  public Resource copyToLanguage(Resource res, String lang, boolean markLanguage) {
+  public Resource copyToLanguage(Resource res, String lang, boolean markLanguage, List<ValidationMessage> errors) {
     if (res == null) {
       return null;
     }
     Resource r = res.copy();
-    switchLanguage(r, lang, markLanguage, false);    
+    switchLanguage(r, lang, markLanguage, false, res.getLanguage(), errors);    
     return r;
   }
 }

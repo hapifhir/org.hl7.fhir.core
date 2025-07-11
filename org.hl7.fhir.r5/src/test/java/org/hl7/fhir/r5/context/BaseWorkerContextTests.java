@@ -54,6 +54,15 @@ public class BaseWorkerContextTests {
     }
 
     @Override
+    public String getDefaultLang() {
+      return "en";
+    }
+    
+    @Override
+    public void setDefaultLang(String defaultLang) {
+    }
+    
+    @Override
     public IResourceValidator newValidator() throws FHIRException {
       return null;
     }
@@ -223,6 +232,15 @@ public class BaseWorkerContextTests {
         return null;
       }
 
+      @Override
+      public String getDefaultLang() {
+        return null;
+      }
+      
+      @Override
+      public void setDefaultLang(String defaultLang) {
+      }
+      
       @Override
       public IResourceValidator newValidator() throws FHIRException {
         return null;
