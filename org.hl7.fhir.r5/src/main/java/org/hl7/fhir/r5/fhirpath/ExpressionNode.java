@@ -53,10 +53,10 @@ public class ExpressionNode {
     First, Last, Tail, Skip, Take, Union, Combine, Intersect, Exclude, Iif, Upper, Lower, ToChars, IndexOf, Substring, StartsWith, EndsWith, Matches, MatchesFull, ReplaceMatches, Contains, Replace, Length,  
     Children, Descendants, MemberOf, Trace, DefineVariable, Check, Today, Now, Resolve, Extension, AllFalse, AnyFalse, AllTrue, AnyTrue,
     HasValue, OfType, Type, ConvertsToBoolean, ConvertsToInteger, ConvertsToString, ConvertsToDecimal, ConvertsToQuantity, ConvertsToDateTime, ConvertsToDate, ConvertsToTime, ToBoolean, ToInteger, ToString, ToDecimal, ToQuantity, ToDateTime, ToTime, ConformsTo,
-    Round, Sqrt, Abs, Ceiling, Exp, Floor, Ln, Log, Power, Truncate, Sort,
+    Round, Sqrt, Abs, Ceiling, Exp, Floor, Ln, Log, Power, Truncate,
     
     // R3 functions
-    Encode, Decode, Escape, Unescape, Trim, Split, Join, LowBoundary, HighBoundary, Precision,
+    Encode, Decode, Escape, Unescape, Trim, Split, Join, LowBoundary, HighBoundary, Precision, Sort, Coalesce,
     
     // Local extensions to FHIRPath
     HtmlChecks1, HtmlChecks2, Comparable, hasTemplateIdOf;
@@ -156,7 +156,8 @@ public class ExpressionNode {
       if (name.equals("log")) return Function.Log;
       if (name.equals("power")) return Function.Power;
       if (name.equals("truncate")) return Function.Truncate; 
-      if (name.equals("sort")) return Function.Sort;  
+      if (name.equals("sort")) return Function.Sort;
+	  if (name.equals("coalesce")) return Function.Coalesce;
       if (name.equals("lowBoundary")) return Function.LowBoundary;  
       if (name.equals("highBoundary")) return Function.HighBoundary;  
       if (name.equals("precision")) return Function.Precision;  
@@ -261,6 +262,7 @@ public class ExpressionNode {
       case Power : return "power";
       case Truncate: return "truncate";
       case Sort: return "sort";
+	  case Coalesce: return "coalesce";
       case LowBoundary: return "lowBoundary";
       case HighBoundary: return "highBoundary";
       case Precision: return "precision";
