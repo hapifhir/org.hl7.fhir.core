@@ -1,6 +1,7 @@
 ## Validator Changes
 
 * New Feature: HTTP server mode for pipeline/dedicated server support
+* FHIRPath improvements - see https://github.com/hapifhir/org.hl7.fhir.core/pull/2080
 * Don't require vitals signs profile for BMI code: 59574-4
 * Fix error in tx error processing
 * Matchetype validation improvements
