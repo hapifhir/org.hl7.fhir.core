@@ -243,4 +243,29 @@ public class FHIRPathDebugTracerTests {
     assertEquals("19,1,=: focus=1 result=1", tracer.traceOutput.get(5));
     assertEquals("14,2,or: focus=1 result=1", tracer.traceOutput.get(6));
   }
+
+  @Test
+  public void testDebugTrace_Coalesce() throws FHIRException, IOException {
+    System.out.println();
+    var expression = "name.coalesce(prefix, family, given, 'usual')";
+    var tracer = new FHIRPathDebugTracer(expression);
+    fp.setTracer(tracer);
+
+    var input = loadTestResource("patient-example.xml");
+    List<Base> results = fp.evaluate(input, expression);
+    fp.setTracer(null);
+
+    assertEquals(2, results.size());
+    assertEquals("Chalmers", ((Element) results.get(0)).getValue().toString());
+    assertEquals("Windsor", ((Element) results.get(1)).getValue().toString());
+
+    assertEquals("Patient.name[0].family", ((Element) results.get(0)).getPath());
+    assertEquals("Patient.name[2].family", ((Element) results.get(1)).getPath());
+
+    assertEquals(4, tracer.traceOutput.size());
+    assertEquals("0,4,name: focus=1 result=3", tracer.traceOutput.get(0));
+    assertEquals("14,6,prefix: focus=3 result=0", tracer.traceOutput.get(1));
+    assertEquals("22,6,family: focus=3 result=2", tracer.traceOutput.get(2));
+    assertEquals("5,8,coalesce: focus=3 result=2", tracer.traceOutput.get(3));
+  }
 }

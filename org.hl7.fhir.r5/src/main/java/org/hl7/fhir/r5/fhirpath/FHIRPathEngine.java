@@ -1576,6 +1576,7 @@ public class FHIRPathEngine {
     case Power:  return checkParamCount(lexer, location, exp, 1);
     case Truncate: return checkParamCount(lexer, location, exp, 0);
     case Sort: return checkParamCount(lexer, location, exp, 0, 10);
+    case Coalesce: return checkParamCount(lexer, location, exp, 1, Integer.MAX_VALUE); // un-bounded number of parameters
     case LowBoundary: return checkParamCount(lexer, location, exp, 0, 1);
     case HighBoundary: return checkParamCount(lexer, location, exp, 0, 1);
     case Precision: return checkParamCount(lexer, location, exp, 0);
@@ -3859,6 +3860,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     }
     case Sort :
       return new TypeDetails(CollectionStatus.ORDERED, focus.getTypes());       
+    case Coalesce : {
+      TypeDetails types = new TypeDetails(null);
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes);
+      for (var t : paramTypes) {
+        types.update(t);
+      }
+      return types;
+    }
     case Truncate :
     case Floor : 
     case Ceiling : {
@@ -4191,6 +4200,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     case Power : return funcPower(context, focus, exp); 
     case Truncate : return funcTruncate(context, focus, exp);
     case Sort : return funcSort(context, focus, exp);
+    case Coalesce: return funcCoalesce(context, focus, exp);
     case LowBoundary : return funcLowBoundary(context, focus, exp);
     case HighBoundary : return funcHighBoundary(context, focus, exp);
     case Precision : return funcPrecision(context, focus, exp);
@@ -6471,6 +6481,19 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return result;
   }
 
+  private List<Base> funcCoalesce(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+    // iterate over all the parameters, and return the first one that has a value
+    for (ExpressionNode p : exp.getParameters()) {
+      List<Base> pc = execute(context, focus, p, true);
+      if (pc.size() > 0) {
+        return pc;
+      }
+    }
+
+    // no result from any of the parameters, so return an empty list
+    List<Base> result = new ArrayList<Base>();
+    return result;
+  }
 
   private List<Base> funcItem(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
