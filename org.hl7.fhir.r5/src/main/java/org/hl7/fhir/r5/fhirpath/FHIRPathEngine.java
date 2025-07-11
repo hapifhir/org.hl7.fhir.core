@@ -1294,7 +1294,6 @@ public class FHIRPathEngine {
             throw lexer.error("The token "+lexer.getCurrent()+" is not expected here - either a \",\" or a \")\" expected");
           }
         }
-        result.setEnd(lexer.getCurrentLocation().copy());
         lexer.next();
         checkParameters(lexer, c, result, details);
       } else {

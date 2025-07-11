@@ -538,6 +538,11 @@ public class ExpressionNode {
 		this.group = group;
 	}
 
+	/**
+	 * The start location of the node (line/column), 1 based values, and points to the
+	 * first character of the node.
+	 * e.g. For an expression "name", would be 1,1
+	 */
 	public SourceLocation getStart() {
 		return start;
 	}
@@ -546,6 +551,11 @@ public class ExpressionNode {
 		this.start = start;
 	}
 
+	/**
+	 * The end location of the node (line/column), 1 based values, and points to the character after the 
+	 * last character of the node.
+	 * e.g. For an expression "name", would be 1,5
+	 */
 	public SourceLocation getEnd() {
 		return end;
 	}
@@ -554,6 +564,11 @@ public class ExpressionNode {
 		this.end = end;
 	}
 
+	/**
+	 * The start location of the operation part of the node (line/column), 1 based values, and points to the
+	 * first character of the node.
+	 * e.g. For an expression "name", would be 1,1
+	 */
 	public SourceLocation getOpStart() {
 		return opStart;
 	}
@@ -562,6 +577,11 @@ public class ExpressionNode {
 		this.opStart = opStart;
 	}
 
+	/**
+	 * The end location of the operation part of the node (line/column), 1 based values, and points to the character after the 
+	 * last character of the node.
+	 * e.g. For an expression "name", would be 1,5
+	 */
 	public SourceLocation getOpEnd() {
 		return opEnd;
 	}
