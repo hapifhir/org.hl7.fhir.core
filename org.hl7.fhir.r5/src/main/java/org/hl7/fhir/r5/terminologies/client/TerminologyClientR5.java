@@ -136,6 +136,11 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
 
   @Override
+  public Parameters batchValidateCS(Parameters pin) {
+    return client.operateType(CodeSystem.class, "batch-validate-code", pin);
+  }
+
+  @Override
   public Parameters subsumes(Parameters pin) {
     return client.operateType(CodeSystem.class, "subsumes", pin);
   }
@@ -143,6 +148,11 @@ public class TerminologyClientR5 implements ITerminologyClient {
   @Override
   public Parameters validateVS(Parameters pin) {
     return client.operateType(ValueSet.class, "validate-code", pin);
+  }
+
+  @Override
+  public Parameters batchValidateVS(Parameters pin) {
+    return client.operateType(ValueSet.class, "batch-validate-code", pin);
   }
 
   @Override
@@ -194,7 +204,7 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
 
   @Override
-  public Bundle validateBatch(Bundle batch) {
+  public Bundle batch(Bundle batch) {
     return client.transaction(batch);
   }
 

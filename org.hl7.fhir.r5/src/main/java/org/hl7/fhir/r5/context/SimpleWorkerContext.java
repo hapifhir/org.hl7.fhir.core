@@ -406,10 +406,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     if (txLog == null) {
       txLog = client.getLogger();
     }
-    TerminologyClientContext tcc = terminologyClientManager.setMasterClient(client, useEcosystem);
-    txLog("Connect to "+client.getAddress());
     try {
-      tcc.initialize();  
+      terminologyClientManager.setMasterClient(client, useEcosystem);
+      txLog("Connect to "+client.getAddress());
     } catch (Exception e) {
       if (canRunWithoutTerminology) {
         noTerminologyServer = true;

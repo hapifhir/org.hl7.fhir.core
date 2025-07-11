@@ -66,6 +66,7 @@ import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.r5.terminologies.ImplicitValueSets;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
@@ -967,7 +968,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
           }
         }
         if (fr == null) {
-          fr = ValueSetUtilities.generateImplicitValueSet(reference);
+          fr = new ImplicitValueSets(context.getExpansionParameters()).generateImplicitValueSet(reference);
         } 
        
         timeTracker.tx(t, "vs "+uri);

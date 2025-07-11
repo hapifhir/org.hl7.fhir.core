@@ -132,19 +132,19 @@ public class ValidatorUtils {
     return builder.parse(new ByteArrayInputStream(cnt));
   }
 
-  protected static List<ValidationMessage> filterMessages(List<ValidationMessage> messages) {
-    List<ValidationMessage> filteredValidation = new ArrayList<ValidationMessage>();
+  protected static List<ValidationMessage> removeDuplicates(List<ValidationMessage> messages) {
+    List<ValidationMessage> uniqueMessages = new ArrayList<ValidationMessage>();
     for (ValidationMessage e : messages) {
-      if (!filteredValidation.contains(e))
-        filteredValidation.add(e);
+      if (!uniqueMessages.contains(e))
+        uniqueMessages.add(e);
     }
-    filteredValidation.sort(null);
-    return filteredValidation;
+    //filteredValidation.sort(null);
+    return uniqueMessages;
   }
 
   protected static OperationOutcome messagesToOutcome(List<ValidationMessage> messages, SimpleWorkerContext context, FHIRPathEngine fpe) throws IOException, FHIRException, EOperationOutcome {
     OperationOutcome op = new OperationOutcome();
-    for (ValidationMessage vm : filterMessages(messages)) {
+    for (ValidationMessage vm : removeDuplicates(messages)) {
       try {
         fpe.parse(vm.getLocation());
       } catch (Exception e) {

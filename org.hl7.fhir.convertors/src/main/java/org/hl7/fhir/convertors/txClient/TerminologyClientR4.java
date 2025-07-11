@@ -141,6 +141,25 @@ public class TerminologyClientR4 implements ITerminologyClient {
     }
   }
 
+  @Override
+  public Parameters batchValidateCS(Parameters pin) throws FHIRException {
+    try {
+      org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) convertResource("validateCS.request", pin);
+      p2 = client.operateType(org.hl7.fhir.r4.model.CodeSystem.class, "batch-validate-code", p2);
+      return (Parameters) convertResource("validateCS.response", p2);
+    } catch (EFhirClientException e) {
+      if (e.getServerErrors().size() == 1) {
+        OperationOutcome op =  (OperationOutcome) convertResource("validateCS.error", e.getServerErrors().get(0));
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
+      } else {
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), e);
+      }
+    } catch (IOException e) {
+      throw new FHIRException(e);
+    }
+  }
+
+
 
   @Override
   public Parameters subsumes(Parameters pin) throws FHIRException {
@@ -172,6 +191,24 @@ public class TerminologyClientR4 implements ITerminologyClient {
         throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
       } else {
         throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), e);        
+      }
+    } catch (IOException e) {
+      throw new FHIRException(e);
+    }
+  }
+
+  @Override
+  public Parameters batchValidateVS(Parameters pin) throws FHIRException {
+    try {
+      org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) convertResource("validateVS.request", pin);
+      p2 = client.operateType(org.hl7.fhir.r4.model.ValueSet.class, "batch-validate-code", p2);
+      return (Parameters) convertResource("validateVS.response", p2);
+    } catch (EFhirClientException e) {
+      if (e.getServerErrors().size() == 1) {
+        OperationOutcome op =  (OperationOutcome) convertResource("validateVS.error", e.getServerErrors().get(0));
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
+      } else {
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), e);
       }
     } catch (IOException e) {
       throw new FHIRException(e);
@@ -227,7 +264,7 @@ public class TerminologyClientR4 implements ITerminologyClient {
   }
 
   @Override
-  public Bundle validateBatch(Bundle batch) {
+  public Bundle batch(Bundle batch) {
     org.hl7.fhir.r4.model.Bundle result = client.transaction((org.hl7.fhir.r4.model.Bundle) convertResource("validateBatch.request", batch));
     return result == null ? null : (Bundle) convertResource("validateBatch.response", result);
   }

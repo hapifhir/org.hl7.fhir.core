@@ -94,6 +94,7 @@ public class Params {
   public static final String AI_TESTS = "-aiTests";
   public static final String HELP = "help";
   public static final String COMPARE = "-compare";
+  public static final String SERVER = "-server";
   public static final String SPREADSHEET = "-spreadsheet";
   public static final String DESTINATION = "-dest";
   public static final String LEFT = "-left";
@@ -610,6 +611,8 @@ public class Params {
         i++;
       } else if (args[i].equals(CONVERT)) {
         validationContext.setMode(EngineMode.CONVERT);
+      } else if (args[i].equals(SERVER)) {
+        i++;
       } else if (args[i].equals(FHIRPATH)) {
         validationContext.setMode(EngineMode.FHIRPATH);
         if (validationContext.getFhirpath() == null)

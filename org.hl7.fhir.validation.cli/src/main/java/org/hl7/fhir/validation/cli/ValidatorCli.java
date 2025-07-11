@@ -141,6 +141,7 @@ public class ValidatorCli {
       new CodeGenTask(),
       new RePackageTask(),
       new InstanceFactoryTask(),
+      new HTTPServerTask(),
       defaultCliTask);
   }
 

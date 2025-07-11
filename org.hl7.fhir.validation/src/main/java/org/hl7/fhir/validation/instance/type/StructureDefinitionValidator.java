@@ -529,10 +529,12 @@ public class StructureDefinitionValidator extends BaseValidator {
         ctxt = session.getOtherVersions().get(v);
       }
     }
-    
+
     try {
-      String[] p = path.split("\\.");
-      StructureDefinition sd = ctxt.fetchResource(StructureDefinition.class, path.contains(".") ? path.substring(0, path.indexOf(".")) : path);
+      String[] p = (path.contains("#")  ? path.substring(path.indexOf("#")+1) : path).split("\\.");
+      String url = path.contains("#") ? path.substring(0, path.indexOf("#")) : "http://hl7.org/fhir/StructureDefinition/"+p[0];
+
+      StructureDefinition sd = ctxt.fetchResource(StructureDefinition.class, url);
       if (sd == null) {
         return null;
       }
@@ -1359,6 +1361,9 @@ public class StructureDefinitionValidator extends BaseValidator {
             }
           }
         }
+        warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), !"http://loinc.org/vs".equals(ref), I18nConstants.SD_ED_BIND_ALL_LOINC_CODES, ref);
+        warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), !"http://snomed.info/sct?fhir_vs".equals(ref), I18nConstants.SD_ED_BIND_ALLSCT_CODES, ref);
+        warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), !"http://hl7.org/fhir/ValueSet/cpt-all".equals(ref), I18nConstants.SD_ED_BIND_ALL_CPT_CODES, ref);
       }
     } 
     if (binding.hasChildren("additional")) {
