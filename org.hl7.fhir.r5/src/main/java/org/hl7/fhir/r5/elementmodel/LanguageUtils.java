@@ -881,7 +881,7 @@ public class LanguageUtils {
       }
       
       if (errors != null)
-        errors.add(new ValidationMessage(Source.Publisher, IssueType.BUSINESSRULE, "IG", "The narrative includes custom content for the default language (" + context.getDefaultLang() + "), but does not include translated content for the " + lang + " language, so the default language has been used", IssueSeverity.WARNING));
+        errors.add(new ValidationMessage(Source.Publisher, IssueType.BUSINESSRULE, "IG", "The narrative includes custom content for the default language (" + context.getDefaultLang() + "), but does not include translated content for the " + lang + " language, so the default language has been used", IssueSeverity.INFORMATION));
       return defaultDiv;
     }
     
