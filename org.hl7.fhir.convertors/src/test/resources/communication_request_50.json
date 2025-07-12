@@ -56,6 +56,7 @@
     "value": "12345"
   },
   "status": "active",
+  "intent": "proposal",
   "category": [
     {
       "coding": [
@@ -79,41 +80,38 @@
       "text": "written"
     }
   ],
-  "context": {
+  "encounter": {
     "reference": "Encounter/example"
   },
   "payload": [
     {
-      "contentString": "Please provide the accident report and any associated pictures to support your Claim# DEF5647."
+      "contentCodeableConcept": {
+        "text": "This should be converted to a contentString in R4"
+      }
     },
     {
-      "contentString": "this contentString is ignored in conversion to r5",
-      "extension": [
-        {
-          "url": "http://hl7.org/fhir/4.0/StructureDefinition/extension-CommunicationRequest.payload.content",
-          "valueReference": {
-            "reference": "#payload-extension-reference"
+      "contentCodeableConcept": {
+        "coding": [
+          {
+            "code": "This should be converted to an extension in R4"
           }
-        }
-      ]
+        ]
+      }
     }
   ],
   "occurrenceDateTime": "2016-06-10T11:01:10-08:00",
   "authoredOn": "2016-06-10T11:01:10-08:00",
   "requester": {
-    "agent": {
-      "reference": "#requester"
-    },
-    "onBehalfOf": {
-      "reference": "#requester2"
-    }
+    "reference": "#requester"
   },
   "recipient": [
     {
       "reference": "#provider"
     }
   ],
-  "sender": {
-    "reference": "#payor"
-  }
+  "informationProvider": [
+    {
+      "reference": "#payor"
+    }
+  ]
 }
