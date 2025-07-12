@@ -74,6 +74,7 @@ public class VersionConvertorConstants {
   public static final String EXT_MED_REQ_ONBEHALF = "http://hl7.org/fhir/3.0/StructureDefinition/extension-MedicationRequest.requester.onBehalfOf";
   public static final String EXT_COM_REQ_ONBEHALF = "http://hl7.org/fhir/3.0/StructureDefinition/extension-CommunicationRequest.requester.onBehalfOf";
   public static final String EXT_DOC_REF_CREATED = "http://hl7.org/fhir/3.0/StructureDefinition/extension-DocumentReference.created";
+  public static final String EXT_DIA_REP_PERFORMER = "http://hl7.org/fhir/3.0/StructureDefinition/extension-DiagnosticReport.performer.role";
 
   public static String refToVS(String url) {
     if (url == null)
