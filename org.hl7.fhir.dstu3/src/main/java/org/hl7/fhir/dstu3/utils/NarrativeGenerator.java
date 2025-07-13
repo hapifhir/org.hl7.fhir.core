@@ -215,9 +215,6 @@ public class NarrativeGenerator implements INarrativeGenerator {
     public ResourceContext(Element bundle, Element doc) {
     }
 
-    public ResourceContext(org.hl7.fhir.dstu3.elementmodel.Element bundle, org.hl7.fhir.dstu3.elementmodel.Element er) {
-    }
-
     public Resource resolve(String value) {
       if (value.startsWith("#")) {
         for (Resource r : resourceResource.getContained()) {
@@ -477,194 +474,6 @@ public class NarrativeGenerator implements INarrativeGenerator {
       if (definition == null)
         throw new Error("not handled");
       return definition.getMax().equals("*") ? Integer.MAX_VALUE : Integer.parseInt(definition.getMax());
-    }
-
-    @Override
-    public StructureDefinition getStructure() {
-      return structure;
-    }
-
-    @Override
-    public BaseWrapper value() {
-      if (getValues().size() != 1)
-        throw new Error("Access single value, but value count is "+getValues().size());
-      return getValues().get(0);
-    }
-
-  }
-
-  private class BaseWrapperMetaElement implements BaseWrapper {
-    private org.hl7.fhir.dstu3.elementmodel.Element element;
-    private String type;
-    private StructureDefinition structure;
-    private ElementDefinition definition;
-    private List<ElementDefinition> children;
-    private List<PropertyWrapper> list;
-
-    public BaseWrapperMetaElement(org.hl7.fhir.dstu3.elementmodel.Element element, String type, StructureDefinition structure, ElementDefinition definition) {
-      this.element = element;
-      this.type = type;
-      this.structure = structure;
-      this.definition = definition;
-    }
-
-    @Override
-    public Base getBase() throws UnsupportedEncodingException, IOException, FHIRException {
-      if (type == null || type.equals("Resource") || type.equals("BackboneElement") || type.equals("Element"))
-        return null;
-
-      if (element.hasElementProperty())
-        return null;
-      ByteArrayOutputStream xml = new ByteArrayOutputStream();
-      try {
-        new org.hl7.fhir.dstu3.elementmodel.XmlParser(context).compose(element, xml, OutputStyle.PRETTY, null);
-      } catch (Exception e) {
-        throw new FHIRException(e.getMessage(), e);
-      }
-      return context.newXmlParser().setOutputStyle(OutputStyle.PRETTY).parseType(xml.toString(), type);
-    }
-
-    @Override
-    public List<PropertyWrapper> children() {
-      if (list == null) {
-        children = ProfileUtilities.getChildList(structure, definition);
-        list = new ArrayList<NarrativeGenerator.PropertyWrapper>();
-        for (ElementDefinition child : children) {
-          List<org.hl7.fhir.dstu3.elementmodel.Element> elements = new ArrayList<org.hl7.fhir.dstu3.elementmodel.Element>();
-          String name = tail(child.getPath());
-          if (name.endsWith("[x]"))
-            element.getNamedChildrenWithWildcard(name, elements);
-          else
-            element.getNamedChildren(name, elements);
-          list.add(new PropertyWrapperMetaElement(structure, child, elements));
-        }
-      }
-      return list;
-    }
-
-    @Override
-    public PropertyWrapper getChildByName(String name) {
-      for (PropertyWrapper p : children())
-        if (p.getName().equals(name))
-          return p;
-      return null;
-    }
-
-  }
-  public class ResurceWrapperMetaElement implements ResourceWrapper {
-    private org.hl7.fhir.dstu3.elementmodel.Element wrapped;
-    private List<ResourceWrapper> list;
-    private List<PropertyWrapper> list2;
-    private StructureDefinition definition;
-    public ResurceWrapperMetaElement(org.hl7.fhir.dstu3.elementmodel.Element wrapped) {
-      this.wrapped = wrapped;
-      this.definition = wrapped.getProperty().getStructure();
-    }
-
-    @Override
-    public List<ResourceWrapper> getContained() {
-      if (list == null) {
-        List<org.hl7.fhir.dstu3.elementmodel.Element> children = wrapped.getChildrenByName("contained");
-        list = new ArrayList<NarrativeGenerator.ResourceWrapper>();
-        for (org.hl7.fhir.dstu3.elementmodel.Element e : children) {
-          list.add(new ResurceWrapperMetaElement(e));
-        }
-      }
-      return list;
-    }
-
-    @Override
-    public String getId() {
-      return wrapped.getNamedChildValue("id");
-    }
-
-    @Override
-    public XhtmlNode getNarrative() throws FHIRFormatError, IOException, FHIRException {
-      org.hl7.fhir.dstu3.elementmodel.Element txt = wrapped.getNamedChild("text");
-      if (txt == null)
-        return null;
-      org.hl7.fhir.dstu3.elementmodel.Element div = txt.getNamedChild("div");
-      if (div == null)
-        return null;
-      else
-        return div.getXhtml();
-    }
-
-    @Override
-    public String getName() {
-      return wrapped.getName();
-    }
-
-    @Override
-    public List<PropertyWrapper> children() {
-      if (list2 == null) {
-        List<ElementDefinition> children = ProfileUtilities.getChildList(definition, definition.getSnapshot().getElement().get(0));
-        list2 = new ArrayList<NarrativeGenerator.PropertyWrapper>();
-        for (ElementDefinition child : children) {
-          List<org.hl7.fhir.dstu3.elementmodel.Element> elements = new ArrayList<org.hl7.fhir.dstu3.elementmodel.Element>();
-          if (child.getPath().endsWith("[x]"))
-            wrapped.getNamedChildrenWithWildcard(tail(child.getPath()), elements);
-          else
-            wrapped.getNamedChildren(tail(child.getPath()), elements);
-          list2.add(new PropertyWrapperMetaElement(definition, child, elements));
-        }
-      }
-      return list2;
-    }
-  }
-
-  private class PropertyWrapperMetaElement implements PropertyWrapper {
-
-    private StructureDefinition structure;
-    private ElementDefinition definition;
-    private List<org.hl7.fhir.dstu3.elementmodel.Element> values;
-    private List<BaseWrapper> list;
-
-    public PropertyWrapperMetaElement(StructureDefinition structure, ElementDefinition definition, List<org.hl7.fhir.dstu3.elementmodel.Element> values) {
-      this.structure = structure;
-      this.definition = definition;
-      this.values = values;
-    }
-
-    @Override
-    public String getName() {
-      return tail(definition.getPath());
-    }
-
-    @Override
-    public boolean hasValues() {
-      return values.size() > 0;
-    }
-
-    @Override
-    public List<BaseWrapper> getValues() {
-      if (list == null) {
-        list = new ArrayList<NarrativeGenerator.BaseWrapper>();
-        for (org.hl7.fhir.dstu3.elementmodel.Element e : values)
-          list.add(new BaseWrapperMetaElement(e, e.fhirType(), structure, definition));
-      }
-      return list;
-    }
-
-    @Override
-    public String getTypeCode() {
-      throw new Error("todo");
-    }
-
-    @Override
-    public String getDefinition() {
-      throw new Error("todo");
-    }
-
-    @Override
-    public int getMinCardinality() {
-      throw new Error("todo");
-      //      return definition.getMin();
-    }
-
-    @Override
-    public int getMaxCardinality() {
-      throw new Error("todo");
     }
 
     @Override
@@ -986,31 +795,6 @@ public class NarrativeGenerator implements INarrativeGenerator {
     String rt = "http://hl7.org/fhir/StructureDefinition/"+doc.getNodeName();
     StructureDefinition p = context.fetchResource(StructureDefinition.class, rt);
     return generateByProfile(doc, p, true);
-  }
-
-  // dom based version, for build program
-  public String generate(org.hl7.fhir.dstu3.elementmodel.Element er, boolean showCodeDetails) throws IOException, DefinitionException {
-    return generate(null, er, showCodeDetails);
-  }
-  
-  public String generate(ResourceContext rcontext, org.hl7.fhir.dstu3.elementmodel.Element er, boolean showCodeDetails) throws IOException, DefinitionException {
-    if (rcontext == null)
-      rcontext = new ResourceContext(null, er);
-    
-    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-    x.para().b().tx("Generated Narrative"+(showCodeDetails ? " with Details" : ""));
-    try {
-      ResurceWrapperMetaElement resw = new ResurceWrapperMetaElement(er);
-      BaseWrapperMetaElement base = new BaseWrapperMetaElement(er, null, er.getProperty().getStructure(), er.getProperty().getDefinition());
-      base.children();
-      generateByProfile(resw, er.getProperty().getStructure(), base, er.getProperty().getStructure().getSnapshot().getElement(), er.getProperty().getDefinition(), base.children, x, er.fhirType(), showCodeDetails);
-
-    } catch (Exception e) {
-      e.printStackTrace();
-      x.para().b().setAttribute("style", "color: maroon").tx("Exception generating Narrative: "+e.getMessage());
-    }
-    inject(er, x,  NarrativeStatus.GENERATED);
-    return new XhtmlComposer(XhtmlComposer.XML).compose(x);
   }
 
   private boolean generateByProfile(DomainResource r, StructureDefinition profile, boolean showCodeDetails) {
@@ -2351,35 +2135,6 @@ public class NarrativeGenerator implements INarrativeGenerator {
     if (div.hasChildNodes())
       div.appendChild(er.getOwnerDocument().createElementNS(FormatUtilities.XHTML_NS, "hr"));
     new XhtmlComposer(XhtmlComposer.XML).compose(div, x);
-  }
-
-  private void inject(org.hl7.fhir.dstu3.elementmodel.Element er, XhtmlNode x, NarrativeStatus status) throws DefinitionException, IOException {
-    if (!x.hasAttribute("xmlns"))
-      x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
-    org.hl7.fhir.dstu3.elementmodel.Element txt = er.getNamedChild("text");
-    if (txt == null) {
-      txt = new org.hl7.fhir.dstu3.elementmodel.Element("text", er.getProperty().getChild(null, "text"));
-      int i = 0;
-      while (i < er.getChildren().size() && (er.getChildren().get(i).getName().equals("id") || er.getChildren().get(i).getName().equals("meta") || er.getChildren().get(i).getName().equals("implicitRules") || er.getChildren().get(i).getName().equals("language")))
-        i++;
-      if (i >= er.getChildren().size())
-        er.getChildren().add(txt);
-      else
-        er.getChildren().add(i, txt);
-    }
-    org.hl7.fhir.dstu3.elementmodel.Element st = txt.getNamedChild("status");
-    if (st == null) {
-      st = new org.hl7.fhir.dstu3.elementmodel.Element("status", txt.getProperty().getChild(null, "status"));
-      txt.getChildren().add(0, st);
-    }
-    st.setValue(status.toCode());
-    org.hl7.fhir.dstu3.elementmodel.Element div = txt.getNamedChild("div");
-    if (div == null) {
-      div = new org.hl7.fhir.dstu3.elementmodel.Element("div", txt.getProperty().getChild(null, "div"));
-      txt.getChildren().add(div);
-      div.setValue(new XhtmlComposer(XhtmlComposer.XML).compose(x));
-    }
-    div.setXhtml(x);
   }
 
   private String getDisplay(List<OtherElementComponent> list, String s) {
@@ -4267,28 +4022,6 @@ public class NarrativeGenerator implements INarrativeGenerator {
     if (request.hasIfNoneExist())
       b.append("If-None-Exist: "+request.getIfNoneExist()+"\r\n");
     root.pre().addText(b.toString());    
-  }
-
-  public XhtmlNode renderBundle(org.hl7.fhir.dstu3.elementmodel.Element element) throws FHIRException {
-    XhtmlNode root = new XhtmlNode(NodeType.Element, "div");
-    for (Base b : element.listChildrenByName("entry")) {
-      XhtmlNode c = getHtmlForResource(((org.hl7.fhir.dstu3.elementmodel.Element) b).getNamedChild("resource"));
-      if (c != null)
-        root.addChildNodes(c.getChildNodes());
-      root.hr();
-    }
-    return root;
-  }
-
-  private XhtmlNode getHtmlForResource(org.hl7.fhir.dstu3.elementmodel.Element element) {
-    org.hl7.fhir.dstu3.elementmodel.Element text = element.getNamedChild("text");
-    if (text == null)
-      return null;
-    org.hl7.fhir.dstu3.elementmodel.Element div = text.getNamedChild("div");
-    if (div == null)
-      return null;
-    else
-      return div.getXhtml();
   }
 
   public String getDefinitionsTarget() {

@@ -38,8 +38,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hl7.fhir.dstu3.elementmodel.Element;
-import org.hl7.fhir.dstu3.elementmodel.ObjectConverter;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBase;
 import org.hl7.fhir.utilities.Utilities;
@@ -253,10 +251,8 @@ private Map<String, Object> userData;
 		}
 		if (e1 == null || e2 == null)
 			return false;
-		if (e2.isMetadataBased() && !e1.isMetadataBased()) // respect existing order for debugging consistency; outcome must be the same either way
-			return e2.equalsDeep(e1);
 		else
-		return e1.equalsDeep(e2);
+  		return e1.equalsDeep(e2);
 	}
 	
 	public static boolean compareDeep(XhtmlNode div1, XhtmlNode div2, boolean allowNull) {
@@ -298,8 +294,6 @@ private Map<String, Object> userData;
   public Type castToType(Base b) throws FHIRException {
     if (b instanceof Type)
       return (Type) b;
-    else if (b.isMetadataBased())
-      return ((org.hl7.fhir.dstu3.elementmodel.Element) b).asType();
     else
       throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to a Reference");
   }
@@ -458,9 +452,7 @@ private Map<String, Object> userData;
 	public CodeableConcept castToCodeableConcept(Base b) throws FHIRException {
 		if (b instanceof CodeableConcept)
 			return (CodeableConcept) b;
-    else if (b instanceof Element) {
-      return ObjectConverter.readAsCodeableConcept((Element) b);
-    } else if (b instanceof CodeType) {
+    else if (b instanceof CodeType) {
 		  CodeableConcept cc = new CodeableConcept();
 		  cc.addCoding().setCode(((CodeType) b).asStringValue());
 		  return cc;
@@ -471,9 +463,7 @@ private Map<String, Object> userData;
 	public Coding castToCoding(Base b) throws FHIRException {
 		if (b instanceof Coding)
 			return (Coding) b;
-    else if (b instanceof Element) {
-      return ObjectConverter.readAsCoding((Element) b);
-		} else
+    else
 			throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to a Coding");
 	}
 	
@@ -610,10 +600,7 @@ private Map<String, Object> userData;
 			return (Reference) b;
 		else if (b.isPrimitive() && Utilities.isURL(b.primitiveValue()))
       return new Reference().setReference(b.primitiveValue());
-    else if (b instanceof org.hl7.fhir.dstu3.elementmodel.Element && b.fhirType().equals("Reference")) {
-      org.hl7.fhir.dstu3.elementmodel.Element e = (org.hl7.fhir.dstu3.elementmodel.Element) b;
-      return new Reference().setReference(e.getChildValue("reference")).setDisplay(e.getChildValue("display"));
-    } else
+    else
 			throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to a Reference");
 	}
 	
@@ -675,9 +662,7 @@ private Map<String, Object> userData;
 	}
 
   public XhtmlNode castToXhtml(Base b) throws FHIRException {
-    if (b instanceof Element) {
-      return ((Element) b).getXhtml();
-    } else if (b instanceof StringType) {
+    if (b instanceof StringType) {
       try {
         return new XhtmlParser().parseFragment(((StringType) b).asStringValue());
       } catch (IOException e) {
@@ -688,17 +673,11 @@ private Map<String, Object> userData;
   }
   
   public String castToXhtmlString(Base b) throws FHIRException {
-    if (b instanceof Element) {
-      return ((Element) b).getValue();
-    } else if (b instanceof StringType) {
+    if (b instanceof StringType) {
       return ((StringType) b).asStringValue();
     } else
       throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to XHtml string");
   }
-  
-	protected boolean isMetadataBased() {
-  	return false;
-	}
 
 	public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
 		if (checkValid)
