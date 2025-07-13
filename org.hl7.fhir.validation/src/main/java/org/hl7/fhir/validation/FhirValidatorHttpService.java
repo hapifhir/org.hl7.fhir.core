@@ -13,6 +13,7 @@ import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.validation.instance.ResourcePercentageLogger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -38,6 +39,7 @@ public class FhirValidatorHttpService {
     this.validationEngine = validationEngine;
     this.igLoader = validationEngine.getIgLoader();
     this.port = port;
+    ResourcePercentageLogger.setLoggingSuppressed(true);
   }
 
   public void startServer() throws IOException {
