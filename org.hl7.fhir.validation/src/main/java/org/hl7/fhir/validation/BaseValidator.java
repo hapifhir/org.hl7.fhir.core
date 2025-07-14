@@ -1302,7 +1302,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
 
   protected IndexedElement getFromBundle(Element bundle, String ref, String fullUrl, List<ValidationMessage> errors, String path, String type, boolean isTransaction, BooleanHolder bh) {
-    String targetUrl = null;
+    String targetUrl;
     String version = "";
     String resourceType = null;
     if (ref.startsWith("http:") || ref.startsWith("urn:") || Utilities.isAbsoluteUrl(ref)) {
@@ -1319,7 +1319,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
       rule(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, Utilities.existsInList(type, "batch-response", "transaction-response") || path.startsWith("Bundle.signature"), I18nConstants.BUNDLE_BUNDLE_FULLURL_MISSING);
       return null;
 
-    } else if (ref.split("/").length != 2 && ref.split("/").length != 4) {
+    } else if (StringUtils.countMatches(ref, '/') != 2 && StringUtils.countMatches(ref, '/') != 4) {
       if (isTransaction) {
         rule(errors, NO_RULE_DATE, IssueType.INVALID, -1, -1, path, isSearchUrl(context, ref), I18nConstants.REFERENCE_REF_FORMAT1, ref);
       } else {
