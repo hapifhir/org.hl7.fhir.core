@@ -5,8 +5,7 @@ import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.packages.PackageCacheDownloader;
-
-import java.io.PrintStream;
+import org.slf4j.Logger;
 
 public class PreloadCacheTask extends StandaloneTask {
   @Override
@@ -30,7 +29,7 @@ public class PreloadCacheTask extends StandaloneTask {
   }
 
   @Override
-  public void printHelp(PrintStream out) {
+  public void logHelp(Logger logger) {
 
   }
 

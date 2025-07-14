@@ -89,7 +89,7 @@ public class PackageInformation {
     return b;
   }
 
-  public boolean isHTO() {
+  public boolean isTHO() {
     boolean b = id.startsWith("hl7.terminology.r");
     return b;
   }

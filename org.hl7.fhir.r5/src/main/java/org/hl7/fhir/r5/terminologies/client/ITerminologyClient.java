@@ -32,7 +32,6 @@ package org.hl7.fhir.r5.terminologies.client;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
@@ -55,6 +54,8 @@ public interface ITerminologyClient {
   ValueSet expandValueset(ValueSet vs, Parameters p) throws FHIRException;
   Parameters validateCS(Parameters pin) throws FHIRException;
   Parameters validateVS(Parameters pin) throws FHIRException;
+  Parameters batchValidateCS(Parameters pin) throws FHIRException;
+  Parameters batchValidateVS(Parameters pin) throws FHIRException;
   Parameters subsumes(Parameters pin) throws FHIRException;
   ITerminologyClient setTimeoutFactor(int i) throws FHIRException;
   ToolingClientLogger getLogger();
@@ -66,7 +67,7 @@ public interface ITerminologyClient {
   Parameters lookupCode(Map<String, String> params) throws FHIRException;
   Parameters lookupCode(Parameters params) throws FHIRException;
   Parameters translate(Parameters params) throws FHIRException;
-  Bundle validateBatch(Bundle batch);
+  Bundle batch(Bundle batch);
   CanonicalResource read(String type, String id);
   Iterable<HTTPHeader> getClientHeaders();
   ITerminologyClient setClientHeaders(ClientHeaders clientHeaders);
@@ -82,4 +83,5 @@ public interface ITerminologyClient {
     void log(String name, String resourceType, String version, byte[] cnt);
   }
   void setConversionLogger(ITerminologyConversionLogger logger);
+  OperationOutcome validateResource(Resource vs);
 }

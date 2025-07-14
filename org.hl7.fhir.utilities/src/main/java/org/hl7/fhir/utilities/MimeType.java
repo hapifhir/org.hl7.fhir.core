@@ -44,11 +44,13 @@ public class MimeType {
 
   public MimeType(String s) {
     source = s;
-    for (String p : s.split("\\;"))
+    for (String ss : s.split("\\;")) {
+      String p = ss.trim();
       if (base == null)
         base = p;
       else
         params.put(p.substring(0, p.indexOf("=")), p.substring(p.indexOf("=")+1));
+    }
     if ("xml".equals(base))
       base = "application/fhir+xml";
     if ("json".equals(base))

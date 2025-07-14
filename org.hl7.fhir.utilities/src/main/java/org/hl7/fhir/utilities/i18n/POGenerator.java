@@ -32,6 +32,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
  *   * path to the local copy of the ig-publisher repo
  *   * path to the local copy of the fhirserver repo
  */
+@SuppressWarnings("checkstyle:systemout")
 public class POGenerator {
 
   public class PropertyValue extends StringPair {
@@ -75,7 +76,7 @@ public class POGenerator {
 
   private int noTrans = 0;
 
-  private void execute(String core, String igpub, String pascal) throws IOException {
+  public void execute(String core, String igpub, String pascal) throws IOException {
     String source = Utilities.path(core, "/org.hl7.fhir.utilities/src/main/resources");
     if (checkState(source, core, igpub, pascal)) {
       IniFile ini = new IniFile(Utilities.path(source, "translations-control.ini"));
@@ -296,133 +297,131 @@ public class POGenerator {
     return res;
   }
 
-  private void generate(String source, String src, String dest, String tgt, int count) throws IOException {
+  enum PluralMode {
+    NONE, ONE, OTHER
+  }
+
+  private void generate(String sourceDirectory, String propertiesFileName, String poFileName, String targetPropertiesFileName, int count) throws IOException {
     // load the destination file 
     // load the source file 
     // update the destination object set for changes from the source file
     // save the destination file 
-    String fn = Utilities.path(source, "source", dest);
-    POSource objects;
-    if (ManagedFileAccess.file(fn).exists()) {
-      objects = POSource.loadPOFile(fn);
+    String poFilePath = Utilities.path(sourceDirectory, "source", poFileName);
+    POSource poObjects;
+    if (ManagedFileAccess.file(poFilePath).exists()) {
+      poObjects = POSource.loadPOFile(poFilePath);
     } else {
-      objects = new POSource();
+      poObjects = new POSource();
     }
-    List<PropertyValue> props = loadProperties(Utilities.path(source, src), false);
-    for (PropertyValue e : props) {
-      String name = e.getName();
-      int mode = 0;
+    List<PropertyValue> javaProperties = loadProperties(Utilities.path(sourceDirectory, propertiesFileName), false);
+    for (PropertyValue javaProperty : javaProperties) {
+      String name = javaProperty.getName();
+      PluralMode pluralMode = PluralMode.NONE;
       if (name.endsWith("_one")) {
-        mode = 1;
+        pluralMode = PluralMode.ONE;
         name = name.substring(0, name.length() - 4);
       } else if (name.endsWith("_other")) {
-        mode = 2;
+        pluralMode = PluralMode.OTHER;
         name = name.substring(0, name.length() - 6);
       } 
 
-      POObject o = findObject(objects.getEntries(), name);
-      if (o == null) {
-        if (mode > 1) {
+      POObject poObject = findObject(poObjects.getPOObjects(), name);
+      if (poObject == null) {
+        if (pluralMode == PluralMode.OTHER) {
           throw new Error("Not right");
         }
-        o = new POObject();
-        o.setId(name);
-        o.setComment(name);
-        objects.getEntries().add(o);
-        o.setMsgid(e.getValue());
-        o.setOrphan(false);
+        poObject = new POObject();
+        poObject.setId(name);
+        poObject.setComment(name);
+        poObjects.getPOObjects().add(poObject);
+        poObject.setMsgid(javaProperty.getValue());
+        poObject.setOrphan(false);
       } else {
-        update(o, mode, e.getValue());
+        updatePOObject(poObject, pluralMode, javaProperty.getValue());
       }
     }
-    objects.getEntries().removeIf(o -> o.isOrphan());
-    Collections.sort(objects.getEntries(), new POObjectSorter());
-    Map<String, Integer> sources = new HashMap<>();
-    Set<String> dups = new HashSet<>();
-    for (POObject o : objects.getEntries()) {
-      if (sources.containsKey(o.getMsgid())) {
-        Integer c = sources.get(o.getMsgid())+1;
-        sources.put(o.getMsgid(), c);
-        dups.add(o.getMsgid());
-//        System.out.println("Duplicate in "+dest.substring(dest.lastIndexOf("/")+1)+": "+o.msgid+" on ("+CommaSeparatedStringBuilder.join(",", listIds(objects, o.msgid))+")");
-      } else {
-        sources.put(o.getMsgid(), 1);
-      }
-    }
-    for (POObject o : objects.getEntries()) {
-      Integer c = sources.get(o.getMsgid());
-      if (c > 1) {
-        o.setDuplicate(true);
-      }
-    }
-    noTrans = objects.savePOFile(Utilities.path(source, "source", dest), count, noTrans);
-    if (tgt != null) {
-      savePropFile(Utilities.path(source, tgt), objects.getEntries());
+    poObjects.getPOObjects().removeIf(o -> o.isOrphan());
+    Collections.sort(poObjects.getPOObjects(), new POObjectSorter());
+    markDuplicatePOObjects(poObjects);
+    noTrans = poObjects.savePOFile(Utilities.path(sourceDirectory, "source", poFileName), count, noTrans);
+    if (targetPropertiesFileName != null) {
+      savePropertiesFile(Utilities.path(sourceDirectory, targetPropertiesFileName), poObjects.getPOObjects());
     }
   }
 
-  private Set<String> listIds(List<POObject> objects, String msgid) {
-    Set<String> res = new HashSet<>();
-    for (POObject o : objects) {
-      if (o.getMsgid().equals(msgid)) {
-        res.add(o.getId());
+  private static void markDuplicatePOObjects(POSource poObjects) {
+    Map<String, Integer> sources = new HashMap<>();
+
+    for (POObject poObject : poObjects.getPOObjects()) {
+      if (sources.containsKey(poObject.getMsgid())) {
+        Integer count = sources.get(poObject.getMsgid())+1;
+        sources.put(poObject.getMsgid(), count);
+//        System.out.println("Duplicate in "+dest.substring(dest.lastIndexOf("/")+1)+": "+o.msgid+" on ("+CommaSeparatedStringBuilder.join(",", listIds(objects, o.msgid))+")");
+      } else {
+        sources.put(poObject.getMsgid(), 1);
       }
     }
-    return res;
-  }
-  private void update(POObject o, int mode, String value) {
-    o.setOrphan(false);
-    if (o.getComment() == null) {
-      o.setComment(o.getId());
+    for (POObject poObject : poObjects.getPOObjects()) {
+      Integer count = sources.get(poObject.getMsgid());
+      if (count > 1) {
+        poObject.setDuplicate(true);
+      }
     }
-    if (mode == 0) {
-      if (!value.equals(o.getMsgid())) {
+  }
+
+  private void updatePOObject(POObject poObject, PluralMode mode, String value) {
+    poObject.setOrphan(false);
+    if (poObject.getComment() == null) {
+      poObject.setComment(poObject.getId());
+    }
+    if (mode == PluralMode.NONE) {
+      if (!value.equals(poObject.getMsgid())) {
         // the english string has changed, and the other language string is now out of date
-        if (o.getOldMsgId() != null && !o.getMsgstr().isEmpty()) {
-          o.setOldMsgId(o.getMsgid());
+        if (poObject.getOldMsgId() != null && !poObject.getMsgstr().isEmpty()) {
+          poObject.setOldMsgId(poObject.getMsgid());
         }
-        o.setMsgid(value);
-        for (int i = 0; i < o.getMsgstr().size(); i++) {
-          if (!Utilities.noString(o.getMsgstr().get(i))) {
-            o.getMsgstr().set(i, "!!"+o.getMsgstr().get(i));
+        poObject.setMsgid(value);
+        for (int i = 0; i < poObject.getMsgstr().size(); i++) {
+          if (!Utilities.noString(poObject.getMsgstr().get(i))) {
+            poObject.getMsgstr().set(i, "!!"+poObject.getMsgstr().get(i));
           }
         }
       } else {
-        o.setOldMsgId(null);
+        poObject.setOldMsgId(null);
       }
-    } else if (mode == 1) {
-      if (!value.equals(o.getMsgid())) {
+    } else if (mode == PluralMode.ONE) {
+      if (!value.equals(poObject.getMsgid())) {
         // the english string has changed, and the other language string is now out of date 
-        if (o.getOldMsgId() != null && !o.getMsgstr().isEmpty()) {
-          o.setOldMsgId(o.getMsgid());
+        if (poObject.getOldMsgId() != null && !poObject.getMsgstr().isEmpty()) {
+          poObject.setOldMsgId(poObject.getMsgid());
         }
-        o.setMsgid(value);
-        if (o.getMsgstr().size() > 0 && !Utilities.noString(o.getMsgstr().get(0))) {
-          o.getMsgstr().set(0, "!!"+o.getMsgstr().get(0));
+        poObject.setMsgid(value);
+        if (poObject.getMsgstr().size() > 0 && !Utilities.noString(poObject.getMsgstr().get(0))) {
+          poObject.getMsgstr().set(0, "!!"+poObject.getMsgstr().get(0));
         }
       } else {
-        o.setOldMsgId(null);
+        poObject.setOldMsgId(null);
       }
-    } else if (mode == 2) {
-      if (!value.equals(o.getMsgidPlural())) {
+    } else if (mode == PluralMode.OTHER) {
+      if (!value.equals(poObject.getMsgidPlural())) {
         // the english string has changed, and the other language string is now out of date 
 //        if (o.oldMsgId != null) {
 //          o.oldMsgId = o.msgid;
 //        }
-        o.setMsgidPlural(value);
-        if (o.getMsgstr().size() > 1 && !Utilities.noString(o.getMsgstr().get(1))) {
-          o.getMsgstr().set(1, "!!"+o.getMsgstr().get(1));
+        poObject.setMsgidPlural(value);
+        if (poObject.getMsgstr().size() > 1 && !Utilities.noString(poObject.getMsgstr().get(1))) {
+          poObject.getMsgstr().set(1, "!!"+poObject.getMsgstr().get(1));
         }
       } else {
-        o.setOldMsgId(null);
+        poObject.setOldMsgId(null);
       }
     }
   }
 
-  private POObject findObject(List<POObject> objects, String name) {
-    for (POObject t : objects) {
-      if (t.getId() != null && t.getId().equals(name)) {
-        return t;
+  private POObject findObject(List<POObject> poObjects, String name) {
+    for (POObject poObject : poObjects) {
+      if (poObject.getId() != null && poObject.getId().equals(name)) {
+        return poObject;
       }
     }
     return null;
@@ -444,7 +443,7 @@ public class POGenerator {
     return res;
   }
 
-  private void savePropFile(String tgt, List<POObject> objects) throws IOException {
+  private void savePropertiesFile(String tgt, List<POObject> objects) throws IOException {
     String nameLine = FileUtilities.fileToLines(tgt).get(0);
     String[] parts = nameLine.substring(1).trim().split("\\=");
     String[] names = parts[1].split("\\,");

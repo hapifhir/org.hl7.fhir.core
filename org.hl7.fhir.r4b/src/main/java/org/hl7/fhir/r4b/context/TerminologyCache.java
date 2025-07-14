@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4b.context.IWorkerContext.ValidationResult;
@@ -80,6 +81,7 @@ import com.google.gson.JsonPrimitive;
  *
  */
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class TerminologyCache {
   public static final boolean TRANSIENT = false;
   public static final boolean PERMANENT = true;
@@ -450,7 +452,7 @@ public class TerminologyCache {
       }
       sw.close();
     } catch (Exception e) {
-      System.out.println("error saving " + nc.name + ": " + e.getMessage());
+      log.error("error saving " + nc.name + ": " + e.getMessage());
     }
   }
 

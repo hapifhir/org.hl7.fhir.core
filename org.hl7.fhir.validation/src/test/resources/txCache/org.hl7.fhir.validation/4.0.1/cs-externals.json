@@ -8,6 +8,7 @@
   },
   "http://snomed.info/sct|http://snomed.info/sct/900000000000207008" : null,
   "http://hl7.org/fhir/ValueSet/participant-role|null" : null,
+  "https://smt.esante.gouv.fr/fhir/CodeSystem/tre-r374-nature-activite-smsse-regulee|ASR" : null,
   "urn:ietf:bcp:13|null" : null,
   "http://nucc.org/provider-taxonomy|null" : null,
   "http://hl7.org/fhir/measure-type|null" : null,
@@ -50,6 +51,7 @@
     "server" : "http://tx-dev.fhir.org/r4",
     "filename" : "cs-3e1cda47-ba94-4931-95fb-ba08f9900b75.json"
   },
+  "http://snomed.info/sct|http://snomed.info/sct/32506021000036107" : null,
   "http://standardterms.edqm.eu|null" : null,
   "http://fkcfhir.org/fhir/CodeSystem/FMCOrderSubType|null" : null,
   "http://example.org/mySystem|null" : null,
@@ -63,6 +65,7 @@
     "server" : "http://tx-dev.fhir.org/r4",
     "filename" : "cs-055c0189-e2f3-436b-8978-27be9e4e8adb.json"
   },
+  "https://smt.esante.gouv.fr/fhir/CodeSystem/tre-r374-nature-activite-smsse-regulee|null" : null,
   "http://loinc.org|current" : null,
   "https://hl7.fi/fhir/finnish-base-profiles/CodeSystem/SecurityLabelCS|null" : null,
   "https://fhir.hl7.org.uk/CodeSystem/UKCore-SDSJobRoleName|null" : null,

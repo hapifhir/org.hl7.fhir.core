@@ -9,4 +9,6 @@ public abstract class SpecialCodeSystem {
 
   public abstract ConceptDefinitionComponent findConcept(Coding code);
 
+  public abstract boolean inactive(String code);
+
 }

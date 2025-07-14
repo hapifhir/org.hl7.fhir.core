@@ -1,10 +1,10 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.elementmodel.Element;
@@ -43,6 +43,7 @@ import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
+@Slf4j
 public class StructureMapValidator extends BaseValidator {
 
   public class ElementDefinitionSource {
@@ -690,6 +691,13 @@ public class StructureMapValidator extends BaseValidator {
       if (sd != null && type.equals(sd.getType())) {
         return true;
       }
+      StructureDefinition sdt = context.fetchTypeDefinition(type);
+      while (sdt != null) {
+        if (sd != null && sdt.getType().equals(sd.getType())) {
+          return true;
+        }
+        sdt = context.fetchResource(StructureDefinition.class, sdt.getBaseDefinition());
+      }
     }
     return false;
   }
@@ -1201,7 +1209,7 @@ public class StructureMapValidator extends BaseValidator {
             }
           }
         } else {
-          System.out.println("Unable to find type "+type);
+          log.info("Unable to find type "+type);
         }
       }
     }    

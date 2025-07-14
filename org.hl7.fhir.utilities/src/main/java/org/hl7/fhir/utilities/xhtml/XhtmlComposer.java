@@ -51,6 +51,7 @@ public class XhtmlComposer {
   private boolean pretty;
   private boolean xml; 
   private boolean autoLinks;
+  private boolean canonical;
 
   public static final boolean XML = true; 
   public static final boolean HTML = false; 
@@ -69,13 +70,16 @@ public class XhtmlComposer {
 
   private Writer dst;
 
-  public String compose(XhtmlDocument doc) throws IOException  {
+  public String compose(XhtmlDocument doc) {
     if (!xml && !pretty) {
       breakBlocksWithLines(doc);
     }
     StringWriter sdst = new StringWriter();
     dst = sdst;
-    composeDoc(doc);
+    try {
+      composeDoc(doc);
+    } catch (IOException e) {
+    }
     return sdst.toString();
   }
 
@@ -90,7 +94,7 @@ public class XhtmlComposer {
       XhtmlNode node = list.get(i);
       if (node.getNodeType() == NodeType.Element && BLOCK_NAMES.contains(node.getName())) {
         XhtmlNode prev = list.get(i-1);
-        if (prev.getNodeType() != NodeType.Text || prev.getContent() == null || !(prev.getContent().endsWith("\r") || prev.getValue().endsWith("\n"))) {
+        if (prev.getNodeType() != NodeType.Text || prev.getContent() == null || !(prev.getContent().endsWith("\r") || prev.getContent().endsWith("\n"))) {
           list.add(i, new XhtmlNode(NodeType.Text).setContent("\r\n"));
         }        
       }
@@ -98,13 +102,16 @@ public class XhtmlComposer {
     }    
   }
 
-  public String compose(XhtmlNode node) throws IOException  {
+  public String compose(XhtmlNode node) {
     if (!xml && !pretty) {
       breakBlocksWithLines(node);
     }
     StringWriter sdst = new StringWriter();
     dst = sdst;
-    writeNode("", node, false);
+    try {
+      writeNode("", node, false);
+    } catch (IOException e) {
+    }
     return sdst.toString();
   }
 
@@ -154,72 +161,123 @@ public class XhtmlComposer {
     } else if (node.getNodeType() == NodeType.Text) {
       writeText(node);
     } else if (node.getNodeType() == null) {
-      throw new IOException("Null node type");
+      throw new Error("Null node type");
     } else {
-      throw new IOException("Unknown node type: "+node.getNodeType().toString());
+      throw new Error("Unknown node type: "+node.getNodeType().toString());
     }
   }
 
   private boolean isValidUrlChar(char c) {
     return Character.isAlphabetic(c) || Character.isDigit(c) || Utilities.existsInList(c, ';', ',', '/', '?', ':', '@', '&', '=', '+', '$', '-', '_', '.', '!', '~', '*', '\'', '(', ')');
   }
-  
+
   private void writeText(XhtmlNode node) throws IOException  {
     String src = node.getContent();
     int i = 0;
     while (i < src.length()) {
       int ci = src.codePointAt(i);
-      if (ci > 65535) {
-        dst.append("&#x");
-        dst.append(Integer.toHexString(ci).toUpperCase());
-        dst.append(";");
-        i += Character.charCount(ci);
-      } else {
-        char c = (char) ci;
-        if (autoLinks && c == 'h' && Utilities.startsWithInList(src.substring(i), "http://", "https://")) {
-          int j = i;
-          while (i < src.length() && isValidUrlChar(src.charAt(i))) {
-            i++;
-          }
-          String url = src.substring(j, i);
-          if (url.endsWith(".") || url.endsWith(",")) {
-            i--;
-            url = url.substring(0, url.length()-1);
-          }
-          url = Utilities.escapeXml(url);
-          dst.append("<a href=\""+url+"\">"+ url +"</a>");
+      char c = (char) ci;
+      if (canonical) {
+        if (c == '&') {
+          dst.append("&amp;");
+        } else if (c == '<') {
+          dst.append("&lt;");
+        } else if (c == '>') {
+          dst.append("&gt;");
+        } else if (c == '\r') {
+          dst.append("#xD;");
         } else {
-          i++;
-          if (c == '&') {
-            dst.append("&amp;");
-          } else if (c == '<') {
-            dst.append("&lt;");
-          } else if (c == '>') {
-            dst.append("&gt;");
-          } else if (xml) {
-            if (c == '"')
-              dst.append("&quot;");
-            else 
-              dst.append(c);
+          dst.append(c);
+        }
+        i++;
+      } else {
+        if (ci > 65535) {
+          dst.append("&#x");
+          dst.append(Integer.toHexString(ci).toUpperCase());
+          dst.append(";");
+          i += Character.charCount(ci);
+        } else {
+          if (autoLinks && c == 'h' && Utilities.startsWithInList(src.substring(i), "http://", "https://")) {
+            int j = i;
+            while (i < src.length() && isValidUrlChar(src.charAt(i))) {
+              i++;
+            }
+            String url = src.substring(j, i);
+            if (url.endsWith(".") || url.endsWith(",")) {
+              i--;
+              url = url.substring(0, url.length()-1);
+            }
+            url = Utilities.escapeXml(url);
+            dst.append("<a href=\""+url+"\">"+ url +"</a>");
           } else {
-            if (c == XhtmlNode.NBSP.charAt(0))
-              dst.append("&nbsp;");
-            else if (c == (char) 0xA7)
-              dst.append("&sect;");
-            else if (c == (char) 169)
-              dst.append("&copy;");
-            else if (c == (char) 8482)
-              dst.append("&trade;");
-            else if (c == (char) 956)
-              dst.append("&mu;");
-            else if (c == (char) 174)
-              dst.append("&reg;");
-            else 
-              dst.append(c);            
+            i++;
+            if (c == '&') {
+              dst.append("&amp;");
+            } else if (c == '<') {
+              dst.append("&lt;");
+            } else if (c == '>') {
+              dst.append("&gt;");
+            } else if (xml) {
+              if (c == '"')
+                dst.append("&quot;");
+              else 
+                dst.append(c);
+            } else {
+              if (c == XhtmlNode.NBSP.charAt(0))
+                dst.append("&nbsp;");
+              else if (c == (char) 0xA7)
+                dst.append("&sect;");
+              else if (c == (char) 169)
+                dst.append("&copy;");
+              else if (c == (char) 8482)
+                dst.append("&trade;");
+              else if (c == (char) 956)
+                dst.append("&mu;");
+              else if (c == (char) 174)
+                dst.append("&reg;");
+              else 
+                dst.append(c);            
+            }
           }
         }
       }
     }
+  }
+  
+  private String escapeHtml(String s)  {
+    if (s == null || s.equals(""))
+      return null;
+    StringBuilder b = new StringBuilder();
+    for (char c : s.toCharArray()) {
+      if (canonical) {
+        if (c == '<')
+          b.append("&lt;");
+        else if (c == '"')
+          b.append("&quot;");
+        else if (c == '&')
+          b.append("&amp;");
+        else if (c == '\t')
+          b.append("#x9;");
+        else if (c == '\n')
+          b.append("#xA;");
+        else if (c == '\r')
+          b.append("#xD;");
+        else
+          b.append(c);
+      } else {
+        if (c == '<')
+          b.append("&lt;");
+        else if (c == '>')
+          b.append("&gt;");
+        else if (c == '"')
+          b.append("&quot;");
+        else if (c == '&')
+          b.append("&amp;");
+        else
+          b.append(c);
+      }
+    }
+    return b.toString();
   }
 
   boolean isTwoCharUnicodeCodePoint(char c1, char c2) {
@@ -238,23 +296,6 @@ public class XhtmlComposer {
     dst.append("<?" + node.getContent() + "?>\r\n");
   }
 
-  private String escapeHtml(String s)  {
-    if (s == null || s.equals(""))
-      return null;
-    StringBuilder b = new StringBuilder();
-    for (char c : s.toCharArray())
-      if (c == '<')
-        b.append("&lt;");
-      else if (c == '>')
-        b.append("&gt;");
-      else if (c == '"')
-        b.append("&quot;");
-      else if (c == '&')
-        b.append("&amp;");
-      else
-        b.append(c);
-    return b.toString();
-  }
 
   private String attributes(XhtmlNode node) {
     StringBuilder s = new StringBuilder();
@@ -437,11 +478,7 @@ public class XhtmlComposer {
   }
 
   public String composeEx(XhtmlNode node) {
-    try {
-      return compose(node);
-    } catch (IOException e) {
-      throw new Error(e);
-    }
+    return compose(node);
   }
 
   public String compose(XhtmlNodeList nodes) throws IOException {
@@ -459,6 +496,15 @@ public class XhtmlComposer {
 
   public XhtmlComposer setAutoLinks(boolean autoLinks) {
     this.autoLinks = autoLinks;
+    return this;
+  }
+
+  public boolean isCanonical() {
+    return canonical;
+  }
+
+  public XhtmlComposer setCanonical(boolean canonical) {
+    this.canonical = canonical;
     return this;
   }
 

@@ -28,6 +28,7 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 
+@SuppressWarnings("checkstyle:systemout")
 public class ResourceDependencyPackageBuilder {
 
   private static final Set<String> LOADED_TYPES =

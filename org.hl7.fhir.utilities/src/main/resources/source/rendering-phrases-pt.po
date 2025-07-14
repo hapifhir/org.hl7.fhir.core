@@ -22,6 +22,18 @@ msgstr "Derivado de:"
 msgid "Type: {0}"
 msgstr "Tipo: {0}"
 
+# ACTOR_DERIVED_FROM
+#: ACTOR_DERIVED_FROM
+msgctxt "ACTOR_DERIVED_FROM"
+msgid "Derived From"
+msgstr ""
+
+# ACTOR_DERIVED_FROM_NONE
+#: ACTOR_DERIVED_FROM_NONE
+msgctxt "ACTOR_DERIVED_FROM_NONE"
+msgid "(none)"
+msgstr ""
+
 # ADD_BIND_ADD_BIND
 #: ADD_BIND_ADD_BIND
 msgid "Additional Bindings"
@@ -75,6 +87,7 @@ msgstr "O conjunto de valores é"
 #, fuzzy
 # ADD_BIND_MAX
 #: ADD_BIND_MAX
+#, fuzzy
 msgid "Max Binding"
 msgstr "Vínculo máximo"
 
@@ -116,7 +129,6 @@ msgstr "Obrigatório"
 # ADD_BIND_UI
 #: ADD_BIND_UI
 msgctxt "ADD_BIND_UI"
-#, fuzzy
 msgid "UI"
 msgstr "IU"
 
@@ -155,7 +167,11 @@ msgstr "Os validadores verificarão esta ligação (força = obrigatório)"
 msgid "This value set is a component of the base value set"
 msgstr "Este conjunto de valores é um componente do conjunto de valores de base"
 
-#, fuzzy
+# BUNDLE_DOCUMENT_DETAILS
+#: BUNDLE_DOCUMENT_DETAILS
+msgid "Document Details"
+msgstr ""
+
 # BUNDLE_ETAG
 #: BUNDLE_ETAG
 #, fuzzy
@@ -734,7 +750,7 @@ msgstr "OBTER versões anteriores de recursos (interação vread)"
 #: CAPABILTY_ALLOW_CAP
 #, fuzzy
 msgid "Any FHIR capability may be ''allowed'' by the system unless explicitly marked as ''SHALL NOT''. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case."
-msgstr "Qualquer capacidade FHIR pode ser \"permitida\" pelo sistema, exceto se for explicitamente assinalada como \"NÃO DEVE\". Alguns itens são marcados como MAY no Guia de Implementação para destacar a sua potencial relevância para o caso de utilização."
+msgstr "Qualquer capacidade FHIR pode ser \\\"permitida\\\" pelo sistema, exceto se for explicitamente assinalada como \\\"NÃO DEVE\\\". Alguns itens são marcados como MAY no Guia de Implementação para destacar a sua potencial relevância para o caso de utilização."
 
 # CAPABILTY_SHALL_SUPP
 #: CAPABILTY_SHALL_SUPP
@@ -952,6 +968,18 @@ msgstr "Relacionamento"
 msgid "Source Code"
 msgstr "Código fonte"
 
+# CONC_MAP_SOURCE_CARD
+#: CONC_MAP_SOURCE_CARD
+msgctxt "CONC_MAP_SOURCE_CARD"
+msgid "Card."
+msgstr ""
+
+# CONC_MAP_SOURCE_TYPE
+#: CONC_MAP_SOURCE_TYPE
+msgctxt "CONC_MAP_SOURCE_TYPE"
+msgid "Type"
+msgstr ""
+
 # CONC_MAP_SRC_DET
 #: CONC_MAP_SRC_DET
 #, fuzzy
@@ -971,11 +999,23 @@ msgstr "para"
 msgid "Target Code"
 msgstr "Código de destino"
 
+# CONC_MAP_TRGT_CARD
+#: CONC_MAP_TRGT_CARD
+msgctxt "CONC_MAP_TRGT_CARD"
+msgid "Card."
+msgstr ""
+
 # CONC_MAP_TRGT_DET
 #: CONC_MAP_TRGT_DET
 #, fuzzy
 msgid "Target Concept Details"
 msgstr "Detalhes do conceito-alvo"
+
+# CONC_MAP_TRGT_TYPE
+#: CONC_MAP_TRGT_TYPE
+msgctxt "CONC_MAP_TRGT_TYPE"
+msgid "Type"
+msgstr ""
 
 # DATA_REND_AFTERNOON
 #: DATA_REND_AFTERNOON
@@ -1538,8 +1578,8 @@ msgstr "Tipo de relatório não especificado"
 
 # DIAG_REP_UNSPECIFIED_SUBJECT
 #: DIAG_REP_UNSPECIFIED_SUBJECT
-msgctxt "DIAG_REP_UNSPECIFIED_SUBJECT"
 #, fuzzy
+msgctxt "DIAG_REP_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
 msgstr "Assunto não especificado"
 
@@ -2437,7 +2477,7 @@ msgstr "O URL oficial para esta definição de operação é:"
 #: OP_DEF_OUTPAR
 #, fuzzy
 msgid "Output parameters Profile:"
-msgstr "Parâmetros de saída Perfil:"
+msgstr "Perfil de Parâmetros de saída:"
 
 # OP_DEF_SCO
 #: OP_DEF_SCO
@@ -2676,13 +2716,13 @@ msgstr "Nascimento múltiplo:"
 #: PAT_MUL_BIRTH_HINT
 #, fuzzy
 msgid "Known multipleBirth status of Patient"
-msgstr "Múltiplos conhecidosEstado civil do doente"
+msgstr "Estado conhecido de nascimento múltiplo do doente"
 
 # PAT_NOK_CONTACT_HINT
 #: PAT_NOK_CONTACT_HINT
 #, fuzzy
 msgid "Patient contact"
-msgstr "Contacto com o doente"
+msgstr "Contacto do doente"
 
 # PAT_NOM_CONTACT
 #: PAT_NOM_CONTACT
@@ -2694,7 +2734,7 @@ msgstr "Contacto nomeado:"
 #: PAT_NO_DOB
 #, fuzzy
 msgid "DoB Unknown"
-msgstr "DoB Desconhecido"
+msgstr "DN Desconhecida"
 
 # PAT_NO_GENDER
 #: PAT_NO_GENDER
@@ -2756,7 +2796,7 @@ msgstr "Erro ao gerar uma narrativa para"
 #: PROF_DRIV_EXCP
 #, fuzzy
 msgid "Exception Generating Narrative: {0}"
-msgstr "Narrativa geradora de exceção: {0}"
+msgstr "Exceção ao gerar narrativa: {0}"
 
 # PROF_DRIV_FEXCP
 #: PROF_DRIV_FEXCP
@@ -3246,6 +3286,61 @@ msgstr "Assunto não especificado"
 msgid "Value Set:"
 msgstr "Conjunto de valores:"
 
+# R44B_DERIVES_FROM
+#: R44B_DERIVES_FROM
+msgid "derives from"
+msgstr ""
+
+# R44B_HAS_TARGET
+#: R44B_HAS_TARGET
+msgid "has target"
+msgstr ""
+
+# R44B_HAS_TYPE
+#: R44B_HAS_TYPE
+msgid "has type"
+msgstr ""
+
+# R44B_NOT_COMP
+#: R44B_NOT_COMP
+msgid "This is an {0} IG that is not compatible with {1}\\\" because"
+msgstr ""
+
+# R44B_NOT_IN
+#: R44B_NOT_IN
+msgid "The following resources are not in the {0} version"
+msgstr ""
+
+# R44B_ONLY_IN
+#: R44B_ONLY_IN
+msgid "The following resources are only in the {0} version"
+msgstr ""
+
+# R44B_PACKAGE_REF
+#: R44B_PACKAGE_REF
+msgid "Packages for both <a href=\\\"{0}\\\">R4 ({1}.r4)</a> and <a href=\\\"{2}\\\">R4B ({3}.r4b)</a> are available."
+msgstr ""
+
+# R44B_PROBLEMS
+#: R44B_PROBLEMS
+msgid "While checking for {0} compatibility, the following {1} problems were found"
+msgstr ""
+
+# R44B_REFERS_TO
+#: R44B_REFERS_TO
+msgid "<a href=\\\"{0}\\\">{1}}</a> refers to the canonical type at {2}"
+msgstr ""
+
+# R44B_USE_OK
+#: R44B_USE_OK
+msgid "This is an {0} IG. None of the features it uses are changed in {1}, so it can be used as is with {1}} systems."
+msgstr ""
+
+# R44B_WRONG_MSG
+#: R44B_WRONG_MSG
+msgid "Something went wrong with the cross-version analysis because"
+msgstr ""
+
 # REND_ADDED
 #: REND_ADDED
 #, fuzzy
@@ -3499,22 +3594,22 @@ msgstr ""
 # SDR_CONT_CH_DET_CS
 #: SDR_CONT_CH_DET_CS
 msgid "The list of codes defined by the code system has changed"
-msgstr ""
+msgstr "A lista de códigos definida pelo sistema de códigos foi alterada"
 
 # SDR_CONT_CH_DET_SD
 #: SDR_CONT_CH_DET_SD
 msgid "The data elements list has changed"
-msgstr ""
+msgstr "A lista de elementos de dados foi alterada"
 
 # SDR_CONT_CH_DET_VS
 #: SDR_CONT_CH_DET_VS
 msgid "The logical definition of the value set has changed"
-msgstr ""
+msgstr "A definição lógica do conjunto de valores foi alterada"
 
 # SDR_CONT_CH_NO
 #: SDR_CONT_CH_NO
 msgid "Unable to evaluate changes to content"
-msgstr ""
+msgstr "Impossível avaliar alterações ao conteúdo"
 
 # SDR_DEFN_CH_DET_CS
 #: SDR_DEFN_CH_DET_CS
@@ -3536,7 +3631,7 @@ msgstr ""
 # SDR_DEFN_CH_NO
 #: SDR_DEFN_CH_NO
 msgid "Unable to evaluate changes to definitions"
-msgstr ""
+msgstr "Impossível avaliar alterações às definições"
 
 # SDR_DERIVED
 #: SDR_DERIVED
@@ -3585,17 +3680,17 @@ msgstr ""
 # SDR_EXT_CTXT_PATHS
 #: SDR_EXT_CTXT_PATHS
 msgid "In addition, the extension can only be used when these FHIRPath expressions are true"
-msgstr ""
+msgstr "Ademais, a extensão só pode ser usada quando estas expressões FHIRPath forem verdadeiras"
 
 # SDR_EXT_DEPR
 #: SDR_EXT_DEPR
 msgid "This extension is deprecated and should no longer be used"
-msgstr ""
+msgstr "Esta extensão está obsoleta e não deve mais ser usada"
 
 # SDR_EXT_ELEM
 #: SDR_EXT_ELEM
 msgid "This extension may be used on the following element(s)"
-msgstr ""
+msgstr "Esta extensão pode ser usada nos seguintes elementos"
 
 # SDR_EXT_ELEM_ID
 #: SDR_EXT_ELEM_ID
@@ -3622,12 +3717,12 @@ msgstr ""
 # SDR_EXT_VER_PFX
 #: SDR_EXT_VER_PFX
 msgid "This extension is allowed for use with"
-msgstr ""
+msgstr "Esta extensão é permitida para uso com"
 
 # SDR_EXT_VER_SFX
 #: SDR_EXT_VER_SFX
 msgid "."
-msgstr ""
+msgstr "."
 
 # SDR_FIXED_VALUE
 #: SDR_FIXED_VALUE
@@ -3642,7 +3737,7 @@ msgstr ""
 
 # SDR_FROM_ELEM
 #: SDR_FROM_ELEM
-msgid "// from Element: <a href=\"{0}\">extension</a>"
+msgid "// from Element: <a href=\\\"{0}\\\">extension</a>"
 msgstr ""
 
 # SDR_GUIDANCE_HERE
@@ -3653,7 +3748,7 @@ msgstr ""
 # SDR_GUIDANCE_PFX
 #: SDR_GUIDANCE_PFX
 msgid "Guidance on how to interpret the contents of this table can be found"
-msgstr ""
+msgstr "Instruções sobre como interpretar o conteúdo desta tabela podem ser encontradas"
 
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
@@ -3675,12 +3770,12 @@ msgstr ""
 # SDR_INTRP_CH_NO_VS
 #: SDR_INTRP_CH_NO_VS
 msgid "Unable to evaluate changes to the expansion"
-msgstr ""
+msgstr "Impossível avaliar alterações à expansão"
 
 # SDR_LIMITED_ONE
 #: SDR_LIMITED_ONE
 msgid "This element is an array in the base standard, but the profile only allows one element"
-msgstr ""
+msgstr "Este elemento é uma lista na norma base, mas o perfil só permite um elemento"
 
 # SDR_META_CH_DET
 #: SDR_META_CH_DET
@@ -3731,7 +3826,7 @@ msgstr "Este {0} não é utilizado por nenhum perfil neste guia de implementaç�
 # SDR_OFF_URL
 #: SDR_OFF_URL
 msgid "The official URL for this profile is"
-msgstr ""
+msgstr "O URL oficial para este perfil é"
 
 # SDR_ONE_OF
 #: SDR_ONE_OF
@@ -3741,7 +3836,7 @@ msgstr ""
 # SDR_ONLY_ONE
 #: SDR_ONLY_ONE
 msgid "Only One!"
-msgstr ""
+msgstr "Apenas um!"
 
 # SDR_PATTERN_VALUE
 #: SDR_PATTERN_VALUE
@@ -3763,7 +3858,7 @@ msgstr "Refere a este {0}"
 # SDR_REQUIRED
 #: SDR_REQUIRED
 msgid "This element is required"
-msgstr ""
+msgstr "Este elemento é obrigatório"
 
 # SDR_SEARCH
 #: SDR_SEARCH
@@ -3779,12 +3874,12 @@ msgstr ""
 # SDR_SRC_FHIR
 #: SDR_SRC_FHIR
 msgid "the FHIR Standard"
-msgstr ""
+msgstr "a norma FHIR"
 
 # SDR_SRC_IG
 #: SDR_SRC_IG
 msgid "this IG"
-msgstr ""
+msgstr "este IG"
 
 # SDR_SRC_PACK
 #: SDR_SRC_PACK
@@ -3794,7 +3889,7 @@ msgstr ""
 # SDR_SUPP
 #: SDR_SUPP
 msgid "(this element must be supported)"
-msgstr ""
+msgstr "(este elemento deve ser suportado)"
 
 # SDR_UNK_EXT
 #: SDR_UNK_EXT
@@ -3816,16 +3911,17 @@ msgstr "Usa este {0}"
 # SDR_VER_BEF
 #: SDR_VER_BEF
 msgid "For versions until {0}"
-msgstr ""
+msgstr "Para versões até {0}"
 
 # SDR_VER_FOR
 #: SDR_VER_FOR
 msgid "For version {0}"
-msgstr ""
+msgstr "Para a versão {0}"
 
 # SDR_VER_FROM_PFX
 #: SDR_VER_FROM_PFX
-msgid "\"FHIR versions"
+msgctxt "SDR_VER_FROM_PFX"
+msgid "FHIR versions"
 msgstr ""
 
 # SDR_VER_FROM_SFX
@@ -3851,6 +3947,7 @@ msgstr ""
 
 # SDR_VER_RANGE_PFX
 #: SDR_VER_RANGE_PFX
+msgctxt "SDR_VER_RANGE_PFX"
 msgid "FHIR versions"
 msgstr ""
 
@@ -4574,7 +4671,7 @@ msgstr "Atual"
 #: STRUC_DEF_CURR_RULE
 #, fuzzy
 msgid "New records are required to use this value set, but legacy records may use other codes. The definition of ''new record'' is difficult, since systems often create new records based on pre-existing data. Usually ''current'' bindings are mandated by an external authority that makes clear rules around this"
-msgstr "Os novos registos têm de utilizar este conjunto de valores, mas os registos antigos podem utilizar outros códigos. A definição de \"novo registo\" é difícil, uma vez que os sistemas criam frequentemente novos registos com base em dados pré-existentes. Normalmente, as ligações \"actuais\" são impostas por uma autoridade externa que estabelece regras claras sobre esta matéria"
+msgstr "Os novos registos têm de utilizar este conjunto de valores, mas os registos antigos podem utilizar outros códigos. A definição de \\\"novo registo\\\" é difícil, uma vez que os sistemas criam frequentemente novos registos com base em dados pré-existentes. Normalmente, as ligações \\\"actuais\\\" são impostas por uma autoridade externa que estabelece regras claras sobre esta matéria"
 
 # STRUC_DEF_DATE
 #: STRUC_DEF_DATE
@@ -4929,7 +5026,7 @@ msgstr "A matriz JSON para esta propriedade não está presente quando não exis
 #: STRUC_DEF_JSON_NULL
 #, fuzzy
 msgid "JSON: This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
-msgstr "JSON: Este objeto pode ser representado como nulo na estrutura JSON (que conta como \"presente\" para efeitos de cardinalidade)"
+msgstr "JSON: Este objeto pode ser representado como nulo na estrutura JSON (que conta como \\\"presente\\\" para efeitos de cardinalidade)"
 
 # STRUC_DEF_JSON_PRESENT
 #: STRUC_DEF_JSON_PRESENT
@@ -5111,7 +5208,7 @@ msgstr "Não há Resumo, pois este perfil não tem diferencial"
 #: STRUC_DEF_NULL_JSON
 #, fuzzy
 msgid "This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
-msgstr "Este objeto pode ser representado como nulo na estrutura JSON (que conta como \"presente\" para efeitos de cardinalidade)"
+msgstr "Este objeto pode ser representado como nulo na estrutura JSON (que conta como \\\"presente\\\" para efeitos de cardinalidade)"
 
 # STRUC_DEF_OBLIG
 #: STRUC_DEF_OBLIG
@@ -5322,7 +5419,7 @@ msgstr "Requisitos"
 #: STRUC_DEF_REQ_BIND
 #, fuzzy
 msgid "A required binding for additional codes, for us when the binding strength is ''extensible'' or ''preferred''"
-msgstr "Uma ligação necessária para códigos adicionais, por exemplo, quando a força da ligação é \"extensível\" ou \"preferida"
+msgstr "Uma ligação necessária para códigos adicionais, por exemplo, quando a força da ligação é \\\"extensível\\\" ou \\\"preferida"
 
 # STRUC_DEF_REQ_PATT
 #: STRUC_DEF_REQ_PATT

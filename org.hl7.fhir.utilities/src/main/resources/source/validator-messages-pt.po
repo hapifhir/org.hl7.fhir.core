@@ -330,6 +330,290 @@ msgstr "Os pacotes SearchSet devem ter modos de pesquisa nas entradas"
 msgid "No types could be determined from the search string, so the types can''t be checked"
 msgstr "Não foi possível determinar nenhum tipo a partir da cadeia de pesquisa, pelo que os tipos não podem ser verificados"
 
+# BUNDLE_SIGNATURE_CANON_DIFF
+#: BUNDLE_SIGNATURE_CANON_DIFF
+msgid "The canonicalization in the digital signature is {0} which doesn't match the value {1} found in the targetFormat"
+msgstr ""
+
+# BUNDLE_SIGNATURE_CANON_ERROR
+#: BUNDLE_SIGNATURE_CANON_ERROR
+msgid "Error parsing the targetFormat ''{0}'': {1}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_CHECKED_DATA_B64
+#: BUNDLE_SIGNATURE_CHECKED_DATA_B64
+msgid "The signature data is not valid base64 content, but it looks like native application/jose, so it will be checked anyway"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_INVALID
+#: BUNDLE_SIGNATURE_DIGSIG_INVALID
+msgid "The digital signature is invalid XML: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_NO_CERT
+#: BUNDLE_SIGNATURE_DIGSIG_NO_CERT
+msgid "Didn''t find a provided X509 certificate in the digital signature, so can''t verify the signature"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_NO_REFERENCES
+#: BUNDLE_SIGNATURE_DIGSIG_NO_REFERENCES
+msgid "No references found in the digital signature SignedInfo"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_NO_SIG_TIME
+#: BUNDLE_SIGNATURE_DIGSIG_NO_SIG_TIME
+msgid "No SigningTime element found in the digital signature"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_NO_SV
+#: BUNDLE_SIGNATURE_DIGSIG_NO_SV
+msgid "Didn''t find a provided signedValue in the digital signature, so can''t verify the signature"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_REFERENCES_TOO_MANY
+#: BUNDLE_SIGNATURE_DIGSIG_REFERENCES_TOO_MANY
+msgid "Too many references found in the digital signature SignedInfo - not understood"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_REFERENCE_NOT_UNDERSTOOD
+#: BUNDLE_SIGNATURE_DIGSIG_REFERENCE_NOT_UNDERSTOOD
+msgid "The reference in the SignedInfo in the digital signature is ''{0}'' which is not understood (or correct?)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_REFERENCE_TYPE_NOT_UNDERSTOOD
+#: BUNDLE_SIGNATURE_DIGSIG_REFERENCE_TYPE_NOT_UNDERSTOOD
+msgid "The second reference in the SignedInfo in the digital signature has type ''{0}'' which is not understood (or correct?)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_SIGNED_INVALID
+#: BUNDLE_SIGNATURE_DIGSIG_SIGNED_INVALID
+msgid "The digital signature is not valid XML: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_SIGNED_INVALID_XML
+#: BUNDLE_SIGNATURE_DIGSIG_SIGNED_INVALID_XML
+msgid "The signed bytes provided could not be read - invalid XML Structure ({0})"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_SIGNED_MISMATCH
+#: BUNDLE_SIGNATURE_DIGSIG_SIGNED_MISMATCH
+msgctxt "BUNDLE_SIGNATURE_DIGSIG_SIGNED_MISMATCH"
+msgid "The signature cannot be valid because the content to sign ({0} bytes} is not the same as the signed content ({1} bytes)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_SIGNED_SAME
+#: BUNDLE_SIGNATURE_DIGSIG_SIGNED_SAME
+msgid "The signed bytes are identical, so the signature failure is not because the content changed. Check Canonicalization carefully (including whitespace)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_SIGNED_XML_MATCHES
+#: BUNDLE_SIGNATURE_DIGSIG_SIGNED_XML_MATCHES
+msgid "The actual XML structures of payload and canonicalized form do match, so the issue is in the canonicalization"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_SIGNED_XML_NO_MATCH
+#: BUNDLE_SIGNATURE_DIGSIG_SIGNED_XML_NO_MATCH
+msgid "The actual XML structures of payload and canonicalized form do not match: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_SIG_ERROR
+#: BUNDLE_SIGNATURE_DIGSIG_SIG_ERROR
+msgid "Error verifying the signature: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_WHEN_MISMATCH
+#: BUNDLE_SIGNATURE_DIGSIG_WHEN_MISMATCH
+msgid "The time in the digital signature {0} is not the same as the stated time {1}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_DIGSIG_X509_ERROR
+#: BUNDLE_SIGNATURE_DIGSIG_X509_ERROR
+msgctxt "BUNDLE_SIGNATURE_DIGSIG_X509_ERROR"
+msgid "Unable to parse X509 Certificate: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_HEADER_CERT_NOT_FOUND
+#: BUNDLE_SIGNATURE_HEADER_CERT_NOT_FOUND
+msgid "Didn''t find a matching certificate for the ''kid'' {0} in the header, so can''t verify the signature"
+msgstr ""
+
+# BUNDLE_SIGNATURE_HEADER_CERT_NOT_FOUND_ERROR
+#: BUNDLE_SIGNATURE_HEADER_CERT_NOT_FOUND_ERROR
+msgid "Error scanning for certificate to match kid {0}: {1}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_HEADER_NO_KID_OR_CERT
+#: BUNDLE_SIGNATURE_HEADER_NO_KID_OR_CERT
+msgid "Didn''t find a provided certificate or a ''kid'' in the header, so can''t verify the signature"
+msgstr ""
+
+# BUNDLE_SIGNATURE_HEADER_NO_SIG_TIME
+#: BUNDLE_SIGNATURE_HEADER_NO_SIG_TIME
+msgid "The signature does not have a signing time (sigT in the header)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_HEADER_PARSE
+#: BUNDLE_SIGNATURE_HEADER_PARSE
+msgid "Error parsing the digital signature header: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH
+#: BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH
+msgid "The time in the signature {0} is not the same as the stated time {1}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_HEADER_X509_ERROR
+#: BUNDLE_SIGNATURE_HEADER_X509_ERROR
+msgctxt "BUNDLE_SIGNATURE_HEADER_X509_ERROR"
+msgid "Unable to parse X509 Certificate: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_NOT_CHECKED_DATA
+#: BUNDLE_SIGNATURE_NOT_CHECKED_DATA
+msgid "There is no actual signature data, so the {0} signature cannot be checked"
+msgstr ""
+
+# BUNDLE_SIGNATURE_NOT_CHECKED_DATA_B64
+#: BUNDLE_SIGNATURE_NOT_CHECKED_DATA_B64
+msgid "The signature data is not valid base64 content, so the signature cannot be checked"
+msgstr ""
+
+# BUNDLE_SIGNATURE_NOT_CHECKED_KIND
+#: BUNDLE_SIGNATURE_NOT_CHECKED_KIND
+msgid "The signature format ''{0}'' is not checked (known formats: application/jose and application/pkcs7-signature)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_NO_SIG_FORMAT
+#: BUNDLE_SIGNATURE_NO_SIG_FORMAT
+msgid "There is no value for sigFormat. In the absence of a stated signature format, the signature cannot be interpreted reliably (or validated)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_BASE64_DIFF
+#: BUNDLE_SIGNATURE_PAYLOAD_BASE64_DIFF
+msgid "The signed bytes are identical, but the base64 representations differ"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_CANON_DEFAULT
+#: BUNDLE_SIGNATURE_PAYLOAD_CANON_DEFAULT
+msgid "No canonicalization found, so using {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_INVALID
+#: BUNDLE_SIGNATURE_PAYLOAD_INVALID
+msgid "The payload provided could not be read - invalid Base64 content ({0})"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_INVALID_JSON
+#: BUNDLE_SIGNATURE_PAYLOAD_INVALID_JSON
+msgid "The payload provided could not be read - invalid JSON Structure ({0})"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_JSON_MATCHES
+#: BUNDLE_SIGNATURE_PAYLOAD_JSON_MATCHES
+msgid "The actual JSON structures of payload and canonicalized form do match, so the issue is in the canonicalization"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_JSON_NO_MATCH
+#: BUNDLE_SIGNATURE_PAYLOAD_JSON_NO_MATCH
+msgid "The actual JSON structures of payload and canonicalized form do not match: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_MISMATCH
+#: BUNDLE_SIGNATURE_PAYLOAD_MISMATCH
+msgctxt "BUNDLE_SIGNATURE_PAYLOAD_MISMATCH"
+msgid "The signature cannot be valid because the content to sign ({0} bytes} is not the same as the signed content ({1} bytes)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_PAYLOAD_PRESENT
+#: BUNDLE_SIGNATURE_PAYLOAD_PRESENT
+msgid "The signature has a payload, but the signature should be a detached signature with no payload"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIGNED_AT
+#: BUNDLE_SIGNATURE_SIGNED_AT
+msgid "The content claims to have been signed at {0}, but this has not been verified"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIGNED_AT_VERIFIED
+#: BUNDLE_SIGNATURE_SIGNED_AT_VERIFIED
+msgid "The content was signed at {0} (and this has been verified by the signature)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIGNED_BY
+#: BUNDLE_SIGNATURE_SIGNED_BY
+msgid "The content claims to have been signed by {0}, but this has not been verified"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIGNED_BY_VERIFIED
+#: BUNDLE_SIGNATURE_SIGNED_BY_VERIFIED
+msgid "The content was signed by {0} (and this has been verified by the signature)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_DIGEST_MISMATCH
+#: BUNDLE_SIGNATURE_SIG_DIGEST_MISMATCH
+msgid "The digest value for the signed content doesn''t match the provided content ({0} vs {1}). The signature is not valid"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_DIGEST_MISMATCH_XADES
+#: BUNDLE_SIGNATURE_SIG_DIGEST_MISMATCH_XADES
+msgid "The digest value for the XaDeS signed content doesn''t match the provided content ({0} vs {1}). The signature is not valid. Check XML canonicalization carefully, particularly with regard to whitespace and namespaces"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_ERROR
+#: BUNDLE_SIGNATURE_SIG_ERROR
+msgid "Error verifying the signature against the certificate: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_FAIL_CERT
+#: BUNDLE_SIGNATURE_SIG_FAIL_CERT
+msgid "The signature did not verify against the provided certificate"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_FAIL_CERT_ID
+#: BUNDLE_SIGNATURE_SIG_FAIL_CERT_ID
+msgid "The signature did not verify against the provided certificate (key id = {0})"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_FAIL_KID
+#: BUNDLE_SIGNATURE_SIG_FAIL_KID
+msgid "The signature did not verify against the certificate using the key with id {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_FORMAT_JOSE
+#: BUNDLE_SIGNATURE_SIG_FORMAT_JOSE
+msgid "Signature looks like application/jose, so validating accordingly"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_INVALID
+#: BUNDLE_SIGNATURE_SIG_INVALID
+msgid "The actual signature is not valid base64: {0}"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_OK
+#: BUNDLE_SIGNATURE_SIG_OK
+msgid "The signature verified OK"
+msgstr ""
+
+# BUNDLE_SIGNATURE_WHO_MISMATCH
+#: BUNDLE_SIGNATURE_WHO_MISMATCH
+msgid "The  Signature.who.identifier ''{0}'' does not match a subject value from the certificate (one of {1})"
+msgstr ""
+
+# BUNDLE_SIGNATURE_WHO_NOT_IN_CERT
+#: BUNDLE_SIGNATURE_WHO_NOT_IN_CERT
+msgid "The Signature.who value is not found in the digital signature"
+msgstr ""
+
+# BUNDLE_SIGNATURE_WHO_NO_INFO
+#: BUNDLE_SIGNATURE_WHO_NO_INFO
+msgid "Neither the digital signature nor Signature.who are provided to identify the signer"
+msgstr ""
+
+# BUNDLE_SIGNATURE_WHO_RECOMMENDED
+#: BUNDLE_SIGNATURE_WHO_RECOMMENDED
+msgid "A certificate subject identifier should also be found in Signature.who.identifier (one of {0})"
+msgstr ""
+
 # Bad_file_path_error
 #: Bad_file_path_error
 #, fuzzy
@@ -582,13 +866,13 @@ msgstr "Os sistemas de códigos NÃO DEVEM ter um valor declarado para o element
 #: CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_MISSING
 #, fuzzy
 msgid "CodeSystem Supplements with a content value of ''supplement'' SHALL have a supplements element that specifies which code system is being supplemented"
-msgstr "Os suplementos ao sistema de códigos com um valor de conteúdo \"suplemento\" DEVERÃO ter um elemento \"suplementos\" que especifique qual o sistema de códigos que está a ser suplementado"
+msgstr "Os suplementos ao sistema de códigos com um valor de conteúdo \\\"suplemento\\\" DEVERÃO ter um elemento \\\"suplementos\\\" que especifique qual o sistema de códigos que está a ser suplementado"
 
 # CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_WRONG
 #: CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_WRONG
 #, fuzzy
 msgid "CodeSystem Supplements SHALL have a content value of ''supplement''"
-msgstr "Os suplementos do CodeSystem DEVERÃO ter um valor de conteúdo \"suplemento"
+msgstr "Os suplementos do CodeSystem DEVERÃO ter um valor de conteúdo \\\"suplemento"
 
 # CODESYSTEM_CS_NONHL7_MISSING_ELEMENT
 #: CODESYSTEM_CS_NONHL7_MISSING_ELEMENT
@@ -606,19 +890,19 @@ msgstr "CodeSystem {0} é um suplemento, pelo que não pode ser utilizado como u
 #: CODESYSTEM_CS_NO_VS_NOTCOMPLETE
 #, fuzzy
 msgid "Review the All Codes Value Set - incomplete CodeSystems generally should not have an all codes value set specified"
-msgstr "Rever o conjunto de valores \"Todos os códigos\" - os CodeSystems incompletos geralmente não devem ter um conjunto de valores \"Todos os códigos\" especificado"
+msgstr "Rever o conjunto de valores \\\"Todos os códigos\\\" - os CodeSystems incompletos geralmente não devem ter um conjunto de valores \\\"Todos os códigos\\\" especificado"
 
 # CODESYSTEM_CS_NO_VS_SUPPLEMENT1
 #: CODESYSTEM_CS_NO_VS_SUPPLEMENT1
 #, fuzzy
 msgid "CodeSystems supplements should not have an all codes value set specified, and if they do, it must match the base code system"
-msgstr "Os suplementos CodeSystems não devem ter um conjunto de valores \"todos os códigos\" especificado e, se o tiverem, este deve corresponder ao sistema de códigos de base"
+msgstr "Os suplementos CodeSystems não devem ter um conjunto de valores \\\"todos os códigos\\\" especificado e, se o tiverem, este deve corresponder ao sistema de códigos de base"
 
 # CODESYSTEM_CS_NO_VS_SUPPLEMENT2
 #: CODESYSTEM_CS_NO_VS_SUPPLEMENT2
 #, fuzzy
 msgid "CodeSystems supplements should not have an all codes value set specified, and if they do, it must match the base code system, and this one does not (''{0}'')"
-msgstr "Os suplementos CodeSystems não devem ter um conjunto de valores \"todos os códigos\" especificado e, se o tiverem, deve corresponder ao sistema de códigos de base, o que não acontece neste caso (''{0}'')"
+msgstr "Os suplementos CodeSystems não devem ter um conjunto de valores \\\"todos os códigos\\\" especificado e, se o tiverem, deve corresponder ao sistema de códigos de base, o que não acontece neste caso (''{0}'')"
 
 # CODESYSTEM_CS_SUPP_CANT_CHECK
 #: CODESYSTEM_CS_SUPP_CANT_CHECK
@@ -654,13 +938,13 @@ msgstr "O código fornecido ({2}) não se encontra na expansão do conjunto de v
 #: CODESYSTEM_CS_VS_EXP_MISMATCH
 #, fuzzy
 msgid "CodeSystem {0} has an ''all system'' value set of {1}, but it is an expansion with the wrong number of concepts (found {2}, expected {3})"
-msgstr "O CodeSystem {0} tem um conjunto de valores de \"todo o sistema\" {1}, mas é uma expansão com o número errado de conceitos (encontrado {2}, esperado {3})"
+msgstr "O CodeSystem {0} tem um conjunto de valores de \\\"todo o sistema\\\" {1}, mas é uma expansão com o número errado de conceitos (encontrado {2}, esperado {3})"
 
 # CODESYSTEM_DESIGNATION_DISP_CLASH_LANG
 #: CODESYSTEM_DESIGNATION_DISP_CLASH_LANG
 #, fuzzy
 msgid "The designation ''{0}'' has no use and is in the same language (''{2}''), so is not differentiated from the base display (''{1}'')"
-msgstr "A designação \"{0}\" não tem qualquer utilidade e está na mesma língua (\"{2}\"), pelo que não se diferencia da visualização de base (\"{1}\")"
+msgstr "A designação \\\"{0}\\\" não tem qualquer utilidade e está na mesma língua (\\\"{2}\\\"), pelo que não se diferencia da visualização de base (\\\"{1}\\\")"
 
 # CODESYSTEM_DESIGNATION_DISP_CLASH_NO_LANG
 #: CODESYSTEM_DESIGNATION_DISP_CLASH_NO_LANG
@@ -720,7 +1004,7 @@ msgstr "Tipo incorreto ''{2}'': O código ''{0}'' identifica uma propriedade que
 #: CODESYSTEM_PROPERTY_CODE_WARNING
 #, fuzzy
 msgid "If the type is ''code'', then the valueSet property should be provided to clarify what kind of code will be found in the element"
-msgstr "Se o tipo for \"código\", então a propriedade valueSet deve ser fornecida para esclarecer que tipo de código será encontrado no elemento"
+msgstr "Se o tipo for \\\"código\\\", então a propriedade valueSet deve ser fornecida para esclarecer que tipo de código será encontrado no elemento"
 
 # CODESYSTEM_PROPERTY_DUPLICATE_CODE
 #: CODESYSTEM_PROPERTY_DUPLICATE_CODE
@@ -840,7 +1124,7 @@ msgstr "Os sistemas de códigos publicados pelo HL7 DEVERÃO estar em conformida
 #: CODESYSTEM_SUPP_NO_DISPLAY
 #, fuzzy
 msgid "This display (''{0}'') differs from that defined by the base code system (''{1}''). Both displays claim to be the ''primary designation'' for the same language (''{2}''), and the correct interpretation of this is undefined"
-msgstr "Esta indicação (''{0}'') é diferente da definida pelo sistema de códigos de base (''{1}''). Ambas as visualizações afirmam ser a \"designação primária\" para a mesma língua (\"{2}\"), e a interpretação correta desta afirmação é indefinida"
+msgstr "Esta indicação (''{0}'') é diferente da definida pelo sistema de códigos de base (''{1}''). Ambas as visualizações afirmam ser a \\\"designação primária\\\" para a mesma língua (\\\"{2}\\\"), e a interpretação correta desta afirmação é indefinida"
 
 # CODESYSTEM_THO_CHECK
 #: CODESYSTEM_THO_CHECK
@@ -1086,19 +1370,19 @@ msgstr "Referências de instantâneos circulares detectadas; não é possível g
 #: CodeSystem_CS_VS_IncludeDetails
 #, fuzzy
 msgid "CodeSystem {0} has an ''all system'' value set of {1}, but the include has extra details"
-msgstr "O CodeSystem {0} tem um conjunto de valores \"todos os sistemas\" de {1}, mas o include tem pormenores adicionais"
+msgstr "O CodeSystem {0} tem um conjunto de valores \\\"todos os sistemas\\\" de {1}, mas o include tem pormenores adicionais"
 
 # CodeSystem_CS_VS_Invalid
 #: CodeSystem_CS_VS_Invalid
 #, fuzzy
 msgid "CodeSystem {0} has an ''all system'' value set of {1}, but the value set doesn''t have a single include"
-msgstr "CodeSystem {0} tem um conjunto de valores \"todos os sistemas\" de {1}, mas o conjunto de valores não tem um único include"
+msgstr "CodeSystem {0} tem um conjunto de valores \\\"todos os sistemas\\\" de {1}, mas o conjunto de valores não tem um único include"
 
 # CodeSystem_CS_VS_WrongSystem
 #: CodeSystem_CS_VS_WrongSystem
 #, fuzzy
 msgid "CodeSystem {0} has an ''all system'' value set of {1}, but the value set doesn''t have a matching system ({2})"
-msgstr "O CodeSystem {0} tem um conjunto de valores \"todos os sistemas\" de {1}, mas o conjunto de valores não tem um sistema correspondente ({2})"
+msgstr "O CodeSystem {0} tem um conjunto de valores \\\"todos os sistemas\\\" de {1}, mas o conjunto de valores não tem um sistema correspondente ({2})"
 
 # Code_found_in_expansion_however_
 #: Code_found_in_expansion_however_
@@ -2055,7 +2339,7 @@ msgstr "Erro ao avaliar a expressão FHIRPath: O tipo de parâmetro {2} não é 
 
 # FILTER_NOT_UNDERSTOOD
 #: FILTER_NOT_UNDERSTOOD
-msgid "The filter \"{0} {1} {2}\" from the value set {3} was not understood in the context of {4}"
+msgid "The filter \\\"{0} {1} {2}\\\" from the value set {3} was not understood in the context of {4}"
 msgstr ""
 
 # Fixed_Type_Checks_DT_Address_Line
@@ -2116,7 +2400,7 @@ msgstr "Termos clínicos SNOMED&reg; (SNOMED CT&reg;)"
 #: HTA_SCT_MESSAGE
 #, fuzzy
 msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\"https://www.snomed.org/get-snomed\\">https://www.snomed.org/get-snomed</a> or <a href=\\"mailto:info@snomed.org\\">info@snomed.org</a>."
-msgstr "!!Este material contém conteúdo que é copyright da SNOMED International. Os implementadores destas especificações devem ter a licença apropriada de afiliado da SNOMED CT - para mais informações contacte <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> ou <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
+msgstr "Este material contém conteúdo que é copyright da SNOMED International. Os implementadores destas especificações devem ter a licença apropriada de afiliado da SNOMED CT - para mais informações contacte <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> ou <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
 
 # IG_DEPENDENCY_CAN_VERSION_ALONE
 #: IG_DEPENDENCY_CAN_VERSION_ALONE
@@ -2602,13 +2886,13 @@ msgstr "O grupo deve ter um código ou linkId que corresponda à definição da 
 #: MEASURE_MR_GRP_POP_NO_COUNT
 #, fuzzy
 msgid "Count should be present for reports where type is not ''subject-list''"
-msgstr "A contagem deve estar presente nos relatórios cujo tipo não seja \"lista de assuntos"
+msgstr "A contagem deve estar presente nos relatórios cujo tipo não seja \\\"lista de assuntos"
 
 # MEASURE_MR_GRP_POP_NO_SUBJECTS
 #: MEASURE_MR_GRP_POP_NO_SUBJECTS
 #, fuzzy
 msgid "Reports where type is not ''subject-list'' don''t have subjects listed"
-msgstr "Os relatórios em que o tipo não é \"lista de assuntos\" não têm assuntos listados"
+msgstr "Os relatórios em que o tipo não é \\\"lista de assuntos\\\" não têm assuntos listados"
 
 # MEASURE_MR_GRP_POP_UNK_CODE
 #: MEASURE_MR_GRP_POP_UNK_CODE
@@ -2698,13 +2982,13 @@ msgstr "Este valor é fixado pela Medida em ''{0}''"
 #: MEASURE_MR_SCORE_PROHIBITED_MS
 #, fuzzy
 msgid "No measureScore when the scoring of the message is ''cohort''"
-msgstr "Não há measureScore quando a pontuação da mensagem é \"coorte"
+msgstr "Não há measureScore quando a pontuação da mensagem é \\\"coorte"
 
 # MEASURE_MR_SCORE_PROHIBITED_RT
 #: MEASURE_MR_SCORE_PROHIBITED_RT
 #, fuzzy
 msgid "No measureScore when the type of the report is ''data-collection''"
-msgstr "Não há measureScore quando o tipo de relatório é \"recolha de dados"
+msgstr "Não há measureScore quando o tipo de relatório é \\\"recolha de dados"
 
 # MEASURE_MR_SCORE_REQUIRED
 #: MEASURE_MR_SCORE_REQUIRED
@@ -2994,7 +3278,7 @@ msgstr "Duplicação da etiqueta de segurança {0}"
 #: MustSupport_VAL_MustSupport
 #, fuzzy
 msgid "The element {0} is not marked as ''mustSupport'' in the profile {1}. Consider not using the element, or marking the element as must-Support in the profile"
-msgstr "O elemento {0} não está marcado como ''mustSupport'' no perfil {1}. Considerar não utilizar o elemento ou marcar o elemento como \"must-Support\" no perfil"
+msgstr "O elemento {0} não está marcado como ''mustSupport'' no perfil {1}. Considerar não utilizar o elemento ou marcar o elemento como \\\"must-Support\\\" no perfil"
 
 # NDJSON_EMPTY_LINE_WARNING
 #: NDJSON_EMPTY_LINE_WARNING
@@ -4355,7 +4639,7 @@ msgstr "Rever o tipo de extensão para {1}: as extensões não devem ter um cont
 #: SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH
 #, fuzzy
 msgid "Review the extension type for {1}: the context of {0} appears to be a simple element, so the context type should be ''element'' not ''fhirpath''"
-msgstr "Rever o tipo de extensão para {1}: o contexto de {0} parece ser um elemento simples, pelo que o tipo de contexto deve ser \"element\" e não \"fhirpath"
+msgstr "Rever o tipo de extensão para {1}: o contexto de {0} parece ser um elemento simples, pelo que o tipo de contexto deve ser \\\"element\\\" e não \\\"fhirpath"
 
 # SD_DERIVATION_KIND_MISMATCH
 #: SD_DERIVATION_KIND_MISMATCH
@@ -4415,7 +4699,7 @@ msgstr "A referência valueSet {1} no elemento {0} não pôde ser resolvida"
 #: SD_ED_EXPERIMENTAL_BINDING
 #, fuzzy
 msgid "The definition for the element ''{0}'' binds to the value set ''{1}'' which is experimental, but this structure is not labeled as experimental"
-msgstr "A definição do elemento \"{0}\" está ligada ao conjunto de valores \"{1}\", que é experimental, mas esta estrutura não está identificada como experimental"
+msgstr "A definição do elemento \\\"{0}\\\" está ligada ao conjunto de valores \\\"{1}\\\", que é experimental, mas esta estrutura não está identificada como experimental"
 
 # SD_ED_SHOULD_BIND
 #: SD_ED_SHOULD_BIND
@@ -4482,7 +4766,7 @@ msgstr[1] ""
 #: SD_ELEMENT_FIXED_WRONG_TYPE
 #, fuzzy
 msgid "The base element has a fixed type of ''{0}'', so this element must have a fixed value of the same type, not ''{1}''"
-msgstr "O elemento base tem um tipo fixo de \"{0}\", pelo que este elemento deve ter um valor fixo do mesmo tipo, e não \"{1}"
+msgstr "O elemento base tem um tipo fixo de \\\"{0}\\\", pelo que este elemento deve ter um valor fixo do mesmo tipo, e não \\\"{1}"
 
 # SD_ELEMENT_NOT_IN_CONSTRAINT
 #: SD_ELEMENT_NOT_IN_CONSTRAINT
@@ -4560,7 +4844,7 @@ msgstr "O elemento {0} tem tipos/perfis/destinos que estão marcados como must-s
 #: SD_NESTED_MUST_SUPPORT_SNAPSHOT
 #, fuzzy
 msgid "The element {0} has types/profiles/targets that are marked as must support, but the element itself is not marked as must-support"
-msgstr "O elemento {0} tem tipos/perfis/destinos que estão marcados como \"must support\", mas o elemento em si não está marcado como \"must support"
+msgstr "O elemento {0} tem tipos/perfis/destinos que estão marcados como \\\"must support\\\", mas o elemento em si não está marcado como \\\"must support"
 
 # SD_NO_CONTEXT_INV_WHEN_NOT_EXTENSION
 #: SD_NO_CONTEXT_INV_WHEN_NOT_EXTENSION
@@ -4632,7 +4916,7 @@ msgstr "O elemento ''{0}'' tem uma propriedade ''{1}'' que não é permitida nos
 #: SD_OBGLIGATION_PROFILE_ILLEGAL_BINDING
 #, fuzzy
 msgid "The element ''{0}'' has a binding when the base element does not, and this is not allowed in Obligation profiles"
-msgstr "O elemento \"{0}\" tem uma ligação quando o elemento de base não tem, e isto não é permitido nos perfis de Obrigação"
+msgstr "O elemento \\\"{0}\\\" tem uma ligação quando o elemento de base não tem, e isto não é permitido nos perfis de Obrigação"
 
 # SD_OBGLIGATION_PROFILE_ILLEGAL_ON_BINDING
 #: SD_OBGLIGATION_PROFILE_ILLEGAL_ON_BINDING
@@ -4662,7 +4946,7 @@ msgstr "O valor do caminho do elemento ''{0}'' de ''{1}'' não corresponde ao ca
 #: SD_OBGLIGATION_PROFILE_UKNOWN
 #, fuzzy
 msgid "The profile is marked as an obligation profile, but it''s correctness cannot be checked since the base profile ''{0}'' is not known"
-msgstr "O perfil é marcado como um perfil obrigatório, mas a sua correção não pode ser verificada porque o perfil de base \"{0}\" não é conhecido"
+msgstr "O perfil é marcado como um perfil obrigatório, mas a sua correção não pode ser verificada porque o perfil de base \\\"{0}\\\" não é conhecido"
 
 # SD_OBGLIGATION_PROFILE_UNMATCHED
 #: SD_OBGLIGATION_PROFILE_UNMATCHED
@@ -4848,7 +5132,7 @@ msgstr "A expressão ''{2}'' não é compatível com a expressão ''{1}'' no par
 #: SEARCHPARAMETER_MISSING_COMPONENTS
 #, fuzzy
 msgid "When the SearchParameter has a type of ''composite'', then the SearchParameter must define two or more components"
-msgstr "Quando o SearchParameter tem um tipo de \"composto\", então o SearchParameter deve definir dois ou mais componentes"
+msgstr "Quando o SearchParameter tem um tipo de \\\"composto\\\", então o SearchParameter deve definir dois ou mais componentes"
 
 # SEARCHPARAMETER_NOTFOUND
 #: SEARCHPARAMETER_NOTFOUND
@@ -4962,7 +5246,7 @@ msgstr "Não foram encontrados mapas que correspondam a {0} - a validação pode
 #: SM_LIST_RULE_ID_ONLY_WHEN_SHARE
 #, fuzzy
 msgid "A ruleId should only be provided when the rule mode is ''share''"
-msgstr "Um ruleId só deve ser fornecido quando o modo de regra é \"partilhar"
+msgstr "Um ruleId só deve ser fornecido quando o modo de regra é \\\"partilhar"
 
 # SM_MATCHING_RULEGROUP_NOT_FOUND
 #: SM_MATCHING_RULEGROUP_NOT_FOUND
@@ -5440,6 +5724,16 @@ msgstr "Os URLs canónicos devem ser URLs absolutos se não forem referências a
 msgid "Canonical URLs in contained resources must be absolute URLs if present ({0})"
 msgstr "Os URLs canónicos nos recursos contidos devem ser URLs absolutos se estiverem presentes ({0})"
 
+# TYPE_SPECIFIC_CHECKS_DT_ATT_B64_DECODE_FAIL
+#: TYPE_SPECIFIC_CHECKS_DT_ATT_B64_DECODE_FAIL
+msgid "The base64 content in the {0} element is not valid base64: {1}"
+msgstr ""
+
+# TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH
+#: TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH
+msgid "The hash of the data did not match the data"
+msgstr ""
+
 # TYPE_SPECIFIC_CHECKS_DT_ATT_NO_CONTENT
 #: TYPE_SPECIFIC_CHECKS_DT_ATT_NO_CONTENT
 #, fuzzy
@@ -5745,6 +6039,16 @@ msgstr "Os códigos UCUM que contêm anotações legíveis por humanos como {0} 
 #, fuzzy
 msgid "Example URLs are not allowed in this context ({0})"
 msgstr "Os URLs de exemplo não são permitidos neste contexto ({0})"
+
+# TYPE_SPECIFIC_CHECKS_DT_URL_INTERNAL
+#: TYPE_SPECIFIC_CHECKS_DT_URL_INTERNAL
+msgid "The URL value ''{0}'' is invalid because there is no matching target"
+msgstr ""
+
+# TYPE_SPECIFIC_CHECKS_DT_URL_INTERNAL_WARN
+#: TYPE_SPECIFIC_CHECKS_DT_URL_INTERNAL_WARN
+msgid "The URL value ''{0}'' might be wrong because it appears to point to an internal target, but there is no matching target"
+msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_XHTML_ACTIVE_HREF
 #: TYPE_SPECIFIC_CHECKS_DT_XHTML_ACTIVE_HREF
@@ -6182,7 +6486,7 @@ msgstr "O valor ''{0}'' não é um valor Base64 válido"
 #: Type_Specific_Checks_DT_Boolean_Value
 #, fuzzy
 msgid "Boolean values must be ''true'' or ''false''"
-msgstr "Os valores booleanos devem ser \"true\" ou \"false"
+msgstr "Os valores booleanos devem ser \\\"true\\\" ou \\\"false"
 
 # Type_Specific_Checks_DT_Code_WS
 #: Type_Specific_Checks_DT_Code_WS
@@ -6428,13 +6732,13 @@ msgstr "Não é possível verificar se o código está no conjunto de valores ''
 #: UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_CS
 #, fuzzy
 msgid "Unable to check whether the code is in the value set ''{0}'' because the code system {1} was not found"
-msgstr "Não foi possível verificar se o código está no conjunto de valores \"{0}\" porque o sistema de códigos {1} não foi encontrado"
+msgstr "Não foi possível verificar se o código está no conjunto de valores \\\"{0}\\\" porque o sistema de códigos {1} não foi encontrado"
 
 # UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_VS
 #: UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_VS
 #, fuzzy
 msgid "Unable to check whether the code is in the value set ''{0}'' because the value set {1} was not found"
-msgstr "Não é possível verificar se o código está no conjunto de valores \"{0}\" porque o conjunto de valores {1} não foi encontrado"
+msgstr "Não é possível verificar se o código está no conjunto de valores \\\"{0}\\\" porque o conjunto de valores {1} não foi encontrado"
 
 # UNABLE_TO_DETERMINE_TYPE_CONTEXT_INV
 #: UNABLE_TO_DETERMINE_TYPE_CONTEXT_INV
@@ -6963,7 +7267,7 @@ msgstr "Não são permitidos conteúdos experimentais neste contexto"
 #: VALIDATION_VAL_GLOBAL_PROFILE_UNKNOWN
 #, fuzzy
 msgid "Global Profile reference ''{0}'' from IG {1} could not be resolved, so has not been checked"
-msgstr "A referência do perfil global \"{0}\" do IG {1} não pôde ser resolvida, pelo que não foi verificada"
+msgstr "A referência do perfil global \\\"{0}\\\" do IG {1} não pôde ser resolvida, pelo que não foi verificada"
 
 # VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT
 #: VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT
@@ -7095,7 +7399,7 @@ msgstr "O estatuto do recurso ''{0}'' e o estatuto das normas ''{1}'' não são 
 #: VALIDATION_VAL_STATUS_INCONSISTENT_HINT
 #, fuzzy
 msgid "The resource status ''{0}'' and the standards status ''{1}'' may not be consistent and should be reviewed"
-msgstr "O estatuto do recurso \"{0}\" e o estatuto das normas \"{1}\" podem não ser coerentes e devem ser revistos"
+msgstr "O estatuto do recurso \\\"{0}\\\" e o estatuto das normas \\\"{1}\\\" podem não ser coerentes e devem ser revistos"
 
 # VALIDATION_VAL_VERSION_NOHASH
 #: VALIDATION_VAL_VERSION_NOHASH
@@ -7145,6 +7449,11 @@ msgstr "A operação ''{0}'' não é permitida para a propriedade ''{1}'' no sis
 msgid "The value for a filter based on property ''{0}'' must be either ''true'' or ''false'', not ''{1}''"
 msgstr "O valor de um filtro baseado na propriedade ''{0}'' tem de ser ''true'' ou ''false'' e não ''{1}''"
 
+# VALUESET_BAD_FILTER_VALUE_CANT_CHECK
+#: VALUESET_BAD_FILTER_VALUE_CANT_CHECK
+msgid "The value ''{1}'' for the filter {0} can''t be checked: {2}"
+msgstr ""
+
 # VALUESET_BAD_FILTER_VALUE_CODE
 #: VALUESET_BAD_FILTER_VALUE_CODE
 #, fuzzy
@@ -7187,6 +7496,11 @@ msgstr "O valor do filtro tem uma vírgula, mas a operação é diferente para '
 msgid "The value for a filter based on property ''{0}'' must be integer value, not ''{1}''"
 msgstr "O valor de um filtro baseado na propriedade ''{0}'' deve ser um valor inteiro e não ''{1}''"
 
+# VALUESET_BAD_FILTER_VALUE_INVALID
+#: VALUESET_BAD_FILTER_VALUE_INVALID
+msgid "The value ''{1}'' for the filter {0} is invalid: {2}"
+msgstr ""
+
 # VALUESET_BAD_FILTER_VALUE_VALID_CODE
 #: VALUESET_BAD_FILTER_VALUE_VALID_CODE
 #, fuzzy
@@ -7198,6 +7512,11 @@ msgstr "O valor de um filtro baseado na propriedade ''{0}'' deve ser um código 
 #, fuzzy
 msgid "The value for a filter based on property ''{0}'' must be a valid code from the system ''{2}'', and ''{1}'' is not ({3}). Note that this is change from the past; terminology servers are expected to still continue to support this filter"
 msgstr "O valor de um filtro baseado na propriedade ''{0}'' deve ser um código válido do sistema ''{2}'', e ''{1}'' não é ({3}). Note-se que se trata de uma alteração em relação ao passado; espera-se que os servidores de terminologia continuem a suportar este filtro"
+
+# VALUESET_BAD_FILTER_VALUE_VALID_CODE_INACTIVE
+#: VALUESET_BAD_FILTER_VALUE_VALID_CODE_INACTIVE
+msgid "The code for the filter ''{0}'' is inactive (''{1}'')"
+msgstr ""
 
 # VALUESET_BAD_FILTER_VALUE_VALID_REGEX
 #: VALUESET_BAD_FILTER_VALUE_VALID_REGEX
@@ -7341,7 +7660,7 @@ msgstr "O sistema ''{0}'' é de facto um conjunto de valores"
 #: VALUESET_INCLUDE_WRONG_VS_HINT
 #, fuzzy
 msgid "The system ''{0}'' is actually a value set, which itself refers to the system ''{1}'' so that may be what is intended here"
-msgstr "O sistema \"{0}\" é, de facto, um conjunto de valores, que se refere ao sistema \"{1}\", pelo que pode ser isso que se pretende aqui"
+msgstr "O sistema \\\"{0}\\\" é, de facto, um conjunto de valores, que se refere ao sistema \\\"{1}\\\", pelo que pode ser isso que se pretende aqui"
 
 # VALUESET_INCLUDE_WRONG_VS_MANY
 #: VALUESET_INCLUDE_WRONG_VS_MANY
@@ -7733,6 +8052,13 @@ msgid_plural "Slice ''{3}'': minimum required = {0}, but only found {7} (from {1
 msgstr[0] ""
 msgstr[1] ""
 
+# Validation_VAL_Profile_Minimum_SLICE_EXT
+#: Validation_VAL_Profile_Minimum_SLICE_EXT
+msgid "Slice ''{3}'' for extension ''{8}'': a matching slice is required, but not found (from {1}). Note that other slices are allowed in addition to this required slice"
+msgid_plural "Slice ''{3}'' for extension ''{8}'': minimum required = {0}, but only found {7} (from {1})"
+msgstr[0] ""
+msgstr[1] ""
+
 # Validation_VAL_Profile_MultipleMatches
 #: Validation_VAL_Profile_MultipleMatches
 msgid "Found multiple matching profiles among {0} choice: {1}"
@@ -7844,6 +8170,51 @@ msgstr "Espaço de nome incorreto - esperava-se ''{0}''"
 msgid "Wrong type for resource"
 msgstr "Tipo incorreto de recurso"
 
+# XHTML_CONTROL_LANGS_NONE
+#: XHTML_CONTROL_LANGS_NONE
+msgid "The profile {1} requires a section in the narrative for the resource language {0}, but there is no sections"
+msgstr ""
+
+# XHTML_CONTROL_LANGS_NONE2
+#: XHTML_CONTROL_LANGS_NONE2
+msgid "The profile {1} requires a section in the narrative for the language {0}, but there is no sections"
+msgstr ""
+
+# XHTML_CONTROL_LANGS_NONE_NO_DEFAULT
+#: XHTML_CONTROL_LANGS_NONE_NO_DEFAULT
+msgid "The profile {1} requires a section in the narrative for the resource language, but there is no sections and no resource language"
+msgstr ""
+
+# XHTML_CONTROL_LANGS_NO_DEFAULT
+#: XHTML_CONTROL_LANGS_NO_DEFAULT
+msgid "The profile {1} requires a section in the narrative for the resource language, but there is no language"
+msgstr ""
+
+# XHTML_CONTROL_LANGS_REQUIRED
+#: XHTML_CONTROL_LANGS_REQUIRED
+msgid "The xhtml has no language sections, but language sections are required in this context by the profile {1}"
+msgstr ""
+
+# XHTML_CONTROL_LANGS_REQUIRED_DEF
+#: XHTML_CONTROL_LANGS_REQUIRED_DEF
+msgid "The profile {2} requires a section in the narrative for the resource language ({0}), but it was not found (found {1})"
+msgstr ""
+
+# XHTML_CONTROL_LANGS_REQUIRED_LANG
+#: XHTML_CONTROL_LANGS_REQUIRED_LANG
+msgid "The profile {2} requires a section in the narrative for the language ''{0}'', but it was not found (found {1})"
+msgstr ""
+
+# XHTML_CONTROL_NO_LANGS
+#: XHTML_CONTROL_NO_LANGS
+msgid "The xhtml has some language sections ({0}), but language sections are prohibited in this context by the profile {1}"
+msgstr ""
+
+# XHTML_CONTROL_NO_SOURCE
+#: XHTML_CONTROL_NO_SOURCE
+msgid "The xhtml node at ''{0}'' does not have a class attribute to indicate it''s source (boilerplate, generated, or original) and this is required by the profile {1}"
+msgstr ""
+
 # XHTML_URL_DATA_DATA_INVALID
 #: XHTML_URL_DATA_DATA_INVALID
 #, fuzzy
@@ -7899,11 +8270,26 @@ msgstr "O atributo ''xml:space'' é legal mas tem um valor fixo de ''preserve''.
 msgid "Invalid attribute name in the XHTML (''{0}'' on ''{1}'')"
 msgstr "Nome de atributo inválido no XHTML (''{0}'' em ''{1}'')"
 
+# XHTML_XHTML_BAD_ELEMENT_TYPE
+#: XHTML_XHTML_BAD_ELEMENT_TYPE
+msgid "Elements of type [{0}] cannot appear at {1}"
+msgstr ""
+
+# XHTML_XHTML_BLOCK_IN_PARA
+#: XHTML_XHTML_BLOCK_IN_PARA
+msgid "Found block structures inside a paragraph/text element {0} at {1}: {2}"
+msgstr ""
+
 # XHTML_XHTML_DOCTYPE_ILLEGAL
 #: XHTML_XHTML_DOCTYPE_ILLEGAL
 #, fuzzy
 msgid "Malformed XHTML: Found a DocType declaration, and these are not allowed (XXE security vulnerability protection)"
 msgstr "XHTML malformado: Encontrada uma declaração DocType, que não é permitida (proteção contra vulnerabilidades de segurança XXE)"
+
+# XHTML_XHTML_DUPLICATE_IDS
+#: XHTML_XHTML_DUPLICATE_IDS
+msgid "The XHTML  the resource contains more than one node for each of the following node ids and anchor names: {0}"
+msgstr ""
 
 # XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA
 #: XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA
@@ -7923,11 +8309,31 @@ msgstr "Nome de elemento inválido no XHTML (''{0}'')"
 msgid "Invalid entity in the XHTML (''{0}'')"
 msgstr "Entidade inválida no XHTML (''{0}'')"
 
+# XHTML_XHTML_ILLEGAL_CHILDREN
+#: XHTML_XHTML_ILLEGAL_CHILDREN
+msgid "Elements of type {0} at {1} cannot have the following children: {2}"
+msgstr ""
+
 # XHTML_XHTML_Image_Reference_Illegal
 #: XHTML_XHTML_Image_Reference_Illegal
 #, fuzzy
 msgid "Invalid Image Reference in the XHTML (''{0}'')"
 msgstr "Referência de imagem inválida no XHTML (''{0}'')"
+
+# XHTML_XHTML_MIXED_LANG
+#: XHTML_XHTML_MIXED_LANG
+msgid "The xhtml has some language sections ({0}), and also has content that is not in a language section"
+msgstr ""
+
+# XHTML_XHTML_NO_CHILDREN
+#: XHTML_XHTML_NO_CHILDREN
+msgid "Elements of type {0} cannot have children"
+msgstr ""
+
+# XHTML_XHTML_NO_RECURSION
+#: XHTML_XHTML_NO_RECURSION
+msgid "Elements of type {0} at {1} cannot contain nested {0} at {2}"
+msgstr ""
 
 # XHTML_XHTML_NS_InValid
 #: XHTML_XHTML_NS_InValid
@@ -7940,6 +8346,11 @@ msgstr "Espaço de nome incorreto no XHTML (''{0}'', deveria ser ''{1}'')"
 #, fuzzy
 msgid "Wrong name on the XHTML (''{0}'') - must start with div"
 msgstr "Nome errado no XHTML (''{0}'') - deve começar com div"
+
+# XHTML_XHTML_OUT_OF_PLACE
+#: XHTML_XHTML_OUT_OF_PLACE
+msgid "Elements of type {0} must be in a {1}, not a {2} at {3}"
+msgstr ""
 
 # XSI_TYPE_UNNECESSARY
 #: XSI_TYPE_UNNECESSARY

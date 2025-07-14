@@ -2303,7 +2303,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           if (this.targetProfile == null)
             return false;
           for (CanonicalType v : this.targetProfile)
-            if (v.getValue().equals(value)) // canonical
+            if (v.getValue().equals(value) || v.getValue().startsWith(value+"|")) // canonical
               return true;
           return false;
         }
@@ -13178,6 +13178,10 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     return res;
   }
   
+  public boolean isProfiledExtension() {
+    return getType().size() == 1 && "Extension".equals(getTypeFirstRep().getCode()) && 
+        getTypeFirstRep().getProfile().size() == 1;
+  }
 // end addition
 
 }

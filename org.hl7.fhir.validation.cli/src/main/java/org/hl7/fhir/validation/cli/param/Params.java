@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
@@ -21,6 +22,7 @@ import org.hl7.fhir.validation.service.utils.EngineMode;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
+@Slf4j
 public class Params {
 
   public static final String VERSION = "-version";
@@ -46,6 +48,8 @@ public class Params {
   public static final String CHECK_REFERENCES = "-check-references";
   public static final String RESOLUTION_CONTEXT = "-resolution-context";
   public static final String DEBUG = "-debug";
+  public static final String DEBUG_LOG = "-debug-log";
+  public static final String TRACE_LOG = "-trace-log";
   public static final String SCT = "-sct";
   public static final String RECURSE = "-recurse";
   public static final String SHOW_MESSAGES_FROM_REFERENCES = "-showReferenceMessages";
@@ -66,6 +70,7 @@ public class Params {
   public static final String TRANSFORM = "-transform";
   public static final String FORMAT = "-format";
   public static final String LANG_TRANSFORM = "-lang-transform";
+  public static final String LANG_REGEN = "-lang-regen";
   public static final String EXP_PARAMS = "-expansion-parameters";
   public static final String NARRATIVE = "-narrative";
   public static final String SNAPSHOT = "-snapshot";
@@ -89,6 +94,7 @@ public class Params {
   public static final String AI_TESTS = "-aiTests";
   public static final String HELP = "help";
   public static final String COMPARE = "-compare";
+  public static final String SERVER = "-server";
   public static final String SPREADSHEET = "-spreadsheet";
   public static final String DESTINATION = "-dest";
   public static final String LEFT = "-left";
@@ -128,6 +134,7 @@ public class Params {
   public static final String TEST_MODULES = "-test-modules";
 
   public static final String TEST_NAME_FILTER = "-test-classname-filter";
+  public static final String CERT = "-cert";
   public static final String SPECIAL = "-special";
   public static final String TARGET = "-target";
   public static final String SOURCE = "-source";
@@ -142,6 +149,7 @@ public class Params {
   public static final String NO_HTTP_ACCESS = "-no-http-access";
   public static final String AUTH_NONCONFORMANT_SERVERS = "-authorise-non-conformant-tx-servers";
   public static final String R5_REF_POLICY = "r5-bundle-relative-reference-policy";
+  public static final String MATCHETYPE = "-matchetype";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -200,6 +208,10 @@ public class Params {
           throw new Error("Specified -html-output without indicating output file");
         else
           validationContext.setHtmlOutput(args[++i]);
+      } else if (args[i].equals(DEBUG_LOG)) {
+        i++;
+      } else if (args[i].equals(TRACE_LOG)) {
+        i++;
       } else if (args[i].equals(PROXY)) {
         i++; // ignore next parameter
       } else if (args[i].equals(PROXY_AUTH)) {
@@ -293,7 +305,8 @@ public class Params {
       } else if (args[i].equals(RESOLUTION_CONTEXT)) {
         validationContext.setResolutionContext(args[++i]);
       } else if (args[i].equals(DEBUG)) {
-        validationContext.setDoDebug(true);
+        //FIXME warm that debug now outputs to the log file
+        //validationContext.setDoDebug(true);
       } else if (args[i].equals(SCT)) {
         validationContext.setSnomedCT(args[++i]);
       } else if (args[i].equals(RECURSE)) {
@@ -401,6 +414,11 @@ public class Params {
       } else if (args[i].equals(LANG_TRANSFORM)) {
         validationContext.setLangTransform(args[++i]);
         validationContext.setMode(EngineMode.LANG_TRANSFORM);
+      } else if (args[i].equals(LANG_REGEN)) {
+        validationContext.addLangRegenParam(args[++i]);
+        validationContext.addLangRegenParam(args[++i]);
+        validationContext.addLangRegenParam(args[++i]);
+        validationContext.setMode(EngineMode.LANG_REGEN);
       } else if (args[i].equals(EXP_PARAMS)) {
         validationContext.setExpansionParameters(args[++i]);
       } else if (args[i].equals(COMPILE)) {
@@ -485,7 +503,28 @@ public class Params {
           throw new Error("Specified -txCache without indicating file");
         else
           validationContext.setTxCache(args[++i]);
-      } else if (args[i].equals(LOG)) {
+      } else if (args[i].equals(CERT)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -txCache without indicating file");
+        else {
+          String s = args[++i];
+          if (!(new File(s).exists())) {
+            throw new Error("Certificate source '"+s+"'  not found");            
+          } else {
+            validationContext.getCertSources().add(s);
+          }
+        }
+      } else if (args[i].equals(MATCHETYPE)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -matchetype without indicating file");
+        else {
+          String s = args[++i];
+          if (!(new File(s).exists())) {
+            throw new Error("-matchetype source '"+s+"'  not found");            
+          } else {
+            validationContext.getMatchetypes().add(s);
+          }
+        }} else if (args[i].equals(LOG)) {
         if (i + 1 == args.length)
           throw new Error("Specified -log without indicating file");
         else
@@ -572,6 +611,8 @@ public class Params {
         i++;
       } else if (args[i].equals(CONVERT)) {
         validationContext.setMode(EngineMode.CONVERT);
+      } else if (args[i].equals(SERVER)) {
+        i++;
       } else if (args[i].equals(FHIRPATH)) {
         validationContext.setMode(EngineMode.FHIRPATH);
         if (validationContext.getFhirpath() == null)
@@ -658,7 +699,7 @@ public class Params {
         else {
           String s = args[++i];
           if (!s.startsWith("hl7.fhir.core-")) {
-            System.out.println("Load Package: " + s);
+            log.info("Load Package: " + s);
           }
         }
       }

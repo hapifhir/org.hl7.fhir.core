@@ -160,6 +160,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String GENERAL_URI = "GENERAL_URI";
   public static final String GENERAL_ADD_LANG = "GENERAL_ADD_LANG";
   public static final String CODE_SYS_CODE_NOT_HERE = "CODE_SYS_CODE_NOT_HERE";
+  public static final String CODE_SYS_SUPP_CODE_NOT_HERE = "CODE_SYS_SUPP_CODE_NOT_HERE";
   public static final String CODE_SYS_COMPLETE = "CODE_SYS_COMPLETE";
   public static final String GENERAL_CONTENT = "GENERAL_CONTENT";
   public static final String CODE_SYS_COPY = "CODE_SYS_COPY";
@@ -188,9 +189,13 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CONC_MAP_NOT_SPEC = "CONC_MAP_NOT_SPEC";
   public static final String CONC_MAP_REL = "CONC_MAP_REL";
   public static final String CONC_MAP_SOURCE = "CONC_MAP_SOURCE";
+  public static final String CONC_MAP_SOURCE_CARD = "CONC_MAP_SOURCE_CARD";
+  public static final String CONC_MAP_SOURCE_TYPE = "CONC_MAP_SOURCE_TYPE";
   public static final String CONC_MAP_SRC_DET = "CONC_MAP_SRC_DET";
   public static final String CONC_MAP_TO = "CONC_MAP_TO"; 
   public static final String CONC_MAP_TRGT = "CONC_MAP_TRGT";
+  public static final String CONC_MAP_TRGT_CARD = "CONC_MAP_TRGT_CARD";
+  public static final String CONC_MAP_TRGT_TYPE = "CONC_MAP_TRGT_TYPE";
   public static final String CONC_MAP_TRGT_DET = "CONC_MAP_TRGT_DET";
   public static final String DATA_REND_AFTRBKFST = "DATA_REND_AFTRBKFST";
   public static final String DATA_REND_AFTRDINR = "DATA_REND_AFTRDINR";
@@ -546,7 +551,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String SD_SLICING_INFO = "SD_SLICING_INFO";
   public static final String SD_SUMMARY_FIXED = "SD_SUMMARY_FIXED";
   public static final String SD_SUMMARY_MANDATORY = "SD_SUMMARY_MANDATORY";
-  public static final String SD_SUMMARY_MAPPINGS = "SD_SUMMARY_MAPPINGS";
   public static final String SD_SUMMARY_MISSING_EXTENSION = "SD_SUMMARY_MISSING_EXTENSION";
   public static final String SD_SUMMARY_MISSING_PROFILE = "SD_SUMMARY_MISSING_PROFILE";
   public static final String SD_SUMMARY_MUST_SUPPORT = "SD_SUMMARY_MUST_SUPPORT";
@@ -577,7 +581,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String STRUC_DEF_AFFECT_CONSTRAINTS = "STRUC_DEF_AFFECT_CONSTRAINTS";
   public static final String STRUC_DEF_ALLOWED = "STRUC_DEF_ALLOWED";
   public static final String STRUC_DEF_ALL_ACTORS = "STRUC_DEF_ALL_ACTORS";
-  public static final String STRUC_DEF_ALL_MAP_KEY = "STRUC_DEF_ALL_MAP_KEY";
   public static final String STRUC_DEF_ALL_SLICES = "STRUC_DEF_ALL_SLICES";
   public static final String STRUC_DEF_ALL_TYPES = "STRUC_DEF_ALL_TYPES";
   public static final String STRUC_DEF_ALT_NAME = "STRUC_DEF_ALT_NAME";
@@ -1087,7 +1090,20 @@ public class RenderingI18nContext extends I18nBase {
   public static final String SDR_CONCEPT_DOMAIN = "SDR_CONCEPT_DOMAIN";
   public static final String BUNDLE_DOCUMENT_DETAILS = "BUNDLE_DOCUMENT_DETAILS";
   public static final String BUNDLE_DOCUMENT_CONTENT = "BUNDLE_DOCUMENT_CONTENT";
-
+  public static final String R44B_DERIVES_FROM = "R44B_DERIVES_FROM";
+  public static final String R44B_HAS_TYPE = "R44B_HAS_TYPE";
+  public static final String R44B_REFERS_TO = "R44B_REFERS_TO";
+  public static final String R44B_HAS_TARGET = "R44B_HAS_TARGET";
+  public static final String R44B_WRONG_MSG = "R44B_WRONG_MSG";
+  public static final String R44B_USE_OK = "R44B_USE_OK";
+  public static final String R44B_PACKAGE_REF = "R44B_PACKAGE_REF";
+  public static final String R44B_NOT_COMP = "R44B_NOT_COMP";
+  public static final String R44B_NOT_IN = "R44B_NOT_IN";
+  public static final String R44B_ONLY_IN = "R44B_ONLY_IN";
+  public static final String R44B_PROBLEMS = "R44B_PROBLEMS";
+  public static final String ACTOR_DERIVED_FROM = "ACTOR_DERIVED_FROM";
+  public static final String ACTOR_DERIVED_FROM_NONE = "ACTOR_DERIVED_FROM_NONE";
+  public static final String VALUE_SET_NEEDS_SUPPL = "VALUE_SET_NEEDS_SUPPL";
   
 
   protected String getMessagesSourceFileName() {

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.Getter;import lombok.Setter;import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.BindingResolution;
@@ -42,28 +44,40 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class ContextUtilities implements ProfileKnowledgeProvider {
 
   private IWorkerContext context;
-  private boolean suppressDebugMessages;
   private XVerExtensionManager xverManager;
   private Map<String, String> oidCache = new HashMap<>();
   private List<StructureDefinition> allStructuresList = new ArrayList<StructureDefinition>();
   private List<String> canonicalResourceNames;
   private List<String> concreteResourceNames;
   private Set<String> concreteResourceNameSet;
-  
+  @Setter private List<String> suppressedMappings;
+  @Getter@Setter private Set<String> localFileNames;
+  @Getter@Setter private Set<String> masterSourceNames;
+
   public ContextUtilities(IWorkerContext context) {
     super();
     this.context = context;
+    this.suppressedMappings = new ArrayList<String>();
   }
 
+  public ContextUtilities(IWorkerContext context, List<String> suppressedMappings) {
+    super();
+    this.context = context;
+    this.suppressedMappings = suppressedMappings;
+  }
+
+  @Deprecated
   public boolean isSuppressDebugMessages() {
-    return suppressDebugMessages;
+    return false;
   }
 
+  @Deprecated
   public void setSuppressDebugMessages(boolean suppressDebugMessages) {
-    this.suppressDebugMessages = suppressDebugMessages;
+    //DO NOTHING
   }
   
   public String oid2Uri(String oid) {
@@ -226,12 +240,8 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
             generateSnapshot(sd);
             // new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
           } catch (Exception e) {
-            if (!isSuppressDebugMessages()) {
-              System.out.println("Unable to generate snapshot @2 for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
-              if (context.getLogger() != null && context.getLogger().isDebugLogging()) {
-                e.printStackTrace();
-              }
-            }
+            log.debug("Unable to generate snapshot @2 for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
+            context.getLogger().logDebugMessage(ILoggingService.LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
           }
           allStructuresList.add(sd);
           set.add(sd);
@@ -271,6 +281,9 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       pu.setAutoFixSliceNames(true);
       pu.setThrowException(false);
       pu.setForPublication(context.isForPublication());
+      pu.setSuppressedMappings(suppressedMappings);
+      pu.setLocalFileNames(localFileNames);
+      pu.setMasterSourceFileNames(masterSourceNames);
       if (xverManager == null) {
         xverManager = new XVerExtensionManager(context);
       }
@@ -288,7 +301,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
           if (!msg.isIgnorableError()) {
             throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE___ELEMENT__ERROR_GENERATING_SNAPSHOT_, p.getName(), p.getUrl(), msg.getLocation(), msg.getMessage()));
           } else {
-            System.err.println(msg.getMessage());
+            log.error(msg.getMessage());
           }
         }
       }
@@ -546,5 +559,5 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     return null;
   }
 
-}
+  }
 

@@ -36,6 +36,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 
+@SuppressWarnings("checkstyle:systemout")
 public class UTGVersionSorter {
 
   private final Date runTime = new Date();

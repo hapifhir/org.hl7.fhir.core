@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.Coding;
@@ -15,7 +14,6 @@ import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UsageContext;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
@@ -212,17 +210,17 @@ public class ObligationsRenderer extends Renderer {
           } while (match!=null && obd.alreadyMatched());
           if (match!=null)
             obd.setCompare(match);
-          obligations.add(obd);
+          addObligation(obd);
           if (obd.compare!=null)
             compBindings.remove(obd.compare.getKey());
         } else {
-          obligations.add(obd);
+          addObligation(obd);
         }
       }
     }
     for (ObligationDetail b: compBindings.values()) {
       b.removed = true;
-      obligations.add(b);
+      addObligation(b);
     }
   }
 
@@ -254,18 +252,32 @@ public class ObligationsRenderer extends Renderer {
             } while (match!=null && obd.alreadyMatched());
             if (match!=null)
               obd.setCompare(match);
-            obligations.add(obd);
+            addObligation(obd);
             if (obd.compare!=null)
               compBindings.remove(obd.compare.getKey());
           } else {
-            obligations.add(obd);
+            addObligation(obd);
           }
         }
       }
     }
     for (ObligationDetail b: compBindings.values()) {
       b.removed = true;
-      obligations.add(b);
+      addObligation(b);
+    }
+  }
+
+
+  private void addObligation(ObligationDetail obd) {
+    boolean add = context.getActorWhiteList().isEmpty();
+    if (!add) {
+      for (CanonicalType a : obd.actors) { 
+        ActorDefinition ad = context.getContext().fetchResource(ActorDefinition.class, a.getValue());
+        add = add || (context.getActorWhiteList().contains(ad));
+      }
+    }
+    if (add) {
+      obligations.add(obd);
     }
   }
 
@@ -378,7 +390,7 @@ public class ObligationsRenderer extends Renderer {
       hasUsage = hasUsage || !ob.usage.isEmpty() || (ob.compare!=null && !ob.compare.usage.isEmpty());
       hasFilter = hasFilter || ob.filter != null || (ob.compare!=null && ob.compare.filter!=null);
       hasElementId = hasElementId || !ob.elementIds.isEmpty()  || (ob.compare!=null && !ob.compare.elementIds.isEmpty());
-      hasSource = hasSource || ob.source != null || (ob.compare!=null && ob.compare.source!=null);
+      hasSource = hasSource || ((ob.source != null || (ob.compare!=null && ob.compare.source!=null)) && !ob.source.equals(profile.getVersionedUrl()));
     }
 
     List<String> inScopePaths = new ArrayList<>();
@@ -404,7 +416,7 @@ public class ObligationsRenderer extends Renderer {
     if (hasFilter) {
       tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.GENERAL_FILTER));
     }
-    if (hasFilter) {
+    if (hasSource) {
       tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.GENERAL_SOURCE));
     }
     for (ObligationDetail ob : obligations) {

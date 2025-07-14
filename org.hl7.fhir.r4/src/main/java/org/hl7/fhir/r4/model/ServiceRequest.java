@@ -1374,16 +1374,6 @@ public class ServiceRequest extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getBasedOnTarget() {
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<Resource>();
-    return this.basedOnTarget;
-  }
-
-  /**
    * @return {@link #replaces} (The request takes the place of the referenced
    *         completed or terminated request(s).)
    */
@@ -1436,28 +1426,6 @@ public class ServiceRequest extends DomainResource {
       addReplaces();
     }
     return getReplaces().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<ServiceRequest> getReplacesTarget() {
-    if (this.replacesTarget == null)
-      this.replacesTarget = new ArrayList<ServiceRequest>();
-    return this.replacesTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public ServiceRequest addReplacesTarget() {
-    ServiceRequest r = new ServiceRequest();
-    if (this.replacesTarget == null)
-      this.replacesTarget = new ArrayList<ServiceRequest>();
-    this.replacesTarget.add(r);
-    return r;
   }
 
   /**
@@ -2359,16 +2327,6 @@ public class ServiceRequest extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getPerformerTarget() {
-    if (this.performerTarget == null)
-      this.performerTarget = new ArrayList<Resource>();
-    return this.performerTarget;
-  }
-
-  /**
    * @return {@link #locationCode} (The preferred location(s) where the procedure
    *         should actually happen in coded or free text form. E.g. at home or
    *         nursing day care center.)
@@ -2478,28 +2436,6 @@ public class ServiceRequest extends DomainResource {
       addLocationReference();
     }
     return getLocationReference().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Location> getLocationReferenceTarget() {
-    if (this.locationReferenceTarget == null)
-      this.locationReferenceTarget = new ArrayList<Location>();
-    return this.locationReferenceTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Location addLocationReferenceTarget() {
-    Location r = new Location();
-    if (this.locationReferenceTarget == null)
-      this.locationReferenceTarget = new ArrayList<Location>();
-    this.locationReferenceTarget.add(r);
-    return r;
   }
 
   /**
@@ -2616,16 +2552,6 @@ public class ServiceRequest extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getReasonReferenceTarget() {
-    if (this.reasonReferenceTarget == null)
-      this.reasonReferenceTarget = new ArrayList<Resource>();
-    return this.reasonReferenceTarget;
-  }
-
-  /**
    * @return {@link #insurance} (Insurance plans, coverage extensions,
    *         pre-authorizations and/or pre-determinations that may be needed for
    *         delivering the requested service.)
@@ -2679,16 +2605,6 @@ public class ServiceRequest extends DomainResource {
       addInsurance();
     }
     return getInsurance().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getInsuranceTarget() {
-    if (this.insuranceTarget == null)
-      this.insuranceTarget = new ArrayList<Resource>();
-    return this.insuranceTarget;
   }
 
   /**
@@ -2754,16 +2670,6 @@ public class ServiceRequest extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getSupportingInfoTarget() {
-    if (this.supportingInfoTarget == null)
-      this.supportingInfoTarget = new ArrayList<Resource>();
-    return this.supportingInfoTarget;
-  }
-
-  /**
    * @return {@link #specimen} (One or more specimens that the laboratory
    *         procedure will use.)
    */
@@ -2816,28 +2722,6 @@ public class ServiceRequest extends DomainResource {
       addSpecimen();
     }
     return getSpecimen().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Specimen> getSpecimenTarget() {
-    if (this.specimenTarget == null)
-      this.specimenTarget = new ArrayList<Specimen>();
-    return this.specimenTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Specimen addSpecimenTarget() {
-    Specimen r = new Specimen();
-    if (this.specimenTarget == null)
-      this.specimenTarget = new ArrayList<Specimen>();
-    this.specimenTarget.add(r);
-    return r;
   }
 
   /**
@@ -3058,28 +2942,6 @@ public class ServiceRequest extends DomainResource {
       addRelevantHistory();
     }
     return getRelevantHistory().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Provenance> getRelevantHistoryTarget() {
-    if (this.relevantHistoryTarget == null)
-      this.relevantHistoryTarget = new ArrayList<Provenance>();
-    return this.relevantHistoryTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Provenance addRelevantHistoryTarget() {
-    Provenance r = new Provenance();
-    if (this.relevantHistoryTarget == null)
-      this.relevantHistoryTarget = new ArrayList<Provenance>();
-    this.relevantHistoryTarget.add(r);
-    return r;
   }
 
   protected void listChildren(List<Property> children) {

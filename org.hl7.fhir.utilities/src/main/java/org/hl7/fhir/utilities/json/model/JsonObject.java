@@ -83,6 +83,11 @@ public class JsonObject extends JsonElement {
     return add(name, value == null ? new JsonNull() : new JsonString(value));
   }
 
+  public JsonObject addNull(String name) throws JsonException {
+    check(name != null, "Name is null");
+    return add(name, new JsonNull());
+  }
+
   public JsonObject add(String name, List<String> values) throws JsonException {
     check(name != null, "Name is null");
     JsonArray arr = new JsonArray();
@@ -290,7 +295,20 @@ public class JsonObject extends JsonElement {
     }
     return null;
   }
-  
+
+  public Long asLong(String name) {
+    if (hasNumber(name)) {
+      return ((JsonNumber) get(name)).getLong();
+    }
+    if (hasPrimitive(name)) {
+      String s = asString(name);
+      if (Utilities.isLong(s)) {
+        return Long.parseLong(s);
+      }
+    }
+    return null;
+  }
+
   public Double asDouble(String name) {
     if (hasNumber(name)) {
       return ((JsonNumber) get(name)).getDouble();
@@ -483,6 +501,10 @@ public class JsonObject extends JsonElement {
     return has(name) && get(name).type() == JsonElementType.BOOLEAN;
   }
 
+  public boolean isJsonNumber(String name) {
+    return has(name) && get(name).type() == JsonElementType.NUMBER;
+  }
+  
   public String compareTo(JsonObject j2) {
     String path = "$";
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();

@@ -3129,16 +3129,6 @@ public class MeasureReport extends DomainResource {
     return getEvaluatedResource().get(0);
   }
 
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getEvaluatedResourceTarget() {
-    if (this.evaluatedResourceTarget == null)
-      this.evaluatedResourceTarget = new ArrayList<Resource>();
-    return this.evaluatedResourceTarget;
-  }
-
   protected void listChildren(List<Property> children) {
     super.listChildren(children);
     children.add(new Property("identifier", "Identifier",

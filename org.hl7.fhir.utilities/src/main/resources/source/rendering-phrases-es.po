@@ -19,6 +19,18 @@ msgstr ""
 msgid "Type: {0}"
 msgstr ""
 
+# ACTOR_DERIVED_FROM
+#: ACTOR_DERIVED_FROM
+msgctxt "ACTOR_DERIVED_FROM"
+msgid "Derived From"
+msgstr ""
+
+# ACTOR_DERIVED_FROM_NONE
+#: ACTOR_DERIVED_FROM_NONE
+msgctxt "ACTOR_DERIVED_FROM_NONE"
+msgid "(none)"
+msgstr ""
+
 # ADD_BIND_ADD_BIND
 #: ADD_BIND_ADD_BIND
 msgid "Additional Bindings"
@@ -127,6 +139,16 @@ msgstr ""
 # ADD_BIND_VALUE_COMP
 #: ADD_BIND_VALUE_COMP
 msgid "This value set is a component of the base value set"
+msgstr ""
+
+# BUNDLE_DOCUMENT_CONTENT
+#: BUNDLE_DOCUMENT_CONTENT
+msgid "Document Content"
+msgstr ""
+
+# BUNDLE_DOCUMENT_DETAILS
+#: BUNDLE_DOCUMENT_DETAILS
+msgid "Document Details"
 msgstr ""
 
 # BUNDLE_ETAG
@@ -764,6 +786,18 @@ msgstr ""
 msgid "Source Code"
 msgstr ""
 
+# CONC_MAP_SOURCE_CARD
+#: CONC_MAP_SOURCE_CARD
+msgctxt "CONC_MAP_SOURCE_CARD"
+msgid "Card."
+msgstr ""
+
+# CONC_MAP_SOURCE_TYPE
+#: CONC_MAP_SOURCE_TYPE
+msgctxt "CONC_MAP_SOURCE_TYPE"
+msgid "Type"
+msgstr ""
+
 # CONC_MAP_SRC_DET
 #: CONC_MAP_SRC_DET
 msgid "Source Concept Details"
@@ -780,9 +814,21 @@ msgstr ""
 msgid "Target Code"
 msgstr ""
 
+# CONC_MAP_TRGT_CARD
+#: CONC_MAP_TRGT_CARD
+msgctxt "CONC_MAP_TRGT_CARD"
+msgid "Card."
+msgstr ""
+
 # CONC_MAP_TRGT_DET
 #: CONC_MAP_TRGT_DET
 msgid "Target Concept Details"
+msgstr ""
+
+# CONC_MAP_TRGT_TYPE
+#: CONC_MAP_TRGT_TYPE
+msgctxt "CONC_MAP_TRGT_TYPE"
+msgid "Type"
 msgstr ""
 
 # DATA_REND_AFTERNOON
@@ -1399,6 +1445,7 @@ msgstr ""
 
 # GENERAL_CARD
 #: GENERAL_CARD
+msgctxt "GENERAL_CARD"
 msgid "Card."
 msgstr ""
 
@@ -1707,6 +1754,7 @@ msgstr ""
 
 # GENERAL_TYPE
 #: GENERAL_TYPE
+msgctxt "GENERAL_TYPE"
 msgid "Type"
 msgstr ""
 
@@ -2427,6 +2475,7 @@ msgstr ""
 
 # QUEST_DERIVED
 #: QUEST_DERIVED
+msgctxt "QUEST_DERIVED"
 msgid "Derived From"
 msgstr ""
 
@@ -2689,6 +2738,61 @@ msgstr ""
 # QUEST_VALUE
 #: QUEST_VALUE
 msgid "Value Set:"
+msgstr ""
+
+# R44B_DERIVES_FROM
+#: R44B_DERIVES_FROM
+msgid "derives from"
+msgstr ""
+
+# R44B_HAS_TARGET
+#: R44B_HAS_TARGET
+msgid "has target"
+msgstr ""
+
+# R44B_HAS_TYPE
+#: R44B_HAS_TYPE
+msgid "has type"
+msgstr ""
+
+# R44B_NOT_COMP
+#: R44B_NOT_COMP
+msgid "This is an {0} IG that is not compatible with {1}\" because"
+msgstr ""
+
+# R44B_NOT_IN
+#: R44B_NOT_IN
+msgid "The following resources are not in the {0} version"
+msgstr ""
+
+# R44B_ONLY_IN
+#: R44B_ONLY_IN
+msgid "The following resources are only in the {0} version"
+msgstr ""
+
+# R44B_PACKAGE_REF
+#: R44B_PACKAGE_REF
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\\"{2}\\\">R4B ({3}.r4b)</a> are available."
+msgstr ""
+
+# R44B_PROBLEMS
+#: R44B_PROBLEMS
+msgid "While checking for {0} compatibility, the following {1} problems were found"
+msgstr ""
+
+# R44B_REFERS_TO
+#: R44B_REFERS_TO
+msgid "<a href=\"{0}\">{1}}</a> refers to the canonical type at {2}"
+msgstr ""
+
+# R44B_USE_OK
+#: R44B_USE_OK
+msgid "This is an {0} IG. None of the features it uses are changed in {1}, so it can be used as is with {1}} systems."
+msgstr ""
+
+# R44B_WRONG_MSG
+#: R44B_WRONG_MSG
+msgid "Something went wrong with the cross-version analysis because"
 msgstr ""
 
 # REND_ADDED
@@ -3226,7 +3330,8 @@ msgstr ""
 
 # SDR_VER_FROM_PFX
 #: SDR_VER_FROM_PFX
-msgid "\"FHIR versions"
+msgctxt "SDR_VER_FROM_PFX"
+msgid "FHIR versions"
 msgstr ""
 
 # SDR_VER_FROM_SFX
@@ -3252,6 +3357,7 @@ msgstr ""
 
 # SDR_VER_RANGE_PFX
 #: SDR_VER_RANGE_PFX
+msgctxt "SDR_VER_RANGE_PFX"
 msgid "FHIR versions"
 msgstr ""
 
@@ -3493,11 +3599,6 @@ msgstr ""
 msgid "Mandatory: {0} {1}"
 msgstr ""
 
-# SD_SUMMARY_MAPPINGS
-#: SD_SUMMARY_MAPPINGS
-msgid "Mappings for {0} ({2}{1}{3})"
-msgstr ""
-
 # SD_SUMMARY_MISSING_EXTENSION
 #: SD_SUMMARY_MISSING_EXTENSION
 msgid "Unable to summarise extension {0} (no extension found)"
@@ -3598,6 +3699,7 @@ msgstr ""
 
 # SEARCH_PAR_NONE
 #: SEARCH_PAR_NONE
+msgctxt "SEARCH_PAR_NONE"
 msgid "(none)"
 msgstr ""
 
@@ -3623,7 +3725,7 @@ msgstr ""
 
 # STATUS_MSG_LOCAL_BUILD
 #: STATUS_MSG_LOCAL_BUILD
-msgid "{0} - Local Development build (v{1}) built by the FHIR (HL7&reg; FHIR&reg; Standard) Build Tools. See the <a href=''{2}/history.html''>Directory of published versions</a>"
+msgid "{0} - Local Development build (v{1}) built by the FHIR (HL7® FHIR® Standard) Build Tools. See the <a href=''{2}/history.html''>Directory of published versions</a>"
 msgstr ""
 
 # STATUS_MSG_PUBLICATION_HOLDER
@@ -3654,11 +3756,6 @@ msgstr ""
 # STRUC_DEF_ALL_ACTORS
 #: STRUC_DEF_ALL_ACTORS
 msgid "All Actors"
-msgstr ""
-
-# STRUC_DEF_ALL_MAP_KEY
-#: STRUC_DEF_ALL_MAP_KEY
-msgid "All Mappings are Empty"
 msgstr ""
 
 # STRUC_DEF_ALL_SLICES

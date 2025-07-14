@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4b.formats.IParser;
 import org.hl7.fhir.r4b.formats.JsonParser;
@@ -22,6 +23,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.http.*;
 import org.hl7.fhir.utilities.xhtml.XhtmlUtils;
 
+@Slf4j
 public class FhirRequestBuilder {
 
   protected static final String HTTP_PROXY_USER = "http.proxyUser";
@@ -194,8 +196,8 @@ public class FhirRequestBuilder {
         if (ok) {
           resource = getParser(format).parse(body);
         } else {
-          System.out.println("Got error response with no Content-Type from "+source+" with status "+code);
-          System.out.println(body);
+          log.warn("Got error response with no Content-Type from "+source+" with status "+code);
+          log.warn(body);
           resource = OperationOutcomeUtilities.outcomeFromTextError(body);
         }
       } else { 
@@ -206,7 +208,7 @@ public class FhirRequestBuilder {
         case "application/json":
         case "application/fhir+json":
           if (!format.contains("json")) {
-            System.out.println("Got json response expecting "+format+" from "+source+" with status "+code);            
+            log.warn("Got json response expecting "+format+" from "+source+" with status "+code);
           }
           resource = getParser(ResourceFormat.RESOURCE_JSON.getHeader()).parse(body);
           break;
@@ -214,7 +216,7 @@ public class FhirRequestBuilder {
         case "application/fhir+xml":
         case "text/xml":
           if (!format.contains("xml")) {
-            System.out.println("Got xml response expecting "+format+" from "+source+" with status "+code);            
+            log.warn("Got xml response expecting "+format+" from "+source+" with status "+code);
           }
           resource = getParser(ResourceFormat.RESOURCE_XML.getHeader()).parse(body);
           break;
@@ -225,8 +227,8 @@ public class FhirRequestBuilder {
           resource = OperationOutcomeUtilities.outcomeFromTextError(XhtmlUtils.convertHtmlToText(response.getContentAsString(), source));
           break;
         default: // not sure what else to do? 
-          System.out.println("Got content-type '"+contentType+"' from "+source);
-          System.out.println(body);
+          log.warn("Got content-type '"+contentType+"' from "+source);
+          log.warn(body);
           resource = OperationOutcomeUtilities.outcomeFromTextError(body);
         }
       }
@@ -241,14 +243,14 @@ public class FhirRequestBuilder {
         throw new EFhirClientException("Error from "+source+": " + ResourceUtilities.getErrorDescription(error), error);
       } else {
         // umm, weird...
-        System.out.println("Got OperationOutcome with no error from "+source+" with status "+code);            
-        System.out.println(body);
+        log.info("Got OperationOutcome with no error from "+source+" with status "+code);
+        log.info(body);
         return null;
       }
     }
     if (resource == null) {
-      System.out.println("No resource from "+source+" with status "+code);   
-      System.out.println(body);         
+      log.error("No resource from "+source+" with status "+code);
+      log.error(body);
       return null; // shouldn't get here?
     }
     if (resourceType != null && !resource.fhirType().equals(resourceType)) {

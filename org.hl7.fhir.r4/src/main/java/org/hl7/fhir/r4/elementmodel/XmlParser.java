@@ -493,7 +493,7 @@ public class XmlParser extends ParserBase {
   public void compose(Element e, OutputStream stream, OutputStyle style, String base)
       throws IOException, FHIRException {
     XMLWriter xml = new XMLWriter(stream, "UTF-8");
-    xml.setSortAttributes(false);
+    xml.setCanonical(false);
     xml.setPretty(style == OutputStyle.PRETTY);
     xml.start();
     xml.setDefaultNamespace(e.getProperty().getNamespace());

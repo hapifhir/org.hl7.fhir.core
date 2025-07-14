@@ -135,4 +135,9 @@ public class JsonCreatorGson implements JsonCreator {
   @Override
   public boolean canElide() { return false;}
 
+  @Override
+  public boolean isCanonical() {
+    return false;
+  }
+
 }

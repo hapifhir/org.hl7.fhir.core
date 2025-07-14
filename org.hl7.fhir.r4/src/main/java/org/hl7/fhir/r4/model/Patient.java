@@ -2383,16 +2383,6 @@ public class Patient extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getGeneralPractitionerTarget() {
-    if (this.generalPractitionerTarget == null)
-      this.generalPractitionerTarget = new ArrayList<Resource>();
-    return this.generalPractitionerTarget;
-  }
-
-  /**
    * @return {@link #managingOrganization} (Organization that is the custodian of
    *         the patient record.)
    */

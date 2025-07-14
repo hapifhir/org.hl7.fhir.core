@@ -45,6 +45,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.Getter;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -62,6 +63,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.NamingSystem;
+import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
@@ -115,18 +117,6 @@ public interface IWorkerContext {
   public interface ITerminologyOperationDetails {
 
     public void seeSupplement(CodeSystem supp);
-  }
-  /**
-   @deprecated This interface only exists to provide backward compatibility for the following two projects:
-   <a href="https://github.com/cqframework/clinical-reasoning">clinical-reasoning</a>
-   <a href="https://github.com/cqframework/clinical_quality_language/">clinical_quality-language</a>
-
-   Due to a circular dependency, they cannot be updated without a release of HAPI, which requires backwards
-   compatibility with core version 6.1.2.2
-   **/
-  @Deprecated(forRemoval = true)
-  public interface ILoggingService extends org.hl7.fhir.r5.context.ILoggingService{
-
   }
   public class OIDDefinitionComparer implements Comparator<OIDDefinition> {
 
@@ -481,8 +471,19 @@ public interface IWorkerContext {
    * @return
    * @throws Exception 
    */
+  @Deprecated
   public boolean supportsSystem(String system) throws TerminologyServiceException;
+  @Deprecated
   public boolean supportsSystem(String system, FhirPublication fhirVersion) throws TerminologyServiceException;
+
+  /**
+   * return the System Support Information for the server that serves the specified code system
+   * @param system
+   * @param version
+   * @return
+   */
+  public SystemSupportInformation getTxSupportInfo(String system, String version);
+  public SystemSupportInformation getTxSupportInfo(String system);
 
   /**
    * ValueSet Expansion - see $expand
@@ -653,9 +654,8 @@ public interface IWorkerContext {
    * @param codes
    * @param vs
    */
-  public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs);
-  public void validateCodeBatchByRef(ValidationOptions options, List<? extends CodingValidationRequest> codes, String vsUrl);
-
+  public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs, boolean passVS);
+  public OperationOutcome validateTxResource(ValidationOptions options, Resource resource);
 
   // todo: figure these out
   public Map<String, NamingSystem> getNSUrlMap();
@@ -747,21 +747,6 @@ public interface IWorkerContext {
    * 
    * note that the package system uses lazy loading; the loader will be called later when the classes that use the context need the relevant resource
    *
-   * Deprecated - use the simpler method where the types come from the loader.
-   * 
-   * @param pi - the package to load
-   * @param loader - an implemenation of IContextResourceLoader that knows how to read the resources in the package (e.g. for the appropriate version).
-   * @param types - which types of resources to load
-   * @return the number of resources loaded
-   */
-  @Deprecated
-  int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, Set<String> types) throws FileNotFoundException, IOException, FHIRException;
-
-  /**
-   * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package
-   * 
-   * note that the package system uses lazy loading; the loader will be called later when the classes that use the context need the relevant resource
-   *
    * This method also loads all the packages that the package depends on (recursively)
    * 
    * @param pi - the package to load
@@ -816,4 +801,28 @@ public interface IWorkerContext {
 
   public boolean isServerSideSystem(String url);
 
+  class SystemSupportInformation {
+    // whether the ssytem(/version) is supported
+    @Getter
+    private boolean supported;
+
+    // the server that supports the system(/version)
+    // maybe null for some systems where we never consult any server
+    @Getter
+    private String server;
+
+    // if the server supports it, the set of test cases the server claims to pass (or null)
+    @Getter
+    private String testVersion;
+
+    public SystemSupportInformation(boolean supported, String server, String testVersion) {
+      this.supported = supported;
+      this.server = server;
+      this.testVersion = testVersion;
+    }
+
+    public SystemSupportInformation(boolean supported) {
+      this.supported = supported;
+    }
+  }
 }

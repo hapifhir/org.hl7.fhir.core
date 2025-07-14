@@ -37,6 +37,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r4b.model.BooleanType;
@@ -59,6 +60,7 @@ import org.hl7.fhir.r4b.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 
+@Slf4j
 public class CodeSystemUtilities {
 
   public static class ConceptDefinitionComponentSorter implements Comparator<ConceptDefinitionComponent> {
@@ -376,7 +378,7 @@ public class CodeSystemUtilities {
           cs.setUserData("ballot.package", pckage);
         else if (!pckage.equals(cs.getUserString("ballot.package")))
           if (!"infrastructure".equals(cs.getUserString("ballot.package")))
-            System.out.println("Code System " + cs.getUrl() + ": ownership clash " + pckage + " vs "
+            log.warn("Code System " + cs.getUrl() + ": ownership clash " + pckage + " vs "
                 + cs.getUserString("ballot.package"));
       }
       if (status == StandardsStatus.NORMATIVE) {

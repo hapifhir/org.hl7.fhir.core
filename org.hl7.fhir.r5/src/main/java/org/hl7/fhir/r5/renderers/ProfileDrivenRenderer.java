@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -32,6 +33,7 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class ProfileDrivenRenderer extends ResourceRenderer {
 
   private Set<String> containedIds = new HashSet<>();
@@ -53,10 +55,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         generateByProfile(status, r, sd, r, ed, context.getProfileUtilities().getChildList(sd, ed), x, r.fhirType(), context.isTechnicalMode(), 0);
       }
     } catch (Exception e) {
-      if (DEBUG) {
-        System.out.println(context.formatPhrase(RenderingContext.PROF_DRIV_ERR_GEN_NARR) +r.fhirType()+"/"+r.getId()+": "+e.getMessage());
-        e.printStackTrace();
-      }
+      log.debug(context.formatPhrase(RenderingContext.PROF_DRIV_ERR_GEN_NARR) +r.fhirType()+"/"+r.getId()+": "+e.getMessage(), e);
       x.para().b().style("color: maroon").tx(context.formatPhrase(RenderingContext.PROF_DRIV_EXCP, e.getMessage())+" ");
     }
   }
@@ -346,12 +345,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
              name = name.substring(0, name.length() - 3);
            if (showCodeDetails || !isDefaultValue(displayHints, p.getValues())) {
 
-             para.b().addText(name);
+             markBoilerplate(para.b()).addText(name);
              para.tx(": ");
              if (renderAsList(child) && p.getValues().size() > 1) {
                XhtmlNode list = x.ul();
                for (ResourceWrapper v : p.getValues())
-                 renderLeaf(status, res, v, profile, child, x, list.li(), false, showCodeDetails, displayHints, indent);
+                 renderLeaf(status, res, v, profile, child, x, xlinkNarrative(list.li(), v), false, showCodeDetails, displayHints, indent);
              } else {
                boolean first = true;
                for (ResourceWrapper v : p.getValues()) {
@@ -360,7 +359,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
                  } else {
                    para.tx(", ");
                  }
-                 renderLeaf(status, res, v, profile, child, x, para, false, showCodeDetails, displayHints, indent);
+                 renderLeaf(status, res, v, profile, child, x, spanIfTracking(para, v), false, showCodeDetails, displayHints, indent);
                }
              }
            }

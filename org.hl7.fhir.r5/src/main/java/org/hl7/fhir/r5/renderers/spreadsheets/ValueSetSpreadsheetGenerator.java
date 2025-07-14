@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.renderers.spreadsheets;
 import java.io.IOException;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -15,6 +16,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator {
 
   public ValueSetSpreadsheetGenerator(IWorkerContext context) {
@@ -27,7 +29,7 @@ public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator 
 
   public ValueSetSpreadsheetGenerator renderValueSet(ValueSet vs) throws IOException {
     if (vs == null) {
-      System.out.println("no valueset!");
+      log.warn("no valueset!");
     }
     addValueSetMetadata(renderCanonicalResource(vs, false), vs);
     int i = 0;

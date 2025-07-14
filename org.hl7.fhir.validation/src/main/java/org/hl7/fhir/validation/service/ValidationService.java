@@ -21,11 +21,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nonnull;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.context.SystemOutLoggingService;
+import org.hl7.fhir.r5.context.Slf4JLoggingService;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.LanguageUtils;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -95,11 +96,13 @@ import org.hl7.fhir.validation.service.renderers.NativeRenderer;
 import org.hl7.fhir.validation.service.renderers.ValidationOutputRenderer;
 import org.hl7.fhir.validation.service.utils.Common;
 import org.hl7.fhir.validation.service.utils.EngineMode;
+import org.hl7.fhir.validation.service.utils.Slf4JOutputStream;
 import org.hl7.fhir.validation.service.utils.VersionSourceInformation;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.instance.advisor.JsonDrivenPolicyAdvisor;
 import org.hl7.fhir.validation.instance.advisor.TextDrivenPolicyAdvisor;
 
+@Slf4j
 public class ValidationService {
 
   private final SessionCache sessionCache;
@@ -148,9 +151,9 @@ public class ValidationService {
     validationEngine.setLanguage(request.getValidationContext().getLang());
     validationEngine.setLocale(request.getValidationContext().getLocale());
     if (request.getValidationContext().getProfiles().size() > 0) {
-      System.out.println("  .. validate " + request.listSourceFiles() + " against " + request.getValidationContext().getProfiles().toString());
+      log.info("  .. validate " + request.listSourceFiles() + " against " + request.getValidationContext().getProfiles().toString());
     } else {
-      System.out.println("  .. validate " + request.listSourceFiles());
+      log.info("  .. validate " + request.listSourceFiles());
     }
 
     ValidationResponse response = new ValidationResponse().setSessionId(sessionId).setValidationTimes(new HashMap<>());
@@ -158,7 +161,6 @@ public class ValidationService {
     for (FileInfo fileToValidate : request.getFilesToValidate()) {
       if (fileToValidate.getFileType() == null) {
         Manager.FhirFormat format = ResourceChecker.checkIsResource(validationEngine.getContext(),
-          false,
           fileToValidate.getFileContent().getBytes(),
           fileToValidate.getFileName(),
           false);
@@ -189,7 +191,7 @@ public class ValidationService {
       }
     }
 
-    System.out.println("  Max Memory: "+Runtime.getRuntime().maxMemory());
+    log.info("  Max Memory: "+Runtime.getRuntime().maxMemory());
     return response;
   }
 
@@ -247,7 +249,7 @@ public class ValidationService {
 
   public void validateSources(ValidationContext validationContext, ValidationEngine validator, ValidatorWatchMode watch, int watchScanDelay, int watchSettleTime) throws Exception {
     if (validationContext.getProfiles().size() > 0) {
-      System.out.println("  Profiles: " + validationContext.getProfiles());
+      log.info("  Profiles: " + validationContext.getProfiles());
     }
     IgLoader igLoader = new IgLoader(validator.getPcm(), validator.getContext(), validator.getVersion());
         
@@ -265,8 +267,8 @@ public class ValidationService {
       if (r != null) {
         statusNeeded = true;
         MemoryMXBean mbean = ManagementFactory.getMemoryMXBean();
-        System.out.println("Done. " + validator.getContext().clock().report()+". Memory = "+Utilities.describeSize(mbean.getHeapMemoryUsage().getUsed()+mbean.getNonHeapMemoryUsage().getUsed()));
-        System.out.println();
+        log.info("Done. " + validator.getContext().clock().report()+". Memory = "+Utilities.describeSize(mbean.getHeapMemoryUsage().getUsed()+mbean.getNonHeapMemoryUsage().getUsed()));
+        log.info("");
 
         PrintStream dst = null;
         ValidationOutputRenderer renderer = makeValidationOutputRenderer(validationContext);
@@ -275,7 +277,7 @@ public class ValidationService {
         renderer.setRunDate(runDate);
         if (renderer.isSingleFile()) {
           if (validationContext.getOutput() == null) {
-            dst = System.out;
+            dst = new PrintStream(new Slf4JOutputStream());
           } else {
             dst = new PrintStream(ManagedFileAccess.outStream(Utilities.path(validationContext.getOutput())));
           }
@@ -302,7 +304,7 @@ public class ValidationService {
           }
         } else if (r == null) {
           ec = ec + 1;
-          System.out.println("No output from validation - nothing to validate");
+          log.info("No output from validation - nothing to validate");
         } else {
           renderer.start(false);
           OperationOutcome op = (OperationOutcome) r;
@@ -318,17 +320,17 @@ public class ValidationService {
         if (validationContext.getHtmlOutput() != null) {
           String html = new HTMLOutputGenerator(records).generate(System.currentTimeMillis() - start);
           FileUtilities.stringToFile(html, validationContext.getHtmlOutput());
-          System.out.println("HTML Summary in " + validationContext.getHtmlOutput());
+          log.info("HTML Summary in " + validationContext.getHtmlOutput());
         }
 
         if (validationContext.isShowTerminologyRouting()) {
-          System.out.println("");
-          System.out.println("Terminology Routing Dump ---------------------------------------");
+          log.info("");
+          log.info("Terminology Routing Dump ---------------------------------------");
           if (validator.getContext().getTxClientManager().getInternalLog().isEmpty()) {
-            System.out.println("(nothing happened)");            
+            log.info("(nothing happened)");
           } else {
-            for (InternalLogEvent log : validator.getContext().getTxClientManager().getInternalLog()) {
-              System.out.println(log.getMessage()+" -> "+log.getServer()+" (for VS "+log.getVs()+" with systems '"+log.getSystems()+"', choices = '"+log.getChoices()+"')");
+            for (InternalLogEvent logEvent : validator.getContext().getTxClientManager().getInternalLog()) {
+              log.info(logEvent.getMessage()+" -> "+logEvent.getServer()+" (for VS "+logEvent.getVs()+" with systems '"+logEvent.getSystems()+"', choices = '"+logEvent.getChoices()+"')");
             }
           }
           validator.getContext().getTxClientManager().getInternalLog().clear();
@@ -336,7 +338,7 @@ public class ValidationService {
       }
       if (watch != ValidatorWatchMode.NONE) {
         if (statusNeeded) {
-          System.out.println("Watching for changes ("+Integer.toString(watchScanDelay)+"ms cycle)");
+          log.info("Watching for changes ("+Integer.toString(watchScanDelay)+"ms cycle)");
         }
         Thread.sleep(watchScanDelay);
       }
@@ -381,7 +383,7 @@ public class ValidationService {
     } else if (Utilities.existsInList(style, "json")) {
       return new NativeRenderer(FhirFormat.JSON);
     } else {
-      System.out.println("Unknown output style '"+style+"'");
+      log.info("Unknown output style '"+style+"'");
       return new DefaultRenderer();
     }
   }
@@ -394,7 +396,7 @@ public class ValidationService {
 
       List<String> sources = validationContext.getSources();
       if ((sources.size() == 1) && (validationContext.getOutput() != null)) {
-        System.out.println(" ...convert");
+        log.info(" ...convert");
         validator.convert(sources.get(0), validationContext.getOutput());
       } else {
         if (validationContext.getOutputSuffix() == null) {
@@ -403,14 +405,14 @@ public class ValidationService {
         for (int i = 0; i < sources.size(); i++) {
             String output = sources.get(i) + "." + validationContext.getOutputSuffix();
             validator.convert(sources.get(i), output);
-            System.out.println(" ...convert [" + i +  "] (" + sources.get(i) + " to " + output + ")");
+            log.info(" ...convert [" + i +  "] (" + sources.get(i) + " to " + output + ")");
         }
       }
   }
 
   public void evaluateFhirpath(ValidationContext validationContext, ValidationEngine validator) throws Exception {
-    System.out.println(" ...evaluating " + validationContext.getFhirpath());
-    System.out.println(validator.evaluateFhirPath(validationContext.getSources().get(0), validationContext.getFhirpath()));
+    log.info(" ...evaluating " + validationContext.getFhirpath());
+    log.info(validator.evaluateFhirPath(validationContext.getSources().get(0), validationContext.getFhirpath()));
   }
 
   public void generateSnapshot(ValidationContext validationContext, ValidationEngine validator) throws Exception {
@@ -422,7 +424,7 @@ public class ValidationService {
       List<String> sources = validationContext.getSources();
       if ((sources.size() == 1) && (validationContext.getOutput() != null)) {
         StructureDefinition r = validator.snapshot(sources.get(0), validationContext.getSv());
-        System.out.println(" ...generated snapshot successfully");
+        log.info(" ...generated snapshot successfully");
         validator.handleOutput(r, validationContext.getOutput(), validationContext.getSv());
       } else {
         if (validationContext.getOutputSuffix() == null) {
@@ -432,7 +434,7 @@ public class ValidationService {
           StructureDefinition r = validator.snapshot(sources.get(i), validationContext.getSv());
           String output = sources.get(i) + "." + validationContext.getOutputSuffix();
           validator.handleOutput(r, output, validationContext.getSv());
-          System.out.println(" ...generated snapshot [" + i +  "] successfully (" + sources.get(i) + " to " + output + ")");
+          log.info(" ...generated snapshot [" + i +  "] successfully (" + sources.get(i) + " to " + output + ")");
         }
       }
 
@@ -440,7 +442,7 @@ public class ValidationService {
 
   public void generateNarrative(ValidationContext validationContext, ValidationEngine validator) throws Exception {
     Resource r = validator.generate(validationContext.getSources().get(0), validationContext.getSv());
-    System.out.println(" ...generated narrative successfully");
+    log.info(" ...generated narrative successfully");
     if (validationContext.getOutput() != null) {
       validator.handleOutput(r, validationContext.getOutput(), validationContext.getSv());
     }
@@ -463,7 +465,7 @@ public class ValidationService {
       }
       validator.setMapLog(validationContext.getMapLog());
       org.hl7.fhir.r5.elementmodel.Element r = validator.transform(validationContext.getSources().get(0), validationContext.getMap());
-      System.out.println(" ...success");
+      log.info(" ...success");
       if (validationContext.getOutput() != null) {
         FileOutputStream s = ManagedFileAccess.outStream(validationContext.getOutput());
         if (validationContext.getOutput() != null && validationContext.getOutput().endsWith(".json"))
@@ -473,7 +475,7 @@ public class ValidationService {
         s.close();
       }
     } catch (Exception e) {
-      System.out.println(" ...Failure: " + e.getMessage());
+      log.info(" ...Failure: " + e.getMessage());
       e.printStackTrace();
     }
   }
@@ -498,9 +500,9 @@ public class ValidationService {
       if (map == null)
         throw new Exception("Unable to locate map " + validationContext.getMap());
       validator.handleOutput(map, validationContext.getOutput(), validator.getVersion());
-      System.out.println(" ...success");
+      log.info(" ...success");
     } catch (Exception e) {
-      System.out.println(" ...Failure: " + e.getMessage());
+      log.info(" ...Failure: " + e.getMessage());
       e.printStackTrace();
     }
   }
@@ -520,10 +522,10 @@ public class ValidationService {
         validator.setMapLog(validationContext.getMapLog());
       }
       byte[] r = validator.transformVersion(validationContext.getSources().get(0), validationContext.getTargetVer(), validationContext.getOutput().endsWith(".json") ? Manager.FhirFormat.JSON : Manager.FhirFormat.XML, validationContext.getCanDoNative());
-      System.out.println(" ...success");
+      log.info(" ...success");
       FileUtilities.bytesToFile(r, validationContext.getOutput());
     } catch (Exception e) {
-      System.out.println(" ...Failure: " + e.getMessage());
+      log.info(" ...Failure: " + e.getMessage());
       e.printStackTrace();
     }
   }
@@ -537,7 +539,7 @@ public class ValidationService {
 
     if (!sessionCache.sessionExists(sessionId)) {
       if (sessionId != null) {
-        System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
+        log.info("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
       }
       sessionCache.cleanUp();
       if (validationContext.getSv() == null) {
@@ -548,10 +550,10 @@ public class ValidationService {
 
       ValidationEngine validationEngine = getValidationEngineFromValidationContext(validationContext, engineDefinitions, tt);
       sessionId = sessionCache.cacheSession(validationEngine);
-      System.out.println("Cached new session. Cache size = " + sessionCache.getSessionIds().size());
+      log.info("Cached new session. Cache size = " + sessionCache.getSessionIds().size());
 
     } else {
-      System.out.println("Cached session exists for session id " + sessionId + ", returning stored validator session id. Cache size = " + sessionCache.getSessionIds().size());
+      log.info("Cached session exists for session id " + sessionId + ", returning stored validator session id. Cache size = " + sessionCache.getSessionIds().size());
     }
     return sessionId;
   }
@@ -575,12 +577,12 @@ public class ValidationService {
 
   @Nonnull
   protected ValidationEngine buildValidationEngine(ValidationContext validationContext, String definitions, TimeTracker timeTracker) throws IOException, URISyntaxException {
-    System.out.print("  Load FHIR v" + validationContext.getSv() + " from " + definitions);
+    log.info("  Loading FHIR v" + validationContext.getSv() + " from " + definitions);
     ValidationEngine validationEngine = getValidationEngineBuilder().withVersion(validationContext.getSv()).withTimeTracker(timeTracker)
         .withUserAgent(Common.getValidatorUserAgent()).withThoVersion(Constants.THO_WORKING_VERSION)
         .withExtensionsVersion(Constants.EXTENSIONS_WORKING_VERSION).fromSource(definitions);
 
-    System.out.println(" - " + validationEngine.getContext().countAllCaches() + " resources (" + timeTracker.milestone() + ")");
+    log.info("  Loaded FHIR - " + validationEngine.getContext().countAllCaches() + " resources (" + timeTracker.milestone() + ")");
 
     loadIgsAndExtensions(validationEngine, validationContext, timeTracker);
     if (validationContext.getTxCache() != null) {
@@ -588,15 +590,15 @@ public class ValidationService {
       validationEngine.getContext().initTxCache(cache);
     }
     if (validationEngine.getContext().getTxCache() == null || validationEngine.getContext().getTxCache().getFolder() == null) {
-      System.out.println("  No Terminology Cache");      
+      log.info("  No Terminology Cache");
     } else {
-      System.out.println("  Terminology Cache at "+validationEngine.getContext().getTxCache().getFolder());
+      log.info("  Terminology Cache at "+validationEngine.getContext().getTxCache().getFolder());
       if (validationContext.isClearTxCache()) {
-        System.out.println("  Terminology Cache Entries Cleaned out");
+        log.info("  Terminology Cache Entries Cleaned out");
         validationEngine.getContext().getTxCache().clear();
       }
     }
-    System.out.print("  Get set... ");
+    log.info("  Get set... ");
     validationEngine.setQuestionnaireMode(validationContext.getQuestionnaireMode());
     validationEngine.setLevel(validationContext.getLevel());
     validationEngine.setDoNative(validationContext.isDoNative());
@@ -608,6 +610,8 @@ public class ValidationService {
         validationEngine.getExtensionDomains().add(s);
       }
     }
+    validationEngine.getCertSources().addAll(validationContext.getCertSources());
+    validationEngine.getMatchetypes().addAll(validationContext.getMatchetypes());
     validationEngine.setLanguage(validationContext.getLang());
     validationEngine.setLocale(validationContext.getLocale());
     validationEngine.setSnomedExtension(validationContext.getSnomedCTCode());
@@ -663,7 +667,7 @@ public class ValidationService {
     validationEngine.setNoExperimentalContent(validationContext.isNoExperimentalContent());
     TerminologyCache.setNoCaching(validationContext.isNoInternalCaching());
     validationEngine.prepare(); // generate any missing snapshots
-    System.out.println(" go (" + timeTracker.milestone() + ")");
+    log.info("  ...go! (" + timeTracker.milestone() + ")");
     return validationEngine;
   }
 
@@ -674,34 +678,34 @@ public class ValidationService {
     if (!VersionUtilities.isR5Ver(validationEngine.getContext().getVersion())) {
       igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), "hl7.fhir.uv.extensions", false);
     }
-    System.out.print("  Terminology server " + validationContext.getTxServer());
-    String txver = validationEngine.setTerminologyServer(validationContext.getTxServer(), validationContext.getTxLog(), ver, !validationContext.getNoEcosystem());
-    System.out.println(" - Version " + txver + " (" + timeTracker.milestone() + ")");
+    final String lineStart = "  Terminology server " + validationContext.getTxServer();
+    final String txver = validationEngine.setTerminologyServer(validationContext.getTxServer(), validationContext.getTxLog(), ver, !validationContext.getNoEcosystem());
+    log.info(lineStart + " - Version " + txver + " (" + timeTracker.milestone() + ")");
     validationEngine.setDebug(validationContext.isDoDebug());
-    validationEngine.getContext().setLogger(new SystemOutLoggingService(validationContext.isDoDebug()));
+    validationEngine.getContext().setLogger(new Slf4JLoggingService(log));
     for (String src : validationContext.getIgs()) {
       igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), src, validationContext.isRecursive());
     }
-    System.out.println("  Package Summary: "+ validationEngine.getContext().loadedPackageSummary());
+    log.info("  Package Summary: "+ validationEngine.getContext().loadedPackageSummary());
   }
 
   public String determineVersion(ValidationContext validationContext) throws IOException {
     if (validationContext.getMode() != EngineMode.VALIDATION && validationContext.getMode() != EngineMode.INSTALL) {
       return "5.0";
     }
-    System.out.println("Scanning for versions (no -version parameter):");
+    log.info("Scanning for versions (no -version parameter):");
     VersionSourceInformation versions = scanForVersions(validationContext);
     for (String s : versions.getReport()) {
       if (!s.equals("(nothing found)")) {
-        System.out.println("  " + s);
+        log.info("  " + s);
       }
     }
     if (versions.isEmpty()) {
-      System.out.println("  No Version Info found: Using Default version R5");
+      log.info("  No Version Info found: Using Default version R5");
       return "5.0.0";
     }
     if (versions.size() == 1) {
-      System.out.println("-> use version " + versions.version());
+      log.info("-> use version " + versions.version());
       return versions.version();
     }
     throw new IllegalArgumentException("-> Multiple versions found. Specify a particular version using the -version parameter");
@@ -720,11 +724,11 @@ public class ValidationService {
       new ConceptMapSpreadsheetGenerator(validator.getContext()).renderConceptMap((ConceptMap) cr).finish(ManagedFileAccess.outStream(validationContext.getOutput()));
     } else {
       ok = false;
-      System.out.println(" ...Unable to generate spreadsheet for "+ validationContext.getSources().get(0)+": no way to generate a spreadsheet for a "+cr.fhirType());
+      log.info(" ...Unable to generate spreadsheet for "+ validationContext.getSources().get(0)+": no way to generate a spreadsheet for a "+cr.fhirType());
     }
 
     if (ok) {
-      System.out.println(" ...generated spreadsheet successfully");
+      log.info(" ...generated spreadsheet successfully");
     }
   }
 
@@ -737,7 +741,7 @@ public class ValidationService {
       transformLangInject(validationContext, validator);
       break;
     default:
-      System.out.println(" ...Unknown lang transform mode "+ validationContext.getLangTransform());
+      log.info(" ...Unknown lang transform mode "+ validationContext.getLangTransform());
     }
   }
 
@@ -751,7 +755,7 @@ public class ValidationService {
     List<SourceFile> refs = new ArrayList<>();
     ValidatorUtils.parseSources(validationContext.getSources(), refs, validator.getContext());
     for (SourceFile ref : refs) {
-      System.out.println("  Extract Translations from " + ref);
+      log.info("  Extract Translations from " + ref);
       org.hl7.fhir.validation.Content cnt = validator.getIgLoader().loadContent(ref.getRef(), "translate", false, true);
       Element e = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());
       LanguageProducerSession ps = po.startSession(e.fhirType()+"-"+e.getIdBase(), validationContext.getSrcLang());
@@ -770,7 +774,7 @@ public class ValidationService {
       psl.finish();
       ps.finish(); 
     }
-    System.out.println("Done - produced "+(po.fileCount()+xliff.fileCount()) + " files in "+dst);
+    log.info("Done - produced "+(po.fileCount()+xliff.fileCount()) + " files in "+dst);
   }
   
   private void transformLangInject(ValidationContext validationContext, ValidationEngine validator) throws IOException {
@@ -786,14 +790,14 @@ public class ValidationService {
     ValidatorUtils.parseSources(validationContext.getSources(), refs, validator.getContext());
     int t = 0;
     for (SourceFile ref : refs) {
-      System.out.println("  Inject Translations into " + ref);
+      log.info("  Inject Translations into " + ref);
       org.hl7.fhir.validation.Content cnt = validator.getIgLoader().loadContent(ref.getRef(), "translate", false, true);
       Element e = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());      
       t = t + new LanguageUtils(validator.getContext()).importFromTranslations(e, translations);
       Manager.compose(validator.getContext(), e, ManagedFileAccess.outStream(Utilities.path(dst, ManagedFileAccess.file(ref.getRef()).getName())), cnt.getCntType(),
           OutputStyle.PRETTY, null);
     }
-    System.out.println("Done - imported "+t+" translations into "+refs.size()+ " in "+dst);
+    log.info("Done - imported "+t+" translations into "+refs.size()+ " in "+dst);
   }
   
   private void loadTranslationSource(List<TranslationUnit> translations, String input) throws IOException {
@@ -808,13 +812,13 @@ public class ValidationService {
           try {
             translations.addAll(new PoGetTextProducer().loadSource(ManagedFileAccess.inStream(f)));
           } catch (Exception e) {
-            System.out.println("Error reading PO File "+f.getAbsolutePath()+": "+e.getMessage());
+            log.info("Error reading PO File "+f.getAbsolutePath()+": "+e.getMessage());
           }
         } else if (f.getName().endsWith(".xliff")) {
           try {
             translations.addAll(new XLIFFProducer().loadSource(ManagedFileAccess.inStream(f)));
           } catch (Exception e) {
-            System.out.println("Error reading XLIFF File "+f.getAbsolutePath()+": "+e.getMessage());
+            log.info("Error reading XLIFF File "+f.getAbsolutePath()+": "+e.getMessage());
           }          
         } else {
           try {
@@ -823,14 +827,14 @@ public class ValidationService {
             try {
               translations.addAll(new XLIFFProducer().loadSource(ManagedFileAccess.inStream(f)));
             } catch (Exception e2) {
-              System.out.println("Error reading File "+f.getAbsolutePath()+" as XLIFF: "+e2.getMessage());
-              System.out.println("Error reading File "+f.getAbsolutePath()+" as PO: "+e.getMessage());
+              log.info("Error reading File "+f.getAbsolutePath()+" as XLIFF: "+e2.getMessage());
+              log.info("Error reading File "+f.getAbsolutePath()+" as PO: "+e.getMessage());
             }   
           }
         }
       }
     } else {
-      System.out.println("Input not found: "+input);
+      log.info("Input not found: "+input);
     }    
   }
 
@@ -839,11 +843,11 @@ public class ValidationService {
   public void install(ValidationContext validationContext, ValidationEngine validator) throws FHIRException, IOException {
     cp = 0;
     cs = 0;
-    System.out.println("Generating Snapshots");
+    log.info("Generating Snapshots");
     for (String ig : validationContext.getIgs()) {
       processIG(validator, ig);
     }
-    System.out.println("Installed/Processed "+cp+" packages, generated "+cs+" snapshots");
+    log.info("Installed/Processed "+cp+" packages, generated "+cs+" snapshots");
   }
 
   private void processIG(ValidationEngine validator, String ig) throws FHIRException, IOException {
@@ -853,7 +857,7 @@ public class ValidationService {
       for (String d : npm.dependencies()) {
         processIG(validator, d);
       }
-      System.out.println("Processing "+ig);
+      log.info("Processing "+ig);
       cp++;
       for (String d : npm.listResources("StructureDefinition")) {
         String filename = npm.getFilePath(d);
@@ -874,22 +878,22 @@ public class ValidationService {
   public void codeGen(ValidationContext validationContext, ValidationEngine validationEngine) throws IOException {
     boolean ok = true;
     if (validationContext.getProfiles().isEmpty()) {
-      System.out.println("Must specify at least one profile to generate code for with -profile or -profiles ");
+      log.info("Must specify at least one profile to generate code for with -profile or -profiles ");
       ok = false;
     }
     if (validationContext.getPackageName() == null) {
-      System.out.println("Must provide a Java package name (-package-name)");
+      log.info("Must provide a Java package name (-package-name)");
       ok = false;
     }
     if (validationContext.getSv() == null) {
-      System.out.println("Must specify a version (-version)");
+      log.info("Must specify a version (-version)");
       ok = false;
     } else if (!VersionUtilities.isR4Ver(validationContext.getSv()) && !VersionUtilities.isR5Ver(validationContext.getSv())) {
-      System.out.println("Only versions 4 and 5 are supported (-version)");
+      log.info("Only versions 4 and 5 are supported (-version)");
       ok = false;
     }
     if (validationContext.getOutput() == null) {
-      System.out.println("Must provide an output directory (-output)");
+      log.info("Must provide an output directory (-output)");
       ok = false;
     }
     FileUtilities.createDirectory(validationContext.getOutput());
@@ -915,34 +919,34 @@ public class ValidationService {
           for (StructureDefinition sd : validationEngine.getContext().fetchResourcesByType(StructureDefinition.class)) {
             if (sd.getUrl().startsWith(profile.replace("*", ""))) {
               gen.setCanonical(sd.getUrl());
-              System.out.print("Generate for "+sd.getUrl());
+              log.info("Generating PE code for "+sd.getUrl());
               String s = gen.execute();
-              System.out.println(": "+s);
+              log.info("Generated PE code for "+sd.getUrl() + ": "+s);
             }
           }
         } else {
           gen.setCanonical(profile);
-          System.out.print("Generate for "+profile);
+          log.info("Generating PE code for "+ profile);
           String s = gen.execute();
-          System.out.println(": "+s);
+          log.info("Generated PE code for "+ profile + ": "+s);
         }
       }
-      System.out.println("Done");
+      log.info("Done");
     }
   }
 
   public void instanceFactory(ValidationContext validationContext, ValidationEngine validationEngine) throws IOException {
     boolean ok = true;
     if (validationContext.getSource() == null) {
-      System.out.println("Must specify a source (-version)");
+      log.info("Must specify a source (-version)");
       ok = false;
     } else if (!ManagedFileAccess.file(validationContext.getSource()).exists()) {
-      System.out.println("Factory source '"+ validationContext.getSource()+"' not found");
+      log.info("Factory source '"+ validationContext.getSource()+"' not found");
       ok = false;
     }
 
     if (ok) {
-      System.out.println("Preparing to execute");
+      log.info("Preparing to execute");
               
       FHIRPathEngine fpe = new FHIRPathEngine(validationEngine.getContext());
       TestDataHostServices hs = new TestDataHostServices(validationEngine.getContext(), new DateTimeType(new Date()), new StringType(VersionUtilities.getSpecUrl(validationEngine.getContext().getVersion())));
@@ -955,18 +959,18 @@ public class ValidationService {
       LiquidEngine liquid = new LiquidEngine(validationEngine.getContext(), hs);
       
       String path = FileUtilities.getDirectoryForFile(validationContext.getSource());
-      String log = Utilities.path(path, "log");
-      FileUtilities.createDirectory(log);
+      String logPath = Utilities.path(path, "log");
+      FileUtilities.createDirectory(logPath);
                   
       JsonObject json = JsonParser.parseObjectFromFile(validationContext.getSource());
       for (JsonObject fact : json.forceArray("factories").asJsonObjects()) {
-        TestDataFactory tdf = new TestDataFactory(validationEngine.getContext(), fact, liquid, fpe, "http://hl7.org/fhir/test", path, log, new HashMap<>(), new Locale("us"));
+        TestDataFactory tdf = new TestDataFactory(validationEngine.getContext(), fact, liquid, fpe, "http://hl7.org/fhir/test", path, logPath, new HashMap<>(), new Locale("us"));
         tdf.setTesting(true); // no randomness
-        System.out.println("Execute Test Data Factory '"+tdf.getName()+"'. Log in "+Utilities.path(log, tdf.statedLog()));
+        log.info("Execute Test Data Factory '"+tdf.getName()+"'. Log in "+Utilities.path(logPath, tdf.statedLog()));
         tdf.execute();
       }
 
-      System.out.println("Done");
+      log.info("Done");
     }
   }
 

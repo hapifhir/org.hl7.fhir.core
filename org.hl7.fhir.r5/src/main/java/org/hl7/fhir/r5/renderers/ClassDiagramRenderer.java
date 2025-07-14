@@ -941,7 +941,7 @@ public class ClassDiagramRenderer {
             String link = vs == null ? null : vs.getWebPath();
             String suffix = "";
             suffix = getBindingSuffix(b);
-            div.ahOrNot(link, b.getDescription()+" (Strength="+b.getStrength().getDisplay()+")").tx(ls.see(name+suffix));
+            div.ahOrNot(link, b.getDescription()+" (Strength="+(b.getStrength() == null ? "null " : b.getStrength().getDisplay())+")").tx(ls.see(name+suffix));
           }
           div.tx(ls.see(" \u00BB"));
 
@@ -953,6 +953,9 @@ public class ClassDiagramRenderer {
 
   private String getBindingSuffix(ElementDefinitionBindingComponent b) {
     String suffix;
+    if (b.getStrength() == null) {
+      return "??";
+    }
     switch (b.getStrength()) {
     case EXAMPLE:
       suffix = "??";

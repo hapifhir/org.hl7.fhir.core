@@ -52,17 +52,17 @@ public class OperationDefinitionValidator extends BaseValidator {
       if (profile.childByName("parameter") != null && profile.childByName("parameter").hasSlices()) {
         for (DefinitionNavigator slice : profile.childByName("parameter").slices()) {
           DefinitionNavigator nameSlice = slice.childByName("name");
-          if (rule(errors, "2025-04-08", IssueType.UNKNOWN, stack, sdt != null, I18nConstants.OPDEF_PROFILE_NO_SLICE, use, slice.current().getSliceName())) {
+          if (rule(errors, "2025-04-08", IssueType.UNKNOWN, stack, nameSlice != null, I18nConstants.OPDEF_PROFILE_NO_SLICE, use, slice.current().getSliceName())) {
             DataType name = nameSlice.current().hasFixed() ? nameSlice.current().getFixed() : nameSlice.current().getPattern();
             if (rule(errors, "2025-04-08", IssueType.UNKNOWN, stack, sdt != null, I18nConstants.OPDEF_PROFILE_NO_FIXED, use, slice.current().getSliceName())) {
               String paramName = name.primitiveValue();
               Element param = getParamByName(params, paramName, use);
               if (param == null) {
-                warning(errors, "2025-04-08", IssueType.UNKNOWN, stack, false, I18nConstants.OPDEF_PROFILE_NOT_IN_PARAM, use, paramName);
+                warning(errors, "2025-04-08", IssueType.UNKNOWN, stack, false, I18nConstants.OPDEF_PROFILE_NOT_IN_PARAM, use, paramName, sdt.getVersionedUrl());
               } else {
                 matched.add(param);
                 NodeStack nsp = stack.push(param, params.indexOf(param), null, null);
-                ok = compareParameterDefinitions(errors, nsp, use, paramName, slice, param) && ok;
+                ok = compareParameterDefinitions(errors, nsp, use, paramName, slice, param, sdt) && ok;
               }
             } else {
               ok = false;
@@ -86,17 +86,17 @@ public class OperationDefinitionValidator extends BaseValidator {
     return ok;
   }
 
-  private boolean compareParameterDefinitions(List<ValidationMessage> errors, NodeStack nsp, String use, String paramName, DefinitionNavigator slice, Element param) {
+  private boolean compareParameterDefinitions(List<ValidationMessage> errors, NodeStack nsp, String use, String paramName, DefinitionNavigator slice, Element param, StructureDefinition sdt) {
     boolean ok = true;
     int minParam = Utilities.parseInt(param.getNamedChildValue("min"), -1);
     int minProfile = slice.current().getMin();
     if (minParam > -1) {
-      ok = rule(errors, "2025-04-08", IssueType.UNKNOWN, nsp, minParam == minProfile, I18nConstants.OPDEF_PROFILE_NOT_VALUE_MISMATCH, use, paramName, "min", param.getNamedChildValue("min"), slice.current().getMin()) && ok;
+      ok = rule(errors, "2025-04-08", IssueType.UNKNOWN, nsp, minParam == minProfile, I18nConstants.OPDEF_PROFILE_NOT_VALUE_MISMATCH, use, paramName, "min", param.getNamedChildValue("min"), slice.current().getMin(), sdt) && ok;
     }
     int maxParam = parseMax(param.getNamedChildValue("max"));
     int maxProfile =  parseMax(slice.current().getMax());
     if (maxParam > -1 && maxProfile > -1) {
-      ok = rule(errors, "2025-04-08", IssueType.UNKNOWN, nsp, maxParam == maxProfile, I18nConstants.OPDEF_PROFILE_NOT_VALUE_MISMATCH, use, paramName, "max", param.getNamedChildValue("max"), slice.current().getMax()) && ok;
+      ok = rule(errors, "2025-04-08", IssueType.UNKNOWN, nsp, maxParam == maxProfile, I18nConstants.OPDEF_PROFILE_NOT_VALUE_MISMATCH, use, paramName, "max", param.getNamedChildValue("max"), slice.current().getMax(), sdt) && ok;
     }
     
     List<String> allowedTypes = new ArrayList<>();
@@ -125,7 +125,7 @@ public class OperationDefinitionValidator extends BaseValidator {
       for (TypeRefComponent tr : valueDefn.current().getType()) {
         String t = tr.getWorkingCode();
         profileTypes.add(t);
-        ok = rule(errors, "2025-04-08", IssueType.INVALID, nsp, allowedTypes.contains(t), I18nConstants.OPDEF_PROFILE_TYPE_NOT_IN_PARAMS, use, paramName, t, CommaSeparatedStringBuilder.join2(",", " and ", allowedTypes)) && ok;
+        ok = rule(errors, "2025-04-08", IssueType.INVALID, nsp, allowedTypes.contains(t), I18nConstants.OPDEF_PROFILE_TYPE_NOT_IN_PARAMS, use, paramName, t, presentProfilesList(allowedTypes), sdt.getVersionedUrl()) && ok;
         for (CanonicalType ct : tr.getTargetProfile()) {
           profileTargets.add(ct.asStringValue());
         }
@@ -135,30 +135,44 @@ public class OperationDefinitionValidator extends BaseValidator {
       for (TypeRefComponent tr : resDefn.current().getType()) {
         String t = tr.getWorkingCode();
         profileTypes.add(t);
-        for (CanonicalType ct : tr.getProfile()) {
+        for (CanonicalType ct : tr.getTargetProfile()) {
           profileTargets.add(ct.asStringValue());
         }
-        ok = rule(errors, "2025-04-08", IssueType.INVALID, nsp, allowedTypes.contains(t), I18nConstants.OPDEF_PROFILE_TYPE_NOT_IN_PARAMS, use, paramName, t, CommaSeparatedStringBuilder.join2(",", " and ", allowedTypes)) && ok;
+        ok = rule(errors, "2025-04-08", IssueType.INVALID, nsp, allowedTypes.contains(t), I18nConstants.OPDEF_PROFILE_TYPE_NOT_IN_PARAMS, use, paramName, t, presentProfilesList(allowedTypes), sdt.getVersionedUrl()) && ok;
       }
     }
     for (String t : allowedTypes) {
-      ok = rule(errors, "2025-04-08", IssueType.INVALID, nsp, profileTypes.contains(t), I18nConstants.OPDEF_PROFILE_TYPE_NOT_IN_PROFILE, use, paramName, t, CommaSeparatedStringBuilder.join2(",", " and ", profileTypes)) && ok;        
+      ok = rule(errors, "2025-04-08", IssueType.INVALID, nsp, profileTypes.contains(t), I18nConstants.OPDEF_PROFILE_TYPE_NOT_IN_PROFILE, use, paramName, t, presentProfilesList(profileTypes), sdt.getVersionedUrl()) && ok;        
     }
 
     for (String t : allowedTargets) {
-      ok = rule(errors, "2025-04-08", IssueType.INVALID, nsp, profileTargets.contains(t), I18nConstants.OPDEF_PROFILE_PROFILE_NOT_IN_PARAMS, use, paramName, t, CommaSeparatedStringBuilder.join2(",", " and ", profileTargets)) && ok;        
+      ok = rule(errors, "2025-04-08", IssueType.INVALID, nsp, profileTargets.contains(t), I18nConstants.OPDEF_PROFILE_PROFILE_NOT_IN_PROFILE, use, paramName, t, presentProfilesList(profileTargets), sdt.getVersionedUrl()) && ok;        
     }
     
-    for (String t : profileTargets) {
-      ok = rule(errors, "2025-04-08", IssueType.INVALID, nsp, allowedTargets.contains(t), I18nConstants.OPDEF_PROFILE_PROFILE_NOT_IN_PROFILE, use, paramName, t, CommaSeparatedStringBuilder.join2(",", " and ", allowedTargets)) && ok;        
+    String paramType = param.getNamedChildValue("type");
+    if (paramType!=null && !paramType.equals("Element")) {
+      // If the type is Element, then it's a polymorphic type and target profiles can't be declared in the operation because doing so
+      // would violate opd-3: 'A targetProfile can only be specified for parameters of type Reference or Canonical'
+      // Therefore, we can't check.  (Also, the parameter could be a mix of Reference and canonical, and each could have different targets.)
+      for (String t : profileTargets) {
+        ok = rule(errors, "2025-04-08", IssueType.INVALID, nsp, allowedTargets.contains(t), I18nConstants.OPDEF_PROFILE_PROFILE_NOT_IN_PARAMS, use, paramName, t, presentProfilesList(allowedTargets), sdt.getVersionedUrl()) && ok;        
+      }
     }
-    
+
 //    type / allowedType / extension
 //    targetProfile
 //    binding
 //    
     // toodo later - part
     return ok;
+  }
+
+  private Object presentProfilesList(List<String> list) {
+    if (list.isEmpty()) {
+      return "(none)";
+    } else {
+      return CommaSeparatedStringBuilder.join2(",", " and ", Utilities.sorted(list));
+    }
   }
 
   private boolean isUsed(DefinitionNavigator focus, DefinitionNavigator other1, DefinitionNavigator other2) {

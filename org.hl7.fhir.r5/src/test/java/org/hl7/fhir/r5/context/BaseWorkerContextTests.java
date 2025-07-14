@@ -79,11 +79,6 @@ public class BaseWorkerContextTests {
     }
 
     @Override
-    public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, Set<String> types) throws FileNotFoundException, IOException, FHIRException {
-      return 0;
-    }
-
-    @Override
     public int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException {
       return 0;
     }
@@ -209,7 +204,7 @@ public class BaseWorkerContextTests {
   }
 
   @BeforeEach
-  public void beforeEach() {
+  public void beforeEach() throws IOException {
 
     Mockito.doReturn(DUMMY_URL).when(terminologyClient).getAddress();
     context.initTxCache(terminologyCache);
@@ -254,14 +249,9 @@ public class BaseWorkerContextTests {
       }
 
       @Override
-      public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, Set<String> types) throws FileNotFoundException, IOException, FHIRException {
-        return 0;
-      }
-
-      @Override
-      public int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException {
-        return 0;
-      }
+        public int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException {
+            return 0;
+        }
 
       @Override
       public boolean hasPackage(String id, String ver) {

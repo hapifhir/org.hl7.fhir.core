@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Kind;
@@ -18,6 +20,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.TerminologyUtilities;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
@@ -38,6 +41,7 @@ import org.hl7.fhir.validation.codesystem.BCP47Checker;
 import org.hl7.fhir.validation.codesystem.CPTChecker;
 import org.hl7.fhir.validation.codesystem.CodeSystemBasedChecker;
 import org.hl7.fhir.validation.codesystem.CodeSystemChecker;
+import org.hl7.fhir.validation.codesystem.CodeSystemChecker.StringWithFlag;
 import org.hl7.fhir.validation.codesystem.GeneralCodeSystemChecker;
 import org.hl7.fhir.validation.codesystem.LoincChecker;
 import org.hl7.fhir.validation.codesystem.RxNormChecker;
@@ -47,6 +51,7 @@ import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
+@Slf4j
 public class ValueSetValidator extends BaseValidator {
 
   public class ParameterDeclaration {
@@ -104,6 +109,7 @@ public class ValueSetValidator extends BaseValidator {
     private EnumSet<PropertyOperation> ops;
     private List<String> codeList = new ArrayList<>();
     private boolean change;
+    private boolean active;
 
     protected PropertyValidationRules(PropertyFilterType type, CodeValidationRule codeValidation, PropertyOperation... ops) {
       super();
@@ -146,6 +152,13 @@ public class ValueSetValidator extends BaseValidator {
     }
     public PropertyValidationRules setChange(boolean change) {
       this.change = change;
+      return this;
+    }
+    public boolean isActive() {
+      return active;
+    }
+    public PropertyValidationRules setActive(boolean active) {
+      this.active = active;
       return this;
     }
 
@@ -430,13 +443,13 @@ public class ValueSetValidator extends BaseValidator {
                   } else if (systemOk) {
                     batch.add(prepareValidateValueSetIncludeConcept(errors, concept, stack.push(concept, cc, null, null), system, version, csChecker));
                     if (batch.size() > VALIDATION_BATCH_SIZE) {
-                      executeValidationBatch(errors, vsid, retired, system, version, batch);
+                      executeValidationBatch(errors, vsid, retired, system, version, batch, stack);
                       batch.clear();
                     }
                   }
                   cc++;
                 }    
-                executeValidationBatch(errors, vsid, retired, system, version, batch);
+                executeValidationBatch(errors, vsid, retired, system, version, batch, stack);
               } catch (Exception e) {
                 ok = false;
                 VSCodingValidationRequest cv = batch.get(0);
@@ -459,21 +472,20 @@ public class ValueSetValidator extends BaseValidator {
   }
 
   private void executeValidationBatch(List<ValidationMessage> errors, String vsid, boolean retired, String system,
-      String version, List<VSCodingValidationRequest> batch) {
+      String version, List<VSCodingValidationRequest> batch, NodeStack baseStack) {
     if (batch.size() > 0) {
-      long t = System.currentTimeMillis();
-      if (settings.isDebug()) {
-        System.out.println("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
-      }
-      context.validateCodeBatch(ValidationOptions.defaults().withExampleOK(), batch, null);
-      if (settings.isDebug()) {
-        System.out.println("  :   .. "+(System.currentTimeMillis()-t)+"ms");
-      }
-      for (VSCodingValidationRequest cv : batch) {
-        if (version == null) {
-          warningOrError(!retired, errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode(), cv.getResult().getMessage());
-        } else {
-          warningOrError(!retired, errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, cv.getCoding().getCode(), cv.getResult().getMessage());
+      IWorkerContext.SystemSupportInformation txInfo = context.getTxSupportInfo(system, version);
+      if (warning(errors, "2025-07-07", IssueType.NOTSUPPORTED, baseStack, VersionUtilities.isThisOrLater(TerminologyClientContext.TX_BATCH_VERSION, txInfo.getTestVersion()), I18nConstants.VALUESET_TXVER_BATCH_NOT_SUPPORTED, (txInfo.getTestVersion() == null ? "Not Known" : txInfo.getTestVersion()), system+(version == null ? "" : "|"+version), txInfo.getServer())) {
+        long t = System.currentTimeMillis();
+        log.debug("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
+        context.validateCodeBatch(ValidationOptions.defaults().withExampleOK(), batch, null, false);
+        log.debug("  :   .. "+(System.currentTimeMillis()-t)+"ms");
+        for (VSCodingValidationRequest cv : batch) {
+          if (version == null) {
+            warningOrError(!retired, errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode(), cv.getResult().getMessage());
+          } else {
+            warningOrError(!retired, errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, cv.getCoding().getCode(), cv.getResult().getMessage());
+          }
         }
       }
     }
@@ -604,7 +616,16 @@ public class ValueSetValidator extends BaseValidator {
           } else {
             ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, expr == null, I18nConstants.VALUESET_BAD_FILTER_EXPR_AND_VALUE) && ok;
             
-            if ("exists".equals(op)) {
+            if (rules.isActive()) {
+              StringWithFlag msg = csChecker.checkFilterValue(system, version, property, op, value, rules, ValidationOptions.defaults());
+              if (msg == null) {
+                // nothing
+              } else if (msg.isFail()) {
+                warning(errors, "2025-06-16", IssueType.INVALID, stack, msg == null, I18nConstants.VALUESET_BAD_FILTER_VALUE_CANT_CHECK, property, value, msg.getMsg());
+              } else {
+                ok = rule(errors, "2025-06-16", IssueType.INVALID, stack, msg == null, I18nConstants.VALUESET_BAD_FILTER_VALUE_INVALID, property, value, msg.getMsg()) && ok;                
+              }
+            } else if ("exists".equals(op)) {
               ok = checkFilterValue(errors, stack, system, version, ok, property, op, value,  new PropertyValidationRules(PropertyFilterType.Boolean, null)) && ok;
             } else if ("regex".equals(op)) {
               String err = null;
@@ -687,10 +708,12 @@ public class ValueSetValidator extends BaseValidator {
             I18nConstants.VALUESET_BAD_FILTER_VALUE_CODE, property, value) && ok;
         if (!noTerminologyChecks && (rules.getCodeValidation() == CodeValidationRule.Error || rules.getCodeValidation() == CodeValidationRule.Warning)) {
           ValidationResult vr = context.validateCode(settings, system, version, value, null);
-          if (rules.getCodeValidation() == CodeValidationRule.Error) {
-            ok = rule(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), vr.isOk(), rules.isChange() ? I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_CHANGE : I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage()) && ok;
+          if (vr.isOk()) {
+            warning(errors, "2025-06-04", IssueType.INVALID, stack.getLiteralPath(), !vr.isInactive(), I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_INACTIVE, property, value, system);            
+          } else if (rules.getCodeValidation() == CodeValidationRule.Error) {
+            ok = rule(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), false, rules.isChange() ? I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_CHANGE : I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage()) && ok;
           } else {
-            warning(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), vr.isOk(), rules.isChange() ? I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_CHANGE : I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage());
+            warning(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), false, rules.isChange() ? I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_CHANGE : I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage());
           }
         }
         break;
@@ -722,9 +745,16 @@ public class ValueSetValidator extends BaseValidator {
             I18nConstants.VALUESET_BAD_FILTER_VALUE_INTEGER, property, value) && ok;
         break;
       case Coding :
-        Coding code = Coding.fromLiteral(value);
+        Coding code;
+        if (value.matches("[a-zA-Z][a-zA-Z0-9+.-]*:[^\\s|]+\\|\\S+")) {
+          warning(errors, "2025-07-10", IssueType.INVALID, stack, false, I18nConstants.VALUESET_BAD_FILTER_VALUE_CODED_LEGACY, property, value);
+          code = new Coding().setSystem(value.substring(0, value.lastIndexOf("|"))).setCode(value.substring(value.lastIndexOf("|") + 1));
+        } else {
+          code = Coding.fromLiteral(value);
+        }
+
         if (code == null) {
-          ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, false, I18nConstants.VALUESET_BAD_FILTER_VALUE_CODED, property, value) && ok;
+          ok = rule(errors, "2025-07-10", IssueType.INVALID, stack, false, I18nConstants.VALUESET_BAD_FILTER_VALUE_CODED, property, value) && ok;
         } else if (!noTerminologyChecks) {
           ValidationResult vr = context.validateCode(settings, code, null);
           ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, vr.isOk(), I18nConstants.VALUESET_BAD_FILTER_VALUE_CODED_INVALID, property, value, vr.getMessage()) && ok;

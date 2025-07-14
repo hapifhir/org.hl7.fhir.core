@@ -3,10 +3,6 @@ package org.hl7.fhir.r5.context;
 import static org.junit.jupiter.api.Assertions.*;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5.TerminologyClientR5Factory;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 import java.io.IOException;
@@ -15,32 +11,17 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import org.hl7.fhir.r5.model.CapabilityStatement;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.Enumerations;
-import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
-import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
-import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
-import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
-import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
-import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
-import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
-import org.hl7.fhir.utilities.validation.ValidationMessage;
-import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
@@ -71,15 +52,15 @@ public class SimpleWorkerContextTests {
   public static final CapabilityStatement capabilitiesStatement = new CapabilityStatement();
   static { capabilitiesStatement.setSoftware(software);}
 
-  @BeforeEach
-  public void beforeEach() {
+
+  public void mockTerminologyClientAndCache()  {
     Mockito.doReturn(DUMMY_URL).when(terminologyClient).getAddress();
     context.initTxCache(terminologyCache);
-    context.terminologyClientManager.setMasterClient(terminologyClient, false);
   }
 
   @Test
-  public void testInitializationWithCache() {
+  public void testInitializationWithCache()  {
+    mockTerminologyClientAndCache();
    String address = "dummyUrl";
 
    Mockito.doReturn(true).when(terminologyCache).hasTerminologyCapabilities(address);
@@ -89,7 +70,7 @@ public class SimpleWorkerContextTests {
     context.connectToTSServer(new TerminologyClientR5Factory(), terminologyClient, false);
 
     Mockito.verify(terminologyCache).getTerminologyCapabilities(address);
-    Mockito.verify(terminologyClient).getCapabilitiesStatement();
+    Mockito.verify(terminologyClient).getCapabilitiesStatement(); //FIXME why called twice?
 
     Mockito.verify(terminologyCache, times(0)).getCapabilityStatement(address);
     Mockito.verify(terminologyClient, times(0)).getTerminologyCapabilities();
@@ -97,12 +78,12 @@ public class SimpleWorkerContextTests {
 
   @Test
   public void testInitializationWithClient() {
+    mockTerminologyClientAndCache();
     String address = "dummyUrl";
 
     Mockito.doReturn(false).when(terminologyCache).hasTerminologyCapabilities(address);
 
     Mockito.doReturn(terminologyCapabilities).when(terminologyClient).getTerminologyCapabilities();
-//    Mockito.doReturn(capabilitiesStatement).when(terminologyClient).getCapabilitiesStatementQuick();
     Mockito.doReturn(capabilitiesStatement).when(terminologyClient).getCapabilitiesStatement();
 
     TerminologyClientContext.setAllowNonConformantServers(true);
@@ -112,7 +93,7 @@ public class SimpleWorkerContextTests {
     Mockito.verify(terminologyCache, times(0)).getTerminologyCapabilities(address);
     Mockito.verify(terminologyCache, times(0)).getCapabilityStatement(address);
 
-    Mockito.verify(terminologyClient).getTerminologyCapabilities();
+    Mockito.verify(terminologyClient).getTerminologyCapabilities(); //FIXME why called twice?
     Mockito.verify(terminologyClient).getCapabilitiesStatement();
 
   }

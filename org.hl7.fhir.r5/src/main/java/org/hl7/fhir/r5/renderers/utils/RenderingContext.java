@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -20,6 +21,7 @@ import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumeration;
@@ -30,6 +32,7 @@ import org.hl7.fhir.r5.renderers.utils.Resolver.IReferenceResolver;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.KeyIssuer;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
@@ -38,6 +41,8 @@ import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.xhtml.XhtmlFluent;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 /**
  * Managing Language when rendering 
@@ -263,6 +268,18 @@ public class RenderingContext extends RenderingI18nContext {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
   private final IWorkerContext worker;
   private MarkDownProcessor markdown;
   private ResourceRendererMode mode;
@@ -328,6 +345,11 @@ public class RenderingContext extends RenderingI18nContext {
   private boolean debug;
   private DesignationMode designationMode;
   private boolean noHeader;
+  private Set<ActorDefinition> actorWhiteList = new HashSet<>();
+  private boolean trackNarrativeSource;
+  private KeyIssuer crossLinkKeyGen;
+  private int randomTracker;
+  private boolean testing;
   
   /**
    * 
@@ -350,6 +372,7 @@ public class RenderingContext extends RenderingI18nContext {
     if (terminologyServiceOptions != null) {
       this.terminologyServiceOptions = terminologyServiceOptions;
     }
+    crossLinkKeyGen = new KeyIssuer("xn");
   }
   
   public RenderingContext copy(boolean copyAnchors) {
@@ -401,6 +424,25 @@ public class RenderingContext extends RenderingI18nContext {
     res.resolveLinkResolver = resolveLinkResolver;
     res.debug = debug;
     res.noHeader = noHeader;
+    res.uniqueLocalPrefix = uniqueLocalPrefix;
+    res.secondaryLang = secondaryLang;
+    res.fixedFormat = fixedFormat;
+    res.oids = oids;
+    res.base64Limit = base64Limit;
+    res.shortPatientForm = shortPatientForm;
+    res.designationMode = designationMode;
+    res.addName = addName;
+    res.typeMap = typeMap;
+    res.trackNarrativeSource = trackNarrativeSource;
+    res.crossLinkKeyGen = crossLinkKeyGen;
+    
+    res.getActorWhiteList().addAll(actorWhiteList);
+
+// not sure about these    
+//    private List<String> files = new ArrayList<String>(); // files created as by-products in destDir
+//    private Map<KnownLinkType, String> links = new HashMap<>();
+//    private Map<String, StringPair> namedLinks = new HashMap<>();
+
     return res;
   }
   
@@ -1149,5 +1191,42 @@ public class RenderingContext extends RenderingI18nContext {
     this.noHeader = noHeader;
   }
 
+  public Set<ActorDefinition> getActorWhiteList() {
+    return actorWhiteList;
+  }
 
+  public boolean isTrackNarrativeSource() {
+    return trackNarrativeSource;
+  }
+
+  public void setTrackNarrativeSource(boolean trackNarrativeSource) {
+    this.trackNarrativeSource = trackNarrativeSource;
+  }
+
+  public String nextXNKey() {
+    return crossLinkKeyGen.issueKey();
+  }
+
+  public String getRandomName(String id) {
+    if (testing) {
+      return id+"-"+(++randomTracker);
+    } else {
+      return UUID.randomUUID().toString().toLowerCase();
+    }
+  }
+
+  public boolean isTesting() {
+    return testing;
+  }
+
+  /**
+   * testing is used to turn off production of random UUIDs and produce something known and predictable but
+   * likely to produce name clashes in production - for the sake of test case reproducibility
+   * @param testing
+   */
+  public void setTesting(boolean testing) {
+    this.testing = testing;
+  }
+
+  
 }

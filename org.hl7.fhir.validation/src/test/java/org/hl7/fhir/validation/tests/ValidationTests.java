@@ -253,6 +253,10 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     } else {
       val.getSettings().setLanguages(null);      
     }
+
+    if (content.has("certificate")) {
+      val.getSettings().getCertificates().put(content.get("certificate").getAsString(), TestingUtilities.loadTestResourceBytes("validator", content.get("certificate").getAsString()));
+    }
     
     if (content.has("fetcher") && "standalone".equals(JsonUtilities.str(content, "fetcher"))) {
       val.setFetcher(vCurr);
@@ -583,7 +587,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
   private FhirFormat determineFormat(JsonObject config, byte[] cnt) throws IOException {
     String name = JsonUtilities.str(config, "file");
-    return org.hl7.fhir.validation.ResourceChecker.checkIsResource(vCurr.getContext(), true, cnt, name, !JsonUtilities.bool(config, "guess-format")); 
+    return org.hl7.fhir.validation.ResourceChecker.checkIsResource(vCurr.getContext(), cnt, name, !JsonUtilities.bool(config, "guess-format"));
   }
 
   private List<StructureDefinition> asSdList(StructureDefinition sd) {
@@ -664,7 +668,10 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       focus.addProperty("java", "java/"+name.replace("/", "-")+"-"+mode+".json");
     }
 
-    OperationOutcome goal = (OperationOutcome) new JsonParser().parse(TestingUtilities.loadTestResource("validator", "outcomes", "java", name.replace("/", "-")+"-"+mode+".json"));
+    byte[] cnt = TestingUtilities.findTestResource("validator", "outcomes", "java", name.replace("/", "-")+"-"+mode+".json") ?
+        TestingUtilities.loadTestResourceBytes("validator", "outcomes", "java", name.replace("/", "-")+"-"+mode+".json") :
+        " { \"resourceType\" : \"OperationOutcome\" }".getBytes();
+    OperationOutcome goal = (OperationOutcome) new JsonParser().parse(cnt);
     OperationOutcome actual = OperationOutcomeUtilities.createOutcomeSimple(errors);
     actual.setText(null);
     actual.getIssue().forEach(iss -> iss.removeExtension(ToolingExtensions.EXT_ISSUE_SLICE_INFO));

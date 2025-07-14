@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ElementRedirection;
@@ -37,6 +38,7 @@ import lombok.With;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class ProfilePathProcessor {
 
   /**
@@ -248,7 +250,7 @@ public class ProfilePathProcessor {
 
   private void debugProcessPathsIteration(ProfilePathProcessorState cursors, String currentBasePath) {
     if (profileUtilities.isDebug()) {
-      System.out.println(getDebugIndent() + " - " + currentBasePath + ": "+
+      log.debug(getDebugIndent() + " - " + currentBasePath + ": "+
           "base = " + cursors.baseCursor + " (" + profileUtilities.descED(cursors.base.getElement(), cursors.baseCursor) + ") to " + getBaseLimit() +" (" + profileUtilities.descED(cursors.base.getElement(), getBaseLimit()) + "), "+
           "diff = " + cursors.diffCursor + " (" + profileUtilities.descED(getDifferential().getElement(), cursors.diffCursor) + ") to " + getDiffLimit() + " (" + profileUtilities.descED(getDifferential().getElement(), getDiffLimit()) + ") " +
         "(slicingDone = " + getSlicing().isDone() + ") (diffpath= " + (getDifferential().getElement().size() > cursors.diffCursor ? getDifferential().getElement().get(cursors.diffCursor).getPath() : "n/a") + ")");
@@ -259,7 +261,7 @@ public class ProfilePathProcessor {
 
   private void debugProcessPathsEntry(ProfilePathProcessorState cursors) {
     if (profileUtilities.isDebug()) {
-      System.out.println(getDebugIndent() + "PP @ " + cursors.resultPathBase + " / " + getContextPathSource() + " : base = " + cursors.baseCursor + " to " + getBaseLimit() + ", diff = " + cursors.diffCursor + " to " + getDiffLimit() + " (slicing = " + getSlicing().isDone() + ", k " + (getRedirector() == null ? "null" : getRedirector().toString()) + ")");
+      log.debug(getDebugIndent() + "PP @ " + cursors.resultPathBase + " / " + getContextPathSource() + " : base = " + cursors.baseCursor + " to " + getBaseLimit() + ", diff = " + cursors.diffCursor + " to " + getDiffLimit() + " (slicing = " + getSlicing().isDone() + ", k " + (getRedirector() == null ? "null" : getRedirector().toString()) + ")");
     }
   }
 
@@ -724,7 +726,7 @@ public class ProfilePathProcessor {
           }
           if (src == null) {
             if (firstTypeStructureDefinition.isGeneratingSnapshot()) {
-              System.out.println("At this time the reference to "+eid+" cannot be handled - consult Grahame Grieve"); 
+              log.info("At this time the reference to "+eid+" cannot be handled - consult Grahame Grieve");
             } else if (Utilities.existsInList(currentBase.typeSummary(), "Extension", "Resource")) {
               throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.UNABLE_TO_FIND_ELEMENT__IN_, eid, firstTypeProfile.getValue()));
             }
@@ -954,7 +956,7 @@ public class ProfilePathProcessor {
         template.getSlicing().addDiscriminator().setType(DiscriminatorType.VALUE).setPath("url");
         addToResult(template);
       } else {
-        System.err.println("checkToSeeIfSlicingExists: "+ed.getPath()+":"+ed.getSliceName()+" is not sliced");
+        log.error("checkToSeeIfSlicingExists: "+ed.getPath()+":"+ed.getSliceName()+" is not sliced");
       }
     }
   }
@@ -1087,7 +1089,6 @@ public class ProfilePathProcessor {
             int newBaseLimit = newBaseCursor;
             while (newBaseLimit < cursors.base.getElement().size() && cursors.base.getElement().get(newBaseLimit).getPath().startsWith(tgt.getElement().getPath() + "."))
               newBaseLimit++;
-//            System.out.println("Test!");
 
               ProfilePathProcessorState ncursors = new ProfilePathProcessorState(cursors.baseSource, cursors.base, newBaseCursor, start, cursors.contextName, cursors.resultPathBase);
               this
@@ -1432,7 +1433,7 @@ public class ProfilePathProcessor {
 
   private void debugCheck(ElementDefinition outcome) {
     if (outcome.getPath().startsWith("List.") && "http://nictiz.nl/fhir/StructureDefinition/Bundle-MedicationOverview".equals(url)) {
-      System.out.println("wrong!");
+      log.debug("wrong!");
     }
   }
 

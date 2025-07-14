@@ -34,7 +34,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -45,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -138,6 +138,7 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
  *
  */
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class ProfileUtilities {
 
   private static boolean suppressIgnorableExceptions;
@@ -438,7 +439,8 @@ public class ProfileUtilities {
   private boolean forPublication;
   private List<StructureDefinition> obligationProfiles = new ArrayList<>();
   private boolean wantThrowExceptions;
- 
+  private List<String> suppressedMappings= new ArrayList<>();
+  
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp, FHIRPathEngine fpe) {
     super();
     this.context = context;
@@ -630,8 +632,8 @@ public class ProfileUtilities {
     for (ElementDefinition e : list) {
       if (e == null)
         throw new Error(context.formatMessage(I18nConstants.ELEMENT__NULL_, profile.getUrl()));
-      if (e.getId() == null)
-        throw new Error(context.formatMessage(I18nConstants.ELEMENT_ID__NULL__ON_, e.toString(), profile.getUrl()));
+//      if (e.getId() == null) // this is sort of true, but in some corner cases it's not, and in those cases, we don't care
+//        throw new Error(context.formatMessage(I18nConstants.ELEMENT_ID__NULL__ON_, e.toString(), profile.getUrl()));
       
       if (!capturing && id!=null && e.getId().equals(id)) {
         capturing = true;
@@ -759,20 +761,20 @@ public class ProfileUtilities {
       try {
         checkDifferential(derived.getDifferential().getElement(), derived.getTypeName(), derived.getUrl());
         checkDifferentialBaseType(derived);
-        if (debug) {
-          System.out.println("Differential: ");
-          int i = 0;
+
+          log.debug("Differential: ");
+          int debugPadding = 0;
           for (ElementDefinition ed : derived.getDifferential().getElement()) {
-            System.out.println(" "+Utilities.padLeft(Integer.toString(i), ' ', 3)+" "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
-            i++;
+            log.debug(" "+Utilities.padLeft(Integer.toString(debugPadding), ' ', 3)+" "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
+            debugPadding++;
           }
-          System.out.println("Snapshot: ");
-          i = 0;
+          log.debug("Snapshot: ");
+          debugPadding = 0;
           for (ElementDefinition ed : base.getSnapshot().getElement()) {
-            System.out.println(" "+Utilities.padLeft(Integer.toString(i), ' ', 3)+" "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
-            i++;
+            log.debug(" "+Utilities.padLeft(Integer.toString(debugPadding), ' ', 3)+" "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
+            debugPadding++;
           }
-        }
+
 
         copyInheritedExtensions(base, derived, webUrl);
 
@@ -803,7 +805,7 @@ public class ProfileUtilities {
         //        debug = true;
         //      }
 
-        MappingAssistant mappingDetails = new MappingAssistant(mappingMergeMode, base, derived, context.getVersion());
+        MappingAssistant mappingDetails = new MappingAssistant(mappingMergeMode, base, derived, context.getVersion(), suppressedMappings);
         
         ProfilePathProcessor.processPaths(this, base, derived, url, webUrl, diff, baseSnapshot, mappingDetails);
 
@@ -851,30 +853,27 @@ public class ProfileUtilities {
         mappingDetails.update();
 
         setIds(derived, false);
-        if (debug) {
-          System.out.println("Differential: ");
-          int i = 0;
+
+          log.debug("Differential: ");
+          int debugPad = 0;
           for (ElementDefinition ed : derived.getDifferential().getElement()) {
-            System.out.println(" "+Utilities.padLeft(Integer.toString(i), ' ', 3)+" "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed));
-            i++;
+            log.debug(" "+Utilities.padLeft(Integer.toString(debugPad), ' ', 3)+" "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed));
+            debugPad++;
           }
-          System.out.println("Diff (processed): ");
-          i = 0;
+          log.debug("Diff (processed): ");
+          debugPad = 0;
           for (ElementDefinition ed : diff.getElement()) {
-            System.out.println(" "+Utilities.padLeft(Integer.toString(i), ' ', 3)+" "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+
+            log.debug(" "+Utilities.padLeft(Integer.toString(debugPad), ' ', 3)+" "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+
                 " -> "+(destInfo(ed, derived.getSnapshot().getElement())));
-            i++;
+            debugPad++;
           }
-          System.out.println("Snapshot: ");
-          i = 0;
+          log.debug("Snapshot: ");
+          debugPad = 0;
           for (ElementDefinition ed : derived.getSnapshot().getElement()) {
-            System.out.println(" "+Utilities.padLeft(Integer.toString(i), ' ', 3)+" "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
-            i++;
+            log.debug(" "+Utilities.padLeft(Integer.toString(debugPad), ' ', 3)+" "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
+            debugPad++;
           }
-//          System.out.println("diff: ");
-//          for (ElementDefinition ed : diff.getElement())
-//            System.out.println("  "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed)+" [gen = "+(ed.hasUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT) ? ed.getUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT) : "--")+"]");
-        }
+
         CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
         //Check that all differential elements have a corresponding snapshot element
         int ce = 0;
@@ -903,17 +902,17 @@ public class ProfileUtilities {
         }
         if (!Utilities.noString(b.toString())) {
           String msg = "The profile "+derived.getUrl()+" has "+ce+" "+Utilities.pluralize("element", ce)+" in the differential ("+b.toString()+") that don't have a matching element in the snapshot: check that the path and definitions are legal in the differential (including order)";
-          if (debug) {
-            System.err.println("Error in snapshot generation: "+msg);
-            if (!debug) {
-              System.out.println("Differential: ");
+
+            log.debug("Error in snapshot generation: "+msg);
+
+          log.debug("Differential: ");
               for (ElementDefinition ed : derived.getDifferential().getElement())
-                System.out.println("  "+ed.getId()+" = "+ed.getPath()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
-              System.out.println("Snapshot: ");
+                log.debug("  "+ed.getId()+" = "+ed.getPath()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
+          log.debug("Snapshot: ");
               for (ElementDefinition ed : derived.getSnapshot().getElement())
-                System.out.println("  "+ed.getId()+" = "+ed.getPath()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
-            }
-          }
+                log.debug("  "+ed.getId()+" = "+ed.getPath()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
+
+
           handleError(url, msg);
         }
         // hack around a problem in R4 definitions (somewhere?)
@@ -1046,10 +1045,8 @@ public class ProfileUtilities {
           i++;
         }
       } catch (Exception e) {
-        System.out.println("Exception generating snapshot for "+derived.getVersionedUrl()+": " +e.getMessage());
-        if (debug) {
-          e.printStackTrace();
-        }
+        log.error("Exception generating snapshot for "+derived.getVersionedUrl()+": " +e.getMessage());
+        log.debug(e.getMessage(), e);
         // if we had an exception generating the snapshot, make sure we don't leave any half generated snapshot behind
         derived.setSnapshot(null);
         derived.setGeneratingSnapshot(false);
@@ -1295,7 +1292,6 @@ public class ProfileUtilities {
     List<ElementDefinition> children = getChildren(derived, element);
     List<ElementChoiceGroup> groups = readChoices(element, children);
     for (ElementChoiceGroup group : groups) {
-//      System.out.println(children);
       String mandated = null;
       Set<String> names = new HashSet<>();
       for (ElementDefinition ed : children) {
@@ -1627,7 +1623,7 @@ public class ProfileUtilities {
         return true;
       }
       if (tr.getWorkingCode().equals(t.getCode())) {
-        System.err.println("Type error: use of a simple type \""+t.getCode()+"\" wrongly constraining "+base.getPath());
+        log.error("Type error: use of a simple type \""+t.getCode()+"\" wrongly constraining "+base.getPath());
         return true;
       }
     }
@@ -2024,23 +2020,21 @@ public class ProfileUtilities {
         }
       }
       if (sd == null) {
-        if (debug) {
-          System.err.println("Failed to find referenced profile: " + type.getProfile());
-        }
+          log.debug("Failed to find referenced profile: " + type.getProfile());
       }
         
     }
     if (sd == null)
       sd = context.fetchTypeDefinition(type.getWorkingCode());
     if (sd == null)
-      System.err.println("XX: failed to find profle for type: " + type.getWorkingCode()); // debug GJM
+      log.warn("XX: failed to find profle for type: " + type.getWorkingCode()); // debug GJM
     return sd;
   }
 
   protected StructureDefinition getProfileForDataType(String type)  {
     StructureDefinition sd = context.fetchTypeDefinition(type);
     if (sd == null)
-      System.err.println("XX: failed to find profle for type: " + type); // debug GJM
+      log.warn("XX: failed to find profle for type: " + type); // debug GJM
     return sd;
   }
 
@@ -2207,10 +2201,13 @@ public class ProfileUtilities {
                 // re-enabled 11-Feb 2022 GDG - we do want to do this. At least, $assemble in davinci-dtr, where the markdown comes from the SDC IG, and an SDC local reference must be changed to point to SDC. in this case, it's called when generating snapshots
                 // added processRelatives parameter to deal with this (well, to try)
                 if (processRelatives && webUrl != null && !issLocalFileName(url, localFilenames)) {
-                  //                System.out.println("Making "+url+" relative to '"+webUrl+"'");
+
                   b.append(webUrl);
+                  if (!Utilities.noString(webUrl) && !webUrl.endsWith("/")) {
+                    b.append("/");
+                  }
                 } else {
-                  //                System.out.println("Not making "+url+" relative to '"+webUrl+"'");
+                  //DO NOTHING
                 }
                 i = i + 1;
               }
@@ -2414,7 +2411,7 @@ public class ProfileUtilities {
 //      if (ok != (statedPath.equals(path) || (path.endsWith("[x]") && statedPath.length() > path.length() - 2 &&
 //            statedPath.substring(0, path.length()-3).equals(path.substring(0, path.length()-3)) &&
 //            (statedPath.length() < path.length() || !statedPath.substring(path.length()).contains("."))))) {
-//        System.out.println("mismatch in paths: "+statedPath +" vs " +path);
+//
 //      }
       if (ok) {
         /*
@@ -2629,12 +2626,12 @@ public class ProfileUtilities {
       String type = source.getTypeFirstRep().getWorkingCode();
       if (msg) {
         if ("Extension".equals(type)) {
-          System.out.println("Can't find Extension definition for "+source.getTypeFirstRep().getProfile().get(0).asStringValue()+" but trying to go on");          
+          log.warn("Can't find Extension definition for "+source.getTypeFirstRep().getProfile().get(0).asStringValue()+" but trying to go on");
           if (allowUnknownProfile != AllowUnknownProfile.ALL_TYPES) {
             throw new DefinitionException("Unable to find Extension definition for "+source.getTypeFirstRep().getProfile().get(0).asStringValue());          
           }
         } else {
-          System.out.println("Can't find "+type+" profile "+source.getTypeFirstRep().getProfile().get(0).asStringValue()+" but trying to go on");          
+          log.warn("Can't find "+type+" profile "+source.getTypeFirstRep().getProfile().get(0).asStringValue()+" but trying to go on");
           if (allowUnknownProfile == AllowUnknownProfile.NONE) {
             throw new DefinitionException("Unable to find "+type+" profile "+source.getTypeFirstRep().getProfile().get(0).asStringValue());          
           }
@@ -3017,7 +3014,7 @@ public class ProfileUtilities {
         if (!Base.compareDeep(derived.getType(), base.getType(), false)) {
           if (base.hasType()) {
             for (TypeRefComponent ts : derived.getType()) {
-              checkTypeDerivation(purl, derivedSrc, base, derived, ts, path);
+              checkTypeDerivation(purl, derivedSrc, base, derived, ts, path, derivedSrc.getDerivation() == TypeDerivationRule.SPECIALIZATION);
             }
           }
           base.getType().clear();
@@ -3163,7 +3160,7 @@ public class ProfileUtilities {
      tgt.getExtension().addAll(src.getExtension());
   }
 
-  private void checkTypeDerivation(String purl, StructureDefinition srcSD, ElementDefinition base, ElementDefinition derived, TypeRefComponent ts, String path) {
+  private void checkTypeDerivation(String purl, StructureDefinition srcSD, ElementDefinition base, ElementDefinition derived, TypeRefComponent ts, String path, boolean specialising) {
     boolean ok = false;
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     String t = ts.getWorkingCode();
@@ -3200,6 +3197,8 @@ public class ProfileUtilities {
             String url = u.getValue();
             boolean tgtOk = !td.hasTargetProfile() || sdConformsToTargets(path, derived.getPath(), url, td);            
             if (tgtOk) {
+              ok = true;
+            } else if (specialising) {
               ok = true;
             } else {
               addMessage(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, derived.getPath(), context.formatMessage(I18nConstants.ERROR_AT__THE_TARGET_PROFILE__IS_NOT__VALID_CONSTRAINT_ON_THE_BASE_, purl, derived.getPath(), url, td.getTargetProfile()), IssueSeverity.ERROR));
@@ -4867,21 +4866,35 @@ public class ProfileUtilities {
     return false;
   }
 
+  public List<String> getSuppressedMappings() {
+    return suppressedMappings;
+  }
+
+  public void setSuppressedMappings(List<String> suppressedMappings) {
+    this.suppressedMappings = suppressedMappings;
+  }
+  
   public static String getCSUrl(StructureDefinition profile) {
     if (profile.hasExtension(ToolingExtensions.EXT_SD_CS_URL)) {
       return ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_SD_CS_URL);
     } else {
       return profile.getUrl()+"?codesystem";
-    }
-    
+    }    
   }
 
   public static String getUrlFromCSUrl(String url) {
+    if (url == null) {
+      return null;
+    }
     if (url.endsWith("?codesystem")) {
       return url.replace("?codesystem", "");
     } else {
       return null;
     }
+  }
+
+  public FHIRPathEngine getFpe() {
+    return fpe;
   }
 
 }

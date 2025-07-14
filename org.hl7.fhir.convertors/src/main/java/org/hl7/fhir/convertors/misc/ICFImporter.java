@@ -1,9 +1,7 @@
 package org.hl7.fhir.convertors.misc;
 
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +19,7 @@ import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@SuppressWarnings("checkstyle:systemout")
 public class ICFImporter {
 
   public static void main(String[] args) throws FHIRException, FileNotFoundException, IOException {

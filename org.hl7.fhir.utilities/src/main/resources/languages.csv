@@ -1,10 +1,11 @@
-language,en,de,es,fr,ja,nl,pt,ar,ru
-en,English,Englisch,Inglés,Anglais,英語,Engels,Inglês,الإنجليزية,Английский
-es,Spanish,Spanisch,Español,Espagnol,スペイン語,Spaans,Espanhol,الإسبانية,Испанский
-de,German,Deutsch,Alemán,Allemand,ドイツ語,Duits,Alemão,الألمانية,Немецкий
-fr,French,French,Francés,Français,フランス語,Frans,Francês,الفرنسية,Французский
-ja,Japanese,Japanisch,Japonés,Japonais,日本語,Japans,Japonês,اليابانية,Японский
-nl,Dutch,Niederländisch,Holandés,Néerlandais,オランダ語,Nederlands,Neerlandês,الهولندية,Голландский
-pt,Portuguese,Portugiesisch,Portugués,Portugais,ポルトガル語,Portugees,Português,البرتغالية,Португальский
-ar,Arabic,Arabisch,Árabe,Arabe,アラビア語,Arabisch,Árabe,العربية,Арабский
-ru,Russian,Russisch,Ruso,Russe,ロシア語,Russisch,Russo,الروسية,Русский
+language,en,de,es,fr,ja,nl,pt,ar,ru,uz
+en,English,Englisch,Inglés,Anglais,英語,Engels,Inglês,الإنجليزية,Английский,Ingliz tili
+es,Spanish,Spanisch,Español,Espagnol,スペイン語,Spaans,Espanhol,الإسبانية,Испанский,Ispan tili
+de,German,Deutsch,Alemán,Allemand,ドイツ語,Duits,Alemão,الألمانية,Немецкий,Nemis tili
+fr,French,French,Francés,Français,フランス語,Frans,Francês,الفرنسية,Французский,Fransuz tili
+ja,Japanese,Japanisch,Japonés,Japonais,日本語,Japans,Japonês,اليابانية,Японский,Yapon tili
+nl,Dutch,Niederländisch,Holandés,Néerlandais,オランダ語,Nederlands,Neerlandês,الهولندية,Голландский,Golland tili
+pt,Portuguese,Portugiesisch,Portugués,Portugais,ポルトガル語,Portugees,Português,البرتغالية,Португальский,Portugal tili
+ar,Arabic,Arabisch,Árabe,Arabe,アラビア語,Arabisch,Árabe,العربية,Арабский,Arab tili
+ru,Russian,Russisch,Ruso,Russe,ロシア語,Russisch,Russo,الروسية,Русский,Rus tili
+uz,Uzbek,Usbekisch,Uzbeko,Ouzbek,ウズベク語,Oezbeeks,Uzbeque,الأوزبكية,Узбекский,O'zbek tili

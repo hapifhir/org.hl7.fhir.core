@@ -26,6 +26,6 @@ public abstract class ModelMappingProvider {
 
 
   protected String ref() {
-    return context.getPkp().getDefinitionsName(dest);
+    return dest.getWebPath(); // context.getPkp().getDefinitionsName(dest);
   }
 }

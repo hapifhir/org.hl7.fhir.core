@@ -164,7 +164,7 @@ public class CompareUtilities extends BaseTestingUtilities {
     return compareElements(id, "", loadXml(expected).getDocumentElement(), loadXml(actual).getDocumentElement());
   }
 
-  private String compareElements(String id, String path, Element expectedElement, Element actualElement) {
+  public String compareElements(String id, String path, Element expectedElement, Element actualElement) {
     if (!namespacesMatch(expectedElement.getNamespaceURI(), actualElement.getNamespaceURI()))
       return createNotEqualMessage(id, "Namespaces differ at " + path, expectedElement.getNamespaceURI(), actualElement.getNamespaceURI());
     if (!expectedElement.getLocalName().equals(actualElement.getLocalName()))
@@ -228,6 +228,16 @@ public class CompareUtilities extends BaseTestingUtilities {
           byte[] b2 = unBase64(actualNode.getTextContent());
           if (!sameBytes(b1, b2))
             return createNotEqualMessage(id, "Attributes differ at " + path, normalise(expectedNode.getTextContent()).toString(), normalise(actualNode.getTextContent()).toString()) ;
+        }
+      }
+    }
+    for (int i = 0; i < actual.getLength(); i++) {
+      Node actualNode = actual.item(i);
+      String actualNodeName = actualNode.getNodeName();
+      if (!(actualNodeName.equals("xmlns") || actualNodeName.startsWith("xmlns:"))) {
+        Node expectedNode = expected.getNamedItem(actualNodeName);
+        if (expectedNode == null) {
+          return "Attributes differ at " + path + ": unexpected attribute " + actualNodeName;
         }
       }
     }
@@ -338,7 +348,7 @@ public class CompareUtilities extends BaseTestingUtilities {
     return compareObjects(id, "", expectedJsonObject, actualJsonObject);
   }
 
-  private String compareObjects(String id, String path, JsonObject expectedJsonObject, JsonObject actualJsonObject) {
+  public String compareObjects(String id, String path, JsonObject expectedJsonObject, JsonObject actualJsonObject) {
     List<String> optionals = listOptionals(expectedJsonObject);
     List<String> countOnlys = listCountOnlys(expectedJsonObject);
     for (JsonProperty en : actualJsonObject.getProperties()) {

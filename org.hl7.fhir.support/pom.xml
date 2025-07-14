@@ -6,12 +6,13 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>6.5.25-SNAPSHOT</version>
+        <version>6.5.29-SNAPSHOT</version>
     </parent>
 
     <artifactId>org.hl7.fhir.support</artifactId>
-
     <packaging>bundle</packaging>
+
+    <name>HL7 Core Artifact - Support</name>
 
     <properties>
         <checkstyle_config_location>${project.parent.basedir}</checkstyle_config_location>

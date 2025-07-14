@@ -81,6 +81,7 @@ import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 
@@ -177,8 +178,6 @@ public class JsonParser extends ParserBase {
     List<ValidatedFragment> res = new ArrayList<>();
     res.add(focusFragment);
 
-//    long  t =System.currentTimeMillis()-start;
-//    System.out.println("json parser: "+(t)+"ms, "+(content.length/1024)+"kb "+(t == 0 ? "" : " @ "+(content.length / t)+"kb/s"));
     return res;
   }
 
@@ -854,6 +853,9 @@ public class JsonParser extends ParserBase {
   }
 
   private void compose(String path, Element e, Set<String> done, Element child) throws IOException {
+    if (canonicalFilter.contains(child.getPath())) {
+      return;
+    }
     checkComposeComments(child);
     if (wantCompose(path, child)) {
       boolean isList = child.hasElementProperty() ? child.getElementProperty().isList() : child.getProperty().isList();
@@ -988,7 +990,9 @@ public class JsonParser extends ParserBase {
       json.name(name);
     }
     String type = item.getType();
-    if (Utilities.existsInList(type, "boolean")) {
+    if (item.hasXhtml()) {
+      json.value(new XhtmlComposer(XhtmlComposer.XML, false).setCanonical(json.isCanonical()).compose(item.getXhtml()));
+    } else if (Utilities.existsInList(type, "boolean")) {
       json.value(item.getValue().trim().equals("true") ? new Boolean(true) : new Boolean(false));
     } else if (Utilities.existsInList(type, "integer", "unsignedInt", "positiveInt")) {
       json.value(new Integer(item.getValue()));
@@ -1005,8 +1009,9 @@ public class JsonParser extends ParserBase {
 
   private void compose(String name, String path, Element element) throws IOException {
     if (element.isPrimitive() || isPrimitive(element.getType())) {
-      if (element.hasValue())
+      if (element.hasXhtml() || element.hasValue()) {
         primitiveValue(name, element);
+      }
       name = "_"+name;
       if (!markedXhtml && element.getType().equals("xhtml"))
         json.anchor("end-xhtml");

@@ -44,7 +44,12 @@ import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.With;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -59,6 +64,7 @@ import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.ImplementationGuide;
+import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Questionnaire;
@@ -94,6 +100,7 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import ca.uhn.fhir.parser.DataFormatException;
 import lombok.AccessLevel;
@@ -106,6 +113,7 @@ import lombok.With;
  * very light client to connect to an open unauthenticated terminology service
  */
 
+@Slf4j
 @MarkedToMoveToAdjunctPackage
 public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerContext {
 
@@ -263,7 +271,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       locale = null;
       userAgent = null;
       allowLoadingDuplicates = false;
-      loggingService = new SystemOutLoggingService();
+      loggingService = new Slf4JLoggingService(log);
     }
 
     private SimpleWorkerContext getSimpleWorkerContextInstance() throws IOException {
@@ -281,7 +289,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
     private SimpleWorkerContext build(SimpleWorkerContext context) throws IOException {
       if (VersionUtilities.isR2Ver(context.getVersion()) || VersionUtilities.isR2Ver(context.getVersion())) {
-        System.out.println("As of end 2024, FHIR R2 (version "+context.getVersion()+") is no longer officially supported.");
+        log.warn("As of end 2024, FHIR R2 (version "+context.getVersion()+") is no longer officially supported.");
       }
       context.initTxCache(terminologyCachePath);
       context.setUserAgent(userAgent);
@@ -364,7 +372,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         try {
           context.loadDefinitionItem(name, new ByteArrayInputStream(source.get(name).getBytes()), loader, null, pi);
         } catch (Exception e) {
-          System.out.println("Error loading "+name+": "+e.getMessage());
+          log.error("Error loading "+name+": "+e.getMessage());
           throw new FHIRException("Error loading "+name+": "+e.getMessage(), e);
         }
       }
@@ -397,10 +405,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     if (txLog == null) {
       txLog = client.getLogger();
     }
-    TerminologyClientContext tcc = terminologyClientManager.setMasterClient(client, useEcosystem);
-    txLog("Connect to "+client.getAddress());
     try {
-      tcc.initialize();  
+      terminologyClientManager.setMasterClient(client, useEcosystem);
+      txLog("Connect to "+client.getAddress());
     } catch (Exception e) {
       if (canRunWithoutTerminology) {
         noTerminologyServer = true;
@@ -534,11 +541,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     
     
   }
-
-  @Override
-  public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, Set<String> types) throws IOException, FHIRException {
-    return loadFromPackageInt(pi, loader, types);
-  }
  
   @Override
   public int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws IOException, FHIRException {
@@ -551,7 +553,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       if (!loadedPackages.contains(e) && !VersionUtilities.isCorePackage(e)) {
         NpmPackage npm = pcm.loadPackage(e);
         if (!VersionUtilities.versionsMatch(version, npm.fhirVersion())) {
-          System.out.println(formatMessage(I18nConstants.PACKAGE_VERSION_MISMATCH, e, version, npm.fhirVersion(), path));  
+          log.info(formatMessage(I18nConstants.PACKAGE_VERSION_MISMATCH, e, version, npm.fhirVersion(), path));
         }
         t = t + loadFromPackageAndDependenciesInt(npm, loader.getNewLoader(npm), pcm, path+" -> "+npm.name()+"#"+npm.version());
       }
@@ -564,7 +566,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   public int loadFromPackageInt(NpmPackage pi, IContextResourceLoader loader, Set<String> types) throws IOException, FHIRException {
     int t = 0;
     if (progress) {
-      System.out.println("Load Package "+pi.name()+"#"+pi.version());
+      log.info("Load Package "+pi.name()+"#"+pi.version());
     }
     if (loadedPackages.contains(pi.id()+"#"+pi.version())) {
       return 0;
@@ -636,7 +638,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       try {
         registerResourceFromPackage(makeIgResource(pi), pii);
       } catch (Exception e) {
-        System.out.print("Problem constructing IG for "+pi.vid()+": "+e.getMessage());
+        log.error("Problem constructing IG for "+pi.vid()+": "+e.getMessage());
       }
     }
 	  for (String s : pi.list("other")) {
@@ -826,13 +828,11 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     if (r instanceof StructureDefinition) {
       StructureDefinition p = (StructureDefinition)r;
       try {
-        new ContextUtilities(this).generateSnapshot(p);
+        cutils.generateSnapshot(p);
       } catch (Exception e) {
         // not sure what to do in this case?
-        System.out.println("Unable to generate snapshot @3 for "+uri+": "+e.getMessage());
-        if (logger.isDebugLogging()) {
-          e.printStackTrace();
-        }
+        log.error("Unable to generate snapshot @3 for "+uri+": "+e.getMessage());
+        logger.logDebugMessage(org.hl7.fhir.r5.context.ILoggingService.LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
       }
     }
     return r;

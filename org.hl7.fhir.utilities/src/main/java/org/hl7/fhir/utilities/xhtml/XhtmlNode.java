@@ -297,8 +297,23 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
       node.setContent(content);
       addChildNode(node);
       return node;
-    } else 
+    } else {
       return null;
+    }
+  }
+
+  public void addTextWithLineBreaks(String content) {
+    if (content != null) {
+      boolean first = true;
+      for (String line : content.split("\\r?\\n")) {
+        if (first) {
+          first = false;
+        } else {
+          br();
+        }
+        tx(line);
+      }
+    }
   }
 
   public XhtmlNode addText(int index, String content) {
@@ -656,11 +671,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     switch (nodeType) {
     case Document: 
     case Element:
-      try {
-        return new XhtmlComposer(XhtmlComposer.HTML).compose(this);
-      } catch (IOException e) {
-        return super.toString();
-      }
+      return new XhtmlComposer(XhtmlComposer.HTML).compose(this);
     case Text:
       return this.content;
     case Comment:
@@ -994,6 +1005,14 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return hasAttribute("class", name);
   }
 
+  public XhtmlNode clss(String name) {
+    if (hasAttribute("class")) {
+      setAttribute("class", getAttribute("class")+" "+name);      
+    } else {
+      setAttribute("class", name);
+    }
+    return this;
+  }
 
   public void styleCells(XhtmlNode x) {
     setUserData("cells", x);    
@@ -1295,6 +1314,53 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   public XhtmlNode svgPath(XhtmlNode insertionPoint) {
     var x = addTag("path", insertionPoint);
     return x;
+  }
+
+
+  public boolean hasContent() {
+    if (nodeType == NodeType.Text) {
+      return content != null && content.trim().length() > 0;
+    }
+    if (nodeType == NodeType.Element) {
+      for (XhtmlNode n : getChildNodes()) {
+        if (n.hasContent()) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public String getPathName() {
+    if (getName() == null) {
+      return getNodeType().toCode();      
+    } else {
+      return getName();
+    }
+  }
+
+
+  public int countByPathName(XhtmlNode node) {
+    int count = 0;
+    for (XhtmlNode t : getChildNodes()) {
+      if (t.getPathName().equals(node.getPathName())) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  public int indexByPathName(XhtmlNode node) {
+    int count = 0;
+    for (XhtmlNode t : getChildNodes()) {
+      if (t == node) {
+        return count;        
+      }
+      if (t.getPathName().equals(node.getPathName())) {
+        count++;
+      }
+    }
+    return count;
   }
 
 }

@@ -373,32 +373,31 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   }
 
   private boolean showPropertyInTable(PropertyComponent cp) {
-    if (cp.hasCode()) {
-      if (cp.hasExtension(ToolingExtensions.EXT_RENDERED_VALUE)) {
-        return true;
-      }
-      if (cp.getCodeElement().hasExtension(ToolingExtensions.EXT_RENDERED_VALUE)) {
-        return true;
-      }
-      String uri = cp.getUri();
-      if (Utilities.noString(uri)){
-        return true; // do we always want to render properties in this case? Not sure...
-      }
-      String code = null;
-      if (uri.contains("#")) {
-        code = uri.substring(uri.indexOf("#")+1);
-        uri = uri.substring(0, uri.indexOf("#"));
-      }
-      if (Utilities.existsInList(uri, "http://hl7.org/fhir/concept-properties") || context.getCodeSystemPropList().contains(uri)) {
-        return true;
-      };
-      CodeSystem cs = getContext().getWorker().fetchCodeSystem(uri);
-      if (cs == null) {
-        return false;
-      }
-      return code == null ? false : CodeSystemUtilities.hasCode(cs, code);
-    }
-    return false;
+    return cp.hasCode();
+//      if (cp.hasExtension(ToolingExtensions.EXT_RENDERED_VALUE)) {
+//        return true;
+//      }
+//      if (cp.getCodeElement().hasExtension(ToolingExtensions.EXT_RENDERED_VALUE)) {
+//        return true;
+//      }
+//      String uri = cp.getUri();
+//      if (Utilities.noString(uri)){
+//        return true; // do we always want to render properties in this case? Not sure...
+//      }
+//      String code = null;
+//      if (uri.contains("#")) {
+//        code = uri.substring(uri.indexOf("#")+1);
+//        uri = uri.substring(0, uri.indexOf("#"));
+//      }
+//      if (Utilities.existsInList(uri, "http://hl7.org/fhir/concept-properties") || context.getCodeSystemPropList().contains(uri)) {
+//        return true;
+//      };
+//      CodeSystem cs = getContext().getWorker().fetchCodeSystem(uri);
+//      if (cs == null) {
+//        return false;
+//      }
+//      switch ()
+//      return code == null ? false : CodeSystemUtilities.hasCode(cs, code);
   }
 
 
@@ -532,7 +531,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       td = tr.td();
       Boolean b = CodeSystemUtilities.isDeprecated(cs, c, false);
       if (b !=  null && b) {
-        smartAddText(td, formatPhrase(RenderingContext.CODESYSTEM_DEPRECATED));
+        td.addTextWithLineBreaks(formatPhrase(RenderingContext.CODESYSTEM_DEPRECATED));
         hasExtensions = true;
         if (ToolingExtensions.hasExtension(c, ToolingExtensions.EXT_REPLACED_BY)) {
           Coding cc = (Coding) ToolingExtensions.getExtension(c, ToolingExtensions.EXT_REPLACED_BY).getValue();
@@ -698,10 +697,15 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
   private boolean hasMarkdownInDefinitions(CodeSystem cs) {
     if (doMarkdown == null) {
+      if (cs.hasUserData(UserDataNames.CS_MARKDOWN_FLAG)) {
+        doMarkdown = (Boolean) cs.getUserData(UserDataNames.CS_MARKDOWN_FLAG);
+      } else {
       if (cs.hasExtension("http://hl7.org/fhir/StructureDefinition/codesystem-use-markdown")) {
         doMarkdown  = ToolingExtensions.readBoolExtension(cs, "http://hl7.org/fhir/StructureDefinition/codesystem-use-markdown");
       } else {
         doMarkdown = CodeSystemUtilities.hasMarkdownInDefinitions(cs, context.getMarkdown());
+      }
+        cs.setUserData(UserDataNames.CS_MARKDOWN_FLAG, doMarkdown);
       }
     }
     return doMarkdown;

@@ -37,6 +37,7 @@ import java.util.Set;
  */
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -75,6 +76,7 @@ import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
+@Slf4j
 public class ValueSetUtilities extends TerminologyUtilities {
 
 
@@ -189,7 +191,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
           vs.setUserData(UserDataNames.kindling_ballot_package, pckage);
         else if (!pckage.equals(vs.getUserString(UserDataNames.kindling_ballot_package)))
           if (!"infrastructure".equals(vs.getUserString(UserDataNames.kindling_ballot_package)))
-          System.out.println("Value Set "+vs.getUrl()+": ownership clash "+pckage+" vs "+vs.getUserString(UserDataNames.kindling_ballot_package));
+          log.warn("Value Set "+vs.getUrl()+": ownership clash "+pckage+" vs "+vs.getUserString(UserDataNames.kindling_ballot_package));
       }
       if (status == StandardsStatus.NORMATIVE) {
         vs.setStatus(PublicationStatus.ACTIVE);
@@ -227,83 +229,6 @@ public class ValueSetUtilities extends TerminologyUtilities {
     if ("Normative".equals("status")) 
       return 4;
     return -1;
-  }
-
-  public static ValueSet generateImplicitValueSet(String uri) {
-    if (uri.startsWith("http://snomed.info/sct"))
-      return generateImplicitSnomedValueSet(uri);
-    if (uri.startsWith("http://loinc.org/vs"))
-      return generateImplicitLoincValueSet(uri);
-    if (uri.equals("http://hl7.org/fhir/ValueSet/mimetypes")) {
-      return generateImplicitMimetypesValueSet(uri);
-    }
-    return null;
-  }
-
-  private static ValueSet generateImplicitMimetypesValueSet(String theUri) {
-    ValueSet valueSet = new ValueSet();
-    valueSet.setStatus(PublicationStatus.ACTIVE);
-    valueSet.setUrl(theUri);
-    valueSet.setDescription("This value set includes all possible codes from BCP-13 (http://tools.ietf.org/html/bcp13)");
-    valueSet.getCompose()
-      .addInclude().setSystem("urn:ietf:bcp:13");
-    return valueSet;
-  }
-
-  private static ValueSet generateImplicitLoincValueSet(String uri) {
-    if ("http://loinc.org/vs".equals(uri))
-      return makeLoincValueSet();
-    if (uri.startsWith("http://loinc.org/vs/LL"))
-      return makeAnswerList(makeLoincValueSet(), uri);
-    return null;
-  }
-
-  private static ValueSet makeAnswerList(ValueSet vs, String uri) {
-    vs.setUrl(uri);
-    String c = uri.substring(20);
-    vs.setName("LOINCAnswers"+c);
-    vs.setTitle("LOINC Answer Codes for "+c);
-    vs.getCompose().getIncludeFirstRep().addFilter().setProperty("LIST").setOp(FilterOperator.EQUAL).setValue(c);
-    return vs;
-  }
-
-  private static ValueSet makeLoincValueSet() {
-    ValueSet vs = new ValueSet();
-    vs.setUrl("http://loinc.org/vs");
-    vs.setName("LOINCCodes");
-    vs.setTitle("All LOINC codes");
-    vs.setCopyright("This content LOINC® is copyright © 1995 Regenstrief Institute, Inc. and the LOINC Committee, and available at no cost under the license at http://loinc.org/terms-of-use");
-    vs.setStatus(PublicationStatus.ACTIVE);
-    vs.getCompose().addInclude().setSystem("http://loinc.org");
-    return vs;
-  }
-
-  private static ValueSet generateImplicitSnomedValueSet(String uri) {
-    if ("http://snomed.info/sct?fhir_vs".equals(uri))
-      return makeImplicitSnomedValueSet(uri);
-    return null;
-  }
-
-  private static ValueSet makeImplicitSnomedValueSet(String uri) {
-    ValueSet vs = new ValueSet();
-    vs.setUrl(uri);
-    vs.setName("SCTValueSet");
-    vs.setTitle("SCT ValueSet");
-    vs.setDescription("All SNOMED CT Concepts");
-    vs.setCopyright("This value set includes content from SNOMED CT, which is copyright © 2002+ International Health Terminology Standards Development Organisation (SNOMED International), and distributed by agreement between SNOMED International and HL7. Implementer use of SNOMED CT is not covered by this agreement");
-    vs.setStatus(PublicationStatus.ACTIVE);
-    vs.getCompose().addInclude().setSystem("http://snomed.info/sct");
-    return vs;
-  }
-
-  public static void setDeprecated(List<ValueSetExpansionPropertyComponent> vsProp,  ValueSetExpansionContainsComponent n) {
-    n.addProperty().setCode("status").setValue(new CodeType("deprecated"));
-    for (ValueSetExpansionPropertyComponent o : vsProp) {
-      if ("status".equals(o.getCode())) {
-        return;
-      }
-    }
-    vsProp.add(new ValueSetExpansionPropertyComponent().setCode("status").setUri("http://hl7.org/fhir/concept-properties#status"));
   }
 
 
@@ -518,80 +443,6 @@ public class ValueSetUtilities extends TerminologyUtilities {
     return defaultVersion;
   }
 
-  public static boolean isImplicitLoincValueSet(String url) {
-    return url.startsWith("http://loinc.org/vs");    
-  }
-
-  public static boolean isImplicitSCTValueSet(String url) {
-    return url.startsWith("http://snomed.info/sct") && url.contains("?fhir_vs");
-  }
-
-  public static ValueSet makeImplicitValueSet(String url, String version) {
-    if (url.startsWith("http://snomed.info/sct")) {
-      return makeImplicitSCTVS(url, version);
-    } else if (url.startsWith("http://loinc.org/vs")) {
-      return makeImplicitLoincVS(url, version);
-    } else {
-      throw new FHIRException("Unknown implicit value set URL "+url);
-    }
-  }
-
-  private static ValueSet makeImplicitSCTVS(String url, String version) {
-    String query = url.substring(url.indexOf("?")+1);
-    if ("fhir_vs".equals(query)) {
-      ValueSet vs = new ValueSet();
-      vs.setUrl(url);
-      vs.setVersion(version);
-      vs.getCompose().addInclude().setSystem("http://snomed.info/sct");
-      return vs;
-    } else if (query.startsWith("fhir_vs=isa/")) {
-      ValueSet vs = new ValueSet();
-      vs.setUrl(url);
-      vs.setVersion(version);
-      vs.getCompose().addInclude().setSystem("http://snomed.info/sct").addFilter().setProperty("concept").setOp(FilterOperator.ISA).setValue(query.substring(12));
-      return vs;
-    } else if (query.equals("fhir_vs=refset")) {
-      ValueSet vs = new ValueSet();
-      vs.setUrl(url);
-      vs.setVersion(version);
-      vs.getCompose().addInclude().setSystem("http://snomed.info/sct").addFilter().setProperty("concept").setOp(FilterOperator.ISA).setValue("refset-base");
-      return vs;      
-    } else if (query.startsWith("fhir_vs=refset/")) {
-      ValueSet vs = new ValueSet();
-      vs.setUrl(url);
-      vs.setVersion(version);
-      vs.getCompose().addInclude().setSystem("http://snomed.info/sct").addFilter().setProperty("concept").setOp(FilterOperator.IN).setValue(query.substring(15));
-      return vs;      
-    } else {
-      throw new FHIRException("Unknown implicit SNOMED CT value set URL "+url);
-    }
-  }
-
-  private static ValueSet makeImplicitLoincVS(String url, String version) {
-    if (url.equals("http://loinc.org/vs")) {
-      ValueSet vs = new ValueSet();
-      vs.setUrl(url);
-      vs.setVersion(version);
-      vs.getCompose().addInclude().setSystem("http://loinc.org");
-      return vs;
-    } else if (url.startsWith("http://loinc.org/vs/LP")) {
-      ValueSet vs = new ValueSet();
-      vs.setUrl(url);
-      vs.setVersion(version);
-      vs.getCompose().addInclude().setSystem("http://loinc.org").addFilter().setProperty("ancestor").setOp(FilterOperator.EQUAL).setValue(url.substring("http://loinc.org/vs/".length()));
-      return vs;      
-    } else if (url.startsWith("http://loinc.org/vs/LL")) {
-      ValueSet vs = new ValueSet();
-      vs.setUrl(url);
-      vs.setVersion(version);
-      // this isn't the actual definition, but it won't matter to us internally
-      vs.getCompose().addInclude().setSystem("http://loinc.org").addFilter().setProperty("answer-list").setOp(FilterOperator.EQUAL).setValue(url.substring("http://loinc.org/vs/".length()));      
-      return vs;
-    } else {
-      throw new FHIRException("Unknown implicit LOINC value set URL "+url);
-    }
-  }
-
   public static Set<String> checkExpansionSubset(ValueSet vs1, ValueSet vs2) {
     Set<String> codes = new HashSet<>();
     checkCodes(codes, vs2.getExpansion().getContains(), vs1.getExpansion().getContains());
@@ -608,7 +459,6 @@ public class ValueSetUtilities extends TerminologyUtilities {
         checkCodes(codes, c.getContains(), listT);
       }
     }
-    
   }
 
   private static ValueSetExpansionContainsComponent findContained(ValueSetExpansionContainsComponent c, List<ValueSetExpansionContainsComponent> listT) {
@@ -626,5 +476,15 @@ public class ValueSetUtilities extends TerminologyUtilities {
     return null;
   }
 
-  
+  public static void setDeprecated(List<ValueSet.ValueSetExpansionPropertyComponent> vsProp, ValueSet.ValueSetExpansionContainsComponent n) {
+    n.addProperty().setCode("status").setValue(new CodeType("deprecated"));
+    for (ValueSet.ValueSetExpansionPropertyComponent o : vsProp) {
+      if ("status".equals(o.getCode())) {
+        return;
+      }
+    }
+    vsProp.add(new ValueSet.ValueSetExpansionPropertyComponent().setCode("status").setUri("http://hl7.org/fhir/concept-properties#status"));
+  }
+
+
 }

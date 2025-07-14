@@ -1067,7 +1067,6 @@ public class Turtle {
 	//	
 	//	public void importTtl(Section sct, String ttl) throws Exception {
 	//		if (!Utilities.noString(ttl)) {
-	//			//        System.out.println("import ttl: "+ttl);
 	//			Lexer lexer = new Lexer(ttl);
 	//			String subject = null;
 	//			String predicate = null;
@@ -1332,8 +1331,7 @@ public class Turtle {
 	//
 	//	public void importTtl(Section sct, String ttl) throws Exception {
 	//		if (!Utilities.noString(ttl)) {
-	//			//        System.out.println("import ttl: "+ttl);
-	//			Lexer lexer = new Lexer(ttl);
+  //			Lexer lexer = new Lexer(ttl);
 	//			String subject = null;
 	//			String predicate = null;
 	//			while (!lexer.done()) {

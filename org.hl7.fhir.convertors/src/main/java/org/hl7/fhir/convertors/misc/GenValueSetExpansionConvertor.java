@@ -1,7 +1,5 @@
 package org.hl7.fhir.convertors.misc;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 /*
@@ -45,6 +43,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@SuppressWarnings("checkstyle:systemout")
 public class GenValueSetExpansionConvertor {
 
   public static void main(String[] args) throws FHIRFormatError, IOException {

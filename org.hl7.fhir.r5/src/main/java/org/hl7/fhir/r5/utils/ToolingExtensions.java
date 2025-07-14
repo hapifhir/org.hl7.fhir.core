@@ -311,6 +311,8 @@ public class ToolingExtensions {
   public static final String EXT_ENTRY_FORMAT = "http://hl7.org/fhir/StructureDefinition/entryFormat";
   public static final String EXT_TEXT_LINK = "http://hl7.org/fhir/StructureDefinition/textLink";
   public static final String EXT_CONCEPT_DOMAIN = "http://hl7.org/fhir/StructureDefinition/binding-conceptDomain";
+  public static final String EXT_NARRATIVE_SOURCE_CONTROL = "http://hl7.org/fhir/StructureDefinition/narrative-source-control";
+  public static final String EXT_NARRATIVE_LANGUAGE_CONTROL = "http://hl7.org/fhir/StructureDefinition/narrative-language-control";
   public static final String EXT_SD_CS_URL = "todo";
   
   // specific extension helpers
@@ -474,7 +476,7 @@ public class ToolingExtensions {
     }
     return null;
   }
-  
+
   public static String readStringExtension(Element c, String uri) {
     Extension ex = ExtensionHelper.getExtension(c, uri);
     if (ex == null)
@@ -498,6 +500,34 @@ public class ToolingExtensions {
     if (!(ex.getValue() instanceof StringType))
       return null;
     return ((StringType) ex.getValue()).getValue();
+  }
+  
+  public static List<String> readStringExtensions(Element c, String uri) {
+    List<String> res = new ArrayList<>();
+    List<Extension> list = ExtensionHelper.getExtensionList(c, uri);
+    for (Extension ex : list) {
+      if (ex != null) {
+        if (ex.getValue() instanceof UriType)
+          res.add(((UriType) ex.getValue()).getValue());
+        if (ex.getValue() instanceof CanonicalType)
+          res.add(((CanonicalType) ex.getValue()).getValue());
+        if (ex.getValue() instanceof CodeType)
+          res.add(((CodeType) ex.getValue()).getValue());
+        if (ex.getValue() instanceof IntegerType)
+          res.add(((IntegerType) ex.getValue()).asStringValue());
+        if (ex.getValue() instanceof Integer64Type)
+          res.add(((Integer64Type) ex.getValue()).asStringValue());
+        if (ex.getValue() instanceof DecimalType)
+          res.add(((DecimalType) ex.getValue()).asStringValue());
+        if ((ex.getValue() instanceof MarkdownType))
+          res.add(((MarkdownType) ex.getValue()).getValue());
+        if ((ex.getValue() instanceof PrimitiveType))
+          res.add(((PrimitiveType) ex.getValue()).primitiveValue());
+        if ((ex.getValue() instanceof StringType))
+          res.add(((StringType) ex.getValue()).getValue());
+      }
+    }
+    return res;
   }
 
   public static String readStringExtension(DomainResource c, String... uris) {

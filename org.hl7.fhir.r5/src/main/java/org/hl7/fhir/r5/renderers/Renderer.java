@@ -42,8 +42,6 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  */
 @MarkedToMoveToAdjunctPackage
 public class Renderer  {
-
-  protected static final boolean DEBUG = false;
   
   public static class RenderingStatus {
     private boolean extensions;
@@ -259,4 +257,46 @@ public class Renderer  {
     return context.getTranslatedCode(child.primitiveValue(), child.getCodeSystemUri());
   }
 
+
+  public XhtmlNode xlinkNarrative(XhtmlNode x, ResourceWrapper type) {
+    if (context.isTrackNarrativeSource() && !x.hasUserData("narrative.linked") && type != null) {
+      if (type.hasId()) {
+        x.id(type.getId());
+      } else {
+        String id = context.nextXNKey();
+        x.id(id);
+        type.setId(id);
+      }
+      x.clss("generated");
+      x.setUserData("narrative.linked", true);
+    }
+    return x;
+  }
+
+  public XhtmlNode markBoilerplate(XhtmlNode x) {
+    if (context.isTrackNarrativeSource()) {
+      x.clss("boilerplate");
+    }
+    return x;
+  }
+
+  public XhtmlNode markGenerated(XhtmlNode x) {
+    if (context.isTrackNarrativeSource()) {
+      x.clss("generated");
+    }
+    return x;
+  }
+
+  public XhtmlNode spanIfTracking(XhtmlNode x, ResourceWrapper v) {
+    if (context.isTrackNarrativeSource()) {
+      XhtmlNode span = x.span();
+      xlinkNarrative(span, v);
+      return span;
+    } else {
+      return x;
+    }
+  }
+
+
+  
 }

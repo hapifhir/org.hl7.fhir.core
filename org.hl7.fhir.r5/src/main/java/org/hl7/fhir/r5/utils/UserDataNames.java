@@ -72,7 +72,6 @@ public class UserDataNames {
   public static final String tx_status_msg_value = "status-msg-value";
   public static final String tx_val_sys_error = "val.sys.error";
   public static final String tx_cs_special = "tx.cs.special";
-  public static final String TX_REQUEST = "source";
   public static final String TX_ASSOCIATED_CODESYSTEM = "cs";
   public static final String tx_cs_version_notes = "cs.version.notes";
   public static final String tx_known_supplements = "supplements.installed";
@@ -153,6 +152,8 @@ public class UserDataNames {
   public static final String DN_TRANSIENT = "DN_TRANSIENT";
   public static final String JGEN_ALL_PRIMITIVE = "JGEN_ALL_PRIMITIVE";
   public static final String IG_DEP_ALIASED = "IG_DEP_ALIASED";
+  public static final String CS_MARKDOWN_FLAG = "CS_MARKDOWN_FLAG";
   public static final String PROFILE_RENDERED_MAPPINGS = "PROFILE_RENDERED_MAPPINGS";
+  public static final String EXP_REVIEWED = "EXP_REVIEWED";
   
 }  

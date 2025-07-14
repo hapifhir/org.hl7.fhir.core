@@ -39,6 +39,8 @@ public class ValidatorCliTests {
   ConvertTask convertTask;
   @Spy
   CompareTask compareTask;
+  @Spy
+  HTTPServerTask serverTask;
 
   @Spy
   CompileTask compileTask;
@@ -50,6 +52,9 @@ public class ValidatorCliTests {
 
   @Spy
   LangTransformTask langTransformTask;
+
+  @Spy
+  LangRegenerateTask langRegenTask;
 
   @Spy
   NarrativeTask narrativeTask;
@@ -124,6 +129,7 @@ public class ValidatorCliTests {
           fhirpathTask,
           installTask,
           langTransformTask,
+          langRegenTask,
           narrativeTask,
           preloadCacheTask,
           scanTask,
@@ -138,6 +144,7 @@ public class ValidatorCliTests {
           codeGenTask,
           txPackTask,
           instanceFactoryTask,
+          serverTask,
           //validate is the default
           validateTask
         );

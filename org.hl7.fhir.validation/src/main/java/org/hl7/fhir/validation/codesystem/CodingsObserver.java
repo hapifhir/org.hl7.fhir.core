@@ -9,9 +9,11 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.validation.ValidatorSession;
@@ -24,6 +26,7 @@ import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 import lombok.NonNull;
 
+@Slf4j
 public class CodingsObserver extends BaseValidator {
 
   private class CodingUsage {
@@ -72,8 +75,8 @@ public class CodingsObserver extends BaseValidator {
 
   public void finish(List<ValidationMessage> errors, NodeStack rootStack) {
     if (checkIPSCodes) {
-      System.out.println("");
-      System.out.println("Checking SCT codes for IPS");
+      log.info("");
+      log.info("Checking SCT codes for IPS");
 
       Set<String> snomedCTCodes = new HashSet<>();
       for (CodingUsage c : list) {
@@ -89,7 +92,7 @@ public class CodingsObserver extends BaseValidator {
           }
         }
       }
-      System.out.println("Done Checking SCT codes for IPS");
+      log.info("Done Checking SCT codes for IPS");
     }
   }
 
@@ -98,9 +101,11 @@ public class CodingsObserver extends BaseValidator {
     for (String s : codes) {      
       serverList.add(new CodingValidationRequest(new Coding("http://snomed.info/sct", s, null)));
     }
-    
-    context.validateCodeBatchByRef(null, serverList, "http://terminology.hl7.org/ValueSet/snomed-intl-ips");
-    
+
+    ValueSet vsTemp = new ValueSet();
+    vsTemp.setUrl("http://terminology.hl7.org/ValueSet/snomed-intl-ips");
+    context.validateCodeBatch(null, serverList, vsTemp, false);
+    // #FIXME
     Map<String, String> results = new HashMap<>();
     
     for (CodingValidationRequest vr : serverList) {
