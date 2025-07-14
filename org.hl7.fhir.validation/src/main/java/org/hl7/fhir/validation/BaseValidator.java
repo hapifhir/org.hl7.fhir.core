@@ -1321,7 +1321,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
 
     } else if (ref.split("/").length != 2 && ref.split("/").length != 4) {
       if (isTransaction) {
-        rule(errors, NO_RULE_DATE, IssueType.INVALID, -1, -1, path, isSearchUrl(ref), I18nConstants.REFERENCE_REF_FORMAT1, ref);
+        rule(errors, NO_RULE_DATE, IssueType.INVALID, -1, -1, path, isSearchUrl(context, ref), I18nConstants.REFERENCE_REF_FORMAT1, ref);
       } else {
         rule(errors, NO_RULE_DATE, IssueType.INVALID, -1, -1, path, false, I18nConstants.REFERENCE_REF_FORMAT2, ref);
       }
@@ -1419,16 +1419,29 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return match == null ? null : new IndexedElement(matchIndex, match, entries.get(matchIndex));
   }
 
-  private boolean isSearchUrl(String ref) {
-    if (Utilities.noString(ref) || !ref.contains("?")) {
+  /**
+   * Determines whether a string is a valid search URL. A valid search URL takes
+   * the forms:
+   * [resourceType]?[paramName]=[paramValue]
+   * [resourceType]?[paramName]=[paramValue]&[paramName]=[paramValue]
+   * [resourceType]?[paramName]=[paramValue]&[paramName]=[paramValue]&....
+   */
+  public static boolean isSearchUrl(IWorkerContext context, String ref) {
+    if (Utilities.noString(ref)) {
       return false;
     }
-    String tn = ref.substring(0, ref.indexOf("?"));
-    String q = ref.substring(ref.indexOf("?") + 1);
-    if (!context.getResourceNames().contains(tn)) {
+
+    int questionMarkIndex = ref.indexOf("?");
+    if (questionMarkIndex == -1) {
+      return false;
+    }
+
+    String resourceType = ref.substring(0, questionMarkIndex);
+    String query = ref.substring(questionMarkIndex + 1);
+    if (!context.getResourceNamesAsSet().contains(resourceType)) {
       return false;
     } else {
-      return q.matches("([_a-zA-Z][_a-zA-Z0-9]*=[^=&]*)(&([_a-zA-Z][_a-zA-Z0-9]*=[^=&]*))*");
+      return query.matches("([_a-zA-Z][_a-zA-Z0-9.:]*=[^=&]*)(&([_a-zA-Z][_a-zA-Z0-9.:]*=[^=&]*))*");
     }
   }
 
