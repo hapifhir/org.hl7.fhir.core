@@ -3247,13 +3247,13 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (left.size() > 1) {
       throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "div");
     }
-    if (!left.get(0).isPrimitive() && !(left.get(0) instanceof Quantity)) {
+    if (!left.get(0).isPrimitive()) {
       throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_WRONG_TYPE, "div", left.get(0).fhirType());
     }
     if (right.size() > 1) {
       throw makeExceptionPlural(right.size(), expr, I18nConstants.FHIRPATH_RIGHT_VALUE, "div");
     }
-    if (!right.get(0).isPrimitive() && !(right.get(0) instanceof Quantity)) {
+    if (!right.get(0).isPrimitive()) {
       throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_WRONG_TYPE, "div", right.get(0).fhirType());
     }
 
