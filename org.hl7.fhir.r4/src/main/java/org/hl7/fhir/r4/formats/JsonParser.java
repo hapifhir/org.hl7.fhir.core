@@ -1033,7 +1033,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("reference"))
       res.setReferenceElement(parseString(json.get("reference").getAsString()));
     if (json.has("_reference"))
-      parseElementProperties(getJObject(json, "_reference"), res.getReferenceElement());
+      parseElementProperties(getJObject(json, "_reference"), res.getReferenceElement_());
     if (json.has("type"))
       res.setTypeElement(parseUri(json.get("type").getAsString()));
     if (json.has("_type"))
@@ -34234,8 +34234,8 @@ public class JsonParser extends JsonParserBase {
   protected void composeReferenceInner(Reference element) throws IOException {
     composeElement(element);
     if (element.hasReferenceElement()) {
-      composeStringCore("reference", element.getReferenceElement(), false);
-      composeStringExtras("reference", element.getReferenceElement(), false);
+      composeStringCore("reference", element.getReferenceElement_(), false);
+      composeStringExtras("reference", element.getReferenceElement_(), false);
     }
     if (element.hasTypeElement()) {
       composeUriCore("type", element.getTypeElement(), false);

@@ -266,6 +266,8 @@ public class NarrativeGenerationTests {
     rc.setMode(test.technical ? ResourceRendererMode.TECHNICAL : ResourceRendererMode.END_USER);
     rc.setProfileUtilities(new ProfileUtilities(rc.getContext(), null, new TestProfileKnowledgeProvider(rc.getContext())));
         
+    rc.setTesting(true);
+    
     if (test.getSDMode() != null) {
       rc.setStructureMode(StructureDefinitionRendererMode.valueOf(test.getSDMode().toUpperCase()));
     }

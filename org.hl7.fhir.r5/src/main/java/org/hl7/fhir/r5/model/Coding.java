@@ -555,18 +555,26 @@ public class Coding extends DataType implements IBaseCoding, ICompositeType, ICo
       public boolean is(String system, String code) {
         return hasSystem() && hasCode() &&  this.getSystem().equals(system) && this.getCode().equals(code);
       }
-      
-      public String toString() {
-        String base = hasSystem() ? getSystem() : "";
-        if (hasVersion())
-          base = base+"|"+getVersion();
-        base = base + "#"+getCode();
-        if (hasDisplay())
-          base = base+": '"+getDisplay()+"'";
-        return base;        
-      } 
-      
-      public static Coding fromLiteral(String value) {
+
+  public String toString() {
+    String base = hasSystem() ? getSystem() : "";
+    if (hasVersion())
+      base = base+"|"+getVersion();
+    base = base + "#"+getCode();
+    if (hasDisplay())
+      base = base+": '"+getDisplay()+"'";
+    return base;
+  }
+
+  public String toToken() {
+    String base = hasSystem() ? getSystem() : "";
+    if (hasVersion())
+      base = base+"|"+getVersion();
+    base = base + "#"+getCode();
+    return base;
+  }
+
+  public static Coding fromLiteral(String value) {
         String sv = value.contains("#") ? value.substring(0, value.indexOf("#")) : value; 
         String cp = value.contains("#") ? value.substring(value.indexOf("#")+1) : null;
         

@@ -72,7 +72,6 @@ public class UserDataNames {
   public static final String tx_status_msg_value = "status-msg-value";
   public static final String tx_val_sys_error = "val.sys.error";
   public static final String tx_cs_special = "tx.cs.special";
-  public static final String TX_REQUEST = "source";
   public static final String TX_ASSOCIATED_CODESYSTEM = "cs";
   public static final String tx_cs_version_notes = "cs.version.notes";
   public static final String tx_known_supplements = "supplements.installed";

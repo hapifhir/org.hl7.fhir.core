@@ -173,10 +173,23 @@ public class DefinitionNavigator {
     String prefix = path+".";
     Map<String, DefinitionNavigator> nameMap = new HashMap<String, DefinitionNavigator>();
 
+    int workingIndex = index;
+    ElementDefinition curr = current();
+    if (curr != null && curr.hasContentReference()) {
+      if (!(workingIndex < list().size()-1 && list().get(workingIndex+1).getPath().startsWith(prefix))) {
+        String ref = curr.getContentReference();
+        if (ref.contains("#")) {
+          ref = ref.substring(ref.indexOf("#")+1);
+        }
+        prefix = ref;
+        workingIndex = getById(list(), ref);
+      }
+    }
+
     DefinitionNavigator last = null;
     String polymorphicRoot = null;
     DefinitionNavigator polymorphicDN = null;
-    for (int i = indexMatches ? index + 1 : index; i < list().size(); i++) {
+    for (int i = indexMatches ? workingIndex + 1 : workingIndex; i < list().size(); i++) {
       String path = list().get(i).getPath();
       if (path.startsWith(prefix)) {
         if (!path.substring(prefix.length()).contains(".")) {
@@ -257,6 +270,9 @@ public class DefinitionNavigator {
         break;
       }
     }
+    if (children.isEmpty() && current().hasContentReference()) {
+      throw new Error("What?");
+    }
     inlineChildren = !children.isEmpty();
     if (children.isEmpty() && followTypes) {
       ElementDefinition ed = current();
@@ -285,6 +301,15 @@ public class DefinitionNavigator {
         }
       }
     }
+  }
+
+  private int getById(List<ElementDefinition> list, String ref) {
+    for (ElementDefinition ed : list) {
+      if (ref.equals(ed.getPath())) {
+        return list.indexOf(ed);
+      }
+    }
+    return -1;
   }
 
   private ElementDefinition makeExtensionDefinitionElement(String path) {

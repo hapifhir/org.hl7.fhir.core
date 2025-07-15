@@ -1611,16 +1611,16 @@ public class FHIRPathEngine {
           }
         }     
       }
-      if (tracer != null) tracer.traceExpression(context, focus, work, exp);
+      traceExpression(focus, exp, context, work);
       break;
     case Function:
       List<Base> work2 = evaluateFunction(context, focus, exp);
       work.addAll(work2);
-      if (tracer != null) tracer.traceExpression(context, focus, work, exp);
+      traceExpression(focus, exp, context, work);
       break;
     case Constant:
       work.addAll(resolveConstant(context, exp.getConstant(), false, exp, true));
-      if (tracer != null) tracer.traceExpression(context, focus, work, exp);
+      traceExpression(focus, exp, context, work);
       break;
     case Group:
       work2 = execute(context, focus, exp.getGroup(), atEntry);
@@ -1644,17 +1644,22 @@ public class FHIRPathEngine {
         else if (last.getOperation() == Operation.Is || last.getOperation() == Operation.As) {
           work2 = executeTypeName(context, focus, next, false);
           work = operate(context, work, last.getOperation(), work2, last);
-          if (tracer != null) tracer.traceOperationExpression(context, focus, work, last);
+          if (tracer != null) { tracer.traceOperationExpression(context, focus, work, last); }
         } else {
           work2 = execute(context, focus, next, true);
           work = operate(context, work, last.getOperation(), work2, last);
-          if (tracer != null) tracer.traceOperationExpression(context, focus, work, last);
+          if (tracer != null) { tracer.traceOperationExpression(context, focus, work, last); }
         }
         last = next;
         next = next.getOpNext();
       }
     }
     return work;
+  }
+
+  private void traceExpression(List<Base> focus, ExpressionNode exp, ExecutionContext context, List<Base> work) {
+    if (tracer == null) { return; }
+    tracer.traceExpression(context, focus, work, exp);
   }
 
   private List<Base> executeTypeName(ExecutionContext context, List<Base> focus, ExpressionNode next, boolean atEntry) {
@@ -2785,7 +2790,7 @@ public class FHIRPathEngine {
       return makeBoolean(false);
     }
     if (left.size() > 1) {
-      throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "in");
+      throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "in", convertToString(left));
     }
     boolean ans = true;
     for (Base l : left) {
@@ -2835,7 +2840,7 @@ public class FHIRPathEngine {
       return new ArrayList<Base>();
     }
     if (left.size() > 1) {
-      throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "+");
+      throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "+", convertToString(left));
     }
     if (!left.get(0).isPrimitive()) {
       throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_WRONG_TYPE, "+", left.get(0).fhirType());
@@ -2976,7 +2981,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       return new ArrayList<Base>();
     }
     if (left.size() > 1) {
-      throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "*");
+      throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "*", convertToString(left));
     }
     var lq = makeQuantity(left.get(0));
     if (!left.get(0).isPrimitive() && !(lq instanceof Quantity)) {
@@ -3017,7 +3022,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> opConcatenate(List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
     if (left.size() > 1) {
-      throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "&");
+      throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "&", convertToString(left));
     }
     if (left.size() > 0 && !left.get(0).hasType(FHIR_TYPES_STRING)) {
       throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_WRONG_TYPE, "&", left.get(0).fhirType());
@@ -3150,7 +3155,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       return new ArrayList<Base>();
     }
     if (left.size() > 1) {
-      throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "-");
+      throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "-", convertToString(left));
     }
     if (!left.get(0).isPrimitive() && !left.get(0).hasType("Quantity")) {
       throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_WRONG_TYPE, "-", left.get(0).fhirType());
@@ -3197,7 +3202,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       return new ArrayList<Base>();
     }
     if (left.size() > 1) {
-      throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "/");
+      throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "/", convertToString(left));
     }
     var lq = makeQuantity(left.get(0));
     if (!left.get(0).isPrimitive() && !(lq instanceof Quantity)) {
@@ -3245,7 +3250,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       return new ArrayList<Base>();
     }
     if (left.size() > 1) {
-      throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "div");
+      throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "div", convertToString(left));
     }
     if (!left.get(0).isPrimitive()) {
       throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_WRONG_TYPE, "div", left.get(0).fhirType());
@@ -3285,7 +3290,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (left.size() == 0 || right.size() == 0) {
       return new ArrayList<Base>();
     } if (left.size() > 1) {
-      throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "mod");
+      throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "mod", convertToString(left));
     }
     if (!left.get(0).isPrimitive()) {
       throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_WRONG_TYPE, "mod", left.get(0).fhirType());

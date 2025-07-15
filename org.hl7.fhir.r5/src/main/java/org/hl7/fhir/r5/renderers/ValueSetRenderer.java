@@ -61,6 +61,7 @@ import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.LoincLinker;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
@@ -95,16 +96,27 @@ public class ValueSetRenderer extends TerminologyRenderer {
           generateCopyright(x, r);
       }
       if (vs.hasExtension(ToolingExtensions.EXT_VS_CS_SUPPL_NEEDED)) {
+        List<Extension> exts = vs.getExtensionsByUrl(ToolingExtensions.EXT_VS_CS_SUPPL_NEEDED);
         var p = x.para();
-        p.tx("This ValueSet requires the Code system Supplement ");
-        String u = ToolingExtensions.readStringExtension(vs, ToolingExtensions.EXT_VS_CS_SUPPL_NEEDED);
-        CodeSystem cs = context.getContext().fetchResource(CodeSystem.class, u);
-        if (cs == null) {
-          p.code().tx(u);
-        } else if (!cs.hasWebPath()) {
-          p.ah(u).tx(cs.present());
-        } else {
-          p.ah(cs.getWebPath()).tx(cs.present());          
+        p.tx(context.formatPhrasePlural(exts.size(), RenderingI18nContext.VALUE_SET_NEEDS_SUPPL));
+        p.tx(" ");
+        for (int i = 0; i < exts.size(); i++) { 
+          if (i > 0) {
+            if (i == exts.size() - 1) {
+              p.tx(" and ");
+            } else {
+              p.tx(", ");
+            }
+          }
+          String u = exts.get(i).getValue().primitiveValue();
+          CodeSystem cs = context.getContext().fetchResource(CodeSystem.class, u);
+          if (cs == null) {
+            p.code().tx(u);
+          } else if (!cs.hasWebPath()) {
+            p.ah(u).tx(cs.present());
+          } else {
+            p.ah(cs.getWebPath()).tx(cs.present());          
+          }
         }
         p.tx(".");
       }
@@ -1505,15 +1517,15 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (hasDefinition) {
       td = tr.td();
       if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION)) {
-        smartAddText(td, ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_DEFINITION));
+        td.addTextWithLineBreaks(ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_DEFINITION));
       } else if (cc != null && !Utilities.noString(cc.getDefinition())) {
-        smartAddText(td, cc.getDefinition());
+        td.addTextWithLineBreaks(cc.getDefinition());
       }
     }
     if (hasComments) {
       td = tr.td();
       if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_VS_COMMENT)) {
-        smartAddText(td, context.formatPhrase(RenderingContext.VALUE_SET_NOTE, ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_VS_COMMENT)+" "));
+        td.addTextWithLineBreaks(context.formatPhrase(RenderingContext.VALUE_SET_NOTE, ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_VS_COMMENT)+" "));
       }
     }
     if (doDesignations) {
@@ -1629,7 +1641,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           int len = Integer.min(serverList.size(), MAX_BATCH_VALIDATION_SIZE);
           List<CodingValidationRequest> list = serverList.subList(i, i+len);
           i += len;
-          getContext().getWorker().validateCodeBatch(getContext().getTerminologyServiceOptions(), list, null);
+          getContext().getWorker().validateCodeBatch(getContext().getTerminologyServiceOptions(), list, null, true);
           for (CodingValidationRequest vr : list) {
             ConceptDefinitionComponent v = vr.getResult().asConceptDefinition();
             if (v != null) {

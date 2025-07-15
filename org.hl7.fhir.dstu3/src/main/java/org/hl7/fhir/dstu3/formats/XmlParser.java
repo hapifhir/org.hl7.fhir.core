@@ -19042,7 +19042,7 @@ public class XmlParser extends XmlParserBase {
   protected void composeReferenceElements(Reference element) throws IOException {
       composeElementElements(element);
       if (element.hasReferenceElement()) {
-        composeString("reference", element.getReferenceElement());
+        composeString("reference", element.getReferenceElement_());
       }
       if (element.hasIdentifier()) {
         composeIdentifier("identifier", element.getIdentifier());

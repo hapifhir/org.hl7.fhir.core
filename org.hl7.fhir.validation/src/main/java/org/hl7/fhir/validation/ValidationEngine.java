@@ -103,6 +103,9 @@ import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.validation.BaseValidator.ValidationControl;
@@ -716,12 +719,25 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     }
     InstanceValidator validator = getValidator(cntType);
     Element res = validator.validate(null, messages, new ByteArrayInputStream(source.getBytes()), cntType, asSdList(profiles));
+    boolean first = true;
     for (String fn : matchetypes) {
+      if (first) {
+        messages.removeIf(msg -> msg.getLevel() != IssueSeverity.FATAL);
+        first = false;
+      }
       byte[] cnt = FileUtilities.fileToBytes(fn);
       Element exp = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt), FormatUtilities.determineFormat(cnt));
+      log.info("  Validate against matchetype " + fn);
       MatchetypeValidator mv = new MatchetypeValidator(validator.getFHIRPathEngine());
+      ValidationMessage vm = new ValidationMessage(Source.MatchetypeValidator, IssueType.INFORMATIONAL, res.fhirType(), "Validate aginast Matchetype "+fn, IssueSeverity.INFORMATION);
+      messages.add(vm);
       List<ValidationMessage> mtErrors = new ArrayList<ValidationMessage>();
-      mv.compare(mtErrors, "$", exp, res);
+      mv.compare(mtErrors, res.fhirType(), exp, res);
+      if (mtErrors.isEmpty()) {
+        vm.setMessage(vm.getMessage()+" - All OK"); 
+      } else {
+        messages.addAll(mtErrors);
+      }
     }
     
     if (showTimes) {

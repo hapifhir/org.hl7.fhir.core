@@ -177,7 +177,7 @@ public class CodeSystemValidator extends BaseValidator {
       CodeSystem csSupp = null;
       if ("supplement".equals(content) || supp != null) {      
         if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), !Utilities.noString(supp), I18nConstants.CODESYSTEM_CS_SUPP_NO_SUPP)) {
-          if (context.supportsSystem(supp, options.getFhirVersion())) {
+          if (context.supportsSystem(supp)) {
             csSupp = context.fetchCodeSystem(supp);
             if (csSupp != null) {
               if (csSupp.hasHierarchyMeaningElement() && cs.hasChild("hierarchyMeaning")) {
