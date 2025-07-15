@@ -29,6 +29,30 @@ import org.hl7.fhir.r5.model.ValueSet;
 
 public class ConceptMapUtilities {
 
+  public static class MappingTriple {
+    private ConceptMapGroupComponent grp;
+    private SourceElementComponent src;
+    private TargetElementComponent tgt;
+
+    public MappingTriple(ConceptMapGroupComponent grp, SourceElementComponent src, TargetElementComponent tgt) {
+      this.grp = grp;
+      this.src = src;
+      this.tgt = tgt;
+    }
+
+    public ConceptMapGroupComponent getGrp() {
+      return grp;
+    }
+
+    public SourceElementComponent getSrc() {
+      return src;
+    }
+
+    public TargetElementComponent getTgt() {
+      return tgt;
+    }
+  }
+
   public static class TargetSorter implements Comparator<TargetElementComponent> {
 
     @Override
@@ -117,12 +141,35 @@ public class ConceptMapUtilities {
     cm.addIdentifier().setSystem("urn:ietf:rfc:3986").setValue(oid);
   }
 
+  public static boolean hasMappingForSource(ConceptMap cm, Coding code) {
+    return hasMappingForSource(cm, code.getSystem(), code.getVersion(), code.getCode());
+  }
+
   public static boolean hasMappingForSource(ConceptMap cm, String system, String version, String code) {
     for (ConceptMapGroupComponent grp : cm.getGroup()) {
       if (system.equals(grp.getSource())) { // to do: version
         for (SourceElementComponent e : grp.getElement()) {
           if (code.equals(e.getCode())) {
             return true; // doesn't matter if it's actually unmapped
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  public static boolean hasMappingForTarget(ConceptMap cm, Coding code) {
+    return hasMappingForTarget(cm, code.getSystem(), code.getVersion(), code.getCode());
+  }
+
+  public static boolean hasMappingForTarget(ConceptMap cm, String system, String version, String code) {
+    for (ConceptMapGroupComponent grp : cm.getGroup()) {
+      if (system.equals(grp.getTarget())) { // to do: version
+        for (SourceElementComponent e : grp.getElement()) {
+          for (TargetElementComponent t : e.getTarget()) {
+            if (code.equals(t.getCode())) {
+              return true; // doesn't matter if it's actually unmapped
+            }
           }
         }
       }
@@ -680,6 +727,42 @@ public class ConceptMapUtilities {
       }
     }
     return false;
+  }
+
+  public static List<MappingTriple> getBySource(ConceptMap map, Coding c) {
+    List<MappingTriple> list = new ArrayList<>();
+    for (ConceptMapGroupComponent g : map.getGroup()) {
+      if (CanonicalType.matches(g.getSource(), c.getSystem(), c.getVersion())) {
+        for (SourceElementComponent e : g.getElement()) {
+          if (e.getCode().equals(c.getCode())) {
+            if (e.getNoMap()) {
+              list.add(new MappingTriple(g, e, null));
+            } else {
+              for (TargetElementComponent t : e.getTarget()) {
+                list.add(new MappingTriple(g, e, t));
+              }
+            }
+          }
+        }
+      }
+    }
+    return list;
+  }
+
+  public static List<MappingTriple> getByTarget(ConceptMap map, Coding c) {
+    List<MappingTriple> list = new ArrayList<>();
+    for (ConceptMapGroupComponent g : map.getGroup()) {
+      if (CanonicalType.matches(g.getTarget(), c.getSystem(), c.getVersion())) {
+        for (SourceElementComponent e : g.getElement()) {
+          for (TargetElementComponent t : e.getTarget()) {
+            if (t.getCode().equals(c.getCode())) {
+              list.add(new MappingTriple(g, e, t));
+            }
+          }
+        }
+      }
+    }
+    return list;
   }
 
 }

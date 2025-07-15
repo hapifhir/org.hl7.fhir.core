@@ -297,8 +297,23 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
       node.setContent(content);
       addChildNode(node);
       return node;
-    } else 
+    } else {
       return null;
+    }
+  }
+
+  public void addTextWithLineBreaks(String content) {
+    if (content != null) {
+      boolean first = true;
+      for (String line : content.split("\\r?\\n")) {
+        if (first) {
+          first = false;
+        } else {
+          br();
+        }
+        tx(line);
+      }
+    }
   }
 
   public XhtmlNode addText(int index, String content) {

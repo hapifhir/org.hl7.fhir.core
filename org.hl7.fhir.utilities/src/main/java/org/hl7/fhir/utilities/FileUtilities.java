@@ -538,4 +538,9 @@ public class FileUtilities {
     
   }
 
+  public static boolean isEmptyDirectory(File dst) {
+    File[] files = dst.listFiles();
+    return files == null || files.length == 0;
+  }
+
 }

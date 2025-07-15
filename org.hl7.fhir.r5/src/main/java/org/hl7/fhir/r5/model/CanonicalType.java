@@ -66,7 +66,18 @@ public class CanonicalType extends UriType {
 		super(theValue);
 	}
 
-	/**
+  public static boolean matches(String canonical, String url, String version) {
+    String u = canonical.contains("|") ? canonical.substring(0, canonical.indexOf("|")) : canonical;
+    String v = canonical.contains("|") ? canonical.substring(canonical.indexOf("|")+1) : null;
+    if (version == null) {
+      return u.equals(url);
+    } else {
+      return u.equals(url) && (v == null || v.equals(version));
+    }
+  }
+
+
+  /**
 	 * Constructor
 	 */
 	@Override
@@ -109,5 +120,9 @@ public class CanonicalType extends UriType {
       setValue(getValue()+"|"+version);
     }
   }
-	
+
+  public static String urlWithVersion(String system, String version) {
+    return system+(version == null ? "" : "|"+version);
+  }
+
 }

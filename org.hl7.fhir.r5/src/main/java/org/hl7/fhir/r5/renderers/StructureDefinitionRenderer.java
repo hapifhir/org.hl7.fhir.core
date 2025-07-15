@@ -1673,12 +1673,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             String ltx = null;
             if (langCtrl.isEmpty()) {
               ltx = "This profile does not constrain the narrative in regard to language specific sections";               
-            } else if (langCtrl.size() == 1 && langCtrl.get(0).equals("#no")) {
+            } else if (langCtrl.size() == 1 && langCtrl.get(0).equals("_no")) {
               ltx = "This profile constrains the narrative to not contain any language specific sections";               
-            } else if (langCtrl.size() == 1 && langCtrl.get(0).equals("#yes")) {
+            } else if (langCtrl.size() == 1 && langCtrl.get(0).equals("_yes")) {
               ltx = "This profile constrains the narrative to contain language sections, but doesn't make rules about them";  
             } else {
-              int i = langCtrl.indexOf("#resource");
+              int i = langCtrl.indexOf("_resource");
               if (i == -1) {
                 ltx = "This profile constrains the narrative to contain language sections for the languages "+CommaSeparatedStringBuilder.join2(", ", " and ", langCtrl);                  
               } else {

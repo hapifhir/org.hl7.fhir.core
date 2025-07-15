@@ -59,9 +59,9 @@ public abstract class XhtmlFluent {
   public XhtmlNode table(String clss, boolean forPresentation) {
     XhtmlNode res = addTag("table");
     if (!Utilities.noString(clss))
-      res.setAttribute("class", clss);
+      res.clss(clss);
     if (forPresentation) {
-      res.setAttribute("role", "presentation");
+      res.clss("presentation");
     }
     return res;
   }
