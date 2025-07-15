@@ -4594,8 +4594,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     if (conditional) {
-      String query = ref.substring(ref.indexOf("?"));
-      boolean test = !Utilities.noString(query) && query.matches("\\?([_a-zA-Z][_a-zA-Z0-9]*=[^=&]*)(&([_a-zA-Z][_a-zA-Z0-9]*=[^=&]*))*");
+      boolean test = isSearchUrl(context, ref);
           //("^\\?([\\w-]+(=[\\w-]*)?(&[\\w-]+(=[\\w-]*)?)*)?$"),
       ok = rule(errors, "2023-02-20", IssueType.INVALID, element.line(), element.col(), path, test, I18nConstants.REFERENCE_REF_QUERY_INVALID, ref) && ok;
     } else if (stop.ok()) {
