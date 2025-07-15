@@ -70,7 +70,6 @@ import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -216,7 +215,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private boolean doNative;
   @Getter @Setter private boolean noInvariantChecks;
   @Getter @Setter private boolean displayWarnings;
-  @Getter @Setter private boolean logProgress;
+  @Getter @Setter private boolean logValidationProgress;
   @Getter @Setter private boolean wantInvariantInMessage;
   @Getter @Setter private boolean hintAboutNonMustSupport;
   @Getter @Setter private boolean anyExtensionsAllowed = false;
@@ -286,7 +285,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     pcm = other.pcm;
     mapLog = other.mapLog;
     debug = other.debug;
-    logProgress = other.logProgress;
+    logValidationProgress = other.logValidationProgress;
     fetcher = other.fetcher;
     policyAdvisor = other.policyAdvisor;
     locator = other.locator;
@@ -977,7 +976,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       igLoader.loadIg(getIgs(), getBinaries(), SHCParser.CURRENT_PACKAGE, true);      
     }
     validator.setJurisdiction(jurisdiction);
-    validator.setLogProgress(logProgress);
+    validator.setLogProgress(logValidationProgress);
     if (policyAdvisor != null) {
       validator.setPolicyAdvisor(policyAdvisor);
     }
