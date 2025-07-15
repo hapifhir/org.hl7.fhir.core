@@ -1322,7 +1322,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
       rule(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, Utilities.existsInList(type, "batch-response", "transaction-response") || path.startsWith("Bundle.signature"), I18nConstants.BUNDLE_BUNDLE_FULLURL_MISSING);
       return null;
 
-    } else if (StringUtils.countMatches(ref, '/') != 2 && StringUtils.countMatches(ref, '/') != 4) {
+    } else if (StringUtils.countMatches(ref, '/') != 1 && StringUtils.countMatches(ref, '/') != 3) {
       if (isTransaction) {
         rule(errors, NO_RULE_DATE, IssueType.INVALID, -1, -1, path, isSearchUrl(context, ref), I18nConstants.REFERENCE_REF_FORMAT1, ref);
       } else {
