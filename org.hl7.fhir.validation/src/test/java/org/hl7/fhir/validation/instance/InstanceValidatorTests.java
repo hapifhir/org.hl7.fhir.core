@@ -89,6 +89,9 @@ class InstanceValidatorTests {
     "Patient?name.chain=simpson                        , true",
     "Patient?family=simpson&given=homer                , true",
     "Patient?family=                                   , true",
+    "Patient?param-name=param-value                    , true",
+    "Patient?param=param+value                         , true",
+    "Patient?param=param%20value                       , true",
     "Patient?family=&given=                            , true",
     // Bad URLs
     "?                                                 , false",
