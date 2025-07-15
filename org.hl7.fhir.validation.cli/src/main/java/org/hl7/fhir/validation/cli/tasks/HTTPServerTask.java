@@ -43,6 +43,7 @@ public class HTTPServerTask extends ValidationEngineTask {
 
   @Override
   public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
+    validationEngine.setLogProgress(false);
     FhirValidatorHttpService service = new FhirValidatorHttpService(validationEngine, Integer.parseInt(Params.getParam(args, Params.SERVER)));
     service.startServer();
     log.info("Press any key to stop the server...");
