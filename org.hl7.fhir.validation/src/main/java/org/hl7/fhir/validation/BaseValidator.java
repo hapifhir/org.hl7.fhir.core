@@ -94,6 +94,12 @@ import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class BaseValidator implements IValidationContextResourceLoader, IMessagingServices {
 
+  /**
+   * This regex tests FHIR search parameters. It expects the formats:
+   * [paramName]=[paramValue]
+   * [paramName]=[paramValue]&[paramName]=[paramValue]
+   * etc..
+   */
   private static final Pattern SEARCH_URL_PARAMS = Pattern.compile("([_a-zA-Z][_a-zA-Z0-9.:]*=[^=&]*)(&([_a-zA-Z][_a-zA-Z0-9.:]*=[^=&]*))*");
 
   public static class BooleanHolder {
