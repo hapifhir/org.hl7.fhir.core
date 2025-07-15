@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 
@@ -92,6 +93,8 @@ import org.hl7.fhir.validation.instance.utils.IndexedElement;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class BaseValidator implements IValidationContextResourceLoader, IMessagingServices {
+
+  private static final Pattern SEARCH_URL_PARAMS = Pattern.compile("([_a-zA-Z][_a-zA-Z0-9.:]*=[^=&]*)(&([_a-zA-Z][_a-zA-Z0-9.:]*=[^=&]*))*");
 
   public static class BooleanHolder {
     private boolean value = true;
@@ -1441,7 +1444,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     if (!context.getResourceNamesAsSet().contains(resourceType)) {
       return false;
     } else {
-      return query.matches("([_a-zA-Z][_a-zA-Z0-9.:]*=[^=&]*)(&([_a-zA-Z][_a-zA-Z0-9.:]*=[^=&]*))*");
+      return SEARCH_URL_PARAMS.matcher(query).matches();
     }
   }
 
