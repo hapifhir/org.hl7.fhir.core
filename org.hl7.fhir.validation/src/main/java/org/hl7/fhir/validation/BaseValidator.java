@@ -100,7 +100,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    * [paramName]=[paramValue]&[paramName]=[paramValue]
    * etc..
    */
-  private static final Pattern SEARCH_URL_PARAMS = Pattern.compile("([_a-zA-Z][_a-zA-Z0-9.:-]*=[^=&]*)(&([_a-zA-Z][_a-zA-Z0-9.:]*=[^=&]*))*");
+  private static final Pattern SEARCH_URL_PARAMS = Pattern.compile("[_a-zA-Z][_a-zA-Z0-9.:-]*=[^=&]*(&([_a-zA-Z][_a-zA-Z0-9.:]*=[^=&]*))*");
 
   public static class BooleanHolder {
     private boolean value = true;
