@@ -39,11 +39,26 @@ public class HTTPServerTask extends ValidationEngineTask {
 
   @Override
   public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
+    checkForInvalidArgs(args);
     validationEngine.setLogValidationProgress(false);
     FhirValidatorHttpService service = new FhirValidatorHttpService(validationEngine, Integer.parseInt(Params.getParam(args, Params.SERVER)));
     service.startServer();
     log.info("Press any key to stop the server...");
     System.in.read();
     service.stop();
+  }
+
+  private void checkForInvalidArgs(String[] args) {
+    final String[] invalidParams = {
+      Params.WATCH_MODE_PARAM,
+      Params.WATCH_SCAN_DELAY,
+      Params.WATCH_SETTLE_TIME
+    };
+    final String warningText = " is not supported in server mode and will be ignored.";
+    for (String invalidParam : invalidParams) {
+      if (Params.hasParam(args, invalidParam)) {
+        log.warn(invalidParam + warningText);
+      }
+    }
   }
 }
