@@ -1696,7 +1696,7 @@ public class FHIRPathEngine {
     return res;
   }
 
-  private Quantity makeQuantity(Base base) {
+  public static Quantity makeQuantity(Base base) {
     if (base == null) {
       return null;
     }
@@ -2335,8 +2335,10 @@ public class FHIRPathEngine {
     var rq = makeQuantity(right);
     if (lq instanceof Quantity && rq instanceof Quantity) {
       return qtyEqual(lq, rq);
-    } else if (left.isDateTime() && right.isDateTime()) { 
-      return datesEqual(left.dateTimeValue(), right.dateTimeValue());
+    } else if (left.hasType("date", "dateTime", "instant") && right.hasType("date", "dateTime", "instant")) { 
+      var leftDate = new DateTimeType(left.primitiveValue());
+      var rightDate = new DateTimeType(right.primitiveValue());
+      return datesEqual(leftDate, rightDate);
     } else if (left instanceof DecimalType || right instanceof DecimalType) { 
       return decEqual(left.primitiveValue(), right.primitiveValue());
     } else if (left.isPrimitive() && right.isPrimitive()) {
