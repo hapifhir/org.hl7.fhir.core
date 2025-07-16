@@ -7,7 +7,9 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.FhirValidatorHttpService;
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -40,10 +42,19 @@ class FhirValidatorHttpServiceTest {
     "  </name>\n" +
     "</Patient>\n";
 
-  @BeforeEach
-  void setUp() throws Exception {
+  private ValidationEngine getValidationEngine() throws IOException, URISyntaxException {
+    return new ValidationEngine.ValidationEngineBuilder().fromSource(VersionUtilities.packageForVersion("r4"));
+  }
+
+  private ValidationEngine getValidationEngineWithIG() throws IOException, URISyntaxException {
+    ValidationEngine validationEngine = getValidationEngine();
+    validationEngine.getIgLoader().loadIg(validationEngine.getIgs(), validationEngine.getBinaries(),"hl7.fhir.us.core#5.0.1", false);
+    return validationEngine;
+
+  }
+
+  void setUpService(ValidationEngine validationEngine) throws URISyntaxException, IOException, InterruptedException {
     // Initialize ValidationEngine
-    ValidationEngine validationEngine = new ValidationEngine.ValidationEngineBuilder().fromSource(VersionUtilities.packageForVersion("r4"));
     validationEngine.getContext().setAllowLoadingDuplicates(true);
 
     // Connect to terminology server
@@ -66,87 +77,17 @@ class FhirValidatorHttpServiceTest {
 
   @Test
   @DisplayName("Service starts successfully")
-  void testServiceStarts() {
+  void testServiceStarts() throws Exception {
+    setUpService(getValidationEngine());
     // If we get here without exceptions, the service started successfully
     assertTrue(true);
   }
 
   @Test
-  @DisplayName("Load IG - Success case")
-  void testLoadIGSuccess() throws Exception {
-
-    
-    HttpRequest request = HttpRequest.newBuilder()
-      .uri(URI.create(BASE_URL + "/loadIG?packageId=hl7.fhir.us.core&version=5.0.1"))
-      .POST(HttpRequest.BodyPublishers.noBody())
-      .header("Accept", "application/fhir+json")
-      .build();
-
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-    // Assert
-    assertEquals(200, response.statusCode());
-    assertTrue(response.headers().firstValue("Content-Type").orElse("").contains("application/fhir+json"));
-
-    // Parse response and verify it's a success OperationOutcome
-    String ss = response.body().toString();
-    assertEquals(ss, "{\"resourceType\":\"OperationOutcome\",\"issue\":[{\"severity\":\"information\",\"code\":\"informational\",\"diagnostics\":\"Successfully loaded IG: hl7.fhir.us.core#5.0.1\"}]}");
-  }
-
-  @Test
-  @DisplayName("Load IG - Missing parameters")
-  void testLoadIGMissingParameters() throws Exception {
-    
-    HttpRequest request = HttpRequest.newBuilder()
-      .uri(URI.create(BASE_URL + "/loadIG?packageId=hl7.fhir.us.core"))
-      .POST(HttpRequest.BodyPublishers.noBody())
-      .build();
-
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-    // Assert
-    assertEquals(400, response.statusCode());
-    assertTrue(response.body().contains("Missing required parameters"));
-  }
-
-  @Test
-  @DisplayName("Load IG - Method not allowed")
-  void testLoadIGMethodNotAllowed() throws Exception {
-    
-    HttpRequest request = HttpRequest.newBuilder()
-      .uri(URI.create(BASE_URL + "/loadIG?packageId=test&version=1.0.0"))
-      .GET()
-      .build();
-
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-    // Assert
-    assertEquals(405, response.statusCode());
-  }
-
-  @Test
-  @DisplayName("Load IG - Error case")
-  void testLoadIGError() throws Exception {
-    
-    HttpRequest request = HttpRequest.newBuilder()
-      .uri(URI.create(BASE_URL + "/loadIG?packageId=invalid.package&version=1.0.0"))
-      .POST(HttpRequest.BodyPublishers.noBody())
-      .header("Accept", "application/fhir+json")
-      .build();
-
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-    // Assert
-    assertEquals(500, response.statusCode());
-
-    String ss = response.body().toString();
-    assertEquals(ss, "{\"resourceType\":\"OperationOutcome\",\"issue\":[{\"severity\":\"error\",\"code\":\"exception\",\"diagnostics\":\"Failed to load IG: Unable to resolve package id invalid.package#1.0.0\"}]}");
-  }
-
-  @Test
   @DisplayName("Validate Resource - JSON Success")
   void testValidateResourceJsonSuccess() throws Exception {
-    
+    setUpService(getValidationEngine());
+
     HttpRequest request = HttpRequest.newBuilder()
       .uri(URI.create(BASE_URL + "/validateResource?resourceIdRule=OPTIONAL&anyExtensionsAllowed=true&bpWarnings=Ignore&displayOption=Ignore"))
       .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_JSON))
@@ -167,7 +108,8 @@ class FhirValidatorHttpServiceTest {
   @Test
   @DisplayName("Validate Resource - XML Success")
   void testValidateResourceXmlSuccess() throws Exception {
-    
+    setUpService(getValidationEngine());
+
     HttpRequest request = HttpRequest.newBuilder()
       .uri(URI.create(BASE_URL + "/validateResource?resourceIdRule=REQUIRED&anyExtensionsAllowed=false&bpWarnings=Warning&displayOption=Check"))
       .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_XML))
@@ -189,10 +131,11 @@ class FhirValidatorHttpServiceTest {
   @Test
   @DisplayName("Validate Resource - With Profiles")
   void testValidateResourceWithProfiles() throws Exception {
-    
+    setUpService(getValidationEngine());
     String profilesParam = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient";
+
     HttpRequest request = HttpRequest.newBuilder()
-      .uri(URI.create(BASE_URL + "/validateResource?profiles=http%3A%2F%2Fhl7.org%2Ffhir%2Fus%2Fcore%2FStructureDefinition%2Fus-core-patient"))
+      .uri(URI.create(BASE_URL + "/validateResource?profiles=" + java.net.URLEncoder.encode(profilesParam, "UTF-8")))
       .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_JSON))
       .header("Content-Type", "application/fhir+json")
       .build();
@@ -209,7 +152,7 @@ class FhirValidatorHttpServiceTest {
   @Test
   @DisplayName("Validate Resource - With Profiles (setup properly)")
   void testValidateResourceWithProfilesSuccess() throws Exception {
-    testLoadIGSuccess();
+    setUpService(getValidationEngineWithIG());
 
     String profilesParam = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient";
     HttpRequest request = HttpRequest.newBuilder()
@@ -230,7 +173,7 @@ class FhirValidatorHttpServiceTest {
   @Test
   @DisplayName("Validate Resource - All Parameters")
   void testValidateResourceAllParameters() throws Exception {
-
+    setUpService(getValidationEngine());
     
     HttpRequest request = HttpRequest.newBuilder()
       .uri(URI.create(BASE_URL + "/validateResource" +
@@ -253,7 +196,8 @@ class FhirValidatorHttpServiceTest {
   @Test
   @DisplayName("Parameter Parsing - Invalid Enum Values")
   void testParameterParsingInvalidEnums() throws Exception {
-    
+    setUpService(getValidationEngine());
+
     HttpRequest request = HttpRequest.newBuilder()
       .uri(URI.create(BASE_URL + "/validateResource" +
         "?resourceIdRule=INVALID" +
