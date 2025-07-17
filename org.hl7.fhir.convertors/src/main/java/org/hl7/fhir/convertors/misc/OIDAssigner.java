@@ -41,11 +41,11 @@ public class OIDAssigner {
 
   private void processFile(IniFile oids, File f, String version, FhirFormat fmt) {
     switch (VersionUtilities.getMajMin(version)) {
-    case "1.0" : processFileR2(oids, f, fmt);
-    case "3.0" : processFileR3(oids, f, fmt);
-    case "4.0" : processFileR4(oids, f, fmt);
-    case "4.3" : processFileR4B(oids, f, fmt);
-    case "5.0" : processFileR5(oids, f, fmt);
+    case "1.0" : processFileR2(oids, f, fmt); break;
+    case "3.0" : processFileR3(oids, f, fmt); break;
+    case "4.0" : processFileR4(oids, f, fmt); break;
+    case "4.3" : processFileR4B(oids, f, fmt); break;
+    case "5.0" : processFileR5(oids, f, fmt); break;
     }    
   }
 

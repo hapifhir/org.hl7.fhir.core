@@ -611,28 +611,40 @@ public class StructureMap14_50 {
           switch (src.getValue()) {
               case APPEND:
                   tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapTransform.APPEND);
+                  break;
               case CAST:
                   tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapTransform.CAST);
+                  break;
               case COPY:
                   tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapTransform.COPY);
+                  break;
               case CREATE:
                   tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapTransform.CREATE);
+                  break;
               case DATEOP:
                   tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapTransform.DATEOP);
+                  break;
               case ESCAPE:
                   tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapTransform.ESCAPE);
+                  break;
               case EVALUATE:
                   tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapTransform.EVALUATE);
+                  break;
               case POINTER:
                   tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapTransform.POINTER);
+                  break;
               case REFERENCE:
                   tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapTransform.REFERENCE);
+                  break;
               case TRANSLATE:
                   tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapTransform.TRANSLATE);
+                  break;
               case TRUNCATE:
                   tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapTransform.TRUNCATE);
-              case UUID:
+                  break;
+                  case UUID:
                   tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapTransform.UUID);
+                  break;
               default:
                   tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapTransform.NULL);
           }
