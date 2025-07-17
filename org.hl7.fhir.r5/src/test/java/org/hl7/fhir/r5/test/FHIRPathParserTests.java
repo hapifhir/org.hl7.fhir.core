@@ -141,6 +141,8 @@ public class FHIRPathParserTests {
     var opWhere = opNumerator.getInner();
     Assertions.assertEquals(2, opWhere.getStart().getLine());
     Assertions.assertEquals(12, opWhere.getStart().getColumn());
+    Assertions.assertEquals(2, opWhere.getEnd().getLine());
+    Assertions.assertEquals(17, opWhere.getEnd().getColumn());
 
     // the code
     var opCode = opWhere.getParameters().get(0);
@@ -150,12 +152,15 @@ public class FHIRPathParserTests {
     // the equality operator
     Assertions.assertEquals(2, opCode.getOpStart().getLine());
     Assertions.assertEquals(23, opCode.getOpStart().getColumn());
+    Assertions.assertEquals(2, opCode.getOpEnd().getLine());
+    Assertions.assertEquals(24, opCode.getOpEnd().getColumn());
 
     // the string value
     var opString = opCode.getOpNext();
     Assertions.assertEquals(2, opString.getStart().getLine());
     Assertions.assertEquals(26, opString.getStart().getColumn());
-
+    Assertions.assertEquals(2, opString.getEnd().getLine());
+    Assertions.assertEquals(36, opString.getEnd().getColumn());
   }
 
   @Test
