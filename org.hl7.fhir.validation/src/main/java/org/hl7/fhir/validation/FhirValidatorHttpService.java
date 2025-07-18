@@ -34,7 +34,6 @@ public class FhirValidatorHttpService {
   public FhirValidatorHttpService(ValidationEngine validationEngine, int port) {
     this.validationEngine = validationEngine;
     this.port = port;
-    ResourcePercentageLogger.setLoggingSuppressed(true);
   }
 
   public void startServer() throws IOException {
