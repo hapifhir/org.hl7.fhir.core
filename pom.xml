@@ -14,16 +14,16 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>6.5.28-SNAPSHOT</version>
+    <version>6.5.29-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
-        <commons_lang3_version>3.17.0</commons_lang3_version>
+        <commons_lang3_version>3.18.0</commons_lang3_version>
         <commons_compress_version>1.27.1</commons_compress_version>
         <commons_io_version>2.17.0</commons_io_version>
         <guava_version>32.0.1-jre</guava_version>
         <hapi_fhir_version>6.4.1</hapi_fhir_version>
-        <validator_test_case_version>1.7.28-SNAPSHOT</validator_test_case_version>
+        <validator_test_case_version>1.7.28</validator_test_case_version>
         <jackson_version>2.17.0</jackson_version>
         <junit_jupiter_version>5.9.2</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
@@ -203,6 +203,12 @@
                 <version>1.0.10</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>4.4</version>
+            </dependency>
+
             <!-- Apache POI -->
             <dependency>
                 <groupId>org.apache.poi</groupId>
@@ -315,7 +321,7 @@
             <dependency>
               <groupId>com.nimbusds</groupId>
               <artifactId>nimbus-jose-jwt</artifactId>
-              <version>9.37.3</version>
+              <version>10.0.2</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc -->
@@ -737,7 +743,7 @@
                         <configuration>
                             <publishingServerId>central</publishingServerId>
                             <autoPublish>true</autoPublish>
-                            <waitUntil>published</waitUntil>
+                            <waitUntil>validated</waitUntil>
                             <centralBaseUrl>https://central.sonatype.com</centralBaseUrl>
                             <centralSnapshotsUrl>https://central.sonatype.com/repository/maven-snapshots/</centralSnapshotsUrl>
                         </configuration>
