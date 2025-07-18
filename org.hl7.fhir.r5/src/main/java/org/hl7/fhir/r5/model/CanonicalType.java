@@ -125,4 +125,12 @@ public class CanonicalType extends UriType {
     return system+(version == null ? "" : "|"+version);
   }
 
+  public boolean matches(String system, String version) {
+    if (version == null) {
+      return this.primitiveValue().equals(system) || this.primitiveValue().startsWith(system+"|");
+    } else {
+      return this.primitiveValue().equals(urlWithVersion(system, version));
+    }
+  }
+
 }
