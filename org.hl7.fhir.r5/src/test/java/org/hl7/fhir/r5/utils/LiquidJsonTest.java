@@ -9,6 +9,7 @@ import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.fhirpath.BaseHostServices;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
@@ -25,18 +26,21 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class LiquidJsonTest implements IEvaluationContext {
+public class LiquidJsonTest extends BaseHostServices {
 
-  private IWorkerContext ctxt;
   private ContextUtilities cu;
   private ProfileUtilities pu;
+
+  public LiquidJsonTest() {
+    super(TestingUtilities.getSharedWorkerContext());
+  }
 
   @Test
   void testHistory() throws JsonException, IOException {
     init();
 
     JsonObject json = JsonParser.parseObject(TestingUtilities.loadTestResource("r5", "liquid-json", "history.json"));
-    LiquidEngine liquid = new LiquidEngine(ctxt, this);
+    LiquidEngine liquid = new LiquidEngine(context, this);
     LiquidDocument template = liquid.parse(TestingUtilities.loadTestResource("r5", "liquid-json", "history.liquid"), null);
     BaseJsonWrapper base = new BaseJsonWrapper(json);
     String s = liquid.evaluate(template, base, this).trim();
@@ -50,7 +54,7 @@ public class LiquidJsonTest implements IEvaluationContext {
     init();
 
     JsonObject json = JsonParser.parseObject(TestingUtilities.loadTestResource("r5", "liquid-json", "test-cases.json"));
-    LiquidEngine liquid = new LiquidEngine(ctxt, this);
+    LiquidEngine liquid = new LiquidEngine(context, this);
     LiquidDocument template = liquid.parse(TestingUtilities.loadTestResource("r5", "liquid-json", "test-cases.liquid"), null);
     BaseJsonWrapper base = new BaseJsonWrapper(json);
     String s = liquid.evaluate(template, base, this).trim();
@@ -61,9 +65,8 @@ public class LiquidJsonTest implements IEvaluationContext {
 
   public void init() {
     if (pu == null) {
-      ctxt = TestingUtilities.getSharedWorkerContext();
-      cu = new ContextUtilities(ctxt);
-      pu = new ProfileUtilities(ctxt, null, cu);
+      cu = new ContextUtilities(context);
+      pu = new ProfileUtilities(context, null, cu);
     }
   }
 
@@ -82,26 +85,6 @@ public class LiquidJsonTest implements IEvaluationContext {
   public boolean log(String argument, List<Base> focus) {
     // TODO Auto-generated method stub
     return false;
-  }
-
-  @Override
-  public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus,
-      List<TypeDetails> parameters) throws PathEngineException {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName,
-      List<List<Base>> parameters) {
-    // TODO Auto-generated method stub
-    return null;
   }
 
   @Override
