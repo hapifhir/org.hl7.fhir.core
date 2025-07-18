@@ -6418,7 +6418,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public boolean checkSpecials(ValidationContext valContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean checkSpecials, ResourcePercentageLogger pct, ValidationMode mode, boolean contained, boolean isOk) {
     boolean ok = true;
-    
+
     // first, does the policy advisor have profiles it wants us to check? 
     List<StructureDefinition> profiles = policyAdvisor.getImpliedProfilesForResource(this, valContext.getAppContext(), stack.getLiteralPath(), 
         element.getProperty().getDefinition(), element.getProperty().getStructure(), element, isOk, this, errors);
@@ -6436,6 +6436,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (warning(errors, "2023-08-14", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), statusCodesConsistent(status, standardsStatus), I18nConstants.VALIDATION_VAL_STATUS_INCONSISTENT, status, standardsStatus)) {
             hint(errors, "2023-08-14", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), statusCodesDeeplyConsistent(status, standardsStatus), I18nConstants.VALIDATION_VAL_STATUS_INCONSISTENT_HINT, status, standardsStatus);          
           }
+        }
+        if (element.getNamedChildValue("description") != null && !"deprecated".equals(standardsStatus)) {
+          hint(errors, "2023-08-14", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), !element.getNamedChildValue("description").toLowerCase().contains("deprecated"), "Resource is not deprecated, but the description mentions deprecated - check whether it should be deprecated");
         }
         if (noExperimentalContent) {
           String exp = element.getNamedChildValue("experimental");
@@ -6563,8 +6566,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else {
         return ok; // HL7 sid.
       }
-    }   
-
+    }
     return ok;
   }
 
@@ -7621,7 +7623,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     List<ElementDefinition> slicerSlices = null;
     
     List<String> problematicPaths = new ArrayList<String>();
-    if ("named-elements".equals(element.getProperty().getDefinition().getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE))) {
+    if ("named-elements".equals(element.getProperty().getExtensionStyle())) {
       // there's no children to iterate. Instead we iterate the elements, checking that they're ok
       // there must be a child - and only one - with 
       ElementDefinition ed = null;
