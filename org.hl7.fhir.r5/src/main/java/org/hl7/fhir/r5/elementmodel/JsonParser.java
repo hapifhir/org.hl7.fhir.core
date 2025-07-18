@@ -280,7 +280,9 @@ public class JsonParser extends ParserBase {
   private void checkNotProcessed(List<ValidationMessage> errors, String path, Element element, boolean hasResourceType, List<JsonProperty> children) {
     if (policy != ValidationPolicy.NONE) {
       for (JsonProperty e : children) {
-        if (e.getTag() == 0) {
+        if (hasResourceType && "resourceType".equals(e.getName())) {
+          // nothing
+        } else if (e.getTag() == 0) {
           StructureDefinition sd = element.getProperty().isLogical() ? getContextUtilities().fetchByJsonName(e.getName()) : null;
           if (sd != null) {
             Property property = new Property(context, sd.getSnapshot().getElementFirstRep(), sd, element.getProperty().getUtils(), element.getProperty().getContextUtils());
@@ -297,8 +299,6 @@ public class JsonParser extends ParserBase {
                 }
               }
             }
-          } else if (hasResourceType && "resourceType".equals(e.getName())) {
-            // nothing
           } else {
             JsonProperty p = getFoundJsonPropertyByName(e.getName(), children);
             if (p != null) {
