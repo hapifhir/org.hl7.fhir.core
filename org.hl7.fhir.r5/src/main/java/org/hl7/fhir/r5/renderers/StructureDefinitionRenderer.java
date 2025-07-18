@@ -1799,11 +1799,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           } 
         } 
         if (root) { 
-          if (ToolingExtensions.readBoolExtension(profile, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG)) { 
+          if (ToolingExtensions.readBoolExtension(profile, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG_OLD)) {
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
             c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_OBLIG_ADD), null).addStyle("font-weight:bold"));           
           } 
-          addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_INHERITS), "This profile picks up obligations and additional bindings from the profile", true); 
+          addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_INHERITS_NEW, ToolingExtensions.EXT_OBLIGATION_INHERITS_OLD), "This profile picks up obligations and additional bindings from the profile", true);
           addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ToolingExtensions.EXT_SD_IMPOSE_PROFILE), "This profile also imposes the profile", true); 
           addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ToolingExtensions.EXT_SD_COMPLIES_WITH_PROFILE), "This profile also complies with the profile", true); 
  
@@ -4347,13 +4347,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     ObligationsRenderer obr = new ObligationsRenderer(corePath, sdx, d.getPath(), context, hostMd, this, true); 
     obr.seeObligations(d.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)); 
     obr.seeRootObligations(d.getId(), sdx.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)); 
-    if (obr.hasObligations() || (root && (sdx.hasExtension(ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG) || sdx.hasExtension(ToolingExtensions.EXT_OBLIGATION_INHERITS)))) { 
+    if (obr.hasObligations() || (root && (sdx.hasExtension(ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG_OLD) || sdx.hasExtension(ToolingExtensions.EXT_OBLIGATION_INHERITS_NEW, ToolingExtensions.EXT_OBLIGATION_INHERITS_OLD)))) {
       XhtmlNode ul = ret.ul(); 
       if (root) { 
-        if (sdx.hasExtension(ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG)) { 
+        if (sdx.hasExtension(ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG_OLD)) {
           ul.li().tx(context.formatPhrase(RenderingContext.STRUC_DEF_OBLIG_ADD));            
         }  
-        for (Extension ext : sdx.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_INHERITS)) { 
+        for (Extension ext : sdx.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_INHERITS_NEW, ToolingExtensions.EXT_OBLIGATION_INHERITS_OLD)) {
           String iu = ext.getValue().primitiveValue(); 
           XhtmlNode bb = ul.li(); 
           bb.tx(context.formatPhrase(RenderingContext.STRUC_DEF_OBLIG_FROM)+" ");            

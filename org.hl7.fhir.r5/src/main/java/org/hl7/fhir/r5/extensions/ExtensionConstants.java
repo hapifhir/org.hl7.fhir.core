@@ -559,7 +559,8 @@ public class ExtensionConstants {
   public static final String EXT_OBLIGATION_TOOLS = "http://hl7.org/fhir/tools/StructureDefinition/obligation"; // Obligation Extension
   public static final String EXT_PROFILE_MAPPING = "http://hl7.org/fhir/tools/StructureDefinition/profile-mapping"; // Profile Mapping Extension
   public static final String EXT_PROFILE_SUMMARY = "http://hl7.org/fhir/tools/StructureDefinition/profile-summary"; // ProfileSummary
-  public static final String EXT_SELECT_BY_MAP = "http://hl7.org/fhir/tools/StructureDefinition/select-by-map"; // Select By Map
+  public static final String EXT_SELECT_BY_MAP_OLD = "http://hl7.org/fhir/tools/StructureDefinition/select-by-map"; // Select By Map
+  public static final String EXT_SELECT_BY_MAP_NEW = "http://hl7.org/fhir/StructureDefinition/select-by-map"; // Select By Map
   public static final String EXT_TYPE_SPECIFIER = "http://hl7.org/fhir/tools/StructureDefinition/type-specifier"; // Type Specifier Extension
   public static final String EXT_ASSOCIATED_CONCEPT_PROPERTY = "http://terminology.hl7.org/StructureDefinition/ext-mif-assocConceptProp"; // MIF Associated concept property
   public static final String EXT_SUPPORTED_CONCEPT_RELATIONSHIP_INVERSE_NAME = "http://terminology.hl7.org/StructureDefinition/ext-mif-relationship-inverseName"; // MIF concept relationship inverse name

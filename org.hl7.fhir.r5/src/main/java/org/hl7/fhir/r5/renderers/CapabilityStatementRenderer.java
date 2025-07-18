@@ -985,12 +985,12 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       profCell.nbsp().nbsp();
       renderCanonical(status, res, profCell, StructureDefinition.class, sp);
     }
-    if (r.hasExtension(ToolingExtensions.EXT_PROFILE_MAPPING)) {
+    if (r.hasExtension(ToolingExtensions.EXT_PROFILE_MAPPING_NEW, ToolingExtensions.EXT_PROFILE_MAPPING_OLD)) {
       profCell.br();
       profCell.b().tx(context.formatPhrase(RenderingContext.CAPABILITY_PROF_MAP));
       XhtmlNode tbl = profCell.table("grid", false);
       boolean doco = false;
-      for (Extension ext : r.getExtensionsByUrl(ToolingExtensions.EXT_PROFILE_MAPPING)) {
+      for (Extension ext : r.getExtensionsByUrl(ToolingExtensions.EXT_PROFILE_MAPPING_NEW, ToolingExtensions.EXT_PROFILE_MAPPING_OLD)) {
         doco = doco || ext.hasExtension("documentation");
       }
       XhtmlNode tr = tbl.tr();
@@ -999,7 +999,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       if (doco) {
         tr.th().tx(context.formatPhrase(RenderingContext.GENERAL_CRIT));
       }
-      for (Extension ext : r.getExtensionsByUrl(ToolingExtensions.EXT_PROFILE_MAPPING)) {
+      for (Extension ext : r.getExtensionsByUrl(ToolingExtensions.EXT_PROFILE_MAPPING_NEW, ToolingExtensions.EXT_PROFILE_MAPPING_OLD)) {
         tr = tbl.tr();
         tr.td().code().tx(ToolingExtensions.readStringExtension(ext, "search"));
         String url = ToolingExtensions.readStringExtension(ext, "profile");

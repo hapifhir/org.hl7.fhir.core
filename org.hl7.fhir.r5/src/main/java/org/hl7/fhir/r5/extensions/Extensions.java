@@ -11852,7 +11852,7 @@ public class Extensions {
 // Select By Map
 
   public static Extension makeSelectByMap(String value) {
-    return new Extension(ExtensionConstants.EXT_SELECT_BY_MAP).setValue(new CanonicalType(value));
+    return new Extension(ExtensionConstants.EXT_SELECT_BY_MAP_OLD).setValue(new CanonicalType(value));
   }
 
 // -- SupportedConceptRelationshipInverseName -------------------------------------

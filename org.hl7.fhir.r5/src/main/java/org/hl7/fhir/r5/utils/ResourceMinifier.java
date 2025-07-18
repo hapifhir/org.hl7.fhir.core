@@ -43,7 +43,7 @@ import org.hl7.fhir.utilities.Utilities;
 public class ResourceMinifier {
 
   private static final List<String> VALIDATION_EXTENSIONS =
-      Arrays.asList(ToolingExtensions.EXT_OBLIGATION_INHERITS, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG);
+      Arrays.asList(ToolingExtensions.EXT_OBLIGATION_INHERITS_NEW, ToolingExtensions.EXT_OBLIGATION_INHERITS_OLD, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG_OLD);
 
   public boolean isMinified(String resName) {
     return Utilities.existsInList(resName, "StructureDefinition", "CodeSystem", "ValueSet", "CapabilityStatement",

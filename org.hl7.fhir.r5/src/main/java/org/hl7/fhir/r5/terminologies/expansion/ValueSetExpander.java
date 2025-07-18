@@ -791,7 +791,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     focus.getExpansion().setTimestampElement(DateTimeType.now());
     focus.getExpansion().setIdentifier(Factory.createUUID()); 
     checkCanonical(focus.getExpansion(), focus, focus);
-    for (Extension ext : focus.getCompose().getExtensionsByUrl("http://hl7.org/fhir/tools/StructureDefinition/valueset-expansion-parameter")) {
+    for (Extension ext : focus.getCompose().getExtensionsByUrl(ToolingExtensions.EXT_VS_EXP_PARAM_NEW, ToolingExtensions.EXT_VS_EXP_PARAM_OLD)) {
       processParameter(ext.getExtensionString("name"), ext.getExtensionByUrl("value").getValue());
     }
     for (ParametersParameterComponent p : expParams.getParameter()) {
@@ -911,7 +911,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     focus.getExpansion().setTimestampElement(DateTimeType.now());
     focus.getExpansion().setIdentifier(Factory.createUUID()); 
     checkCanonical(focus.getExpansion(), focus, focus);
-    for (Extension ext : focus.getCompose().getExtensionsByUrl("http://hl7.org/fhir/tools/StructureDefinition/valueset-expansion-parameter")) {
+    for (Extension ext : focus.getCompose().getExtensionsByUrl(ToolingExtensions.EXT_VS_EXP_PARAM_NEW, ToolingExtensions.EXT_VS_EXP_PARAM_OLD)) {
       processParameter(ext.getExtensionString("name"), ext.getExtensionByUrl("value").getValue());
     }
     for (ParametersParameterComponent p : expParams.getParameter()) {

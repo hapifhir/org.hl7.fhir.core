@@ -3529,7 +3529,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         txCache.cacheValueSet(canonical, svs);
       }
       if (svs != null) {
-        String web = ToolingExtensions.readStringExtension(svs.getVs(), ToolingExtensions.EXT_WEB_SOURCE);
+        String web = ToolingExtensions.readStringExtension(svs.getVs(), ToolingExtensions.EXT_WEB_SOURCE_OLD, ToolingExtensions.EXT_WEB_SOURCE_NEW);
         if (web == null) {
           web = Utilities.pathURL(svs.getServer(), "ValueSet", svs.getVs().getIdBase());
         }
@@ -3551,7 +3551,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         txCache.cacheCodeSystem(canonical, scs);
       }
       if (scs != null) {
-        String web = ToolingExtensions.readStringExtension(scs.getCs(), ToolingExtensions.EXT_WEB_SOURCE);
+        String web = ToolingExtensions.readStringExtension(scs.getCs(), ToolingExtensions.EXT_WEB_SOURCE_OLD, ToolingExtensions.EXT_WEB_SOURCE_NEW);
         if (web == null) {
           web = Utilities.pathURL(scs.getServer(), "ValueSet", scs.getCs().getIdBase());
         }
