@@ -84,6 +84,7 @@ import org.hl7.fhir.dstu3.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.OIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.CSFileInputStream;
@@ -103,7 +104,7 @@ import org.slf4j.event.Level;
  * very light client to connect to an open unauthenticated terminology service
  */
 
-@Deprecated
+@MarkedToMoveToAdjunctPackage
 @Slf4j
 public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerContext, ProfileKnowledgeProvider {
 

@@ -94,6 +94,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -127,7 +128,7 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
  * @author Grahame
  *
  */
-@Deprecated
+@MarkedToMoveToAdjunctPackage
 @Slf4j
 public class ProfileUtilities extends TranslatingUtilities {
 
