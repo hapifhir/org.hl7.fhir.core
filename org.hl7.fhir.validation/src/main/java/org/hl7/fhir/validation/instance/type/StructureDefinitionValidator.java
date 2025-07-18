@@ -213,8 +213,8 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
 
         // obligation profile support
-        if (src.hasExtension(ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG)) {
-          Element ext = src.getExtension(ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG);
+        if (src.hasExtension(ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG_OLD)) {
+          Element ext = src.getExtension(ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG_OLD);
           Element value = ext.getNamedChild("value", false);
           if (value != null && "true".equals(value.primitiveValue())) {
             if (rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), "constraint".equals(src.getNamedChildValue("derivation", false)), I18nConstants.SD_OBGLIGATION_PROFILE_DERIVATION)) {
@@ -232,7 +232,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         List<Element> extensions = src.getChildren("extension");
         int c = 0;
         for (Element extension : extensions) {
-          if (ToolingExtensions.EXT_OBLIGATION_INHERITS.equals(extension.getNamedChildValue("url", false))) {
+          if (Utilities.existsInList(extension.getNamedChildValue("url", false), ToolingExtensions.EXT_OBLIGATION_INHERITS_NEW, ToolingExtensions.EXT_OBLIGATION_INHERITS_OLD)) {
             ok = validateInheritsObligationProfile(errors, extension, stack.push(extension, c, null, null), src) && ok;
           }
           c++;
@@ -332,7 +332,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       StructureDefinition sd = context.fetchResource(StructureDefinition.class, tgt);
       if (rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), src != null, 
           I18nConstants.SD_OBGLIGATION_INHERITS_PROFILE_TARGET_NOT_FOUND, tgt))  {
-        if (rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), ToolingExtensions.readBoolExtension(sd, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG), 
+        if (rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), ToolingExtensions.readBoolExtension(sd, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG_OLD),
             I18nConstants.SD_OBGLIGATION_INHERITS_PROFILE_NOT_RIGHT_TYPE, tgt)) {
           String base = src.getNamedChildValue("baseDefinition", false);
           if (rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), base != null && base.equals(sd.getBaseDefinition()), 
@@ -478,9 +478,7 @@ public class StructureDefinitionValidator extends BaseValidator {
           cv = ec.primitiveValue();
         }
         if ("element".equals(ct)) {
-          SourcedElementDefinition ed = findElementDefinition(ec, cv);
-          rule(errors, "2025-07-25", IssueType.INVALID, n.getLiteralPath(), ed != null, I18nConstants.SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND, cv);
-          
+          ok = checkElementDefinition(errors, n, ec, cv) && ok;
         }
         if ("element".equals(ct) && "Element".equals(cv)) {
           warning(errors, "2023-04-23", IssueType.BUSINESSRULE, n.getLiteralPath(), false, I18nConstants.SD_CONTEXT_SHOULD_NOT_BE_ELEMENT, cv, src.getNamedChildValue("id", false));
@@ -504,18 +502,31 @@ public class StructureDefinitionValidator extends BaseValidator {
     return ok;
   }
 
-  private SourcedElementDefinition findElementDefinition(Element ec, String path) throws IOException {
-    IWorkerContext ctxt;
-    if (!ec.hasExtension(ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE)) {
-      ctxt = context;
+  private boolean checkElementDefinition(List<ValidationMessage> errors, NodeStack n, Element ec, String path) throws IOException {
+    boolean ok = true;
+    String startVer;
+    String endVer;
+    Element ext = ec.getExtension(ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE);
+    if (ext != null && ext.hasExtension(ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE_START)) {
+      startVer = ext.getExtensionString(ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE_START);
     } else {
-      Element ext = ec.getExtension(ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE);
-      String v;
-      if (ext.hasExtension(ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE_START)) {
-        v = ext.getExtensionString(ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE_START);
-      } else {
-        v = "1.0";
+      startVer = settings.getMinVersion();
+      if (startVer == null) {
+        startVer = context.getVersion();
       }
+    }
+
+    if (ext != null && ext.hasExtension(ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE_END)) {
+      endVer = ext.getExtensionString(ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE_END);
+    } else {
+      endVer = settings.getMaxVersion();
+      if (endVer == null) {
+        endVer = context.getVersion();
+      }
+    }
+    List<String> versionList = VersionUtilities.iterateCoreVersions(startVer, endVer);
+    for (String v : versionList) {
+      IWorkerContext ctxt;
       if (VersionUtilities.versionsMatch(context.getVersion(), v)) {
         ctxt = context;
       } else {
@@ -523,31 +534,50 @@ public class StructureDefinitionValidator extends BaseValidator {
           FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
           NpmPackage npm = pcm.loadPackage(VersionUtilities.packageForVersion(v));
           SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true)
-              .fromPackage(npm, ValidatorUtils.loaderForVersion(v), false);
+            .fromPackage(npm, ValidatorUtils.loaderForVersion(v), false);
           session.getOtherVersions().put(v, swc);
         }
         ctxt = session.getOtherVersions().get(v);
       }
-    }
+      try {
+        String pp = (path.contains("#") ? path.substring(path.indexOf("#") + 1) : path);
+        String[] p = pp.split("\\.");
+        String url = path.contains("#") ? path.substring(0, path.indexOf("#")) : "http://hl7.org/fhir/StructureDefinition/" + p[0];
 
-    try {
-      String[] p = (path.contains("#")  ? path.substring(path.indexOf("#")+1) : path).split("\\.");
-      String url = path.contains("#") ? path.substring(0, path.indexOf("#")) : "http://hl7.org/fhir/StructureDefinition/"+p[0];
-
-      StructureDefinition sd = ctxt.fetchResource(StructureDefinition.class, url);
-      if (sd == null) {
-        return null;
-      }
-      DefinitionNavigator dn = new DefinitionNavigator(ctxt, sd, false, true);
-      for (int i = 1; i < p.length; i++) {
-        if (dn != null) {
-          dn = dn.childByName(p[i]);
+        StructureDefinition sd = ctxt.fetchResource(StructureDefinition.class, url);
+        if (sd == null && url.equals("http://hl7.org/fhir/StructureDefinition/CanonicalResource")) {
+          // this is a hack for the fact that CanonicalResource wasn't properly defined in R3-R5
+          sd = ctxt.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/CodeSystem");
+          pp = pp.replace("CanonicalResource", "CodeSystem");
+          p = pp.split("\\.");
         }
+        if (sd == null && url.equals("http://hl7.org/fhir/StructureDefinition/MetadataResource")) {
+          // this is a hack for the fact that MetadataResource wasn't properly defined in R3-R5
+          sd = ctxt.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/PlanDefinition");
+          pp = pp.replace("MetadataResource", "PlanDefinition");
+          p = pp.split("\\.");
+        }
+        if (sd == null) {
+          ok = false;
+          rule(errors, "2025-07-25", IssueType.INVALID, n.getLiteralPath(), false, versionList.size() == 1 ? I18nConstants.SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND : I18nConstants.SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND_VER, path, ctxt.getVersion());
+        } else {
+          DefinitionNavigator dn = new DefinitionNavigator(ctxt, sd, false, true);
+          for (int i = 1; i < p.length; i++) {
+            if (dn != null) {
+              dn = dn.childByName(p[i]);
+            }
+          }
+          if (dn == null) {
+            ok = false;
+            rule(errors, "2025-07-25", IssueType.INVALID, n.getLiteralPath(), false, versionList.size() == 1 ? I18nConstants.SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND : I18nConstants.SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND_VER, path, ctxt.getVersion());
+          }
+        }
+      } catch (Exception e) {
+        ok = false;
+        rule(errors, "2025-07-25", IssueType.INVALID, n.getLiteralPath(), false, versionList.size() == 1 ? I18nConstants.SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND : I18nConstants.SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND_VER, path, ctxt.getVersion());
       }
-      return dn == null ? null : new SourcedElementDefinition(dn.getStructure(), dn.current());
-    } catch (Exception e) {
-      return null;
     }
+    return ok;
   }
 
   private boolean hasJsonName(Element sd) {
