@@ -232,6 +232,7 @@ public class ProfileUtilities {
       "http://hl7.org/fhir/StructureDefinition/structuredefinition-wg",
       "http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version",
       "http://hl7.org/fhir/tools/StructureDefinition/obligation-profile",
+      "http://hl7.org/fhir/StructureDefinition/obligation-profile",
       "http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status-reason",
       ToolingExtensions.EXT_SUMMARY/*,
       ToolingExtensions.EXT_OBLIGATION_CORE,
@@ -1151,9 +1152,10 @@ public class ProfileUtilities {
   }
 
   private void findInheritedObligationProfiles(StructureDefinition derived) {
-    for (Extension ext : derived.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_INHERITS)) {
+    List<Extension> list = derived.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_INHERITS_NEW, ToolingExtensions.EXT_OBLIGATION_INHERITS_OLD);
+    for (Extension ext : list) {
       StructureDefinition op = context.fetchResource(StructureDefinition.class, ext.getValueCanonicalType().primitiveValue());
-      if (op != null && ToolingExtensions.readBoolExtension(op, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG)) {
+      if (op != null && ToolingExtensions.readBoolExtension(op, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG_OLD)) {
         if (derived.getBaseDefinition().equals(op.getBaseDefinition())) {
           obligationProfiles.add(op);
         }
@@ -1200,7 +1202,7 @@ public class ProfileUtilities {
   }
 
   private String getExtensionAction(String url) {
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+    StructureDefinition sd = context.fetchResourceRaw(StructureDefinition.class, url);
     if (sd != null && sd.hasExtension(ToolingExtensions.EXT_SNAPSHOT_BEHAVIOR)) {
       return ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_SNAPSHOT_BEHAVIOR);
     }
@@ -3190,7 +3192,7 @@ public class ProfileUtilities {
 //        matchType = true;
 //      }
       if (matchType) {
-        ts.copyExtensions(td, "http://hl7.org/fhir/StructureDefinition/elementdefinition-type-must-support", "http://hl7.org/fhir/StructureDefinition/elementdefinition-pattern", "http://hl7.org/fhir/StructureDefinition/obligation");
+        ts.copyExtensions(td, "http://hl7.org/fhir/StructureDefinition/elementdefinition-type-must-support", "http://hl7.org/fhir/StructureDefinition/elementdefinition-pattern", "http://hl7.org/fhir/StructureDefinition/obligation", "http://hl7.org/fhir/tools/StructureDefinition/obligation");
         if (ts.hasTargetProfile()) {
           // check that any derived target has a reference chain back to one of the base target profiles
           for (UriType u : ts.getTargetProfile()) {

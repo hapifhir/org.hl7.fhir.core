@@ -114,7 +114,7 @@ public class ValueSetProcessBase {
     public void seeValueSet(ValueSet vs) {
       if (vs != null) {
         for (Extension ext : vs.getCompose().getExtension()) {
-          if ("http://hl7.org/fhir/tools/StructureDefinition/valueset-expansion-parameter".equals(ext.getUrl())) {
+          if (Utilities.existsInList(ext.getUrl(), ToolingExtensions.EXT_VS_EXP_PARAM_NEW, ToolingExtensions.EXT_VS_EXP_PARAM_OLD)) {
             String name = ext.getExtensionString("name");
             Extension value = ext.getExtensionByUrl("value");
             if ("includeAlternateCodes".equals(name) && value != null && value.hasValue()) {

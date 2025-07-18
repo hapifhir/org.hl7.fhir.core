@@ -145,11 +145,14 @@ public class ToolingExtensions {
   public static final String EXT_EXTENSION_STYLE = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-extension-style";
   public static final String EXT_LOGICAL_TARGET = "http://hl7.org/fhir/tools/StructureDefinition/logical-target";
   public static final String EXT_LOGICAL_CONTAINER = "http://hl7.org/fhir/tools/StructureDefinition/logical-container";
-  public static final String EXT_PROFILE_MAPPING = "http://hl7.org/fhir/tools/StructureDefinition/profile-mapping";
+  public static final String EXT_PROFILE_MAPPING_OLD = "http://hl7.org/fhir/tools/StructureDefinition/profile-mapping";
+  public static final String EXT_PROFILE_MAPPING_NEW = "http://hl7.org/fhir/StructureDefinition/profile-mapping";
   public static final String EXT_CS_ALTERNATE_USE = "http://hl7.org/fhir/StructureDefinition/alternate-code-use";
   public static final String EXT_CS_ALTERNATE_STATUS = "http://hl7.org/fhir/StructureDefinition/alternate-code-status";
-  public static final String EXT_OBLIGATION_PROFILE_FLAG = "http://hl7.org/fhir/tools/StructureDefinition/obligation-profile";
-  public static final String EXT_OBLIGATION_INHERITS = "http://hl7.org/fhir/tools/StructureDefinition/inherit-obligations";
+  public static final String EXT_OBLIGATION_PROFILE_FLAG_OLD = "http://hl7.org/fhir/tools/StructureDefinition/obligation-profile";
+  public static final String EXT_OBLIGATION_PROFILE_FLAG_NEW = "http://hl7.org/fhir/StructureDefinition/obligation-profile";
+  public static final String EXT_OBLIGATION_INHERITS_OLD = "http://hl7.org/fhir/tools/StructureDefinition/inherit-obligations";
+  public static final String EXT_OBLIGATION_INHERITS_NEW = "http://hl7.org/fhir/StructureDefinition/inherit-obligations";
   public static final String EXT_DAR = "http://hl7.org/fhir/StructureDefinition/data-absent-reason";
   public static final String EXT_NF = "http://hl7.org/fhir/StructureDefinition/iso21090-nullFlavor";
   public static final String EXT_OT = "http://hl7.org/fhir/StructureDefinition/originalText";
@@ -157,6 +160,8 @@ public class ToolingExtensions {
 
   public static final String EXT_PATTERN = "http://hl7.org/fhir/StructureDefinition/elementdefinition-pattern";
   public static final String EXT_ALLOWEDRESOURCE = "http://hl7.org/fhir/StructureDefinition/questionnaire-referenceResource";
+  public static final String EXT_VS_EXP_PARAM_OLD = "http://hl7.org/fhir/tools/StructureDefinition/valueset-expansion-parameter" ;
+  public static final String EXT_VS_EXP_PARAM_NEW = "http://hl7.org/fhir/StructureDefinition/valueset-expansion-parameter" ;
   private static final String EXT_ALLOWABLE_UNITS = "http://hl7.org/fhir/StructureDefinition/elementdefinition-allowedUnits";
   private static final String EXT_FHIRTYPE = "http://hl7.org/fhir/StructureDefinition/questionnaire-fhirType";
   public static final String EXT_ALLOWED_TYPE =  "http://hl7.org/fhir/StructureDefinition/operationdefinition-allowed-type";
@@ -273,7 +278,8 @@ public class ToolingExtensions {
   public static final String EXT_SEARCH_PARAMETER_BASE = "http://hl7.org/fhir/tools/StructureDefinition/searchparameter-base-type";
   public static final String EXT_ISSUE_SLICE_INFO = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-slicetext";
   public static final String EXT_ISSUE_SERVER = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server";
-  public static final String EXT_WEB_SOURCE = "http://hl7.org/fhir/tools/StructureDefinition/web-source";
+  public static final String EXT_WEB_SOURCE_OLD = "http://hl7.org/fhir/tools/StructureDefinition/web-source";
+  public static final String EXT_WEB_SOURCE_NEW = "http://hl7.org/fhir/StructureDefinition/web-source";
   public static final String EXT_APPLICABLE_VERSION = "http://hl7.org/fhir/StructureDefinition/version-specific-use";
   public static final String EXT_APPLICABLE_VERSION_VALUE = "http://hl7.org/fhir/StructureDefinition/version-specific-value";
   public static final String EXT_IG_URL = "http://hl7.org/fhir/tools/StructureDefinition/implementationguide-resource-uri";

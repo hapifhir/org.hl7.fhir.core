@@ -437,19 +437,19 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
 
 // Manual code (from Configuration.txt):
 public void checkNoModifiers(String noun, String verb) throws FHIRException {
-        if (hasModifierExtension()) {
-          throw new FHIRException("Found unknown Modifier Exceptions on "+noun+" doing "+verb);
-        }
-        
+  if (hasModifierExtension()) {
+    throw new FHIRException("Found unknown Modifier Exceptions on " + noun + " doing " + verb);
   }
+
+}
 
   public void addExtension(String url, DataType value) {
     Extension ex = new Extension();
     ex.setUrl(url);
     ex.setValue(value);
-    getExtension().add(ex);    
+    getExtension().add(ex);
   }
-  
+
   public boolean hasExtension(String... theUrls) {
     for (Extension next : getModifierExtension()) {
       if (Utilities.existsInList(next.getUrl(), theUrls)) {
@@ -474,7 +474,7 @@ public void checkNoModifiers(String noun, String verb) throws FHIRException {
       if (url.equals(e.getUrl()))
         return true;
     return false;
-}
+  }
 
   public Extension getExtensionByUrl(String theUrl) {
     org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
@@ -498,80 +498,111 @@ public void checkNoModifiers(String noun, String verb) throws FHIRException {
       return retVal.get(0);
     }
   }
-  
-      public Resource getContained(String ref) {
-        if (ref == null)
-          return null;
-        
-        if (ref.startsWith("#"))
-          ref = ref.substring(1);
-        for (Resource r : getContained()) {
-          if (r.getId().equals(ref)) 
-            return r;
-        }
-        return null;
-      }
 
-    /**
-     * Returns a list of extensions from this element which have the given URL. Note that
-     * this list may not be modified (you can not add or remove elements from it)
-     */
-    public List<Extension> getExtensionsByUrl(String theUrl) {
-      org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must be provided with a value");
-      ArrayList<Extension> retVal = new ArrayList<Extension>();
-      for (Extension next : getExtension()) {
-        if (theUrl.equals(next.getUrl())) {
-          retVal.add(next);
-        }
+
+  /**
+   * Returns the value as a string if this element has only one extension that matches the given URL, and that can be converted to a string.
+   * <p>
+   * Note: BackboneElements override this to check Modifier Extensions too
+   *
+   * @param theUrl The URL. Must not be blank or null.
+   */
+  public String getExtensionString(String theUrl) throws FHIRException {
+    List<Extension> ext = getExtensionsByUrl(theUrl);
+    if (ext.isEmpty())
+      return null;
+    if (ext.size() > 1)
+      throw new FHIRException("Multiple matching extensions found for extension '" + theUrl + "'");
+    if (!ext.get(0).hasValue())
+      return null;
+    if (!ext.get(0).getValue().isPrimitive())
+      throw new FHIRException("Extension '" + theUrl + "' could not be converted to a string");
+    return ext.get(0).getValue().primitiveValue();
+  }
+
+  public String getExtensionString(String... theUrls) throws FHIRException {
+    for (String url : theUrls) {
+      if (hasExtension(url)) {
+        return getExtensionString(url);
       }
-      for (Extension next : getModifierExtension()) {
-        if (theUrl.equals(next.getUrl())) {
-          retVal.add(next);
-        }
-      }
-      return Collections.unmodifiableList(retVal);
     }
-    
+    return null;
+  }
 
-    public List<Extension> getExtensionsByUrl(String... theUrls) {
-      ArrayList<Extension> retVal = new ArrayList<>();
 
-      for (Extension next : getExtension()) {
-        if (Utilities.existsInList(next.getUrl(), theUrls)) {
-          retVal.add(next);
-        }
+  public Resource getContained(String ref) {
+    if (ref == null)
+      return null;
+
+    if (ref.startsWith("#"))
+      ref = ref.substring(1);
+    for (Resource r : getContained()) {
+      if (r.getId().equals(ref))
+        return r;
+    }
+    return null;
+  }
+
+  /**
+   * Returns a list of extensions from this element which have the given URL. Note that
+   * this list may not be modified (you can not add or remove elements from it)
+   */
+  public List<Extension> getExtensionsByUrl(String theUrl) {
+    org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must be provided with a value");
+    ArrayList<Extension> retVal = new ArrayList<Extension>();
+    for (Extension next : getExtension()) {
+      if (theUrl.equals(next.getUrl())) {
+        retVal.add(next);
       }
-      for (Extension next : getModifierExtension()) {
-        if (Utilities.existsInList(next.getUrl(), theUrls)) {
-          retVal.add(next);
-        }
+    }
+    for (Extension next : getModifierExtension()) {
+      if (theUrl.equals(next.getUrl())) {
+        retVal.add(next);
       }
-      return java.util.Collections.unmodifiableList(retVal);
     }
+    return Collections.unmodifiableList(retVal);
+  }
 
-    /**
-     * Returns a list of modifier extensions from this element which have the given URL. Note that
-     * this list may not be modified (you can not add or remove elements from it)
-     */
-    public List<Extension> getModifierExtensionsByUrl(String theUrl) {
-      org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must be provided with a value");
-      ArrayList<Extension> retVal = new ArrayList<Extension>();
-      for (Extension next : getModifierExtension()) {
-        if (theUrl.equals(next.getUrl())) {
-          retVal.add(next);
-        }
+
+  public List<Extension> getExtensionsByUrl(String... theUrls) {
+    ArrayList<Extension> retVal = new ArrayList<>();
+
+    for (Extension next : getExtension()) {
+      if (Utilities.existsInList(next.getUrl(), theUrls)) {
+        retVal.add(next);
       }
-      return Collections.unmodifiableList(retVal);
     }
+    for (Extension next : getModifierExtension()) {
+      if (Utilities.existsInList(next.getUrl(), theUrls)) {
+        retVal.add(next);
+      }
+    }
+    return java.util.Collections.unmodifiableList(retVal);
+  }
+
+  /**
+   * Returns a list of modifier extensions from this element which have the given URL. Note that
+   * this list may not be modified (you can not add or remove elements from it)
+   */
+  public List<Extension> getModifierExtensionsByUrl(String theUrl) {
+    org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must be provided with a value");
+    ArrayList<Extension> retVal = new ArrayList<Extension>();
+    for (Extension next : getModifierExtension()) {
+      if (theUrl.equals(next.getUrl())) {
+        retVal.add(next);
+      }
+    }
+    return Collections.unmodifiableList(retVal);
+  }
 
 
-    public StandardsStatus getStandardsStatus() {
-      return ToolingExtensions.getStandardsStatus(this);
-    }
-    
-    public void setStandardsStatus(StandardsStatus status) {
-      ToolingExtensions.setStandardsStatus(this, status, null);
-    }
+  public StandardsStatus getStandardsStatus() {
+    return ToolingExtensions.getStandardsStatus(this);
+  }
+
+  public void setStandardsStatus(StandardsStatus status) {
+    ToolingExtensions.setStandardsStatus(this, status, null);
+  }
 
     
 // end addition

@@ -1153,6 +1153,16 @@ public class Element extends Base implements NamedItem {
     return null;
   }
 
+  public Element getExtension(String... urls) {
+    for (String url : urls) {
+      Element e = getExtension(url);
+      if (e != null) {
+        return e;
+      }
+    }
+    return null;
+  }
+
   public String getExtensionString(String url) {
     if (children != null) {
       for (Element child : children) {

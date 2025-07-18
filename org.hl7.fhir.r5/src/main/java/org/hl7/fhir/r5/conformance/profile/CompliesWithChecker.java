@@ -85,7 +85,7 @@ public class CompliesWithChecker {
     DefinitionNavigator cnChild = claimee.childByName(anChild.current().getName());
     String cpath = path+"."+anChild.current().getName();
     if (cnChild == null) {
-      messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, cpath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_MISSING, anChild.path()), IssueSeverity.ERROR));
+      messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, cpath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_MISSING, anChild.globalPath()), IssueSeverity.ERROR));
     } else if (anChild.sliced() || cnChild.sliced()) {
       if (!cnChild.hasSlices()) {
         if (anChild.hasSlices()) {
