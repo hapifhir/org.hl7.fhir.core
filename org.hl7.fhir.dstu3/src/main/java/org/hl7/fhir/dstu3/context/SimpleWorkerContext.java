@@ -81,7 +81,6 @@ import org.hl7.fhir.dstu3.terminologies.ValueSetExpansionCache;
 import org.hl7.fhir.dstu3.utils.INarrativeGenerator;
 import org.hl7.fhir.dstu3.utils.NarrativeGenerator;
 import org.hl7.fhir.dstu3.utils.client.FHIRToolingClient;
-import org.hl7.fhir.dstu3.utils.validation.IResourceValidator;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -112,9 +111,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException;
   }
 
-  public interface IValidatorFactory {
-    IResourceValidator makeValidator(IWorkerContext ctxts) throws FHIRException;
-  }
 
   // all maps are to the full URI
 	private Map<String, StructureDefinition> structures = new HashMap<String, StructureDefinition>();
@@ -124,7 +120,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private String version;
   private String revision;
   private String date;
-  private IValidatorFactory validatorFactory;
   
 	// -- Initializations
 	/**
@@ -451,12 +446,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 		return new NarrativeGenerator(prefix, basePath, this);
 	}
 
-	@Override
-	public IResourceValidator newValidator() throws FHIRException {
-	  if (validatorFactory == null)
-	    throw new Error("No validator configured");
-	  return validatorFactory.makeValidator(this);
-	}
 
   @Override
   public <T extends Resource> T fetchResource(Class<T> class_, String uri) {
@@ -752,14 +741,4 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return res;
   }
 
-  public IValidatorFactory getValidatorFactory() {
-    return validatorFactory;
-  }
-
-  public void setValidatorFactory(IValidatorFactory validatorFactory) {
-    this.validatorFactory = validatorFactory;
-  }
-
- 
-  
 }
