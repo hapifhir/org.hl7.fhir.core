@@ -59,6 +59,7 @@
         <module>org.hl7.fhir.dstu2</module>
         <module>org.hl7.fhir.dstu2016may</module>
         <module>org.hl7.fhir.dstu3</module>
+        <module>org.hl7.fhir.dstu3.support</module>
         <module>org.hl7.fhir.r4</module>
         <module>org.hl7.fhir.r4b</module>
         <module>org.hl7.fhir.r5</module>
