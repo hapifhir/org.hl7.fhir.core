@@ -207,11 +207,25 @@ public class FHIRPathEngine {
      * This will also be called if the host invokes the FluentPath engine with a context of null
      *  
      * @param appContext - content passed into the fluent path engine
-     * @param name - name reference to resolve
+     * @param name - name reference to resolve -
      * @param beforeContext - whether this is being called before the name is resolved locally, or not
      * @return the value of the reference (or null, if it's not valid, though can throw an exception if desired)
      */
     public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant)  throws PathEngineException;
+
+
+    /**
+     * A constant reference - e.g. a reference to a name that must be resolved in context.
+     * The % will be removed from the constant name before this is invoked.
+     * Variables created with defineVariable will not be processed by resolveConstant (or resolveConstantType)
+     *
+     * This will also be called if the host invokes the FluentPath engine with a context of null
+     *
+     * @param appContext - content passed into the fluent path engine
+     * @param name - name reference to resolve - with % prefixed, unlike for resolveConstant (a bug now too painful to fix)
+     * @param explicitConstant - ??
+     * @return the type of the reference (or null, if it's not valid, though can throw an exception if desired)
+     */
     public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException;
 
     /**

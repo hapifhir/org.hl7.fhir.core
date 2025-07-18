@@ -742,5 +742,17 @@ public class Property {
     return false;
   }
 
-
+  public String getExtensionStyle() {
+    ElementDefinition ed = getDefinition();
+    if (ed.hasExtension(ToolingExtensions.EXT_EXTENSION_STYLE)) {
+      return ed.getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE);
+    }
+    if (ed.getType().size() == 1) {
+      StructureDefinition sd = context.fetchTypeDefinition(ed.getTypeFirstRep().getWorkingCode());
+      if (sd.hasExtension(ToolingExtensions.EXT_EXTENSION_STYLE)) {
+        return sd.getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE);
+      }
+    }
+    return null;
+  }
 }
