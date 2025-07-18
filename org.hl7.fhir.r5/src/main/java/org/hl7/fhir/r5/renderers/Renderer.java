@@ -190,6 +190,16 @@ public class Renderer  {
     }
   }
 
+  /**
+   * return true if there's any actual changes
+   *
+   * @param context
+   * @param base
+   * @param x
+   * @param version
+   * @param metadataFields
+   * @return
+   */
   public static boolean renderStatusSummary(RenderingContext context, Base base, XhtmlNode x, String version, String... metadataFields) {
     if (base.hasUserData(UserDataNames.COMP_VERSION_ANNOTATION)) {
       VersionComparisonAnnotation self = (VersionComparisonAnnotation) base.getUserData(UserDataNames.COMP_VERSION_ANNOTATION);
