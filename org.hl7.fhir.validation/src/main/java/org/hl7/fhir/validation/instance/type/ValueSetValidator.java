@@ -408,7 +408,13 @@ public class ValueSetValidator extends BaseValidator {
       } else {
         if (system.startsWith("urn:oid:")) {
           List<CodeSystem> csl = cu.fetchByIdentifier(CodeSystem.class, system);
-          ok = rule(errors, "2025-01-09", IssueType.INVALID, stack, csl.isEmpty(), I18nConstants.VALUESET_INCLUDE_WRONG_CS_OID, system) && ok;
+          if (!csl.isEmpty()) {
+            if (csl.size() == 1) {
+              ok = rule(errors, "2025-01-09", IssueType.INVALID, stack, csl.isEmpty(), I18nConstants.VALUESET_INCLUDE_WRONG_CS_OID, system, csl.get(0).getUrl()) && ok;
+            } else {
+              ok = rule(errors, "2025-01-09", IssueType.INVALID, stack, csl.isEmpty(), I18nConstants.VALUESET_INCLUDE_WRONG_CS_OID_PLURAL, system) && ok;
+            }
+          }
         }
         ValueSet vs = context.findTxResource(ValueSet.class, system, version);
         if (vs != null) {
