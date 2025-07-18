@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.hl7.fhir.convertors.misc.ProfileVersionAdaptor.ConversionMessageStatus;
 import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -74,6 +75,9 @@ public class ProfileVersionAdaptor {
   }
 
   public StructureDefinition convert(StructureDefinition sd, List<ConversionMessage> log) throws FileNotFoundException, IOException {
+    if (sd.getKind() == StructureDefinitionKind.LOGICAL) {
+      return convertLogical(sd, log);
+    }
     if (sd.getDerivation() != TypeDerivationRule.CONSTRAINT || !"Extension".equals(sd.getType())) {
       return null; // nothing to say right now
     }
@@ -234,6 +238,87 @@ public class ProfileVersionAdaptor {
     return sd;
   }
 
+  private StructureDefinition convertLogical(StructureDefinition sdSrc, List<ConversionMessage> log) {
+    StructureDefinition sd = sdSrc.copy();
+    sd.setFhirVersion(FHIRVersion.fromCode(tCtxt.getVersion()));
+    sd.setSnapshot(null);
+
+    // first pass, targetProfiles
+    for (ElementDefinition ed : sd.getDifferential().getElement()) {
+      for (TypeRefComponent td : ed.getType()) {
+        List<CanonicalType> toRemove = new ArrayList<CanonicalType>();
+        for (CanonicalType c : td.getTargetProfile()) {
+          String tp = getCorrectedProfile(c);
+          if (tp == null) {
+            log.add(new ConversionMessage("Remove the target profile "+c.getValue()+" from the element "+ed.getIdOrPath(), ConversionMessageStatus.WARNING));
+            toRemove.add(c);
+          } else if (!tp.equals(c.getValue())) {
+            log.add(new ConversionMessage("Change the target profile "+c.getValue()+" to "+tp+" on the element "+ed.getIdOrPath(), ConversionMessageStatus.WARNING));
+            c.setValue(tp);
+          }
+        }
+        td.getTargetProfile().removeAll(toRemove);
+      }
+    }
+    // second pass, unsupported primitive data types
+    for (ElementDefinition ed : sd.getDifferential().getElement()) {
+      for (TypeRefComponent tr : ed.getType()) {
+        String mappedDT = getMappedDT(tr.getCode());
+        if (mappedDT != null) {
+          log.add(new ConversionMessage("Map the type "+tr.getCode()+" to "+mappedDT+" on the element "+ed.getIdOrPath(), ConversionMessageStatus.WARNING));
+          tr.setCode(mappedDT);
+        }
+      }
+    }
+
+    // third pass, unsupported complex data types
+    for (int i = 0; i < sd.getDifferential().getElement().size(); i++) {
+      ElementDefinition ed = sd.getDifferential().getElement().get(i);
+      if (ed.getType().size() > 1) {
+        if (ed.getType().removeIf(tr -> !tcu.isDatatype(tr.getWorkingCode()))) {
+          log.add(new ConversionMessage("Remove types from the element " + ed.getIdOrPath(), ConversionMessageStatus.WARNING));
+        }
+      } else if (ed.getType().size() == 1) {
+        TypeRefComponent tr = ed.getTypeFirstRep();
+        if (!tcu.isDatatype(tr.getWorkingCode()) && !isValidLogicalType(tr.getWorkingCode())) {
+          log.add(new ConversionMessage("Illegal type "+tr.getWorkingCode(), ConversionMessageStatus.ERROR));
+          return null;
+        }
+      }
+    }
+
+    if (!log.isEmpty()) {
+      if (!sd.hasExtension(ToolingExtensions.EXT_FMM_LEVEL) || ToolingExtensions.readIntegerExtension(sd, ToolingExtensions.EXT_FMM_LEVEL, 0) > 2) {
+        ToolingExtensions.setCodeExtension(sd, ToolingExtensions.EXT_FMM_LEVEL, "2");
+      }
+      ToolingExtensions.setCodeExtension(sd, ToolingExtensions.EXT_STANDARDS_STATUS, "draft");
+      ToolingExtensions.setCodeExtension(sd, ToolingExtensions.EXT_STANDARDS_STATUS_REASON, "Logical Models that have been modified for "+VersionUtilities.getNameForVersion(tCtxt.getVersion())+" are still draft while real-world experience is collected");
+      log.add(new ConversionMessage("Note: Logical Models that have been modified for "+VersionUtilities.getNameForVersion(tCtxt.getVersion())+" are still draft while real-world experience is collected", ConversionMessageStatus.NOTE));
+    }
+
+    StructureDefinition base = tCtxt.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+    if (base == null) {
+      base = sCtxt.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+    }
+    if (base == null) {
+      throw new FHIRException("Unable to find base for Logical Model from "+sd.getBaseDefinition());
+    }
+    tpu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/"+VersionUtilities.getNameForVersion(tCtxt.getVersion())+"/", sd.getName());
+    return sd;
+  }
+
+  private boolean isValidLogicalType(String code) {
+    StructureDefinition sd = tCtxt.fetchTypeDefinition(code);
+    if (sd != null) {
+      return true;
+    }
+    sd = sCtxt.fetchTypeDefinition(code);
+    if (sd != null && !sd.getSourcePackage().isCore()) {
+      return true;
+    }
+    return false;
+  }
+
   private int addDatatypeSlice(StructureDefinition sd, int offset, int insPoint, ElementDefinition base, String type) {
     ElementDefinition ned = new ElementDefinition(base.getPath());
     ned.setSliceName("_datatype");
@@ -295,6 +380,11 @@ public class ProfileVersionAdaptor {
   private String getCorrectedProfile(CanonicalType c) {
     StructureDefinition sd = tCtxt.fetchResource(StructureDefinition.class, c.getValue());
     if (sd != null) {
+      return c.getValue();
+    }
+    // or it might be something defined in the IG or it's dependencies
+    sd = sCtxt.fetchResource(StructureDefinition.class, c.getValue());
+    if (sd != null && !sd.getSourcePackage().isCore()) {
       return c.getValue();
     }
     return null;
