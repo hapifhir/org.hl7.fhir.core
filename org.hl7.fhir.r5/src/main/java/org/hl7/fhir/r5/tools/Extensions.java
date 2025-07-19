@@ -1,8 +1,11 @@
 package org.hl7.fhir.r5.tools;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.extensions.ExtensionsUtils;
+
+
 import java.util.List;
 import java.math.BigDecimal;
 
@@ -60,12 +63,12 @@ public class Extensions {
   }
 
   public static StructureDefinition addTerminologyBindingStyleEXT(StructureDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_TERMINOLOGY_BINDING_STYLE_E_X_T, new CodeType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_TERMINOLOGY_BINDING_STYLE_E_X_T, new CodeType(value));
     return context;
   }
 
   public static List<String> getTerminologyBindingStyleEXTList(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_TERMINOLOGY_BINDING_STYLE_E_X_T);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_TERMINOLOGY_BINDING_STYLE_E_X_T);
   }
 
 // -- DateFormat -------------------------------------
@@ -77,12 +80,12 @@ public class Extensions {
   }
 
   public static ElementDefinition addDateFormat(ElementDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_DATE_FORMAT, new StringType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_DATE_FORMAT, new StringType(value));
     return context;
   }
 
   public static List<String> getDateFormatList(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_DATE_FORMAT);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_DATE_FORMAT);
   }
 
 // -- DateRulesControl -------------------------------------
@@ -94,12 +97,12 @@ public class Extensions {
   }
 
   public static ElementDefinition addDateRulesControl(ElementDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_DATE_RULES_CONTROL, new StringType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_DATE_RULES_CONTROL, new StringType(value));
     return context;
   }
 
   public static List<String> getDateRulesControlList(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_DATE_RULES_CONTROL);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_DATE_RULES_CONTROL);
   }
 
 // -- ExtensionStylesEXT -------------------------------------
@@ -111,12 +114,12 @@ public class Extensions {
   }
 
   public static StructureDefinition addExtensionStylesEXT(StructureDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_EXTENSION_STYLES_E_X_T, new CodeType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_EXTENSION_STYLES_E_X_T, new CodeType(value));
     return context;
   }
 
   public static List<String> getExtensionStylesEXTList(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_EXTENSION_STYLES_E_X_T);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_EXTENSION_STYLES_E_X_T);
   }
 
 // -- IdExpectationExt -------------------------------------
@@ -128,12 +131,12 @@ public class Extensions {
   }
 
   public static ElementDefinition addIdExpectationExt(ElementDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_ID_EXPECTATION_EXT, new CodeType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_ID_EXPECTATION_EXT, new CodeType(value));
     return context;
   }
 
   public static List<String> getIdExpectationExtList(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_ID_EXPECTATION_EXT);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_ID_EXPECTATION_EXT);
   }
 
 // -- ActorExampleURL -------------------------------------
@@ -145,12 +148,12 @@ public class Extensions {
   }
 
   public static ActorDefinition addActorExampleURL(ActorDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_ACTOR_EXAMPLE_U_R_L, new UrlType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_ACTOR_EXAMPLE_U_R_L, new UrlType(value));
     return context;
   }
 
   public static List<String> getActorExampleURLList(ActorDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_ACTOR_EXAMPLE_U_R_L);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_ACTOR_EXAMPLE_U_R_L);
   }
 
 // -- ActorForExample -------------------------------------
@@ -186,12 +189,12 @@ public class Extensions {
   }
 
   public static StructureDefinition addIGPublisherLoadAsResource(StructureDefinition context, boolean value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_IGPUBLISHER_LOAD_AS_RESOURCE, new BooleanType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_IGPUBLISHER_LOAD_AS_RESOURCE, new BooleanType(value));
     return context;
   }
 
   public static List<Boolean> getIGPublisherLoadAsResourceList(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionBooleanList(context, ExtensionConstants.EXT_IGPUBLISHER_LOAD_AS_RESOURCE);
+    return ExtensionUtilities.getExtensionBooleanList(context, ExtensionConstants.EXT_IGPUBLISHER_LOAD_AS_RESOURCE);
   }
 
 // -- IGPageName -------------------------------------
@@ -211,12 +214,12 @@ public class Extensions {
   }
 
   public static ElementDefinition addIGPublisherUseAsResourceId(ElementDefinition context, boolean value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_IGPUBLISHER_USE_AS_RESOURCE_ID, new BooleanType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_IGPUBLISHER_USE_AS_RESOURCE_ID, new BooleanType(value));
     return context;
   }
 
   public static List<Boolean> getIGPublisherUseAsResourceIdList(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionBooleanList(context, ExtensionConstants.EXT_IGPUBLISHER_USE_AS_RESOURCE_ID);
+    return ExtensionUtilities.getExtensionBooleanList(context, ExtensionConstants.EXT_IGPUBLISHER_USE_AS_RESOURCE_ID);
   }
 
 // -- IGPublisherBundle -------------------------------------
@@ -260,12 +263,12 @@ public class Extensions {
   }
 
   public static ElementDefinition addImpliedStringPrefix(ElementDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_IMPLIED_STRING_PREFIX, new StringType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_IMPLIED_STRING_PREFIX, new StringType(value));
     return context;
   }
 
   public static List<String> getImpliedStringPrefixList(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_IMPLIED_STRING_PREFIX);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_IMPLIED_STRING_PREFIX);
   }
 
 // -- InheritObligations -------------------------------------
@@ -277,12 +280,12 @@ public class Extensions {
   }
 
   public static StructureDefinition addInheritObligations(StructureDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_INHERIT_OBLIGATIONS, new CanonicalType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_INHERIT_OBLIGATIONS, new CanonicalType(value));
     return context;
   }
 
   public static List<String> getInheritObligationsList(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_INHERIT_OBLIGATIONS);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_INHERIT_OBLIGATIONS);
   }
 
 // -- JsonEmptyBehavior -------------------------------------
@@ -294,12 +297,12 @@ public class Extensions {
   }
 
   public static ElementDefinition addJsonEmptyBehavior(ElementDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_JSON_EMPTY_BEHAVIOR, new CodeType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_JSON_EMPTY_BEHAVIOR, new CodeType(value));
     return context;
   }
 
   public static List<String> getJsonEmptyBehaviorList(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_JSON_EMPTY_BEHAVIOR);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_JSON_EMPTY_BEHAVIOR);
   }
 
 // -- JsonPropertyName -------------------------------------
@@ -311,12 +314,12 @@ public class Extensions {
   }
 
   public static ElementDefinition addJsonPropertyName(ElementDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_JSON_PROPERTY_NAME, new StringType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_JSON_PROPERTY_NAME, new StringType(value));
     return context;
   }
 
   public static List<String> getJsonPropertyNameList(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_JSON_PROPERTY_NAME);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_JSON_PROPERTY_NAME);
   }
 
 // -- JsonNullableExt -------------------------------------
@@ -328,12 +331,12 @@ public class Extensions {
   }
 
   public static ElementDefinition setJsonNullableExt(ElementDefinition context, boolean value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_JSON_NULLABLE_EXT, new BooleanType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_JSON_NULLABLE_EXT, new BooleanType(value));
     return context;
   }
 
   public static Boolean getJsonNullableExt(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionBoolean(context, ExtensionConstants.EXT_JSON_NULLABLE_EXT);
+    return ExtensionUtilities.getExtensionBoolean(context, ExtensionConstants.EXT_JSON_NULLABLE_EXT);
   }
 
 // -- JsonPrimitiveChoiceExt -------------------------------------
@@ -345,12 +348,12 @@ public class Extensions {
   }
 
   public static ElementDefinition setJsonPrimitiveChoiceExt(ElementDefinition context, boolean value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_JSON_PRIMITIVE_CHOICE_EXT, new BooleanType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_JSON_PRIMITIVE_CHOICE_EXT, new BooleanType(value));
     return context;
   }
 
   public static Boolean getJsonPrimitiveChoiceExt(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionBoolean(context, ExtensionConstants.EXT_JSON_PRIMITIVE_CHOICE_EXT);
+    return ExtensionUtilities.getExtensionBoolean(context, ExtensionConstants.EXT_JSON_PRIMITIVE_CHOICE_EXT);
   }
 
 // -- JsonPropertyKey -------------------------------------
@@ -362,12 +365,12 @@ public class Extensions {
   }
 
   public static ElementDefinition addJsonPropertyKey(ElementDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_JSON_PROPERTY_KEY, new CodeType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_JSON_PROPERTY_KEY, new CodeType(value));
     return context;
   }
 
   public static List<String> getJsonPropertyKeyList(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_JSON_PROPERTY_KEY);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_JSON_PROPERTY_KEY);
   }
 
 // -- JsonSuppressResourceType -------------------------------------
@@ -379,12 +382,12 @@ public class Extensions {
   }
 
   public static StructureDefinition addJsonSuppressResourceType(StructureDefinition context, boolean value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_JSON_SUPPRESS_RESOURCE_TYPE, new BooleanType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_JSON_SUPPRESS_RESOURCE_TYPE, new BooleanType(value));
     return context;
   }
 
   public static List<Boolean> getJsonSuppressResourceTypeList(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionBooleanList(context, ExtensionConstants.EXT_JSON_SUPPRESS_RESOURCE_TYPE);
+    return ExtensionUtilities.getExtensionBooleanList(context, ExtensionConstants.EXT_JSON_SUPPRESS_RESOURCE_TYPE);
   }
 
 // -- LogicalContainer -------------------------------------
@@ -396,12 +399,12 @@ public class Extensions {
   }
 
   public static StructureDefinition setLogicalContainer(StructureDefinition context, String value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_LOGICAL_CONTAINER, new UriType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_LOGICAL_CONTAINER, new UriType(value));
     return context;
   }
 
   public static String getLogicalContainer(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionString(context, ExtensionConstants.EXT_LOGICAL_CONTAINER);
+    return ExtensionUtilities.getExtensionString(context, ExtensionConstants.EXT_LOGICAL_CONTAINER);
   }
 
 // -- LogicalTarget -------------------------------------
@@ -413,12 +416,12 @@ public class Extensions {
   }
 
   public static StructureDefinition setLogicalTarget(StructureDefinition context, boolean value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_LOGICAL_TARGET, new BooleanType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_LOGICAL_TARGET, new BooleanType(value));
     return context;
   }
 
   public static Boolean getLogicalTarget(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionBoolean(context, ExtensionConstants.EXT_LOGICAL_TARGET);
+    return ExtensionUtilities.getExtensionBoolean(context, ExtensionConstants.EXT_LOGICAL_TARGET);
   }
 
 // -- MatchetypeFlag -------------------------------------
@@ -430,12 +433,12 @@ public class Extensions {
   }
 
   public static Resource addMatchetypeFlag(Resource context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_MATCHETYPE_FLAG, new CodeType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_MATCHETYPE_FLAG, new CodeType(value));
     return context;
   }
 
   public static List<String> getMatchetypeFlagList(Resource context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_MATCHETYPE_FLAG);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_MATCHETYPE_FLAG);
   }
 
 // -- MatchetypeCountFlag -------------------------------------
@@ -447,12 +450,12 @@ public class Extensions {
   }
 
   public static Element addMatchetypeCountFlag(Element context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_MATCHETYPE_COUNT_FLAG, new StringType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_MATCHETYPE_COUNT_FLAG, new StringType(value));
     return context;
   }
 
   public static List<String> getMatchetypeCountFlagList(Element context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_MATCHETYPE_COUNT_FLAG);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_MATCHETYPE_COUNT_FLAG);
   }
 
 // -- MatchetypeOptionalFlag -------------------------------------
@@ -468,21 +471,21 @@ public class Extensions {
   }
 
   public static Element addMatchetypeOptionalFlag(Element context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_MATCHETYPE_OPTIONAL_FLAG, new StringType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_MATCHETYPE_OPTIONAL_FLAG, new StringType(value));
     return context;
   }
 
   public static List<String> getMatchetypeOptionalFlagStringList(Element context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_MATCHETYPE_OPTIONAL_FLAG);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_MATCHETYPE_OPTIONAL_FLAG);
   }
 
   public static Element addMatchetypeOptionalFlag(Element context, boolean value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_MATCHETYPE_OPTIONAL_FLAG, new BooleanType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_MATCHETYPE_OPTIONAL_FLAG, new BooleanType(value));
     return context;
   }
 
   public static List<Boolean> getMatchetypeOptionalFlagBooleanList(Element context) {
-    return ExtensionsUtils.getExtensionBooleanList(context, ExtensionConstants.EXT_MATCHETYPE_OPTIONAL_FLAG);
+    return ExtensionUtilities.getExtensionBooleanList(context, ExtensionConstants.EXT_MATCHETYPE_OPTIONAL_FLAG);
   }
 
 // -- NoBinding -------------------------------------
@@ -494,12 +497,12 @@ public class Extensions {
   }
 
   public static ElementDefinition setNoBinding(ElementDefinition context, boolean value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_NO_BINDING, new BooleanType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_NO_BINDING, new BooleanType(value));
     return context;
   }
 
   public static Boolean getNoBinding(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionBoolean(context, ExtensionConstants.EXT_NO_BINDING);
+    return ExtensionUtilities.getExtensionBoolean(context, ExtensionConstants.EXT_NO_BINDING);
   }
 
 // -- ObligationProfile -------------------------------------
@@ -511,12 +514,12 @@ public class Extensions {
   }
 
   public static StructureDefinition addObligationProfile(StructureDefinition context, boolean value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_OBLIGATION_PROFILE, new BooleanType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_OBLIGATION_PROFILE, new BooleanType(value));
     return context;
   }
 
   public static List<Boolean> getObligationProfileList(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionBooleanList(context, ExtensionConstants.EXT_OBLIGATION_PROFILE);
+    return ExtensionUtilities.getExtensionBooleanList(context, ExtensionConstants.EXT_OBLIGATION_PROFILE);
   }
 
 // -- PackageScope -------------------------------------
@@ -528,12 +531,12 @@ public class Extensions {
   }
 
   public static ImplementationGuide addPackageScope(ImplementationGuide context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_PACKAGE_SCOPE, new CodeType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_PACKAGE_SCOPE, new CodeType(value));
     return context;
   }
 
   public static List<String> getPackageScopeList(ImplementationGuide context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_PACKAGE_SCOPE);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_PACKAGE_SCOPE);
   }
 
 // -- ProfileMapping -------------------------------------
@@ -577,12 +580,12 @@ public class Extensions {
   }
 
   public static StructureDefinition addExtensionSnapshotBehavior(StructureDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_EXTENSION_SNAPSHOT_BEHAVIOR, new CodeType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_EXTENSION_SNAPSHOT_BEHAVIOR, new CodeType(value));
     return context;
   }
 
   public static List<String> getExtensionSnapshotBehaviorList(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_EXTENSION_SNAPSHOT_BEHAVIOR);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_EXTENSION_SNAPSHOT_BEHAVIOR);
   }
 
 // -- ExtensionSnapshotSource -------------------------------------
@@ -594,12 +597,12 @@ public class Extensions {
   }
 
   public static StructureDefinition addExtensionSnapshotSource(StructureDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_EXTENSION_SNAPSHOT_SOURCE, new CanonicalType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_EXTENSION_SNAPSHOT_SOURCE, new CanonicalType(value));
     return context;
   }
 
   public static List<String> getExtensionSnapshotSourceList(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_EXTENSION_SNAPSHOT_SOURCE);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_EXTENSION_SNAPSHOT_SOURCE);
   }
 
 // -- RenderingEngineViewHintsExt -------------------------------------
@@ -611,21 +614,21 @@ public class Extensions {
   }
 
   public static ElementDefinition setRenderingEngineViewHintsExt(ElementDefinition context, String value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_RENDERING_ENGINE_VIEW_HINTS_EXT, new CodeType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_RENDERING_ENGINE_VIEW_HINTS_EXT, new CodeType(value));
     return context;
   }
 
   public static String getRenderingEngineViewHintsExt(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionString(context, ExtensionConstants.EXT_RENDERING_ENGINE_VIEW_HINTS_EXT);
+    return ExtensionUtilities.getExtensionString(context, ExtensionConstants.EXT_RENDERING_ENGINE_VIEW_HINTS_EXT);
   }
 
   public static StructureDefinition setRenderingEngineViewHintsExt(StructureDefinition context, String value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_RENDERING_ENGINE_VIEW_HINTS_EXT, new CodeType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_RENDERING_ENGINE_VIEW_HINTS_EXT, new CodeType(value));
     return context;
   }
 
   public static String getRenderingEngineViewHintsExt(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionString(context, ExtensionConstants.EXT_RENDERING_ENGINE_VIEW_HINTS_EXT);
+    return ExtensionUtilities.getExtensionString(context, ExtensionConstants.EXT_RENDERING_ENGINE_VIEW_HINTS_EXT);
   }
 
 // -- WebSource -------------------------------------
@@ -637,12 +640,12 @@ public class Extensions {
   }
 
   public static CanonicalResource setWebSource(CanonicalResource context, String value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_WEB_SOURCE, new UrlType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_WEB_SOURCE, new UrlType(value));
     return context;
   }
 
   public static String getWebSource(CanonicalResource context) {
-    return ExtensionsUtils.getExtensionString(context, ExtensionConstants.EXT_WEB_SOURCE);
+    return ExtensionUtilities.getExtensionString(context, ExtensionConstants.EXT_WEB_SOURCE);
   }
 
 // -- XMLChoiceGroup -------------------------------------
@@ -654,12 +657,12 @@ public class Extensions {
   }
 
   public static ElementDefinition addXMLChoiceGroup(ElementDefinition context, boolean value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_XMLCHOICE_GROUP, new BooleanType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_XMLCHOICE_GROUP, new BooleanType(value));
     return context;
   }
 
   public static List<Boolean> getXMLChoiceGroupList(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionBooleanList(context, ExtensionConstants.EXT_XMLCHOICE_GROUP);
+    return ExtensionUtilities.getExtensionBooleanList(context, ExtensionConstants.EXT_XMLCHOICE_GROUP);
   }
 
 // -- XmlElementName -------------------------------------
@@ -671,21 +674,21 @@ public class Extensions {
   }
 
   public static ElementDefinition addXmlElementName(ElementDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_XML_ELEMENT_NAME, new StringType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_XML_ELEMENT_NAME, new StringType(value));
     return context;
   }
 
   public static List<String> getXmlElementNameList(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_XML_ELEMENT_NAME);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_XML_ELEMENT_NAME);
   }
 
   public static StructureDefinition addXmlElementName(StructureDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_XML_ELEMENT_NAME, new StringType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_XML_ELEMENT_NAME, new StringType(value));
     return context;
   }
 
   public static List<String> getXmlElementNameList(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_XML_ELEMENT_NAME);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_XML_ELEMENT_NAME);
   }
 
 // -- Namespace -------------------------------------
@@ -697,21 +700,21 @@ public class Extensions {
   }
 
   public static ElementDefinition setNamespace(ElementDefinition context, String value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_NAMESPACE, new UriType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_NAMESPACE, new UriType(value));
     return context;
   }
 
   public static String getNamespace(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionString(context, ExtensionConstants.EXT_NAMESPACE);
+    return ExtensionUtilities.getExtensionString(context, ExtensionConstants.EXT_NAMESPACE);
   }
 
   public static StructureDefinition setNamespace(StructureDefinition context, String value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_NAMESPACE, new UriType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_NAMESPACE, new UriType(value));
     return context;
   }
 
   public static String getNamespace(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionString(context, ExtensionConstants.EXT_NAMESPACE);
+    return ExtensionUtilities.getExtensionString(context, ExtensionConstants.EXT_NAMESPACE);
   }
 
 // -- XmlNoOrder -------------------------------------
@@ -723,12 +726,12 @@ public class Extensions {
   }
 
   public static StructureDefinition setXmlNoOrder(StructureDefinition context, boolean value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_XML_NO_ORDER, new BooleanType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_XML_NO_ORDER, new BooleanType(value));
     return context;
   }
 
   public static Boolean getXmlNoOrder(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionBoolean(context, ExtensionConstants.EXT_XML_NO_ORDER);
+    return ExtensionUtilities.getExtensionBoolean(context, ExtensionConstants.EXT_XML_NO_ORDER);
   }
 
 

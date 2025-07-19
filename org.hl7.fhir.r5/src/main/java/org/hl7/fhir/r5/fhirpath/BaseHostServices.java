@@ -4,10 +4,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.DateTimeType;
-import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.terminologies.TerminologyFunctions;
-import org.hl7.fhir.r5.testfactory.TestDataHostServices;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 
 import java.util.ArrayList;
@@ -15,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class BaseHostServices implements FHIRPathEngine.IEvaluationContext {
+public abstract class BaseHostServices implements IHostApplicationServices {
 
   protected IWorkerContext context;
   protected Map<String, FunctionDefinition> functions = new HashMap<>();
@@ -47,8 +44,8 @@ public abstract class BaseHostServices implements FHIRPathEngine.IEvaluationCont
     return this;
   }
 
-  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
-    if (name.equals("%terminologies")) {
+  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
+    if (mode == FHIRPathConstantEvaluationMode.EXPLICIT && name.equals("terminologies")) {
       return new TypeDetails(ExpressionNode.CollectionStatus.SINGLETON, "TerminologyServices");
     } else {
       throw makeException(I18nConstants.FHIRPATH_UNKNOWN_CONSTANT, name);
@@ -60,8 +57,8 @@ public abstract class BaseHostServices implements FHIRPathEngine.IEvaluationCont
     return new PathEngineException(fmt, constName);
   }
 
-  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
-    if (name.equals("terminologies")) {
+  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
+    if (mode == FHIRPathConstantEvaluationMode.EXPLICIT && name.equals("terminologies")) {
       List<Base> res = new ArrayList<>();
       res.add(new TerminologyFunctions.TerminologiesObject());
       return res;

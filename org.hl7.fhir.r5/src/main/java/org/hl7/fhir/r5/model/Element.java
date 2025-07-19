@@ -32,22 +32,17 @@ package org.hl7.fhir.r5.model;
 // Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.r5.model.Enumerations.*;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.Block;
 
 import org.hl7.fhir.instance.model.api.IBaseElement;
 import  org.hl7.fhir.instance.model.api.IBaseHasExtensions;
-import  org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
 import  org.hl7.fhir.utilities.StandardsStatus;
@@ -526,11 +521,11 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
 
 
   public StandardsStatus getStandardsStatus() {
-    return ToolingExtensions.getStandardsStatus(this);
+    return ExtensionUtilities.getStandardsStatus(this);
   }
   
   public void setStandardsStatus(StandardsStatus status) {
-    ToolingExtensions.setStandardsStatus(this, status, null);
+    ExtensionUtilities.setStandardsStatus(this, status, null);
   }
 
   public boolean hasExtension(Extension ext) {

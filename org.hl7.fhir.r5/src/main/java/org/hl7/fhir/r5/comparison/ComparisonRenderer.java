@@ -1,7 +1,6 @@
 package org.hl7.fhir.r5.comparison;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -28,7 +27,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r5.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.liquid.LiquidEngine;
@@ -47,7 +46,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
 @MarkedToMoveToAdjunctPackage
 @Slf4j
-public class ComparisonRenderer implements IEvaluationContext {
+public class ComparisonRenderer implements IHostApplicationServices {
 
   private IWorkerContext contextLeft;
   private IWorkerContext contextRight;
@@ -308,21 +307,21 @@ public class ComparisonRenderer implements IEvaluationContext {
   }
 
   @Override
-  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
-    @SuppressWarnings("unchecked")
+  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     Map<String, Base> vars = (Map<String, Base>) appContext;
     List<Base> res = new ArrayList<>();
-    if (vars.containsKey(name)) {
-      res.add(vars.get(name));
+    if (mode == FHIRPathConstantEvaluationMode.EXPLICIT) {
+      if (vars.containsKey(name)) {
+        res.add(vars.get(name));
+      }
     }
     return res;
   }
 
   @Override
-  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
-    @SuppressWarnings("unchecked")
+  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     Map<String, Base> vars = (Map<String, Base>) appContext;
-    Base b = vars.get(name);
+    Base b = mode == FHIRPathConstantEvaluationMode.EXPLICIT ? vars.get(name) : null;
     return new TypeDetails(CollectionStatus.SINGLETON, b == null ? "Base" : b.fhirType());
   }
 

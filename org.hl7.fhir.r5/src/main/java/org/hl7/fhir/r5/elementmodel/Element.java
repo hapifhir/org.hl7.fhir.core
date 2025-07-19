@@ -44,7 +44,8 @@ import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.extensions.ExtensionsUtils;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -57,7 +58,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.TypeConvertor;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.ElementDecoration;
 import org.hl7.fhir.utilities.ElementDecoration.DecorationType;
@@ -1579,7 +1580,7 @@ public class Element extends Base implements NamedItem {
     for (Element e : getChildren()) {
       if (e.fhirType().equals("Extension")) {
         String url = e.getNamedChildValue("url", false);
-        if (ToolingExtensions.EXT_TRANSLATION.equals(url)) {
+        if (ExtensionDefinitions.EXT_TRANSLATION.equals(url)) {
           String l = null;
           String v = null;
           for (Element g : e.getChildren()) {
@@ -1602,8 +1603,8 @@ public class Element extends Base implements NamedItem {
   }
 
   public String getBasePath() {
-    if (property.getStructure().hasExtension(ToolingExtensions.EXT_RESOURCE_IMPLEMENTS)) {
-      StructureDefinition sd = property.getContext().fetchResource(StructureDefinition.class, ExtensionsUtils.getExtensionString(property.getStructure(), ToolingExtensions.EXT_RESOURCE_IMPLEMENTS));
+    if (property.getStructure().hasExtension(ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS)) {
+      StructureDefinition sd = property.getContext().fetchResource(StructureDefinition.class, ExtensionUtilities.readStringExtension(property.getStructure(), ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS));
       if (sd != null) {
         ElementDefinition ed = sd.getSnapshot().getElementByPath(property.getDefinition().getPath().replace(property.getStructure().getType(), sd.getType()));
         if (ed != null) {
@@ -1618,7 +1619,7 @@ public class Element extends Base implements NamedItem {
     for (Element e : getChildren()) {
       if (e.fhirType().equals("Extension")) {
         String url = e.getNamedChildValue("url", false);
-        if (ToolingExtensions.EXT_TRANSLATION.equals(url)) {
+        if (ExtensionDefinitions.EXT_TRANSLATION.equals(url)) {
           String l = null;
           Element v = null;
           for (Element g : e.getChildren()) {
@@ -1644,7 +1645,7 @@ public class Element extends Base implements NamedItem {
       }
     }
     Element t = addElement("extension");
-    t.addElement("url").setValue(ToolingExtensions.EXT_TRANSLATION);
+    t.addElement("url").setValue(ExtensionDefinitions.EXT_TRANSLATION);
 
     Element ext = t.addElement("extension");
     ext.addElement("url").setValue("lang");
@@ -1741,7 +1742,7 @@ public class Element extends Base implements NamedItem {
 
   public String getStatedResourceId() {
     for (Property p : getProperty().getChildProperties(null)) {
-      if (ToolingExtensions.readBoolExtension(p.getDefinition(), ToolingExtensions.EXT_USE_AS_RESOURCE_ID)) {
+      if (ExtensionUtilities.readBoolExtension(p.getDefinition(), ExtensionDefinitions.EXT_USE_AS_RESOURCE_ID)) {
         return getNamedChildValue(p.getName());
       }
     }

@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -45,7 +46,6 @@ import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.OIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -172,8 +172,8 @@ public class JavaBaseGenerator extends OutputStreamWriter {
 	}
 
 	protected String getTypename(TypeRefComponent type) throws Exception {
-	  if (type.hasExtension(ToolingExtensions.EXT_FHIR_TYPE)) {
-	    return type.getExtensionString(ToolingExtensions.EXT_FHIR_TYPE);
+	  if (type.hasExtension(ExtensionDefinitions.EXT_FHIR_TYPE)) {
+	    return type.getExtensionString(ExtensionDefinitions.EXT_FHIR_TYPE);
 	  } else {
 		  String code = type.getCode();
 		  if (Utilities.isAbsoluteUrl(code)) {
@@ -317,7 +317,7 @@ public class JavaBaseGenerator extends OutputStreamWriter {
   }
 
   protected boolean isNamedElementExtensions(ElementDefinition ed) {
-    return "named-elements".equals(ed.getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE));
+    return "named-elements".equals(ed.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE));
   }
 
   protected Map<String, String> getConcreteDescendents(Analysis analysis, TypeInfo ti) {

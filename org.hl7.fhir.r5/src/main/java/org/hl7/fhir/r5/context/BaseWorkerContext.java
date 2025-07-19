@@ -62,6 +62,8 @@ import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.context.ILoggingService.LogCategory;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.Bundle;
@@ -139,7 +141,7 @@ import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
 import org.hl7.fhir.r5.utils.PackageHackerR5;
 import org.hl7.fhir.r5.utils.ResourceUtilities;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
@@ -1213,7 +1215,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
 //  private boolean hasTooCostlyExpansion(ValueSet valueset) {
-//    return valueset != null && valueset.hasExpansion() && ToolingExtensions.hasExtension(valueset.getExpansion(), ToolingExtensions.EXT_EXP_TOOCOSTLY);
+//    return valueset != null && valueset.hasExpansion() && ExtensionUtilities.hasExtension(valueset.getExpansion(), ExtensionDefinitions.EXT_EXP_TOOCOSTLY);
 //  }
   
   // --- validate code -------------------------------------------------------------------------------
@@ -2011,7 +2013,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (vs != null && !hasCanonicalResource(pin, "tx-resource", vs.getVUrl())) {
         cache = checkAddToParams(tc, pin, vs) || cache;
         addDependentResources(opCtxt, tc, pin, vs);
-        for (Extension ext : vs.getExtensionsByUrl(ToolingExtensions.EXT_VS_CS_SUPPL_NEEDED)) {
+        for (Extension ext : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
           if (ext.hasValueCanonicalType()) {
             String url = ext.getValueCanonicalType().asStringValue();
             CodeSystem supp = fetchResource(CodeSystem.class, url);
@@ -2203,7 +2205,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (p.getName().equals("issues")) {
           OperationOutcome oo = (OperationOutcome) p.getResource();
           for (OperationOutcomeIssueComponent iss : oo.getIssue()) {
-            iss.addExtension(ToolingExtensions.EXT_ISSUE_SERVER, new UrlType(server));
+            iss.addExtension(ExtensionDefinitions.EXT_ISSUE_SERVER, new UrlType(server));
             issues.add(iss);
           }
         } else {
@@ -3529,7 +3531,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         txCache.cacheValueSet(canonical, svs);
       }
       if (svs != null) {
-        String web = ToolingExtensions.readStringExtension(svs.getVs(), ToolingExtensions.EXT_WEB_SOURCE_OLD, ToolingExtensions.EXT_WEB_SOURCE_NEW);
+        String web = ExtensionUtilities.readStringExtension(svs.getVs(), ExtensionDefinitions.EXT_WEB_SOURCE_OLD, ExtensionDefinitions.EXT_WEB_SOURCE_NEW);
         if (web == null) {
           web = Utilities.pathURL(svs.getServer(), "ValueSet", svs.getVs().getIdBase());
         }
@@ -3551,7 +3553,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         txCache.cacheCodeSystem(canonical, scs);
       }
       if (scs != null) {
-        String web = ToolingExtensions.readStringExtension(scs.getCs(), ToolingExtensions.EXT_WEB_SOURCE_OLD, ToolingExtensions.EXT_WEB_SOURCE_NEW);
+        String web = ExtensionUtilities.readStringExtension(scs.getCs(), ExtensionDefinitions.EXT_WEB_SOURCE_OLD, ExtensionDefinitions.EXT_WEB_SOURCE_NEW);
         if (web == null) {
           web = Utilities.pathURL(scs.getServer(), "ValueSet", scs.getCs().getIdBase());
         }

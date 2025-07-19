@@ -59,13 +59,13 @@ public class FHIRPathTests {
     }
 
     @Override
-    public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
-      return super.resolveConstant(engine, appContext, name, beforeContext, explicitConstant);
+    public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
+      return super.resolveConstant(engine, appContext, name, mode);
     }
 
     @Override
-    public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
-      return super.resolveConstantType(engine, appContext, name, explicitConstant);
+    public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
+      return super.resolveConstantType(engine, appContext, name, mode);
     }
 
     @Override
@@ -307,7 +307,7 @@ public class FHIRPathTests {
     final String DUMMY_CONSTANT_2 = "dummyConstant2";
     fp.setHostServices(new FHIRPathTestEvaluationServices(context) {
       @Override
-      public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
+      public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
 
         return Arrays.asList(
           new StringType(DUMMY_CONSTANT_1).noExtensions(),

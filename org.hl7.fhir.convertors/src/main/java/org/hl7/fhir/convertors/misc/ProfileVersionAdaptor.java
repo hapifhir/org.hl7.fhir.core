@@ -1,37 +1,32 @@
 package org.hl7.fhir.convertors.misc;
 
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hl7.fhir.convertors.misc.ProfileVersionAdaptor.ConversionMessageStatus;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
 import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
-import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
@@ -225,11 +220,11 @@ public class ProfileVersionAdaptor {
       }
     }
     if (!log.isEmpty()) {
-      if (!sd.hasExtension(ToolingExtensions.EXT_FMM_LEVEL) || ToolingExtensions.readIntegerExtension(sd, ToolingExtensions.EXT_FMM_LEVEL, 0) > 2) {
-        ToolingExtensions.setCodeExtension(sd, ToolingExtensions.EXT_FMM_LEVEL, "2");
+      if (!sd.hasExtension(ExtensionDefinitions.EXT_FMM_LEVEL) || ExtensionUtilities.readIntegerExtension(sd, ExtensionDefinitions.EXT_FMM_LEVEL, 0) > 2) {
+        ExtensionUtilities.setCodeExtension(sd, ExtensionDefinitions.EXT_FMM_LEVEL, "2");
       }
-      ToolingExtensions.setCodeExtension(sd, ToolingExtensions.EXT_STANDARDS_STATUS, "draft");
-      ToolingExtensions.setCodeExtension(sd, ToolingExtensions.EXT_STANDARDS_STATUS_REASON, "Extensions that have been modified for "+VersionUtilities.getNameForVersion(tCtxt.getVersion())+" are still draft while real-world experience is collected");
+      ExtensionUtilities.setCodeExtension(sd, ExtensionDefinitions.EXT_STANDARDS_STATUS, "draft");
+      ExtensionUtilities.setCodeExtension(sd, ExtensionDefinitions.EXT_STANDARDS_STATUS_REASON, "Extensions that have been modified for "+VersionUtilities.getNameForVersion(tCtxt.getVersion())+" are still draft while real-world experience is collected");
       log.add(new ConversionMessage("Note: Extensions that have been modified for "+VersionUtilities.getNameForVersion(tCtxt.getVersion())+" are still draft while real-world experience is collected", ConversionMessageStatus.NOTE));
     }
 
@@ -288,11 +283,11 @@ public class ProfileVersionAdaptor {
     }
 
     if (!log.isEmpty()) {
-      if (!sd.hasExtension(ToolingExtensions.EXT_FMM_LEVEL) || ToolingExtensions.readIntegerExtension(sd, ToolingExtensions.EXT_FMM_LEVEL, 0) > 2) {
-        ToolingExtensions.setCodeExtension(sd, ToolingExtensions.EXT_FMM_LEVEL, "2");
+      if (!sd.hasExtension(ExtensionDefinitions.EXT_FMM_LEVEL) || ExtensionUtilities.readIntegerExtension(sd, ExtensionDefinitions.EXT_FMM_LEVEL, 0) > 2) {
+        ExtensionUtilities.setCodeExtension(sd, ExtensionDefinitions.EXT_FMM_LEVEL, "2");
       }
-      ToolingExtensions.setCodeExtension(sd, ToolingExtensions.EXT_STANDARDS_STATUS, "draft");
-      ToolingExtensions.setCodeExtension(sd, ToolingExtensions.EXT_STANDARDS_STATUS_REASON, "Logical Models that have been modified for "+VersionUtilities.getNameForVersion(tCtxt.getVersion())+" are still draft while real-world experience is collected");
+      ExtensionUtilities.setCodeExtension(sd, ExtensionDefinitions.EXT_STANDARDS_STATUS, "draft");
+      ExtensionUtilities.setCodeExtension(sd, ExtensionDefinitions.EXT_STANDARDS_STATUS_REASON, "Logical Models that have been modified for "+VersionUtilities.getNameForVersion(tCtxt.getVersion())+" are still draft while real-world experience is collected");
       log.add(new ConversionMessage("Note: Logical Models that have been modified for "+VersionUtilities.getNameForVersion(tCtxt.getVersion())+" are still draft while real-world experience is collected", ConversionMessageStatus.NOTE));
     }
 

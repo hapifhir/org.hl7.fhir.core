@@ -12,6 +12,8 @@ import javax.annotation.Nullable;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
@@ -40,7 +42,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -985,12 +987,12 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       profCell.nbsp().nbsp();
       renderCanonical(status, res, profCell, StructureDefinition.class, sp);
     }
-    if (r.hasExtension(ToolingExtensions.EXT_PROFILE_MAPPING_NEW, ToolingExtensions.EXT_PROFILE_MAPPING_OLD)) {
+    if (r.hasExtension(ExtensionDefinitions.EXT_PROFILE_MAPPING_NEW, ExtensionDefinitions.EXT_PROFILE_MAPPING_OLD)) {
       profCell.br();
       profCell.b().tx(context.formatPhrase(RenderingContext.CAPABILITY_PROF_MAP));
       XhtmlNode tbl = profCell.table("grid", false);
       boolean doco = false;
-      for (Extension ext : r.getExtensionsByUrl(ToolingExtensions.EXT_PROFILE_MAPPING_NEW, ToolingExtensions.EXT_PROFILE_MAPPING_OLD)) {
+      for (Extension ext : r.getExtensionsByUrl(ExtensionDefinitions.EXT_PROFILE_MAPPING_NEW, ExtensionDefinitions.EXT_PROFILE_MAPPING_OLD)) {
         doco = doco || ext.hasExtension("documentation");
       }
       XhtmlNode tr = tbl.tr();
@@ -999,10 +1001,10 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       if (doco) {
         tr.th().tx(context.formatPhrase(RenderingContext.GENERAL_CRIT));
       }
-      for (Extension ext : r.getExtensionsByUrl(ToolingExtensions.EXT_PROFILE_MAPPING_NEW, ToolingExtensions.EXT_PROFILE_MAPPING_OLD)) {
+      for (Extension ext : r.getExtensionsByUrl(ExtensionDefinitions.EXT_PROFILE_MAPPING_NEW, ExtensionDefinitions.EXT_PROFILE_MAPPING_OLD)) {
         tr = tbl.tr();
-        tr.td().code().tx(ToolingExtensions.readStringExtension(ext, "search"));
-        String url = ToolingExtensions.readStringExtension(ext, "profile");
+        tr.td().code().tx(ExtensionUtilities.readStringExtension(ext, "search"));
+        String url = ExtensionUtilities.readStringExtension(ext, "profile");
         StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, url);
         if (sd != null) {
           tr.td().code().ah(sd.getWebPath()).tx(sd.present());
@@ -1010,7 +1012,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
           tr.td().code().tx(url);
         }
         if (doco) {
-          tr.td().code().markdown(ToolingExtensions.readStringExtension(ext, "documentation"), "documentation"); 
+          tr.td().code().markdown(ExtensionUtilities.readStringExtension(ext, "documentation"), "documentation"); 
         }
       }      
     }
