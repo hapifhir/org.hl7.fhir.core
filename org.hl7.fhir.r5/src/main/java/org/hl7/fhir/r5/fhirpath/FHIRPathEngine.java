@@ -184,6 +184,14 @@ public class FHIRPathEngine {
   private boolean liquidMode; // in liquid mode, || terminates the expression and hands the parser back to the host
   private boolean doNotEnforceAsSingletonRule;
   private boolean doNotEnforceAsCaseSensitive;
+
+  /*
+   * The FHIRPath engine consults with the HostApplicationServices when an element fails to
+   * resolve, in case it's an implicit constant being referred to. it can also do that beforehand,
+   * in which case the constant will override any element of the given name. But it will only
+   * do that if CheckWithHostServicesBeforeHand is true
+   */
+  private boolean checkWithHostServicesBeforeHand;
   private boolean allowDoubleQuotes;
   private List<IssueMessage> typeWarnings = new ArrayList<>();
   private boolean emitSQLonFHIRWarning;
@@ -349,7 +357,20 @@ public class FHIRPathEngine {
     this.doNotEnforceAsCaseSensitive = doNotEnforceAsCaseSensitive;
   }
 
-  // --- public API -------------------------------------------------------
+  /**
+   * The FHIRPath engine consults with the HostApplicationServices when an element fails to
+   * resolve, in case it's an implicit constant being referred to. it can also do that beforehand,
+   * in which case the constant will override any element of the given name. But it will only
+   * do that if checkWithHostServicesBeforeHand is true
+   */
+  public boolean isCheckWithHostServicesBeforeHand() {
+    return checkWithHostServicesBeforeHand;
+  }
+
+  public void setCheckWithHostServicesBeforeHand(boolean checkWithHostServicesBeforeHand) {
+    this.checkWithHostServicesBeforeHand = checkWithHostServicesBeforeHand;
+  }
+// --- public API -------------------------------------------------------
   /**
    * Parse a path for later use using execute
    * 
@@ -3283,8 +3304,8 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> execute(ExecutionContext context, Base item, ExpressionNode exp, boolean atEntry) throws FHIRException {
-    List<Base> result = new ArrayList<Base>(); 
-    if (atEntry && context.appInfo != null && hostServices != null) {
+    List<Base> result = new ArrayList<Base>();
+    if (atEntry && context.appInfo != null && hostServices != null && checkWithHostServicesBeforeHand) {
       // we'll see if the name matches a constant known by the context.
       List<Base> temp = hostServices.resolveConstant(this, context.appInfo, exp.getName(), IHostApplicationServices.FHIRPathConstantEvaluationMode.IMPLICIT_BEFORE);
       if (!temp.isEmpty()) {

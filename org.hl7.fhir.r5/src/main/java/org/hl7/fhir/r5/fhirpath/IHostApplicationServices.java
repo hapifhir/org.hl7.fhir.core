@@ -65,7 +65,7 @@ public interface IHostApplicationServices {
 
     /**
      * The FHIRPath engine has evaluated a property and found nothing, and perhaps the Host Application wants to
-     * offer a value (constant fall through)
+     * offer a value (constant fall through). This only happens if checkWithHostServicesBeforeHand is true on the FHIRPath engine
      */
     IMPLICIT_AFTER
   }
