@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,6 +16,8 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
@@ -37,7 +38,6 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.IniFile;
@@ -772,11 +772,11 @@ public class SpecDifferenceEvaluator {
 
 
   private String getMaxValueSet(ElementDefinitionBindingComponent bnd) {
-    return ToolingExtensions.readStringExtension(bnd, ToolingExtensions.EXT_MAX_VALUESET);
+    return ExtensionUtilities.readStringExtension(bnd, ExtensionDefinitions.EXT_MAX_VALUESET);
   }
   
   private boolean hasMaxValueSet(ElementDefinitionBindingComponent bnd) {
-    return bnd.hasExtension(ToolingExtensions.EXT_MAX_VALUESET);
+    return bnd.hasExtension(ExtensionDefinitions.EXT_MAX_VALUESET);
   }
   
   private void describeMax(XhtmlNode li, ElementDefinitionBindingComponent orig) {

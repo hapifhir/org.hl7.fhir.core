@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
@@ -43,7 +44,7 @@ import org.hl7.fhir.utilities.Utilities;
 public class ResourceMinifier {
 
   private static final List<String> VALIDATION_EXTENSIONS =
-      Arrays.asList(ToolingExtensions.EXT_OBLIGATION_INHERITS_NEW, ToolingExtensions.EXT_OBLIGATION_INHERITS_OLD, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG_OLD);
+      Arrays.asList(ExtensionDefinitions.EXT_OBLIGATION_INHERITS_NEW, ExtensionDefinitions.EXT_OBLIGATION_INHERITS_OLD, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_OLD);
 
   public boolean isMinified(String resName) {
     return Utilities.existsInList(resName, "StructureDefinition", "CodeSystem", "ValueSet", "CapabilityStatement",

@@ -1,9 +1,7 @@
 package org.hl7.fhir.r5.testfactory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -12,8 +10,6 @@ import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.fhirpath.BaseHostServices;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
-import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.liquid.GlobalObject;
 import org.hl7.fhir.r5.model.Base;
@@ -36,7 +32,7 @@ public class TestDataHostServices extends BaseHostServices {
 
   
   @Override
-  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
+  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     if ("Globals".equals(name)) {
       List<Base> list = new ArrayList<Base>();
       list.add(new GlobalObject(dt, pathToSpec));
@@ -47,7 +43,7 @@ public class TestDataHostServices extends BaseHostServices {
   }
 
   @Override
-  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
+  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     if ("Globals".equals(name)) {
       return new TypeDetails(CollectionStatus.SINGLETON, "GlobalObject");
     } else {

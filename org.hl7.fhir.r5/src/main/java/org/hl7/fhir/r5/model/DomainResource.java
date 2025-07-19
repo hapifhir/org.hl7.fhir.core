@@ -39,7 +39,8 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBaseHasExtensions;
 import org.hl7.fhir.instance.model.api.IBaseHasModifierExtensions;
 import org.hl7.fhir.instance.model.api.IDomainResource;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
+
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -597,11 +598,11 @@ public void checkNoModifiers(String noun, String verb) throws FHIRException {
 
 
   public StandardsStatus getStandardsStatus() {
-    return ToolingExtensions.getStandardsStatus(this);
+    return ExtensionUtilities.getStandardsStatus(this);
   }
 
   public void setStandardsStatus(StandardsStatus status) {
-    ToolingExtensions.setStandardsStatus(this, status, null);
+    ExtensionUtilities.setStandardsStatus(this, status, null);
   }
 
     

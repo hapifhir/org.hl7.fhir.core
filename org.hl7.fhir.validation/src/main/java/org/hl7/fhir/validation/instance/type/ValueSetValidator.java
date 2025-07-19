@@ -11,6 +11,7 @@ import java.util.regex.PatternSyntaxException;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Kind;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
@@ -25,7 +26,6 @@ import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationAction;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationRule;
@@ -220,7 +220,7 @@ public class ValueSetValidator extends BaseValidator {
     if (!VersionUtilities.isR2Ver(context.getVersion())) {
       List<ParameterDeclaration> parameters = new ArrayList<ValueSetValidator.ParameterDeclaration>(); 
       int i = 0;
-      for (Element ext : vs.getExtensions(ToolingExtensions.EXT_VALUESET_PARAMETER)) {
+      for (Element ext : vs.getExtensions(ExtensionDefinitions.EXT_VALUESET_PARAMETER)) {
         Element n = ext.getExtension("name");
         if (n != null) {
           Element d = ext.getExtension("documentation");
@@ -559,7 +559,7 @@ public class ValueSetValidator extends BaseValidator {
     String op = filter.getChildValue("op");
     Element ve = filter.getNamedChild("value");
     String value = ve == null ? null : ve.primitiveValue();
-    Element expr = ve == null ? null : ve.getExtension(ToolingExtensions.EXT_CQF_EXP);
+    Element expr = ve == null ? null : ve.getExtension(ExtensionDefinitions.EXT_CQF_EXP);
     
     if (property != null) {
       List<String> knownNames = new ArrayList<String>();

@@ -2,21 +2,13 @@ package org.hl7.fhir.r5.terminologies;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
-import org.hl7.fhir.r5.fhirpath.ExpressionNode;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses;
-import org.hl7.fhir.r5.fhirpath.TypeDetails;
-import org.hl7.fhir.r5.liquid.BaseTableWrapper;
+import org.hl7.fhir.r5.fhirpath.*;
 import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
-import org.hl7.fhir.r5.testfactory.TestDataFactory;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
@@ -26,7 +18,7 @@ import java.util.List;
 public class TerminologyFunctions {
 
 
-  public static abstract class TerminologyFunctionBase extends FHIRPathEngine.IEvaluationContext.FunctionDefinition {
+  public static abstract class TerminologyFunctionBase extends IHostApplicationServices.FunctionDefinition {
 
     protected FHIRException makeExceptionPlural(FHIRPathEngine engine, Integer num, String constName, Object... args) {
       String fmt = engine.getWorker().formatMessagePlural(num, constName, args);

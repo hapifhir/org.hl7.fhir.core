@@ -80,8 +80,9 @@ import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.LanguageUtils;
-import org.hl7.fhir.r5.extensions.ExtensionConstants;
-import org.hl7.fhir.r5.extensions.ExtensionsUtils;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -130,7 +131,7 @@ import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase.TerminologyOp
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -240,31 +241,31 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if (deprecated) {
       ValueSetUtilities.setDeprecated(vsProp, n);
     }
-    if (ExtensionsUtils.hasExtension(csExtList, "http://hl7.org/fhir/StructureDefinition/codesystem-label")) {
-      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#label", "label", ExtensionsUtils.getExtensionValue(csExtList, "http://hl7.org/fhir/StructureDefinition/codesystem-label"));
+    if (ExtensionUtilities.hasExtension(csExtList, "http://hl7.org/fhir/StructureDefinition/codesystem-label")) {
+      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#label", "label", ExtensionUtilities.getExtensionValue(csExtList, "http://hl7.org/fhir/StructureDefinition/codesystem-label"));
     }
-    if (ExtensionsUtils.hasExtension(vsExtList, "http://hl7.org/fhir/StructureDefinition/valueset-label")) {
-      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#label", "label", ExtensionsUtils.getExtensionValue(vsExtList, "http://hl7.org/fhir/StructureDefinition/valueset-label"));
+    if (ExtensionUtilities.hasExtension(vsExtList, "http://hl7.org/fhir/StructureDefinition/valueset-label")) {
+      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#label", "label", ExtensionUtilities.getExtensionValue(vsExtList, "http://hl7.org/fhir/StructureDefinition/valueset-label"));
     }
-    if (ExtensionsUtils.hasExtension(csExtList, "http://hl7.org/fhir/StructureDefinition/codesystem-conceptOrder")) {
-      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#order", "order", convertToDecimal(ExtensionsUtils.getExtensionValue(csExtList, "http://hl7.org/fhir/StructureDefinition/codesystem-conceptOrder")));
+    if (ExtensionUtilities.hasExtension(csExtList, "http://hl7.org/fhir/StructureDefinition/codesystem-conceptOrder")) {
+      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#order", "order", convertToDecimal(ExtensionUtilities.getExtensionValue(csExtList, "http://hl7.org/fhir/StructureDefinition/codesystem-conceptOrder")));
     }
-    if (ExtensionsUtils.hasExtension(vsExtList, "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder")) {
-      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#order", "order", convertToDecimal(ExtensionsUtils.getExtensionValue(vsExtList, "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder")));
+    if (ExtensionUtilities.hasExtension(vsExtList, "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder")) {
+      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#order", "order", convertToDecimal(ExtensionUtilities.getExtensionValue(vsExtList, "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder")));
     }
-    if (ExtensionsUtils.hasExtension(csExtList, "http://hl7.org/fhir/StructureDefinition/itemWeight")) {
-      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#itemWeight", "weight", ExtensionsUtils.getExtensionValue(csExtList, "http://hl7.org/fhir/StructureDefinition/itemWeight"));
+    if (ExtensionUtilities.hasExtension(csExtList, "http://hl7.org/fhir/StructureDefinition/itemWeight")) {
+      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#itemWeight", "weight", ExtensionUtilities.getExtensionValue(csExtList, "http://hl7.org/fhir/StructureDefinition/itemWeight"));
     }
-    if (ExtensionsUtils.hasExtension(vsExtList, "http://hl7.org/fhir/StructureDefinition/itemWeight")) {
-      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#itemWeight", "weight", ExtensionsUtils.getExtensionValue(vsExtList, "http://hl7.org/fhir/StructureDefinition/itemWeight"));
+    if (ExtensionUtilities.hasExtension(vsExtList, "http://hl7.org/fhir/StructureDefinition/itemWeight")) {
+      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#itemWeight", "weight", ExtensionUtilities.getExtensionValue(vsExtList, "http://hl7.org/fhir/StructureDefinition/itemWeight"));
     }
-    ExtensionsUtils.copyExtensions(csExtList, n.getExtension(), 
+    ExtensionUtilities.copyExtensions(csExtList, n.getExtension(),
         "http://hl7.org/fhir/StructureDefinition/coding-sctdescid", 
         "http://hl7.org/fhir/StructureDefinition/rendering-style", 
         "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
         "http://hl7.org/fhir/StructureDefinition/codesystem-alternate");
-    
-    ExtensionsUtils.copyExtensions(vsExtList, n.getExtension(), 
+
+    ExtensionUtilities.copyExtensions(vsExtList, n.getExtension(),
         "http://hl7.org/fhir/StructureDefinition/valueset-supplement", 
         "http://hl7.org/fhir/StructureDefinition/valueset-deprecated",
         "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
@@ -521,7 +522,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     ValueSetExpansionContainsComponent np = null;
     for (String code : getCodesForConcept(focus, expParams)) {
       ValueSetExpansionContainsComponent t = addCode(wc, focus.getSystem(), code, focus.getDisplay(), langDisplay, parent, 
-           convert(focus.getDesignation()), expParams, focus.getAbstract(), focus.getInactive(), filters, noInactive, false, vsProps, makeCSProps(focus.getExtensionString(ToolingExtensions.EXT_DEFINITION), null), null, focus.getProperty(), null, focus.getExtension(), exp);
+           convert(focus.getDesignation()), expParams, focus.getAbstract(), focus.getInactive(), filters, noInactive, false, vsProps, makeCSProps(focus.getExtensionString(ExtensionDefinitions.EXT_DEFINITION), null), null, focus.getProperty(), null, focus.getExtension(), exp);
       if (np == null) {
         np = t;
       }
@@ -647,7 +648,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
   private static boolean hasUse(ConceptPropertyComponent p, List<String> uses) {
-    for (Extension ext : p.getExtensionsByUrl(ToolingExtensions.EXT_CS_ALTERNATE_USE)) {
+    for (Extension ext : p.getExtensionsByUrl(ExtensionDefinitions.EXT_CS_ALTERNATE_USE)) {
       if (ext.hasValueCoding() && Utilities.existsInList(ext.getValueCoding().getCode(), uses)) {
         return true;
       }
@@ -791,13 +792,13 @@ public class ValueSetExpander extends ValueSetProcessBase {
     focus.getExpansion().setTimestampElement(DateTimeType.now());
     focus.getExpansion().setIdentifier(Factory.createUUID()); 
     checkCanonical(focus.getExpansion(), focus, focus);
-    for (Extension ext : focus.getCompose().getExtensionsByUrl(ToolingExtensions.EXT_VS_EXP_PARAM_NEW, ToolingExtensions.EXT_VS_EXP_PARAM_OLD)) {
+    for (Extension ext : focus.getCompose().getExtensionsByUrl(ExtensionDefinitions.EXT_VS_EXP_PARAM_NEW, ExtensionDefinitions.EXT_VS_EXP_PARAM_OLD)) {
       processParameter(ext.getExtensionString("name"), ext.getExtensionByUrl("value").getValue());
     }
     for (ParametersParameterComponent p : expParams.getParameter()) {
       processParameter(p.getName(), p.getValue());
     }
-    for (Extension s : focus.getExtensionsByUrl(ExtensionConstants.EXT_VSSUPPLEMENT)) {
+    for (Extension s : focus.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
       requiredSupplements.add(s.getValue().primitiveValue());
     }
     if (langs == null && focus.hasLanguage()) {
@@ -911,13 +912,13 @@ public class ValueSetExpander extends ValueSetProcessBase {
     focus.getExpansion().setTimestampElement(DateTimeType.now());
     focus.getExpansion().setIdentifier(Factory.createUUID()); 
     checkCanonical(focus.getExpansion(), focus, focus);
-    for (Extension ext : focus.getCompose().getExtensionsByUrl(ToolingExtensions.EXT_VS_EXP_PARAM_NEW, ToolingExtensions.EXT_VS_EXP_PARAM_OLD)) {
+    for (Extension ext : focus.getCompose().getExtensionsByUrl(ExtensionDefinitions.EXT_VS_EXP_PARAM_NEW, ExtensionDefinitions.EXT_VS_EXP_PARAM_OLD)) {
       processParameter(ext.getExtensionString("name"), ext.getExtensionByUrl("value").getValue());
     }
     for (ParametersParameterComponent p : expParams.getParameter()) {
       processParameter(p.getName(), p.getValue());
     }
-    for (Extension s : focus.getExtensionsByUrl(ExtensionConstants.EXT_VSSUPPLEMENT)) {
+    for (Extension s : focus.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
       requiredSupplements.add(s.getValue().primitiveValue());
     }
     if (langs == null && focus.hasLanguage()) {
@@ -1080,9 +1081,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     ValueSetExpansionComponent evs = vso.getValueset().getExpansion();
     for (Extension ex : evs.getExtension()) {
-      if (ex.getUrl().equals(ToolingExtensions.EXT_EXP_TOOCOSTLY)) {
+      if (ex.getUrl().equals(ExtensionDefinitions.EXT_EXP_TOOCOSTLY)) {
         if (ex.getValue() instanceof BooleanType) {
-          exp.getExtension().add(new Extension(ToolingExtensions.EXT_EXP_TOOCOSTLY).setValue(new CanonicalType(value)));
+          exp.getExtension().add(new Extension(ExtensionDefinitions.EXT_EXP_TOOCOSTLY).setValue(new CanonicalType(value)));
         } else {
           exp.getExtension().add(ex);
         }
@@ -1140,7 +1141,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("used-valueset").setValue(u));
     }
     for (Extension ex : vso.getValueset().getExpansion().getExtension()) {
-      if (ex.getUrl().equals(ToolingExtensions.EXT_EXP_TOOCOSTLY)) {
+      if (ex.getUrl().equals(ExtensionDefinitions.EXT_EXP_TOOCOSTLY)) {
         throw fail(VS_EXP_IMPORT_ERROR_TOO_COSTLY, true, vs.getUrl());
       } 
     }
@@ -1195,7 +1196,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     for (ValueSetExpansionContainsComponent c : list) {
       c.checkNoModifiers("Imported Expansion in Code System", "expanding");
       ValueSetExpansionContainsComponent np = addCode(dwc, c.getSystem(), c.getCode(), c.getDisplay(), lang, parent, translateDesignations(c), expParams, c.getAbstract(), c.getInactive(), 
-          filter, noInactive, false, vsProps, makeCSProps(c.getExtensionString(ToolingExtensions.EXT_DEFINITION), null), null, c.getProperty(), null, c.getExtension(), exp);
+          filter, noInactive, false, vsProps, makeCSProps(c.getExtensionString(ExtensionDefinitions.EXT_DEFINITION), null), null, c.getProperty(), null, c.getExtension(), exp);
       if (np != null) {
         count++;
       }
@@ -1289,8 +1290,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
       }
     }
     for (Extension ex : vs.getExpansion().getExtension()) {
-      if (Utilities.existsInList(ex.getUrl(), ToolingExtensions.EXT_EXP_TOOCOSTLY, "http://hl7.org/fhir/StructureDefinition/valueset-unclosed")) {
-        if (!ExtensionsUtils.hasExtension(extensions, ex.getUrl())) {
+      if (Utilities.existsInList(ex.getUrl(), ExtensionDefinitions.EXT_EXP_TOOCOSTLY, "http://hl7.org/fhir/StructureDefinition/valueset-unclosed")) {
+        if (!ExtensionUtilities.hasExtension(extensions, ex.getUrl())) {
           extensions.add(ex);
         }
       }
