@@ -35,15 +35,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Operation;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.tools.CDSHookContext;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -203,7 +202,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
   private void genTypeSpecifierParser(TypeSpecifier ts) {
 
     parser.append("  protected "+ts.resName+" "+ts.fnName+"(JsonObject resource, JsonObject json) throws IOException, FHIRFormatError {\r\n");
-    for (Extension ex : ts.ed.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC)) {
+    for (Extension ex : ts.ed.getExtensionsByUrl(ExtensionDefinitions.EXT_TYPE_SPEC)) {
       ExpressionNode cond = fpe.parse(ex.getExtensionString("condition"));
       parser.append("    if ("+renderNode(cond)+") {\r\n");
       parser.append("      return parse"+Utilities.urlTail(ex.getExtensionString("type"))+"(json);\r\n");
@@ -322,7 +321,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
       } else if (ed.hasUserData(UserDataNames.JGEN_ALL_PRIMITIVE)) {
         prsr = "parseNativePrimitive(json, \""+name+"\")";
       } else {
-        if (ed.hasExtension(ToolingExtensions.EXT_TYPE_SPEC)) {
+        if (ed.hasExtension(ExtensionDefinitions.EXT_TYPE_SPEC)) {
           prsr = "parse"+tn+"(json, getJObject(json, \""+name+"\"))";
           aprsr = "parse"+tn+"(json, array.get(i).getAsJsonObject())";
           anprsr = "parse"+tn+"(null, null)";
@@ -497,7 +496,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
   private void genTypeSpecifierCompose(TypeSpecifier ts) {
     composer.append("  protected void "+ts.fnName+"(String name, "+ts.resName+" element) throws IOException {\r\n");
     boolean first = true;
-    for (Extension ex : ts.ed.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC)) {
+    for (Extension ex : ts.ed.getExtensionsByUrl(ExtensionDefinitions.EXT_TYPE_SPEC)) {
       String tn = Utilities.urlTail(ex.getExtensionString("type"));
       composer.append("    "+(first ? "":"} else ")+"if (element instanceof "+tn+") {\r\n");
       composer.append("      compose"+tn+"(name, ("+tn+") element);\r\n");
@@ -679,7 +678,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
         composer.append("        "+comp+"(\""+name+"\", element.get"+upFirst(getElementName(name, false))+"FirstRep());\r\n");
         composer.append("      }\r\n");
       } else {
-        if (ed.hasExtension(ToolingExtensions.EXT_TYPE_SPEC)) {
+        if (ed.hasExtension(ExtensionDefinitions.EXT_TYPE_SPEC)) {
           typeSpecifiers.add(new TypeSpecifier(comp, tn, ed));
         }
         composer.append("      if (element.has"+upFirst(getElementName(name, false))+"()) {\r\n");

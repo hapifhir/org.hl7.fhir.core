@@ -53,8 +53,8 @@ import org.hl7.fhir.r4.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r4.model.MetadataResource;
 import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r4.model.UriType;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 
 public class R3ToR4Loader extends BaseLoaderR4 implements IContextResourceLoader {
 
@@ -103,7 +103,7 @@ public class R3ToR4Loader extends BaseLoaderR4 implements IContextResourceLoader
         if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
           StructureDefinition sd = (StructureDefinition) be.getResource();
           sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU3));
-          sd.addExtension().setUrl(ToolingExtensions.EXT_XML_NAMESPACE).setValue(new UriType(URL_BASE));
+          sd.addExtension().setUrl(ExtensionDefinitions.EXT_XML_NAMESPACE).setValue(new UriType(URL_BASE));
           for (ElementDefinition ed : sd.getSnapshot().getElement())
             patchUrl(ed);
           for (ElementDefinition ed : sd.getDifferential().getElement())

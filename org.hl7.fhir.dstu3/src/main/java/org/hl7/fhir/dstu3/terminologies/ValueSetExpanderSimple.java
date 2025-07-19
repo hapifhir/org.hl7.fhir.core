@@ -70,6 +70,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 
 /*
@@ -101,7 +102,7 @@ import org.hl7.fhir.utilities.Utilities;
  *
  */
 
-@Deprecated
+@MarkedToMoveToAdjunctPackage
 public class ValueSetExpanderSimple implements ValueSetExpander {
 
   private List<ValueSetExpansionContainsComponent> codes = new ArrayList<ValueSet.ValueSetExpansionContainsComponent>();

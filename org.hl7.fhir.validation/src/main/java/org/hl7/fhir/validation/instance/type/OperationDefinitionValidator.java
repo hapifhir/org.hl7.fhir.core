@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -100,8 +100,8 @@ public class OperationDefinitionValidator extends BaseValidator {
     }
     
     List<String> allowedTypes = new ArrayList<>();
-    if (param.hasExtension(ToolingExtensions.EXT_ALLOWED_TYPE)) {
-      for (Element ex : param.getExtensions(ToolingExtensions.EXT_ALLOWED_TYPE)) {
+    if (param.hasExtension(ExtensionDefinitions.EXT_ALLOWED_TYPE)) {
+      for (Element ex : param.getExtensions(ExtensionDefinitions.EXT_ALLOWED_TYPE)) {
         allowedTypes.add(ex.getNamedChildValue("value"));
       }
     } else if (param.hasChildren("allowedType")) {

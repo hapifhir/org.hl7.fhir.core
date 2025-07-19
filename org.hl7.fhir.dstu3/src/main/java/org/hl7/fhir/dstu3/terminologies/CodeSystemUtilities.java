@@ -46,9 +46,10 @@ import org.hl7.fhir.dstu3.model.UriType;
 import org.hl7.fhir.dstu3.utils.ToolingExtensions;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 
-@Deprecated
+@MarkedToMoveToAdjunctPackage
 public class CodeSystemUtilities {
 
   public static boolean isDeprecated(CodeSystem cs, ConceptDefinitionComponent def) {

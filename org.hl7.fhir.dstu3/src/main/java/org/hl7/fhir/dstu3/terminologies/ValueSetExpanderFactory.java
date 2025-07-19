@@ -60,7 +60,9 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-@Deprecated
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
+@MarkedToMoveToAdjunctPackage
 public interface ValueSetExpanderFactory {
 	public ValueSetExpander getExpander();
 }

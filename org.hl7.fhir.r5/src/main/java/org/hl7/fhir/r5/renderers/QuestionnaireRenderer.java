@@ -11,6 +11,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.ContextUtilities;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -22,7 +23,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
@@ -219,22 +220,22 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     if (i.has("readOnly")) { 
       return true; 
     } 
-    if ("true".equals(i.extensionString(ToolingExtensions.EXT_Q_IS_SUBJ))) { 
+    if ("true".equals(i.extensionString(ExtensionDefinitions.EXT_Q_IS_SUBJ))) {
       return true; 
     } 
-    if ("true".equals(i.extensionString(ToolingExtensions.EXT_Q_HIDDEN))) { 
+    if ("true".equals(i.extensionString(ExtensionDefinitions.EXT_Q_HIDDEN))) { 
       return true; 
     } 
-    if ("true".equals(i.extensionString(ToolingExtensions.EXT_Q_OTP_DISP))) { 
+    if ("true".equals(i.extensionString(ExtensionDefinitions.EXT_Q_OTP_DISP))) { 
       return true; 
     } 
-    if (i.hasExtension(ToolingExtensions.EXT_O_LINK_PERIOD)) { 
+    if (i.hasExtension(ExtensionDefinitions.EXT_O_LINK_PERIOD)) { 
       return true; 
     } 
-    if (i.hasExtension(ToolingExtensions.EXT_Q_CHOICE_ORIENT)) { 
+    if (i.hasExtension(ExtensionDefinitions.EXT_Q_CHOICE_ORIENT)) { 
       return true; 
     } 
-    if (i.hasExtension(ToolingExtensions.EXT_Q_DISPLAY_CAT)) { 
+    if (i.hasExtension(ExtensionDefinitions.EXT_Q_DISPLAY_CAT)) { 
       return true; 
     } 
     return checkForFlags(i.children("item")); 
@@ -290,9 +291,9 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     String txt = (i.has("prefix") ? i.primitiveValue("prefix") + ". " : "") + i.primitiveValue("text"); 
     r.getCells().add(gen.new Cell(null, null, txt, null, null)); 
     r.getCells().add(gen.new Cell(null, null, ("true".equals(i.primitiveValue("required")) ? "1" : "0")+".."+("true".equals(i.primitiveValue("repeats")) ? "*" : "1"), null, null)); 
-    if (i.child("type").hasExtension(ToolingExtensions.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL)) { 
+    if (i.child("type").hasExtension(ExtensionDefinitions.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL)) { 
       status.setExtensions(true);
-      String t = i.child("type").extensionString(ToolingExtensions.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL); 
+      String t = i.child("type").extensionString(ExtensionDefinitions.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL); 
       r.getCells().add(gen.new Cell(null, context.getLink(KnownLinkType.SPEC, true)+"codesystem-item-type.html#item-type-"+t, t, null, null)); 
     } else { 
       r.getCells().add(gen.new Cell(null, context.getLink(KnownLinkType.SPEC, true)+"codesystem-item-type.html#item-type-"+type, type, null, null)); 
@@ -309,11 +310,11 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         status.setExtensions(true);
         flags.addPiece(gen.new Piece(getSDCLink("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-Questionnaire-isSubject", "StructureDefinition-sdc-questionnaire-isSubject.html"), null, context.formatPhrase(RenderingContext.QUEST_SUBJECT)).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("alt", "icon").attribute("src", getImgPath("icon-qi-subject.png")))); 
       } 
-      if ("true".equals(i.extensionString(ToolingExtensions.EXT_Q_HIDDEN))) { 
+      if ("true".equals(i.extensionString(ExtensionDefinitions.EXT_Q_HIDDEN))) { 
         status.setExtensions(true);
         flags.addPiece(gen.new Piece(getSpecLink("extension-questionnaire-hidden.html"), null, context.formatPhrase(RenderingContext.QUEST_HIDDEN)).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("alt", "icon").attribute("src", getImgPath("icon-qi-hidden.png")))); 
       } 
-      if ("true".equals(i.extensionString(ToolingExtensions.EXT_Q_OTP_DISP))) { 
+      if ("true".equals(i.extensionString(ExtensionDefinitions.EXT_Q_OTP_DISP))) { 
         status.setExtensions(true);
         flags.addPiece(gen.new Piece(getSDCLink("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-Questionnaire-optionalDisplay", "StructureDefinition-sdc-questionnaire-optionalDisplay.html"), null, context.formatPhrase(RenderingContext.QUEST_DISPLAY)).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("alt", "icon").attribute("src", getImgPath("icon-qi-optional.png")))); 
       } 
@@ -321,14 +322,14 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         status.setExtensions(true);
         flags.addPiece(gen.new Piece(getSDCLink("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-Questionnaire-observationLinkPeriod", "StructureDefinition-sdc-questionnaire-observationLinkPeriod.html"), null, context.formatPhrase(RenderingContext.QUEST_LINKED)).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("alt", "icon").attribute("src", getImgPath("icon-qi-observation.png")))); 
       } 
-      if (i.hasExtension(ToolingExtensions.EXT_Q_CHOICE_ORIENT)) { 
+      if (i.hasExtension(ExtensionDefinitions.EXT_Q_CHOICE_ORIENT)) { 
         status.setExtensions(true);
-        String code = i.extensionString(ToolingExtensions.EXT_Q_CHOICE_ORIENT); 
+        String code = i.extensionString(ExtensionDefinitions.EXT_Q_CHOICE_ORIENT); 
         flags.addPiece(gen.new Piece(getSpecLink("extension-questionnaire-choiceorientation.html"), null, context.formatPhrase(RenderingContext.QUEST_ORIENTATION, code)+" ").addHtml(new XhtmlNode(NodeType.Element, "img").attribute("alt", "icon").attribute("src", getImgPath("icon-qi-" + code + ".png")))); 
       } 
-      if (i.hasExtension(ToolingExtensions.EXT_Q_DISPLAY_CAT)) { 
+      if (i.hasExtension(ExtensionDefinitions.EXT_Q_DISPLAY_CAT)) { 
         status.setExtensions(true);
-        ResourceWrapper cc = i.extensionValue(ToolingExtensions.EXT_Q_DISPLAY_CAT); 
+        ResourceWrapper cc = i.extensionValue(ExtensionDefinitions.EXT_Q_DISPLAY_CAT); 
         String code = getCodeFromCC(cc, "http://hl7.org/fhir/questionnaire-display-category"); 
         flags.addPiece(gen.new Piece("https://hl7.org/fhir/R4/extension-questionnaire-displayCategory.html", null, context.formatPhrase(RenderingContext.QUEST_CAT, code)+" ").addHtml(new XhtmlNode(NodeType.Element, "img").attribute("alt", "icon").attribute("src", getImgPath("icon-qi-" + code + ".png")))); 
       } 
@@ -760,8 +761,8 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       } 
     } 
 
-    //  if (i.hasExtension(ToolingExtensions.EXT_Q_CHOICE_ORIENT)) { 
-    //  String code = ToolingExtensions.readStringExtension(i,  ToolingExtensions.EXT_Q_CHOICE_ORIENT); 
+    //  if (i.hasExtension(ExtensionDefinitions.EXT_Q_CHOICE_ORIENT)) { 
+    //  String code = ExtensionUtilities.readStringExtension(i,  ExtensionDefinitions.EXT_Q_CHOICE_ORIENT); 
     //  flags.addPiece(gen.new Piece("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-Questionnaire-observationLinkPeriod", null, "Orientation: "+code).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("alt", "icon").attribute("src", Utilities.path(context.getLocalPrefix(), "icon-qi-"+code+".png")))); 
     //} 
 
@@ -775,12 +776,12 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       hasFlag = true; 
       flags.ah(getSDCLink("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-Questionnaire-isSubject", "StructureDefinition-sdc-questionnaire-isSubject.html"), context.formatPhrase(RenderingContext.QUEST_SUBJECT)).img(getImgPath("icon-qi-subject.png"), "icon"); 
     } 
-    if ("true".equals(i.extensionString(ToolingExtensions.EXT_Q_HIDDEN))) { 
+    if ("true".equals(i.extensionString(ExtensionDefinitions.EXT_Q_HIDDEN))) { 
       hasFlag = true; 
       flags.ah(Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), "extension-questionnaire-hidden.html"), context.formatPhrase(RenderingContext.QUEST_HIDDEN)).img(getImgPath("icon-qi-hidden.png"), "icon"); 
       d.style("background-color: #eeeeee"); 
     } 
-    if ("true".equals(i.extensionString(ToolingExtensions.EXT_Q_OTP_DISP))) { 
+    if ("true".equals(i.extensionString(ExtensionDefinitions.EXT_Q_OTP_DISP))) { 
       hasFlag = true; 
       flags.ah(getSDCLink("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-Questionnaire-optionalDisplay", "StructureDefinition-sdc-questionnaire-optionalDisplay.html"), context.formatPhrase(RenderingContext.QUEST_DISPLAY)).img(getImgPath("icon-qi-optional.png"), "icon"); 
     } 
@@ -788,8 +789,8 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       hasFlag = true; 
       flags.ah(getSDCLink("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-Questionnaire-observationLinkPeriod", "StructureDefinition-sdc-questionnaire-observationLinkPeriod.html"), context.formatPhrase(RenderingContext.QUEST_LINKED)).img(getImgPath("icon-qi-observation.png"), "icon"); 
     } 
-    if (i.hasExtension(ToolingExtensions.EXT_Q_DISPLAY_CAT)) { 
-      ResourceWrapper cc = i.extension(ToolingExtensions.EXT_Q_DISPLAY_CAT).child("value"); 
+    if (i.hasExtension(ExtensionDefinitions.EXT_Q_DISPLAY_CAT)) { 
+      ResourceWrapper cc = i.extension(ExtensionDefinitions.EXT_Q_DISPLAY_CAT).child("value"); 
       String code = getCodeFromCC(cc, "http://hl7.org/fhir/questionnaire-display-category"); 
       hasFlag = true; 
       flags.ah("https://hl7.org/fhir/R4/extension-questionnaire-displayCategory.html", (context.formatPhrase(RenderingContext.QUEST_CAT, code)+" ")).img(getImgPath("icon-qi-" + code + ".png"), "icon"); 
@@ -1056,16 +1057,16 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     } 
 
     // appearance  
-    if (qi.hasExtension(ToolingExtensions.EXT_Q_DISPLAY_CAT)) { 
+    if (qi.hasExtension(ExtensionDefinitions.EXT_Q_DISPLAY_CAT)) { 
       XhtmlNode tr = tbl.tr(); 
-      tr.td().ah(ToolingExtensions.EXT_Q_DISPLAY_CAT).tx("Display Category"); 
-      renderDataType(status, tr.td(), qi.extension(ToolingExtensions.EXT_Q_DISPLAY_CAT).child("value")); 
+      tr.td().ah(ExtensionDefinitions.EXT_Q_DISPLAY_CAT).tx("Display Category"); 
+      renderDataType(status, tr.td(), qi.extension(ExtensionDefinitions.EXT_Q_DISPLAY_CAT).child("value")); 
     } 
-    if ("true".equals(qi.extensionString(ToolingExtensions.EXT_Q_HIDDEN))) { 
-      defn(tbl, context.formatPhrase(RenderingContext.QUEST_HIDDEN_ITEM), ToolingExtensions.EXT_Q_DISPLAY_CAT, "This item is a hidden question", null); 
+    if ("true".equals(qi.extensionString(ExtensionDefinitions.EXT_Q_HIDDEN))) { 
+      defn(tbl, context.formatPhrase(RenderingContext.QUEST_HIDDEN_ITEM), ExtensionDefinitions.EXT_Q_DISPLAY_CAT, "This item is a hidden question", null); 
     } 
-    if ("true".equals(qi.extensionString(ToolingExtensions.EXT_Q_OTP_DISP))) { 
-      defn(tbl, context.formatPhrase(RenderingContext.QUEST_HIDDEN_ITEM), ToolingExtensions.EXT_Q_OTP_DISP, "This item is optional to display", null); 
+    if ("true".equals(qi.extensionString(ExtensionDefinitions.EXT_Q_OTP_DISP))) { 
+      defn(tbl, context.formatPhrase(RenderingContext.QUEST_HIDDEN_ITEM), ExtensionDefinitions.EXT_Q_OTP_DISP, "This item is optional to display", null); 
     } 
 
     // formal definitions 
@@ -1083,7 +1084,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     } 
     if (qi.hasExtension("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-Questionnaire-observationLinkPeriod")) { 
       XhtmlNode tr = tbl.tr(); 
-      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, ToolingExtensions.EXT_O_LINK_PERIOD); 
+      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, ExtensionDefinitions.EXT_O_LINK_PERIOD); 
       if (sd != null && sd.hasWebPath()) { 
         tr.td().ah(sd.getWebPath()).tx(context.formatPhrase(RenderingContext.QUEST_OBSERVATION)); 
       } else { 

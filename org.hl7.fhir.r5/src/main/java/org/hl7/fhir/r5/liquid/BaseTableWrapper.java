@@ -13,7 +13,7 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext.FunctionDefinition;
+import org.hl7.fhir.r5.fhirpath.IHostApplicationServices.FunctionDefinition;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.model.Base;

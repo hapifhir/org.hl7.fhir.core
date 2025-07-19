@@ -39,7 +39,6 @@ import java.util.List;
 import org.hl7.fhir.dstu3.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.dstu3.model.Enumerations.PublicationStatusEnumFactory;
 // added from java-adornments.txt:
-import org.hl7.fhir.dstu3.utils.StructureMapUtilities;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -2053,14 +2052,6 @@ public class StructureMap extends MetadataResource {
 
   }
 
-// added from java-adornments.txt:
-
-  public String toString() {
-    return StructureMapUtilities.groupToString(this);
-  }
-
-
-// end addition
   }
 
     @Block()
@@ -3017,14 +3008,6 @@ public class StructureMap extends MetadataResource {
 
   }
 
-// added from java-adornments.txt:
-
-  public String toString() {
-    return StructureMapUtilities.ruleToString(this);
-  }
-
-
-// end addition
   }
 
     @Block()
@@ -3977,14 +3960,6 @@ public class StructureMap extends MetadataResource {
 
   }
 
-// added from java-adornments.txt:
-
-  public String toString() {
-    return StructureMapUtilities.sourceToString(this);
-  }
-
-
-// end addition
   }
 
     @Block()
@@ -4688,14 +4663,7 @@ public class StructureMap extends MetadataResource {
 
   }
 
-// added from java-adornments.txt:
 
-  public String toString() {
-    return StructureMapUtilities.targetToString(this);
-  }
-
-
-// end addition
   }
 
     @Block()
@@ -6776,13 +6744,5 @@ public class StructureMap extends MetadataResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
-// added from java-adornments.txt:
-
-  public String toString() {
-    return StructureMapUtilities.render(this);
-  }
-
-
-// end addition
 
 }

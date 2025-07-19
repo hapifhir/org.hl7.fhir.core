@@ -26,7 +26,7 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.AllowUnknownProfile;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r5.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -324,7 +324,7 @@ public class SnapShotGenerationTests {
 
   }
 
-  private static class SnapShotGenerationTestsContext implements IEvaluationContext {
+  private static class SnapShotGenerationTestsContext implements IHostApplicationServices {
     public List<TestDetails> tests = new ArrayList<>();
     private IWorkerContext testContext;
 
@@ -375,12 +375,12 @@ public class SnapShotGenerationTests {
 
     // FHIRPath methods
     @Override
-    public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
+    public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
       throw new Error("Not implemented yet");
     }
 
     @Override
-    public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
+    public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
       throw new Error("Not implemented yet");
     }
 

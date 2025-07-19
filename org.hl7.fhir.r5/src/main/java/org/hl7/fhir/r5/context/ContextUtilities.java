@@ -14,6 +14,8 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.BindingResolution;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -26,7 +28,7 @@ import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.model.Identifier;
@@ -387,8 +389,8 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
           // this is turned off because it's valid to use a FHIR type directly in
           // an extension of this kind, and that can't be a logical model. Any profile on
           // a type is acceptable as long as it has the json name on it  
-          ed != null && ed.hasExtension(ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED) && 
-          key.equals(ToolingExtensions.readStringExtension(ed, ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED))) {
+          ed != null && ed.hasExtension(ExtensionDefinitions.EXT_JSON_NAME, ExtensionDefinitions.EXT_JSON_NAME_DEPRECATED) &&
+          key.equals(ExtensionUtilities.readStringExtension(ed, ExtensionDefinitions.EXT_JSON_NAME, ExtensionDefinitions.EXT_JSON_NAME_DEPRECATED))) {
         return sd;
       }
     }
@@ -430,8 +432,8 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
 
   public List<String> fetchCodeSystemVersions(String system) {
     List<String> res = new ArrayList<>();
-    for (CodeSystem cs : context.fetchResourcesByType(CodeSystem.class)) {
-      if (system.equals(cs.getUrl()) && cs.hasVersion()) {
+    for (CodeSystem cs : context.fetchResourceVersionsByTypeAndUrl(CodeSystem.class, system)) {
+      if (cs.hasVersion()) {
         res.add(cs.getVersion());
       }
     }

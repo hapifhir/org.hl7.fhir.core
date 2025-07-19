@@ -30,8 +30,9 @@ package org.hl7.fhir.dstu3.utils;
  */
 
 
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
-@Deprecated
+@MarkedToMoveToAdjunctPackage
 public interface INarrativeGenerator {
 
 }

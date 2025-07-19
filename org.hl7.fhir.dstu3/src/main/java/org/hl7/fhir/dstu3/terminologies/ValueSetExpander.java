@@ -37,7 +37,6 @@ import java.io.IOException;
 import org.hl7.fhir.dstu3.model.ExpansionProfile;
 import org.hl7.fhir.dstu3.model.ValueSet;
 
-@Deprecated
 public interface ValueSetExpander {
   public enum TerminologyServiceErrorClass {
     UNKNOWN, NOSERVICE, SERVER_ERROR, VALUESET_UNSUPPORTED;

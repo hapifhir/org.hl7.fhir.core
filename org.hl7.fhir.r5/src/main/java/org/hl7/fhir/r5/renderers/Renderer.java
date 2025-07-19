@@ -14,11 +14,8 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
-import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
-import org.hl7.fhir.utilities.StandardsStatus;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -101,7 +98,8 @@ public class Renderer  {
       return spanOuter;
     case Changed:
       spanOuter = x.span("border: solid 1px #dddddd; margin: 2px; padding: 2px", null);
-      spanInner = spanOuter.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", vca.getOriginal() == null ? context.formatPhrase(RenderingContext.REND_SINCE_CHANGED, context.getChangeVersion()) : context.formatPhrase(RenderingContext.REND_SINCE_CHANGED_WAS, context.getChangeVersion(), vca.getOriginal()));
+      String s = context.formatPhrase(RenderingContext.REND_SINCE_CHANGED, context.getChangeVersion());
+      spanInner = spanOuter.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", vca.getOriginal() == null ? s : context.formatPhrase(RenderingContext.REND_SINCE_CHANGED_WAS, context.getChangeVersion(), vca.getOriginal()));
       spanInner.img("icon-change-edit.png", "icon");
       spanInner.tx(" "+context.formatPhrase(RenderingContext.REND_CHANGED));
       return spanOuter;
@@ -133,7 +131,8 @@ public class Renderer  {
       return divOuter;
     case Changed:
       divOuter = x.div("border: solid 1px #dddddd; margin: 2px; padding: 2px");
-      spanInner = divOuter.para().style("margin: 0").span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", vca.getOriginal() == null ? context.formatPhrase(RenderingContext.REND_SINCE_CHANGED, context.getChangeVersion()) : context.formatPhrase(RenderingContext.REND_SINCE_CHANGED_WAS, context.getChangeVersion(),  vca.getOriginal()));
+      String s = context.formatPhrase(RenderingContext.REND_SINCE_CHANGED, context.getChangeVersion());
+      spanInner = divOuter.para().style("margin: 0").span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", vca.getOriginal() == null ? s : context.formatPhrase(RenderingContext.REND_SINCE_CHANGED_WAS, context.getChangeVersion(),  vca.getOriginal()));
       spanInner.img("icon-change-edit.png", "icon");
       spanInner.tx(" "+context.formatPhrase(RenderingContext.REND_CHANGED));
       return divOuter;
@@ -191,7 +190,17 @@ public class Renderer  {
     }
   }
 
-  public static void renderStatusSummary(RenderingContext context, Base base, XhtmlNode x, String version, String... metadataFields) {
+  /**
+   * return true if there's any actual changes
+   *
+   * @param context
+   * @param base
+   * @param x
+   * @param version
+   * @param metadataFields
+   * @return
+   */
+  public static boolean renderStatusSummary(RenderingContext context, Base base, XhtmlNode x, String version, String... metadataFields) {
     if (base.hasUserData(UserDataNames.COMP_VERSION_ANNOTATION)) {
       VersionComparisonAnnotation self = (VersionComparisonAnnotation) base.getUserData(UserDataNames.COMP_VERSION_ANNOTATION);
       switch (self.getType()) {
@@ -199,30 +208,31 @@ public class Renderer  {
         XhtmlNode spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", context.formatPhrase(RenderingContext.REND_SINCE_ADDED, version));
         spanInner.img("icon-change-add.png", "icon");
         spanInner.tx(" "+context.formatPhrase(RenderingContext.REND_ADDED));
-        return;
+        return true;
       case Changed:
         if (self.getComp().noChangeOtherThanMetadata(metadataFields)) {
           x.span("color: #eeeeee").tx("n/c");
-          return;
+          return false;
         } else {
           spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px",
               self.getOriginal() != null ? context.formatPhrase(RenderingContext.REND_SINCE_CHANGED_WAS, version, self.getOriginal()) : context.formatPhrase(RenderingContext.REND_SINCE_CHANGED, version));
           spanInner.img("icon-change-edit.png", "icon");
           spanInner.tx(" "+context.formatPhrase(RenderingContext.REND_CHANGED));
         }
-        return;
+        return true;
       case Deleted:
         spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", context.formatPhrase(RenderingContext.GENERAL_REMOVED_SINCE, version));
         spanInner.img("icon-change-remove.png", "icon");
         spanInner.tx(" "+context.formatPhrase(RenderingContext.REND_REMOVED));
-        return;
+        return true;
       default:
         x.span("color: #eeeeee").tx("n/c");
-        return;
+        return false;
       }
     } else {
       x.span("color: #eeeeee").tx("--");
     }
+    return false;
   }
 
 

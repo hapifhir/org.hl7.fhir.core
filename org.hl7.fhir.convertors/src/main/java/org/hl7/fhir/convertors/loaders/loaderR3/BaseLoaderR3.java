@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import org.hl7.fhir.dstu3.context.SimpleWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.dstu3.model.Resource;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 
 import lombok.Getter;
 import lombok.Setter;

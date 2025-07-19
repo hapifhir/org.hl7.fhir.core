@@ -86,7 +86,8 @@ public class ExtensionConstants {
   public static final String EXT_EXTENSION_SNAPSHOT_SOURCE = "http://hl7.org/fhir/tools/StructureDefinition/snapshot-source"; // Extension Snapshot Source
   public static final String EXT_TYPE_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/type-parameter"; // Type Parameter Extension
   public static final String EXT_TYPE_SPECIFIER = "http://hl7.org/fhir/tools/StructureDefinition/type-specifier"; // Type Specifier Extension
-  public static final String EXT_VALUE_SET_EXPANSION_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/valueset-expansion-parameter"; // ValueSet Expansion Parameter
+  public static final String EXT_VALUE_SET_EXPANSION_PARAMETER_OLD = "http://hl7.org/fhir/tools/StructureDefinition/valueset-expansion-parameter"; // ValueSet Expansion Parameter
+  public static final String EXT_VALUE_SET_EXPANSION_PARAMETER_NEW = "http://hl7.org/fhir/StructureDefinition/valueset-expansion-parameter"; // ValueSet Expansion Parameter
   public static final String EXT_VALUE_SET_PARAMETER_DECLARATION = "http://hl7.org/fhir/tools/StructureDefinition/valueset-parameter"; // ValueSet Parameter Declaration
   public static final String EXT_RENDERING_ENGINE_VIEW_HINTS_EXT = "http://hl7.org/fhir/tools/StructureDefinition/view-hint"; // Viewing Hints for Rendering Engines (Extension)
   public static final String EXT_WEB_SOURCE = "http://hl7.org/fhir/tools/StructureDefinition/web-source"; // Web Source

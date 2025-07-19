@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext.FunctionDefinition;
+import org.hl7.fhir.r5.fhirpath.IHostApplicationServices.FunctionDefinition;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
@@ -16,8 +16,6 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
-
-import com.microsoft.schemas.office.visio.x2012.main.impl.FunctionDefTypeImpl;
 
 @MarkedToMoveToAdjunctPackage
 public class GlobalObject extends Base {

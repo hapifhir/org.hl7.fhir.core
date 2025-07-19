@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import lombok.Getter;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.*;
@@ -17,7 +18,7 @@ import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCode
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext.TerminologyClientContextUseCount;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.utilities.ENoDump;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -226,11 +227,11 @@ public class TerminologyClientContext {
       boolean csParams = false;
 
       for (Extension t : capabilitiesStatement.getExtension()) {
-        if (ToolingExtensions.EXT_FEATURE.equals(t.getUrl())) {
+        if (ExtensionDefinitions.EXT_FEATURE.equals(t.getUrl())) {
           String defn = t.getExtensionString("definition");
-          if (ToolingExtensions.FEATURE_TX_TEST_VERSION.equals(defn)) {
+          if (ExtensionDefinitions.FEATURE_TX_TEST_VERSION.equals(defn)) {
             testVersion = t.getExtensionString("value");
-          } else if (ToolingExtensions.FEATURE_TX_CS_PARAMS.equals(defn)) {
+          } else if (ExtensionDefinitions.FEATURE_TX_CS_PARAMS.equals(defn)) {
             csParams = "true".equals(t.getExtensionString("value"));
           } 
         }
