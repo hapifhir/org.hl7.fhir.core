@@ -340,8 +340,10 @@ public interface IWorkerContext {
    * @param canonicalForSource
    * @return
    */
-  public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_, FhirPublication fhirVersion);
   public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_);
+  public <T extends Resource> List<T> fetchResourceVersionsByTypeAndUrl(Class<T> class_, String url);
+  @Deprecated
+  public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_, FhirPublication fhirVersion);
 
 
   /**
