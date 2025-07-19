@@ -432,8 +432,8 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
 
   public List<String> fetchCodeSystemVersions(String system) {
     List<String> res = new ArrayList<>();
-    for (CodeSystem cs : context.fetchResourcesByType(CodeSystem.class)) {
-      if (system.equals(cs.getUrl()) && cs.hasVersion()) {
+    for (CodeSystem cs : context.fetchResourceVersionsByTypeAndUrl(CodeSystem.class, system)) {
+      if (cs.hasVersion()) {
         res.add(cs.getVersion());
       }
     }
