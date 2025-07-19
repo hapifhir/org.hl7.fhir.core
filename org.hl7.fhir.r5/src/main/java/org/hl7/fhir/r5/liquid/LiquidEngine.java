@@ -204,6 +204,7 @@ public class LiquidEngine implements IHostApplicationServices {
     engine = new FHIRPathEngine(context);
     engine.setHostServices(this);
     engine.setLiquidMode(true);
+    engine.setCheckWithHostServicesBeforeHand(true);
   }
 
   public ILiquidEngineIncludeResolver getIncludeResolver() {
