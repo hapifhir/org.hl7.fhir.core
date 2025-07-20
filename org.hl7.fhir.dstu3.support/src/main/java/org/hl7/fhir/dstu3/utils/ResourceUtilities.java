@@ -57,6 +57,7 @@ import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.dstu3.model.ResourceType;
 import org.hl7.fhir.dstu3.model.Type;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
@@ -65,6 +66,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
  * @author Grahame
  *
  */
+@MarkedToMoveToAdjunctPackage
 public class ResourceUtilities {
 
   public final static String FHIR_LANGUAGE = "urn:ietf:bcp:47";
