@@ -36,6 +36,11 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>org.hl7.fhir.dstu3</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- UCUM -->
         <dependency>

@@ -34,8 +34,9 @@ package org.hl7.fhir.dstu3.formats;
 
 // Generated on Mon, Apr 17, 2017 08:38+1000 for FHIR v3.0.x
 import org.hl7.fhir.dstu3.model.*;
-import org.hl7.fhir.dstu3.utils.formats.Turtle.Complex;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.turtle.Turtle;
+import org.hl7.fhir.utilities.turtle.Turtle.Complex;
 
 public class RdfParser extends RdfParserBase {
 
