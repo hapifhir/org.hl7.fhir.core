@@ -283,7 +283,7 @@ public class CommunicationRequest40_50 {
     if (org.hl7.fhir.r4.utils.ToolingExtensions.hasExtension(src, VersionConvertorConstants.EXT_PAYLOAD_CONTENT)) {
       org.hl7.fhir.r4.model.Extension e = org.hl7.fhir.r4.utils.ToolingExtensions.getExtension(src, VersionConvertorConstants.EXT_PAYLOAD_CONTENT);
       tgt.setContent(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(e.getValue()));
-      org.hl7.fhir.r5.utils.ToolingExtensions.removeExtension(tgt, VersionConvertorConstants.EXT_PAYLOAD_CONTENT);
+      org.hl7.fhir.r5.extensions.ExtensionUtilities.removeExtension(tgt, VersionConvertorConstants.EXT_PAYLOAD_CONTENT);
     } else if (src.hasContent()) {
       org.hl7.fhir.r4.model.Type content = src.getContent();
       if (content instanceof org.hl7.fhir.r4.model.StringType) {

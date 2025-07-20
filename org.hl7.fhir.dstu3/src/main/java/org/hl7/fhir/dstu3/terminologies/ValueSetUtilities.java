@@ -37,9 +37,10 @@ import org.hl7.fhir.dstu3.model.Meta;
 import org.hl7.fhir.dstu3.model.UriType;
 import org.hl7.fhir.dstu3.model.ValueSet;
 import org.hl7.fhir.dstu3.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 
-@Deprecated
+@MarkedToMoveToAdjunctPackage
 public class ValueSetUtilities {
 
   public static ValueSet makeShareable(ValueSet vs) {

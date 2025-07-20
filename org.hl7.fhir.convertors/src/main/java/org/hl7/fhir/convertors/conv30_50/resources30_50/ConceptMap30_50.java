@@ -14,9 +14,9 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Stri
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Uri30_50;
 import org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CanonicalPair;
 
 public class ConceptMap30_50 {
@@ -293,7 +293,7 @@ public class ConceptMap30_50 {
           return null;
       Enumeration<ConceptMapRelationship> tgt = new Enumeration<ConceptMapRelationship>(new Enumerations.ConceptMapRelationshipEnumFactory());
       ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-      ToolingExtensions.setCodeExtensionMod(tgtCtxt, VersionConvertorConstants.EXT_OLD_CONCEPTMAP_EQUIVALENCE, src.getValueAsString());
+      ExtensionUtilities.setCodeExtensionMod(tgtCtxt, VersionConvertorConstants.EXT_OLD_CONCEPTMAP_EQUIVALENCE, src.getValueAsString());
       if (src.getValue() == null) {
           tgt.setValue(null);
       } else {
