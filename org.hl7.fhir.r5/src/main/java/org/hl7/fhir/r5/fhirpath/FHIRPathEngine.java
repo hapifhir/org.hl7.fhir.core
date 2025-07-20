@@ -949,7 +949,7 @@ public class FHIRPathEngine {
           && (!q.hasSystem() || q.getSystem().equals("http://unitsofmeasure.org"))) {
         return q.getValue().toPlainString()+" "+q.getUnit();
       }
-      if (q.getSystem().equals("http://unitsofmeasure.org")) {
+      if ("http://unitsofmeasure.org".equals(q.getSystem())) {
         String u = "'"+q.getCode()+"'";
         return q.getValue().toPlainString()+" "+u;
       } else {
