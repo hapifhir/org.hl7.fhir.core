@@ -7628,7 +7628,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       // there must be a child - and only one - with 
       ElementDefinition ed = null;
       for (ElementDefinition t : childDefinitions.getList()) {
-        if ("named-elements".equals(t.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE))) {
+        if ("named-elements".equals(t.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED))) {
           ed = t;
         }
       }

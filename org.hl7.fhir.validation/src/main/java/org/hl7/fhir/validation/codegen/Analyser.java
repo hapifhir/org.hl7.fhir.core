@@ -152,7 +152,8 @@ public class Analyser {
     }
     
     if (tn == null) {
-      if (e.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE) && "named-elements".equals(e.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE))) {
+      if (e.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED) &&
+        "named-elements".equals(e.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED))) {
         tn = "NamedElementExtension";
         e.setUserData("java.type", tn);
       } else if (e.getType().size() > 0 && !e.hasContentReference() && pu.getChildList(analysis.getStructure(), e).isEmpty()) { // !isAbstractType(e.getType().get(0).getCode())

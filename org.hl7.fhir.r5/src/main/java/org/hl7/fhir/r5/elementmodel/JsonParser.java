@@ -1031,7 +1031,7 @@ public class JsonParser extends ParserBase {
         }
       }
 
-      if ("named-elements".equals(element.getProperty().getDefinition().getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE))) {
+      if ("named-elements".equals(element.getProperty().getDefinition().getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED))) {
         composeNamedChildren(path + "." + element.getJsonName(), element);        
       } else {
         Set<String> done = new HashSet<String>();

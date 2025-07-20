@@ -31,7 +31,8 @@ public class ExtensionDefinitions {
   public static final String EXT_JSON_NAME_DEPRECATED = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-json-name";
   public static final String EXT_JSON_NAME = "http://hl7.org/fhir/tools/StructureDefinition/json-name";
   public static final String EXT_BINDING_STYLE = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-binding-style";
-  public static final String EXT_EXTENSION_STYLE = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-extension-style";
+  public static final String EXT_EXTENSION_STYLE_NEW = "http://hl7.org/fhir/tools/StructureDefinition/extension-style";
+  public static final String EXT_EXTENSION_STYLE_DEPRECATED = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-extension-style";
   public static final String EXT_LOGICAL_TARGET = "http://hl7.org/fhir/tools/StructureDefinition/logical-target";
   public static final String EXT_LOGICAL_CONTAINER = "http://hl7.org/fhir/tools/StructureDefinition/logical-container";
   public static final String EXT_PROFILE_MAPPING_OLD = "http://hl7.org/fhir/tools/StructureDefinition/profile-mapping";

@@ -746,13 +746,13 @@ public class Property {
 
   public String getExtensionStyle() {
     ElementDefinition ed = getDefinition();
-    if (ed.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE)) {
-      return ed.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE);
+    if (ed.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED)) {
+      return ed.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED);
     }
     if (ed.getType().size() == 1) {
       StructureDefinition sd = context.fetchTypeDefinition(ed.getTypeFirstRep().getWorkingCode());
-      if (sd.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE)) {
-        return sd.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE);
+      if (sd.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED)) {
+        return sd.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED);
       }
     }
     return null;
