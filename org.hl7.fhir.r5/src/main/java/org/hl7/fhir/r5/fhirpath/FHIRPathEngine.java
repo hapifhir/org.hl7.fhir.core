@@ -29,6 +29,7 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Function;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Kind;
@@ -942,8 +943,8 @@ public class FHIRPathEngine {
       return ((IIdType)item).getIdPart();
     } else if (item.isPrimitive()) {
       return item.primitiveValue();
-    } else if (item instanceof Quantity) {
-      Quantity q = (Quantity) item;
+    } else if (item.fhirType().equals("Quantity")) {
+      Quantity q = makeQuantity(item);
       if (q.hasUnit() && Utilities.existsInList(q.getUnit(), "year", "years", "month", "months", "week", "weeks", "day", "days", "hour", "hours", "minute", "minutes", "second", "seconds", "millisecond", "milliseconds")
           && (!q.hasSystem() || q.getSystem().equals("http://unitsofmeasure.org"))) {
         return q.getValue().toPlainString()+" "+q.getUnit();
@@ -1232,7 +1233,6 @@ public class FHIRPathEngine {
             throw lexer.error("The token "+lexer.getCurrent()+" is not expected here - either a \",\" or a \")\" expected");
           }
         }
-        result.setEnd(lexer.getCurrentLocation().copy());
         lexer.next();
         checkParameters(lexer, c, result, details);
       } else {
@@ -1515,6 +1515,7 @@ public class FHIRPathEngine {
     case Power:  return checkParamCount(lexer, location, exp, 1);
     case Truncate: return checkParamCount(lexer, location, exp, 0);
     case Sort: return checkParamCount(lexer, location, exp, 0, 10);
+    case Coalesce: return checkParamCount(lexer, location, exp, 1, Integer.MAX_VALUE); // un-bounded number of parameters
     case LowBoundary: return checkParamCount(lexer, location, exp, 0, 1);
     case HighBoundary: return checkParamCount(lexer, location, exp, 0, 1);
     case Precision: return checkParamCount(lexer, location, exp, 0);
@@ -1631,6 +1632,19 @@ public class FHIRPathEngine {
     List<Base> res = new ArrayList<Base>();
     res.add(new BooleanType(b).noExtensions());
     return res;
+  }
+
+  public static Quantity makeQuantity(Base base) {
+    if (base == null) {
+      return null;
+    }
+    if (base instanceof Quantity) {
+      return (Quantity) base;
+    }
+    if (base instanceof org.hl7.fhir.r5.elementmodel.Element) {
+      return ObjectConverter.readAsQuantity((org.hl7.fhir.r5.elementmodel.Element) base);
+    }
+    return null;
   }
 
   private List<Base> makeNull() {
@@ -2255,10 +2269,14 @@ public class FHIRPathEngine {
   }
 
   private Boolean doEquals(Base left, Base right) {
-    if (left instanceof Quantity && right instanceof Quantity) {
-      return qtyEqual((Quantity) left, (Quantity) right);
-    } else if (left.isDateTime() && right.isDateTime()) { 
-      return datesEqual(left.dateTimeValue(), right.dateTimeValue());
+    var lq = makeQuantity(left);
+    var rq = makeQuantity(right);
+    if (lq instanceof Quantity && rq instanceof Quantity) {
+      return qtyEqual(lq, rq);
+    } else if (left.hasType("date", "dateTime", "instant") && right.hasType("date", "dateTime", "instant")) { 
+      var leftDate = new DateTimeType(left.primitiveValue());
+      var rightDate = new DateTimeType(right.primitiveValue());
+      return datesEqual(leftDate, rightDate);
     } else if (left instanceof DecimalType || right instanceof DecimalType) { 
       return decEqual(left.primitiveValue(), right.primitiveValue());
     } else if (left.isPrimitive() && right.isPrimitive()) {
@@ -2269,8 +2287,10 @@ public class FHIRPathEngine {
   }
 
   private boolean doEquivalent(Base left, Base right) throws PathEngineException {
-    if (left instanceof Quantity && right instanceof Quantity) {
-      return qtyEquivalent((Quantity) left, (Quantity) right);
+    var lq = makeQuantity(left);
+    var rq = makeQuantity(right);
+    if (lq instanceof Quantity && rq instanceof Quantity) {
+      return qtyEquivalent(lq, rq);
     }
     if (left.hasType("integer") && right.hasType("integer")) {
       return doEquals(left, right);
@@ -2510,10 +2530,12 @@ public class FHIRPathEngine {
         if (worker.getUcumService() == null) {
           return makeBoolean(false);
         } else {
+          var lq = makeQuantity(left.get(0));
+          var rq = makeQuantity(right.get(0));
           List<Base> dl = new ArrayList<Base>();
-          dl.add(qtyToCanonicalDecimal((Quantity) left.get(0)));
+          dl.add(qtyToCanonicalDecimal(lq));
           List<Base> dr = new ArrayList<Base>();
-          dr.add(qtyToCanonicalDecimal((Quantity) right.get(0)));
+          dr.add(qtyToCanonicalDecimal(rq));
           return opLessThan(dl, dr, expr);
         }
       }
@@ -2557,10 +2579,12 @@ public class FHIRPathEngine {
         if (worker.getUcumService() == null) {
           return makeBoolean(false);
         } else {
+          var lq = makeQuantity(left.get(0));
+          var rq = makeQuantity(right.get(0));
           List<Base> dl = new ArrayList<Base>();
-          dl.add(qtyToCanonicalDecimal((Quantity) left.get(0)));
+          dl.add(qtyToCanonicalDecimal(lq));
           List<Base> dr = new ArrayList<Base>();
-          dr.add(qtyToCanonicalDecimal((Quantity) right.get(0)));
+          dr.add(qtyToCanonicalDecimal(rq));
           return opGreater(dl, dr, expr);
         }
       }
@@ -2607,10 +2631,12 @@ public class FHIRPathEngine {
         if (worker.getUcumService() == null) {
           return makeBoolean(false);
         } else {
+          var lq = makeQuantity(left.get(0));
+          var rq = makeQuantity(right.get(0));
           List<Base> dl = new ArrayList<Base>();
-          dl.add(qtyToCanonicalDecimal((Quantity) left.get(0)));
+          dl.add(qtyToCanonicalDecimal(lq));
           List<Base> dr = new ArrayList<Base>();
-          dr.add(qtyToCanonicalDecimal((Quantity) right.get(0)));
+          dr.add(qtyToCanonicalDecimal(rq));
           return opLessOrEqual(dl, dr, expr);
         }
       }
@@ -2655,10 +2681,12 @@ public class FHIRPathEngine {
         if (worker.getUcumService() == null) {
           return makeBoolean(false);
         } else {
+          var lq = makeQuantity(left.get(0));
+          var rq = makeQuantity(right.get(0));
           List<Base> dl = new ArrayList<Base>();
-          dl.add(qtyToCanonicalDecimal((Quantity) left.get(0)));
+          dl.add(qtyToCanonicalDecimal(lq));
           List<Base> dr = new ArrayList<Base>();
-          dr.add(qtyToCanonicalDecimal((Quantity) right.get(0)));
+          dr.add(qtyToCanonicalDecimal(rq));
           return opGreaterOrEqual(dl, dr, expr);
         }
       }
@@ -2775,13 +2803,16 @@ public class FHIRPathEngine {
       result.add(new DecimalType(new BigDecimal(l.primitiveValue()).add(new BigDecimal(r.primitiveValue()))));
     } else if (l.hasType("date") && r.hasType("Quantity")) {
       DateType dl = l instanceof DateType ? (DateType) l : new DateType(l.primitiveValue()); 
-      result.add(dateAdd(dl, (Quantity) r, false, expr));
+      var rq = makeQuantity(r);
+      result.add(dateAdd(dl, rq, false, expr));
     } else if ((l.isDateTime() || l.hasType("dateTime") || l.hasType("instant")) && r.hasType("Quantity")) {
       DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue()); 
-      result.add(dateAdd(dl, (Quantity) r, false, expr));
+      var rq = makeQuantity(r);
+      result.add(dateAdd(dl, rq, false, expr));
     } else if (l.hasType("time") && r.hasType("Quantity")) {
       TimeType dl = l instanceof TimeType ? (TimeType) l : new TimeType(l.primitiveValue()); 
-      var rdt = timeAdd(dl, (Quantity) r, false, expr);
+      var rq = makeQuantity(r);
+      var rdt = timeAdd(dl, rq, false, expr);
       result.add(rdt); // we only want the time part
     } else {
       throw makeException(expr, I18nConstants.FHIRPATH_OP_INCOMPATIBLE, "+", left.get(0).fhirType(), right.get(0).fhirType());
@@ -2892,13 +2923,15 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (left.size() > 1) {
       throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "*", convertToString(left));
     }
-    if (!left.get(0).isPrimitive() && !(left.get(0) instanceof Quantity)) {
+    var lq = makeQuantity(left.get(0));
+    if (!left.get(0).isPrimitive() && !(lq instanceof Quantity)) {
       throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_WRONG_TYPE, "*", left.get(0).fhirType());
     }
+    var rq = makeQuantity(right.get(0));
     if (right.size() > 1) {
       throw makeExceptionPlural(right.size(), expr, I18nConstants.FHIRPATH_RIGHT_VALUE, "*");
     }
-    if (!right.get(0).isPrimitive() && !(right.get(0) instanceof Quantity)) {
+    if (!right.get(0).isPrimitive() && !(rq instanceof Quantity)) {
       throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_WRONG_TYPE, "*", right.get(0).fhirType());
     }
 
@@ -2910,9 +2943,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       result.add(new IntegerType(Integer.parseInt(l.primitiveValue()) * Integer.parseInt(r.primitiveValue())));
     } else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) { 
       result.add(new DecimalType(new BigDecimal(l.primitiveValue()).multiply(new BigDecimal(r.primitiveValue()))));
-    } else if (l instanceof Quantity && r instanceof Quantity && worker.getUcumService() != null) {
-      Pair pl = qtyToPair((Quantity) l);
-      Pair pr = qtyToPair((Quantity) r);
+    } else if (lq instanceof Quantity && rq instanceof Quantity && worker.getUcumService() != null) {
+      Pair pl = qtyToPair(lq);
+      Pair pr = qtyToPair(rq);
       Pair p;
       try {
         p = worker.getUcumService().multiply(pl, pr);
@@ -3085,18 +3118,18 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     } else if (l.hasType("decimal", "integer", "Quantity") && r.hasType("Quantity")) { 
       String s = l.primitiveValue();
       if ("0".equals(s)) {
-        Quantity qty = (Quantity) r;
+        Quantity qty = makeQuantity(r);
         result.add(qty.copy().setValue(qty.getValue().abs()));
       }
     } else if (l.hasType("date") && r.hasType("Quantity")) {
       DateType dl = l instanceof DateType ? (DateType) l : new DateType(l.primitiveValue()); 
-      result.add(dateAdd(dl, (Quantity) r, true, expr));
+      result.add(dateAdd(dl, makeQuantity(r), true, expr));
     } else if ((l.isDateTime() || l.hasType("dateTime") || l.hasType("instant")) && r.hasType("Quantity")) {
       DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue()); 
-      result.add(dateAdd(dl, (Quantity) r, true, expr));
+      result.add(dateAdd(dl, makeQuantity(r), true, expr));
     } else if (l.hasType("time") && r.hasType("Quantity")) {
       TimeType dl = l instanceof TimeType ? (TimeType) l : new TimeType(l.primitiveValue()); 
-      var rdt = timeAdd(dl, (Quantity) r, true, expr);
+      var rdt = timeAdd(dl, makeQuantity(r), true, expr);
       result.add(rdt); // we only want the time part
     } else {
       throw makeException(expr, I18nConstants.FHIRPATH_OP_INCOMPATIBLE, "-", left.get(0).fhirType(), right.get(0).fhirType());
@@ -3111,13 +3144,15 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (left.size() > 1) {
       throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "/", convertToString(left));
     }
-    if (!left.get(0).isPrimitive() && !(left.get(0) instanceof Quantity)) {
+    var lq = makeQuantity(left.get(0));
+    if (!left.get(0).isPrimitive() && !(lq instanceof Quantity)) {
       throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_WRONG_TYPE, "/", left.get(0).fhirType());
     }
     if (right.size() > 1) {
       throw makeExceptionPlural(right.size(), expr, I18nConstants.FHIRPATH_RIGHT_VALUE, "/");
     }
-    if (!right.get(0).isPrimitive() && !(right.get(0) instanceof Quantity)) {
+    var rq = makeQuantity(right.get(0));
+    if (!right.get(0).isPrimitive() && !(rq instanceof Quantity)) {
       throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_WRONG_TYPE, "/", right.get(0).fhirType());
     }
 
@@ -3134,9 +3169,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       } catch (UcumException e) {
         // just return nothing
       }
-    } else if (l instanceof Quantity && r instanceof Quantity && worker.getUcumService() != null) {
-      Pair pl = qtyToPair((Quantity) l);
-      Pair pr = qtyToPair((Quantity) r);
+    } else if (lq instanceof Quantity && rq instanceof Quantity && worker.getUcumService() != null) {
+      Pair pl = qtyToPair(lq);
+      Pair pr = qtyToPair(rq);
       Pair p;
       try {
         p = worker.getUcumService().divideBy(pl, pr);
@@ -3157,13 +3192,13 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (left.size() > 1) {
       throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "div", convertToString(left));
     }
-    if (!left.get(0).isPrimitive() && !(left.get(0) instanceof Quantity)) {
+    if (!left.get(0).isPrimitive()) {
       throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_WRONG_TYPE, "div", left.get(0).fhirType());
     }
     if (right.size() > 1) {
       throw makeExceptionPlural(right.size(), expr, I18nConstants.FHIRPATH_RIGHT_VALUE, "div");
     }
-    if (!right.get(0).isPrimitive() && !(right.get(0) instanceof Quantity)) {
+    if (!right.get(0).isPrimitive()) {
       throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_WRONG_TYPE, "div", right.get(0).fhirType());
     }
 
@@ -3239,14 +3274,18 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer);
     } else if (constant instanceof DecimalType) {
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Decimal);
-    } else if (constant instanceof Quantity) {
-      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Quantity);
     } else if (constant instanceof FHIRConstant) {
       return resolveConstantType(context, ((FHIRConstant) constant).getValue(), expr, mode);
     } else if (constant == null) {
       return new TypeDetails(CollectionStatus.SINGLETON);      
-    } else {
-      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
+    } else 
+    {
+      var q = makeQuantity(constant);
+      if (q instanceof Quantity) {
+        return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Quantity);
+      } else {
+        return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
+      }
     }
   }
 
@@ -3803,6 +3842,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     }
     case Sort :
       return new TypeDetails(CollectionStatus.ORDERED, focus.getTypes());       
+    case Coalesce : {
+      TypeDetails types = new TypeDetails(null);
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes);
+      for (var t : paramTypes) {
+        types.update(t);
+      }
+      return types;
+    }
     case Truncate :
     case Floor : 
     case Ceiling : {
@@ -4135,6 +4182,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     case Power : return funcPower(context, focus, exp); 
     case Truncate : return funcTruncate(context, focus, exp);
     case Sort : return funcSort(context, focus, exp);
+    case Coalesce: return funcCoalesce(context, focus, exp);
     case LowBoundary : return funcLowBoundary(context, focus, exp);
     case HighBoundary : return funcHighBoundary(context, focus, exp);
     case Precision : return funcPrecision(context, focus, exp);
@@ -4254,7 +4302,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         // just return nothing
       }
     } else if (base.hasType("Quantity")) {
-      Quantity qty = (Quantity) base;
+      Quantity qty = makeQuantity(base);
       result.add(qty.copy().setValue(qty.getValue().abs()));
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "abs", "(focus)", base.fhirType(), "integer or decimal");
@@ -5110,8 +5158,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   private List<Base> funcToQuantity(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
     if (focus.size() == 1) {
-      if (focus.get(0) instanceof Quantity) {
-        result.add(focus.get(0));
+      var qty = makeQuantity(focus.get(0));
+      if (qty instanceof Quantity) {
+        result.add(qty);
       } else if (focus.get(0) instanceof StringType) {
         Quantity q = parseQuantityString(focus.get(0).primitiveValue());
         if (q != null) {
@@ -6160,7 +6209,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof DecimalType) {
       result.add(new BooleanType(true).noExtensions());
-    } else if (focus.get(0) instanceof Quantity) {
+    } else if (makeQuantity(focus.get(0)) instanceof Quantity) {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof BooleanType) {
       result.add(new BooleanType(true).noExtensions());
@@ -6415,6 +6464,19 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return result;
   }
 
+  private List<Base> funcCoalesce(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+    // iterate over all the parameters, and return the first one that has a value
+    for (ExpressionNode p : exp.getParameters()) {
+      List<Base> pc = execute(context, focus, p, true);
+      if (pc.size() > 0) {
+        return pc;
+      }
+    }
+
+    // no result from any of the parameters, so return an empty list
+    List<Base> result = new ArrayList<Base>();
+    return result;
+  }
 
   private List<Base> funcItem(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
