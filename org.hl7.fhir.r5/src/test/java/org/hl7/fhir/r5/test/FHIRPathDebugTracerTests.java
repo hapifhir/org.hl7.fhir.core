@@ -166,10 +166,10 @@ public class FHIRPathDebugTracerTests {
     assertEquals(6, tracer.traceOutput.size());
     assertEquals("0,7,Patient: focus=1 result=1", tracer.traceOutput.get(0));
     assertEquals("8,9,birthDate: focus=1 result=1", tracer.traceOutput.get(1));
-    assertEquals("18,10,toString: focus=1 result=1", tracer.traceOutput.get(2));
+    assertEquals("18,8,toString: focus=1 result=1", tracer.traceOutput.get(2));
     assertEquals("39,1,constant: focus=1 result=1", tracer.traceOutput.get(3));
     assertEquals("42,1,constant: focus=1 result=1", tracer.traceOutput.get(4));
-    assertEquals("29,15,substring: focus=1 result=1", tracer.traceOutput.get(5));
+    assertEquals("29,9,substring: focus=1 result=1", tracer.traceOutput.get(5));
   }
 
   @Test
@@ -196,10 +196,9 @@ public class FHIRPathDebugTracerTests {
     assertEquals("0,4,name: focus=1 result=3", tracer.traceOutput.get(0));
     assertEquals("11,3,use: focus=1 result=1", tracer.traceOutput.get(1));
     assertEquals("15,10,constant: focus=1 result=1", tracer.traceOutput.get(2));
-    assertEquals("15,10,constant: focus=1 result=1", tracer.traceOutput.get(2));
     assertEquals("14,1,=: focus=1 result=1", tracer.traceOutput.get(3));
 
-    assertEquals("5,36,where: focus=3 result=2", tracer.traceOutput.get(18));
+    assertEquals("5,5,where: focus=3 result=2", tracer.traceOutput.get(18));
     assertEquals("42,5,given: focus=2 result=3", tracer.traceOutput.get(19));
   }
 
@@ -243,5 +242,30 @@ public class FHIRPathDebugTracerTests {
     assertEquals("20,9,constant: focus=1 result=1", tracer.traceOutput.get(4));
     assertEquals("19,1,=: focus=1 result=1", tracer.traceOutput.get(5));
     assertEquals("14,2,or: focus=1 result=1", tracer.traceOutput.get(6));
+  }
+
+  @Test
+  public void testDebugTrace_Coalesce() throws FHIRException, IOException {
+    System.out.println();
+    var expression = "name.coalesce(prefix, family, given, 'usual')";
+    var tracer = new FHIRPathDebugTracer(expression);
+    fp.setTracer(tracer);
+
+    var input = loadTestResource("patient-example.xml");
+    List<Base> results = fp.evaluate(input, expression);
+    fp.setTracer(null);
+
+    assertEquals(2, results.size());
+    assertEquals("Chalmers", ((Element) results.get(0)).getValue().toString());
+    assertEquals("Windsor", ((Element) results.get(1)).getValue().toString());
+
+    assertEquals("Patient.name[0].family", ((Element) results.get(0)).getPath());
+    assertEquals("Patient.name[2].family", ((Element) results.get(1)).getPath());
+
+    assertEquals(4, tracer.traceOutput.size());
+    assertEquals("0,4,name: focus=1 result=3", tracer.traceOutput.get(0));
+    assertEquals("14,6,prefix: focus=3 result=0", tracer.traceOutput.get(1));
+    assertEquals("22,6,family: focus=3 result=2", tracer.traceOutput.get(2));
+    assertEquals("5,8,coalesce: focus=3 result=2", tracer.traceOutput.get(3));
   }
 }
