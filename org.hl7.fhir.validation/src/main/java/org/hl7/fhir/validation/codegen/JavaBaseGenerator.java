@@ -317,7 +317,7 @@ public class JavaBaseGenerator extends OutputStreamWriter {
   }
 
   protected boolean isNamedElementExtensions(ElementDefinition ed) {
-    return "named-elements".equals(ed.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE));
+    return "named-elements".equals(ed.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED));
   }
 
   protected Map<String, String> getConcreteDescendents(Analysis analysis, TypeInfo ti) {

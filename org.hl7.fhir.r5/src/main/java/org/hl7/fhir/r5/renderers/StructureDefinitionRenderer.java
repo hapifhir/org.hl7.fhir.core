@@ -1641,9 +1641,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           c.getPieces().add(gen.new Piece(null, " "+ (context.formatPhrase(RenderingContext.STRUC_DEF_PREFIXED)), null));           
         } 
  
-        if (definition.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE)) { 
+        if (definition.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED)) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          String es = definition.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE); 
+          String es = definition.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED);
           if ("named-elements".equals(es)) { 
             if (rc.hasLink(KnownLinkType.JSON_NAMES)) { 
               c.getPieces().add(gen.new Piece(rc.getLink(KnownLinkType.JSON_NAMES, true), context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON), null));                         
@@ -4143,8 +4143,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
     tableRow(tbl, context.formatPhrase(RenderingContext.GENERAL_OBLIG), null, strikethrough, describeObligations(status, d, root, sd, defPath, anchorPrefix, inScopeElements, res));
  
-    if (d.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE)) { 
-      String es = d.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE); 
+    if (d.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED)) {
+      String es = d.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED);
       if ("named-elements".equals(es)) { 
         if (context.hasLink(KnownLinkType.JSON_NAMES)) { 
           tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_STYLE), context.getLink(KnownLinkType.JSON_NAMES, true), strikethrough, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON)); 
