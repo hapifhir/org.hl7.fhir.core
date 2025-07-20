@@ -46,8 +46,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.dstu3.conformance.ProfileUtilities.ProfileKnowledgeProvider.BindingResolution;
 import org.hl7.fhir.dstu3.context.IWorkerContext;
 import org.hl7.fhir.dstu3.context.IWorkerContext.ValidationResult;
-import org.hl7.fhir.dstu3.elementmodel.ObjectConverter;
-import org.hl7.fhir.dstu3.elementmodel.Property;
 import org.hl7.fhir.dstu3.formats.IParser;
 import org.hl7.fhir.dstu3.model.Base;
 import org.hl7.fhir.dstu3.model.BooleanType;
@@ -96,6 +94,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -129,7 +128,7 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
  * @author Grahame
  *
  */
-@Deprecated
+@MarkedToMoveToAdjunctPackage
 @Slf4j
 public class ProfileUtilities extends TranslatingUtilities {
 
@@ -3225,61 +3224,6 @@ public class ProfileUtilities extends TranslatingUtilities {
     @Override
     public String getId() {
       return "-genexample-"+index;
-    }
-  }
-  
-  public List<org.hl7.fhir.dstu3.elementmodel.Element> generateExamples(StructureDefinition sd, boolean evenWhenNoExamples) throws FHIRException {
-    List<org.hl7.fhir.dstu3.elementmodel.Element> examples = new ArrayList<org.hl7.fhir.dstu3.elementmodel.Element>();
-    if (sd.hasSnapshot()) {
-      if (evenWhenNoExamples || hasAnyExampleValues(sd)) 
-        examples.add(generateExample(sd, new BaseExampleValueAccessor()));
-      for (int i = 1; i <= 50; i++) {
-        if (hasAnyExampleValues(sd, Integer.toString(i))) 
-          examples.add(generateExample(sd, new ExtendedExampleValueAccessor(Integer.toString(i))));
-      }
-    }
-    return examples;
-  }
-
-  private org.hl7.fhir.dstu3.elementmodel.Element generateExample(StructureDefinition profile, ExampleValueAccessor accessor) throws FHIRException {
-    ElementDefinition ed = profile.getSnapshot().getElementFirstRep();
-    org.hl7.fhir.dstu3.elementmodel.Element r = new org.hl7.fhir.dstu3.elementmodel.Element(ed.getPath(), new Property(context, ed, profile));
-    List<ElementDefinition> children = getChildMap(profile, ed);
-    for (ElementDefinition child : children) {
-      if (child.getPath().endsWith(".id")) {
-        org.hl7.fhir.dstu3.elementmodel.Element id = new org.hl7.fhir.dstu3.elementmodel.Element("id", new Property(context, child, profile));
-        id.setValue(profile.getId()+accessor.getId());
-        r.getChildren().add(id);
-      } else { 
-        org.hl7.fhir.dstu3.elementmodel.Element e = createExampleElement(profile, child, accessor);
-        if (e != null)
-          r.getChildren().add(e);
-      }
-    }
-    return r;
-  }
-
-  private org.hl7.fhir.dstu3.elementmodel.Element createExampleElement(StructureDefinition profile, ElementDefinition ed, ExampleValueAccessor accessor) throws FHIRException {
-    Type v = accessor.getExampleValue(ed);
-    if (v != null) {
-      return new ObjectConverter(context).convert(new Property(context, ed, profile), v);
-    } else {
-      org.hl7.fhir.dstu3.elementmodel.Element res = new org.hl7.fhir.dstu3.elementmodel.Element(tail(ed.getPath()), new Property(context, ed, profile));
-      boolean hasValue = false;
-      List<ElementDefinition> children = getChildMap(profile, ed);
-      for (ElementDefinition child : children) {
-        if (!child.hasContentReference()) {
-        org.hl7.fhir.dstu3.elementmodel.Element e = createExampleElement(profile, child, accessor);
-        if (e != null) {
-          hasValue = true;
-          res.getChildren().add(e);
-        }
-      }
-      }
-      if (hasValue)
-        return res;
-      else
-        return null;
     }
   }
 

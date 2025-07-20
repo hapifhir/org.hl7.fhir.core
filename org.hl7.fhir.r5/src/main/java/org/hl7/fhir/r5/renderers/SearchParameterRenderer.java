@@ -7,6 +7,7 @@ import java.util.List;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.SearchComparator;
 import org.hl7.fhir.r5.model.Enumerations.SearchModifierCode;
@@ -21,7 +22,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
@@ -57,7 +58,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
   public void render(RenderingStatus status, XhtmlNode x, SearchParameter spd) throws IOException, FHIRException, EOperationOutcome {
     XhtmlNode h2 = x.h2();
     h2.addText(spd.getName());
-    StandardsStatus ss = ToolingExtensions.getStandardsStatus(spd);
+    StandardsStatus ss = ExtensionUtilities.getStandardsStatus(spd);
     if (ss != context.getDefaultStandardsStatus()) {
       genStandardsStatus(h2, ss);
     }

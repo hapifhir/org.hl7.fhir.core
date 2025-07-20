@@ -78,11 +78,12 @@ import org.hl7.fhir.dstu3.terminologies.ValueSetExpander.TerminologyServiceError
 import org.hl7.fhir.dstu3.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.dstu3.utils.ToolingExtensions;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
-@Deprecated
+@MarkedToMoveToAdjunctPackage
 public class ValueSetExpansionCache implements ValueSetExpanderFactory {
 
   public class CacheAwareExpander implements ValueSetExpander {

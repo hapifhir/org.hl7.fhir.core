@@ -48,7 +48,8 @@ import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.LanguageUtils;
-import org.hl7.fhir.r5.extensions.ExtensionConstants;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
@@ -85,7 +86,7 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
@@ -176,7 +177,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (valueset != null) {
       opContext.note("vs = "+valueset.getVersionedUrl());
       opContext.seeContext(valueset.getVersionedUrl());
-      for (Extension s : valueset.getExtensionsByUrl(ExtensionConstants.EXT_VSSUPPLEMENT)) {
+      for (Extension s : valueset.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
         requiredSupplements.add(s.getValue().primitiveValue());
       }
 
@@ -222,8 +223,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   private void analyseComponent(ConceptSetComponent i, String name) {
     opContext.deadCheck("analyse Component "+name);
-    if (i.getSystemElement().hasExtension(ToolingExtensions.EXT_VALUESET_SYSTEM)) {
-      String ref = i.getSystemElement().getExtensionString(ToolingExtensions.EXT_VALUESET_SYSTEM);
+    if (i.getSystemElement().hasExtension(ExtensionDefinitions.EXT_VALUESET_SYSTEM)) {
+      String ref = i.getSystemElement().getExtensionString(ExtensionDefinitions.EXT_VALUESET_SYSTEM);
       if (ref.startsWith("#")) {
         String id = ref.substring(1);
         for (ValidationContextResourceProxy t : localContext.getResources()) {
@@ -799,7 +800,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   private void checkValueSetOptions() {
     if (valueset != null) {
-      for (Extension ext : valueset.getCompose().getExtensionsByUrl("http://hl7.org/fhir/tools/StructureDefinition/valueset-expansion-parameter")) {
+      for (Extension ext : valueset.getCompose().getExtensionsByUrl(ExtensionDefinitions.EXT_VS_EXP_PARAM_NEW, ExtensionDefinitions.EXT_VS_EXP_PARAM_OLD)) {
         var name = ext.getExtensionString("name");
         var value = ext.getExtensionByUrl("value").getValue();
         if ("displayLanguage".equals(name)) {

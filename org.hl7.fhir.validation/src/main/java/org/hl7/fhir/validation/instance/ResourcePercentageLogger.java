@@ -10,6 +10,8 @@ public class ResourcePercentageLogger {
   private final Logger logger;
   private final int total;
   private final String fhirType;
+
+  private static boolean loggingSuppressed;
   private int last; 
   private int current;
   private final boolean log;
@@ -26,7 +28,7 @@ public class ResourcePercentageLogger {
     last = 0;
     this.log = log;
     this.url = url;
-    if (log) {
+    if (log && !loggingSuppressed) {
       String startString = "Validate " + fhirType + " against " + url;
       System.out.print(startString);
       this.logger.debug(startString);
@@ -34,7 +36,7 @@ public class ResourcePercentageLogger {
   }
 
   public void done() {
-    if (log) {
+    if (log && !loggingSuppressed) {
       System.out.println("|");
       this.logger.debug("Done validating " + fhirType + " against " + url);
     }
@@ -60,6 +62,14 @@ public class ResourcePercentageLogger {
         }
       }
     }
+  }
+
+  public static boolean isLoggingSuppressed() {
+    return loggingSuppressed;
+  }
+
+  public static void setLoggingSuppressed(boolean loggingSuppressed) {
+    ResourcePercentageLogger.loggingSuppressed = loggingSuppressed;
   }
 
 }

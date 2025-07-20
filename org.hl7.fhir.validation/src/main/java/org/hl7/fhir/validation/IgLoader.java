@@ -815,8 +815,6 @@ public class IgLoader implements IValidationEngineLoader {
         res = new org.hl7.fhir.dstu3.formats.XmlParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         res = new org.hl7.fhir.dstu3.formats.JsonParser().parse(new ByteArrayInputStream(content));
-      else if (fn.endsWith(".txt") || fn.endsWith(".map")  || fn.endsWith(".fml"))
-        res = new org.hl7.fhir.dstu3.utils.StructureMapUtilities(org.hl7.fhir.dstu3.context.SimpleWorkerContext.fromNothing()).parse(new String(content));
       else
         throw new FHIRException("Unsupported format for " + fn);
       r = VersionConvertorFactory_30_50.convertResource(res);

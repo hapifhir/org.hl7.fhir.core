@@ -90,10 +90,7 @@ import org.hl7.fhir.dstu3.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.UUIDUtilities;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.I18nBase;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -105,7 +102,7 @@ import com.google.gson.JsonSyntaxException;
 import ca.uhn.fhir.rest.api.Constants;
 
 
-@Deprecated
+@MarkedToMoveToAdjunctPackage
 @Slf4j
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 

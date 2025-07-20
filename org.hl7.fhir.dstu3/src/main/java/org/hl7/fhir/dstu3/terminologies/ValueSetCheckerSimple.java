@@ -46,8 +46,9 @@ import org.hl7.fhir.dstu3.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.dstu3.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.dstu3.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.dstu3.utils.EOperationOutcome;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
-@Deprecated
+@MarkedToMoveToAdjunctPackage
 public class ValueSetCheckerSimple implements ValueSetChecker {
 
   private ValueSet valueset;

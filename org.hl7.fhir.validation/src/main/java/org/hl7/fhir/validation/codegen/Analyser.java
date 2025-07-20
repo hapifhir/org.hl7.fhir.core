@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
@@ -17,7 +18,6 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 
 import org.hl7.fhir.utilities.Utilities;
@@ -152,7 +152,8 @@ public class Analyser {
     }
     
     if (tn == null) {
-      if (e.hasExtension(ToolingExtensions.EXT_EXTENSION_STYLE) && "named-elements".equals(e.getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE))) {
+      if (e.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED) &&
+        "named-elements".equals(e.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED))) {
         tn = "NamedElementExtension";
         e.setUserData("java.type", tn);
       } else if (e.getType().size() > 0 && !e.hasContentReference() && pu.getChildList(analysis.getStructure(), e).isEmpty()) { // !isAbstractType(e.getType().get(0).getCode())
@@ -281,8 +282,8 @@ public class Analyser {
       throw new Exception("not supported");
     } else {
       TypeRefComponent tr = e.getType().get(0);
-      if (tr.hasExtension(ToolingExtensions.EXT_FHIR_TYPE)) {
-        return tr.getExtensionString(ToolingExtensions.EXT_FHIR_TYPE);
+      if (tr.hasExtension(ExtensionDefinitions.EXT_FHIR_TYPE)) {
+        return tr.getExtensionString(ExtensionDefinitions.EXT_FHIR_TYPE);
       } else {
         String type = tr.getCode();
         if (Utilities.isAbsoluteUrl(type)) {

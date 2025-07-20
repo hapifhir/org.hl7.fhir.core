@@ -34,12 +34,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.validation.codegen.JavaParserJsonGenerator.TypeSpecifier;
@@ -187,7 +187,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
 
     parser.append("  protected "+ts.getResName()+" "+ts.getFnName()+"(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {\r\n");
     parser.append("    String xsiType = xpp.getAttributeValue(\"xsi\", \"type\");\r\n");
-    for (Extension ex : ts.getEd().getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC)) {
+    for (Extension ex : ts.getEd().getExtensionsByUrl(ExtensionDefinitions.EXT_TYPE_SPEC)) {
       parser.append("    if (\""+Utilities.urlTail(ex.getExtensionString("type"))+"\".equals(xsiType)) {\r\n");
       parser.append("      return parse"+Utilities.urlTail(ex.getExtensionString("type"))+"(xpp);\r\n");
       parser.append("    }\r\n");
@@ -267,7 +267,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
         prsr = "parseNativePrimitive(xpp)";
       } else {   
         String tn = ed.getUserString("java.type");
-        if (ed.hasExtension(ToolingExtensions.EXT_TYPE_SPEC)) {
+        if (ed.hasExtension(ExtensionDefinitions.EXT_TYPE_SPEC)) {
           typeSpecifiers.add(new TypeSpecifier("parse"+upFirst(tn), tn, ed));
         }
         if (tn.contains("Reference("))
@@ -366,7 +366,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
   private void genTypeSpecifierCompose(TypeSpecifier ts) {
     composer.append("  protected void "+ts.getFnName()+"(String name, "+ts.getResName()+" element) throws IOException {\r\n");
     boolean first = true;
-    for (Extension ex : ts.getEd().getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC)) {
+    for (Extension ex : ts.getEd().getExtensionsByUrl(ExtensionDefinitions.EXT_TYPE_SPEC)) {
       String tn = Utilities.urlTail(ex.getExtensionString("type"));
       composer.append("    "+(first ? "":"} else ")+"if (element instanceof "+tn+") {\r\n");
       composer.append("      compose"+tn+"(name, ("+tn+") element);\r\n");
@@ -460,7 +460,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
         }
       }
       
-      if (ed.hasExtension(ToolingExtensions.EXT_TYPE_SPEC)) {
+      if (ed.hasExtension(ExtensionDefinitions.EXT_TYPE_SPEC)) {
         typeSpecifiers.add(new TypeSpecifier(comp, tn, ed));
       }
       if (ed.unbounded()) {
