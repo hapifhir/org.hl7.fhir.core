@@ -884,9 +884,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
       cs.setContent(CodeSystemContentMode.COMPLETE);
       return cs; 
     }
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, system);
-    if (sd != null) {
-      return CodeSystemUtilities.convertSD(sd);
+    if (Utilities.isAbsoluteUrl(system)) {
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, system, version);
+      if (sd != null) {
+        return CodeSystemUtilities.convertSD(sd);
+      }
     }
     return null;
   }
