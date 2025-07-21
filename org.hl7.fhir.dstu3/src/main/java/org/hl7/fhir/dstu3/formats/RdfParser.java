@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu3.formats;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.

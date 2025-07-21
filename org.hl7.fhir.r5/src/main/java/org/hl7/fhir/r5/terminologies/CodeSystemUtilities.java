@@ -46,29 +46,15 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.model.BooleanType;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyType;
-import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.DateTimeType;
-import org.hl7.fhir.r5.model.DecimalType;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptDefinitionComponentSorter;
 import org.hl7.fhir.r5.terminologies.providers.SpecialCodeSystem;
-import org.hl7.fhir.r5.model.Identifier;
-import org.hl7.fhir.r5.model.IntegerType;
-import org.hl7.fhir.r5.model.Meta;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.utils.CanonicalResourceUtilities;
 
 import org.hl7.fhir.r5.utils.UserDataNames;
@@ -1119,5 +1105,22 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     }
     return null;
   }
+
+  public static CodeSystem convertSD(StructureDefinition sd) {
+    CodeSystem cs = new CodeSystem();
+    cs.setId(sd.getId());
+    cs.setUrl(sd.getUrl());
+    cs.setVersion(sd.getVersion());
+    cs.setStatus(sd.getStatus());
+    cs.setContent(Enumerations.CodeSystemContentMode.COMPLETE);
+    for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+      ConceptDefinitionComponent cd = cs.addConcept();
+      cd.setCode(ed.getId());
+      cd.setDisplay(ed.getId());
+      ed.setDefinition(ed.getDefinition());
+    }
+    return cs;
+  }
+
 }
 
