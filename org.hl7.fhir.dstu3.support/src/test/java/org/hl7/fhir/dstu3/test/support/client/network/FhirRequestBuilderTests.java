@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.dstu3.model.OperationOutcome;
+import org.hl7.fhir.dstu3.support.utils.client.network.FhirRequestBuilder;
 import org.hl7.fhir.utilities.http.*;
-import org.hl7.fhir.dstu3.utils.client.network.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
