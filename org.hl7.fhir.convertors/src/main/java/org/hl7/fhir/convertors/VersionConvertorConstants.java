@@ -72,6 +72,8 @@ public class VersionConvertorConstants {
   public static final String EXT_NOT_GIVEN_EXTENSION_URL = "http://hl7.org/fhir/3.0/StructureDefinition/extension-Immunization.notGiven";
   public static final String EXT_IG_DEPENDSON_PACKAGE_EXTENSION = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ImplementationGuide.dependsOn.packageId";
   public static final String EXT_MED_REQ_ONBEHALF = "http://hl7.org/fhir/3.0/StructureDefinition/extension-MedicationRequest.requester.onBehalfOf";
+  public static final String EXT_MED_STAT_STATUS = "http://hl7.org/fhir/3.0/StructureDefinition/extension-MedicationStatement.status";
+  public static final String EXT_MED_STAT_TAKEN = "http://hl7.org/fhir/3.0/StructureDefinition/extension-MedicationStatement.takem";
   public static final String EXT_COM_REQ_ONBEHALF = "http://hl7.org/fhir/3.0/StructureDefinition/extension-CommunicationRequest.requester.onBehalfOf";
   public static final String EXT_DOC_REF_CREATED = "http://hl7.org/fhir/3.0/StructureDefinition/extension-DocumentReference.created";
 
