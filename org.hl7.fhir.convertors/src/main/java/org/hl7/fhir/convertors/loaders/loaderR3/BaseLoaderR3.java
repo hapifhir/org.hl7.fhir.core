@@ -2,7 +2,7 @@ package org.hl7.fhir.convertors.loaders.loaderR3;
 
 import javax.annotation.Nonnull;
 
-import org.hl7.fhir.dstu3.context.SimpleWorkerContext;
+import org.hl7.fhir.dstu3.support.context.SimpleWorkerContext;
 import org.hl7.fhir.dstu3.model.Resource;
 
 import lombok.Getter;

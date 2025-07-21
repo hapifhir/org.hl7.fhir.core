@@ -1,9 +1,9 @@
 package org.hl7.fhir.dstu3.test.support.client;
 
 import org.hl7.fhir.dstu3.model.*;
-import org.hl7.fhir.dstu3.utils.client.FHIRToolingClient;
-import org.hl7.fhir.dstu3.utils.client.network.Client;
-import org.hl7.fhir.dstu3.utils.client.network.ResourceRequest;
+import org.hl7.fhir.dstu3.support.utils.client.FHIRToolingClient;
+import org.hl7.fhir.dstu3.support.utils.client.network.Client;
+import org.hl7.fhir.dstu3.support.utils.client.network.ResourceRequest;
 import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.hl7.fhir.utilities.http.HTTPRequest;
 import org.junit.jupiter.api.BeforeEach;
