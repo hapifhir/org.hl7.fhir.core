@@ -12,6 +12,7 @@
 * Remove IG load endpoint from server mode
 * Warn about watch params when in server mode
 * Suppress progress logging in server mode
+* Add support for Implicit CodeSystems from StructureDefinitions
 
 ## Breaking Changes in the HAPI Core
 
