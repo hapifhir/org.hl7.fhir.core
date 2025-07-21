@@ -5496,7 +5496,7 @@ msgstr "Système"
 # VALUE_SET_THESE_CODES_DEF
 #: VALUE_SET_THESE_CODES_DEF
 msgid "these codes as defined in"
-msgstr "ce•s code•s tel qu'il•s est/sont défini•s dans"
+msgstr "ce(s) code(s) tel qu'il(s) est (sont) défini(s) dans"
 
 # VALUE_SET_TOO_COSTLY
 #: VALUE_SET_TOO_COSTLY
