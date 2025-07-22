@@ -13,7 +13,7 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.fhirpath.IHostApplicationServices.FunctionDefinition;
+import org.hl7.fhir.r5.fhirpath.FHIRPathFunctionDefinition;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.model.Base;
@@ -190,7 +190,7 @@ public class BaseTableWrapper extends Base {
     return value;
   }
 
-  public static class TableColumnFunction extends FunctionDefinition {
+  public static class TableColumnFunction extends FHIRPathFunctionDefinition {
 
     @Override
     public String name() {
@@ -226,7 +226,7 @@ public class BaseTableWrapper extends Base {
 
   }
 
-  public static class TableDateColumnFunction extends FunctionDefinition {
+  public static class TableDateColumnFunction extends FHIRPathFunctionDefinition {
 
     @Override
     public String name() {
