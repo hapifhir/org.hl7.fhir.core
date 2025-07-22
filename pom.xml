@@ -35,12 +35,12 @@
         <byte_buddy_version>1.14.8</byte_buddy_version>
         <apache_poi_version>5.4.1</apache_poi_version>
         <saxon_he_version>11.6</saxon_he_version>
-        <maven.compiler.release>11</maven.compiler.release>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <maven.compiler.testRelease>11</maven.compiler.testRelease>
-        <maven.compiler.testSource>11</maven.compiler.testSource>
-        <maven.compiler.testTarget>11</maven.compiler.testTarget>
+        <maven.compiler.release>17</maven.compiler.release>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.testRelease>17</maven.compiler.testRelease>
+        <maven.compiler.testSource>17</maven.compiler.testSource>
+        <maven.compiler.testTarget>17</maven.compiler.testTarget>
         <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
         <checkstyle_config_location>${project.basedir}</checkstyle_config_location>
         <logback-classic.version>1.5.15</logback-classic.version>
@@ -444,11 +444,8 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
+                <version>3.14.0</version>
                 <configuration>
-
-                    <release>11</release>
-
                     <forceLegacyJavacApi>false</forceLegacyJavacApi>
                     <encoding>UTF-8</encoding>
                     <!-- Allows running the compiler in a separate process. If false it uses the built-in compiler,
