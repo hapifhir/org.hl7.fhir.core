@@ -1,13 +1,12 @@
-package org.hl7.fhir.r5.terminologies;
+package org.hl7.fhir.r4b.terminologies;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.elementmodel.ObjectConverter;
-import org.hl7.fhir.r5.fhirpath.*;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.r4b.context.IWorkerContext;
+import org.hl7.fhir.r4b.fhirpath.*;
+import org.hl7.fhir.r4b.elementmodel.Element;
+import org.hl7.fhir.r4b.elementmodel.ObjectConverter;
+import org.hl7.fhir.r4b.model.*;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -18,7 +17,7 @@ import java.util.List;
 public class TerminologyFunctions {
 
 
-  public static abstract class TerminologyFunctionBase extends FHIRPathFunctionDefinition {
+  public static abstract class TerminologyFunctionBase extends FHiRPathFunctionDefinition {
 
     protected FHIRException makeExceptionPlural(FHIRPathEngine engine, Integer num, String constName, Object... args) {
       String fmt = engine.getWorker().formatMessagePlural(num, constName, args);
@@ -53,10 +52,6 @@ public class TerminologyFunctions {
       return this;
     }
 
-    @Override
-    public FhirPublication getFHIRPublicationVersion() {
-      return null;
-    }
   }
 
   public static class ExpandFunction extends TerminologyFunctionBase {
@@ -93,12 +88,12 @@ public class TerminologyFunctions {
         }
         ValueSet vs = null;
         if (param1.get(0).isPrimitive()) {
-          vs = engine.getWorker().findTxResource(ValueSet.class, param1.get(0).primitiveValue());
+          vs = engine.getWorker().fetchResource(ValueSet.class, param1.get(0).primitiveValue());
         } else {
           // nothing
         }
         if (vs != null) {
-          ValueSetExpansionOutcome exp = engine.getWorker().expandVS(vs, true, false);
+          ValueSetExpander.ValueSetExpansionOutcome exp = engine.getWorker().expandVS(vs, true, false);
           if (exp.isOk() && exp.getValueset() != null) {
             result.add(exp.getValueset());
           }
@@ -144,7 +139,7 @@ public class TerminologyFunctions {
         }
         ValueSet vs = null;
         if (param1.get(0).isPrimitive()) {
-          vs = engine.getWorker().findTxResource(ValueSet.class, param1.get(0).primitiveValue());
+          vs = engine.getWorker().fetchResource(ValueSet.class, param1.get(0).primitiveValue());
         } else {
           // nothing
         }
@@ -155,15 +150,15 @@ public class TerminologyFunctions {
           }
           Base coded = param2.get(0);
           if (coded.isPrimitive()) {
-            ValidationResult vr = engine.getWorker().validateCode(ValidationOptions.defaults(), coded.primitiveValue(), vs);
+            IWorkerContext.ValidationResult vr = engine.getWorker().validateCode(ValidationOptions.defaults(), coded.primitiveValue(), vs);
             result.add(vr.getOrMakeParameters());
           } else if ("Coding".equals(coded.fhirType())) {
             Coding coding = coded instanceof Coding ? (Coding) coded : ObjectConverter.readAsCoding((Element) coded);
-            ValidationResult vr = engine.getWorker().validateCode(ValidationOptions.defaults(), coded.primitiveValue(), vs);
+            IWorkerContext.ValidationResult vr = engine.getWorker().validateCode(ValidationOptions.defaults(), coded.primitiveValue(), vs);
             result.add(vr.getOrMakeParameters());
           } else if ("CodeableConcept".equals(coded.fhirType())) {
             CodeableConcept cc = coded instanceof CodeableConcept ? (CodeableConcept) coded : ObjectConverter.readAsCodeableConcept((Element) coded);
-            ValidationResult vr = engine.getWorker().validateCode(ValidationOptions.defaults(), coded.primitiveValue(), vs);
+            IWorkerContext.ValidationResult vr = engine.getWorker().validateCode(ValidationOptions.defaults(), coded.primitiveValue(), vs);
             result.add(vr.getOrMakeParameters());
           }
         }
@@ -207,7 +202,7 @@ public class TerminologyFunctions {
         }
         ConceptMap cm = null;
         if (param1.get(0).isPrimitive()) {
-          cm = engine.getWorker().findTxResource(ConceptMap.class, param1.get(0).primitiveValue());
+          cm = engine.getWorker().fetchResource(ConceptMap.class, param1.get(0).primitiveValue());
         } else {
           // nothing
         }

@@ -26,6 +26,7 @@ import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.TerminologyFunctions;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.xml.XMLUtil;
