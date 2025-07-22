@@ -494,6 +494,26 @@ public class ExtensionUtilities {
       resource.getExtension().add(new Extension(uri).setValue(new UriType(value)));
   }
 
+  public static void setCanonicalExtension(DomainResource resource, String uri, String value) {
+    if (Utilities.noString(value))
+      return;
+    Extension ext = getExtension(resource, uri);
+    if (ext != null)
+      ext.setValue(new UriType(value));
+    else
+      resource.getExtension().add(new Extension(uri).setValue(new CanonicalType(value)));
+  }
+
+  public static void setCanonicalExtension(Element resource, String uri, String value) {
+    if (Utilities.noString(value))
+      return;
+    Extension ext = getExtension(resource, uri);
+    if (ext != null)
+      ext.setValue(new UriType(value));
+    else
+      resource.getExtension().add(new Extension(uri).setValue(new CanonicalType(value)));
+  }
+
   public static void setUrlExtension(DomainResource resource, String uri, String value) {
     if (Utilities.noString(value))
       return;
