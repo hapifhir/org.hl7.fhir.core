@@ -252,7 +252,7 @@ public class PackageHacker {
   public static JsonObject fixPackageOnLoad(JsonObject npm)  {
     String ref = npm.asString("url");
     if (ref != null) {
-      String nref = ref;
+      String nref = fixPackageUrl(ref);
       if (!nref.equals(ref)) {
         npm.set("url", nref);
       }
