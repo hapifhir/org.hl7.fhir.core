@@ -1,12 +1,10 @@
-package org.hl7.fhir.dstu3.utils;
+package org.hl7.fhir.r4b.utils;
 
-import org.hl7.fhir.dstu3.model.Base;
-import org.hl7.fhir.dstu3.model.Element;
-import org.hl7.fhir.dstu3.model.Property;
-import org.hl7.fhir.dstu3.model.Resource;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.r4b.model.Base;
+import org.hl7.fhir.r4b.model.Element;
+import org.hl7.fhir.r4b.model.Property;
+import org.hl7.fhir.r4b.model.Resource;
 
-@MarkedToMoveToAdjunctPackage
 public class ElementVisitor {
 
   public enum ElementVisitorInstruction {
