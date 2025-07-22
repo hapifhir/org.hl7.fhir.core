@@ -23,7 +23,6 @@ public class R5ExampleFinder {
   }
 
   private void exec(JsonObject json, File file) {
-    System.out.println(file.getAbsolutePath());
     for (File f : file.listFiles()) {
       if (f.isDirectory()) {
         exec(json, f);
