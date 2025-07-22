@@ -3098,7 +3098,7 @@ public class ProfileUtilities {
     if (Utilities.existsInList(extension.getUrl(), ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) {
       Extension sub = extension.getExtensionByUrl(ExtensionDefinitions.EXT_OBLIGATION_SOURCE, ExtensionDefinitions.EXT_OBLIGATION_SOURCE_SHORT);
       if (sub == null || overrideSource) {
-        ExtensionUtilities.setUriExtension(extension, ExtensionDefinitions.EXT_OBLIGATION_SOURCE, srcSD.getVersionedUrl());
+        ExtensionUtilities.setCanonicalExtension(extension, ExtensionDefinitions.EXT_OBLIGATION_SOURCE, srcSD.getVersionedUrl());
       }
     }
     return extension;

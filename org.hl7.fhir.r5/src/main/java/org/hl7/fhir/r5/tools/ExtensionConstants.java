@@ -83,7 +83,7 @@ public class ExtensionConstants {
   public static final String EXT_SELECT_BY_MAP = "http://hl7.org/fhir/tools/StructureDefinition/select-by-map"; // Select By Map
   public static final String EXT_SNAPSHOT_BASE_VERSION = "http://hl7.org/fhir/tools/StructureDefinition/snapshot-base-version"; // Snapshot Base Version
   public static final String EXT_EXTENSION_SNAPSHOT_BEHAVIOR = "http://hl7.org/fhir/tools/StructureDefinition/snapshot-behavior"; // Extension Snapshot Behavior
-  public static final String EXT_EXTENSION_SNAPSHOT_SOURCE = "http://hl7.org/fhir/tools/StructureDefinition/snapshot-source"; // Extension Snapshot Source
+  public static final String EXT_EXTENSION_SNAPSHOT_SOURCE = "http://hl7.org/fhir/tools/StructureDefinition/snapshot-base-version"; // Extension Snapshot Source
   public static final String EXT_TYPE_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/type-parameter"; // Type Parameter Extension
   public static final String EXT_TYPE_SPECIFIER = "http://hl7.org/fhir/tools/StructureDefinition/type-specifier"; // Type Specifier Extension
   public static final String EXT_VALUE_SET_EXPANSION_PARAMETER_OLD = "http://hl7.org/fhir/tools/StructureDefinition/valueset-expansion-parameter"; // ValueSet Expansion Parameter
