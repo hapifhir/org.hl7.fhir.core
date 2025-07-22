@@ -54,7 +54,8 @@ public class PackageCacheTests {
   @Test
   public void testNotCaseSensitive() throws IOException {
     FilesystemPackageCacheManager cache = new FilesystemPackageCacheManager.Builder().withTestingCacheFolder().build();
-    cache.clear();    
+    cache.clear();
+    System.out.println("sun.jnu.encoding=" + System.getProperty("sun.jnu.encoding"));
     Assertions.assertEquals(cache.loadPackage("KBV.Basis", "1.1.3").version(), "1.1.3");
     Assertions.assertEquals(cache.loadPackage("kbv.basis", "1.1.3").version(), "1.1.3");    
   }
