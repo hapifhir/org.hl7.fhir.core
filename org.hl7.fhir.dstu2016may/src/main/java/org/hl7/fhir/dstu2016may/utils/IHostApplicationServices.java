@@ -1,33 +1,44 @@
-package org.hl7.fhir.r5.fhirpath;
+package org.hl7.fhir.dstu2016may.utils;
 
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.dstu2016may.model.Base;
+import org.hl7.fhir.dstu2016may.model.ExpressionNode;
+import org.hl7.fhir.dstu2016may.model.ExpressionNode.TypeDetails;
+import org.hl7.fhir.dstu2016may.model.Type;
 import org.hl7.fhir.exceptions.PathEngineException;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 
 import java.util.List;
 
-/**
- * This interface allows the application making use of a FHIRPathEngine to provide
- * additional services that can be used in the FHIRPath statements. The services fall into
- * two categories: extending the FHIRPath engine with types, constants and functions, and
- * performing work that the FHIRPath engine doesn't know how to do itself
- *
- * Functionality:
- *  * resolveConstant()/resolveConstantType() - register constants
- *  * log() - do something when .log() is used in the FHIRPath statement
- *  * resolveFunction() / checkFunction() / executeFunction() - allow the application to define FHIRPath functions of it's own
- *  * resolveReference() - called when a FHIRPath statement uses 'resolve()' so the host application can attempt to resolve the reference
- *  * resolveValueSet() - called when memberOf() is used
- *  * conformsToProfile() - check that the content conforms to the stated profile. Used by the ValidationEngine - not generally suitable for applications to provide their own interface
- *  * paramIsType() - used when the FHIRPath statement
- *
- *  Note that his used to be called IEvaluationContext in the FHIRPathEngine class, but was renamed
- *  due to a broken interface - see comments at https://github.com/hapifhir/org.hl7.fhir.core/releases/tag/6.6.0
- */
-
+// if the fhir path expressions are allowed to use constants beyond those
+// defined in the specification
+// the application can implement them by providing a constant resolver
 public interface IHostApplicationServices {
+  public class FunctionDetails {
+    private String description;
+    private int minParameters;
+    private int maxParameters;
+
+    public FunctionDetails(String description, int minParameters, int maxParameters) {
+      super();
+      this.description = description;
+      this.minParameters = minParameters;
+      this.maxParameters = maxParameters;
+    }
+
+    public String getDescription() {
+      return description;
+    }
+
+    public int getMinParameters() {
+      return minParameters;
+    }
+
+    public int getMaxParameters() {
+      return maxParameters;
+    }
+
+  }
+
 
   /**
    * A constant reference - e.g. a reference to a name that must be resolved in context.
@@ -68,14 +79,7 @@ public interface IHostApplicationServices {
    */
   public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException;
 
-  /**
-   * when the .log() function is called
-   *
-   * @param argument
-   * @param focus
-   * @return
-   */
-  public boolean log(String argument, List<Base> focus);
+  public boolean Log(String argument, List<Base> focus);
 
   // extensibility for functions
 
@@ -83,16 +87,18 @@ public interface IHostApplicationServices {
    * @param functionName
    * @return null if the function is not known
    */
-  public FHIRPathUtilityClasses.FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName);
+  public FunctionDetails resolveFunction(String functionName);
 
   /**
-   * Check the function parameters, and throw an error if they are incorrect, or return the type for the function
+   * Check the function parameters, and throw an error if they are incorrect, or
+   * return the type for the function
    *
    * @param functionName
    * @param parameters
    * @return
    */
-  public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters) throws PathEngineException;
+  public ExpressionNode.TypeDetails checkFunction(Object appContext, String functionName, List<ExpressionNode.TypeDetails> parameters)
+    throws PathEngineException;
 
   /**
    * @param appContext
@@ -100,30 +106,5 @@ public interface IHostApplicationServices {
    * @param parameters
    * @return
    */
-  public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters);
-
-  /**
-   * Implementation of resolve() function. Passed a string, return matching resource, if one is known - else null
-   *
-   * @param url the reference (Reference.reference or the value of the canonical
-   * @return
-   * @throws FHIRException
-   * @appContext - passed in by the host to the FHIRPathEngine
-   */
-  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException;
-
-  public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException;
-
-  /*
-   * return the value set referenced by the url, which has been used in memberOf()
-   */
-  public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url);
-
-  /**
-   * For the moment, there can only be one parameter if it's a type parameter
-   *
-   * @param name
-   * @return true if it's a type parameter
-   */
-  public boolean paramIsType(String name, int index);
+  public List<Base> executeFunction(Object appContext, String functionName, List<List<Base>> parameters);
 }

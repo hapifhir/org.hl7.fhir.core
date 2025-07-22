@@ -1,9 +1,9 @@
-package org.hl7.fhir.r5.fhirpath;
+package org.hl7.fhir.r4b.fhirpath;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r4b.model.Base;
+import org.hl7.fhir.r4b.model.ValueSet;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 
 import java.util.List;
@@ -86,7 +86,8 @@ public interface IHostApplicationServices {
   public FHIRPathUtilityClasses.FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName);
 
   /**
-   * Check the function parameters, and throw an error if they are incorrect, or return the type for the function
+   * Check the function parameters, and throw an error if they are incorrect, or
+   * return the type for the function
    *
    * @param functionName
    * @param parameters
