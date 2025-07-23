@@ -182,6 +182,7 @@ import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.HL7WorkGroups.HL7WorkGroup;
 import org.hl7.fhir.utilities.Utilities.DecimalStatus;
 import org.hl7.fhir.utilities.VersionUtilities.VersionURLInfo;
+import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResultException;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -4018,7 +4019,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (noTerminologyChecks)
       return true;
-          
+
     boolean ok = true;
     String value = element.primitiveValue();
 
@@ -7640,7 +7641,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (!namedExtensionTypeIsOk(ei.getElement().getProperty(), ed)) {
             bh.see(rule(errors, NO_RULE_DATE, IssueType.NOTSUPPORTED, stack, false, I18nConstants.VALIDATION_VAL_NAMED_EXTENSIONS_BAD_TYPE, 
                 childDefinitions.getSource().getVersionedUrl(), ed.getPath(), ed.typeSummary(), ei.getElement().getProperty().getStructure().getType()));                    
-          } else if (!namedExtensionContextIsOk(errors, stack, ei.getElement().getProperty(), stack.getLogicalPaths(), contexts)) {
+          } else if (!namedExtensionContextIsOk(errors, stack, ei.getElement().getProperty(), profile, stack.getLogicalPaths(), contexts)) {
             bh.see(rule(errors, NO_RULE_DATE, IssueType.NOTSUPPORTED, stack, false, I18nConstants.VALIDATION_VAL_NAMED_EXTENSIONS_BAD_CONTEXT, 
                 ei.getElement().getProperty().getStructure().getVersionedUrl(), ed.getPath(), CommaSeparatedStringBuilder.join(",", Utilities.sorted(contexts)),
                 CommaSeparatedStringBuilder.join(",", Utilities.sorted(stack.getLogicalPaths()))));                    
@@ -7759,7 +7760,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
 
-  private boolean namedExtensionContextIsOk(List<ValidationMessage> errors, NodeStack stack, org.hl7.fhir.r5.elementmodel.Property property, Set<String> logicalPaths, Set<String> contexts) {
+  private boolean namedExtensionContextIsOk(List<ValidationMessage> errors, NodeStack stack, org.hl7.fhir.r5.elementmodel.Property property, StructureDefinition ctxtProfile, Set<String> logicalPaths, Set<String> contexts) {
     StructureDefinition sd = property.getStructure();
     if (!sd.hasContext()) {
       return true;
@@ -7767,7 +7768,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     for (StructureDefinitionContextComponent ctxt : sd.getContext()) {
       switch (ctxt.getType()) {
       case ELEMENT:
-        contexts.add("element:"+ctxt.getExpression());
+        String exp = ctxt.getExpression();
+        if (exp.contains("#")) {
+          String u = exp.substring(0, exp.indexOf("#"));
+          if (!u.equals(ctxtProfile.getUrl())) {
+            break;
+          }
+          exp = exp.substring(exp.indexOf("#")+1);
+        }
+        contexts.add("element:"+exp);
         for (String lp : logicalPaths) {
           if (lp.equals(ctxt.getExpression())) {
             return true;

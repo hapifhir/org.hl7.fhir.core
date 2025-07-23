@@ -431,7 +431,7 @@ public class ExpressionNode {
         b.append("'" + Utilities.escapeJson(constant.primitiveValue()) + "'");
       } else if (constant instanceof Quantity) {
         Quantity q = (Quantity) constant;
-        b.append(Utilities.escapeJson(q.getValue().toPlainString()));
+        b.append(Utilities.escapeJson(q.hasValue() ? q.getValue().toPlainString() : ""));
         if (q.hasUnit() || q.hasCode()) {
           b.append(" '");
           if (q.hasUnit()) {
