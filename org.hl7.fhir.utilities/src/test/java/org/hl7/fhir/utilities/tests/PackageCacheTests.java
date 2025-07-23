@@ -56,8 +56,8 @@ public class PackageCacheTests {
     FilesystemPackageCacheManager cache = new FilesystemPackageCacheManager.Builder().withTestingCacheFolder().build();
     cache.clear();
     System.out.println("sun.jnu.encoding=" + System.getProperty("sun.jnu.encoding"));
-    Assertions.assertEquals("1.1.3", cache.loadPackage("KBV.Basis", "1.7.0").version());
-    Assertions.assertEquals("1.1.3", cache.loadPackage("kbv.basis", "1.7.0").version());
+    Assertions.assertEquals("1.7.0", cache.loadPackage("KBV.Basis", "1.7.0").version());
+    Assertions.assertEquals("1.7.0", cache.loadPackage("kbv.basis", "1.7.0").version());
   }
   
   @Test
