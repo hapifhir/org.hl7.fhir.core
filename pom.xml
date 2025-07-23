@@ -401,7 +401,7 @@
                         <!-- We need to include the ${argLine} here so the Jacoco test arguments are included in the
                          Surefire testing run. This may appear as an error in some IDEs, but it will run regardless.
                         -->
-                        <argLine>@{argLine} -Xmx3500m -XX:MaxRAMPercentage=50.0</argLine>
+                        <argLine>@{argLine} -Xmx3500m -XX:MaxRAMPercentage=50.0 -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8</argLine>
                         <systemPropertyVariables>
                             <java.locale.providers>COMPAT</java.locale.providers>
                             <!--    For JUnit4 use TestUtilities.runningAsSurefire() or
