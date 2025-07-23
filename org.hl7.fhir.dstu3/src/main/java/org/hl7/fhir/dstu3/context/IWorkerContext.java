@@ -37,16 +37,8 @@ import java.util.Set;
 
 import org.hl7.fhir.dstu3.formats.IParser;
 import org.hl7.fhir.dstu3.formats.ParserType;
-import org.hl7.fhir.dstu3.model.CodeSystem;
+import org.hl7.fhir.dstu3.model.*;
 import org.hl7.fhir.dstu3.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.dstu3.model.CodeableConcept;
-import org.hl7.fhir.dstu3.model.Coding;
-import org.hl7.fhir.dstu3.model.ConceptMap;
-import org.hl7.fhir.dstu3.model.ExpansionProfile;
-import org.hl7.fhir.dstu3.model.MetadataResource;
-import org.hl7.fhir.dstu3.model.Resource;
-import org.hl7.fhir.dstu3.model.StructureDefinition;
-import org.hl7.fhir.dstu3.model.ValueSet;
 import org.hl7.fhir.dstu3.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.dstu3.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -293,8 +285,20 @@ public interface IWorkerContext {
     public TerminologyServiceErrorClass getErrorClass() {
       return errorClass;
     }
-    
-    
+
+
+
+    public Parameters getOrMakeParameters() {
+      Parameters p = new Parameters();
+      p.addParameter().setName("result").setValue(new BooleanType(isOk()));
+      if (getMessage() != null) {
+        p.addParameter().setName("message").setValue(new StringType(getMessage()));
+      }
+      if (getDisplay() != null) {
+        p.addParameter().setName("display").setValue(new StringType(getDisplay()));
+      }
+      return p;
+    }
   }
 
   /**
@@ -426,6 +430,9 @@ public interface IWorkerContext {
       return errorClass;
     }
 
+    public boolean isOk() {
+      return error == null;
+    }
   }
 
   public enum TerminologyServiceErrorClass {
