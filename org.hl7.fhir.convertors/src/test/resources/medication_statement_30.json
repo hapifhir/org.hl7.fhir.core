@@ -48,6 +48,17 @@
       ]
     }
   ],
+  "reasonNotTaken": [
+    {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "32914009",
+          "display": "this should be merged with reasonCode in 40"
+        }
+      ]
+    }
+  ],
   "note": [
     {
       "text": "Patient indicates they miss the occasional dose"

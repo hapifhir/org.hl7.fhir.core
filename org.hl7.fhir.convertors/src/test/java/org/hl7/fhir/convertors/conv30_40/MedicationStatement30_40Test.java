@@ -5,9 +5,13 @@ import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -29,6 +33,57 @@ public class MedicationStatement30_40Test {
     Assertions.assertTrue(r4Expected.equalsDeep(r4Converted),
       "Failed comparing\n" + r4Parser.composeString(r4Expected) + "\nand\n" + r4Parser.composeString(r4Converted));
   }
+
+
+  //    src.status where (src.taken in ('n' | 'unk')).not() -> tgt.status;
+  //    src.taken where value = 'n' -> tgt.status = 'not-taken';
+  //    src.taken where value = 'unk' -> tgt.status = 'unknown';
+  private static Stream<Arguments> statusTakenConversionInput30To40() {
+    return Stream.of(
+      Arguments.of(
+        org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus.ACTIVE,
+        org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementTaken.Y,
+        org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.ACTIVE),
+      Arguments.of(
+        org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus.ONHOLD,
+        org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementTaken.NA,
+        org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.ONHOLD),
+      Arguments.of(
+        org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus.ACTIVE,
+        org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementTaken.N,
+        org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.NOTTAKEN),
+      Arguments.of(
+        org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus.ACTIVE,
+        org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementTaken.UNK,
+        org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.UNKNOWN)
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("statusTakenConversionInput30To40")
+  public void testStatusConversion30To40(org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus statusInput,
+                                         org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementTaken takenInput,
+                                         org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus expectedOutput) {
+
+    org.hl7.fhir.dstu3.model.MedicationStatement dstu3 = new org.hl7.fhir.dstu3.model.MedicationStatement();
+    dstu3.setStatus(statusInput);
+    dstu3.setTaken(takenInput);
+
+    org.hl7.fhir.r4.model.MedicationStatement r4result = (org.hl7.fhir.r4.model.MedicationStatement) VersionConvertorFactory_30_40.convertResource(dstu3);
+    Assertions.assertEquals(expectedOutput, r4result.getStatus());
+
+    Assertions.assertTrue(r4result.hasExtension(VersionConvertorConstants.EXT_MED_STAT_STATUS));
+    org.hl7.fhir.r4.model.Extension statusExtension = r4result.getExtensionByUrl(VersionConvertorConstants.EXT_MED_STAT_STATUS);
+    org.hl7.fhir.r4.model.StringType statusExtensionValue = Assertions.assertInstanceOf(org.hl7.fhir.r4.model.StringType.class, statusExtension.getValue());
+    Assertions.assertEquals(statusInput.toCode(), statusExtensionValue.getValue());
+
+
+    Assertions.assertTrue(r4result.hasExtension(VersionConvertorConstants.EXT_MED_STAT_TAKEN));
+    org.hl7.fhir.r4.model.Extension takenExtension = r4result.getExtensionByUrl(VersionConvertorConstants.EXT_MED_STAT_TAKEN);
+    org.hl7.fhir.r4.model.StringType takenExtensionValue = Assertions.assertInstanceOf(org.hl7.fhir.r4.model.StringType.class, takenExtension.getValue());
+    Assertions.assertEquals(takenInput.toCode(), takenExtensionValue.getValue());
+  }
+
 
   @Test
   public void convertMedicationStatement40to30() throws IOException {

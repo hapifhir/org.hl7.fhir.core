@@ -1,6 +1,16 @@
 {
   "resourceType": "MedicationStatement",
   "id": "example001",
+  "extension": [
+    {
+      "url": "http://hl7.org/fhir/3.0/StructureDefinition/extension-MedicationStatement.status",
+      "valueString": "active"
+    },
+    {
+      "url": "http://hl7.org/fhir/3.0/StructureDefinition/extension-MedicationStatement.taken",
+      "valueString": "n"
+    }
+  ],
   "identifier": [
     {
       "use": "official",
@@ -8,7 +18,7 @@
       "value": "12345689"
     }
   ],
-  "status": "active",
+  "status": "not-taken",
   "category": {
     "coding": [
       {
@@ -21,13 +31,13 @@
   "medicationReference": {
     "reference": "#med0309"
   },
-  "effectiveDateTime": "2015-01-23",
-  "dateAsserted": "2015-02-22",
-  "informationSource": {
+  "subject": {
     "reference": "Patient/pat1",
     "display": "Donald Duck"
   },
-  "subject": {
+  "effectiveDateTime": "2015-01-23",
+  "dateAsserted": "2015-02-22",
+  "informationSource": {
     "reference": "Patient/pat1",
     "display": "Donald Duck"
   },
@@ -36,7 +46,6 @@
       "reference": "MedicationRequest/medrx002"
     }
   ],
-  "taken": "n",
   "reasonCode": [
     {
       "coding": [
@@ -44,6 +53,15 @@
           "system": "http://snomed.info/sct",
           "code": "32914008",
           "display": "Restless Legs"
+        }
+      ]
+    },
+    {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "32914009",
+          "display": "this should be merged with reasonCode in 40"
         }
       ]
     }
@@ -87,20 +105,24 @@
           }
         ]
       },
-      "doseRange": {
-        "low": {
-          "value": 1,
-          "unit": "TAB",
-          "system": "http://hl7.org/fhir/v3/orderableDrugForm",
-          "code": "TAB"
-        },
-        "high": {
-          "value": 2,
-          "unit": "TAB",
-          "system": "http://hl7.org/fhir/v3/orderableDrugForm",
-          "code": "TAB"
+      "doseAndRate": [
+        {
+          "doseRange": {
+            "low": {
+              "value": 1,
+              "unit": "TAB",
+              "system": "http://hl7.org/fhir/v3/orderableDrugForm",
+              "code": "TAB"
+            },
+            "high": {
+              "value": 2,
+              "unit": "TAB",
+              "system": "http://hl7.org/fhir/v3/orderableDrugForm",
+              "code": "TAB"
+            }
+          }
         }
-      }
+      ]
     }
   ]
 }
