@@ -18,7 +18,7 @@ public class MedicationStatement30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.MedicationStatement tgt = new org.hl7.fhir.dstu3.model.MedicationStatement();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_MED_STAT_STATUS, VersionConvertorConstants.EXT_MED_STAT_TAKEN);
 
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier30_40.convertIdentifier(t));

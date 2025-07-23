@@ -69,6 +69,8 @@ public class MedicationStatement30_40Test {
     org.hl7.fhir.dstu3.model.MedicationStatement dstu3Converted = (org.hl7.fhir.dstu3.model.MedicationStatement) VersionConvertorFactory_30_40.convertResource(r4Actual);
     Assertions.assertEquals(org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus.INTENDED, dstu3Converted.getStatus());
     Assertions.assertEquals(org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementTaken.UNK, dstu3Converted.getTaken());
+    Assertions.assertFalse(dstu3Converted.hasExtension(VersionConvertorConstants.EXT_MED_STAT_STATUS));
+    Assertions.assertFalse(dstu3Converted.hasExtension(VersionConvertorConstants.EXT_MED_STAT_TAKEN));
   }
 
   @Test
@@ -80,6 +82,8 @@ public class MedicationStatement30_40Test {
     org.hl7.fhir.dstu3.model.MedicationStatement dstu3Converted = (org.hl7.fhir.dstu3.model.MedicationStatement) VersionConvertorFactory_30_40.convertResource(r4Actual);
     Assertions.assertNull(dstu3Converted.getStatus());
     Assertions.assertNull(dstu3Converted.getTaken());
+    Assertions.assertFalse(dstu3Converted.hasExtension(VersionConvertorConstants.EXT_MED_STAT_STATUS));
+    Assertions.assertFalse(dstu3Converted.hasExtension(VersionConvertorConstants.EXT_MED_STAT_TAKEN));
   }
 
   @Test
