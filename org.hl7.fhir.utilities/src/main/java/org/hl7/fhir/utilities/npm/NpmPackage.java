@@ -561,7 +561,7 @@ public class NpmPackage {
     } catch (Exception e) {
       throw new IOException("Error reading "+(desc == null ? "package" : desc)+": "+e.getMessage(), e);      
     }
-    try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn)) {
+    try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn, StandardCharsets.UTF_8.toString())) {
       TarArchiveEntry entry;
 
       while ((entry = tarIn.getNextEntry()) != null) {
