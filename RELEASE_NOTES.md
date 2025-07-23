@@ -11,3 +11,4 @@
 * fix issue with wrong us core 311 web reference
 * Split dstu3 package contents to prevent duplicate packages (#2105)
 * add ElementVisitor to older FHIR versions
+* Bump gson to 2.13.1 #2104
