@@ -68,7 +68,7 @@ parameters:
         - name: windows_java_21
           image: windows-latest
           jdk: 1.21
-          javaToolOptions:
+          javaToolOptions: -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8
         - name: macos_java_17
           image: macos-latest
           jdk: 1.17
