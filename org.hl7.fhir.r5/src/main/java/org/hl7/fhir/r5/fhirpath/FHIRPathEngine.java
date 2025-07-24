@@ -2026,15 +2026,29 @@ public class FHIRPathEngine {
       result.add(new BooleanType(false).noExtensions());
     else {
       String tn = convertToString(right);
-      if (left.get(0) instanceof org.hl7.fhir.r5.elementmodel.Element) {
-        result.add(new BooleanType(left.get(0).hasType(tn)).noExtensions());
-      } else if ((left.get(0) instanceof Element) && ((Element) left.get(0)).isDisallowExtensions()) {
-        result.add(new BooleanType(Utilities.capitalize(left.get(0).fhirType()).equals(tn) || ("System."+Utilities.capitalize(left.get(0).fhirType())).equals(tn)).noExtensions());
-      } else {
-        if (left.get(0).fhirType().equals(tn)) {
+      var leftValue = left.get(0);
+      var leftFhirType = leftValue.fhirType();
+      if (leftValue instanceof org.hl7.fhir.r5.elementmodel.Element) {
+        // Need to handle the fhir type inheritance here
+        if (leftFhirType.equals(tn)) {
           result.add(new BooleanType(true).noExtensions());
         } else {
-          StructureDefinition sd = worker.fetchTypeDefinition(left.get(0).fhirType());
+          StructureDefinition sd = worker.fetchTypeDefinition(leftFhirType);
+          while (sd != null) {
+            if (tn.equals(sd.getType())) {
+              return makeBoolean(true);
+            }
+            sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
+          }
+          return makeBoolean(false);
+        }      
+      } else if ((leftValue instanceof Element) && ((Element) leftValue).isDisallowExtensions()) {
+        result.add(new BooleanType(Utilities.capitalize(leftFhirType).equals(tn) || ("System."+Utilities.capitalize(leftFhirType)).equals(tn)).noExtensions());
+      } else {
+        if (leftFhirType.equals(tn)) {
+          result.add(new BooleanType(true).noExtensions());
+        } else {
+          StructureDefinition sd = worker.fetchTypeDefinition(leftFhirType);
           while (sd != null) {
             if (tn.equals(sd.getType())) {
               return makeBoolean(true);
