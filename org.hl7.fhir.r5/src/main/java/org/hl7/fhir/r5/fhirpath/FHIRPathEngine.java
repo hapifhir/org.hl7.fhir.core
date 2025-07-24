@@ -3425,9 +3425,10 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     int i = 0;
     for (ExpressionNode exprParam : exp.getParameters()) {
       if (isExpressionParameter(exp, i)) {
-        paramTypes.add(executeType(changeThis(context, focus), focus, exprParam, elementDependencies, true, canBeNone, exp));
+        var newContext = changeThis(context, focus);
+        paramTypes.add(executeType(newContext, newContext.thisItem, exprParam, elementDependencies, true, canBeNone, exp));
       } else {
-        paramTypes.add(executeType(context, focus, exprParam, elementDependencies, true, canBeNone, exp));
+        paramTypes.add(executeType(context, context.thisItem, exprParam, elementDependencies, true, canBeNone, exp));
       }
       i++;
     }
@@ -4205,7 +4206,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         }
       } else {
         for (ExpressionNode p : exp.getParameters()) {
-          params.add(execute(context, focus, p, true));
+          params.add(execute(context, baseToList(context.thisItem), p, true));
         }
       }
       return hostServices.executeFunction(this, context.appInfo, focus, exp.getName(), params);
@@ -4217,7 +4218,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcHasTemplateIdOf(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
-    List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> swb = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String sw = convertToString(swb);
 
     StructureDefinition sd = this.worker.fetchResource(StructureDefinition.class, sw);
@@ -4412,7 +4413,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
     if (base.hasType("integer", "decimal", "unsignedInt", "positiveInt")) {
-      List<Base> n1 = execute(context, focus, expr.getParameters().get(0), true);
+      List<Base> n1 = execute(context, baseToList(context.thisItem), expr.getParameters().get(0), true);
       if (n1.size() == 0) {
         // no base, so we just return nothing (as per the spec)
         return new ArrayList<Base>();
@@ -4447,7 +4448,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
     if (base.hasType("integer", "decimal", "unsignedInt", "positiveInt")) {
-      List<Base> n1 = execute(context, focus, expr.getParameters().get(0), true);
+      List<Base> n1 = execute(context, baseToList(context.thisItem), expr.getParameters().get(0), true);
       if (n1.size() == 0) {
         // no base, so we just return nothing (as per the spec)
         return new ArrayList<Base>();
@@ -4498,7 +4499,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     }
     Integer precision = null;
     if (expr.getParameters().size() > 0) {
-      List<Base> n1 = execute(context, focus, expr.getParameters().get(0), true);
+      List<Base> n1 = execute(context, baseToList(context.thisItem), expr.getParameters().get(0), true);
       if (n1.size() != 1) {
         throw makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "lowBoundary", "0", "Multiple Values", "integer");
       }
@@ -4542,7 +4543,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     }
     Integer precision = null;
     if (expr.getParameters().size() > 0) {
-      List<Base> n1 = execute(context, focus, expr.getParameters().get(0), true);
+      List<Base> n1 = execute(context, baseToList(context.thisItem), expr.getParameters().get(0), true);
       if (n1.size() != 1) {
         throw makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "lowBoundary", "0", "Multiple Values", "integer");
       }
@@ -4610,7 +4611,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (base.hasType("integer", "decimal", "unsignedInt", "positiveInt")) {
       int i = 0;
       if (expr.getParameters().size() == 1) {
-        List<Base> n1 = execute(context, focus, expr.getParameters().get(0), true);
+        List<Base> n1 = execute(context, baseToList(context.thisItem), expr.getParameters().get(0), true);
         if (n1.size() != 1) {
           throw makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "power", "0", "Multiple Values", "integer");
         }
@@ -4646,7 +4647,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcEncode(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> nl = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String param = nl.get(0).primitiveValue();
 
     List<Base> result = new ArrayList<Base>();
@@ -4667,7 +4668,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcDecode(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> nl = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String param = nl.get(0).primitiveValue();
 
     List<Base> result = new ArrayList<Base>();
@@ -4687,7 +4688,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcEscape(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> nl = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String param = nl.get(0).primitiveValue();
 
     List<Base> result = new ArrayList<Base>();
@@ -4708,7 +4709,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcUnescape(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> nl = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String param = nl.get(0).primitiveValue();
 
     List<Base> result = new ArrayList<Base>();
@@ -4738,7 +4739,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcSplit(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> nl = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String param = nl.get(0).primitiveValue();
 
     List<Base> result = new ArrayList<Base>();
@@ -4753,14 +4754,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcJoin(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-    List<Base> nl = exp.getParameters().size() > 0 ? execute(context, focus, exp.getParameters().get(0), true) : new ArrayList<Base>();
+    List<Base> nl = exp.getParameters().size() > 0 ? execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true) : new ArrayList<Base>();
     String param = "";
     String param2 = "";
     if (exp.getParameters().size() > 0) {
       param = nl.get(0).primitiveValue();
       param2 = param;
       if (exp.getParameters().size() == 2) {
-        nl = execute(context, focus, exp.getParameters().get(1), true);
+        nl = execute(context, baseToList(context.thisItem), exp.getParameters().get(1), true);
         param2 = nl.get(0).primitiveValue();
       }
     }
@@ -4818,7 +4819,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (focus.size() != 1 || !(focus.get(0).fhirType().equals("Quantity"))) {
       return makeBoolean(false);          
     }
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> nl = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     if (nl.size() != 1 || !(nl.get(0).fhirType().equals("Quantity"))) {
       return makeBoolean(false);          
     }
@@ -4992,7 +4993,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
 
   private List<Base> funcMemberOf(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> nl = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     if (nl.size() != 1 || focus.size() != 1) {
       return new ArrayList<Base>();
     }
@@ -5046,9 +5047,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcReplace(ExecutionContext context, List<Base> focus, ExpressionNode expr) throws FHIRException, PathEngineException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> tB = execute(context, focus, expr.getParameters().get(0), true);
+    List<Base> tB = execute(context, baseToList(context.thisItem), expr.getParameters().get(0), true);
     String t = convertToString(tB);
-    List<Base> rB = execute(context, focus, expr.getParameters().get(1), true);
+    List<Base> rB = execute(context, baseToList(context.thisItem), expr.getParameters().get(1), true);
     String r = convertToString(rB);
 
     if (focus.size() == 0 || tB.size() == 0 || rB.size() == 0) {
@@ -5072,9 +5073,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcReplaceMatches(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> regexB = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> regexB = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String regex = convertToString(regexB);
-    List<Base> replB = execute(context, focus, exp.getParameters().get(1), true);
+    List<Base> replB = execute(context, baseToList(context.thisItem), exp.getParameters().get(1), true);
     String repl = convertToString(replB);
 
     if (focus.size() == 0 || regexB.size() == 0 || replB.size() == 0) {
@@ -5092,7 +5093,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcEndsWith(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> swb = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String sw = convertToString(swb);
 
     if (focus.size() == 0) {
@@ -5224,7 +5225,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
 
   private List<Base> funcTake(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    List<Base> n1 = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> n1 = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     int i1 = Integer.parseInt(n1.get(0).primitiveValue());
 
     List<Base> result = new ArrayList<Base>();
@@ -5242,7 +5243,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         result.add(item);
       }
     }
-    for (Base item : execute(context, focus, exp.getParameters().get(0), true)) {
+    for (Base item : execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true)) {
       if (!doContains(result, item)) {
         result.add(item);
       }
@@ -5255,7 +5256,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     for (Base item : focus) {
       result.add(item);
     }
-    for (Base item : execute(context, focus, exp.getParameters().get(0), true)) {
+    for (Base item : execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true)) {
       result.add(item);
     }
     return result;
@@ -5263,7 +5264,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcIntersect(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> other = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> other = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
 
     for (Base item : focus) {
       if (!doContains(result, item) && doContains(other, item)) {
@@ -5275,7 +5276,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcExclude(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> other = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> other = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
 
     for (Base item : focus) {
       if (!doContains(other, item)) {
@@ -5537,7 +5538,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
 
   private List<Base> funcSupersetOf(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    List<Base> target = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> target = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
 
     boolean valid = true;
     for (Base item : target) {
@@ -5560,7 +5561,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
 
   private List<Base> funcSubsetOf(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    List<Base> target = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> target = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
 
     boolean valid = true;
     for (Base item : focus) {
@@ -5652,7 +5653,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcExtension(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> nl = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String url = nl.get(0).primitiveValue();
 
     for (Base item : focus) {
@@ -5810,10 +5811,10 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcTrace(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> nl = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String name = nl.get(0).primitiveValue();
     if (exp.getParameters().size() == 2) {
-      List<Base> n2 = execute(context, focus, exp.getParameters().get(1), true);
+      List<Base> n2 = execute(context, baseToList(context.thisItem), exp.getParameters().get(1), true);
       log(name, n2);
     } else { 
       log(name, focus);
@@ -5827,7 +5828,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     List<Base> value;
     if (exp.getParameters().size() == 2) {
       value = execute(context, focus, exp.getParameters().get(1), true);
-    } else { 
+    } else {
       value = focus;
     }
     // stash the variable into the context
@@ -5836,9 +5837,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcCheck(ExecutionContext context, List<Base> focus, ExpressionNode expr) throws FHIRException {
-    List<Base> n1 = execute(context, focus, expr.getParameters().get(0), true);
+    List<Base> n1 = execute(context, baseToList(context.thisItem), expr.getParameters().get(0), true);
     if (!convertToBoolean(n1)) {
-      List<Base> n2 = execute(context, focus, expr.getParameters().get(1), true);
+      List<Base> n2 = execute(context, baseToList(context.thisItem), expr.getParameters().get(1), true);
       String name = n2.get(0).primitiveValue();
       throw makeException(expr, I18nConstants.FHIRPATH_CHECK_FAILED, name);
     }
@@ -5871,7 +5872,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcMatches(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> swb = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String sw = convertToString(swb);
 
     if (focus.size() == 0 || swb.size() == 0) {
@@ -5896,7 +5897,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcMatchesFull(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    String sw = convertToString(execute(context, focus, exp.getParameters().get(0), true));
+    String sw = convertToString(execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true));
 
     if (focus.size() == 1 && !Utilities.noString(sw)) {
       if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
@@ -5918,7 +5919,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcContains(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> swb = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String sw = convertToString(swb);
 
     if (focus.size() != 1) {
@@ -5966,7 +5967,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcStartsWith(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> swb = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String sw = convertToString(swb);
 
     if (focus.size() == 0) {
@@ -6026,7 +6027,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       return result;
     }
 
-    List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> swb = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String sw = convertToString(swb);
     if (swb.size() == 0) {
       // no result
@@ -6050,7 +6051,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       return result;
     }
 
-    List<Base> n1 = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> n1 = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     if (n1.size() == 0) {
       // the start parameter is not present, so return an empty list)
       return result;
@@ -6058,7 +6059,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     int i1 = Integer.parseInt(n1.get(0).primitiveValue());
     int i2 = -1;
     if (exp.parameterCount() == 2) {
-      List<Base> n2 = execute(context, focus, exp.getParameters().get(1), true);
+      List<Base> n2 = execute(context, baseToList(context.thisItem), exp.getParameters().get(1), true);
       if (n2.isEmpty()|| !n2.get(0).isPrimitive() || !Utilities.isInteger(n2.get(0).primitiveValue())) {
         return new ArrayList<Base>();
       }
@@ -6168,7 +6169,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (focus.size() != 1) {
       result.add(new BooleanType(false).noExtensions());
     } else {
-      String url = convertToString(execute(context, focus, expr.getParameters().get(0), true));
+      String url = convertToString(execute(context, baseToList(context.thisItem), expr.getParameters().get(0), true));
       result.add(new BooleanType(hostServices.conformsToProfile(this, context.appInfo,  focus.get(0), url)).noExtensions());
     }
     return result;
@@ -6290,7 +6291,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcSkip(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    List<Base> n1 = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> n1 = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     int i1 = Integer.parseInt(n1.get(0).primitiveValue());
 
     List<Base> result = new ArrayList<Base>();
@@ -6480,7 +6481,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcItem(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    String s = convertToString(execute(context, focus, exp.getParameters().get(0), true));
+    String s = convertToString(execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true));
     if (Utilities.isInteger(s) && Integer.parseInt(s) < focus.size()) {
       result.add(focus.get(Integer.parseInt(s)));
     } 
