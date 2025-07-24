@@ -76,6 +76,7 @@ import org.hl7.fhir.utilities.MergedList.MergeNode;
 import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -947,11 +948,11 @@ public class FHIRPathEngine {
       Quantity q = makeQuantity(item);
       if (q.hasUnit() && Utilities.existsInList(q.getUnit(), "year", "years", "month", "months", "week", "weeks", "day", "days", "hour", "hours", "minute", "minutes", "second", "seconds", "millisecond", "milliseconds")
           && (!q.hasSystem() || q.getSystem().equals("http://unitsofmeasure.org"))) {
-        return q.getValue().toPlainString()+" "+q.getUnit();
+        return (q.hasValue() ? q.getValue().toPlainString() : "")+" "+q.getUnit();
       }
       if ("http://unitsofmeasure.org".equals(q.getSystem())) {
         String u = "'"+q.getCode()+"'";
-        return q.getValue().toPlainString()+" "+u;
+        return (q.hasValue() ? q.getValue().toPlainString() : "")+" "+u;
       } else {
         return item.toString();
       }
@@ -1557,7 +1558,7 @@ public class FHIRPathEngine {
       traceExpression(focus, exp, context, work);
       break;
     case Constant:
-      work.addAll(resolveConstant(context, exp.getConstant(), IHostApplicationServices.FHIRPathConstantEvaluationMode.EXPLICIT, exp));
+      work.addAll(resolveConstant(context, exp.getConstant(), FHIRPathConstantEvaluationMode.EXPLICIT, exp));
       traceExpression(focus, exp, context, work);
       break;
     case Group:
@@ -1668,7 +1669,7 @@ public class FHIRPathEngine {
       } else if (atEntry && exp.getName().equals("$index")) {
         result.addType(TypeDetails.FP_Integer);
       } else if (atEntry && focus == null) {
-        result.update(executeContextType(context, exp.getName(), exp, IHostApplicationServices.FHIRPathConstantEvaluationMode.NOVALUE));
+        result.update(executeContextType(context, exp.getName(), exp, FHIRPathConstantEvaluationMode.NOVALUE));
       } else {
         for (String s : focus.getTypes()) {
           result.update(executeType(s, exp, atEntry, focus, elementDependencies));
@@ -1692,7 +1693,7 @@ public class FHIRPathEngine {
       result.addType(TypeDetails.FP_Quantity);
       break;
     case Constant:
-      result.update(resolveConstantType(context, exp.getConstant(), exp, IHostApplicationServices.FHIRPathConstantEvaluationMode.EXPLICIT));
+      result.update(resolveConstantType(context, exp.getConstant(), exp, FHIRPathConstantEvaluationMode.EXPLICIT));
       break;
     case Group:
       result.update(executeType(context, focus, exp.getGroup(), elementDependencies, atEntry, canBeNone, exp));
@@ -1735,7 +1736,7 @@ public class FHIRPathEngine {
       }
     }
   }
-  private List<Base> resolveConstant(ExecutionContext context, Base constant, IHostApplicationServices.FHIRPathConstantEvaluationMode mode, ExpressionNode expr) throws PathEngineException {
+  private List<Base> resolveConstant(ExecutionContext context, Base constant, FHIRPathConstantEvaluationMode mode, ExpressionNode expr) throws PathEngineException {
     if (constant == null) {
       return new ArrayList<Base>();
     }
@@ -1834,7 +1835,7 @@ public class FHIRPathEngine {
     return false;
   }
 
-  private List<Base> resolveConstant(ExecutionContext context, String s, IHostApplicationServices.FHIRPathConstantEvaluationMode mode, ExpressionNode expr) throws PathEngineException {
+  private List<Base> resolveConstant(ExecutionContext context, String s, FHIRPathConstantEvaluationMode mode, ExpressionNode expr) throws PathEngineException {
     if (s.equals("%sct")) {
       return new ArrayList<Base>(Arrays.asList(new StringType("http://snomed.info/sct").noExtensions()));
     } else if (s.equals("%loinc")) {
@@ -1864,7 +1865,7 @@ public class FHIRPathEngine {
     } else if (hostServices == null) {
       throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONSTANT, s);
     } else {
-      return hostServices.resolveConstant(this, context.appInfo, mode == IHostApplicationServices.FHIRPathConstantEvaluationMode.EXPLICIT ? s.substring(1) : s, mode);
+      return hostServices.resolveConstant(this, context.appInfo, mode == FHIRPathConstantEvaluationMode.EXPLICIT ? s.substring(1) : s, mode);
     }
   }
 
@@ -3267,7 +3268,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
 
-  private TypeDetails resolveConstantType(ExecutionTypeContext context, Base constant, ExpressionNode expr, IHostApplicationServices.FHIRPathConstantEvaluationMode mode) throws PathEngineException {
+  private TypeDetails resolveConstantType(ExecutionTypeContext context, Base constant, ExpressionNode expr, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     if (constant instanceof BooleanType) { 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     } else if (constant instanceof IntegerType) {
@@ -3289,7 +3290,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     }
   }
 
-  private TypeDetails resolveConstantType(ExecutionTypeContext context, String s, ExpressionNode expr, IHostApplicationServices.FHIRPathConstantEvaluationMode mode) throws PathEngineException {
+  private TypeDetails resolveConstantType(ExecutionTypeContext context, String s, ExpressionNode expr, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     if (s.startsWith("@")) {
       if (s.startsWith("@T")) {
         return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Time);
@@ -3333,7 +3334,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       String varName = s.substring(1);
       if (context.hasDefinedVariable(varName))
         return context.getDefinedVariable(varName);
-      TypeDetails v = hostServices.resolveConstantType(this, context.appInfo, mode == IHostApplicationServices.FHIRPathConstantEvaluationMode.EXPLICIT ? s.substring(1) : s, mode);
+      TypeDetails v = hostServices.resolveConstantType(this, context.appInfo, mode == FHIRPathConstantEvaluationMode.EXPLICIT ? s.substring(1) : s, mode);
       if (v == null) {
         throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONSTANT, s); 
       } else {
@@ -3346,7 +3347,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     List<Base> result = new ArrayList<Base>();
     if (atEntry && context.appInfo != null && hostServices != null && checkWithHostServicesBeforeHand) {
       // we'll see if the name matches a constant known by the context.
-      List<Base> temp = hostServices.resolveConstant(this, context.appInfo, exp.getName(), IHostApplicationServices.FHIRPathConstantEvaluationMode.IMPLICIT_BEFORE);
+      List<Base> temp = hostServices.resolveConstant(this, context.appInfo, exp.getName(), FHIRPathConstantEvaluationMode.IMPLICIT_BEFORE);
       if (!temp.isEmpty()) {
         result.addAll(temp);
         return result;
@@ -3374,7 +3375,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (atEntry && context.appInfo != null && hostServices != null && result.isEmpty()) {
       // well, we didn't get a match on the name - we'll see if the name matches a constant known by the context.
       // (if the name does match, and the user wants to get the constant value, they'll have to try harder...
-      result.addAll(hostServices.resolveConstant(this, context.appInfo, exp.getName(), IHostApplicationServices.FHIRPathConstantEvaluationMode.IMPLICIT_AFTER));
+      result.addAll(hostServices.resolveConstant(this, context.appInfo, exp.getName(), FHIRPathConstantEvaluationMode.IMPLICIT_AFTER));
     }
     return result;
   }	
@@ -3384,7 +3385,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
 
-  private TypeDetails executeContextType(ExecutionTypeContext context, String name, ExpressionNode expr, IHostApplicationServices.FHIRPathConstantEvaluationMode mode) throws PathEngineException, DefinitionException {
+  private TypeDetails executeContextType(ExecutionTypeContext context, String name, ExpressionNode expr, FHIRPathConstantEvaluationMode mode) throws PathEngineException, DefinitionException {
     if (hostServices == null) {
       throw makeException(expr, I18nConstants.FHIRPATH_HO_HOST_SERVICES, "Context Reference");
     }

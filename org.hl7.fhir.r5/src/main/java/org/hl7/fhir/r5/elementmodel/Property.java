@@ -751,7 +751,7 @@ public class Property {
     }
     if (ed.getType().size() == 1) {
       StructureDefinition sd = context.fetchTypeDefinition(ed.getTypeFirstRep().getWorkingCode());
-      if (sd.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED)) {
+      if (sd != null && sd.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED)) {
         return sd.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED);
       }
     }
