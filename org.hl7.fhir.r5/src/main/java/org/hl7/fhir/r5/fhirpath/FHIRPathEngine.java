@@ -1491,14 +1491,14 @@ public class FHIRPathEngine {
     case ToInteger: return checkParamCount(lexer, location, exp, 0);
     case ToDecimal: return checkParamCount(lexer, location, exp, 0);
     case ToString: return checkParamCount(lexer, location, exp, 0);
-    case ToQuantity: return checkParamCount(lexer, location, exp, 0);
+    case ToQuantity: return checkParamCount(lexer, location, exp, 0); // this has an optional unit parameter
     case ToBoolean: return checkParamCount(lexer, location, exp, 0);
     case ToDateTime: return checkParamCount(lexer, location, exp, 0);
     case ToTime: return checkParamCount(lexer, location, exp, 0);
     case ConvertsToInteger: return checkParamCount(lexer, location, exp, 0);
     case ConvertsToDecimal: return checkParamCount(lexer, location, exp, 0);
     case ConvertsToString: return checkParamCount(lexer, location, exp, 0);
-    case ConvertsToQuantity: return checkParamCount(lexer, location, exp, 0);
+    case ConvertsToQuantity: return checkParamCount(lexer, location, exp, 0); // this has an optional unit parameter
     case ConvertsToBoolean: return checkParamCount(lexer, location, exp, 0);
     case ConvertsToDateTime: return checkParamCount(lexer, location, exp, 0);
     case ConvertsToDate: return checkParamCount(lexer, location, exp, 0);
@@ -4816,6 +4816,10 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcComparable(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+    // Undocumented what this should do if the input collection is empty
+    // if (focus.size() == 0) {
+    //   return new ArrayList<Base>();
+    // }
     if (focus.size() != 1 || !(focus.get(0).fhirType().equals("Quantity"))) {
       return makeBoolean(false);          
     }
@@ -5157,6 +5161,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcToQuantity(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
+    // THIS DOESN'T APPEAR TO BE PROCESSING THE UNITS
     List<Base> result = new ArrayList<Base>();
     if (focus.size() == 1) {
       var qty = makeQuantity(focus.get(0));
@@ -6203,6 +6208,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcIsQuantity(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
+    // also not checking the optional parameter for units
     List<Base> result = new ArrayList<Base>();
     if (focus.size() != 1) {
       result.add(new BooleanType(false).noExtensions());
