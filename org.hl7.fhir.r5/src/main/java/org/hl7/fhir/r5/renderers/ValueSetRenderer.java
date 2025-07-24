@@ -18,6 +18,8 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -56,7 +58,7 @@ import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.LoincLinker;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
@@ -95,8 +97,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
         if (vs.hasCopyright())
           generateCopyright(x, r);
       }
-      if (vs.hasExtension(ToolingExtensions.EXT_VS_CS_SUPPL_NEEDED)) {
-        List<Extension> exts = vs.getExtensionsByUrl(ToolingExtensions.EXT_VS_CS_SUPPL_NEEDED);
+      if (vs.hasExtension(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
+        List<Extension> exts = vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED);
         var p = x.para();
         p.tx(context.formatPhrasePlural(exts.size(), RenderingI18nContext.VALUE_SET_NEEDS_SUPPL));
         p.tx(" ");
@@ -120,13 +122,13 @@ public class ValueSetRenderer extends TerminologyRenderer {
         }
         p.tx(".");
       }
-      if (vs.hasExtension(ToolingExtensions.EXT_VALUESET_PARAMETER)) {
+      if (vs.hasExtension(ExtensionDefinitions.EXT_VALUESET_PARAMETER)) {
         x.para().b().tx("This ValueSet has parameters");
         XhtmlNode tbl = x.table("grid");
         XhtmlNode tr = tbl.tr();
         tr.th().tx("Name");
         tr.th().tx("Documentation");
-        for (Extension ext : vs.getExtensionsByUrl(ToolingExtensions.EXT_VALUESET_PARAMETER)) {
+        for (Extension ext : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VALUESET_PARAMETER)) {
           tr = tbl.tr();
           tr.td().tx(ext.getExtensionString("name"));
           tr.td().markdown(ext.getExtensionString("documentation"), "parameter.documentation");    
@@ -248,7 +250,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     boolean hasFragment = generateContentModeNotices(x, vs.getExpansion(), vs);
     generateVersionNotice(x, vs.getExpansion(), vs);
     
-    if (ToolingExtensions.hasExtension(vs.getExpansion(), ToolingExtensions.EXT_EXP_TOOCOSTLY)) {
+    if (ExtensionUtilities.hasExtension(vs.getExpansion(), ExtensionDefinitions.EXT_EXP_TOOCOSTLY)) {
       String msg = null;
       if (vs.getExpansion().getContains().isEmpty()) {
         msg = context.formatPhrase(RenderingContext.VALUE_SET_TOO_COSTLY);
@@ -821,10 +823,10 @@ public class ValueSetRenderer extends TerminologyRenderer {
     for (String lang : langs) {
       String d = null;
       for (Extension ext : c.getExtension()) {
-        if (ToolingExtensions.EXT_TRANSLATION.equals(ext.getUrl())) {
-          String l = ToolingExtensions.readStringExtension(ext, "lang");
+        if (ExtensionDefinitions.EXT_TRANSLATION.equals(ext.getUrl())) {
+          String l = ExtensionUtilities.readStringExtension(ext, "lang");
           if (lang.equals(l)) {
-            d = ToolingExtensions.readStringExtension(ext, "content");
+            d = ExtensionUtilities.readStringExtension(ext, "content");
           }
         }
       }
@@ -897,8 +899,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
 
   private void scanForDesignations(ValueSet vs, ValueSetExpansionContainsComponent c, List<String> langs, Map<String, String> designations) {
     for (Extension ext : c.getExtension()) {
-      if (ToolingExtensions.EXT_TRANSLATION.equals(ext.getUrl())) {
-        String lang = ToolingExtensions.readStringExtension(ext,  "lang");
+      if (ExtensionDefinitions.EXT_TRANSLATION.equals(ext.getUrl())) {
+        String lang = ExtensionUtilities.readStringExtension(ext,  "lang");
         if (!Utilities.noString(lang) && !langs.contains(lang) && !isBaseLang(vs, lang)) {
           langs.add(lang);
         }
@@ -939,8 +941,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
 
   private void scanForLangs(ValueSetExpansionContainsComponent c, List<String> langs) {
     for (Extension ext : c.getExtension()) {
-      if (ToolingExtensions.EXT_TRANSLATION.equals(ext.getUrl())) {
-        String lang = ToolingExtensions.readStringExtension(ext,  "lang");
+      if (ExtensionDefinitions.EXT_TRANSLATION.equals(ext.getUrl())) {
+        String lang = ExtensionUtilities.readStringExtension(ext,  "lang");
         if (!Utilities.noString(lang) && !langs.contains(lang)) {
           langs.add(lang);
         }
@@ -1039,7 +1041,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
   private boolean hasMarkdownInDefinitions(CodeSystem cs) {
     if (!cs.hasUserData(UserDataNames.CS_MARKDOWN_FLAG)) {
       if (cs.hasExtension("http://hl7.org/fhir/StructureDefinition/codesystem-use-markdown")) {
-        cs.setUserData(UserDataNames.CS_MARKDOWN_FLAG, ToolingExtensions.readBoolExtension(cs, "http://hl7.org/fhir/StructureDefinition/codesystem-use-markdown"));
+        cs.setUserData(UserDataNames.CS_MARKDOWN_FLAG, ExtensionUtilities.readBoolExtension(cs, "http://hl7.org/fhir/StructureDefinition/codesystem-use-markdown"));
       } else {
         cs.setUserData(UserDataNames.CS_MARKDOWN_FLAG, CodeSystemUtilities.hasMarkdownInDefinitions(cs, context.getMarkdown()));
       }
@@ -1202,8 +1204,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
 
   private void renderExpansionRules(XhtmlNode x, ConceptSetComponent inc, int index, Map<String, ConceptDefinitionComponent> definitions) throws FHIRException, IOException {
     String s = context.formatPhrase(RenderingContext.VALUE_SET_NOT_DEF);
-    if (inc.hasExtension(ToolingExtensions.EXT_EXPAND_RULES)) {
-      String rule = inc.getExtensionString(ToolingExtensions.EXT_EXPAND_RULES);
+    if (inc.hasExtension(ExtensionDefinitions.EXT_EXPAND_RULES)) {
+      String rule = inc.getExtensionString(ExtensionDefinitions.EXT_EXPAND_RULES);
       if (rule != null) {
         switch (rule) {
         case "all-codes": s = context.formatPhrase(RenderingContext.VALUE_SET_ALL_CODE); 
@@ -1220,7 +1222,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.GENERAL_CODE), context.formatPhrase(RenderingContext.VALUE_SET_CODE_ITEM), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.TX_DISPLAY), context.formatPhrase(RenderingContext.VALUE_SET_DISPLAY_ITEM), null, 0));
 
-    for (Extension ext : inc.getExtensionsByUrl(ToolingExtensions.EXT_EXPAND_GROUP)) {
+    for (Extension ext : inc.getExtensionsByUrl(ExtensionDefinitions.EXT_EXPAND_GROUP)) {
       renderExpandGroup(gen, model, ext, inc, definitions);
     }
     x.br();
@@ -1268,7 +1270,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
   private Extension findTargetByCode(ConceptSetComponent inc, String mc) {
-    for (Extension ext : inc.getExtensionsByUrl(ToolingExtensions.EXT_EXPAND_GROUP)) {
+    for (Extension ext : inc.getExtensionsByUrl(ExtensionDefinitions.EXT_EXPAND_GROUP)) {
       String code = ext.getExtensionString("code");
       if (mc.equals(code)) {
         return ext;
@@ -1294,8 +1296,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
   private void scanDesignations(ConceptSetComponent inc, List<String> langs, Map<String, String> designations) {
     for (ConceptReferenceComponent cc : inc.getConcept()) {
       for (Extension ext : cc.getExtension()) {
-        if (ToolingExtensions.EXT_TRANSLATION.equals(ext.getUrl())) {
-          String lang = ToolingExtensions.readStringExtension(ext,  "lang");
+        if (ExtensionDefinitions.EXT_TRANSLATION.equals(ext.getUrl())) {
+          String lang = ExtensionUtilities.readStringExtension(ext,  "lang");
           if (!Utilities.noString(lang) && !langs.contains(lang)) {
             langs.add(lang);
           }
@@ -1382,9 +1384,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
           boolean hasComments = false;
           boolean hasDefinition = false;
           for (ConceptReferenceComponent c : inc.getConcept()) {
-            hasComments = hasComments || ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_VS_COMMENT);
+            hasComments = hasComments || ExtensionHelper.hasExtension(c, ExtensionDefinitions.EXT_VS_COMMENT);
             ConceptDefinitionComponent cc = definitions == null ? null : definitions.get(c.getCode()); 
-            hasDefinition = hasDefinition || ((cc != null && cc.hasDefinition()) || ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION));
+            hasDefinition = hasDefinition || ((cc != null && cc.hasDefinition()) || ExtensionHelper.hasExtension(c, ExtensionDefinitions.EXT_DEFINITION));
           }
           if (hasComments || hasDefinition) {
             status.setExtensions(true);
@@ -1419,8 +1421,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
               }
             } else {
               wli.tx(f.getProperty()+" "+describe(f.getOp())+" ");
-              if (f.getValueElement().hasExtension(ToolingExtensions.EXT_CQF_EXP)) {
-                Extension expE = f.getValueElement().getExtensionByUrl(ToolingExtensions.EXT_CQF_EXP);
+              if (f.getValueElement().hasExtension(ExtensionDefinitions.EXT_CQF_EXP)) {
+                Extension expE = f.getValueElement().getExtensionByUrl(ExtensionDefinitions.EXT_CQF_EXP);
                 Expression exp = expE.getValueExpression();
                 wli.addText("(as calculated by ");
                 wli.code().tx(exp.getExpression());
@@ -1447,7 +1449,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
                   wli.addText(f.getValue());
                 }
               }
-              String disp = ToolingExtensions.getDisplayHint(f);
+              String disp = ExtensionUtilities.getDisplayHint(f);
               if (disp != null)
                 wli.tx(" ("+disp+")");
             }
@@ -1466,7 +1468,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           AddVsRef(vs.asStringValue(), wli, vsRes);
         }
       }
-      if (inc.hasExtension(ToolingExtensions.EXT_EXPAND_RULES) || inc.hasExtension(ToolingExtensions.EXT_EXPAND_GROUP)) {
+      if (inc.hasExtension(ExtensionDefinitions.EXT_EXPAND_RULES) || inc.hasExtension(ExtensionDefinitions.EXT_EXPAND_GROUP)) {
         status.setExtensions(true);
         renderExpansionRules(li, inc, index, definitions);
       }
@@ -1516,16 +1518,16 @@ public class ValueSetRenderer extends TerminologyRenderer {
 
     if (hasDefinition) {
       td = tr.td();
-      if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION)) {
-        td.addTextWithLineBreaks(ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_DEFINITION));
+      if (ExtensionHelper.hasExtension(c, ExtensionDefinitions.EXT_DEFINITION)) {
+        td.addTextWithLineBreaks(ExtensionUtilities.readStringExtension(c, ExtensionDefinitions.EXT_DEFINITION));
       } else if (cc != null && !Utilities.noString(cc.getDefinition())) {
         td.addTextWithLineBreaks(cc.getDefinition());
       }
     }
     if (hasComments) {
       td = tr.td();
-      if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_VS_COMMENT)) {
-        td.addTextWithLineBreaks(context.formatPhrase(RenderingContext.VALUE_SET_NOTE, ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_VS_COMMENT)+" "));
+      if (ExtensionHelper.hasExtension(c, ExtensionDefinitions.EXT_VS_COMMENT)) {
+        td.addTextWithLineBreaks(context.formatPhrase(RenderingContext.VALUE_SET_NOTE, ExtensionUtilities.readStringExtension(c, ExtensionDefinitions.EXT_VS_COMMENT)+" "));
       }
     }
     if (doDesignations) {
@@ -1567,10 +1569,10 @@ public class ValueSetRenderer extends TerminologyRenderer {
     for (String lang : langs) {
       String d = null;
       for (Extension ext : c.getExtension()) {
-        if (ToolingExtensions.EXT_TRANSLATION.equals(ext.getUrl())) {
-          String l = ToolingExtensions.readStringExtension(ext, "lang");
+        if (ExtensionDefinitions.EXT_TRANSLATION.equals(ext.getUrl())) {
+          String l = ExtensionUtilities.readStringExtension(ext, "lang");
           if (lang.equals(l)) {
-            d = ToolingExtensions.readStringExtension(ext, "content");
+            d = ExtensionUtilities.readStringExtension(ext, "content");
           }
         }
       }
