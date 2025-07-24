@@ -14,7 +14,7 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>6.5.29-SNAPSHOT</version>
+    <version>6.6.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -22,8 +22,9 @@
         <commons_compress_version>1.27.1</commons_compress_version>
         <commons_io_version>2.17.0</commons_io_version>
         <guava_version>32.0.1-jre</guava_version>
+        <gson_version>2.13.1</gson_version>
         <hapi_fhir_version>6.4.1</hapi_fhir_version>
-        <validator_test_case_version>1.7.28</validator_test_case_version>
+        <validator_test_case_version>1.7.30</validator_test_case_version>
         <jackson_version>2.17.0</jackson_version>
         <junit_jupiter_version>5.9.2</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
@@ -59,6 +60,7 @@
         <module>org.hl7.fhir.dstu2</module>
         <module>org.hl7.fhir.dstu2016may</module>
         <module>org.hl7.fhir.dstu3</module>
+        <module>org.hl7.fhir.dstu3.support</module>
         <module>org.hl7.fhir.r4</module>
         <module>org.hl7.fhir.r4b</module>
         <module>org.hl7.fhir.r5</module>
@@ -292,6 +294,12 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava_version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${gson_version}</version>
             </dependency>
 
             <dependency>

@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -26,7 +27,7 @@ public class CompactRenderer extends ValidationOutputRenderer {
   @Override
   public void render(OperationOutcome op) throws IOException {
     if (split) {
-      File file = ManagedFileAccess.file(Utilities.path(dir.getAbsolutePath(), FileUtilities.changeFileExt(tail(ToolingExtensions.readStringExtension(op, ToolingExtensions.EXT_OO_FILE)), ".txt")));
+      File file = ManagedFileAccess.file(Utilities.path(dir.getAbsolutePath(), FileUtilities.changeFileExt(tail(ExtensionUtilities.readStringExtension(op, ExtensionDefinitions.EXT_OO_FILE)), ".txt")));
       if (op.isSuccess()) {
         if (file.exists()) {
           file.delete();
@@ -43,17 +44,17 @@ public class CompactRenderer extends ValidationOutputRenderer {
 
   private void render(PrintStream d, OperationOutcome op) throws IOException {
     if (split) {
-      d.println(ManagedFileAccess.file(ToolingExtensions.readStringExtension(op, ToolingExtensions.EXT_OO_FILE)).getName()+" "+getRunDate()+":");      
+      d.println(ManagedFileAccess.file(ExtensionUtilities.readStringExtension(op, ExtensionDefinitions.EXT_OO_FILE)).getName()+" "+getRunDate()+":");
     } else {
       d.println();
       d.println("----------------------------------------------------------------------------------");
-      d.println(ToolingExtensions.readStringExtension(op, ToolingExtensions.EXT_OO_FILE)+" "+getRunDate());
+      d.println(ExtensionUtilities.readStringExtension(op, ExtensionDefinitions.EXT_OO_FILE)+" "+getRunDate());
     }
     List<String> lines = new ArrayList<>();
     for (OperationOutcome.OperationOutcomeIssueComponent issue : op.getIssue()) {
       String path = issue.hasExpression() ? issue.getExpression().get(0).asStringValue() : "n/a";
-      int line = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_LINE, -1);
-      int col = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_COL, -1);      
+      int line = ExtensionUtilities.readIntegerExtension(issue, ExtensionDefinitions.EXT_ISSUE_LINE, -1);
+      int col = ExtensionUtilities.readIntegerExtension(issue, ExtensionDefinitions.EXT_ISSUE_COL, -1);      
       lines.add(Utilities.padLeft(Integer.toString(line), '0', 8) + ":" + Utilities.padLeft(Integer.toString(col), '0', 8)+":"+
       path+"|["+Integer.toString(line) + ", " + Integer.toString(col)+"] "+path+": "+issue.getSeverity().getDisplay()+" - "+issue.getDetails().getText()+
       renderMessageId(issue));

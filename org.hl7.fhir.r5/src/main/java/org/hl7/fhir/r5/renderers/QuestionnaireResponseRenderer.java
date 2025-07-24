@@ -398,7 +398,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //    }
 //    
 ////  if (i.hasExtension(" http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-choiceOrientation")) {
-////  String code = ToolingExtensions.readStringExtension(i,  "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-choiceOrientation");
+////  String code = ExtensionUtilities.readStringExtension(i,  "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-choiceOrientation");
 ////  flags.addPiece(gen.new Piece("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-observationLinkPeriod", null, "Orientation: "+code).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("alt", "icon").attribute("src", Utilities.path(context.getLocalPrefix(), "icon-qi-"+code+".png"))));
 ////}
 //
@@ -408,16 +408,16 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //    XhtmlNode flags = item(ul, "Flags");
 //    item(ul, "linkId", i.getLinkId());
 //    
-//    if (ToolingExtensions.readBoolExtension(i, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-isSubject")) {
+//    if (ExtensionUtilities.readBoolExtension(i, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-isSubject")) {
 //      hasFlag = true;
 //      flags.ah(getSDCLink("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-isSubject", "Can change the subject of the QuestionnaireResponse").img(Utilities.path(context.getLocalPrefix(), "icon-qi-subject.png"));
 //    }
-//    if (ToolingExtensions.readBoolExtension(i, "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-hidden")) {
+//    if (ExtensionUtilities.readBoolExtension(i, "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-hidden")) {
 //      hasFlag = true;
 //      flags.ah(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "extension-QuestionnaireResponse-hidden.html"), "Is a hidden item").img(Utilities.path(context.getLocalPrefix(), "icon-qi-hidden.png"));
 //      d.style("background-color: #eeeeee");
 //    }
-//    if (ToolingExtensions.readBoolExtension(i, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-optionalDisplay")) {
+//    if (ExtensionUtilities.readBoolExtension(i, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-optionalDisplay")) {
 //      hasFlag = true;
 //      flags.ah(getSDCLink("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-optionalDisplay", "Is optional to display").img(Utilities.path(context.getLocalPrefix(), "icon-qi-optional.png"));
 //    }
@@ -652,7 +652,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //    defn(tbl, "Required", qi.getRequired(), true);
 //    defn(tbl, "Repeats", qi.getRepeats(), true);
 //    defn(tbl, "Read Only", qi.getReadOnly(), false);
-//    if (ToolingExtensions.readBoolExtension(qi, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-isSubject")) {
+//    if (ExtensionUtilities.readBoolExtension(qi, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-isSubject")) {
 //      defn(tbl, "Subject", "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-isSubject", "This element changes who the subject of the question is", null);
 //    }
 //    
@@ -693,10 +693,10 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //      tr.td().ah("http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-displayCategory").tx(context.formatPhrase(RenderingContext.QUEST_DISPLAY_CAT));
 //      render(tr.td(), qi.getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-displayCategory").getValue());
 //    }
-//    if (ToolingExtensions.readBoolExtension(qi, "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-hidden")) {
+//    if (ExtensionUtilities.readBoolExtension(qi, "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-hidden")) {
 //      defn(tbl, "Hidden Item", "https://hl7.org/fhir/R4/extension-questionnaire-displayCategory.html", "This item is a hidden question", null);
 //    }
-//    if (ToolingExtensions.readBoolExtension(qi, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-optionalDisplay")) {
+//    if (ExtensionUtilities.readBoolExtension(qi, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-optionalDisplay")) {
 //      defn(tbl, "Hidden Item", "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-optionalDisplay", "This item is optional to display", null);
 //    }
 //    

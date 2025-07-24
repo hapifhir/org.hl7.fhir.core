@@ -11,6 +11,9 @@ import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
+import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.validation.instance.ResourcePercentageLogger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -34,6 +37,7 @@ public class FhirValidatorHttpService {
   public FhirValidatorHttpService(ValidationEngine validationEngine, int port) {
     this.validationEngine = validationEngine;
     this.port = port;
+    ResourcePercentageLogger.setLoggingSuppressed(true);
   }
 
   public void startServer() throws IOException {

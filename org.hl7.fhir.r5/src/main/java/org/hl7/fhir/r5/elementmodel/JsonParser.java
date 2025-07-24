@@ -55,6 +55,8 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
 import org.hl7.fhir.r5.elementmodel.JsonParser.ILogicalModelResolver;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonCreator;
@@ -63,7 +65,7 @@ import org.hl7.fhir.r5.formats.JsonCreatorDirect;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.FileUtilities;
@@ -280,7 +282,9 @@ public class JsonParser extends ParserBase {
   private void checkNotProcessed(List<ValidationMessage> errors, String path, Element element, boolean hasResourceType, List<JsonProperty> children) {
     if (policy != ValidationPolicy.NONE) {
       for (JsonProperty e : children) {
-        if (e.getTag() == 0) {
+        if (hasResourceType && "resourceType".equals(e.getName())) {
+          // nothing
+        } else if (e.getTag() == 0) {
           StructureDefinition sd = element.getProperty().isLogical() ? getContextUtilities().fetchByJsonName(e.getName()) : null;
           if (sd != null) {
             Property property = new Property(context, sd.getSnapshot().getElementFirstRep(), sd, element.getProperty().getUtils(), element.getProperty().getContextUtils());
@@ -297,8 +301,6 @@ public class JsonParser extends ParserBase {
                 }
               }
             }
-          } else if (hasResourceType && "resourceType".equals(e.getName())) {
-            // nothing
           } else {
             JsonProperty p = getFoundJsonPropertyByName(e.getName(), children);
             if (p != null) {
@@ -819,8 +821,8 @@ public class JsonParser extends ParserBase {
 
   private boolean isSuppressResourceType(Property property) {
     StructureDefinition sd = property.getStructure();
-    if (sd != null && sd.hasExtension(ToolingExtensions.EXT_SUPPRESS_RESOURCE_TYPE)) {
-      return ToolingExtensions.readBoolExtension(sd, ToolingExtensions.EXT_SUPPRESS_RESOURCE_TYPE);
+    if (sd != null && sd.hasExtension(ExtensionDefinitions.EXT_SUPPRESS_RESOURCE_TYPE)) {
+      return ExtensionUtilities.readBoolExtension(sd, ExtensionDefinitions.EXT_SUPPRESS_RESOURCE_TYPE);
     } else {
       return false;
     }
@@ -882,7 +884,7 @@ public class JsonParser extends ParserBase {
           }
         }
         if (!skipList) {
-          if (child.getProperty().getDefinition().hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY))
+          if (child.getProperty().getDefinition().hasExtension(ExtensionDefinitions.EXT_JSON_PROP_KEY))
             composeKeyList(path, list);
           else 
             composeList(list.get(0).getName(), path, list);
@@ -893,7 +895,7 @@ public class JsonParser extends ParserBase {
 
   
   private void composeKeyList(String path, List<Element> list) throws IOException {
-    String keyName = list.get(0).getProperty().getDefinition().getExtensionString(ToolingExtensions.EXT_JSON_PROP_KEY);
+    String keyName = list.get(0).getProperty().getDefinition().getExtensionString(ExtensionDefinitions.EXT_JSON_PROP_KEY);
     json.name(list.get(0).getName());
     json.beginObject();
     for (Element e: list) {
@@ -1029,7 +1031,7 @@ public class JsonParser extends ParserBase {
         }
       }
 
-      if ("named-elements".equals(element.getProperty().getDefinition().getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE))) {
+      if ("named-elements".equals(element.getProperty().getDefinition().getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED))) {
         composeNamedChildren(path + "." + element.getJsonName(), element);        
       } else {
         Set<String> done = new HashSet<String>();

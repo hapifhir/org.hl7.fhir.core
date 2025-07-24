@@ -15,7 +15,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.ContextUtilities;
-import org.hl7.fhir.r5.extensions.ExtensionConstants;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.Enumerations;
@@ -511,8 +511,8 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
         n.tx(context.formatPhrase(RenderingContext.EX_SCEN_OTH));
         String link = new ContextUtilities(context.getWorker()).getLinkForUrl(context.getLink(KnownLinkType.SPEC, true), step.getWorkflow());
         String title = "Unknown title";
-        if (step.getWorkflowElement().hasExtension(ExtensionConstants.EXT_DISPLAY_NAME)) {
-          title = step.getWorkflowElement().getExtensionString(ExtensionConstants.EXT_DISPLAY_NAME);
+        if (step.getWorkflowElement().hasExtension(ExtensionDefinitions.EXT_DISPLAY_NAME)) {
+          title = step.getWorkflowElement().getExtensionString(ExtensionDefinitions.EXT_DISPLAY_NAME);
         } else {
           Resolver.ResourceWithReference rres = context.getResolver().resolve(context, step.getWorkflow(), null);
           if (rres != null && rres.getResource() != null && rres.getResource().has("title"))

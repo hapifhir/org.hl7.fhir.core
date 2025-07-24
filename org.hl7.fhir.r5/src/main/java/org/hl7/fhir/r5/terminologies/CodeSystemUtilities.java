@@ -44,31 +44,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.BooleanType;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyType;
-import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.DateTimeType;
-import org.hl7.fhir.r5.model.DecimalType;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptDefinitionComponentSorter;
 import org.hl7.fhir.r5.terminologies.providers.SpecialCodeSystem;
-import org.hl7.fhir.r5.model.Identifier;
-import org.hl7.fhir.r5.model.IntegerType;
-import org.hl7.fhir.r5.model.Meta;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.utils.CanonicalResourceUtilities;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
@@ -384,7 +372,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
         if ("deprecated".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType) 
           return ((BooleanType) p.getValue()).getValue();
       }
-      StandardsStatus ss = ToolingExtensions.getStandardsStatus(def);
+      StandardsStatus ss = ExtensionUtilities.getStandardsStatus(def);
       if (ss == StandardsStatus.DEPRECATED) {
         return true;
       }
@@ -423,7 +411,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
   
   public static boolean isInactive(CodeSystem cs, ConceptDefinitionComponent def) throws FHIRException {
-    StandardsStatus ss = ToolingExtensions.getStandardsStatus(def);
+    StandardsStatus ss = ExtensionUtilities.getStandardsStatus(def);
     if (ss == StandardsStatus.DEPRECATED || ss == StandardsStatus.WITHDRAWN) {
       return true;
     }
@@ -578,7 +566,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
   private static boolean hasUse(ConceptPropertyComponent p, String use) {
-    for (Extension ext : p.getExtensionsByUrl(ToolingExtensions.EXT_CS_ALTERNATE_USE)) {
+    for (Extension ext : p.getExtensionsByUrl(ExtensionDefinitions.EXT_CS_ALTERNATE_USE)) {
       if (ext.hasValueCoding() && use.equals(ext.getValueCoding().getCode())) {
         return true;
       }
@@ -588,15 +576,15 @@ public class CodeSystemUtilities extends TerminologyUtilities {
 
   public static void markStatus(CodeSystem cs, String wg, StandardsStatus status, String pckage, String fmm, String normativeVersion) throws FHIRException {
     if (wg != null) {
-      if (!ToolingExtensions.hasExtension(cs, ToolingExtensions.EXT_WORKGROUP) || 
-          (Utilities.existsInList(ToolingExtensions.readStringExtension(cs, ToolingExtensions.EXT_WORKGROUP), "fhir", "vocab") && !Utilities.existsInList(wg, "fhir", "vocab"))) {
+      if (!ExtensionUtilities.hasExtension(cs, ExtensionDefinitions.EXT_WORKGROUP) || 
+          (Utilities.existsInList(ExtensionUtilities.readStringExtension(cs, ExtensionDefinitions.EXT_WORKGROUP), "fhir", "vocab") && !Utilities.existsInList(wg, "fhir", "vocab"))) {
         CanonicalResourceUtilities.setHl7WG(cs, wg);
       }
     }
     if (status != null) {
-      StandardsStatus ss = ToolingExtensions.getStandardsStatus(cs);
+      StandardsStatus ss = ExtensionUtilities.getStandardsStatus(cs);
       if (ss == null || ss.isLowerThan(status)) 
-        ToolingExtensions.setStandardsStatus(cs, status, normativeVersion);
+        ExtensionUtilities.setStandardsStatus(cs, status, normativeVersion);
       if (pckage != null) {
         if (!cs.hasUserData(UserDataNames.kindling_ballot_package))
           cs.setUserData(UserDataNames.kindling_ballot_package, pckage);
@@ -609,9 +597,9 @@ public class CodeSystemUtilities extends TerminologyUtilities {
       }
     }
     if (fmm != null) {
-      String sfmm = ToolingExtensions.readStringExtension(cs, ToolingExtensions.EXT_FMM_LEVEL);
+      String sfmm = ExtensionUtilities.readStringExtension(cs, ExtensionDefinitions.EXT_FMM_LEVEL);
       if (Utilities.noString(sfmm) || Integer.parseInt(sfmm) < Integer.parseInt(fmm)) { 
-        ToolingExtensions.setIntegerExtension(cs, ToolingExtensions.EXT_FMM_LEVEL, Integer.parseInt(fmm));
+        ExtensionUtilities.setIntegerExtension(cs, ExtensionDefinitions.EXT_FMM_LEVEL, Integer.parseInt(fmm));
       }
     }
   }
@@ -1003,7 +991,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
   public static String getStatus(CodeSystem cs, ConceptDefinitionComponent cc) {
-    StandardsStatus ss = ToolingExtensions.getStandardsStatus(cc);
+    StandardsStatus ss = ExtensionUtilities.getStandardsStatus(cc);
     if (ss == StandardsStatus.DEPRECATED || ss == StandardsStatus.WITHDRAWN) {
       return ss.toCode();
     }
@@ -1117,5 +1105,22 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     }
     return null;
   }
+
+  public static CodeSystem convertSD(StructureDefinition sd) {
+    CodeSystem cs = new CodeSystem();
+    cs.setId(sd.getId());
+    cs.setUrl(sd.getUrl());
+    cs.setVersion(sd.getVersion());
+    cs.setStatus(sd.getStatus());
+    cs.setContent(Enumerations.CodeSystemContentMode.COMPLETE);
+    for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+      ConceptDefinitionComponent cd = cs.addConcept();
+      cd.setCode(ed.getId());
+      cd.setDisplay(ed.getId());
+      ed.setDefinition(ed.getDefinition());
+    }
+    return cs;
+  }
+
 }
 
