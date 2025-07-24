@@ -1373,6 +1373,11 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     XhtmlNode x = addTag("script");
     x.setContent("\r\n"+s+"\r\n");
   }
+  public void jsSrc(String s) {
+    XhtmlNode x = addTag("script");
+    x.setAttribute("src", s);
+    x.setContent(" ");
+  }
   public void styles(String s) {
     XhtmlNode x = addTag("style");
     x.setContent("\r\n"+s+"\r\n");

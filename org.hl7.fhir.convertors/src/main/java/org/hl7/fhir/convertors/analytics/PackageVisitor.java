@@ -261,15 +261,13 @@ public class PackageVisitor {
             }
             if (ok) {
               int c = 0;
-              for (String type : resourceTypes) {
-                for (String s : npm.listResources(type)) {
-                  c++;
-                  try {
-                    processor.processResource(ctxt, context, type, s, FileUtilities.streamToBytes(npm.load("package", s)));
-                  } catch (Exception e) {
-                    log.error("####### Error loading "+pid+"#current["+fv+"]/"+type+" ####### "+e.getMessage());
-                    //                e.printStackTrace();
-                  }
+              for (PackagedResourceFile pri : npm.listAllResources(resourceTypes)) {
+                c++;
+                try {
+                  processor.processResource(ctxt, context, pri.getResourceType(), pri.getFilename(), FileUtilities.streamToBytes(npm.load(pri.getFolder(), pri.getFilename())));
+                } catch (Exception e) {
+                  log.error("####### Error loading "+pid+"#current["+fv+"]/"+pri.getResourceType()+" ####### "+e.getMessage());
+                  //                e.printStackTrace();
                 }
               }
               processor.finishPackage(ctxt);
