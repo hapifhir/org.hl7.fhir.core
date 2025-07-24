@@ -368,7 +368,7 @@ public class TurtleParser extends ParserBase {
   }
 
   protected String getReferenceURI(String ref) {
-    if (ref != null && (ref.startsWith("http://") || ref.startsWith("https://")))
+    if (ref != null && (ref.startsWith("http://") || ref.startsWith("https://") || ref.startsWith("urn:")))
       return "<" + ref + ">";
     else if (base != null && ref != null && ref.contains("/"))
       return "<" + Utilities.appendForwardSlash(base) + ref + ">";
