@@ -12,6 +12,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -55,6 +56,7 @@ public class ProfileVersionAdaptor {
   private IWorkerContext tCtxt;
   private ProfileUtilities tpu;
   private ContextUtilities tcu;
+  private List<StructureDefinition> snapshotQueue = new ArrayList<>();
 
   public ProfileVersionAdaptor(IWorkerContext sourceContext, IWorkerContext targetContext) {
     super();
@@ -67,6 +69,7 @@ public class ProfileVersionAdaptor {
     }
     tcu = new ContextUtilities(tCtxt);
     tpu = new ProfileUtilities(tCtxt, null, tcu);
+
   }
 
   public StructureDefinition convert(StructureDefinition sd, List<ConversionMessage> log) throws FileNotFoundException, IOException {
@@ -94,10 +97,10 @@ public class ProfileVersionAdaptor {
         for (CanonicalType c : td.getTargetProfile()) {
           String tp = getCorrectedProfile(c);
           if (tp == null) {
-            log.add(new ConversionMessage("Remove the target profile "+c.getValue()+" from the element "+ed.getIdOrPath(), ConversionMessageStatus.WARNING));
+            log.add(new ConversionMessage("Remove the target profile " + c.getValue() + " from the element " + ed.getIdOrPath(), ConversionMessageStatus.WARNING));
             toRemove.add(c);
           } else if (!tp.equals(c.getValue())) {
-            log.add(new ConversionMessage("Change the target profile "+c.getValue()+" to "+tp+" on the element "+ed.getIdOrPath(), ConversionMessageStatus.WARNING));
+            log.add(new ConversionMessage("Change the target profile " + c.getValue() + " to " + tp + " on the element " + ed.getIdOrPath(), ConversionMessageStatus.WARNING));
             c.setValue(tp);
           }
         }
@@ -109,7 +112,7 @@ public class ProfileVersionAdaptor {
       for (TypeRefComponent tr : ed.getType()) {
         String mappedDT = getMappedDT(tr.getCode());
         if (mappedDT != null) {
-          log.add(new ConversionMessage("Map the type "+tr.getCode()+" to "+mappedDT+" on the element "+ed.getIdOrPath(), ConversionMessageStatus.WARNING));
+          log.add(new ConversionMessage("Map the type " + tr.getCode() + " to " + mappedDT + " on the element " + ed.getIdOrPath(), ConversionMessageStatus.WARNING));
           tr.setCode(mappedDT);
         }
       }
@@ -123,14 +126,14 @@ public class ProfileVersionAdaptor {
       if (ed.getPath().contains(".value")) {
         if (ed.getType().size() > 1) {
           if (ed.getType().removeIf(tr -> !tcu.isDatatype(tr.getWorkingCode()))) {
-            log.add(new ConversionMessage("Remove types from the element "+ed.getIdOrPath(), ConversionMessageStatus.WARNING));
+            log.add(new ConversionMessage("Remove types from the element " + ed.getIdOrPath(), ConversionMessageStatus.WARNING));
           }
         } else if (ed.getType().size() == 1) {
           TypeRefComponent tr = ed.getTypeFirstRep();
           if (!tcu.isDatatype(tr.getWorkingCode()) || !isValidExtensionType(tr.getWorkingCode())) {
             if (ed.hasBinding()) {
               if (!"CodeableReference".equals(tr.getWorkingCode())) {
-                throw new DefinitionException("not handled: Unknown type "+tr.getWorkingCode()+" has a binding");
+                throw new DefinitionException("not handled: Unknown type " + tr.getWorkingCode() + " has a binding");
               }
             }
             ed.getType().clear();
@@ -142,9 +145,9 @@ public class ProfileVersionAdaptor {
             lastExt.getSlicing().setRules(SlicingRules.OPEN).setOrdered(false).addDiscriminator().setType(DiscriminatorType.VALUE).setPath("url");
             StructureDefinition type = sCtxt.fetchTypeDefinition(tr.getCode());
             if (type == null) {
-              throw new DefinitionException("unable to find definition for "+tr.getCode());
+              throw new DefinitionException("unable to find definition for " + tr.getCode());
             }
-            log.add(new ConversionMessage("Replace the type "+tr.getCode()+" with a set of extensions for the content of the type along with the _datatype extension", ConversionMessageStatus.WARNING));
+            log.add(new ConversionMessage("Replace the type " + tr.getCode() + " with a set of extensions for the content of the type along with the _datatype extension", ConversionMessageStatus.WARNING));
             int insPoint = sd.getDifferential().getElement().indexOf(lastExt);
             int offset = 1;
 
@@ -158,7 +161,7 @@ public class ProfileVersionAdaptor {
                 int bo = 0;
                 int cc = Utilities.charCount(ted.getPath(), '.');
                 if (cc > 2) {
-                  throw new DefinitionException("type is deeper than 2?");                  
+                  throw new DefinitionException("type is deeper than 2?");
                 } else if (cc == 2) {
                   base = group;
                   bo = 2;
@@ -172,19 +175,19 @@ public class ProfileVersionAdaptor {
                 ned.setComment(ted.getComment());
                 ned.setMin(ted.getMin());
                 ned.setMax(ted.getMax());
-                offset = addDiffElement(sd, insPoint-bo, offset, ned);
+                offset = addDiffElement(sd, insPoint - bo, offset, ned);
                 // set the extensions to 0
-                ElementDefinition need = new ElementDefinition(base.getPath()+".extension");
+                ElementDefinition need = new ElementDefinition(base.getPath() + ".extension");
                 need.setMax("0");
-                offset = addDiffElement(sd, insPoint-bo, offset, need);
+                offset = addDiffElement(sd, insPoint - bo, offset, need);
                 // fix the url 
-                ned = new ElementDefinition(base.getPath()+".url");
+                ned = new ElementDefinition(base.getPath() + ".url");
                 ned.setFixed(new UriType(ted.getName()));
-                offset = addDiffElement(sd, insPoint-bo, offset, ned);
+                offset = addDiffElement(sd, insPoint - bo, offset, ned);
                 // set the value 
-                ned = new ElementDefinition(base.getPath()+".value[x]");
+                ned = new ElementDefinition(base.getPath() + ".value[x]");
                 ned.setMin(1);
-                offset = addDiffElement(sd, insPoint-bo, offset, ned);
+                offset = addDiffElement(sd, insPoint - bo, offset, ned);
                 if (ted.getType().size() == 1 && Utilities.existsInList(ted.getTypeFirstRep().getWorkingCode(), "Element", "BackboneElement")) {
                   need.setMax("*");
                   ned.setMin(0);
@@ -212,7 +215,7 @@ public class ProfileVersionAdaptor {
                 }
               }
             }
-          }          
+          }
         }
       }
       if (ed.getPath().endsWith(".extension")) {
@@ -224,13 +227,19 @@ public class ProfileVersionAdaptor {
         ExtensionUtilities.setCodeExtension(sd, ExtensionDefinitions.EXT_FMM_LEVEL, "2");
       }
       ExtensionUtilities.setCodeExtension(sd, ExtensionDefinitions.EXT_STANDARDS_STATUS, "draft");
-      ExtensionUtilities.setCodeExtension(sd, ExtensionDefinitions.EXT_STANDARDS_STATUS_REASON, "Extensions that have been modified for "+VersionUtilities.getNameForVersion(tCtxt.getVersion())+" are still draft while real-world experience is collected");
-      log.add(new ConversionMessage("Note: Extensions that have been modified for "+VersionUtilities.getNameForVersion(tCtxt.getVersion())+" are still draft while real-world experience is collected", ConversionMessageStatus.NOTE));
+      ExtensionUtilities.setCodeExtension(sd, ExtensionDefinitions.EXT_STANDARDS_STATUS_REASON, "Extensions that have been modified for " + VersionUtilities.getNameForVersion(tCtxt.getVersion()) + " are still draft while real-world experience is collected");
+      log.add(new ConversionMessage("Note: Extensions that have been modified for " + VersionUtilities.getNameForVersion(tCtxt.getVersion()) + " are still draft while real-world experience is collected", ConversionMessageStatus.NOTE));
     }
-
-    StructureDefinition base = tCtxt.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
-    tpu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/"+VersionUtilities.getNameForVersion(tCtxt.getVersion())+"/", sd.getName());  
+    snapshotQueue.add(sd);
+    tCtxt.cacheResource(sd);
     return sd;
+  }
+
+  public void generateSnapshots() {
+    for (StructureDefinition sd : snapshotQueue) {
+      StructureDefinition base = tCtxt.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+      tpu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/" + VersionUtilities.getNameForVersion(tCtxt.getVersion()) + "/", sd.getName());
+    }
   }
 
   private StructureDefinition convertLogical(StructureDefinition sdSrc, List<ConversionMessage> log) {
@@ -298,7 +307,8 @@ public class ProfileVersionAdaptor {
     if (base == null) {
       throw new FHIRException("Unable to find base for Logical Model from "+sd.getBaseDefinition());
     }
-    tpu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/"+VersionUtilities.getNameForVersion(tCtxt.getVersion())+"/", sd.getName());
+    snapshotQueue.add(sd);
+    tCtxt.cacheResource(sd);
     return sd;
   }
 
