@@ -3421,17 +3421,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return type.contains("#") ? "" : type.substring(type.lastIndexOf("/")+1);
   }
 
-
   private void evaluateParameters(ExecutionTypeContext context, TypeDetails focus, ExpressionNode exp, Set<ElementDefinition> elementDependencies, List<TypeDetails> paramTypes, boolean canBeNone) {
-    int i = 0;
     for (ExpressionNode exprParam : exp.getParameters()) {
-      if (isExpressionParameter(exp, i)) {
+      if (hasExpressionParameter(exp)) {
         var newContext = changeThis(context, focus);
         paramTypes.add(executeType(newContext, newContext.thisItem, exprParam, elementDependencies, true, canBeNone, exp));
       } else {
         paramTypes.add(executeType(context, context.thisItem, exprParam, elementDependencies, true, canBeNone, exp));
       }
-      i++;
     }
   }
 
@@ -3974,19 +3971,19 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return !focus.hasType(tn);
   }
 
-  private boolean isExpressionParameter(ExpressionNode exp, int i) {
+  private boolean hasExpressionParameter(ExpressionNode exp) {
     if (exp.getFunction() == Function.Sort) {
       return true;
     }
-    
-    switch (i) {
-    case 0:
-      return exp.getFunction() == Function.Where || exp.getFunction() == Function.Exists || exp.getFunction() == Function.All || exp.getFunction() == Function.Select || exp.getFunction() == Function.Repeat || exp.getFunction() == Function.Aggregate;
-    case 1:
-      return exp.getFunction() == Function.Trace || exp.getFunction() == Function.DefineVariable;
-    default: 
-      return false;
+    if (exp.getFunction() == Function.Iif) {
+      return true;
     }
+    
+    if (exp.getFunction() == Function.Where || exp.getFunction() == Function.Exists || exp.getFunction() == Function.All || exp.getFunction() == Function.Select || exp.getFunction() == Function.Repeat || exp.getFunction() == Function.Aggregate)
+      return true;
+    if (exp.getFunction() == Function.Trace || exp.getFunction() == Function.DefineVariable)
+      return true;
+    return false;
   }
 
 
