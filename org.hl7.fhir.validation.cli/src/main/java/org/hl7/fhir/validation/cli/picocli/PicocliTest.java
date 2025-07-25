@@ -1,16 +1,24 @@
 package org.hl7.fhir.validation.cli.picocli;
 
+import org.apache.commons.lang3.ArrayUtils;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 public class PicocliTest {
-    @Command(mixinStandardHelpOptions = true, version = "0.1",
-    description = "Validates FHIR resources.")
+    @Command(mixinStandardHelpOptions = true,
+    description = "Validates FHIR resources.",
+    subcommands = {
+      CommandLine.HelpCommand.class,
+      ServerCommand.class
+    })
     static class DefaultCommand implements Callable<Integer> {
+      @CommandLine.Spec
+      CommandLine.Model.CommandSpec spec;
 
       @Option(names = {"-a", "--arg"}, description = "An argument to the command")
       private String arg = null;
@@ -22,11 +30,11 @@ public class PicocliTest {
       }
     }
 
-  @Command(name = "-server", mixinStandardHelpOptions = true, version = "0.1",
+  @Command(name = "server",
     description = "Start a fhir server.")
   static class ServerCommand implements Callable<Integer> {
 
-    @Option(names = {"-p", "--port"}, description = "An argument to the command")
+    @Option(names = {"-p", "--port"}, description = "The port to run the server on", required = true)
     private String port = null;
 
     @Override
@@ -36,10 +44,27 @@ public class PicocliTest {
     }
   }
 
+  private static String[] getBackwardCompatibleArgs(String[] args) {
+      Map<String, String> argMap = Map.of(
+          "-server", "server"
+      );
+
+      String[] newArgs = new String[args.length];
+      for (int i = 0; i < args.length; i++) {
+          if (argMap.containsKey(args[i])) {
+              newArgs[i] = argMap.get(args[i]);
+          } else {
+              newArgs[i] = args[i];
+          }
+      }
+      return newArgs;
+  }
+
     public static void main(String[] args) {
-        int exitCode = new CommandLine(new DefaultCommand()).addSubcommand(
-          "-server", new ServerCommand())
-          .execute(args);
-        System.exit(exitCode);
+      String[] backwardCompatibleArgs = getBackwardCompatibleArgs(args);
+      CommandLine commandLine = new CommandLine(new DefaultCommand());
+      int exitCode = commandLine.execute(backwardCompatibleArgs);
+      System.exit(exitCode);
     }
+
 }
