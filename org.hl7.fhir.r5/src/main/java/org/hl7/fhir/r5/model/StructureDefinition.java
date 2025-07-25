@@ -34,9 +34,11 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
@@ -5383,7 +5385,7 @@ public class StructureDefinition extends CanonicalResource {
     if (baseDefinitions == null) {
       baseDefinitions = new ArrayList<>();
       baseDefinitions.add(getBaseDefinition());
-      for (Extension ex : getExtensionsByUrl(ToolingExtensions.EXT_ADDITIONAL_BASE)) {
+      for (Extension ex : getExtensionsByUrl(ExtensionDefinitions.EXT_ADDITIONAL_BASE)) {
         if (ex.hasValue() && ex.getValue().hasPrimitiveValue()) {
           baseDefinitions.add(ex.getValue().primitiveValue());
         }

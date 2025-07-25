@@ -3,6 +3,8 @@ package org.hl7.fhir.r5.utils;
 import java.util.List;
 
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CompartmentDefinition;
@@ -22,7 +24,7 @@ public class CanonicalResourceUtilities {
     if (wg == null) {
       throw new Error("Unknown WG "+wgc);
     }
-    ToolingExtensions.setCodeExtension(cr, ToolingExtensions.EXT_WORKGROUP, wg.getCode());
+    ExtensionUtilities.setCodeExtension(cr, ExtensionDefinitions.EXT_WORKGROUP, wg.getCode());
     cr.setPublisher("HL7 International / "+wg.getName());
     boolean found = false;
     for (ContactDetail c : cr.getContact()) {
@@ -38,7 +40,7 @@ public class CanonicalResourceUtilities {
   }
 
   public static void setHl7WG(CanonicalResource cr) {
-    String wgc = ToolingExtensions.readStringExtension(cr, ToolingExtensions.EXT_WORKGROUP);
+    String wgc = ExtensionUtilities.readStringExtension(cr, ExtensionDefinitions.EXT_WORKGROUP);
     if (wgc == null) {
       wgc = "fhir";      
     }
@@ -46,7 +48,7 @@ public class CanonicalResourceUtilities {
     if (wg == null) {
       throw new Error("Unknown WG '"+wgc+"' in "+cr.fhirType()+"/"+cr.getIdBase());
     }
-    ToolingExtensions.setCodeExtension(cr, ToolingExtensions.EXT_WORKGROUP, wg.getCode());
+    ExtensionUtilities.setCodeExtension(cr, ExtensionDefinitions.EXT_WORKGROUP, wg.getCode());
     cr.setPublisher("HL7 International / "+wg.getName());
     boolean found = false;
     for (ContactDetail c : cr.getContact()) {
@@ -68,10 +70,10 @@ public class CanonicalResourceUtilities {
         throw new Error("Unknown WG "+code);
       }
       
-      Element ext = res.getExtension(ToolingExtensions.EXT_WORKGROUP);
+      Element ext = res.getExtension(ExtensionDefinitions.EXT_WORKGROUP);
       if (ext == null) {
         ext = res.addElement("extension");
-        ext.setChildValue("url", ToolingExtensions.EXT_WORKGROUP);
+        ext.setChildValue("url", ExtensionDefinitions.EXT_WORKGROUP);
       } 
       ext.setChildValue("value[x]",  new CodeType(code));
       if (!Utilities.existsInList(res.fhirType(), "ClinicalUseDefinition")) {
@@ -105,13 +107,13 @@ public class CanonicalResourceUtilities {
 //      org.w3c.dom.Element wgext = null;
 //      for (org.w3c.dom.Element ext : extensions) {
 //        String url = ext.getAttribute("url");
-//        if (ToolingExtensions.EXT_WORKGROUP.equals(url)) {
+//        if (ExtensionDefinitions.EXT_WORKGROUP.equals(url)) {
 //          wgext = ext;
 //        }
 //      }
 //      if (wgext == null) {
 //        wgext = res.getOwnerDocument().createElementNS(Constants.NS_FHIR_ROOT, "extension");
-//        wgext.setAttribute("url", ToolingExtensions.EXT_WORKGROUP);
+//        wgext.setAttribute("url", ExtensionDefinitions.EXT_WORKGROUP);
 //        org.w3c.dom.Element after = XMLUtil.getLastChild(res, "id", "meta", "text", "implicitRules", "language", "text", "contained");
 //        if (after != null) {
 //          after = XMLUtil.getNextSibling(after);

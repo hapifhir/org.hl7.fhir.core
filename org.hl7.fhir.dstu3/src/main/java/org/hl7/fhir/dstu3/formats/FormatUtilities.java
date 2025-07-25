@@ -64,7 +64,7 @@ import java.math.BigDecimal;
 import java.net.URI;
 
 import org.apache.commons.codec.binary.Base64;
-import org.hl7.fhir.dstu3.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.dstu3.formats.FhirFormat;
 
 public abstract class FormatUtilities {
   public static final String ID_REGEX = "[A-Za-z0-9\\-\\.]{1,64}";

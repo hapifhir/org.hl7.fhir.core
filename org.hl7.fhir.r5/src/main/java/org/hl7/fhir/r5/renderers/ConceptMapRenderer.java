@@ -14,6 +14,8 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
@@ -32,7 +34,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
@@ -370,7 +372,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       targets.get("code").add(grp.getTarget());
       for (SourceElementComponent ccl : grp.getElement()) {
         ok = ok && (ccl.getNoMap() || (ccl.getTarget().size() == 1 && ccl.getTarget().get(0).getDependsOn().isEmpty() && ccl.getTarget().get(0).getProduct().isEmpty()));
-        if (ccl.hasExtension(ToolingExtensions.EXT_CM_NOMAP_COMMENT)) {
+        if (ccl.hasExtension(ExtensionDefinitions.EXT_CM_NOMAP_COMMENT)) {
           hasComment = true;
         }
         for (TargetElementComponent ccm : ccl.getTarget()) {
@@ -461,9 +463,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       if (ccl.getNoMap()) {
         if (!hasComment) {
           tr.td().colspan("5").style("background-color: #efefef").tx("(not mapped)");
-        } else if (ccl.hasExtension(ToolingExtensions.EXT_CM_NOMAP_COMMENT)) {
+        } else if (ccl.hasExtension(ExtensionDefinitions.EXT_CM_NOMAP_COMMENT)) {
           tr.td().colspan("5").style("background-color: #efefef").tx("(not mapped)");
-          tr.td().style("background-color: #efefef").tx(ccl.getExtensionString(ToolingExtensions.EXT_CM_NOMAP_COMMENT));
+          tr.td().style("background-color: #efefef").tx(ccl.getExtensionString(ExtensionDefinitions.EXT_CM_NOMAP_COMMENT));
         } else {
           tr.td().colspan("4").style("background-color: #efefef").tx("(not mapped)");
         }
@@ -479,8 +481,8 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           if (!ccm.hasRelationship()) {
             tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
           } else {
-            if (ccm.hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
-              String code = ToolingExtensions.readStringExtension(ccm, ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
+            if (ccm.hasExtension(ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
+              String code = ExtensionUtilities.readStringExtension(ccm, ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
               tr.td().ah(context.prefixLocalHref(eqpath+"#"+code), code).tx(presentEquivalenceCode(code));                
             } else {
               tr.td().ah(context.prefixLocalHref(eqpath+"#"+ccm.getRelationship().toCode()), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
@@ -541,9 +543,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         if (ccl.getNoMap()) {
           if (!hasComment) {
             tr.td().colspan("2").style("background-color: #efefef").tx("(not mapped)");
-          } else if (ccl.hasExtension(ToolingExtensions.EXT_CM_NOMAP_COMMENT)) {
+          } else if (ccl.hasExtension(ExtensionDefinitions.EXT_CM_NOMAP_COMMENT)) {
             tr.td().colspan("2").style("background-color: #efefef").tx("(not mapped)");
-            tr.td().style("background-color: #efefef").tx(ccl.getExtensionString(ToolingExtensions.EXT_CM_NOMAP_COMMENT));
+            tr.td().style("background-color: #efefef").tx(ccl.getExtensionString(ExtensionDefinitions.EXT_CM_NOMAP_COMMENT));
           } else {
             tr.td().colspan("3").style("background-color: #efefef").tx("(not mapped)");
           }
@@ -559,8 +561,8 @@ public class ConceptMapRenderer extends TerminologyRenderer {
             if (!ccm.hasRelationship())
               tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
             else {
-              if (ccm.hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
-                String code = ToolingExtensions.readStringExtension(ccm, ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
+              if (ccm.hasExtension(ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
+                String code = ExtensionUtilities.readStringExtension(ccm, ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
                 tr.td().ah(context.prefixLocalHref(eqpath+"#"+code), code).tx(presentEquivalenceCode(code));                
               } else {
                 tr.td().ah(context.prefixLocalHref(eqpath+"#"+ccm.getRelationship().toCode()), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
@@ -667,9 +669,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
             td.addText(grp.getSource()+" / "+ccl.getCode());
           display = ccl.hasDisplay() ? ccl.getDisplay() : getDisplayForConcept(grp.getSource(), ccl.getCode());
           tr.td().style("border-left-width: 0px").tx(display == null ? "" : display);
-          if (ccl.hasExtension(ToolingExtensions.EXT_CM_NOMAP_COMMENT)) {
+          if (ccl.hasExtension(ExtensionDefinitions.EXT_CM_NOMAP_COMMENT)) {
             tr.td().colspan("3").style("background-color: #efefef").tx("(not mapped)");
-            tr.td().style("background-color: #efefef").tx(ccl.getExtensionString(ToolingExtensions.EXT_CM_NOMAP_COMMENT));             
+            tr.td().style("background-color: #efefef").tx(ccl.getExtensionString(ExtensionDefinitions.EXT_CM_NOMAP_COMMENT));             
           } else {
             tr.td().colspan("4").style("background-color: #efefef").tx("(not mapped)");
           }
@@ -718,8 +720,8 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               if (!ccm.hasRelationship())
                 tr.td();
               else {
-                if (ccm.hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
-                  String code = ToolingExtensions.readStringExtension(ccm, ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
+                if (ccm.hasExtension(ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
+                  String code = ExtensionUtilities.readStringExtension(ccm, ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
                   tr.td().ah(context.prefixLocalHref(eqpath+"#"+code), code).tx(presentEquivalenceCode(code));                
                 } else {
                   tr.td().ah(context.prefixLocalHref(eqpath+"#"+ccm.getRelationship().toCode()), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));

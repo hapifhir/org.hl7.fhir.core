@@ -2,11 +2,9 @@ package org.hl7.fhir.r5.terminologies.utilities;
 
 import java.util.*;
 
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -430,6 +428,38 @@ public class ValidationResult {
     this.parameters = parameters;
     
   }
-  
-  
+
+
+  public Parameters getOrMakeParameters() {
+    if (parameters == null) {
+      Parameters p = new Parameters();
+      p.addParameter("result", isOk());
+      if (getMessage() != null) {
+        p.addParameter("message", getMessage());
+      }
+      if (getDisplay() != null) {
+        p.addParameter("display", getDisplay());
+      }
+      if (getSystem() != null) {
+        p.addParameter("system", new UriType(getSystem()));
+      }
+      if (getVersion() != null) {
+        p.addParameter("version", getVersion());
+      }
+      if (getCode() != null) {
+        p.addParameter("code", new CodeType(getCode()));
+      }
+      if (getCodeableConcept() != null) {
+        p.addParameter("codeableConcept", getCodeableConcept());
+      }
+      if (issues != null && !issues.isEmpty()) {
+        OperationOutcome oo = new OperationOutcome();
+        oo.getIssue().addAll(issues);
+        p.addParameter().setName("issues").setResource(oo);
+      }
+      return p;
+    } else {
+      return parameters;
+    }
+  }
 }

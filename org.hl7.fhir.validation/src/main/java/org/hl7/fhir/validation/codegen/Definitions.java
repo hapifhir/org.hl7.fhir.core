@@ -2,6 +2,8 @@ package org.hl7.fhir.validation.codegen;
 
 import org.hl7.fhir.r5.context.CanonicalResourceManager;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -13,7 +15,6 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 
 public class Definitions {
@@ -105,9 +106,9 @@ public class Definitions {
 //      }
 //    }
     for (StructureDefinition sd : structures.getList()) {
-      if (sd.hasExtension(ToolingExtensions.EXT_RESOURCE_IMPLEMENTS) &&
+      if (sd.hasExtension(ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS) &&
           !Utilities.existsInList(sd.getType(), "MedicationKnowledge", "ObservationDefinition", "SpecimenDefinition")) {
-        sd.setBaseDefinition(ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_RESOURCE_IMPLEMENTS));
+        sd.setBaseDefinition(ExtensionUtilities.readStringExtension(sd, ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS));
       }
     }
   }

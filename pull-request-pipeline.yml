@@ -14,6 +14,7 @@ parameters:
         - org.hl7.fhir.dstu2
         - org.hl7.fhir.dstu2016may
         - org.hl7.fhir.dstu3
+        - org.hl7.fhir.dstu3.support
         - org.hl7.fhir.r4
         - org.hl7.fhir.r4b
         - org.hl7.fhir.r5
@@ -32,6 +33,7 @@ parameters:
         - dstu2
         - dstu2016may
         - dstu3
+        - dstu3_support
         - r4
         - r4b
         - r5

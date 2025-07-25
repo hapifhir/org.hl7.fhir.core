@@ -28,9 +28,10 @@ import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r5.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -51,7 +52,6 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
@@ -65,6 +65,7 @@ import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
@@ -101,14 +102,13 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.base.Charsets;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 
 @RunWith(Parameterized.class)
-public class ValidationTests implements IEvaluationContext, IValidatorResourceFetcher, IValidationPolicyAdvisor, IDigitalSignatureServices, IDirectPackageProvider {
+public class ValidationTests implements IHostApplicationServices, IValidatorResourceFetcher, IValidationPolicyAdvisor, IDigitalSignatureServices, IDirectPackageProvider {
 
   public class TestSorter implements Comparator<Object> {
 
@@ -674,7 +674,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     OperationOutcome goal = (OperationOutcome) new JsonParser().parse(cnt);
     OperationOutcome actual = OperationOutcomeUtilities.createOutcomeSimple(errors);
     actual.setText(null);
-    actual.getIssue().forEach(iss -> iss.removeExtension(ToolingExtensions.EXT_ISSUE_SLICE_INFO));
+    actual.getIssue().forEach(iss -> iss.removeExtension(ExtensionDefinitions.EXT_ISSUE_SLICE_INFO));
     
     String json = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(actual);
     FileUtilities.stringToFile(json, Utilities.path(outputFolder, name.replace("/", "-")+"-"+mode+".json"));
@@ -693,7 +693,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     for (OperationOutcomeIssueComponent issActual : actual.getIssue()) {
       if (PRINT_OUTPUT_TO_CONSOLE) {
         logOutput(issActual.toString());
-        for (Extension ext : issActual.getExtensionsByUrl(ToolingExtensions.EXT_ISSUE_INNER_MESSAGE)) {
+        for (Extension ext : issActual.getExtensionsByUrl(ExtensionDefinitions.EXT_ISSUE_INNER_MESSAGE)) {
           logOutput(innerToString(ext));
         }
       }
@@ -789,7 +789,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
                || (!t.hasExpression() && !iss.hasExpression())) &&
           t.getCode() == iss.getCode() && t.getSeverity() == iss.getSeverity() && 
           (t.hasDiagnostics() ? t.getDiagnostics().equals(iss.getDiagnostics()) : !iss.hasDiagnostics()) && 
-          (t.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER) != null ? t.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER).equals(iss.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER)) : iss.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER) == null) && 
+          (t.getExtensionString(ExtensionDefinitions.EXT_ISSUE_SERVER) != null ? t.getExtensionString(ExtensionDefinitions.EXT_ISSUE_SERVER).equals(iss.getExtensionString(ExtensionDefinitions.EXT_ISSUE_SERVER)) : iss.getExtensionString(ExtensionDefinitions.EXT_ISSUE_SERVER) == null) && 
           textMatches(t.getDetails().getText(), iss.getDetails().getText())) {
         return t;
       }
@@ -819,12 +819,12 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   @Override
-  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
+  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     return new ArrayList<Base>();
   }
 
   @Override
-  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
+  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     return null;
   }
 

@@ -37,9 +37,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
 
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -616,14 +617,14 @@ public abstract class CanonicalResource extends DomainResource {
       return getUserString(UserDataNames.render_presentation);
     }
     if (hasTitleElement()) {
-      for (Entry<String, String> t : ToolingExtensions.getLanguageTranslations(getTitleElement()).entrySet()) {
+      for (Entry<String, String> t : ExtensionUtilities.getLanguageTranslations(getTitleElement()).entrySet()) {
         if (t.getKey().equals(lang)) {
           return t.getValue();
         }
       }
     }
     if (hasNameElement()) {
-      for (Entry<String, String> t : ToolingExtensions.getLanguageTranslations(getNameElement()).entrySet()) {
+      for (Entry<String, String> t : ExtensionUtilities.getLanguageTranslations(getNameElement()).entrySet()) {
         if (t.getKey().equals(lang)) {
           return t.getValue();
         }

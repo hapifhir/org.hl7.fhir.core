@@ -172,13 +172,13 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
       DefinitionNavigator ln = new DefinitionNavigator(session.getContextLeft(), left, false, false);
       DefinitionNavigator rn = new DefinitionNavigator(session.getContextRight(), right, false, false);
       StructuralMatch<ElementDefinitionNode> sm = new StructuralMatch<ElementDefinitionNode>(new ElementDefinitionNode(left, ln.current()), new ElementDefinitionNode(right, rn.current()));
-      compareElements(res, sm, ln.path(), null, ln, rn);
+      compareElements(res, sm, ln.globalPath(), null, ln, rn);
       res.combined = sm;
       ln = new DefinitionNavigator(session.getContextLeft(), left, true, false);
       rn = new DefinitionNavigator(session.getContextRight(), right, true, false);
       List<Base> parents = new ArrayList<Base>();
       parents.add(right);
-      ch = compareDiff(ln.path(), null, ln, rn, res, parents) || ch;
+      ch = compareDiff(ln.globalPath(), null, ln, rn, res, parents) || ch;
       // we don't preserve the differences - we only want the annotations
     }
     res.updateDefinitionsState(ch);
@@ -204,7 +204,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     assert(path != null);  
     assert(left != null);
     assert(right != null);
-    assert(left.path().equals(right.path()));
+    assert(left.globalPath().equals(right.globalPath()));
 
     boolean def = false;
     
@@ -221,7 +221,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     // we ignore slicing right now - we're going to clone the root one anyway, and then think about clones 
     // simple stuff
     ElementDefinition subset = new ElementDefinition();
-    subset.setPath(left.path());
+    subset.setPath(left.globalPath());
     if (sliceName != null)
       subset.setSliceName(sliceName);
 
@@ -381,7 +381,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
         matchR.add(r);
         StructuralMatch<ElementDefinitionNode> sm = new StructuralMatch<ElementDefinitionNode>(new ElementDefinitionNode(l.getStructure(), l.current()), new ElementDefinitionNode(r.getStructure(), r.current()));
         res.getChildren().add(sm);
-        def = compareElements(comp, sm, l.path(), null, l, r) || def;
+        def = compareElements(comp, sm, l.globalPath(), null, l, r) || def;
       }
     }
     for (DefinitionNavigator r : rc) {
@@ -398,7 +398,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     assert(path != null);  
     assert(left != null);
     assert(right != null);
-    assert(left.path().equals(right.path()));
+    assert(left.globalPath().equals(right.globalPath()));
     assert(parents.size() > 0);
     
     boolean def = false;
@@ -559,7 +559,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
           res.updateContentState(true);
         } else {
           matchR.add(r);
-          def = compareDiff(l.path(), null, l, r, res, parents) || def;
+          def = compareDiff(l.globalPath(), null, l, r, res, parents) || def;
         }
       }
       for (DefinitionNavigator r : rc) {
@@ -580,7 +580,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
         res.updateContentState(true);
       } else {
         matchR.add(r);
-        def = compareDiff(l.path(), null, l, r, res, parents) || def;
+        def = compareDiff(l.globalPath(), null, l, r, res, parents) || def;
       }
     }
     for (DefinitionNavigator r : rc) {

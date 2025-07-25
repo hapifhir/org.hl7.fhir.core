@@ -7,6 +7,7 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.model.*;
@@ -131,35 +132,35 @@ class CapabilityStatementUtilitiesTests {
 
     BooleanType b1 =  mergeIntrospect(makeBool(false, SHALL), makeBool(true, SHOULD), "test");
     Assertions.assertEquals(b1.getValue(), false);
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
 
     b1 =  mergeIntrospect(makeBool(false, SHOULD), makeBool(true, SHALL), "test");
     Assertions.assertEquals(b1.getValue(), true);
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
 
     b1 =  mergeIntrospect(makeBool(false, SHALL), makeBool(true, MAY), "test");
     Assertions.assertEquals(b1.getValue(), false);
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
 
     b1 =  mergeIntrospect(makeBool(false, MAY), makeBool(true, SHALL), "test");
     Assertions.assertEquals(b1.getValue(), true);
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
 
     b1 =  mergeIntrospect(makeBool(true, MAY), makeBool(true, SHALL), "test");
     Assertions.assertEquals(b1.getValue(), true);
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
 
     b1 =  mergeIntrospect(makeBool(false, SHOULD), makeBool(true, MAY), "test");
     Assertions.assertEquals(b1.getValue(), false);
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHOULD);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHOULD);
 
     b1 =  mergeIntrospect(makeBool(false, MAY), makeBool(true, SHOULD), "test");
     Assertions.assertEquals(b1.getValue(), true);
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHOULD);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHOULD);
 
     b1 =  mergeIntrospect(makeBool(true, MAY), makeBool(true, SHOULD), "test");
     Assertions.assertEquals(b1.getValue(), true);
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHOULD);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHOULD);
   }
 
   @Test
@@ -178,23 +179,23 @@ class CapabilityStatementUtilitiesTests {
 
     IntegerType i1 =  mergeIntrospect(makeInt(1, SHALL), makeInt(2, SHOULD), "test");
     Assertions.assertEquals(i1.getValue(), 1);
-    Assertions.assertEquals(i1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
+    Assertions.assertEquals(i1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
 
     i1 =  mergeIntrospect(makeInt(1, SHOULD), makeInt(2, SHALL), "test");
     Assertions.assertEquals(i1.getValue(), 2);
-    Assertions.assertEquals(i1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
+    Assertions.assertEquals(i1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
 
     i1 =  mergeIntrospect(makeInt(2, SHOULD), makeInt(1, MAY), "test");
     Assertions.assertEquals(i1.getValue(), 2);
-    Assertions.assertEquals(i1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHOULD);
+    Assertions.assertEquals(i1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHOULD);
 
     i1 =  mergeIntrospect(makeInt(2, MAY), makeInt(1, SHOULD), "test");
     Assertions.assertEquals(i1.getValue(), 2);
-    Assertions.assertEquals(i1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), MAY);
+    Assertions.assertEquals(i1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), MAY);
 
     i1 =  mergeIntrospect(makeInt(2, MAY), makeInt(1, SHALL), "test");
     Assertions.assertEquals(i1.getValue(), 1);
-    Assertions.assertEquals(i1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
+    Assertions.assertEquals(i1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
   }
 
   @Test
@@ -219,23 +220,23 @@ class CapabilityStatementUtilitiesTests {
 
     Enumeration c1 =  mergeIntrospect(makeCode(VP_VERSIONED, SHALL), makeCode(VP_VERSIONEDUPDATE, SHOULD), "test");
     Assertions.assertEquals(c1.getValueAsString(), VP_VERSIONED.getCode());
-    Assertions.assertEquals(c1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
+    Assertions.assertEquals(c1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
 
     c1 =  mergeIntrospect(makeCode(VP_VERSIONED, SHOULD), makeCode(VP_VERSIONEDUPDATE, SHALL), "test");
     Assertions.assertEquals(c1.getValueAsString(), VP_VERSIONEDUPDATE.getCode());
-    Assertions.assertEquals(c1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
+    Assertions.assertEquals(c1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
 
     c1 =  mergeIntrospect(makeCode(VP_VERSIONED, SHOULD), makeCode(VP_NOVERSION, MAY), "test");
     Assertions.assertEquals(c1.getValueAsString(), VP_VERSIONED.getCode());
-    Assertions.assertEquals(c1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHOULD);
+    Assertions.assertEquals(c1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHOULD);
 
     c1 =  mergeIntrospect(makeCode(VP_VERSIONED, MAY), makeCode(VP_NOVERSION, SHOULD), "test");
     Assertions.assertEquals(c1.getValueAsString(), VP_VERSIONED.getCode());
-    Assertions.assertEquals(c1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), MAY);
+    Assertions.assertEquals(c1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), MAY);
 
     c1 =  mergeIntrospect(makeCode(CD_SINGLE, MAY), makeCode(CD_NOTSUPPORTED, SHALL), "test");
     Assertions.assertEquals(c1.getValueAsString(), CD_NOTSUPPORTED.getCode());
-    Assertions.assertEquals(c1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
+    Assertions.assertEquals(c1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
   }
 
   @Test
@@ -243,116 +244,116 @@ class CapabilityStatementUtilitiesTests {
     // null, null -> null
     BooleanType b1 = makeBool(true, null);
     csu.mergeExpectations(b1, makeBool(true, null), "SHALL");
-    Assertions.assertEquals(b1.hasExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT), false);
+    Assertions.assertEquals(b1.hasExtension(ExtensionDefinitions.EXT_CAP_STMT_EXPECT), false);
 
     // SHALL, null -> SHALL
     b1 = makeBool(true, SHALL);
     csu.mergeExpectations(b1, makeBool(true, null), "SHALL");
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
 
     // SHOULD, null -> SHOULD
     b1 = makeBool(true, SHOULD);
     csu.mergeExpectations(b1, makeBool(true, null), "SHALL");
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHOULD);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHOULD);
 
     // MAY, null -> MAY
     b1 = makeBool(true, MAY);
     csu.mergeExpectations(b1, makeBool(true, null), "SHALL");
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), MAY);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), MAY);
 
     // null, SHALL -> SHALL
     b1 = makeBool(true, null);
     csu.mergeExpectations(b1, makeBool(true, SHALL), "SHALL");
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
 
     // null, SHOULD -> SHOULD
     b1 = makeBool(true, null);
     csu.mergeExpectations(b1, makeBool(true, SHOULD), "SHALL");
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHOULD);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHOULD);
 
     // null, MAY -> MAY
     b1 = makeBool(true, null);
     csu.mergeExpectations(b1, makeBool(true, MAY), "SHALL");
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), MAY);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), MAY);
 
     // SHALL, SHALL -> SHALL
     b1 = makeBool(true, SHALL);
     csu.mergeExpectations(b1, makeBool(true, SHALL), "SHALL");
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
 
     // SHALL, SHOULD -> SHALL
     b1 = makeBool(true, SHALL);
     csu.mergeExpectations(b1, makeBool(true, SHOULD), "SHALL");
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
 
     // SHALL, MAY -> SHALL
     b1 = makeBool(true, SHALL);
     csu.mergeExpectations(b1, makeBool(true, MAY), "SHALL");
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
 
     // SHOULD, SHALL -> SHALL
     b1 = makeBool(true, SHOULD);
     csu.mergeExpectations(b1, makeBool(true, SHALL), "SHALL");
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
 
     // SHOULD, SHOULD -> SHOULD
     b1 = makeBool(true, SHOULD);
     csu.mergeExpectations(b1, makeBool(true, SHOULD), "SHALL");
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHOULD);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHOULD);
 
     // SHOULD, MAY -> SHOULD
     b1 = makeBool(true, SHOULD);
     csu.mergeExpectations(b1, makeBool(true, MAY), "SHALL");
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHOULD);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHOULD);
 
     // MAY, SHALL -> SHALL
     b1 = makeBool(true, MAY);
     csu.mergeExpectations(b1, makeBool(true, SHALL), "SHALL");
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHALL);
 
     // MAY, SHOULD -> SHOULD
     b1 = makeBool(true, MAY);
     csu.mergeExpectations(b1, makeBool(true, SHOULD), "SHALL");
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHOULD);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), SHOULD);
 
     // MAY, MAY -> MAY
     b1 = makeBool(true, MAY);
     csu.mergeExpectations(b1, makeBool(true, MAY), "SHALL");
-    Assertions.assertEquals(b1.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), MAY);
+    Assertions.assertEquals(b1.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode(), MAY);
   }
 
   private CanonicalType makeCanonical(String url, String conformance) {
     CanonicalType c = new CanonicalType(url);
     if (conformance != null)
-      c.addExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT, new CodeType(conformance));
+      c.addExtension(ExtensionDefinitions.EXT_CAP_STMT_EXPECT, new CodeType(conformance));
     return c;
   }
 
   private BooleanType makeBool(boolean aBool, String conformance) {
     BooleanType b = new BooleanType(aBool);
     if (conformance != null)
-      b.addExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT, new CodeType(conformance));
+      b.addExtension(ExtensionDefinitions.EXT_CAP_STMT_EXPECT, new CodeType(conformance));
     return b;
   }
 
   private UnsignedIntType makeInt(int anInt, String conformance) {
     UnsignedIntType i = new UnsignedIntType(anInt);
     if (conformance != null)
-      i.addExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT, new CodeType(conformance));
+      i.addExtension(ExtensionDefinitions.EXT_CAP_STMT_EXPECT, new CodeType(conformance));
     return i;
   }
 
   private Enumeration makeCode(Enumeration aCode, String conformance) {
     Enumeration c = aCode.copy();
     if (conformance != null)
-      c.addExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT, new CodeType(conformance));
+      c.addExtension(ExtensionDefinitions.EXT_CAP_STMT_EXPECT, new CodeType(conformance));
     return c;
   }
 
   private boolean hasConformanceElement(List l, DataType d, String conformance) {
     for (Object o: l) {
       if (((DataType)o).toString().equals(d.toString())) {
-        Extension e = ((DataType) o).getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT);
+        Extension e = ((DataType) o).getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT);
         if (e == null)
           return conformance==null;
         else if (e.getValueCodeType().getCode().equals(conformance))

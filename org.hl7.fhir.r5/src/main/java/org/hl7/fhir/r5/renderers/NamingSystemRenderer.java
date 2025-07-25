@@ -8,13 +8,14 @@ import java.util.List;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -65,7 +66,7 @@ public class NamingSystemRenderer extends ResourceRenderer {
     if (ns.hasPublisher()) {
       row(tbl, (context.formatPhrase(RenderingContext.CANON_REND_PUBLISHER)), gt(ns.getPublisherElement()));
     }
-    if (ns.hasExtension(ToolingExtensions.EXT_WORKGROUP)) {
+    if (ns.hasExtension(ExtensionDefinitions.EXT_WORKGROUP)) {
       renderCommitteeLink(row(tbl, "Committee"), ns);
     }
     if (CodeSystemUtilities.hasOID(ns)) {

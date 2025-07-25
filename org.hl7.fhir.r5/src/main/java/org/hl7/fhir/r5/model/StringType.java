@@ -33,7 +33,7 @@ package org.hl7.fhir.r5.model;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 

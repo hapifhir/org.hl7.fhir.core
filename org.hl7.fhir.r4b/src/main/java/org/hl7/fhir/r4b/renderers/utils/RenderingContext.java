@@ -1,26 +1,20 @@
 package org.hl7.fhir.r4b.renderers.utils;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r4b.conformance.ProfileUtilities;
-import org.hl7.fhir.r4b.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r4b.context.IWorkerContext;
-import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4b.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r4b.model.Base;
 import org.hl7.fhir.r4b.model.DomainResource;
-import org.hl7.fhir.r4b.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r4b.renderers.utils.Resolver.IReferenceResolver;
-import org.hl7.fhir.r4b.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
@@ -104,7 +98,7 @@ public class RenderingContext {
   private ResourceRendererMode mode;
   private IReferenceResolver resolver;
   private ILiquidTemplateProvider templateProvider;
-  private IEvaluationContext services;
+  private IHostApplicationServices services;
   private ITypeParser parser;
 
   private String lang;
@@ -358,11 +352,11 @@ public class RenderingContext {
     return this;
   }
 
-  public IEvaluationContext getServices() {
+  public IHostApplicationServices getServices() {
     return services;
   }
 
-  public RenderingContext setServices(IEvaluationContext services) {
+  public RenderingContext setServices(IHostApplicationServices services) {
     this.services = services;
     return this;
   }

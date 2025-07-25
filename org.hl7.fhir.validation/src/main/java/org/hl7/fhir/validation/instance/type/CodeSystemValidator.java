@@ -608,11 +608,17 @@ public class CodeSystemValidator extends BaseValidator {
     Element value = property.getNamedChild("value");
     if (code != null) {
       PropertyDef defn = properties.get(code);
-      if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), defn != null, I18nConstants.CODESYSTEM_PROPERTY_UNDEFINED, code) &&
-          rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), value != null, I18nConstants.CODESYSTEM_PROPERTY_NO_VALUE, code) &&
-          rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), value.fhirType().equals(defn.type), I18nConstants.CODESYSTEM_PROPERTY_WRONG_TYPE, code, value.fhirType(), defn.type)) {
-        if ("code".equals(value.fhirType())) {
-          checkCodeProperty(errors, cs, stack, defn, value.primitiveValue(), codes, supplements);
+      warning(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), defn != null, I18nConstants.CODESYSTEM_PROPERTY_UNDEFINED, code);
+
+      if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), value != null, I18nConstants.CODESYSTEM_PROPERTY_NO_VALUE, code)) {
+        if (defn != null) {
+          if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), value.fhirType().equals(defn.type), I18nConstants.CODESYSTEM_PROPERTY_WRONG_TYPE, code, value.fhirType(), defn.type)) {
+            if ("code".equals(value.fhirType())) {
+              checkCodeProperty(errors, cs, stack, defn, value.primitiveValue(), codes, supplements);
+            }
+          } else {
+            ok = false;
+          }
         }
       } else {
         ok = false;

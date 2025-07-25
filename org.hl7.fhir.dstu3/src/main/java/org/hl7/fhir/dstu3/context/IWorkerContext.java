@@ -37,22 +37,10 @@ import java.util.Set;
 
 import org.hl7.fhir.dstu3.formats.IParser;
 import org.hl7.fhir.dstu3.formats.ParserType;
-import org.hl7.fhir.dstu3.model.CodeSystem;
+import org.hl7.fhir.dstu3.model.*;
 import org.hl7.fhir.dstu3.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.dstu3.model.CodeableConcept;
-import org.hl7.fhir.dstu3.model.Coding;
-import org.hl7.fhir.dstu3.model.ConceptMap;
-import org.hl7.fhir.dstu3.model.ExpansionProfile;
-import org.hl7.fhir.dstu3.model.MetadataResource;
-import org.hl7.fhir.dstu3.model.Resource;
-import org.hl7.fhir.dstu3.model.StructureDefinition;
-import org.hl7.fhir.dstu3.model.ValueSet;
 import org.hl7.fhir.dstu3.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.dstu3.model.ValueSet.ValueSetExpansionComponent;
-import org.hl7.fhir.dstu3.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
-import org.hl7.fhir.dstu3.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
-import org.hl7.fhir.dstu3.utils.INarrativeGenerator;
-import org.hl7.fhir.dstu3.utils.validation.IResourceValidator;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -126,22 +114,6 @@ public interface IWorkerContext {
    * @return
    */
   public IParser newXmlParser();
-
-  /**
-   * Get a generator that can generate narrative for the instance
-   * 
-   * @return a prepared generator
-   */
-  public INarrativeGenerator getNarrativeGenerator(String prefix, String basePath);
-
-  /**
-   * Get a validator that can check whether a resource is valid 
-   * 
-   * @return a prepared generator
-   * @throws FHIRException 
-   * @
-   */
-  public IResourceValidator newValidator() throws FHIRException;
 
   // -- resource fetchers ---------------------------------------------------
 
@@ -313,8 +285,20 @@ public interface IWorkerContext {
     public TerminologyServiceErrorClass getErrorClass() {
       return errorClass;
     }
-    
-    
+
+
+
+    public Parameters getOrMakeParameters() {
+      Parameters p = new Parameters();
+      p.addParameter().setName("result").setValue(new BooleanType(isOk()));
+      if (getMessage() != null) {
+        p.addParameter().setName("message").setValue(new StringType(getMessage()));
+      }
+      if (getDisplay() != null) {
+        p.addParameter().setName("display").setValue(new StringType(getDisplay()));
+      }
+      return p;
+    }
   }
 
   /**
@@ -394,4 +378,68 @@ public interface IWorkerContext {
   public boolean isNoTerminologyServer();
   public StructureDefinition fetchTypeDefinition(String typeName);
 
+
+  /**
+   * Some value sets are just too big to expand. Instead of an expanded value set,
+   * you get back an interface that can test membership - usually on a server somewhere
+   *
+   * @author Grahame
+   */
+  public class ValueSetExpansionOutcome {
+    private ValueSet valueset;
+    private Object service; // actually a ValueSetChecker, but we shouldn't need this?
+    private String error;
+    private TerminologyServiceErrorClass errorClass;
+
+    public ValueSetExpansionOutcome(ValueSet valueset) {
+      super();
+      this.valueset = valueset;
+      this.service = null;
+      this.error = null;
+    }
+    public ValueSetExpansionOutcome(ValueSet valueset, String error, TerminologyServiceErrorClass errorClass) {
+      super();
+      this.valueset = valueset;
+      this.service = null;
+      this.error = error;
+      this.errorClass = errorClass;
+    }
+    public ValueSetExpansionOutcome(Object service, String error, TerminologyServiceErrorClass errorClass) {
+      super();
+      this.valueset = null;
+      this.service = service;
+      this.error = error;
+      this.errorClass = errorClass;
+    }
+    public ValueSetExpansionOutcome(String error, TerminologyServiceErrorClass errorClass) {
+      this.valueset = null;
+      this.service = null;
+      this.error = error;
+      this.errorClass = errorClass;
+    }
+    public ValueSet getValueset() {
+      return valueset;
+    }
+    public Object getService() {
+      return service;
+    }
+    public String getError() {
+      return error;
+    }
+    public TerminologyServiceErrorClass getErrorClass() {
+      return errorClass;
+    }
+
+    public boolean isOk() {
+      return error == null;
+    }
+  }
+
+  public enum TerminologyServiceErrorClass {
+    UNKNOWN, NOSERVICE, SERVER_ERROR, VALUESET_UNSUPPORTED;
+
+    public boolean isInfrastructure() {
+      return this == NOSERVICE || this == SERVER_ERROR || this == VALUESET_UNSUPPORTED;
+    }
+  }
 }

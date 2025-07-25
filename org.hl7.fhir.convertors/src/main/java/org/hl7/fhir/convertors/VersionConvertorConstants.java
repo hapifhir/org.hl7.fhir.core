@@ -1,7 +1,5 @@
 package org.hl7.fhir.convertors;
 
-import org.hl7.fhir.r5.utils.ToolingExtensions;
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +29,8 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
   
  */
 
+
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 
 public class VersionConvertorConstants {
 
@@ -65,7 +65,7 @@ public class VersionConvertorConstants {
   public static final String EXT_OLD_CONCEPTMAP_EQUIVALENCE = "http://hl7.org/fhir/1.0/StructureDefinition/extension-ConceptMap.element.target.equivalence";
   public static final String EXT_OPDEF_ORIGINAL_TYPE = "http://hl7.org/fhir/4.0/StructureDefinition/extension-OperationDefinition.parameter.type";
   public static final String EXT_PAT_ANIMAL = "http://hl7.org/fhir/StructureDefinition/patient-animal";
-  public static final String EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL = ToolingExtensions.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL;
+  public static final String EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL = ExtensionDefinitions.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL;
   public static final String EXT_VALUE_ALT = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.valueAlternatives";
   public static final String EXT_VS_EXP_PROP = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.property";
   public static final String EXT_VS_EXTENSIBLE = "http://hl7.org/fhir/1.0/StructureDefinition/extension-ValueSet.extensible";

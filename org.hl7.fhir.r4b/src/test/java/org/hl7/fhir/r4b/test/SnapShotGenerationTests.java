@@ -2,7 +2,6 @@ package org.hl7.fhir.r4b.test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ import org.hl7.fhir.r4b.context.IWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r4b.fhirpath.TypeDetails;
 import org.hl7.fhir.r4b.fhirpath.ExpressionNode.CollectionStatus;
-import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4b.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r4b.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4b.formats.JsonParser;
@@ -43,6 +42,7 @@ import org.hl7.fhir.r4b.test.utils.TestingUtilities;
 import org.hl7.fhir.r4b.utils.validation.IResourceValidator;
 import org.hl7.fhir.r4b.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
@@ -318,7 +318,7 @@ public class SnapShotGenerationTests {
 
   }
 
-  private static class SnapShotGenerationTestsContext implements IEvaluationContext {
+  private static class SnapShotGenerationTestsContext implements IHostApplicationServices {
     public List<TestDetails> tests = new ArrayList<>();
 
     public Resource fetchFixture(String id) {
@@ -368,13 +368,13 @@ public class SnapShotGenerationTests {
 
     // FHIRPath methods
     @Override
-    public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant)
+    public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode)
         throws PathEngineException {
       throw new Error("Not implemented yet");
     }
 
     @Override
-    public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
+    public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
       throw new Error("Not implemented yet");
     }
 
@@ -453,6 +453,11 @@ public class SnapShotGenerationTests {
     @Override
     public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
       throw new Error("Not implemented yet");
+    }
+
+    @Override
+    public boolean paramIsType(String name, int index) {
+      return false;
     }
 
   }

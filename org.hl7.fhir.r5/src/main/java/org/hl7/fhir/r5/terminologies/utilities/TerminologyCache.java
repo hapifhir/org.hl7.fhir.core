@@ -76,7 +76,8 @@ import com.google.gson.JsonPrimitive;
 @MarkedToMoveToAdjunctPackage
 @Slf4j
 public class TerminologyCache {
-  
+
+
   public static class SourcedCodeSystem {
     private String server;
     private CodeSystem cs;
@@ -1235,4 +1236,12 @@ public class TerminologyCache {
   }
 
 
+  public String getReport() {
+    int c = 0;
+    for (NamedCache nc : caches.values()) {
+      c += nc.list.size();
+    }
+    return "txCache report: "+
+      c+" entries in "+caches.size()+" buckets + "+vsCache.size()+" VS, "+csCache.size()+" CS & "+serverMap.size()+" SM. Hitcount = "+hitCount+"/"+requestCount+", "+networkCount;
+  }
 }

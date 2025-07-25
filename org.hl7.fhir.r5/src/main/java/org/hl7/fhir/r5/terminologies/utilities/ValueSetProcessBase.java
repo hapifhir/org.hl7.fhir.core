@@ -6,6 +6,8 @@ import java.util.List;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ITerminologyOperationDetails;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -21,7 +23,7 @@ import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.StandardsStatus;
@@ -114,7 +116,7 @@ public class ValueSetProcessBase {
     public void seeValueSet(ValueSet vs) {
       if (vs != null) {
         for (Extension ext : vs.getCompose().getExtension()) {
-          if ("http://hl7.org/fhir/tools/StructureDefinition/valueset-expansion-parameter".equals(ext.getUrl())) {
+          if (Utilities.existsInList(ext.getUrl(), ExtensionDefinitions.EXT_VS_EXP_PARAM_NEW, ExtensionDefinitions.EXT_VS_EXP_PARAM_OLD)) {
             String name = ext.getExtensionString("name");
             Extension value = ext.getExtensionByUrl("value");
             if ("includeAlternateCodes".equals(name) && value != null && value.hasValue()) {
@@ -131,7 +133,7 @@ public class ValueSetProcessBase {
       }
 
       for (Extension ext : extensions) {
-        if (ToolingExtensions.EXT_CS_ALTERNATE_USE.equals(ext.getUrl())) {
+        if (ExtensionDefinitions.EXT_CS_ALTERNATE_USE.equals(ext.getUrl())) {
           if (ext.hasValueCoding() && Utilities.existsInList(ext.getValueCoding().getCode(), uses)) {
             return true;
           }
@@ -171,10 +173,10 @@ public class ValueSetProcessBase {
       result.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", code.toCode(), null);
     }
     if (server != null) {
-      result.addExtension(ToolingExtensions.EXT_ISSUE_SERVER, new UrlType(server));
+      result.addExtension(ExtensionDefinitions.EXT_ISSUE_SERVER, new UrlType(server));
     }
     if (msgId != null) {      
-      result.addExtension(ToolingExtensions.EXT_ISSUE_MSG_ID, new StringType(msgId));
+      result.addExtension(ExtensionDefinitions.EXT_ISSUE_MSG_ID, new StringType(msgId));
     }
     ArrayList<OperationOutcomeIssueComponent> list = new ArrayList<>();
     list.add(result);
@@ -183,7 +185,7 @@ public class ValueSetProcessBase {
   
   public void checkCanonical(List<OperationOutcomeIssueComponent> issues, String path, CanonicalResource resource, CanonicalResource source) {
     if (resource != null) {
-      StandardsStatus standardsStatus = ToolingExtensions.getStandardsStatus(resource);
+      StandardsStatus standardsStatus = ExtensionUtilities.getStandardsStatus(resource);
       if (standardsStatus == StandardsStatus.DEPRECATED) {
         addToIssues(issues, makeStatusIssue(path, "deprecated", I18nConstants.MSG_DEPRECATED, resource));
       } else if (standardsStatus == StandardsStatus.WITHDRAWN) {
@@ -194,7 +196,7 @@ public class ValueSetProcessBase {
         if (resource.getExperimental() && !source.getExperimental()) {
           addToIssues(issues, makeStatusIssue(path, "experimental", I18nConstants.MSG_EXPERIMENTAL, resource));
         } else if ((resource.getStatus() == PublicationStatus.DRAFT || standardsStatus == StandardsStatus.DRAFT)
-            && !(source.getStatus() == PublicationStatus.DRAFT || ToolingExtensions.getStandardsStatus(source) == StandardsStatus.DRAFT)) {
+            && !(source.getStatus() == PublicationStatus.DRAFT || ExtensionUtilities.getStandardsStatus(source) == StandardsStatus.DRAFT)) {
           addToIssues(issues, makeStatusIssue(path, "draft", I18nConstants.MSG_DRAFT, resource));
         }
       } else {
@@ -213,7 +215,7 @@ public class ValueSetProcessBase {
     // this is a testing hack - see TerminologyServiceTests
     iss.get(0).setUserData(UserDataNames.tx_status_msg_name, "warning-"+id);
     iss.get(0).setUserData(UserDataNames.tx_status_msg_value, new UriType(resource.getVersionedUrl()));
-    ToolingExtensions.setStringExtension(iss.get(0), ToolingExtensions.EXT_ISSUE_MSG_ID, msg);
+    ExtensionUtilities.setStringExtension(iss.get(0), ExtensionDefinitions.EXT_ISSUE_MSG_ID, msg);
     
     return iss;
   }
@@ -234,7 +236,7 @@ public class ValueSetProcessBase {
 
   public void checkCanonical(ValueSetExpansionComponent params, CanonicalResource resource, ValueSet source) {
     if (resource != null) {
-      StandardsStatus standardsStatus = ToolingExtensions.getStandardsStatus(resource);
+      StandardsStatus standardsStatus = ExtensionUtilities.getStandardsStatus(resource);
       if (standardsStatus == StandardsStatus.DEPRECATED) {
         if (!params.hasParameterValue("warning-deprecated", resource.getVersionedUrl())) {
           params.addParameter("warning-deprecated", new UriType(resource.getVersionedUrl()));
@@ -252,7 +254,7 @@ public class ValueSetProcessBase {
           params.addParameter("warning-experimental", new UriType(resource.getVersionedUrl()));
         }         
       } else if ((resource.getStatus() == PublicationStatus.DRAFT || standardsStatus == StandardsStatus.DRAFT)
-          && !(source.getStatus() == PublicationStatus.DRAFT || ToolingExtensions.getStandardsStatus(source) == StandardsStatus.DRAFT)) {
+          && !(source.getStatus() == PublicationStatus.DRAFT || ExtensionUtilities.getStandardsStatus(source) == StandardsStatus.DRAFT)) {
         if (!params.hasParameterValue("warning-draft", resource.getVersionedUrl())) {
           params.addParameter("warning-draft", new UriType(resource.getVersionedUrl()));
         }         

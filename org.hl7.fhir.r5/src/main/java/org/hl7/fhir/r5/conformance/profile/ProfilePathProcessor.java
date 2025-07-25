@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ElementRedirection;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -19,8 +20,6 @@ import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
@@ -442,7 +441,7 @@ public class ProfilePathProcessor {
     return path.replace(redirect, rootPath);
   }
 
-  private int resolveContentReference(StructureDefinitionSnapshotComponent base, ElementDefinition currentBase) {
+  private int resolveContentReference(StructureDefinition.StructureDefinitionSnapshotComponent base, ElementDefinition currentBase) {
     String path = currentBase.getContentReference().substring(currentBase.getContentReference().indexOf("#")+1);
 
     // work backwards and find the nearest case
@@ -696,7 +695,7 @@ public class ProfilePathProcessor {
       }
       if (firstTypeStructureDefinition != null) {
         if (!firstTypeStructureDefinition.isGeneratingSnapshot()) { // can't do this check while generating
-          if (!profileUtilities.isMatchingType(firstTypeStructureDefinition, diffMatches.get(0).getType(), firstTypeProfile.getExtensionString(ToolingExtensions.EXT_PROFILE_ELEMENT))) {
+          if (!profileUtilities.isMatchingType(firstTypeStructureDefinition, diffMatches.get(0).getType(), firstTypeProfile.getExtensionString(ExtensionDefinitions.EXT_PROFILE_ELEMENT))) {
             throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE2, firstTypeStructureDefinition.getUrl(), diffMatches.get(0).getPath(), firstTypeStructureDefinition.getType(), firstTypeProfile.getValue(), diffMatches.get(0).getType().get(0).getWorkingCode()));
           }
         }
@@ -715,9 +714,9 @@ public class ProfilePathProcessor {
         }
         ElementDefinition src;
         StructureDefinition srcSD = null;;
-        if (firstTypeProfile.hasExtension(ToolingExtensions.EXT_PROFILE_ELEMENT)) {
+        if (firstTypeProfile.hasExtension(ExtensionDefinitions.EXT_PROFILE_ELEMENT)) {
           src = null;          
-          String eid = firstTypeProfile.getExtensionString(ToolingExtensions.EXT_PROFILE_ELEMENT);
+          String eid = firstTypeProfile.getExtensionString(ExtensionDefinitions.EXT_PROFILE_ELEMENT);
           for (ElementDefinition t : firstTypeStructureDefinition.getSnapshot().getElement()) {
             if (eid.equals(t.getId())) {
               src = t;
@@ -988,11 +987,11 @@ public class ProfilePathProcessor {
     return true;
   }
 
-  private int indexOfFirstNonChild(StructureDefinitionSnapshotComponent base, ElementDefinition currentBase, int i, int baseLimit) {
+  private int indexOfFirstNonChild(StructureDefinition.StructureDefinitionSnapshotComponent base, ElementDefinition currentBase, int i, int baseLimit) {
     return baseLimit+1;
   }
 
-  private boolean baseHasChildren(StructureDefinitionSnapshotComponent base, ElementDefinition ed) {
+  private boolean baseHasChildren(StructureDefinition.StructureDefinitionSnapshotComponent base, ElementDefinition ed) {
     int index = base.getElement().indexOf(ed);
     if (index == -1 || index >= base.getElement().size()-1)
       return false;

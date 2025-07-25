@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -216,7 +218,7 @@ public class MappingAssistant {
   }
 
   private boolean isSuppressed(Element s) {
-    return ToolingExtensions.readBoolExtension(s, ToolingExtensions.EXT_SUPPRESSED);
+    return ExtensionUtilities.readBoolExtension(s, ExtensionDefinitions.EXT_SUPPRESSED);
   }
 
   private StructureDefinitionMappingComponent findDefinition(String name) {

@@ -12,7 +12,7 @@ import org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.Mark
 import org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.String14_30;
 import org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.Uri14_30;
 import org.hl7.fhir.convertors.conv14_30.resources14_30.Enumerations14_30;
-import org.hl7.fhir.dstu3.conformance.ProfileUtilities;
+import org.hl7.fhir.dstu3.support.conformance.ProfileUtilities;
 import org.hl7.fhir.dstu3.model.ElementDefinition;
 import org.hl7.fhir.exceptions.FHIRException;
 

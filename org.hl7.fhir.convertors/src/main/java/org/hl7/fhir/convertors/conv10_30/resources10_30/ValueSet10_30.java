@@ -20,7 +20,7 @@ import org.hl7.fhir.dstu3.model.CodeSystem;
 import org.hl7.fhir.dstu3.model.CodeSystem.CodeSystemContentMode;
 import org.hl7.fhir.dstu3.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.dstu3.model.Enumeration;
-import org.hl7.fhir.dstu3.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.dstu3.utils.CodeSystemUtilities;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class ValueSet10_30 {

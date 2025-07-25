@@ -12,6 +12,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeType;
@@ -29,7 +30,7 @@ import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionDifferentialComponent;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.TypesUtilities;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -132,9 +133,9 @@ public class SnapshotGenerationPreProcessor {
   public void process(StructureDefinitionDifferentialComponent diff, StructureDefinition srcOriginal) {
     StructureDefinition srcWrapper = shallowClone(srcOriginal, diff); 
     processSlices(diff, srcWrapper);  
-    if (srcWrapper.hasExtension(ToolingExtensions.EXT_ADDITIONAL_BASE)) {
+    if (srcWrapper.hasExtension(ExtensionDefinitions.EXT_ADDITIONAL_BASE)) {
        insertMissingSparseElements(diff.getElement(), srcWrapper.getTypeName());
-       for (Extension ext : srcWrapper.getExtensionsByUrl(ToolingExtensions.EXT_ADDITIONAL_BASE)) {
+       for (Extension ext : srcWrapper.getExtensionsByUrl(ExtensionDefinitions.EXT_ADDITIONAL_BASE)) {
          StructureDefinition ab = context.fetchResource(StructureDefinition.class, ext.getValue().primitiveValue());
          if (ab == null) {
            throw new FHIRException("Unable to find additional base '"+ext.getValue().primitiveValue()+"'");

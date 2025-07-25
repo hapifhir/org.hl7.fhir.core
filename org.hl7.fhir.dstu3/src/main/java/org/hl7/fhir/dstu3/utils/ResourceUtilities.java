@@ -65,7 +65,6 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
  * @author Grahame
  *
  */
-@Deprecated
 public class ResourceUtilities {
 
   public final static String FHIR_LANGUAGE = "urn:ietf:bcp:47";
@@ -172,17 +171,17 @@ public class ResourceUtilities {
       } else if (col.equals("DataElement.type")) {
         v = dee.hasType() ? Utilities.escapeXml(dee.getType().get(0).getCode()) : "";
       } else if (col.equals("DataElement.units")) {
-        v = renderDEUnits(ToolingExtensions.getAllowedUnits(dee));
+        v = renderDEUnits(ExtensionUtilities.getAllowedUnits(dee));
       } else if (col.equals("DataElement.binding")) {
         v = renderBinding(dee.getBinding());
       } else if (col.equals("DataElement.minValue")) {
-        v = ToolingExtensions.hasExtension(de, "http://hl7.org/fhir/StructureDefinition/minValue") ? Utilities.escapeXml(ToolingExtensions.readPrimitiveExtension(de, "http://hl7.org/fhir/StructureDefinition/minValue").asStringValue()) : "";
+        v = ExtensionUtilities.hasExtension(de, "http://hl7.org/fhir/StructureDefinition/minValue") ? Utilities.escapeXml(ExtensionUtilities.readPrimitiveExtension(de, "http://hl7.org/fhir/StructureDefinition/minValue").asStringValue()) : "";
       } else if (col.equals("DataElement.maxValue")) {
-        v = ToolingExtensions.hasExtension(de, "http://hl7.org/fhir/StructureDefinition/maxValue") ? Utilities.escapeXml(ToolingExtensions.readPrimitiveExtension(de, "http://hl7.org/fhir/StructureDefinition/maxValue").asStringValue()) : "";
+        v = ExtensionUtilities.hasExtension(de, "http://hl7.org/fhir/StructureDefinition/maxValue") ? Utilities.escapeXml(ExtensionUtilities.readPrimitiveExtension(de, "http://hl7.org/fhir/StructureDefinition/maxValue").asStringValue()) : "";
       } else if (col.equals("DataElement.maxLength")) {
-        v = ToolingExtensions.hasExtension(de, "http://hl7.org/fhir/StructureDefinition/maxLength") ? Utilities.escapeXml(ToolingExtensions.readPrimitiveExtension(de, "http://hl7.org/fhir/StructureDefinition/maxLength").asStringValue()) : "";
+        v = ExtensionUtilities.hasExtension(de, "http://hl7.org/fhir/StructureDefinition/maxLength") ? Utilities.escapeXml(ExtensionUtilities.readPrimitiveExtension(de, "http://hl7.org/fhir/StructureDefinition/maxLength").asStringValue()) : "";
       } else if (col.equals("DataElement.mask")) {
-        v = ToolingExtensions.hasExtension(de, "http://hl7.org/fhir/StructureDefinition/mask") ? Utilities.escapeXml(ToolingExtensions.readPrimitiveExtension(de, "http://hl7.org/fhir/StructureDefinition/mask").asStringValue()) : "";
+        v = ExtensionUtilities.hasExtension(de, "http://hl7.org/fhir/StructureDefinition/mask") ? Utilities.escapeXml(ExtensionUtilities.readPrimitiveExtension(de, "http://hl7.org/fhir/StructureDefinition/mask").asStringValue()) : "";
       } else 
         throw new Error("Unknown column name: "+col);
 
@@ -190,8 +189,8 @@ public class ResourceUtilities {
     }
     if (profileLink) {
       b.append("<td><a href=\""+linkBase+"-"+de.getId()+".html\">Profile</a>, <a href=\"http://www.opencem.org/#/20140917/Intermountain/"+de.getId()+"\">CEM</a>");
-      if (ToolingExtensions.hasExtension(de, ToolingExtensions.EXT_CIMI_REFERENCE)) 
-        b.append(", <a href=\""+ToolingExtensions.readStringExtension(de, ToolingExtensions.EXT_CIMI_REFERENCE)+"\">CIMI</a>");
+      if (ExtensionUtilities.hasExtension(de, ExtensionUtilities.EXT_CIMI_REFERENCE))
+        b.append(", <a href=\""+ ExtensionUtilities.readStringExtension(de, ExtensionUtilities.EXT_CIMI_REFERENCE)+"\">CIMI</a>");
       b.append("</td>");
     }
     b.append("</tr>\r\n");
@@ -287,7 +286,7 @@ public class ResourceUtilities {
   private static boolean hasExtension(Bundle bundle, String url) {
     for (BundleEntryComponent e : bundle.getEntry()) {
       DataElement de = (DataElement) e.getResource();
-      if (ToolingExtensions.hasExtension(de, url))
+      if (ExtensionUtilities.hasExtension(de, url))
         return true;
     }
     return false;
@@ -323,7 +322,7 @@ public class ResourceUtilities {
   private static boolean hasUnits(Bundle bundle) {
     for (BundleEntryComponent e : bundle.getEntry()) {
       DataElement de = (DataElement) e.getResource();
-      if (ToolingExtensions.getAllowedUnits(de.getElement().get(0)) != null)
+      if (ExtensionUtilities.getAllowedUnits(de.getElement().get(0)) != null)
         return true;
     }
     return false;

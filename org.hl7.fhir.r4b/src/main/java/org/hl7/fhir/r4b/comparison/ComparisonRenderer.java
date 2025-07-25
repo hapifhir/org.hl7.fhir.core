@@ -1,7 +1,6 @@
 package org.hl7.fhir.r4b.comparison;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -26,7 +25,7 @@ import org.hl7.fhir.r4b.context.IWorkerContext;
 import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r4b.fhirpath.TypeDetails;
 import org.hl7.fhir.r4b.fhirpath.ExpressionNode.CollectionStatus;
-import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4b.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r4b.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4b.model.Base;
@@ -38,12 +37,13 @@ import org.hl7.fhir.r4b.utils.LiquidEngine.LiquidDocument;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
 @MarkedToMoveToAdjunctPackage
 @Slf4j
-public class ComparisonRenderer implements IEvaluationContext {
+public class ComparisonRenderer implements IHostApplicationServices {
 
   private IWorkerContext contextLeft;
   private IWorkerContext contextRight;
@@ -235,7 +235,7 @@ public class ComparisonRenderer implements IEvaluationContext {
   }
 
   @Override
-  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
+  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     @SuppressWarnings("unchecked")
     Map<String, Base> vars = (Map<String, Base>) appContext;
     List<Base> res = new ArrayList<>();
@@ -246,7 +246,7 @@ public class ComparisonRenderer implements IEvaluationContext {
   }
 
   @Override
-  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
+  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     @SuppressWarnings("unchecked")
     Map<String, Base> vars = (Map<String, Base>) appContext;
     Base b = vars.get(name);
@@ -288,6 +288,11 @@ public class ComparisonRenderer implements IEvaluationContext {
   @Override
   public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
     return null;
+  }
+
+  @Override
+  public boolean paramIsType(String name, int index) {
+    return false;
   }
 
 }

@@ -31,7 +31,6 @@ package org.hl7.fhir.dstu3.formats;
 
 
 
-import org.hl7.fhir.dstu3.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
 
 public class ParserFactory {

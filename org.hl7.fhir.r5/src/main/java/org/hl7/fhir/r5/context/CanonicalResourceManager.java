@@ -720,6 +720,19 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     return res;
   }
 
+  public List<T> getVersionList(String url) {
+    List<T> res = new ArrayList<>();
+    for (CachedCanonicalResource<T> t : list) {
+      if (url.equals(t.getUrl())) {
+        if (!res.contains(t.getResource())) {
+          res.add(t.getResource());
+        }
+
+      }
+    }
+    return res;
+  }
+
   public List<T> getSortedList() {
     List<T> res = getList();
     Collections.sort(res, new CanonicalListSorter());

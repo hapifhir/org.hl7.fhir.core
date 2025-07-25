@@ -1,10 +1,6 @@
 package org.hl7.fhir.utilities;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.StringJoiner;
+import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -41,7 +37,6 @@ import org.hl7.fhir.utilities.VersionUtilities.SemVer;
 
 
 public class VersionUtilities {
-
 
   public static class SemVerSorter implements Comparator<String> {
 
@@ -777,5 +772,25 @@ public class VersionUtilities {
     }
   }
 
+
+  public static List<String> iterateCoreVersions(String startVer, String endVer) {
+    List<String> result = new ArrayList<>();
+    if (isThisOrLater(startVer, "1.0") && isThisOrLater("1.0", endVer)) {
+      result.add("1.0");
+    }
+    if (isThisOrLater(startVer, "3.0") && isThisOrLater("3.0", endVer)) {
+      result.add("3.0");
+    }
+    if (isThisOrLater(startVer, "4.0") && isThisOrLater("4.0", endVer)) {
+      result.add("4.0");
+    }
+    if (isThisOrLater(startVer, "4.3") && isThisOrLater("4.3", endVer)) {
+      result.add("4.3");
+    }
+    if (isThisOrLater(startVer, "5.0") && isThisOrLater("5.0", endVer)) {
+      result.add("5.0");
+    }
+    return result;
+  }
 
 }

@@ -2,11 +2,6 @@ package org.hl7.fhir.utilities.npm;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonToken;
@@ -29,49 +24,40 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
  */
 @Slf4j
 public class NpmPackageIndexBuilder {
-  
+
+  public interface INpmPackageIndexBuilderDBImpl {
+
+    void start(String filename);
+    void seeFile(String name, JsonObject fi) throws Exception;
+    void close();
+  }
+
+  public interface INpmPackageIndexBuilderDBImplFactory {
+    INpmPackageIndexBuilderDBImpl create();
+  }
+
+  private static INpmPackageIndexBuilderDBImplFactory extensionFactory;
+
   public static final Integer CURRENT_INDEX_VERSION = 2;
   private JsonObject index;
   private JsonArray files;
-  private Connection conn;
-  private PreparedStatement psql;
   private String dbFilename;
-  
+  private static INpmPackageIndexBuilderDBImpl extension;
+
   public void start(String filename) {
     index = new JsonObject();
     index.add("index-version", CURRENT_INDEX_VERSION);
     files = new JsonArray();
     index.add("files", files);
-
-    dbFilename = filename;
     if (filename != null) {
+      dbFilename = filename;
       try {
-        ManagedFileAccess.file(filename).delete();
-        conn = DriverManager.getConnection("jdbc:sqlite:"+filename); 
-        Statement stmt = conn.createStatement();
-        stmt.execute("CREATE TABLE ResourceList (\r\n"+
-            "FileName       nvarchar NOT NULL,\r\n"+
-            "ResourceType   nvarchar NOT NULL,\r\n"+
-            "Id             nvarchar NULL,\r\n"+
-            "Url            nvarchar NULL,\r\n"+
-            "Version        nvarchar NULL,\r\n"+
-            "Kind           nvarchar NULL,\r\n"+
-            "Type           nvarchar NULL,\r\n"+
-            "Supplements    nvarchar NULL,\r\n"+
-            "Content        nvarchar NULL,\r\n"+
-            "ValueSet       nvarchar NULL,\r\n"+
-            "Derivation     nvarchar NULL,\r\n"+
-            "PRIMARY KEY (FileName))\r\n");
-
-        psql = conn.prepareStatement("Insert into ResourceList (FileName, ResourceType, Id, Url, Version, Kind, Type, Supplements, Content, ValueSet) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-      } catch (Exception e) {
-        if (conn != null) { 
-          try {
-            conn.close();
-          } catch (SQLException e1) {
-          }
+        if (extensionFactory != null) {
+          extension = extensionFactory.create();
+          extension.start(filename);
         }
-        conn = null;
+      } catch (Exception e) {
+        // nothing?
       }
     }
   }
@@ -124,22 +110,10 @@ public class NpmPackageIndexBuilder {
           return true;
         }
 
-        if (psql != null) {
-          psql.setString(1, name); // FileName);
-          psql.setString(2, fi.asString("resourceType")); // ResourceType");
-          psql.setString(3, fi.asString("id")); // Id");
-          psql.setString(4, fi.asString("url")); // Url");
-          psql.setString(5, fi.asString("version")); // Version");
-          psql.setString(6, fi.asString("kind")); // Kind");
-          psql.setString(7, fi.asString("type")); // Type");
-          psql.setString(8, fi.asString("supplements")); // Supplements");
-          psql.setString(9, fi.asString("content")); // Content");
-          psql.setString(10, fi.asString("valueSet")); // ValueSet");
-          psql.setString(10, fi.asString("derivation")); // Derivation");
-          psql.execute();
+        if (extension != null) {
+          extension.seeFile(name, fi);
         }
       } catch (Exception e) {
-
         if (name.contains("openapi")) {
           return false;
         }
@@ -149,12 +123,8 @@ public class NpmPackageIndexBuilder {
   }
 
   public String build() {
-    try {
-      if (conn != null) {
-        conn.close();
-      }
-    } catch (Exception e) {
-      // nothing
+    if (extension != null) {
+      extension.close();
     }
     String res = JsonParser.compose(index, true);
     index = null;
@@ -229,5 +199,12 @@ public class NpmPackageIndexBuilder {
     return dbFilename;
   }
 
+  public static INpmPackageIndexBuilderDBImplFactory getExtensionFactory() {
+    return extensionFactory;
+  }
+
+  public static void setExtensionFactory(INpmPackageIndexBuilderDBImplFactory extensionFactory) {
+    NpmPackageIndexBuilder.extensionFactory = extensionFactory;
+  }
 
 }

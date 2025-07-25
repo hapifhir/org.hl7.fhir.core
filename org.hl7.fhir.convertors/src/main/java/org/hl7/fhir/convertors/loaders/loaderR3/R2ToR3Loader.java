@@ -49,7 +49,7 @@ import org.hl7.fhir.dstu3.model.StructureDefinition;
 import org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.dstu3.model.UriType;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 
 public class R2ToR3Loader extends BaseLoaderR3 {
 
@@ -99,7 +99,7 @@ public class R2ToR3Loader extends BaseLoaderR3 {
         .map(be -> (StructureDefinition) be.getResource())
         .forEach(sd -> {
           sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU2));
-          sd.addExtension().setUrl(ToolingExtensions.EXT_XML_NAMESPACE).setValue(new UriType(URL_BASE));
+          sd.addExtension().setUrl(ExtensionDefinitions.EXT_XML_NAMESPACE).setValue(new UriType(URL_BASE));
         });
     }
     return b;

@@ -60,7 +60,7 @@ import org.hl7.fhir.r4.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r4.fhirpath.TypeDetails;
 import org.hl7.fhir.r4.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r4.fhirpath.FHIRLexer.FHIRLexerException;
-import org.hl7.fhir.r4.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r4.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4.fhirpath.TypeDetails.ProfiledType;
 import org.hl7.fhir.r4.model.Base;
@@ -124,6 +124,7 @@ import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -182,9 +183,9 @@ public class StructureMapUtilities {
     public List<Base> performSearch(Object appContext, String url) throws FHIRException;
   }
 
-  private class FHIRPathHostServices implements IEvaluationContext {
+  private class FHIRPathHostServices implements IHostApplicationServices {
 
-    public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant)
+    public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode)
         throws PathEngineException {
       Variables vars = (Variables) appContext;
       Base res = vars.get(VariableMode.INPUT, name);
@@ -197,7 +198,7 @@ public class StructureMapUtilities {
     }
 
     @Override
-    public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
+    public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
       if (!(appContext instanceof VariablesForProfiling))
         throw new Error(
             "Internal Logic Error (wrong type '" + appContext.getClass().getName() + "' in resolveConstantType)");

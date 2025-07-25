@@ -261,7 +261,7 @@ public class LoincToDEConvertor {
 //				// units:
 //				// UNITSREQUIRED	
 //				// SUBMITTED_UNITS
-//				ToolingExtensions.setAllowableUnits(dee, makeUnits(col(row, "EXAMPLE_UNITS"), col(row, "EXAMPLE_UCUM_UNITS")));
+//				ExtensionUtilities.setAllowableUnits(dee, makeUnits(col(row, "EXAMPLE_UNITS"), col(row, "EXAMPLE_UCUM_UNITS")));
 //				// EXAMPLE_SI_UCUM_UNITS	
 			
 			row = XMLUtil.getNextSibling(row);

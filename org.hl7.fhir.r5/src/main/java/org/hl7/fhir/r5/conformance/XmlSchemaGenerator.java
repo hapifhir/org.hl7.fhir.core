@@ -30,7 +30,6 @@ package org.hl7.fhir.r5.conformance;
  */
 
 
-import java.io.FileOutputStream;
 /*
 Copyright (c) 2011+, HL7, Inc
 All rights reserved.
@@ -73,11 +72,13 @@ import java.util.Set;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
@@ -242,8 +243,8 @@ public class XmlSchemaGenerator  {
 
   private String getNs(StructureDefinition sd) {
     String ns = "http://hl7.org/fhir";
-    if (sd.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED))
-      ns = ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED);
+    if (sd.hasExtension(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED))
+      ns = ExtensionUtilities.readStringExtension(sd, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED);
     return ns;
   }
 
