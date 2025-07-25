@@ -139,8 +139,10 @@ public class StructureMap14_40 {
           switch (src.getValue()) {
               case TYPE:
                   tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapContextType.TYPE);
+                  break;
               case VARIABLE:
                   tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapContextType.VARIABLE);
+                  break;
               default:
                   tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapContextType.NULL);
           }

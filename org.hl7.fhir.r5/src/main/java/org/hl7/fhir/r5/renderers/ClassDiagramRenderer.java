@@ -21,6 +21,7 @@ import org.hl7.fhir.r5.conformance.profile.SnapshotGenerationPreProcessor;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.LanguageUtils;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
@@ -36,7 +37,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
@@ -630,7 +631,7 @@ public class ClassDiagramRenderer {
     } else if (base != null && !classNames.contains(base.getName())) {
        t = t + " ("+base.getName()+")";
     }
-    if (sd.hasExtension(ToolingExtensions.EXT_RESOURCE_INTERFACE)) {
+    if (sd.hasExtension(ExtensionDefinitions.EXT_RESOURCE_INTERFACE)) {
       t = t + " «Interface»";
     }
     double width = textWidth(t) * 1.8;
@@ -865,9 +866,9 @@ public class ClassDiagramRenderer {
         flag(div, ls, e.getIsModifier(), "?!", "black", "white", rc.formatPhrase(RenderingContext.STRUC_DEF_MOD), null);
 //        flag(div, ls, e.getIsSummary(), "\u03A3", "white", "black", rc.formatPhrase(RenderingContext.STRUC_DEF_ELE_INCLUDED), null);
         
-        if (e.getMustSupport() && e.hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) {
+        if (e.getMustSupport() && e.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) {
           flag(div, ls, e.getMustSupport(), "SO", "white", "red", rc.formatPhrase(RenderingContext.STRUC_DEF_OBLIG_SUPP), null);        
-        } else if (e.hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) {
+        } else if (e.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) {
           flag(div, ls, e.getMustSupport(), "O", "white", "red", rc.formatPhrase(RenderingContext.STRUC_DEF_OBLIG), null);
         } else {
           flag(div, ls, e.getMustSupport(), "S", "white", "red", rc.formatPhrase(RenderingContext.STRUC_DEF_ELE_MUST_SUPP), null);
@@ -893,7 +894,7 @@ public class ClassDiagramRenderer {
           } else if (e.getBinding().getStrength() == BindingStrength.EXTENSIBLE) {
             flag(div, ls, true, "B?", "black", "#fad570", rc.formatPhrase(RenderingContext.GENERAL_REQUIRED_BINDING, describeVS(e.getBinding().getValueSet(), vs)), vsLink(e.getBinding().getValueSet(), vs));                        
           } 
-          flag(div, ls, e.hasExtension(ToolingExtensions.EXT_BINDING_ADDITIONAL), "B+", "black", "#fad570", rc.formatPhrase(RenderingContext.GENERAL_ADDITIONAL_BINDING), null);
+          flag(div, ls, e.hasExtension(ExtensionDefinitions.EXT_BINDING_ADDITIONAL), "B+", "black", "#fad570", rc.formatPhrase(RenderingContext.GENERAL_ADDITIONAL_BINDING), null);
         }
       } else {
 

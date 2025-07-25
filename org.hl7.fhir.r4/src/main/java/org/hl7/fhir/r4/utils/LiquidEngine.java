@@ -42,7 +42,7 @@ import org.hl7.fhir.r4.fhirpath.ExpressionNode;
 import org.hl7.fhir.r4.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r4.fhirpath.TypeDetails;
 import org.hl7.fhir.r4.fhirpath.FHIRPathEngine.ExpressionNodeWithOffset;
-import org.hl7.fhir.r4.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r4.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.model.Resource;
@@ -50,15 +50,16 @@ import org.hl7.fhir.r4.model.Tuple;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 
 @MarkedToMoveToAdjunctPackage
-public class LiquidEngine implements IEvaluationContext {
+public class LiquidEngine implements IHostApplicationServices {
 
   public interface ILiquidEngineIcludeResolver {
     public String fetchInclude(LiquidEngine engine, String name);
   }
 
-  private IEvaluationContext externalHostServices;
+  private IHostApplicationServices externalHostServices;
   private FHIRPathEngine engine;
   private ILiquidEngineIcludeResolver includeResolver;
 
@@ -78,7 +79,7 @@ public class LiquidEngine implements IEvaluationContext {
     }
   }
 
-  public LiquidEngine(IWorkerContext context, IEvaluationContext hostServices) {
+  public LiquidEngine(IWorkerContext context, IHostApplicationServices hostServices) {
     super();
     this.externalHostServices = hostServices;
     engine = new FHIRPathEngine(context);
@@ -372,21 +373,21 @@ public class LiquidEngine implements IEvaluationContext {
   }
 
   @Override
-  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
+  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
     if (ctxt.vars.containsKey(name))
       return new ArrayList<>(Arrays.asList(ctxt.vars.get(name)));
     if (externalHostServices == null)
       return null;
-    return externalHostServices.resolveConstant(engine, ctxt.externalContext, name, beforeContext, explicitConstant);
+    return externalHostServices.resolveConstant(engine, ctxt.externalContext, name, mode);
   }
 
   @Override
-  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
+  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     if (externalHostServices == null)
       return null;
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
-    return externalHostServices.resolveConstantType(engine, ctxt.externalContext, name, explicitConstant);
+    return externalHostServices.resolveConstantType(engine, ctxt.externalContext, name, mode);
   }
 
   @Override

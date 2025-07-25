@@ -48,9 +48,11 @@ import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Factory;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.Enumerations.QuantityComparator;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
@@ -160,6 +162,34 @@ public class ObjectConverter  {
     c.setCode(item.getNamedChildValue("code"));
     c.setDisplay(item.getNamedChildValue("display"));
     return c;
+  }
+
+  public static Quantity readAsQuantity(Element item) {
+    // Check the type of the item before trying to read it as a Quantity
+    if (item == null || !item.fhirType().equals("Quantity")) {
+      return null;
+    }
+    Quantity q = new Quantity();
+
+    var value = item.getNamedChildValue("value");
+    if (value != null) {
+      q.setValue(new java.math.BigDecimal(value));
+    }
+    var comparator = item.getNamedChildValue("comparator");
+    if (comparator != null) {
+      if (QuantityComparator.isValidCode(comparator))
+      {
+        q.setComparator(QuantityComparator.fromCode(comparator));
+      } else {
+        // should we throw an exception here?
+        // throw new FHIRException("Invalid comparator value: " + comparator);
+      }
+    }
+
+    q.setSystem(item.getNamedChildValue("system"));
+    q.setCode(item.getNamedChildValue("code"));
+    q.setUnit(item.getNamedChildValue("unit"));
+    return q;
   }
 
   public static Identifier readAsIdentifier(Element item) {

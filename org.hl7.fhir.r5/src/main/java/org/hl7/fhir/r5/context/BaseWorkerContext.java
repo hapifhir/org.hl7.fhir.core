@@ -62,6 +62,8 @@ import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.context.ILoggingService.LogCategory;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.Bundle;
@@ -139,7 +141,7 @@ import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
 import org.hl7.fhir.r5.utils.PackageHackerR5;
 import org.hl7.fhir.r5.utils.ResourceUtilities;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
@@ -168,6 +170,7 @@ import lombok.Getter;
 @Slf4j
 @MarkedToMoveToAdjunctPackage
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
+  private static boolean allowedToIterateTerminologyResources;
 
   public interface IByteProvider {
     byte[] bytes() throws IOException;
@@ -1213,7 +1216,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
 //  private boolean hasTooCostlyExpansion(ValueSet valueset) {
-//    return valueset != null && valueset.hasExpansion() && ToolingExtensions.hasExtension(valueset.getExpansion(), ToolingExtensions.EXT_EXP_TOOCOSTLY);
+//    return valueset != null && valueset.hasExpansion() && ExtensionUtilities.hasExtension(valueset.getExpansion(), ExtensionDefinitions.EXT_EXP_TOOCOSTLY);
 //  }
   
   // --- validate code -------------------------------------------------------------------------------
@@ -2011,7 +2014,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (vs != null && !hasCanonicalResource(pin, "tx-resource", vs.getVUrl())) {
         cache = checkAddToParams(tc, pin, vs) || cache;
         addDependentResources(opCtxt, tc, pin, vs);
-        for (Extension ext : vs.getExtensionsByUrl(ToolingExtensions.EXT_VS_CS_SUPPL_NEEDED)) {
+        for (Extension ext : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
           if (ext.hasValueCanonicalType()) {
             String url = ext.getValueCanonicalType().asStringValue();
             CodeSystem supp = fetchResource(CodeSystem.class, url);
@@ -2203,7 +2206,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (p.getName().equals("issues")) {
           OperationOutcome oo = (OperationOutcome) p.getResource();
           for (OperationOutcomeIssueComponent iss : oo.getIssue()) {
-            iss.addExtension(ToolingExtensions.EXT_ISSUE_SERVER, new UrlType(server));
+            iss.addExtension(ExtensionDefinitions.EXT_ISSUE_SERVER, new UrlType(server));
             issues.add(iss);
           }
         } else {
@@ -2745,7 +2748,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       throw new FHIRException(formatMessage(I18nConstants.NOT_DONE_YET_CANT_FETCH_, uri));
     }
   }
-  
+
   public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_, FhirPublication fhirVersion) {
     return fetchResourcesByType(class_);
   }
@@ -2755,6 +2758,18 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     List<T> res = new ArrayList<>();
 
+    if (class_ == Resource.class || class_ == ValueSet.class || class_ == CodeSystem.class)  {
+      if (!isAllowedToIterateTerminologyResources()) {
+        // what's going on here?
+        // it's not unusual to have >50k ValueSets and >10k CodeSystems in context. Iterating all of
+        // them will cause everyone of them to loaded through the lazy loading infrastructure. This
+        // can consume upwards of 10GB of RAM.
+        //
+        // By default, the context won't let you do that. If you do wnat to do it, and take the performance hit
+        // setAllowedToIterateTerminologyResources(true);
+        throw new Error("This context  is configured to not allow Iterating terminology resources due to performance concerns");
+      }
+    }
     synchronized (lock) {
 
       if (class_ == Resource.class || class_ == DomainResource.class || class_ == CanonicalResource.class || class_ == null) {
@@ -2806,6 +2821,67 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         res.addAll((List<T>) questionnaires.getList());
       } else if (class_ == SearchParameter.class) {
         res.addAll((List<T>) searchParameters.getList());
+      }
+    }
+    return res;
+  }
+
+  @SuppressWarnings("unchecked")
+  public <T extends Resource> List<T> fetchResourceVersionsByTypeAndUrl(Class<T> class_, String url) {
+
+    List<T> res = new ArrayList<>();
+
+    synchronized (lock) {
+
+      if (class_ == Resource.class || class_ == DomainResource.class || class_ == CanonicalResource.class || class_ == null) {
+        res.addAll((List<T>) structures.getVersionList(url));
+        res.addAll((List<T>) guides.getVersionList(url));
+        res.addAll((List<T>) capstmts.getVersionList(url));
+        res.addAll((List<T>) measures.getVersionList(url));
+        res.addAll((List<T>) libraries.getVersionList(url));
+        res.addAll((List<T>) valueSets.getVersionList(url));
+        res.addAll((List<T>) codeSystems.getVersionList(url));
+        res.addAll((List<T>) operations.getVersionList(url));
+        res.addAll((List<T>) searchParameters.getVersionList(url));
+        res.addAll((List<T>) plans.getVersionList(url));
+        res.addAll((List<T>) maps.getVersionList(url));
+        res.addAll((List<T>) transforms.getVersionList(url));
+        res.addAll((List<T>) questionnaires.getVersionList(url));
+        res.addAll((List<T>) systems.getVersionList(url));
+        res.addAll((List<T>) actors.getVersionList(url));
+        res.addAll((List<T>) requirements.getVersionList(url));
+      } else if (class_ == ImplementationGuide.class) {
+        res.addAll((List<T>) guides.getVersionList(url));
+      } else if (class_ == CapabilityStatement.class) {
+        res.addAll((List<T>) capstmts.getVersionList(url));
+      } else if (class_ == Measure.class) {
+        res.addAll((List<T>) measures.getVersionList(url));
+      } else if (class_ == Library.class) {
+        res.addAll((List<T>) libraries.getVersionList(url));
+      } else if (class_ == StructureDefinition.class) {
+        res.addAll((List<T>) structures.getVersionList(url));
+      } else if (class_ == StructureMap.class) {
+        res.addAll((List<T>) transforms.getVersionList(url));
+      } else if (class_ == ValueSet.class) {
+        res.addAll((List<T>) valueSets.getVersionList(url));
+      } else if (class_ == CodeSystem.class) {
+        res.addAll((List<T>) codeSystems.getVersionList(url));
+      } else if (class_ == NamingSystem.class) {
+        res.addAll((List<T>) systems.getVersionList(url));
+      } else if (class_ == ActorDefinition.class) {
+        res.addAll((List<T>) actors.getVersionList(url));
+      } else if (class_ == Requirements.class) {
+        res.addAll((List<T>) requirements.getVersionList(url));
+      } else if (class_ == ConceptMap.class) {
+        res.addAll((List<T>) maps.getVersionList(url));
+      } else if (class_ == PlanDefinition.class) {
+        res.addAll((List<T>) plans.getVersionList(url));
+      } else if (class_ == OperationDefinition.class) {
+        res.addAll((List<T>) operations.getVersionList(url));
+      } else if (class_ == Questionnaire.class) {
+        res.addAll((List<T>) questionnaires.getVersionList(url));
+      } else if (class_ == SearchParameter.class) {
+        res.addAll((List<T>) searchParameters.getVersionList(url));
       }
     }
     return res;
@@ -3529,7 +3605,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         txCache.cacheValueSet(canonical, svs);
       }
       if (svs != null) {
-        String web = ToolingExtensions.readStringExtension(svs.getVs(), ToolingExtensions.EXT_WEB_SOURCE);
+        String web = ExtensionUtilities.readStringExtension(svs.getVs(), ExtensionDefinitions.EXT_WEB_SOURCE_OLD, ExtensionDefinitions.EXT_WEB_SOURCE_NEW);
         if (web == null) {
           web = Utilities.pathURL(svs.getServer(), "ValueSet", svs.getVs().getIdBase());
         }
@@ -3551,7 +3627,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         txCache.cacheCodeSystem(canonical, scs);
       }
       if (scs != null) {
-        String web = ToolingExtensions.readStringExtension(scs.getCs(), ToolingExtensions.EXT_WEB_SOURCE);
+        String web = ExtensionUtilities.readStringExtension(scs.getCs(), ExtensionDefinitions.EXT_WEB_SOURCE_OLD, ExtensionDefinitions.EXT_WEB_SOURCE_NEW);
         if (web == null) {
           web = Utilities.pathURL(scs.getServer(), "ValueSet", scs.getCs().getIdBase());
         }
@@ -3762,4 +3838,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return cutils;
   }
 
+
+  public String txCacheReport() {
+    return txCache.getReport();
+  }
+
+
+  public static boolean isAllowedToIterateTerminologyResources() {
+    return allowedToIterateTerminologyResources;
+  }
+
+  public static void setAllowedToIterateTerminologyResources(boolean allowedToIterateTerminologyResources) {
+    BaseWorkerContext.allowedToIterateTerminologyResources = allowedToIterateTerminologyResources;
+  }
 }

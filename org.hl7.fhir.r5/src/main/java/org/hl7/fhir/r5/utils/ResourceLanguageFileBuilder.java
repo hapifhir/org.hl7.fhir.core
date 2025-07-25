@@ -6,6 +6,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Extension;
@@ -101,7 +102,7 @@ public class ResourceLanguageFileBuilder {
           ed = t;
         }
       }
-      if (ed != null && ed.hasExtension(ToolingExtensions.EXT_TRANSLATABLE)) {
+      if (ed != null && ed.hasExtension(ExtensionDefinitions.EXT_TRANSLATABLE)) {
         return true;
       }
     }
@@ -111,7 +112,7 @@ public class ResourceLanguageFileBuilder {
   private String getTranslation(Base b, String target2) {
     if (b instanceof  org.hl7.fhir.r5.model.Element) {
       org.hl7.fhir.r5.model.Element e = (org.hl7.fhir.r5.model.Element) b;
-      for (Extension ext : e.getExtensionsByUrl(ToolingExtensions.EXT_TRANSLATION)) {
+      for (Extension ext : e.getExtensionsByUrl(ExtensionDefinitions.EXT_TRANSLATION)) {
         String lang = ext.hasExtension("lang") ? ext.getExtensionString("lang") : null;
         if (target.equals(lang)) {
           return ext.getExtensionString("content");

@@ -53,10 +53,10 @@ public class ExpressionNode {
     First, Last, Tail, Skip, Take, Union, Combine, Intersect, Exclude, Iif, Upper, Lower, ToChars, IndexOf, Substring, StartsWith, EndsWith, Matches, MatchesFull, ReplaceMatches, Contains, Replace, Length,  
     Children, Descendants, MemberOf, Trace, DefineVariable, Check, Today, Now, Resolve, Extension, AllFalse, AnyFalse, AllTrue, AnyTrue,
     HasValue, OfType, Type, ConvertsToBoolean, ConvertsToInteger, ConvertsToString, ConvertsToDecimal, ConvertsToQuantity, ConvertsToDateTime, ConvertsToDate, ConvertsToTime, ToBoolean, ToInteger, ToString, ToDecimal, ToQuantity, ToDateTime, ToTime, ConformsTo,
-    Round, Sqrt, Abs, Ceiling, Exp, Floor, Ln, Log, Power, Truncate, Sort,
+    Round, Sqrt, Abs, Ceiling, Exp, Floor, Ln, Log, Power, Truncate,
     
     // R3 functions
-    Encode, Decode, Escape, Unescape, Trim, Split, Join, LowBoundary, HighBoundary, Precision,
+    Encode, Decode, Escape, Unescape, Trim, Split, Join, LowBoundary, HighBoundary, Precision, Sort, Coalesce,
     
     // Local extensions to FHIRPath
     HtmlChecks1, HtmlChecks2, Comparable, hasTemplateIdOf;
@@ -156,7 +156,8 @@ public class ExpressionNode {
       if (name.equals("log")) return Function.Log;
       if (name.equals("power")) return Function.Power;
       if (name.equals("truncate")) return Function.Truncate; 
-      if (name.equals("sort")) return Function.Sort;  
+      if (name.equals("sort")) return Function.Sort;
+	  if (name.equals("coalesce")) return Function.Coalesce;
       if (name.equals("lowBoundary")) return Function.LowBoundary;  
       if (name.equals("highBoundary")) return Function.HighBoundary;  
       if (name.equals("precision")) return Function.Precision;  
@@ -261,6 +262,7 @@ public class ExpressionNode {
       case Power : return "power";
       case Truncate: return "truncate";
       case Sort: return "sort";
+	  case Coalesce: return "coalesce";
       case LowBoundary: return "lowBoundary";
       case HighBoundary: return "highBoundary";
       case Precision: return "precision";
@@ -429,7 +431,7 @@ public class ExpressionNode {
         b.append("'" + Utilities.escapeJson(constant.primitiveValue()) + "'");
       } else if (constant instanceof Quantity) {
         Quantity q = (Quantity) constant;
-        b.append(Utilities.escapeJson(q.getValue().toPlainString()));
+        b.append(Utilities.escapeJson(q.hasValue() ? q.getValue().toPlainString() : ""));
         if (q.hasUnit() || q.hasCode()) {
           b.append(" '");
           if (q.hasUnit()) {
@@ -538,6 +540,11 @@ public class ExpressionNode {
 		this.group = group;
 	}
 
+	/**
+	 * The start location of the node (line/column), 1 based values, and points to the
+	 * first character of the node.
+	 * e.g. For an expression "name", would be 1,1
+	 */
 	public SourceLocation getStart() {
 		return start;
 	}
@@ -546,6 +553,11 @@ public class ExpressionNode {
 		this.start = start;
 	}
 
+	/**
+	 * The end location of the node (line/column), 1 based values, and points to the character after the 
+	 * last character of the node.
+	 * e.g. For an expression "name", would be 1,5
+	 */
 	public SourceLocation getEnd() {
 		return end;
 	}
@@ -554,6 +566,11 @@ public class ExpressionNode {
 		this.end = end;
 	}
 
+	/**
+	 * The start location of the operation part of the node (line/column), 1 based values, and points to the
+	 * first character of the node.
+	 * e.g. For an expression "name", would be 1,1
+	 */
 	public SourceLocation getOpStart() {
 		return opStart;
 	}
@@ -562,6 +579,11 @@ public class ExpressionNode {
 		this.opStart = opStart;
 	}
 
+	/**
+	 * The end location of the operation part of the node (line/column), 1 based values, and points to the character after the 
+	 * last character of the node.
+	 * e.g. For an expression "name", would be 1,5
+	 */
 	public SourceLocation getOpEnd() {
 		return opEnd;
 	}

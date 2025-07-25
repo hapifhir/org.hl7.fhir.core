@@ -13,6 +13,7 @@ import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.validation.instance.ResourcePercentageLogger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -30,22 +31,19 @@ import java.util.*;
 public class FhirValidatorHttpService {
 
   private final ValidationEngine validationEngine;
-  private IgLoader igLoader;
   private HttpServer server;
   private final int port;
 
   public FhirValidatorHttpService(ValidationEngine validationEngine, int port) {
     this.validationEngine = validationEngine;
-    this.igLoader = validationEngine.getIgLoader();
     this.port = port;
+    ResourcePercentageLogger.setLoggingSuppressed(true);
   }
 
   public void startServer() throws IOException {
     // Create HTTP server
     server = HttpServer.create(new InetSocketAddress(port), 0);
 
-    // Set up endpoints
-    server.createContext("/loadIG", new LoadIGHandler());
     server.createContext("/validateResource", new ValidateResourceHandler());
 
     // Start the server
@@ -62,43 +60,6 @@ public class FhirValidatorHttpService {
     if (server != null) {
       server.stop(0);
       log.info("FHIR Validator HTTP Service stopped");
-    }
-  }
-
-  /**
-   * Handler for loading Implementation Guides
-   */
-  private class LoadIGHandler implements HttpHandler {
-    @Override
-    public void handle(HttpExchange exchange) throws IOException {
-      if (!"POST".equals(exchange.getRequestMethod())) {
-        sendResponse(exchange, 405, "Method not allowed", "text/plain");
-        return;
-      }
-
-      try {
-        // Parse parameters from query string
-        Map<String, String> params = parseQueryParams(exchange.getRequestURI().getQuery());
-        String packageId = params.get("packageId");
-        String version = params.get("version");
-
-        if (packageId == null || version == null) {
-          sendResponse(exchange, 400, "Missing required parameters: packageId and version", "text/plain");
-          return;
-        }
-
-        // Load the IG using IGLoader
-        String igPackage = packageId + "#" + version;
-        igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), igPackage, false);
-
-        // Create success OperationOutcome
-        OperationOutcome outcome = createSuccessOperationOutcome("Successfully loaded IG: " + igPackage);
-        sendOperationOutcome(exchange, 200, outcome, getAcceptHeader(exchange));
-
-      } catch (Exception e) {
-        OperationOutcome outcome = createErrorOperationOutcome("Failed to load IG: " + e.getMessage());
-        sendOperationOutcome(exchange, 500, outcome, getAcceptHeader(exchange));
-      }
     }
   }
 

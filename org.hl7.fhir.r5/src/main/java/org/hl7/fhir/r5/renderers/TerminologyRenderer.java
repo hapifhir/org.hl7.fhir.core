@@ -9,6 +9,7 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -25,7 +26,7 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CanonicalPair;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
@@ -237,7 +238,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
   }
 
   protected String getDisplayForProperty(PropertyComponent pc) {
-    String display = ToolingExtensions.getPresentation(pc, pc.getCodeElement());
+    String display = ExtensionUtilities.getPresentation(pc, pc.getCodeElement());
     if (display == null || display.equals(pc.getCode()) && pc.hasUri()) {
       display = getDisplayForProperty(pc.getUri());
       if (display == null) {

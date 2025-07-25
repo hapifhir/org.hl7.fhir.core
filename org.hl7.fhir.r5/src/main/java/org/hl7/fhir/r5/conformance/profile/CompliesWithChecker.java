@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.DataType;
@@ -27,10 +28,8 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.UUIDUtilities;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -85,7 +84,7 @@ public class CompliesWithChecker {
     DefinitionNavigator cnChild = claimee.childByName(anChild.current().getName());
     String cpath = path+"."+anChild.current().getName();
     if (cnChild == null) {
-      messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, cpath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_MISSING, anChild.path()), IssueSeverity.ERROR));
+      messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, cpath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_MISSING, anChild.globalPath()), IssueSeverity.ERROR));
     } else if (anChild.sliced() || cnChild.sliced()) {
       if (!cnChild.hasSlices()) {
         if (anChild.hasSlices()) {
@@ -203,7 +202,7 @@ public class CompliesWithChecker {
         if (sd1 == null || sd2 == null) {
           return false;
         }
-        for (Extension ex : sd2.getExtensionsByUrl(ToolingExtensions.EXT_SD_COMPLIES_WITH_PROFILE)) {
+        for (Extension ex : sd2.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_COMPLIES_WITH_PROFILE)) {
           String url = ex.getValue().primitiveValue();
           if (url != null) {
             StructureDefinition sde = sd1;
@@ -215,7 +214,7 @@ public class CompliesWithChecker {
             }
           }
         }
-        for (Extension ex : sd2.getExtensionsByUrl(ToolingExtensions.EXT_SD_IMPOSE_PROFILE)) {
+        for (Extension ex : sd2.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE)) {
           String url = ex.getValue().primitiveValue();
           if (url != null) {
             StructureDefinition sde = sd1;

@@ -2,10 +2,11 @@ package org.hl7.fhir.r5.conformance;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.extensions.ExtensionConstants;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.utilities.Utilities;
 
 import java.util.*;
@@ -53,10 +54,10 @@ public class CapabilityStatementUtilities {
       CapabilityStatement importedCS = context.fetchResource(CapabilityStatement.class, canonical.getValue());
       if (importedCS == null)
         throw new FHIRException("Unable to resolve CapabilityStatement " + canonical.getValue() + " imported by " + targetCS.getUrl());
-      String importConformance = effectiveConformance(canonical.getExtensionString(ToolingExtensions.EXT_CAP_STMT_EXPECT), conformance);
+      String importConformance = effectiveConformance(canonical.getExtensionString(ExtensionDefinitions.EXT_CAP_STMT_EXPECT), conformance);
       if (importedUrls.containsKey(canonical.getValue()) && !importedUrls.get(canonical.getValue()).equals(importConformance)) {
         throw new FHIRException("The CapabilityStatement " + canonical.getValue() + " is imported with different strengths - " + importedUrls.get(canonical.getValue()).equals(importConformance) + ", " + importConformance +
-          (importConformance.equals(canonical.getExtensionString(ToolingExtensions.EXT_CAP_STMT_EXPECT)) ? "" : "(effective from " + canonical.getExtensionString(ToolingExtensions.EXT_CAP_STMT_EXPECT) + ")"));
+          (importConformance.equals(canonical.getExtensionString(ExtensionDefinitions.EXT_CAP_STMT_EXPECT)) ? "" : "(effective from " + canonical.getExtensionString(ExtensionDefinitions.EXT_CAP_STMT_EXPECT) + ")"));
       }
       importedUrls.put(targetCS.getUrl(), importConformance);
 
@@ -126,8 +127,8 @@ public class CapabilityStatementUtilities {
   void mergeProperties(CapabilityStatement.CapabilityStatementRestComponent targetType, CapabilityStatement.CapabilityStatementRestComponent importedType, String maxConformance, String context) {
     String localContext = context + "." + targetType.getMode();
 
-    merge(targetType.getExtensionsByUrl(ExtensionConstants.EXT_CSDECLARED_PROFILE), importedType.getExtensionsByUrl(ExtensionConstants.EXT_CSDECLARED_PROFILE), maxConformance, ".extension(DeclaredProfile)");
-    merge(targetType.getExtensionsByUrl(ExtensionConstants.EXT_CSSEARCH_PARAMETER_COMBINATION), importedType.getExtensionsByUrl(ExtensionConstants.EXT_CSSEARCH_PARAMETER_COMBINATION), maxConformance, ".extension(SearchMode)");
+    merge(targetType.getExtensionsByUrl(ExtensionDefinitions.EXT_CSDECLARED_PROFILE), importedType.getExtensionsByUrl(ExtensionDefinitions.EXT_CSDECLARED_PROFILE), maxConformance, ".extension(DeclaredProfile)");
+    merge(targetType.getExtensionsByUrl(ExtensionDefinitions.EXT_CSSEARCH_PARAMETER_COMBINATION), importedType.getExtensionsByUrl(ExtensionDefinitions.EXT_CSSEARCH_PARAMETER_COMBINATION), maxConformance, ".extension(SearchMode)");
     if (!targetType.hasSecurity())
       targetType.setSecurity(importedType.getSecurity());
     else if (!importedType.hasSecurity())
@@ -244,9 +245,9 @@ public class CapabilityStatementUtilities {
           match = ((CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent)targetType).getMode().equals(((CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent)importedType).getMode())
             && ((CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent)targetType).getDefinition().equals(((CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent)importedType).getDefinition());
         else if (importedType instanceof Extension) {
-          if (((Extension)importedType).getUrl().equals(ExtensionConstants.EXT_CSDECLARED_PROFILE))
+          if (((Extension)importedType).getUrl().equals(ExtensionDefinitions.EXT_CSDECLARED_PROFILE))
             match = ((Extension)targetType).getValueCanonicalType().getValue().equals(((Extension)importedType).getValueCanonicalType().getValue());
-          else if (((Extension)importedType).getUrl().equals(ExtensionConstants.EXT_CSSEARCH_PARAMETER_COMBINATION)) {
+          else if (((Extension)importedType).getUrl().equals(ExtensionDefinitions.EXT_CSSEARCH_PARAMETER_COMBINATION)) {
             match = requiredSort(targetType).equals(requiredSort(importedType));
           } else
             throw new Error("Unexpected extension " + ((Extension)importedType).getUrl());
@@ -279,9 +280,9 @@ public class CapabilityStatementUtilities {
         else if (importedType instanceof CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent) {
           // No properties to merge
         } else if (importedType instanceof Extension) {
-          if (((Extension) importedType).getUrl().equals(ExtensionConstants.EXT_CSDECLARED_PROFILE)) {
+          if (((Extension) importedType).getUrl().equals(ExtensionDefinitions.EXT_CSDECLARED_PROFILE)) {
             // No action needed
-          } else if (((Extension) importedType).getUrl().equals(ExtensionConstants.EXT_CSSEARCH_PARAMETER_COMBINATION))
+          } else if (((Extension) importedType).getUrl().equals(ExtensionDefinitions.EXT_CSSEARCH_PARAMETER_COMBINATION))
             mergeSearchComboExt(((Extension) foundType), ((Extension) importedType), context + ".extension(SearchCombo - " + requiredSort(importedType) + ")");
         }
         mergeExpectations((Element) foundType, (Element) importedType, maxConformance);
@@ -354,9 +355,9 @@ public class CapabilityStatementUtilities {
     else if (targetInt.getValue().equals(importedInt.getValue())) {
       mergeExpectations(targetInt, importedInt, maxConformance);
       return targetInt;
-    } else if (targetInt.hasExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT) && importedInt.hasExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT)) {
-      String targetExpectation = targetInt.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode();
-      String importedExpectation = importedInt.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode();
+    } else if (targetInt.hasExtension(ExtensionDefinitions.EXT_CAP_STMT_EXPECT) && importedInt.hasExtension(ExtensionDefinitions.EXT_CAP_STMT_EXPECT)) {
+      String targetExpectation = targetInt.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode();
+      String importedExpectation = importedInt.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode();
       if (targetExpectation.equals(importedExpectation)) {
         if (targetExpectation.equals("SHALL"))
           throw new FHIRException("Non matching enumeration values with SHALL conformance expectations for " + context + " - base CapabilityStatement:" + targetInt.getValue() + "; imported CapabilityStatement:" + importedInt.getValue());
@@ -394,9 +395,9 @@ public class CapabilityStatementUtilities {
     else if (targetCode.getValue().equals(importedCode.getValue())) {
       mergeExpectations(targetCode, importedCode, maxConformance);
       return targetCode;
-    } else if (targetCode.hasExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT) && importedCode.hasExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT)) {
-      String targetExpectation = targetCode.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode();
-      String importedExpectation = importedCode.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode();
+    } else if (targetCode.hasExtension(ExtensionDefinitions.EXT_CAP_STMT_EXPECT) && importedCode.hasExtension(ExtensionDefinitions.EXT_CAP_STMT_EXPECT)) {
+      String targetExpectation = targetCode.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode();
+      String importedExpectation = importedCode.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode();
       int targetWeight = weightForEnum(targetCode, context);
       int importedWeight = weightForEnum(importedCode, context);
       if (targetExpectation.equals(importedExpectation)) {
@@ -487,9 +488,9 @@ public class CapabilityStatementUtilities {
     else if (targetBool.getValue().equals(importedBool.getValue())) {
       mergeExpectations(targetBool, importedBool, maxConformance);
       return targetBool;
-    } else if (targetBool.hasExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT) && importedBool.hasExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT)) {
-      String targetExpectation = targetBool.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode();
-      String importedExpectation = importedBool.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode();
+    } else if (targetBool.hasExtension(ExtensionDefinitions.EXT_CAP_STMT_EXPECT) && importedBool.hasExtension(ExtensionDefinitions.EXT_CAP_STMT_EXPECT)) {
+      String targetExpectation = targetBool.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode();
+      String importedExpectation = importedBool.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT).getValueCodeType().getCode();
       if (targetExpectation.equals(importedExpectation))
         throw new FHIRException("Non matching boolean values with equivalent conformance expectations for " + context + " - base CapabilityStatement:" + targetBool.getValue() + "; imported CapabilityStatement:" + importedBool.getValue());
       else if (targetExpectation.equals("SHALL"))
@@ -506,15 +507,15 @@ public class CapabilityStatementUtilities {
 
 
   public void mergeExpectations(Element target, Element source, String maxConformance) {
-    if (target.hasExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT)) {
-      Extension targetExpectation = target.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT);
-      if (!targetExpectation.getValueCodeType().getCode().equals("SHALL") && source.hasExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT)) {
-        String sourceExpectation = effectiveConformance(source.getExtensionString(ToolingExtensions.EXT_CAP_STMT_EXPECT), maxConformance);
+    if (target.hasExtension(ExtensionDefinitions.EXT_CAP_STMT_EXPECT)) {
+      Extension targetExpectation = target.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT);
+      if (!targetExpectation.getValueCodeType().getCode().equals("SHALL") && source.hasExtension(ExtensionDefinitions.EXT_CAP_STMT_EXPECT)) {
+        String sourceExpectation = effectiveConformance(source.getExtensionString(ExtensionDefinitions.EXT_CAP_STMT_EXPECT), maxConformance);
         if (sourceExpectation.equals("SHALL") || targetExpectation.getValueCodeType().getCode().equals("MAY"))
           targetExpectation.setValue(new CodeType(sourceExpectation));
       }
-    } else if (source.hasExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT)) {
-      target.addExtension(source.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT));
+    } else if (source.hasExtension(ExtensionDefinitions.EXT_CAP_STMT_EXPECT)) {
+      target.addExtension(source.getExtensionByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT));
     }
   }
 
@@ -532,9 +533,9 @@ public class CapabilityStatementUtilities {
   }
 
   public DataType fixMax(DataType d, String maxConformance) {
-    String conformance = d.getExtensionString(ToolingExtensions.EXT_CAP_STMT_EXPECT);
-    d.removeExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT);
-    d.addExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT, new CodeType(effectiveConformance(conformance, maxConformance)));
+    String conformance = d.getExtensionString(ExtensionDefinitions.EXT_CAP_STMT_EXPECT);
+    d.removeExtension(ExtensionDefinitions.EXT_CAP_STMT_EXPECT);
+    d.addExtension(ExtensionDefinitions.EXT_CAP_STMT_EXPECT, new CodeType(effectiveConformance(conformance, maxConformance)));
     return d;
   }
 }

@@ -176,7 +176,7 @@ public class AllergyIntolerance30_50 {
       case INACTIVE:
         return new org.hl7.fhir.r5.model.CodeableConcept(new org.hl7.fhir.r5.model.Coding().setSystem("http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical").setCode("inactive"));
       case RESOLVED:
-        new org.hl7.fhir.r5.model.CodeableConcept(new org.hl7.fhir.r5.model.Coding().setSystem("http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical").setCode("resolved"));
+        return new org.hl7.fhir.r5.model.CodeableConcept(new org.hl7.fhir.r5.model.Coding().setSystem("http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical").setCode("resolved"));
       default:
         return null;
     }

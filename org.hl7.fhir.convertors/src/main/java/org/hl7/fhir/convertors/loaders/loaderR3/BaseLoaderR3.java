@@ -2,16 +2,15 @@ package org.hl7.fhir.convertors.loaders.loaderR3;
 
 import javax.annotation.Nonnull;
 
-import org.hl7.fhir.dstu3.context.SimpleWorkerContext.IContextResourceLoader;
+import org.hl7.fhir.dstu3.support.context.SimpleWorkerContext;
 import org.hl7.fhir.dstu3.model.Resource;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
-public abstract class BaseLoaderR3 implements IContextResourceLoader {
+public abstract class BaseLoaderR3 implements SimpleWorkerContext.IContextResourceLoader {
 
   protected final String URL_BASE = "http://hl7.org/fhir/";
   protected final String URL_DSTU2 = "http://hl7.org/fhir/1.0/";

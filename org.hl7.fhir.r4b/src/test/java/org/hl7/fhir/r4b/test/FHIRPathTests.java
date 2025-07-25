@@ -14,14 +14,14 @@ import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r4b.fhirpath.ExpressionNode;
 import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r4b.fhirpath.TypeDetails;
-import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4b.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r4b.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.formats.JsonParser;
 import org.hl7.fhir.r4b.formats.XmlParser;
 import org.hl7.fhir.r4b.model.*;
-import org.hl7.fhir.r4b.test.FHIRPathTests.TestResultType;
 import org.hl7.fhir.r4b.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -43,17 +43,17 @@ public class FHIRPathTests {
     OK, SYNTAX, SEMANTICS, EXECUTION
   }
 
-  public class FHIRPathTestEvaluationServices implements IEvaluationContext {
+  public class FHIRPathTestEvaluationServices implements IHostApplicationServices {
 
     @Override
-    public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant)
+    public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode)
         throws PathEngineException {
       throw new NotImplementedException(
           "Not done yet (FHIRPathTestEvaluationServices.resolveConstant), when item is element");
     }
 
     @Override
-    public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
+    public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
       throw new NotImplementedException(
           "Not done yet (FHIRPathTestEvaluationServices.resolveConstantType), when item is element");
     }
@@ -103,6 +103,11 @@ public class FHIRPathTests {
     @Override
     public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
       return TestingUtilities.context().fetchResource(ValueSet.class, url);
+    }
+
+    @Override
+    public boolean paramIsType(String name, int index) {
+      return false;
     }
 
   }
@@ -312,7 +317,7 @@ public class FHIRPathTests {
     final String DUMMY_CONSTANT_2 = "dummyConstant2";
     fp.setHostServices(new FHIRPathTestEvaluationServices() {
       @Override
-      public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant)
+      public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode)
           throws PathEngineException {
 
         return Arrays.asList(new StringType(DUMMY_CONSTANT_1).noExtensions(),

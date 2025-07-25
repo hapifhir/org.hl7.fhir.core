@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.CanonicalResource;
@@ -189,9 +190,9 @@ public class MappingSheetParser {
       element.setCode(row.getIdentifier());
       element.setId(row.getSequence());
       element.setDisplay(row.getName()+" : "+row.getDataType()+" ["+row.getCardinality()+"]");
-      element.addExtension(ToolingExtensions.EXT_MAPPING_NAME, new StringType(row.getName()));
-      element.addExtension(ToolingExtensions.EXT_MAPPING_TYPE, new StringType(row.getDataType()));
-      element.addExtension(ToolingExtensions.EXT_MAPPING_CARD, new StringType(row.getCardinality()));
+      element.addExtension(ExtensionDefinitions.EXT_MAPPING_NAME, new StringType(row.getName()));
+      element.addExtension(ExtensionDefinitions.EXT_MAPPING_TYPE, new StringType(row.getDataType()));
+      element.addExtension(ExtensionDefinitions.EXT_MAPPING_CARD, new StringType(row.getCardinality()));
       if ("N/A".equals(row.getAttribute()))
         element.setNoMap(true);
       else {
@@ -200,8 +201,8 @@ public class MappingSheetParser {
           element.getTargetFirstRep().addDependsOn().setAttribute("http://hl7.org/fhirpath").setValue(new StringType(processCondition(row.getCondition())));
         element.getTargetFirstRep().setCode(row.getAttribute());
         element.getTargetFirstRep().setDisplay(row.getType()+" : ["+row.getMinMax()+"]");
-        element.getTargetFirstRep().addExtension(ToolingExtensions.EXT_MAPPING_TGTTYPE, new StringType(row.getType()));
-        element.getTargetFirstRep().addExtension(ToolingExtensions.EXT_MAPPING_TGTCARD, new StringType(row.getMinMax()));
+        element.getTargetFirstRep().addExtension(ExtensionDefinitions.EXT_MAPPING_TGTTYPE, new StringType(row.getType()));
+        element.getTargetFirstRep().addExtension(ExtensionDefinitions.EXT_MAPPING_TGTCARD, new StringType(row.getMinMax()));
         if (row.getDerived() != null) 
           element.getTargetFirstRep().getProductFirstRep().setAttribute(row.getDerived()).setValue(new StringType(row.getDerivedMapping()));
         if (row.getComments() != null)
@@ -259,15 +260,15 @@ public class MappingSheetParser {
       src.setMin(row.getCardinalityMin());
       src.setMax(row.getCardinalityMax());
       src.setType(row.getDataType());
-      src.addExtension(ToolingExtensions.EXT_MAPPING_NAME, new StringType(row.getName()));
+      src.addExtension(ExtensionDefinitions.EXT_MAPPING_NAME, new StringType(row.getName()));
       if (row.getCondition() != null) {
         src.setCheck(processCondition(row.getCondition()));
       }
       StructureMapGroupRuleTargetComponent tgt = rule.getTargetFirstRep();
       tgt.setContext("tgt");
       tgt.setElement(row.getAttribute());
-      tgt.addExtension(ToolingExtensions.EXT_MAPPING_TGTTYPE, new StringType(row.getType()));
-      tgt.addExtension(ToolingExtensions.EXT_MAPPING_TGTCARD, new StringType(row.getMinMax()));
+      tgt.addExtension(ExtensionDefinitions.EXT_MAPPING_TGTTYPE, new StringType(row.getType()));
+      tgt.addExtension(ExtensionDefinitions.EXT_MAPPING_TGTCARD, new StringType(row.getMinMax()));
       if (row.getDtMapping() != null) {
         src.setVariable("s");
         tgt.setVariable("t");
@@ -300,7 +301,7 @@ public class MappingSheetParser {
       return false;
     ConceptMapGroupComponent grp = cm.getGroupFirstRep();
     for (SourceElementComponent e : grp.getElement()) {
-      if (!e.hasExtension(ToolingExtensions.EXT_MAPPING_TYPE))
+      if (!e.hasExtension(ExtensionDefinitions.EXT_MAPPING_TYPE))
         return false;
     }
     return true;
@@ -374,14 +375,14 @@ public class MappingSheetParser {
   private void readConceptMap(ConceptMap cm) throws FHIRException {
     for (ConceptMapGroupComponent g : cm.getGroup()) {
       for (SourceElementComponent e : g.getElement()) {
-        if (e.hasId() && e.getTarget().size() == 1 && e.hasExtension(ToolingExtensions.EXT_MAPPING_TYPE)) {
+        if (e.hasId() && e.getTarget().size() == 1 && e.hasExtension(ExtensionDefinitions.EXT_MAPPING_TYPE)) {
           TargetElementComponent t = e.getTargetFirstRep();
           MappingRow row = new MappingRow();
           row.sequence = e.getId();
           row.identifier = e.getCode();
-          row.name = e.getExtensionString(ToolingExtensions.EXT_MAPPING_NAME);
-          row.dataType = e.getExtensionString(ToolingExtensions.EXT_MAPPING_TYPE);
-          row.cardinality = e.getExtensionString(ToolingExtensions.EXT_MAPPING_CARD);
+          row.name = e.getExtensionString(ExtensionDefinitions.EXT_MAPPING_NAME);
+          row.dataType = e.getExtensionString(ExtensionDefinitions.EXT_MAPPING_TYPE);
+          row.cardinality = e.getExtensionString(ExtensionDefinitions.EXT_MAPPING_CARD);
           if (e.getNoMap() == true) {
             row.attribute = "N/A";            
           } else {
@@ -389,8 +390,8 @@ public class MappingSheetParser {
             if (dep != null)
               row.condition = dep.getValue().primitiveValue();
             row.attribute = t.getCode();
-            row.type = t.getExtensionString(ToolingExtensions.EXT_MAPPING_TGTTYPE);
-            row.minMax = t.getExtensionString(ToolingExtensions.EXT_MAPPING_TGTCARD);
+            row.type = t.getExtensionString(ExtensionDefinitions.EXT_MAPPING_TGTTYPE);
+            row.minMax = t.getExtensionString(ExtensionDefinitions.EXT_MAPPING_TGTCARD);
             row.dtMapping = t.getExtensionString("http://hl7.org/fhir/StructureDefinition/ConceptMap-type-mapping");
             row.vocabMapping = t.getExtensionString("http://hl7.org/fhir/StructureDefinition/ConceptMap-vocab-mapping");
             if (t.getProduct().size() > 0) {

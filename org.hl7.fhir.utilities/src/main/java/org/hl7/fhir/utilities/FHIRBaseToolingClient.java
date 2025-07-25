@@ -3,7 +3,7 @@ package org.hl7.fhir.utilities;
 
 public class FHIRBaseToolingClient {
 
-  private static final int DEFAULT_TIMEOUT_NORMAL = 1500;
+  private static final int DEFAULT_TIMEOUT_NORMAL = 3000;
   private static final int DEFAULT_TIMEOUT_OPERATION = 30000;
   private static final int DEFAULT_TIMEOUT_ENTRY = 500;
   private static final int DEFAULT_TIMEOUT_OPERATION_LONG = 60000;

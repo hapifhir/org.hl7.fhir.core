@@ -55,7 +55,7 @@ import org.hl7.fhir.r4.conformance.ProfileUtilities;
 import org.hl7.fhir.r4.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r4.context.IWorkerContext;
 import org.hl7.fhir.r4.context.IWorkerContext.ValidationResult;
-import org.hl7.fhir.r4.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r4.formats.FormatUtilities;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4.formats.XmlParser;
@@ -323,7 +323,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private MarkDownProcessor markdown = new MarkDownProcessor(Dialect.COMMON_MARK);
   private ITypeParser parser; // when generating for an element model
   private ILiquidTemplateProvider templateProvider;
-  private IEvaluationContext services;
+  private IHostApplicationServices services;
 
   public boolean generate(Bundle b, boolean evenIfAlreadyHasNarrative, Set<String> outputTracker)
       throws EOperationOutcome, FHIRException, IOException {
@@ -1062,7 +1062,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     init();
   }
 
-  public NarrativeGenerator setLiquidServices(ILiquidTemplateProvider templateProvider, IEvaluationContext services) {
+  public NarrativeGenerator setLiquidServices(ILiquidTemplateProvider templateProvider, IHostApplicationServices services) {
     this.templateProvider = templateProvider;
     this.services = services;
     return this;

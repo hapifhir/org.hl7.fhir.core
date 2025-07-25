@@ -331,7 +331,7 @@ public class XhtmlComposer {
       if (node.getName() == "head" && node.getElement("meta") == null)
         dst.append(indent + "  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>" + (pretty && !noPrettyOverride ? "\r\n" : ""));
 
-      if (act && "script".equals(node.getName())) {
+      if (act && Utilities.existsInList(node.getName(), "script", "style")) {
         dst.append(node.allText());
       } else {
         for (XhtmlNode c : node.getChildNodes())

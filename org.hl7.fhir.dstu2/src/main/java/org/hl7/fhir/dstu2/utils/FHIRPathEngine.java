@@ -60,14 +60,14 @@ import org.hl7.fhir.dstu2.model.Resource;
 import org.hl7.fhir.dstu2.model.StringType;
 import org.hl7.fhir.dstu2.model.StructureDefinition;
 import org.hl7.fhir.dstu2.model.TimeType;
-import org.hl7.fhir.dstu2.model.Type;
 import org.hl7.fhir.dstu2.utils.FHIRLexer.FHIRLexerException;
-import org.hl7.fhir.dstu2.utils.FHIRPathEngine.IEvaluationContext.FunctionDetails;
+import org.hl7.fhir.dstu2.utils.IHostApplicationServices.FunctionDetails;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.utilities.Utilities;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 
 /**
  * 
@@ -76,74 +76,10 @@ import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
  */
 public class FHIRPathEngine {
   private IWorkerContext worker;
-  private IEvaluationContext hostServices;
+  private IHostApplicationServices hostServices;
   private StringBuilder log = new StringBuilder();
   private Set<String> primitiveTypes = new HashSet<String>();
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
-
-  // if the fhir path expressions are allowed to use constants beyond those
-  // defined in the specification
-  // the application can implement them by providing a constant resolver
-  public interface IEvaluationContext {
-    public class FunctionDetails {
-      private String description;
-      private int minParameters;
-      private int maxParameters;
-
-      public FunctionDetails(String description, int minParameters, int maxParameters) {
-        super();
-        this.description = description;
-        this.minParameters = minParameters;
-        this.maxParameters = maxParameters;
-      }
-
-      public String getDescription() {
-        return description;
-      }
-
-      public int getMinParameters() {
-        return minParameters;
-      }
-
-      public int getMaxParameters() {
-        return maxParameters;
-      }
-
-    }
-
-    public Type resolveConstant(Object appContext, String name);
-
-    public String resolveConstantType(Object appContext, String name);
-
-    public boolean Log(String argument, List<Base> focus);
-
-    // extensibility for functions
-    /**
-     * 
-     * @param functionName
-     * @return null if the function is not known
-     */
-    public FunctionDetails resolveFunction(String functionName);
-
-    /**
-     * Check the function parameters, and throw an error if they are incorrect, or
-     * return the type for the function
-     * 
-     * @param functionName
-     * @param parameters
-     * @return
-     */
-    public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters)
-        throws PathEngineException;
-
-    /**
-     * @param appContext
-     * @param functionName
-     * @param parameters
-     * @return
-     */
-    public List<Base> executeFunction(Object appContext, String functionName, List<List<Base>> parameters);
-  }
 
   /**
    * @param worker - used when validating paths (@check), and used doing value set
@@ -174,11 +110,11 @@ public class FHIRPathEngine {
   // implementation
   // HAPI overrides to these to support extensing the base model
 
-  public IEvaluationContext getConstantResolver() {
+  public IHostApplicationServices getConstantResolver() {
     return hostServices;
   }
 
-  public void setConstantResolver(IEvaluationContext constantResolver) {
+  public void setConstantResolver(IHostApplicationServices constantResolver) {
     this.hostServices = constantResolver;
   }
 
@@ -882,7 +818,7 @@ public class FHIRPathEngine {
       work.addAll(work2);
       break;
     case Constant:
-      Base b = processConstant(context, exp.getConstant());
+      Base b = processConstant(context, exp.getConstant(), FHIRPathConstantEvaluationMode.EXPLICIT);
       if (b != null)
         work.add(b);
       break;
@@ -965,7 +901,7 @@ public class FHIRPathEngine {
       result.update(evaluateFunctionType(context, focus, exp));
       break;
     case Constant:
-      result.addType(readConstantType(context, exp.getConstant()));
+      result.addType(readConstantType(context, exp.getConstant(), FHIRPathConstantEvaluationMode.EXPLICIT));
       break;
     case Group:
       result.update(executeType(context, focus, exp.getGroup(), atEntry));
@@ -994,7 +930,7 @@ public class FHIRPathEngine {
     return result;
   }
 
-  private Base processConstant(ExecutionContext context, String constant) throws PathEngineException {
+  private Base processConstant(ExecutionContext context, String constant, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     if (constant.equals("true")) {
       return new BooleanType(true);
     } else if (constant.equals("false")) {
@@ -1008,7 +944,7 @@ public class FHIRPathEngine {
     } else if (constant.startsWith("\'")) {
       return new StringType(processConstantString(constant));
     } else if (constant.startsWith("%")) {
-      return resolveConstant(context, constant);
+      return resolveConstant(context, constant, mode);
     } else if (constant.startsWith("@")) {
       return processDateConstant(context.appInfo, constant.substring(1));
     } else {
@@ -1034,7 +970,7 @@ public class FHIRPathEngine {
       return new DateType(value);
   }
 
-  private Base resolveConstant(ExecutionContext context, String s) throws PathEngineException {
+  private Base resolveConstant(ExecutionContext context, String s, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     if (s.equals("%sct"))
       return new StringType("http://snomed.info/sct");
     else if (s.equals("%loinc"))
@@ -1058,7 +994,17 @@ public class FHIRPathEngine {
     else if (hostServices == null)
       throw new PathEngineException("Unknown fixed constant '" + s + "'");
     else
-      return hostServices.resolveConstant(context.appInfo, s);
+      return justOne(hostServices.resolveConstant(this, context.appInfo, s, mode));
+  }
+
+  private Base justOne(List<Base> bases) {
+    if (bases.size() == 0) {
+      return null;
+    } else if (bases.size() == 1) {
+      return bases.get(0);
+    } else {
+      throw new Error("In this version, only singleton constants");
+    }
   }
 
   private String processConstantString(String s) throws PathEngineException {
@@ -1773,7 +1719,7 @@ public class FHIRPathEngine {
     return result;
   }
 
-  private String readConstantType(ExecutionTypeContext context, String constant) throws PathEngineException {
+  private String readConstantType(ExecutionTypeContext context, String constant, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     if (constant.equals("true"))
       return "boolean";
     else if (constant.equals("false"))
@@ -1783,12 +1729,12 @@ public class FHIRPathEngine {
     else if (Utilities.isDecimal(constant, false))
       return "decimal";
     else if (constant.startsWith("%"))
-      return resolveConstantType(context, constant);
+      return resolveConstantType(context, constant, mode);
     else
       return "string";
   }
 
-  private String resolveConstantType(ExecutionTypeContext context, String s) throws PathEngineException {
+  private String resolveConstantType(ExecutionTypeContext context, String s, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     if (s.equals("%sct"))
       return "string";
     else if (s.equals("%loinc"))
@@ -1814,7 +1760,7 @@ public class FHIRPathEngine {
     else if (hostServices == null)
       throw new PathEngineException("Unknown fixed constant type for '" + s + "'");
     else
-      return hostServices.resolveConstantType(context.appInfo, s);
+      return hostServices.resolveConstantType(this, context.appInfo, s, mode).getType();
   }
 
   private List<Base> execute(ExecutionContext context, Base item, ExpressionNode exp, boolean atEntry) {

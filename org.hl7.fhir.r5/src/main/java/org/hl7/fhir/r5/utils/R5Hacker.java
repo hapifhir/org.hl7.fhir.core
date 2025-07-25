@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.utils;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
@@ -32,8 +33,8 @@ public class R5Hacker {
     if (ed.hasDefinition() && ed.getDefinition() != null) {
       ed.setDefinition(ed.getDefinition().replace("http://hl7.org/fhir/5.0.0-snapshot3/", "http://hl7.org/fhir/R5/"));
     }
-    if (ed.hasBinding() && ed.getBinding().hasExtension(ToolingExtensions.EXT_BINDING_DEFINITION)) {
-      Extension ext = ed.getBinding().getExtensionByUrl(ToolingExtensions.EXT_BINDING_DEFINITION);
+    if (ed.hasBinding() && ed.getBinding().hasExtension(ExtensionDefinitions.EXT_BINDING_DEFINITION)) {
+      Extension ext = ed.getBinding().getExtensionByUrl(ExtensionDefinitions.EXT_BINDING_DEFINITION);
       ext.setValue(new MarkdownType(ext.getValue().primitiveValue()));
     }
   }

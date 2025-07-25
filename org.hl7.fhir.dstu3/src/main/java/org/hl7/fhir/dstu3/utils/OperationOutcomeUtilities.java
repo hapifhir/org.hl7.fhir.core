@@ -37,10 +37,11 @@ import org.hl7.fhir.dstu3.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.dstu3.model.OperationOutcome.IssueType;
 import org.hl7.fhir.dstu3.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.dstu3.model.StringType;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
-@Deprecated
+@MarkedToMoveToAdjunctPackage
 public class OperationOutcomeUtilities {
 
 
@@ -60,7 +61,7 @@ public class OperationOutcomeUtilities {
     c.setText(message.getMessage());
     issue.setDetails(c);
     if (message.getSource() != null) {
-      issue.getExtension().add(ToolingExtensions.makeIssueSource(message.getSource()));
+      issue.getExtension().add(ExtensionUtilities.makeIssueSource(message.getSource()));
     }
     return issue;
   }

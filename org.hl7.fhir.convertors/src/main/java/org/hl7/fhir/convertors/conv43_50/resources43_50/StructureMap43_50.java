@@ -846,7 +846,7 @@ public class StructureMap43_50 {
 
   public static org.hl7.fhir.r5.model.DataType convertVariableStringToParameterDataType(org.hl7.fhir.r4b.model.StringType src) {
     if (src.hasExtension(ToolingExtensions.EXT_ORIGINAL_VARIABLE_TYPE)) {
-      return ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getExtensionByUrl(ToolingExtensions.EXT_ORIGINAL_VARIABLE_TYPE).getValue()); 
+      return ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getExtensionByUrl(ToolingExtensions.EXT_ORIGINAL_VARIABLE_TYPE).getValue());
     } else {
       org.hl7.fhir.r5.model.IdType tgt = new org.hl7.fhir.r5.model.IdType();
       ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
@@ -899,7 +899,7 @@ public class StructureMap43_50 {
     if (src.hasValueIdType()) {
       tgt.setValueAsString(src.getValueIdType().getValueAsString());
     } else if (src.hasValue()) {
-      tgt.addExtension(ToolingExtensions.EXT_ORIGINAL_VARIABLE_TYPE,ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getValue())); 
+      tgt.addExtension(ToolingExtensions.EXT_ORIGINAL_VARIABLE_TYPE,ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getValue()));
     }
     return tgt;
   }

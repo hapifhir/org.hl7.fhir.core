@@ -37,9 +37,9 @@ import java.util.List;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.instance.model.api.ICompositeType;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import  org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import  org.hl7.fhir.r5.model.Enumerations.BindingStrengthEnumFactory;
-import  org.hl7.fhir.r5.utils.ToolingExtensions;
 import  org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -2635,12 +2635,12 @@ public boolean hasTarget() {
    * @return
    */
   public String getWorkingCode() {
-    if (hasExtension(ToolingExtensions.EXT_FHIR_TYPE))
-      return getExtensionString(ToolingExtensions.EXT_FHIR_TYPE);
+    if (hasExtension(ExtensionDefinitions.EXT_FHIR_TYPE))
+      return getExtensionString(ExtensionDefinitions.EXT_FHIR_TYPE);
     if (!hasCodeElement()) 
       return null;
-    if (getCodeElement().hasExtension(ToolingExtensions.EXT_XML_TYPE)) {
-      String s = getCodeElement().getExtensionString(ToolingExtensions.EXT_XML_TYPE);
+    if (getCodeElement().hasExtension(ExtensionDefinitions.EXT_XML_TYPE)) {
+      String s = getCodeElement().getExtensionString(ExtensionDefinitions.EXT_XML_TYPE);
       if ("xsd:gYear OR xsd:gYearMonth OR xsd:date OR xsd:dateTime".equalsIgnoreCase(s))
         return "dateTime";
       if ("xsd:gYear OR xsd:gYearMonth OR xsd:date".equalsIgnoreCase(s))
@@ -13171,9 +13171,9 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
   }
 
   public boolean hasObligations() {
-    boolean res = hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE);
+    boolean res = hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE);
     for (TypeRefComponent tr : getType()) {
-      res = res || tr.hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE);
+      res = res || tr.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE);
     }
     return res;
   }

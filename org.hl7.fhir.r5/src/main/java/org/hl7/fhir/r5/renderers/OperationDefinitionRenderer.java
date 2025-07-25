@@ -6,6 +6,8 @@ import java.io.UnsupportedEncodingException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.FHIRTypes;
@@ -21,7 +23,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.StandardsStatus;
@@ -140,7 +142,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     tr.td().addText(p.getUse().toString()); 
     XhtmlNode td = tr.td(); 
     td.addText(path+p.getName()); 
-    StandardsStatus ss = ToolingExtensions.getStandardsStatus(p); 
+    StandardsStatus ss = ExtensionUtilities.getStandardsStatus(p);
     genStandardsStatus(td, ss); 
     td = tr.td(); 
     if (p.hasScope()) { 
@@ -156,9 +158,9 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     StructureDefinition sd = actualType != null ? context.getWorker().fetchTypeDefinition(actualType) : null; 
     if (sd == null) {
       td.tx(p.hasType() ? actualType : "");  
-    } else if (sd.getAbstract() && p.hasExtension(ToolingExtensions.EXT_ALLOWED_TYPE)) {  
+    } else if (sd.getAbstract() && p.hasExtension(ExtensionDefinitions.EXT_ALLOWED_TYPE)) {
       boolean first = true;  
-      for (Extension ex : p.getExtensionsByUrl(ToolingExtensions.EXT_ALLOWED_TYPE)) {  
+      for (Extension ex : p.getExtensionsByUrl(ExtensionDefinitions.EXT_ALLOWED_TYPE)) {  
         if (first) first = false; else td.tx(" | ");  
         String s = ex.getValue().primitiveValue();  
         StructureDefinition sdt = context.getWorker().fetchTypeDefinition(s);  

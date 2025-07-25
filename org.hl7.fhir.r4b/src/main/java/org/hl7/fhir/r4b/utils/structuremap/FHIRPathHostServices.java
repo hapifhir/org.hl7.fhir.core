@@ -5,6 +5,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r4b.elementmodel.Element;
 import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.r4b.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r4b.fhirpath.TypeDetails;
 import org.hl7.fhir.r4b.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.model.Base;
@@ -12,13 +13,14 @@ import org.hl7.fhir.r4b.model.Resource;
 import org.hl7.fhir.r4b.model.ValueSet;
 import org.hl7.fhir.r4b.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @MarkedToMoveToAdjunctPackage
-public class FHIRPathHostServices implements FHIRPathEngine.IEvaluationContext {
+public class FHIRPathHostServices implements IHostApplicationServices {
 
   private final StructureMapUtilities structureMapUtilities;
 
@@ -26,7 +28,7 @@ public class FHIRPathHostServices implements FHIRPathEngine.IEvaluationContext {
     this.structureMapUtilities = structureMapUtilities;
   }
 
-  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
+  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     Variables vars = (Variables) appContext;
     Base res = vars.get(VariableMode.INPUT, name);
     if (res == null)
@@ -38,7 +40,7 @@ public class FHIRPathHostServices implements FHIRPathEngine.IEvaluationContext {
   }
 
   @Override
-  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
+  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     if (!(appContext instanceof VariablesForProfiling))
       throw new Error(
           "Internal Logic Error (wrong type '" + appContext.getClass().getName() + "' in resolveConstantType)");
@@ -104,6 +106,11 @@ public class FHIRPathHostServices implements FHIRPathEngine.IEvaluationContext {
   @Override
   public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
     throw new Error("Not Implemented Yet");
+  }
+
+  @Override
+  public boolean paramIsType(String name, int index) {
+    return false;
   }
 
 }

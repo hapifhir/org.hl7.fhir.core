@@ -126,6 +126,9 @@ public class PoGetTextProducer extends LanguageFileProducer {
   }
 
   private String stripEoln(String s) {
+    if (s == null) {
+      return "";
+    }
     s = s.replace("\r\n\r\n", " ").replace("\n\n", " ").replace("\r\r", " ");
     s = s.replace("\r\n", " ").replace("\n", " ").replace("\r", " ");
 //    // yes, the double escaping is intentional here - it appears necessary

@@ -41,6 +41,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -70,7 +72,7 @@ import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptDefinitionCompon
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptStatus;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
 import org.hl7.fhir.r5.utils.CanonicalResourceUtilities;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
@@ -177,15 +179,15 @@ public class ValueSetUtilities extends TerminologyUtilities {
       return;
     
     if (wg != null) {
-      if (!ToolingExtensions.hasExtension(vs, ToolingExtensions.EXT_WORKGROUP) || 
-          (!Utilities.existsInList(ToolingExtensions.readStringExtension(vs, ToolingExtensions.EXT_WORKGROUP), "fhir", "vocab") && Utilities.existsInList(wg, "fhir", "vocab"))) {
+      if (!ExtensionUtilities.hasExtension(vs, ExtensionDefinitions.EXT_WORKGROUP) ||
+          (!Utilities.existsInList(ExtensionUtilities.readStringExtension(vs, ExtensionDefinitions.EXT_WORKGROUP), "fhir", "vocab") && Utilities.existsInList(wg, "fhir", "vocab"))) {
         CanonicalResourceUtilities.setHl7WG(vs, wg);
       }
     }
     if (status != null) {
-      StandardsStatus ss = ToolingExtensions.getStandardsStatus(vs);
+      StandardsStatus ss = ExtensionUtilities.getStandardsStatus(vs);
       if (ss == null || ss.isLowerThan(status)) 
-        ToolingExtensions.setStandardsStatus(vs, status, normativeVersion);
+        ExtensionUtilities.setStandardsStatus(vs, status, normativeVersion);
       if (pckage != null) {
         if (!vs.hasUserData(UserDataNames.kindling_ballot_package))        
           vs.setUserData(UserDataNames.kindling_ballot_package, pckage);
@@ -198,9 +200,9 @@ public class ValueSetUtilities extends TerminologyUtilities {
       }
     }
     if (fmm != null) {
-      String sfmm = ToolingExtensions.readStringExtension(vs, ToolingExtensions.EXT_FMM_LEVEL);
+      String sfmm = ExtensionUtilities.readStringExtension(vs, ExtensionDefinitions.EXT_FMM_LEVEL);
       if (Utilities.noString(sfmm) || Integer.parseInt(sfmm) < Integer.parseInt(fmm))  {
-        ToolingExtensions.setIntegerExtension(vs, ToolingExtensions.EXT_FMM_LEVEL, Integer.parseInt(fmm));
+        ExtensionUtilities.setIntegerExtension(vs, ExtensionDefinitions.EXT_FMM_LEVEL, Integer.parseInt(fmm));
       }
     }
     if (vs.hasUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM))
@@ -271,7 +273,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
         if ("deprecated".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType) 
           return ((BooleanType) p.getValue()).getValue();
       }
-      StandardsStatus ss = ToolingExtensions.getStandardsStatus(c);
+      StandardsStatus ss = ExtensionUtilities.getStandardsStatus(c);
       if (ss == StandardsStatus.DEPRECATED) {
         return true;
       }

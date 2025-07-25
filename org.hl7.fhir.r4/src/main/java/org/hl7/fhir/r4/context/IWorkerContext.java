@@ -387,6 +387,17 @@ public interface IWorkerContext {
       return this;
     }
 
+    public Parameters getOrMakeParameters() {
+        Parameters p = new Parameters();
+        p.addParameter("result", isOk());
+        if (getMessage() != null) {
+          p.addParameter("message", getMessage());
+        }
+        if (getDisplay() != null) {
+          p.addParameter("display", getDisplay());
+        }
+        return p;
+    }
   }
 
   /**

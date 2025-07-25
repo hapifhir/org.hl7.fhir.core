@@ -9,6 +9,8 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeableConcept;
@@ -27,7 +29,7 @@ import org.hl7.fhir.r5.renderers.DataRenderer;
 import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.ElementTable.HintDrivenGroupingEngine;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonArray;
@@ -151,8 +153,8 @@ public class ElementTable {
     }
     
     public ElementTableGroupingState groupState(ElementDefinition ed) {
-      if (ed.hasExtension(ToolingExtensions.EXT_PROFILE_VIEW_HINT)) {
-        List<Extension> exl = ed.getExtensionsByUrl(ToolingExtensions.EXT_PROFILE_VIEW_HINT);
+      if (ed.hasExtension(ExtensionDefinitions.EXT_PROFILE_VIEW_HINT)) {
+        List<Extension> exl = ed.getExtensionsByUrl(ExtensionDefinitions.EXT_PROFILE_VIEW_HINT);
         for (Extension ex : exl) {
           if ("element-view-group".equals(ex.getExtensionString("name")) ) {
             return ElementTableGroupingState.DEFINES_GROUP;
@@ -163,16 +165,16 @@ public class ElementTable {
     }
     
     public ElementTableGrouping getGroup(ElementDefinition ed) {
-      if (ed.hasExtension(ToolingExtensions.EXT_PROFILE_VIEW_HINT)) {
+      if (ed.hasExtension(ExtensionDefinitions.EXT_PROFILE_VIEW_HINT)) {
         String n = null;
         int order = 0;
-        List<Extension> exl = ed.getExtensionsByUrl(ToolingExtensions.EXT_PROFILE_VIEW_HINT);
+        List<Extension> exl = ed.getExtensionsByUrl(ExtensionDefinitions.EXT_PROFILE_VIEW_HINT);
         for (Extension ex : exl) {
           if ("element-view-group".equals(ex.getExtensionString("name")) ) {
             n = ex.getExtensionString("value");
           }
           if ("element-view-order".equals(ex.getExtensionString("name")) ) {
-            order = ToolingExtensions.readIntegerExtension(ex, "value", 0);
+            order = ExtensionUtilities.readIntegerExtension(ex, "value", 0);
           }
         }
         if (n != null) {
