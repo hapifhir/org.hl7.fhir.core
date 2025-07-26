@@ -2504,7 +2504,7 @@ public class FHIRPathEngine {
       if (l.hasType(FHIR_TYPES_STRING) && r.hasType(FHIR_TYPES_STRING)) { 
         return makeBoolean(l.primitiveValue().compareTo(r.primitiveValue()) < 0);
       } else if ((l.hasType("integer") || l.hasType("decimal")) && (r.hasType("integer") || r.hasType("decimal"))) { 
-        return makeBoolean(new Double(l.primitiveValue()) < new Double(r.primitiveValue()));
+        return makeBoolean(Double.valueOf(l.primitiveValue()) < Double.valueOf(r.primitiveValue()));
       } else if ((l.hasType("date", "dateTime", "instant")) && (r.hasType("date", "dateTime", "instant"))) {
         Integer i = compareDateTimeElements(l, r, false);
         if (i == null) {
@@ -2553,7 +2553,7 @@ public class FHIRPathEngine {
       if (l.hasType(FHIR_TYPES_STRING) && r.hasType(FHIR_TYPES_STRING)) {
         return makeBoolean(l.primitiveValue().compareTo(r.primitiveValue()) > 0);
       } else if ((l.hasType("integer", "decimal", "unsignedInt", "positiveInt")) && (r.hasType("integer", "decimal", "unsignedInt", "positiveInt"))) { 
-        return makeBoolean(new Double(l.primitiveValue()) > new Double(r.primitiveValue()));
+        return makeBoolean(Double.valueOf(l.primitiveValue()) > Double.valueOf(r.primitiveValue()));
       } else if ((l.hasType("date", "dateTime", "instant")) && (r.hasType("date", "dateTime", "instant"))) {
         Integer i = compareDateTimeElements(l, r, false);
         if (i == null) {
@@ -2603,7 +2603,7 @@ public class FHIRPathEngine {
       if (l.hasType(FHIR_TYPES_STRING) && r.hasType(FHIR_TYPES_STRING)) { 
         return makeBoolean(l.primitiveValue().compareTo(r.primitiveValue()) <= 0);
       } else if ((l.hasType("integer", "decimal", "unsignedInt", "positiveInt")) && (r.hasType("integer", "decimal", "unsignedInt", "positiveInt"))) { 
-        return makeBoolean(new Double(l.primitiveValue()) <= new Double(r.primitiveValue()));
+        return makeBoolean(Double.valueOf(l.primitiveValue()) <= Double.valueOf(r.primitiveValue()));
       } else if ((l.hasType("date", "dateTime", "instant")) && (r.hasType("date", "dateTime", "instant"))) {
         Integer i = compareDateTimeElements(l, r, false);
         if (i == null) {
@@ -2655,7 +2655,7 @@ public class FHIRPathEngine {
       if (l.hasType(FHIR_TYPES_STRING) && r.hasType(FHIR_TYPES_STRING)) { 
         return makeBoolean(l.primitiveValue().compareTo(r.primitiveValue()) >= 0);
       } else if ((l.hasType("integer", "decimal", "unsignedInt", "positiveInt")) && (r.hasType("integer", "decimal", "unsignedInt", "positiveInt"))) { 
-        return makeBoolean(new Double(l.primitiveValue()) >= new Double(r.primitiveValue()));
+        return makeBoolean(Double.valueOf(l.primitiveValue()) >= Double.valueOf(r.primitiveValue()));
       } else if ((l.hasType("date", "dateTime", "instant")) && (r.hasType("date", "dateTime", "instant"))) {
         Integer i = compareDateTimeElements(l, r, false);
         if (i == null) {
