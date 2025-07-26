@@ -3995,7 +3995,8 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     
     if (exp.getFunction() == Function.Where || exp.getFunction() == Function.Exists || exp.getFunction() == Function.All || exp.getFunction() == Function.Select || exp.getFunction() == Function.Repeat || exp.getFunction() == Function.Aggregate)
       return true;
-    if (exp.getFunction() == Function.Trace || exp.getFunction() == Function.DefineVariable)
+    Set<Function> functionsWithExpressionParameter = Set.of(Function.Trace, Function.DefineVariable);
+    if (functionsWithExpressionParameter.contains(exp.getFunction()))
       return true;
     return false;
   }
