@@ -53,10 +53,12 @@ public class VersionConvertorConstants {
   public static final String EXT_IG_DEFINITION_PARAM_URL_EXT = "http://hl7.org/fhir/tools/CodeSystem/ig-parameters";
   public static final String EXT_IG_DEFINITION_RESOURCE_PROFILE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ImplementationGuide.definition.resource.profile";
   public static final String EXT_IG_DEPENDSON_REASON = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ImplementationGuide.dependsOn.reason";
-  public static final String EXT_MED_CONT = "http://hl7.org/fhir/3.0/StructureDefinition/extension-Medication.package.container";
   public static final String EXT_MED_ISBRAND = "http://hl7.org/fhir/3.0/StructureDefinition/extension-Medication.isBrand";
+  public static final String EXT_MED_OTC = "http://hl7.org/fhir/3.0/StructureDefinition/extension-MedicationOTC";
+  public static final String EXT_MED_IMAGE = "http://hl7.org/fhir/3.0/StructureDefinition/extension-MedicationImage";
+  public static final String EXT_MED_PACK_CONTAINER = "http://hl7.org/fhir/3.0/StructureDefinition/extension-Medication.package.container";
   public static final String EXT_MED_PACK_AMOUNT = "http://hl7.org/fhir/3.0/StructureDefinition/extension-Medication.package.content.amount";
-  public static final String EXT_MED_PACK_CONT = "http://hl7.org/fhir/3.0/StructureDefinition/extension-Medication.package.content";
+  public static final String EXT_MED_PACK_CONTENT = "http://hl7.org/fhir/3.0/StructureDefinition/extension-Medication.package.content";
   public static final String EXT_MUST_VALUE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.mustHaveValue";
   public static final String EXT_NAMINGSYSTEM_TITLE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.title";
   public static final String EXT_NAMINGSYSTEM_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.url";
