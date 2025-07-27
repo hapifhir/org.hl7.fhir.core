@@ -49,8 +49,8 @@ public class MedicationRequest30_40 {
       tgt.setAuthoredOnElement(DateTime30_40.convertDateTime(src.getAuthoredOnElement()));
     if (src.hasRequester()) {
       tgt.getRequester().setAgent(Reference30_40.convertReference(src.getRequester()));
-      if (src.hasExtension(VersionConvertorConstants.EXT_MED_REQ_ONBEHALF)) {
-        org.hl7.fhir.r4.model.Extension extension = src.getExtensionByUrl(VersionConvertorConstants.EXT_MED_REQ_ONBEHALF);
+      if (src.getRequester().hasExtension(VersionConvertorConstants.EXT_MED_REQ_ONBEHALF)) {
+        org.hl7.fhir.r4.model.Extension extension = src.getRequester().getExtensionByUrl(VersionConvertorConstants.EXT_MED_REQ_ONBEHALF);
         if (extension.getValue() instanceof org.hl7.fhir.r4.model.Reference) {
           tgt.getRequester().setOnBehalfOf(Reference30_40.convertReference((org.hl7.fhir.r4.model.Reference) extension.getValue()));
         }
@@ -115,10 +115,10 @@ public class MedicationRequest30_40 {
     if (src.hasRequester()) {
       if (src.getRequester().hasAgent()) {
         tgt.setRequester(Reference30_40.convertReference(src.getRequester().getAgent()));
-      }
-      if (src.getRequester().hasOnBehalfOf()) {
-        tgt.addExtension(VersionConvertorConstants.EXT_MED_REQ_ONBEHALF,
-          Reference30_40.convertReference(src.getRequester().getOnBehalfOf()));
+        if (src.getRequester().hasOnBehalfOf()) {
+          tgt.getRequester().addExtension(VersionConvertorConstants.EXT_MED_REQ_ONBEHALF,
+            Reference30_40.convertReference(src.getRequester().getOnBehalfOf()));
+        }
       }
     }
     if (src.hasRecorder())
