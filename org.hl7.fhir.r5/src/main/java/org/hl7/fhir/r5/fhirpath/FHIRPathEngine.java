@@ -5855,9 +5855,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcCheck(ExecutionContext context, List<Base> focus, ExpressionNode expr) throws FHIRException {
-    List<Base> n1 = execute(context, baseToList(context.thisItem), expr.getParameters().get(0), true);
+    List<Base> n1 = execute(context, focus, expr.getParameters().get(0), true);
     if (!convertToBoolean(n1)) {
-      List<Base> n2 = execute(context, baseToList(context.thisItem), expr.getParameters().get(1), true);
+      List<Base> n2 = execute(context, focus, expr.getParameters().get(1), true);
       String name = n2.get(0).primitiveValue();
       throw makeException(expr, I18nConstants.FHIRPATH_CHECK_FAILED, name);
     }
