@@ -4,17 +4,17 @@
   "text": {
     "status": "generated"
   },
-  "extension": [
-    {
-      "url": "http://hl7.org/fhir/3.0/StructureDefinition/extension-MedicationRequest.requester.onBehalfOf",
-      "valueReference": {
-        "reference": "Organization/f002"
-      }
-    }
-  ],
   "requester": {
     "reference": "Practitioner/f007",
-    "display": "Patrick Pump"
+    "display": "Patrick Pump",
+    "extension": [
+      {
+        "url": "http://hl7.org/fhir/3.0/StructureDefinition/extension-MedicationRequest.requester.onBehalfOf",
+        "valueReference": {
+          "reference": "Organization/f002"
+        }
+      }
+    ]
   },
   "contained": [
     {
