@@ -19,7 +19,7 @@ public class MedicationRequest30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.MedicationRequest tgt = new org.hl7.fhir.dstu3.model.MedicationRequest();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_MED_REQ_ONBEHALF);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
 
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
@@ -48,7 +48,7 @@ public class MedicationRequest30_40 {
     if (src.hasAuthoredOn())
       tgt.setAuthoredOnElement(DateTime30_40.convertDateTime(src.getAuthoredOnElement()));
     if (src.hasRequester()) {
-      tgt.getRequester().setAgent(Reference30_40.convertReference(src.getRequester()));
+      tgt.getRequester().setAgent(Reference30_40.convertReference(src.getRequester(), VersionConvertorConstants.EXT_MED_REQ_ONBEHALF));
       if (src.getRequester().hasExtension(VersionConvertorConstants.EXT_MED_REQ_ONBEHALF)) {
         org.hl7.fhir.r4.model.Extension extension = src.getRequester().getExtensionByUrl(VersionConvertorConstants.EXT_MED_REQ_ONBEHALF);
         if (extension.getValue() instanceof org.hl7.fhir.r4.model.Reference) {
