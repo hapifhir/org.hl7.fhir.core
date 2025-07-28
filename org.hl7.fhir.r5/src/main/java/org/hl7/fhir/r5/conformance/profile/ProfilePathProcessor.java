@@ -198,18 +198,11 @@ public class ProfilePathProcessor {
       ElementDefinition currentBase = cursors.base.getElement().get(cursors.baseCursor);
       String currentBasePath = profileUtilities.fixedPathSource(getContextPathSource(), currentBase.getPath(), getRedirector());
 
-      if ("Composition.section.section".equals(currentBasePath)) {
-        DebugUtilities.breakpoint();
-      }
       debugProcessPathsIteration(cursors, currentBasePath);
       checkDiffAssignedAndCursor(cursors);
       List<ElementDefinition> diffMatches = profileUtilities.getDiffMatches(getDifferential(), currentBasePath, cursors.diffCursor, getDiffLimit(), getProfileName()); // get a list of matching elements in scope
 
       int dc = cursors.diffCursor;
-//      if (diffMatches.size() > 0 && diffMatches.get(0).getPath().startsWith("Questionnaire.")) {
-//        DebugUtilities.ln(diffMatches.get(0).toString());
-//        DebugUtilities.breakpoint();
-//      }
       // in the simple case, source is not sliced.
       if (!currentBase.hasSlicing() || currentBasePath.equals(getSlicing().getPath()))
       {
