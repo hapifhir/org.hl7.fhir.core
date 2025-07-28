@@ -81,6 +81,14 @@ private static TxTestData testData;
   @SuppressWarnings("deprecation")
   @Test
   public void test() throws Exception {
+
+    if (setup.getSuite().asBoolean("disabled") || setup.getTest().asBoolean("disabled")) {
+      return;
+    }
+    if (!passesModes(setup.getSuite()) || !passesModes(setup.getTest())) {
+      return;
+    }
+
     if (baseEngine == null) {
       baseEngine = TestUtilities.getValidationEngineNoTxServer("hl7.fhir.r5.core#5.0.0", FhirPublication.R5, "5.0.0");
     }
@@ -89,9 +97,6 @@ private static TxTestData testData;
       // System.out.println(s);
       Resource res = loadResource(s);
       engine.seeResource(res);
-    }
-    if (setup.getSuite().asBoolean("disabled") || setup.getTest().asBoolean("disabled")) {
-      return;
     }
     String reqFile = setup.getTest().asString("request");
     Resource req = reqFile == null ? null : loadResource(reqFile);
@@ -121,6 +126,24 @@ private static TxTestData testData;
     } else if (!Utilities.existsInList(setup.getTest().asString("operation"), "batch-validate")) { // the internal terminologgy server doesn't implement this method
       Assertions.fail("Unknown Operation "+ setup.getTest().asString("operation"));
     }
+  }
+
+  private boolean passesModes(JsonObject obj) {
+    Set<String> modes = new HashSet();
+    modes.add("general");
+
+    if (obj.has("modes")) {
+      for (String mode : obj.getStrings("modes")) {
+        if (modes.contains(mode)) {
+          return true;
+        }
+      }
+    }
+    if (obj.has("mode")) {
+      return modes.contains(obj.asString("mode"));
+    }
+    return true;
+
   }
 
   private void expand(String id, ValidationEngine engine, Resource req, String resp, String lang, String fp, JsonObject ext) throws IOException {
