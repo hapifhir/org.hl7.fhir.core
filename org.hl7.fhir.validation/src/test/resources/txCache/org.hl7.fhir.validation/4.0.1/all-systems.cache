@@ -3787,7 +3787,6 @@ v: {
   "code" : "application/fhir+xml;canonicalization=http://hl7.org/fhir/canonicalization/xml#document",
   "system" : "urn:ietf:bcp:13",
   "server" : "https://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3812,7 +3811,6 @@ v: {
   "code" : "application/fhir+xml;canonicalization=http://hl7.org/fhir/canonicalization/xml#document",
   "system" : "urn:ietf:bcp:13",
   "server" : "https://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3844,7 +3842,6 @@ v: {
   "code" : "application/pkcs7-signature",
   "system" : "urn:ietf:bcp:13",
   "server" : "https://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3869,7 +3866,6 @@ v: {
   "code" : "application/pkcs7-signature",
   "system" : "urn:ietf:bcp:13",
   "server" : "https://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3901,7 +3897,6 @@ v: {
   "code" : "application/fhir+json;canonicalization=http://hl7.org/fhir/canonicalization/json",
   "system" : "urn:ietf:bcp:13",
   "server" : "https://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3926,9 +3921,81 @@ v: {
   "code" : "application/fhir+json;canonicalization=http://hl7.org/fhir/canonicalization/json",
   "system" : "urn:ietf:bcp:13",
   "server" : "https://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode",
+  "code" : "urn:ihe:iti:xds:2017:mimeTypeSufficient",
+  "display" : "Format aus MIME Type ableitbar"
+}, "url": "http://hl7.org/fhir/ValueSet/formatcodes", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "displayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "mimeType Sufficient",
+  "code" : "urn:ihe:iti:xds:2017:mimeTypeSufficient",
+  "system" : "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode",
+  "version" : "1.4.0",
+  "severity" : "error",
+  "error" : "The provided code 'http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode#urn:ihe:iti:xds:2017:mimeTypeSufficient ('Format aus MIME Type ableitbar')' was not found in the value set 'http://hl7.org/fhir/ValueSet/formatcodes|4.0.1'; Wrong Display Name 'Format aus MIME Type ableitbar' for http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode#urn:ihe:iti:xds:2017:mimeTypeSufficient. Valid display is 'mimeType Sufficient' (for the language(s) 'en-US')",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Display_Name_for__should_be_one_of__instead_of"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Format aus MIME Type ableitbar' for http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode#urn:ihe:iti:xds:2017:mimeTypeSufficient. Valid display is 'mimeType Sufficient' (for the language(s) 'en-US')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code 'http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode#urn:ihe:iti:xds:2017:mimeTypeSufficient ('Format aus MIME Type ableitbar')' was not found in the value set 'http://hl7.org/fhir/ValueSet/formatcodes|4.0.1'"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
+  }]
 }
 
 }

@@ -2758,16 +2758,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     List<T> res = new ArrayList<>();
 
-    if (class_ == Resource.class || class_ == ValueSet.class || class_ == CodeSystem.class)  {
+    if (class_ == Resource.class || class_ == ValueSet.class)  {
       if (!isAllowedToIterateTerminologyResources()) {
         // what's going on here?
-        // it's not unusual to have >50k ValueSets and >10k CodeSystems in context. Iterating all of
-        // them will cause everyone of them to loaded through the lazy loading infrastructure. This
+        // it's not unusual to have >50k ValueSets in context. Iterating all of
+        // them will cause every one of them to loaded through the lazy loading infrastructure. This
         // can consume upwards of 10GB of RAM.
         //
-        // By default, the context won't let you do that. If you do wnat to do it, and take the performance hit
+        // By default, the context won't let you do that. If you do want to do it, and take the performance hit, then
         // setAllowedToIterateTerminologyResources(true);
-        throw new Error("This context  is configured to not allow Iterating terminology resources due to performance concerns");
+        throw new Error("This context is configured to not allow Iterating ValueSet resources due to performance concerns");
       }
     }
     synchronized (lock) {
