@@ -214,7 +214,7 @@ public class ProfilePathProcessor {
       else {
         processPathWithSlicedBase(currentBase, currentBasePath, diffMatches, typeList, cursors, mapHelper);
       }
-      // GDG 28-July 2025. this change is for the sd-nexted-ext text case
+      // GDG 28-July 2025. this change is for the sd-nested-ext text case
       // In general, if there's a diffmatch, then once it's processed, the cursor should advance
       // to account for it being 'used'. But some of the code paths above don't. And the code paths are
       // complicated. I wrote this expecting it to blow up some existing test cases, but it didn't.
