@@ -3084,21 +3084,21 @@ public class ProfileUtilities {
   }
 
   private MarkdownType mergeMarkdown(MarkdownType dest, MarkdownType source) {
-    MarkdownType res = dest.copy();
-    if (!res.hasValue() && source.hasValue()) {
-      res.setValue(source.getValue());
-    } else if (res.hasValue() && source.hasValue() && res.getValue().startsWith("...")) {
-      res.setValue(Utilities.appendDerivedTextToBase(source.getValue(), res.getValue()));
+    MarkdownType mergedMarkdown = dest.copy();
+    if (!mergedMarkdown.hasValue() && source.hasValue()) {
+      mergedMarkdown.setValue(source.getValue());
+    } else if (mergedMarkdown.hasValue() && source.hasValue() && mergedMarkdown.getValue().startsWith("...")) {
+      mergedMarkdown.setValue(Utilities.appendDerivedTextToBase(source.getValue(), mergedMarkdown.getValue()));
     }
-    for (Extension ext : source.getExtension()) {
-      Extension exd = findMatchingExtension(res, ext);
-      if (exd == null) {
-        res.addExtension(ext);
+    for (Extension sourceExtension : source.getExtension()) {
+      Extension matchingExtension = findMatchingExtension(mergedMarkdown, sourceExtension);
+      if (matchingExtension == null) {
+        mergedMarkdown.addExtension(sourceExtension.copy());
       } else {
-        exd.setValue(ext.getValue());
+        matchingExtension.setValue(sourceExtension.getValue());
       }
     }
-    return res;
+    return mergedMarkdown;
   }
 
   private StringType mergeStrings(StringType dest, StringType source) {
@@ -3108,27 +3108,27 @@ public class ProfileUtilities {
     } else if (res.hasValue() && source.hasValue() && res.getValue().startsWith("...")) {
       res.setValue(Utilities.appendDerivedTextToBase(res.getValue(), source.getValue()));
     }
-    for (Extension ext : source.getExtension()) {
-      Extension exd = findMatchingExtension(res, ext);
-      if (exd == null) {
-        res.addExtension(ext);
+    for (Extension sourceExtension : source.getExtension()) {
+      Extension matchingExtension = findMatchingExtension(res, sourceExtension);
+      if (matchingExtension == null) {
+        res.addExtension(sourceExtension.copy());
       } else {
-        exd.setValue(ext.getValue());
+        matchingExtension.setValue(sourceExtension.getValue());
       }
     }
     return res;
   }
 
-  private Extension findMatchingExtension(Element res, Extension exs) {
-    for (Extension ext : res.getExtensionsByUrl(exs.getUrl())) {
-      if (ExtensionDefinitions.EXT_TRANSLATION.equals(ext.getUrl())) {
-        String slang = exs.getExtensionString("lang");
-        String dlang = ext.getExtensionString("lang");
+  private Extension findMatchingExtension(Element res, Extension extensionToMatch) {
+    for (Extension elementExtension : res.getExtensionsByUrl(extensionToMatch.getUrl())) {
+      if (ExtensionDefinitions.EXT_TRANSLATION.equals(elementExtension.getUrl())) {
+        String slang = extensionToMatch.getExtensionString("lang");
+        String dlang = elementExtension.getExtensionString("lang");
         if (Utilities.stringsEqual(slang, dlang)) {
-          return ext;
+          return elementExtension;
         }
       } else {
-        return ext;
+        return elementExtension;
       }
 
     }
