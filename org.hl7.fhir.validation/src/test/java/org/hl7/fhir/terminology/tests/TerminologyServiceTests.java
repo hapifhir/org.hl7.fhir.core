@@ -129,7 +129,7 @@ private static TxTestData testData;
   }
 
   private boolean passesModes(JsonObject obj) {
-    Set<String> modes = new HashSet();
+    Set<String> modes = new HashSet<>();
     modes.add("general");
 
     if (obj.has("modes")) {
