@@ -587,9 +587,9 @@ public class JsonParser extends ParserBase {
     }
     String type = item.getType();
     if (Utilities.existsInList(type, "boolean"))
-      json.value(item.getValue().trim().equals("true") ? new Boolean(true) : new Boolean(false));
+      json.value(item.getValue().trim().equals("true") ? Boolean.valueOf(true) : Boolean.valueOf(false));
     else if (Utilities.existsInList(type, "integer", "unsignedInt", "positiveInt"))
-      json.value(new Integer(item.getValue()));
+      json.value(Integer.valueOf(item.getValue()));
     else if (Utilities.existsInList(type, "decimal"))
       try {
         json.value(new BigDecimal(item.getValue()));

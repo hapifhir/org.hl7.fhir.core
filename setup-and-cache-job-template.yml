@@ -30,7 +30,7 @@ jobs:
             options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -DskipTests -P CHECKSTYLE -Djacoco.skip=true'
           mavenOptions: '-Xmx1G'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
+          jdkVersionOption: '1.17'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'install'

@@ -7,10 +7,7 @@ import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Codeab
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Ratio10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.SimpleQuantity10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Boolean10_40;
-import org.hl7.fhir.dstu2.model.Medication;
-import org.hl7.fhir.dstu2.model.Medication.MedicationPackageContentComponent;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.model.Extension;
 
 public class Medication10_40 {
 
@@ -40,12 +37,12 @@ public class Medication10_40 {
       org.hl7.fhir.dstu2.model.Medication.MedicationPackageComponent package_ = src.getPackage();
       if (package_.hasContainer())
         tgt.addExtension(
-          VersionConvertorConstants.EXT_MED_CONT,
+          VersionConvertorConstants.EXT_MED_PACK_CONTAINER,
           CodeableConcept10_40.convertCodeableConcept(package_.getContainer())
         );
       for (org.hl7.fhir.dstu2.model.Medication.MedicationPackageContentComponent c : package_.getContent())
         tgt.addExtension(
-          VersionConvertorConstants.EXT_MED_PACK_CONT,
+          VersionConvertorConstants.EXT_MED_PACK_CONTENT,
           Medication10_40.content(c)
         );
     }
@@ -83,7 +80,7 @@ public class Medication10_40 {
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.hasItem())
       tgt.addExtension(
-        VersionConvertorConstants.EXT_MED_PACK_CONT,
+        VersionConvertorConstants.EXT_MED_PACK_CONTENT,
         Reference10_40.convertReference(src.getItem())
       );
     if (src.hasAmount())

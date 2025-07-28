@@ -672,7 +672,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
         TestingUtilities.loadTestResourceBytes("validator", "outcomes", "java", name.replace("/", "-")+"-"+mode+".json") :
         " { \"resourceType\" : \"OperationOutcome\" }".getBytes();
     OperationOutcome goal = (OperationOutcome) new JsonParser().parse(cnt);
-    OperationOutcome actual = OperationOutcomeUtilities.createOutcomeSimple(errors);
+    OperationOutcome actual = content.has("ids-in-errors") ? OperationOutcomeUtilities.createOutcomeSimpleWithIds(errors) :  OperationOutcomeUtilities.createOutcomeSimple(errors);
     actual.setText(null);
     actual.getIssue().forEach(iss -> iss.removeExtension(ExtensionDefinitions.EXT_ISSUE_SLICE_INFO));
     

@@ -22,9 +22,9 @@ public class PackageCacheTests {
     cache.clear();
     List<String> list = cache.listPackages();
     if (!list.isEmpty()) {
-      System.out.println("remaining packages: "+list.toString());
+      System.out.println("remaining packages: "+list);
     }
-    Assertions.assertTrue(list.isEmpty(), "List should be true but is "+list.toString());
+    Assertions.assertTrue(list.isEmpty(), "List should be true but is "+list);
     npm = cache.loadPackage(CommonPackages.ID_PUBPACK, CommonPackages.VER_PUBPACK);
     npm.loadAllFiles();
     Assertions.assertNotNull(npm);
@@ -45,18 +45,18 @@ public class PackageCacheTests {
   public void testPatchWildCard() throws IOException {
     FilesystemPackageCacheManager cache = new FilesystemPackageCacheManager.Builder().withTestingCacheFolder().build();
     cache.clear();    
-    Assertions.assertEquals(cache.loadPackage("hl7.fhir.us.core", "3.1.0").version(), "3.1.0");
-    Assertions.assertEquals(cache.loadPackage("hl7.fhir.us.core", "3.1.1").version(), "3.1.1");
-    Assertions.assertEquals(cache.loadPackage("hl7.fhir.us.core", "3.1.x").version(), "3.1.1");
-    Assertions.assertEquals(cache.loadPackage("hl7.fhir.us.core", "3.0.x").version(), "3.0.1");
+    Assertions.assertEquals("3.1.0", cache.loadPackage("hl7.fhir.us.core", "3.1.0").version());
+    Assertions.assertEquals("3.1.1", cache.loadPackage("hl7.fhir.us.core", "3.1.1").version());
+    Assertions.assertEquals("3.1.1", cache.loadPackage("hl7.fhir.us.core", "3.1.x").version());
+    Assertions.assertEquals("3.0.1", cache.loadPackage("hl7.fhir.us.core", "3.0.x").version());
   }
 
   @Test
   public void testNotCaseSensitive() throws IOException {
     FilesystemPackageCacheManager cache = new FilesystemPackageCacheManager.Builder().withTestingCacheFolder().build();
-    cache.clear();    
-    Assertions.assertEquals(cache.loadPackage("KBV.Basis", "1.1.3").version(), "1.1.3");
-    Assertions.assertEquals(cache.loadPackage("kbv.basis", "1.1.3").version(), "1.1.3");    
+    cache.clear();
+    Assertions.assertEquals("1.7.0", cache.loadPackage("KBV.Basis", "1.7.0").version());
+    Assertions.assertEquals("1.7.0", cache.loadPackage("kbv.basis", "1.7.0").version());
   }
   
   @Test

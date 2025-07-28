@@ -1,0 +1,103 @@
+{
+  "resourceType": "Medication",
+  "id": "med0301",
+  "contained": [
+    {
+      "resourceType": "Organization",
+      "id": "org4",
+      "name": "Pfizer Laboratories Div Pfizer Inc"
+    }
+  ],
+  "code": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/sid/ndc",
+        "code": "0069-2587-10",
+        "display": "Vancomycin Hydrochloride (VANCOMYCIN HYDROCHLORIDE)"
+      }
+    ]
+  },
+  "status": "active",
+  "isBrand": true,
+  "isOverTheCounter": false,
+  "manufacturer": {
+    "reference": "#org4"
+  },
+  "form": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "385219001",
+        "display": "Injection Solution (qualifier value)"
+      }
+    ]
+  },
+  "ingredient": [
+    {
+      "itemCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+            "code": "66955",
+            "display": "Vancomycin Hydrochloride"
+          }
+        ]
+      },
+      "isActive": true,
+      "amount": {
+        "numerator": {
+          "value": 500,
+          "system": "http://unitsofmeasure.org",
+          "code": "mg"
+        },
+        "denominator": {
+          "value": 10,
+          "system": "http://unitsofmeasure.org",
+          "code": "mL"
+        }
+      }
+    }
+  ],
+  "package": {
+    "container": {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "415818006",
+          "display": "Vial"
+        }
+      ]
+    },
+    "content": [
+      {
+        "itemCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "324337001",
+              "display": "Vancomycin 500mg powder for infusion solution vial (product)"
+            }
+          ]
+        },
+        "amount": {
+          "value": 10,
+          "system": "http://unitsofmeasure.org",
+          "code": "mL"
+        }
+      }
+    ],
+    "batch": [
+      {
+        "lotNumber": "9494788",
+        "expirationDate": "2017-05-22"
+      }
+    ]
+  },
+  "image": [
+    {
+      "contentType": "application/pdf",
+      "url": "https://www.drugs.com/images/pills/fio/AKN07410.JPG",
+      "title": "Vancomycin Image"
+    }
+  ]
+}

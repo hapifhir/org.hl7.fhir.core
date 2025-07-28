@@ -201,6 +201,8 @@ public class Resource30_40 {
       return Substance30_40.convertSubstance((org.hl7.fhir.dstu3.model.Substance) src);
     if (src instanceof org.hl7.fhir.dstu3.model.SupplyDelivery)
       return SupplyDelivery30_40.convertSupplyDelivery((org.hl7.fhir.dstu3.model.SupplyDelivery) src);
+    if (src instanceof org.hl7.fhir.dstu3.model.Task)
+      return Task30_40.convertTask((org.hl7.fhir.dstu3.model.Task) src);
     if (src instanceof org.hl7.fhir.dstu3.model.TestReport)
       return TestReport30_40.convertTestReport((org.hl7.fhir.dstu3.model.TestReport) src);
     if (src instanceof org.hl7.fhir.dstu3.model.TestScript)
@@ -380,6 +382,8 @@ public class Resource30_40 {
       return Substance30_40.convertSubstance((org.hl7.fhir.r4.model.Substance) src);
     if (src instanceof org.hl7.fhir.r4.model.SupplyDelivery)
       return SupplyDelivery30_40.convertSupplyDelivery((org.hl7.fhir.r4.model.SupplyDelivery) src);
+    if (src instanceof org.hl7.fhir.r4.model.Task)
+      return Task30_40.convertTask((org.hl7.fhir.r4.model.Task) src);
     if (src instanceof org.hl7.fhir.r4.model.TestReport)
       return TestReport30_40.convertTestReport((org.hl7.fhir.r4.model.TestReport) src);
     if (src instanceof org.hl7.fhir.r4.model.TestScript)

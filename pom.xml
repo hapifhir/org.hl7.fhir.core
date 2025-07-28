@@ -14,7 +14,7 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>6.6.2-SNAPSHOT</version>
+    <version>6.6.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -24,11 +24,11 @@
         <guava_version>32.0.1-jre</guava_version>
         <gson_version>2.13.1</gson_version>
         <hapi_fhir_version>6.4.1</hapi_fhir_version>
-        <validator_test_case_version>1.7.30</validator_test_case_version>
+        <validator_test_case_version>1.7.31</validator_test_case_version>
         <jackson_version>2.17.0</jackson_version>
         <junit_jupiter_version>5.9.2</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
-        <maven_surefire_version>3.1.2</maven_surefire_version>
+        <maven_surefire_version>3.5.3</maven_surefire_version>
         <maven_clean_version>3.1.0</maven_clean_version>
         <okhttp.version>4.11.0</okhttp.version>
         <jacoco_version>0.8.12</jacoco_version>
@@ -36,12 +36,14 @@
         <byte_buddy_version>1.14.8</byte_buddy_version>
         <apache_poi_version>5.4.1</apache_poi_version>
         <saxon_he_version>11.6</saxon_he_version>
-        <maven.compiler.release>11</maven.compiler.release>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <maven.compiler.testRelease>11</maven.compiler.testRelease>
-        <maven.compiler.testSource>11</maven.compiler.testSource>
-        <maven.compiler.testTarget>11</maven.compiler.testTarget>
+        <maven.compiler.release>17</maven.compiler.release>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.testRelease>17</maven.compiler.testRelease>
+        <maven.compiler.testSource>17</maven.compiler.testSource>
+        <maven.compiler.testTarget>17</maven.compiler.testTarget>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
         <checkstyle_config_location>${project.basedir}</checkstyle_config_location>
         <logback-classic.version>1.5.15</logback-classic.version>
@@ -336,7 +338,7 @@
             <dependency>
                 <groupId>org.xerial</groupId>
                 <artifactId>sqlite-jdbc</artifactId>
-                <version>3.49.1.0</version>
+                <version>3.50.3.0</version>
             </dependency>
 
             <dependency>
@@ -451,11 +453,8 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
+                <version>3.14.0</version>
                 <configuration>
-
-                    <release>11</release>
-
                     <forceLegacyJavacApi>false</forceLegacyJavacApi>
                     <encoding>UTF-8</encoding>
                     <!-- Allows running the compiler in a separate process. If false it uses the built-in compiler,
@@ -627,18 +626,18 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>animal-sniffer-maven-plugin</artifactId>
-                <version>1.22</version>
+                <version>1.24</version>
                 <configuration>
                     <signature>
-                        <groupId>net.sf.androidscents.signature</groupId>
-                        <artifactId>android-api-level-26</artifactId>
-                        <version>8.0.0_r2</version>
+                        <groupId>com.toasttab.android</groupId>
+                        <artifactId>gummy-bears-api-34</artifactId>
+                        <version>0.12.0</version>
                     </signature>
                     <failOnError>false</failOnError>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>check-android-26-compliance</id>
+                        <id>check-android-34-compliance</id>
                         <phase>test</phase>
                         <goals>
                             <goal>check</goal>
