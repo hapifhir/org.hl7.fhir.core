@@ -188,6 +188,14 @@ public class OperationOutcomeUtilities {
     return issue;
   }
 
+  public static OperationOutcomeIssueComponent convertToIssueSimpleWithId(ValidationMessage message, OperationOutcome op) {
+    OperationOutcomeIssueComponent issue = convertToIssueSimple(message, op);
+    if (message.getMessageId() != null) {
+      ExtensionUtilities.setStringExtension(issue, ExtensionDefinitions.EXT_ISSUE_MSG_ID, message.getMessageId());
+    }
+    return issue;
+  }
+
   private static String errorSummaryForSlicingAsText(List<ValidationMessage> list) {
     StringBuilder b = new StringBuilder();
     for (ValidationMessage vm : list) {
@@ -210,6 +218,14 @@ public class OperationOutcomeUtilities {
     OperationOutcome res = new OperationOutcome();
     for (ValidationMessage vm : messages) {
       res.addIssue(convertToIssueSimple(vm, res));
+    }
+    return res;
+  }
+
+  public static OperationOutcome createOutcomeSimpleWithIds(List<ValidationMessage> messages) {
+    OperationOutcome res = new OperationOutcome();
+    for (ValidationMessage vm : messages) {
+      res.addIssue(convertToIssueSimpleWithId(vm, res));
     }
     return res;
   }

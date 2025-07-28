@@ -1,0 +1,128 @@
+{
+  "resourceType": "MedicationStatement",
+  "id": "example001",
+  "extension": [
+    {
+      "url": "http://hl7.org/fhir/3.0/StructureDefinition/extension-MedicationStatement.status",
+      "valueString": "active"
+    },
+    {
+      "url": "http://hl7.org/fhir/3.0/StructureDefinition/extension-MedicationStatement.taken",
+      "valueString": "n"
+    }
+  ],
+  "identifier": [
+    {
+      "use": "official",
+      "system": "http://www.bmc.nl/portal/medstatements",
+      "value": "12345689"
+    }
+  ],
+  "status": "not-taken",
+  "category": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/medication-statement-category",
+        "code": "inpatient",
+        "display": "Inpatient"
+      }
+    ]
+  },
+  "medicationReference": {
+    "reference": "#med0309"
+  },
+  "subject": {
+    "reference": "Patient/pat1",
+    "display": "Donald Duck"
+  },
+  "effectiveDateTime": "2015-01-23",
+  "dateAsserted": "2015-02-22",
+  "informationSource": {
+    "reference": "Patient/pat1",
+    "display": "Donald Duck"
+  },
+  "derivedFrom": [
+    {
+      "reference": "MedicationRequest/medrx002"
+    }
+  ],
+  "reasonCode": [
+    {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "32914008",
+          "display": "Restless Legs"
+        }
+      ]
+    },
+    {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "32914009",
+          "display": "this should be merged with reasonCode in 40"
+        }
+      ]
+    }
+  ],
+  "note": [
+    {
+      "text": "Patient indicates they miss the occasional dose"
+    }
+  ],
+  "dosage": [
+    {
+      "sequence": 1,
+      "text": "1-2 tablets once daily at bedtime as needed for restless legs",
+      "additionalInstruction": [
+        {
+          "text": "Taking at bedtime"
+        }
+      ],
+      "timing": {
+        "repeat": {
+          "frequency": 1,
+          "period": 1,
+          "periodUnit": "d"
+        }
+      },
+      "asNeededCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "32914008",
+            "display": "Restless Legs"
+          }
+        ]
+      },
+      "route": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "26643006",
+            "display": "Oral Route"
+          }
+        ]
+      },
+      "doseAndRate": [
+        {
+          "doseRange": {
+            "low": {
+              "value": 1,
+              "unit": "TAB",
+              "system": "http://hl7.org/fhir/v3/orderableDrugForm",
+              "code": "TAB"
+            },
+            "high": {
+              "value": 2,
+              "unit": "TAB",
+              "system": "http://hl7.org/fhir/v3/orderableDrugForm",
+              "code": "TAB"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

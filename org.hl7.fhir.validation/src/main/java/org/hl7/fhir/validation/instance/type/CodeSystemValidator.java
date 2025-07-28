@@ -483,7 +483,7 @@ public class CodeSystemValidator extends BaseValidator {
       return null;
     } else {
       ValueSet vs = context.findTxResource(ValueSet.class, url);
-      if (vs != null) {        
+      if (vs == null) {
         warning(errors, "2025-01-09", IssueType.NOTFOUND, cs.line(), cs.col(), stack.getLiteralPath(), false, message, url);
       }
       return vs;
