@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Attachment30_40;
@@ -16,11 +17,13 @@ public class DiagnosticReport30_40 {
   public static org.hl7.fhir.r4.model.DiagnosticReport convertDiagnosticReport(org.hl7.fhir.dstu3.model.DiagnosticReport src) throws FHIRException {
     if (src == null)
       return null;
+
     org.hl7.fhir.r4.model.DiagnosticReport tgt = new org.hl7.fhir.r4.model.DiagnosticReport();
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
     for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
-    for (org.hl7.fhir.dstu3.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference30_40.convertReference(t));
+    for (org.hl7.fhir.dstu3.model.Reference t : src.getBasedOn())
+      tgt.addBasedOn(Reference30_40.convertReference(t));
     if (src.hasStatus())
       tgt.setStatusElement(convertDiagnosticReportStatus(src.getStatusElement()));
     if (src.hasCategory())
@@ -35,8 +38,16 @@ public class DiagnosticReport30_40 {
       tgt.setEffective(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getEffective()));
     if (src.hasIssued())
       tgt.setIssuedElement(Instant30_40.convertInstant(src.getIssuedElement()));
-    for (org.hl7.fhir.dstu3.model.Reference t : src.getSpecimen()) tgt.addSpecimen(Reference30_40.convertReference(t));
-    for (org.hl7.fhir.dstu3.model.Reference t : src.getResult()) tgt.addResult(Reference30_40.convertReference(t));
+    for (org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportPerformerComponent t : src.getPerformer()) {
+      org.hl7.fhir.r4.model.Reference performer = convertDiagnosticReportPerformerComponent(t);
+      if (performer != null) {
+        tgt.addPerformer(performer);
+      }
+    }
+    for (org.hl7.fhir.dstu3.model.Reference t : src.getSpecimen())
+      tgt.addSpecimen(Reference30_40.convertReference(t));
+    for (org.hl7.fhir.dstu3.model.Reference t : src.getResult())
+      tgt.addResult(Reference30_40.convertReference(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getImagingStudy())
       tgt.addImagingStudy(Reference30_40.convertReference(t));
     for (org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportImageComponent t : src.getImage())
@@ -50,6 +61,7 @@ public class DiagnosticReport30_40 {
     return tgt;
   }
 
+
   public static org.hl7.fhir.dstu3.model.DiagnosticReport convertDiagnosticReport(org.hl7.fhir.r4.model.DiagnosticReport src) throws FHIRException {
     if (src == null)
       return null;
@@ -57,7 +69,8 @@ public class DiagnosticReport30_40 {
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference30_40.convertReference(t));
+    for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn())
+      tgt.addBasedOn(Reference30_40.convertReference(t));
     if (src.hasStatus())
       tgt.setStatusElement(convertDiagnosticReportStatus(src.getStatusElement()));
     if (src.hasCategory())
@@ -72,8 +85,16 @@ public class DiagnosticReport30_40 {
       tgt.setEffective(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getEffective()));
     if (src.hasIssued())
       tgt.setIssuedElement(Instant30_40.convertInstant(src.getIssuedElement()));
-    for (org.hl7.fhir.r4.model.Reference t : src.getSpecimen()) tgt.addSpecimen(Reference30_40.convertReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getResult()) tgt.addResult(Reference30_40.convertReference(t));
+    for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) {
+      org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportPerformerComponent performer = convertDiagnosticReportPerformerComponent(t);
+      if (performer != null) {
+        tgt.addPerformer(performer);
+      }
+    }
+    for (org.hl7.fhir.r4.model.Reference t : src.getSpecimen())
+      tgt.addSpecimen(Reference30_40.convertReference(t));
+    for (org.hl7.fhir.r4.model.Reference t : src.getResult())
+      tgt.addResult(Reference30_40.convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getImagingStudy())
       tgt.addImagingStudy(Reference30_40.convertReference(t));
     for (org.hl7.fhir.r4.model.DiagnosticReport.DiagnosticReportMediaComponent t : src.getMedia())
@@ -86,6 +107,35 @@ public class DiagnosticReport30_40 {
       tgt.addPresentedForm(Attachment30_40.convertAttachment(t));
     return tgt;
   }
+
+  private static org.hl7.fhir.r4.model.Reference convertDiagnosticReportPerformerComponent(org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportPerformerComponent src) {
+    if (src == null || !src.hasActor())
+      return null;
+
+    org.hl7.fhir.r4.model.Reference tgt = Reference30_40.convertReference(src.getActor());
+    if (src.hasRole()) {
+      tgt.addExtension(VersionConvertorConstants.EXT_DIA_REP_PERFORMER, CodeableConcept30_40.convertCodeableConcept(src.getRole()));
+    }
+
+    return tgt;
+  }
+
+  private static org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportPerformerComponent convertDiagnosticReportPerformerComponent(org.hl7.fhir.r4.model.Reference src) {
+    if (src == null)
+      return null;
+
+    org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportPerformerComponent tgt = new org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportPerformerComponent();
+    tgt.setActor(Reference30_40.convertReference(src, VersionConvertorConstants.EXT_DIA_REP_PERFORMER));
+    if (src.hasExtension(VersionConvertorConstants.EXT_DIA_REP_PERFORMER)) {
+      org.hl7.fhir.r4.model.Extension extension = src.getExtensionByUrl(VersionConvertorConstants.EXT_DIA_REP_PERFORMER);
+      if (extension.getValue() instanceof org.hl7.fhir.r4.model.CodeableConcept) {
+        tgt.setRole(CodeableConcept30_40.convertCodeableConcept((org.hl7.fhir.r4.model.CodeableConcept) extension.getValue()));
+      }
+    }
+
+    return tgt;
+  }
+
 
   public static org.hl7.fhir.r4.model.DiagnosticReport.DiagnosticReportMediaComponent convertDiagnosticReportImageComponent(org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportImageComponent src) throws FHIRException {
     if (src == null)

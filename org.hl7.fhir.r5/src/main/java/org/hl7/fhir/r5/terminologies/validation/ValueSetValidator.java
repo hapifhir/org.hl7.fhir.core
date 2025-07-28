@@ -941,6 +941,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   private ValidationResult validateCode(String path, Coding code, CodeSystem cs, CodeableConcept vcc, ValidationProcessInfo info) {
+    if (code.getCode() == null) {
+      String msg = context.formatMessage(cs.getVersion() == null ? I18nConstants.NO_CODE_PROVIDED :  I18nConstants.NO_CODE_PROVIDED_VERSION, cs.getUrl(),  cs.getVersion());
+      return new ValidationResult(IssueSeverity.WARNING, msg, makeIssue(IssueSeverity.WARNING, IssueType.VALUE, path+".code", msg, OpIssueCode.InvalidData, null));
+    }
     ConceptDefinitionComponent cc = cs.hasUserData(UserDataNames.tx_cs_special) ? ((SpecialCodeSystem) cs.getUserData(UserDataNames.tx_cs_special)).findConcept(code) : findCodeInConcept(cs.getConcept(), code.getCode(), cs.getCaseSensitive(), allAltCodes);
     if (cc == null) {
       cc = findSpecialConcept(code, cs);
@@ -1175,6 +1179,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
   
   private ConceptDefinitionComponent findCodeInConcept(List<ConceptDefinitionComponent> concept, String code, boolean caseSensitive, AlternateCodesProcessingRules altCodeRules) {
+    if (code == null) {
+      return null;
+    }
     for (ConceptDefinitionComponent cc : concept) {
       if (code.equals(cc.getCode()) || (!caseSensitive && (code.equalsIgnoreCase(cc.getCode())))) {
         return cc;
