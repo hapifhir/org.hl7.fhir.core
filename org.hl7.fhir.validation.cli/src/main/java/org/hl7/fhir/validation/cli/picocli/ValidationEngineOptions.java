@@ -1,10 +1,31 @@
 package org.hl7.fhir.validation.cli.picocli;
 
+import ca.uhn.fhir.context.FhirVersionEnum;
+import org.apache.commons.lang3.ArrayUtils;
+import org.hl7.fhir.utilities.VersionUtilities;
 import picocli.CommandLine;
 
-@CommandLine.Command()
+import java.util.ArrayList;
+import java.util.Arrays;
+
+@CommandLine.Command
 public class ValidationEngineOptions {
-  @CommandLine.Option(names = {"-version"}, description = "Version of FHIR.")
-  String fhirVersion;
+
+  static class CLIFHIRVersions extends ArrayList<String> {
+    //FIXME: add minor versions and
+    CLIFHIRVersions() { super(
+      Arrays.stream(ArrayUtils.addAll(VersionUtilities.SUPPORTED_MAJOR_VERSIONS, VersionUtilities.SUPPORTED_VERSIONS)).toList()
+    );
+    }
+  }
+
+  @CommandLine.Option(names = {"-version"},
+    completionCandidates = CLIFHIRVersions.class,
+    description = """
+    Version of FHIR.
+    Valid values are: ${COMPLETION-CANDIDATES}
+    Default is ${DEFAULT-VALUE}
+    """)
+  String fhirVersion = "5.0";
 
 }

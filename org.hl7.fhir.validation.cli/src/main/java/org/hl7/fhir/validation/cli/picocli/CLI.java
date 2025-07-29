@@ -1,17 +1,18 @@
 package org.hl7.fhir.validation.cli.picocli;
 
+import org.hl7.fhir.validation.cli.JavaSystemProxyParamSetter;
+import org.hl7.fhir.validation.cli.param.Params;
 import picocli.CommandLine;
-import picocli.CommandLine.Command;
-import picocli.CommandLine.Option;
 
 import java.util.Map;
-import java.util.concurrent.Callable;
 
-public class PicocliTest {
+public class CLI {
 
   private static String[] getBackwardCompatibleArgs(String[] args) {
       Map<String, String> argMap = Map.of(
-          "-server", "server"
+          "-server", "server",
+          "-?", "-help",
+          "/?", "-help"
       );
 
       String[] newArgs = new String[args.length];
@@ -28,8 +29,21 @@ public class PicocliTest {
     public static void main(String[] args) {
       String[] backwardCompatibleArgs = getBackwardCompatibleArgs(args);
       CommandLine commandLine = new CommandLine(new DefaultCommand());
+
+      CommandLine.ParseResult parseResult = commandLine.parseArgs(backwardCompatibleArgs);
+
+      setJavaSystemProxyFromParsedArgs(parseResult);
+
       int exitCode = commandLine.execute(backwardCompatibleArgs);
       System.exit(exitCode);
     }
+
+  private static void setJavaSystemProxyFromParsedArgs(CommandLine.ParseResult parseResult) {
+    final String proxy =  parseResult.matchedOptionValue(Params.PROXY, null);
+    final String httpsProxy = parseResult.matchedOptionValue( Params.HTTPS_PROXY, null);
+    final String proxyAuth = parseResult.matchedOptionValue( Params.PROXY_AUTH, null);
+
+    JavaSystemProxyParamSetter.setJavaSystemProxyParams(proxy, httpsProxy, proxyAuth);
+  }
 
 }
