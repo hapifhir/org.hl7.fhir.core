@@ -62,7 +62,7 @@ public abstract class I18nBase {
           warnedLocales = new HashSet<String>();
         }
         if (!warnedLocales.contains(locale.toLanguageTag())) {
-          log.warn("The locale " + locale.toLanguageTag() + " is not supported. Messages will default to en-US.");
+          logUncontainedMessage("The locale " + locale.toLanguageTag() + " is not supported. Messages will default to en-US.");
           warnedLocales.add(locale.toLanguageTag());
         }
       }
@@ -99,7 +99,7 @@ public abstract class I18nBase {
         if (warnAboutMissingMessages && (hasArgs || !message.contains(" "))) {
           Set<String> uncontainedKeys = I18nBase.uncontainedKeys.computeIfAbsent(getLocale(), k -> new HashSet<>());
           if (!uncontainedKeys.contains(message)) {
-            log.warn("Attempting to localize " + typeOfString() + " " + message + ", but no such equivalent message exists for" +
+            logUncontainedMessage("Attempting to localize " + typeOfString() + " " + message + ", but no such equivalent message exists for" +
               " the locale " + getLocale());
             uncontainedKeys.add(message);
           }
@@ -107,6 +107,10 @@ public abstract class I18nBase {
       }
     }
     return messageKeyExistsForLocale(message);
+  }
+
+  protected void logUncontainedMessage(String message) {
+    log.warn(message);
   }
 
   protected String typeOfString() {
