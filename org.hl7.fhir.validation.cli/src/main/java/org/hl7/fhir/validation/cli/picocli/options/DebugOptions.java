@@ -16,9 +16,10 @@ public class DebugOptions implements GlobalOptions {
   String traceLog;
 
   @Override
-  public void apply(CommandLine.ParseResult parseResult) {
+  public int apply(CommandLine.ParseResult parseResult) {
     setLogbackConfiguration(parseResult, DEBUG_LOG, Level.DEBUG);
     setLogbackConfiguration(parseResult, TRACE_LOG, Level.TRACE);
+    return 0;
   }
 
   private static void setLogbackConfiguration(CommandLine.ParseResult parseResult, String logParam, Level logLevel) {

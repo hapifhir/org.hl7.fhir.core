@@ -16,6 +16,8 @@ public interface GlobalOptions {
   /**
    * Apply the global options to the parsed command line result
    * @param parseResult A Picocli {@link CommandLine.ParseResult} that contains the parsed options.
+   *
+   * @return An integer indicating the exit code for the application if this method fails.
    */
-  public void apply(CommandLine.ParseResult parseResult);
+  public int apply(CommandLine.ParseResult parseResult);
 }

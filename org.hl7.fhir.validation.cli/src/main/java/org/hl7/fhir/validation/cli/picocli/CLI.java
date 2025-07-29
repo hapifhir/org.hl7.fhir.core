@@ -1,13 +1,17 @@
 package org.hl7.fhir.validation.cli.picocli;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.validation.cli.picocli.options.DebugOptions;
 import org.hl7.fhir.validation.cli.picocli.options.GlobalOptions;
 import org.hl7.fhir.validation.cli.picocli.options.LocaleOptions;
 import org.hl7.fhir.validation.cli.picocli.options.ProxyOptions;
+import org.slf4j.event.Level;
 import picocli.CommandLine;
 
+import java.io.PrintWriter;
 import java.util.Map;
 
+@Slf4j
 public class CLI {
 
   private final static GlobalOptions[] GLOBAL_OPTIONS =  {
@@ -41,10 +45,16 @@ public class CLI {
       CommandLine.ParseResult parseResult = commandLine.parseArgs(backwardCompatibleArgs);
 
       for (GlobalOptions globalOption : GLOBAL_OPTIONS) {
-        globalOption.apply(parseResult);
+        int exitCode = globalOption.apply(parseResult);
+        if (exitCode != 0) {
+          System.exit(exitCode);
+        }
       }
-
+      commandLine
+        .setOut(new PrintWriter(new CLIToSlf4jLoggerWriter(log, Level.INFO)))
+        .setErr(new PrintWriter(new CLIToSlf4jLoggerWriter(log, Level.ERROR)));
       int exitCode = commandLine.execute(backwardCompatibleArgs);
       System.exit(exitCode);
     }
+
 }
