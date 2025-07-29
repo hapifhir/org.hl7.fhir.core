@@ -1,5 +1,8 @@
 package org.hl7.fhir.validation.cli.picocli;
 
+import org.hl7.fhir.validation.cli.picocli.options.LocaleOptions;
+import org.hl7.fhir.validation.cli.picocli.options.ProxyOptions;
+import org.hl7.fhir.validation.cli.picocli.options.ValidationEngineOptions;
 import picocli.CommandLine;
 
 import java.util.concurrent.Callable;
@@ -21,15 +24,20 @@ import java.util.concurrent.Callable;
     CommandLine.HelpCommand.class,
     ServerCommand.class
   })
-class DefaultCommand implements Callable<Integer> {
+class ValidateCommand implements Callable<Integer> {
   @CommandLine.Spec
   CommandLine.Model.CommandSpec spec;
+
+  @CommandLine.ArgGroup(validate = false, heading = "Locale Options%n")
+  LocaleOptions localeOptions = new LocaleOptions();
+
+  @CommandLine.ArgGroup(validate = false, heading = "Proxy Options%n")
+  ProxyOptions proxyOptions = new ProxyOptions();
+
 
   @CommandLine.ArgGroup(validate = false, heading = "Validation Engine%n")
   ValidationEngineOptions validationEngineOptions = new ValidationEngineOptions();
 
-  @CommandLine.ArgGroup(validate = false, heading = "Proxy Options%n")
-  ProxyOptions proxyOptions = new ProxyOptions();
 
 
   //Needed to allow Help Command.

@@ -1,6 +1,5 @@
-package org.hl7.fhir.validation.cli.picocli;
+package org.hl7.fhir.validation.cli.picocli.options;
 
-import ca.uhn.fhir.context.FhirVersionEnum;
 import org.apache.commons.lang3.ArrayUtils;
 import org.hl7.fhir.utilities.VersionUtilities;
 import picocli.CommandLine;
@@ -26,6 +25,6 @@ public class ValidationEngineOptions {
     Valid values are: ${COMPLETION-CANDIDATES}
     Default is ${DEFAULT-VALUE}
     """)
-  String fhirVersion = "5.0";
+  public String fhirVersion = "5.0";
 
 }

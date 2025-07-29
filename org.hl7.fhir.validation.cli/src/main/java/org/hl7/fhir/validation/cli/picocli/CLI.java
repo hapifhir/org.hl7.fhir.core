@@ -1,12 +1,20 @@
 package org.hl7.fhir.validation.cli.picocli;
 
-import org.hl7.fhir.validation.cli.JavaSystemProxyParamSetter;
-import org.hl7.fhir.validation.cli.param.Params;
+import org.hl7.fhir.validation.cli.picocli.options.DebugOptions;
+import org.hl7.fhir.validation.cli.picocli.options.GlobalOptions;
+import org.hl7.fhir.validation.cli.picocli.options.LocaleOptions;
+import org.hl7.fhir.validation.cli.picocli.options.ProxyOptions;
 import picocli.CommandLine;
 
 import java.util.Map;
 
 public class CLI {
+
+  private final static GlobalOptions[] GLOBAL_OPTIONS =  {
+    new LocaleOptions(),
+    new DebugOptions(),
+    new ProxyOptions()
+  };
 
   private static String[] getBackwardCompatibleArgs(String[] args) {
       Map<String, String> argMap = Map.of(
@@ -28,22 +36,20 @@ public class CLI {
 
     public static void main(String[] args) {
       String[] backwardCompatibleArgs = getBackwardCompatibleArgs(args);
-      CommandLine commandLine = new CommandLine(new DefaultCommand());
+      CommandLine commandLine = new CommandLine(new ValidateCommand());
 
       CommandLine.ParseResult parseResult = commandLine.parseArgs(backwardCompatibleArgs);
 
-      setJavaSystemProxyFromParsedArgs(parseResult);
+      for (GlobalOptions globalOption : GLOBAL_OPTIONS) {
+        globalOption.apply(parseResult);
+      }
 
       int exitCode = commandLine.execute(backwardCompatibleArgs);
       System.exit(exitCode);
     }
 
-  private static void setJavaSystemProxyFromParsedArgs(CommandLine.ParseResult parseResult) {
-    final String proxy =  parseResult.matchedOptionValue(Params.PROXY, null);
-    final String httpsProxy = parseResult.matchedOptionValue( Params.HTTPS_PROXY, null);
-    final String proxyAuth = parseResult.matchedOptionValue( Params.PROXY_AUTH, null);
 
-    JavaSystemProxyParamSetter.setJavaSystemProxyParams(proxy, httpsProxy, proxyAuth);
-  }
+
+
 
 }
