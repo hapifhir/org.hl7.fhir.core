@@ -19,7 +19,7 @@ public abstract class I18nBase {
 
   public static final String KEY_DELIMITER = "_";
 
-  public static Map<Locale, Set<String>> uncontainedKeys = new HashMap<>();
+  public static final Map<Locale, Set<String>> uncontainedKeys = new HashMap<>();
 
   private Locale locale = null;
   private ResourceBundle messages = null;
