@@ -1,8 +1,6 @@
 package org.hl7.fhir.validation.cli.picocli;
 
-import org.hl7.fhir.validation.cli.picocli.options.LocaleOptions;
-import org.hl7.fhir.validation.cli.picocli.options.ProxyOptions;
-import org.hl7.fhir.validation.cli.picocli.options.ValidationEngineOptions;
+import org.hl7.fhir.validation.cli.picocli.options.*;
 import picocli.CommandLine;
 
 import java.util.concurrent.Callable;
@@ -28,12 +26,17 @@ class ValidateCommand implements Callable<Integer> {
   @CommandLine.Spec
   CommandLine.Model.CommandSpec spec;
 
+  @CommandLine.ArgGroup(validate = false, heading = "Proxy Options%n")
+  DebugOptions debugOptions = new DebugOptions();
+
   @CommandLine.ArgGroup(validate = false, heading = "Locale Options%n")
   LocaleOptions localeOptions = new LocaleOptions();
 
   @CommandLine.ArgGroup(validate = false, heading = "Proxy Options%n")
   ProxyOptions proxyOptions = new ProxyOptions();
 
+  @CommandLine.ArgGroup(validate = false, heading = "Terminology Client Options%n")
+  TerminologyClientOptions terminologyClientOptions = new TerminologyClientOptions();
 
   @CommandLine.ArgGroup(validate = false, heading = "Validation Engine%n")
   ValidationEngineOptions validationEngineOptions = new ValidationEngineOptions();

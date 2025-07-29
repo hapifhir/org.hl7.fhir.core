@@ -6,7 +6,7 @@ import picocli.CommandLine;
 import java.util.Locale;
 
 public class LocaleOptions implements GlobalOptions{
-  @CommandLine.Option(names = {"-locale"}, description = "The locale. Specified by a valid IETF BCP 47 language tag (en-US, fr-FR, etc.")
+  @CommandLine.Option(names = {"-locale"}, description = "The locale. Specified by a valid IETF BCP 47 language tag (en-US, fr-FR, etc.)")
   String locale;
 
   @Override
