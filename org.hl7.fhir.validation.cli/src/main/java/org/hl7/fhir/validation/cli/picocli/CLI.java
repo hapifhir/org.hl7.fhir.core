@@ -1,6 +1,7 @@
 package org.hl7.fhir.validation.cli.picocli;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.validation.cli.Display;
 import org.hl7.fhir.validation.cli.picocli.options.DebugOptions;
 import org.hl7.fhir.validation.cli.picocli.options.GlobalOptions;
 import org.hl7.fhir.validation.cli.picocli.options.LocaleOptions;
@@ -50,6 +51,10 @@ public class CLI {
           System.exit(exitCode);
         }
       }
+
+      Display.displayVersion(log);
+      Display.displaySystemInfo(log);
+
       commandLine
         .setOut(new PrintWriter(new CLIToSlf4jLoggerWriter(log, Level.INFO)))
         .setErr(new PrintWriter(new CLIToSlf4jLoggerWriter(log, Level.ERROR)));
