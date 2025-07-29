@@ -16,11 +16,13 @@ public class ProxyOptions implements GlobalOptions{
   String proxyAuth;
 
   @Override
-  public void apply(CommandLine.ParseResult parseResult) {
+  public int apply(CommandLine.ParseResult parseResult) {
     final String proxy = parseResult.matchedOptionValue(Params.PROXY, null);
     final String httpsProxy = parseResult.matchedOptionValue(Params.HTTPS_PROXY, null);
     final String proxyAuth = parseResult.matchedOptionValue(Params.PROXY_AUTH, null);
 
     JavaSystemProxyParamSetter.setJavaSystemProxyParams(proxy, httpsProxy, proxyAuth);
+
+    return 0;
   }
 }

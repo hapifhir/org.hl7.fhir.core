@@ -11,9 +11,10 @@ public class HttpAccessOptions implements GlobalOptions{
   public boolean noHttpAccess = false;
 
   @Override
-  public void apply(CommandLine.ParseResult parseResult) {
+  public int apply(CommandLine.ParseResult parseResult) {
     if (parseResult.hasMatchedOption(NO_HTTP_ACCESS)) {
       ManagedWebAccess.setAccessPolicy(ManagedWebAccess.WebAccessPolicy.PROHIBITED);
     }
+    return 0;
   }
 }

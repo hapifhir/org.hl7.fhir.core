@@ -10,12 +10,13 @@ public class LocaleOptions implements GlobalOptions{
   String locale;
 
   @Override
-  public void apply(CommandLine.ParseResult parseResult) {
+  public int apply(CommandLine.ParseResult parseResult) {
     if (!parseResult.hasMatchedOption(Params.LOCALE)) {
-      return;
+      return 0;
     }
     String languageTag = parseResult.matchedOptionValue(Params.LOCALE, null);
     Locale locale = Locale.forLanguageTag(languageTag);
     Locale.setDefault(locale);
+    return 0;
   }
 }

@@ -11,10 +11,11 @@ public class TerminologyClientOptions implements GlobalOptions{
   public boolean authorizeNonConformantServers = false;
 
   @Override
-  public void apply(CommandLine.ParseResult parseResult) {
+  public int apply(CommandLine.ParseResult parseResult) {
     if (parseResult.hasMatchedOption(AUTH_NONCONFORMANT_SERVERS)) {
       TerminologyClientContext.setAllowNonConformantServers(true);
     }
     TerminologyClientContext.setCanAllowNonConformantServers(true);
+    return 0;
   }
 }
