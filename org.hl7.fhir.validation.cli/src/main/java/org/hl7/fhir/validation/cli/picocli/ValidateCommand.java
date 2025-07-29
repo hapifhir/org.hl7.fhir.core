@@ -26,7 +26,7 @@ class ValidateCommand implements Callable<Integer> {
   @CommandLine.Spec
   CommandLine.Model.CommandSpec spec;
 
-  @CommandLine.ArgGroup(validate = false, heading = "Proxy Options%n")
+  @CommandLine.ArgGroup(validate = false, heading = "Debug Options%n")
   DebugOptions debugOptions = new DebugOptions();
 
   @CommandLine.ArgGroup(validate = false, heading = "Locale Options%n")
