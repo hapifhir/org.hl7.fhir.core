@@ -195,7 +195,7 @@ public class ValidatorCli {
 
   @SuppressWarnings("checkstyle:systemout")
   private static void checkCharsetAndWarnIfNotUTF8() {
-    FileFormat.checkCharsetAndWarnIfNotUTF8(System.out);
+    FileFormat.checkCharsetAndWarnIfNotUTF8(log);
   }
 
   private static void setLogbackConfiguration(String[] args) {

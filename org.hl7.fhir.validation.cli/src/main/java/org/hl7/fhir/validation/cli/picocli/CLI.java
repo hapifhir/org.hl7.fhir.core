@@ -1,6 +1,7 @@
 package org.hl7.fhir.validation.cli.picocli;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.utilities.FileFormat;
 import org.hl7.fhir.validation.cli.Display;
 import org.hl7.fhir.validation.cli.picocli.options.DebugOptions;
 import org.hl7.fhir.validation.cli.picocli.options.GlobalOptions;
@@ -54,6 +55,8 @@ public class CLI {
 
       Display.displayVersion(log);
       Display.displaySystemInfo(log);
+
+      FileFormat.checkCharsetAndWarnIfNotUTF8(log);
 
       commandLine
         .setOut(new PrintWriter(new CLIToSlf4jLoggerWriter(log, Level.INFO)))
