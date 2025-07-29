@@ -2,6 +2,10 @@ package org.hl7.fhir.utilities;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,25 +14,23 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class FileFormatTest {
   @Test
   public void testCurrentFileFormat() throws IOException {
-    ByteArrayOutputStream bo = new ByteArrayOutputStream();
+    org.slf4j.Logger logger = mock(org.slf4j.Logger.class);
 
-    FileFormat.checkCharsetAndWarnIfNotUTF8(new PrintStream(bo));
+    FileFormat.checkCharsetAndWarnIfNotUTF8(logger);
 
-    bo.flush();
-    String allWrittenLines = new String(bo.toByteArray());
-
-    assertAWarningIsGivenWhenNotUTF8(allWrittenLines);
+    assertAWarningIsGivenWhenNotUTF8(logger);
   }
 
-  private static void assertAWarningIsGivenWhenNotUTF8(String allWrittenLines) {
+  private static void assertAWarningIsGivenWhenNotUTF8(org.slf4j.Logger logger) {
     if (Charset.defaultCharset().equals(StandardCharsets.UTF_8)) {
-      assertEquals(0, allWrittenLines.length());
+      verify(logger, Mockito.times(0)).warn(anyString());
     } else {
-      assertThat(allWrittenLines).contains("WARNING");
+      verify(logger).warn(argThat((String warn) -> warn.contains("WARNING")));
     }
   }
 }
