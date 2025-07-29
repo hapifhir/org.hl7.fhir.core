@@ -47,9 +47,4 @@ public class CLI {
       int exitCode = commandLine.execute(backwardCompatibleArgs);
       System.exit(exitCode);
     }
-
-
-
-
-
 }

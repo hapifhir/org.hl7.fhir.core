@@ -15,7 +15,6 @@ public class ProxyOptions implements GlobalOptions{
   @CommandLine.Option(names = {"-auth"}, description = "Basic proxy authentication using [username]:[password]")
   String proxyAuth;
 
-
   @Override
   public void apply(CommandLine.ParseResult parseResult) {
     final String proxy = parseResult.matchedOptionValue(Params.PROXY, null);
