@@ -1,12 +1,7 @@
 package org.hl7.fhir.utilities.i18n;
 
 import java.text.MessageFormat;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -23,6 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 public abstract class I18nBase {
 
   public static final String KEY_DELIMITER = "_";
+
+  public static Map<Locale, Set<String>> uncontainedKeys = new HashMap<>();
+
   private Locale locale = null;
   private ResourceBundle messages = null;
   private PluralRules pluralRules = null;
@@ -99,8 +97,12 @@ public abstract class I18nBase {
     if (!messageKeyExistsForLocale(message)) {
       if (!message.contains(" ")) {
         if (warnAboutMissingMessages && (hasArgs || !message.contains(" "))) {
-          log.warn("Attempting to localize "+typeOfString()+" " + message + ", but no such equivalent message exists for" +
+          Set<String> uncontainedKeys = I18nBase.uncontainedKeys.computeIfAbsent(getLocale(), k -> new HashSet<>());
+          if (!uncontainedKeys.contains(message)) {
+            log.warn("Attempting to localize " + typeOfString() + " " + message + ", but no such equivalent message exists for" +
               " the locale " + getLocale());
+            uncontainedKeys.add(message);
+          }
         }
       }
     }
