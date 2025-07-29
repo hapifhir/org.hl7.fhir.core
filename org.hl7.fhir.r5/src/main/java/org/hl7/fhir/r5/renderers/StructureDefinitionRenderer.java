@@ -1792,9 +1792,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_THEN_TYPE)+" ", null));           
             StructureDefinition sd = context.getWorker().fetchTypeDefinition(type); 
             if (sd == null) { 
-              c.getPieces().add(gen.new Piece("<code>"));           
-              c.getPieces().add(gen.new Piece(null, type, null));           
-              c.getPieces().add(gen.new Piece("</code>"));           
+              piece = gen.new Piece("code");
+              piece.addHtml(new XhtmlNode(NodeType.Text).setContent(type));
+              c.getPieces().add(piece);
             } else { 
               c.getPieces().add(gen.new Piece(sd.getWebPath(), sd.getTypeName(), null));           
             } 

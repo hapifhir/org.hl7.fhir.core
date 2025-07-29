@@ -52,7 +52,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import org.hl7.fhir.utilities.filesystem.CSFile;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 
@@ -181,7 +180,7 @@ public final class IniFile
             }
             objSec = null;
         }
-        return new Boolean(blnRet);
+        return blnRet;
     }
 
     /**
@@ -206,7 +205,7 @@ public final class IniFile
                 if (objProp != null)
                 {
                     strVal = objProp.getPropValue();
-                    if (strVal != null) intRet = new Integer(strVal);
+                    if (strVal != null) intRet = Integer.valueOf(strVal);
                 }
             }
             catch (NumberFormatException NFExIgnore)
@@ -243,7 +242,7 @@ public final class IniFile
                 if (objProp != null)
                 {
                     strVal = objProp.getPropValue();
-                    if (strVal != null) lngRet = new Long(strVal);
+                    if (strVal != null) lngRet = Long.valueOf(strVal);
                 }
             }
             catch (NumberFormatException NFExIgnore)
@@ -280,7 +279,7 @@ public final class IniFile
                 if (objProp != null)
                 {
                     strVal = objProp.getPropValue();
-                    if (strVal != null) dblRet = new Double(strVal);
+                    if (strVal != null) dblRet = Double.valueOf(strVal);
                 }
             }
             catch (NumberFormatException NFExIgnore)
@@ -461,7 +460,7 @@ public final class IniFile
     {
         INISection objSec   = null;
 
-        objSec = (INISection) this.iniSections.get(pstrSection);
+        objSec = this.iniSections.get(pstrSection);
         if (objSec == null)
         {
             objSec = new INISection(pstrSection);
