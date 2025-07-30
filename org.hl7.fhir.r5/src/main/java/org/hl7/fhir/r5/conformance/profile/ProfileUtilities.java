@@ -2657,10 +2657,8 @@ public class ProfileUtilities {
       }
 
       if (derived.hasDefinitionElement()) {
-        if (derived.getDefinition() != null && derived.getDefinition().startsWith("..."))
-          base.setDefinition(Utilities.appendDerivedTextToBase(base.getDefinition(), derived.getDefinition()));
-        else if (!Base.compareDeep(derived.getDefinitionElement(), base.getDefinitionElement(), false)) {
-          base.setDefinitionElement(derived.getDefinitionElement().copy());
+        if (!Base.compareDeep(derived.getDefinitionElement(), base.getDefinitionElement(), false)) {
+          base.setDefinitionElement(mergeMarkdown(derived.getDefinitionElement(), base.getDefinitionElement()));
         } else if (trimDifferential)
           derived.setDefinitionElement(null);
         else if (derived.hasDefinitionElement())
@@ -2668,10 +2666,8 @@ public class ProfileUtilities {
       }
 
       if (derived.hasCommentElement()) {
-        if (derived.getComment().startsWith("..."))
-          base.setComment(Utilities.appendDerivedTextToBase(base.getComment(), derived.getComment()));
-        else if (derived.hasCommentElement()!= base.hasCommentElement() || !Base.compareDeep(derived.getCommentElement(), base.getCommentElement(), false))
-          base.setCommentElement(derived.getCommentElement().copy());
+        if (!Base.compareDeep(derived.getCommentElement(), base.getCommentElement(), false))
+          base.setCommentElement(mergeMarkdown(derived.getCommentElement(), base.getCommentElement()));
         else if (trimDifferential)
           base.setCommentElement(derived.getCommentElement().copy());
         else if (derived.hasCommentElement())
@@ -2679,10 +2675,8 @@ public class ProfileUtilities {
       }
 
       if (derived.hasLabelElement()) {
-        if (derived.getLabel().startsWith("..."))
-          base.setLabel(Utilities.appendDerivedTextToBase(base.getLabel(), derived.getLabel()));
-        else if (!base.hasLabelElement() || !Base.compareDeep(derived.getLabelElement(), base.getLabelElement(), false))
-          base.setLabelElement(derived.getLabelElement().copy());
+       if (!base.hasLabelElement() || !Base.compareDeep(derived.getLabelElement(), base.getLabelElement(), false))
+          base.setLabelElement(mergeStrings(derived.getLabelElement(), base.getLabelElement()));
         else if (trimDifferential)
           base.setLabelElement(derived.getLabelElement().copy());
         else if (derived.hasLabelElement())
@@ -2690,10 +2684,8 @@ public class ProfileUtilities {
       }
 
       if (derived.hasRequirementsElement()) {
-        if (derived.getRequirements().startsWith("..."))
-          base.setRequirements(Utilities.appendDerivedTextToBase(base.getRequirements(), derived.getRequirements()));
-        else if (!base.hasRequirementsElement() || !Base.compareDeep(derived.getRequirementsElement(), base.getRequirementsElement(), false))
-          base.setRequirementsElement(derived.getRequirementsElement().copy());
+        if (!base.hasRequirementsElement() || !Base.compareDeep(derived.getRequirementsElement(), base.getRequirementsElement(), false))
+          base.setRequirementsElement(mergeMarkdown(derived.getRequirementsElement(), base.getRequirementsElement()));
         else if (trimDifferential)
           base.setRequirementsElement(derived.getRequirementsElement().copy());
         else if (derived.hasRequirementsElement())
@@ -3089,6 +3081,58 @@ public class ProfileUtilities {
       checkTypeOk(dest, dest.getPattern().fhirType(), srcSD, "pattern");
     }
     //updateURLs(url, webUrl, dest);
+  }
+
+  private MarkdownType mergeMarkdown(MarkdownType dest, MarkdownType source) {
+    MarkdownType mergedMarkdown = dest.copy();
+    if (!mergedMarkdown.hasValue() && source.hasValue()) {
+      mergedMarkdown.setValue(source.getValue());
+    } else if (mergedMarkdown.hasValue() && source.hasValue() && mergedMarkdown.getValue().startsWith("...")) {
+      mergedMarkdown.setValue(Utilities.appendDerivedTextToBase(source.getValue(), mergedMarkdown.getValue()));
+    }
+    for (Extension sourceExtension : source.getExtension()) {
+      Extension matchingExtension = findMatchingExtension(mergedMarkdown, sourceExtension);
+      if (matchingExtension == null) {
+        mergedMarkdown.addExtension(sourceExtension.copy());
+      } else {
+        matchingExtension.setValue(sourceExtension.getValue());
+      }
+    }
+    return mergedMarkdown;
+  }
+
+  private StringType mergeStrings(StringType dest, StringType source) {
+    StringType res = dest.copy();
+    if (!res.hasValue() && source.hasValue()) {
+      res.setValue(source.getValue());
+    } else if (res.hasValue() && source.hasValue() && res.getValue().startsWith("...")) {
+      res.setValue(Utilities.appendDerivedTextToBase(res.getValue(), source.getValue()));
+    }
+    for (Extension sourceExtension : source.getExtension()) {
+      Extension matchingExtension = findMatchingExtension(res, sourceExtension);
+      if (matchingExtension == null) {
+        res.addExtension(sourceExtension.copy());
+      } else {
+        matchingExtension.setValue(sourceExtension.getValue());
+      }
+    }
+    return res;
+  }
+
+  private Extension findMatchingExtension(Element res, Extension extensionToMatch) {
+    for (Extension elementExtension : res.getExtensionsByUrl(extensionToMatch.getUrl())) {
+      if (ExtensionDefinitions.EXT_TRANSLATION.equals(elementExtension.getUrl())) {
+        String slang = extensionToMatch.getExtensionString("lang");
+        String dlang = elementExtension.getExtensionString("lang");
+        if (Utilities.stringsEqual(slang, dlang)) {
+          return elementExtension;
+        }
+      } else {
+        return elementExtension;
+      }
+
+    }
+    return null;
   }
 
   private static Extension markExtensionSource(Extension extension, boolean overrideSource, StructureDefinition srcSD) {
@@ -4153,48 +4197,52 @@ public class ProfileUtilities {
     SliceList sliceInfo = new SliceList();
     // first pass, update the element ids
     for (ElementDefinition ed : list) {
-      List<String> paths = new ArrayList<String>();
-      if (!ed.hasPath())
-        throw new DefinitionException(context.formatMessage(I18nConstants.NO_PATH_ON_ELEMENT_DEFINITION__IN_, Integer.toString(list.indexOf(ed)), name));
-      sliceInfo.seeElement(ed);
-      String[] pl = ed.getPath().split("\\.");
-      for (int i = paths.size(); i < pl.length; i++) // -1 because the last path is in focus
-        paths.add(pl[i]);
-      String slices[] = sliceInfo.analyse(paths);
-      
-      StringBuilder b = new StringBuilder();
-      b.append(paths.get(0));
-      for (int i = 1; i < paths.size(); i++) {
-        b.append(".");
-        String s = paths.get(i);
-        String p = slices[i];
-        b.append(fixChars(s));
-        if (p != null) {
-          b.append(":");
-          b.append(p);
-        }
-      }
-      String bs = b.toString();
-      if (ed.hasId()) {
-        replacedIds.put(ed.getId(), ed.getPath());
-      }
-      ed.setId(bs);
-      if (idList.containsKey(bs)) {
-        addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, name+"."+bs, context.formatMessage(I18nConstants.SAME_ID_ON_MULTIPLE_ELEMENTS__IN_, bs, idList.get(bs), ed.getPath(), name), ValidationMessage.IssueSeverity.ERROR));
-      }
-      idList.put(bs, ed.getPath());
-      if (ed.hasContentReference() && ed.getContentReference().startsWith("#")) {
-        String s = ed.getContentReference();
-        String typeURL = getUrlForSource(type, srcSD);
-        if (replacedIds.containsKey(s.substring(1))) {
-          ed.setContentReference(typeURL+"#"+replacedIds.get(s.substring(1)));
-        } else {
-          ed.setContentReference(typeURL+s);
-        }
-      }
+      generateIdForElement(list, name, type, srcSD, ed, sliceInfo, replacedIds, idList);
     }  
     // second path - fix up any broken path based id references
     
+  }
+
+  private void generateIdForElement(List<ElementDefinition> list, String name, String type, StructureDefinition srcSD, ElementDefinition ed, SliceList sliceInfo, Map<String, String> replacedIds, Map<String, String> idList) {
+    List<String> paths = new ArrayList<String>();
+    if (!ed.hasPath())
+      throw new DefinitionException(context.formatMessage(I18nConstants.NO_PATH_ON_ELEMENT_DEFINITION__IN_, Integer.toString(list.indexOf(ed)), name));
+    sliceInfo.seeElement(ed);
+    String[] pl = ed.getPath().split("\\.");
+    for (int i = paths.size(); i < pl.length; i++) // -1 because the last path is in focus
+      paths.add(pl[i]);
+    String slices[] = sliceInfo.analyse(paths);
+
+    StringBuilder b = new StringBuilder();
+    b.append(paths.get(0));
+    for (int i = 1; i < paths.size(); i++) {
+      b.append(".");
+      String s = paths.get(i);
+      String p = slices[i];
+      b.append(fixChars(s));
+      if (p != null) {
+        b.append(":");
+        b.append(p);
+      }
+    }
+    String bs = b.toString();
+    if (ed.hasId()) {
+      replacedIds.put(ed.getId(), ed.getPath());
+    }
+    ed.setId(bs);
+    if (idList.containsKey(bs)) {
+      addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.BUSINESSRULE, name +"."+bs, context.formatMessage(I18nConstants.SAME_ID_ON_MULTIPLE_ELEMENTS__IN_, bs, idList.get(bs), ed.getPath(), name), IssueSeverity.ERROR));
+    }
+    idList.put(bs, ed.getPath());
+    if (ed.hasContentReference() && ed.getContentReference().startsWith("#")) {
+      String s = ed.getContentReference();
+      String typeURL = getUrlForSource(type, srcSD);
+      if (replacedIds.containsKey(s.substring(1))) {
+        ed.setContentReference(typeURL+"#"+ replacedIds.get(s.substring(1)));
+      } else {
+        ed.setContentReference(typeURL+s);
+      }
+    }
   }
 
 

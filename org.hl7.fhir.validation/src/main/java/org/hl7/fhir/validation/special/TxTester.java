@@ -407,7 +407,11 @@ public class TxTester {
 
   public String executeTest(ITxTesterLoader loader, JsonObject suite, JsonObject test, Set<String> modes) throws URISyntaxException, FHIRFormatError, FileNotFoundException, IOException {
     error = null;
-    if (terminologyClient == null) {
+    if (!passesModes(suite, modes) || !passesModes(test, modes)) {
+      return "n/a";
+    }
+
+      if (terminologyClient == null) {
       terminologyClient = connectToServer(modes);
       checkClient();
     }
@@ -420,7 +424,20 @@ public class TxTester {
       return error;
     }
   }
-  
+
+  private boolean passesModes(JsonObject obj, Set<String> modes) {
+    if (obj.has("modes")) {
+      for (String mode : obj.getStrings("modes")) {
+        if (modes.contains(mode)) {
+          return true;
+        }
+      }
+    }
+    if (obj.has("mode")) {
+      return modes.contains(obj.asString("mode"));
+    }
+    return true;
+  }
 
   private boolean runSuite(ITxTesterLoader loader, JsonObject suite, Set<String> modes, String filter, JsonArray output, IntHolder counter, IntHolder errCount) throws FHIRFormatError, FileNotFoundException, IOException {
     log.info("Group "+suite.asString("name"));
@@ -508,7 +525,7 @@ public class TxTester {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
 
-       log.info("  Tested "+ testName +": " + (msg == null ? "Pass" : "Fail") + " ("+Utilities.describeDuration(System.currentTimeMillis() - start)+")");
+       log.info("   -- "+ testName +": " + (msg == null ? "Pass" : "Fail") + " ("+Utilities.describeDuration(System.currentTimeMillis() - start)+")");
         if (msg != null) {
           log.error("    "+msg);
           error = msg;
