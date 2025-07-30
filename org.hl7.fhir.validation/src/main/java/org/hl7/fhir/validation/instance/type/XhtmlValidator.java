@@ -126,8 +126,11 @@ public class XhtmlValidator extends BaseValidator {
           ok = pRules(cpath, c);
           ok = parent(cpath, c, x, "table") && ok;
           break;
-        case "colgroup": case "col": 
+        case "colgroup":
           ok = parent(cpath, c, x, "table") && ok;
+          break;
+        case "col":
+          ok = parent(cpath, c, x, "colgroup", "table") && ok;
           break;
         case "th": case "td":
           ok = parent(cpath, c, x, "tr", "thead", "tfoot") && ok;
