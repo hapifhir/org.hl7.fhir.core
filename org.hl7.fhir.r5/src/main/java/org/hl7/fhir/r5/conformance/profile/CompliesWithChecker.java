@@ -7,6 +7,7 @@ import java.util.Set;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.DataType;
@@ -30,6 +31,7 @@ import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.UUIDUtilities;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -344,28 +346,28 @@ public class CompliesWithChecker {
     boolean doInner = true;
     if (!inSlice) {
       if (a.getMin() > c.getMin()) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "min", a.getMin(), c.getMin()), IssueSeverity.ERROR));
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "min", a.getMin(), c.getMin(), c.getId()), IssueSeverity.ERROR));
       }
     }
     if (a.getMaxAsInt() < c.getMaxAsInt()) {
-      messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "max", a.getMax(), c.getMax()), IssueSeverity.ERROR));
+      messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "max", a.getMax(), c.getMax(), c.getId()), IssueSeverity.ERROR));
     }
     if (a.hasFixed()) {
       if (!c.hasFixed()) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "fixed", a.getFixed(), null), IssueSeverity.ERROR));        
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "fixed", a.getFixed(), null, c.getId()), IssueSeverity.ERROR));
       } else if (!compliesWith(a.getFixed(), c.getFixed())) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "fixed", a.getFixed(), c.getFixed()), IssueSeverity.ERROR));        
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "fixed", a.getFixed(), c.getFixed(), c.getId()), IssueSeverity.ERROR));
       }
     } else if (a.hasPattern()) {
       if (!c.hasFixed() && !c.hasPattern()) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "pattern", a.getFixed(), null), IssueSeverity.ERROR));                
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "pattern", a.getFixed(), null, c.getId()), IssueSeverity.ERROR));
       } else if (c.hasFixed()) {
         if (!compliesWith(a.getFixed(), c.getFixed())) {
-          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "pattern", a.getFixed(), c.getFixed()), IssueSeverity.ERROR));        
+          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "pattern", a.getFixed(), c.getFixed(), c.getId()), IssueSeverity.ERROR));
         }
       } else { // if (c.hasPattern()) 
         if (!compliesWith(a.getPattern(), c.getPattern())) {
-          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "pattern", a.getFixed(), c.getPattern()), IssueSeverity.ERROR));        
+          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "pattern", a.getFixed(), c.getPattern(), c.getId()), IssueSeverity.ERROR));
         }
       }
     }
@@ -379,22 +381,22 @@ public class CompliesWithChecker {
     }
     if (a.hasMinValue()) {
       if (notGreaterThan(a.getMinValue(), c.getMinValue())) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "minValue", a.getMinValue(), c.getMinValue()), IssueSeverity.ERROR));
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "minValue", a.getMinValue(), c.getMinValue(), c.getId()), IssueSeverity.ERROR));
       }
     }
     if (a.hasMaxValue()) {
       if (notLessThan(a.getMaxValue(), c.getMaxValue())) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "maxValue", a.getMaxValue(), c.getMaxValue()), IssueSeverity.ERROR));
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "maxValue", a.getMaxValue(), c.getMaxValue(), c.getId()), IssueSeverity.ERROR));
       }
     }
     if (a.hasMaxLength()) {
       if (a.getMaxLength() < c.getMaxLength()) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "maxLength", a.getMaxValue(), c.getMaxValue()), IssueSeverity.ERROR));
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "maxLength", a.getMaxValue(), c.getMaxValue(), c.getId()), IssueSeverity.ERROR));
       }
     }
     if (a.hasMustHaveValue()) {
       if (a.getMustHaveValue() && !c.getMustHaveValue()) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "mustHaveValue", a.getMustHaveValue(), c.getMustHaveValue()), IssueSeverity.ERROR));
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "mustHaveValue", a.getMustHaveValue(), c.getMustHaveValue(), c.getId()), IssueSeverity.ERROR));
       }
     }
     if (a.hasValueAlternatives()) {
@@ -414,11 +416,13 @@ public class CompliesWithChecker {
 
     if (a.hasBinding() && a.getBinding().hasValueSet() && (a.getBinding().getStrength() == BindingStrength.REQUIRED || a.getBinding().getStrength() == BindingStrength.EXTENSIBLE)) {
       if (!c.hasBinding()) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "binding", a.getBinding().getValueSet(), "null"), IssueSeverity.ERROR));        
+        if (isBindableType(c)) {
+          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "binding", a.getBinding().getValueSet(), "null", c.getId()), IssueSeverity.ERROR));
+        }
       } else if (c.getBinding().getStrength() != BindingStrength.REQUIRED && c.getBinding().getStrength() != BindingStrength.EXTENSIBLE) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "binding.strength", a.getBinding().getStrength(), a.getBinding().getStrength()), IssueSeverity.ERROR));              
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "binding.strength", a.getBinding().getStrength(), c.getBinding().getStrength(), c.getId()), IssueSeverity.ERROR));
       } else if (c.getBinding().getStrength() == BindingStrength.EXTENSIBLE && a.getBinding().getStrength() == BindingStrength.REQUIRED) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "binding.strength", a.getBinding().getStrength(), a.getBinding().getStrength()), IssueSeverity.ERROR));                      
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "binding.strength", a.getBinding().getStrength(), c.getBinding().getStrength(), c.getId()), IssueSeverity.ERROR));
       } else if (!c.getBinding().getValueSet().equals(a.getBinding().getValueSet())) {
         ValueSet cVS = context.fetchResource(ValueSet.class, c.getBinding().getValueSet());
         ValueSet aVS = context.fetchResource(ValueSet.class, a.getBinding().getValueSet());
@@ -448,6 +452,31 @@ public class CompliesWithChecker {
       }
     }
     return doInner;
+  }
+
+  private boolean isBindableType(ElementDefinition c) {
+    for (TypeRefComponent t : c.getType()) {
+      if (isBindableType(t.getWorkingCode())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean isBindableType(String type) {
+    if (Utilities.existsInList(type, "CodeableConcept", "Coding", "code", "CodeableReference", "string", "uri", "Quantity")) {
+      return true;
+    }
+    StructureDefinition sd = context.fetchTypeDefinition(type);
+    if (sd == null) {
+      return false;
+    }
+    for (Extension ex : sd.getExtensionsByUrl(ExtensionDefinitions.EXT_TYPE_CHARACTERISTICS)) {
+      if ("can-bind".equals(ex.getValue().primitiveValue())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private boolean typesIdentical(ElementDefinition c, ElementDefinition a) {
