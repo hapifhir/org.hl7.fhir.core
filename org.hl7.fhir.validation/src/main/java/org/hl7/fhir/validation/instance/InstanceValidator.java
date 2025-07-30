@@ -4262,6 +4262,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     long max = -1;
     byte[] cnt = null;
     byte[] hash = null;
+    String h64 = null;
     String fetchError = null;
     
     if (element.hasChild("size", false)) {
@@ -4274,7 +4275,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     if (element.hasChild("hash")) {
-      String h64 = element.getChildValue("hash");
+      h64 = element.getChildValue("hash");
       hash = readBase64Data(errors, theStack, "hash", h64);
       if (hash == null) {
         ok = false;
@@ -4308,7 +4309,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           } else if (url.startsWith("file:")) {
             cnt = FileUtilities.streamToBytes(new FileInputStream(ManagedFileAccess.file(url.substring(5))));
           } else {
-            fetchError = context.formatMessage(I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_UNKNOWN_URL_SCHEME, url);          }
+            fetchError = context.formatMessage(I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_UNKNOWN_URL_SCHEME, url);
+          }
         } catch (Exception e) {
           if (STACK_TRACE) e.printStackTrace();
           fetchError = context.formatMessage(I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_URL_ERROR, url, e.getMessage());
@@ -4330,7 +4332,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         MessageDigest sha1 = MessageDigest.getInstance("SHA-1");
         byte[] c = sha1.digest(cnt); 
-        ok = rule(errors, "2025-06-25", IssueType.STRUCTURE, theStack, Arrays.equals(c, hash), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH) && ok;
+        ok = rule(errors, "2025-06-25", IssueType.STRUCTURE, theStack, Arrays.equals(c, hash), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH, h64, Base64.getEncoder().encodeToString(c)) && ok;
       } catch (NoSuchAlgorithmException e) {
       }
     } else {
@@ -6638,7 +6640,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
             if (xl == null) {
               warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_MISSING3);
-            } else if (!xl.equals(lang)) {
+            } else if (!xl.equals(lang) && !xl.equals(l)) {
               warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_DIFFERENT2, lang, xl);
             }
           }
@@ -8111,7 +8113,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         msgId = inv.getSource()+"#"+inv.getKey();
       } else {
         msgId = profile.getUrl()+"#"+inv.getKey();
-        msg = context.formatMessage(I18nConstants.INV_FAILED, inv.getKey() + ": '" + inv.getHuman()+"'")+msg;
+        msg = context.formatMessage(I18nConstants.INV_FAILED, inv.getKey() + ": '" + (settings.isForPublication() ? inv.getExpression() : inv.getHuman())+"'")+msg;
       }
       String invId = (inv.hasSource() ? inv.getSource() : profile.getUrl()) + "#"+inv.getKey();
       
