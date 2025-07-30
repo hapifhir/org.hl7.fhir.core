@@ -1104,7 +1104,8 @@ public class RenderingI18nContext extends I18nBase {
   public static final String ACTOR_DERIVED_FROM = "ACTOR_DERIVED_FROM";
   public static final String ACTOR_DERIVED_FROM_NONE = "ACTOR_DERIVED_FROM_NONE";
   public static final String VALUE_SET_NEEDS_SUPPL = "VALUE_SET_NEEDS_SUPPL";
-  
+  public static final String SD_XIG_LINK = "SD_XIG_LINK";
+
 
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";
