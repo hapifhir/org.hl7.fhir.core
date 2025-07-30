@@ -59,7 +59,7 @@ public abstract class I18nBase {
     if (Locale.ROOT == messages.getLocale()) {
       if (!locale.getLanguage().equals("en")) {
         if (warnedLocales == null) {
-          warnedLocales = new HashSet<String>();
+          warnedLocales = new HashSet<>();
         }
         if (!warnedLocales.contains(locale.toLanguageTag())) {
           logUncontainedMessage("The locale " + locale.toLanguageTag() + " is not supported. Messages will default to en-US.");
@@ -173,7 +173,7 @@ public abstract class I18nBase {
   /**
    * Formats the message with locale correct pluralization using the passed in
    * message arguments.
-   *
+   * </br>
    * In the message properties files, each plural specific message will have a
    * key consisting of a root key and a suffix denoting the plurality rule (_one
    * for singular, _other for multiple in English, for example). Suffixes are
