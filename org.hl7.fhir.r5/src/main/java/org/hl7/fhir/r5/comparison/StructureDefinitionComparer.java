@@ -1543,7 +1543,7 @@ public String getCanonicalForDefaultContext() {
 }
 
 @Override
-public String getDefinitionsName(Resource r) {
+public String  getDefinitionsName(Resource r) {
   // TODO Auto-generated method stub
   return null;
 }
