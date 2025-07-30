@@ -7646,7 +7646,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 ei.getElement().getProperty().getStructure().getVersionedUrl(), ed.getPath(), CommaSeparatedStringBuilder.join(",", Utilities.sorted(contexts)),
                 CommaSeparatedStringBuilder.join(",", Utilities.sorted(stack.getLogicalPaths()))));                    
           } else {
-            if (childDefinitions.getSource().getContext().isEmpty()) {
+            if (ei.getElement().getProperty().getStructure().getContext().isEmpty()) {
               warning(errors, NO_RULE_DATE, IssueType.NOTSUPPORTED, stack, false, I18nConstants.VALIDATION_VAL_NAMED_EXTENSIONS_NO_CONTEXT, ei.getElement().getProperty().getStructure().getVersionedUrl());
             }
             ei.setDefinition(ei.getElement().getProperty().getStructure(), ei.getElement().getProperty().getDefinition());
