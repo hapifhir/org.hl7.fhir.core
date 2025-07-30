@@ -99,12 +99,15 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
   private static TxTester tester;
   private Set<String> modes = new HashSet<>();
   private static int error = 0;
+  private static int skipped = 0;
   private static int count = 0;
   private static TxTestData txtests;
 
   public LocalTerminologyServiceTests(String name, JsonObjectPair setup) {
     this.setup = setup;
     modes.add("tx.fhir.org");
+    modes.add("omop");
+    modes.add("general");
   }
 
   @SuppressWarnings("deprecation")
@@ -120,9 +123,9 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
     }
     if (setup == null) {
       if (error == 0) {
-        System.out.println("tx.fhir.org passed all "+count+" HL7 terminology service tests (mode 'tx.fhir.org', tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
+        System.out.println("tx.fhir.org passed all "+(count-skipped)+" HL7 terminology service tests (mode 'tx.fhir.org', tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
       } else {
-        System.out.println("tx.fhir.org failed "+error+" of "+count+" HL7 terminology service tests (mode 'tx.fhir.org', tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
+        System.out.println("tx.fhir.org failed "+error+" of "+(count-skipped)+" HL7 terminology service tests (mode 'tx.fhir.org', tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
       }
       Assertions.assertTrue(error == 0);
     } else {
@@ -132,10 +135,14 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
           tester = new TxTester(this, SERVER, true, externals);
         }
         if (setup.suite.asString("name").contains("omop") || true) {
-
           String err = tester.executeTest(this, setup.suite, setup.test, modes);
           if (err != null) {
-            error++;
+            if ("n/a".equals(err)) {
+              skipped++;
+              err = null;
+            } else {
+              error++;
+            }
           }
           Assertions.assertTrue(err == null, err);
         } else {
