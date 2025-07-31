@@ -1,7 +1,6 @@
 package org.hl7.fhir.validation.cli.tasks;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.FhirValidatorHttpService;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.Display;
