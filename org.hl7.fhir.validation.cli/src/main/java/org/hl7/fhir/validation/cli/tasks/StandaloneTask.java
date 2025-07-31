@@ -5,7 +5,7 @@ import org.hl7.fhir.validation.service.model.ValidationContext;
 
 public abstract class StandaloneTask extends CliTask{
 
-  public abstract void executeTask(ValidationContext validationContext, String[] args) throws Exception;
+  public abstract void executeTask(ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception;
 
 
 

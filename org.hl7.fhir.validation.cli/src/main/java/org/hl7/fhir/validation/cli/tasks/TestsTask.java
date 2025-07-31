@@ -37,7 +37,7 @@ public class TestsTask extends StandaloneTask{
   }
 
   @Override
-  public void executeTask(ValidationContext validationContext, String[] args) throws Exception {
+  public void executeTask(ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
       final String testModuleParam = Params.getParam(args, Params.TEST_MODULES);
       final String testClassnameFilter = Params.getParam(args, Params.TEST_NAME_FILTER);
       final String testCasesDirectory = Params.getParam(args, Params.TEST);

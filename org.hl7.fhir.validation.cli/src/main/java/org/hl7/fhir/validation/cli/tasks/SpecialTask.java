@@ -36,7 +36,7 @@ public class SpecialTask extends StandaloneTask{
   }
 
   @Override
-  public void executeTask(ValidationContext validationContext, String[] args) throws Exception {
+  public void executeTask(ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
     String specialMode = Params.getParam(args, Params.SPECIAL);
     if ("r4r5tests".equals(specialMode)) {
       final String target = Params.getParam(args, Params.TARGET);
