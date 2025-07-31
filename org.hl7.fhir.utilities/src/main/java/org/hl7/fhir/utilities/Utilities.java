@@ -141,6 +141,13 @@ public class Utilities {
     return id.matches("[A-Za-z0-9\\-\\.]{1,64}");
   }
 
+  public static String[] appendStr(String[] array1, String[] array2) {
+    String[] result = new String[array1.length + array2.length];
+    System.arraycopy(array1, 0, result, 0, array1.length);
+    System.arraycopy(array2, 0, result, array1.length, array2.length);
+    return result;
+  }
+
   public enum DecimalStatus {
     BLANK, SYNTAX, RANGE, OK
   }
