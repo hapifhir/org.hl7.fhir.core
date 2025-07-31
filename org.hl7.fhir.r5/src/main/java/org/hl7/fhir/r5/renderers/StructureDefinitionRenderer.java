@@ -4224,8 +4224,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_MEAN_MISS), null, strikethrough, d.getMeaningWhenMissing()); 
     tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_FIXED), null, strikethrough, encodeValue(d.getFixed(), "fixed", d, compare==null ? null : compare.getFixed(), mode, d.getName())); 
     tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_PATT_VALUE), null, strikethrough, encodeValue(d.getPattern(), "pattern", d, compare==null ? null : compare.getPattern(), mode, d.getName())); 
-    tableRow(tbl, context.formatPhrase(RenderingContext.GENERAL_EXAMPLE), null, strikethrough, encodeValues(d.getExample())); 
-    tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_INVAR), null, strikethrough, invariants(d.getConstraint(), compare==null ? null : compare.getConstraint(), d, mode)); 
+    tableRow(tbl, context.formatPhrase(RenderingContext.GENERAL_EXAMPLE), null, strikethrough, encodeValues(d.getExample()));
+    tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_INVAR), null, strikethrough, invariants(d.getConstraint(), compare==null ? null : compare.getConstraint(), d, mode));
     tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_LOINC), null, strikethrough, getMapping(sd, d, LOINC_MAPPING, compare, mode)); 
     tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_SNOMED), null, strikethrough, getMapping(sd, d, SNOMED_MAPPING, compare, mode)); 
     tbl.tx("\r\n"); 
@@ -5015,17 +5015,19 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
   } 
  
-  private String encodeValues(List<ElementDefinitionExampleComponent> examples) throws FHIRException, IOException { 
-    StringBuilder b = new StringBuilder(); 
-    boolean first = false; 
-    for (ElementDefinitionExampleComponent ex : examples) { 
-      if (first) 
-        first = false; 
+  private XhtmlNode encodeValues(List<ElementDefinitionExampleComponent> examples) throws FHIRException, IOException {
+    XhtmlNode x = null;
+    for (ElementDefinitionExampleComponent ex : examples) {
+      if (x == null)
+        x = new XhtmlNode(NodeType.Element, "div");
       else 
-        b.append("<br/>"); 
-      b.append("<b>" + Utilities.escapeXml(ex.getLabel()) + "</b>:" + encodeValue(ex.getValue(), null) + "\r\n"); 
-    } 
-    return b.toString(); 
+        x.br();
+      XhtmlNode b = x.b();
+      b.tx(ex.getLabel());
+      b.tx(": ");
+      x.tx(encodeValue(ex.getValue(), null));
+    }
+    return x;
  
   } 
  
