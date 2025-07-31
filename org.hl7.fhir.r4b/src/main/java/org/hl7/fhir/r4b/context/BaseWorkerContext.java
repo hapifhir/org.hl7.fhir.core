@@ -50,7 +50,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r4b.conformance.ProfileUtilities;
-  import org.hl7.fhir.r4b.context.CanonicalResourceManager.CanonicalResourceProxy;
+import org.hl7.fhir.r4b.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r4b.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r4b.model.BooleanType;
 import org.hl7.fhir.r4b.model.Bundle;

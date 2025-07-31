@@ -47,7 +47,7 @@ public class TxTestsTask extends StandaloneTask{
   }
 
   @Override
-  public void executeTask(ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
+  public void executeTask(ValidationContext validationContext, String[] args) throws Exception {
       String output = Params.getParam(args, Params.OUTPUT);
       String version = Params.getParam(args, Params.VERSION);
       final String tx = Params.getParam(args, Params.TERMINOLOGY);

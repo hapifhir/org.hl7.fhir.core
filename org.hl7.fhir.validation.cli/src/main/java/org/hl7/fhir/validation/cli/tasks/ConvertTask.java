@@ -36,7 +36,7 @@ public class ConvertTask extends ValidationEngineTask {
   }
 
   @Override
-  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
+  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt) throws Exception {
     validationService.convertSources(validationContext, validationEngine);
   }
 
