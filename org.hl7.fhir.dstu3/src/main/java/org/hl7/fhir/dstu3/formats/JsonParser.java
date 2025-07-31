@@ -213,7 +213,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("reference"))
       res.setReferenceElement(parseString(json.get("reference").getAsString()));
     if (json.has("_reference"))
-      parseElementProperties(getJObject(json, "_reference"), res.getReferenceElement());
+      parseElementProperties(getJObject(json, "_reference"), res.getReferenceElement_());
     if (json.has("identifier"))
       res.setIdentifier(parseIdentifier(getJObject(json, "identifier")));
     if (json.has("display"))
@@ -21153,8 +21153,8 @@ public class JsonParser extends JsonParserBase {
   protected void composeReferenceInner(Reference element) throws IOException {
       composeElement(element);
       if (element.hasReferenceElement()) {
-        composeStringCore("reference", element.getReferenceElement(), false);
-        composeStringExtras("reference", element.getReferenceElement(), false);
+        composeStringCore("reference", element.getReferenceElement_(), false);
+        composeStringExtras("reference", element.getReferenceElement_(), false);
       }
       if (element.hasIdentifier()) {
         composeIdentifier("identifier", element.getIdentifier());

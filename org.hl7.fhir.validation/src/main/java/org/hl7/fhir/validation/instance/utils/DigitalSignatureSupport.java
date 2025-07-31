@@ -23,6 +23,7 @@ import javax.xml.transform.TransformerException;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -128,9 +129,37 @@ public class DigitalSignatureSupport {
       return XMLUtil.getNamedChild(qualifyingProperties, "SignedProperties");
     }
 
+    public String getPurpose() {
+      org.w3c.dom.Element object = XMLUtil.getNamedChild(doc, "Object");
+      // try xades first
+      org.w3c.dom.Element qualifyingProperties = XMLUtil.getNamedChild(object, "QualifyingProperties");
+      org.w3c.dom.Element signedProperties = XMLUtil.getNamedChild(qualifyingProperties, "SignedProperties");
+      org.w3c.dom.Element signedSignatureProperties = XMLUtil.getNamedChild(signedProperties, "SignedDataObjectProperties");
+      org.w3c.dom.Element signedDataObjectProperties = XMLUtil.getNamedChild(signedSignatureProperties, "CommitmentTypeIndication");
+      org.w3c.dom.Element commitmentTypeId = XMLUtil.getNamedChild(signedDataObjectProperties, "CommitmentTypeId");
+      if (commitmentTypeId != null) {
+        return XMLUtil.getNamedChildText(commitmentTypeId, "Identifier");
+      }
+      return null;
+    }
+
+    public String getPurposeDesc() {
+      org.w3c.dom.Element object = XMLUtil.getNamedChild(doc, "Object");
+      // try xades first
+      org.w3c.dom.Element qualifyingProperties = XMLUtil.getNamedChild(object, "QualifyingProperties");
+      org.w3c.dom.Element signedProperties = XMLUtil.getNamedChild(qualifyingProperties, "SignedProperties");
+      org.w3c.dom.Element signedSignatureProperties = XMLUtil.getNamedChild(signedProperties, "SignedDataObjectProperties");
+      org.w3c.dom.Element signedDataObjectProperties = XMLUtil.getNamedChild(signedSignatureProperties, "CommitmentTypeIndication");
+      org.w3c.dom.Element commitmentTypeId = XMLUtil.getNamedChild(signedDataObjectProperties, "CommitmentTypeId");
+      if (commitmentTypeId != null) {
+        return XMLUtil.getNamedChildText(commitmentTypeId, "Description");
+      }
+      return null;
+    }
+
   }
 
-  public static SignedInfo buildSignInfo(X509Certificate cert, byte[] signableSource, String canon, Instant instant, String name) throws NoSuchAlgorithmException, CertificateEncodingException, UnsupportedEncodingException, InvalidCanonicalizerException, CanonicalizationException, ParserConfigurationException, SAXException, IOException {
+  public static SignedInfo buildSignInfo(X509Certificate cert, byte[] signableSource, String canon, Instant instant, String name, String purpose, String purposeDesc) throws NoSuchAlgorithmException, CertificateEncodingException, UnsupportedEncodingException, InvalidCanonicalizerException, CanonicalizationException, ParserConfigurationException, SAXException, IOException {
 
     byte[] xc = canonicalizeXml(new String(signableSource, StandardCharsets.UTF_8), "http://www.w3.org/TR/2001/REC-xml-c14n-20010315");
 
@@ -160,6 +189,7 @@ public class DigitalSignatureSupport {
       xades.append("<x:SignedSignatureProperties>");
       xades.append("<x:SigningTime>"+DateTimeFormatter.ISO_INSTANT.format(instant)+"</x:SigningTime>");
       xades.append("</x:SignedSignatureProperties>");
+      xades.append(cmmId(purpose, purposeDesc));
       xades.append("</x:SignedProperties>");
       byte[] xxc = canonicalizeXml(xades.toString(), "http://www.w3.org/2001/10/xml-exc-c14n#");
       String xadesB64 = getDigest(xxc, name+"-xades");
@@ -175,6 +205,14 @@ public class DigitalSignatureSupport {
     return new SignedInfo(signedInfo.toString(), signedInfoBytes);
   }
 
+  public static String cmmId(String purpose, String purposeDesc) {
+    if (purpose == null) {
+      return "";
+    }
+    String xp = purposeDesc == null ? "" : "<x:Description>"+Utilities.escapeXml(purposeDesc)+"</x:Description>";
+    return "<x:SignedDataObjectProperties><x:CommitmentTypeIndication><x:CommitmentTypeId><x:Identifier>"+Utilities.escapeXml(purpose)+"</x:Identifier>"+xp+
+           "</x:CommitmentTypeId></x:CommitmentTypeIndication></x:SignedDataObjectProperties>";
+  }
   public static String getDigest(byte[] xc, String name) throws NoSuchAlgorithmException {
     MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
     byte[] digestValue = sha256.digest(xc);
@@ -222,9 +260,9 @@ public class DigitalSignatureSupport {
     return ba.toByteArray();
   }
 
-  public static SignedInfo buildSignInfoXades(X509Certificate cert, byte[] signableSource, String canon, byte[] xades, String name) throws CertificateEncodingException, NoSuchAlgorithmException, UnsupportedEncodingException, InvalidCanonicalizerException, CanonicalizationException, ParserConfigurationException, SAXException, IOException, TransformerException {
+  public static SignedInfo buildSignInfoXades(X509Certificate cert, byte[] signableSource, String canon, byte[] xades, String name, String purpose, String purposeDesc) throws CertificateEncodingException, NoSuchAlgorithmException, UnsupportedEncodingException, InvalidCanonicalizerException, CanonicalizationException, ParserConfigurationException, SAXException, IOException, TransformerException {
     if (xades == null) {
-      return buildSignInfo(cert, signableSource, canon, null, name);
+      return buildSignInfo(cert, signableSource, canon, null, name, purpose, purposeDesc);
     } else {
 
       byte[] xc = canonicalizeXml(new String(signableSource, StandardCharsets.UTF_8), "http://www.w3.org/TR/2001/REC-xml-c14n-20010315");

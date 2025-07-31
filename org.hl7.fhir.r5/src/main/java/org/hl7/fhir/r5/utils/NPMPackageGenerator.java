@@ -382,7 +382,6 @@ public class NPMPackageGenerator {
     indexer.start(indexdb);
   }
 
-
   public boolean hasFile(Category cat, String name) throws IOException {
     String path = cat.getDirectory()+name;
     if (path.length() > 100) {

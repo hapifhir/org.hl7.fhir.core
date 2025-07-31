@@ -10,9 +10,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.poi.ss.formula.eval.ExternalNameEval;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -37,7 +40,7 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper.ElementKind;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
@@ -360,7 +363,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     }     
   }
 
-  // todo: if (r.hasExtension(ToolingExtensions.EXT_TARGET_ID) || r.hasExtension(ToolingExtensions.EXT_TARGET_PATH)) {
+  // todo: if (r.hasExtension(ExtensionDefinitions.EXT_TARGET_ID) || r.hasExtension(ExtensionDefinitions.EXT_TARGET_PATH)) {
   @Override
   public void renderReference(RenderingStatus status, XhtmlNode x, ResourceWrapper type) throws FHIRFormatError, DefinitionException, IOException {
     if (type == null) {
@@ -480,15 +483,15 @@ public abstract class ResourceRenderer extends DataRenderer {
       if ((tr == null || (tr.getWebPath() != null && !tr.getWebPath().startsWith("#"))) && name != null) {
         text.append(" \""+name+"\"");
       }
-      if (r.hasExtension(ToolingExtensions.EXT_TARGET_ID) || r.hasExtension(ToolingExtensions.EXT_TARGET_PATH)) {
+      if (r.hasExtension(ExtensionDefinitions.EXT_TARGET_ID) || r.hasExtension(ExtensionDefinitions.EXT_TARGET_PATH)) {
         text.append("(");
-        for (Extension ex : r.getExtensionsByUrl(ToolingExtensions.EXT_TARGET_ID)) {
+        for (Extension ex : r.getExtensionsByUrl(ExtensionDefinitions.EXT_TARGET_ID)) {
           if (ex.hasValue()) {
             text.append(", ");
             text.append("#"+ex.getValue().primitiveValue());
           }
         }
-        for (Extension ex : r.getExtensionsByUrl(ToolingExtensions.EXT_TARGET_PATH)) {
+        for (Extension ex : r.getExtensionsByUrl(ExtensionDefinitions.EXT_TARGET_PATH)) {
           if (ex.hasValue()) {
             text.append(", ");
             text.append("/#"+ex.getValue().primitiveValue());
@@ -555,15 +558,15 @@ public abstract class ResourceRenderer extends DataRenderer {
       if ((trt == null || (trt.getWebPath() != null && !trt.getWebPath().startsWith("#"))) && name != null) {
         text.append(" \""+name+"\"");
       }
-      if (r.hasExtension(ToolingExtensions.EXT_TARGET_ID) || r.hasExtension(ToolingExtensions.EXT_TARGET_PATH)) {
+      if (r.hasExtension(ExtensionDefinitions.EXT_TARGET_ID) || r.hasExtension(ExtensionDefinitions.EXT_TARGET_PATH)) {
         text.append("(");
-        for (ResourceWrapper ex : r.extensions(ToolingExtensions.EXT_TARGET_ID)) {
+        for (ResourceWrapper ex : r.extensions(ExtensionDefinitions.EXT_TARGET_ID)) {
           if (ex.has("value")) {
             text.append(", ");
             text.append("#"+ex.primitiveValue("value"));
           }
         }
-        for (ResourceWrapper ex : r.extensions(ToolingExtensions.EXT_TARGET_PATH)) {
+        for (ResourceWrapper ex : r.extensions(ExtensionDefinitions.EXT_TARGET_PATH)) {
           if (ex.has("value")) {
             text.append(", ");
             text.append("#"+ex.primitiveValue("value"));
@@ -838,13 +841,13 @@ public abstract class ResourceRenderer extends DataRenderer {
   protected void generateCopyright(XhtmlNode x, ResourceWrapper cs) {
     XhtmlNode p = x.para();
     p.b().tx(getContext().formatPhrase(RenderingContext.RESOURCE_COPYRIGHT));
-    smartAddText(p, " " + context.getTranslated(cs.child("copyright")));
+    p.addTextWithLineBreaks(" " + context.getTranslated(cs.child("copyright")));
   }
   
   protected void generateCopyrightTableRow(XhtmlNode tbl, ResourceWrapper cs) {
     XhtmlNode tr = tbl.tr();
     tr.td().b().tx(getContext().formatPhrase(RenderingContext.RESOURCE_COPYRIGHT));
-    smartAddText(tr.td(), " " + context.getTranslated(cs.child("copyright")));
+    tr.td().addTextWithLineBreaks(" " + context.getTranslated(cs.child("copyright")));
   }
 
   public String displayReference(Resource res, Reference r) throws UnsupportedEncodingException, IOException {
@@ -865,7 +868,7 @@ public abstract class ResourceRenderer extends DataRenderer {
    }
 
    protected void renderCommitteeLink(XhtmlNode x, CanonicalResource cr) {
-     String code = ToolingExtensions.readStringExtension(cr, ToolingExtensions.EXT_WORKGROUP);
+     String code = ExtensionUtilities.readStringExtension(cr, ExtensionDefinitions.EXT_WORKGROUP);
      CodeSystem cs = context.getWorker().fetchCodeSystem("http://terminology.hl7.org/CodeSystem/hl7-work-group");
      if (cs == null || !cs.hasWebPath())
        x.tx(code);
@@ -1220,7 +1223,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       buildPublisherLinks( tr.td(), cr);
     }
     
-    if (cr.hasExtension(ToolingExtensions.EXT_WORKGROUP)) {
+    if (cr.hasExtension(ExtensionDefinitions.EXT_WORKGROUP)) {
       status.setExtensions(true);
       tr = tbl.tr();
       markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
@@ -1233,12 +1236,12 @@ public abstract class ResourceRenderer extends DataRenderer {
       xlinkNarrative(tr.td(), cr.child("copyright")).markdown(context.getTranslated(cr.child("copyright")), "copyright");
     }
     
-    if (cr.hasExtension(ToolingExtensions.EXT_FMM_LEVEL)) {
+    if (cr.hasExtension(ExtensionDefinitions.EXT_FMM_LEVEL)) {
       status.setExtensions(true);
       // Use hard-coded spec link to point to current spec because DSTU2 had maturity listed on a different page
       tr = tbl.tr();
       markBoilerplate(tr.td()).ah("http://hl7.org/fhir/versions.html#maturity", "Maturity Level").attribute("class", "fmm").tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
-      renderDataType(status, tr.td(), cr.extensionValue(ToolingExtensions.EXT_FMM_LEVEL));
+      renderDataType(status, tr.td(), cr.extensionValue(ExtensionDefinitions.EXT_FMM_LEVEL));
     }    
   }
 
@@ -1262,7 +1265,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       status.setExtensions(true);
       tr = tbl.tr();
       markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL));
-      tr.td().code().tx(ToolingExtensions.readStringExtension(cr, EXT_NS_URL)+":");
+      tr.td().code().tx(ExtensionUtilities.readStringExtension(cr, EXT_NS_URL)+":");
     } else if (!context.isContained()) {                                          
       tr = tbl.tr();
       markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL));
@@ -1276,7 +1279,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       status.setExtensions(true);
       tr = tbl.tr();
       markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
-      tr.td().tx(ToolingExtensions.readStringExtension(cr, "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.version"));
+      tr.td().tx(ExtensionUtilities.readStringExtension(cr, "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.version"));
     }
 
     String name = cr.hasName() ? context.getTranslated(cr.getNameElement()) : null;
@@ -1312,7 +1315,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       buildPublisherLinks(tr.td(), cr);
     }
     
-    if (cr.hasExtension(ToolingExtensions.EXT_WORKGROUP)) {
+    if (cr.hasExtension(ExtensionDefinitions.EXT_WORKGROUP)) {
       status.setExtensions(true);
       tr = tbl.tr();
       markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
@@ -1325,18 +1328,18 @@ public abstract class ResourceRenderer extends DataRenderer {
       tr.td().markdown(cr.getDescription(), "copyright");      
     }
     
-    if (ToolingExtensions.hasExtension(cr, ToolingExtensions.EXT_FMM_LEVEL)) {
+    if (ExtensionUtilities.hasExtension(cr, ExtensionDefinitions.EXT_FMM_LEVEL)) {
       status.setExtensions(true);
       // Use hard-coded spec link to point to current spec because DSTU2 had maturity listed on a different page
       tr = tbl.tr();
       markBoilerplate(tr.td()).ah("http://hl7.org/fhir/versions.html#maturity", "Maturity Level").attribute("class", "fmm").tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
-      tr.td().tx(ToolingExtensions.readStringExtension(cr, ToolingExtensions.EXT_FMM_LEVEL));
+      tr.td().tx(ExtensionUtilities.readStringExtension(cr, ExtensionDefinitions.EXT_FMM_LEVEL));
     }    
   }
 
 
   protected void renderCommitteeLink(XhtmlNode x, ResourceWrapper cr) {
-    String code = cr.extensionString(ToolingExtensions.EXT_WORKGROUP);
+    String code = cr.extensionString(ExtensionDefinitions.EXT_WORKGROUP);
     CodeSystem cs = context.getContext().fetchCodeSystem("http://terminology.hl7.org/CodeSystem/hl7-work-group");
     if (cs == null || !cs.hasWebPath())
       x.tx(code);
@@ -1461,18 +1464,18 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   protected String describeStatus(RenderingStatus status, ResourceWrapper cr) {
     String s = describeStatus(cr.primitiveValue("status"), cr.primitiveValue("experimental"), cr.child("date"), cr.extensionString("http://hl7.org/fhir/StructureDefinition/valueset-deprecated"));
-    if (cr.hasExtension(ToolingExtensions.EXT_STANDARDS_STATUS)) {
+    if (cr.hasExtension(ExtensionDefinitions.EXT_STANDARDS_STATUS)) {
       status.setExtensions(true);
-      s = s + presentStandardsStatus(cr.extensionString(ToolingExtensions.EXT_STANDARDS_STATUS));
+      s = s + presentStandardsStatus(cr.extensionString(ExtensionDefinitions.EXT_STANDARDS_STATUS));
     }
     return s;
   }
 
   protected String describeStatus(RenderingStatus status, CanonicalResource cr) {
-    String s = describeStatus(cr.getStatus(), cr.hasExperimental() ? cr.getExperimental() : false, cr.hasDate() ? cr.getDateElement() : null, ToolingExtensions.readBooleanExtension(cr, "http://hl7.org/fhir/StructureDefinition/valueset-deprecated"));
-    if (cr.hasExtension(ToolingExtensions.EXT_STANDARDS_STATUS)) {
+    String s = describeStatus(cr.getStatus(), cr.hasExperimental() ? cr.getExperimental() : false, cr.hasDate() ? cr.getDateElement() : null, ExtensionUtilities.readBooleanExtension(cr, "http://hl7.org/fhir/StructureDefinition/valueset-deprecated"));
+    if (cr.hasExtension(ExtensionDefinitions.EXT_STANDARDS_STATUS)) {
       status.setExtensions(true);
-      s = s + presentStandardsStatus(ToolingExtensions.readStringExtension(cr, ToolingExtensions.EXT_STANDARDS_STATUS));
+      s = s + presentStandardsStatus(ExtensionUtilities.readStringExtension(cr, ExtensionDefinitions.EXT_STANDARDS_STATUS));
     }
     return s;
   }

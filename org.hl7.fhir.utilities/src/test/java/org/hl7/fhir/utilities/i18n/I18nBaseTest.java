@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,6 +20,7 @@ import java.util.ResourceBundle;
 import com.ibm.icu.text.PluralRules;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 class I18nBaseTest {
 
@@ -82,6 +85,16 @@ class I18nBaseTest {
   }
 
   @Test
+  void testFormatMessageWithEscapedQuotes() {
+    I18nTestClass testClass = new I18nTestClass();
+    ResourceBundle loadedBundle = ResourceBundle.getBundle("Messages", new Locale("pt"));
+    testClass.setLocale(new Locale("pt"));
+    String result = testClass.formatMessage(I18nConstants.HTA_SCT_MESSAGE, "test");
+    MessageFormat form = new MessageFormat(loadedBundle.getString(I18nConstants.HTA_SCT_MESSAGE));
+
+  }
+
+  @Test
   @DisplayName("Test argument substitution without initializing Locale.")
   void testFormatMessageWithoutInitLocale() {
     I18nTestClass testClass = new I18nTestClass();
@@ -128,6 +141,20 @@ class I18nBaseTest {
   void testFormatMessageForNonExistentMessage() {
     I18nTestClass testClass = new I18nTestClass();
     assertEquals(BAD_STRING_ARG, testClass.formatMessage(BAD_STRING_ARG, ARG_1));
+  }
+
+  @Test
+  @DisplayName("Assert that a warning is only logged once for a non-existent message.")
+  void testOnlyOneLogForNonExistentMessages() {
+    I18nTestClass testClass = Mockito.spy(new I18nTestClass());
+
+    assertEquals(BAD_STRING_ARG, testClass.formatMessage(BAD_STRING_ARG, ARG_1));
+
+    verify(testClass).logUncontainedMessage(anyString());
+
+    assertEquals(BAD_STRING_ARG, testClass.formatMessage(BAD_STRING_ARG, ARG_1));
+
+    verify(testClass).logUncontainedMessage(anyString());
   }
 
   @Test

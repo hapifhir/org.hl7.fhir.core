@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ElementRedirection;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -19,13 +20,8 @@ import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -201,11 +197,12 @@ public class ProfilePathProcessor {
       // get the current focus of the base, and decide what to do
       ElementDefinition currentBase = cursors.base.getElement().get(cursors.baseCursor);
       String currentBasePath = profileUtilities.fixedPathSource(getContextPathSource(), currentBase.getPath(), getRedirector());
-      
+
       debugProcessPathsIteration(cursors, currentBasePath);
       checkDiffAssignedAndCursor(cursors);
       List<ElementDefinition> diffMatches = profileUtilities.getDiffMatches(getDifferential(), currentBasePath, cursors.diffCursor, getDiffLimit(), getProfileName()); // get a list of matching elements in scope
 
+      int dc = cursors.diffCursor;
       // in the simple case, source is not sliced.
       if (!currentBase.hasSlicing() || currentBasePath.equals(getSlicing().getPath()))
       {
@@ -216,6 +213,20 @@ public class ProfilePathProcessor {
       }
       else {
         processPathWithSlicedBase(currentBase, currentBasePath, diffMatches, typeList, cursors, mapHelper);
+      }
+      // GDG 28-July 2025. this change is for the sd-nested-ext text case
+      // In general, if there's a diffmatch, then once it's processed, the cursor should advance
+      // to account for it being 'used'. But some of the code paths above don't. And the code paths are
+      // complicated. I wrote this expecting it to blow up some existing test cases, but it didn't.
+      // I think it only matters when there's inner content, and the content is missed because the diffCursor
+      // hasn't increased. But actually, it worked just fine to not change any existing test case, and fix
+      // sd-nested-ext. Now maybe we should chase down each of those code paths, and figure out where they
+      // should increment the diffCursor, but that's pretty difficult. Since this *works*, I'm going with this
+      // but it might be something that needs revisiting if other complex slicing with inner matches arises
+      if (diffMatches.size() > 0) {
+        if (dc == cursors.diffCursor) {
+          cursors.diffCursor = cursors.diffCursor + diffMatches.size();
+        }
       }
       first = false;
     }
@@ -395,7 +406,7 @@ public class ProfilePathProcessor {
               outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), src.copy(), true);
               outcome.setId(null);
               String path = outcome.getPath();
-              path = fixForRedirect(path, currentBase.getIdOrPath(), currentBase.getContentReference().substring(currentBase.getContentReference().indexOf("#")+1));
+              path = fixForRedirect(path, currentBase.getPath(), currentBase.getContentReference().substring(currentBase.getContentReference().indexOf("#")+1));
               outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), path, getRedirector(), getContextPathSource()));
               profileUtilities.updateFromBase(outcome, src, getSourceStructureDefinition().getUrl());
               profileUtilities.markExtensions(outcome, false, cursors.baseSource);
@@ -442,7 +453,7 @@ public class ProfilePathProcessor {
     return path.replace(redirect, rootPath);
   }
 
-  private int resolveContentReference(StructureDefinitionSnapshotComponent base, ElementDefinition currentBase) {
+  private int resolveContentReference(StructureDefinition.StructureDefinitionSnapshotComponent base, ElementDefinition currentBase) {
     String path = currentBase.getContentReference().substring(currentBase.getContentReference().indexOf("#")+1);
 
     // work backwards and find the nearest case
@@ -696,7 +707,7 @@ public class ProfilePathProcessor {
       }
       if (firstTypeStructureDefinition != null) {
         if (!firstTypeStructureDefinition.isGeneratingSnapshot()) { // can't do this check while generating
-          if (!profileUtilities.isMatchingType(firstTypeStructureDefinition, diffMatches.get(0).getType(), firstTypeProfile.getExtensionString(ToolingExtensions.EXT_PROFILE_ELEMENT))) {
+          if (!profileUtilities.isMatchingType(firstTypeStructureDefinition, diffMatches.get(0).getType(), firstTypeProfile.getExtensionString(ExtensionDefinitions.EXT_PROFILE_ELEMENT))) {
             throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE2, firstTypeStructureDefinition.getUrl(), diffMatches.get(0).getPath(), firstTypeStructureDefinition.getType(), firstTypeProfile.getValue(), diffMatches.get(0).getType().get(0).getWorkingCode()));
           }
         }
@@ -715,9 +726,9 @@ public class ProfilePathProcessor {
         }
         ElementDefinition src;
         StructureDefinition srcSD = null;;
-        if (firstTypeProfile.hasExtension(ToolingExtensions.EXT_PROFILE_ELEMENT)) {
+        if (firstTypeProfile.hasExtension(ExtensionDefinitions.EXT_PROFILE_ELEMENT)) {
           src = null;          
-          String eid = firstTypeProfile.getExtensionString(ToolingExtensions.EXT_PROFILE_ELEMENT);
+          String eid = firstTypeProfile.getExtensionString(ExtensionDefinitions.EXT_PROFILE_ELEMENT);
           for (ElementDefinition t : firstTypeStructureDefinition.getSnapshot().getElement()) {
             if (eid.equals(t.getId())) {
               src = t;
@@ -988,11 +999,11 @@ public class ProfilePathProcessor {
     return true;
   }
 
-  private int indexOfFirstNonChild(StructureDefinitionSnapshotComponent base, ElementDefinition currentBase, int i, int baseLimit) {
+  private int indexOfFirstNonChild(StructureDefinition.StructureDefinitionSnapshotComponent base, ElementDefinition currentBase, int i, int baseLimit) {
     return baseLimit+1;
   }
 
-  private boolean baseHasChildren(StructureDefinitionSnapshotComponent base, ElementDefinition ed) {
+  private boolean baseHasChildren(StructureDefinition.StructureDefinitionSnapshotComponent base, ElementDefinition ed) {
     int index = base.getElement().indexOf(ed);
     if (index == -1 || index >= base.getElement().size()-1)
       return false;

@@ -15,9 +15,10 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CanonicalPair;
 
 /*
@@ -205,10 +206,10 @@ public class ConceptMap40_50 {
       if (t.getEquivalence() == org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.UNMATCHED) {
         tgt.setNoMap(true);
         if (t.hasComment()) {
-          if (tgt.hasExtension(ToolingExtensions.EXT_CM_NOMAP_COMMENT)) {
+          if (tgt.hasExtension(ExtensionDefinitions.EXT_CM_NOMAP_COMMENT)) {
             throw new FHIRException("A source can only have one 'unmatched' relationship. Consider using 'disjoint' ");
           }
-          tgt.addExtension(ToolingExtensions.EXT_CM_NOMAP_COMMENT, ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(t.getCommentElement()));
+          tgt.addExtension(ExtensionDefinitions.EXT_CM_NOMAP_COMMENT, ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(t.getCommentElement()));
         }
       } else {
         tgt.addTarget(convertTargetElementComponent(t, tgtMap));
@@ -221,7 +222,7 @@ public class ConceptMap40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent tgt = new org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt, ToolingExtensions.EXT_CM_NOMAP_COMMENT);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt, ExtensionDefinitions.EXT_CM_NOMAP_COMMENT);
     if (src.hasCode())
       tgt.setCodeElement(Code40_50.convertCode(src.getCodeElement()));
     if (src.hasDisplay())
@@ -229,8 +230,8 @@ public class ConceptMap40_50 {
     if (src.hasNoMap() && src.getNoMap() == true) {
       org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent t = new org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent();
       t.setEquivalence(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.UNMATCHED);
-      if (src.hasExtension(ToolingExtensions.EXT_CM_NOMAP_COMMENT)) {
-        t.setCommentElement((org.hl7.fhir.r4.model.StringType) ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getExtensionByUrl(ToolingExtensions.EXT_CM_NOMAP_COMMENT).getValue()));
+      if (src.hasExtension(ExtensionDefinitions.EXT_CM_NOMAP_COMMENT)) {
+        t.setCommentElement((org.hl7.fhir.r4.model.StringType) ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getExtensionByUrl(ExtensionDefinitions.EXT_CM_NOMAP_COMMENT).getValue()));
       }
       tgt.addTarget(t);
     } else {
@@ -323,7 +324,7 @@ public class ConceptMap40_50 {
           return null;
       Enumeration<ConceptMapRelationship> tgt = new Enumeration<ConceptMapRelationship>(new Enumerations.ConceptMapRelationshipEnumFactory());
       ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-      ToolingExtensions.setCodeExtensionMod(tgtCtxt, VersionConvertorConstants.EXT_OLD_CONCEPTMAP_EQUIVALENCE, src.getValueAsString());
+      ExtensionUtilities.setCodeExtensionMod(tgtCtxt, VersionConvertorConstants.EXT_OLD_CONCEPTMAP_EQUIVALENCE, src.getValueAsString());
       if (src.getValue() == null) {
           tgt.setValue(null);
       } else {

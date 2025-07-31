@@ -160,6 +160,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String GENERAL_URI = "GENERAL_URI";
   public static final String GENERAL_ADD_LANG = "GENERAL_ADD_LANG";
   public static final String CODE_SYS_CODE_NOT_HERE = "CODE_SYS_CODE_NOT_HERE";
+  public static final String CODE_SYS_SUPP_CODE_NOT_HERE = "CODE_SYS_SUPP_CODE_NOT_HERE";
   public static final String CODE_SYS_COMPLETE = "CODE_SYS_COMPLETE";
   public static final String GENERAL_CONTENT = "GENERAL_CONTENT";
   public static final String CODE_SYS_COPY = "CODE_SYS_COPY";
@@ -1102,6 +1103,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String R44B_PROBLEMS = "R44B_PROBLEMS";
   public static final String ACTOR_DERIVED_FROM = "ACTOR_DERIVED_FROM";
   public static final String ACTOR_DERIVED_FROM_NONE = "ACTOR_DERIVED_FROM_NONE";
+  public static final String VALUE_SET_NEEDS_SUPPL = "VALUE_SET_NEEDS_SUPPL";
   
 
   protected String getMessagesSourceFileName() {

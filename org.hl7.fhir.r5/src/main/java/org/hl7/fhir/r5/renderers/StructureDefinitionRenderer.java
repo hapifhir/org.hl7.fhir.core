@@ -22,6 +22,8 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ElementChoiceGroup;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ExtensionContext;
 import org.hl7.fhir.r5.conformance.profile.SnapshotGenerationPreProcessor;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -96,7 +98,7 @@ import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.PublicationHacker;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
@@ -795,7 +797,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       for (ElementDefinitionBindingAdditionalComponent ab : ed.getBinding().getAdditional()) { 
         cols.add(ab.getPurpose().toCode()); 
       } 
-      for (Extension ext : ed.getBinding().getExtensionsByUrl(ToolingExtensions.EXT_BINDING_ADDITIONAL)) { 
+      for (Extension ext : ed.getBinding().getExtensionsByUrl(ExtensionDefinitions.EXT_BINDING_ADDITIONAL)) { 
         cols.add(ext.getExtensionString("purpose"));         
       } 
     } 
@@ -833,7 +835,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private boolean scanObligations(Set<String> cols, List<ElementDefinition> list, ElementDefinition ed) { 
     boolean res = true;
     Map<String, Integer> nameCounts = new HashMap<>();
-    for (Extension ob : ed.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) { 
+    for (Extension ob : ed.getExtensionsByUrl(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) {
       if (ob.hasExtension("actor", "actorId")) { 
         for (Extension a : ob.getExtensionsByUrl("actor", "actorId")) {
           String name = a.getValueCanonicalType().primitiveValue();
@@ -933,16 +935,16 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } else if (!hasDef || element.getType().size() == 0) { 
         if (root && profile != null && context.getWorker().getResourceNames().contains(profile.getType())) { 
           row.setIcon("icon_resource.png", context.formatPhrase(RenderingContext.GENERAL_RESOURCE)); 
-        } else if (hasDef && element.hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY)) { 
+        } else if (hasDef && element.hasExtension(ExtensionDefinitions.EXT_JSON_PROP_KEY)) { 
           row.setIcon("icon-object-box.png", context.formatPhrase(RenderingContext.TEXT_ICON_OBJECT_BOX)); 
-          keyRows.add(element.getId()+"."+ToolingExtensions.readStringExtension(element, ToolingExtensions.EXT_JSON_PROP_KEY)); 
+          keyRows.add(element.getId()+"."+ ExtensionUtilities.readStringExtension(element, ExtensionDefinitions.EXT_JSON_PROP_KEY));
         } else { 
           row.setIcon("icon_element.gif", context.formatPhrase(RenderingContext.TEXT_ICON_ELEMENT)); 
         } 
       } else if (hasDef && element.getType().size() > 1) { 
         if (allAreReference(element.getType())) { 
           row.setIcon("icon_reference.png", context.formatPhrase(RenderingContext.TEXT_ICON_REFERENCE)); 
-        } else if (element.hasExtension(ToolingExtensions.EXT_JSON_PRIMITIVE_CHOICE)) { 
+        } else if (element.hasExtension(ExtensionDefinitions.EXT_JSON_PRIMITIVE_CHOICE)) { 
           row.setIcon("icon_choice.gif", context.formatPhrase(RenderingContext.TEXT_ICON_CHOICE)); 
         } else { 
           row.setIcon("icon_choice.gif", context.formatPhrase(RenderingContext.TEXT_ICON_CHOICE)); 
@@ -960,9 +962,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         row.setIcon("icon_reference.png", context.formatPhrase(RenderingContext.TEXT_ICON_REFERENCE)); 
       } else if (hasDef && context.getContext().isDataType(element.getType().get(0).getWorkingCode())) { 
         row.setIcon("icon_datatype.gif", context.formatPhrase(RenderingContext.TEXT_ICON_DATATYPE)); 
-      } else if (hasDef && element.hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY)) { 
+      } else if (hasDef && element.hasExtension(ExtensionDefinitions.EXT_JSON_PROP_KEY)) { 
         row.setIcon("icon-object-box.png", context.formatPhrase(RenderingContext.TEXT_ICON_OBJECT_BOX)); 
-        keyRows.add(element.getId()+"."+ToolingExtensions.readStringExtension(element, ToolingExtensions.EXT_JSON_PROP_KEY)); 
+        keyRows.add(element.getId()+"."+ExtensionUtilities.readStringExtension(element, ExtensionDefinitions.EXT_JSON_PROP_KEY)); 
       } else if (hasDef && Utilities.existsInList(element.getType().get(0).getWorkingCode(), "Base", "Element", "BackboneElement")) { 
         row.setIcon("icon_element.gif", context.formatPhrase(RenderingContext.TEXT_ICON_ELEMENT)); 
       } else { 
@@ -1249,39 +1251,39 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         ElementDefinitionBindingAdditionalComponent ab = new ElementDefinitionBindingAdditionalComponent(); 
         res.add(ab.setAny(false).setDocumentation(b.getDescription()).setValueSet(b.getValueSet())); 
       } 
-      if ("maximum".equals(type) && b.hasExtension(ToolingExtensions.EXT_MAX_VALUESET)) { 
+      if ("maximum".equals(type) && b.hasExtension(ExtensionDefinitions.EXT_MAX_VALUESET)) { 
         ElementDefinitionBindingAdditionalComponent ab = new ElementDefinitionBindingAdditionalComponent(); 
-        res.add(ab.setAny(false).setValueSet(ToolingExtensions.readStringExtension(b, ToolingExtensions.EXT_MAX_VALUESET))); 
+        res.add(ab.setAny(false).setValueSet(ExtensionUtilities.readStringExtension(b, ExtensionDefinitions.EXT_MAX_VALUESET))); 
       } 
-      if ("minimum".equals(type) && b.hasExtension(ToolingExtensions.EXT_MIN_VALUESET)) { 
+      if ("minimum".equals(type) && b.hasExtension(ExtensionDefinitions.EXT_MIN_VALUESET)) { 
         ElementDefinitionBindingAdditionalComponent ab = new ElementDefinitionBindingAdditionalComponent(); 
-        res.add(ab.setAny(false).setValueSet(ToolingExtensions.readStringExtension(b, ToolingExtensions.EXT_MIN_VALUESET))); 
+        res.add(ab.setAny(false).setValueSet(ExtensionUtilities.readStringExtension(b, ExtensionDefinitions.EXT_MIN_VALUESET))); 
       } 
       for (ElementDefinitionBindingAdditionalComponent t : b.getAdditional()) { 
         if (type.equals(t.getPurpose().toCode())) { 
           res.add(t); 
         } 
       } 
-      for (Extension ext : b.getExtensionsByUrl(ToolingExtensions.EXT_BINDING_ADDITIONAL)) { 
+      for (Extension ext : b.getExtensionsByUrl(ExtensionDefinitions.EXT_BINDING_ADDITIONAL)) { 
         if (type.equals(ext.getExtensionString("purpose"))) { 
           ElementDefinitionBindingAdditionalComponent ab = new ElementDefinitionBindingAdditionalComponent(); 
           if (ext.hasExtension("any")) { 
-            ab.setAny(ToolingExtensions.readBooleanExtension(ext, "any")); 
+            ab.setAny(ExtensionUtilities.readBooleanExtension(ext, "any")); 
           } 
           if (ext.hasExtension("purpose")) { 
-            ab.setPurpose(AdditionalBindingPurposeVS.fromCode(ToolingExtensions.readStringExtension(ext, "purpose"))); 
+            ab.setPurpose(AdditionalBindingPurposeVS.fromCode(ExtensionUtilities.readStringExtension(ext, "purpose"))); 
           } 
           if (ext.hasExtension("documentation")) { 
-            ab.setDocumentation(ToolingExtensions.readStringExtension(ext, "documentation")); 
+            ab.setDocumentation(ExtensionUtilities.readStringExtension(ext, "documentation")); 
           } 
           if (ext.hasExtension("shortDoco")) { 
-            ab.setShortDoco(ToolingExtensions.readStringExtension(ext, "shortDoco")); 
+            ab.setShortDoco(ExtensionUtilities.readStringExtension(ext, "shortDoco")); 
           } 
-          if (ToolingExtensions.hasExtension(ext, "usage")) { 
+          if (ExtensionUtilities.hasExtension(ext, "usage")) { 
             ab.addUsage(ext.getExtensionByUrl("usage").getValueUsageContext()); 
           } 
           if (ext.hasExtension("valueSet")) { 
-            ab.setValueSet(ToolingExtensions.readStringExtension(ext, "valueSet")); 
+            ab.setValueSet(ExtensionUtilities.readStringExtension(ext, "valueSet")); 
           } 
           res.add(ab);         
         } 
@@ -1304,8 +1306,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
     Cell left = gen.new Cell(null, ref, sName, hint, null); 
     row.getCells().add(left); 
-    if (profile.hasExtension(ToolingExtensions.EXT_TYPE_PARAMETER)) {
-      Extension etp = profile.getExtensionByUrl(ToolingExtensions.EXT_TYPE_PARAMETER);
+    if (profile.hasExtension(ExtensionDefinitions.EXT_TYPE_PARAMETER)) {
+      Extension etp = profile.getExtensionByUrl(ExtensionDefinitions.EXT_TYPE_PARAMETER);
       String name = etp.getExtensionString("name");
       String type = etp.getExtensionString("type");
       StructureDefinition t = context.getContext().fetchTypeDefinition(type);
@@ -1331,11 +1333,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       checkForNoChange(element.getIsModifierElement(), gc.addStyledText((context.formatPhrase(RenderingContext.STRUC_DEF_MOD)), "?!", null, null, null, false)); 
     } 
     if (element != null) { 
-      if (element.getMustSupport() && element.hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) { 
+      if (element.getMustSupport() && element.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) { 
         checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingContext.STRUC_DEF_OBLIG_SUPP)), "SO", "white", "red", null, false)); 
       } else if (element.getMustSupport()) { 
           checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingContext.STRUC_DEF_ELE_MUST_SUPP)), "S", "white", "red", null, false)); 
-      } else if (element != null && element.hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) { 
+      } else if (element != null && element.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) { 
        checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingContext.STRUC_DEF_OBLIG)), "O", "white", "red", null, false)); 
       } 
     } 
@@ -1351,8 +1353,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       p.addStyle(CONSTRAINT_STYLE); 
       p.setReference(Utilities.pathURL(VersionUtilities.getSpecUrl(context.getWorker().getVersion()), "conformance-rules.html#constraints")); 
     } 
-    if (element != null && element.hasExtension(ToolingExtensions.EXT_STANDARDS_STATUS)) { 
-      StandardsStatus ss = StandardsStatus.fromCode(element.getExtensionString(ToolingExtensions.EXT_STANDARDS_STATUS)); 
+    if (element != null && element.hasExtension(ExtensionDefinitions.EXT_STANDARDS_STATUS)) { 
+      StandardsStatus ss = StandardsStatus.fromCode(element.getExtensionString(ExtensionDefinitions.EXT_STANDARDS_STATUS)); 
       gc.addStyledText(context.formatPhrase(RenderingContext.STRUC_DEF_STAND_STATUS) +ss.toDisplay(), ss.getAbbrev(), context.formatPhrase(RenderingContext.STRUC_DEF_BLACK), ss.getColor(), context.getWorker().getSpecUrl()+"versions.html#std-process", true); 
     } 
  
@@ -1427,8 +1429,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
     String hint = null; 
     if (max.hasValue() && min.hasValue() && "*".equals(max.getValue()) && 0 == min.getValue()) { 
-      if (definition.hasExtension(ToolingExtensions.EXT_JSON_EMPTY)) { 
-        String code = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_EMPTY); 
+      if (definition.hasExtension(ExtensionDefinitions.EXT_JSON_EMPTY)) { 
+        String code = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_JSON_EMPTY); 
         if ("present".equals(code)) { 
           hint = context.formatPhrase(RenderingContext.STRUC_DEF_JSON_IS); 
         } else { 
@@ -1518,14 +1520,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     row.getCells().add(c); 
  
     if (used) { 
-      if (logicalModel && ToolingExtensions.hasAnyOfExtensions(profile, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED)) { 
+      if (logicalModel && ExtensionUtilities.hasAnyOfExtensions(profile, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED)) { 
         if (root) { 
           c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_XML_NAME))+": ", null).addStyle("font-weight:bold")); 
-          c.getPieces().add(gen.new Piece(null, ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED), null));         
-        } else if (!root && ToolingExtensions.hasAnyOfExtensions(definition, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED) &&  
-            !ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED).equals(ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED))) { 
+          c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED), null));         
+        } else if (!root && ExtensionUtilities.hasAnyOfExtensions(definition, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED) &&  
+            !ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED).equals(ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED))) { 
           c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_XML_NAME))+": ", null).addStyle("font-weight:bold")); 
-          c.getPieces().add(gen.new Piece(null, ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED), null));         
+          c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED), null));         
         } 
       } 
       if (root) { 
@@ -1620,41 +1622,41 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_SLICE))+": ", null).addStyle("font-weight:bold")); 
           c.getPieces().add(gen.new Piece(null, describeSlice(definition.getSlicing()), null)); 
         } 
-        if (!definition.getPath().contains(".") && ToolingExtensions.hasExtension(profile, ToolingExtensions.EXT_BINDING_STYLE)) { 
+        if (!definition.getPath().contains(".") && ExtensionUtilities.hasExtension(profile, ExtensionDefinitions.EXT_BINDING_STYLE)) { 
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
           c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_BINDING))+": ", null).addStyle("font-weight:bold")); 
           c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_TYPE_SET)+" "), null)); 
-          c.getPieces().add(gen.new Piece(null, ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_BINDING_STYLE), null)); 
+          c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_BINDING_STYLE), null)); 
           c.getPieces().add(gen.new Piece(null, " "+context.formatPhrase(RenderingContext.STRUC_DEF_BINDING_STYLE), null));             
         } 
         if (definition.hasValueAlternatives()) { 
           addCanonicalList(gen, c, definition.getValueAlternatives(), "The primitive value may be replaced by the extension", true); 
         } 
-        if (definition.hasExtension(ToolingExtensions.EXT_IMPLIED_PREFIX)) { 
+        if (definition.hasExtension(ExtensionDefinitions.EXT_IMPLIED_PREFIX)) { 
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
           c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_ELE_READ)+" "), null));           
           Piece piece = gen.new Piece("code"); 
-          piece.addHtml(new XhtmlNode(NodeType.Text).setContent(ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_IMPLIED_PREFIX))); 
+          piece.addHtml(new XhtmlNode(NodeType.Text).setContent(ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_IMPLIED_PREFIX))); 
           c.getPieces().add(piece);           
           c.getPieces().add(gen.new Piece(null, " "+ (context.formatPhrase(RenderingContext.STRUC_DEF_PREFIXED)), null));           
         } 
  
-        if (definition.hasExtension(ToolingExtensions.EXT_EXTENSION_STYLE)) { 
+        if (definition.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED)) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          String es = definition.getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE); 
+          String es = definition.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED);
           if ("named-elements".equals(es)) { 
             if (rc.hasLink(KnownLinkType.JSON_NAMES)) { 
               c.getPieces().add(gen.new Piece(rc.getLink(KnownLinkType.JSON_NAMES, true), context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON), null));                         
             } else { 
-              c.getPieces().add(gen.new Piece(ToolingExtensions.WEB_EXTENSION_STYLE, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON), null));                         
+              c.getPieces().add(gen.new Piece(ExtensionDefinitions.WEB_EXTENSION_STYLE, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON), null));
             } 
           } 
         } 
         if (definition.typeSummary().equals("Narrative")) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
           Set<String> statusCodes = determineNarrativeStatus(definition, profile, snapshot);
-          List<String> langCtrl = ToolingExtensions.readStringExtensions(definition, ToolingExtensions.EXT_NARRATIVE_LANGUAGE_CONTROL);
-          String level = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_NARRATIVE_SOURCE_CONTROL);
+          List<String> langCtrl = ExtensionUtilities.readStringExtensions(definition, ExtensionDefinitions.EXT_NARRATIVE_LANGUAGE_CONTROL);
+          String level = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_NARRATIVE_SOURCE_CONTROL);
           // what do we want to do here? 
           // the narrative might be constrained in these ways: 
           //  extension http://hl7.org/fhir/StructureDefinition/narrative-language-control 
@@ -1673,12 +1675,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             String ltx = null;
             if (langCtrl.isEmpty()) {
               ltx = "This profile does not constrain the narrative in regard to language specific sections";               
-            } else if (langCtrl.size() == 1 && langCtrl.get(0).equals("#no")) {
+            } else if (langCtrl.size() == 1 && langCtrl.get(0).equals("_no")) {
               ltx = "This profile constrains the narrative to not contain any language specific sections";               
-            } else if (langCtrl.size() == 1 && langCtrl.get(0).equals("#yes")) {
+            } else if (langCtrl.size() == 1 && langCtrl.get(0).equals("_yes")) {
               ltx = "This profile constrains the narrative to contain language sections, but doesn't make rules about them";  
             } else {
-              int i = langCtrl.indexOf("#resource");
+              int i = langCtrl.indexOf("_resource");
               if (i == -1) {
                 ltx = "This profile constrains the narrative to contain language sections for the languages "+CommaSeparatedStringBuilder.join2(", ", " and ", langCtrl);                  
               } else {
@@ -1700,15 +1702,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             }
           }
         }
-        if (definition.hasExtension(ToolingExtensions.EXT_DATE_FORMAT)) { 
-          String df = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_DATE_FORMAT); 
+        if (definition.hasExtension(ExtensionDefinitions.EXT_DATE_FORMAT)) { 
+          String df = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_DATE_FORMAT); 
           if (df != null) { 
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
             c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_DATE, df)+" "), null)); 
           } 
         } 
-        if (definition.hasExtension(ToolingExtensions.EXT_ID_EXPECTATION)) { 
-          String ide = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_ID_EXPECTATION); 
+        if (definition.hasExtension(ExtensionDefinitions.EXT_ID_EXPECTATION)) { 
+          String ide = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_ID_EXPECTATION); 
           if (ide.equals("optional")) { 
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
             c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_ID_IS), null));      
@@ -1720,38 +1722,38 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_ID_NOT_ALLOW), null));      
           } 
         } 
-        if (definition.hasExtension(ToolingExtensions.EXT_ID_CHOICE_GROUP)) { 
+        if (definition.hasExtension(ExtensionDefinitions.EXT_ID_CHOICE_GROUP)) { 
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
           c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_CHOICE_GRP))+": ", null).addStyle("font-weight:bold")); 
           c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_REPEAT), null)); 
         } 
-        if (definition.hasExtension(ToolingExtensions.EXT_XML_NAME, ToolingExtensions.EXT_XML_NAME_DEPRECATED)) { 
+        if (definition.hasExtension(ExtensionDefinitions.EXT_XML_NAME, ExtensionDefinitions.EXT_XML_NAME_DEPRECATED)) { 
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          if (definition.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED)) { 
+          if (definition.hasExtension(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED)) { 
             c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_XML))+": ", null).addStyle("font-weight:bold")); 
-            c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ToolingExtensions.EXT_XML_NAME, ToolingExtensions.EXT_XML_NAME_DEPRECATED), null)); 
+            c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ExtensionDefinitions.EXT_XML_NAME, ExtensionDefinitions.EXT_XML_NAME_DEPRECATED), null)); 
             c.getPieces().add(gen.new Piece(null, " (", null)); 
-            c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED), null)); 
+            c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED), null)); 
             c.getPieces().add(gen.new Piece(null, ")", null));             
           } else { 
             c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_XML_ELE))+": ", null).addStyle("font-weight:bold")); 
-            c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ToolingExtensions.EXT_XML_NAME, ToolingExtensions.EXT_XML_NAME_DEPRECATED), null)); 
+            c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ExtensionDefinitions.EXT_XML_NAME, ExtensionDefinitions.EXT_XML_NAME_DEPRECATED), null)); 
           }             
-        } else if (definition.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED)) { 
+        } else if (definition.hasExtension(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED)) { 
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
           c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_XML_NAME))+": ", null).addStyle("font-weight:bold")); 
-          c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED), null));           
+          c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED), null));           
         } 
-        if (definition.hasExtension(ToolingExtensions.EXT_JSON_EMPTY)) { 
+        if (definition.hasExtension(ExtensionDefinitions.EXT_JSON_EMPTY)) { 
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          String code = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_EMPTY); 
+          String code = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_JSON_EMPTY); 
           if ("present".equals(code)) { 
             c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_JSON_INFERRED), null));      
           } else { 
             c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_JSON_ARRAY), null));      
           } 
         } 
-        String jn = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED); 
+        String jn = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_JSON_NAME, ExtensionDefinitions.EXT_JSON_NAME_DEPRECATED); 
         if (!Utilities.noString(jn)) { 
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
           if (definition.getPath().contains(".")) { 
@@ -1765,24 +1767,24 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           } 
         } 
  
-        if (ToolingExtensions.readBoolExtension(definition, ToolingExtensions.EXT_JSON_PRIMITIVE_CHOICE)) { 
+        if (ExtensionUtilities.readBoolExtension(definition, ExtensionDefinitions.EXT_JSON_PRIMITIVE_CHOICE)) { 
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
           c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_JSON_INFERRED), null));      
         } 
-        if (ToolingExtensions.readBoolExtension(definition, ToolingExtensions.EXT_JSON_NULLABLE)) { 
+        if (ExtensionUtilities.readBoolExtension(definition, ExtensionDefinitions.EXT_JSON_NULLABLE)) { 
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
           c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_JSON_NULL), null));      
         } 
-        if (definition.hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY)) { 
+        if (definition.hasExtension(ExtensionDefinitions.EXT_JSON_PROP_KEY)) { 
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          String code = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_PROP_KEY); 
+          String code = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_JSON_PROP_KEY); 
           c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_SINGLE_JSON_OBJECTS, code), null));      
         }       
-        if (definition.hasExtension(ToolingExtensions.EXT_TYPE_SPEC)) { 
-          for (Extension e : definition.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC)) { 
+        if (definition.hasExtension(ExtensionDefinitions.EXT_TYPE_SPEC)) { 
+          for (Extension e : definition.getExtensionsByUrl(ExtensionDefinitions.EXT_TYPE_SPEC)) { 
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            String cond = ToolingExtensions.readStringExtension(e, "condition"); 
-            String type = ToolingExtensions.readStringExtension(e, "type"); 
+            String cond = ExtensionUtilities.readStringExtension(e, "condition"); 
+            String type = ExtensionUtilities.readStringExtension(e, "type"); 
             c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_JSON_IF), null));           
             Piece piece = gen.new Piece("code"); 
             piece.addHtml(new XhtmlNode(NodeType.Text).setContent(cond)); 
@@ -1790,26 +1792,26 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_THEN_TYPE)+" ", null));           
             StructureDefinition sd = context.getWorker().fetchTypeDefinition(type); 
             if (sd == null) { 
-              c.getPieces().add(gen.new Piece("<code>"));           
-              c.getPieces().add(gen.new Piece(null, type, null));           
-              c.getPieces().add(gen.new Piece("</code>"));           
+              piece = gen.new Piece("code");
+              piece.addHtml(new XhtmlNode(NodeType.Text).setContent(type));
+              c.getPieces().add(piece);
             } else { 
               c.getPieces().add(gen.new Piece(sd.getWebPath(), sd.getTypeName(), null));           
             } 
           } 
         } 
         if (root) { 
-          if (ToolingExtensions.readBoolExtension(profile, ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG)) { 
+          if (ExtensionUtilities.readBoolExtension(profile, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_OLD)) {
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
             c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_OBLIG_ADD), null).addStyle("font-weight:bold"));           
           } 
-          addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_INHERITS), "This profile picks up obligations and additional bindings from the profile", true); 
-          addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ToolingExtensions.EXT_SD_IMPOSE_PROFILE), "This profile also imposes the profile", true); 
-          addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ToolingExtensions.EXT_SD_COMPLIES_WITH_PROFILE), "This profile also complies with the profile", true); 
+          addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ExtensionDefinitions.EXT_OBLIGATION_INHERITS_NEW, ExtensionDefinitions.EXT_OBLIGATION_INHERITS_OLD), "This profile picks up obligations and additional bindings from the profile", true);
+          addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE), "This profile also imposes the profile", true); 
+          addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_COMPLIES_WITH_PROFILE), "This profile also complies with the profile", true); 
  
           if (profile.getKind() == StructureDefinitionKind.LOGICAL) { 
-            Extension lt = ToolingExtensions.getExtension(profile, ToolingExtensions.EXT_LOGICAL_TARGET); 
-            List<Extension> tc = ToolingExtensions.getExtensions(profile, ToolingExtensions.EXT_TYPE_CHARACTERISTICS);
+            Extension lt = ExtensionUtilities.getExtension(profile, ExtensionDefinitions.EXT_LOGICAL_TARGET); 
+            List<Extension> tc = ExtensionUtilities.getExtensions(profile, ExtensionDefinitions.EXT_TYPE_CHARACTERISTICS);
             Boolean canBeTarget = checkCanBeTarget(lt, tc);
             if (canBeTarget == null) {
               // don't say anything
@@ -1821,7 +1823,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_NOT_MARK), null).addStyle("font-weight:bold"));                       
             }
             
-            String ps = ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_PROFILE_STYLE); 
+            String ps = ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_PROFILE_STYLE); 
             if (ps != null) { 
               if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
               if ("cda".equals(ps)) { 
@@ -1830,7 +1832,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_UNKNOWN_APPROACH, ps)+" ", null).addStyle("font-weight:bold")); 
               }               
             } 
-            Extension lc = ToolingExtensions.getExtension(profile, ToolingExtensions.EXT_LOGICAL_CONTAINER); 
+            Extension lc = ExtensionUtilities.getExtension(profile, ExtensionDefinitions.EXT_LOGICAL_CONTAINER); 
             if (lc != null && lc.hasValueUriType()) { 
               if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
               c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_LOGICAL_CONT))+": ", context.formatPhrase(RenderingContext.STRUC_DEF_ROOT)).addStyle("font-weight:bold")); 
@@ -1887,14 +1889,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             }
             AdditionalBindingsRenderer abr = new AdditionalBindingsRenderer(context.getPkp(), corePath, profile, definition.getPath(), rc, null, this); 
             abr.seeAdditionalBindings(definition, null, false); 
-            if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET)) { 
-              abr.seeMaxBinding(ToolingExtensions.getExtension(binding, ToolingExtensions.EXT_MAX_VALUESET)); 
+            if (binding.hasExtension(ExtensionDefinitions.EXT_MAX_VALUESET)) { 
+              abr.seeMaxBinding(ExtensionUtilities.getExtension(binding, ExtensionDefinitions.EXT_MAX_VALUESET)); 
             } 
-            if (binding.hasExtension(ToolingExtensions.EXT_MIN_VALUESET)) { 
-              abr.seeMinBinding(ToolingExtensions.getExtension(binding, ToolingExtensions.EXT_MIN_VALUESET)); 
+            if (binding.hasExtension(ExtensionDefinitions.EXT_MIN_VALUESET)) { 
+              abr.seeMinBinding(ExtensionUtilities.getExtension(binding, ExtensionDefinitions.EXT_MIN_VALUESET)); 
             } 
-            if (binding.hasExtension(ToolingExtensions.EXT_BINDING_ADDITIONAL)) { 
-              abr.seeAdditionalBindings(binding.getExtensionsByUrl(ToolingExtensions.EXT_BINDING_ADDITIONAL)); 
+            if (binding.hasExtension(ExtensionDefinitions.EXT_BINDING_ADDITIONAL)) { 
+              abr.seeAdditionalBindings(binding.getExtensionsByUrl(ExtensionDefinitions.EXT_BINDING_ADDITIONAL)); 
             } 
             abr.render(gen, c); 
           }
@@ -1959,11 +1961,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           } 
  
           ObligationsRenderer obr = new ObligationsRenderer(corePath, profile, definition.getPath(), rc, null, this, false); 
-          if (definition.hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) { 
-            obr.seeObligations(definition.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)); 
+          if (definition.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) { 
+            obr.seeObligations(definition.getExtensionsByUrl(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)); 
           } 
-          if (!definition.getPath().contains(".") && profile.hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) { 
-            obr.seeObligations(profile.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)); 
+          if (!definition.getPath().contains(".") && profile.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) { 
+            obr.seeObligations(profile.getExtensionsByUrl(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)); 
           } 
           obr.renderTable(status, res, gen, c, inScopeElements);
           if (definition.hasMaxLength() && definition.getMaxLength()!=0) { 
@@ -1971,8 +1973,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, context.formatPhrase(RenderingContext.GENERAL_MAX_LENGTH), null).addStyle("font-weight:bold"))); 
             c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, Integer.toString(definition.getMaxLength()), null).addStyle("color: darkgreen"))); 
           } 
-          if (definition.hasExtension(ToolingExtensions.EXT_MIN_LENGTH)) {
-            int min = ToolingExtensions.readIntegerExtension(definition, ToolingExtensions.EXT_MIN_LENGTH, 0);
+          if (definition.hasExtension(ExtensionDefinitions.EXT_MIN_LENGTH)) {
+            int min = ExtensionUtilities.readIntegerExtension(definition, ExtensionDefinitions.EXT_MIN_LENGTH, 0);
             if (min > 0) {
               if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
               c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.GENERAL_MIN_LENGTH), null).addStyle("font-weight:bold")); 
@@ -1981,7 +1983,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           } 
           if (profile != null) { 
             for (StructureDefinitionMappingComponent md : profile.getMapping()) { 
-              if (md.hasExtension(ToolingExtensions.EXT_TABLE_NAME)) { 
+              if (md.hasExtension(ExtensionDefinitions.EXT_TABLE_NAME)) { 
                 ElementDefinitionMappingComponent map = null; 
                 for (ElementDefinitionMappingComponent m : definition.getMapping())  
                   if (m.getIdentity().equals(md.getIdentity())) 
@@ -1989,7 +1991,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 if (map != null) { 
                   for (int i = 0; i<definition.getMapping().size(); i++){ 
                     c.addPiece(gen.new Piece("br")); 
-                    c.getPieces().add(gen.new Piece(null, ToolingExtensions.readStringExtension(md, ToolingExtensions.EXT_TABLE_NAME)+": " + map.getMap(), null)); 
+                    c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(md, ExtensionDefinitions.EXT_TABLE_NAME)+": " + map.getMap(), null)); 
                   } 
                 } 
               } 
@@ -2027,7 +2029,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
   private Boolean checkCanBeTarget(Extension lt, List<Extension> tc) {
     Boolean res = null;
-    if (lt == null || !lt.hasValueBooleanType() || lt.getValue().hasExtension(ToolingExtensions.EXT_DAR)) {                  
+    if (lt == null || !lt.hasValueBooleanType() || lt.getValue().hasExtension(ExtensionDefinitions.EXT_DAR)) {                  
     } else if (!lt.getValueBooleanType().hasValue()) {
       res = null; // GDG Dec-2024: this is true, but changed to null
     } else if (lt.getValueBooleanType().booleanValue()) {
@@ -2279,8 +2281,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               if (ref != null) { 
                 String[] parts = ref.split("\\|"); 
                 if (parts[0].startsWith("http:") || parts[0].startsWith("https:")) { 
-                  if (p.hasExtension(ToolingExtensions.EXT_PROFILE_ELEMENT)) { 
-                    String pp = p.getExtensionString(ToolingExtensions.EXT_PROFILE_ELEMENT); 
+                  if (p.hasExtension(ExtensionDefinitions.EXT_PROFILE_ELEMENT)) { 
+                    String pp = p.getExtensionString(ExtensionDefinitions.EXT_PROFILE_ELEMENT); 
                     pp = pp.substring(pp.indexOf(".")); 
                     c.addPiece(checkForNoChange(t, gen.new Piece(parts[0], parts[1]+pp, t.getWorkingCode()))); 
                   } else { 
@@ -2312,10 +2314,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           } else { 
             c.addPiece(checkForNoChange(t, gen.new Piece(null, tc, null))); 
           } 
-          if (t.hasExtension(ToolingExtensions.EXT_TYPE_PARAMETER)) {
+          if (t.hasExtension(ExtensionDefinitions.EXT_TYPE_PARAMETER)) {
             c.addPiece(checkForNoChange(t, gen.new Piece(null, "<", null)));
             boolean pfirst = true;
-            List<Extension> exl = t.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_PARAMETER);
+            List<Extension> exl = t.getExtensionsByUrl(ExtensionDefinitions.EXT_TYPE_PARAMETER);
             for (Extension ex : exl) {
               if (pfirst) { pfirst = false; } else { c.addPiece(checkForNoChange(t, gen.new Piece(null, ";", null))); }
               if (exl.size() > 1) {
@@ -2846,18 +2848,18 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               c.getPieces().add(gen.new Piece(null, ": ", null)); 
               c.addMarkdownNoPara(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue()); 
             }
-            if (binding.hasExtension(ToolingExtensions.EXT_CONCEPT_DOMAIN)) { 
+            if (binding.hasExtension(ExtensionDefinitions.EXT_CONCEPT_DOMAIN)) { 
               c.getPieces().add(gen.new Piece(null, ". ", null));  
               c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.SDR_CONCEPT_DOMAIN), null));  
               c.getPieces().add(gen.new Piece(null, ": ", null));  
-              c.getPieces().add(describeCoded(gen, binding.getExtensionByUrl(ToolingExtensions.EXT_CONCEPT_DOMAIN).getValue()));  
+              c.getPieces().add(describeCoded(gen, binding.getExtensionByUrl(ExtensionDefinitions.EXT_CONCEPT_DOMAIN).getValue()));  
             }
           } 
           for (ElementDefinitionConstraintComponent inv : definition.getConstraint()) { 
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
             c.getPieces().add(checkForNoChange(inv, gen.new Piece(null, inv.getKey()+": ", null).addStyle("font-weight:bold"))); 
-            if (inv.getHumanElement().hasExtension(ToolingExtensions.EXT_REND_MD)) { 
-              c.addMarkdown(inv.getHumanElement().getExtensionString(ToolingExtensions.EXT_REND_MD)); 
+            if (inv.getHumanElement().hasExtension(ExtensionDefinitions.EXT_REND_MD)) { 
+              c.addMarkdown(inv.getHumanElement().getExtensionString(ExtensionDefinitions.EXT_REND_MD)); 
             } else { 
               c.getPieces().add(checkForNoChange(inv, gen.new Piece(null, inv.getHuman(), null))); 
             } 
@@ -2886,8 +2888,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, context.formatPhrase(RenderingContext.GENERAL_MAX_LENGTH), null).addStyle("font-weight:bold"))); 
             c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, Integer.toString(definition.getMaxLength()), null).addStyle("color: darkgreen"))); 
           } 
-          if (definition.hasExtension(ToolingExtensions.EXT_MIN_LENGTH)) {
-            int min = ToolingExtensions.readIntegerExtension(definition, ToolingExtensions.EXT_MIN_LENGTH, 0);
+          if (definition.hasExtension(ExtensionDefinitions.EXT_MIN_LENGTH)) {
+            int min = ExtensionUtilities.readIntegerExtension(definition, ExtensionDefinitions.EXT_MIN_LENGTH, 0);
             if (min > 0) {
               if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
               c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.GENERAL_MIN_LENGTH), null).addStyle("font-weight:bold")); 
@@ -2896,7 +2898,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           }
           if (profile != null) { 
             for (StructureDefinitionMappingComponent md : profile.getMapping()) { 
-              if (md.hasExtension(ToolingExtensions.EXT_TABLE_NAME)) { 
+              if (md.hasExtension(ExtensionDefinitions.EXT_TABLE_NAME)) { 
                 ElementDefinitionMappingComponent map = null; 
                 for (ElementDefinitionMappingComponent m : definition.getMapping())  
                   if (m.getIdentity().equals(md.getIdentity())) 
@@ -2904,7 +2906,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 if (map != null) { 
                   for (int i = 0; i<definition.getMapping().size(); i++){ 
                     c.addPiece(gen.new Piece("br")); 
-                    c.getPieces().add(gen.new Piece(null, ToolingExtensions.readStringExtension(md, ToolingExtensions.EXT_TABLE_NAME)+": " + map.getMap(), null)); 
+                    c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(md, ExtensionDefinitions.EXT_TABLE_NAME)+": " + map.getMap(), null)); 
                   } 
                 } 
               } 
@@ -3255,11 +3257,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return !all && !any; 
   } 
   public boolean isMustSupportDirect(TypeRefComponent tr) { 
-    return ("true".equals(ToolingExtensions.readStringExtension(tr, ToolingExtensions.EXT_MUST_SUPPORT))); 
+    return ("true".equals(ExtensionUtilities.readStringExtension(tr, ExtensionDefinitions.EXT_MUST_SUPPORT))); 
   } 
  
   public boolean isMustSupport(TypeRefComponent tr) { 
-    if ("true".equals(ToolingExtensions.readStringExtension(tr, ToolingExtensions.EXT_MUST_SUPPORT))) { 
+    if ("true".equals(ExtensionUtilities.readStringExtension(tr, ExtensionDefinitions.EXT_MUST_SUPPORT))) { 
       return true; 
     } 
     if (isMustSupport(tr.getProfile())) { 
@@ -3279,7 +3281,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
  
   public boolean isMustSupport(CanonicalType profile) { 
-    return "true".equals(ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_MUST_SUPPORT)); 
+    return "true".equals(ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_MUST_SUPPORT)); 
   } 
  
  
@@ -3485,10 +3487,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   public XhtmlNode formatTypeSpecifiers(ElementDefinition d) { 
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div"); 
     boolean first = true; 
-    for (Extension e : d.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC)) { 
+    for (Extension e : d.getExtensionsByUrl(ExtensionDefinitions.EXT_TYPE_SPEC)) { 
       if (first) first = false; else x.br(); 
-      String cond = ToolingExtensions.readStringExtension(e, "condition"); 
-      String type = ToolingExtensions.readStringExtension(e, "type"); 
+      String cond = ExtensionUtilities.readStringExtension(e, "condition"); 
+      String type = ExtensionUtilities.readStringExtension(e, "type"); 
       x.tx(context.formatPhrase(RenderingContext.STRUC_DEF_IF)+" "); 
       x.code().tx(cond); 
       x.tx(" "+(context.formatPhrase(RenderingContext.STRUC_DEF_THEN_TYPE)+" ")); 
@@ -3598,11 +3600,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         c.addMarkdownNoPara(PublicationHacker.fixBindingDescriptions(context.getWorker(), ved.getBinding().getDescriptionElement()).asStringValue()); 
       } 
 
-      if (ved.getBinding().hasExtension(ToolingExtensions.EXT_CONCEPT_DOMAIN)) { 
+      if (ved.getBinding().hasExtension(ExtensionDefinitions.EXT_CONCEPT_DOMAIN)) { 
         c.getPieces().add(gen.new Piece(null, ". ", null));  
         c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.SDR_CONCEPT_DOMAIN), null));  
         c.getPieces().add(gen.new Piece(null, ": ", null));  
-        c.getPieces().add(describeCoded(gen, ved.getBinding().getExtensionByUrl(ToolingExtensions.EXT_CONCEPT_DOMAIN).getValue()));  
+        c.getPieces().add(describeCoded(gen, ved.getBinding().getExtensionByUrl(ExtensionDefinitions.EXT_CONCEPT_DOMAIN).getValue()));  
       }
     } 
     c.addPiece(gen.new Piece("br")).addPiece(gen.new Piece(null, ProfileUtilities.describeExtensionContext(ed), null)); 
@@ -4065,14 +4067,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } else { 
       tableRow(tbl, context.formatPhrase(RenderingContext.GENERAL_TYPE), "datatypes.html", strikethrough, describeTypes(d.getType(), false, d, compare, mode, value, compareValue, sd));  
     } 
-    if (root && sd.hasExtension(ToolingExtensions.EXT_TYPE_PARAMETER)) {
-      tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_TYPE_PARAMETER), "http://hl7.org/fhir/tools/StructureDefinition-type-parameter.html", strikethrough, renderTypeParameter(sd.getExtensionByUrl(ToolingExtensions.EXT_TYPE_PARAMETER)));
+    if (root && sd.hasExtension(ExtensionDefinitions.EXT_TYPE_PARAMETER)) {
+      tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_TYPE_PARAMETER), "http://hl7.org/fhir/tools/StructureDefinition-type-parameter.html", strikethrough, renderTypeParameter(sd.getExtensionByUrl(ExtensionDefinitions.EXT_TYPE_PARAMETER)));
     }
-    if (d.hasExtension(ToolingExtensions.EXT_DEF_TYPE)) { 
-      tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_DEFAULT_TYPE), "datatypes.html", strikethrough, ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_DEF_TYPE));           
+    if (d.hasExtension(ExtensionDefinitions.EXT_DEF_TYPE)) { 
+      tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_DEFAULT_TYPE), "datatypes.html", strikethrough, ExtensionUtilities.readStringExtension(d, ExtensionDefinitions.EXT_DEF_TYPE));           
     } 
-    if (d.hasExtension(ToolingExtensions.EXT_TYPE_SPEC)) { 
-      tableRow(tbl, Utilities.pluralize(context.formatPhrase(RenderingContext.STRUC_DEF_TYPE_SPEC), d.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC).size()), "datatypes.html", strikethrough, formatTypeSpecifiers(d));           
+    if (d.hasExtension(ExtensionDefinitions.EXT_TYPE_SPEC)) { 
+      tableRow(tbl, Utilities.pluralize(context.formatPhrase(RenderingContext.STRUC_DEF_TYPE_SPEC), d.getExtensionsByUrl(ExtensionDefinitions.EXT_TYPE_SPEC).size()), "datatypes.html", strikethrough, formatTypeSpecifiers(d));           
     } 
     if (d.getPath().endsWith("[x]") && !d.prohibited()) { 
       tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_NOTE_X), null, strikethrough).ahWithText(context.formatPhrase(RenderingContext.STRUC_DEF_SEE) 
@@ -4086,7 +4088,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } else if (hasPrimitiveTypes(d)) { 
       tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_PRIMITIVE), "elementdefinition.html#primitives", strikethrough, context.formatPhrase(RenderingContext.STRUC_DEF_PRIM_ELE));             
     } 
-    if (ToolingExtensions.hasAllowedUnits(d)) {       
+    if (ExtensionUtilities.hasAllowedUnits(d)) {       
       tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_ALLOWED), "http://hl7.org/fhir/extensions/StructureDefinition-elementdefinition-allowedUnits.html", strikethrough, describeAllowedUnits(d));         
     } 
     tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_MUST_SUPPORT), "conformance-rules.html#mustSupport", strikethrough, displayBoolean(d.getMustSupport(), d.getMustSupportElement(), "mustSupport", d, compare==null ? null : compare.getMustSupportElement(), mode)); 
@@ -4098,10 +4100,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } 
     } 
     if (root && sd.getKind() == StructureDefinitionKind.LOGICAL) { 
-      Extension lt = ToolingExtensions.getExtension(sd, ToolingExtensions.EXT_LOGICAL_TARGET); 
+      Extension lt = ExtensionUtilities.getExtension(sd, ExtensionDefinitions.EXT_LOGICAL_TARGET); 
       if (lt == null || !lt.hasValue()) { 
         tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_LOGICAL), null, strikethrough, context.formatPhrase(RenderingContext.STRUC_DEF_NOT_MARK));         
-      } else if (lt.getValue().hasExtension(ToolingExtensions.EXT_DAR)) {         
+      } else if (lt.getValue().hasExtension(ExtensionDefinitions.EXT_DAR)) {         
       } else if (lt.getValueBooleanType().hasValue()) { 
         tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_LOGICAL), null, strikethrough, context.formatPhrase(RenderingContext.STRUC_DEF_NOT_MARK));         
       } else if (lt.getValueBooleanType().booleanValue()) { 
@@ -4110,7 +4112,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_LOGICAL), null, strikethrough, context.formatPhrase(RenderingContext.STRUC_DEF_CANNOT_TARGET)); 
       } 
  
-      Extension lc = ToolingExtensions.getExtension(sd, ToolingExtensions.EXT_LOGICAL_CONTAINER); 
+      Extension lc = ExtensionUtilities.getExtension(sd, ExtensionDefinitions.EXT_LOGICAL_CONTAINER); 
       if (lc != null && lc.hasValueUriType()) { 
         String uri = lc.getValue().primitiveValue(); 
         StructureDefinition lct = context.getContext().fetchTypeDefinition(uri); 
@@ -4121,7 +4123,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         } 
       } 
        
-      String ps = ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_PROFILE_STYLE); 
+      String ps = ExtensionUtilities.readStringExtension(sd, ExtensionDefinitions.EXT_PROFILE_STYLE); 
       if (ps != null) { 
         if ("cda".equals(ps)) { 
           tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_VALID), null, strikethrough, context.formatPhrase(RenderingContext.STRUC_DEF_TEMPLATEID)); 
@@ -4131,36 +4133,36 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } 
     } 
  
-    if (root && sd.hasExtension(ToolingExtensions.EXT_SD_IMPOSE_PROFILE)) { 
+    if (root && sd.hasExtension(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE)) { 
       tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_IMPOSE_PROFILE), "http://hl7.org/fhir/extensions/StructureDefinition-structuredefinition-imposeProfile.html", strikethrough,  
-          renderCanonicalListExt(context.formatPhrase(RenderingContext.STRUC_DEF_PROF_REQ)+" ", sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_IMPOSE_PROFILE))); 
+          renderCanonicalListExt(context.formatPhrase(RenderingContext.STRUC_DEF_PROF_REQ)+" ", sd.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE))); 
     } 
-    if (root && sd.hasExtension(ToolingExtensions.EXT_SD_COMPLIES_WITH_PROFILE)) { 
+    if (root && sd.hasExtension(ExtensionDefinitions.EXT_SD_COMPLIES_WITH_PROFILE)) { 
       tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_COMP_PROF), "http://hl7.org/fhir/extensions/StructureDefinition-structuredefinition-compliesWithProfile.html", strikethrough,  
-          renderCanonicalListExt(context.formatPhrase(RenderingContext.STRUC_DEF_PROF_COMP)+" ", sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_COMPLIES_WITH_PROFILE))); 
+          renderCanonicalListExt(context.formatPhrase(RenderingContext.STRUC_DEF_PROF_COMP)+" ", sd.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_COMPLIES_WITH_PROFILE))); 
     } 
     tableRow(tbl, context.formatPhrase(RenderingContext.GENERAL_OBLIG), null, strikethrough, describeObligations(status, d, root, sd, defPath, anchorPrefix, inScopeElements, res));
  
-    if (d.hasExtension(ToolingExtensions.EXT_EXTENSION_STYLE)) { 
-      String es = d.getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE); 
+    if (d.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED)) {
+      String es = d.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED);
       if ("named-elements".equals(es)) { 
         if (context.hasLink(KnownLinkType.JSON_NAMES)) { 
           tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_STYLE), context.getLink(KnownLinkType.JSON_NAMES, true), strikethrough, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON)); 
         } else { 
-          tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_STYLE), ToolingExtensions.WEB_EXTENSION_STYLE, strikethrough, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON)); 
+          tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_STYLE), ExtensionDefinitions.WEB_EXTENSION_STYLE, strikethrough, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON));
         } 
       } 
     } 
  
-    if (!d.getPath().contains(".") && ToolingExtensions.hasExtension(sd, ToolingExtensions.EXT_BINDING_STYLE)) { 
-      tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_BINDING_STYLE), ToolingExtensions.WEB_BINDING_STYLE, strikethrough,  
-    		  context.formatPhrase(RenderingContext.STRUC_DEF_TYPE_BOUND, ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_BINDING_STYLE)+" binding style")+" ");             
+    if (!d.getPath().contains(".") && ExtensionUtilities.hasExtension(sd, ExtensionDefinitions.EXT_BINDING_STYLE)) { 
+      tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_BINDING_STYLE), ExtensionDefinitions.WEB_BINDING_STYLE, strikethrough,
+    		  context.formatPhrase(RenderingContext.STRUC_DEF_TYPE_BOUND, ExtensionUtilities.readStringExtension(sd, ExtensionDefinitions.EXT_BINDING_STYLE)+" binding style")+" ");             
     } 
  
-    if (d.hasExtension(ToolingExtensions.EXT_DATE_FORMAT)) { 
-      tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_DATE_FORM), null, strikethrough, ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_DATE_FORMAT)); 
+    if (d.hasExtension(ExtensionDefinitions.EXT_DATE_FORMAT)) { 
+      tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_DATE_FORM), null, strikethrough, ExtensionUtilities.readStringExtension(d, ExtensionDefinitions.EXT_DATE_FORMAT)); 
     } 
-    String ide = ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_ID_EXPECTATION); 
+    String ide = ExtensionUtilities.readStringExtension(d, ExtensionDefinitions.EXT_ID_EXPECTATION); 
     if (ide != null) { 
       if (ide.equals("optional")) { 
         tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_ID_EXPECT), null, strikethrough, context.formatPhrase(RenderingContext.STRUC_DEF_ID_IS)); 
@@ -4171,27 +4173,27 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } 
     } 
  
-    if (d.hasExtension(ToolingExtensions.EXT_ID_CHOICE_GROUP)) { 
+    if (d.hasExtension(ExtensionDefinitions.EXT_ID_CHOICE_GROUP)) { 
       tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_CHOICE_GRP), null, strikethrough, context.formatPhrase(RenderingContext.STRUC_DEF_REPEAT));           
     } 
      
     // tooling extensions for formats 
-    if (ToolingExtensions.hasAnyOfExtensions(d, ToolingExtensions.EXT_JSON_EMPTY, ToolingExtensions.EXT_JSON_PROP_KEY, ToolingExtensions.EXT_JSON_NULLABLE,  
-        ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED, ToolingExtensions.EXT_JSON_PRIMITIVE_CHOICE)) { 
+    if (ExtensionUtilities.hasAnyOfExtensions(d, ExtensionDefinitions.EXT_JSON_EMPTY, ExtensionDefinitions.EXT_JSON_PROP_KEY, ExtensionDefinitions.EXT_JSON_NULLABLE,  
+        ExtensionDefinitions.EXT_JSON_NAME, ExtensionDefinitions.EXT_JSON_NAME_DEPRECATED, ExtensionDefinitions.EXT_JSON_PRIMITIVE_CHOICE)) { 
       tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_JSON_FORM), null, strikethrough,  describeJson(d));           
     } 
-    if (d.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED) || sd.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED) ||  
-        d.hasExtension(ToolingExtensions.EXT_XML_NAME, ToolingExtensions.EXT_XML_NAME_DEPRECATED) || sd.hasExtension(ToolingExtensions.EXT_XML_NAME, ToolingExtensions.EXT_XML_NAME_DEPRECATED) || 
+    if (d.hasExtension(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED) || sd.hasExtension(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED) ||  
+        d.hasExtension(ExtensionDefinitions.EXT_XML_NAME, ExtensionDefinitions.EXT_XML_NAME_DEPRECATED) || sd.hasExtension(ExtensionDefinitions.EXT_XML_NAME, ExtensionDefinitions.EXT_XML_NAME_DEPRECATED) || 
         d.hasRepresentation()) { 
       tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_XML_FORM), null, strikethrough, describeXml(sd, d, root));           
     } 
  
-    if (d.hasExtension(ToolingExtensions.EXT_IMPLIED_PREFIX)) { 
-      tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_STRING_FORM), null, strikethrough).codeWithText(context.formatPhrase(RenderingContext.STRUC_DEF_ELE_READ)+" ", ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_IMPLIED_PREFIX), context.formatPhrase(RenderingContext.STRUC_DEF_PREFIXED));                 
+    if (d.hasExtension(ExtensionDefinitions.EXT_IMPLIED_PREFIX)) { 
+      tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_STRING_FORM), null, strikethrough).codeWithText(context.formatPhrase(RenderingContext.STRUC_DEF_ELE_READ)+" ", ExtensionUtilities.readStringExtension(d, ExtensionDefinitions.EXT_IMPLIED_PREFIX), context.formatPhrase(RenderingContext.STRUC_DEF_PREFIXED));                 
     } 
  
-    if (d.hasExtension(ToolingExtensions.EXT_STANDARDS_STATUS)) { 
-      StandardsStatus ss = StandardsStatus.fromCode(d.getExtensionString(ToolingExtensions.EXT_STANDARDS_STATUS)); 
+    if (d.hasExtension(ExtensionDefinitions.EXT_STANDARDS_STATUS)) { 
+      StandardsStatus ss = StandardsStatus.fromCode(d.getExtensionString(ExtensionDefinitions.EXT_STANDARDS_STATUS)); 
       //      gc.addStyledText("Standards Status = "+ss.toDisplay(), ss.getAbbrev(), "black", ss.getColor(), baseSpecUrl()+, true); 
       StructureDefinition sdb = context.getContext().fetchResource(StructureDefinition.class, sd.getBaseDefinition()); 
       if (sdb != null) { 
@@ -4215,7 +4217,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_MIN_VALUE), null, strikethrough, compareString(d.hasMinValue() ? encodeValue(d.getMinValue(), null) : null, d.getMinValue(), null, "minValue", d, compare!= null && compare.hasMinValue() ? encodeValue(compare.getMinValue(), null) : null, null, mode, false, false)); 
     tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_MAX_VALUE), null, strikethrough, compareString(d.hasMaxValue() ? encodeValue(d.getMaxValue(), null) : null, d.getMaxValue(), null, "maxValue", d, compare!= null && compare.hasMaxValue() ? encodeValue(compare.getMaxValue(), null) : null, null, mode, false, false)); 
     tableRow(tbl, context.formatPhrase(RenderingContext.GENERAL_MAX_LENGTH), null, strikethrough, compareString(d.hasMaxLength() ? toStr(d.getMaxLength()) : null, d.getMaxLengthElement(), null, "maxLength", d, compare!= null && compare.hasMaxLengthElement() ? toStr(compare.getMaxLength()) : null, null, mode, false, false)); 
-    tableRow(tbl, context.formatPhrase(RenderingContext.GENERAL_MIN_LENGTH), null, strikethrough, ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_MIN_LENGTH)); 
+    tableRow(tbl, context.formatPhrase(RenderingContext.GENERAL_MIN_LENGTH), null, strikethrough, ExtensionUtilities.readStringExtension(d, ExtensionDefinitions.EXT_MIN_LENGTH)); 
     tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_VALUE_REQ), null, strikethrough, compareString(encodeValue(d.getMustHaveValueElement(), null), d.getMustHaveValueElement(), null, (compare != null ? encodeValue(compare.getMustHaveValueElement(), null) : null), d, null, "mustHaveValueElement", mode, false, false));    
     tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_VALUE_ALT), null, strikethrough, compareSimpleTypeLists(d.getValueAlternatives(), ((compare==null) || slicedExtension ? null : compare.getValueAlternatives()), mode)); 
     tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_DEFAULT_VALUE), null, strikethrough, encodeValue(d.getDefaultValue(), "defaultValue", d, compare==null ? null : compare.getDefaultValue(), mode, d.getName())); 
@@ -4283,14 +4285,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         } 
       } 
     } 
-    String name = ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED); 
+    String name = ExtensionUtilities.readStringExtension(d, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED); 
     if (name == null && root) { 
-      name = ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED); 
+      name = ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED); 
     } 
     if (name != null) { 
       ret.codeWithText(context.formatPhrase(RenderingContext.STRUC_DEF_NAMESPACE)+" ", name, "."); 
     } 
-    name = ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_XML_NAME, ToolingExtensions.EXT_XML_NAME_DEPRECATED); 
+    name = ExtensionUtilities.readStringExtension(d, ExtensionDefinitions.EXT_XML_NAME, ExtensionDefinitions.EXT_XML_NAME_DEPRECATED); 
     if (name != null) { 
       ret.codeWithText(context.formatPhrase(RenderingContext.STRUC_DEF_XML_ACTUAL), name, "."); 
     } 
@@ -4300,9 +4302,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private XhtmlNode describeJson(ElementDefinition d) { 
     XhtmlNode ret = new XhtmlNode(NodeType.Element, "div"); 
     var ul = ret.ul(); 
-    boolean list = ToolingExtensions.countExtensions(d, ToolingExtensions.EXT_JSON_EMPTY, ToolingExtensions.EXT_JSON_PROP_KEY, ToolingExtensions.EXT_JSON_NULLABLE, ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED) > 1; 
+    boolean list = ExtensionUtilities.countExtensions(d, ExtensionDefinitions.EXT_JSON_EMPTY, ExtensionDefinitions.EXT_JSON_PROP_KEY, ExtensionDefinitions.EXT_JSON_NULLABLE, ExtensionDefinitions.EXT_JSON_NAME, ExtensionDefinitions.EXT_JSON_NAME_DEPRECATED) > 1;
  
-    String code = ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_JSON_EMPTY); 
+    String code = ExtensionUtilities.readStringExtension(d, ExtensionDefinitions.EXT_JSON_EMPTY); 
     if (code != null) { 
       switch (code) { 
       case "present": 
@@ -4316,7 +4318,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         break; 
       } 
     } 
-    String jn = ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED); 
+    String jn = ExtensionUtilities.readStringExtension(d, ExtensionDefinitions.EXT_JSON_NAME, ExtensionDefinitions.EXT_JSON_NAME_DEPRECATED); 
     if (jn != null) { 
       if (d.getPath().contains(".")) { 
         ul.li().codeWithText(context.formatPhrase(RenderingContext.STRUC_DEF_JSON_PROPERTY_NAME), jn, null); 
@@ -4324,14 +4326,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         ul.li().codeWithText(context.formatPhrase(RenderingContext.STRUC_DEF_JSON_CAN_NAME), jn, " " + context.formatPhrase(RenderingContext.STRUC_DEF_JSON_EXT));           
       } 
     } 
-    code = ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_JSON_PROP_KEY); 
+    code = ExtensionUtilities.readStringExtension(d, ExtensionDefinitions.EXT_JSON_PROP_KEY); 
     if (code != null) { 
       ul.li().codeWithText(context.formatPhrase(RenderingContext.STRUC_DEF_JSON_SINGLE), code, " "+ context.formatPhrase(RenderingContext.STRUC_DEF_JSON_CHILD)); 
     } 
-    if (ToolingExtensions.readBoolExtension(d, ToolingExtensions.EXT_JSON_NULLABLE)) { 
+    if (ExtensionUtilities.readBoolExtension(d, ExtensionDefinitions.EXT_JSON_NULLABLE)) { 
       ul.li().tx(context.formatPhrase(RenderingContext.STRUC_DEF_NULL_JSON)); 
     } 
-    if (ToolingExtensions.readBoolExtension(d, ToolingExtensions.EXT_JSON_PRIMITIVE_CHOICE)) { 
+    if (ExtensionUtilities.readBoolExtension(d, ExtensionDefinitions.EXT_JSON_PRIMITIVE_CHOICE)) { 
       ul.li().tx(context.formatPhrase(RenderingContext.STRUC_DEF_INFERRED_JSON)); 
     } 
  
@@ -4345,15 +4347,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private XhtmlNode describeObligations(RenderingStatus status, ElementDefinition d, boolean root, StructureDefinition sdx, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements, ResourceWrapper res) throws IOException {
     XhtmlNode ret = new XhtmlNode(NodeType.Element, "div"); 
     ObligationsRenderer obr = new ObligationsRenderer(corePath, sdx, d.getPath(), context, hostMd, this, true); 
-    obr.seeObligations(d.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)); 
-    obr.seeRootObligations(d.getId(), sdx.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)); 
-    if (obr.hasObligations() || (root && (sdx.hasExtension(ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG) || sdx.hasExtension(ToolingExtensions.EXT_OBLIGATION_INHERITS)))) { 
+    obr.seeObligations(d.getExtensionsByUrl(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)); 
+    obr.seeRootObligations(d.getId(), sdx.getExtensionsByUrl(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)); 
+    if (obr.hasObligations() || (root && (sdx.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_OLD) || sdx.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_INHERITS_NEW, ExtensionDefinitions.EXT_OBLIGATION_INHERITS_OLD)))) {
       XhtmlNode ul = ret.ul(); 
       if (root) { 
-        if (sdx.hasExtension(ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG)) { 
+        if (sdx.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_OLD)) {
           ul.li().tx(context.formatPhrase(RenderingContext.STRUC_DEF_OBLIG_ADD));            
         }  
-        for (Extension ext : sdx.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_INHERITS)) { 
+        for (Extension ext : sdx.getExtensionsByUrl(ExtensionDefinitions.EXT_OBLIGATION_INHERITS_NEW, ExtensionDefinitions.EXT_OBLIGATION_INHERITS_OLD)) {
           String iu = ext.getValue().primitiveValue(); 
           XhtmlNode bb = ul.li(); 
           bb.tx(context.formatPhrase(RenderingContext.STRUC_DEF_OBLIG_FROM)+" ");            
@@ -4385,7 +4387,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
   private XhtmlNode describeAllowedUnits(ElementDefinition d) { 
     XhtmlNode ret = new XhtmlNode(NodeType.Element, "div"); 
-    DataType au = ToolingExtensions.getAllowedUnits(d); 
+    DataType au = ExtensionUtilities.getAllowedUnits(d); 
     if (au instanceof CanonicalType) { 
       String url = ((CanonicalType) au).asStringValue(); 
       ValueSet vs = context.getContext().findTxResource(ValueSet.class, url); 
@@ -4445,12 +4447,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
   private StandardsStatus determineStandardsStatus(StructureDefinition sd, ElementDefinition ed) { 
-    if (ed != null && ed.hasExtension(ToolingExtensions.EXT_STANDARDS_STATUS)) { 
-      return StandardsStatus.fromCode(ed.getExtensionString(ToolingExtensions.EXT_STANDARDS_STATUS)); 
+    if (ed != null && ed.hasExtension(ExtensionDefinitions.EXT_STANDARDS_STATUS)) { 
+      return StandardsStatus.fromCode(ed.getExtensionString(ExtensionDefinitions.EXT_STANDARDS_STATUS)); 
     } 
     while (sd != null) { 
-      if (sd.hasExtension(ToolingExtensions.EXT_STANDARDS_STATUS)) { 
-        return ToolingExtensions.getStandardsStatus(sd); 
+      if (sd.hasExtension(ExtensionDefinitions.EXT_STANDARDS_STATUS)) { 
+        return ExtensionUtilities.getStandardsStatus(sd); 
       } 
       sd = context.getContext().fetchResource(StructureDefinition.class, sd.getBaseDefinition()); 
     } 
@@ -4731,10 +4733,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } else { 
       ts = compareString(x, t.getWorkingCode(), t, getTypeLink(t, sd), "code", t, compare==null ? null : compare.getWorkingCode(), compare==null ? null : getTypeLink(compare, sd), mode, false, false); 
     } 
-    if (t.hasExtension(ToolingExtensions.EXT_TYPE_PARAMETER)) {
+    if (t.hasExtension(ExtensionDefinitions.EXT_TYPE_PARAMETER)) {
       x.tx("<");
       boolean first = true;
-      List<Extension> exl = t.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_PARAMETER);
+      List<Extension> exl = t.getExtensionsByUrl(ExtensionDefinitions.EXT_TYPE_PARAMETER);
       for (Extension ex : exl) {
         if (first) { first = false; } else { x.tx("; "); }
         if (exl.size() > 1) {
@@ -4930,23 +4932,23 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           x.copyAllContent(bindingDesc); 
         } 
       } 
-      if (binding.hasExtension(ToolingExtensions.EXT_CONCEPT_DOMAIN)) { 
+      if (binding.hasExtension(ExtensionDefinitions.EXT_CONCEPT_DOMAIN)) { 
         x.tx(". "); 
         x.tx(context.formatPhrase(RenderingI18nContext.SDR_CONCEPT_DOMAIN));  
         x.tx(": ");  
-        renderCoding(new RenderingStatus(), x, ResourceWrapper.forType(context.getContextUtilities(), binding.getExtensionByUrl(ToolingExtensions.EXT_CONCEPT_DOMAIN).getValue()));  
+        renderCoding(new RenderingStatus(), x, ResourceWrapper.forType(context.getContextUtilities(), binding.getExtensionByUrl(ExtensionDefinitions.EXT_CONCEPT_DOMAIN).getValue()));  
       }
  
       AdditionalBindingsRenderer abr = new AdditionalBindingsRenderer(context.getPkp(), corePath, sd, d.getPath(), context, hostMd, this); 
  
-      if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET)) { 
-        abr.seeMaxBinding(ToolingExtensions.getExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), compBinding==null ? null : ToolingExtensions.getExtension(compBinding, ToolingExtensions.EXT_MAX_VALUESET), mode!=GEN_MODE_SNAP && mode!=GEN_MODE_MS); 
+      if (binding.hasExtension(ExtensionDefinitions.EXT_MAX_VALUESET)) { 
+        abr.seeMaxBinding(ExtensionUtilities.getExtension(binding, ExtensionDefinitions.EXT_MAX_VALUESET), compBinding==null ? null : ExtensionUtilities.getExtension(compBinding, ExtensionDefinitions.EXT_MAX_VALUESET), mode!=GEN_MODE_SNAP && mode!=GEN_MODE_MS); 
       } 
-      if (binding.hasExtension(ToolingExtensions.EXT_MIN_VALUESET)) { 
-        abr.seeMinBinding(ToolingExtensions.getExtension(binding, ToolingExtensions.EXT_MIN_VALUESET), compBinding==null ? null : ToolingExtensions.getExtension(compBinding, ToolingExtensions.EXT_MIN_VALUESET), mode!=GEN_MODE_SNAP && mode!=GEN_MODE_MS); 
+      if (binding.hasExtension(ExtensionDefinitions.EXT_MIN_VALUESET)) { 
+        abr.seeMinBinding(ExtensionUtilities.getExtension(binding, ExtensionDefinitions.EXT_MIN_VALUESET), compBinding==null ? null : ExtensionUtilities.getExtension(compBinding, ExtensionDefinitions.EXT_MIN_VALUESET), mode!=GEN_MODE_SNAP && mode!=GEN_MODE_MS); 
       } 
-      if (binding.hasExtension(ToolingExtensions.EXT_BINDING_ADDITIONAL)) { 
-        abr.seeAdditionalBindings(binding.getExtensionsByUrl(ToolingExtensions.EXT_BINDING_ADDITIONAL), compBinding==null ? null : compBinding.getExtensionsByUrl(ToolingExtensions.EXT_BINDING_ADDITIONAL), mode!=GEN_MODE_SNAP && mode!=GEN_MODE_MS); 
+      if (binding.hasExtension(ExtensionDefinitions.EXT_BINDING_ADDITIONAL)) { 
+        abr.seeAdditionalBindings(binding.getExtensionsByUrl(ExtensionDefinitions.EXT_BINDING_ADDITIONAL), compBinding==null ? null : compBinding.getExtensionsByUrl(ExtensionDefinitions.EXT_BINDING_ADDITIONAL), mode!=GEN_MODE_SNAP && mode!=GEN_MODE_MS); 
       } 
  
       if (abr.hasBindings()) { 
@@ -5216,7 +5218,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, defFile, rc.getUniqueLocalPrefix());
       gen.setTreelines(false);
       TableModel model = initElementTable(gen, corePath, true, profile.getId()+"e", true, TableGenerationMode.XHTML);
-      new ElementTable(context, groups, this, ToolingExtensions.hasExtensionValue(profile, ToolingExtensions.EXT_PROFILE_VIEW_HINT, "element-view-replace-cardinality")).build(gen, model);
+      new ElementTable(context, groups, this, ExtensionUtilities.hasExtensionValue(profile, ExtensionDefinitions.EXT_PROFILE_VIEW_HINT, "element-view-replace-cardinality")).build(gen, model);
           
       try { 
         return gen.generate(model, imagePath, 0, outputTracker); 
@@ -5276,8 +5278,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private boolean useParent(ElementDefinition ed) {
     for (TypeRefComponent t : ed.getType()) {
       StructureDefinition sd = context.getContext().fetchTypeDefinition(t.getWorkingCode());
-      if (sd != null && sd.hasExtension(ToolingExtensions.EXT_PROFILE_VIEW_HINT)) {
-        for (Extension ext : sd.getExtensionsByUrl(ToolingExtensions.EXT_PROFILE_VIEW_HINT)) {
+      if (sd != null && sd.hasExtension(ExtensionDefinitions.EXT_PROFILE_VIEW_HINT)) {
+        for (Extension ext : sd.getExtensionsByUrl(ExtensionDefinitions.EXT_PROFILE_VIEW_HINT)) {
           if (ext.hasValue()) {
             String v = ext.getValue().primitiveValue();
             if ("element-view-defns-parent".equals(v)) {
@@ -5312,8 +5314,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         return true;
       }
       StructureDefinition sd = context.getContext().fetchTypeDefinition(t.getWorkingCode());
-      if (sd != null && sd.hasExtension(ToolingExtensions.EXT_PROFILE_VIEW_HINT)) {
-        for (Extension ext : sd.getExtensionsByUrl(ToolingExtensions.EXT_PROFILE_VIEW_HINT)) {
+      if (sd != null && sd.hasExtension(ExtensionDefinitions.EXT_PROFILE_VIEW_HINT)) {
+        for (Extension ext : sd.getExtensionsByUrl(ExtensionDefinitions.EXT_PROFILE_VIEW_HINT)) {
           if (ext.hasValue()) {
             String v = ext.getValue().primitiveValue();
             if ("element-view-as-leaf".equals(v)) {
@@ -5350,7 +5352,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (sd == null) {
       return null;
     }
-    if (sd.hasExtension(ToolingExtensions.EXT_PROFILE_VIEW_HINT) && "element-view-ready".equals(ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_PROFILE_VIEW_HINT))) {
+    if (sd.hasExtension(ExtensionDefinitions.EXT_PROFILE_VIEW_HINT) && "element-view-ready".equals(ExtensionUtilities.readStringExtension(sd, ExtensionDefinitions.EXT_PROFILE_VIEW_HINT))) {
       return new HintDrivenGroupingEngine(context.getProfileUtilities().getChildList(sd, sd.getSnapshot().getElementFirstRep()));
     }
     if (resourceGroupings == null) {
@@ -5480,7 +5482,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } else if (element.getType().size() == 0) { 
       if (profile != null && context.getWorker().getResourceNames().contains(profile.getType())) { 
         return "icon_resource.png"; 
-      } else if (element.hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY)) { 
+      } else if (element.hasExtension(ExtensionDefinitions.EXT_JSON_PROP_KEY)) { 
         return "icon-object-box.png"; 
       } else { 
         return "icon_element.gif"; 
@@ -5488,7 +5490,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } else if (element.getType().size() > 1) { 
       if (allAreReference(element.getType())) { 
         return "icon_reference.png"; 
-      } else if (element.hasExtension(ToolingExtensions.EXT_JSON_PRIMITIVE_CHOICE)) { 
+      } else if (element.hasExtension(ExtensionDefinitions.EXT_JSON_PRIMITIVE_CHOICE)) { 
         return "icon_choice.gif"; 
       } else { 
         return "icon_choice.gif"; 
@@ -5509,7 +5511,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       return "icon_element.gif"; 
     } else if (context.getContext().isDataType(element.getType().get(0).getWorkingCode())) { 
       return "icon_datatype.gif"; 
-    } else if (element.hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY)) { 
+    } else if (element.hasExtension(ExtensionDefinitions.EXT_JSON_PROP_KEY)) { 
       return "icon-object-box.png"; 
     } else { 
       return "icon_resource.png"; 

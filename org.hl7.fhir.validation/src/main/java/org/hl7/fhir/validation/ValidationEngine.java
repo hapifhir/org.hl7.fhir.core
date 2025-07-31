@@ -44,6 +44,8 @@ import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.elementmodel.ParserBase;
 import org.hl7.fhir.r5.elementmodel.SHCParser;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.formats.FormatUtilities;
@@ -70,10 +72,8 @@ import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.IMessagingServices;
@@ -101,8 +101,12 @@ import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.validation.BaseValidator.ValidationControl;
@@ -213,6 +217,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private boolean doNative;
   @Getter @Setter private boolean noInvariantChecks;
   @Getter @Setter private boolean displayWarnings;
+  @Getter @Setter private boolean logValidationProgress;
   @Getter @Setter private boolean wantInvariantInMessage;
   @Getter @Setter private boolean hintAboutNonMustSupport;
   @Getter @Setter private boolean anyExtensionsAllowed = false;
@@ -282,6 +287,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     pcm = other.pcm;
     mapLog = other.mapLog;
     debug = other.debug;
+    logValidationProgress = other.logValidationProgress;
     fetcher = other.fetcher;
     policyAdvisor = other.policyAdvisor;
     locator = other.locator;
@@ -409,6 +415,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     }
     
     public ValidationEngine fromNothing() throws IOException {
+      NpmPackageIndexBuilder.setExtensionFactory(new SQLiteINpmPackageIndexBuilderDBImpl.SQLiteINpmPackageIndexBuilderDBImplFactory());
       ValidationEngine engine = new ValidationEngine();
       SimpleWorkerContext.SimpleWorkerContextBuilder contextBuilder = new SimpleWorkerContext.SimpleWorkerContextBuilder().withLoggingService(loggingService);
       if (terminologyCachePath != null)
@@ -676,7 +683,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         
         try {
           OperationOutcome outcome = validate(ref.getRef(), ref.getCnt().getFocus(), ref.getCnt().getCntType(), profiles, record);
-          ToolingExtensions.addStringExtension(outcome, ToolingExtensions.EXT_OO_FILE, ref.getRef());
+          ExtensionUtilities.addStringExtension(outcome, ExtensionDefinitions.EXT_OO_FILE, ref.getRef());
           log.info(" " + context.clock().milestone());
           results.addEntry().setResource(outcome);
           tts.end();
@@ -716,12 +723,25 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     }
     InstanceValidator validator = getValidator(cntType);
     Element res = validator.validate(null, messages, new ByteArrayInputStream(source.getBytes()), cntType, asSdList(profiles));
+    boolean first = true;
     for (String fn : matchetypes) {
+      if (first) {
+        messages.removeIf(msg -> msg.getLevel() != IssueSeverity.FATAL);
+        first = false;
+      }
       byte[] cnt = FileUtilities.fileToBytes(fn);
       Element exp = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt), FormatUtilities.determineFormat(cnt));
+      log.info("  Validate against matchetype " + fn);
       MatchetypeValidator mv = new MatchetypeValidator(validator.getFHIRPathEngine());
+      ValidationMessage vm = new ValidationMessage(Source.MatchetypeValidator, IssueType.INFORMATIONAL, res.fhirType(), "Validate aginast Matchetype "+fn, IssueSeverity.INFORMATION);
+      messages.add(vm);
       List<ValidationMessage> mtErrors = new ArrayList<ValidationMessage>();
-      mv.compare(mtErrors, "$", exp, res);
+      mv.compare(mtErrors, res.fhirType(), exp, res);
+      if (mtErrors.isEmpty()) {
+        vm.setMessage(vm.getMessage()+" - All OK"); 
+      } else {
+        messages.addAll(mtErrors);
+      }
     }
     
     if (showTimes) {
@@ -959,7 +979,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       igLoader.loadIg(getIgs(), getBinaries(), SHCParser.CURRENT_PACKAGE, true);      
     }
     validator.setJurisdiction(jurisdiction);
-    validator.setLogProgress(true);
+    validator.setLogProgress(logValidationProgress);
     if (policyAdvisor != null) {
       validator.setPolicyAdvisor(policyAdvisor);
     }
@@ -1010,8 +1030,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         new org.hl7.fhir.dstu3.formats.XmlParser().setOutputStyle(org.hl7.fhir.dstu3.formats.IParser.OutputStyle.PRETTY).compose(s, res);
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         new org.hl7.fhir.dstu3.formats.JsonParser().setOutputStyle(org.hl7.fhir.dstu3.formats.IParser.OutputStyle.PRETTY).compose(s, res);
-      else if (fn.endsWith(".txt") || fn.endsWith(".map")  || fn.endsWith(".fml"))
-        FileUtilities.stringToStream(org.hl7.fhir.dstu3.utils.StructureMapUtilities.render((org.hl7.fhir.dstu3.model.StructureMap) res), s);
       else
         throw new FHIRException("Unsupported format for " + fn);
     } else if (VersionUtilities.isR4Ver(version)) {

@@ -177,7 +177,7 @@ public class CodeSystemValidator extends BaseValidator {
       CodeSystem csSupp = null;
       if ("supplement".equals(content) || supp != null) {      
         if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), !Utilities.noString(supp), I18nConstants.CODESYSTEM_CS_SUPP_NO_SUPP)) {
-          if (context.supportsSystem(supp, options.getFhirVersion())) {
+          if (context.supportsSystem(supp)) {
             csSupp = context.fetchCodeSystem(supp);
             if (csSupp != null) {
               if (csSupp.hasHierarchyMeaningElement() && cs.hasChild("hierarchyMeaning")) {
@@ -483,7 +483,7 @@ public class CodeSystemValidator extends BaseValidator {
       return null;
     } else {
       ValueSet vs = context.findTxResource(ValueSet.class, url);
-      if (vs != null) {        
+      if (vs == null) {
         warning(errors, "2025-01-09", IssueType.NOTFOUND, cs.line(), cs.col(), stack.getLiteralPath(), false, message, url);
       }
       return vs;
@@ -608,11 +608,17 @@ public class CodeSystemValidator extends BaseValidator {
     Element value = property.getNamedChild("value");
     if (code != null) {
       PropertyDef defn = properties.get(code);
-      if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), defn != null, I18nConstants.CODESYSTEM_PROPERTY_UNDEFINED, code) &&
-          rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), value != null, I18nConstants.CODESYSTEM_PROPERTY_NO_VALUE, code) &&
-          rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), value.fhirType().equals(defn.type), I18nConstants.CODESYSTEM_PROPERTY_WRONG_TYPE, code, value.fhirType(), defn.type)) {
-        if ("code".equals(value.fhirType())) {
-          checkCodeProperty(errors, cs, stack, defn, value.primitiveValue(), codes, supplements);
+      warning(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), defn != null, I18nConstants.CODESYSTEM_PROPERTY_UNDEFINED, code);
+
+      if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), value != null, I18nConstants.CODESYSTEM_PROPERTY_NO_VALUE, code)) {
+        if (defn != null) {
+          if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), value.fhirType().equals(defn.type), I18nConstants.CODESYSTEM_PROPERTY_WRONG_TYPE, code, value.fhirType(), defn.type)) {
+            if ("code".equals(value.fhirType())) {
+              checkCodeProperty(errors, cs, stack, defn, value.primitiveValue(), codes, supplements);
+            }
+          } else {
+            ok = false;
+          }
         }
       } else {
         ok = false;

@@ -63,7 +63,8 @@ public class DefinitionNavigator {
   private List<DefinitionNavigator> slices;
   private List<String> names = new ArrayList<String>();
   private TypeRefComponent typeOfChildren;
-  private String path;
+  private String globalPath;
+  private String localPath;
   private boolean diff;
   private boolean followTypes;
   private boolean inlineChildren;
@@ -79,17 +80,19 @@ public class DefinitionNavigator {
     this.diff = diff;
     this.followTypes = followTypes;
     if (diff) {
-      this.path = structure.getType(); // fragile?
-      indexMatches = this.path.equals(list().get(0).getPath());
+      this.globalPath = structure.getType(); // fragile?
+      indexMatches = this.globalPath.equals(list().get(0).getPath());
     } else {
       indexMatches = true;
-      this.path = current().getPath(); // first element
+      this.globalPath = current().getPath(); // first element
     }
+    this.localPath = this.globalPath;
     names.add(nameTail());
   }
   
-  private DefinitionNavigator(IWorkerContext context, StructureDefinition structure, boolean diff, boolean followTypes, int index, String path, List<String> names, String type) {
-    this.path = path;
+  private DefinitionNavigator(IWorkerContext context, StructureDefinition structure, boolean diff, boolean followTypes, int index, String globalPath, String localPath, List<String> names, String type) {
+    this.globalPath = globalPath;
+    this.localPath = localPath;
     this.context = context;
     this.structure = structure;
     this.diff = diff;
@@ -116,7 +119,8 @@ public class DefinitionNavigator {
     this.index =  other.index;
     this.diff =  other.diff;
     this.followTypes = followTypes;
-    this.path = other.path;
+    this.globalPath = other.globalPath;
+    this.localPath = other.localPath;
     this.indexMatches = other.indexMatches;
     this.typeOfChildren = other.typeOfChildren;
     this.inlineChildren = other.inlineChildren;
@@ -170,18 +174,31 @@ public class DefinitionNavigator {
 
   private void loadChildren() throws DefinitionException {
     children = new ArrayList<DefinitionNavigator>();
-    String prefix = path+".";
+    String prefix = localPath+".";
     Map<String, DefinitionNavigator> nameMap = new HashMap<String, DefinitionNavigator>();
+
+    int workingIndex = index;
+    ElementDefinition curr = current();
+    if (curr != null && curr.hasContentReference()) {
+      if (!(workingIndex < list().size()-1 && list().get(workingIndex+1).getPath().startsWith(prefix))) {
+        String ref = curr.getContentReference();
+        if (ref.contains("#")) {
+          ref = ref.substring(ref.indexOf("#")+1);
+        }
+        prefix = ref;
+        workingIndex = getById(list(), ref);
+      }
+    }
 
     DefinitionNavigator last = null;
     String polymorphicRoot = null;
     DefinitionNavigator polymorphicDN = null;
-    for (int i = indexMatches ? index + 1 : index; i < list().size(); i++) {
+    for (int i = indexMatches ? workingIndex + 1 : workingIndex; i < list().size(); i++) {
       String path = list().get(i).getPath();
       if (path.startsWith(prefix)) {
         if (!path.substring(prefix.length()).contains(".")) {
           // immediate child
-          DefinitionNavigator dn = new DefinitionNavigator(context, structure, diff, followTypes, i, this.path+"."+tail(path), names, null);
+          DefinitionNavigator dn = new DefinitionNavigator(context, structure, diff, followTypes, i, this.globalPath+"."+tail(path), path, names, null);
           last = dn;
 
           if (nameMap.containsKey(path)) {
@@ -226,7 +243,7 @@ public class DefinitionNavigator {
             if (diff && "extension".equals(dn.current().getName())) {
               StructureDefinition vsd = new StructureDefinition(); // fake wrapper for placeholder element
               vsd.getDifferential().getElement().add(makeExtensionDefinitionElement(path));
-              DefinitionNavigator master = new DefinitionNavigator(context, vsd, diff, followTypes, 0, this.path+"."+tail(path), names, null);
+              DefinitionNavigator master = new DefinitionNavigator(context, vsd, diff, followTypes, 0, this.globalPath+"."+tail(path), path, names, null);
               nameMap.put(path, master);
               children.add(master);
               master.slices = new ArrayList<DefinitionNavigator>();
@@ -247,15 +264,18 @@ public class DefinitionNavigator {
               
             }
           }
-        } else if (last == null || !path.startsWith(last.path)) {
+        } else if (last == null || !path.startsWith(last.localPath)) {
           // implied child
-          DefinitionNavigator dn = new DefinitionNavigator(context, structure, diff, followTypes, i, this.path+"."+tail(path), names, null);
+          DefinitionNavigator dn = new DefinitionNavigator(context, structure, diff, followTypes, i, this.globalPath+"."+tail(path), path, names, null);
           nameMap.put(path, dn);
           children.add(dn);
         }
       } else if (path.length() < prefix.length()) {
         break;
       }
+    }
+    if (children.isEmpty() && current().hasContentReference()) {
+      throw new Error("What?");
     }
     inlineChildren = !children.isEmpty();
     if (children.isEmpty() && followTypes) {
@@ -280,11 +300,20 @@ public class DefinitionNavigator {
       for (int i = 0; i < list.size(); i++) {
         ElementDefinition edt = list.get(i);
         if (Utilities.charCount(edt.getPath(), '.') == 1) {
-          DefinitionNavigator dn = new DefinitionNavigator(context, sdt, diff, followTypes, i, ed.getPath(), names, null);
+          DefinitionNavigator dn = new DefinitionNavigator(context, sdt, diff, followTypes, i, this.globalPath+"."+tail(edt.getPath()), edt.getPath(), names, null);
           children.add(dn);
         }
       }
     }
+  }
+
+  private int getById(List<ElementDefinition> list, String ref) {
+    for (ElementDefinition ed : list) {
+      if (ref.equals(ed.getPath())) {
+        return list.indexOf(ed);
+      }
+    }
+    return -1;
   }
 
   private ElementDefinition makeExtensionDefinitionElement(String path) {
@@ -294,10 +323,14 @@ public class DefinitionNavigator {
     return ed;
   }
 
-  public String path() {
-    return path;
+  public String globalPath() {
+    return globalPath;
   }
-  
+
+  public String localPath() {
+    return localPath;
+  }
+
   private String tail(String p) {
     if (p.contains("."))
       return p.substring(p.lastIndexOf('.')+1);
@@ -306,7 +339,7 @@ public class DefinitionNavigator {
   }
 
   public String nameTail() {
-    return tail(path);
+    return tail(localPath);
   }
 
   /**
@@ -334,7 +367,7 @@ public class DefinitionNavigator {
     typeOfChildren = null;
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, /* GF#13465 : this somehow needs to be revisited type.hasProfile() ? type.getProfile() : */ type.getWorkingCode(), src);
     if (sd != null) {
-      DefinitionNavigator dn = new DefinitionNavigator(context, sd, diff, followTypes, 0, path, names, sd.getType());
+      DefinitionNavigator dn = new DefinitionNavigator(context, sd, diff, followTypes, 0, globalPath, localPath, names, sd.getType());
       typeChildren = dn.children();
     } else
       throw new DefinitionException("Unable to find definition for "+type.getWorkingCode()+(type.hasProfile() ? "("+type.getProfile()+")" : ""));
@@ -365,7 +398,7 @@ public class DefinitionNavigator {
   }
 
   public String getId() {
-    return current() == null ? path : current().hasSliceName() ? current().getPath()+":"+current().getSliceName() : current().getPath();
+    return current() == null ? localPath : current().hasSliceName() ? current().getPath()+":"+current().getSliceName() : current().getPath();
   }
 
   public Base parent() {
@@ -385,7 +418,7 @@ public class DefinitionNavigator {
 
   public DefinitionNavigator childByPath(String path) {
     for (DefinitionNavigator child : children()) {
-      if (child.path().equals(path)) {
+      if (child.globalPath().equals(path)) {
         return child;
       }
     }

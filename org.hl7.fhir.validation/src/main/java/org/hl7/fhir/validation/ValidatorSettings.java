@@ -26,7 +26,9 @@ public class ValidatorSettings extends ValidationOptions {
   private boolean assumeValidRestReferences;
   private Map<String, byte[]> certificates = new HashMap<>();
   private List<String> certificateFolders = new ArrayList<>();
-  
+  private String minVersion;
+  private String maxVersion;
+
   public Source getSource() {
     return source;
   }
@@ -104,5 +106,20 @@ public class ValidatorSettings extends ValidationOptions {
   public void setCertificateFolders(List<String> certificateFolders) {
     this.certificateFolders = certificateFolders;
   }
-  
+
+  public String getMinVersion() {
+    return minVersion;
+  }
+
+  public String getMaxVersion() {
+    return maxVersion;
+  }
+
+  public void setMinVersion(String minVersion) {
+    this.minVersion =  minVersion;
+  }
+
+  public void setMaxVersion(String maxVersion) {
+    this.maxVersion =  maxVersion;
+  }
 }

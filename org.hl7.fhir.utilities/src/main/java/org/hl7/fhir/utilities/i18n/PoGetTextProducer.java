@@ -1,13 +1,10 @@
 package org.hl7.fhir.utilities.i18n;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
 public class PoGetTextProducer extends LanguageFileProducer {
@@ -75,7 +72,7 @@ public class PoGetTextProducer extends LanguageFileProducer {
     public void entry(TextUnit unit) {
       POObject po = new POObject(unit.getId(), unit.getSrcText(), unit.getTgtText());
       po.setComment(unit.getContext());
-      source.getEntries().add(po);      
+      source.getPOObjects().add(po);
     }
 
   }
@@ -90,7 +87,7 @@ public class PoGetTextProducer extends LanguageFileProducer {
   public List<TranslationUnit> loadSource(InputStream source) throws IOException {
     List<TranslationUnit> list = new ArrayList<>();
     POSource polist = POSource.loadPOFile(source);
-    for (POObject po : polist.getEntries()) {
+    for (POObject po : polist.getPOObjects()) {
       TranslationUnit tu = new TranslationUnit(srcLang == null ? polist.getLang() : srcLang, po.getId(), null, po.getMsgid(), po.getMsgstr().isEmpty() ? null : po.getMsgstrFirst());
       if (tu.getId() != null) {
         list.add(tu);
@@ -123,12 +120,15 @@ public class PoGetTextProducer extends LanguageFileProducer {
       POObject po = new POObject(unit.getId(), unit.getSrcText(), unit.getTgtText());
       po.setComment(unit.getContext());
       po.setOldMsgId(unit.getOriginal());
-      source.getEntries().add(po);      
+      source.getPOObjects().add(po);
     }
     source.savePOFile(getFileName(id, baseLang, targetLang)+".po", 1, 0);      
   }
 
   private String stripEoln(String s) {
+    if (s == null) {
+      return "";
+    }
     s = s.replace("\r\n\r\n", " ").replace("\n\n", " ").replace("\r\r", " ");
     s = s.replace("\r\n", " ").replace("\n", " ").replace("\r", " ");
 //    // yes, the double escaping is intentional here - it appears necessary

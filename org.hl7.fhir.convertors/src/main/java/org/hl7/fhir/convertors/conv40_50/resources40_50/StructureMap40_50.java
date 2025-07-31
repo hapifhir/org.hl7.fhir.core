@@ -17,7 +17,7 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.StructureMap.StructureMapGroupTypeMode;
-import org.hl7.fhir.r4.utils.ToolingExtensions;
+import org.hl7.fhir.r4b.utils.ToolingExtensions;
 import org.hl7.fhir.r5.fhirpath.FHIRPathConstant;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent;
@@ -846,7 +846,7 @@ public class StructureMap40_50 {
 
   public static org.hl7.fhir.r5.model.DataType convertVariableStringToParameterDataType(org.hl7.fhir.r4.model.StringType src) {
     if (src.hasExtension(ToolingExtensions.EXT_ORIGINAL_VARIABLE_TYPE)) {
-      return ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getExtensionByUrl(ToolingExtensions.EXT_ORIGINAL_VARIABLE_TYPE).getValue()); 
+      return ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getExtensionByUrl(ToolingExtensions.EXT_ORIGINAL_VARIABLE_TYPE).getValue());
     } else {
       org.hl7.fhir.r5.model.IdType tgt = new org.hl7.fhir.r5.model.IdType();
       ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
@@ -899,7 +899,7 @@ public class StructureMap40_50 {
     if (src.hasValueIdType()) {
       tgt.setValueAsString(src.getValueIdType().getValueAsString());
     } else if (src.hasValue()) {
-      tgt.addExtension(ToolingExtensions.EXT_ORIGINAL_VARIABLE_TYPE,ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue())); 
+      tgt.addExtension(ToolingExtensions.EXT_ORIGINAL_VARIABLE_TYPE,ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     }
     return tgt;
   }

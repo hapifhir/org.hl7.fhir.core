@@ -231,7 +231,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     if (getChildNodes().isInLink() || name.equals("a")) {
       node.getChildNodes().setInLink(true);
     }
-    if (Utilities.existsInList(name, "b", "big", "i", "small", "tt", "abbr", "acronym", "cite", "code", "dfn", "em", "kbd", "strong", "samp", "var", "a", "bdo", "br", "img", "map", "object", "q", "script", "span", "sub", "sup", " button", "input", "label", "select", "textarea")) {
+    if (Utilities.existsInList(name, "b", "big", "i", "small", "tt", "abbr", "acronym", "cite", "code", "dfn", "em", "kbd", "strong", "samp", "var", "a", "bdo", "br", "img", "map", "object", "q", "script", "span", "sub", "sup", " button", "input", "label", "select", "textarea", "style", "script")) {
       node.notPretty();
     }        
     return node;
@@ -297,8 +297,23 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
       node.setContent(content);
       addChildNode(node);
       return node;
-    } else 
+    } else {
       return null;
+    }
+  }
+
+  public void addTextWithLineBreaks(String content) {
+    if (content != null) {
+      boolean first = true;
+      for (String line : content.split("\\r?\\n")) {
+        if (first) {
+          first = false;
+        } else {
+          br();
+        }
+        tx(line);
+      }
+    }
   }
 
   public XhtmlNode addText(int index, String content) {
@@ -737,12 +752,16 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
   public XhtmlNode input(String name, String type, String placeholder, int size) {
     XhtmlNode p = new XhtmlNode(NodeType.Element, "input");
-    p.attribute("name", name);
+    if (name != null) {
+      p.attribute("name", name);
+    }
     p.attribute("type", type);
     if (placeholder != null) {
       p.attribute("placeholder", placeholder);
     }
-    p.attribute("size", Integer.toString(size));
+    if (size > 0) {
+        p.attribute("size", Integer.toString(size));
+    }
     addChildNode(p);
     return p;
   }
@@ -1076,7 +1095,9 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
   public XhtmlNode button(String class_, String title) {
     XhtmlNode btn = addTag("button");
-    btn.attribute("class", class_);
+    if (class_ != null) {
+      btn.attribute("class", class_);
+    }
     if (title != null) {
       btn.attribute("title", title);
     }
@@ -1346,6 +1367,20 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
       }
     }
     return count;
+  }
+
+  public void js(String s) {
+    XhtmlNode x = addTag("script");
+    x.setContent("\r\n"+s+"\r\n");
+  }
+  public void jsSrc(String s) {
+    XhtmlNode x = addTag("script");
+    x.setAttribute("src", s);
+    x.setContent(" ");
+  }
+  public void styles(String s) {
+    XhtmlNode x = addTag("style");
+    x.setContent("\r\n"+s+"\r\n");
   }
 
 }

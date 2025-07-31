@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -100,8 +100,8 @@ public class OperationDefinitionValidator extends BaseValidator {
     }
     
     List<String> allowedTypes = new ArrayList<>();
-    if (param.hasExtension(ToolingExtensions.EXT_ALLOWED_TYPE)) {
-      for (Element ex : param.getExtensions(ToolingExtensions.EXT_ALLOWED_TYPE)) {
+    if (param.hasExtension(ExtensionDefinitions.EXT_ALLOWED_TYPE)) {
+      for (Element ex : param.getExtensions(ExtensionDefinitions.EXT_ALLOWED_TYPE)) {
         allowedTypes.add(ex.getNamedChildValue("value"));
       }
     } else if (param.hasChildren("allowedType")) {
@@ -135,7 +135,7 @@ public class OperationDefinitionValidator extends BaseValidator {
       for (TypeRefComponent tr : resDefn.current().getType()) {
         String t = tr.getWorkingCode();
         profileTypes.add(t);
-        for (CanonicalType ct : tr.getProfile()) {
+        for (CanonicalType ct : tr.getTargetProfile()) {
           profileTargets.add(ct.asStringValue());
         }
         ok = rule(errors, "2025-04-08", IssueType.INVALID, nsp, allowedTypes.contains(t), I18nConstants.OPDEF_PROFILE_TYPE_NOT_IN_PARAMS, use, paramName, t, presentProfilesList(allowedTypes), sdt.getVersionedUrl()) && ok;
@@ -149,10 +149,16 @@ public class OperationDefinitionValidator extends BaseValidator {
       ok = rule(errors, "2025-04-08", IssueType.INVALID, nsp, profileTargets.contains(t), I18nConstants.OPDEF_PROFILE_PROFILE_NOT_IN_PROFILE, use, paramName, t, presentProfilesList(profileTargets), sdt.getVersionedUrl()) && ok;        
     }
     
-    for (String t : profileTargets) {
-      ok = rule(errors, "2025-04-08", IssueType.INVALID, nsp, allowedTargets.contains(t), I18nConstants.OPDEF_PROFILE_PROFILE_NOT_IN_PARAMS, use, paramName, t, presentProfilesList(allowedTargets), sdt.getVersionedUrl()) && ok;        
+    String paramType = param.getNamedChildValue("type");
+    if (paramType!=null && !paramType.equals("Element")) {
+      // If the type is Element, then it's a polymorphic type and target profiles can't be declared in the operation because doing so
+      // would violate opd-3: 'A targetProfile can only be specified for parameters of type Reference or Canonical'
+      // Therefore, we can't check.  (Also, the parameter could be a mix of Reference and canonical, and each could have different targets.)
+      for (String t : profileTargets) {
+        ok = rule(errors, "2025-04-08", IssueType.INVALID, nsp, allowedTargets.contains(t), I18nConstants.OPDEF_PROFILE_PROFILE_NOT_IN_PARAMS, use, paramName, t, presentProfilesList(allowedTargets), sdt.getVersionedUrl()) && ok;        
+      }
     }
-    
+
 //    type / allowedType / extension
 //    targetProfile
 //    binding

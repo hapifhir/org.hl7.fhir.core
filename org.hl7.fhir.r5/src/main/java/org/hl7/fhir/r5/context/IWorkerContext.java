@@ -45,6 +45,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.Getter;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -295,14 +296,31 @@ public interface IWorkerContext {
    * @throws Exception
    */
   public <T extends Resource> T fetchResource(Class<T> class_, String uri);
-  public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri);
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException;
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, Resource sourceOfReference) throws FHIRException;
   public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version);
   public <T extends Resource> T fetchResource(Class<T> class_, String uri, FhirPublication fhirVersion);
   public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version, FhirPublication fhirVersion);
 
-  /** has the same functionality as fetchResource, but passes in information about the source of the 
+  /**
+   * Find an identified resource, but do not do any processing on it.
+   * The usual processing that happens is ensuring that the snapshot is
+   * generated before returning it; This routine is used in the snapshot
+   * generation routines to avoid circular dependency challenges generating
+   * snapshots.
+   *
+   * class can be Resource, DomainResource or CanonicalResource, which means resource of all kinds
+   *
+   * @param class_
+   * @param uri
+   * @return
+   * @throws FHIRException
+   * @throws Exception
+   */
+  public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri);
+
+
+  /** has the same functionality as fetchResource, but passes in information about the source of the
    * reference (this may affect resolution of version)
    *  
    * @param <T>
@@ -322,8 +340,10 @@ public interface IWorkerContext {
    * @param canonicalForSource
    * @return
    */
-  public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_, FhirPublication fhirVersion);
   public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_);
+  public <T extends Resource> List<T> fetchResourceVersionsByTypeAndUrl(Class<T> class_, String url);
+  @Deprecated
+  public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_, FhirPublication fhirVersion);
 
 
   /**
@@ -470,8 +490,19 @@ public interface IWorkerContext {
    * @return
    * @throws Exception 
    */
+  @Deprecated
   public boolean supportsSystem(String system) throws TerminologyServiceException;
+  @Deprecated
   public boolean supportsSystem(String system, FhirPublication fhirVersion) throws TerminologyServiceException;
+
+  /**
+   * return the System Support Information for the server that serves the specified code system
+   * @param system
+   * @param version
+   * @return
+   */
+  public SystemSupportInformation getTxSupportInfo(String system, String version);
+  public SystemSupportInformation getTxSupportInfo(String system);
 
   /**
    * ValueSet Expansion - see $expand
@@ -642,8 +673,7 @@ public interface IWorkerContext {
    * @param codes
    * @param vs
    */
-  public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs);
-  public void validateCodeBatchByRef(ValidationOptions options, List<? extends CodingValidationRequest> codes, String vsUrl);
+  public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs, boolean passVS);
   public OperationOutcome validateTxResource(ValidationOptions options, Resource resource);
 
   // todo: figure these out
@@ -790,4 +820,28 @@ public interface IWorkerContext {
 
   public boolean isServerSideSystem(String url);
 
+  class SystemSupportInformation {
+    // whether the ssytem(/version) is supported
+    @Getter
+    private boolean supported;
+
+    // the server that supports the system(/version)
+    // maybe null for some systems where we never consult any server
+    @Getter
+    private String server;
+
+    // if the server supports it, the set of test cases the server claims to pass (or null)
+    @Getter
+    private String testVersion;
+
+    public SystemSupportInformation(boolean supported, String server, String testVersion) {
+      this.supported = supported;
+      this.server = server;
+      this.testVersion = testVersion;
+    }
+
+    public SystemSupportInformation(boolean supported) {
+      this.supported = supported;
+    }
+  }
 }

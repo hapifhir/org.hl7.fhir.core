@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.terminologies.client;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -8,22 +9,26 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CapabilityStatement;
-import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.TerminologyCapabilities;
+import lombok.Getter;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.formats.IParser;
+import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext.TerminologyClientContextUseCount;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.utilities.ENoDump;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.VersionUtilities;
 
 @MarkedToMoveToAdjunctPackage
 public class TerminologyClientContext {
-  
+  public static final String MIN_TEST_VERSION = "1.6.0";
+  public static final String TX_BATCH_VERSION = "1.7.8"; // actually, it's 17.7., but there was an error in the tx.fhir.org code around this
+  public static final String LATEST_VERSION = "1.7.8"; // dito
+
   public enum TerminologyClientContextUseType {
     expand, validate, readVS, readCS
   }
@@ -59,17 +64,18 @@ public class TerminologyClientContext {
     }
   }
 
-  private static final String MIN_TEST_VERSION = "1.6.0";
   private static boolean allowNonConformantServers = false;
   private static boolean canAllowNonConformantServers = false;
 
   private static boolean canUseCacheId;
 
   private ITerminologyClient client;
-  private boolean initialised = false;
+
   private CapabilityStatement capabilitiesStatement;
   private TerminologyCapabilities txcaps;
-  private TerminologyCache txCache;
+  @Getter
+  private final TerminologyCache txCache;
+  private String testVersion;
   
   private Map<String, TerminologyClientContextUseCount> useCounts = new HashMap<>();
   private boolean isTxCaching;
@@ -77,11 +83,13 @@ public class TerminologyClientContext {
   private boolean master;
   private String cacheId;
 
-  protected TerminologyClientContext(ITerminologyClient client, String cacheId, boolean master) {
+  protected TerminologyClientContext(ITerminologyClient client, TerminologyCache txCache, String cacheId, boolean master) throws IOException {
     super();
     this.client = client;
+    this.txCache = txCache;
     this.cacheId = cacheId;
     this.master = master;
+    initialize();
   }
 
   public Map<String, TerminologyClientContextUseCount> getUseCounts() {
@@ -134,6 +142,11 @@ public class TerminologyClientContext {
 
   public void setTxCapabilities(TerminologyCapabilities txcaps) {
     this.txcaps = txcaps;
+    try {
+      new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).compose(new FileOutputStream("/Users/grahamegrieve/temp/txcaps.json"), txcaps);
+    } catch (IOException e) {
+
+    }
   }
 
   public Set<String> getCached() {
@@ -172,21 +185,18 @@ public class TerminologyClientContext {
     return cacheId;
   }
 
-  public TerminologyCache getTxCache() {
-    return txCache;
-  }
+  private void initialize() throws IOException {
 
-  public void setTxCache(TerminologyCache txCache) {
-    this.txCache = txCache;
-  }
-
-  public void initialize() throws IOException {
-    if (!initialised) {
       // we don't cache the quick CS - we want to know that the server is with us. 
       capabilitiesStatement = client.getCapabilitiesStatement();
       checkFeature();
       if (txCache != null && txCache.hasTerminologyCapabilities(getAddress())) {
         txcaps = txCache.getTerminologyCapabilities(getAddress());
+        try {
+          new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).compose(new FileOutputStream("/Users/grahamegrieve/temp/txcaps.json"), txcaps);
+        } catch (IOException e) {
+
+        }
         if (txcaps.getSoftware().hasVersion() && !txcaps.getSoftware().getVersion().equals(capabilitiesStatement.getSoftware().getVersion())) {
           txcaps = null;
         }
@@ -194,7 +204,11 @@ public class TerminologyClientContext {
       if (txcaps == null) {
         txcaps = client.getTerminologyCapabilities();
         if (txCache != null) {
-          txCache.cacheTerminologyCapabilities(getAddress(), txcaps);
+          try {
+            txCache.cacheTerminologyCapabilities(getAddress(), txcaps);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
         }
       }
       if (txcaps != null && TerminologyClientContext.canUseCacheId) {
@@ -205,21 +219,19 @@ public class TerminologyClientContext {
           }
         }
       }
-      initialised = true;
-    }    
+
   }
 
   private void checkFeature() {
     if (!allowNonConformantServers && capabilitiesStatement != null) {
-      String testVersion = null;
       boolean csParams = false;
 
       for (Extension t : capabilitiesStatement.getExtension()) {
-        if (ToolingExtensions.EXT_FEATURE.equals(t.getUrl())) {
+        if (ExtensionDefinitions.EXT_FEATURE.equals(t.getUrl())) {
           String defn = t.getExtensionString("definition");
-          if (ToolingExtensions.FEATURE_TX_TEST_VERSION.equals(defn)) {
+          if (ExtensionDefinitions.FEATURE_TX_TEST_VERSION.equals(defn)) {
             testVersion = t.getExtensionString("value");
-          } else if (ToolingExtensions.FEATURE_TX_CS_PARAMS.equals(defn)) {
+          } else if (ExtensionDefinitions.FEATURE_TX_CS_PARAMS.equals(defn)) {
             csParams = "true".equals(t.getExtensionString("value"));
           } 
         }
@@ -250,13 +262,35 @@ public class TerminologyClientContext {
   }
 
   public boolean supportsSystem(String system) throws IOException {
-    initialize();
+    try {
+      new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).compose(new FileOutputStream("/Users/grahamegrieve/temp/txcaps.json"), txcaps);
+    } catch (IOException e) {
+
+    }
     for (TerminologyCapabilitiesCodeSystemComponent tccs : txcaps.getCodeSystem()) {
-      if (system.equals(tccs.getUri())) {
+      if (system.equals(tccs.getUri()) || (tccs.hasVersion() && system.equals(CanonicalType.urlWithVersion(tccs.getUri(), tccs.getVersionFirstRep().getCode())))) {
         return true;
+      }
+      if (system.startsWith(tccs.getUri()+"|")) {
+        if (tccs.hasVersion()) {
+          for (TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersion()) {
+            if (system.equals(CanonicalType.urlWithVersion(tccs.getUri(), v.getCode()))) {
+              return true;
+            }
+          }
+        }
       }
     }
     return false;
+  }
+
+  public String getTxTestVersion() {
+    try {
+      return testVersion;
+    } catch (Exception e) {
+      // debug?
+      return null;
+    }
   }
 
   @Override
@@ -296,5 +330,5 @@ public class TerminologyClientContext {
   public static void setCanAllowNonConformantServers(boolean canAllowNonConformantServers) {
     TerminologyClientContext.canAllowNonConformantServers = canAllowNonConformantServers;
   }
-  
+
 }
