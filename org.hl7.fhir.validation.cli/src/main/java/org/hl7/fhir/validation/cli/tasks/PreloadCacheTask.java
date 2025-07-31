@@ -34,7 +34,7 @@ public class PreloadCacheTask extends StandaloneTask {
   }
 
   @Override
-  public void executeTask(ValidationContext validationContext, String[] args) throws Exception {
+  public void executeTask(ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
     PackageVisitor pv = new PackageCacheDownloader();
     pv.visitPackages();
   }
