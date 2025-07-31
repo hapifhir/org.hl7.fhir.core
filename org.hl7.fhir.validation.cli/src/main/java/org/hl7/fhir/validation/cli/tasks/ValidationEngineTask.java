@@ -7,10 +7,6 @@ import org.hl7.fhir.validation.service.ValidationService;
 
 public abstract class ValidationEngineTask extends CliTask{
 
-
-
-
-
   public abstract void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args) throws Exception;
 
 }

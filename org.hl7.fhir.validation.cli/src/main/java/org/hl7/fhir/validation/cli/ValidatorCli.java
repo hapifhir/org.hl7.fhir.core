@@ -362,9 +362,10 @@ public class ValidatorCli {
 
     final CliTask cliTask = selectCliTask(validationContext, params);
 
-    TimeTracker tt = new TimeTracker();
+
 
     if (cliTask instanceof ValidationEngineTask) {
+      TimeTracker tt = new TimeTracker();
       TimeTracker.Session tts = tt.start("Loading");
       if (validationContext.getSv() == null) {
         validationContext.setSv(myValidationService.determineVersion(validationContext));
@@ -372,12 +373,13 @@ public class ValidatorCli {
       ValidationEngine validationEngine = getValidationEngine(tt, validationContext);
       tts.end();
       ((ValidationEngineTask) cliTask).executeTask(myValidationService, validationEngine, validationContext, params);
+      log.info("Done. " + tt.report()+". Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
     } else if (cliTask instanceof StandaloneTask) {
       ((StandaloneTask) cliTask).executeTask(validationContext,params);
+      log.info("Done. Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
     }
 
-    log.info("Done. " + tt.report()+". Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
-    SystemExitManager.finish();
+     SystemExitManager.finish();
   }
 
   private CliTask selectCliTask(ValidationContext validationContext, String[] params) {
