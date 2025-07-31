@@ -358,11 +358,10 @@ public class ValidatorCli {
   }
 
   private void readParamsAndExecuteTask(ValidationContext validationContext, String[] params) throws Exception {
-
-
     Display.printCliParamsAndInfo(log, params);
 
     final CliTask cliTask = selectCliTask(validationContext, params);
+
     TimeTracker tt = new TimeTracker();
 
     if (cliTask instanceof ValidationEngineTask) {
@@ -372,7 +371,7 @@ public class ValidatorCli {
       }
       ValidationEngine validationEngine = getValidationEngine(tt, validationContext);
       tts.end();
-      ((ValidationEngineTask) cliTask).executeTask(myValidationService, validationEngine, validationContext, params, tt);
+      ((ValidationEngineTask) cliTask).executeTask(myValidationService, validationEngine, validationContext, params);
     } else if (cliTask instanceof StandaloneTask) {
       ((StandaloneTask) cliTask).executeTask(validationContext,params);
     }
