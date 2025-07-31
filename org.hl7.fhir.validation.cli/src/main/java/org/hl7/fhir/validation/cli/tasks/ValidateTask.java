@@ -4,13 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.cli.Display;
 import org.slf4j.Logger;
+
+import javax.annotation.Nonnull;
 
 @Slf4j
 public class ValidateTask extends ValidationEngineTask {
@@ -39,7 +40,7 @@ public class ValidateTask extends ValidationEngineTask {
   }
 
   @Override
-  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
+  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
     // There is no explicit way to trigger a validation task.
     // It is the default task.
     return false;
@@ -51,7 +52,7 @@ public class ValidateTask extends ValidationEngineTask {
   }
 
   @Override
-  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
+  public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
     if (validationContext.getExpansionParameters() != null) {
       validationEngine.loadExpansionParameters(validationContext.getExpansionParameters());
     }
@@ -65,5 +66,9 @@ public class ValidateTask extends ValidationEngineTask {
     log.info("Validating");
 
     validationService.validateSources(validationContext, validationEngine, validationContext.getWatchMode(), validationContext.getWatchScanDelay(), validationContext.getWatchSettleTime());
+
+    if (validationContext.getAdvisorFile() != null) {
+      log.info("Note: Some validation issues might be hidden by the advisor settings in the file "+ validationContext.getAdvisorFile());
+    }
   }
 }
