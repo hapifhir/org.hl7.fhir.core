@@ -1,9 +1,7 @@
 package org.hl7.fhir.validation.cli.tasks;
 
 import java.io.File;
-import java.io.PrintStream;
 
-import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.i18n.POGenerator;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.service.model.ValidationContext;
