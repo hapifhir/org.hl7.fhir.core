@@ -444,7 +444,15 @@ public class LanguageUtils {
   }
 
   public static boolean langsMatch(String dstLang, String srcLang) {
-    return dstLang == null || srcLang == null ? Utilities.existsInList(srcLang, "en", "en-US") : dstLang.startsWith(srcLang) || "*".equals(srcLang);
+    if (dstLang == null && srcLang == null) {
+      return true;
+    } if (dstLang == null) {
+      return srcLang.equals("en") || srcLang.startsWith("en-");
+    } else if (srcLang == null) {
+      return dstLang.equals("en") || dstLang.startsWith("en-");
+    } else {
+      return dstLang.startsWith(srcLang) || "*".equals(srcLang);
+    }
   }
 
   public void fillSupplement(CodeSystem csSrc, CodeSystem csDst, List<TranslationUnit> list) {

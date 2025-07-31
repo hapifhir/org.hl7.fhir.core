@@ -1,7 +1,6 @@
-package org.hl7.fhir.convertors.misc;
+package org.hl7.fhir.validation.special;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
@@ -27,7 +26,9 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
 import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.hl7.fhir.validation.SQLiteINpmPackageIndexBuilderDBImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -54,7 +55,8 @@ public class DicomPackageBuilder {
     }
     String source = args[0];
     String dest = args[1];
-    
+    NpmPackageIndexBuilder.setExtensionFactory(new SQLiteINpmPackageIndexBuilderDBImpl.SQLiteINpmPackageIndexBuilderDBImplFactory());
+
     DicomPackageBuilder self = new DicomPackageBuilder();
     self.setSource(source);
     self.setDest(dest);
@@ -63,6 +65,7 @@ public class DicomPackageBuilder {
   }
 
   public void execute() throws FileNotFoundException, ParserConfigurationException, SAXException, IOException {
+    System.out.println("DICOM: "+source+" -> "+dest);
     CodeSystem cs = buildCodeSystem();
     String fn = Utilities.path(dest, pattern.replace("{version}", version));
     FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fn));

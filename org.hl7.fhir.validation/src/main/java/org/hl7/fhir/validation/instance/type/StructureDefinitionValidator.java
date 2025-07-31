@@ -847,7 +847,7 @@ public class StructureDefinitionValidator extends BaseValidator {
           ok = prohibited(errors, stack,  "specialization", element, "sliceName", /* allowed in element on .extension "slicing", */
               "fixed", "pattern", "minValue", "maxValue", "maxLength") && ok;
         } else {
-          ok = prohibited(errors, stack,  "specialization", element, "sliceName", "slicing", "requirements", "nameReference", "defaultValue", "fixed", "pattern", "example", "minValue", "maxValue", "maxLength") && ok;
+          ok = prohibited(errors, stack,  "specialization", element, "sliceName", "slicing", "requirements", "nameReference", "defaultValue", "fixed", "pattern", "example", "minValue", "maxValue"/*, "maxLength"*/) && ok;
         }      
       }
     }
