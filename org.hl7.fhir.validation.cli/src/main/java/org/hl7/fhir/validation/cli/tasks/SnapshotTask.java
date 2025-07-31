@@ -7,6 +7,8 @@ import org.hl7.fhir.validation.cli.Display;
 import org.hl7.fhir.validation.service.utils.EngineMode;
 import org.slf4j.Logger;
 
+import javax.annotation.Nonnull;
+
 public class SnapshotTask extends ValidationEngineTask {
 
   @Override
@@ -25,7 +27,7 @@ public class SnapshotTask extends ValidationEngineTask {
   }
 
   @Override
-  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
+  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
     return validationContext.getMode() == EngineMode.SNAPSHOT;
   }
 
@@ -35,7 +37,7 @@ public class SnapshotTask extends ValidationEngineTask {
   }
 
   @Override
-  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args) throws Exception {
+  public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
     validationService.generateSnapshot(validationContext, validationEngine);
   }
 

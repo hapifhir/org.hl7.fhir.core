@@ -24,6 +24,8 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.annotation.Nonnull;
+
 @ExtendWith(MockitoExtension.class)
 public class ValidatorCliTests {
 
@@ -65,25 +67,25 @@ public class ValidatorCliTests {
   @Spy
   PreloadCacheTask preloadCacheTask = new PreloadCacheTask() {
     @Override
-    public void executeTask(ValidationContext validationContext, String[] args) {}
+    public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {}
   };
 
   @Spy
   TestsTask testsTask = new TestsTask() {
       @Override
-      public void executeTask(ValidationContext validationContext, String[] args) {}
+      public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {}
   };
 
   @Spy
   TxTestsTask txTestsTask = new TxTestsTask() {
     @Override
-    public void executeTask(ValidationContext validationContext, String[] args) {}
+    public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {}
   };
   
 
   AiTestsTask aiTestsTask = new AiTestsTask() {
     @Override
-    public void executeTask(ValidationContext validationContext, String[] args) {}
+    public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {}
   };
   @Spy
   TransformTask transformTask;
@@ -105,12 +107,12 @@ public class ValidatorCliTests {
   @Spy
   ScanTask scanTask = new ScanTask() {
     @Override
-    public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args) {}
+    public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) {}
   };
   @Spy
   SpecialTask specialTask = new SpecialTask() {
     @Override
-    public void executeTask(ValidationContext validationContext, String[] args) {}
+    public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {}
   };
 
   public ValidatorCli mockValidatorCli() {

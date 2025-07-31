@@ -18,6 +18,8 @@ import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.special.TxTester;
 import org.slf4j.Logger;
 
+import javax.annotation.Nonnull;
+
 @Slf4j
 public class TxTestsTask extends StandaloneTask{
   @Override
@@ -36,7 +38,7 @@ public class TxTestsTask extends StandaloneTask{
   }
 
   @Override
-  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
+  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
     return Params.hasParam(args, Params.TX_TESTS);
   }
 
@@ -46,7 +48,7 @@ public class TxTestsTask extends StandaloneTask{
   }
 
   @Override
-  public void executeTask(ValidationContext validationContext, String[] args) throws Exception {
+  public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
       String output = Params.getParam(args, Params.OUTPUT);
       String version = Params.getParam(args, Params.VERSION);
       final String tx = Params.getParam(args, Params.TERMINOLOGY);

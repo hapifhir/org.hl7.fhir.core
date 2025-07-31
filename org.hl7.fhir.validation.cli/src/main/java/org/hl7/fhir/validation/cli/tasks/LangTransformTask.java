@@ -6,6 +6,8 @@ import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.service.utils.EngineMode;
 import org.slf4j.Logger;
 
+import javax.annotation.Nonnull;
+
 public class LangTransformTask extends ValidationEngineTask {
 
   @Override
@@ -24,7 +26,7 @@ public class LangTransformTask extends ValidationEngineTask {
   }
 
   @Override
-  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
+  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
     return validationContext.getMode() == EngineMode.LANG_TRANSFORM;
   }
 
@@ -34,7 +36,7 @@ public class LangTransformTask extends ValidationEngineTask {
   }
 
   @Override
-  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args) throws Exception {
+  public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
     validationService.transformLang(validationContext, validationEngine);
   }
 

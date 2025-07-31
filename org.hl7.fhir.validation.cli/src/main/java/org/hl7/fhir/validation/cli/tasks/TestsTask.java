@@ -8,6 +8,8 @@ import org.hl7.fhir.validation.testexecutor.TestExecutor;
 import org.hl7.fhir.validation.testexecutor.TestExecutorParams;
 import org.slf4j.Logger;
 
+import javax.annotation.Nonnull;
+
 @Slf4j
 public class TestsTask extends StandaloneTask{
   @Override
@@ -26,7 +28,7 @@ public class TestsTask extends StandaloneTask{
   }
 
   @Override
-  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
+  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
     return Params.hasParam(args, Params.TEST);
   }
 
@@ -36,7 +38,7 @@ public class TestsTask extends StandaloneTask{
   }
 
   @Override
-  public void executeTask(ValidationContext validationContext, String[] args) throws Exception {
+  public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
       final String testModuleParam = Params.getParam(args, Params.TEST_MODULES);
       final String testClassnameFilter = Params.getParam(args, Params.TEST_NAME_FILTER);
       final String testCasesDirectory = Params.getParam(args, Params.TEST);

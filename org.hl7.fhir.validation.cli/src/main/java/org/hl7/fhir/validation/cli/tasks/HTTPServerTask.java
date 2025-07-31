@@ -9,6 +9,8 @@ import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.slf4j.Logger;
 
+import javax.annotation.Nonnull;
+
 @Slf4j
 public class HTTPServerTask extends ValidationEngineTask {
 
@@ -28,7 +30,7 @@ public class HTTPServerTask extends ValidationEngineTask {
   }
 
   @Override
-  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
+  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
     return Params.hasParam(args, Params.SERVER);
   }
 
@@ -37,7 +39,7 @@ public class HTTPServerTask extends ValidationEngineTask {
   }
 
   @Override
-  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args) throws Exception {
+  public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
     checkForInvalidArgs(args);
     validationEngine.setLogValidationProgress(false);
     FhirValidatorHttpService service = new FhirValidatorHttpService(validationEngine, Integer.parseInt(Params.getParam(args, Params.SERVER)));
