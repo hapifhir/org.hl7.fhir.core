@@ -7,6 +7,8 @@ import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.special.R4R5MapTester;
 import org.slf4j.Logger;
 
+import javax.annotation.Nonnull;
+
 @Slf4j
 public class SpecialTask extends StandaloneTask{
   @Override
@@ -25,7 +27,7 @@ public class SpecialTask extends StandaloneTask{
   }
 
   @Override
-  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
+  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
     return Params.hasParam(args, Params.SPECIAL);
   }
 
@@ -35,7 +37,7 @@ public class SpecialTask extends StandaloneTask{
   }
 
   @Override
-  public void executeTask(ValidationContext validationContext, String[] args) throws Exception {
+  public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
     String specialMode = Params.getParam(args, Params.SPECIAL);
     if ("r4r5tests".equals(specialMode)) {
       final String target = Params.getParam(args, Params.TARGET);

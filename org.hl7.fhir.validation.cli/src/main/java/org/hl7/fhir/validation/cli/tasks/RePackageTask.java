@@ -16,6 +16,8 @@ import org.hl7.fhir.validation.special.PackageReGenerator.ExpansionPackageGenera
 import org.hl7.fhir.validation.special.PackageReGenerator.ExpansionPackageGeneratorScope;
 import org.slf4j.Logger;
 
+import javax.annotation.Nonnull;
+
 @Slf4j
 public class RePackageTask extends ValidationEngineTask {
 
@@ -35,7 +37,7 @@ public class RePackageTask extends ValidationEngineTask {
   }
 
   @Override
-  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
+  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
     return validationContext.getMode() == EngineMode.RE_PACKAGE;
   }
 
@@ -45,7 +47,7 @@ public class RePackageTask extends ValidationEngineTask {
   }
 
   @Override
-  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args) throws Exception {
+  public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
     boolean json = validationContext.getFormat() != FhirFormat.XML;
     String output = validationContext.getOutput();
     File f = ManagedFileAccess.file(output);

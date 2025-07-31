@@ -6,6 +6,8 @@ import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.packages.PackageCacheDownloader;
 import org.slf4j.Logger;
 
+import javax.annotation.Nonnull;
+
 public class PreloadCacheTask extends StandaloneTask {
   @Override
   public String getName() {
@@ -23,7 +25,7 @@ public class PreloadCacheTask extends StandaloneTask {
   }
 
   @Override
-  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
+  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
     return Params.hasParam(args, Params.PRELOAD_CACHE);
   }
 
@@ -33,7 +35,7 @@ public class PreloadCacheTask extends StandaloneTask {
   }
 
   @Override
-  public void executeTask(ValidationContext validationContext, String[] args) throws Exception {
+  public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
     PackageVisitor pv = new PackageCacheDownloader();
     pv.visitPackages();
   }
