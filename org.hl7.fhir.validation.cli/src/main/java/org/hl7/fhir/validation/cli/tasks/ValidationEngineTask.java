@@ -7,7 +7,7 @@ import org.hl7.fhir.validation.service.ValidationService;
 
 public abstract class ValidationEngineTask extends CliTask{
 
-  public abstract void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, org.hl7.fhir.utilities.TimeTracker tt, TimeTracker.Session tts) throws Exception;
+  public abstract void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, org.hl7.fhir.utilities.TimeTracker tt) throws Exception;
 
 
 

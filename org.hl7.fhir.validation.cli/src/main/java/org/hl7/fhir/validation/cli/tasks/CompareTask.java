@@ -43,7 +43,7 @@ public class CompareTask extends ValidationEngineTask {
   }
 
   @Override
-  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
+  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt) throws Exception {
     Display.printCliParamsAndInfo(log, args);
     if (!destinationDirectoryValid(Params.getParam(args, Params.DESTINATION))) {
       return;
@@ -53,6 +53,7 @@ public class CompareTask extends ValidationEngineTask {
     }
     String v = VersionUtilities.getCurrentVersion(validationContext.getSv());
     String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
+    //FIXME timetracker use
     ValidationEngine validator = validationService.initializeValidator(validationContext, definitions, tt);
     validator.loadPackage(CommonPackages.ID_PUBPACK, null);
     String left = Params.getParam(args, Params.LEFT);

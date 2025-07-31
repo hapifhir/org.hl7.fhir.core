@@ -34,7 +34,7 @@ public class AiTestsTask extends StandaloneTask{
   }
 
   @Override
-  public void executeTask(ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
+  public void executeTask(ValidationContext validationContext, String[] args) throws Exception {
     String source = Params.getParam(args, Params.SOURCE);
     String config = Params.getParam(args, Params.CONFIG);
     boolean runTests = Params.hasParam(args, Params.RUN_TESTS);

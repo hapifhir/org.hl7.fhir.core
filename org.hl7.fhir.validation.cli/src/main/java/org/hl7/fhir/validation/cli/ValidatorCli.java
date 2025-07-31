@@ -145,9 +145,7 @@ public class ValidatorCli {
       defaultCliTask);
   }
 
-  protected void readParamsAndExecuteTask(ValidationContext validationContext, String[] args) throws Exception {
-    TimeTracker tt = new TimeTracker();
-    TimeTracker.Session tts = tt.start("Loading");
+  protected void readGlobalParamsAndExecuteTask(ValidationContext validationContext, String[] args) throws Exception {
 
     if (validationContext.getLocale() != null) {
       Locale.setDefault(validationContext.getLocale());
@@ -190,7 +188,8 @@ public class ValidatorCli {
       return;
     }
 
-    readParamsAndExecuteTask(tt, tts, validationContext, args);
+
+    readParamsAndExecuteTask(validationContext, args);
   }
 
   @SuppressWarnings("checkstyle:systemout")
@@ -252,7 +251,7 @@ public class ValidatorCli {
     args = addAdditionalParamsForIpsParam(args);
     final ValidationContext validationContext = Params.loadValidationContext(args);
     try {
-      validatorCli.readParamsAndExecuteTask(validationContext, args);
+      validatorCli.readGlobalParamsAndExecuteTask(validationContext, args);
     } catch (ENoDump e) {
       log.info(e.getMessage());
     }
@@ -358,25 +357,26 @@ public class ValidatorCli {
       || Params.hasParam(args, "/?"));
   }
 
-  private void readParamsAndExecuteTask(TimeTracker tt, TimeTracker.Session tts, ValidationContext validationContext, String[] params) throws Exception {
+  private void readParamsAndExecuteTask(ValidationContext validationContext, String[] params) throws Exception {
+
+
     Display.printCliParamsAndInfo(log, params);
 
     final CliTask cliTask = selectCliTask(validationContext, params);
+    TimeTracker tt = new TimeTracker();
 
     if (cliTask instanceof ValidationEngineTask) {
+      TimeTracker.Session tts = tt.start("Loading");
       if (validationContext.getSv() == null) {
         validationContext.setSv(myValidationService.determineVersion(validationContext));
       }
       ValidationEngine validationEngine = getValidationEngine(tt, validationContext);
       tts.end();
-      ((ValidationEngineTask) cliTask).executeTask(myValidationService, validationEngine, validationContext, params, tt, tts);
+      ((ValidationEngineTask) cliTask).executeTask(myValidationService, validationEngine, validationContext, params, tt);
     } else if (cliTask instanceof StandaloneTask) {
-      ((StandaloneTask) cliTask).executeTask(validationContext,params,tt,tts);
+      ((StandaloneTask) cliTask).executeTask(validationContext,params);
     }
 
-    if (validationContext.getAdvisorFile() != null) {
-      log.info("Note: Some validation issues might be hidden by the advisor settings in the file "+ validationContext.getAdvisorFile());
-    }
     log.info("Done. " + tt.report()+". Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
     SystemExitManager.finish();
   }
