@@ -1,7 +1,6 @@
 package org.hl7.fhir.validation.cli;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -12,7 +11,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 
-import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
@@ -107,7 +105,7 @@ public class ValidatorCliTests {
   @Spy
   ScanTask scanTask = new ScanTask() {
     @Override
-    public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt) {}
+    public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args) {}
   };
   @Spy
   SpecialTask specialTask = new SpecialTask() {
@@ -171,14 +169,6 @@ public class ValidatorCliTests {
     }
   }
 
-  private void assertContainsValidationTask(List<CliTask> tasks, String name) {
-    for (CliTask task : tasks) {
-      if (task.getName().equals(name)) {
-        return;
-      }
-    }
-    fail("Cannot find " + name + " in task list");
-  }
 
   @Test
   public void transformTest() throws Exception {
@@ -299,7 +289,7 @@ public class ValidatorCliTests {
     ValidatorCli cli = mockValidatorCliWithService(validationContext);
     cli.readGlobalParamsAndExecuteTask(validationContext, args);
     Mockito.verify(validationService).determineVersion(same(validationContext));
-    Mockito.verify(scanTask).executeTask(same(validationService), same(validationEngine), same(validationContext), eq(args), any(TimeTracker.class));
+    Mockito.verify(scanTask).executeTask(same(validationService), same(validationEngine), same(validationContext), eq(args));
   }
 
   @Test
@@ -319,7 +309,7 @@ public class ValidatorCliTests {
     ValidatorCli cli = mockValidatorCliWithService(validationContext);
     cli.readGlobalParamsAndExecuteTask(validationContext, args);
     Mockito.verify(validationService).determineVersion(same(validationContext));
-    Mockito.verify(compareTask).executeTask(same(validationService), same(validationEngine), same(validationContext), eq(args), any(TimeTracker.class));
+    Mockito.verify(compareTask).executeTask(same(validationService), same(validationEngine), same(validationContext), eq(args));
   }
 
   @Test

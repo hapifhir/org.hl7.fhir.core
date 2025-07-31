@@ -39,7 +39,7 @@ public class LangRegenerateTask extends ValidationEngineTask {
   }
 
   @Override
-  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt) throws Exception {
+  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args) throws Exception {
     String core = validationContext.getLangRegenParam().get(0); 
     String igpub = validationContext.getLangRegenParam().get(1);
     String pascal = validationContext.getLangRegenParam().get(2);

@@ -51,7 +51,7 @@ public class ValidateTask extends ValidationEngineTask {
   }
 
   @Override
-  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt) throws Exception {
+  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args) throws Exception {
     if (validationContext.getExpansionParameters() != null) {
       validationEngine.loadExpansionParameters(validationContext.getExpansionParameters());
     }
