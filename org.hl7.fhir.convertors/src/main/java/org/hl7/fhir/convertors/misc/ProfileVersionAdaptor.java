@@ -28,6 +28,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextCompo
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
@@ -226,9 +227,12 @@ public class ProfileVersionAdaptor {
       if (!sd.hasExtension(ExtensionDefinitions.EXT_FMM_LEVEL) || ExtensionUtilities.readIntegerExtension(sd, ExtensionDefinitions.EXT_FMM_LEVEL, 0) > 2) {
         ExtensionUtilities.setCodeExtension(sd, ExtensionDefinitions.EXT_FMM_LEVEL, "2");
       }
-      ExtensionUtilities.setCodeExtension(sd, ExtensionDefinitions.EXT_STANDARDS_STATUS, "draft");
-      ExtensionUtilities.setCodeExtension(sd, ExtensionDefinitions.EXT_STANDARDS_STATUS_REASON, "Extensions that have been modified for " + VersionUtilities.getNameForVersion(tCtxt.getVersion()) + " are still draft while real-world experience is collected");
-      log.add(new ConversionMessage("Note: Extensions that have been modified for " + VersionUtilities.getNameForVersion(tCtxt.getVersion()) + " are still draft while real-world experience is collected", ConversionMessageStatus.NOTE));
+      StandardsStatus code = ExtensionUtilities.getStandardsStatus(sd);
+      if (code == StandardsStatus.TRIAL_USE) {
+        ExtensionUtilities.setCodeExtension(sd, ExtensionDefinitions.EXT_STANDARDS_STATUS, "draft");
+        ExtensionUtilities.setCodeExtension(sd, ExtensionDefinitions.EXT_STANDARDS_STATUS_REASON, "Extensions that have been modified for " + VersionUtilities.getNameForVersion(tCtxt.getVersion()) + " are still draft while real-world experience is collected");
+        log.add(new ConversionMessage("Note: Extensions that have been modified for " + VersionUtilities.getNameForVersion(tCtxt.getVersion()) + " are still draft while real-world experience is collected", ConversionMessageStatus.NOTE));
+      }
     }
     snapshotQueue.add(sd);
     tCtxt.cacheResource(sd);
