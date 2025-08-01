@@ -73,7 +73,7 @@ public class ResourceLanguageFileBuilder {
   }
   
   private void process(LanguageProducerLanguageSession sess, Property p, String id, String path) throws IOException {
-    if (p.hasValues()) {
+    if (p != null && p.hasValues()) {
       int i = 0;
       for (Base b : p.getValues()) {
         String pid = id+"."+p.getName();

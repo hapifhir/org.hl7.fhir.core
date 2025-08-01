@@ -283,9 +283,13 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     if (vs != null) {
       String ref = (String) vs.getWebPath();
 
-      ref = context.fixReference(ref);
-      XhtmlNode a = li.ah(context.prefixLocalHref(ref == null ? "?ngen-11?" : ref.replace("\\", "/")));
-      a.addText(vs.present());
+      if (ref == null) {
+        li.tx(vs.present());
+      } else {
+        ref = context.fixReference(ref);
+        XhtmlNode a = li.ah(context.prefixLocalHref(ref.replace("\\", "/")));
+        a.addText(vs.present());
+      }
     } else {
       CodeSystem cs = getContext().getWorker().fetchCodeSystem(value);
       if (cs != null) {

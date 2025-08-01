@@ -251,9 +251,9 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       val.getSettings().setLanguages(content.get("language").getAsString());
       val.setValidationLanguage(val.getSettings().getLanguages().getChosen());
     } else {
-      val.getSettings().setLanguages(null);      
+      val.getSettings().setLanguages(null);
+      val.setValidationLanguage(null);
     }
-
     if (content.has("certificate")) {
       val.getSettings().getCertificates().put(content.get("certificate").getAsString(), TestingUtilities.loadTestResourceBytes("validator", content.get("certificate").getAsString()));
     }
@@ -284,10 +284,6 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     if (content.has("allowed-extension-domains"))
       for (JsonElement a : content.getAsJsonArray("allowed-extension-domains"))
         val.getExtensionDomains().add(a.getAsString());
-    if (content.has("language"))
-      val.setValidationLanguage(content.get("language").getAsString());
-    else
-      val.setValidationLanguage(null);
     val.setForPublication(content.has("for-publication") && "true".equals(content.get("for-publication").getAsString()));
     if (content.has("default-version")) {
       val.getSettings().setVersionFlexible(content.get("default-version").getAsBoolean());

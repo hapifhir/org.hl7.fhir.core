@@ -18,6 +18,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import lombok.extern.slf4j.Slf4j;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.Pair;
 import org.fhir.ucum.UcumException;
@@ -67,15 +68,8 @@ import org.hl7.fhir.r5.model.TimeType;
 import org.hl7.fhir.r5.model.TypeConvertor;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.DateTimeUtil;
-import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.hl7.fhir.utilities.MergedList;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.MergedList.MergeNode;
-import org.hl7.fhir.utilities.SourceLocation;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -120,6 +114,7 @@ import ca.uhn.fhir.util.ElementUtil;
  * @author Grahame Grieve
  *
  */
+@Slf4j
 public class FHIRPathEngine {
 
   public class ExtensionDefinition {
@@ -174,7 +169,7 @@ public class FHIRPathEngine {
   private IWorkerContext worker;
   private IHostApplicationServices hostServices;
   private IDebugTracer tracer;
-  private StringBuilder log = new StringBuilder();
+  private StringBuilder traceLog = new StringBuilder();
   private Set<String> primitiveTypes = new HashSet<String>();
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
   private boolean legacyMode; // some R2 and R3 constraints assume that != is valid for empty sets, so when running for R2/R3, this is set ot true  
@@ -754,7 +749,7 @@ public class FHIRPathEngine {
     if (base != null) {
       list.add(base);
     }
-    log = new StringBuilder();
+    traceLog = new StringBuilder();
     return execute(new ExecutionContext(null, base != null && base.isResource() ? base : null, base != null && base.isResource() ? base : null, base, base), list, ExpressionNode, true);
   }
 
@@ -773,7 +768,7 @@ public class FHIRPathEngine {
     if (base != null) {
       list.add(base);
     }
-    log = new StringBuilder();
+    traceLog = new StringBuilder();
     return execute(new ExecutionContext(appContext, base != null && base.isResource() ? base : null, base != null && base.isResource() ? base : null, base, base), list, ExpressionNode, true);
   }
   
@@ -792,7 +787,7 @@ public class FHIRPathEngine {
     if (base != null) {
       list.add(base);
     }
-    log = new StringBuilder();
+    traceLog = new StringBuilder();
     return execute(new ExecutionContext(null, base.isResource() ? base : null, base.isResource() ? base : null, base, base), list, exp, true);
   }
 
@@ -810,7 +805,7 @@ public class FHIRPathEngine {
     if (base != null) {
       list.add(base);
     }
-    log = new StringBuilder();
+    traceLog = new StringBuilder();
     return execute(new ExecutionContext(appContext, focusResource, rootResource, base, base), list, ExpressionNode, true);
   }
 
@@ -828,7 +823,7 @@ public class FHIRPathEngine {
     if (base != null) {
       list.add(base);
     }
-    log = new StringBuilder();
+    traceLog = new StringBuilder();
     return execute(new ExecutionContext(appContext, focusResource, rootResource, base, base), list, expressionNode, true);
   }
 
@@ -847,7 +842,7 @@ public class FHIRPathEngine {
     if (base != null) {
       list.add(base);
     }
-    log = new StringBuilder();
+    traceLog = new StringBuilder();
     return execute(new ExecutionContext(appContext, focusResource, rootResource, base, base), list, exp, true);
   }
 
@@ -979,28 +974,28 @@ public class FHIRPathEngine {
   }
 
 
-  private void log(String name, List<Base> contents) {
+  private void addToLog(String name, List<Base> contents) {
     if (hostServices == null || !hostServices.log(name, contents)) {
-      if (log.length() > 0) {
-        log.append("; ");
+      if (traceLog.length() > 0) {
+        traceLog.append("; ");
       }
-      log.append(name);
-      log.append(": ");
+      traceLog.append(name);
+      traceLog.append(": ");
       boolean first = true;
       for (Base b : contents) {
         if (first) {
           first = false;
         } else {
-          log.append(",");
+          traceLog.append(",");
         }
-        log.append(convertToString(b));
+        traceLog.append(convertToString(b));
       }
     }
   }
 
   public String forLog() {
-    if (log.length() > 0) {
-      return " ("+log.toString()+")";
+    if (traceLog.length() > 0) {
+      return " ("+ traceLog.toString()+")";
     } else {
       return "";
     }
@@ -1520,7 +1515,8 @@ public class FHIRPathEngine {
     case LowBoundary: return checkParamCount(lexer, location, exp, 0, 1);
     case HighBoundary: return checkParamCount(lexer, location, exp, 0, 1);
     case Precision: return checkParamCount(lexer, location, exp, 0);
-    case hasTemplateIdOf: return checkParamCount(lexer, location, exp, 1);
+      case hasTemplateIdOf: return checkParamCount(lexer, location, exp, 1);
+      case Debug: return checkParamCount(lexer, location, exp, 0, 1);
     case Custom: return checkParamCount(lexer, location, exp, details.getMinParameters(), details.getMaxParameters());
     }
     return false;
@@ -3915,10 +3911,13 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       checkContextContinuous(focus, exp.getFunction().toCode(), exp, false);      
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer);       
     }
-    case hasTemplateIdOf: {
-      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
-      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
-    }
+      case hasTemplateIdOf: {
+        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+        return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+      }
+      case Debug: {
+        return focus;
+      }
     case Custom : {
       return hostServices.checkFunction(this, context.appInfo,exp.getName(), focus, paramTypes);
     }
@@ -4201,6 +4200,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     case HighBoundary : return funcHighBoundary(context, focus, exp);
     case Precision : return funcPrecision(context, focus, exp);
     case hasTemplateIdOf: return funcHasTemplateIdOf(context, focus, exp);
+    case Debug: return funcDebug(context, focus, exp);
 
 
     case Custom: { 
@@ -4638,6 +4638,22 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return result;
   }
 
+  private List<Base> funcDebug(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    String name = "<anonymous>";
+    if (expr.getParameters().size() == 1) {
+      List<Base> n1 = execute(context, baseToList(context.thisItem), expr.getParameters().get(0), true);
+      if (!n1.isEmpty()) {
+        name =convertToString(n1);
+      }
+    }
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(", ");
+    for (Base base : focus) {
+      b.append(base.fhirType()+":"+convertToString(base));
+    }
+    log.info("Debug Point '"+name+"': "+b.toString());
+    return focus;
+  }
+
   private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
   private ContextUtilities cu;
   public static String bytesToHex(byte[] bytes) {
@@ -4868,7 +4884,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private String getNamedValue(Base base, String name) {
     Property p = base.getChildByName(name);
-    if (p.hasValues() && p.getValues().size() == 1) {
+    if (p != null && p.hasValues() && p.getValues().size() == 1) {
       return p.getValues().get(0).primitiveValue();
     }
     return null;
@@ -5833,9 +5849,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     String name = nl.get(0).primitiveValue();
     if (exp.getParameters().size() == 2) {
       List<Base> n2 = execute(context, baseToList(context.thisItem), exp.getParameters().get(1), true);
-      log(name, n2);
+      addToLog(name, n2);
     } else { 
-      log(name, focus);
+      addToLog(name, focus);
     }
     return focus;
   }
@@ -6909,7 +6925,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
 
   public boolean hasLog() {
-    return log != null && log.length() > 0;
+    return traceLog != null && traceLog.length() > 0;
   }
 
 
@@ -6917,8 +6933,8 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (!hasLog()) {
       return "";
     }
-    String s = log.toString();
-    log = new StringBuilder();
+    String s = traceLog.toString();
+    traceLog = new StringBuilder();
     return s;
   }
 

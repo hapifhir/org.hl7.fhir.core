@@ -10,7 +10,7 @@
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -18,11 +18,11 @@ v: {
   "display" : "SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose or 50 mcg/0.25mL dose",
   "code" : "207",
   "system" : "http://hl7.org/fhir/sid/cvx",
-  "version" : "20231214",
+  "version" : "20250715",
   "severity" : "error",
   "error" : "Wrong Display Name 'SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose' for http://hl7.org/fhir/sid/cvx#207. Valid display is 'COVID-19, mRNA, LNP-S, PF, 100 mcg/0.5mL dose or 50 mcg/0.25mL dose' (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -33,7 +33,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -62,7 +62,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -70,11 +70,11 @@ v: {
   "display" : "SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose or 50 mcg/0.25mL dose",
   "code" : "207",
   "system" : "http://hl7.org/fhir/sid/cvx",
-  "version" : "20231214",
+  "version" : "20250715",
   "severity" : "error",
   "error" : "Wrong Display Name 'X SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose' for http://hl7.org/fhir/sid/cvx#207. Valid display is 'COVID-19, mRNA, LNP-S, PF, 100 mcg/0.5mL dose or 50 mcg/0.25mL dose' (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -85,7 +85,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -106,7 +106,7 @@ v: {
 {"code" : {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "code" : "141",
-  "display" : "Influenza, seasonal, injectable"
+  "display" : "Influenza, split virus, trivalent, preservative"
 }, "valueSet" :null, "langs":"en-NZ", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
@@ -114,16 +114,16 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
 v: {
-  "display" : "Influenza, seasonal, injectable",
+  "display" : "Influenza, split virus, trivalent, injectable, contains preservative",
   "code" : "141",
   "system" : "http://hl7.org/fhir/sid/cvx",
-  "version" : "20231214",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -142,7 +142,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -150,8 +150,8 @@ v: {
   "display" : "SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 30 mcg/0.3mL dose",
   "code" : "208",
   "system" : "http://hl7.org/fhir/sid/cvx",
-  "version" : "20231214",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -170,7 +170,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -178,8 +178,8 @@ v: {
   "display" : "diphtheria, tetanus toxoids and acellular pertussis vaccine",
   "code" : "20",
   "system" : "http://hl7.org/fhir/sid/cvx",
-  "version" : "20231214",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -198,7 +198,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -206,8 +206,8 @@ v: {
   "display" : "tetanus and diphtheria toxoids, not adsorbed, for adult use",
   "code" : "138",
   "system" : "http://hl7.org/fhir/sid/cvx",
-  "version" : "20231214",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -226,7 +226,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -234,8 +234,8 @@ v: {
   "display" : "pneumococcal conjugate vaccine, 13 valent",
   "code" : "133",
   "system" : "http://hl7.org/fhir/sid/cvx",
-  "version" : "20231214",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -254,7 +254,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -262,8 +262,8 @@ v: {
   "display" : "SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 30 mcg/0.3mL dose",
   "code" : "208",
   "system" : "http://hl7.org/fhir/sid/cvx",
-  "version" : "20231214",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -274,7 +274,7 @@ v: {
 {"code" : {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "code" : "141",
-  "display" : "Influenza, seasonal, injectable"
+  "display" : "Influenza, split virus, trivalent, preservative"
 }, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
@@ -282,16 +282,16 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
 v: {
-  "display" : "Influenza, seasonal, injectable",
+  "display" : "Influenza, split virus, trivalent, injectable, contains preservative",
   "code" : "141",
   "system" : "http://hl7.org/fhir/sid/cvx",
-  "version" : "20231214",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -310,7 +310,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -318,8 +318,8 @@ v: {
   "display" : "diphtheria, tetanus toxoids and acellular pertussis vaccine",
   "code" : "20",
   "system" : "http://hl7.org/fhir/sid/cvx",
-  "version" : "20231214",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -338,7 +338,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -346,8 +346,8 @@ v: {
   "display" : "tetanus and diphtheria toxoids, not adsorbed, for adult use",
   "code" : "138",
   "system" : "http://hl7.org/fhir/sid/cvx",
-  "version" : "20231214",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -366,7 +366,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -374,8 +374,8 @@ v: {
   "display" : "pneumococcal conjugate vaccine, 13 valent",
   "code" : "133",
   "system" : "http://hl7.org/fhir/sid/cvx",
-  "version" : "20231214",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -393,7 +393,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -401,8 +401,8 @@ v: {
   "display" : "SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 30 mcg/0.3mL dose",
   "code" : "208",
   "system" : "http://hl7.org/fhir/sid/cvx",
-  "version" : "20231214",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -420,7 +420,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -428,8 +428,8 @@ v: {
   "display" : "SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 30 mcg/0.3mL dose",
   "code" : "208",
   "system" : "http://hl7.org/fhir/sid/cvx",
-  "version" : "20231214",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -447,7 +447,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -455,9 +455,9 @@ v: {
   "code" : "209",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "severity" : "error",
-  "error" : "Unknown code '209' in the CodeSystem 'http://hl7.org/fhir/sid/cvx' version '20231214'",
+  "error" : "Unknown code '209' in the CodeSystem 'http://hl7.org/fhir/sid/cvx' version '20250715'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -468,7 +468,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -477,7 +477,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code '209' in the CodeSystem 'http://hl7.org/fhir/sid/cvx' version '20231214'"
+      "text" : "Unknown code '209' in the CodeSystem 'http://hl7.org/fhir/sid/cvx' version '20250715'"
     },
     "location" : ["Coding.code"],
     "expression" : ["Coding.code"]
@@ -496,7 +496,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -504,9 +504,9 @@ v: {
   "code" : "209",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "severity" : "error",
-  "error" : "The provided code 'http://hl7.org/fhir/sid/cvx#209' was not found in the value set 'http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2'; Unknown code '209' in the CodeSystem 'http://hl7.org/fhir/sid/cvx' version '20231214'",
+  "error" : "The provided code 'http://hl7.org/fhir/sid/cvx#209' was not found in the value set 'http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2'; Unknown code '209' in the CodeSystem 'http://hl7.org/fhir/sid/cvx' version '20250715'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -517,7 +517,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -526,7 +526,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code '209' in the CodeSystem 'http://hl7.org/fhir/sid/cvx' version '20231214'"
+      "text" : "Unknown code '209' in the CodeSystem 'http://hl7.org/fhir/sid/cvx' version '20250715'"
     },
     "location" : ["Coding.code"],
     "expression" : ["Coding.code"]
@@ -538,7 +538,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -566,7 +566,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -574,8 +574,8 @@ v: {
   "display" : "SARS-COV-2 (COVID-19) vaccine, vector non-replicating, recombinant spike protein-ChAdOx1, preservative free, 0.5 mL",
   "code" : "210",
   "system" : "http://hl7.org/fhir/sid/cvx",
-  "version" : "20231214",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -593,7 +593,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -601,8 +601,8 @@ v: {
   "display" : "SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose or 50 mcg/0.25mL dose",
   "code" : "207",
   "system" : "http://hl7.org/fhir/sid/cvx",
-  "version" : "20231214",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -620,7 +620,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -628,8 +628,8 @@ v: {
   "display" : "SARS-COV-2 (COVID-19) vaccine, vector non-replicating, recombinant spike protein-ChAdOx1, preservative free, 0.5 mL",
   "code" : "210",
   "system" : "http://hl7.org/fhir/sid/cvx",
-  "version" : "20231214",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -647,7 +647,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -655,8 +655,8 @@ v: {
   "display" : "SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose or 50 mcg/0.25mL dose",
   "code" : "207",
   "system" : "http://hl7.org/fhir/sid/cvx",
-  "version" : "20231214",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

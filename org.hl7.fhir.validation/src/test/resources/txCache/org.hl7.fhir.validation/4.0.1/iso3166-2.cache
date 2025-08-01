@@ -14,15 +14,11 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:6c82c2c5-aeea-48ef-a28f-a92b2d241e99",
-    "timestamp" : "2025-05-06T22:50:54.423Z",
+    "identifier" : "urn:uuid:b2b39cd5-23f8-43ac-b7c3-c5a787c23c83",
+    "timestamp" : "2025-08-01T14:08:53.634Z",
     "total" : 5099,
     "offset" : 0,
     "parameter" : [{
-      "name" : "displayLanguage",
-      "valueCode" : "en-US"
-    },
-    {
       "name" : "excludeNested",
       "valueBoolean" : true
     },

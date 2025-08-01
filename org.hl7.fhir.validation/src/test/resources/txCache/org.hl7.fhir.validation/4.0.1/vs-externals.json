@@ -1,47 +1,29 @@
 {
   "http://loinc.org|2.76" : null,
   "http://www.rfc-editor.org/bcp/bcp13.txt" : null,
-  "http://hl7.org/fhir/ValueSet/country" : null,
-  "http://snomed.info/sct?fhir_vs=refset/929360041000036105" : {
-    "server" : "http://tx-dev.fhir.org/r4",
-    "filename" : "vs-a6766da8-f531-40ef-bc46-53f65761e0a8.json"
-  },
-  "http://snomed.info/sct|http://snomed.info/sct/32506021000036107" : null,
-  "http://fhir.ch/ig/ch-ig/ValueSet/ch-ig-example" : null,
-  "http://hl7.org/fhir/us/qicore/ValueSet/qicore-negation-reason" : null,
-  "http://fhir.ch/ig/ch-ig/ValueSet/OrganizationType" : null,
-  "http://hl7.org/fhir/tools/StructureDefinition/valueset-parameter" : null,
-  "https://fhir.kbv.de/ValueSet/KBV_VS_SFHIR_ICD_SEITENLOKALISATION" : null,
-  "http://hl7.org/fhir/test/CodeSystem/big|null" : null,
-  "http://fhir.abda.de/eRezeptAbgabedaten/ValueSet/DAV-VS-ERP-DEUEV-Anlage-8" : null,
-  "#VSPHQ9" : null,
-  "http://loinc.org/vs/LL378-1" : {
-    "server" : "http://tx-dev.fhir.org/r4",
-    "filename" : "vs-568e8416-b7d9-42c1-8ea4-7769df664a23.json"
-  },
-  "http://loinc.org/vs/LL4048-6" : {
-    "server" : "http://tx-dev.fhir.org/r4",
-    "filename" : "vs-e2c27dea-76bc-4208-9ee1-ea137a7bf901.json"
-  },
-  "http://snomed.info/sct|http://snomed.info/sct/731000124108" : null,
   "#f3b2bd36-199b-4591-b4db-f49db0912b6|null" : null,
   "#c1|null" : null,
   "http://example.org/invalid-valueset-canonical" : null,
   "http://hl7.org/fhir/us/davinci-hrex/ValueSet/hrex-endpoint-name" : null,
+  "http://snomed.info/sct|http://snomed.info/sct/32506021000036107" : null,
+  "http://fhir.ch/ig/ch-ig/ValueSet/ch-ig-example" : null,
+  "http://hl7.org/fhir/us/qicore/ValueSet/qicore-negation-reason" : null,
+  "http://fhir.ch/ig/ch-ig/ValueSet/OrganizationType" : null,
+  "https://fhir.kbv.de/ValueSet/KBV_VS_SFHIR_ICD_SEITENLOKALISATION" : null,
+  "http://hl7.org/fhir/test/CodeSystem/big|null" : null,
+  "http://fhir.abda.de/eRezeptAbgabedaten/ValueSet/DAV-VS-ERP-DEUEV-Anlage-8" : null,
+  "#VSPHQ9" : null,
   "http://something/something|null" : null,
   "http://hl7.org/fhir/CodeSystem/c1|null" : null,
-  "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9|null" : null,
   "#options-1" : null,
-  "http://loinc.org/vs/LL1971-2" : {
-    "server" : "http://tx-dev.fhir.org/r4",
-    "filename" : "vs-75bdc359-fe06-4617-96e0-c5b167cae39b.json"
-  },
+  "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9|null" : null,
   "#f3b2bd36-199b-4591-b4db-f49db0912b62|null" : null,
+  "https://sqlonfhir-dstu2.azurewebsites.net/fhir/ValueSet/administrative-gender" : null,
   "http://hl7.org/fhir/smart-app-launch/ValueSet/user-access-category" : null,
   "https://healthterminologies.gov.au/fhir/ValueSet/australian-immunisation-register-vaccine-1" : {
     "server" : "https://tx.ontoserver.csiro.au/fhir",
-    "filename" : "vs-20ae1373-a816-445f-90d2-60cb0357e8cd.json"
+    "filename" : "vs-1d9dd86c-728c-46e2-92b4-629c8b90bdeb.json"
   },
-  "https://sqlonfhir-dstu2.azurewebsites.net/fhir/ValueSet/administrative-gender" : null,
+  "http://snomed.info/sct|http://snomed.info/sct/731000124108" : null,
   "https://sqlonfhir-ci2.azurewebsites.net/fhir/ValueSet/hcxdir-locality" : null
 }

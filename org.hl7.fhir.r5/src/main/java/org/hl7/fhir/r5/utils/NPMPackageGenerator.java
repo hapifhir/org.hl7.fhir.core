@@ -448,16 +448,20 @@ public class NPMPackageGenerator {
     OutputStream.close();
     FileUtilities.bytesToFile(OutputStream.toByteArray(), destFile);
     // also, for cache management on current builds, generate a little manifest
-    String json = JsonParser.compose(packageManifest, true);
-    FileUtilities.stringToFile(json, FileUtilities.changeFileExt(destFile, ".manifest.json"));
+    if (packageManifest != null) {
+      String json = JsonParser.compose(packageManifest, true);
+      FileUtilities.stringToFile(json, FileUtilities.changeFileExt(destFile, ".manifest.json"));
+    }
   }
 
   private void buildIndexJson() throws IOException {
     byte[] content = FileUtilities.stringToBytes(indexer.build());
-    addFile(Category.RESOURCE, ".index.json", content); 
-    content = FileUtilities.fileToBytes(indexdb);
-    ManagedFileAccess.file(indexdb).delete();
-    addFile(Category.RESOURCE, ".index.db", content); 
+    addFile(Category.RESOURCE, ".index.json", content);
+    if (ManagedFileAccess.file(indexdb).exists()) {
+      content = FileUtilities.fileToBytes(indexdb);
+      ManagedFileAccess.file(indexdb).delete();
+      addFile(Category.RESOURCE, ".index.db", content);
+    }
   }
 
   public String filename() {

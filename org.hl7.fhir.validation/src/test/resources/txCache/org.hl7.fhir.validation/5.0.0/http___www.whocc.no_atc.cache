@@ -10,7 +10,7 @@
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -18,11 +18,11 @@ v: {
   "display" : "Natural opium alkaloids",
   "code" : "N02AA",
   "system" : "http://www.whocc.no/atc",
-  "version" : "2020-05",
+  "version" : "2025",
   "severity" : "error",
   "error" : "Wrong Display Name 'Barbiturates and derivatives' for http://www.whocc.no/atc#N02AA. Valid display is 'Natural opium alkaloids' (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -33,7 +33,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r5"
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
     }],
     "severity" : "error",
     "code" : "invalid",

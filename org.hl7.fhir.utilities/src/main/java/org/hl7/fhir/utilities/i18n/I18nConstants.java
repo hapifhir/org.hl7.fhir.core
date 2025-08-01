@@ -1077,6 +1077,7 @@ public class I18nConstants {
   public static final String UNICODE_XML_BAD_CHARS = "UNICODE_XML_BAD_CHARS";
   public static final String UNKNOWN_CODESYSTEM = "UNKNOWN_CODESYSTEM";
   public static final String UNKNOWN_CODESYSTEM_VERSION = "UNKNOWN_CODESYSTEM_VERSION";
+  public static final String UNKNOWN_CODESYSTEM_VERSION_NONE = "UNKNOWN_CODESYSTEM_VERSION_NONE";
   public static final String UNKNOWN_CODE_IN = "Unknown_Code_in";
   public static final String UNKNOWN_CODE_IN_FRAGMENT = "UNKNOWN_CODE_IN_FRAGMENT";
   public static final String UNKNOWN_CODE_IN_VERSION = "Unknown_Code_in_Version";
