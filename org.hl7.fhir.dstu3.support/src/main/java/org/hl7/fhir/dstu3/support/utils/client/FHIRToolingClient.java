@@ -83,7 +83,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
 
   //Pass endpoint for client - URI
   public FHIRToolingClient(String baseServiceUrl, String userAgent) throws URISyntaxException {
-    preferredResourceFormat = ResourceFormat.RESOURCE_XML;
+    preferredResourceFormat = ResourceFormat.RESOURCE_JSON;
     this.userAgent = userAgent;
     this.allowedVersions = supportableVersions();
     initialize(baseServiceUrl);
