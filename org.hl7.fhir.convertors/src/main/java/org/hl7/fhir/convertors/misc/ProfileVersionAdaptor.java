@@ -88,7 +88,6 @@ public class ProfileVersionAdaptor {
       return null; // didn't convert successfully
     }
     sd.setFhirVersion(FHIRVersion.fromCode(tCtxt.getVersion()));
-
     sd.setSnapshot(null);
 
     // first pass, targetProfiles
@@ -459,7 +458,11 @@ public class ProfileVersionAdaptor {
     if (sd == null) {
       StructureDefinition ssd = sCtxt.fetchTypeDefinition(base);
       if (ssd != null && ssd.getKind() == StructureDefinitionKind.RESOURCE) {
-        return "Basic";
+        if ("CanonicalResource".equals(base)) {
+          return "CanonicalResource";
+        } else {
+          return "Basic";
+        }
       } else if (ssd != null && ssd.getKind() == StructureDefinitionKind.COMPLEXTYPE) {
         return null;
       } else {
