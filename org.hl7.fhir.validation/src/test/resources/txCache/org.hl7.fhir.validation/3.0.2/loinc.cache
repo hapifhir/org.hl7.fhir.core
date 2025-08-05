@@ -228,7 +228,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -256,7 +255,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -283,7 +281,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -314,7 +311,6 @@ v: {
   "error" : "Wrong Display Name 'Allergies' for http://loinc.org#48765-2. Valid display is one of 3 choices: 'Allergies and adverse reactions Document' (en-US), 'Allergies and adverse reactions Document' (en-US) or 'Allergies &or adverse reactions Doc' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -363,7 +359,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -391,7 +386,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -419,7 +413,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -447,7 +440,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -475,7 +467,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -503,7 +494,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -531,7 +521,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -562,7 +551,6 @@ v: {
   "error" : "Wrong Display Name 'Plan of care' for http://loinc.org#18776-5. Valid display is one of 4 choices: 'Plan of care note' (en-US), 'Plan of care note' (en-US), 'Plan of care note' (en-US) or 'Y' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -611,7 +599,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -639,7 +626,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -670,7 +656,6 @@ v: {
   "error" : "Wrong Display Name 'Review of systems Narrative Reporte' for http://loinc.org#10187-3. Valid display is one of 3 choices: 'Review of systems Narrative - Reported' (en-US), 'Review of systems Narrative - Reported' (en-US) or 'Review of systems' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -722,7 +707,6 @@ v: {
   "error" : "Wrong Display Name 'Administrative information' for http://loinc.org#87504-7. Valid display is one of 2 choices: 'LCDS v4.00 - Administrative information - discharge during assessment period [CMS Assessment]' (en-US) or 'LCDS v4.00 - Administrative information - discharge during assessment period [CMS Assessment]' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -768,6 +752,61 @@ v: {
 v: {
   "display" : "Chloride [Moles/volume] in Blood",
   "code" : "2069-3",
+  "system" : "http://loinc.org",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "29463-7",
+  "display" : "Body Weight"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Body weight",
+  "code" : "29463-7",
+  "system" : "http://loinc.org",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3141-9",
+  "display" : "Body weight Measured"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Body weight Measured",
+  "code" : "3141-9",
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r3",
