@@ -845,7 +845,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         if (path.contains(".")) {
           ok = required(errors, stack,  "specialization", element, "min", "max") && ok;
           ok = prohibited(errors, stack,  "specialization", element, "sliceName", /* allowed in element on .extension "slicing", */
-              "fixed", "pattern", "minValue", "maxValue", "maxLength") && ok;
+              "fixed", "pattern", "minValue", "maxValue") && ok; // "maxLength" - was prohibited, but it's used like this in the core spec.
         } else {
           ok = prohibited(errors, stack,  "specialization", element, "sliceName", "slicing", "requirements", "nameReference", "defaultValue", "fixed", "pattern", "example", "minValue", "maxValue"/*, "maxLength"*/) && ok;
         }      
