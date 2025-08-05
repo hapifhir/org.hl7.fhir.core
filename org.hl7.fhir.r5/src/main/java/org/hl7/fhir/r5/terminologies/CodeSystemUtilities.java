@@ -64,6 +64,8 @@ import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
+import javax.annotation.Nonnull;
+
 @Slf4j
 public class CodeSystemUtilities extends TerminologyUtilities {
 
@@ -168,7 +170,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
       return false;
     }
 
-    public List<ConceptDefinitionComponent> getConcepts(ConceptDefinitionComponent context) {
+    public List<ConceptDefinitionComponent> getConcepts(@Nonnull ConceptDefinitionComponent context) {
       if (context == null) {
         if (restructure) {
           List<ConceptDefinitionComponent> res = new ArrayList<>();
@@ -212,7 +214,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
       return codes;
     }
 
-    public List<ConceptDefinitionComponent> getOtherChildren(ConceptDefinitionComponent context) {
+    public List<ConceptDefinitionComponent> getOtherChildren(@Nonnull ConceptDefinitionComponent context) {
       List<ConceptDefinitionComponent> res = new ArrayList<>();
       for (ConceptDefinitionComponent cd : cs.getConcept()) {
         if (getSubsumedBy(cd).contains(context.getCode()) && processed.contains(cd.getCode())) {
@@ -224,7 +226,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
 
-  public static boolean isNotSelectable(CodeSystem cs, ConceptDefinitionComponent def) {
+  public static boolean isNotSelectable(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent def) {
     String pd = getPropertyByUrl(cs, "http://hl7.org/fhir/concept-properties#notSelectable");
     if (pd == null) {
       pd = "notSelectable";
@@ -236,12 +238,12 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return false;
   }
 
-  public static boolean isNotSelectable(CodeSystem cs, String code) {
+  public static boolean isNotSelectable(@Nonnull CodeSystem cs, @Nonnull String code) {
     ConceptDefinitionComponent cd = findCode(cs.getConcept(), code);
     return cd == null ? false : isNotSelectable(cs, cd);
   }
 
-  public static void setNotSelectable(CodeSystem cs, ConceptDefinitionComponent concept) throws FHIRFormatError {
+  public static void setNotSelectable(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent concept) throws FHIRFormatError {
     defineNotSelectableProperty(cs);
     ConceptPropertyComponent p = getProperty(concept, "notSelectable");
     if (p != null)
@@ -250,7 +252,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
       concept.addProperty().setCode("notSelectable").setValue(new BooleanType(true));    
   }
 
-  public static void setProperty(CodeSystem cs, ConceptDefinitionComponent concept, String code, DataType value) throws FHIRFormatError {
+  public static void setProperty(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent concept, @Nonnull String code, @Nonnull DataType value) throws FHIRFormatError {
     defineProperty(cs, code, propertyTypeForValue(value));
     ConceptPropertyComponent p = getProperty(concept,  code);
     if (p != null)
@@ -259,7 +261,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
       concept.addProperty().setCode(code).setValue(value);    
   }
   
-  public static void setProperty(CodeSystem cs, ConceptDefinitionComponent concept, String url, String code, DataType value) throws FHIRFormatError {
+  public static void setProperty(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent concept, @Nonnull String url, @Nonnull String code, @Nonnull DataType value) throws FHIRFormatError {
     defineProperty(cs, code, propertyTypeForValue(value), url);
     ConceptPropertyComponent p = getProperty(concept,  code);
     if (p != null)
@@ -314,7 +316,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return code;
   }
 
-  public static void defineNotSelectableProperty(CodeSystem cs) {
+  public static void defineNotSelectableProperty(@Nonnull CodeSystem cs) {
     defineCodeSystemProperty(cs, "notSelectable", "Indicates that the code is abstract - only intended to be used as a selector for other concepts", PropertyType.BOOLEAN);
   }
 
@@ -333,7 +335,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     }
   }
 
-  public static void setStatus(CodeSystem cs, ConceptDefinitionComponent concept, ConceptStatus status) throws FHIRFormatError {
+  public static void setStatus(@Nonnull CodeSystem cs, ConceptDefinitionComponent concept, ConceptStatus status) throws FHIRFormatError {
     defineStatusProperty(cs);
     ConceptPropertyComponent p = getProperty(concept, "status");
     if (p != null)
@@ -342,7 +344,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
       concept.addProperty().setCode("status").setValue(new CodeType(status.toCode()));    
   }
 
-  public static void defineStatusProperty(CodeSystem cs) {
+  public static void defineStatusProperty(@Nonnull CodeSystem cs) {
     defineCodeSystemProperty(cs, "status", "A property that indicates the status of the concept. One of active, experimental, deprecated, retired", PropertyType.CODE);
   }
 
@@ -350,15 +352,15 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     defineCodeSystemProperty(cs, "deprecationDate", "The date at which a concept was deprecated. Concepts that are deprecated but not inactive can still be used, but their use is discouraged", PropertyType.DATETIME);
   }
 
-  public static void defineParentProperty(CodeSystem cs) {
+  public static void defineParentProperty(@Nonnull CodeSystem cs) {
     defineCodeSystemProperty(cs, "parent", "The concept identified in this property is a parent of the concept on which it is a property. The property type will be 'code'. The meaning of parent/child relationships is defined by the hierarchyMeaning attribute", PropertyType.CODE);
   }
 
-  public static void defineChildProperty(CodeSystem cs) {
+  public static void defineChildProperty(@Nonnull CodeSystem cs) {
     defineCodeSystemProperty(cs, "child", "The concept identified in this property is a child of the concept on which it is a property. The property type will be 'code'. The meaning of parent/child relationships is defined by the hierarchyMeaning attribute", PropertyType.CODE);
   }
 
-  public static boolean isDeprecated(CodeSystem cs, ConceptDefinitionComponent def, boolean ignoreStatus)  {
+  public static boolean isDeprecated(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent def, boolean ignoreStatus)  {
     try {
       for (ConceptPropertyComponent p : def.getProperty()) {
         if (!ignoreStatus) {
@@ -382,7 +384,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     }
   }
 
-  public static boolean isInactive(CodeSystem cs, ConceptDefinitionComponent def, boolean ignoreStatus)  {
+  public static boolean isInactive(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent def, boolean ignoreStatus)  {
     try {
       for (ConceptPropertyComponent p : def.getProperty()) {
         if (!ignoreStatus) {
@@ -399,18 +401,18 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     }
   }
 
-  public static void setDeprecated(CodeSystem cs, ConceptDefinitionComponent concept, DateTimeType date) throws FHIRFormatError {
+  public static void setDeprecated(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent concept, @Nonnull DateTimeType date) throws FHIRFormatError {
     setStatus(cs, concept, ConceptStatus.Deprecated);
     defineDeprecatedProperty(cs);
     concept.addProperty().setCode("deprecationDate").setValue(date);    
   }
 
 
-  public static void setDeprecated(CodeSystem cs, ConceptDefinitionComponent concept) throws FHIRFormatError {
+  public static void setDeprecated(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent concept) throws FHIRFormatError {
     setStatus(cs, concept, ConceptStatus.Deprecated);
   }
   
-  public static boolean isInactive(CodeSystem cs, ConceptDefinitionComponent def) throws FHIRException {
+  public static boolean isInactive(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent def) throws FHIRException {
     StandardsStatus ss = ExtensionUtilities.getStandardsStatus(def);
     if (ss == StandardsStatus.DEPRECATED || ss == StandardsStatus.WITHDRAWN) {
       return true;
@@ -430,7 +432,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return false;
   }
   
-  public static boolean isInactive(CodeSystem cs, String code) throws FHIRException {
+  public static boolean isInactive(@Nonnull CodeSystem cs, @Nonnull String code) throws FHIRException {
     if (cs.hasUserData(UserDataNames.tx_cs_special)) {
       SpecialCodeSystem scs = (SpecialCodeSystem) cs.getUserData(UserDataNames.tx_cs_special);
       return scs.inactive(code);
@@ -441,7 +443,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return isInactive(cs, def);
   }
 
-  public static void defineCodeSystemProperty(CodeSystem cs, String code, String description, PropertyType type) {
+  public static void defineCodeSystemProperty(@Nonnull CodeSystem cs, @Nonnull String code, @Nonnull String description, @Nonnull PropertyType type) {
     for (PropertyComponent p : cs.getProperty()) {
       if (p.hasCode() && p.getCode().equals(code))
         return;
@@ -449,7 +451,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     cs.addProperty().setCode(code).setDescription(description).setType(type).setUri("http://hl7.org/fhir/concept-properties#"+code);
   }
 
-  public static String getCodeDefinition(CodeSystem cs, String code) {
+  public static String getCodeDefinition(@Nonnull CodeSystem cs, @Nonnull String code) {
     return getCodeDefinition(cs.getConcept(), code);
   }
 
@@ -464,7 +466,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return null;
   }
 
-  public static CodeSystem makeShareable(CodeSystem cs) {
+  public static CodeSystem makeShareable(@Nonnull CodeSystem cs) {
     if (!cs.hasExperimental()) {
       cs.setExperimental(false);
     }
@@ -478,7 +480,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return cs;
   }
 
-  public static boolean checkMakeShareable(CodeSystem cs) {
+  public static boolean checkMakeShareable(@Nonnull CodeSystem cs) {
     boolean changed = false;
     if (!cs.hasExperimental()) {
       cs.setExperimental(false);
@@ -494,7 +496,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return true;
   }
 
-  public static void setOID(CodeSystem cs, String oid) {
+  public static void setOID(@Nonnull CodeSystem cs, @Nonnull String oid) {
     if (!oid.startsWith("urn:oid:"))
        oid = "urn:oid:" + oid;
     if (!cs.hasIdentifier())
@@ -506,17 +508,17 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     
   }
 
-  public static boolean hasOID(CanonicalResource cs) {
+  public static boolean hasOID(@Nonnull CanonicalResource cs) {
     return getOID(cs) != null;
   }
 
-  public static String getOID(CanonicalResource cs) {
+  public static String getOID(@Nonnull CanonicalResource cs) {
     if (cs != null && cs.hasIdentifier() && "urn:ietf:rfc:3986".equals(cs.getIdentifierFirstRep().getSystem()) && cs.getIdentifierFirstRep().hasValue() && cs.getIdentifierFirstRep().getValue().startsWith("urn:oid:"))
         return cs.getIdentifierFirstRep().getValue().substring(8);
     return null;
   }
 
-  public static ConceptDefinitionComponent findCode(List<ConceptDefinitionComponent> list, String code) {
+  public static ConceptDefinitionComponent findCode(@Nonnull List<ConceptDefinitionComponent> list, @Nonnull String code) {
     for (ConceptDefinitionComponent c : list) {
       if (c.hasCode() && c.getCode().equals(code))
         return c;
@@ -528,7 +530,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
 
-  public static List<ConceptDefinitionComponent> findCodeWithParents(List<ConceptDefinitionComponent> parents, List<ConceptDefinitionComponent> list, String code) {
+  public static List<ConceptDefinitionComponent> findCodeWithParents(@Nonnull List<ConceptDefinitionComponent> parents, @Nonnull List<ConceptDefinitionComponent> list, @Nonnull String code) {
     for (ConceptDefinitionComponent c : list) {
       if (c.hasCode() && c.getCode().equals(code)) {
         return addToList(parents, c);
@@ -549,7 +551,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return res;
   }
 
-  public static ConceptDefinitionComponent findCodeOrAltCode(List<ConceptDefinitionComponent> list, String code, String use) {
+  public static ConceptDefinitionComponent findCodeOrAltCode(@Nonnull List<ConceptDefinitionComponent> list, @Nonnull String code, @Nonnull String use) {
     for (ConceptDefinitionComponent c : list) {
       if (c.hasCode() && c.getCode().equals(code))
         return c;
@@ -574,7 +576,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return false;
   }
 
-  public static void markStatus(CodeSystem cs, String wg, StandardsStatus status, String pckage, String fmm, String normativeVersion) throws FHIRException {
+  public static void markStatus(@Nonnull CodeSystem cs, String wg, StandardsStatus status, String pckage, String fmm, String normativeVersion) throws FHIRException {
     if (wg != null) {
       if (!ExtensionUtilities.hasExtension(cs, ExtensionDefinitions.EXT_WORKGROUP) || 
           (Utilities.existsInList(ExtensionUtilities.readStringExtension(cs, ExtensionDefinitions.EXT_WORKGROUP), "fhir", "vocab") && !Utilities.existsInList(wg, "fhir", "vocab"))) {
@@ -605,21 +607,21 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
  
-  public static DataType readProperty(ConceptDefinitionComponent concept, String code) {
+  public static DataType readProperty(@Nonnull ConceptDefinitionComponent concept, @Nonnull String code) {
     for (ConceptPropertyComponent p : concept.getProperty())
       if (p.hasCode() && p.getCode().equals(code))
         return p.getValue(); 
     return null;
   }
 
-  public static ConceptPropertyComponent getProperty(ConceptDefinitionComponent concept, String code) {
+  public static ConceptPropertyComponent getProperty(@Nonnull ConceptDefinitionComponent concept, @Nonnull String code) {
     for (ConceptPropertyComponent p : concept.getProperty())
       if (p.hasCode() && p.getCode().equals(code))
         return p; 
     return null;
   }
   
-  public static List<ConceptPropertyComponent> getPropertyValues(ConceptDefinitionComponent concept, String code) {
+  public static List<ConceptPropertyComponent> getPropertyValues(@Nonnull ConceptDefinitionComponent concept, @Nonnull String code) {
     List<ConceptPropertyComponent> res = new ArrayList<>();
     if (code != null) {
       for (ConceptPropertyComponent p : concept.getProperty()) {
@@ -633,7 +635,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
 
   // see http://hl7.org/fhir/R4/codesystem.html#hierachy
   // returns additional parents not in the hierarchy
-  public static List<String> getOtherChildren(CodeSystem cs, ConceptDefinitionComponent c) {
+  public static List<String> getOtherChildren(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent c) {
     List<String> res = new ArrayList<String>();
     for (ConceptPropertyComponent p : c.getProperty()) {
       if ("parent".equals(p.getCode())) {
@@ -644,12 +646,12 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
   // see http://hl7.org/fhir/R4/codesystem.html#hierachy
-  public static void addOtherChild(CodeSystem cs, ConceptDefinitionComponent owner, String code) {
+  public static void addOtherChild(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent owner, @Nonnull String code) {
     defineChildProperty(cs);
     owner.addProperty().setCode("child").setValue(new CodeType(code));
   }
 
-  public static boolean hasProperty(ConceptDefinitionComponent c, String code) {
+  public static boolean hasProperty(@Nonnull ConceptDefinitionComponent c, @Nonnull String code) {
     for (ConceptPropertyComponent cp : c.getProperty()) {
       if (code.equals(cp.getCode())) {
         return true;
@@ -658,7 +660,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return false;
   }
 
-  public static String getProperty(CodeSystem cs, ConceptDefinitionComponent c, String uri, String code) {
+  public static String getProperty(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent c, @Nonnull String uri, @Nonnull String code) {
     for (ConceptPropertyComponent cp : c.getProperty()) {
       if (code.equals(cp.getCode())) {
         return cp.getValue().primitiveValue();
@@ -675,7 +677,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return null;
   }
 
-  public static boolean hasProperty(CodeSystem cs, ConceptDefinitionComponent c, String uri, String code) {
+  public static boolean hasProperty(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent c, @Nonnull String uri, @Nonnull String code) {
     for (ConceptPropertyComponent cp : c.getProperty()) {
       if (code.equals(cp.getCode())) {
         return true;
@@ -689,7 +691,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return false;
   }
 
-  public static boolean hasCode(CodeSystem cs, String code) {
+  public static boolean hasCode(@Nonnull CodeSystem cs, @Nonnull String code) {
     for (ConceptDefinitionComponent cc : cs.getConcept()) {
       if (hasCode(cc, code)) {
         return true;
@@ -698,7 +700,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return false;
   }
 
-  private static boolean hasCode(ConceptDefinitionComponent cc, String code) {
+  private static boolean hasCode(@Nonnull ConceptDefinitionComponent cc, @Nonnull String code) {
     if (code.equals(cc.getCode())) {
       return true;
     }
@@ -710,10 +712,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return false;
   }
 
-  public static ConceptDefinitionComponent getCode(CodeSystem cs, String code) {
-    if (code == null) {
-      return null;
-    }
+  public static ConceptDefinitionComponent getCode(@Nonnull CodeSystem cs, @Nonnull String code) {
     for (ConceptDefinitionComponent cc : cs.getConcept()) {
       ConceptDefinitionComponent cd = getCode(cc, code);
       if (cd != null) {
@@ -723,7 +722,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return null;
   }
 
-  private static ConceptDefinitionComponent getCode(ConceptDefinitionComponent cc, String code) {
+  private static ConceptDefinitionComponent getCode(@Nonnull ConceptDefinitionComponent cc, @Nonnull String code) {
     if (code.equals(cc.getCode())) {
       return cc;
     }
@@ -736,14 +735,14 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return null;
   }
 
-  public static void crossLinkCodeSystem(CodeSystem cs) {
+  public static void crossLinkCodeSystem(@Nonnull CodeSystem cs) {
     String parent = getPropertyByUrl(cs, "http://hl7.org/fhir/concept-properties#parent");
     if ((parent != null)) {
       crossLinkConcepts(cs.getConcept(), cs.getConcept(), parent);
     }
   }
 
-  private static String getPropertyByUrl(CodeSystem cs, String url) {
+  private static String getPropertyByUrl(@Nonnull CodeSystem cs, String url) {
     for (PropertyComponent pc : cs.getProperty()) {
       if (url.equals(pc.getUri())) {
         return pc.getCode();
@@ -772,7 +771,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     
   }
 
-  public static boolean hasHierarchy(CodeSystem cs) {
+  public static boolean hasHierarchy(@Nonnull CodeSystem cs) {
     for (ConceptDefinitionComponent c : cs.getConcept()) {
       if (c.hasConcept()) {
         return true;
@@ -781,7 +780,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return false;
   }
 
-  public static void sortAllCodes(CodeSystem cs) {
+  public static void sortAllCodes(@Nonnull CodeSystem cs) {
     sortAllCodes(cs.getConcept());
   }
 
@@ -820,11 +819,11 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return null;
   }
 
-  public static boolean isNotCurrent(CodeSystem cs, ConceptDefinitionComponent c) {
+  public static boolean isNotCurrent(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent c) {
     return isInactive(cs, c) || isDeprecated(cs, c, false);
   }
 
-  public static List<String> getDisplays(CodeSystem srcCS, ConceptDefinitionComponent cd) {
+  public static List<String> getDisplays(@Nonnull CodeSystem srcCS, @Nonnull ConceptDefinitionComponent cd) {
     List<String> list = new ArrayList<>();
     if (cd.hasDisplay()) {
       list.add(cd.getDisplay());
@@ -837,7 +836,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return list;
   }
 
-  public static boolean checkDisplay(CodeSystem cs, ConceptDefinitionComponent cd, String display) {
+  public static boolean checkDisplay(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent cd, @Nonnull String display) {
     List<String> displays = getDisplays(cs, cd);
     for (String s : displays) {
       if (s.equalsIgnoreCase(display)) {
@@ -847,7 +846,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return false;
   }
 
-  public static int countCodes(CodeSystem cs) {
+  public static int countCodes(@Nonnull CodeSystem cs) {
     return countCodes(cs.getConcept());
   }
 
@@ -859,7 +858,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return t;
   }
 
-  public static CodeSystem mergeSupplements(CodeSystem cs, List<CodeSystem> supplements) {
+  public static CodeSystem mergeSupplements(@Nonnull CodeSystem cs, @Nonnull List<CodeSystem> supplements) {
     CodeSystem ret = cs.copy();
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (CodeSystem sup : supplements) {
@@ -955,7 +954,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return null;
   }
 
-  public static boolean hasProperties(CodeSystem cs) {
+  public static boolean hasProperties(@Nonnull CodeSystem cs) {
     return hasProperties(cs.getConcept());
   }
 
@@ -968,7 +967,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return false;
   }
 
-  public static boolean hasDesignations(CodeSystem cs) {
+  public static boolean hasDesignations(@Nonnull CodeSystem cs) {
     return hasDesignations(cs.getConcept());
   }
 
@@ -981,7 +980,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return false;
   }
 
-  public static boolean hasPropertyDef(CodeSystem cs, String property) {
+  public static boolean hasPropertyDef(@Nonnull CodeSystem cs, @Nonnull String property) {
     
     for (PropertyComponent pd : cs.getProperty()) {
       if (pd.hasCode() && pd.getCode().equals(property)) {
@@ -991,12 +990,12 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return false;
   }
 
-  public static DataType getProperty(CodeSystem cs, String code, String property) {
+  public static DataType getProperty(@Nonnull CodeSystem cs, @Nonnull String code, @Nonnull String property) {
     ConceptDefinitionComponent def = getCode(cs, code);
     return getProperty(cs, def, property);
   }
   
-  public static DataType getProperty(CodeSystem cs, ConceptDefinitionComponent def, String property) {
+  public static DataType getProperty(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent def, @Nonnull String property) {
     PropertyComponent defn = getPropertyDefinition(cs, property);
     if (defn != null) {
       property = defn.getCode();
@@ -1005,7 +1004,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return cp == null ? null : cp.getValue();
   }
 
-  public static boolean hasMarkdownInDefinitions(CodeSystem cs, MarkDownProcessor md) {
+  public static boolean hasMarkdownInDefinitions(@Nonnull CodeSystem cs, @Nonnull MarkDownProcessor md) {
     return hasMarkdownInDefinitions(cs.getConcept(), md);
   }
 
@@ -1021,7 +1020,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return false;
   }
 
-  public static String getStatus(CodeSystem cs, ConceptDefinitionComponent cc) {
+  public static String getStatus(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent cc) {
     StandardsStatus ss = ExtensionUtilities.getStandardsStatus(cc);
     if (ss == StandardsStatus.DEPRECATED || ss == StandardsStatus.WITHDRAWN) {
       return ss.toCode();
@@ -1034,7 +1033,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     }
   }
 
-  public static Boolean subsumes(CodeSystem cs, String pc, String cc) {
+  public static Boolean subsumes(@Nonnull CodeSystem cs, @Nonnull String pc, @Nonnull String cc) {
     if (pc.equals(cc)) {
       return true;
     }
@@ -1047,7 +1046,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return false;
   }
 
-  public static Set<String> codes(CodeSystem cs) {
+  public static Set<String> codes(@Nonnull CodeSystem cs) {
     Set<String> res = new HashSet<>();
     addCodes(res, cs.getConcept());
     return res;
@@ -1071,7 +1070,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
    * @param property
    * @return
    */
-  public static PropertyComponent getPropertyDefinition(CodeSystem cs, String property) {
+  public static PropertyComponent getPropertyDefinition(@Nonnull CodeSystem cs, @Nonnull String property) {
     String uri = getStandardPropertyUri(property);
     if (uri != null) {
       for (PropertyComponent cp : cs.getProperty()) {
@@ -1088,7 +1087,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return null;
   }
 
-  public static boolean isDefinedProperty(CodeSystem cs, String property) {
+  public static boolean isDefinedProperty(@Nonnull CodeSystem cs, @Nonnull String property) {
     String uri = getStandardPropertyUri(property);
     if (uri != null) {
       for (PropertyComponent cp : cs.getProperty()) {
@@ -1128,7 +1127,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return Utilities.existsInList(url, "http://snomed.info/sct", "http://loinc.org");
   }
 
-  public static PropertyComponent getPropertyByUri(CodeSystem cs, String uri) {
+  public static PropertyComponent getPropertyByUri(@Nonnull CodeSystem cs, @Nonnull String uri) {
     for (PropertyComponent t : cs.getProperty()) {
       if (uri.equals(t.getUri())) {
         return t;
@@ -1137,7 +1136,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return null;
   }
 
-  public static CodeSystem convertSD(StructureDefinition sd) {
+  public static CodeSystem convertSD(@Nonnull StructureDefinition sd) {
     CodeSystem cs = new CodeSystem();
     cs.setId(sd.getId());
     cs.setUrl(sd.getUrl());
@@ -1153,16 +1152,16 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return cs;
   }
 
-  public static boolean hasCSComments(CodeSystem cs, ConceptDefinitionComponent c) {
+  public static boolean hasCSComments(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent c) {
     return hasProperty(cs, c, "http://hl7.org/fhir/concept-properties#comments", "comments");
   }
 
 
-  public static String getCSComments(CodeSystem cs, ConceptDefinitionComponent c) {
+  public static String getCSComments(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent c) {
     return getProperty(cs, c, "http://hl7.org/fhir/concept-properties#comments", "comments");
   }
 
-  public static void addCSComments(CodeSystem cs, ConceptDefinitionComponent cc, String comments) {
+  public static void addCSComments(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent cc, @Nonnull String comments) {
     String code = "comments";
 
     for (PropertyComponent p : cs.getProperty()) {

@@ -65,7 +65,6 @@ import org.slf4j.LoggerFactory;
 @Slf4j
 public class Property {
 
-  private static final Logger log = LoggerFactory.getLogger(Property.class);
   private IWorkerContext context;
 	private ElementDefinition definition;
 	private StructureDefinition structure;
