@@ -984,6 +984,26 @@ public class ExtensionUtilities {
       dr.getExtension().add(Factory.newExtension(url, new UriType(value), true));
   }
 
+
+  public static void addCanonicalExtension(Element e, String url, String content) {
+    if (!StringUtils.isBlank(content)) {
+      Extension ex = getExtension(e, url);
+      if (ex != null)
+        ex.setValue(new CanonicalType(content));
+      else
+        e.getExtension().add(Factory.newExtension(url, new CanonicalType(content), true));
+    }
+  }
+
+  public static void addCanonicalExtension(DomainResource dr, String url, String value) {
+    Extension ex = getExtension(dr, url);
+    if (ex != null)
+      ex.setValue(new CanonicalType(value));
+    else
+      dr.getExtension().add(Factory.newExtension(url, new CanonicalType(value), true));
+  }
+
+
   public static boolean usesExtension(String url, Base base) {
     if ("Extension".equals(base.fhirType())) {
       Property p = base.getNamedProperty("url");
