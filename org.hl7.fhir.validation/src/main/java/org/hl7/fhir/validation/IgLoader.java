@@ -514,7 +514,7 @@ public class IgLoader implements IValidationEngineLoader {
       version = src.substring(src.indexOf("#") + 1);
     }
     if (version == null) {
-      version = getPackageCacheManager().getLatestVersion(id);
+      version = getPackageCacheManager().getLatestVersion(id, false);
     }
     if (version == null) {
       pi = getPackageCacheManager().loadPackageFromCacheOnly(id);
@@ -665,7 +665,7 @@ public class IgLoader implements IValidationEngineLoader {
       version = src.substring(src.indexOf("#") + 1);
     }
     if (version == null) {
-      version = getPackageCacheManager().getLatestVersion(id);
+      version = getPackageCacheManager().getLatestVersion(id, false);
     }
     NpmPackage pi = null;
     if (version == null) {

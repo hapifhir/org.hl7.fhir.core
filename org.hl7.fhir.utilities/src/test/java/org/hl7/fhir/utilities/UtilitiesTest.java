@@ -425,5 +425,18 @@ class UtilitiesTest {
     assertThat(actual.get(0).getName()).isEqualTo(key);
     assertThat(actual.get(0).getValue()).isEqualTo(value);
   }
+
+  @Test
+  void testAppendStringArray() {
+    String[] a = new String[] {"A", "B"};
+    String[] b = new String[] {"C", "D", "E"};
+    String[] result = Utilities.concatStringArray(a, b);
+    assertThat(result).hasSize(5);
+    assertThat(result[0]).isEqualTo("A");
+    assertThat(result[1]).isEqualTo("B");
+    assertThat(result[2]).isEqualTo("C");
+    assertThat(result[3]).isEqualTo("D");
+    assertThat(result[4]).isEqualTo("E");
+  }
 }
 
