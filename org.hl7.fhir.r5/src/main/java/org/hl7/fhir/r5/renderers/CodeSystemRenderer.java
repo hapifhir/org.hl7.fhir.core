@@ -271,7 +271,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
     List<String> langs = new ArrayList<>();
     for (ConceptDefinitionComponent c : cs.getConcept()) {
-      commentS = commentS || conceptsHaveComments(c);
+      commentS = commentS || conceptsHaveComments(cs, c);
       deprecated = deprecated || conceptsHaveDeprecated(cs, c, ignoreStatus);
       display = display || conceptsHaveDisplay(c);
       version = version || conceptsHaveVersion(c);
@@ -411,11 +411,11 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     return count;
   }
   
-  private boolean conceptsHaveComments(ConceptDefinitionComponent c) {
-    if (ExtensionUtilities.hasCSComment(c))
+  private boolean conceptsHaveComments(CodeSystem cs, ConceptDefinitionComponent c) {
+    if (CodeSystemUtilities.hasCSComments(cs, c))
       return true;
     for (ConceptDefinitionComponent g : c.getConcept())
-      if (conceptsHaveComments(g))
+      if (conceptsHaveComments(cs, g))
         return true;
     return false;
   }

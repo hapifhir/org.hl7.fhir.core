@@ -658,6 +658,37 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return false;
   }
 
+  public static String getProperty(CodeSystem cs, ConceptDefinitionComponent c, String uri, String code) {
+    for (ConceptPropertyComponent cp : c.getProperty()) {
+      if (code.equals(cp.getCode())) {
+        return cp.getValue().primitiveValue();
+      }
+    }
+    for (PropertyComponent p : cs.getProperty()) {
+      if (uri.equals(p.getUri())) {
+        var t = getProperty(c, p.getCode());
+        if (t != null) {
+          return t.primitiveValue();
+        }
+      }
+    }
+    return null;
+  }
+
+  public static boolean hasProperty(CodeSystem cs, ConceptDefinitionComponent c, String uri, String code) {
+    for (ConceptPropertyComponent cp : c.getProperty()) {
+      if (code.equals(cp.getCode())) {
+        return true;
+      }
+    }
+    for (PropertyComponent p : cs.getProperty()) {
+      if (uri.equals(p.getUri())) {
+        return hasProperty(c, p.getCode());
+      }
+    }
+    return false;
+  }
+
   public static boolean hasCode(CodeSystem cs, String code) {
     for (ConceptDefinitionComponent cc : cs.getConcept()) {
       if (hasCode(cc, code)) {
@@ -1120,6 +1151,26 @@ public class CodeSystemUtilities extends TerminologyUtilities {
       ed.setDefinition(ed.getDefinition());
     }
     return cs;
+  }
+
+  public static boolean hasCSComments(CodeSystem cs, ConceptDefinitionComponent c) {
+    return hasProperty(cs, c, "http://hl7.org/fhir/concept-properties#comments", "comments");
+  }
+
+
+  public static String getCSComments(CodeSystem cs, ConceptDefinitionComponent c) {
+    return getProperty(cs, c, "http://hl7.org/fhir/concept-properties#comments", "comments");
+  }
+
+  public static void addCSComments(CodeSystem cs, ConceptDefinitionComponent cc, String comments) {
+    String code = "comments";
+
+    for (PropertyComponent p : cs.getProperty()) {
+      if ("http://hl7.org/fhir/concept-properties#comments".equals(p.getUri())) {
+        code = p.getCode();
+      }
+    }
+    setProperty(cs, cc, code, new StringType(comments));
   }
 
 }
