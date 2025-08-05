@@ -1,0 +1,52 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://terminology.hl7.org/CodeSystem/v2-0360|2.7",
+  "code" : "BS",
+  "display" : "Bachelor of Science"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "BS",
+  "system" : "http://terminology.hl7.org/CodeSystem/v2-0360",
+  "version" : "2.7",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://terminology.hl7.org/CodeSystem/v2-0360|2.7' could not be found, so the code cannot be validated",
+  "class" : "CODESYSTEM_UNSUPPORTED_VERSION",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://terminology.hl7.org/CodeSystem/v2-0360|2.7' could not be found, so the code cannot be validated"
+    },
+    "location" : ["Coding.system"],
+    "expression" : ["Coding.system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------

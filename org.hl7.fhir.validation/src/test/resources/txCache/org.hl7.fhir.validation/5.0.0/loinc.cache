@@ -19,7 +19,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -49,7 +48,6 @@ v: {
   "error" : "The provided code 'http://loinc.org#100066-0' was not found in the value set 'http://hl7.org/fhir/test/StructureDefinition/additional-bindings-vs1--0|1.0.0'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -98,7 +96,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -126,7 +123,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -154,7 +150,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -181,7 +176,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -208,7 +202,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -235,7 +228,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -264,7 +256,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -291,7 +282,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -323,7 +313,6 @@ v: {
   "error" : "Wrong Display Name 'Allergies and adverse reactions' for http://loinc.org#48765-2. Valid display is one of 3 choices: 'Allergies and adverse reactions Document' (en-US), 'Allergies and adverse reactions Document' (en-US) or 'Allergies &or adverse reactions Doc' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -373,7 +362,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -400,7 +388,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -432,7 +419,6 @@ v: {
   "error" : "Wrong Display Name 'Allergies and adverse reactions' for http://loinc.org#48765-2. Valid display is one of 3 choices: 'Allergies and adverse reactions Document' (en-US), 'Allergies and adverse reactions Document' (en-US) or 'Allergies &or adverse reactions Doc' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -480,7 +466,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -507,7 +492,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -534,7 +518,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -565,7 +548,6 @@ v: {
   "error" : "Wrong Display Name 'Ingeademde zuurstof [volume/tijd] in geïnhaleerd gas' for http://loinc.org#3151-8. Valid display is one of 4 choices: 'Inhaled oxygen flow rate' (en-US), 'Inhaled oxygen flow rate' (en-US), 'Inhaled O2 flow rate' (en-US) or 'Inhaled oxygen' (en-US) (for the language(s) 'en')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -614,7 +596,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -642,7 +623,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -669,7 +649,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -696,7 +675,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -727,7 +705,6 @@ v: {
   "error" : "Wrong Display Name 'Cholesterol [Moles/​volume] in Serum or Plasma' for http://loinc.org#35200-5. Valid display is one of 4 choices: 'Cholesterol [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Cholesterol [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Cholest SerPl-msCnc' (en-US) or 'Cholesterol, Blood' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -776,7 +753,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -804,7 +780,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -831,7 +806,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -859,7 +833,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -890,7 +863,6 @@ v: {
   "error" : "Wrong Display Name 'Triglyceride [Moles/​volume] in Serum or Plasma' for http://loinc.org#35217-9. Valid display is one of 4 choices: 'Triglyceride [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Triglyceride [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Trigl SerPl-msCnc' (en-US) or 'Triglyceride, Blood' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -938,7 +910,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -965,9 +936,379 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.80",
   "server" : "https://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP43571-6"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "LP43571-6",
+  "system" : "http://loinc.org",
+  "severity" : "error",
+  "error" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.80'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Unknown_Code_in_Version"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.80'"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "29463-7",
+  "display" : "Body Weight"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Body weight",
+  "code" : "29463-7",
+  "system" : "http://loinc.org",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3141-9",
+  "display" : "Body weight Measured"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Body weight Measured",
+  "code" : "3141-9",
+  "system" : "http://loinc.org",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "29463-7"
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Body weight",
+  "code" : "29463-7",
+  "system" : "http://loinc.org",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3141-9"
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Body weight Measured",
+  "code" : "3141-9",
+  "system" : "http://loinc.org",
+  "version" : "2.80",
+  "severity" : "error",
+  "error" : "The provided code 'http://loinc.org#3141-9' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0|5.0.0'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code 'http://loinc.org#3141-9' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0|5.0.0'"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA6724-4",
+  "display" : "Good color all over"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Good color all over",
+  "code" : "LA6724-4",
+  "system" : "http://loinc.org",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA6718-6",
+  "display" : "At least 100 beats per minute"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "At least 100 beats per minute",
+  "code" : "LA6718-6",
+  "system" : "http://loinc.org",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA6721-0",
+  "display" : "Grimace and pulling away, cough, or sneeze during suctioning"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Grimace and pulling away, cough, or sneeze during suctioning",
+  "code" : "LA6721-0",
+  "system" : "http://loinc.org",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA6715-2",
+  "display" : "Active motion "
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Active motion",
+  "code" : "LA6715-2",
+  "system" : "http://loinc.org",
+  "version" : "2.80",
+  "severity" : "error",
+  "error" : "Wrong whitespace in Display Name 'Active motion ' for http://loinc.org#LA6715-2. Valid display is 'Active motion' (en-US) (for the language(s) 'en-US')",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Display_Name_WS_for__should_be_one_of__instead_of"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong whitespace in Display Name 'Active motion ' for http://loinc.org#LA6715-2. Valid display is 'Active motion' (en-US) (for the language(s) 'en-US')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA6727-7",
+  "display" : "Good, strong cry; normal rate and effort of breathing    "
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Good, strong cry; normal rate and effort of breathing",
+  "code" : "LA6727-7",
+  "system" : "http://loinc.org",
+  "version" : "2.80",
+  "severity" : "error",
+  "error" : "Wrong whitespace in Display Name 'Good, strong cry; normal rate and effort of breathing    ' for http://loinc.org#LA6727-7. Valid display is 'Good, strong cry; normal rate and effort of breathing' (en-US) (for the language(s) 'en-US')",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Display_Name_WS_for__should_be_one_of__instead_of"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong whitespace in Display Name 'Good, strong cry; normal rate and effort of breathing    ' for http://loinc.org#LA6727-7. Valid display is 'Good, strong cry; normal rate and effort of breathing' (en-US) (for the language(s) 'en-US')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
 }
 
 }
