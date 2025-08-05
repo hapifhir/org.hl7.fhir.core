@@ -137,11 +137,6 @@ public class ExtensionUtilities {
       nc.getExtension().add(Factory.newExtension(ExtensionDefinitions.EXT_VS_COMMENT, Factory.newString_(comment), true));
   }
 
-  public static void addCSComment(CodeSystem.ConceptDefinitionComponent nc, String comment) {
-    if (!StringUtils.isBlank(comment))
-      nc.getExtension().add(Factory.newExtension(ExtensionDefinitions.EXT_CS_COMMENT, Factory.newString_(comment), true));
-  }
-
   //  public static void markDeprecated(Element nc) {
   //    setDeprecated(nc);
   //  }
@@ -370,18 +365,6 @@ public class ExtensionUtilities {
     if (!(ex.getValue() instanceof BooleanType))
       return false;
     return true;
-  }
-
-  public static String getCSComment(CodeSystem.ConceptDefinitionComponent c) {
-    return readStringExtension(c, ExtensionDefinitions.EXT_CS_COMMENT);
-  }
-  //
-  //  public static Boolean getDeprecated(Element c) {
-  //    return readBooleanExtension(c, EXT_DEPRECATED);
-  //  }
-
-  public static boolean hasCSComment(CodeSystem.ConceptDefinitionComponent c) {
-    return findStringExtension(c, ExtensionDefinitions.EXT_CS_COMMENT);
   }
 
   //  public static boolean hasDeprecated(Element c) {
