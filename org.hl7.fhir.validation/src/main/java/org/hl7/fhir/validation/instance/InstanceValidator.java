@@ -4262,7 +4262,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     long max = -1;
     byte[] cnt = null;
     byte[] hash = null;
-    String h64 = null;
+    String hash64 = null;
     String fetchError = null;
     
     if (element.hasChild("size", false)) {
@@ -4275,8 +4275,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     if (element.hasChild("hash")) {
-      h64 = element.getChildValue("hash");
-      hash = readBase64Data(errors, theStack, "hash", h64);
+      hash64 = element.getChildValue("hash");
+      hash = readBase64Data(errors, theStack, "hash", hash64);
       if (hash == null) {
         ok = false;
       }
@@ -4332,7 +4332,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         MessageDigest sha1 = MessageDigest.getInstance("SHA-1");
         byte[] c = sha1.digest(cnt); 
-        ok = rule(errors, "2025-06-25", IssueType.STRUCTURE, theStack, Arrays.equals(c, hash), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH, h64, Base64.getEncoder().encodeToString(c)) && ok;
+        ok = rule(errors, "2025-06-25", IssueType.STRUCTURE, theStack, Arrays.equals(c, hash), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH, hash64, Base64.getEncoder().encodeToString(c)) && ok;
       } catch (NoSuchAlgorithmException e) {
       }
     } else {
