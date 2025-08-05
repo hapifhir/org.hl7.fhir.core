@@ -427,13 +427,13 @@ public class ProfileVersionAdaptor {
       if (ctxt.getType() != null) {
         switch (ctxt.getType()) {
         case ELEMENT:
-          String np = adaptPath(ctxt.getExpression());
-          if (np == null) {
+          String newPath = adaptPath(ctxt.getExpression());
+          if (newPath == null) {
             log.add(new ConversionMessage("Remove the extension context "+ctxt.getExpression(), ConversionMessageStatus.WARNING));
             toRemove.add(ctxt);
-          } else if (!np.equals(ctxt.getExpression())) {
-            log.add(new ConversionMessage("Adjust the extension context "+ctxt.getExpression()+" to "+np, ConversionMessageStatus.WARNING));
-            ctxt.setExpression(np);
+          } else if (!newPath.equals(ctxt.getExpression())) {
+            log.add(new ConversionMessage("Adjust the extension context "+ctxt.getExpression()+" to "+newPath, ConversionMessageStatus.WARNING));
+            ctxt.setExpression(newPath);
           }
           break;
         case EXTENSION:
@@ -452,6 +452,14 @@ public class ProfileVersionAdaptor {
     sd.getContext().removeAll(toRemove);
   }
 
+  /**
+   * WIP: change a context for an older version, or delete it (= return null)
+   *
+   * ToDo: Use the Cross-Version infrastructure to make this more intelligent
+   *
+   * @param path
+   * @return
+   */
   private String adaptPath(String path) {
     String base = path.contains(".") ? path.substring(0, path.indexOf(".")) : path;
     StructureDefinition sd = tCtxt.fetchTypeDefinition(base);
