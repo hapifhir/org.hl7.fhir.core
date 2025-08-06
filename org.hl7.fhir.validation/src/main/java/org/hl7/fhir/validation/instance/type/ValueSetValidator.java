@@ -316,7 +316,6 @@ public class ValueSetValidator extends BaseValidator {
     }      
 
     if (policyAdvisor.policyForSpecialValidation((IResourceValidator) parent, valContext.getAppContext(), SpecialValidationRule.VALUESET_IMPORT_CHECKS, stack.getLiteralPath(), vsSrc, include) == SpecialValidationAction.CHECK_RULE) {
-
       List<Element> valuesets = include.getChildrenByName("valueSet");
       int i = 0;
       for (Element ve : valuesets) {
@@ -400,6 +399,10 @@ public class ValueSetValidator extends BaseValidator {
           case SUPPLEMENT:
             validateConcepts = false;
             ok = rule(errors, "2024-03-06", IssueType.INVALID, stack, false, version == null ? I18nConstants.VALUESET_INCLUDE_CS_SUPPLEMENT : I18nConstants.VALUESET_INCLUDE_CSVER_SUPPLEMENT, system, cs.getSupplements(), version) && ok;             
+            break;
+          case NOTPRESENT:
+            validateConcepts = false;
+            warning(errors, "2024-03-06", IssueType.INVALID, stack, false, version == null ? I18nConstants.VALUESET_INCLUDE_CS_CONTENT : I18nConstants.VALUESET_INCLUDE_CSVER_CONTENT, system, cs.getContent().toCode(), version);
             break;
           default:
             break;
