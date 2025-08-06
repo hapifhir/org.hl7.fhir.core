@@ -43,6 +43,7 @@ import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBaseXhtml;
+import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
 import ca.uhn.fhir.model.primitive.XhtmlDt;
@@ -331,8 +332,12 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   public boolean allChildrenAreText() {
     boolean res = true;
     if (hasChildren()) {
-      for (XhtmlNode n : childNodes)
+      for (XhtmlNode n : childNodes) {
+        if (n == null) {
+          DebugUtilities.breakpoint();
+        }
         res = res && n.getNodeType() == NodeType.Text;
+      }
     }
     return res;
   }
@@ -1209,10 +1214,15 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     }
   }
 
-  
   public void addChildNode(XhtmlNode node) {
     checkWhenAddingNode(node);
-    getChildNodes().add(node);    
+    getChildNodes().add(node);
+  }
+
+  @Override
+  public void addChild(XhtmlNode node) {
+    checkWhenAddingNode(node);
+    getChildNodes().add(node);
   }
 
 
@@ -1371,16 +1381,22 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
   public void js(String s) {
     XhtmlNode x = addTag("script");
-    x.setContent("\r\n"+s+"\r\n");
+    x.tx("\r\n"+s+"\r\n");
   }
   public void jsSrc(String s) {
     XhtmlNode x = addTag("script");
     x.setAttribute("src", s);
-    x.setContent(" ");
+    x.tx(" ");
   }
   public void styles(String s) {
     XhtmlNode x = addTag("style");
-    x.setContent("\r\n"+s+"\r\n");
+    x.tx("\r\n"+s+"\r\n");
+  }
+
+  public void styleChildren(String style) {
+    for (XhtmlNode t : getChildNodes()) {
+      t.style(style);
+    }
   }
 
 }
