@@ -213,5 +213,5 @@ public class ExtensionDefinitions {
   public static final String EXT_DISPLAY_NAME = "http://hl7.org/fhir/StructureDefinition/display"; // Display Name
   public static final String EXT_CSDECLARED_PROFILE = "http://hl7.org/fhir/StructureDefinition/capabilitystatement-declared-profile"; // CapabilityStatement Declared Profile
   public static final String EXT_CSSEARCH_PARAMETER_COMBINATION = "http://hl7.org/fhir/StructureDefinition/capabilitystatement-search-parameter-combination"; // CapabilityStatement Search Parameter Combination
-
+  public static final String EXT_TYPE_OPERATION = "http://hl7.org/fhir/tools/StructureDefinition/type-operation";
 }

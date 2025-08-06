@@ -1059,6 +1059,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String SDR_CH_DET = "SDR_CH_DET";
   public static final String SDR_CH_NO = "SDR_CH_NO";
   public static final String SDR_EXPERIMENTAL = "SDR_EXPERIMENTAL";
+  public static final String SDR_DRAFT = "SDR_DRAFT";
   public static final String SDR_EXT_DEPR = "SDR_EXT_DEPR";
   public static final String SDR_EXT_ANY = "SDR_EXT_ANY";
   public static final String SDR_EXT_ELEM = "SDR_EXT_ELEM";
@@ -1104,7 +1105,8 @@ public class RenderingI18nContext extends I18nBase {
   public static final String ACTOR_DERIVED_FROM = "ACTOR_DERIVED_FROM";
   public static final String ACTOR_DERIVED_FROM_NONE = "ACTOR_DERIVED_FROM_NONE";
   public static final String VALUE_SET_NEEDS_SUPPL = "VALUE_SET_NEEDS_SUPPL";
-  
+  public static final String SD_XIG_LINK = "SD_XIG_LINK";
+
 
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";

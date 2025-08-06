@@ -1227,6 +1227,47 @@ public class HierarchicalTableGenerator {
   }
 
 
+  /**
+   * this is used to generate a simplified form while reusing all the massive amount of code that goes into the generation of the table
+   *
+   * no heirarchy, no headings, no border
+   */
+  public XhtmlNode generateAttributeTable(TableModel model, String imagePath, int border, Set<String> outputTracker) throws IOException, FHIRException  {
+    checkModel(model);
+    boolean script = false;
+    XhtmlNode table = new XhtmlNode(NodeType.Element, "table").setAttribute("border", Integer.toString(border)).setAttribute("cellspacing", "0").setAttribute("cellpadding", "0");
+    Counter counter = new Counter();
+    for (Row r : model.getRows().get(0).getSubRows()) {
+      renderAttributeRow(table, r, 0, imagePath, border, outputTracker, counter, model);
+    }
+    return table;
+  }
+
+
+  private void renderAttributeRow(XhtmlNode table, Row r, int indent, String imagePath, int border, Set<String> outputTracker, Counter counter, TableModel model) throws IOException  {
+    if (!r.partnerRow) {
+      counter.row();
+    }
+    XhtmlNode tr = table.addTag("tr");
+    String color = "white";
+    if (r.getColor() != null)
+      color = r.getColor();
+    else if (model.isAlternating()  && counter.isOdd())
+      color = BACKGROUND_ALT_COLOR;
+
+    String lineStyle = r.getTopLine() == null ? "" : "; border-top: 1px solid "+r.getTopLine();
+
+    tr.style("border: " + border + "px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: "+color+(r.getOpacity() == null ? "" : "; opacity: "+r.getOpacity())+lineStyle);
+    boolean first = true;
+    for (Cell t : r.getCells()) {
+      renderCell(tr, t, "td", first ? r.getIcon() : null, first ? r.getHint() : null, null, !r.getSubRows().isEmpty(), first ? r.getAnchor() : null, color, r.getLineColor(), imagePath, border, outputTracker, model, r, first, false, model.getId(), null);
+      first = false;
+    }
+    table.addText("\r\n");
+  }
+
+
+
   private XhtmlNode addStyle(XhtmlNode node, Piece p) {
     if (p.getStyle() != null)
       node.style(p.getStyle());

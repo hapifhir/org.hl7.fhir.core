@@ -309,7 +309,7 @@ public class XhtmlComposer {
       indent = "";
 
     boolean concise = false;
-    if (!node.hasChildren()) {
+    if (!node.hasChildren() && !node.hasContent()) {
       if (this.xml) {
         concise = true;
       } else if (!(node.hasEmptyExpanded() && node.getEmptyExpanded()) && 
