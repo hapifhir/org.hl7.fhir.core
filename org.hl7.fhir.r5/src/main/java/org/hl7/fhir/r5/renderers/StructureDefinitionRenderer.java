@@ -581,60 +581,83 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       this.link = link; 
     } 
  
-  } 
-   
-  public XhtmlNode generateTable(RenderingStatus status, String defFile, StructureDefinition profile, boolean diff, String imageFolder, boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, String imagePath, 
-      boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean mustSupport, RenderingContext rc, String anchorPrefix, ResourceWrapper res, String idSfx) throws IOException, FHIRException { 
+  }
+
+  public XhtmlNode generateTable(RenderingStatus status, String defFile, StructureDefinition profile, boolean diff, String imageFolder, boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, String imagePath,
+                                 boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean mustSupport, RenderingContext rc, String anchorPrefix, ResourceWrapper res, String idSfx) throws IOException, FHIRException {
     assert(diff != snapshot);// check it's ok to get rid of one of these 
     anchors.clear();
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, defFile, rc.getUniqueLocalPrefix());
- 
-    List<ElementDefinition> list; 
+
+    TableModel model = generateTableInner(status, defFile, profile, diff, profileBaseFileName, snapshot, corePath, imagePath, logicalModel, allInvariants, mustSupport, rc, anchorPrefix, res, idSfx, gen);
+    if (model == null) return null;
+    try {
+      return gen.generate(model, imagePath, 0, outputTracker);
+    } catch (org.hl7.fhir.exceptions.FHIRException e) {
+      throw new FHIRException(context.getWorker().formatMessage(I18nConstants.ERROR_GENERATING_TABLE_FOR_PROFILE__, profile.getUrl(), e.getMessage()), e);
+    }
+  }
+
+  public XhtmlNode generateAttributeTable(RenderingStatus status, String defFile, StructureDefinition profile, boolean diff, String imageFolder, boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, String imagePath,
+                                 boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean mustSupport, RenderingContext rc, String anchorPrefix, ResourceWrapper res, String idSfx) throws IOException, FHIRException {
+    assert(diff != snapshot);// check it's ok to get rid of one of these
+    anchors.clear();
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, defFile, rc.getUniqueLocalPrefix());
+
+    TableModel model = generateTableInner(status, defFile, profile, diff, profileBaseFileName, snapshot, corePath, imagePath, logicalModel, allInvariants, mustSupport, rc, anchorPrefix, res, idSfx, gen);
+    if (model == null) {
+      return null;
+    }
+    try {
+      return gen.generateAttributeTable(model, imagePath, 0, outputTracker);
+    } catch (org.hl7.fhir.exceptions.FHIRException e) {
+      throw new FHIRException(context.getWorker().formatMessage(I18nConstants.ERROR_GENERATING_TABLE_FOR_PROFILE__, profile.getUrl(), e.getMessage()), e);
+    }
+  }
+
+  private TableModel generateTableInner(RenderingStatus status, String defFile, StructureDefinition profile, boolean diff, String profileBaseFileName, boolean snapshot, String corePath, String imagePath, boolean logicalModel, boolean allInvariants, boolean mustSupport, RenderingContext rc, String anchorPrefix, ResourceWrapper res, String idSfx, HierarchicalTableGenerator gen) throws IOException {
+    List<ElementDefinition> list;
     if (diff) {
-      list = new SnapshotGenerationPreProcessor(context.getProfileUtilities()).supplementMissingDiffElements(profile);      
-    } else { 
-      list = new ArrayList<>(); 
-      list.addAll(profile.getSnapshot().getElement()); 
-    } 
+      list = new SnapshotGenerationPreProcessor(context.getProfileUtilities()).supplementMissingDiffElements(profile);
+    } else {
+      list = new ArrayList<>();
+      list.addAll(profile.getSnapshot().getElement());
+    }
 
     List<Column> columns = new ArrayList<>();
-    List<ModelMappingProvider> mappings = new ArrayList<>(); 
-    TableModel model; 
+    List<ModelMappingProvider> mappings = new ArrayList<>();
+    TableModel model;
     boolean obLists = false;
-    switch (context.getStructureMode()) { 
-    case BINDINGS: 
-      scanBindings(columns, list); 
-      model = initCustomTable(gen, corePath, false, true, profile.getId()+idSfx, rc.getRules() == GenerationRules.IG_PUBLISHER, columns);     
-      break; 
-    case OBLIGATIONS: 
-      obLists = scanObligations(columns, list); 
-      model = initCustomTable(gen, corePath, false, true, profile.getId()+idSfx, rc.getRules() == GenerationRules.IG_PUBLISHER, columns);     
-      break;  
-    case MAPPINGS: 
-      mappings = scanForMappings(profile, list, columns); 
+    switch (context.getStructureMode()) {
+    case BINDINGS:
+      scanBindings(columns, list);
+      model = initCustomTable(gen, corePath, false, true, profile.getId()+ idSfx, rc.getRules() == GenerationRules.IG_PUBLISHER, columns);
+      break;
+    case OBLIGATIONS:
+      obLists = scanObligations(columns, list);
+      model = initCustomTable(gen, corePath, false, true, profile.getId()+ idSfx, rc.getRules() == GenerationRules.IG_PUBLISHER, columns);
+      break;
+    case MAPPINGS:
+      mappings = scanForMappings(profile, list, columns);
       if (mappings.isEmpty()) {
         return null;
       }
-      model = initCustomTable(gen, corePath, false, true, profile.getId()+idSfx, rc.getRules() == GenerationRules.IG_PUBLISHER, columns);     
-      break; 
-    case SUMMARY: 
-      model = gen.initNormalTable(corePath, false, true, profile.getId()+idSfx, rc.getRules() == GenerationRules.IG_PUBLISHER, rc.getRules() == GenerationRules.IG_PUBLISHER ? TableGenerationMode.XHTML : TableGenerationMode.XML); 
-      break; 
-    default: 
-      throw new Error(context.formatPhrase(RenderingContext.STRUC_DEF_ERROR)); 
-    } 
- 
-    List<StructureDefinition> profiles = new ArrayList<StructureDefinition>(); 
-    profiles.add(profile); 
-    keyRows.clear(); 
- 
-    genElement(status, defFile == null ? null : defFile+"#", gen, model.getRows(), list.get(0), list, profiles, diff, profileBaseFileName, null, snapshot, corePath, imagePath, true, logicalModel, profile.getDerivation() == TypeDerivationRule.CONSTRAINT && usesMustSupport(list), allInvariants, null, mustSupport, rc, anchorPrefix, profile, columns, res, obLists, mappings); 
-    try { 
-      return gen.generate(model, imagePath, 0, outputTracker); 
-    } catch (org.hl7.fhir.exceptions.FHIRException e) { 
-      throw new FHIRException(context.getWorker().formatMessage(I18nConstants.ERROR_GENERATING_TABLE_FOR_PROFILE__, profile.getUrl(), e.getMessage()), e); 
-    } 
-  } 
+      model = initCustomTable(gen, corePath, false, true, profile.getId()+ idSfx, rc.getRules() == GenerationRules.IG_PUBLISHER, columns);
+      break;
+    case SUMMARY:
+      model = gen.initNormalTable(corePath, false, true, profile.getId()+ idSfx, rc.getRules() == GenerationRules.IG_PUBLISHER, rc.getRules() == GenerationRules.IG_PUBLISHER ? TableGenerationMode.XHTML : TableGenerationMode.XML);
+      break;
+    default:
+      throw new Error(context.formatPhrase(RenderingContext.STRUC_DEF_ERROR));
+    }
+
+    List<StructureDefinition> profiles = new ArrayList<StructureDefinition>();
+    profiles.add(profile);
+    keyRows.clear();
+
+    genElement(status, defFile == null ? null : defFile +"#", gen, model.getRows(), list.get(0), list, profiles, diff, profileBaseFileName, null, snapshot, corePath, imagePath, true, logicalModel, profile.getDerivation() == TypeDerivationRule.CONSTRAINT && usesMustSupport(list), allInvariants, null, mustSupport, rc, anchorPrefix, profile, columns, res, obLists, mappings);
+    return model;
+  }
 
   private List<ModelMappingProvider> scanForMappings(StructureDefinition profile, List<ElementDefinition> list, List<Column> columns) {
     List<ModelMappingProvider> res = new ArrayList<ModelMappingProvider>();
@@ -728,6 +751,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   private boolean includeSDForMap(StructureDefinition sd, boolean okForNull) {
+    if (mappingsMode == null) {
+      return false;
+    }
     switch (mappingsMode) {
     case IN_LIST: return mappingTargets.contains(sd);
     case NOT_IN_LIST: return sd != null && !mappingTargets.contains(sd);
@@ -4224,8 +4250,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_MEAN_MISS), null, strikethrough, d.getMeaningWhenMissing()); 
     tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_FIXED), null, strikethrough, encodeValue(d.getFixed(), "fixed", d, compare==null ? null : compare.getFixed(), mode, d.getName())); 
     tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_PATT_VALUE), null, strikethrough, encodeValue(d.getPattern(), "pattern", d, compare==null ? null : compare.getPattern(), mode, d.getName())); 
-    tableRow(tbl, context.formatPhrase(RenderingContext.GENERAL_EXAMPLE), null, strikethrough, encodeValues(d.getExample())); 
-    tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_INVAR), null, strikethrough, invariants(d.getConstraint(), compare==null ? null : compare.getConstraint(), d, mode)); 
+    tableRow(tbl, context.formatPhrase(RenderingContext.GENERAL_EXAMPLE), null, strikethrough, encodeValues(d.getExample()));
+    tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_INVAR), null, strikethrough, invariants(d.getConstraint(), compare==null ? null : compare.getConstraint(), d, mode));
     tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_LOINC), null, strikethrough, getMapping(sd, d, LOINC_MAPPING, compare, mode)); 
     tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_SNOMED), null, strikethrough, getMapping(sd, d, SNOMED_MAPPING, compare, mode)); 
     tbl.tx("\r\n"); 
@@ -5015,17 +5041,19 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
   } 
  
-  private String encodeValues(List<ElementDefinitionExampleComponent> examples) throws FHIRException, IOException { 
-    StringBuilder b = new StringBuilder(); 
-    boolean first = false; 
-    for (ElementDefinitionExampleComponent ex : examples) { 
-      if (first) 
-        first = false; 
+  private XhtmlNode encodeValues(List<ElementDefinitionExampleComponent> examples) throws FHIRException, IOException {
+    XhtmlNode x = null;
+    for (ElementDefinitionExampleComponent ex : examples) {
+      if (x == null)
+        x = new XhtmlNode(NodeType.Element, "div");
       else 
-        b.append("<br/>"); 
-      b.append("<b>" + Utilities.escapeXml(ex.getLabel()) + "</b>:" + encodeValue(ex.getValue(), null) + "\r\n"); 
-    } 
-    return b.toString(); 
+        x.br();
+      XhtmlNode b = x.b();
+      b.tx(ex.getLabel());
+      b.tx(": ");
+      x.tx(encodeValue(ex.getValue(), null));
+    }
+    return x;
  
   } 
  

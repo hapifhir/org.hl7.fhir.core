@@ -9,7 +9,7 @@
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -17,7 +17,8 @@ v: {
   "display" : "French (Region=Canada)",
   "code" : "fr-CA",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -34,7 +35,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -42,24 +43,11 @@ v: {
   "display" : "French (Region=Canada)",
   "code" : "fr-CA",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
 
-}
--------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "inactive" : true,
-    "include" : [{
-      "system" : "urn:ietf:bcp:47"
-    }]
-  }
-}}####
-e: {
-  "from-server" : true,
-  "error" : "Error from http://tx-dev.fhir.org/r5: The code System \"urn:ietf:bcp:47\" has a grammar, and cannot be enumerated directly"
 }
 -------------------------------------------------------------------------------------

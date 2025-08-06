@@ -9,7 +9,7 @@
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -17,8 +17,8 @@ v: {
   "display" : "Specular microscopy panel",
   "code" : "100066-0",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -35,7 +35,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -43,11 +43,11 @@ v: {
   "display" : "Specular microscopy panel",
   "code" : "100066-0",
   "system" : "http://loinc.org",
-  "version" : "2.78",
+  "version" : "2.80",
   "severity" : "error",
   "error" : "The provided code 'http://loinc.org#100066-0' was not found in the value set 'http://hl7.org/fhir/test/StructureDefinition/additional-bindings-vs1--0|1.0.0'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -57,7 +57,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r5"
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -86,7 +86,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -94,8 +94,8 @@ v: {
   "display" : "Blood pressure panel with all children optional",
   "code" : "85354-9",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -113,7 +113,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -121,8 +121,8 @@ v: {
   "display" : "Systolic blood pressure",
   "code" : "8480-6",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -140,7 +140,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -148,8 +148,8 @@ v: {
   "display" : "Diastolic blood pressure",
   "code" : "8462-4",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -166,7 +166,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -174,8 +174,8 @@ v: {
   "display" : "Blood pressure panel with all children optional",
   "code" : "85354-9",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -192,7 +192,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -200,8 +200,8 @@ v: {
   "display" : "Systolic blood pressure",
   "code" : "8480-6",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -218,7 +218,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -226,8 +226,8 @@ v: {
   "display" : "Diastolic blood pressure",
   "code" : "8462-4",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -236,7 +236,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
-  "version" : "2.74",
+  "version" : "2.80",
   "code" : "56445-0",
   "display" : "Medication summary Doc"
 }, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
@@ -246,7 +246,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -254,8 +254,8 @@ v: {
   "display" : "Medication summary Document",
   "code" : "56445-0",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -272,7 +272,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -280,8 +280,8 @@ v: {
   "display" : "Medication summary Document",
   "code" : "56445-0",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -290,7 +290,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
-  "version" : "2.74",
+  "version" : "2.80",
   "code" : "48765-2",
   "display" : "Allergies and adverse reactions"
 }, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
@@ -300,7 +300,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -308,11 +308,11 @@ v: {
   "display" : "Allergies and adverse reactions Document",
   "code" : "48765-2",
   "system" : "http://loinc.org",
-  "version" : "2.78",
+  "version" : "2.80",
   "severity" : "error",
   "error" : "Wrong Display Name 'Allergies and adverse reactions' for http://loinc.org#48765-2. Valid display is one of 3 choices: 'Allergies and adverse reactions Document' (en-US), 'Allergies and adverse reactions Document' (en-US) or 'Allergies &or adverse reactions Doc' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -322,7 +322,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r5"
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -352,7 +352,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -360,8 +360,8 @@ v: {
   "display" : "Medication summary Document",
   "code" : "56445-0",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -378,7 +378,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -386,8 +386,8 @@ v: {
   "display" : "Medication summary Document",
   "code" : "56445-0",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -406,7 +406,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -414,11 +414,11 @@ v: {
   "display" : "Allergies and adverse reactions Document",
   "code" : "48765-2",
   "system" : "http://loinc.org",
-  "version" : "2.78",
+  "version" : "2.80",
   "severity" : "error",
   "error" : "Wrong Display Name 'Allergies and adverse reactions' for http://loinc.org#48765-2. Valid display is one of 3 choices: 'Allergies and adverse reactions Document' (en-US), 'Allergies and adverse reactions Document' (en-US) or 'Allergies &or adverse reactions Doc' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -428,7 +428,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r5"
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -448,6 +448,84 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
+  "code" : "55107-7"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Addendum Document",
+  "code" : "55107-7",
+  "system" : "http://loinc.org",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "55107-7"
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Addendum Document",
+  "code" : "55107-7",
+  "system" : "http://loinc.org",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "11369-6"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "History of Immunization Narrative",
+  "code" : "11369-6",
+  "system" : "http://loinc.org",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
   "code" : "3151-8",
   "display" : "Ingeademde zuurstof [volume/tijd] in geïnhaleerd gas"
 }, "valueSet" :null, "langs":"en", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
@@ -457,7 +535,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -465,21 +543,21 @@ v: {
   "display" : "Inhaled oxygen flow rate",
   "code" : "3151-8",
   "system" : "http://loinc.org",
-  "version" : "2.78",
+  "version" : "2.80",
   "severity" : "error",
-  "error" : "Wrong Display Name 'Ingeademde zuurstof [volume/tijd] in geïnhaleerd gas' for http://loinc.org#3151-8. There are no valid display names found for language(s) 'en'. Default display is 'Inhaled oxygen flow rate'",
+  "error" : "Wrong Display Name 'Ingeademde zuurstof [volume/tijd] in geïnhaleerd gas' for http://loinc.org#3151-8. Valid display is one of 4 choices: 'Inhaled oxygen flow rate' (en-US), 'Inhaled oxygen flow rate' (en-US), 'Inhaled O2 flow rate' (en-US) or 'Inhaled oxygen' (en-US) (for the language(s) 'en')",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR"
+      "valueString" : "Display_Name_for__should_be_one_of__instead_of"
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r5"
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -488,7 +566,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-display"
       }],
-      "text" : "Wrong Display Name 'Ingeademde zuurstof [volume/tijd] in geïnhaleerd gas' for http://loinc.org#3151-8. There are no valid display names found for language(s) 'en'. Default display is 'Inhaled oxygen flow rate'"
+      "text" : "Wrong Display Name 'Ingeademde zuurstof [volume/tijd] in geïnhaleerd gas' for http://loinc.org#3151-8. Valid display is one of 4 choices: 'Inhaled oxygen flow rate' (en-US), 'Inhaled oxygen flow rate' (en-US), 'Inhaled O2 flow rate' (en-US) or 'Inhaled oxygen' (en-US) (for the language(s) 'en')"
     },
     "location" : ["Coding.display"],
     "expression" : ["Coding.display"]
@@ -508,7 +586,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -516,8 +594,35 @@ v: {
   "display" : "Ingeademde zuurstof [volume/tijd] in geïnhaleerd gas",
   "code" : "3151-8",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "11524-6",
+  "display" : "EKG study"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "EKG study",
+  "code" : "11524-6",
+  "system" : "http://loinc.org",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -534,7 +639,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -542,8 +647,8 @@ v: {
   "display" : "Heart rate",
   "code" : "8867-4",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -560,7 +665,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -568,8 +673,8 @@ v: {
   "display" : "Heart rate",
   "code" : "8867-4",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -587,7 +692,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -595,11 +700,11 @@ v: {
   "display" : "Cholesterol [Mass or Moles/volume] in Serum or Plasma",
   "code" : "35200-5",
   "system" : "http://loinc.org",
-  "version" : "2.78",
+  "version" : "2.80",
   "severity" : "error",
   "error" : "Wrong Display Name 'Cholesterol [Moles/​volume] in Serum or Plasma' for http://loinc.org#35200-5. Valid display is one of 4 choices: 'Cholesterol [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Cholesterol [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Cholest SerPl-msCnc' (en-US) or 'Cholesterol, Blood' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -609,7 +714,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r5"
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -638,7 +743,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -646,8 +751,8 @@ v: {
   "display" : "Cholesterol in LDL [Mass/volume] in Serum or Plasma by calculation",
   "code" : "13457-7",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -665,7 +770,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -673,8 +778,8 @@ v: {
   "display" : "Body weight",
   "code" : "29463-7",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -691,7 +796,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -699,8 +804,8 @@ v: {
   "display" : "Body weight",
   "code" : "29463-7",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -718,7 +823,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -726,8 +831,8 @@ v: {
   "display" : "Cholesterol [Mass or Moles/volume] in Serum or Plasma",
   "code" : "35200-5",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -745,7 +850,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -753,11 +858,11 @@ v: {
   "display" : "Triglyceride [Mass or Moles/volume] in Serum or Plasma",
   "code" : "35217-9",
   "system" : "http://loinc.org",
-  "version" : "2.78",
+  "version" : "2.80",
   "severity" : "error",
   "error" : "Wrong Display Name 'Triglyceride [Moles/​volume] in Serum or Plasma' for http://loinc.org#35217-9. Valid display is one of 4 choices: 'Triglyceride [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Triglyceride [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Trigl SerPl-msCnc' (en-US) or 'Triglyceride, Blood' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -767,7 +872,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r5"
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -787,6 +892,58 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
+  "code" : "104207-6"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "r5BundleRelativeReferencePolicy":"never", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Medication administration list [Identifier] Episode Pharmacy",
+  "code" : "104207-6",
+  "system" : "http://loinc.org",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "104207-6"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Medication administration list [Identifier] Episode Pharmacy",
+  "code" : "104207-6",
+  "system" : "http://loinc.org",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
   "code" : "LP43571-6"
 }, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
@@ -795,7 +952,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -803,9 +960,10 @@ v: {
   "code" : "LP43571-6",
   "system" : "http://loinc.org",
   "severity" : "error",
-  "error" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.78'",
+  "error" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.80'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -815,7 +973,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r5"
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -824,7 +982,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.78'"
+      "text" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.80'"
     },
     "location" : ["Coding.code"],
     "expression" : ["Coding.code"]
@@ -844,7 +1002,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -852,8 +1010,9 @@ v: {
   "display" : "Body weight",
   "code" : "29463-7",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -871,7 +1030,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -879,8 +1038,9 @@ v: {
   "display" : "Body weight Measured",
   "code" : "3141-9",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -897,7 +1057,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -905,8 +1065,9 @@ v: {
   "display" : "Body weight",
   "code" : "29463-7",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -923,7 +1084,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -931,11 +1092,12 @@ v: {
   "display" : "Body weight Measured",
   "code" : "3141-9",
   "system" : "http://loinc.org",
-  "version" : "2.78",
+  "version" : "2.80",
   "severity" : "error",
   "error" : "The provided code 'http://loinc.org#3141-9' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0|5.0.0'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -945,7 +1107,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r5"
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -974,7 +1136,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -982,8 +1144,9 @@ v: {
   "display" : "Good color all over",
   "code" : "LA6724-4",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1001,7 +1164,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -1009,8 +1172,9 @@ v: {
   "display" : "At least 100 beats per minute",
   "code" : "LA6718-6",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1028,7 +1192,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -1036,8 +1200,9 @@ v: {
   "display" : "Grimace and pulling away, cough, or sneeze during suctioning",
   "code" : "LA6721-0",
   "system" : "http://loinc.org",
-  "version" : "2.78",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "version" : "2.80",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1055,7 +1220,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -1063,11 +1228,12 @@ v: {
   "display" : "Active motion",
   "code" : "LA6715-2",
   "system" : "http://loinc.org",
-  "version" : "2.78",
+  "version" : "2.80",
   "severity" : "error",
   "error" : "Wrong whitespace in Display Name 'Active motion ' for http://loinc.org#LA6715-2. Valid display is 'Active motion' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1077,7 +1243,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r5"
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -1106,7 +1272,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -1114,11 +1280,12 @@ v: {
   "display" : "Good, strong cry; normal rate and effort of breathing",
   "code" : "LA6727-7",
   "system" : "http://loinc.org",
-  "version" : "2.78",
+  "version" : "2.80",
   "severity" : "error",
   "error" : "Wrong whitespace in Display Name 'Good, strong cry; normal rate and effort of breathing    ' for http://loinc.org#LA6727-7. Valid display is 'Good, strong cry; normal rate and effort of breathing' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1128,7 +1295,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r5"
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -1142,166 +1309,6 @@ v: {
     "location" : ["Coding.display"],
     "expression" : ["Coding.display"]
   }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "104207-6"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Medication administration list [Identifier] Episode Pharmacy",
-  "code" : "104207-6",
-  "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "http://tx-dev.fhir.org/r5",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "104207-6"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "r5BundleRelativeReferencePolicy":"never", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Medication administration list [Identifier] Episode Pharmacy",
-  "code" : "104207-6",
-  "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "http://tx-dev.fhir.org/r5",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "11524-6",
-  "display" : "EKG study"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "EKG study",
-  "code" : "11524-6",
-  "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "55107-7"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Addendum Document",
-  "code" : "55107-7",
-  "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "55107-7"
-}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Addendum Document",
-  "code" : "55107-7",
-  "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "11369-6"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "History of Immunization Narrative",
-  "code" : "11369-6",
-  "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
 }
 
 }
