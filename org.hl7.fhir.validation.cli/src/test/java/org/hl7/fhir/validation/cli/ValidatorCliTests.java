@@ -1,7 +1,6 @@
 package org.hl7.fhir.validation.cli;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -12,7 +11,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 
-import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
@@ -25,6 +23,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import javax.annotation.Nonnull;
 
 @ExtendWith(MockitoExtension.class)
 public class ValidatorCliTests {
@@ -67,25 +67,25 @@ public class ValidatorCliTests {
   @Spy
   PreloadCacheTask preloadCacheTask = new PreloadCacheTask() {
     @Override
-    public void executeTask(ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) {}
+    public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {}
   };
 
   @Spy
   TestsTask testsTask = new TestsTask() {
       @Override
-      public void executeTask(ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) {}
+      public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {}
   };
 
   @Spy
   TxTestsTask txTestsTask = new TxTestsTask() {
     @Override
-    public void executeTask(ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) {}
+    public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {}
   };
   
 
   AiTestsTask aiTestsTask = new AiTestsTask() {
     @Override
-    public void executeTask(ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) {}
+    public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {}
   };
   @Spy
   TransformTask transformTask;
@@ -107,17 +107,17 @@ public class ValidatorCliTests {
   @Spy
   ScanTask scanTask = new ScanTask() {
     @Override
-    public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) {}
+    public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) {}
   };
   @Spy
   SpecialTask specialTask = new SpecialTask() {
     @Override
-    public void executeTask(ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) {}
+    public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {}
   };
 
   public ValidatorCli mockValidatorCli() {
     ValidatorCli validatorCli = spy(new ValidatorCli(validationService){
-      protected void validateScan(ValidationContext validationContext, ValidationEngine validator) {
+      private void validateScan(ValidationContext validationContext, ValidationEngine validator) {
         // DO NOTHING;
       }
 
@@ -171,21 +171,13 @@ public class ValidatorCliTests {
     }
   }
 
-  private void assertContainsValidationTask(List<CliTask> tasks, String name) {
-    for (CliTask task : tasks) {
-      if (task.getName().equals(name)) {
-        return;
-      }
-    }
-    fail("Cannot find " + name + " in task list");
-  }
 
   @Test
   public void transformTest() throws Exception {
     final String[] args = new String[]{"-transform", "dummyFile.map", "dummySource.json"};
     ValidationContext validationContext = Params.loadValidationContext(args);
     ValidatorCli cli = mockValidatorCliWithService(validationContext);
-    cli.readParamsAndExecuteTask(validationContext, args);
+    cli.readGlobalParamsAndExecuteTask(validationContext, args);
     Mockito.verify(validationService).determineVersion(same(validationContext));
     Mockito.verify(validationService).transform(same(validationContext), same(validationEngine));
   }
@@ -195,7 +187,7 @@ public class ValidatorCliTests {
     final String[] args = new String[]{"-narrative"};
     ValidationContext validationContext = Params.loadValidationContext(args);
     ValidatorCli cli = mockValidatorCliWithService(validationContext);
-    cli.readParamsAndExecuteTask(validationContext, args);
+    cli.readGlobalParamsAndExecuteTask(validationContext, args);
     Mockito.verify(validationService).determineVersion(same(validationContext));
     Mockito.verify(validationService).generateNarrative(same(validationContext), same(validationEngine));
   }
@@ -205,7 +197,7 @@ public class ValidatorCliTests {
     final String[] args = new String[]{"-compile", "dummyMap.map"};
     ValidationContext validationContext = Params.loadValidationContext(args);
     ValidatorCli cli = mockValidatorCliWithService(validationContext);
-    cli.readParamsAndExecuteTask(validationContext, args);
+    cli.readGlobalParamsAndExecuteTask(validationContext, args);
     Mockito.verify(validationService).determineVersion(same(validationContext));
     Mockito.verify(validationService).compile(same(validationContext), same(validationEngine));
   }
@@ -215,7 +207,7 @@ public class ValidatorCliTests {
     final String[] args = new String[]{"-convert"};
     ValidationContext validationContext = Params.loadValidationContext(args);
     ValidatorCli cli = mockValidatorCliWithService(validationContext);
-    cli.readParamsAndExecuteTask(validationContext, args);
+    cli.readGlobalParamsAndExecuteTask(validationContext, args);
     Mockito.verify(validationService).determineVersion(same(validationContext));
     Mockito.verify(validationService).convertSources(validationContext,validationEngine);
   }
@@ -224,7 +216,7 @@ public class ValidatorCliTests {
     final String[] args = new String[]{"-snapshot"};
     ValidationContext validationContext = Params.loadValidationContext(args);
     ValidatorCli cli = mockValidatorCliWithService(validationContext);
-    cli.readParamsAndExecuteTask(validationContext, args);
+    cli.readGlobalParamsAndExecuteTask(validationContext, args);
     Mockito.verify(validationService).determineVersion(same(validationContext));
     Mockito.verify(validationService).generateSnapshot(same(validationContext), same(validationEngine));
   }
@@ -234,7 +226,7 @@ public class ValidatorCliTests {
     final String[] args = new String[]{"-install"};
     ValidationContext validationContext = Params.loadValidationContext(args);
     ValidatorCli cli = mockValidatorCliWithService(validationContext);
-    cli.readParamsAndExecuteTask(validationContext, args);
+    cli.readGlobalParamsAndExecuteTask(validationContext, args);
     Mockito.verify(validationService).determineVersion(same(validationContext));
     Mockito.verify(validationService).install(same(validationContext), same(validationEngine));
   }
@@ -244,7 +236,7 @@ public class ValidatorCliTests {
     final String[] args = new String[]{"-spreadsheet"};
     ValidationContext validationContext = Params.loadValidationContext(args);
     ValidatorCli cli = mockValidatorCliWithService(validationContext);
-    cli.readParamsAndExecuteTask(validationContext, args);
+    cli.readGlobalParamsAndExecuteTask(validationContext, args);
     Mockito.verify(validationService).determineVersion(same(validationContext));
     Mockito.verify(validationService).generateSpreadsheet(same(validationContext), same(validationEngine));
   }
@@ -254,7 +246,7 @@ public class ValidatorCliTests {
     final String[] args = new String[]{"-fhirpath", "dummyExpression"};
     ValidationContext validationContext = Params.loadValidationContext(args);
     ValidatorCli cli = mockValidatorCliWithService(validationContext);
-    cli.readParamsAndExecuteTask(validationContext, args);
+    cli.readGlobalParamsAndExecuteTask(validationContext, args);
     Mockito.verify(validationService).determineVersion(same(validationContext));
     Mockito.verify(validationService).evaluateFhirpath(same(validationContext), same(validationEngine));
   }
@@ -264,7 +256,7 @@ public class ValidatorCliTests {
     final String[] args = new String[]{"-to-version", "1.2.3"};
     ValidationContext validationContext = Params.loadValidationContext(args);
     ValidatorCli cli = mockValidatorCliWithService(validationContext);
-    cli.readParamsAndExecuteTask(validationContext, args);
+    cli.readGlobalParamsAndExecuteTask(validationContext, args);
     Mockito.verify(validationService).determineVersion(same(validationContext));
     Mockito.verify(validationService).transformVersion(same(validationContext), same(validationEngine));
   }
@@ -274,7 +266,7 @@ public class ValidatorCliTests {
     final String[] args = new String[]{"-lang-transform", "dummyLang"};
     ValidationContext validationContext = Params.loadValidationContext(args);
     ValidatorCli cli = mockValidatorCliWithService(validationContext);
-    cli.readParamsAndExecuteTask(validationContext, args);
+    cli.readGlobalParamsAndExecuteTask(validationContext, args);
     Mockito.verify(validationService).determineVersion(same(validationContext));
     Mockito.verify(validationService).transformLang(same(validationContext), same(validationEngine));
   }
@@ -287,7 +279,7 @@ public class ValidatorCliTests {
     ValidatorWatchMode watchMode = ValidatorWatchMode.NONE;
     int watchScanDelay = 1000;
     int watchSettleTime = 100;
-    cli.readParamsAndExecuteTask(validationContext, args);
+    cli.readGlobalParamsAndExecuteTask(validationContext, args);
     Mockito.verify(validationService).determineVersion(same(validationContext));
     Mockito.verify(validationService).validateSources(same(validationContext), same(validationEngine), eq(watchMode), eq(watchScanDelay), eq(watchSettleTime));
   }
@@ -297,9 +289,9 @@ public class ValidatorCliTests {
     final String[] args = new String[]{"-scan"};
     ValidationContext validationContext = Params.loadValidationContext(args);
     ValidatorCli cli = mockValidatorCliWithService(validationContext);
-    cli.readParamsAndExecuteTask(validationContext, args);
+    cli.readGlobalParamsAndExecuteTask(validationContext, args);
     Mockito.verify(validationService).determineVersion(same(validationContext));
-    Mockito.verify(scanTask).executeTask(same(validationService), same(validationEngine), same(validationContext), eq(args), any(TimeTracker.class), any(TimeTracker.Session.class));
+    Mockito.verify(scanTask).executeTask(same(validationService), same(validationEngine), same(validationContext), eq(args));
   }
 
   @Test
@@ -307,9 +299,9 @@ public class ValidatorCliTests {
     final String[] args = new String[]{"-special"};
     ValidationContext validationContext = Params.loadValidationContext(args);
     ValidatorCli cli = mockValidatorCli();
-    cli.readParamsAndExecuteTask(validationContext, args);
+    cli.readGlobalParamsAndExecuteTask(validationContext, args);
 
-    Mockito.verify(specialTask).executeTask(same(validationContext), eq(args), any(TimeTracker.class), any(TimeTracker.Session.class));
+    Mockito.verify(specialTask).executeTask(same(validationContext), eq(args));
   }
 
   @Test
@@ -317,9 +309,9 @@ public class ValidatorCliTests {
     final String[] args = new String[]{"-compare"};
     ValidationContext validationContext = Params.loadValidationContext(args);
     ValidatorCli cli = mockValidatorCliWithService(validationContext);
-    cli.readParamsAndExecuteTask(validationContext, args);
+    cli.readGlobalParamsAndExecuteTask(validationContext, args);
     Mockito.verify(validationService).determineVersion(same(validationContext));
-    Mockito.verify(compareTask).executeTask(same(validationService), same(validationEngine), same(validationContext), eq(args), any(TimeTracker.class), any(TimeTracker.Session.class));
+    Mockito.verify(compareTask).executeTask(same(validationService), same(validationEngine), same(validationContext), eq(args));
   }
 
   @Test
@@ -327,9 +319,9 @@ public class ValidatorCliTests {
     final String[] args = new String[]{"-preload-cache"};
     ValidationContext validationContext = Params.loadValidationContext(args);
     ValidatorCli cli = mockValidatorCli();
-    cli.readParamsAndExecuteTask(validationContext, args);
+    cli.readGlobalParamsAndExecuteTask(validationContext, args);
 
-    Mockito.verify(preloadCacheTask).executeTask(same(validationContext), eq(args), any(TimeTracker.class), any(TimeTracker.Session.class));
+    Mockito.verify(preloadCacheTask).executeTask(same(validationContext), eq(args));
   }
 
   @Test
@@ -337,9 +329,9 @@ public class ValidatorCliTests {
     final String[] args = new String[]{"-txTests"};
     ValidationContext validationContext = Params.loadValidationContext(args);
     ValidatorCli cli = mockValidatorCli();
-    cli.readParamsAndExecuteTask(validationContext, args);
+    cli.readGlobalParamsAndExecuteTask(validationContext, args);
 
-    Mockito.verify(txTestsTask).executeTask(same(validationContext), eq(args), any(TimeTracker.class), any(TimeTracker.Session.class));
+    Mockito.verify(txTestsTask).executeTask(same(validationContext), eq(args));
   }
 
 
@@ -348,8 +340,8 @@ public class ValidatorCliTests {
     final String[] args = new String[]{"-tests"};
     ValidationContext validationContext = Params.loadValidationContext(args);
     ValidatorCli cli = mockValidatorCli();
-    cli.readParamsAndExecuteTask(validationContext, args);
+    cli.readGlobalParamsAndExecuteTask(validationContext, args);
 
-    Mockito.verify(testsTask).executeTask(same(validationContext), eq(args), any(TimeTracker.class), any(TimeTracker.Session.class));
+    Mockito.verify(testsTask).executeTask(same(validationContext), eq(args));
   }
 }
