@@ -328,14 +328,14 @@ public abstract class XhtmlFluent {
           for (XhtmlNode c1 : c.getChildNodes()) {
             if ("p".equals(c1.getName())) {
               if (first) first = false;
-              else c.br();
+              else br();
               addChildren(c1.getChildNodes());
             } else {
               addChild(c1);
             }
           }
         } else  if ("p".equals(c.getName())) {
-          if (first) first = false; else c.br();
+          if (first) first = false; else br();
           addChildren(c.getChildNodes());
         } else {
           addChild(c);

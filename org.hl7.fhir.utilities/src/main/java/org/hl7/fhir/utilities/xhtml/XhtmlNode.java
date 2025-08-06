@@ -43,7 +43,6 @@ import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBaseXhtml;
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
 import ca.uhn.fhir.model.primitive.XhtmlDt;
@@ -333,9 +332,6 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     boolean res = true;
     if (hasChildren()) {
       for (XhtmlNode n : childNodes) {
-        if (n == null) {
-          DebugUtilities.breakpoint();
-        }
         res = res && n.getNodeType() == NodeType.Text;
       }
     }
