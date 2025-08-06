@@ -804,7 +804,8 @@ public class XmlParser extends ParserBase {
     }
     markedXhtml = false;
     xml.start();
-    xml.setDefaultNamespace(e.getProperty().getXmlNamespace());    
+    xml.setDefaultNamespace(e.getProperty().getXmlNamespace());
+
     if (Utilities.isAbsoluteUrl(e.getType())) {
       xml.namespace(urlRoot(e.getType()), "et");
     }
@@ -836,8 +837,9 @@ public class XmlParser extends ParserBase {
       if (isElideElements() && element.isElided() && xml.canElide())
         xml.elide();
       else {
-        if (linkResolver != null)
+        if (linkResolver != null) {
           xml.link(linkResolver.resolveProperty(element.getProperty()));
+        }
         xml.enter(element.getProperty().getXmlNamespace(),elementName);
         if (linkResolver != null && element.getProperty().isReference()) {
           String ref = linkResolver.resolveReference(getReferenceForElement(element));
@@ -846,6 +848,9 @@ public class XmlParser extends ParserBase {
           }
         }
         xml.text(element.getValue());
+        if (linkResolver != null) {
+          xml.link(linkResolver.resolveProperty(element.getProperty()));
+        }
         xml.exit(element.getProperty().getXmlNamespace(),elementName);
       }
     } else if (!element.hasChildren() && !element.hasValue() && !element.hasXhtml()) {
@@ -890,8 +895,9 @@ public class XmlParser extends ParserBase {
               xml.link(linkResolver.resolveType(element.getType()));
             xml.attribute("value", element.getValue());
           }
-          if (linkResolver != null)
+          if (linkResolver != null) {
             xml.link(linkResolver.resolveProperty(element.getProperty()));
+          }
           if (element.hasChildren()) {
             xml.enter(element.getProperty().getXmlNamespace(), elementName);
             if (linkResolver != null && element.getProperty().isReference()) {
@@ -902,6 +908,9 @@ public class XmlParser extends ParserBase {
             }
             for (Element child : element.getChildren())
               composeElement(xml, child, child.getName(), false);
+            if (linkResolver != null) {
+              xml.link(linkResolver.resolveProperty(element.getProperty()));
+            }
             xml.exit(element.getProperty().getXmlNamespace(),elementName);
           } else
             xml.element(elementName);
@@ -980,8 +989,14 @@ public class XmlParser extends ParserBase {
         }
       }
       if (!element.getProperty().getDefinition().hasExtension(ExtensionDefinitions.EXT_ID_CHOICE_GROUP)) {
-        if (!root && element.getSpecial() != null)
-          xml.exit(element.getProperty().getXmlNamespace(),element.getType());
+
+        if (linkResolver != null) {
+          xml.link(linkResolver.resolveProperty(element.getProperty()));
+        }
+        if (!root && element.getSpecial() != null) {
+          xml.exit(element.getProperty().getXmlNamespace(), element.getType());
+        }
+
         if (Utilities.isAbsoluteUrl(elementName)) {
           xml.exit(urlRoot(elementName), urlTail(elementName));
         } else {

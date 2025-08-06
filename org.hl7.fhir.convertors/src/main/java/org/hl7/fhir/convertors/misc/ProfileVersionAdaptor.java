@@ -28,6 +28,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextCompo
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
@@ -87,7 +88,6 @@ public class ProfileVersionAdaptor {
       return null; // didn't convert successfully
     }
     sd.setFhirVersion(FHIRVersion.fromCode(tCtxt.getVersion()));
-
     sd.setSnapshot(null);
 
     // first pass, targetProfiles
@@ -226,9 +226,12 @@ public class ProfileVersionAdaptor {
       if (!sd.hasExtension(ExtensionDefinitions.EXT_FMM_LEVEL) || ExtensionUtilities.readIntegerExtension(sd, ExtensionDefinitions.EXT_FMM_LEVEL, 0) > 2) {
         ExtensionUtilities.setCodeExtension(sd, ExtensionDefinitions.EXT_FMM_LEVEL, "2");
       }
-      ExtensionUtilities.setCodeExtension(sd, ExtensionDefinitions.EXT_STANDARDS_STATUS, "draft");
-      ExtensionUtilities.setCodeExtension(sd, ExtensionDefinitions.EXT_STANDARDS_STATUS_REASON, "Extensions that have been modified for " + VersionUtilities.getNameForVersion(tCtxt.getVersion()) + " are still draft while real-world experience is collected");
-      log.add(new ConversionMessage("Note: Extensions that have been modified for " + VersionUtilities.getNameForVersion(tCtxt.getVersion()) + " are still draft while real-world experience is collected", ConversionMessageStatus.NOTE));
+      StandardsStatus code = ExtensionUtilities.getStandardsStatus(sd);
+      if (code == StandardsStatus.TRIAL_USE) {
+        ExtensionUtilities.setCodeExtension(sd, ExtensionDefinitions.EXT_STANDARDS_STATUS, "draft");
+        ExtensionUtilities.setCodeExtension(sd, ExtensionDefinitions.EXT_STANDARDS_STATUS_REASON, "Extensions that have been modified for " + VersionUtilities.getNameForVersion(tCtxt.getVersion()) + " are still draft while real-world experience is collected");
+        log.add(new ConversionMessage("Note: Extensions that have been modified for " + VersionUtilities.getNameForVersion(tCtxt.getVersion()) + " are still draft while real-world experience is collected", ConversionMessageStatus.NOTE));
+      }
     }
     snapshotQueue.add(sd);
     tCtxt.cacheResource(sd);
@@ -424,13 +427,13 @@ public class ProfileVersionAdaptor {
       if (ctxt.getType() != null) {
         switch (ctxt.getType()) {
         case ELEMENT:
-          String np = adaptPath(ctxt.getExpression());
-          if (np == null) {
+          String newPath = adaptPath(ctxt.getExpression());
+          if (newPath == null) {
             log.add(new ConversionMessage("Remove the extension context "+ctxt.getExpression(), ConversionMessageStatus.WARNING));
             toRemove.add(ctxt);
-          } else if (!np.equals(ctxt.getExpression())) {
-            log.add(new ConversionMessage("Adjust the extension context "+ctxt.getExpression()+" to "+np, ConversionMessageStatus.WARNING));
-            ctxt.setExpression(np);
+          } else if (!newPath.equals(ctxt.getExpression())) {
+            log.add(new ConversionMessage("Adjust the extension context "+ctxt.getExpression()+" to "+newPath, ConversionMessageStatus.WARNING));
+            ctxt.setExpression(newPath);
           }
           break;
         case EXTENSION:
@@ -449,13 +452,25 @@ public class ProfileVersionAdaptor {
     sd.getContext().removeAll(toRemove);
   }
 
+  /**
+   * WIP: change a context for an older version, or delete it (= return null)
+   *
+   * ToDo: Use the Cross-Version infrastructure to make this more intelligent
+   *
+   * @param path
+   * @return
+   */
   private String adaptPath(String path) {
     String base = path.contains(".") ? path.substring(0, path.indexOf(".")) : path;
     StructureDefinition sd = tCtxt.fetchTypeDefinition(base);
     if (sd == null) {
       StructureDefinition ssd = sCtxt.fetchTypeDefinition(base);
       if (ssd != null && ssd.getKind() == StructureDefinitionKind.RESOURCE) {
-        return "Basic";
+        if ("CanonicalResource".equals(base)) {
+          return "CanonicalResource";
+        } else {
+          return "Basic";
+        }
       } else if (ssd != null && ssd.getKind() == StructureDefinitionKind.COMPLEXTYPE) {
         return null;
       } else {

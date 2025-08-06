@@ -10,7 +10,7 @@
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -18,7 +18,7 @@ v: {
   "display" : "German (Region=Switzerland)",
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -36,7 +36,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -44,7 +44,7 @@ v: {
   "display" : "German (Switzerland)",
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -63,7 +63,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -71,7 +71,7 @@ v: {
   "display" : "French",
   "code" : "fr",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -89,7 +89,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -97,7 +97,7 @@ v: {
   "display" : "French",
   "code" : "fr",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -116,7 +116,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -124,7 +124,7 @@ v: {
   "display" : "English",
   "code" : "en",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -142,7 +142,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -150,7 +150,7 @@ v: {
   "display" : "English",
   "code" : "en",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

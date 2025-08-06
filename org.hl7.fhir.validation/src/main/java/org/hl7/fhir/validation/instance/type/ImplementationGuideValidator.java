@@ -110,7 +110,7 @@ public class ImplementationGuideValidator extends BaseValidator {
             PackageClient pc = new PackageClient(PackageServer.primaryServer());
             List<PackageInfo> list = pc.getVersions(packageId);
             Collections.sort(list, new org.hl7.fhir.utilities.npm.PackageInfo.PackageInfoVersionSorter());
-            String lver = pcm.getLatestVersion(packageId);
+            String lver = pcm.getLatestVersion(packageId, true);
             String date = null;
             for (PackageInfo t : list) {
               if (!t.getVersion().contains("-")) {

@@ -200,8 +200,11 @@ public class PackageClient {
     return Utilities.pathURL(address, id, v);
   }
 
-  public String getLatestVersion(String id) throws IOException {
+  public String getLatestVersion(String id, boolean mileStonesOnly) throws IOException {
     List<PackageInfo> list = getVersions(id);
+    if (mileStonesOnly) {
+      list.removeIf(i -> i.getVersion().contains("-"));
+    }
     if (list.isEmpty()) {
       throw new IOException("Package not found: "+id);
     } else {
