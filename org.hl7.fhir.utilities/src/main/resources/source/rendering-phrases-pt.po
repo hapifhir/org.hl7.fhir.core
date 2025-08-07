@@ -58,6 +58,7 @@ msgstr "qualquer repetição"
 # ADD_BIND_CURR_BIND
 #: ADD_BIND_CURR_BIND
 #, fuzzymsgctxt "ADD_BIND_CURR_BIND"
+msgctxt "ADD_BIND_CURR_BIND"
 msgid "Current"
 msgstr "Actual"
 
@@ -103,6 +104,7 @@ msgstr "Novos registos têm de utilizar este conjunto de valores, mas os registo
 # ADD_BIND_PREF_BIND
 #: ADD_BIND_PREF_BIND
 #, fuzzymsgctxt "ADD_BIND_PREF_BIND"
+msgctxt "ADD_BIND_PREF_BIND"
 msgid "Preferred"
 msgstr "Preferido"
 
@@ -115,12 +117,14 @@ msgstr "Este é o conjunto de valores recomendado (a documentação deve explica
 # ADD_BIND_REQ_BIND
 #: ADD_BIND_REQ_BIND
 #, fuzzymsgctxt "ADD_BIND_REQ_BIND"
+msgctxt "ADD_BIND_REQ_BIND"
 msgid "Required"
 msgstr "Obrigatório"
 
 # ADD_BIND_UI
 #: ADD_BIND_UI
 #, fuzzymsgctxt "ADD_BIND_UI"
+msgctxt "ADD_BIND_UI"
 msgid "UI"
 msgstr "IU"
 
@@ -725,32 +729,32 @@ msgstr "Conceitos"
 # CODESYSTEM_CONTENT_COMPLETE
 #: CODESYSTEM_CONTENT_COMPLETE
 #, fuzzy
-msgid "This <param name=\\\"cased\\\"/> code system <param name=\\\"cs\\\"/> defines the following code<if test=\\\"code-count != 1\\\">s</if><param name=\\\"h\\\"/>:"
-msgstr "Este <param name=\\\"cased\\\"/> sistema de código <param name=\\\"cs\\\"/> define o seguinte código<if test=\\\"code-count != 1\\\">s</if><param name=\\\"h\\\"/>:"
+msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines the following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgstr "!!Este <param name=\\\"cased\\\"/> sistema de código <param name=\\\"cs\\\"/> define o seguinte código<if test=\\\"code-count != 1\\\">s</if><param name=\\\"h\\\"/>:"
 
 # CODESYSTEM_CONTENT_EXAMPLE
 #: CODESYSTEM_CONTENT_EXAMPLE
 #, fuzzy
-msgid "This <param name=\\\"cased\\\"/> code system <param name=\\\"cs\\\"/> provides some code<if test=\\\"code-count != 1\\\">s</if><param name=\\\"h\\\"/> <b>that are example only</b>:"
-msgstr "Este <param name=\\\"cased\\\"/> sistema de código <param name=\\\"cs\\\"/> fornece alguns códigos<if test=\\\"code-count != 1\\\">s</if><param name=\\\"h\\\"/> <b>que são apenas exemplos</b>:"
+msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides some code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>that are example only</b>:"
+msgstr "!!Este <param name=\\\"cased\\\"/> sistema de código <param name=\\\"cs\\\"/> fornece alguns códigos<if test=\\\"code-count != 1\\\">s</if><param name=\\\"h\\\"/> <b>que são apenas exemplos</b>:"
 
 # CODESYSTEM_CONTENT_FRAGMENT
 #: CODESYSTEM_CONTENT_FRAGMENT
 #, fuzzy
-msgid "This <param name=\\\"cased\\\"/> code system <param name=\\\"cs\\\"/> provides <b>a fragment</b> that includes following code<if test=\\\"code-count != 1\\\">s</if><param name=\\\"h\\\"/>:"
-msgstr "Este <param name=\\\"cased\\\"/> sistema de código <param name=\\\"cs\\\"/> fornece <b>um fragmento</b> que inclui o seguinte código<if test=\\\"code-count != 1\\\">s</if><param name=\\\"h\\\"/>:"
+msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides <b>a fragment</b> that includes following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgstr "!!Este <param name=\\\"cased\\\"/> sistema de código <param name=\\\"cs\\\"/> fornece <b>um fragmento</b> que inclui o seguinte código<if test=\\\"code-count != 1\\\">s</if><param name=\\\"h\\\"/>:"
 
 # CODESYSTEM_CONTENT_NOTPRESENT
 #: CODESYSTEM_CONTENT_NOTPRESENT
 #, fuzzy
-msgid "This <param name=\\\"cased\\\"/> code system <param name=\\\"cs\\\"/> defines codes<param name=\\\"h\\\"/>, but no codes are represented here"
-msgstr "Este <param name=\\\"cased\\\"/> sistema de código <param name=\\\"cs\\\"/> define códigos<param name=\\\"h\\\"/>, mas nenhum código é representado aqui"
+msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines codes<param name=\"h\"/>, but no codes are represented here"
+msgstr "!!Este <param name=\\\"cased\\\"/> sistema de código <param name=\\\"cs\\\"/> define códigos<param name=\\\"h\\\"/>, mas nenhum código é representado aqui"
 
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
 #, fuzzy
-msgid "This code system supplement <param name=\\\"cs\\\"/> defines {0} on the following code<if test=\\\"code-count != 1\\\">s</if>:"
-msgstr "Este suplemento do sistema de código <param name=\\\"cs\\\"/> define {0} no seguinte código<if test=\\\"code-count != 1\\\">s</if>:"
+msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
+msgstr "!!Este suplemento do sistema de código <param name=\\\"cs\\\"/> define {0} no seguinte código<if test=\\\"code-count != 1\\\">s</if>:"
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
@@ -860,6 +864,11 @@ msgstr "(substituído por"
 msgid "This code system resource is a supplement to"
 msgstr "Este recurso do sistema de códigos é um suplemento ao"
 
+# CODE_SYS_SUPP_CODE_NOT_HERE
+#: CODE_SYS_SUPP_CODE_NOT_HERE
+msgid "This CodeSystem Supplement is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
+msgstr ""
+
 # CODE_SYS_THE_VALUE_SET
 #: CODE_SYS_THE_VALUE_SET
 #, fuzzy
@@ -947,6 +956,7 @@ msgstr "Fonte Detalhes do conceito"
 # CONC_MAP_TO
 #: CONC_MAP_TO
 #, fuzzymsgctxt "CONC_MAP_TO"
+msgctxt "CONC_MAP_TO"
 msgid "to"
 msgstr "para"
 
@@ -1049,6 +1059,7 @@ msgstr "ao almoço"
 # DATA_REND_ATT_DATA
 #: DATA_REND_ATT_DATA
 #, fuzzymsgctxt "DATA_REND_ATT_DATA"
+msgctxt "DATA_REND_ATT_DATA"
 msgid "{0}: {1}"
 msgstr "{0}: {1}"
 
@@ -1535,14 +1546,15 @@ msgstr "Tipo de relatório não especificado"
 # DIAG_REP_UNSPECIFIED_SUBJECT
 #: DIAG_REP_UNSPECIFIED_SUBJECT
 #, fuzzymsgctxt "DIAG_REP_UNSPECIFIED_SUBJECT"
+msgctxt "DIAG_REP_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
 msgstr "Assunto não especificado"
 
 # DOCUMENT_SUMMARY
 #: DOCUMENT_SUMMARY
 #, fuzzy
-msgid "<param name=\\\"status\\\"/> Document at <param name=\\\"date\\\"/> by <param name=\\\"author\\\"/> for <param name=\\\"subject\\\"/> <if test=\\\"has-encounter = true\\\"> in encounter <param name=\\\"encounter\\\"/></if>"
-msgstr "<param name=\\\"status\\\"/> Documento em <param name=\\\"date\\\"/> por <param name=\\\"author\\\"/> para <param name=\\\"subject\\\"/> <if test=\\\"has-encounter = true\\\"> no encontro <param name=\\\"encounter\\\"/></if>"
+msgid "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
+msgstr "!!<param name=\\\"status\\\"/> Documento em <param name=\\\"date\\\"/> por <param name=\\\"author\\\"/> para <param name=\\\"subject\\\"/> <if test=\\\"has-encounter = true\\\"> no encontro <param name=\\\"encounter\\\"/></if>"
 
 # EXAMPLE_SCEN_STEP_SCEN
 #: EXAMPLE_SCEN_STEP_SCEN
@@ -1655,8 +1667,8 @@ msgstr "Não foi possível encontrar o ator referenciado {0}"
 # FMM_TABLE
 #: FMM_TABLE
 #, fuzzy
-msgid "<table class=\\\"cols\\\"><tbody><tr><td><a href=\\\"http://hl7.org/fhir/versions.html#maturity\\\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\\\"{1}versions.html#std-process\\\" title=\\\"Standard Status\\\">{2}</a></td></tr></tbody></table>"
-msgstr "<table class=\\\"cols\\\"><tbody><tr><td><a href=\\\"http://hl7.org/fhir/versions.html#maturity\\\">Nível de maturidade</a>: {0}</td><td>&nbsp;<a href=\\\"{1}versions.html#std-process\\\" title=\\\"Estado normalizado\\\">{2}</a></td></tr></tbody></table>"
+msgid "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
+msgstr "!!<table class=\\\"cols\\\"><tbody><tr><td><a href=\\\"http://hl7.org/fhir/versions.html#maturity\\\">Nível de maturidade</a>: {0}</td><td>&nbsp;<a href=\\\"{1}versions.html#std-process\\\" title=\\\"Estado normalizado\\\">{2}</a></td></tr></tbody></table>"
 
 # GENERAL_ADDITIONAL_BINDING
 #: GENERAL_ADDITIONAL_BINDING
@@ -1708,6 +1720,7 @@ msgstr "O conjunto mínimo de valores admissíveis - qualquer sistema conforme D
 # GENERAL_CARD
 #: GENERAL_CARD
 #, fuzzymsgctxt "GENERAL_CARD"
+msgctxt "GENERAL_CARD"
 msgid "Card."
 msgstr "Card."
 
@@ -1756,6 +1769,7 @@ msgstr "Conformidade"
 # GENERAL_CONSTRAINTS
 #: GENERAL_CONSTRAINTS
 #, fuzzymsgctxt "GENERAL_CONSTRAINTS"
+msgctxt "GENERAL_CONSTRAINTS"
 msgid "Constraints"
 msgstr "Condicionantes"
 
@@ -1786,6 +1800,7 @@ msgstr "Critérios"
 # GENERAL_DATA_DISPLAY_PROPERTY
 #: GENERAL_DATA_DISPLAY_PROPERTY
 #, fuzzymsgctxt "GENERAL_DATA_DISPLAY_PROPERTY"
+msgctxt "GENERAL_DATA_DISPLAY_PROPERTY"
 msgid "{0}: {1}"
 msgstr "{0}: {1}"
 
@@ -1798,6 +1813,7 @@ msgstr "Definição de URL"
 # GENERAL_DEFINITION
 #: GENERAL_DEFINITION
 #, fuzzymsgctxt "GENERAL_DEFINITION"
+msgctxt "GENERAL_DEFINITION"
 msgid "Definition"
 msgstr "Definição"
 
@@ -1852,6 +1868,7 @@ msgstr "Filtro"
 # GENERAL_FIXED_VALUE
 #: GENERAL_FIXED_VALUE
 #, fuzzymsgctxt "GENERAL_FIXED_VALUE"
+msgctxt "GENERAL_FIXED_VALUE"
 msgid "Fixed Value: {0}"
 msgstr "Valor fixo: {0}"
 
@@ -1912,12 +1929,14 @@ msgstr "Nota"
 # GENERAL_OBLIG
 #: GENERAL_OBLIG
 #, fuzzymsgctxt "GENERAL_OBLIG"
+msgctxt "GENERAL_OBLIG"
 msgid "Obligations"
 msgstr "Obrigações"
 
 # GENERAL_OBLIGATIONS
 #: GENERAL_OBLIGATIONS
 #, fuzzymsgctxt "GENERAL_OBLIGATIONS"
+msgctxt "GENERAL_OBLIGATIONS"
 msgid "Obligations"
 msgstr "Obrigações"
 
@@ -1942,18 +1961,21 @@ msgstr "Parâmetros"
 # GENERAL_PATTERN_VALUE
 #: GENERAL_PATTERN_VALUE
 #, fuzzymsgctxt "GENERAL_PATTERN_VALUE"
+msgctxt "GENERAL_PATTERN_VALUE"
 msgid "Pattern Value: {0}"
 msgstr "Valor do padrão: {0}"
 
 # GENERAL_PREFERRED
 #: GENERAL_PREFERRED
 #, fuzzymsgctxt "GENERAL_PREFERRED"
+msgctxt "GENERAL_PREFERRED"
 msgid "Preferred"
 msgstr "Preferenciais"
 
 # GENERAL_PROF
 #: GENERAL_PROF
 #, fuzzymsgctxt "GENERAL_PROF"
+msgctxt "GENERAL_PROF"
 msgid "Profile"
 msgstr "Perfil"
 
@@ -1990,6 +2012,7 @@ msgstr "Pedido"
 # GENERAL_REQUIRED
 #: GENERAL_REQUIRED
 #, fuzzymsgctxt "GENERAL_REQUIRED"
+msgctxt "GENERAL_REQUIRED"
 msgid "Required"
 msgstr "Necessário"
 
@@ -2002,6 +2025,7 @@ msgstr "Ligação obrigatória ao ValueSet {0}"
 # GENERAL_RESOURCE
 #: GENERAL_RESOURCE
 #, fuzzymsgctxt "GENERAL_RESOURCE"
+msgctxt "GENERAL_RESOURCE"
 msgid "Resource"
 msgstr "Recursos"
 
@@ -2014,6 +2038,7 @@ msgstr "Etiqueta de segurança"
 # GENERAL_SOURCE
 #: GENERAL_SOURCE
 #, fuzzymsgctxt "GENERAL_SOURCE"
+msgctxt "GENERAL_SOURCE"
 msgid "Source"
 msgstr "Fonte"
 
@@ -2032,6 +2057,7 @@ msgstr "Arranque"
 # GENERAL_STATUS
 #: GENERAL_STATUS
 #, fuzzymsgctxt "GENERAL_STATUS"
+msgctxt "GENERAL_STATUS"
 msgid "Status"
 msgstr "Estado"
 
@@ -2062,6 +2088,7 @@ msgstr "Ainda não foi feito"
 # GENERAL_TYPE
 #: GENERAL_TYPE
 #, fuzzymsgctxt "GENERAL_TYPE"
+msgctxt "GENERAL_TYPE"
 msgid "Type"
 msgstr "Tipo"
 
@@ -2338,6 +2365,7 @@ msgstr "Tipo de lista não especificado"
 # LIST_UNSPECIFIED_SUBJECT
 #: LIST_UNSPECIFIED_SUBJECT
 #, fuzzymsgctxt "LIST_UNSPECIFIED_SUBJECT"
+msgctxt "LIST_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
 msgstr "Assunto não especificado"
 
@@ -2362,6 +2390,7 @@ msgstr "Editora: {0}"
 # MATURITY_STATUS
 #: MATURITY_STATUS
 #, fuzzymsgctxt "MATURITY_STATUS"
+msgctxt "MATURITY_STATUS"
 msgid "Status"
 msgstr "Estado"
 
@@ -2464,6 +2493,7 @@ msgstr "Gravidade"
 # OP_OUT_SRC
 #: OP_OUT_SRC
 #, fuzzymsgctxt "OP_OUT_SRC"
+msgctxt "OP_OUT_SRC"
 msgid "Source"
 msgstr "Fonte"
 
@@ -2593,6 +2623,7 @@ msgstr "(preferencial)"
 # PAT_LINKS
 #: PAT_LINKS
 #, fuzzymsgctxt "PAT_LINKS"
+msgctxt "PAT_LINKS"
 msgid "Links:"
 msgstr "Ligações:"
 
@@ -2752,6 +2783,7 @@ msgstr "Narrativa gerada: {0} {1}"
 # PROF_DRIV_SUMM
 #: PROF_DRIV_SUMM
 #, fuzzymsgctxt "PROF_DRIV_SUMM"
+msgctxt "PROF_DRIV_SUMM"
 msgid "{0}: {1}"
 msgstr "{0}: {1}"
 
@@ -2900,6 +2932,7 @@ msgstr "Contexto"
 # QUEST_DERIVED
 #: QUEST_DERIVED
 #, fuzzymsgctxt "QUEST_DERIVED"
+msgctxt "QUEST_DERIVED"
 msgid "Derived From"
 msgstr "Derivado de"
 
@@ -3206,6 +3239,7 @@ msgstr "Questionário não especificado"
 # QUEST_UNSPECIFIED_SUBJECT
 #: QUEST_UNSPECIFIED_SUBJECT
 #, fuzzymsgctxt "QUEST_UNSPECIFIED_SUBJECT"
+msgctxt "QUEST_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
 msgstr "Assunto não especificado"
 
@@ -3232,7 +3266,7 @@ msgstr ""
 
 # R44B_NOT_COMP
 #: R44B_NOT_COMP
-msgid "This is an {0} IG that is not compatible with {1}\\\" because"
+msgid "This is an {0} IG that is not compatible with {1}\" because"
 msgstr ""
 
 # R44B_NOT_IN
@@ -3247,7 +3281,7 @@ msgstr ""
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
-msgid "Packages for both <a href=\\\"{0}\\\">R4 ({1}.r4)</a> and <a href=\\\"{2}\\\">R4B ({3}.r4b)</a> are available."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
 msgstr ""
 
 # R44B_PROBLEMS
@@ -3257,7 +3291,7 @@ msgstr ""
 
 # R44B_REFERS_TO
 #: R44B_REFERS_TO
-msgid "<a href=\\\"{0}\\\">{1}}</a> refers to the canonical type at {2}"
+msgid "<a href=\"{0}\">{1}}</a> refers to the canonical type at {2}"
 msgstr ""
 
 # R44B_USE_OK
@@ -3357,6 +3391,7 @@ msgstr "Estes requisitos são derivados dos seguintes requisitos:"
 # REQ_LINKS
 #: REQ_LINKS
 #, fuzzymsgctxt "REQ_LINKS"
+msgctxt "REQ_LINKS"
 msgid "Links:"
 msgstr "Ligações:"
 
@@ -3405,8 +3440,8 @@ msgstr "Erro de renderização: {0}"
 # RES_REND_INFO_SOURCE
 #: RES_REND_INFO_SOURCE
 #, fuzzy
-msgid "Information Source: <param name=\\\"source\\\"/>"
-msgstr "Fonte de informação: <param name=\\\"source\\\"/>"
+msgid "Information Source: <param name=\"source\"/>"
+msgstr "!!Fonte de informação: <param name=\\\"source\\\"/>"
 
 # RES_REND_LANGUAGE
 #: RES_REND_LANGUAGE
@@ -3665,7 +3700,7 @@ msgstr ""
 
 # SDR_FROM_ELEM
 #: SDR_FROM_ELEM
-msgid "// from Element: <a href=\\\"{0}\\\">extension</a>"
+msgid "// from Element: <a href=\"{0}\">extension</a>"
 msgstr ""
 
 # SDR_GUIDANCE_HERE
@@ -4114,6 +4149,7 @@ msgstr "Referência ao tipo do elemento"
 # SD_HEAD_CARD_DESC
 #: SD_HEAD_CARD_DESC
 #, fuzzymsgctxt "SD_HEAD_CARD_DESC"
+msgctxt "SD_HEAD_CARD_DESC"
 msgid "Minimum and Maximum # of times the element can appear in the instance"
 msgstr "Número mínimo e máximo de vezes que o elemento pode aparecer na instância"
 
@@ -4271,6 +4307,7 @@ msgstr "multipleOr: Cabe ao servidor decidir se o parâmetro pode ter vários va
 # SEARCH_PAR_NONE
 #: SEARCH_PAR_NONE
 #, fuzzymsgctxt "SEARCH_PAR_NONE"
+msgctxt "SEARCH_PAR_NONE"
 msgid "(none)"
 msgstr "(nenhum)"
 
@@ -4361,6 +4398,7 @@ msgstr "Nomes alternativos"
 # STRUC_DEF_AND
 #: STRUC_DEF_AND
 #, fuzzymsgctxt "STRUC_DEF_AND"
+msgctxt "STRUC_DEF_AND"
 msgid "and"
 msgstr "e"
 
@@ -4541,6 +4579,7 @@ msgstr "Restrição de fatias"
 # STRUC_DEF_CONSTRAINTS
 #: STRUC_DEF_CONSTRAINTS
 #, fuzzymsgctxt "STRUC_DEF_CONSTRAINTS"
+msgctxt "STRUC_DEF_CONSTRAINTS"
 msgid "Constraints"
 msgstr "Restrições"
 
@@ -4571,6 +4610,7 @@ msgstr "Clique para copiar o URL"
 # STRUC_DEF_CURR
 #: STRUC_DEF_CURR
 #, fuzzymsgctxt "STRUC_DEF_CURR"
+msgctxt "STRUC_DEF_CURR"
 msgid "Current"
 msgstr "Atual"
 
@@ -4697,6 +4737,7 @@ msgstr "exemplo"
 # STRUC_DEF_EXT
 #: STRUC_DEF_EXT
 #, fuzzymsgctxt "STRUC_DEF_EXT"
+msgctxt "STRUC_DEF_EXT"
 msgid "Extensible"
 msgstr "Extensível"
 
@@ -4973,6 +5014,7 @@ msgstr "Pelo menos os seguintes elementos"
 # STRUC_DEF_LOGICAL
 #: STRUC_DEF_LOGICAL
 #, fuzzymsgctxt "STRUC_DEF_LOGICAL"
+msgctxt "STRUC_DEF_LOGICAL"
 msgid "Logical Model"
 msgstr "Modelo lógico"
 
@@ -5003,6 +5045,7 @@ msgstr "Máximo"
 # STRUC_DEF_MAX_MIN
 #: STRUC_DEF_MAX_MIN
 #, fuzzymsgctxt "STRUC_DEF_MAX_MIN"
+msgctxt "STRUC_DEF_MAX_MIN"
 msgid "Minimum and Maximum # of times the element can appear in the instance"
 msgstr "Número mínimo e máximo de vezes que o elemento pode aparecer na instância"
 
@@ -5171,6 +5214,7 @@ msgstr "Encomendado"
 # STRUC_DEF_PATH
 #: STRUC_DEF_PATH
 #, fuzzymsgctxt "STRUC_DEF_PATH"
+msgctxt "STRUC_DEF_PATH"
 msgid "Path"
 msgstr "Caminho"
 
@@ -5525,6 +5569,7 @@ msgstr "Este tipo deve ser suportado"
 # STRUC_DEF_UI
 #: STRUC_DEF_UI
 #, fuzzymsgctxt "STRUC_DEF_UI"
+msgctxt "STRUC_DEF_UI"
 msgid "UI"
 msgstr "IU"
 
@@ -5954,6 +5999,7 @@ msgstr "todos os códigos definidos em"
 # VALUE_SET_AND
 #: VALUE_SET_AND
 #, fuzzymsgctxt "VALUE_SET_AND"
+msgctxt "VALUE_SET_AND"
 msgid "and"
 msgstr "e"
 
@@ -6275,6 +6321,13 @@ msgstr "Nível"
 #, fuzzy
 msgid "Loinc v"
 msgstr "Loinc v"
+
+# VALUE_SET_NEEDS_SUPPL
+#: VALUE_SET_NEEDS_SUPPL
+msgid "This ValueSet requires the Code system Supplement"
+msgid_plural "This ValueSet requires the Code system Supplements"
+msgstr[0] ""
+msgstr[1] ""
 
 # VALUE_SET_NO
 #: VALUE_SET_NO
