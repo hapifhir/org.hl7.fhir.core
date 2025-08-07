@@ -9,6 +9,9 @@ on:
   schedule: # check for translations from Crowdin every 12h
     - cron: '0 */12 * * *'
 
+permissions:  # added using https://github.com/step-security/secure-repo
+  contents: read
+
 jobs:
   crowdin:
     runs-on: ubuntu-latest
