@@ -263,8 +263,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.SUPPLEMENT)) {
             if (context.isNoTerminologyServer()) {
               if (c.hasVersion()) {
-                String msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION, c.getSystem(), c.getVersion() , resolveCodeSystemVersions(c.getSystem()).toString());
-                unknownSystems.add(c.getSystem()+"|"+c.getVersion());
+                String msg = getUnknownCodeSystemMessage(c.getSystem(), c.getVersion());
                 res = new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".coding["+i+"].system", msg, OpIssueCode.NotFound, null)).setUnknownSystems(unknownSystems);
               } else {
                 String msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, c.getSystem(), c.getVersion());
@@ -418,6 +417,19 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
   }
 
+  private String getUnknownCodeSystemMessage(String system, String version) {
+    Set<String> set = resolveCodeSystemVersions(system);
+    String msg;
+    if (set.isEmpty()) {
+      msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION_NONE, system, version);
+      unknownSystems.add(system);
+    } else {
+      msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION, system, version, CommaSeparatedStringBuilder.join(",", Utilities.sorted(set)));
+      unknownSystems.add(system + "|" + version);
+    }
+    return msg;
+  }
+
   private void checkValueSetLoad(ValidationProcessInfo info) {
     int serverCount = getServerLoad(info);
     // There's a trade off here: if we're going to hit the server inside the components, then
@@ -521,8 +533,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return cs;
   }
 
-  public List<String> resolveCodeSystemVersions(String system) {
-    List<String> res = new ArrayList<>();
+  public Set<String> resolveCodeSystemVersions(String system) {
+    Set<String> res = new HashSet<>();
     for (CodeSystem t : localSystems) {
       if (t.getUrl().equals(system) && t.hasVersion()) {
         res.add(t.getVersion());
@@ -617,8 +629,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
               warningMessage = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, system);
               unknownSystems.add(system);
             } else {
-              warningMessage = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION, system, wv, resolveCodeSystemVersions(system).toString());
-              unknownSystems.add(system+"|"+wv);
+              warningMessage = getUnknownCodeSystemMessage(system, wv);
             }
             if (!inExpansion) {
               if (valueset != null && valueset.hasExpansion()) {

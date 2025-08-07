@@ -75,7 +75,7 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
         PackageClient packageClient = myClientFactory.apply(nextPackageServer);
         try {
           if (Utilities.noString(version)) {
-            version = packageClient.getLatestVersion(id);
+            version = packageClient.getLatestVersion(id, false);
           }
           if (version.endsWith(".x")) {
             version = packageClient.getLatestVersion(id, version);

@@ -145,14 +145,7 @@ import org.hl7.fhir.r5.utils.ResourceUtilities;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
-import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
-import org.hl7.fhir.utilities.TimeTracker;
-import org.hl7.fhir.utilities.ToolingClientLogger;
-import org.hl7.fhir.utilities.UUIDUtilities;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.I18nBase;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -1978,22 +1971,24 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (expParameters == null) {
       throw new Error(formatMessage(I18nConstants.NO_EXPANSIONPROFILE_PROVIDED));
     }
+    String defLang = null;
     for (ParametersParameterComponent pp : expParameters.getParameter()) {
-      if (!pin.hasParameter(pp.getName())) {
+      if ("defaultDisplayLanguage".equals(pp.getName())) {
+        defLang = pp.getValue().primitiveValue();
+      } else if (!pin.hasParameter(pp.getName())) {
         pin.addParameter(pp);
-      } else if (isOverridingParameterName(pp.getName())) {
+      } else if ("displayLanguage".equals(pp.getName())) {
         pin.setParameter(pp);
       }
+    }
+    if (defLang != null && !pin.hasParameter("displayLanguage")) {
+      pin.addParameter().setName("displayLanguage").setValue(new CodeType(defLang));
     }
 
     if (options.isDisplayWarningMode()) {
       pin.addParameter("mode","lenient-display-validation");
     }
     pin.addParameter("diagnostics", true);
-  }
-
-  private boolean isOverridingParameterName(String pname) {
-    return Utilities.existsInList(pname, "displayLanguage");
   }
 
   private boolean addDependentResources(ITerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, ValueSet vs) {
@@ -3792,7 +3787,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           }
         }
         ParametersParameterComponent p = expParameters.addParameter();
-        p.setName("displayLanguage");
+        p.setName("defaultDisplayLanguage");
         p.setValue(new CodeType(lt));
         p.setUserData(UserDataNames.auto_added_parameter, true);
       }
