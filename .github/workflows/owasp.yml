@@ -8,6 +8,9 @@ on:
 
   workflow_dispatch:
 
+permissions:  # added using https://github.com/step-security/secure-repo
+  contents: read
+
 jobs:
   analyze:
     name: Analyze
@@ -16,28 +19,33 @@ jobs:
       contents: read  # Only read access to repository contents
       security-events: write
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        with:
+          egress-policy: audit
 
-    - env:
-        NVD_API_KEY:
-          ${{ secrets.NVD_API_KEY }}
-      run: |
-        mvn -DskipTests install -P OWASP_CHECK
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-    - env:
-        NVD_API_KEY:
-          ${{ secrets.NVD_API_KEY }}
-      run: |
-        mvn -DskipTests dependency-check:aggregate -P OWASP_CHECK
+      - env:
+          NVD_API_KEY:
+            ${{ secrets.NVD_API_KEY }}
+        run: |
+          mvn -DskipTests install -P OWASP_CHECK
 
-    - name: Upload SARIF file
-      uses: github/codeql-action/upload-sarif@v3
-      with:
-        # Path to SARIF file relative to the root of the repository
-        sarif_file: target/dependency-check-report.sarif
-        # Optional category for the results
-        # Used to differentiate multiple results for one commit
+      - env:
+          NVD_API_KEY:
+            ${{ secrets.NVD_API_KEY }}
+        run: |
+          mvn -DskipTests dependency-check:aggregate -P OWASP_CHECK
 
-        category: OWASP-dependency-check
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@a4e1a019f5e24960714ff6296aee04b736cbc3cf # v3.29.6
+        with:
+          # Path to SARIF file relative to the root of the repository
+          sarif_file: target/dependency-check-report.sarif
+          # Optional category for the results
+          # Used to differentiate multiple results for one commit
+
+          category: OWASP-dependency-check
 
