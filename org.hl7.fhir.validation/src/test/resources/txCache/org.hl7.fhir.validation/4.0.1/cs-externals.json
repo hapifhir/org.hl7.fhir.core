@@ -14,6 +14,7 @@
   "http://unstats.un.org/unsd/methods/m49/m49.htm|null" : null,
   "http://hl7.org/fhir/uv/phd/CodeSystem/PhdObservationCategories|null" : null,
   "urn:oid:1.2.840.10008.2.16.4|null" : null,
+  "http://snomed.info/sct|http://snomed.info/sct/2011000195101" : null,
   "http://terminology.hl7.org/CodeSystem/v2-0532|2.1.0" : null,
   "http://example.org|null" : null,
   "http://fkcfhir.org/fhir/CodeSystem/FMCOrderSchedule|null" : null,
