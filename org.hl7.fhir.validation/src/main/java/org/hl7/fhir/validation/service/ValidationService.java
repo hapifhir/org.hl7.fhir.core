@@ -560,8 +560,8 @@ public class ValidationService {
 
   private ValidationEngine getValidationEngineFromValidationContext(ValidationContext validationContext, String definitions, TimeTracker tt) throws Exception {
     ValidationEngine validationEngine;
-    if (validationContext.getBaseEngine() != null && hasBaseEngineForKey(validationContext.getBaseEngine())) {
-      validationEngine = new ValidationEngine(getBaseEngine(validationContext.getBaseEngine()));
+    if (validationContext.engineContext.getBaseEngine() != null && hasBaseEngineForKey(validationContext.engineContext.getBaseEngine())) {
+      validationEngine = new ValidationEngine(getBaseEngine(validationContext.engineContext.getBaseEngine()));
     } else {
       if (definitions == null) {
         throw new IllegalArgumentException("Cannot create a validator engine (definitions == null)");
@@ -601,8 +601,8 @@ public class ValidationService {
     log.info("  Get set... ");
     validationEngine.setQuestionnaireMode(validationContext.getQuestionnaireMode());
     validationEngine.setLevel(validationContext.getLevel());
-    validationEngine.setDoNative(validationContext.isDoNative());
-    validationEngine.setHintAboutNonMustSupport(validationContext.isHintAboutNonMustSupport());
+    validationEngine.setDoNative(validationContext.engineContext.isDoNative());
+    validationEngine.setHintAboutNonMustSupport(validationContext.engineContext.isHintAboutNonMustSupport());
     for (String s : validationContext.getExtensions()) {
       if ("any".equals(s)) {
         validationEngine.setAnyExtensionsAllowed(true);
