@@ -6,7 +6,7 @@ Only new releases of this project will contain security updates. All clients sho
 
 ## Signed Releases
 
-As of version 6.6.0, release assets excluding compressed soource code are signed with a `*.asc` signature file for verification. This file is available [here](https://hl7.github.io/assets/keys/public.pgp) and also on the [Ubuntu keyserver](https://keyserver.ubuntu.com/pks/lookup?search=85D1C17CF1152107B272386C8FDFA68281399B5D&fingerprint=on&op=index)
+As of version 6.6.0, release assets excluding compressed source code are signed with a `*.asc` signature file for verification. This file is available [here](https://hl7.github.io/assets/keys/public.pgp) and also on the [Ubuntu keyserver](https://keyserver.ubuntu.com/pks/lookup?search=85D1C17CF1152107B272386C8FDFA68281399B5D&fingerprint=on&op=index)
 
 ## Reporting Vulnerabilities
 
