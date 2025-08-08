@@ -5,8 +5,11 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-    
+
   workflow_dispatch:
+
+permissions:  # added using https://github.com/step-security/secure-repo
+  contents: read
 
 jobs:
   build:
@@ -16,11 +19,16 @@ jobs:
       contents: read  # Only read access to repository contents
       security-events: write
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        with:
+          egress-policy: audit
+
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Run static analysis
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@77137e9dc3ab1b329b7c8a38c2eb7475850a14e8 # master
         env:
           # Workaround for rate limiting on ghcr. Use these two entries for ghcr related TOOMANYREQUESTS errors.
           TRIVY_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-db
@@ -38,7 +46,7 @@ jobs:
 
 
       - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@a4e1a019f5e24960714ff6296aee04b736cbc3cf # v3.29.6
         with:
           sarif_file: 'trivy-results.sarif'
           category: 'Trivy-security-scan'
