@@ -31,3 +31,4 @@ LGPL 2.1
 GNU Lesser General Public License
 MPL 1.1
 Mozilla Public License Version 2.0
+Unicode-3.0
