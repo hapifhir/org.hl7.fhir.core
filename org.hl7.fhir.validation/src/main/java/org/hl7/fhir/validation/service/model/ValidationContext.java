@@ -30,18 +30,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ValidationContext {
 
-  @JsonProperty("baseEngine")
-  @SerializedName("baseEngine")
-  private
-  String baseEngine = null;
-  @JsonProperty("doNative")
-  @SerializedName("doNative")
-  private
-  boolean doNative = false;
-  @JsonProperty("hintAboutNonMustSupport")
-  @SerializedName("hintAboutNonMustSupport")
-  private
-  boolean hintAboutNonMustSupport = false;
+  public ValidationEngineContext engineContext = new ValidationEngineContext();
+
+
   @JsonProperty("recursive")
   @SerializedName("recursive")
   private
@@ -368,19 +359,6 @@ public class ValidationContext {
   private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy;
   
   private List<String> langRegenParam = new ArrayList<>();
-  
-  @SerializedName("baseEngine")
-  @JsonProperty("baseEngine")
-  public String getBaseEngine() {
-    return baseEngine;
-  }
-
-  @SerializedName("baseEngine")
-  @JsonProperty("baseEngine")
-  public ValidationContext setBaseEngine(String baseEngine) {
-    this.baseEngine = baseEngine;
-    return this;
-  }
 
   @SerializedName("map")
   @JsonProperty("map")
@@ -520,19 +498,6 @@ public class ValidationContext {
     return this;
   }
 
-  @SerializedName("doNative")
-  @JsonProperty("doNative")
-  public boolean isDoNative() {
-    return doNative;
-  }
-
-  @SerializedName("doNative")
-  @JsonProperty("doNative")
-  public ValidationContext setDoNative(boolean doNative) {
-    this.doNative = doNative;
-    return this;
-  }
-
   @SerializedName("extensions")
   @JsonProperty("extensions")
   public List<String> getExtensions() {
@@ -572,18 +537,7 @@ public class ValidationContext {
     return this;
   }
 
-  @SerializedName("hintAboutNonMustSupport")
-  @JsonProperty("hintAboutNonMustSupport")
-  public boolean isHintAboutNonMustSupport() {
-    return hintAboutNonMustSupport;
-  }
 
-  @SerializedName("hintAboutNonMustSupport")
-  @JsonProperty("hintAboutNonMustSupport")
-  public ValidationContext setHintAboutNonMustSupport(boolean hintAboutNonMustSupport) {
-    this.hintAboutNonMustSupport = hintAboutNonMustSupport;
-    return this;
-  }
 
   @SerializedName("recursive")
   @JsonProperty("recursive")
@@ -1238,9 +1192,7 @@ public class ValidationContext {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     ValidationContext that = (ValidationContext) o;
-    return Objects.equals(baseEngine, that.baseEngine) &&
-      doNative == that.doNative &&
-      hintAboutNonMustSupport == that.hintAboutNonMustSupport &&
+    return Objects.equals(engineContext, that.engineContext) &&
       recursive == that.recursive &&
       doDebug == that.doDebug &&
       assumeValidRestReferences == that.assumeValidRestReferences &&
@@ -1305,7 +1257,7 @@ public class ValidationContext {
 
   @Override
   public int hashCode() {
-    return Objects.hash(baseEngine, doNative, extensions, certSources, matchetypes, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, checkReferences,canDoNative, noInternalCaching, resolutionContext, aiService,
+    return Objects.hash(engineContext, extensions, certSources, matchetypes, recursive, doDebug, assumeValidRestReferences, checkReferences,canDoNative, noInternalCaching, resolutionContext, aiService,
       noExtensibleBindingMessages, noInvariants, displayWarnings, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
       targetVer, packageName, igs, questionnaireMode, level, profiles, options, sources, inputs, mode, locale, locations, crumbTrails, showMessageIds, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars,
       watchMode, watchScanDelay, watchSettleTime, bestPracticeLevel, unknownCodeSystemsCauseErrors, noExperimentalContent, advisorFile, expansionParameters, format, htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
@@ -1314,12 +1266,9 @@ public class ValidationContext {
   @Override
   public String toString() {
     return "ValidationContext{" +
-      "baseEngine=" + baseEngine +
-      ", doNative=" + doNative +
-      ", extensions=" + extensions +
+      "extensions=" + extensions +
       ", certSources=" + certSources +
       ", matchetypes=" + matchetypes +
-      ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +
       ", recursive=" + recursive +
       ", doDebug=" + doDebug +
       ", assumeValidRestReferences=" + assumeValidRestReferences +
