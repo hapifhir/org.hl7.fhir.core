@@ -1,11 +1,16 @@
 package org.hl7.fhir.r5.terminologies.utilities;
 
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.model.ValueSet.*;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.Enumerations;
+import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
 
 public class VCLParser {
 
@@ -19,8 +24,10 @@ public class VCLParser {
     }
   }
 
+  private static String VCL_URI = "http://fhir.org/VCL?v1=";
+
   private enum TokenType {
-    DASH, OPEN, CLOSE, SEMI, COMMA, DOT, STAR,
+    DASH, OPEN, CLOSE, LCRLY, RCRLY, SEMI, COMMA, DOT, STAR,
     EQ, IS_A, IS_NOT_A, DESC_OF, REGEX, IN, NOT_IN,
     GENERALIZES, CHILD_OF, DESC_LEAF, EXISTS,
     URI, SCODE, QUOTED_VALUE, EOF
@@ -65,6 +72,8 @@ public class VCLParser {
           case '-': tokens.add(new Token(TokenType.DASH, "-", startPos)); pos++; continue;
           case '(': tokens.add(new Token(TokenType.OPEN, "(", startPos)); pos++; continue;
           case ')': tokens.add(new Token(TokenType.CLOSE, ")", startPos)); pos++; continue;
+          case '{': tokens.add(new Token(TokenType.LCRLY, "{", startPos)); pos++; continue;
+          case '}': tokens.add(new Token(TokenType.RCRLY, "}", startPos)); pos++; continue;
           case ';': tokens.add(new Token(TokenType.SEMI, ";", startPos)); pos++; continue;
           case ',': tokens.add(new Token(TokenType.COMMA, ",", startPos)); pos++; continue;
           case '.': tokens.add(new Token(TokenType.DOT, ".", startPos)); pos++; continue;
@@ -118,15 +127,13 @@ public class VCLParser {
         }
 
         if (Character.isLetter(ch)) {
-          String value = readWhile(c -> Character.isLetterOrDigit(c) || c == ':' || c == '?' ||
-            c == '&' || c == '%' || c == '+' || c == '-' || c == '.' || c == '@' ||
-            c == '#' || c == '$' || c == '!' || c == '{' || c == '}' || c == '_');
-
-          if (value.contains(":")) {
-            String restOfUri = readWhile(c -> Character.isLetterOrDigit(c) || c == '?' ||
-              c == '&' || c == '%' || c == '+' || c == '-' || c == '.' || c == '@' ||
-              c == '#' || c == '$' || c == '!' || c == '{' || c == '}' || c == '_' || c == '/');
-            value += restOfUri;
+          String value = readWhile(c -> Character.isLetterOrDigit(c) || c == '-' || c == '_');
+          if (pos < input.length() && input.charAt(pos) == ':') {
+            pos++;
+            String restOfUri = readWhile(c -> Character.isLetterOrDigit(c) || c == '?' || c == '&'
+                || c == '%' || c == '+' || c == '-' || c == '.' || c == '@' || c == '#' || c == '$'
+                || c == '!' || c == '{' || c == '}' || c == '_' || c == '/');
+            value += ":" + restOfUri;
 
             if (pos < input.length() && input.charAt(pos) == '|') {
               pos++;
@@ -206,6 +213,19 @@ public class VCLParser {
     private int pos = 0;
     private ValueSet valueSet;
     private ValueSetComposeComponent compose;
+
+    private static String getImplicitVcl(String system, String expression) {
+      String encodedVcl = ("(" + system + ")(" + expression + ")")
+          .replace("%", "%25")
+          .replace("&", "%26")
+          .replace("(", "%28")
+          .replace(")", "%29")
+          .replace("=", "%3D")
+          .replace("?", "%3F")
+          .replace("#", "%23")
+          ;
+      return VCL_URI + encodedVcl;
+    }
 
     public Parser(List<Token> tokens) {
       this.tokens = tokens;
@@ -346,25 +366,87 @@ public class VCLParser {
     private void parseSimpleExpr(String systemUri, boolean isExclusion) throws VCLParseException {
       ConceptSetComponent conceptSet = createConceptSet(systemUri, isExclusion);
 
-      if (current().type == TokenType.STAR) {
+      if (peek().type == TokenType.DOT) {
+        parseOf(systemUri, conceptSet);
+      } else if (current().type == TokenType.STAR) {
         consume(TokenType.STAR);
         conceptSet.addFilter()
           .setProperty("concept")
           .setOp(Enumerations.FilterOperator.EXISTS)
           .setValue("true");
       } else if (current().type == TokenType.SCODE || current().type == TokenType.QUOTED_VALUE) {
-        String code = parseCode();
-
-        if (isFilterOperator(current().type)) {
-          parseFilter(conceptSet, code);
+        if (current().type == TokenType.SCODE && current().value.contains(".")) {
+          parseOf(systemUri, conceptSet);
         } else {
-          conceptSet.addConcept().setCode(code);
+          String code = parseCode();
+
+          if (isFilterOperator(current().type)) {
+            parseFilter(conceptSet, code);
+          } else {
+            conceptSet.addConcept().setCode(code);
+          }
         }
       } else if (current().type == TokenType.IN) {
         parseIncludeVs(conceptSet);
       } else {
-        throw new VCLParseException("Expected code, filter, or include", current().position);
+        parseOf(systemUri, conceptSet);
       }
+    }
+
+    private void parseOf(String systemUri, ConceptSetComponent conceptSet) throws VCLParseException {
+      boolean isVcl = false;
+      StringBuilder sb = new StringBuilder();
+
+      switch (current().type) {
+      case LCRLY: {
+        // codeList or filterList
+        consume(TokenType.LCRLY);
+        if (peek().type == TokenType.COMMA) {
+          sb.append(parseCode());
+          while (current().type == TokenType.COMMA) {
+            consume(TokenType.COMMA);
+            sb.append(",").append(parseCode());
+          }
+        } else {
+          isVcl = true;
+          parseFilterList(sb);
+        }
+        consume(TokenType.RCRLY);
+        break;
+      }
+      case STAR: {
+        sb.append(current().value);
+        consume(TokenType.STAR);
+        break;
+      }
+      case URI: {
+        sb.append(current().value);
+        consume(TokenType.URI);
+        break;
+      }
+      case SCODE:
+      case QUOTED_VALUE: {
+        sb.append(current().value);
+        parseCode();
+        break;
+      }
+      default:
+        throw new VCLParseException("Expected code, codeList, STAR, URI or filterList", current().position);
+      }
+
+      consume(TokenType.DOT);
+
+      String property = parseCode();
+      String implicitVcl = isVcl ? getImplicitVcl(systemUri, sb.toString()) : sb.toString();
+
+      addOf(conceptSet, property, implicitVcl);
+    }
+
+    private void addOf(ConceptSetComponent conceptSet, String property, String value) {
+      ConceptSetFilterComponent filter = conceptSet.addFilter().setProperty(property)
+          .setOp(Enumerations.FilterOperator.EQUAL).setValue(value);
+
+      filter.addExtension().setUrl("http://hl7.org/fhir/6.0/StructureDefinition/extension-ValueSet.compose.include.filter.op").setValue(new CodeType("of"));
     }
 
     private void parseFilter(ConceptSetComponent conceptSet, String property) throws VCLParseException {
@@ -397,11 +479,11 @@ public class VCLParser {
           break;
         case IN:
           filter.setOp(Enumerations.FilterOperator.IN);
-          filter.setValue(parseFilterValue());
+          filter.setValue(parseFilterValue(conceptSet.getSystem()));
           break;
         case NOT_IN:
           filter.setOp(Enumerations.FilterOperator.NOTIN);
-          filter.setValue(parseFilterValue());
+          filter.setValue(parseFilterValue(conceptSet.getSystem()));
           break;
         case GENERALIZES:
           filter.setOp(Enumerations.FilterOperator.GENERALIZES);
@@ -521,25 +603,54 @@ public class VCLParser {
       }
     }
 
-    private String parseFilterValue() throws VCLParseException {
-      if (current().type == TokenType.OPEN) {
-        consume(TokenType.OPEN);
+    private String parseFilterValue(String systemUri) throws VCLParseException {
+      if (current().type == TokenType.LCRLY) {
+        consume(TokenType.LCRLY);
         StringBuilder sb = new StringBuilder();
         sb.append(parseCode());
 
-        while (current().type == TokenType.COMMA) {
-          consume(TokenType.COMMA);
-          sb.append(",").append(parseCode());
-        }
+        if (isFilterOperator(current().type)) {
+          parseFilterList(sb);
+          consume(TokenType.RCRLY);
+          return getImplicitVcl(systemUri, sb.toString());
+        } else {
+          while (current().type == TokenType.COMMA) {
+            consume(TokenType.COMMA);
+            sb.append(",").append(parseCode());
+          }
 
-        consume(TokenType.CLOSE);
-        return sb.toString();
+          consume(TokenType.RCRLY);
+          return sb.toString();
+        }
       } else if (current().type == TokenType.URI) {
         String uri = current().value;
         consume(TokenType.URI);
         return uri;
       } else {
         return parseCode();
+      }
+    }
+
+    private void parseFilterList(StringBuilder sb) throws VCLParseException {
+      int depth = 1;
+      while (depth > 0) {
+        TokenType tokenType = current().type;
+
+        switch (tokenType) {
+        case LCRLY:
+          depth++;
+          break;
+        case RCRLY:
+          depth--;
+          break;
+        default:
+          // do nothing
+        }
+
+        if (depth > 0) {
+          sb.append(current().value);
+          consume(tokenType);
+        }
       }
     }
 
