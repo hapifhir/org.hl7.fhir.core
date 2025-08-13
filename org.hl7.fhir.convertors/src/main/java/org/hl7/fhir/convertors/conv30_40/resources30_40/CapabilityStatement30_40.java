@@ -1,7 +1,5 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
-import java.util.stream.Collectors;
-
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.ContactDetail30_40;
@@ -9,16 +7,13 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Coding30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Timing30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Boolean30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Code30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.MarkDown30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.UnsignedInt30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Uri30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.*;
 import org.hl7.fhir.dstu3.model.CapabilityStatement;
 import org.hl7.fhir.dstu3.model.Enumeration;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.Extension;
+
+import java.util.stream.Collectors;
 
 public class CapabilityStatement30_40 {
 
@@ -267,29 +262,40 @@ public class CapabilityStatement30_40 {
     for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent t : src.getSupportedMessage())
       tgt.addSupportedMessage(convertCapabilityStatementMessagingSupportedMessageComponent(t));
     for (org.hl7.fhir.r4.model.Extension e : src.getExtensionsByUrl(VersionConvertorConstants.EXT_IG_CONFORMANCE_MESSAGE_EVENT)) {
-      org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementMessagingEventComponent event = new org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementMessagingEventComponent();
-      tgt.addEvent(event);
-      event.setCode(Coding30_40.convertCoding((org.hl7.fhir.r4.model.Coding) e.getExtensionByUrl("code").getValue()));
-      if (e.hasExtension("category"))
-        event.setCategory(org.hl7.fhir.dstu3.model.CapabilityStatement.MessageSignificanceCategory.fromCode(e.getExtensionByUrl("category").getValue().toString()));
-      event.setMode(org.hl7.fhir.dstu3.model.CapabilityStatement.EventCapabilityMode.fromCode(e.getExtensionByUrl("mode").getValue().toString()));
-      event.setCode(Coding30_40.convertCoding((org.hl7.fhir.r4.model.Coding) e.getExtensionByUrl("code").getValue()));
-      if (e.hasExtension("category"))
-        event.setCategory(org.hl7.fhir.dstu3.model.CapabilityStatement.MessageSignificanceCategory.fromCode(e.getExtensionByUrl("category").getValue().toString()));
-      event.setMode(org.hl7.fhir.dstu3.model.CapabilityStatement.EventCapabilityMode.fromCode(e.getExtensionByUrl("mode").getValue().toString()));
-      org.hl7.fhir.r4.model.Extension focusE = e.getExtensionByUrl("focus");
-      if (focusE.getValue().hasPrimitiveValue())
-        event.setFocus(focusE.getValue().toString());
-      else {
-        event.setFocusElement(new org.hl7.fhir.dstu3.model.CodeType());
-        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(focusE.getValue(), event.getFocusElement());
-      }
-      event.setRequest(Reference30_40.convertReference((org.hl7.fhir.r4.model.Reference) e.getExtensionByUrl("request").getValue()));
-      event.setResponse(Reference30_40.convertReference((org.hl7.fhir.r4.model.Reference) e.getExtensionByUrl("response").getValue()));
-      if (e.hasExtension("documentation"))
-        event.setDocumentation(e.getExtensionByUrl("documentation").getValue().toString());
+      tgt.addEvent(convertMessageExtensionToMessageEvent(e));
     }
     return tgt;
+  }
+
+  public static CapabilityStatement.CapabilityStatementMessagingEventComponent convertMessageExtensionToMessageEvent(Extension extension) {
+    CapabilityStatement.CapabilityStatementMessagingEventComponent event = new CapabilityStatement.CapabilityStatementMessagingEventComponent();
+    event.setCode(Coding30_40.convertCoding((org.hl7.fhir.r4.model.Coding) extension.getExtensionByUrl("code").getValue()));
+    if (extension.hasExtension("category"))
+      event.setCategory(CapabilityStatement.MessageSignificanceCategory.fromCode(extension.getExtensionByUrl("category").getValue().toString()));
+    event.setMode(CapabilityStatement.EventCapabilityMode.fromCode(extension.getExtensionByUrl("mode").getValue().toString()));
+    //TODO this seems to be duplicate code
+    event.setCode(Coding30_40.convertCoding((org.hl7.fhir.r4.model.Coding) extension.getExtensionByUrl("code").getValue()));
+    if (extension.hasExtension("category"))
+      event.setCategory(CapabilityStatement.MessageSignificanceCategory.fromCode(extension.getExtensionByUrl("category").getValue().toString()));
+    event.setMode(CapabilityStatement.EventCapabilityMode.fromCode(extension.getExtensionByUrl("mode").getValue().toString()));
+
+    event.setFocusElement(convertFocusExtensionR4ToMessageEventDstu3(extension.getExtensionByUrl("focus")));
+    event.setRequest(Reference30_40.convertReference((org.hl7.fhir.r4.model.Reference) extension.getExtensionByUrl("request").getValue()));
+    event.setResponse(Reference30_40.convertReference((org.hl7.fhir.r4.model.Reference) extension.getExtensionByUrl("response").getValue()));
+    if (extension.hasExtension("documentation"))
+      event.setDocumentation(extension.getExtensionByUrl("documentation").getValue().toString());
+
+    return event;
+  }
+
+  public static org.hl7.fhir.dstu3.model.CodeType convertFocusExtensionR4ToMessageEventDstu3(Extension focusE) {
+    org.hl7.fhir.dstu3.model.CodeType result = new org.hl7.fhir.dstu3.model.CodeType();
+    if (focusE.getValue().hasPrimitiveValue()) {
+      result.setValue(focusE.getValue().toString());
+    } else {
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(focusE.getValue(), result);
+    }
+    return result;
   }
 
   public static org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementMessagingComponent convertCapabilityStatementMessagingComponent(org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementMessagingComponent src) throws FHIRException {
