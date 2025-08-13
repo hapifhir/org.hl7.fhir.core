@@ -252,7 +252,7 @@ public class CapabilityStatement30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementMessagingComponent tgt = new org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementMessagingComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src, tgt, VersionConvertorConstants.EXT_IG_CONFORMANCE_MESSAGE_EVENT);
     for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementMessagingEndpointComponent t : src.getEndpoint())
       tgt.addEndpoint(convertCapabilityStatementMessagingEndpointComponent(t));
     if (src.hasReliableCache())
