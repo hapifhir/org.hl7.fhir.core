@@ -9,6 +9,12 @@ import com.google.gson.annotations.SerializedName;
 
 public class ValidationRequest {
 
+  @JsonProperty("validationEngineSettings")
+  @JsonAlias("validationEngineSettings") // alias for jackson deserialization
+  @SerializedName(value="validationEngineSettings")
+  private
+  ValidationEngineSettings validationEngineSettings;
+
   @JsonProperty("validationContext")
   @JsonAlias("cliContext") // alias for jackson deserialization
   @SerializedName(value="validationContext", alternate={"cliContext"})
@@ -19,11 +25,6 @@ public class ValidationRequest {
   @SerializedName("filesToValidate")
   private
   List<FileInfo> filesToValidate = new ArrayList<>();
-
-  @JsonProperty("validationContext")
-  public ValidationContext getValidationContext() {
-    return validationContext;
-  }
 
   @JsonProperty("sessionId")
   @SerializedName("sessionId")
@@ -43,6 +44,25 @@ public class ValidationRequest {
     this.sessionId = sessionToken;
   }
 
+  @JsonProperty("validationEngineSettings")
+  public ValidationEngineSettings getValidationEngineSettings() {
+    return validationEngineSettings;
+  }
+
+  @JsonProperty("validationEngineSettings")
+  public ValidationRequest setValidationEngineSettings(ValidationEngineSettings validationEngineSettings) {
+    this.validationEngineSettings = validationEngineSettings;
+    return this;
+  }
+
+  @Deprecated
+  @JsonProperty("validationContext")
+  public ValidationContext getValidationContext() {
+    return validationContext;
+  }
+
+
+  @Deprecated
   @JsonProperty("validationContext")
   public ValidationRequest setValidationContext(ValidationContext validationContext) {
     this.validationContext = validationContext;
