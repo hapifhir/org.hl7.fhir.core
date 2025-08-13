@@ -273,11 +273,6 @@ public class CapabilityStatement30_40 {
     if (extension.hasExtension("category"))
       event.setCategory(CapabilityStatement.MessageSignificanceCategory.fromCode(extension.getExtensionByUrl("category").getValue().toString()));
     event.setMode(CapabilityStatement.EventCapabilityMode.fromCode(extension.getExtensionByUrl("mode").getValue().toString()));
-    //TODO this seems to be duplicate code
-    event.setCode(Coding30_40.convertCoding((org.hl7.fhir.r4.model.Coding) extension.getExtensionByUrl("code").getValue()));
-    if (extension.hasExtension("category"))
-      event.setCategory(CapabilityStatement.MessageSignificanceCategory.fromCode(extension.getExtensionByUrl("category").getValue().toString()));
-    event.setMode(CapabilityStatement.EventCapabilityMode.fromCode(extension.getExtensionByUrl("mode").getValue().toString()));
 
     event.setFocusElement(convertFocusExtensionR4ToMessageEventDstu3(extension.getExtensionByUrl("focus")));
     event.setRequest(Reference30_40.convertReference((org.hl7.fhir.r4.model.Reference) extension.getExtensionByUrl("request").getValue()));
