@@ -28,12 +28,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * A POJO for storing the flags/values for the CLI validator.
  */
+@Deprecated
 public class ValidationContext {
 
+  //NOT A COMMAND LINE OPTION
   @JsonProperty("baseEngine")
   @SerializedName("baseEngine")
-  private
-  String baseEngine = null;
+  private String baseEngine = null;
+
   @JsonProperty("doNative")
   @SerializedName("doNative")
   private
