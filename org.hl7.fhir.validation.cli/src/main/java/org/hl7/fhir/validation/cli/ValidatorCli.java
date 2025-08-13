@@ -147,7 +147,7 @@ public class ValidatorCli {
       defaultCliTask);
   }
 
-  protected void readGlobalParamsAndExecuteTask(ValidationContext validationContext, String[] args) throws Exception {
+  protected void readGlobalParamsAndExecuteTask(ValidationEngineSettings validationEngineSettings, ValidationContext validationContext, String[] args) throws Exception {
 
     if (validationContext.getLocale() != null) {
       Locale.setDefault(validationContext.getLocale());
@@ -191,7 +191,7 @@ public class ValidatorCli {
     }
 
 
-    readParamsAndExecuteTask(validationContext, args);
+    readParamsAndExecuteTask(validationEngineSettings, validationContext, args);
   }
 
   @SuppressWarnings("checkstyle:systemout")
@@ -252,8 +252,9 @@ public class ValidatorCli {
 
     args = addAdditionalParamsForIpsParam(args);
     final ValidationContext validationContext = Params.loadValidationContext(args);
+    ValidationEngineSettings validationEngineSettings = ValidationEngineParams.getValidationEngineSettingsFromArgs(args);
     try {
-      validatorCli.readGlobalParamsAndExecuteTask(validationContext, args);
+      validatorCli.readGlobalParamsAndExecuteTask(validationEngineSettings, validationContext, args);
     } catch (ENoDump e) {
       log.info(e.getMessage());
     }
@@ -359,7 +360,7 @@ public class ValidatorCli {
       || Params.hasParam(args, "/?"));
   }
 
-  private void readParamsAndExecuteTask(ValidationContext validationContext, String[] params) throws Exception {
+  private void readParamsAndExecuteTask(ValidationEngineSettings validationEngineSettings, ValidationContext validationContext, String[] params) throws Exception {
     Display.printCliParamsAndInfo(log, params);
 
     final CliTask cliTask = selectCliTask(validationContext, params);
@@ -367,7 +368,7 @@ public class ValidatorCli {
 
 
     if (cliTask instanceof ValidationEngineTask) {
-      ValidationEngineSettings validationEngineSettings = ValidationEngineParams.getValidationEngineSettingsFromArgs(params);
+
       TimeTracker tt = new TimeTracker();
       TimeTracker.Session tts = tt.start("Loading");
       if (validationContext.getSv() == null) {
