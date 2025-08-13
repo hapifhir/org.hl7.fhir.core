@@ -100,7 +100,6 @@ public class CapabilityStatement30_40Test {
     CapabilityStatement.CapabilityStatementMessagingEventComponent result = CapabilityStatement30_40.convertMessageExtensionToMessageEvent(input);
 
     assertNotNull(result);
-    //verify extension does not get mapped
     assertTrue(new org.hl7.fhir.dstu3.model.Coding("system", "code", "display").equalsDeep(result.getCode()));
     assertEquals(CapabilityStatement.MessageSignificanceCategory.CURRENCY, result.getCategory());
     assertEquals(org.hl7.fhir.dstu3.model.CapabilityStatement.EventCapabilityMode.RECEIVER, result.getMode());
