@@ -605,8 +605,8 @@ public class ValidationService {
     log.info("  Get set... ");
     validationEngine.setQuestionnaireMode(validationContext.getQuestionnaireMode()); //VES
     validationEngine.setLevel(validationContext.getLevel()); //VES
-    validationEngine.setDoNative(validationContext.isDoNative()); //VES
-    validationEngine.setHintAboutNonMustSupport(validationContext.isHintAboutNonMustSupport()); //VES
+    validationEngine.setDoNative(validationEngineSettings.isDoNative()); //VES
+    validationEngine.setHintAboutNonMustSupport(validationEngineSettings.isHintAboutNonMustSupport()); //VES
     for (String s : validationContext.getExtensions()) { //VES
       if ("any".equals(s)) {
         validationEngine.setAnyExtensionsAllowed(true);
@@ -618,7 +618,7 @@ public class ValidationService {
     validationEngine.getMatchetypes().addAll(validationContext.getMatchetypes()); //VES
     validationEngine.setLanguage(validationContext.getLang()); //!VES?
     validationEngine.setLocale(validationContext.getLocale()); //!VES?
-    validationEngine.setSnomedExtension(validationContext.getSnomedCTCode()); //VES
+    validationEngine.setSnomedExtension(validationEngineSettings.getSnomedCTCode()); //VES
     validationEngine.setAssumeValidRestReferences(validationContext.isAssumeValidRestReferences()); //VES
     validationEngine.setShowMessagesFromReferences(validationContext.isShowMessagesFromReferences()); //VES
     validationEngine.setDoImplicitFHIRPathStringConversion(validationContext.isDoImplicitFHIRPathStringConversion()); //VES

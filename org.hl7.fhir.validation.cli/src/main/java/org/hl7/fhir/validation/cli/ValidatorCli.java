@@ -251,8 +251,9 @@ public class ValidatorCli {
     final ValidatorCli validatorCli = new ValidatorCli(validationService);
 
     args = addAdditionalParamsForIpsParam(args);
-    final ValidationContext validationContext = Params.loadValidationContext(args);
-    ValidationEngineSettings validationEngineSettings = ValidationEngineParams.getValidationEngineSettingsFromArgs(args);
+    final ValidationEngineSettings validationEngineSettings = new ValidationEngineSettings();
+    final ValidationContext validationContext = Params.loadValidationContext(validationEngineSettings,args);
+
     try {
       validatorCli.readGlobalParamsAndExecuteTask(validationEngineSettings, validationContext, args);
     } catch (ENoDump e) {
@@ -364,8 +365,6 @@ public class ValidatorCli {
     Display.printCliParamsAndInfo(log, params);
 
     final CliTask cliTask = selectCliTask(validationContext, params);
-
-
 
     if (cliTask instanceof ValidationEngineTask) {
 

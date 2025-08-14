@@ -13,6 +13,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
+import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -43,7 +44,7 @@ public class ValidationContext {
   @JsonProperty("hintAboutNonMustSupport")
   @SerializedName("hintAboutNonMustSupport")
   private
-  boolean hintAboutNonMustSupport = false;
+  boolean hintAboutNonMustSupport = false; //MOVED to ValidationEngineSettings
   @JsonProperty("recursive")
   @SerializedName("recursive")
   private
@@ -72,7 +73,8 @@ public class ValidationContext {
   @JsonProperty("canDoNative")
   @SerializedName("canDoNative")
   private
-  boolean canDoNative = false;
+  boolean canDoNative = false; //MOVED to ValidationEngineSettings
+
   @JsonProperty("noInternalCaching")
   @SerializedName("noInternalCaching")
   private
@@ -172,7 +174,7 @@ public class ValidationContext {
   @JsonProperty("snomedCT")
   @SerializedName("snomedCT")
   private
-  String snomedCT = "900000000000207008";
+  String snomedCT = "900000000000207008"; //MOVED to ValidationEngineSettings
   @JsonProperty("targetVer")
   @SerializedName("targetVer")
   private
@@ -943,35 +945,8 @@ public class ValidationContext {
   @SerializedName("snomedCT")
   @JsonProperty("snomedCT")
   public String getSnomedCTCode() {
-    if ("intl".equals(snomedCT)) return "900000000000207008";
-    if ("us".equals(snomedCT)) return "731000124108";
-    if ("us+icd10cm".equals(snomedCT)) return "5991000124107";
-    if ("uk/clinical".equals(snomedCT)) return "999000021000000109";
-    if ("uk".equals(snomedCT)) return "83821000000107";
-    if ("au".equals(snomedCT)) return "32506021000036107";
-    if ("at".equals(snomedCT)) return "11000234105";
-    if ("ca".equals(snomedCT)) return "20611000087101";
-    if ("ca-en".equals(snomedCT)) return "20621000087109";
-    if ("ca-fr".equals(snomedCT)) return "20611000087101";
-    if ("nl".equals(snomedCT)) return "11000146104";
-    if ("se".equals(snomedCT)) return "45991000052106";
-    if ("es".equals(snomedCT)) return "449081005";
-    if ("es-ES".equals(snomedCT)) return "900000001000122104";
-    if ("ar".equals(snomedCT)) return "11000221109";
-    if ("dk".equals(snomedCT)) return "554471000005108";
-    if ("be".equals(snomedCT)) return "11000172109";
-    if ("ee".equals(snomedCT)) return "11000181102";
-    if ("fi".equals(snomedCT)) return "11000229106";
-    if ("de".equals(snomedCT)) return "11000274103";
-    if ("in".equals(snomedCT)) return "1121000189102";
-    if ("ie".equals(snomedCT)) return "11000220105";
-    if ("nl".equals(snomedCT)) return "11000146104";
-    if ("nz".equals(snomedCT)) return "21000210109";
-    if ("no".equals(snomedCT)) return "51000202101";
-    if ("kr".equals(snomedCT)) return "11000267109";
-    if ("se".equals(snomedCT)) return "45991000052106";
-    if ("ch".equals(snomedCT)) return "2011000195101";
-    if ("uy".equals(snomedCT)) return "5631000179106";
+    String number = SnomedUtilities.getCodeFromAlias(snomedCT);
+    if (number != null) return number;
     return snomedCT;
   }
 
