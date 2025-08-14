@@ -546,6 +546,11 @@ msgstr ""
 msgid "Summary of System-wide Operations"
 msgstr ""
 
+# CAPABILITY_SUMM_SYS_SP
+#: CAPABILITY_SUMM_SYS_SP
+msgid "Summary of System-wide Search Parameters"
+msgstr ""
+
 # CAPABILITY_SUPP
 #: CAPABILITY_SUPP
 msgid "support"
