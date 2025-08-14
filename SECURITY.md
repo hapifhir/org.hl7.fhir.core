@@ -10,7 +10,7 @@ As of version 6.6.0, release assets excluding compressed source code are signed 
 
 ## Reporting Vulnerabilities
 
-Please report all potential security vulnerabilities using the [Report a vulnerability](../../security/advisories/new) button in the [Security](../../security) section of this repository. 
+Please report all potential security vulnerabilities at [https://github.com/hapifhir/org.hl7.fhir.core/security/advisories/new](https://github.com/hapifhir/org.hl7.fhir.core/security/advisories/new) or by using the [Report a vulnerability](../../security/advisories/new) button in the [Security](../../security) section of this repository. 
 
 # Developer Notes
 
