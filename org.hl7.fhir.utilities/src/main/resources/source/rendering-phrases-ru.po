@@ -554,6 +554,16 @@ msgstr "В сводной таблице перечислены ресурсы, 
 msgid "Summary of System-wide Interactions"
 msgstr "Краткая информация об общесистемных взаимодействиях"
 
+# CAPABILITY_SUMM_SYS_OP
+#: CAPABILITY_SUMM_SYS_OP
+msgid "Summary of System-wide Operations"
+msgstr "Краткая информация об общесистемных oперациях"
+
+# CAPABILITY_SUMM_SYS_SP
+#: CAPABILITY_SUMM_SYS_SP
+msgid "Summary of System-wide Search Parameters"
+msgstr "Краткая информация об общесистемных Параметры поиска"
+
 # CAPABILITY_SUPP
 #: CAPABILITY_SUPP
 msgid "support"

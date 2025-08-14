@@ -541,6 +541,11 @@ msgstr "Le tableau récapitulatif liste les ressources faisant partie de cette c
 msgid "Summary of System-wide Interactions"
 msgstr ""
 
+# CAPABILITY_SUMM_SYS_OP
+#: CAPABILITY_SUMM_SYS_OP
+msgid "Summary of System-wide Operations"
+msgstr ""
+
 # CAPABILITY_SUPP
 #: CAPABILITY_SUPP
 msgid "support"
