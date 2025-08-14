@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.service.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
+import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
 
 /**
    * A POJO for storing the flags/values for building a ValidationEngine.
@@ -62,5 +63,25 @@ import com.google.gson.annotations.SerializedName;
       this.hintAboutNonMustSupport = hintAboutNonMustSupport;
       return this;
     }
+
+  @JsonProperty("snomedCT")
+  @SerializedName("snomedCT")
+  private
+  String snomedCT = "900000000000207008"; //MOVED to ValidationEngineSettings
+
+  @SerializedName("snomedCT")
+  @JsonProperty("snomedCT")
+  public String getSnomedCTCode() {
+    String number = SnomedUtilities.getCodeFromAlias(snomedCT);
+    if (number != null) return number;
+    return snomedCT;
+  }
+
+  @SerializedName("snomedCT")
+  @JsonProperty("snomedCT")
+  public ValidationEngineSettings setSnomedCT(String snomedCT) {
+    this.snomedCT = snomedCT;
+    return this;
+  }
 
 }
