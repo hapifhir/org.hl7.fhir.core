@@ -379,7 +379,7 @@ public class TurtleParser extends ParserBase {
   protected void decorateReference(Complex t, Element coding) {
     String refURI = getReferenceURI(coding.getChildValue("reference"));
     if(refURI != null)
-      t.linkedPredicate("fhir:link", refURI, linkResolver == null ? null : linkResolver.resolvePage("rdf.html#reference"), null);
+      t.linkedPredicate("fhir:l", refURI, linkResolver == null ? null : linkResolver.resolvePage("rdf.html#reference"), null);
   }
 
   private String genSubjectId(Element e) {
@@ -562,7 +562,7 @@ public class TurtleParser extends ParserBase {
 	  }
 	  String refURI = getReferenceURI(versioned);
 	  if (refURI != null)
-        t.linkedPredicate("fhir:link", getReferenceURI(versioned), linkResolver == null ? null : linkResolver.resolveType(type), null);
+        t.linkedPredicate("fhir:l", getReferenceURI(versioned), linkResolver == null ? null : linkResolver.resolveType(type), null);
     }
   }
 
