@@ -151,7 +151,8 @@ msgstr[1] ""
 
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
-#, fuzzymsgctxt "BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT"
+msgctxt "BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT"
+#, fuzzy
 msgid "Can''t find ''{0}'' in the bundle ({1})"
 msgstr "Não é possível encontrar ''{0}'' no pacote ({1})"
 
@@ -693,7 +694,8 @@ msgstr "Não foi encontrado nenhum perfil para o recurso {0} do tipo ''{1}''"
 
 # Bundle_BUNDLE_Entry_NotFound
 #: Bundle_BUNDLE_Entry_NotFound
-#, fuzzymsgctxt "Bundle_BUNDLE_Entry_NotFound"
+msgctxt "Bundle_BUNDLE_Entry_NotFound"
+#, fuzzy
 msgid "Can''t find ''{0}'' in the bundle ({1})"
 msgstr "Não é possível encontrar ''{0}'' no pacote ({1})"
 
@@ -1526,8 +1528,8 @@ msgstr "Erro na restrição ''{0}'': {1}"
 # ED_INVARIANT_DIFF_NO_SOURCE
 #: ED_INVARIANT_DIFF_NO_SOURCE
 #, fuzzy
-msgid "The invariant {0} defined in the differential must have no source, or the source must be the same as the profile ({1} vs {2})"
-msgstr "!!O invariante {0} definido no diferencial não deve ter fonte, ou a fonte deve ser a mesma que o perfil ({1} vs {2})"
+msgid "The invariant {0} defined in the differential must have no source, or the source must be the same as the profile"
+msgstr "O invariante {0} definido no diferencial não deve ter fonte, ou a fonte deve ser a mesma que o perfil"
 
 # ED_INVARIANT_EXPRESSION_CONFLICT
 #: ED_INVARIANT_EXPRESSION_CONFLICT
@@ -2385,7 +2387,7 @@ msgstr "LOINC"
 # HTA_LOINC_MESSAGE
 #: HTA_LOINC_MESSAGE
 #, fuzzy
-msgid "This material contains content from <a href=\\\"http://loinc.org\\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\\"http://loinc.org/license\\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
+msgid "This material contains content from <a href=\\"http://loinc.org\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\"http://loinc.org/license\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
 msgstr "!!Este material contém conteúdo do <a href=\\\"http://loinc.org\\\">LOINC</a>. LOINC é copyright &copy; 1995-2020, Regenstrief Institute, Inc. e o Logical Observation Identifiers Names and Codes (LOINC) Committee e está disponível sem custo sob a <a href=\\\"http://loinc.org/license\\\">licença</a>. LOINC&reg; é uma marca registada dos Estados Unidos da América do Regenstrief Institute, Inc."
 
 # HTA_SCT_DESC
@@ -2397,8 +2399,8 @@ msgstr "Termos clínicos SNOMED&reg; (SNOMED CT&reg;)"
 # HTA_SCT_MESSAGE
 #: HTA_SCT_MESSAGE
 #, fuzzy
-msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> or <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
-msgstr "!!Este material contém conteúdo que é copyright da SNOMED International. Os implementadores destas especificações devem ter a licença apropriada de afiliado da SNOMED CT - para mais informações contacte <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> ou <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
+msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\"https://www.snomed.org/get-snomed\\">https://www.snomed.org/get-snomed</a> or <a href=\\"mailto:info@snomed.org\\">info@snomed.org</a>."
+msgstr "Este material contém conteúdo que é copyright da SNOMED International. Os implementadores destas especificações devem ter a licença apropriada de afiliado da SNOMED CT - para mais informações contacte <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> ou <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
 
 # IG_DEPENDENCY_CAN_VERSION_ALONE
 #: IG_DEPENDENCY_CAN_VERSION_ALONE
@@ -3471,32 +3473,32 @@ msgstr "Este objeto é definido como uma matriz com chave em Json, mas a proprie
 # OPDEF_PROFILE_NOT_FOUND
 #: OPDEF_PROFILE_NOT_FOUND
 #, fuzzy
-msgid "The ''{0}'' profile ''{1}'' can not be resolved"
-msgstr "!!O perfil {0} ''{1}'' não pode ser resolvido"
+msgid "The {0} profile ''{1}'' can not be resolved"
+msgstr "O perfil {0} ''{1}'' não pode ser resolvido"
 
 # OPDEF_PROFILE_NOT_IN_PARAM
 #: OPDEF_PROFILE_NOT_IN_PARAM
 #, fuzzy
-msgid "The ''{0}'' profile {2} defines a parameter ''{1}'' but this is not in the parameters list in the operation definition"
-msgstr "!!O perfil {0} define um parâmetro ''{1}'' mas este não consta da lista de parâmetros"
+msgid "The {0} profile defines a parameter ''{1}'' but this is not in the parameters list"
+msgstr "O perfil {0} define um parâmetro ''{1}'' mas este não consta da lista de parâmetros"
 
 # OPDEF_PROFILE_NOT_IN_PROFILE
 #: OPDEF_PROFILE_NOT_IN_PROFILE
 #, fuzzy
-msgid "The ''{0}'' profile does not have a parameter ''{1}'' but it is in the parameters list in the operation definition"
-msgstr "!!O perfil {0} não tem um parâmetro ''{1}'' mas está na lista de parâmetros"
+msgid "The {0} profile does not have a parameter ''{1}'' but it is in the parameters list"
+msgstr "O perfil {0} não tem um parâmetro ''{1}'' mas está na lista de parâmetros"
 
 # OPDEF_PROFILE_NOT_PARAMETERS
 #: OPDEF_PROFILE_NOT_PARAMETERS
 #, fuzzy
-msgid "The ''{0}'' profile ''{1}'' is not a profile on the ''Parameters'' resource"
-msgstr "!!O perfil {0} ''{1}'' não é um perfil no recurso ''Parâmetros''"
+msgid "The {0} profile ''{1}'' is not a profile on the ''Parameters'' resource"
+msgstr "O perfil {0} ''{1}'' não é um perfil no recurso ''Parâmetros''"
 
 # OPDEF_PROFILE_NOT_VALUE_MISMATCH
 #: OPDEF_PROFILE_NOT_VALUE_MISMATCH
 #, fuzzy
-msgid "The parameter ''{1}'' has a value for ''{2}'' of ''{4}'' in the ''{0}'' profile {4} that is different to ''{3}'' which is the value in the parameter definition in the operation definition"
-msgstr "!!O parâmetro ''{1}'' tem um valor para ''{2}'' de ''{4}'' no perfil {0} que é diferente de ''{3}'' que é o valor na definição do parâmetro"
+msgid "The parameter ''{1}'' has a value for ''{2}'' of ''{4}'' in the {0} profile that is different to ''{3}'' which is the value in the parameter definition"
+msgstr "O parâmetro ''{1}'' tem um valor para ''{2}'' de ''{4}'' no perfil {0} que é diferente de ''{3}'' que é o valor na definição do parâmetro"
 
 # OPDEF_PROFILE_NO_FIXED
 #: OPDEF_PROFILE_NO_FIXED
@@ -3507,32 +3509,32 @@ msgstr "O nome do parâmetro para a fatia ''{1}'' no perfil {0} não é fixo"
 # OPDEF_PROFILE_NO_SLICE
 #: OPDEF_PROFILE_NO_SLICE
 #, fuzzy
-msgid "The slice ''{1}'' in the {0} profile does not have a sub-slice for the parameter name"
-msgstr "!!A fatia ''{1}'' no perfil {0} não tem uma entrada para o nome do parâmetro"
+msgid "The slice ''{1}'' in the {0} profile does not have an entry for the parameter name"
+msgstr "A fatia ''{1}'' no perfil {0} não tem uma entrada para o nome do parâmetro"
 
 # OPDEF_PROFILE_PROFILE_NOT_IN_PARAMS
 #: OPDEF_PROFILE_PROFILE_NOT_IN_PARAMS
 #, fuzzy
-msgid "The target profile ''{2}'' is allowed for the parameter ''{1}'' in the ''{0}'' profile {4} but is not in the list of target profiles for the parameter in the operation definition: {3}"
-msgstr "!!O perfil de destino ''{2}'' é permitido para o parâmetro ''{1}'' no perfil {0} mas não na lista de perfis de destino para o parâmetro: {3}"
+msgid "The target profile ''{2}'' is allowed for the parameter ''{1}'' in the  {0} profile but not in the list of target profiles for the parameter: {3}"
+msgstr "O perfil de destino ''{2}'' é permitido para o parâmetro ''{1}'' no perfil {0} mas não na lista de perfis de destino para o parâmetro: {3}"
 
 # OPDEF_PROFILE_PROFILE_NOT_IN_PROFILE
 #: OPDEF_PROFILE_PROFILE_NOT_IN_PROFILE
 #, fuzzy
-msgid "The target profile ''{2}'' is not allowed for the parameter ''{1}'' in the ''{0}'' profile but is in the list of target profiles for the parameter in the operation definition (profile target profiles = {3})"
-msgstr "!!O perfil de destino ''{2}'' não é permitido para o parâmetro ''{1}'' no perfil {0} mas está na lista de perfis de destino para o parâmetro (perfis de destino = {3})"
+msgid "The target profile ''{2}'' is not allowed for the parameter ''{1}'' in the  {0} profile but is in the list of target profiles for the parameter (target profiles = {3})"
+msgstr "O perfil de destino ''{2}'' não é permitido para o parâmetro ''{1}'' no perfil {0} mas está na lista de perfis de destino para o parâmetro (perfis de destino = {3})"
 
 # OPDEF_PROFILE_TYPE_NOT_IN_PARAMS
 #: OPDEF_PROFILE_TYPE_NOT_IN_PARAMS
 #, fuzzy
-msgid "The type ''{2}'' is allowed for the parameter ''{1}'' in the ''{0}'' profile {4} but is not in the list of allowed types for the parameter in the operation definition: {3}"
-msgstr "!!O tipo ''{2}'' é permitido para o parâmetro ''{1}'' no perfil {0} mas não consta da lista de tipos permitidos para o parâmetro: {3}"
+msgid "The type ''{2}'' is allowed for the parameter ''{1}'' in the  {0} profile but is not in the list of allowed types for the parameter: {3}"
+msgstr "O tipo ''{2}'' é permitido para o parâmetro ''{1}'' no perfil {0} mas não consta da lista de tipos permitidos para o parâmetro: {3}"
 
 # OPDEF_PROFILE_TYPE_NOT_IN_PROFILE
 #: OPDEF_PROFILE_TYPE_NOT_IN_PROFILE
 #, fuzzy
-msgid "The type ''{2}'' is not allowed for the parameter ''{1}'' in the ''{0}'' profile {4} but is in the list of allowed types for the parameter in the operation definition (allowed types = {3})"
-msgstr "!!O tipo ''{2}'' não é permitido para o parâmetro ''{1}'' no perfil {0} mas está na lista de tipos permitidos para o parâmetro (tipos de perfil = {3})"
+msgid "The type ''{2}'' is not allowed for the parameter ''{1}'' in the  {0} profile but is in the list of allowed types for the parameter (profile types = {3})"
+msgstr "O tipo ''{2}'' não é permitido para o parâmetro ''{1}'' no perfil {0} mas está na lista de tipos permitidos para o parâmetro (tipos de perfil = {3})"
 
 # Object_must_have_some_content
 #: Object_must_have_some_content
@@ -3771,13 +3773,15 @@ msgstr "O tipo de mime {0} não é válido para esta resposta (permitido = {1})"
 
 # QUESTIONNAIRE_QR_ITEM_DATE_MAX
 #: QUESTIONNAIRE_QR_ITEM_DATE_MAX
-#, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_DATE_MAX"
+msgctxt "QUESTIONNAIRE_QR_ITEM_DATE_MAX"
+#, fuzzy
 msgid "The value {0} is greater than the allowed maximum of {1}"
 msgstr "O valor {0} é superior ao máximo permitido de {1}"
 
 # QUESTIONNAIRE_QR_ITEM_DATE_MIN
 #: QUESTIONNAIRE_QR_ITEM_DATE_MIN
-#, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_DATE_MIN"
+msgctxt "QUESTIONNAIRE_QR_ITEM_DATE_MIN"
+#, fuzzy
 msgid "The value {0} is less than the allowed minimum of {1}"
 msgstr "O valor {0} é inferior ao mínimo permitido de {1}"
 
@@ -3825,7 +3829,8 @@ msgstr "Não foi possível encontrar o conjunto de valores unitários ''{1}''"
 
 # QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX
 #: QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX
-#, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX"
+msgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX"
+#, fuzzy
 msgid "The value {0} is greater than the allowed maximum of {1}"
 msgstr "O valor {0} é superior ao máximo permitido de {1}"
 
@@ -3837,7 +3842,8 @@ msgstr "O valor {0} tem demasiadas casas decimais (limite = {1})"
 
 # QUESTIONNAIRE_QR_ITEM_DECIMAL_MIN
 #: QUESTIONNAIRE_QR_ITEM_DECIMAL_MIN
-#, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_MIN"
+msgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_MIN"
+#, fuzzy
 msgid "The value {0} is less than the allowed minimum of {1}"
 msgstr "O valor {0} é inferior ao mínimo permitido de {1}"
 
@@ -3849,7 +3855,8 @@ msgstr "O valor {0} tem uma unidade que não está no conjunto de valores unitá
 
 # QUESTIONNAIRE_QR_ITEM_DECIMAL_VALUE_EXCEPTION
 #: QUESTIONNAIRE_QR_ITEM_DECIMAL_VALUE_EXCEPTION
-#, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_VALUE_EXCEPTION"
+msgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_VALUE_EXCEPTION"
+#, fuzzy
 msgid "An error occurred checking the value: {0}"
 msgstr "Ocorreu um erro ao verificar o valor: {0}"
 
@@ -3873,19 +3880,22 @@ msgstr "Não foram encontrados subitens para o grupo necessário"
 
 # QUESTIONNAIRE_QR_ITEM_INTEGER_MAX
 #: QUESTIONNAIRE_QR_ITEM_INTEGER_MAX
-#, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_MAX"
+msgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_MAX"
+#, fuzzy
 msgid "The value {0} is greater than the allowed maximum of {1}"
 msgstr "O valor {0} é superior ao máximo permitido de {1}"
 
 # QUESTIONNAIRE_QR_ITEM_INTEGER_MIN
 #: QUESTIONNAIRE_QR_ITEM_INTEGER_MIN
-#, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_MIN"
+msgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_MIN"
+#, fuzzy
 msgid "The value {0} is less than the allowed minimum of {1}"
 msgstr "O valor {0} é inferior ao mínimo permitido de {1}"
 
 # QUESTIONNAIRE_QR_ITEM_INTEGER_VALUE_EXCEPTION
 #: QUESTIONNAIRE_QR_ITEM_INTEGER_VALUE_EXCEPTION
-#, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_VALUE_EXCEPTION"
+msgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_VALUE_EXCEPTION"
+#, fuzzy
 msgid "An error occurred checking the value: {0}"
 msgstr "Ocorreu um erro ao verificar o valor: {0}"
 
@@ -3987,13 +3997,15 @@ msgstr "A resposta ''{0}'' não está em conformidade com o formato esperado ''{
 
 # QUESTIONNAIRE_QR_ITEM_TIME_MAX
 #: QUESTIONNAIRE_QR_ITEM_TIME_MAX
-#, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_TIME_MAX"
+msgctxt "QUESTIONNAIRE_QR_ITEM_TIME_MAX"
+#, fuzzy
 msgid "The value {0} is greater than the allowed maximum of {1}"
 msgstr "O valor {0} é superior ao máximo permitido de {1}"
 
 # QUESTIONNAIRE_QR_ITEM_TIME_MIN
 #: QUESTIONNAIRE_QR_ITEM_TIME_MIN
-#, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_TIME_MIN"
+msgctxt "QUESTIONNAIRE_QR_ITEM_TIME_MIN"
+#, fuzzy
 msgid "The value {0} is less than the allowed minimum of {1}"
 msgstr "O valor {0} é inferior ao mínimo permitido de {1}"
 
@@ -4369,7 +4381,7 @@ msgstr "A parte de consulta da referência condicional não é uma cadeia de con
 # REFERENCE_REF_REL_UNSOLVEABLE
 #: REFERENCE_REF_REL_UNSOLVEABLE
 #, fuzzy
-msgid "The URL ''{0}'' cannot be resolved unless the fullURL is a RESTFul base URL, or a baseURL has been provided and the Bundle is a batch or transaction"
+msgid "The URL ''{0}'' cannot be resolved unless the fullURL is a RESTFul base URL, or a baseURL has been provided and the Bundle is a batch or transction"
 msgstr "O URL ''{0}'' não pode ser resolvido a menos que o fullURL seja um URL de base RESTFul, ou que tenha sido fornecido um baseURL e o Bundle seja um lote ou uma transação"
 
 # REFERENCE_REF_SUSPICIOUS
@@ -7712,13 +7724,15 @@ msgstr "A referência do sistema do conjunto de valores ''{0}'' termina com um '
 
 # VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_1
 #: VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_1
-#, fuzzymsgctxt "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_1"
+msgctxt "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_1"
+#, fuzzy
 msgid "Value set System references must not use the canonical version syntax - the version ''{0}'' should be in the version property, but that already contains ''{1}''"
 msgstr "Conjunto de valores As referências do sistema não devem utilizar a sintaxe da versão canónica - a versão ''{0}'' deve estar na propriedade version, mas esta já contém ''{1}''"
 
 # VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2
 #: VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2
-#, fuzzymsgctxt "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2"
+msgctxt "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2"
+#, fuzzy
 msgid "Value set System references must not use the canonical version syntax - the version ''{0}'' should be in the version property, but that already contains ''{1}''"
 msgstr "Conjunto de valores As referências do sistema não devem utilizar a sintaxe da versão canónica - a versão ''{0}'' deve estar na propriedade version, mas esta já contém ''{1}''"
 
@@ -8491,6 +8505,6 @@ msgstr "O atributo XML {0} tem um carácter inválido"
 # xml_encoding_invalid
 #: xml_encoding_invalid
 #, fuzzy
-msgid "The XML encoding is invalid (must be UTF-8, not ''{0}'')"
-msgstr "!!A codificação XML é inválida (tem de ser UTF-8)"
+msgid "The XML encoding is invalid (must be UTF-8)"
+msgstr "A codificação XML é inválida (tem de ser UTF-8)"
 
