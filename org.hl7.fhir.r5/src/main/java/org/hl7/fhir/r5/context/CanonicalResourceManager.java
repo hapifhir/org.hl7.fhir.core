@@ -9,7 +9,6 @@ import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -477,7 +476,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
   private static boolean compareByVersionString(String existingVersion, String newVersion) {
     if (VersionUtilities.isSemVer(existingVersion) && VersionUtilities.isSemVer(newVersion)) {
-      return !VersionUtilities.isThisOrLater(existingVersion, newVersion);
+      return !VersionUtilities.isThisOrLaterMajorMinor(existingVersion, newVersion);
     } else if (Utilities.isInteger(existingVersion) && Utilities.isInteger(newVersion)) {
       return Integer.parseInt(existingVersion) > Integer.parseInt(newVersion);
     } else {
