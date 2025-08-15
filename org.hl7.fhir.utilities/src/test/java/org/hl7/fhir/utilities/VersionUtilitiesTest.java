@@ -67,6 +67,11 @@ public class VersionUtilitiesTest {
   @Test 
   public void bugFixTests() {
     assertTrue(VersionUtilities.isThisOrLaterMajorMinor("1.0.0-ballot", "1.0.1"));
+    assertTrue(VersionUtilities.isThisOrLaterMajorMinorPatch("3.1.x", "3.1.1"));
+    assertFalse(VersionUtilities.isThisOrLaterMajorMinorPatch("3.0.x", "3.1.1"));
+    assertFalse(VersionUtilities.isThisOrLaterMajorMinorPatch("3.1.1", "3.0.x"));
+
+    assertFalse(VersionUtilities.versionsMatch("3.1.1", "3.0.x"));
   }
 
   // I asked Claude to break this thing, to really torture it (Claude's words!) and this is
@@ -99,8 +104,8 @@ public class VersionUtilitiesTest {
 
   @Test
   public void testGetMajMin_SinglePartVersions() {
-    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.getMajMin("1"));
-    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.getMajMin("5"));
+    Assertions.assertNull(VersionUtilities.getMajMin("1"));
+    Assertions.assertNull(VersionUtilities.getMajMin("5"));
   }
 
   @Test
@@ -154,8 +159,8 @@ public class VersionUtilitiesTest {
 
   @Test
   public void testGetMajMinPatch_SinglePartVersions() {
-    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.getMajMinPatch("1"));
-    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.getMajMinPatch("5"));
+    Assertions.assertNull(VersionUtilities.getMajMinPatch("1"));
+    Assertions.assertNull(VersionUtilities.getMajMinPatch("5"));
   }
 
   @Test
@@ -1097,7 +1102,7 @@ public class VersionUtilitiesTest {
 
     for (String version : malicious) {
       Assertions.assertFalse(VersionUtilities.isSemVer(version));
-      assertThrows(FHIRException.class, () -> VersionUtilities.getMajMin(version));
+      Assertions.assertNull(VersionUtilities.getMajMin(version));
       assertThrows(FHIRException.class, () -> VersionUtilities.compareVersions("1.0.0", version));
     }
   }

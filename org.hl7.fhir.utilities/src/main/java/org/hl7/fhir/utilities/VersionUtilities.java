@@ -306,9 +306,11 @@ public class VersionUtilities {
 
   /**
    * given any valid semver string, returns major.minor. Also accepts the special values rX/RX where X is a major FHIR version (2,2B,3,4,4B,5,6)
+   *
+   * returns null if not a valid semver
    */
   public static @Nullable String getMajMin(@Nullable String version) {
-    version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
+    version = removeLabels(fixForSpecialValue(version));
     if (version == null) {
       return null;
     }
@@ -325,9 +327,13 @@ public class VersionUtilities {
 
   /**
    * given any valid semver string, returns major.minor.patch. Also accepts the special values rX/RX where X is a major FHIR version (2,2B,3,4,4B,5,6)
+   *
+   * if there's no patch, it will be assumed to be 0
+   *
+   * returns null if it's not a valid semver
    */
   public static String getMajMinPatch(@Nullable String version) {
-    version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
+    version = removeLabels(fixForSpecialValue(version));
     if (version == null) {
       return null;
     }
