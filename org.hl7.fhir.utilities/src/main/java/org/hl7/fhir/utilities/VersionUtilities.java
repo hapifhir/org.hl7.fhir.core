@@ -732,27 +732,6 @@ public class VersionUtilities {
   /**
    * returns true if v1 and v2 are both semver, and major and minor match
    */
-//  public static boolean versionsCompatible(String v1, String v2) {
-//    if (v1 == null || v2 == null) {
-//      return false;
-//    }
-//    String[] v1l = v1.split("\\|");
-//    String[] v2l = v2.split("\\|");
-//    for (String vs1 : v1l) {
-//      for (String vs2 : v2l) {
-//        String mm1 = getMajMin(vs1);
-//        String mm2 = getMajMin(vs2);
-//        if (mm1 == null || mm2 == null) {
-//          return false;
-//        } else {
-//          if (mm1.equals(mm2)) {
-//            return true;
-//          }
-//        }
-//      }
-//    }
-//    return false;
-//  }
   public static boolean versionsMatch(@Nonnull String v1, @Nonnull String v2) {
     v1 = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(v1)));
     v2 = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(v2)));
