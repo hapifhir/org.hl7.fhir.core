@@ -6,6 +6,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.VersionUtilities.SemVer;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -126,7 +129,7 @@ public class VersionUtilities {
     }
   }
   
-  public static String packageForVersion(String v) {
+  public @Nonnull static String packageForVersion(@Nonnull String v) {
     if (isR2Ver(v)) {
       return "hl7.fhir.r2.core";
     }
@@ -203,10 +206,8 @@ public class VersionUtilities {
     return v;
   }
 
-  public static boolean isSupportedVersion(String version) {
-    if (version.contains("-")) {
-      version = version.substring(0, version.indexOf("-"));
-    }
+  public static boolean isSupportedVersion(@Nonnull String version) {
+   version = checkVersionNotNullAndValid(removeLabels(fixForSpecialValue(version)));
     return Utilities.existsInList(version, SUPPORTED_VERSIONS);
   }
 
@@ -226,109 +227,136 @@ public class VersionUtilities {
     return stringJoiner.toString();
   }
 
-  public static boolean isR6Ver(String ver) {
-    return ver != null && (ver.startsWith("6.0"));
+  /**
+   * returns true if version refers to any R6 release (including rX/RX variants)
+   */
+  public static boolean isR6Plus(String version) {
+    return isR6Ver(version);
   }
 
-  public static boolean isR5Ver(String ver) {
-    return ver != null && (ver.startsWith("5.0") || Utilities.existsInList(ver.toUpperCase(), "R5"));
+  public static boolean isR6Ver(@Nonnull String version) {
+    version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
+    return version != null && (version.startsWith("6.0"));
   }
 
-  public static boolean isR4BVer(String ver) {
-    return ver != null && (ver.startsWith("4.1") || ver.startsWith("4.3") || Utilities.existsInList(ver.toUpperCase(), "R4B"));
+  /**
+   * returns true if version refers to any R5 release (including pre-release versions starting from 4.5) (including rX/RX variants)
+   */
+  public static boolean isR5Plus(String version) {
+    return isR5Ver(version) || isR6Plus(version);
   }
 
-  public static boolean isR4Ver(String ver) {
-    return ver != null && (ver.startsWith("4.0") || Utilities.existsInList(ver.toUpperCase(), "R4"));
+  public static boolean isR5Ver(@Nonnull String version) {
+    version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
+    return version != null && (version.startsWith("4.5") || version.startsWith("5.0"));
   }
 
-  public static boolean isR3Ver(String ver) {
-    return ver != null && (ver.startsWith("3.0") || Utilities.existsInList(ver.toUpperCase(), "STU3", "R3"));
+  public static boolean isR4BVer(@Nonnull String version) {
+    version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
+    return version != null && (version.startsWith("4.1") || version.startsWith("4.3"));
   }
 
-  public static boolean isR2BVer(String ver) {
-    return ver != null && ver.startsWith("1.4");
+  public static boolean isR4Ver(@Nonnull String version) {
+    version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
+    return version != null && (version.startsWith("4.1") || version.startsWith("3.4") || version.startsWith("3.5"));
   }
 
-  public static boolean isR2Ver(String ver) {
-    return ver != null && (ver.startsWith("1.0") || Utilities.existsInList(ver.toUpperCase(), "STU1", "R1"));
+  /**
+   * returns true if version refers to any R4 release (including pre-release versions starting from 3.2) (including rX/RX variants)
+   */
+  public static boolean isR4Plus(String version) {
+    return isR4Ver(version) || isR4BVer(version) || isR5Plus(version);
   }
 
-  public static boolean versionsCompatible(String v1, String v2) {
-    if (v1 == null || v2 == null) {
+  public static boolean isR3Ver(@Nonnull String version) {
+    version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
+    return version != null && (version.startsWith("3.0"));
+  }
+
+  public static boolean isR2BVer(@Nonnull String version) {
+    version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
+    return version != null && (version.startsWith("1.4"));
+  }
+
+  public static boolean isR2Ver(@Nonnull String version) {
+    version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
+    return version != null && (version.startsWith("1.0"));
+  }
+
+  public static boolean isCorePackage(@Nonnull String s) {
+    if (s == null) {
       return false;
     }
-    String[] v1l = v1.split("\\|"); 
-    String[] v2l = v2.split("\\|");
-    for (String vs1 : v1l) {
-      for (String vs2 : v2l) {
-        String mm1 = getMajMin(vs1);
-        String mm2 = getMajMin(vs2);
-        if (mm1 == null || mm2 == null) {
-          return false;
-        } else {
-          if (mm1.equals(mm2)) {
-            return true;
-          }
-        }
-      }
-    }
-    return false;
-  }
-
-  public static boolean isCorePackage(String s) {
     if (s.contains("#")) {
       s = s.substring(0, s.indexOf("#"));
     }
     return Utilities.existsInList(s, "hl7.fhir.core","hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core", "hl7.fhir.r4.core", "hl7.fhir.r4b.core", "hl7.fhir.r5.core", "hl7.fhir.r6.core");
   }
 
-  public static String getMajMin(String version) {
+  public static @Nullable String versionWithoutLabels(@Nullable String version) {
+    version = checkVersionNotNullAndValid(fixForSpecialValue(version));
+    return removeLabels(version);
+  }
+
+  /**
+   * given any valid semver string, returns major.minor. Also accepts the special values rX/RX where X is a major FHIR version (2,2B,3,4,4B,5,6)
+   */
+  public static @Nullable String getMajMin(@Nullable String version) {
+    version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
     if (version == null) {
       return null;
     }
-    if (version.startsWith("http://hl7.org/fhir/")) {
-      version = version.substring(20);
-      if (version.contains("/")) {
-        version = version.substring(0, version.indexOf("/"));
-      }
+    if (!isSemVer(version)) {
+      return null;
     }
-    
-    if (Utilities.charCount(version, '.') == 1) {
-      String[] p = version.split("\\.");
-      return p[0]+"."+p[1];
-    } else if (Utilities.charCount(version, '.') == 2) {
-      String[] p = version.split("\\.");
-      return p[0]+"."+p[1];
-    } else if (Utilities.existsInList(version.toUpperCase(), "R2", "R2B", "R3", "R4", "R4B", "R5", "R6")) {
-      switch (version.toUpperCase()) {
-      case "R2": return "1.0";
-      case "R2B": return "1.4";
-      case "R3": return "3.0";
-      case "R4": return "4.0";
-      case "R4B": return "4.3";
-      case "R5": return "5.0";
-      case "R6": return "6.0";
-      }
-    }  
-    return null;
+    String[] p = version.split("\\.");
+    return p[0]+"."+p[1];
   }
 
-  public static String getPatch(String version) {
+  /**
+   * given any valid semver string, returns major.minor.patch. Also accepts the special values rX/RX where X is a major FHIR version (2,2B,3,4,4B,5,6)
+   */
+  public static String getMajMinPatch(@Nullable String version) {
+    version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
+    if (version == null) {
+      return null;
+    }
+    if (!isSemVer(version)) {
+      return null;
+    }
+    String[] p = version.split("\\.");
+    return p[0] + "." + p[1] + (p.length >= 3 ? "."+p[2] : "");
+  }
+
+  /**
+   * given any valid semver string, returns just the patch version, with no labels. Also accepts the special values rX/RX where X is a major FHIR version (2,2B,3,4,4B,5,6)
+   */
+  public static String getPatch(@Nullable String version) {
+    version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
     if (version == null)
       return null;
-    if (Utilities.charCount(version, '.') == 2) {
-      String[] p = version.split("\\.");
-      return p[2];  
-    }
-    return null;
+    String[] p = version.split("\\.");
+    return p.length >= 3 ? p[2] : null;
   }
 
-  public static boolean isSemVer(String version) {
+
+  /**
+   * returns true if this is a valid server. we accept major.minor without a patch. This one does not accept the codes such as RX
+   */
+  public static boolean isSemVer(@Nullable String version) {
     if (Utilities.noString(version)) {
       return false;
     }
-    return version.matches("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-\\+]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-\\+][0-9a-zA-Z-\\+]*))*))?)?$");
+    if (!version.matches("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(\\.(0|[1-9]\\d*))?(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-\\+]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-\\+][0-9a-zA-Z-\\+]*))*))?$")) {
+      return false;
+    }
+    String[] parts = removeLabels(version).split("\\.");
+    for (String p : parts) {
+      if (!Utilities.isInteger(p)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   /** 
@@ -344,15 +372,14 @@ public class VersionUtilities {
    * @param current The value being compared
    * @return Is {@literal current} later or equal to {@literal test}? For example, if <code>this = 0.5</code> and <code>current = 0.6</code> this method will return true
    */
-  public static boolean isThisOrLater(String test, String current) {
+  public static boolean isThisOrLater(@Nonnull String test, @Nonnull String current) {
     if (test == null || current == null) {
       return false;
     }
+    test = removeLabels(checkVersionValid(fixForSpecialValue(test)));
+    current = removeLabels(checkVersionValid(fixForSpecialValue(current)));
     String t = getMajMin(test);
     String c = getMajMin(current);
-    if (t == null || c == null) {
-      return false;
-    }
     if (c.compareTo(t) == 0) {
       return isMajMinOrLaterPatch(test, current);
     }
@@ -384,6 +411,13 @@ public class VersionUtilities {
       return theCurrentPart.compareTo(theTestPart) >= 0;
     }
   }
+  private static int compareVersionPartInt(String theTestPart, String theCurrentPart) {
+    if (StringUtils.isNumeric(theTestPart) && StringUtils.isNumeric(theCurrentPart)) {
+      return Integer.parseInt(theCurrentPart) - Integer.parseInt(theTestPart);
+    } else {
+      return theCurrentPart.compareTo(theTestPart);
+    }
+  }
 
   /** 
    * return true if the current version equals test for major and min, or later patch 
@@ -392,7 +426,10 @@ public class VersionUtilities {
    * @param current
    * @return
    */
-  public static boolean isMajMinOrLaterPatch(String test, String current) {
+  public static boolean isMajMinOrLaterPatch(@Nonnull String test, @Nonnull String current) {
+    test = removeLabels(checkVersionValid(fixForSpecialValue(test)));
+    current = removeLabels(checkVersionValid(fixForSpecialValue(current)));
+
     String t = getMajMin(test);
     String c = getMajMin(current);
     if (c != null && t != null && c.compareTo(t) == 0) {
@@ -401,69 +438,81 @@ public class VersionUtilities {
       if (pt==null || "x".equals(pt)) {
         return true;
       }
-      if (pc!=null) {
-        if (pt.contains("-") && !pc.contains("-")) {
-          pt = pt.substring(0, pt.indexOf("-"));
-          int res = pc.compareTo(pt);
-          return res >= 0;
-        } else {
-          return compareVersionPart(pt, pc);          
+      if (pc != null) {
+        int order = compareVersionPartInt(pt, pc);
+        if (order == 0) {
+          String lblTest = getLabelPart(test);
+          String lblCurrent = getLabelPart(current);
+          if (lblTest != null || lblCurrent != null) {
+            if (lblTest == null) {
+              order = 1;
+            } else if (lblCurrent == null) {
+              order = -1;
+            } else {
+              order = lblTest.compareTo(lblCurrent);
+            }
+          }
         }
+        return order >= 0;
       }
     }
     return false;
   }
 
+  private static String getLabelPart(String s) {
+    if (Utilities.noString(s)) {
+      return null;
+    }
+    int p = s.indexOf("+");
+    int m = s.indexOf("-");
+    if (p >= 0 && m >= 0) {
+      int e = Integer.min(p, m);
+      return s.substring(e+1);
+    } else if (p >= 0) {
+      return s.substring(p+1);
+    } else if (m >= 0) {
+      return s.substring(m+1);
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * given any semver, increment the major version and reset the minor and patch to .0.0, and remove any labels
+   */
   public static String incMajorVersion(String v) {
-    assert isSemVer(v);
-    int[] parts = splitParts(v);
+    v = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(v)));
+    int[] parts = splitParts(removeLabels(v));
     return Integer.toString(parts[0]+1)+".0.0";
   }
 
-  public static String incMinorVersion(String v) {
-    assert isSemVer(v);
-    int[] parts = splitParts(v);
-    return Integer.toString(parts[0])+"."+Integer.toString(parts[1]+1)+".0";
+  /**
+   * given any semver, increment the minor version and reset the patch to .0 and remove any labels
+   */
+  public static @Nonnull String incMinorVersion(@Nonnull String v) {
+    v = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(v)));
+    int[] parts = splitParts(removeLabels(v));
+    return Integer.toString(parts[0])+"."+(parts.length == 1 ? "0.0" : Integer.toString(parts[1]+1)+".0");
   }
 
-  public static String incPatchVersion(String v) {
-    assert isSemVer(v);
+  /**
+   * given any semver, increment the patch and remove any labels
+   */
+  public static @Nonnull String incPatchVersion(@Nonnull String v) {
+    v = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(v)));
     int[] parts = splitParts(v);
-    return Integer.toString(parts[0])+"."+Integer.toString(parts[1])+"."+Integer.toString(parts[2]+1);
+    return Integer.toString(parts[0])+"."+
+      (parts.length < 2 ? "0" : Integer.toString(parts[1]))+"."+
+      (parts.length < 3 ? "1" : Integer.toString(parts[2]+1));
   }
 
   private static int[] splitParts(String v) {
     String[] p = v.split("\\.");
-    int[] i = new int[] {Integer.parseInt(p[0]),Integer.parseInt(p[1]),Integer.parseInt(p[2])};
-    return i;
+    return Arrays.stream(p).mapToInt(Integer::parseInt).toArray();
   }
 
   public static String versionFromCode(String version) {
-    if ("r2".equals(version)) {
-      return "1.0.2";
-    }
-    if ("r2b".equals(version)) {
-      return "1.4.0";
-    }
-    if ("r3".equals(version)) {
-      return "3.0.2";
-    }
-    if ("r4".equals(version)) {
-      return "4.0.1";
-    }
-    if ("r4".equals(version)) {
-      return "4.0.1";
-    }
-    if ("r4b".equals(version)) {
-      return "4.3.0";
-    }
-    if ("r5".equals(version)) {
-      return "5.0.0";
-    }
-    if ("r6".equals(version)) {
-      return "6.0.0-cibuild";
-    }
-    throw new FHIRException("Unknown version "+version);
+    return checkVersionNotNullAndValid(fixForSpecialValue(version));
   }
 
   public static VersionURLInfo parseVersionUrl(String url) {
@@ -637,7 +686,10 @@ public class VersionUtilities {
     return res;
   }
 
-  public static String getVersionForPackage(String pid) {
+  public static String getVersionForPackage(@Nonnull String pid) {
+    if (pid == null) {
+      return null;
+    }
     if (pid.startsWith("hl7.fhir.r")) {
       String[] p = pid.split("\\.");
       return versionFromCode(p[2]);
@@ -645,13 +697,43 @@ public class VersionUtilities {
     return null;
   }
 
-  public static boolean versionsMatch(String v1, String v2) {
+
+  /**
+   * returns true if v1 and v2 are both semver, and major and minor match
+   */
+//  public static boolean versionsCompatible(String v1, String v2) {
+//    if (v1 == null || v2 == null) {
+//      return false;
+//    }
+//    String[] v1l = v1.split("\\|");
+//    String[] v2l = v2.split("\\|");
+//    for (String vs1 : v1l) {
+//      for (String vs2 : v2l) {
+//        String mm1 = getMajMin(vs1);
+//        String mm2 = getMajMin(vs2);
+//        if (mm1 == null || mm2 == null) {
+//          return false;
+//        } else {
+//          if (mm1.equals(mm2)) {
+//            return true;
+//          }
+//        }
+//      }
+//    }
+//    return false;
+//  }
+  public static boolean versionsMatch(@Nonnull String v1, @Nonnull  String v2) {
+    v1 = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(v1)));
+    v2 = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(v2)));
     String mm1 = getMajMin(v1);
     String mm2 = getMajMin(v2);
     return mm1 != null && mm2 != null && mm1.equals(mm2);
   }
-  
-  public static boolean versionsMatch(String v1, List<String> v2l) {
+
+  /**
+   * returns true if v1 matches any v2 where both are semver, and major and minor match
+   */
+  public static boolean versionsMatchList(@Nonnull String v1, @Nonnull List<String> v2l) {
     for (String v2 : v2l) {
       if (versionsMatch(v1, v2)) {
         return true;
@@ -660,15 +742,10 @@ public class VersionUtilities {
     return false;
   }
 
-  public static boolean isR5VerOrLater(String version) {
-    if (version == null) {
-      return false;
-    }
-    String v = getMajMin(version);
-    return v.compareTo("4.5") >= 0; 
-  }
-
-  public static String removeVersionFromCanonical(String url) {
+  /**
+   * Given a canonical URL of format {url}|{version}, remove the version part
+   */
+  public static @Nullable String removeVersionFromCanonical(@Nullable String url) {
     if (url == null) {
       return null;
     }
@@ -679,25 +756,8 @@ public class VersionUtilities {
     }
   }
 
-  public static boolean isR4Plus(String version) {
-    return version != null && (version.startsWith("4.") || version.startsWith("5.") || "current".equals(version));
-  }
-
-  public static boolean refersTo(String refVer, String v) {
-    if (v.length() > refVer.length()) {
-      v = v.substring(0, refVer.length());
-    }
-    return refVer.equals(v);
-  }
-
-  public static String getSpecUrl(String v) {
-    if (v.contains("-cibuild")) {
-      return "http://build.fhir.org";
-    }
-    if (v.contains("-")) {
-      return "http://hl7.org/fhir/"+v;
-    }
-    
+  public static String getSpecUrl(@Nonnull String v) {
+    v = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(v)));
     switch (getMajMin(v)) {
     case "0.0" : return "http://hl7.org/fhir/DSTU1";
     case "1.0" : return "http://hl7.org/fhir/DSTU2";
@@ -706,18 +766,15 @@ public class VersionUtilities {
     case "4.0" : return "http://hl7.org/fhir/R4";
     case "4.3" : return "http://hl7.org/fhir/R4B";
     case "5.0" : return "http://hl7.org/fhir/R5";
-    case "6.0" : return "http://hl7.org/fhir/R6";
+    case "6.0" : return "http://build.fhir.org";
     default:
       return "http://hl7.org/fhir";
     }
   }
 
-  public static String getNameForVersion(String v) {
-    String mm = getMajMin(v);
-    if (mm == null) {
-      throw new Error("Unable to determine version for '"+v+"'");
-    }
-    switch (mm) {
+  public static @Nonnull String getNameForVersion(@Nonnull String v) {
+    v = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(v)));
+    switch (getMajMin(v)) {
     case "1.0" : return "R2";
     case "1.4" : return "R2B";
     case "3.0" : return "R3";
@@ -730,27 +787,39 @@ public class VersionUtilities {
     }
   }
 
-  public static boolean isR5Plus(String version) {
-    return version != null && (version.startsWith("5.") || version.startsWith("6.") || "current".equals(version));
-  }
+  /**
+   * given version ver1 and ver2, comparre them as semver strings (special values also accepted).
+   * -1 means ver1 is earlier, 0 means they 'match' and 1 means ver2 is later (normal java sort order)
+   */
+  public static int compareVersions(@Nullable String ver1, @Nullable String ver2) {
+    ver1 = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(ver1), "ver1"));
+    ver2 = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(ver2), "ver2"));
 
-  public static boolean isR6Plus(String version) {
-    return version != null && version.startsWith("6.");
-  }
-
-  public static int compareVersions(String ver1, String ver2) {
     if (ver1 == null) {
-      return ver2 == null ? 0 : 1;
+      return ver2 == null ? 0 : -1;
     } else if (isSemVer(ver1) && isSemVer(ver2)) {
       SemVer sv1 = new SemVer(ver1);
       SemVer sv2 = new SemVer(ver2);
       return sv1.compareTo(sv2);
+    } else if (ver2 == null) {
+      return 1;
     } else {
       return ver1.compareTo(ver2);
     }
   }
 
-  public static boolean includedInRange(String startVer, String stopVer, String ver) {
+  /**
+   * true of ver is included in the range bounded by startVer and stopVer (or matches - bounds and inclusive)
+   *
+   * Special values also accepted e.g. r3 is in r3 to r5
+   * @param ver
+   * @return
+   */
+  public static boolean includedInRange(@Nonnull String startVer, @Nonnull String stopVer, @Nonnull String ver) {
+    startVer = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(startVer), "startVer"));
+    stopVer = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(stopVer), "stopVer"));
+    ver = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(ver), "ver"));
+
     if (ver.equals(startVer)) {
       return true;
     }
@@ -760,37 +829,133 @@ public class VersionUtilities {
     return startVer.compareTo(ver) < 0 && stopVer.compareTo(ver) > 0;
   }
 
-  public static String getNoPatch(String version) {
-    return version.contains("-") ? version.substring(0, version.indexOf("-")) : version;
-  }
-
-  public static String getResourceTypesUrl(String version) {
-    if (VersionUtilities.isR5Plus(version)) {
+  public static String getResourceTypesUrl(@Nonnull String version) {
+    if (isR5Plus(version)) {
       return "http://hl7.org/fhir/fhir-types";
     } else {
       return "http://hl7.org/fhir/resource-types";
     }
   }
 
-
-  public static List<String> iterateCoreVersions(String startVer, String endVer) {
+  /**
+   * given a range of core versions, list all the ones in the range (accepts either version of special values, returns actual versions)
+   */
+  public static List<String> iterateCoreVersions(@Nonnull String startVer, @Nonnull String stopVer) {
+    startVer = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(startVer), "startVer"));
+    stopVer = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(stopVer), "stopVer"));
     List<String> result = new ArrayList<>();
-    if (isThisOrLater(startVer, "1.0") && isThisOrLater("1.0", endVer)) {
+    if (isThisOrLater(startVer, "1.0") && isThisOrLater("1.0", stopVer)) {
       result.add("1.0");
     }
-    if (isThisOrLater(startVer, "3.0") && isThisOrLater("3.0", endVer)) {
+    if (isThisOrLater(startVer, "3.0") && isThisOrLater("3.0", stopVer)) {
       result.add("3.0");
     }
-    if (isThisOrLater(startVer, "4.0") && isThisOrLater("4.0", endVer)) {
+    if (isThisOrLater(startVer, "4.0") && isThisOrLater("4.0", stopVer)) {
       result.add("4.0");
     }
-    if (isThisOrLater(startVer, "4.3") && isThisOrLater("4.3", endVer)) {
+    if (isThisOrLater(startVer, "4.3") && isThisOrLater("4.3", stopVer)) {
       result.add("4.3");
     }
-    if (isThisOrLater(startVer, "5.0") && isThisOrLater("5.0", endVer)) {
+    if (isThisOrLater(startVer, "5.0") && isThisOrLater("5.0", stopVer)) {
       result.add("5.0");
     }
     return result;
+  }
+
+
+  private static String removeLabels(String version) {
+    if (Utilities.noString(version))
+      return null;
+    if (version.contains("+")) {
+      version = version.substring(0, version.indexOf("+"));
+    }
+    if (version.contains("-")) {
+      version = version.substring(0, version.indexOf("-"));
+    }
+    return version;
+  }
+
+
+  private static String checkVersionNotNullAndValid(String s) {
+    if (s == null) {
+      throw new FHIRException("Invalid version: null");
+    } else if (!isSemVer(s)) {
+      throw new FHIRException("Invalid version: '"+s+'"');
+    } else {
+      return s;
+    }
+  }
+
+  private static String checkVersionNotNullAndValid(String s, String label) {
+    if (s == null) {
+      throw new FHIRException("Invalid "+label+" version: null");
+    } else if (!isSemVer(s)) {
+      throw new FHIRException("Invalid "+label+" version: '"+s+'"');
+    } else {
+      return s;
+    }
+  }
+
+
+  private static String checkVersionValid(String s) {
+    if (s == null) {
+      return null;
+    } else if (!isSemVer(s)) {
+      throw new FHIRException("Invalid version: '"+s+'"');
+    } else {
+      return s;
+    }
+  }
+
+  private static String checkVersionValid(String s, String label) {
+    if (s == null) {
+      return null;
+    } else if (!isSemVer(s)) {
+      throw new FHIRException("Invalid "+label+" version: '"+s+'"');
+    } else {
+      return s;
+    }
+  }
+
+  private static String checkVersionNotNull(String s) {
+    if (s == null) {
+      throw new FHIRException("Invalid version: null");
+    } else {
+      return s;
+    }
+  }
+
+  private static String checkVersionNotNull(String s, String label) {
+    if (s == null) {
+      throw new FHIRException("Invalid "+label+" version: null");
+    } else {
+      return s;
+    }
+  }
+
+  private static String fixForSpecialValue(String version) {
+    if (Utilities.noString(version)) {
+      return null;
+    }
+    if (version.startsWith("http://hl7.org/fhir/")) {
+      version = version.substring(20);
+      if (version.contains("/")) {
+        version = version.substring(0, version.indexOf("/"));
+      }
+    }
+
+    switch (version.toUpperCase()) {
+      case "R2": return "1.0.2";
+      case "DSTU2": return "1.0.2";
+      case "R2B": return "1.4.0";
+      case "R3": return "3.0.2";
+      case "STU3": return "3.0.2";
+      case "R4": return "4.0.1";
+      case "R4B": return "4.3.0";
+      case "R5": return "5.0.0";
+      case "R6": return "6.0.0-cibuild";
+      default: return version;
+    }
   }
 
 }

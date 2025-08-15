@@ -9,7 +9,9 @@ import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
 /**
@@ -260,14 +262,12 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         return -1;
       } else if (v2 == null) {
         return 1;
+      } else if (v1.equals(v2)) {
+        return 0;
+      } else if (compareByVersionString(v1, v2)) {
+        return 1;
       } else {
-        String mm1 = VersionUtilities.getMajMin(v1);
-        String mm2 = VersionUtilities.getMajMin(v2);
-        if (mm1 == null || mm2 == null) {
-          return v1.compareTo(v2);
-        } else {
-          return mm1.compareTo(mm2);
-        }
+        return -1;
       }
     }
 
@@ -353,7 +353,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     if (map.get(cr.getUrl()) != null && (cr.getPackageInfo() != null && cr.getPackageInfo().isExamplesPackage())) {
       return;
     }
-    
+
     // -- 2. preparation -----------------------------------------------------------------------------
     if (cr.resource != null && cr.getPackageInfo() != null) {
       cr.resource.setSourcePackage(cr.getPackageInfo());
@@ -402,34 +402,126 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
     // -- 4. add to the map all the ways ---------------------------------------------------------------
     String pv = cr.getPackageInfo() != null ? cr.getPackageInfo().getVID() : null;
-    map.put(cr.getId(), cr); // we do this so we can drop by id - if not enforcing id, it's just the most recent resource with this id      
-    map.put(cr.hasVersion() ? cr.getUrl()+"|"+cr.getVersion() : cr.getUrl()+"|#0", cr);
+    addToMap(cr.getId(), cr); // we do this so we can drop by id - if not enforcing id, it's just the most recent resource with this id
+    addToMap(cr.hasVersion() ? cr.getUrl()+"|"+cr.getVersion() : cr.getUrl()+"|#0", cr);
     if (pv != null) {
-      map.put(pv+":"+(cr.hasVersion() ? cr.getUrl()+"|"+cr.getVersion() : cr.getUrl()+"|#0"), cr);      
+      addToMap(pv+":"+(cr.hasVersion() ? cr.getUrl()+"|"+cr.getVersion() : cr.getUrl()+"|#0"), cr);
     }
     int ndx = set.indexOf(cr);
     if (ndx == set.size()-1) {
-      map.put(cr.getUrl(), cr);
+      addToMap(cr.getUrl(), cr);
       if (pv != null) {
-        map.put(pv+":"+cr.getUrl(), cr);
+        addToMap(pv+":"+cr.getUrl(), cr);
       }
     }
+    String mmp = VersionUtilities.getMajMinPatch(cr.getVersion());
+    if (mmp != null && !mmp.equals(cr.getVersion())) {
+      if (pv != null) {
+        addToMap(pv+":"+cr.getUrl()+"|"+mmp, cr);
+      }
+      if (set.size() - 1 == ndx) {
+        addToMap(cr.getUrl()+"|"+mmp, cr);
+      } else {
+        for (int i = set.size() - 1; i > ndx; i--) {
+          if (mmp.equals(VersionUtilities.getMajMinPatch(set.get(i).getVersion()))) {
+            return;
+          }
+          addToMap(cr.getUrl()+"|"+mmp, cr);
+        }
+      }
+    }
+
     String mm = VersionUtilities.getMajMin(cr.getVersion());
     if (mm != null) {
       if (pv != null) {
-        map.put(pv+":"+cr.getUrl()+"|"+mm, cr);                
+        addToMap(pv+":"+cr.getUrl()+"|"+mm, cr);
       }
       if (set.size() - 1 == ndx) {
-        map.put(cr.getUrl()+"|"+mm, cr);        
+        addToMap(cr.getUrl()+"|"+mm, cr);
       } else {
         for (int i = set.size() - 1; i > ndx; i--) {
           if (mm.equals(VersionUtilities.getMajMin(set.get(i).getVersion()))) {
             return;
           }
-          map.put(cr.getUrl()+"|"+mm, cr);
+          addToMap(cr.getUrl()+"|"+mm, cr);
         }
       }
     }
+  }
+
+  private void addToMap(String key, CachedCanonicalResource<T> cr) {
+    boolean older = false;
+    CachedCanonicalResource<T> existing = map.get(key);
+    if (existing != null) {
+      // at every level of adding something to the map, the most recent (by versioning) wins.
+      String existingVersion = existing.getVersion();
+      String newVersion = cr.getVersion();
+      if (existingVersion != null && newVersion != null) {
+        if (existingVersion.equals(newVersion)) {
+          older = isOlderByPackage(existing, cr);
+        } else {
+          older = compareByVersionString(existingVersion, newVersion);
+        }
+      } else if (existingVersion == null && newVersion != null) {
+        older = false;
+      } else if (existingVersion != null && newVersion == null) {
+        older = true;
+      } else {
+        older = isOlderByPackage(existing, cr);
+      }
+    }
+    if (!older) {
+      map.put(key, cr);
+    }
+  }
+
+  private static boolean compareByVersionString(String existingVersion, String newVersion) {
+    if (VersionUtilities.isSemVer(existingVersion) && VersionUtilities.isSemVer(newVersion)) {
+      return !VersionUtilities.isThisOrLater(existingVersion, newVersion);
+    } else if (Utilities.isInteger(existingVersion) && Utilities.isInteger(newVersion)) {
+      return Integer.parseInt(existingVersion) > Integer.parseInt(newVersion);
+    } else {
+      return existingVersion.compareTo(newVersion) > 0;
+    }
+  }
+
+  private boolean isOlderByPackage(CachedCanonicalResource<T> existing, CachedCanonicalResource<T> cr) {
+    PackageInformation piExisting = existing.getPackageInfo();
+    PackageInformation piNew = cr.getPackageInfo();
+    if (piNew != null && piExisting != null) {
+      if (piNew.getId().equals(piExisting.getId())) {
+        String vExisting = piExisting.getVersion();
+        String vNew = piNew.getVersion();
+        if (vExisting != null && vNew != null) {
+          if (vExisting.equals(vNew)) {
+            return false; // procedurally more recent wins
+          } else {
+            return compareByVersionString(vExisting, vNew); // though it should be a semver
+          }
+        } else if (vExisting != null && vNew == null) {
+          // the one without package source information wins
+          return false;
+        } else if (vExisting == null && vNew != null) {
+          // the one without package source information wins
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        // comes from a mismatch package - presumable some repackaging has gone on - the most recent by date wins
+        return piNew.getDate().before(piExisting.getDate());
+      }
+    } else if (piNew == null && piExisting != null) {
+      // the one without package source information wins
+      return false;
+    } else if (piNew != null && piExisting == null) {
+      // the one without package source information wins
+      return true;
+    } else { // piNew == null && piExisting == null
+      // well, we really don't know; more recent in load order wins
+      return false;
+    }
+
   }
 
   private void addToSupplements(CanonicalResourceManager<T>.CachedCanonicalResource<T> cr) {
@@ -511,7 +603,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       if (version != null) {
         CachedCanonicalResource<T> latest = null;
         for (CachedCanonicalResource<T> t : rl) {
-          if (VersionUtilities.versionsCompatible(t.getVersion(), version)) {
+          if (VersionUtilities.versionsMatch(t.getVersion(), version)) {
             latest = t;
           }
         }
@@ -579,7 +671,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
    * @param srcInfo
    * @return
    */
-  public T get(String url, List<String> pvlist) {
+  public T getByPackage(String url, List<String> pvlist) {
     for (String pv : pvlist) {
       if (map.containsKey(pv+":"+url)) {
         return map.get(pv+":"+url).getResource();
@@ -588,9 +680,9 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     return map.containsKey(url) ? map.get(url).getResource() : null;
   }
   
-  public T get(String system, String version, List<String> pvlist) {
+  public T getByPackage(String system, String version, List<String> pvlist) {
     if (version == null) {
-      return get(system, pvlist);
+      return getByPackage(system, pvlist);
     } else {
       for (String pv : pvlist) {
         if (map.containsKey(pv+":"+system+"|"+version))
