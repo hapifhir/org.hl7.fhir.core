@@ -638,7 +638,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (theContext.getVersion().startsWith("3.0") || theContext.getVersion().startsWith("1.0"))
       fpe.setLegacyMode(true);
     settings.setSource(Source.InstanceValidator);
-    fpe.setDoNotEnforceAsSingletonRule(!VersionUtilities.isR5VerOrLater(theContext.getVersion()));
+    fpe.setDoNotEnforceAsSingletonRule(!VersionUtilities.isR5Plus(theContext.getVersion()));
     fpe.setAllowDoubleQuotes(allowDoubleQuotesInFHIRPath);
     codingObserver = new CodingsObserver(theContext, settings, xverManager, session);
     oids = new OIDUtilities();
@@ -2858,7 +2858,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if ("http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version".equals(extUrl)) {
       list.get(0).setExpression("Element"); // well, it can't be used anywhere but the list of places it can be used is quite long
     }
-    if (!VersionUtilities.isThisOrLater("4.6", context.getVersion())) {
+    if (!VersionUtilities.isThisOrLaterMajorMinor("4.6", context.getVersion())) {
       if (Utilities.existsInList(extUrl, "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation", "http://hl7.org/fhir/StructureDefinition/capabilitystatement-prohibited")) {
         list.get(0).setExpression("Element"); // well, they can't be used anywhere but the list of places they can be used is quite long        
       }
@@ -3256,7 +3256,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (type.equals("dateTime")) {
         boolean dok = ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path,
             e.primitiveValue()
-            .matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_VALID, "'"+e.primitiveValue()+"' doesn't meet format requirements for dateTime") && ok;
+            .matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_VALID, e.primitiveValue()) && ok;
         if (isCoreDefinition(profile) || (context.hasExtension(ExtensionDefinitions.EXT_DATE_RULES) && ExtensionUtilities.readStringExtension(context, ExtensionDefinitions.EXT_DATE_RULES).contains("tz-for-time"))) {
           dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !hasTime(e.primitiveValue()) || hasTimeZone(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_TZ) && dok;
         }
@@ -3286,7 +3286,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
       if (type.equals("date")) {
-        boolean dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1]))?)?"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, "'"+e.primitiveValue()+"' doesn't meet format requirements for date");
+        boolean dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1]))?)?"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, e.primitiveValue());
         dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && dok;
         if (dok) {
           try {
@@ -3310,7 +3310,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_VALID, value) && ok;
           } else {
             boolean wsok = !Base64Util.base64HasWhitespace(encoded);
-            if (VersionUtilities.isR5VerOrLater(this.context.getVersion())) {
+            if (VersionUtilities.isR5Plus(this.context.getVersion())) {
               ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, wsok, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR) && ok;            
             } else {
               warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, wsok, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING);            
@@ -3384,7 +3384,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       if (type.equals("instant")) {
         boolean dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path,
-            e.primitiveValue().matches("-?[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REGEX, "'"+e.primitiveValue()+"' doesn't meet format requirements for instant)");
+            e.primitiveValue().matches("-?[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REGEX,  e.primitiveValue());
         if (dok) {
           try {
             InstantType dt = new InstantType(e.primitiveValue());
@@ -4935,7 +4935,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean checkSampledData(List<ValidationMessage> errors, String path, Element focus, SampledData fixed, String fixedSource, boolean pattern, String context) {
     boolean ok = true;
     ok = checkFixedValue(errors, path + ".origin", focus.getNamedChild("origin", false), fixed.getOrigin(), fixedSource, "origin", focus, pattern, context) && ok;
-    if (VersionUtilities.isR5VerOrLater(this.context.getVersion())) {
+    if (VersionUtilities.isR5Plus(this.context.getVersion())) {
       ok = checkFixedValue(errors, path + ".interval", focus.getNamedChild("period", false), fixed.getIntervalElement(), fixedSource, "interval", focus, pattern, context) && ok;
       ok = checkFixedValue(errors, path + ".intervalUnit", focus.getNamedChild("period", false), fixed.getIntervalUnitElement(), fixedSource, "intervalUnit", focus, pattern, context) && ok;
     } else {
@@ -6197,7 +6197,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           // is this a version specific reference? 
           VersionURLInfo vu = VersionUtilities.parseVersionUrl(profile.primitiveValue());
           if (vu != null) {
-            if (!VersionUtilities.versionsCompatible(vu.getVersion(),  context.getVersion())) {
+            if (!VersionUtilities.versionsMatch(vu.getVersion(),  context.getVersion())) {
               hint(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_OTHER_VERSION, vu.getVersion());
             } else if (vu.getUrl().equals(defn.getUrl())) {
               hint(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_THIS_VERSION_OK);              

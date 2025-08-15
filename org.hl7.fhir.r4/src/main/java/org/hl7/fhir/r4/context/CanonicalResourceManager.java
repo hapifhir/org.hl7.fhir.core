@@ -99,7 +99,7 @@ public class CanonicalResourceManager<T extends MetadataResource> {
       if (version != null) {
         T latest = null;
         for (T t : rl) {
-          if (VersionUtilities.versionsCompatible(t.getVersion(), version)) {
+          if (VersionUtilities.versionsMatch(t.getVersion(), version)) {
             latest = t;
           }
         }

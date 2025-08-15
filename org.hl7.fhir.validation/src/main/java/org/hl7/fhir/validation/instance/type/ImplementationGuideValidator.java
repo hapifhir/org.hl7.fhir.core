@@ -95,7 +95,7 @@ public class ImplementationGuideValidator extends BaseValidator {
         if (warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), npm != null, I18nConstants.IG_DEPENDENCY_PACKAGE_UNKNOWN, packageId+"#"+version)) {
           if (!fvl.isEmpty()) {
             String pver = npm.fhirVersion();
-            if (!VersionUtilities.versionsMatch(pver, fvl)) {
+            if (!VersionUtilities.versionsMatchList(pver, fvl)) {
               if (Utilities.existsInList(packageId, "hl7.fhir.uv.extensions", "hl7.fhir.uv.tools", "hl7.terminology")) {
                 ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), false, I18nConstants.IG_DEPENDENCY_VERSION_ERROR, CommaSeparatedStringBuilder.join(",", fvl), packageId+"#"+version, pver, 
                     packageId+"."+VersionUtilities.getNameForVersion(fvl.get(0)).toLowerCase()) && ok;                           

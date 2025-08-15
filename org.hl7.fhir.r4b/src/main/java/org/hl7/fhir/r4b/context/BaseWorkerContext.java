@@ -536,7 +536,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         map.put(r.getUrl(), rl.get(rl.size() - 1));
         T latest = null;
         for (T t : rl) {
-          if (VersionUtilities.versionsCompatible(t.getVersion(), r.getVersion())) {
+          if (VersionUtilities.versionsMatch(t.getVersion(), r.getVersion())) {
             latest = t;
           }
         }

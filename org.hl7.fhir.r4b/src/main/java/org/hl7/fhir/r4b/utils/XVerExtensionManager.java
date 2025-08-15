@@ -177,9 +177,9 @@ public class XVerExtensionManager {
   }
 
   private String translateDataType(String v, String dt) {
-    if (VersionUtilities.versionsCompatible("1.0", v) || VersionUtilities.versionsCompatible("1.4", v)) {
+    if (VersionUtilities.versionsMatch("1.0", v) || VersionUtilities.versionsMatch("1.4", v)) {
       return translateToR2(dt);
-    } else if (VersionUtilities.versionsCompatible("3.0", v)) {
+    } else if (VersionUtilities.versionsMatch("3.0", v)) {
       return translateToR3(dt);
     } else {
       return dt;
