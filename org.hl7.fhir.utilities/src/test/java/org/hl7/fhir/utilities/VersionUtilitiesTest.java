@@ -1,15 +1,16 @@
 package org.hl7.fhir.utilities;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.junit.jupiter.api.Test;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
+import javax.security.sasl.SaslServer;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class VersionUtilitiesTest {
 
@@ -23,51 +24,53 @@ public class VersionUtilitiesTest {
 
   @Test
   public void isThisOrLater_Simple() {
-    assertTrue(VersionUtilities.isThisOrLater("0.1", "0.2"));
-    assertFalse(VersionUtilities.isThisOrLater("0.2", "0.1"));
+    assertTrue(VersionUtilities.isThisOrLaterMajorMinor("0.1", "0.2"));
+    assertFalse(VersionUtilities.isThisOrLaterMajorMinor("0.2", "0.1"));
   }
 
   @Test
   public void isThisOrLater_NeedNumericComparison() {
-    assertTrue(VersionUtilities.isThisOrLater("0.9", "0.10"));
-    assertFalse(VersionUtilities.isThisOrLater("0.10", "0.9"));
+    assertTrue(VersionUtilities.isThisOrLaterMajorMinor("0.9", "0.10"));
+    assertFalse(VersionUtilities.isThisOrLaterMajorMinor("0.10", "0.9"));
   }
 
   @Test
   public void isThisOrLater_DifferentLengths() {
-    assertTrue(VersionUtilities.isThisOrLater("0.9", "0.9.1"));
-    assertFalse(VersionUtilities.isThisOrLater("0.9.1", "0.9"));
+    assertTrue(VersionUtilities.isThisOrLaterMajorMinor("0.9", "0.9.1"));
+    assertTrue(VersionUtilities.isThisOrLaterMajorMinor("0.9.1", "0.9"));
+
+    assertTrue(VersionUtilities.isThisOrLaterMajorMinorPatch("0.9", "0.9.1"));
+    assertFalse(VersionUtilities.isThisOrLaterMajorMinorPatch("0.9.1", "0.9"));
   }
 
   @Test
   public void isThisOrLater_NonNumeric() {
-    assertTrue(VersionUtilities.isThisOrLater("0.A", "0.B"));
-    assertFalse(VersionUtilities.isThisOrLater("0.B", "0.A"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.isThisOrLaterMajorMinor("0.A", "0.B"));
+    Assertions.assertThrows(FHIRException.class, () ->VersionUtilities.isThisOrLaterMajorMinor("0.B", "0.A"));
   }
 
 
   @Test
   public void isMajMinOrLaterPatch_Simple() {
-    assertTrue(VersionUtilities.isMajMinOrLaterPatch("0.9.0", "0.9.0"));
-    assertTrue(VersionUtilities.isMajMinOrLaterPatch("0.9.0", "0.9.1"));
-    assertFalse(VersionUtilities.isThisOrLater("0.9.0", "0.8.1"));
+    assertTrue(VersionUtilities.isThisOrLaterMajorMinorPatch("0.9.0", "0.9.0"));
+    assertTrue(VersionUtilities.isThisOrLaterMajorMinorPatch("0.9.0", "0.9.1"));
+    assertFalse(VersionUtilities.isThisOrLaterMajorMinor("0.9.0", "0.8.1"));
   }
 
   @Test
   public void isMajMinOrLaterPatch_VersionWithX() {
-    assertTrue(VersionUtilities.isMajMinOrLaterPatch("0.9.x", "0.9.0"));
-    assertTrue(VersionUtilities.isMajMinOrLaterPatch("0.9.x", "0.9.1"));
-    assertFalse(VersionUtilities.isThisOrLater("0.9.x", "0.8.1"));
+    assertTrue(VersionUtilities.isThisOrLaterMajorMinorPatch("0.9.x", "0.9.0"));
+    assertTrue(VersionUtilities.isThisOrLaterMajorMinorPatch("0.9.x", "0.9.1"));
+    assertFalse(VersionUtilities.isThisOrLaterMajorMinor("0.9.x", "0.8.1"));
   }
 
   @Test 
   public void bugFixTests() {
-    assertTrue(VersionUtilities.isThisOrLater("1.0.0-ballot", "1.0.1"));
+    assertTrue(VersionUtilities.isThisOrLaterMajorMinor("1.0.0-ballot", "1.0.1"));
   }
 
   // I asked Claude to break this thing, to really torture it (Claude's words!) and this is
   // what I got:
-
 
   // =============================================
   // getMajMin() TESTS
@@ -96,8 +99,8 @@ public class VersionUtilitiesTest {
 
   @Test
   public void testGetMajMin_SinglePartVersions() {
-    Assertions.assertEquals("1.0", VersionUtilities.getMajMin("1"));
-    Assertions.assertEquals("5.0", VersionUtilities.getMajMin("5"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.getMajMin("1"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.getMajMin("5"));
   }
 
   @Test
@@ -105,7 +108,7 @@ public class VersionUtilitiesTest {
     Assertions.assertEquals("1.0", VersionUtilities.getMajMin("r2"));
     Assertions.assertEquals("3.0", VersionUtilities.getMajMin("r3"));
     Assertions.assertEquals("4.0", VersionUtilities.getMajMin("r4"));
-    Assertions.assertEquals("4.1", VersionUtilities.getMajMin("r4B"));
+    Assertions.assertEquals("4.3", VersionUtilities.getMajMin("r4B"));
     Assertions.assertEquals("5.0", VersionUtilities.getMajMin("r5"));
     Assertions.assertEquals("6.0", VersionUtilities.getMajMin("r6"));
 
@@ -113,7 +116,7 @@ public class VersionUtilitiesTest {
     Assertions.assertEquals("1.0", VersionUtilities.getMajMin("R2"));
     Assertions.assertEquals("3.0", VersionUtilities.getMajMin("R3"));
     Assertions.assertEquals("4.0", VersionUtilities.getMajMin("R4"));
-    Assertions.assertEquals("4.1", VersionUtilities.getMajMin("R4B"));
+    Assertions.assertEquals("4.3", VersionUtilities.getMajMin("R4B"));
     Assertions.assertEquals("5.0", VersionUtilities.getMajMin("R5"));
     Assertions.assertEquals("6.0", VersionUtilities.getMajMin("R6"));
   }
@@ -151,16 +154,16 @@ public class VersionUtilitiesTest {
 
   @Test
   public void testGetMajMinPatch_SinglePartVersions() {
-    Assertions.assertEquals("1.0.0", VersionUtilities.getMajMinPatch("1"));
-    Assertions.assertEquals("5.0.0", VersionUtilities.getMajMinPatch("5"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.getMajMinPatch("1"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.getMajMinPatch("5"));
   }
 
   @Test
   public void testGetMajMinPatch_FhirSpecialVersions() {
-    Assertions.assertEquals("1.0.0", VersionUtilities.getMajMinPatch("r2"));
-    Assertions.assertEquals("3.0.0", VersionUtilities.getMajMinPatch("r3"));
-    Assertions.assertEquals("4.0.0", VersionUtilities.getMajMinPatch("r4"));
-    Assertions.assertEquals("4.1.0", VersionUtilities.getMajMinPatch("r4B"));
+    Assertions.assertEquals("1.0.2", VersionUtilities.getMajMinPatch("r2"));
+    Assertions.assertEquals("3.0.2", VersionUtilities.getMajMinPatch("r3"));
+    Assertions.assertEquals("4.0.1", VersionUtilities.getMajMinPatch("r4"));
+    Assertions.assertEquals("4.3.0", VersionUtilities.getMajMinPatch("r4B"));
     Assertions.assertEquals("5.0.0", VersionUtilities.getMajMinPatch("r5"));
     Assertions.assertEquals("6.0.0", VersionUtilities.getMajMinPatch("r6"));
   }
@@ -191,8 +194,8 @@ public class VersionUtilitiesTest {
 
   @Test
   public void testGetPatch_SinglePartVersions() {
-    Assertions.assertEquals("0", VersionUtilities.getPatch("1"));
-    Assertions.assertEquals("0", VersionUtilities.getPatch("5"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.getPatch("1"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.getPatch("5"));
   }
 
   @Test
@@ -235,26 +238,26 @@ public class VersionUtilitiesTest {
 
   @Test
   public void testIsSemVer_ValidSinglePartVersions() {
-    Assertions.assertTrue(VersionUtilities.isSemVer("1"));
-    Assertions.assertTrue(VersionUtilities.isSemVer("5"));
-    Assertions.assertTrue(VersionUtilities.isSemVer("10"));
+    Assertions.assertFalse(VersionUtilities.isSemVer("1"));
+    Assertions.assertFalse(VersionUtilities.isSemVer("5"));
+    Assertions.assertFalse(VersionUtilities.isSemVer("10"));
   }
 
   @Test
   public void testIsSemVer_FhirSpecialVersions() {
-    Assertions.assertTrue(VersionUtilities.isSemVer("r2"));
-    Assertions.assertTrue(VersionUtilities.isSemVer("r3"));
-    Assertions.assertTrue(VersionUtilities.isSemVer("r4"));
-    Assertions.assertTrue(VersionUtilities.isSemVer("r4B"));
-    Assertions.assertTrue(VersionUtilities.isSemVer("r5"));
-    Assertions.assertTrue(VersionUtilities.isSemVer("r6"));
+    Assertions.assertFalse(VersionUtilities.isSemVer("r2"));
+    Assertions.assertFalse(VersionUtilities.isSemVer("r3"));
+    Assertions.assertFalse(VersionUtilities.isSemVer("r4"));
+    Assertions.assertFalse(VersionUtilities.isSemVer("r4B"));
+    Assertions.assertFalse(VersionUtilities.isSemVer("r5"));
+    Assertions.assertFalse(VersionUtilities.isSemVer("r6"));
 
-    Assertions.assertTrue(VersionUtilities.isSemVer("R2"));
-    Assertions.assertTrue(VersionUtilities.isSemVer("R3"));
-    Assertions.assertTrue(VersionUtilities.isSemVer("R4"));
-    Assertions.assertTrue(VersionUtilities.isSemVer("R4B"));
-    Assertions.assertTrue(VersionUtilities.isSemVer("R5"));
-    Assertions.assertTrue(VersionUtilities.isSemVer("R6"));
+    Assertions.assertFalse(VersionUtilities.isSemVer("R2"));
+    Assertions.assertFalse(VersionUtilities.isSemVer("R3"));
+    Assertions.assertFalse(VersionUtilities.isSemVer("R4"));
+    Assertions.assertFalse(VersionUtilities.isSemVer("R4B"));
+    Assertions.assertFalse(VersionUtilities.isSemVer("R5"));
+    Assertions.assertFalse(VersionUtilities.isSemVer("R6"));
   }
 
   @Test
@@ -276,48 +279,60 @@ public class VersionUtilitiesTest {
 
   @Test
   public void testIsThisOrLater_SameVersions() {
-    Assertions.assertTrue(VersionUtilities.isThisOrLater("1.0.0", "1.0.0"));
-    Assertions.assertTrue(VersionUtilities.isThisOrLater("2.1.3", "2.1.3"));
-    Assertions.assertTrue(VersionUtilities.isThisOrLater("r4", "r4"));
-    Assertions.assertTrue(VersionUtilities.isThisOrLater("R5", "r5")); // Case insensitive
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinor("1.0.0", "1.0.0"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinor("2.1.3", "2.1.3"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinor("r4", "r4"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinor("R5", "r5")); // Case insensitive
   }
 
   @Test
   public void testIsThisOrLater_LaterVersions() {
-    Assertions.assertTrue(VersionUtilities.isThisOrLater("1.0.0", "1.0.1"));
-    Assertions.assertTrue(VersionUtilities.isThisOrLater("1.0.0", "1.1.0"));
-    Assertions.assertTrue(VersionUtilities.isThisOrLater("1.0.0", "2.0.0"));
-    Assertions.assertTrue(VersionUtilities.isThisOrLater("2.1.0", "2.1.5"));
-    Assertions.assertTrue(VersionUtilities.isThisOrLater("r3", "r4"));
-    Assertions.assertTrue(VersionUtilities.isThisOrLater("r4", "r5"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinor("1.0.0", "1.0.1"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinor("1.0.0", "1.1.0"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinor("1.0.0", "2.0.0"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinor("2.1.0", "2.1.5"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinor("r3", "r4"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinor("r4", "r5"));
   }
 
   @Test
   public void testIsThisOrLater_EarlierVersions() {
-    Assertions.assertFalse(VersionUtilities.isThisOrLater("1.0.1", "1.0.0"));
-    Assertions.assertFalse(VersionUtilities.isThisOrLater("1.1.0", "1.0.0"));
-    Assertions.assertFalse(VersionUtilities.isThisOrLater("2.0.0", "1.0.0"));
-    Assertions.assertFalse(VersionUtilities.isThisOrLater("2.1.5", "2.1.0"));
-    Assertions.assertFalse(VersionUtilities.isThisOrLater("r4", "r3"));
-    Assertions.assertFalse(VersionUtilities.isThisOrLater("r5", "r4"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinor("1.0.1", "1.0.0"));
+    Assertions.assertFalse(VersionUtilities.isThisOrLaterMajorMinor("1.1.0", "1.0.0"));
+    Assertions.assertFalse(VersionUtilities.isThisOrLaterMajorMinor("2.0.0", "1.0.0"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinor("2.1.5", "2.1.0"));
+    Assertions.assertFalse(VersionUtilities.isThisOrLaterMajorMinor("r4", "r3"));
+    Assertions.assertFalse(VersionUtilities.isThisOrLaterMajorMinor("r5", "r4"));
+
+    Assertions.assertFalse(VersionUtilities.isThisOrLaterMajorMinorPatch("1.0.1", "1.0.0"));
+    Assertions.assertFalse(VersionUtilities.isThisOrLaterMajorMinorPatch("1.1.0", "1.0.0"));
+    Assertions.assertFalse(VersionUtilities.isThisOrLaterMajorMinorPatch("2.0.0", "1.0.0"));
+    Assertions.assertFalse(VersionUtilities.isThisOrLaterMajorMinorPatch("2.1.5", "2.1.0"));
+    Assertions.assertFalse(VersionUtilities.isThisOrLaterMajorMinorPatch("r4", "r3"));
+    Assertions.assertFalse(VersionUtilities.isThisOrLaterMajorMinorPatch("r5", "r4"));
   }
 
   @Test
   public void testIsThisOrLater_NumericVsTextComparison() {
     // Numeric comparison: 0.9 < 0.10
-    Assertions.assertTrue(VersionUtilities.isThisOrLater("0.9", "0.10"));
-    Assertions.assertTrue(VersionUtilities.isThisOrLater("1.9", "1.10"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinor("0.9", "0.10"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinor("1.9", "1.10"));
 
     // Text comparison fallback for non-numeric
-    Assertions.assertTrue(VersionUtilities.isThisOrLater("1.0.0-alpha", "1.0.0-beta"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinor("1.0.0-alpha", "1.0.0-beta"));
   }
 
   @Test
   public void testIsThisOrLater_MixedDepths() {
-    Assertions.assertTrue(VersionUtilities.isThisOrLater("1.0", "1.0.0"));
-    Assertions.assertTrue(VersionUtilities.isThisOrLater("1", "1.0.0"));
-    Assertions.assertTrue(VersionUtilities.isThisOrLater("2.0", "2.1"));
-    Assertions.assertFalse(VersionUtilities.isThisOrLater("2.1", "2.0"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinor("1.0", "1.0.0"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.isThisOrLaterMajorMinor("1", "1.0.0"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinor("2.0", "2.1"));
+    Assertions.assertFalse(VersionUtilities.isThisOrLaterMajorMinor("2.1", "2.0"));
+
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinorPatch("1.0", "1.0.0"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.isThisOrLaterMajorMinorPatch("1", "1.0.0"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinorPatch("2.0", "2.1"));
+    Assertions.assertFalse(VersionUtilities.isThisOrLaterMajorMinorPatch("2.1", "2.0"));
   }
 
   // =============================================
@@ -326,31 +341,31 @@ public class VersionUtilitiesTest {
 
   @Test
   public void testIsMajMinOrLaterPatch_SameMajorMinor() {
-    Assertions.assertTrue(VersionUtilities.isMajMinOrLaterPatch("1.0.0", "1.0.0"));
-    Assertions.assertTrue(VersionUtilities.isMajMinOrLaterPatch("1.0.0", "1.0.1"));
-    Assertions.assertTrue(VersionUtilities.isMajMinOrLaterPatch("1.0.0", "1.0.10"));
-    Assertions.assertTrue(VersionUtilities.isMajMinOrLaterPatch("2.1.0", "2.1.5"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinorPatch("1.0.0", "1.0.0"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinorPatch("1.0.0", "1.0.1"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinorPatch("1.0.0", "1.0.10"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinorPatch("2.1.0", "2.1.5"));
   }
 
   @Test
   public void testIsMajMinOrLaterPatch_DifferentMajorMinor() {
-    Assertions.assertFalse(VersionUtilities.isMajMinOrLaterPatch("1.0.0", "1.1.0"));
-    Assertions.assertFalse(VersionUtilities.isMajMinOrLaterPatch("1.0.0", "2.0.0"));
-    Assertions.assertFalse(VersionUtilities.isMajMinOrLaterPatch("2.1.0", "2.0.5"));
-    Assertions.assertFalse(VersionUtilities.isMajMinOrLaterPatch("2.1.0", "3.1.0"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinorPatch("1.0.0", "1.1.0"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinorPatch("1.0.0", "2.0.0"));
+    Assertions.assertFalse(VersionUtilities.isThisOrLaterMajorMinorPatch("2.1.0", "2.0.5"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinorPatch("2.1.0", "3.1.0"));
   }
 
   @Test
   public void testIsMajMinOrLaterPatch_EarlierPatch() {
-    Assertions.assertFalse(VersionUtilities.isMajMinOrLaterPatch("1.0.5", "1.0.0"));
-    Assertions.assertFalse(VersionUtilities.isMajMinOrLaterPatch("2.1.10", "2.1.5"));
+    Assertions.assertFalse(VersionUtilities.isThisOrLaterMajorMinorPatch("1.0.5", "1.0.0"));
+    Assertions.assertFalse(VersionUtilities.isThisOrLaterMajorMinorPatch("2.1.10", "2.1.5"));
   }
 
   @Test
   public void testIsMajMinOrLaterPatch_FhirVersions() {
-    Assertions.assertTrue(VersionUtilities.isMajMinOrLaterPatch("r4", "r4"));
-    Assertions.assertFalse(VersionUtilities.isMajMinOrLaterPatch("r4", "r5"));
-    Assertions.assertFalse(VersionUtilities.isMajMinOrLaterPatch("r5", "r4"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinorPatch("r4", "r4"));
+    Assertions.assertTrue(VersionUtilities.isThisOrLaterMajorMinorPatch("r4", "r5"));
+    Assertions.assertFalse(VersionUtilities.isThisOrLaterMajorMinorPatch("r5", "r4"));
   }
 
   // =============================================
@@ -431,8 +446,8 @@ public class VersionUtilitiesTest {
 
   @Test
   public void testIncPatchVersion_SinglePartVersions() {
-    Assertions.assertEquals("1.0.1", VersionUtilities.incPatchVersion("1"));
-    Assertions.assertEquals("5.0.1", VersionUtilities.incPatchVersion("5"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.incPatchVersion("1"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.incPatchVersion("5"));
   }
 
   // =============================================
@@ -480,7 +495,7 @@ public class VersionUtilitiesTest {
     Assertions.assertTrue(VersionUtilities.versionsMatchList("R5", versions)); // Case insensitive
 
     Assertions.assertFalse(VersionUtilities.versionsMatchList("1.1.0", versions));
-    Assertions.assertFalse(VersionUtilities.versionsMatchList("4.0.0", versions));
+    Assertions.assertTrue(VersionUtilities.versionsMatchList("4.0.1", versions));
     Assertions.assertFalse(VersionUtilities.versionsMatchList("r6", versions));
   }
 
@@ -494,13 +509,13 @@ public class VersionUtilitiesTest {
     Assertions.assertTrue(VersionUtilities.isR5Plus("R5"));
     Assertions.assertTrue(VersionUtilities.isR5Plus("r6"));
     Assertions.assertTrue(VersionUtilities.isR5Plus("5.0.0"));
-    Assertions.assertTrue(VersionUtilities.isR5Plus("5.1.0"));
+    Assertions.assertFalse(VersionUtilities.isR5Plus("5.1.0"));
     Assertions.assertTrue(VersionUtilities.isR5Plus("6.0.0"));
 
     Assertions.assertFalse(VersionUtilities.isR5Plus("r4"));
     Assertions.assertFalse(VersionUtilities.isR5Plus("r4B"));
     Assertions.assertFalse(VersionUtilities.isR5Plus("4.0.0"));
-    Assertions.assertFalse(VersionUtilities.isR5Plus("4.5.0"));
+    Assertions.assertTrue(VersionUtilities.isR5Plus("4.5.0"));
   }
 
   @Test
@@ -609,17 +624,17 @@ public class VersionUtilitiesTest {
 
   @Test
   public void testCompareVersions_Prerelease() {
-    Assertions.assertEquals(-1, VersionUtilities.compareVersions("1.0.0", "1.0.0-alpha"));
-    Assertions.assertEquals(1, VersionUtilities.compareVersions("1.0.0-alpha", "1.0.0-beta"));
-    Assertions.assertEquals(-1, VersionUtilities.compareVersions("1.0.0-beta", "1.0.0-alpha"));
+    Assertions.assertEquals(1, VersionUtilities.compareVersions("1.0.0", "1.0.0-alpha"));
+    Assertions.assertEquals(-1, VersionUtilities.compareVersions("1.0.0-alpha", "1.0.0-beta"));
+    Assertions.assertEquals(1, VersionUtilities.compareVersions("1.0.0-beta", "1.0.0-alpha"));
   }
 
   @Test
   public void testCompareVersions_MixedDepths() {
-    Assertions.assertEquals(0, VersionUtilities.compareVersions("1.0", "1.0.0"));
-    Assertions.assertEquals(0, VersionUtilities.compareVersions("1", "1.0.0"));
-    Assertions.assertEquals(-1, VersionUtilities.compareVersions("1.1", "1.0"));
-    Assertions.assertEquals(1, VersionUtilities.compareVersions("1.0", "1.1"));
+    Assertions.assertEquals(-1, VersionUtilities.compareVersions("1.0", "1.0.0"));
+    Assertions.assertThrows(FHIRException.class,  () -> VersionUtilities.compareVersions("1", "1.0.0"));
+    Assertions.assertEquals(1, VersionUtilities.compareVersions("1.1", "1.0"));
+    Assertions.assertEquals(-1, VersionUtilities.compareVersions("1.0", "1.1"));
   }
 
   // =============================================
@@ -664,36 +679,36 @@ public class VersionUtilitiesTest {
   @Test
   public void testIterateCoreVersions_FhirRange() {
     List<String> versions = VersionUtilities.iterateCoreVersions("r3", "r5");
-    Assertions.assertTrue(versions.contains("3.0.0"));
-    Assertions.assertTrue(versions.contains("4.0.0"));
-    Assertions.assertTrue(versions.contains("5.0.0"));
-    Assertions.assertFalse(versions.contains("2.0.0"));
-    Assertions.assertFalse(versions.contains("6.0.0"));
+    Assertions.assertTrue(versions.contains("3.0"));
+    Assertions.assertTrue(versions.contains("4.0"));
+    Assertions.assertTrue(versions.contains("5.0"));
+    Assertions.assertFalse(versions.contains("1.0"));
+    Assertions.assertFalse(versions.contains("6.0"));
   }
 
   @Test
   public void testIterateCoreVersions_SemverRange() {
     List<String> versions = VersionUtilities.iterateCoreVersions("3.0.0", "5.0.0");
-    Assertions.assertTrue(versions.contains("3.0.0"));
-    Assertions.assertTrue(versions.contains("4.0.0"));
-    Assertions.assertTrue(versions.contains("5.0.0"));
-    Assertions.assertFalse(versions.contains("2.0.0"));
-    Assertions.assertFalse(versions.contains("6.0.0"));
+    Assertions.assertTrue(versions.contains("3.0"));
+    Assertions.assertTrue(versions.contains("4.0"));
+    Assertions.assertTrue(versions.contains("5.0"));
+    Assertions.assertFalse(versions.contains("2.0"));
+    Assertions.assertFalse(versions.contains("6.0"));
   }
 
   @Test
   public void testIterateCoreVersions_SingleVersion() {
     List<String> versions = VersionUtilities.iterateCoreVersions("r4", "r4");
     Assertions.assertEquals(1, versions.size());
-    Assertions.assertTrue(versions.contains("4.0.0"));
+    Assertions.assertTrue(versions.contains("4.0"));
   }
 
   @Test
   public void testIterateCoreVersions_IncludesR4B() {
     List<String> versions = VersionUtilities.iterateCoreVersions("r4", "r5");
-    Assertions.assertTrue(versions.contains("4.0.0"));
-    Assertions.assertTrue(versions.contains("4.1.0")); // r4B
-    Assertions.assertTrue(versions.contains("5.0.0"));
+    Assertions.assertTrue(versions.contains("4.0"));
+    Assertions.assertTrue(versions.contains("4.3")); // r4B
+    Assertions.assertTrue(versions.contains("5.0"));
   }
 
   // =============================================
@@ -706,21 +721,21 @@ public class VersionUtilitiesTest {
     Assertions.assertNull(VersionUtilities.getMajMinPatch(null));
     Assertions.assertNull(VersionUtilities.getPatch(null));
     Assertions.assertFalse(VersionUtilities.isSemVer(null));
-    Assertions.assertFalse(VersionUtilities.isThisOrLater(null, "1.0.0"));
-    Assertions.assertFalse(VersionUtilities.isThisOrLater("1.0.0", null));
-    Assertions.assertFalse(VersionUtilities.versionsMatch(null, "1.0.0"));
-    Assertions.assertFalse(VersionUtilities.versionsMatch("1.0.0", null));
+    Assertions.assertFalse(VersionUtilities.isThisOrLaterMajorMinor(null, "1.0.0"));
+    Assertions.assertFalse(VersionUtilities.isThisOrLaterMajorMinor("1.0.0", null));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.versionsMatch(null, "1.0.0"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.versionsMatch("1.0.0", null));
   }
 
   @Test
   public void testEmptyStringHandling() {
-    Assertions.assertEquals("", VersionUtilities.getMajMin(""));
-    Assertions.assertEquals("", VersionUtilities.getMajMinPatch(""));
-    Assertions.assertEquals("", VersionUtilities.getPatch(""));
+    Assertions.assertEquals(null, VersionUtilities.getMajMin(""));
+    Assertions.assertEquals(null, VersionUtilities.getMajMinPatch(""));
+    Assertions.assertEquals(null, VersionUtilities.getPatch(""));
     Assertions.assertFalse(VersionUtilities.isSemVer(""));
-    Assertions.assertFalse(VersionUtilities.isThisOrLater("", "1.0.0"));
-    Assertions.assertFalse(VersionUtilities.isThisOrLater("1.0.0", ""));
-    Assertions.assertFalse(VersionUtilities.versionsMatch("", "1.0.0"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.isThisOrLaterMajorMinor("", "1.0.0"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.isThisOrLaterMajorMinor("1.0.0", ""));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.versionsMatch("", "1.0.0"));
   }
 
   @Test
@@ -790,14 +805,16 @@ public class VersionUtilitiesTest {
   @Test
   public void testComplexLabels_InvalidSemverLabels() {
     // Invalid according to semver spec
-    Assertions.assertFalse(VersionUtilities.isSemVer("1.2-label")); // Missing patch
+    Assertions.assertTrue(VersionUtilities.isSemVer("1.2-label")); // Missing patch - is allowed
     Assertions.assertFalse(VersionUtilities.isSemVer("1.0.0-")); // Empty prerelease
     Assertions.assertFalse(VersionUtilities.isSemVer("1.0.0+")); // Empty build
     Assertions.assertFalse(VersionUtilities.isSemVer("1.0.0-+build")); // Empty prerelease with build
     Assertions.assertFalse(VersionUtilities.isSemVer("1.0.0-alpha+")); // Empty build after prerelease
-    Assertions.assertFalse(VersionUtilities.isSemVer("1.0.0+build-alpha")); // Build then prerelease (wrong order)
-    Assertions.assertFalse(VersionUtilities.isSemVer("1.0.0--alpha")); // Double dash
-    Assertions.assertFalse(VersionUtilities.isSemVer("1.0.0++build")); // Double plus
+    Assertions.assertTrue(VersionUtilities.isSemVer("1.0.0+build-alpha")); // build can contain '-'
+    Assertions.assertTrue(VersionUtilities.isSemVer("1.0.0--alpha")); // Double dash
+    Assertions.assertFalse(VersionUtilities.isSemVer("1.0.0-+alpha")); // Double dash
+    Assertions.assertTrue(VersionUtilities.isSemVer("1.0.0+-build")); // Double plus - totally valid (weird, though)
+    Assertions.assertFalse(VersionUtilities.isSemVer("1.0.0++build")); // Double plus - totally valid (weird, though)
   }
 
   @Test
@@ -826,9 +843,11 @@ public class VersionUtilitiesTest {
     Assertions.assertTrue(VersionUtilities.isSemVer("0.0.0"));
     Assertions.assertTrue(VersionUtilities.isSemVer("1.0.0"));
 
-    // Leading zeros in prerelease/build identifiers might be ok
-    Assertions.assertTrue(VersionUtilities.isSemVer("1.0.0-01"));
+    // Leading zeros in prerelease/build identifiers not ok?
+    Assertions.assertFalse(VersionUtilities.isSemVer("1.0.0-01"));
     Assertions.assertTrue(VersionUtilities.isSemVer("1.0.0+01"));
+    Assertions.assertTrue(VersionUtilities.isSemVer("1.0.0-1"));
+    Assertions.assertTrue(VersionUtilities.isSemVer("1.0.0+1"));
   }
 
   // =============================================
@@ -894,11 +913,8 @@ public class VersionUtilitiesTest {
     Assertions.assertFalse(VersionUtilities.isSemVer(veryLarge + ".0.0"));
 
     // Test version comparison with large numbers
-    int result1 = VersionUtilities.compareVersions(maxInt + ".0.0", beyondMaxInt + ".0.0");
-    Assertions.assertEquals(-1, result1); // maxInt < maxInt+1
-
-    int result2 = VersionUtilities.compareVersions("999999999999999999999999999998", "999999999999999999999999999999");
-    Assertions.assertEquals(-1, result2); // First is smaller
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.compareVersions(maxInt + ".0.0", beyondMaxInt + ".0.0"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.compareVersions("999999999999999999999999999998", "999999999999999999999999999999"));
   }
 
   @Test
@@ -924,24 +940,22 @@ public class VersionUtilitiesTest {
 
   @Test
   public void testCompareVersions_LeadingZeroTricks() {
+    Assertions.assertFalse(VersionUtilities.isSemVer("1.01.0"));
+    Assertions.assertFalse(VersionUtilities.isSemVer("01.1.0"));
+    Assertions.assertFalse(VersionUtilities.isSemVer("1.1.00"));
+
     // Leading zeros in different comparison paths
-    int result1 = VersionUtilities.compareVersions("1.01.0", "1.1.0");
-    int result2 = VersionUtilities.compareVersions("1.1.0", "1.01.0");
-
-    // Should be consistent regardless of order
-    Assertions.assertEquals(-result1, result2);
-
-    // Zero vs leading zero
-    int result3 = VersionUtilities.compareVersions("1.0.0", "1.00.0");
-    Assertions.assertNotEquals(999, result3); // Should return valid comparison result
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.compareVersions("1.01.0", "1.1.0"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.compareVersions("1.1.0", "1.01.0"));
   }
 
   @Test
   public void testCompareVersions_MixedTypes() {
     // Mix regular versions with FHIR special versions
-    Assertions.assertEquals(1, VersionUtilities.compareVersions("3.0.0", "r4")); // 3.0.0 < 4.0.0 (r4)
-    Assertions.assertEquals(-1, VersionUtilities.compareVersions("5.0.0", "r4")); // 5.0.0 > 4.0.0 (r4)
-    Assertions.assertEquals(0, VersionUtilities.compareVersions("4.0.0", "r4")); // Should be equal
+    Assertions.assertEquals(-1, VersionUtilities.compareVersions("3.0.0", "r4")); // 3.0.0 < 4.0.0 (r4)
+    Assertions.assertEquals(1, VersionUtilities.compareVersions("5.0.0", "r4")); // 5.0.0 > 4.0.0 (r4)
+    Assertions.assertEquals(0, VersionUtilities.compareVersions("4.0.1", "r4")); // Should be equal
+    Assertions.assertEquals(-1, VersionUtilities.compareVersions("4.0", "r4")); // Should be equal
 
     // Case sensitivity tricks
     Assertions.assertEquals(0, VersionUtilities.compareVersions("R4", "r4"));
@@ -951,33 +965,29 @@ public class VersionUtilitiesTest {
   @Test
   public void testCompareVersions_PrereleaseEdgeCases() {
     // Prerelease vs release
-    Assertions.assertEquals(1, VersionUtilities.compareVersions("1.0.0-alpha", "1.0.0"));
+    Assertions.assertEquals(-1, VersionUtilities.compareVersions("1.0.0-alpha", "1.0.0"));
 
     // Empty-looking prerelease vs actual empty
-    int result = VersionUtilities.compareVersions("1.0.0-", "1.0.0");
-    // Should handle gracefully (might be invalid, but shouldn't crash)
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.compareVersions("1.0.0-", "1.0.0"));
 
     // Complex prerelease ordering
-    Assertions.assertEquals(1, VersionUtilities.compareVersions("1.0.0-alpha", "1.0.0-beta"));
-    Assertions.assertEquals(1, VersionUtilities.compareVersions("1.0.0-alpha.1", "1.0.0-alpha.2"));
-    Assertions.assertEquals(1, VersionUtilities.compareVersions("1.0.0-alpha.1", "1.0.0-alpha.beta"));
+    Assertions.assertEquals(-1, VersionUtilities.compareVersions("1.0.0-alpha", "1.0.0-beta"));
+    Assertions.assertEquals(-1, VersionUtilities.compareVersions("1.0.0-alpha.1", "1.0.0-alpha.2"));
+    Assertions.assertEquals(-1, VersionUtilities.compareVersions("1.0.0-alpha.1", "1.0.0-alpha.beta"));
 
     // Numeric vs string in prerelease
-    Assertions.assertEquals(1, VersionUtilities.compareVersions("1.0.0-1", "1.0.0-2"));
-    Assertions.assertEquals(1, VersionUtilities.compareVersions("1.0.0-1", "1.0.0-10")); // Numeric: 1 < 10
+    Assertions.assertEquals(-1, VersionUtilities.compareVersions("1.0.0-1", "1.0.0-2"));
+    Assertions.assertEquals(-1, VersionUtilities.compareVersions("1.0.0-1", "1.0.0-10")); // Numeric: 1 < 10
   }
 
   @Test
   public void testCompareVersions_NumberStringBoundary() {
     // Test the boundary between numeric and string comparison
-    Assertions.assertEquals(1, VersionUtilities.compareVersions("0.9", "0.10")); // Numeric: 9 < 10
+    Assertions.assertEquals(-1, VersionUtilities.compareVersions("0.9", "0.10")); // Numeric: 9 < 10
 
     // But what about with non-numeric characters?
-    int result1 = VersionUtilities.compareVersions("0.9a", "0.10a"); // Should fall back to string comparison
-    int result2 = VersionUtilities.compareVersions("0.9", "0.10a"); // Mixed
-
-    // String comparison: "0.9a" > "0.10a" lexically
-    // This might be where bugs hide!
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.compareVersions("0.9a", "0.10a"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.compareVersions("0.9", "0.10a"));
   }
 
   @Test
@@ -1054,23 +1064,17 @@ public class VersionUtilitiesTest {
     Assertions.assertTrue(VersionUtilities.versionsMatch("R4", "r4"));
 
     // Leading zeros (if they somehow get through)
-    boolean result = VersionUtilities.versionsMatch("1.01.0", "1.1.5");
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.versionsMatch("1.01.0", "1.1.5"));
     // Should handle gracefully
   }
 
   @Test
   public void testVersionsMatch_WithMalformedInputs() {
     // How does versionsMatch handle malformed inputs?
-    try {
-      boolean result1 = VersionUtilities.versionsMatch("1..0", "1.0.0");
-      boolean result2 = VersionUtilities.versionsMatch("1.0.0", "1..0");
-      boolean result3 = VersionUtilities.versionsMatch("", "1.0.0");
-      boolean result4 = VersionUtilities.versionsMatch("1.0.0", "");
-
-      // Should not crash, regardless of results
-    } catch (Exception e) {
-      Assertions.fail("Should handle malformed inputs gracefully: " + e.getMessage());
-    }
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.versionsMatch("1..0", "1.0.0"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.versionsMatch("1.0.0", "1..0"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.versionsMatch("", "1.0.0"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.versionsMatch("1.0.0", ""));
   }
 
   // =============================================
@@ -1092,15 +1096,9 @@ public class VersionUtilitiesTest {
     };
 
     for (String version : malicious) {
-      try {
-        boolean isSemver = VersionUtilities.isSemVer(version);
-        String majMin = VersionUtilities.getMajMin(version);
-        int comparison = VersionUtilities.compareVersions("1.0.0", version);
-
-        // Should handle gracefully without crashes
-      } catch (Exception e) {
-        Assertions.fail("Should handle malicious input gracefully: " + version + " -> " + e.getMessage());
-      }
+      Assertions.assertFalse(VersionUtilities.isSemVer(version));
+      assertThrows(FHIRException.class, () -> VersionUtilities.getMajMin(version));
+      assertThrows(FHIRException.class, () -> VersionUtilities.compareVersions("1.0.0", version));
     }
   }
 
@@ -1129,12 +1127,12 @@ public class VersionUtilitiesTest {
   @Test
   public void testPrereleaseBoundaries() {
     // Boundary between prerelease and release
-    Assertions.assertEquals(1, VersionUtilities.compareVersions("1.0.0-rc.999", "1.0.0"));
-    Assertions.assertEquals(-1, VersionUtilities.compareVersions("1.0.0", "1.0.0-alpha"));
+    Assertions.assertEquals(-1, VersionUtilities.compareVersions("1.0.0-rc.999", "1.0.0"));
+    Assertions.assertEquals(1, VersionUtilities.compareVersions("1.0.0", "1.0.0-alpha"));
 
     // Prerelease ordering boundaries
-    Assertions.assertEquals(1, VersionUtilities.compareVersions("1.0.0-alpha.999", "1.0.0-beta"));
-    Assertions.assertEquals(1, VersionUtilities.compareVersions("1.0.0-rc.999", "1.0.0"));
+    Assertions.assertEquals(-1, VersionUtilities.compareVersions("1.0.0-alpha.999", "1.0.0-beta"));
+    Assertions.assertEquals(-1, VersionUtilities.compareVersions("1.0.0-rc.999", "1.0.0"));
   }
 
   // =============================================
@@ -1163,4 +1161,126 @@ public class VersionUtilitiesTest {
     Assertions.assertTrue(elapsed < 10000, "Performance test should complete in under 10 seconds, took: " + elapsed + "ms");
   }
 
+
+  @Test
+  @DisplayName("Semantic accessor methods - basic versions")
+  void testSemanticAccessorsBasic() {
+    SemverParser.ParseResult result = SemverParser.parseSemver("1.2.3");
+    assertTrue(result.isSuccess());
+    Assertions.assertEquals("1", result.getMajor());
+    Assertions.assertEquals("2", result.getMinor());
+    Assertions.assertEquals("3", result.getPatch());
+    Assertions.assertNull(result.getReleaseLabel());
+    Assertions.assertNull(result.getBuild());
+  }
+
+  @Test
+  @DisplayName("Semantic accessor methods - with pre-release")
+  void testSemanticAccessorsPreRelease() {
+    SemverParser.ParseResult result = SemverParser.parseSemver("1.2.3-alpha.1");
+    assertTrue(result.isSuccess());
+    Assertions.assertEquals("1", result.getMajor());
+    Assertions.assertEquals("2", result.getMinor());
+    Assertions.assertEquals("3", result.getPatch());
+    Assertions.assertEquals("alpha.1", result.getReleaseLabel());
+    Assertions.assertNull(result.getBuild());
+  }
+
+  @Test
+  @DisplayName("Semantic accessor methods - with build")
+  void testSemanticAccessorsBuild() {
+    SemverParser.ParseResult result = SemverParser.parseSemver("1.2.3+build.456");
+    assertTrue(result.isSuccess());
+    Assertions.assertEquals("1", result.getMajor());
+    Assertions.assertEquals("2", result.getMinor());
+    Assertions.assertEquals("3", result.getPatch());
+    Assertions.assertNull(result.getReleaseLabel());
+    Assertions.assertEquals("build.456", result.getBuild());
+  }
+
+  @Test
+  @DisplayName("Semantic accessor methods - with both pre-release and build")
+  void testSemanticAccessorsBoth() {
+    SemverParser.ParseResult result = SemverParser.parseSemver("1.2.3-alpha.1+build.456");
+    assertTrue(result.isSuccess());
+    Assertions.assertEquals("1", result.getMajor());
+    Assertions.assertEquals("2", result.getMinor());
+    Assertions.assertEquals("3", result.getPatch());
+    Assertions.assertEquals("alpha.1", result.getReleaseLabel());
+    Assertions.assertEquals("build.456", result.getBuild());
+  }
+
+  @Test
+  @DisplayName("Semantic accessor methods - with wildcards")
+  void testSemanticAccessorsWildcards() {
+    SemverParser.ParseResult result1 = SemverParser.parseSemver("1.*", true);
+    assertTrue(result1.isSuccess());
+    Assertions.assertEquals("1", result1.getMajor());
+    Assertions.assertEquals("*", result1.getMinor());
+    Assertions.assertNull(result1.getPatch());
+    Assertions.assertNull(result1.getReleaseLabel());
+    Assertions.assertNull(result1.getBuild());
+
+    SemverParser.ParseResult result2 = SemverParser.parseSemver("1.2.x", true);
+    assertTrue(result2.isSuccess());
+    Assertions.assertEquals("1", result2.getMajor());
+    Assertions.assertEquals("2", result2.getMinor());
+    Assertions.assertEquals("x", result2.getPatch());
+    Assertions.assertNull(result2.getReleaseLabel());
+    Assertions.assertNull(result2.getBuild());
+
+    SemverParser.ParseResult result3 = SemverParser.parseSemver("1.2.3-*", true);
+    assertTrue(result3.isSuccess());
+    Assertions.assertEquals("1", result3.getMajor());
+    Assertions.assertEquals("2", result3.getMinor());
+    Assertions.assertEquals("3", result3.getPatch());
+    Assertions.assertEquals("*", result3.getReleaseLabel());
+    Assertions.assertNull(result3.getBuild());
+  }
+
+  @Test
+  @DisplayName("Semantic accessor methods - complex pre-release and build")
+  void testSemanticAccessorsComplex() {
+    SemverParser.ParseResult result = SemverParser.parseSemver("1.2.3-alpha-beta.1.2.3+build.meta.data.123");
+    assertTrue(result.isSuccess());
+    Assertions.assertEquals("1", result.getMajor());
+    Assertions.assertEquals("2", result.getMinor());
+    Assertions.assertEquals("3", result.getPatch());
+    Assertions.assertEquals("alpha-beta.1.2.3", result.getReleaseLabel());
+    Assertions.assertEquals("build.meta.data.123", result.getBuild());
+  }
+
+  @Test
+  @DisplayName("Semantic accessor methods - error cases")
+  void testSemanticAccessorsErrors() {
+    SemverParser.ParseResult result = SemverParser.parseSemver("invalid");
+    assertFalse(result.isSuccess());
+    Assertions.assertNull(result.getMajor());
+    Assertions.assertNull(result.getMinor());
+    Assertions.assertNull(result.getPatch());
+    Assertions.assertNull(result.getReleaseLabel());
+    Assertions.assertNull(result.getBuild());
+  }
+
+  @Test
+  @DisplayName("Semantic accessor methods - edge cases")
+  void testSemanticAccessorsEdgeCases() {
+    // Single component pre-release and build
+    SemverParser.ParseResult result1 = SemverParser.parseSemver("1.2.3-alpha+build");
+    assertTrue(result1.isSuccess());
+    Assertions.assertEquals("alpha", result1.getReleaseLabel());
+    Assertions.assertEquals("build", result1.getBuild());
+
+    // Numeric pre-release
+    SemverParser.ParseResult result2 = SemverParser.parseSemver("1.2.3-123");
+    assertTrue(result2.isSuccess());
+    Assertions.assertEquals("123", result2.getReleaseLabel());
+
+    // Build with leading zeros
+    SemverParser.ParseResult result3 = SemverParser.parseSemver("1.2.3+001.002");
+    assertTrue(result3.isSuccess());
+    Assertions.assertEquals("001.002", result3.getBuild());
+  }
+
+  
 }
