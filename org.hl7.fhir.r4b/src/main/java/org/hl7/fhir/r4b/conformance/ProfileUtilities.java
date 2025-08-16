@@ -5627,7 +5627,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             Cell c = gen.new Cell();
             row.getCells().add(c);
             c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref + ed.getPath()
-                : (VersionUtilities.isThisOrLater("4.1", context.getVersion())
+                : (VersionUtilities.isThisOrLaterMajorMinor("4.1", context.getVersion())
                     ? corePath + "types-definitions.html#" + ed.getBase().getPath()
                     : corePath + "element-definitions.html#" + ed.getBase().getPath())),
                 t.getName(), null));

@@ -143,10 +143,6 @@ public class ValueSetProcessBase {
     }
   }
 
-
-  protected List<OperationOutcomeIssueComponent> makeIssue(IssueSeverity level, IssueType type, String location, String message, OpIssueCode code, String server) {
-    return makeIssue(level, type, location, message, code, server, null);
-  }
   protected List<OperationOutcomeIssueComponent> makeIssue(IssueSeverity level, IssueType type, String location, String message, OpIssueCode code, String server, String msgId) {
     OperationOutcomeIssueComponent result = new OperationOutcomeIssueComponent();
     switch (level) {
@@ -210,7 +206,8 @@ public class ValueSetProcessBase {
   }
 
   private List<OperationOutcomeIssueComponent> makeStatusIssue(String path, String id, String msg, CanonicalResource resource) {
-    List<OperationOutcomeIssueComponent> iss = makeIssue(IssueSeverity.INFORMATION, IssueType.BUSINESSRULE, null, context.formatMessage(msg, resource.getVersionedUrl(), null, resource.fhirType()), OpIssueCode.StatusCheck, null);
+    List<OperationOutcomeIssueComponent> iss = makeIssue(IssueSeverity.INFORMATION, IssueType.BUSINESSRULE, null,
+      context.formatMessage(msg, resource.getVersionedUrl(), null, resource.fhirType()), OpIssueCode.StatusCheck, null, msg);
 
     // this is a testing hack - see TerminologyServiceTests
     iss.get(0).setUserData(UserDataNames.tx_status_msg_name, "warning-"+id);

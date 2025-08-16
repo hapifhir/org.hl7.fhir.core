@@ -109,6 +109,7 @@ public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
     if (patchUrls) {
       for (BundleEntryComponent be : b.getEntry()) {
         if (be.hasResource()) {
+          inspectResource(be.getResource());
           doPatchUrls(be.getResource());
         }
       }
@@ -135,6 +136,7 @@ public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
     if (r5 instanceof StructureDefinition) {
       r5 = new StructureDefinitionHacker(version).fixSD((StructureDefinition) r5);
     }
+    inspectResource(r5);
     if (patchUrls) {
       doPatchUrls(r5);
     }

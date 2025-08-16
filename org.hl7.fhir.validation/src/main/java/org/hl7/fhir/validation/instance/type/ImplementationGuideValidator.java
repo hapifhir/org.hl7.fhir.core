@@ -95,7 +95,7 @@ public class ImplementationGuideValidator extends BaseValidator {
         if (warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), npm != null, I18nConstants.IG_DEPENDENCY_PACKAGE_UNKNOWN, packageId+"#"+version)) {
           if (!fvl.isEmpty()) {
             String pver = npm.fhirVersion();
-            if (!VersionUtilities.versionsMatch(pver, fvl)) {
+            if (!VersionUtilities.versionMatchesList(pver, fvl)) {
               if (Utilities.existsInList(packageId, "hl7.fhir.uv.extensions", "hl7.fhir.uv.tools", "hl7.terminology")) {
                 ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), false, I18nConstants.IG_DEPENDENCY_VERSION_ERROR, CommaSeparatedStringBuilder.join(",", fvl), packageId+"#"+version, pver, 
                     packageId+"."+VersionUtilities.getNameForVersion(fvl.get(0)).toLowerCase()) && ok;                           
@@ -117,7 +117,7 @@ public class ImplementationGuideValidator extends BaseValidator {
                 lver = t.getVersion();
               }
             }
-            if (lver != null && !"current".equals(lver) && !"current".equals(version) && !VersionUtilities.versionsMatch(version, lver) && isMoreThanXMonthsAgo(npm.dateAsLocalDate(), DATE_WARNING_CUTOFF)) {
+            if (lver != null && !"current".equals(lver) && !"current".equals(version) && !VersionUtilities.versionMatches(version, lver) && isMoreThanXMonthsAgo(npm.dateAsLocalDate(), DATE_WARNING_CUTOFF)) {
               warning(errors, "2025-03-06", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), false, I18nConstants.IG_DEPENDENCY_VERSION_WARNING_OLD, packageId+"#"+version, lver, npm.dateAsLocalDate().toString());            
             }
           } catch (Exception e) {

@@ -1437,4 +1437,5 @@ public class I18nConstants {
   public static final String SD_ED_BIND_ALL_CPT_CODES = "SD_ED_BIND_ALL_CPT_CODES";
   public static final String NO_CODE_PROVIDED = "NO_CODE_PROVIDED";
   public static final String NO_CODE_PROVIDED_VERSION = "NO_CODE_PROVIDED_VERSION";
+  public static final String RESOURCE_INTERNAL_USE_ONLY = "RESOURCE_INTERNAL_USE_ONLY";
 }

@@ -90,6 +90,7 @@ public class R5ToR5Loader extends BaseLoaderR5 {
     if (patchUrls) {
       for (BundleEntryComponent be : b.getEntry()) {
         if (be.hasResource()) {
+          inspectResource(be.getResource());
           doPatchUrls(be.getResource());
         }
       }
@@ -109,6 +110,7 @@ public class R5ToR5Loader extends BaseLoaderR5 {
     if (killPrimitives) {
       throw new FHIRException("Cannot kill primitives when using deferred loading");
     }
+    inspectResource(r5);
     if (patchUrls) {
       doPatchUrls(r5);
     }
@@ -121,7 +123,8 @@ public class R5ToR5Loader extends BaseLoaderR5 {
     }
     return r5;
   }
-  
+
+
   @Override
   public List<CodeSystem> getCodeSystems() {
     return new ArrayList<>();

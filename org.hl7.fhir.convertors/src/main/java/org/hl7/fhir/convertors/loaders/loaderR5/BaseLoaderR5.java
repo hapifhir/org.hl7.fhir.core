@@ -42,6 +42,7 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
   @Getter protected Set<String> types = new HashSet<>();
   protected ILoaderKnowledgeProviderR5 lkp;
   private boolean loadProfiles = true;
+  protected Set<String> tags = new HashSet<>();
 
   public BaseLoaderR5(Set<String> types, ILoaderKnowledgeProviderR5 lkp) {
     super();
@@ -204,6 +205,19 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
       return false;
     } else {
       return true;
+    }
+  }
+
+  public BaseLoaderR5 addTag(String tag) {
+    if (tag != null) {
+      tags.add(tag);
+    }
+    return this;
+  }
+
+  protected void inspectResource(Resource res) {
+    for (String t : tags) {
+      res.setUserData(t, true);
     }
   }
 }
