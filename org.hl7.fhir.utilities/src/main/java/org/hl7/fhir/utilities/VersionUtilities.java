@@ -4,7 +4,7 @@ import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.junit.jupiter.api.function.Executable;
+import org.hl7.fhir.utilities.SemverParser;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -737,21 +737,80 @@ public class VersionUtilities {
 
   /**
    * returns true if v1 and v2 are both semver, and major and minor match
+   *
+   * matching means that the specific version provided in candidate is equal to the value
+   * provided by criteria, or is in the set of values defined by the critteria using
+   * applicable wildcards
+   *
+   * e.g.
+   * 2.0 matches 2.0 and not 2.0.0, 2.0.1 etc
+   * 2.0.0 matches 2.0.0 and not 2.0.1 or 2.0.0-something or 2.0.0+something
+   * 2.* matches 2.0 and 2.1 but not 2.0.0 or 2.1-something
+   * 2.0.* matches 2.0.0, 2.0.1, and not 2.0.0-something or 2.0.0+something
+   * 2.0.0-* matches 2.0.0-prerelease or any other label but not 2.0.0+build
+   * 2.0.0+* matches 2.0.0+build or any other build but not 2.0.0 or 2.0.0-prerelease
+   * 2.0.x-x matches 2.0.1-prerelease or 2.0.1-prerelease but not 2.0.0 or 2.0.1
+   * 2.0? matches 2.0, 2.0.1, 2.0.0-build etc - anything that starts with 2.0
+   * 2.0.1? matches 2.0.1, 2.0.1-release, 2.0.1+build etc - anything that starts with 2.0.1
+   * 2.x? matches 2.anything (weird thing to do)
+   *
+   * wildcard summary:
+   *   * = anything that goes in this part. (x and X are also acceptable wildcards for minor and patch, but not for release or build labels, where x and X are valid values)
+   *   ? = anything that goes in this part and ignore the rest of the version. Note that the ? does not follow the part separator.
+   *
    */
-  public static boolean versionsMatch(@Nonnull String v1, @Nonnull String v2) {
-    v1 = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(v1)));
-    v2 = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(v2)));
-    String mm1 = getMajMinPriv(v1);
-    String mm2 = getMajMinPriv(v2);
-    return mm1 != null && mm2 != null && mm1.equals(mm2);
+  public static boolean versionMatches(@Nonnull String criteria, @Nonnull String candidate) {
+    if (Utilities.noString(criteria)) {
+      throw new FHIRException("Invalid criteria: null / empty");
+    }
+    if (Utilities.noString(candidate)) {
+      throw new FHIRException("Invalid candidate: null / empty");
+    }
+    criteria = fixForSpecialValue(criteria);
+    candidate = fixForSpecialValue(candidate);
+
+    boolean endsWithQ = false;
+    if (criteria.endsWith("?")) {
+      endsWithQ = true;
+      criteria = criteria.substring(0, criteria.length() - 1);
+    }
+    SemverParser.ParseResult parsedCriteria = SemverParser.parseSemver(criteria, true, false);
+    if (!parsedCriteria.isSuccess()) {
+      throw new FHIRException("Invalid criteria: " + criteria+": ("+parsedCriteria.getError()+")");
+    }
+    SemverParser.ParseResult parsedCandidate = SemverParser.parseSemver(candidate, false, false);
+    if (!parsedCandidate.isSuccess()) {
+      throw new FHIRException("Invalid candidate: " + candidate+" ("+parsedCandidate.getError()+")");
+    }
+    if (!partMatches(parsedCriteria.getMajor(), parsedCandidate.getMajor(), true)) { return false; }
+    if (endsWithQ && parsedCriteria.getMinor() == null) { return true; }
+    if (!partMatches(parsedCriteria.getMinor(), parsedCandidate.getMinor(), true)) { return false; }
+    if (endsWithQ && parsedCriteria.getPatch() == null) { return true; }
+    if (!partMatches(parsedCriteria.getPatch(), parsedCandidate.getPatch(), true)) { return false; }
+    if (endsWithQ && parsedCriteria.getReleaseLabel() == null && parsedCriteria.getBuild() == null) { return true; }
+    if (!partMatches(parsedCriteria.getReleaseLabel(), parsedCandidate.getReleaseLabel(), false)) { return false; }
+    if (!partMatches(parsedCriteria.getBuild(), parsedCandidate.getBuild(), false)) { return false; }
+    return true;
+  }
+
+  private static boolean partMatches(String criteria, String candidate, boolean allowX) {
+    if (criteria == null) {
+      return candidate == null;
+    } else {
+      if (allowX ? Utilities.existsInList(criteria, "*", "x", "X") : Utilities.existsInList(criteria, "*")) {
+        return candidate != null;
+      } else {
+        return criteria.equals(candidate);
+      }
+    }
   }
 
   /**
    * returns true if v1 matches any v2 where both are semver, and major and minor match
    */
-  public static boolean versionsMatchList(@Nonnull String v1, @Nonnull List<String> v2l) {
+  public static boolean versionMatchesList(@Nonnull String v1, @Nonnull List<String> v2l) {
     for (String v2 : v2l) {
-      if (versionsMatch(v1, v2)) {
+      if (versionMatches(v1, v2)) {
         return true;
       }
     }

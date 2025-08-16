@@ -566,7 +566,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   private boolean versionsMatch(String versionTest, String versionActual) {
-    return versionTest == null && VersionUtilities.versionsMatch(versionTest, versionActual);
+    return versionTest == null && VersionUtilities.versionMatches(versionTest, versionActual);
   }
 
   public ValidationResult validateCode(Coding code) throws FHIRException {

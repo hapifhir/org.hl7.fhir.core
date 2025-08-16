@@ -1,5 +1,7 @@
 package org.hl7.fhir.utilities;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SemverParser {
   private final String input;
@@ -166,14 +168,6 @@ public class SemverParser {
     if (peek() != null && peek() == '-') {
       consume('-');
       parts.add("-");
-
-      // Check for wildcard in pre-release
-      if (allowWildcards && isWildcard(peek())) {
-        String wildcard = parseWildcard();
-        parts.add(wildcard);
-        return; // Terminate after wildcard
-      }
-
       parsePreRelease();
 
       if (peek() != null && peek() == '+') {
@@ -203,15 +197,36 @@ public class SemverParser {
     consume('.');
     parts.add(".");
 
-    // Check for wildcard as minor
+    boolean hasWildcardInMinor = false;
+
+    // Parse minor version (either numeric or wildcard)
     if (allowWildcards && isWildcard(peek())) {
       String wildcard = parseWildcard();
       parts.add(wildcard);
-      return; // Terminate after wildcard
+      hasWildcardInMinor = true;
+    } else {
+      String minor = parseNumericIdentifier();
+      parts.add(minor);
     }
 
-    String minor = parseNumericIdentifier();
-    parts.add(minor);
+    // If we have a wildcard in minor, we can stop here or continue with wildcards only
+    if (hasWildcardInMinor) {
+      // Check if we have a dot for patch
+      if (peek() != null && peek() == '.') {
+        consume('.');
+        parts.add(".");
+
+        // After wildcard, only wildcards are allowed in version positions
+        if (allowWildcards && isWildcard(peek())) {
+          String patchWildcard = parseWildcard();
+          parts.add(patchWildcard);
+        } else {
+          throw new IllegalArgumentException(String.format("After wildcard in version, only wildcards are allowed at position %d", pos));
+        }
+      }
+      // Otherwise, we're done with version core - this handles "1.*" case
+      return;
+    }
 
     // Check if patch is optional and we're at end or at a separator
     if (!requirePatch && (peek() == null || peek() == '-' || peek() == '+')) {
@@ -230,15 +245,14 @@ public class SemverParser {
     consume('.');
     parts.add(".");
 
-    // Check for wildcard as patch
+    // Parse patch version (either numeric or wildcard)
     if (allowWildcards && isWildcard(peek())) {
       String wildcard = parseWildcard();
       parts.add(wildcard);
-      return; // Terminate after wildcard
+    } else {
+      String patch = parseNumericIdentifier();
+      parts.add(patch);
     }
-
-    String patch = parseNumericIdentifier();
-    parts.add(patch);
   }
 
   // <pre-release> ::= <dot-separated pre-release identifiers>
@@ -279,6 +293,11 @@ public class SemverParser {
 
   // <pre-release identifier> ::= <alphanumeric identifier> | <numeric identifier>
   private String parsePreReleaseIdentifier() {
+    // Check if this is a wildcard first
+    if (allowWildcards && isWildcard(peek())) {
+      return parseWildcard();
+    }
+
     // Check if this is a valid numeric identifier by looking ahead
     if (isValidNumericIdentifier()) {
       return parseNumericIdentifier();
@@ -290,6 +309,11 @@ public class SemverParser {
 
   // <build identifier> ::= <alphanumeric identifier> | <digits>
   private String parseBuildIdentifier() {
+    // Check if this is a wildcard first
+    if (allowWildcards && isWildcard(peek())) {
+      return parseWildcard();
+    }
+
     // Check if this is pure digits by looking ahead
     if (isValidDigitsOnly()) {
       return parseDigits();

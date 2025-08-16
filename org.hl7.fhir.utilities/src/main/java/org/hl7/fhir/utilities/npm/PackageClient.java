@@ -225,7 +225,7 @@ public class PackageClient {
     } else {
       String v = null;
       for (PackageInfo p : list) {
-        if (VersionUtilities.isThisOrLaterMajorMinorPatch(specVersion, p.getVersion())) {
+        if (VersionUtilities.versionMatches(specVersion, p.getVersion())) {
           v = p.getVersion();
         }
       }
