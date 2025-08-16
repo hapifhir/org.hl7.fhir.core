@@ -289,7 +289,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       if (version != null) {
         CachedCanonicalResource<T> latest = null;
         for (CachedCanonicalResource<T> t : rl) {
-          if (VersionUtilities.versionsMatch(t.getVersion(), version)) {
+          if (VersionUtilities.versionMatches(t.getVersion(), version)) {
             latest = t;
           }
         }

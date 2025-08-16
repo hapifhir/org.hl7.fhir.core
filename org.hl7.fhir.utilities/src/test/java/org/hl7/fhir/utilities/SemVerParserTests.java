@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.Arrays;
 
-class SemverParserTests {
+class SemverParserTest {
 
   @Test
   @DisplayName("Valid basic semver versions")
@@ -108,6 +108,15 @@ class SemverParserTests {
     assertValidParseWithWildcards("1.2.3-*", Arrays.asList("1", ".", "2", ".", "3", "-", "*"));
     assertValidParseWithWildcards("1.2.3-x", Arrays.asList("1", ".", "2", ".", "3", "-", "x"));
 
+    // Build metadata wildcards
+    assertValidParseWithWildcards("1.2.3+*", Arrays.asList("1", ".", "2", ".", "3", "+", "*"));
+    assertValidParseWithWildcards("1.2.3+x", Arrays.asList("1", ".", "2", ".", "3", "+", "x"));
+    assertValidParseWithWildcards("1.2.3+build.*", Arrays.asList("1", ".", "2", ".", "3", "+", "build", ".", "*"));
+
+    // Multiple wildcards in same version (the problematic case)
+    assertValidParseWithWildcards("2.x.x-x", Arrays.asList("2", ".", "x", ".", "x", "-", "x"));
+    assertValidParseWithWildcards("1.*.X+*", Arrays.asList("1", ".", "*", ".", "X", "+", "*"));
+
     // Multiple wildcard characters
     assertValidParseWithWildcards("1.xxx", Arrays.asList("1", ".", "xxx"));
     assertValidParseWithWildcards("1.**", Arrays.asList("1", ".", "**"));
@@ -115,14 +124,16 @@ class SemverParserTests {
   }
 
   @Test
-  @DisplayName("Invalid wildcard versions - expression doesn't terminate")
-  void testInvalidWildcardVersionsNonTerminating() {
-    // These should fail because expression should terminate after wildcard
-    assertInvalidParseWithWildcards("1.*.3");
-    assertInvalidParseWithWildcards("1.x.3");
-    assertInvalidParseWithWildcards("1.2.*.4");
-    assertInvalidParseWithWildcards("1.2.3-*.beta");
-    assertInvalidParseWithWildcards("1.2.3-alpha.*.beta");
+  @DisplayName("Invalid wildcard versions - illogical mixing")
+  void testInvalidWildcardVersionsIllogicalMixing() {
+    // These should fail because they mix wildcards with concrete values illogically
+    assertInvalidParseWithWildcards("1.x.3"); // wildcard minor with concrete patch doesn't make sense
+    assertInvalidParseWithWildcards("1.*.3"); // wildcard minor with concrete patch doesn't make sense
+
+    // These are logical and should work
+    assertValidParseWithWildcards("1.*", Arrays.asList("1", ".", "*")); // wildcard minor, no patch
+    assertValidParseWithWildcards("1.x.x", Arrays.asList("1", ".", "x", ".", "x")); // wildcard minor, wildcard patch
+    assertValidParseWithWildcards("1.2.*", Arrays.asList("1", ".", "2", ".", "*")); // concrete minor, wildcard patch
   }
 
   @Test
@@ -133,6 +144,7 @@ class SemverParserTests {
     assertInvalidParse("1.x");
     assertInvalidParse("1.2.*");
     assertInvalidParse("1.2.3-*");
+    assertInvalidParse("2.x.x-x");
   }
 
   @Test
@@ -144,9 +156,11 @@ class SemverParserTests {
 
     // Should terminate immediately after wildcard
     assertValidParseWithWildcards("1.2.3-*", Arrays.asList("1", ".", "2", ".", "3", "-", "*"));
+    assertValidParseWithWildcards("1.2.3+*", Arrays.asList("1", ".", "2", ".", "3", "+", "*"));
 
     // Mixed wildcard characters
     assertValidParseWithWildcards("1.2.xX*", Arrays.asList("1", ".", "2", ".", "xX*"));
+    assertValidParseWithWildcards("1.2.3+x*X", Arrays.asList("1", ".", "2", ".", "3", "+", "x*X"));
   }
 
   private void assertValidParseWithWildcards(String input, java.util.List<String> expectedParts) {
@@ -238,6 +252,31 @@ class SemverParserTests {
     assertEquals("3", result3.getPatch());
     assertEquals("*", result3.getReleaseLabel());
     assertNull(result3.getBuild());
+
+    SemverParser.ParseResult result4 = SemverParser.parseSemver("1.2.3+*", true);
+    assertTrue(result4.isSuccess());
+    assertEquals("1", result4.getMajor());
+    assertEquals("2", result4.getMinor());
+    assertEquals("3", result4.getPatch());
+    assertNull(result4.getReleaseLabel());
+    assertEquals("*", result4.getBuild());
+
+    SemverParser.ParseResult result5 = SemverParser.parseSemver("1.2.3+build.x", true);
+    assertTrue(result5.isSuccess());
+    assertEquals("1", result5.getMajor());
+    assertEquals("2", result5.getMinor());
+    assertEquals("3", result5.getPatch());
+    assertNull(result5.getReleaseLabel());
+    assertEquals("build.x", result5.getBuild());
+
+    // Test the complex case that was failing
+    SemverParser.ParseResult result6 = SemverParser.parseSemver("2.x.x-x", true);
+    assertTrue(result6.isSuccess());
+    assertEquals("2", result6.getMajor());
+    assertEquals("x", result6.getMinor());
+    assertEquals("x", result6.getPatch());
+    assertEquals("x", result6.getReleaseLabel());
+    assertNull(result6.getBuild());
   }
 
   @Test
@@ -324,7 +363,7 @@ class SemverParserTests {
     assertValidParseOptionalPatchWithWildcards("1.*", Arrays.asList("1", ".", "*"));
     assertValidParseOptionalPatchWithWildcards("1.X", Arrays.asList("1", ".", "X"));
 
-    // Should still terminate after wildcard
+    // These should now be invalid (mixing wildcard with concrete)
     assertInvalidParseOptionalPatchWithWildcards("1.x.3");
     assertInvalidParseOptionalPatchWithWildcards("1.*.beta");
   }

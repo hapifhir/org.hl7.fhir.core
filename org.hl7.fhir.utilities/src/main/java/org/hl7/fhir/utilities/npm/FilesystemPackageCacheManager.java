@@ -518,7 +518,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         }
         if (version != null && !version.equals("current") && (version.endsWith(".x") || Utilities.charCount(version, '.') < 2) && currentPackageFolder.contains("#")) {
           String[] parts = currentPackageFolder.split("#");
-          if (parts[0].equals(id) && VersionUtilities.isThisOrLaterMajorMinorPatch((foundVersion != null ? foundVersion : version), parts[1])) {
+          if (parts[0].equals(id) && VersionUtilities.versionMatches((foundVersion != null ? foundVersion : version), parts[1])) {
             foundVersion = parts[1];
             foundPackageFolder = currentPackageFolder;
           }

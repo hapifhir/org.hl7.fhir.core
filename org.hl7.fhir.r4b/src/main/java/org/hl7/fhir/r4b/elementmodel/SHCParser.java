@@ -147,7 +147,7 @@ public class SHCParser extends ParserBase {
         return res;
       }
       JsonElement fv = cs.get("fhirVersion");
-      if (!VersionUtilities.versionsMatch(context.getVersion(), fv.getAsString())) {
+      if (!VersionUtilities.versionMatches(context.getVersion(), fv.getAsString())) {
         logError(
             line(fv), col(fv), path + ".fhirVersion", IssueType.STRUCTURE, "Card claims to be of version "
                 + fv.getAsString() + ", cannot be validated against version " + context.getVersion(),
