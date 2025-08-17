@@ -1118,4 +1118,152 @@ public class VersionUtilitiesTest {
     assertTrue(result3.isSuccess());
     assertEquals("001.002", result3.getBuild());
   }
+
+
+  @Test
+  @DisplayName("hasWildcards should return false for null and empty inputs")
+  void testNullAndEmpty() {
+    assertFalse(VersionUtilities.versionHasWildcards(null));
+    assertFalse(VersionUtilities.versionHasWildcards(""));
+    assertFalse(VersionUtilities.versionHasWildcards("   ")); // whitespace only
+  }
+
+  @Test
+  @DisplayName("hasWildcards should return false for regular semver versions")
+  void testRegularSemver() {
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0"));
+    assertFalse(VersionUtilities.versionHasWildcards("2.1.5"));
+    assertFalse(VersionUtilities.versionHasWildcards("1.0"));
+    assertFalse(VersionUtilities.versionHasWildcards("10.20.30"));
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0-alpha"));
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0+build"));
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0-alpha+build"));
+  }
+
+  @Test
+  @DisplayName("hasWildcards should return true for question mark suffix wildcard")
+  void testQuestionMarkSuffix() {
+    assertTrue(VersionUtilities.versionHasWildcards("1.0?"));
+    assertTrue(VersionUtilities.versionHasWildcards("2.1.0?"));
+    assertTrue(VersionUtilities.versionHasWildcards("1.0.0-alpha?"));
+    assertTrue(VersionUtilities.versionHasWildcards("1.0.0+build?"));
+    assertTrue(VersionUtilities.versionHasWildcards("?"));
+  }
+
+  @Test
+  @DisplayName("hasWildcards should return true for asterisk wildcard anywhere")
+  void testAsteriskWildcard() {
+    // Asterisk in version parts
+    assertTrue(VersionUtilities.versionHasWildcards("*.0.0"));
+    assertTrue(VersionUtilities.versionHasWildcards("1.*.0"));
+    assertTrue(VersionUtilities.versionHasWildcards("1.0.*"));
+    assertTrue(VersionUtilities.versionHasWildcards("*.*.*"));
+
+    // Asterisk in release labels (still wildcard)
+    assertTrue(VersionUtilities.versionHasWildcards("1.0.0-*"));
+    assertTrue(VersionUtilities.versionHasWildcards("1.0.0-alpha*"));
+    assertTrue(VersionUtilities.versionHasWildcards("1.0.0-*alpha"));
+
+    // Asterisk in build labels (still wildcard)
+    assertTrue(VersionUtilities.versionHasWildcards("1.0.0+*"));
+    assertTrue(VersionUtilities.versionHasWildcards("1.0.0+build*"));
+    assertTrue(VersionUtilities.versionHasWildcards("1.0.0+*build"));
+
+    // Just asterisk
+    assertTrue(VersionUtilities.versionHasWildcards("*"));
+  }
+
+  @Test
+  @DisplayName("hasWildcards should return true for x/X wildcards in version parts")
+  void testXWildcardsInVersionParts() {
+    // lowercase x in version parts
+    assertTrue(VersionUtilities.versionHasWildcards("x.0.0"));
+    assertTrue(VersionUtilities.versionHasWildcards("1.x.0"));
+    assertTrue(VersionUtilities.versionHasWildcards("1.0.x"));
+    assertTrue(VersionUtilities.versionHasWildcards("x.x.x"));
+
+    // uppercase X in version parts
+    assertTrue(VersionUtilities.versionHasWildcards("X.0.0"));
+    assertTrue(VersionUtilities.versionHasWildcards("1.X.0"));
+    assertTrue(VersionUtilities.versionHasWildcards("1.0.X"));
+    assertTrue(VersionUtilities.versionHasWildcards("X.X.X"));
+
+    // Mixed case
+    assertTrue(VersionUtilities.versionHasWildcards("x.X.0"));
+    assertTrue(VersionUtilities.versionHasWildcards("X.x.0"));
+
+    // Just x or X
+    assertTrue(VersionUtilities.versionHasWildcards("x"));
+    assertTrue(VersionUtilities.versionHasWildcards("X"));
+  }
+
+  @Test
+  @DisplayName("hasWildcards should return false for x/X in release labels")
+  void testXInReleaseLabels() {
+    // x/X in release labels should NOT be considered wildcards
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0-x"));
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0-X"));
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0-alpha-x"));
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0-x-alpha"));
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0-prex"));
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0-xpost"));
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0-preX"));
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0-Xpost"));
+  }
+
+  @Test
+  @DisplayName("hasWildcards should return false for x/X in build labels")
+  void testXInBuildLabels() {
+    // x/X in build labels should NOT be considered wildcards
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0+x"));
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0+X"));
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0+build-x"));
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0+x-build"));
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0+prebuildx"));
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0+xpostbuild"));
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0+prebuildX"));
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0+Xpostbuild"));
+  }
+
+  @Test
+  @DisplayName("hasWildcards should handle complex cases with both release and build labels")
+  void testComplexCases() {
+    // x/X in version part should return true, even with release/build labels
+    assertTrue(VersionUtilities.versionHasWildcards("x.0.0-alpha+build"));
+    assertTrue(VersionUtilities.versionHasWildcards("1.x.0-alpha+build"));
+    assertTrue(VersionUtilities.versionHasWildcards("1.0.X-alpha+build"));
+
+    // x/X only in labels should return false
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0-x+X"));
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0-X+x"));
+
+    // Mixed wildcards - any wildcard should return true
+    assertTrue(VersionUtilities.versionHasWildcards("*.0.0-x+X"));
+    assertTrue(VersionUtilities.versionHasWildcards("1.0.0-x+X?"));
+    assertTrue(VersionUtilities.versionHasWildcards("x.0.0-*+build"));
+  }
+
+  @Test
+  @DisplayName("hasWildcards should handle edge cases")
+  void testEdgeCases() {
+    // Only separators
+    assertFalse(VersionUtilities.versionHasWildcards("-"));
+    assertFalse(VersionUtilities.versionHasWildcards("+"));
+    assertFalse(VersionUtilities.versionHasWildcards("-+"));
+    assertFalse(VersionUtilities.versionHasWildcards("+-"));
+
+    // Wildcards with separators but no version numbers
+    assertTrue(VersionUtilities.versionHasWildcards("*-"));
+    assertTrue(VersionUtilities.versionHasWildcards("*+"));
+    assertTrue(VersionUtilities.versionHasWildcards("x-"));
+    assertTrue(VersionUtilities.versionHasWildcards("X+"));
+
+    // Multiple dots
+    assertTrue(VersionUtilities.versionHasWildcards("1.x.0.0"));
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0.0-x"));
+
+    // Question mark not at end
+    assertFalse(VersionUtilities.versionHasWildcards("1.0.0?-alpha"));
+    assertFalse(VersionUtilities.versionHasWildcards("1.?0.0"));
+  }
 }

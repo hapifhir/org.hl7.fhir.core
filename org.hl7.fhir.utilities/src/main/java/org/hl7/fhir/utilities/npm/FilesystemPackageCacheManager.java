@@ -319,10 +319,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (version.startsWith("file:")) {
       throw new FHIRException("Cannot add package " + id + " to the package cache - the version '" + version + "' is illegal in this context");
     }
-    for (char ch : version.toCharArray()) {
-      if (!Character.isAlphabetic(ch) && !Character.isDigit(ch) && !Utilities.existsInList(ch, '.', '-', '$')) {
-        throw new FHIRException("Cannot add package " + id + " to the package cache - the version '" + version + "' is illegal (ch '" + ch + "'");
-      }
+    if (Utilities.existsInList(version, "current", "dev") || VersionUtilities.isSemVer(version)) {
+      throw new FHIRException("Cannot add package " + id + " to the package cache - the version '" + version + "' is illegal - must be a valid SemVer, or 'current' or 'dev'");
     }
   }
 
@@ -332,7 +330,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       return retVal;
     }
 
-    retVal = super.loadFromPackageServer(id, VersionUtilities.getMajMin(version) + ".x?");
+    retVal = super.loadFromPackageServer(id, VersionUtilities.getMajMin(version) + ".x");
     if (retVal != null) {
       return retVal;
     }
