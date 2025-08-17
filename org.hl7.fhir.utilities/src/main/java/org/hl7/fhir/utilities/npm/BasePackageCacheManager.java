@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,7 +78,7 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
           if (Utilities.noString(version)) {
             version = packageClient.getLatestVersion(id, false);
           }
-          if (version.endsWith(".x")) {
+          if (VersionUtilities.isSemVerWithWildcards(version)) {
             version = packageClient.getLatestVersion(id, version);
             if (version == null) {
               return null;

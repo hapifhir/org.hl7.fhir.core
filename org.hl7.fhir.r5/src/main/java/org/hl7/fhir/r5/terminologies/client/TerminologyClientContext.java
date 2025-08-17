@@ -242,7 +242,7 @@ public class TerminologyClientContext {
         } else {
           throw new ENoDump("The terminology server "+client.getAddress()+" is not approved for use with this software (it does not pass the required tests)");
         }
-      } else if (!VersionUtilities.isThisOrLaterMajorMinor(MIN_TEST_VERSION, testVersion)) {
+      } else if (!VersionUtilities.isThisOrLater(MIN_TEST_VERSION, testVersion, VersionUtilities.VersionPrecision.MINOR)) {
         if (canAllowNonConformantServers) {
           throw new ENoDump("The terminology server "+client.getAddress()+" is not approved for use with this software as it is too old (test version = "+testVersion+").\r\nIf you wish to use this server, add the parameter -authorise-non-conformant-tx-servers to the command line parameters");
         } else {
