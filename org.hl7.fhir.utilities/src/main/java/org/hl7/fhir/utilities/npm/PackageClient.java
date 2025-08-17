@@ -225,8 +225,20 @@ public class PackageClient {
     } else {
       String v = null;
       for (PackageInfo p : list) {
-        if (VersionUtilities.versionMatches(specVersion, p.getVersion())) {
-          v = p.getVersion();
+        String version = p.getVersion();
+        if (VersionUtilities.isSemVer(version) && VersionUtilities.versionMatches(specVersion, version)) {
+          v = version;
+        }
+      }
+      if (v == null) {
+        for (PackageInfo p : list) {
+          String version = p.getVersion();
+          while (version.contains(".00")) {
+            version = version.replace(".00", ".0");
+          }
+          if (VersionUtilities.isSemVer(version) && VersionUtilities.versionMatches(specVersion, version)) {
+            v = version;
+          }
         }
       }
       return v;

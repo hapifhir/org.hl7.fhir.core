@@ -471,6 +471,46 @@ public class VersionUtilities {
   }
 
   /**
+   * Returns true if the version string contains any wildcard characters.
+   * Supported wildcards are: * (asterisk) anywhere, x/X (in major/minor/patch only), and ? (question mark suffix).
+   * Note: x and X are only wildcards in version number parts, not in release labels (after -) or build labels (after +).
+   *
+   * @param version version string to check
+   * @return true if version contains any wildcard characters, false otherwise
+   */
+  public static boolean versionHasWildcards(@Nullable String version) {
+    if (Utilities.noString(version)) {
+      return false;
+    }
+
+    // Check for ? suffix wildcard
+    if (version.endsWith("?")) {
+      return true;
+    }
+
+    // Check for * wildcard anywhere
+    if (version.contains("*")) {
+      return true;
+    }
+
+    // For x/X wildcards, we need to check only the version number parts (before any - or +)
+    String versionPart = version;
+    int dashIndex = version.indexOf('-');
+    int plusIndex = version.indexOf('+');
+
+    if (dashIndex >= 0 && plusIndex >= 0) {
+      versionPart = version.substring(0, Math.min(dashIndex, plusIndex));
+    } else if (dashIndex >= 0) {
+      versionPart = version.substring(0, dashIndex);
+    } else if (plusIndex >= 0) {
+      versionPart = version.substring(0, plusIndex);
+    }
+
+    // Check for x/X wildcards only in the version number part
+    return versionPart.contains("x") || versionPart.contains("X");
+  }
+
+  /**
    * return true if the current version equals criteria, or later, based on the degree of precision specified
    *
    * This can be used to check e.g. if a feature is defined in 4.0, if (VersionUtilities.isThisOrLater("4.0", version))

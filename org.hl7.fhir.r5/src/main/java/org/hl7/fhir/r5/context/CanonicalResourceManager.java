@@ -500,7 +500,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     } else if (p2 == null) {
       return -1;
     } else if (p1.getId().equals(p2.getId())) {
-      int res = VersionUtilities.compareVersions(p1.getVersion(), p2.getVersion());
+      int res = compareByResourceVersion(p1.getVersion(), p2.getVersion());
       if (res == 0) {
         res = compareByDate(p1.getDate(), p2.getDate());
       }
