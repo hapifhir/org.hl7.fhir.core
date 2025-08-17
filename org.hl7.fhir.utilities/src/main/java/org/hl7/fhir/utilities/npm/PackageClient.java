@@ -210,7 +210,7 @@ public class PackageClient {
     } else {
       String v = list.get(0).getVersion();
       for (PackageInfo p : list) {
-        if (VersionUtilities.isThisOrLaterMajorMinor(v, p.getVersion())) {
+        if (VersionUtilities.isThisOrLater(v, p.getVersion(), VersionUtilities.VersionPrecision.MINOR)) {
           v = p.getVersion();
         }
       }
@@ -255,7 +255,7 @@ public class PackageClient {
         for (JsonObject e : o.getJsonObjects("editions")) {
           if (fhirVersion == null || fhirVersion.equals(e.asString("fhir-version"))) {
             String v = e.asString("ig-version");
-            if (version == null || VersionUtilities.isThisOrLaterMajorMinor(version, v)) {
+            if (version == null || VersionUtilities.isThisOrLater(version, v, VersionUtilities.VersionPrecision.MINOR)) {
               version = v;
               fVersion = e.getJsonArray("fhir-version").get(0).asString();
               url = e.asString("url");

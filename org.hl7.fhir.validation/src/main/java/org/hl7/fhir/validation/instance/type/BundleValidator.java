@@ -154,7 +154,7 @@ public class BundleValidator extends BaseValidator {
           String id = resource.getNamedChildValue(ID, false);
           ok = validateDocument(errors, bundle, entries, resource, firstStack.push(resource, -1, null, null), fullUrl, id) && ok;
         }
-        if (!VersionUtilities.isThisOrLaterMajorMinor(FHIRVersion._4_0_1.getDisplay(), bundle.getProperty().getStructure().getFhirVersion().getDisplay())) {
+        if (!VersionUtilities.isThisOrLater(FHIRVersion._4_0_1.getDisplay(), bundle.getProperty().getStructure().getFhirVersion().getDisplay(), VersionUtilities.VersionPrecision.MINOR)) {
           ok = handleSpecialCaseForLastUpdated(bundle, errors, stack) && ok;
         }
         ok = checkAllInterlinked(errors, entries, stack, bundle, false) && ok;

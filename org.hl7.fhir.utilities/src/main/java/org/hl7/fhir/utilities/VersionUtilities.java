@@ -4,7 +4,6 @@ import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.SemverParser;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -40,6 +39,8 @@ import javax.annotation.Nullable;
 
 
 public class VersionUtilities {
+
+  public enum VersionPrecision { MAJOR, MINOR, PATCH, FULL}
 
   public static class SemVerSorter implements Comparator<String> {
 
@@ -132,8 +133,12 @@ public class VersionUtilities {
     }
   }
 
-  public @Nonnull
-  static String packageForVersion(@Nonnull String v) {
+  /**
+   * Returns the package name for the given FHIR version.
+   * @param v FHIR version string
+   * @return package name (e.g., "hl7.fhir.r4.core") or null if version not recognized
+   */
+  public @Nonnull static String packageForVersion(@Nonnull String v) {
     if (isR2Ver(v)) {
       return "hl7.fhir.r2.core";
     }
@@ -166,6 +171,11 @@ public class VersionUtilities {
     return null;
   }
 
+  /**
+   * Returns the current/latest version for a given FHIR version family.
+   * @param v FHIR version string
+   * @return current version string for that family
+   */
   public static String getCurrentVersion(String v) {
     if (isR2Ver(v)) {
       return "1.0.2";
@@ -188,6 +198,11 @@ public class VersionUtilities {
     return v;
   }
 
+  /**
+   * Returns the current package version for a given FHIR version family.
+   * @param v FHIR version string
+   * @return package version (major.minor format)
+   */
   public static String getCurrentPackageVersion(String v) {
     if (isR2Ver(v)) {
       return "1.0";
@@ -210,15 +225,28 @@ public class VersionUtilities {
     return v;
   }
 
+  /**
+   * Checks if the given version is in the list of supported FHIR versions.
+   * @param version version string to check
+   * @return true if version is supported
+   */
   public static boolean isSupportedVersion(@Nonnull String version) {
     version = checkVersionNotNullAndValid(removeLabels(fixForSpecialValue(version)));
     return Utilities.existsInList(version, SUPPORTED_VERSIONS);
   }
 
+  /**
+   * Returns a comma-separated list of all supported FHIR versions.
+   * @return string listing supported versions
+   */
   public static String listSupportedVersions() {
     return listVersions(SUPPORTED_VERSIONS);
   }
 
+  /**
+   * Returns a comma-separated list of all supported major FHIR versions.
+   * @return string listing supported major versions
+   */
   public static String listSupportedMajorVersions() {
     return listVersions(SUPPORTED_MAJOR_VERSIONS);
   }
@@ -238,6 +266,11 @@ public class VersionUtilities {
     return isR6Ver(version);
   }
 
+  /**
+   * Checks if version refers to any R6 release.
+   * @param version version string to check
+   * @return true if R6 version
+   */
   public static boolean isR6Ver(@Nonnull String version) {
     version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
     return version != null && (version.startsWith("6.0"));
@@ -250,16 +283,31 @@ public class VersionUtilities {
     return isR5Ver(version) || isR6Plus(version);
   }
 
+  /**
+   * Checks if version refers to any R5 release (including 4.5+ pre-releases).
+   * @param version version string to check
+   * @return true if R5 version
+   */
   public static boolean isR5Ver(@Nonnull String version) {
     version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
     return version != null && (version.startsWith("4.5") || version.startsWith("5.0"));
   }
 
+  /**
+   * Checks if version refers to any R4B release.
+   * @param version version string to check
+   * @return true if R4B version
+   */
   public static boolean isR4BVer(@Nonnull String version) {
     version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
     return version != null && (version.startsWith("4.1") || version.startsWith("4.3"));
   }
 
+  /**
+   * Checks if version refers to any R4 release (including 3.2+ pre-releases).
+   * @param version version string to check
+   * @return true if R4 version
+   */
   public static boolean isR4Ver(@Nonnull String version) {
     version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
     return version != null && (version.startsWith("4.0")
@@ -274,21 +322,41 @@ public class VersionUtilities {
     return isR4Ver(version) || isR4BVer(version) || isR5Plus(version);
   }
 
+  /**
+   * Checks if version refers to any R3 release.
+   * @param version version string to check
+   * @return true if R3 version
+   */
   public static boolean isR3Ver(@Nonnull String version) {
     version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
     return version != null && (version.startsWith("3.0"));
   }
 
+  /**
+   * Checks if version refers to any R2B release.
+   * @param version version string to check
+   * @return true if R2B version
+   */
   public static boolean isR2BVer(@Nonnull String version) {
     version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
     return version != null && (version.startsWith("1.4"));
   }
 
+  /**
+   * Checks if version refers to any R2 release.
+   * @param version version string to check
+   * @return true if R2 version
+   */
   public static boolean isR2Ver(@Nonnull String version) {
     version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
     return version != null && (version.startsWith("1.0"));
   }
 
+  /**
+   * Checks if the given string is a FHIR core package name.
+   * @param s package name to check
+   * @return true if it's a core package
+   */
   public static boolean isCorePackage(@Nonnull String s) {
     if (s == null) {
       return false;
@@ -299,6 +367,11 @@ public class VersionUtilities {
     return Utilities.existsInList(s, "hl7.fhir.core", "hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core", "hl7.fhir.r4.core", "hl7.fhir.r4b.core", "hl7.fhir.r5.core", "hl7.fhir.r6.core");
   }
 
+  /**
+   * Returns version string with labels (pre-release/build info) removed.
+   * @param version version string
+   * @return version without labels, or null if invalid
+   */
   public static @Nullable String versionWithoutLabels(@Nullable String version) {
     version = checkVersionNotNullAndValid(fixForSpecialValue(version));
     return removeLabels(version);
@@ -361,7 +434,7 @@ public class VersionUtilities {
 
 
   /**
-   * returns true if this is a valid server. we accept major.minor without a patch. This one does not accept the codes such as RX
+   * returns true if this is a valid semver. we accept major.minor without a patch. This one does not accept the codes such as RX
    */
   public static boolean isSemVer(@Nullable String version) {
     if (Utilities.noString(version)) {
@@ -376,6 +449,11 @@ public class VersionUtilities {
       && (pr.getPatch() == null || Utilities.isInteger(pr.getPatch()));
   }
 
+  /**
+   * Checks if version string is valid semver with wildcard support.
+   * @param version version string to validate
+   * @return true if valid semver with wildcards
+   */
   public static boolean isSemVerWithWildcards(@Nullable String version) {
     if (Utilities.noString(version)) {
       return false;
@@ -393,49 +471,57 @@ public class VersionUtilities {
   }
 
   /**
-   * return true if the current version equals test, or later,
-   * so if a feature is defined in 4.0, if (VersionUtilities.isThisOrLater("4.0", version))
-   * <p>
-   * This method tries to perform a numeric parse, so that <code>0.9</code> will be considered below <code>0.10</code>
-   * in accordance with SemVer. If either side contains a non-numeric character in a version string, a simple text
-   * compare will be done instead.
-   * </p>
+   * return true if the current version equals criteria, or later, based on the degree of precision specified
    *
-   * @param test    The value to compare to
-   * @param current The value being compared
-   * @return Is {@literal current} later or equal to {@literal test}? For example, if <code>this = 0.5</code> and <code>current = 0.6</code> this method will return true
+   * This can be used to check e.g. if a feature is defined in 4.0, if (VersionUtilities.isThisOrLater("4.0", version))
+   *
+   * this is only applicable to valid semver versions (though patch is optional)
+   *
+   * the criteria string can contain wildcards - see @versionMatches
+   *
+   * @param criteria    The value to compare to
+   * @param candidate The value being compared
+   * @param precision how far into the version string to consider (usually just set to full if there's wildcards in the test string)
+   *
+   * @return Is {@literal current} later or equal to {@literal criteria}? For example, if <code>this = 0.5</code> and <code>current = 0.6</code> this method will return true
    */
-  public static boolean isThisOrLaterMajorMinor(@Nonnull String test, @Nonnull String current) {
-    if (test == null || current == null) {
-      return false;
-    }
-    test = removeLabels(checkVersionNotNullAndValidWildcards(fixForSpecialValue(test), "test"));
-    current = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(current), "current"));
-    String t = getMajMinPriv(test);
-    String c = getMajMinPriv(current);
-    if (c.compareTo(t) == 0) {
-      return true;
-    }
+  public static boolean isThisOrLater(@Nonnull String criteria, @Nonnull String candidate, VersionPrecision precision) {
+    criteria = checkVersionNotNullAndValidWildcards(fixForSpecialValue(criteria), "criteria");
+    candidate = checkVersionNotNullAndValid(fixForSpecialValue(candidate), "candidate");
 
-    String[] testParts = t.split("\\.");
-    String[] currentParts = c.split("\\.");
-
-    for (int i = 0; i < Math.max(testParts.length, currentParts.length); i++) {
-      if (i == testParts.length) {
-        return true;
-      } else if (i == currentParts.length) {
-        return false;
-      }
-      String testPart = testParts[i];
-      String currentPart = currentParts[i];
-      if (testPart.equals(currentPart)) {
-        continue;
-      }
-      return compareVersionPart(testPart, currentPart);
+    boolean endsWithQ = false;
+    if (criteria.endsWith("?")) {
+      endsWithQ = true;
+      criteria = criteria.substring(0, criteria.length() - 1);
     }
-
+    SemverParser.ParseResult parsedCriteria = SemverParser.parseSemver(criteria, true, false);
+    if (!parsedCriteria.isSuccess()) {
+      throw new FHIRException("Invalid criteria: " + criteria+": ("+parsedCriteria.getError()+")");
+    }
+    SemverParser.ParseResult parsedCandidate = SemverParser.parseSemver(candidate, false, false);
+    if (!parsedCandidate.isSuccess()) {
+      throw new FHIRException("Invalid candidate: " + candidate+" ("+parsedCandidate.getError()+")");
+    }
+    int thisOrLater;
+    thisOrLater = partIsThisOrLater(parsedCriteria.getMajor(), parsedCandidate.getMajor(), true);
+    if (thisOrLater != 0) { return thisOrLater < 0 ?  true : false; }
+    if (endsWithQ && parsedCriteria.getMinor() == null) { return true; }
+    if (precision == VersionPrecision.MAJOR) { return true; }
+    thisOrLater = partIsThisOrLater(parsedCriteria.getMinor(), parsedCandidate.getMinor(), true);
+    if (thisOrLater != 0) { return thisOrLater < 0 ?  true : false; }
+    if (endsWithQ && parsedCriteria.getPatch() == null) { return true; }
+    if (precision == VersionPrecision.MINOR) { return true; }
+    thisOrLater = partIsThisOrLater(parsedCriteria.getPatch(), parsedCandidate.getPatch(), true);
+    if (thisOrLater != 0) { return thisOrLater < 0 ?  true : false; }
+    if (precision == VersionPrecision.PATCH) { return true; }
+    if (endsWithQ && parsedCriteria.getReleaseLabel() == null && parsedCriteria.getBuild() == null) { return true; }
+    thisOrLater = partIsThisOrLater(parsedCriteria.getReleaseLabel(), parsedCandidate.getReleaseLabel(), false);
+    if (thisOrLater != 0) { return thisOrLater < 0 ?  true : false; }
+    thisOrLater = partIsThisOrLater(parsedCriteria.getBuild(), parsedCandidate.getBuild(), false);
+    if (thisOrLater != 0) { return thisOrLater < 0 ?  true : false; }
     return true;
   }
+
 
   private static boolean compareVersionPart(String theTestPart, String theCurrentPart) {
     if (StringUtils.isNumeric(theTestPart) && StringUtils.isNumeric(theCurrentPart)) {
@@ -451,46 +537,6 @@ public class VersionUtilities {
     } else {
       return theCurrentPart.compareTo(theTestPart);
     }
-  }
-
-  /**
-   * return true if the current version equals test for major and min, or later patch
-   *
-   * @param test
-   * @param current
-   * @return
-   */
-  public static boolean isThisOrLaterMajorMinorPatch(@Nonnull String test, @Nonnull String current) {
-    test = removeLabels(checkVersionValidWildcards(fixForSpecialValue(test)));
-    current = removeLabels(checkVersionValid(fixForSpecialValue(current)));
-
-    String t = getMajMinPriv(test);
-    String c = getMajMinPriv(current);
-    if (c != null && t != null && c.compareTo(t) == 0) {
-      String pt = getPatchPriv(test);
-      String pc = getPatchPriv(current);
-      if (pt == null || "x".equals(pt)) {
-        return true;
-      }
-      if (pc != null) {
-        int order = compareVersionPartInt(pt, pc);
-        if (order == 0) {
-          String lblTest = getLabelPart(test);
-          String lblCurrent = getLabelPart(current);
-          if (lblTest != null || lblCurrent != null) {
-            if (lblTest == null) {
-              order = 1;
-            } else if (lblCurrent == null) {
-              order = -1;
-            } else {
-              order = lblTest.compareTo(lblCurrent);
-            }
-          }
-        }
-        return order >= 0;
-      }
-    }
-    return isThisOrLaterMajorMinor(test, current);
   }
 
   private static String getLabelPart(String s) {
@@ -545,10 +591,20 @@ public class VersionUtilities {
     return Arrays.stream(p).mapToInt(Integer::parseInt).toArray();
   }
 
+  /**
+   * Converts version code to standard version string.
+   * @param version version code or string
+   * @return standardized version string
+   */
   public static String versionFromCode(String version) {
     return checkVersionNotNullAndValid(fixForSpecialValue(version));
   }
 
+  /**
+   * Parses version information from a FHIR URL.
+   * @param url FHIR URL to parse
+   * @return VersionURLInfo object or null if not parseable
+   */
   public static VersionURLInfo parseVersionUrl(String url) {
     if (url.length() < 24) {
       return null;
@@ -578,6 +634,11 @@ public class VersionUtilities {
     return res;
   }
 
+  /**
+   * Returns set of canonical resource names for the given FHIR version.
+   * @param version FHIR version string
+   * @return set of canonical resource type names
+   */
   public static Set<String> getCanonicalResourceNames(String version) {
 
     Set<String> res = new HashSet<String>();
@@ -723,6 +784,11 @@ public class VersionUtilities {
     return res;
   }
 
+  /**
+   * Extracts FHIR version from package ID.
+   * @param pid package ID string
+   * @return version string or null if not extractable
+   */
   public static String getVersionForPackage(@Nonnull String pid) {
     if (pid == null) {
       return null;
@@ -736,7 +802,7 @@ public class VersionUtilities {
 
 
   /**
-   * returns true if v1 and v2 are both semver, and major and minor match
+   * returns true if v1 and v2 are both semver, and they 'match'
    *
    * matching means that the specific version provided in candidate is equal to the value
    * provided by criteria, or is in the set of values defined by the critteria using
@@ -782,6 +848,7 @@ public class VersionUtilities {
     if (!parsedCandidate.isSuccess()) {
       throw new FHIRException("Invalid candidate: " + candidate+" ("+parsedCandidate.getError()+")");
     }
+    int pm;
     if (!partMatches(parsedCriteria.getMajor(), parsedCandidate.getMajor(), true)) { return false; }
     if (endsWithQ && parsedCriteria.getMinor() == null) { return true; }
     if (!partMatches(parsedCriteria.getMinor(), parsedCandidate.getMinor(), true)) { return false; }
@@ -805,8 +872,27 @@ public class VersionUtilities {
     }
   }
 
+  private static int partIsThisOrLater(String criteria, String candidate, boolean allowX) {
+    if (criteria == null) {
+      if (candidate == null) {
+        return 0;
+      } else {
+        return allowX ? -1 : 1;
+      }
+    } else if (candidate == null) {
+      return allowX ? 1 : -1;
+    } else if (allowX ? Utilities.existsInList(criteria, "*", "x", "X") : Utilities.existsInList(criteria, "*")) {
+      return -1;
+    } else if (Utilities.isInteger(criteria) && Utilities.isInteger(candidate)) {
+      return Integer.parseInt(criteria) - Integer.parseInt(candidate);
+    } else {
+      return criteria.compareTo(candidate);
+    }
+  }
+
+
   /**
-   * returns true if v1 matches any v2 where both are semver, and major and minor match
+   * returns true if v1 matches any v2 using the rules for @versionMatches()
    */
   public static boolean versionMatchesList(@Nonnull String v1, @Nonnull List<String> v2l) {
     for (String v2 : v2l) {
@@ -831,6 +917,11 @@ public class VersionUtilities {
     }
   }
 
+  /**
+   * Returns the specification URL for the given FHIR version.
+   * @param v FHIR version string
+   * @return specification URL
+   */
   public static String getSpecUrl(@Nonnull String v) {
     v = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(v)));
     switch (getMajMinPriv(v)) {
@@ -855,6 +946,11 @@ public class VersionUtilities {
     }
   }
 
+  /**
+   * Returns the release name (R2, R3, etc.) for the given version.
+   * @param v FHIR version string
+   * @return release name (e.g., "R4", "R5")
+   */
   public static @Nonnull String getNameForVersion(@Nonnull String v) {
     v = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(v)));
     switch (getMajMinPriv(v)) {
@@ -878,7 +974,7 @@ public class VersionUtilities {
   }
 
   /**
-   * given version ver1 and ver2, comparre them as semver strings (special values also accepted).
+   * given version ver1 and ver2, compare them as semver strings (special values also accepted).
    * -1 means ver1 is earlier, 0 means they 'match' and 1 means ver2 is later (normal java sort order)
    */
   public static int compareVersions(@Nullable String ver1, @Nullable String ver2) {
@@ -961,6 +1057,11 @@ public class VersionUtilities {
     return startVer.compareTo(ver) < 0 && stopVer.compareTo(ver) > 0;
   }
 
+  /**
+   * Returns the resource types URL for the given FHIR version.
+   * @param version FHIR version string
+   * @return resource types URL
+   */
   public static String getResourceTypesUrl(@Nonnull String version) {
     if (isR5Plus(version)) {
       return "http://hl7.org/fhir/fhir-types";
@@ -976,19 +1077,19 @@ public class VersionUtilities {
     startVer = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(startVer), "startVer"));
     stopVer = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(stopVer), "stopVer"));
     List<String> result = new ArrayList<>();
-    if (isThisOrLaterMajorMinor(startVer, "1.0") && isThisOrLaterMajorMinor("1.0", stopVer)) {
+    if (isThisOrLater(startVer, "1.0", VersionPrecision.MINOR) && isThisOrLater("1.0", stopVer, VersionPrecision.MINOR)) {
       result.add("1.0");
     }
-    if (isThisOrLaterMajorMinor(startVer, "3.0") && isThisOrLaterMajorMinor("3.0", stopVer)) {
+    if (isThisOrLater(startVer, "3.0", VersionPrecision.MINOR) && isThisOrLater("3.0", stopVer, VersionPrecision.MINOR)) {
       result.add("3.0");
     }
-    if (isThisOrLaterMajorMinor(startVer, "4.0") && isThisOrLaterMajorMinor("4.0", stopVer)) {
+    if (isThisOrLater(startVer, "4.0", VersionPrecision.MINOR) && isThisOrLater("4.0", stopVer, VersionPrecision.MINOR)) {
       result.add("4.0");
     }
-    if (isThisOrLaterMajorMinor(startVer, "4.3") && isThisOrLaterMajorMinor("4.3", stopVer)) {
+    if (isThisOrLater(startVer, "4.3", VersionPrecision.MINOR) && isThisOrLater("4.3", stopVer, VersionPrecision.MINOR)) {
       result.add("4.3");
     }
-    if (isThisOrLaterMajorMinor(startVer, "5.0") && isThisOrLaterMajorMinor("5.0", stopVer)) {
+    if (isThisOrLater(startVer, "5.0", VersionPrecision.MINOR) && isThisOrLater("5.0", stopVer, VersionPrecision.MINOR)) {
       result.add("5.0");
     }
     return result;

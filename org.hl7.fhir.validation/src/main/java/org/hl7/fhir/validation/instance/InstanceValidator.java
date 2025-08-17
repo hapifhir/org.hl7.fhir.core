@@ -2858,7 +2858,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if ("http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version".equals(extUrl)) {
       list.get(0).setExpression("Element"); // well, it can't be used anywhere but the list of places it can be used is quite long
     }
-    if (!VersionUtilities.isThisOrLaterMajorMinor("4.6", context.getVersion())) {
+    if (!VersionUtilities.isThisOrLater("4.6", context.getVersion(), VersionUtilities.VersionPrecision.MINOR)) {
       if (Utilities.existsInList(extUrl, "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation", "http://hl7.org/fhir/StructureDefinition/capabilitystatement-prohibited")) {
         list.get(0).setExpression("Element"); // well, they can't be used anywhere but the list of places they can be used is quite long        
       }

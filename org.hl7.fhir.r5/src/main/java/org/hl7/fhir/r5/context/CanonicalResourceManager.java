@@ -10,6 +10,7 @@ import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.NaturalOrderComparator;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
@@ -29,6 +30,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     "http://dicom.nema.org/resources/ontology/DCM",
     "http://nucc.org/provider-taxonomy"
   };
+  private int loadCount = 0;
 
   public static abstract class CanonicalResourceProxy {
     private String type;
@@ -157,6 +159,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
 
   public class CachedCanonicalResource<T1 extends CanonicalResource> {
+    int loadingOrder = 0;
     private T1 resource;
     private CanonicalResourceProxy proxy;
     private PackageInformation packageInfo;
@@ -240,46 +243,23 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       if (proxy != null) {
         resource = null;
       }      
-    }  
+    }
+
+    public int getLoadingOrder() {
+      return loadingOrder;
+    }
+
+    public void setLoadingOrder(int loadingOrder) {
+      this.loadingOrder = loadingOrder;
+    }
   }
 
   public class MetadataResourceVersionComparator<T1 extends CachedCanonicalResource<T>> implements Comparator<T1> {
     @Override
     public int compare(T1 arg1, T1 arg2) {
-      String c1 = arg1.getContent();
-      String c2 = arg2.getContent();
-      if (c1 != null && c2 != null && !c1.equals(c2)) {
-        int i1 = orderOfContent(c1);
-        int i2 = orderOfContent(c2);
-        return Integer.compare(i1, i2);
-      }
-      String v1 = arg1.getVersion();
-      String v2 = arg2.getVersion();
-      if (v1 == null && v2 == null) {
-        return Integer.compare(list.indexOf(arg1), list.indexOf(arg2)); // retain original order
-      } else if (v1 == null) {
-        return -1;
-      } else if (v2 == null) {
-        return 1;
-      } else if (v1.equals(v2)) {
-        return 0;
-      } else if (compareByVersionString(v1, v2)) {
-        return 1;
-      } else {
-        return -1;
-      }
+      return compareResources(arg1, arg2);
     }
 
-    private int orderOfContent(String c) {
-      switch (c) {
-      case "not-present": return 1;
-      case "example": return 2;
-      case "fragment": return 3;
-      case "complete": return 5;
-      case "supplement": return 4;
-      }
-      return 0;
-    }
   }
 
   private boolean minimalMemory;
@@ -446,81 +426,141 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         }
       }
     }
+    cr.setLoadingOrder(++loadCount);
+  }
+
+  private int compareResources (CachedCanonicalResource<T> c1, CachedCanonicalResource<T> c2) {
+    // the order of comparison is
+    // by resource version
+    // by content type (ignore content=not-present code systems)
+    // by package version (e.g for THO)
+    // by whether we've seen it or not
+    int res = compareByResourceVersion(c1.getVersion(), c2.getVersion());
+    if (res == 0) {
+      res = compareByResourceContent(c1.getContent(), c2.getContent());
+    }
+    if (res == 0) {
+      res = compareByPackageVersion(c1.getPackageInfo(), c2.getPackageInfo());
+    }
+    if (res == 0) {
+      res = compareByLoadCount(c1.getLoadingOrder(), c2.getLoadingOrder());
+    }
+    return res;
+  }
+
+  private int compareByLoadCount(int o1, int o2) {
+    if (01 == 0 && o2 == 0) {
+      return 0;
+    } else if (o1 == 0) {
+      return 1;
+    } else if (o2 == 0) {
+      return -1;
+    } else {
+      return Integer.compare(o1, o2);
+    }
+  }
+
+  private int compareByResourceVersion(String v1, String v2) {
+    if (v1 == null && v2 == null) {
+      return 0;
+    } else if (v1 == null) {
+      return -1; // this order is deliberate
+    } else if (v2 == null) {
+      return 1;
+    } else if (VersionUtilities.isSemVer(v1) && VersionUtilities.isSemVer(v2)) {
+      return VersionUtilities.compareVersions(v1, v2);
+    } else if (Utilities.isInteger(v1) && Utilities.isInteger(v2)) {
+      return Integer.compare(Integer.parseInt(v1), Integer.parseInt(v2));
+    } else {
+      return new NaturalOrderComparator<String>().compare(v1, v2);
+    }
+  }
+
+  private int compareByLoadCount(String v1, String v2) {
+    if (v1 == null && v2 == null) {
+      return 0;
+    } else if (v1 == null) {
+      return 1;
+    } else if (v2 == null) {
+      return -1;
+    } else if (VersionUtilities.isSemVer(v1) && VersionUtilities.isSemVer(v2)) {
+      return VersionUtilities.compareVersions(v1, v2);
+    } else if (Utilities.isInteger(v1) && Utilities.isInteger(v2)) {
+      return Integer.compare(Integer.parseInt(v1), Integer.parseInt(v2));
+    } else {
+      return new NaturalOrderComparator<String>().compare(v1, v2);
+    }
+  }
+
+  private int compareByPackageVersion(PackageInformation p1, PackageInformation p2) {
+    if (p1 == null && p2 == null) {
+      return 0;
+    } else if (p1 == null) {
+      return 1; // this order is deliberate.
+    } else if (p2 == null) {
+      return -1;
+    } else if (p1.getId().equals(p2.getId())) {
+      int res = VersionUtilities.compareVersions(p1.getVersion(), p2.getVersion());
+      if (res == 0) {
+        res = compareByDate(p1.getDate(), p2.getDate());
+      }
+      return res;
+    } else {
+      // comes from a mismatch package - presumable some repackaging has gone on - the most recent by date wins
+      return compareByDate(p1.getDate(), p2.getDate());
+    }
+  }
+
+  private int compareByDate(Date d1, Date d2) {
+    if (d1 == null && d2 == null) {
+      return 0;
+    } else if (d1 == null) {
+      return 1;
+    } else if (d2 == null) {
+      return -1;
+    } else {
+      return d1.compareTo(d2);
+    }
+  }
+
+  private int compareByResourceContent(String c1, String c2) {
+    if (c1 == null && c2 == null) {
+      return 0;
+    } else if (c1 == null) {
+      return -1;
+    } else if (c2 == null) {
+      return 1;
+    } else if (c1.equals(c2)) {
+      return 0;
+    } else {
+      int i1 = orderOfContent(c1);
+      int i2 = orderOfContent(c2);
+      return Integer.compare(i1, i2);
+    }
+  }
+
+  private int orderOfContent(String c) {
+    switch (c) {
+      case "not-present": return 1;
+      case "example": return 2;
+      case "fragment": return 3;
+      case "complete": return 5;
+      case "supplement": return 4;
+    }
+    return 0;
   }
 
   private void addToMap(String key, CachedCanonicalResource<T> cr) {
-    boolean older = false;
+    boolean newIsOlder = false;
     CachedCanonicalResource<T> existing = map.get(key);
     if (existing != null) {
       // at every level of adding something to the map, the most recent (by versioning) wins.
-      String existingVersion = existing.getVersion();
-      String newVersion = cr.getVersion();
-      if (existingVersion != null && newVersion != null) {
-        if (existingVersion.equals(newVersion)) {
-          older = isOlderByPackage(existing, cr);
-        } else {
-          older = compareByVersionString(existingVersion, newVersion);
-        }
-      } else if (existingVersion == null && newVersion != null) {
-        older = false;
-      } else if (existingVersion != null && newVersion == null) {
-        older = true;
-      } else {
-        older = isOlderByPackage(existing, cr);
-      }
+      int comp = compareResources(existing, cr);
+      newIsOlder = comp == 1;
     }
-    if (!older) {
+    if (!newIsOlder) {
       map.put(key, cr);
     }
-  }
-
-  private static boolean compareByVersionString(String existingVersion, String newVersion) {
-    if (VersionUtilities.isSemVer(existingVersion) && VersionUtilities.isSemVer(newVersion)) {
-      return !VersionUtilities.isThisOrLaterMajorMinor(existingVersion, newVersion);
-    } else if (Utilities.isInteger(existingVersion) && Utilities.isInteger(newVersion)) {
-      return Integer.parseInt(existingVersion) > Integer.parseInt(newVersion);
-    } else {
-      return existingVersion.compareTo(newVersion) > 0;
-    }
-  }
-
-  private boolean isOlderByPackage(CachedCanonicalResource<T> existing, CachedCanonicalResource<T> cr) {
-    PackageInformation piExisting = existing.getPackageInfo();
-    PackageInformation piNew = cr.getPackageInfo();
-    if (piNew != null && piExisting != null) {
-      if (piNew.getId().equals(piExisting.getId())) {
-        String vExisting = piExisting.getVersion();
-        String vNew = piNew.getVersion();
-        if (vExisting != null && vNew != null) {
-          if (vExisting.equals(vNew)) {
-            return false; // procedurally more recent wins
-          } else {
-            return compareByVersionString(vExisting, vNew); // though it should be a semver
-          }
-        } else if (vExisting != null && vNew == null) {
-          // the one without package source information wins
-          return false;
-        } else if (vExisting == null && vNew != null) {
-          // the one without package source information wins
-          return true;
-        } else {
-          return false;
-        }
-      } else {
-        // comes from a mismatch package - presumable some repackaging has gone on - the most recent by date wins
-        return piNew.getDate().before(piExisting.getDate());
-      }
-    } else if (piNew == null && piExisting != null) {
-      // the one without package source information wins
-      return false;
-    } else if (piNew != null && piExisting == null) {
-      // the one without package source information wins
-      return true;
-    } else { // piNew == null && piExisting == null
-      // well, we really don't know; more recent in load order wins
-      return false;
-    }
-
   }
 
   private void addToSupplements(CanonicalResourceManager<T>.CachedCanonicalResource<T> cr) {
@@ -640,11 +680,13 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     } else {
       if (map.containsKey(system+"|"+version))
         return map.get(system+"|"+version).getResource();
-      String mm = VersionUtilities.getMajMin(version);
-      if (mm != null && map.containsKey(system+"|"+mm))
-        return map.get(system+"|"+mm).getResource();
-      else
-        return null;
+      if (VersionUtilities.isSemVer(version) && !Utilities.containsInList(version, "+", "-")) {
+        String mm = VersionUtilities.getMajMin(version);
+        if (mm != null && map.containsKey(system + "|" + mm))
+          return map.get(system + "|" + mm).getResource();
+
+      }
+      return null;
     }
   }
   

@@ -281,14 +281,14 @@ public class CanonicalResourceManagerTests {
 
     mrm.see(vs2, null);
 
-    Assertions.assertEquals(mrm.size(), 2);
+    Assertions.assertEquals(2, mrm.size());
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertEquals(mrm.get("2345").getName(), "1");
+    Assertions.assertEquals("1", mrm.get("2345").getName());
     Assertions.assertNotNull(mrm.get("2346"));
-    Assertions.assertEquals(mrm.get("2346").getName(), "2");
+    Assertions.assertEquals("2", mrm.get("2346").getName());
     
     Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "2");
+    Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234").getName());
     Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
     Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "2");
     Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
@@ -930,42 +930,9 @@ public class CanonicalResourceManagerTests {
     Assertions.assertEquals(0, sl.size());
   }
 
-
-  @Test
-  public void testVersionContentionTemplate() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
-
-    CodeSystem cs1 = makeCodeSystem("1", "http://url", "2.0.1");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = new PackageInformation("hl7.fhir.something", "1.2.3", dateFromStr("2023-04-05"));
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://url", "2.0.1");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = new PackageInformation("hl7.fhir.something", "1.2.3", dateFromStr("2023-04-05"));
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    CodeSystem cs = csm.get("http://url", "2.0.1");
-    Assertions.assertEquals("2", cs.getId());
-  }
-
   private Date dateFromStr(String date) throws ParseException {
     SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
     return dt.parse(date);
-  }
-
-  private CodeSystem makeCodeSystem(String id, String url, String ver) {
-    CodeSystem cs = new CodeSystem();
-    cs.setId(id);
-    cs.setUrl(url);
-    cs.setVersion(ver);
-    return cs;
-  }
-
-  private PackageInformation makePackageInfo(String id, String version, String date) throws ParseException {
-    return new PackageInformation(id, version, "4.0.1", dateFromStr(date));
   }
 
   // Claude generated test cases
@@ -978,221 +945,111 @@ public class CanonicalResourceManagerTests {
   public void testSemverVersionComparison_HigherVersionWins() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.0.1");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
+    registerResources(csm,
+      makeCodeSystem("1", "2.0.1"), defaultPackage(),
+      makeCodeSystem("2", "2.1.0"), defaultPackage());
 
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.1.0");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    CodeSystem cs = csm.get("http://test", "2.1.0");
-    Assertions.assertEquals("2", cs.getId());
-
-    CodeSystem csLatest = csm.get("http://test", null);
-    Assertions.assertEquals("2", csLatest.getId());
+    checkResponseResource(csm, "2.1.0", "2");
+    checkResponseResource(csm, null, "2");
   }
 
   @Test
   public void testSemverVersionComparison_LowerVersionLoses() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.1.0");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
+    registerResources(csm,
+      makeCodeSystem("1", "2.1.0"), defaultPackage(),
+      makeCodeSystem("2", "2.0.1"), defaultPackage());
 
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.0.1");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    CodeSystem cs = csm.get("http://test", null);
-    Assertions.assertEquals("1", cs.getId()); // First one has higher version
+    checkResponseResource(csm, null, "1");
   }
 
   @Test
   public void testDateVersionComparison() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2023-01-01"), defaultPackage(),
+        makeCodeSystem("2", "2023-06-15"), defaultPackage());
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2023-01-01");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2023-06-15");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    CodeSystem cs = csm.get("http://test", null);
-    Assertions.assertEquals("2", cs.getId()); // Later date wins
+    checkResponseResource(csm, null, "2");
   }
 
   @Test
   public void testIntegerVersionComparison() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
-
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "5");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "10");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    CodeSystem cs = csm.get("http://test", null);
-    Assertions.assertEquals("2", cs.getId()); // 10 > 5
+    registerResources(csm,
+        makeCodeSystem("1", "5"), defaultPackage(),
+        makeCodeSystem("2", "10"), defaultPackage());
+    checkResponseResource(csm, null, "2");
   }
 
   @Test
   public void testVersionedVsUnversioned_VersionedWins1() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.0.1"), defaultPackage(),
+        makeCodeSystem("2", null), defaultPackage());
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.0.1");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", null); // No version
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    CodeSystem cs = csm.get("http://test", null);
-    Assertions.assertEquals("1", cs.getId()); // Versioned wins
+    checkResponseResource(csm, null, "1");
   }
 
   @Test
   public void testVersionedVsUnversioned_VersionedWins2() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("2", null), defaultPackage(), 
+        makeCodeSystem("1", "2.0.1"), defaultPackage());
 
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", null); // No version
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.0.1");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs = csm.get("http://test", null);
-    Assertions.assertEquals("1", cs.getId()); // Versioned wins
+    checkResponseResource(csm, null, "1");
   }
 
   @Test
   public void testPackageVersionedVsUnversioned_VersionedLoses1() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
-
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.0.1");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.0.1"); // No version
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", null, "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    CodeSystem cs = csm.get("http://test", null);
-    Assertions.assertEquals("2", cs.getId()); // Versioned wins
+    registerResources(csm,
+        makeCodeSystem("1", "2.0.1"), defaultPackage(),
+        makeCodeSystem("2", "2.0.1"), makePackageInfo("hl7.fhir.core", null, "2023-01-01"));
+    checkResponseResource(csm, null, "1");
   }
 
   @Test
   public void testPackageVersionedVsUnversioned_VersionedLoses2() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("2", "2.0.1"), makePackageInfo("hl7.fhir.core", null, "2023-01-01"),
+        makeCodeSystem("1", "2.0.1"), defaultPackage());
 
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.0.1"); // No version
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", null, "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.0.1");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs = csm.get("http://test", null);
-    Assertions.assertEquals("2", cs.getId()); // Versioned wins
+    checkResponseResource(csm, null, "1");
   }
 
   @Test
   public void testPackageVersionedVsNP_VersionedLoses1() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.0.1"), defaultPackage(),
+        makeCodeSystem("2", "2.0.1"), null);
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.0.1");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.0.1"); // No version
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, null);
-    csm.see(cc2);
-
-    CodeSystem cs = csm.get("http://test", null);
-    Assertions.assertEquals("2", cs.getId()); // Versioned wins
+    checkResponseResource(csm, null, "2");
   }
 
   @Test
   public void testPackageVersionedVsNP_VersionedLoses2() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("2", "2.0.1"), null,
+        makeCodeSystem("1", "2.0.1"), defaultPackage());
 
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.0.1"); // No version
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, null);
-    csm.see(cc2);
-
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.0.1");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs = csm.get("http://test", null);
-    Assertions.assertEquals("2", cs.getId()); // Versioned wins
+    checkResponseResource(csm, null, "2");
   }
 
   @Test
   public void testBothUnversioned_MostRecentWins() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", null), defaultPackage(),
+        makeCodeSystem("2", null), defaultPackage());
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", null);
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", null);
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    CodeSystem cs = csm.get("http://test", null);
-    Assertions.assertEquals("2", cs.getId()); // Most recent wins
+    checkResponseResource(csm, null, "2");
   }
 
   // =============================================
@@ -1202,98 +1059,52 @@ public class CanonicalResourceManagerTests {
   @Test
   public void testSameVersion_PackagedVsUnpackaged_PackagedWins() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.0.1"), defaultPackage(),
+        makeCodeSystem("2", "2.0.1"), null);
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.0.1");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.0.1");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, null); // No package
-    csm.see(cc2);
-
-    CodeSystem cs = csm.get("http://test", "2.0.1");
-    Assertions.assertEquals("2", cs.getId()); // Packaged wins
+    checkResponseResource(csm, "2.0.1", "2");
   }
 
   @Test
   public void testSameVersion_BothUnpackaged_MostRecentWins() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.0.1"), null,
+        makeCodeSystem("2", "2.0.1"), null);
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.0.1");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, null);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.0.1");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, null);
-    csm.see(cc2);
-
-    CodeSystem cs = csm.get("http://test", "2.0.1");
-    Assertions.assertEquals("2", cs.getId()); // Most recent wins
+    checkResponseResource(csm, "2.0.1", "2");
   }
 
   @Test
   public void testSameVersion_DifferentPackageIds_MoreRecentDateWins() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.0.1"), defaultPackage(),
+        makeCodeSystem("2", "2.0.1"), laterPackage());
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.0.1");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
 
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.0.1");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.other", "1.0.0", "2023-06-15"); // Later date
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    CodeSystem cs = csm.get("http://test", "2.0.1");
-    Assertions.assertEquals("2", cs.getId()); // More recent package date wins
+    checkResponseResource(csm, "2.0.1", "2"); // More recent package date wins
   }
 
   @Test
   public void testSameVersion_SamePackageId_HigherPackageVersionWins() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.0.1"), defaultPackage(),
+        makeCodeSystem("2", "2.0.1"), makePackageInfo("hl7.fhir.core", "2.0.0", "2023-01-01")); // Higher package version;
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.0.1");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.0.1");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "2.0.0", "2023-01-01"); // Higher package version
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    CodeSystem cs = csm.get("http://test", "2.0.1");
-    Assertions.assertEquals("2", cs.getId()); // Higher package version wins
+    checkResponseResource(csm, "2.0.1", "2"); // Higher package version wins
   }
 
   @Test
   public void testSameVersion_SamePackage_MostRecentWins() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.0.1"), defaultPackage(),
+        makeCodeSystem("2", "2.0.1"), defaultPackage());
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.0.1");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.0.1");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01"); // Identical package
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    CodeSystem cs = csm.get("http://test", "2.0.1");
-    Assertions.assertEquals("2", cs.getId()); // Most recent wins (template test case)
+    checkResponseResource(csm, "2.0.1", "2");  // Most recent wins (template test case)
   }
 
   // =============================================
@@ -1303,74 +1114,34 @@ public class CanonicalResourceManagerTests {
   @Test
   public void testComplexScenario_MultipleVersionsAndPackages() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "1.0.0"),  makePackageInfo("hl7.fhir.core", "2.0.0", "2023-06-01"),
+        makeCodeSystem("2", "2.0.0"), defaultPackage());
 
-    // Add older version from newer package
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "1.0.0");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "2.0.0", "2023-06-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    // Add newer version from older package
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.0.0");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    CodeSystem cs = csm.get("http://test", null);
-    Assertions.assertEquals("2", cs.getId()); // Higher resource version wins regardless of package
+    checkResponseResource(csm, null, "2"); // Higher resource version wins regardless of package
   }
 
   @Test
   public void testNaturalOrderVersioning() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "v1.2"), defaultPackage(),
+        makeCodeSystem("2", "v1.10"), defaultPackage());
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "v1.2");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "v1.10");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    CodeSystem cs = csm.get("http://test", null);
-    Assertions.assertEquals("2", cs.getId()); // v1.10 > v1.2 in natural order
+    checkResponseResource(csm, null, "2"); // v1.10 > v1.2 in natural order
   }
 
   @Test
   public void testMajorMinorVersionRetrieval() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.0.1"), defaultPackage(),
+        makeCodeSystem("2", "2.1.5"), defaultPackage());
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.0.1");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.1.5");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    // Test exact version retrieval
-    CodeSystem cs1Exact = csm.get("http://test", "2.0.1");
-    Assertions.assertEquals("1", cs1Exact.getId());
-
-    CodeSystem cs2Exact = csm.get("http://test", "2.1.5");
-    Assertions.assertEquals("2", cs2Exact.getId());
-
-    // Test major.minor retrieval (should get latest patch version)
-    CodeSystem cs2MajorMinor = csm.get("http://test", "2.1");
-    Assertions.assertEquals("2", cs2MajorMinor.getId());
-
-    CodeSystem cs1MajorMinor = csm.get("http://test", "2.0");
-    Assertions.assertEquals("1", cs1MajorMinor.getId());
+    checkResponseResource(csm, "2.0.1", "1"); // Test exact version retrieval
+    checkResponseResource(csm, "2.1.5", "2");
+    checkResponseResource(csm, "2.1", "2");  // Test major.minor retrieval (should get latest patch version)
+    checkResponseResource(csm, "2.0", "1");
   }
 
   // =============================================
@@ -1380,381 +1151,168 @@ public class CanonicalResourceManagerTests {
   @Test
   public void testSemverDepth_2_1_Then_2_1_0() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1"), defaultPackage(),
+        makeCodeSystem("2", "2.1.0"), defaultPackage());
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.1");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.1.0");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    // 2.1.0 > 2.1 (more specific wins)
-    CodeSystem csExact2_1 = csm.get("http://test", "2.1");
-    Assertions.assertEquals("2", csExact2_1.getId());
-
-    CodeSystem csExact2_1_0 = csm.get("http://test", "2.1.0");
-    Assertions.assertEquals("2", csExact2_1_0.getId());
-
-    CodeSystem csLatest = csm.get("http://test", null);
-    Assertions.assertEquals("2", csLatest.getId());
+    checkResponseResource(csm, "2.1", "2"); // 2.1.0 > 2.1 (more specific wins)
+    checkResponseResource(csm, "2.1.0", "2");
+    checkResponseResource(csm, null, "2");
   }
 
   @Test
   public void testSemverDepth_2_1_0_Then_2_1() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1.0"), defaultPackage(),
+        makeCodeSystem("2", "2.1"), defaultPackage());
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.1.0");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
 
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.1");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    // 2.1.0 > 2.1 (more specific wins, regardless of order added)
-    CodeSystem csExact2_1 = csm.get("http://test", "2.1");
-    Assertions.assertEquals("1", csExact2_1.getId()); // Should return 2.1.0 as it's more specific
-
-    CodeSystem csExact2_1_0 = csm.get("http://test", "2.1.0");
-    Assertions.assertEquals("1", csExact2_1_0.getId());
-
-    CodeSystem csLatest = csm.get("http://test", null);
-    Assertions.assertEquals("1", csLatest.getId());
+    checkResponseResource(csm, "2.1", "1"); // 2.1.0 > 2.1 (more specific wins, regardless of order added)
+    checkResponseResource(csm, "2.1.0", "1");
+    checkResponseResource(csm, null, "1");
   }
 
   @Test
   public void testSemverDepth_2_1_0_Then_2_1_0_alpha() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1.0"), defaultPackage(),
+        makeCodeSystem("2", "2.1.0-alpha"), defaultPackage());
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.1.0");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.1.0-alpha");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    // 2.1.0 > 2.1.0-alpha (release > pre-release)
-    CodeSystem csExact2_1_0 = csm.get("http://test", "2.1.0");
-    Assertions.assertEquals("1", csExact2_1_0.getId());
-
-    CodeSystem csExact2_1_0_alpha = csm.get("http://test", "2.1.0-alpha");
-    Assertions.assertEquals("2", csExact2_1_0_alpha.getId());
-
-    CodeSystem csPartial2_1 = csm.get("http://test", "2.1");
-    Assertions.assertEquals("1", csPartial2_1.getId()); // Should return release version
-
-    CodeSystem csLatest = csm.get("http://test", null);
-    Assertions.assertEquals("1", csLatest.getId());
+    checkResponseResource(csm, "2.1.0", "1");  // 2.1.0 > 2.1.0-alpha (release > pre-release)
+    checkResponseResource(csm, "2.1.0-alpha", "2");
+    checkResponseResource(csm, "2.1", "1"); // Should return release version
+    checkResponseResource(csm, null, "1");
   }
 
   @Test
   public void testSemverDepth_2_1_0_alpha_Then_2_1_0() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1.0-alpha"), defaultPackage(),
+        makeCodeSystem("2", "2.1.0"), defaultPackage());
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.1.0-alpha");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
 
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.1.0");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    // 2.1.0 > 2.1.0-alpha (release > pre-release, regardless of order)
-    CodeSystem csExact2_1_0 = csm.get("http://test", "2.1.0");
-    Assertions.assertEquals("2", csExact2_1_0.getId());
-
-    CodeSystem csExact2_1_0_alpha = csm.get("http://test", "2.1.0-alpha");
-    Assertions.assertEquals("1", csExact2_1_0_alpha.getId());
-
-    CodeSystem csPartial2_1 = csm.get("http://test", "2.1");
-    Assertions.assertEquals("2", csPartial2_1.getId()); // Should return release version
-
-    CodeSystem csLatest = csm.get("http://test", null);
-    Assertions.assertEquals("2", csLatest.getId());
+    checkResponseResource(csm, "2.1.0", "2"); // 2.1.0 > 2.1.0-alpha (release > pre-release, regardless of order)
+    checkResponseResource(csm, "2.1.0-alpha", "1");
+    checkResponseResource(csm, "2.1", "2"); // Should return release version
+    checkResponseResource(csm, null, "2");
   }
 
   @Test
   public void testSemverDepth_2_1_Then_2_1_0_alpha() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1"), defaultPackage(),
+        makeCodeSystem("2", "2.1.0-alpha"), defaultPackage());
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.1");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.1.0-alpha");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    // 2.1.0-alpha > 2.1 (more specific wins)
-    CodeSystem csExact2_1 = csm.get("http://test", "2.1");
-    Assertions.assertEquals("2", csExact2_1.getId());
-
-    CodeSystem csExact2_1_0_alpha = csm.get("http://test", "2.1.0-alpha");
-    Assertions.assertEquals("2", csExact2_1_0_alpha.getId());
-
-    CodeSystem csLatest = csm.get("http://test", null);
-    Assertions.assertEquals("2", csLatest.getId());
+    checkResponseResource(csm, "2.1", "2"); // 2.1.0-alpha > 2.1 (more specific wins)
+    checkResponseResource(csm, "2.1.0-alpha", "2");
+    checkResponseResource(csm, null, "2");
   }
 
   @Test
   public void testPrereleaseOrdering_alpha_vs_beta() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1.0-alpha"), defaultPackage(),
+        makeCodeSystem("2", "2.1.0-beta"), defaultPackage());
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.1.0-alpha");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
 
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.1.0-beta");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    // 2.1.0-beta > 2.1.0-alpha (beta > alpha)
-    CodeSystem csLatest = csm.get("http://test", null);
-    Assertions.assertEquals("2", csLatest.getId());
-
-    CodeSystem csPartial2_1 = csm.get("http://test", "2.1");
-    Assertions.assertEquals("2", csPartial2_1.getId()); // Should return latest pre-release
+    checkResponseResource(csm, null, "2"); // 2.1.0-beta > 2.1.0-alpha (beta > alpha)
+    checkResponseResource(csm, "2.1","2" ); // Should return latest pre-release
   }
 
   @Test
   public void testPrereleaseOrdering_beta_vs_alpha() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1.0-beta"), defaultPackage(),
+        makeCodeSystem("2", "2.1.0-alpha"), defaultPackage());
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.1.0-beta");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
 
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.1.0-alpha");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    // 2.1.0-beta > 2.1.0-alpha (beta > alpha, regardless of order)
-    CodeSystem csLatest = csm.get("http://test", null);
-    Assertions.assertEquals("1", csLatest.getId()); // beta was added first
-
-    CodeSystem csPartial2_1 = csm.get("http://test", "2.1");
-    Assertions.assertEquals("1", csPartial2_1.getId());
+    checkResponseResource(csm, null, "1"); // 2.1.0-beta > 2.1.0-alpha (beta > alpha, regardless of order)
+    checkResponseResource(csm, "2.1", "1");
   }
 
   @Test
   public void testPrereleaseNumericOrdering() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1.0-alpha.1"), defaultPackage(),
+        makeCodeSystem("2", "2.1.0-alpha.2"), defaultPackage());
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.1.0-alpha.1");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.1.0-alpha.2");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    // 2.1.0-alpha.2 > 2.1.0-alpha.1
-    CodeSystem csLatest = csm.get("http://test", null);
-    Assertions.assertEquals("2", csLatest.getId());
-
-    CodeSystem csPartial2_11 = csm.get("http://test", "2.1.0-alpha.2");
-    Assertions.assertEquals("2", csPartial2_11.getId());
-
-    CodeSystem csPartial2_12 = csm.get("http://test", "2.1.0-alpha");
-    Assertions.assertNull(csPartial2_12);
-
-    CodeSystem csPartial2_1b = csm.get("http://test", "2.1.0");
-    Assertions.assertEquals("2", csPartial2_1b.getId());
-
-    CodeSystem csPartial2_1d = csm.get("http://test", "2.1");
-    Assertions.assertEquals("2", csPartial2_1d.getId());
+    checkResponseResource(csm, null, "2"); // 2.1.0-alpha.2 > 2.1.0-alpha.1
+    checkResponseResource(csm, "2.1.0-alpha.2", "2");
+    checkResponseResource(csm, "2.1.0-alpha", null);
+    checkResponseResource(csm, "2.1.0", "2");
+    checkResponseResource(csm, "2.1", "2");
   }
 
   @Test
   public void testComplexPrereleaseOrdering() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1.0-alpha.1"), defaultPackage(),
+        makeCodeSystem("2", "2.1.0-alpha.beta"), defaultPackage());
+    registerResources(csm,
+        makeCodeSystem("3", "2.1.0-beta"), defaultPackage(),
+        makeCodeSystem("4", "2.1.0-beta.2"), defaultPackage());
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.1.0-alpha.1");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.1.0-alpha.beta");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    CodeSystem cs3 = makeCodeSystem("3", "http://test", "2.1.0-beta");
-    CanonicalResourceProxy cp3 = new DeferredLoadTestResource(cs3);
-    PackageInformation pi3 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc3 = csm.new CachedCanonicalResource<CodeSystem>(cp3, pi3);
-    csm.see(cc3);
-
-    CodeSystem cs4 = makeCodeSystem("4", "http://test", "2.1.0-beta.2");
-    CanonicalResourceProxy cp4 = new DeferredLoadTestResource(cs4);
-    PackageInformation pi4 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc4 = csm.new CachedCanonicalResource<CodeSystem>(cp4, pi4);
-    csm.see(cc4);
-
-    // 2.1.0-beta.2 > 2.1.0-beta > 2.1.0-alpha.beta > 2.1.0-alpha.1
-    CodeSystem csLatest = csm.get("http://test", null);
-    Assertions.assertEquals("4", csLatest.getId());
-
-    CodeSystem csPartial2_1 = csm.get("http://test", "2.1");
-    Assertions.assertEquals("4", csPartial2_1.getId());
+    checkResponseResource(csm, null, "4"); // 2.1.0-beta.2 > 2.1.0-beta > 2.1.0-alpha.beta > 2.1.0-alpha.1
+    checkResponseResource(csm, "2.1", "4");
   }
 
   @Test
   public void testPartialVersionMatching_Multiple_Patch_Versions() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
-
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.1.1");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.1.2");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    CodeSystem cs3 = makeCodeSystem("3", "http://test", "2.1.10");
-    CanonicalResourceProxy cp3 = new DeferredLoadTestResource(cs3);
-    PackageInformation pi3 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc3 = csm.new CachedCanonicalResource<CodeSystem>(cp3, pi3);
-    csm.see(cc3);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1.1"), defaultPackage(),
+        makeCodeSystem("2", "2.1.2"), defaultPackage(),
+        makeCodeSystem("3", "2.1.10"), defaultPackage());
 
     // Test exact version retrieval
-    CodeSystem cs1Exact = csm.get("http://test", "2.1.1");
-    Assertions.assertEquals("1", cs1Exact.getId());
-
-    CodeSystem cs2Exact = csm.get("http://test", "2.1.2");
-    Assertions.assertEquals("2", cs2Exact.getId());
-
-    CodeSystem cs3Exact = csm.get("http://test", "2.1.10");
-    Assertions.assertEquals("3", cs3Exact.getId());
-
+    checkResponseResource(csm, "2.1.1", "1");
+    checkResponseResource(csm, "2.1.2", "2");
+    checkResponseResource(csm, "2.1.10", "3");
     // Test partial version retrieval - should get latest (2.1.10)
-    CodeSystem csPartial = csm.get("http://test", "2.1");
-    Assertions.assertEquals("3", csPartial.getId());
-
-    CodeSystem csLatest = csm.get("http://test", null);
-    Assertions.assertEquals("3", csLatest.getId());
+    checkResponseResource(csm, "2.1", "3");
+    checkResponseResource(csm, null, "3");
   }
 
   @Test
   public void testPartialVersionMatching_With_Prerelease() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
-
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.1.0");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.1.1-alpha");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    CodeSystem cs3 = makeCodeSystem("3", "http://test", "2.1.1");
-    CanonicalResourceProxy cp3 = new DeferredLoadTestResource(cs3);
-    PackageInformation pi3 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc3 = csm.new CachedCanonicalResource<CodeSystem>(cp3, pi3);
-    csm.see(cc3);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1.0"), defaultPackage(),
+        makeCodeSystem("2", "2.1.1-alpha"), defaultPackage(),
+        makeCodeSystem("3", "2.1.1"), defaultPackage(),
+        makeCodeSystem("4", "2.1.2"), defaultPackage());
 
     // Test exact version retrieval
-    CodeSystem cs1Exact = csm.get("http://test", "2.1.0");
-    Assertions.assertEquals("1", cs1Exact.getId());
-
-    CodeSystem cs2Exact = csm.get("http://test", "2.1.1-alpha");
-    Assertions.assertEquals("2", cs2Exact.getId());
-
-    CodeSystem cs3Exact = csm.get("http://test", "2.1.1");
-    Assertions.assertEquals("3", cs3Exact.getId());
-
+    checkResponseResource(csm, "2.1.0", "1");
+    checkResponseResource(csm, "2.1.1-alpha", "2");
+    checkResponseResource(csm, "2.1.1", "3");
     // Test partial version retrieval - should get latest release version (2.1.1)
-    CodeSystem csPartial = csm.get("http://test", "2.1");
-    Assertions.assertEquals("3", csPartial.getId());
-
-    CodeSystem csLatest = csm.get("http://test", null);
-    Assertions.assertEquals("3", csLatest.getId()); // 2.1.1 > 2.1.1-alpha
+    checkResponseResource(csm, "2.1", "4");
+    checkResponseResource(csm, null, "4");
   }
 
   @Test
   public void testMixedDepthVersioning_Complex() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
-
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.0");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    CodeSystem cs3 = makeCodeSystem("3", "http://test", "2.0.0");
-    CanonicalResourceProxy cp3 = new DeferredLoadTestResource(cs3);
-    PackageInformation pi3 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc3 = csm.new CachedCanonicalResource<CodeSystem>(cp3, pi3);
-    csm.see(cc3);
-
-    CodeSystem cs4 = makeCodeSystem("4", "http://test", "2.0.0-rc.1");
-    CanonicalResourceProxy cp4 = new DeferredLoadTestResource(cs4);
-    PackageInformation pi4 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc4 = csm.new CachedCanonicalResource<CodeSystem>(cp4, pi4);
-    csm.see(cc4);
+    registerResources(csm,
+      makeCodeSystem("1", "2"), defaultPackage(),
+      makeCodeSystem("2", "2.0"), defaultPackage(),
+      makeCodeSystem("3", "2.0.0"), defaultPackage(),
+      makeCodeSystem("4", "2.0.0-rc.1"), defaultPackage());
 
     // 2.0.0 > 2.0.0-rc.1 > 2.0 > 2 (most specific release wins)
-    CodeSystem csExact2 = csm.get("http://test", "2");
-    Assertions.assertEquals("3", csExact2.getId()); // Should return most specific: 2.0.0
-
-    CodeSystem csExact2_0 = csm.get("http://test", "2.0");
-    Assertions.assertEquals("3", csExact2_0.getId()); // Should return most specific: 2.0.0
-
-    CodeSystem csExact2_0_0 = csm.get("http://test", "2.0.0");
-    Assertions.assertEquals("3", csExact2_0_0.getId());
-
-    CodeSystem csLatest = csm.get("http://test", null);
-    Assertions.assertEquals("3", csLatest.getId()); // 2.0.0 is the highest release
+    checkResponseResource(csm, "2", "1");
+    checkResponseResource(csm, "2.0", "3"); // because semver kicks in
+    checkResponseResource(csm, "2.0.0", "3");
+    checkResponseResource(csm, null, "3");
   }
 
   // =============================================
@@ -1764,42 +1322,95 @@ public class CanonicalResourceManagerTests {
   @Test
   public void testAlphanumericVersions() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+      makeCodeSystem("1", "1.0-alpha"), defaultPackage(),
+      makeCodeSystem("2", "1.0-beta"), defaultPackage());
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "1.0-alpha");
-    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
-    csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "1.0-beta");
-    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
-    csm.see(cc2);
-
-    CodeSystem cs = csm.get("http://test", null);
-    Assertions.assertEquals("2", cs.getId()); // beta > alpha in natural order
+    checkResponseResource(csm, null, "2"); // beta > alpha in natural order
   }
 
   @Test
   public void testSameDateDifferentTime() throws ParseException {
     CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.0.1"), defaultPackage(),
+        makeCodeSystem("2", "2.0.1"), defaultPackage());
 
-    CodeSystem cs1 = makeCodeSystem("1", "http://test", "2.0.1");
+    checkResponseResource(csm, "2.0.1", "2");  // Most recent addition wins when dates are equal
+  }
+
+
+  // worker routines
+  private void registerResources(CanonicalResourceManager<CodeSystem> csm, CodeSystem cs1, PackageInformation pi1,
+                                 CodeSystem cs2, PackageInformation pi2) {
     CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    // Both packages on same date - should fall back to most recent addition
-    PackageInformation pi1 = makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
     CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
     csm.see(cc1);
-
-    CodeSystem cs2 = makeCodeSystem("2", "http://test", "2.0.1");
     CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    PackageInformation pi2 = makePackageInfo("hl7.fhir.other", "1.0.0", "2023-01-01");
     CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
     csm.see(cc2);
-
-    CodeSystem cs = csm.get("http://test", "2.0.1");
-    Assertions.assertEquals("2", cs.getId()); // Most recent addition wins when dates are equal
   }
+
+  private void registerResources(CanonicalResourceManager<CodeSystem> csm, CodeSystem cs1, PackageInformation pi1,
+                                 CodeSystem cs2, PackageInformation pi2,
+                                 CodeSystem cs3, PackageInformation pi3) {
+    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
+    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
+    csm.see(cc1);
+    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
+    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
+    csm.see(cc2);
+    CanonicalResourceProxy cp3 = new DeferredLoadTestResource(cs3);
+    CanonicalResourceManager.CachedCanonicalResource cc3 = csm.new CachedCanonicalResource<CodeSystem>(cp3, pi3);
+    csm.see(cc3);
+  }
+
+  private void registerResources(CanonicalResourceManager<CodeSystem> csm, CodeSystem cs1, PackageInformation pi1,
+                                 CodeSystem cs2, PackageInformation pi2,
+                                 CodeSystem cs3, PackageInformation pi3,
+                                 CodeSystem cs4, PackageInformation pi4) {
+    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
+    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
+    csm.see(cc1);
+    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
+    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
+    csm.see(cc2);
+    CanonicalResourceProxy cp3 = new DeferredLoadTestResource(cs3);
+    CanonicalResourceManager.CachedCanonicalResource cc3 = csm.new CachedCanonicalResource<CodeSystem>(cp3, pi3);
+    csm.see(cc3);
+    CanonicalResourceProxy cp4 = new DeferredLoadTestResource(cs4);
+    CanonicalResourceManager.CachedCanonicalResource cc4 = csm.new CachedCanonicalResource<CodeSystem>(cp4, pi4);
+    csm.see(cc4);
+  }
+
+  private void checkResponseResource(CanonicalResourceManager<CodeSystem> csm, String version, String winner) {
+    CodeSystem cs = csm.get("http://test", version);
+    if (winner == null) {
+      Assertions.assertNull(cs);
+    } else {
+      Assertions.assertEquals(winner, cs.getId()); // First one has higher version
+    }
+  }
+
+  private PackageInformation defaultPackage() throws ParseException {
+    return makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
+  }
+
+  private PackageInformation laterPackage() throws ParseException {
+    return makePackageInfo("hl7.fhir.other", "1.0.0", "2023-06-15");
+  }
+
+  private PackageInformation makePackageInfo(String id, String version, String date) throws ParseException {
+    return new PackageInformation(id, version, "4.0.1", dateFromStr(date));
+  }
+
+  private CodeSystem makeCodeSystem(String id, String ver) {
+    CodeSystem cs = new CodeSystem();
+    cs.setId(id);
+    cs.setUrl("http://test");
+    cs.setVersion(ver);
+    return cs;
+  }
+
 
 }

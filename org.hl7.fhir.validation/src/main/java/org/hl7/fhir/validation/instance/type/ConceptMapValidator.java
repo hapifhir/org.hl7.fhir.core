@@ -558,7 +558,7 @@ public class ConceptMapValidator extends BaseValidator {
       String key = CanonicalType.urlWithVersion(system.url, system.version);
       if (!checkServerURLs.containsKey(key)) {
         IWorkerContext.SystemSupportInformation txInfo = context.getTxSupportInfo(system.url, system.version);
-        supported = VersionUtilities.isThisOrLaterMajorMinor(TerminologyClientContext.TX_BATCH_VERSION, txInfo.getTestVersion());
+        supported = VersionUtilities.isThisOrLater(TerminologyClientContext.TX_BATCH_VERSION, txInfo.getTestVersion(), VersionUtilities.VersionPrecision.MINOR);
         checkServerURLs.put(key, supported);
         if (!supported) {
           warning(errors, "2025-07-07", IssueType.NOTSUPPORTED, baseStack, false, I18nConstants.VALUESET_TXVER_BATCH_NOT_SUPPORTED, (txInfo.getTestVersion() == null ? "Not Known" : txInfo.getTestVersion()), system.url + (system.version == null ? "" : "|" + system.version), txInfo.getServer());

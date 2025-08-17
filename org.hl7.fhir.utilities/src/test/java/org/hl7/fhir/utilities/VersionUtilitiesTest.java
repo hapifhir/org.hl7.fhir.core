@@ -1,14 +1,9 @@
 package org.hl7.fhir.utilities;
 
-import junit.runner.Version;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,36 +34,36 @@ public class VersionUtilitiesTest {
     test_isThisOrLaterMajorMinor("0.9", "0.9.1", true);
     test_isThisOrLaterMajorMinor("0.9.1", "0.9", true);
 
-    test_isThisOrLaterMajorMinorPatch("0.9", "0.9.1", true);
-    test_isThisOrLaterMajorMinorPatch("0.9.1", "0.9", false);
+    test_isThisOrLater("0.9", "0.9.1", true);
+    test_isThisOrLater("0.9.1", "0.9", false);
   }
 
   @Test
   public void isThisOrLater_NonNumeric() {
-    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.isThisOrLaterMajorMinor("0.A", "0.B"));
-    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.isThisOrLaterMajorMinor("0.B", "0.A"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.isThisOrLater("0.A", "0.B", VersionUtilities.VersionPrecision.MINOR));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.isThisOrLater("0.B", "0.A", VersionUtilities.VersionPrecision.MINOR));
   }
 
   @Test
   public void isMajMinOrLaterPatch_Simple() {
-    test_isThisOrLaterMajorMinorPatch("0.9.0", "0.9.0", true);
-    test_isThisOrLaterMajorMinorPatch("0.9.0", "0.9.1", true);
+    test_isThisOrLater("0.9.0", "0.9.0", true);
+    test_isThisOrLater("0.9.0", "0.9.1", true);
     test_isThisOrLaterMajorMinor("0.9.0", "0.8.1", false);
   }
 
   @Test
   public void isMajMinOrLaterPatch_VersionWithX() {
-    test_isThisOrLaterMajorMinorPatch("0.9.x", "0.9.0", true);
-    test_isThisOrLaterMajorMinorPatch("0.9.x", "0.9.1", true);
+    test_isThisOrLater("0.9.x", "0.9.0", true);
+    test_isThisOrLater("0.9.x", "0.9.1", true);
     test_isThisOrLaterMajorMinor("0.9.x", "0.8.1", false);
   }
 
   @Test
   public void bugFixTests() {
     test_isThisOrLaterMajorMinor("1.0.0-ballot", "1.0.1", true);
-    test_isThisOrLaterMajorMinorPatch("3.1.x", "3.1.1", true);
-    test_isThisOrLaterMajorMinorPatch("3.0.x", "3.1.1", true);
-    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.isThisOrLaterMajorMinorPatch("3.1.1", "3.0.x"));
+    test_isThisOrLater("3.1.x", "3.1.1", true);
+    test_isThisOrLater("3.0.x", "3.1.1", true);
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.isThisOrLater("3.1.1", "3.0.x", VersionUtilities.VersionPrecision.FULL));
   }
 
   // =============================================
@@ -303,12 +298,12 @@ public class VersionUtilitiesTest {
     test_isThisOrLaterMajorMinor("r4", "r3", false);
     test_isThisOrLaterMajorMinor("r5", "r4", false);
 
-    test_isThisOrLaterMajorMinorPatch("1.0.1", "1.0.0", false);
-    test_isThisOrLaterMajorMinorPatch("1.1.0", "1.0.0", false);
-    test_isThisOrLaterMajorMinorPatch("2.0.0", "1.0.0", false);
-    test_isThisOrLaterMajorMinorPatch("2.1.5", "2.1.0", false);
-    test_isThisOrLaterMajorMinorPatch("r4", "r3", false);
-    test_isThisOrLaterMajorMinorPatch("r5", "r4", false);
+    test_isThisOrLater("1.0.1", "1.0.0", false);
+    test_isThisOrLater("1.1.0", "1.0.0", false);
+    test_isThisOrLater("2.0.0", "1.0.0", false);
+    test_isThisOrLater("2.1.5", "2.1.0", false);
+    test_isThisOrLater("r4", "r3", false);
+    test_isThisOrLater("r5", "r4", false);
   }
 
   @Test
@@ -324,14 +319,14 @@ public class VersionUtilitiesTest {
   @Test
   public void testIsThisOrLater_MixedDepths() {
     test_isThisOrLaterMajorMinor("1.0", "1.0.0", true);
-    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.isThisOrLaterMajorMinor("1", "1.0.0"));
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.isThisOrLater("1", "1.0.0", VersionUtilities.VersionPrecision.MINOR));
     test_isThisOrLaterMajorMinor("2.0", "2.1", true);
     test_isThisOrLaterMajorMinor("2.1", "2.0", false);
 
-    test_isThisOrLaterMajorMinorPatch("1.0", "1.0.0", true);
-    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.isThisOrLaterMajorMinorPatch("1", "1.0.0"));
-    test_isThisOrLaterMajorMinorPatch("2.0", "2.1", true);
-    test_isThisOrLaterMajorMinorPatch("2.1", "2.0", false);
+    test_isThisOrLater("1.0", "1.0.0", true);
+    Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.isThisOrLater("1", "1.0.0", VersionUtilities.VersionPrecision.FULL));
+    test_isThisOrLater("2.0", "2.1", true);
+    test_isThisOrLater("2.1", "2.0", false);
   }
 
   // =============================================
@@ -340,31 +335,31 @@ public class VersionUtilitiesTest {
 
   @Test
   public void testIsMajMinOrLaterPatch_SameMajorMinor() {
-    test_isThisOrLaterMajorMinorPatch("1.0.0", "1.0.0", true);
-    test_isThisOrLaterMajorMinorPatch("1.0.0", "1.0.1", true);
-    test_isThisOrLaterMajorMinorPatch("1.0.0", "1.0.10", true);
-    test_isThisOrLaterMajorMinorPatch("2.1.0", "2.1.5", true);
+    test_isThisOrLater("1.0.0", "1.0.0", true);
+    test_isThisOrLater("1.0.0", "1.0.1", true);
+    test_isThisOrLater("1.0.0", "1.0.10", true);
+    test_isThisOrLater("2.1.0", "2.1.5", true);
   }
 
   @Test
   public void testIsMajMinOrLaterPatch_DifferentMajorMinor() {
-    test_isThisOrLaterMajorMinorPatch("1.0.0", "1.1.0", true);
-    test_isThisOrLaterMajorMinorPatch("1.0.0", "2.0.0", true);
-    test_isThisOrLaterMajorMinorPatch("2.1.0", "2.0.5", false);
-    test_isThisOrLaterMajorMinorPatch("2.1.0", "3.1.0", true);
+    test_isThisOrLater("1.0.0", "1.1.0", true);
+    test_isThisOrLater("1.0.0", "2.0.0", true);
+    test_isThisOrLater("2.1.0", "2.0.5", false);
+    test_isThisOrLater("2.1.0", "3.1.0", true);
   }
 
   @Test
   public void testIsMajMinOrLaterPatch_EarlierPatch() {
-    test_isThisOrLaterMajorMinorPatch("1.0.5", "1.0.0", false);
-    test_isThisOrLaterMajorMinorPatch("2.1.10", "2.1.5", false);
+    test_isThisOrLater("1.0.5", "1.0.0", false);
+    test_isThisOrLater("2.1.10", "2.1.5", false);
   }
 
   @Test
   public void testIsMajMinOrLaterPatch_FhirVersions() {
-    test_isThisOrLaterMajorMinorPatch("r4", "r4", true);
-    test_isThisOrLaterMajorMinorPatch("r4", "r5", true);
-    test_isThisOrLaterMajorMinorPatch("r5", "r4", false);
+    test_isThisOrLater("r4", "r4", true);
+    test_isThisOrLater("r4", "r5", true);
+    test_isThisOrLater("r5", "r4", false);
   }
 
   // =============================================
@@ -926,12 +921,12 @@ public class VersionUtilitiesTest {
   }
 
   private void test_isThisOrLaterMajorMinor(String test, String current, boolean expected) {
-    assertEquals(expected, VersionUtilities.isThisOrLaterMajorMinor(test, current),
+    assertEquals(expected, VersionUtilities.isThisOrLater(test, current, VersionUtilities.VersionPrecision.MINOR),
       String.format("isThisOrLaterMajorMinor('%s', '%s') should be %s", test, current, expected));
   }
 
-  private void test_isThisOrLaterMajorMinorPatch(String test, String current, boolean expected) {
-    assertEquals(expected, VersionUtilities.isThisOrLaterMajorMinorPatch(test, current),
+  private void test_isThisOrLater(String test, String current, boolean expected) {
+    assertEquals(expected, VersionUtilities.isThisOrLater(test, current,  VersionUtilities.VersionPrecision.FULL),
       String.format("isThisOrLaterMajorMinorPatch('%s', '%s') should be %s", test, current, expected));
   }
 
