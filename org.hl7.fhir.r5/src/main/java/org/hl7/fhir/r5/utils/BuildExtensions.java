@@ -2,15 +2,15 @@ package org.hl7.fhir.r5.utils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 @MarkedToMoveToAdjunctPackage
-public class BuildExtensions extends ToolingExtensions {
+public class BuildExtensions extends ExtensionDefinitions {
 
   public static final String EXT_DESCRIPTION = "http://hl7.org/fhir/build/StructureDefinition/description";
   public static final String EXT_TITLE = "http://hl7.org/fhir/build/StructureDefinition/title";
@@ -70,7 +70,7 @@ public class BuildExtensions extends ToolingExtensions {
           }
         }
       }
-      list.addAll(ToolingExtensions.allConsts());
+      list.addAll(ExtensionUtilities.allConsts());
       cachedConsts = list;
     }
     return cachedConsts;

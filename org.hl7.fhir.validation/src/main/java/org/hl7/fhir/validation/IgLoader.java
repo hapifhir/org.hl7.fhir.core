@@ -514,7 +514,7 @@ public class IgLoader implements IValidationEngineLoader {
       version = src.substring(src.indexOf("#") + 1);
     }
     if (version == null) {
-      version = getPackageCacheManager().getLatestVersion(id);
+      version = getPackageCacheManager().getLatestVersion(id, false);
     }
     if (version == null) {
       pi = getPackageCacheManager().loadPackageFromCacheOnly(id);
@@ -665,7 +665,7 @@ public class IgLoader implements IValidationEngineLoader {
       version = src.substring(src.indexOf("#") + 1);
     }
     if (version == null) {
-      version = getPackageCacheManager().getLatestVersion(id);
+      version = getPackageCacheManager().getLatestVersion(id, false);
     }
     NpmPackage pi = null;
     if (version == null) {
@@ -815,8 +815,6 @@ public class IgLoader implements IValidationEngineLoader {
         res = new org.hl7.fhir.dstu3.formats.XmlParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         res = new org.hl7.fhir.dstu3.formats.JsonParser().parse(new ByteArrayInputStream(content));
-      else if (fn.endsWith(".txt") || fn.endsWith(".map")  || fn.endsWith(".fml"))
-        res = new org.hl7.fhir.dstu3.utils.StructureMapUtilities(org.hl7.fhir.dstu3.context.SimpleWorkerContext.fromNothing()).parse(new String(content));
       else
         throw new FHIRException("Unsupported format for " + fn);
       r = VersionConvertorFactory_30_50.convertResource(res);

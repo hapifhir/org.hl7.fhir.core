@@ -14,6 +14,8 @@ Please maintain this README.md as a linkable document, as other documentation ma
 --->
 
 # HAPI FHIR - HL7 FHIR Core Artifacts
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/hapifhir/org.hl7.fhir.core/badge)](https://scorecard.dev/viewer/?uri=github.com/hapifhir/org.hl7.fhir.core)
+
 
 | CI Status (master) | 
 | :---: |

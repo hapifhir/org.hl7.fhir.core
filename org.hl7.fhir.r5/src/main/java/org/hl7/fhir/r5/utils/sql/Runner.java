@@ -14,7 +14,7 @@ import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r5.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Base64BinaryType;
@@ -27,6 +27,7 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
@@ -55,7 +56,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 @MarkedToMoveToAdjunctPackage
 @Slf4j
-public class Runner implements IEvaluationContext {
+public class Runner implements IHostApplicationServices {
   
   public interface IRunnerObserver {
     public void handleRow(Base resource, int total, int cursor);
@@ -416,9 +417,9 @@ public class Runner implements IEvaluationContext {
   }
 
   @Override
-  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
+  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     List<Base> list = new ArrayList<Base>();
-    if (explicitConstant) {
+    if (mode == FHIRPathConstantEvaluationMode.EXPLICIT) {
       JsonObject vd = (JsonObject) appContext;
       JsonObject constant = findConstant(vd, name);
       if (constant != null) {
@@ -432,11 +433,11 @@ public class Runner implements IEvaluationContext {
   }
 
   @Override
-  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
-    if (explicitConstant) {
+  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
+    if (mode == FHIRPathConstantEvaluationMode.EXPLICIT) {
       if (appContext instanceof JsonObject) {
         JsonObject vd = (JsonObject) appContext;
-        JsonObject constant = findConstant(vd, name.substring(1));
+        JsonObject constant = findConstant(vd, name);
         if (constant != null) {
           Base b = (Base) constant.getUserData(UserDataNames.db_value);
           if (b != null) {
@@ -445,7 +446,7 @@ public class Runner implements IEvaluationContext {
         }
       } else if (appContext instanceof Element) {
         Element vd = (Element) appContext;
-        Element constant = findConstant(vd, name.substring(1));
+        Element constant = findConstant(vd, name);
         if (constant != null) {
           Element v = constant.getNamedChild("value");
           if (v != null) {

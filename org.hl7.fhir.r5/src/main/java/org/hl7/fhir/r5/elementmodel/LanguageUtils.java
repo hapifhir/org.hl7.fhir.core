@@ -10,10 +10,11 @@ import java.util.Map;
 import java.util.Set;
 
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.cd;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -32,18 +33,14 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
-import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
-import org.hl7.fhir.utilities.i18n.LanguageFileProducer;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerLanguageSession;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TextUnit;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TranslationUnit;
-import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -287,7 +284,7 @@ public class LanguageUtils {
           if (!handleAsSpecial(parent, element, translation)) {
             usedUnits.add(translation);
             if (translation.getTgtText() != null) {
-              ToolingExtensions.setLanguageTranslation(e, translation.getLanguage(), translation.getTgtText());
+              ExtensionUtilities.setLanguageTranslation(e, translation.getLanguage(), translation.getTgtText());
             } else {
               log.warn("?");
             }
@@ -324,7 +321,7 @@ public class LanguageUtils {
   }
 
   private boolean isTranslation(Base element) {
-    return "Extension".equals(element.fhirType()) && element.getChildByName("url").hasValues()  && ToolingExtensions.EXT_TRANSLATION.equals(element.getChildByName("url").getValues().get(0).primitiveValue());
+    return "Extension".equals(element.fhirType()) && element.getChildByName("url").hasValues()  && ExtensionDefinitions.EXT_TRANSLATION.equals(element.getChildByName("url").getValues().get(0).primitiveValue());
   }
 
   private boolean handleAsSpecial(Base parent, Base element, TranslationUnit translation) {
@@ -447,7 +444,15 @@ public class LanguageUtils {
   }
 
   public static boolean langsMatch(String dstLang, String srcLang) {
-    return dstLang == null || srcLang == null ? Utilities.existsInList(srcLang, "en", "en-US") : dstLang.startsWith(srcLang) || "*".equals(srcLang);
+    if (dstLang == null && srcLang == null) {
+      return true;
+    } if (dstLang == null) {
+      return srcLang.equals("en") || srcLang.startsWith("en-");
+    } else if (srcLang == null) {
+      return dstLang.equals("en") || dstLang.startsWith("en-");
+    } else {
+      return dstLang.startsWith(srcLang) || "*".equals(srcLang);
+    }
   }
 
   public void fillSupplement(CodeSystem csSrc, CodeSystem csDst, List<TranslationUnit> list) {
@@ -779,8 +784,8 @@ public class LanguageUtils {
     if (r.isPrimitive()) {
 
       PrimitiveType<?> dt = (PrimitiveType<?>) r;
-      String cnt = ToolingExtensions.getLanguageTranslation(dt, lang); 
-      dt.removeExtension(ToolingExtensions.EXT_TRANSLATION);
+      String cnt = ExtensionUtilities.getLanguageTranslation(dt, lang); 
+      dt.removeExtension(ExtensionDefinitions.EXT_TRANSLATION);
       if (cnt != null) {
         dt.setValueAsString(cnt);
         changed = true;
@@ -844,7 +849,7 @@ public class LanguageUtils {
     boolean changed = false;
     if (e.getProperty().isTranslatable()) {
       String cnt = getTranslation(e, lang);
-      e.removeExtension(ToolingExtensions.EXT_TRANSLATION);
+      e.removeExtension(ExtensionDefinitions.EXT_TRANSLATION);
       if (cnt != null) {
         e.setValue(cnt);
         changed = true;
@@ -876,7 +881,7 @@ public class LanguageUtils {
   }
 
   public String getTranslation(org.hl7.fhir.r5.model.Element e, String lang) {
-    for (Extension ext : e.getExtensionsByUrl(ToolingExtensions.EXT_TRANSLATION)) {
+    for (Extension ext : e.getExtensionsByUrl(ExtensionDefinitions.EXT_TRANSLATION)) {
       String l = ext.getExtensionString("lang");
       String v =  ext.getExtensionString("content");
       if (langsMatch(l, lang) && v != null) {
@@ -887,7 +892,7 @@ public class LanguageUtils {
   }
 
   public String getTranslationOrBase(PrimitiveType<?> e, String lang) {
-    for (Extension ext : e.getExtensionsByUrl(ToolingExtensions.EXT_TRANSLATION)) {
+    for (Extension ext : e.getExtensionsByUrl(ExtensionDefinitions.EXT_TRANSLATION)) {
       String l = ext.getExtensionString("lang");
       String v =  ext.getExtensionString("content");
       if (langsMatch(l, lang) && v != null) {

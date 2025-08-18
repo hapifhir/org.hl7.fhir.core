@@ -6,8 +6,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.ImplementationGuide;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
@@ -49,9 +49,9 @@ public class ImplementationGuideValidator extends BaseValidator {
     }
 
     if (isHL7Org(ig)) {
-      ok = rule(errors, "2025-02-13", IssueType.BUSINESSRULE, ig.line(), ig.col(), stack.getLiteralPath(), ig.hasExtension(ToolingExtensions.EXT_STANDARDS_STATUS), I18nConstants.IG_HL7_STANDARDS_STATUS_REQUIRED) && ok;               
-      ok = rule(errors, "2025-02-13", IssueType.BUSINESSRULE, ig.line(), ig.col(), stack.getLiteralPath(), ig.hasExtension(ToolingExtensions.EXT_WORKGROUP), I18nConstants.IG_HL7_WG_REQUIRED) && ok;               
-      warning(errors, "2025-02-13", IssueType.BUSINESSRULE, ig.line(), ig.col(), stack.getLiteralPath(), ig.hasExtension(ToolingExtensions.EXT_FMM_LEVEL), I18nConstants.IG_HL7_FMM_SHOULD);               
+      ok = rule(errors, "2025-02-13", IssueType.BUSINESSRULE, ig.line(), ig.col(), stack.getLiteralPath(), ig.hasExtension(ExtensionDefinitions.EXT_STANDARDS_STATUS), I18nConstants.IG_HL7_STANDARDS_STATUS_REQUIRED) && ok;
+      ok = rule(errors, "2025-02-13", IssueType.BUSINESSRULE, ig.line(), ig.col(), stack.getLiteralPath(), ig.hasExtension(ExtensionDefinitions.EXT_WORKGROUP), I18nConstants.IG_HL7_WG_REQUIRED) && ok;               
+      warning(errors, "2025-02-13", IssueType.BUSINESSRULE, ig.line(), ig.col(), stack.getLiteralPath(), ig.hasExtension(ExtensionDefinitions.EXT_FMM_LEVEL), I18nConstants.IG_HL7_FMM_SHOULD);               
     }
     return ok;
   }
@@ -110,7 +110,7 @@ public class ImplementationGuideValidator extends BaseValidator {
             PackageClient pc = new PackageClient(PackageServer.primaryServer());
             List<PackageInfo> list = pc.getVersions(packageId);
             Collections.sort(list, new org.hl7.fhir.utilities.npm.PackageInfo.PackageInfoVersionSorter());
-            String lver = pcm.getLatestVersion(packageId);
+            String lver = pcm.getLatestVersion(packageId, true);
             String date = null;
             for (PackageInfo t : list) {
               if (!t.getVersion().contains("-")) {
