@@ -307,26 +307,40 @@ public class CapabilityStatement30_40 {
     for (org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent t : src.getSupportedMessage())
       tgt.addSupportedMessage(convertCapabilityStatementMessagingSupportedMessageComponent(t));
     for (org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementMessagingEventComponent t : src.getEvent()) {
-      org.hl7.fhir.r4.model.Extension e = new org.hl7.fhir.r4.model.Extension(VersionConvertorConstants.EXT_IG_CONFORMANCE_MESSAGE_EVENT);
-      e.addExtension(new org.hl7.fhir.r4.model.Extension("code", Coding30_40.convertCoding(t.getCode())));
-      if (t.hasCategory())
-        e.addExtension(new org.hl7.fhir.r4.model.Extension("category", new org.hl7.fhir.r4.model.CodeType(t.getCategory().toCode())));
-      e.addExtension(new org.hl7.fhir.r4.model.Extension("mode", new org.hl7.fhir.r4.model.CodeType(t.getMode().toCode())));
-      if (t.getFocusElement().hasValue())
-        e.addExtension(new org.hl7.fhir.r4.model.Extension("focus", new org.hl7.fhir.r4.model.StringType(t.getFocus())));
-      else {
-        org.hl7.fhir.r4.model.CodeType focus = new org.hl7.fhir.r4.model.CodeType();
-        org.hl7.fhir.r4.model.Extension focusE = new org.hl7.fhir.r4.model.Extension("focus", focus);
-        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(t.getFocusElement(), focus);
-        e.addExtension(focusE);
-      }
-      e.addExtension(new org.hl7.fhir.r4.model.Extension("request", Reference30_40.convertReference(t.getRequest())));
-      e.addExtension(new org.hl7.fhir.r4.model.Extension("response", Reference30_40.convertReference(t.getResponse())));
-      if (t.hasDocumentation())
-        e.addExtension(new org.hl7.fhir.r4.model.Extension("documentation", new org.hl7.fhir.r4.model.StringType(t.getDocumentation())));
+      Extension e = convertCapabilityStatementMessageEvent(t);
       tgt.addExtension(e);
     }
     return tgt;
+  }
+
+  public static Extension convertCapabilityStatementMessageEvent(CapabilityStatement.CapabilityStatementMessagingEventComponent t) {
+    Extension e = new Extension(VersionConvertorConstants.EXT_IG_CONFORMANCE_MESSAGE_EVENT);
+    e.addExtension(new Extension("code", Coding30_40.convertCoding(t.getCode())));
+    if (t.hasCategory()) {
+      e.addExtension(new Extension("category", new org.hl7.fhir.r4.model.CodeType(t.getCategory().toCode())));
+    }
+    e.addExtension(new Extension("mode", new org.hl7.fhir.r4.model.CodeType(t.getMode().toCode())));
+    if (t.hasFocusElement()) {
+      e.addExtension(convertFocusMessagingEventComponent(t.getFocusElement()));
+    }
+    e.addExtension(new Extension("request", Reference30_40.convertReference(t.getRequest())));
+    e.addExtension(new Extension("response", Reference30_40.convertReference(t.getResponse())));
+    if (t.hasDocumentation()) {
+      e.addExtension(new Extension("documentation", new org.hl7.fhir.r4.model.StringType(t.getDocumentation())));
+    }
+    return e;
+  }
+
+  public static Extension convertFocusMessagingEventComponent(org.hl7.fhir.dstu3.model.CodeType t) {
+    Extension result = new Extension("focus");
+    if (t.hasValue()) {
+      result.setValue(new org.hl7.fhir.r4.model.StringType(t.getValue()));
+    } else {
+      org.hl7.fhir.r4.model.CodeType focus = new org.hl7.fhir.r4.model.CodeType();
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(t, focus);
+      result.setValue(focus);
+    }
+    return result;
   }
 
   public static org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementMessagingEndpointComponent convertCapabilityStatementMessagingEndpointComponent(org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementMessagingEndpointComponent src) throws FHIRException {
