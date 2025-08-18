@@ -1,3 +1,5 @@
+msgid ""
+msgstr ""
 
 # ABSTRACT_CODE_NOT_ALLOWED
 #: ABSTRACT_CODE_NOT_ALLOWED
@@ -151,8 +153,8 @@ msgstr[1] ""
 
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
-msgctxt "BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT"
 #, fuzzy
+msgctxt "BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT"
 msgid "Can''t find ''{0}'' in the bundle ({1})"
 msgstr "Não é possível encontrar ''{0}'' no pacote ({1})"
 
@@ -694,8 +696,8 @@ msgstr "Não foi encontrado nenhum perfil para o recurso {0} do tipo ''{1}''"
 
 # Bundle_BUNDLE_Entry_NotFound
 #: Bundle_BUNDLE_Entry_NotFound
-msgctxt "Bundle_BUNDLE_Entry_NotFound"
 #, fuzzy
+msgctxt "Bundle_BUNDLE_Entry_NotFound"
 msgid "Can''t find ''{0}'' in the bundle ({1})"
 msgstr "Não é possível encontrar ''{0}'' no pacote ({1})"
 
@@ -2387,7 +2389,7 @@ msgstr "LOINC"
 # HTA_LOINC_MESSAGE
 #: HTA_LOINC_MESSAGE
 #, fuzzy
-msgid "This material contains content from <a href=\\"http://loinc.org\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\"http://loinc.org/license\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
+msgid "This material contains content from <a href=\\\"http://loinc.org\\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\\"http://loinc.org/license\\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
 msgstr "!!Este material contém conteúdo do <a href=\\\"http://loinc.org\\\">LOINC</a>. LOINC é copyright &copy; 1995-2020, Regenstrief Institute, Inc. e o Logical Observation Identifiers Names and Codes (LOINC) Committee e está disponível sem custo sob a <a href=\\\"http://loinc.org/license\\\">licença</a>. LOINC&reg; é uma marca registada dos Estados Unidos da América do Regenstrief Institute, Inc."
 
 # HTA_SCT_DESC
@@ -2399,7 +2401,7 @@ msgstr "Termos clínicos SNOMED&reg; (SNOMED CT&reg;)"
 # HTA_SCT_MESSAGE
 #: HTA_SCT_MESSAGE
 #, fuzzy
-msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\"https://www.snomed.org/get-snomed\\">https://www.snomed.org/get-snomed</a> or <a href=\\"mailto:info@snomed.org\\">info@snomed.org</a>."
+msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> or <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
 msgstr "Este material contém conteúdo que é copyright da SNOMED International. Os implementadores destas especificações devem ter a licença apropriada de afiliado da SNOMED CT - para mais informações contacte <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> ou <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
 
 # IG_DEPENDENCY_CAN_VERSION_ALONE
@@ -3773,15 +3775,15 @@ msgstr "O tipo de mime {0} não é válido para esta resposta (permitido = {1})"
 
 # QUESTIONNAIRE_QR_ITEM_DATE_MAX
 #: QUESTIONNAIRE_QR_ITEM_DATE_MAX
-msgctxt "QUESTIONNAIRE_QR_ITEM_DATE_MAX"
 #, fuzzy
+msgctxt "QUESTIONNAIRE_QR_ITEM_DATE_MAX"
 msgid "The value {0} is greater than the allowed maximum of {1}"
 msgstr "O valor {0} é superior ao máximo permitido de {1}"
 
 # QUESTIONNAIRE_QR_ITEM_DATE_MIN
 #: QUESTIONNAIRE_QR_ITEM_DATE_MIN
-msgctxt "QUESTIONNAIRE_QR_ITEM_DATE_MIN"
 #, fuzzy
+msgctxt "QUESTIONNAIRE_QR_ITEM_DATE_MIN"
 msgid "The value {0} is less than the allowed minimum of {1}"
 msgstr "O valor {0} é inferior ao mínimo permitido de {1}"
 
@@ -3829,8 +3831,8 @@ msgstr "Não foi possível encontrar o conjunto de valores unitários ''{1}''"
 
 # QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX
 #: QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX
-msgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX"
 #, fuzzy
+msgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX"
 msgid "The value {0} is greater than the allowed maximum of {1}"
 msgstr "O valor {0} é superior ao máximo permitido de {1}"
 
@@ -3842,8 +3844,8 @@ msgstr "O valor {0} tem demasiadas casas decimais (limite = {1})"
 
 # QUESTIONNAIRE_QR_ITEM_DECIMAL_MIN
 #: QUESTIONNAIRE_QR_ITEM_DECIMAL_MIN
-msgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_MIN"
 #, fuzzy
+msgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_MIN"
 msgid "The value {0} is less than the allowed minimum of {1}"
 msgstr "O valor {0} é inferior ao mínimo permitido de {1}"
 
@@ -3855,8 +3857,8 @@ msgstr "O valor {0} tem uma unidade que não está no conjunto de valores unitá
 
 # QUESTIONNAIRE_QR_ITEM_DECIMAL_VALUE_EXCEPTION
 #: QUESTIONNAIRE_QR_ITEM_DECIMAL_VALUE_EXCEPTION
-msgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_VALUE_EXCEPTION"
 #, fuzzy
+msgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_VALUE_EXCEPTION"
 msgid "An error occurred checking the value: {0}"
 msgstr "Ocorreu um erro ao verificar o valor: {0}"
 
@@ -3880,22 +3882,22 @@ msgstr "Não foram encontrados subitens para o grupo necessário"
 
 # QUESTIONNAIRE_QR_ITEM_INTEGER_MAX
 #: QUESTIONNAIRE_QR_ITEM_INTEGER_MAX
-msgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_MAX"
 #, fuzzy
+msgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_MAX"
 msgid "The value {0} is greater than the allowed maximum of {1}"
 msgstr "O valor {0} é superior ao máximo permitido de {1}"
 
 # QUESTIONNAIRE_QR_ITEM_INTEGER_MIN
 #: QUESTIONNAIRE_QR_ITEM_INTEGER_MIN
-msgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_MIN"
 #, fuzzy
+msgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_MIN"
 msgid "The value {0} is less than the allowed minimum of {1}"
 msgstr "O valor {0} é inferior ao mínimo permitido de {1}"
 
 # QUESTIONNAIRE_QR_ITEM_INTEGER_VALUE_EXCEPTION
 #: QUESTIONNAIRE_QR_ITEM_INTEGER_VALUE_EXCEPTION
-msgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_VALUE_EXCEPTION"
 #, fuzzy
+msgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_VALUE_EXCEPTION"
 msgid "An error occurred checking the value: {0}"
 msgstr "Ocorreu um erro ao verificar o valor: {0}"
 
@@ -3997,15 +3999,15 @@ msgstr "A resposta ''{0}'' não está em conformidade com o formato esperado ''{
 
 # QUESTIONNAIRE_QR_ITEM_TIME_MAX
 #: QUESTIONNAIRE_QR_ITEM_TIME_MAX
-msgctxt "QUESTIONNAIRE_QR_ITEM_TIME_MAX"
 #, fuzzy
+msgctxt "QUESTIONNAIRE_QR_ITEM_TIME_MAX"
 msgid "The value {0} is greater than the allowed maximum of {1}"
 msgstr "O valor {0} é superior ao máximo permitido de {1}"
 
 # QUESTIONNAIRE_QR_ITEM_TIME_MIN
 #: QUESTIONNAIRE_QR_ITEM_TIME_MIN
-msgctxt "QUESTIONNAIRE_QR_ITEM_TIME_MIN"
 #, fuzzy
+msgctxt "QUESTIONNAIRE_QR_ITEM_TIME_MIN"
 msgid "The value {0} is less than the allowed minimum of {1}"
 msgstr "O valor {0} é inferior ao mínimo permitido de {1}"
 
@@ -7724,15 +7726,15 @@ msgstr "A referência do sistema do conjunto de valores ''{0}'' termina com um '
 
 # VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_1
 #: VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_1
-msgctxt "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_1"
 #, fuzzy
+msgctxt "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_1"
 msgid "Value set System references must not use the canonical version syntax - the version ''{0}'' should be in the version property, but that already contains ''{1}''"
 msgstr "Conjunto de valores As referências do sistema não devem utilizar a sintaxe da versão canónica - a versão ''{0}'' deve estar na propriedade version, mas esta já contém ''{1}''"
 
 # VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2
 #: VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2
-msgctxt "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2"
 #, fuzzy
+msgctxt "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2"
 msgid "Value set System references must not use the canonical version syntax - the version ''{0}'' should be in the version property, but that already contains ''{1}''"
 msgstr "Conjunto de valores As referências do sistema não devem utilizar a sintaxe da versão canónica - a versão ''{0}'' deve estar na propriedade version, mas esta já contém ''{1}''"
 
@@ -8507,4 +8509,3 @@ msgstr "O atributo XML {0} tem um carácter inválido"
 #, fuzzy
 msgid "The XML encoding is invalid (must be UTF-8)"
 msgstr "A codificação XML é inválida (tem de ser UTF-8)"
-

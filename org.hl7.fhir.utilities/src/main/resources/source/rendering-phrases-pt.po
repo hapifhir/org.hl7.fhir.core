@@ -718,7 +718,7 @@ msgstr "OBTER versões anteriores de recursos (interação vread)"
 #: CAPABILTY_ALLOW_CAP
 #, fuzzy
 msgid "Any FHIR capability may be ''allowed'' by the system unless explicitly marked as ''SHALL NOT''. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case."
-msgstr "Qualquer capacidade FHIR pode ser \\\"permitida\\\" pelo sistema, exceto se for explicitamente assinalada como \\\"NÃO DEVE\\\". Alguns itens são marcados como MAY no Guia de Implementação para destacar a sua potencial relevância para o caso de utilização."
+msgstr "Qualquer capacidade FHIR pode ser ''permitida'' pelo sistema, exceto se for explicitamente assinalada como ''NÃO DEVE''. Alguns itens são marcados como MAY no Guia de Implementação para destacar a sua potencial relevância para o caso de utilização."
 
 # CAPABILTY_SHALL_SUPP
 #: CAPABILTY_SHALL_SUPP
@@ -3271,7 +3271,7 @@ msgstr ""
 
 # R44B_NOT_COMP
 #: R44B_NOT_COMP
-msgid "This is an {0} IG that is not compatible with {1}\\\" because"
+msgid "This is an {0} IG that is not compatible with {1}\" because"
 msgstr ""
 
 # R44B_NOT_IN
@@ -3286,7 +3286,7 @@ msgstr ""
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
-msgid "Packages for both <a href=\\\"{0}\\\">R4 ({1}.r4)</a> and <a href=\\\"{2}\\\">R4B ({3}.r4b)</a> are available."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\"{2}\">R4B ({3}.r4b)</a> are available."
 msgstr ""
 
 # R44B_PROBLEMS
@@ -3296,7 +3296,7 @@ msgstr ""
 
 # R44B_REFERS_TO
 #: R44B_REFERS_TO
-msgid "<a href=\\\"{0}\\\">{1}}</a> refers to the canonical type at {2}"
+msgid "<a href=\"{0}\">{1}}</a> refers to the canonical type at {2}"
 msgstr ""
 
 # R44B_USE_OK
@@ -3705,7 +3705,7 @@ msgstr ""
 
 # SDR_FROM_ELEM
 #: SDR_FROM_ELEM
-msgid "// from Element: <a href=\\\"{0}\\\">extension</a>"
+msgid "// from Element: <a href=\"{0}\">extension</a>"
 msgstr ""
 
 # SDR_GUIDANCE_HERE
@@ -4639,7 +4639,7 @@ msgstr "Atual"
 #: STRUC_DEF_CURR_RULE
 #, fuzzy
 msgid "New records are required to use this value set, but legacy records may use other codes. The definition of ''new record'' is difficult, since systems often create new records based on pre-existing data. Usually ''current'' bindings are mandated by an external authority that makes clear rules around this"
-msgstr "Os novos registos têm de utilizar este conjunto de valores, mas os registos antigos podem utilizar outros códigos. A definição de \\\"novo registo\\\" é difícil, uma vez que os sistemas criam frequentemente novos registos com base em dados pré-existentes. Normalmente, as ligações \\\"actuais\\\" são impostas por uma autoridade externa que estabelece regras claras sobre esta matéria"
+msgstr "Os novos registos têm de utilizar este conjunto de valores, mas os registos antigos podem utilizar outros códigos. A definição de ''novo registo'' é difícil, uma vez que os sistemas criam frequentemente novos registos com base em dados pré-existentes. Normalmente, as ligações ''actuais'' são impostas por uma autoridade externa que estabelece regras claras sobre esta matéria"
 
 # STRUC_DEF_DATE
 #: STRUC_DEF_DATE
@@ -4994,7 +4994,7 @@ msgstr "A matriz JSON para esta propriedade não está presente quando não exis
 #: STRUC_DEF_JSON_NULL
 #, fuzzy
 msgid "JSON: This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
-msgstr "JSON: Este objeto pode ser representado como nulo na estrutura JSON (que conta como \\\"presente\\\" para efeitos de cardinalidade)"
+msgstr "JSON: Este objeto pode ser representado como nulo na estrutura JSON (que conta como ''presente'' para efeitos de cardinalidade)"
 
 # STRUC_DEF_JSON_PRESENT
 #: STRUC_DEF_JSON_PRESENT
@@ -5176,7 +5176,7 @@ msgstr "Não há Resumo, pois este perfil não tem diferencial"
 #: STRUC_DEF_NULL_JSON
 #, fuzzy
 msgid "This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
-msgstr "Este objeto pode ser representado como nulo na estrutura JSON (que conta como \\\"presente\\\" para efeitos de cardinalidade)"
+msgstr "Este objeto pode ser representado como nulo na estrutura JSON (que conta como ''presente'' para efeitos de cardinalidade)"
 
 # STRUC_DEF_OBLIG
 #: STRUC_DEF_OBLIG
@@ -5387,7 +5387,7 @@ msgstr "Requisitos"
 #: STRUC_DEF_REQ_BIND
 #, fuzzy
 msgid "A required binding for additional codes, for us when the binding strength is ''extensible'' or ''preferred''"
-msgstr "Uma ligação necessária para códigos adicionais, por exemplo, quando a força da ligação é \\\"extensível\\\" ou \\\"preferida"
+msgstr "Uma ligação necessária para códigos adicionais, por exemplo, quando a força da ligação é ''extensível'' ou ''preferida''"
 
 # STRUC_DEF_REQ_PATT
 #: STRUC_DEF_REQ_PATT
