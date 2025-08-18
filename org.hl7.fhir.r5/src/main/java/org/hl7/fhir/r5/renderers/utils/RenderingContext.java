@@ -20,7 +20,9 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
+import org.hl7.fhir.r5.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DomainResource;
@@ -30,19 +32,11 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.renderers.utils.Resolver.IReferenceResolver;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.KeyIssuer;
-import org.hl7.fhir.utilities.MarkDownProcessor;
+
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
-import org.hl7.fhir.utilities.StandardsStatus;
-import org.hl7.fhir.utilities.StringPair;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
-import org.hl7.fhir.utilities.xhtml.XhtmlFluent;
-import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 /**
  * Managing Language when rendering 
@@ -286,7 +280,7 @@ public class RenderingContext extends RenderingI18nContext {
   private GenerationRules rules;
   private IReferenceResolver resolver;
   private ILiquidTemplateProvider templateProvider;
-  private IEvaluationContext services;
+  private IHostApplicationServices services;
   private ITypeParser parser;
 
   // i18n related fields
@@ -569,11 +563,11 @@ public class RenderingContext extends RenderingI18nContext {
     return this;
   }
 
-  public IEvaluationContext getServices() {
+  public IHostApplicationServices getServices() {
     return services;
   }
 
-  public RenderingContext setServices(IEvaluationContext services) {
+  public RenderingContext setServices(IHostApplicationServices services) {
     this.services = services;
     return this;
   }
@@ -897,7 +891,7 @@ public class RenderingContext extends RenderingI18nContext {
 
   public String getTranslated(PrimitiveType<?> t) {
 
-      String v = ToolingExtensions.getLanguageTranslation(t, getLocale().toLanguageTag());
+      String v = ExtensionUtilities.getLanguageTranslation(t, getLocale().toLanguageTag());
       if (v != null) {
         return v;
       }
@@ -910,7 +904,7 @@ public class RenderingContext extends RenderingI18nContext {
       return null;
     }
 
-      for (ResourceWrapper e : t.extensions(ToolingExtensions.EXT_TRANSLATION)) {
+      for (ResourceWrapper e : t.extensions(ExtensionDefinitions.EXT_TRANSLATION)) {
         String l = e.extensionString("lang");
         if (l != null && l.equals(getLocale().toLanguageTag())) {
           String v = e.extensionString("content");
@@ -924,7 +918,7 @@ public class RenderingContext extends RenderingI18nContext {
   }
 
   public StringType getTranslatedElement(PrimitiveType<?> t) {
-    StringType v = ToolingExtensions.getLanguageTranslationElement(t, getLocale().toLanguageTag());
+    StringType v = ExtensionUtilities.getLanguageTranslationElement(t, getLocale().toLanguageTag());
     if (v != null) {
       return v;
     }
@@ -938,7 +932,7 @@ public class RenderingContext extends RenderingI18nContext {
   public String getTranslatedCode(Base b, String codeSystem) {
     if (b instanceof org.hl7.fhir.r5.model.Element) {
       org.hl7.fhir.r5.model.Element e = (org.hl7.fhir.r5.model.Element) b;
-      String v = ToolingExtensions.getLanguageTranslation(e, getLocale().toLanguageTag());
+      String v = ExtensionUtilities.getLanguageTranslation(e, getLocale().toLanguageTag());
       if (v != null) {
         return v;
       }
@@ -978,7 +972,7 @@ public class RenderingContext extends RenderingI18nContext {
   }
   
   public String getTranslatedCode(Enumeration<?> e, String codeSystem) {
-    String v = ToolingExtensions.getLanguageTranslation(e, getLocale().toLanguageTag());
+    String v = ExtensionUtilities.getLanguageTranslation(e, getLocale().toLanguageTag());
     if (v != null) {
       return v;
     }
@@ -1011,7 +1005,7 @@ public class RenderingContext extends RenderingI18nContext {
       // first we look through the translation extensions
       for (Element ext : e.getChildrenByName("extension")) {
         String url = ext.getNamedChildValue("url");
-        if (url.equals(ToolingExtensions.EXT_TRANSLATION)) {
+        if (url.equals(ExtensionDefinitions.EXT_TRANSLATION)) {
           Base e1 = ext.getExtensionValue("lang");
 
           if (e1 != null && e1.primitiveValue() != null && e1.primitiveValue().equals(getLocale().toLanguageTag())) {

@@ -15,6 +15,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.ContextUtilities;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -23,7 +24,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper.NamedResourceWrapperList;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -637,7 +638,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
   private Map<String, String> readDisplayHints(ElementDefinition defn) throws DefinitionException {
     Map<String, String> hints = new HashMap<String, String>();
     if (defn != null) {
-      String displayHint = ToolingExtensions.getDisplayHint(defn);
+      String displayHint = ExtensionUtilities.getDisplayHint(defn);
       if (!Utilities.noString(displayHint)) {
         String[] list = displayHint.split(";");
         for (String item : list) {

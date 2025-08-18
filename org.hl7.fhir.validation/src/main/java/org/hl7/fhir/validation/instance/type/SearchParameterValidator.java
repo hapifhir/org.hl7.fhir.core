@@ -6,18 +6,17 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Kind;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Operation;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IssueMessage;
 import org.hl7.fhir.r5.model.SearchParameter;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
-import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 
@@ -51,8 +50,8 @@ public class SearchParameterValidator extends BaseValidator {
     if (cs.hasChild("expression", false)) {
       List<String> bases = new ArrayList<>();
       for (Element b : cs.getChildrenByName("base")) {
-        if (b.hasExtension(ToolingExtensions.EXT_SEARCH_PARAMETER_BASE)) {
-          bases.add(b.getExtensionValue(ToolingExtensions.EXT_SEARCH_PARAMETER_BASE).primitiveValue());
+        if (b.hasExtension(ExtensionDefinitions.EXT_SEARCH_PARAMETER_BASE)) {
+          bases.add(b.getExtensionValue(ExtensionDefinitions.EXT_SEARCH_PARAMETER_BASE).primitiveValue());
         } else {
           bases.add(b.primitiveValue());
         }

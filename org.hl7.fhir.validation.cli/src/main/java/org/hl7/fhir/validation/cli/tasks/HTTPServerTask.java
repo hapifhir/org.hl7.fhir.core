@@ -1,11 +1,6 @@
 package org.hl7.fhir.validation.cli.tasks;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r5.model.Constants;
-import org.hl7.fhir.r5.model.ImplementationGuide;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.utilities.TimeTracker;
-import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.FhirValidatorHttpService;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.Display;
@@ -13,6 +8,8 @@ import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.slf4j.Logger;
+
+import javax.annotation.Nonnull;
 
 @Slf4j
 public class HTTPServerTask extends ValidationEngineTask {
@@ -33,7 +30,7 @@ public class HTTPServerTask extends ValidationEngineTask {
   }
 
   @Override
-  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
+  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
     return Params.hasParam(args, Params.SERVER);
   }
 
@@ -42,11 +39,27 @@ public class HTTPServerTask extends ValidationEngineTask {
   }
 
   @Override
-  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
+  public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
+    checkForInvalidArgs(args);
+    validationEngine.setLogValidationProgress(false);
     FhirValidatorHttpService service = new FhirValidatorHttpService(validationEngine, Integer.parseInt(Params.getParam(args, Params.SERVER)));
     service.startServer();
     log.info("Press any key to stop the server...");
     System.in.read();
     service.stop();
+  }
+
+  private void checkForInvalidArgs(String[] args) {
+    final String[] invalidParams = {
+      Params.WATCH_MODE_PARAM,
+      Params.WATCH_SCAN_DELAY,
+      Params.WATCH_SETTLE_TIME
+    };
+    final String warningText = " is not supported in server mode and will be ignored.";
+    for (String invalidParam : invalidParams) {
+      if (Params.hasParam(args, invalidParam)) {
+        log.warn(invalidParam + warningText);
+      }
+    }
   }
 }

@@ -13,10 +13,7 @@ import java.util.Map.Entry;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.convertors.factory.*;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -28,9 +25,10 @@ import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r5.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -51,7 +49,6 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
@@ -65,6 +62,7 @@ import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
@@ -101,14 +99,13 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.base.Charsets;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 
 @RunWith(Parameterized.class)
-public class ValidationTests implements IEvaluationContext, IValidatorResourceFetcher, IValidationPolicyAdvisor, IDigitalSignatureServices, IDirectPackageProvider {
+public class ValidationTests implements IHostApplicationServices, IValidatorResourceFetcher, IValidationPolicyAdvisor, IDigitalSignatureServices, IDirectPackageProvider {
 
   public class TestSorter implements Comparator<Object> {
 
@@ -251,9 +248,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       val.getSettings().setLanguages(content.get("language").getAsString());
       val.setValidationLanguage(val.getSettings().getLanguages().getChosen());
     } else {
-      val.getSettings().setLanguages(null);      
+      val.getSettings().setLanguages(null);
+      val.setValidationLanguage(null);
     }
-
     if (content.has("certificate")) {
       val.getSettings().getCertificates().put(content.get("certificate").getAsString(), TestingUtilities.loadTestResourceBytes("validator", content.get("certificate").getAsString()));
     }
@@ -284,10 +281,6 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("allowed-extension-domains"))
       for (JsonElement a : content.getAsJsonArray("allowed-extension-domains"))
         val.getExtensionDomains().add(a.getAsString());
-    if (content.has("language"))
-      val.setValidationLanguage(content.get("language").getAsString());
-    else
-      val.setValidationLanguage(null);
     val.setForPublication(content.has("for-publication") && "true".equals(content.get("for-publication").getAsString()));
     if (content.has("default-version")) {
       val.getSettings().setVersionFlexible(content.get("default-version").getAsBoolean());
@@ -634,6 +627,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
           return VersionConvertorFactory_10_50.convertResource(new org.hl7.fhir.dstu2.formats.JsonParser().parse(inputStream));
         else if (org.hl7.fhir.r4.model.Constants.VERSION.equals(version) || "4.0".equals(version))
           return VersionConvertorFactory_40_50.convertResource(new org.hl7.fhir.r4.formats.JsonParser().parse(inputStream));
+        else if (org.hl7.fhir.r4b.model.Constants.VERSION.equals(version) || "4.3".equals(version))
+          return VersionConvertorFactory_43_50.convertResource(new org.hl7.fhir.r4b.formats.JsonParser().parse(inputStream));
         else
           throw new FHIRException("unknown version " + version);
       } else {
@@ -647,6 +642,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
           return VersionConvertorFactory_10_50.convertResource(new org.hl7.fhir.dstu2.formats.XmlParser().parse(inputStream));
         else if (org.hl7.fhir.r4.model.Constants.VERSION.equals(version) || "4.0".equals(version))
           return VersionConvertorFactory_40_50.convertResource(new org.hl7.fhir.r4.formats.XmlParser().parse(inputStream));
+        else if (org.hl7.fhir.r4b.model.Constants.VERSION.equals(version) || "4.3".equals(version))
+          return VersionConvertorFactory_43_50.convertResource(new org.hl7.fhir.r4b.formats.XmlParser().parse(inputStream));
         else
           throw new FHIRException("unknown version " + version);
       }
@@ -672,9 +669,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         TestingUtilities.loadTestResourceBytes("validator", "outcomes", "java", name.replace("/", "-")+"-"+mode+".json") :
         " { \"resourceType\" : \"OperationOutcome\" }".getBytes();
     OperationOutcome goal = (OperationOutcome) new JsonParser().parse(cnt);
-    OperationOutcome actual = OperationOutcomeUtilities.createOutcomeSimple(errors);
+    OperationOutcome actual = content.has("ids-in-errors") ? OperationOutcomeUtilities.createOutcomeSimpleWithIds(errors) :  OperationOutcomeUtilities.createOutcomeSimple(errors);
     actual.setText(null);
-    actual.getIssue().forEach(iss -> iss.removeExtension(ToolingExtensions.EXT_ISSUE_SLICE_INFO));
+    actual.getIssue().forEach(iss -> iss.removeExtension(ExtensionDefinitions.EXT_ISSUE_SLICE_INFO));
     
     String json = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(actual);
     FileUtilities.stringToFile(json, Utilities.path(outputFolder, name.replace("/", "-")+"-"+mode+".json"));
@@ -693,7 +690,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     for (OperationOutcomeIssueComponent issActual : actual.getIssue()) {
       if (PRINT_OUTPUT_TO_CONSOLE) {
         logOutput(issActual.toString());
-        for (Extension ext : issActual.getExtensionsByUrl(ToolingExtensions.EXT_ISSUE_INNER_MESSAGE)) {
+        for (Extension ext : issActual.getExtensionsByUrl(ExtensionDefinitions.EXT_ISSUE_INNER_MESSAGE)) {
           logOutput(innerToString(ext));
         }
       }
@@ -789,7 +786,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
                || (!t.hasExpression() && !iss.hasExpression())) &&
           t.getCode() == iss.getCode() && t.getSeverity() == iss.getSeverity() && 
           (t.hasDiagnostics() ? t.getDiagnostics().equals(iss.getDiagnostics()) : !iss.hasDiagnostics()) && 
-          (t.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER) != null ? t.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER).equals(iss.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER)) : iss.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER) == null) && 
+          (t.getExtensionString(ExtensionDefinitions.EXT_ISSUE_SERVER) != null ? t.getExtensionString(ExtensionDefinitions.EXT_ISSUE_SERVER).equals(iss.getExtensionString(ExtensionDefinitions.EXT_ISSUE_SERVER)) : iss.getExtensionString(ExtensionDefinitions.EXT_ISSUE_SERVER) == null) && 
           textMatches(t.getDetails().getText(), iss.getDetails().getText())) {
         return t;
       }
@@ -819,12 +816,12 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   @Override
-  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
+  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     return new ArrayList<Base>();
   }
 
   @Override
-  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
+  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     return null;
   }
 

@@ -307,6 +307,7 @@ public class I18nConstants {
   public static final String FHIRPATH_DISCRIMINATOR_RESOLVE_NO_TYPE = "FHIRPATH_DISCRIMINATOR_RESOLVE_NO_TYPE";
   public static final String FHIRPATH_DISCRIMINATOR_TYPE_NONE = "FHIRPATH_DISCRIMINATOR_TYPE_NONE";
   public static final String FHIRPATH_FOCUS = "FHIRPATH_FOCUS";
+  public static final String FHIRPATH_PARAMETER_CARD = "FHIRPATH_PARAMETER_CARD";
   public static final String FHIRPATH_HO_HOST_SERVICES = "FHIRPATH_HO_HOST_SERVICES";
   public static final String FHIRPATH_INVALID_TYPE = "FHIRPATH_INVALID_TYPE";
   public static final String FHIRPATH_LEFT_VALUE = "FHIRPATH_LEFT_VALUE";
@@ -1076,6 +1077,7 @@ public class I18nConstants {
   public static final String UNICODE_XML_BAD_CHARS = "UNICODE_XML_BAD_CHARS";
   public static final String UNKNOWN_CODESYSTEM = "UNKNOWN_CODESYSTEM";
   public static final String UNKNOWN_CODESYSTEM_VERSION = "UNKNOWN_CODESYSTEM_VERSION";
+  public static final String UNKNOWN_CODESYSTEM_VERSION_NONE = "UNKNOWN_CODESYSTEM_VERSION_NONE";
   public static final String UNKNOWN_CODE_IN = "Unknown_Code_in";
   public static final String UNKNOWN_CODE_IN_FRAGMENT = "UNKNOWN_CODE_IN_FRAGMENT";
   public static final String UNKNOWN_CODE_IN_VERSION = "Unknown_Code_in_Version";
@@ -1195,6 +1197,7 @@ public class I18nConstants {
   public static final String VALUESET_INCLUDE_SYSTEM_ABSOLUTE = "VALUESET_INCLUDE_SYSTEM_ABSOLUTE";
   public static final String VALUESET_INCLUDE_SYSTEM_ABSOLUTE_FRAG = "VALUESET_INCLUDE_SYSTEM_ABSOLUTE_FRAG";
   public static final String VALUESET_INCLUDE_WRONG_CS_OID = "VALUESET_INCLUDE_WRONG_CS_OID";
+  public static final String VALUESET_INCLUDE_WRONG_CS_OID_PLURAL = "VALUESET_INCLUDE_WRONG_CS_OID_PLURAL";
   public static final String VALUESET_INCLUDE_WRONG_VS = "VALUESET_INCLUDE_WRONG_VS";
   public static final String VALUESET_INCLUDE_WRONG_VS_HINT = "VALUESET_INCLUDE_WRONG_VS_HINT";
   public static final String VALUESET_INCLUDE_WRONG_VS_MANY = "VALUESET_INCLUDE_WRONG_VS_MANY";
@@ -1343,6 +1346,7 @@ public class I18nConstants {
   public static final String TEXT_LINK_NO_DATA = "TEXT_LINK_NO_DATA";
   public static final String TEXT_LINK_SELECTOR_INVALID = "TEXT_LINK_SELECTOR_INVALID";
   public static final String SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND = "SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND";
+  public static final String SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND_VER = "SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND_VER";
   public static final String VALUESET_BAD_FILTER_VALUE_VALID_CODE_INACTIVE = "VALUESET_BAD_FILTER_VALUE_VALID_CODE_INACTIVE";
   public static final String XHTML_CONTROL_NO_SOURCE = "XHTML_CONTROL_NO_SOURCE";
   public static final String XHTML_XHTML_MIXED_LANG = "XHTML_XHTML_MIXED_LANG";
@@ -1431,4 +1435,6 @@ public class I18nConstants {
   public static final String SD_ED_BIND_ALL_LOINC_CODES = "SD_ED_BIND_ALL_LOINC_CODES";
   public static final String SD_ED_BIND_ALLSCT_CODES = "SD_ED_BIND_ALLSCT_CODES";
   public static final String SD_ED_BIND_ALL_CPT_CODES = "SD_ED_BIND_ALL_CPT_CODES";
+  public static final String NO_CODE_PROVIDED = "NO_CODE_PROVIDED";
+  public static final String NO_CODE_PROVIDED_VERSION = "NO_CODE_PROVIDED_VERSION";
 }

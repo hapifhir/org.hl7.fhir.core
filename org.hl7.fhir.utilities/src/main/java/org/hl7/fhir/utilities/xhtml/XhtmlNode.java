@@ -231,7 +231,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     if (getChildNodes().isInLink() || name.equals("a")) {
       node.getChildNodes().setInLink(true);
     }
-    if (Utilities.existsInList(name, "b", "big", "i", "small", "tt", "abbr", "acronym", "cite", "code", "dfn", "em", "kbd", "strong", "samp", "var", "a", "bdo", "br", "img", "map", "object", "q", "script", "span", "sub", "sup", " button", "input", "label", "select", "textarea")) {
+    if (Utilities.existsInList(name, "b", "big", "i", "small", "tt", "abbr", "acronym", "cite", "code", "dfn", "em", "kbd", "strong", "samp", "var", "a", "bdo", "br", "img", "map", "object", "q", "script", "span", "sub", "sup", " button", "input", "label", "select", "textarea", "style", "script")) {
       node.notPretty();
     }        
     return node;
@@ -331,8 +331,9 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   public boolean allChildrenAreText() {
     boolean res = true;
     if (hasChildren()) {
-      for (XhtmlNode n : childNodes)
+      for (XhtmlNode n : childNodes) {
         res = res && n.getNodeType() == NodeType.Text;
+      }
     }
     return res;
   }
@@ -752,12 +753,16 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
   public XhtmlNode input(String name, String type, String placeholder, int size) {
     XhtmlNode p = new XhtmlNode(NodeType.Element, "input");
-    p.attribute("name", name);
+    if (name != null) {
+      p.attribute("name", name);
+    }
     p.attribute("type", type);
     if (placeholder != null) {
       p.attribute("placeholder", placeholder);
     }
-    p.attribute("size", Integer.toString(size));
+    if (size > 0) {
+        p.attribute("size", Integer.toString(size));
+    }
     addChildNode(p);
     return p;
   }
@@ -1091,7 +1096,9 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
   public XhtmlNode button(String class_, String title) {
     XhtmlNode btn = addTag("button");
-    btn.attribute("class", class_);
+    if (class_ != null) {
+      btn.attribute("class", class_);
+    }
     if (title != null) {
       btn.attribute("title", title);
     }
@@ -1203,10 +1210,15 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     }
   }
 
-  
   public void addChildNode(XhtmlNode node) {
     checkWhenAddingNode(node);
-    getChildNodes().add(node);    
+    getChildNodes().add(node);
+  }
+
+  @Override
+  public void addChild(XhtmlNode node) {
+    checkWhenAddingNode(node);
+    getChildNodes().add(node);
   }
 
 
@@ -1361,6 +1373,26 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
       }
     }
     return count;
+  }
+
+  public void js(String s) {
+    XhtmlNode x = addTag("script");
+    x.tx("\r\n"+s+"\r\n");
+  }
+  public void jsSrc(String s) {
+    XhtmlNode x = addTag("script");
+    x.setAttribute("src", s);
+    x.tx(" ");
+  }
+  public void styles(String s) {
+    XhtmlNode x = addTag("style");
+    x.tx("\r\n"+s+"\r\n");
+  }
+
+  public void styleChildren(String style) {
+    for (XhtmlNode t : getChildNodes()) {
+      t.style(style);
+    }
   }
 
 }

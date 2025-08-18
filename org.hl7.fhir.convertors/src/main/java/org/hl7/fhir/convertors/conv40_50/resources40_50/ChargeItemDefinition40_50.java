@@ -92,8 +92,8 @@ public class ChargeItemDefinition40_50 {
       tgt.setApprovalDateElement(Date40_50.convertDate(src.getApprovalDateElement()));
     if (src.hasLastReviewDate())
       tgt.setLastReviewDateElement(Date40_50.convertDate(src.getLastReviewDateElement()));
-    if (src.hasEffectivePeriod())
-      tgt.setEffectivePeriod(Period40_50.convertPeriod(src.getEffectivePeriod()));
+//    if (src.hasEffectivePeriod())
+//      tgt.setEffectivePeriod(Period40_50.convertPeriod(src.getEffectivePeriod()));
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.r4.model.Reference t : src.getInstance()) tgt.addInstance(Reference40_50.convertReference(t));
@@ -144,8 +144,8 @@ public class ChargeItemDefinition40_50 {
       tgt.setApprovalDateElement(Date40_50.convertDate(src.getApprovalDateElement()));
     if (src.hasLastReviewDate())
       tgt.setLastReviewDateElement(Date40_50.convertDate(src.getLastReviewDateElement()));
-    if (src.hasEffectivePeriod())
-      tgt.setEffectivePeriod(Period40_50.convertPeriod(src.getEffectivePeriod()));
+//    if (src.hasEffectivePeriod())
+//      tgt.setEffectivePeriod(Period40_50.convertPeriod(src.getEffectivePeriod()));
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.r5.model.Reference t : src.getInstance()) tgt.addInstance(Reference40_50.convertReference(t));

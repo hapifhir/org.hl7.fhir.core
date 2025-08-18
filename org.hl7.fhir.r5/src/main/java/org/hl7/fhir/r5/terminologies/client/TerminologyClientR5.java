@@ -58,7 +58,7 @@ public class TerminologyClientR5 implements ITerminologyClient {
 
     @Override
     public ITerminologyClient makeClient(String id, String url, String userAgent, ToolingClientLogger logger) throws URISyntaxException {
-      return new TerminologyClientR5(id, checkEndsWith("/r4", url), userAgent);
+      return new TerminologyClientR5(id, checkEndsWith("/r5", url), userAgent);
     }
 
     private String checkEndsWith(String term, String url) {

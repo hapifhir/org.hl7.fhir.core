@@ -48,25 +48,17 @@ import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.LanguageUtils;
-import org.hl7.fhir.r5.extensions.ExtensionConstants;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r5.model.PackageInformation;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
@@ -85,7 +77,7 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
@@ -176,7 +168,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (valueset != null) {
       opContext.note("vs = "+valueset.getVersionedUrl());
       opContext.seeContext(valueset.getVersionedUrl());
-      for (Extension s : valueset.getExtensionsByUrl(ExtensionConstants.EXT_VSSUPPLEMENT)) {
+      for (Extension s : valueset.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
         requiredSupplements.add(s.getValue().primitiveValue());
       }
 
@@ -222,8 +214,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   private void analyseComponent(ConceptSetComponent i, String name) {
     opContext.deadCheck("analyse Component "+name);
-    if (i.getSystemElement().hasExtension(ToolingExtensions.EXT_VALUESET_SYSTEM)) {
-      String ref = i.getSystemElement().getExtensionString(ToolingExtensions.EXT_VALUESET_SYSTEM);
+    if (i.getSystemElement().hasExtension(ExtensionDefinitions.EXT_VALUESET_SYSTEM)) {
+      String ref = i.getSystemElement().getExtensionString(ExtensionDefinitions.EXT_VALUESET_SYSTEM);
       if (ref.startsWith("#")) {
         String id = ref.substring(1);
         for (ValidationContextResourceProxy t : localContext.getResources()) {
@@ -271,8 +263,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.SUPPLEMENT)) {
             if (context.isNoTerminologyServer()) {
               if (c.hasVersion()) {
-                String msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION, c.getSystem(), c.getVersion() , resolveCodeSystemVersions(c.getSystem()).toString());
-                unknownSystems.add(c.getSystem()+"|"+c.getVersion());
+                String msg = getUnknownCodeSystemMessage(c.getSystem(), c.getVersion());
                 res = new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".coding["+i+"].system", msg, OpIssueCode.NotFound, null)).setUnknownSystems(unknownSystems);
               } else {
                 String msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, c.getSystem(), c.getVersion());
@@ -426,6 +417,19 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
   }
 
+  private String getUnknownCodeSystemMessage(String system, String version) {
+    Set<String> set = resolveCodeSystemVersions(system);
+    String msg;
+    if (set.isEmpty()) {
+      msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION_NONE, system, version);
+      unknownSystems.add(system);
+    } else {
+      msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION, system, version, CommaSeparatedStringBuilder.join(",", Utilities.sorted(set)));
+      unknownSystems.add(system + "|" + version);
+    }
+    return msg;
+  }
+
   private void checkValueSetLoad(ValidationProcessInfo info) {
     int serverCount = getServerLoad(info);
     // There's a trade off here: if we're going to hit the server inside the components, then
@@ -529,8 +533,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return cs;
   }
 
-  public List<String> resolveCodeSystemVersions(String system) {
-    List<String> res = new ArrayList<>();
+  public Set<String> resolveCodeSystemVersions(String system) {
+    Set<String> res = new HashSet<>();
     for (CodeSystem t : localSystems) {
       if (t.getUrl().equals(system) && t.hasVersion()) {
         res.add(t.getVersion());
@@ -625,8 +629,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
               warningMessage = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, system);
               unknownSystems.add(system);
             } else {
-              warningMessage = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION, system, wv, resolveCodeSystemVersions(system).toString());
-              unknownSystems.add(system+"|"+wv);
+              warningMessage = getUnknownCodeSystemMessage(system, wv);
             }
             if (!inExpansion) {
               if (valueset != null && valueset.hasExpansion()) {
@@ -799,7 +802,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   private void checkValueSetOptions() {
     if (valueset != null) {
-      for (Extension ext : valueset.getCompose().getExtensionsByUrl("http://hl7.org/fhir/tools/StructureDefinition/valueset-expansion-parameter")) {
+      for (Extension ext : valueset.getCompose().getExtensionsByUrl(ExtensionDefinitions.EXT_VS_EXP_PARAM_NEW, ExtensionDefinitions.EXT_VS_EXP_PARAM_OLD)) {
         var name = ext.getExtensionString("name");
         var value = ext.getExtensionByUrl("value").getValue();
         if ("displayLanguage".equals(name)) {
@@ -892,6 +895,12 @@ public class ValueSetValidator extends ValueSetProcessBase {
       cs.setContent(CodeSystemContentMode.COMPLETE);
       return cs; 
     }
+    if (Utilities.isAbsoluteUrl(system)) {
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, system, version);
+      if (sd != null) {
+        return CodeSystemUtilities.convertSD(sd);
+      }
+    }
     return null;
   }
 
@@ -943,6 +952,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   private ValidationResult validateCode(String path, Coding code, CodeSystem cs, CodeableConcept vcc, ValidationProcessInfo info) {
+    if (code.getCode() == null) {
+      String msg = context.formatMessage(cs.getVersion() == null ? I18nConstants.NO_CODE_PROVIDED :  I18nConstants.NO_CODE_PROVIDED_VERSION, cs.getUrl(),  cs.getVersion());
+      return new ValidationResult(IssueSeverity.WARNING, msg, makeIssue(IssueSeverity.WARNING, IssueType.VALUE, path+".code", msg, OpIssueCode.InvalidData, null));
+    }
     ConceptDefinitionComponent cc = cs.hasUserData(UserDataNames.tx_cs_special) ? ((SpecialCodeSystem) cs.getUserData(UserDataNames.tx_cs_special)).findConcept(code) : findCodeInConcept(cs.getConcept(), code.getCode(), cs.getCaseSensitive(), allAltCodes);
     if (cc == null) {
       cc = findSpecialConcept(code, cs);
@@ -1177,6 +1190,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
   
   private ConceptDefinitionComponent findCodeInConcept(List<ConceptDefinitionComponent> concept, String code, boolean caseSensitive, AlternateCodesProcessingRules altCodeRules) {
+    if (code == null) {
+      return null;
+    }
     for (ConceptDefinitionComponent cc : concept) {
       if (code.equals(cc.getCode()) || (!caseSensitive && (code.equalsIgnoreCase(cc.getCode())))) {
         return cc;
