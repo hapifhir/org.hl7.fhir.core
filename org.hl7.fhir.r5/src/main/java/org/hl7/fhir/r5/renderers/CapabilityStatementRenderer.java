@@ -1373,17 +1373,19 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     ResourceSearchParams sParams = new ResourceSearchParams();
     String capExpectation;
     SingleParam param;
-    for ( CapabilityStatementRestResourceSearchParamComponent sp : r.getSearchParam()) {
-      capExpectation = expectationForDisplay(sp,EXPECTATION);
-      if (Utilities.noString(capExpectation)) {
-        capExpectation = "supported";
+    if (r == null) {
+      for (CapabilityStatementRestResourceSearchParamComponent sp : r.getSearchParam()) {
+        capExpectation = expectationForDisplay(sp, EXPECTATION);
+        if (Utilities.noString(capExpectation)) {
+          capExpectation = "supported";
+        }
+        if (r == null)
+          param = new SingleParam(sp.getName(), sp.getDefinition(), sp.getType().toCode(), sp.getDocumentation(), capExpectation);
+        else
+          param = new SingleParam(sp.getName(), sp.getDefinition(), sp.getType().toCode(), sp.getDocumentation(), capExpectation, r.getType().toLowerCase());
+        sParams.addIndividualbyName(param.getName(), param);
+        sParams.addIndividualbyExp(capExpectation, param);
       }
-      if (r==null)
-        param = new SingleParam(sp.getName(),sp.getDefinition(),sp.getType().toCode(),sp.getDocumentation(),capExpectation);
-      else
-        param = new SingleParam(sp.getName(),sp.getDefinition(),sp.getType().toCode(),sp.getDocumentation(),capExpectation, r.getType().toLowerCase());
-      sParams.addIndividualbyName(param.getName(), param);
-      sParams.addIndividualbyExp(capExpectation,param);
     }
     //CombinedSearchParam component;
     if (r!=null) {
