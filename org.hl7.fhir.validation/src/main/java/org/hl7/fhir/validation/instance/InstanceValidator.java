@@ -85,28 +85,12 @@ import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.TypedElementDefinition;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.formats.FormatUtilities;
-import org.hl7.fhir.r5.model.Address;
-import org.hl7.fhir.r5.model.Attachment;
-import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Base.ProfileSource;
 import org.hl7.fhir.r5.model.Base.ValidationInfo;
 import org.hl7.fhir.r5.model.Base.ValidationMode;
 import org.hl7.fhir.r5.model.Base.ValidationReason;
-import org.hl7.fhir.r5.model.BooleanType;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.Constants;
-import org.hl7.fhir.r5.model.ContactPoint;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.DateTimeType;
-import org.hl7.fhir.r5.model.DateType;
-import org.hl7.fhir.r5.model.DecimalType;
-import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.AdditionalBindingPurposeVS;
 import org.hl7.fhir.r5.model.ElementDefinition.AggregationMode;
 import org.hl7.fhir.r5.model.ElementDefinition.ConstraintSeverity;
@@ -122,38 +106,14 @@ import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
-import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.HumanName;
-import org.hl7.fhir.r5.model.Identifier;
-import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideGlobalComponent;
-import org.hl7.fhir.r5.model.InstantType;
-import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r5.model.Period;
-import org.hl7.fhir.r5.model.PrimitiveType;
-import org.hl7.fhir.r5.model.Property;
-import org.hl7.fhir.r5.model.Quantity;
-import org.hl7.fhir.r5.model.Range;
-import org.hl7.fhir.r5.model.Ratio;
-import org.hl7.fhir.r5.model.Reference;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.SampledData;
-import org.hl7.fhir.r5.model.SearchParameter;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.ExtensionContextType;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.TimeType;
-import org.hl7.fhir.r5.model.Timing;
-import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.model.UrlType;
-import org.hl7.fhir.r5.model.UsageContext;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
@@ -3630,6 +3590,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else {
         if (type.equals("canonical")) {
           ReferenceValidationPolicy rp = policyAdvisor.policyForReference(this, valContext, path, url, refType);
+          url = checkManifest(url);
           if (rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE || rp == ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS || rp == ReferenceValidationPolicy.CHECK_VALID) {
             try {
               Resource r = null;
@@ -3668,6 +3629,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     return ok;
+  }
+
+  private String checkManifest(String url) {
+    if (url.contains("|")) {
+      return url;
+    }
+    if (context.getExpansionParameters() != null) {
+      for (Parameters.ParametersParameterComponent p : context.getExpansionParameters().getParameter()) {
+        if (Utilities.existsInList(p.getName(), "system-version", "default-valueset-version", "default-canonical-version")) {
+          String v = p.getValue().primitiveValue();
+          if (!Utilities.noString(v) && v.startsWith(url)) {
+            return v;
+          }
+        }
+      }
+    }
+    return url;
   }
 
   private boolean isExtensionThatMatters(Element element) {
