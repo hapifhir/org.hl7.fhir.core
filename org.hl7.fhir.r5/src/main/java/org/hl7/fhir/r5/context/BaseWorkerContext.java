@@ -3200,7 +3200,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
       try {
 
-        logger.logDebugMessage(LogCategory.GENERATE,"Generating snapshot for "+ structureDefinition.getVersionedUrl());
+        // logger.logDebugMessage(LogCategory.GENERATE,"Generating snapshot for "+ structureDefinition.getVersionedUrl());
 
        // structureDefinition.setGeneratingSnapshot(true);
         try {
