@@ -818,6 +818,17 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   }
 
 
+  public XhtmlNode sepBr() {
+    // if there's already text, add the separator. otherwise, we'll add it next time
+    if (!seperated) {
+      seperated = true;
+      return this;
+    }
+    br();
+    return this;
+  }
+
+
   // more fluent
   
   public XhtmlNode colspan(String n) {
