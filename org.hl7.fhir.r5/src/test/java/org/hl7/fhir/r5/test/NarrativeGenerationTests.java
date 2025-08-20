@@ -292,7 +292,7 @@ public class NarrativeGenerationTests {
     FileUtilities.stringToFile(expected, expectedFileName);
     FileUtilities.stringToFile(actual, actualFileName);
     String msg = new CompareUtilities().checkXMLIsSame(id, expectedFileName, actualFileName);
-    //Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
+    Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
 
     String disp = RendererFactory.factory(source, rc).buildSummary(ResourceWrapper.forResource(rc.getContextUtilities(), source));
     expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + ".txt"));
@@ -302,7 +302,7 @@ public class NarrativeGenerationTests {
     FileUtilities.stringToFile(expected, expectedFileName);
     FileUtilities.stringToFile(actual, actualFileName);
     msg = new CompareUtilities().checkTextIsSame(id, expected, actual);
-    //Assertions.assertTrue(msg == null, "Summary Output does not match expected: "+msg);
+    Assertions.assertTrue(msg == null, "Summary Output does not match expected: "+msg);
     
     //    
 //    if (test.isMeta()) {
