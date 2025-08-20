@@ -464,4 +464,5 @@ class SemverParserTest {
       String.format("Expected '%s' to be invalid, but it was parsed successfully with parts: %s",
         input, result.isSuccess() ? result.getParts() : "N/A"));
   }
+  
 }
