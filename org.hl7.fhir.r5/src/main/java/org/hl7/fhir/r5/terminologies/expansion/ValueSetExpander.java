@@ -281,7 +281,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (designations == null) {
         designations = new ArrayList<>();
       }
-      designations.add(new ConceptDefinitionDesignationComponent().setLanguage(dispLang).setValue(display).setUse(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/designation-usage").setCode("display")));
+      designations.add(new ConceptDefinitionDesignationComponent().setLanguage(dispLang).setValue(display).setUse(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra").setCode("preferredForLanguage")));
       pref = findMatchingDesignation(designations);
       if (pref != null) {
         n.setDisplay(pref.getValue());
@@ -480,7 +480,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
   private boolean isDisplay(ConceptDefinitionDesignationComponent cd, boolean def) {
-    return (def && !cd.hasUse()) || (cd.hasUse() && cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display"));
+    return (def && !cd.hasUse())
+      || (cd.hasUse() && cd.getUse().is("http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra", "preferredForLanguage"))
+      || (cd.hasUse() && cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display"));
   }
 
   private boolean filterContainsCode(List<ValueSet> filters, String system, String code, ValueSetExpansionComponent exp) {

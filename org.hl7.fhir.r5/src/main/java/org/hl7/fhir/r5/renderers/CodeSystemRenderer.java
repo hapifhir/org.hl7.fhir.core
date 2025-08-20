@@ -685,7 +685,8 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
   private String getDisplay(String lang, ConceptDefinitionComponent c) {
     for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) {
-      if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display") && cd.hasLanguage() && cd.getLanguage().equals(lang)) {
+      if ((cd.getUse().is("http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra", "preferredForLanguage") || cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display"))
+          && cd.hasLanguage() && cd.getLanguage().equals(lang)) {
         return cd.getValue();
       }
     }
