@@ -312,7 +312,7 @@ public class VersionUtilities {
     version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
     return version != null && (version.startsWith("4.0")
       // pre-release versions
-      || version.startsWith("3.2") || version.startsWith("3.3") || version.startsWith("3.4") || version.startsWith("3.5"));
+      || version.startsWith("3.2") || version.startsWith("3.3") || version.startsWith("3.5") || version.startsWith("3.5a")); // todo: 3.5a is not legal :-(
   }
 
   /**
@@ -434,7 +434,11 @@ public class VersionUtilities {
 
 
   /**
-   * returns true if this is a valid semver. we accept major.minor without a patch. This one does not accept the codes such as RX
+   * returns true if this is a valid semver.
+   *
+   * Note that we accept major.minor without a patch (but maybe with labels).
+   *
+   * This routine does not accept the codes such as RX
    */
   public static boolean isSemVer(@Nullable String version) {
     if (Utilities.noString(version)) {
@@ -1113,7 +1117,7 @@ public class VersionUtilities {
   /**
    * given a range of core versions, list all the ones in the range (accepts either version of special values, returns actual versions)
    */
-  public static List<String> iterateCoreVersions(@Nonnull String startVer, @Nonnull String stopVer) {
+  public static List<String> iterateCorePublishedVersions(@Nonnull String startVer, @Nonnull String stopVer) {
     startVer = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(startVer), "startVer"));
     stopVer = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(stopVer), "stopVer"));
     List<String> result = new ArrayList<>();

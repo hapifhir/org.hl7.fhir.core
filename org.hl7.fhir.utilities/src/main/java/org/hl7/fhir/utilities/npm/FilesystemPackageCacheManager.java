@@ -319,7 +319,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (version.startsWith("file:")) {
       throw new FHIRException("Cannot add package " + id + " to the package cache - the version '" + version + "' is illegal in this context");
     }
-    if (Utilities.existsInList(version, "current", "dev") || VersionUtilities.isSemVer(version)) {
+    if (!(Utilities.existsInList(version, "current", "dev") || VersionUtilities.isSemVer(version))) {
       throw new FHIRException("Cannot add package " + id + " to the package cache - the version '" + version + "' is illegal - must be a valid SemVer, or 'current' or 'dev'");
     }
   }

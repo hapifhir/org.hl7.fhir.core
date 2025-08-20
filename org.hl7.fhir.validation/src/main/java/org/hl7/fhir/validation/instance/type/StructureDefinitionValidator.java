@@ -519,7 +519,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         endVer = context.getVersion();
       }
     }
-    List<String> versionList = VersionUtilities.iterateCoreVersions(startVer, endVer);
+    List<String> versionList = VersionUtilities.iterateCorePublishedVersions(startVer, endVer);
     for (String v : versionList) {
       IWorkerContext ctxt;
       if (VersionUtilities.versionMatches(context.getVersion(), v)) {
@@ -1375,9 +1375,9 @@ public class StructureDefinitionValidator extends BaseValidator {
         // just because we can't resolve it directly doesn't mean that terminology server can't. Check with it
 
         if (warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs != null || serverSupportsValueSet(ref), I18nConstants.SD_ED_BIND_UNKNOWN_VS, path, ref)) {
-          ok = rule(errors, "2025-07-15", IssueType.BUSINESSRULE, stack.getLiteralPath(), !vs.hasUserData(UserDataNames.RESOURCE_INTERNAL_USE_ONLY), I18nConstants.RESOURCE_INTERNAL_USE_ONLY, "ValueSet", vs.getSourcePackage() != null ? vs.getSourcePackage().getVID() : "??") && ok;
           if (vs != null) {
-            if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs instanceof ValueSet, I18nConstants.SD_ED_BIND_NOT_VS, path, ref, vs.fhirType())) {              
+            ok = rule(errors, "2025-07-15", IssueType.BUSINESSRULE, stack.getLiteralPath(), !vs.hasUserData(UserDataNames.RESOURCE_INTERNAL_USE_ONLY), I18nConstants.RESOURCE_INTERNAL_USE_ONLY, "ValueSet", vs.getSourcePackage() != null ? vs.getSourcePackage().getVID() : "??") && ok;
+            if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs instanceof ValueSet, I18nConstants.SD_ED_BIND_NOT_VS, path, ref, vs.fhirType())) {
               ValueSet vsr = (ValueSet) vs;
               if (!"example".equals(binding.getNamedChildValue("strength"))) {
                 warning(errors, "2024-09-17", IssueType.BUSINESSRULE, stack.getLiteralPath(), !vsr.getExperimental() || experimental, I18nConstants.SD_ED_EXPERIMENTAL_BINDING, path, ref);
@@ -1424,9 +1424,9 @@ public class StructureDefinitionValidator extends BaseValidator {
         // just because we can't resolve it directly doesn't mean that terminology server can't. Check with it
 
         if (warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs != null || serverSupportsValueSet(ref), I18nConstants.SD_ED_BIND_UNKNOWN_VS, path, ref)) {
-          ok = rule(errors, "2025-07-15", IssueType.BUSINESSRULE, stack.getLiteralPath(), !vs.hasUserData(UserDataNames.RESOURCE_INTERNAL_USE_ONLY), I18nConstants.RESOURCE_INTERNAL_USE_ONLY, "ValueSet", vs.getSourcePackage() != null ? vs.getSourcePackage().getVID() : "??") && ok;
           if (vs != null) {
-            if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs instanceof ValueSet, I18nConstants.SD_ED_BIND_NOT_VS, path, ref, vs.fhirType())) {              
+            ok = rule(errors, "2025-07-15", IssueType.BUSINESSRULE, stack.getLiteralPath(), !vs.hasUserData(UserDataNames.RESOURCE_INTERNAL_USE_ONLY), I18nConstants.RESOURCE_INTERNAL_USE_ONLY, "ValueSet", vs.getSourcePackage() != null ? vs.getSourcePackage().getVID() : "??") && ok;
+            if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs instanceof ValueSet, I18nConstants.SD_ED_BIND_NOT_VS, path, ref, vs.fhirType())) {
               ValueSet vsr = (ValueSet) vs;
               warning(errors, "2024-09-17", IssueType.BUSINESSRULE, stack.getLiteralPath(), !vsr.getExperimental() || experimental, I18nConstants.SD_ED_EXPERIMENTAL_BINDING, path, ref);
             } else {

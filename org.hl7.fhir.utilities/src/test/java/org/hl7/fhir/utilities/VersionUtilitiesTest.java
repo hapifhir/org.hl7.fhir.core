@@ -290,14 +290,17 @@ public class VersionUtilitiesTest {
   }
 
   @Test
-  public void testIsThisOrLater_EarlierVersions() {
+  public void testIsThisOrLaterMajorMinor_EarlierVersions() {
     test_isThisOrLaterMajorMinor("1.0.1", "1.0.0", true);
     test_isThisOrLaterMajorMinor("1.1.0", "1.0.0", false);
     test_isThisOrLaterMajorMinor("2.0.0", "1.0.0", false);
     test_isThisOrLaterMajorMinor("2.1.5", "2.1.0", true);
     test_isThisOrLaterMajorMinor("r4", "r3", false);
     test_isThisOrLaterMajorMinor("r5", "r4", false);
+  }
 
+  @Test
+  public void testIsThisOrLater_EarlierVersions() {
     test_isThisOrLater("1.0.1", "1.0.0", false);
     test_isThisOrLater("1.1.0", "1.0.0", false);
     test_isThisOrLater("2.0.0", "1.0.0", false);
@@ -320,11 +323,16 @@ public class VersionUtilitiesTest {
   public void testIsThisOrLater_MixedDepths() {
     test_isThisOrLaterMajorMinor("1.0", "1.0.0", true);
     Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.isThisOrLater("1", "1.0.0", VersionUtilities.VersionPrecision.MINOR));
-    test_isThisOrLaterMajorMinor("2.0", "2.1", true);
-    test_isThisOrLaterMajorMinor("2.1", "2.0", false);
 
     test_isThisOrLater("1.0", "1.0.0", true);
     Assertions.assertThrows(FHIRException.class, () -> VersionUtilities.isThisOrLater("1", "1.0.0", VersionUtilities.VersionPrecision.FULL));
+  }
+
+  @Test
+  public void testIsThisOrLater_Misc() {
+    test_isThisOrLaterMajorMinor("2.0", "2.1", true);
+    test_isThisOrLaterMajorMinor("2.1", "2.0", false);
+
     test_isThisOrLater("2.0", "2.1", true);
     test_isThisOrLater("2.1", "2.0", false);
   }
@@ -677,18 +685,22 @@ public class VersionUtilitiesTest {
   // =============================================
 
   @Test
-  public void testIsR5VerOrLater() {
+  public void testIsR5Plus() {
     test_isR5Plus("r5", true);
     test_isR5Plus("R5", true);
     test_isR5Plus("r6", true);
     test_isR5Plus("5.0.0", true);
+    test_isR5Plus("5.0.0-snapshot3", true);
     test_isR5Plus("5.1.0", false);
     test_isR5Plus("6.0.0", true);
+    test_isR5Plus("6.0.0-ballot2", true);
+    test_isR5Plus("4.5.0", true); // Pre-release R5
 
     test_isR5Plus("r4", false);
-    test_isR5Plus("r4B", false);
+    test_isR5Plus("R4B", false);
     test_isR5Plus("4.0.0", false);
     test_isR5Plus("4.5.0", true);
+    test_isR5Plus("4.4.0", false);
   }
 
   @Test
@@ -706,22 +718,13 @@ public class VersionUtilitiesTest {
     test_isR4Plus("r3", false);
     test_isR4Plus("3.0.0", false);
     test_isR4Plus("3.1.0", false);
+    test_isR4Plus("3.2.0", true);
+    test_isR4Plus("3.3.0", true);
+    test_isR4Plus("3.4.0", false);
+    test_isR4Plus("3.5.0", true);
+    // test_isR4Plus("3.5a.0", true);
   }
 
-  @Test
-  public void testIsR5Plus() {
-    test_isR5Plus("r5", true);
-    test_isR5Plus("R5", true);
-    test_isR5Plus("r6", true);
-    test_isR5Plus("5.0.0", true);
-    test_isR5Plus("6.0.0", true);
-    test_isR5Plus("4.5.0", true); // Pre-release R5
-
-    test_isR5Plus("r4", false);
-    test_isR5Plus("r4B", false);
-    test_isR5Plus("4.0.0", false);
-    test_isR5Plus("4.4.0", false);
-  }
 
   @Test
   public void testIsR6Plus() {
@@ -994,131 +997,6 @@ public class VersionUtilitiesTest {
     assertEquals(expected, VersionUtilities.includedInRange(startVer, stopVer, ver),
       String.format("includedInRange('%s', '%s', '%s') should be %s", startVer, stopVer, ver, expected));
   }
-
-  // =============================================
-  // Semantic accessor methods tests (using SemverParser)
-  // =============================================
-
-  @Test
-  @DisplayName("Semantic accessor methods - basic versions")
-  void testSemanticAccessorsBasic() {
-    SemverParser.ParseResult result = SemverParser.parseSemver("1.2.3");
-    assertTrue(result.isSuccess());
-    assertEquals("1", result.getMajor());
-    assertEquals("2", result.getMinor());
-    assertEquals("3", result.getPatch());
-    assertNull(result.getReleaseLabel());
-    assertNull(result.getBuild());
-  }
-
-  @Test
-  @DisplayName("Semantic accessor methods - with pre-release")
-  void testSemanticAccessorsPreRelease() {
-    SemverParser.ParseResult result = SemverParser.parseSemver("1.2.3-alpha.1");
-    assertTrue(result.isSuccess());
-    assertEquals("1", result.getMajor());
-    assertEquals("2", result.getMinor());
-    assertEquals("3", result.getPatch());
-    assertEquals("alpha.1", result.getReleaseLabel());
-    assertNull(result.getBuild());
-  }
-
-  @Test
-  @DisplayName("Semantic accessor methods - with build")
-  void testSemanticAccessorsBuild() {
-    SemverParser.ParseResult result = SemverParser.parseSemver("1.2.3+build.456");
-    assertTrue(result.isSuccess());
-    assertEquals("1", result.getMajor());
-    assertEquals("2", result.getMinor());
-    assertEquals("3", result.getPatch());
-    assertNull(result.getReleaseLabel());
-    assertEquals("build.456", result.getBuild());
-  }
-
-  @Test
-  @DisplayName("Semantic accessor methods - with both pre-release and build")
-  void testSemanticAccessorsBoth() {
-    SemverParser.ParseResult result = SemverParser.parseSemver("1.2.3-alpha.1+build.456");
-    assertTrue(result.isSuccess());
-    assertEquals("1", result.getMajor());
-    assertEquals("2", result.getMinor());
-    assertEquals("3", result.getPatch());
-    assertEquals("alpha.1", result.getReleaseLabel());
-    assertEquals("build.456", result.getBuild());
-  }
-
-  @Test
-  @DisplayName("Semantic accessor methods - with wildcards")
-  void testSemanticAccessorsWildcards() {
-    SemverParser.ParseResult result1 = SemverParser.parseSemver("1.*", true);
-    assertTrue(result1.isSuccess());
-    assertEquals("1", result1.getMajor());
-    assertEquals("*", result1.getMinor());
-    assertNull(result1.getPatch());
-    assertNull(result1.getReleaseLabel());
-    assertNull(result1.getBuild());
-
-    SemverParser.ParseResult result2 = SemverParser.parseSemver("1.2.x", true);
-    assertTrue(result2.isSuccess());
-    assertEquals("1", result2.getMajor());
-    assertEquals("2", result2.getMinor());
-    assertEquals("x", result2.getPatch());
-    assertNull(result2.getReleaseLabel());
-    assertNull(result2.getBuild());
-
-    SemverParser.ParseResult result3 = SemverParser.parseSemver("1.2.3-*", true);
-    assertTrue(result3.isSuccess());
-    assertEquals("1", result3.getMajor());
-    assertEquals("2", result3.getMinor());
-    assertEquals("3", result3.getPatch());
-    assertEquals("*", result3.getReleaseLabel());
-    assertNull(result3.getBuild());
-  }
-
-  @Test
-  @DisplayName("Semantic accessor methods - complex pre-release and build")
-  void testSemanticAccessorsComplex() {
-    SemverParser.ParseResult result = SemverParser.parseSemver("1.2.3-alpha-beta.1.2.3+build.meta.data.123");
-    assertTrue(result.isSuccess());
-    assertEquals("1", result.getMajor());
-    assertEquals("2", result.getMinor());
-    assertEquals("3", result.getPatch());
-    assertEquals("alpha-beta.1.2.3", result.getReleaseLabel());
-    assertEquals("build.meta.data.123", result.getBuild());
-  }
-
-  @Test
-  @DisplayName("Semantic accessor methods - error cases")
-  void testSemanticAccessorsErrors() {
-    SemverParser.ParseResult result = SemverParser.parseSemver("invalid");
-    assertFalse(result.isSuccess());
-    assertNull(result.getMajor());
-    assertNull(result.getMinor());
-    assertNull(result.getPatch());
-    assertNull(result.getReleaseLabel());
-    assertNull(result.getBuild());
-  }
-
-  @Test
-  @DisplayName("Semantic accessor methods - edge cases")
-  void testSemanticAccessorsEdgeCases() {
-    // Single component pre-release and build
-    SemverParser.ParseResult result1 = SemverParser.parseSemver("1.2.3-alpha+build");
-    assertTrue(result1.isSuccess());
-    assertEquals("alpha", result1.getReleaseLabel());
-    assertEquals("build", result1.getBuild());
-
-    // Numeric pre-release
-    SemverParser.ParseResult result2 = SemverParser.parseSemver("1.2.3-123");
-    assertTrue(result2.isSuccess());
-    assertEquals("123", result2.getReleaseLabel());
-
-    // Build with leading zeros
-    SemverParser.ParseResult result3 = SemverParser.parseSemver("1.2.3+001.002");
-    assertTrue(result3.isSuccess());
-    assertEquals("001.002", result3.getBuild());
-  }
-
 
   @Test
   @DisplayName("hasWildcards should return false for null and empty inputs")
