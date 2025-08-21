@@ -654,7 +654,12 @@ public class SnapShotGenerationTests {
 //        DiffUtils.testDiff(dst.getAbsolutePath(), actualFilePath);
       }
 
-      Assertions.assertTrue(structureDefinitionEquality, "Output does not match expected");
+      if (!structureDefinitionEquality) {
+        System.out.println("snapshot test "+test.id+" failed: " + new JsonParser().composeString(t1));
+        System.out.println("t1: " + new JsonParser().composeString(t1));
+        System.out.println("t2: " + new JsonParser().composeString(t2));
+      }
+      Assertions.assertTrue(structureDefinitionEquality, "Output for "+test.id+" does not match expected");
     }
     if (ml.size() > 0) {
       throw new FHIRException("Snapshot Generation failed: " + ml.toString());
