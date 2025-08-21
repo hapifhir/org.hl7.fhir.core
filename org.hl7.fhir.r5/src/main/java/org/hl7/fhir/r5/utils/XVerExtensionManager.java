@@ -210,9 +210,9 @@ public class XVerExtensionManager {
   }
 
   private String translateDataType(String v, String dt) {
-    if (VersionUtilities.versionsCompatible("1.0", v) || VersionUtilities.versionsCompatible("1.4", v)) {
+    if (VersionUtilities.versionMatches("1.0.x", v) || VersionUtilities.versionMatches("1.4.x", v)) {
       return translateToR2(dt);
-    } else if (VersionUtilities.versionsCompatible("3.0", v)) {
+    } else if (VersionUtilities.versionMatches("3.0.x", v)) {
       return translateToR3(dt);
     } else {
       return dt;

@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -279,14 +281,14 @@ public class CanonicalResourceManagerTests {
 
     mrm.see(vs2, null);
 
-    Assertions.assertEquals(mrm.size(), 2);
+    Assertions.assertEquals(2, mrm.size());
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertEquals(mrm.get("2345").getName(), "1");
+    Assertions.assertEquals("1", mrm.get("2345").getName());
     Assertions.assertNotNull(mrm.get("2346"));
-    Assertions.assertEquals(mrm.get("2346").getName(), "2");
+    Assertions.assertEquals("2", mrm.get("2346").getName());
     
     Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "2");
+    Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234").getName());
     Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
     Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "2");
     Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
@@ -838,20 +840,20 @@ public class CanonicalResourceManagerTests {
     pvl1.add("pid.two#1.0.0");
     
     Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234").getName());
-    Assertions.assertEquals("1", mrm.get("http://url/ValueSet/234", pvl1).getName());
-    Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234", pvl2).getName());
+    Assertions.assertEquals("1", mrm.getByPackage("http://url/ValueSet/234", pvl1).getName());
+    Assertions.assertEquals("2", mrm.getByPackage("http://url/ValueSet/234", pvl2).getName());
 
     Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234", "4.0.1").getName());
-    Assertions.assertEquals("1", mrm.get("http://url/ValueSet/234", "4.0.1", pvl1).getName());
-    Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234", "4.0.1", pvl2).getName());
+    Assertions.assertEquals("1", mrm.getByPackage("http://url/ValueSet/234", "4.0.1", pvl1).getName());
+    Assertions.assertEquals("2", mrm.getByPackage("http://url/ValueSet/234", "4.0.1", pvl2).getName());
 
     Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234", "4.0").getName());
-    Assertions.assertEquals("1", mrm.get("http://url/ValueSet/234", "4.0", pvl1).getName());
-    Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234", "4.0", pvl2).getName());
+    Assertions.assertEquals("1", mrm.getByPackage("http://url/ValueSet/234", "4.0", pvl1).getName());
+    Assertions.assertEquals("2", mrm.getByPackage("http://url/ValueSet/234", "4.0", pvl2).getName());
     
     Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234", "4.0.2").getName());
-    Assertions.assertEquals("1", mrm.get("http://url/ValueSet/234", "4.0.2", pvl1).getName());
-    Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234", "4.0.2", pvl2).getName());
+    Assertions.assertEquals("1", mrm.getByPackage("http://url/ValueSet/234", "4.0.2", pvl1).getName());
+    Assertions.assertEquals("2", mrm.getByPackage("http://url/ValueSet/234", "4.0.2", pvl2).getName());
   }
 
   @Test
@@ -927,4 +929,488 @@ public class CanonicalResourceManagerTests {
     sl = mrm.getSupplements("http://url/CodeSystem/s234");
     Assertions.assertEquals(0, sl.size());
   }
+
+  private Date dateFromStr(String date) throws ParseException {
+    SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+    return dt.parse(date);
+  }
+
+  // Claude generated test cases
+
+  // =============================================
+  // VERSION COMPARISON TESTS
+  // =============================================
+
+  @Test
+  public void testSemverVersionComparison_HigherVersionWins() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+
+    registerResources(csm,
+      makeCodeSystem("1", "2.0.1"), defaultPackage(),
+      makeCodeSystem("2", "2.1.0"), defaultPackage());
+
+    checkResponseResource(csm, "2.1.0", "2");
+    checkResponseResource(csm, null, "2");
+  }
+
+  @Test
+  public void testSemverVersionComparison_LowerVersionLoses() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+
+    registerResources(csm,
+      makeCodeSystem("1", "2.1.0"), defaultPackage(),
+      makeCodeSystem("2", "2.0.1"), defaultPackage());
+
+    checkResponseResource(csm, null, "1");
+  }
+
+  @Test
+  public void testDateVersionComparison() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2023-01-01"), defaultPackage(),
+        makeCodeSystem("2", "2023-06-15"), defaultPackage());
+
+    checkResponseResource(csm, null, "2");
+  }
+
+  @Test
+  public void testIntegerVersionComparison() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "5"), defaultPackage(),
+        makeCodeSystem("2", "10"), defaultPackage());
+    checkResponseResource(csm, null, "2");
+  }
+
+  @Test
+  public void testVersionedVsUnversioned_VersionedWins1() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.0.1"), defaultPackage(),
+        makeCodeSystem("2", null), defaultPackage());
+
+    checkResponseResource(csm, null, "1");
+  }
+
+  @Test
+  public void testVersionedVsUnversioned_VersionedWins2() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("2", null), defaultPackage(), 
+        makeCodeSystem("1", "2.0.1"), defaultPackage());
+
+    checkResponseResource(csm, null, "1");
+  }
+
+  @Test
+  public void testPackageVersionedVsUnversioned_VersionedLoses1() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.0.1"), defaultPackage(),
+        makeCodeSystem("2", "2.0.1"), makePackageInfo("hl7.fhir.core", null, "2023-01-01"));
+    checkResponseResource(csm, null, "1");
+  }
+
+  @Test
+  public void testPackageVersionedVsUnversioned_VersionedLoses2() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("2", "2.0.1"), makePackageInfo("hl7.fhir.core", null, "2023-01-01"),
+        makeCodeSystem("1", "2.0.1"), defaultPackage());
+
+    checkResponseResource(csm, null, "1");
+  }
+
+  @Test
+  public void testPackageVersionedVsNP_VersionedLoses1() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.0.1"), defaultPackage(),
+        makeCodeSystem("2", "2.0.1"), null);
+
+    checkResponseResource(csm, null, "2");
+  }
+
+  @Test
+  public void testPackageVersionedVsNP_VersionedLoses2() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("2", "2.0.1"), null,
+        makeCodeSystem("1", "2.0.1"), defaultPackage());
+
+    checkResponseResource(csm, null, "2");
+  }
+
+  @Test
+  public void testBothUnversioned_MostRecentWins() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", null), defaultPackage(),
+        makeCodeSystem("2", null), defaultPackage());
+
+    checkResponseResource(csm, null, "2");
+  }
+
+  // =============================================
+  // PACKAGE COMPARISON TESTS
+  // =============================================
+
+  @Test
+  public void testSameVersion_PackagedVsUnpackaged_PackagedWins() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.0.1"), defaultPackage(),
+        makeCodeSystem("2", "2.0.1"), null);
+
+    checkResponseResource(csm, "2.0.1", "2");
+  }
+
+  @Test
+  public void testSameVersion_BothUnpackaged_MostRecentWins() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.0.1"), null,
+        makeCodeSystem("2", "2.0.1"), null);
+
+    checkResponseResource(csm, "2.0.1", "2");
+  }
+
+  @Test
+  public void testSameVersion_DifferentPackageIds_MoreRecentDateWins() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.0.1"), defaultPackage(),
+        makeCodeSystem("2", "2.0.1"), laterPackage());
+
+
+    checkResponseResource(csm, "2.0.1", "2"); // More recent package date wins
+  }
+
+  @Test
+  public void testSameVersion_SamePackageId_HigherPackageVersionWins() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.0.1"), defaultPackage(),
+        makeCodeSystem("2", "2.0.1"), makePackageInfo("hl7.fhir.core", "2.0.0", "2023-01-01")); // Higher package version;
+
+    checkResponseResource(csm, "2.0.1", "2"); // Higher package version wins
+  }
+
+  @Test
+  public void testSameVersion_SamePackage_MostRecentWins() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.0.1"), defaultPackage(),
+        makeCodeSystem("2", "2.0.1"), defaultPackage());
+
+    checkResponseResource(csm, "2.0.1", "2");  // Most recent wins (template test case)
+  }
+
+  // =============================================
+  // COMPLEX SCENARIOS
+  // =============================================
+
+  @Test
+  public void testComplexScenario_MultipleVersionsAndPackages() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "1.0.0"),  makePackageInfo("hl7.fhir.core", "2.0.0", "2023-06-01"),
+        makeCodeSystem("2", "2.0.0"), defaultPackage());
+
+    checkResponseResource(csm, null, "2"); // Higher resource version wins regardless of package
+  }
+
+  @Test
+  public void testNaturalOrderVersioning() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "v1.2"), defaultPackage(),
+        makeCodeSystem("2", "v1.10"), defaultPackage());
+
+    checkResponseResource(csm, null, "2"); // v1.10 > v1.2 in natural order
+  }
+
+  @Test
+  public void testMajorMinorVersionRetrieval() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.0.1"), defaultPackage(),
+        makeCodeSystem("2", "2.1.5"), defaultPackage());
+
+    checkResponseResource(csm, "2.0.1", "1"); // Test exact version retrieval
+    checkResponseResource(csm, "2.1.5", "2");
+    checkResponseResource(csm, "2.1", "2");  // Test major.minor retrieval (should get latest patch version)
+    checkResponseResource(csm, "2.0", "1");
+  }
+
+  // =============================================
+  // SEMVER DEPTH MIXING TESTS
+  // =============================================
+
+  @Test
+  public void testSemverDepth_2_1_Then_2_1_0() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1"), defaultPackage(),
+        makeCodeSystem("2", "2.1.0"), defaultPackage());
+
+    checkResponseResource(csm, "2.1", "2"); // 2.1.0 > 2.1 (more specific wins)
+    checkResponseResource(csm, "2.1.0", "2");
+    checkResponseResource(csm, null, "2");
+  }
+
+  @Test
+  public void testSemverDepth_2_1_0_Then_2_1() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1.0"), defaultPackage(),
+        makeCodeSystem("2", "2.1"), defaultPackage());
+
+
+    checkResponseResource(csm, "2.1", "1"); // 2.1.0 > 2.1 (more specific wins, regardless of order added)
+    checkResponseResource(csm, "2.1.0", "1");
+    checkResponseResource(csm, null, "1");
+  }
+
+  @Test
+  public void testSemverDepth_2_1_0_Then_2_1_0_alpha() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1.0"), defaultPackage(),
+        makeCodeSystem("2", "2.1.0-alpha"), defaultPackage());
+
+    checkResponseResource(csm, "2.1.0", "1");  // 2.1.0 > 2.1.0-alpha (release > pre-release)
+    checkResponseResource(csm, "2.1.0-alpha", "2");
+    checkResponseResource(csm, "2.1", "1"); // Should return release version
+    checkResponseResource(csm, null, "1");
+  }
+
+  @Test
+  public void testSemverDepth_2_1_0_alpha_Then_2_1_0() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1.0-alpha"), defaultPackage(),
+        makeCodeSystem("2", "2.1.0"), defaultPackage());
+
+
+    checkResponseResource(csm, "2.1.0", "2"); // 2.1.0 > 2.1.0-alpha (release > pre-release, regardless of order)
+    checkResponseResource(csm, "2.1.0-alpha", "1");
+    checkResponseResource(csm, "2.1", "2"); // Should return release version
+    checkResponseResource(csm, null, "2");
+  }
+
+  @Test
+  public void testSemverDepth_2_1_Then_2_1_0_alpha() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1"), defaultPackage(),
+        makeCodeSystem("2", "2.1.0-alpha"), defaultPackage());
+
+    checkResponseResource(csm, "2.1", "2"); // 2.1.0-alpha > 2.1 (more specific wins)
+    checkResponseResource(csm, "2.1.0-alpha", "2");
+    checkResponseResource(csm, null, "2");
+  }
+
+  @Test
+  public void testPrereleaseOrdering_alpha_vs_beta() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1.0-alpha"), defaultPackage(),
+        makeCodeSystem("2", "2.1.0-beta"), defaultPackage());
+
+
+    checkResponseResource(csm, null, "2"); // 2.1.0-beta > 2.1.0-alpha (beta > alpha)
+    checkResponseResource(csm, "2.1","2" ); // Should return latest pre-release
+  }
+
+  @Test
+  public void testPrereleaseOrdering_beta_vs_alpha() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1.0-beta"), defaultPackage(),
+        makeCodeSystem("2", "2.1.0-alpha"), defaultPackage());
+
+
+    checkResponseResource(csm, null, "1"); // 2.1.0-beta > 2.1.0-alpha (beta > alpha, regardless of order)
+    checkResponseResource(csm, "2.1", "1");
+  }
+
+  @Test
+  public void testPrereleaseNumericOrdering() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1.0-alpha.1"), defaultPackage(),
+        makeCodeSystem("2", "2.1.0-alpha.2"), defaultPackage());
+
+    checkResponseResource(csm, null, "2"); // 2.1.0-alpha.2 > 2.1.0-alpha.1
+    checkResponseResource(csm, "2.1.0-alpha.2", "2");
+    checkResponseResource(csm, "2.1.0-alpha", null);
+    checkResponseResource(csm, "2.1.0", "2");
+    checkResponseResource(csm, "2.1", "2");
+  }
+
+  @Test
+  public void testComplexPrereleaseOrdering() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1.0-alpha.1"), defaultPackage(),
+        makeCodeSystem("2", "2.1.0-alpha.beta"), defaultPackage());
+    registerResources(csm,
+        makeCodeSystem("3", "2.1.0-beta"), defaultPackage(),
+        makeCodeSystem("4", "2.1.0-beta.2"), defaultPackage());
+
+    checkResponseResource(csm, null, "4"); // 2.1.0-beta.2 > 2.1.0-beta > 2.1.0-alpha.beta > 2.1.0-alpha.1
+    checkResponseResource(csm, "2.1", "4");
+  }
+
+  @Test
+  public void testPartialVersionMatching_Multiple_Patch_Versions() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1.1"), defaultPackage(),
+        makeCodeSystem("2", "2.1.2"), defaultPackage(),
+        makeCodeSystem("3", "2.1.10"), defaultPackage());
+
+    // Test exact version retrieval
+    checkResponseResource(csm, "2.1.1", "1");
+    checkResponseResource(csm, "2.1.2", "2");
+    checkResponseResource(csm, "2.1.10", "3");
+    // Test partial version retrieval - should get latest (2.1.10)
+    checkResponseResource(csm, "2.1", "3");
+    checkResponseResource(csm, null, "3");
+  }
+
+  @Test
+  public void testPartialVersionMatching_With_Prerelease() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.1.0"), defaultPackage(),
+        makeCodeSystem("2", "2.1.1-alpha"), defaultPackage(),
+        makeCodeSystem("3", "2.1.1"), defaultPackage(),
+        makeCodeSystem("4", "2.1.2"), defaultPackage());
+
+    // Test exact version retrieval
+    checkResponseResource(csm, "2.1.0", "1");
+    checkResponseResource(csm, "2.1.1-alpha", "2");
+    checkResponseResource(csm, "2.1.1", "3");
+    // Test partial version retrieval - should get latest release version (2.1.1)
+    checkResponseResource(csm, "2.1", "4");
+    checkResponseResource(csm, null, "4");
+  }
+
+  @Test
+  public void testMixedDepthVersioning_Complex() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+      makeCodeSystem("1", "2"), defaultPackage(),
+      makeCodeSystem("2", "2.0"), defaultPackage(),
+      makeCodeSystem("3", "2.0.0"), defaultPackage(),
+      makeCodeSystem("4", "2.0.0-rc.1"), defaultPackage());
+
+    // 2.0.0 > 2.0.0-rc.1 > 2.0 > 2 (most specific release wins)
+    checkResponseResource(csm, "2", "1");
+    checkResponseResource(csm, "2.0", "3"); // because semver kicks in
+    checkResponseResource(csm, "2.0.0", "3");
+    checkResponseResource(csm, null, "3");
+  }
+
+  // =============================================
+  // EDGE CASES
+  // =============================================
+
+  @Test
+  public void testAlphanumericVersions() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+      makeCodeSystem("1", "1.0-alpha"), defaultPackage(),
+      makeCodeSystem("2", "1.0-beta"), defaultPackage());
+
+    checkResponseResource(csm, null, "2"); // beta > alpha in natural order
+  }
+
+  @Test
+  public void testSameDateDifferentTime() throws ParseException {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    registerResources(csm,
+        makeCodeSystem("1", "2.0.1"), defaultPackage(),
+        makeCodeSystem("2", "2.0.1"), defaultPackage());
+
+    checkResponseResource(csm, "2.0.1", "2");  // Most recent addition wins when dates are equal
+  }
+
+
+  // worker routines
+  private void registerResources(CanonicalResourceManager<CodeSystem> csm, CodeSystem cs1, PackageInformation pi1,
+                                 CodeSystem cs2, PackageInformation pi2) {
+    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
+    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
+    csm.see(cc1);
+    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
+    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
+    csm.see(cc2);
+  }
+
+  private void registerResources(CanonicalResourceManager<CodeSystem> csm, CodeSystem cs1, PackageInformation pi1,
+                                 CodeSystem cs2, PackageInformation pi2,
+                                 CodeSystem cs3, PackageInformation pi3) {
+    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
+    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
+    csm.see(cc1);
+    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
+    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
+    csm.see(cc2);
+    CanonicalResourceProxy cp3 = new DeferredLoadTestResource(cs3);
+    CanonicalResourceManager.CachedCanonicalResource cc3 = csm.new CachedCanonicalResource<CodeSystem>(cp3, pi3);
+    csm.see(cc3);
+  }
+
+  private void registerResources(CanonicalResourceManager<CodeSystem> csm, CodeSystem cs1, PackageInformation pi1,
+                                 CodeSystem cs2, PackageInformation pi2,
+                                 CodeSystem cs3, PackageInformation pi3,
+                                 CodeSystem cs4, PackageInformation pi4) {
+    CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
+    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
+    csm.see(cc1);
+    CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
+    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
+    csm.see(cc2);
+    CanonicalResourceProxy cp3 = new DeferredLoadTestResource(cs3);
+    CanonicalResourceManager.CachedCanonicalResource cc3 = csm.new CachedCanonicalResource<CodeSystem>(cp3, pi3);
+    csm.see(cc3);
+    CanonicalResourceProxy cp4 = new DeferredLoadTestResource(cs4);
+    CanonicalResourceManager.CachedCanonicalResource cc4 = csm.new CachedCanonicalResource<CodeSystem>(cp4, pi4);
+    csm.see(cc4);
+  }
+
+  private void checkResponseResource(CanonicalResourceManager<CodeSystem> csm, String version, String winner) {
+    CodeSystem cs = csm.get("http://test", version);
+    if (winner == null) {
+      Assertions.assertNull(cs);
+    } else {
+      Assertions.assertEquals(winner, cs.getId()); // First one has higher version
+    }
+  }
+
+  private PackageInformation defaultPackage() throws ParseException {
+    return makePackageInfo("hl7.fhir.core", "1.0.0", "2023-01-01");
+  }
+
+  private PackageInformation laterPackage() throws ParseException {
+    return makePackageInfo("hl7.fhir.other", "1.0.0", "2023-06-15");
+  }
+
+  private PackageInformation makePackageInfo(String id, String version, String date) throws ParseException {
+    return new PackageInformation(id, version, "4.0.1", dateFromStr(date));
+  }
+
+  private CodeSystem makeCodeSystem(String id, String ver) {
+    CodeSystem cs = new CodeSystem();
+    cs.setId(id);
+    cs.setUrl("http://test");
+    cs.setVersion(ver);
+    return cs;
+  }
+
+
 }
