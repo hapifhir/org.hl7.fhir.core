@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import javax.xml.crypto.dsig.SignatureMethod;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -547,7 +548,8 @@ public class SnapShotGenerationTests {
 
   private void testGen(boolean fail, TestDetails test, SnapShotGenerationTestsContext context) throws Exception {
     FileUtilities.createDirectory(Utilities.path("[tmp]", "snapshot", "input"));
-    
+    System.out.println("Loaded Packages: "+ ((SimpleWorkerContext) testContext).loadedPackageSummary());
+
     if (!Utilities.noString(test.register)) {
       List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
       ProfileUtilities pu = new ProfileUtilities(testContext, messages, null);
