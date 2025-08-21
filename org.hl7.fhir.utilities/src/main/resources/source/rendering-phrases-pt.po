@@ -636,6 +636,16 @@ msgstr "A tabela de resumo enumera os recursos que fazem parte desta configuraç
 msgid "Summary of System-wide Interactions"
 msgstr "Resumo das interações a nível do sistema"
 
+# CAPABILITY_SUMM_SYS_OP
+#: CAPABILITY_SUMM_SYS_OP
+msgid "Summary of System-wide Operations"
+msgstr "Resumo das operações a nível do sistema"
+
+# CAPABILITY_SUMM_SYS_SP
+#: CAPABILITY_SUMM_SYS_SP
+msgid "Summary of System-wide Search Parameters"
+msgstr "Resumo das operações a nível do parâmetros de pesquisa"
+
 # CAPABILITY_SUPP
 #: CAPABILITY_SUPP
 #, fuzzy

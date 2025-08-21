@@ -21,7 +21,7 @@ public class Basic30_50 {
     if (src.hasSubject())
       tgt.setSubject(Reference30_50.convertReference(src.getSubject()));
     if (src.hasCreated())
-      tgt.setCreatedElement(Date30_50.convertDatetoDateTime(src.getCreatedElement()));
+      tgt.setCreatedElement(Date30_50.convertDateToDateTime(src.getCreatedElement()));
     if (src.hasAuthor())
       tgt.setAuthor(Reference30_50.convertReference(src.getAuthor()));
     return tgt;

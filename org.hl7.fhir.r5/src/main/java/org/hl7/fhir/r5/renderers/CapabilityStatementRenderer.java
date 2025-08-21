@@ -137,6 +137,14 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       if (!Utilities.noString(documentation)) this.documentation=documentation;
     }
  
+    public SingleParam(String name, String definition, String type, String documentation, String expectation) {
+      if (!Utilities.noString(name)) this.name=name;
+      if (!Utilities.noString(definition)) this.definition=definition;
+      if (!Utilities.noString(type)) this.type=type;
+      if (!Utilities.noString(documentation)) this.documentation=documentation;
+      if (!Utilities.noString(expectation)) this.expectation=expectation;
+    }
+ 
     public SingleParam(String name, String definition, String type, String documentation, String expectation, String hostResource) {
       if (!Utilities.noString(name)) this.name=name;
       if (!Utilities.noString(definition)) this.definition=definition;
@@ -333,8 +341,10 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     uList.li().addText(context.formatPhrase(RenderingContext.CAPABILITY_FHIR_VER, currentVersion.toCode()) + " ");
     addSupportedFormats(uList, conf);
     
-    uList.li().addText(context.formatPhrase(RenderingContext.CAPABILITY_PUB_ON, displayDateTime(wrapWC(res, conf.getDateElement())) + " "));
-    uList.li().addText(context.formatPhrase(RenderingContext.CAPABILITY_PUB_BY, conf.getPublisherElement().asStringValue()) + " ");
+    if (conf.hasDate())
+      uList.li().addText(context.formatPhrase(RenderingContext.CAPABILITY_PUB_ON, displayDateTime(wrapWC(res, conf.getDateElement())) + " "));
+    if (conf.hasPublisher())
+      uList.li().addText(context.formatPhrase(RenderingContext.CAPABILITY_PUB_BY, conf.getPublisherElement().asStringValue()) + " ");
 
 
     XhtmlNode block = x.addTag("blockquote").attribute("class","impl-note");
@@ -382,11 +392,11 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
             resCount++;
           }
         }
-        if (rest.getOperation().size() > 0) {
-          //TODO Figure out what should come out of this
+        //TODO Figure out what should come out of this
+/*        if (rest.getOperation().size() > 0) {
           x.h(nextLevel,context.prefixAnchor("operationsCap" + Integer.toString(count))).addText(context.formatPhrase(RenderingContext.CAPABILITY_OP));
           x.h(nextLevel+1,context.prefixAnchor("operationsSummary" + Integer.toString(count))).addText(context.formatPhrase(RenderingContext.OP_DEF_USE));
-        }
+        }*/
         count++;
       }
     }
@@ -442,20 +452,36 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     return false;
   }
 
-  private String showOp(CapabilityStatementRestResourceComponent r, TypeRestfulInteraction on) {
+  private void showOp(XhtmlNode n, CapabilityStatementRestResourceComponent r, TypeRestfulInteraction on) {
     for (ResourceInteractionComponent op : r.getInteraction()) {
       if (op.getCode() == on)
-        return "y";
+        supportedWithConformance(n, op);
     }
-    return "";
   }
 
-  private String showOp(CapabilityStatementRestComponent r, SystemRestfulInteraction on) {
+  private void showOp(XhtmlNode n, CapabilityStatementRestComponent r, SystemRestfulInteraction on) {
     for (SystemInteractionComponent op : r.getInteraction()) {
       if (op.getCode() == on)
-        return "y";
+        supportedWithConformance(n, op);
     }
-    return "";
+  }
+  
+  private void supportedWithConformance(XhtmlNode n, Element op) {
+    if (op.hasExtension(ExtensionDefinitions.EXT_CAP_STMT_EXPECT)) {
+      String expectation = op.getExtensionString(ExtensionDefinitions.EXT_CAP_STMT_EXPECT);
+      XhtmlNode n2 = n.span(null, expectation);
+      if (expectation.equals("SHALL"))
+        n2.b().tx("Y");
+      else if (expectation.equals("SHOULD"))
+        n2.tx("Y");
+      else if (expectation.equals("MAY"))
+        n2.tx("y?");
+      else if (expectation.equals("SHOULD-NOT"))
+        n2.tx("🛇?");
+      else
+        n.tx("y");
+    } else
+      n.tx("y");    
   }
 
   private XhtmlNode addTableRow(XhtmlNode t, String name) {
@@ -554,6 +580,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   }
 
   private void addSupportedFormats(XhtmlNode uList, CapabilityStatement conf) {
+
     XhtmlNode lItem = uList.li();
     lItem.addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPP_FORM) + " ");
     Boolean first = true;
@@ -570,20 +597,22 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       lItem.code().addText(c.getCode());
       first = false;
     }
-    lItem = uList.li();
-    lItem.addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPP_PATCH_FORM) + " ");
-    first=true;
-    for (CodeType c : conf.getPatchFormat()) {
-      if (!first) {
-        lItem.addText(", ");
+    if (conf.hasPatchFormat()) {
+      lItem = uList.li();
+      lItem.addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPP_PATCH_FORM) + " ");
+      first=true;
+      for (CodeType c : conf.getPatchFormat()) {
+        if (!first) {
+          lItem.addText(", ");
+        }
+        capExpectation = getExtValueCode(c.getExtensionByUrl(EXPECTATION));
+        if (!Utilities.noString(capExpectation)) {
+          lItem.addTag("strong").addText(capExpectation);
+          lItem.addText(" " + context.formatPhrase(RenderingContext.CAPABILITY_SUPP) + " ");
+        }
+        lItem.code().addText(c.getCode());
+        first = false;
       }
-      capExpectation = getExtValueCode(c.getExtensionByUrl(EXPECTATION));
-      if (!Utilities.noString(capExpectation)) {
-        lItem.addTag("strong").addText(capExpectation);
-        lItem.addText(" " + context.formatPhrase(RenderingContext.CAPABILITY_SUPP) + " ");
-      }
-      lItem.code().addText(c.getCode());
-      first = false;
     }
   }
 
@@ -616,9 +645,21 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       if (!Utilities.noString(mdText)) {
         addMarkdown(body.blockquote(),mdText);
       }
-    }  
-    body.div().attribute("class","lead").addTag("em").addText(context.formatPhrase(RenderingContext.CAPABILITY_SUMM_SYS_INT));
-    addSystemInteractions(body, rest.getInteraction());
+    }
+    if (rest.hasInteraction()) {
+      body.div().attribute("class","lead").addTag("em").addText(context.formatPhrase(RenderingContext.CAPABILITY_SUMM_SYS_INT));
+      addSystemInteractions(body, rest.getInteraction());
+    }
+
+    if (rest.hasSearchParam()) {
+      ResourceSearchParams sParams = collectParams(rest.getSearchParam());
+      addSearchParams(body, sParams, RenderingContext.CAPABILITY_SUMM_SYS_SP);
+    }
+
+    if (rest.hasOperation()) {
+      ResourceOperations ops = collectOperations(rest.getOperation());
+      addExtendedOperations(body, ops, RenderingContext.CAPABILITY_SUMM_SYS_OP);
+    }
         
   }
 
@@ -938,20 +979,20 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         renderSupportedProfiles(status, res, profCell, r);
       }
       //Show capabilities
-      tr.td().attribute("class", "text-center").addText(showOp(r, TypeRestfulInteraction.READ));
+      showOp(tr.td().attribute("class", "text-center"), r, TypeRestfulInteraction.READ);
       if (hasVRead)
-        tr.td().attribute("class", "text-center").addText(showOp(r, TypeRestfulInteraction.VREAD));
-      tr.td().attribute("class", "text-center").addText(showOp(r, TypeRestfulInteraction.SEARCHTYPE));
-      tr.td().attribute("class", "text-center").addText(showOp(r, TypeRestfulInteraction.UPDATE));
+        showOp(tr.td().attribute("class", "text-center"), r, TypeRestfulInteraction.VREAD);
+      showOp(tr.td().attribute("class", "text-center"), r, TypeRestfulInteraction.SEARCHTYPE);
+      showOp(tr.td().attribute("class", "text-center"), r, TypeRestfulInteraction.UPDATE);
       if (hasPatch)
-        tr.td().attribute("class", "text-center").addText(showOp(r, TypeRestfulInteraction.PATCH));
-      tr.td().attribute("class", "text-center").addText(showOp(r, TypeRestfulInteraction.CREATE));
+        showOp(tr.td().attribute("class", "text-center"), r, TypeRestfulInteraction.PATCH);
+        showOp(tr.td().attribute("class", "text-center"), r, TypeRestfulInteraction.CREATE);
       if (hasDelete)
-        tr.td().attribute("class", "text-center").addText(showOp(r, TypeRestfulInteraction.DELETE));
+        showOp(tr.td().attribute("class", "text-center"), r, TypeRestfulInteraction.DELETE);
       if (hasUpdates)
-        tr.td().attribute("class", "text-center").addText(showOp(r, TypeRestfulInteraction.HISTORYINSTANCE));
+        showOp(tr.td().attribute("class", "text-center"), r, TypeRestfulInteraction.HISTORYINSTANCE);
       if (hasHistory)
-        tr.td().attribute("class", "text-center").addText(showOp(r, TypeRestfulInteraction.HISTORYTYPE));
+        showOp(tr.td().attribute("class", "text-center"), r, TypeRestfulInteraction.HISTORYTYPE);
       //Show search parameters
       List<String> stringList = new ArrayList<String>();
       getParams(stringList,r.getSearchParam());
@@ -1223,15 +1264,19 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     }
 
     //Resource search parameters
-    ResourceSearchParams sParams = collectParams(r);
-    addSearchParams(body, sParams);
+    if (r.hasSearchParam()) {
+      ResourceSearchParams sParams = collectParams(r);
+      addSearchParams(body, sParams, RenderingContext.CAPABILITY_SEARCH_PARS);
+    }
     //addSearchParamsDocumentation(body, sParams);
     //Resource operations
-    ResourceOperations ops = collectOperations(r);
-    addExtendedOperations(body, ops);
+    if (r.hasOperation()) {
+      ResourceOperations ops = collectOperations(r.getOperation());
+      addExtendedOperations(body, ops, RenderingContext.CAPABILITY_EXT_OP);
+    }
   }
 
-  private void addExtendedOperations(XhtmlNode body, ResourceOperations ops) {
+  private void addExtendedOperations(XhtmlNode body, ResourceOperations ops, String leadId) {
     if (ops == null) return;
     Map<String, List<SingleOperation>> map = ops.getOperations();
     if (!hasOperations(map)) return;
@@ -1242,7 +1287,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     XhtmlNode tr;
     row = body.div().attribute("class", "row");
     cell = row.div().attribute("class", "col-12");
-    addLead(cell, context.formatPhrase(RenderingContext.CAPABILITY_EXT_OP));
+    addLead(cell, context.formatPhrase(leadId));
     table = cell.table("table table-condensed table-hover", false);
     tr = table.addTag("thead").tr();
     tr.th().addText(context.formatPhrase(RenderingContext.GENERAL_CONFORMANCE));
@@ -1257,8 +1302,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     return;
   }
 
-  private ResourceOperations collectOperations(CapabilityStatementRestResourceComponent r) {
-    List <CapabilityStatementRestResourceOperationComponent> opList = r.getOperation();
+  private ResourceOperations collectOperations(List <CapabilityStatementRestResourceOperationComponent> opList) {
     if (opList.size()==0) return null;
     String capExpectation;
     SingleOperation operation;
@@ -1318,51 +1362,67 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   }
 
   private ResourceSearchParams collectParams(CapabilityStatementRestResourceComponent r) {
+    return collectParams(r.getSearchParam(), r);
+  }
+
+  private ResourceSearchParams collectParams(List<CapabilityStatementRestResourceSearchParamComponent> params) {
+    return collectParams(params, null);
+  }
+
+  private ResourceSearchParams collectParams(List<CapabilityStatementRestResourceSearchParamComponent> params, CapabilityStatementRestResourceComponent r) {
     ResourceSearchParams sParams = new ResourceSearchParams();
     String capExpectation;
     SingleParam param;
-    for ( CapabilityStatementRestResourceSearchParamComponent sp : r.getSearchParam()) {
-      capExpectation = expectationForDisplay(sp,EXPECTATION);
-      if (Utilities.noString(capExpectation)) {
-        capExpectation = "supported";
+    if (r == null) {
+      for (CapabilityStatementRestResourceSearchParamComponent sp : r.getSearchParam()) {
+        capExpectation = expectationForDisplay(sp, EXPECTATION);
+        if (Utilities.noString(capExpectation)) {
+          capExpectation = "supported";
+        }
+        if (r == null)
+          param = new SingleParam(sp.getName(), sp.getDefinition(), sp.getType().toCode(), sp.getDocumentation(), capExpectation);
+        else
+          param = new SingleParam(sp.getName(), sp.getDefinition(), sp.getType().toCode(), sp.getDocumentation(), capExpectation, r.getType().toLowerCase());
+        sParams.addIndividualbyName(param.getName(), param);
+        sParams.addIndividualbyExp(capExpectation, param);
       }
-      param = new SingleParam(sp.getName(),sp.getDefinition(),sp.getType().toCode(),sp.getDocumentation(),capExpectation, r.getType().toLowerCase());
-      sParams.addIndividualbyName(param.getName(), param);
-      sParams.addIndividualbyExp(capExpectation,param);
     }
     //CombinedSearchParam component;
-    CombinedSearchParamSet combinedParams;
-    String paramName;
-    for (Extension e : r.getExtensionsByUrl(COMBINED)) {
-      capExpectation = expectationForDisplay(e,EXPECTATION);
-      if (Utilities.noString(capExpectation)) {
-        capExpectation = "supported";
-      }
-      combinedParams = new CombinedSearchParamSet(capExpectation);
-      for (Extension cmpnt : e.getExtensionsByUrl("required")) {
-        paramName = cmpnt.getValueStringType().asStringValue();
-        param = sParams.getIndbyName().get(paramName);
-        if (param == null) {
-          param = new SingleParam(paramName,"","<unknown>");
+    if (r!=null) {
+      CombinedSearchParamSet combinedParams;
+      String paramName;
+      for (Extension e : r.getExtensionsByUrl(COMBINED)) {
+        capExpectation = expectationForDisplay(e,EXPECTATION);
+        if (Utilities.noString(capExpectation)) {
+          capExpectation = "supported";
         }
-        //component = new CombinedSearchParam(param, true);
-        combinedParams.addParam(true, param);
-      }
-      for (Extension cmpnt : e.getExtensionsByUrl("optional")) {
-        paramName = cmpnt.getValueStringType().asStringValue();
-        param = sParams.getIndbyName().get(paramName);
-        if (param == null) {
-          param = new SingleParam(paramName);
+        combinedParams = new CombinedSearchParamSet(capExpectation);
+        for (Extension cmpnt : e.getExtensionsByUrl("required")) {
+          paramName = cmpnt.getValueStringType().asStringValue();
+          param = sParams.getIndbyName().get(paramName);
+          if (param == null) {
+            param = new SingleParam(paramName,"","<unknown>");
+          }
+          //component = new CombinedSearchParam(param, true);
+          combinedParams.addParam(true, param);
         }
-        //component = new CombinedSearchParam(param);
-        combinedParams.addParam(false, param);
+        for (Extension cmpnt : e.getExtensionsByUrl("optional")) {
+          paramName = cmpnt.getValueStringType().asStringValue();
+          param = sParams.getIndbyName().get(paramName);
+          if (param == null) {
+            param = new SingleParam(paramName);
+          }
+          //component = new CombinedSearchParam(param);
+          combinedParams.addParam(false, param);
+        }
+        sParams.addCombinedParamSet(capExpectation, combinedParams);
       }
-      sParams.addCombinedParamSet(capExpectation, combinedParams);
     }
+    
     return sParams;
   }
 
-  private void addSearchParams(XhtmlNode body, ResourceSearchParams sParams) {
+  private void addSearchParams(XhtmlNode body, ResourceSearchParams sParams, String leadId) {
     Map<String, List<CombinedSearchParamSet>> comboMap = sParams.getCombined();
     if (isCombinedEmpty(comboMap) && sParams.getIndbyName().size()==0) return;
     XhtmlNode row;
@@ -1372,7 +1432,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     XhtmlNode tr;
     row = body.div().attribute("class", "row");
     cell = row.div().attribute("class", "col-lg-7");
-    addLead(cell, context.formatPhrase(RenderingContext.CAPABILITY_SEARCH_PARS));
+    addLead(cell, context.formatPhrase(leadId));
     table = cell.table("table table-condensed table-hover", false);
     tr = table.addTag("thead").tr();
     tr.th().addText(context.formatPhrase(RenderingContext.GENERAL_CONFORMANCE));
