@@ -63,7 +63,7 @@ public class ProfileVersionAdaptor {
     super();
     this.sCtxt = sourceContext;
     this.tCtxt = targetContext;
-    if (VersionUtilities.versionsMatch(sourceContext.getVersion(), targetContext.getVersion())) {
+    if (VersionUtilities.versionMatches(sourceContext.getVersion(), targetContext.getVersion())) {
       throw new DefinitionException("Cannot convert profile from "+sourceContext.getVersion()+" to "+targetContext.getVersion());
     } else if (VersionUtilities.compareVersions(sourceContext.getVersion(), targetContext.getVersion()) < 1) {
       throw new DefinitionException("Only converts backwards - cannot do "+sourceContext.getVersion()+" to "+targetContext.getVersion());
