@@ -295,7 +295,6 @@ public class CarePlan30_40 {
       }
     }
     if (src.hasCode()) {
-      if (src.hasCode()) //TODO
         tgt.setCode(CodeableConcept30_40.convertCodeableConcept(src.getCode()));
     }
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) {
@@ -308,44 +307,36 @@ public class CarePlan30_40 {
       tgt.addGoal(Reference30_40.convertReference(t));
     }
     if (src.hasStatus()) {
-      if (src.hasStatus()) //TODO
         tgt.setStatusElement(convertCarePlanActivityStatus(src.getStatusElement()));
     }
     if (src.hasStatusReason()) {
       List<Coding> coding = src.getStatusReason().getCoding();
-      if (coding.size() > 0) { //TODO is empty
+      if (!coding.isEmpty()) {
         tgt.setStatusReason(coding.get(0).getCode());
       }
     }
     if (src.hasDoNotPerform()) {
-      if (src.hasDoNotPerformElement()) //TODO
         tgt.setProhibitedElement(Boolean30_40.convertBoolean(src.getDoNotPerformElement()));
     }
     if (src.hasScheduled()) {
-      if (src.hasScheduled()) //TODO
         tgt.setScheduled(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getScheduled()));
     }
     if (src.hasLocation()) {
-      if (src.hasLocation()) //TODO
         tgt.setLocation(Reference30_40.convertReference(src.getLocation()));
     }
     for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) {
       tgt.addPerformer(Reference30_40.convertReference(t));
     }
     if (src.hasProduct()) {
-      if (src.hasProduct()) //TODO
         tgt.setProduct(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getProduct()));
     }
     if (src.hasDailyAmount()) {
-      if (src.hasDailyAmount()) //TODO
         tgt.setDailyAmount(SimpleQuantity30_40.convertSimpleQuantity(src.getDailyAmount()));
     }
     if (src.hasQuantity()) {
-      if (src.hasQuantity())//TODO
         tgt.setQuantity(SimpleQuantity30_40.convertSimpleQuantity(src.getQuantity()));
     }
     if (src.hasDescription()) {
-      if (src.hasDescriptionElement()) //TODO
         tgt.setDescriptionElement(String30_40.convertString(src.getDescriptionElement()));
     }
     return tgt;
