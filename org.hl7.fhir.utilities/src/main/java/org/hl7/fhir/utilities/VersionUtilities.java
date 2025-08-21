@@ -856,6 +856,7 @@ public class VersionUtilities {
    * 2.0 matches 2.0 and not 2.0.0, 2.0.1 etc
    * 2.0.0 matches 2.0.0 and not 2.0.1 or 2.0.0-something or 2.0.0+something
    * 2.* matches 2.0 and 2.1 but not 2.0.0 or 2.1-something
+   * 2.x.x matches 2.0.1 and 2.1.0 etc but not 2.0
    * 2.0.* matches 2.0.0, 2.0.1, and not 2.0.0-something or 2.0.0+something
    * 2.0.0-* matches 2.0.0-prerelease or any other label but not 2.0.0+build
    * 2.0.0+* matches 2.0.0+build or any other build but not 2.0.0 or 2.0.0-prerelease
