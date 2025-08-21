@@ -2326,11 +2326,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException {
     return fetchResourceWithException(class_, uri, null);
   }
-  
+
   public <T extends Resource> T fetchResourceWithException(String cls, String uri) throws FHIRException {
     return fetchResourceWithExceptionByVersion(cls, uri, null, null);
   }
-  
+
+  public <T extends Resource> T fetchResourceByVersionWithException(Class<T> class_, String uri, String version) throws FHIRException {
+    return fetchResourceWithExceptionByVersion(class_, uri, version, null);
+  }
+
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, Resource sourceForReference) throws FHIRException {
     return fetchResourceWithExceptionByVersion(class_, uri, null, sourceForReference);
   }
@@ -2977,9 +2981,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
-  public <T extends Resource> boolean hasResource(Class<T> class_, String uri, FhirPublication fhirVersion) {
+  public <T extends Resource> boolean hasResource(Class<T> class_, String uri, String fhirVersion) {
     try {
-      return fetchResourceWithException(class_, uri) != null;
+      return fetchResourceByVersionWithException(class_, uri, fhirVersion) != null;
     } catch (Exception e) {
       return false;
     }
