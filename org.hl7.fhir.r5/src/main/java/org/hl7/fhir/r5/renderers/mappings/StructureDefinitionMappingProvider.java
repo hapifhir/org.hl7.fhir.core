@@ -73,17 +73,22 @@ public class StructureDefinitionMappingProvider extends ModelMappingProvider {
           m = t;
         }
       }
+      boolean complex = false;
       if (m != null) {
         String[] maps = (m.getMap() == null ? "" : m.getMap()).split("\\,");
         if (maps.length == 1) {
           renderMap(div, maps[0]);
         } else {
+          complex = true;
           XhtmlNode ul = div.ul();
           for (String s : maps) {
             renderMap(ul.li(), s);
           }
         }
         if (m.hasComment()) {
+          if (!complex) {
+            div.br();
+          }
           div.i().tx(m.getComment());
         }
       }
