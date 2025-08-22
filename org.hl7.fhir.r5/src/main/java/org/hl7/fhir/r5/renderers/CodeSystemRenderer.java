@@ -255,8 +255,14 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     boolean ignoreStatus = false;
     boolean isSupplement = cs.getContent() == CodeSystemContentMode.SUPPLEMENT;
     List<PropertyComponent> properties = new ArrayList<>();
+    boolean isManual = false;
     for (PropertyComponent cp : cs.getProperty()) {
-      if (showPropertyInTable(cp)) {
+      if (cp.hasExtension(ExtensionDefinitions.EXT_DISPLAY_HINT)) {
+        isManual = true;
+      }
+    }
+    for (PropertyComponent cp : cs.getProperty()) {
+      if (showPropertyInTable(cp, isManual)) {
         boolean exists = false;
         for (ConceptDefinitionComponent c : cs.getConcept()) {
           exists = exists || conceptsHaveProperty(c, cp);
@@ -374,34 +380,15 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
   }
 
-  private boolean showPropertyInTable(PropertyComponent cp) {
-    return cp.hasCode();
-//      if (cp.hasExtension(ExtensionDefinitions.EXT_RENDERED_VALUE)) {
-//        return true;
-//      }
-//      if (cp.getCodeElement().hasExtension(ExtensionDefinitions.EXT_RENDERED_VALUE)) {
-//        return true;
-//      }
-//      String uri = cp.getUri();
-//      if (Utilities.noString(uri)){
-//        return true; // do we always want to render properties in this case? Not sure...
-//      }
-//      String code = null;
-//      if (uri.contains("#")) {
-//        code = uri.substring(uri.indexOf("#")+1);
-//        uri = uri.substring(0, uri.indexOf("#"));
-//      }
-//      if (Utilities.existsInList(uri, "http://hl7.org/fhir/concept-properties") || context.getCodeSystemPropList().contains(uri)) {
-//        return true;
-//      };
-//      CodeSystem cs = getContext().getWorker().fetchCodeSystem(uri);
-//      if (cs == null) {
-//        return false;
-//      }
-//      switch ()
-//      return code == null ? false : CodeSystemUtilities.hasCode(cs, code);
+  private boolean showPropertyInTable(PropertyComponent cp, boolean isManual) {
+    if (!isManual) {
+      return cp.hasCode();
+    } else if (cp.hasExtension(ExtensionDefinitions.EXT_DISPLAY_HINT)) {
+      return Utilities.existsInList(cp.getExtensionString(ExtensionDefinitions.EXT_DISPLAY_HINT), "display", "no-link");
+    } else {
+      return false;
+    }
   }
-
 
   private int countConcepts(List<ConceptDefinitionComponent> list) {
     int count = list.size();
@@ -597,6 +584,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       for (PropertyComponent pc : properties) {
         td = tr.td();
         boolean first = true;
+        boolean nolink = !Utilities.existsInList(pc.getExtensionString(ExtensionDefinitions.EXT_DISPLAY_HINT), "no-link");
         List<ConceptPropertyComponent> pcvl = CodeSystemUtilities.getPropertyValues(c, pc.getCode());
         for (ConceptPropertyComponent pcv : pcvl) {
           if (pcv.hasValue()) {
@@ -606,19 +594,23 @@ public class CodeSystemRenderer extends TerminologyRenderer {
             } else {
               String pv = pcv.getValue().primitiveValue();
               if (pcv.hasValueStringType() && Utilities.isAbsoluteUrl(pv)) {
-                CanonicalResource cr = (CanonicalResource) context.getContext().fetchResource(Resource.class, pv);
-                if (cr != null) {
-                  if (cr.hasWebPath()) {
-                    td.ah(context.prefixLocalHref(cr.getWebPath()), cr.getVersionedUrl()).tx(cr.present());
-                  } else {
-                    td.ah(cr.getVersionedUrl(), cr.getVersionedUrl()).tx(cr.present());
-                  }
-                } else if (Utilities.isAbsoluteUrlLinkable(pv) && !isInKnownUrlSpace(pv)) {
-                  td.ah(context.prefixLocalHref(pv)).tx(pv);
+                if (nolink) {
+                  td.code(pv);
                 } else {
-                  td.code(pv);                
+                  CanonicalResource cr = (CanonicalResource) context.getContext().fetchResource(Resource.class, pv);
+                  if (cr != null) {
+                    if (cr.hasWebPath()) {
+                      td.ah(context.prefixLocalHref(cr.getWebPath()), cr.getVersionedUrl()).tx(cr.present());
+                    } else {
+                      td.ah(cr.getVersionedUrl(), cr.getVersionedUrl()).tx(cr.present());
+                    }
+                  } else if (Utilities.isAbsoluteUrlLinkable(pv) && !isInKnownUrlSpace(pv)) {
+                    td.ah(context.prefixLocalHref(pv)).tx(pv);
+                  } else {
+                    td.code(pv);
+                  }
                 }
-              } else if ("parent".equals(pcv.getCode())) {              
+              } else if ("parent".equals(pcv.getCode()) && !nolink) {
                 td.ah(context.prefixLocalHref("#"+cs.getId()+"-"+Utilities.nmtokenize(pv))).addText(pv);
               } else {
                 td.addText(pv);

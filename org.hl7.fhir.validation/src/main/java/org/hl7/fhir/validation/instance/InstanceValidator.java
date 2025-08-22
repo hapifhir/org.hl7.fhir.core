@@ -145,6 +145,7 @@ import org.hl7.fhir.utilities.VersionUtilities.VersionURLInfo;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResultException;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.IDigitalSignatureServices;
@@ -212,7 +213,9 @@ import org.w3c.dom.Document;
  */
 @Slf4j
 public class InstanceValidator extends BaseValidator implements IResourceValidator {
-  
+
+  private Map<Element, Map<String, List<String>>> xhtmlElementMap = new HashMap<>();
+
   public enum MatchetypeStatus {
     Disallowed, Allowed, Required
   }
@@ -3922,7 +3925,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       refs.add(path+"/id");
     }
     if (element.getXhtml() != null) {
-      count = count + countTargetMatches(element.getXhtml(), fragment, path, refs);
+      Map<String, List<String>> map = xhtmlElementMap.get(element);
+      if (map == null) {
+        map = buildXhtmlIdMap(element.getXhtml());
+        xhtmlElementMap.put(element, map);
+      }
+      List<String> xrefs = map.get(fragment);
+      if (xrefs != null) {
+        count = count + xrefs.size();
+        for (String x : xrefs) {
+          refs.add(path+x);
+        }
+      }
     }
     if (element.hasChildren()) {
       for (Element child : element.getChildren()) {
@@ -3941,28 +3955,65 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return count;
   }
 
-  private int countTargetMatches(XhtmlNode node, String fragment, String path, List<String> refs) {
-    int count = 0;
-    if (fragment.equals(node.getAttribute("id"))) {
-      count++;
-      refs.add(path+"/@id");
-    }
-    if ("a".equals(node.getName()) && fragment.equals(node.getAttribute("name"))) {
-      count++;
-      refs.add(path+"/@name");
-    }
-    if (node.hasChildren()) {
-      for (int i = 0; i < node.getChildNodes().size(); i++) {
-        XhtmlNode child = node.getChildNodes().get(i);
-        String cn = child.getPathName();
-        int total = node.countByPathName(child);
-        int index = node.indexByPathName(child);
-        count = count + countTargetMatches(child, fragment, path+"/"+cn+(total > 1 ? "["+index+"]" : ""), refs);
-      }
-    }
-    return count;
+  private Map<String, List<String>> buildXhtmlIdMap(XhtmlNode xhtml) {
+    Map<String, List<String>> res = new HashMap<>();
+    addXhtmlToIdMap(res, "/", xhtml);
+    return res;
   }
 
+  private void addXhtmlToIdMap(Map<String, List<String>> map, String path, XhtmlNode x) {
+    if (x.getNodeType() == NodeType.Element) {
+      String id = x.getAttribute("id");
+      if (id != null) {
+        addToMapList(map, path, id, "@id");
+      }
+      if ("a".equals(x.getName()) && x.getAttribute("name") != null) {
+        addToMapList(map, path, x.getAttribute("name"), "@name");
+      }
+
+      if (x.hasChildren()) {
+        for (int i = 0; i < x.getChildNodes().size(); i++) {
+          XhtmlNode child = x.getChildNodes().get(i);
+          String cn = child.getPathName();
+          int total = x.countByPathName(child);
+          int index = x.indexByPathName(child);
+          addXhtmlToIdMap(map, path + cn + (total > 1 ? "[" + index + "]" : "") + "/", child);
+        }
+      }
+    }
+  }
+
+  private void addToMapList(Map<String, List<String>> map, String path, String id, String name) {
+    List<String> list = map.get(id);
+    if (list == null) {
+      list = new ArrayList<>();
+      map.put(id, list);
+    }
+    list.add(path + name);
+  }
+
+//  private int countTargetMatches(XhtmlNode node, String fragment, String path, List<String> refs) {
+//    int count = 0;
+//    if (fragment.equals(node.getAttribute("id"))) {
+//      count++;
+//      refs.add(path+"/@id");
+//    }
+//    if ("a".equals(node.getName()) && fragment.equals(node.getAttribute("name"))) {
+//      count++;
+//      refs.add(path+"/@name");
+//    }
+//    if (node.hasChildren()) {
+//      for (int i = 0; i < node.getChildNodes().size(); i++) {
+//        XhtmlNode child = node.getChildNodes().get(i);
+//        String cn = child.getPathName();
+//        int total = node.countByPathName(child);
+//        int index = node.indexByPathName(child);
+//        count = count + countTargetMatches(child, fragment, path+"/"+cn+(total > 1 ? "["+index+"]" : ""), refs);
+//      }
+//    }
+//    return count;
+//  }
+//
 
   private boolean checkImageSources(ValidationContext valContext, List<ValidationMessage> errors, Element e, String path, String xpath, XhtmlNode node, Element resource) {
     boolean ok = true;
