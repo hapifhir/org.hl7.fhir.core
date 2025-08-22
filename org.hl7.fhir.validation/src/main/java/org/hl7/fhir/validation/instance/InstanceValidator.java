@@ -206,11 +206,6 @@ import org.w3c.dom.Document;
  *
  * @author Grahame Grieve
  */
-/*
- * todo:
- * check urn's don't start oid: or uuid:
- * check MetadataResource.url is absolute
- */
 @Slf4j
 public class InstanceValidator extends BaseValidator implements IResourceValidator {
 
@@ -222,7 +217,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public enum BindingContext {
     BASE, MAXVS, ADDITIONAL
-
   }
 
   private static final String EXECUTED_CONSTRAINT_LIST = "validator.executed.invariant.list";
