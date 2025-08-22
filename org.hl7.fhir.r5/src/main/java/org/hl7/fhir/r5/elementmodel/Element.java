@@ -84,6 +84,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  */
 @MarkedToMoveToAdjunctPackage
 public class Element extends Base implements NamedItem {
+
   public class SliceDefinition {
 
     private StructureDefinition profile;
@@ -1758,4 +1759,5 @@ public class Element extends Base implements NamedItem {
   public boolean hasXhtml() {
     return xhtml != null;
   }
+
 }
