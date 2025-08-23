@@ -163,6 +163,15 @@ public enum ObjectRole {
    */
   _24,
   /**
+   * The source or origin of data, when there is no other matching role available.
+   */
+  _25,
+  /**
+   * A data processing element that creates, analyzes, modifies, or manipulates
+   * data as part of this event.
+   */
+  _26,
+  /**
    * added to help the parsers
    */
   NULL;
@@ -218,6 +227,10 @@ public enum ObjectRole {
       return _23;
     if ("24".equals(codeString))
       return _24;
+    if ("25".equals(codeString))
+      return _25;
+    if ("26".equals(codeString))
+      return _26;
     throw new FHIRException("Unknown ObjectRole code '" + codeString + "'");
   }
 
@@ -271,6 +284,10 @@ public enum ObjectRole {
       return "23";
     case _24:
       return "24";
+    case _25:
+      return "25";
+    case _26:
+      return "26";
     case NULL:
       return null;
     default:
@@ -332,6 +349,10 @@ public enum ObjectRole {
       return "An object that specifies or controls the routing or delivery of items.  For example, a distribution list is the routing criteria for mail.  The items delivered may be documents, jobs, or other objects.";
     case _24:
       return "The contents of a query.  This is used to capture the contents of any kind of query.  For security surveillance purposes knowing the queries being made is very important.";
+    case _25:
+      return "The source or origin of data, when there is no other matching role available.";
+    case _26:
+      return "A data processing element that creates, analyzes, modifies, or manipulates data as part of this event.";
     case NULL:
       return null;
     default:
@@ -389,6 +410,10 @@ public enum ObjectRole {
       return "Routing Criteria";
     case _24:
       return "Query";
+    case _25:
+      return "Data Source";
+    case _26:
+      return "Processing Element";
     case NULL:
       return null;
     default:
