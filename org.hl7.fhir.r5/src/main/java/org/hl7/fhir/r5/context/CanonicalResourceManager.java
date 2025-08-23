@@ -172,6 +172,9 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     
     public CachedCanonicalResource(CanonicalResourceProxy proxy, PackageInformation packageInfo) {
       super();
+      if (proxy == null) {
+        throw new NullPointerException("Canonical resource proxy cannot be null");
+      }
       this.proxy = proxy;
       this.packageInfo = packageInfo;
     }

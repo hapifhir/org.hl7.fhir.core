@@ -39,6 +39,7 @@ public class I18nConstants {
   public static final String BUNDLE_BUNDLE_ENTRY_NOPROFILE_TYPE = "Bundle_BUNDLE_Entry_NoProfile_TYPE";
   public static final String BUNDLE_BUNDLE_ENTRY_NOTFOUND = "Bundle_BUNDLE_Entry_NotFound";
   public static final String BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT = "BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT";
+  public static final String BUNDLE_BUNDLE_ENTRY_NOTFOUND_CANNOT = "BUNDLE_BUNDLE_ENTRY_NOTFOUND_CANNOT";
   public static final String BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT = "BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT";
   public static final String BUNDLE_BUNDLE_ENTRY_ORPHAN_DOCUMENT = "Bundle_BUNDLE_Entry_Orphan_DOCUMENT";
   public static final String BUNDLE_BUNDLE_ENTRY_ORPHAN_MESSAGE = "Bundle_BUNDLE_Entry_Orphan_MESSAGE";
