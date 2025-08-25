@@ -6882,7 +6882,6 @@ v: {
   "version" : "http://snomed.info/sct/2011000195101/version/20250607",
   "server" : "https://tx.fhir.ch/r4",
   "inactive" : true,
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -6910,7 +6909,6 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/2011000195101/version/20250607",
   "server" : "https://tx.fhir.ch/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -6938,6 +6936,32 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/2011000195101/version/20250607",
   "server" : "https://tx.fhir.ch/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "371532007"
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode--0", "version": "2.0.4", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Progress note",
+  "code" : "371532007",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

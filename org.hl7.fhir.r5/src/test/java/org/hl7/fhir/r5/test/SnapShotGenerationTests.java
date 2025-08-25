@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import javax.xml.crypto.dsig.SignatureMethod;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -548,6 +549,8 @@ public class SnapShotGenerationTests {
   private void testGen(boolean fail, TestDetails test, SnapShotGenerationTestsContext context) throws Exception {
     FileUtilities.createDirectory(Utilities.path("[tmp]", "snapshot", "input"));
     
+    System.out.println("Loaded Packages: "+ ((SimpleWorkerContext) testContext).loadedPackageSummary());
+
     if (!Utilities.noString(test.register)) {
       List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
       ProfileUtilities pu = new ProfileUtilities(testContext, messages, null);
@@ -557,7 +560,7 @@ public class SnapShotGenerationTests {
         pu.setIds(sd, false);
       }
       for (StructureDefinition sd : test.included) {
-        if (!testContext.hasResource(StructureDefinition.class, sd.getUrl())) {
+        if (!testContext.hasResource(StructureDefinition.class, sd.getUrl(), sd.getVersion())) {
           testContext.cacheResource(sd);
         }
       }
@@ -576,7 +579,7 @@ public class SnapShotGenerationTests {
         throw new FHIRException("register gen failed: " + messages.toString());
     }
     StructureDefinition base = getSD(test.getSource().getBaseDefinition(), context);
-    if (!base.getUrl().equals(test.getSource().getBaseDefinition()))
+    if (!base.getUrl().equals(test.getSource().getBaseDefinition()) && !base.getVersionedUrl().equals(test.getSource().getBaseDefinition()))
       throw new Exception("URL mismatch on base: " + base.getUrl() + " wanting " + test.getSource().getBaseDefinition());
 
     StructureDefinition output = test.getSource().copy();
@@ -654,7 +657,12 @@ public class SnapShotGenerationTests {
 //        DiffUtils.testDiff(dst.getAbsolutePath(), actualFilePath);
       }
 
-      Assertions.assertTrue(structureDefinitionEquality, "Output does not match expected");
+      if (!structureDefinitionEquality) {
+        System.out.println("snapshot test "+test.id+" failed: " + new JsonParser().composeString(t1));
+        System.out.println("t1: " + new JsonParser().composeString(t1));
+        System.out.println("t2: " + new JsonParser().composeString(t2));
+      }
+      Assertions.assertTrue(structureDefinitionEquality, "Output for "+test.id+" does not match expected");
     }
     if (ml.size() > 0) {
       throw new FHIRException("Snapshot Generation failed: " + ml.toString());
@@ -668,7 +676,10 @@ public class SnapShotGenerationTests {
       sd = testContext.fetchResource(StructureDefinition.class, url);
     } 
     if (sd == null) {
-      throw new DefinitionException("Unable to find profile "+url);
+      if (url.contains("|")) {
+        url = url.substring(0, url.indexOf("|"));
+      }
+      throw new DefinitionException("Unable to find profile "+url+". Known versions = "+testContext.fetchResourceVersionsByTypeAndUrl(StructureDefinition.class, url));
     }
     if (!sd.hasSnapshot()) {
       StructureDefinition base = getSD(sd.getBaseDefinition(), context);

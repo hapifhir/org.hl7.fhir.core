@@ -210,7 +210,7 @@ public class PackageClient {
     } else {
       String v = list.get(0).getVersion();
       for (PackageInfo p : list) {
-        if (VersionUtilities.isThisOrLater(v, p.getVersion())) {
+        if (VersionUtilities.isThisOrLater(v, p.getVersion(), VersionUtilities.VersionPrecision.MINOR)) {
           v = p.getVersion();
         }
       }
@@ -225,8 +225,20 @@ public class PackageClient {
     } else {
       String v = null;
       for (PackageInfo p : list) {
-        if (VersionUtilities.isMajMinOrLaterPatch(specVersion, p.getVersion())) {
-          v = p.getVersion();
+        String version = p.getVersion();
+        if (VersionUtilities.isSemVer(version) && VersionUtilities.versionMatches(specVersion, version)) {
+          v = version;
+        }
+      }
+      if (v == null) {
+        for (PackageInfo p : list) {
+          String version = p.getVersion();
+          while (version.contains(".00")) {
+            version = version.replace(".00", ".0");
+          }
+          if (VersionUtilities.isSemVer(version) && VersionUtilities.versionMatches(specVersion, version)) {
+            v = version;
+          }
         }
       }
       return v;
@@ -255,7 +267,7 @@ public class PackageClient {
         for (JsonObject e : o.getJsonObjects("editions")) {
           if (fhirVersion == null || fhirVersion.equals(e.asString("fhir-version"))) {
             String v = e.asString("ig-version");
-            if (version == null || VersionUtilities.isThisOrLater(version, v)) {
+            if (version == null || VersionUtilities.isThisOrLater(version, v, VersionUtilities.VersionPrecision.MINOR)) {
               version = v;
               fVersion = e.getJsonArray("fhir-version").get(0).asString();
               url = e.asString("url");

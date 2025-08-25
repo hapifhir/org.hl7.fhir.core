@@ -84,6 +84,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  */
 @MarkedToMoveToAdjunctPackage
 public class Element extends Base implements NamedItem {
+
   public class SliceDefinition {
 
     private StructureDefinition profile;
@@ -796,10 +797,16 @@ public class Element extends Base implements NamedItem {
       }
   }
 
-  public String getNamedChildValue(String name) {
-    return getNamedChildValue(name, true);
+  public String getNamedChildValue(String... names) {
+    for (String name : names) {
+      String result = getNamedChildValue(name, true);
+      if (result != null) {
+        return result;
+      }
+    }
+    return null;
   }
-  
+
   public String getNamedChildValue(String name, boolean exception) {
   	Element child = getNamedChild(name, exception);
   	return child == null ? null : child.value;
@@ -1752,4 +1759,5 @@ public class Element extends Base implements NamedItem {
   public boolean hasXhtml() {
     return xhtml != null;
   }
+
 }
