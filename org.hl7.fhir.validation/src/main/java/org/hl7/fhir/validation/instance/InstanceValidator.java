@@ -5799,12 +5799,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         throw new FHIRException(context.formatMessage(I18nConstants.PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__, expression, profile.getVersionedUrl(), path, e.getMessage()));
       }
       timeTracker.fpe(t);
+//      DebugUtilities.ln("slice "+ed.getSliceName()+" rules = "+n.toString());
       ed.setUserData(UserDataNames.validator_slice_expression_cache, n);
     } else {
     }
 
     ValidationContext shc = valContext.forSlicing();
     boolean pass = evaluateSlicingExpression(shc, element, path, profile, n);
+   // DebugUtilities.ln("    element "+element.getPath()+(pass ? "matches" : "does not match"));
     if (!pass) {
       slicingHint(sliceInfo, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, false, isProfile(slicer), (context.formatMessage(I18nConstants.DOES_NOT_MATCH_SLICE_, ed.getSliceName(), n.toString().substring(8).trim())), "discriminator = " + Utilities.escapeXml(n.toString()), null);
       for (String url : shc.getSliceRecords().keySet()) {
