@@ -430,7 +430,7 @@ public class TerminologyCache {
       nameCacheToken(vs, ct);
       JsonParser json = new JsonParser();
       json.setOutputStyle(OutputStyle.PRETTY);
-      String expJS = expParameters == null ? "" : json.composeString(expParameters);
+      String expJS = expParameters == null ? "" : json.composeString(expParameters.copy());
 
       if (vs != null && vs.hasUrl() && vs.hasVersion()) {
         ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())
@@ -460,7 +460,7 @@ public class TerminologyCache {
       ct.setName(vsUrl);
       JsonParser json = new JsonParser();
       json.setOutputStyle(OutputStyle.PRETTY);
-      String expJS = json.composeString(expParameters);
+      String expJS = json.composeString(expParameters.copy());
 
       ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsUrl == null ? "null" : vsUrl)+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}";
       ct.key = String.valueOf(hashJson(ct.request));
@@ -492,7 +492,7 @@ public class TerminologyCache {
       nameCacheToken(vs, ct);
       JsonParser json = new JsonParser();
       json.setOutputStyle(OutputStyle.PRETTY);
-      String expJS = json.composeString(expParameters);
+      String expJS = json.composeString(expParameters.copy());
       if (vs != null && vs.hasUrl() && vs.hasVersion()) {
         ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+
             "\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\""+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}\r\n";      
@@ -1194,7 +1194,7 @@ public class TerminologyCache {
       ct.hasVersion = parent.hasVersion() || child.hasVersion();
       JsonParser json = new JsonParser();
       json.setOutputStyle(OutputStyle.PRETTY);
-      String expJS = json.composeString(expParameters);
+      String expJS = json.composeString(expParameters.copy());
       ct.request = "{\"op\": \"subsumes\", \"parent\" : "+json.composeString(parent, "code")+", \"child\" :"+json.composeString(child, "code")+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}";
       ct.key = String.valueOf(hashJson(ct.request));
       return ct;
