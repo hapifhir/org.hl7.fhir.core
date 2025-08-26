@@ -665,7 +665,7 @@ public class SnapShotGenerationTests {
       Assertions.assertTrue(structureDefinitionEquality, "Output for "+test.id+" does not match expected");
     }
     if (ml.size() > 0) {
-      throw new FHIRException("Snapshot Generation failed: " + ml.toString());
+      throw new FHIRException("Snapshot Generation failed for "+test.getSource().getUrl()+": " + ml.toString());
     }
     output.setText(txt);
   }
