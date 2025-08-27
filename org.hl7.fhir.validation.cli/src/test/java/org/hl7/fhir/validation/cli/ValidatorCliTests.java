@@ -326,7 +326,7 @@ public class ValidatorCliTests {
 
   @Test
   public void txTestsTest() throws Exception {
-    final String[] args = new String[]{"-txTests"};
+    final String[] args = new String[]{"txTests"};
     ValidationContext validationContext = Params.loadValidationContext(args);
     ValidatorCli cli = mockValidatorCli();
     cli.readGlobalParamsAndExecuteTask(validationContext, args);
