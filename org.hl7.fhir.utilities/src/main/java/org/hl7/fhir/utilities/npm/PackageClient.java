@@ -246,21 +246,21 @@ public class PackageClient {
   }
 
   protected PackageInfo getPackageInfoFromJSON(JsonObject o, String name, String canonical, String fhirVersion) {
-      String id = o.asString("npm-name");
-      String pname = o.asString("name");
-      String pcanonical = o.asString("canonical");
-      String description = o.asString("description");
-      Instant d = o.has("date") ? o.asDate("date") : null;
+      String packageId = o.asString("npm-name");
+      String packageName = o.asString("name");
+      String packageCanonical = o.asString("canonical");
+      String packageDescription = o.asString("description");
+      Instant packageDate = o.has("date") ? o.asDate("date") : null;
       boolean ok = true;
       if (ok && !Utilities.noString(name)) {
-        ok = (pname != null && pname.contains(name)) || (description != null && description.contains(name)) || (id != null && id.contains(name));
+        ok = (packageName != null && packageName.contains(name)) || (packageDescription != null && packageDescription.contains(name)) || (packageId != null && packageId.contains(name));
       }
       if (ok && !Utilities.noString(canonical)) {
-        ok = pcanonical.contains(canonical);
+        ok = packageCanonical.contains(canonical);
       }
-      String version = null;
-      String fVersion = null;
-      String url = null;
+      String currentVersion = null;
+      String currentFhirVersion = null;
+      String currentUrl = null;
 
       if (ok) {
         // Get the latest version out of the available valid editions of this IG.
@@ -269,24 +269,25 @@ public class PackageClient {
             String igVersion = edition.asString("ig-version");
             try {
               // If this version is valid, check if it is later than the current version
-              if (version == null || VersionUtilities.isThisOrLater(version, igVersion, VersionUtilities.VersionPrecision.MINOR)) {
-                version = igVersion;
-                fVersion = edition.getJsonArray("fhir-version").get(0).asString();
-                url = edition.asString("url");
+              if (currentVersion == null || VersionUtilities.isThisOrLater(currentVersion, igVersion, VersionUtilities.VersionPrecision.MINOR)) {
+                currentVersion = igVersion;
+                currentFhirVersion = edition.getJsonArray("fhir-version").get(0).asString();
+                currentUrl = edition.asString("url");
 
                 String npmPackage = edition.asString("package");
-                if (npmPackage != null && id == null) {
-                  id = npmPackage.substring(0, npmPackage.indexOf("#"));
+                if (npmPackage != null && packageId == null) {
+
+                  packageId = npmPackage.substring(0, npmPackage.indexOf("#"));
                 }
               }
             }
             catch (org.hl7.fhir.exceptions.FHIRException fhirException) {
-              log.error("Error comparing versions \"{}\" and \"{}\" while getting package info from JSON", version, igVersion, fhirException);
+              log.error("Error comparing versions \"{}\" and \"{}\" while getting package info from JSON", currentVersion, igVersion, fhirException);
             }
           }
         }
       }
-      return new PackageInfo(id, version, fVersion, description, url, pcanonical, address, d);
+      return new PackageInfo(packageId, currentVersion, currentFhirVersion, packageDescription, currentUrl, packageCanonical, address, packageDate);
   }
   
   public List<PackageInfo> listFromRegistry(String name, String canonical, String fhirVersion) throws IOException {
