@@ -26,6 +26,9 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
+import static org.hl7.fhir.utilities.VersionUtilities.checkVersionNotNullAndValid;
+import static org.hl7.fhir.utilities.VersionUtilities.fixForSpecialValue;
+
 @Slf4j
 public class PackageClient {
 
@@ -268,6 +271,8 @@ public class PackageClient {
           if (fhirVersion == null || fhirVersion.equals(edition.asString("fhir-version"))) {
             String igVersion = edition.asString("ig-version");
             try {
+
+              VersionUtilities.checkVersionNotNullAndValid(fixForSpecialValue(igVersion), "candidate");
               // If this version is valid, check if it is later than the current version
               if (currentVersion == null || VersionUtilities.isThisOrLater(currentVersion, igVersion, VersionUtilities.VersionPrecision.MINOR)) {
                 currentVersion = igVersion;
@@ -282,7 +287,7 @@ public class PackageClient {
               }
             }
             catch (org.hl7.fhir.exceptions.FHIRException fhirException) {
-              log.error("Error comparing versions \"{}\" and \"{}\" while getting package info from JSON", currentVersion, igVersion, fhirException);
+              log.error("Error evaluating edition with version \"{}\" while getting package info from JSON", igVersion, fhirException);
             }
           }
         }
