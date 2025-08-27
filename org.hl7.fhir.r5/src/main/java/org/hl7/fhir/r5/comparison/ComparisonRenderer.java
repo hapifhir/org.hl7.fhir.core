@@ -150,7 +150,9 @@ public class ComparisonRenderer implements IHostApplicationServices {
   }
 
   private void renderComparison(String id, ResourceComparison comp) throws IOException, FHIRFormatError, DefinitionException, FHIRException, EOperationOutcome {    
-    if (comp instanceof ProfileComparison) {
+    if (comp instanceof PlaceHolderComparison) {
+      // nothing? TODO: is this a problem?
+    } else  if (comp instanceof ProfileComparison) {
       renderProfile(id, (ProfileComparison) comp);
     } else if (comp instanceof ValueSetComparison) {
       renderValueSet(id, (ValueSetComparison) comp);

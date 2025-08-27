@@ -1,6 +1,5 @@
 {
   "http://loinc.org|2.76" : null,
-  "http://www.rfc-editor.org/bcp/bcp13.txt" : null,
   "#f3b2bd36-199b-4591-b4db-f49db0912b6|null" : null,
   "#c1|null" : null,
   "http://example.org/invalid-valueset-canonical" : null,
@@ -22,7 +21,7 @@
   "http://hl7.org/fhir/smart-app-launch/ValueSet/user-access-category" : null,
   "https://healthterminologies.gov.au/fhir/ValueSet/australian-immunisation-register-vaccine-1" : {
     "server" : "https://tx.ontoserver.csiro.au/fhir",
-    "filename" : "vs-1d9dd86c-728c-46e2-92b4-629c8b90bdeb.json"
+    "filename" : "vs-e1c481d5-1fdd-425f-98da-20a1d0767553.json"
   },
   "http://snomed.info/sct|http://snomed.info/sct/731000124108" : null,
   "https://sqlonfhir-ci2.azurewebsites.net/fhir/ValueSet/hcxdir-locality" : null

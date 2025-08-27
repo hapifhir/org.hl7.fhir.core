@@ -77,9 +77,9 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
     if (VersionUtilities.isR5Plus(npm.fhirVersion())) {
       return new R5ToR5Loader(types, lkp.forNewPackage(npm));
     } else if (VersionUtilities.isR4BVer(npm.fhirVersion())) {
-      return new R4BToR5Loader(types, lkp.forNewPackage(npm), npm.version());
+      return new R4BToR5Loader(types, lkp.forNewPackage(npm), npm.fhirVersion());
     } else if (VersionUtilities.isR4Ver(npm.fhirVersion())) {
-      return new R4ToR5Loader(types, lkp.forNewPackage(npm), npm.version());
+      return new R4ToR5Loader(types, lkp.forNewPackage(npm), npm.fhirVersion());
     } else if (VersionUtilities.isR3Ver(npm.fhirVersion())) {
       return new R3ToR5Loader(types, lkp.forNewPackage(npm));
     } else if (VersionUtilities.isR2Ver(npm.fhirVersion())) {

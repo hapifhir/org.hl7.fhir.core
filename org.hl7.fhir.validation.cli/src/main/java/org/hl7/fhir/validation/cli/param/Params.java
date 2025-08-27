@@ -26,6 +26,7 @@ import org.hl7.fhir.validation.service.utils.ValidationLevel;
 public class Params {
 
   public static final String VERSION = "-version";
+  public static final String TEST_VERSION = "-test-version";
   public static final String ALT_VERSION = "-alt-version";
   public static final String OUTPUT = "-output";
 
@@ -90,7 +91,7 @@ public class Params {
   public static final String CONVERT = "-convert";
   public static final String FHIRPATH = "-fhirpath";
   public static final String TEST = "-tests";
-  public static final String TX_TESTS = "-txTests";
+  public static final String TX_TESTS = "txTests";
   public static final String AI_TESTS = "-aiTests";
   public static final String HELP = "help";
   public static final String COMPARE = "-compare";
