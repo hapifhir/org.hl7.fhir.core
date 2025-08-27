@@ -6,7 +6,7 @@
 * Changes to tx-tester: 
   * rename `-txTests` parameter to `txTests`
   * rename `-version` parameter to `-test-version`
-  * move test case output from `{dest}` to `{dest}\actual` and also populate `{dest}\expected` for ease of comparison
+  * move test case output from `dest` to `dest\actual` and also populate `dest\expected` for ease of comparison
 * Fix bug doing compares on differentials with incomplete slicing information
 * Test cases for updating eco-system to LOINC 2.81
 * Use correct version when loading packages (FHIR version, not package version)
