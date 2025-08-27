@@ -35,6 +35,15 @@ public class PackageClientTest implements ResourceLoaderTests {
   }
 
   @Test
+  @DisplayName("test getting package from valid JSON with invalid version field")
+  public void getPacakgeInfoFromJSONWithInvalidVersionTest() throws java.io.IOException {
+    final JsonObject jsonObject = JsonParser.parseObject(getResourceAsInputStream("npm","PackageClient-invalidVersion.json"));
+    final PackageInfo packageInfo = packageClient.getPackageInfoFromJSON(jsonObject, null, null, null);
+
+    assertExpectedFields(packageInfo);
+  }
+
+  @Test
   @DisplayName("test getting package from JSON works")
   public void getPackageInfoWithIdFromJSONTest() throws java.io.IOException {
     final JsonObject jsonObject = JsonParser.parseObject(getResourceAsInputStream("npm", "PackageClient-testCaseWithId.json"));

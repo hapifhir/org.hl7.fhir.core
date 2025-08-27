@@ -26,6 +26,9 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
+import static org.hl7.fhir.utilities.VersionUtilities.checkVersionNotNullAndValid;
+import static org.hl7.fhir.utilities.VersionUtilities.fixForSpecialValue;
+
 @Slf4j
 public class PackageClient {
 
@@ -246,41 +249,48 @@ public class PackageClient {
   }
 
   protected PackageInfo getPackageInfoFromJSON(JsonObject o, String name, String canonical, String fhirVersion) {
-      String id = o.asString("npm-name");
-      String pname = o.asString("name");
-      String pcanonical = o.asString("canonical");
-      String description = o.asString("description");
-      Instant d = o.has("date") ? o.asDate("date") : null;
+      String packageId = o.asString("npm-name");
+      String packageName = o.asString("name");
+      String packageCanonical = o.asString("canonical");
+      String packageDescription = o.asString("description");
+      Instant packageDate = o.has("date") ? o.asDate("date") : null;
       boolean ok = true;
       if (ok && !Utilities.noString(name)) {
-        ok = (pname != null && pname.contains(name)) || (description != null && description.contains(name)) || (id != null && id.contains(name));
+        ok = (packageName != null && packageName.contains(name)) || (packageDescription != null && packageDescription.contains(name)) || (packageId != null && packageId.contains(name));
       }
       if (ok && !Utilities.noString(canonical)) {
-        ok = pcanonical.contains(canonical);
+        ok = packageCanonical.contains(canonical);
       }
-      String version = null;
-      String fVersion = null;
-      String url = null;
+      String currentVersion = null;
+      String currentFhirVersion = null;
+      String currentUrl = null;
 
       if (ok) {
-        // if we can find something...
-        for (JsonObject e : o.getJsonObjects("editions")) {
-          if (fhirVersion == null || fhirVersion.equals(e.asString("fhir-version"))) {
-            String v = e.asString("ig-version");
-            if (version == null || VersionUtilities.isThisOrLater(version, v, VersionUtilities.VersionPrecision.MINOR)) {
-              version = v;
-              fVersion = e.getJsonArray("fhir-version").get(0).asString();
-              url = e.asString("url");
-
-              String npmPackage = e.asString("package");
-              if (npmPackage != null && id == null) {
-                id = npmPackage.substring(0, npmPackage.indexOf("#"));
+        // Get the latest version out of the available valid editions of this IG.
+        for (JsonObject edition : o.getJsonObjects("editions")) {
+          if (fhirVersion == null || fhirVersion.equals(edition.asString("fhir-version"))) {
+            String igVersion = edition.asString("ig-version");
+              if (!VersionUtilities.isSemVer(igVersion))
+              {
+                log.error("Non-semver version \"{}\" encountered while getting package info for {}", igVersion, edition.asString("package"));
+                continue;
               }
-            }
+              // If this version is valid, check if it is later than the current version
+              if (currentVersion == null || VersionUtilities.isThisOrLater(currentVersion, igVersion, VersionUtilities.VersionPrecision.MINOR)) {
+                currentVersion = igVersion;
+                currentFhirVersion = edition.getJsonArray("fhir-version").get(0).asString();
+                currentUrl = edition.asString("url");
+
+                String npmPackage = edition.asString("package");
+                if (npmPackage != null && packageId == null) {
+
+                  packageId = npmPackage.substring(0, npmPackage.indexOf("#"));
+                }
+              }
           }
         }
       }
-      return new PackageInfo(id, version, fVersion, description, url, pcanonical, address, d);
+      return new PackageInfo(packageId, currentVersion, currentFhirVersion, packageDescription, currentUrl, packageCanonical, address, packageDate);
   }
   
   public List<PackageInfo> listFromRegistry(String name, String canonical, String fhirVersion) throws IOException {
