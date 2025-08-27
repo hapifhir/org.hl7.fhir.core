@@ -41,7 +41,7 @@ public class VersionConvertorConstants {
   public final static String EXT_MODIFIER_REASON_LEGACY = "No Modifier Reason provideed in previous versions of FHIR";
   public final static String EXT_PROFILE_EXTENSION = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ElementDefinition.type.profile";
   public static final String EXT_ACCEPT_UNKNOWN_EXTENSION_URL = "http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown";
-  public static final String EXT_CarePlanActivityDetailComponentExtension = "http://hl7.org/fhir/3.0/StructureDefinition/extension-CarePlan.activity.detail.category";
+  public static final String EXT_CARE_PLAN_ACTIVITY_DETAIL_COMPONENT_EXTENSION = "http://hl7.org/fhir/3.0/StructureDefinition/extension-CarePlan.activity.detail.category";
   public static final String EXT_EXP_VS_CONT_PROP = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property";
   public static final String EXT_TESTSCRIPT_SCOPE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-TestScript.scope";
   public static final String EXT_ACTUAL_RESOURCE_NAME = "http://hl7.org/fhir/tools/StructureDefinition/original-resource-name";
