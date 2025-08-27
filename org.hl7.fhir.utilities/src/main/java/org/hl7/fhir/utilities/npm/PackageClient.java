@@ -263,19 +263,25 @@ public class PackageClient {
       String url = null;
 
       if (ok) {
-        // if we can find something...
-        for (JsonObject e : o.getJsonObjects("editions")) {
-          if (fhirVersion == null || fhirVersion.equals(e.asString("fhir-version"))) {
-            String v = e.asString("ig-version");
-            if (version == null || VersionUtilities.isThisOrLater(version, v, VersionUtilities.VersionPrecision.MINOR)) {
-              version = v;
-              fVersion = e.getJsonArray("fhir-version").get(0).asString();
-              url = e.asString("url");
+        // Get the latest version out of the available valid editions of this IG.
+        for (JsonObject edition : o.getJsonObjects("editions")) {
+          if (fhirVersion == null || fhirVersion.equals(edition.asString("fhir-version"))) {
+            String igVersion = edition.asString("ig-version");
+            try {
+              // If this version is valid, check if it is later than the current version
+              if (version == null || VersionUtilities.isThisOrLater(version, igVersion, VersionUtilities.VersionPrecision.MINOR)) {
+                version = igVersion;
+                fVersion = edition.getJsonArray("fhir-version").get(0).asString();
+                url = edition.asString("url");
 
-              String npmPackage = e.asString("package");
-              if (npmPackage != null && id == null) {
-                id = npmPackage.substring(0, npmPackage.indexOf("#"));
+                String npmPackage = edition.asString("package");
+                if (npmPackage != null && id == null) {
+                  id = npmPackage.substring(0, npmPackage.indexOf("#"));
+                }
               }
+            }
+            catch (org.hl7.fhir.exceptions.FHIRException fhirException) {
+              log.error("Error comparing versions \"{}\" and \"{}\" while getting package info from JSON", version, igVersion, fhirException);
             }
           }
         }
