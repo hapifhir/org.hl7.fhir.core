@@ -270,9 +270,11 @@ public class PackageClient {
         for (JsonObject edition : o.getJsonObjects("editions")) {
           if (fhirVersion == null || fhirVersion.equals(edition.asString("fhir-version"))) {
             String igVersion = edition.asString("ig-version");
-            try {
-
-              VersionUtilities.checkVersionNotNullAndValid(fixForSpecialValue(igVersion), "candidate");
+              if (!VersionUtilities.isSemVer(igVersion))
+              {
+                log.error("Non-semver version \"{}\" encountered while getting package info for {}", igVersion, edition.asString("package"));
+                continue;
+              }
               // If this version is valid, check if it is later than the current version
               if (currentVersion == null || VersionUtilities.isThisOrLater(currentVersion, igVersion, VersionUtilities.VersionPrecision.MINOR)) {
                 currentVersion = igVersion;
@@ -285,10 +287,6 @@ public class PackageClient {
                   packageId = npmPackage.substring(0, npmPackage.indexOf("#"));
                 }
               }
-            }
-            catch (org.hl7.fhir.exceptions.FHIRException fhirException) {
-              log.error("Error evaluating edition with version \"{}\" while getting package info from JSON", igVersion, fhirException);
-            }
           }
         }
       }
