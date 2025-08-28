@@ -50,6 +50,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import javax.annotation.Nonnull;
 
@@ -327,6 +328,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   protected Map<String, Map<String, ValidationResult>> validationCache = new HashMap<String, Map<String,ValidationResult>>();
   protected String name;
+  @Setter
+  @Getter
   private boolean allowLoadingDuplicates;
 
   private final Set<String> codeSystemsUsed = new HashSet<>();
@@ -2314,14 +2317,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return res;
   }
 
-  public boolean isAllowLoadingDuplicates() {
-    return allowLoadingDuplicates;
-  }
-
-  public void setAllowLoadingDuplicates(boolean allowLoadingDuplicates) {
-    this.allowLoadingDuplicates = allowLoadingDuplicates;
-  }
-
   @Override
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException {
     return fetchResourceWithException(class_, uri, null);
@@ -3768,26 +3763,55 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public void setLocale(Locale locale) {
     super.setLocale(locale);
     if (locale != null) {
-      String lt = locale.toLanguageTag();
-      if ("und".equals(lt)) {
+      final String languageTag = locale.toLanguageTag();
+      if ("und".equals(languageTag)) {
         throw new FHIRException("The locale "+locale.toString()+" is not valid");
       }
+      /* If displayLanguage is an existing parameter, we check to see if it was added automatically or explicitly set by
+       the user
+
+       * If it was added automatically, we update it to the new locale
+       * If it was set by the user, we do not update it.
+
+       In both cases, we are done.
+       */
+
       if (expParameters != null) {
-        for (ParametersParameterComponent p : expParameters.getParameter()) {
-          if ("displayLanguage".equals(p.getName())) {
-            if (p.hasUserData(UserDataNames.auto_added_parameter)) {
-              p.setValue(new CodeType(lt));
-              return;
-            } else {
-              // user supplied, we leave it alone
-              return ;
+        int displayLanguageCount = 0;
+        for (ParametersParameterComponent expParameter : expParameters.getParameter()) {
+          if ("displayLanguage".equals(expParameter.getName())) {
+            if (expParameter.hasUserData(UserDataNames.auto_added_parameter)) {
+              expParameter.setValue(new CodeType(languageTag));
             }
+            displayLanguageCount++;
           }
         }
-        ParametersParameterComponent p = expParameters.addParameter();
-        p.setName("defaultDisplayLanguage");
-        p.setValue(new CodeType(lt));
-        p.setUserData(UserDataNames.auto_added_parameter, true);
+        if (displayLanguageCount > 1) {
+          throw new FHIRException("Multiple displayLanguage parameters found");
+        }
+        if (displayLanguageCount == 1) {
+          return;
+        }
+
+        // There is no displayLanguage parameter so we are free to add a "defaultDisplayLanguage" instead.
+
+        int defaultDisplayLanguageCount = 0;
+        for (ParametersParameterComponent expParameter : expParameters.getParameter()) {
+          if ("defaultDisplayLanguage".equals(expParameter.getName())) {
+            expParameter.setValue(new CodeType(languageTag));
+            expParameter.setUserData(UserDataNames.auto_added_parameter, true);
+            defaultDisplayLanguageCount++;
+          }
+        }
+        if (defaultDisplayLanguageCount > 1) {
+          throw new FHIRException("Multiple defaultDisplayLanguage parameters found");
+        }
+        if (defaultDisplayLanguageCount == 0) {
+          ParametersParameterComponent p = expParameters.addParameter();
+          p.setName("defaultDisplayLanguage");
+          p.setValue(new CodeType(languageTag));
+          p.setUserData(UserDataNames.auto_added_parameter, true);
+        }
       }
     }
   }

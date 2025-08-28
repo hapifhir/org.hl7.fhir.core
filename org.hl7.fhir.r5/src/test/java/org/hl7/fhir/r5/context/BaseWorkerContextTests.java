@@ -9,6 +9,7 @@ import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -30,12 +31,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -575,5 +573,56 @@ public class BaseWorkerContextTests {
 
     Mockito.verify(terminologyCache).getExpansion(cacheToken);
     Mockito.verify(terminologyCache).cacheExpansion(cacheToken, actualExpansionResult, true);
+  }
+
+  @Test
+  void setLocaleSetsDefaultDisplayLanguageIfNoDisplayLanguage() throws IOException {
+    BaseWorkerContext baseWorkerContext = getBaseWorkerContext();
+
+    baseWorkerContext.setLocale(Locale.CHINA);
+    Parameters actualParameters = baseWorkerContext.getExpansionParameters();
+    assertThat(actualParameters.getParameter().size()).isEqualTo(1);
+    assertThat(actualParameters.getParameter().get(0).getName()).isEqualTo("defaultDisplayLanguage");
+    assertThat(actualParameters.getParameter().get(0).getValue().toString()).isEqualTo(Locale.CHINA.toLanguageTag());
+  }
+
+  @Test
+  void setLocaleResetsDisplayLanguageIfSetAutomatically() throws IOException {
+    BaseWorkerContext baseWorkerContext = getBaseWorkerContext();
+    baseWorkerContext.expParameters = new Parameters();
+    baseWorkerContext.expParameters.addParameter().setName("displayLanguage").setValue(new CodeType(Locale.FRANCE.toLanguageTag())).setUserData(UserDataNames.auto_added_parameter, "groovy");
+
+    baseWorkerContext.setLocale(Locale.CHINA);
+    Parameters actualParameters = baseWorkerContext.getExpansionParameters();
+    assertThat(actualParameters.getParameter().size()).isEqualTo(1);
+    assertThat(actualParameters.getParameter().get(0).getName()).isEqualTo("displayLanguage");
+    assertThat(actualParameters.getParameter().get(0).getValue().toString()).isEqualTo(Locale.CHINA.toLanguageTag());
+  }
+
+  @Test
+  void setLocaleDoesntChangeDisplayLanguageIfNotSetAutomatically() throws IOException {
+    BaseWorkerContext baseWorkerContext = getBaseWorkerContext();
+    baseWorkerContext.expParameters = new Parameters();
+    baseWorkerContext.expParameters.addParameter().setName("displayLanguage").setValue(new CodeType(Locale.FRANCE.toLanguageTag()));
+
+    baseWorkerContext.setLocale(Locale.CHINA);
+    Parameters actualParameters = baseWorkerContext.getExpansionParameters();
+    assertThat(actualParameters.getParameter().size()).isEqualTo(1);
+    assertThat(actualParameters.getParameter().get(0).getName()).isEqualTo("displayLanguage");
+    assertThat(actualParameters.getParameter().get(0).getValue().toString()).isEqualTo(Locale.FRANCE.toLanguageTag());
+
+  }
+
+  @Test
+  void setLocaleDoesNotCreateDuplicateParams() throws IOException {
+    BaseWorkerContext baseWorkerContext = getBaseWorkerContext();
+
+    for (int i = 0; i < 10; i++) {
+      baseWorkerContext.setLocale(Locale.US);
+      Parameters actualParameters = baseWorkerContext.getExpansionParameters();
+      assertThat(actualParameters.getParameter().size()).isEqualTo(1);
+      assertThat(actualParameters.getParameter().get(0).getName()).isEqualTo("defaultDisplayLanguage");
+      assertThat(actualParameters.getParameter().get(0).getValue().toString()).isEqualTo("en-US");
+    }
   }
 }
