@@ -1301,7 +1301,7 @@ public class QuestionnaireValidator extends BaseValidator {
     if (Utilities.noString(v) || !v.contains(".")) {
       return 0;
     } else {
-      return v.length() - v.lastIndexOf(".");
+      return v.length() - v.lastIndexOf(".") - 1;
     }
   }
 
