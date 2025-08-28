@@ -1167,7 +1167,7 @@ public class QuestionnaireValidator extends BaseValidator {
         }
         if (qItem.hasExtension(ExtensionDefinitions.EXT_MAX_DECIMALS)) {
           int dt = Integer.parseInt(qItem.getExtensionByUrl(ExtensionDefinitions.EXT_MAX_DECIMALS).getValue().primitiveValue());
-          ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, precision(vdt.getValueElement().primitiveValue()) <= dt, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX_DECIMALS, v.primitiveValue(), dt) && ok;
+          ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, precision(vdt.getValueElement().primitiveValue()) <= dt, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX_DECIMALS, vdt.getValueElement().primitiveValue(), dt) && ok;
         }
         if (qItem.hasExtension(ExtensionDefinitions.EXT_Q_UNIT_OPTION)) {
           boolean matched = false;
