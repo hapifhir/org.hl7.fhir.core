@@ -866,6 +866,10 @@ public class XmlParser extends ParserBase {
         if (isElideElements() && element.isElided() && xml.canElide())
           xml.elide();
         else {
+          if ((element.getXhtml()==null) && (element.getValue() != null)) {
+            XhtmlParser xhtml = new XhtmlParser();
+            element.setXhtml(xhtml.setXmlMode(true).parse(element.getValue(), null).getDocumentElement());
+          }
           if (isCdaText(element.getProperty())) {
             new CDANarrativeFormat().convert(xml, element.getXhtml());
           } else {

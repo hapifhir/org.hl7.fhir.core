@@ -6,16 +6,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TimeZone;
+import java.util.*;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
@@ -45,6 +36,8 @@ import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPHeader;
+import org.hl7.fhir.utilities.http.HTTPResult;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -117,7 +110,6 @@ public class TxTester {
   private TerminologyCapabilities tc;
   private TxTesterConversionLogger conversionLogger;
   private TestReport testReport;
-  
 
   public TxTester(ITxTesterLoader loader, String server, boolean tight, JsonObject externals) {
     super();
@@ -156,6 +148,8 @@ public class TxTester {
     if (!ManagedFileAccess.file(outputDir).exists()) {
       throw new IOException("Unable to create output directory "+outputDir);
     }
+    FileUtilities.createDirectory(Utilities.path(outputDir, "actual"));
+    FileUtilities.createDirectory(Utilities.path(outputDir, "expected"));
     log.info("  Term Service Url: "+server);
     testReport.addParticipant().setType(TestReportParticipantType.SERVER).setUri(server);
     log.info("  External Strings: "+(externals != null));
@@ -346,7 +340,12 @@ public class TxTester {
     log.info("Load Tests from "+loader.describe());
     return JsonParser.parseObject(loader.loadContent(loader.testFileName()));
   }
-  
+
+  private byte[] fetch(String source) throws IOException {
+    String murl = source.contains("?") ? source+"&nocache=" + System.currentTimeMillis() : source+"?nocache=" + System.currentTimeMillis();
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), murl, "application/json, application/fhir+json");
+    return res.getContent();
+  }
 
   private ITerminologyClient connectToServer(Set<String> modes) throws URISyntaxException, IOException {
     log.info("Connect to "+server);
@@ -357,8 +356,11 @@ public class TxTester {
     }
     
     String fhirVersion = null;
-    try {      
-      JsonObject vl = JsonParser.parseObjectFromUrl(Utilities.pathURL(server, "$versions", "?_format=json"));
+    try {
+      String actFn = this.outputDir == null ?  Utilities.path("[tmp]", serverId(), "actual", "$versions.json") : Utilities.path(this.outputDir, "actual", "$versions.json");
+      byte[] vr = fetch(Utilities.pathURL(server, "$versions", "?_format=json"));
+      FileUtilities.bytesToFile(vr, actFn);
+      JsonObject vl = JsonParser.parseObject(vr);
       if ("Parameters".equals(vl.asString("resourceType"))) {
         for (JsonObject v : vl.forceArray("parameter").asJsonObjects()) {
           if ("default".equals(v.asString("name"))) {
@@ -494,33 +496,39 @@ public class TxTester {
 
         String fn = chooseParam(test, "response", modes);
         String resp = FileUtilities.bytesToString(loader.loadContent(fn));
-        String fp = this.outputDir == null ?  Utilities.path("[tmp]", serverId(), fn) : Utilities.path(this.outputDir, fn);
-        File fo = ManagedFileAccess.file(fp);
+        String expFn = this.outputDir == null ?  Utilities.path("[tmp]", serverId(), "expected", fn) : Utilities.path(this.outputDir, "expected", fn);
+        String actFn = this.outputDir == null ?  Utilities.path("[tmp]", serverId(), "actual", fn) : Utilities.path(this.outputDir, "actual", fn);
+        File fo = ManagedFileAccess.file(expFn);
         if (fo.exists()) {
           fo.delete();
         }
+        fo = ManagedFileAccess.file(actFn);
+        if (fo.exists()) {
+          fo.delete();
+        }
+
         JsonObject ext = externals == null ? null : externals.getJsonObject(fn);
 
         String lang = test.asString("Accept-Language");
         String msg = null;
         if (test.asString("operation").equals("metadata")) {
-          msg = metadata(test.str("name"), setup, resp, fp, lang, profile, ext, modes);
+          msg = metadata(test.str("name"), setup, resp, expFn, actFn, lang, profile, ext, modes);
         } else if (test.asString("operation").equals("term-caps")) {
-          msg = termcaps(test.str("name"), setup, resp, fp, lang, profile, ext, modes);
+          msg = termcaps(test.str("name"), setup, resp, expFn, actFn, lang, profile, ext, modes);
         } else if (test.asString("operation").equals("expand")) {
-          msg = expand(test.str("name"), setup, (Parameters) req, resp, fp, lang, profile, ext, getResponseCode(test), modes);
+          msg = expand(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("validate-code")) {
-          msg = validate(test.str("name"), setup, (Parameters) req, resp, fp, lang, profile, ext, getResponseCode(test), modes);      
+          msg = validate(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);      
         } else if (test.asString("operation").equals("cs-validate-code")) {
-          msg = validateCS(test.str("name"), setup, (Parameters) req, resp, fp, lang, profile, ext, getResponseCode(test), modes);      
+          msg = validateCS(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);      
         } else if (test.asString("operation").equals("lookup")) {
-          msg = lookup(test.str("name"), setup, (Parameters) req, resp, fp, lang, profile, ext, getResponseCode(test), modes);      
+          msg = lookup(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);      
         } else if (test.asString("operation").equals("translate")) {
-          msg = translate(test.str("name"), setup, (Parameters) req, resp, fp, lang, profile, ext, getResponseCode(test), modes);
+          msg = translate(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("batch")) {
-          msg = batch(test.str("name"), setup, (Bundle) req, resp, fp, lang, profile, ext, getResponseCode(test), modes);
+          msg = batch(test.str("name"), setup, (Bundle) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("batch-validate")) {
-          msg = batchValidate(test.str("name"), setup, (Parameters) req, resp, fp, lang, profile, ext, getResponseCode(test), modes);
+          msg = batchValidate(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
@@ -559,7 +567,7 @@ public class TxTester {
     }
   }
 
-  private String metadata(String id, List<Resource> setup, String resp, String fp, String lang, Parameters profile, JsonObject ext, Set<String> modes) throws IOException {
+  private String metadata(String id, List<Resource> setup, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, Set<String> modes) throws IOException {
     CapabilityStatement cs = cstmt.copy();
     TxTesterScrubbers.scrubCapStmt(cs, tight);
     TxTesterSorters.sortCapStmt(cs);
@@ -567,13 +575,15 @@ public class TxTester {
 
     String diff = new CompareUtilities(modes, ext, vars()).setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
     if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
-      FileUtilities.stringToFile(csj, fp);        
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
+      FileUtilities.stringToFile(resp, expFn);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
+      FileUtilities.stringToFile(csj, actFn);
     }
     return diff;
   }
 
-  private String termcaps(String id, List<Resource> setup, String resp, String fp, String lang, Parameters profile, JsonObject ext, Set<String> modes) throws IOException {
+  private String termcaps(String id, List<Resource> setup, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, Set<String> modes) throws IOException {
     TerminologyCapabilities cs = tc.copy();
     TxTesterScrubbers.scrubTermCaps(cs, tight);
     TxTesterSorters.sortTermCaps(cs);
@@ -581,8 +591,10 @@ public class TxTester {
 
     String diff = new CompareUtilities(modes, ext, vars()).setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
     if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
-      FileUtilities.stringToFile(csj, fp);        
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
+      FileUtilities.stringToFile(csj, expFn);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
+      FileUtilities.stringToFile(resp, actFn);
     }
     return diff;
   }
@@ -616,7 +628,7 @@ public class TxTester {
     return new URI(server).getHost();
   }
 
-  private String lookup(String id, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
+  private String lookup(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -638,8 +650,10 @@ public class TxTester {
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
-      FileUtilities.stringToFile(pj, fp);        
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
+      FileUtilities.stringToFile(resp, expFn);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
+      FileUtilities.stringToFile(pj, actFn);
     }
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
@@ -647,7 +661,7 @@ public class TxTester {
     return diff;
   }
 
-  private String translate(String id, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
+  private String translate(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -669,8 +683,10 @@ public class TxTester {
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
-      FileUtilities.stringToFile(pj, fp);        
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
+      FileUtilities.stringToFile(resp, expFn);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
+      FileUtilities.stringToFile(pj, actFn);
     }
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
@@ -678,7 +694,7 @@ public class TxTester {
     return diff;
   }
 
-  private String expand(String id, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
+  private String expand(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -700,8 +716,10 @@ public class TxTester {
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, vsj, false);
     if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
-      FileUtilities.stringToFile(vsj, fp);        
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
+      FileUtilities.stringToFile(resp, expFn);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
+      FileUtilities.stringToFile(vsj, actFn);
     }
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
@@ -720,7 +738,7 @@ public class TxTester {
     }
   }
 
-  private String batchValidate(String id, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
+  private String batchValidate(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -743,8 +761,10 @@ public class TxTester {
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
-      FileUtilities.stringToFile(pj, fp);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
+      FileUtilities.stringToFile(resp, expFn);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
+      FileUtilities.stringToFile(pj, actFn);
     }
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
@@ -752,7 +772,7 @@ public class TxTester {
     return diff;
   }
 
-  private String validate(String id, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
+  private String validate(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -775,8 +795,10 @@ public class TxTester {
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
-      FileUtilities.stringToFile(pj, fp);        
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
+      FileUtilities.stringToFile(resp, expFn);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
+      FileUtilities.stringToFile(pj, actFn);
     }
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
@@ -784,7 +806,7 @@ public class TxTester {
     return diff;
   }
   
-  private String validateCS(String id, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
+  private String validateCS(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -806,8 +828,10 @@ public class TxTester {
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
-      FileUtilities.stringToFile(pj, fp);        
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
+      FileUtilities.stringToFile(resp, expFn);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
+      FileUtilities.stringToFile(pj, actFn);
     }
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
@@ -815,7 +839,7 @@ public class TxTester {
     return diff;
   }
 
-  private String batch(String id, List<Resource> setup, Bundle bnd, String resp, String fp, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
+  private String batch(String id, List<Resource> setup, Bundle bnd, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
     for (Resource r : setup) {
       Parameters p = (Parameters) bnd.getEntryFirstRep().getResource();
       p.addParameter().setName("tx-resource").setResource(r);
@@ -849,8 +873,10 @@ public class TxTester {
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, bj, false);
     if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
-      FileUtilities.stringToFile(bj, fp);        
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
+      FileUtilities.stringToFile(resp, expFn);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
+      FileUtilities.stringToFile(bj, actFn);
     }
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
