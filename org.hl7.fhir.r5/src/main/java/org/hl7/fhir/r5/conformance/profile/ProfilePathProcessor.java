@@ -966,10 +966,18 @@ public class ProfilePathProcessor {
         template.getSlicing().setOrdered(false);
         template.getSlicing().addDiscriminator().setType(DiscriminatorType.VALUE).setPath("url");
         addToResult(template);
-      } else {
-        log.error("checkToSeeIfSlicingExists: "+ed.getPath()+":"+ed.getSliceName()+" is not sliced");
+      } else if (isJumpingIntoTypeSlicing(ed, template)) {
+        template.getSlicing().setRules(SlicingRules.CLOSED);
+        template.getSlicing().setOrdered(false);
+        template.getSlicing().addDiscriminator().setType(DiscriminatorType.TYPE).setPath("$this");
+        addToResult(template);
+//        log.error("checkToSeeIfSlicingExists: "+ed.getPath()+":"+ed.getSliceName()+" is not sliced");
       }
     }
+  }
+
+  private boolean isJumpingIntoTypeSlicing(ElementDefinition ed, ElementDefinition template) {
+    return template.getPath().endsWith("[x]") && !template.hasSliceName() && !template.hasSlicing() && ed.hasSliceName() && ed.getType().size() > 0;
   }
 
   private boolean pathsMatch(String path1, String path2) {

@@ -273,7 +273,7 @@ public class ValidatorCli {
         res.add("4.0");
         res.add("-check-ips-codes");
         res.add("-ig");
-        res.add("hl7.fhir.uv.ips#2.0.0");
+        res.add("hl7.fhir.uv.ips#2.0.0-ballot");
         res.add("-profile");
         res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips");
         res.add("-extension");

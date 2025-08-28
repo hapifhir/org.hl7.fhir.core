@@ -100,6 +100,7 @@ public class R2016MayToR5Loader extends BaseLoaderR5 {
     if (patchUrls) {
       for (BundleEntryComponent be : b.getEntry()) {
         if (be.hasResource()) {
+          inspectResource(be.getResource());
           doPatchUrls(be.getResource());
         }
       }
@@ -123,6 +124,7 @@ public class R2016MayToR5Loader extends BaseLoaderR5 {
     if (killPrimitives) {
       throw new FHIRException("Cannot kill primitives when using deferred loading");
     }
+    inspectResource(r5);
     if (patchUrls) {
       doPatchUrls(r5);
     }
