@@ -20,6 +20,8 @@ public class CapabilityStatement30_40 {
   private static final String[] IGNORED_EXTENSION_URLS = new String[]{
     VersionConvertorConstants.EXT_ACCEPT_UNKNOWN_EXTENSION_URL
   };
+  public static final String CATEGORY = "category";
+  public static final String DOCUMENTATION = "documentation";
 
   public static org.hl7.fhir.dstu3.model.CapabilityStatement convertCapabilityStatement(org.hl7.fhir.r4.model.CapabilityStatement src) throws FHIRException {
     if (src == null)
@@ -270,15 +272,15 @@ public class CapabilityStatement30_40 {
   public static CapabilityStatement.CapabilityStatementMessagingEventComponent convertMessageExtensionToMessageEvent(Extension extension) {
     CapabilityStatement.CapabilityStatementMessagingEventComponent event = new CapabilityStatement.CapabilityStatementMessagingEventComponent();
     event.setCode(Coding30_40.convertCoding((org.hl7.fhir.r4.model.Coding) extension.getExtensionByUrl("code").getValue()));
-    if (extension.hasExtension("category"))
-      event.setCategory(CapabilityStatement.MessageSignificanceCategory.fromCode(extension.getExtensionByUrl("category").getValue().toString()));
+    if (extension.hasExtension(CATEGORY))
+      event.setCategory(CapabilityStatement.MessageSignificanceCategory.fromCode(extension.getExtensionByUrl(CATEGORY).getValue().toString()));
     event.setMode(CapabilityStatement.EventCapabilityMode.fromCode(extension.getExtensionByUrl("mode").getValue().toString()));
 
     event.setFocusElement(convertFocusExtensionR4ToMessageEventDstu3(extension.getExtensionByUrl("focus")));
     event.setRequest(Reference30_40.convertReference((org.hl7.fhir.r4.model.Reference) extension.getExtensionByUrl("request").getValue()));
     event.setResponse(Reference30_40.convertReference((org.hl7.fhir.r4.model.Reference) extension.getExtensionByUrl("response").getValue()));
-    if (extension.hasExtension("documentation"))
-      event.setDocumentation(extension.getExtensionByUrl("documentation").getValue().toString());
+    if (extension.hasExtension(DOCUMENTATION))
+      event.setDocumentation(extension.getExtensionByUrl(DOCUMENTATION).getValue().toString());
 
     return event;
   }
@@ -317,7 +319,7 @@ public class CapabilityStatement30_40 {
     Extension e = new Extension(VersionConvertorConstants.EXT_IG_CONFORMANCE_MESSAGE_EVENT);
     e.addExtension(new Extension("code", Coding30_40.convertCoding(t.getCode())));
     if (t.hasCategory()) {
-      e.addExtension(new Extension("category", new org.hl7.fhir.r4.model.CodeType(t.getCategory().toCode())));
+      e.addExtension(new Extension(CATEGORY, new org.hl7.fhir.r4.model.CodeType(t.getCategory().toCode())));
     }
     e.addExtension(new Extension("mode", new org.hl7.fhir.r4.model.CodeType(t.getMode().toCode())));
     if (t.hasFocusElement()) {
@@ -326,7 +328,7 @@ public class CapabilityStatement30_40 {
     e.addExtension(new Extension("request", Reference30_40.convertReference(t.getRequest())));
     e.addExtension(new Extension("response", Reference30_40.convertReference(t.getResponse())));
     if (t.hasDocumentation()) {
-      e.addExtension(new Extension("documentation", new org.hl7.fhir.r4.model.StringType(t.getDocumentation())));
+      e.addExtension(new Extension(DOCUMENTATION, new org.hl7.fhir.r4.model.StringType(t.getDocumentation())));
     }
     return e;
   }
