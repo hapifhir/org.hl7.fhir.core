@@ -1073,7 +1073,7 @@ public class QuestionnaireValidator extends BaseValidator {
         }
         if (qItem.hasExtension(ExtensionDefinitions.EXT_MAX_DECIMALS)) {
           int dt = Integer.parseInt(qItem.getExtensionByUrl(ExtensionDefinitions.EXT_MAX_DECIMALS).getValue().primitiveValue());
-          ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, precision(vdt.primitiveValue()) < dt, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX_DECIMALS, v.primitiveValue(), dt) && ok;
+          ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, precision(vdt.primitiveValue()) <= dt, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX_DECIMALS, v.primitiveValue(), dt) && ok;
         }
       } catch (Exception e) {
         ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_VALUE_EXCEPTION, e.getMessage()) && ok;
@@ -1167,7 +1167,7 @@ public class QuestionnaireValidator extends BaseValidator {
         }
         if (qItem.hasExtension(ExtensionDefinitions.EXT_MAX_DECIMALS)) {
           int dt = Integer.parseInt(qItem.getExtensionByUrl(ExtensionDefinitions.EXT_MAX_DECIMALS).getValue().primitiveValue());
-          ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, precision(vdt.getValueElement().primitiveValue()) < dt, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX_DECIMALS, v.primitiveValue(), dt) && ok;
+          ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, precision(vdt.getValueElement().primitiveValue()) <= dt, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX_DECIMALS, vdt.getValueElement().primitiveValue(), dt) && ok;
         }
         if (qItem.hasExtension(ExtensionDefinitions.EXT_Q_UNIT_OPTION)) {
           boolean matched = false;
@@ -1301,7 +1301,7 @@ public class QuestionnaireValidator extends BaseValidator {
     if (Utilities.noString(v) || !v.contains(".")) {
       return 0;
     } else {
-      return v.length() - v.lastIndexOf(".");
+      return v.length() - v.lastIndexOf(".") - 1;
     }
   }
 
