@@ -90,6 +90,7 @@ import com.google.gson.JsonPrimitive;
 public class SpecDifferenceEvaluator {
 
 
+  public static final String STATUS_PROPERTY = "status";
   private IWorkerContext context;
   private final SpecPackage originalR4 = new SpecPackage();
   private final SpecPackage originalR4B = new SpecPackage();
@@ -214,7 +215,7 @@ public class SpecDifferenceEvaluator {
     JsonObject type = new JsonObject();
     json.add(rev.getName(), type);
     if (orig == null)
-      type.addProperty("status", "new");
+      type.addProperty(STATUS_PROPERTY, "new");
     else {
       start();
       compareJson(type, orig, rev, r4);
@@ -230,7 +231,7 @@ public class SpecDifferenceEvaluator {
     type.setAttribute("name", rev.getName());
     xml.appendChild(type);
     if (orig == null)
-      type.setAttribute("status", "new");
+      type.setAttribute(STATUS_PROPERTY, "new");
     else {
       start();
       compareXml(doc, type, orig, rev, r4);
@@ -249,11 +250,11 @@ public class SpecDifferenceEvaluator {
       JsonObject type = new JsonObject();
       json.add(rev.getName(), type);
       if (orig == null) {
-        type.addProperty("status", "new");
+        type.addProperty(STATUS_PROPERTY, "new");
       } else if (rev.getKind() == StructureDefinitionKind.PRIMITIVETYPE) {
-        type.addProperty("status", "no-change");
+        type.addProperty(STATUS_PROPERTY, "no-change");
       } else if (rev.hasDerivation() && orig.hasDerivation() && rev.getDerivation() != orig.getDerivation()) {
-        type.addProperty("status", "status-change");
+        type.addProperty(STATUS_PROPERTY, "status-change");
         type.addProperty("past-status", orig.getDerivation().toCode());
         type.addProperty("current-status", rev.getDerivation().toCode());
       } else {
@@ -267,7 +268,7 @@ public class SpecDifferenceEvaluator {
         types.add(new JsonPrimitive(orig.getName()));
         JsonObject type = new JsonObject();
         json.add(orig.getName(), type);
-        type.addProperty("status", "deleted");
+        type.addProperty(STATUS_PROPERTY, "deleted");
       }
     }
 
@@ -278,7 +279,7 @@ public class SpecDifferenceEvaluator {
       JsonObject type = new JsonObject();
       json.add(rev.getName(), type);
       if (orig == null) {
-        type.addProperty("status", "new");
+        type.addProperty(STATUS_PROPERTY, "new");
       } else {
         compareJson(type, orig, rev, r4);
       }
@@ -290,7 +291,7 @@ public class SpecDifferenceEvaluator {
         types.add(new JsonPrimitive(orig.getName()));
         JsonObject type = new JsonObject();
         json.add(orig.getName(), type);
-        type.addProperty("status", "deleted");
+        type.addProperty(STATUS_PROPERTY, "deleted");
       }
     }
   }
@@ -305,11 +306,11 @@ public class SpecDifferenceEvaluator {
       type.setAttribute("name", rev.getName());
       xml.appendChild(type);
       if (orig == null) {
-        type.setAttribute("status", "new");
+        type.setAttribute(STATUS_PROPERTY, "new");
       } else if (rev.getKind() == StructureDefinitionKind.PRIMITIVETYPE) {
-        type.setAttribute("status", "no-change");
+        type.setAttribute(STATUS_PROPERTY, "no-change");
       } else if (rev.hasDerivation() && orig.hasDerivation() && rev.getDerivation() != orig.getDerivation()) {
-        type.setAttribute("status", "status-change");
+        type.setAttribute(STATUS_PROPERTY, "status-change");
         type.setAttribute("past-status", orig.getDerivation().toCode());
         type.setAttribute("current-status", rev.getDerivation().toCode());
       } else {
@@ -323,7 +324,7 @@ public class SpecDifferenceEvaluator {
         Element type = doc.createElement("type");
         type.setAttribute("name", orig.getName());
         xml.appendChild(type);
-        type.setAttribute("status", "deleted");
+        type.setAttribute(STATUS_PROPERTY, "deleted");
       }
     }
 
@@ -334,7 +335,7 @@ public class SpecDifferenceEvaluator {
       type.setAttribute("name", rev.getName());
       xml.appendChild(type);
       if (orig == null) {
-        type.setAttribute("status", "new");
+        type.setAttribute(STATUS_PROPERTY, "new");
       } else {
         compareXml(doc, type, orig, rev, r4);
       }
@@ -346,7 +347,7 @@ public class SpecDifferenceEvaluator {
         Element type = doc.createElement("type");
         type.setAttribute("name", orig.getName());
         xml.appendChild(type);
-        type.setAttribute("status", "deleted");
+        type.setAttribute(STATUS_PROPERTY, "deleted");
       }
     }
   }
@@ -500,7 +501,7 @@ public class SpecDifferenceEvaluator {
     if (!res && mand)
       right.ul().li().b().addText("Added Mandatory Element");
     else
-      right.ul().li().addText(res ? "Added Resource" : !name.contains(".") ? "Added Type" : mand ? "Added Mandatory Element " : "Added Element");
+      right.ul().li().addText(res ? "Added Resource" : !name.contains(".") ? "Added Type" : "Added Element");
   }
 
   private void compare(StructureDefinition orig, StructureDefinition rev, boolean r4) {
@@ -1090,7 +1091,7 @@ public class SpecDifferenceEvaluator {
         changed = true;
         JsonObject element = new JsonObject();
         elements.add(ed.getPath(), element);
-        element.addProperty("status", "new");
+        element.addProperty(STATUS_PROPERTY, "new");
       } else
         changed = compareElementJson(elements, ed, oed, r4) || changed;
     }
@@ -1108,7 +1109,7 @@ public class SpecDifferenceEvaluator {
           dels.add(ed.getPath());
           JsonObject element = new JsonObject();
           elements.add(ed.getPath(), element);
-          element.addProperty("status", "deleted");
+          element.addProperty(STATUS_PROPERTY, "deleted");
         }
       }
     }
@@ -1117,9 +1118,9 @@ public class SpecDifferenceEvaluator {
       type.add("elements", elements);
 
     if (changed)
-      type.addProperty("status", "changed");
+      type.addProperty(STATUS_PROPERTY, "changed");
     else
-      type.addProperty("status", "no-change");
+      type.addProperty(STATUS_PROPERTY, "no-change");
 
     for (ElementDefinition ed : rev.getDifferential().getElement())
       ed.clearUserData(UserDataNames.comparison_match);
@@ -1150,7 +1151,7 @@ public class SpecDifferenceEvaluator {
         Element element = doc.createElement("element");
         element.setAttribute("path", ed.getPath());
         type.appendChild(element);
-        element.setAttribute("status", "new");
+        element.setAttribute(STATUS_PROPERTY, "new");
       } else
         changed = compareElementXml(doc, type, ed, oed, r4) || changed;
     }
@@ -1169,15 +1170,15 @@ public class SpecDifferenceEvaluator {
           Element element = doc.createElement("element");
           element.setAttribute("path", ed.getPath());
           type.appendChild(element);
-          element.setAttribute("status", "deleted");
+          element.setAttribute(STATUS_PROPERTY, "deleted");
         }
       }
     }
 
     if (changed)
-      type.setAttribute("status", "changed");
+      type.setAttribute(STATUS_PROPERTY, "changed");
     else
-      type.setAttribute("status", "no-change");
+      type.setAttribute(STATUS_PROPERTY, "no-change");
 
     for (ElementDefinition ed : rev.getDifferential().getElement())
       ed.clearUserData(UserDataNames.comparison_match);
