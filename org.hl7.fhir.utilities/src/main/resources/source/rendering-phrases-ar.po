@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
 "X-Crowdin-Project: orghl7fhircore\n"
 "X-Crowdin-Project-ID: 792848\n"
-"X-Crowdin-Language: de\n"
+"X-Crowdin-Language: ar\n"
 "X-Crowdin-File: /org.hl7.fhir.utilities/src/main/resources/source/rendering-phrases-en.po\n"
 "X-Crowdin-File-ID: 236\n"
 "Project-Id-Version: orghl7fhircore\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Language-Team: German\n"
-"Language: de_DE\n"
+"Language-Team: Arabic\n"
+"Language: ar_SA\n"
 "PO-Revision-Date: 2025-08-14 20:03\n"
 
 # ACTOR_DEF_ACT
@@ -20,12 +20,12 @@ msgstr ""
 # ACTOR_DEF_CAP
 #: ACTOR_DEF_CAP
 msgid "Capabilities:"
-msgstr "Fähigkeiten:"
+msgstr ""
 
 # ACTOR_DEF_DER
 #: ACTOR_DEF_DER
 msgid "Derived from:"
-msgstr "Abgeleitet von:"
+msgstr ""
 
 # ACTOR_DEF_TYP
 #: ACTOR_DEF_TYP
@@ -121,7 +121,7 @@ msgstr ""
 #: ADD_BIND_REQ_BIND
 msgctxt "ADD_BIND_REQ_BIND"
 msgid "Required"
-msgstr "Erforderlich"
+msgstr ""
 
 # ADD_BIND_UI
 #: ADD_BIND_UI
@@ -167,7 +167,7 @@ msgstr ""
 # BUNDLE_ETAG
 #: BUNDLE_ETAG
 msgid "ETag = {0}"
-msgstr "ETag = {0}"
+msgstr ""
 
 # BUNDLE_HEADER_DOCUMENT_CONTENTS
 #: BUNDLE_HEADER_DOCUMENT_CONTENTS
@@ -202,7 +202,7 @@ msgstr ""
 # BUNDLE_IF_NONE
 #: BUNDLE_IF_NONE
 msgid "If-None-Exist = {0}"
-msgstr "If-None= {0}"
+msgstr ""
 
 # BUNDLE_IF_NON_MATCH
 #: BUNDLE_IF_NON_MATCH
@@ -217,7 +217,7 @@ msgstr ""
 # BUNDLE_LOCATION
 #: BUNDLE_LOCATION
 msgid "Location = {0}"
-msgstr "Locatio"
+msgstr ""
 
 # BUNDLE_REQUEST
 #: BUNDLE_REQUEST
@@ -227,7 +227,7 @@ msgstr ""
 # BUNDLE_RESOURCE
 #: BUNDLE_RESOURCE
 msgid "Resource {0}:"
-msgstr "Resso}:"
+msgstr ""
 
 # BUNDLE_RESPONSE
 #: BUNDLE_RESPONSE
@@ -242,7 +242,7 @@ msgstr ""
 # BUNDLE_SEARCH
 #: BUNDLE_SEARCH
 msgid "Search:"
-msgstr "Suche:"
+msgstr ""
 
 # BUNDLE_SEARCH_MODE
 #: BUNDLE_SEARCH_MODE
@@ -697,7 +697,7 @@ msgstr ""
 # CODE_SYS_COPY
 #: CODE_SYS_COPY
 msgid "Copy"
-msgstr "Kopieren"
+msgstr "نسخ"
 
 # CODE_SYS_DISP
 #: CODE_SYS_DISP
@@ -742,7 +742,7 @@ msgstr ""
 # CODE_SYS_PROP
 #: CODE_SYS_PROP
 msgid "properties"
-msgstr "eigenschaften"
+msgstr "الخصائص"
 
 # CODE_SYS_REPLACED_BY
 #: CODE_SYS_REPLACED_BY
@@ -1213,7 +1213,7 @@ msgstr ""
 # DATA_REND_UNKNWN
 #: DATA_REND_UNKNWN
 msgid "unknown"
-msgstr "unbekannt"
+msgstr ""
 
 # DATA_REND_UNRD_EX
 #: DATA_REND_UNRD_EX
@@ -1558,7 +1558,7 @@ msgstr ""
 # GENERAL_DESC
 #: GENERAL_DESC
 msgid "Description"
-msgstr "Beschreibung"
+msgstr ""
 
 # GENERAL_DESC_CONST
 #: GENERAL_DESC_CONST
@@ -1568,7 +1568,7 @@ msgstr ""
 # GENERAL_DETAILS
 #: GENERAL_DETAILS
 msgid "Details"
-msgstr "Details"
+msgstr ""
 
 # GENERAL_DOCUMENTATION
 #: GENERAL_DOCUMENTATION
@@ -1578,7 +1578,7 @@ msgstr ""
 # GENERAL_EXAMPLE
 #: GENERAL_EXAMPLE
 msgid "Example"
-msgstr "Beispiel"
+msgstr ""
 
 # GENERAL_EXPER
 #: GENERAL_EXPER
@@ -1629,7 +1629,7 @@ msgstr ""
 # GENERAL_NAME
 #: GENERAL_NAME
 msgid "Name"
-msgstr "Name"
+msgstr ""
 
 # GENERAL_NCI_THES
 #: GENERAL_NCI_THES
@@ -1684,12 +1684,12 @@ msgstr ""
 #: GENERAL_PROF
 msgctxt "GENERAL_PROF"
 msgid "Profile"
-msgstr "Profil"
+msgstr ""
 
 # GENERAL_PROPS
 #: GENERAL_PROPS
 msgid "Properties"
-msgstr "Eigenschaften"
+msgstr "الخصائص"
 
 # GENERAL_PURPOSE
 #: GENERAL_PURPOSE
@@ -1715,7 +1715,7 @@ msgstr ""
 #: GENERAL_REQUIRED
 msgctxt "GENERAL_REQUIRED"
 msgid "Required"
-msgstr "Erforderlich"
+msgstr ""
 
 # GENERAL_REQUIRED_BINDING
 #: GENERAL_REQUIRED_BINDING
@@ -1753,7 +1753,7 @@ msgstr ""
 #: GENERAL_STATUS
 msgctxt "GENERAL_STATUS"
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 # GENERAL_SUBJ
 #: GENERAL_SUBJ
@@ -1773,7 +1773,7 @@ msgstr ""
 # GENERAL_TODO
 #: GENERAL_TODO
 msgid "Not done yet"
-msgstr "Noch nicht unterst\\u00fctzt"
+msgstr ""
 
 # GENERAL_TYPE
 #: GENERAL_TYPE
@@ -1814,7 +1814,7 @@ msgstr ""
 # GENERAL_VALUE
 #: GENERAL_VALUE
 msgid "Value"
-msgstr "Wert"
+msgstr ""
 
 # GENERAL_VALUESET
 #: GENERAL_VALUESET
@@ -1839,12 +1839,12 @@ msgstr ""
 # GENERAL_VER
 #: GENERAL_VER
 msgid "Version"
-msgstr "Version"
+msgstr ""
 
 # GENERAL_VER_LOW
 #: GENERAL_VER_LOW
 msgid "version"
-msgstr "version"
+msgstr ""
 
 # GENERAL_XML
 #: GENERAL_XML
@@ -1884,7 +1884,7 @@ msgstr ""
 # KIND_PROFILE
 #: KIND_PROFILE
 msgid "profile"
-msgstr "Profil"
+msgstr ""
 
 # LIB_REND_ART
 #: LIB_REND_ART
@@ -1894,7 +1894,7 @@ msgstr ""
 # LIB_REND_AUT
 #: LIB_REND_AUT
 msgid "Author"
-msgstr "Autor"
+msgstr ""
 
 # LIB_REND_CONT
 #: LIB_REND_CONT
@@ -1904,7 +1904,7 @@ msgstr ""
 # LIB_REND_ED
 #: LIB_REND_ED
 msgid "Editor"
-msgstr "Editor"
+msgstr ""
 
 # LIB_REND_END
 #: LIB_REND_END
@@ -2031,7 +2031,7 @@ msgstr ""
 #: MATURITY_STATUS
 msgctxt "MATURITY_STATUS"
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 # MATURITY_STDS_STATUS
 #: MATURITY_STDS_STATUS
@@ -2106,7 +2106,7 @@ msgstr ""
 # OP_OUT_OK
 #: OP_OUT_OK
 msgid "All OK"
-msgstr "Alles OK"
+msgstr ""
 
 # OP_OUT_SEV
 #: OP_OUT_SEV
@@ -2180,6 +2180,10 @@ msgid "Contained Resource"
 msgid_plural "Contained Resources"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 # PAT_DECEASED
 #: PAT_DECEASED
@@ -2212,6 +2216,10 @@ msgid "Language:"
 msgid_plural "Languages:"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 # PAT_LANG_HINT
 #: PAT_LANG_HINT
@@ -2219,6 +2227,10 @@ msgid "Language spoken"
 msgid_plural "Languages spoken"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 # PAT_LANG_PREFERRED
 #: PAT_LANG_PREFERRED
@@ -2317,6 +2329,10 @@ msgid "Other Id:"
 msgid_plural "Other Ids:"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 # PAT_OTHER_ID_HINT
 #: PAT_OTHER_ID_HINT
@@ -2324,6 +2340,10 @@ msgid "Other Id (see the one above)"
 msgid_plural "Other Ids (see the one above)"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 # PAT_PERIOD
 #: PAT_PERIOD
@@ -2530,7 +2550,7 @@ msgstr ""
 # QUEST_GROUP
 #: QUEST_GROUP
 msgid "Group"
-msgstr "Gruppe"
+msgstr ""
 
 # QUEST_HIDDEN
 #: QUEST_HIDDEN
@@ -2625,7 +2645,7 @@ msgstr ""
 # QUEST_OPTIONS
 #: QUEST_OPTIONS
 msgid "Options:"
-msgstr "Optionen:"
+msgstr ""
 
 # QUEST_ORIENTATION
 #: QUEST_ORIENTATION
@@ -2705,7 +2725,7 @@ msgstr ""
 # QUEST_TEXT
 #: QUEST_TEXT
 msgid "Text"
-msgstr "Text"
+msgstr ""
 
 # QUEST_TEXTFOR
 #: QUEST_TEXTFOR
@@ -2962,7 +2982,7 @@ msgstr ""
 # RES_REND_UNKNOWN
 #: RES_REND_UNKNOWN
 msgid "Unknown"
-msgstr "Unbekannt"
+msgstr ""
 
 # RES_REND_UPDATED
 #: RES_REND_UPDATED
@@ -2972,7 +2992,7 @@ msgstr ""
 # RES_REND_VER
 #: RES_REND_VER
 msgid "version: {0}"
-msgstr "version: {0}"
+msgstr ""
 
 # SDR_ALL_ELEM
 #: SDR_ALL_ELEM
@@ -3464,7 +3484,7 @@ msgstr ""
 #: SDT_RES_PROF
 msgctxt "SDT_RES_PROF"
 msgid "Profile"
-msgstr "Profil"
+msgstr ""
 
 # SD_COMP_HEAD_CARD_L
 #: SD_COMP_HEAD_CARD_L
@@ -3653,6 +3673,10 @@ msgid "The element {0} is sliced based on the value of {1}"
 msgid_plural "The element {0} is sliced based on the values of {1}"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 # SD_SUMMARY_SLICES
 #: SD_SUMMARY_SLICES
@@ -3824,7 +3848,7 @@ msgstr ""
 # STRUC_DEF_BLACK
 #: STRUC_DEF_BLACK
 msgid "black"
-msgstr "schwarz"
+msgstr ""
 
 # STRUC_DEF_BUSINESS_ID
 #: STRUC_DEF_BUSINESS_ID
@@ -4071,7 +4095,7 @@ msgstr ""
 # STRUC_DEF_EXAM
 #: STRUC_DEF_EXAM
 msgid "example"
-msgstr "beispiel"
+msgstr ""
 
 # STRUC_DEF_EXT
 #: STRUC_DEF_EXT
@@ -4585,7 +4609,7 @@ msgstr ""
 # STRUC_DEF_REQUIRED
 #: STRUC_DEF_REQUIRED
 msgid "required"
-msgstr "erforderlich"
+msgstr ""
 
 # STRUC_DEF_REQUIRED_PATT
 #: STRUC_DEF_REQUIRED_PATT
@@ -5212,7 +5236,7 @@ msgstr ""
 # VALUE_SET_DANISH
 #: VALUE_SET_DANISH
 msgid "Danish"
-msgstr "Dänisch"
+msgstr ""
 
 # VALUE_SET_DE
 #: VALUE_SET_DE
@@ -5242,7 +5266,7 @@ msgstr ""
 # VALUE_SET_DUTCH
 #: VALUE_SET_DUTCH
 msgid "Dutch"
-msgstr "Niederländisch (Dutch)"
+msgstr ""
 
 # VALUE_SET_EE
 #: VALUE_SET_EE
@@ -5345,11 +5369,15 @@ msgid "Import all the codes that are contained in"
 msgid_plural "Import all the codes that are contained in the intersection of"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 # VALUE_SET_IN
 #: VALUE_SET_IN
 msgid "in"
-msgstr "rein"
+msgstr "للداخل"
 
 # VALUE_SET_INACT
 #: VALUE_SET_INACT
@@ -5494,7 +5522,7 @@ msgstr ""
 # VALUE_SET_SPAN
 #: VALUE_SET_SPAN
 msgid "Spanish"
-msgstr "Spanisch (Spanish)"
+msgstr ""
 
 # VALUE_SET_SPEC_NAME
 #: VALUE_SET_SPEC_NAME
@@ -5504,7 +5532,7 @@ msgstr ""
 # VALUE_SET_SWEDISH
 #: VALUE_SET_SWEDISH
 msgid "Swedish"
-msgstr "Schwedisch"
+msgstr ""
 
 # VALUE_SET_SYNONYM
 #: VALUE_SET_SYNONYM
@@ -5559,7 +5587,7 @@ msgstr ""
 # VALUE_SET_WHERE
 #: VALUE_SET_WHERE
 msgid "where"
-msgstr "wo"
+msgstr ""
 
 # VALUE_SET_WHERE_CODES
 #: VALUE_SET_WHERE_CODES
