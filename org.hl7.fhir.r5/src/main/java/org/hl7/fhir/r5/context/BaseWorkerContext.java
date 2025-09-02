@@ -423,7 +423,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         txCache = other.txCache; // no copy. for now?
       expandCodesLimit = other.expandCodesLimit;
       logger = other.logger;
-      expansionParameters = other.expansionParameters != null ? new AtomicReference<>(other.getExpansionParameters()) : null;
+      expansionParameters = other.expansionParameters != null ? new AtomicReference<>(other.copyExpansionParametersWithUserData()) : null;
       version = other.version;
       supportedCodeSystems.putAll(other.supportedCodeSystems);
       unsupportedCodeSystems.addAll(other.unsupportedCodeSystems);
@@ -3784,15 +3784,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     In both cases, we are done.
     */
 
-    Parameters newExpansionParameters = new Parameters();
-    // Copy all existing parameters include userData (not usually included in copyies)
-    if (this.expansionParameters.get().hasParameter()) {
-      for (ParametersParameterComponent expParameter : this.expansionParameters.get().getParameter()) {
-        Parameters.ParametersParameterComponent copy = newExpansionParameters.addParameter();
-        expParameter.copyValues(copy);
-        copy.copyUserData(expParameter);
-      }
-    }
+    Parameters newExpansionParameters = copyExpansionParametersWithUserData();
 
     int displayLanguageCount = 0;
     for (ParametersParameterComponent expParameter : newExpansionParameters.getParameter()) {
@@ -3832,7 +3824,20 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     this.expansionParameters.set(newExpansionParameters);
   }
-  
+
+  private Parameters copyExpansionParametersWithUserData() {
+    Parameters newExpansionParameters = new Parameters();
+    // Copy all existing parameters include userData (not usually included in copyies)
+    if (this.expansionParameters.get().hasParameter()) {
+      for (ParametersParameterComponent expParameter : this.expansionParameters.get().getParameter()) {
+        ParametersParameterComponent copy = newExpansionParameters.addParameter();
+        expParameter.copyValues(copy);
+        copy.copyUserData(expParameter);
+      }
+    }
+    return newExpansionParameters;
+  }
+
   @Override
   public OperationOutcome validateTxResource(ValidationOptions options, Resource resource) {
     if (resource instanceof ValueSet) {
