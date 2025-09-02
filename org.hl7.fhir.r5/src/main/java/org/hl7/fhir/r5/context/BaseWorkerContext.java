@@ -3785,6 +3785,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     */
 
     Parameters newExpansionParameters = new Parameters();
+    // Copy all existing parameters include userData (not usually included in copyies)
     if (this.expansionParameters.get().hasParameter()) {
       for (ParametersParameterComponent expParameter : this.expansionParameters.get().getParameter()) {
         Parameters.ParametersParameterComponent copy = newExpansionParameters.addParameter();
