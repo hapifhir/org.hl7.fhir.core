@@ -281,7 +281,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (designations == null) {
         designations = new ArrayList<>();
       }
-      designations.add(new ConceptDefinitionDesignationComponent().setLanguage(dispLang).setValue(display).setUse(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/designation-usage").setCode("display")));
+      designations.add(new ConceptDefinitionDesignationComponent().setLanguage(dispLang).setValue(display).setUse(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra").setCode("preferredForLanguage")));
       pref = findMatchingDesignation(designations);
       if (pref != null) {
         n.setDisplay(pref.getValue());
@@ -480,7 +480,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
   private boolean isDisplay(ConceptDefinitionDesignationComponent cd, boolean def) {
-    return (def && !cd.hasUse()) || (cd.hasUse() && cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display"));
+    return (def && !cd.hasUse())
+      || (cd.hasUse() && cd.getUse().is("http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra", "preferredForLanguage"))
+      || (cd.hasUse() && cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display"));
   }
 
   private boolean filterContainsCode(List<ValueSet> filters, String system, String code, ValueSetExpansionComponent exp) {
@@ -1401,7 +1403,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
     
     if (!fc.hasValue() || fc.getValue() == null) {
       List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
-      issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, vspath+".value", context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM_FILTER_WITH_NO_VALUE, cs.getUrl(), fc.getProperty(), fc.getOp().toCode()), OpIssueCode.VSProcessing, null)); 
+      issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, vspath+".value", context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM_FILTER_WITH_NO_VALUE,
+        cs.getUrl(), fc.getProperty(), fc.getOp().toCode()), OpIssueCode.VSProcessing, null, I18nConstants.UNABLE_TO_HANDLE_SYSTEM_FILTER_WITH_NO_VALUE));
       throw new VSCheckerException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM_FILTER_WITH_NO_VALUE, cs.getUrl(), fc.getProperty(), fc.getOp().toCode()), issues, TerminologyServiceErrorClass.INTERNAL_ERROR);
     }
     opContext.deadCheck("processFilter");

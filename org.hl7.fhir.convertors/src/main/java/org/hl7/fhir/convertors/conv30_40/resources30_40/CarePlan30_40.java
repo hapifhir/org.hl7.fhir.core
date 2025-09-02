@@ -1,15 +1,9 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
-import java.util.List;
-
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Annotation30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Period30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.SimpleQuantity30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.*;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Boolean30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
 import org.hl7.fhir.dstu3.model.CarePlan;
@@ -17,6 +11,8 @@ import org.hl7.fhir.dstu3.model.Enumeration;
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Coding;
+
+import java.util.List;
 
 public class CarePlan30_40 {
 
@@ -223,12 +219,11 @@ public class CarePlan30_40 {
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasCategory()) {
       org.hl7.fhir.r4.model.Extension t = new org.hl7.fhir.r4.model.Extension();
-      t.setUrl(VersionConvertorConstants.EXT_CarePlanActivityDetailComponentExtension);
+      t.setUrl(VersionConvertorConstants.EXT_CARE_PLAN_ACTIVITY_DETAIL_COMPONENT_EXTENSION);
       t.setValue(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getCategory()));
       tgt.addExtension(t);
     }
     if (src.hasCode()) {
-      if (src.hasCode())
         tgt.setCode(CodeableConcept30_40.convertCodeableConcept(src.getCode()));
     }
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonCode()) {
@@ -241,7 +236,6 @@ public class CarePlan30_40 {
       tgt.addGoal(Reference30_40.convertReference(t));
     }
     if (src.hasStatus()) {
-      if (src.hasStatus())
         tgt.setStatusElement(convertCarePlanActivityStatus(src.getStatusElement()));
     }
     if (src.hasStatusReason()) {
@@ -251,34 +245,27 @@ public class CarePlan30_40 {
       tgt.setStatusReason(t);
     }
     if (src.hasProhibited()) {
-      if (src.hasProhibitedElement())
         tgt.setDoNotPerformElement(Boolean30_40.convertBoolean(src.getProhibitedElement()));
     }
     if (src.hasScheduled()) {
-      if (src.hasScheduled())
         tgt.setScheduled(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getScheduled()));
     }
     if (src.hasLocation()) {
-      if (src.hasLocation())
         tgt.setLocation(Reference30_40.convertReference(src.getLocation()));
     }
     for (org.hl7.fhir.dstu3.model.Reference t : src.getPerformer()) {
       tgt.addPerformer(Reference30_40.convertReference(t));
     }
     if (src.hasProduct()) {
-      if (src.hasProduct())
         tgt.setProduct(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getProduct()));
     }
     if (src.hasDailyAmount()) {
-      if (src.hasDailyAmount())
         tgt.setDailyAmount(SimpleQuantity30_40.convertSimpleQuantity(src.getDailyAmount()));
     }
     if (src.hasQuantity()) {
-      if (src.hasQuantity())
         tgt.setQuantity(SimpleQuantity30_40.convertSimpleQuantity(src.getQuantity()));
     }
     if (src.hasDescription()) {
-      if (src.hasDescriptionElement())
         tgt.setDescriptionElement(String30_40.convertString(src.getDescriptionElement()));
     }
     return tgt;
@@ -288,9 +275,9 @@ public class CarePlan30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityDetailComponent tgt = new org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityDetailComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src, tgt, VersionConvertorConstants.EXT_CARE_PLAN_ACTIVITY_DETAIL_COMPONENT_EXTENSION);
     if (src.hasExtension()) {
-      org.hl7.fhir.r4.model.Extension extension = src.getExtensionByUrl(VersionConvertorConstants.EXT_CarePlanActivityDetailComponentExtension);
+      org.hl7.fhir.r4.model.Extension extension = src.getExtensionByUrl(VersionConvertorConstants.EXT_CARE_PLAN_ACTIVITY_DETAIL_COMPONENT_EXTENSION);
       if (extension != null) {
         org.hl7.fhir.r4.model.Type value = extension.getValue();
         if (value instanceof org.hl7.fhir.r4.model.CodeableConcept) {
@@ -299,7 +286,6 @@ public class CarePlan30_40 {
       }
     }
     if (src.hasCode()) {
-      if (src.hasCode())
         tgt.setCode(CodeableConcept30_40.convertCodeableConcept(src.getCode()));
     }
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) {
@@ -312,44 +298,36 @@ public class CarePlan30_40 {
       tgt.addGoal(Reference30_40.convertReference(t));
     }
     if (src.hasStatus()) {
-      if (src.hasStatus())
         tgt.setStatusElement(convertCarePlanActivityStatus(src.getStatusElement()));
     }
     if (src.hasStatusReason()) {
       List<Coding> coding = src.getStatusReason().getCoding();
-      if (coding.size() > 0) {
+      if (!coding.isEmpty()) {
         tgt.setStatusReason(coding.get(0).getCode());
       }
     }
     if (src.hasDoNotPerform()) {
-      if (src.hasDoNotPerformElement())
         tgt.setProhibitedElement(Boolean30_40.convertBoolean(src.getDoNotPerformElement()));
     }
     if (src.hasScheduled()) {
-      if (src.hasScheduled())
         tgt.setScheduled(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getScheduled()));
     }
     if (src.hasLocation()) {
-      if (src.hasLocation())
         tgt.setLocation(Reference30_40.convertReference(src.getLocation()));
     }
     for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) {
       tgt.addPerformer(Reference30_40.convertReference(t));
     }
     if (src.hasProduct()) {
-      if (src.hasProduct())
         tgt.setProduct(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getProduct()));
     }
     if (src.hasDailyAmount()) {
-      if (src.hasDailyAmount())
         tgt.setDailyAmount(SimpleQuantity30_40.convertSimpleQuantity(src.getDailyAmount()));
     }
     if (src.hasQuantity()) {
-      if (src.hasQuantity())
         tgt.setQuantity(SimpleQuantity30_40.convertSimpleQuantity(src.getQuantity()));
     }
     if (src.hasDescription()) {
-      if (src.hasDescriptionElement())
         tgt.setDescriptionElement(String30_40.convertString(src.getDescriptionElement()));
     }
     return tgt;

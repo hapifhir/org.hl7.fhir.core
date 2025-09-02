@@ -84,6 +84,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  */
 @MarkedToMoveToAdjunctPackage
 public class Element extends Base implements NamedItem {
+
   public class SliceDefinition {
 
     private StructureDefinition profile;
@@ -751,7 +752,7 @@ public class Element extends Base implements NamedItem {
   public Element getNamedChild(String name) {
     return getNamedChild(name, true);
   }
-  
+
   public Element getNamedChild(String name, boolean exception) {
     if (children == null)
       return null;
@@ -765,22 +766,45 @@ public class Element extends Base implements NamedItem {
         return l.get(0);
       }
     } else {
-      
+
     }
     Element result = null;
-    
+
     for (Element child : children) {
       if (child.getName() != null && name != null && child.getProperty() != null && child.getProperty().getDefinition() != null && child.fhirType() != null) {
         if (child.getName().equals(name) || (child.getName().length() >  child.fhirType().length() && child.getName().substring(0, child.getName().length() - child.fhirType().length()).equals(name) && child.getProperty().getDefinition().isChoice())) {
           if (result == null)
             result = child;
-          else 
+          else
             throw new Error("Attempt to read a single element when there is more than one present ("+name+")");
         }
       }
     }
-	  return result;
-	}
+    return result;
+  }
+
+  public Element getNamedChildSingle(String name, boolean exception) {
+    if (children == null)
+      return null;
+    if (children.size() > 20) {
+      List<Element> l = children.getByName(name);
+      if (l == null || l.size() == 0) {
+        // try the other way (in case of complicated naming rules)
+      } else if (l.size() > 1 && exception) {
+        throw new Error("Attempt to read a single element when there is more than one present ("+name+")");
+      } else {
+        return l.get(0);
+      }
+    }
+    for (Element child : children) {
+      if (child.getName() != null && name != null && child.getProperty() != null && child.getProperty().getDefinition() != null && child.fhirType() != null) {
+        if (child.getName().equals(name) || (child.getName().length() >  child.fhirType().length() && child.getName().substring(0, child.getName().length() - child.fhirType().length()).equals(name) && child.getProperty().getDefinition().isChoice())) {
+          return child;
+        }
+      }
+    }
+    return null;
+  }
 
   public void getNamedChildren(String name, List<Element> list) {
   	if (children != null)
@@ -807,8 +831,23 @@ public class Element extends Base implements NamedItem {
   }
 
   public String getNamedChildValue(String name, boolean exception) {
-  	Element child = getNamedChild(name, exception);
-  	return child == null ? null : child.value;
+    Element child = getNamedChild(name, exception);
+    return child == null ? null : child.value;
+  }
+
+  public String getNamedChildValueSingle(String... names) {
+    for (String name : names) {
+      String result = getNamedChildValueSingle(name, true);
+      if (result != null) {
+        return result;
+      }
+    }
+    return null;
+  }
+
+  public String getNamedChildValueSingle(String name, boolean exception) {
+    Element child = getNamedChildSingle(name, exception);
+    return child == null ? null : child.value;
   }
 
   public void getNamedChildrenWithWildcard(String string, List<Element> values) {
@@ -1758,4 +1797,5 @@ public class Element extends Base implements NamedItem {
   public boolean hasXhtml() {
     return xhtml != null;
   }
+
 }

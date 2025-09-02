@@ -52,6 +52,16 @@ import org.stringtemplate.v4.ST;
 @Slf4j
 public class ShExGenerator {
 
+  public static class ShExComparator implements Comparator<String> {
+    @Override
+    public int compare(String o1, String o2) {
+        String substring1 = StringUtils.substringBetween(o1, "fhirvs:", " ");
+        String substring2 = StringUtils.substringBetween(o2, "fhirvs:", " ");
+        return (substring1 == null ? "" : substring1)
+          .compareTo(substring2 == null ? "" : substring2);
+    }
+  }
+
   public enum HTMLLinkPolicy {
     NONE, EXTERNAL, INTERNAL
   }
@@ -496,20 +506,7 @@ public class ShExGenerator {
         for (ValueSet vs : required_value_sets)
           sortedVS.add(genValueSet(vs));
 
-        Collections.sort(sortedVS, new Comparator<String>() {
-          @Override
-          public int compare(String o1, String o2) {
-            try {
-              return StringUtils.substringBetween(o1, "fhirvs:", " ")
-                .compareTo(StringUtils.substringBetween(o2, "fhirvs:", " "));
-            }
-            catch(Exception e){
-              log.debug("SORT COMPARISON FAILED BETWEEN \n\t\t" + o1 + "\n\t\t and \n\t\t" + o2);
-              log.debug(e.getMessage());
-              return 0;
-            }
-          }
-      });
+        Collections.sort(sortedVS, new ShExComparator());
 
         for (String svs : sortedVS)
           shapeDefinitions.append("\n").append(svs);

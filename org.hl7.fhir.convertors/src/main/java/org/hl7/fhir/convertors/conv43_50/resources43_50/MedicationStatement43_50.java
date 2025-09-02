@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Annotation43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
@@ -52,8 +53,12 @@ public class MedicationStatement43_50 {
       tgt.addIdentifier(Identifier43_50.convertIdentifier(t));
 //    for (org.hl7.fhir.r4b.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference43_50.convertReference(t));
 //    for (org.hl7.fhir.r4b.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference43_50.convertReference(t));
-    if (src.hasStatus())
+    if (src.hasPrimitiveExtension(VersionConvertorConstants.EXT_MED_STAT_STATUS_5)) {
+      tgt.setStatus(org.hl7.fhir.r5.model.MedicationStatement.MedicationStatementStatusCodes.fromCode(src.getExtensionString(VersionConvertorConstants.EXT_MED_STAT_STATUS_5)));
+    } else if (src.hasStatus()) {
+      tgt.addExtension(new org.hl7.fhir.r5.model.Extension(VersionConvertorConstants.EXT_MED_STAT_STATUS_4, new org.hl7.fhir.r5.model.CodeType(src.getStatus().toCode())));
       tgt.setStatusElement(convertMedicationStatementStatus(src.getStatusElement()));
+    }
 //    for (org.hl7.fhir.r4b.model.CodeableConcept t : src.getStatusReason())
 //      tgt.addStatusReason(CodeableConcept43_50.convertCodeableConcept(t));
     if (src.hasCategory())
@@ -94,8 +99,12 @@ public class MedicationStatement43_50 {
       tgt.addIdentifier(Identifier43_50.convertIdentifier(t));
 //    for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference43_50.convertReference(t));
 //    for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference43_50.convertReference(t));
-    if (src.hasStatus())
+    if (src.hasPrimitiveExtension(VersionConvertorConstants.EXT_MED_STAT_STATUS_4)) {
+      tgt.setStatus(org.hl7.fhir.r4b.model.MedicationStatement.MedicationStatusCodes.fromCode(src.getExtensionString(VersionConvertorConstants.EXT_MED_STAT_STATUS_4)));
+    } else if (src.hasStatus()) {
+      tgt.addExtension(new org.hl7.fhir.r4b.model.Extension(VersionConvertorConstants.EXT_MED_STAT_STATUS_5, new org.hl7.fhir.r4b.model.CodeType(src.getStatus().toCode())));
       tgt.setStatusElement(convertMedicationStatementStatus(src.getStatusElement()));
+    }
 //    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getStatusReason())
 //      tgt.addStatusReason(CodeableConcept43_50.convertCodeableConcept(t));
     if (src.hasCategory())

@@ -3,13 +3,7 @@ package org.hl7.fhir.convertors.conv30_40.resources30_40;
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Address30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Attachment30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.ContactPoint30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.HumanName30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Period30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.*;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Boolean30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Date30_40;
 import org.hl7.fhir.dstu3.model.Enumeration;
@@ -153,12 +147,13 @@ public class Patient30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Patient tgt = new org.hl7.fhir.dstu3.model.Patient();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_PAT_ANIMAL);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
     if (src.hasActive())
       tgt.setActiveElement(Boolean30_40.convertBoolean(src.getActiveElement()));
-    for (org.hl7.fhir.r4.model.HumanName t : src.getName()) tgt.addName(HumanName30_40.convertHumanName(t));
+    for (org.hl7.fhir.r4.model.HumanName t : src.getName())
+      tgt.addName(HumanName30_40.convertHumanName(t));
     for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom())
       tgt.addTelecom(ContactPoint30_40.convertContactPoint(t));
     if (src.hasGender())
@@ -167,12 +162,14 @@ public class Patient30_40 {
       tgt.setBirthDateElement(Date30_40.convertDate(src.getBirthDateElement()));
     if (src.hasDeceased())
       tgt.setDeceased(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getDeceased()));
-    for (org.hl7.fhir.r4.model.Address t : src.getAddress()) tgt.addAddress(Address30_40.convertAddress(t));
+    for (org.hl7.fhir.r4.model.Address t : src.getAddress())
+      tgt.addAddress(Address30_40.convertAddress(t));
     if (src.hasMaritalStatus())
       tgt.setMaritalStatus(CodeableConcept30_40.convertCodeableConcept(src.getMaritalStatus()));
     if (src.hasMultipleBirth())
       tgt.setMultipleBirth(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getMultipleBirth()));
-    for (org.hl7.fhir.r4.model.Attachment t : src.getPhoto()) tgt.addPhoto(Attachment30_40.convertAttachment(t));
+    for (org.hl7.fhir.r4.model.Attachment t : src.getPhoto())
+      tgt.addPhoto(Attachment30_40.convertAttachment(t));
     for (org.hl7.fhir.r4.model.Patient.ContactComponent t : src.getContact())
       tgt.addContact(convertContactComponent(t));
     if (src.hasExtension(VersionConvertorConstants.EXT_PAT_ANIMAL))
@@ -197,7 +194,8 @@ public class Patient30_40 {
       tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
     if (src.hasActive())
       tgt.setActiveElement(Boolean30_40.convertBoolean(src.getActiveElement()));
-    for (org.hl7.fhir.dstu3.model.HumanName t : src.getName()) tgt.addName(HumanName30_40.convertHumanName(t));
+    for (org.hl7.fhir.dstu3.model.HumanName t : src.getName())
+      tgt.addName(HumanName30_40.convertHumanName(t));
     for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom())
       tgt.addTelecom(ContactPoint30_40.convertContactPoint(t));
     if (src.hasGender())
@@ -206,12 +204,14 @@ public class Patient30_40 {
       tgt.setBirthDateElement(Date30_40.convertDate(src.getBirthDateElement()));
     if (src.hasDeceased())
       tgt.setDeceased(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getDeceased()));
-    for (org.hl7.fhir.dstu3.model.Address t : src.getAddress()) tgt.addAddress(Address30_40.convertAddress(t));
+    for (org.hl7.fhir.dstu3.model.Address t : src.getAddress())
+      tgt.addAddress(Address30_40.convertAddress(t));
     if (src.hasMaritalStatus())
       tgt.setMaritalStatus(CodeableConcept30_40.convertCodeableConcept(src.getMaritalStatus()));
     if (src.hasMultipleBirth())
       tgt.setMultipleBirth(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getMultipleBirth()));
-    for (org.hl7.fhir.dstu3.model.Attachment t : src.getPhoto()) tgt.addPhoto(Attachment30_40.convertAttachment(t));
+    for (org.hl7.fhir.dstu3.model.Attachment t : src.getPhoto())
+      tgt.addPhoto(Attachment30_40.convertAttachment(t));
     for (org.hl7.fhir.dstu3.model.Patient.ContactComponent t : src.getContact())
       tgt.addContact(convertContactComponent(t));
     if (src.hasAnimal())

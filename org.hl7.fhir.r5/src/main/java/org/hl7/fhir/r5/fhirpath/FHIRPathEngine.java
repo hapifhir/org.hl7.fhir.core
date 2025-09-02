@@ -238,7 +238,7 @@ public class FHIRPathEngine {
   }
 
   private void initFlags() {
-    if (!VersionUtilities.isR5VerOrLater(worker.getVersion())) {
+    if (!VersionUtilities.isR5Plus(worker.getVersion())) {
       doNotEnforceAsCaseSensitive = true;
       doNotEnforceAsSingletonRule = true;
     }

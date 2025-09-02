@@ -573,6 +573,21 @@ public abstract class DomainResource extends Resource
     return false;
   }
 
+  public boolean hasPrimitiveExtension(String url) {
+    for (Extension e : getModifierExtension()) {
+      if (url.equals(e.getUrl()) && e.hasValue() && e.getValue().isPrimitive()) {
+        return true;
+      }
+    }
+    for (Extension e : getExtension()) {
+      if (url.equals(e.getUrl()) && e.hasValue() && e.getValue().isPrimitive()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
   public Extension getExtensionByUrl(String theUrl) {
     org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
     ArrayList<Extension> retVal = new ArrayList<Extension>();
@@ -594,6 +609,36 @@ public abstract class DomainResource extends Resource
       return retVal.get(0);
     }
   }
+
+  /**
+   * Returns the value as a string if this element has only one extension that matches the given URL, and that can be converted to a string.
+   * <p>
+   * Note: BackboneElements override this to check Modifier Extensions too
+   *
+   * @param theUrl The URL. Must not be blank or null.
+   */
+  public String getExtensionString(String theUrl) throws FHIRException {
+    List<Extension> ext = getExtensionsByUrl(theUrl);
+    if (ext.isEmpty())
+      return null;
+    if (ext.size() > 1)
+      throw new FHIRException("Multiple matching extensions found for extension '" + theUrl + "'");
+    if (!ext.get(0).hasValue())
+      return null;
+    if (!ext.get(0).getValue().isPrimitive())
+      throw new FHIRException("Extension '" + theUrl + "' could not be converted to a string");
+    return ext.get(0).getValue().primitiveValue();
+  }
+
+  public String getExtensionString(String... theUrls) throws FHIRException {
+    for (String url : theUrls) {
+      if (hasExtension(url)) {
+        return getExtensionString(url);
+      }
+    }
+    return null;
+  }
+
 
   public Resource getContained(String reference) {
     for (Resource c : getContained()) {

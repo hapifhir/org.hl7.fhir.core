@@ -41,7 +41,7 @@ public class VersionConvertorConstants {
   public final static String EXT_MODIFIER_REASON_LEGACY = "No Modifier Reason provideed in previous versions of FHIR";
   public final static String EXT_PROFILE_EXTENSION = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ElementDefinition.type.profile";
   public static final String EXT_ACCEPT_UNKNOWN_EXTENSION_URL = "http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown";
-  public static final String EXT_CarePlanActivityDetailComponentExtension = "http://hl7.org/fhir/3.0/StructureDefinition/extension-CarePlan.activity.detail.category";
+  public static final String EXT_CARE_PLAN_ACTIVITY_DETAIL_COMPONENT_EXTENSION = "http://hl7.org/fhir/3.0/StructureDefinition/extension-CarePlan.activity.detail.category";
   public static final String EXT_EXP_VS_CONT_PROP = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property";
   public static final String EXT_TESTSCRIPT_SCOPE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-TestScript.scope";
   public static final String EXT_ACTUAL_RESOURCE_NAME = "http://hl7.org/fhir/tools/StructureDefinition/original-resource-name";
@@ -74,6 +74,8 @@ public class VersionConvertorConstants {
   public static final String EXT_IG_DEPENDSON_PACKAGE_EXTENSION = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ImplementationGuide.dependsOn.packageId";
   public static final String EXT_MED_REQ_ONBEHALF = "http://hl7.org/fhir/3.0/StructureDefinition/extension-MedicationRequest.requester.onBehalfOf";
   public static final String EXT_MED_STAT_STATUS = "http://hl7.org/fhir/3.0/StructureDefinition/extension-MedicationStatement.status";
+  public static final String EXT_MED_STAT_STATUS_4 = "http://hl7.org/fhir/4.0/StructureDefinition/extension-MedicationStatement.status";
+  public static final String EXT_MED_STAT_STATUS_5 = "http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.status";
   public static final String EXT_MED_STAT_TAKEN = "http://hl7.org/fhir/3.0/StructureDefinition/extension-MedicationStatement.taken";
   public static final String EXT_COM_REQ_ONBEHALF = "http://hl7.org/fhir/3.0/StructureDefinition/extension-CommunicationRequest.requester.onBehalfOf";
   public static final String EXT_DOC_REF_CREATED = "http://hl7.org/fhir/3.0/StructureDefinition/extension-DocumentReference.created";

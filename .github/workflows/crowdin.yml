@@ -15,6 +15,9 @@ permissions:  # added using https://github.com/step-security/secure-repo
 jobs:
   crowdin:
     runs-on: ubuntu-latest
+    permissions:
+        contents: write
+        pull-requests: write
     steps:
       - name: Harden the runner (Audit all outbound calls)
         uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
@@ -38,6 +41,6 @@ jobs:
           pull_request_body: 'New Crowdin pull request with translations'
           pull_request_base_branch_name: ${{ github.ref_name }}
         env:
-          GITHUB_TOKEN: ${{ secrets.CROWDIN_GITUSER_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}

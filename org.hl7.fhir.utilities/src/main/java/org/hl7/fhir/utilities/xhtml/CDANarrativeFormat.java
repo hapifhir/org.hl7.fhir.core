@@ -406,6 +406,8 @@ public class CDANarrativeFormat {
         processTh(xml, n);
       else if (n.getName().equals("thead"))
         processTHead(xml, n);
+      else if (n.getName().equals("a"))
+        processA(xml, n);
       else if (n.getName().equals("tr"))
         processTr(xml, n);
       else
@@ -556,6 +558,13 @@ public class CDANarrativeFormat {
     xml.enter("tr");
     processChildren(xml, n);
     xml.exit("tr");
+  }
+
+  private void processA(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+    processAttributes(n, xml, "id", "language", "styleCode", "align", "char", "charoff", "valign");
+    xml.enter("linkHtml");
+    processChildren(xml, n);
+    xml.exit("linkHtml");
   }
 
   private void processAttributes(XhtmlNode xn, IXMLWriter xml, String... names) throws IOException {

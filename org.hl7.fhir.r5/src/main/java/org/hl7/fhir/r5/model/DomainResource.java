@@ -477,6 +477,20 @@ public void checkNoModifiers(String noun, String verb) throws FHIRException {
     return false;
   }
 
+  public boolean hasPrimitiveExtension(String url) {
+    for (Extension e : getModifierExtension()) {
+      if (url.equals(e.getUrl()) & e.hasValue() && e.getValue().isPrimitive()) {
+        return true;
+      }
+    }
+    for (Extension e : getExtension()) {
+      if (url.equals(e.getUrl()) & e.hasValue() && e.getValue().isPrimitive()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public Extension getExtensionByUrl(String theUrl) {
     org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
     ArrayList<Extension> retVal = new ArrayList<Extension>();

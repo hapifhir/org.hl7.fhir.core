@@ -50,7 +50,7 @@ public class TxTestsTask extends StandaloneTask{
   @Override
   public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
       String output = Params.getParam(args, Params.OUTPUT);
-      String version = Params.getParam(args, Params.VERSION);
+      String version = Params.getParam(args, Params.TEST_VERSION);
       final String tx = Params.getParam(args, Params.TERMINOLOGY);
       final String filter = Params.getParam(args, Params.FILTER);
       final String externals = Params.getParam(args, Params.EXTERNALS);

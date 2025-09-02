@@ -50,6 +50,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import javax.annotation.Nonnull;
 
@@ -66,10 +67,6 @@ import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.BooleanType;
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.r5.model.Bundle.BundleType;
-import org.hl7.fhir.r5.model.Bundle.HTTPVerb;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CapabilityStatement;
@@ -157,8 +154,6 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import com.google.gson.JsonObject;
-
-import lombok.Getter;
 
 @Slf4j
 @MarkedToMoveToAdjunctPackage
@@ -333,6 +328,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   protected Map<String, Map<String, ValidationResult>> validationCache = new HashMap<String, Map<String,ValidationResult>>();
   protected String name;
+  @Setter
+  @Getter
   private boolean allowLoadingDuplicates;
 
   private final Set<String> codeSystemsUsed = new HashSet<>();
@@ -777,7 +774,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         map.put(r.getUrl(), rl.get(rl.size()-1));
         T latest = null;
         for (T t : rl) {
-          if (VersionUtilities.versionsCompatible(t.getVersion(), r.getVersion())) {
+          if (VersionUtilities.versionMatches(t.getVersion(), r.getVersion())) {
             latest = t;
           }
         }
@@ -2320,23 +2317,19 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return res;
   }
 
-  public boolean isAllowLoadingDuplicates() {
-    return allowLoadingDuplicates;
-  }
-
-  public void setAllowLoadingDuplicates(boolean allowLoadingDuplicates) {
-    this.allowLoadingDuplicates = allowLoadingDuplicates;
-  }
-
   @Override
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException {
     return fetchResourceWithException(class_, uri, null);
   }
-  
+
   public <T extends Resource> T fetchResourceWithException(String cls, String uri) throws FHIRException {
     return fetchResourceWithExceptionByVersion(cls, uri, null, null);
   }
-  
+
+  public <T extends Resource> T fetchResourceByVersionWithException(Class<T> class_, String uri, String version) throws FHIRException {
+    return fetchResourceWithExceptionByVersion(class_, uri, version, null);
+  }
+
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, Resource sourceForReference) throws FHIRException {
     return fetchResourceWithExceptionByVersion(class_, uri, null, sourceForReference);
   }
@@ -2397,52 +2390,52 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } 
       if (class_ == Resource.class || class_ == null) {
         if (structures.has(uri)) {
-          return (T) structures.get(uri, version, pvlist);
+          return (T) structures.getByPackage(uri, version, pvlist);
         }        
         if (guides.has(uri)) {
-          return (T) guides.get(uri, version, pvlist);
+          return (T) guides.getByPackage(uri, version, pvlist);
         } 
         if (capstmts.has(uri)) {
-          return (T) capstmts.get(uri, version, pvlist);
+          return (T) capstmts.getByPackage(uri, version, pvlist);
         } 
         if (measures.has(uri)) {
-          return (T) measures.get(uri, version, pvlist);
+          return (T) measures.getByPackage(uri, version, pvlist);
         } 
         if (libraries.has(uri)) {
-          return (T) libraries.get(uri, version, pvlist);
+          return (T) libraries.getByPackage(uri, version, pvlist);
         } 
         if (valueSets.has(uri)) {
-          return (T) valueSets.get(uri, version, pvlist);
+          return (T) valueSets.getByPackage(uri, version, pvlist);
         } 
         if (codeSystems.has(uri)) {
-          return (T) codeSystems.get(uri, version, pvlist);
+          return (T) codeSystems.getByPackage(uri, version, pvlist);
         } 
         if (systems.has(uri)) {
-          return (T) systems.get(uri, version, pvlist);
+          return (T) systems.getByPackage(uri, version, pvlist);
         } 
         if (operations.has(uri)) {
-          return (T) operations.get(uri, version, pvlist);
+          return (T) operations.getByPackage(uri, version, pvlist);
         } 
         if (searchParameters.has(uri)) {
-          return (T) searchParameters.get(uri, version, pvlist);
+          return (T) searchParameters.getByPackage(uri, version, pvlist);
         } 
         if (plans.has(uri)) {
-          return (T) plans.get(uri, version, pvlist);
+          return (T) plans.getByPackage(uri, version, pvlist);
         } 
         if (maps.has(uri)) {
-          return (T) maps.get(uri, version, pvlist);
+          return (T) maps.getByPackage(uri, version, pvlist);
         } 
         if (transforms.has(uri)) {
-          return (T) transforms.get(uri, version, pvlist);
+          return (T) transforms.getByPackage(uri, version, pvlist);
         } 
         if (actors.has(uri)) {
-          return (T) actors.get(uri, version, pvlist);
+          return (T) actors.getByPackage(uri, version, pvlist);
         } 
         if (requirements.has(uri)) {
-          return (T) requirements.get(uri, version, pvlist);
+          return (T) requirements.getByPackage(uri, version, pvlist);
         } 
         if (questionnaires.has(uri)) {
-          return (T) questionnaires.get(uri, version, pvlist);
+          return (T) questionnaires.getByPackage(uri, version, pvlist);
         } 
 
         for (Map<String, ResourceProxy> rt : allResourcesById.values()) {
@@ -2467,49 +2460,49 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 //        }
         return null;      
       } else if (class_ == ImplementationGuide.class) {
-        return (T) guides.get(uri, version, pvlist);
+        return (T) guides.getByPackage(uri, version, pvlist);
       } else if (class_ == CapabilityStatement.class) {
-        return (T) capstmts.get(uri, version, pvlist);
+        return (T) capstmts.getByPackage(uri, version, pvlist);
       } else if (class_ == Measure.class) {
-        return (T) measures.get(uri, version, pvlist);
+        return (T) measures.getByPackage(uri, version, pvlist);
       } else if (class_ == Library.class) {
-        return (T) libraries.get(uri, version, pvlist);
+        return (T) libraries.getByPackage(uri, version, pvlist);
       } else if (class_ == StructureDefinition.class) {
-        return (T) structures.get(uri, version, pvlist);
+        return (T) structures.getByPackage(uri, version, pvlist);
       } else if (class_ == StructureMap.class) {
-        return (T) transforms.get(uri, version, pvlist);
+        return (T) transforms.getByPackage(uri, version, pvlist);
       } else if (class_ == NamingSystem.class) {
-        return (T) systems.get(uri, version, pvlist);
+        return (T) systems.getByPackage(uri, version, pvlist);
       } else if (class_ == ValueSet.class) {
-        return (T) valueSets.get(uri, version, pvlist);
+        return (T) valueSets.getByPackage(uri, version, pvlist);
       } else if (class_ == CodeSystem.class) {
-        return (T) codeSystems.get(uri, version, pvlist);
+        return (T) codeSystems.getByPackage(uri, version, pvlist);
       } else if (class_ == ConceptMap.class) {
-        return (T) maps.get(uri, version, pvlist);
+        return (T) maps.getByPackage(uri, version, pvlist);
       } else if (class_ == ActorDefinition.class) {
-        return (T) actors.get(uri, version, pvlist);
+        return (T) actors.getByPackage(uri, version, pvlist);
       } else if (class_ == Requirements.class) {
-        return (T) requirements.get(uri, version, pvlist);
+        return (T) requirements.getByPackage(uri, version, pvlist);
       } else if (class_ == PlanDefinition.class) {
-        return (T) plans.get(uri, version, pvlist);
+        return (T) plans.getByPackage(uri, version, pvlist);
       } else if (class_ == OperationDefinition.class) {
         OperationDefinition od = operations.get(uri, version);
         return (T) od;
       } else if (class_ == Questionnaire.class) {
-        return (T) questionnaires.get(uri, version, pvlist);
+        return (T) questionnaires.getByPackage(uri, version, pvlist);
       } else if (class_ == SearchParameter.class) {
-        SearchParameter res = searchParameters.get(uri, version, pvlist);
+        SearchParameter res = searchParameters.getByPackage(uri, version, pvlist);
         return (T) res;
       }
       if (class_ == CodeSystem.class && codeSystems.has(uri)) { 
-        return (T) codeSystems.get(uri, version, pvlist);
+        return (T) codeSystems.getByPackage(uri, version, pvlist);
       }
       if (class_ == ValueSet.class && valueSets.has(uri)) {
-        return (T) valueSets.get(uri, version, pvlist);
+        return (T) valueSets.getByPackage(uri, version, pvlist);
       } 
       
       if (class_ == Questionnaire.class) {
-        return (T) questionnaires.get(uri, version, pvlist);
+        return (T) questionnaires.getByPackage(uri, version, pvlist);
       } 
       if (supportedCodeSystems.containsKey(uri)) {
         return null;
@@ -2983,9 +2976,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
-  public <T extends Resource> boolean hasResource(Class<T> class_, String uri, FhirPublication fhirVersion) {
+  public <T extends Resource> boolean hasResource(Class<T> class_, String uri, String fhirVersion) {
     try {
-      return fetchResourceWithException(class_, uri) != null;
+      return fetchResourceByVersionWithException(class_, uri, fhirVersion) != null;
     } catch (Exception e) {
       return false;
     }
@@ -3206,7 +3199,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
       try {
 
-        logger.logDebugMessage(LogCategory.GENERATE,"Generating snapshot for "+ structureDefinition.getVersionedUrl());
+        // logger.logDebugMessage(LogCategory.GENERATE,"Generating snapshot for "+ structureDefinition.getVersionedUrl());
 
        // structureDefinition.setGeneratingSnapshot(true);
         try {
@@ -3770,26 +3763,55 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public void setLocale(Locale locale) {
     super.setLocale(locale);
     if (locale != null) {
-      String lt = locale.toLanguageTag();
-      if ("und".equals(lt)) {
+      final String languageTag = locale.toLanguageTag();
+      if ("und".equals(languageTag)) {
         throw new FHIRException("The locale "+locale.toString()+" is not valid");
       }
+      /* If displayLanguage is an existing parameter, we check to see if it was added automatically or explicitly set by
+       the user
+
+       * If it was added automatically, we update it to the new locale
+       * If it was set by the user, we do not update it.
+
+       In both cases, we are done.
+       */
+
       if (expParameters != null) {
-        for (ParametersParameterComponent p : expParameters.getParameter()) {
-          if ("displayLanguage".equals(p.getName())) {
-            if (p.hasUserData(UserDataNames.auto_added_parameter)) {
-              p.setValue(new CodeType(lt));
-              return;
-            } else {
-              // user supplied, we leave it alone
-              return ;
+        int displayLanguageCount = 0;
+        for (ParametersParameterComponent expParameter : expParameters.getParameter()) {
+          if ("displayLanguage".equals(expParameter.getName())) {
+            if (expParameter.hasUserData(UserDataNames.auto_added_parameter)) {
+              expParameter.setValue(new CodeType(languageTag));
             }
+            displayLanguageCount++;
           }
         }
-        ParametersParameterComponent p = expParameters.addParameter();
-        p.setName("defaultDisplayLanguage");
-        p.setValue(new CodeType(lt));
-        p.setUserData(UserDataNames.auto_added_parameter, true);
+        if (displayLanguageCount > 1) {
+          throw new FHIRException("Multiple displayLanguage parameters found");
+        }
+        if (displayLanguageCount == 1) {
+          return;
+        }
+
+        // There is no displayLanguage parameter so we are free to add a "defaultDisplayLanguage" instead.
+
+        int defaultDisplayLanguageCount = 0;
+        for (ParametersParameterComponent expParameter : expParameters.getParameter()) {
+          if ("defaultDisplayLanguage".equals(expParameter.getName())) {
+            expParameter.setValue(new CodeType(languageTag));
+            expParameter.setUserData(UserDataNames.auto_added_parameter, true);
+            defaultDisplayLanguageCount++;
+          }
+        }
+        if (defaultDisplayLanguageCount > 1) {
+          throw new FHIRException("Multiple defaultDisplayLanguage parameters found");
+        }
+        if (defaultDisplayLanguageCount == 0) {
+          ParametersParameterComponent p = expParameters.addParameter();
+          p.setName("defaultDisplayLanguage");
+          p.setValue(new CodeType(languageTag));
+          p.setUserData(UserDataNames.auto_added_parameter, true);
+        }
       }
     }
   }

@@ -18,7 +18,7 @@ v: {
   "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
   "code" : "59408-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Wrong Display Name 'O2 % BldC Oximetry' for http://loinc.org#59408-5. Valid display is one of 3 choices: 'Oxygen saturation in Arterial blood by Pulse oximetry' (en-US), 'Oxygen saturation in Arterial blood by Pulse oximetry' (en-US) or 'SaO2 % BldA PulseOx' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
@@ -70,7 +70,7 @@ v: {
   "display" : "Oxygen saturation in Arterial blood",
   "code" : "2708-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -97,7 +97,7 @@ v: {
   "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
   "code" : "59408-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "The provided code 'http://loinc.org#59408-5' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0|4.0.1'",
   "class" : "UNKNOWN",
@@ -148,7 +148,7 @@ v: {
   "display" : "Oxygen saturation in Arterial blood",
   "code" : "2708-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -176,7 +176,7 @@ v: {
   "display" : "Inhaled oxygen concentration",
   "code" : "3150-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -203,7 +203,7 @@ v: {
   "display" : "Inhaled oxygen concentration",
   "code" : "3150-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "The provided code 'http://loinc.org#3150-0' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0|4.0.1'",
   "class" : "UNKNOWN",
@@ -255,7 +255,7 @@ v: {
   "display" : "Inhaled oxygen flow rate",
   "code" : "3151-8",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Wrong Display Name 'Flow Rate' for http://loinc.org#3151-8. Valid display is one of 4 choices: 'Inhaled oxygen flow rate' (en-US), 'Inhaled oxygen flow rate' (en-US), 'Inhaled O2 flow rate' (en-US) or 'Inhaled oxygen' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
@@ -306,7 +306,7 @@ v: {
   "display" : "Inhaled oxygen flow rate",
   "code" : "3151-8",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "The provided code 'http://loinc.org#3151-8' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0|4.0.1'",
   "class" : "UNKNOWN",
@@ -357,7 +357,7 @@ v: {
   "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
   "code" : "59408-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -384,7 +384,7 @@ v: {
   "display" : "Oxygen saturation in Arterial blood",
   "code" : "2708-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "The provided code 'http://loinc.org#2708-6' was not found in the value set 'http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0|4.0.0'",
   "class" : "UNKNOWN",
@@ -435,7 +435,7 @@ v: {
   "display" : "Inhaled oxygen concentration",
   "code" : "3150-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -462,7 +462,7 @@ v: {
   "display" : "Inhaled oxygen flow rate",
   "code" : "3151-8",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -489,7 +489,7 @@ v: {
   "display" : "Specular microscopy panel",
   "code" : "100066-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -516,7 +516,7 @@ v: {
   "display" : "Specular microscopy panel",
   "code" : "100066-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "The provided code 'http://loinc.org#100066-0' was not found in the value set 'http://hl7.org/fhir/test/StructureDefinition/additional-bindings-vs1--0|1.0.0'",
   "class" : "UNKNOWN",
@@ -618,7 +618,7 @@ v: {
   "display" : "Glucose [Mass/volume] in Urine by Test strip",
   "code" : "5792-7",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -645,7 +645,7 @@ v: {
   "display" : "Laboratory report",
   "code" : "11502-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -672,7 +672,331 @@ v: {
   "display" : "Laboratory report",
   "code" : "11502-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "97507-8"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Average glucose [Mass/volume] in Interstitial fluid during Reporting Period",
+  "code" : "97507-8",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "106793-3"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Continuous glucose monitoring time in ranges panel",
+  "code" : "106793-3",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "104642-4"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Time below range, very low in Reporting Period Interstitial fluid by calculation",
+  "code" : "104642-4",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "104641-6"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Time below range, low in Reporting Period Interstitial fluid by calculation",
+  "code" : "104641-6",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "97510-2"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Glucose measurements in range out of Total glucose measurements during reporting period",
+  "code" : "97510-2",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "104640-8"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Time above range, high in Reporting Period Interstitial fluid by calculation",
+  "code" : "104640-8",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "104639-0"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Time above range, very high in Reporting Period Interstitial fluid by calculation",
+  "code" : "104639-0",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "97506-0"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Glucose management indicator",
+  "code" : "97506-0",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "104638-2"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Glucose standard deviation/Glucose mean in Reporting Period Interstitial fluid by calculation",
+  "code" : "104638-2",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "104636-6"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Days continuous glucose monitor device worn [#] Reporting Period Estimated",
+  "code" : "104636-6",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "104637-4"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Percentage of time continuous glucose monitor device worn Reporting Period Calculated",
+  "code" : "104637-4",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "99504-3"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Glucose [Mass/volume] in Interstitial fluid",
+  "code" : "99504-3",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -700,7 +1024,7 @@ v: {
   "display" : "Plan of care note",
   "code" : "18776-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -727,7 +1051,7 @@ v: {
   "display" : "Plan of care note",
   "code" : "18776-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -755,7 +1079,7 @@ v: {
   "display" : "Patientenkurzakte - Dokument",
   "code" : "60591-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Wrong Display Name 'Patient summary Document' for http://loinc.org#60591-5. Valid display is one of 2 choices: 'Patientenkurzakte - Dokument' (de-DE) or 'Patient Summary' (de-AT) (for the language(s) 'de-CH')",
   "class" : "UNKNOWN",
@@ -806,7 +1130,7 @@ v: {
   "display" : "Patientenkurzakte - Dokument",
   "code" : "60591-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -834,7 +1158,7 @@ v: {
   "display" : "Primary insurance",
   "code" : "76437-3",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "warning",
   "error" : "There are no valid display names found for the code http://loinc.org#76437-3 for language(s) 'de-CH'. The display is 'Primary insurance' the default language display",
   "server" : "https://tx-dev.fhir.org/r4",
@@ -885,7 +1209,7 @@ v: {
   "display" : "Medikationsanamnese - Freitext",
   "code" : "10160-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Wrong Display Name 'History of Medication use Narrative' for http://loinc.org#10160-0. Valid display is 'Medikationsanamnese - Freitext' (de-DE) (for the language(s) 'de-CH')",
   "class" : "UNKNOWN",
@@ -937,7 +1261,7 @@ v: {
   "display" : "Allergien und unerwünschte Wirkungen - Dokument",
   "code" : "48765-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Wrong Display Name 'Allergies and adverse reactions Document' for http://loinc.org#48765-2. Valid display is 'Allergien und unerwünschte Wirkungen - Dokument' (de-DE) (for the language(s) 'de-CH')",
   "class" : "UNKNOWN",
@@ -989,7 +1313,7 @@ v: {
   "display" : "Problemliste - Berichtet",
   "code" : "11450-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Wrong Display Name 'Problem list - Reported' for http://loinc.org#11450-4. Valid display is 'Problemliste - Berichtet' (de-DE) (for the language(s) 'de-CH')",
   "class" : "UNKNOWN",
@@ -1041,7 +1365,7 @@ v: {
   "display" : "Anamnese der Maßnahmen - Dokument",
   "code" : "47519-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Wrong Display Name 'History of Procedures Document' for http://loinc.org#47519-4. Valid display is 'Anamnese der Maßnahmen - Dokument' (de-DE) (for the language(s) 'de-CH')",
   "class" : "UNKNOWN",
@@ -1090,12 +1414,12 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Relevante diagnostische Tests/Labordaten - Freitext",
+  "display" : "Relevante diagnostische Tests/Labordaten - Notiz",
   "code" : "30954-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
-  "error" : "Wrong Display Name 'Relevant diagnostic tests/laboratory data Narrative' for http://loinc.org#30954-2. Valid display is 'Relevante diagnostische Tests/Labordaten - Freitext' (de-DE) (for the language(s) 'de-CH')",
+  "error" : "Wrong Display Name 'Relevant diagnostic tests/laboratory data Narrative' for http://loinc.org#30954-2. Valid display is 'Relevante diagnostische Tests/Labordaten - Notiz' (de-DE) (for the language(s) 'de-CH')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
@@ -1117,7 +1441,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-display"
       }],
-      "text" : "Wrong Display Name 'Relevant diagnostic tests/laboratory data Narrative' for http://loinc.org#30954-2. Valid display is 'Relevante diagnostische Tests/Labordaten - Freitext' (de-DE) (for the language(s) 'de-CH')"
+      "text" : "Wrong Display Name 'Relevant diagnostic tests/laboratory data Narrative' for http://loinc.org#30954-2. Valid display is 'Relevante diagnostische Tests/Labordaten - Notiz' (de-DE) (for the language(s) 'de-CH')"
     },
     "location" : ["Coding.display"],
     "expression" : ["Coding.display"]
@@ -1142,12 +1466,12 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Vitalparameter",
+  "display" : "Vitalparameter - Notiz",
   "code" : "8716-3",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
-  "error" : "Wrong Display Name 'Vital signs' for http://loinc.org#8716-3. Valid display is 'Vitalparameter' (de-DE) (for the language(s) 'de-CH')",
+  "error" : "Wrong Display Name 'Vital signs' for http://loinc.org#8716-3. Valid display is 'Vitalparameter - Notiz' (de-DE) (for the language(s) 'de-CH')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
@@ -1169,7 +1493,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-display"
       }],
-      "text" : "Wrong Display Name 'Vital signs' for http://loinc.org#8716-3. Valid display is 'Vitalparameter' (de-DE) (for the language(s) 'de-CH')"
+      "text" : "Wrong Display Name 'Vital signs' for http://loinc.org#8716-3. Valid display is 'Vitalparameter - Notiz' (de-DE) (for the language(s) 'de-CH')"
     },
     "location" : ["Coding.display"],
     "expression" : ["Coding.display"]
@@ -1194,12 +1518,12 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Sozialanamnese - Freitext",
+  "display" : "Sozialanamnese - Notiz",
   "code" : "29762-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
-  "error" : "Wrong Display Name 'Social history Narrative' for http://loinc.org#29762-2. Valid display is 'Sozialanamnese - Freitext' (de-DE) (for the language(s) 'de-CH')",
+  "error" : "Wrong Display Name 'Social history Narrative' for http://loinc.org#29762-2. Valid display is 'Sozialanamnese - Notiz' (de-DE) (for the language(s) 'de-CH')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
@@ -1221,7 +1545,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-display"
       }],
-      "text" : "Wrong Display Name 'Social history Narrative' for http://loinc.org#29762-2. Valid display is 'Sozialanamnese - Freitext' (de-DE) (for the language(s) 'de-CH')"
+      "text" : "Wrong Display Name 'Social history Narrative' for http://loinc.org#29762-2. Valid display is 'Sozialanamnese - Notiz' (de-DE) (for the language(s) 'de-CH')"
     },
     "location" : ["Coding.display"],
     "expression" : ["Coding.display"]
@@ -1249,7 +1573,7 @@ v: {
   "display" : "Anamnese früherer Schwangerschaften - Freitext",
   "code" : "10162-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Wrong Display Name 'History of pregnancies Narrative' for http://loinc.org#10162-6. Valid display is 'Anamnese früherer Schwangerschaften - Freitext' (de-DE) (for the language(s) 'de-CH')",
   "class" : "UNKNOWN",
@@ -1301,7 +1625,7 @@ v: {
   "display" : "Details Document",
   "code" : "51899-3",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "warning",
   "error" : "There are no valid display names found for the code http://loinc.org#51899-3 for language(s) 'de-CH'. The display is 'Details Document' the default language display",
   "server" : "https://tx-dev.fhir.org/r4",
@@ -1352,7 +1676,7 @@ v: {
   "display" : "INR in Capillary blood by Coagulation assay",
   "code" : "46418-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -1380,7 +1704,7 @@ v: {
   "display" : "Creatinine [Moles/volume] in Serum, Plasma or Blood",
   "code" : "77140-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -1408,7 +1732,7 @@ v: {
   "display" : "Cytotoxic percent reactive Ab [Presence] in Serum by Quick method",
   "code" : "4535-1",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -1436,7 +1760,7 @@ v: {
   "display" : "Body weight",
   "code" : "29463-7",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -1463,7 +1787,7 @@ v: {
   "display" : "Body weight",
   "code" : "29463-7",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -1491,7 +1815,7 @@ v: {
   "display" : "Body height",
   "code" : "8302-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -1518,7 +1842,7 @@ v: {
   "display" : "Body height",
   "code" : "8302-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -1546,7 +1870,7 @@ v: {
   "display" : "Body mass index (BMI) [Ratio]",
   "code" : "39156-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -1573,7 +1897,7 @@ v: {
   "display" : "Body mass index (BMI) [Ratio]",
   "code" : "39156-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -1601,7 +1925,7 @@ v: {
   "display" : "Blood pressure panel with all children optional",
   "code" : "85354-9",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -1628,7 +1952,7 @@ v: {
   "display" : "Blood pressure panel with all children optional",
   "code" : "85354-9",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -1656,7 +1980,7 @@ v: {
   "display" : "Systolic blood pressure",
   "code" : "8480-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -1683,7 +2007,7 @@ v: {
   "display" : "Systolic blood pressure",
   "code" : "8480-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -1711,7 +2035,7 @@ v: {
   "display" : "Diastolic blood pressure",
   "code" : "8462-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -1738,7 +2062,7 @@ v: {
   "display" : "Diastolic blood pressure",
   "code" : "8462-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -1766,7 +2090,7 @@ v: {
   "display" : "ABO group [Type] in Blood",
   "code" : "883-9",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -1794,7 +2118,7 @@ v: {
   "display" : "Health Quality Measure document",
   "code" : "57024-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -1822,9 +2146,9 @@ v: {
   "display" : "Consent Document",
   "code" : "59284-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
-  "error" : "Wrong Display Name 'Patient Authorization Signature' for http://loinc.org#59284-0. Valid display is one of 3 choices: 'Consent Document' (en-US), 'Consent Document' (en-US) or 'Consent' (en-US) (for the language(s) 'en-US')",
+  "error" : "Wrong Display Name 'Patient Authorization Signature' for http://loinc.org#59284-0. Valid display is one of 4 choices: 'Consent Document' (en-US), 'Consent Document' (en-US), 'Consent' (en-US) or 'Y' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
@@ -1846,7 +2170,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-display"
       }],
-      "text" : "Wrong Display Name 'Patient Authorization Signature' for http://loinc.org#59284-0. Valid display is one of 3 choices: 'Consent Document' (en-US), 'Consent Document' (en-US) or 'Consent' (en-US) (for the language(s) 'en-US')"
+      "text" : "Wrong Display Name 'Patient Authorization Signature' for http://loinc.org#59284-0. Valid display is one of 4 choices: 'Consent Document' (en-US), 'Consent Document' (en-US), 'Consent' (en-US) or 'Y' (en-US) (for the language(s) 'en-US')"
     },
     "location" : ["Coding.display"],
     "expression" : ["Coding.display"]
@@ -1873,7 +2197,7 @@ v: {
   "display" : "Consent Document",
   "code" : "59284-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -1901,7 +2225,7 @@ v: {
   "display" : "Patient summary Document",
   "code" : "60591-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -1928,7 +2252,7 @@ v: {
   "display" : "Patient summary Document",
   "code" : "60591-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -1956,7 +2280,7 @@ v: {
   "display" : "Allergies and adverse reactions Document",
   "code" : "48765-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -1984,7 +2308,7 @@ v: {
   "display" : "History of Medication use Narrative",
   "code" : "10160-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2012,7 +2336,7 @@ v: {
   "display" : "Problem list - Reported",
   "code" : "11450-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2040,7 +2364,7 @@ v: {
   "display" : "FDA product label NDC labeler code request",
   "code" : "51726-8",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Wrong Display Name 'NDC labeler code request' for http://loinc.org#51726-8. Valid display is one of 3 choices: 'FDA product label NDC labeler code request' (en-US), 'FDA product label NDC labeler code request' (en-US) or 'FDA label NDC labeler code request' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
@@ -2092,7 +2416,7 @@ v: {
   "display" : "Pain medicine Plan of care note",
   "code" : "80764-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2122,7 +2446,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "current",
   "severity" : "error",
-  "error" : "A definition for CodeSystem 'http://loinc.org' version 'current' could not be found, so the code cannot be validated. Valid versions: [2.80]",
+  "error" : "A definition for CodeSystem 'http://loinc.org' version 'current' could not be found, so the code cannot be validated. Valid versions: 2.81",
   "class" : "CODESYSTEM_UNSUPPORTED_VERSION",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
@@ -2144,7 +2468,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "not-found"
       }],
-      "text" : "A definition for CodeSystem 'http://loinc.org' version 'current' could not be found, so the code cannot be validated. Valid versions: [2.80]"
+      "text" : "A definition for CodeSystem 'http://loinc.org' version 'current' could not be found, so the code cannot be validated. Valid versions: 2.81"
     },
     "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
@@ -2171,7 +2495,7 @@ v: {
   "display" : "Medication summary Document",
   "code" : "56445-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2201,7 +2525,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "current",
   "severity" : "error",
-  "error" : "A definition for CodeSystem 'http://loinc.org' version 'current' could not be found, so the code cannot be validated. Valid versions: [2.80]",
+  "error" : "A definition for CodeSystem 'http://loinc.org' version 'current' could not be found, so the code cannot be validated. Valid versions: 2.81",
   "class" : "CODESYSTEM_UNSUPPORTED_VERSION",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
@@ -2223,7 +2547,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "not-found"
       }],
-      "text" : "A definition for CodeSystem 'http://loinc.org' version 'current' could not be found, so the code cannot be validated. Valid versions: [2.80]"
+      "text" : "A definition for CodeSystem 'http://loinc.org' version 'current' could not be found, so the code cannot be validated. Valid versions: 2.81"
     },
     "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
@@ -2251,7 +2575,7 @@ v: {
   "display" : "Summary of episode note",
   "code" : "34133-9",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2278,7 +2602,7 @@ v: {
   "display" : "Summary of episode note",
   "code" : "34133-9",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2305,7 +2629,7 @@ v: {
   "display" : "Summary of episode note",
   "code" : "34133-9",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2333,7 +2657,7 @@ v: {
   "display" : "CBC panel - Blood by Automated count",
   "code" : "58410-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2360,7 +2684,7 @@ v: {
   "display" : "CBC panel - Blood by Automated count",
   "code" : "58410-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2371,7 +2695,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "code" : "57852-6",
   "display" : "Problem list Narrative - Reported"
 }, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
@@ -2389,7 +2713,7 @@ v: {
   "display" : "Problem list Narrative - Reported",
   "code" : "57852-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2417,7 +2741,7 @@ v: {
   "display" : "C reactive protein [Mass/volume] in Serum or Plasma",
   "code" : "1988-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Wrong Display Name 'C-reaktives Protein [Masse/Volumen] in Serum oder Plasma' for http://loinc.org#1988-5. Valid display is one of 4 choices: 'C reactive protein [Mass/volume] in Serum or Plasma' (en-US), 'C reactive protein [Mass/volume] in Serum or Plasma' (en-US), 'CRP SerPl-mCnc' (en-US) or 'C Reactive Protein (CRP), Blood' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
@@ -2469,7 +2793,7 @@ v: {
   "display" : "Patient summary Document",
   "code" : "60591-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2496,7 +2820,7 @@ v: {
   "display" : "Patient summary Document",
   "code" : "60591-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2524,7 +2848,7 @@ v: {
   "display" : "Allergies and adverse reactions Document",
   "code" : "48765-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2552,7 +2876,7 @@ v: {
   "display" : "Problem list - Reported",
   "code" : "11450-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2580,7 +2904,7 @@ v: {
   "display" : "History of Medication use Narrative",
   "code" : "10160-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2605,14 +2929,38 @@ v: {
   }]
 }}####
 v: {
-  "display" : "History of Immunization Narrative",
+  "display" : "History of Immunization note",
   "code" : "11369-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'History of Immunization Narrative' for http://loinc.org#11369-6. Valid display is one of 3 choices: 'History of Immunization note' (en-US), 'History of Immunization note' (en-US) or 'Hx of Immunization note' (en-US) (for the language(s) 'en-NZ')",
+  "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Display_Name_for__should_be_one_of__instead_of"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'History of Immunization Narrative' for http://loinc.org#11369-6. Valid display is one of 3 choices: 'History of Immunization note' (en-US), 'History of Immunization note' (en-US) or 'Hx of Immunization note' (en-US) (for the language(s) 'en-NZ')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
 }
 
 }
@@ -2636,7 +2984,7 @@ v: {
   "display" : "History of Procedures Document",
   "code" : "47519-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2661,14 +3009,38 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Relevant diagnostic tests/laboratory data Narrative",
+  "display" : "Relevant diagnostic tests/laboratory data note",
   "code" : "30954-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Relevant diagnostic tests/laboratory data Narrative' for http://loinc.org#30954-2. Valid display is one of 3 choices: 'Relevant diagnostic tests/laboratory data note' (en-US), 'Relevant diagnostic tests/laboratory data note' (en-US) or 'Relevant dx tests/lab data note' (en-US) (for the language(s) 'en-NZ')",
+  "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Display_Name_for__should_be_one_of__instead_of"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Relevant diagnostic tests/laboratory data Narrative' for http://loinc.org#30954-2. Valid display is one of 3 choices: 'Relevant diagnostic tests/laboratory data note' (en-US), 'Relevant diagnostic tests/laboratory data note' (en-US) or 'Relevant dx tests/lab data note' (en-US) (for the language(s) 'en-NZ')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
 }
 
 }
@@ -2689,14 +3061,38 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Vital signs",
+  "display" : "Vital signs note",
   "code" : "8716-3",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Vital signs' for http://loinc.org#8716-3. Valid display is one of 3 choices: 'Vital signs note' (en-US), 'Vital signs note' (en-US) or 'Vital signs note' (en-US) (for the language(s) 'en-NZ')",
+  "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Display_Name_for__should_be_one_of__instead_of"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Vital signs' for http://loinc.org#8716-3. Valid display is one of 3 choices: 'Vital signs note' (en-US), 'Vital signs note' (en-US) or 'Vital signs note' (en-US) (for the language(s) 'en-NZ')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
 }
 
 }
@@ -2717,14 +3113,38 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Social history Narrative",
+  "display" : "Social history note",
   "code" : "29762-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Social history Narrative' for http://loinc.org#29762-2. Valid display is one of 3 choices: 'Social history note' (en-US), 'Social history note' (en-US) or 'Social hx note' (en-US) (for the language(s) 'en-NZ')",
+  "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Display_Name_for__should_be_one_of__instead_of"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Social history Narrative' for http://loinc.org#29762-2. Valid display is one of 3 choices: 'Social history note' (en-US), 'Social history note' (en-US) or 'Social hx note' (en-US) (for the language(s) 'en-NZ')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
 }
 
 }
@@ -2748,7 +3168,7 @@ v: {
   "display" : "Functional status assessment note",
   "code" : "47420-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2776,7 +3196,7 @@ v: {
   "display" : "Body temperature",
   "code" : "8310-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2803,7 +3223,7 @@ v: {
   "display" : "Body temperature",
   "code" : "8310-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2831,7 +3251,7 @@ v: {
   "display" : "Heart rate",
   "code" : "8867-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2858,7 +3278,7 @@ v: {
   "display" : "Heart rate",
   "code" : "8867-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2886,7 +3306,7 @@ v: {
   "display" : "Respiratory rate",
   "code" : "9279-1",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2913,7 +3333,7 @@ v: {
   "display" : "Respiratory rate",
   "code" : "9279-1",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2941,7 +3361,7 @@ v: {
   "display" : "Blood pressure panel with all children optional",
   "code" : "85354-9",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2968,7 +3388,7 @@ v: {
   "display" : "Blood pressure panel with all children optional",
   "code" : "85354-9",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -2996,7 +3416,7 @@ v: {
   "display" : "Systolic blood pressure",
   "code" : "8480-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3023,7 +3443,7 @@ v: {
   "display" : "Systolic blood pressure",
   "code" : "8480-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3051,7 +3471,7 @@ v: {
   "display" : "Diastolic blood pressure",
   "code" : "8462-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3078,7 +3498,7 @@ v: {
   "display" : "Diastolic blood pressure",
   "code" : "8462-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3106,7 +3526,7 @@ v: {
   "display" : "Body height",
   "code" : "8302-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3133,7 +3553,7 @@ v: {
   "display" : "Body height",
   "code" : "8302-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3161,7 +3581,7 @@ v: {
   "display" : "Body weight",
   "code" : "29463-7",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3188,7 +3608,7 @@ v: {
   "display" : "Body weight",
   "code" : "29463-7",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3216,7 +3636,7 @@ v: {
   "display" : "Tobacco smoking status",
   "code" : "72166-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3244,7 +3664,7 @@ v: {
   "display" : "Former smoker",
   "code" : "LA15920-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3272,7 +3692,7 @@ v: {
   "display" : "Body temperature",
   "code" : "8310-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3299,7 +3719,7 @@ v: {
   "display" : "Body temperature",
   "code" : "8310-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3327,7 +3747,7 @@ v: {
   "display" : "Heart rate",
   "code" : "8867-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3354,7 +3774,7 @@ v: {
   "display" : "Heart rate",
   "code" : "8867-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3382,7 +3802,7 @@ v: {
   "display" : "Respiratory rate",
   "code" : "9279-1",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3409,7 +3829,7 @@ v: {
   "display" : "Respiratory rate",
   "code" : "9279-1",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3437,7 +3857,7 @@ v: {
   "display" : "Tobacco smoking status",
   "code" : "72166-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3465,7 +3885,7 @@ v: {
   "display" : "Former smoker",
   "code" : "LA15920-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3492,7 +3912,7 @@ v: {
   "display" : "Former smoker",
   "code" : "LA15920-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3520,7 +3940,7 @@ v: {
   "display" : "Discharge summary",
   "code" : "18842-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3547,7 +3967,7 @@ v: {
   "display" : "Discharge summary",
   "code" : "18842-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3574,7 +3994,7 @@ v: {
   "display" : "Reason for visit Narrative",
   "code" : "29299-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3602,7 +4022,7 @@ v: {
   "code" : "�g��",
   "system" : "http://loinc.org",
   "severity" : "error",
-  "error" : "Unknown code '�g��' in the CodeSystem 'http://loinc.org' version '2.80'",
+  "error" : "Unknown code '�g��' in the CodeSystem 'http://loinc.org' version '2.81'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
@@ -3624,7 +4044,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code '�g��' in the CodeSystem 'http://loinc.org' version '2.80'"
+      "text" : "Unknown code '�g��' in the CodeSystem 'http://loinc.org' version '2.81'"
     },
     "location" : ["Coding.code"],
     "expression" : ["Coding.code"]
@@ -3652,7 +4072,7 @@ v: {
   "display" : "Rh [Type] in Blood",
   "code" : "10331-7",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3680,7 +4100,7 @@ v: {
   "display" : "First Blood pressure Set",
   "code" : "18684-1",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Wrong Display Name '����' for http://loinc.org#18684-1. Valid display is one of 2 choices: 'First Blood pressure Set' (en-US) or 'First Blood pressure Set' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
@@ -3732,7 +4152,7 @@ v: {
   "display" : "Systolic blood pressure",
   "code" : "8480-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Wrong Display Name '���k������' for http://loinc.org#8480-6. Valid display is one of 3 choices: 'Systolic blood pressure' (en-US), 'Systolic blood pressure' (en-US) or 'BP sys' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
@@ -3784,7 +4204,7 @@ v: {
   "display" : "Diastolic blood pressure",
   "code" : "8462-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Wrong Display Name '�g��������' for http://loinc.org#8462-4. Valid display is one of 3 choices: 'Diastolic blood pressure' (en-US), 'Diastolic blood pressure' (en-US) or 'BP dias' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
@@ -3836,7 +4256,7 @@ v: {
   "display" : "Hemoglobin [Mass/volume] in Blood",
   "code" : "718-7",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3864,7 +4284,7 @@ v: {
   "display" : "Creatinine [Mass/volume] in Blood",
   "code" : "38483-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3892,7 +4312,7 @@ v: {
   "display" : "Cholesterol [Mass/volume] in Serum or Plasma",
   "code" : "2093-3",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3920,7 +4340,7 @@ v: {
   "display" : "Patient Health Questionnaire 9 item (PHQ-9) total score [Reported]",
   "code" : "44261-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3931,7 +4351,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "code" : "29463-7",
   "display" : "Body weight"
 }, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
@@ -3949,7 +4369,7 @@ v: {
   "display" : "Body weight",
   "code" : "29463-7",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -3960,7 +4380,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "code" : "29463-7",
   "display" : "Body weight"
 }, "url": "http://fhir.de/ValueSet/VitalSignDE_Body_Weight_Loinc", "version": "0.9.13", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
@@ -3978,7 +4398,7 @@ v: {
   "display" : "Body weight",
   "code" : "29463-7",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4006,7 +4426,7 @@ v: {
   "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
   "code" : "59408-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4034,7 +4454,7 @@ v: {
   "display" : "Inhaled oxygen flow rate",
   "code" : "3151-8",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4061,7 +4481,7 @@ v: {
   "display" : "Genetic variant assessment",
   "code" : "69548-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4088,7 +4508,7 @@ v: {
   "display" : "Present",
   "code" : "LA9633-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4115,7 +4535,7 @@ v: {
   "display" : "Sequencing",
   "code" : "LA26398-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4142,7 +4562,7 @@ v: {
   "display" : "Gene studied [ID]",
   "code" : "48018-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4169,7 +4589,7 @@ v: {
   "display" : "Discrete genetic variant",
   "code" : "81252-9",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4196,7 +4616,7 @@ v: {
   "display" : "Genomic DNA change (gHGVS)",
   "code" : "81290-9",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4223,7 +4643,7 @@ v: {
   "display" : "Genomic source class [Type]",
   "code" : "48002-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4250,7 +4670,7 @@ v: {
   "display" : "Somatic",
   "code" : "LA6684-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4277,7 +4697,7 @@ v: {
   "display" : "Genetic variant assessment",
   "code" : "69548-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4316,7 +4736,7 @@ v: {
   "display" : "Present",
   "code" : "LA9633-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4355,7 +4775,7 @@ v: {
   "display" : "Sequencing",
   "code" : "LA26398-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4394,7 +4814,7 @@ v: {
   "display" : "Somatic",
   "code" : "LA6684-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4422,7 +4842,7 @@ v: {
   "display" : "Inhaled oxygen concentration",
   "code" : "3150-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4449,7 +4869,7 @@ v: {
   "display" : "Body temperature",
   "code" : "8310-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4476,7 +4896,7 @@ v: {
   "display" : "Heart rate",
   "code" : "8867-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4504,7 +4924,7 @@ v: {
   "display" : "Systolic blood pressure by Noninvasive",
   "code" : "76534-7",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4531,7 +4951,7 @@ v: {
   "display" : "Systolic blood pressure by Noninvasive",
   "code" : "76534-7",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "The provided code 'http://loinc.org#76534-7' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0|4.0.1'",
   "class" : "UNKNOWN",
@@ -4582,7 +5002,7 @@ v: {
   "display" : "Specular microscopy panel",
   "code" : "100066-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4610,7 +5030,7 @@ v: {
   "display" : "Medications",
   "code" : "LA20271-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4638,7 +5058,7 @@ v: {
   "display" : "Prescription or over-the-counter (including herbal supplements)",
   "code" : "LA20278-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4666,7 +5086,7 @@ v: {
   "display" : "Incorrect action (process failure or error) (e.g., such as administering overdose or incorrect medication)",
   "code" : "LA20275-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4694,7 +5114,7 @@ v: {
   "display" : "Incorrect patient",
   "code" : "LA20276-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4722,7 +5142,7 @@ v: {
   "display" : "Administering",
   "code" : "LA20296-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4750,7 +5170,7 @@ v: {
   "display" : "No",
   "code" : "LA32-8",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4778,7 +5198,7 @@ v: {
   "display" : "Yes",
   "code" : "LA33-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -4933,7 +5353,7 @@ v: {
   "display" : "Medications",
   "code" : "LA20271-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -5016,7 +5436,7 @@ v: {
   "display" : "Prescription or over-the-counter (including herbal supplements)",
   "code" : "LA20278-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -5079,7 +5499,7 @@ v: {
   "display" : "Incorrect action (process failure or error) (e.g., such as administering overdose or incorrect medication)",
   "code" : "LA20275-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -5174,7 +5594,7 @@ v: {
   "display" : "Incorrect patient",
   "code" : "LA20276-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -5249,7 +5669,7 @@ v: {
   "display" : "Administering",
   "code" : "LA20296-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -5292,7 +5712,7 @@ v: {
   "display" : "No",
   "code" : "LA32-8",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -5335,7 +5755,7 @@ v: {
   "display" : "Yes",
   "code" : "LA33-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -5362,7 +5782,7 @@ v: {
   "display" : "Yes",
   "code" : "LA33-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -5389,7 +5809,7 @@ v: {
   "display" : "No",
   "code" : "LA32-8",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -5429,7 +5849,7 @@ v: {
   "display" : "Yes",
   "code" : "LA33-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -5469,7 +5889,7 @@ v: {
   "display" : "No",
   "code" : "LA32-8",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -5496,7 +5916,7 @@ v: {
   "display" : "Medication administration list [Identifier] Episode Pharmacy",
   "code" : "104207-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -5523,7 +5943,7 @@ v: {
   "display" : "Medication administration list [Identifier] Episode Pharmacy",
   "code" : "104207-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -5548,14 +5968,38 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Within the past 12 months the food we bought just didn't last and we didn't have money to get more [U.S. FSS]",
+  "display" : "Within the past 12 months the food we bought just didn't last and we didn't have money to get more",
   "code" : "88123-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Within the past 12 months the food we bought just didn't last and we didn't have money to get more [U.S. FSS]' for http://loinc.org#88123-5. Valid display is one of 2 choices: 'Within the past 12 months the food we bought just didn't last and we didn't have money to get more' (en-US) or 'Within the past 12 months the food we bought just didn't last and we didn't have money to get more' (en-US) (for the language(s) 'en-US')",
+  "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Display_Name_for__should_be_one_of__instead_of"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Within the past 12 months the food we bought just didn't last and we didn't have money to get more [U.S. FSS]' for http://loinc.org#88123-5. Valid display is one of 2 choices: 'Within the past 12 months the food we bought just didn't last and we didn't have money to get more' (en-US) or 'Within the past 12 months the food we bought just didn't last and we didn't have money to get more' (en-US) (for the language(s) 'en-US')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
 }
 
 }
@@ -5579,7 +6023,7 @@ v: {
   "display" : "Often true",
   "code" : "LA28397-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -5606,7 +6050,7 @@ v: {
   "display" : "Medical records",
   "code" : "11503-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -5633,7 +6077,7 @@ v: {
   "display" : "Medical records",
   "code" : "11503-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -5661,7 +6105,7 @@ v: {
   "display" : "Medical records",
   "code" : "11503-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -5688,7 +6132,7 @@ v: {
   "code" : "test",
   "system" : "http://loinc.org",
   "severity" : "error",
-  "error" : "Unknown code 'test' in the CodeSystem 'http://loinc.org' version '2.80'",
+  "error" : "Unknown code 'test' in the CodeSystem 'http://loinc.org' version '2.81'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
@@ -5710,7 +6154,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code 'test' in the CodeSystem 'http://loinc.org' version '2.80'"
+      "text" : "Unknown code 'test' in the CodeSystem 'http://loinc.org' version '2.81'"
     },
     "location" : ["Coding.code"],
     "expression" : ["Coding.code"]
@@ -5737,7 +6181,7 @@ v: {
   "display" : "History of allergies, reported",
   "code" : "10155-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {

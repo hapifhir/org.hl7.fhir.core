@@ -6,7 +6,7 @@
   "name" : "FHIRReferenceServerTerminologyCapabilities",
   "title" : "FHIR Reference Server Terminology Capability Statement",
   "status" : "active",
-  "date" : "2025-08-04T01:56:35.777Z",
+  "date" : "2025-08-26T20:38:40.315Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -1785,7 +1785,7 @@
   {
     "uri" : "http://loinc.org",
     "version" : [{
-      "code" : "2.80"
+      "code" : "2.81"
     }]
   },
   {

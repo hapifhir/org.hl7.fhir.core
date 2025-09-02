@@ -1333,6 +1333,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
       return context.formatPhrase(RenderingContext.VALUE_SET_SYNONYM);
     case "http://terminology.hl7.org/CodeSystem/designation-usage#display":
       return context.formatPhrase(RenderingContext.VALUE_SET_OTHER_DISPLAY);
+    case "http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra#preferredForLanguage":
+      return context.formatPhrase(RenderingContext.VALUE_SET_OTHER_DISPLAY);
     default:
       // As specified in http://www.hl7.org/fhir/valueset-definitions.html#ValueSet.compose.include.concept.designation.use and in http://www.hl7.org/fhir/codesystem-definitions.html#CodeSystem.concept.designation.use the terminology binding is extensible.
       return url;

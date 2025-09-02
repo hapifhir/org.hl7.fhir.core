@@ -109,7 +109,7 @@ public class FHIRPathTests {
     context = new SimpleWorkerContext(TestingUtilities.getSharedWorkerContext());
     if (!context.hasPackage("hl7.cda.us.ccda", null)) {
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
-      NpmPackage npm = pcm.loadPackage("hl7.cda.uv.core", "2.0.0");
+      NpmPackage npm = pcm.loadPackage("hl7.cda.uv.core", "2.0?");
       context.loadFromPackage(npm, null);
       npm = pcm.loadPackage("hl7.cda.us.ccda", "current");
       context.loadFromPackage(npm, null);

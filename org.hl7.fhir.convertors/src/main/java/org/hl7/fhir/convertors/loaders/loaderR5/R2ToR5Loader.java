@@ -103,6 +103,7 @@ public class R2ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
     if (patchUrls) {
       for (BundleEntryComponent be : b.getEntry()) {
         if (be.hasResource()) {
+          inspectResource(be.getResource());
           doPatchUrls(be.getResource());
         }
       }
@@ -123,6 +124,7 @@ public class R2ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
     if (killPrimitives) {
       throw new FHIRException("Cannot kill primitives when using deferred loading");
     }
+    inspectResource(r5);
     if (patchUrls) {
       doPatchUrls(r5);
     }

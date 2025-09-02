@@ -17,6 +17,7 @@ v: {
   "code" : "fi",
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r3",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -42,6 +43,7 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
   "server" : "https://tx-dev.fhir.org/r3",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -73,6 +75,7 @@ v: {
   "code" : "image/jpg",
   "system" : "urn:ietf:bcp:13",
   "server" : "https://tx-dev.fhir.org/r3",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }

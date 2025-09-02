@@ -383,7 +383,7 @@ public interface IWorkerContext {
    */
   public <T extends Resource> boolean hasResource(Class<T> class_, String uri);
   public <T extends Resource> boolean hasResource(Class<T> class_, String uri, Resource sourceOfReference);
-  public <T extends Resource> boolean hasResource(Class<T> class_, String uri, FhirPublication fhirVersion);
+  public <T extends Resource> boolean hasResource(Class<T> class_, String uri, String fhirVersion);
 
   /**
    * cache a resource for later retrieval using fetchResource.

@@ -1069,10 +1069,13 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
               c.setTargetProfile(r.getTargetProfile());
               tfound = true;
             } else if (sdl.getType().equals(sdr.getType())) {
-              ProfileComparison compP = (ProfileComparison) session.compare(sdl, sdr);
-              if (compP != null && compP.getIntersection() != null) {
-                tfound = true;
-                c.addTargetProfile("#"+compP.getId());
+              ResourceComparison compare = session.compare(sdl, sdr);
+              if (compare instanceof ProfileComparison) {
+                ProfileComparison compP = (ProfileComparison) compare;
+                if (compP != null && compP.getIntersection() != null) {
+                  tfound = true;
+                  c.addTargetProfile("#" + compP.getId());
+                }
               }
             }
           }

@@ -26,6 +26,7 @@ import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationAction;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationRule;
@@ -366,6 +367,7 @@ public class ValueSetValidator extends BaseValidator {
       }
       if (version == null) {
         CodeSystem cs = context.fetchCodeSystem(system);
+
         if (cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(system) && fetcher != null) {
           Set<String> possibleVersions = fetcher.fetchCanonicalResourceVersions(null, valContext.getAppContext(), system);
           warning(errors, NO_RULE_DATE, IssueType.INVALID,  stack, possibleVersions.size() <= 1, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS, 
@@ -386,6 +388,7 @@ public class ValueSetValidator extends BaseValidator {
       }
       boolean validateConcepts = true;
       if (cs != null) { // if it's null, we can't analyse this
+        ok = rule(errors, "2025-07-15", IssueType.BUSINESSRULE, stack.getLiteralPath(), !cs.hasUserData(UserDataNames.RESOURCE_INTERNAL_USE_ONLY), I18nConstants.RESOURCE_INTERNAL_USE_ONLY, "CodeSystem", cs.getSourcePackage() != null ? cs.getSourcePackage().getVID() : "??") && ok;
         if (cs.getContent() == null) {
           warning(errors, "2024-03-06", IssueType.INVALID, stack, false, version == null ? I18nConstants.VALUESET_INCLUDE_CS_CONTENT : I18nConstants.VALUESET_INCLUDE_CSVER_CONTENT, system, "null", version);             
         } else {
@@ -487,7 +490,7 @@ public class ValueSetValidator extends BaseValidator {
       String version, List<VSCodingValidationRequest> batch, NodeStack baseStack) {
     if (batch.size() > 0) {
       IWorkerContext.SystemSupportInformation txInfo = context.getTxSupportInfo(system, version);
-      if (warning(errors, "2025-07-07", IssueType.NOTSUPPORTED, baseStack, VersionUtilities.isThisOrLater(TerminologyClientContext.TX_BATCH_VERSION, txInfo.getTestVersion()), I18nConstants.VALUESET_TXVER_BATCH_NOT_SUPPORTED, (txInfo.getTestVersion() == null ? "Not Known" : txInfo.getTestVersion()), system+(version == null ? "" : "|"+version), txInfo.getServer())) {
+      if (warning(errors, "2025-07-07", IssueType.NOTSUPPORTED, baseStack,  txInfo.getTestVersion() != null && VersionUtilities.isThisOrLater(TerminologyClientContext.TX_BATCH_VERSION, txInfo.getTestVersion(), VersionUtilities.VersionPrecision.MINOR), I18nConstants.VALUESET_TXVER_BATCH_NOT_SUPPORTED, (txInfo.getTestVersion() == null ? "Not Known" : txInfo.getTestVersion()), system+(version == null ? "" : "|"+version), txInfo.getServer())) {
         long t = System.currentTimeMillis();
         log.debug("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
         context.validateCodeBatch(ValidationOptions.defaults().withExampleOK(), batch, null, false);

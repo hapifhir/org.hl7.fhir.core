@@ -129,6 +129,8 @@ public class RenderingI18nContext extends I18nBase {
   public static final String GENERAL_SUMM = "GENERAL_SUMM";
   public static final String CAPABILITY_SUMM_RES = "CAPABILITY_SUMM_RES";
   public static final String CAPABILITY_SUMM_SYS_INT = "CAPABILITY_SUMM_SYS_INT";
+  public static final String CAPABILITY_SUMM_SYS_OP = "CAPABILITY_SUMM_SYS_OP";
+  public static final String CAPABILITY_SUMM_SYS_SP = "CAPABILITY_SUMM_SYS_SP";
   public static final String CAPABILITY_SUPP = "CAPABILITY_SUPP";
   public static final String CAPABILITY_SUPPS = "CAPABILITY_SUPPS";
   public static final String CAPABILITY_SUPP_FORM = "CAPABILITY_SUPP_FORM";

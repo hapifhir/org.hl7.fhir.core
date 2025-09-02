@@ -802,7 +802,7 @@ public class IgLoader implements IValidationEngineLoader {
       if (isDebug() || ((e.getMessage() != null && e.getMessage().contains("cannot be cast")))) {
        log.debug(e.getMessage(), e);
       }
-      log.error(e.getMessage(), e);
+      // no need to see this unless debugging? log.error(e.getMessage(), e);
     }
     return r;
   }

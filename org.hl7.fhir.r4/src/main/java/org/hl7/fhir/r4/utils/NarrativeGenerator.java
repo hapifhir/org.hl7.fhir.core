@@ -3532,12 +3532,12 @@ public class NarrativeGenerator implements INarrativeGenerator {
         } else if (lang.equals("*")) {
           boolean sl = false;
           for (ConceptDefinitionDesignationComponent cd : c.getDesignation())
-            if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display") && cd.hasLanguage()
+            if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra", "preferredForLanguage") && cd.hasLanguage()
                 && !c.getDisplay().equalsIgnoreCase(cd.getValue()))
               sl = true;
           td.addText((sl ? cs.getLanguage("en") + ": " : "") + c.getDisplay());
           for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) {
-            if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display") && cd.hasLanguage()
+            if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra", "preferredForLanguage") && cd.hasLanguage()
                 && !c.getDisplay().equalsIgnoreCase(cd.getValue())) {
               td.br();
               td.addText(cd.getLanguage() + ": " + cd.getValue());
@@ -3547,7 +3547,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
           td.addText(c.getDisplay());
         } else {
           for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) {
-            if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display") && cd.hasLanguage()
+            if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra", "preferredForLanguage") && cd.hasLanguage()
                 && cd.getLanguage().equals(lang)) {
               td.addText(cd.getValue());
             }

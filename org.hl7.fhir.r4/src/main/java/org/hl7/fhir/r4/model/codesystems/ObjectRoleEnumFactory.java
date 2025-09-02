@@ -86,6 +86,10 @@ public class ObjectRoleEnumFactory implements EnumFactory<ObjectRole> {
       return ObjectRole._23;
     if ("24".equals(codeString))
       return ObjectRole._24;
+    if ("25".equals(codeString))
+      return ObjectRole._25;
+    if ("26".equals(codeString))
+      return ObjectRole._26;
     throw new IllegalArgumentException("Unknown ObjectRole code '" + codeString + "'");
   }
 
@@ -140,6 +144,10 @@ public class ObjectRoleEnumFactory implements EnumFactory<ObjectRole> {
       return "23";
     if (code == ObjectRole._24)
       return "24";
+    if (code == ObjectRole._25)
+      return "25";
+    if (code == ObjectRole._26)
+      return "26";
     return "?";
    }
 

@@ -552,7 +552,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     for (String e : pi.dependencies()) {
       if (!loadedPackages.contains(e) && !VersionUtilities.isCorePackage(e)) {
         NpmPackage npm = pcm.loadPackage(e);
-        if (!VersionUtilities.versionsMatch(version, npm.fhirVersion())) {
+        if (!VersionUtilities.versionMatches(version, npm.fhirVersion())) {
           log.info(formatMessage(I18nConstants.PACKAGE_VERSION_MISMATCH, e, version, npm.fhirVersion(), path));
         }
         t = t + loadFromPackageAndDependenciesInt(npm, loader.getNewLoader(npm), pcm, path+" -> "+npm.name()+"#"+npm.version());
@@ -915,7 +915,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       String v = idAndver.substring(idAndver.lastIndexOf("#")+1);
       for (String s : loadedPackages) {
         String v2 = s.substring(s.lastIndexOf("#")+1);
-        if (s.startsWith("hl7.fhir.uv.extensions.") && VersionUtilities.versionsMatch(v, v2)) {
+        if (s.startsWith("hl7.fhir.uv.extensions.") && VersionUtilities.versionMatches(v, v2)) {
           return true;
         }
       }
