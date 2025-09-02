@@ -342,7 +342,7 @@ public class ValidatorCliTests {
 
   @Test
   public void txTestsTest() throws Exception {
-    final String[] args = new String[]{"-txTests"};
+    final String[] args = new String[]{"txTests"};
     ValidationEngineSettings validationEngineSettings = new ValidationEngineSettings();
     ValidationContext validationContext = Params.loadValidationContext(validationEngineSettings,args);
     ValidatorCli cli = mockValidatorCli();

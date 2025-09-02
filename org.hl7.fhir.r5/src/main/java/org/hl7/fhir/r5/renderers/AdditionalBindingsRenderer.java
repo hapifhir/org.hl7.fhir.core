@@ -294,7 +294,7 @@ public class AdditionalBindingsRenderer {
             if (uc.hasValueCodeableConcept() && !uc.getValueCodeableConcept().hasText() && uc.getValueCodeableConcept().getCoding().size() == 1) {
               c = uc.getValueCodeableConcept().getCodingFirstRep();
               renderUsageCode(td, c);
-            } else {
+            } else if (uc.getValue() != null) {
               new DataRenderer(context).renderBase(new RenderingStatus(), td, uc.getValue());
             }
           }

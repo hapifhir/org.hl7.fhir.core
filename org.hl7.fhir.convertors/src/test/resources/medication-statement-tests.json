@@ -1,0 +1,150 @@
+{
+  "r4_resources": [
+    {
+      "resourceType": "MedicationStatement",
+      "id": "r4-active",
+      "status": "active",
+      "medicationCodeableConcept": {
+        "text": "Aspirin 100mg"
+      },
+      "subject": {
+        "reference": "Patient/123"
+      }
+    },
+    {
+      "resourceType": "MedicationStatement",
+      "id": "r4-completed",
+      "status": "completed",
+      "medicationCodeableConcept": {
+        "text": "Ibuprofen 200mg"
+      },
+      "subject": {
+        "reference": "Patient/123"
+      }
+    },
+    {
+      "resourceType": "MedicationStatement",
+      "id": "r4-enteredinerror",
+      "status": "entered-in-error",
+      "medicationCodeableConcept": {
+        "text": "Acetaminophen 500mg"
+      },
+      "subject": {
+        "reference": "Patient/123"
+      }
+    },
+    {
+      "resourceType": "MedicationStatement",
+      "id": "r4-intended",
+      "status": "intended",
+      "medicationCodeableConcept": {
+        "text": "Metformin 500mg"
+      },
+      "subject": {
+        "reference": "Patient/123"
+      }
+    },
+    {
+      "resourceType": "MedicationStatement",
+      "id": "r4-stopped",
+      "status": "stopped",
+      "medicationCodeableConcept": {
+        "text": "Lisinopril 10mg"
+      },
+      "subject": {
+        "reference": "Patient/123"
+      }
+    },
+    {
+      "resourceType": "MedicationStatement",
+      "id": "r4-onhold",
+      "status": "on-hold",
+      "medicationCodeableConcept": {
+        "text": "Warfarin 5mg"
+      },
+      "subject": {
+        "reference": "Patient/123"
+      }
+    },
+    {
+      "resourceType": "MedicationStatement",
+      "id": "r4-unknown",
+      "status": "unknown",
+      "medicationCodeableConcept": {
+        "text": "Vitamin D 1000IU"
+      },
+      "subject": {
+        "reference": "Patient/123"
+      }
+    },
+    {
+      "resourceType": "MedicationStatement",
+      "id": "r4-nottaken",
+      "status": "not-taken",
+      "medicationCodeableConcept": {
+        "text": "Simvastatin 20mg"
+      },
+      "subject": {
+        "reference": "Patient/123"
+      }
+    }
+  ],
+  "r5_resources": [
+    {
+      "resourceType": "MedicationStatement",
+      "id": "r5-recorded",
+      "status": "recorded",
+      "medication": {
+        "concept": {
+          "text": "Aspirin 100mg"
+        }
+      },
+      "subject": {
+        "reference": "Patient/123"
+      }
+    },
+    {
+      "resourceType": "MedicationStatement",
+      "id": "r5-enteredinerror",
+      "status": "entered-in-error",
+      "medication": {
+        "concept": {
+          "text": "Acetaminophen 500mg"
+        }
+      },
+      "subject": {
+        "reference": "Patient/123"
+      }
+    },
+    {
+      "resourceType": "MedicationStatement",
+      "id": "r5-draft",
+      "status": "draft",
+      "medication": {
+        "concept": {
+          "text": "Metformin 500mg"
+        }
+      },
+      "subject": {
+        "reference": "Patient/123"
+      }
+    }
+  ],
+  "expected_conversion_results": {
+    "r4_to_r5_to_r4": {
+      "active": "completed",
+      "completed": "completed",
+      "entered-in-error": "entered-in-error",
+      "intended": "completed",
+      "stopped": "completed",
+      "on-hold": "completed",
+      "unknown": "completed",
+      "not-taken": "completed"
+    },
+    "r5_to_r4_to_r5": {
+      "recorded": "This conversion path is ambiguous - R4 'completed' could map back to 'recorded' but the conversion logic isn't clear",
+      "entered-in-error": "entered-in-error",
+      "draft": "This conversion path is problematic - R4 'unknown' would likely map back to 'recorded' not 'draft'"
+    }
+  }
+}

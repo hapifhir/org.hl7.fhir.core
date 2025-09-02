@@ -109,7 +109,6 @@ public class ComparisonRenderer implements IHostApplicationServices {
   }
 
   private void processList(List<String> list, StringBuilder b, String name) throws IOException {
-    // TODO Auto-generated method stub
     boolean first = true;
     for (String id : list) {
       ResourceComparison comp = session.getCompares().get(id);
@@ -150,7 +149,9 @@ public class ComparisonRenderer implements IHostApplicationServices {
   }
 
   private void renderComparison(String id, ResourceComparison comp) throws IOException, FHIRFormatError, DefinitionException, FHIRException, EOperationOutcome {    
-    if (comp instanceof ProfileComparison) {
+    if (comp instanceof PlaceHolderComparison) {
+      // nothing? TODO: is this a problem?
+    } else  if (comp instanceof ProfileComparison) {
       renderProfile(id, (ProfileComparison) comp);
     } else if (comp instanceof ValueSetComparison) {
       renderValueSet(id, (ValueSetComparison) comp);

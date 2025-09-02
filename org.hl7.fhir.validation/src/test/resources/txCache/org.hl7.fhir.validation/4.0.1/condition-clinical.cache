@@ -20,7 +20,7 @@ v: {
   "system" : "http://terminology.hl7.org/CodeSystem/condition-clinical",
   "version" : "0.5.0",
   "severity" : "error",
-  "error" : "A definition for CodeSystem 'http://terminology.hl7.org/CodeSystem/condition-clinical' version '0.5.0' could not be found, so the code cannot be validated. Valid versions: [3.0.0,4.0.1]",
+  "error" : "A definition for CodeSystem 'http://terminology.hl7.org/CodeSystem/condition-clinical' version '0.5.0' could not be found, so the code cannot be validated. Valid versions: 3.0.0,4.0.1",
   "class" : "CODESYSTEM_UNSUPPORTED_VERSION",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
@@ -42,7 +42,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "not-found"
       }],
-      "text" : "A definition for CodeSystem 'http://terminology.hl7.org/CodeSystem/condition-clinical' version '0.5.0' could not be found, so the code cannot be validated. Valid versions: [3.0.0,4.0.1]"
+      "text" : "A definition for CodeSystem 'http://terminology.hl7.org/CodeSystem/condition-clinical' version '0.5.0' could not be found, so the code cannot be validated. Valid versions: 3.0.0,4.0.1"
     },
     "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
