@@ -1164,7 +1164,7 @@ public class VersionUtilities {
     }
   }
 
-  private static String checkVersionNotNullAndValid(String s, String label) {
+  public static String checkVersionNotNullAndValid(String s, String label) {
     if (s == null) {
       throw new FHIRException("Invalid " + label + " version: null");
     } else if (!isSemVer(s)) {
@@ -1241,7 +1241,7 @@ public class VersionUtilities {
     }
   }
 
-  private static String fixForSpecialValue(String version) {
+  public static String fixForSpecialValue(String version) {
     if (Utilities.noString(version)) {
       return null;
     }
