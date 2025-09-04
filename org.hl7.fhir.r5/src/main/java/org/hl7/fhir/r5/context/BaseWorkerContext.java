@@ -2275,6 +2275,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     getTxClientManager().setLogger(logger);
   }
 
+  /**
+   * Returns a copy of the expansion parameters used by this context. Note that because the return value is a copy, any
+   * changes done to it will not be reflected in the context and any changes to the context will likewise not be
+   * reflected in the return value after it is returned. If you need to change the expansion parameters, use
+   * {@link #setExpansionParameters(Parameters)}.
+   *
+   * @return a copy of the expansion parameters
+   */
   public Parameters getExpansionParameters() {
     return expansionParameters.get().copy();
   }
