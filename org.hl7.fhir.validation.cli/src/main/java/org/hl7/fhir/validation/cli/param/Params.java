@@ -18,6 +18,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeRefer
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.ValidatorWatchMode;
+import org.hl7.fhir.validation.service.model.ValidationEngineSettings;
 import org.hl7.fhir.validation.service.utils.EngineMode;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
@@ -180,12 +181,15 @@ public class Params {
   /**
    * TODO Don't do this all in one for loop. Use the above methods.
    */
-  public static ValidationContext loadValidationContext(String[] args) throws Exception {
+  public static ValidationContext loadValidationContext(ValidationEngineSettings validationEngineSettings, String[] args) throws Exception {
     ValidationContext validationContext = new ValidationContext();
 
     // load the parameters - so order doesn't matter
     for (int i = 0; i < args.length; i++) {
-      if (args[i].equals(VERSION)) {
+      if (ValidationEngineParams.isValidationEngineParam(args[i])) {
+        i = ValidationEngineParams.setValidationEngineSettingsFromArgs(validationEngineSettings, args, i);
+      }
+      else if (args[i].equals(VERSION)) {
         validationContext.setSv(VersionUtilities.getCurrentPackageVersion(args[++i]));
       } else if (args[i].equals(FHIR_SETTINGS_PARAM)) {
         final String fhirSettingsFilePath = args[++i];
@@ -297,18 +301,12 @@ public class Params {
           String inp = args[++i];
           validationContext.getInputs().add(inp);
         }
-      } else if (args[i].equals(NATIVE)) {
-        validationContext.setDoNative(true);
-      } else if (args[i].equals(ASSUME_VALID_REST_REF)) {
-        validationContext.setAssumeValidRestReferences(true);
       } else if (args[i].equals(CHECK_REFERENCES)) {
         validationContext.setCheckReferences(true);
       } else if (args[i].equals(RESOLUTION_CONTEXT)) {
         validationContext.setResolutionContext(args[++i]);
       } else if (args[i].equals(DEBUG)) {
         log.warn("Debugging support is now provided through the -debug-log and -trace-log CLI parameters. Use the -help option for detailed instructions.");
-      } else if (args[i].equals(SCT)) {
-        validationContext.setSnomedCT(args[++i]);
       } else if (args[i].equals(RECURSE)) {
         validationContext.setRecursive(true);
       } else if (args[i].equals(SHOW_MESSAGES_FROM_REFERENCES)) {
@@ -359,8 +357,6 @@ public class Params {
         validationContext.setDisplayWarnings(true);
       } else if (args[i].equals(WANT_INVARIANTS_IN_MESSAGES)) {
         validationContext.setWantInvariantsInMessages(true);
-      } else if (args[i].equals(HINT_ABOUT_NON_MUST_SUPPORT)) {
-        validationContext.setHintAboutNonMustSupport(true);
       } else if (args[i].equals(TO_VERSION)) {
         validationContext.setTargetVer(args[++i]);
         validationContext.setMode(EngineMode.VERSION);
