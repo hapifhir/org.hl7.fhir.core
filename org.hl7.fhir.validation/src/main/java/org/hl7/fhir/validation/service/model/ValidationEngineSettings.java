@@ -84,4 +84,20 @@ import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
     return this;
   }
 
+  @JsonProperty("assumeValidRestReferences")
+  @SerializedName("assumeValidRestReferences")
+  private boolean assumeValidRestReferences = false;
+
+  @SerializedName("assumeValidRestReferences")
+  @JsonProperty("assumeValidRestReferences")
+  public boolean isAssumeValidRestReferences() {
+    return assumeValidRestReferences;
+  }
+
+  @SerializedName("assumeValidRestReferences")
+  @JsonProperty("assumeValidRestReferences")
+  public ValidationEngineSettings setAssumeValidRestReferences(boolean assumeValidRestReferences) {
+    this.assumeValidRestReferences = assumeValidRestReferences;
+    return this;
+  }
 }

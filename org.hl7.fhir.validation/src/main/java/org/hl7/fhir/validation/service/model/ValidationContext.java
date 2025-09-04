@@ -28,47 +28,56 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A POJO for storing the flags/values for the CLI validator.
+ *
+ * @deprecated This class exists to provide backwards compatibility for downstream projects such as the
+ * validator-wrapper. Its contents are now accessible through more modular objects such as {@link ValidationEngineSettings}
  */
 @Deprecated
 public class ValidationContext {
 
   //NOT A COMMAND LINE OPTION
+  // Now in ValidationEngineSettings
   @JsonProperty("baseEngine")
   @SerializedName("baseEngine")
   private String baseEngine = null;
 
+  // Now in ValidationEngineSettings
   @JsonProperty("doNative")
   @SerializedName("doNative")
-  private
-  boolean doNative = false;
+  private boolean doNative = false;
+
+  // Now in ValidationEngineSettings
   @JsonProperty("hintAboutNonMustSupport")
   @SerializedName("hintAboutNonMustSupport")
   private
   boolean hintAboutNonMustSupport = false; //MOVED to ValidationEngineSettings
+
   @JsonProperty("recursive")
   @SerializedName("recursive")
   private
   boolean recursive = false;
+
   @JsonProperty("showMessagesFromReferences")
   @SerializedName("showMessagesFromReferences")
   private
   boolean showMessagesFromReferences = false;
+
   @JsonProperty("doDebug")
   @SerializedName("doDebug")
-  private
-  boolean doDebug = false;
+  private boolean doDebug = false;
+
+  // Now in ValidationEngineSettings
   @JsonProperty("assumeValidRestReferences")
   @SerializedName("assumeValidRestReferences")
-  private
-  boolean assumeValidRestReferences = false;
+  private boolean assumeValidRestReferences = false;
+
   @JsonProperty("checkReferences")
   @SerializedName("checkReferences")
-  private
-  boolean checkReferences = false;
+  private boolean checkReferences = false;
+
   @JsonProperty("resolutionContext")
   @SerializedName("resolutionContext")
-  private
-  String resolutionContext = null;
+  private String resolutionContext = null;
   
   @JsonProperty("canDoNative")
   @SerializedName("canDoNative")
