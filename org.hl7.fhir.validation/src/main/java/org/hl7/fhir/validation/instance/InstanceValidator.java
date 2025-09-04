@@ -7368,7 +7368,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           url = url.substring(0, url.indexOf("#"));
         }
         p = this.context.fetchResource(StructureDefinition.class, typeProfile);
-        if (rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), p != null, I18nConstants.VALIDATION_VAL_UNKNOWN_PROFILE, typeProfile)) {
+        if (rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), p != null, I18nConstants.VALIDATION_VAL_UNKNOWN_PROFILE, typeProfile)
+          && rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), p.getSnapshot().hasElement(), I18nConstants.VALIDATION_VAL_PROFILE_NOSNAPSHOT, typeProfile)) {
           List<ValidationMessage> profileErrors = new ArrayList<ValidationMessage>();
           validateElement(valContext, profileErrors, p, getElementByTail(p, tail), profile, checkDefn, resource, ei.getElement(), type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension, pct, mode); // we don't track ok here
           if (hasErrors(profileErrors))
@@ -7947,7 +7948,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private ElementDefinition getElementByTail(StructureDefinition p, String tail) throws DefinitionException {
-    if (tail == null)
+    if (tail == null && !p.getSnapshot().getElement().isEmpty())
       return p.getSnapshot().getElement().get(0);
     for (ElementDefinition t : p.getSnapshot().getElement()) {
       if (tail.equals(t.getId()))
