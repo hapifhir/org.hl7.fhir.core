@@ -11,7 +11,8 @@ public class ValidationEngineParams {
   private static final Set<String> ARG_NAMES = new HashSet<>(Arrays.asList(
     Params.NATIVE,
     Params.SCT,
-    Params.HINT_ABOUT_NON_MUST_SUPPORT
+    Params.HINT_ABOUT_NON_MUST_SUPPORT,
+    Params.ASSUME_VALID_REST_REF
   ));
 
   public static boolean isValidationEngineParam(String arg) {
@@ -38,6 +39,8 @@ public class ValidationEngineParams {
         return i+1;
       } else if (args[i].equals(Params.HINT_ABOUT_NON_MUST_SUPPORT)) {
         validationEngineSettings.setHintAboutNonMustSupport(true);
+      } else if (args[i].equals(Params.ASSUME_VALID_REST_REF)) {
+        validationEngineSettings.setAssumeValidRestReferences(true);
       }
     return i;
   }
