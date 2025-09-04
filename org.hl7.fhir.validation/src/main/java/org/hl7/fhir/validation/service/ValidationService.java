@@ -148,6 +148,7 @@ public class ValidationService {
     /* Cached validation engines already have expensive setup like loading definitions complete. But it wouldn't make
        sense to rebuild a whole engine to change the language, so we manually change it here.
      */
+    //FIXME move these to ValidationEngineSettings and after that, an inheritable LocalizationOptions
     validationEngine.setLanguage(request.getValidationContext().getLang());
     validationEngine.setLocale(request.getValidationContext().getLocale());
     if (request.getValidationContext().getProfiles().size() > 0) {
