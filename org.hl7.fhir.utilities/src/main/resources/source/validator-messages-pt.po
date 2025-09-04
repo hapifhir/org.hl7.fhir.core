@@ -152,6 +152,7 @@ msgstr[1] ""
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
 #, fuzzymsgctxt "BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT"
+msgctxt "BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT"
 msgid "Can''t find ''{0}'' in the bundle ({1})"
 msgstr "Não é possível encontrar ''{0}'' no pacote ({1})"
 
@@ -339,6 +340,16 @@ msgstr ""
 msgid "Error parsing the targetFormat ''{0}'': {1}"
 msgstr ""
 
+# BUNDLE_SIGNATURE_CERT_DETAILS
+#: BUNDLE_SIGNATURE_CERT_DETAILS
+msgid "Signing Certificate Details: Subject=''{0}'', Issuer=''{1}'', Serial=''{2}''"
+msgstr ""
+
+# BUNDLE_SIGNATURE_CERT_SOURCE
+#: BUNDLE_SIGNATURE_CERT_SOURCE
+msgid "Signing Certificate Source: {0}"
+msgstr ""
+
 # BUNDLE_SIGNATURE_CHECKED_DATA_B64
 #: BUNDLE_SIGNATURE_CHECKED_DATA_B64
 msgid "The signature data is not valid base64 content, but it looks like native application/jose, so it will be checked anyway"
@@ -456,6 +467,11 @@ msgstr ""
 msgid "Error parsing the digital signature header: {0}"
 msgstr ""
 
+# BUNDLE_SIGNATURE_HEADER_SIG_TIME_WRONG_FORMAT
+#: BUNDLE_SIGNATURE_HEADER_SIG_TIME_WRONG_FORMAT
+msgid "The sigT header has the wrong format: {0}"
+msgstr ""
+
 # BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH
 #: BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH
 msgid "The time in the signature {0} is not the same as the stated time {1}"
@@ -546,6 +562,16 @@ msgstr ""
 # BUNDLE_SIGNATURE_SIGNED_BY_VERIFIED
 #: BUNDLE_SIGNATURE_SIGNED_BY_VERIFIED
 msgid "The content was signed by {0} (and this has been verified by the signature)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIGNED_FOR
+#: BUNDLE_SIGNATURE_SIGNED_FOR
+msgid "The content claims that it was signed for the purpose of {1} ({0}), but this has not been verified"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIGNED_FOR_VERIFIED
+#: BUNDLE_SIGNATURE_SIGNED_FOR_VERIFIED
+msgid "The content was signed for the purpose of {1} ({0}) (and this has been verified by the signature)"
 msgstr ""
 
 # BUNDLE_SIGNATURE_SIG_DIGEST_MISMATCH
@@ -694,6 +720,7 @@ msgstr "Não foi encontrado nenhum perfil para o recurso {0} do tipo ''{1}''"
 # Bundle_BUNDLE_Entry_NotFound
 #: Bundle_BUNDLE_Entry_NotFound
 #, fuzzymsgctxt "Bundle_BUNDLE_Entry_NotFound"
+msgctxt "Bundle_BUNDLE_Entry_NotFound"
 msgid "Can''t find ''{0}'' in the bundle ({1})"
 msgstr "Não é possível encontrar ''{0}'' no pacote ({1})"
 
@@ -2141,7 +2168,7 @@ msgstr "O tipo {0} não é válido"
 #: FHIRPATH_LEFT_VALUE
 msgctxt "FHIRPATH_LEFT_VALUE"
 msgid "-- no content: do not translate #80 --"
-msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values"
+msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values ({2})"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -2337,7 +2364,7 @@ msgstr "Erro ao avaliar a expressão FHIRPath: O tipo de parâmetro {2} não é 
 
 # FILTER_NOT_UNDERSTOOD
 #: FILTER_NOT_UNDERSTOOD
-msgid "The filter \\\"{0} {1} {2}\\\" from the value set {3} was not understood in the context of {4}"
+msgid "The filter \"{0} {1} {2}\" from the value set {3} was not understood in the context of {4}"
 msgstr ""
 
 # Fixed_Type_Checks_DT_Address_Line
@@ -2385,8 +2412,8 @@ msgstr "LOINC"
 # HTA_LOINC_MESSAGE
 #: HTA_LOINC_MESSAGE
 #, fuzzy
-msgid "This material contains content from <a href=\\\"http://loinc.org\\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\\"http://loinc.org/license\\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
-msgstr "!!Este material contém conteúdo do <a href=\\\"http://loinc.org\\\">LOINC</a>. LOINC é copyright &copy; 1995-2020, Regenstrief Institute, Inc. e o Logical Observation Identifiers Names and Codes (LOINC) Committee e está disponível sem custo sob a <a href=\\\"http://loinc.org/license\\\">licença</a>. LOINC&reg; é uma marca registada dos Estados Unidos da América do Regenstrief Institute, Inc."
+msgid "This material contains content from <a href=\\"http://loinc.org\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\"http://loinc.org/license\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
+msgstr "!!!!Este material contém conteúdo do <a href=\\\"http://loinc.org\\\">LOINC</a>. LOINC é copyright &copy; 1995-2020, Regenstrief Institute, Inc. e o Logical Observation Identifiers Names and Codes (LOINC) Committee e está disponível sem custo sob a <a href=\\\"http://loinc.org/license\\\">licença</a>. LOINC&reg; é uma marca registada dos Estados Unidos da América do Regenstrief Institute, Inc."
 
 # HTA_SCT_DESC
 #: HTA_SCT_DESC
@@ -2397,8 +2424,8 @@ msgstr "Termos clínicos SNOMED&reg; (SNOMED CT&reg;)"
 # HTA_SCT_MESSAGE
 #: HTA_SCT_MESSAGE
 #, fuzzy
-msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> or <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
-msgstr "!!Este material contém conteúdo que é copyright da SNOMED International. Os implementadores destas especificações devem ter a licença apropriada de afiliado da SNOMED CT - para mais informações contacte <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> ou <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
+msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\"https://www.snomed.org/get-snomed\\">https://www.snomed.org/get-snomed</a> or <a href=\\"mailto:info@snomed.org\\">info@snomed.org</a>."
+msgstr "!!!!Este material contém conteúdo que é copyright da SNOMED International. Os implementadores destas especificações devem ter a licença apropriada de afiliado da SNOMED CT - para mais informações contacte <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> ou <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
 
 # IG_DEPENDENCY_CAN_VERSION_ALONE
 #: IG_DEPENDENCY_CAN_VERSION_ALONE
@@ -3772,12 +3799,14 @@ msgstr "O tipo de mime {0} não é válido para esta resposta (permitido = {1})"
 # QUESTIONNAIRE_QR_ITEM_DATE_MAX
 #: QUESTIONNAIRE_QR_ITEM_DATE_MAX
 #, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_DATE_MAX"
+msgctxt "QUESTIONNAIRE_QR_ITEM_DATE_MAX"
 msgid "The value {0} is greater than the allowed maximum of {1}"
 msgstr "O valor {0} é superior ao máximo permitido de {1}"
 
 # QUESTIONNAIRE_QR_ITEM_DATE_MIN
 #: QUESTIONNAIRE_QR_ITEM_DATE_MIN
 #, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_DATE_MIN"
+msgctxt "QUESTIONNAIRE_QR_ITEM_DATE_MIN"
 msgid "The value {0} is less than the allowed minimum of {1}"
 msgstr "O valor {0} é inferior ao mínimo permitido de {1}"
 
@@ -3826,6 +3855,7 @@ msgstr "Não foi possível encontrar o conjunto de valores unitários ''{1}''"
 # QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX
 #: QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX
 #, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX"
+msgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX"
 msgid "The value {0} is greater than the allowed maximum of {1}"
 msgstr "O valor {0} é superior ao máximo permitido de {1}"
 
@@ -3838,6 +3868,7 @@ msgstr "O valor {0} tem demasiadas casas decimais (limite = {1})"
 # QUESTIONNAIRE_QR_ITEM_DECIMAL_MIN
 #: QUESTIONNAIRE_QR_ITEM_DECIMAL_MIN
 #, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_MIN"
+msgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_MIN"
 msgid "The value {0} is less than the allowed minimum of {1}"
 msgstr "O valor {0} é inferior ao mínimo permitido de {1}"
 
@@ -3850,6 +3881,7 @@ msgstr "O valor {0} tem uma unidade que não está no conjunto de valores unitá
 # QUESTIONNAIRE_QR_ITEM_DECIMAL_VALUE_EXCEPTION
 #: QUESTIONNAIRE_QR_ITEM_DECIMAL_VALUE_EXCEPTION
 #, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_VALUE_EXCEPTION"
+msgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_VALUE_EXCEPTION"
 msgid "An error occurred checking the value: {0}"
 msgstr "Ocorreu um erro ao verificar o valor: {0}"
 
@@ -3874,18 +3906,21 @@ msgstr "Não foram encontrados subitens para o grupo necessário"
 # QUESTIONNAIRE_QR_ITEM_INTEGER_MAX
 #: QUESTIONNAIRE_QR_ITEM_INTEGER_MAX
 #, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_MAX"
+msgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_MAX"
 msgid "The value {0} is greater than the allowed maximum of {1}"
 msgstr "O valor {0} é superior ao máximo permitido de {1}"
 
 # QUESTIONNAIRE_QR_ITEM_INTEGER_MIN
 #: QUESTIONNAIRE_QR_ITEM_INTEGER_MIN
 #, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_MIN"
+msgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_MIN"
 msgid "The value {0} is less than the allowed minimum of {1}"
 msgstr "O valor {0} é inferior ao mínimo permitido de {1}"
 
 # QUESTIONNAIRE_QR_ITEM_INTEGER_VALUE_EXCEPTION
 #: QUESTIONNAIRE_QR_ITEM_INTEGER_VALUE_EXCEPTION
 #, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_VALUE_EXCEPTION"
+msgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_VALUE_EXCEPTION"
 msgid "An error occurred checking the value: {0}"
 msgstr "Ocorreu um erro ao verificar o valor: {0}"
 
@@ -3988,12 +4023,14 @@ msgstr "A resposta ''{0}'' não está em conformidade com o formato esperado ''{
 # QUESTIONNAIRE_QR_ITEM_TIME_MAX
 #: QUESTIONNAIRE_QR_ITEM_TIME_MAX
 #, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_TIME_MAX"
+msgctxt "QUESTIONNAIRE_QR_ITEM_TIME_MAX"
 msgid "The value {0} is greater than the allowed maximum of {1}"
 msgstr "O valor {0} é superior ao máximo permitido de {1}"
 
 # QUESTIONNAIRE_QR_ITEM_TIME_MIN
 #: QUESTIONNAIRE_QR_ITEM_TIME_MIN
 #, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_TIME_MIN"
+msgctxt "QUESTIONNAIRE_QR_ITEM_TIME_MIN"
 msgid "The value {0} is less than the allowed minimum of {1}"
 msgstr "O valor {0} é inferior ao mínimo permitido de {1}"
 
@@ -4658,6 +4695,21 @@ msgstr "O valor do Contexto de utilização deve ser do tipo {1} e não {0}"
 #, fuzzy
 msgid "The Usage Context {0}#{1} is not recognized so cannot be validated"
 msgstr "O contexto de utilização {0}#{1} não é reconhecido, pelo que não pode ser validado"
+
+# SD_ED_BIND_ALLSCT_CODES
+#: SD_ED_BIND_ALLSCT_CODES
+msgid "This binding is to ALL SNOMED CT codes, which includes qualifiers etc. The value set choice should be reviewed"
+msgstr ""
+
+# SD_ED_BIND_ALL_CPT_CODES
+#: SD_ED_BIND_ALL_CPT_CODES
+msgid "This binding is to ALL CPT codes, which includes modifiers and internal metadata codes. The value set choice should be reviewed"
+msgstr ""
+
+# SD_ED_BIND_ALL_LOINC_CODES
+#: SD_ED_BIND_ALL_LOINC_CODES
+msgid "This binding is to ALL LOINC codes, which includes part codes and answer list codes. The value set choice should be reviewed"
+msgstr ""
 
 # SD_ED_BIND_MULTIPLE_TYPES
 #: SD_ED_BIND_MULTIPLE_TYPES
@@ -7290,8 +7342,8 @@ msgstr "A definição de extensão {0} não define quaisquer contextos de utiliz
 # VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED
 #: VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED
 #, fuzzy
-msgid "Profile {1} identifies {2} as a dependency (using the extension http://hl7.org/fhir/StructureDefinition/structuredefinition-dependencies), but this profile could not be found"
-msgstr "O perfil {1} identifica {2} como uma dependência (utilizando a extensão http://hl7.org/fhir/StructureDefinition/structuredefinition-dependencies), mas não foi possível encontrar este perfil"
+msgid "Profile {1} identifies {0} as a dependency (using the extension http://hl7.org/fhir/StructureDefinition/structuredefinition-dependencies), but this profile could not be found"
+msgstr "!!O perfil {1} identifica {2} como uma dependência (utilizando a extensão http://hl7.org/fhir/StructureDefinition/structuredefinition-dependencies), mas não foi possível encontrar este perfil"
 
 # VALIDATION_VAL_PROFILE_MINIMUM_MAGIC
 #: VALIDATION_VAL_PROFILE_MINIMUM_MAGIC
@@ -7459,6 +7511,11 @@ msgstr "O valor de um filtro baseado na propriedade ''{0}'' deve estar no format
 #, fuzzy
 msgid "The value for a filter based on property ''{0}'' is ''{1}'' which is not a valid code ({2})"
 msgstr "O valor de um filtro baseado na propriedade ''{0}'' é ''{1}'', o que não é um código válido ({2})"
+
+# VALUESET_BAD_FILTER_VALUE_CODED_LEGACY
+#: VALUESET_BAD_FILTER_VALUE_CODED_LEGACY
+msgid "The value for a filter based on property ''{0}'' should be in the format system(|version)#code, not the coding search pattern ''{1}''"
+msgstr ""
 
 # VALUESET_BAD_FILTER_VALUE_DATETIME
 #: VALUESET_BAD_FILTER_VALUE_DATETIME
@@ -7713,12 +7770,14 @@ msgstr "A referência do sistema do conjunto de valores ''{0}'' termina com um '
 # VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_1
 #: VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_1
 #, fuzzymsgctxt "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_1"
+msgctxt "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_1"
 msgid "Value set System references must not use the canonical version syntax - the version ''{0}'' should be in the version property, but that already contains ''{1}''"
 msgstr "Conjunto de valores As referências do sistema não devem utilizar a sintaxe da versão canónica - a versão ''{0}'' deve estar na propriedade version, mas esta já contém ''{1}''"
 
 # VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2
 #: VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2
 #, fuzzymsgctxt "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2"
+msgctxt "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2"
 msgid "Value set System references must not use the canonical version syntax - the version ''{0}'' should be in the version property, but that already contains ''{1}''"
 msgstr "Conjunto de valores As referências do sistema não devem utilizar a sintaxe da versão canónica - a versão ''{0}'' deve estar na propriedade version, mas esta já contém ''{1}''"
 
@@ -7782,6 +7841,11 @@ msgstr "A expansão do conjunto de valores ''{0}'' tem {2} códigos, que são de
 #, fuzzy
 msgid "The value set ''{0}'' {2} took too long to process (>{1}sec)"
 msgstr "O conjunto de valores ''{0}'' {2} demorou demasiado tempo a processar (>{1}seg)"
+
+# VALUESET_TXVER_BATCH_NOT_SUPPORTED
+#: VALUESET_TXVER_BATCH_NOT_SUPPORTED
+msgid "The terminology server {2} used for the CodeSystem {1} does not support batch validation (tx version {0}), so the codes have not been validated"
+msgstr ""
 
 # VALUESET_UNC_SYSTEM_WARNING
 #: VALUESET_UNC_SYSTEM_WARNING
