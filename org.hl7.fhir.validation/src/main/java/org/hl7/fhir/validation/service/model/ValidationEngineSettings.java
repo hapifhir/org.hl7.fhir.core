@@ -67,7 +67,7 @@ import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
   @JsonProperty("snomedCT")
   @SerializedName("snomedCT")
   private
-  String snomedCT = "900000000000207008"; //MOVED to ValidationEngineSettings
+  String snomedCT = "900000000000207008";
 
   @SerializedName("snomedCT")
   @JsonProperty("snomedCT")

@@ -561,8 +561,8 @@ public class ValidationService {
 
   private ValidationEngine getValidationEngineFromValidationContext(ValidationEngineSettings validationEngineSettings, ValidationContext validationContext, String definitions, TimeTracker tt) throws Exception {
     ValidationEngine validationEngine;
-    if (validationContext.getBaseEngine() != null && hasBaseEngineForKey(validationContext.getBaseEngine())) {
-      validationEngine = new ValidationEngine(getBaseEngine(validationContext.getBaseEngine()));
+    if (validationEngineSettings.getBaseEngine() != null && hasBaseEngineForKey(validationEngineSettings.getBaseEngine())) {
+      validationEngine = new ValidationEngine(getBaseEngine(validationEngineSettings.getBaseEngine()));
     } else {
       if (definitions == null) {
         throw new IllegalArgumentException("Cannot create a validator engine (definitions == null)");
