@@ -306,8 +306,7 @@ public class Params {
       } else if (args[i].equals(RESOLUTION_CONTEXT)) {
         validationContext.setResolutionContext(args[++i]);
       } else if (args[i].equals(DEBUG)) {
-        //FIXME warm that debug now outputs to the log file
-        //validationContext.setDoDebug(true);
+        log.warn("Debugging support is now provided through the -debug-log and -trace-log CLI parameters. Use the -help option for detailed instructions.");
       } else if (args[i].equals(SCT)) {
         validationContext.setSnomedCT(args[++i]);
       } else if (args[i].equals(RECURSE)) {
