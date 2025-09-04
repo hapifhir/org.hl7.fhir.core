@@ -302,7 +302,7 @@ public class Params {
           validationContext.getInputs().add(inp);
         }
       } else if (args[i].equals(ASSUME_VALID_REST_REF)) {
-        validationContext.setAssumeValidRestReferences(true);
+        validationEngineSettings.setAssumeValidRestReferences(true);
       } else if (args[i].equals(CHECK_REFERENCES)) {
         validationContext.setCheckReferences(true);
       } else if (args[i].equals(RESOLUTION_CONTEXT)) {

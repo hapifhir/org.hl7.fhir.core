@@ -620,7 +620,7 @@ public class ValidationService {
     validationEngine.setLanguage(validationContext.getLang()); //!VES?
     validationEngine.setLocale(validationContext.getLocale()); //!VES?
     validationEngine.setSnomedExtension(validationEngineSettings.getSnomedCTCode()); //VES
-    validationEngine.setAssumeValidRestReferences(validationContext.isAssumeValidRestReferences()); //VES
+    validationEngine.setAssumeValidRestReferences(validationEngineSettings.isAssumeValidRestReferences()); //VES
     validationEngine.setShowMessagesFromReferences(validationContext.isShowMessagesFromReferences()); //VES
     validationEngine.setDoImplicitFHIRPathStringConversion(validationContext.isDoImplicitFHIRPathStringConversion()); //VES
     validationEngine.setHtmlInMarkdownCheck(validationContext.getHtmlInMarkdownCheck()); //VES
