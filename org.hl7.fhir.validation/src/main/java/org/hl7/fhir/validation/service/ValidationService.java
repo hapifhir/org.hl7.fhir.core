@@ -142,7 +142,7 @@ public class ValidationService {
   public ValidationResponse validateSources(ValidationRequest request) throws Exception {
 
     TimeTracker timeTracker = new TimeTracker();
-    String sessionId = initializeValidator(request.getValidationContext(), null, timeTracker, request.sessionId);
+    String sessionId = initializeValidator(request.getValidationContext(), timeTracker, request.sessionId);
     ValidationEngine validationEngine = sessionCache.fetchSessionValidatorEngine(sessionId);
 
     /* Cached validation engines already have expensive setup like loading definitions complete. But it wouldn't make
@@ -530,45 +530,110 @@ public class ValidationService {
     }
   }
 
+  @Deprecated
   public ValidationEngine initializeValidator(ValidationContext validationContext, String definitions, TimeTracker tt) throws Exception {
     return sessionCache.fetchSessionValidatorEngine(initializeValidator(validationContext, definitions, tt, null));
   }
+  /**
+   * Check if there is an entry in the session cache for the passed sessionId and return the key for that session if it
+   * exists. If no entry exists, one will be created from the passed validationContext with a new key, which will be
+   * returned.
+   *
+   * @param validationContext a ValidationContext to be used to generate a ValidationEngine
+   * @param timeTracker an existing TimeTracker to associate with a newly generated ValidationEngine
+   * @param sessionId a key used to look for existing ValidationEngine instances in the cache
+   * @return a sessionId associated with an appropriate ValidationEngine
+   *
+   * @deprecated This method is based on {@link ValidationContext}, which will eventually be replaced.
+   */
+  @Deprecated
+  public String initializeValidator(ValidationContext validationContext, TimeTracker timeTracker, String sessionId) throws Exception {
+    return initializeValidator(validationContext, null, timeTracker, sessionId);
+  }
 
-  public String initializeValidator(ValidationContext validationContext, String definitions, TimeTracker tt, String sessionId) throws Exception {
-    tt.milestone();
+  /**
+   * This method is maintained for backward compatibility, and allows the FHIR definitions string to be explicitly set.
+   * It is strongly advised to use the
+   * {@link ValidationService#initializeValidator(ValidationContext, TimeTracker, String)} method, which sets this
+   * automatically based on the FHIR version information included in the ValidationContext.
+   *
+   * @see ValidationService#initializeValidator(ValidationContext, TimeTracker, String)
+   *
+   * @param definitions explicit FHIR definitions to be used.
+   * @return a sessionId associated with an appropriate ValidationEngine
+   *
+   * @deprecated This method is based on {@link ValidationContext}, which will eventually be replaced.
+   */
+  @Deprecated
+  public String initializeValidator(ValidationContext validationContext, String definitions, TimeTracker timeTracker, String sessionId) throws Exception {
+    timeTracker.milestone();
 
-    if (!sessionCache.sessionExists(sessionId)) {
+    if (sessionCache.sessionExists(sessionId)) {
+      log.info("Cached session exists for session id " + sessionId + ", returning stored validator session id. Cache size = " + sessionCache.getSessionIds().size());
+      return sessionId;
+    }
       if (sessionId != null) {
         log.info("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
       }
       sessionCache.cleanUp();
-      if (validationContext.getSv() == null) {
-        String sv = determineVersion(validationContext);
-        validationContext.setSv(sv);
-      }
-      final String engineDefinitions = definitions != null ? definitions : VersionUtilities.packageForVersion(validationContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(validationContext.getSv());
 
-      ValidationEngine validationEngine = getValidationEngineFromValidationContext(validationContext, engineDefinitions, tt);
-      sessionId = sessionCache.cacheSession(validationEngine);
-      log.info("Cached new session. Cache size = " + sessionCache.getSessionIds().size());
-
-    } else {
-      log.info("Cached session exists for session id " + sessionId + ", returning stored validator session id. Cache size = " + sessionCache.getSessionIds().size());
-    }
-    return sessionId;
+      final ValidationEngine validationEngine = getValidationEngineFromValidationContext(validationContext, definitions, timeTracker);
+      final String newSessionId = sessionCache.cacheSession(validationEngine);
+      log.info("Cached new session with ID " + newSessionId + " . Cache size = " + sessionCache.getSessionIds().size());
+    return newSessionId;
   }
 
-  private ValidationEngine getValidationEngineFromValidationContext(ValidationContext validationContext, String definitions, TimeTracker tt) throws Exception {
+  /**
+   * Create and return a ValidationEngine based on the ValidationContext.
+   * <p/>
+   * If this service contains an existing ValidationEngine indexed by the value passed in validationContext.baseEngine,
+   * the existing engine will be copied and returned instead.
+   *
+   * @param validationContext a ValidationContext to be used to generate the ValidationEngine
+   * @param timeTracker an existing TimeTracker to associate with a newly generated ValidationEngine
+   * @return the generated ValidationEngine
+   *
+   * @deprecated This method is based on {@link ValidationContext}, which will eventually be replaced.
+   */
+  @Deprecated
+  public ValidationEngine getValidationEngineFromValidationContext(ValidationContext validationContext, TimeTracker timeTracker) throws Exception {
+    return getValidationEngineFromValidationContext(validationContext, null, timeTracker);
+  }
+
+  /**
+   * This method is maintained for backward compatibility, and allows the FHIR definitions string to be explicitly set.
+   * It is strongly advised to use the
+   * {@link ValidationService#getValidationEngineFromValidationContext(ValidationContext, TimeTracker)} method, which
+   * sets this automatically based on the FHIR versioninformation included in the ValidationContext.
+   *
+   * @param definitions explicit FHIR definitions to be used.
+   *
+   * @see ValidationService#getValidationEngineFromValidationContext(ValidationContext, TimeTracker)
+   *
+   * @deprecated This method is based on {@link ValidationContext}, which will eventually be replaced.
+   */
+  @Deprecated
+  public ValidationEngine getValidationEngineFromValidationContext(ValidationContext validationContext, String definitions, TimeTracker timeTracker) throws Exception {
+    if (validationContext.getSv() == null) {
+      final String sv = determineVersion(validationContext);
+      validationContext.setSv(sv);
+    }
+
     ValidationEngine validationEngine;
     if (validationContext.getBaseEngine() != null && hasBaseEngineForKey(validationContext.getBaseEngine())) {
       validationEngine = new ValidationEngine(getBaseEngine(validationContext.getBaseEngine()));
     } else {
-      if (definitions == null) {
-        throw new IllegalArgumentException("Cannot create a validator engine (definitions == null)");
-      }
-      validationEngine = buildValidationEngine(validationContext, definitions, tt);
+      final String engineDefinitions = definitions != null ? definitions : getEngineDefinitionsForVersion(validationContext.getSv());
+      validationEngine = buildValidationEngine(validationContext, engineDefinitions, timeTracker);
     }
     return validationEngine;
+  }
+
+  private static String getEngineDefinitionsForVersion(@Nonnull String fhirVersion) {
+    if ("dev".equals(fhirVersion)) {
+      return "hl7.fhir.r5.core#current";
+    }
+    return VersionUtilities.packageForVersion(fhirVersion) + "#" + VersionUtilities.getCurrentVersion(fhirVersion);
   }
 
   protected ValidationEngine.ValidationEngineBuilder getValidationEngineBuilder() {
@@ -689,15 +754,37 @@ public class ValidationService {
     log.info("  Package Summary: "+ validationEngine.getContext().loadedPackageSummary());
   }
 
+  /**
+   * Returns the appropriate FHIR version based on the ValidationContext.
+   * <p/>
+   *
+   * This is evaluated first on required versions for the mode specified in the evaluationContext and then the FHIR
+   * versions specified by the IGs in the context.
+   * <p/>
+   *
+   * 5.0.0 will be returned if no version information can be obtained from IGs.
+   *
+   * @param validationContext The validationContext
+   * @return An appropriate FHIR Version
+   * @throws IOException If IGs cannot be loaded as part of the evaluation.
+   */
+  public String getFhirVersionFromValidationContext(ValidationContext validationContext) throws IOException {
+    return determineVersion(validationContext);
+  }
+
+  /**
+   * @deprecated Use {@link ValidationService#getFhirVersionFromValidationContext } in future versions for the same functionality.
+   */
+  @Deprecated(forRemoval = true)
   public String determineVersion(ValidationContext validationContext) throws IOException {
-    if (validationContext.getMode() != EngineMode.VALIDATION && validationContext.getMode() != EngineMode.INSTALL) {
+    if (validationContext.getMode() != EngineMode.INSTALL) {
       return "5.0";
     }
     log.info("Scanning for versions (no -version parameter):");
     VersionSourceInformation versions = scanForVersions(validationContext);
-    for (String s : versions.getReport()) {
-      if (!s.equals("(nothing found)")) {
-        log.info("  " + s);
+    for (String reportEntry : versions.getReport()) {
+      if (!reportEntry.equals("(nothing found)")) {
+        log.info("  " + reportEntry);
       }
     }
     if (versions.isEmpty()) {
