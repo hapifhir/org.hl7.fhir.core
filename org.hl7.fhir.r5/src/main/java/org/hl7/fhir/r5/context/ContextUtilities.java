@@ -30,12 +30,13 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap;
 
 import org.hl7.fhir.r5.utils.UserDataNames;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerFactory;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.OIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -287,7 +288,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       pu.setLocalFileNames(localFileNames);
       pu.setMasterSourceFileNames(masterSourceNames);
       if (xverManager == null) {
-        xverManager = new XVerExtensionManager(context);
+        xverManager = XVerExtensionManagerFactory.createExtensionManager(context);
       }
       pu.setXver(xverManager);
       if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {

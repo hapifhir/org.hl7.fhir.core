@@ -20,7 +20,7 @@ v: {
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://spms.min-saude.pt/valueset-list' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "unknown-systems" : "http://spms.min-saude.pt/valueset-list",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -31,7 +31,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r3"
+      "valueUrl" : "http://local.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "not-found",

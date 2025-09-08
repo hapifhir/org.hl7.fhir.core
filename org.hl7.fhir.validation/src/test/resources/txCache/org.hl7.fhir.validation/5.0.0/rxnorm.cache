@@ -19,7 +19,7 @@ v: {
   "code" : "1049640",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -47,7 +47,7 @@ v: {
   "code" : "428759",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -75,7 +75,7 @@ v: {
   "code" : "428759",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

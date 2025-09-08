@@ -166,6 +166,9 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
     public CachedCanonicalResource(T1 resource, PackageInformation packageInfo) {
       super();
+      if (resource == null) {
+        throw new NullPointerException("Canonical resource cannot be null");
+      }
       this.resource = resource;
       this.packageInfo = packageInfo;
     }
