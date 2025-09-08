@@ -1558,6 +1558,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     boolean ok = true;
     String p = profile.primitiveValue();
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, p);
+    BooleanHolder errored = new BooleanHolder();
     if (code.equals("Reference")) {
       if (warning(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), sd != null, I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p)) {
         ok = rule(errors, "2025-07-15", IssueType.BUSINESSRULE, stack.getLiteralPath(), !sd.hasUserData(UserDataNames.RESOURCE_INTERNAL_USE_ONLY), I18nConstants.RESOURCE_INTERNAL_USE_ONLY, "Structure", sd.getSourcePackage() != null ? sd.getSourcePackage().getVID() : "??") && ok;
@@ -1570,7 +1571,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
     } else {
       if (sd == null ) {
-        sd = getXverExt(errors, stack.getLiteralPath(), profile, p);
+        sd = getXverExt(errors, stack.getLiteralPath(), profile, p, errored);
       }
       if (warning(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), sd != null, I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p)) {
         ok = rule(errors, "2025-07-15", IssueType.BUSINESSRULE, stack.getLiteralPath(), !sd.hasUserData(UserDataNames.RESOURCE_INTERNAL_USE_ONLY), I18nConstants.RESOURCE_INTERNAL_USE_ONLY, "Structure", sd.getSourcePackage() != null ? sd.getSourcePackage().getVID() : "??") && ok;
@@ -1624,8 +1625,9 @@ public class StructureDefinitionValidator extends BaseValidator {
     boolean ok = true;
     String p = profile.primitiveValue();
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, p);
+    BooleanHolder errored = new BooleanHolder();
     if (sd == null ) {
-      sd = getXverExt(errors, stack.getLiteralPath(), profile, p);
+      sd = getXverExt(errors, stack.getLiteralPath(), profile, p, errored);
     }
     if (warning(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), sd != null, I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p)) {
       StructureDefinition t = determineBaseType(sd);
