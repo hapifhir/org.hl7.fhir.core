@@ -1575,8 +1575,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               c.addPiece(gen.new Piece(sd.getWebPath(), sd.getName(), null)); 
             } 
           } 
-        } 
-        if (logicalModel) { 
+        }
+        if (logicalModel) {
           List<SourcedElementDefinition> ancestors = new ArrayList<>(); 
           getAncestorElements(new ArrayList<>(), profile, ancestors); 
           if (ancestors.size() > 0) { 
@@ -1665,8 +1665,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           piece.addHtml(new XhtmlNode(NodeType.Text).setContent(ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_IMPLIED_PREFIX))); 
           c.getPieces().add(piece);           
           c.getPieces().add(gen.new Piece(null, " "+ (context.formatPhrase(RenderingContext.STRUC_DEF_PREFIXED)), null));           
-        } 
- 
+        }
+        if (root && ProfileUtilities.isModifierExtension(profile)) {
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+          c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_MODIFIER_EXT), null).addStyle("font-weight:bold"));
+
+        }
+
         if (definition.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED)) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
           String es = definition.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED);
