@@ -516,6 +516,8 @@ public class IgLoader implements IValidationEngineLoader, XVerExtensionManagerNe
     }
     if (version == null) {
       version = getPackageCacheManager().getLatestVersion(id, false);
+    } else if (VersionUtilities.isSemVerWithWildcards(version)) {
+      version = getPackageCacheManager().getLatestVersion(id, version);
     }
     if (version == null) {
       pi = getPackageCacheManager().loadPackageFromCacheOnly(id);
