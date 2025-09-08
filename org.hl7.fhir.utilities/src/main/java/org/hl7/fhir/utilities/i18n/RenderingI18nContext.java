@@ -349,7 +349,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String OP_DEF_OUTPAR = "OP_DEF_OUTPAR";
   public static final String OP_DEF_SCO = "OP_DEF_SCO";
   public static final String OP_DEF_URL = "OP_DEF_URL";
-  public static final String OP_DEF_URLS = "OP_DEF_URLS";
   public static final String OP_DEF_USE = "OP_DEF_USE";
   public static final String GENERAL_DETAILS = "GENERAL_DETAILS";
   public static final String OP_OUT_DIAG = "OP_OUT_DIAG";
@@ -703,6 +702,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String STRUC_DEF_MOD = "STRUC_DEF_MOD";
   public static final String STRUC_DEF_MODIF = "STRUC_DEF_MODIF";
   public static final String STRUC_DEF_MODIFIER = "STRUC_DEF_MODIFIER";
+  public static final String STRUC_DEF_MODIFIER_EXT = "STRUC_DEF_MODIFIER_EXT";
   public static final String STRUC_DEF_MUST_SUPPORT = "STRUC_DEF_MUST_SUPPORT";
   public static final String STRUC_DEF_MUST_SUPPORT_TYPES = "STRUC_DEF_MUST_SUPPORT_TYPES";
   public static final String STRUC_DEF_NAMESPACE = "STRUC_DEF_NAMESPACE"; 
@@ -987,6 +987,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String GENERAL_TYPE_PROFILE = "GENERAL_TYPE_PROFILE";
   public static final String GENERAL_TYPE_TARGET_PROFILE = "GENERAL_TYPE_TARGET_PROFILE";
   public static final String SDR_EXTENSION_SUMMARY = "SDR_EXTENSION_SUMMARY";
+  public static final String SDR_EXTENSION_SUMMARY_MODIFIER = "SDR_EXTENSION_SUMMARY_MODIFIER";
   public static final String STATUS_MSG_AUTOBUILD = "STATUS_MSG_AUTOBUILD";
   public static final String STATUS_MSG_PUBLICATION_HOLDER = "STATUS_MSG_PUBLICATION_HOLDER";
   public static final String STATUS_MSG_LOCAL_BUILD = "STATUS_MSG_LOCAL_BUILD";
@@ -1065,6 +1066,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String SDR_EXT_DEPR = "SDR_EXT_DEPR";
   public static final String SDR_EXT_ANY = "SDR_EXT_ANY";
   public static final String SDR_EXT_ELEM = "SDR_EXT_ELEM";
+  public static final String SDR_EXT_MOD = "SDR_EXT_MOD";
   public static final String SDR_EXT_ELEM_ID = "SDR_EXT_ELEM_ID";
   public static final String SDR_EXT_EXT = "SDR_EXT_EXT";
   public static final String SDR_EXT_PATH = "SDR_EXT_PATH";
