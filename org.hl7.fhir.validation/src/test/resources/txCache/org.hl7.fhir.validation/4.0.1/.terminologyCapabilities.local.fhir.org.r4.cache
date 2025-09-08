@@ -1,12 +1,12 @@
 {
   "resourceType" : "TerminologyCapabilities",
   "id" : "FhirServer",
-  "url" : "http://tx-dev.fhir.org/r4/TerminologyCapabilities/tx",
+  "url" : "http://localhost/r4/TerminologyCapabilities/tx",
   "version" : "2.0.0",
   "name" : "FHIRReferenceServerTerminologyCapabilities",
   "title" : "FHIR Reference Server Terminology Capability Statement",
   "status" : "active",
-  "date" : "2025-08-26T21:03:30.925Z",
+  "date" : "2025-09-08T06:01:47.471Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -268,19 +268,19 @@
     }]
   },
   {
+    "uri" : "http://hl7.org/fhir/codesystem-content-mode",
+    "version" : [{
+      "code" : "4.0.1"
+    }]
+  },
+  {
+    "uri" : "http://hl7.org/fhir/codesystem-hierarchy-meaning",
+    "version" : [{
+      "code" : "4.0.1"
+    }]
+  },
+  {
     "uri" : "http://hl7.org/fhir/CodeSystem/example",
-    "version" : [{
-      "code" : "4.0.1"
-    }]
-  },
-  {
-    "uri" : "http://hl7.org/fhir/CodeSystem/medicationrequest-intent",
-    "version" : [{
-      "code" : "4.0.1"
-    }]
-  },
-  {
-    "uri" : "http://hl7.org/fhir/CodeSystem/medicationrequest-status",
     "version" : [{
       "code" : "4.0.1"
     }]
@@ -293,6 +293,18 @@
   },
   {
     "uri" : "http://hl7.org/fhir/CodeSystem/medication-status",
+    "version" : [{
+      "code" : "4.0.1"
+    }]
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/medicationrequest-intent",
+    "version" : [{
+      "code" : "4.0.1"
+    }]
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/medicationrequest-status",
     "version" : [{
       "code" : "4.0.1"
     }]
@@ -311,18 +323,6 @@
   },
   {
     "uri" : "http://hl7.org/fhir/CodeSystem/task-code",
-    "version" : [{
-      "code" : "4.0.1"
-    }]
-  },
-  {
-    "uri" : "http://hl7.org/fhir/codesystem-content-mode",
-    "version" : [{
-      "code" : "4.0.1"
-    }]
-  },
-  {
-    "uri" : "http://hl7.org/fhir/codesystem-hierarchy-meaning",
     "version" : [{
       "code" : "4.0.1"
     }]
@@ -352,12 +352,6 @@
     }]
   },
   {
-    "uri" : "http://hl7.org/fhir/conceptmap-unmapped-mode",
-    "version" : [{
-      "code" : "4.0.1"
-    }]
-  },
-  {
     "uri" : "http://hl7.org/fhir/concept-properties",
     "version" : [{
       "code" : "4.0.1"
@@ -371,6 +365,12 @@
   },
   {
     "uri" : "http://hl7.org/fhir/concept-subsumption-outcome",
+    "version" : [{
+      "code" : "4.0.1"
+    }]
+  },
+  {
+    "uri" : "http://hl7.org/fhir/conceptmap-unmapped-mode",
     "version" : [{
       "code" : "4.0.1"
     }]
@@ -394,12 +394,6 @@
     }]
   },
   {
-    "uri" : "http://hl7.org/fhir/consentperformer",
-    "version" : [{
-      "code" : "4.0.1"
-    }]
-  },
-  {
     "uri" : "http://hl7.org/fhir/consent-provision-type",
     "version" : [{
       "code" : "4.0.1"
@@ -407,6 +401,12 @@
   },
   {
     "uri" : "http://hl7.org/fhir/consent-state-codes",
+    "version" : [{
+      "code" : "4.0.1"
+    }]
+  },
+  {
+    "uri" : "http://hl7.org/fhir/consentperformer",
     "version" : [{
       "code" : "4.0.1"
     }]
@@ -682,12 +682,6 @@
     }]
   },
   {
-    "uri" : "http://hl7.org/fhir/examplescenario-actor-type",
-    "version" : [{
-      "code" : "4.0.1"
-    }]
-  },
-  {
     "uri" : "http://hl7.org/fhir/ex-claimitemtype",
     "version" : [{
       "code" : "4.0.1"
@@ -718,6 +712,30 @@
     }]
   },
   {
+    "uri" : "http://hl7.org/fhir/ex-servicemodifier",
+    "version" : [{
+      "code" : "4.0.1"
+    }]
+  },
+  {
+    "uri" : "http://hl7.org/fhir/ex-serviceproduct",
+    "version" : [{
+      "code" : "4.0.1"
+    }]
+  },
+  {
+    "uri" : "http://hl7.org/fhir/ex-udi",
+    "version" : [{
+      "code" : "4.0.1"
+    }]
+  },
+  {
+    "uri" : "http://hl7.org/fhir/examplescenario-actor-type",
+    "version" : [{
+      "code" : "4.0.1"
+    }]
+  },
+  {
     "uri" : "http://hl7.org/fhir/explanationofbenefit-status",
     "version" : [{
       "code" : "4.0.1"
@@ -736,18 +754,6 @@
     }]
   },
   {
-    "uri" : "http://hl7.org/fhir/ex-servicemodifier",
-    "version" : [{
-      "code" : "4.0.1"
-    }]
-  },
-  {
-    "uri" : "http://hl7.org/fhir/ex-serviceproduct",
-    "version" : [{
-      "code" : "4.0.1"
-    }]
-  },
-  {
     "uri" : "http://hl7.org/fhir/extension-context-type",
     "version" : [{
       "code" : "4.0.1"
@@ -755,12 +761,6 @@
   },
   {
     "uri" : "http://hl7.org/fhir/extra-activity-type",
-    "version" : [{
-      "code" : "4.0.1"
-    }]
-  },
-  {
-    "uri" : "http://hl7.org/fhir/ex-udi",
     "version" : [{
       "code" : "4.0.1"
     }]
@@ -814,13 +814,13 @@
     }]
   },
   {
-    "uri" : "http://hl7.org/fhir/goal-status",
+    "uri" : "http://hl7.org/fhir/goal-status-reason",
     "version" : [{
       "code" : "4.0.1"
     }]
   },
   {
-    "uri" : "http://hl7.org/fhir/goal-status-reason",
+    "uri" : "http://hl7.org/fhir/goal-status",
     "version" : [{
       "code" : "4.0.1"
     }]
@@ -952,13 +952,13 @@
     }]
   },
   {
-    "uri" : "http://hl7.org/fhir/linkage-type",
+    "uri" : "http://hl7.org/fhir/link-type",
     "version" : [{
       "code" : "4.0.1"
     }]
   },
   {
-    "uri" : "http://hl7.org/fhir/link-type",
+    "uri" : "http://hl7.org/fhir/linkage-type",
     "version" : [{
       "code" : "4.0.1"
     }]
@@ -1048,13 +1048,13 @@
     }]
   },
   {
-    "uri" : "http://hl7.org/fhir/messageheader-response-request",
+    "uri" : "http://hl7.org/fhir/message-significance-category",
     "version" : [{
       "code" : "4.0.1"
     }]
   },
   {
-    "uri" : "http://hl7.org/fhir/message-significance-category",
+    "uri" : "http://hl7.org/fhir/messageheader-response-request",
     "version" : [{
       "code" : "4.0.1"
     }]
@@ -1306,13 +1306,13 @@
     }]
   },
   {
-    "uri" : "http://hl7.org/fhir/relationship",
+    "uri" : "http://hl7.org/fhir/relation-type",
     "version" : [{
       "code" : "4.0.1"
     }]
   },
   {
-    "uri" : "http://hl7.org/fhir/relation-type",
+    "uri" : "http://hl7.org/fhir/relationship",
     "version" : [{
       "code" : "4.0.1"
     }]
@@ -1498,15 +1498,15 @@
     }]
   },
   {
-    "uri" : "http://hl7.org/fhir/sid/icd-10",
-    "version" : [{
-      "code" : "2019-covid-expanded"
-    }]
-  },
-  {
     "uri" : "http://hl7.org/fhir/sid/icd-10-cm",
     "version" : [{
       "code" : "2024"
+    }]
+  },
+  {
+    "uri" : "http://hl7.org/fhir/sid/icd-10",
+    "version" : [{
+      "code" : "2019-covid-expanded"
     }]
   },
   {
@@ -1821,6 +1821,18 @@
   {
     "uri" : "http://snomed.info/sct",
     "version" : [{
+      "code" : "http://snomed.info/sct/11000274103/version/20250515"
+    }]
+  },
+  {
+    "uri" : "http://snomed.info/sct",
+    "version" : [{
+      "code" : "http://snomed.info/sct/11000279109/version/20250127"
+    }]
+  },
+  {
+    "uri" : "http://snomed.info/sct",
+    "version" : [{
       "code" : "http://snomed.info/sct/2011000195101/version/20230607"
     }]
   },
@@ -1846,12 +1858,6 @@
     "uri" : "http://snomed.info/sct",
     "version" : [{
       "code" : "http://snomed.info/sct/45991000052106/version/20231130"
-    }]
-  },
-  {
-    "uri" : "http://snomed.info/sct",
-    "version" : [{
-      "code" : "http://snomed.info/sct/554471000005108/version/20250331"
     }]
   },
   {
@@ -1888,6 +1894,18 @@
     "uri" : "http://snomed.info/sct",
     "version" : [{
       "code" : "http://snomed.info/sct/900000000000207008/version/20250201"
+    }]
+  },
+  {
+    "uri" : "http://snomed.info/sct",
+    "version" : [{
+      "code" : "http://snomed.info/sct/900000000000207008/version/20250801"
+    }]
+  },
+  {
+    "uri" : "http://snomed.info/sct",
+    "version" : [{
+      "code" : "http://snomed.info/xsct/900000000000207008/version/20250814"
     }]
   },
   {
@@ -1939,18 +1957,6 @@
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/adjudication",
-    "version" : [{
-      "code" : "1.0.1"
-    }]
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/adjudication",
-    "version" : [{
-      "code" : "4.0.1"
-    }]
-  },
-  {
     "uri" : "http://terminology.hl7.org/CodeSystem/adjudication-error",
     "version" : [{
       "code" : "1.0.1"
@@ -1970,6 +1976,18 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/adjudication-reason",
+    "version" : [{
+      "code" : "4.0.1"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/adjudication",
+    "version" : [{
+      "code" : "1.0.1"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/adjudication",
     "version" : [{
       "code" : "4.0.1"
     }]
@@ -2413,18 +2431,6 @@
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/claimcareteamrole",
-    "version" : [{
-      "code" : "1.0.1"
-    }]
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/claimcareteamrole",
-    "version" : [{
-      "code" : "4.0.1"
-    }]
-  },
-  {
     "uri" : "http://terminology.hl7.org/CodeSystem/claim-exception",
     "version" : [{
       "code" : "1.0.1"
@@ -2437,25 +2443,37 @@
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/claiminformationcategory",
+    "uri" : "http://terminology.hl7.org/CodeSystem/claim-type",
     "version" : [{
       "code" : "1.0.1"
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/claiminformationcategory",
+    "uri" : "http://terminology.hl7.org/CodeSystem/claim-type",
     "version" : [{
       "code" : "4.0.1"
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/claim-type",
+    "uri" : "http://terminology.hl7.org/CodeSystem/claimcareteamrole",
     "version" : [{
       "code" : "1.0.1"
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/claim-type",
+    "uri" : "http://terminology.hl7.org/CodeSystem/claimcareteamrole",
+    "version" : [{
+      "code" : "4.0.1"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/claiminformationcategory",
+    "version" : [{
+      "code" : "1.0.1"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/claiminformationcategory",
     "version" : [{
       "code" : "4.0.1"
     }]
@@ -2689,30 +2707,6 @@
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/contractaction",
-    "version" : [{
-      "code" : "1.0.1"
-    }]
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/contractaction",
-    "version" : [{
-      "code" : "4.0.1"
-    }]
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/contractactorrole",
-    "version" : [{
-      "code" : "1.0.1"
-    }]
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/contractactorrole",
-    "version" : [{
-      "code" : "4.0.1"
-    }]
-  },
-  {
     "uri" : "http://terminology.hl7.org/CodeSystem/contract-content-derivative",
     "version" : [{
       "code" : "1.0.1"
@@ -2737,6 +2731,42 @@
     }]
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contract-type",
+    "version" : [{
+      "code" : "1.0.1"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contract-type",
+    "version" : [{
+      "code" : "4.0.1"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contractaction",
+    "version" : [{
+      "code" : "1.0.1"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contractaction",
+    "version" : [{
+      "code" : "4.0.1"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contractactorrole",
+    "version" : [{
+      "code" : "1.0.1"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contractactorrole",
+    "version" : [{
+      "code" : "4.0.1"
+    }]
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/contractsignertypecodes",
     "version" : [{
       "code" : "1.0.1"
@@ -2780,18 +2810,6 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/contracttermtypecodes",
-    "version" : [{
-      "code" : "4.0.1"
-    }]
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/contract-type",
-    "version" : [{
-      "code" : "1.0.1"
-    }]
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/contract-type",
     "version" : [{
       "code" : "4.0.1"
     }]
@@ -2857,25 +2875,25 @@
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/coverageeligibilityresponse-ex-auth-support",
+    "uri" : "http://terminology.hl7.org/CodeSystem/coverage-selfpay",
     "version" : [{
       "code" : "1.0.1"
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/coverageeligibilityresponse-ex-auth-support",
+    "uri" : "http://terminology.hl7.org/CodeSystem/coverage-selfpay",
     "version" : [{
       "code" : "4.0.1"
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/coverage-selfpay",
+    "uri" : "http://terminology.hl7.org/CodeSystem/coverageeligibilityresponse-ex-auth-support",
     "version" : [{
       "code" : "1.0.1"
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/coverage-selfpay",
+    "uri" : "http://terminology.hl7.org/CodeSystem/coverageeligibilityresponse-ex-auth-support",
     "version" : [{
       "code" : "4.0.1"
     }]
@@ -2935,18 +2953,6 @@
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-activationState",
-    "version" : [{
-      "code" : "1.0.0"
-    }]
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-priority",
-    "version" : [{
-      "code" : "1.0.0"
-    }]
-  },
-  {
     "uri" : "http://terminology.hl7.org/CodeSystem/device-status-reason",
     "version" : [{
       "code" : "1.0.0"
@@ -2956,6 +2962,18 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/device-status-reason",
     "version" : [{
       "code" : "4.0.1"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-activationState",
+    "version" : [{
+      "code" : "1.0.0"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-priority",
+    "version" : [{
+      "code" : "1.0.0"
     }]
   },
   {
@@ -3205,30 +3223,6 @@
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/expansion-parameter-source",
-    "version" : [{
-      "code" : "1.0.0"
-    }]
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/expansion-parameter-source",
-    "version" : [{
-      "code" : "4.0.1"
-    }]
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/expansion-processing-rule",
-    "version" : [{
-      "code" : "1.0.0"
-    }]
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/expansion-processing-rule",
-    "version" : [{
-      "code" : "4.0.1"
-    }]
-  },
-  {
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-payee-resource-type",
     "version" : [{
       "code" : "1.0.0"
@@ -3337,18 +3331,6 @@
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/extra-security-role-type",
-    "version" : [{
-      "code" : "1.0.1"
-    }]
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/extra-security-role-type",
-    "version" : [{
-      "code" : "4.0.1"
-    }]
-  },
-  {
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-USCLS",
     "version" : [{
       "code" : "1.0.0"
@@ -3368,6 +3350,42 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-visionprescriptionproduct",
+    "version" : [{
+      "code" : "4.0.1"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/expansion-parameter-source",
+    "version" : [{
+      "code" : "1.0.0"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/expansion-parameter-source",
+    "version" : [{
+      "code" : "4.0.1"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/expansion-processing-rule",
+    "version" : [{
+      "code" : "1.0.0"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/expansion-processing-rule",
+    "version" : [{
+      "code" : "4.0.1"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/extra-security-role-type",
+    "version" : [{
+      "code" : "1.0.1"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/extra-security-role-type",
     "version" : [{
       "code" : "4.0.1"
     }]
@@ -3553,12 +3571,6 @@
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra",
-    "version" : [{
-      "code" : "3.0.0"
-    }]
-  },
-  {
     "uri" : "http://terminology.hl7.org/CodeSystem/hl7-work-group",
     "version" : [{
       "code" : "4.0.1"
@@ -3568,6 +3580,12 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/hl7-work-group",
     "version" : [{
       "code" : "8.0.0"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra",
+    "version" : [{
+      "code" : "3.0.0"
     }]
   },
   {
@@ -3586,25 +3604,25 @@
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status",
+    "uri" : "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status-reason",
     "version" : [{
       "code" : "1.0.1"
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status",
+    "uri" : "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status-reason",
     "version" : [{
       "code" : "4.0.1"
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status-reason",
+    "uri" : "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status",
     "version" : [{
       "code" : "1.0.1"
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status-reason",
+    "uri" : "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status",
     "version" : [{
       "code" : "4.0.1"
     }]
@@ -3688,12 +3706,6 @@
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/insuranceplan-plan-type",
-    "version" : [{
-      "code" : "1.0.0"
-    }]
-  },
-  {
     "uri" : "http://terminology.hl7.org/CodeSystem/insurance-plan-type",
     "version" : [{
       "code" : "2.0.1"
@@ -3707,6 +3719,12 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/insurance-product-type",
+    "version" : [{
+      "code" : "1.0.0"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/insuranceplan-plan-type",
     "version" : [{
       "code" : "1.0.0"
     }]
@@ -3919,6 +3937,18 @@
     }]
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/medication-statement-category",
+    "version" : [{
+      "code" : "4.0.1"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/medication-usage-admin-location",
+    "version" : [{
+      "code" : "1.0.0"
+    }]
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/medicationdispense-performer-function",
     "version" : [{
       "code" : "1.0.1"
@@ -4012,18 +4042,6 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/medicationrequest-status-reason",
     "version" : [{
       "code" : "4.0.1"
-    }]
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/medication-statement-category",
-    "version" : [{
-      "code" : "4.0.1"
-    }]
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/medication-usage-admin-location",
-    "version" : [{
-      "code" : "1.0.0"
     }]
   },
   {
@@ -4153,13 +4171,13 @@
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/organization-affiliation-role",
+    "uri" : "http://terminology.hl7.org/CodeSystem/organization-affiliation-role-for-hie",
     "version" : [{
       "code" : "1.0.0"
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/organization-affiliation-role-for-hie",
+    "uri" : "http://terminology.hl7.org/CodeSystem/organization-affiliation-role",
     "version" : [{
       "code" : "1.0.0"
     }]
@@ -4231,25 +4249,25 @@
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/paymentstatus",
+    "uri" : "http://terminology.hl7.org/CodeSystem/payment-type",
     "version" : [{
       "code" : "1.0.1"
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/paymentstatus",
+    "uri" : "http://terminology.hl7.org/CodeSystem/payment-type",
     "version" : [{
       "code" : "4.0.1"
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/payment-type",
+    "uri" : "http://terminology.hl7.org/CodeSystem/paymentstatus",
     "version" : [{
       "code" : "1.0.1"
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/payment-type",
+    "uri" : "http://terminology.hl7.org/CodeSystem/paymentstatus",
     "version" : [{
       "code" : "4.0.1"
     }]
@@ -4501,13 +4519,13 @@
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/research-subject-state",
+    "uri" : "http://terminology.hl7.org/CodeSystem/research-subject-state-type",
     "version" : [{
       "code" : "1.0.1"
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/research-subject-state-type",
+    "uri" : "http://terminology.hl7.org/CodeSystem/research-subject-state",
     "version" : [{
       "code" : "1.0.1"
     }]
@@ -11911,15 +11929,15 @@
     }]
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/variable-role",
-    "version" : [{
-      "code" : "2.0.0"
-    }]
-  },
-  {
     "uri" : "http://terminology.hl7.org/CodeSystem/variable-role-subtype",
     "version" : [{
       "code" : "1.0.0"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/variable-role",
+    "version" : [{
+      "code" : "2.0.0"
     }]
   },
   {
@@ -11988,7 +12006,7 @@
   {
     "uri" : "http://www.ama-assn.org/go/cpt",
     "version" : [{
-      "code" : "2023"
+      "code" : "2024"
     }]
   },
   {
@@ -12073,6 +12091,12 @@
     }]
   },
   {
+    "uri" : "urn:iso-astm:E1762-95:2013",
+    "version" : [{
+      "code" : "4.0.1"
+    }]
+  },
+  {
     "uri" : "urn:iso:std:iso:11073:10101",
     "version" : [{
       "code" : "2024-12-05"
@@ -12098,12 +12122,6 @@
   },
   {
     "uri" : "urn:iso:std:iso:4217"
-  },
-  {
-    "uri" : "urn:iso-astm:E1762-95:2013",
-    "version" : [{
-      "code" : "4.0.1"
-    }]
   },
   {
     "uri" : "urn:oid:1.2.36.1.2001.1001.101.104.16592",
