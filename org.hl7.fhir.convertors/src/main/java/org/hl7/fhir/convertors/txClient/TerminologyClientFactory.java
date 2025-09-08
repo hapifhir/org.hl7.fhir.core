@@ -30,7 +30,7 @@ public class TerminologyClientFactory implements ITerminologyClientFactory {
       return new TerminologyClientR5(id, checkEndsWith("/r4", url), userAgent).setLogger(logger);
     v = VersionUtilities.getMajMin(v);
     if (VersionUtilities.isR2Ver(v)) {
-      throw new Error("R2 is no longer supported");      
+      return new TerminologyClientR3(id, checkEndsWith("/r3", url), userAgent).setLogger(logger); // r2 is the least worst match
     }
     if (VersionUtilities.isR2BVer(v)) {
       return new TerminologyClientR3(id, checkEndsWith("/r3", url), userAgent).setLogger(logger); // r3 is the least worst match      
