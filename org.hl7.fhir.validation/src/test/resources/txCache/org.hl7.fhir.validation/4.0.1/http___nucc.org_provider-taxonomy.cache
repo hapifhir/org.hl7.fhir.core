@@ -22,7 +22,7 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X. Valid display is 'General Practice Physician' (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -33,7 +33,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -70,7 +70,7 @@ v: {
   "code" : "208D00000X",
   "system" : "http://nucc.org/provider-taxonomy",
   "version" : "22.1",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

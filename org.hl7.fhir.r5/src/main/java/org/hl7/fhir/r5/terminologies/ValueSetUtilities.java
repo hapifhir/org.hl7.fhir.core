@@ -81,7 +81,6 @@ import org.hl7.fhir.utilities.VersionUtilities;
 @Slf4j
 public class ValueSetUtilities extends TerminologyUtilities {
 
-
   public static class ValueSetSorter implements Comparator<ValueSet> {
 
     @Override
@@ -299,6 +298,13 @@ public class ValueSetUtilities extends TerminologyUtilities {
     return false;
   }
 
+  public static org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent addCodeProperty(ValueSet vs, ValueSetExpansionContainsComponent ctxt, String url, String code, String value) {
+    if (value != null) {
+      return addProperty(vs, ctxt, url, code, new CodeType(value));
+    } else {
+      return null;
+    }
+  }
   public static org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent addProperty(ValueSet vs, ValueSetExpansionContainsComponent ctxt, String url, String code, String value) {
     if (value != null) {
       return addProperty(vs, ctxt, url, code, new StringType(value));
@@ -479,13 +485,44 @@ public class ValueSetUtilities extends TerminologyUtilities {
   }
 
   public static void setDeprecated(List<ValueSet.ValueSetExpansionPropertyComponent> vsProp, ValueSet.ValueSetExpansionContainsComponent n) {
-    n.addProperty().setCode("status").setValue(new CodeType("deprecated"));
-    for (ValueSet.ValueSetExpansionPropertyComponent o : vsProp) {
-      if ("status".equals(o.getCode())) {
-        return;
+    if (!"deprecated".equals(ValueSetUtilities.getStatus(vsProp, n))) {
+      n.addProperty().setCode("status").setValue(new CodeType("deprecated"));
+      for (ValueSet.ValueSetExpansionPropertyComponent o : vsProp) {
+        if ("status".equals(o.getCode())) {
+          return;
+        }
+      }
+      vsProp.add(new ValueSet.ValueSetExpansionPropertyComponent().setCode("status").setUri("http://hl7.org/fhir/concept-properties#status"));
+    }
+  }
+
+  private static String getStatus(List<ValueSetExpansionPropertyComponent> vsProp, ValueSetExpansionContainsComponent n) {
+    return ValueSetUtilities.getProperty(vsProp, n, "status", "http://hl7.org/fhir/concept-properties#status");
+  }
+
+
+  public static String getProperty(List<ValueSetExpansionPropertyComponent> vsProp, ValueSetExpansionContainsComponent focus, String code, String url) {
+    ValueSet.ValueSetExpansionPropertyComponent pc = null;
+    for (ValueSet.ValueSetExpansionPropertyComponent t : vsProp) {
+      if (t.hasUri() && t.getUri().equals(url)) {
+        pc = t;
       }
     }
-    vsProp.add(new ValueSet.ValueSetExpansionPropertyComponent().setCode("status").setUri("http://hl7.org/fhir/concept-properties#status"));
+    if (pc == null) {
+      for (ValueSet.ValueSetExpansionPropertyComponent t : vsProp) {
+        if (t.hasCode() && t.getCode().equals(code)) {
+          pc = t;
+        }
+      }
+    }
+    if (pc != null) {
+      for (ValueSet.ConceptPropertyComponent t : focus.getProperty()) {
+        if (t.hasCode() && t.getCode().equals(pc.getCode())) {
+          return t.getValue().primitiveValue();
+        }
+      }
+    }
+    return null;
   }
 
 

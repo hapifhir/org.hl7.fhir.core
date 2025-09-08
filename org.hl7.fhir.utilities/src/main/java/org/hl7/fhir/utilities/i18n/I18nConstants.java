@@ -833,9 +833,9 @@ public class I18nConstants {
   public static final String SM_TARGET_TYPE_UNKNOWN = "SM_TARGET_TYPE_UNKNOWN";
   public static final String SNAPSHOT_EXISTING_PROBLEM = "SNAPSHOT_EXISTING_PROBLEM";
   public static final String SNAPSHOT_IS_EMPTY = "SNAPSHOT_IS_EMPTY";
-  public static final String STATUS_CODE_HINT = "STATUS_CODE_HINT";
-  public static final String STATUS_CODE_HINT_CODE = "STATUS_CODE_HINT_CODE";
-  public static final String STATUS_CODE_WARNING = "STATUS_CODE_WARNING";
+//  public static final String STATUS_CODE_HINT = "STATUS_CODE_HINT";
+//  public static final String STATUS_CODE_HINT_CODE = "STATUS_CODE_HINT_CODE";
+//  public static final String STATUS_CODE_WARNING = "STATUS_CODE_WARNING";
   public static final String STATUS_CODE_WARNING_CODE = "STATUS_CODE_WARNING_CODE";
   public static final String STRUCTUREDEFINITION__AT__ILLEGAL_CONSTRAINED_TYPE__FROM__IN_ = "StructureDefinition__at__illegal_constrained_type__from__in_";
   public static final String TERMINOLOGY_PASSTHROUGH_TX_MESSAGE = "Terminology_PassThrough_TX_Message";
@@ -1439,4 +1439,9 @@ public class I18nConstants {
   public static final String NO_CODE_PROVIDED = "NO_CODE_PROVIDED";
   public static final String NO_CODE_PROVIDED_VERSION = "NO_CODE_PROVIDED_VERSION";
   public static final String RESOURCE_INTERNAL_USE_ONLY = "RESOURCE_INTERNAL_USE_ONLY";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_SID_INCORRECT = "TYPE_SPECIFIC_CHECKS_DT_SID_INCORRECT";
+  public static final String INACTIVE_DISPLAY_FOUND = "INACTIVE_DISPLAY_FOUND";
+  public static final String INACTIVE_CONCEPT_FOUND = "INACTIVE_CONCEPT_FOUND";
+  public static final String CONCEPT_DEPRECATED_IN_VALUESET = "CONCEPT_DEPRECATED_IN_VALUESET";
+  public static final String EXTENSION_EXT_VERSION_NOTALLOWED = "EXTENSION_EXT_VERSION_NOTALLOWED";
 }
