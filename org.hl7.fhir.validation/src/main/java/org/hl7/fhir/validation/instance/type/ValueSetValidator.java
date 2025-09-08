@@ -421,7 +421,11 @@ public class ValueSetValidator extends BaseValidator {
             if (csl.size() == 1) {
               ok = rule(errors, "2025-01-09", IssueType.INVALID, stack, csl.isEmpty(), I18nConstants.VALUESET_INCLUDE_WRONG_CS_OID, system, csl.get(0).getUrl()) && ok;
             } else {
-              ok = rule(errors, "2025-01-09", IssueType.INVALID, stack, csl.isEmpty(), I18nConstants.VALUESET_INCLUDE_WRONG_CS_OID_PLURAL, system) && ok;
+              List<String> ids = new ArrayList<>();
+              for (CodeSystem c : csl) {
+                ids.add(c.getVersionedUrl());
+              }
+              ok = rule(errors, "2025-01-09", IssueType.INVALID, stack, csl.isEmpty(), I18nConstants.VALUESET_INCLUDE_WRONG_CS_OID_PLURAL, system, CommaSeparatedStringBuilder.join(",", ids)) && ok;
             }
           }
         }
