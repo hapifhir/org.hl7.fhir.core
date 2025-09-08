@@ -66,7 +66,7 @@ public class CoreVersionPinner {
     }
     if (vsi.hasSystem() && !vsi.hasVersion()) {
       CodeSystem cs = context.fetchResource(CodeSystem.class, vsi.getSystem());
-      if (cs != null && cs.hasVersion()) {
+      if (cs != null && cs.hasVersion() && !vsi.getSystem().contains("terminology.hl7.org")) {
         vsi.setVersion(cs.getVersion());
         vsi.getVersionElement().setUserData(UserDataNames.VERSION_PINNED_ON_LOAD, true);
       }
