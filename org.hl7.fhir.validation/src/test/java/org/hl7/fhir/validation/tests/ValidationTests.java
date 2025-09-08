@@ -58,6 +58,9 @@ import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerFactory;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerNew;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -403,6 +406,14 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     if (content.has("noHtmlInMarkdown")) {
       val.setHtmlInMarkdownCheck(HtmlInMarkdownCheck.ERROR);
     }
+    if (content.has("new-xver-mode")) {
+      XVerExtensionManagerFactory.setLoader(new IgLoader(new FilesystemPackageCacheManager.Builder().build(), (SimpleWorkerContext) val.getContext(), val.getContext().getVersion()));
+    } else {
+      XVerExtensionManagerFactory.setLoader(null);
+    }
+    XVerExtensionManager xv = XVerExtensionManagerFactory.createExtensionManager(val.getContext());
+    ((SimpleWorkerContext) val.getContext()).setXVerManager(xv);
+    val.setXverManager(xv);
     JsonObject mtInfo = null;
     
     if (content.has("matchetype")) {
