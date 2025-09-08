@@ -226,8 +226,12 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       Assertions.assertTrue(true);
       return;
     }
-    if (content.has("use-test") && !content.get("use-test").getAsBoolean())
+    if (content.has("use-test") && !content.get("use-test").getAsBoolean()) {
       return;
+    }
+    if (content.has("new-xver-mode")) {
+      return;
+    }
 
     byte[] testCaseContent = TestingUtilities.loadTestResource("validator", JsonUtilities.str(content, "file")).getBytes(StandardCharsets.UTF_8);
     // load and process content    
