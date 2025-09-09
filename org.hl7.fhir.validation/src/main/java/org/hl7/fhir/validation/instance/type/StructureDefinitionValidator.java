@@ -183,7 +183,7 @@ public class StructureDefinitionValidator extends BaseValidator {
           if  (burl != null) {
             boolean bok = false;
             for (StructureDefinition sdb : context.fetchResourcesByType(StructureDefinition.class)) {
-              if (burl.equals(sdb.getBaseDefinition())) {
+              if (burl.equals(sdb.getBaseDefinitionNoVersion())) {
                 bok = true;
               }
             }

@@ -5,6 +5,10 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 
 public class XVerExtensionManagerFactory {
 
+  // this arrangement is temporary while working up the new cross-version package
+  // system. We need to figure out a better way to inject the loader logic.
+  //
+  // On the context?
   private static XVerExtensionManagerNew.IXverManagerPackageLoader loader;
 
   public static XVerExtensionManagerNew.IXverManagerPackageLoader getLoader() {
