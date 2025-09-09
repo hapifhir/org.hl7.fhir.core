@@ -18,7 +18,7 @@ v: {
   "code" : "66493003",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -45,7 +45,7 @@ v: {
   "code" : "394899003",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -72,33 +72,53 @@ v: {
   "code" : "118246004",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "severity" : "error",
-  "error" : "Wrong Display Name 'Laboratory test finding (finding)' for http://snomed.info/sct#118246004. Valid display is one of 4 choices: 'Laboratory test finding' (en), 'Laboratory test observations' (en), 'Laboratory test result' (en) or 'Laboratory test finding (navigational concept)' (en) (for the language(s) 'en-US')",
-  "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "severity" : "warning",
+  "error" : "The concept '118246004' has a status of inactive and its use should be reviewed",
+  "server" : "http://local.fhir.org/r3",
   "inactive" : true,
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "Display_Name_for__should_be_one_of__instead_of"
+      "valueString" : "INACTIVE_DISPLAY_FOUND"
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r3"
+      "valueUrl" : "http://local.fhir.org/r3"
     }],
-    "severity" : "error",
+    "severity" : "warning",
     "code" : "invalid",
     "details" : {
       "coding" : [{
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "invalid-display"
+        "code" : "display-comment"
       }],
-      "text" : "Wrong Display Name 'Laboratory test finding (finding)' for http://snomed.info/sct#118246004. Valid display is one of 4 choices: 'Laboratory test finding' (en), 'Laboratory test observations' (en), 'Laboratory test result' (en) or 'Laboratory test finding (navigational concept)' (en) (for the language(s) 'en-US')"
+      "text" : "'Laboratory test finding (finding)' is no longer considered a correct display for code '118246004' (status = inactive). The correct display is one of \"Laboratory test finding\""
     },
     "location" : ["Coding.display"],
     "expression" : ["Coding.display"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "INACTIVE_CONCEPT_FOUND"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://local.fhir.org/r3"
+    }],
+    "severity" : "warning",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "code-comment"
+      }],
+      "text" : "The concept '118246004' has a status of inactive and its use should be reviewed"
+    },
+    "location" : ["Coding"],
+    "expression" : ["Coding"]
   }]
 }
 
@@ -125,9 +145,9 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
   "severity" : "error",
-  "error" : "Wrong Display Name 'Chemistry' for http://snomed.info/sct#275711006. Valid display is one of 2 choices: 'Serum chemistry test' (en) or 'Serum chemistry test (procedure)' (en) (for the language(s) 'en-US')",
+  "error" : "Wrong Display Name 'Chemistry' for http://snomed.info/sct#275711006. Valid display is 'Serum chemistry test' (en) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -137,7 +157,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r3"
+      "valueUrl" : "http://local.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -146,7 +166,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-display"
       }],
-      "text" : "Wrong Display Name 'Chemistry' for http://snomed.info/sct#275711006. Valid display is one of 2 choices: 'Serum chemistry test' (en) or 'Serum chemistry test (procedure)' (en) (for the language(s) 'en-US')"
+      "text" : "Wrong Display Name 'Chemistry' for http://snomed.info/sct#275711006. Valid display is 'Serum chemistry test' (en) (for the language(s) 'en-US')"
     },
     "location" : ["Coding.display"],
     "expression" : ["Coding.display"]
@@ -175,7 +195,7 @@ v: {
   "code" : "281302008",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -202,7 +222,7 @@ v: {
   "code" : "419891008",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -229,7 +249,7 @@ v: {
   "code" : "371525003",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -256,7 +276,7 @@ v: {
   "code" : "17621005",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -283,7 +303,7 @@ v: {
   "code" : "722172003",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -310,7 +330,7 @@ v: {
   "code" : "394609007",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -337,7 +357,7 @@ v: {
   "code" : "71388002",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -365,7 +385,7 @@ v: {
   "severity" : "error",
   "error" : "Unknown code '823681000000100' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -375,7 +395,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r3"
+      "valueUrl" : "http://local.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -414,7 +434,7 @@ v: {
   "severity" : "error",
   "error" : "Unknown code '886921000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -424,7 +444,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r3"
+      "valueUrl" : "http://local.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -463,7 +483,7 @@ v: {
   "severity" : "error",
   "error" : "Unknown code '1077881000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -473,7 +493,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r3"
+      "valueUrl" : "http://local.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -512,7 +532,7 @@ v: {
   "severity" : "error",
   "error" : "Unknown code '887181000000106' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -522,7 +542,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r3"
+      "valueUrl" : "http://local.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -561,7 +581,7 @@ v: {
   "severity" : "error",
   "error" : "Unknown code '887161000000102' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -571,7 +591,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r3"
+      "valueUrl" : "http://local.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -610,7 +630,7 @@ v: {
   "severity" : "error",
   "error" : "Unknown code '1052891000000108' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -620,7 +640,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r3"
+      "valueUrl" : "http://local.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -659,7 +679,7 @@ v: {
   "severity" : "error",
   "error" : "Unknown code '715851000000102' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -669,7 +689,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r3"
+      "valueUrl" : "http://local.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -708,7 +728,7 @@ v: {
   "severity" : "error",
   "error" : "Unknown code '717121000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -718,7 +738,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r3"
+      "valueUrl" : "http://local.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -757,7 +777,7 @@ v: {
   "severity" : "error",
   "error" : "Unknown code '933361000000108' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -767,7 +787,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r3"
+      "valueUrl" : "http://local.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -806,7 +826,7 @@ v: {
   "severity" : "error",
   "error" : "Unknown code '887171000000109' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -816,7 +836,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r3"
+      "valueUrl" : "http://local.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -855,7 +875,7 @@ v: {
   "severity" : "error",
   "error" : "Unknown code '887201000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -865,7 +885,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r3"
+      "valueUrl" : "http://local.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -904,7 +924,7 @@ v: {
   "severity" : "error",
   "error" : "Unknown code '1052951000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -914,7 +934,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r3"
+      "valueUrl" : "http://local.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -953,7 +973,7 @@ v: {
   "severity" : "error",
   "error" : "Unknown code '886731000000109' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -963,7 +983,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r3"
+      "valueUrl" : "http://local.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -1002,7 +1022,7 @@ v: {
   "severity" : "error",
   "error" : "Unknown code '887231000000104' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1012,7 +1032,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r3"
+      "valueUrl" : "http://local.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -1051,7 +1071,7 @@ v: {
   "severity" : "error",
   "error" : "Unknown code '9290701000001101' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1061,7 +1081,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r3"
+      "valueUrl" : "http://local.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -1099,7 +1119,7 @@ v: {
   "code" : "443938003",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1126,7 +1146,7 @@ v: {
   "code" : "17621005",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1152,7 +1172,7 @@ v: {
   "code" : "27171005",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1178,7 +1198,7 @@ v: {
   "code" : "55011004",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1212,7 +1232,7 @@ v: {
   "code" : "55011004",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1239,7 +1259,7 @@ v: {
   "severity" : "error",
   "error" : "Unknown code '11181000146103' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1249,7 +1269,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r3"
+      "valueUrl" : "http://local.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -1287,7 +1307,7 @@ v: {
   "code" : "27113001",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "https://tx-dev.fhir.org/r3",
+  "server" : "http://local.fhir.org/r3",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

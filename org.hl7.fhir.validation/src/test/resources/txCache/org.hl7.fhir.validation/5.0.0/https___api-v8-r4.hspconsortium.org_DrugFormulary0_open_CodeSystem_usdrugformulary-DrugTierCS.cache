@@ -20,7 +20,7 @@ v: {
   "severity" : "error",
   "error" : "A definition for CodeSystem 'https://api-v8-r4.hspconsortium.org/DrugFormulary0/open/CodeSystem/usdrugformulary-DrugTierCS' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "unknown-systems" : "https://api-v8-r4.hspconsortium.org/DrugFormulary0/open/CodeSystem/usdrugformulary-DrugTierCS",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -31,7 +31,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r5"
+      "valueUrl" : "http://local.fhir.org/r5"
     }],
     "severity" : "error",
     "code" : "not-found",

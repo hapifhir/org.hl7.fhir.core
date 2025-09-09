@@ -317,3 +317,5 @@ package.tgz
 org.hl7.fhir.model/effective-pom.xml
 
 org.hl7.fhir.support/effective-pom.xml
+
+.vscode/settings.json
