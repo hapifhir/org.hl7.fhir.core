@@ -72,7 +72,6 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.Column;
 import org.hl7.fhir.r5.renderers.mappings.ConceptMapMappingProvider;
 import org.hl7.fhir.r5.renderers.mappings.ModelMappingProvider;
 import org.hl7.fhir.r5.renderers.mappings.StructureDefinitionMappingProvider;
@@ -1563,7 +1562,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
           List<StructureDefinition> children = new ArrayList<>(); 
           for (StructureDefinition sd : context.getWorker().fetchResourcesByType(StructureDefinition.class)) { 
-            if (sd.hasBaseDefinition() && sd.getBaseDefinition().equals(profile.getUrl())) { 
+            if (sd.hasBaseDefinition() && sd.getBaseDefinitionNoVersion().equals(profile.getUrl())) {
               children.add(sd); 
             } 
           } 

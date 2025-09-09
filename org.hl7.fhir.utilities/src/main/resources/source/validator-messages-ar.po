@@ -1,19 +1,9 @@
-# ABSTRACT_CODE_NOT_ALLOWED
-msgid ""
-msgstr ""
-"Project-Id-Version: FHIR\n"
-"Report-Msgid-Bugs-To: you@example.com\n"
-"POT-Creation-Date: 2025-07-19 23:27+0000\n"
-"PO-Revision-Date: 2025-07-19 23:27+0000\n"
-"Language: ar\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 
+# ABSTRACT_CODE_NOT_ALLOWED
 #: ABSTRACT_CODE_NOT_ALLOWED
 #, fuzzy
 msgid "Code ''{0}#{1}'' is abstract, and not allowed in this context"
-msgstr "الرمز ''{0}#{1}}'' مجرّد، وغير مسموح به في هذا السياق"
+msgstr "Project-Id-Version: FHIR\nReport-Msgid-Bugs-To: you@example.com\nPOT-Creation-Date: 2025-07-19 23:27+0000\nPO-Revision-Date: 2025-07-19 23:27+0000\nLanguage: ar\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n"
 
 # ALL_OK
 #: ALL_OK
@@ -156,8 +146,19 @@ msgstr "لم يتطابق مورد {1} مع الملف الشخصي {2} لأن: 
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT
 #, fuzzy
-msgid "Can''t find ''{1}'' in the bundle ({2}). Note that there is a resource in the bundle with the same type and id, but it does not match because of the fullUrl based rules around matching relative references (must be ``{3}``)"
-msgid_plural "Can''t find ''{1}'' in the bundle ({2}). Note that there are {0} resources in the bundle with the same type and id, but they do not match because of the fullUrl based rules around matching relative references (one of ``{3}``)"
+msgid "Can''t find ''{1}'' in the bundle ({2}). Note that there is a resource in the bundle with the same type and id, but it does not match because of the fullUrl based rules around matching relative references (must be ''{3}'', but found ''{4}'')"
+msgid_plural "Can''t find ''{1}'' in the bundle ({2}). Note that there are {0} resources in the bundle with the same type and id, but they do not match because of the fullUrl based rules around matching relative references (must be ''{3}'', but found these: {4})"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+# BUNDLE_BUNDLE_ENTRY_NOTFOUND_CANNOT
+#: BUNDLE_BUNDLE_ENTRY_NOTFOUND_CANNOT
+msgid "Can''t find ''{1}'' in the bundle ({2}). Note that there is a resource in the bundle with the same type and id, but it does not match because of the fullUrl based rules around matching relative references. Found ''{3}'', but it doesn''t match because of the source fullUrl ''{4}''"
+msgid_plural "Can''t find ''{1}'' in the bundle ({2}). Note that there are {0} resources in the bundle with the same type and id, but they do not match because of the fullUrl based rules around matching relative references. Found ''{3}'', but none of them match because of the source fullUrl ''{4}''"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
@@ -199,8 +200,8 @@ msgstr "يتطابق الإدخال {0} مع المرجع {1} حسب النوع 
 # BUNDLE_BUNDLE_POSSIBLE_MATCH_WRONG_FU
 #: BUNDLE_BUNDLE_POSSIBLE_MATCH_WRONG_FU
 #, fuzzy
-msgid "Entry {0} matches the reference {1} by type and id but it''s fullUrl {2} does not match the full target URL {3} by Bundle resolution rules"
-msgstr "يتطابق الإدخال {0} مع المرجع {1} حسب النوع والمعرف ولكن عنوان URL الكامل {2} لا يتطابق مع عنوان URL الهدف الكامل {3} حسب قواعد حل الحزمة"
+msgid "Entry {0} matches the reference {1} by type and id but its fullUrl {2} does not match the full target URL {3} by Bundle resolution rules"
+msgstr "!!يتطابق الإدخال {0} مع المرجع {1} حسب النوع والمعرف ولكن عنوان URL الكامل {2} لا يتطابق مع عنوان URL الهدف الكامل {3} حسب قواعد حل الحزمة"
 
 # BUNDLE_ENTRY_URL_ABSOLUTE
 #: BUNDLE_ENTRY_URL_ABSOLUTE
@@ -1437,6 +1438,11 @@ msgstr "يجب أن يكون المرجع إلى مجموعة قيم، ولكن 
 msgid "The concept map has too many codes to validate ({0})"
 msgstr "تحتوي خريطة المفاهيم على رموز كثيرة جداً للتحقق من صحتها ({0})"
 
+# CONCEPT_DEPRECATED_IN_VALUESET
+#: CONCEPT_DEPRECATED_IN_VALUESET
+msgid "The presence of the concept ''{1}'' in the system ''{0}'' in the value set {3} is marked with a status of {2} and its use should be reviewed"
+msgstr ""
+
 # CONTAINED_ORPHAN_DOM3
 #: CONTAINED_ORPHAN_DOM3
 #, fuzzy
@@ -1728,14 +1734,19 @@ msgstr "يحدد الامتداد {0} سياق {1} لكن المدقق لا يس
 # EXTENSION_EXTM_CONTEXT_WRONG_XVER
 #: EXTENSION_EXTM_CONTEXT_WRONG_XVER
 #, fuzzy
-msgid "The modifier extension {0} from FHIR version {3} is not allowed to be used at this point (allowed = {1}; this element is [{2}; this is a warning since contexts may be renamed between FHIR versions)"
-msgstr "لا يُسمح باستخدام امتداد المعدل {0} من الإصدار {3} من FHIR في هذه المرحلة (مسموح به = {1}؛ هذا العنصر هو {2}؛ وهذا تحذير حيث يمكن إعادة تسمية السياقات بين إصدارات FHIR)"
+msgid "The modifier extension {0} from FHIR version {3} is not allowed to be used at this point (this element is {2}; allowed for this version = {1}; this is a warning since contexts may be renamed between FHIR versions)"
+msgstr "!!لا يُسمح باستخدام امتداد المعدل {0} من الإصدار {3} من FHIR في هذه المرحلة (مسموح به = {1}؛ هذا العنصر هو {2}؛ وهذا تحذير حيث يمكن إعادة تسمية السياقات بين إصدارات FHIR)"
 
 # EXTENSION_EXTP_CONTEXT_WRONG_XVER
 #: EXTENSION_EXTP_CONTEXT_WRONG_XVER
 #, fuzzy
-msgid "The extension {0} from FHIR version {3} is not allowed to be used at this point (allowed = {1}; this element is [{2}; this is a warning since contexts may be renamed between FHIR versions)"
-msgstr "لا يُسمح باستخدام الامتداد {0} من إصدار FHIR {3} في هذه المرحلة (مسموح به = {1}؛ هذا العنصر هو {2}؛ وهذا تحذير حيث يمكن إعادة تسمية السياقات بين إصدارات FHIR)"
+msgid "The extension {0} from FHIR version {3} is not allowed to be used at this point (this element is {2}; allowed for this version = {1}; this is a warning since contexts may be renamed between FHIR versions)"
+msgstr "!!لا يُسمح باستخدام الامتداد {0} من إصدار FHIR {3} في هذه المرحلة (مسموح به = {1}؛ هذا العنصر هو {2}؛ وهذا تحذير حيث يمكن إعادة تسمية السياقات بين إصدارات FHIR)"
+
+# EXTENSION_EXT_VERSION_NOTALLOWED
+#: EXTENSION_EXT_VERSION_NOTALLOWED
+msgid "Extension url ''{0}'' is not allowed (Element id ''{1}'' is valid, so check other defined extensions)"
+msgstr ""
 
 # EXTENSION_FHIR_VERSION_EARLIEST
 #: EXTENSION_FHIR_VERSION_EARLIEST
@@ -1908,26 +1919,28 @@ msgstr "غير قادر على التحقق من صحة الرمز ''{0}'' في 
 # Extension_EXTM_Context_Wrong
 #: Extension_EXTM_Context_Wrong
 #, fuzzy
-msgid "The modifier extension {0} is not allowed to be used at this point (allowed = {1}; this element is {2})"
-msgstr "لا يُسمح باستخدام ملحق المعدل {0} في هذه النقطة (مسموح = {1}؛ هذا العنصر هو {2})"
+msgid "The modifier extension {0} is not allowed to be used at this point (this element is {2}; allowed = {1})"
+msgstr "!!لا يُسمح باستخدام ملحق المعدل {0} في هذه النقطة (مسموح = {1}؛ هذا العنصر هو {2})"
 
 # Extension_EXTM_Context_Wrong_VER
 #: Extension_EXTM_Context_Wrong_VER
 #, fuzzy
-msgid "The modifier extension {0} is not allowed to be used at this point (allowed for this version = {1}; this element is {2})"
-msgstr "لا يُسمح باستخدام ملحق المعدل {0} في هذه النقطة (المسموح به في هذا الإصدار = {1}؛ هذا العنصر هو {2})"
+msgid "The modifier extension {0} is not allowed to be used at this point (this element is {2}; allowed for this version = {1})"
+msgstr "!!لا يُسمح باستخدام ملحق المعدل {0} في هذه النقطة (المسموح به في هذا الإصدار = {1}؛ هذا العنصر هو {2})"
 
 # Extension_EXTP_Context_Wrong
 #: Extension_EXTP_Context_Wrong
 #, fuzzy
-msgid "The extension {0} is not allowed to be used at this point (allowed = {1}; this element is {2})"
-msgstr "الامتداد {0} غير مسموح باستخدامه في هذه النقطة (مسموح = {1}؛ هذا العنصر هو {2})"
+msgctxt "Extension_EXTP_Context_Wrong"
+msgid "The extension {0} is not allowed to be used at this point (this element is {2}; allowed for this version = {1})"
+msgstr "!!الامتداد {0} غير مسموح باستخدامه في هذه النقطة (مسموح = {1}؛ هذا العنصر هو {2})"
 
 # Extension_EXTP_Context_Wrong_VER
 #: Extension_EXTP_Context_Wrong_VER
 #, fuzzy
-msgid "The extension {0} is not allowed to be used at this point (allowed for this version = {1}; this element is {2})"
-msgstr "الامتداد {0} غير مسموح باستخدامه في هذه النقطة (المسموح به في هذا الإصدار = {1}؛ هذا العنصر هو {2})"
+msgctxt "Extension_EXTP_Context_Wrong_VER"
+msgid "The extension {0} is not allowed to be used at this point (this element is {2}; allowed for this version = {1})"
+msgstr "!!الامتداد {0} غير مسموح باستخدامه في هذه النقطة (المسموح به في هذا الإصدار = {1}؛ هذا العنصر هو {2})"
 
 # Extension_EXT_Count_Mismatch
 #: Extension_EXT_Count_Mismatch
@@ -2094,8 +2107,8 @@ msgstr "خطأ في تقييم تعبير FHIRPath: تعذرت مقارنة قي
 # FHIRPATH_CHECK_FAILED
 #: FHIRPATH_CHECK_FAILED
 #, fuzzy
-msgid "Error evaluating FHIRPath expression: The check {0} failed"
-msgstr "خطأ في تقييم تعبير FHIRPath: فشل التحقق من {0}"
+msgid "Error evaluating FHIRPath expression: Check failed with message ''{0}''"
+msgstr "!!خطأ في تقييم تعبير FHIRPath: فشل التحقق من {0}"
 
 # FHIRPATH_CHOICE_NO_TYPE_SPECIFIER
 #: FHIRPATH_CHOICE_NO_TYPE_SPECIFIER
@@ -2185,7 +2198,7 @@ msgstr "تعذّر حلّ المميز ''{0}'' على ''{2}'' الموجود ف�
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 #, fuzzy
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES"
-msgid "-- no content: do not translate #124 --"
+msgid "-- no content: do not translate #121 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} type profiles"
 msgstr[0] ""
 msgstr[1] ""
@@ -2198,7 +2211,7 @@ msgstr[5] ""
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 #, fuzzy
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES"
-msgid "-- no content: do not translate #125 --"
+msgid "-- no content: do not translate #122 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} types"
 msgstr[0] ""
 msgstr[1] ""
@@ -2229,7 +2242,7 @@ msgstr "استخدام غير صحيح لـ ofType() في المميّز - ال�
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 #, fuzzy
 msgctxt "FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES"
-msgid "-- no content: do not translate #126 --"
+msgid "-- no content: do not translate #123 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] ""
@@ -2260,8 +2273,8 @@ msgstr "استخدام غير صحيح لـ ofType() في المميّز - لا 
 #: FHIRPATH_FOCUS
 #, fuzzy
 msgctxt "FHIRPATH_FOCUS"
-msgid "-- no content: do not translate #127 --"
-msgid_plural "Error evaluating FHIRPath expression: focus for {0} can only have one value, but has {0} values"
+msgid "-- no content: do not translate #124 --"
+msgid_plural "Error evaluating FHIRPath expression: focus for {1} can only have one value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
@@ -2285,7 +2298,7 @@ msgstr "النوع {0} غير صالح"
 #: FHIRPATH_LEFT_VALUE
 #, fuzzy
 msgctxt "FHIRPATH_LEFT_VALUE"
-msgid "-- no content: do not translate #128 --"
+msgid "-- no content: do not translate #125 --"
 msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values ({2})"
 msgstr[0] ""
 msgstr[1] ""
@@ -2372,6 +2385,18 @@ msgstr "خطأ في تقييم تعبير FHIRPath {0}: المعامل الأي�
 msgid "Error evaluating FHIRPath expression: The function {0} can only be used on ordered collections"
 msgstr "خطأ في تقييم تعبير FHIRPath: يمكن استخدام الدالة {0} فقط على المجموعات المرتبة"
 
+# FHIRPATH_PARAMETER_CARD
+#: FHIRPATH_PARAMETER_CARD
+msgctxt "FHIRPATH_PARAMETER_CARD"
+msgid "-- no content: do not translate #126 --"
+msgid_plural "Error evaluating FHIRPath expression: parameter {1} can only have one value, but has {0} values"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
 # FHIRPATH_PARAM_WRONG
 #: FHIRPATH_PARAM_WRONG
 #, fuzzy
@@ -2406,7 +2431,7 @@ msgstr "مشكلة في استخدام حل () - تعذر حل ملف التعر
 #: FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 #, fuzzy
 msgctxt "FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET"
-msgid "-- no content: do not translate #129 --"
+msgid "-- no content: do not translate #127 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] ""
@@ -2419,7 +2444,7 @@ msgstr[5] ""
 #: FHIRPATH_RIGHT_VALUE
 #, fuzzy
 msgctxt "FHIRPATH_RIGHT_VALUE"
-msgid "-- no content: do not translate #130 --"
+msgid "-- no content: do not translate #128 --"
 msgid_plural "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
@@ -2455,8 +2480,8 @@ msgstr "غير قادر على التقييم على هيئة منطقية: {0}"
 # FHIRPATH_UNKNOWN_CONSTANT
 #: FHIRPATH_UNKNOWN_CONSTANT
 #, fuzzy
-msgid "Error evaluating FHIRPath expression: Invalid FHIR Constant {0}"
-msgstr "خطأ في تقييم تعبير FHIRPath: ثابت FHIR غير صالح {0}"
+msgid "Error evaluating FHIRPath expression: Invalid FHIRPath Constant {0}"
+msgstr "!!خطأ في تقييم تعبير FHIRPath: ثابت FHIR غير صالح {0}"
 
 # FHIRPATH_UNKNOWN_CONTEXT
 #: FHIRPATH_UNKNOWN_CONTEXT
@@ -2545,8 +2570,8 @@ msgstr "لوينك"
 # HTA_LOINC_MESSAGE
 #: HTA_LOINC_MESSAGE
 #, fuzzy
-msgid "This material contains content from <a href=\\\"http://loinc.org\\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\\"http://loinc.org/license\\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
-msgstr "تحتوي هذه المادة على محتوى من <a href=\\\"http://loinc.org\\\">لوينك</a>. حقوق الطبع والنشر لـ LOINC &copy؛ 1995-2020، معهد Regenstrief Institute, Inc. ولجنة أسماء ورموز معرفات الملاحظات المنطقية (LOINC) وهي متاحة مجانًا بموجب <a href=\"http://loinc.org/license\\\">LOSINC</a>. LOINC&reg؛ هي علامة تجارية مسجلة في الولايات المتحدة الأمريكية لشركة Regenstrief Institute, Inc."
+msgid "This material contains content from <a href=\\"http://loinc.org\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\"http://loinc.org/license\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
+msgstr "!!تحتوي هذه المادة على محتوى من <a href=\\\"http://loinc.org\\\">لوينك</a>. حقوق الطبع والنشر لـ LOINC &copy؛ 1995-2020، معهد Regenstrief Institute, Inc. ولجنة أسماء ورموز معرفات الملاحظات المنطقية (LOINC) وهي متاحة مجانًا بموجب <a href=\"http://loinc.org/license\\\">LOSINC</a>. LOINC&reg؛ هي علامة تجارية مسجلة في الولايات المتحدة الأمريكية لشركة Regenstrief Institute, Inc."
 
 # HTA_SCT_DESC
 #: HTA_SCT_DESC
@@ -2557,8 +2582,8 @@ msgstr "مصطلحات SNOMED السريرية&reg؛ (SNOMED CT&reg؛)"
 # HTA_SCT_MESSAGE
 #: HTA_SCT_MESSAGE
 #, fuzzy
-msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> or <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
-msgstr "تحتوي هذه المادة على محتوى محمي بحقوق الطبع والنشر لـ SNOMED International. يجب أن يكون لدى منفذي هذه المواصفات الترخيص المناسب من الشركة التابعة لـ SNOMED CT - لمزيد من المعلومات اتصل بـ <a href=\"https://www.snomed.org/get-snomed\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed<</a> أو <a href=\"mailto:info@snomed.org\\\">info@snomed.org</a>."
+msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\"https://www.snomed.org/get-snomed\\">https://www.snomed.org/get-snomed</a> or <a href=\\"mailto:info@snomed.org\\">info@snomed.org</a>."
+msgstr "!!تحتوي هذه المادة على محتوى محمي بحقوق الطبع والنشر لـ SNOMED International. يجب أن يكون لدى منفذي هذه المواصفات الترخيص المناسب من الشركة التابعة لـ SNOMED CT - لمزيد من المعلومات اتصل بـ <a href=\"https://www.snomed.org/get-snomed\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed<</a> أو <a href=\"mailto:info@snomed.org\\\">info@snomed.org</a>."
 
 # IG_DEPENDENCY_CAN_VERSION_ALONE
 #: IG_DEPENDENCY_CAN_VERSION_ALONE
@@ -2691,6 +2716,22 @@ msgstr "يجب أن تكون خاصية fhir_comments مصفوفة من السل
 #, fuzzy
 msgid "The property ''{0}'' is invalid"
 msgstr "الخاصية ''{0}'' غير صالحة"
+
+# INACTIVE_CONCEPT_FOUND
+#: INACTIVE_CONCEPT_FOUND
+msgid "The concept ''{1}'' has a status of {0} and its use should be reviewed"
+msgstr ""
+
+# INACTIVE_DISPLAY_FOUND
+#: INACTIVE_DISPLAY_FOUND
+msgid "''{1}'' is no longer considered a correct display for code ''{2}'' (status = {4}). The correct display is ''{3}''"
+msgid_plural "''{1}'' is no longer considered a correct display for code ''{2}'' (status = {4}). The correct display is one of {3}"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 # INVALID_DISPLAY_NAME
 #: INVALID_DISPLAY_NAME
@@ -3307,8 +3348,8 @@ msgstr "تم إهمال {0} {1} {0} {1}"
 # MSG_DEPENDS_ON_DEPRECATED_NOTE
 #: MSG_DEPENDS_ON_DEPRECATED_NOTE
 #, fuzzy
-msgid "The {0} {1} is deprecated with the note {2}"
-msgstr "يتم إهمال {0} {1} مع الملاحظة {2}"
+msgid "The {0} {1} is deprecated with the note: ''{2}''"
+msgstr "!!يتم إهمال {0} {1} مع الملاحظة {2}"
 
 # MSG_DEPENDS_ON_DRAFT
 #: MSG_DEPENDS_ON_DRAFT
@@ -3410,7 +3451,7 @@ msgstr "الإشارة إلى {2} المسحوبة {2} {0} من {1}"
 #: MULTIPLE_LOGICAL_MODELS
 #, fuzzy
 msgctxt "MULTIPLE_LOGICAL_MODELS"
-msgid "-- no content: do not translate #131 --"
+msgid "-- no content: do not translate #129 --"
 msgid_plural "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
 msgstr[0] ""
 msgstr[1] ""
@@ -3448,6 +3489,16 @@ msgstr "لم يتم وضع علامة {0} على العنصر {0} كـ \"يجب 
 #, fuzzy
 msgid "The NDJSON source contains an empty line. This may not be accepted by some processors"
 msgstr "يحتوي مصدر NDJSON على سطر فارغ. قد لا يتم قبول ذلك من قبل بعض المعالجات"
+
+# NO_CODE_PROVIDED
+#: NO_CODE_PROVIDED
+msgid "No code provided for CodeSystem ''{0}''"
+msgstr ""
+
+# NO_CODE_PROVIDED_VERSION
+#: NO_CODE_PROVIDED_VERSION
+msgid "No code provided for CodeSystem ''{0}'' version ''{1}''"
+msgstr ""
 
 # NO_VALID_DISPLAY_AT_ALL
 #: NO_VALID_DISPLAY_AT_ALL
@@ -3788,8 +3839,8 @@ msgstr "يتم تعريف {0} ''{1}}'' في الملف الشخصي المطال
 # PROFILE_COMPLIES_WITH_NOT_VALID
 #: PROFILE_COMPLIES_WITH_NOT_VALID
 #, fuzzy
-msgid "The {0} value of ''{2}'' does not comply with the value ''{1}'' from the claimed profile"
-msgstr "لا تتوافق قيمة {0} من \"{2}\" مع قيمة \"{1}\" من الملف الشخصي المطالب به"
+msgid "The {0} value of ''{2}'' on the path {3} does not comply with the value ''{1}'' from the claimed profile"
+msgstr "!!لا تتوافق قيمة {0} من \"{2}\" مع قيمة \"{1}\" من الملف الشخصي المطالب به"
 
 # PROFILE_COMPLIES_WITH_NO_VS
 #: PROFILE_COMPLIES_WITH_NO_VS
@@ -4477,7 +4528,7 @@ msgstr "يُسمح فقط بعنصر إجابة إجابة واحدة فقط م�
 #: Questionnaire_QR_Item_OnlyOneI
 #, fuzzy
 msgctxt "Questionnaire_QR_Item_OnlyOneI"
-msgid "-- no content: do not translate #132 --"
+msgid "-- no content: do not translate #130 --"
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
 msgstr[0] ""
 msgstr[1] ""
@@ -4543,8 +4594,8 @@ msgstr "يأتي هدف قاعدة التمكين هذه ({0}) بعد السؤا
 # Questionnaire_Q_EnableWhen_IsInner
 #: Questionnaire_Q_EnableWhen_IsInner
 #, fuzzy
-msgid "Questions with an enableWhen cannot refer to an inner question for it''s enableWhen condition"
-msgstr "لا يمكن أن تشير الأسئلة التي تحتوي على شرط \"تمكين-متى\" إلى سؤال داخلي من أجل شرط \"تمكين-متى\" الخاص بها"
+msgid "Questions with an enableWhen cannot refer to an inner question for its enableWhen condition"
+msgstr "!!لا يمكن أن تشير الأسئلة التي تحتوي على شرط \"تمكين-متى\" إلى سؤال داخلي من أجل شرط \"تمكين-متى\" الخاص بها"
 
 # Questionnaire_Q_EnableWhen_NoLink
 #: Questionnaire_Q_EnableWhen_NoLink
@@ -4617,6 +4668,11 @@ msgstr "يحتوي عنصر JSON ''نوع المورد'' على نوع JSON خا
 #, fuzzy
 msgid "Duplicate ID for contained resource: {0}"
 msgstr "معرف مكرر للمورد المتضمن: {0}"
+
+# RESOURCE_INTERNAL_USE_ONLY
+#: RESOURCE_INTERNAL_USE_ONLY
+msgid "This {0} comes from the package {1} which has been marked as not suitable for this use"
+msgstr ""
 
 # RESOURCE_MATCHETYPE_DISALLOWED
 #: RESOURCE_MATCHETYPE_DISALLOWED
@@ -4827,6 +4883,11 @@ msgstr "يجب أن يكون النوع {0} هو نفس النوع الموجو�
 #, fuzzy
 msgid "The element {0} is not valid"
 msgstr "العنصر {0} غير صالح"
+
+# SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND_VER
+#: SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND_VER
+msgid "The element {0} is not valid in version {1}"
+msgstr ""
 
 # SD_CONTEXT_SHOULD_NOT_BE_ELEMENT
 #: SD_CONTEXT_SHOULD_NOT_BE_ELEMENT
@@ -5167,8 +5228,8 @@ msgstr "لا تتطابق قيمة مسار العنصر ''{0}'' ''{1}'' مع ا
 # SD_OBGLIGATION_PROFILE_UKNOWN
 #: SD_OBGLIGATION_PROFILE_UKNOWN
 #, fuzzy
-msgid "The profile is marked as an obligation profile, but it''s correctness cannot be checked since the base profile ''{0}'' is not known"
-msgstr "تم وضع علامة على ملف التعريف كملف تعريف التزام، ولكن لا يمكن التحقق من صحته نظرًا لأن ملف التعريف الأساسي \"{0}\" غير معروف"
+msgid "The profile is marked as an obligation profile, but its correctness cannot be checked since the base profile ''{0}'' is not known"
+msgstr "!!تم وضع علامة على ملف التعريف كملف تعريف التزام، ولكن لا يمكن التحقق من صحته نظرًا لأن ملف التعريف الأساسي \"{0}\" غير معروف"
 
 # SD_OBGLIGATION_PROFILE_UNMATCHED
 #: SD_OBGLIGATION_PROFILE_UNMATCHED
@@ -5281,8 +5342,8 @@ msgstr "يشير النوع ''{0}'' في {3} إلى النوع المجرد ''{1
 # SD_TYPE_PARAMETER_INVALID
 #: SD_TYPE_PARAMETER_INVALID
 #, fuzzy
-msgid "The type definition ''{2}'' has a type parameter ''{3}'', which is not consistent with it''s ancestor type definition ''{0}'' which has the type parameter ''{1}''"
-msgstr "يحتوي تعريف النوع ''{2}'' على معلمة النوع ''{3}''، وهو ما لا يتوافق مع تعريف النوع السلف ''{0}'' الذي يحتوي على معلمة النوع ''{1}''"
+msgid "The type definition ''{2}'' has a type parameter ''{3}'', which is not consistent with its ancestor type definition ''{0}'' which has the type parameter ''{1}''"
+msgstr "!!يحتوي تعريف النوع ''{2}'' على معلمة النوع ''{3}''، وهو ما لا يتوافق مع تعريف النوع السلف ''{0}'' الذي يحتوي على معلمة النوع ''{1}''"
 
 # SD_TYPE_PARAMETER_INVALID_REF
 #: SD_TYPE_PARAMETER_INVALID_REF
@@ -5389,8 +5450,8 @@ msgstr "لا يمكن تقييم التقطيع: {0}"
 # SM_DEPENDENT_PARAM_MODE_MISMATCH
 #: SM_DEPENDENT_PARAM_MODE_MISMATCH
 #, fuzzy
-msgid "The parameter {0} refers to the variable {1} but it''s mode is {2} which is not the same as the mode required for the group {3}"
-msgstr "يشير المتغير {0} إلى المتغير {1} ولكن وضعه هو {2} وهو ليس نفس الوضع المطلوب للمجموعة {3}"
+msgid "The parameter {0} refers to the variable {1} but its mode is {2} which is not the same as the mode required for the group {3}"
+msgstr "!!يشير المتغير {0} إلى المتغير {1} ولكن وضعه هو {2} وهو ليس نفس الوضع المطلوب للمجموعة {3}"
 
 # SM_DEPENDENT_PARAM_NOT_FOUND
 #: SM_DEPENDENT_PARAM_NOT_FOUND
@@ -5401,8 +5462,8 @@ msgstr "لم يتم العثور على المتغير {1} \"{0}\". المتغي
 # SM_DEPENDENT_PARAM_TYPE_MISMATCH
 #: SM_DEPENDENT_PARAM_TYPE_MISMATCH
 #, fuzzy
-msgid "The parameter ''{0}'' refers to the variable ''{1}'' but it''s type is ''{2}'' which is not compatible with the type required for the group ''{3}'', which is ''{4}'' (from map ''{5}'')"
-msgstr "يشير المتغير ''{0}'' إلى المتغير ''{1}'' لكن نوعه هو ''{2}'' وهو غير متوافق مع النوع المطلوب للمجموعة ''{3}''، وهو ''{4}'' (من الخريطة ''{5}'')"
+msgid "The parameter ''{0}'' refers to the variable ''{1}'' but its type is ''{2}'' which is not compatible with the type required for the group ''{3}'', which is ''{4}'' (from map ''{5}'')"
+msgstr "!!يشير المتغير ''{0}'' إلى المتغير ''{1}'' لكن نوعه هو ''{2}'' وهو غير متوافق مع النوع المطلوب للمجموعة ''{3}''، وهو ''{4}'' (من الخريطة ''{5}'')"
 
 # SM_DEPENDENT_PARAM_TYPE_MISMATCH_DUPLICATE
 #: SM_DEPENDENT_PARAM_TYPE_MISMATCH_DUPLICATE
@@ -5497,8 +5558,8 @@ msgstr "لا ينبغي توفير معرف قاعدة القائمة نظرًا
 # SM_ORPHAN_GROUP
 #: SM_ORPHAN_GROUP
 #, fuzzy
-msgid "The group {0} is not called successfully from within this mapping script, and does not have types on it''s inputs, so type verification is not possible"
-msgstr "لا يتم استدعاء المجموعة {0} بنجاح من داخل هذا البرنامج النصي للتخطيط، ولا تحتوي على أنواع في مدخلاتها، لذلك لا يمكن التحقق من النوع"
+msgid "The group {0} is not called successfully from within this mapping script, and does not have types on its inputs, so type verification is not possible"
+msgstr "!!لا يتم استدعاء المجموعة {0} بنجاح من داخل هذا البرنامج النصي للتخطيط، ولا تحتوي على أنواع في مدخلاتها، لذلك لا يمكن التحقق من النوع"
 
 # SM_RULEGROUP_NOT_FOUND
 #: SM_RULEGROUP_NOT_FOUND
@@ -5740,24 +5801,6 @@ msgstr "تحتوي اللقطة التي تم إنشاؤها على عدد عن�
 msgid "The snapshot for the profile ''{0}'' is empty. This is usually due to a processing error logged elsewhere"
 msgstr "لقطة الملف الشخصي ''{0}'' فارغة. عادةً ما يرجع ذلك إلى خطأ في المعالجة تم تسجيله في مكان آخر"
 
-# STATUS_CODE_HINT
-#: STATUS_CODE_HINT
-#, fuzzy
-msgid "The code is {0}"
-msgstr "الرمز هو {0}"
-
-# STATUS_CODE_HINT_CODE
-#: STATUS_CODE_HINT_CODE
-#, fuzzy
-msgid "The code ''{1}'' is {0}"
-msgstr "الرمز ''{1}'' هو {0}"
-
-# STATUS_CODE_WARNING
-#: STATUS_CODE_WARNING
-#, fuzzy
-msgid "The code is valid but is {0}"
-msgstr "الرمز صالح ولكنه {0}"
-
 # STATUS_CODE_WARNING_CODE
 #: STATUS_CODE_WARNING_CODE
 #, fuzzy
@@ -5959,8 +6002,8 @@ msgstr "محتوى القاعدة 64 في العنصر {0} غير صالح ال�
 # TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH
 #: TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH
 #, fuzzy
-msgid "The hash of the data did not match the data"
-msgstr "لم يتطابق تجزئة البيانات مع البيانات"
+msgid "The hash of the data did not match the data (stated: ''{0}'', actual: ''{1}'')"
+msgstr "!!لم يتطابق تجزئة البيانات مع البيانات"
 
 # TYPE_SPECIFIC_CHECKS_DT_ATT_NO_CONTENT
 #: TYPE_SPECIFIC_CHECKS_DT_ATT_NO_CONTENT
@@ -6261,6 +6304,11 @@ msgstr "يمكن أن تكون رموز UCUM التي تحتوي على شروح
 #, fuzzy
 msgid "UCUM Codes that contain human readable annotations like {0} can be misleading (e.g. they are ignored when comparing units). Best Practice is not to depend on annotations in the UCUM code, so this usage should be checked, and the Quantity.unit SHOULD contain the annotation"
 msgstr "يمكن أن تكون رموز UCUM التي تحتوي على شروح بشرية مقروءة مثل {0} مضللة (على سبيل المثال يتم تجاهلها عند مقارنة الوحدات). تتمثل أفضل الممارسات في عدم الاعتماد على التعليقات التوضيحية في رمز UCUM، لذلك يجب التحقق من هذا الاستخدام، ويجب أن تحتوي وحدة الكمية على التعليق التوضيحي"
+
+# TYPE_SPECIFIC_CHECKS_DT_SID_INCORRECT
+#: TYPE_SPECIFIC_CHECKS_DT_SID_INCORRECT
+msgid "The URL {0} is not a correct URL to use (in spite of being in the standard, and/or accepted in the past)"
+msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE
 #: TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE
@@ -6733,8 +6781,8 @@ msgstr "القيمة \"{0}\" خارج نطاق السنوات المعقولة -
 # Type_Specific_Checks_DT_DateTime_Regex
 #: Type_Specific_Checks_DT_DateTime_Regex
 #, fuzzy
-msgid "The instant ''{0}'' is not valid (by regex)"
-msgstr "اللحظة ''{0}'' غير صالحة (بواسطة regex)"
+msgid "Not a valid instant format: ''{0}''"
+msgstr "!!اللحظة ''{0}'' غير صالحة (بواسطة regex)"
 
 # Type_Specific_Checks_DT_DateTime_TZ
 #: Type_Specific_Checks_DT_DateTime_TZ
@@ -6745,14 +6793,14 @@ msgstr "إذا كان التاريخ له وقت، فيجب أن يكون له �
 # Type_Specific_Checks_DT_DateTime_Valid
 #: Type_Specific_Checks_DT_DateTime_Valid
 #, fuzzy
-msgid "Not a valid date/time ({0})"
-msgstr "تاريخ/وقت غير صالح ({0})"
+msgid "Not a valid date/time format: ''{0}''"
+msgstr "!!تاريخ/وقت غير صالح ({0})"
 
 # Type_Specific_Checks_DT_Date_Valid
 #: Type_Specific_Checks_DT_Date_Valid
 #, fuzzy
-msgid "Not a valid date ({0})"
-msgstr "تاريخ غير صالح ({0})"
+msgid "Not a valid date format: ''{0}''"
+msgstr "!!تاريخ غير صالح ({0})"
 
 # Type_Specific_Checks_DT_Decimal_GT
 #: Type_Specific_Checks_DT_Decimal_GT
@@ -7041,6 +7089,11 @@ msgstr "تعذّر العثور على تعريف ل CodeSystem ''{0}''، لذل
 #, fuzzy
 msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the code cannot be validated. Valid versions: {2}"
 msgstr "تعذّر العثور على تعريف لنظام CodeSystem ''{0}'' الإصدار ''{1}''، لذلك لا يمكن التحقق من صحة الرمز. إصدارات صالحة: {2}"
+
+# UNKNOWN_CODESYSTEM_VERSION_NONE
+#: UNKNOWN_CODESYSTEM_VERSION_NONE
+msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the code cannot be validated. No versions of this code system are known"
+msgstr ""
 
 # UNKNOWN_CODE_IN_FRAGMENT
 #: UNKNOWN_CODE_IN_FRAGMENT
@@ -7891,8 +7944,13 @@ msgstr "يجب أن تكون قيم URI في ValueSet.compose.include.system م�
 # VALUESET_INCLUDE_WRONG_CS_OID
 #: VALUESET_INCLUDE_WRONG_CS_OID
 #, fuzzy
-msgid "It is not valid to refer to a CodeSystem by an identifier like this ''{0}''"
-msgstr "لا تصح الإشارة إلى نظام CodeSystem بواسطة معرّف مثل هذا ''{0}''"
+msgid "It is not valid to refer to a CodeSystem by an identifier like this ''{0}'' - use ''{1}''"
+msgstr "!!لا تصح الإشارة إلى نظام CodeSystem بواسطة معرّف مثل هذا ''{0}''"
+
+# VALUESET_INCLUDE_WRONG_CS_OID_PLURAL
+#: VALUESET_INCLUDE_WRONG_CS_OID_PLURAL
+msgid "It is not valid to refer to a CodeSystem by an identifier like this ''{0}'', and the identifier matches to multiple CodeSystem resources ({1})"
+msgstr ""
 
 # VALUESET_INCLUDE_WRONG_VS
 #: VALUESET_INCLUDE_WRONG_VS
@@ -7912,11 +7970,26 @@ msgstr "النظام ''{0}'' هو في الواقع مجموعة قيم، وال
 msgid "The system ''{0}'' is actually a value set, which itself refers to the systems {1}"
 msgstr "النظام \"{0}\" هو في الواقع مجموعة قيم، والتي تشير في حد ذاتها إلى الأنظمة {1}"
 
+# VALUESET_INC_NOT_VALIDATING
+#: VALUESET_INC_NOT_VALIDATING
+msgid "The concepts in the value set include have not been validated because the validator is configured not to check them"
+msgstr ""
+
+# VALUESET_INC_NO_BATCH_ON_SERVER
+#: VALUESET_INC_NO_BATCH_ON_SERVER
+msgid "The concepts in the value set include have not been validated because the terminology server {0} does not support batch validation (tests version < 1.7.8)"
+msgstr ""
+
+# VALUESET_INC_NO_SERVER
+#: VALUESET_INC_NO_SERVER
+msgid "The concepts in the value set include have not been validated because there is no terminology server"
+msgstr ""
+
 # VALUESET_INC_TOO_MANY_CODES
 #: VALUESET_INC_TOO_MANY_CODES
 #, fuzzy
-msgid "The value set include has too many codes to validate ({0}), so each individual code has not been checked"
-msgstr "تحتوي مجموعة القيم المضمنة على رموز كثيرة جداً للتحقق من صحتها ({0})، لذلك لم يتم التحقق من كل رمز على حدة"
+msgid "The value set include has too many concepts to validate ({0}), so each individual code has not been checked"
+msgstr "!!تحتوي مجموعة القيم المضمنة على رموز كثيرة جداً للتحقق من صحتها ({0})، لذلك لم يتم التحقق من كل رمز على حدة"
 
 # VALUESET_NO_SYSTEM_WARNING
 #: VALUESET_NO_SYSTEM_WARNING
@@ -8511,8 +8584,8 @@ msgstr "يحتوي xhtml على بعض أقسام اللغة ({0})، ولكن أ
 # XHTML_CONTROL_NO_SOURCE
 #: XHTML_CONTROL_NO_SOURCE
 #, fuzzy
-msgid "The xhtml node at ''{0}'' does not have a class attribute to indicate it''s source (boilerplate, generated, or original) and this is required by the profile {1}"
-msgstr "لا تحتوي عقدة xhtml في ''{0}'' على سمة فئة للإشارة إلى مصدرها (نموذج، أو مولد، أو أصلي) وهذا مطلوب في الملف الشخصي {1}"
+msgid "The xhtml node at ''{0}'' does not have a class attribute to indicate its source (boilerplate, generated, or original) and this is required by the profile {1}"
+msgstr "!!لا تحتوي عقدة xhtml في ''{0}'' على سمة فئة للإشارة إلى مصدرها (نموذج، أو مولد، أو أصلي) وهذا مطلوب في الملف الشخصي {1}"
 
 # XHTML_URL_DATA_DATA_INVALID
 #: XHTML_URL_DATA_DATA_INVALID
@@ -8565,8 +8638,8 @@ msgstr[5] ""
 # XHTML_XHTML_ATTRIBUTE_XML_SPACE
 #: XHTML_XHTML_ATTRIBUTE_XML_SPACE
 #, fuzzy
-msgid "The attribute ''xml:space'' is legal but has a fixed value of ''preserve''. It''s use is discouraged"
-msgstr "السمة ''xml:space'' قانونية ولكن لها قيمة ثابتة هي ''محفوظة''. لا يُنصح باستخدامها"
+msgid "The attribute ''xml:space'' is legal but has a fixed value of ''preserve''. Its use is discouraged"
+msgstr "!!السمة ''xml:space'' قانونية ولكن لها قيمة ثابتة هي ''محفوظة''. لا يُنصح باستخدامها"
 
 # XHTML_XHTML_Attribute_Illegal
 #: XHTML_XHTML_Attribute_Illegal
@@ -8819,3 +8892,4 @@ msgstr "تحتوي سمة XML {0} على حرف غير صالح"
 #, fuzzy
 msgid "The XML encoding is invalid (must be UTF-8, not ''{0}'')"
 msgstr "ترميز XML غير صالح (يجب أن يكون UTF-8، وليس ''{0}'')"
+
