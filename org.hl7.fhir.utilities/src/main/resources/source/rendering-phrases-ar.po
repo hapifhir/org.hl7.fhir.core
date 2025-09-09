@@ -1,19 +1,9 @@
-# ACTOR_DEF_ACT
-msgid ""
-msgstr ""
-"Project-Id-Version: FHIR\n"
-"Report-Msgid-Bugs-To: you@example.com\n"
-"POT-Creation-Date: 2025-07-19 23:19+0000\n"
-"PO-Revision-Date: 2025-07-19 23:19+0000\n"
-"Language: ar\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 
+# ACTOR_DEF_ACT
 #: ACTOR_DEF_ACT
 #, fuzzy
 msgid "Actor: {0}"
-msgstr "الممثل: {0}"
+msgstr "Project-Id-Version: FHIR\nReport-Msgid-Bugs-To: you@example.com\nPOT-Creation-Date: 2025-07-19 23:19+0000\nPO-Revision-Date: 2025-07-19 23:19+0000\nLanguage: ar\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n"
 
 # ACTOR_DEF_CAP
 #: ACTOR_DEF_CAP
@@ -657,6 +647,16 @@ msgstr "يسرد جدول الملخص الموارد التي تشكل جزءا
 #, fuzzy
 msgid "Summary of System-wide Interactions"
 msgstr "ملخص التفاعلات على مستوى المنظومة"
+
+# CAPABILITY_SUMM_SYS_OP
+#: CAPABILITY_SUMM_SYS_OP
+msgid "Summary of System-wide Operations"
+msgstr ""
+
+# CAPABILITY_SUMM_SYS_SP
+#: CAPABILITY_SUMM_SYS_SP
+msgid "Summary of System-wide Search Parameters"
+msgstr ""
 
 # CAPABILITY_SUPP
 #: CAPABILITY_SUPP
@@ -1303,8 +1303,8 @@ msgstr "في الوجبات"
 # DATA_REND_MKDWN_LNK
 #: DATA_REND_MKDWN_LNK
 #, fuzzy
-msgid "Unable to resolve markdown link"
-msgstr "تعذر حل رابط تخفيض السعر"
+msgid "Unable to resolve markdown link ''{0}''"
+msgstr "!!تعذر حل رابط تخفيض السعر"
 
 # DATA_REND_MORNING
 #: DATA_REND_MORNING
@@ -2488,12 +2488,6 @@ msgstr "النطاق"
 msgid "URL: [base]/{0}"
 msgstr "عنوان URL: [الأساس]/{0}"
 
-# OP_DEF_URLS
-#: OP_DEF_URLS
-#, fuzzy
-msgid "URL: [base]/${0}"
-msgstr "عنوان URL: [القاعدة]/${0}$"
-
 # OP_DEF_USE
 #: OP_DEF_USE
 #, fuzzy
@@ -3348,8 +3342,8 @@ msgstr "الموارد التالية موجودة في إصدار {0} فقط ف
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
 #, fuzzy
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\\"{2}\\\">R4B ({3}.r4b)</a> are available."
-msgstr "تتوفر حزم لكل من <a href=\"{0}\">R4 ({1}.r4)</a> و <a href=\"{2} \\\">R4B ({3}.r4b)</a>."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
+msgstr "!!تتوفر حزم لكل من <a href=\"{0}\">R4 ({1}.r4)</a> و <a href=\"{2} \\\">R4B ({3}.r4b)</a>."
 
 # R44B_PROBLEMS
 #: R44B_PROBLEMS
@@ -3690,6 +3684,11 @@ msgstr "تعذر تقييم التغييرات على التعريفات"
 msgid "Derived from this {0}"
 msgstr "مشتق من هذا {0}"
 
+# SDR_DRAFT
+#: SDR_DRAFT
+msgid "This is an draft extension definition; the committee is seeking implementation feedback, and the definition or contents of the extension may change in future versions"
+msgstr ""
+
 # SDR_DRAW_IN
 #: SDR_DRAW_IN
 #, fuzzy
@@ -3705,14 +3704,19 @@ msgstr "أمثلة على ذلك {0}"
 # SDR_EXPERIMENTAL
 #: SDR_EXPERIMENTAL
 #, fuzzy
-msgid "This is an experimental extension definition; the committee is seeking implementation feedback, and the definition or contents of the extension may change in future versions"
-msgstr "هذا تعريف تجريبي للامتداد؛ وتسعى اللجنة إلى الحصول على ملاحظات حول التنفيذ، وقد يتغير تعريف الامتداد أو محتوياته في الإصدارات المستقبلية"
+msgid "This is an experimental extension definition; the definition is intended for testing purposes, education or evaluation, and the definition is not anticipated to be matured to a point where it is intended for genuine usage."
+msgstr "!!هذا تعريف تجريبي للامتداد؛ وتسعى اللجنة إلى الحصول على ملاحظات حول التنفيذ، وقد يتغير تعريف الامتداد أو محتوياته في الإصدارات المستقبلية"
 
 # SDR_EXTENSION_SUMMARY
 #: SDR_EXTENSION_SUMMARY
 #, fuzzy
 msgid "Simple Extension with the type {0}: {1}"
 msgstr "امتداد بسيط بنوع {0}: {1}"
+
+# SDR_EXTENSION_SUMMARY_MODIFIER
+#: SDR_EXTENSION_SUMMARY_MODIFIER
+msgid "Simple <b>Modifier</b> Extension with the type {0}: {1}"
+msgstr ""
 
 # SDR_EXT_ANY
 #: SDR_EXT_ANY
@@ -3762,6 +3766,11 @@ msgstr "معرّف العنصر"
 msgctxt "SDR_EXT_EXT"
 msgid "Extension"
 msgstr "التمديد"
+
+# SDR_EXT_MOD
+#: SDR_EXT_MOD
+msgid "This extension is a modifier extension."
+msgstr ""
 
 # SDR_EXT_PATH
 #: SDR_EXT_PATH
@@ -3823,8 +3832,8 @@ msgstr "يمكن الاطلاع على إرشادات حول كيفية تفسي
 #: SDR_GUIDANCE_SFX
 #, fuzzy
 msgctxt "SDR_GUIDANCE_SFX"
-msgid "-- no content: do not translate #121 --"
-msgstr "-- لا يوجد محتوى: لا تترجم #121 ---"
+msgid "-- no content: do not translate #118 --"
+msgstr "!!!!!!!!-- لا يوجد محتوى: لا تترجم #121 ---"
 
 # SDR_IMPOSE
 #: SDR_IMPOSE
@@ -4056,8 +4065,8 @@ msgstr "إصدارات FHIR"
 #: SDR_VER_RANGE_SFX
 #, fuzzy
 msgctxt "SDR_VER_RANGE_SFX"
-msgid "-- no content: do not translate #122 --"
-msgstr "-- لا يوجد محتوى: لا تترجم #122 --"
+msgid "-- no content: do not translate #119 --"
+msgstr "!!!!!!!!-- لا يوجد محتوى: لا تترجم #122 --"
 
 # SDR_VER_TO_PFX
 #: SDR_VER_TO_PFX
@@ -4069,8 +4078,8 @@ msgstr "إصدارات FHIR حتى"
 #: SDR_VER_TO_SFX
 #, fuzzy
 msgctxt "SDR_VER_TO_SFX"
-msgid "-- no content: do not translate #123 --"
-msgstr "-- لا يوجد محتوى: لا تترجم #123 --"
+msgid "-- no content: do not translate #120 --"
+msgstr "!!!!!!!!-- لا يوجد محتوى: لا تترجم #123 --"
 
 # SDR_VER_UNK
 #: SDR_VER_UNK
@@ -4396,6 +4405,11 @@ msgstr "تُعرّف هذه البنية {0} الشرائح {1} التالية"
 msgid "There is a slice with no discriminator at {0}"
 msgstr "هناك شريحة بدون مميز عند {0}"
 
+# SD_XIG_LINK
+#: SD_XIG_LINK
+msgid "<p>You can also check for <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">usages in the FHIR IG Statistics</a></p>"
+msgstr ""
+
 # SEARCH_PAR_ALLOWED
 #: SEARCH_PAR_ALLOWED
 #, fuzzy
@@ -4695,8 +4709,8 @@ msgstr "مجمع"
 # STRUC_DEF_COMPLEXBRACK
 #: STRUC_DEF_COMPLEXBRACK
 #, fuzzy
-msgid "(complex)"
-msgstr "(معقد)"
+msgid "(Complex)"
+msgstr "!!(معقد)"
 
 # STRUC_DEF_COMP_DOC
 #: STRUC_DEF_COMP_DOC
@@ -5248,6 +5262,11 @@ msgstr "تعديل"
 #, fuzzy
 msgid "Is Modifier"
 msgstr "هو تعديل"
+
+# STRUC_DEF_MODIFIER_EXT
+#: STRUC_DEF_MODIFIER_EXT
+msgid "This is a modifier extension"
+msgstr ""
 
 # STRUC_DEF_MUST_SUPPORT
 #: STRUC_DEF_MUST_SUPPORT
@@ -6721,3 +6740,4 @@ msgstr "هذا الرمز غير قابل للتحديد (''ملخص'')"
 #, fuzzy
 msgid "n/a"
 msgstr "غير متاح"
+
