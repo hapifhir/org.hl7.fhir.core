@@ -3974,7 +3974,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         String purl = tn;
         while (purl != null && !purl.equals(pt.getUri())) {
           StructureDefinition sd = worker.fetchResource(StructureDefinition.class, purl);
-          purl = sd == null ? null : sd.getBaseDefinition();
+          purl = sd == null ? null : sd.getBaseDefinitionNoVersion();
         }
         if (purl != null) {
           return false;
@@ -6782,7 +6782,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   private void addTypeAndDescendents(List<StructureDefinition> sdl, StructureDefinition dt, List<StructureDefinition> types) {
     sdl.add(dt);
     for (StructureDefinition sd : types) {
-      if (sd.hasBaseDefinition() && sd.getBaseDefinition().equals(dt.getUrl()) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+      if (sd.hasBaseDefinition() && sd.getBaseDefinitionNoVersion().equals(dt.getUrl()) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
         addTypeAndDescendents(sdl, sd, types);
       }
     }  
@@ -7010,7 +7010,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
           if (t.getPath().endsWith(".extension") && t.hasSliceName()) {
             StructureDefinition exsd = (t.getType() == null || t.getType().isEmpty() || t.getType().get(0).getProfile().isEmpty()) ?
                 null : worker.fetchResource(StructureDefinition.class, t.getType().get(0).getProfile().get(0).getValue(), profile);
-            while (exsd != null && !exsd.getBaseDefinition().equals("http://hl7.org/fhir/StructureDefinition/Extension")) {
+            while (exsd != null && !exsd.getBaseDefinitionNoVersion().equals("http://hl7.org/fhir/StructureDefinition/Extension")) {
               exsd = worker.fetchResource(StructureDefinition.class, exsd.getBaseDefinition(), exsd);
             }
             if (exsd != null && exsd.getUrl().equals(targetUrl)) {

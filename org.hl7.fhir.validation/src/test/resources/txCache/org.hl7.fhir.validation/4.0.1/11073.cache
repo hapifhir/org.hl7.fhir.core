@@ -19,7 +19,7 @@ v: {
   "code" : "150456",
   "system" : "urn:iso:std:iso:11073:10101",
   "version" : "2024-12-05",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -30,7 +30,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "information",
     "code" : "business-rule",
@@ -65,7 +65,7 @@ v: {
   "code" : "149530",
   "system" : "urn:iso:std:iso:11073:10101",
   "version" : "2024-12-05",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -76,7 +76,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "information",
     "code" : "business-rule",
@@ -111,7 +111,7 @@ v: {
   "code" : "68193",
   "system" : "urn:iso:std:iso:11073:10101",
   "version" : "2024-12-05",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -122,7 +122,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "information",
     "code" : "business-rule",
@@ -157,7 +157,7 @@ v: {
   "code" : "150588",
   "system" : "urn:iso:std:iso:11073:10101",
   "version" : "2024-12-05",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -168,7 +168,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "information",
     "code" : "business-rule",

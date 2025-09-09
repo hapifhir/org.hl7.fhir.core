@@ -3132,11 +3132,27 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     return m;
   }
-  
+
   public List<StructureDefinition> listStructures() {
     List<StructureDefinition> m = new ArrayList<StructureDefinition>();
     synchronized (lock) {
-      structures.listAll(m);    
+      structures.listAll(m);
+    }
+    return m;
+  }
+
+  public List<ValueSet> listValueSets() {
+    List<ValueSet> m = new ArrayList<ValueSet>();
+    synchronized (lock) {
+      valueSets.listAll(m);
+    }
+    return m;
+  }
+
+  public List<CodeSystem> listCodeSystems() {
+    List<CodeSystem> m = new ArrayList<CodeSystem>();
+    synchronized (lock) {
+      codeSystems.listAll(m);
     }
     return m;
   }
@@ -3363,6 +3379,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (!hasResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Base")) {
       cacheResource(ProfileUtilities.makeBaseDefinition(version));
     }
+    new CoreVersionPinner(this).pinCoreVersions(listCodeSystems(), listValueSets(), listStructures());
     if(genSnapshots) {
       for (StructureDefinition sd : listStructures()) {
         try {

@@ -51,7 +51,7 @@ public class ValueSetProcessBase {
   }
   
   public enum OpIssueCode {
-    NotInVS, ThisNotInVS, InvalidCode, Display, DisplayComment, NotFound, CodeRule, VSProcessing, InferFailed, StatusCheck, InvalidData;
+    NotInVS, ThisNotInVS, InvalidCode, Display, DisplayComment, NotFound, CodeRule, VSProcessing, InferFailed, StatusCheck, InvalidData, CodeComment;
     
     public String toCode() {
       switch (this) {
@@ -66,6 +66,7 @@ public class ValueSetProcessBase {
       case StatusCheck: return "status-check";
       case ThisNotInVS: return "this-code-not-in-vs";
       case VSProcessing: return "vs-invalid";
+      case CodeComment: return "code-comment";
       default:
         return "??";      
       }

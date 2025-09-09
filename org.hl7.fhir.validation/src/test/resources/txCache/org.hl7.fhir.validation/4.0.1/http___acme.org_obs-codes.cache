@@ -19,7 +19,7 @@ v: {
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://acme.org/obs-codes' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "http://acme.org/obs-codes",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -30,7 +30,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "not-found",
@@ -68,7 +68,7 @@ v: {
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://acme.org/obs-codes' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "http://acme.org/obs-codes",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -79,7 +79,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "not-found",

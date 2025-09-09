@@ -1286,8 +1286,8 @@ msgstr "nas refeições"
 # DATA_REND_MKDWN_LNK
 #: DATA_REND_MKDWN_LNK
 #, fuzzy
-msgid "Unable to resolve markdown link"
-msgstr "Não é possível resolver a ligação markdown"
+msgid "Unable to resolve markdown link ''{0}''"
+msgstr "!!Não é possível resolver a ligação markdown"
 
 # DATA_REND_MORNING
 #: DATA_REND_MORNING
@@ -2470,12 +2470,6 @@ msgstr "Âmbito de aplicação"
 msgid "URL: [base]/{0}"
 msgstr "URL: [base]/{0}"
 
-# OP_DEF_URLS
-#: OP_DEF_URLS
-#, fuzzy
-msgid "URL: [base]/${0}"
-msgstr "URL: [base]/${0}"
-
 # OP_DEF_USE
 #: OP_DEF_USE
 #, fuzzy
@@ -3612,6 +3606,11 @@ msgstr "Impossível avaliar alterações às definições"
 msgid "Derived from this {0}"
 msgstr "Derivado deste {0}"
 
+# SDR_DRAFT
+#: SDR_DRAFT
+msgid "This is an draft extension definition; the committee is seeking implementation feedback, and the definition or contents of the extension may change in future versions"
+msgstr ""
+
 # SDR_DRAW_IN
 #: SDR_DRAW_IN
 #, fuzzy
@@ -3626,7 +3625,7 @@ msgstr "Exemplos para este {0}"
 
 # SDR_EXPERIMENTAL
 #: SDR_EXPERIMENTAL
-msgid "This is an experimental extension definition; the committee is seeking implementation feedback, and the definition or contents of the extension may change in future versions"
+msgid "This is an experimental extension definition; the definition is intended for testing purposes, education or evaluation, and the definition is not anticipated to be matured to a point where it is intended for genuine usage."
 msgstr ""
 
 # SDR_EXTENSION_SUMMARY
@@ -3634,6 +3633,11 @@ msgstr ""
 #, fuzzy
 msgid "Simple Extension with the type {0}: {1}"
 msgstr "Extensão simples com o tipo {0}: {1}"
+
+# SDR_EXTENSION_SUMMARY_MODIFIER
+#: SDR_EXTENSION_SUMMARY_MODIFIER
+msgid "Simple <b>Modifier</b> Extension with the type {0}: {1}"
+msgstr ""
 
 # SDR_EXT_ANY
 #: SDR_EXT_ANY
@@ -3674,6 +3678,11 @@ msgstr ""
 #: SDR_EXT_EXT
 msgctxt "SDR_EXT_EXT"
 msgid "Extension"
+msgstr ""
+
+# SDR_EXT_MOD
+#: SDR_EXT_MOD
+msgid "This extension is a modifier extension."
 msgstr ""
 
 # SDR_EXT_PATH
@@ -3726,7 +3735,7 @@ msgstr "Instruções sobre como interpretar o conteúdo desta tabela podem ser e
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
-msgid "-- no content: do not translate #73 --"
+msgid "-- no content: do not translate #79 --"
 msgstr ""
 
 # SDR_IMPOSE
@@ -3927,7 +3936,7 @@ msgstr ""
 # SDR_VER_RANGE_SFX
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
-msgid "-- no content: do not translate #74 --"
+msgid "-- no content: do not translate #80 --"
 msgstr ""
 
 # SDR_VER_TO_PFX
@@ -3938,7 +3947,7 @@ msgstr ""
 # SDR_VER_TO_SFX
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
-msgid "-- no content: do not translate #75 --"
+msgid "-- no content: do not translate #81 --"
 msgstr ""
 
 # SDR_VER_UNK
@@ -4254,6 +4263,11 @@ msgstr "Esta estrutura define os seguintes {0}Slices{1}"
 msgid "There is a slice with no discriminator at {0}"
 msgstr "Existe um corte sem discriminador em {0}"
 
+# SD_XIG_LINK
+#: SD_XIG_LINK
+msgid "<p>You can also check for <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">usages in the FHIR IG Statistics</a></p>"
+msgstr ""
+
 # SEARCH_PAR_ALLOWED
 #: SEARCH_PAR_ALLOWED
 #, fuzzy
@@ -4553,8 +4567,8 @@ msgstr "Complexo"
 # STRUC_DEF_COMPLEXBRACK
 #: STRUC_DEF_COMPLEXBRACK
 #, fuzzy
-msgid "(complex)"
-msgstr "(complexo)"
+msgid "(Complex)"
+msgstr "!!(complexo)"
 
 # STRUC_DEF_COMP_DOC
 #: STRUC_DEF_COMP_DOC
@@ -5106,6 +5120,11 @@ msgstr "Modificador"
 #, fuzzy
 msgid "Is Modifier"
 msgstr "É modificador"
+
+# STRUC_DEF_MODIFIER_EXT
+#: STRUC_DEF_MODIFIER_EXT
+msgid "This is a modifier extension"
+msgstr ""
 
 # STRUC_DEF_MUST_SUPPORT
 #: STRUC_DEF_MUST_SUPPORT

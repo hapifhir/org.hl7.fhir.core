@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.ValidatorSettings;

@@ -121,10 +121,17 @@ msgstr "De {1} resource kwam niet overeen met profiel {2} omdat: {3}"
 
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT
-msgid "Can''t find ''{1}'' in the bundle ({2}). Note that there is a resource in the bundle with the same type and id, but it does not match because of the fullUrl based rules around matching relative references (must be ``{3}``)"
-msgid_plural "Can''t find ''{1}'' in the bundle ({2}). Note that there are {0} resources in the bundle with the same type and id, but they do not match because of the fullUrl based rules around matching relative references (one of ``{3}``)"
+msgid "Can''t find ''{1}'' in the bundle ({2}). Note that there is a resource in the bundle with the same type and id, but it does not match because of the fullUrl based rules around matching relative references (must be ''{3}'', but found ''{4}'')"
+msgid_plural "Can''t find ''{1}'' in the bundle ({2}). Note that there are {0} resources in the bundle with the same type and id, but they do not match because of the fullUrl based rules around matching relative references (must be ''{3}'', but found these: {4})"
 msgstr[0] "Kan ''{1}'' niet vinden in de Bundle ({2}). Merk op dat er een resource in de Bundle staat met hetzelfde type en id, maar dat deze niet matcht op basis van de regels voor fullUrl rond matchen van relatieve referenties (moet zijn ``{3}``)"
 msgstr[1] "Kan ''{1}'' niet vinden in de Bundle ({2}). Merk op dat er {0} resources in de Bundle staan met hetzelfde type en id, maar dat deze niet matchen op basis van de regels voor fullUrl rond matchen van relatieve referenties (een van ``{3}``)"
+
+# BUNDLE_BUNDLE_ENTRY_NOTFOUND_CANNOT
+#: BUNDLE_BUNDLE_ENTRY_NOTFOUND_CANNOT
+msgid "Can''t find ''{1}'' in the bundle ({2}). Note that there is a resource in the bundle with the same type and id, but it does not match because of the fullUrl based rules around matching relative references. Found ''{3}'', but it doesn''t match because of the source fullUrl ''{4}''"
+msgid_plural "Can''t find ''{1}'' in the bundle ({2}). Note that there are {0} resources in the bundle with the same type and id, but they do not match because of the fullUrl based rules around matching relative references. Found ''{3}'', but none of them match because of the source fullUrl ''{4}''"
+msgstr[0] ""
+msgstr[1] ""
 
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
@@ -154,8 +161,8 @@ msgstr "Entry {0} komt overeen met de referentie {1} op basis van type en id maa
 
 # BUNDLE_BUNDLE_POSSIBLE_MATCH_WRONG_FU
 #: BUNDLE_BUNDLE_POSSIBLE_MATCH_WRONG_FU
-msgid "Entry {0} matches the reference {1} by type and id but it''s fullUrl {2} does not match the full target URL {3} by Bundle resolution rules"
-msgstr "Entry {0} komt overeen met de verwijzing {1} op basis van type en id maar zijn fullUrl {2} komt niet overeen met de fullUrl {3} van het doel volgens de regels voor het volgen van verwijzingen in Bundles"
+msgid "Entry {0} matches the reference {1} by type and id but its fullUrl {2} does not match the full target URL {3} by Bundle resolution rules"
+msgstr "!!Entry {0} komt overeen met de verwijzing {1} op basis van type en id maar zijn fullUrl {2} komt niet overeen met de fullUrl {3} van het doel volgens de regels voor het volgen van verwijzingen in Bundles"
 
 # BUNDLE_ENTRY_URL_ABSOLUTE
 #: BUNDLE_ENTRY_URL_ABSOLUTE
@@ -1186,6 +1193,11 @@ msgstr "Verwijzing moet een waardelijst zijn, maar {0} gevonden"
 msgid "The concept map has too many codes to validate ({0})"
 msgstr "De conceptmap heeft teveel codes om te valideren ({0})"
 
+# CONCEPT_DEPRECATED_IN_VALUESET
+#: CONCEPT_DEPRECATED_IN_VALUESET
+msgid "The presence of the concept ''{1}'' in the system ''{0}'' in the value set {3} is marked with a status of {2} and its use should be reviewed"
+msgstr ""
+
 # CONTAINED_ORPHAN_DOM3
 #: CONTAINED_ORPHAN_DOM3
 msgid "The contained resource ''{0}'' is not referenced to from elsewhere in the containing resource nor does it refer to the containing resource (dom-3)"
@@ -1421,13 +1433,18 @@ msgstr "De extensie {0} specificeert een context {1} maar de validator kan dat p
 
 # EXTENSION_EXTM_CONTEXT_WRONG_XVER
 #: EXTENSION_EXTM_CONTEXT_WRONG_XVER
-msgid "The modifier extension {0} from FHIR version {3} is not allowed to be used at this point (allowed = {1}; this element is [{2}; this is a warning since contexts may be renamed between FHIR versions)"
-msgstr "De modifier extensie {0} uit FHIR version {3} is niet toegestaan om te worden gebruikt op dit punt (toegestaan = {1}; dit element is [{2}; dit is een waarschuwing aangezien contexten gewijzigd mogen worden tussen versies van FHIR)"
+msgid "The modifier extension {0} from FHIR version {3} is not allowed to be used at this point (this element is {2}; allowed for this version = {1}; this is a warning since contexts may be renamed between FHIR versions)"
+msgstr "!!De modifier extensie {0} uit FHIR version {3} is niet toegestaan om te worden gebruikt op dit punt (toegestaan = {1}; dit element is [{2}; dit is een waarschuwing aangezien contexten gewijzigd mogen worden tussen versies van FHIR)"
 
 # EXTENSION_EXTP_CONTEXT_WRONG_XVER
 #: EXTENSION_EXTP_CONTEXT_WRONG_XVER
-msgid "The extension {0} from FHIR version {3} is not allowed to be used at this point (allowed = {1}; this element is [{2}; this is a warning since contexts may be renamed between FHIR versions)"
-msgstr "De extensie {0} van FHIR versie {3} is niet toegestaan om te worden gebruikt op dit punt (toegestaan = {1}; dit element is [{2}; Dit is een waarschuwing aangezien contexten gewijzigd mogen worden tussen versies van FHIR)"
+msgid "The extension {0} from FHIR version {3} is not allowed to be used at this point (this element is {2}; allowed for this version = {1}; this is a warning since contexts may be renamed between FHIR versions)"
+msgstr "!!De extensie {0} van FHIR versie {3} is niet toegestaan om te worden gebruikt op dit punt (toegestaan = {1}; dit element is [{2}; Dit is een waarschuwing aangezien contexten gewijzigd mogen worden tussen versies van FHIR)"
+
+# EXTENSION_EXT_VERSION_NOTALLOWED
+#: EXTENSION_EXT_VERSION_NOTALLOWED
+msgid "Extension url ''{0}'' is not allowed (Element id ''{1}'' is valid, so check other defined extensions)"
+msgstr ""
 
 # EXTENSION_FHIR_VERSION_EARLIEST
 #: EXTENSION_FHIR_VERSION_EARLIEST
@@ -1571,23 +1588,25 @@ msgstr "Fout bij valideren van code ''{0}'' in systeem ''{1}'' omdat de validato
 
 # Extension_EXTM_Context_Wrong
 #: Extension_EXTM_Context_Wrong
-msgid "The modifier extension {0} is not allowed to be used at this point (allowed = {1}; this element is {2})"
-msgstr "De modifier extensie {0} is hier niet toegestaan (toegestaan = {1}; dit element is {2})"
+msgid "The modifier extension {0} is not allowed to be used at this point (this element is {2}; allowed = {1})"
+msgstr "!!De modifier extensie {0} is hier niet toegestaan (toegestaan = {1}; dit element is {2})"
 
 # Extension_EXTM_Context_Wrong_VER
 #: Extension_EXTM_Context_Wrong_VER
-msgid "The modifier extension {0} is not allowed to be used at this point (allowed for this version = {1}; this element is {2})"
-msgstr "De modifierextensie {0} is niet toegestaan om te worden gebruikt op dit punt (toegestaan voor deze versie = {1}; dit element is {2})"
+msgid "The modifier extension {0} is not allowed to be used at this point (this element is {2}; allowed for this version = {1})"
+msgstr "!!De modifierextensie {0} is niet toegestaan om te worden gebruikt op dit punt (toegestaan voor deze versie = {1}; dit element is {2})"
 
 # Extension_EXTP_Context_Wrong
 #: Extension_EXTP_Context_Wrong
-msgid "The extension {0} is not allowed to be used at this point (allowed = {1}; this element is {2})"
-msgstr "De extensie {0} mag niet op dit punt worden gebruikt (toegestaan = {1}; dit element is {2})"
+msgctxt "Extension_EXTP_Context_Wrong"
+msgid "The extension {0} is not allowed to be used at this point (this element is {2}; allowed for this version = {1})"
+msgstr "!!De extensie {0} mag niet op dit punt worden gebruikt (toegestaan = {1}; dit element is {2})"
 
 # Extension_EXTP_Context_Wrong_VER
 #: Extension_EXTP_Context_Wrong_VER
-msgid "The extension {0} is not allowed to be used at this point (allowed for this version = {1}; this element is {2})"
-msgstr "De extensie {0} is niet toegestaan om te worden gebruikt op dit punt (toegestaan voor deze versie = {1}; dit element is {2})"
+msgctxt "Extension_EXTP_Context_Wrong_VER"
+msgid "The extension {0} is not allowed to be used at this point (this element is {2}; allowed for this version = {1})"
+msgstr "!!De extensie {0} is niet toegestaan om te worden gebruikt op dit punt (toegestaan voor deze versie = {1}; dit element is {2})"
 
 # Extension_EXT_Count_Mismatch
 #: Extension_EXT_Count_Mismatch
@@ -1726,8 +1745,8 @@ msgstr "Fout bij evalueren FHIRPath expressie: Kan geen waarden vergelijken van 
 
 # FHIRPATH_CHECK_FAILED
 #: FHIRPATH_CHECK_FAILED
-msgid "Error evaluating FHIRPath expression: The check {0} failed"
-msgstr "Fout bij evalueren FHIRPath expressie: Controle {0} is mislukt"
+msgid "Error evaluating FHIRPath expression: Check failed with message ''{0}''"
+msgstr "!!Fout bij evalueren FHIRPath expressie: Controle {0} is mislukt"
 
 # FHIRPATH_CHOICE_NO_TYPE_SPECIFIER
 #: FHIRPATH_CHOICE_NO_TYPE_SPECIFIER
@@ -1802,7 +1821,7 @@ msgstr "Kan discriminator ''{0}'' op ''{2}'' niet vinden, gevonden in de definit
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES"
-msgid "-- no content: do not translate #64 --"
+msgid "-- no content: do not translate #69 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} type profiles"
 msgstr[0] ""
 msgstr[1] "Fout in discriminator bij {1}: geen onderliggende elementen, {0} typeprofielen"
@@ -1810,7 +1829,7 @@ msgstr[1] "Fout in discriminator bij {1}: geen onderliggende elementen, {0} type
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES"
-msgid "-- no content: do not translate #65 --"
+msgid "-- no content: do not translate #70 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} types"
 msgstr[0] ""
 msgstr[1] "Fout in discriminator bij {1}: geen onderliggende elementen, {0} typen"
@@ -1833,7 +1852,7 @@ msgstr "Onjuist gebruik van ofType() in discriminator - Type heeft geen code op 
 # FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES"
-msgid "-- no content: do not translate #66 --"
+msgid "-- no content: do not translate #71 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] "Onjuist gebruik van resolve() in discriminator - {0} mogelijke typen op {1} (kan er maar een zijn)"
@@ -1856,8 +1875,8 @@ msgstr "Onjuist gebruik van ofType() in discriminator - geen type op element {0}
 # FHIRPATH_FOCUS
 #: FHIRPATH_FOCUS
 msgctxt "FHIRPATH_FOCUS"
-msgid "-- no content: do not translate #67 --"
-msgid_plural "Error evaluating FHIRPath expression: focus for {0} can only have one value, but has {0} values"
+msgid "-- no content: do not translate #72 --"
+msgid_plural "Error evaluating FHIRPath expression: focus for {1} can only have one value, but has {0} values"
 msgstr[0] ""
 msgstr[1] "Fout bij evalueren FHIRPath expressie: focus voor {0} kan maar een warde hebben, maar heeft {0} waarden"
 
@@ -1874,7 +1893,7 @@ msgstr "Het type {0} is ongeldig"
 # FHIRPATH_LEFT_VALUE
 #: FHIRPATH_LEFT_VALUE
 msgctxt "FHIRPATH_LEFT_VALUE"
-msgid "-- no content: do not translate #68 --"
+msgid "-- no content: do not translate #73 --"
 msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values ({2})"
 msgstr[0] ""
 msgstr[1] "Fout bij evalueren FHIRPath expressie: linker operandus van {1} kan maar 1 waarde hebben, maar heeft {0} waarden"
@@ -1947,6 +1966,14 @@ msgstr "Fout bij evalueren FHIRPath expressie {0}: linker en rechter operandus h
 msgid "Error evaluating FHIRPath expression: The function {0} can only be used on ordered collections"
 msgstr "Fout bij evalueren FHIRPath expressie: De functie {0} kan alleen worden gebruikt op collecties met een volgorde"
 
+# FHIRPATH_PARAMETER_CARD
+#: FHIRPATH_PARAMETER_CARD
+msgctxt "FHIRPATH_PARAMETER_CARD"
+msgid "-- no content: do not translate #74 --"
+msgid_plural "Error evaluating FHIRPath expression: parameter {1} can only have one value, but has {0} values"
+msgstr[0] ""
+msgstr[1] ""
+
 # FHIRPATH_PARAM_WRONG
 #: FHIRPATH_PARAM_WRONG
 msgid "Error evaluating FHIRPath expression: The expression type {0} is not supported for parameter {1} on function {2}"
@@ -1975,7 +2002,7 @@ msgstr "Probleem met gebruik van resolve() - profiel {0} op {1} is niet gevonden
 # FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 #: FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 msgctxt "FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET"
-msgid "-- no content: do not translate #69 --"
+msgid "-- no content: do not translate #75 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] "Onjuist gebruik van resolve() in discriminator - {0} mogelijke doeltypen op {1} (kan er maar één zijn)"
@@ -1983,7 +2010,7 @@ msgstr[1] "Onjuist gebruik van resolve() in discriminator - {0} mogelijke doelty
 # FHIRPATH_RIGHT_VALUE
 #: FHIRPATH_RIGHT_VALUE
 msgctxt "FHIRPATH_RIGHT_VALUE"
-msgid "-- no content: do not translate #70 --"
+msgid "-- no content: do not translate #76 --"
 msgid_plural "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
 msgstr[1] "Fout bij evalueren FHIRPath-expressie: rechter operandus van {1} kan maar 1 waarde hebben, maar heeft {0} waarden"
@@ -2010,8 +2037,8 @@ msgstr "Kan niet verwerken als een boolean: {0}"
 
 # FHIRPATH_UNKNOWN_CONSTANT
 #: FHIRPATH_UNKNOWN_CONSTANT
-msgid "Error evaluating FHIRPath expression: Invalid FHIR Constant {0}"
-msgstr "Fout bij evalueren FHIRPath expressie: Ongeldige FHIR constante {0}"
+msgid "Error evaluating FHIRPath expression: Invalid FHIRPath Constant {0}"
+msgstr "!!Fout bij evalueren FHIRPath expressie: Ongeldige FHIR constante {0}"
 
 # FHIRPATH_UNKNOWN_CONTEXT
 #: FHIRPATH_UNKNOWN_CONTEXT
@@ -2213,6 +2240,18 @@ msgstr "De fhir_comments property moet een array van strings zijn"
 #: ILLEGAL_PROPERTY
 msgid "The property ''{0}'' is invalid"
 msgstr "De eigenschap ''{0}'' is ongeldig"
+
+# INACTIVE_CONCEPT_FOUND
+#: INACTIVE_CONCEPT_FOUND
+msgid "The concept ''{1}'' has a status of {0} and its use should be reviewed"
+msgstr ""
+
+# INACTIVE_DISPLAY_FOUND
+#: INACTIVE_DISPLAY_FOUND
+msgid "''{1}'' is no longer considered a correct display for code ''{2}'' (status = {4}). The correct display is ''{3}''"
+msgid_plural "''{1}'' is no longer considered a correct display for code ''{2}'' (status = {4}). The correct display is one of {3}"
+msgstr[0] ""
+msgstr[1] ""
 
 # INVALID_DISPLAY_NAME
 #: INVALID_DISPLAY_NAME
@@ -2726,8 +2765,8 @@ msgstr "De {0} {1} is verouderd"
 
 # MSG_DEPENDS_ON_DEPRECATED_NOTE
 #: MSG_DEPENDS_ON_DEPRECATED_NOTE
-msgid "The {0} {1} is deprecated with the note {2}"
-msgstr "De {0} {1} is verouderd met de opmerking {2}"
+msgid "The {0} {1} is deprecated with the note: ''{2}''"
+msgstr "!!De {0} {1} is verouderd met de opmerking {2}"
 
 # MSG_DEPENDS_ON_DRAFT
 #: MSG_DEPENDS_ON_DRAFT
@@ -2812,7 +2851,7 @@ msgstr "Referentie naar teruggetrokken {2} {0} van {1}"
 # MULTIPLE_LOGICAL_MODELS
 #: MULTIPLE_LOGICAL_MODELS
 msgctxt "MULTIPLE_LOGICAL_MODELS"
-msgid "-- no content: do not translate #71 --"
+msgid "-- no content: do not translate #77 --"
 msgid_plural "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
 msgstr[0] ""
 msgstr[1] "{0} logische modellen gevonden in de aangegeven profielen, dus niet in staat logisch model te verwerken (kan er maar een zijn, gevonden {1})"
@@ -2841,6 +2880,16 @@ msgstr "Het element {0} is niet gemarkeerd als ''mustSupport'' in het profiel {1
 #: NDJSON_EMPTY_LINE_WARNING
 msgid "The NDJSON source contains an empty line. This may not be accepted by some processors"
 msgstr "De NOJSON bron bevat een lege regel. Dit wordt mogelijk niet geaccepteerd door sommige processors"
+
+# NO_CODE_PROVIDED
+#: NO_CODE_PROVIDED
+msgid "No code provided for CodeSystem ''{0}''"
+msgstr ""
+
+# NO_CODE_PROVIDED_VERSION
+#: NO_CODE_PROVIDED_VERSION
+msgid "No code provided for CodeSystem ''{0}'' version ''{1}''"
+msgstr ""
 
 # NO_VALID_DISPLAY_AT_ALL
 #: NO_VALID_DISPLAY_AT_ALL
@@ -3120,8 +3169,8 @@ msgstr "De {0} ''{1}'' is gedefinieerd in het geclaimde profiel, maar ontbreekt"
 
 # PROFILE_COMPLIES_WITH_NOT_VALID
 #: PROFILE_COMPLIES_WITH_NOT_VALID
-msgid "The {0} value of ''{2}'' does not comply with the value ''{1}'' from the claimed profile"
-msgstr "!!De {0} waarde van ''{2}'' komt niet overeen met de waarde ''{1}''"
+msgid "The {0} value of ''{2}'' on the path {3} does not comply with the value ''{1}'' from the claimed profile"
+msgstr "!!!!De {0} waarde van ''{2}'' komt niet overeen met de waarde ''{1}''"
 
 # PROFILE_COMPLIES_WITH_NO_VS
 #: PROFILE_COMPLIES_WITH_NO_VS
@@ -3748,7 +3797,7 @@ msgstr "Er is slechts een antwoorditem toegestaan bij dit linkId"
 # Questionnaire_QR_Item_OnlyOneI
 #: Questionnaire_QR_Item_OnlyOneI
 msgctxt "Questionnaire_QR_Item_OnlyOneI"
-msgid "-- no content: do not translate #72 --"
+msgid "-- no content: do not translate #78 --"
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
 msgstr[0] ""
 msgstr[1] "Er is slechts een item toegestaan bij dit linkId {1} - gevonden {0} items"
@@ -3797,8 +3846,8 @@ msgstr "Het doel van deze enableWhen regel ({0}) komt pas na deze vraag"
 
 # Questionnaire_Q_EnableWhen_IsInner
 #: Questionnaire_Q_EnableWhen_IsInner
-msgid "Questions with an enableWhen cannot refer to an inner question for it''s enableWhen condition"
-msgstr "Vragen met een enableWhen kunnen niet verwijzen naar een vraag onder deze vraag als basis voor de enableWhen conditie"
+msgid "Questions with an enableWhen cannot refer to an inner question for its enableWhen condition"
+msgstr "!!Vragen met een enableWhen kunnen niet verwijzen naar een vraag onder deze vraag als basis voor de enableWhen conditie"
 
 # Questionnaire_Q_EnableWhen_NoLink
 #: Questionnaire_Q_EnableWhen_NoLink
@@ -3861,6 +3910,11 @@ msgstr "Het JSON element ''resourceType'' heeft het verkeerde JSON type: {0}"
 #: RESOURCE_DUPLICATE_CONTAINED_ID
 msgid "Duplicate ID for contained resource: {0}"
 msgstr "Dubbel id voor contained resource: {0}"
+
+# RESOURCE_INTERNAL_USE_ONLY
+#: RESOURCE_INTERNAL_USE_ONLY
+msgid "This {0} comes from the package {1} which has been marked as not suitable for this use"
+msgstr ""
 
 # RESOURCE_MATCHETYPE_DISALLOWED
 #: RESOURCE_MATCHETYPE_DISALLOWED
@@ -4038,6 +4092,11 @@ msgstr "Het type {0} moet hetzelfde zijn als het type in de basisstructuur {1} d
 # SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND
 #: SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND
 msgid "The element {0} is not valid"
+msgstr ""
+
+# SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND_VER
+#: SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND_VER
+msgid "The element {0} is not valid in version {1}"
 msgstr ""
 
 # SD_CONTEXT_SHOULD_NOT_BE_ELEMENT
@@ -4319,8 +4378,8 @@ msgstr "De padwaarde ''{1}'' van element ''{0}'' komt niet overeen met het basis
 
 # SD_OBGLIGATION_PROFILE_UKNOWN
 #: SD_OBGLIGATION_PROFILE_UKNOWN
-msgid "The profile is marked as an obligation profile, but it''s correctness cannot be checked since the base profile ''{0}'' is not known"
-msgstr "Het element ''{0}'' is gemarkeerd als obligation-profiel maar de geldigheid kan niet worden gecontroleerd omdat het basisprofiel ''{0}'' onbekend is"
+msgid "The profile is marked as an obligation profile, but its correctness cannot be checked since the base profile ''{0}'' is not known"
+msgstr "!!Het element ''{0}'' is gemarkeerd als obligation-profiel maar de geldigheid kan niet worden gecontroleerd omdat het basisprofiel ''{0}'' onbekend is"
 
 # SD_OBGLIGATION_PROFILE_UNMATCHED
 #: SD_OBGLIGATION_PROFILE_UNMATCHED
@@ -4416,8 +4475,8 @@ msgstr "Het type ''{0}'' bij {3} verwijst naar het abstracte type ''{1}'' maar d
 
 # SD_TYPE_PARAMETER_INVALID
 #: SD_TYPE_PARAMETER_INVALID
-msgid "The type definition ''{2}'' has a type parameter ''{3}'', which is not consistent with it''s ancestor type definition ''{0}'' which has the type parameter ''{1}''"
-msgstr "De typedefinitie ''{2}'' heeft typeparameter ''{3}'', wat niet consistent is met zijn ancestor-typedefinitie ''{0}'' die typeparameter ''{1}'' heeft"
+msgid "The type definition ''{2}'' has a type parameter ''{3}'', which is not consistent with its ancestor type definition ''{0}'' which has the type parameter ''{1}''"
+msgstr "!!De typedefinitie ''{2}'' heeft typeparameter ''{3}'', wat niet consistent is met zijn ancestor-typedefinitie ''{0}'' die typeparameter ''{1}'' heeft"
 
 # SD_TYPE_PARAMETER_INVALID_REF
 #: SD_TYPE_PARAMETER_INVALID_REF
@@ -4506,8 +4565,8 @@ msgstr "Slicing kan niet worden toegepast: {0}"
 
 # SM_DEPENDENT_PARAM_MODE_MISMATCH
 #: SM_DEPENDENT_PARAM_MODE_MISMATCH
-msgid "The parameter {0} refers to the variable {1} but it''s mode is {2} which is not the same as the mode required for the group {3}"
-msgstr "De parameter {0} verwijst naar de variabele {1} maar zijn mode is {2} wat niet hetzelfde is als de vereiste mode voor de groep {3}"
+msgid "The parameter {0} refers to the variable {1} but its mode is {2} which is not the same as the mode required for the group {3}"
+msgstr "!!De parameter {0} verwijst naar de variabele {1} maar zijn mode is {2} wat niet hetzelfde is als de vereiste mode voor de groep {3}"
 
 # SM_DEPENDENT_PARAM_NOT_FOUND
 #: SM_DEPENDENT_PARAM_NOT_FOUND
@@ -4516,8 +4575,8 @@ msgstr "De {1} parameter ''{0}'' is niet gevonden. Bekende variabelen: {2}"
 
 # SM_DEPENDENT_PARAM_TYPE_MISMATCH
 #: SM_DEPENDENT_PARAM_TYPE_MISMATCH
-msgid "The parameter ''{0}'' refers to the variable ''{1}'' but it''s type is ''{2}'' which is not compatible with the type required for the group ''{3}'', which is ''{4}'' (from map ''{5}'')"
-msgstr "De parameter ''{0}'' verwijst naar de variabele ''{1}'' maar zijn type is  ''{2}'' wat niet compatibele is met het vereist type voor de groep ''{3}'', welke is ''{4}'' (uit map ''{5}'')"
+msgid "The parameter ''{0}'' refers to the variable ''{1}'' but its type is ''{2}'' which is not compatible with the type required for the group ''{3}'', which is ''{4}'' (from map ''{5}'')"
+msgstr "!!De parameter ''{0}'' verwijst naar de variabele ''{1}'' maar zijn type is  ''{2}'' wat niet compatibele is met het vereist type voor de groep ''{3}'', welke is ''{4}'' (uit map ''{5}'')"
 
 # SM_DEPENDENT_PARAM_TYPE_MISMATCH_DUPLICATE
 #: SM_DEPENDENT_PARAM_TYPE_MISMATCH_DUPLICATE
@@ -4596,8 +4655,8 @@ msgstr "Een list ruleId moet niet worden gebruikt aangezien dit een regel is die
 
 # SM_ORPHAN_GROUP
 #: SM_ORPHAN_GROUP
-msgid "The group {0} is not called successfully from within this mapping script, and does not have types on it''s inputs, so type verification is not possible"
-msgstr "De groep {0} wordt niet succesvol gebruikt binnen dit mappingscript en heeft geen typen op zijn inputs, dus verificatie van type is niet mogelijk"
+msgid "The group {0} is not called successfully from within this mapping script, and does not have types on its inputs, so type verification is not possible"
+msgstr "!!De groep {0} wordt niet succesvol gebruikt binnen dit mappingscript en heeft geen typen op zijn inputs, dus verificatie van type is niet mogelijk"
 
 # SM_RULEGROUP_NOT_FOUND
 #: SM_RULEGROUP_NOT_FOUND
@@ -4799,21 +4858,6 @@ msgstr "De gegenereerde snapshot heeft een ander aantal elementen {1} dan de oor
 msgid "The snapshot for the profile ''{0}'' is empty. This is usually due to a processing error logged elsewhere"
 msgstr "De snapshot voor profiel ''{0}'' is leeg. Meestal ligt dat aan een verwerkingsprobleem dat elders staat"
 
-# STATUS_CODE_HINT
-#: STATUS_CODE_HINT
-msgid "The code is {0}"
-msgstr "De code is {0}"
-
-# STATUS_CODE_HINT_CODE
-#: STATUS_CODE_HINT_CODE
-msgid "The code ''{1}'' is {0}"
-msgstr "De code ''{1}'' is {0}"
-
-# STATUS_CODE_WARNING
-#: STATUS_CODE_WARNING
-msgid "The code is valid but is {0}"
-msgstr "De code is ongeldig maar is {0}"
-
 # STATUS_CODE_WARNING_CODE
 #: STATUS_CODE_WARNING_CODE
 msgid "The code ''{1}'' is valid but is {0}"
@@ -4984,7 +5028,7 @@ msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH
 #: TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH
-msgid "The hash of the data did not match the data"
+msgid "The hash of the data did not match the data (stated: ''{0}'', actual: ''{1}'')"
 msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_ATT_NO_CONTENT
@@ -5236,6 +5280,11 @@ msgstr "UCUM-codes met menselijk leesbare annotaties zoals {0} kunnen misleidend
 #: TYPE_SPECIFIC_CHECKS_DT_QTY_UCUM_ANNOTATIONS_NO_UNIT
 msgid "UCUM Codes that contain human readable annotations like {0} can be misleading (e.g. they are ignored when comparing units). Best Practice is not to depend on annotations in the UCUM code, so this usage should be checked, and the Quantity.unit SHOULD contain the annotation"
 msgstr "UCUM-codes met menselijk leesbare annotaties zoals {0} kunnen misleidend zijn (bijv. omdat ze worden genegeerd bij vergelijken van eenheden). Best practice is om niet afhankelijk te zijn van annotaties in de UCUM-code, dus controleer dit gebruik en de Quantity.unit ZOU de annotatie MOETEN bevatten"
+
+# TYPE_SPECIFIC_CHECKS_DT_SID_INCORRECT
+#: TYPE_SPECIFIC_CHECKS_DT_SID_INCORRECT
+msgid "The URL {0} is not a correct URL to use (in spite of being in the standard, and/or accepted in the past)"
+msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE
 #: TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE
@@ -5629,8 +5678,8 @@ msgstr "De waarde ''{0}'' valt buiten de redelijke waarden voor jaar - controlee
 
 # Type_Specific_Checks_DT_DateTime_Regex
 #: Type_Specific_Checks_DT_DateTime_Regex
-msgid "The instant ''{0}'' is not valid (by regex)"
-msgstr "De instant ''{0}'' is niet geldig (op basis van regex)"
+msgid "Not a valid instant format: ''{0}''"
+msgstr "!!De instant ''{0}'' is niet geldig (op basis van regex)"
 
 # Type_Specific_Checks_DT_DateTime_TZ
 #: Type_Specific_Checks_DT_DateTime_TZ
@@ -5639,13 +5688,13 @@ msgstr "Als een datum een tijd bevat, dan moet deze ook een tijdzone bevatten"
 
 # Type_Specific_Checks_DT_DateTime_Valid
 #: Type_Specific_Checks_DT_DateTime_Valid
-msgid "Not a valid date/time ({0})"
-msgstr "Ongeldige datum/tijd ({0})"
+msgid "Not a valid date/time format: ''{0}''"
+msgstr "!!Ongeldige datum/tijd ({0})"
 
 # Type_Specific_Checks_DT_Date_Valid
 #: Type_Specific_Checks_DT_Date_Valid
-msgid "Not a valid date ({0})"
-msgstr "Ongeldige datum ({0})"
+msgid "Not a valid date format: ''{0}''"
+msgstr "!!Ongeldige datum ({0})"
 
 # Type_Specific_Checks_DT_Decimal_GT
 #: Type_Specific_Checks_DT_Decimal_GT
@@ -5883,6 +5932,11 @@ msgstr "De definitie voor CodeSystem ''{0}'' is niet gevonden, dus kan de code n
 #: UNKNOWN_CODESYSTEM_VERSION
 msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the code cannot be validated. Valid versions: {2}"
 msgstr "De definitie voor CodeSystem {0} versie {1} is niet gevonden,  dus kan de code niet worden gevalideerd. Geldige versies: {2}"
+
+# UNKNOWN_CODESYSTEM_VERSION_NONE
+#: UNKNOWN_CODESYSTEM_VERSION_NONE
+msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the code cannot be validated. No versions of this code system are known"
+msgstr ""
 
 # UNRECOGNISED_PROPERTY_TYPE
 #: UNKNOWN_CODE_IN_FRAGMENT
@@ -6595,8 +6649,13 @@ msgstr "Uri-waarden in ValueSet.compose.include.system moeten absoluut zijn. Om 
 
 # VALUESET_INCLUDE_WRONG_CS_OID
 #: VALUESET_INCLUDE_WRONG_CS_OID
-msgid "It is not valid to refer to a CodeSystem by an identifier like this ''{0}''"
-msgstr "Verwijzen naar een codesysteem met een identifier zoals deze ''{0}'' is niet geldig"
+msgid "It is not valid to refer to a CodeSystem by an identifier like this ''{0}'' - use ''{1}''"
+msgstr "!!Verwijzen naar een codesysteem met een identifier zoals deze ''{0}'' is niet geldig"
+
+# VALUESET_INCLUDE_WRONG_CS_OID_PLURAL
+#: VALUESET_INCLUDE_WRONG_CS_OID_PLURAL
+msgid "It is not valid to refer to a CodeSystem by an identifier like this ''{0}'', and the identifier matches to multiple CodeSystem resources ({1})"
+msgstr ""
 
 # VALUESET_INCLUDE_WRONG_VS
 #: VALUESET_INCLUDE_WRONG_VS
@@ -6613,10 +6672,25 @@ msgstr "Het systeem ''{0}'' is een waardelijst, die zelf verwijst naar systeem '
 msgid "The system ''{0}'' is actually a value set, which itself refers to the systems {1}"
 msgstr "Het systeem ''{0}'' is een waardelijst, die zelf verwijst naar systemen {1}"
 
+# VALUESET_INC_NOT_VALIDATING
+#: VALUESET_INC_NOT_VALIDATING
+msgid "The concepts in the value set include have not been validated because the validator is configured not to check them"
+msgstr ""
+
+# VALUESET_INC_NO_BATCH_ON_SERVER
+#: VALUESET_INC_NO_BATCH_ON_SERVER
+msgid "The concepts in the value set include have not been validated because the terminology server {0} does not support batch validation (tests version < 1.7.8)"
+msgstr ""
+
+# VALUESET_INC_NO_SERVER
+#: VALUESET_INC_NO_SERVER
+msgid "The concepts in the value set include have not been validated because there is no terminology server"
+msgstr ""
+
 # VALUESET_NO_SYSTEM_WARNING
 #: VALUESET_INC_TOO_MANY_CODES
-msgid "The value set include has too many codes to validate ({0}), so each individual code has not been checked"
-msgstr "De waardelijst-inclusie heeft teveel codes om te valideren ({0}), dus niet elke individuele code is gecontroleerd"
+msgid "The value set include has too many concepts to validate ({0}), so each individual code has not been checked"
+msgstr "!!De waardelijst-inclusie heeft teveel codes om te valideren ({0}), dus niet elke individuele code is gecontroleerd"
 
 # VALUESET_REFERENCE_INVALID_TYPE
 #: VALUESET_NO_SYSTEM_WARNING
@@ -7092,7 +7166,7 @@ msgstr ""
 
 # XHTML_CONTROL_NO_SOURCE
 #: XHTML_CONTROL_NO_SOURCE
-msgid "The xhtml node at ''{0}'' does not have a class attribute to indicate it''s source (boilerplate, generated, or original) and this is required by the profile {1}"
+msgid "The xhtml node at ''{0}'' does not have a class attribute to indicate its source (boilerplate, generated, or original) and this is required by the profile {1}"
 msgstr ""
 
 # XHTML_URL_DATA_DATA_INVALID_COMMA
@@ -7134,8 +7208,8 @@ msgstr[1] "URL bevat {0} ongeldige tekens ({1})"
 
 # XHTML_XHTML_ATTRIBUTE_XML_SPACE
 #: XHTML_XHTML_ATTRIBUTE_XML_SPACE
-msgid "The attribute ''xml:space'' is legal but has a fixed value of ''preserve''. It''s use is discouraged"
-msgstr "!!Het attribuut ''xml:space'' is geldig maar heeft vaste waarde ''preserve''. Dit gebruik wordt afgeraden"
+msgid "The attribute ''xml:space'' is legal but has a fixed value of ''preserve''. Its use is discouraged"
+msgstr "!!!!Het attribuut ''xml:space'' is geldig maar heeft vaste waarde ''preserve''. Dit gebruik wordt afgeraden"
 
 # XHTML_XHTML_DOCTYPE_ILLEGAL
 #: XHTML_XHTML_Attribute_Illegal

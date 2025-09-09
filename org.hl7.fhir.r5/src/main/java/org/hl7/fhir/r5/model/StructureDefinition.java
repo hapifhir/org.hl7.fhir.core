@@ -41,12 +41,9 @@ import org.hl7.fhir.r5.model.Enumerations.*;
 
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
@@ -5393,6 +5390,16 @@ public class StructureDefinition extends CanonicalResource {
     }
     return baseDefinitions;
   }
+
+  public String getBaseDefinitionNoVersion() {
+    String bd = getBaseDefinition();
+    if (bd != null && bd.contains("|")) {
+      bd = bd.substring(0, bd.indexOf("|"));
+    }
+    return bd;
+  }
+
+
 
 // end addition
 
