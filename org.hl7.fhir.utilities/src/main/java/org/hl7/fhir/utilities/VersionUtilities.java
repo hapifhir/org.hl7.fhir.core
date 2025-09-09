@@ -272,7 +272,7 @@ public class VersionUtilities {
    * @return true if R6 version
    */
   public static boolean isR6Ver(@Nonnull String version) {
-    version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
+    version = removeLabels(checkVersionValidWildcards(fixForSpecialValue(version)));
     return version != null && (version.startsWith("6.0"));
   }
 
@@ -289,7 +289,7 @@ public class VersionUtilities {
    * @return true if R5 version
    */
   public static boolean isR5Ver(@Nonnull String version) {
-    version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
+    version = removeLabels(checkVersionValidWildcards(fixForSpecialValue(version)));
     return version != null && (version.startsWith("4.5") || version.startsWith("5.0"));
   }
 
@@ -299,7 +299,7 @@ public class VersionUtilities {
    * @return true if R4B version
    */
   public static boolean isR4BVer(@Nonnull String version) {
-    version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
+    version = removeLabels(checkVersionValidWildcards(fixForSpecialValue(version)));
     return version != null && (version.startsWith("4.1") || version.startsWith("4.3"));
   }
 
@@ -309,7 +309,7 @@ public class VersionUtilities {
    * @return true if R4 version
    */
   public static boolean isR4Ver(@Nonnull String version) {
-    version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
+    version = removeLabels(checkVersionValidWildcards(fixForSpecialValue(version)));
     return version != null && (version.startsWith("4.0")
       // pre-release versions
       || version.startsWith("3.2") || version.startsWith("3.3") || version.startsWith("3.5") || version.startsWith("3.5a")); // todo: 3.5a is not legal :-(
@@ -328,7 +328,7 @@ public class VersionUtilities {
    * @return true if R3 version
    */
   public static boolean isR3Ver(@Nonnull String version) {
-    version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
+    version = removeLabels(checkVersionValidWildcards(fixForSpecialValue(version)));
     return version != null && (version.startsWith("3.0"));
   }
 
@@ -338,7 +338,7 @@ public class VersionUtilities {
    * @return true if R2B version
    */
   public static boolean isR2BVer(@Nonnull String version) {
-    version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
+    version = removeLabels(checkVersionValidWildcards(fixForSpecialValue(version)));
     return version != null && (version.startsWith("1.4"));
   }
 
@@ -348,7 +348,7 @@ public class VersionUtilities {
    * @return true if R2 version
    */
   public static boolean isR2Ver(@Nonnull String version) {
-    version = removeLabels(checkVersionValid(fixForSpecialValue(version)));
+    version = removeLabels(checkVersionValidWildcards(fixForSpecialValue(version)));
     return version != null && (version.startsWith("1.0"));
   }
 
@@ -1168,7 +1168,7 @@ public class VersionUtilities {
     if (s == null) {
       throw new FHIRException("Invalid " + label + " version: null");
     } else if (!isSemVer(s)) {
-      throw new FHIRException("Invalid " + label + " version: '" + s + '"');
+      throw new FHIRException("Invalid " + label + " version: '" + s + "'");
     } else {
       return s;
     }

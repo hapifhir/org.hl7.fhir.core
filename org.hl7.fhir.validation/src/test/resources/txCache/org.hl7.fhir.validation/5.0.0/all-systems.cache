@@ -23,7 +23,7 @@ v: {
   "display" : "text/plain",
   "code" : "text/plain",
   "system" : "urn:ietf:bcp:13",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -47,7 +47,7 @@ v: {
   "display" : "text/plain",
   "code" : "text/plain",
   "system" : "urn:ietf:bcp:13",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -78,7 +78,7 @@ v: {
   "display" : "English (Region=United States)",
   "code" : "en-US",
   "system" : "urn:ietf:bcp:47",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -102,7 +102,7 @@ v: {
   "display" : "English (Region=United States)",
   "code" : "en-US",
   "system" : "urn:ietf:bcp:47",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -133,7 +133,7 @@ v: {
   "display" : "German",
   "code" : "de",
   "system" : "urn:ietf:bcp:47",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -157,7 +157,7 @@ v: {
   "display" : "German",
   "code" : "de",
   "system" : "urn:ietf:bcp:47",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -188,7 +188,7 @@ v: {
   "display" : "English",
   "code" : "en",
   "system" : "urn:ietf:bcp:47",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -212,7 +212,7 @@ v: {
   "display" : "English",
   "code" : "en",
   "system" : "urn:ietf:bcp:47",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -238,7 +238,7 @@ v: {
   "code" : "urn:ihe:iti:xds-sd:text:2008",
   "system" : "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode",
   "version" : "1.4.0",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -265,7 +265,7 @@ v: {
   "display" : "World",
   "code" : "001",
   "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -275,7 +275,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r5"
+      "valueUrl" : "http://local.fhir.org/r5"
     }],
     "severity" : "information",
     "code" : "business-rule",
@@ -315,7 +315,7 @@ v: {
   "display" : "Dutch (Region=Netherlands)",
   "code" : "nl-NL",
   "system" : "urn:ietf:bcp:47",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -339,7 +339,7 @@ v: {
   "display" : "Dutch (Region=Netherlands)",
   "code" : "nl-NL",
   "system" : "urn:ietf:bcp:47",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -370,7 +370,7 @@ v: {
   "display" : "image/gif",
   "code" : "image/gif",
   "system" : "urn:ietf:bcp:13",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -394,7 +394,7 @@ v: {
   "display" : "image/gif",
   "code" : "image/gif",
   "system" : "urn:ietf:bcp:13",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -426,7 +426,7 @@ v: {
   "code" : "ms",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -451,7 +451,7 @@ v: {
   "code" : "ms",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -482,7 +482,7 @@ v: {
   "display" : "English (Region=Australia)",
   "code" : "en-AU",
   "system" : "urn:ietf:bcp:47",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -506,7 +506,7 @@ v: {
   "display" : "English (Region=Australia)",
   "code" : "en-AU",
   "system" : "urn:ietf:bcp:47",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -534,7 +534,7 @@ v: {
   "display" : "World",
   "code" : "001",
   "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -544,7 +544,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r5"
+      "valueUrl" : "http://local.fhir.org/r5"
     }],
     "severity" : "information",
     "code" : "business-rule",

@@ -1,0 +1,6743 @@
+
+# ACTOR_DEF_ACT
+#: ACTOR_DEF_ACT
+#, fuzzy
+msgid "Actor: {0}"
+msgstr "Project-Id-Version: FHIR\nReport-Msgid-Bugs-To: you@example.com\nPOT-Creation-Date: 2025-07-19 23:19+0000\nPO-Revision-Date: 2025-07-19 23:19+0000\nLanguage: ar\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n"
+
+# ACTOR_DEF_CAP
+#: ACTOR_DEF_CAP
+#, fuzzy
+msgid "Capabilities:"
+msgstr "الإمكانيات:"
+
+# ACTOR_DEF_DER
+#: ACTOR_DEF_DER
+#, fuzzy
+msgid "Derived from:"
+msgstr "مشتق من:"
+
+# ACTOR_DEF_TYP
+#: ACTOR_DEF_TYP
+#, fuzzy
+msgid "Type: {0}"
+msgstr "اكتب: {0}"
+
+# ACTOR_DERIVED_FROM
+#: ACTOR_DERIVED_FROM
+#, fuzzy
+msgctxt "ACTOR_DERIVED_FROM"
+msgid "Derived From"
+msgstr "مشتق من"
+
+# ACTOR_DERIVED_FROM_NONE
+#: ACTOR_DERIVED_FROM_NONE
+#, fuzzy
+msgctxt "ACTOR_DERIVED_FROM_NONE"
+msgid "(none)"
+msgstr "(لا شيء)"
+
+# ADD_BIND_ADD_BIND
+#: ADD_BIND_ADD_BIND
+#, fuzzy
+msgid "Additional Bindings"
+msgstr "الروابط الإضافية"
+
+# ADD_BIND_ALL_REP
+#: ADD_BIND_ALL_REP
+#, fuzzy
+msgid "All repeats"
+msgstr "جميع التكرارات"
+
+# ADD_BIND_ANY
+#: ADD_BIND_ANY
+#, fuzzy
+msgid "Any"
+msgstr "أي"
+
+# ADD_BIND_ANY_REP
+#: ADD_BIND_ANY_REP
+#, fuzzy
+msgid "any repeat"
+msgstr "أي تكرار"
+
+# ADD_BIND_CURR_BIND
+#: ADD_BIND_CURR_BIND
+#, fuzzy
+msgctxt "ADD_BIND_CURR_BIND"
+msgid "Current"
+msgstr "الحالي"
+
+# ADD_BIND_DESIG_SYS
+#: ADD_BIND_DESIG_SYS
+#, fuzzy
+msgid "This value set is a good set of codes to start with when designing your system"
+msgstr "تعد مجموعة القيم هذه مجموعة جيدة من الرموز للبدء بها عند تصميم نظامك"
+
+# ADD_BIND_EXT_PREF
+#: ADD_BIND_EXT_PREF
+#, fuzzy
+msgid "A required binding, for use when the binding strength is ''extensible'' or ''preferred''"
+msgstr "الربط المطلوب، للاستخدام عندما تكون قوة الربط \"قابلة للتمديد\" أو \"مفضلة"
+
+# ADD_BIND_EX_BIND
+#: ADD_BIND_EX_BIND
+#, fuzzy
+msgctxt "ADD_BIND_EX_BIND"
+msgid "Extensible"
+msgstr "قابل للتوسيع"
+
+# ADD_BIND_GIVEN_CONT
+#: ADD_BIND_GIVEN_CONT
+#, fuzzy
+msgid "This value set is provided to user look up in a given context"
+msgstr "يتم توفير مجموعة القيم هذه للمستخدم للبحث عن المستخدم في سياق معين"
+
+# ADD_BIND_MAX
+#: ADD_BIND_MAX
+#, fuzzy
+msgid "Max Binding"
+msgstr "الحد الأقصى للتجليد"
+
+# ADD_BIND_MIN
+#: ADD_BIND_MIN
+#, fuzzy
+msgid "Min Binding"
+msgstr "الحد الأدنى للتجليد"
+
+# ADD_BIND_NEW_REC
+#: ADD_BIND_NEW_REC
+#, fuzzy
+msgid "New records are required to use this value set, but legacy records may use other codes"
+msgstr "السجلات الجديدة مطلوبة لاستخدام مجموعة القيم هذه، ولكن يمكن للسجلات القديمة استخدام رموز أخرى"
+
+# ADD_BIND_PREF_BIND
+#: ADD_BIND_PREF_BIND
+#, fuzzy
+msgctxt "ADD_BIND_PREF_BIND"
+msgid "Preferred"
+msgstr "المفضل"
+
+# ADD_BIND_RECOM_VALUE_SET
+#: ADD_BIND_RECOM_VALUE_SET
+#, fuzzy
+msgid "This is the value set that is recommended (documentation should explain why)"
+msgstr "هذه هي مجموعة القيم الموصى بها (يجب أن توضح الوثائق السبب)"
+
+# ADD_BIND_REQ_BIND
+#: ADD_BIND_REQ_BIND
+#, fuzzy
+msgctxt "ADD_BIND_REQ_BIND"
+msgid "Required"
+msgstr "مطلوب"
+
+# ADD_BIND_UI
+#: ADD_BIND_UI
+#, fuzzy
+msgctxt "ADD_BIND_UI"
+msgid "UI"
+msgstr "واجهة المستخدم"
+
+# ADD_BIND_UI_BIND
+#: ADD_BIND_UI_BIND
+#, fuzzy
+msgid "UI Binding"
+msgstr "ربط واجهة المستخدم"
+
+# ADD_BIND_UNKNOWN_PUR
+#: ADD_BIND_UNKNOWN_PUR
+#, fuzzy
+msgid "Unknown code for purpose"
+msgstr "رمز غير معروف للغرض"
+
+# ADD_BIND_VALID_EXT
+#: ADD_BIND_VALID_EXT
+#, fuzzy
+msgid "Validators will check this binding (strength = extensible)"
+msgstr "سيتحقق المدققون من صحة هذا الربط (القوة = قابل للتوسيع)"
+
+# ADD_BIND_VALID_REQ
+#: ADD_BIND_VALID_REQ
+#, fuzzy
+msgid "Validators will check this binding (strength = required)"
+msgstr "سيتحقق المدققون من هذا الربط (القوة = مطلوب)"
+
+# ADD_BIND_VALUE_COMP
+#: ADD_BIND_VALUE_COMP
+#, fuzzy
+msgid "This value set is a component of the base value set"
+msgstr "مجموعة القيم هذه هي أحد مكونات مجموعة القيم الأساسية"
+
+# BUNDLE_DOCUMENT_CONTENT
+#: BUNDLE_DOCUMENT_CONTENT
+#, fuzzy
+msgid "Document Content"
+msgstr "محتوى المستند"
+
+# BUNDLE_DOCUMENT_DETAILS
+#: BUNDLE_DOCUMENT_DETAILS
+#, fuzzy
+msgid "Document Details"
+msgstr "تفاصيل المستند"
+
+# BUNDLE_ETAG
+#: BUNDLE_ETAG
+#, fuzzy
+msgid "ETag = {0}"
+msgstr "علامة ETAG = {0}"
+
+# BUNDLE_HEADER_DOCUMENT_CONTENTS
+#: BUNDLE_HEADER_DOCUMENT_CONTENTS
+#, fuzzy
+msgid "Additional Resources Included in Document"
+msgstr "الموارد الإضافية المضمنة في المستند"
+
+# BUNDLE_HEADER_ENTRY
+#: BUNDLE_HEADER_ENTRY
+#, fuzzy
+msgid "Entry {0}"
+msgstr "المدخل {0}"
+
+# BUNDLE_HEADER_ENTRY_URL
+#: BUNDLE_HEADER_ENTRY_URL
+#, fuzzy
+msgid "Entry {0} - fullUrl = {1}"
+msgstr "الإدخال {0} - FullUrl = {1}"
+
+# BUNDLE_HEADER_ROOT
+#: BUNDLE_HEADER_ROOT
+#, fuzzy
+msgid "Bundle {0} of type {1}"
+msgstr "الحزمة {0} من النوع {1}"
+
+# BUNDLE_IF_MATCH
+#: BUNDLE_IF_MATCH
+#, fuzzy
+msgid "If-Match = {0}"
+msgstr "إذا تطابق = {0}"
+
+# BUNDLE_IF_MOD
+#: BUNDLE_IF_MOD
+#, fuzzy
+msgid "If-Modified-Since = {0}"
+msgstr "إذا-معدل-منذ-منذ = {0}"
+
+# BUNDLE_IF_NONE
+#: BUNDLE_IF_NONE
+#, fuzzy
+msgid "If-None-Exist = {0}"
+msgstr "إذا-لا-موجود-موجود = {0}"
+
+# BUNDLE_IF_NON_MATCH
+#: BUNDLE_IF_NON_MATCH
+#, fuzzy
+msgid "If-None-Match = {0}"
+msgstr "إذا-لا-لا-مطابقة = {0}"
+
+# BUNDLE_LAST_MOD
+#: BUNDLE_LAST_MOD
+#, fuzzy
+msgid "LastModified = {0}"
+msgstr "آخر تعديل = {0}"
+
+# BUNDLE_LOCATION
+#: BUNDLE_LOCATION
+#, fuzzy
+msgid "Location = {0}"
+msgstr "الموقع = {0}"
+
+# BUNDLE_REQUEST
+#: BUNDLE_REQUEST
+#, fuzzy
+msgid "Request:"
+msgstr "الطلب:"
+
+# BUNDLE_RESOURCE
+#: BUNDLE_RESOURCE
+#, fuzzy
+msgid "Resource {0}:"
+msgstr "المورد {0}:"
+
+# BUNDLE_RESPONSE
+#: BUNDLE_RESPONSE
+#, fuzzy
+msgid "Response:"
+msgstr "الرد:"
+
+# BUNDLE_REV_EXCP
+#: BUNDLE_REV_EXCP
+#, fuzzy
+msgid "Exception generating narrative: {0}"
+msgstr "سرد توليد الاستثناءات: {0}"
+
+# BUNDLE_SEARCH
+#: BUNDLE_SEARCH
+#, fuzzy
+msgid "Search:"
+msgstr "بحث:"
+
+# BUNDLE_SEARCH_MODE
+#: BUNDLE_SEARCH_MODE
+#, fuzzy
+msgid "Mode = {0}"
+msgstr "الوضع = {0}"
+
+# BUNDLE_SEARCH_SCORE
+#: BUNDLE_SEARCH_SCORE
+#, fuzzy
+msgid "Score = {0}"
+msgstr "النتيجة = {0}"
+
+# BUNDLE_SUMMARY
+#: BUNDLE_SUMMARY
+#, fuzzy
+msgid "{0} Bundle, {1} Entries"
+msgstr "{0} حزمة، {1} إدخالات"
+
+# BUND_REND_INVALID_DOC
+#: BUND_REND_INVALID_DOC
+#, fuzzy
+msgid "Invalid document ''{0}'' - first entry is not a Composition ({0})"
+msgstr "مستند غير صالح ''{0}'' - الإدخال الأول ليس تكويناً ({0})"
+
+# CANON_REND_COMMITTEE
+#: CANON_REND_COMMITTEE
+#, fuzzy
+msgid "Committee"
+msgstr "اللجنة"
+
+# CANON_REND_JSON
+#: CANON_REND_JSON
+#, fuzzy
+msgid "JSON"
+msgstr "JSON"
+
+# CANON_REND_MATURITY
+#: CANON_REND_MATURITY
+#, fuzzy
+msgid "Maturity"
+msgstr "النضج"
+
+# CANON_REND_PUBLISHER
+#: CANON_REND_PUBLISHER
+#, fuzzy
+msgid "Publisher"
+msgstr "الناشر"
+
+# CANON_REND_SOURCE_RES
+#: CANON_REND_SOURCE_RES
+#, fuzzy
+msgid "Source Resource"
+msgstr "مصدر المصدر"
+
+# CANON_REND_TURTLE
+#: CANON_REND_TURTLE
+#, fuzzy
+msgid "Turtle"
+msgstr "سلحفاة"
+
+# CAPABILITY_ADD_SUPP_PROF
+#: CAPABILITY_ADD_SUPP_PROF
+#, fuzzy
+msgid "Additional supported profiles:"
+msgstr "ملفات تعريف إضافية مدعومة:"
+
+# CAPABILITY_BASE_SYS
+#: CAPABILITY_BASE_SYS
+#, fuzzy
+msgid "Base System Profile"
+msgstr "ملف تعريف النظام الأساسي"
+
+# CAPABILITY_COMB_SEARCH_PAR
+#: CAPABILITY_COMB_SEARCH_PAR
+#, fuzzy
+msgid "Combined Search Parameters"
+msgstr "معلمات البحث المدمجة"
+
+# CAPABILITY_CORS_NO
+#: CAPABILITY_CORS_NO
+#, fuzzy
+msgid "Enable CORS: no"
+msgstr "تمكين CORS: لا"
+
+# CAPABILITY_CORS_YES
+#: CAPABILITY_CORS_YES
+#, fuzzy
+msgid "Enable CORS: yes"
+msgstr "تمكين CORS: نعم"
+
+# CAPABILITY_CREATE_INT
+#: CAPABILITY_CREATE_INT
+#, fuzzy
+msgid "POST a new resource (create interaction)"
+msgstr "إرسال بريد مورد جديد (إنشاء تفاعل)"
+
+# CAPABILITY_DELETE_INT
+#: CAPABILITY_DELETE_INT
+#, fuzzy
+msgid "DELETE a resource (delete interaction)"
+msgstr "حذف مورد (حذف التفاعل)"
+
+# CAPABILITY_DOCUMENT_CAPS
+#: CAPABILITY_DOCUMENT_CAPS
+#, fuzzy
+msgid "FHIR Document Capabilities"
+msgstr "إمكانيات مستند FHIR"
+
+# CAPABILITY_ENDPOINTS
+#: CAPABILITY_ENDPOINTS
+#, fuzzy
+msgid "Endpoint(s)"
+msgstr "نقطة (نقاط النهاية)"
+
+# CAPABILITY_ERR_DET
+#: CAPABILITY_ERR_DET
+#, fuzzy
+msgid "Error detected"
+msgstr "تم اكتشاف خطأ"
+
+# CAPABILITY_EXT_OP
+#: CAPABILITY_EXT_OP
+#, fuzzy
+msgid "Extended Operations"
+msgstr "العمليات الموسعة"
+
+# CAPABILITY_FHIR
+#: CAPABILITY_FHIR
+#, fuzzy
+msgid "Core FHIR Resource"
+msgstr "مورد FHIR الأساسي"
+
+# CAPABILITY_FHIR_VER
+#: CAPABILITY_FHIR_VER
+#, fuzzy
+msgid "FHIR Version: {0}"
+msgstr "إصدار FHIR: {0}"
+
+# CAPABILITY_HISTORY_INT
+#: CAPABILITY_HISTORY_INT
+#, fuzzy
+msgid "GET changes to a resource (history interaction on instance)"
+msgstr "الحصول على تغييرات على مورد (تفاعل التاريخ على سبيل المثال)"
+
+# CAPABILITY_HISTORY_TYPE
+#: CAPABILITY_HISTORY_TYPE
+#, fuzzy
+msgid "GET changes for all resources of the type (history interaction on type)"
+msgstr "الحصول على التغييرات لجميع موارد النوع (تفاعل التاريخ على النوع)"
+
+# CAPABILITY_IMP_VER
+#: CAPABILITY_IMP_VER
+#, fuzzy
+msgid "Implementation Guide Version: {0}"
+msgstr "إصدار دليل التنفيذ: {0}"
+
+# CAPABILITY_INT
+#: CAPABILITY_INT
+#, fuzzy
+msgid "interaction."
+msgstr "التفاعل."
+
+# CAPABILITY_INTER_SUPP
+#: CAPABILITY_INTER_SUPP
+#, fuzzy
+msgid "The interactions supported by each resource ("
+msgstr "التفاعلات التي يدعمها كل مورد ("
+
+# CAPABILITY_INT_DESC
+#: CAPABILITY_INT_DESC
+#, fuzzy
+msgid "interaction described as follows:"
+msgstr "التفاعل الموصوف على النحو التالي:"
+
+# CAPABILITY_INT_SUMM
+#: CAPABILITY_INT_SUMM
+#, fuzzy
+msgid "Interaction summary"
+msgstr "ملخص التفاعل"
+
+# CAPABILITY_MAY_SUPP
+#: CAPABILITY_MAY_SUPP
+#, fuzzy
+msgid "MAY Support the Following Implementation Guides"
+msgstr "قد يدعم أدلة التنفيذ التالية"
+
+# CAPABILITY_MESSAGING_CAP
+#: CAPABILITY_MESSAGING_CAP
+#, fuzzy
+msgid "Messaging Capability"
+msgstr "إمكانية المراسلة"
+
+# CAPABILITY_MESSAGING_CAPS
+#: CAPABILITY_MESSAGING_CAPS
+#, fuzzy
+msgid "FHIR Messaging Capabilities"
+msgstr "إمكانيات مراسلة FHIR"
+
+# CAPABILITY_MULT_EXT
+#: CAPABILITY_MULT_EXT
+#, fuzzy
+msgid "this mark indicates that there are more than one expectation extensions present"
+msgstr "تُشير هذه العلامة إلى وجود أكثر من امتداد توقع واحد فقط"
+
+# CAPABILITY_NOTE_CAP
+#: CAPABILITY_NOTE_CAP
+#, fuzzy
+msgid "Note to Implementers: FHIR Capabilities"
+msgstr "ملاحظة إلى المنفذين: إمكانيات FHIR"
+
+# CAPABILITY_OP
+#: CAPABILITY_OP
+#, fuzzy
+msgid "Operations"
+msgstr "العمليات"
+
+# CAPABILITY_OPER
+#: CAPABILITY_OPER
+#, fuzzy
+msgid "Operation"
+msgstr "العملية"
+
+# CAPABILITY_OTH_RES_ENB
+#: CAPABILITY_OTH_RES_ENB
+#, fuzzy
+msgid "The other resources enabled for"
+msgstr "الموارد الأخرى الممكّنة لـ"
+
+# CAPABILITY_PATCH_INT
+#: CAPABILITY_PATCH_INT
+#, fuzzy
+msgid "PATCH a new resource version (patch interaction)"
+msgstr "تصحيح إصدار مورد جديد (تفاعل التصحيح)"
+
+# CAPABILITY_PROF_CONF
+#: CAPABILITY_PROF_CONF
+#, fuzzy
+msgid "Profile Conformance"
+msgstr "مطابقة الملف الشخصي"
+
+# CAPABILITY_PROF_MAP
+#: CAPABILITY_PROF_MAP
+#, fuzzy
+msgid "Profile Mapping"
+msgstr "تخطيط الملف الشخصي"
+
+# CAPABILITY_PROF_RES_DOC
+#: CAPABILITY_PROF_RES_DOC
+#, fuzzy
+msgid "Document Resource Profile"
+msgstr "ملف تعريف موارد المستندات"
+
+# CAPABILITY_PUB_BY
+#: CAPABILITY_PUB_BY
+#, fuzzy
+msgid "Published by: {0}"
+msgstr "تم النشر بواسطة: {0}"
+
+# CAPABILITY_PUB_ON
+#: CAPABILITY_PUB_ON
+#, fuzzy
+msgid "Published on: {0}"
+msgstr "نُشرت بتاريخ: {0}"
+
+# CAPABILITY_READ_INT
+#: CAPABILITY_READ_INT
+#, fuzzy
+msgid "GET a resource (read interaction)"
+msgstr "الحصول على مورد (قراءة التفاعل)"
+
+# CAPABILITY_REF_PROF
+#: CAPABILITY_REF_PROF
+#, fuzzy
+msgid "Reference Policy"
+msgstr "السياسة المرجعية"
+
+# CAPABILITY_REQ_RECOM
+#: CAPABILITY_REQ_RECOM
+#, fuzzy
+msgid "Required and recommended search parameters"
+msgstr "معلمات البحث المطلوبة والموصى بها"
+
+# CAPABILITY_REST_CAPS
+#: CAPABILITY_REST_CAPS
+#, fuzzy
+msgid "FHIR RESTful Capabilities"
+msgstr "إمكانات FHIR RESTful Capabilities"
+
+# CAPABILITY_REST_CONFIG
+#: CAPABILITY_REST_CONFIG
+#, fuzzy
+msgid "REST Configuration: {0}"
+msgstr "تهيئة REST: {0}"
+
+# CAPABILITY_RES_CONF
+#: CAPABILITY_RES_CONF
+#, fuzzy
+msgid "Resource Conformance: {0}"
+msgstr "توافق الموارد: {0}"
+
+# CAPABILITY_RES_ENB
+#: CAPABILITY_RES_ENB
+#, fuzzy
+msgid "The linked resources enabled for"
+msgstr "تم تمكين الموارد المرتبطة لـ"
+
+# CAPABILITY_RES_OPER
+#: CAPABILITY_RES_OPER
+#, fuzzy
+msgid "The operations on the resource (if any)"
+msgstr "العمليات على المورد (إن وجدت)"
+
+# CAPABILITY_RES_PRO
+#: CAPABILITY_RES_PRO
+#, fuzzy
+msgid "Capabilities by Resource/Profile"
+msgstr "القدرات حسب المورد/الملف الشخصي"
+
+# CAPABILITY_RES_TYP
+#: CAPABILITY_RES_TYP
+#, fuzzy
+msgid "Resource Type"
+msgstr "نوع المورد"
+
+# CAPABILITY_REV_PROF
+#: CAPABILITY_REV_PROF
+#, fuzzy
+msgid "The relevant profiles (if any)"
+msgstr "الملفات الشخصية ذات الصلة (إن وجدت)"
+
+# CAPABILITY_SEARCHES
+#: CAPABILITY_SEARCHES
+#, fuzzy
+msgid "Searches"
+msgstr "عمليات البحث"
+
+# CAPABILITY_SEARCH_INT
+#: CAPABILITY_SEARCH_INT
+#, fuzzy
+msgid "GET all set of resources of the type (search interaction)"
+msgstr "الحصول على كل مجموعة الموارد من النوع (تفاعل البحث)"
+
+# CAPABILITY_SEARCH_PAR
+#: CAPABILITY_SEARCH_PAR
+#, fuzzy
+msgid "The required, recommended, and some optional search parameters (if any)."
+msgstr "معلمات البحث المطلوبة والموصى بها وبعض معلمات البحث الاختيارية (إن وجدت)."
+
+# CAPABILITY_SEARCH_PARS
+#: CAPABILITY_SEARCH_PARS
+#, fuzzy
+msgid "Search Parameters"
+msgstr "معلمات البحث"
+
+# CAPABILITY_SHOULD_SUPP
+#: CAPABILITY_SHOULD_SUPP
+#, fuzzy
+msgid "SHOULD Support the Following Implementation Guides"
+msgstr "يجب أن تدعم أدلة التنفيذ التالية"
+
+# CAPABILITY_SUMM_RES
+#: CAPABILITY_SUMM_RES
+#, fuzzy
+msgid "The summary table lists the resources that are part of this configuration, and for each resource it lists:"
+msgstr "يسرد جدول الملخص الموارد التي تشكل جزءاً من هذا التكوين، ولكل مورد يسرد:"
+
+# CAPABILITY_SUMM_SYS_INT
+#: CAPABILITY_SUMM_SYS_INT
+#, fuzzy
+msgid "Summary of System-wide Interactions"
+msgstr "ملخص التفاعلات على مستوى المنظومة"
+
+# CAPABILITY_SUMM_SYS_OP
+#: CAPABILITY_SUMM_SYS_OP
+msgid "Summary of System-wide Operations"
+msgstr ""
+
+# CAPABILITY_SUMM_SYS_SP
+#: CAPABILITY_SUMM_SYS_SP
+msgid "Summary of System-wide Search Parameters"
+msgstr ""
+
+# CAPABILITY_SUPP
+#: CAPABILITY_SUPP
+#, fuzzy
+msgid "support"
+msgstr "الدعم"
+
+# CAPABILITY_SUPPS
+#: CAPABILITY_SUPPS
+#, fuzzy
+msgid "Supports"
+msgstr "يدعم"
+
+# CAPABILITY_SUPPS_THE
+#: CAPABILITY_SUPPS_THE
+#, fuzzy
+msgid "Supports the"
+msgstr "يدعم"
+
+# CAPABILITY_SUPP_FORM
+#: CAPABILITY_SUPP_FORM
+#, fuzzy
+msgid "Supported Formats:"
+msgstr "التنسيقات المدعومة:"
+
+# CAPABILITY_SUPP_MSGS
+#: CAPABILITY_SUPP_MSGS
+#, fuzzy
+msgid "Supported Message(s)"
+msgstr "الرسالة (الرسائل) المدعومة"
+
+# CAPABILITY_SUPP_PATCH_FORM
+#: CAPABILITY_SUPP_PATCH_FORM
+#, fuzzy
+msgid "Supported Patch Formats:"
+msgstr "تنسيقات التصحيح المدعومة:"
+
+# CAPABILITY_SUPP_PROFS
+#: CAPABILITY_SUPP_PROFS
+#, fuzzy
+msgid "Supported Profiles"
+msgstr "الملفات الشخصية المدعومة"
+
+# CAPABILITY_SUPP_THE
+#: CAPABILITY_SUPP_THE
+#, fuzzy
+msgid "support the"
+msgstr "دعم"
+
+# CAPABILITY_TYPS
+#: CAPABILITY_TYPS
+#, fuzzy
+msgid "Types"
+msgstr "الأنواع"
+
+# CAPABILITY_TYP_PRES
+#: CAPABILITY_TYP_PRES
+#, fuzzy
+msgid "ype are only present if at least one of the resources has support for them."
+msgstr "ype موجودة فقط إذا كان أحد الموارد على الأقل يدعمها."
+
+# CAPABILITY_UPDATE_INT
+#: CAPABILITY_UPDATE_INT
+#, fuzzy
+msgid "PUT a new resource version (update interaction)"
+msgstr "وضع إصدار مورد جديد (تحديث التفاعل)"
+
+# CAPABILITY_VREAD_INT
+#: CAPABILITY_VREAD_INT
+#, fuzzy
+msgid "GET past versions of resources (vread interaction)"
+msgstr "الحصول على الإصدارات السابقة من الموارد (تفاعل القراءة التفاعلية)"
+
+# CAPABILTY_ALLOW_CAP
+#: CAPABILTY_ALLOW_CAP
+#, fuzzy
+msgid "Any FHIR capability may be ''allowed'' by the system unless explicitly marked as ''SHALL NOT''. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case."
+msgstr "قد \"يسمح\" النظام بأي إمكانية من إمكانيات FHIR \"مسموح بها\" ما لم يتم وضع علامة \"يجب ألا\" صراحةً. تم وضع علامة \"قد\" على بعض العناصر في دليل التنفيذ لتسليط الضوء على أهميتها المحتملة لحالة الاستخدام."
+
+# CAPABILTY_SHALL_SUPP
+#: CAPABILTY_SHALL_SUPP
+#, fuzzy
+msgid "SHALL Support the Following Implementation Guides"
+msgstr "يجب أن تدعم أدلة التنفيذ التالية"
+
+# CODESYSTEM_CONCEPTS
+#: CODESYSTEM_CONCEPTS
+#, fuzzy
+msgid "Concepts"
+msgstr "المفاهيم"
+
+# CODESYSTEM_CONTENT_COMPLETE
+#: CODESYSTEM_CONTENT_COMPLETE
+#, fuzzy
+msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines the following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgstr "يُعرّف هذا <param name=\"cased\"/> نظام الشيفرة <param name=\"cs\"/> الرمز التالي<f test=\"code-count != 1\">s</f><param name=\"h\"/>:"
+
+# CODESYSTEM_CONTENT_EXAMPLE
+#: CODESYSTEM_CONTENT_EXAMPLE
+#, fuzzy
+msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides some code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>that are example only</b>:"
+msgstr "يوفر هذا <pparam name=\"cased\"/> نظام الرمز <param name=\"cs\"/> بعض الرموز<f test=\"code-count !\"= 1\"><f/f><param name=\"h\"/> <b>هذا مثال فقط</b>:"
+
+# CODESYSTEM_CONTENT_FRAGMENT
+#: CODESYSTEM_CONTENT_FRAGMENT
+#, fuzzy
+msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides <b>a fragment</b> that includes following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgstr "يوفر هذا <pparam name=\"cased\"/> نظام التعليمات البرمجية <param name=\"cs\"/> جزءًا <b>جزءًا <b> يتضمن التعليمات البرمجية التالية<f test=\"code-count !\"= 1\">s</f></إذا><param name=\"h\"/>:"
+
+# CODESYSTEM_CONTENT_NOTPRESENT
+#: CODESYSTEM_CONTENT_NOTPRESENT
+#, fuzzy
+msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines codes<param name=\"h\"/>, but no codes are represented here"
+msgstr "يحدد هذا <param name=\"cased\"/> نظام الرمز <param name=\"cs\"/> رموز <param name=\"h\"/>، ولكن لا توجد رموز ممثلة هنا"
+
+# CODESYSTEM_CONTENT_SUPPLEMENT
+#: CODESYSTEM_CONTENT_SUPPLEMENT
+#, fuzzy
+msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
+msgstr "يُعرّف ملحق نظام الشيفرة هذا <param name=\"cs\"/> يُعرّف {0} على الشيفرة التالية <إذا كان اختبار=\"عدد الشيفرات != 1\">s</إذا"
+
+# CODESYSTEM_DEPRECATED
+#: CODESYSTEM_DEPRECATED
+#, fuzzy
+msgid "Deprecated"
+msgstr "مهمل"
+
+# CODESYSTEM_FILTERS
+#: CODESYSTEM_FILTERS
+#, fuzzy
+msgid "Filters"
+msgstr "الفلاتر"
+
+# CODESYSTEM_FILTER_OP
+#: CODESYSTEM_FILTER_OP
+#, fuzzy
+msgid "Op"
+msgstr "المرجع"
+
+# CODESYSTEM_PROPS_DESC
+#: CODESYSTEM_PROPS_DESC
+#, fuzzy
+msgid "This code system defines the following properties for its concepts"
+msgstr "يحدد نظام التعليمات البرمجية هذا الخصائص التالية لمفاهيمه"
+
+# CODE_SYS_CODE_NOT_HERE
+#: CODE_SYS_CODE_NOT_HERE
+#, fuzzy
+msgid "This CodeSystem is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
+msgstr "لا يتم استخدام نظام الترميز هذا هنا؛ ويمكن استخدامه في مكان آخر (على سبيل المثال المواصفات و/أو التطبيقات التي تستخدم هذا المحتوى)"
+
+# CODE_SYS_COMPLETE
+#: CODE_SYS_COMPLETE
+#, fuzzy
+msgid "All the concepts defined by the code system are included in the code system resource"
+msgstr "يتم تضمين جميع المفاهيم التي يحددها نظام التعليمات البرمجية في مورد نظام التعليمات البرمجية"
+
+# CODE_SYS_COPY
+#: CODE_SYS_COPY
+#, fuzzy
+msgid "Copy"
+msgstr "نسخ"
+
+# CODE_SYS_DISP
+#: CODE_SYS_DISP
+#, fuzzy
+msgid "displays"
+msgstr "شاشات العرض"
+
+# CODE_SYS_DISP_PROP
+#: CODE_SYS_DISP_PROP
+#, fuzzy
+msgid "displays and properties"
+msgstr "شاشات العرض والخصائص"
+
+# CODE_SYS_EXAMPLE
+#: CODE_SYS_EXAMPLE
+#, fuzzy
+msgid "A few representative concepts are included in the code system resource"
+msgstr "يتم تضمين بعض المفاهيم التمثيلية في مورد نظام التعليمات البرمجية"
+
+# CODE_SYS_FEAT
+#: CODE_SYS_FEAT
+#, fuzzy
+msgid "features"
+msgstr "الميزات"
+
+# CODE_SYS_FOR_OID
+#: CODE_SYS_FOR_OID
+#, fuzzy
+msgid "{0} (for OID based terminology systems)"
+msgstr "{0} (لأنظمة المصطلحات المستندة إلى OID)"
+
+# CODE_SYS_FRAGMENT
+#: CODE_SYS_FRAGMENT
+#, fuzzy
+msgid "A subset of the code system concepts are included in the code system resource"
+msgstr "يتم تضمين مجموعة فرعية من مفاهيم نظام التعليمات البرمجية في مورد نظام التعليمات البرمجية"
+
+# CODE_SYS_IN_A_HIERARCHY
+#: CODE_SYS_IN_A_HIERARCHY
+#, fuzzy
+msgid "in a {0} hierarchy"
+msgstr "في التسلسل الهرمي {0}"
+
+# CODE_SYS_NOTPRESENT
+#: CODE_SYS_NOTPRESENT
+#, fuzzy
+msgid "None of the concepts defined by the code system are included in the code system resource"
+msgstr "لا يتم تضمين أي من المفاهيم التي يحددها نظام التعليمات البرمجية في مورد نظام التعليمات البرمجية"
+
+# CODE_SYS_PROP
+#: CODE_SYS_PROP
+#, fuzzy
+msgid "properties"
+msgstr "الخصائص"
+
+# CODE_SYS_REPLACED_BY
+#: CODE_SYS_REPLACED_BY
+#, fuzzy
+msgid "(replaced by"
+msgstr "(يُستعاض عنها بـ"
+
+# CODE_SYS_SUPPLEMENT
+#: CODE_SYS_SUPPLEMENT
+#, fuzzy
+msgid "This code system resource is a supplement to"
+msgstr "يعد مورد نظام التعليمات البرمجية هذا مكملاً لـ"
+
+# CODE_SYS_SUPP_CODE_NOT_HERE
+#: CODE_SYS_SUPP_CODE_NOT_HERE
+#, fuzzy
+msgid "This CodeSystem Supplement is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
+msgstr "لا يتم استخدام ملحق نظام الترميز هذا هنا؛ ويمكن استخدامه في مكان آخر (على سبيل المثال المواصفات و/أو التطبيقات التي تستخدم هذا المحتوى)"
+
+# CODE_SYS_THE_VALUE_SET
+#: CODE_SYS_THE_VALUE_SET
+#, fuzzy
+msgid "{0} is the value set for all codes in this code system"
+msgstr "{0} هي القيمة المحددة لجميع الرموز في نظام الرموز هذا"
+
+# CODE_SYS_UNDEF_HIER
+#: CODE_SYS_UNDEF_HIER
+#, fuzzy
+msgid "in an undefined hierarchy"
+msgstr "في تسلسل هرمي غير محدد"
+
+# CODE_SYS_UNKN_MODE
+#: CODE_SYS_UNKN_MODE
+#, fuzzy
+msgid "Unknown CodeSystemContentMode mode"
+msgstr "وضع CodeSystemContententMode غير معروف"
+
+# CONC_MAP_CODES
+#: CONC_MAP_CODES
+#, fuzzy
+msgid "Codes"
+msgstr "الرموز"
+
+# CONC_MAP_CODE_SYS_UNSPEC
+#: CONC_MAP_CODE_SYS_UNSPEC
+#, fuzzy
+msgid "unspecified code system"
+msgstr "نظام كود غير محدد"
+
+# CONC_MAP_FRM
+#: CONC_MAP_FRM
+#, fuzzy
+msgid "from"
+msgstr "من"
+
+# CONC_MAP_FROM
+#: CONC_MAP_FROM
+#, fuzzy
+msgid "Mapping from"
+msgstr "رسم الخرائط من"
+
+# CONC_MAP_GRP
+#: CONC_MAP_GRP
+#, fuzzy
+msgid "Group {0}"
+msgstr "المجموعة {0}"
+
+# CONC_MAP_NOT_SPEC
+#: CONC_MAP_NOT_SPEC
+#, fuzzy
+msgid "(not specified)"
+msgstr "(غير محدد)"
+
+# CONC_MAP_REL
+#: CONC_MAP_REL
+#, fuzzy
+msgid "Relationship"
+msgstr "العلاقة"
+
+# CONC_MAP_SOURCE
+#: CONC_MAP_SOURCE
+#, fuzzy
+msgid "Source Code"
+msgstr "كود المصدر"
+
+# CONC_MAP_SOURCE_CARD
+#: CONC_MAP_SOURCE_CARD
+#, fuzzy
+msgctxt "CONC_MAP_SOURCE_CARD"
+msgid "Card."
+msgstr "البطاقة."
+
+# CONC_MAP_SOURCE_TYPE
+#: CONC_MAP_SOURCE_TYPE
+#, fuzzy
+msgctxt "CONC_MAP_SOURCE_TYPE"
+msgid "Type"
+msgstr "النوع"
+
+# CONC_MAP_SRC_DET
+#: CONC_MAP_SRC_DET
+#, fuzzy
+msgid "Source Concept Details"
+msgstr "تفاصيل مفهوم المصدر التفاصيل"
+
+# CONC_MAP_TO
+#: CONC_MAP_TO
+#, fuzzy
+msgctxt "CONC_MAP_TO"
+msgid "to"
+msgstr "إلى"
+
+# CONC_MAP_TRGT
+#: CONC_MAP_TRGT
+#, fuzzy
+msgid "Target Code"
+msgstr "الرمز المستهدف"
+
+# CONC_MAP_TRGT_CARD
+#: CONC_MAP_TRGT_CARD
+#, fuzzy
+msgctxt "CONC_MAP_TRGT_CARD"
+msgid "Card."
+msgstr "البطاقة."
+
+# CONC_MAP_TRGT_DET
+#: CONC_MAP_TRGT_DET
+#, fuzzy
+msgid "Target Concept Details"
+msgstr "تفاصيل المفهوم المستهدف"
+
+# CONC_MAP_TRGT_TYPE
+#: CONC_MAP_TRGT_TYPE
+#, fuzzy
+msgctxt "CONC_MAP_TRGT_TYPE"
+msgid "Type"
+msgstr "النوع"
+
+# DATA_REND_AFTERNOON
+#: DATA_REND_AFTERNOON
+#, fuzzy
+msgid "Afternoon"
+msgstr "بعد الظهر"
+
+# DATA_REND_AFTERNOON_EARLY
+#: DATA_REND_AFTERNOON_EARLY
+#, fuzzy
+msgid "Early Afternoon"
+msgstr "بعد الظهر"
+
+# DATA_REND_AFTERNOON_LATE
+#: DATA_REND_AFTERNOON_LATE
+#, fuzzy
+msgid "Late Afternoon"
+msgstr "وقت متأخر بعد الظهر"
+
+# DATA_REND_AFTER_SLEEP
+#: DATA_REND_AFTER_SLEEP
+#, fuzzy
+msgid "After Sleep"
+msgstr "بعد النوم"
+
+# DATA_REND_AFTRBKFST
+#: DATA_REND_AFTRBKFST
+#, fuzzy
+msgid "after breakfast"
+msgstr "بعد الإفطار"
+
+# DATA_REND_AFTRDINR
+#: DATA_REND_AFTRDINR
+#, fuzzy
+msgid "after dinner"
+msgstr "بعد العشاء"
+
+# DATA_REND_AFTRLUNCH
+#: DATA_REND_AFTRLUNCH
+#, fuzzy
+msgid "after lunch"
+msgstr "بعد الغداء"
+
+# DATA_REND_AFTRMEALS
+#: DATA_REND_AFTRMEALS
+#, fuzzy
+msgid "after meals"
+msgstr "بعد الوجبات"
+
+# DATA_REND_AFTRWKNG
+#: DATA_REND_AFTRWKNG
+#, fuzzy
+msgid "after waking"
+msgstr "بعد الاستيقاظ"
+
+# DATA_REND_ATBKFST
+#: DATA_REND_ATBKFST
+#, fuzzy
+msgid "at breakfast"
+msgstr "في وجبة الإفطار"
+
+# DATA_REND_ATDINR
+#: DATA_REND_ATDINR
+#, fuzzy
+msgid "at dinner"
+msgstr "على العشاء"
+
+# DATA_REND_ATLUNCH
+#: DATA_REND_ATLUNCH
+#, fuzzy
+msgid "at lunch"
+msgstr "على الغداء"
+
+# DATA_REND_ATT_DATA
+#: DATA_REND_ATT_DATA
+#, fuzzy
+msgctxt "DATA_REND_ATT_DATA"
+msgid "{0}: {1}"
+msgstr "{0}: {1}"
+
+# DATA_REND_ATT_URL
+#: DATA_REND_ATT_URL
+#, fuzzy
+msgid "{0} @ {1}"
+msgstr "{0} @ {1}"
+
+# DATA_REND_BASE64
+#: DATA_REND_BASE64
+#, fuzzy
+msgid "(base64 data - {0} base64 chars)"
+msgstr "(بيانات base64 - {0} base64 chars)"
+
+# DATA_REND_BFBKFST
+#: DATA_REND_BFBKFST
+#, fuzzy
+msgid "before breakfast"
+msgstr "قبل الإفطار"
+
+# DATA_REND_BFDINR
+#: DATA_REND_BFDINR
+#, fuzzy
+msgid "before dinner"
+msgstr "قبل العشاء"
+
+# DATA_REND_BFLUNCH
+#: DATA_REND_BFLUNCH
+#, fuzzy
+msgid "before lunch"
+msgstr "قبل الغداء"
+
+# DATA_REND_BFMEALS
+#: DATA_REND_BFMEALS
+#, fuzzy
+msgid "before meals"
+msgstr "قبل الوجبات"
+
+# DATA_REND_BFSLEEP
+#: DATA_REND_BFSLEEP
+#, fuzzy
+msgid "before sleeping"
+msgstr "قبل النوم"
+
+# DATA_REND_BY
+#: DATA_REND_BY
+#, fuzzy
+msgid "By"
+msgstr "بواسطة"
+
+# DATA_REND_CODES
+#: DATA_REND_CODES
+#, fuzzy
+msgid "Codes:"
+msgstr "الرموز:"
+
+# DATA_REND_COND
+#: DATA_REND_COND
+#, fuzzy
+msgid "Condition"
+msgstr "الحالة"
+
+# DATA_REND_COUNT
+#: DATA_REND_COUNT
+#, fuzzy
+msgid "Count {0}"
+msgstr "عد {0}"
+
+# DATA_REND_CURRENCY
+#: DATA_REND_CURRENCY
+#, fuzzy
+msgid "{1} {0}"
+msgstr "{1} {0}"
+
+# DATA_REND_DATA
+#: DATA_REND_DATA
+#, fuzzy
+msgid "Data: {0}"
+msgstr "البيانات: {0}"
+
+# DATA_REND_DETAILS
+#: DATA_REND_DETAILS
+#, fuzzy
+msgid "(Details: {0}  code"
+msgstr "(التفاصيل: {0} الرمز"
+
+# DATA_REND_DETAILS_STATED
+#: DATA_REND_DETAILS_STATED
+#, fuzzy
+msgid "(Details: {0} code {1} = ''{2}'')"
+msgstr "(التفاصيل: {0} رمز {1} = ''{2}'')"
+
+# DATA_REND_DETAILS_STATED_ND
+#: DATA_REND_DETAILS_STATED_ND
+#, fuzzy
+msgid "(Details: {0} code {1})"
+msgstr "(التفاصيل: {0} الرمز {1})"
+
+# DATA_REND_DICOM
+#: DATA_REND_DICOM
+#, fuzzy
+msgid "DICOM"
+msgstr "DICOM"
+
+# DATA_REND_DIM
+#: DATA_REND_DIM
+#, fuzzy
+msgid "Dimensions: {0}"
+msgstr "الأبعاد: {0}"
+
+# DATA_REND_DURATION
+#: DATA_REND_DURATION
+#, fuzzy
+msgid "Duration {0}"
+msgstr "المدة {0}"
+
+# DATA_REND_ERROR
+#: DATA_REND_ERROR
+#, fuzzy
+msgid "Error: {0}"
+msgstr "خطأ: {0}"
+
+# DATA_REND_EVENING
+#: DATA_REND_EVENING
+#, fuzzy
+msgid "Evening"
+msgstr "مساء الخير"
+
+# DATA_REND_EVENING_EARLY
+#: DATA_REND_EVENING_EARLY
+#, fuzzy
+msgid "Early Evening"
+msgstr "المساء الباكر"
+
+# DATA_REND_EVENING_LATE
+#: DATA_REND_EVENING_LATE
+#, fuzzy
+msgid "Late Evening"
+msgstr "في وقت متأخر من المساء"
+
+# DATA_REND_EVENTS
+#: DATA_REND_EVENTS
+#, fuzzy
+msgid "Events: {0}"
+msgstr "الأحداث: {0}"
+
+# DATA_REND_EXCEPTION
+#: DATA_REND_EXCEPTION
+#, fuzzy
+msgid "Exception"
+msgstr "الاستثناء"
+
+# DATA_REND_FACT
+#: DATA_REND_FACT
+#, fuzzy
+msgid "Factor: {0}"
+msgstr "العامل: {0}"
+
+# DATA_REND_FAX
+#: DATA_REND_FAX
+#, fuzzy
+msgid "Fax: {0}"
+msgstr "الفاكس: {0}"
+
+# DATA_REND_GLN
+#: DATA_REND_GLN
+#, fuzzy
+msgid "Global Location Number"
+msgstr "رقم الموقع العالمي"
+
+# DATA_REND_ICD
+#: DATA_REND_ICD
+#, fuzzy
+msgid "ICD-9"
+msgstr "التصنيف الدولي للأمراض ICD-9"
+
+# DATA_REND_IMMEDIATE
+#: DATA_REND_IMMEDIATE
+#, fuzzy
+msgid "Immediate"
+msgstr "فوري"
+
+# DATA_REND_INT
+#: DATA_REND_INT
+#, fuzzy
+msgid "Interval: {0}"
+msgstr "الفترة الزمنية: {0}"
+
+# DATA_REND_LIMIT
+#: DATA_REND_LIMIT
+#, fuzzy
+msgid "Limit"
+msgstr "الحد"
+
+# DATA_REND_LOINC
+#: DATA_REND_LOINC
+#, fuzzy
+msgid "LOINC"
+msgstr "لوينك"
+
+# DATA_REND_LOWER
+#: DATA_REND_LOWER
+#, fuzzy
+msgid "Lower: {0}"
+msgstr "أقل: {0}"
+
+# DATA_REND_MEALS
+#: DATA_REND_MEALS
+#, fuzzy
+msgid "at meals"
+msgstr "في الوجبات"
+
+# DATA_REND_MKDWN_LNK
+#: DATA_REND_MKDWN_LNK
+#, fuzzy
+msgid "Unable to resolve markdown link ''{0}''"
+msgstr "!!تعذر حل رابط تخفيض السعر"
+
+# DATA_REND_MORNING
+#: DATA_REND_MORNING
+#, fuzzy
+msgid "Morning"
+msgstr "صباح الخير"
+
+# DATA_REND_MORNING_EARLY
+#: DATA_REND_MORNING_EARLY
+#, fuzzy
+msgid "Early Morning"
+msgstr "الصباح الباكر"
+
+# DATA_REND_MORNING_LATE
+#: DATA_REND_MORNING_LATE
+#, fuzzy
+msgid "Late Morning"
+msgstr "الصباح المتأخر"
+
+# DATA_REND_NIGHT
+#: DATA_REND_NIGHT
+#, fuzzy
+msgid "Night"
+msgstr "ليلاً"
+
+# DATA_REND_NOON
+#: DATA_REND_NOON
+#, fuzzy
+msgid "Noon"
+msgstr "الظهيرة"
+
+# DATA_REND_NOT_STAT
+#: DATA_REND_NOT_STAT
+#, fuzzy
+msgid "[not stated]"
+msgstr "[غير مذكور]"
+
+# DATA_REND_NO_DISP
+#: DATA_REND_NO_DISP
+#, fuzzy
+msgid "No display for {0}"
+msgstr "لا يوجد عرض ل {0}"
+
+# DATA_REND_ONCE
+#: DATA_REND_ONCE
+#, fuzzy
+msgid "Once"
+msgstr "مرة واحدة"
+
+# DATA_REND_ONGOING
+#: DATA_REND_ONGOING
+#, fuzzy
+msgid "(ongoing)"
+msgstr "(مستمر)"
+
+# DATA_REND_ORIGIN
+#: DATA_REND_ORIGIN
+#, fuzzy
+msgid "Origin: {0}"
+msgstr "الأصل: {0}"
+
+# DATA_REND_PER
+#: DATA_REND_PER
+#, fuzzy
+msgid "per"
+msgstr "لكل"
+
+# DATA_REND_PERIOD
+#: DATA_REND_PERIOD
+#, fuzzy
+msgid "period:"
+msgstr "الفترة:"
+
+# DATA_REND_PHONE
+#: DATA_REND_PHONE
+#, fuzzy
+msgid "Phone: {0}"
+msgstr "الهاتف: {0}"
+
+# DATA_REND_RXNORM
+#: DATA_REND_RXNORM
+#, fuzzy
+msgid "RxNorm"
+msgstr "RxNorm"
+
+# DATA_REND_SEARCH
+#: DATA_REND_SEARCH
+#, fuzzy
+msgid "Search on: {0}"
+msgstr "ابحث عن: {0}"
+
+# DATA_REND_SNOMED
+#: DATA_REND_SNOMED
+#, fuzzy
+msgid "SNOMED CT"
+msgstr "SNOMED CT"
+
+# DATA_REND_SORT
+#: DATA_REND_SORT
+#, fuzzy
+msgid "Sort"
+msgstr "فرز"
+
+# DATA_REND_SOURCE
+#: DATA_REND_SOURCE
+#, fuzzy
+msgid "source"
+msgstr "المصدر"
+
+# DATA_REND_STARTING
+#: DATA_REND_STARTING
+#, fuzzy
+msgid "Starting {0}"
+msgstr "بدءاً من {0}"
+
+# DATA_REND_THESE_CODES
+#: DATA_REND_THESE_CODES
+#, fuzzy
+msgid "One of these codes:"
+msgstr "أحد هذه الرموز"
+
+# DATA_REND_TIMING
+#: DATA_REND_TIMING
+#, fuzzy
+msgid "Timing"
+msgstr "التوقيت"
+
+# DATA_REND_TO_DO
+#: DATA_REND_TO_DO
+#, fuzzy
+msgid "to do: {0}"
+msgstr "إلى: {0}"
+
+# DATA_REND_UNKNWN
+#: DATA_REND_UNKNWN
+#, fuzzy
+msgid "unknown"
+msgstr "غير معروف"
+
+# DATA_REND_UNRD_EX
+#: DATA_REND_UNRD_EX
+#, fuzzy
+msgid "WARNING: Unrenderable Modifier Extension!"
+msgstr "تحذير: امتداد المعدل غير قابل للتعديل!"
+
+# DATA_REND_UNTIL
+#: DATA_REND_UNTIL
+#, fuzzy
+msgid "Until {0}"
+msgstr "حتى {0}"
+
+# DATA_REND_UP
+#: DATA_REND_UP
+#, fuzzy
+msgid "Upper: {0}"
+msgstr "العلوي: {0}"
+
+# DATA_REND_USE
+#: DATA_REND_USE
+#, fuzzy
+msgid "use:"
+msgstr "الاستخدام:"
+
+# DATA_REND_VALUESET
+#: DATA_REND_VALUESET
+#, fuzzy
+msgid "In ValueSet"
+msgstr "في ValueSet"
+
+# DATA_REND_VERSION
+#: DATA_REND_VERSION
+#, fuzzy
+msgid "(version = {0} {1}"
+msgstr "(الإصدار = {0} {1}"
+
+# DIAG_REP_REND_AGE
+#: DIAG_REP_REND_AGE
+#, fuzzy
+msgid "Age"
+msgstr "العمر"
+
+# DIAG_REP_REND_CODECON
+#: DIAG_REP_REND_CODECON
+#, fuzzy
+msgid "Coded Conclusions:"
+msgstr "الاستنتاجات المشفرة:"
+
+# DIAG_REP_REND_ERR
+#: DIAG_REP_REND_ERR
+#, fuzzy
+msgid "Error:"
+msgstr "خطأ:"
+
+# DIAG_REP_REND_FOR
+#: DIAG_REP_REND_FOR
+#, fuzzy
+msgid "for"
+msgstr "لـ"
+
+# DIAG_REP_REND_IDENTIFIER
+#: DIAG_REP_REND_IDENTIFIER
+#, fuzzy
+msgid "Identifier"
+msgstr "تحديد"
+
+# DIAG_REP_REND_NOTRES
+#: DIAG_REP_REND_NOTRES
+#, fuzzy
+msgid "The observation ''{0}'' could not be resolved"
+msgstr "تعذّر حل الملاحظة ''{0}''"
+
+# DIAG_REP_REND_OBS
+#: DIAG_REP_REND_OBS
+#, fuzzy
+msgid "Observation"
+msgstr "الملاحظة"
+
+# DIAG_REP_REND_PER
+#: DIAG_REP_REND_PER
+#, fuzzy
+msgid "Performer"
+msgstr "المؤدي"
+
+# DIAG_REP_REND_REFRAN
+#: DIAG_REP_REND_REFRAN
+#, fuzzy
+msgid "Reference Range"
+msgstr "النطاق المرجعي"
+
+# DIAG_REP_REND_REP
+#: DIAG_REP_REND_REP
+#, fuzzy
+msgid "Reported"
+msgstr "تم الإبلاغ"
+
+# DIAG_REP_REND_REPDET
+#: DIAG_REP_REND_REPDET
+#, fuzzy
+msgid "Report Details"
+msgstr "تفاصيل التقرير"
+
+# DIAG_REP_REND_UNABLE
+#: DIAG_REP_REND_UNABLE
+#, fuzzy
+msgid "Unable to get Patient Details"
+msgstr "تعذر الحصول على تفاصيل المريض"
+
+# DIAG_REP_REND_WHEN
+#: DIAG_REP_REND_WHEN
+#, fuzzy
+msgid "When For"
+msgstr "متى"
+
+# DIAG_REP_SUMMARY
+#: DIAG_REP_SUMMARY
+#, fuzzy
+msgid "Diagnostic Report for ''{0}'' for ''{1}''"
+msgstr "تقرير تشخيصي ل \"{0}\" ل \"{1}"
+
+# DIAG_REP_UNSPECIFIED_CODE
+#: DIAG_REP_UNSPECIFIED_CODE
+#, fuzzy
+msgid "Unspecified Report Type"
+msgstr "نوع التقرير غير محدد"
+
+# DIAG_REP_UNSPECIFIED_SUBJECT
+#: DIAG_REP_UNSPECIFIED_SUBJECT
+#, fuzzy
+msgctxt "DIAG_REP_UNSPECIFIED_SUBJECT"
+msgid "Unspecified Subject"
+msgstr "موضوع غير محدد"
+
+# DOCUMENT_SUMMARY
+#: DOCUMENT_SUMMARY
+#, fuzzy
+msgid "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
+msgstr "<param name=\"status\"/> مستند في <param name=\"date\"/> بواسطة <param name=\"author\"/> ل <param name=\"subject\"/> <إذا كان <param name=\"subject\"/> <f test=\"has-encounter = true\"> في لقاء <param name=\"encounter\"/></if>"
+
+# EXAMPLE_SCEN_STEP_SCEN
+#: EXAMPLE_SCEN_STEP_SCEN
+#, fuzzy
+msgid "Step {0}  - See scenario {1}"
+msgstr "الخطوة {0} - انظر السيناريو {1}"
+
+# EX_SCEN_ALT
+#: EX_SCEN_ALT
+#, fuzzy
+msgid "Alternative {0}"
+msgstr "البديل {0}"
+
+# EX_SCEN_BEL
+#: EX_SCEN_BEL
+#, fuzzy
+msgid "below"
+msgstr "أدناه"
+
+# EX_SCEN_CONTA
+#: EX_SCEN_CONTA
+#, fuzzy
+msgid "Contains:"
+msgstr "يحتوي على:"
+
+# EX_SCEN_ERR_REN
+#: EX_SCEN_ERR_REN
+#, fuzzy
+msgid "Error rendering ExampleScenario {0}"
+msgstr "خطأ في عرض مثال على السيناريو {0}"
+
+# EX_SCEN_FVER
+#: EX_SCEN_FVER
+#, fuzzy
+msgid "FHIR version"
+msgstr "إصدار FHIR"
+
+# EX_SCEN_IN
+#: EX_SCEN_IN
+#, fuzzy
+msgid "Initiator"
+msgstr "البادئ"
+
+# EX_SCEN_OTH
+#: EX_SCEN_OTH
+#, fuzzy
+msgid "See other scenario"
+msgstr "انظر السيناريوهات الأخرى"
+
+# EX_SCEN_POSTCON
+#: EX_SCEN_POSTCON
+#, fuzzy
+msgid "Post-conditions:"
+msgstr "الشروط اللاحقة:"
+
+# EX_SCEN_PRECON
+#: EX_SCEN_PRECON
+#, fuzzy
+msgid "Pre-conditions:"
+msgstr "الشروط المسبقة:"
+
+# EX_SCEN_PROC
+#: EX_SCEN_PROC
+#, fuzzy
+msgid "Process: {0}"
+msgstr "العملية: {0}"
+
+# EX_SCEN_REC
+#: EX_SCEN_REC
+#, fuzzy
+msgid "Receiver"
+msgstr "جهاز الاستقبال"
+
+# EX_SCEN_RES
+#: EX_SCEN_RES
+#, fuzzy
+msgid "Response"
+msgstr "الاستجابة"
+
+# EX_SCEN_SEE
+#: EX_SCEN_SEE
+#, fuzzy
+msgid "See subprocess"
+msgstr "انظر العملية الفرعية"
+
+# EX_SCEN_STEP
+#: EX_SCEN_STEP
+#, fuzzy
+msgid "Step"
+msgstr "الخطوة"
+
+# EX_SCEN_TIME
+#: EX_SCEN_TIME
+#, fuzzy
+msgid "... time passes ..."
+msgstr "... يمر الوقت ..."
+
+# EX_SCEN_UN
+#: EX_SCEN_UN
+#, fuzzy
+msgid "Unknown ExampleScenario Renderer Mode {0}"
+msgstr "مثال غير معروف وضع المُعيد للسيناريو {0}"
+
+# EX_SCEN_UN_ACT
+#: EX_SCEN_UN_ACT
+#, fuzzy
+msgid "Unable to find referenced actor {0}"
+msgstr "تعذر العثور على الممثل المشار إليه {0}"
+
+# FMM_TABLE
+#: FMM_TABLE
+#, fuzzy
+msgid "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
+msgstr "<table class=\"cols\"><<tbody><tr><tr><td><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">مستوى النضج</>: {0}</td><td><td>&nbsp;<a href=\"{1} الإصدارات.html#std-process\" العنوان=\"الحالة القياسية\">{2}</td></td></tr></tr></tbody></tbody></table>"
+
+# GENERAL_ADDITIONAL_BINDING
+#: GENERAL_ADDITIONAL_BINDING
+#, fuzzy
+msgid "This element has additional bindings"
+msgstr "يحتوي هذا العنصر على ارتباطات إضافية"
+
+# GENERAL_ADD_LANG
+#: GENERAL_ADD_LANG
+#, fuzzy
+msgid "Additional Language Displays"
+msgstr "شاشات عرض اللغات الإضافية"
+
+# GENERAL_BINDING
+#: GENERAL_BINDING
+#, fuzzy
+msgid "Binding"
+msgstr "التجليد"
+
+# GENERAL_BINDINGS
+#: GENERAL_BINDINGS
+#, fuzzy
+msgid "Bindings"
+msgstr "الروابط"
+
+# GENERAL_BINDING_NO_DESC
+#: GENERAL_BINDING_NO_DESC
+#, fuzzy
+msgid "No description provided"
+msgstr "لم يتم تقديم أي وصف"
+
+# GENERAL_BINDING_NO_VS_1
+#: GENERAL_BINDING_NO_VS_1
+#, fuzzy
+msgid "Binding Description"
+msgstr "الوصف الملزم"
+
+# GENERAL_BINDING_NO_VS_2
+#: GENERAL_BINDING_NO_VS_2
+#, fuzzy
+msgid "This binding doesn''t define a testable ValueSet"
+msgstr "هذا الربط لا يحدد مجموعة قيم قابلة للاختبار"
+
+# GENERAL_BIND_MIN_ALLOW
+#: GENERAL_BIND_MIN_ALLOW
+#, fuzzy
+msgid "The minimum allowable value set - any conformant system SHALL support all these codes"
+msgstr "الحد الأدنى لمجموعة القيم المسموح بها - يجب أن يدعم أي نظام متوافق جميع هذه الرموز"
+
+# GENERAL_CARD
+#: GENERAL_CARD
+#, fuzzy
+msgctxt "GENERAL_CARD"
+msgid "Card."
+msgstr "البطاقة."
+
+# GENERAL_CARDINALITY
+#: GENERAL_CARDINALITY
+#, fuzzy
+msgid "Cardinality"
+msgstr "الكاردينالية"
+
+# GENERAL_CODE
+#: GENERAL_CODE
+#, fuzzy
+msgid "Code"
+msgstr "الكود"
+
+# GENERAL_COMMENT
+#: GENERAL_COMMENT
+#, fuzzy
+msgid "Comment"
+msgstr "كيفية"
+
+# GENERAL_COMMENTS
+#: GENERAL_COMMENTS
+#, fuzzy
+msgid "Comments"
+msgstr "التعليقات"
+
+# GENERAL_COMPARATORS
+#: GENERAL_COMPARATORS
+#, fuzzy
+msgid "Comparators"
+msgstr "المقارنات"
+
+# GENERAL_COMPONENT
+#: GENERAL_COMPONENT
+#, fuzzy
+msgid "Component"
+msgstr "المكوّن"
+
+# GENERAL_CONFORMANCE
+#: GENERAL_CONFORMANCE
+#, fuzzy
+msgid "Conformance"
+msgstr "الامتثال"
+
+# GENERAL_CONSTRAINTS
+#: GENERAL_CONSTRAINTS
+#, fuzzy
+msgctxt "GENERAL_CONSTRAINTS"
+msgid "Constraints"
+msgstr "القيود"
+
+# GENERAL_CONTACT
+#: GENERAL_CONTACT
+#, fuzzy
+msgid "Contact:"
+msgstr "اتصل بـ"
+
+# GENERAL_CONTENT
+#: GENERAL_CONTENT
+#, fuzzy
+msgid "Content"
+msgstr "المحتوى"
+
+# GENERAL_COPYRIGHT
+#: GENERAL_COPYRIGHT
+#, fuzzy
+msgid "Copyright"
+msgstr "حقوق الطبع والنشر"
+
+# GENERAL_CRIT
+#: GENERAL_CRIT
+#, fuzzy
+msgid "Criteria"
+msgstr "المعايير"
+
+# GENERAL_DATA_DISPLAY_PROPERTY
+#: GENERAL_DATA_DISPLAY_PROPERTY
+#, fuzzy
+msgctxt "GENERAL_DATA_DISPLAY_PROPERTY"
+msgid "{0}: {1}"
+msgstr "{0}: {1}"
+
+# GENERAL_DEFINING_URL
+#: GENERAL_DEFINING_URL
+#, fuzzy
+msgid "Defining URL"
+msgstr "تعريف عنوان URL"
+
+# GENERAL_DEFINITION
+#: GENERAL_DEFINITION
+#, fuzzy
+msgctxt "GENERAL_DEFINITION"
+msgid "Definition"
+msgstr "التعريف"
+
+# GENERAL_DEFINITION_COLON
+#: GENERAL_DEFINITION_COLON
+#, fuzzy
+msgid "Definition:"
+msgstr "التعريف:"
+
+# GENERAL_DESC
+#: GENERAL_DESC
+#, fuzzy
+msgid "Description"
+msgstr "الوصف"
+
+# GENERAL_DESC_CONST
+#: GENERAL_DESC_CONST
+#, fuzzy
+msgid "Description & Constraints"
+msgstr "الوصف والقيود"
+
+# GENERAL_DETAILS
+#: GENERAL_DETAILS
+#, fuzzy
+msgid "Details"
+msgstr "التفاصيل"
+
+# GENERAL_DOCUMENTATION
+#: GENERAL_DOCUMENTATION
+#, fuzzy
+msgid "Documentation"
+msgstr "التوثيق"
+
+# GENERAL_EXAMPLE
+#: GENERAL_EXAMPLE
+#, fuzzy
+msgid "Example"
+msgstr "مثال على ذلك"
+
+# GENERAL_EXPER
+#: GENERAL_EXPER
+#, fuzzy
+msgid "Experimental"
+msgstr "تجريبي"
+
+# GENERAL_FILTER
+#: GENERAL_FILTER
+#, fuzzy
+msgid "Filter"
+msgstr "الفلاتر"
+
+# GENERAL_FIXED_VALUE
+#: GENERAL_FIXED_VALUE
+#, fuzzy
+msgctxt "GENERAL_FIXED_VALUE"
+msgid "Fixed Value: {0}"
+msgstr "القيمة الثابتة: {0}"
+
+# GENERAL_FLAGS
+#: GENERAL_FLAGS
+#, fuzzy
+msgid "Flags"
+msgstr "الأعلام"
+
+# GENERAL_LOCATION
+#: GENERAL_LOCATION
+#, fuzzy
+msgid "Location"
+msgstr "الموقع"
+
+# GENERAL_LOGICAL_NAME
+#: GENERAL_LOGICAL_NAME
+#, fuzzy
+msgid "The logical name of the element"
+msgstr "الاسم المنطقي للعنصر"
+
+# GENERAL_MAX_LENGTH
+#: GENERAL_MAX_LENGTH
+#, fuzzy
+msgid "Max Length:"
+msgstr "الحد الأقصى للطول:"
+
+# GENERAL_MIN_LENGTH
+#: GENERAL_MIN_LENGTH
+#, fuzzy
+msgid "Min Length:"
+msgstr "الحد الأدنى للطول:"
+
+# GENERAL_MODIFIERS
+#: GENERAL_MODIFIERS
+#, fuzzy
+msgid "Modifiers"
+msgstr "تعديل"
+
+# GENERAL_NAME
+#: GENERAL_NAME
+#, fuzzy
+msgid "Name"
+msgstr "الاسم"
+
+# GENERAL_NCI_THES
+#: GENERAL_NCI_THES
+#, fuzzy
+msgid "NCI Thesaurus"
+msgstr "معجم NCI Thesaurus"
+
+# GENERAL_NOTE
+#: GENERAL_NOTE
+#, fuzzy
+msgid "Note"
+msgstr "ملاحظة"
+
+# GENERAL_OBLIG
+#: GENERAL_OBLIG
+#, fuzzy
+msgctxt "GENERAL_OBLIG"
+msgid "Obligations"
+msgstr "الالتزامات"
+
+# GENERAL_OBLIGATIONS
+#: GENERAL_OBLIGATIONS
+#, fuzzy
+msgctxt "GENERAL_OBLIGATIONS"
+msgid "Obligations"
+msgstr "الالتزامات"
+
+# GENERAL_OID
+#: GENERAL_OID
+#, fuzzy
+msgid "OID"
+msgstr "OID"
+
+# GENERAL_PAR
+#: GENERAL_PAR
+#, fuzzy
+msgid "Parameter"
+msgstr "المعلمة"
+
+# GENERAL_PARS
+#: GENERAL_PARS
+#, fuzzy
+msgid "Parameters"
+msgstr "المعلمات"
+
+# GENERAL_PATTERN_VALUE
+#: GENERAL_PATTERN_VALUE
+#, fuzzy
+msgctxt "GENERAL_PATTERN_VALUE"
+msgid "Pattern Value: {0}"
+msgstr "قيمة النمط: {0}"
+
+# GENERAL_PREFERRED
+#: GENERAL_PREFERRED
+#, fuzzy
+msgctxt "GENERAL_PREFERRED"
+msgid "Preferred"
+msgstr "المفضل"
+
+# GENERAL_PROF
+#: GENERAL_PROF
+#, fuzzy
+msgctxt "GENERAL_PROF"
+msgid "Profile"
+msgstr "الملف الشخصي"
+
+# GENERAL_PROPS
+#: GENERAL_PROPS
+#, fuzzy
+msgid "Properties"
+msgstr "الخصائص"
+
+# GENERAL_PURPOSE
+#: GENERAL_PURPOSE
+#, fuzzy
+msgid "Purpose"
+msgstr "الغرض"
+
+# GENERAL_REFS
+#: GENERAL_REFS
+#, fuzzy
+msgid "References:"
+msgstr "المراجع:"
+
+# GENERAL_REMOVED_SINCE
+#: GENERAL_REMOVED_SINCE
+#, fuzzy
+msgid "This content has been removed since {0}"
+msgstr "تمت إزالة هذا المحتوى منذ {0}"
+
+# GENERAL_REQUEST
+#: GENERAL_REQUEST
+#, fuzzy
+msgid "Request"
+msgstr "الطلب"
+
+# GENERAL_REQUIRED
+#: GENERAL_REQUIRED
+#, fuzzy
+msgctxt "GENERAL_REQUIRED"
+msgid "Required"
+msgstr "مطلوب"
+
+# GENERAL_REQUIRED_BINDING
+#: GENERAL_REQUIRED_BINDING
+#, fuzzy
+msgid "Required Binding to ValueSet {0}"
+msgstr "الارتباط المطلوب بمجموعة القيمة {0}"
+
+# GENERAL_RESOURCE
+#: GENERAL_RESOURCE
+#, fuzzy
+msgctxt "GENERAL_RESOURCE"
+msgid "Resource"
+msgstr "الموارد"
+
+# GENERAL_SECURITY_LABEL
+#: GENERAL_SECURITY_LABEL
+#, fuzzy
+msgid "Security Label"
+msgstr "ملصق الأمان"
+
+# GENERAL_SOURCE
+#: GENERAL_SOURCE
+#, fuzzy
+msgctxt "GENERAL_SOURCE"
+msgid "Source"
+msgstr "المصدر"
+
+# GENERAL_SRC
+#: GENERAL_SRC
+#, fuzzy
+msgid "Source:"
+msgstr "المصدر:"
+
+# GENERAL_STARTER
+#: GENERAL_STARTER
+#, fuzzy
+msgid "Starter"
+msgstr "المبتدئ"
+
+# GENERAL_STATUS
+#: GENERAL_STATUS
+#, fuzzy
+msgctxt "GENERAL_STATUS"
+msgid "Status"
+msgstr "الحالة"
+
+# GENERAL_SUBJ
+#: GENERAL_SUBJ
+#, fuzzy
+msgid "Subject"
+msgstr "الموضوع"
+
+# GENERAL_SUMM
+#: GENERAL_SUMM
+#, fuzzy
+msgid "Summary"
+msgstr "الملخص"
+
+# GENERAL_TITLE
+#: GENERAL_TITLE
+#, fuzzy
+msgid "Title"
+msgstr "العنوان"
+
+# GENERAL_TODO
+#: GENERAL_TODO
+#, fuzzy
+msgid "Not done yet"
+msgstr "لم يتم ذلك بعد"
+
+# GENERAL_TYPE
+#: GENERAL_TYPE
+#, fuzzy
+msgctxt "GENERAL_TYPE"
+msgid "Type"
+msgstr "النوع"
+
+# GENERAL_TYPE_PROFILE
+#: GENERAL_TYPE_PROFILE
+#, fuzzy
+msgid "This element has profiles on it's type: {0}"
+msgstr "يحتوي هذا العنصر على ملفات تعريف على نوعه: {0}"
+
+# GENERAL_TYPE_TARGET_PROFILE
+#: GENERAL_TYPE_TARGET_PROFILE
+#, fuzzy
+msgid "This element has restrictions/profiles on it's targets: {0}"
+msgstr "يحتوي هذا العنصر على قيود/ملفات تعريف على أهدافه: {0}"
+
+# GENERAL_UCUM
+#: GENERAL_UCUM
+#, fuzzy
+msgid "UCUM"
+msgstr "UCUM"
+
+# GENERAL_URI
+#: GENERAL_URI
+#, fuzzy
+msgid "URI"
+msgstr "URI"
+
+# GENERAL_URL
+#: GENERAL_URL
+#, fuzzy
+msgid "URL"
+msgstr "عنوان URL"
+
+# GENERAL_USAGE
+#: GENERAL_USAGE
+#, fuzzy
+msgid "Usage"
+msgstr "الاستخدام"
+
+# GENERAL_VALUE
+#: GENERAL_VALUE
+#, fuzzy
+msgid "Value"
+msgstr "القيمة"
+
+# GENERAL_VALUESET
+#: GENERAL_VALUESET
+#, fuzzy
+msgid "Value Set"
+msgstr "مجموعة القيم"
+
+# GENERAL_VALUE_BOUNDED
+#: GENERAL_VALUE_BOUNDED
+#, fuzzy
+msgid "The value must be between {0} and {1} (or equal)"
+msgstr "يجب أن تكون القيمة بين {0} و {1} (أو مساوية)"
+
+# GENERAL_VALUE_MAX
+#: GENERAL_VALUE_MAX
+#, fuzzy
+msgid "The value must be less or equal to {0}"
+msgstr "يجب أن تكون القيمة أقل من {0} أو تساويها"
+
+# GENERAL_VALUE_MIN
+#: GENERAL_VALUE_MIN
+#, fuzzy
+msgid "The value must be greater or equal to {0}"
+msgstr "يجب أن تكون القيمة أكبر من {0} أو تساويها"
+
+# GENERAL_VER
+#: GENERAL_VER
+#, fuzzy
+msgid "Version"
+msgstr "الإصدار"
+
+# GENERAL_VER_LOW
+#: GENERAL_VER_LOW
+#, fuzzy
+msgid "version"
+msgstr "الإصدار"
+
+# GENERAL_XML
+#: GENERAL_XML
+#, fuzzy
+msgid "XML"
+msgstr "XML"
+
+# IMP_GUIDE_URL
+#: IMP_GUIDE_URL
+#, fuzzy
+msgid "The official URL for this implementation guide is:"
+msgstr "الرابط الرسمي لدليل التنفيذ هذا هو"
+
+# IP_INTRO
+#: IP_INTRO
+#, fuzzy
+msgid "This {0} includes IP covered under the following statements."
+msgstr "هذا {0} يشمل الملكية الفكرية المشمولة تحت العبارات التالية."
+
+# IP_NONE
+#: IP_NONE
+#, fuzzy
+msgid "No use of external IP"
+msgstr "عدم استخدام IP خارجي"
+
+# IP_NONE_EXT
+#: IP_NONE_EXT
+#, fuzzy
+msgid "No use of external IP (other than from the FHIR specification)"
+msgstr "عدم استخدام عنوان IP خارجي (بخلاف مواصفات FHIR)"
+
+# KIND_EXTENSION
+#: KIND_EXTENSION
+#, fuzzy
+msgid "extension"
+msgstr "التمديد"
+
+# KIND_LOGICAL
+#: KIND_LOGICAL
+#, fuzzy
+msgid "logical model"
+msgstr "النموذج المنطقي"
+
+# KIND_PROFILE
+#: KIND_PROFILE
+#, fuzzy
+msgid "profile"
+msgstr "الملف الشخصي"
+
+# LIB_REND_ART
+#: LIB_REND_ART
+#, fuzzy
+msgid "Related Artifacts"
+msgstr "القطع الأثرية ذات الصلة"
+
+# LIB_REND_AUT
+#: LIB_REND_AUT
+#, fuzzy
+msgid "Author"
+msgstr "المؤلف"
+
+# LIB_REND_CONT
+#: LIB_REND_CONT
+#, fuzzy
+msgid "Contents"
+msgstr "المحتويات"
+
+# LIB_REND_ED
+#: LIB_REND_ED
+#, fuzzy
+msgid "Editor"
+msgstr "محرر"
+
+# LIB_REND_END
+#: LIB_REND_END
+#, fuzzy
+msgid "Endorser"
+msgstr "المؤيد"
+
+# LIB_REND_NOCONT
+#: LIB_REND_NOCONT
+#, fuzzy
+msgid "No Content"
+msgstr "لا يوجد محتوى"
+
+# LIB_REND_PAR
+#: LIB_REND_PAR
+#, fuzzy
+msgid "Participants"
+msgstr "المشاركون"
+
+# LIB_REND_REQ
+#: LIB_REND_REQ
+#, fuzzy
+msgid "Data Requirements"
+msgstr "متطلبات البيانات"
+
+# LIB_REND_REV
+#: LIB_REND_REV
+#, fuzzy
+msgid "Reviewer"
+msgstr "المراجع"
+
+# LIB_REND_SHOW
+#: LIB_REND_SHOW
+#, fuzzy
+msgid "Content not shown - ("
+msgstr "المحتوى غير معروض - ("
+
+# LIB_REND_SIZE
+#: LIB_REND_SIZE
+#, fuzzy
+msgid ", size = {0}"
+msgstr "، الحجم = {0}"
+
+# LIST_REND_CODE
+#: LIST_REND_CODE
+#, fuzzy
+msgid "Code: {0}"
+msgstr "الرمز: {0}"
+
+# LIST_REND_DAT
+#: LIST_REND_DAT
+#, fuzzy
+msgid "Date"
+msgstr "التاريخ"
+
+# LIST_REND_DATE
+#: LIST_REND_DATE
+#, fuzzy
+msgid "Date: {0}"
+msgstr "التاريخ: {0}"
+
+# LIST_REND_DEL
+#: LIST_REND_DEL
+#, fuzzy
+msgid "Deleted"
+msgstr "محذوف"
+
+# LIST_REND_ENC
+#: LIST_REND_ENC
+#, fuzzy
+msgid "Encounter:"
+msgstr "اللقاء:"
+
+# LIST_REND_FLAG
+#: LIST_REND_FLAG
+#, fuzzy
+msgid "Flag"
+msgstr "العلم"
+
+# LIST_REND_ITEM
+#: LIST_REND_ITEM
+#, fuzzy
+msgid "Items"
+msgstr "العناصر"
+
+# LIST_REND_MODE
+#: LIST_REND_MODE
+#, fuzzy
+msgid "Mode: {0}"
+msgstr "الوضع: {0}"
+
+# LIST_REND_ORD
+#: LIST_REND_ORD
+#, fuzzy
+msgid "Order: {0}"
+msgstr "الطلب: {0}"
+
+# LIST_REND_STAT
+#: LIST_REND_STAT
+#, fuzzy
+msgid "Status: {0}"
+msgstr "الحالة: {0}"
+
+# LIST_REND_SUB
+#: LIST_REND_SUB
+#, fuzzy
+msgid "Subject:"
+msgstr "الموضوع:"
+
+# LIST_SUMMARY
+#: LIST_SUMMARY
+#, fuzzy
+msgid "List for ''{0}'' for ''{1}''"
+msgstr "قائمة ل \"{0}\" ل \"{1}"
+
+# LIST_UNSPECIFIED_CODE
+#: LIST_UNSPECIFIED_CODE
+#, fuzzy
+msgid "Unspecified List Type"
+msgstr "نوع القائمة غير محدد"
+
+# LIST_UNSPECIFIED_SUBJECT
+#: LIST_UNSPECIFIED_SUBJECT
+#, fuzzy
+msgctxt "LIST_UNSPECIFIED_SUBJECT"
+msgid "Unspecified Subject"
+msgstr "موضوع غير محدد"
+
+# MAP_DEFAULT_COMMENT
+#: MAP_DEFAULT_COMMENT
+#, fuzzy
+msgid "This element was not defined prior to R5"
+msgstr "لم يتم تعريف هذا العنصر قبل R5"
+
+# MATURITY_MATURITY
+#: MATURITY_MATURITY
+#, fuzzy
+msgid "Maturity Level: {0}"
+msgstr "مستوى النضج: {0}"
+
+# MATURITY_PUBLISHER
+#: MATURITY_PUBLISHER
+#, fuzzy
+msgid "Publisher: {0}"
+msgstr "الناشر: {0}"
+
+# MATURITY_STATUS
+#: MATURITY_STATUS
+#, fuzzy
+msgctxt "MATURITY_STATUS"
+msgid "Status"
+msgstr "الحالة"
+
+# MATURITY_STDS_STATUS
+#: MATURITY_STDS_STATUS
+#, fuzzy
+msgid "Standards Status: {0}"
+msgstr "حالة المعايير: {0}"
+
+# NAME_SYS_IDEN
+#: NAME_SYS_IDEN
+#, fuzzy
+msgid "Identifiers"
+msgstr "المعرّفات"
+
+# NAME_SYS_PER
+#: NAME_SYS_PER
+#, fuzzy
+msgid "Period"
+msgstr "الفترة"
+
+# OBLIGATION_SOURCE
+#: OBLIGATION_SOURCE
+#, fuzzy
+msgid "This obligation is defined in the profile {0}"
+msgstr "يتم تعريف هذا الالتزام في الملف الشخصي {0}"
+
+# OBLIG_ACT
+#: OBLIG_ACT
+#, fuzzy
+msgid "Actor"
+msgstr "الممثل"
+
+# OBLIG_ELE
+#: OBLIG_ELE
+#, fuzzy
+msgid "Elements"
+msgstr "العناصر"
+
+# OP_DEF_INPAR
+#: OP_DEF_INPAR
+#, fuzzy
+msgid "Input parameters Profile:"
+msgstr "معلمات الإدخال الملف الشخصي:"
+
+# OP_DEF_OFFIC
+#: OP_DEF_OFFIC
+#, fuzzy
+msgid "The official URL for this operation definition is:"
+msgstr "عنوان URL الرسمي لتعريف هذه العملية هو"
+
+# OP_DEF_OUTPAR
+#: OP_DEF_OUTPAR
+#, fuzzy
+msgid "Output parameters Profile:"
+msgstr "ملف تعريف معلمات الإخراج:"
+
+# OP_DEF_SCO
+#: OP_DEF_SCO
+#, fuzzy
+msgid "Scope"
+msgstr "النطاق"
+
+# OP_DEF_URL
+#: OP_DEF_URL
+#, fuzzy
+msgid "URL: [base]/{0}"
+msgstr "عنوان URL: [الأساس]/{0}"
+
+# OP_DEF_USE
+#: OP_DEF_USE
+#, fuzzy
+msgid "Use"
+msgstr "الاستخدام"
+
+# OP_OUT_DIAG
+#: OP_OUT_DIAG
+#, fuzzy
+msgid "Diagnostics"
+msgstr "التشخيص"
+
+# OP_OUT_OK
+#: OP_OUT_OK
+#, fuzzy
+msgid "All OK"
+msgstr "كل شيء على ما يرام"
+
+# OP_OUT_SEV
+#: OP_OUT_SEV
+#, fuzzy
+msgid "Severity"
+msgstr "الخطورة"
+
+# OP_OUT_SRC
+#: OP_OUT_SRC
+#, fuzzy
+msgctxt "OP_OUT_SRC"
+msgid "Source"
+msgstr "المصدر"
+
+# OP_OUT_SUMM
+#: OP_OUT_SUMM
+#, fuzzy
+msgid "OperationOutcome ({0} Error(s), {1} Warning(s), {2} Hint(s))"
+msgstr "نتيجة العملية ({0} خطأ (أخطاء)، {1} تحذير (تحذيرات) تحذير (تحذيرات)، {2} تلميح (تلميحات))"
+
+# OP_OUT_SUMM_ALL_OK
+#: OP_OUT_SUMM_ALL_OK
+#, fuzzy
+msgid "OperationOutcome (ALL OK)"
+msgstr "العمليةالنتيجة (الكل موافق)"
+
+# OP_OUT_SUMM_NOHINT
+#: OP_OUT_SUMM_NOHINT
+#, fuzzy
+msgid "OperationOutcome ({0} Error(s), {1} Warning(s))"
+msgstr "نتيجة العملية ({0} خطأ (أخطاء)، {1} تحذير (تحذيرات) تحذير (تحذيرات))"
+
+# PARS_SUMMARY_LIST
+#: PARS_SUMMARY_LIST
+#, fuzzy
+msgid "Parameters: {0}"
+msgstr "المعلمات: {0}"
+
+# PARS_SUMMARY_SIZE
+#: PARS_SUMMARY_SIZE
+#, fuzzy
+msgid "Parameters ({0} parameters)"
+msgstr "المعلمات ({0} المعلمات)"
+
+# PAT_ACTIVE
+#: PAT_ACTIVE
+#, fuzzy
+msgid "Active:"
+msgstr "نشط:"
+
+# PAT_ACTIVE_HINT
+#: PAT_ACTIVE_HINT
+#, fuzzy
+msgid "Record is active"
+msgstr "السجل نشط"
+
+# PAT_ALT_NAME
+#: PAT_ALT_NAME
+#, fuzzy
+msgid "Alt. Name:"
+msgstr "قديم. الاسم:"
+
+# PAT_ALT_NAME_HINT
+#: PAT_ALT_NAME_HINT
+#, fuzzy
+msgid "Alternate names (see the one above)"
+msgstr "الأسماء البديلة (انظر الاسم أعلاه)"
+
+# PAT_CONTACT
+#: PAT_CONTACT
+#, fuzzy
+msgid "Contact Detail"
+msgstr "تفاصيل الاتصال"
+
+# PAT_CONTACT_HINT
+#: PAT_CONTACT_HINT
+#, fuzzy
+msgid "Ways to contact the Patient"
+msgstr "طرق الاتصال بالمريض"
+
+# PAT_CONTAINED
+#: PAT_CONTAINED
+#, fuzzy
+msgid "Contained Resource"
+msgid_plural "Contained Resources"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+# PAT_DECEASED
+#: PAT_DECEASED
+#, fuzzy
+msgid "Deceased:"
+msgstr "متوفى"
+
+# PAT_DECEASED_HINT
+#: PAT_DECEASED_HINT
+#, fuzzy
+msgid "Known status of Patient"
+msgstr "الحالة المعروفة للمريض"
+
+# PAT_DOB
+#: PAT_DOB
+#, fuzzy
+msgid "DoB: {0}"
+msgstr "دوب: {0}"
+
+# PAT_GENDER
+#: PAT_GENDER
+#, fuzzy
+msgid "Gender: {0}"
+msgstr "الجنس: {0}"
+
+# PAT_GP
+#: PAT_GP
+#, fuzzy
+msgid "General Practitioner"
+msgstr "ممارس عام"
+
+# PAT_LANG
+#: PAT_LANG
+#, fuzzy
+msgid "Language:"
+msgid_plural "Languages:"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+# PAT_LANG_HINT
+#: PAT_LANG_HINT
+#, fuzzy
+msgid "Language spoken"
+msgid_plural "Languages spoken"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+# PAT_LANG_PREFERRED
+#: PAT_LANG_PREFERRED
+#, fuzzy
+msgid "(preferred)"
+msgstr "(مفضل)"
+
+# PAT_LINKS
+#: PAT_LINKS
+#, fuzzy
+msgctxt "PAT_LINKS"
+msgid "Links:"
+msgstr "إلى اليسار:"
+
+# PAT_LINKS_HINT
+#: PAT_LINKS_HINT
+#, fuzzy
+msgid "Patient Links"
+msgstr "روابط المرضى"
+
+# PAT_LINK_REFER
+#: PAT_LINK_REFER
+#, fuzzy
+msgid "Please refer to"
+msgstr "يرجى الرجوع إلى"
+
+# PAT_LINK_REPL
+#: PAT_LINK_REPL
+#, fuzzy
+msgid "This record replaces"
+msgstr "يحل هذا السجل محل"
+
+# PAT_LINK_REPLBY
+#: PAT_LINK_REPLBY
+#, fuzzy
+msgid "This record replaced by"
+msgstr "استُبدل هذا السجل بـ"
+
+# PAT_LINK_SEE
+#: PAT_LINK_SEE
+#, fuzzy
+msgid "Also see"
+msgstr "انظر أيضًا"
+
+# PAT_MARITAL
+#: PAT_MARITAL
+#, fuzzy
+msgid "Marital Status:"
+msgstr "الحالة الاجتماعية:"
+
+# PAT_MARITAL_HINT
+#: PAT_MARITAL_HINT
+#, fuzzy
+msgid "Known Marital status of Patient"
+msgstr "الحالة الاجتماعية المعروفة للمريض"
+
+# PAT_MO
+#: PAT_MO
+#, fuzzy
+msgid "Managing Organization"
+msgstr "إدارة المنظمة"
+
+# PAT_MUL_BIRTH
+#: PAT_MUL_BIRTH
+#, fuzzy
+msgid "Multiple Birth:"
+msgstr "الولادة المتعددة:"
+
+# PAT_MUL_BIRTH_HINT
+#: PAT_MUL_BIRTH_HINT
+#, fuzzy
+msgid "Known multipleBirth status of Patient"
+msgstr "حالة الولادة المتعددة المعروفة للمريض"
+
+# PAT_NOK_CONTACT_HINT
+#: PAT_NOK_CONTACT_HINT
+#, fuzzy
+msgid "Patient contact"
+msgstr "الاتصال بالمريض"
+
+# PAT_NOM_CONTACT
+#: PAT_NOM_CONTACT
+#, fuzzy
+msgid "Nominated Contact:"
+msgstr "جهة الاتصال المرشحة:"
+
+# PAT_NO_DOB
+#: PAT_NO_DOB
+#, fuzzy
+msgid "DoB Unknown"
+msgstr "غير معروف"
+
+# PAT_NO_GENDER
+#: PAT_NO_GENDER
+#, fuzzy
+msgid "(no stated gender)"
+msgstr "(لم يُذكر الجنس)"
+
+# PAT_NO_NAME
+#: PAT_NO_NAME
+#, fuzzy
+msgid "Anonymous Patient"
+msgstr "مريض مجهول الهوية"
+
+# PAT_ORG
+#: PAT_ORG
+#, fuzzy
+msgid "Organization:"
+msgstr "المنظمة:"
+
+# PAT_OTHER_ID
+#: PAT_OTHER_ID
+#, fuzzy
+msgid "Other Id:"
+msgid_plural "Other Ids:"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+# PAT_OTHER_ID_HINT
+#: PAT_OTHER_ID_HINT
+#, fuzzy
+msgid "Other Id (see the one above)"
+msgid_plural "Other Ids (see the one above)"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+# PAT_PERIOD
+#: PAT_PERIOD
+#, fuzzy
+msgid "Valid Period:"
+msgstr "فترة الصلاحية:"
+
+# PAT_PHOTO
+#: PAT_PHOTO
+#, fuzzy
+msgid "Patient Photo"
+msgstr "صورة المريض"
+
+# PAT_RELN
+#: PAT_RELN
+#, fuzzy
+msgid "Relationships:"
+msgstr "العلاقات:"
+
+# PROF_DRIV_ERR_GEN_NARR
+#: PROF_DRIV_ERR_GEN_NARR
+#, fuzzy
+msgid "Error Generating Narrative for"
+msgstr "السرد المولد للأخطاء في"
+
+# PROF_DRIV_EXCP
+#: PROF_DRIV_EXCP
+#, fuzzy
+msgid "Exception Generating Narrative: {0}"
+msgstr "رواية توليد الاستثناءات: {0}"
+
+# PROF_DRIV_FEXCP
+#: PROF_DRIV_FEXCP
+#, fuzzy
+msgid "Cannot find definition for {0}"
+msgstr "لا يمكن العثور على تعريف ل {0}"
+
+# PROF_DRIV_GEN_NARR
+#: PROF_DRIV_GEN_NARR
+#, fuzzy
+msgid "{0} {1}"
+msgstr "{0} {1}"
+
+# PROF_DRIV_GEN_NARR_TECH
+#: PROF_DRIV_GEN_NARR_TECH
+#, fuzzy
+msgid "Generated Narrative: {0} {1}"
+msgstr "السرد المُنشأ: {0} {1}"
+
+# PROF_DRIV_SUMM
+#: PROF_DRIV_SUMM
+#, fuzzy
+msgctxt "PROF_DRIV_SUMM"
+msgid "{0}: {1}"
+msgstr "{0}: {1}"
+
+# PROF_DRIV_SUMM_PROP
+#: PROF_DRIV_SUMM_PROP
+#, fuzzy
+msgid "{0} = {1}"
+msgstr "{0} = {1}"
+
+# PROV_ACT
+#: PROV_ACT
+#, fuzzy
+msgid "Activity"
+msgstr "النشاط"
+
+# PROV_AGE
+#: PROV_AGE
+#, fuzzy
+msgid "Agents"
+msgstr "الوكلاء"
+
+# PROV_BEHALF
+#: PROV_BEHALF
+#, fuzzy
+msgid "On Behalf Of"
+msgstr "نيابة عن"
+
+# PROV_FOR
+#: PROV_FOR
+#, fuzzy
+msgid "Provenance for {0}"
+msgstr "المصدر لـ {0}"
+
+# PROV_OCC
+#: PROV_OCC
+#, fuzzy
+msgid "Occurrence"
+msgstr "الحدوث"
+
+# PROV_POL
+#: PROV_POL
+#, fuzzy
+msgid "Policy"
+msgstr "السياسة"
+
+# PROV_PROV
+#: PROV_PROV
+#, fuzzy
+msgid "Provenance for"
+msgstr "المصدر لـ"
+
+# PROV_PROVE
+#: PROV_PROVE
+#, fuzzy
+msgid "Provenance for:"
+msgstr "المصدر لـ"
+
+# PROV_REC
+#: PROV_REC
+#, fuzzy
+msgid "Recorded"
+msgstr "مسجل"
+
+# PROV_ROLE
+#: PROV_ROLE
+#, fuzzy
+msgid "Role"
+msgstr "الدور"
+
+# PROV_WHO
+#: PROV_WHO
+#, fuzzy
+msgid "who"
+msgstr "من"
+
+# QUEST_ADD_INFO
+#: QUEST_ADD_INFO
+#, fuzzy
+msgid "Additional information about the item"
+msgstr "معلومات إضافية حول العنصر"
+
+# QUEST_ALLOWED
+#: QUEST_ALLOWED
+#, fuzzy
+msgid "Allowed Answers"
+msgstr "الإجابات المسموح بها"
+
+# QUEST_ANSW
+#: QUEST_ANSW
+#, fuzzy
+msgid "Answer options for {0}"
+msgstr "خيارات الإجابة عن {0}"
+
+# QUEST_ANSWER
+#: QUEST_ANSWER
+#, fuzzy
+msgid "Answer"
+msgstr "الإجابة"
+
+# QUEST_ANSWERS
+#: QUEST_ANSWERS
+#, fuzzy
+msgid "Answers"
+msgstr "الإجابات"
+
+# QUEST_APP
+#: QUEST_APP
+#, fuzzy
+msgid "Approval Date"
+msgstr "تاريخ الموافقة"
+
+# QUEST_ARE_TRUE
+#: QUEST_ARE_TRUE
+#, fuzzy
+msgid "?? are true:"
+msgstr "صحيح:"
+
+# QUEST_ATTRIBUTES
+#: QUEST_ATTRIBUTES
+#, fuzzy
+msgid "Other attributes of the item"
+msgstr "السمات الأخرى للعنصر"
+
+# QUEST_CALC
+#: QUEST_CALC
+#, fuzzy
+msgid "Calculated Value"
+msgstr "القيمة المحسوبة"
+
+# QUEST_CAND
+#: QUEST_CAND
+#, fuzzy
+msgid "Candidates"
+msgstr "المرشحون"
+
+# QUEST_CAT
+#: QUEST_CAT
+#, fuzzy
+msgid "Category: {0}"
+msgstr "الفئة: {0}"
+
+# QUEST_CONT
+#: QUEST_CONT
+#, fuzzy
+msgid "Context"
+msgstr "السياق"
+
+# QUEST_DERIVED
+#: QUEST_DERIVED
+#, fuzzy
+msgctxt "QUEST_DERIVED"
+msgid "Derived From"
+msgstr "مشتق من"
+
+# QUEST_DISPLAY
+#: QUEST_DISPLAY
+#, fuzzy
+msgid "Is optional to display"
+msgstr "اختياري للعرض"
+
+# QUEST_DISPLAY_CAT
+#: QUEST_DISPLAY_CAT
+#, fuzzy
+msgid "Display Category"
+msgstr "فئة العرض"
+
+# QUEST_EFF_PERIOD
+#: QUEST_EFF_PERIOD
+#, fuzzy
+msgid "Effective Period"
+msgstr "فترة السريان"
+
+# QUEST_EN
+#: QUEST_EN
+#, fuzzy
+msgid "Enable When"
+msgstr "التمكين عند"
+
+# QUEST_ENABLE
+#: QUEST_ENABLE
+#, fuzzy
+msgid "Enable When:"
+msgstr "التمكين عند:"
+
+# QUEST_EXP
+#: QUEST_EXP
+#, fuzzy
+msgid "Expressions:"
+msgstr "التعبيرات:"
+
+# QUEST_GROUP
+#: QUEST_GROUP
+#, fuzzy
+msgid "Group"
+msgstr "المجموعة"
+
+# QUEST_HIDDEN
+#: QUEST_HIDDEN
+#, fuzzy
+msgid "Is a hidden item"
+msgstr "هو عنصر مخفي"
+
+# QUEST_HIDDEN_ITEM
+#: QUEST_HIDDEN_ITEM
+#, fuzzy
+msgid "Hidden Item"
+msgstr "العنصر المخفي"
+
+# QUEST_ID
+#: QUEST_ID
+#, fuzzy
+msgid "Link Id"
+msgstr "معرف الرابط"
+
+# QUEST_INITIAL
+#: QUEST_INITIAL
+#, fuzzy
+msgid "Initial Value:"
+msgstr "القيمة الأولية:"
+
+# QUEST_INITIALLY
+#: QUEST_INITIALLY
+#, fuzzy
+msgid "(initially selected)"
+msgstr "(تم اختياره في البداية)"
+
+# QUEST_INITIAL_ANSWER
+#: QUEST_INITIAL_ANSWER
+#, fuzzy
+msgid "Initial Answer"
+msgstr "إجابة أولية"
+
+# QUEST_INT
+#: QUEST_INT
+#, fuzzy
+msgid "Initial Values"
+msgstr "القيم الأولية"
+
+# QUEST_ITEM
+#: QUEST_ITEM
+#, fuzzy
+msgid "Item"
+msgstr "البند"
+
+# QUEST_ITEM_CONT
+#: QUEST_ITEM_CONT
+#, fuzzy
+msgid "Item Context"
+msgstr "سياق العنصر"
+
+# QUEST_LINK
+#: QUEST_LINK
+#, fuzzy
+msgid "The linkID for the item"
+msgstr "معرف الارتباط للعنصر"
+
+# QUEST_LINKED
+#: QUEST_LINKED
+#, fuzzy
+msgid "Is linked to an observation"
+msgstr "مرتبط بملاحظة"
+
+# QUEST_LINKID
+#: QUEST_LINKID
+#, fuzzy
+msgid "LinkID"
+msgstr "لينك آي دي"
+
+# QUEST_MAND
+#: QUEST_MAND
+#, fuzzy
+msgid "Mandatory"
+msgstr "إلزامي"
+
+# QUEST_MAX_LENGTH
+#: QUEST_MAX_LENGTH
+#, fuzzy
+msgid "Max Length"
+msgstr "الحد الأقصى للطول"
+
+# QUEST_NLM
+#: QUEST_NLM
+#, fuzzy
+msgid "NLM Forms Library"
+msgstr "مكتبة نماذج NLM"
+
+# QUEST_NONE_SPEC
+#: QUEST_NONE_SPEC
+#, fuzzy
+msgid "None specified"
+msgstr "غير محدد"
+
+# QUEST_OBSERVATION
+#: QUEST_OBSERVATION
+#, fuzzy
+msgid "Observation Link Period"
+msgstr "فترة ارتباط الملاحظة"
+
+# QUEST_OPT
+#: QUEST_OPT
+#, fuzzy
+msgid "Options Sets"
+msgstr "مجموعات الخيارات"
+
+# QUEST_OPTIONS
+#: QUEST_OPTIONS
+#, fuzzy
+msgid "Options:"
+msgstr "الخيارات:"
+
+# QUEST_ORIENTATION
+#: QUEST_ORIENTATION
+#, fuzzy
+msgid "Orientation: {0}"
+msgstr "التوجه: {0}"
+
+# QUEST_PREFIX
+#: QUEST_PREFIX
+#, fuzzy
+msgid "Prefix"
+msgstr "البادئة"
+
+# QUEST_PUB
+#: QUEST_PUB
+#, fuzzy
+msgid "Publication Date"
+msgstr "تاريخ النشر"
+
+# QUEST_QUEST
+#: QUEST_QUEST
+#, fuzzy
+msgid "Questionnaire"
+msgstr "استبيان"
+
+# QUEST_QUESTION
+#: QUEST_QUESTION
+#, fuzzy
+msgid "Questionnaire:"
+msgstr "استبيان:"
+
+# QUEST_READONLY
+#: QUEST_READONLY
+#, fuzzy
+msgid "Is Read Only"
+msgstr "للقراءة فقط"
+
+# QUEST_READ_ONLY
+#: QUEST_READ_ONLY
+#, fuzzy
+msgid "Read Only"
+msgstr "للقراءة فقط"
+
+# QUEST_REP
+#: QUEST_REP
+#, fuzzy
+msgid "Repeats"
+msgstr "التكرار"
+
+# QUEST_RESP_ROOT
+#: QUEST_RESP_ROOT
+#, fuzzy
+msgid "QuestionnaireResponseRoot"
+msgstr "جذر الاستبيانResponseRoot"
+
+# QUEST_REV_DATE
+#: QUEST_REV_DATE
+#, fuzzy
+msgid "Last Review Date"
+msgstr "تاريخ آخر مراجعة"
+
+# QUEST_ROOT
+#: QUEST_ROOT
+#, fuzzy
+msgid "QuestionnaireRoot"
+msgstr "جذر الاستبيان"
+
+# QUEST_STRUCT
+#: QUEST_STRUCT
+#, fuzzy
+msgid "Structure"
+msgstr "الهيكل"
+
+# QUEST_SUBJECT
+#: QUEST_SUBJECT
+#, fuzzy
+msgid "Can change the subject of the questionnaire"
+msgstr "يمكن تغيير موضوع الاستبيان"
+
+# QUEST_SUB_TYPE
+#: QUEST_SUB_TYPE
+#, fuzzy
+msgid "Subject Type"
+msgstr "نوع الموضوع"
+
+# QUEST_SUMMARY
+#: QUEST_SUMMARY
+#, fuzzy
+msgid "Response to Questionnaire ''{0}'' about ''{1}''"
+msgstr "الرد على الاستبيان \"{0}\" حول \"{1}"
+
+# QUEST_TEXT
+#: QUEST_TEXT
+#, fuzzy
+msgid "Text"
+msgstr "النص"
+
+# QUEST_TEXTFOR
+#: QUEST_TEXTFOR
+#, fuzzy
+msgid "Text for the item"
+msgstr "النص الخاص بالعنصر"
+
+# QUEST_TIMES
+#: QUEST_TIMES
+#, fuzzy
+msgid "Minimum and Maximum # of times the item can appear in the instance"
+msgstr "الحد الأدنى والحد الأقصى لعدد المرات التي يمكن أن يظهر فيها العنصر في المثيل"
+
+# QUEST_TRUE
+#: QUEST_TRUE
+#, fuzzy
+msgid "are true:"
+msgstr "صحيحة:"
+
+# QUEST_TRY
+#: QUEST_TRY
+#, fuzzy
+msgid "Try this questionnaire out:"
+msgstr "جرّب هذا الاستبيان"
+
+# QUEST_TRY_QUEST
+#: QUEST_TRY_QUEST
+#, fuzzy
+msgid "Try this QuestionnaireResponse out:"
+msgstr "جرّب هذا الاستبيانالإجابة على هذا الاستبيان:"
+
+# QUEST_TYPE_ITEM
+#: QUEST_TYPE_ITEM
+#, fuzzy
+msgid "The type of the item"
+msgstr "نوع العنصر"
+
+# QUEST_UNKNOWN_MODE
+#: QUEST_UNKNOWN_MODE
+#, fuzzy
+msgid "Unknown QuestionnaireResponse Renderer Mode"
+msgstr "وضع مستجيب الاستبيان غير معروف وضع مستجيب الاستبيان"
+
+# QUEST_UNSPECIFIED_QUESTIONNAIRE
+#: QUEST_UNSPECIFIED_QUESTIONNAIRE
+#, fuzzy
+msgid "Unspecified Questionnaire"
+msgstr "استبيان غير محدد"
+
+# QUEST_UNSPECIFIED_SUBJECT
+#: QUEST_UNSPECIFIED_SUBJECT
+#, fuzzy
+msgctxt "QUEST_UNSPECIFIED_SUBJECT"
+msgid "Unspecified Subject"
+msgstr "موضوع غير محدد"
+
+# QUEST_VALUE
+#: QUEST_VALUE
+#, fuzzy
+msgid "Value Set:"
+msgstr "مجموعة القيم:"
+
+# R44B_DERIVES_FROM
+#: R44B_DERIVES_FROM
+#, fuzzy
+msgid "derives from"
+msgstr "مشتق من"
+
+# R44B_HAS_TARGET
+#: R44B_HAS_TARGET
+#, fuzzy
+msgid "has target"
+msgstr "لديه هدف"
+
+# R44B_HAS_TYPE
+#: R44B_HAS_TYPE
+#, fuzzy
+msgid "has type"
+msgstr "لديه نوع"
+
+# R44B_NOT_COMP
+#: R44B_NOT_COMP
+#, fuzzy
+msgid "This is an {0} IG that is not compatible with {1}\" because"
+msgstr "هذا هو {0} IG غير متوافق مع {1}\" لأن"
+
+# R44B_NOT_IN
+#: R44B_NOT_IN
+#, fuzzy
+msgid "The following resources are not in the {0} version"
+msgstr "الموارد التالية غير موجودة في إصدار {0}"
+
+# R44B_ONLY_IN
+#: R44B_ONLY_IN
+#, fuzzy
+msgid "The following resources are only in the {0} version"
+msgstr "الموارد التالية موجودة في إصدار {0} فقط في الإصدار {0}"
+
+# R44B_PACKAGE_REF
+#: R44B_PACKAGE_REF
+#, fuzzy
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
+msgstr "!!تتوفر حزم لكل من <a href=\"{0}\">R4 ({1}.r4)</a> و <a href=\"{2} \\\">R4B ({3}.r4b)</a>."
+
+# R44B_PROBLEMS
+#: R44B_PROBLEMS
+#, fuzzy
+msgid "While checking for {0} compatibility, the following {1} problems were found"
+msgstr "أثناء التحقق من {0} التوافق، تم العثور على المشاكل {1} التالية"
+
+# R44B_REFERS_TO
+#: R44B_REFERS_TO
+#, fuzzy
+msgid "<a href=\"{0}\">{1}}</a> refers to the canonical type at {2}"
+msgstr "يشير <a href=\"{0}\">{1}}</a> إلى النوع الأساسي في {2}"
+
+# R44B_USE_OK
+#: R44B_USE_OK
+#, fuzzy
+msgid "This is an {0} IG. None of the features it uses are changed in {1}, so it can be used as is with {1}} systems."
+msgstr "هذا هو {0} IG. لا يتم تغيير أي من الميزات التي يستخدمها في {1}، لذلك يمكن استخدامه كما هو مع أنظمة {1}."
+
+# R44B_WRONG_MSG
+#: R44B_WRONG_MSG
+#, fuzzy
+msgid "Something went wrong with the cross-version analysis because"
+msgstr "حدث خطأ ما في تحليل النسخ المتقاطعة لأن"
+
+# REND_ADDED
+#: REND_ADDED
+#, fuzzy
+msgid "Added:"
+msgstr "تمت الإضافة:"
+
+# REND_CHANGED
+#: REND_CHANGED
+#, fuzzy
+msgid "Changed:"
+msgstr "تم التغيير:"
+
+# REND_REMOVED
+#: REND_REMOVED
+#, fuzzy
+msgid "Removed:"
+msgstr "تمت الإزالة:"
+
+# REND_ROW_CHANGED_SINCE_WAS
+#: REND_ROW_CHANGED_SINCE_WAS
+#, fuzzy
+msgid "This row of content has been changed since {0} (was ''{1}'')"
+msgstr "تم تغيير هذا الصف من المحتوى منذ {0} (كان \"{1}\")"
+
+# REND_ROW_SINCE
+#: REND_ROW_SINCE
+#, fuzzy
+msgid "This row of content has been added since {0}"
+msgstr "تمت إضافة هذا الصف من المحتوى منذ {0}"
+
+# REND_SINCE_ADDED
+#: REND_SINCE_ADDED
+#, fuzzy
+msgid "This content has been added since {0}"
+msgstr "تمت إضافة هذا المحتوى منذ {0}"
+
+# REND_SINCE_CHANGED
+#: REND_SINCE_CHANGED
+#, fuzzy
+msgid "This content has been changed since {0}"
+msgstr "تم تغيير هذا المحتوى منذ {0}"
+
+# REND_SINCE_CHANGED_WAS
+#: REND_SINCE_CHANGED_WAS
+#, fuzzy
+msgid "This content has been changed since {0} (was ''{1}'')"
+msgstr "تم تغيير هذا المحتوى منذ {0} (كان \"{1}\")"
+
+# REND_STANDARDS
+#: REND_STANDARDS
+#, fuzzy
+msgid "Standards Status = {0}"
+msgstr "حالة المعايير = {0}"
+
+# REQ_ACTOR
+#: REQ_ACTOR
+#, fuzzy
+msgid "These requirements apply to the actor"
+msgstr "تنطبق هذه المتطلبات على الممثل"
+
+# REQ_DERIVE
+#: REQ_DERIVE
+#, fuzzy
+msgid "These requirements derive from"
+msgstr "هذه المتطلبات مستمدة من"
+
+# REQ_DERIVED
+#: REQ_DERIVED
+#, fuzzy
+msgid "Derived From:"
+msgstr "مشتق من:"
+
+# REQ_FOLLOWING_ACTOR
+#: REQ_FOLLOWING_ACTOR
+#, fuzzy
+msgid "These requirements apply to the following actors:"
+msgstr "تنطبق هذه المتطلبات على الجهات التالية"
+
+# REQ_FOLLOWING_REQ
+#: REQ_FOLLOWING_REQ
+#, fuzzy
+msgid "These requirements are derived from the following requirements:"
+msgstr "هذه المتطلبات مستمدة من المتطلبات التالية:"
+
+# REQ_LINKS
+#: REQ_LINKS
+#, fuzzy
+msgctxt "REQ_LINKS"
+msgid "Links:"
+msgstr "إلى اليسار:"
+
+# REQ_SATISFIED
+#: REQ_SATISFIED
+#, fuzzy
+msgid "Satisfied By:"
+msgstr "راضٍ من قبل:"
+
+# RESOURCE_COPYRIGHT
+#: RESOURCE_COPYRIGHT
+#, fuzzy
+msgid "Copyright Statement:"
+msgstr "بيان حقوق الطبع والنشر:"
+
+# RES_REND_ACT
+#: RES_REND_ACT
+#, fuzzy
+msgid "Active"
+msgstr "نشط"
+
+# RES_REND_COND_REF
+#: RES_REND_COND_REF
+#, fuzzy
+msgid "Conditional Reference:"
+msgstr "المرجع الشرطي:"
+
+# RES_REND_DESC
+#: RES_REND_DESC
+#, fuzzy
+msgid ". Description: (todo)"
+msgstr ". الوصف: (الكل)"
+
+# RES_REND_DRAFT
+#: RES_REND_DRAFT
+#, fuzzy
+msgid "draft"
+msgstr "مسودة"
+
+# RES_REND_ERROR
+#: RES_REND_ERROR
+#, fuzzy
+msgid "Error rendering: {0}"
+msgstr "عرض الخطأ: {0}"
+
+# RES_REND_INFO_SOURCE
+#: RES_REND_INFO_SOURCE
+#, fuzzy
+msgid "Information Source: <param name=\"source\"/>"
+msgstr "مصدر المعلومات: <param name=\"مصدر\"/>"
+
+# RES_REND_LANGUAGE
+#: RES_REND_LANGUAGE
+#, fuzzy
+msgid "Language: {0}"
+msgstr "اللغة: {0}"
+
+# RES_REND_RET
+#: RES_REND_RET
+#, fuzzy
+msgid "retired"
+msgstr "متقاعد"
+
+# RES_REND_SEE_ON_THIS_PAGE
+#: RES_REND_SEE_ON_THIS_PAGE
+#, fuzzy
+msgid "See on this page:"
+msgstr "انظر في هذه الصفحة:"
+
+# RES_REND_SPEC_RULES
+#: RES_REND_SPEC_RULES
+#, fuzzy
+msgid "Special rules apply: {0}!"
+msgstr "تطبق قواعد خاصة: {0}!"
+
+# RES_REND_TAG
+#: RES_REND_TAG
+#, fuzzy
+msgid "Tag"
+msgstr "الوسم"
+
+# RES_REND_TEMPLATE_ID
+#: RES_REND_TEMPLATE_ID
+#, fuzzy
+msgid "templateId: {0}"
+msgstr "معرف القالب: {0}"
+
+# RES_REND_UNKNOWN
+#: RES_REND_UNKNOWN
+#, fuzzy
+msgid "Unknown"
+msgstr "غير معروف"
+
+# RES_REND_UPDATED
+#: RES_REND_UPDATED
+#, fuzzy
+msgid "Last updated: {0}"
+msgstr "آخر تحديث {0}"
+
+# RES_REND_VER
+#: RES_REND_VER
+#, fuzzy
+msgid "version: {0}"
+msgstr "الإصدار: {0}"
+
+# SDR_ALL_ELEM
+#: SDR_ALL_ELEM
+#, fuzzy
+msgid "**ALL** elements"
+msgstr "**جميع العناصر**"
+
+# SDR_ALL_EXT
+#: SDR_ALL_EXT
+#, fuzzy
+msgid "**ALL** extensions"
+msgstr "**جميع التمديدات**"
+
+# SDR_ANY_ORDER
+#: SDR_ANY_ORDER
+#, fuzzy
+msgid "// sliced by {0} in any order"
+msgstr "// مقطعة إلى شرائح {0} بأي ترتيب"
+
+# SDR_BP
+#: SDR_BP
+#, fuzzy
+msgid "best practice"
+msgstr "أفضل الممارسات"
+
+# SDR_CAPSTMT
+#: SDR_CAPSTMT
+#, fuzzy
+msgid "CapabilityStatements using this {0}"
+msgstr "بيانات القدرة باستخدام هذه {0} بيانات القدرة باستخدام هذه {0}"
+
+# SDR_CH_DET
+#: SDR_CH_DET
+#, fuzzy
+msgid "New Content"
+msgstr "محتوى جديد"
+
+# SDR_CH_NO
+#: SDR_CH_NO
+#, fuzzy
+msgid "No changes"
+msgstr "لا توجد تغييرات"
+
+# SDR_CLICK_COPY
+#: SDR_CLICK_COPY
+#, fuzzy
+msgid "Click to copy URL"
+msgstr "انقر لنسخ عنوان URL"
+
+# SDR_CODE_FROM
+#: SDR_CODE_FROM
+#, fuzzy
+msgid "(a valid code from {0})"
+msgstr "(رمز صالح من {0})"
+
+# SDR_COMPLY
+#: SDR_COMPLY
+#, fuzzy
+msgid "Comply with this profile {0}"
+msgstr "يتوافق مع هذا الملف الشخصي {0}"
+
+# SDR_CONCEPT_DOMAIN
+#: SDR_CONCEPT_DOMAIN
+#, fuzzy
+msgid "Concept Domain"
+msgstr "مجال المفهوم"
+
+# SDR_CONT_CH_DET_CS
+#: SDR_CONT_CH_DET_CS
+#, fuzzy
+msgid "The list of codes defined by the code system has changed"
+msgstr "لقد تغيرت قائمة الرموز التي يحددها نظام الرموز"
+
+# SDR_CONT_CH_DET_SD
+#: SDR_CONT_CH_DET_SD
+#, fuzzy
+msgid "The data elements list has changed"
+msgstr "تم تغيير قائمة عناصر البيانات"
+
+# SDR_CONT_CH_DET_VS
+#: SDR_CONT_CH_DET_VS
+#, fuzzy
+msgid "The logical definition of the value set has changed"
+msgstr "تم تغيير التعريف المنطقي لمجموعة القيم"
+
+# SDR_CONT_CH_NO
+#: SDR_CONT_CH_NO
+#, fuzzy
+msgid "Unable to evaluate changes to content"
+msgstr "غير قادر على تقييم التغييرات على المحتوى"
+
+# SDR_DEFN_CH_DET_CS
+#: SDR_DEFN_CH_DET_CS
+#, fuzzy
+msgctxt "SDR_DEFN_CH_DET_CS"
+msgid "One or more text definitions/displays have changed"
+msgstr "تم تغيير تعريف واحد أو أكثر من تعريفات/عروض النص"
+
+# SDR_DEFN_CH_DET_SD
+#: SDR_DEFN_CH_DET_SD
+#, fuzzy
+msgid "One or more text definitions, invariants or bindings have changed"
+msgstr "تم تغيير تعريف واحد أو أكثر من تعريفات النص أو المتغيرات أو الارتباطات"
+
+# SDR_DEFN_CH_DET_VS
+#: SDR_DEFN_CH_DET_VS
+#, fuzzy
+msgctxt "SDR_DEFN_CH_DET_VS"
+msgid "One or more text definitions/displays have changed"
+msgstr "تم تغيير تعريف واحد أو أكثر من تعريفات/عروض النص"
+
+# SDR_DEFN_CH_NO
+#: SDR_DEFN_CH_NO
+#, fuzzy
+msgid "Unable to evaluate changes to definitions"
+msgstr "تعذر تقييم التغييرات على التعريفات"
+
+# SDR_DERIVED
+#: SDR_DERIVED
+#, fuzzy
+msgid "Derived from this {0}"
+msgstr "مشتق من هذا {0}"
+
+# SDR_DRAFT
+#: SDR_DRAFT
+msgid "This is an draft extension definition; the committee is seeking implementation feedback, and the definition or contents of the extension may change in future versions"
+msgstr ""
+
+# SDR_DRAW_IN
+#: SDR_DRAW_IN
+#, fuzzy
+msgid "Draw in Obligations & Additional Bindings from this {0}"
+msgstr "ارسم في الالتزامات والارتباطات الإضافية من هذا {0}"
+
+# SDR_EXAMPLE
+#: SDR_EXAMPLE
+#, fuzzy
+msgid "Examples for this {0}"
+msgstr "أمثلة على ذلك {0}"
+
+# SDR_EXPERIMENTAL
+#: SDR_EXPERIMENTAL
+#, fuzzy
+msgid "This is an experimental extension definition; the definition is intended for testing purposes, education or evaluation, and the definition is not anticipated to be matured to a point where it is intended for genuine usage."
+msgstr "!!هذا تعريف تجريبي للامتداد؛ وتسعى اللجنة إلى الحصول على ملاحظات حول التنفيذ، وقد يتغير تعريف الامتداد أو محتوياته في الإصدارات المستقبلية"
+
+# SDR_EXTENSION_SUMMARY
+#: SDR_EXTENSION_SUMMARY
+#, fuzzy
+msgid "Simple Extension with the type {0}: {1}"
+msgstr "امتداد بسيط بنوع {0}: {1}"
+
+# SDR_EXTENSION_SUMMARY_MODIFIER
+#: SDR_EXTENSION_SUMMARY_MODIFIER
+msgid "Simple <b>Modifier</b> Extension with the type {0}: {1}"
+msgstr ""
+
+# SDR_EXT_ANY
+#: SDR_EXT_ANY
+#, fuzzy
+msgid "This extension does not specify which elements it should be used on"
+msgstr "لا يحدد هذا الامتداد العناصر التي يجب استخدامه عليها"
+
+# SDR_EXT_CHANGED
+#: SDR_EXT_CHANGED
+#, fuzzy
+msgid "The extension is represented a little differently in {0}"
+msgstr "يتم تمثيل الامتداد بشكل مختلف قليلاً في {0}"
+
+# SDR_EXT_CTXT_PATH
+#: SDR_EXT_CTXT_PATH
+#, fuzzy
+msgid "In addition, the extension can only be used when this FHIRPath expression is true"
+msgstr "بالإضافة إلى ذلك، لا يمكن استخدام الامتداد إلا عندما يكون تعبير FHIRPath هذا صحيحًا"
+
+# SDR_EXT_CTXT_PATHS
+#: SDR_EXT_CTXT_PATHS
+#, fuzzy
+msgid "In addition, the extension can only be used when these FHIRPath expressions are true"
+msgstr "بالإضافة إلى ذلك، لا يمكن استخدام الامتداد إلا عندما تكون تعبيرات FHIRPath صحيحة"
+
+# SDR_EXT_DEPR
+#: SDR_EXT_DEPR
+#, fuzzy
+msgid "This extension is deprecated and should no longer be used"
+msgstr "تم إهمال هذا الامتداد ولا ينبغي استخدامه بعد الآن"
+
+# SDR_EXT_ELEM
+#: SDR_EXT_ELEM
+#, fuzzy
+msgid "This extension may be used on the following element(s)"
+msgstr "يمكن استخدام هذا الامتداد على العنصر (العناصر) التالية"
+
+# SDR_EXT_ELEM_ID
+#: SDR_EXT_ELEM_ID
+#, fuzzy
+msgid "Element ID"
+msgstr "معرّف العنصر"
+
+# SDR_EXT_EXT
+#: SDR_EXT_EXT
+#, fuzzy
+msgctxt "SDR_EXT_EXT"
+msgid "Extension"
+msgstr "التمديد"
+
+# SDR_EXT_MOD
+#: SDR_EXT_MOD
+msgid "This extension is a modifier extension."
+msgstr ""
+
+# SDR_EXT_PATH
+#: SDR_EXT_PATH
+#, fuzzy
+msgctxt "SDR_EXT_PATH"
+msgid "Path"
+msgstr "المسار"
+
+# SDR_EXT_UNCHANGED
+#: SDR_EXT_UNCHANGED
+#, fuzzy
+msgid "The extension is unchanged in {0}"
+msgstr "الامتداد لم يتغير في {0}"
+
+# SDR_EXT_VER_PFX
+#: SDR_EXT_VER_PFX
+#, fuzzy
+msgid "This extension is allowed for use with"
+msgstr "يُسمح باستخدام هذا الامتداد مع"
+
+# SDR_EXT_VER_SFX
+#: SDR_EXT_VER_SFX
+#, fuzzy
+msgid "."
+msgstr "."
+
+# SDR_FIXED_VALUE
+#: SDR_FIXED_VALUE
+#, fuzzy
+msgctxt "SDR_FIXED_VALUE"
+msgid "Fixed Value: {0}"
+msgstr "القيمة الثابتة: {0}"
+
+# SDR_FROM
+#: SDR_FROM
+#, fuzzy
+msgid "From {0}"
+msgstr "من {0}"
+
+# SDR_FROM_ELEM
+#: SDR_FROM_ELEM
+#, fuzzy
+msgid "// from Element: <a href=\"{0}\">extension</a>"
+msgstr "// من العنصر: <a href=\"{0}\">الإضافة</a/a>"
+
+# SDR_GUIDANCE_HERE
+#: SDR_GUIDANCE_HERE
+#, fuzzy
+msgid "here"
+msgstr "هنا"
+
+# SDR_GUIDANCE_PFX
+#: SDR_GUIDANCE_PFX
+#, fuzzy
+msgid "Guidance on how to interpret the contents of this table can be found"
+msgstr "يمكن الاطلاع على إرشادات حول كيفية تفسير محتويات هذا الجدول"
+
+# SDR_GUIDANCE_SFX
+#: SDR_GUIDANCE_SFX
+#, fuzzy
+msgctxt "SDR_GUIDANCE_SFX"
+msgid "-- no content: do not translate #118 --"
+msgstr "!!!!!!!!-- لا يوجد محتوى: لا تترجم #121 ---"
+
+# SDR_IMPOSE
+#: SDR_IMPOSE
+#, fuzzy
+msgid "Impose this profile {0}"
+msgstr "فرض هذا الملف الشخصي {0}"
+
+# SDR_INTRP_CH_DET_VS
+#: SDR_INTRP_CH_DET_VS
+#, fuzzy
+msgid "The expansion has changed"
+msgstr "لقد تغيرت التوسعة"
+
+# SDR_INTRP_CH_NO_VS
+#: SDR_INTRP_CH_NO_VS
+#, fuzzy
+msgid "Unable to evaluate changes to the expansion"
+msgstr "غير قادر على تقييم التغييرات في التوسعة"
+
+# SDR_LIMITED_ONE
+#: SDR_LIMITED_ONE
+#, fuzzy
+msgid "This element is an array in the base standard, but the profile only allows one element"
+msgstr "هذا العنصر عبارة عن مصفوفة في المعيار الأساسي، لكن ملف التعريف يسمح بعنصر واحد فقط"
+
+# SDR_META_CH_DET
+#: SDR_META_CH_DET
+#, fuzzy
+msgid "The resource metadata has changed ({0})"
+msgstr "تم تغيير بيانات تعريف المورد ({0})"
+
+# SDR_META_CH_NO
+#: SDR_META_CH_NO
+#, fuzzy
+msgid "Unable to evaluate changes to metadata"
+msgstr "تعذر تقييم التغييرات على البيانات الوصفية"
+
+# SDR_MOD
+#: SDR_MOD
+#, fuzzy
+msgid "(this element modifies the meaning of other elements)"
+msgstr "(يعدل هذا العنصر معنى العناصر الأخرى)"
+
+# SDR_MOD_SUPP
+#: SDR_MOD_SUPP
+#, fuzzy
+msgid "(this element modifies the meaning of other elements, and must be supported)"
+msgstr "(يعدل هذا العنصر معنى العناصر الأخرى، ويجب دعمه)"
+
+# SDR_MULTIPLE_PROFILES
+#: SDR_MULTIPLE_PROFILES
+#, fuzzy
+msgid "Multiple profiles are not supported at this time"
+msgstr "الملفات الشخصية المتعددة غير مدعومة في الوقت الحالي"
+
+# SDR_NOT_DONE_CC
+#: SDR_NOT_DONE_CC
+#, fuzzy
+msgid "Error describing concept - not done yet (no codings, no text)"
+msgstr "خطأ في وصف المفهوم - لم يتم بعد (لا توجد رموز، لا يوجد نص)"
+
+# SDR_NOT_GEN
+#: SDR_NOT_GEN
+#, fuzzy
+msgid "Generating text summary of fixed value not yet done for type {0}"
+msgstr "إنشاء ملخص نصي للقيمة الثابتة لم يتم بعد للنوع {0}"
+
+# SDR_NOT_HANDLED_EXT
+#: SDR_NOT_HANDLED_EXT
+#, fuzzy
+msgid "Not handled yet: complex extension ''{0}''"
+msgstr "لم يتم التعامل معها بعد: الامتداد المعقد ''{0}''"
+
+# SDR_NOT_USED
+#: SDR_NOT_USED
+#, fuzzy
+msgid "This {0} is not used by any profiles in this Implementation Guide"
+msgstr "لا يتم استخدام هذا {0} من قبل أي ملفات تعريف في دليل التنفيذ هذا"
+
+# SDR_OFF_URL
+#: SDR_OFF_URL
+#, fuzzy
+msgid "The official URL for this profile is"
+msgstr "الرابط الرسمي لهذا الملف الشخصي هو"
+
+# SDR_ONE_OF
+#: SDR_ONE_OF
+#, fuzzy
+msgid "One of these {0}"
+msgstr "واحدة من هذه {0}"
+
+# SDR_ONLY_ONE
+#: SDR_ONLY_ONE
+#, fuzzy
+msgid "Only One!"
+msgstr "واحد فقط"
+
+# SDR_PATTERN_VALUE
+#: SDR_PATTERN_VALUE
+#, fuzzy
+msgctxt "SDR_PATTERN_VALUE"
+msgid "Pattern Value: {0}"
+msgstr "قيمة النمط: {0}"
+
+# SDR_PRIM_VALUE
+#: SDR_PRIM_VALUE
+#, fuzzy
+msgid "Primitive Value {0}"
+msgstr "القيمة البدائية {0}"
+
+# SDR_REFER
+#: SDR_REFER
+#, fuzzy
+msgid "Refer to this {0}"
+msgstr "ارجع إلى هذا {0}"
+
+# SDR_REQUIRED
+#: SDR_REQUIRED
+#, fuzzy
+msgid "This element is required"
+msgstr "هذا العنصر مطلوب"
+
+# SDR_SEARCH
+#: SDR_SEARCH
+#, fuzzy
+msgid "Search Parameters using this {0}"
+msgstr "معلمات البحث باستخدام هذه {0}"
+
+# SDR_SORTED
+#: SDR_SORTED
+#, fuzzy
+msgid "// sliced by {0} in the specified order {1}"
+msgstr "// مقطعة حسب {0} بالترتيب المحدد {1}"
+
+# SDR_SRC_FHIR
+#: SDR_SRC_FHIR
+#, fuzzy
+msgid "the FHIR Standard"
+msgstr "معيار FHIR"
+
+# SDR_SRC_IG
+#: SDR_SRC_IG
+#, fuzzy
+msgid "this IG"
+msgstr "هذا IG"
+
+# SDR_SRC_PACK
+#: SDR_SRC_PACK
+#, fuzzy
+msgid "Package: {0}"
+msgstr "الحزمة: {0}"
+
+# SDR_SUPP
+#: SDR_SUPP
+#, fuzzy
+msgid "(this element must be supported)"
+msgstr "(يجب دعم هذا العنصر)"
+
+# SDR_UNK_EXT
+#: SDR_UNK_EXT
+#, fuzzy
+msgid "Not handled yet: unknown extension ''{0}''"
+msgstr "لم يتم التعامل معها بعد: امتداد غير معروف ''{0}''"
+
+# SDR_USAGE
+#: SDR_USAGE
+#, fuzzy
+msgid "Usages"
+msgstr "الاستخدامات"
+
+# SDR_USE
+#: SDR_USE
+#, fuzzy
+msgid "Use this {0}"
+msgstr "استخدم هذا {0}"
+
+# SDR_VER_BEF
+#: SDR_VER_BEF
+#, fuzzy
+msgid "For versions until {0}"
+msgstr "للإصدارات حتى {0}"
+
+# SDR_VER_FOR
+#: SDR_VER_FOR
+#, fuzzy
+msgid "For version {0}"
+msgstr "بالنسبة للإصدار {0}"
+
+# SDR_VER_FROM_PFX
+#: SDR_VER_FROM_PFX
+#, fuzzy
+msgctxt "SDR_VER_FROM_PFX"
+msgid "FHIR versions"
+msgstr "إصدارات FHIR"
+
+# SDR_VER_FROM_SFX
+#: SDR_VER_FROM_SFX
+#, fuzzy
+msgid "and after"
+msgstr "وبعد"
+
+# SDR_VER_ON
+#: SDR_VER_ON
+#, fuzzy
+msgid "For versions {0} onwards"
+msgstr "بالنسبة للإصدارات {0} وما بعدها"
+
+# SDR_VER_RANGE
+#: SDR_VER_RANGE
+#, fuzzy
+msgid "For versions {0} to {1}"
+msgstr "بالنسبة للإصدارات {0} إلى {1}"
+
+# SDR_VER_RANGE_MID
+#: SDR_VER_RANGE_MID
+#, fuzzy
+msgctxt "SDR_VER_RANGE_MID"
+msgid "to"
+msgstr "إلى"
+
+# SDR_VER_RANGE_PFX
+#: SDR_VER_RANGE_PFX
+#, fuzzy
+msgctxt "SDR_VER_RANGE_PFX"
+msgid "FHIR versions"
+msgstr "إصدارات FHIR"
+
+# SDR_VER_RANGE_SFX
+#: SDR_VER_RANGE_SFX
+#, fuzzy
+msgctxt "SDR_VER_RANGE_SFX"
+msgid "-- no content: do not translate #119 --"
+msgstr "!!!!!!!!-- لا يوجد محتوى: لا تترجم #122 --"
+
+# SDR_VER_TO_PFX
+#: SDR_VER_TO_PFX
+#, fuzzy
+msgid "FHIR versions up to"
+msgstr "إصدارات FHIR حتى"
+
+# SDR_VER_TO_SFX
+#: SDR_VER_TO_SFX
+#, fuzzy
+msgctxt "SDR_VER_TO_SFX"
+msgid "-- no content: do not translate #120 --"
+msgstr "!!!!!!!!-- لا يوجد محتوى: لا تترجم #123 --"
+
+# SDR_VER_UNK
+#: SDR_VER_UNK
+#, fuzzy
+msgid "For unknown versions"
+msgstr "بالنسبة للإصدارات غير المعروفة"
+
+# SDT_DEF
+#: SDT_DEF
+#, fuzzy
+msgctxt "SDT_DEF"
+msgid "Definition"
+msgstr "التعريف"
+
+# SDT_DT
+#: SDT_DT
+#, fuzzy
+msgid "DataType"
+msgstr "نوع البيانات"
+
+# SDT_DT_PROF
+#: SDT_DT_PROF
+#, fuzzy
+msgid "DataType Profile"
+msgstr "ملف تعريف نوع البيانات"
+
+# SDT_EXTENSION
+#: SDT_EXTENSION
+#, fuzzy
+msgctxt "SDT_EXTENSION"
+msgid "Extension"
+msgstr "التمديد"
+
+# SDT_LM
+#: SDT_LM
+#, fuzzy
+msgctxt "SDT_LM"
+msgid "Logical Model"
+msgstr "النموذج المنطقي"
+
+# SDT_LM_PROF
+#: SDT_LM_PROF
+#, fuzzy
+msgid "Logical Model Profile"
+msgstr "ملف تعريف النموذج المنطقي"
+
+# SDT_OBLIGATION_PROFILE
+#: SDT_OBLIGATION_PROFILE
+#, fuzzy
+msgid "Obligation Profile"
+msgstr "ملف الالتزام"
+
+# SDT_ORIGINAL_SOURCE
+#: SDT_ORIGINAL_SOURCE
+#, fuzzy
+msgid "Original Source"
+msgstr "المصدر الأصلي"
+
+# SDT_PT
+#: SDT_PT
+#, fuzzy
+msgid "Primitive Type"
+msgstr "النوع البدائي"
+
+# SDT_PT_PROF
+#: SDT_PT_PROF
+#, fuzzy
+msgid "Primitive Type Profile"
+msgstr "الملف الشخصي للنوع البدائي"
+
+# SDT_RES
+#: SDT_RES
+#, fuzzy
+msgctxt "SDT_RES"
+msgid "Resource"
+msgstr "الموارد"
+
+# SDT_RES_PROF
+#: SDT_RES_PROF
+#, fuzzy
+msgctxt "SDT_RES_PROF"
+msgid "Profile"
+msgstr "الملف الشخصي"
+
+# SD_COMP_HEAD_CARD_L
+#: SD_COMP_HEAD_CARD_L
+#, fuzzy
+msgid "L Card."
+msgstr "بطاقة L."
+
+# SD_COMP_HEAD_CARD_L_DESC
+#: SD_COMP_HEAD_CARD_L_DESC
+#, fuzzy
+msgid "Minimum and Maximum # of times the element can appear in the instance - Left Structure"
+msgstr "الحد الأدنى والحد الأقصى لعدد المرات التي يمكن أن يظهر فيها العنصر في المثيل - البنية اليسرى"
+
+# SD_COMP_HEAD_CARD_R
+#: SD_COMP_HEAD_CARD_R
+#, fuzzy
+msgid "R Card."
+msgstr "بطاقة R."
+
+# SD_COMP_HEAD_CARD_R_DESC
+#: SD_COMP_HEAD_CARD_R_DESC
+#, fuzzy
+msgid "Minimum and Maximum # of times the element can appear in the instance - Right Structure"
+msgstr "الحد الأدنى والحد الأقصى لعدد المرات التي يمكن أن يظهر فيها العنصر في المثيل - البنية اليمنى"
+
+# SD_COMP_HEAD_COMP_DESC
+#: SD_COMP_HEAD_COMP_DESC
+#, fuzzy
+msgid "Comments about the comparison"
+msgstr "تعليقات حول المقارنة"
+
+# SD_COMP_HEAD_DESC_L
+#: SD_COMP_HEAD_DESC_L
+#, fuzzy
+msgid "L Description & Constraints"
+msgstr "ل الوصف والقيود"
+
+# SD_COMP_HEAD_DESC_L_DESC
+#: SD_COMP_HEAD_DESC_L_DESC
+#, fuzzy
+msgid "Additional information about the element - Left Structure"
+msgstr "معلومات إضافية حول العنصر - البنية اليسرى"
+
+# SD_COMP_HEAD_DESC_R
+#: SD_COMP_HEAD_DESC_R
+#, fuzzy
+msgid "R Description & Constraints"
+msgstr "وصف R والقيود"
+
+# SD_COMP_HEAD_DESC_R_DESC
+#: SD_COMP_HEAD_DESC_R_DESC
+#, fuzzy
+msgid "Additional information about the element - Right Structure"
+msgstr "معلومات إضافية حول العنصر - البنية الصحيحة"
+
+# SD_COMP_HEAD_FLAGS_L
+#: SD_COMP_HEAD_FLAGS_L
+#, fuzzy
+msgid "L Flags"
+msgstr "أعلام L"
+
+# SD_COMP_HEAD_FLAGS_L_DESC
+#: SD_COMP_HEAD_FLAGS_L_DESC
+#, fuzzy
+msgid "Information about the use of the element - Left Structure"
+msgstr "معلومات حول استخدام العنصر - الهيكل الأيسر - البنية اليسرى"
+
+# SD_COMP_HEAD_FLAGS_R
+#: SD_COMP_HEAD_FLAGS_R
+#, fuzzy
+msgid "R Flags"
+msgstr "أعلام R"
+
+# SD_COMP_HEAD_FLAGS_R_DESC
+#: SD_COMP_HEAD_FLAGS_R_DESC
+#, fuzzy
+msgid "Information about the use of the element - Right Structure"
+msgstr "معلومات حول استخدام العنصر - البنية الصحيحة"
+
+# SD_COMP_HEAD_TYPE_L
+#: SD_COMP_HEAD_TYPE_L
+#, fuzzy
+msgid "L Type"
+msgstr "النوع L"
+
+# SD_COMP_HEAD_TYPE_L_DESC
+#: SD_COMP_HEAD_TYPE_L_DESC
+#, fuzzy
+msgid "Reference to the type of the element - Left Structure"
+msgstr "الإشارة إلى نوع العنصر - الهيكل الأيسر - البنية اليسرى"
+
+# SD_COMP_HEAD_TYPE_R
+#: SD_COMP_HEAD_TYPE_R
+#, fuzzy
+msgid "R Type"
+msgstr "نوع R"
+
+# SD_COMP_HEAD_TYPE_R_DESC
+#: SD_COMP_HEAD_TYPE_R_DESC
+#, fuzzy
+msgid "Reference to the type of the element - Right Structure"
+msgstr "الإشارة إلى نوع العنصر - البنية الصحيحة - البنية الصحيحة"
+
+# SD_DOCO
+#: SD_DOCO
+#, fuzzy
+msgid "Documentation for this format"
+msgstr "الوثائق الخاصة بهذا التنسيق"
+
+# SD_GRID_HEAD_CARD_DESC
+#: SD_GRID_HEAD_CARD_DESC
+#, fuzzy
+msgid "Minimum and Maximum # of times the element can appear in the instance. Super-scripts indicate additional constraints on appearance"
+msgstr "الحد الأدنى والحد الأقصى لعدد المرات التي يمكن أن يظهر فيها العنصر في المثيل. تشير الأحرف الفائقة إلى قيود إضافية على الظهور"
+
+# SD_GRID_HEAD_DESC
+#: SD_GRID_HEAD_DESC
+#, fuzzy
+msgid "Constraints and Usage"
+msgstr "القيود والاستخدام"
+
+# SD_GRID_HEAD_DESC_DESC
+#: SD_GRID_HEAD_DESC_DESC
+#, fuzzy
+msgid "Fixed values, length limits, vocabulary bindings and other usage notes"
+msgstr "القيم الثابتة، وحدود الطول، وارتباطات المفردات وملاحظات الاستخدام الأخرى"
+
+# SD_GRID_HEAD_NAME_DESC
+#: SD_GRID_HEAD_NAME_DESC
+#, fuzzy
+msgid "The name of the element (Slice name in brackets).  Mouse-over provides definition"
+msgstr "اسم العنصر (اسم الشريحة بين قوسين).  يوفر التمرير فوق الماوس تعريفًا"
+
+# SD_GRID_HEAD_TYPE_DESC
+#: SD_GRID_HEAD_TYPE_DESC
+#, fuzzy
+msgid "Reference to the type of the element"
+msgstr "الإشارة إلى نوع العنصر"
+
+# SD_HEAD_CARD_DESC
+#: SD_HEAD_CARD_DESC
+#, fuzzy
+msgctxt "SD_HEAD_CARD_DESC"
+msgid "Minimum and Maximum # of times the element can appear in the instance"
+msgstr "الحد الأدنى والحد الأقصى لعدد المرات التي يمكن أن يظهر فيها العنصر في المثيل"
+
+# SD_HEAD_DESC_DESC
+#: SD_HEAD_DESC_DESC
+#, fuzzy
+msgid "Additional information about the element"
+msgstr "معلومات إضافية حول العنصر"
+
+# SD_HEAD_FLAGS_DESC
+#: SD_HEAD_FLAGS_DESC
+#, fuzzy
+msgid "Information about the use of the element"
+msgstr "معلومات حول استخدام العنصر"
+
+# SD_LEGEND
+#: SD_LEGEND
+#, fuzzy
+msgid "Legend for this format"
+msgstr "أسطورة لهذا التنسيق"
+
+# SD_SLICING_INFO
+#: SD_SLICING_INFO
+#, fuzzy
+msgid "{0}, {1} by {2}"
+msgstr "{0}، {1} بواسطة {2}"
+
+# SD_SUMMARY_FIXED
+#: SD_SUMMARY_FIXED
+#, fuzzy
+msgid "Fixed: {0} {1}"
+msgstr "ثابت: {0} {1}"
+
+# SD_SUMMARY_MANDATORY
+#: SD_SUMMARY_MANDATORY
+#, fuzzy
+msgid "Mandatory: {0} {1}"
+msgstr "إلزامي: {0} {1}"
+
+# SD_SUMMARY_MISSING_EXTENSION
+#: SD_SUMMARY_MISSING_EXTENSION
+#, fuzzy
+msgid "Unable to summarise extension {0} (no extension found)"
+msgstr "تعذر تلخيص الامتداد {0} (لم يتم العثور على امتداد)"
+
+# SD_SUMMARY_MISSING_PROFILE
+#: SD_SUMMARY_MISSING_PROFILE
+#, fuzzy
+msgid "Unable to summarise profile {0} (no profile found)"
+msgstr "تعذر تلخيص ملف التعريف {0} (لم يتم العثور على ملف تعريف)"
+
+# SD_SUMMARY_MUST_SUPPORT
+#: SD_SUMMARY_MUST_SUPPORT
+#, fuzzy
+msgid "Must-Support: {0} {1}"
+msgstr "يجب دعمه: {0} {1}"
+
+# SD_SUMMARY_NESTED_MANDATORY
+#: SD_SUMMARY_NESTED_MANDATORY
+#, fuzzy
+msgid "({0} nested mandatory {1})"
+msgstr "({0} متداخلة إلزامية {1})"
+
+# SD_SUMMARY_PROHIBITED
+#: SD_SUMMARY_PROHIBITED
+#, fuzzy
+msgid "Prohibited: {0} {1}"
+msgstr "محظور: {0} {1}"
+
+# SD_SUMMARY_PUBLICATION
+#: SD_SUMMARY_PUBLICATION
+#, fuzzy
+msgid "This profile was published on {0} as a {1} by {2}"
+msgstr "تم نشر هذا الملف الشخصي على {0} كـ {1} بواسطة {2}"
+
+# SD_SUMMARY_SLICE
+#: SD_SUMMARY_SLICE
+#, fuzzy
+msgid "The element {0} is sliced based on the value of {1}"
+msgid_plural "The element {0} is sliced based on the values of {1}"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+# SD_SUMMARY_SLICES
+#: SD_SUMMARY_SLICES
+#, fuzzy
+msgid "This structure defines the following {0}Slices{1}"
+msgstr "تُعرّف هذه البنية {0} الشرائح {1} التالية"
+
+# SD_SUMMARY_SLICE_NONE
+#: SD_SUMMARY_SLICE_NONE
+#, fuzzy
+msgid "There is a slice with no discriminator at {0}"
+msgstr "هناك شريحة بدون مميز عند {0}"
+
+# SD_XIG_LINK
+#: SD_XIG_LINK
+msgid "<p>You can also check for <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">usages in the FHIR IG Statistics</a></p>"
+msgstr ""
+
+# SEARCH_PAR_ALLOWED
+#: SEARCH_PAR_ALLOWED
+#, fuzzy
+msgid "Allowed:"
+msgstr "مسموح به:"
+
+# SEARCH_PAR_CHAIN
+#: SEARCH_PAR_CHAIN
+#, fuzzy
+msgid "Chains"
+msgstr "السلاسل"
+
+# SEARCH_PAR_EXP
+#: SEARCH_PAR_EXP
+#, fuzzy
+msgid "Expression"
+msgstr "التعبير"
+
+# SEARCH_PAR_MULTIPLES
+#: SEARCH_PAR_MULTIPLES
+#, fuzzy
+msgid "Multiples"
+msgstr "المضاعفات"
+
+# SEARCH_PAR_MULTIPLE_AND_APPEAR
+#: SEARCH_PAR_MULTIPLE_AND_APPEAR
+#, fuzzy
+msgid "multipleAnd: The parameter may only appear once"
+msgstr "متعددAnd: قد تظهر المعلمة مرة واحدة فقط"
+
+# SEARCH_PAR_MULTIPLE_AND_REPEAT
+#: SEARCH_PAR_MULTIPLE_AND_REPEAT
+#, fuzzy
+msgid "multipleAnd: The parameter may repeat in order to specify multiple values that must all be true"
+msgstr "متعدد: قد تتكرر المعلمة من أجل تحديد قيم متعددة يجب أن تكون جميعها صحيحة"
+
+# SEARCH_PAR_MULTIPLE_AND_SERVER
+#: SEARCH_PAR_MULTIPLE_AND_SERVER
+#, fuzzy
+msgid "multipleAnd: It''s up to the server whether the parameter may repeat in order to specify multiple values that must all be true"
+msgstr "متعدد: الأمر متروك للخادم فيما إذا كانت المعلمة قد تتكرر من أجل تحديد قيم متعددة يجب أن تكون جميعها صحيحة"
+
+# SEARCH_PAR_MULTIPLE_OR_MULTIPLE
+#: SEARCH_PAR_MULTIPLE_OR_MULTIPLE
+#, fuzzy
+msgid "multipleOr: The parameter may have multiple values (separated by comma) where at least one must be true"
+msgstr "Multi-Or: قد تحتوي المعلمة على قيم متعددة (مفصولة بفاصلة) حيث يجب أن تكون قيمة واحدة على الأقل صحيحة"
+
+# SEARCH_PAR_MULTIPLE_OR_ONE
+#: SEARCH_PAR_MULTIPLE_OR_ONE
+#, fuzzy
+msgid "multipleOr: The parameter may only have one value (no comma separators)"
+msgstr "متعدد: قد تحتوي المعلمة على قيمة واحدة فقط (بدون فواصل فاصلة)"
+
+# SEARCH_PAR_MULTIPLE_OR_SERVER
+#: SEARCH_PAR_MULTIPLE_OR_SERVER
+#, fuzzy
+msgid "multipleOr: It''s up to the server whether the parameter can have multiple values (separated by comma) where at least one must be true"
+msgstr "Multi-Or: الأمر متروك للخادم فيما إذا كان يمكن أن تحتوي المعلمة على قيم متعددة (مفصولة بفاصلة) حيث يجب أن تكون واحدة على الأقل صحيحة"
+
+# SEARCH_PAR_NONE
+#: SEARCH_PAR_NONE
+#, fuzzy
+msgctxt "SEARCH_PAR_NONE"
+msgid "(none)"
+msgstr "(لا شيء)"
+
+# SEARCH_PAR_PROC
+#: SEARCH_PAR_PROC
+#, fuzzy
+msgid "Processing Mode"
+msgstr "وضع المعالجة"
+
+# SEARCH_PAR_REND_TARGET
+#: SEARCH_PAR_REND_TARGET
+#, fuzzy
+msgid "Target Resources"
+msgstr "الموارد المستهدفة"
+
+# SEARCH_PAR_RES
+#: SEARCH_PAR_RES
+#, fuzzy
+msgid "All Resources"
+msgstr "جميع الموارد"
+
+# STATUS_MSG_AUTOBUILD
+#: STATUS_MSG_AUTOBUILD
+#, fuzzy
+msgid "{0}, published by {1}. This guide is not an authorized publication; it is the continuous build for version {2}  built by the FHIR (HL7&reg; FHIR&reg; Standard) CI Build. This version is based on the current content of <a href=''{3}''>{3}</a> and changes regularly. See the <a href=''{4}/history.html''>Directory of published versions</a>"
+msgstr "{0}، تم نشره بواسطة {1}. هذا الدليل ليس منشورًا معتمدًا؛ إنه البناء المستمر للإصدار {2} الذي تم إنشاؤه بواسطة FHIR (HL7&reg؛ FHIR&reg؛ CI Build). يستند هذا الإصدار إلى المحتوى الحالي لـ <a href='''{3}''>{3}</a> ويتغير بانتظام. راجع <a href='''{4}'''/history.html''>دليل الإصدارات المنشورة</a>"
+
+# STATUS_MSG_LOCAL_BUILD
+#: STATUS_MSG_LOCAL_BUILD
+#, fuzzy
+msgid "{0} - Local Development build (v{1}) built by the FHIR (HL7® FHIR® Standard) Build Tools. See the <a href=''{2}/history.html''>Directory of published versions</a>"
+msgstr "{0} - بناء التطوير المحلي (الإصدار{1}) الذي تم إنشاؤه بواسطة أدوات بناء FHIR (معيار HL7® FHIR®). انظر <a href=''{2}/history.html''>دليل الإصدارات المنشورة</a>"
+
+# STATUS_MSG_PUBLICATION_HOLDER
+#: STATUS_MSG_PUBLICATION_HOLDER
+#, fuzzy
+msgid "Publication Build: This will be filled in by the publication tooling"
+msgstr "بناء المنشور: سيتم ملء هذا من خلال أدوات النشر"
+
+# STRUC_DEF_ABSTRACT
+#: STRUC_DEF_ABSTRACT
+#, fuzzy
+msgid "This is an abstract"
+msgstr "هذا ملخص"
+
+# STRUC_DEF_ACT
+#: STRUC_DEF_ACT
+#, fuzzy
+msgid "Obligations that apply to the actor {0}"
+msgstr "الالتزامات التي تنطبق على الممثل {0}"
+
+# STRUC_DEF_AFFECT_CONSTRAINTS
+#: STRUC_DEF_AFFECT_CONSTRAINTS
+#, fuzzy
+msgid "This element has or is affected by constraints ("
+msgstr "هذا العنصر لديه أو يتأثر بالقيود ("
+
+# STRUC_DEF_ALLOWED
+#: STRUC_DEF_ALLOWED
+#, fuzzy
+msgid "Allowed Units"
+msgstr "الوحدات المسموح بها"
+
+# STRUC_DEF_ALL_ACTORS
+#: STRUC_DEF_ALL_ACTORS
+#, fuzzy
+msgid "All Actors"
+msgstr "جميع الممثلين"
+
+# STRUC_DEF_ALL_SLICES
+#: STRUC_DEF_ALL_SLICES
+#, fuzzy
+msgid ":All Slices"
+msgstr ":جميع الشرائح"
+
+# STRUC_DEF_ALL_TYPES
+#: STRUC_DEF_ALL_TYPES
+#, fuzzy
+msgid "All Types"
+msgstr "جميع الأنواع"
+
+# STRUC_DEF_ALT_NAME
+#: STRUC_DEF_ALT_NAME
+#, fuzzy
+msgid "Alternate Names"
+msgstr "الأسماء البديلة"
+
+# STRUC_DEF_AND
+#: STRUC_DEF_AND
+#, fuzzy
+msgctxt "STRUC_DEF_AND"
+msgid "and"
+msgstr "و"
+
+# STRUC_DEF_APPROP_CON
+#: STRUC_DEF_APPROP_CON
+#, fuzzy
+msgid "Concepts must come from this value set if appropriate concept is in this value set"
+msgstr "يجب أن تأتي المفاهيم من مجموعة القيم هذه إذا كان المفهوم المناسب في مجموعة القيم هذه"
+
+# STRUC_DEF_AS_SHOWN
+#: STRUC_DEF_AS_SHOWN
+#, fuzzy
+msgid "As shown"
+msgstr "كما هو موضح"
+
+# STRUC_DEF_BECAUSE
+#: STRUC_DEF_BECAUSE
+#, fuzzy
+msgid "because"
+msgstr "لأن"
+
+# STRUC_DEF_BINDINGS
+#: STRUC_DEF_BINDINGS
+#, fuzzy
+msgid "Binding:"
+msgstr "التجليد:"
+
+# STRUC_DEF_BINDING_STYLE
+#: STRUC_DEF_BINDING_STYLE
+#, fuzzy
+msgid "binding style"
+msgstr "نمط التجليد"
+
+# STRUC_DEF_BLACK
+#: STRUC_DEF_BLACK
+#, fuzzy
+msgid "black"
+msgstr "أسود"
+
+# STRUC_DEF_BUSINESS_ID
+#: STRUC_DEF_BUSINESS_ID
+#, fuzzy
+msgid "This is a business identifier, not a resource identifier (see"
+msgstr "هذا معرّف عمل، وليس معرّف مورد (راجع"
+
+# STRUC_DEF_BUSINESS_VERID
+#: STRUC_DEF_BUSINESS_VERID
+#, fuzzy
+msgid "This is a business version Id, not a resource version Id (see"
+msgstr "هذا معرف إصدار العمل، وليس معرف إصدار المورد (راجع"
+
+# STRUC_DEF_CAND
+#: STRUC_DEF_CAND
+#, fuzzy
+msgid "Candidate"
+msgstr "المرشح"
+
+# STRUC_DEF_CAND_SUB
+#: STRUC_DEF_CAND_SUB
+#, fuzzy
+msgid "This value set is a candidate to substitute for the overall conformance value set in some situations; usually these are defined in the documentation"
+msgstr "تعتبر مجموعة القيم هذه مرشحة للاستعاضة عن مجموعة قيم المطابقة الإجمالية في بعض الحالات؛ وعادةً ما يتم تعريفها في الوثائق"
+
+# STRUC_DEF_CANNOT_TARGET
+#: STRUC_DEF_CANNOT_TARGET
+#, fuzzy
+msgid "Instances of this logical model cannot be the target of a Reference"
+msgstr "لا يمكن أن تكون مثيلات هذا النموذج المنطقي هدفًا لمرجع"
+
+# STRUC_DEF_CANT_FIND
+#: STRUC_DEF_CANT_FIND
+#, fuzzy
+msgid "getElementByName: can''t find {0} in {1} from {2}"
+msgstr "getElementByName: لا يمكن العثور على {0} في {1} من {2}"
+
+# STRUC_DEF_CAN_TARGET
+#: STRUC_DEF_CAN_TARGET
+#, fuzzy
+msgid "Instances of this logical model can be the target of a Reference"
+msgstr "يمكن أن تكون مثيلات هذا النموذج المنطقي هدفًا لمرجع"
+
+# STRUC_DEF_CAP
+#: STRUC_DEF_CAP
+#, fuzzy
+msgid "CAP Code"
+msgstr "الرمز البريدي"
+
+# STRUC_DEF_CDA
+#: STRUC_DEF_CDA
+#, fuzzy
+msgid "This property is represented as CDA Text in the XML."
+msgstr "يتم تمثيل هذه الخاصية كنص CDA في XML."
+
+# STRUC_DEF_CHILD
+#: STRUC_DEF_CHILD
+#, fuzzy
+msgid "Child"
+msgstr "الطفل"
+
+# STRUC_DEF_CHOICE
+#: STRUC_DEF_CHOICE
+#, fuzzy
+msgid "(Choice of one)"
+msgstr "(اختيار واحد)"
+
+# STRUC_DEF_CHOICE_DATA_TYPE
+#: STRUC_DEF_CHOICE_DATA_TYPE
+#, fuzzy
+msgid "Choice of Data Types"
+msgstr "اختيار أنواع البيانات"
+
+# STRUC_DEF_CHOICE_GRP
+#: STRUC_DEF_CHOICE_GRP
+#, fuzzy
+msgid "Choice Group"
+msgstr "مجموعة تشويس"
+
+# STRUC_DEF_CHOICE_OF
+#: STRUC_DEF_CHOICE_OF
+#, fuzzy
+msgid "Choice of:"
+msgstr "اختيار من:"
+
+# STRUC_DEF_CLOSED
+#: STRUC_DEF_CLOSED
+#, fuzzy
+msgid "Closed"
+msgstr "مغلق"
+
+# STRUC_DEF_COMMENT
+#: STRUC_DEF_COMMENT
+#, fuzzy
+msgid "Comments:"
+msgstr "التعليقات:"
+
+# STRUC_DEF_COMPLEX
+#: STRUC_DEF_COMPLEX
+#, fuzzy
+msgid "Complex"
+msgstr "مجمع"
+
+# STRUC_DEF_COMPLEXBRACK
+#: STRUC_DEF_COMPLEXBRACK
+#, fuzzy
+msgid "(Complex)"
+msgstr "!!(معقد)"
+
+# STRUC_DEF_COMP_DOC
+#: STRUC_DEF_COMP_DOC
+#, fuzzy
+msgid "This value set is a component of the base value set. Usually this is called out so that documentation can be written about a portion of the value set"
+msgstr "مجموعة القيم هذه هي أحد مكونات مجموعة القيم الأساسية. عادةً ما يتم استدعاء ذلك حتى يمكن كتابة الوثائق حول جزء من مجموعة القيم"
+
+# STRUC_DEF_COMP_EX
+#: STRUC_DEF_COMP_EX
+#, fuzzy
+msgid "(Complex Extension)"
+msgstr "(ملحق المجمع)"
+
+# STRUC_DEF_COMP_PROF
+#: STRUC_DEF_COMP_PROF
+#, fuzzy
+msgid "Complies with Profile"
+msgstr "يتوافق مع الملف الشخصي"
+
+# STRUC_DEF_CONC_SET
+#: STRUC_DEF_CONC_SET
+#, fuzzy
+msgid "Concepts must come from this value set"
+msgstr "يجب أن تأتي المفاهيم من مجموعة القيم هذه"
+
+# STRUC_DEF_CONSTRAINING
+#: STRUC_DEF_CONSTRAINING
+#, fuzzy
+msgid "Slice Constraining"
+msgstr "تقييد الشرائح"
+
+# STRUC_DEF_CONSTRAINTS
+#: STRUC_DEF_CONSTRAINTS
+#, fuzzy
+msgctxt "STRUC_DEF_CONSTRAINTS"
+msgid "Constraints"
+msgstr "القيود"
+
+# STRUC_DEF_CONTROL
+#: STRUC_DEF_CONTROL
+#, fuzzy
+msgid "Control"
+msgstr "التحكم"
+
+# STRUC_DEF_CONT_RULE
+#: STRUC_DEF_CONT_RULE
+#, fuzzy
+msgid "Content/Rules for all slices"
+msgstr "المحتوى/القواعد لجميع الشرائح"
+
+# STRUC_DEF_CONT_TYPE
+#: STRUC_DEF_CONT_TYPE
+#, fuzzy
+msgid "Content/Rules for all Types"
+msgstr "المحتوى/القواعد لجميع الأنواع"
+
+# STRUC_DEF_COPY_URL
+#: STRUC_DEF_COPY_URL
+#, fuzzy
+msgid "Click to Copy URL"
+msgstr "انقر لنسخ الرابط"
+
+# STRUC_DEF_CURR
+#: STRUC_DEF_CURR
+#, fuzzy
+msgctxt "STRUC_DEF_CURR"
+msgid "Current"
+msgstr "الحالي"
+
+# STRUC_DEF_CURR_RULE
+#: STRUC_DEF_CURR_RULE
+#, fuzzy
+msgid "New records are required to use this value set, but legacy records may use other codes. The definition of ''new record'' is difficult, since systems often create new records based on pre-existing data. Usually ''current'' bindings are mandated by an external authority that makes clear rules around this"
+msgstr "يجب أن تستخدم السجلات الجديدة مجموعة القيم هذه، لكن السجلات القديمة قد تستخدم رموزاً أخرى. إن تعريف \"السجل الجديد\" صعب، لأن الأنظمة غالباً ما تنشئ سجلات جديدة بناءً على البيانات الموجودة مسبقاً. وعادةً ما تكون ارتباطات \"السجل الحالي\" مفوضة من قبل سلطة خارجية تضع قواعد واضحة حول هذا الأمر"
+
+# STRUC_DEF_DATE
+#: STRUC_DEF_DATE
+#, fuzzy
+msgid "Date Format: {0}"
+msgstr "تنسيق التاريخ: {0}"
+
+# STRUC_DEF_DATE_FORM
+#: STRUC_DEF_DATE_FORM
+#, fuzzy
+msgid "Date Format"
+msgstr "تنسيق التاريخ"
+
+# STRUC_DEF_DEFAULT_TYPE
+#: STRUC_DEF_DEFAULT_TYPE
+#, fuzzy
+msgid "Default Type"
+msgstr "النوع الافتراضي"
+
+# STRUC_DEF_DEFAULT_VALUE
+#: STRUC_DEF_DEFAULT_VALUE
+#, fuzzy
+msgid "Default Value"
+msgstr "القيمة الافتراضية"
+
+# STRUC_DEF_DEF_CODES
+#: STRUC_DEF_DEF_CODES
+#, fuzzy
+msgid "Definitional Codes"
+msgstr "الرموز التعريفية"
+
+# STRUC_DEF_DERIVED_PROFILE
+#: STRUC_DEF_DERIVED_PROFILE
+#, fuzzy
+msgid "In this IG, the following structures are derived from this profile:"
+msgstr "في هذا الدليل، تُشتق الهياكل التالية من هذا الملف الشخصي:"
+
+# STRUC_DEF_DESCRIM
+#: STRUC_DEF_DESCRIM
+#, fuzzy
+msgid ", and can be differentiated using the following discriminators:"
+msgstr "ويمكن التفريق بينهما باستخدام المميزات التالية:"
+
+# STRUC_DEF_DESC_PROF
+#: STRUC_DEF_DESC_PROF
+#, fuzzy
+msgid "Description of the profile"
+msgstr "وصف الملف الشخصي"
+
+# STRUC_DEF_DISCUSSION
+#: STRUC_DEF_DISCUSSION
+#, fuzzy
+msgid "discussion"
+msgstr "المناقشة"
+
+# STRUC_DEF_ELE
+#: STRUC_DEF_ELE
+#, fuzzy
+msgid "This primitive element must have a value"
+msgstr "يجب أن يكون لهذا العنصر البدائي قيمة"
+
+# STRUC_DEF_ELEMENT
+#: STRUC_DEF_ELEMENT
+#, fuzzy
+msgid "element"
+msgstr "العنصر"
+
+# STRUC_DEF_ELEMENTS
+#: STRUC_DEF_ELEMENTS
+#, fuzzy
+msgid "Elements defined in Ancestors:"
+msgstr "العناصر المحددة في الأسلاف:"
+
+# STRUC_DEF_ELE_AFFECTED
+#: STRUC_DEF_ELE_AFFECTED
+#, fuzzy
+msgid "This element has or is affected by constraints ( {0} {1}"
+msgstr "هذا العنصر لديه أو يتأثر بالقيود ( {0} {1} {0} {1}"
+
+# STRUC_DEF_ELE_INCLUDED
+#: STRUC_DEF_ELE_INCLUDED
+#, fuzzy
+msgid "This element is included in summaries"
+msgstr "يتم تضمين هذا العنصر في الملخصات"
+
+# STRUC_DEF_ELE_MUST_SUPP
+#: STRUC_DEF_ELE_MUST_SUPP
+#, fuzzy
+msgid "This element must be supported"
+msgstr "يجب دعم هذا العنصر"
+
+# STRUC_DEF_ELE_READ
+#: STRUC_DEF_ELE_READ
+#, fuzzy
+msgid "When this element is read"
+msgstr "عند قراءة هذا العنصر"
+
+# STRUC_DEF_ERROR
+#: STRUC_DEF_ERROR
+#, fuzzy
+msgid "Unknown structure mode"
+msgstr "وضع هيكل غير معروف"
+
+# STRUC_DEF_ERR_DESC
+#: STRUC_DEF_ERR_DESC
+#, fuzzy
+msgid "Error describing concept- not done yet (no codings, no text)"
+msgstr "خطأ في وصف المفهوم- لم يتم بعد (لا توجد رموز، لا يوجد نص)"
+
+# STRUC_DEF_EXAM
+#: STRUC_DEF_EXAM
+#, fuzzy
+msgid "example"
+msgstr "مثال على ذلك"
+
+# STRUC_DEF_EXT
+#: STRUC_DEF_EXT
+#, fuzzy
+msgctxt "STRUC_DEF_EXT"
+msgid "Extensible"
+msgstr "قابل للتوسيع"
+
+# STRUC_DEF_EXTENSIBLE
+#: STRUC_DEF_EXTENSIBLE
+#, fuzzy
+msgid "extensible"
+msgstr "قابل للتوسيع"
+
+# STRUC_DEF_EXTENSIONS
+#: STRUC_DEF_EXTENSIONS
+#, fuzzy
+msgid "Extensions"
+msgstr "التمديدات"
+
+# STRUC_DEF_EXT_JSON
+#: STRUC_DEF_EXT_JSON
+#, fuzzy
+msgid "This element can be extended by named JSON elements"
+msgstr "يمكن توسيع هذا العنصر بواسطة عناصر JSON مسماة"
+
+# STRUC_DEF_EXT_STYLE
+#: STRUC_DEF_EXT_STYLE
+#, fuzzy
+msgid "Extension Style"
+msgstr "نمط التمديد"
+
+# STRUC_DEF_EX_CODE
+#: STRUC_DEF_EX_CODE
+#, fuzzy
+msgid "For example codes, see"
+msgstr "للاطلاع على أمثلة على الرموز، انظر"
+
+# STRUC_DEF_EX_DESC
+#: STRUC_DEF_EX_DESC
+#, fuzzy
+msgid "Instances are not expected or even encouraged to draw from the specified value set. The value set merely provides examples of the types of concepts intended to be included."
+msgstr "لا يُتوقع من المثيلات أو حتى يتم تشجيعها على السحب من مجموعة القيم المحددة. فمجموعة القيم توفر فقط أمثلة على أنواع المفاهيم المراد تضمينها."
+
+# STRUC_DEF_EX_TYPE
+#: STRUC_DEF_EX_TYPE
+#, fuzzy
+msgid "(Extension Type:"
+msgstr "(نوع الامتداد:"
+
+# STRUC_DEF_EX_URL
+#: STRUC_DEF_EX_URL
+#, fuzzy
+msgid "Extension URL = {0}"
+msgstr "امتداد URL = {0}"
+
+# STRUC_DEF_FHIR
+#: STRUC_DEF_FHIR
+#, fuzzy
+msgid "Base FHIR {0}"
+msgstr "قاعدة FHIR {0}"
+
+# STRUC_DEF_FHIR_EXCEP
+#: STRUC_DEF_FHIR_EXCEP
+#, fuzzy
+msgid "Unable to retrieve StructureDefinition with URL {0}"
+msgstr "تعذر استرداد تعريف البنية مع عنوان URL {0}"
+
+# STRUC_DEF_FII
+#: STRUC_DEF_FII
+#, fuzzy
+msgid "Formal Invariant Identifier"
+msgstr "المعرّف الثابت الرسمي"
+
+# STRUC_DEF_FIXED
+#: STRUC_DEF_FIXED
+#, fuzzy
+msgid "Fixed Value"
+msgstr "القيمة الثابتة"
+
+# STRUC_DEF_FIXED_VALUE
+#: STRUC_DEF_FIXED_VALUE
+#, fuzzy
+msgid "Fixed Value:"
+msgstr "القيمة الثابتة:"
+
+# STRUC_DEF_FOR_CODE
+#: STRUC_DEF_FOR_CODE
+#, fuzzy
+msgid "For codes, see"
+msgstr "للاطلاع على الرموز، انظر"
+
+# STRUC_DEF_FURTHER_INFO
+#: STRUC_DEF_FURTHER_INFO
+#, fuzzy
+msgid "for further information about how to use [x]"
+msgstr "لمزيد من المعلومات حول كيفية استخدام [x]"
+
+# STRUC_DEF_GRADE
+#: STRUC_DEF_GRADE
+#, fuzzy
+msgid "Grade"
+msgstr "الصف"
+
+# STRUC_DEF_ID
+#: STRUC_DEF_ID
+#, fuzzy
+msgid "Id"
+msgstr "المعرف"
+
+# STRUC_DEF_ID_EXPECT
+#: STRUC_DEF_ID_EXPECT
+#, fuzzy
+msgid "ID Expectation"
+msgstr "توقعات الهوية"
+
+# STRUC_DEF_ID_IS
+#: STRUC_DEF_ID_IS
+#, fuzzy
+msgid "Id may or not be present (this is the default for elements but not resources)"
+msgstr "قد يكون المعرف موجودًا أو غير موجود (هذا هو الافتراضي للعناصر وليس الموارد)"
+
+# STRUC_DEF_ID_MAY
+#: STRUC_DEF_ID_MAY
+#, fuzzy
+msgid "Id is required to be present (this is the default for resources but not elements)"
+msgstr "يجب أن يكون المعرف موجودًا (هذا هو الافتراضي للموارد وليس العناصر)"
+
+# STRUC_DEF_ID_NOT_ALLOW
+#: STRUC_DEF_ID_NOT_ALLOW
+#, fuzzy
+msgid "An id is not allowed in this context"
+msgstr "المعرف غير مسموح به في هذا السياق"
+
+# STRUC_DEF_IF
+#: STRUC_DEF_IF
+#, fuzzy
+msgid "If"
+msgstr "إذا كان"
+
+# STRUC_DEF_IMPOSE_PROFILE
+#: STRUC_DEF_IMPOSE_PROFILE
+#, fuzzy
+msgid "Impose Profile"
+msgstr "فرض الملف الشخصي"
+
+# STRUC_DEF_INFERRED_JSON
+#: STRUC_DEF_INFERRED_JSON
+#, fuzzy
+msgid "The type of this element is inferred from the JSON type in the instance"
+msgstr "يُستدل على نوع هذا العنصر من نوع JSON في المثيل"
+
+# STRUC_DEF_INVAR
+#: STRUC_DEF_INVAR
+#, fuzzy
+msgid "Invariants"
+msgstr "المتغيرات"
+
+# STRUC_DEF_INVARIANT
+#: STRUC_DEF_INVARIANT
+#, fuzzy
+msgid "This element is affected by the following invariants:"
+msgstr "يتأثر هذا العنصر بالمتغيرات التالية:"
+
+# STRUC_DEF_JSON_ARRAY
+#: STRUC_DEF_JSON_ARRAY
+#, fuzzy
+msgid "JSON: This element may be present as a JSON Array even when there are no items in the instance"
+msgstr "JSON: قد يكون هذا العنصر موجودًا كمصفوفة JSON حتى في حالة عدم وجود عناصر في المثيل"
+
+# STRUC_DEF_JSON_CAN_NAME
+#: STRUC_DEF_JSON_CAN_NAME
+#, fuzzy
+msgid "This type can appear in JSON with the property name"
+msgstr "يمكن أن يظهر هذا النوع في JSON مع اسم الخاصية"
+
+# STRUC_DEF_JSON_CHILD
+#: STRUC_DEF_JSON_CHILD
+#, fuzzy
+msgid "child"
+msgstr "طفل"
+
+# STRUC_DEF_JSON_EXT
+#: STRUC_DEF_JSON_EXT
+#, fuzzy
+msgid "(in elements using named extensions)"
+msgstr "(في العناصر التي تستخدم ملحقات مسماة)"
+
+# STRUC_DEF_JSON_FORM
+#: STRUC_DEF_JSON_FORM
+#, fuzzy
+msgid "JSON Format"
+msgstr "تنسيق JSON"
+
+# STRUC_DEF_JSON_IF
+#: STRUC_DEF_JSON_IF
+#, fuzzy
+msgid "JSON: If"
+msgstr "JSON: إذا كان"
+
+# STRUC_DEF_JSON_INFERRED
+#: STRUC_DEF_JSON_INFERRED
+#, fuzzy
+msgid "JSON: The type of this element is inferred from the JSON type in the instance"
+msgstr "JSON: يُستدل على نوع هذا العنصر من نوع JSON في المثيل"
+
+# STRUC_DEF_JSON_IS
+#: STRUC_DEF_JSON_IS
+#, fuzzy
+msgid "This element is present as a JSON Array even when there are no items in the instance"
+msgstr "هذا العنصر موجود كمصفوفة JSON حتى في حالة عدم وجود عناصر في المثيل"
+
+# STRUC_DEF_JSON_MAY
+#: STRUC_DEF_JSON_MAY
+#, fuzzy
+msgid "This element may be present as a JSON Array even when there are no items in the instance"
+msgstr "قد يكون هذا العنصر موجودًا كمصفوفة JSON حتى في حالة عدم وجود عناصر في المثيل"
+
+# STRUC_DEF_JSON_MAY_PRESENT
+#: STRUC_DEF_JSON_MAY_PRESENT
+#, fuzzy
+msgid "The JSON Array for this property may be present even when there are no items in the instance (e.g. may be present as an empty array)"
+msgstr "قد تكون مصفوفة JSON Array لهذه الخاصية موجودة حتى في حالة عدم وجود عناصر في المثيل (على سبيل المثال قد تكون موجودة كمصفوفة فارغة)"
+
+# STRUC_DEF_JSON_NAME
+#: STRUC_DEF_JSON_NAME
+#, fuzzy
+msgid "JSON Property Name"
+msgstr "اسم خاصية JSON"
+
+# STRUC_DEF_JSON_NOT_PRESENT
+#: STRUC_DEF_JSON_NOT_PRESENT
+#, fuzzy
+msgid "The JSON Array for this property is not present when there are no items in the instance (e.g. never as an empty array)"
+msgstr "لا تكون مصفوفة JSON لهذه الخاصية موجودة في حالة عدم وجود عناصر في المثيل (على سبيل المثال لا تكون مصفوفة فارغة أبدًا)"
+
+# STRUC_DEF_JSON_NULL
+#: STRUC_DEF_JSON_NULL
+#, fuzzy
+msgid "JSON: This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
+msgstr "JSON: يمكن تمثيل هذا الكائن على أنه لا شيء في بنية JSON (والذي يُعتبر \"موجود\" لأغراض البطاقة)"
+
+# STRUC_DEF_JSON_PRESENT
+#: STRUC_DEF_JSON_PRESENT
+#, fuzzy
+msgid "The JSON Array for this property is present even when there are no items in the instance (e.g. as an empty array)"
+msgstr "مصفوفة JSON لهذه الخاصية موجودة حتى في حالة عدم وجود عناصر في المثيل (على سبيل المثال كمصفوفة فارغة)"
+
+# STRUC_DEF_JSON_PROPERTY_NAME
+#: STRUC_DEF_JSON_PROPERTY_NAME
+#, fuzzy
+msgid "This property appears in JSON with the property name"
+msgstr "تظهر هذه الخاصية في JSON مع اسم الخاصية"
+
+# STRUC_DEF_JSON_SINGLE
+#: STRUC_DEF_JSON_SINGLE
+#, fuzzy
+msgid "This repeating object is represented as a single JSON object with named properties. The name of the property (key) is the value of the"
+msgstr "يتم تمثيل هذا الكائن المتكرر ككائن JSON واحد مع خصائص مسماة. اسم الخاصية (المفتاح) هو اسم الخاصية (المفتاح) هو قيمة"
+
+# STRUC_DEF_JSON_TYPE
+#: STRUC_DEF_JSON_TYPE
+#, fuzzy
+msgid "JSON Property Name for Type"
+msgstr "اسم خاصية JSON للنوع"
+
+# STRUC_DEF_LABEL
+#: STRUC_DEF_LABEL
+#, fuzzy
+msgid "Label"
+msgstr "التسمية"
+
+# STRUC_DEF_LEAST_FOLLOW
+#: STRUC_DEF_LEAST_FOLLOW
+#, fuzzy
+msgid "At least the following"
+msgstr "على الأقل ما يلي"
+
+# STRUC_DEF_LOGICAL
+#: STRUC_DEF_LOGICAL
+#, fuzzy
+msgctxt "STRUC_DEF_LOGICAL"
+msgid "Logical Model"
+msgstr "النموذج المنطقي"
+
+# STRUC_DEF_LOGICAL_CONT
+#: STRUC_DEF_LOGICAL_CONT
+#, fuzzy
+msgid "Logical Container"
+msgstr "حاوية منطقية"
+
+# STRUC_DEF_LOINC
+#: STRUC_DEF_LOINC
+#, fuzzy
+msgid "LOINC Code"
+msgstr "رمز لوينك (LOINC)"
+
+# STRUC_DEF_LOINC_CODE
+#: STRUC_DEF_LOINC_CODE
+#, fuzzy
+msgid "LOINC code"
+msgstr "رمز لوينك (LOINC)"
+
+# STRUC_DEF_MAX
+#: STRUC_DEF_MAX
+#, fuzzy
+msgid "Maximum"
+msgstr "الحد الأقصى"
+
+# STRUC_DEF_MAX_MIN
+#: STRUC_DEF_MAX_MIN
+#, fuzzy
+msgctxt "STRUC_DEF_MAX_MIN"
+msgid "Minimum and Maximum # of times the element can appear in the instance"
+msgstr "الحد الأدنى والحد الأقصى لعدد المرات التي يمكن أن يظهر فيها العنصر في المثيل"
+
+# STRUC_DEF_MAX_VALUE
+#: STRUC_DEF_MAX_VALUE
+#, fuzzy
+msgid "Max Value"
+msgstr "القيمة القصوى"
+
+# STRUC_DEF_MEAN_MISS
+#: STRUC_DEF_MEAN_MISS
+#, fuzzy
+msgid "Meaning if Missing"
+msgstr "المعنى إذا كان مفقود"
+
+# STRUC_DEF_MIN
+#: STRUC_DEF_MIN
+#, fuzzy
+msgid "Minimum"
+msgstr "الحد الأدنى"
+
+# STRUC_DEF_MIN_VALUE
+#: STRUC_DEF_MIN_VALUE
+#, fuzzy
+msgid "Min Value"
+msgstr "الحد الأدنى للقيمة"
+
+# STRUC_DEF_MISSING_LINK
+#: STRUC_DEF_MISSING_LINK
+#, fuzzy
+msgid "missing link"
+msgstr "حلقة الوصل المفقودة"
+
+# STRUC_DEF_MOD
+#: STRUC_DEF_MOD
+#, fuzzy
+msgid "This element is a modifier element"
+msgstr "هذا العنصر هو عنصر معدل"
+
+# STRUC_DEF_MODIF
+#: STRUC_DEF_MODIF
+#, fuzzy
+msgid "Modifier"
+msgstr "تعديل"
+
+# STRUC_DEF_MODIFIER
+#: STRUC_DEF_MODIFIER
+#, fuzzy
+msgid "Is Modifier"
+msgstr "هو تعديل"
+
+# STRUC_DEF_MODIFIER_EXT
+#: STRUC_DEF_MODIFIER_EXT
+msgid "This is a modifier extension"
+msgstr ""
+
+# STRUC_DEF_MUST_SUPPORT
+#: STRUC_DEF_MUST_SUPPORT
+#, fuzzy
+msgid "Must Support"
+msgstr "يجب دعمه"
+
+# STRUC_DEF_MUST_SUPPORT_TYPES
+#: STRUC_DEF_MUST_SUPPORT_TYPES
+#, fuzzy
+msgid "Must Support Types"
+msgstr "يجب دعم أنواع الدعم"
+
+# STRUC_DEF_NAMESPACE
+#: STRUC_DEF_NAMESPACE
+#, fuzzy
+msgid "In the XML format, this property has the namespace"
+msgstr "في تنسيق XML، تحتوي هذه الخاصية على مساحة الاسم"
+
+# STRUC_DEF_NOTE_X
+#: STRUC_DEF_NOTE_X
+#, fuzzy
+msgid "[x] Note"
+msgstr "[س] ملاحظة"
+
+# STRUC_DEF_NOT_MARK
+#: STRUC_DEF_NOT_MARK
+#, fuzzy
+msgid "Instances of this logical model are not marked to be the target of a Reference"
+msgstr "لم يتم وضع علامة على مثيلات هذا النموذج المنطقي لتكون هدفًا لمرجع"
+
+# STRUC_DEF_NO_DESCRIM
+#: STRUC_DEF_NO_DESCRIM
+#, fuzzy
+msgid ", and defines no disciminators to differentiate the slices"
+msgstr "ولا يحدد أي فواصل للتمييز بين الشرائح"
+
+# STRUC_DEF_NO_MAPPINGS
+#: STRUC_DEF_NO_MAPPINGS
+#, fuzzy
+msgid "No Mappings"
+msgstr "لا توجد تعيينات"
+
+# STRUC_DEF_NO_MUST_SUPPORT
+#: STRUC_DEF_NO_MUST_SUPPORT
+#, fuzzy
+msgid "No must-support rules about the choice of types/profiles"
+msgstr "لا توجد قواعد واجبة الدعم بشأن اختيار الأنواع/الملفات"
+
+# STRUC_DEF_NO_SUMMARY
+#: STRUC_DEF_NO_SUMMARY
+#, fuzzy
+msgid "No Summary, as this profile has no differential"
+msgstr "لا يوجد ملخص، لأن هذا الملف الشخصي ليس له تفاضل"
+
+# STRUC_DEF_NULL_JSON
+#: STRUC_DEF_NULL_JSON
+#, fuzzy
+msgid "This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
+msgstr "يمكن تمثيل هذا الكائن على أنه فارغ في بنية JSON (والذي يُعتبر \"موجود\" لأغراض الكاردينالية)"
+
+# STRUC_DEF_OBLIG
+#: STRUC_DEF_OBLIG
+#, fuzzy
+msgid "This element has obligations"
+msgstr "هذا العنصر له التزامات"
+
+# STRUC_DEF_OBLIG_ADD
+#: STRUC_DEF_OBLIG_ADD
+#, fuzzy
+msgid "This is an obligation profile that only contains obligations and additional bindings"
+msgstr "هذا هو ملف تعريف الالتزام الذي يحتوي فقط على التزامات وارتباطات إضافية"
+
+# STRUC_DEF_OBLIG_ALL
+#: STRUC_DEF_OBLIG_ALL
+#, fuzzy
+msgid "Obligations that apply to all actors"
+msgstr "الالتزامات التي تنطبق على جميع الجهات الفاعلة"
+
+# STRUC_DEF_OBLIG_FROM
+#: STRUC_DEF_OBLIG_FROM
+#, fuzzy
+msgid "This profile picks up obligations and additional bindings from"
+msgstr "يلتقط هذا الملف الشخصي الالتزامات والارتباطات الإضافية من"
+
+# STRUC_DEF_OBLIG_SUPP
+#: STRUC_DEF_OBLIG_SUPP
+#, fuzzy
+msgid "This element has obligations and must be supported"
+msgstr "هذا العنصر له التزامات ويجب دعمه"
+
+# STRUC_DEF_ONE_OF
+#: STRUC_DEF_ONE_OF
+#, fuzzy
+msgid "One of:"
+msgstr "واحد من:"
+
+# STRUC_DEF_OPEN
+#: STRUC_DEF_OPEN
+#, fuzzy
+msgid "Open"
+msgstr "مفتوح"
+
+# STRUC_DEF_OPEN_END
+#: STRUC_DEF_OPEN_END
+#, fuzzy
+msgid "Open At End"
+msgstr "فتح في النهاية"
+
+# STRUC_DEF_ORDERED
+#: STRUC_DEF_ORDERED
+#, fuzzy
+msgid "Ordered"
+msgstr "طلب"
+
+# STRUC_DEF_PATH
+#: STRUC_DEF_PATH
+#, fuzzy
+msgctxt "STRUC_DEF_PATH"
+msgid "Path"
+msgstr "المسار"
+
+# STRUC_DEF_PATHS
+#: STRUC_DEF_PATHS
+#, fuzzy
+msgid "Path(s)"
+msgstr "المسار (المسارات)"
+
+# STRUC_DEF_PATT_VALUE
+#: STRUC_DEF_PATT_VALUE
+#, fuzzy
+msgid "Pattern Value"
+msgstr "قيمة النمط"
+
+# STRUC_DEF_PREFERRED
+#: STRUC_DEF_PREFERRED
+#, fuzzy
+msgid "preferred"
+msgstr "المفضل"
+
+# STRUC_DEF_PREFIXED
+#: STRUC_DEF_PREFIXED
+#, fuzzy
+msgid "is prefixed to the value before validation"
+msgstr "مسبوقة بالقيمة قبل التحقق من صحتها"
+
+# STRUC_DEF_PREF_CONT
+#: STRUC_DEF_PREF_CONT
+#, fuzzy
+msgid "This is the value set that is preferred in a given context (documentation should explain why)"
+msgstr "هذه هي مجموعة القيم المفضلة في سياق معين (يجب أن توضح الوثائق السبب)"
+
+# STRUC_DEF_PRIMITIVE
+#: STRUC_DEF_PRIMITIVE
+#, fuzzy
+msgid "Primitive Value"
+msgstr "القيمة البدائية"
+
+# STRUC_DEF_PRIM_ELE
+#: STRUC_DEF_PRIM_ELE
+#, fuzzy
+msgid "This primitive element may be present, or absent, or replaced by an extension"
+msgstr "قد يكون هذا العنصر البدائي حاضراً أو غائباً أو مستبدلاً بامتداد"
+
+# STRUC_DEF_PRIM_TYPE_PRESENT
+#: STRUC_DEF_PRIM_TYPE_PRESENT
+#, fuzzy
+msgid "This primitive type may be present, or absent if replaced by one of the following extensions:"
+msgstr "قد يكون هذا النوع البدائي موجودًا، أو غائبًا إذا تم استبداله بأحد الامتدادات التالية:"
+
+# STRUC_DEF_PRIM_TYPE_VALUE
+#: STRUC_DEF_PRIM_TYPE_VALUE
+#, fuzzy
+msgid "This primitive type must have a value (the value must be present, and cannot be replaced by an extension)"
+msgstr "هذا النوع البدائي يجب أن يكون له قيمة (يجب أن تكون القيمة موجودة، ولا يمكن استبدالها بملحق)"
+
+# STRUC_DEF_PROFILED
+#: STRUC_DEF_PROFILED
+#, fuzzy
+msgid "profiled by"
+msgstr "لمحة عن"
+
+# STRUC_DEF_PROFILE_BUILDS
+#: STRUC_DEF_PROFILE_BUILDS
+#, fuzzy
+msgid "This profile builds on"
+msgstr "يعتمد هذا الملف الشخصي على"
+
+# STRUC_DEF_PROF_COMP
+#: STRUC_DEF_PROF_COMP
+#, fuzzy
+msgid "This profile complies with the profile"
+msgstr "يتوافق هذا الملف الشخصي مع الملف الشخصي"
+
+# STRUC_DEF_PROF_REQ
+#: STRUC_DEF_PROF_REQ
+#, fuzzy
+msgid "This profile also requires that the instance also conform this additional profile:"
+msgstr "يتطلب ملف التعريف هذا أيضًا أن يتوافق المثيل أيضًا مع ملف التعريف الإضافي هذا:"
+
+# STRUC_DEF_PROF_RES
+#: STRUC_DEF_PROF_RES
+#, fuzzy
+msgid "A profiled resource"
+msgstr "مورد موصوف"
+
+# STRUC_DEF_PROF_SUPP
+#: STRUC_DEF_PROF_SUPP
+#, fuzzy
+msgid "This profile must be supported"
+msgstr "يجب دعم هذا الملف الشخصي"
+
+# STRUC_DEF_PROPERTY
+#: STRUC_DEF_PROPERTY
+#, fuzzy
+msgid "Property"
+msgstr "الممتلكات"
+
+# STRUC_DEF_REFERS_EXT
+#: STRUC_DEF_REFERS_EXT
+#, fuzzy
+msgid "This structure refers to these extensions"
+msgstr "تشير هذه البنية إلى هذه الامتدادات"
+
+# STRUC_DEF_REFER_PROFILE
+#: STRUC_DEF_REFER_PROFILE
+#, fuzzy
+msgid "In this IG, the following structures refer to this profile:"
+msgstr "في هذا الدليل، تشير الهياكل التالية إلى هذا الملف الشخصي:"
+
+# STRUC_DEF_REND_UNABLE_RES
+#: STRUC_DEF_REND_UNABLE_RES
+#, fuzzy
+msgid "Unable to resolve StructureDefinition {0} resolving content reference {1}"
+msgstr "غير قادر على حل تعريف البنية {0} حل مرجع المحتوى {1}"
+
+# STRUC_DEF_REPEAT
+#: STRUC_DEF_REPEAT
+#, fuzzy
+msgid "This is a repeating choice group that does not appear directly in the instance"
+msgstr "هذه مجموعة اختيارات متكررة لا تظهر مباشرة في المثال"
+
+# STRUC_DEF_REPEAT_ELE
+#: STRUC_DEF_REPEAT_ELE
+#, fuzzy
+msgid "This repeating element order: {0}"
+msgstr "ترتيب العنصر المتكرر هذا: {0}"
+
+# STRUC_DEF_REQUIRED
+#: STRUC_DEF_REQUIRED
+#, fuzzy
+msgid "required"
+msgstr "مطلوب"
+
+# STRUC_DEF_REQUIRED_PATT
+#: STRUC_DEF_REQUIRED_PATT
+#, fuzzy
+msgid "Required Pattern:"
+msgstr "النمط المطلوب:"
+
+# STRUC_DEF_REQUIREMENTS
+#: STRUC_DEF_REQUIREMENTS
+#, fuzzy
+msgid "Requirements"
+msgstr "المتطلبات"
+
+# STRUC_DEF_REQ_BIND
+#: STRUC_DEF_REQ_BIND
+#, fuzzy
+msgid "A required binding for additional codes, for us when the binding strength is ''extensible'' or ''preferred''"
+msgstr "الربط المطلوب للرموز الإضافية، بالنسبة لنا عندما تكون قوة الربط \"قابلة للتوسيع\" أو \"مفضلة"
+
+# STRUC_DEF_REQ_PATT
+#: STRUC_DEF_REQ_PATT
+#, fuzzy
+msgid "Required Pattern"
+msgstr "النمط المطلوب"
+
+# STRUC_DEF_ROOT
+#: STRUC_DEF_ROOT
+#, fuzzy
+msgid "The root class that contains instances of this class"
+msgstr "الفئة الجذرية التي تحتوي على مثيلات هذه الفئة"
+
+# STRUC_DEF_SEE
+#: STRUC_DEF_SEE
+#, fuzzy
+msgid "See"
+msgstr "انظر"
+
+# STRUC_DEF_SET_ARE
+#: STRUC_DEF_SET_ARE
+#, fuzzy
+msgid ". The slices are"
+msgstr ". الشرائح هي"
+
+# STRUC_DEF_SET_SLICES
+#: STRUC_DEF_SET_SLICES
+#, fuzzy
+msgid "This element introduces a set of slices on"
+msgstr "يقدم هذا العنصر مجموعة من الشرائح على"
+
+# STRUC_DEF_SHALL_CODE
+#: STRUC_DEF_SHALL_CODE
+#, fuzzy
+msgid "The codes SHALL be taken from"
+msgstr "يجب أن تكون الرموز مأخوذة من"
+
+# STRUC_DEF_SHORT
+#: STRUC_DEF_SHORT
+#, fuzzy
+msgid "Short"
+msgstr "قصير"
+
+# STRUC_DEF_SHOULD_CODE
+#: STRUC_DEF_SHOULD_CODE
+#, fuzzy
+msgid "The codes SHOULD be taken from"
+msgstr "يجب أن تكون الرموز مأخوذة من"
+
+# STRUC_DEF_SINGLE_JSON_OBJECTS
+#: STRUC_DEF_SINGLE_JSON_OBJECTS
+#, fuzzy
+msgid "JSON: Represented as a single JSON Object with named properties using the value of the {0} child as the key"
+msgstr "JSON: يتم تمثيله ككائن JSON واحد مع خصائص مسماة باستخدام قيمة التابع {0} كمفتاح"
+
+# STRUC_DEF_SLIC
+#: STRUC_DEF_SLIC
+#, fuzzy
+msgid "Slices"
+msgstr "الشرائح"
+
+# STRUC_DEF_SLICE
+#: STRUC_DEF_SLICE
+#, fuzzy
+msgid "Slice"
+msgstr "شريحة"
+
+# STRUC_DEF_SLICES
+#: STRUC_DEF_SLICES
+#, fuzzy
+msgid "Slice:"
+msgstr "شريحة:"
+
+# STRUC_DEF_SLICE_FOR
+#: STRUC_DEF_SLICE_FOR
+#, fuzzy
+msgid "Slices for {0}"
+msgstr "شرائح لـ {0}"
+
+# STRUC_DEF_SLICE_NAME
+#: STRUC_DEF_SLICE_NAME
+#, fuzzy
+msgid "Slice Name"
+msgstr "اسم الشريحة"
+
+# STRUC_DEF_SLICE_PAR
+#: STRUC_DEF_SLICE_PAR
+#, fuzzy
+msgid "Slice {0}"
+msgstr "شريحة {0}"
+
+# STRUC_DEF_SNOMED
+#: STRUC_DEF_SNOMED
+#, fuzzy
+msgid "SNOMED-CT"
+msgstr "SNOMED-CT"
+
+# STRUC_DEF_SNOMED_CODE
+#: STRUC_DEF_SNOMED_CODE
+#, fuzzy
+msgid "SNOMED-CT Code"
+msgstr "رمز SNOMED-CT"
+
+# STRUC_DEF_STAND_STAT
+#: STRUC_DEF_STAND_STAT
+#, fuzzy
+msgid "Standard Status"
+msgstr "الحالة القياسية"
+
+# STRUC_DEF_STAND_STATUS
+#: STRUC_DEF_STAND_STATUS
+#, fuzzy
+msgid "Standards Status ="
+msgstr "حالة المعايير ="
+
+# STRUC_DEF_STRING_FORM
+#: STRUC_DEF_STRING_FORM
+#, fuzzy
+msgid "String Format"
+msgstr "تنسيق السلسلة"
+
+# STRUC_DEF_STRUCTURES
+#: STRUC_DEF_STRUCTURES
+#, fuzzy
+msgid "Structures"
+msgstr "الهياكل"
+
+# STRUC_DEF_SUIT_SHALL_CODE
+#: STRUC_DEF_SUIT_SHALL_CODE
+#, fuzzy
+msgid "Unless not suitable, these codes SHALL be taken from"
+msgstr "ما لم تكن هذه الرموز مأخوذة من"
+
+# STRUC_DEF_TARG_SUPP
+#: STRUC_DEF_TARG_SUPP
+#, fuzzy
+msgid "This target must be supported"
+msgstr "يجب دعم هذا الهدف"
+
+# STRUC_DEF_TEMPLATEID
+#: STRUC_DEF_TEMPLATEID
+#, fuzzy
+msgid "Instance of this type are validated by templateId"
+msgstr "يتم التحقق من صحة مثيلات هذا النوع بواسطة templateId"
+
+# STRUC_DEF_TERM_BIND
+#: STRUC_DEF_TERM_BIND
+#, fuzzy
+msgid "Terminology Bindings (Differential)"
+msgstr "ارتباطات المصطلحات (التفاضلية)"
+
+# STRUC_DEF_TERM_BINDS
+#: STRUC_DEF_TERM_BINDS
+#, fuzzy
+msgid "Terminology Bindings"
+msgstr "ارتباطات المصطلحات"
+
+# STRUC_DEF_THEN_TYPE
+#: STRUC_DEF_THEN_TYPE
+#, fuzzy
+msgid "then the type is"
+msgstr "فإن النوع هو"
+
+# STRUC_DEF_THIS_REFERS
+#: STRUC_DEF_THIS_REFERS
+#, fuzzy
+msgid "This structure refers to these other structures"
+msgstr "يشير هذا الهيكل إلى هذه الهياكل الأخرى"
+
+# STRUC_DEF_TYPE_BOUND
+#: STRUC_DEF_TYPE_BOUND
+#, fuzzy
+msgid "This type can be bound to a value set using the {0}"
+msgstr "يمكن ربط هذا النوع بمجموعة قيمة باستخدام {0}"
+
+# STRUC_DEF_TYPE_PARAMETER
+#: STRUC_DEF_TYPE_PARAMETER
+#, fuzzy
+msgid "Type Parameter"
+msgstr "معلمة النوع"
+
+# STRUC_DEF_TYPE_SET
+#: STRUC_DEF_TYPE_SET
+#, fuzzy
+msgid "This type can be bound to a value set using the"
+msgstr "يمكن ربط هذا النوع بمجموعة قيم باستخدام"
+
+# STRUC_DEF_TYPE_SPEC
+#: STRUC_DEF_TYPE_SPEC
+#, fuzzy
+msgid "Type Specifier"
+msgstr "مواصفات النوع"
+
+# STRUC_DEF_TYPE_SUPP
+#: STRUC_DEF_TYPE_SUPP
+#, fuzzy
+msgid "This type must be supported"
+msgstr "يجب أن يكون هذا النوع مدعومًا"
+
+# STRUC_DEF_UI
+#: STRUC_DEF_UI
+#, fuzzy
+msgctxt "STRUC_DEF_UI"
+msgid "UI"
+msgstr "واجهة المستخدم"
+
+# STRUC_DEF_UI_CONT
+#: STRUC_DEF_UI_CONT
+#, fuzzy
+msgid "This value set is provided for user look up in a given context. Typically, these valuesets only include a subset of codes relevant for input in a context"
+msgstr "يتم توفير مجموعة القيم هذه للمستخدم للبحث عن المستخدم في سياق معين. عادةً ما تتضمن مجموعات القيم هذه فقط مجموعة فرعية من الرموز ذات الصلة بالإدخال في سياق ما"
+
+# STRUC_DEF_UNADORNED
+#: STRUC_DEF_UNADORNED
+#, fuzzy
+msgid "In the XML format, this property is represented as unadorned text."
+msgstr "في تنسيق XML، يتم تمثيل هذه الخاصية كنص غير مزخرف."
+
+# STRUC_DEF_UNDEF_ACT
+#: STRUC_DEF_UNDEF_ACT
+#, fuzzy
+msgid "Obligations that apply to the undefined actor {0}"
+msgstr "الالتزامات التي تنطبق على الفاعل غير المحدد {0}"
+
+# STRUC_DEF_UNKNOWN_APPROACH
+#: STRUC_DEF_UNKNOWN_APPROACH
+#, fuzzy
+msgid "Instances of this type are validated using an unknown approach: {0}"
+msgstr "يتم التحقق من صحة مثيلات هذا النوع باستخدام نهج غير معروف: {0}"
+
+# STRUC_DEF_UNKNOWN_REF
+#: STRUC_DEF_UNKNOWN_REF
+#, fuzzy
+msgid "Unknown reference to {0}"
+msgstr "إشارة غير معروفة إلى {0}"
+
+# STRUC_DEF_UNORDERED
+#: STRUC_DEF_UNORDERED
+#, fuzzy
+msgid "Unordered"
+msgstr "غير مرتبة"
+
+# STRUC_DEF_UNSPECIFIED
+#: STRUC_DEF_UNSPECIFIED
+#, fuzzy
+msgid "Unspecified"
+msgstr "غير محدد"
+
+# STRUC_DEF_URLS
+#: STRUC_DEF_URLS
+#, fuzzy
+msgid "URL:"
+msgstr "عنوان URL:"
+
+# STRUC_DEF_VALID
+#: STRUC_DEF_VALID
+#, fuzzy
+msgid "Validation"
+msgstr "التحقق من الصحة"
+
+# STRUC_DEF_VALUESET
+#: STRUC_DEF_VALUESET
+#, fuzzy
+msgid "ValueSet"
+msgstr "مجموعة القيم"
+
+# STRUC_DEF_VALUESET_CODE
+#: STRUC_DEF_VALUESET_CODE
+#, fuzzy
+msgid "ValueSet / Code"
+msgstr "مجموعة القيمة / الرمز"
+
+# STRUC_DEF_VALUE_ALT
+#: STRUC_DEF_VALUE_ALT
+#, fuzzy
+msgid "Value Alternatives"
+msgstr "بدائل القيمة"
+
+# STRUC_DEF_VALUE_REQ
+#: STRUC_DEF_VALUE_REQ
+#, fuzzy
+msgid "Value Required"
+msgstr "القيمة المطلوبة"
+
+# STRUC_DEF_WHAT
+#: STRUC_DEF_WHAT
+#, fuzzy
+msgid "What goes here"
+msgstr "ما يوضع هنا"
+
+# STRUC_DEF_XHTML
+#: STRUC_DEF_XHTML
+#, fuzzy
+msgid "This property is represented as XHTML Text in the XML."
+msgstr "يتم تمثيل هذه الخاصية كنص XHTML في XML."
+
+# STRUC_DEF_XML_ACTUAL
+#: STRUC_DEF_XML_ACTUAL
+#, fuzzy
+msgid "In the XML format, this property has the actual name"
+msgstr "في تنسيق XML، تحتوي هذه الخاصية على الاسم الفعلي"
+
+# STRUC_DEF_XML_ATTRIBUTE
+#: STRUC_DEF_XML_ATTRIBUTE
+#, fuzzy
+msgid "In the XML format, this property is represented as an attribute."
+msgstr "في تنسيق XML، يتم تمثيل هذه الخاصية كسمة."
+
+# STRUC_DEF_XML_ELE
+#: STRUC_DEF_XML_ELE
+#, fuzzy
+msgid "XML Element Name"
+msgstr "اسم عنصر XML"
+
+# STRUC_DEF_XML_FORM
+#: STRUC_DEF_XML_FORM
+#, fuzzy
+msgid "XML Format"
+msgstr "تنسيق XML"
+
+# STRUC_DEF_XML_NAME
+#: STRUC_DEF_XML_NAME
+#, fuzzy
+msgid "XML Namespace"
+msgstr "مساحة اسم XML"
+
+# STRUC_DEF_XSI
+#: STRUC_DEF_XSI
+#, fuzzy
+msgid "The type of this property is determined using the"
+msgstr "يتم تحديد نوع هذه الخاصية باستخدام خاصية"
+
+# SUB_TOPIC_CREATE
+#: SUB_TOPIC_CREATE
+#, fuzzy
+msgid "* create result = {0}"
+msgstr "* نتيجة الإنشاء = {0}"
+
+# SUB_TOPIC_CURR
+#: SUB_TOPIC_CURR
+#, fuzzy
+msgid "* current = {0}"
+msgstr "* الحالي = {0}"
+
+# SUB_TOPIC_DELETE
+#: SUB_TOPIC_DELETE
+#, fuzzy
+msgid "* delete result = {0}"
+msgstr "* حذف النتيجة = {0}"
+
+# SUB_TOPIC_EVENT
+#: SUB_TOPIC_EVENT
+#, fuzzy
+msgid "Event"
+msgstr "الحدث"
+
+# SUB_TOPIC_FHIR_PATH
+#: SUB_TOPIC_FHIR_PATH
+#, fuzzy
+msgid "FHIR Path"
+msgstr "مسار FHIR"
+
+# SUB_TOPIC_FILT_DEF
+#: SUB_TOPIC_FILT_DEF
+#, fuzzy
+msgid "Filter Definition"
+msgstr "تعريف المرشح"
+
+# SUB_TOPIC_FILT_PAR
+#: SUB_TOPIC_FILT_PAR
+#, fuzzy
+msgid "Filter Parameter"
+msgstr "معلمات التصفية"
+
+# SUB_TOPIC_INCL
+#: SUB_TOPIC_INCL
+#, fuzzy
+msgid "Includes"
+msgstr "تشمل"
+
+# SUB_TOPIC_INT
+#: SUB_TOPIC_INT
+#, fuzzy
+msgid "Interactions"
+msgstr "التفاعلات"
+
+# SUB_TOPIC_PREV
+#: SUB_TOPIC_PREV
+#, fuzzy
+msgid "* previous = {0}"
+msgstr "* السابق = {0}"
+
+# SUB_TOPIC_REQ
+#: SUB_TOPIC_REQ
+#, fuzzy
+msgid "* require both = {0}"
+msgstr "* يتطلب كلاهما = {0}"
+
+# SUB_TOPIC_RES_TRIG
+#: SUB_TOPIC_RES_TRIG
+#, fuzzy
+msgid "Resource Triggers"
+msgstr "مشغلات الموارد"
+
+# SUB_TOPIC_REV_INCL
+#: SUB_TOPIC_REV_INCL
+#, fuzzy
+msgid "Reverse Includes"
+msgstr "يشمل العكس"
+
+# TERMINOLOGY_LVL
+#: TERMINOLOGY_LVL
+#, fuzzy
+msgid "Lvl"
+msgstr "المستوى الأعلى"
+
+# TERM_REND_COPY
+#: TERM_REND_COPY
+#, fuzzy
+msgid "Copy {0} Format to clipboard"
+msgstr "نسخ {0} التنسيق إلى الحافظة"
+
+# TEST_PLAN_ASS
+#: TEST_PLAN_ASS
+#, fuzzy
+msgid "Assertion"
+msgstr "التأكيد"
+
+# TEST_PLAN_ASSERTION
+#: TEST_PLAN_ASSERTION
+#, fuzzy
+msgid "Assertion {0}"
+msgstr "تأكيد {0}"
+
+# TEST_PLAN_CASE
+#: TEST_PLAN_CASE
+#, fuzzy
+msgid "Test Case"
+msgstr "حالة الاختبار"
+
+# TEST_PLAN_CASE_SEQ
+#: TEST_PLAN_CASE_SEQ
+#, fuzzy
+msgid "Test Case - Sequence {0}"
+msgstr "حالة الاختبار - التسلسل {0}"
+
+# TEST_PLAN_CATEGORY
+#: TEST_PLAN_CATEGORY
+#, fuzzy
+msgid "Category:"
+msgstr "الفئة:"
+
+# TEST_PLAN_DATA
+#: TEST_PLAN_DATA
+#, fuzzy
+msgid "Test Data"
+msgstr "بيانات الاختبار"
+
+# TEST_PLAN_DEP
+#: TEST_PLAN_DEP
+#, fuzzy
+msgid "Test Plan Dependency:"
+msgstr "تبعية خطة الاختبار:"
+
+# TEST_PLAN_DEPEN
+#: TEST_PLAN_DEPEN
+#, fuzzy
+msgid "Test Plan Dependencies:"
+msgstr "تبعيات خطة الاختبار:"
+
+# TEST_PLAN_DESC
+#: TEST_PLAN_DESC
+#, fuzzy
+msgid "Dependency - no description"
+msgstr "التبعية - لا يوجد وصف"
+
+# TEST_PLAN_LANG
+#: TEST_PLAN_LANG
+#, fuzzy
+msgid "Language"
+msgstr "اللغة"
+
+# TEST_PLAN_RESULT
+#: TEST_PLAN_RESULT
+#, fuzzy
+msgid "Result"
+msgstr "النتيجة"
+
+# TEST_PLAN_RUN
+#: TEST_PLAN_RUN
+#, fuzzy
+msgid "Test Run"
+msgstr "اختبار التشغيل"
+
+# TEST_PLAN_SCOPE
+#: TEST_PLAN_SCOPE
+#, fuzzy
+msgid "Test Plan Scope:"
+msgstr "نطاق خطة الاختبار:"
+
+# TEST_PLAN_SCOPES
+#: TEST_PLAN_SCOPES
+#, fuzzy
+msgid "Test Plan Scopes:"
+msgstr "نطاقات خطة الاختبار:"
+
+# TEST_PLAN_SOURCE
+#: TEST_PLAN_SOURCE
+#, fuzzy
+msgid "Source[x]"
+msgstr "المصدر [x]"
+
+# TEST_PLAN_TEST_DATA
+#: TEST_PLAN_TEST_DATA
+#, fuzzy
+msgid "Test Data {0}"
+msgstr "بيانات الاختبار {0}"
+
+# TEST_PLAN_TEST_RUN
+#: TEST_PLAN_TEST_RUN
+#, fuzzy
+msgid "Test Run {0}"
+msgstr "اختبار التشغيل {0}"
+
+# TEXT_ICON_CHOICE
+#: TEXT_ICON_CHOICE
+#, fuzzy
+msgid "Choice of Types"
+msgstr "اختيار الأنواع"
+
+# TEXT_ICON_DATATYPE
+#: TEXT_ICON_DATATYPE
+#, fuzzy
+msgid "Data Type"
+msgstr "نوع البيانات"
+
+# TEXT_ICON_ELEMENT
+#: TEXT_ICON_ELEMENT
+#, fuzzy
+msgid "Element"
+msgstr "العنصر"
+
+# TEXT_ICON_EXTENSION_COMPLEX
+#: TEXT_ICON_EXTENSION_COMPLEX
+#, fuzzy
+msgid "Complex Extension"
+msgstr "ملحق المجمع"
+
+# TEXT_ICON_EXTENSION_SIMPLE
+#: TEXT_ICON_EXTENSION_SIMPLE
+#, fuzzy
+msgid "Simple Extension"
+msgstr "التمديد البسيط"
+
+# TEXT_ICON_KEY
+#: TEXT_ICON_KEY
+#, fuzzy
+msgid "JSON Key Value"
+msgstr "قيمة مفتاح JSON"
+
+# TEXT_ICON_OBJECT_BOX
+#: TEXT_ICON_OBJECT_BOX
+#, fuzzy
+msgid "Object"
+msgstr "الكائن"
+
+# TEXT_ICON_PRIMITIVE
+#: TEXT_ICON_PRIMITIVE
+#, fuzzy
+msgid "Primitive Data Type"
+msgstr "نوع البيانات البدائية"
+
+# TEXT_ICON_REFERENCE
+#: TEXT_ICON_REFERENCE
+#, fuzzy
+msgid "Reference to another Resource"
+msgstr "الإحالة إلى مورد آخر"
+
+# TEXT_ICON_REUSE
+#: TEXT_ICON_REUSE
+#, fuzzy
+msgid "Reference to another Element"
+msgstr "الإحالة إلى عنصر آخر"
+
+# TEXT_ICON_SLICE
+#: TEXT_ICON_SLICE
+#, fuzzy
+msgid "Slice Definition"
+msgstr "تعريف الشريحة"
+
+# TEXT_ICON_SLICE_ITEM
+#: TEXT_ICON_SLICE_ITEM
+#, fuzzy
+msgid "Slice Item"
+msgstr "عنصر الشريحة"
+
+# TX_DISPLAY
+#: TX_DISPLAY
+#, fuzzy
+msgid "Display"
+msgstr "العرض"
+
+# TX_DISPLAY_LANG
+#: TX_DISPLAY_LANG
+#, fuzzy
+msgid "Display ({0})"
+msgstr "عرض ({0})"
+
+# VALUE_ES_ES
+#: VALUE_ES_ES
+#, fuzzy
+msgid "Spanish National Edition"
+msgstr "الطبعة الوطنية الإسبانية"
+
+# VALUE_SET_ADD_DESIG
+#: VALUE_SET_ADD_DESIG
+#, fuzzy
+msgid "Additional Designations and Language Displays"
+msgstr "التسميات الإضافية وعروض اللغة الإضافية"
+
+# VALUE_SET_ALL_CODE
+#: VALUE_SET_ALL_CODE
+#, fuzzy
+msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains all the codes, and also this structure:"
+msgstr "يحدد هذا التضمين التسلسل الهرمي عند إنشاء مجموعات القيم لاستخدامها في واجهة المستخدم. تحتوي التوسعة على جميع الرموز، وكذلك هذه البنية:"
+
+# VALUE_SET_ALL_CODES_DEF
+#: VALUE_SET_ALL_CODES_DEF
+#, fuzzy
+msgid "all codes defined in"
+msgstr "جميع الرموز المحددة في"
+
+# VALUE_SET_AND
+#: VALUE_SET_AND
+#, fuzzy
+msgctxt "VALUE_SET_AND"
+msgid "and"
+msgstr "و"
+
+# VALUE_SET_AR
+#: VALUE_SET_AR
+#, fuzzy
+msgid "Argentinian Edition"
+msgstr "النسخة الأرجنتينية"
+
+# VALUE_SET_AT
+#: VALUE_SET_AT
+#, fuzzy
+msgid "Austrian Edition"
+msgstr "الطبعة النمساوية"
+
+# VALUE_SET_AUS
+#: VALUE_SET_AUS
+#, fuzzy
+msgid "Australian Edition"
+msgstr "الإصدار الأسترالي"
+
+# VALUE_SET_BE
+#: VALUE_SET_BE
+#, fuzzy
+msgid "Belgian Edition"
+msgstr "الإصدار البلجيكي"
+
+# VALUE_SET_CA
+#: VALUE_SET_CA
+#, fuzzy
+msgid "Canadian Edition"
+msgstr "الإصدار الكندي"
+
+# VALUE_SET_CA_EN
+#: VALUE_SET_CA_EN
+#, fuzzy
+msgid "Canadian English Edition"
+msgstr "الطبعة الإنجليزية الكندية"
+
+# VALUE_SET_CH
+#: VALUE_SET_CH
+#, fuzzy
+msgid "Swiss Edition"
+msgstr "الإصدار السويسري"
+
+# VALUE_SET_CODES_FROM
+#: VALUE_SET_CODES_FROM
+#, fuzzy
+msgid "codes from"
+msgstr "الرموز من"
+
+# VALUE_SET_CODE_ITEM
+#: VALUE_SET_CODE_ITEM
+#, fuzzy
+msgid "The code for the item"
+msgstr "الرمز الخاص بالعنصر"
+
+# VALUE_SET_CODE_SELEC
+#: VALUE_SET_CODE_SELEC
+#, fuzzy
+msgid "This value set cannot be fully expanded, but a selection ({0} codes) of the whole set of codes is shown here."
+msgstr "لا يمكن توسيع مجموعة القيم هذه بالكامل، ولكن يتم عرض مجموعة مختارة ({0} رموز) من مجموعة الرموز بأكملها هنا."
+
+# VALUE_SET_COMMA
+#: VALUE_SET_COMMA
+#, fuzzy
+msgid ","
+msgstr ","
+
+# VALUE_SET_CONT
+#: VALUE_SET_CONT
+#, fuzzy
+msgid "Value Set Contents"
+msgstr "محتويات مجموعة القيم"
+
+# VALUE_SET_CONTAINS
+#: VALUE_SET_CONTAINS
+#, fuzzy
+msgid "This value set contains {0} concepts"
+msgstr "تحتوي مجموعة القيم هذه على مفاهيم {0}"
+
+# VALUE_SET_CONTAINS_AT_LEAST
+#: VALUE_SET_CONTAINS_AT_LEAST
+#, fuzzy
+msgid "This value set contains at least {0} concepts"
+msgstr "تحتوي مجموعة القيم هذه على مفاهيم {0} على الأقل"
+
+# VALUE_SET_CONT_STRUC
+#: VALUE_SET_CONT_STRUC
+#, fuzzy
+msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure:"
+msgstr "يحدد هذا التضمين التسلسل الهرمي عند إنشاء مجموعات القيم لاستخدامها في واجهة المستخدم. تحتوي التوسعة على هذه البنية:"
+
+# VALUE_SET_DANISH
+#: VALUE_SET_DANISH
+#, fuzzy
+msgid "Danish"
+msgstr "دنماركية"
+
+# VALUE_SET_DE
+#: VALUE_SET_DE
+#, fuzzy
+msgid "German Edition"
+msgstr "الطبعة الألمانية"
+
+# VALUE_SET_DESCENDENTOF
+#: VALUE_SET_DESCENDENTOF
+#, fuzzy
+msgid "descends from"
+msgstr "ينحدر من"
+
+# VALUE_SET_DESIG
+#: VALUE_SET_DESIG
+#, fuzzy
+msgid "Additional Designations"
+msgstr "التسميات الإضافية"
+
+# VALUE_SET_DISPLAY_ITEM
+#: VALUE_SET_DISPLAY_ITEM
+#, fuzzy
+msgid "The display for the item"
+msgstr "العرض الخاص بالعنصر"
+
+# VALUE_SET_DOESNT_EXIST
+#: VALUE_SET_DOESNT_EXIST
+#, fuzzy
+msgid "doesn''t exist"
+msgstr "غير موجود"
+
+# VALUE_SET_DUTCH
+#: VALUE_SET_DUTCH
+#, fuzzy
+msgid "Dutch"
+msgstr "اللغة الهولندية"
+
+# VALUE_SET_EE
+#: VALUE_SET_EE
+#, fuzzy
+msgid "Estonian Edition"
+msgstr "النسخة الإستونية"
+
+# VALUE_SET_EQUAL
+#: VALUE_SET_EQUAL
+#, fuzzy
+msgid "="
+msgstr "="
+
+# VALUE_SET_ERROR
+#: VALUE_SET_ERROR
+#, fuzzy
+msgid "Error Expanding ValueSet: {0}"
+msgstr "خطأ في توسيع مجموعة القيم: {0}"
+
+# VALUE_SET_EXCL
+#: VALUE_SET_EXCL
+#, fuzzy
+msgid "Exclude"
+msgstr "استبعاد"
+
+# VALUE_SET_EXCLUDED_FROM
+#: VALUE_SET_EXCLUDED_FROM
+#, fuzzy
+msgid "Excluded from"
+msgstr "مستبعد من"
+
+# VALUE_SET_EXISTS
+#: VALUE_SET_EXISTS
+#, fuzzy
+msgid "exists"
+msgstr "موجود"
+
+# VALUE_SET_EXP
+#: VALUE_SET_EXP
+#, fuzzy
+msgid "Expansion based on example code system"
+msgstr "التوسع على أساس نظام الكود النموذجي"
+
+# VALUE_SET_EXPANSION
+#: VALUE_SET_EXPANSION
+#, fuzzy
+msgid "Expansion based on"
+msgstr "التوسعة على أساس"
+
+# VALUE_SET_EXPANSIONS
+#: VALUE_SET_EXPANSIONS
+#, fuzzy
+msgid "Expansion based on:"
+msgstr "التوسعة على أساس:"
+
+# VALUE_SET_EXPANSIONS_INTERNAL
+#: VALUE_SET_EXPANSIONS_INTERNAL
+#, fuzzy
+msgid "Expansion performed internally based on:"
+msgstr "يتم التوسيع داخلياً على أساس:"
+
+# VALUE_SET_EXPANSIONS_SRVR
+#: VALUE_SET_EXPANSIONS_SRVR
+#, fuzzy
+msgid "Expansion from {0} based on:"
+msgstr "التوسعة من {0} بناءً على:"
+
+# VALUE_SET_EXPANSION_INTERNAL
+#: VALUE_SET_EXPANSION_INTERNAL
+#, fuzzy
+msgid "Expansion performed internally based on"
+msgstr "التوسعة التي تتم داخليًا بناءً على"
+
+# VALUE_SET_EXPANSION_SRVR
+#: VALUE_SET_EXPANSION_SRVR
+#, fuzzy
+msgid "Expansion from {0} based on"
+msgstr "التوسيع من {0} بناءً على"
+
+# VALUE_SET_EXP_FRAG
+#: VALUE_SET_EXP_FRAG
+#, fuzzy
+msgid "Expansion based on code system fragment"
+msgstr "التوسيع على أساس جزء نظام التعليمات البرمجية"
+
+# VALUE_SET_FI
+#: VALUE_SET_FI
+#, fuzzy
+msgid "Finnish Edition"
+msgstr "النسخة الفنلندية"
+
+# VALUE_SET_GENERALIZES
+#: VALUE_SET_GENERALIZES
+#, fuzzy
+msgid "generalizes"
+msgstr "يعمم"
+
+# VALUE_SET_HAS
+#: VALUE_SET_HAS
+#, fuzzy
+msgid "This value set has {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
+msgstr "تحتوي مجموعة القيم هذه على {0} رموز فيها. من أجل الحفاظ على حجم المنشور قابلاً للإدارة، يتم عرض مجموعة مختارة فقط ({1} رموز) من مجموعة الرموز بأكملها."
+
+# VALUE_SET_HAS_AT_LEAST
+#: VALUE_SET_HAS_AT_LEAST
+#, fuzzy
+msgid "This value set has at least {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
+msgstr "تحتوي مجموعة القيم هذه على {0} رمز على الأقل فيها. من أجل الحفاظ على حجم المنشور قابلاً للإدارة، يتم عرض مجموعة مختارة فقط ({1} رمز) من مجموعة الرموز بأكملها."
+
+# VALUE_SET_IE
+#: VALUE_SET_IE
+#, fuzzy
+msgid "Irish Edition"
+msgstr "النسخة الأيرلندية"
+
+# VALUE_SET_IMPORT
+#: VALUE_SET_IMPORT
+#, fuzzy
+msgid "Import all the codes that are contained in"
+msgid_plural "Import all the codes that are contained in the intersection of"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+# VALUE_SET_IN
+#: VALUE_SET_IN
+#, fuzzy
+msgid "in"
+msgstr "في"
+
+# VALUE_SET_INACT
+#: VALUE_SET_INACT
+#, fuzzy
+msgid "inactive"
+msgstr "غير نشط"
+
+# VALUE_SET_INACTIVE
+#: VALUE_SET_INACTIVE
+#, fuzzy
+msgid "Inactive"
+msgstr "غير نشط"
+
+# VALUE_SET_INC
+#: VALUE_SET_INC
+#, fuzzy
+msgid "Include"
+msgstr "تضمين"
+
+# VALUE_SET_INCLUDED_INTO
+#: VALUE_SET_INCLUDED_INTO
+#, fuzzy
+msgid "Included into"
+msgstr "مضمنة في"
+
+# VALUE_SET_INT
+#: VALUE_SET_INT
+#, fuzzy
+msgid "International"
+msgstr "الدولية"
+
+# VALUE_SET_ISA
+#: VALUE_SET_ISA
+#, fuzzy
+msgid "is-a"
+msgstr "هو-أ"
+
+# VALUE_SET_ISNOTA
+#: VALUE_SET_ISNOTA
+#, fuzzy
+msgid "is-not-a"
+msgstr "ليست"
+
+# VALUE_SET_KR
+#: VALUE_SET_KR
+#, fuzzy
+msgid "Republic of Korea Edition (South Korea)"
+msgstr "إصدار جمهورية كوريا (كوريا الجنوبية)"
+
+# VALUE_SET_LEVEL
+#: VALUE_SET_LEVEL
+#, fuzzy
+msgid "Level"
+msgstr "المستوى"
+
+# VALUE_SET_LOINCV
+#: VALUE_SET_LOINCV
+#, fuzzy
+msgid "Loinc v"
+msgstr "لوينك ف"
+
+# VALUE_SET_NEEDS_SUPPL
+#: VALUE_SET_NEEDS_SUPPL
+#, fuzzy
+msgid "This ValueSet requires the Code system Supplement"
+msgid_plural "This ValueSet requires the Code system Supplements"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+# VALUE_SET_NO
+#: VALUE_SET_NO
+#, fuzzy
+msgid "Norwegian Edition"
+msgstr "النسخة النرويجية"
+
+# VALUE_SET_NOTE
+#: VALUE_SET_NOTE
+#, fuzzy
+msgid "Note: {0}"
+msgstr "ملاحظة: {0}"
+
+# VALUE_SET_NOTIN
+#: VALUE_SET_NOTIN
+#, fuzzy
+msgid "not in"
+msgstr "ليس في"
+
+# VALUE_SET_NOT_DEF
+#: VALUE_SET_NOT_DEF
+#, fuzzy
+msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface, but the rules are not properly defined"
+msgstr "يحدد هذا التضمين التسلسل الهرمي لوقت إنشاء مجموعات القيم لاستخدامها في واجهة المستخدم، ولكن لم يتم تحديد القواعد بشكل صحيح"
+
+# VALUE_SET_NOT_FOUND
+#: VALUE_SET_NOT_FOUND
+#, fuzzy
+msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure, and any codes not found in the structure:"
+msgstr "يحدد هذا التضمين التسلسل الهرمي عند إنشاء مجموعات القيم لاستخدامها في واجهة المستخدم. تحتوي التوسعة على هذه البنية، وأي رموز غير موجودة في البنية:"
+
+# VALUE_SET_NO_VER
+#: VALUE_SET_NO_VER
+#, fuzzy
+msgid "(no version)"
+msgstr "(بدون إصدار)"
+
+# VALUE_SET_NO_VERSION
+#: VALUE_SET_NO_VERSION
+#, fuzzy
+msgid "(no version) ("
+msgstr "(بدون إصدار) ("
+
+# VALUE_SET_NULL
+#: VALUE_SET_NULL
+#, fuzzy
+msgid "null"
+msgstr "لا شيء"
+
+# VALUE_SET_NULLS
+#: VALUE_SET_NULLS
+#, fuzzy
+msgid "?ngen-13?"
+msgstr "نجن-13"
+
+# VALUE_SET_NUMBER_CONCEPTS
+#: VALUE_SET_NUMBER_CONCEPTS
+#, fuzzy
+msgid "This value set expansion contains {0} concepts."
+msgstr "يحتوي توسع مجموعة القيم هذا على مفاهيم {0}."
+
+# VALUE_SET_NZ
+#: VALUE_SET_NZ
+#, fuzzy
+msgid "New Zealand Edition"
+msgstr "إصدار نيوزيلندا"
+
+# VALUE_SET_OTHER_DISPLAY
+#: VALUE_SET_OTHER_DISPLAY
+#, fuzzy
+msgid "Other Display ({0})"
+msgstr "عرض أخرى ({0})"
+
+# VALUE_SET_REGEX
+#: VALUE_SET_REGEX
+#, fuzzy
+msgid "matches (by regex)"
+msgstr "التطابق (حسب الرجعيات)"
+
+# VALUE_SET_RULES_EXC
+#: VALUE_SET_RULES_EXC
+#, fuzzy
+msgid "This value set excludes codes based on the following rules:"
+msgstr "تستثني مجموعة القيم هذه الرموز بناءً على القواعد التالية:"
+
+# VALUE_SET_RULES_INC
+#: VALUE_SET_RULES_INC
+#, fuzzy
+msgid "This value set includes codes based on the following rules:"
+msgstr "تتضمن مجموعة القيم هذه رموزًا تستند إلى القواعد التالية:"
+
+# VALUE_SET_SEL
+#: VALUE_SET_SEL
+#, fuzzy
+msgid "This value set has >1000 codes in it. In order to keep the publication size manageable, only a selection (1000 codes) of the whole set of codes is shown"
+msgstr "تحتوي مجموعة القيم هذه على أكثر من 1000 رمز. ولإبقاء حجم المنشور قابلاً للإدارة، يتم عرض مجموعة مختارة فقط (1000 رمز) من مجموعة الرموز بأكملها"
+
+# VALUE_SET_SNOMED
+#: VALUE_SET_SNOMED
+#, fuzzy
+msgid "SNOMED CT {0} edition"
+msgstr "إصدار {0} SNOMED CT {0}"
+
+# VALUE_SET_SNOMED_ADD
+#: VALUE_SET_SNOMED_ADD
+#, fuzzy
+msgid "SNOMED CT {0} edition {1}"
+msgstr "إصدار SNOMED CT {0} طبعة {1}"
+
+# VALUE_SET_SPAN
+#: VALUE_SET_SPAN
+#, fuzzy
+msgid "Spanish"
+msgstr "الإسبانية"
+
+# VALUE_SET_SPEC_NAME
+#: VALUE_SET_SPEC_NAME
+#, fuzzy
+msgid "Fully specified name"
+msgstr "الاسم المحدد بالكامل"
+
+# VALUE_SET_SWEDISH
+#: VALUE_SET_SWEDISH
+#, fuzzy
+msgid "Swedish"
+msgstr "اللغة السويدية"
+
+# VALUE_SET_SYNONYM
+#: VALUE_SET_SYNONYM
+#, fuzzy
+msgid "Synonym"
+msgstr "المرادف"
+
+# VALUE_SET_SYSTEM
+#: VALUE_SET_SYSTEM
+#, fuzzy
+msgid "System"
+msgstr "النظام"
+
+# VALUE_SET_THESE_CODES_DEF
+#: VALUE_SET_THESE_CODES_DEF
+#, fuzzy
+msgid "these codes as defined in"
+msgstr "هذه الرموز على النحو المحدد في"
+
+# VALUE_SET_TOO_COSTLY
+#: VALUE_SET_TOO_COSTLY
+#, fuzzy
+msgid "This value set cannot be expanded because the terminology server(s) deemed it too costly to do so"
+msgstr "لا يمكن توسيع مجموعة القيم هذه لأن خادم (خوادم) المصطلحات اعتبرها مكلفة للغاية للقيام بذلك"
+
+# VALUE_SET_UK
+#: VALUE_SET_UK
+#, fuzzy
+msgid "United Kingdom"
+msgstr "المملكة المتحدة"
+
+# VALUE_SET_UK_CLIN
+#: VALUE_SET_UK_CLIN
+#, fuzzy
+msgid "UK Clinical Edition"
+msgstr "الإصدار السريري في المملكة المتحدة"
+
+# VALUE_SET_US
+#: VALUE_SET_US
+#, fuzzy
+msgid "United States"
+msgstr "الولايات المتحدة الأمريكية"
+
+# VALUE_SET_USED_ELSEWHERE
+#: VALUE_SET_USED_ELSEWHERE
+#, fuzzy
+msgid "This value set is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
+msgstr "لا يتم استخدام مجموعة القيم هذه هنا؛ يمكن استخدامها في مكان آخر (على سبيل المثال المواصفات و/أو التطبيقات التي تستخدم هذا المحتوى)"
+
+# VALUE_SET_US_ICD10CM
+#: VALUE_SET_US_ICD10CM
+#, fuzzy
+msgid "US Edition (with ICD-10-CM maps)"
+msgstr "إصدار الولايات المتحدة (مع خرائط ICD-10-CM)"
+
+# VALUE_SET_UY
+#: VALUE_SET_UY
+#, fuzzy
+msgid "Uruguay Edition"
+msgstr "إصدار أوروغواي"
+
+# VALUE_SET_WHERE
+#: VALUE_SET_WHERE
+#, fuzzy
+msgid "where"
+msgstr "حيث"
+
+# VALUE_SET_WHERE_CODES
+#: VALUE_SET_WHERE_CODES
+#, fuzzy
+msgid ", where the codes are contained in"
+msgstr "حيث ترد الرموز في"
+
+# VSR_LOGICAL
+#: VSR_LOGICAL
+#, fuzzy
+msgid "Logical Definition (CLD)"
+msgstr "التعريف المنطقي (CLD)"
+
+# VSR_NO_DEF
+#: VSR_NO_DEF
+#, fuzzy
+msgid "No formal definition provided for this value set"
+msgstr "لم يتم توفير تعريف رسمي لمجموعة القيم هذه"
+
+# VSR_TRIGGER
+#: VSR_TRIGGER
+#, fuzzy
+msgid "Used as a trigger criteria in"
+msgstr "يُستخدم كمعيار للتشغيل في"
+
+# VS_ABSTRACT_CODE_HINT
+#: VS_ABSTRACT_CODE_HINT
+#, fuzzy
+msgid "This code is not selectable (''Abstract'')"
+msgstr "هذا الرمز غير قابل للتحديد (''ملخص'')"
+
+# _NA
+#: _NA
+#, fuzzy
+msgid "n/a"
+msgstr "غير متاح"
+

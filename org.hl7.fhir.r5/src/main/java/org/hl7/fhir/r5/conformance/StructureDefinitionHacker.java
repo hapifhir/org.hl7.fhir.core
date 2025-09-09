@@ -84,7 +84,7 @@ public class StructureDefinitionHacker {
         fixMarkdownR4BURLs(ed);
       }
     }
-    if ("http://hl7.org/fhir/StructureDefinition/vitalsigns".equals(sd.getUrl()) || "http://hl7.org/fhir/StructureDefinition/vitalsigns".equals(sd.getBaseDefinition())) {
+    if ("http://hl7.org/fhir/StructureDefinition/vitalsigns".equals(sd.getUrl()) || "http://hl7.org/fhir/StructureDefinition/vitalsigns".equals(sd.getBaseDefinitionNoVersion())) {
       for (ElementDefinition ed : sd.getDifferential().getElement()) {
         checkVSConstraint(ed);
       }

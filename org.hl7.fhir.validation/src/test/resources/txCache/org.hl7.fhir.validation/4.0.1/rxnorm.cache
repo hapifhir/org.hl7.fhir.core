@@ -19,7 +19,7 @@ v: {
   "code" : "1000990",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -47,7 +47,7 @@ v: {
   "code" : "1010603",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -75,7 +75,7 @@ v: {
   "code" : "1298088",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -103,7 +103,7 @@ v: {
   "code" : "1010600",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -131,7 +131,7 @@ v: {
   "code" : "428759",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -159,7 +159,7 @@ v: {
   "code" : "428759",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -186,7 +186,7 @@ v: {
   "code" : "1591957",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
