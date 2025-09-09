@@ -549,7 +549,7 @@ public class ShExGenerator {
 
     String bd = null;
     if (sd.hasBaseDefinition()) {
-      bd = sd.getBaseDefinition();
+      bd = sd.getBaseDefinitionNoVersion();
       String[] els = bd.split("/");
       bd = els[els.length - 1];
     }

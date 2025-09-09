@@ -22,7 +22,7 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose' for http://hl7.org/fhir/sid/cvx#207. Valid display is 'COVID-19, mRNA, LNP-S, PF, 100 mcg/0.5mL dose or 50 mcg/0.25mL dose' (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -33,7 +33,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -74,7 +74,7 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'X SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose' for http://hl7.org/fhir/sid/cvx#207. Valid display is 'COVID-19, mRNA, LNP-S, PF, 100 mcg/0.5mL dose or 50 mcg/0.25mL dose' (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -85,7 +85,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -123,7 +123,7 @@ v: {
   "code" : "141",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -151,7 +151,7 @@ v: {
   "code" : "208",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -179,7 +179,7 @@ v: {
   "code" : "20",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -207,7 +207,7 @@ v: {
   "code" : "138",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -235,7 +235,7 @@ v: {
   "code" : "133",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -263,7 +263,7 @@ v: {
   "code" : "208",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -291,7 +291,7 @@ v: {
   "code" : "141",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -319,7 +319,7 @@ v: {
   "code" : "20",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -347,7 +347,7 @@ v: {
   "code" : "138",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -375,7 +375,7 @@ v: {
   "code" : "133",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -402,7 +402,7 @@ v: {
   "code" : "208",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -429,7 +429,7 @@ v: {
   "code" : "208",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -457,7 +457,7 @@ v: {
   "severity" : "error",
   "error" : "Unknown code '209' in the CodeSystem 'http://hl7.org/fhir/sid/cvx' version '20250715'",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -468,7 +468,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -506,7 +506,7 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://hl7.org/fhir/sid/cvx#209' was not found in the value set 'http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2'; Unknown code '209' in the CodeSystem 'http://hl7.org/fhir/sid/cvx' version '20250715'",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -517,7 +517,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -538,7 +538,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -575,7 +575,7 @@ v: {
   "code" : "210",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -602,7 +602,7 @@ v: {
   "code" : "207",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -629,7 +629,7 @@ v: {
   "code" : "210",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -656,7 +656,7 @@ v: {
   "code" : "207",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

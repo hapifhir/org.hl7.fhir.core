@@ -701,7 +701,7 @@ public class ProfilePathProcessor {
           case Unknown:
             throw new FHIRException("Reference to unknown extension " + firstTypeProfile.getValue());
           case Valid:
-            firstTypeStructureDefinition = profileUtilities.getXver().makeDefinition(firstTypeProfile.getValue());
+            firstTypeStructureDefinition = profileUtilities.getXver().getDefinition(firstTypeProfile.getValue());
             profileUtilities.generateSnapshot(profileUtilities.getContext().fetchTypeDefinition("Extension"), firstTypeStructureDefinition, firstTypeStructureDefinition.getUrl(), getWebUrl(), firstTypeStructureDefinition.getName());
         }
       }

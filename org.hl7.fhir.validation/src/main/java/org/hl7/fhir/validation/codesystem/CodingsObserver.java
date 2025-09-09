@@ -15,7 +15,7 @@ import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -23,8 +23,6 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
-
-import lombok.NonNull;
 
 @Slf4j
 public class CodingsObserver extends BaseValidator {

@@ -235,7 +235,12 @@ public class DataRenderer extends Renderer implements CodeResolver {
       case "999000021000000109" : return "UK+Clinical"+dt;  
       case "5631000179106" : return "UY"+dt;
       case "5991000124107" : return "US+ICD10CM"+dt;
-      default: return "??"+dt;  
+      case "21000325107": return "CH"+dt;
+      case "11000279109": return "CZ"+dt;
+      case "11000181102": return "ES"+dt;
+      case "51000202101": return "NO"+dt;
+      case "827022005": return "IPS"+dt;
+      default: return "??"+dt;
       }       
     } else { 
       return version; 

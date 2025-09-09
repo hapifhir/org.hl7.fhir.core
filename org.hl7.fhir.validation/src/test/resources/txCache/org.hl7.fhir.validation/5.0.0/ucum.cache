@@ -18,7 +18,7 @@ v: {
   "code" : "mm[Hg]",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -44,7 +44,7 @@ v: {
   "code" : "mm[Hg]",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -70,7 +70,7 @@ v: {
   "code" : "cm",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -96,7 +96,7 @@ v: {
   "code" : "uV",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -122,7 +122,7 @@ v: {
   "code" : "/min",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -148,7 +148,7 @@ v: {
   "code" : "mmol/L",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -174,7 +174,7 @@ v: {
   "code" : "mL",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -200,7 +200,7 @@ v: {
   "code" : "Cel",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }

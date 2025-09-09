@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -51,7 +50,6 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
-import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableGenerationMode;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -1003,7 +1001,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
   private boolean derivesFrom(StructureDefinition left, StructureDefinition right, IWorkerContext ctxt) {
     StructureDefinition sd = left;
     while (sd != null) {
-      if (right.getUrl().equals(sd.getBaseDefinition())) {
+      if (right.getUrl().equals(sd.getBaseDefinitionNoVersion())) {
         return true;
       }
       sd = sd.hasBaseDefinition() ? ctxt.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd) : null;

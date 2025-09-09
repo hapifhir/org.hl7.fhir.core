@@ -1,6 +1,5 @@
 package org.hl7.fhir.r5.renderers;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -10,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.poi.ss.formula.eval.ExternalNameEval;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -41,7 +39,7 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper.ElementKind;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;

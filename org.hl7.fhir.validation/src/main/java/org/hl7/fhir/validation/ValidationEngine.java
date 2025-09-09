@@ -606,10 +606,15 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     if (context.hasResource(ImplementationGuide.class, src))
       return;
 
-    byte[] source = ProfileLoader.loadProfileSource(src);
-    FhirFormat fmt = FormatUtilities.determineFormat(source);
-    Resource r = FormatUtilities.makeParser(fmt).parse(source);
-    context.cacheResource(r);
+    try {
+      byte[] source = ProfileLoader.loadProfileSource(src);
+      String ssource = FileUtilities.bytesToString(source);
+      FhirFormat fmt = FormatUtilities.determineFormat(source);
+      Resource r = FormatUtilities.makeParser(fmt).parse(source);
+      context.cacheResource(r);
+    } catch (Exception e) {
+      throw new FHIRException("Error loading profile "+src+": "+e.getMessage(), e);
+    }
   }
 
   // testing entry point

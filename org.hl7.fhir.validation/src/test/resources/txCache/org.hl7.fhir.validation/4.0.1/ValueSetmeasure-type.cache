@@ -20,7 +20,7 @@ v: {
   "severity" : "error",
   "error" : "The Coding references a value set, not a code system ('http://hl7.org/fhir/ValueSet/measure-type')",
   "class" : "CODESYSTEM_UNSUPPORTED",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "http://hl7.org/fhir/ValueSet/measure-type",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -31,7 +31,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "invalid",

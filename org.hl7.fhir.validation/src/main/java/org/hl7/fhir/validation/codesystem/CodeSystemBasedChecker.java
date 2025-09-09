@@ -11,7 +11,7 @@ import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.CodeSystem.CodeSystemFilterComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;

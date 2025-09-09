@@ -366,6 +366,33 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     throw new FHIRException("Unable to find the last version for package " + id + ": no local copy, and no network access");
   }
 
+  public String getLatestVersion(String id, String versionFilter) throws IOException {
+    id = stripAlias(id);
+    for (PackageServer nextPackageServer : getPackageServers()) {
+      // special case:
+      if (!(Utilities.existsInList(id, CommonPackages.ID_PUBPACK, "hl7.terminology.r5") && PackageServer.SECONDARY_SERVER.equals(nextPackageServer.getUrl()))) {
+        PackageClient pc = new PackageClient(nextPackageServer);
+        try {
+          return pc.getLatestVersion(id, versionFilter);
+        } catch (IOException e) {
+          ourLog.info("Failed to determine latest version of package {} from server: {}", id, nextPackageServer.toString());
+        }
+      }
+    }
+    try {
+      return fetchVersionTheOldWay(id, versionFilter);
+    } catch (Exception e) {
+      ourLog.info("Failed to determine latest version of package {} from server: {}", id, "build.fhir.org");
+    }
+    // still here? use the latest version we previously found or at least, is in the cache
+
+    String version = getLatestVersionFromCache(id, versionFilter);
+    if (version != null) {
+      return version;
+    }
+    throw new FHIRException("Unable to find the last version for package " + id + ": no local copy, and no network access");
+  }
+
   public String getLatestVersionFromCache(String id) throws IOException {
     id = stripAlias(id);
     for (String f : Utilities.reverseSorted(cacheFolder.list())) {
@@ -375,6 +402,23 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           String ver = f.substring(f.indexOf("#") + 1);
           ourLog.info("Latest version of package {} found locally is {} - using that", id, ver);
           return ver;
+        }
+      }
+    }
+    return null;
+  }
+
+  public String getLatestVersionFromCache(String id, String versionFilter) throws IOException {
+    id = stripAlias(id);
+    for (String f : Utilities.reverseSorted(cacheFolder.list())) {
+      File cf = ManagedFileAccess.file(Utilities.path(cacheFolder, f));
+      if (cf.isDirectory()) {
+        if (f.startsWith(id + "#")) {
+          String ver = f.substring(f.indexOf("#") + 1);
+          if (VersionUtilities.versionMatches(versionFilter, ver)) {
+            ourLog.info("Latest version of package {} found locally is {} - using that", id, ver);
+            return ver;
+          }
         }
       }
     }
@@ -826,6 +870,30 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       throw new FHIRException("Package ids do not match in " + pl.source() + ": " + id + " vs " + pl.pid());
     for (PackageListEntry vo : pl.versions()) {
       if (vo.current()) {
+        return vo.version();
+      }
+    }
+
+    return null;
+  }
+
+  private String fetchVersionTheOldWay(String id, String versionSpec) throws IOException {
+    String url = getUrlForPackage(id);
+    if (url == null) {
+      try {
+        url = ciBuildClient.getPackageUrl(id);
+      } catch (Exception e) {
+        url = null;
+      }
+    }
+    if (url == null) {
+      throw new FHIRException("Unable to resolve package id " + id);
+    }
+    PackageList pl = PackageList.fromUrl(Utilities.pathURL(url, "package-list.json"));
+    if (!id.equals(pl.pid()))
+      throw new FHIRException("Package ids do not match in " + pl.source() + ": " + id + " vs " + pl.pid());
+    for (PackageListEntry vo : pl.versions()) {
+      if (VersionUtilities.versionMatches(versionSpec, vo.version())) {
         return vo.version();
       }
     }
