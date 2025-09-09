@@ -154,7 +154,7 @@ msgstr ""
 # BUNDLE_ETAG
 #: BUNDLE_ETAG
 msgid "ETag = {0}"
-msgstr "ETag = {0}"
+msgstr ""
 
 # BUNDLE_HEADER_DOCUMENT_CONTENTS
 #: BUNDLE_HEADER_DOCUMENT_CONTENTS
@@ -189,7 +189,7 @@ msgstr ""
 # BUNDLE_IF_NONE
 #: BUNDLE_IF_NONE
 msgid "If-None-Exist = {0}"
-msgstr "If-None= {0}"
+msgstr ""
 
 # BUNDLE_IF_NON_MATCH
 #: BUNDLE_IF_NON_MATCH
@@ -204,7 +204,7 @@ msgstr ""
 # BUNDLE_LOCATION
 #: BUNDLE_LOCATION
 msgid "Location = {0}"
-msgstr "Locatio"
+msgstr ""
 
 # BUNDLE_REQUEST
 #: BUNDLE_REQUEST
@@ -214,7 +214,7 @@ msgstr ""
 # BUNDLE_RESOURCE
 #: BUNDLE_RESOURCE
 msgid "Resource {0}:"
-msgstr "Resso}:"
+msgstr ""
 
 # BUNDLE_RESPONSE
 #: BUNDLE_RESPONSE
@@ -229,7 +229,7 @@ msgstr ""
 # BUNDLE_SEARCH
 #: BUNDLE_SEARCH
 msgid "Search:"
-msgstr "Suche:"
+msgstr ""
 
 # BUNDLE_SEARCH_MODE
 #: BUNDLE_SEARCH_MODE
@@ -2166,7 +2166,6 @@ msgstr ""
 msgid "Contained Resource"
 msgid_plural "Contained Resources"
 msgstr[0] ""
-msgstr[1] ""
 
 # PAT_DECEASED
 #: PAT_DECEASED
@@ -2198,14 +2197,12 @@ msgstr ""
 msgid "Language:"
 msgid_plural "Languages:"
 msgstr[0] ""
-msgstr[1] ""
 
 # PAT_LANG_HINT
 #: PAT_LANG_HINT
 msgid "Language spoken"
 msgid_plural "Languages spoken"
 msgstr[0] ""
-msgstr[1] ""
 
 # PAT_LANG_PREFERRED
 #: PAT_LANG_PREFERRED
@@ -2303,14 +2300,12 @@ msgstr ""
 msgid "Other Id:"
 msgid_plural "Other Ids:"
 msgstr[0] ""
-msgstr[1] ""
 
 # PAT_OTHER_ID_HINT
 #: PAT_OTHER_ID_HINT
 msgid "Other Id (see the one above)"
 msgid_plural "Other Ids (see the one above)"
 msgstr[0] ""
-msgstr[1] ""
 
 # PAT_PERIOD
 #: PAT_PERIOD
@@ -3189,7 +3184,7 @@ msgstr ""
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
-msgid "-- no content: do not translate #14 --"
+msgid "-- no content: do not translate #105 --"
 msgstr ""
 
 # SDR_IMPOSE
@@ -3384,7 +3379,7 @@ msgstr ""
 # SDR_VER_RANGE_SFX
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
-msgid "-- no content: do not translate #15 --"
+msgid "-- no content: do not translate #106 --"
 msgstr ""
 
 # SDR_VER_TO_PFX
@@ -3395,7 +3390,7 @@ msgstr ""
 # SDR_VER_TO_SFX
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
-msgid "-- no content: do not translate #16 --"
+msgid "-- no content: do not translate #107 --"
 msgstr ""
 
 # SDR_VER_UNK
@@ -3654,7 +3649,6 @@ msgstr ""
 msgid "The element {0} is sliced based on the value of {1}"
 msgid_plural "The element {0} is sliced based on the values of {1}"
 msgstr[0] ""
-msgstr[1] ""
 
 # SD_SUMMARY_SLICES
 #: SD_SUMMARY_SLICES
@@ -5356,7 +5350,6 @@ msgstr ""
 msgid "Import all the codes that are contained in"
 msgid_plural "Import all the codes that are contained in the intersection of"
 msgstr[0] ""
-msgstr[1] ""
 
 # VALUE_SET_IN
 #: VALUE_SET_IN
@@ -5418,7 +5411,6 @@ msgstr ""
 msgid "This ValueSet requires the Code system Supplement"
 msgid_plural "This ValueSet requires the Code system Supplements"
 msgstr[0] ""
-msgstr[1] ""
 
 # VALUE_SET_NO
 #: VALUE_SET_NO

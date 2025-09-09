@@ -154,7 +154,7 @@ msgstr ""
 # BUNDLE_ETAG
 #: BUNDLE_ETAG
 msgid "ETag = {0}"
-msgstr "ETag = {0}"
+msgstr ""
 
 # BUNDLE_HEADER_DOCUMENT_CONTENTS
 #: BUNDLE_HEADER_DOCUMENT_CONTENTS
@@ -189,7 +189,7 @@ msgstr ""
 # BUNDLE_IF_NONE
 #: BUNDLE_IF_NONE
 msgid "If-None-Exist = {0}"
-msgstr "If-None= {0}"
+msgstr ""
 
 # BUNDLE_IF_NON_MATCH
 #: BUNDLE_IF_NON_MATCH
@@ -204,7 +204,7 @@ msgstr ""
 # BUNDLE_LOCATION
 #: BUNDLE_LOCATION
 msgid "Location = {0}"
-msgstr "Locatio"
+msgstr ""
 
 # BUNDLE_REQUEST
 #: BUNDLE_REQUEST
@@ -214,7 +214,7 @@ msgstr ""
 # BUNDLE_RESOURCE
 #: BUNDLE_RESOURCE
 msgid "Resource {0}:"
-msgstr "Resso}:"
+msgstr ""
 
 # BUNDLE_RESPONSE
 #: BUNDLE_RESPONSE
@@ -229,7 +229,7 @@ msgstr ""
 # BUNDLE_SEARCH
 #: BUNDLE_SEARCH
 msgid "Search:"
-msgstr "Suche:"
+msgstr ""
 
 # BUNDLE_SEARCH_MODE
 #: BUNDLE_SEARCH_MODE
@@ -3189,7 +3189,7 @@ msgstr ""
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
-msgid "-- no content: do not translate #14 --"
+msgid "-- no content: do not translate #92 --"
 msgstr ""
 
 # SDR_IMPOSE
@@ -3384,7 +3384,7 @@ msgstr ""
 # SDR_VER_RANGE_SFX
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
-msgid "-- no content: do not translate #15 --"
+msgid "-- no content: do not translate #93 --"
 msgstr ""
 
 # SDR_VER_TO_PFX
@@ -3395,7 +3395,7 @@ msgstr ""
 # SDR_VER_TO_SFX
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
-msgid "-- no content: do not translate #16 --"
+msgid "-- no content: do not translate #94 --"
 msgstr ""
 
 # SDR_VER_UNK
