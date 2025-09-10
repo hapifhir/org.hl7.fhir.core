@@ -307,12 +307,12 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     map.putAll(source.map);
   }
   
-  public void register(CanonicalResourceProxy r, PackageInformation packgeInfo) {
-    if (!r.hasId()) {
+  public void register(CanonicalResourceProxy canonicalResourceProxy, PackageInformation packageInfo) {
+    if (!canonicalResourceProxy.hasId()) {
       throw new FHIRException("An id is required for a deferred load resource");
     }
-    CanonicalResourceManager<T>.CachedCanonicalResource<T> cr = new CachedCanonicalResource<T>(r, packgeInfo);
-    see(cr);
+    CanonicalResourceManager<T>.CachedCanonicalResource<T> cachedCanonicalResource = new CachedCanonicalResource<T>(canonicalResourceProxy, packageInfo);
+    see(cachedCanonicalResource);
   }
 
   public void see(T r, PackageInformation packgeInfo) {
