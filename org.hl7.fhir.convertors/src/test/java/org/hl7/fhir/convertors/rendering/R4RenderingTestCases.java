@@ -9,9 +9,6 @@ import org.hl7.fhir.convertors.context.ContextResourceLoaderFactory;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
 import org.hl7.fhir.convertors.wrapper.ResourceWrapperR4;
-import org.hl7.fhir.exceptions.DefinitionException;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r4.model.ContactPoint;
 import org.hl7.fhir.r4.model.Enumerations;
 import org.hl7.fhir.r4.model.HumanName;
@@ -24,7 +21,6 @@ import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.ResourceRenderer;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
-import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -35,31 +31,37 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 class R4RenderingTestCases {
 
   @Test
-  void test() throws IOException, FHIRFormatError, DefinitionException, FHIRException, EOperationOutcome {
-    Patient patient = makePatient();
-    org.hl7.fhir.r5.model.Resource r5p = VersionConvertorFactory_40_50.convertResource(patient);
-    
-    RenderingContext rc = makeContext("5.0.0", FhirPublication.R5);
-    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-    ResourceRenderer pr = RendererFactory.factory(r5p.fhirType(), rc);
-    pr.buildNarrative(new Renderer.RenderingStatus(), x, ResourceWrapper.forResource(rc, r5p));
-    String html = new XhtmlComposer(false, true).compose(x);
-    System.out.println(html);
+  void test()  {
+    assertDoesNotThrow(() -> {
+      Patient patient = makePatient();
+      org.hl7.fhir.r5.model.Resource r5p = VersionConvertorFactory_40_50.convertResource(patient);
+
+      RenderingContext rc = makeContext("5.0.0", FhirPublication.R5);
+      XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+      ResourceRenderer pr = RendererFactory.factory(r5p.fhirType(), rc);
+      pr.buildNarrative(new Renderer.RenderingStatus(), x, ResourceWrapper.forResource(rc, r5p));
+      String html = new XhtmlComposer(false, true).compose(x);
+      System.out.println(html);
+    });
   }
 
   @Test
-  void testR4() throws IOException, FHIRFormatError, DefinitionException, FHIRException, EOperationOutcome {
-    Patient patient = makePatient();
-    RenderingContext rc = makeContext("4.0.1", FhirPublication.R4);
+  void testR4() {
+    assertDoesNotThrow(() -> {
+      Patient patient = makePatient();
+      RenderingContext rc = makeContext("4.0.1", FhirPublication.R4);
 
-    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-    ResourceRenderer pr = RendererFactory.factory(patient.fhirType(), rc);
-    pr.buildNarrative(new Renderer.RenderingStatus(), x, ResourceWrapperR4.forResource(rc, patient));
-    String html = new XhtmlComposer(false, true).compose(x);
-    System.out.println(html);
+      XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+      ResourceRenderer pr = RendererFactory.factory(patient.fhirType(), rc);
+      pr.buildNarrative(new Renderer.RenderingStatus(), x, ResourceWrapperR4.forResource(rc, patient));
+      String html = new XhtmlComposer(false, true).compose(x);
+      System.out.println(html);
+    });
   }
 
   public Patient makePatient() {
