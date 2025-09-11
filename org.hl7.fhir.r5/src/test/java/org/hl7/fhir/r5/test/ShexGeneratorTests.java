@@ -432,49 +432,49 @@ public class ShexGeneratorTests {
     Path auxPath = FileSystems.getDefault().getPath(System.getProperty("user.home") + "/runtime_environments/ShExSchemas/aux.shex");
 
 
-    try {
-      this.shexGenerator = new ShExGenerator(ctx);
+    this.shexGenerator = new ShExGenerator(ctx);
 
-      this.shexGenerator.debugMode = debugMode;
-      this.shexGenerator.processConstraints = processConstraints;
-      this.shexGenerator.constraintPolicy = policy;
+    this.shexGenerator.debugMode = debugMode;
+    this.shexGenerator.processConstraints = processConstraints;
+    this.shexGenerator.constraintPolicy = policy;
 
-      if (excludeMetaSDs) {
-        // ShEx Generator skips resources which are at Meta level of FHIR Resource definitions
-        this.shexGenerator.setExcludedStructureDefinitionUrls(
-          ShexGeneratorTestUtils.getMetaStructureDefinitionsToSkip());
+    if (excludeMetaSDs) {
+      // ShEx Generator skips resources which are at Meta level of FHIR Resource definitions
+      this.shexGenerator.setExcludedStructureDefinitionUrls(
+        ShexGeneratorTestUtils.getMetaStructureDefinitionsToSkip());
+    }
+    else
+      this.shexGenerator.setExcludedStructureDefinitionUrls(null);
+
+    // when ShEx translates only selected resource extensions
+    if (useSelectedExtensions) {
+      List<StructureDefinition> selExtns = new ArrayList<StructureDefinition>();
+      for (String eUrl : ShexGeneratorTestUtils.getSelectedExtensions()) {
+        StructureDefinition esd = ctx.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(eUrl, null));
+        if (esd != null)
+          selExtns.add(esd);
       }
-      else
-        this.shexGenerator.setExcludedStructureDefinitionUrls(null);
+      this.shexGenerator.setSelectedExtension(selExtns);
+    }
 
-      // when ShEx translates only selected resource extensions
-      if (useSelectedExtensions) {
-        List<StructureDefinition> selExtns = new ArrayList<StructureDefinition>();
-        for (String eUrl : ShexGeneratorTestUtils.getSelectedExtensions()) {
-          StructureDefinition esd = ctx.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(eUrl, null));
-          if (esd != null)
-            selExtns.add(esd);
+    String schema = this.shexGenerator.generate(HTMLLinkPolicy.NONE, sd);
+    if (!schema.isEmpty()) {
+
+      if (validateShEx) {
+        try {
+          ShExsValidator validator = ShExsValidatorBuilder.fromStringSync(schema, "ShexC");
+          Schema sch = validator.schema();
+
+          Assert.assertNotNull(sch);
+
+          System.out.println("VALIDATION PASSED for ShEx Schema " + sd.getName() + " (Kind:" + cat + ")");
+        } catch (Exception e) {
+          System.out.println("VALIDATION FAILED for ShEx Schema " + sd.getName() + " (Kind:" + cat + ")");
+          e.printStackTrace();
         }
-        this.shexGenerator.setSelectedExtension(selExtns);
       }
-
-      String schema = this.shexGenerator.generate(HTMLLinkPolicy.NONE, sd);
-      if (!schema.isEmpty()) {
-
-        if (validateShEx) {
-          try {
-            ShExsValidator validator = ShExsValidatorBuilder.fromStringSync(schema, "ShexC");
-            Schema sch = validator.schema();
-
-            Assert.assertNotNull(sch);
-
-            System.out.println("VALIDATION PASSED for ShEx Schema " + sd.getName() + " (Kind:" + cat + ")");
-          } catch (Exception e) {
-            System.out.println("VALIDATION FAILED for ShEx Schema " + sd.getName() + " (Kind:" + cat + ")");
-            e.printStackTrace();
-          }
-        }
-        File auxFile = auxPath.toFile();
+      File auxFile = auxPath.toFile();
+      try {
         auxFile.createNewFile();
         String auxContent = TextFile.fileToString(auxFile);
         List<String> importsInAux = substringBetweenMarkers(auxContent, "#imported_begin\nIMPORT <", ">\n#imported_end");
@@ -500,9 +500,9 @@ public class ShexGeneratorTests {
         "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
         "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
         addItems(importsInAux, importsInSchema, true) + addItems(oomInAux, oomInSchema, false) + addItems(vsInAux, vsInSchema, false), auxPath.toString());
+      } catch (IOException e) {
+        throw new RuntimeException("failed to create " + auxPath, e);
       }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 
