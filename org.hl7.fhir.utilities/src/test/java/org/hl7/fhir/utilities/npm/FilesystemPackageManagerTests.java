@@ -206,6 +206,20 @@ public class FilesystemPackageManagerTests {
     lockThread.join();
   }
 
+  @Test
+  public void testCacheHitWithCanonicalSubstringMatch() throws IOException {
+    File cacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-canonicalSubstringTest"));
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(cacheDirectory.getAbsolutePath()).build();
+
+    pcm.addPackageToCache("example.fhir.uv.myig", "1.2.3", this.getClass().getResourceAsStream("/npm/dummy-package.tgz"), "https://packages.fhir.org/example.fhir.uv.myig/1.2.3");
+
+    String dependsOnUri = "http://somewhere.org/fhir/uv/myig/ImplementationGuide/hl7.fhir.uv.extensions";
+
+    String npmPackageName = pcm.findCanonicalInLocalCache(dependsOnUri);
+    assertThat(npmPackageName).isNotNull();
+    assertThat(npmPackageName).isEqualTo("example.fhir.uv.myig");
+  }
+
   /**
     We repeat the same tests multiple times here, in order to catch very rare edge cases.
    */
