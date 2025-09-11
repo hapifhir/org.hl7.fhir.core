@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class CapabilityStatement30_40 {
 
   private static final String[] IGNORED_EXTENSION_URLS = new String[]{
-    VersionConvertorConstants.EXT_ACCEPT_UNKNOWN_EXTENSION_URL
+    VersionConvertorConstants.EXT_ACCEPT_UNKNOWN_EXTENSION_URL, VersionConvertorConstants.EXT_CS_PROFILE
   };
 
   public static org.hl7.fhir.dstu3.model.CapabilityStatement convertCapabilityStatement(org.hl7.fhir.r4.model.CapabilityStatement src) throws FHIRException {
@@ -56,7 +56,8 @@ public class CapabilityStatement30_40 {
       tgt.setCopyrightElement(MarkDown30_40.convertMarkdown(src.getCopyrightElement()));
     if (src.hasKind())
       tgt.setKindElement(convertCapabilityStatementKind(src.getKindElement()));
-    for (org.hl7.fhir.r4.model.UriType t : src.getInstantiates()) tgt.addInstantiates(t.getValue());
+    for (org.hl7.fhir.r4.model.UriType t : src.getInstantiates())
+      tgt.addInstantiates(t.getValue());
     if (src.hasSoftware())
       tgt.setSoftware(convertCapabilityStatementSoftwareComponent(src.getSoftware()));
     if (src.hasImplementation())
@@ -65,20 +66,23 @@ public class CapabilityStatement30_40 {
       tgt.setFhirVersion(src.getFhirVersion().toCode());
     if (src.hasExtension(VersionConvertorConstants.EXT_ACCEPT_UNKNOWN_EXTENSION_URL))
       tgt.setAcceptUnknown(org.hl7.fhir.dstu3.model.CapabilityStatement.UnknownContentCode.fromCode(src.getExtensionByUrl(VersionConvertorConstants.EXT_ACCEPT_UNKNOWN_EXTENSION_URL).getValue().primitiveValue()));
-    for (org.hl7.fhir.r4.model.CodeType t : src.getFormat()) tgt.addFormat(t.getValue());
-    for (org.hl7.fhir.r4.model.CodeType t : src.getPatchFormat()) tgt.addPatchFormat(t.getValue());
-    for (org.hl7.fhir.r4.model.UriType t : src.getImplementationGuide()) tgt.addImplementationGuide(t.getValue());
-    for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestComponent r : src.getRest())
+    for (org.hl7.fhir.r4.model.CodeType t : src.getFormat())
+      tgt.addFormat(t.getValue());
+    for (org.hl7.fhir.r4.model.CodeType t : src.getPatchFormat())
+      tgt.addPatchFormat(t.getValue());
+    for (org.hl7.fhir.r4.model.UriType t : src.getImplementationGuide())
+      tgt.addImplementationGuide(t.getValue());
+    for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestComponent r : src.getRest()) {
+      tgt.addRest(convertCapabilityStatementRestComponent(r));
       for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceComponent rr : r.getResource())
         for (org.hl7.fhir.r4.model.CanonicalType t : rr.getSupportedProfile())
           tgt.addProfile(Reference30_40.convertCanonicalToReference(t));
+    }
     for (org.hl7.fhir.r4.model.Extension ext : src.getExtension()) {
       if (VersionConvertorConstants.EXT_CS_PROFILE.equals(ext.getUrl())) {
         tgt.addProfile(Reference30_40.convertReference((org.hl7.fhir.r4.model.Reference) ext.getValue()));
       }
     }
-    for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestComponent t : src.getRest())
-      tgt.addRest(convertCapabilityStatementRestComponent(t));
     for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementMessagingComponent t : src.getMessaging())
       tgt.addMessaging(convertCapabilityStatementMessagingComponent(t));
     for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementDocumentComponent t : src.getDocument())

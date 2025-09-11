@@ -8,14 +8,18 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.dstu3.model.CapabilityStatement;
 import org.hl7.fhir.dstu3.model.CodeType;
 import org.hl7.fhir.dstu3.model.Coding;
-import org.hl7.fhir.r4.model.Extension;
-import org.hl7.fhir.r4.model.StringType;
+import org.hl7.fhir.r4.model.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CapabilityStatement30_40Test {
@@ -33,6 +37,85 @@ public class CapabilityStatement30_40Test {
     org.hl7.fhir.dstu3.model.CapabilityStatement dstu3_actual = (org.hl7.fhir.dstu3.model.CapabilityStatement) dstu3_parser.parse(dstu3_input);
 
     assertTrue(dstu3_actual.equalsDeep(dstu3_conv), "should be the same");
+  }
+
+  @Test
+  public void convertCapabilityStatementR4ToDstu3() {
+    org.hl7.fhir.r4.model.CapabilityStatement input = new org.hl7.fhir.r4.model.CapabilityStatement();
+    input.setUrl("http://example.com");
+    input.setVersion("1.0.0");
+    input.setName("name");
+    input.setTitle("title");
+    input.setStatus(Enumerations.PublicationStatus.ACTIVE);
+    input.setExperimental(true);
+    Date date = Date.from(LocalDate.of(1983, 1, 5).atStartOfDay(ZoneId.systemDefault()).toInstant());
+    input.setDate(date);
+    input.setPublisher("publisher");
+    input.addContact(new ContactDetail().setName("contact"));
+    input.setDescription("description");
+    input.addUseContext(new UsageContext().setCode(new org.hl7.fhir.r4.model.Coding("system", "useContext", "display")));
+    input.addJurisdiction(new CodeableConcept(new org.hl7.fhir.r4.model.Coding("system", "jurisdiction", "display")));
+    input.setPurpose("purpose");
+    input.setCopyright("copyricht");
+    input.setKind(org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind.CAPABILITY);
+    input.addInstantiates("instantiates");
+    input.setSoftware(new org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementSoftwareComponent(new StringType("software")));
+    input.setImplementation(new org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementImplementationComponent(new StringType("implementation")));
+    input.setFhirVersion(Enumerations.FHIRVersion._4_0);
+    input.addExtension(new Extension(VersionConvertorConstants.EXT_ACCEPT_UNKNOWN_EXTENSION_URL, new StringType("elements")));
+    input.addFormat("format");
+    input.addPatchFormat("patchFormat");
+    input.addImplementationGuide("implementationGuide");
+
+    org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestComponent restComponent = new org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestComponent();
+    org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceComponent resourceComponent = new org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceComponent();
+    resourceComponent.addSupportedProfile("SupportedProfile");
+    restComponent.addResource(resourceComponent);
+    input.addRest(restComponent);
+    input.addExtension(new Extension(VersionConvertorConstants.EXT_CS_PROFILE, new Reference("profile")));
+    input.addMessaging(new org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementMessagingComponent());
+    input.addDocument(new org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementDocumentComponent());
+
+    org.hl7.fhir.dstu3.model.CapabilityStatement result = (org.hl7.fhir.dstu3.model.CapabilityStatement) VersionConvertorFactory_30_40.convertResource(input);
+
+    assertEquals(input.getUrl(), result.getUrl());
+    assertEquals(input.getVersion(), result.getVersion());
+    assertEquals(input.getName(), result.getName());
+    assertEquals(input.getTitle(), result.getTitle());
+    assertEquals(org.hl7.fhir.dstu3.model.Enumerations.PublicationStatus.ACTIVE, result.getStatus());
+    assertEquals(date, result.getDate());
+    assertEquals(input.getPublisher(), result.getPublisher());
+    assertThat(result.getContact(), hasSize(1));
+    assertEquals(input.getContact().get(0).getName(), result.getContact().get(0).getName());
+    assertEquals(input.getDescription(), result.getDescription());
+    assertThat(result.getUseContext(), hasSize(1));
+    assertTrue(result.getUseContext().get(0).getCode().equalsDeep(new org.hl7.fhir.dstu3.model.Coding("system", "useContext", "display")));
+    assertThat(result.getJurisdiction(), hasSize(1));
+    assertTrue(result.getJurisdiction().get(0).getCodingFirstRep().equalsDeep(new org.hl7.fhir.dstu3.model.Coding("system", "jurisdiction", "display")));
+    assertEquals(input.getPurpose(), result.getPurpose());
+    assertEquals(input.getCopyright(), result.getCopyright());
+    assertEquals(org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementKind.CAPABILITY, result.getKind());
+    assertThat(input.getInstantiates(), hasSize(1));
+    assertEquals(input.getInstantiates().get(0).getValue(), result.getInstantiates().get(0).getValue());
+    assertEquals(input.getSoftware().getName(), result.getSoftware().getName());
+    assertEquals(input.getImplementation().getDescription(), result.getImplementation().getDescription());
+    assertEquals("4.0", result.getFhirVersion());
+
+    assertEquals(CapabilityStatement.UnknownContentCode.ELEMENTS, result.getAcceptUnknown());
+    assertFalse(result.hasExtension(VersionConvertorConstants.EXT_ACCEPT_UNKNOWN_EXTENSION_URL));
+
+    assertThat(result.getFormat(), hasSize(1));
+    assertEquals(input.getFormat().get(0).getValue(), result.getFormat().get(0).getValue());
+    assertThat(result.getPatchFormat(), hasSize(1));
+    assertEquals(input.getPatchFormat().get(0).getValue(), result.getPatchFormat().get(0).getValue());
+    assertThat(result.getImplementationGuide(), hasSize(1));
+    assertEquals(input.getImplementationGuide().get(0).getValue(), result.getImplementationGuide().get(0).getValue());
+    assertThat(result.getRest(), hasSize(1));
+
+    assertThat(result.getProfile(), hasSize(2));
+    assertTrue(result.getProfile().get(0).equalsDeep(new org.hl7.fhir.dstu3.model.Reference("SupportedProfile")));
+    assertTrue(result.getProfile().get(1).equalsDeep(new org.hl7.fhir.dstu3.model.Reference("profile")));
+    assertFalse(result.hasExtension(VersionConvertorConstants.EXT_CS_PROFILE));
   }
 
   @Test
