@@ -17,8 +17,8 @@ import org.junit.jupiter.api.Test;
 
 public class CanonicalResourceManagerTests {
 
-  public class DeferredLoadTestResource extends CanonicalResourceProxy {
-    private CanonicalResource resource;
+  public static class DeferredLoadTestResource extends CanonicalResourceProxy {
+    private final CanonicalResource resource;
 
     public DeferredLoadTestResource(CanonicalResource resource) {
       super(resource.fhirType(), resource.getId(), resource.getUrl(), resource.getVersion(), resource instanceof CodeSystem ? ((CodeSystem) resource).getSupplements() : null, null, null);
@@ -36,33 +36,33 @@ public class CanonicalResourceManagerTests {
     CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs = new ValueSet();
     vs.setId("2345");
-    vs.setUrl("http://url/ValueSet/234");
+    vs.setUrl("https://url/ValueSet/234");
     // no version
     
     mrm.clear();
     mrm.see(vs, null);
     
-    Assertions.assertEquals(mrm.size(), 1);
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
+    Assertions.assertEquals(1, mrm.size());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
     mrm.see(vs, null);    
-    Assertions.assertEquals(mrm.size(), 1);
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
+    Assertions.assertEquals(1, mrm.size());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
 
     mrm.drop("2344");
-    Assertions.assertEquals(mrm.size(), 1);
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
+    Assertions.assertEquals(1, mrm.size());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
     
     mrm.drop("2345");
-    Assertions.assertEquals(mrm.size(), 0);
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234"));
+    Assertions.assertEquals(0, mrm.size());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234"));
     Assertions.assertNull(mrm.get("2345"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
   }
 
   @Test
@@ -70,19 +70,19 @@ public class CanonicalResourceManagerTests {
     CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs = new ValueSet();
     vs.setId("2345");
-    vs.setUrl("http://url/ValueSet/234");
+    vs.setUrl("https://url/ValueSet/234");
     vs.setVersion("4.0.1");
     
     mrm.clear();
     mrm.see(vs, null);
     
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
   }
 
   @Test
@@ -90,17 +90,17 @@ public class CanonicalResourceManagerTests {
     CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs = new ValueSet();
     vs.setId("2345");
-    vs.setUrl("http://url/ValueSet/234");
+    vs.setUrl("https://url/ValueSet/234");
     vs.setVersion("20140403");
     
     mrm.clear();
     mrm.see(vs, null);
     
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "20140403"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "20140402"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "2014"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "20140403"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "20140402"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "2014"));
   }
 
   @Test
@@ -108,79 +108,79 @@ public class CanonicalResourceManagerTests {
     CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(false, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
-    vs1.setUrl("http://url/ValueSet/234");
+    vs1.setUrl("https://url/ValueSet/234");
     vs1.setVersion("4.0.1");
     vs1.setName("1");
     
     ValueSet vs2 = new ValueSet();
     vs2.setId("2345");
-    vs2.setUrl("http://url/ValueSet/234");
+    vs2.setUrl("https://url/ValueSet/234");
     vs2.setVersion("4.0.2");
     vs2.setName("2");
     
     mrm.clear();
     mrm.see(vs1, null);
     
-    Assertions.assertEquals(mrm.size(), 1);
+    Assertions.assertEquals(1, mrm.size());
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertEquals(mrm.get("2345").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "1");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertEquals("1", mrm.get("2345").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
 
     mrm.see(vs2, null);
 
-    Assertions.assertEquals(mrm.size(), 2);
+    Assertions.assertEquals(2, mrm.size());
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertEquals(mrm.get("2345").getName(), "2");
+    Assertions.assertEquals("2", mrm.get("2345").getName());
     
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "2");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
 
     mrm.drop("2346"); // doesn't exist;
-    Assertions.assertEquals(mrm.size(), 2);
+    Assertions.assertEquals(2, mrm.size());
     Assertions.assertNotNull(mrm.get("2345"));
     Assertions.assertNull(mrm.get("2346"));
-    Assertions.assertEquals(mrm.get("2345").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "2");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertEquals("2", mrm.get("2345").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
     
     mrm.drop("2345"); // vs2;
-    Assertions.assertEquals(mrm.size(), 0);
+    Assertions.assertEquals(0, mrm.size());
     Assertions.assertNull(mrm.get("2345"));
     Assertions.assertNull(mrm.get("2346"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));   
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));   
   }
 
   @Test
@@ -188,62 +188,62 @@ public class CanonicalResourceManagerTests {
     CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
-    vs1.setUrl("http://url/ValueSet/234");
+    vs1.setUrl("https://url/ValueSet/234");
     vs1.setVersion("4.0.1");
     vs1.setName("1");
     
     ValueSet vs2 = new ValueSet();
     vs2.setId("2345");
-    vs2.setUrl("http://url/ValueSet/234");
+    vs2.setUrl("https://url/ValueSet/234");
     vs2.setVersion("4.0.2");
     vs2.setName("2");
     
     mrm.clear();
     mrm.see(vs1, null);
     
-    Assertions.assertEquals(mrm.size(), 1);
+    Assertions.assertEquals(1, mrm.size());
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertEquals(mrm.get("2345").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "1");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertEquals("1", mrm.get("2345").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
 
     mrm.see(vs2, null);
 
-    Assertions.assertEquals(mrm.size(), 1);
+    Assertions.assertEquals(1, mrm.size());
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertEquals(mrm.get("2345").getName(), "2");
+    Assertions.assertEquals("2", mrm.get("2345").getName());
     
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "2");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
 
     mrm.drop("2345"); // vs2;
-    Assertions.assertEquals(mrm.size(), 0);
+    Assertions.assertEquals(0, mrm.size());
     Assertions.assertNull(mrm.get("2345"));
     Assertions.assertNull(mrm.get("2346"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
   }
 
   @Test
@@ -251,33 +251,33 @@ public class CanonicalResourceManagerTests {
     CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
-    vs1.setUrl("http://url/ValueSet/234");
+    vs1.setUrl("https://url/ValueSet/234");
     vs1.setVersion("4.0.1");
     vs1.setName("1");
     
     ValueSet vs2 = new ValueSet();
     vs2.setId("2346");
-    vs2.setUrl("http://url/ValueSet/234");
+    vs2.setUrl("https://url/ValueSet/234");
     vs2.setVersion("4.0.2");
     vs2.setName("2");
     
     mrm.clear();
     mrm.see(vs1, null);
     
-    Assertions.assertEquals(mrm.size(), 1);
+    Assertions.assertEquals(1, mrm.size());
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertEquals(mrm.get("2345").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "1");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertEquals("1", mrm.get("2345").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
 
     mrm.see(vs2, null);
 
@@ -287,34 +287,34 @@ public class CanonicalResourceManagerTests {
     Assertions.assertNotNull(mrm.get("2346"));
     Assertions.assertEquals("2", mrm.get("2346").getName());
     
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234").getName());
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "2");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
 
     mrm.drop("2346"); // vs2;
-    Assertions.assertEquals(mrm.size(), 1);
+    Assertions.assertEquals(1, mrm.size());
     Assertions.assertNotNull(mrm.get("2345"));
     Assertions.assertNull(mrm.get("2346"));
-    Assertions.assertEquals(mrm.get("2345").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "1");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertEquals("1", mrm.get("2345").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
 
   }
 
@@ -323,71 +323,71 @@ public class CanonicalResourceManagerTests {
     CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
-    vs1.setUrl("http://url/ValueSet/234");
+    vs1.setUrl("https://url/ValueSet/234");
     vs1.setVersion("4.0.1");
     vs1.setName("1");
     
     ValueSet vs2 = new ValueSet();
     vs2.setId("2346");
-    vs2.setUrl("http://url/ValueSet/234");
+    vs2.setUrl("https://url/ValueSet/234");
     vs2.setVersion("4.0.2");
     vs2.setName("2");
     
     mrm.clear();
     mrm.see(vs1, null);
     
-    Assertions.assertEquals(mrm.size(), 1);
+    Assertions.assertEquals(1, mrm.size());
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertEquals(mrm.get("2345").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "1");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertEquals("1", mrm.get("2345").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
 
     mrm.see(vs2, null);
 
-    Assertions.assertEquals(mrm.size(), 2);
+    Assertions.assertEquals(2, mrm.size());
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertEquals(mrm.get("2345").getName(), "1");
+    Assertions.assertEquals("1", mrm.get("2345").getName());
     Assertions.assertNotNull(mrm.get("2346"));
-    Assertions.assertEquals(mrm.get("2346").getName(), "2");
+    Assertions.assertEquals("2", mrm.get("2346").getName());
     
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "2");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
 
     mrm.drop("2345"); // vs1;
-    Assertions.assertEquals(mrm.size(), 1);
+    Assertions.assertEquals(1, mrm.size());
     Assertions.assertNull(mrm.get("2345"));
     Assertions.assertNotNull(mrm.get("2346"));
-    Assertions.assertEquals(mrm.get("2346").getName(), "2");
+    Assertions.assertEquals("2", mrm.get("2346").getName());
     
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "2");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
   }
 
   @Test
@@ -395,27 +395,27 @@ public class CanonicalResourceManagerTests {
     CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(false, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("234");
-    vs1.setUrl("http://terminology.hl7.org/ValueSet/234");
+    vs1.setUrl("https://terminology.hl7.org/ValueSet/234");
     vs1.setVersion("2.0.0");
     vs1.setName("1");
     
     ValueSet vs2 = new ValueSet();
     vs2.setId("234");
-    vs2.setUrl("http://terminology.hl7.org/ValueSet/234");
+    vs2.setUrl("https://terminology.hl7.org/ValueSet/234");
     vs2.setVersion("2000.0.0");
     vs2.setName("2");
     
 
     mrm.see(vs1, null);
-    Assertions.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234"));
-    Assertions.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234", "2.0.0"));
-    Assertions.assertTrue(mrm.get("http://terminology.hl7.org/ValueSet/234").getName().equals("1"));
+    Assertions.assertNotNull(mrm.get("https://terminology.hl7.org/ValueSet/234"));
+    Assertions.assertNotNull(mrm.get("https://terminology.hl7.org/ValueSet/234", "2.0.0"));
+    Assertions.assertEquals("1", mrm.get("https://terminology.hl7.org/ValueSet/234").getName());
 
     mrm.see(vs2, null);   
-    Assertions.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234"));
-    Assertions.assertTrue(mrm.get("http://terminology.hl7.org/ValueSet/234").getName().equals("2"));
-    Assertions.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234", "2.0.0"));
-    Assertions.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234", "2000.0.0"));
+    Assertions.assertNotNull(mrm.get("https://terminology.hl7.org/ValueSet/234"));
+    Assertions.assertEquals("2", mrm.get("https://terminology.hl7.org/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://terminology.hl7.org/ValueSet/234", "2.0.0"));
+    Assertions.assertNotNull(mrm.get("https://terminology.hl7.org/ValueSet/234", "2000.0.0"));
   }
   
   @Test
@@ -423,25 +423,25 @@ public class CanonicalResourceManagerTests {
     CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(false, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("234");
-    vs1.setUrl("http://terminology.hl7.org/ValueSet/234");
+    vs1.setUrl("https://terminology.hl7.org/ValueSet/234");
     vs1.setVersion("2.0.0");
     vs1.setName("1");
     
     ValueSet vs2 = new ValueSet();
     vs2.setId("234");
-    vs2.setUrl("http://terminology.hl7.org/ValueSet/234");
+    vs2.setUrl("https://terminology.hl7.org/ValueSet/234");
     vs2.setVersion("2000.0.0");
     vs2.setName("2");
 
     mrm.see(vs1, new PackageInformation("hl7.fhir.r4.core", "4.0.1", "4.0.1", new Date()));
-    Assertions.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234"));
-    Assertions.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234", "2.0.0"));
-    Assertions.assertTrue(mrm.get("http://terminology.hl7.org/ValueSet/234").getName().equals("1"));
+    Assertions.assertNotNull(mrm.get("https://terminology.hl7.org/ValueSet/234"));
+    Assertions.assertNotNull(mrm.get("https://terminology.hl7.org/ValueSet/234", "2.0.0"));
+    Assertions.assertEquals("1", mrm.get("https://terminology.hl7.org/ValueSet/234").getName());
 
     mrm.see(vs2, new PackageInformation("hl7.terminology.r4", "4.0.1", "4.0.1", new Date()));   
-    Assertions.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234"));
-    Assertions.assertTrue(mrm.get("http://terminology.hl7.org/ValueSet/234").getName().equals("2"));
-    Assertions.assertNull(mrm.get("http://terminology.hl7.org/ValueSet/234", "2.0.0")); // this will get dropped completely because of UTG rules
+    Assertions.assertNotNull(mrm.get("https://terminology.hl7.org/ValueSet/234"));
+    Assertions.assertEquals("2", mrm.get("https://terminology.hl7.org/ValueSet/234").getName());
+    Assertions.assertNull(mrm.get("https://terminology.hl7.org/ValueSet/234", "2.0.0")); // this will get dropped completely because of UTG rules
   }
   
   @Test
@@ -449,34 +449,34 @@ public class CanonicalResourceManagerTests {
     CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs = new ValueSet();
     vs.setId("2345");
-    vs.setUrl("http://url/ValueSet/234");
+    vs.setUrl("https://url/ValueSet/234");
     // no version
     DeferredLoadTestResource vsd = new DeferredLoadTestResource(vs);
     
     mrm.clear();
     mrm.register(vsd, null);
     
-    Assertions.assertEquals(mrm.size(), 1);
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
+    Assertions.assertEquals(1, mrm.size());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
     mrm.register(vsd, null);    
-    Assertions.assertEquals(mrm.size(), 1);
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
+    Assertions.assertEquals(1, mrm.size());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
 
     mrm.drop("2344");
-    Assertions.assertEquals(mrm.size(), 1);
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
+    Assertions.assertEquals(1, mrm.size());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
     
     mrm.drop("2345");
-    Assertions.assertEquals(mrm.size(), 0);
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234"));
+    Assertions.assertEquals(0, mrm.size());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234"));
     Assertions.assertNull(mrm.get("2345"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
   }
 
   @Test
@@ -484,7 +484,7 @@ public class CanonicalResourceManagerTests {
     CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs = new ValueSet();
     vs.setId("2345");
-    vs.setUrl("http://url/ValueSet/234");
+    vs.setUrl("https://url/ValueSet/234");
     vs.setVersion("4.0.1");
     DeferredLoadTestResource vsd = new DeferredLoadTestResource(vs);
     
@@ -492,12 +492,12 @@ public class CanonicalResourceManagerTests {
     mrm.register(vsd, null);
     
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
   }
 
   @Test
@@ -505,7 +505,7 @@ public class CanonicalResourceManagerTests {
     CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs = new ValueSet();
     vs.setId("2345");
-    vs.setUrl("http://url/ValueSet/234");
+    vs.setUrl("https://url/ValueSet/234");
     vs.setVersion("20140403");
     DeferredLoadTestResource vsd = new DeferredLoadTestResource(vs);
 
@@ -513,10 +513,10 @@ public class CanonicalResourceManagerTests {
     mrm.register(vsd, null);
     
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "20140403"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "20140402"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "2014"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "20140403"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "20140402"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "2014"));
   }
 
   @Test
@@ -524,14 +524,14 @@ public class CanonicalResourceManagerTests {
     CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(false, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
-    vs1.setUrl("http://url/ValueSet/234");
+    vs1.setUrl("https://url/ValueSet/234");
     vs1.setVersion("4.0.1");
     vs1.setName("1");
     DeferredLoadTestResource vs1d = new DeferredLoadTestResource(vs1);
 
     ValueSet vs2 = new ValueSet();
     vs2.setId("2345");
-    vs2.setUrl("http://url/ValueSet/234");
+    vs2.setUrl("https://url/ValueSet/234");
     vs2.setVersion("4.0.2");
     vs2.setName("2");
     DeferredLoadTestResource vs2d = new DeferredLoadTestResource(vs2);
@@ -539,66 +539,66 @@ public class CanonicalResourceManagerTests {
     mrm.clear();
     mrm.register(vs1d, null);
     
-    Assertions.assertEquals(mrm.size(), 1);
+    Assertions.assertEquals(1, mrm.size());
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertEquals(mrm.get("2345").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "1");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertEquals("1", mrm.get("2345").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
 
     mrm.register(vs2d, null);
 
-    Assertions.assertEquals(mrm.size(), 2);
+    Assertions.assertEquals(2, mrm.size());
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertEquals(mrm.get("2345").getName(), "2");
+    Assertions.assertEquals("2", mrm.get("2345").getName());
     
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "2");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
 
     mrm.drop("2346"); // doesn't exist;
-    Assertions.assertEquals(mrm.size(), 2);
+    Assertions.assertEquals(2, mrm.size());
     Assertions.assertNotNull(mrm.get("2345"));
     Assertions.assertNull(mrm.get("2346"));
-    Assertions.assertEquals(mrm.get("2345").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "2");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertEquals("2", mrm.get("2345").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
     
     mrm.drop("2345"); // vs2;
-    Assertions.assertEquals(mrm.size(), 0);
+    Assertions.assertEquals(0, mrm.size());
     Assertions.assertNull(mrm.get("2345"));
     Assertions.assertNull(mrm.get("2346"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));   
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));   
   }
 
   @Test
@@ -606,14 +606,14 @@ public class CanonicalResourceManagerTests {
     CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
-    vs1.setUrl("http://url/ValueSet/234");
+    vs1.setUrl("https://url/ValueSet/234");
     vs1.setVersion("4.0.1");
     vs1.setName("1");
     DeferredLoadTestResource vs1d = new DeferredLoadTestResource(vs1);
 
     ValueSet vs2 = new ValueSet();
     vs2.setId("2345");
-    vs2.setUrl("http://url/ValueSet/234");
+    vs2.setUrl("https://url/ValueSet/234");
     vs2.setVersion("4.0.2");
     vs2.setName("2");
     DeferredLoadTestResource vs2d = new DeferredLoadTestResource(vs2);
@@ -621,49 +621,49 @@ public class CanonicalResourceManagerTests {
     mrm.clear();
     mrm.register(vs1d, null);
     
-    Assertions.assertEquals(mrm.size(), 1);
+    Assertions.assertEquals(1, mrm.size());
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertEquals(mrm.get("2345").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "1");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertEquals("1", mrm.get("2345").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
 
     mrm.register(vs2d, null);
 
-    Assertions.assertEquals(mrm.size(), 1);
+    Assertions.assertEquals(1, mrm.size());
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertEquals(mrm.get("2345").getName(), "2");
+    Assertions.assertEquals("2", mrm.get("2345").getName());
     
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "2");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
 
     mrm.drop("2345"); // vs2;
-    Assertions.assertEquals(mrm.size(), 0);
+    Assertions.assertEquals(0, mrm.size());
     Assertions.assertNull(mrm.get("2345"));
     Assertions.assertNull(mrm.get("2346"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
   }
 
   @Test
@@ -671,14 +671,14 @@ public class CanonicalResourceManagerTests {
     CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
-    vs1.setUrl("http://url/ValueSet/234");
+    vs1.setUrl("https://url/ValueSet/234");
     vs1.setVersion("4.0.1");
     vs1.setName("1");
     DeferredLoadTestResource vs1d = new DeferredLoadTestResource(vs1);
 
     ValueSet vs2 = new ValueSet();
     vs2.setId("2346");
-    vs2.setUrl("http://url/ValueSet/234");
+    vs2.setUrl("https://url/ValueSet/234");
     vs2.setVersion("4.0.2");
     vs2.setName("2");
     DeferredLoadTestResource vs2d = new DeferredLoadTestResource(vs2);
@@ -686,57 +686,57 @@ public class CanonicalResourceManagerTests {
     mrm.clear();
     mrm.register(vs1d, null);
     
-    Assertions.assertEquals(mrm.size(), 1);
+    Assertions.assertEquals(1, mrm.size());
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertEquals(mrm.get("2345").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "1");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertEquals("1", mrm.get("2345").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
 
     mrm.register(vs2d, null);
 
-    Assertions.assertEquals(mrm.size(), 2);
+    Assertions.assertEquals(2, mrm.size());
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertEquals(mrm.get("2345").getName(), "1");
+    Assertions.assertEquals("1", mrm.get("2345").getName());
     Assertions.assertNotNull(mrm.get("2346"));
-    Assertions.assertEquals(mrm.get("2346").getName(), "2");
+    Assertions.assertEquals("2", mrm.get("2346").getName());
     
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "2");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
 
     mrm.drop("2346"); // vs2;
-    Assertions.assertEquals(mrm.size(), 1);
+    Assertions.assertEquals(1, mrm.size());
     Assertions.assertNotNull(mrm.get("2345"));
     Assertions.assertNull(mrm.get("2346"));
-    Assertions.assertEquals(mrm.get("2345").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "1");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertEquals("1", mrm.get("2345").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
 
   }
 
@@ -745,14 +745,14 @@ public class CanonicalResourceManagerTests {
     CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
-    vs1.setUrl("http://url/ValueSet/234");
+    vs1.setUrl("https://url/ValueSet/234");
     vs1.setVersion("4.0.1");
     vs1.setName("1");
     DeferredLoadTestResource vs1d = new DeferredLoadTestResource(vs1);
 
     ValueSet vs2 = new ValueSet();
     vs2.setId("2346");
-    vs2.setUrl("http://url/ValueSet/234");
+    vs2.setUrl("https://url/ValueSet/234");
     vs2.setVersion("4.0.2");
     vs2.setName("2");
     DeferredLoadTestResource vs2d = new DeferredLoadTestResource(vs2);
@@ -760,58 +760,58 @@ public class CanonicalResourceManagerTests {
     mrm.clear();
     mrm.register(vs1d, null);
     
-    Assertions.assertEquals(mrm.size(), 1);
+    Assertions.assertEquals(1, mrm.size());
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertEquals(mrm.get("2345").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "1");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertEquals("1", mrm.get("2345").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
 
     mrm.register(vs2d, null);
 
-    Assertions.assertEquals(mrm.size(), 2);
+    Assertions.assertEquals(2, mrm.size());
     Assertions.assertNotNull(mrm.get("2345"));
-    Assertions.assertEquals(mrm.get("2345").getName(), "1");
+    Assertions.assertEquals("1", mrm.get("2345").getName());
     Assertions.assertNotNull(mrm.get("2346"));
-    Assertions.assertEquals(mrm.get("2346").getName(), "2");
+    Assertions.assertEquals("2", mrm.get("2346").getName());
     
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "1");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "2");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("1", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
 
     mrm.drop("2345"); // vs1;
-    Assertions.assertEquals(mrm.size(), 1);
+    Assertions.assertEquals(1, mrm.size());
     Assertions.assertNull(mrm.get("2345"));
     Assertions.assertNotNull(mrm.get("2346"));
-    Assertions.assertEquals(mrm.get("2346").getName(), "2");
+    Assertions.assertEquals("2", mrm.get("2346").getName());
     
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.0").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.1"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.1").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0.2"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0.2").getName(), "2");
-    Assertions.assertNotNull(mrm.get("http://url/ValueSet/234", "4.0"));
-    Assertions.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "2");
-    Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.0").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.1"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0.2"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertNotNull(mrm.get("https://url/ValueSet/234", "4.0"));
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertNull(mrm.get("https://url/ValueSet/234", "4.1"));
   }
 
   @Test
@@ -820,15 +820,15 @@ public class CanonicalResourceManagerTests {
     CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(false, false);
     ValueSet vs1 = new ValueSet();
     vs1.setId("2345");
-    vs1.setUrl("http://url/ValueSet/234");
+    vs1.setUrl("https://url/ValueSet/234");
     vs1.setVersion("4.0.1");
     vs1.setName("1");
-    DeferredLoadTestResource vs1d = new DeferredLoadTestResource(vs1);
+
     mrm.see(vs1, new PackageInformation("pid.one", "1.0.0", "4.0.1", new Date()));
 
     ValueSet vs2 = new ValueSet();
     vs2.setId("2346");
-    vs2.setUrl("http://url/ValueSet/234");
+    vs2.setUrl("https://url/ValueSet/234");
     vs2.setVersion("4.0.1");
     vs2.setName("2");
     mrm.see(vs2, new PackageInformation("pid.two", "1.0.0", "4.0.1", new Date()));
@@ -839,21 +839,21 @@ public class CanonicalResourceManagerTests {
     List<String> pvl2 = new ArrayList<>();
     pvl1.add("pid.two#1.0.0");
     
-    Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234").getName());
-    Assertions.assertEquals("1", mrm.getByPackage("http://url/ValueSet/234", pvl1).getName());
-    Assertions.assertEquals("2", mrm.getByPackage("http://url/ValueSet/234", pvl2).getName());
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234").getName());
+    Assertions.assertEquals("1", mrm.getByPackage("https://url/ValueSet/234", pvl1).getName());
+    Assertions.assertEquals("2", mrm.getByPackage("https://url/ValueSet/234", pvl2).getName());
 
-    Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234", "4.0.1").getName());
-    Assertions.assertEquals("1", mrm.getByPackage("http://url/ValueSet/234", "4.0.1", pvl1).getName());
-    Assertions.assertEquals("2", mrm.getByPackage("http://url/ValueSet/234", "4.0.1", pvl2).getName());
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertEquals("1", mrm.getByPackage("https://url/ValueSet/234", "4.0.1", pvl1).getName());
+    Assertions.assertEquals("2", mrm.getByPackage("https://url/ValueSet/234", "4.0.1", pvl2).getName());
 
-    Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234", "4.0").getName());
-    Assertions.assertEquals("1", mrm.getByPackage("http://url/ValueSet/234", "4.0", pvl1).getName());
-    Assertions.assertEquals("2", mrm.getByPackage("http://url/ValueSet/234", "4.0", pvl2).getName());
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0").getName());
+    Assertions.assertEquals("1", mrm.getByPackage("https://url/ValueSet/234", "4.0", pvl1).getName());
+    Assertions.assertEquals("2", mrm.getByPackage("https://url/ValueSet/234", "4.0", pvl2).getName());
     
-    Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234", "4.0.2").getName());
-    Assertions.assertEquals("1", mrm.getByPackage("http://url/ValueSet/234", "4.0.2", pvl1).getName());
-    Assertions.assertEquals("2", mrm.getByPackage("http://url/ValueSet/234", "4.0.2", pvl2).getName());
+    Assertions.assertEquals("2", mrm.get("https://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertEquals("1", mrm.getByPackage("https://url/ValueSet/234", "4.0.2", pvl1).getName());
+    Assertions.assertEquals("2", mrm.getByPackage("https://url/ValueSet/234", "4.0.2", pvl2).getName());
   }
 
   @Test
@@ -861,72 +861,72 @@ public class CanonicalResourceManagerTests {
     CanonicalResourceManager<CodeSystem> mrm = new CanonicalResourceManager<>(true, false);
     CodeSystem csb1 = new CodeSystem();
     csb1.setId("2345");
-    csb1.setUrl("http://url/CodeSystem/234");
+    csb1.setUrl("https://url/CodeSystem/234");
     csb1.setVersion("4.0.1");
     csb1.setName("1");
     mrm.see(csb1, new PackageInformation("pid.one", "1.0.0", "4.0.1", new Date()));
 
     CodeSystem csb2 = new CodeSystem();
     csb2.setId("2346");
-    csb2.setUrl("http://url/CodeSystem/234");
+    csb2.setUrl("https://url/CodeSystem/234");
     csb2.setVersion("4.0.1");
     csb2.setName("2");
     mrm.see(csb2, new PackageInformation("pid.two", "1.0.0", "4.0.1", new Date()));
 
     CodeSystem css1 = new CodeSystem();
     css1.setId("s2345");
-    css1.setUrl("http://url/CodeSystem/s234");
+    css1.setUrl("https://url/CodeSystem/s234");
     css1.setVersion("4.0.1");
     css1.setName("s1");
-    css1.setSupplements("http://url/CodeSystem/234");
+    css1.setSupplements("https://url/CodeSystem/234");
     mrm.see(css1, new PackageInformation("pid.one", "1.0.0", "4.0.1", new Date()));
 
     CodeSystem css2 = new CodeSystem();
     css2.setId("s2346");
-    css2.setUrl("http://url/CodeSystem/s234");
+    css2.setUrl("https://url/CodeSystem/s234");
     css2.setVersion("4.0.1");
     css2.setName("s2");
-    css2.setSupplements("http://url/CodeSystem/234");
+    css2.setSupplements("https://url/CodeSystem/234");
     mrm.see(css2, new PackageInformation("pid.two", "1.0.0", "4.0.1", new Date()));
 
-    List<CodeSystem> sl = mrm.getSupplements("http://url/CodeSystem/234");
+    List<CodeSystem> sl = mrm.getSupplements("https://url/CodeSystem/234");
     Assertions.assertEquals(2, sl.size());
-    sl = mrm.getSupplements("http://url/CodeSystem/234", "1.0.1");
+    sl = mrm.getSupplements("https://url/CodeSystem/234", "1.0.1");
     Assertions.assertEquals(2, sl.size());
-    sl = mrm.getSupplements("http://url/CodeSystem/s234");
+    sl = mrm.getSupplements("https://url/CodeSystem/s234");
     Assertions.assertEquals(0, sl.size());
 
     List<String> pvl = new ArrayList<>();
     pvl.add("pid.two#1.0.0");
-    sl = mrm.getSupplements("http://url/CodeSystem/234", "1.0.1", pvl);
+    sl = mrm.getSupplements("https://url/CodeSystem/234", "1.0.1", pvl);
     Assertions.assertEquals(1, sl.size());    
     
     mrm.drop("s2346");
-    sl = mrm.getSupplements("http://url/CodeSystem/234");
+    sl = mrm.getSupplements("https://url/CodeSystem/234");
     Assertions.assertEquals(1, sl.size());
-    sl = mrm.getSupplements("http://url/CodeSystem/234", "1.0.1");
+    sl = mrm.getSupplements("https://url/CodeSystem/234", "1.0.1");
     Assertions.assertEquals(1, sl.size());
-    sl = mrm.getSupplements("http://url/CodeSystem/s234");
+    sl = mrm.getSupplements("https://url/CodeSystem/s234");
     Assertions.assertEquals(0, sl.size());
 
     pvl = new ArrayList<>();
     pvl.add("pid.two#1.0.0");
-    sl = mrm.getSupplements("http://url/CodeSystem/234", "1.0.1", pvl);
-    Assertions.assertEquals(1, sl.size()); // cause we fall back to the other     
+    sl = mrm.getSupplements("https://url/CodeSystem/234", "1.0.1", pvl);
+    Assertions.assertEquals(1, sl.size()); // because we fall back to the other
 
     pvl = new ArrayList<>();
     pvl.add("pid.one#1.0.0");
-    sl = mrm.getSupplements("http://url/CodeSystem/234", "1.0.1", pvl);
+    sl = mrm.getSupplements("https://url/CodeSystem/234", "1.0.1", pvl);
     Assertions.assertEquals(1, sl.size());    
 
     mrm.drop("s2345");   
 
     mrm.drop("s2346");
-    sl = mrm.getSupplements("http://url/CodeSystem/234");
+    sl = mrm.getSupplements("https://url/CodeSystem/234");
     Assertions.assertEquals(0, sl.size());
-    sl = mrm.getSupplements("http://url/CodeSystem/234", "1.0.1");
+    sl = mrm.getSupplements("https://url/CodeSystem/234", "1.0.1");
     Assertions.assertEquals(0, sl.size());
-    sl = mrm.getSupplements("http://url/CodeSystem/s234");
+    sl = mrm.getSupplements("https://url/CodeSystem/s234");
     Assertions.assertEquals(0, sl.size());
   }
 
@@ -943,7 +943,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSemverVersionComparison_HigherVersionWins() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
 
     registerResources(csm,
       makeCodeSystem("1", "2.0.1"), defaultPackage(),
@@ -955,7 +955,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSemverVersionComparison_LowerVersionLoses() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
 
     registerResources(csm,
       makeCodeSystem("1", "2.1.0"), defaultPackage(),
@@ -966,7 +966,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testDateVersionComparison() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2023-01-01"), defaultPackage(),
         makeCodeSystem("2", "2023-06-15"), defaultPackage());
@@ -976,7 +976,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testIntegerVersionComparison() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "5"), defaultPackage(),
         makeCodeSystem("2", "10"), defaultPackage());
@@ -985,7 +985,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testVersionedVsUnversioned_VersionedWins1() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2.0.1"), defaultPackage(),
         makeCodeSystem("2", null), defaultPackage());
@@ -995,7 +995,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testVersionedVsUnversioned_VersionedWins2() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("2", null), defaultPackage(), 
         makeCodeSystem("1", "2.0.1"), defaultPackage());
@@ -1005,7 +1005,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testPackageVersionedVsUnversioned_VersionedLoses1() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2.0.1"), defaultPackage(),
         makeCodeSystem("2", "2.0.1"), makePackageInfo("hl7.fhir.core", null, "2023-01-01"));
@@ -1014,7 +1014,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testPackageVersionedVsUnversioned_VersionedLoses2() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("2", "2.0.1"), makePackageInfo("hl7.fhir.core", null, "2023-01-01"),
         makeCodeSystem("1", "2.0.1"), defaultPackage());
@@ -1024,7 +1024,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testPackageVersionedVsNP_VersionedLoses1() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2.0.1"), defaultPackage(),
         makeCodeSystem("2", "2.0.1"), null);
@@ -1034,7 +1034,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testPackageVersionedVsNP_VersionedLoses2() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("2", "2.0.1"), null,
         makeCodeSystem("1", "2.0.1"), defaultPackage());
@@ -1044,7 +1044,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testBothUnversioned_MostRecentWins() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", null), defaultPackage(),
         makeCodeSystem("2", null), defaultPackage());
@@ -1058,7 +1058,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSameVersion_PackagedVsUnpackaged_PackagedWins() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2.0.1"), defaultPackage(),
         makeCodeSystem("2", "2.0.1"), null);
@@ -1067,8 +1067,8 @@ public class CanonicalResourceManagerTests {
   }
 
   @Test
-  public void testSameVersion_BothUnpackaged_MostRecentWins() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+  public void testSameVersion_BothUnpackaged_MostRecentWins() {
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2.0.1"), null,
         makeCodeSystem("2", "2.0.1"), null);
@@ -1078,7 +1078,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSameVersion_DifferentPackageIds_MoreRecentDateWins() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2.0.1"), defaultPackage(),
         makeCodeSystem("2", "2.0.1"), laterPackage());
@@ -1089,7 +1089,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSameVersion_SamePackageId_HigherPackageVersionWins() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2.0.1"), defaultPackage(),
         makeCodeSystem("2", "2.0.1"), makePackageInfo("hl7.fhir.core", "2.0.0", "2023-01-01")); // Higher package version;
@@ -1099,7 +1099,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSameVersion_SamePackage_MostRecentWins() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2.0.1"), defaultPackage(),
         makeCodeSystem("2", "2.0.1"), defaultPackage());
@@ -1113,7 +1113,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testComplexScenario_MultipleVersionsAndPackages() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "1.0.0"),  makePackageInfo("hl7.fhir.core", "2.0.0", "2023-06-01"),
         makeCodeSystem("2", "2.0.0"), defaultPackage());
@@ -1123,7 +1123,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testNaturalOrderVersioning() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "v1.2"), defaultPackage(),
         makeCodeSystem("2", "v1.10"), defaultPackage());
@@ -1133,7 +1133,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testMajorMinorVersionRetrieval() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2.0.1"), defaultPackage(),
         makeCodeSystem("2", "2.1.5"), defaultPackage());
@@ -1150,7 +1150,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSemverDepth_2_1_Then_2_1_0() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2.1"), defaultPackage(),
         makeCodeSystem("2", "2.1.0"), defaultPackage());
@@ -1162,7 +1162,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSemverDepth_2_1_0_Then_2_1() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2.1.0"), defaultPackage(),
         makeCodeSystem("2", "2.1"), defaultPackage());
@@ -1175,7 +1175,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSemverDepth_2_1_0_Then_2_1_0_alpha() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2.1.0"), defaultPackage(),
         makeCodeSystem("2", "2.1.0-alpha"), defaultPackage());
@@ -1188,7 +1188,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSemverDepth_2_1_0_alpha_Then_2_1_0() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2.1.0-alpha"), defaultPackage(),
         makeCodeSystem("2", "2.1.0"), defaultPackage());
@@ -1202,7 +1202,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSemverDepth_2_1_Then_2_1_0_alpha() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2.1"), defaultPackage(),
         makeCodeSystem("2", "2.1.0-alpha"), defaultPackage());
@@ -1214,7 +1214,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testPrereleaseOrdering_alpha_vs_beta() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2.1.0-alpha"), defaultPackage(),
         makeCodeSystem("2", "2.1.0-beta"), defaultPackage());
@@ -1226,7 +1226,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testPrereleaseOrdering_beta_vs_alpha() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2.1.0-beta"), defaultPackage(),
         makeCodeSystem("2", "2.1.0-alpha"), defaultPackage());
@@ -1238,7 +1238,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testPrereleaseNumericOrdering() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2.1.0-alpha.1"), defaultPackage(),
         makeCodeSystem("2", "2.1.0-alpha.2"), defaultPackage());
@@ -1252,7 +1252,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testComplexPrereleaseOrdering() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2.1.0-alpha.1"), defaultPackage(),
         makeCodeSystem("2", "2.1.0-alpha.beta"), defaultPackage());
@@ -1266,7 +1266,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testPartialVersionMatching_Multiple_Patch_Versions() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2.1.1"), defaultPackage(),
         makeCodeSystem("2", "2.1.2"), defaultPackage(),
@@ -1283,7 +1283,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testPartialVersionMatching_With_Prerelease() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2.1.0"), defaultPackage(),
         makeCodeSystem("2", "2.1.1-alpha"), defaultPackage(),
@@ -1301,7 +1301,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testMixedDepthVersioning_Complex() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
       makeCodeSystem("1", "2"), defaultPackage(),
       makeCodeSystem("2", "2.0"), defaultPackage(),
@@ -1321,7 +1321,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testAlphanumericVersions() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
       makeCodeSystem("1", "1.0-alpha"), defaultPackage(),
       makeCodeSystem("2", "1.0-beta"), defaultPackage());
@@ -1331,7 +1331,7 @@ public class CanonicalResourceManagerTests {
 
   @Test
   public void testSameDateDifferentTime() throws ParseException {
-    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<CodeSystem>(false, false);
+    CanonicalResourceManager<CodeSystem> csm = new CanonicalResourceManager<>(false, false);
     registerResources(csm,
         makeCodeSystem("1", "2.0.1"), defaultPackage(),
         makeCodeSystem("2", "2.0.1"), defaultPackage());
@@ -1344,10 +1344,10 @@ public class CanonicalResourceManagerTests {
   private void registerResources(CanonicalResourceManager<CodeSystem> csm, CodeSystem cs1, PackageInformation pi1,
                                  CodeSystem cs2, PackageInformation pi2) {
     CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
+    CanonicalResourceManager<CodeSystem>.CachedCanonicalResource<CodeSystem> cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
     csm.see(cc1);
     CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
+    CanonicalResourceManager<CodeSystem>.CachedCanonicalResource<CodeSystem> cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
     csm.see(cc2);
   }
 
@@ -1355,13 +1355,13 @@ public class CanonicalResourceManagerTests {
                                  CodeSystem cs2, PackageInformation pi2,
                                  CodeSystem cs3, PackageInformation pi3) {
     CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
+    CanonicalResourceManager<CodeSystem>.CachedCanonicalResource<CodeSystem> cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
     csm.see(cc1);
     CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
+    CanonicalResourceManager<CodeSystem>.CachedCanonicalResource<CodeSystem> cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
     csm.see(cc2);
     CanonicalResourceProxy cp3 = new DeferredLoadTestResource(cs3);
-    CanonicalResourceManager.CachedCanonicalResource cc3 = csm.new CachedCanonicalResource<CodeSystem>(cp3, pi3);
+    CanonicalResourceManager<CodeSystem>.CachedCanonicalResource<CodeSystem> cc3 = csm.new CachedCanonicalResource<CodeSystem>(cp3, pi3);
     csm.see(cc3);
   }
 
@@ -1370,21 +1370,21 @@ public class CanonicalResourceManagerTests {
                                  CodeSystem cs3, PackageInformation pi3,
                                  CodeSystem cs4, PackageInformation pi4) {
     CanonicalResourceProxy cp1 = new DeferredLoadTestResource(cs1);
-    CanonicalResourceManager.CachedCanonicalResource cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
+    CanonicalResourceManager<CodeSystem>.CachedCanonicalResource<CodeSystem> cc1 = csm.new CachedCanonicalResource<CodeSystem>(cp1, pi1);
     csm.see(cc1);
     CanonicalResourceProxy cp2 = new DeferredLoadTestResource(cs2);
-    CanonicalResourceManager.CachedCanonicalResource cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
+    CanonicalResourceManager<CodeSystem>.CachedCanonicalResource<CodeSystem> cc2 = csm.new CachedCanonicalResource<CodeSystem>(cp2, pi2);
     csm.see(cc2);
     CanonicalResourceProxy cp3 = new DeferredLoadTestResource(cs3);
-    CanonicalResourceManager.CachedCanonicalResource cc3 = csm.new CachedCanonicalResource<CodeSystem>(cp3, pi3);
+    CanonicalResourceManager<CodeSystem>.CachedCanonicalResource<CodeSystem> cc3 = csm.new CachedCanonicalResource<CodeSystem>(cp3, pi3);
     csm.see(cc3);
     CanonicalResourceProxy cp4 = new DeferredLoadTestResource(cs4);
-    CanonicalResourceManager.CachedCanonicalResource cc4 = csm.new CachedCanonicalResource<CodeSystem>(cp4, pi4);
+    CanonicalResourceManager<CodeSystem>.CachedCanonicalResource<CodeSystem> cc4 = csm.new CachedCanonicalResource<CodeSystem>(cp4, pi4);
     csm.see(cc4);
   }
 
   private void checkResponseResource(CanonicalResourceManager<CodeSystem> csm, String version, String winner) {
-    CodeSystem cs = csm.get("http://test", version);
+    CodeSystem cs = csm.get("https://test", version);
     if (winner == null) {
       Assertions.assertNull(cs);
     } else {
@@ -1407,7 +1407,7 @@ public class CanonicalResourceManagerTests {
   private CodeSystem makeCodeSystem(String id, String ver) {
     CodeSystem cs = new CodeSystem();
     cs.setId(id);
-    cs.setUrl("http://test");
+    cs.setUrl("https://test");
     cs.setVersion(ver);
     return cs;
   }
