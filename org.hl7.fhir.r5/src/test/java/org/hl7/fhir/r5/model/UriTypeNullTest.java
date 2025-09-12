@@ -4,13 +4,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 class UriTypeNullTest {
 
   @Test
   @DisplayName("Test null value toString()")
   void testToString() {
-    UriType nullUri = new UriType();
-    System.out.println("Value -> " + nullUri);
+    assertDoesNotThrow(() -> {
+      UriType nullUri = new UriType();
+      System.out.println("Value -> " + nullUri);
+    });
   }
 
   @Test
