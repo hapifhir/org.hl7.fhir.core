@@ -338,7 +338,7 @@ public class ValidatorCli {
         res.add("-version");
         res.add("5.0");
         res.add("-ig");
-        res.add("hl7.fhir.uv.sql-on-fhir#current");
+        res.add("org.sql-on-fhir.ig#current");
       } else {
         res.add(a);
       }
