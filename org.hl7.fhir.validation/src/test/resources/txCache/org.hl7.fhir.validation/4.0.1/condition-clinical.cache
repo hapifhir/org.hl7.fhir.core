@@ -22,7 +22,7 @@ v: {
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://terminology.hl7.org/CodeSystem/condition-clinical' version '0.5.0' could not be found, so the code cannot be validated. Valid versions: 3.0.0,4.0.1",
   "class" : "CODESYSTEM_UNSUPPORTED_VERSION",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -33,7 +33,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "not-found",
@@ -70,7 +70,7 @@ v: {
   "code" : "active",
   "system" : "http://terminology.hl7.org/CodeSystem/condition-clinical",
   "version" : "3.0.0",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

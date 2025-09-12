@@ -101,9 +101,10 @@ import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 
 import org.hl7.fhir.r5.utils.UserDataNames;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
-import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r5.utils.formats.CSVWriter;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerFactory;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -1021,7 +1022,7 @@ public class ProfileUtilities {
               StructureDefinition sd = context.fetchResource(StructureDefinition.class, u.getValue(), derived);
               if (sd == null) {
                 if (makeXVer().matchingUrl(u.getValue()) && xver.status(u.getValue()) == XVerExtensionStatus.Valid) {
-                  sd = xver.makeDefinition(u.getValue());              
+                  sd = xver.getDefinition(u.getValue());
                 }
               }
               if (sd == null) {
@@ -1138,7 +1139,7 @@ public class ProfileUtilities {
 
   private XVerExtensionManager makeXVer() {
     if (xver == null) {
-      xver = new XVerExtensionManager(context);
+      xver = XVerExtensionManagerFactory.createExtensionManager(context);
     }
     return xver;
   }
@@ -1164,7 +1165,7 @@ public class ProfileUtilities {
     for (Extension ext : list) {
       StructureDefinition op = context.fetchResource(StructureDefinition.class, ext.getValueCanonicalType().primitiveValue());
       if (op != null && ExtensionUtilities.readBoolExtension(op, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_OLD)) {
-        if (derived.getBaseDefinition().equals(op.getBaseDefinition())) {
+        if (derived.getBaseDefinitionNoVersion().equals(op.getBaseDefinitionNoVersion())) {
           obligationProfiles.add(op);
         }
       }
@@ -1273,7 +1274,7 @@ public class ProfileUtilities {
    */
   private void checkDifferentialBaseType(StructureDefinition derived) throws Error {
     if (derived.hasDifferential() && !derived.getDifferential().getElementFirstRep().getPath().contains(".") && !derived.getDifferential().getElementFirstRep().getType().isEmpty()) {
-      if (wantFixDifferentialFirstElementType && typeMatchesAncestor(derived.getDifferential().getElementFirstRep().getType(), derived.getBaseDefinition(), derived)) {
+      if (wantFixDifferentialFirstElementType && typeMatchesAncestor(derived.getDifferential().getElementFirstRep().getType(), derived.getBaseDefinitionNoVersion(), derived)) {
         derived.getDifferential().getElementFirstRep().getType().clear();
       } else if (derived.getKind() != StructureDefinitionKind.LOGICAL) {
         throw new Error(context.formatMessage(I18nConstants.TYPE_ON_FIRST_DIFFERENTIAL_ELEMENT));
@@ -2025,7 +2026,7 @@ public class ProfileUtilities {
       sd = context.fetchResource(StructureDefinition.class, type.getProfile().get(0).getValue(), src);
       if (sd == null) {
         if (makeXVer().matchingUrl(type.getProfile().get(0).getValue()) && xver.status(type.getProfile().get(0).getValue()) == XVerExtensionStatus.Valid) {
-          sd = xver.makeDefinition(type.getProfile().get(0).getValue());              
+          sd = xver.getDefinition(type.getProfile().get(0).getValue());
           generateSnapshot(context.fetchTypeDefinition("Extension"), sd, sd.getUrl(), webUrl, sd.getName());
         }
       }
@@ -2596,7 +2597,7 @@ public class ProfileUtilities {
             case Unknown:
               throw new FHIRException("Reference to unknown extension " + pu);
             case Valid:
-              profile = xver.makeDefinition(pu);
+              profile = xver.getDefinition(pu);
               generateSnapshot(context.fetchTypeDefinition("Extension"), profile, profile.getUrl(), context.getSpecUrl(), profile.getName());
           }
         }
@@ -4843,7 +4844,7 @@ public class ProfileUtilities {
   }
 
   public static boolean isModifierExtension(StructureDefinition sd) {
-    ElementDefinition defn = sd.getSnapshot().getElementByPath("Extension");
+    ElementDefinition defn = sd.getSnapshot().hasElement() ? sd.getSnapshot().getElementByPath("Extension") : sd.getDifferential().getElementByPath("Extension");
     return defn != null && defn.getIsModifier();
   }
 

@@ -72,7 +72,6 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.Column;
 import org.hl7.fhir.r5.renderers.mappings.ConceptMapMappingProvider;
 import org.hl7.fhir.r5.renderers.mappings.ModelMappingProvider;
 import org.hl7.fhir.r5.renderers.mappings.StructureDefinitionMappingProvider;
@@ -1563,7 +1562,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
           List<StructureDefinition> children = new ArrayList<>(); 
           for (StructureDefinition sd : context.getWorker().fetchResourcesByType(StructureDefinition.class)) { 
-            if (sd.hasBaseDefinition() && sd.getBaseDefinition().equals(profile.getUrl())) { 
+            if (sd.hasBaseDefinition() && sd.getBaseDefinitionNoVersion().equals(profile.getUrl())) {
               children.add(sd); 
             } 
           } 
@@ -1575,8 +1574,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               c.addPiece(gen.new Piece(sd.getWebPath(), sd.getName(), null)); 
             } 
           } 
-        } 
-        if (logicalModel) { 
+        }
+        if (logicalModel) {
           List<SourcedElementDefinition> ancestors = new ArrayList<>(); 
           getAncestorElements(new ArrayList<>(), profile, ancestors); 
           if (ancestors.size() > 0) { 
@@ -1665,8 +1664,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           piece.addHtml(new XhtmlNode(NodeType.Text).setContent(ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_IMPLIED_PREFIX))); 
           c.getPieces().add(piece);           
           c.getPieces().add(gen.new Piece(null, " "+ (context.formatPhrase(RenderingContext.STRUC_DEF_PREFIXED)), null));           
-        } 
- 
+        }
+        if (root && ProfileUtilities.isModifierExtension(profile)) {
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+          c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_MODIFIER_EXT), null).addStyle("font-weight:bold"));
+
+        }
+
         if (definition.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED)) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
           String es = definition.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED);
