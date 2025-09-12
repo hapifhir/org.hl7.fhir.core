@@ -552,6 +552,15 @@ public interface IWorkerContext {
    * @return
    */
   Locale getLocale();
+
+  /**
+   * Sets the locale for this worker context.
+   *
+   * @param locale The locale to use.
+   * @deprecated Usage of this method is discouraged outside very specific scenarios in testing and the IG publisher.
+   * It is preferred to set the locale via the constructor of the implementing class.
+   */
+  @Deprecated
   void setLocale(Locale locale);
 
   @Deprecated

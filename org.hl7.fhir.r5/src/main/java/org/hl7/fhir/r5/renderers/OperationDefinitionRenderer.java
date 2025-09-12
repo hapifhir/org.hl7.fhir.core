@@ -65,7 +65,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
  
     if (opd.getKind() == OperationKind.QUERY) {
       if (opd.getSystem()) {
-        x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URLS, "?_query="+opd.getCode()+"&..."));
+        x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, "?_query="+opd.getCode()+"&..."));
       }
       for (Enumeration<VersionIndependentResourceTypesAll> c : opd.getResource()) { 
         if (opd.getType()) 
@@ -75,7 +75,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
       } 
     } else {
       if (opd.getSystem()) {
-        x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URLS, "$"+opd.getCode()));
+        x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, "$"+opd.getCode()));
       }
       for (Enumeration<VersionIndependentResourceTypesAll> c : opd.getResource()) { 
         if (opd.getType()) 

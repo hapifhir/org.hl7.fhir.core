@@ -108,6 +108,7 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
     modes.add("tx.fhir.org");
     modes.add("omop");
     modes.add("general");
+    modes.add("snomed");
   }
 
   @SuppressWarnings("deprecation")

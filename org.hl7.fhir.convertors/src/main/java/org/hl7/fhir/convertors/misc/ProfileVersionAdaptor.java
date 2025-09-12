@@ -238,10 +238,14 @@ public class ProfileVersionAdaptor {
     return sd;
   }
 
-  public void generateSnapshots() {
+  public void generateSnapshots(List<ConversionMessage> log) {
     for (StructureDefinition sd : snapshotQueue) {
       StructureDefinition base = tCtxt.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
-      tpu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/" + VersionUtilities.getNameForVersion(tCtxt.getVersion()) + "/", sd.getName());
+      if (base == null) {
+        log.add(new ConversionMessage("Unable to create "+VersionUtilities.getNameForVersion(tCtxt.getVersion())+" version of "+sd.getVersionedUrl()+" because cannot find StructureDefinition for "+sd.getBaseDefinition()+" for version "+tCtxt.getVersion(), ConversionMessageStatus.WARNING));
+      } else {
+        tpu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/" + VersionUtilities.getNameForVersion(tCtxt.getVersion()) + "/", sd.getName());
+      }
     }
   }
 

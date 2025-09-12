@@ -76,7 +76,7 @@ public class NarrativeGenerationTests {
 
     @Override
     public boolean hasLinkFor(String typeSimple) {
-      throw new NotImplementedException();      
+      return false;
     }
 
     @Override

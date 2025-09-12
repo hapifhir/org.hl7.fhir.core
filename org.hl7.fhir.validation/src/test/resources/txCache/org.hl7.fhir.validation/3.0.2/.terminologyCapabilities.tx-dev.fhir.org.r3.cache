@@ -2890,6 +2890,9 @@
     "uri" : "http://snomed.info/sct"
   },
   {
+    "uri" : "http://snomed.info/sct"
+  },
+  {
     "uri" : "http://standardterms.edqm.eu"
   },
   {

@@ -69,17 +69,20 @@ public class TxServiceTestHelper {
       if (p.hasParameter("activeOnly") && "true".equals(p.getParameterString("activeOnly"))) {
         options = options.setActiveOnly(true);
       }
+      Parameters newParameters = context.getExpansionParameters();
       for (ParametersParameterComponent pp : p.getParameter()) {
         if (Utilities.existsInList(pp.getName(), "default-valueset-version", "system-version", "force-system-version", "default-system-version")) {
-          context.getExpansionParameters().getParameter().add(pp);
+          //FIXME this is changing a reference to a copied object so breaks.
+          newParameters.getParameter().add(pp);
         }
       }
-      context.getExpansionParameters().clearParameters("includeAlternateCodes");
+      newParameters.clearParameters("includeAlternateCodes");
       for (Parameters.ParametersParameterComponent pp : p.getParameter()) {
         if ("includeAlternateCodes".equals(pp.getName())) {
-          context.getExpansionParameters().addParameter(pp.copy());
+          newParameters.addParameter(pp.copy());
         }
       }
+      context.setExpansionParameters(newParameters);
       if (p.hasParameter("code")) {
         code = p.getParameterString("code");
         system = p.getParameterString(isCodeSystem ? "url" : "system");
