@@ -362,14 +362,10 @@ public class ValidatorCli {
 
     final CliTask cliTask = selectCliTask(validationContext, params);
 
-
-
     if (cliTask instanceof ValidationEngineTask) {
       TimeTracker tt = new TimeTracker();
       TimeTracker.Session tts = tt.start("Loading");
-      if (validationContext.getSv() == null) {
-        validationContext.setSv(myValidationService.determineVersion(validationContext));
-      }
+
       ValidationEngine validationEngine = getValidationEngine(tt, validationContext);
       tts.end();
       ((ValidationEngineTask) cliTask).executeTask(myValidationService, validationEngine, validationContext, params);
@@ -405,8 +401,7 @@ public class ValidatorCli {
     }
 
     log.info("Loading");
-    String definitions = "dev".equals(validationContext.getSv()) ? "hl7.fhir.r5.core#current" : VersionUtilities.packageForVersion(validationContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(validationContext.getSv());
-    validationEngine = myValidationService.initializeValidator(validationContext, definitions, tt);
+    validationEngine = myValidationService.getValidationEngineFromValidationContext(validationContext, tt);
     return validationEngine;
   }
 
