@@ -5,7 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.context.CanonicalResourceManager;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.model.CanonicalResource;
@@ -14,21 +16,40 @@ import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+import org.mockito.Spy;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
+
+@Slf4j
 public class CanonicalResourceManagerTests {
 
-  public static class DeferredLoadTestResource extends CanonicalResourceProxy {
+  public class DeferredLoadTestResource extends CanonicalResourceProxy {
     private final CanonicalResource resource;
+    private final long delayInMillis;
+    public DeferredLoadTestResource(CanonicalResource resource
+    ) {
+      this(resource, 0);
+    }
 
-    public DeferredLoadTestResource(CanonicalResource resource) {
+    public DeferredLoadTestResource(CanonicalResource resource, long delayInMillis) {
       super(resource.fhirType(), resource.getId(), resource.getUrl(), resource.getVersion(), resource instanceof CodeSystem ? ((CodeSystem) resource).getSupplements() : null, null, null);
       this.resource = resource;
+      this.delayInMillis = delayInMillis;
     }
 
     @Override
     public CanonicalResource loadResource() {
+      if (delayInMillis > 0) {
+        try {
+          Thread.sleep(delayInMillis);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
       return resource;
-    }    
+    }
   }
 
   @Test
@@ -1339,6 +1360,46 @@ public class CanonicalResourceManagerTests {
     checkResponseResource(csm, "2.0.1", "2");  // Most recent addition wins when dates are equal
   }
 
+  /*
+      Multithread Test
+     */
+  @Test
+  // This timeout value was evaluated based on an observed time of 1400 ms for a single run, with a tolerance of 20%.
+  @Timeout(value = 1500, unit = TimeUnit.MILLISECONDS)
+  public void testCachedCanonicalResourceGetWithMultiThread() {
+    //Create a single resource and then try to get it with multiple threads.
+    CanonicalResourceManager<ValueSet> resourceManager = new CanonicalResourceManager<>(true, false);
+    ValueSet vs = new ValueSet();
+    vs.setId("2345");
+    vs.setUrl("https://url/ValueSet/2345");
+
+    // no version
+    DeferredLoadTestResource testResource = spy(new DeferredLoadTestResource(vs, 1000));
+    resourceManager.register(testResource, null);
+
+    final int threadTotal = 20;
+    List<Thread> threads = new ArrayList<>();
+
+    for (int i = 0; i < threadTotal; i++) {
+      Thread t = new Thread(() -> {
+        ValueSet actualValueSet = resourceManager.get("https://url/ValueSet/2345");
+        assertThat(actualValueSet).isNotNull();
+      });
+      t.start();
+      threads.add(t);
+    }
+    threads.forEach(t -> {
+      try {
+        t.join();
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    });
+
+    //Check that loadResource, which can be an expensive operation, is only called once
+    verify(testResource, times(1)).loadResource();
+  }
+
 
   // worker routines
   private void registerResources(CanonicalResourceManager<CodeSystem> csm, CodeSystem cs1, PackageInformation pi1,
@@ -1411,6 +1472,5 @@ public class CanonicalResourceManagerTests {
     cs.setVersion(ver);
     return cs;
   }
-
 
 }
