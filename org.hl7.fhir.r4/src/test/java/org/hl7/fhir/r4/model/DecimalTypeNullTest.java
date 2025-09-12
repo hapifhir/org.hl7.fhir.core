@@ -9,13 +9,17 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 class DecimalTypeNullTest {
 
   @Test
   @DisplayName("Test null value toString()")
   void testToString() {
-    DecimalType nullDecimal = new DecimalType();
-    System.out.println("Value -> " + nullDecimal);
+    assertDoesNotThrow(() -> {
+      DecimalType nullDecimal = new DecimalType();
+      System.out.println("Value -> " + nullDecimal);
+    });
   }
 
   @Test

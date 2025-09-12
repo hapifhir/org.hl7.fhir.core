@@ -5,13 +5,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 class UnsignedIntTypeNullTest {
 
   @Test
   @DisplayName("Test null value toString()")
   void testToString() {
-    UnsignedIntType nullUnsignedInt = new UnsignedIntType();
-    System.out.println("Value -> " + nullUnsignedInt);
+    assertDoesNotThrow(() -> {
+      UnsignedIntType nullUnsignedInt = new UnsignedIntType();
+      System.out.println("Value -> " + nullUnsignedInt);
+    });
   }
 
   @Test

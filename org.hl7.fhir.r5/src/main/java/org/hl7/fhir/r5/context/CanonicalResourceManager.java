@@ -2,6 +2,8 @@ package org.hl7.fhir.r5.context;
 
 import java.util.*;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -159,9 +161,12 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
 
   public class CachedCanonicalResource<T1 extends CanonicalResource> {
+    @Setter
+    @Getter
     int loadingOrder = 0;
     private T1 resource;
     private CanonicalResourceProxy proxy;
+    @Getter
     private PackageInformation packageInfo;
 
     public CachedCanonicalResource(T1 resource, PackageInformation packageInfo) {
@@ -183,24 +188,20 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     }
     
     public T1 getResource() {
-      if (resource == null) {
-        @SuppressWarnings("unchecked")
-        T1 res = (T1) proxy.getResource();
-        if (res == null) {
-          throw new Error("Proxy loading a resource from "+packageInfo+" failed and returned null");
-        }
-        synchronized (this) {
+      synchronized (this) {
+        if (resource == null) {
+          T1 res = (T1) proxy.getResource();
+          if (res == null) {
+            throw new Error("Proxy loading a resource from " + packageInfo + " failed and returned null");
+          }
           resource = res;
+          resource.setSourcePackage(packageInfo);
+          proxy = null;
         }
-        resource.setSourcePackage(packageInfo);
-        proxy = null;
       }
       return resource;
     }
-    
-    public PackageInformation getPackageInfo() {
-      return packageInfo;
-    }
+
     public String getUrl() {
       return resource != null ? resource.getUrl() : proxy.getUrl();
     }
@@ -246,17 +247,11 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     }
 
     public void unload() {
-      if (proxy != null) {
-        resource = null;
-      }      
-    }
-
-    public int getLoadingOrder() {
-      return loadingOrder;
-    }
-
-    public void setLoadingOrder(int loadingOrder) {
-      this.loadingOrder = loadingOrder;
+      synchronized (this) {
+        if (proxy != null) {
+          resource = null;
+        }
+      }
     }
   }
 
@@ -307,12 +302,12 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     map.putAll(source.map);
   }
   
-  public void register(CanonicalResourceProxy r, PackageInformation packgeInfo) {
-    if (!r.hasId()) {
+  public void register(CanonicalResourceProxy canonicalResourceProxy, PackageInformation packageInfo) {
+    if (!canonicalResourceProxy.hasId()) {
       throw new FHIRException("An id is required for a deferred load resource");
     }
-    CanonicalResourceManager<T>.CachedCanonicalResource<T> cr = new CachedCanonicalResource<T>(r, packgeInfo);
-    see(cr);
+    CanonicalResourceManager<T>.CachedCanonicalResource<T> cachedCanonicalResource = new CachedCanonicalResource<T>(canonicalResourceProxy, packageInfo);
+    see(cachedCanonicalResource);
   }
 
   public void see(T r, PackageInformation packgeInfo) {

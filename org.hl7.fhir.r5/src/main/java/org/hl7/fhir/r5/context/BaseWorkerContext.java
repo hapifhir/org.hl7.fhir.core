@@ -290,7 +290,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  private Object lock = new Object(); // used as a lock for the data that follows
+  private final Object lock = new Object(); // used as a lock for the data that follows
   protected String version; // although the internal resources are all R5, the version of FHIR they describe may not be 
 
   private boolean minimalMemory = false;
