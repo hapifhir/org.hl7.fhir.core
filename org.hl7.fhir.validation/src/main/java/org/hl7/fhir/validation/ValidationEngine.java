@@ -230,7 +230,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private IValidationPolicyAdvisor policyAdvisor;
   @Getter @Setter private IWorkerContextManager.ICanonicalResourceLocator locator;
   @Getter @Setter private boolean assumeValidRestReferences;
-  @Getter @Setter private boolean noExtensibleBindingMessages;
+  @Getter @Setter private boolean noExtensibleBindingMessages; //VI
   @Getter @Setter private boolean noUnicodeBiDiControlChars;
   @Getter @Setter private boolean securityChecks;
   @Getter @Setter private boolean crumbTrails;
@@ -762,6 +762,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return ValidatorUtils.messagesToOutcome(messages, context, fhirPathEngine);
   }
 
+  //FIXME DAVE called by HttpServerTask
   public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles, IdStatus resourceIdRule, boolean anyExtensionsAllowed, BestPracticeWarningLevel bpWarnings, CheckDisplayOption displayOption) throws FHIRException, IOException, EOperationOutcome, SAXException {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (doNative) {
@@ -952,8 +953,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         locale = Locale.forLanguageTag(language);
       }
     }
-    validator.setAssumeValidRestReferences(assumeValidRestReferences);
-    validator.setNoExtensibleWarnings(noExtensibleBindingMessages);
+    validator.setAssumeValidRestReferences(assumeValidRestReferences); //VI
+    validator.setNoExtensibleWarnings(noExtensibleBindingMessages); //VI
     validator.setSecurityChecks(securityChecks);
     validator.setCrumbTrails(crumbTrails);
     validator.setForPublication(forPublication);

@@ -88,10 +88,13 @@ public class ValidationContext {
   @SerializedName("noInternalCaching")
   private
   boolean noInternalCaching = false; // internal, for when debugging terminology validation
+
+  // Now in ValidationEngineSettings
   @JsonProperty("noExtensibleBindingMessages")
   @SerializedName("noExtensibleBindingMessages")
   private
   boolean noExtensibleBindingMessages = false;
+
   @JsonProperty("noUnicodeBiDiControlChars")
   @SerializedName("noUnicodeBiDiControlChars")
   private
@@ -1043,6 +1046,7 @@ public class ValidationContext {
     this.noInternalCaching = noInternalCaching;
     return this;
   }
+
 
   @SerializedName("noExtensibleBindingMessages")
   @JsonProperty("noExtensibleBindingMessages")
