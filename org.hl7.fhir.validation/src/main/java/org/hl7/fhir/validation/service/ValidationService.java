@@ -248,6 +248,7 @@ public class ValidationService {
     return versions;
   }
 
+  //FIXME called by ValidateTask
   public void validateSources(ValidationContext validationContext, ValidationEngine validator, ValidatorWatchMode watch, int watchScanDelay, int watchSettleTime) throws Exception {
     if (validationContext.getProfiles().size() > 0) {
       log.info("  Profiles: " + validationContext.getProfiles());
@@ -531,10 +532,24 @@ public class ValidationService {
     }
   }
 
+  /**
+   *
+   * @param validationEngineSettings
+   * @param validationContext
+   * @param definitions
+   * @param tt
+   * @return
+   * @throws Exception
+   */
   public ValidationEngine initializeValidator(ValidationEngineSettings validationEngineSettings, ValidationContext validationContext, String definitions, TimeTracker tt) throws Exception {
     return sessionCache.fetchSessionValidatorEngine(initializeValidator(validationEngineSettings, validationContext, definitions, tt, null));
   }
 
+  /**
+    Initializes a validationEngine and puts it in the sessionCache.
+
+   @return a key for the validationEngine in the sessionCache
+   **/
   public String initializeValidator(ValidationEngineSettings validationEngineSettings, ValidationContext validationContext, String definitions, TimeTracker tt, String sessionId) throws Exception {
     tt.milestone();
 
@@ -625,7 +640,7 @@ public class ValidationService {
     validationEngine.setDoImplicitFHIRPathStringConversion(validationContext.isDoImplicitFHIRPathStringConversion()); //VES
     validationEngine.setHtmlInMarkdownCheck(validationContext.getHtmlInMarkdownCheck()); //VES
     validationEngine.setAllowDoubleQuotesInFHIRPath(validationContext.isAllowDoubleQuotesInFHIRPath()); //VES
-    validationEngine.setNoExtensibleBindingMessages(validationContext.isNoExtensibleBindingMessages()); //VES
+    validationEngine.setNoExtensibleBindingMessages(validationEngineSettings.isNoExtensibleBindingMessages()); //VES
     validationEngine.setNoUnicodeBiDiControlChars(validationContext.isNoUnicodeBiDiControlChars()); //VES
     validationEngine.setNoInvariantChecks(validationContext.isNoInvariants()); //VES
     validationEngine.setDisplayWarnings(validationContext.isDisplayWarnings()); //VES

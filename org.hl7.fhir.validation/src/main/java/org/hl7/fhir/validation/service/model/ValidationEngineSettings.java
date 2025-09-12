@@ -4,70 +4,70 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
 
+import java.util.Objects;
+
 /**
-   * A POJO for storing the flags/values for building a ValidationEngine.
-   */
-  public class ValidationEngineSettings {
+ * A POJO for storing the flags/values for building a ValidationEngine.
+ */
+public class ValidationEngineSettings {
 
-    //NOT A COMMAND LINE OPTION
-    @JsonProperty("baseEngine")
-    @SerializedName("baseEngine")
-    private
-    String baseEngine = null;
+  //NOT A COMMAND LINE OPTION
+  @JsonProperty("baseEngine")
+  @SerializedName("baseEngine")
+  private
+  String baseEngine = null;
 
-    @SerializedName("baseEngine")
-    @JsonProperty("baseEngine")
-    public String getBaseEngine() {
-      return baseEngine;
-    }
+  @SerializedName("baseEngine")
+  @JsonProperty("baseEngine")
+  public String getBaseEngine() {
+    return baseEngine;
+  }
 
-    @SerializedName("baseEngine")
-    @JsonProperty("baseEngine")
-    public ValidationEngineSettings setBaseEngine(String baseEngine) {
-      this.baseEngine = baseEngine;
-      return this;
-    }
+  @SerializedName("baseEngine")
+  @JsonProperty("baseEngine")
+  public ValidationEngineSettings setBaseEngine(String baseEngine) {
+    this.baseEngine = baseEngine;
+    return this;
+  }
 
-    @JsonProperty("doNative")
-    @SerializedName("doNative")
-    private
-    boolean doNative = false;
+  @JsonProperty("doNative")
+  @SerializedName("doNative")
+  private
+  boolean doNative = false;
 
-    @SerializedName("doNative")
-    @JsonProperty("doNative")
-    public boolean isDoNative() {
-      return doNative;
-    }
+  @SerializedName("doNative")
+  @JsonProperty("doNative")
+  public boolean isDoNative() {
+    return doNative;
+  }
 
-    @SerializedName("doNative")
-    @JsonProperty("doNative")
-    public ValidationEngineSettings setDoNative(boolean doNative) {
-      this.doNative = doNative;
-      return this;
-    }
+  @SerializedName("doNative")
+  @JsonProperty("doNative")
+  public ValidationEngineSettings setDoNative(boolean doNative) {
+    this.doNative = doNative;
+    return this;
+  }
 
-    @JsonProperty("hintAboutNonMustSupport")
-    @SerializedName("hintAboutNonMustSupport")
-    private
-    boolean hintAboutNonMustSupport = false;
+  @JsonProperty("hintAboutNonMustSupport")
+  @SerializedName("hintAboutNonMustSupport")
+  private boolean hintAboutNonMustSupport = false;
 
-    @SerializedName("hintAboutNonMustSupport")
-    @JsonProperty("hintAboutNonMustSupport")
-    public boolean isHintAboutNonMustSupport() {
-      return hintAboutNonMustSupport;
-    }
+  @SerializedName("hintAboutNonMustSupport")
+  @JsonProperty("hintAboutNonMustSupport")
+  public boolean isHintAboutNonMustSupport() {
+    return hintAboutNonMustSupport;
+  }
 
-    @SerializedName("hintAboutNonMustSupport")
-    @JsonProperty("hintAboutNonMustSupport")
-    public ValidationEngineSettings setHintAboutNonMustSupport(boolean hintAboutNonMustSupport) {
-      this.hintAboutNonMustSupport = hintAboutNonMustSupport;
-      return this;
-    }
+  @SerializedName("hintAboutNonMustSupport")
+  @JsonProperty("hintAboutNonMustSupport")
+  public ValidationEngineSettings setHintAboutNonMustSupport(boolean hintAboutNonMustSupport) {
+    this.hintAboutNonMustSupport = hintAboutNonMustSupport;
+    return this;
+  }
 
   @JsonProperty("snomedCT")
   @SerializedName("snomedCT")
-  private
-  String snomedCT = "900000000000207008";
+  private String snomedCT = "900000000000207008";
 
   @SerializedName("snomedCT")
   @JsonProperty("snomedCT")
@@ -99,5 +99,58 @@ import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
   public ValidationEngineSettings setAssumeValidRestReferences(boolean assumeValidRestReferences) {
     this.assumeValidRestReferences = assumeValidRestReferences;
     return this;
+  }
+
+  @JsonProperty("noExtensibleBindingMessages")
+  @SerializedName("noExtensibleBindingMessages")
+  private boolean noExtensibleBindingMessages = false;
+
+  @SerializedName("noExtensibleBindingMessages")
+  @JsonProperty("noExtensibleBindingMessages")
+  public boolean isNoExtensibleBindingMessages() {
+    return noExtensibleBindingMessages;
+  }
+
+  @SerializedName("noExtensibleBindingMessages")
+  @JsonProperty("noExtensibleBindingMessages")
+  public ValidationEngineSettings setNoExtensibleBindingMessages(boolean noExtensibleBindingMessages) {
+    this.noExtensibleBindingMessages = noExtensibleBindingMessages;
+    return this;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ValidationEngineSettings that = (ValidationEngineSettings) o;
+    return Objects.equals(baseEngine, that.baseEngine)
+      && doNative == that.doNative
+      && hintAboutNonMustSupport == that.hintAboutNonMustSupport
+      && assumeValidRestReferences == that.assumeValidRestReferences
+      && snomedCT.equals(that.snomedCT)
+      && noExtensibleBindingMessages == that.noExtensibleBindingMessages;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(
+      baseEngine,
+      doNative,
+      hintAboutNonMustSupport,
+      assumeValidRestReferences,
+      snomedCT,
+      noExtensibleBindingMessages);
+  }
+
+  @Override
+  public String toString() {
+    return "ValidationContext{" +
+      "baseEngine=" + baseEngine +
+      ", doNative=" + doNative +
+      ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +
+      ", assumeValidRestReferences=" + assumeValidRestReferences +
+      ", snomedCT=" + snomedCT +
+      ", noExtensibleBindingMessages=" + noExtensibleBindingMessages +
+      "}";
   }
 }
