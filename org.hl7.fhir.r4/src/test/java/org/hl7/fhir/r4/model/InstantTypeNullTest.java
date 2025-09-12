@@ -4,13 +4,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 class InstantTypeNullTest {
 
   @Test
   @DisplayName("Test null value toString()")
   void testToString() {
-    InstantType nullInstant = new InstantType();
-    System.out.println("Value -> " + nullInstant);
+    assertDoesNotThrow(() -> {
+      InstantType nullInstant = new InstantType();
+      System.out.println("Value -> " + nullInstant);
+    });
   }
 
   @Test

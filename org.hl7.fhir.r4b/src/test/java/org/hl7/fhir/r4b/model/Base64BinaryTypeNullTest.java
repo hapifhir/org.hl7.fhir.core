@@ -5,13 +5,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 class Base64BinaryTypeNullTest {
 
   @Test
   @DisplayName("Test null value toString()")
   void testToString() {
-    Base64BinaryType nullBase64 = new Base64BinaryType();
-    System.out.println("Value -> " + nullBase64);
+    assertDoesNotThrow(() -> {
+      Base64BinaryType nullBase64 = new Base64BinaryType();
+      System.out.println("Value -> " + nullBase64);
+    });
   }
 
   @Test
