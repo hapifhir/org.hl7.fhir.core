@@ -943,7 +943,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
   } 
 
   private void renderDefns(RenderingStatus status, XhtmlNode x, ResourceWrapper q) throws IOException { 
-    XhtmlNode tbl = x.table("dict", false); 
+    XhtmlNode tbl = x.table("dict", false).markGenerated(!context.forValidResource());
     renderRootDefinition(status, tbl, q, new ArrayList<>()); 
     for (ResourceWrapper qi : q.children("item")) { 
       renderDefinition(status, tbl, q, qi, new ArrayList<>()); 
