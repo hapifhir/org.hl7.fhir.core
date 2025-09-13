@@ -155,7 +155,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       StructureDefinition sd = (StructureDefinition) r.getBase();
       genSummaryTable(status, x, sd);
       if (context.getStructureMode() == StructureDefinitionRendererMode.DATA_DICT) { 
-        renderDict(status, sd, sd.getDifferential().getElement(), x.table("dict", false), false, GEN_MODE_DIFF, "", r); 
+        renderDict(status, sd, sd.getDifferential().getElement(), x.table("dict", false).markGenerated(!context.forValidResource()), false, GEN_MODE_DIFF, "", r);
       } else { 
         x.addChildNode(generateTable(status, context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false,  
             context.getLink(KnownLinkType.SPEC, false), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, context.withUniqueLocalPrefix(null), "r", r, "X")); 
@@ -4403,7 +4403,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         } 
       } 
       if (obr.hasObligations()) { 
-        XhtmlNode tbl = ret.table("grid", false); 
+        XhtmlNode tbl = ret.table("grid", false).markGenerated(!context.forValidResource());
         obr.renderTable(status, res, tbl.getChildNodes(), true, defPath, anchorPrefix, inScopeElements);
         if (tbl.isEmpty()) { 
           ret.remove(tbl); 
@@ -4982,7 +4982,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } 
  
       if (abr.hasBindings()) { 
-        var tbl = x.table("grid", false); 
+        var tbl = x.table("grid", false).markGenerated(!context.forValidResource());
         abr.render(tbl.getChildNodes(), true); 
       } 
       return x; 
