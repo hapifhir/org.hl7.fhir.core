@@ -4,6 +4,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@MarkedToMoveToAdjunctPackage
 public class XVerExtensionManagerNew extends XVerExtensionManager {
 
   private Map<String, JsonObject> lists = new HashMap<>();
@@ -32,13 +34,13 @@ public class XVerExtensionManagerNew extends XVerExtensionManager {
       return XVerExtensionStatus.Invalid;
     }
     String v = url.substring(20, 23);
-    String tv = VersionUtilities.getNameForVersion(v).toLowerCase();
-    if (tv.contains("?")) {
+    String targetVersion = VersionUtilities.getNameForVersion(v).toLowerCase();
+    if (targetVersion.contains("?")) {
       return XVerExtensionStatus.BadVersion;
     }
 
-    String sv = VersionUtilities.getNameForVersion(context.getVersion()).toLowerCase();
-    String pid = "hl7.fhir.uv.xver-"+tv+"."+sv;
+    String sourceVersion = VersionUtilities.getNameForVersion(context.getVersion()).toLowerCase();
+    String pid = "hl7.fhir.uv.xver-"+targetVersion+"."+sourceVersion;
     if (!context.hasPackage(pid, "dev")) {
       try {
         loader.loadPackage(pid+"#dev");

@@ -25,8 +25,8 @@ import org.hl7.fhir.utilities.VersionUtilities;
 @MarkedToMoveToAdjunctPackage
 public class TerminologyClientContext {
   public static final String MIN_TEST_VERSION = "1.6.0";
-  public static final String TX_BATCH_VERSION = "1.7.8"; // actually, it's 17.7., but there was an error in the tx.fhir.org code around this
-  public static final String LATEST_VERSION = "1.7.8"; // dito
+  public static final String TX_BATCH_VERSION = "1.8.0"; // actually, it's 17.7., but there was an error in the tx.fhir.org code around this
+  public static final String LATEST_VERSION = "1.8.0"; // dito
 
   public enum TerminologyClientContextUseType {
     expand, validate, readVS, readCS
