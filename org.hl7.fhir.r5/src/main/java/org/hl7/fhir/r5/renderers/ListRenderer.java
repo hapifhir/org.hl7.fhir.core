@@ -35,7 +35,7 @@ public class ListRenderer extends ResourceRenderer {
     if (list.has("title")) { 
       x.h2().tx(list.primitiveValue("title")); 
     } 
-    XhtmlNode t = x.table("clstu", false); 
+    XhtmlNode t = x.table("clstu", false).markGenerated(!context.forValidResource());
     XhtmlNode tr = t.tr(); 
     if (list.has("date")) { 
       tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_DATE, displayDateTime(list.child("date")))+" "); 
@@ -77,7 +77,7 @@ public class ListRenderer extends ResourceRenderer {
       deleted = deleted || e.has("deleted"); 
       date = date || e.has("date"); 
     } 
-    t = x.table("grid", false); 
+    t = x.table("grid", false).markGenerated(!context.forValidResource());
     tr = t.tr().style("backgound-color: #eeeeee"); 
     tr.td().b().tx(context.formatPhrase(RenderingContext.LIST_REND_ITEM)); 
     if (date) { 

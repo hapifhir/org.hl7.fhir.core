@@ -594,6 +594,16 @@ public abstract class Base implements Serializable, IBase, IElement {
     return validationInfo;
   }
 
+  public List<ValidationInfo>  getValidationInfoForProfile(StructureDefinition profile) {
+    List<ValidationInfo> ret = new ArrayList<ValidationInfo>();
+    for (ValidationInfo v : getValidationInfo()) {
+      if (v.getStructure() == profile) {
+        ret.add(v);
+      }
+    }
+    return ret;
+  }
+
   public ValidationInfo addDefinition(StructureDefinition structure, ElementDefinition defn, ValidationMode mode) {
     if (validationInfo == null) {
       validationInfo = new ArrayList<>();
@@ -607,7 +617,20 @@ public abstract class Base implements Serializable, IBase, IElement {
     this.validationInfo.add(vi);
     return vi;
   }
-  
+
+  public boolean isValid() {
+    if (hasValidationInfo()) {
+      return false;
+    } else {
+      boolean valid = true;
+      for (ValidationInfo t : validationInfo) {
+        if (!t.isValid()) {
+          valid = false;
+        }
+      }
+      return valid;
+    }
+  }
 
   public boolean hasValidated(StructureDefinition sd, ElementDefinition ed) {
     if (validationInfo != null) {
@@ -628,7 +651,7 @@ public abstract class Base implements Serializable, IBase, IElement {
     validationMessages.add(msg);
     return this;
   }
-  
+
   public boolean hasValidationMessages() {
     return validationMessages != null && !validationMessages.isEmpty();
   }

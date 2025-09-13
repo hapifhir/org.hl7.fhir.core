@@ -4,35 +4,21 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
-import org.hl7.fhir.r5.utils.sql.Column;
-import org.hl7.fhir.r5.utils.sql.ColumnKind;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
-import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
-import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Title;
 
 @MarkedToMoveToAdjunctPackage
 public class FeatureDefinitionRenderer extends ResourceRenderer {
@@ -56,7 +42,7 @@ public class FeatureDefinitionRenderer extends ResourceRenderer {
     renderResourceTechDetails(fd, x);
     genSummaryTable(status, x, fd);
     
-    XhtmlNode tbl = x.table("grid", false);
+    XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
     
     XhtmlNode td = tbl.tr().td();
     td.tx("Feature ");
@@ -95,7 +81,7 @@ public class FeatureDefinitionRenderer extends ResourceRenderer {
     if (fd.has("qualifier")) {
       td.b().tx("Qualifiers");
 
-      XhtmlNode tbl2 = td.table("lines", false);
+      XhtmlNode tbl2 = td.table("lines", false).markGenerated(!context.forValidResource());
       XhtmlNode tr = tbl2.tr();
       tr.td().b().tx("Name");
       tr.td().b().tx("Type");

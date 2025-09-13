@@ -1222,5 +1222,9 @@ public class RenderingContext extends RenderingI18nContext {
     this.testing = testing;
   }
 
-  
+  public boolean forValidResource() {
+    return getRules() == GenerationRules.VALID_RESOURCE;
+  }
+
+
 }

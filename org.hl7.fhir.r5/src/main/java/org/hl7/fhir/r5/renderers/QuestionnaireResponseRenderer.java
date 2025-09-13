@@ -571,7 +571,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
   }
 
 //  private boolean renderDefns(XhtmlNode x, QuestionnaireResponse q) throws IOException {
-//    XhtmlNode tbl = x.table("dict");
+//    XhtmlNode tbl = x.table("dict").markGenerated();
 //    boolean ext = false;
 //    ext = renderRootDefinition(tbl, q, new ArrayList<>()) || ext;
 //    for (QuestionnaireItemComponent qi : q.getItem()) {

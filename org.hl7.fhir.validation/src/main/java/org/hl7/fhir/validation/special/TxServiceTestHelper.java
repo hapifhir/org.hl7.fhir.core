@@ -187,7 +187,7 @@ public class TxServiceTestHelper {
       }
 
       TxTesterSorters.sortParameters(parameters);
-      TxTesterScrubbers.scrubParams(parameters);
+      TxTesterScrubbers.scrubParams(parameters, false);
 
       String actualResponse = new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).composeString(parameters);
 

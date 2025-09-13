@@ -839,19 +839,21 @@ public class NpmPackage {
   public List<PackagedResourceFile> listAllResources(Collection<String> types) throws IOException {
     List<PackagedResourceFile> res = new ArrayList<PackagedResourceFile>();
     for (NpmPackageFolder folder : folders.values()) {
-      if (types.size() == 0) {
-        for (String s : folder.types.keySet()) {
-          if (folder.types.containsKey(s)) {
-            for (String n : folder.types.get(s)) {
-              res.add(new PackagedResourceFile(folder.folderName, n, s));
+      if (!folder.getFolderName().startsWith("tests")) {
+        if (types.size() == 0) {
+          for (String s : folder.types.keySet()) {
+            if (folder.types.containsKey(s)) {
+              for (String n : folder.types.get(s)) {
+                res.add(new PackagedResourceFile(folder.folderName, n, s));
+              }
             }
           }
-        }
-      } else {
-        for (String s : types) {
-          if (folder.types.containsKey(s)) {
-            for (String n : folder.types.get(s)) {
-              res.add(new PackagedResourceFile(folder.folderName, n, s));
+        } else {
+          for (String s : types) {
+            if (folder.types.containsKey(s)) {
+              for (String n : folder.types.get(s)) {
+                res.add(new PackagedResourceFile(folder.folderName, n, s));
+              }
             }
           }
         }

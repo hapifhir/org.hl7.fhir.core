@@ -124,7 +124,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       }
       if (vs.hasExtension(ExtensionDefinitions.EXT_VALUESET_PARAMETER)) {
         x.para().b().tx("This ValueSet has parameters");
-        XhtmlNode tbl = x.table("grid");
+        XhtmlNode tbl = x.table("grid").markGenerated(!context.forValidResource());
         XhtmlNode tr = tbl.tr();
         tr.th().tx("Name");
         tr.th().tx("Documentation");
@@ -288,7 +288,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     boolean doInactive = checkDoInactive(vs.getExpansion().getContains());    
     boolean doDefinition = checkDoDefinition(vs.getExpansion().getContains());
     
-    XhtmlNode t = x.table("codes", false);
+    XhtmlNode t = x.table("codes", false).markGenerated(!context.forValidResource());
     XhtmlNode tr = t.tr();
     if (doLevel)
       tr.td().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_LEVEL));
@@ -355,7 +355,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       } else {
         x.para().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_ADD_DESIG));
       }
-      t = x.table("codes", false);
+      t = x.table("codes", false).markGenerated(!context.forValidResource());
       tr = t.tr();
       tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
       for (String url : designations.keySet()) {
@@ -1185,7 +1185,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       } else {
         x.para().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_ADD_DESIG));
       }
-      XhtmlNode t = x.table("codes", false);
+      XhtmlNode t = x.table("codes", false).markGenerated(!context.forValidResource());
       XhtmlNode tr = t.tr();
       tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
       for (String url : designations.keySet()) {
@@ -1382,7 +1382,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           definitions = getConceptsForCodes(e, inc, vsRes, index);
 
           
-          XhtmlNode t = li.table("none", false);
+          XhtmlNode t = li.table("none", false).markGenerated(!context.forValidResource());
           boolean hasComments = false;
           boolean hasDefinition = false;
           for (ConceptReferenceComponent c : inc.getConcept()) {
