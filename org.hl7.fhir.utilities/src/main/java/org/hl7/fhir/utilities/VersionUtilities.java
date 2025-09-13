@@ -968,7 +968,7 @@ public class VersionUtilities {
    * @return specification URL
    */
   public static String getSpecUrl(@Nonnull String v) {
-    v = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(v)));
+    v = removeLabels(checkVersionNotNullAndValidWildcards(fixForSpecialValue(v)));
     switch (getMajMinPriv(v)) {
       case "0.0":
         return "http://hl7.org/fhir/DSTU1";
@@ -997,7 +997,7 @@ public class VersionUtilities {
    * @return release name (e.g., "R4", "R5")
    */
   public static @Nonnull String getNameForVersion(@Nonnull String v) {
-    v = removeLabels(checkVersionNotNullAndValid(fixForSpecialValue(v)));
+    v = removeLabels(checkVersionNotNullAndValidWildcards(fixForSpecialValue(v)));
     switch (getMajMinPriv(v)) {
       case "1.0":
         return "R2";

@@ -111,7 +111,7 @@ public class ViewDefinitionRenderer extends ResourceRenderer {
         hasNotes = hasNotes || !Utilities.noString(col.getNotes());
       }
       
-      XhtmlNode t2 = x.table("grid", false);
+      XhtmlNode t2 = x.table("grid", false).markGenerated(!context.forValidResource());
       XhtmlNode tr = t2.tr();
       tr.th().tx("Name");
       tr.th().tx("Fhir Type");
@@ -135,7 +135,7 @@ public class ViewDefinitionRenderer extends ResourceRenderer {
     if (vd.has("constant")) {
       x.para().tx("Constants:");
 
-      XhtmlNode t2 = x.table("grid", false);
+      XhtmlNode t2 = x.table("grid", false).markGenerated(!context.forValidResource());
       XhtmlNode tr = t2.tr();
       tr.th().tx("Name");
       tr.th().tx("Value");
