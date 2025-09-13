@@ -640,7 +640,7 @@ public class TxTester {
     String pj;
     try {
       Parameters po = terminologyClient.lookupCode(p);
-      TxTesterScrubbers.scrubParams(po);
+      TxTesterScrubbers.scrubParams(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
@@ -673,7 +673,7 @@ public class TxTester {
     String pj;
     try {
       Parameters po = terminologyClient.translate(p);
-      TxTesterScrubbers.scrubParams(po);
+      TxTesterScrubbers.scrubParams(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
@@ -750,7 +750,7 @@ public class TxTester {
     String pj;
     try {
       Parameters po = terminologyClient.batchValidateVS(p);
-      TxTesterScrubbers.scrubParams(po);
+      TxTesterScrubbers.scrubParams(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
@@ -784,7 +784,7 @@ public class TxTester {
     String pj;
     try {
       Parameters po = terminologyClient.validateVS(p);
-      TxTesterScrubbers.scrubParams(po);
+      TxTesterScrubbers.scrubParams(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
@@ -818,7 +818,7 @@ public class TxTester {
     String pj;
     try {
       Parameters po = terminologyClient.validateCS(p);
-      TxTesterScrubbers.scrubParams(po);
+      TxTesterScrubbers.scrubParams(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
@@ -857,7 +857,7 @@ public class TxTester {
       for (BundleEntryComponent be : bo.getEntry()) {
         if (be.getResource() instanceof Parameters) {
           Parameters po = ((Parameters) be.getResource());
-          TxTesterScrubbers.scrubParams(po);
+          TxTesterScrubbers.scrubParams(po, tight);
           TxTesterSorters.sortParameters(po);
         }
         if (be.getResource() instanceof OperationOutcome) {
