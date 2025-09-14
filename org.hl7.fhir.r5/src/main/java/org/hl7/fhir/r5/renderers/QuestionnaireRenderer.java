@@ -584,9 +584,9 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       } 
     } 
     if (i.has("answerOption")) { 
-      if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br")); 
-      defn.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.QUEST_OPTIONS)+" "), null)); 
-      defn.getPieces().add(gen.new Piece(context.getDefinitionsTarget()+"#item."+i.primitiveValue("linkId"), Integer.toString(i.children("answerOption").size())+" "+Utilities.pluralize("option", i.children("answerOption").size()), null));             
+      if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br"));
+      defn.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.QUEST_OPTIONS)+" "), null));
+      defn.getPieces().add(gen.new Piece((context.getDefinitionsTarget()==null ? "": context.getDefinitionsTarget())+"#item."+i.primitiveValue("linkId"), Integer.toString(i.children("answerOption").size())+" "+Utilities.pluralize("option", i.children("answerOption").size()), null));             
     } 
     if (i.has("initial")) { 
       for (ResourceWrapper v : i.children("initial")) { 
@@ -826,7 +826,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       } 
     } 
     if (i.has("answerOption")) { 
-      item(ul, context.formatPhrase(RenderingContext.QUEST_ANSWERS), Integer.toString(i.children("answerOption").size())+" "+Utilities.pluralize("option", i.children("answerOption").size()), context.getDefinitionsTarget()+"#item."+i.primitiveValue("linkId")); 
+      item(ul, context.formatPhrase(RenderingContext.QUEST_ANSWERS), Integer.toString(i.children("answerOption").size())+" "+Utilities.pluralize("option", i.children("answerOption").size()), (context.getDefinitionsTarget()==null ? "": context.getDefinitionsTarget())+"#item."+i.primitiveValue("linkId")); 
     } 
     if (i.has("initial")) { 
       XhtmlNode vi = item(ul, context.formatPhrase(RenderingContext.QUEST_INT)); 
