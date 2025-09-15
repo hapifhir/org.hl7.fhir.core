@@ -1113,7 +1113,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       }
     }
     if (columns.size() > 0) {
-      XhtmlNode table = x.table("grid", false);
+      XhtmlNode table = x.table("grid", false).markGenerated(!context.forValidResource());
       
       if (provider.getTitle() != null) {
         table.tr().td().colspan(columns.size()).b().tx(provider.getTitle());
@@ -1152,7 +1152,7 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   public boolean genSummaryTable(RenderingStatus status, XhtmlNode x, ResourceWrapper cr) throws IOException {
     if (context.isShowSummaryTable() && cr != null) {
-      XhtmlNode tbl = x.table("grid", false);
+      XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
       genSummaryTableContent(status, tbl, cr);
       return true;
     } else {
@@ -1247,7 +1247,7 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   public void genSummaryTable(RenderingStatus status, XhtmlNode x, CanonicalResource cr) throws IOException {
     if (context.isShowSummaryTable() && cr != null) {
-      XhtmlNode tbl = x.table("grid", false);
+      XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
       genSummaryTableContent(status, tbl, cr);
     }
   }

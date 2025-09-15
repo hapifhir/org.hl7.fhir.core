@@ -833,9 +833,6 @@ public class I18nConstants {
   public static final String SM_TARGET_TYPE_UNKNOWN = "SM_TARGET_TYPE_UNKNOWN";
   public static final String SNAPSHOT_EXISTING_PROBLEM = "SNAPSHOT_EXISTING_PROBLEM";
   public static final String SNAPSHOT_IS_EMPTY = "SNAPSHOT_IS_EMPTY";
-//  public static final String STATUS_CODE_HINT = "STATUS_CODE_HINT";
-//  public static final String STATUS_CODE_HINT_CODE = "STATUS_CODE_HINT_CODE";
-//  public static final String STATUS_CODE_WARNING = "STATUS_CODE_WARNING";
   public static final String STATUS_CODE_WARNING_CODE = "STATUS_CODE_WARNING_CODE";
   public static final String STRUCTUREDEFINITION__AT__ILLEGAL_CONSTRAINED_TYPE__FROM__IN_ = "StructureDefinition__at__illegal_constrained_type__from__in_";
   public static final String TERMINOLOGY_PASSTHROUGH_TX_MESSAGE = "Terminology_PassThrough_TX_Message";
@@ -844,7 +841,6 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_BINDING_MISSING2 = "Terminology_TX_Binding_Missing2";
   public static final String TERMINOLOGY_TX_BINDING_NOSERVER = "Terminology_TX_Binding_NoServer";
   public static final String TERMINOLOGY_TX_BINDING_NOSOURCE = "Terminology_TX_Binding_NoSource";
-  public static final String TERMINOLOGY_TX_BINDING_NOSOURCE2 = "Terminology_TX_Binding_NoSource2";
   public static final String TERMINOLOGY_TX_CODE_VALUESET = "Terminology_TX_Code_ValueSet";
   public static final String TERMINOLOGY_TX_CODE_VALUESETMAX = "Terminology_TX_Code_ValueSetMax";
   public static final String TERMINOLOGY_TX_CODE_VALUESET_EXT = "Terminology_TX_Code_ValueSet_Ext";
@@ -1210,6 +1206,7 @@ public class I18nConstants {
   public static final String VALUESET_INC_NOT_VALIDATING = "VALUESET_INC_NOT_VALIDATING";
   public static final String VALUESET_INC_NO_SERVER = "VALUESET_INC_NO_SERVER";
   public static final String VALUESET_INC_NO_BATCH_ON_SERVER = "VALUESET_INC_NO_BATCH_ON_SERVER";
+  public static final String VALUESET_INC_CS_NO_SUPPORT = "VALUESET_INC_CS_NO_SUPPORT";
   public static final String VALUESET_NO_SYSTEM_WARNING = "VALUESET_NO_SYSTEM_WARNING";
   public static final String VALUESET_PARAMETER_MISSING_BINDING_PARAMETER = "VALUESET_PARAMETER_MISSING_BINDING_PARAMETER";
   public static final String VALUESET_PARAMETER_NAME_WARNING = "VALUESET_PARAMETER_NAME_WARNING";
