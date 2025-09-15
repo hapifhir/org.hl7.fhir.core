@@ -608,7 +608,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
     try {
       byte[] source = ProfileLoader.loadProfileSource(src);
-      String ssource = FileUtilities.bytesToString(source);
       FhirFormat fmt = FormatUtilities.determineFormat(source);
       Resource r = FormatUtilities.makeParser(fmt).parse(source);
       context.cacheResource(r);

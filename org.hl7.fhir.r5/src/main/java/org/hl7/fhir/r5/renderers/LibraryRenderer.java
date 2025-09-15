@@ -44,7 +44,7 @@ public class LibraryRenderer extends ResourceRenderer {
       boolean phone = hasCT(authors, "phone") || hasCT(editors, "phone") || hasCT(reviewers, "phone") || hasCT(endorsers, "phone"); 
       boolean url = hasCT(authors, "url") || hasCT(editors, "url") || hasCT(reviewers, "url") || hasCT(endorsers, "url"); 
       x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_PAR));
-      XhtmlNode t = x.table("grid", false);
+      XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
       for (ResourceWrapper cd : authors) {
         participantRow(status, t, (context.formatPhrase(RenderingContext.LIB_REND_AUT)), cd, email, phone, url);
       }
@@ -62,7 +62,7 @@ public class LibraryRenderer extends ResourceRenderer {
     List<ResourceWrapper> artifacts = lib.children("relatedArtifact");
     if (!artifacts.isEmpty()) {
       x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_ART));
-      XhtmlNode t = x.table("grid", false);
+      XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
       boolean label = false;
       boolean display = false;
       boolean citation = false;
@@ -78,7 +78,7 @@ public class LibraryRenderer extends ResourceRenderer {
     List<ResourceWrapper> parameters = lib.children("parameter");
     if (!parameters.isEmpty()) {
       x.h2().tx(context.formatPhrase(RenderingContext.GENERAL_PARS));
-      XhtmlNode t = x.table("grid", false);
+      XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
       boolean doco = false;
       for (ResourceWrapper p : parameters) {
         doco = doco || p.has("documentation");
