@@ -455,29 +455,34 @@ public class ValueSetValidator extends BaseValidator {
             hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_NOT_VALIDATING, concepts.size());
           } else if (context.isNoTerminologyServer()) {
             hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_NO_SERVER, concepts.size());
-          } else if (concepts.size() > 1 && !VersionUtilities.isThisOrLater("1.7.8", context.getTxSupportInfo(system, version).getTestVersion(), VersionUtilities.VersionPrecision.PATCH )) {
-            hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_NO_BATCH_ON_SERVER, context.getTxSupportInfo(system, version).getServer());
           } else {
-            try {
-              for (Element concept : concepts) {
-                // we treat the first differently because we want to know if the system is worth validating. if it is, then we batch the rest
-                if (first) {
-                  systemOk = validateValueSetIncludeConcept(errors, concept, stack, stack.push(concept, cc, null, null), system, version, csChecker, cs != null);
-                  first = false;
-                } else if (systemOk) {
-                  batch.add(prepareValidateValueSetIncludeConcept(errors, concept, stack.push(concept, cc, null, null), system, version, csChecker));
-                  if (batch.size() > VALIDATION_BATCH_SIZE) {
-                    executeValidationBatch(errors, vsid, retired, system, version, batch, stack);
-                    batch.clear();
+            var si = context.getTxSupportInfo(system, version);
+            if (concepts.size() > 1 && !si.isSupported()) {
+              hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_CS_NO_SUPPORT, si.getServer());
+            } else if (concepts.size() > 1 && !VersionUtilities.isThisOrLater("1.7.8", si.getTestVersion(), VersionUtilities.VersionPrecision.PATCH)) {
+              hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_NO_BATCH_ON_SERVER, si.getServer());
+            } else {
+              try {
+                for (Element concept : concepts) {
+                  // we treat the first differently because we want to know if the system is worth validating. if it is, then we batch the rest
+                  if (first) {
+                    systemOk = validateValueSetIncludeConcept(errors, concept, stack, stack.push(concept, cc, null, null), system, version, csChecker, cs != null);
+                    first = false;
+                  } else if (systemOk) {
+                    batch.add(prepareValidateValueSetIncludeConcept(errors, concept, stack.push(concept, cc, null, null), system, version, csChecker));
+                    if (batch.size() > VALIDATION_BATCH_SIZE) {
+                      executeValidationBatch(errors, vsid, retired, system, version, batch, stack);
+                      batch.clear();
+                    }
                   }
+                  cc++;
                 }
-                cc++;
+                executeValidationBatch(errors, vsid, retired, system, version, batch, stack);
+              } catch (Exception e) {
+                ok = false;
+                VSCodingValidationRequest cv = batch.get(0);
+                rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, cv.getStack().getLiteralPath(), false, e.getMessage());
               }
-              executeValidationBatch(errors, vsid, retired, system, version, batch, stack);
-            } catch (Exception e) {
-              ok = false;
-              VSCodingValidationRequest cv = batch.get(0);
-              rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, cv.getStack().getLiteralPath(), false, e.getMessage());
             }
           }
         }

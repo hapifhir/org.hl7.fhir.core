@@ -69,7 +69,7 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
       x.para().tx(context.formatPhrase(RenderingContext.OP_OUT_OK));
     }
     if (op.has("issue")) { 
-      XhtmlNode tbl = x.table("grid", false); // on the basis that we'll most likely be rendered using the standard fhir css, but it doesn't really matter 
+      XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource()); // on the basis that we'll most likely be rendered using the standard fhir css, but it doesn't really matter
       XhtmlNode tr = tbl.tr(); 
       tr.td().b().tx(context.formatPhrase(RenderingContext.OP_OUT_SEV)); 
       tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_LOCATION)); 

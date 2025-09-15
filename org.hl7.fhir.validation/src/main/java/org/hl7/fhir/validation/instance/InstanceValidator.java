@@ -1379,7 +1379,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 //          } else if (binding.hasValueSet()) {
 //            hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_CANTCHECK);
           } else if (!noBindingMsgSuppressed) {
-            hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path);
+            hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path, profile);
           }
           for (ElementDefinitionBindingAdditionalComponent ab : binding.getAdditional()) {
             StringBuilder b = new StringBuilder();
@@ -1924,7 +1924,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 //          } else if (binding.hasValueSet()) {
 //            hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_CANTCHECK);
           } else if (!noBindingMsgSuppressed) {
-            hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path);
+            hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path, profile);
           }
           for (ElementDefinitionBindingAdditionalComponent ab : binding.getAdditional()) {
             StringBuilder b = new StringBuilder();
@@ -1970,7 +1970,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               } else if (binding.hasValueSet()) {
                 hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_CANTCHECK);
               } else if (!inCodeableConcept && !noBindingMsgSuppressed) {
-                hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path);
+                hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path, profile);
               }
               for (ElementDefinitionBindingAdditionalComponent ab : binding.getAdditional()) {
                 StringBuilder b = new StringBuilder();
@@ -2288,7 +2288,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 //                hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_CANTCHECK);
                 
               } else if (!inCodeableConcept && !noBindingMsgSuppressed) {
-                hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path);
+                hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path, profile);
               }
 
               for (ElementDefinitionBindingAdditionalComponent ab : binding.getAdditional()) {
@@ -4106,7 +4106,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
     } else if (!noBindingMsgSuppressed) {
-      hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, !type.equals("code"), I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE2);
+      hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, !type.equals("code"), I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path, profile);
     }
     return ok;
   }
@@ -7119,6 +7119,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     checkMustSupport(profile, ei);
     long s = System.currentTimeMillis();
 
+    ValidationInfo vi = ei.getElement().addDefinition(profile, ei.getDefinition(), mode);
+
     boolean hasType = checkDefn.getType().size() > 0;
     boolean isAbstract = hasType && Utilities.existsInList(checkDefn.getType().get(0).getWorkingCode(), "Element", "BackboneElement");
     boolean isChoice = checkDefn.getType().size() > 1 || (hasType && "*".equals(checkDefn.getType().get(0).getWorkingCode()));
@@ -7432,6 +7434,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
     }
+    vi.setValid(ok);
     return ok;
   }
 

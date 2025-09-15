@@ -45,7 +45,7 @@ public class ProvenanceRenderer extends ResourceRenderer {
     }
     // summary table
     x.para().tx(context.formatPhrase(RenderingContext.GENERAL_SUMM));
-    XhtmlNode t = x.table("grid", false);
+    XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
     XhtmlNode tr;
     if (prv.has("occurred")) {
       tr = t.tr();
@@ -90,7 +90,7 @@ public class ProvenanceRenderer extends ResourceRenderer {
       hasOnBehalfOf = hasOnBehalfOf || a.has("onBehalfOf"); 
     }    
     x.para().b().tx(context.formatPhrase(RenderingContext.PROV_AGE));
-    t = x.table("grid", false);
+    t = x.table("grid", false).markGenerated(!context.forValidResource());
     tr = t.tr();
     if (hasType) {
       tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_TYPE));

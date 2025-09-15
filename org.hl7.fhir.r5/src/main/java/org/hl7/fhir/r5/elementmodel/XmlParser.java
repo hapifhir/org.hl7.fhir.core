@@ -71,11 +71,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.formats.XmlLocationAnnotator;
 import org.hl7.fhir.r5.utils.formats.XmlLocationData;
-import org.hl7.fhir.utilities.ElementDecoration;
-import org.hl7.fhir.utilities.StringPair;
-import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -820,6 +816,9 @@ public class XmlParser extends ParserBase {
   private void composeElement(IXMLWriter xml, Element element, String elementName, boolean root) throws IOException, FHIRException {
     if (canonicalFilter.contains(element.getPath())) {
       return;
+    }
+    if (element.getProperty().getDefinition().hasExtension(ExtensionDefinitions.EXT_XML_NAME)) {
+      elementName = element.getProperty().getDefinition().getExtensionString(ExtensionDefinitions.EXT_XML_NAME);
     }
     if (!(isElideElements() && element.isElided())) {
       if (showDecorations) {
