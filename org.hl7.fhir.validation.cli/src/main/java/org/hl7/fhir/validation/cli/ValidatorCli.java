@@ -397,7 +397,7 @@ public class ValidatorCli {
     return cliTask;
   }
 
-  private ValidationEngine getValidationEngine(ValidationEngineSettings validationEngineSettings, TimeTracker tt, ValidationContext validationContext) throws Exception {
+  private ValidationEngine getValidationEngine(ValidationEngineSettings validationEngineSettings, TimeTracker timeTracker, ValidationContext validationContext) throws Exception {
     ValidationEngine validationEngine;
     log.info("  Locale: "+Locale.getDefault().getDisplayCountry()+"/"+Locale.getDefault().getCountry());
     if (validationContext.getJurisdiction() == null) { //VES
@@ -408,8 +408,7 @@ public class ValidatorCli {
     }
 
     log.info("Loading");
-    String definitions = "dev".equals(validationContext.getSv()) ? "hl7.fhir.r5.core#current" : VersionUtilities.packageForVersion(validationContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(validationContext.getSv());
-    validationEngine = myValidationService.initializeValidator(validationEngineSettings, validationContext, definitions, tt);
+    validationEngine = myValidationService.initializeValidator(validationEngineSettings, validationContext, timeTracker);
     return validationEngine;
   }
 
