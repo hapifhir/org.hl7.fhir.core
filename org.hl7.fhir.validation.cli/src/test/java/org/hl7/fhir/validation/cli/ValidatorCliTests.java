@@ -154,7 +154,7 @@ public class ValidatorCliTests {
   }
   public ValidatorCli mockValidatorCliWithService(ValidationEngineSettings validationEngineSettings, ValidationContext validationContext) throws Exception {
     when(validationService.determineVersion(Mockito.same(validationContext))).thenReturn("5.0.1");
-    when(validationService.initializeValidator(Mockito.same(validationEngineSettings), Mockito.same(validationContext), anyString(), any(org.hl7.fhir.utilities.TimeTracker.class))).thenReturn(validationEngine);
+    when(validationService.initializeValidator(Mockito.same(validationEngineSettings), Mockito.same(validationContext), any(org.hl7.fhir.utilities.TimeTracker.class))).thenReturn(validationEngine);
     return mockValidatorCli();
   }
 
