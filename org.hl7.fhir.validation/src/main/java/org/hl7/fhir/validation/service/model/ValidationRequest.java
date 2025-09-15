@@ -21,6 +21,27 @@ public class ValidationRequest {
   private
   ValidationContext validationContext;
 
+  /**
+   * @deprecated this method will be removed in the future. See  {@link ValidationContext}
+   * @return The validationContext
+   */
+  @JsonProperty("validationContext")
+  @Deprecated
+  public ValidationContext getValidationContext() {
+    return validationContext;
+  }
+
+  /**
+   * @deprecated this method will be removed in the future. See  {@link ValidationContext}
+   * @param validationContext the ValidationContext
+   * @return This instance
+   */
+  @JsonProperty("validationContext")
+  @Deprecated
+  public ValidationRequest setValidationContext(ValidationContext validationContext) {
+    this.validationContext = validationContext;
+    return this;
+  }
   @JsonProperty("filesToValidate")
   @SerializedName("filesToValidate")
   private
@@ -52,20 +73,6 @@ public class ValidationRequest {
   @JsonProperty("validationEngineSettings")
   public ValidationRequest setValidationEngineSettings(ValidationEngineSettings validationEngineSettings) {
     this.validationEngineSettings = validationEngineSettings;
-    return this;
-  }
-
-  @Deprecated
-  @JsonProperty("validationContext")
-  public ValidationContext getValidationContext() {
-    return validationContext;
-  }
-
-
-  @Deprecated
-  @JsonProperty("validationContext")
-  public ValidationRequest setValidationContext(ValidationContext validationContext) {
-    this.validationContext = validationContext;
     return this;
   }
 

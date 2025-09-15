@@ -78,11 +78,12 @@ public class ValidationContext {
   @JsonProperty("resolutionContext")
   @SerializedName("resolutionContext")
   private String resolutionContext = null;
-  
+
+  // Now in ValidationEngineSettings
   @JsonProperty("canDoNative")
   @SerializedName("canDoNative")
   private
-  boolean canDoNative = false; //MOVED to ValidationEngineSettings
+  boolean canDoNative = false;
 
   @JsonProperty("noInternalCaching")
   @SerializedName("noInternalCaching")
@@ -183,10 +184,13 @@ public class ValidationContext {
   @SerializedName("fhirpath")
   private
   String fhirpath = null;
+
+  //MOVED to ValidationEngineSettings
   @JsonProperty("snomedCT")
   @SerializedName("snomedCT")
   private
-  String snomedCT = "900000000000207008"; //MOVED to ValidationEngineSettings
+  String snomedCT = "900000000000207008";
+
   @JsonProperty("targetVer")
   @SerializedName("targetVer")
   private
