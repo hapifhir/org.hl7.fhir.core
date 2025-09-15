@@ -55,6 +55,7 @@ public class TxTesterScrubbers {
           "http://hl7.org/fhir/test/ValueSet/simple-enumerated", 
           "http://hl7.org/fhir/StructureDefinition/alternate-code-use",
           "http://hl7.org/fhir/StructureDefinition/alternate-code-status",
+          "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
           "http://hl7.org/fhir/test/ValueSet/simple-filter-isa");
     }
     
@@ -88,8 +89,21 @@ public class TxTesterScrubbers {
     scrubDR(vs, tight);    
   }
 
-  public static void scrubParams(Parameters po) {
+  public static void scrubParams(Parameters po, boolean tight) {
     po.setMeta(null);
+    for (var pp : po.getParameter()) {
+      if (pp.getResource() != null) {
+        if (pp.getResource() instanceof ValueSet) {
+          scrubVS((ValueSet) pp.getResource(), tight);
+        }
+        if (pp.getResource() instanceof OperationOutcome) {
+          scrubOO((OperationOutcome) pp.getResource(), tight);
+        }
+        if (pp.getResource() instanceof Parameters) {
+          scrubParams((Parameters) pp.getResource(), tight);
+        }
+      }
+    }
   }
 
   public static void scrubOO(OperationOutcome po, boolean tight) {

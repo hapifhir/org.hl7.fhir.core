@@ -42,7 +42,9 @@ public class FileUtilities {
 
   public static void bytesToFile(final byte[] bytes, final String path) throws IOException {
     try (final OutputStream sw = ManagedFileAccess.outStream(ManagedFileAccess.csfile(path))) {
-      sw.write(bytes);
+      if (bytes != null) {
+        sw.write(bytes);
+      }
     }
   }
   

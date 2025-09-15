@@ -31,7 +31,7 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
     renderResourceTechDetails(st, x);
     genSummaryTable(status, x, (CanonicalResource) st.getResourceNative());
 
-    XhtmlNode tbl = x.table("grid", false);
+    XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
     XhtmlNode ttr = tbl.tr();
     ttr.td().b().tx("SubscriptionTopic");
     ttr.td().tx(context.getTranslated(st.has("title") ? st.child("title") : st.child("name")));

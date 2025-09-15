@@ -48,7 +48,7 @@ public class NamingSystemRenderer extends ResourceRenderer {
 
   public void render(RenderingStatus status, XhtmlNode x, NamingSystem ns) throws FHIRFormatError, DefinitionException, IOException {
     x.h3().tx(context.formatPhrase(RenderingContext.GENERAL_SUMM));
-    XhtmlNode tbl = x.table("grid", false); 
+    XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
     row(tbl, (context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)), ns.getUrl());
     if (ns.hasVersion()) {
       row(tbl, (context.formatPhrase(RenderingContext.GENERAL_VER)), ns.getVersion());
@@ -93,7 +93,7 @@ public class NamingSystemRenderer extends ResourceRenderer {
       }
     }
     x.h3().tx(context.formatPhrase(RenderingContext.NAME_SYS_IDEN));
-    XhtmlNode tbl = x.table("grid", false);
+    XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
     XhtmlNode tr = tbl.tr();
     tr.td().b().tx((context.formatPhrase(RenderingContext.GENERAL_TYPE)));
     tr.td().b().tx((context.formatPhrase(RenderingContext.GENERAL_VALUE)));

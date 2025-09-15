@@ -360,22 +360,24 @@ public class TxTester {
       String actFn = this.outputDir == null ?  Utilities.path("[tmp]", serverId(), "actual", "$versions.json") : Utilities.path(this.outputDir, "actual", "$versions.json");
       byte[] vr = fetch(Utilities.pathURL(server, "$versions", "?_format=json"));
       FileUtilities.bytesToFile(vr, actFn);
-      JsonObject vl = JsonParser.parseObject(vr);
-      if ("Parameters".equals(vl.asString("resourceType"))) {
-        for (JsonObject v : vl.forceArray("parameter").asJsonObjects()) {
-          if ("default".equals(v.asString("name"))) {
-            fhirVersion = v.asString("valueString");
+      if (vr != null) {
+        JsonObject vl = JsonParser.parseObject(vr);
+        if ("Parameters".equals(vl.asString("resourceType"))) {
+          for (JsonObject v : vl.forceArray("parameter").asJsonObjects()) {
+            if ("default".equals(v.asString("name"))) {
+              fhirVersion = v.asString("valueString");
+            }
           }
+        } else if (vl.has("default")) {
+          fhirVersion = vl.asString("default");
+        } else {
+          log.warn("Unable to interpret response from $versions: " + vl.toString());
         }
-      } else if (vl.has("default")) {
-        fhirVersion = vl.asString("default");
-      } else {
-        log.warn("Unable to interpret response from $versions: "+vl.toString());
+
+        if (fhirVersion != null) {
+          log.info("Server version " + fhirVersion + " from $versions");
+        }
       }
-      if (fhirVersion != null) {
-        log.info("Server version "+fhirVersion+" from $versions");
-      }
-      
     } catch (Exception e) {
       log.warn("Server does not support $versions: "+e.getMessage(), e);
     }
@@ -638,7 +640,7 @@ public class TxTester {
     String pj;
     try {
       Parameters po = terminologyClient.lookupCode(p);
-      TxTesterScrubbers.scrubParams(po);
+      TxTesterScrubbers.scrubParams(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
@@ -671,7 +673,7 @@ public class TxTester {
     String pj;
     try {
       Parameters po = terminologyClient.translate(p);
-      TxTesterScrubbers.scrubParams(po);
+      TxTesterScrubbers.scrubParams(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
@@ -748,7 +750,7 @@ public class TxTester {
     String pj;
     try {
       Parameters po = terminologyClient.batchValidateVS(p);
-      TxTesterScrubbers.scrubParams(po);
+      TxTesterScrubbers.scrubParams(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
@@ -782,7 +784,7 @@ public class TxTester {
     String pj;
     try {
       Parameters po = terminologyClient.validateVS(p);
-      TxTesterScrubbers.scrubParams(po);
+      TxTesterScrubbers.scrubParams(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
@@ -816,7 +818,7 @@ public class TxTester {
     String pj;
     try {
       Parameters po = terminologyClient.validateCS(p);
-      TxTesterScrubbers.scrubParams(po);
+      TxTesterScrubbers.scrubParams(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
@@ -855,7 +857,7 @@ public class TxTester {
       for (BundleEntryComponent be : bo.getEntry()) {
         if (be.getResource() instanceof Parameters) {
           Parameters po = ((Parameters) be.getResource());
-          TxTesterScrubbers.scrubParams(po);
+          TxTesterScrubbers.scrubParams(po, tight);
           TxTesterSorters.sortParameters(po);
         }
         if (be.getResource() instanceof OperationOutcome) {

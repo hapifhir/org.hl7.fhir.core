@@ -1392,12 +1392,12 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
         nc = sdrRight.genElementNameCell(gen, combined.getRight().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, false, ext, used , ref, sName, null);
       }
       if (combined.hasLeft()) {
-        frame(sdrLeft.genElementCells(new RenderingStatus(), gen, combined.getLeft().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getLeft().getSrc(), typesRow, row, true, ext, used , ref, nc, false, false, sdrLeft.getContext(), children.size() > 0, defPath, anchorPrefix, new ArrayList<ElementDefinition>(), null), leftColor);
+        frame(sdrLeft.genElementCells(new RenderingStatus(), gen, combined.getLeft().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getLeft().getSrc(), typesRow, row, true, ext, used , ref, nc, false, false, sdrLeft.getContext(), children.size() > 0, defPath, anchorPrefix, new ArrayList<ElementDefinition>(), null, false), leftColor);
       } else {
         frame(spacers(row, 4, gen), leftColor);
       }
       if (combined.hasRight()) {
-        frame(sdrRight.genElementCells(new RenderingStatus(), gen, combined.getRight().getDef(), "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, true, ext, used, ref, nc, false, false, sdrRight.getContext(), children.size() > 0, defPath, anchorPrefix, new ArrayList<ElementDefinition>(), null), rightColor);
+        frame(sdrRight.genElementCells(new RenderingStatus(), gen, combined.getRight().getDef(), "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, true, ext, used, ref, nc, false, false, sdrRight.getContext(), children.size() > 0, defPath, anchorPrefix, new ArrayList<ElementDefinition>(), null, false), rightColor);
       } else {
         frame(spacers(row, 4, gen), rightColor);
       }

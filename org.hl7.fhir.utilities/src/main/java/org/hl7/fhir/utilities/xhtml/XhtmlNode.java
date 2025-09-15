@@ -1406,4 +1406,18 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     }
   }
 
+  /**
+   * we only want to actually mark something as generated in some modes,
+   * but it's more fluent to handle the actual implementation here
+   *
+   * @param actuallyMark
+   * @return
+   */
+  public XhtmlNode markGenerated(boolean actuallyMark) {
+    if (actuallyMark) {
+      this.attribute("data-fhir", "generated");
+    }
+    return this;
+  }
+
 }

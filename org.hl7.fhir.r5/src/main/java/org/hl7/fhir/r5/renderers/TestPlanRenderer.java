@@ -91,7 +91,7 @@ public class TestPlanRenderer extends ResourceRenderer {
         ResourceWrapper dep = deps.get(0);
         p = x.para();
         p.b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_DEP)+" ");
-        XhtmlNode t = x.table("grid", false);
+        XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
         XhtmlNode tr = t.tr();
         if (!Utilities.noString(dep.primitiveValue("description"))) {
           addMarkdown(tr.td(), dep.primitiveValue("description"));
@@ -146,7 +146,7 @@ public class TestPlanRenderer extends ResourceRenderer {
         if (deps.size() == 1) {
           ResourceWrapper dep = deps.get(0);
           x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_DEP));
-          XhtmlNode t = x.table("grid", false);
+          XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
           XhtmlNode tr = t.tr();
           if (!Utilities.noString(dep.primitiveValue("description"))) {
             addMarkdown(tr.td(), dep.primitiveValue("description"));
@@ -232,7 +232,7 @@ public class TestPlanRenderer extends ResourceRenderer {
 
     if (trun.has("script")) {
       ResourceWrapper script = trun.child("script");
-      XhtmlNode t = x.table("grid", false);
+      XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
       XhtmlNode tr = t.tr();
       tr.td().b().addText(context.formatPhrase(RenderingContext.TEST_PLAN_LANG));
       tr.td().b().addText(context.formatPhrase(RenderingContext.TEST_PLAN_SOURCE));
@@ -251,7 +251,7 @@ public class TestPlanRenderer extends ResourceRenderer {
   }
 
   private void renderTestData(RenderingStatus status, XhtmlNode x, ResourceWrapper tp, ResourceWrapper tdata) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    XhtmlNode t = x.table("grid", false);
+    XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
     XhtmlNode tr = t.tr();
     tr.td().b().addText(context.formatPhrase(RenderingContext.GENERAL_TYPE));
     tr.td().b().addText(context.formatPhrase(RenderingContext.GENERAL_CONTENT));
@@ -277,7 +277,7 @@ public class TestPlanRenderer extends ResourceRenderer {
   }
 
   private void renderAssertion(RenderingStatus status, XhtmlNode x, ResourceWrapper tp, ResourceWrapper as) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    XhtmlNode t = x.table("grid", false);
+    XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
     XhtmlNode tr = t.tr();
     tr.td().b().addText(context.formatPhrase(RenderingContext.GENERAL_TYPE));
     tr.td().b().addText(context.formatPhrase(RenderingContext.GENERAL_CONTENT));

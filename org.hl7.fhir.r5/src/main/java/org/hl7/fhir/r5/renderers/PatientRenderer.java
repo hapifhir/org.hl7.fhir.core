@@ -144,12 +144,12 @@ public class PatientRenderer extends ResourceRenderer {
       x.hr();
       XhtmlNode tbl;
       if (hasRenderablePhoto(pat)) {
-        tbl = x.table(null, true);
+        tbl = x.table(null, true).markGenerated(!context.forValidResource());
         XhtmlNode tr = tbl.tr();
-        tbl = tr.td().table("grid", false);
+        tbl = tr.td().table("grid", false).markGenerated(!context.forValidResource());
         renderPhoto(tr.td(), pat);
       } else {
-        tbl = x.table("grid", false);
+        tbl = x.table("grid", false).markGenerated(!context.forValidResource());
       }
 
       // the table has 4 columns
