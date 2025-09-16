@@ -41,6 +41,7 @@ import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerLanguageSession;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TextUnit;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TranslationUnit;
@@ -886,7 +887,7 @@ public class LanguageUtils {
       }
       
       if (errors != null)
-        errors.add(new ValidationMessage(Source.Publisher, IssueType.BUSINESSRULE, "IG", "The narrative includes custom content for the default language (" + defaultLang + "), but does not include translated content for the " + lang + " language, so the default language has been used", IssueSeverity.WARNING));
+        errors.add(new ValidationMessage(Source.Publisher, IssueType.BUSINESSRULE, "IG", context.formatMessage(I18nConstants.NARRATIVE_NOT_TRANSLATED, defaultLang, lang), IssueSeverity.WARNING));
       return defaultDiv;
     }
     
