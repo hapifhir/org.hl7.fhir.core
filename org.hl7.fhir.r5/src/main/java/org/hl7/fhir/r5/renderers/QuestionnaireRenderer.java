@@ -13,6 +13,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -35,10 +36,12 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode; 
 
 @MarkedToMoveToAdjunctPackage
-public class QuestionnaireRenderer extends TerminologyRenderer { 
+public class QuestionnaireRenderer extends TerminologyRenderer {
+  private PackageInformation pi = null;
 
-  public QuestionnaireRenderer(RenderingContext context) { 
-    super(context); 
+  public QuestionnaireRenderer(RenderingContext context, PackageInformation pi) { 
+    super(context);
+    this.pi = pi;
   } 
 
   @Override
@@ -938,8 +941,12 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
 
   private void renderLinks(RenderingStatus status, XhtmlNode x, ResourceWrapper q) { 
     x.para().tx(context.formatPhrase(RenderingContext.QUEST_TRY)); 
-    XhtmlNode ul = x.ul(); 
-    ul.li().ah("http://todo.nlm.gov/path?mode=ig&src="+Utilities.pathURL(context.getLink(KnownLinkType.SELF, false), "package.tgz")+"&q="+q.getId()+".json").tx(context.formatPhrase(RenderingContext.QUEST_NLM)); 
+    XhtmlNode ul = x.ul();
+    String canonical = q.primitiveValue("url");
+    if (canonical != null) {
+      String qUrl = Utilities.URLEncode(canonical);
+      ul.li().ah("https://lhncbc.github.io/questionnaire-viewer/?lfv=latest&qCanonical=" +canonical + "&pID=" + pi.getId() + "&pVersion=" + pi.getVersion()).tx(context.formatPhrase(RenderingContext.QUEST_NLM));
+    }
   } 
 
   private void renderDefns(RenderingStatus status, XhtmlNode x, ResourceWrapper q) throws IOException { 
