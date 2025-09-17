@@ -370,9 +370,7 @@ public class ValidatorCli {
 
       TimeTracker tt = new TimeTracker();
       TimeTracker.Session tts = tt.start("Loading");
-      if (validationContext.getSv() == null) {
-        validationContext.setSv(myValidationService.determineVersion(validationContext));
-      }
+
       ValidationEngine validationEngine = getValidationEngine(validationEngineSettings, tt, validationContext);
       tts.end();
       ((ValidationEngineTask) cliTask).executeTask(myValidationService, validationEngine, validationContext, params);
