@@ -29,8 +29,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * A POJO for storing the flags/values for the CLI validator.
  *
- * @deprecated This class exists to provide backwards compatibility for downstream projects such as the
- * validator-wrapper. Its contents are now accessible through more modular objects such as {@link ValidationEngineSettings}
+ * @deprecated This class will be replaced with more a more modular set of POJOs that better separate concerns like
+ * ValidationEngine instantiation, InstanceValidator instantiation, etc. It will be maintained for backwards
+ * compatibility, but will eventually be removed.
  */
 @Deprecated
 public class ValidationContext {
@@ -50,7 +51,7 @@ public class ValidationContext {
   @JsonProperty("hintAboutNonMustSupport")
   @SerializedName("hintAboutNonMustSupport")
   private
-  boolean hintAboutNonMustSupport = false; //MOVED to ValidationEngineSettings
+  boolean hintAboutNonMustSupport = false;
 
   @JsonProperty("recursive")
   @SerializedName("recursive")
@@ -160,6 +161,8 @@ public class ValidationContext {
   @SerializedName("txServer")
   private
   String txServer = FhirSettings.getTxFhirProduction();
+
+  // Moved to ValidationEngineSettings
   @JsonProperty("sv")
   @SerializedName("sv")
   private
@@ -190,7 +193,8 @@ public class ValidationContext {
   @SerializedName("snomedCT")
   private
   String snomedCT = "900000000000207008";
-
+  
+  // Moved to ValidationEngineSettings
   @JsonProperty("targetVer")
   @SerializedName("targetVer")
   private

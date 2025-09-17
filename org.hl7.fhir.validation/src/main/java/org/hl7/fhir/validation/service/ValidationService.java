@@ -142,7 +142,7 @@ public class ValidationService {
   public ValidationResponse validateSources(ValidationRequest request) throws Exception {
 
     TimeTracker timeTracker = new TimeTracker();
-    //FIXME Conditionally switch here if ValidationEngineSettings is present
+
     final String sessionId;
     if (request.getValidationEngineSettings() != null) {
       sessionId = initializeValidator(request.getValidationEngineSettings(), request.getValidationContext(), null, timeTracker, request.sessionId);
@@ -156,14 +156,15 @@ public class ValidationService {
        sense to rebuild a whole engine to change the language, so we manually change it here.
      */
     //FIXME move these to ValidationEngineSettings and after that, an inheritable LocalizationOptions
-    validationEngine.setLanguage(request.getValidationContext().getLang());
-    validationEngine.setLocale(request.getValidationContext().getLocale());
-    if (request.getValidationContext().getProfiles().size() > 0) {
-      log.info("  .. validate " + request.listSourceFiles() + " against " + request.getValidationContext().getProfiles().toString());
-    } else {
-      log.info("  .. validate " + request.listSourceFiles());
+    if (request.getValidationContext() != null) {
+      validationEngine.setLanguage(request.getValidationContext().getLang());
+      validationEngine.setLocale(request.getValidationContext().getLocale());
+      if (request.getValidationContext().getProfiles().size() > 0) {
+        log.info("  .. validate " + request.listSourceFiles() + " against " + request.getValidationContext().getProfiles().toString());
+      } else {
+        log.info("  .. validate " + request.listSourceFiles());
+      }
     }
-
     ValidationResponse response = new ValidationResponse().setSessionId(sessionId).setValidationTimes(new HashMap<>());
 
     for (FileInfo fileToValidate : request.getFilesToValidate()) {
@@ -185,7 +186,9 @@ public class ValidationService {
           response.addOutcome(outcome);
       } else {
         ValidatedFragments validatedFragments = validationEngine.validateAsFragments(fileToValidate.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fileToValidate.getFileType()),
-          request.getValidationContext().getProfiles(), messages);
+          //FIXME Replace with ValidationInstanceSettings
+          request.getValidationContext() != null ? request.getValidationContext().getProfiles() : List.of(),
+          messages);
 
         List<ValidationOutcome> validationOutcomes = getValidationOutcomesFromValidatedFragments(fileToValidate, validatedFragments);
         for (ValidationOutcome validationOutcome : validationOutcomes) {
@@ -243,15 +246,18 @@ public class ValidationService {
   }
 
   public VersionSourceInformation scanForVersions(ValidationContext validationContext) throws IOException {
+    return scanForVersions(validationContext.getIgs(), validationContext.isRecursive(), validationContext.getSources());
+  }
+  protected VersionSourceInformation scanForVersions(List<String> igs, boolean isRecursive, List<String> sources) throws IOException {
     VersionSourceInformation versions = new VersionSourceInformation();
     IgLoader igLoader = new IgLoader(
       new FilesystemPackageCacheManager.Builder().build(),
       new SimpleWorkerContext.SimpleWorkerContextBuilder().fromNothing(),
       null);
-    for (String src : validationContext.getIgs()) {
-      igLoader.scanForIgVersion(src, validationContext.isRecursive(), versions);
+    for (String src : igs) {
+      igLoader.scanForIgVersion(src, isRecursive, versions);
     }
-    igLoader.scanForVersions(validationContext.getSources(), versions);
+    igLoader.scanForVersions(sources, versions);
     return versions;
   }
 
@@ -544,6 +550,8 @@ public class ValidationService {
   protected static ValidationEngineSettings getValidationEngineSettings(ValidationContext validationContext) {
     return new ValidationEngineSettings()
       .setBaseEngine(validationContext.getBaseEngine())
+      .setSv(validationContext.getSv())
+      .setTargetVer(validationContext.getTargetVer())
       .setDoNative(validationContext.getCanDoNative())
       .setAssumeValidRestReferences(validationContext.isAssumeValidRestReferences())
       .setHintAboutNonMustSupport(validationContext.isHintAboutNonMustSupport())
@@ -551,6 +559,19 @@ public class ValidationService {
       .setNoExtensibleBindingMessages(validationContext.isNoExtensibleBindingMessages());
   }
 
+  /**
+   * This method is maintained for backward compatibility, and allows the FHIR definitions string to be explicitly set.
+   * It is strongly advised to use the
+   * {@link ValidationService#initializeValidator(ValidationEngineSettings, ValidationContext, TimeTracker)} method, which sets this
+   * automatically based on the FHIR version information included in the ValidationContext.
+   *
+   * @see ValidationService#initializeValidator(ValidationEngineSettings, ValidationContext, TimeTracker)
+   *
+   * @param definitions explicit FHIR definitions to be used.
+   * @return a sessionId associated with an appropriate ValidationEngine
+   *
+   * @deprecated This method is based on {@link ValidationContext}, which will eventually be replaced.
+   */
   @Deprecated
   //DO NOT REMOVE YET. Here for reverse compatibility
   public ValidationEngine initializeValidator(ValidationContext validationContext, String definitions, TimeTracker tt) throws Exception {
@@ -558,10 +579,23 @@ public class ValidationService {
     return sessionCache.fetchSessionValidatorEngine(initializeValidator(validationEngineSettings, validationContext, definitions, tt, null));
   }
 
+  //TODO Remove ValidationContext
   public ValidationEngine initializeValidator(ValidationEngineSettings validationEngineSettings, ValidationContext validationContext, TimeTracker tt) throws Exception {
     return sessionCache.fetchSessionValidatorEngine(initializeValidator(validationEngineSettings, validationContext, null, tt, null));
   }
 
+  /**
+   * Check if there is an entry in the session cache for the passed sessionId and return the key for that session if it
+   * exists. If no entry exists, one will be created from the passed validationContext with a new key, which will be
+   * returned.
+   *
+   * @param validationContext a ValidationContext to be used to generate a ValidationEngine
+   * @param timeTracker an existing TimeTracker to associate with a newly generated ValidationEngine
+   * @param sessionId a key used to look for existing ValidationEngine instances in the cache
+   * @return a sessionId associated with an appropriate ValidationEngine
+   *
+   * @deprecated This method is based on {@link ValidationContext}, which will eventually be replaced.
+   */
   //DO NOT REMOVE YET. Used in ValidationService to translate a validation request without ValidationEngineSettings
   public String initializeValidator(ValidationContext validationContext, String definitions, TimeTracker timeTracker, String sessionId) throws Exception {
     ValidationEngineSettings validationEngineSettings = getValidationEngineSettings(validationContext);
@@ -589,12 +623,11 @@ public class ValidationService {
 
   }
 
-
   //TODO remove ValidationContext
   private ValidationEngine getValidationEngineFromValidationContext(ValidationEngineSettings validationEngineSettings, ValidationContext validationContext, String definitions, TimeTracker timeTracker) throws Exception {
-    if (validationContext.getSv() == null) {
-      final String sv = determineVersion(validationContext);
-      validationContext.setSv(sv);
+    if (validationEngineSettings.getSv() == null) {
+      final String sv = determineVersion(validationEngineSettings);
+      validationEngineSettings.setSv(sv);
     }
 
     ValidationEngine validationEngine;
@@ -761,11 +794,20 @@ public class ValidationService {
    */
   @Deprecated(forRemoval = true)
   public String determineVersion(ValidationContext validationContext) throws IOException {
-    if (validationContext.getMode() != EngineMode.INSTALL) {
+    return determineVersion(validationContext.getMode(), validationContext.getIgs(), validationContext.isRecursive(), validationContext.getSources());
+  }
+
+  //FIXME pass along validationEngineSettings
+  private String determineVersion(ValidationEngineSettings validationEngineSettings) {
+    return "5.0";
+  }
+
+  private String determineVersion(EngineMode engineMode, List<String> igs, boolean isRecursive, List<String> sources) throws IOException {
+    if (engineMode != EngineMode.INSTALL) {
       return "5.0";
     };
     log.info("Scanning for versions (no -version parameter):");
-    VersionSourceInformation versions = scanForVersions(validationContext);
+    VersionSourceInformation versions = scanForVersions(igs, isRecursive, sources);
     for (String reportEntry : versions.getReport()) {
       if (!reportEntry.equals("(nothing found)")) {
         log.info("  " + reportEntry);
@@ -921,26 +963,26 @@ public class ValidationService {
     log.info("Installed/Processed "+cp+" packages, generated "+cs+" snapshots");
   }
 
-  private void processIG(ValidationEngine validator, String ig) throws FHIRException, IOException {
-    validator.loadPackage(ig, null);
-    NpmPackage npm = validator.getPcm().loadPackage(ig);
+  private void processIG(ValidationEngine validationEngine, String ig) throws FHIRException, IOException {
+    validationEngine.loadPackage(ig, null);
+    NpmPackage npm = validationEngine.getPcm().loadPackage(ig);
     if (!npm.isCore()) {
       for (String d : npm.dependencies()) {
-        processIG(validator, d);
+        processIG(validationEngine, d);
       }
       log.info("Processing "+ig);
       cp++;
       for (String d : npm.listResources("StructureDefinition")) {
         String filename = npm.getFilePath(d);
-        Resource res = validator.loadResource(FileUtilities.fileToBytes(filename), filename);
+        Resource res = validationEngine.loadResource(FileUtilities.fileToBytes(filename), filename);
         if (!(res instanceof StructureDefinition))
           throw new FHIRException("Require a StructureDefinition for generating a snapshot");
         StructureDefinition sd = (StructureDefinition) res;
         if (!sd.hasSnapshot()) {
-          StructureDefinition base = validator.getContext().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+          StructureDefinition base = validationEngine.getContext().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
           cs++;
-          new ProfileUtilities(validator.getContext(), new ArrayList<ValidationMessage>(), null).setAutoFixSliceNames(true).generateSnapshot(base, sd, sd.getUrl(), null, sd.getName());
-          validator.handleOutput(sd, filename, validator.getVersion());
+          new ProfileUtilities(validationEngine.getContext(), new ArrayList<ValidationMessage>(), null).setAutoFixSliceNames(true).generateSnapshot(base, sd, sd.getUrl(), null, sd.getName());
+          validationEngine.handleOutput(sd, filename, validationEngine.getVersion());
         }
       }
     }
