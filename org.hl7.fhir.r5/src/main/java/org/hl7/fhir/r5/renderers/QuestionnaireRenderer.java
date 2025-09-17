@@ -37,11 +37,9 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 @MarkedToMoveToAdjunctPackage
 public class QuestionnaireRenderer extends TerminologyRenderer {
-  private PackageInformation pi = null;
 
-  public QuestionnaireRenderer(RenderingContext context, PackageInformation pi) { 
+  public QuestionnaireRenderer(RenderingContext context) { 
     super(context);
-    this.pi = pi;
   } 
 
   @Override
@@ -943,9 +941,10 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     x.para().tx(context.formatPhrase(RenderingContext.QUEST_TRY)); 
     XhtmlNode ul = x.ul();
     String canonical = q.primitiveValue("url");
-    if (canonical != null) {
+    PackageInformation pi = context.getPackageInformation();
+    if (canonical != null && pi!=null) {
       String qUrl = Utilities.URLEncode(canonical);
-      ul.li().ah("https://lhncbc.github.io/questionnaire-viewer/?lfv=latest&qCanonical=" +canonical + "&pID=" + pi.getId() + "&pVersion=" + pi.getVersion()).tx(context.formatPhrase(RenderingContext.QUEST_NLM));
+      ul.li().ah("https://lhncbc.github.io/questionnaire-viewer/?lfv=latest&s=default&qCanonical=" +canonical + "&pID=" + pi.getId() + "&pVersion=" + pi.getVersion()).tx(context.formatPhrase(RenderingContext.QUEST_NLM));
     }
   } 
 
