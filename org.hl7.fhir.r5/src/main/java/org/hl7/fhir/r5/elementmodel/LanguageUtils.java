@@ -68,10 +68,6 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 @MarkedToMoveToAdjunctPackage
 @Slf4j
 public class LanguageUtils {
-
-  public static final int NARRATIVE_NONE = 0;
-  public static final int NARRATIVE_ROOT = 1;
-  public static final int NARRATIVE_CHILD = 2;
   
   public static final List<String> TRANSLATION_SUPPLEMENT_RESOURCE_TYPES = Arrays.asList("CodeSystem", "StructureDefinition", "Questionnaire");
 
@@ -824,23 +820,6 @@ public class LanguageUtils {
       changed = true;
     }
     return changed;
-  }
-
-  public int narrativeForLangStatus(DomainResource r, String lang, String defaultLang) {
-    if (!r.hasText() || !r.getText().hasDiv())
-      return NARRATIVE_NONE;
-    else
-      return narrativeForLangStatus(r.getText().getDiv(), lang, defaultLang, r.getLanguage());
-  }
-  
-  public int narrativeForLangStatus(XhtmlNode xhtml, String lang, String resourceLang, String defaultLang) {
-    XhtmlNode div = divForLang(xhtml, lang, resourceLang, defaultLang, null);
-    if (div == null)
-      return NARRATIVE_NONE;
-    else if (div.equals(xhtml))
-      return NARRATIVE_ROOT;
-    else
-      return NARRATIVE_CHILD;
   }
   
   public XhtmlNode divForLang(DomainResource r, String lang, String defaultLang, List<ValidationMessage> errors) {
