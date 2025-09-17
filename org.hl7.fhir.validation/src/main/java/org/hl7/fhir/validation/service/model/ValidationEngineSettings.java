@@ -3,6 +3,7 @@ package org.hl7.fhir.validation.service.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 
 import java.util.Objects;
 
@@ -27,6 +28,46 @@ public class ValidationEngineSettings {
   @JsonProperty("baseEngine")
   public ValidationEngineSettings setBaseEngine(String baseEngine) {
     this.baseEngine = baseEngine;
+    return this;
+  }
+
+  @JsonProperty("sv")
+  @SerializedName("sv")
+  private
+  String sv = null;
+
+  @SerializedName("sv")
+  @JsonProperty("sv")
+  public String getSv() {
+    return sv;
+  }
+
+  @SerializedName("sv")
+  @JsonProperty("sv")
+  public ValidationEngineSettings setSv(String sv) {
+    if (sv != null && (sv.startsWith("R") || sv.startsWith("r"))) {
+      this.sv = VersionUtilities.versionFromCode(sv.toLowerCase());
+    } else {
+      this.sv = sv;
+    }
+    return this;
+  }
+
+  @JsonProperty("targetVer")
+  @SerializedName("targetVer")
+  private
+  String targetVer = null;
+
+  @SerializedName("targetVer")
+  @JsonProperty("targetVer")
+  public String getTargetVer() {
+    return targetVer;
+  }
+
+  @SerializedName("targetVer")
+  @JsonProperty("targetVer")
+  public ValidationEngineSettings setTargetVer(String targetVer) {
+    this.targetVer = targetVer;
     return this;
   }
 
@@ -128,7 +169,9 @@ public class ValidationEngineSettings {
       && hintAboutNonMustSupport == that.hintAboutNonMustSupport
       && assumeValidRestReferences == that.assumeValidRestReferences
       && snomedCT.equals(that.snomedCT)
-      && noExtensibleBindingMessages == that.noExtensibleBindingMessages;
+      && noExtensibleBindingMessages == that.noExtensibleBindingMessages
+      && sv.equals(that.sv)
+      && targetVer.equals(that.targetVer);
   }
 
   @Override
@@ -139,7 +182,9 @@ public class ValidationEngineSettings {
       hintAboutNonMustSupport,
       assumeValidRestReferences,
       snomedCT,
-      noExtensibleBindingMessages);
+      noExtensibleBindingMessages,
+      sv,
+      targetVer);
   }
 
   @Override
@@ -151,6 +196,8 @@ public class ValidationEngineSettings {
       ", assumeValidRestReferences=" + assumeValidRestReferences +
       ", snomedCT=" + snomedCT +
       ", noExtensibleBindingMessages=" + noExtensibleBindingMessages +
+      ", sv=" + sv +
+      ", targetVer=" + targetVer +
       "}";
   }
 }
