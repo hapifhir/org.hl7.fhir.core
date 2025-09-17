@@ -33,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * ValidationEngine instantiation, InstanceValidator instantiation, etc. It will be maintained for backwards
  * compatibility, but will eventually be removed.
  */
-@Deprecated
+@Deprecated(since="2025-09-17")
 public class ValidationContext {
 
   //NOT A COMMAND LINE OPTION
@@ -193,7 +193,7 @@ public class ValidationContext {
   @SerializedName("snomedCT")
   private
   String snomedCT = "900000000000207008";
-  
+
   // Moved to ValidationEngineSettings
   @JsonProperty("targetVer")
   @SerializedName("targetVer")
@@ -211,19 +211,19 @@ public class ValidationContext {
   @JsonProperty("extensions")
   @SerializedName("extensions")
   private
-  List<String> extensions = new ArrayList<String>();
+  List<String> extensions = new ArrayList<>();
   @JsonProperty("certSources")
   @SerializedName("certSources")
   private
-  List<String> certSources = new ArrayList<String>();
+  List<String> certSources = new ArrayList<>();
   @JsonProperty("matchetypes")
   @SerializedName("matchetypes")
   private
-  List<String> matchetypes = new ArrayList<String>();
+  List<String> matchetypes = new ArrayList<>();
   @JsonProperty("igs")
   @SerializedName("igs")
   private
-  List<String> igs = new ArrayList<String>();
+  List<String> igs = new ArrayList<>();
   @JsonProperty("questionnaire")
   @SerializedName("questionnaire")
   private
@@ -235,24 +235,24 @@ public class ValidationContext {
   @JsonProperty("options")
   @SerializedName("options")
   private
-  List<String> options = new ArrayList<String>();
+  List<String> options = new ArrayList<>();
 
   @JsonProperty("profiles")
   @SerializedName("profiles")
   private
-  List<String> profiles = new ArrayList<String>();
+  List<String> profiles = new ArrayList<>();
   @JsonProperty("sources")
   @SerializedName("sources")
   private
-  List<String> sources = new ArrayList<String>();
+  List<String> sources = new ArrayList<>();
   @JsonProperty("inputs")
   @SerializedName("inputs")
   private
-  List<String> inputs = new ArrayList<String>();
+  List<String> inputs = new ArrayList<>();
   @JsonProperty("modeParams")
   @SerializedName("modeParams")
   private
-  Set<String> modeParams = new HashSet<String>();
+  Set<String> modeParams = new HashSet<>();
 
   @JsonProperty("mode")
   @SerializedName("mode")
@@ -312,7 +312,7 @@ public class ValidationContext {
   @JsonProperty("locations")
   @SerializedName("locations")
   private
-  Map<String, String> locations = new HashMap<String, String>();
+  Map<String, String> locations = new HashMap<>();
 
   @JsonProperty("outputStyle")
   @SerializedName("outputStyle")
