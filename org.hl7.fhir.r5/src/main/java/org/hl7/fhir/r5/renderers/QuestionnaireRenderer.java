@@ -944,7 +944,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     PackageInformation pi = context.getPackageInformation();
     if (canonical != null && pi!=null) {
       String qUrl = Utilities.URLEncode(canonical);
-      ul.li().ah("https://lhncbc.github.io/questionnaire-viewer/?lfv=latest&s=default&qCanonical=" +canonical + "&pID=" + pi.getId() + "&pVersion=" + pi.getVersion()).tx(context.formatPhrase(RenderingContext.QUEST_NLM));
+      ul.li().ah("http://hl7.me/lhcformviewer/?lfv=latest&s=default&qCanonical=" +canonical + "&pID=" + pi.getId() + "&pVersion=" + pi.getVersion()).tx(context.formatPhrase(RenderingContext.QUEST_NLM));
     }
   } 
 
