@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -156,6 +158,32 @@ public class ValidationEngineSettings {
   @JsonProperty("noExtensibleBindingMessages")
   public ValidationEngineSettings setNoExtensibleBindingMessages(boolean noExtensibleBindingMessages) {
     this.noExtensibleBindingMessages = noExtensibleBindingMessages;
+    return this;
+  }
+
+  @JsonProperty("igs")
+  @SerializedName("igs")
+  private
+  List<String> igs = new ArrayList<>();
+
+  @SerializedName("igs")
+  @JsonProperty("igs")
+  public List<String> getIgs() {
+    return igs;
+  }
+
+  @SerializedName("igs")
+  @JsonProperty("igs")
+  public ValidationEngineSettings setIgs(List<String> igs) {
+    this.igs = igs;
+    return this;
+  }
+
+  public ValidationEngineSettings addIg(String ig) {
+    if (this.igs == null) {
+      this.igs = new ArrayList<>();
+    }
+    this.igs.add(ig);
     return this;
   }
 
