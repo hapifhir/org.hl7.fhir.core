@@ -501,6 +501,7 @@ public class I18nConstants {
   public static final String MULTIPLE_LOGICAL_MODELS = "MULTIPLE_LOGICAL_MODELS";
   public static final String MUSTSUPPORT_VAL_MUSTSUPPORT = "MustSupport_VAL_MustSupport";
   public static final String NAMED_ITEMS_ARE_OUT_OF_ORDER_IN_THE_SLICE = "Named_items_are_out_of_order_in_the_slice";
+  public static final String NARRATIVE_NOT_TRANSLATED = "NARRATIVE_NOT_TRANSLATED";
   public static final String NDJSON_EMPTY_LINE_WARNING = "NDJSON_EMPTY_LINE_WARNING";
   public static final String NEEDS_A_SNAPSHOT = "needs_a_snapshot";
   public static final String NODE_TYPE__IS_NOT_ALLOWED = "Node_type__is_not_allowed";
