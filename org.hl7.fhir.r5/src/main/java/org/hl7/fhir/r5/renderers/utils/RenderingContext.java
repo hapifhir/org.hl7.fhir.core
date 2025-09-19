@@ -27,6 +27,7 @@ import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
@@ -344,18 +345,21 @@ public class RenderingContext extends RenderingI18nContext {
   private KeyIssuer crossLinkKeyGen;
   private int randomTracker;
   private boolean testing;
+  private PackageInformation pi;
   
   /**
    * 
    * @param workerContext - access to all related resources that might be needed
+   * @param pi - package information needed for certain Questionnaire rendering views
    * @param markdown - appropriate markdown processing engine 
    * @param terminologyServiceOptions - options to use when looking up codes
    * @param specLink - path to FHIR specification
    * @param locale - i18n for rendering
    */
-  public RenderingContext(IWorkerContext workerContext, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String localPrefix, Locale locale, ResourceRendererMode mode, GenerationRules rules) {
+  public RenderingContext(IWorkerContext workerContext, PackageInformation pi, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String localPrefix, Locale locale, ResourceRendererMode mode, GenerationRules rules) {
     super();
     this.worker = workerContext;
+    this.pi = pi;
     this.markdown = markdown;
     this.setLocale(locale);
     this.links.put(KnownLinkType.SPEC, specLink);
@@ -368,9 +372,13 @@ public class RenderingContext extends RenderingI18nContext {
     }
     crossLinkKeyGen = new KeyIssuer("xn");
   }
+
+  public RenderingContext(IWorkerContext workerContext, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String localPrefix, Locale locale, ResourceRendererMode mode, GenerationRules rules) {
+    this(workerContext, null, markdown, terminologyServiceOptions, specLink, localPrefix, locale, mode, rules);
+  }
   
   public RenderingContext copy(boolean copyAnchors) {
-    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, getLink(KnownLinkType.SPEC, false), localPrefix, getLocale(), mode, rules);
+    RenderingContext res = new RenderingContext(worker, pi, markdown, terminologyServiceOptions, getLink(KnownLinkType.SPEC, false), localPrefix, getLocale(), mode, rules);
 
     res.resolver = resolver;
     res.templateProvider = templateProvider;
@@ -445,7 +453,9 @@ public class RenderingContext extends RenderingI18nContext {
     return worker;
   }
 
-
+  public PackageInformation getPackageInformation() {
+    return pi;
+  }
   
   // -- 2. Markdown support -------------------------------------------------------
 
