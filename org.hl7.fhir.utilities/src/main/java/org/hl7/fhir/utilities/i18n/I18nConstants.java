@@ -501,6 +501,7 @@ public class I18nConstants {
   public static final String MULTIPLE_LOGICAL_MODELS = "MULTIPLE_LOGICAL_MODELS";
   public static final String MUSTSUPPORT_VAL_MUSTSUPPORT = "MustSupport_VAL_MustSupport";
   public static final String NAMED_ITEMS_ARE_OUT_OF_ORDER_IN_THE_SLICE = "Named_items_are_out_of_order_in_the_slice";
+  public static final String NARRATIVE_NOT_TRANSLATED = "NARRATIVE_NOT_TRANSLATED";
   public static final String NDJSON_EMPTY_LINE_WARNING = "NDJSON_EMPTY_LINE_WARNING";
   public static final String NEEDS_A_SNAPSHOT = "needs_a_snapshot";
   public static final String NODE_TYPE__IS_NOT_ALLOWED = "Node_type__is_not_allowed";
@@ -833,9 +834,6 @@ public class I18nConstants {
   public static final String SM_TARGET_TYPE_UNKNOWN = "SM_TARGET_TYPE_UNKNOWN";
   public static final String SNAPSHOT_EXISTING_PROBLEM = "SNAPSHOT_EXISTING_PROBLEM";
   public static final String SNAPSHOT_IS_EMPTY = "SNAPSHOT_IS_EMPTY";
-  public static final String STATUS_CODE_HINT = "STATUS_CODE_HINT";
-  public static final String STATUS_CODE_HINT_CODE = "STATUS_CODE_HINT_CODE";
-  public static final String STATUS_CODE_WARNING = "STATUS_CODE_WARNING";
   public static final String STATUS_CODE_WARNING_CODE = "STATUS_CODE_WARNING_CODE";
   public static final String STRUCTUREDEFINITION__AT__ILLEGAL_CONSTRAINED_TYPE__FROM__IN_ = "StructureDefinition__at__illegal_constrained_type__from__in_";
   public static final String TERMINOLOGY_PASSTHROUGH_TX_MESSAGE = "Terminology_PassThrough_TX_Message";
@@ -844,7 +842,6 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_BINDING_MISSING2 = "Terminology_TX_Binding_Missing2";
   public static final String TERMINOLOGY_TX_BINDING_NOSERVER = "Terminology_TX_Binding_NoServer";
   public static final String TERMINOLOGY_TX_BINDING_NOSOURCE = "Terminology_TX_Binding_NoSource";
-  public static final String TERMINOLOGY_TX_BINDING_NOSOURCE2 = "Terminology_TX_Binding_NoSource2";
   public static final String TERMINOLOGY_TX_CODE_VALUESET = "Terminology_TX_Code_ValueSet";
   public static final String TERMINOLOGY_TX_CODE_VALUESETMAX = "Terminology_TX_Code_ValueSetMax";
   public static final String TERMINOLOGY_TX_CODE_VALUESET_EXT = "Terminology_TX_Code_ValueSet_Ext";
@@ -1207,6 +1204,10 @@ public class I18nConstants {
   public static final String VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2 = "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2";
   public static final String VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_3 = "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_3";
   public static final String VALUESET_INC_TOO_MANY_CODES = "VALUESET_INC_TOO_MANY_CODES";
+  public static final String VALUESET_INC_NOT_VALIDATING = "VALUESET_INC_NOT_VALIDATING";
+  public static final String VALUESET_INC_NO_SERVER = "VALUESET_INC_NO_SERVER";
+  public static final String VALUESET_INC_NO_BATCH_ON_SERVER = "VALUESET_INC_NO_BATCH_ON_SERVER";
+  public static final String VALUESET_INC_CS_NO_SUPPORT = "VALUESET_INC_CS_NO_SUPPORT";
   public static final String VALUESET_NO_SYSTEM_WARNING = "VALUESET_NO_SYSTEM_WARNING";
   public static final String VALUESET_PARAMETER_MISSING_BINDING_PARAMETER = "VALUESET_PARAMETER_MISSING_BINDING_PARAMETER";
   public static final String VALUESET_PARAMETER_NAME_WARNING = "VALUESET_PARAMETER_NAME_WARNING";
@@ -1439,4 +1440,9 @@ public class I18nConstants {
   public static final String NO_CODE_PROVIDED = "NO_CODE_PROVIDED";
   public static final String NO_CODE_PROVIDED_VERSION = "NO_CODE_PROVIDED_VERSION";
   public static final String RESOURCE_INTERNAL_USE_ONLY = "RESOURCE_INTERNAL_USE_ONLY";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_SID_INCORRECT = "TYPE_SPECIFIC_CHECKS_DT_SID_INCORRECT";
+  public static final String INACTIVE_DISPLAY_FOUND = "INACTIVE_DISPLAY_FOUND";
+  public static final String INACTIVE_CONCEPT_FOUND = "INACTIVE_CONCEPT_FOUND";
+  public static final String CONCEPT_DEPRECATED_IN_VALUESET = "CONCEPT_DEPRECATED_IN_VALUESET";
+  public static final String EXTENSION_EXT_VERSION_NOTALLOWED = "EXTENSION_EXT_VERSION_NOTALLOWED";
 }

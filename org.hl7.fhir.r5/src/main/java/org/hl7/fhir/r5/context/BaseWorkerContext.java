@@ -48,8 +48,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import javax.annotation.Nonnull;
 
@@ -288,7 +290,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  private Object lock = new Object(); // used as a lock for the data that follows
+  private final Object lock = new Object(); // used as a lock for the data that follows
   protected String version; // although the internal resources are all R5, the version of FHIR they describe may not be 
 
   private boolean minimalMemory = false;
@@ -327,6 +329,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   protected Map<String, Map<String, ValidationResult>> validationCache = new HashMap<String, Map<String,ValidationResult>>();
   protected String name;
+  @Setter
+  @Getter
   private boolean allowLoadingDuplicates;
 
   private final Set<String> codeSystemsUsed = new HashSet<>();
@@ -336,7 +340,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private int expandCodesLimit = 1000;
   protected org.hl7.fhir.r5.context.ILoggingService logger = new Slf4JLoggingService(log);
   protected final TerminologyClientManager terminologyClientManager = new TerminologyClientManager(new TerminologyClientR5.TerminologyClientR5Factory(), UUID.randomUUID().toString(), logger);
-  protected Parameters expParameters;
+  protected AtomicReference<Parameters> expansionParameters = new AtomicReference<>(null);
   private Map<String, PackageInformation> packages = new HashMap<>();
 
   @Getter
@@ -419,7 +423,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         txCache = other.txCache; // no copy. for now?
       expandCodesLimit = other.expandCodesLimit;
       logger = other.logger;
-      expParameters = other.expParameters != null ? other.expParameters.copy() : null;
+      expansionParameters = other.expansionParameters != null ? new AtomicReference<>(other.copyExpansionParametersWithUserData()) : null;
       version = other.version;
       supportedCodeSystems.putAll(other.supportedCodeSystems);
       unsupportedCodeSystems.addAll(other.unsupportedCodeSystems);
@@ -1011,30 +1015,29 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean heirarchical) {
-    if (expParameters == null)
+    if (expansionParameters.get() == null)
       throw new Error(formatMessage(I18nConstants.NO_EXPANSION_PARAMETERS_PROVIDED));
-    Parameters p = expParameters.copy(); 
-    return expandVS(vs, cacheOk, heirarchical, false, p);
+    return expandVS(vs, cacheOk, heirarchical, false, getExpansionParameters());
   }
 
   @Override
   public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean heirarchical, int count) {
-    if (expParameters == null)
+    if (expansionParameters.get() == null)
       throw new Error(formatMessage(I18nConstants.NO_EXPANSION_PARAMETERS_PROVIDED));
-    Parameters p = expParameters.copy(); 
+    Parameters p = getExpansionParameters();
     p.addParameter("count", count);
     return expandVS(vs, cacheOk, heirarchical, false, p);
   }
 
   @Override
   public ValueSetExpansionOutcome expandVS(String url, boolean cacheOk, boolean hierarchical, int count) {
-    if (expParameters == null)
+    if (expansionParameters.get() == null)
       throw new Error(formatMessage(I18nConstants.NO_EXPANSION_PARAMETERS_PROVIDED));
     if (noTerminologyServer) {
       return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE, null, false);
     }
 
-    Parameters p = expParameters.copy(); 
+    Parameters p = getExpansionParameters();
     p.addParameter("count", count);
     p.addParameter("url", new UriType(url));
     p.setParameter("_limit",new IntegerType("10000"));
@@ -1081,10 +1084,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean heirarchical, boolean incompleteOk) {
-    if (expParameters == null)
+    if (expansionParameters.get() == null)
       throw new Error(formatMessage(I18nConstants.NO_EXPANSION_PARAMETERS_PROVIDED));
-    Parameters p = expParameters.copy(); 
-    return expandVS(vs, cacheOk, heirarchical, incompleteOk, p);
+
+    return expandVS(vs, cacheOk, heirarchical, incompleteOk, getExpansionParameters());
   }
 
   public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean hierarchical, boolean incompleteOk, Parameters pIn)  {
@@ -1241,7 +1244,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     // 2nd pass: What can we do internally 
     // 3rd pass: hit the server
     for (CodingValidationRequest t : codes) {
-      t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs, expParameters) : null);
+      t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs, getExpansionParameters()) : null);
       if (t.getCoding().hasSystem()) {
         codeSystemsUsed.add(t.getCoding().getSystem());
       }
@@ -1279,7 +1282,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     
-    if (expParameters == null)
+    if (expansionParameters.get() == null)
       throw new Error(formatMessage(I18nConstants.NO_EXPANSIONPROFILE_PROVIDED));
     // for those that that failed, we try to validate on the server
     Parameters batch = new Parameters();
@@ -1465,7 +1468,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       codeSystemsUsed.add(code.getSystem());
     }
 
-    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateValidationToken(options, code, vs, expParameters) : null;
+    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateValidationToken(options, code, vs, getExpansionParameters()) : null;
     ValidationResult res = null;
     if (cachingAllowed && txCache != null) {
       res = txCache.getValidation(cacheToken);
@@ -1601,7 +1604,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return null;
     }
 
-    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateSubsumesToken(options, parent, child, expParameters) : null;
+    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateSubsumesToken(options, parent, child, getExpansionParameters()) : null;
     if (cachingAllowed && txCache != null) {
       Boolean res = txCache.getSubsumes(cacheToken);
       if (res != null) {
@@ -1663,15 +1666,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   protected ValueSetValidator constructValueSetCheckerSimple(ValidationOptions options,  ValueSet vs,  ValidationContextCarrier ctxt) {
-    return new ValueSetValidator(this, new TerminologyOperationContext(this, options, "validation"), options, vs, ctxt, expParameters, terminologyClientManager, registry);
+    return new ValueSetValidator(this, new TerminologyOperationContext(this, options, "validation"), options, vs, ctxt, getExpansionParameters(), terminologyClientManager, registry);
   }
 
   protected ValueSetValidator constructValueSetCheckerSimple( ValidationOptions options,  ValueSet vs) {
-    return new ValueSetValidator(this, new TerminologyOperationContext(this, options, "validation"), options, vs, expParameters, terminologyClientManager, registry);
+    return new ValueSetValidator(this, new TerminologyOperationContext(this, options, "validation"), options, vs, getExpansionParameters(), terminologyClientManager, registry);
   }
 
   protected Parameters constructParameters(ITerminologyOperationDetails opCtxt, TerminologyClientContext tcd, ValueSet vs, boolean hierarchical) {
-    Parameters p = expParameters.copy();
+    Parameters p = getExpansionParameters();
     p.setParameter("includeDefinition", false);
     p.setParameter("excludeNested", !hierarchical);
 
@@ -1707,7 +1710,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     } else {      
       pIn.addParameter().setName("coding").setValue(codingValidationRequest.getCoding());
     }
-    pIn.addParameters(expParameters);
+    pIn.addParameters(getExpansionParameters());
     return pIn;
   }
 
@@ -1734,7 +1737,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public ValidationResult validateCode(ValidationOptions options, CodeableConcept code, ValueSet vs) {
-    CacheToken cacheToken = txCache.generateValidationToken(options, code, vs, expParameters);
+    CacheToken cacheToken = txCache.generateValidationToken(options, code, vs, getExpansionParameters());
     ValidationResult res = null;
     if (cachingAllowed) {
       res = txCache.getValidation(cacheToken);
@@ -1962,11 +1965,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         throw new Error(formatMessage(I18nConstants.CAN_ONLY_SPECIFY_PROFILE_IN_THE_CONTEXT));
       }
     }
-    if (expParameters == null) {
+    if (expansionParameters.get() == null) {
       throw new Error(formatMessage(I18nConstants.NO_EXPANSIONPROFILE_PROVIDED));
     }
     String defLang = null;
-    for (ParametersParameterComponent pp : expParameters.getParameter()) {
+    for (ParametersParameterComponent pp : expansionParameters.get().getParameter()) {
       if ("defaultDisplayLanguage".equals(pp.getName())) {
         defLang = pp.getValue().primitiveValue();
       } else if (!pin.hasParameter(pp.getName())) {
@@ -2272,13 +2275,21 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     getTxClientManager().setLogger(logger);
   }
 
+  /**
+   * Returns a copy of the expansion parameters used by this context. Note that because the return value is a copy, any
+   * changes done to it will not be reflected in the context and any changes to the context will likewise not be
+   * reflected in the return value after it is returned. If you need to change the expansion parameters, use
+   * {@link #setExpansionParameters(Parameters)}.
+   *
+   * @return a copy of the expansion parameters
+   */
   public Parameters getExpansionParameters() {
-    return expParameters;
+    return expansionParameters.get().copy();
   }
 
-  public void setExpansionParameters(Parameters expParameters) {
-    this.expParameters = expParameters;
-    this.terminologyClientManager.setExpansionParameters(expParameters);
+  public void setExpansionParameters(Parameters expansionParameters) {
+    this.expansionParameters.set(expansionParameters);
+    this.terminologyClientManager.setExpansionParameters(expansionParameters);
   }
 
   @Override
@@ -2312,14 +2323,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Set<String> res = new HashSet<String>();
     res.addAll(getResourceNames());
     return res;
-  }
-
-  public boolean isAllowLoadingDuplicates() {
-    return allowLoadingDuplicates;
-  }
-
-  public void setAllowLoadingDuplicates(boolean allowLoadingDuplicates) {
-    this.allowLoadingDuplicates = allowLoadingDuplicates;
   }
 
   @Override
@@ -3129,11 +3132,27 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     return m;
   }
-  
+
   public List<StructureDefinition> listStructures() {
     List<StructureDefinition> m = new ArrayList<StructureDefinition>();
     synchronized (lock) {
-      structures.listAll(m);    
+      structures.listAll(m);
+    }
+    return m;
+  }
+
+  public List<ValueSet> listValueSets() {
+    List<ValueSet> m = new ArrayList<ValueSet>();
+    synchronized (lock) {
+      valueSets.listAll(m);
+    }
+    return m;
+  }
+
+  public List<CodeSystem> listCodeSystems() {
+    List<CodeSystem> m = new ArrayList<CodeSystem>();
+    synchronized (lock) {
+      codeSystems.listAll(m);
     }
     return m;
   }
@@ -3360,6 +3379,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (!hasResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Base")) {
       cacheResource(ProfileUtilities.makeBaseDefinition(version));
     }
+    new CoreVersionPinner(this).pinCoreVersions(listCodeSystems(), listValueSets(), listStructures());
     if(genSnapshots) {
       for (StructureDefinition sd : listStructures()) {
         try {
@@ -3764,34 +3784,85 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     return res;
   }
-  
+
   public void setLocale(Locale locale) {
     super.setLocale(locale);
-    if (locale != null) {
-      String lt = locale.toLanguageTag();
-      if ("und".equals(lt)) {
-        throw new FHIRException("The locale "+locale.toString()+" is not valid");
-      }
-      if (expParameters != null) {
-        for (ParametersParameterComponent p : expParameters.getParameter()) {
-          if ("displayLanguage".equals(p.getName())) {
-            if (p.hasUserData(UserDataNames.auto_added_parameter)) {
-              p.setValue(new CodeType(lt));
-              return;
-            } else {
-              // user supplied, we leave it alone
-              return ;
-            }
-          }
+    if (locale == null) {
+      return;
+    }
+    final String languageTag = locale.toLanguageTag();
+    if ("und".equals(languageTag)) {
+      throw new FHIRException("The locale " + locale.toString() + " is not valid");
+    }
+
+    if (expansionParameters.get() == null) {
+      return;
+    }
+
+    /*
+    If displayLanguage is an existing parameter, we check to see if it was added automatically or explicitly set by
+    the user
+
+      * If it was added automatically, we update it to the new locale
+      * If it was set by the user, we do not update it.
+
+    In both cases, we are done.
+    */
+
+    Parameters newExpansionParameters = copyExpansionParametersWithUserData();
+
+    int displayLanguageCount = 0;
+    for (ParametersParameterComponent expParameter : newExpansionParameters.getParameter()) {
+      if ("displayLanguage".equals(expParameter.getName())) {
+        if (expParameter.hasUserData(UserDataNames.auto_added_parameter)) {
+          expParameter.setValue(new CodeType(languageTag));
         }
-        ParametersParameterComponent p = expParameters.addParameter();
-        p.setName("defaultDisplayLanguage");
-        p.setValue(new CodeType(lt));
-        p.setUserData(UserDataNames.auto_added_parameter, true);
+        displayLanguageCount++;
       }
     }
+    if (displayLanguageCount > 1) {
+      throw new FHIRException("Multiple displayLanguage parameters found");
+    }
+    if (displayLanguageCount == 1) {
+      this.expansionParameters.set(newExpansionParameters);
+      return;
+    }
+
+    // There is no displayLanguage parameter so we are free to add a "defaultDisplayLanguage" instead.
+
+    int defaultDisplayLanguageCount = 0;
+    for (ParametersParameterComponent expansionParameter : newExpansionParameters.getParameter()) {
+      if ("defaultDisplayLanguage".equals(expansionParameter.getName())) {
+        expansionParameter.setValue(new CodeType(languageTag));
+        expansionParameter.setUserData(UserDataNames.auto_added_parameter, true);
+        defaultDisplayLanguageCount++;
+      }
+    }
+    if (defaultDisplayLanguageCount > 1) {
+      throw new FHIRException("Multiple defaultDisplayLanguage parameters found");
+    }
+    if (defaultDisplayLanguageCount == 0) {
+      ParametersParameterComponent p = newExpansionParameters.addParameter();
+      p.setName("defaultDisplayLanguage");
+      p.setValue(new CodeType(languageTag));
+      p.setUserData(UserDataNames.auto_added_parameter, true);
+    }
+    this.expansionParameters.set(newExpansionParameters);
   }
-  
+
+  private Parameters copyExpansionParametersWithUserData() {
+    Parameters newExpansionParameters = new Parameters();
+    // Copy all existing parameters include userData (not usually included in copyies)
+    if (this.expansionParameters.get() != null && this.expansionParameters.get().hasParameter()) {
+      for (ParametersParameterComponent expParameter : this.expansionParameters.get().getParameter()) {
+        ParametersParameterComponent copy = newExpansionParameters.addParameter();
+        expParameter.copyValues(copy);
+        copy.copyUserData(expParameter);
+      }
+    }
+    return newExpansionParameters;
+  }
+
   @Override
   public OperationOutcome validateTxResource(ValidationOptions options, Resource resource) {
     if (resource instanceof ValueSet) {

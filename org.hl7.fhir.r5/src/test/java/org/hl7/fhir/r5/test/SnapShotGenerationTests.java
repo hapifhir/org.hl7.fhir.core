@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import javax.xml.crypto.dsig.SignatureMethod;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -47,8 +46,9 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerFactory;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
@@ -593,7 +593,7 @@ public class SnapShotGenerationTests {
       NpmPackage npm = new FilesystemPackageCacheManager.Builder().build().loadPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER);
       testContext.loadFromPackage(npm, new TestPackageLoader(Utilities.stringSet("StructureDefinition")));
     }
-    pu.setXver(new XVerExtensionManager(testContext));
+    pu.setXver(XVerExtensionManagerFactory.createExtensionManager(testContext));
     if (test.isSort()) {
       List<String> errors = new ArrayList<String>();
       int lastCount = output.getDifferential().getElement().size();
@@ -665,7 +665,7 @@ public class SnapShotGenerationTests {
       Assertions.assertTrue(structureDefinitionEquality, "Output for "+test.id+" does not match expected");
     }
     if (ml.size() > 0) {
-      throw new FHIRException("Snapshot Generation failed: " + ml.toString());
+      throw new FHIRException("Snapshot Generation failed for "+test.getSource().getUrl()+": " + ml.toString());
     }
     output.setText(txt);
   }

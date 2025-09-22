@@ -31,6 +31,7 @@ import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerNew;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.FileUtilities;
@@ -51,7 +52,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Slf4j
-public class IgLoader implements IValidationEngineLoader {
+public class IgLoader implements IValidationEngineLoader, XVerExtensionManagerNew.IXverManagerPackageLoader {
 
   /**
    * This is used in testing to allow tests to deal with unreleased packages 
@@ -515,6 +516,8 @@ public class IgLoader implements IValidationEngineLoader {
     }
     if (version == null) {
       version = getPackageCacheManager().getLatestVersion(id, false);
+    } else if (VersionUtilities.isSemVerWithWildcards(version)) {
+      version = getPackageCacheManager().getLatestVersion(id, version);
     }
     if (version == null) {
       pi = getPackageCacheManager().loadPackageFromCacheOnly(id);
@@ -802,7 +805,7 @@ public class IgLoader implements IValidationEngineLoader {
       if (isDebug() || ((e.getMessage() != null && e.getMessage().contains("cannot be cast")))) {
        log.debug(e.getMessage(), e);
       }
-      log.error(e.getMessage(), e);
+      // no need to see this unless debugging? log.error(e.getMessage(), e);
     }
     return r;
   }
@@ -879,4 +882,30 @@ public class IgLoader implements IValidationEngineLoader {
     Resource res = loadResourceByVersion(version, cnt.getFocus().getBytes(), cnt.getExampleFileName());
     context.cacheResource(res);
   }
+
+
+  @Override
+  public void loadPackage(String idAndVer) throws IOException {
+    NpmPackage npm = packageCacheManager.loadPackage(idAndVer);
+    if (npm == null) {
+      throw new FHIRException("Unable to load package " + idAndVer);
+    }
+    for (String s : npm.dependencies()) {
+      if (!getContext().getLoadedPackages().contains(s)) {
+//        if (!VersionUtilities.isCorePackage(s)) {
+//          loadIg(igs, binaries, s, false);
+//        }
+      }
+    }
+    StringBuilder packageLoadLine = new StringBuilder();
+    packageLoadLine.append("  Load " + idAndVer);
+    if (!idAndVer.contains("#")) {
+      packageLoadLine.append("#" + npm.version());
+    }
+    IContextResourceLoader loader = ValidatorUtils.loaderForVersion(npm.fhirVersion());
+    loader.setPatchUrls(VersionUtilities.isCorePackage(npm.id()));
+    int count = getContext().loadFromPackage(npm, loader);
+    log.info(packageLoadLine + " - " + count + " resources (" + getContext().clock().milestone() + ")");
+  }
+
 }

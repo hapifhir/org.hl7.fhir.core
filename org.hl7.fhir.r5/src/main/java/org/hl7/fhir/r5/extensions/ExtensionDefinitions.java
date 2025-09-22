@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.extensions;
 
+import java.util.List;
+
 public class ExtensionDefinitions {
 
   public static final String EXT_ISSUE_MSG_ID = "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id";
@@ -214,4 +216,6 @@ public class ExtensionDefinitions {
   public static final String EXT_CSDECLARED_PROFILE = "http://hl7.org/fhir/StructureDefinition/capabilitystatement-declared-profile"; // CapabilityStatement Declared Profile
   public static final String EXT_CSSEARCH_PARAMETER_COMBINATION = "http://hl7.org/fhir/StructureDefinition/capabilitystatement-search-parameter-combination"; // CapabilityStatement Search Parameter Combination
   public static final String EXT_TYPE_OPERATION = "http://hl7.org/fhir/tools/StructureDefinition/type-operation";
+  public static final String EXT_VALUESET_DEPRECATED = "http://hl7.org/fhir/StructureDefinition/valueset-deprecated";
+  public static final String EXT_SCORE = "http://hl7.org/fhir/tools/StructureDefinition/scoring-rule";
 }

@@ -109,7 +109,6 @@ public class ComparisonRenderer implements IHostApplicationServices {
   }
 
   private void processList(List<String> list, StringBuilder b, String name) throws IOException {
-    // TODO Auto-generated method stub
     boolean first = true;
     for (String id : list) {
       ResourceComparison comp = session.getCompares().get(id);

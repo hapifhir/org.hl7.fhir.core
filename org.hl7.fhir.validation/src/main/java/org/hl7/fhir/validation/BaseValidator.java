@@ -71,14 +71,15 @@ import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.terminologies.ImplicitValueSets;
 import org.hl7.fhir.r5.utils.UserDataNames;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
-import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.IValidationContextResourceLoader;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerFactory;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -208,7 +209,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     }
     this.xverManager = xverManager;
     if (this.xverManager == null) {
-      this.xverManager = new XVerExtensionManager(context);
+      this.xverManager = XVerExtensionManagerFactory.createExtensionManager(context);
     }
     this.settings = settings;
     policyAdvisor = new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID);
@@ -706,7 +707,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     IssueSeverity severity = IssueSeverity.fromCode(issue.getSeverity().toCode());
     ValidationMessage validationMessage = new ValidationMessage(Source.TerminologyEngine, code, line, col, path, issue.getDetails().getText(), severity).setTxLink(txLink);
     if (issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_SERVER) != null) {
-      validationMessage.setServer(issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_SERVER).replace("local.fhir.org", "tx-dev.fhir.org"));
+      validationMessage.setServer(issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_SERVER).replace("http://local.fhir.org", "https://tx-dev.fhir.org"));
     }
     if (issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_ID) != null) {
       validationMessage.setMessageId(issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_ID));
@@ -1483,7 +1484,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
   
   public StructureDefinition xverDefn(String url) {
-    return xverManager.makeDefinition(url);
+    return xverManager.getDefinition(url);
   }
   
   public String xverVersion(String url) {
@@ -1506,6 +1507,9 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
         case Invalid:
           rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, profile.getId(), false, I18nConstants.EXTENSION_EXT_VERSION_NOCHANGE, url, xverElementId(url));
           return null;
+        case NotAllowed:
+          rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, profile.getId(), false, I18nConstants.EXTENSION_EXT_VERSION_NOTALLOWED, url, xverElementId(url));
+          return null;
         case Valid:
           StructureDefinition defn = xverDefn(url);
           new ContextUtilities(context).generateSnapshot(defn);
@@ -1520,17 +1524,24 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     }
   }
   
-  public StructureDefinition getXverExt(List<ValidationMessage> errors, String path, Element element, String url) {
+  public StructureDefinition getXverExt(List<ValidationMessage> errors, String path, Element element, String url, BooleanHolder errored) {
     if (isXverUrl(url)) {
       switch (xverStatus(url)) {
       case BadVersion:
         rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_INVALID, url, xverVersion(url));
+        errored.set(true);
         break;
       case Unknown:
         rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_INVALIDID, url, xverElementId(url));
+        errored.set(true);
         break;
       case Invalid:
         rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_NOCHANGE, url, xverElementId(url));
+        errored.set(true);
+        break;
+      case NotAllowed:
+        rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_NOTALLOWED, url, xverElementId(url));
+        errored.set(true);
         break;
       case Valid:
         StructureDefinition ex = xverDefn(url);
@@ -1539,6 +1550,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
         return ex;
       default:
         rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_INTERNAL, url);
+        errored.set(true);
         break;
       }
     }
@@ -1765,5 +1777,11 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   public ValidatorSettings getSettings() {
     return settings;
   }
+
+  // testing only, and transient
+  public void setXverManager(XVerExtensionManager value) {
+    xverManager = value;
+  }
+
 
 }

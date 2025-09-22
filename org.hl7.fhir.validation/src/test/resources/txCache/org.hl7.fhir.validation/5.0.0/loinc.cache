@@ -17,8 +17,8 @@ v: {
   "display" : "Specular microscopy panel",
   "code" : "100066-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -43,11 +43,11 @@ v: {
   "display" : "Specular microscopy panel",
   "code" : "100066-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "The provided code 'http://loinc.org#100066-0' was not found in the value set 'http://hl7.org/fhir/test/StructureDefinition/additional-bindings-vs1--0|1.0.0'",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -57,7 +57,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r5"
+      "valueUrl" : "http://local.fhir.org/r5"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -94,8 +94,8 @@ v: {
   "display" : "Blood pressure panel with all children optional",
   "code" : "85354-9",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -121,8 +121,8 @@ v: {
   "display" : "Systolic blood pressure",
   "code" : "8480-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -148,8 +148,8 @@ v: {
   "display" : "Diastolic blood pressure",
   "code" : "8462-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -174,8 +174,8 @@ v: {
   "display" : "Blood pressure panel with all children optional",
   "code" : "85354-9",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -200,8 +200,8 @@ v: {
   "display" : "Systolic blood pressure",
   "code" : "8480-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -226,8 +226,8 @@ v: {
   "display" : "Diastolic blood pressure",
   "code" : "8462-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -236,7 +236,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "code" : "56445-0",
   "display" : "Medication summary Doc"
 }, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
@@ -254,8 +254,8 @@ v: {
   "display" : "Medication summary Document",
   "code" : "56445-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -280,8 +280,8 @@ v: {
   "display" : "Medication summary Document",
   "code" : "56445-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -290,7 +290,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "code" : "48765-2",
   "display" : "Allergies and adverse reactions"
 }, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
@@ -308,11 +308,11 @@ v: {
   "display" : "Allergies and adverse reactions Document",
   "code" : "48765-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Wrong Display Name 'Allergies and adverse reactions' for http://loinc.org#48765-2. Valid display is one of 3 choices: 'Allergies and adverse reactions Document' (en-US), 'Allergies and adverse reactions Document' (en-US) or 'Allergies &or adverse reactions Doc' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -322,7 +322,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r5"
+      "valueUrl" : "http://local.fhir.org/r5"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -360,8 +360,8 @@ v: {
   "display" : "Medication summary Document",
   "code" : "56445-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -386,8 +386,8 @@ v: {
   "display" : "Medication summary Document",
   "code" : "56445-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -414,11 +414,11 @@ v: {
   "display" : "Allergies and adverse reactions Document",
   "code" : "48765-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Wrong Display Name 'Allergies and adverse reactions' for http://loinc.org#48765-2. Valid display is one of 3 choices: 'Allergies and adverse reactions Document' (en-US), 'Allergies and adverse reactions Document' (en-US) or 'Allergies &or adverse reactions Doc' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -428,7 +428,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r5"
+      "valueUrl" : "http://local.fhir.org/r5"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -464,8 +464,8 @@ v: {
   "display" : "Addendum Document",
   "code" : "55107-7",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -490,8 +490,8 @@ v: {
   "display" : "Addendum Document",
   "code" : "55107-7",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -513,11 +513,11 @@ v: {
   }]
 }}####
 v: {
-  "display" : "History of Immunization Narrative",
+  "display" : "History of Immunization note",
   "code" : "11369-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -543,11 +543,11 @@ v: {
   "display" : "Inhaled oxygen flow rate",
   "code" : "3151-8",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Wrong Display Name 'Ingeademde zuurstof [volume/tijd] in geïnhaleerd gas' for http://loinc.org#3151-8. Valid display is one of 4 choices: 'Inhaled oxygen flow rate' (en-US), 'Inhaled oxygen flow rate' (en-US), 'Inhaled O2 flow rate' (en-US) or 'Inhaled oxygen' (en-US) (for the language(s) 'en')",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -557,7 +557,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r5"
+      "valueUrl" : "http://local.fhir.org/r5"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -594,8 +594,8 @@ v: {
   "display" : "Ingeademde zuurstof [volume/tijd] in geïnhaleerd gas",
   "code" : "3151-8",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -621,8 +621,8 @@ v: {
   "display" : "EKG study",
   "code" : "11524-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -647,8 +647,8 @@ v: {
   "display" : "Heart rate",
   "code" : "8867-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -673,8 +673,8 @@ v: {
   "display" : "Heart rate",
   "code" : "8867-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -700,11 +700,11 @@ v: {
   "display" : "Cholesterol [Mass or Moles/volume] in Serum or Plasma",
   "code" : "35200-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Wrong Display Name 'Cholesterol [Moles/​volume] in Serum or Plasma' for http://loinc.org#35200-5. Valid display is one of 4 choices: 'Cholesterol [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Cholesterol [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Cholest SerPl-msCnc' (en-US) or 'Cholesterol, Blood' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -714,7 +714,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r5"
+      "valueUrl" : "http://local.fhir.org/r5"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -751,8 +751,8 @@ v: {
   "display" : "Cholesterol in LDL [Mass/volume] in Serum or Plasma by calculation",
   "code" : "13457-7",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -778,8 +778,8 @@ v: {
   "display" : "Body weight",
   "code" : "29463-7",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -804,8 +804,8 @@ v: {
   "display" : "Body weight",
   "code" : "29463-7",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -831,8 +831,8 @@ v: {
   "display" : "Cholesterol [Mass or Moles/volume] in Serum or Plasma",
   "code" : "35200-5",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -858,11 +858,11 @@ v: {
   "display" : "Triglyceride [Mass or Moles/volume] in Serum or Plasma",
   "code" : "35217-9",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Wrong Display Name 'Triglyceride [Moles/​volume] in Serum or Plasma' for http://loinc.org#35217-9. Valid display is one of 4 choices: 'Triglyceride [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Triglyceride [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Trigl SerPl-msCnc' (en-US) or 'Triglyceride, Blood' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -872,7 +872,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r5"
+      "valueUrl" : "http://local.fhir.org/r5"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -908,8 +908,8 @@ v: {
   "display" : "Medication administration list [Identifier] Episode Pharmacy",
   "code" : "104207-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -934,8 +934,8 @@ v: {
   "display" : "Medication administration list [Identifier] Episode Pharmacy",
   "code" : "104207-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
-  "server" : "https://tx-dev.fhir.org/r5",
+  "version" : "2.81",
+  "server" : "http://local.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -960,7 +960,7 @@ v: {
   "code" : "LP43571-6",
   "system" : "http://loinc.org",
   "severity" : "error",
-  "error" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.80'",
+  "error" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.81'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
   "unknown-systems" : "",
@@ -982,7 +982,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.80'"
+      "text" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.81'"
     },
     "location" : ["Coding.code"],
     "expression" : ["Coding.code"]
@@ -1010,7 +1010,7 @@ v: {
   "display" : "Body weight",
   "code" : "29463-7",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "unknown-systems" : "",
   "issues" : {
@@ -1038,7 +1038,7 @@ v: {
   "display" : "Body weight Measured",
   "code" : "3141-9",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "unknown-systems" : "",
   "issues" : {
@@ -1065,7 +1065,7 @@ v: {
   "display" : "Body weight",
   "code" : "29463-7",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "unknown-systems" : "",
   "issues" : {
@@ -1092,7 +1092,7 @@ v: {
   "display" : "Body weight Measured",
   "code" : "3141-9",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "The provided code 'http://loinc.org#3141-9' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0|5.0.0'",
   "class" : "UNKNOWN",
@@ -1144,7 +1144,7 @@ v: {
   "display" : "Good color all over",
   "code" : "LA6724-4",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "unknown-systems" : "",
   "issues" : {
@@ -1172,7 +1172,7 @@ v: {
   "display" : "At least 100 beats per minute",
   "code" : "LA6718-6",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "unknown-systems" : "",
   "issues" : {
@@ -1200,7 +1200,7 @@ v: {
   "display" : "Grimace and pulling away, cough, or sneeze during suctioning",
   "code" : "LA6721-0",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "unknown-systems" : "",
   "issues" : {
@@ -1228,7 +1228,7 @@ v: {
   "display" : "Active motion",
   "code" : "LA6715-2",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Wrong whitespace in Display Name 'Active motion ' for http://loinc.org#LA6715-2. Valid display is 'Active motion' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
@@ -1280,7 +1280,7 @@ v: {
   "display" : "Good, strong cry; normal rate and effort of breathing",
   "code" : "LA6727-7",
   "system" : "http://loinc.org",
-  "version" : "2.80",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Wrong whitespace in Display Name 'Good, strong cry; normal rate and effort of breathing    ' for http://loinc.org#LA6727-7. Valid display is 'Good, strong cry; normal rate and effort of breathing' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",

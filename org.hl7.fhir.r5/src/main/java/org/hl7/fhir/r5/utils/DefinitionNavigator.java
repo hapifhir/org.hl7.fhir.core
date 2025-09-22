@@ -205,7 +205,7 @@ public class DefinitionNavigator {
             DefinitionNavigator master = nameMap.get(path);
             ElementDefinition cm = master.current();
             // Skip missing slicing error for extensions: they are implicitly sliced by url
-            if (!cm.hasSlicing()) {
+            if (!diff && !cm.hasSlicing()) {
               String cmPath = cm.getPath();
               boolean isExtension = cmPath.endsWith(".extension")
                                  || cmPath.endsWith(".modifierExtension");

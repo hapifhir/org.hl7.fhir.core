@@ -144,14 +144,22 @@ msgstr "O recurso {1} não correspondia ao perfil {2} porque: {3}"
 
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT
-msgid "Can''t find ''{1}'' in the bundle ({2}). Note that there is a resource in the bundle with the same type and id, but it does not match because of the fullUrl based rules around matching relative references (must be ``{3}``)"
-msgid_plural "Can''t find ''{1}'' in the bundle ({2}). Note that there are {0} resources in the bundle with the same type and id, but they do not match because of the fullUrl based rules around matching relative references (one of ``{3}``)"
+msgid "Can''t find ''{1}'' in the bundle ({2}). Note that there is a resource in the bundle with the same type and id, but it does not match because of the fullUrl based rules around matching relative references (must be ''{3}'', but found ''{4}'')"
+msgid_plural "Can''t find ''{1}'' in the bundle ({2}). Note that there are {0} resources in the bundle with the same type and id, but they do not match because of the fullUrl based rules around matching relative references (must be ''{3}'', but found these: {4})"
+msgstr[0] ""
+msgstr[1] ""
+
+# BUNDLE_BUNDLE_ENTRY_NOTFOUND_CANNOT
+#: BUNDLE_BUNDLE_ENTRY_NOTFOUND_CANNOT
+msgid "Can''t find ''{1}'' in the bundle ({2}). Note that there is a resource in the bundle with the same type and id, but it does not match because of the fullUrl based rules around matching relative references. Found ''{3}'', but it doesn''t match because of the source fullUrl ''{4}''"
+msgid_plural "Can''t find ''{1}'' in the bundle ({2}). Note that there are {0} resources in the bundle with the same type and id, but they do not match because of the fullUrl based rules around matching relative references. Found ''{3}'', but none of them match because of the source fullUrl ''{4}''"
 msgstr[0] ""
 msgstr[1] ""
 
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
 #, fuzzymsgctxt "BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT"
+msgctxt "BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT"
 msgid "Can''t find ''{0}'' in the bundle ({1})"
 msgstr "Não é possível encontrar ''{0}'' no pacote ({1})"
 
@@ -182,8 +190,8 @@ msgstr "A entrada {0} corresponde à referência {1} por tipo e id, mas não cor
 # BUNDLE_BUNDLE_POSSIBLE_MATCH_WRONG_FU
 #: BUNDLE_BUNDLE_POSSIBLE_MATCH_WRONG_FU
 #, fuzzy
-msgid "Entry {0} matches the reference {1} by type and id but it''s fullUrl {2} does not match the full target URL {3} by Bundle resolution rules"
-msgstr "A entrada {0} corresponde à referência {1} por tipo e id, mas o seu URL completo {2} não corresponde ao URL de destino completo {3} pelas regras de resolução de pacotes"
+msgid "Entry {0} matches the reference {1} by type and id but its fullUrl {2} does not match the full target URL {3} by Bundle resolution rules"
+msgstr "!!A entrada {0} corresponde à referência {1} por tipo e id, mas o seu URL completo {2} não corresponde ao URL de destino completo {3} pelas regras de resolução de pacotes"
 
 # BUNDLE_ENTRY_URL_ABSOLUTE
 #: BUNDLE_ENTRY_URL_ABSOLUTE
@@ -339,6 +347,16 @@ msgstr ""
 msgid "Error parsing the targetFormat ''{0}'': {1}"
 msgstr ""
 
+# BUNDLE_SIGNATURE_CERT_DETAILS
+#: BUNDLE_SIGNATURE_CERT_DETAILS
+msgid "Signing Certificate Details: Subject=''{0}'', Issuer=''{1}'', Serial=''{2}''"
+msgstr ""
+
+# BUNDLE_SIGNATURE_CERT_SOURCE
+#: BUNDLE_SIGNATURE_CERT_SOURCE
+msgid "Signing Certificate Source: {0}"
+msgstr ""
+
 # BUNDLE_SIGNATURE_CHECKED_DATA_B64
 #: BUNDLE_SIGNATURE_CHECKED_DATA_B64
 msgid "The signature data is not valid base64 content, but it looks like native application/jose, so it will be checked anyway"
@@ -456,6 +474,11 @@ msgstr ""
 msgid "Error parsing the digital signature header: {0}"
 msgstr ""
 
+# BUNDLE_SIGNATURE_HEADER_SIG_TIME_WRONG_FORMAT
+#: BUNDLE_SIGNATURE_HEADER_SIG_TIME_WRONG_FORMAT
+msgid "The sigT header has the wrong format: {0}"
+msgstr ""
+
 # BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH
 #: BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH
 msgid "The time in the signature {0} is not the same as the stated time {1}"
@@ -546,6 +569,16 @@ msgstr ""
 # BUNDLE_SIGNATURE_SIGNED_BY_VERIFIED
 #: BUNDLE_SIGNATURE_SIGNED_BY_VERIFIED
 msgid "The content was signed by {0} (and this has been verified by the signature)"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIGNED_FOR
+#: BUNDLE_SIGNATURE_SIGNED_FOR
+msgid "The content claims that it was signed for the purpose of {1} ({0}), but this has not been verified"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIGNED_FOR_VERIFIED
+#: BUNDLE_SIGNATURE_SIGNED_FOR_VERIFIED
+msgid "The content was signed for the purpose of {1} ({0}) (and this has been verified by the signature)"
 msgstr ""
 
 # BUNDLE_SIGNATURE_SIG_DIGEST_MISMATCH
@@ -694,6 +727,7 @@ msgstr "Não foi encontrado nenhum perfil para o recurso {0} do tipo ''{1}''"
 # Bundle_BUNDLE_Entry_NotFound
 #: Bundle_BUNDLE_Entry_NotFound
 #, fuzzymsgctxt "Bundle_BUNDLE_Entry_NotFound"
+msgctxt "Bundle_BUNDLE_Entry_NotFound"
 msgid "Can''t find ''{0}'' in the bundle ({1})"
 msgstr "Não é possível encontrar ''{0}'' no pacote ({1})"
 
@@ -1328,6 +1362,11 @@ msgstr "A referência deve ser a um ValueSet, mas em vez disso encontrou um {0}"
 msgid "The concept map has too many codes to validate ({0})"
 msgstr "O mapa concetual tem demasiados códigos para validar ({0})"
 
+# CONCEPT_DEPRECATED_IN_VALUESET
+#: CONCEPT_DEPRECATED_IN_VALUESET
+msgid "The presence of the concept ''{1}'' in the system ''{0}'' in the value set {3} is marked with a status of {2} and its use should be reviewed"
+msgstr ""
+
 # CONTAINED_ORPHAN_DOM3
 #: CONTAINED_ORPHAN_DOM3
 #, fuzzy
@@ -1604,14 +1643,19 @@ msgstr "A extensão {0} especifica um contexto de {1} mas o validador não conse
 # EXTENSION_EXTM_CONTEXT_WRONG_XVER
 #: EXTENSION_EXTM_CONTEXT_WRONG_XVER
 #, fuzzy
-msgid "The modifier extension {0} from FHIR version {3} is not allowed to be used at this point (allowed = {1}; this element is [{2}; this is a warning since contexts may be renamed between FHIR versions)"
-msgstr "A extensão do modificador {0} da versão {3} do FHIR não pode ser utilizada neste momento (permitido = {1}; este elemento é [{2}; trata-se de um aviso, uma vez que os contextos podem ser renomeados entre versões FHIR)"
+msgid "The modifier extension {0} from FHIR version {3} is not allowed to be used at this point (this element is {2}; allowed for this version = {1}; this is a warning since contexts may be renamed between FHIR versions)"
+msgstr "!!A extensão do modificador {0} da versão {3} do FHIR não pode ser utilizada neste momento (permitido = {1}; este elemento é [{2}; trata-se de um aviso, uma vez que os contextos podem ser renomeados entre versões FHIR)"
 
 # EXTENSION_EXTP_CONTEXT_WRONG_XVER
 #: EXTENSION_EXTP_CONTEXT_WRONG_XVER
 #, fuzzy
-msgid "The extension {0} from FHIR version {3} is not allowed to be used at this point (allowed = {1}; this element is [{2}; this is a warning since contexts may be renamed between FHIR versions)"
-msgstr "A extensão {0} da versão {3} do FHIR não pode ser utilizada neste momento (allowed = {1}; este elemento é [{2}; trata-se de um aviso, uma vez que os contextos podem ser renomeados entre versões FHIR)"
+msgid "The extension {0} from FHIR version {3} is not allowed to be used at this point (this element is {2}; allowed for this version = {1}; this is a warning since contexts may be renamed between FHIR versions)"
+msgstr "!!A extensão {0} da versão {3} do FHIR não pode ser utilizada neste momento (allowed = {1}; este elemento é [{2}; trata-se de um aviso, uma vez que os contextos podem ser renomeados entre versões FHIR)"
+
+# EXTENSION_EXT_VERSION_NOTALLOWED
+#: EXTENSION_EXT_VERSION_NOTALLOWED
+msgid "Extension url ''{0}'' is not allowed (Element id ''{1}'' is valid, so check other defined extensions)"
+msgstr ""
 
 # EXTENSION_FHIR_VERSION_EARLIEST
 #: EXTENSION_FHIR_VERSION_EARLIEST
@@ -1784,26 +1828,28 @@ msgstr "Não é possível validar o código ''{0}'' no sistema ''{1}'' porque o 
 # Extension_EXTM_Context_Wrong
 #: Extension_EXTM_Context_Wrong
 #, fuzzy
-msgid "The modifier extension {0} is not allowed to be used at this point (allowed = {1}; this element is {2})"
-msgstr "A extensão do modificador {0} não pode ser utilizada neste momento (allowed = {1}; este elemento é {2})"
+msgid "The modifier extension {0} is not allowed to be used at this point (this element is {2}; allowed = {1})"
+msgstr "!!A extensão do modificador {0} não pode ser utilizada neste momento (allowed = {1}; este elemento é {2})"
 
 # Extension_EXTM_Context_Wrong_VER
 #: Extension_EXTM_Context_Wrong_VER
 #, fuzzy
-msgid "The modifier extension {0} is not allowed to be used at this point (allowed for this version = {1}; this element is {2})"
-msgstr "A extensão do modificador {0} não pode ser utilizada neste momento (permitido para esta versão = {1}; este elemento é {2})"
+msgid "The modifier extension {0} is not allowed to be used at this point (this element is {2}; allowed for this version = {1})"
+msgstr "!!A extensão do modificador {0} não pode ser utilizada neste momento (permitido para esta versão = {1}; este elemento é {2})"
 
 # Extension_EXTP_Context_Wrong
 #: Extension_EXTP_Context_Wrong
 #, fuzzy
-msgid "The extension {0} is not allowed to be used at this point (allowed = {1}; this element is {2})"
-msgstr "A extensão {0} não pode ser utilizada neste momento (allowed = {1}; este elemento é {2})"
+msgctxt "Extension_EXTP_Context_Wrong"
+msgid "The extension {0} is not allowed to be used at this point (this element is {2}; allowed for this version = {1})"
+msgstr "!!A extensão {0} não pode ser utilizada neste momento (allowed = {1}; este elemento é {2})"
 
 # Extension_EXTP_Context_Wrong_VER
 #: Extension_EXTP_Context_Wrong_VER
 #, fuzzy
-msgid "The extension {0} is not allowed to be used at this point (allowed for this version = {1}; this element is {2})"
-msgstr "A extensão {0} não pode ser utilizada neste momento (permitido para esta versão = {1}; este elemento é {2})"
+msgctxt "Extension_EXTP_Context_Wrong_VER"
+msgid "The extension {0} is not allowed to be used at this point (this element is {2}; allowed for this version = {1})"
+msgstr "!!A extensão {0} não pode ser utilizada neste momento (permitido para esta versão = {1}; este elemento é {2})"
 
 # Extension_EXT_Count_Mismatch
 #: Extension_EXT_Count_Mismatch
@@ -1970,8 +2016,8 @@ msgstr "Erro ao avaliar a expressão FHIRPath: Não é possível comparar valore
 # FHIRPATH_CHECK_FAILED
 #: FHIRPATH_CHECK_FAILED
 #, fuzzy
-msgid "Error evaluating FHIRPath expression: The check {0} failed"
-msgstr "Erro ao avaliar a expressão FHIRPath: A verificação {0} falhou"
+msgid "Error evaluating FHIRPath expression: Check failed with message ''{0}''"
+msgstr "!!Erro ao avaliar a expressão FHIRPath: A verificação {0} falhou"
 
 # FHIRPATH_CHOICE_NO_TYPE_SPECIFIER
 #: FHIRPATH_CHOICE_NO_TYPE_SPECIFIER
@@ -2060,7 +2106,7 @@ msgstr "Não foi possível resolver o discriminador ''{0}'' em ''{2}'' encontrad
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES"
-msgid "-- no content: do not translate #76 --"
+msgid "-- no content: do not translate #82 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} type profiles"
 msgstr[0] ""
 msgstr[1] ""
@@ -2068,7 +2114,7 @@ msgstr[1] ""
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES"
-msgid "-- no content: do not translate #77 --"
+msgid "-- no content: do not translate #83 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} types"
 msgstr[0] ""
 msgstr[1] ""
@@ -2094,7 +2140,7 @@ msgstr "Utilização inválida de ofType() no discriminador - Type não tem cód
 # FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES"
-msgid "-- no content: do not translate #78 --"
+msgid "-- no content: do not translate #84 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] ""
@@ -2120,8 +2166,8 @@ msgstr "Utilização inválida de ofType() no discriminador - nenhum tipo no ele
 # FHIRPATH_FOCUS
 #: FHIRPATH_FOCUS
 msgctxt "FHIRPATH_FOCUS"
-msgid "-- no content: do not translate #79 --"
-msgid_plural "Error evaluating FHIRPath expression: focus for {0} can only have one value, but has {0} values"
+msgid "-- no content: do not translate #85 --"
+msgid_plural "Error evaluating FHIRPath expression: focus for {1} can only have one value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -2140,8 +2186,8 @@ msgstr "O tipo {0} não é válido"
 # FHIRPATH_LEFT_VALUE
 #: FHIRPATH_LEFT_VALUE
 msgctxt "FHIRPATH_LEFT_VALUE"
-msgid "-- no content: do not translate #80 --"
-msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values"
+msgid "-- no content: do not translate #86 --"
+msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values ({2})"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -2223,6 +2269,14 @@ msgstr "Erro ao avaliar a expressão FHIRPath {0}: o operando esquerdo e o direi
 msgid "Error evaluating FHIRPath expression: The function {0} can only be used on ordered collections"
 msgstr "Erro ao avaliar a expressão FHIRPath: A função {0} só pode ser utilizada em colecções ordenadas"
 
+# FHIRPATH_PARAMETER_CARD
+#: FHIRPATH_PARAMETER_CARD
+msgctxt "FHIRPATH_PARAMETER_CARD"
+msgid "-- no content: do not translate #87 --"
+msgid_plural "Error evaluating FHIRPath expression: parameter {1} can only have one value, but has {0} values"
+msgstr[0] ""
+msgstr[1] ""
+
 # FHIRPATH_PARAM_WRONG
 #: FHIRPATH_PARAM_WRONG
 #, fuzzy
@@ -2256,7 +2310,7 @@ msgstr "Problema com a utilização de resolve() - o perfil {0} em {1} não pôd
 # FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 #: FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 msgctxt "FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET"
-msgid "-- no content: do not translate #81 --"
+msgid "-- no content: do not translate #88 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] ""
@@ -2264,7 +2318,7 @@ msgstr[1] ""
 # FHIRPATH_RIGHT_VALUE
 #: FHIRPATH_RIGHT_VALUE
 msgctxt "FHIRPATH_RIGHT_VALUE"
-msgid "-- no content: do not translate #82 --"
+msgid "-- no content: do not translate #89 --"
 msgid_plural "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
@@ -2296,8 +2350,8 @@ msgstr "Não é possível avaliar como um booleano: {0}"
 # FHIRPATH_UNKNOWN_CONSTANT
 #: FHIRPATH_UNKNOWN_CONSTANT
 #, fuzzy
-msgid "Error evaluating FHIRPath expression: Invalid FHIR Constant {0}"
-msgstr "Erro ao avaliar a expressão FHIRPath: Constante FHIR inválida {0}"
+msgid "Error evaluating FHIRPath expression: Invalid FHIRPath Constant {0}"
+msgstr "!!Erro ao avaliar a expressão FHIRPath: Constante FHIR inválida {0}"
 
 # FHIRPATH_UNKNOWN_CONTEXT
 #: FHIRPATH_UNKNOWN_CONTEXT
@@ -2337,7 +2391,7 @@ msgstr "Erro ao avaliar a expressão FHIRPath: O tipo de parâmetro {2} não é 
 
 # FILTER_NOT_UNDERSTOOD
 #: FILTER_NOT_UNDERSTOOD
-msgid "The filter \\\"{0} {1} {2}\\\" from the value set {3} was not understood in the context of {4}"
+msgid "The filter \"{0} {1} {2}\" from the value set {3} was not understood in the context of {4}"
 msgstr ""
 
 # Fixed_Type_Checks_DT_Address_Line
@@ -2385,8 +2439,8 @@ msgstr "LOINC"
 # HTA_LOINC_MESSAGE
 #: HTA_LOINC_MESSAGE
 #, fuzzy
-msgid "This material contains content from <a href=\\\"http://loinc.org\\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\\"http://loinc.org/license\\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
-msgstr "!!Este material contém conteúdo do <a href=\\\"http://loinc.org\\\">LOINC</a>. LOINC é copyright &copy; 1995-2020, Regenstrief Institute, Inc. e o Logical Observation Identifiers Names and Codes (LOINC) Committee e está disponível sem custo sob a <a href=\\\"http://loinc.org/license\\\">licença</a>. LOINC&reg; é uma marca registada dos Estados Unidos da América do Regenstrief Institute, Inc."
+msgid "This material contains content from <a href=\\"http://loinc.org\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\"http://loinc.org/license\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
+msgstr "!!!!Este material contém conteúdo do <a href=\\\"http://loinc.org\\\">LOINC</a>. LOINC é copyright &copy; 1995-2020, Regenstrief Institute, Inc. e o Logical Observation Identifiers Names and Codes (LOINC) Committee e está disponível sem custo sob a <a href=\\\"http://loinc.org/license\\\">licença</a>. LOINC&reg; é uma marca registada dos Estados Unidos da América do Regenstrief Institute, Inc."
 
 # HTA_SCT_DESC
 #: HTA_SCT_DESC
@@ -2397,8 +2451,8 @@ msgstr "Termos clínicos SNOMED&reg; (SNOMED CT&reg;)"
 # HTA_SCT_MESSAGE
 #: HTA_SCT_MESSAGE
 #, fuzzy
-msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> or <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
-msgstr "!!Este material contém conteúdo que é copyright da SNOMED International. Os implementadores destas especificações devem ter a licença apropriada de afiliado da SNOMED CT - para mais informações contacte <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> ou <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
+msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\"https://www.snomed.org/get-snomed\\">https://www.snomed.org/get-snomed</a> or <a href=\\"mailto:info@snomed.org\\">info@snomed.org</a>."
+msgstr "!!!!Este material contém conteúdo que é copyright da SNOMED International. Os implementadores destas especificações devem ter a licença apropriada de afiliado da SNOMED CT - para mais informações contacte <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> ou <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
 
 # IG_DEPENDENCY_CAN_VERSION_ALONE
 #: IG_DEPENDENCY_CAN_VERSION_ALONE
@@ -2531,6 +2585,18 @@ msgstr "A propriedade fhir_comments deve ser um conjunto de cadeias de caractere
 #, fuzzy
 msgid "The property ''{0}'' is invalid"
 msgstr "A propriedade ''{0}'' é inválida"
+
+# INACTIVE_CONCEPT_FOUND
+#: INACTIVE_CONCEPT_FOUND
+msgid "The concept ''{1}'' has a status of {0} and its use should be reviewed"
+msgstr ""
+
+# INACTIVE_DISPLAY_FOUND
+#: INACTIVE_DISPLAY_FOUND
+msgid "''{1}'' is no longer considered a correct display for code ''{2}'' (status = {4}). The correct display is ''{3}''"
+msgid_plural "''{1}'' is no longer considered a correct display for code ''{2}'' (status = {4}). The correct display is one of {3}"
+msgstr[0] ""
+msgstr[1] ""
 
 # INVALID_DISPLAY_NAME
 #: INVALID_DISPLAY_NAME
@@ -3147,8 +3213,8 @@ msgstr "O {0} {1} está obsoleto"
 # MSG_DEPENDS_ON_DEPRECATED_NOTE
 #: MSG_DEPENDS_ON_DEPRECATED_NOTE
 #, fuzzy
-msgid "The {0} {1} is deprecated with the note {2}"
-msgstr "O {0} {1} está obsoleto com a nota {2}"
+msgid "The {0} {1} is deprecated with the note: ''{2}''"
+msgstr "!!O {0} {1} está obsoleto com a nota {2}"
 
 # MSG_DEPENDS_ON_DRAFT
 #: MSG_DEPENDS_ON_DRAFT
@@ -3249,7 +3315,7 @@ msgstr "Referência à retirada de {2} {0} de {1}"
 # MULTIPLE_LOGICAL_MODELS
 #: MULTIPLE_LOGICAL_MODELS
 msgctxt "MULTIPLE_LOGICAL_MODELS"
-msgid "-- no content: do not translate #83 --"
+msgid "-- no content: do not translate #90 --"
 msgid_plural "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
 msgstr[0] ""
 msgstr[1] ""
@@ -3283,6 +3349,16 @@ msgstr "O elemento {0} não está marcado como ''mustSupport'' no perfil {1}. Co
 #, fuzzy
 msgid "The NDJSON source contains an empty line. This may not be accepted by some processors"
 msgstr "A fonte NDJSON contém uma linha vazia. Isto pode não ser aceite por alguns processadores"
+
+# NO_CODE_PROVIDED
+#: NO_CODE_PROVIDED
+msgid "No code provided for CodeSystem ''{0}''"
+msgstr ""
+
+# NO_CODE_PROVIDED_VERSION
+#: NO_CODE_PROVIDED_VERSION
+msgid "No code provided for CodeSystem ''{0}'' version ''{1}''"
+msgstr ""
 
 # NO_VALID_DISPLAY_AT_ALL
 #: NO_VALID_DISPLAY_AT_ALL
@@ -3598,8 +3674,8 @@ msgstr "O {0} ''{1}'' está definido no perfil reclamado, mas falta"
 # PROFILE_COMPLIES_WITH_NOT_VALID
 #: PROFILE_COMPLIES_WITH_NOT_VALID
 #, fuzzy
-msgid "The {0} value of ''{2}'' does not comply with the value ''{1}'' from the claimed profile"
-msgstr "O valor {0} de ''{2}'' não está em conformidade com o valor ''{1}'' do perfil reclamado"
+msgid "The {0} value of ''{2}'' on the path {3} does not comply with the value ''{1}'' from the claimed profile"
+msgstr "!!O valor {0} de ''{2}'' não está em conformidade com o valor ''{1}'' do perfil reclamado"
 
 # PROFILE_COMPLIES_WITH_NO_VS
 #: PROFILE_COMPLIES_WITH_NO_VS
@@ -3772,12 +3848,14 @@ msgstr "O tipo de mime {0} não é válido para esta resposta (permitido = {1})"
 # QUESTIONNAIRE_QR_ITEM_DATE_MAX
 #: QUESTIONNAIRE_QR_ITEM_DATE_MAX
 #, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_DATE_MAX"
+msgctxt "QUESTIONNAIRE_QR_ITEM_DATE_MAX"
 msgid "The value {0} is greater than the allowed maximum of {1}"
 msgstr "O valor {0} é superior ao máximo permitido de {1}"
 
 # QUESTIONNAIRE_QR_ITEM_DATE_MIN
 #: QUESTIONNAIRE_QR_ITEM_DATE_MIN
 #, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_DATE_MIN"
+msgctxt "QUESTIONNAIRE_QR_ITEM_DATE_MIN"
 msgid "The value {0} is less than the allowed minimum of {1}"
 msgstr "O valor {0} é inferior ao mínimo permitido de {1}"
 
@@ -3826,6 +3904,7 @@ msgstr "Não foi possível encontrar o conjunto de valores unitários ''{1}''"
 # QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX
 #: QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX
 #, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX"
+msgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_MAX"
 msgid "The value {0} is greater than the allowed maximum of {1}"
 msgstr "O valor {0} é superior ao máximo permitido de {1}"
 
@@ -3838,6 +3917,7 @@ msgstr "O valor {0} tem demasiadas casas decimais (limite = {1})"
 # QUESTIONNAIRE_QR_ITEM_DECIMAL_MIN
 #: QUESTIONNAIRE_QR_ITEM_DECIMAL_MIN
 #, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_MIN"
+msgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_MIN"
 msgid "The value {0} is less than the allowed minimum of {1}"
 msgstr "O valor {0} é inferior ao mínimo permitido de {1}"
 
@@ -3850,6 +3930,7 @@ msgstr "O valor {0} tem uma unidade que não está no conjunto de valores unitá
 # QUESTIONNAIRE_QR_ITEM_DECIMAL_VALUE_EXCEPTION
 #: QUESTIONNAIRE_QR_ITEM_DECIMAL_VALUE_EXCEPTION
 #, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_VALUE_EXCEPTION"
+msgctxt "QUESTIONNAIRE_QR_ITEM_DECIMAL_VALUE_EXCEPTION"
 msgid "An error occurred checking the value: {0}"
 msgstr "Ocorreu um erro ao verificar o valor: {0}"
 
@@ -3874,18 +3955,21 @@ msgstr "Não foram encontrados subitens para o grupo necessário"
 # QUESTIONNAIRE_QR_ITEM_INTEGER_MAX
 #: QUESTIONNAIRE_QR_ITEM_INTEGER_MAX
 #, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_MAX"
+msgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_MAX"
 msgid "The value {0} is greater than the allowed maximum of {1}"
 msgstr "O valor {0} é superior ao máximo permitido de {1}"
 
 # QUESTIONNAIRE_QR_ITEM_INTEGER_MIN
 #: QUESTIONNAIRE_QR_ITEM_INTEGER_MIN
 #, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_MIN"
+msgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_MIN"
 msgid "The value {0} is less than the allowed minimum of {1}"
 msgstr "O valor {0} é inferior ao mínimo permitido de {1}"
 
 # QUESTIONNAIRE_QR_ITEM_INTEGER_VALUE_EXCEPTION
 #: QUESTIONNAIRE_QR_ITEM_INTEGER_VALUE_EXCEPTION
 #, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_VALUE_EXCEPTION"
+msgctxt "QUESTIONNAIRE_QR_ITEM_INTEGER_VALUE_EXCEPTION"
 msgid "An error occurred checking the value: {0}"
 msgstr "Ocorreu um erro ao verificar o valor: {0}"
 
@@ -3988,12 +4072,14 @@ msgstr "A resposta ''{0}'' não está em conformidade com o formato esperado ''{
 # QUESTIONNAIRE_QR_ITEM_TIME_MAX
 #: QUESTIONNAIRE_QR_ITEM_TIME_MAX
 #, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_TIME_MAX"
+msgctxt "QUESTIONNAIRE_QR_ITEM_TIME_MAX"
 msgid "The value {0} is greater than the allowed maximum of {1}"
 msgstr "O valor {0} é superior ao máximo permitido de {1}"
 
 # QUESTIONNAIRE_QR_ITEM_TIME_MIN
 #: QUESTIONNAIRE_QR_ITEM_TIME_MIN
 #, fuzzymsgctxt "QUESTIONNAIRE_QR_ITEM_TIME_MIN"
+msgctxt "QUESTIONNAIRE_QR_ITEM_TIME_MIN"
 msgid "The value {0} is less than the allowed minimum of {1}"
 msgstr "O valor {0} é inferior ao mínimo permitido de {1}"
 
@@ -4276,7 +4362,7 @@ msgstr "Só é permitido um item de resposta com este linkId"
 # Questionnaire_QR_Item_OnlyOneI
 #: Questionnaire_QR_Item_OnlyOneI
 msgctxt "Questionnaire_QR_Item_OnlyOneI"
-msgid "-- no content: do not translate #84 --"
+msgid "-- no content: do not translate #91 --"
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
 msgstr[0] ""
 msgstr[1] ""
@@ -4333,8 +4419,8 @@ msgstr "O objetivo desta regra enableWhen ({0}) vem depois da própria pergunta"
 # Questionnaire_Q_EnableWhen_IsInner
 #: Questionnaire_Q_EnableWhen_IsInner
 #, fuzzy
-msgid "Questions with an enableWhen cannot refer to an inner question for it''s enableWhen condition"
-msgstr "As perguntas com um enableWhen não podem referir-se a uma pergunta interna para a sua condição enableWhen"
+msgid "Questions with an enableWhen cannot refer to an inner question for its enableWhen condition"
+msgstr "!!As perguntas com um enableWhen não podem referir-se a uma pergunta interna para a sua condição enableWhen"
 
 # Questionnaire_Q_EnableWhen_NoLink
 #: Questionnaire_Q_EnableWhen_NoLink
@@ -4407,6 +4493,11 @@ msgstr "O elemento JSON ''resourceType'' tem o tipo JSON errado: {0}"
 #, fuzzy
 msgid "Duplicate ID for contained resource: {0}"
 msgstr "ID duplicado para o recurso contido: {0}"
+
+# RESOURCE_INTERNAL_USE_ONLY
+#: RESOURCE_INTERNAL_USE_ONLY
+msgid "This {0} comes from the package {1} which has been marked as not suitable for this use"
+msgstr ""
 
 # RESOURCE_MATCHETYPE_DISALLOWED
 #: RESOURCE_MATCHETYPE_DISALLOWED
@@ -4617,6 +4708,11 @@ msgstr "O tipo {0} deve ser o mesmo que o tipo da estrutura de base {1} que est�
 msgid "The element {0} is not valid"
 msgstr ""
 
+# SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND_VER
+#: SD_CONTEXT_SHOULD_ELEMENT_NOT_FOUND_VER
+msgid "The element {0} is not valid in version {1}"
+msgstr ""
+
 # SD_CONTEXT_SHOULD_NOT_BE_ELEMENT
 #: SD_CONTEXT_SHOULD_NOT_BE_ELEMENT
 #, fuzzy
@@ -4658,6 +4754,21 @@ msgstr "O valor do Contexto de utilização deve ser do tipo {1} e não {0}"
 #, fuzzy
 msgid "The Usage Context {0}#{1} is not recognized so cannot be validated"
 msgstr "O contexto de utilização {0}#{1} não é reconhecido, pelo que não pode ser validado"
+
+# SD_ED_BIND_ALLSCT_CODES
+#: SD_ED_BIND_ALLSCT_CODES
+msgid "This binding is to ALL SNOMED CT codes, which includes qualifiers etc. The value set choice should be reviewed"
+msgstr ""
+
+# SD_ED_BIND_ALL_CPT_CODES
+#: SD_ED_BIND_ALL_CPT_CODES
+msgid "This binding is to ALL CPT codes, which includes modifiers and internal metadata codes. The value set choice should be reviewed"
+msgstr ""
+
+# SD_ED_BIND_ALL_LOINC_CODES
+#: SD_ED_BIND_ALL_LOINC_CODES
+msgid "This binding is to ALL LOINC codes, which includes part codes and answer list codes. The value set choice should be reviewed"
+msgstr ""
 
 # SD_ED_BIND_MULTIPLE_TYPES
 #: SD_ED_BIND_MULTIPLE_TYPES
@@ -4933,8 +5044,8 @@ msgstr "O valor do caminho do elemento ''{0}'' de ''{1}'' não corresponde ao ca
 # SD_OBGLIGATION_PROFILE_UKNOWN
 #: SD_OBGLIGATION_PROFILE_UKNOWN
 #, fuzzy
-msgid "The profile is marked as an obligation profile, but it''s correctness cannot be checked since the base profile ''{0}'' is not known"
-msgstr "O perfil é marcado como um perfil obrigatório, mas a sua correção não pode ser verificada porque o perfil de base \\\"{0}\\\" não é conhecido"
+msgid "The profile is marked as an obligation profile, but its correctness cannot be checked since the base profile ''{0}'' is not known"
+msgstr "!!O perfil é marcado como um perfil obrigatório, mas a sua correção não pode ser verificada porque o perfil de base \\\"{0}\\\" não é conhecido"
 
 # SD_OBGLIGATION_PROFILE_UNMATCHED
 #: SD_OBGLIGATION_PROFILE_UNMATCHED
@@ -5047,8 +5158,8 @@ msgstr "O tipo ''{0}'' em {3} refere-se ao tipo abstrato ''{1}'' mas o contexto 
 # SD_TYPE_PARAMETER_INVALID
 #: SD_TYPE_PARAMETER_INVALID
 #, fuzzy
-msgid "The type definition ''{2}'' has a type parameter ''{3}'', which is not consistent with it''s ancestor type definition ''{0}'' which has the type parameter ''{1}''"
-msgstr "A definição de tipo ''{2}'' tem um parâmetro de tipo ''{3}'', o que não é consistente com a sua definição de tipo ancestral ''{0}'' que tem o parâmetro de tipo ''{1}''"
+msgid "The type definition ''{2}'' has a type parameter ''{3}'', which is not consistent with its ancestor type definition ''{0}'' which has the type parameter ''{1}''"
+msgstr "!!A definição de tipo ''{2}'' tem um parâmetro de tipo ''{3}'', o que não é consistente com a sua definição de tipo ancestral ''{0}'' que tem o parâmetro de tipo ''{1}''"
 
 # SD_TYPE_PARAMETER_INVALID_REF
 #: SD_TYPE_PARAMETER_INVALID_REF
@@ -5155,8 +5266,8 @@ msgstr "O corte não pode ser avaliado: {0}"
 # SM_DEPENDENT_PARAM_MODE_MISMATCH
 #: SM_DEPENDENT_PARAM_MODE_MISMATCH
 #, fuzzy
-msgid "The parameter {0} refers to the variable {1} but it''s mode is {2} which is not the same as the mode required for the group {3}"
-msgstr "O parâmetro {0} refere-se à variável {1} mas o seu modo é {2}, o que não é o mesmo que o modo necessário para o grupo {3}"
+msgid "The parameter {0} refers to the variable {1} but its mode is {2} which is not the same as the mode required for the group {3}"
+msgstr "!!O parâmetro {0} refere-se à variável {1} mas o seu modo é {2}, o que não é o mesmo que o modo necessário para o grupo {3}"
 
 # SM_DEPENDENT_PARAM_NOT_FOUND
 #: SM_DEPENDENT_PARAM_NOT_FOUND
@@ -5167,8 +5278,8 @@ msgstr "O parâmetro {1} ''{0}'' não foi encontrado. Variáveis conhecidas: {2}
 # SM_DEPENDENT_PARAM_TYPE_MISMATCH
 #: SM_DEPENDENT_PARAM_TYPE_MISMATCH
 #, fuzzy
-msgid "The parameter ''{0}'' refers to the variable ''{1}'' but it''s type is ''{2}'' which is not compatible with the type required for the group ''{3}'', which is ''{4}'' (from map ''{5}'')"
-msgstr "O parâmetro ''{0}'' refere-se à variável ''{1}'' mas o seu tipo é ''{2}'' que não é compatível com o tipo requerido para o grupo ''{3}'', que é ''{4}'' (do mapa ''{5}'')"
+msgid "The parameter ''{0}'' refers to the variable ''{1}'' but its type is ''{2}'' which is not compatible with the type required for the group ''{3}'', which is ''{4}'' (from map ''{5}'')"
+msgstr "!!O parâmetro ''{0}'' refere-se à variável ''{1}'' mas o seu tipo é ''{2}'' que não é compatível com o tipo requerido para o grupo ''{3}'', que é ''{4}'' (do mapa ''{5}'')"
 
 # SM_DEPENDENT_PARAM_TYPE_MISMATCH_DUPLICATE
 #: SM_DEPENDENT_PARAM_TYPE_MISMATCH_DUPLICATE
@@ -5263,8 +5374,8 @@ msgstr "Não deve ser fornecida uma lista ruleId, uma vez que esta é uma regra 
 # SM_ORPHAN_GROUP
 #: SM_ORPHAN_GROUP
 #, fuzzy
-msgid "The group {0} is not called successfully from within this mapping script, and does not have types on it''s inputs, so type verification is not possible"
-msgstr "O grupo {0} não é chamado com êxito a partir deste script mapping e não tem tipos nas suas entradas, pelo que a verificação do tipo não é possível"
+msgid "The group {0} is not called successfully from within this mapping script, and does not have types on its inputs, so type verification is not possible"
+msgstr "!!O grupo {0} não é chamado com êxito a partir deste script mapping e não tem tipos nas suas entradas, pelo que a verificação do tipo não é possível"
 
 # SM_RULEGROUP_NOT_FOUND
 #: SM_RULEGROUP_NOT_FOUND
@@ -5506,24 +5617,6 @@ msgstr "O instantâneo gerado tem um número diferente de elementos {1} do que o
 msgid "The snapshot for the profile ''{0}'' is empty. This is usually due to a processing error logged elsewhere"
 msgstr "O instantâneo para o perfil ''{0}'' está vazio. Isto deve-se normalmente a um erro de processamento registado noutro local"
 
-# STATUS_CODE_HINT
-#: STATUS_CODE_HINT
-#, fuzzy
-msgid "The code is {0}"
-msgstr "O código é {0}"
-
-# STATUS_CODE_HINT_CODE
-#: STATUS_CODE_HINT_CODE
-#, fuzzy
-msgid "The code ''{1}'' is {0}"
-msgstr "O código ''{1}'' é {0}"
-
-# STATUS_CODE_WARNING
-#: STATUS_CODE_WARNING
-#, fuzzy
-msgid "The code is valid but is {0}"
-msgstr "O código é válido mas é {0}"
-
 # STATUS_CODE_WARNING_CODE
 #: STATUS_CODE_WARNING_CODE
 #, fuzzy
@@ -5719,7 +5812,7 @@ msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH
 #: TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH
-msgid "The hash of the data did not match the data"
+msgid "The hash of the data did not match the data (stated: ''{0}'', actual: ''{1}'')"
 msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_ATT_NO_CONTENT
@@ -6021,6 +6114,11 @@ msgstr "Os códigos UCUM que contêm anotações legíveis por humanos como {0} 
 #, fuzzy
 msgid "UCUM Codes that contain human readable annotations like {0} can be misleading (e.g. they are ignored when comparing units). Best Practice is not to depend on annotations in the UCUM code, so this usage should be checked, and the Quantity.unit SHOULD contain the annotation"
 msgstr "Os códigos UCUM que contêm anotações legíveis por humanos como {0} podem ser enganadores (por exemplo, são ignorados quando se comparam unidades). A melhor prática é não depender de anotações no código UCUM, pelo que esta utilização deve ser verificada e a Quantity.unit DEVE conter a anotação"
+
+# TYPE_SPECIFIC_CHECKS_DT_SID_INCORRECT
+#: TYPE_SPECIFIC_CHECKS_DT_SID_INCORRECT
+msgid "The URL {0} is not a correct URL to use (in spite of being in the standard, and/or accepted in the past)"
+msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE
 #: TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE
@@ -6491,8 +6589,8 @@ msgstr "O valor ''{0}'' está fora do intervalo de anos razoáveis - verificar s
 # Type_Specific_Checks_DT_DateTime_Regex
 #: Type_Specific_Checks_DT_DateTime_Regex
 #, fuzzy
-msgid "The instant ''{0}'' is not valid (by regex)"
-msgstr "O instante ''{0}'' não é válido (por regex)"
+msgid "Not a valid instant format: ''{0}''"
+msgstr "!!O instante ''{0}'' não é válido (por regex)"
 
 # Type_Specific_Checks_DT_DateTime_TZ
 #: Type_Specific_Checks_DT_DateTime_TZ
@@ -6503,14 +6601,14 @@ msgstr "Se uma data tiver uma hora, tem de ter um fuso horário"
 # Type_Specific_Checks_DT_DateTime_Valid
 #: Type_Specific_Checks_DT_DateTime_Valid
 #, fuzzy
-msgid "Not a valid date/time ({0})"
-msgstr "Não é uma data/hora válida ({0})"
+msgid "Not a valid date/time format: ''{0}''"
+msgstr "!!Não é uma data/hora válida ({0})"
 
 # Type_Specific_Checks_DT_Date_Valid
 #: Type_Specific_Checks_DT_Date_Valid
 #, fuzzy
-msgid "Not a valid date ({0})"
-msgstr "Não é uma data válida ({0})"
+msgid "Not a valid date format: ''{0}''"
+msgstr "!!Não é uma data válida ({0})"
 
 # Type_Specific_Checks_DT_Decimal_GT
 #: Type_Specific_Checks_DT_Decimal_GT
@@ -6794,6 +6892,11 @@ msgstr "Não foi possível encontrar uma definição para o CodeSystem ''{0}'', 
 #, fuzzy
 msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the code cannot be validated. Valid versions: {2}"
 msgstr "Não foi possível encontrar uma definição para a versão ''{0}'' do CodeSystem ''{1}'', pelo que o código não pode ser validado. Versões válidas: {2}"
+
+# UNKNOWN_CODESYSTEM_VERSION_NONE
+#: UNKNOWN_CODESYSTEM_VERSION_NONE
+msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the code cannot be validated. No versions of this code system are known"
+msgstr ""
 
 # UNKNOWN_CODE_IN_FRAGMENT
 #: UNKNOWN_CODE_IN_FRAGMENT
@@ -7290,8 +7393,8 @@ msgstr "A definição de extensão {0} não define quaisquer contextos de utiliz
 # VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED
 #: VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED
 #, fuzzy
-msgid "Profile {1} identifies {2} as a dependency (using the extension http://hl7.org/fhir/StructureDefinition/structuredefinition-dependencies), but this profile could not be found"
-msgstr "O perfil {1} identifica {2} como uma dependência (utilizando a extensão http://hl7.org/fhir/StructureDefinition/structuredefinition-dependencies), mas não foi possível encontrar este perfil"
+msgid "Profile {1} identifies {0} as a dependency (using the extension http://hl7.org/fhir/StructureDefinition/structuredefinition-dependencies), but this profile could not be found"
+msgstr "!!O perfil {1} identifica {2} como uma dependência (utilizando a extensão http://hl7.org/fhir/StructureDefinition/structuredefinition-dependencies), mas não foi possível encontrar este perfil"
 
 # VALIDATION_VAL_PROFILE_MINIMUM_MAGIC
 #: VALIDATION_VAL_PROFILE_MINIMUM_MAGIC
@@ -7459,6 +7562,11 @@ msgstr "O valor de um filtro baseado na propriedade ''{0}'' deve estar no format
 #, fuzzy
 msgid "The value for a filter based on property ''{0}'' is ''{1}'' which is not a valid code ({2})"
 msgstr "O valor de um filtro baseado na propriedade ''{0}'' é ''{1}'', o que não é um código válido ({2})"
+
+# VALUESET_BAD_FILTER_VALUE_CODED_LEGACY
+#: VALUESET_BAD_FILTER_VALUE_CODED_LEGACY
+msgid "The value for a filter based on property ''{0}'' should be in the format system(|version)#code, not the coding search pattern ''{1}''"
+msgstr ""
 
 # VALUESET_BAD_FILTER_VALUE_DATETIME
 #: VALUESET_BAD_FILTER_VALUE_DATETIME
@@ -7635,8 +7743,13 @@ msgstr "Os valores URI em ValueSet.compose.include.system devem ser absolutos. P
 # VALUESET_INCLUDE_WRONG_CS_OID
 #: VALUESET_INCLUDE_WRONG_CS_OID
 #, fuzzy
-msgid "It is not valid to refer to a CodeSystem by an identifier like this ''{0}''"
-msgstr "Não é válido referir-se a um CodeSystem através de um identificador do tipo ''{0}''"
+msgid "It is not valid to refer to a CodeSystem by an identifier like this ''{0}'' - use ''{1}''"
+msgstr "!!Não é válido referir-se a um CodeSystem através de um identificador do tipo ''{0}''"
+
+# VALUESET_INCLUDE_WRONG_CS_OID_PLURAL
+#: VALUESET_INCLUDE_WRONG_CS_OID_PLURAL
+msgid "It is not valid to refer to a CodeSystem by an identifier like this ''{0}'', and the identifier matches to multiple CodeSystem resources ({1})"
+msgstr ""
 
 # VALUESET_INCLUDE_WRONG_VS
 #: VALUESET_INCLUDE_WRONG_VS
@@ -7656,11 +7769,26 @@ msgstr "O sistema \\\"{0}\\\" é, de facto, um conjunto de valores, que se refer
 msgid "The system ''{0}'' is actually a value set, which itself refers to the systems {1}"
 msgstr "O sistema ''{0}'' é de facto um conjunto de valores, que por sua vez se refere aos sistemas {1}"
 
+# VALUESET_INC_NOT_VALIDATING
+#: VALUESET_INC_NOT_VALIDATING
+msgid "The concepts in the value set include have not been validated because the validator is configured not to check them"
+msgstr ""
+
+# VALUESET_INC_NO_BATCH_ON_SERVER
+#: VALUESET_INC_NO_BATCH_ON_SERVER
+msgid "The concepts in the value set include have not been validated because the terminology server {0} does not support batch validation (tests version < 1.7.8)"
+msgstr ""
+
+# VALUESET_INC_NO_SERVER
+#: VALUESET_INC_NO_SERVER
+msgid "The concepts in the value set include have not been validated because there is no terminology server"
+msgstr ""
+
 # VALUESET_INC_TOO_MANY_CODES
 #: VALUESET_INC_TOO_MANY_CODES
 #, fuzzy
-msgid "The value set include has too many codes to validate ({0}), so each individual code has not been checked"
-msgstr "O conjunto de valores include tem demasiados códigos para validar ({0}), pelo que cada código individual não foi verificado"
+msgid "The value set include has too many concepts to validate ({0}), so each individual code has not been checked"
+msgstr "!!O conjunto de valores include tem demasiados códigos para validar ({0}), pelo que cada código individual não foi verificado"
 
 # VALUESET_NO_SYSTEM_WARNING
 #: VALUESET_NO_SYSTEM_WARNING
@@ -7713,12 +7841,14 @@ msgstr "A referência do sistema do conjunto de valores ''{0}'' termina com um '
 # VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_1
 #: VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_1
 #, fuzzymsgctxt "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_1"
+msgctxt "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_1"
 msgid "Value set System references must not use the canonical version syntax - the version ''{0}'' should be in the version property, but that already contains ''{1}''"
 msgstr "Conjunto de valores As referências do sistema não devem utilizar a sintaxe da versão canónica - a versão ''{0}'' deve estar na propriedade version, mas esta já contém ''{1}''"
 
 # VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2
 #: VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2
 #, fuzzymsgctxt "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2"
+msgctxt "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2"
 msgid "Value set System references must not use the canonical version syntax - the version ''{0}'' should be in the version property, but that already contains ''{1}''"
 msgstr "Conjunto de valores As referências do sistema não devem utilizar a sintaxe da versão canónica - a versão ''{0}'' deve estar na propriedade version, mas esta já contém ''{1}''"
 
@@ -7782,6 +7912,11 @@ msgstr "A expansão do conjunto de valores ''{0}'' tem {2} códigos, que são de
 #, fuzzy
 msgid "The value set ''{0}'' {2} took too long to process (>{1}sec)"
 msgstr "O conjunto de valores ''{0}'' {2} demorou demasiado tempo a processar (>{1}seg)"
+
+# VALUESET_TXVER_BATCH_NOT_SUPPORTED
+#: VALUESET_TXVER_BATCH_NOT_SUPPORTED
+msgid "The terminology server {2} used for the CodeSystem {1} does not support batch validation (tx version {0}), so the codes have not been validated"
+msgstr ""
 
 # VALUESET_UNC_SYSTEM_WARNING
 #: VALUESET_UNC_SYSTEM_WARNING
@@ -8198,7 +8333,7 @@ msgstr ""
 
 # XHTML_CONTROL_NO_SOURCE
 #: XHTML_CONTROL_NO_SOURCE
-msgid "The xhtml node at ''{0}'' does not have a class attribute to indicate it''s source (boilerplate, generated, or original) and this is required by the profile {1}"
+msgid "The xhtml node at ''{0}'' does not have a class attribute to indicate its source (boilerplate, generated, or original) and this is required by the profile {1}"
 msgstr ""
 
 # XHTML_URL_DATA_DATA_INVALID
@@ -8247,8 +8382,8 @@ msgstr[1] ""
 # XHTML_XHTML_ATTRIBUTE_XML_SPACE
 #: XHTML_XHTML_ATTRIBUTE_XML_SPACE
 #, fuzzy
-msgid "The attribute ''xml:space'' is legal but has a fixed value of ''preserve''. It''s use is discouraged"
-msgstr "O atributo ''xml:space'' é legal mas tem um valor fixo de ''preserve''. A sua utilização é desaconselhada"
+msgid "The attribute ''xml:space'' is legal but has a fixed value of ''preserve''. Its use is discouraged"
+msgstr "!!O atributo ''xml:space'' é legal mas tem um valor fixo de ''preserve''. A sua utilização é desaconselhada"
 
 # XHTML_XHTML_Attribute_Illegal
 #: XHTML_XHTML_Attribute_Illegal

@@ -1,9 +1,4 @@
-package org.hl7.fhir.r5.utils;
-
-import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+package org.hl7.fhir.r5.utils.xver;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -24,29 +19,21 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.PackageHacker;
 
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 @MarkedToMoveToAdjunctPackage
-public class XVerExtensionManager {
-
-  public enum XVerExtensionStatus {
-    BadVersion, Unknown, Invalid, Valid
-  }
-
-  public static final String XVER_EXT_MARKER = "XVER_EXT_MARKER";
-
-  public static final String XVER_VER_MARKER = "XVER_VER_MARKER";
+public class XVerExtensionManagerOld extends XVerExtensionManager {
 
   private Map<String, JsonObject> lists = new HashMap<>();
-  private IWorkerContext context;
 
-  public XVerExtensionManager(IWorkerContext context) {
-    this.context = context;
+  public XVerExtensionManagerOld(IWorkerContext context) {
+    super(context);
   }
 
-  public boolean isR5(String url) {
-    String v = url.substring(20, 23);
-    return "5.0".equals(v);    
-  }
-  
+  @Override
   public XVerExtensionStatus status(String url) throws FHIRException {
     if (url.length() < 54) {
       return XVerExtensionStatus.Invalid;
@@ -80,11 +67,8 @@ public class XVerExtensionManager {
     }
   }
 
-  public String getElementId(String url) {
-    return url.substring(54);
-  }
-
-  public StructureDefinition makeDefinition(String url) {
+  @Override
+  public StructureDefinition getDefinition(String url) {
     url = url.replace("%5Bx%5D", "[x]");
     String verSource = url.substring(20, 23);
     String verTarget = VersionUtilities.getMajMin(context.getVersion());
@@ -169,7 +153,7 @@ public class XVerExtensionManager {
     }
   }
 
-  public void populateTypes(JsonObject path, ElementDefinition val, String verSource, String verTarget) {
+  private void populateTypes(JsonObject path, ElementDefinition val, String verSource, String verTarget) {
     for (JsonElement i : path.forceArray("types").getItems()) {
       String s = i.asString();
       if (!s.startsWith("!")) {
@@ -198,9 +182,6 @@ public class XVerExtensionManager {
       }
     }
   }
-
-  // todo: translate names 
-  
   private boolean isResource(String p) {
     return context.getResourceNames().contains(p);
   }
@@ -246,55 +227,6 @@ public class XVerExtensionManager {
       return id.substring(0, id.lastIndexOf("."));
     } else {
       return id;
-    }
-  }
-  
-  public String getVersion(String url) {
-    return url.substring(20, 23);
-  }
-
-  public boolean matchingUrl(String url) {
-    if (url == null || url.length() < 56) {
-      return false;
-    }
-    String pfx = url.substring(0, 20);
-    String v = url.substring(20, 23);
-    String sfx = url.substring(23, 54);
-    return pfx.equals("http://hl7.org/fhir/") &&
-       isVersionPattern(v) && sfx.equals("/StructureDefinition/extension-");
-  }
-
-  private boolean isVersionPattern(String v) {
-    return v.length() == 3 && Character.isDigit(v.charAt(0)) && v.charAt(1) == '.' && Character.isDigit(v.charAt(2));
-  }
-
-  public String getReference(String url) {
-    String version = getVersion(url);
-    String base = VersionUtilities.getSpecUrl(version);
-    if (base == null) {
-      return null;
-    } else {
-      String path = url.substring(url.indexOf("-")+1);
-      if (!path.contains(".")) {
-        return null;
-      }
-      String type = path.substring(0, path.indexOf("."));
-      if (Utilities.existsInList(type, "Annotation", "Attachment", "Identifier", "CodeableConcept", "Coding", "Quantity", "Duration", "Range", "Period", "Ratio", "RatioRange", "SampledData", "Signature", "HumanName", "Address", "ContactPoint", "Timing")) {
-        return Utilities.pathURL(base, "datatypes-definitions.html#"+path+"|"+VersionUtilities.getNameForVersion(version)+" "+path);
-      }
-      if (Utilities.existsInList(type, "Element", "BackboneElement", "BackboneType", "PrimitiveType", "DataType", "Base")) {
-        return Utilities.pathURL(base, "types-definitions.html#"+path+"|"+VersionUtilities.getNameForVersion(version)+" "+path);
-      }
-      if (Utilities.existsInList(type, "UsageContext", "RelatedArtifact", "DataRequirement", "ParameterDefinition", "TriggerDefinition", "Expression", "ContactDetail", "ExtendedContactDetail", "VirtualServiceDetail", "Availability", "MonetaryComponent", "Contributor")) {
-        return Utilities.pathURL(base, "metadatatypes-definitions.html#"+path+"|"+VersionUtilities.getNameForVersion(version)+" "+path);
-      }
-      if (Utilities.existsInList(type, "Reference", "CodeableReference")) {
-        return Utilities.pathURL(base, "references-definitions.html#"+path+"|"+VersionUtilities.getNameForVersion(version)+" "+path);
-      }
-      if (Utilities.existsInList(type, "Meta")) {
-        return Utilities.pathURL(base, "resource-definitions.html#"+path+"|"+VersionUtilities.getNameForVersion(version)+" "+path);
-      }
-      return Utilities.pathURL(base, type.toLowerCase()+"-definitions.html#"+path+"|"+VersionUtilities.getNameForVersion(version)+" "+path);
     }
   }
 

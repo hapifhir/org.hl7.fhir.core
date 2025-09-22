@@ -9,13 +9,13 @@
   }
 }}####
 e: {
-  "source" : tx-dev.fhir.org,
+  "source" : local.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:b2b39cd5-23f8-43ac-b7c3-c5a787c23c83",
-    "timestamp" : "2025-08-01T14:08:53.634Z",
+    "identifier" : "urn:uuid:66cbddf4-7497-b54f-ca50-a4baf46cf077",
+    "timestamp" : "2025-09-05T13:53:49.055Z",
     "total" : 5099,
     "offset" : 0,
     "parameter" : [{

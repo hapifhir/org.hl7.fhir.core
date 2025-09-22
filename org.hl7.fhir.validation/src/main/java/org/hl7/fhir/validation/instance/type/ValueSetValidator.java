@@ -421,7 +421,11 @@ public class ValueSetValidator extends BaseValidator {
             if (csl.size() == 1) {
               ok = rule(errors, "2025-01-09", IssueType.INVALID, stack, csl.isEmpty(), I18nConstants.VALUESET_INCLUDE_WRONG_CS_OID, system, csl.get(0).getUrl()) && ok;
             } else {
-              ok = rule(errors, "2025-01-09", IssueType.INVALID, stack, csl.isEmpty(), I18nConstants.VALUESET_INCLUDE_WRONG_CS_OID_PLURAL, system) && ok;
+              List<String> ids = new ArrayList<>();
+              for (CodeSystem c : csl) {
+                ids.add(c.getVersionedUrl());
+              }
+              ok = rule(errors, "2025-01-09", IssueType.INVALID, stack, csl.isEmpty(), I18nConstants.VALUESET_INCLUDE_WRONG_CS_OID_PLURAL, system, CommaSeparatedStringBuilder.join(",", ids)) && ok;
             }
           }
         }
@@ -447,8 +451,17 @@ public class ValueSetValidator extends BaseValidator {
           boolean first = true;
           if (concepts.size() > TOO_MANY_CODES_TO_VALIDATE) {
             hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_TOO_MANY_CODES, concepts.size());
-          } else {        
-            if (((InstanceValidator) parent).isValidateValueSetCodesOnTxServer() && !context.isNoTerminologyServer()) {
+          } else if (!((InstanceValidator) parent).isValidateValueSetCodesOnTxServer()) {
+            hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_NOT_VALIDATING, concepts.size());
+          } else if (context.isNoTerminologyServer()) {
+            hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_NO_SERVER, concepts.size());
+          } else {
+            var si = context.getTxSupportInfo(system, version);
+            if (concepts.size() > 1 && !si.isSupported()) {
+              hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_CS_NO_SUPPORT, si.getServer());
+            } else if (concepts.size() > 1 && !VersionUtilities.isThisOrLater("1.7.8", si.getTestVersion(), VersionUtilities.VersionPrecision.PATCH)) {
+              hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_NO_BATCH_ON_SERVER, si.getServer());
+            } else {
               try {
                 for (Element concept : concepts) {
                   // we treat the first differently because we want to know if the system is worth validating. if it is, then we batch the rest
@@ -463,7 +476,7 @@ public class ValueSetValidator extends BaseValidator {
                     }
                   }
                   cc++;
-                }    
+                }
                 executeValidationBatch(errors, vsid, retired, system, version, batch, stack);
               } catch (Exception e) {
                 ok = false;

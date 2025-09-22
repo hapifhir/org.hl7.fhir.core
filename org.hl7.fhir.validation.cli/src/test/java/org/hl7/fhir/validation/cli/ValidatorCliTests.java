@@ -228,7 +228,7 @@ public class ValidatorCliTests {
     ValidatorCli cli = mockValidatorCliWithService(validationContext);
     cli.readGlobalParamsAndExecuteTask(validationContext, args);
     Mockito.verify(validationService).determineVersion(same(validationContext));
-    Mockito.verify(validationService).install(same(validationContext), same(validationEngine));
+    Mockito.verify(validationService).install(same(validationContext.getIgs()), same(validationEngine));
   }
 
   @Test
@@ -326,7 +326,7 @@ public class ValidatorCliTests {
 
   @Test
   public void txTestsTest() throws Exception {
-    final String[] args = new String[]{"-txTests"};
+    final String[] args = new String[]{"txTests"};
     ValidationContext validationContext = Params.loadValidationContext(args);
     ValidatorCli cli = mockValidatorCli();
     cli.readGlobalParamsAndExecuteTask(validationContext, args);

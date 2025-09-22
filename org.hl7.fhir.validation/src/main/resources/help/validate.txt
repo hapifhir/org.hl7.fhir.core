@@ -88,9 +88,13 @@ The following parameters are supported:
 -watch-settle-time (ms)
        Control how long the validator waits before seeing a change, and revalidating
      Default 100
-         
--debug
-        Produce additional information about the loading/validation process
+-debug-log [file]: a filename for a debug log
+        Logs debug level messages about the loading/validation process to the
+        specified file. This parameter will be ignored if -trace-log is used.
+-trace-log [file]: a filename for a trace log
+        Logs trace and debug level messages about the loading/validation process
+        to the specified file. This parameter overrides -debug-log parameter if
+        both are used.
 -recurse
         Look in subfolders when -ig refers to a folder
 -locale

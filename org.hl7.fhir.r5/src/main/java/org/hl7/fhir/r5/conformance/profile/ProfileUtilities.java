@@ -101,14 +101,11 @@ import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 
 import org.hl7.fhir.r5.utils.UserDataNames;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
-import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r5.utils.formats.CSVWriter;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerFactory;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -551,7 +548,17 @@ public class ProfileUtilities {
         } else if (element.getType().isEmpty()) {
           throw new DefinitionException("No defined children and no type information on element '"+element.getId()+"'");
         } else if (element.getType().size() > 1) {
-          throw new DefinitionException("No defined children and multiple possible types '"+element.typeSummary()+"' on element '"+element.getId()+"'");
+          // this is a problem. There's two separate but related issues
+          // the first is what's going on here - the profile has walked into an element without fixing the type
+          //   this might be ok - maybe it's just going to constrain extensions for all types, though this is generally a bad idea
+          //   but if that's all it's doing, we'll just pretend we have an element. Only, it's not really an element so that might
+          //   blow up on us later in mystifying ways. We'll have to wear it though, because there's profiles out there that do this
+          // the second problem is whether this should be some common descendent of Element - I'm not clear about that
+          //   left as a problem for the future.
+          //
+          // this is what the code was prior to 2025-08-27:
+          //   throw new DefinitionException("No defined children and multiple possible types '"+element.typeSummary()+"' on element '"+element.getId()+"'");
+          src = context.fetchTypeDefinition("Element");
         } else if (element.getType().get(0).getProfile().size() > 1) {
           throw new DefinitionException("No defined children and multiple possible type profiles '"+element.typeSummary()+"' on element '"+element.getId()+"'");
         } else if (element.getType().get(0).hasProfile()) {
@@ -1015,7 +1022,7 @@ public class ProfileUtilities {
               StructureDefinition sd = context.fetchResource(StructureDefinition.class, u.getValue(), derived);
               if (sd == null) {
                 if (makeXVer().matchingUrl(u.getValue()) && xver.status(u.getValue()) == XVerExtensionStatus.Valid) {
-                  sd = xver.makeDefinition(u.getValue());              
+                  sd = xver.getDefinition(u.getValue());
                 }
               }
               if (sd == null) {
@@ -1132,7 +1139,7 @@ public class ProfileUtilities {
 
   private XVerExtensionManager makeXVer() {
     if (xver == null) {
-      xver = new XVerExtensionManager(context);
+      xver = XVerExtensionManagerFactory.createExtensionManager(context);
     }
     return xver;
   }
@@ -1158,7 +1165,7 @@ public class ProfileUtilities {
     for (Extension ext : list) {
       StructureDefinition op = context.fetchResource(StructureDefinition.class, ext.getValueCanonicalType().primitiveValue());
       if (op != null && ExtensionUtilities.readBoolExtension(op, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_OLD)) {
-        if (derived.getBaseDefinition().equals(op.getBaseDefinition())) {
+        if (derived.getBaseDefinitionNoVersion().equals(op.getBaseDefinitionNoVersion())) {
           obligationProfiles.add(op);
         }
       }
@@ -1267,7 +1274,7 @@ public class ProfileUtilities {
    */
   private void checkDifferentialBaseType(StructureDefinition derived) throws Error {
     if (derived.hasDifferential() && !derived.getDifferential().getElementFirstRep().getPath().contains(".") && !derived.getDifferential().getElementFirstRep().getType().isEmpty()) {
-      if (wantFixDifferentialFirstElementType && typeMatchesAncestor(derived.getDifferential().getElementFirstRep().getType(), derived.getBaseDefinition(), derived)) {
+      if (wantFixDifferentialFirstElementType && typeMatchesAncestor(derived.getDifferential().getElementFirstRep().getType(), derived.getBaseDefinitionNoVersion(), derived)) {
         derived.getDifferential().getElementFirstRep().getType().clear();
       } else if (derived.getKind() != StructureDefinitionKind.LOGICAL) {
         throw new Error(context.formatMessage(I18nConstants.TYPE_ON_FIRST_DIFFERENTIAL_ELEMENT));
@@ -2019,7 +2026,7 @@ public class ProfileUtilities {
       sd = context.fetchResource(StructureDefinition.class, type.getProfile().get(0).getValue(), src);
       if (sd == null) {
         if (makeXVer().matchingUrl(type.getProfile().get(0).getValue()) && xver.status(type.getProfile().get(0).getValue()) == XVerExtensionStatus.Valid) {
-          sd = xver.makeDefinition(type.getProfile().get(0).getValue());              
+          sd = xver.getDefinition(type.getProfile().get(0).getValue());
           generateSnapshot(context.fetchTypeDefinition("Extension"), sd, sd.getUrl(), webUrl, sd.getName());
         }
       }
@@ -2590,7 +2597,7 @@ public class ProfileUtilities {
             case Unknown:
               throw new FHIRException("Reference to unknown extension " + pu);
             case Valid:
-              profile = xver.makeDefinition(pu);
+              profile = xver.getDefinition(pu);
               generateSnapshot(context.fetchTypeDefinition("Extension"), profile, profile.getUrl(), context.getSpecUrl(), profile.getName());
           }
         }
@@ -3270,7 +3277,7 @@ public class ProfileUtilities {
     if (url != null && url.contains("|") && td.hasTargetProfile(url.substring(0, url.indexOf("|")))) {
       return true;
     }
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+    StructureDefinition sd = context.fetchResourceRaw(StructureDefinition.class, url);
     if (sd == null) {
       addMessage(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, "Cannot check whether the target profile " + url + " on "+dPath+" is valid constraint on the base because it is not known", IssueSeverity.WARNING));
       return true;
@@ -3861,7 +3868,6 @@ public class ProfileUtilities {
       }
     }
   }
-
 
   public ElementDefinitionComparer getComparer(ElementDefinitionComparer cmp, ElementDefinitionHolder child) throws FHIRException, Error {
     // what we have to check for here is running off the base profile into a data type profile
@@ -4838,7 +4844,7 @@ public class ProfileUtilities {
   }
 
   public static boolean isModifierExtension(StructureDefinition sd) {
-    ElementDefinition defn = sd.getSnapshot().getElementByPath("Extension");
+    ElementDefinition defn = sd.getSnapshot().hasElement() ? sd.getSnapshot().getElementByPath("Extension") : sd.getDifferential().getElementByPath("Extension");
     return defn != null && defn.getIsModifier();
   }
 

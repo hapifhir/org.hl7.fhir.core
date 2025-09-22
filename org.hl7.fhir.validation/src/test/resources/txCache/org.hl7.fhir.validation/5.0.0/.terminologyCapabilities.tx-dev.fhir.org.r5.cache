@@ -6,7 +6,7 @@
   "name" : "FHIRReferenceServerTerminologyCapabilities",
   "title" : "FHIR Reference Server Terminology Capability Statement",
   "status" : "active",
-  "date" : "2025-08-04T02:00:07.655Z",
+  "date" : "2025-09-08T06:18:33.241Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -2745,7 +2745,7 @@
   {
     "uri" : "http://loinc.org",
     "version" : [{
-      "code" : "2.80"
+      "code" : "2.81"
     }]
   },
   {
@@ -2845,6 +2845,12 @@
     "uri" : "http://snomed.info/sct",
     "version" : [{
       "code" : "http://snomed.info/sct/900000000000207008/version/20250201"
+    }]
+  },
+  {
+    "uri" : "http://snomed.info/sct",
+    "version" : [{
+      "code" : "http://snomed.info/xsct/900000000000207008/version/20250814"
     }]
   },
   {

@@ -454,12 +454,18 @@ public class POGenerator {
       if (o.getMsgidPlural() == null) {
         String v= o.getMsgstr().size() > 0 ? o.getMsgstr().get(0) : "";
         if (!Utilities.noString(v)) {
+          if (v.startsWith("!!")) {
+            v = v.substring(2);
+          }
           b.append(o.getId()+" = "+v+"\r\n");
         }
       } else {
         for (int i = 0; i < names.length; i++) {
           String v = (o.getMsgstr().size() > i ? o.getMsgstr().get(i) : "");
           if (!Utilities.noString(v)) {
+            if (v.startsWith("!!")) {
+              v = v.substring(2);
+            }
             b.append(o.getId()+"_"+names[i].trim()+" = "+v+"\r\n");
           }
         }
