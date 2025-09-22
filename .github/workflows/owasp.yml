@@ -1,0 +1,43 @@
+name: "OWASP Security Scans"
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read  # Only read access to repository contents
+      security-events: write
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - env:
+        NVD_API_KEY:
+          ${{ secrets.NVD_API_KEY }}
+      run: |
+        mvn -DskipTests install -P OWASP_CHECK
+
+    - env:
+        NVD_API_KEY:
+          ${{ secrets.NVD_API_KEY }}
+      run: |
+        mvn -DskipTests dependency-check:aggregate -P OWASP_CHECK
+
+    - name: Upload SARIF file
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        # Path to SARIF file relative to the root of the repository
+        sarif_file: target/dependency-check-report.sarif
+        # Optional category for the results
+        # Used to differentiate multiple results for one commit
+
+        category: OWASP-dependency-check
+

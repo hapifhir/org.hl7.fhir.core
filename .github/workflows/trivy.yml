@@ -1,0 +1,44 @@
+name: "Trivy Security Scans"
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+    
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read  # Only read access to repository contents
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run static analysis
+        uses: aquasecurity/trivy-action@master
+        env:
+          # Workaround for rate limiting on ghcr. Use these two entries for ghcr related TOOMANYREQUESTS errors.
+          TRIVY_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-db
+          TRIVY_JAVA_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-java-db
+        with:
+          scan-type: 'fs'
+          vuln-type: 'library'
+          scanners: 'vuln,secret,config'
+          ignore-unfixed: true
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'MEDIUM,HIGH,CRITICAL'
+
+
+
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
+          category: 'Trivy-security-scan'
