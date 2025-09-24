@@ -187,9 +187,10 @@ public class SqlOnFhirRunnerTests {
     // Add result to report.
     reportGenerator.addResult(fileName, result);
 
-    // Assert for JUnit.
+    // Assert test passed.
     if (!result.passed) {
-      fail(result.error != null ? result.error : "Test failed");
+      fail("SQL on FHIR test failed: " + fileName + " - " + testName +
+           (result.error != null ? " - " + result.error : ""));
     }
   }
 
