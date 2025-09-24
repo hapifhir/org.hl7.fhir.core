@@ -219,6 +219,8 @@ public class XhtmlToMarkdownConverter {
         break;
       case "mark":
         break;
+      case "map":
+        break;
       case "center":
       case "font":
         convert(b, c, allowParagraphs);
@@ -565,6 +567,7 @@ public class XhtmlToMarkdownConverter {
         process(b, c, trim, allowParagraphs);
         break;
       case "div":
+      case "title":
       case "h1":
       case "h2":
       case "h3":
