@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.special;
 
 import com.google.gson.JsonSyntaxException;
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser;
@@ -50,7 +51,9 @@ public class TxServiceTestHelper {
     if (valueSet == null && valueSetUrl != null) {
       String msg = context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_VALUE_SET_, valueSetUrl);
       operationOutcome = new OperationOutcome();
-      CodeableConcept codeableConceptWhenNullValueSet = operationOutcome.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR).setCode(OperationOutcome.IssueType.NOTFOUND).getDetails();
+      OperationOutcome.OperationOutcomeIssueComponent issue = operationOutcome.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR).setCode(OperationOutcome.IssueType.NOTFOUND);
+      issue.addExtension(ExtensionDefinitions.EXT_ISSUE_MSG_ID, new StringType(I18nConstants.UNABLE_TO_RESOLVE_VALUE_SET_));
+      CodeableConcept codeableConceptWhenNullValueSet = issue.getDetails();
       codeableConceptWhenNullValueSet.addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found", null);
       codeableConceptWhenNullValueSet.setText(msg);
     } else {
@@ -123,7 +126,7 @@ public class TxServiceTestHelper {
       if (diff != null) {
         FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
         FileUtilities.stringToFile(actualResponse, fp);
-        log.error("Test "+name+"failed: "+diff);
+        log.error("Test "+name+" failed: "+diff);
       }
       return diff;
     } else {
@@ -154,8 +157,8 @@ public class TxServiceTestHelper {
         }
         if (validationResult.getVersion() != null) {
           parameters.addParameter("version", validationResult.getVersion());
-        } else if (version != null) {
-          parameters.addParameter("version", new StringType(version));
+//        } else if (version != null) {
+//          parameters.addParameter("version", new StringType(version));
         }
         if (validationResult.getDisplay() != null) {
           parameters.addParameter("display", validationResult.getDisplay());
@@ -197,11 +200,12 @@ public class TxServiceTestHelper {
       if (diff != null) {
          FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
         FileUtilities.stringToFile(actualResponse, fp);
-        log.error("Test "+name+"failed: "+diff);
+        log.error("Test "+name+" failed: "+diff);
       }
       return diff;
     }
   }
+
 
   public static void writeDiffToFileSystem(String testName, String expected, String actual) throws IOException {
     String rootDirectory = System.getenv("TX_SERVICE_TEST_DIFF_TARGET");
