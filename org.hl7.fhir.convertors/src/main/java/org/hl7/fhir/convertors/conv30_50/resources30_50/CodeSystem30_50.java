@@ -2,7 +2,9 @@ package org.hl7.fhir.convertors.conv30_50.resources30_50;
 
 import java.util.stream.Collectors;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext30_50;
+import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.ContactDetail30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.UsageContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
@@ -33,6 +35,10 @@ public class CodeSystem30_50 {
       tgt.setIdentifier(Identifier30_50.convertIdentifier(src.getIdentifierFirstRep()));
     if (src.hasVersion())
       tgt.setVersionElement(String30_50.convertString(src.getVersionElement()));
+    if (src.hasVersionAlgorithm()) {
+      tgt.addExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM,
+        ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getVersionAlgorithm()));
+    }
     if (src.hasName())
       tgt.setNameElement(String30_50.convertString(src.getNameElement()));
     if (src.hasTitle())
@@ -84,13 +90,15 @@ public class CodeSystem30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.CodeSystem tgt = new org.hl7.fhir.r5.model.CodeSystem();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyDomainResource(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_VERSION_ALGORITHM);
     if (src.hasUrl())
       tgt.setUrlElement(Uri30_50.convertUri(src.getUrlElement()));
     if (src.hasIdentifier())
       tgt.addIdentifier(Identifier30_50.convertIdentifier(src.getIdentifier()));
     if (src.hasVersion())
       tgt.setVersionElement(String30_50.convertString(src.getVersionElement()));
+    if (src.hasExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM))
+      tgt.setVersionAlgorithm(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getExtensionByUrl(VersionConvertorConstants.EXT_VERSION_ALGORITHM).getValue()));
     if (src.hasName())
       tgt.setNameElement(String30_50.convertString(src.getNameElement()));
     if (src.hasTitle())
