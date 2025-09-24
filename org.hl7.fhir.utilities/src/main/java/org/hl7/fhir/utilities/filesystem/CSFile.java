@@ -47,8 +47,7 @@ public class CSFile extends File {
   public CSFile(String pathname) throws IOException {	  
     super(pathname);
 
-    if (exists()) 
-    {
+    if (exists()) {
     	if(!this.getCanonicalFile().getName().equals(this.getName())) {
     		throw new Error("Case mismatch of file "+ pathname+": found "+this.getCanonicalFile().getAbsolutePath());
     	}

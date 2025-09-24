@@ -61,6 +61,7 @@ import java.util.zip.ZipInputStream;
 
 import javax.annotation.Nonnull;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
@@ -177,24 +178,22 @@ public class NpmPackage {
   }
 
   public static class PackagedResourceFile {
+    @Getter
     private final String folder;
+    @Getter
     private final String filename;
+    @Getter
     private final String resourceType;
-    protected PackagedResourceFile(String folder, String filename, String resourceType) {
+    @Getter
+    private final boolean example;
+    protected PackagedResourceFile(String folder, String filename, String resourceType, boolean example) {
       super();
       this.folder = folder;
       this.filename = filename;
       this.resourceType = resourceType;
+      this.example = example;
     }
-    public String getFolder() {
-      return folder;
-    }
-    public String getFilename() {
-      return filename;
-    }
-    public String getResourceType() {
-      return resourceType;
-    }
+
     public static class Sorter implements Comparator<PackagedResourceFile> {
 
       @Override
@@ -844,7 +843,7 @@ public class NpmPackage {
           for (String s : folder.types.keySet()) {
             if (folder.types.containsKey(s)) {
               for (String n : folder.types.get(s)) {
-                res.add(new PackagedResourceFile(folder.folderName, n, s));
+                res.add(new PackagedResourceFile(folder.folderName, n, s, folder.getFolderName().equals("example")));
               }
             }
           }
@@ -852,8 +851,25 @@ public class NpmPackage {
           for (String s : types) {
             if (folder.types.containsKey(s)) {
               for (String n : folder.types.get(s)) {
-                res.add(new PackagedResourceFile(folder.folderName, n, s));
+                res.add(new PackagedResourceFile(folder.folderName, n, s, folder.getFolderName().equals("example")));
               }
+            }
+          }
+        }
+      }
+    }
+    Collections.sort(res, new PackagedResourceFile.Sorter());
+    return res;
+  }
+
+  public List<PackagedResourceFile> listAllResources() throws IOException {
+    List<PackagedResourceFile> res = new ArrayList<PackagedResourceFile>();
+    for (NpmPackageFolder folder : folders.values()) {
+      if (!folder.getFolderName().startsWith("tests")) {
+        for (String s : folder.types.keySet()) {
+          if (folder.types.containsKey(s)) {
+            for (String n : folder.types.get(s)) {
+              res.add(new PackagedResourceFile(folder.folderName, n, s, folder.getFolderName().equals("example")));
             }
           }
         }

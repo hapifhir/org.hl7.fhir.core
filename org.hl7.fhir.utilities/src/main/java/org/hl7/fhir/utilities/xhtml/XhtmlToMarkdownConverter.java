@@ -109,13 +109,11 @@ public class XhtmlToMarkdownConverter {
       case "br":
       case "wbr":
       case "code":
-      case "c":
       case "del":
       case "sup":
       case "sub":
       case "u":
       case "b":
-      case "bold":
         paragraph(b, c, true, false, allowParagraphs);
         break;
       case "div":
@@ -224,7 +222,6 @@ public class XhtmlToMarkdownConverter {
         break;
       case "center":
       case "font":
-      case "nl":
         convert(b, c, allowParagraphs);
         break;
       default:
@@ -516,7 +513,6 @@ public class XhtmlToMarkdownConverter {
 
     switch (c.getName()) {
       case "a":
-      case "A":
         if (c.hasAttribute("href") && hasSomeChildren(c)) {
           b.append("[");
           process(b, c, trim, allowParagraphs);
@@ -541,7 +537,6 @@ public class XhtmlToMarkdownConverter {
         process(b, c, trim, false);
         b.append("`");
       case "code":
-      case "c":
       case "pre":
         b.append("```");
         process(b, c, trim, allowParagraphs);
@@ -550,7 +545,6 @@ public class XhtmlToMarkdownConverter {
       case "em":
       case "b":
       case "mark":
-      case "bold":
         b.append("**");
         process(b, c, trim, allowParagraphs);
         b.append("**");
@@ -560,7 +554,7 @@ public class XhtmlToMarkdownConverter {
         process(b, c, trim, allowParagraphs);
         b.append("_");
         break;
-      case "i": case "it":
+      case "i":
         b.append("*");
         process(b, c, trim, allowParagraphs);
         b.append("*");
@@ -653,7 +647,19 @@ public class XhtmlToMarkdownConverter {
       default:
         if (processUnknown) {
           // for weird stuff found on hl7.org/fhir
-          process(b, c, trim, allowParagraphs);
+          if ("A".equals(c.getName())) {
+            if (c.hasAttribute("href") && hasSomeChildren(c)) {
+              b.append("[");
+              process(b, c, trim, allowParagraphs);
+              b.append("](");
+              b.append(fixRef(c.getAttribute("href")));
+              b.append(")");
+            } else {
+              process(b, c, trim, allowParagraphs);
+            }
+          } else {
+            process(b, c, trim, allowParagraphs);
+          }
         } else {
           throw new FHIRException("illegal html element: " + c.getName() + " (" + c.allText() + ")");
         }
