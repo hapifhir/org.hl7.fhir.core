@@ -3,7 +3,6 @@ package org.hl7.fhir.utilities.xhtml;
 import lombok.Getter;
 import lombok.Setter;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
 import java.util.Collection;
