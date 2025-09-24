@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
@@ -15,6 +16,7 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
  *
  * @author John Grimes
  */
+@Slf4j
 public class TestReportGenerator {
 
   private Map<String, JsonArray> testResults = new HashMap<>();
@@ -64,11 +66,11 @@ public class TestReportGenerator {
         writer.write(json);
       }
 
-      System.out.println("Test report written to: " + filePath);
+      log.info("Test report written to: {}", filePath);
       printSummary();
 
     } catch (IOException e) {
-      System.err.println("Failed to write test report: " + e.getMessage());
+      log.error("Failed to write test report: {}", e.getMessage());
       e.printStackTrace();
     }
   }
@@ -81,7 +83,7 @@ public class TestReportGenerator {
     int passedTests = 0;
     int failedTests = 0;
 
-    System.out.println("\n=== SQL on FHIR Test Results Summary ===");
+    log.info("\n=== SQL on FHIR Test Results Summary ===");
 
     for (Map.Entry<String, JsonArray> entry : testResults.entrySet()) {
       String fileName = entry.getKey();
@@ -106,19 +108,19 @@ public class TestReportGenerator {
         }
       }
 
-      System.out.printf("%s: %d passed, %d failed (total: %d)%n",
-                        fileName, filePassed, fileFailed, filePassed + fileFailed);
+      log.info("{}: {} passed, {} failed (total: {})",
+               fileName, filePassed, fileFailed, filePassed + fileFailed);
     }
 
-    System.out.println("\n=== Overall Summary ===");
-    System.out.printf("Total tests: %d%n", totalTests);
-    System.out.printf("Passed: %d (%.1f%%)%n", passedTests,
-                      totalTests > 0 ? (100.0 * passedTests / totalTests) : 0);
-    System.out.printf("Failed: %d (%.1f%%)%n", failedTests,
-                      totalTests > 0 ? (100.0 * failedTests / totalTests) : 0);
+    log.info("\n=== Overall Summary ===");
+    log.info("Total tests: {}", totalTests);
+    log.info("Passed: {} ({:.1f}%)", passedTests,
+             totalTests > 0 ? (100.0 * passedTests / totalTests) : 0);
+    log.info("Failed: {} ({:.1f}%)", failedTests,
+             totalTests > 0 ? (100.0 * failedTests / totalTests) : 0);
 
     if (failedTests > 0) {
-      System.out.println("\nFailed tests:");
+      log.info("\nFailed tests:");
       for (Map.Entry<String, JsonArray> entry : testResults.entrySet()) {
         String fileName = entry.getKey();
         JsonArray tests = entry.getValue();
@@ -129,7 +131,7 @@ public class TestReportGenerator {
           JsonObject result = test.getJsonObject("result");
           if (result != null && result.has("passed") && !result.asBoolean("passed")) {
             String error = result.has("error") ? result.asString("error") : "Unknown error";
-            System.out.printf("  - %s: %s - %s%n", fileName, name, error);
+            log.info("  - {}: {} - {}", fileName, name, error);
           }
         }
       }

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.context.IWorkerContext;
 import org.hl7.fhir.r4.model.Base;
@@ -35,6 +36,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  *
  * @author John Grimes
  */
+@Slf4j
 public class SqlOnFhirRunnerTests {
 
   private static IWorkerContext context;
@@ -93,7 +95,7 @@ public class SqlOnFhirRunnerTests {
   @MethodSource("testCases")
   @DisplayName("SQL on FHIR Runner Test")
   public void testRunner(String fileName, String testName, JsonObject testFile, JsonObject test) throws Exception {
-    System.out.println("Running test: " + fileName + " - " + testName);
+    log.info("Running test: {} - {}", fileName, testName);
 
     TestResult result = new TestResult();
     result.name = testName;
