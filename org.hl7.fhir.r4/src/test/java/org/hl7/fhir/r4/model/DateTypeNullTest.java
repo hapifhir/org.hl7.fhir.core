@@ -4,13 +4,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 class DateTypeNullTest {
 
   @Test
   @DisplayName("Test null value toString()")
   void testToString() {
-    DateType nullDate = new DateType();
-    System.out.println("Value -> " + nullDate);
+    assertDoesNotThrow(() -> {
+      DateType nullDate = new DateType();
+      System.out.println("Value -> " + nullDate);
+    });
   }
 
   @Test
