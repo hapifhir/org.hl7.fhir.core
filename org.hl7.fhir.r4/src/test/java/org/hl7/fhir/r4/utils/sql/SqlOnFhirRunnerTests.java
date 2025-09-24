@@ -3,8 +3,11 @@ package org.hl7.fhir.r4.utils.sql;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,8 +114,8 @@ public class SqlOnFhirRunnerTests {
       TestProvider provider = new TestProvider();
       if (testFile.has("resources")) {
         JsonElement resources = testFile.get("resources");
-        if (resources instanceof JsonObject) {
-          loadResources((JsonObject) resources, provider);
+        if (resources instanceof JsonArray) {
+          loadResources((JsonArray) resources, provider);
         }
       }
 
@@ -190,29 +193,16 @@ public class SqlOnFhirRunnerTests {
     }
   }
 
-  private void loadResources(JsonObject resources, TestProvider provider) throws IOException {
+  private void loadResources(JsonArray resources, TestProvider provider) throws IOException {
     org.hl7.fhir.r4.formats.JsonParser fhirParser = new org.hl7.fhir.r4.formats.JsonParser();
 
-    for (String key : resources.getNames()) {
-      JsonElement value = resources.get(key);
-      Resource resource = null;
-
-      if (value instanceof JsonObject) {
-        // Single resource.
-        JsonObject resourceJson = (JsonObject) value;
+    for (JsonElement element : resources) {
+      if (element instanceof JsonObject) {
+        JsonObject resourceJson = (JsonObject) element;
         String json = org.hl7.fhir.utilities.json.parser.JsonParser.compose(resourceJson, true);
-        resource = (Resource) fhirParser.parse(json);
-        provider.addResource(resource);
-      } else if (value instanceof JsonArray) {
-        // Array of resources.
-        JsonArray array = (JsonArray) value;
-        for (JsonElement element : array) {
-          if (element instanceof JsonObject) {
-            JsonObject resourceJson = (JsonObject) element;
-            String json = org.hl7.fhir.utilities.json.parser.JsonParser.compose(resourceJson, true);
-            resource = (Resource) fhirParser.parse(json);
-            provider.addResource(resource);
-          }
+        try (InputStream inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8))) {
+          Resource resource = fhirParser.parse(inputStream);
+          provider.addResource(resource);
         }
       }
     }
