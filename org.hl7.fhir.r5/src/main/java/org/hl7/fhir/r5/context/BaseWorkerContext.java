@@ -1102,7 +1102,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return new ValueSetExpansionOutcome("This value set is not expanded correctly at this time (will be fixed in a future version)", TerminologyServiceErrorClass.VALUESET_UNSUPPORTED, false);
     }
     
-    Parameters p = pIn.copy();
+    Parameters p = getExpansionParameters(); // it's already a copy
+    if (p == null) {
+      p = new Parameters();
+    }
+    for (ParametersParameterComponent pp : pIn.getParameter()) {
+      p.getParameter().add(pp);
+    }
     p.setParameter("_limit",new IntegerType("10000"));
     p.setParameter("_incomplete", new BooleanType("true"));
     if (vs.hasExpansion()) {
@@ -1122,6 +1128,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
 
+    if (!noLimits && !p.hasParameter("count")) {
+      p.addParameter("count", expandCodesLimit);
+      p.addParameter("offset", 0);
+    }
+    p.setParameter("excludeNested", !hierarchical);
+    if (incompleteOk) {
+      p.setParameter("incomplete-ok", true);
+    }
+
     CacheToken cacheToken = txCache.generateExpandToken(vs, hierarchical);
     ValueSetExpansionOutcome res;
     if (cacheOk) {
@@ -1131,19 +1146,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
 
-    if (!noLimits && !p.hasParameter("count")) {
-      p.addParameter("count", expandCodesLimit);
-      p.addParameter("offset", 0);
-    }
-    p.setParameter("excludeNested", !hierarchical);
-    if (incompleteOk) {
-      p.setParameter("incomplete-ok", true);      
-    }
-
     List<String> allErrors = new ArrayList<>();
     
     // ok, first we try to expand locally
     ValueSetExpander vse = constructValueSetExpanderSimple(new ValidationOptions(vs.getFHIRPublicationVersion()));
+    vse.setNoTerminologyServer(noTerminologyServer);
     res = null;
     try {
       res = vse.expand(vs, p);
