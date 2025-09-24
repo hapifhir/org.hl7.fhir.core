@@ -138,12 +138,16 @@ public class ComparisonRenderer implements IHostApplicationServices {
   private void dumpBinaries() throws IOException {
     if (contextLeft != null && contextLeft.getBinaryKeysAsSet() != null) {
       for (String k : contextLeft.getBinaryKeysAsSet()) {
-        FileUtilities.bytesToFile(contextLeft.getBinaryForKey(k), Utilities.path(folder, k));
+        if (!Utilities.isProhibitedBinaryFile(k)) {
+          FileUtilities.bytesToFile(contextLeft.getBinaryForKey(k), Utilities.path(folder, k));
+        }
       }
     }
     if (contextRight != null && contextRight.getBinaryKeysAsSet() != null) {
       for (String k : contextRight.getBinaryKeysAsSet()) {
-        FileUtilities.bytesToFile(contextRight.getBinaryForKey(k), Utilities.path(folder, k));
+        if (!Utilities.isProhibitedBinaryFile(k)) {
+          FileUtilities.bytesToFile(contextRight.getBinaryForKey(k), Utilities.path(folder, k));
+        }
       }
     }
   }
