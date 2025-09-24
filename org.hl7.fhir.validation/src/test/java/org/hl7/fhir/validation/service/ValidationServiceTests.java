@@ -322,7 +322,7 @@ class ValidationServiceTests {
       }
 
       @Override
-      protected void loadIgsAndExtensions(ValidationEngine validationEngine, ValidationContext validationContext, TimeTracker timeTracker) {
+      protected void loadIgsAndExtensions(ValidationEngine validationEngine, List<String> igs, boolean isRecursive) {
         //Don't care. Do nothing.
       }
     };

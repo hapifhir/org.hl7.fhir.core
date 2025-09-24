@@ -5,13 +5,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 class MarkdownTypeNullTest {
 
   @Test
   @DisplayName("Test null value toString()")
   void testToString() {
-    MarkdownType nullMarkdown = new MarkdownType();
-    System.out.println("Value -> " + nullMarkdown);
+    assertDoesNotThrow(() -> {
+      MarkdownType nullMarkdown = new MarkdownType();
+      System.out.println("Value -> " + nullMarkdown);
+    });
   }
 
   @Test

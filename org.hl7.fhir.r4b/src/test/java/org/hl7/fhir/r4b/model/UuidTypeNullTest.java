@@ -5,13 +5,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 class UuidTypeNullTest {
 
   @Test
   @DisplayName("Test null value toString()")
   void testToString() {
-    UuidType nullUuid = new UuidType();
-    System.out.println("Value -> " + nullUuid);
+    assertDoesNotThrow(() -> {
+      UuidType nullUuid = new UuidType();
+      System.out.println("Value -> " + nullUuid);
+    });
   }
 
   @Test
