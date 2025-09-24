@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
@@ -14,7 +16,9 @@ import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 public class ValidationProcessInfo {
   private TerminologyServiceErrorClass err;
   private List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
-  
+  @Getter @Setter
+  private String foundVersion;
+
   public ValidationProcessInfo() {
   }
   
@@ -43,14 +47,7 @@ public class ValidationProcessInfo {
     }
     return false;
   }
-  public String summary() {
-    List<String> msgs = new ArrayList<>();
-    for (OperationOutcomeIssueComponent issue : issues) {
-      msgs.add(issue.getDetails().getText());
-    }
-    Collections.sort(msgs);
-    return CommaSeparatedStringBuilder.join("; ", msgs);
-  }
+
   public List<String> summaryList() {
     List<String> msgs = new ArrayList<>();
     for (OperationOutcomeIssueComponent issue : issues) {

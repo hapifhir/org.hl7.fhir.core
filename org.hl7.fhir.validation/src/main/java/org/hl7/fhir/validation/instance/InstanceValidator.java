@@ -115,6 +115,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingCompo
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.BuildExtensions;
@@ -3539,6 +3540,22 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       } catch (IOException e1) {
         found = false;
+      }
+      boolean httpFound = false;
+      if (!found && url.startsWith("https:")) {
+        String insecureURL = url.replace("https://", "http://");
+        httpFound = isDefinitionURL(insecureURL) || (settings.isAllowExamples() && isExampleUrl(insecureURL)) /* || (url.startsWith("http://hl7.org/fhir/tools")) */ || isCommunicationsUrl(insecureURL) ||
+          SpecialExtensions.isKnownExtension(insecureURL) || isXverUrl(insecureURL) || SIDUtilities.isKnownSID(insecureURL) || isKnownNamespaceUri(insecureURL) || isRfcRef(insecureURL) || isKnownMappingUri(insecureURL) || oids.isKnownOID(insecureURL);
+        if (!httpFound) {
+          try {
+            httpFound = fetcher.resolveURL(this, valContext, context.getBase().getPath(), insecureURL, type, type.equals("canonical"), context.getByType(type) != null ? context.getByType(type).getTargetProfile() : null);
+          } catch (IOException ex) {
+            httpFound = false;
+          }
+        }
+        if (httpFound) {
+          hint(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_WRONG_HTTPS, url, insecureURL);
+        }
       }
       if (!found) {
         if (internal) {
@@ -8513,14 +8530,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, Coding c) {
     codingObserver.seeCode(stack, c);
     String lang = getValidationOptionsLanguage(stack);
-    return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(settings.withLanguage(lang), c, valueset)), c);
+    return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(settings.withLanguage(lang).withNoClient(ValueSetUtilities.isServerSide(c)), c, valueset)), c);
   }
 
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, CodeableConcept cc) throws CheckCodeOnServerException {
     codingObserver.seeCode(stack, cc);
     try {
       String lang = getValidationOptionsLanguage(stack);
-      return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(settings.withLanguage(lang), cc, valueset)), cc);
+      return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(settings.withLanguage(lang).withNoClient(ValueSetUtilities.hasServerSide(cc)), cc, valueset)), cc);
     } catch (Exception e) {
       throw new CheckCodeOnServerException(e);
     }

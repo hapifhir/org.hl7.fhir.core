@@ -36,6 +36,7 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
@@ -234,6 +235,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     val.getContext().setClientRetryCount(4);
     val.setBestPracticeWarningLevel(BestPracticeWarningLevel.Ignore);
     val.getSettings().setDebug(false);
+    // TerminologyClientContext.setAllowNonConformantServers(true);
     if (!VersionUtilities.isR5Plus(val.getContext().getVersion())) {
       val.getSettings().setUseValueSetDisplays(true);
     }
