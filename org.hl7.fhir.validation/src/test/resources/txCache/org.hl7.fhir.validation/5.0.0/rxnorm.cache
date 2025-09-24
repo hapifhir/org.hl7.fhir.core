@@ -1,9 +1,11 @@
 -------------------------------------------------------------------------------------
 {"code" : {
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "code" : "1049640",
-  "display" : "Acetaminophen 325 MG / Oxycodone Hydrochloride 5 MG Oral Tablet [Percocet]"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "coding" : [{
+    "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+    "code" : "1049640",
+    "display" : "Acetaminophen 325 MG / Oxycodone Hydrochloride 5 MG Oral Tablet [Percocet]"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -19,7 +21,7 @@ v: {
   "code" : "1049640",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
-  "server" : "http://local.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -28,10 +30,12 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "code" : "428759",
-  "display" : "metformin 250 MG Oral Tablet"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "r5BundleRelativeReferencePolicy":"never", "profile": {
+  "coding" : [{
+    "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+    "code" : "428759",
+    "display" : "metformin 250 MG Oral Tablet"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "r5BundleRelativeReferencePolicy":"never", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -47,7 +51,7 @@ v: {
   "code" : "428759",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
-  "server" : "http://local.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -56,10 +60,12 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "code" : "428759",
-  "display" : "metformin 250 MG Oral Tablet"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "coding" : [{
+    "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+    "code" : "428759",
+    "display" : "metformin 250 MG Oral Tablet"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -75,7 +81,7 @@ v: {
   "code" : "428759",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
-  "server" : "http://local.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
