@@ -35,7 +35,7 @@ jobs:
           OSSINDEX_PASSWORD:
             ${{ secrets.OSSINDEX_PASSWORD }}
         run: |
-          mvn -DskipTests install -P OWASP_CHECK -DossIndexUsername=$OSSINDEX_USERNAME -DossIndexPassword=$OSSINDEX_PASSWORD
+          mvn -DskipTests install -P OWASP_CHECK -DossIndexUsername=${{ env.OSSINDEX_USERNAME }} -DossIndexPassword=${{ env.OSSINDEX_PASSWORD }}
 
       - env:
           NVD_API_KEY:
@@ -45,7 +45,7 @@ jobs:
           OSSINDEX_PASSWORD:
             ${{ secrets.OSSINDEX_PASSWORD }}
         run: |
-          mvn -DskipTests dependency-check:aggregate -P OWASP_CHECK -DossIndexUsername=$OSSINDEX_USERNAME -DossIndexPassword=$OSSINDEX_PASSWORD
+          mvn -DskipTests dependency-check:aggregate -P OWASP_CHECK -DossIndexUsername=${{ env.OSSINDEX_USERNAME }} -DossIndexPassword=${{ env.OSSINDEX_PASSWORD }}
 
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@a4e1a019f5e24960714ff6296aee04b736cbc3cf # v3.29.6
