@@ -1,13 +1,12 @@
 package org.hl7.fhir.utilities.xhtml;
 
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.IOException;
 
-import org.hl7.fhir.exceptions.FHIRFormatError;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class XhtmlTests {
 

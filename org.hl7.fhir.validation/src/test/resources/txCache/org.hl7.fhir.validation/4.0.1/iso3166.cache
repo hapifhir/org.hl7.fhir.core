@@ -19,7 +19,7 @@ v: {
   "code" : "NO",
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -46,7 +46,7 @@ v: {
   "code" : "NO",
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -74,7 +74,7 @@ v: {
   "code" : "AU",
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -105,7 +105,7 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'Australia' for urn:iso:std:iso:3166#BD. Valid display is 'Bangladesh' (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -116,7 +116,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -153,7 +153,7 @@ v: {
   "code" : "NO",
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -180,7 +180,7 @@ v: {
   "code" : "FIN",
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -207,7 +207,7 @@ v: {
   "code" : "AU",
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -234,7 +234,7 @@ v: {
   "code" : "BD",
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -252,13 +252,13 @@ v: {
   }
 }}####
 e: {
-  "source" : local.fhir.org,
+  "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:f652e845-c8b0-44eb-57ed-0bb77d619358",
-    "timestamp" : "2025-09-05T13:53:50.038Z",
+    "identifier" : "urn:uuid:18df3050-2f82-4810-8e46-71cfe9114a24",
+    "timestamp" : "2025-09-23T23:47:43.214Z",
     "total" : 747,
     "offset" : 0,
     "parameter" : [{
@@ -275,10 +275,6 @@ e: {
     },
     {
       "name" : "used-codesystem",
-      "valueUri" : "urn:iso:std:iso:3166|2018"
-    },
-    {
-      "name" : "version",
       "valueUri" : "urn:iso:std:iso:3166|2018"
     }],
     "contains" : [{
