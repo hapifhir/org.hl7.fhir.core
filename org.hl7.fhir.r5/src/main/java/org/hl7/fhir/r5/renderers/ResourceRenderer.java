@@ -353,7 +353,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         }
       } else {
         if (url.contains("|")) {
-          x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present()+ context.formatPhrase(RenderingContext.RES_REND_VER) +cr.getVersion()+")");
+          x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present()+ context.formatPhrase(RenderingContext.RES_REND_VER, cr.getVersion())+")");
         } else {
           x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present());
         }
