@@ -160,12 +160,12 @@ public class ValueSetValidator extends ValueSetProcessBase {
       if (!requiredSupplements.isEmpty()) {
         for (ConceptSetComponent inc : valueset.getCompose().getInclude()) {
           if (inc.hasSystem()) {
-            checkCodeSystemResolves(null, inc);
+            checkCodeSystemResolves(inc);
           }
         }
         for (ConceptSetComponent inc : valueset.getCompose().getExclude()) {
           if (inc.hasSystem()) {
-            checkCodeSystemResolves(null, inc);
+            checkCodeSystemResolves(inc);
           }
         }
       }
@@ -188,7 +188,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     opContext.note("analysed");
   }
 
-  private void checkCodeSystemResolves(String path, ConceptSetComponent c) {
+  private void checkCodeSystemResolves(ConceptSetComponent c) {
     CodeSystem csa = context.fetchCodeSystem(c.getSystem());
     VersionAlgorithm va = csa == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(csa.getVersionAlgorithm());
     String version = determineVersion(c.getSystem(), c.getVersion(), va);
@@ -197,7 +197,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       // well, it doesn't really matter at this point. Mainly we're triggering the supplement analysis to happen 
       opContext.note("Unable to resolve "+c.getSystem()+"#"+version);
     } else {
-      checkVersion(path, c.getSystem(), cs.getVersion(), va, null);
+      checkVersion(null, c.getSystem(), cs.getVersion(), va, null);
     }
   }
 
@@ -1658,16 +1658,14 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
     }
     for (Parameters.ParametersParameterComponent t : rules) {
-      if ("check-system-version".equals(t.getName())) {
-        String tv = t.getValue().primitiveValue().substring(system.length() + 1);
-        if (!versionsMatch(system, version, tv)) {
-          if (issues == null) {
-            throw failWithIssue(IssueType.EXCEPTION, OpIssueCode.VersionError, null, I18nConstants.VALUESET_VERSION_CHECK, system, version, tv);
-          } else {
-            String msg = context.formatMessage(I18nConstants.VALUESET_VERSION_CHECK, system, version, tv);
-            if (!hasIssue(issues, msg)) {
-               issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.EXCEPTION, Utilities.noString(path) ? "version" : path + "." + "version", msg, OpIssueCode.VersionError, null, I18nConstants.VALUESET_VERSION_CHECK));
-            }
+      String tv = t.getValue().primitiveValue().substring(system.length() + 1);
+      if (!versionsMatch(system, version, tv)) {
+        if (issues == null) {
+          throw failWithIssue(IssueType.EXCEPTION, OpIssueCode.VersionError, null, I18nConstants.VALUESET_VERSION_CHECK, system, version, tv);
+        } else {
+          String msg = context.formatMessage(I18nConstants.VALUESET_VERSION_CHECK, system, version, tv);
+          if (!hasIssue(issues, msg)) {
+             issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.EXCEPTION, Utilities.noString(path) ? "version" : path + "." + "version", msg, OpIssueCode.VersionError, null, I18nConstants.VALUESET_VERSION_CHECK));
           }
         }
       }

@@ -27,8 +27,7 @@ import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 
-import org.hl7.fhir.r5.terminologies.expansion.ETooCostly;
-import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
+import org.hl7.fhir.r5.terminologies.expansion.OperationIsTooCostly;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
@@ -312,23 +311,23 @@ public class ValueSetProcessBase {
     return s;
   }
 
-  protected boolean versionsMatch(@Nonnull String system, @Nonnull String result, @Nonnull String tv) {
-    if (system == null || result == null || tv == null) {
+  protected boolean versionsMatch(@Nonnull String system, @Nonnull String candidate, @Nonnull String criteria) {
+    if (system == null || candidate == null || criteria == null) {
       return false;
     }
     CodeSystem cs = context.fetchCodeSystem(system);
     VersionAlgorithm va = cs == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(cs.getVersionAlgorithm());
     if (va == VersionAlgorithm.Unknown) {
-      va = VersionAlgorithm.guessFormat(result);
+      va = VersionAlgorithm.guessFormat(candidate);
     }
     switch (va) {
-      case Unknown: return result.startsWith(tv);
-      case SemVer: return VersionUtilities.isSemVer(result) ? VersionUtilities.versionMatches(tv, result) : false;
-      case Integer: return result.equals(tv);
-      case Alpha: return result.startsWith(tv);
-      case Date:return result.startsWith(tv);
-      case Natural: return result.startsWith(tv);
-      default: return result.startsWith(tv);
+      case Unknown: return candidate.startsWith(criteria);
+      case SemVer: return VersionUtilities.isSemVer(candidate) ? VersionUtilities.versionMatches(criteria, candidate) : false;
+      case Integer: return candidate.equals(criteria);
+      case Alpha: return candidate.startsWith(criteria);
+      case Date:return candidate.startsWith(criteria);
+      case Natural: return candidate.startsWith(criteria);
+      default: return candidate.startsWith(criteria);
     }
   }
 
@@ -345,21 +344,15 @@ public class ValueSetProcessBase {
     return new FHIRException(msg);
   }
 
-  protected ValueSetProcessBase.UnknownValueSetException failUnk(String msgId, boolean check, Object... params) {
+  protected ValueSetProcessBase.UnknownValueSetException failWithUnknownVSException(String msgId, boolean check, Object... params) {
     String msg = context.formatMessage(msgId, params);
     allErrors.add(msg);
     return new ValueSetProcessBase.UnknownValueSetException(msg);
   }
 
-  protected ValueSetProcessBase.UnknownValueSetException failNotFound(String msgId, boolean check, Object... params) {
-    String msg = context.formatMessage(msgId, params);
+  protected OperationIsTooCostly failAsTooCostly(String msg) {
     allErrors.add(msg);
-    return new ValueSetProcessBase.UnknownValueSetException(msg);
-  }
-
-  protected ETooCostly failCostly(String msg) {
-    allErrors.add(msg);
-    return new ETooCostly(msg);
+    return new OperationIsTooCostly(msg);
   }
 
   protected TerminologyServiceException failTSE(String msg) {

@@ -5,7 +5,6 @@ import lombok.Setter;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -409,7 +408,7 @@ public class XhtmlToMarkdownConverter {
   private boolean hasBoldedTDs(XhtmlNode x) {
     for (XhtmlNode child : x.getChildNodes()) {
       if ("td".equals(child.getName())) {
-        return child.firstNamedChild("b") != null;
+        return child.firstNamedDescendent("b") != null;
       }
     }
     return false;
@@ -424,7 +423,7 @@ public class XhtmlToMarkdownConverter {
         if (count == 0) {
           paragraph(b, c, true, false, true);
         } else if (count == 1) {
-          paragraph(b, c.firstNamedChild("p"), true, false, true);
+          paragraph(b, c.firstNamedDescendent("p"), true, false, true);
         } else { // count > 1
           boolean first = true;
           for (XhtmlNode g : c.getChildNodes()) {

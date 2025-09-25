@@ -100,9 +100,17 @@ public class ValueSetUtilities extends TerminologyUtilities {
 
   public static boolean isServerSide(String url) {
     // this is required to work around placeholders or bad definitions in THO (cvx)
-    return Utilities.existsInList(url, "http://hl7.org/fhir/sid/cvx", "http://loinc.org",
-      "http://snomed.info/sct", "http://www.nlm.nih.gov/research/umls/rxnorm", "http://www.ama-assn.org/go/cpt", "http://hl7.org/fhir/ndfrt",
-      "http://hl7.org/fhir/sid/ndc", "http://hl7.org/fhir/sid/icd-10", "http://hl7.org/fhir/sid/icd-9-cm", "http://hl7.org/fhir/sid/icd-10-cm");
+    return Utilities.existsInList(url,
+      "http://hl7.org/fhir/sid/cvx",
+      "http://loinc.org",
+      "http://snomed.info/sct",
+      "http://www.nlm.nih.gov/research/umls/rxnorm",
+      "http://www.ama-assn.org/go/cpt",
+      "http://hl7.org/fhir/ndfrt",
+      "http://hl7.org/fhir/sid/ndc", 
+      "http://hl7.org/fhir/sid/icd-10",
+      "http://hl7.org/fhir/sid/icd-9-cm",
+      "http://hl7.org/fhir/sid/icd-10-cm");
   }
 
   public static boolean isServerSide(Coding c) {

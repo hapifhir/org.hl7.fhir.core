@@ -180,9 +180,9 @@ public class ValidationOptions {
     return n;
   }
 
-  public ValidationOptions withNoClient(boolean value) {
+  public ValidationOptions withUseClient(boolean value) {
     ValidationOptions n = this.copy();
-    n.useClient = !value;
+    n.useClient = value;
     return n;
   }
 

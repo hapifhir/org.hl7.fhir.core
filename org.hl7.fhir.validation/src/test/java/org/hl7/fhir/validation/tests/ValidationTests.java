@@ -235,7 +235,6 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     val.getContext().setClientRetryCount(4);
     val.setBestPracticeWarningLevel(BestPracticeWarningLevel.Ignore);
     val.getSettings().setDebug(false);
-    // TerminologyClientContext.setAllowNonConformantServers(true);
     if (!VersionUtilities.isR5Plus(val.getContext().getVersion())) {
       val.getSettings().setUseValueSetDisplays(true);
     }

@@ -120,7 +120,6 @@ import org.hl7.fhir.r5.terminologies.providers.CodeSystemProvider;
 import org.hl7.fhir.r5.terminologies.providers.CodeSystemProviderExtension;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
-import org.hl7.fhir.r5.terminologies.utilities.VersionAlgorithm;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
@@ -173,7 +172,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   private boolean checkCodesWhenExpanding;
   private boolean includeAbstract = true;
   private boolean debug;
-  private boolean doingVersions;
+  private boolean reportingOnVersionsInContains;
   private Set<String> sources = new HashSet<>();
 
   private AcceptLanguageHeader langs;
@@ -195,7 +194,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   private ValueSetExpansionContainsComponent addCode(WorkingContext wc, String system, String version, String code, String display, String dispLang, ValueSetExpansionContainsComponent parent, List<ConceptDefinitionDesignationComponent> designations, Parameters expParams,
       boolean isAbstract, boolean inactive, List<ValueSet> filters, boolean noInactive, boolean deprecated, List<ValueSetExpansionPropertyComponent> vsProp,
       List<ConceptPropertyComponent> csProps, CodeSystem cs, List<org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent> expProps,
-      List<Extension> csExtList, List<Extension> vsExtList, ValueSetExpansionComponent exp, String vstatus) throws ETooCostly {
+      List<Extension> csExtList, List<Extension> vsExtList, ValueSetExpansionComponent exp, String vstatus) throws OperationIsTooCostly {
     opContext.deadCheck("addCode"+code);
     
     if (filters != null && !filters.isEmpty() && !filterContainsCode(filters, system, code, exp))
@@ -497,7 +496,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return null;
   }
 
-  private void addCodeAndDescendents(WorkingContext wc, ValueSetExpansionContainsComponent focus, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filters, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc, ValueSetExpansionComponent exp, String langDisplay)  throws FHIRException, ETooCostly {
+  private void addCodeAndDescendents(WorkingContext wc, ValueSetExpansionContainsComponent focus, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filters, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc, ValueSetExpansionComponent exp, String langDisplay)  throws FHIRException, OperationIsTooCostly {
     opContext.deadCheck("addCodeAndDescendents");
     focus.checkNoModifiers("Expansion.contains", "expanding");
     ValueSetExpansionContainsComponent np = null;
@@ -574,7 +573,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
   private void addCodeAndDescendents(WorkingContext wc, CodeSystem cs, String system, String version, ConceptDefinitionComponent def, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filters,
-        ConceptDefinitionComponent exclusion, ConceptFilter filterFunc, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, List<WorkingContext> otherFilters, ValueSetExpansionComponent exp)  throws FHIRException, ETooCostly {
+        ConceptDefinitionComponent exclusion, ConceptFilter filterFunc, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, List<WorkingContext> otherFilters, ValueSetExpansionComponent exp)  throws FHIRException, OperationIsTooCostly {
     opContext.deadCheck("addCodeAndDescendents");
     def.checkNoModifiers("Code in Code System", "expanding");
     if (exclusion != null) {
@@ -618,7 +617,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
   private void excludeCodeAndDescendents(WorkingContext wc, CodeSystem cs, String system, ConceptDefinitionComponent def, Parameters expParams, List<ValueSet> filters, 
-      ConceptDefinitionComponent exclusion, ConceptFilter filterFunc, List<WorkingContext> otherFilters, ValueSetExpansionComponent exp)  throws FHIRException, ETooCostly {
+      ConceptDefinitionComponent exclusion, ConceptFilter filterFunc, List<WorkingContext> otherFilters, ValueSetExpansionComponent exp)  throws FHIRException, OperationIsTooCostly {
     opContext.deadCheck("excludeCodeAndDescendents");
     def.checkNoModifiers("Code in Code System", "expanding");
     if (exclusion != null) {
@@ -664,10 +663,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
   
 
-  private void addCodes(ValueSetExpansionComponent expand, List<ValueSetExpansionParameterComponent> params, Parameters expParams, List<ValueSet> filters, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc, ValueSetExpansionComponent exp) throws ETooCostly, FHIRException {
+  private void addCodes(ValueSetExpansionComponent expand, List<ValueSetExpansionParameterComponent> params, Parameters expParams, List<ValueSet> filters, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc, ValueSetExpansionComponent exp) throws OperationIsTooCostly, FHIRException {
     if (expand != null) {
       if (expand.getContains().size() > maxExpansionSize)
-        throw failCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, vsSrc.getUrl(), ">" + Integer.toString(expand.getContains().size())));
+        throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, vsSrc.getUrl(), ">" + Integer.toString(expand.getContains().size())));
       for (ValueSetExpansionParameterComponent p : expand.getParameter()) {
         if (!existsInParams(params, p.getName(), p.getValue()))
           params.add(p);
@@ -685,7 +684,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     wc.getExcludeKeys().add(s);
   }
 
-  private void excludeCodes(WorkingContext wc, ConceptSetComponent exc, Parameters expParams, ValueSetExpansionComponent exp, ValueSet vs, String vspath) throws FHIRException, FileNotFoundException, ETooCostly, IOException {
+  private void excludeCodes(WorkingContext wc, ConceptSetComponent exc, Parameters expParams, ValueSetExpansionComponent exp, ValueSet vs, String vspath) throws FHIRException, FileNotFoundException, OperationIsTooCostly, IOException {
     opContext.deadCheck("excludeCodes");
     exc.checkNoModifiers("Compose.exclude", "expanding");
     if (exc.hasSystem() && exc.getConcept().size() == 0 && exc.getFilter().size() == 0) {
@@ -772,7 +771,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       } else {
         throw e;
       }
-    } catch (ETooCostly e) {
+    } catch (OperationIsTooCostly e) {
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.TOO_COSTLY, allErrors, false);
     } catch (UnknownValueSetException e) {
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.VALUESET_UNKNOWN, allErrors, false);
@@ -786,7 +785,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
   }
 
-  public ValueSetExpansionOutcome expandInternal(ValueSet source, Parameters expParams) throws FHIRException, FileNotFoundException, ETooCostly, IOException, CodeSystemProviderExtension {
+  public ValueSetExpansionOutcome expandInternal(ValueSet source, Parameters expParams) throws FHIRException, FileNotFoundException, OperationIsTooCostly, IOException, CodeSystemProviderExtension {
     if (expParams == null)
       expParams = makeDefaultExpansion();
     altCodeParams.seeParameters(expParams);
@@ -822,9 +821,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
     if (dwc.getCount() > maxExpansionSize && dwc.getOffsetParam() + dwc.getCountParam() == 0) {
       if (dwc.isNoTotal()) {
-        throw failCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)));        
+        throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)));
       } else {
-        throw failCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_COUNT, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize), MessageFormat.format("{0,number,#}", dwc.getCount())));
+        throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_COUNT, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize), MessageFormat.format("{0,number,#}", dwc.getCount())));
       }
     } else if (dwc.isCanBeHierarchy() && ((dwc.getCountParam() == 0) || dwc.getCountParam() > dwc.getCodes().size())) {
       for (ValueSetExpansionContainsComponent c : dwc.getRoots()) {
@@ -848,7 +847,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       }
     }
 
-    if (!doingVersions) {
+    if (!reportingOnVersionsInContains) {
       stripVersions(focus.getExpansion().getContains());
     }
 
@@ -910,7 +909,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
   }
   
-  public ValueSetExpansionOutcome doExpand(ValueSet source, Parameters expParams) throws FHIRException, ETooCostly, FileNotFoundException, IOException, CodeSystemProviderExtension {
+  public ValueSetExpansionOutcome doExpand(ValueSet source, Parameters expParams) throws FHIRException, OperationIsTooCostly, FileNotFoundException, IOException, CodeSystemProviderExtension {
     if (expParams == null)
       expParams = makeDefaultExpansion();
     altCodeParams.seeParameters(expParams);
@@ -946,9 +945,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
     if (dwc.getCount() > maxExpansionSize && dwc.getOffsetParam() + dwc.getCountParam() == 0) {
       if (dwc.isNoTotal()) {
-        throw failCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)));        
+        throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)));
       } else {
-        throw failCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_COUNT, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize), MessageFormat.format("{0,number,#}", dwc.getCount())));
+        throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_COUNT, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize), MessageFormat.format("{0,number,#}", dwc.getCount())));
       }
     } else if (dwc.isCanBeHierarchy() && ((dwc.getCountParam() == 0) || dwc.getCountParam() > dwc.getCodes().size())) {
       for (ValueSetExpansionContainsComponent c : dwc.getRoots()) {
@@ -971,7 +970,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         }
       }
     }
-    if (!doingVersions) {
+    if (!reportingOnVersionsInContains) {
       stripVersions(focus.getExpansion().getContains());
     }
 
@@ -1024,12 +1023,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
   private void handleCompose(ValueSetComposeComponent compose, ValueSetExpansionComponent exp, Parameters expParams, String ctxt, List<Extension> extensions, ValueSet valueSet)
-      throws ETooCostly, FileNotFoundException, IOException, FHIRException, CodeSystemProviderExtension {
+      throws OperationIsTooCostly, FileNotFoundException, IOException, FHIRException, CodeSystemProviderExtension {
     compose.checkNoModifiers("ValueSet.compose", "expanding");
     String vspath = "ValueSet["+valueSet.getVersionedUrl()+"].compose";
 
     // scan first to see if we need to report versions
-    doingVersions = checkForDifferingVersions(compose);
+    reportingOnVersionsInContains = checkForDifferingVersions(compose);
 
     // Exclude comes first because we build up a map of things to exclude
     int c = 0;
@@ -1092,7 +1091,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return false;
   }
 
-  private ValueSet importValueSet(WorkingContext wc, String value, ValueSetExpansionComponent exp, Parameters expParams, boolean noInactive, ValueSet valueSet) throws ETooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
+  private ValueSet importValueSet(WorkingContext wc, String value, ValueSetExpansionComponent exp, Parameters expParams, boolean noInactive, ValueSet valueSet) throws OperationIsTooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
     if (value == null)
       throw fail(I18nConstants.VS_EXP_IMPORT_NULL);
     String url = getCu().pinValueSet(value, expParams);
@@ -1101,9 +1100,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
       boolean pinned = !url.equals(value);
       String ver = pinned ? url.substring(value.length()+1) : null;
       if (context.fetchResource(CodeSystem.class, url, valueSet) != null) {
-        throw failNotFound(pinned ? I18nConstants.VS_EXP_IMPORT_CS_PINNED : I18nConstants.VS_EXP_IMPORT_CS, true, value, ver);
+        throw failWithUnknownVSException(pinned ? I18nConstants.VS_EXP_IMPORT_CS_PINNED : I18nConstants.VS_EXP_IMPORT_CS, true, value, ver);
       } else  {
-        throw failNotFound(pinned ? I18nConstants.VS_EXP_IMPORT_UNK_PINNED : I18nConstants.VS_EXP_IMPORT_UNK, true, value, ver);
+        throw failWithUnknownVSException(pinned ? I18nConstants.VS_EXP_IMPORT_UNK_PINNED : I18nConstants.VS_EXP_IMPORT_UNK, true, value, ver);
       }
     }
     checkCanonical(exp, vs, focus);
@@ -1116,7 +1115,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if (vso.getError() != null) {
       addErrors(vso.getAllErrors());
       if (vso.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNKNOWN) {  
-        throw failUnk(I18nConstants.VS_EXP_IMPORT_ERROR, true, vs.getUrl(), vso.getError());
+        throw failWithUnknownVSException(I18nConstants.VS_EXP_IMPORT_ERROR, true, vs.getUrl(), vso.getError());
       } else {
         throw fail(I18nConstants.VS_EXP_IMPORT_ERROR, vs.getUrl(), vso.getError());
       }
@@ -1156,7 +1155,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   
 
 
-  private ValueSet importValueSetForExclude(WorkingContext wc, String value, ValueSetExpansionComponent exp, Parameters expParams, boolean noInactive, ValueSet valueSet) throws ETooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
+  private ValueSet importValueSetForExclude(WorkingContext wc, String value, ValueSetExpansionComponent exp, Parameters expParams, boolean noInactive, ValueSet valueSet) throws OperationIsTooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
     if (value == null)
       throw fail(I18nConstants.VS_EXP_IMPORT_NULL_X);
     String url = getCu().pinValueSet(value, expParams);
@@ -1235,7 +1234,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
   }
 
-  private int copyImportContains(List<ValueSetExpansionContainsComponent> list, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filter, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc, ValueSetExpansionComponent exp) throws FHIRException, ETooCostly {
+  private int copyImportContains(List<ValueSetExpansionContainsComponent> list, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filter, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc, ValueSetExpansionComponent exp) throws FHIRException, OperationIsTooCostly {
     int count = 0;
     opContext.deadCheck("copyImportContains");
     
@@ -1273,7 +1272,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return list;
   }
 
-  private void includeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, boolean heirarchical, boolean noInactive, List<Extension> extensions, ValueSet valueSet, String vspath) throws ETooCostly, FileNotFoundException, IOException, FHIRException, CodeSystemProviderExtension {
+  private void includeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, boolean heirarchical, boolean noInactive, List<Extension> extensions, ValueSet valueSet, String vspath) throws OperationIsTooCostly, FileNotFoundException, IOException, FHIRException, CodeSystemProviderExtension {
     opContext.deadCheck("includeCodes");
     inc.checkNoModifiers("Compose.include", "expanding");
     List<ValueSet> imports = new ArrayList<ValueSet>();
@@ -1395,16 +1394,14 @@ public class ValueSetExpander extends ValueSetProcessBase {
       }
     }
     for (ParametersParameterComponent t : rules) {
-      if ("check-system-version".equals(t.getName())) {
-        String tv = t.getValue().primitiveValue().substring(system.length() + 1);
-        if (Utilities.noString(result)) {
-          result = tv;
-          if (!hasParam(exp, t.getName(), t.getValue().primitiveValue())) {
-            exp.addParameter(t.getName(), new UriType(t.getValue().primitiveValue()));
-          }
-        } else if (!versionsMatch(system, result, tv)) {
-          throw failWithIssue(IssueType.EXCEPTION, OpIssueCode.VersionError, null, I18nConstants.VALUESET_VERSION_CHECK, system, result, tv);
+      String tv = t.getValue().primitiveValue().substring(system.length() + 1);
+      if (Utilities.noString(result)) {
+        result = tv;
+        if (!hasParam(exp, t.getName(), t.getValue().primitiveValue())) {
+          exp.addParameter(t.getName(), new UriType(t.getValue().primitiveValue()));
         }
+      } else if (!versionsMatch(system, result, tv)) {
+        throw failWithIssue(IssueType.EXCEPTION, OpIssueCode.VersionError, null, I18nConstants.VALUESET_VERSION_CHECK, system, result, tv);
       }
     }
   }
@@ -1418,7 +1415,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return false;
   }
 
-  private void doServerIncludeCodes(ConceptSetComponent inc, boolean heirarchical, ValueSetExpansionComponent exp, List<ValueSet> imports, Parameters expParams, List<Extension> extensions, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps) throws FHIRException, CodeSystemProviderExtension, ETooCostly {
+  private void doServerIncludeCodes(ConceptSetComponent inc, boolean heirarchical, ValueSetExpansionComponent exp, List<ValueSet> imports, Parameters expParams, List<Extension> extensions, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps) throws FHIRException, CodeSystemProviderExtension, OperationIsTooCostly {
     opContext.deadCheck("doServerIncludeCodes");
     CodeSystemProvider csp = CodeSystemProvider.factory(inc.getSystem());
     if (csp != null) {
@@ -1474,7 +1471,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return count;
   }
 
-  public void doInternalIncludeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, List<ValueSet> imports, CodeSystem cs, boolean noInactive, Resource vsSrc, String vspath) throws NoTerminologyServiceException, TerminologyServiceException, FHIRException, ETooCostly {
+  public void doInternalIncludeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, List<ValueSet> imports, CodeSystem cs, boolean noInactive, Resource vsSrc, String vspath) throws NoTerminologyServiceException, TerminologyServiceException, FHIRException, OperationIsTooCostly {
     opContext.deadCheck("doInternalIncludeCodes");
     if (cs == null) {
       if (context.isNoTerminologyServer())
@@ -1561,7 +1558,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
   private void processFilter(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, List<ValueSet> imports, CodeSystem cs, boolean noInactive, 
       ConceptSetFilterComponent fc, WorkingContext wc, List<WorkingContext> filters, boolean exclude, String vspath)
-      throws ETooCostly {
+      throws OperationIsTooCostly {
     
     if (!fc.hasValue() || fc.getValue() == null) {
       List<OperationOutcomeIssueComponent> issues = new ArrayList<>();

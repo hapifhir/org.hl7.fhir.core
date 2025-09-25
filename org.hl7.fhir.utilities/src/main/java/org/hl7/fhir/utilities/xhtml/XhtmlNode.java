@@ -1444,12 +1444,12 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return this;
   }
 
-  public XhtmlNode firstNamedChild(String name) {
+  public XhtmlNode firstNamedDescendent(String name) {
     for (XhtmlNode t : getChildNodes()) {
       if (name.equals(t.getName())) {
         return t;
       }
-      XhtmlNode r = t.firstNamedChild(name);
+      XhtmlNode r = t.firstNamedDescendent(name);
       if (r != null) {
         return r;
       }
