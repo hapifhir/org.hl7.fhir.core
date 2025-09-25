@@ -55,18 +55,18 @@ public class ValidationEngineParams {
         if (i + 1 == args.length)
           throw new Error("Specified " + args[i] + " without indicating ig file");
         else {
-          String s = args[i + 1];
-          String version = Params.getVersionFromIGName(null, s);
-          if (version == null) {
-            validationEngineSettings.addIg(s);
+          String ig = args[i + 1];
+          String igVersion = Params.getVersionFromIGName(null, ig);
+          if (igVersion == null) {
+            validationEngineSettings.addIg(ig);
           } else {
-            String v = Params.getParam(args, Params.VERSION);
-            if (v != null && !v.equals(version)) {
-              throw new Error("Parameters are inconsistent: specified version is "+v+" but -ig parameter "+s+" implies a different version");
-            } else if (validationEngineSettings.getSv() != null && !version.equals(validationEngineSettings.getSv())) {
-              throw new Error("Parameters are inconsistent: multiple -ig parameters implying differetion versions ("+ validationEngineSettings.getSv()+","+version+")");
+            String explicitParamVersion = Params.getParam(args, Params.VERSION);
+            if (explicitParamVersion != null && !explicitParamVersion.equals(igVersion)) {
+              throw new Error("Parameters are inconsistent: specified version is "+explicitParamVersion+" but -ig parameter "+ig+" implies a different version");
+            } else if (validationEngineSettings.getSv() != null && !igVersion.equals(validationEngineSettings.getSv())) {
+              throw new Error("Parameters are inconsistent: multiple -ig parameters implying differetion versions ("+ validationEngineSettings.getSv()+","+igVersion+")");
             } else {
-              validationEngineSettings.setSv(version);
+              validationEngineSettings.setSv(igVersion);
             }
           }
           return i + 1;
