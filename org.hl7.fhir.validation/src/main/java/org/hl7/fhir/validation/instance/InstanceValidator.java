@@ -3749,6 +3749,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           "ImplementationGuide.definition.page.source[x]", "ImplementationGuide.definition.page.name",  "ImplementationGuide.definition.page.name[x]",
           "Requirements.statement.satisfiedBy", "Bundle.entry.request.url",
           "Attachment.url",
+          "CapabilityStatement.implementation.url",
           "StructureDefinition.type", "ElementDefinition.fixed[x]", "ElementDefinition.pattern[x]", "ImplementationGuide.dependsOn.uri", "StructureDefinition.mapping.uri",
           "MessageHeader.source.endpoint", "MessageHeader.source.endpoint[x]", "MessageHeader.destination.endpoint", "MessageHeader.destination.endpoint[x]",
           "QuestionnaireResponse.item.definition");
