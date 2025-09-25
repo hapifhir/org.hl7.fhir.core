@@ -67,10 +67,18 @@ public class FileUtilities {
   public static byte[] stringToBytes(final String content) throws IOException {
     return content.getBytes(StandardCharsets.UTF_8);
   }
-  
+
   public static void stringToFile(final String content, final String path) throws IOException  {
     final File file = ManagedFileAccess.csfile(path);
     stringToFile(content, file);
+  }
+
+  public static void stringToFileIfDifferent(final String content, final String path) throws IOException  {
+    final File file = ManagedFileAccess.csfile(path);
+    String current = file.exists() ? fileToString(file) : null;
+    if (current == null || !current.equals(content)) {
+      stringToFile(content, file);
+    }
   }
 
   public static void stringToFile(final String content, final File file) throws IOException {

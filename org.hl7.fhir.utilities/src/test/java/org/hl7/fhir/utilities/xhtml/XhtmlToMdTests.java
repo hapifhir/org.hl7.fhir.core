@@ -1,6 +1,5 @@
 package org.hl7.fhir.utilities.xhtml;
 
-import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

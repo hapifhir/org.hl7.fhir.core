@@ -157,8 +157,6 @@ public class TxServiceTestHelper {
         }
         if (validationResult.getVersion() != null) {
           parameters.addParameter("version", validationResult.getVersion());
-//        } else if (version != null) {
-//          parameters.addParameter("version", new StringType(version));
         }
         if (validationResult.getDisplay() != null) {
           parameters.addParameter("display", validationResult.getDisplay());

@@ -87,14 +87,7 @@ public class ValidationResult {
     }
     if (issues != null) {
       this.issues.addAll(issues);
-      for (OperationOutcomeIssueComponent issue : issues) {
-        if (issue.getSeverity() == OperationOutcome.IssueSeverity.ERROR) {
-          String msg = issue.getDetails().getText();
-          if (!this.messages.contains(msg)) {
-            this.messages.add(msg);
-          }
-        }
-      }
+      mineIssues(issues);
     }
   }
 
@@ -116,14 +109,7 @@ public class ValidationResult {
     this.preferredDisplay = preferredDisplay;
     if (issues != null) {
       this.issues.addAll(issues);
-      for (OperationOutcomeIssueComponent issue : issues) {
-        if (issue.getSeverity() == OperationOutcome.IssueSeverity.ERROR) {
-          String msg = issue.getDetails().getText();
-          if (!this.messages.contains(msg)) {
-            this.messages.add(msg);
-          }
-        }
-      }
+      mineIssues(issues);
     }
   }
   public ValidationResult(IssueSeverity severity, List<String> messages, String system, String version, ConceptDefinitionComponent definition, String preferredDisplay, List<OperationOutcomeIssueComponent>  issues) {
@@ -135,14 +121,7 @@ public class ValidationResult {
     this.preferredDisplay = preferredDisplay;
     if (issues != null) {
       this.issues.addAll(issues);
-      for (OperationOutcomeIssueComponent issue : issues) {
-        if (issue.getSeverity() == OperationOutcome.IssueSeverity.ERROR) {
-          String msg = issue.getDetails().getText();
-          if (!this.messages.contains(msg)) {
-            this.messages.add(msg);
-          }
-        }
-      }
+      mineIssues(issues);
     }
   }
 
@@ -154,17 +133,19 @@ public class ValidationResult {
     this.errorClass = errorClass;
     if (issues != null) {
       this.issues.addAll(issues);
-      for (OperationOutcomeIssueComponent issue : issues) {
-        if (issue.getSeverity() == OperationOutcome.IssueSeverity.ERROR) {
-          String msg = issue.getDetails().getText();
-          if (!this.messages.contains(msg)) {
-            this.messages.add(msg);
-          }
+      mineIssues(issues);
+    }
+  }
+
+  public void mineIssues(List<OperationOutcomeIssueComponent> issues) {
+    for (OperationOutcomeIssueComponent iss : issues) {
+      if (iss.getSeverity() == OperationOutcome.IssueSeverity.ERROR) {
+        if (!messages.contains(iss.getDetails().getText())) {
+          messages.add(iss.getDetails().getText());
         }
       }
     }
   }
-
   public boolean isOk() {
     return severity == null || severity == IssueSeverity.INFORMATION || severity == IssueSeverity.WARNING || errorIsDisplayIssue;
   }
@@ -516,13 +497,4 @@ public class ValidationResult {
     }
   }
 
-  public void mineIssues(List<OperationOutcomeIssueComponent> issues) {
-    for (OperationOutcomeIssueComponent iss : issues) {
-      if (iss.getSeverity() == OperationOutcome.IssueSeverity.ERROR) {
-        if (!messages.contains(iss.getDetails().getText())) {
-          messages.add(iss.getDetails().getText());
-        }
-      }
-    }
-  }
 }
