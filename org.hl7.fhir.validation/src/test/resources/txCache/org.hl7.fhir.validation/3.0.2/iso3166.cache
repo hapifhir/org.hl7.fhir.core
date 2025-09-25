@@ -18,7 +18,7 @@ v: {
   "code" : "NL",
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
-  "server" : "http://local.fhir.org/r3",
+  "server" : "https://tx-dev.fhir.org/r3",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -46,7 +46,7 @@ v: {
   "code" : "NL",
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
-  "server" : "http://local.fhir.org/r3",
+  "server" : "https://tx-dev.fhir.org/r3",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -74,7 +74,7 @@ v: {
   "code" : "NL",
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
-  "server" : "http://local.fhir.org/r3",
+  "server" : "https://tx-dev.fhir.org/r3",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -101,7 +101,7 @@ v: {
   "code" : "NL",
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
-  "server" : "http://local.fhir.org/r3",
+  "server" : "https://tx-dev.fhir.org/r3",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -128,7 +128,7 @@ v: {
   "code" : "NL",
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
-  "server" : "http://local.fhir.org/r3",
+  "server" : "https://tx-dev.fhir.org/r3",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

@@ -274,14 +274,14 @@ public class ValidationEngineTests {
     List<String> profiles = new ArrayList<>();
     OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "observation401_ucum.json"), profiles);
     Assertions.assertTrue(checkOutcomes("test401USCore", op, 
-      "information/invalid @ Observation.meta.source: The URL value '#iLFSV7OLv0KF8dmQ' might be wrong because it appears to point to an internal target, but there is no matching target\n"
-      + "warning/not-found @ Observation.code.coding[0].system: A definition for CodeSystem 'http://loinc.org' could not be found, so the code cannot be validated\n"
-      + "warning/business-rule @ Observation.value.ofType(Quantity): Unable to validate code 'kg' in system 'http://unitsofmeasure.org' because the validator is running without terminology services\n"
-      + "warning/invariant @ Observation: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)\n"
-      + "information/informational @ Observation: Validate Observation against the Body weight profile (http://hl7.org/fhir/StructureDefinition/bodyweight) which is required by the FHIR specification because the LOINC code 29463-7 was found\n"
-      + "warning/not-found @ Observation.code: Unable to check whether the code is in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|4.0.1' because the code system http://loinc.org was not found\n"
-      + "warning/informational @ Observation.value.ofType(Quantity).code: Unable to validate code without using server because: Resolved system http://unitsofmeasure.org (v3.0.1), but the definition doesn't include any codes, so the code has not been validated\n"
-      + "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have a performer"));
+      "information/invalid @ Observation.meta.source: The URL value '#iLFSV7OLv0KF8dmQ' might be wrong because it appears to point to an internal target, but there is no matching target\n" +
+        "warning/code-invalid @ Observation.code: Error Cannot invoke \"org.hl7.fhir.r5.terminologies.client.TerminologyClientContext.getAddress()\" because \"tc\" is null validating CodeableConcept\n" +
+        "warning/business-rule @ Observation.value.ofType(Quantity): Unable to validate code 'kg' in system 'http://unitsofmeasure.org' because the validator is running without terminology services\n" +
+        "warning/invariant @ Observation: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)\n" +
+        "information/informational @ Observation: Validate Observation against the Body weight profile (http://hl7.org/fhir/StructureDefinition/bodyweight) which is required by the FHIR specification because the LOINC code 29463-7 was found\n" +
+        "information/code-invalid @ Observation.code: Could not confirm that the codes provided are from the extensible value set http://hl7.org/fhir/ValueSet/observation-vitalsignresult|4.0.1 because there is no terminology service\n" +
+        "warning/informational @ Observation.value.ofType(Quantity).code: Unable to validate code without using server because: Resolved system http://unitsofmeasure.org (v3.0.1), but the definition doesn't include any codes, so the code has not been validated\n" +
+        "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have a performer"));
     verifyNoTerminologyRequests(logger);
   }
 

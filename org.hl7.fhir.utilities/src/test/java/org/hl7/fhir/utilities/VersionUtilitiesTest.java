@@ -553,6 +553,11 @@ public class VersionUtilitiesTest {
     test_versionMatches("2.5.*", "2.5.99", true);
     test_versionMatches("2.5.*", "2.4.0", false);
     test_versionMatches("2.5.*", "2.6.0", false);
+
+    test_versionMatches("2.0.x-*",  "2.0.1-prerelease", true);
+    test_versionMatches("2.0.x-*","2.0.1-prerelease", true);
+    test_versionMatches("2.0.x-*","2.0.0", false);
+    test_versionMatches("2.0.x-*", "2.0.1", false);
   }
 
   @Test
