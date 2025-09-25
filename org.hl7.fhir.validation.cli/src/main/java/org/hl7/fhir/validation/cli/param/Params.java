@@ -189,9 +189,7 @@ public class Params {
       if (ValidationEngineParams.isValidationEngineParam(args[i])) {
         i = ValidationEngineParams.setValidationEngineSettingsFromArgs(validationEngineSettings, args, i);
       }
-      else if (args[i].equals(VERSION)) {
-        validationContext.setSv(VersionUtilities.getCurrentPackageVersion(args[++i]));
-      } else if (args[i].equals(FHIR_SETTINGS_PARAM)) {
+      else if (args[i].equals(FHIR_SETTINGS_PARAM)) {
         final String fhirSettingsFilePath = args[++i];
         if (! ManagedFileAccess.file(fhirSettingsFilePath).exists()) {
           throw new Error("Cannot find fhir-settings file: " + fhirSettingsFilePath);
@@ -355,9 +353,6 @@ public class Params {
         validationContext.setDisplayWarnings(true);
       } else if (args[i].equals(WANT_INVARIANTS_IN_MESSAGES)) {
         validationContext.setWantInvariantsInMessages(true);
-      } else if (args[i].equals(TO_VERSION)) {
-        validationContext.setTargetVer(args[++i]);
-        validationContext.setMode(EngineMode.VERSION);
       } else if (args[i].equals(PACKAGE_NAME)) {
         validationContext.setPackageName(args[++i]);
         if (!hasParam(args, "-re-package")) {
@@ -543,25 +538,6 @@ public class Params {
           throw new Error("Specified -jurisdiction without indicating jurisdiction");
         else
           validationContext.setJurisdiction(processJurisdiction(args[++i]));
-      } else if (args[i].equals(IMPLEMENTATION_GUIDE) || args[i].equals(DEFINITION)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified " + args[i] + " without indicating ig file");
-        else {
-          String s = args[++i];
-          String version = getVersionFromIGName(null, s);
-          if (version == null) {
-            validationContext.addIg(s);
-          } else {
-            String v = getParam(args, VERSION);
-            if (v != null && !v.equals(version)) {
-              throw new Error("Parameters are inconsistent: specified version is "+v+" but -ig parameter "+s+" implies a different version");
-            } else if (validationContext.getSv() != null && !version.equals(validationContext.getSv())) {
-              throw new Error("Parameters are inconsistent: multiple -ig parameters implying differetion versions ("+ validationContext.getSv()+","+version+")");
-            } else {
-              validationContext.setSv(version);
-            }
-          }
-        }
       } else if (args[i].equals(ALT_VERSION)) {
         if (i + 1 == args.length)
           throw new Error("Specified " + args[i] + " without indicating version");

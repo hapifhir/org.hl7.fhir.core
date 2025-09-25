@@ -254,6 +254,7 @@ public class ValidationContext {
   private
   Set<String> modeParams = new HashSet<>();
 
+  //FIXME this needs to be included at the ValidationRequest level
   @JsonProperty("mode")
   @SerializedName("mode")
   private
@@ -762,12 +763,15 @@ public class ValidationContext {
     return this;
   }
 
+  //FIXME never used this. This should be done in shouldExecuteTask via Params logic until we can replace this with a
+  // proper CLI
   @SerializedName("mode")
   @JsonProperty("mode")
   public EngineMode getMode() {
     return mode;
   }
 
+  //FIXME find all the places this is called and remove them. This should be purely set in shouldExecuteTask
   @SerializedName("mode")
   @JsonProperty("mode")
   public ValidationContext setMode(EngineMode mode) {

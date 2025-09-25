@@ -378,22 +378,24 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
 
       XSSFSheet xSheet = (XSSFSheet)sheet;
 
+      final int mustSupportCol = 7;
+      final int slicingCol = 27;
       CTAutoFilter sheetFilter = xSheet.getCTWorksheet().getAutoFilter();
       CTFilterColumn filterColumn1 = sheetFilter.addNewFilterColumn();
-      filterColumn1.setColId(6);
+      filterColumn1.setColId(mustSupportCol); // mustSupport
       CTCustomFilters filters = filterColumn1.addNewCustomFilters();
       CTCustomFilter filter1 = filters.addNewCustomFilter();
       filter1.setOperator(STFilterOperator.NOT_EQUAL);
       filter1.setVal(" ");
 
       CTFilterColumn filterColumn2 = sheetFilter.addNewFilterColumn();
-      filterColumn2.setColId(26);
+      filterColumn2.setColId(slicingCol); //slicing
       CTFilters filters2 = filterColumn2.addNewFilters();
       filters2.setBlank(true);
 
       // We have to apply the filter ourselves by hiding the rows: 
       for (Row row : sheet) {
-        if (row.getRowNum()>0 && (!row.getCell(6).getStringCellValue().equals("Y") || !row.getCell(26).getStringCellValue().isEmpty())) {
+        if (row.getRowNum()>0 && (!row.getCell(mustSupportCol).getStringCellValue().equals("Y") || !row.getCell(slicingCol).getStringCellValue().isEmpty())) {
           ((XSSFRow) row).getCTRow().setHidden(true);
         }
       }

@@ -1,6 +1,8 @@
 package org.hl7.fhir.validation.cli.param;
 
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.service.model.ValidationEngineSettings;
+import org.hl7.fhir.validation.service.utils.EngineMode;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -42,6 +44,33 @@ public class ValidationEngineParams {
         validationEngineSettings.setAssumeValidRestReferences(true);
       } else if (args[i].equals(Params.NO_EXTENSIBLE_BINDING_WARNINGS)) {
         validationEngineSettings.setNoExtensibleBindingMessages(true);
+      } else if (args[i].equals(Params.VERSION)) {
+        validationEngineSettings.setSv(VersionUtilities.getCurrentPackageVersion(args[i + 1]));
+        return i+1;
+      } else if (args[i].equals(Params.TO_VERSION)) {
+        validationEngineSettings.setTargetVer(args[i + 1]);
+        //FIXME test this line. This has been moved to VersionTask as a Params.hasParam
+        //validationContext.setMode(EngineMode.VERSION);
+      } else if (args[i].equals(Params.IMPLEMENTATION_GUIDE) || args[i].equals(Params.DEFINITION)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified " + args[i] + " without indicating ig file");
+        else {
+          String s = args[i + 1];
+          String version = Params.getVersionFromIGName(null, s);
+          if (version == null) {
+            validationEngineSettings.addIg(s);
+          } else {
+            String v = Params.getParam(args, Params.VERSION);
+            if (v != null && !v.equals(version)) {
+              throw new Error("Parameters are inconsistent: specified version is "+v+" but -ig parameter "+s+" implies a different version");
+            } else if (validationEngineSettings.getSv() != null && !version.equals(validationEngineSettings.getSv())) {
+              throw new Error("Parameters are inconsistent: multiple -ig parameters implying differetion versions ("+ validationEngineSettings.getSv()+","+version+")");
+            } else {
+              validationEngineSettings.setSv(version);
+            }
+          }
+          return i + 1;
+        }
       }
     return i;
   }

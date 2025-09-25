@@ -252,6 +252,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private List<String> certSources = new ArrayList<>();
   @Getter @Setter private List<String> matchetypes = new ArrayList<>();
 
+  //FIXME move to ValidationInstanceSettings
   @Getter @Setter private boolean showTimes;
   @Getter @Setter private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
   @Getter @Setter private QuestionnaireMode questionnaireMode;
