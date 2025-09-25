@@ -51,6 +51,7 @@ import ca.uhn.fhir.model.primitive.XhtmlDt;
 public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   private static final long serialVersionUID = -4362547161441436492L;
 
+
   public static class Location implements Serializable {
     private static final long serialVersionUID = -4079302502900219721L;
     private int line;
@@ -388,6 +389,29 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
         } else if (Utilities.existsInList(n.getName(), "th", "td", "span")) {
           b.append(" ");
         }
+      }
+    }
+    return b.toString();
+  }
+
+  public String toLiteralText() {
+    if (!hasChildren()) {
+      if (getContent() == null) {
+        return "";
+      } else {
+        return getContent();
+      }
+    }
+
+    StringBuilder b = new StringBuilder();
+    for (XhtmlNode n : childNodes) {
+      if (n.getNodeType() == NodeType.Text) {
+        if (n.getContent() != null) {
+          b.append(n.getContent());
+        }
+      }
+      if (n.getNodeType() == NodeType.Element) {
+        b.append(n.toLiteralText());
       }
     }
     return b.toString();
@@ -1420,4 +1444,26 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return this;
   }
 
+  public XhtmlNode firstNamedDescendent(String name) {
+    for (XhtmlNode t : getChildNodes()) {
+      if (name.equals(t.getName())) {
+        return t;
+      }
+      XhtmlNode r = t.firstNamedDescendent(name);
+      if (r != null) {
+        return r;
+      }
+    }
+    return null;
+  }
+
+  public int countChildrenByName(String p) {
+    int count = 0;
+    for (XhtmlNode t : getChildNodes()) {
+      if (p.equals(t.getName())) {
+        count++;
+      }
+    }
+    return count;
+  }
 }
