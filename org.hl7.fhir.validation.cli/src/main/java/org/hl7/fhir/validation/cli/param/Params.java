@@ -426,6 +426,7 @@ public class Params {
         validationContext.setMode(EngineMode.SNAPSHOT);
       } else if (args[i].equals(INSTALL)) {
         validationContext.setMode(EngineMode.INSTALL);
+        //FIXME require FHIR Version to be inferred in ValidationService
       } else if (args[i].equals(RUN_TESTS)) {
         // TODO setBaseTestingUtils test directory
         validationContext.setMode(EngineMode.RUN_TESTS);

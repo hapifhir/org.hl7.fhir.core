@@ -254,7 +254,11 @@ public class ValidationContext {
   private
   Set<String> modeParams = new HashSet<>();
 
-  //FIXME this needs to be included at the ValidationRequest level
+  /* FIXME this should be deprecated. Its only real use is switching between different tasks in the CLI
+     and as a side-effect, requiring version to be inferred in ValidationService when INSTALL and VALIDATION modes
+     are used
+   */
+
   @JsonProperty("mode")
   @SerializedName("mode")
   private
