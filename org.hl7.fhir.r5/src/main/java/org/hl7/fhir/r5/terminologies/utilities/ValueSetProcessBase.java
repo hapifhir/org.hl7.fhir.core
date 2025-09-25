@@ -1,8 +1,11 @@
 package org.hl7.fhir.r5.terminologies.utilities;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ITerminologyOperationDetails;
@@ -24,15 +27,39 @@ import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 
+import org.hl7.fhir.r5.terminologies.expansion.OperationIsTooCostly;
+import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
+import javax.annotation.Nonnull;
+
 @MarkedToMoveToAdjunctPackage
 public class ValueSetProcessBase {
+
+  public class UnknownValueSetException extends FHIRException {
+
+    protected UnknownValueSetException() {
+      super();
+    }
+
+    protected UnknownValueSetException(String message, Throwable cause) {
+      super(message, cause);
+    }
+
+    protected UnknownValueSetException(String message) {
+      super(message);
+    }
+
+    protected UnknownValueSetException(Throwable cause) {
+      super(cause);
+    }
+  }
 
   public static class TerminologyOperationDetails implements ITerminologyOperationDetails {
 
@@ -51,7 +78,7 @@ public class ValueSetProcessBase {
   }
   
   public enum OpIssueCode {
-    NotInVS, ThisNotInVS, InvalidCode, Display, DisplayComment, NotFound, CodeRule, VSProcessing, InferFailed, StatusCheck, InvalidData, CodeComment;
+    NotInVS, ThisNotInVS, InvalidCode, Display, DisplayComment, NotFound, CodeRule, VSProcessing, InferFailed, StatusCheck, InvalidData, CodeComment, VersionError;
     
     public String toCode() {
       switch (this) {
@@ -61,12 +88,13 @@ public class ValueSetProcessBase {
       case InferFailed: return "cannot-infer";
       case InvalidCode: return "invalid-code";
       case NotFound: return "not-found";
-      case NotInVS: return "not-in-vs";
+        case NotInVS: return "not-in-vs";
       case InvalidData: return "invalid-data";
       case StatusCheck: return "status-check";
       case ThisNotInVS: return "this-code-not-in-vs";
       case VSProcessing: return "vs-invalid";
       case CodeComment: return "code-comment";
+      case VersionError: return "version-error";
       default:
         return "??";      
       }
@@ -76,7 +104,8 @@ public class ValueSetProcessBase {
   private ContextUtilities cu;
   protected TerminologyOperationContext opContext;
   protected List<String> requiredSupplements = new ArrayList<>();
-  
+  protected List<String> allErrors = new ArrayList<>();
+
   protected ValueSetProcessBase(IWorkerContext context, TerminologyOperationContext opContext) {
     super();
     this.context = context;
@@ -281,7 +310,60 @@ public class ValueSetProcessBase {
     }
     return s;
   }
-  
+
+  protected boolean versionsMatch(@Nonnull String system, @Nonnull String candidate, @Nonnull String criteria) {
+    if (system == null || candidate == null || criteria == null) {
+      return false;
+    }
+    CodeSystem cs = context.fetchCodeSystem(system);
+    VersionAlgorithm va = cs == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(cs.getVersionAlgorithm());
+    if (va == VersionAlgorithm.Unknown) {
+      va = VersionAlgorithm.guessFormat(candidate);
+    }
+    switch (va) {
+      case Unknown: return candidate.startsWith(criteria);
+      case SemVer: return VersionUtilities.isSemVer(candidate) ? VersionUtilities.versionMatches(criteria, candidate) : false;
+      case Integer: return candidate.equals(criteria);
+      case Alpha: return candidate.startsWith(criteria);
+      case Date:return candidate.startsWith(criteria);
+      case Natural: return candidate.startsWith(criteria);
+      default: return candidate.startsWith(criteria);
+    }
+  }
+
+  protected FHIRException failWithIssue(IssueType type, OpIssueCode code, String path, String msgId, Object... params) {
+    String msg = context.formatMessage(msgId, params);
+    List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
+    issues.addAll(makeIssue(IssueSeverity.ERROR, type, path, msg,  code, null, msgId));
+    throw new VSCheckerException(msg, issues, TerminologyServiceErrorClass.PROCESSING);
+  }
+
+  protected FHIRException fail(String msgId, Object... params) {
+    String msg = context.formatMessage(msgId, params);
+    allErrors.add(msg);
+    return new FHIRException(msg);
+  }
+
+  protected ValueSetProcessBase.UnknownValueSetException failWithUnknownVSException(String msgId, boolean check, Object... params) {
+    String msg = context.formatMessage(msgId, params);
+    allErrors.add(msg);
+    return new ValueSetProcessBase.UnknownValueSetException(msg);
+  }
+
+  protected OperationIsTooCostly failAsTooCostly(String msg) {
+    allErrors.add(msg);
+    return new OperationIsTooCostly(msg);
+  }
+
+  protected TerminologyServiceException failTSE(String msg) {
+    allErrors.add(msg);
+    return new TerminologyServiceException(msg);
+  }
+
+  public Collection<? extends String> getAllErrors() {
+    return allErrors;
+  }
+
   protected AlternateCodesProcessingRules altCodeParams = new AlternateCodesProcessingRules(false);
   protected AlternateCodesProcessingRules allAltCodes = new AlternateCodesProcessingRules(true);
 }

@@ -414,12 +414,12 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   
   public static boolean isInactive(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent def) throws FHIRException {
     StandardsStatus ss = ExtensionUtilities.getStandardsStatus(def);
-    if (ss == StandardsStatus.DEPRECATED || ss == StandardsStatus.WITHDRAWN) {
+    if (ss == StandardsStatus.WITHDRAWN) {
       return true;
     }
     for (ConceptPropertyComponent p : def.getProperty()) {
       if ("status".equals(p.getCode()) && p.hasValueStringType()) {
-        return "inactive".equals(p.getValueStringType().primitiveValue()) || "retired".equals(p.getValueStringType().primitiveValue()) || "deprecated".equals(p.getValueStringType().primitiveValue());
+        return Utilities.existsInList(p.getValueStringType().primitiveValue(), "inactive", "retired");
       }
       if ("inactive".equals(p.getCode()) && p.hasValueBooleanType()) {
         return p.getValueBooleanType().getValue();

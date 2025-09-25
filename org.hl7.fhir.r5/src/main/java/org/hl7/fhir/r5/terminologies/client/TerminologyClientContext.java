@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Set;
 
 import lombok.Getter;
+import lombok.Setter;
+import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -26,7 +28,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 public class TerminologyClientContext {
   public static final String MIN_TEST_VERSION = "1.6.0";
   public static final String TX_BATCH_VERSION = "1.7.8"; // actually, it's 17.7., but there was an error in the tx.fhir.org code around this
-  public static final String LATEST_VERSION = "1.8.0"; // dito
+  public static final String LATEST_VERSION = "1.9.0";
 
   public enum TerminologyClientContextUseType {
     expand, validate, readVS, readCS
@@ -63,9 +65,13 @@ public class TerminologyClientContext {
     }
   }
 
+  @Getter
   private static boolean allowNonConformantServers = false;
+  @Getter
+  @Setter
   private static boolean canAllowNonConformantServers = false;
 
+  @Getter
   private static boolean canUseCacheId;
 
   private ITerminologyClient client;
@@ -238,21 +244,21 @@ public class TerminologyClientContext {
 
       if (testVersion == null) {
         if (canAllowNonConformantServers) {
-          throw new ENoDump("The terminology server "+client.getAddress()+" is not approved for use with this software (it does not pass the required tests).\r\nIf you wish to use this server, add the parameter -authorise-non-conformant-tx-servers to the command line parameters");
+          throw new TerminologyServiceException("The terminology server "+client.getAddress()+" is not approved for use with this software (it does not pass the required tests).\r\nIf you wish to use this server, add the parameter -authorise-non-conformant-tx-servers to the command line parameters");
         } else {
-          throw new ENoDump("The terminology server "+client.getAddress()+" is not approved for use with this software (it does not pass the required tests)");
+          throw new TerminologyServiceException("The terminology server "+client.getAddress()+" is not approved for use with this software (it does not pass the required tests)");
         }
       } else if (!VersionUtilities.isThisOrLater(MIN_TEST_VERSION, testVersion, VersionUtilities.VersionPrecision.MINOR)) {
         if (canAllowNonConformantServers) {
-          throw new ENoDump("The terminology server "+client.getAddress()+" is not approved for use with this software as it is too old (test version = "+testVersion+").\r\nIf you wish to use this server, add the parameter -authorise-non-conformant-tx-servers to the command line parameters");
+          throw new TerminologyServiceException("The terminology server "+client.getAddress()+" is not approved for use with this software as it is too old (test version = "+testVersion+").\r\nIf you wish to use this server, add the parameter -authorise-non-conformant-tx-servers to the command line parameters");
         } else {
-          throw new ENoDump("The terminology server "+client.getAddress()+" is not approved for use with this software as it is too old (test version = "+testVersion+")");          
+          throw new TerminologyServiceException("The terminology server "+client.getAddress()+" is not approved for use with this software as it is too old (test version = "+testVersion+")");
         }
       } else if (!csParams) {
         if (canAllowNonConformantServers) {
-          throw new ENoDump("The terminology server "+client.getAddress()+" is not approved for use as it does not accept code systems in the tx-resource parameter.\r\nIf you wish to use this server, add the parameter -authorise-non-conformant-tx-servers to the command line parameters");
+          throw new TerminologyServiceException("The terminology server "+client.getAddress()+" is not approved for use as it does not accept code systems in the tx-resource parameter.\r\nIf you wish to use this server, add the parameter -authorise-non-conformant-tx-servers to the command line parameters");
         } else {
-          throw new ENoDump("The terminology server "+client.getAddress()+" is not approved for use as it does not accept code systems in the tx-resource parameter");          
+          throw new TerminologyServiceException("The terminology server "+client.getAddress()+" is not approved for use as it does not accept code systems in the tx-resource parameter");
         }
       } else {
         // all good
@@ -297,10 +303,6 @@ public class TerminologyClientContext {
     return client.getAddress();
   }
 
-  public static boolean isCanUseCacheId() {
-    return canUseCacheId;
-  }
-
   public static void setCanUseCacheId(boolean canUseCacheId) {
     TerminologyClientContext.canUseCacheId = canUseCacheId;
   }
@@ -314,20 +316,8 @@ public class TerminologyClientContext {
     }
   }
 
-  public static boolean isAllowNonConformantServers() {
-    return allowNonConformantServers;
-  }
-
   public static void setAllowNonConformantServers(boolean allowNonConformantServers) {
     TerminologyClientContext.allowNonConformantServers = allowNonConformantServers;
-  }
-
-  public static boolean isCanAllowNonConformantServers() {
-    return canAllowNonConformantServers;
-  }
-
-  public static void setCanAllowNonConformantServers(boolean canAllowNonConformantServers) {
-    TerminologyClientContext.canAllowNonConformantServers = canAllowNonConformantServers;
   }
 
 }

@@ -1,0 +1,210 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://fhir.de/CodeSystem/dimdi/icd-10-gm",
+  "version" : "2020",
+  "code" : "A54.4"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Gonokokkeninfektion des Muskel-Skelett-Systems",
+  "code" : "A54.4",
+  "system" : "http://fhir.de/CodeSystem/dimdi/icd-10-gm",
+  "version" : "2020",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "MSG_EXPERIMENTAL"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "status-check"
+      }],
+      "text" : "Reference to experimental CodeSystem http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://fhir.de/CodeSystem/dimdi/icd-10-gm",
+  "version" : "2020",
+  "code" : "M73.04"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Bursitis gonorrhoica[A54.4] : Hand",
+  "code" : "M73.04",
+  "system" : "http://fhir.de/CodeSystem/dimdi/icd-10-gm",
+  "version" : "2020",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "MSG_EXPERIMENTAL"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "status-check"
+      }],
+      "text" : "Reference to experimental CodeSystem http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://fhir.de/CodeSystem/dimdi/icd-10-gm",
+  "version" : "2020",
+  "code" : "A54.4† M73.04*",
+  "display" : "Bursitis gonorrhoica"
+}, "url": "http://fhir.de/ValueSet/dimdi/icd-10-gm", "version": "0.9.13", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "A54.4† M73.04*",
+  "system" : "http://fhir.de/CodeSystem/dimdi/icd-10-gm",
+  "version" : "2020",
+  "severity" : "error",
+  "error" : "The code system 'http://fhir.de/CodeSystem/dimdi/icd-10-gm' version '2021' for the versionless include in the ValueSet include is different to the one in the value ('2020'); The provided code 'http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020#A54.4† M73.04* ('Bursitis gonorrhoica')' was not found in the value set 'http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13'; Unknown code 'A54.4† M73.04*' in the CodeSystem 'http://fhir.de/CodeSystem/dimdi/icd-10-gm' version '2020'; Unknown code 'A54.4† M73.04*' in the CodeSystem 'http://fhir.de/CodeSystem/dimdi/icd-10-gm' version '2021'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "VALUESET_VALUE_MISMATCH_DEFAULT"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "vs-invalid"
+      }],
+      "text" : "The code system 'http://fhir.de/CodeSystem/dimdi/icd-10-gm' version '2021' for the versionless include in the ValueSet include is different to the one in the value ('2020')"
+    },
+    "location" : ["Coding.version"],
+    "expression" : ["Coding.version"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Unknown_Code_in_Version"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Unknown code 'A54.4† M73.04*' in the CodeSystem 'http://fhir.de/CodeSystem/dimdi/icd-10-gm' version '2021'"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Unknown_Code_in_Version"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Unknown code 'A54.4† M73.04*' in the CodeSystem 'http://fhir.de/CodeSystem/dimdi/icd-10-gm' version '2020'"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code 'http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020#A54.4† M73.04* ('Bursitis gonorrhoica')' was not found in the value set 'http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13'"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------

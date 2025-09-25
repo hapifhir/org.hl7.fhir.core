@@ -115,6 +115,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingCompo
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.BuildExtensions;
@@ -3522,23 +3523,21 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     // now, do we check the URI target?
     if (fetcher != null && !type.equals("uuid")) {
       boolean found;
-      try {
-        if (url.startsWith("#")) {
-          List<String> refs = new ArrayList<>();
-          int count = countTargetMatches(valContext.getRootResource(), url.substring(1), true, "$", refs);
-          found = count > 0;
-        } else {
-          found = isDefinitionURL(url) || (settings.isAllowExamples() && isExampleUrl(url)) /* || (url.startsWith("http://hl7.org/fhir/tools")) */ || isCommunicationsUrl(url) ||
-              SpecialExtensions.isKnownExtension(url) || isXverUrl(url) || SIDUtilities.isKnownSID(url) || isKnownNamespaceUri(url) || isRfcRef(url) || isKnownMappingUri(url) || oids.isKnownOID(url);
-          if (!found) {
-            found = fetcher.resolveURL(this, valContext, context.getBase().getPath(), url, type, type.equals("canonical"), context.getByType(type) != null ? context.getByType(type).getTargetProfile() : null);
-          } else if (SIDUtilities.isIncorrectSID(url)) {
-            warning(errors, "2025-08-29", IssueType.INFORMATIONAL, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_SID_INCORRECT, url);
-
-          }
+      if (url.startsWith("#")) {
+        List<String> refs = new ArrayList<>();
+        int count = countTargetMatches(valContext.getRootResource(), url.substring(1), true, "$", refs);
+        found = count > 0;
+      } else {
+        found = resolveUrl(valContext, type, context, url);
+        if (found && SIDUtilities.isIncorrectSID(url)) {
+          warning(errors, "2025-08-29", IssueType.INFORMATIONAL, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_SID_INCORRECT, url);
         }
-      } catch (IOException e1) {
-        found = false;
+      }
+      if (!found && url.startsWith("https:")) { // check to see whether
+        String insecureURL = url.replace("https://", "http://");
+        if (resolveUrl(valContext, type, context, insecureURL)) {
+          hint(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_WRONG_HTTPS, url, insecureURL);
+        }
       }
       if (!found) {
         if (internal) {
@@ -3629,6 +3628,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     return ok;
   }
+
+  private boolean resolveUrl(ValidationContext valContext, String type, ElementDefinition context, String url) {
+    try {
+      boolean found = isDefinitionURL(url) || (settings.isAllowExamples() && isExampleUrl(url)) /* || (url.startsWith("http://hl7.org/fhir/tools")) */ || isCommunicationsUrl(url) ||
+        SpecialExtensions.isKnownExtension(url) || isXverUrl(url) || SIDUtilities.isKnownSID(url) || isKnownNamespaceUri(url) || isRfcRef(url) || isKnownMappingUri(url) || oids.isKnownOID(url);
+      if (!found) {
+        return fetcher.resolveURL(this, valContext, context.getBase().getPath(), url, type, type.equals("canonical"), context.getByType(type) != null ? context.getByType(type).getTargetProfile() : null);
+      } else {
+        return true;
+      }
+    } catch (IOException ex) {
+       return false;
+    }
+ }
 
   private String checkManifest(String url) {
     if (url.contains("|")) {
@@ -8513,14 +8526,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, Coding c) {
     codingObserver.seeCode(stack, c);
     String lang = getValidationOptionsLanguage(stack);
-    return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(settings.withLanguage(lang), c, valueset)), c);
+    return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(settings.withLanguage(lang).withUseClient(!ValueSetUtilities.isServerSide(c)), c, valueset)), c);
   }
 
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, CodeableConcept cc) throws CheckCodeOnServerException {
     codingObserver.seeCode(stack, cc);
     try {
       String lang = getValidationOptionsLanguage(stack);
-      return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(settings.withLanguage(lang), cc, valueset)), cc);
+      return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(settings.withLanguage(lang).withUseClient(!ValueSetUtilities.hasServerSide(cc)), cc, valueset)), cc);
     } catch (Exception e) {
       throw new CheckCodeOnServerException(e);
     }

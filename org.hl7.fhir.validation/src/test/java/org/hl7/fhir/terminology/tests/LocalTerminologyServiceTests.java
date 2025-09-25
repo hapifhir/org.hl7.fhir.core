@@ -50,7 +50,8 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
     private JsonObject test;
   }
 
-  private static final String SERVER = FhirSettings.getTxFhirLocal();  
+//  private static final String SERVER = FhirSettings.getTxFhirLocal();
+  private static final String SERVER = "http://127.0.0.1:3001/r4";
   // private static final String SERVER = "https://r4.ontoserver.csiro.au/fhir";
 
   private static boolean localTxRunning() throws IOException {

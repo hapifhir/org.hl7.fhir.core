@@ -43,25 +43,12 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.model.BooleanType;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.DateTimeType;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.IntegerType;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
-import org.hl7.fhir.r5.model.Identifier;
-import org.hl7.fhir.r5.model.Meta;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
-import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
@@ -111,11 +98,34 @@ public class ValueSetUtilities extends TerminologyUtilities {
 
   }
 
-
   public static boolean isServerSide(String url) {
-    return Utilities.existsInList(url, "http://hl7.org/fhir/sid/cvx");
+    // this is required to work around placeholders or bad definitions in THO (cvx)
+    return Utilities.existsInList(url,
+      "http://hl7.org/fhir/sid/cvx",
+      "http://loinc.org",
+      "http://snomed.info/sct",
+      "http://www.nlm.nih.gov/research/umls/rxnorm",
+      "http://www.ama-assn.org/go/cpt",
+      "http://hl7.org/fhir/ndfrt",
+      "http://hl7.org/fhir/sid/ndc", 
+      "http://hl7.org/fhir/sid/icd-10",
+      "http://hl7.org/fhir/sid/icd-9-cm",
+      "http://hl7.org/fhir/sid/icd-10-cm");
   }
-  
+
+  public static boolean isServerSide(Coding c) {
+    return isServerSide(c.getSystem());
+  }
+
+  public static boolean hasServerSide(CodeableConcept cc) {
+    for (Coding c : cc.getCoding()) {
+      if (isServerSide(c)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public static ValueSet makeShareable(ValueSet vs) {
     if (!vs.hasExperimental()) {
       vs.setExperimental(false);

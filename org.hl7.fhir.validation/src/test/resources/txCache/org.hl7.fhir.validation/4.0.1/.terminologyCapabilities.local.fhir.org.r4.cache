@@ -1,12 +1,12 @@
 {
   "resourceType" : "TerminologyCapabilities",
   "id" : "FhirServer",
-  "url" : "http://localhost/r4/TerminologyCapabilities/tx",
+  "url" : "http://localhost:3001/r4/TerminologyCapabilities/tx",
   "version" : "2.0.0",
   "name" : "FHIRReferenceServerTerminologyCapabilities",
   "title" : "FHIR Reference Server Terminology Capability Statement",
   "status" : "active",
-  "date" : "2025-09-08T06:01:47.471Z",
+  "date" : "2025-09-23T18:33:29.046Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",

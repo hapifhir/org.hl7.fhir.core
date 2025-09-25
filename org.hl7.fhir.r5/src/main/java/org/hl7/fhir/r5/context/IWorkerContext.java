@@ -472,7 +472,9 @@ public interface IWorkerContext {
    */
   public CodeSystem fetchSupplementedCodeSystem(String system);
   public CodeSystem fetchSupplementedCodeSystem(String system, String version);
+  @Deprecated
   public CodeSystem fetchSupplementedCodeSystem(String system, FhirPublication fhirVersion);
+  @Deprecated
   public CodeSystem fetchSupplementedCodeSystem(String system, String version, FhirPublication fhirVersion);
 
   /**
