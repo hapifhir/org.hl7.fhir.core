@@ -33,7 +33,7 @@ jobs:
           OSSINDEX_USERNAME:
             ${{ secrets.OSSINDEX_USERNAME }}
           OSSINDEX_PASSWORD:
-            ${{ secrets.OSSINDEX_USERNAME }}
+            ${{ secrets.OSSINDEX_PASSWORD }}
         run: |
           mvn -DskipTests install -P OWASP_CHECK -DossIndexUsername=$OSSINDEX_USERNAME -DossIndexPassword=$OSSINDEX_PASSWORD
 
@@ -43,7 +43,7 @@ jobs:
           OSSINDEX_USERNAME:
             ${{ secrets.OSSINDEX_USERNAME }}
           OSSINDEX_PASSWORD:
-            ${{ secrets.OSSINDEX_USERNAME }}
+            ${{ secrets.OSSINDEX_PASSWORD }}
         run: |
           mvn -DskipTests dependency-check:aggregate -P OWASP_CHECK -DossIndexUsername=$OSSINDEX_USERNAME -DossIndexPassword=$OSSINDEX_PASSWORD
 
