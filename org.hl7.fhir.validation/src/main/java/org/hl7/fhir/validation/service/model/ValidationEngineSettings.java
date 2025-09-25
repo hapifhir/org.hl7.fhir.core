@@ -187,6 +187,20 @@ public class ValidationEngineSettings {
     return this;
   }
 
+  //FIXME move to ValidationInstanceSettings
+  @JsonProperty("showTimes")
+  @SerializedName("showTimes")
+  private
+  boolean showTimes = false;
+
+  public boolean isShowTimes() {
+    return showTimes;
+  }
+
+  public void setShowTimes(boolean showTimes) {
+    this.showTimes = showTimes;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

@@ -29,19 +29,19 @@ import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.service.model.ValidationContext;
-import org.hl7.fhir.validation.service.model.FileInfo;
-import org.hl7.fhir.validation.service.model.ValidationEngineSettings;
-import org.hl7.fhir.validation.service.model.ValidationRequest;
+import org.hl7.fhir.validation.service.model.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+
+import javax.annotation.Nonnull;
 
 class ValidationServiceTests {
 
@@ -58,8 +58,25 @@ class ValidationServiceTests {
   void validationSessionTest() throws Exception {
     TestingUtilities.injectCorePackageLoader();
     SessionCache sessionCache = Mockito.spy(new PassiveExpiringSessionCache());
-    ValidationService myService = Mockito.spy(new ValidationService(sessionCache));
+    ValidationEngine engine = Mockito.mock(ValidationEngine.class);
+    try {
+      when(engine.validateAsFragments(any(), any(), any(), any())).thenReturn(new ValidatedFragments(List.of(),new ValidationTime()));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    } catch (EOperationOutcome e) {
+      throw new RuntimeException(e);
+    }
+    ValidationService myService = Mockito.spy(new ValidationService(sessionCache) {
 
+      @Nonnull
+      protected ValidationEngine buildValidationEngine(ValidationEngineSettings validationEngineSettings, ValidationContext validationContext, String definitions, TimeTracker timeTracker) {
+        return engine;
+      }
+
+      public ValidationEngine copyBaseEngine(ValidationEngine baseEngine) {
+        return engine;
+      }
+    });
     List<FileInfo> filesToValidate = getFilesToValidate();
 
     ValidationRequest request = new ValidationRequest().setValidationContext(new ValidationContext().setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"))).setFilesToValidate(filesToValidate);
@@ -87,17 +104,34 @@ class ValidationServiceTests {
   @Test
   void validationSessionBaseEngineTest() throws Exception {
     TestingUtilities.injectCorePackageLoader();
+    ValidationEngine engine = Mockito.mock(ValidationEngine.class);
+    try {
+      when(engine.validateAsFragments(any(), any(), any(), any())).thenReturn(new ValidatedFragments(List.of(),new ValidationTime()));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    } catch (EOperationOutcome e) {
+      throw new RuntimeException(e);
+    }
+    ValidationService myService = Mockito.spy(new ValidationService() {
 
-    ValidationService myService = Mockito.spy(new ValidationService());
+      @Nonnull
+      protected ValidationEngine buildValidationEngine(ValidationEngineSettings validationEngineSettings, ValidationContext validationContext, String definitions, TimeTracker timeTracker) {
+        return engine;
+      }
 
-    ValidationContext baseContext = new ValidationContext().setBaseEngine("myDummyKey").setSv("4.0.1").setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"));
-    ValidationEngineSettings baseEngineSettings = new ValidationEngineSettings();
+      public ValidationEngine copyBaseEngine(ValidationEngine baseEngine) {
+        return engine;
+      }
+    });
+
+    ValidationContext baseContext = new ValidationContext().setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"));
+    ValidationEngineSettings baseEngineSettings = new ValidationEngineSettings().setBaseEngine("myDummyKey").setSv("4.0.1");
     myService.putBaseEngine("myDummyKey", baseEngineSettings, baseContext);
     verify(myService, Mockito.times(1)).buildValidationEngine(any(), any(), any(), any());
 
     {
       final List<FileInfo> filesToValidate = getFilesToValidate();
-      final ValidationRequest request = new ValidationRequest().setValidationContext(new ValidationContext().setSv("4.0.1")).setFilesToValidate(filesToValidate);
+      final ValidationRequest request = new ValidationRequest().setValidationEngineSettings(new ValidationEngineSettings().setSv("4.0.1")).setFilesToValidate(filesToValidate);
       myService.validateSources(request);
 
       verify(myService, Mockito.times(0)).getBaseEngine("myDummyKey");
@@ -106,11 +140,29 @@ class ValidationServiceTests {
 
     {
       final List<FileInfo> filesToValidate = getFilesToValidate();
-      final ValidationRequest request = new ValidationRequest().setValidationContext(new ValidationContext().setBaseEngine("myDummyKey")).setFilesToValidate(filesToValidate);
+      final ValidationRequest request = new ValidationRequest().setValidationContext(new ValidationContext().setSv("4.0.1")).setFilesToValidate(filesToValidate);
+      myService.validateSources(request);
+
+      verify(myService, Mockito.times(0)).getBaseEngine("myDummyKey");
+      verify(myService, Mockito.times(3)).buildValidationEngine(any(), any(), any(), any());
+    }
+
+    {
+      final List<FileInfo> filesToValidate = getFilesToValidate();
+      final ValidationRequest request = new ValidationRequest().setValidationEngineSettings(new ValidationEngineSettings().setBaseEngine("myDummyKey")).setFilesToValidate(filesToValidate);
       myService.validateSources(request);
 
       verify(myService, Mockito.times(1)).getBaseEngine("myDummyKey");
-      verify(myService, Mockito.times(2)).buildValidationEngine(any(), any(), any(), any());
+      verify(myService, Mockito.times(3)).buildValidationEngine(any(), any(), any(), any());
+    }
+
+    {
+      final List<FileInfo> filesToValidate = getFilesToValidate();
+      final ValidationRequest request = new ValidationRequest().setValidationContext(new ValidationContext().setBaseEngine("myDummyKey")).setFilesToValidate(filesToValidate);
+      myService.validateSources(request);
+
+      verify(myService, Mockito.times(2)).getBaseEngine("myDummyKey");
+      verify(myService, Mockito.times(3)).buildValidationEngine(any(), any(), any(), any());
     }
   }
 
@@ -326,7 +378,7 @@ class ValidationServiceTests {
       }
 
       @Override
-      protected void loadIgsAndExtensions(ValidationEngine validationEngine, ValidationContext validationContext, TimeTracker timeTracker) {
+      protected void loadIgsAndExtensions(ValidationEngine validationEngine, List<String> igs, boolean isRecursive) {
         //Don't care. Do nothing.
       }
     };

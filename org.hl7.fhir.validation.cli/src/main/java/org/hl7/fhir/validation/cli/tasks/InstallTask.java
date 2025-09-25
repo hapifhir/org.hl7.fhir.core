@@ -37,6 +37,6 @@ public class InstallTask extends ValidationEngineTask {
 
   @Override
   public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
-    validationService.install(validationContext, validationEngine);
+    validationService.install(validationContext.getIgs(), validationEngine);
   }
 }
