@@ -9,6 +9,8 @@ import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 
+import java.util.*;
+
 @MarkedToMoveToAdjunctPackage
 public class TypeManager {
 
