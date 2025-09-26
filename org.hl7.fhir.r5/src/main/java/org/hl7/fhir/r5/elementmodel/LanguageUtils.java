@@ -861,8 +861,10 @@ public class LanguageUtils {
     // (if it wasn't generated) or will leave the narrative as null, which will force it to be generated for this language
     if (!lang.equals(defaultLang)) {
       XhtmlNode defaultDiv = divForLang(xhtml, defaultLang, resourceLang, defaultLang, null);
-      if (scanForGeneratedNarrative(defaultDiv, defaultLang)) {
-        return null;
+      if (defaultDiv != null) {
+        if (scanForGeneratedNarrative(defaultDiv, defaultLang)) {
+          return null;
+        }
       }
       
       if (errors != null)
@@ -880,7 +882,7 @@ public class LanguageUtils {
   }
     
   private static boolean scanForGeneratedNarrative(XhtmlNode x, String lang, RenderingI18nContext rc) {
-    
+
     if (x.getContent() != null && x.getContent().contains( rc.formatPhrase(RenderingContext.PROF_DRIV_GEN_NARR_TECH, "", "").trim())) {
       return true;
     }

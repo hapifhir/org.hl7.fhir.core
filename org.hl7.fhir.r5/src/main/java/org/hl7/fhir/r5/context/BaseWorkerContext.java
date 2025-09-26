@@ -1107,7 +1107,32 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       p = new Parameters();
     }
     for (ParametersParameterComponent pp : pIn.getParameter()) {
-      p.getParameter().add(pp);
+      if (Utilities.existsInList(pp.getName(), "designation", "filterProperty", "useSupplement", "property", "tx-resource")) {
+        // these parameters are additive
+        p.getParameter().add(pp.copy());
+      } else {
+        ParametersParameterComponent existing = null;
+        if (Utilities.existsInList(pp.getName(), "system-version", "check-system-version", "force-system-version",
+          "default-valueset-version", "check-valueset-version", "force-valueset-version") && pp.hasValue() && pp.getValue().isPrimitive()) {
+          String url = pp.getValue().primitiveValue();
+          if (url.contains("|")) {
+            url = url.substring(0, url.indexOf("|") + 1);
+          }
+          for (ParametersParameterComponent t : p.getParameter()) {
+            if (pp.getName().equals(t.getName()) && t.hasValue() && t.getValue().isPrimitive() && t.getValue().primitiveValue().startsWith(url)) {
+              existing = t;
+              break;
+            }
+          }
+        } else {
+          existing = p.getParameter(pp.getName());
+        }
+        if (existing != null) {
+          existing.setValue(pp.getValue());
+        } else {
+          p.getParameter().add(pp.copy());
+        }
+      }
     }
     p.setParameter("_limit",new IntegerType("10000"));
     p.setParameter("_incomplete", new BooleanType("true"));

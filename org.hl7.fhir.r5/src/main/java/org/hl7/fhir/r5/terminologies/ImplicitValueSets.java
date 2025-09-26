@@ -122,6 +122,7 @@ public class ImplicitValueSets {
       vs.setCopyright("This value set includes content from SNOMED CT, which is copyright © 2002+ International Health Terminology Standards Development Organisation (SNOMED International), and distributed by agreement between SNOMED International and HL7. Implementer use of SNOMED CT is not covered by this agreement");
       vs.setStatus(PublicationStatus.ACTIVE);
       vs.getCompose().addInclude().setSystem("http://snomed.info/sct");
+      vs.setWebPath("https://browser.ihtsdotools.org/");
       return vs;
     } else if (query.startsWith("fhir_vs=isa/")) {
       String sct = query.substring(12);

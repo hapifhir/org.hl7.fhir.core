@@ -1037,7 +1037,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String SDR_FROM = "SDR_FROM";
   public static final String SDR_SRC_FHIR = "SDR_SRC_FHIR";
   public static final String SDR_SRC_IG = "SDR_SRC_IG";
-  public static final String SDR_SRC_PACK = "SDR_SRC_PACK";
   public static final String SDR_CODE_FROM = "SDR_CODE_FROM";
   public static final String SDR_ALL_ELEM = "SDR_ALL_ELEM";
   public static final String SDR_ALL_EXT = "SDR_ALL_EXT";
@@ -1110,7 +1109,14 @@ public class RenderingI18nContext extends I18nBase {
   public static final String ACTOR_DERIVED_FROM_NONE = "ACTOR_DERIVED_FROM_NONE";
   public static final String VALUE_SET_NEEDS_SUPPL = "VALUE_SET_NEEDS_SUPPL";
   public static final String SD_XIG_LINK = "SD_XIG_LINK";
-
+  public static final String VS_VERSION_STATED = "VS_VERSION_STATED";
+  public static final String VS_VERSION_WILDCARD = "VS_VERSION_WILDCARD";
+  public static final String VS_VERSION_BY_PACKAGE = "VS_VERSION_BY_PACKAGE";
+  public static final String VS_VERSION_THIS_PACKAGE = "VS_VERSION_THIS_PACKAGE";
+  public static final String VS_VERSION_WILDCARD_BY_PACKAGE = "VS_VERSION_WILDCARD_BY_PACKAGE";
+  public static final String VS_VERSION_FOUND = "VS_VERSION_FOUND";
+  public static final String VS_VERSION_NONE = "VS_VERSION_NONE";
+  public static final String VS_VERSION_NOTHING = "VS_VERSION_NOTHING";
 
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";
