@@ -168,6 +168,29 @@ public class Utilities {
     return !EXCLUDED_FILES.contains(k);
   }
 
+  public static String insertBreakingSpaces(String text, Set<Character> breakingChars) {
+    if (text == null || text.isEmpty() || breakingChars == null || breakingChars.isEmpty()) {
+      return text;
+    }
+
+    StringBuilder result = new StringBuilder();
+    int charsSinceLastBreak = 0;
+
+    for (int i = 0; i < text.length(); i++) {
+      char currentChar = text.charAt(i);
+      result.append(currentChar);
+      charsSinceLastBreak++;
+
+      // If we've gone 20+ chars and current char is a breaking char, insert zero-width space
+      if (charsSinceLastBreak >= 20 && breakingChars.contains(currentChar)) {
+        result.append('\u200B');
+        charsSinceLastBreak = 0;
+      }
+    }
+
+    return result.toString();
+  }
+
   public enum DecimalStatus {
     BLANK, SYNTAX, RANGE, OK
   }
