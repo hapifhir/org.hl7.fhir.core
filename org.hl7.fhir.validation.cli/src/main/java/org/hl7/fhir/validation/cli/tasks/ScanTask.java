@@ -2,9 +2,9 @@ package org.hl7.fhir.validation.cli.tasks;
 
 import org.hl7.fhir.validation.Scanner;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
-import org.hl7.fhir.validation.service.utils.EngineMode;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
@@ -29,7 +29,7 @@ public class ScanTask extends ValidationEngineTask {
 
   @Override
   public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
-    return validationContext.getMode() == EngineMode.SCAN;
+    return Params.hasParam(args, Params.SCAN);
   }
 
   @Override
