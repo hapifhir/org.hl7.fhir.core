@@ -3485,6 +3485,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       for (StructureDefinition t : context.fetchResourcesByType(StructureDefinition.class)) {
         if (t.hasSourcePackage() && t.getSourcePackage().getId().startsWith("hl7.fhir.r") && v.equals(t.getType())) {
           tok = true;
+        } else if (v.equals(t.getType())) {
+          if (t.hasUserData(UserDataNames.loader_custom_resource)) {
+            tok = true;
+          }
         }
       }
       if (tok) {
@@ -3844,7 +3848,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (!"url".equals(p[1])) {
       return false;
     }
-    return VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains((p[0]));
+    return
+      Utilities.existsInList(p[0], "CanonicalResource", "MetadataResource") ||
+      VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains((p[0]));
   }
 
   private boolean containsHtmlTags(String cnt) {
