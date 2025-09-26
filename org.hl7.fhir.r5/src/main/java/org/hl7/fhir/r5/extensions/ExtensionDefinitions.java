@@ -218,4 +218,6 @@ public class ExtensionDefinitions {
   public static final String EXT_TYPE_OPERATION = "http://hl7.org/fhir/tools/StructureDefinition/type-operation";
   public static final String EXT_VALUESET_DEPRECATED = "http://hl7.org/fhir/StructureDefinition/valueset-deprecated";
   public static final String EXT_SCORE = "http://hl7.org/fhir/tools/StructureDefinition/scoring-rule";
+  public static final String EXT_ADDITIONAL_COMPARTMENT = "http://hl7.org/fhir/tools/StructureDefinition/additional-resource-compartment";
+  public static final String EXT_ADDITIONAL_REFERENCE = "http://hl7.org/fhir/tools/StructureDefinition/additional-resource-reference";
 }

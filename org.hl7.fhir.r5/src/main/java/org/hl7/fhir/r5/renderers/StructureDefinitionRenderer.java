@@ -1575,23 +1575,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             } 
           } 
         }
-        if (logicalModel) {
-          List<SourcedElementDefinition> ancestors = new ArrayList<>(); 
-          getAncestorElements(new ArrayList<>(), profile, ancestors); 
-          if (ancestors.size() > 0) { 
-            c.addPiece(gen.new Piece("br")); 
-            c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_ELEMENTS), null)); 
-            boolean first = true; 
-            for (SourcedElementDefinition ed : ancestors) { 
-              if (first) 
-                first = false; 
-              else 
-                c.addPiece(gen.new Piece(null, ", ", null)); 
-              c.addPiece(gen.new Piece(ed.getProfile().getWebPath(), (isAttr(ed) ? "@" : "")+ed.getDefinition().getName(), ed.getDefinition().getDefinition())); 
-            }      
-          } 
-        } 
-      } 
+      }
       if (definition.getPath().endsWith("url") && definition.hasFixed()) { 
         c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, "\""+buildJson(definition.getFixed())+"\"", null).addStyle("color: darkgreen"))); 
       } else { 
@@ -1640,8 +1624,28 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             c.getPieces().add(gen.new Piece(ref, fullUrl, null)); 
  
           } 
-        } 
- 
+        }
+
+        if (root) {
+          if (profile.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+            List<SourcedElementDefinition> ancestors = new ArrayList<>();
+            getAncestorElements(new ArrayList<>(), profile, ancestors);
+            if (ancestors.size() > 0) {
+              c.addPiece(gen.new Piece("br"));
+              c.addPiece(gen.new Piece("br"));
+              c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_ELEMENTS), null));
+              boolean first = true;
+              for (SourcedElementDefinition ed : ancestors) {
+                if (first)
+                  first = false;
+                else
+                  c.addPiece(gen.new Piece(null, ", ", null));
+                c.addPiece(gen.new Piece(ed.getProfile().getWebPath(), (isAttr(ed) ? "@" : "") + ed.getDefinition().getName(), ed.getDefinition().getDefinition()));
+              }
+            }
+          }
+        }
+
         if (definition.hasSlicing()) { 
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
           c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_SLICE))+": ", null).addStyle("font-weight:bold")); 

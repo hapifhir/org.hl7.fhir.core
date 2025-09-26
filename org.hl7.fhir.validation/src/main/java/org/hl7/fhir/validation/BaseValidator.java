@@ -658,10 +658,19 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   protected ValidationMessage addValidationMessage(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, String msg, IssueSeverity theSeverity, Source theSource, String id) {
     ValidationMessage validationMessage = new ValidationMessage(theSource, type, line, col, path, msg, theSeverity).setMessageId(id);
     validationMessage.setRuleDate(ruleDate);
-    if (doingLevel(theSeverity) && checkMsgId(id, validationMessage)) {
+    if (doingLevel(theSeverity) && !hasMessage(errors, validationMessage) && checkMsgId(id, validationMessage)) {
       errors.add(validationMessage);
     }
     return validationMessage;
+  }
+
+  private boolean hasMessage(List<ValidationMessage> errors, ValidationMessage newMsg) {
+    for (ValidationMessage m : errors) {
+      if (m.preciseMatch(newMsg)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public boolean checkMsgId(String id, ValidationMessage vm) { 
