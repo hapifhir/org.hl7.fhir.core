@@ -363,14 +363,9 @@ public class Params {
         validationContext.setHintAboutNonMustSupport(true);
       } else if (args[i].equals(TO_VERSION)) {
         validationContext.setTargetVer(args[++i]);
-        validationContext.setMode(EngineMode.VERSION);
       } else if (args[i].equals(PACKAGE_NAME)) {
         validationContext.setPackageName(args[++i]);
-        if (!hasParam(args, "-re-package")) {
-          validationContext.setMode(EngineMode.CODEGEN);
-        }
       } else if (args[i].equals(TX_PACK)) {
-        validationContext.setMode(EngineMode.RE_PACKAGE);
         String pn = args[++i];
         if (pn != null) {
           if (pn.contains(",")) {
@@ -384,7 +379,6 @@ public class Params {
         validationContext.getModeParams().add("tx");
         validationContext.getModeParams().add("expansions");
       } else if (args[i].equals(RE_PACK)) {
-        validationContext.setMode(EngineMode.RE_PACKAGE);
         String pn = args[++i];
         if (pn != null) {
           if (pn.contains(",")) {
@@ -408,38 +402,24 @@ public class Params {
         validationContext.setCanDoNative(false);
       } else if (args[i].equals(TRANSFORM)) {
         validationContext.setMap(args[++i]);
-        validationContext.setMode(EngineMode.TRANSFORM);
       } else if (args[i].equals(FORMAT)) {
         validationContext.setFormat(FhirFormat.fromCode(args[++i]));
       } else if (args[i].equals(LANG_TRANSFORM)) {
         validationContext.setLangTransform(args[++i]);
-        validationContext.setMode(EngineMode.LANG_TRANSFORM);
       } else if (args[i].equals(LANG_REGEN)) {
         validationContext.addLangRegenParam(args[++i]);
         validationContext.addLangRegenParam(args[++i]);
         validationContext.addLangRegenParam(args[++i]);
-        validationContext.setMode(EngineMode.LANG_REGEN);
       } else if (args[i].equals(EXP_PARAMS)) {
         validationContext.setExpansionParameters(args[++i]);
       } else if (args[i].equals(COMPILE)) {
         validationContext.setMap(args[++i]);
-        validationContext.setMode(EngineMode.COMPILE);
-      } else if (args[i].equals(CODEGEN)) {
-        validationContext.setMode(EngineMode.CODEGEN);
       } else if (args[i].equals(FACTORY)) {
-        validationContext.setMode(EngineMode.FACTORY);
         validationContext.setSource(args[++i]);
-      } else if (args[i].equals(NARRATIVE)) {
-        validationContext.setMode(EngineMode.NARRATIVE);
-      } else if (args[i].equals(SPREADSHEET)) {
-        validationContext.setMode(EngineMode.SPREADSHEET);
-      } else if (args[i].equals(SNAPSHOT)) {
-        validationContext.setMode(EngineMode.SNAPSHOT);
-      } else if (args[i].equals(INSTALL)) {
-        validationContext.setMode(EngineMode.INSTALL);
       } else if (args[i].equals(RUN_TESTS)) {
         // TODO setBaseTestingUtils test directory
-        validationContext.setMode(EngineMode.RUN_TESTS);
+        //This did nothing? RUN_TESTS has no corresponding shouldExecuteTask
+        //validationContext.setMode(EngineMode.RUN_TESTS);
       } else if (args[i].equals(SECURITY_CHECKS)) {
         validationContext.setSecurityChecks(true);
       } else if (args[i].equals(CRUMB_TRAIL)) {
@@ -484,8 +464,6 @@ public class Params {
         } else if (!Utilities.existsInList(Utilities.getFileExtension(f.getName()), "json", "txt")) {
           throw new Error("Advisor file "+ validationContext.getAdvisorFile()+" must be a .json or a .txt file");
         }
-      } else if (args[i].equals(SCAN)) {
-        validationContext.setMode(EngineMode.SCAN);
       } else if (args[i].equals(TERMINOLOGY)) {
         if (i + 1 == args.length)
           throw new Error("Specified -tx without indicating terminology server");
@@ -609,12 +587,9 @@ public class Params {
             validationContext.setWatchSettleTime(readInteger(WATCH_SETTLE_TIME, args[++i]));
           }      } else if (args[i].startsWith(X)) {
         i++;
-      } else if (args[i].equals(CONVERT)) {
-        validationContext.setMode(EngineMode.CONVERT);
       } else if (args[i].equals(SERVER)) {
         i++;
       } else if (args[i].equals(FHIRPATH)) {
-        validationContext.setMode(EngineMode.FHIRPATH);
         if (validationContext.getFhirpath() == null)
           if (i + 1 == args.length)
             throw new Error("Specified -fhirpath without indicating a FHIRPath expression");

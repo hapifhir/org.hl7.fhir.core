@@ -7,10 +7,10 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.cli.Display;
-import org.hl7.fhir.validation.service.utils.EngineMode;
 import org.hl7.fhir.validation.special.PackageReGenerator;
 import org.hl7.fhir.validation.special.PackageReGenerator.ExpansionPackageGeneratorOutputType;
 import org.hl7.fhir.validation.special.PackageReGenerator.ExpansionPackageGeneratorScope;
@@ -38,7 +38,8 @@ public class RePackageTask extends ValidationEngineTask {
 
   @Override
   public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
-    return validationContext.getMode() == EngineMode.RE_PACKAGE;
+    return Params.hasParam(args, Params.TX_PACK)
+      || Params.hasParam(args, Params.RE_PACK) ;
   }
 
   @Override
