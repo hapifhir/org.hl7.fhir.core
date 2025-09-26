@@ -125,12 +125,11 @@ public class BundleRenderer extends ResourceRenderer {
             root.para().addText(formatPhrase(RenderingContext.BUNDLE_RESOURCE, r.fhirType()));
             XhtmlNode xn = r.getNarrative();
             if (xn == null || xn.isEmpty()) {
+              xn = new XhtmlNode(NodeType.Element, "div");
               ResourceRenderer rr = RendererFactory.factory(r, context);
               try {
-                xn = new XhtmlNode(NodeType.Element, "div"); 
                 rr.buildNarrative(new RenderingStatus(), xn, r);
               } catch (Exception e) {
-                xn = new XhtmlNode();
                 xn.para().b().tx(context.formatPhrase(RenderingContext.BUNDLE_REV_EXCP, e.getMessage()) + " ");
               }
             } else {
