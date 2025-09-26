@@ -899,14 +899,19 @@ public class RenderingContext extends RenderingI18nContext {
   }
 
 
-  public String getTranslated(PrimitiveType<?> t) {
-
-      String v = ExtensionUtilities.getLanguageTranslation(t, getLocale().toLanguageTag());
+  public String getTranslated(PrimitiveType<?>... tl) {
+    for (PrimitiveType<?> t : tl) {
+      StringType v = ExtensionUtilities.getLanguageTranslationElement(t, getLocale().toLanguageTag());
       if (v != null) {
-        return v;
+        return v.primitiveValue();
       }
-
-    return t.asStringValue();
+    }
+    for (PrimitiveType<?> t : tl) {
+      if (t.hasValue()) {
+        return t.primitiveValue();
+      }
+    }
+    return null;
   }
 
   public String getTranslated(ResourceWrapper t) {
@@ -927,17 +932,25 @@ public class RenderingContext extends RenderingI18nContext {
     return t.primitiveValue();
   }
 
-  public StringType getTranslatedElement(PrimitiveType<?> t) {
-    StringType v = ExtensionUtilities.getLanguageTranslationElement(t, getLocale().toLanguageTag());
-    if (v != null) {
-      return v;
+  public StringType getTranslatedElement(PrimitiveType<?>... tl) {
+    for (PrimitiveType<?> t : tl) {
+      StringType v = ExtensionUtilities.getLanguageTranslationElement(t, getLocale().toLanguageTag());
+      if (v != null) {
+        return v;
+      }
     }
-    if (t instanceof StringType) {
-      return (StringType) t;
-    } else {
-      return new StringType(t.asStringValue());
+    for (PrimitiveType<?> t : tl) {
+      if (t.hasValue()) {
+        if (t instanceof StringType) {
+          return (StringType) t;
+        } else {
+          return new StringType(t.asStringValue());
+        }
+      }
     }
+    return null;
   }
+
 
   public String getTranslatedCode(Base b, String codeSystem) {
     if (b instanceof org.hl7.fhir.r5.model.Element) {
