@@ -1,12 +1,5 @@
 package org.hl7.fhir.r5.context;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -34,6 +27,7 @@ public class TypeManager {
 
   public void reload() {
     typeDefinitions.clear();
+    fhirTypeDefinitions.clear();
     primitiveNames.clear();
     dataTypeNames.clear();
     for (CanonicalResourceManager<StructureDefinition>.CachedCanonicalResource<StructureDefinition> cr : structures.getCachedList()) {
