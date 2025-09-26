@@ -13,6 +13,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
+import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -27,58 +28,75 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A POJO for storing the flags/values for the CLI validator.
+ *
+ * @deprecated This class will be replaced with more a more modular set of POJOs that better separate concerns like
+ * ValidationEngine instantiation, InstanceValidator instantiation, etc. It will be maintained for backwards
+ * compatibility, but will eventually be removed.
  */
+@Deprecated(since="2025-09-17")
 public class ValidationContext {
 
+  //NOT A COMMAND LINE OPTION
+  // Now in ValidationEngineSettings
   @JsonProperty("baseEngine")
   @SerializedName("baseEngine")
-  private
-  String baseEngine = null;
+  private String baseEngine = null;
+
+  // Now in ValidationEngineSettings
   @JsonProperty("doNative")
   @SerializedName("doNative")
-  private
-  boolean doNative = false;
+  private boolean doNative = false;
+
+  // Now in ValidationEngineSettings
   @JsonProperty("hintAboutNonMustSupport")
   @SerializedName("hintAboutNonMustSupport")
   private
   boolean hintAboutNonMustSupport = false;
+
   @JsonProperty("recursive")
   @SerializedName("recursive")
   private
   boolean recursive = false;
+
   @JsonProperty("showMessagesFromReferences")
   @SerializedName("showMessagesFromReferences")
   private
   boolean showMessagesFromReferences = false;
+
   @JsonProperty("doDebug")
   @SerializedName("doDebug")
-  private
-  boolean doDebug = false;
+  private boolean doDebug = false;
+
+  // Now in ValidationEngineSettings
   @JsonProperty("assumeValidRestReferences")
   @SerializedName("assumeValidRestReferences")
-  private
-  boolean assumeValidRestReferences = false;
+  private boolean assumeValidRestReferences = false;
+
   @JsonProperty("checkReferences")
   @SerializedName("checkReferences")
-  private
-  boolean checkReferences = false;
+  private boolean checkReferences = false;
+
   @JsonProperty("resolutionContext")
   @SerializedName("resolutionContext")
-  private
-  String resolutionContext = null;
-  
+  private String resolutionContext = null;
+
+  // Now in ValidationEngineSettings
   @JsonProperty("canDoNative")
   @SerializedName("canDoNative")
   private
   boolean canDoNative = false;
+
   @JsonProperty("noInternalCaching")
   @SerializedName("noInternalCaching")
   private
   boolean noInternalCaching = false; // internal, for when debugging terminology validation
+
+  // Now in ValidationEngineSettings
   @JsonProperty("noExtensibleBindingMessages")
   @SerializedName("noExtensibleBindingMessages")
   private
   boolean noExtensibleBindingMessages = false;
+
   @JsonProperty("noUnicodeBiDiControlChars")
   @SerializedName("noUnicodeBiDiControlChars")
   private
@@ -143,6 +161,8 @@ public class ValidationContext {
   @SerializedName("txServer")
   private
   String txServer = FhirSettings.getTxFhirProduction();
+
+  // Moved to ValidationEngineSettings
   @JsonProperty("sv")
   @SerializedName("sv")
   private
@@ -167,10 +187,14 @@ public class ValidationContext {
   @SerializedName("fhirpath")
   private
   String fhirpath = null;
+
+  //MOVED to ValidationEngineSettings
   @JsonProperty("snomedCT")
   @SerializedName("snomedCT")
   private
   String snomedCT = "900000000000207008";
+
+  // Moved to ValidationEngineSettings
   @JsonProperty("targetVer")
   @SerializedName("targetVer")
   private
@@ -187,19 +211,19 @@ public class ValidationContext {
   @JsonProperty("extensions")
   @SerializedName("extensions")
   private
-  List<String> extensions = new ArrayList<String>();
+  List<String> extensions = new ArrayList<>();
   @JsonProperty("certSources")
   @SerializedName("certSources")
   private
-  List<String> certSources = new ArrayList<String>();
+  List<String> certSources = new ArrayList<>();
   @JsonProperty("matchetypes")
   @SerializedName("matchetypes")
   private
-  List<String> matchetypes = new ArrayList<String>();
+  List<String> matchetypes = new ArrayList<>();
   @JsonProperty("igs")
   @SerializedName("igs")
   private
-  List<String> igs = new ArrayList<String>();
+  List<String> igs = new ArrayList<>();
   @JsonProperty("questionnaire")
   @SerializedName("questionnaire")
   private
@@ -211,24 +235,29 @@ public class ValidationContext {
   @JsonProperty("options")
   @SerializedName("options")
   private
-  List<String> options = new ArrayList<String>();
+  List<String> options = new ArrayList<>();
 
   @JsonProperty("profiles")
   @SerializedName("profiles")
   private
-  List<String> profiles = new ArrayList<String>();
+  List<String> profiles = new ArrayList<>();
   @JsonProperty("sources")
   @SerializedName("sources")
   private
-  List<String> sources = new ArrayList<String>();
+  List<String> sources = new ArrayList<>();
   @JsonProperty("inputs")
   @SerializedName("inputs")
   private
-  List<String> inputs = new ArrayList<String>();
+  List<String> inputs = new ArrayList<>();
   @JsonProperty("modeParams")
   @SerializedName("modeParams")
   private
-  Set<String> modeParams = new HashSet<String>();
+  Set<String> modeParams = new HashSet<>();
+
+  /* FIXME this should be deprecated. Its only real use is switching between different tasks in the CLI
+     and as a side-effect, requiring version to be inferred in ValidationService when INSTALL and VALIDATION modes
+     are used
+   */
 
   @JsonProperty("mode")
   @SerializedName("mode")
@@ -288,7 +317,7 @@ public class ValidationContext {
   @JsonProperty("locations")
   @SerializedName("locations")
   private
-  Map<String, String> locations = new HashMap<String, String>();
+  Map<String, String> locations = new HashMap<>();
 
   @JsonProperty("outputStyle")
   @SerializedName("outputStyle")
@@ -738,12 +767,15 @@ public class ValidationContext {
     return this;
   }
 
+  //FIXME never used this. This should be done in shouldExecuteTask via Params logic until we can replace this with a
+  // proper CLI
   @SerializedName("mode")
   @JsonProperty("mode")
   public EngineMode getMode() {
     return mode;
   }
 
+  //FIXME find all the places this is called and remove them. This should be purely set in shouldExecuteTask
   @SerializedName("mode")
   @JsonProperty("mode")
   public ValidationContext setMode(EngineMode mode) {
@@ -941,35 +973,8 @@ public class ValidationContext {
   @SerializedName("snomedCT")
   @JsonProperty("snomedCT")
   public String getSnomedCTCode() {
-    if ("intl".equals(snomedCT)) return "900000000000207008";
-    if ("us".equals(snomedCT)) return "731000124108";
-    if ("us+icd10cm".equals(snomedCT)) return "5991000124107";
-    if ("uk/clinical".equals(snomedCT)) return "999000021000000109";
-    if ("uk".equals(snomedCT)) return "83821000000107";
-    if ("au".equals(snomedCT)) return "32506021000036107";
-    if ("at".equals(snomedCT)) return "11000234105";
-    if ("ca".equals(snomedCT)) return "20611000087101";
-    if ("ca-en".equals(snomedCT)) return "20621000087109";
-    if ("ca-fr".equals(snomedCT)) return "20611000087101";
-    if ("nl".equals(snomedCT)) return "11000146104";
-    if ("se".equals(snomedCT)) return "45991000052106";
-    if ("es".equals(snomedCT)) return "449081005";
-    if ("es-ES".equals(snomedCT)) return "900000001000122104";
-    if ("ar".equals(snomedCT)) return "11000221109";
-    if ("dk".equals(snomedCT)) return "554471000005108";
-    if ("be".equals(snomedCT)) return "11000172109";
-    if ("ee".equals(snomedCT)) return "11000181102";
-    if ("fi".equals(snomedCT)) return "11000229106";
-    if ("de".equals(snomedCT)) return "11000274103";
-    if ("in".equals(snomedCT)) return "1121000189102";
-    if ("ie".equals(snomedCT)) return "11000220105";
-    if ("nl".equals(snomedCT)) return "11000146104";
-    if ("nz".equals(snomedCT)) return "21000210109";
-    if ("no".equals(snomedCT)) return "51000202101";
-    if ("kr".equals(snomedCT)) return "11000267109";
-    if ("se".equals(snomedCT)) return "45991000052106";
-    if ("ch".equals(snomedCT)) return "2011000195101";
-    if ("uy".equals(snomedCT)) return "5631000179106";
+    String number = SnomedUtilities.getCodeFromAlias(snomedCT);
+    if (number != null) return number;
     return snomedCT;
   }
 
@@ -1057,6 +1062,7 @@ public class ValidationContext {
     this.noInternalCaching = noInternalCaching;
     return this;
   }
+
 
   @SerializedName("noExtensibleBindingMessages")
   @JsonProperty("noExtensibleBindingMessages")

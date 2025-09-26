@@ -9,21 +9,43 @@ import com.google.gson.annotations.SerializedName;
 
 public class ValidationRequest {
 
+  @JsonProperty("validationEngineSettings")
+  @JsonAlias("validationEngineSettings") // alias for jackson deserialization
+  @SerializedName(value="validationEngineSettings")
+  private
+  ValidationEngineSettings validationEngineSettings;
+
   @JsonProperty("validationContext")
   @JsonAlias("cliContext") // alias for jackson deserialization
   @SerializedName(value="validationContext", alternate={"cliContext"})
   private
   ValidationContext validationContext;
 
+  /**
+   * @deprecated this method will be removed in the future. See  {@link ValidationContext}
+   * @return The validationContext
+   */
+  @JsonProperty("validationContext")
+  @Deprecated
+  public ValidationContext getValidationContext() {
+    return validationContext;
+  }
+
+  /**
+   * @deprecated this method will be removed in the future. See  {@link ValidationContext}
+   * @param validationContext the ValidationContext
+   * @return This instance
+   */
+  @JsonProperty("validationContext")
+  @Deprecated
+  public ValidationRequest setValidationContext(ValidationContext validationContext) {
+    this.validationContext = validationContext;
+    return this;
+  }
   @JsonProperty("filesToValidate")
   @SerializedName("filesToValidate")
   private
   List<FileInfo> filesToValidate = new ArrayList<>();
-
-  @JsonProperty("validationContext")
-  public ValidationContext getValidationContext() {
-    return validationContext;
-  }
 
   @JsonProperty("sessionId")
   @SerializedName("sessionId")
@@ -43,9 +65,14 @@ public class ValidationRequest {
     this.sessionId = sessionToken;
   }
 
-  @JsonProperty("validationContext")
-  public ValidationRequest setValidationContext(ValidationContext validationContext) {
-    this.validationContext = validationContext;
+  @JsonProperty("validationEngineSettings")
+  public ValidationEngineSettings getValidationEngineSettings() {
+    return validationEngineSettings;
+  }
+
+  @JsonProperty("validationEngineSettings")
+  public ValidationRequest setValidationEngineSettings(ValidationEngineSettings validationEngineSettings) {
+    this.validationEngineSettings = validationEngineSettings;
     return this;
   }
 
