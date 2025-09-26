@@ -740,16 +740,20 @@ public class ValidationContext {
 
   @SerializedName("mode")
   @JsonProperty("mode")
+  @Deprecated(since = "2025-09-25")
   public EngineMode getMode() {
     return mode;
   }
 
   @SerializedName("mode")
   @JsonProperty("mode")
+  @Deprecated(since = "2025-09-25")
   public ValidationContext setMode(EngineMode mode) {
     this.mode = mode;
     return this;
   }
+
+
 
   @SerializedName("output")
   @JsonProperty("output")
@@ -1516,6 +1520,17 @@ public class ValidationContext {
 
   public List<String> getLangRegenParam() {
     return langRegenParam;
+  }
+
+  private Boolean inferFhirVersion = true;
+
+  public Boolean isInferFhirVersion() {
+    return inferFhirVersion;
+  }
+
+  public ValidationContext setInferFhirVersion(Boolean inferFhirVersion) {
+    this.inferFhirVersion = inferFhirVersion;
+    return this;
   }
 
 }
