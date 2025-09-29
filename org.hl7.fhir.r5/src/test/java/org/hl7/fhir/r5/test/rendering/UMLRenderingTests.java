@@ -161,7 +161,7 @@ public class UMLRenderingTests {
       if ("source".equals(input.getName())) {
         StructureDefinition sd = (StructureDefinition) new JsonParser().parse(TestingUtilities.loadTestResource("r5", "uml", input.getFile()));
         sd.setWebPath("http://test/path/"+sd.getId());
-        context.cacheResource(sd);
+        context.getManager().cacheResource(sd);
       } else if ("template".equals(input.getName())) {
         String name = new File(input.getFile()).getName();
         FileUtilities.streamToFile(TestingUtilities.loadTestResourceStream("r5", "uml", input.getFile()), Utilities.path(source, name));

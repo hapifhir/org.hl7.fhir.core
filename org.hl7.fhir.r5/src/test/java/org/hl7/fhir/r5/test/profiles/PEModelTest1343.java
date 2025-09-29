@@ -23,7 +23,7 @@ public class PEModelTest1343 {
       ctxt = TestingUtilities.getSharedWorkerContext("4.0.1");
       FilesystemPackageCacheManager pc = new FilesystemPackageCacheManager.Builder().build();
       NpmPackage npm = pc.loadPackage("hl7.fhir.fr.core", "1.1.0");
-      ctxt.loadFromPackage(npm, new TestPackageLoader(Utilities.stringSet(SimpleWorkerContext.defaultTypesToLoad().stream().toArray(String[]::new))));
+      ctxt.getManager().loadFromPackage(npm, new TestPackageLoader(Utilities.stringSet(SimpleWorkerContext.defaultTypesToLoad().stream().toArray(String[]::new))));
     }
   }
 

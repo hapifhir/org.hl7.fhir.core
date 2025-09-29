@@ -257,7 +257,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         if (sd.hasExtension(ExtensionDefinitions.EXT_SD_COMPLIES_WITH_PROFILE)) {
           for (Extension ext : sd.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_COMPLIES_WITH_PROFILE)) {
             String curl = ext.getValue().primitiveValue();
-            StructureDefinition auth = context.fetchResource(StructureDefinition.class, curl, sd);
+            StructureDefinition auth = context.fetchResource(StructureDefinition.class, curl, null, sd);
             if (auth == null) {
               ok = rule(errors, "2025-03-30", IssueType.INVALID, stack.getLiteralPath(), false, I18nConstants.SD_EXTENSION_COMPLIES_WITH_UNKNOWN, curl) && ok;
             } else {

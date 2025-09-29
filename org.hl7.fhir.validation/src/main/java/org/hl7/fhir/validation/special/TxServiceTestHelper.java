@@ -33,7 +33,7 @@ public class TxServiceTestHelper {
     if (!isCodeSystem) {
       if (p.hasParameter("valueSetVersion")) {
         valueSetUrl = p.getParameterValue("url").primitiveValue()+"|"+p.getParameterValue("valueSetVersion").primitiveValue();
-        valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), p.getParameterValue("valueSetVersion").primitiveValue());
+        valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), p.getParameterValue("valueSetVersion").primitiveValue(), null);
       } else {
         valueSetUrl = p.getParameterValue("url").primitiveValue();
         valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
@@ -85,7 +85,7 @@ public class TxServiceTestHelper {
           newParameters.addParameter(pp.copy());
         }
       }
-      context.setExpansionParameters(newParameters);
+      context.getManager().setExpansionParameters(newParameters);
       if (p.hasParameter("code")) {
         code = p.getParameterString("code");
         system = p.getParameterString(isCodeSystem ? "url" : "system");

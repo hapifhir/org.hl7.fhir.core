@@ -451,7 +451,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       String s = Utilities.padLeft("", '\u00A0', level*2);
       td.addText(s);
     }
-    String link = isSupplement ? getLinkForCode(cs.getSupplements(), null, c.getCode()) : null;
+    String link = isSupplement ? getLinkForCode(cs.getSupplements(), null, c.getCode(), cs) : null;
     if (link != null) {
       td.ah(context.prefixLocalHref(link)).style( "white-space:nowrap").addText(c.getCode());
     } else {

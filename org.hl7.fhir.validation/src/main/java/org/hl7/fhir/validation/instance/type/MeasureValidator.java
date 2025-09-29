@@ -239,7 +239,7 @@ public class MeasureValidator extends BaseValidator {
         ok = validateMeasureReportGroups(hostContext, mc, errors, element, stack, inComplete) && ok;
       } else {
         if (measure.contains("|")) {
-          List<Measure> versionList = context.fetchResourcesByUrl(Measure.class, measure.substring(0, measure.indexOf("|")));
+          List<Measure> versionList = context.fetchResourceVersions(Measure.class, measure.substring(0, measure.indexOf("|")));
           if (versionList != null && !versionList.isEmpty()) {
             CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
             for (Measure mm : versionList) {
