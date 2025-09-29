@@ -256,7 +256,13 @@ public interface IWorkerContext {
    *   - the version of the resource
    *   - the source of the reference
    *
-   *  The URL may contain the version using the |version suffix. It's an error to provide both the suffix and a version
+   *  The URL may contain the version using the |version suffix. It's an error to provide both the suffix and a version.
+   *  version can be in either place for ease of use acros different scenarios; in practice, it's generally best to not
+   *  worry about it being in both places - it should not be and if it is, it's an error in the resource content, and
+   *  just let this routine return an error if it is
+   *
+   *  If no version is provided in either parameter, then the latest known resource will be returned using a general
+   *  heuristic based on the provided version algorithm etc.
    *
    *  The source of the reference gives a package context for the resolution, since the
    *  package context drives the version determination. It should always be provided if the
@@ -280,7 +286,7 @@ public interface IWorkerContext {
    * @param class_ the type of resource
    * @param uri the URL of the resource, optionally with a |version suffix
    * @param version the version. Don't provide both a version and a |version suffix
-   * @param sourceOfReference where the reference was found
+   * @param sourceOfReference where the reference was found (if the reference is in a resource)
    * @return if the resource is known
    */
   public <T extends Resource> boolean hasResource(Class<T> class_, String uri, String version, Resource sourceOfReference);
@@ -346,7 +352,7 @@ public interface IWorkerContext {
    * @param class_ the type of resource
    * @param uri the URL of the resource, optionally with a |version suffix
    * @param version the version. Don't provide both a version and a |version suffix
-   * @param sourceOfReference where the reference was found
+   * @param sourceOfReference where the reference was found (if the reference is in a resource)
    * @return if the resource is known
    */
   public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version, Resource sourceOfReference);
@@ -390,7 +396,7 @@ public interface IWorkerContext {
    * @param class_ the type of resource
    * @param uri the URL of the resource, optionally with a |version suffix
    * @param version the version. Don't provide both a version and a |version suffix
-   * @param sourceOfReference where the reference was found
+   * @param sourceOfReference where the reference was found (if the reference is in a resource)
    * @return if the resource is known. Will throw an exception if the resource is not known
    */
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, String version, Resource sourceOfReference) throws FHIRException;

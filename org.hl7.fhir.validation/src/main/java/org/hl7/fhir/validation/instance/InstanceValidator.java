@@ -2442,7 +2442,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       vurl = ex.getVersionedUrl();
     }
-    System.out.println(url+" -> "+vurl);
     if (url.contains("|")) {
       if (ex == null) {
         ex = Utilities.isAbsoluteUrl(url) ?profileUtilities.findProfile(url, profile) : null;

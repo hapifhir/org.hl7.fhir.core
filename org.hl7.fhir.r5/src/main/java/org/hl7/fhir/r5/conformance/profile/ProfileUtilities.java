@@ -443,6 +443,7 @@ public class ProfileUtilities {
     if (context != null && this.fpe == null) {
       this.fpe = new FHIRPathEngine(context, this);
     }
+    parameters = context.getExpansionParameters();
   }
 
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp) {
@@ -457,6 +458,7 @@ public class ProfileUtilities {
     if (context != null) {
       this.fpe = new FHIRPathEngine(context, this);
     }
+    parameters = context.getExpansionParameters();
   }
   
   public boolean isWantFixDifferentialFirstElementType() {
