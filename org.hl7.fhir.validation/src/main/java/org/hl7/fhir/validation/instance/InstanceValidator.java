@@ -2425,6 +2425,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean checkExtension(ValidationContext valContext, List<ValidationMessage> errors, String path, Element resource, Element container, Element element, ElementDefinition def, StructureDefinition profile, NodeStack stack, NodeStack containerStack, String extensionUrl, ResourcePercentageLogger pct, ValidationMode mode) throws FHIRException {
     boolean ok = true;
     String url = element.getNamedChildValue("url", false);
+    String vurl = url;
     String u = url.contains("|") ? url.substring(0, url.indexOf("|")) : url;
     boolean isModifier = element.getName().equals("modifierExtension");
     assert def.getIsModifier() == isModifier;
@@ -2438,7 +2439,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     StructureDefinition ex = Utilities.isAbsoluteUrl(u) ?profileUtilities.findProfile(u, profile) : null;
     if (ex == null) {
       ex = getXverExt(errors, path, element, url, errored);
+    } else {
+      vurl = ex.getVersionedUrl();
     }
+    System.out.println(url+" -> "+vurl);
     if (url.contains("|")) {
       if (ex == null) {
         ex = Utilities.isAbsoluteUrl(url) ?profileUtilities.findProfile(url, profile) : null;

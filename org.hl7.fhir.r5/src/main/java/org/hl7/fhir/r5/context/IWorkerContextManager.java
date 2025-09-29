@@ -27,6 +27,8 @@ public interface IWorkerContextManager {
 
   public IPackageCacheManager packageManager();
 
+  public void setPackageManager(IPackageCacheManager manager);
+
   /**
    * Get the expansion parameters passed through the terminology server when txServer calls are made
    *
