@@ -196,7 +196,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private XVerExtensionManager xverManager;
   private boolean allowLazyLoading = true;
   private IPackageCacheManager packageCacheManager;
-
   @Getter @Setter private ILoaderFactory loaderFactory;
 
   private SimpleWorkerContext() throws IOException, FHIRException {
@@ -230,6 +229,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     xverManager = other.xverManager;
     allowLazyLoading = other.allowLazyLoading;
     questionnaire = other.questionnaire;
+    packageCacheManager = other.packageCacheManager;
+    loaderFactory = other.loaderFactory;
   }
 
 
@@ -902,6 +903,11 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   @Override
   public IPackageCacheManager packageManager() {
     return packageCacheManager;
+  }
+
+  @Override
+  public void setPackageManager(IPackageCacheManager packageCacheManager) {
+    this.packageCacheManager = packageCacheManager;
   }
 
   public void cachePackage(PackageInformation packageInfo) {

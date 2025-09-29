@@ -70,6 +70,11 @@ public class BaseWorkerContextTests {
     }
 
     @Override
+    public void setPackageManager(IPackageCacheManager manager) {
+
+    }
+
+    @Override
     public void cachePackage(PackageInformation packageInfo) {
 
     }
@@ -252,6 +257,11 @@ public class BaseWorkerContextTests {
       @Override
       public IPackageCacheManager packageManager() {
         return null;
+      }
+
+      @Override
+      public void setPackageManager(IPackageCacheManager manager) {
+
       }
 
       @Override
