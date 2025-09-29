@@ -702,7 +702,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       }
 
       CodeSystem cs = context.fetchSupplementedCodeSystem(exc.getSystem());
-      if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) && context.supportsSystem(exc.getSystem())) {
+      if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) && context.getTxSupportInfo(exc.getSystem(), exc.getVersion()).isSupported()) {
         ValueSetExpansionOutcome vse = context.expandVS(new TerminologyOperationDetails(requiredSupplements), exc, false, false);
         ValueSet valueset = vse.getValueset();
         if (valueset.hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
@@ -1095,11 +1095,11 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if (value == null)
       throw fail(I18nConstants.VS_EXP_IMPORT_NULL);
     String url = getCu().pinValueSet(value, expParams);
-    ValueSet vs = context.findTxResource(ValueSet.class, url, valueSet);
+    ValueSet vs = context.findTxResource(ValueSet.class, url, null, valueSet);
     if (vs == null) {
       boolean pinned = !url.equals(value);
       String ver = pinned ? url.substring(value.length()+1) : null;
-      if (context.fetchResource(CodeSystem.class, url, valueSet) != null) {
+      if (context.fetchResource(CodeSystem.class, url, null, valueSet) != null) {
         throw failWithUnknownVSException(pinned ? I18nConstants.VS_EXP_IMPORT_CS_PINNED : I18nConstants.VS_EXP_IMPORT_CS, true, value, ver);
       } else  {
         throw failWithUnknownVSException(pinned ? I18nConstants.VS_EXP_IMPORT_UNK_PINNED : I18nConstants.VS_EXP_IMPORT_UNK, true, value, ver);
@@ -1159,11 +1159,11 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if (value == null)
       throw fail(I18nConstants.VS_EXP_IMPORT_NULL_X);
     String url = getCu().pinValueSet(value, expParams);
-    ValueSet vs = context.findTxResource(ValueSet.class, url, valueSet);
+    ValueSet vs = context.findTxResource(ValueSet.class, url, null, valueSet);
     if (vs == null) {
       boolean pinned = !url.equals(value);
       String ver = pinned ? url.substring(value.length()+1) : null;
-      if (context.fetchResource(CodeSystem.class, url, valueSet) != null) {
+      if (context.fetchResource(CodeSystem.class, url, null, valueSet) != null) {
         throw fail(pinned ? I18nConstants.VS_EXP_IMPORT_CS_PINNED_X : I18nConstants.VS_EXP_IMPORT_CS_X, value, ver);
       } else  {
         throw fail(pinned ? I18nConstants.VS_EXP_IMPORT_UNK_PINNED_X : I18nConstants.VS_EXP_IMPORT_UNK_X, value, ver);
@@ -1294,7 +1294,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         dwc.setNoTotal(true);
       }
       String version = determineVersion(inc.getSystem(), inc.getVersion(), exp, expParams);
-      CodeSystem cs = context.fetchSupplementedCodeSystem(inc.getSystem(), version);
+      CodeSystem cs = context.fetchSupplementedCodeSystem(inc.getSystem(), version, valueSet);
       if (cs != null) {
         checkVersion(inc.getSystem(), cs.getVersion(), exp, expParams);
       }
@@ -1302,7 +1302,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         if (version == null) {
           throw failWithIssue(IssueType.NOTFOUND, OpIssueCode.NotFound, null, I18nConstants.UNKNOWN_CODESYSTEM_EXP, inc.getSystem());
         } else {
-          List<CodeSystem> list = context.fetchResourcesByUrl(CodeSystem.class, inc.getSystem());
+          List<CodeSystem> list = context.fetchResourceVersions(CodeSystem.class, inc.getSystem());
           if (list.size() == 0) {
             throw failWithIssue(IssueType.NOTFOUND, OpIssueCode.NotFound, null, I18nConstants.UNKNOWN_CODESYSTEM_VERSION_EXP_NONE, inc.getSystem(), version);
           } else {

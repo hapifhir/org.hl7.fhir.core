@@ -469,7 +469,7 @@ public class SnapShotGenerationXTests {
           pu.generateSnapshot(base, sd, sd.getUrl(), "http://test.org/profile", sd.getName());
         }
         if (!UtilitiesXTests.context(version).hasResource(StructureDefinition.class, sd.getUrl()))
-          UtilitiesXTests.context(version).cacheResource(sd);
+          UtilitiesXTests.context(version).getManager().cacheResource(sd);
         int ec = 0;
         for (ValidationMessage vm : messages) {
           if (vm.getLevel() == IssueSeverity.ERROR) {

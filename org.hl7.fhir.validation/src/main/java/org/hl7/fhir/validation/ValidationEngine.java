@@ -963,7 +963,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.setForPublication(forPublication);
     validator.setAllowExamples(allowExampleUrls);
     validator.setShowMessagesFromReferences(showMessagesFromReferences);
-    validator.getContext().setLocale(locale);
+    validator.getContext().getManager().setLocale(locale);
     validator.setFetcher(this);
     validator.getImplementationGuides().addAll(igs);
     validator.getBundleValidationRules().addAll(bundleValidationRules);
@@ -1340,7 +1340,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Override
   public Set<String> fetchCanonicalResourceVersions(IResourceValidator validator, Object appContext, String url) {
     Set<String> res = new HashSet<>();
-    for (Resource r : context.fetchResourcesByUrl(Resource.class, url)) {
+    for (Resource r : context.fetchResourceVersions(Resource.class, url)) {
       if (r instanceof CanonicalResource) {
         CanonicalResource cr = (CanonicalResource) r;
         res.add(cr.hasVersion() ? cr.getVersion() : "{{unversioned}}");

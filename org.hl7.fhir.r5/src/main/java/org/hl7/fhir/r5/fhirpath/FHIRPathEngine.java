@@ -2034,7 +2034,7 @@ public class FHIRPathEngine {
             if (tn.equals(sd.getType())) {
               return makeBoolean(true);
             }
-            sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
+            sd = profileUtilities.findProfile(sd.getBaseDefinition(), sd);
           }
           return makeBoolean(false);
         }      
@@ -2049,7 +2049,7 @@ public class FHIRPathEngine {
             if (tn.equals(sd.getType())) {
               return makeBoolean(true);
             }
-            sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
+            sd = profileUtilities.findProfile(sd.getBaseDefinition(), sd);
           }
           return makeBoolean(false);
         }      
@@ -3376,7 +3376,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
             result.add(item);
             break;
           }
-          sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
+          sd = profileUtilities.findProfile(sd.getBaseDefinition(), sd);
         }
       }
     } else {
@@ -3419,7 +3419,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         if (stated.equals(sd.getTypeName())) {
           return true;
         }
-        sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+        sd = profileUtilities.findProfile(sd.getBaseDefinition(), sd);
       }
       return false;
     } catch (Exception e) { 
@@ -3737,7 +3737,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
             for (String pt : profiles) {
               String extn = pt.contains("#") ? pt.substring(0, pt.indexOf("#")) : pt;
               String subExtn = pt.contains("#") ? pt.substring(0, pt.indexOf("#")) : null;
-              StructureDefinition sd = worker.fetchResource(StructureDefinition.class, extn);
+              StructureDefinition sd = profileUtilities.findProfile(extn, null); // source doesn't matter looking up extensions
               if (sd != null) {
                 String id = subExtn == null ? "Extension.extension:"+url : subExtn+".extension:"+url;
                 ElementDefinition ed = sd.getSnapshot().getElementById(id);
@@ -3929,14 +3929,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private ExtensionDefinition findExtensionDefinition(TypeDetails focus, String url) {
     if (Utilities.isAbsoluteUrl(url)) {
-      StructureDefinition sd = worker.fetchResource(StructureDefinition.class, url);
+      StructureDefinition sd = profileUtilities.findProfile(url, null);
       if (sd == null) {
         return null;
       } else {
         return new ExtensionDefinition(true, sd, sd.getSnapshot().getElementFirstRep());
       }
     }
-    StructureDefinition sd = worker.fetchResource(StructureDefinition.class, focus.getType());
+    StructureDefinition sd = profileUtilities.findProfile(focus.getType(), null);
     if (sd != null) {
       for (ElementDefinition ed : sd.getSnapshot().getElement()) {
         if (ed.hasFixed() && url.equals(ed.getFixed().primitiveValue())) {
@@ -3973,7 +3973,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       if (!pt.hasProfiles()) { // get back to this later
         String purl = tn;
         while (purl != null && !purl.equals(pt.getUri())) {
-          StructureDefinition sd = worker.fetchResource(StructureDefinition.class, purl);
+          StructureDefinition sd = profileUtilities.findProfile(purl, null); // #TODO: fix up TypeDetails to track down the soruce of the profiled Types
           purl = sd == null ? null : sd.getBaseDefinitionNoVersion();
         }
         if (purl != null) {
@@ -4234,7 +4234,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     List<Base> swb = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String sw = convertToString(swb);
 
-    StructureDefinition sd = this.worker.fetchResource(StructureDefinition.class, sw);
+    StructureDefinition sd = this.profileUtilities.findProfile(sw, null); // no source for tracking CDA refs
     if (focus.size() == 1 && sd != null) {
       boolean found = false;
       for (Identifier id : sd.getIdentifier()) {
@@ -5379,7 +5379,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
           if (n.equals(sd.getType())) {
             return makeBoolean(true);
           }
-          sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
+          sd = profileUtilities.findProfile(sd.getBaseDefinition(), sd);
         }
         return makeBoolean(false);
       }
@@ -5423,7 +5423,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
               result.add(b);
               break;
             }
-            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
+            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : profileUtilities.findProfile(sd.getBaseDefinition(), sd);
           }
         }
       }
@@ -5464,7 +5464,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
               result.add(b);
               break;
             }
-            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
+            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : profileUtilities.findProfile(sd.getBaseDefinition(), sd);
           }
         }
       } else if (tn.startsWith("CDA.")) {
@@ -5478,7 +5478,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
               result.add(b);
               break;
             }
-            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
+            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : profileUtilities.findProfile(sd.getBaseDefinition(), sd);
           }
         }
       }
@@ -6585,7 +6585,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       String tail = "";
       StructureDefinition sd = worker.fetchTypeDefinition(url);
       if (sd == null) {
-        sd = worker.fetchResource(StructureDefinition.class, url);
+        sd = profileUtilities.findProfile(url, null); // #TODO: add version correctness here. It's not version correct as is
       }
       if (sd == null) {
         if (url.startsWith(TypeDetails.FP_NS)) {
@@ -6602,14 +6602,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       }
       if (m != null && hasDataType(m.definition)) {
         if (m.fixedType != null)  {
-          StructureDefinition dt = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(m.fixedType, null), sd);
+          StructureDefinition dt = profileUtilities.findProfile(ProfileUtilities.sdNs(m.fixedType, null), sd);
           if (dt == null) {
             throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_TYPE, ProfileUtilities.sdNs(m.fixedType, null), "getChildTypesByName#2");
           }
           sdl.add(dt);
         } else
           for (TypeRefComponent t : m.definition.getType()) {
-            StructureDefinition dt = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(t.getCode(), null));
+            StructureDefinition dt = profileUtilities.findProfile(ProfileUtilities.sdNs(t.getCode(), null), null); // #TODO: Version correctness
             if (dt == null) {
               throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_TYPE, ProfileUtilities.sdNs(t.getCode(), null), "getChildTypesByName#3");
             }
@@ -6840,7 +6840,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
           List<ElementDefinitionMatch> list = new ArrayList<>();
           // for each type, does it have the next node in the path? 
           for (TypeRefComponent tr : ed.getType()) {
-            StructureDefinition nsd = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(tr.getCode(), null), sd);
+            StructureDefinition nsd = profileUtilities.findProfile(ProfileUtilities.sdNs(tr.getCode(), null), sd);
             if (nsd == null) { 
               throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, ed.getType().get(0).getCode(), "getElementDefinition");
             }
@@ -6849,7 +6849,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
           }
           return list;
         }
-        StructureDefinition nsd = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(ed.getType().get(0).getCode(), null), sd);
+        StructureDefinition nsd = profileUtilities.findProfile(ProfileUtilities.sdNs(ed.getType().get(0).getCode(), null), sd);
         if (nsd == null) { 
           throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, ed.getType().get(0).getCode(), "getElementDefinition");
         }
@@ -6913,7 +6913,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         ref = ref.replace(sdt.getUrl()+"#", "#");
         break;
       }
-      sdt = worker.fetchResource(StructureDefinition.class, sdt.getBaseDefinition());
+      sdt = profileUtilities.findProfile(sdt.getBaseDefinition(), sdt);
     }
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       if (ref.equals("#"+ed.getId())) {
@@ -6998,7 +6998,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         if (element.getTypes().get(0).getTargetProfile().size() > 1) {
           throw makeExceptionPlural(element.getTypes().get(0).getTargetProfile().size(), expr, I18nConstants.FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET, element.getElement().getId());
         }
-        sd = worker.fetchResource(StructureDefinition.class, element.getTypes().get(0).getTargetProfile().get(0).getValue(), profile);
+        sd = profileUtilities.findProfile(element.getTypes().get(0).getTargetProfile().get(0).getValue(), profile);
         if (sd == null) {
           throw makeException(expr, I18nConstants.FHIRPATH_RESOLVE_DISCRIMINATOR_CANT_FIND, element.getTypes().get(0).getTargetProfile(), element.getElement().getId());
         }
@@ -7009,9 +7009,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         for (ElementDefinition t : childDefinitions.getList()) {
           if (t.getPath().endsWith(".extension") && t.hasSliceName()) {
             StructureDefinition exsd = (t.getType() == null || t.getType().isEmpty() || t.getType().get(0).getProfile().isEmpty()) ?
-                null : worker.fetchResource(StructureDefinition.class, t.getType().get(0).getProfile().get(0).getValue(), profile);
+                null : profileUtilities.findProfile(t.getType().get(0).getProfile().get(0).getValue(), profile);
             while (exsd != null && !exsd.getBaseDefinitionNoVersion().equals("http://hl7.org/fhir/StructureDefinition/Extension")) {
-              exsd = worker.fetchResource(StructureDefinition.class, exsd.getBaseDefinition(), exsd);
+              exsd = profileUtilities.findProfile(exsd.getBaseDefinition(), exsd);
             }
             if (exsd != null && exsd.getUrl().equals(targetUrl)) {
               if (profileUtilities.getChildMap(sd, t, false).getList().isEmpty()) {
@@ -7098,9 +7098,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       throw makeExceptionPlural(ed.getTypes().get(0).getProfile().size(), expr, I18nConstants.FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES, ed.getElement().getId());
     }
     if (ed.getTypes().get(0).hasProfile()) { 
-      return worker.fetchResource(StructureDefinition.class, ed.getTypes().get(0).getProfile().get(0).getValue(), ed.getSrc());
+      return profileUtilities.findProfile(ed.getTypes().get(0).getProfile().get(0).getValue(), ed.getSrc());
     } else {
-      return worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(ed.getTypes().get(0).getCode(), null), ed.getSrc());
+      return profileUtilities.findProfile(ProfileUtilities.sdNs(ed.getTypes().get(0).getCode(), null), ed.getSrc());
     }
   }
 

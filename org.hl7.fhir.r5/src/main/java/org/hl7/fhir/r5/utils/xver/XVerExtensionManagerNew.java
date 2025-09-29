@@ -17,15 +17,9 @@ import java.util.Map;
 public class XVerExtensionManagerNew extends XVerExtensionManager {
 
   private Map<String, JsonObject> lists = new HashMap<>();
-  private final IXverManagerPackageLoader loader;
 
-  public interface IXverManagerPackageLoader {
-    public void loadPackage(String idAndVer) throws IOException;
-  }
-  
-  public XVerExtensionManagerNew(IWorkerContext context, IXverManagerPackageLoader loader) {
+  public XVerExtensionManagerNew(IWorkerContext context) {
     super(context);
-    this.loader = loader;
   }
 
   @Override
@@ -43,7 +37,7 @@ public class XVerExtensionManagerNew extends XVerExtensionManager {
     String pid = "hl7.fhir.uv.xver-"+targetVersion+"."+sourceVersion;
     if (!context.hasPackage(pid, "dev")) {
       try {
-        loader.loadPackage(pid+"#dev");
+        context.getManager().loadPackage(pid+"#dev");
       } catch (IOException e) {
         return XVerExtensionStatus.BadVersion;
       }

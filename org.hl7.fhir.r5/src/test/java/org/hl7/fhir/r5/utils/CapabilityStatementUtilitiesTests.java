@@ -69,7 +69,7 @@ class CapabilityStatementUtilitiesTests {
     if (c1==null || c2==null)
       Assertions.fail("Unable to read source CapabilityStatements");
 
-    ctxt.cacheResource(c1);
+    ctxt.getManager().cacheResource(c1);
     CapabilityStatement out = csu.resolveImports(c2);
     try {
       String s1 = p.composeString(out);

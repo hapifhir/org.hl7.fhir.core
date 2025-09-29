@@ -16,6 +16,7 @@ import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
+import org.hl7.fhir.utilities.npm.IPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -47,7 +48,7 @@ public class BaseWorkerContextTests {
   private static final String DUMMY_URL = "dummyUrl";
 
   @Spy
-  BaseWorkerContext context = new BaseWorkerContext(){
+  BaseWorkerContext context = new BaseWorkerContext() {
     @Override
     public String getVersion() {
       return "4.0.1";
@@ -64,6 +65,11 @@ public class BaseWorkerContextTests {
     }
 
     @Override
+    public IPackageCacheManager packageManager() {
+      return null;
+    }
+
+    @Override
     public void cachePackage(PackageInformation packageInfo) {
 
     }
@@ -75,6 +81,16 @@ public class BaseWorkerContextTests {
 
     @Override
     public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
+      return 0;
+    }
+
+    @Override
+    public int loadPackage(NpmPackage pi) throws FileNotFoundException, IOException, FHIRException {
+      return 0;
+    }
+
+    @Override
+    public int loadPackage(String idAndVer) throws FileNotFoundException, IOException, FHIRException {
       return 0;
     }
 
@@ -234,6 +250,11 @@ public class BaseWorkerContextTests {
       }
 
       @Override
+      public IPackageCacheManager packageManager() {
+        return null;
+      }
+
+      @Override
       public void cachePackage(PackageInformation packageInfo) {
 
       }
@@ -245,6 +266,16 @@ public class BaseWorkerContextTests {
 
       @Override
       public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
+        return 0;
+      }
+
+      @Override
+      public int loadPackage(NpmPackage pi) throws FileNotFoundException, IOException, FHIRException {
+        return 0;
+      }
+
+      @Override
+      public int loadPackage(String idAndVer) throws FileNotFoundException, IOException, FHIRException {
         return 0;
       }
 
@@ -274,7 +305,7 @@ public class BaseWorkerContextTests {
       }
 
       @Override
-      public <T extends Resource> List<T> fetchResourcesByUrl(Class<T> class_, String url) {
+      public <T extends Resource> List<T> fetchResourceVersions(Class<T> class_, String url) {
         return new ArrayList<>();
       }
 
