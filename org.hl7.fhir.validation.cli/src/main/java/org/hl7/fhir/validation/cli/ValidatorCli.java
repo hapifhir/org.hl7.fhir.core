@@ -362,11 +362,14 @@ public class ValidatorCli {
 
     final CliTask cliTask = selectCliTask(validationContext, params);
 
-
-
     if (cliTask instanceof ValidationEngineTask) {
       TimeTracker tt = new TimeTracker();
       TimeTracker.Session tts = tt.start("Loading");
+
+      if (((ValidationEngineTask) cliTask).inferFhirVersion()) {
+        validationContext.setInferFhirVersion(Boolean.TRUE);
+      }
+
       if (validationContext.getSv() == null) {
         validationContext.setSv(myValidationService.determineVersion(validationContext));
       }

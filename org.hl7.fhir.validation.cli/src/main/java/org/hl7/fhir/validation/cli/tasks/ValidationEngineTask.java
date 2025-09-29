@@ -10,4 +10,7 @@ public abstract class ValidationEngineTask extends CliTask{
 
   public abstract void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception;
 
+  public boolean inferFhirVersion() {
+    return false;
+  }
 }
