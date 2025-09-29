@@ -2497,13 +2497,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", !ex.getSnapshot().getElement().get(0).getIsModifier(), I18nConstants.EXTENSION_EXT_MODIFIER_N, url) && ok;
 
       // check the type of the extension:
-      Set<String> allowedTypes = listExtensionTypes(ex);
+      ElementDefinition ved = getExtensionValueDefinition(ex);
+      Set<String> allowedTypes = listExtensionTypes(ex, ved);
       String actualType = getExtensionType(element);
       if (actualType != null)
         ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, allowedTypes.contains(actualType), I18nConstants.EXTENSION_EXT_TYPE, url, allowedTypes.toString(), actualType) && ok;
-      else if (element.hasChildren("extension"))
-        ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, allowedTypes.isEmpty(), I18nConstants.EXTENSION_EXT_SIMPLE_WRONG, url) && ok;
-      else
+      else if (element.hasChildren("extension")) {
+        // just because a value is allowed doesn't mean that it's required.
+        if (ved.getMin() > 0) {
+          ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, allowedTypes.isEmpty(), I18nConstants.EXTENSION_EXT_SIMPLE_WRONG, url) && ok;
+        } else {
+          // nothing?
+//          ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, allowedTypes.isEmpty(), I18nConstants.EXTENSION_EXT_SIMPLE_WRONG, url) && ok;
+        }
+      } else
         ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, allowedTypes.isEmpty(), I18nConstants.EXTENSION_EXT_SIMPLE_ABSENT, url) && ok;
 
       // 3. is the content of the extension valid?
@@ -2536,7 +2543,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return null;
   }
 
-  private Set<String> listExtensionTypes(StructureDefinition ex) {
+  private ElementDefinition getExtensionValueDefinition(StructureDefinition ex) {
     ElementDefinition vd = null;
     for (ElementDefinition ed : ex.getSnapshot().getElement()) {
       if (ed.getPath().startsWith("Extension.value")) {
@@ -2544,6 +2551,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         break;
       }
     }
+    return vd;
+  }
+  private Set<String> listExtensionTypes(StructureDefinition ex, ElementDefinition vd) {
     Set<String> res = new HashSet<String>();
     if (vd != null && !"0".equals(vd.getMax())) {
       for (TypeRefComponent tr : vd.getType()) {
