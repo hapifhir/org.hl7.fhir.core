@@ -71,4 +71,9 @@ public class ValidateTask extends ValidationEngineTask {
       log.info("Note: Some validation issues might be hidden by the advisor settings in the file "+ validationContext.getAdvisorFile());
     }
   }
+
+  @Override
+  public boolean inferFhirVersion() {
+    return true;
+  }
 }

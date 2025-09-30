@@ -201,6 +201,17 @@ public class ValidationEngineSettings {
     this.showTimes = showTimes;
   }
 
+  private Boolean inferFhirVersion = true;
+
+  public Boolean isInferFhirVersion() {
+    return inferFhirVersion;
+  }
+
+  public ValidationEngineSettings setInferFhirVersion(Boolean inferFhirVersion) {
+    this.inferFhirVersion = inferFhirVersion;
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -213,7 +224,8 @@ public class ValidationEngineSettings {
       && snomedCT.equals(that.snomedCT)
       && noExtensibleBindingMessages == that.noExtensibleBindingMessages
       && sv.equals(that.sv)
-      && targetVer.equals(that.targetVer);
+      && targetVer.equals(that.targetVer)
+      && isInferFhirVersion() == that.isInferFhirVersion();
   }
 
   @Override
@@ -226,7 +238,8 @@ public class ValidationEngineSettings {
       snomedCT,
       noExtensibleBindingMessages,
       sv,
-      targetVer);
+      targetVer,
+      inferFhirVersion);
   }
 
   @Override
@@ -240,6 +253,7 @@ public class ValidationEngineSettings {
       ", noExtensibleBindingMessages=" + noExtensibleBindingMessages +
       ", sv=" + sv +
       ", targetVer=" + targetVer +
+      ", inferFhirVersion=" + inferFhirVersion +
       "}";
   }
 }

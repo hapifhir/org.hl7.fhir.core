@@ -4,9 +4,9 @@ import java.io.File;
 
 import org.hl7.fhir.utilities.i18n.POGenerator;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
-import org.hl7.fhir.validation.service.utils.EngineMode;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
@@ -30,7 +30,7 @@ public class LangRegenerateTask extends ValidationEngineTask {
 
   @Override
   public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
-    return validationContext.getMode() == EngineMode.LANG_REGEN;
+    return Params.hasParam(args, Params.LANG_REGEN);
   }
 
   @Override
