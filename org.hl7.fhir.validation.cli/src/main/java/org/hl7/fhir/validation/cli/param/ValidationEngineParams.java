@@ -15,7 +15,11 @@ public class ValidationEngineParams {
     Params.SCT,
     Params.HINT_ABOUT_NON_MUST_SUPPORT,
     Params.ASSUME_VALID_REST_REF,
-    Params.NO_EXTENSIBLE_BINDING_WARNINGS
+    Params.NO_EXTENSIBLE_BINDING_WARNINGS,
+    Params.IMPLEMENTATION_GUIDE,
+    Params.DEFINITION,
+    Params.VERSION,
+    Params.TO_VERSION
   ));
 
   public static boolean isValidationEngineParam(String arg) {
@@ -49,8 +53,6 @@ public class ValidationEngineParams {
         return i+1;
       } else if (args[i].equals(Params.TO_VERSION)) {
         validationEngineSettings.setTargetVer(args[i + 1]);
-        //FIXME test this line. This has been moved to VersionTask as a Params.hasParam
-        //validationContext.setMode(EngineMode.VERSION);
       } else if (args[i].equals(Params.IMPLEMENTATION_GUIDE) || args[i].equals(Params.DEFINITION)) {
         if (i + 1 == args.length)
           throw new Error("Specified " + args[i] + " without indicating ig file");
