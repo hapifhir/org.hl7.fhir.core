@@ -220,4 +220,5 @@ public class ExtensionDefinitions {
   public static final String EXT_SCORE = "http://hl7.org/fhir/tools/StructureDefinition/scoring-rule";
   public static final String EXT_ADDITIONAL_COMPARTMENT = "http://hl7.org/fhir/tools/StructureDefinition/additional-resource-compartment";
   public static final String EXT_ADDITIONAL_REFERENCE = "http://hl7.org/fhir/tools/StructureDefinition/additional-resource-reference";
+  public static final String EXT_ADDITIONAL_RESOURCE = "http://hl7.org/fhir/tools/StructureDefinition/additional-resource";
 }

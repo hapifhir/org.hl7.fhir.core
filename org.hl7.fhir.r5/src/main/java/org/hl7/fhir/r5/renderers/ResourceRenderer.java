@@ -237,7 +237,7 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   public <T extends Resource> void renderCanonical(RenderingStatus status, XhtmlNode x, Class<T> class_, ResourceWrapper canonical) throws UnsupportedEncodingException, IOException {
     if (!renderPrimitiveWithNoValue(status, x, canonical)) {
-      CanonicalResource target = (CanonicalResource) context.getWorker().fetchResource(class_, canonical.primitiveValue(), canonical.getResourceNative());
+      CanonicalResource target = (CanonicalResource) context.getWorker().fetchResource(class_, canonical.primitiveValue(), null, canonical.getResourceNative());
       if (target != null && target.hasWebPath()) {
         if (canonical.primitiveValue().contains("|")) {
           x.ah(context.prefixLocalHref(target.getWebPath())).tx(target.present()+ context.formatPhrase(RenderingContext.RES_REND_VER) +target.getVersion()+")");
@@ -264,7 +264,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       return "";
     }
     String url = canonical.primitiveValue();
-    Resource target = context.getWorker().fetchResource(Resource.class, url, canonical.getResourceNative());
+    Resource target = context.getWorker().fetchResource(Resource.class, url, null, canonical.getResourceNative());
     if (target == null || !(target instanceof CanonicalResource)) {
       return url;       
     } else {
@@ -337,7 +337,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       return;
     }
     String url = canonical.asStringValue();
-    Resource target = context.getWorker().fetchResource(Resource.class, url, res.getResourceNative());
+    Resource target = context.getWorker().fetchResource(Resource.class, url, null, res.getResourceNative());
     if (target == null || !(target instanceof CanonicalResource)) {
       x.code().tx(url);       
     } else {
@@ -653,7 +653,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       if (v.startsWith("mailto:")) { 
         x.ah(v).addText(v.substring(7)); 
       } else { 
-        String link = getLinkForCode(v, null, null);
+        String link = getLinkForCode(v, null, null, uri.getResourceNative());
         if (link != null) {  
           x.ah(context.prefixLocalHref(link)).addText(v);
         } else {
@@ -692,11 +692,11 @@ public abstract class ResourceRenderer extends DataRenderer {
    * @param <T>
    */
   protected <T extends Resource> T findCanonical(Class<T> class_, UriType canonical, ResourceWrapper sourceOfReference) {
-    return context.getContext().fetchResource(class_, canonical.asStringValue(), sourceOfReference.getResourceNative());
+    return context.getContext().fetchResource(class_, canonical.asStringValue(), null, sourceOfReference.getResourceNative());
   }
 
   protected <T extends Resource> T findCanonical(Class<T> class_, String canonical, ResourceWrapper sourceOfReference) {
-    return context.getContext().fetchResource(class_, canonical, sourceOfReference.getResourceNative());
+    return context.getContext().fetchResource(class_, canonical, null, sourceOfReference.getResourceNative());
   }
 
 
@@ -749,7 +749,7 @@ public abstract class ResourceRenderer extends DataRenderer {
           return rr;
         }
       }
-      Resource r = context.getWorker().fetchResource(Resource.class, url, version);
+      Resource r = context.getWorker().fetchResource(Resource.class, url, version, resource == null ? null : resource.getResourceNative());
       if (r != null) {
         return new ResourceWithReference(ResourceReferenceKind.EXTERNAL, url, r.getWebPath(), wrap(r));
       }

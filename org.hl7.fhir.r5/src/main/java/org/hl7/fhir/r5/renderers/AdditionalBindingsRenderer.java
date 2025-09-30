@@ -429,18 +429,18 @@ public class AdditionalBindingsRenderer {
     return !bindings.isEmpty();
   }
 
-  public void render(XhtmlNodeList children, List<ElementDefinitionBindingAdditionalComponent> list) {
+  public void render(XhtmlNodeList children, List<ElementDefinitionBindingAdditionalComponent> list, StructureDefinition sd) {
     if (list.size() == 1) {
-      render(children, list.get(0));
+      render(children, list.get(0), sd);
     } else {
       XhtmlNode ul = children.ul();
       for (ElementDefinitionBindingAdditionalComponent b : list) {
-        render(ul.li().getChildNodes(), b);
+        render(ul.li().getChildNodes(), b, sd);
       }
     }
   }
 
-  private void render(XhtmlNodeList children, ElementDefinitionBindingAdditionalComponent b) {
+  private void render(XhtmlNodeList children, ElementDefinitionBindingAdditionalComponent b, StructureDefinition sd) {
     if (b.getValueSet() == null) {
       return; // what should happen?
     }
@@ -467,7 +467,7 @@ public class AdditionalBindingsRenderer {
           children.tx(displayForUsage(uc.getCode()));
           children.tx("=");
         }
-        CodeResolution ccr = cr.resolveCode(uc.getValueCodeableConcept());
+        CodeResolution ccr = cr.resolveCode(uc.getValueCodeableConcept(), sd);
         children.ah(context.prefixLocalHref(ccr.getLink()), ccr.getHint()).tx(ccr.getDisplay());
       }
       children.tx(")");

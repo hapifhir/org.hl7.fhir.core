@@ -980,11 +980,11 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
       } else {
         reference = cu.pinValueSet(reference);
         long t = System.nanoTime();
-        ValueSet fr = context.findTxResource(ValueSet.class, reference, src);
+        ValueSet fr = context.findTxResource(ValueSet.class, reference, null, src);
         if (fr == null) {
           if (!Utilities.isAbsoluteUrl(reference)) {
             reference = resolve(uri, reference);
-            fr = context.findTxResource(ValueSet.class, reference, src);
+            fr = context.findTxResource(ValueSet.class, reference, null, src);
           }
         }
         if (fr == null) {
@@ -1522,7 +1522,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
         case Valid:
           StructureDefinition defn = xverDefn(url);
           new ContextUtilities(context).generateSnapshot(defn);
-          context.cacheResource(defn);
+          context.getManager().cacheResource(defn);
           return defn;
         default:
           rule(errors, NO_RULE_DATE, IssueType.INVALID, profile.getId(), false, I18nConstants.EXTENSION_EXT_VERSION_INTERNAL, url);
@@ -1555,7 +1555,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
       case Valid:
         StructureDefinition ex = xverDefn(url);
         new ContextUtilities(context).generateSnapshot(ex);
-        context.cacheResource(ex);
+        context.getManager().cacheResource(ex);
         return ex;
       default:
         rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_INTERNAL, url);
