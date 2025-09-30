@@ -6,12 +6,9 @@ import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
-import org.hl7.fhir.validation.cli.ValidatorCli;
 import org.junit.jupiter.api.Test;
 
 public class CDAValidationTest {
-
-  private SimpleWorkerContext context;
 
   @Test
   public void test() throws Exception {
