@@ -29,12 +29,12 @@ public class GeneratedPEModelTest {
       ctxt = TestingUtilities.getSharedWorkerContext();
       FilesystemPackageCacheManager pc = new FilesystemPackageCacheManager.Builder().build();
       NpmPackage npm = pc.loadPackage("hl7.fhir.us.core", "5.0.0");
-      ctxt.loadFromPackage(npm, new TestPackageLoader(Utilities.stringSet("StructureDefinition" )));
+      ctxt.getManager().loadFromPackage(npm, new TestPackageLoader(Utilities.stringSet("StructureDefinition" )));
       
-      ctxt.cacheResource(new JsonParser().parse(TestingUtilities.loadTestResource("r5", "profiles", "pe-extension-simple.json")));
-      ctxt.cacheResource(new JsonParser().parse(TestingUtilities.loadTestResource("r5", "profiles", "pe-extension-complex.json")));
-      ctxt.cacheResource(new JsonParser().parse(TestingUtilities.loadTestResource("r5", "profiles", "pe-profile2.json")));
-      ctxt.cacheResource(new JsonParser().parse(TestingUtilities.loadTestResource("r5", "profiles", "pe-profile1.json")));
+      ctxt.getManager().cacheResource(new JsonParser().parse(TestingUtilities.loadTestResource("r5", "profiles", "pe-extension-simple.json")));
+      ctxt.getManager().cacheResource(new JsonParser().parse(TestingUtilities.loadTestResource("r5", "profiles", "pe-extension-complex.json")));
+      ctxt.getManager().cacheResource(new JsonParser().parse(TestingUtilities.loadTestResource("r5", "profiles", "pe-profile2.json")));
+      ctxt.getManager().cacheResource(new JsonParser().parse(TestingUtilities.loadTestResource("r5", "profiles", "pe-profile1.json")));
     }
   }
 

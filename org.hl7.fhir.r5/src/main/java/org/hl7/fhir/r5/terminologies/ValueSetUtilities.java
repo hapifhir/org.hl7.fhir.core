@@ -397,7 +397,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
     Set<String> systems = new HashSet<>();
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
       for (CanonicalType ct : inc.getValueSet()) {
-        ValueSet vsr = ctxt.findTxResource(ValueSet.class, ct.asStringValue(), vs);
+        ValueSet vsr = ctxt.findTxResource(ValueSet.class, ct.asStringValue(), null, vs);
         if (vsr != null) {
           systems.addAll(listSystems(ctxt, vsr));
         }
