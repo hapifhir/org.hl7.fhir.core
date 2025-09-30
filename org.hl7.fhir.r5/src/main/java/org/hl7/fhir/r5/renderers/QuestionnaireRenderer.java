@@ -470,7 +470,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       path = d.substring(d.indexOf("#")+1); 
       d = d.substring(0, d.indexOf("#")); 
     } 
-    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, q.getResourceNative()); 
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, null, q.getResourceNative());
     if (sd != null) { 
       String url = sd.getWebPath(); 
       if (url != null) { 
@@ -491,7 +491,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       path = d.substring(d.indexOf("#")+1); 
       d = d.substring(0, d.indexOf("#")); 
     } 
-    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, q.getResourceNative()); 
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, null, q.getResourceNative());
     if (sd != null) { 
       String url = sd.getWebPath(); 
       if (url != null) { 
@@ -576,7 +576,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
           defn.getPieces().add(gen.new Piece(vs.getWebPath(), RendererFactory.factory(vs, context.forContained()).buildSummary(vs), null));                               
         } 
       } else { 
-        ValueSet vs = context.getWorker().findTxResource(ValueSet.class, i.primitiveValue("answerValueSet"), q.getResourceNative()); 
+        ValueSet vs = context.getWorker().findTxResource(ValueSet.class, i.primitiveValue("answerValueSet"), null, q.getResourceNative());
         if (vs == null  || !vs.hasWebPath()) { 
           defn.getPieces().add(gen.new Piece(null, i.primitiveValue("answerValueSet"), null));                     
         } else { 
@@ -818,7 +818,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
           ans.ah(context.prefixLocalHref(vs.getWebPath())).tx(RendererFactory.factory(vs, context.forContained()).buildSummary(vs));                               
         } 
       } else { 
-        ValueSet vs = context.getWorker().findTxResource(ValueSet.class, i.primitiveValue("answerValueSet"), q.getResourceNative()); 
+        ValueSet vs = context.getWorker().findTxResource(ValueSet.class, i.primitiveValue("answerValueSet"), null, q.getResourceNative());
         if (vs == null  || !vs.hasWebPath()) { 
           ans.tx(i.primitiveValue("answerValueSet"));                     
         } else { 
@@ -920,7 +920,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
           vs.setUrl(q.primitiveValue("url")+"--"+contained); 
         } 
       } else { 
-        vs = context.getContext().findTxResource(ValueSet.class, i.primitiveValue("answerValueSet"), q.getResourceNative()); 
+        vs = context.getContext().findTxResource(ValueSet.class, i.primitiveValue("answerValueSet"), null, q.getResourceNative());
       } 
       if (vs != null) { 
         ValueSetExpansionOutcome exp = context.getContext().expandVS(vs, true, false); 
@@ -1034,7 +1034,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     // content control 
     defn(tbl, context.formatPhrase(RenderingContext.QUEST_MAX_LENGTH), qi.primitiveValue("maxLength")); 
     if (qi.has("answerValueSet")) { 
-      defn(tbl, context.formatPhrase(RenderingContext.GENERAL_VALUESET), qi.primitiveValue("definition"), context.getWorker().findTxResource(ValueSet.class,  qi.primitiveValue("answerValueSet"), q.getResourceNative())); 
+      defn(tbl, context.formatPhrase(RenderingContext.GENERAL_VALUESET), qi.primitiveValue("definition"), context.getWorker().findTxResource(ValueSet.class,  qi.primitiveValue("answerValueSet"), null, q.getResourceNative()));
     } 
     if (qi.has("answerOption")) { 
       XhtmlNode tr = tbl.tr(); 

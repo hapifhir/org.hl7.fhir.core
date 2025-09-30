@@ -1,4 +1,6 @@
 {
+  "http://cancer.questionnaire.org/system/code/yesno" : null,
   "http://acme.org/messagetypes|null" : null,
-  "http://cancer.questionnaire.org/system/code/yesno|null" : null
+  "http://cancer.questionnaire.org/system/code/yesno|null" : null,
+  "http://acme.org/messagetypes" : null
 }

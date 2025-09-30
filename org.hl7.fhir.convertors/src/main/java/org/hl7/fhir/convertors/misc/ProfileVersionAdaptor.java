@@ -53,13 +53,13 @@ public class ProfileVersionAdaptor {
     } 
   }
 
-  private IWorkerContext sCtxt;
-  private IWorkerContext tCtxt;
+  private SimpleWorkerContext sCtxt;
+  private SimpleWorkerContext tCtxt;
   private ProfileUtilities tpu;
   private ContextUtilities tcu;
   private List<StructureDefinition> snapshotQueue = new ArrayList<>();
 
-  public ProfileVersionAdaptor(IWorkerContext sourceContext, IWorkerContext targetContext) {
+  public ProfileVersionAdaptor(SimpleWorkerContext sourceContext, SimpleWorkerContext targetContext) {
     super();
     this.sCtxt = sourceContext;
     this.tCtxt = targetContext;
