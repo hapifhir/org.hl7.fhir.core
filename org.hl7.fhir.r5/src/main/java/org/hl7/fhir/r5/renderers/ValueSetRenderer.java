@@ -179,7 +179,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           re = new ConceptMapRenderInstructions(cm.present(), cm.getUrl(), false);
         }
         if (re != null) {
-          ValueSet vst = cm.hasTargetScope() ? getContext().getWorker().findTxResource(ValueSet.class, cm.hasTargetScopeCanonicalType() ? cm.getTargetScopeCanonicalType().getValue() : cm.getTargetScopeUriType().asStringValue(), cm) : null;
+          ValueSet vst = cm.hasTargetScope() ? getContext().getWorker().findTxResource(ValueSet.class, cm.hasTargetScopeCanonicalType() ? cm.getTargetScopeCanonicalType().getValue() : cm.getTargetScopeUriType().asStringValue(), null, cm) : null;
           res.add(new UsedConceptMap(re, vst == null ? cm.getWebPath() : vst.getWebPath(), cm));
         }
       }
@@ -665,7 +665,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         x.tx(context.formatPhrase(RenderingContext.VALUE_SET_LOINCV)+v);        
       }
     } else if (Utilities.noString(v)) {
-      CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u, source);
+      CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u, null, source);
       if (cr != null) {
         if (cr.hasWebPath()) {
           x.ah(context.prefixLocalHref(cr.getWebPath())).tx(t+" "+cr.present()+" "+ context.formatPhrase(RenderingContext.VALUE_SET_NO_VERSION)+cr.fhirType()+")");          
@@ -676,7 +676,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         x.tx(t+" "+displaySystem(u)+" "+ context.formatPhrase(RenderingContext.VALUE_SET_NO_VER));
       }
     } else {
-      CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u+"|"+v, source);
+      CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u, v, source);
       if (cr != null) {
         if (cr.hasWebPath()) {
           x.ah(context.prefixLocalHref(cr.getWebPath())).tx(t+" "+cr.present()+" v"+v+" ("+cr.fhirType()+")");          

@@ -362,18 +362,18 @@ public class PackageReGenerator {
 
   private void chaseDependenciesVS(ValueSet vs) {
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
-      chaseDependenciesVS(inc);
+      chaseDependenciesVS(inc, vs);
     }
     for (ConceptSetComponent inc : vs.getCompose().getExclude()) {
-      chaseDependenciesVS(inc);
+      chaseDependenciesVS(inc, vs);
     }
   }
 
-  private void chaseDependenciesVS(ConceptSetComponent inc) {
+  private void chaseDependenciesVS(ConceptSetComponent inc, ValueSet vs) {
     for (CanonicalType c : inc.getValueSet()) {
       processResource(context.fetchResource(ValueSet.class, c.primitiveValue()));
     }
-    processResource(context.fetchResource(CodeSystem.class, inc.getSystem(), inc.getVersion()));
+    processResource(context.fetchResource(CodeSystem.class, inc.getSystem(), inc.getVersion(), vs));
   }
 
   private void chaseDependenciesSD(StructureDefinition sd) {
@@ -490,7 +490,7 @@ public class PackageReGenerator {
     if (b instanceof CanonicalType) {
       CanonicalType ct = (CanonicalType) b;
       if (!ct.hasVersion()) {
-        Resource res = context.fetchResource(Resource.class, ct.getValue(), src);
+        Resource res = context.fetchResource(Resource.class, ct.getValue(), null, src);
         if (res != null && res instanceof CanonicalResource) {
           CanonicalResource cr = (CanonicalResource) res;
           ct.addVersion(cr.getVersion());
@@ -500,7 +500,7 @@ public class PackageReGenerator {
     if (b instanceof ConceptSetComponent) {
       ConceptSetComponent cs = (ConceptSetComponent) b;
       if (!cs.hasVersion()) {
-        Resource res = context.fetchResource(Resource.class, cs.getSystem(), src);
+        Resource res = context.fetchResource(Resource.class, cs.getSystem(), null, src);
         if (res != null && res instanceof CanonicalResource) {
           CanonicalResource cr = (CanonicalResource) res;
           cs.setVersion(cr.getVersion());
@@ -663,7 +663,7 @@ public class PackageReGenerator {
       }
     }
     if (scope != ExpansionPackageGeneratorScope.IG_ONLY && sd.getBaseDefinition() != null) {
-      StructureDefinition bsd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
+      StructureDefinition bsd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), null, sd);
       if (bsd != null) { 
         if (!bsd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition") || scope == ExpansionPackageGeneratorScope.EVERYTHING) {
           processSD(bsd, bsd.getSourcePackage().getVID());
@@ -725,7 +725,7 @@ public class PackageReGenerator {
         loader.loadPackage(tho, true);
         loader.loadPackage(npm, true);
         context = ctxt;
-        context.setExpansionParameters(expansionParameters);
+        context.getManager().setExpansionParameters(expansionParameters);
         loader.loadPackage(npm, true);    
       } else {
         var loader = new IgLoader(pcm, (SimpleWorkerContext) context, context.getVersion());

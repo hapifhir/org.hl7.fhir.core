@@ -141,7 +141,7 @@ public class R5ExtensionsLoader {
         sd.getSnapshot().getElement().removeAll(rl);
         sd.setWebPath(Utilities.pathURL(lsd.source.getWebLocation(), sd.getId().toLowerCase()+".html"));
         registerTerminologies(sd);
-        context.cacheResourceFromPackage(sd, new PackageInformation(lsd.source));
+        context.getManager().cacheResourceFromPackage(sd, new PackageInformation(lsd.source));
       }
     }    
   }
@@ -201,7 +201,7 @@ public class R5ExtensionsLoader {
   }
 
   private void loadValueSet(ValueSet vs, IWorkerContext context, Map<String, Loadable<ValueSet>> valueSets, Map<String, Loadable<CodeSystem>> codeSystems) throws FHIRFormatError, FileNotFoundException, IOException {
-    context.cacheResourceFromPackage(vs, vs.getSourcePackage());
+    context.getManager().cacheResourceFromPackage(vs, vs.getSourcePackage());
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
       for (CanonicalType t : inc.getValueSet()) {
         String vsu = t.getValue();
@@ -227,7 +227,7 @@ public class R5ExtensionsLoader {
           cs.setUrl(csu);
           inc.setSystem(csu);
           if (!context.hasResource(CodeSystem.class, csu)) {
-            context.cacheResourceFromPackage(cs, cs.getSourcePackage());
+            context.getManager().cacheResourceFromPackage(cs, cs.getSourcePackage());
           }
         }
       }

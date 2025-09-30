@@ -192,7 +192,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     CodeSystem csa = context.fetchCodeSystem(c.getSystem());
     VersionAlgorithm va = csa == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(csa.getVersionAlgorithm());
     String version = determineVersion(c.getSystem(), c.getVersion(), va);
-    CodeSystem cs = resolveCodeSystem(c.getSystem(), version);
+    CodeSystem cs = resolveCodeSystem(c.getSystem(), version, valueset);
     if (cs == null) {
       // well, it doesn't really matter at this point. Mainly we're triggering the supplement analysis to happen 
       opContext.note("Unable to resolve "+c.getSystem()+"#"+version);
@@ -250,7 +250,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           CodeSystem csa = context.fetchCodeSystem(c.getSystem());
           VersionAlgorithm va = csa == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(csa.getVersionAlgorithm());
           String version = determineVersion(c.getSystem(), c.getVersion(), va);
-          CodeSystem cs = resolveCodeSystem(c.getSystem(), version);
+          CodeSystem cs = resolveCodeSystem(c.getSystem(), version, valueset);
           ValidationResult res = null;
           if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.SUPPLEMENT)) {
             if (context.isNoTerminologyServer()) {
@@ -483,7 +483,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       serverCount += vsv.getServerLoad(info);
     }
     if (inc.hasSystem()) {
-      CodeSystem cs = resolveCodeSystem(inc.getSystem(), inc.getVersion());
+      CodeSystem cs = resolveCodeSystem(inc.getSystem(), inc.getVersion(), valueset);
       if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)) {
         serverCount++;
       }
@@ -519,7 +519,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   private String lookupDisplay(Coding c) {
-    CodeSystem cs = resolveCodeSystem(c.getSystem(), c.getVersion());
+    CodeSystem cs = resolveCodeSystem(c.getSystem(), c.getVersion(), valueset);
     if (cs != null) {
       ConceptDefinitionComponent cd = CodeSystemUtilities.findCodeOrAltCode(cs.getConcept(), c.getCode(), null);
       if (cd != null) {
@@ -529,18 +529,18 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return null;
   }
 
-  public CodeSystem resolveCodeSystem(String system, String version) {
+  public CodeSystem resolveCodeSystem(String system, String version, Resource source) {
     for (CodeSystem t : localSystems) {
       if (t.getUrl().equals(system) && versionsMatch(version, t.getVersion())) {
         return t;
       }
     }
-    CodeSystem cs = context.fetchSupplementedCodeSystem(system, version);
+    CodeSystem cs = context.fetchSupplementedCodeSystem(system, version, source);
     if (cs == null) {
       cs = findSpecialCodeSystem(system, version);
     }
     if (cs == null) {
-      cs = context.findTxResource(CodeSystem.class, system, version);
+      cs = context.findTxResource(CodeSystem.class, system, version, source);
     }
     if (cs != null) {
       if (cs.hasUserData("supplements.installed")) {
@@ -633,7 +633,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         inInclude = checkInclude(code);
         String workingVersion = getCodeSystemVersionFromValueSet(system, code.getCode());
         String wv = determineVersion(path, system, workingVersion, code.getVersion(), issues);
-        CodeSystem cs = resolveCodeSystem(system, wv);
+        CodeSystem cs = resolveCodeSystem(system, wv, null);
         if (cs == null) {
           if (!VersionUtilities.isR6Plus(context.getVersion()) && "urn:ietf:bcp:13".equals(system) && Utilities.existsInList(code.getCode(), "xml", "json", "ttl") && "http://hl7.org/fhir/ValueSet/mimetypes".equals(valueset.getUrl())) {
             return new ValidationResult(system, null, new ConceptDefinitionComponent(code.getCode()), "application/fhir+"+code.getCode());        
@@ -979,7 +979,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return cs; 
     }
     if (Utilities.isAbsoluteUrl(system)) {
-      StructureDefinition sd = context.fetchResource(StructureDefinition.class, system, version);
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, system, version, null);
       if (sd != null) {
         return CodeSystemUtilities.convertSD(sd);
       }
@@ -1406,7 +1406,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           sys.add(vsi.getSystem());
         }
       } else {
-        CodeSystem cs = resolveCodeSystem(vsi.getSystem(), vsi.getVersion());
+        CodeSystem cs = resolveCodeSystem(vsi.getSystem(), vsi.getVersion(), valueset);
         if (cs != null && cs.getContent() == CodeSystemContentMode.COMPLETE) {
           if (vsi.hasConcept()) {
             for (ConceptReferenceComponent cc : vsi.getConcept()) {
@@ -1531,6 +1531,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   private String determineVersion(String path, @Nonnull String system, String versionVS, String versionCoding, List<OperationOutcomeIssueComponent> issues) {
     CodeSystem csa = context.fetchCodeSystem(system); // get the latest
+    Resource source = valueset;
     VersionAlgorithm va = csa == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(csa.getVersionAlgorithm());
 
     // phase 1: get correct system version
@@ -1541,13 +1542,14 @@ public class ValueSetValidator extends ValueSetProcessBase {
       // if versionCoding is more detailed than result, then we use that instead
       if (versionIsMoreDetailed(va, result, versionCoding)) {
         result = versionCoding;
+        source = null;
       }
       String key = system+"^"+result+"^"+versionVS+"^"+versionCoding;
       if (!checkedVersionCombinations.contains(key)) {
         checkedVersionCombinations.add(key);
 
         // phase 4: is the determined version compatible?
-        CodeSystem cs = context.fetchResource(CodeSystem.class, system, result);
+        CodeSystem cs = context.fetchResource(CodeSystem.class, system, result, source);
         if (cs != null) {
           checkVersion(path, system, cs.getVersion(), va, issues);
         }
@@ -1558,13 +1560,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
           } else if (!result.equals(versionVS)) {
             issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, Utilities.noString(path) ? "version" : path + "." + "version",
               context.formatMessage(I18nConstants.VALUESET_VALUE_MISMATCH_CHANGED, system, result, notNull(versionVS), notNull(versionCoding)), OpIssueCode.VSProcessing, null, I18nConstants.VALUESET_VALUE_MISMATCH_CHANGED));
-          } else {
+          } else if (!notNull(versionVS).equals(notNull(versionCoding))) {
             issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, Utilities.noString(path) ? "version" : path + "." + "version",
               context.formatMessage(I18nConstants.VALUESET_VALUE_MISMATCH, system, notNull(versionVS), notNull(versionCoding)), OpIssueCode.VSProcessing, null, I18nConstants.VALUESET_VALUE_MISMATCH));
           }
-          CodeSystem cs2 = context.fetchCodeSystem(system, versionCoding);
+          CodeSystem cs2 = context.fetchCodeSystem(system, versionCoding, source);
           if (cs2 == null) {
-            List<CodeSystem> list = context.fetchResourcesByUrl(CodeSystem.class, system);
+            List<CodeSystem> list = context.fetchResourceVersions(CodeSystem.class, system);
             Set<String> versions = new HashSet<>();
             for (CodeSystem c : list) {
               versions.add(c.getVersion());
@@ -1723,7 +1725,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return false;
     // ok, we need the code system
     String actualVersion = determineVersion(path, system, vsi.getVersion(), version, issues);
-    CodeSystem cs = resolveCodeSystem(system, actualVersion);
+    CodeSystem cs = resolveCodeSystem(system, actualVersion, valueset);
     if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)) {
       if (throwToServer) {
         // make up a transient value set with
@@ -1987,7 +1989,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (inner.containsKey(url)) {
       return inner.get(url);
     }
-    ValueSet vs = context.findTxResource(ValueSet.class, url, valueset);
+    ValueSet vs = context.findTxResource(ValueSet.class, url, null, valueset);
     if (vs == null && info != null) {
       unknownValueSets.add(url);
       info.addIssue(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, null, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_VALUE_SET_, url), OpIssueCode.NotFound, null, I18nConstants.UNABLE_TO_RESOLVE_VALUE_SET_));

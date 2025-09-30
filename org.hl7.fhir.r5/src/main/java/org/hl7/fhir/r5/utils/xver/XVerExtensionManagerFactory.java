@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.utils.xver;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
@@ -11,19 +13,13 @@ public class XVerExtensionManagerFactory {
   // system. We need to figure out a better way to inject the loader logic.
   //
   // On the context?
-  private static XVerExtensionManagerNew.IXverManagerPackageLoader loader;
+  @Getter @Setter
+  private static boolean newLoader = false;
 
-  public static XVerExtensionManagerNew.IXverManagerPackageLoader getLoader() {
-    return loader;
-  }
-
-  public static void setLoader(XVerExtensionManagerNew.IXverManagerPackageLoader loader) {
-    XVerExtensionManagerFactory.loader = loader;
-  }
 
   public static XVerExtensionManager createExtensionManager(IWorkerContext context) throws FHIRException {
-    if (loader != null) {
-      return new XVerExtensionManagerNew(context, loader);
+    if (newLoader) {
+      return new XVerExtensionManagerNew(context);
     } else {
       return new XVerExtensionManagerOld(context);
     }
