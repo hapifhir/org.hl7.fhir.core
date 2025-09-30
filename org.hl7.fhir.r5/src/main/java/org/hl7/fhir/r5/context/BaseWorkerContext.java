@@ -161,9 +161,6 @@ import com.google.gson.JsonObject;
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext, IWorkerContextManager, IOIDServices {
   private static boolean allowedToIterateTerminologyResources;
 
-  public interface ITerminologyOperationDetails {
-    public void seeSupplement(CodeSystem supp);
-  }
 
   public interface IByteProvider {
     byte[] bytes() throws IOException;
@@ -547,7 +544,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   public void cacheResourceFromPackage(Resource r, PackageInformation packageInfo) throws FHIRException {
- 
+
     synchronized (lock) {   
       if (packageInfo != null) {
         packages.put(packageInfo.getVID(), packageInfo);
@@ -2284,10 +2281,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
    * @return a copy of the expansion parameters
    */
   public Parameters getExpansionParameters() {
-    return expansionParameters.get().copy();
+    final Parameters parameters = expansionParameters.get();
+    return parameters == null ? null : parameters.copy();
   }
 
-  public void setExpansionParameters(Parameters expansionParameters) {
+    public void setExpansionParameters(Parameters expansionParameters) {
     this.expansionParameters.set(expansionParameters);
     this.terminologyClientManager.setExpansionParameters(expansionParameters);
   }
