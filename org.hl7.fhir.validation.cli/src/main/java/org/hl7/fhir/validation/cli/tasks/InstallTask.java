@@ -1,9 +1,9 @@
 package org.hl7.fhir.validation.cli.tasks;
 
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
-import org.hl7.fhir.validation.service.utils.EngineMode;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
@@ -27,7 +27,7 @@ public class InstallTask extends ValidationEngineTask {
 
   @Override
   public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
-    return validationContext.getMode() == EngineMode.INSTALL;
+    return Params.hasParam(args, Params.INSTALL);
   }
 
   @Override
@@ -38,5 +38,10 @@ public class InstallTask extends ValidationEngineTask {
   @Override
   public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
     validationService.install(validationContext.getIgs(), validationEngine);
+  }
+
+  @Override
+  public boolean inferFhirVersion() {
+    return true;
   }
 }

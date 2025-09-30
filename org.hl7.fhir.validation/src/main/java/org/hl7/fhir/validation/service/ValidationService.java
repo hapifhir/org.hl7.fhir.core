@@ -554,9 +554,9 @@ public class ValidationService {
     }
   }
 
-
-
   protected static ValidationEngineSettings getValidationEngineSettings(ValidationContext validationContext) {
+    final boolean inferFhirVersion= ValidationService.isInferFhirVersion(validationContext);
+
     return new ValidationEngineSettings()
       .setBaseEngine(validationContext.getBaseEngine())
       .setSv(validationContext.getSv())
@@ -565,7 +565,13 @@ public class ValidationService {
       .setAssumeValidRestReferences(validationContext.isAssumeValidRestReferences())
       .setHintAboutNonMustSupport(validationContext.isHintAboutNonMustSupport())
       .setSnomedCT(validationContext.getSnomedCTCode())
-      .setNoExtensibleBindingMessages(validationContext.isNoExtensibleBindingMessages());
+      .setNoExtensibleBindingMessages(validationContext.isNoExtensibleBindingMessages())
+      .setInferFhirVersion(inferFhirVersion);
+  }
+
+  protected static boolean isInferFhirVersion(ValidationContext validationContext) {
+    return validationContext.getMode() == EngineMode.INSTALL
+      || validationContext.getMode() == EngineMode.VALIDATION;
   }
 
   /**
@@ -625,6 +631,7 @@ public class ValidationService {
       log.info("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
     }
     sessionCache.cleanUp();
+
     final ValidationEngine validationEngine = getValidationEngineFromValidationContext(validationEngineSettings, validationContext, definitions, timeTracker);
     final String newSessionId = sessionCache.cacheSession(validationEngine);
     log.info("Cached new session with ID " + newSessionId + " . Cache size = " + sessionCache.getSessionIds().size());
@@ -635,7 +642,7 @@ public class ValidationService {
   //TODO remove ValidationContext
   private ValidationEngine getValidationEngineFromValidationContext(ValidationEngineSettings validationEngineSettings, ValidationContext validationContext, String definitions, TimeTracker timeTracker) throws Exception {
     if (validationEngineSettings.getSv() == null) {
-      final String sv = determineVersion(validationEngineSettings);
+      final String sv = determineFhirVersion(validationEngineSettings);
       validationEngineSettings.setSv(sv);
     }
 
@@ -807,20 +814,31 @@ public class ValidationService {
   /**
    * @deprecated Use {@link ValidationService#getFhirVersionFromValidationContext } in future versions for the same functionality.
    */
-  @Deprecated(forRemoval = true)
+  @Deprecated(since = "2025-09-29")
   public String determineVersion(ValidationContext validationContext) throws IOException {
-    return determineVersion(validationContext.getMode(), validationContext.getIgs(), validationContext.isRecursive(), validationContext.getSources());
+    boolean inferFhirVersion = isInferFhirVersion(validationContext);
+    return determineFhirVersion(inferFhirVersion, validationContext.getIgs(), validationContext.isRecursive(), validationContext.getSources());
   }
 
   //FIXME pass along validationEngineSettings
-  private String determineVersion(ValidationEngineSettings validationEngineSettings) {
-    return "5.0";
+  public String determineFhirVersion(ValidationEngineSettings validationEngineSettings) throws IOException{
+    return determineFhirVersion(
+      validationEngineSettings.isInferFhirVersion(),
+      validationEngineSettings.getIgs(),
+      //FIXME move isRecursive to ValidationEngineSettings
+      //validationEngineSettings.isRecursive();
+      false,
+      //FIXME move sources to ValidationEngineSettings
+      //validationEngineSettings.getSources();
+      List.of()
+    );
   }
 
-  private String determineVersion(EngineMode engineMode, List<String> igs, boolean isRecursive, List<String> sources) throws IOException {
-    if (engineMode != EngineMode.INSTALL) {
+  private String determineFhirVersion(boolean isInferFhirVersion, List<String> igs, boolean isRecursive, List<String> sources) throws IOException {
+
+    if (!isInferFhirVersion) {
       return "5.0";
-    };
+    }
     log.info("Scanning for versions (no -version parameter):");
     VersionSourceInformation versions = scanForVersions(igs, isRecursive, sources);
     for (String reportEntry : versions.getReport()) {

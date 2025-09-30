@@ -72,14 +72,12 @@ import org.hl7.fhir.utilities.FileFormat;
 import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccess.WebAccessPolicy;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.logging.Level;
 import org.hl7.fhir.validation.cli.logging.LogbackUtilities;
-import org.hl7.fhir.validation.cli.param.ValidationEngineParams;
 import org.hl7.fhir.validation.cli.tasks.*;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
@@ -189,8 +187,6 @@ public class ValidatorCli {
       }
       return;
     }
-
-
     readParamsAndExecuteTask(validationEngineSettings, validationContext, args);
   }
 
@@ -370,6 +366,9 @@ public class ValidatorCli {
 
       TimeTracker tt = new TimeTracker();
       TimeTracker.Session tts = tt.start("Loading");
+      if (((ValidationEngineTask) cliTask).inferFhirVersion()) {
+        validationEngineSettings.setInferFhirVersion(Boolean.TRUE);
+      }
 
       ValidationEngine validationEngine = getValidationEngine(validationEngineSettings, tt, validationContext);
       tts.end();

@@ -771,17 +771,20 @@ public class ValidationContext {
   // proper CLI
   @SerializedName("mode")
   @JsonProperty("mode")
+  @Deprecated(since = "2025-09-25")
   public EngineMode getMode() {
     return mode;
   }
 
-  //FIXME find all the places this is called and remove them. This should be purely set in shouldExecuteTask
   @SerializedName("mode")
   @JsonProperty("mode")
+  @Deprecated(since = "2025-09-25")
   public ValidationContext setMode(EngineMode mode) {
     this.mode = mode;
     return this;
   }
+
+
 
   @SerializedName("output")
   @JsonProperty("output")
@@ -1522,6 +1525,17 @@ public class ValidationContext {
 
   public List<String> getLangRegenParam() {
     return langRegenParam;
+  }
+
+  private Boolean inferFhirVersion = true;
+
+  public Boolean isInferFhirVersion() {
+    return inferFhirVersion;
+  }
+
+  public ValidationContext setInferFhirVersion(Boolean inferFhirVersion) {
+    this.inferFhirVersion = inferFhirVersion;
+    return this;
   }
 
 }
