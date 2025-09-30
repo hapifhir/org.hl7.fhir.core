@@ -4,7 +4,7 @@ import lombok.Getter;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.r5.context.BaseWorkerContext.ITerminologyOperationDetails;
+import org.hl7.fhir.r5.context.IWorkerContext.ITerminologyOperationDetails;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
@@ -793,4 +793,7 @@ public interface IWorkerContext {
   public boolean isForPublication();
   public void setForPublication(boolean value);
 
+  public interface ITerminologyOperationDetails {
+    public void seeSupplement(CodeSystem supp);
+  }
 }

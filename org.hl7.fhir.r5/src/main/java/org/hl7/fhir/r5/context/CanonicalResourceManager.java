@@ -11,10 +11,7 @@ import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
-import org.hl7.fhir.utilities.NaturalOrderComparator;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.*;
 
 /**
  * This manages a cached list of resources, and provides high speed access by URL / URL+version, and assumes that patch version doesn't matter for access
