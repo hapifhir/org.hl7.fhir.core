@@ -26,6 +26,7 @@ import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.TerminologyFunctions;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -108,7 +109,7 @@ public class FHIRPathTests {
     context = new SimpleWorkerContext(TestingUtilities.getSharedWorkerContext());
     if (!context.hasPackage("hl7.cda.us.ccda", null)) {
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
-      NpmPackage npm = pcm.loadPackage("hl7.cda.uv.core", "2.0.0");
+      NpmPackage npm = pcm.loadPackage("hl7.cda.uv.core", "2.0?");
       context.loadFromPackage(npm, null);
       npm = pcm.loadPackage("hl7.cda.us.ccda", "current");
       context.loadFromPackage(npm, null);

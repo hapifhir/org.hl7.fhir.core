@@ -137,11 +137,6 @@ public class ExtensionUtilities {
       nc.getExtension().add(Factory.newExtension(ExtensionDefinitions.EXT_VS_COMMENT, Factory.newString_(comment), true));
   }
 
-  public static void addCSComment(CodeSystem.ConceptDefinitionComponent nc, String comment) {
-    if (!StringUtils.isBlank(comment))
-      nc.getExtension().add(Factory.newExtension(ExtensionDefinitions.EXT_CS_COMMENT, Factory.newString_(comment), true));
-  }
-
   //  public static void markDeprecated(Element nc) {
   //    setDeprecated(nc);
   //  }
@@ -372,18 +367,6 @@ public class ExtensionUtilities {
     return true;
   }
 
-  public static String getCSComment(CodeSystem.ConceptDefinitionComponent c) {
-    return readStringExtension(c, ExtensionDefinitions.EXT_CS_COMMENT);
-  }
-  //
-  //  public static Boolean getDeprecated(Element c) {
-  //    return readBooleanExtension(c, EXT_DEPRECATED);
-  //  }
-
-  public static boolean hasCSComment(CodeSystem.ConceptDefinitionComponent c) {
-    return findStringExtension(c, ExtensionDefinitions.EXT_CS_COMMENT);
-  }
-
   //  public static boolean hasDeprecated(Element c) {
   //    return findBooleanExtension(c, EXT_DEPRECATED);
   //  }
@@ -492,6 +475,26 @@ public class ExtensionUtilities {
       ext.setValue(new UriType(value));
     else
       resource.getExtension().add(new Extension(uri).setValue(new UriType(value)));
+  }
+
+  public static void setCanonicalExtension(DomainResource resource, String uri, String value) {
+    if (Utilities.noString(value))
+      return;
+    Extension ext = getExtension(resource, uri);
+    if (ext != null)
+      ext.setValue(new UriType(value));
+    else
+      resource.getExtension().add(new Extension(uri).setValue(new CanonicalType(value)));
+  }
+
+  public static void setCanonicalExtension(Element resource, String uri, String value) {
+    if (Utilities.noString(value))
+      return;
+    Extension ext = getExtension(resource, uri);
+    if (ext != null)
+      ext.setValue(new UriType(value));
+    else
+      resource.getExtension().add(new Extension(uri).setValue(new CanonicalType(value)));
   }
 
   public static void setUrlExtension(DomainResource resource, String uri, String value) {
@@ -928,17 +931,21 @@ public class ExtensionUtilities {
   //    return hasExtension(cs, EXT_OID);
   //  }
   //
-  public static void addUrlExtension(Element e, String url, String content) {
-    if (!StringUtils.isBlank(content)) {
-      Extension ex = getExtension(e, url);
-      if (ex != null)
-        ex.setValue(new UrlType(content));
-      else
-        e.getExtension().add(Factory.newExtension(url, new UrlType(content), true));
+  public static void addUrlExtension(Element e, String url, String value) {
+    if (StringUtils.isBlank(value)) {
+      return;
     }
+    Extension ex = getExtension(e, url);
+    if (ex != null)
+      ex.setValue(new UrlType(value));
+    else
+      e.getExtension().add(Factory.newExtension(url, new UrlType(value), true));
   }
 
   public static void addUrlExtension(DomainResource dr, String url, String value) {
+    if (StringUtils.isBlank(value)) {
+      return;
+    }
     Extension ex = getExtension(dr, url);
     if (ex != null)
       ex.setValue(new UrlType(value));
@@ -946,23 +953,51 @@ public class ExtensionUtilities {
       dr.getExtension().add(Factory.newExtension(url, new UrlType(value), true));
   }
 
-  public static void addUriExtension(Element e, String url, String content) {
-    if (!StringUtils.isBlank(content)) {
-      Extension ex = getExtension(e, url);
-      if (ex != null)
-        ex.setValue(new UriType(content));
-      else
-        e.getExtension().add(Factory.newExtension(url, new UriType(content), true));
+  public static void addUriExtension(Element e, String url, String value) {
+    if (StringUtils.isBlank(value)) {
+      return;
     }
+    Extension ex = getExtension(e, url);
+    if (ex != null)
+      ex.setValue(new UriType(value));
+    else
+      e.getExtension().add(Factory.newExtension(url, new UriType(value), true));
   }
 
   public static void addUriExtension(DomainResource dr, String url, String value) {
+    if (StringUtils.isBlank(value)) {
+      return;
+    }
     Extension ex = getExtension(dr, url);
     if (ex != null)
       ex.setValue(new UriType(value));
     else
       dr.getExtension().add(Factory.newExtension(url, new UriType(value), true));
   }
+
+  public static void addCanonicalExtension(Element e, String url, String value) {
+    if (StringUtils.isBlank(value)) {
+      return;
+    }
+    Extension ex = getExtension(e, url);
+    if (ex != null)
+      ex.setValue(new CanonicalType(value));
+    else
+      e.getExtension().add(Factory.newExtension(url, new CanonicalType(value), true));
+
+  }
+
+  public static void addCanonicalExtension(DomainResource dr, String url, String value) {
+    if (StringUtils.isBlank(value)) {
+      return;
+    }
+    Extension ex = getExtension(dr, url);
+    if (ex != null)
+      ex.setValue(new CanonicalType(value));
+    else
+      dr.getExtension().add(Factory.newExtension(url, new CanonicalType(value), true));
+  }
+
 
   public static boolean usesExtension(String url, Base base) {
     if ("Extension".equals(base.fhirType())) {

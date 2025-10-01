@@ -173,10 +173,16 @@ public class ValidationOptions {
     n.useServer = false;
     return n;
   }
-  
+
   public ValidationOptions withNoClient() {
     ValidationOptions n = this.copy();
     n.useClient = false;
+    return n;
+  }
+
+  public ValidationOptions withUseClient(boolean value) {
+    ValidationOptions n = this.copy();
+    n.useClient = value;
     return n;
   }
 

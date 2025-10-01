@@ -26,6 +26,7 @@ import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationAction;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationRule;
@@ -316,7 +317,6 @@ public class ValueSetValidator extends BaseValidator {
     }      
 
     if (policyAdvisor.policyForSpecialValidation((IResourceValidator) parent, valContext.getAppContext(), SpecialValidationRule.VALUESET_IMPORT_CHECKS, stack.getLiteralPath(), vsSrc, include) == SpecialValidationAction.CHECK_RULE) {
-
       List<Element> valuesets = include.getChildrenByName("valueSet");
       int i = 0;
       for (Element ve : valuesets) {
@@ -367,6 +367,7 @@ public class ValueSetValidator extends BaseValidator {
       }
       if (version == null) {
         CodeSystem cs = context.fetchCodeSystem(system);
+
         if (cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(system) && fetcher != null) {
           Set<String> possibleVersions = fetcher.fetchCanonicalResourceVersions(null, valContext.getAppContext(), system);
           warning(errors, NO_RULE_DATE, IssueType.INVALID,  stack, possibleVersions.size() <= 1, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS, 
@@ -380,13 +381,14 @@ public class ValueSetValidator extends BaseValidator {
     CodeSystemChecker csChecker = getSystemValidator(system, errors);
     CodeSystem cs = null;
     if (!Utilities.noString(system)) {
-      cs = context.fetchCodeSystem(system, version);
+      cs = context.fetchCodeSystem(system, version, null);
       if (cs == null) {
         // can we get it from a terminology server? 
-        cs = context.findTxResource(CodeSystem.class, system, version);
+        cs = context.findTxResource(CodeSystem.class, system, version, null);
       }
       boolean validateConcepts = true;
       if (cs != null) { // if it's null, we can't analyse this
+        ok = rule(errors, "2025-07-15", IssueType.BUSINESSRULE, stack.getLiteralPath(), !cs.hasUserData(UserDataNames.RESOURCE_INTERNAL_USE_ONLY), I18nConstants.RESOURCE_INTERNAL_USE_ONLY, "CodeSystem", cs.getSourcePackage() != null ? cs.getSourcePackage().getVID() : "??") && ok;
         if (cs.getContent() == null) {
           warning(errors, "2024-03-06", IssueType.INVALID, stack, false, version == null ? I18nConstants.VALUESET_INCLUDE_CS_CONTENT : I18nConstants.VALUESET_INCLUDE_CSVER_CONTENT, system, "null", version);             
         } else {
@@ -401,6 +403,13 @@ public class ValueSetValidator extends BaseValidator {
             validateConcepts = false;
             ok = rule(errors, "2024-03-06", IssueType.INVALID, stack, false, version == null ? I18nConstants.VALUESET_INCLUDE_CS_SUPPLEMENT : I18nConstants.VALUESET_INCLUDE_CSVER_SUPPLEMENT, system, cs.getSupplements(), version) && ok;             
             break;
+          case NOTPRESENT:
+            // what happens next depends on whether we can validate this codeSystem
+            if (!context.getTxSupportInfo(cs.getUrl(), cs.getVersion()).isServerSide()) {
+              validateConcepts = false;
+              warning(errors, "2024-03-06", IssueType.INVALID, stack, false, version == null ? I18nConstants.VALUESET_INCLUDE_CS_CONTENT : I18nConstants.VALUESET_INCLUDE_CSVER_CONTENT, system, cs.getContent().toCode(), version);
+            }
+            break;
           default:
             break;
           }
@@ -412,11 +421,15 @@ public class ValueSetValidator extends BaseValidator {
             if (csl.size() == 1) {
               ok = rule(errors, "2025-01-09", IssueType.INVALID, stack, csl.isEmpty(), I18nConstants.VALUESET_INCLUDE_WRONG_CS_OID, system, csl.get(0).getUrl()) && ok;
             } else {
-              ok = rule(errors, "2025-01-09", IssueType.INVALID, stack, csl.isEmpty(), I18nConstants.VALUESET_INCLUDE_WRONG_CS_OID_PLURAL, system) && ok;
+              List<String> ids = new ArrayList<>();
+              for (CodeSystem c : csl) {
+                ids.add(c.getVersionedUrl());
+              }
+              ok = rule(errors, "2025-01-09", IssueType.INVALID, stack, csl.isEmpty(), I18nConstants.VALUESET_INCLUDE_WRONG_CS_OID_PLURAL, system, CommaSeparatedStringBuilder.join(",", ids)) && ok;
             }
           }
         }
-        ValueSet vs = context.findTxResource(ValueSet.class, system, version);
+        ValueSet vs = context.findTxResource(ValueSet.class, system, version, null);
         if (vs != null) {
           validateConcepts = false;
           List<String> systems = TerminologyUtilities.listSystems(vs);
@@ -438,8 +451,17 @@ public class ValueSetValidator extends BaseValidator {
           boolean first = true;
           if (concepts.size() > TOO_MANY_CODES_TO_VALIDATE) {
             hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_TOO_MANY_CODES, concepts.size());
-          } else {        
-            if (((InstanceValidator) parent).isValidateValueSetCodesOnTxServer() && !context.isNoTerminologyServer()) {
+          } else if (!((InstanceValidator) parent).isValidateValueSetCodesOnTxServer()) {
+            hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_NOT_VALIDATING, concepts.size());
+          } else if (context.isNoTerminologyServer()) {
+            hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_NO_SERVER, concepts.size());
+          } else {
+            var si = context.getTxSupportInfo(system, version);
+            if (concepts.size() > 1 && !si.isSupported()) {
+              hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_CS_NO_SUPPORT, si.getServer());
+            } else if (concepts.size() > 1 && !VersionUtilities.isThisOrLater("1.7.8", si.getTestVersion(), VersionUtilities.VersionPrecision.PATCH)) {
+              hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_NO_BATCH_ON_SERVER, si.getServer());
+            } else {
               try {
                 for (Element concept : concepts) {
                   // we treat the first differently because we want to know if the system is worth validating. if it is, then we batch the rest
@@ -454,7 +476,7 @@ public class ValueSetValidator extends BaseValidator {
                     }
                   }
                   cc++;
-                }    
+                }
                 executeValidationBatch(errors, vsid, retired, system, version, batch, stack);
               } catch (Exception e) {
                 ok = false;
@@ -481,7 +503,7 @@ public class ValueSetValidator extends BaseValidator {
       String version, List<VSCodingValidationRequest> batch, NodeStack baseStack) {
     if (batch.size() > 0) {
       IWorkerContext.SystemSupportInformation txInfo = context.getTxSupportInfo(system, version);
-      if (warning(errors, "2025-07-07", IssueType.NOTSUPPORTED, baseStack, VersionUtilities.isThisOrLater(TerminologyClientContext.TX_BATCH_VERSION, txInfo.getTestVersion()), I18nConstants.VALUESET_TXVER_BATCH_NOT_SUPPORTED, (txInfo.getTestVersion() == null ? "Not Known" : txInfo.getTestVersion()), system+(version == null ? "" : "|"+version), txInfo.getServer())) {
+      if (warning(errors, "2025-07-07", IssueType.NOTSUPPORTED, baseStack,  txInfo.getTestVersion() != null && VersionUtilities.isThisOrLater(TerminologyClientContext.TX_BATCH_VERSION, txInfo.getTestVersion(), VersionUtilities.VersionPrecision.MINOR), I18nConstants.VALUESET_TXVER_BATCH_NOT_SUPPORTED, (txInfo.getTestVersion() == null ? "Not Known" : txInfo.getTestVersion()), system+(version == null ? "" : "|"+version), txInfo.getServer())) {
         long t = System.currentTimeMillis();
         log.debug("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
         context.validateCodeBatch(ValidationOptions.defaults().withExampleOK(), batch, null, false);

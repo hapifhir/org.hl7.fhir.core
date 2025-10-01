@@ -18,6 +18,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import lombok.extern.slf4j.Slf4j;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.Pair;
 import org.fhir.ucum.UcumException;
@@ -67,15 +68,9 @@ import org.hl7.fhir.r5.model.TimeType;
 import org.hl7.fhir.r5.model.TypeConvertor;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.DateTimeUtil;
-import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.hl7.fhir.utilities.MergedList;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.MergedList.MergeNode;
-import org.hl7.fhir.utilities.SourceLocation;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -119,6 +114,7 @@ import ca.uhn.fhir.util.ElementUtil;
  * @author Grahame Grieve
  *
  */
+@Slf4j
 public class FHIRPathEngine {
 
   public class ExtensionDefinition {
@@ -173,7 +169,7 @@ public class FHIRPathEngine {
   private IWorkerContext worker;
   private IHostApplicationServices hostServices;
   private IDebugTracer tracer;
-  private StringBuilder log = new StringBuilder();
+  private StringBuilder traceLog = new StringBuilder();
   private Set<String> primitiveTypes = new HashSet<String>();
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
   private boolean legacyMode; // some R2 and R3 constraints assume that != is valid for empty sets, so when running for R2/R3, this is set ot true  
@@ -242,7 +238,7 @@ public class FHIRPathEngine {
   }
 
   private void initFlags() {
-    if (!VersionUtilities.isR5VerOrLater(worker.getVersion())) {
+    if (!VersionUtilities.isR5Plus(worker.getVersion())) {
       doNotEnforceAsCaseSensitive = true;
       doNotEnforceAsSingletonRule = true;
     }
@@ -753,7 +749,7 @@ public class FHIRPathEngine {
     if (base != null) {
       list.add(base);
     }
-    log = new StringBuilder();
+    traceLog = new StringBuilder();
     return execute(new ExecutionContext(null, base != null && base.isResource() ? base : null, base != null && base.isResource() ? base : null, base, base), list, ExpressionNode, true);
   }
 
@@ -772,7 +768,7 @@ public class FHIRPathEngine {
     if (base != null) {
       list.add(base);
     }
-    log = new StringBuilder();
+    traceLog = new StringBuilder();
     return execute(new ExecutionContext(appContext, base != null && base.isResource() ? base : null, base != null && base.isResource() ? base : null, base, base), list, ExpressionNode, true);
   }
   
@@ -791,7 +787,7 @@ public class FHIRPathEngine {
     if (base != null) {
       list.add(base);
     }
-    log = new StringBuilder();
+    traceLog = new StringBuilder();
     return execute(new ExecutionContext(null, base.isResource() ? base : null, base.isResource() ? base : null, base, base), list, exp, true);
   }
 
@@ -809,7 +805,7 @@ public class FHIRPathEngine {
     if (base != null) {
       list.add(base);
     }
-    log = new StringBuilder();
+    traceLog = new StringBuilder();
     return execute(new ExecutionContext(appContext, focusResource, rootResource, base, base), list, ExpressionNode, true);
   }
 
@@ -827,7 +823,7 @@ public class FHIRPathEngine {
     if (base != null) {
       list.add(base);
     }
-    log = new StringBuilder();
+    traceLog = new StringBuilder();
     return execute(new ExecutionContext(appContext, focusResource, rootResource, base, base), list, expressionNode, true);
   }
 
@@ -846,7 +842,7 @@ public class FHIRPathEngine {
     if (base != null) {
       list.add(base);
     }
-    log = new StringBuilder();
+    traceLog = new StringBuilder();
     return execute(new ExecutionContext(appContext, focusResource, rootResource, base, base), list, exp, true);
   }
 
@@ -947,11 +943,11 @@ public class FHIRPathEngine {
       Quantity q = makeQuantity(item);
       if (q.hasUnit() && Utilities.existsInList(q.getUnit(), "year", "years", "month", "months", "week", "weeks", "day", "days", "hour", "hours", "minute", "minutes", "second", "seconds", "millisecond", "milliseconds")
           && (!q.hasSystem() || q.getSystem().equals("http://unitsofmeasure.org"))) {
-        return q.getValue().toPlainString()+" "+q.getUnit();
+        return (q.hasValue() ? q.getValue().toPlainString() : "")+" "+q.getUnit();
       }
       if ("http://unitsofmeasure.org".equals(q.getSystem())) {
         String u = "'"+q.getCode()+"'";
-        return q.getValue().toPlainString()+" "+u;
+        return (q.hasValue() ? q.getValue().toPlainString() : "")+" "+u;
       } else {
         return item.toString();
       }
@@ -978,28 +974,28 @@ public class FHIRPathEngine {
   }
 
 
-  private void log(String name, List<Base> contents) {
+  private void addToLog(String name, List<Base> contents) {
     if (hostServices == null || !hostServices.log(name, contents)) {
-      if (log.length() > 0) {
-        log.append("; ");
+      if (traceLog.length() > 0) {
+        traceLog.append("; ");
       }
-      log.append(name);
-      log.append(": ");
+      traceLog.append(name);
+      traceLog.append(": ");
       boolean first = true;
       for (Base b : contents) {
         if (first) {
           first = false;
         } else {
-          log.append(",");
+          traceLog.append(",");
         }
-        log.append(convertToString(b));
+        traceLog.append(convertToString(b));
       }
     }
   }
 
   public String forLog() {
-    if (log.length() > 0) {
-      return " ("+log.toString()+")";
+    if (traceLog.length() > 0) {
+      return " ("+ traceLog.toString()+")";
     } else {
       return "";
     }
@@ -1491,14 +1487,14 @@ public class FHIRPathEngine {
     case ToInteger: return checkParamCount(lexer, location, exp, 0);
     case ToDecimal: return checkParamCount(lexer, location, exp, 0);
     case ToString: return checkParamCount(lexer, location, exp, 0);
-    case ToQuantity: return checkParamCount(lexer, location, exp, 0);
+    case ToQuantity: return checkParamCount(lexer, location, exp, 0); // this has an optional unit parameter
     case ToBoolean: return checkParamCount(lexer, location, exp, 0);
     case ToDateTime: return checkParamCount(lexer, location, exp, 0);
     case ToTime: return checkParamCount(lexer, location, exp, 0);
     case ConvertsToInteger: return checkParamCount(lexer, location, exp, 0);
     case ConvertsToDecimal: return checkParamCount(lexer, location, exp, 0);
     case ConvertsToString: return checkParamCount(lexer, location, exp, 0);
-    case ConvertsToQuantity: return checkParamCount(lexer, location, exp, 0);
+    case ConvertsToQuantity: return checkParamCount(lexer, location, exp, 0); // this has an optional unit parameter
     case ConvertsToBoolean: return checkParamCount(lexer, location, exp, 0);
     case ConvertsToDateTime: return checkParamCount(lexer, location, exp, 0);
     case ConvertsToDate: return checkParamCount(lexer, location, exp, 0);
@@ -1519,7 +1515,8 @@ public class FHIRPathEngine {
     case LowBoundary: return checkParamCount(lexer, location, exp, 0, 1);
     case HighBoundary: return checkParamCount(lexer, location, exp, 0, 1);
     case Precision: return checkParamCount(lexer, location, exp, 0);
-    case hasTemplateIdOf: return checkParamCount(lexer, location, exp, 1);
+      case hasTemplateIdOf: return checkParamCount(lexer, location, exp, 1);
+      case Debug: return checkParamCount(lexer, location, exp, 0, 1);
     case Custom: return checkParamCount(lexer, location, exp, details.getMinParameters(), details.getMaxParameters());
     }
     return false;
@@ -1557,7 +1554,7 @@ public class FHIRPathEngine {
       traceExpression(focus, exp, context, work);
       break;
     case Constant:
-      work.addAll(resolveConstant(context, exp.getConstant(), IHostApplicationServices.FHIRPathConstantEvaluationMode.EXPLICIT, exp));
+      work.addAll(resolveConstant(context, exp.getConstant(), FHIRPathConstantEvaluationMode.EXPLICIT, exp));
       traceExpression(focus, exp, context, work);
       break;
     case Group:
@@ -1668,7 +1665,7 @@ public class FHIRPathEngine {
       } else if (atEntry && exp.getName().equals("$index")) {
         result.addType(TypeDetails.FP_Integer);
       } else if (atEntry && focus == null) {
-        result.update(executeContextType(context, exp.getName(), exp, IHostApplicationServices.FHIRPathConstantEvaluationMode.NOVALUE));
+        result.update(executeContextType(context, exp.getName(), exp, FHIRPathConstantEvaluationMode.NOVALUE));
       } else {
         for (String s : focus.getTypes()) {
           result.update(executeType(s, exp, atEntry, focus, elementDependencies));
@@ -1692,7 +1689,7 @@ public class FHIRPathEngine {
       result.addType(TypeDetails.FP_Quantity);
       break;
     case Constant:
-      result.update(resolveConstantType(context, exp.getConstant(), exp, IHostApplicationServices.FHIRPathConstantEvaluationMode.EXPLICIT));
+      result.update(resolveConstantType(context, exp.getConstant(), exp, FHIRPathConstantEvaluationMode.EXPLICIT));
       break;
     case Group:
       result.update(executeType(context, focus, exp.getGroup(), elementDependencies, atEntry, canBeNone, exp));
@@ -1735,7 +1732,7 @@ public class FHIRPathEngine {
       }
     }
   }
-  private List<Base> resolveConstant(ExecutionContext context, Base constant, IHostApplicationServices.FHIRPathConstantEvaluationMode mode, ExpressionNode expr) throws PathEngineException {
+  private List<Base> resolveConstant(ExecutionContext context, Base constant, FHIRPathConstantEvaluationMode mode, ExpressionNode expr) throws PathEngineException {
     if (constant == null) {
       return new ArrayList<Base>();
     }
@@ -1834,7 +1831,7 @@ public class FHIRPathEngine {
     return false;
   }
 
-  private List<Base> resolveConstant(ExecutionContext context, String s, IHostApplicationServices.FHIRPathConstantEvaluationMode mode, ExpressionNode expr) throws PathEngineException {
+  private List<Base> resolveConstant(ExecutionContext context, String s, FHIRPathConstantEvaluationMode mode, ExpressionNode expr) throws PathEngineException {
     if (s.equals("%sct")) {
       return new ArrayList<Base>(Arrays.asList(new StringType("http://snomed.info/sct").noExtensions()));
     } else if (s.equals("%loinc")) {
@@ -1864,7 +1861,7 @@ public class FHIRPathEngine {
     } else if (hostServices == null) {
       throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONSTANT, s);
     } else {
-      return hostServices.resolveConstant(this, context.appInfo, mode == IHostApplicationServices.FHIRPathConstantEvaluationMode.EXPLICIT ? s.substring(1) : s, mode);
+      return hostServices.resolveConstant(this, context.appInfo, mode == FHIRPathConstantEvaluationMode.EXPLICIT ? s.substring(1) : s, mode);
     }
   }
 
@@ -2025,20 +2022,34 @@ public class FHIRPathEngine {
       result.add(new BooleanType(false).noExtensions());
     else {
       String tn = convertToString(right);
-      if (left.get(0) instanceof org.hl7.fhir.r5.elementmodel.Element) {
-        result.add(new BooleanType(left.get(0).hasType(tn)).noExtensions());
-      } else if ((left.get(0) instanceof Element) && ((Element) left.get(0)).isDisallowExtensions()) {
-        result.add(new BooleanType(Utilities.capitalize(left.get(0).fhirType()).equals(tn) || ("System."+Utilities.capitalize(left.get(0).fhirType())).equals(tn)).noExtensions());
-      } else {
-        if (left.get(0).fhirType().equals(tn)) {
+      var leftValue = left.get(0);
+      var leftFhirType = leftValue.fhirType();
+      if (leftValue instanceof org.hl7.fhir.r5.elementmodel.Element) {
+        // Need to handle the fhir type inheritance here
+        if (leftFhirType.equals(tn)) {
           result.add(new BooleanType(true).noExtensions());
         } else {
-          StructureDefinition sd = worker.fetchTypeDefinition(left.get(0).fhirType());
+          StructureDefinition sd = worker.fetchTypeDefinition(leftFhirType);
           while (sd != null) {
             if (tn.equals(sd.getType())) {
               return makeBoolean(true);
             }
-            sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
+            sd = profileUtilities.findProfile(sd.getBaseDefinition(), sd);
+          }
+          return makeBoolean(false);
+        }      
+      } else if ((leftValue instanceof Element) && ((Element) leftValue).isDisallowExtensions()) {
+        result.add(new BooleanType(Utilities.capitalize(leftFhirType).equals(tn) || ("System."+Utilities.capitalize(leftFhirType)).equals(tn)).noExtensions());
+      } else {
+        if (leftFhirType.equals(tn)) {
+          result.add(new BooleanType(true).noExtensions());
+        } else {
+          StructureDefinition sd = worker.fetchTypeDefinition(leftFhirType);
+          while (sd != null) {
+            if (tn.equals(sd.getType())) {
+              return makeBoolean(true);
+            }
+            sd = profileUtilities.findProfile(sd.getBaseDefinition(), sd);
           }
           return makeBoolean(false);
         }      
@@ -2503,7 +2514,7 @@ public class FHIRPathEngine {
       if (l.hasType(FHIR_TYPES_STRING) && r.hasType(FHIR_TYPES_STRING)) { 
         return makeBoolean(l.primitiveValue().compareTo(r.primitiveValue()) < 0);
       } else if ((l.hasType("integer") || l.hasType("decimal")) && (r.hasType("integer") || r.hasType("decimal"))) { 
-        return makeBoolean(new Double(l.primitiveValue()) < new Double(r.primitiveValue()));
+        return makeBoolean(Double.valueOf(l.primitiveValue()) < Double.valueOf(r.primitiveValue()));
       } else if ((l.hasType("date", "dateTime", "instant")) && (r.hasType("date", "dateTime", "instant"))) {
         Integer i = compareDateTimeElements(l, r, false);
         if (i == null) {
@@ -2552,7 +2563,7 @@ public class FHIRPathEngine {
       if (l.hasType(FHIR_TYPES_STRING) && r.hasType(FHIR_TYPES_STRING)) {
         return makeBoolean(l.primitiveValue().compareTo(r.primitiveValue()) > 0);
       } else if ((l.hasType("integer", "decimal", "unsignedInt", "positiveInt")) && (r.hasType("integer", "decimal", "unsignedInt", "positiveInt"))) { 
-        return makeBoolean(new Double(l.primitiveValue()) > new Double(r.primitiveValue()));
+        return makeBoolean(Double.valueOf(l.primitiveValue()) > Double.valueOf(r.primitiveValue()));
       } else if ((l.hasType("date", "dateTime", "instant")) && (r.hasType("date", "dateTime", "instant"))) {
         Integer i = compareDateTimeElements(l, r, false);
         if (i == null) {
@@ -2602,7 +2613,7 @@ public class FHIRPathEngine {
       if (l.hasType(FHIR_TYPES_STRING) && r.hasType(FHIR_TYPES_STRING)) { 
         return makeBoolean(l.primitiveValue().compareTo(r.primitiveValue()) <= 0);
       } else if ((l.hasType("integer", "decimal", "unsignedInt", "positiveInt")) && (r.hasType("integer", "decimal", "unsignedInt", "positiveInt"))) { 
-        return makeBoolean(new Double(l.primitiveValue()) <= new Double(r.primitiveValue()));
+        return makeBoolean(Double.valueOf(l.primitiveValue()) <= Double.valueOf(r.primitiveValue()));
       } else if ((l.hasType("date", "dateTime", "instant")) && (r.hasType("date", "dateTime", "instant"))) {
         Integer i = compareDateTimeElements(l, r, false);
         if (i == null) {
@@ -2654,7 +2665,7 @@ public class FHIRPathEngine {
       if (l.hasType(FHIR_TYPES_STRING) && r.hasType(FHIR_TYPES_STRING)) { 
         return makeBoolean(l.primitiveValue().compareTo(r.primitiveValue()) >= 0);
       } else if ((l.hasType("integer", "decimal", "unsignedInt", "positiveInt")) && (r.hasType("integer", "decimal", "unsignedInt", "positiveInt"))) { 
-        return makeBoolean(new Double(l.primitiveValue()) >= new Double(r.primitiveValue()));
+        return makeBoolean(Double.valueOf(l.primitiveValue()) >= Double.valueOf(r.primitiveValue()));
       } else if ((l.hasType("date", "dateTime", "instant")) && (r.hasType("date", "dateTime", "instant"))) {
         Integer i = compareDateTimeElements(l, r, false);
         if (i == null) {
@@ -3267,7 +3278,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
 
-  private TypeDetails resolveConstantType(ExecutionTypeContext context, Base constant, ExpressionNode expr, IHostApplicationServices.FHIRPathConstantEvaluationMode mode) throws PathEngineException {
+  private TypeDetails resolveConstantType(ExecutionTypeContext context, Base constant, ExpressionNode expr, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     if (constant instanceof BooleanType) { 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     } else if (constant instanceof IntegerType) {
@@ -3289,7 +3300,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     }
   }
 
-  private TypeDetails resolveConstantType(ExecutionTypeContext context, String s, ExpressionNode expr, IHostApplicationServices.FHIRPathConstantEvaluationMode mode) throws PathEngineException {
+  private TypeDetails resolveConstantType(ExecutionTypeContext context, String s, ExpressionNode expr, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     if (s.startsWith("@")) {
       if (s.startsWith("@T")) {
         return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Time);
@@ -3333,7 +3344,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       String varName = s.substring(1);
       if (context.hasDefinedVariable(varName))
         return context.getDefinedVariable(varName);
-      TypeDetails v = hostServices.resolveConstantType(this, context.appInfo, mode == IHostApplicationServices.FHIRPathConstantEvaluationMode.EXPLICIT ? s.substring(1) : s, mode);
+      TypeDetails v = hostServices.resolveConstantType(this, context.appInfo, mode == FHIRPathConstantEvaluationMode.EXPLICIT ? s.substring(1) : s, mode);
       if (v == null) {
         throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONSTANT, s); 
       } else {
@@ -3346,7 +3357,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     List<Base> result = new ArrayList<Base>();
     if (atEntry && context.appInfo != null && hostServices != null && checkWithHostServicesBeforeHand) {
       // we'll see if the name matches a constant known by the context.
-      List<Base> temp = hostServices.resolveConstant(this, context.appInfo, exp.getName(), IHostApplicationServices.FHIRPathConstantEvaluationMode.IMPLICIT_BEFORE);
+      List<Base> temp = hostServices.resolveConstant(this, context.appInfo, exp.getName(), FHIRPathConstantEvaluationMode.IMPLICIT_BEFORE);
       if (!temp.isEmpty()) {
         result.addAll(temp);
         return result;
@@ -3365,7 +3376,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
             result.add(item);
             break;
           }
-          sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
+          sd = profileUtilities.findProfile(sd.getBaseDefinition(), sd);
         }
       }
     } else {
@@ -3374,7 +3385,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (atEntry && context.appInfo != null && hostServices != null && result.isEmpty()) {
       // well, we didn't get a match on the name - we'll see if the name matches a constant known by the context.
       // (if the name does match, and the user wants to get the constant value, they'll have to try harder...
-      result.addAll(hostServices.resolveConstant(this, context.appInfo, exp.getName(), IHostApplicationServices.FHIRPathConstantEvaluationMode.IMPLICIT_AFTER));
+      result.addAll(hostServices.resolveConstant(this, context.appInfo, exp.getName(), FHIRPathConstantEvaluationMode.IMPLICIT_AFTER));
     }
     return result;
   }	
@@ -3384,7 +3395,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
 
-  private TypeDetails executeContextType(ExecutionTypeContext context, String name, ExpressionNode expr, IHostApplicationServices.FHIRPathConstantEvaluationMode mode) throws PathEngineException, DefinitionException {
+  private TypeDetails executeContextType(ExecutionTypeContext context, String name, ExpressionNode expr, FHIRPathConstantEvaluationMode mode) throws PathEngineException, DefinitionException {
     if (hostServices == null) {
       throw makeException(expr, I18nConstants.FHIRPATH_HO_HOST_SERVICES, "Context Reference");
     }
@@ -3408,7 +3419,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         if (stated.equals(sd.getTypeName())) {
           return true;
         }
-        sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+        sd = profileUtilities.findProfile(sd.getBaseDefinition(), sd);
       }
       return false;
     } catch (Exception e) { 
@@ -3420,16 +3431,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return type.contains("#") ? "" : type.substring(type.lastIndexOf("/")+1);
   }
 
-
   private void evaluateParameters(ExecutionTypeContext context, TypeDetails focus, ExpressionNode exp, Set<ElementDefinition> elementDependencies, List<TypeDetails> paramTypes, boolean canBeNone) {
-    int i = 0;
     for (ExpressionNode exprParam : exp.getParameters()) {
-      if (isExpressionParameter(exp, i)) {
-        paramTypes.add(executeType(changeThis(context, focus), focus, exprParam, elementDependencies, true, canBeNone, exp));
+      if (hasExpressionParameter(exp)) {
+        var newContext = changeThis(context, focus);
+        paramTypes.add(executeType(newContext, newContext.thisItem, exprParam, elementDependencies, true, canBeNone, exp));
       } else {
-        paramTypes.add(executeType(context, focus, exprParam, elementDependencies, true, canBeNone, exp));
+        paramTypes.add(executeType(context, context.thisItem, exprParam, elementDependencies, true, canBeNone, exp));
       }
-      i++;
     }
   }
 
@@ -3728,7 +3737,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
             for (String pt : profiles) {
               String extn = pt.contains("#") ? pt.substring(0, pt.indexOf("#")) : pt;
               String subExtn = pt.contains("#") ? pt.substring(0, pt.indexOf("#")) : null;
-              StructureDefinition sd = worker.fetchResource(StructureDefinition.class, extn);
+              StructureDefinition sd = profileUtilities.findProfile(extn, null); // source doesn't matter looking up extensions
               if (sd != null) {
                 String id = subExtn == null ? "Extension.extension:"+url : subExtn+".extension:"+url;
                 ElementDefinition ed = sd.getSnapshot().getElementById(id);
@@ -3902,10 +3911,13 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       checkContextContinuous(focus, exp.getFunction().toCode(), exp, false);      
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer);       
     }
-    case hasTemplateIdOf: {
-      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
-      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
-    }
+      case hasTemplateIdOf: {
+        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+        return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+      }
+      case Debug: {
+        return focus;
+      }
     case Custom : {
       return hostServices.checkFunction(this, context.appInfo,exp.getName(), focus, paramTypes);
     }
@@ -3917,14 +3929,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private ExtensionDefinition findExtensionDefinition(TypeDetails focus, String url) {
     if (Utilities.isAbsoluteUrl(url)) {
-      StructureDefinition sd = worker.fetchResource(StructureDefinition.class, url);
+      StructureDefinition sd = profileUtilities.findProfile(url, null);
       if (sd == null) {
         return null;
       } else {
         return new ExtensionDefinition(true, sd, sd.getSnapshot().getElementFirstRep());
       }
     }
-    StructureDefinition sd = worker.fetchResource(StructureDefinition.class, focus.getType());
+    StructureDefinition sd = profileUtilities.findProfile(focus.getType(), null);
     if (sd != null) {
       for (ElementDefinition ed : sd.getSnapshot().getElement()) {
         if (ed.hasFixed() && url.equals(ed.getFixed().primitiveValue())) {
@@ -3961,8 +3973,8 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       if (!pt.hasProfiles()) { // get back to this later
         String purl = tn;
         while (purl != null && !purl.equals(pt.getUri())) {
-          StructureDefinition sd = worker.fetchResource(StructureDefinition.class, purl);
-          purl = sd == null ? null : sd.getBaseDefinition();
+          StructureDefinition sd = profileUtilities.findProfile(purl, null); // #TODO: fix up TypeDetails to track down the soruce of the profiled Types
+          purl = sd == null ? null : sd.getBaseDefinitionNoVersion();
         }
         if (purl != null) {
           return false;
@@ -3972,19 +3984,20 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return !focus.hasType(tn);
   }
 
-  private boolean isExpressionParameter(ExpressionNode exp, int i) {
+  private boolean hasExpressionParameter(ExpressionNode exp) {
     if (exp.getFunction() == Function.Sort) {
       return true;
     }
-    
-    switch (i) {
-    case 0:
-      return exp.getFunction() == Function.Where || exp.getFunction() == Function.Exists || exp.getFunction() == Function.All || exp.getFunction() == Function.Select || exp.getFunction() == Function.Repeat || exp.getFunction() == Function.Aggregate;
-    case 1:
-      return exp.getFunction() == Function.Trace || exp.getFunction() == Function.DefineVariable;
-    default: 
-      return false;
+    if (exp.getFunction() == Function.Iif) {
+      return true;
     }
+    
+    if (exp.getFunction() == Function.Where || exp.getFunction() == Function.Exists || exp.getFunction() == Function.All || exp.getFunction() == Function.Select || exp.getFunction() == Function.Repeat || exp.getFunction() == Function.Aggregate)
+      return true;
+    Set<Function> functionsWithExpressionParameter = Set.of(Function.Trace, Function.DefineVariable);
+    if (functionsWithExpressionParameter.contains(exp.getFunction()))
+      return true;
+    return false;
   }
 
 
@@ -4187,6 +4200,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     case HighBoundary : return funcHighBoundary(context, focus, exp);
     case Precision : return funcPrecision(context, focus, exp);
     case hasTemplateIdOf: return funcHasTemplateIdOf(context, focus, exp);
+    case Debug: return funcDebug(context, focus, exp);
 
 
     case Custom: { 
@@ -4205,7 +4219,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         }
       } else {
         for (ExpressionNode p : exp.getParameters()) {
-          params.add(execute(context, focus, p, true));
+          params.add(execute(context, baseToList(context.thisItem), p, true));
         }
       }
       return hostServices.executeFunction(this, context.appInfo, focus, exp.getName(), params);
@@ -4217,10 +4231,10 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcHasTemplateIdOf(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
-    List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> swb = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String sw = convertToString(swb);
 
-    StructureDefinition sd = this.worker.fetchResource(StructureDefinition.class, sw);
+    StructureDefinition sd = this.profileUtilities.findProfile(sw, null); // no source for tracking CDA refs
     if (focus.size() == 1 && sd != null) {
       boolean found = false;
       for (Identifier id : sd.getIdentifier()) {
@@ -4412,7 +4426,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
     if (base.hasType("integer", "decimal", "unsignedInt", "positiveInt")) {
-      List<Base> n1 = execute(context, focus, expr.getParameters().get(0), true);
+      List<Base> n1 = execute(context, baseToList(context.thisItem), expr.getParameters().get(0), true);
       if (n1.size() == 0) {
         // no base, so we just return nothing (as per the spec)
         return new ArrayList<Base>();
@@ -4447,7 +4461,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
     if (base.hasType("integer", "decimal", "unsignedInt", "positiveInt")) {
-      List<Base> n1 = execute(context, focus, expr.getParameters().get(0), true);
+      List<Base> n1 = execute(context, baseToList(context.thisItem), expr.getParameters().get(0), true);
       if (n1.size() == 0) {
         // no base, so we just return nothing (as per the spec)
         return new ArrayList<Base>();
@@ -4498,7 +4512,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     }
     Integer precision = null;
     if (expr.getParameters().size() > 0) {
-      List<Base> n1 = execute(context, focus, expr.getParameters().get(0), true);
+      List<Base> n1 = execute(context, baseToList(context.thisItem), expr.getParameters().get(0), true);
       if (n1.size() != 1) {
         throw makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "lowBoundary", "0", "Multiple Values", "integer");
       }
@@ -4542,7 +4556,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     }
     Integer precision = null;
     if (expr.getParameters().size() > 0) {
-      List<Base> n1 = execute(context, focus, expr.getParameters().get(0), true);
+      List<Base> n1 = execute(context, baseToList(context.thisItem), expr.getParameters().get(0), true);
       if (n1.size() != 1) {
         throw makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "lowBoundary", "0", "Multiple Values", "integer");
       }
@@ -4610,7 +4624,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (base.hasType("integer", "decimal", "unsignedInt", "positiveInt")) {
       int i = 0;
       if (expr.getParameters().size() == 1) {
-        List<Base> n1 = execute(context, focus, expr.getParameters().get(0), true);
+        List<Base> n1 = execute(context, baseToList(context.thisItem), expr.getParameters().get(0), true);
         if (n1.size() != 1) {
           throw makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "power", "0", "Multiple Values", "integer");
         }
@@ -4622,6 +4636,22 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "round", "(focus)", base.fhirType(), "integer or decimal");
     }
     return result;
+  }
+
+  private List<Base> funcDebug(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    String name = "<anonymous>";
+    if (expr.getParameters().size() == 1) {
+      List<Base> n1 = execute(context, baseToList(context.thisItem), expr.getParameters().get(0), true);
+      if (!n1.isEmpty()) {
+        name =convertToString(n1);
+      }
+    }
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(", ");
+    for (Base base : focus) {
+      b.append(base.fhirType()+":"+convertToString(base));
+    }
+    log.info("Debug Point '"+name+"': "+b.toString());
+    return focus;
   }
 
   private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
@@ -4646,7 +4676,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcEncode(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> nl = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String param = nl.get(0).primitiveValue();
 
     List<Base> result = new ArrayList<Base>();
@@ -4667,7 +4697,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcDecode(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> nl = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String param = nl.get(0).primitiveValue();
 
     List<Base> result = new ArrayList<Base>();
@@ -4687,7 +4717,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcEscape(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> nl = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String param = nl.get(0).primitiveValue();
 
     List<Base> result = new ArrayList<Base>();
@@ -4708,7 +4738,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcUnescape(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> nl = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String param = nl.get(0).primitiveValue();
 
     List<Base> result = new ArrayList<Base>();
@@ -4738,7 +4768,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcSplit(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> nl = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String param = nl.get(0).primitiveValue();
 
     List<Base> result = new ArrayList<Base>();
@@ -4753,14 +4783,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcJoin(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-    List<Base> nl = exp.getParameters().size() > 0 ? execute(context, focus, exp.getParameters().get(0), true) : new ArrayList<Base>();
+    List<Base> nl = exp.getParameters().size() > 0 ? execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true) : new ArrayList<Base>();
     String param = "";
     String param2 = "";
     if (exp.getParameters().size() > 0) {
       param = nl.get(0).primitiveValue();
       param2 = param;
       if (exp.getParameters().size() == 2) {
-        nl = execute(context, focus, exp.getParameters().get(1), true);
+        nl = execute(context, baseToList(context.thisItem), exp.getParameters().get(1), true);
         param2 = nl.get(0).primitiveValue();
       }
     }
@@ -4815,10 +4845,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcComparable(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+    // Undocumented what this should do if the input collection is empty
+    // if (focus.size() == 0) {
+    //   return new ArrayList<Base>();
+    // }
     if (focus.size() != 1 || !(focus.get(0).fhirType().equals("Quantity"))) {
       return makeBoolean(false);          
     }
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> nl = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     if (nl.size() != 1 || !(nl.get(0).fhirType().equals("Quantity"))) {
       return makeBoolean(false);          
     }
@@ -4850,7 +4884,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private String getNamedValue(Base base, String name) {
     Property p = base.getChildByName(name);
-    if (p.hasValues() && p.getValues().size() == 1) {
+    if (p != null && p.hasValues() && p.getValues().size() == 1) {
       return p.getValues().get(0).primitiveValue();
     }
     return null;
@@ -4992,7 +5026,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
 
   private List<Base> funcMemberOf(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> nl = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     if (nl.size() != 1 || focus.size() != 1) {
       return new ArrayList<Base>();
     }
@@ -5046,9 +5080,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcReplace(ExecutionContext context, List<Base> focus, ExpressionNode expr) throws FHIRException, PathEngineException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> tB = execute(context, focus, expr.getParameters().get(0), true);
+    List<Base> tB = execute(context, baseToList(context.thisItem), expr.getParameters().get(0), true);
     String t = convertToString(tB);
-    List<Base> rB = execute(context, focus, expr.getParameters().get(1), true);
+    List<Base> rB = execute(context, baseToList(context.thisItem), expr.getParameters().get(1), true);
     String r = convertToString(rB);
 
     if (focus.size() == 0 || tB.size() == 0 || rB.size() == 0) {
@@ -5072,9 +5106,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcReplaceMatches(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> regexB = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> regexB = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String regex = convertToString(regexB);
-    List<Base> replB = execute(context, focus, exp.getParameters().get(1), true);
+    List<Base> replB = execute(context, baseToList(context.thisItem), exp.getParameters().get(1), true);
     String repl = convertToString(replB);
 
     if (focus.size() == 0 || regexB.size() == 0 || replB.size() == 0) {
@@ -5092,7 +5126,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcEndsWith(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> swb = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String sw = convertToString(swb);
 
     if (focus.size() == 0) {
@@ -5156,6 +5190,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcToQuantity(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
+    // THIS DOESN'T APPEAR TO BE PROCESSING THE UNITS
     List<Base> result = new ArrayList<Base>();
     if (focus.size() == 1) {
       var qty = makeQuantity(focus.get(0));
@@ -5224,7 +5259,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
 
   private List<Base> funcTake(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    List<Base> n1 = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> n1 = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     int i1 = Integer.parseInt(n1.get(0).primitiveValue());
 
     List<Base> result = new ArrayList<Base>();
@@ -5242,7 +5277,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         result.add(item);
       }
     }
-    for (Base item : execute(context, focus, exp.getParameters().get(0), true)) {
+    for (Base item : execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true)) {
       if (!doContains(result, item)) {
         result.add(item);
       }
@@ -5255,7 +5290,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     for (Base item : focus) {
       result.add(item);
     }
-    for (Base item : execute(context, focus, exp.getParameters().get(0), true)) {
+    for (Base item : execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true)) {
       result.add(item);
     }
     return result;
@@ -5263,7 +5298,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcIntersect(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> other = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> other = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
 
     for (Base item : focus) {
       if (!doContains(result, item) && doContains(other, item)) {
@@ -5275,7 +5310,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcExclude(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> other = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> other = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
 
     for (Base item : focus) {
       if (!doContains(other, item)) {
@@ -5344,7 +5379,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
           if (n.equals(sd.getType())) {
             return makeBoolean(true);
           }
-          sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
+          sd = profileUtilities.findProfile(sd.getBaseDefinition(), sd);
         }
         return makeBoolean(false);
       }
@@ -5388,7 +5423,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
               result.add(b);
               break;
             }
-            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
+            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : profileUtilities.findProfile(sd.getBaseDefinition(), sd);
           }
         }
       }
@@ -5429,7 +5464,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
               result.add(b);
               break;
             }
-            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
+            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : profileUtilities.findProfile(sd.getBaseDefinition(), sd);
           }
         }
       } else if (tn.startsWith("CDA.")) {
@@ -5443,7 +5478,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
               result.add(b);
               break;
             }
-            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
+            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : profileUtilities.findProfile(sd.getBaseDefinition(), sd);
           }
         }
       }
@@ -5537,7 +5572,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
 
   private List<Base> funcSupersetOf(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    List<Base> target = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> target = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
 
     boolean valid = true;
     for (Base item : target) {
@@ -5560,7 +5595,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
 
   private List<Base> funcSubsetOf(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    List<Base> target = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> target = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
 
     boolean valid = true;
     for (Base item : focus) {
@@ -5652,7 +5687,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcExtension(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> nl = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String url = nl.get(0).primitiveValue();
 
     for (Base item : focus) {
@@ -5810,13 +5845,13 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcTrace(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> nl = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String name = nl.get(0).primitiveValue();
     if (exp.getParameters().size() == 2) {
-      List<Base> n2 = execute(context, focus, exp.getParameters().get(1), true);
-      log(name, n2);
+      List<Base> n2 = execute(context, baseToList(context.thisItem), exp.getParameters().get(1), true);
+      addToLog(name, n2);
     } else { 
-      log(name, focus);
+      addToLog(name, focus);
     }
     return focus;
   }
@@ -5827,7 +5862,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     List<Base> value;
     if (exp.getParameters().size() == 2) {
       value = execute(context, focus, exp.getParameters().get(1), true);
-    } else { 
+    } else {
       value = focus;
     }
     // stash the variable into the context
@@ -5871,7 +5906,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcMatches(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> swb = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String sw = convertToString(swb);
 
     if (focus.size() == 0 || swb.size() == 0) {
@@ -5896,7 +5931,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcMatchesFull(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    String sw = convertToString(execute(context, focus, exp.getParameters().get(0), true));
+    String sw = convertToString(execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true));
 
     if (focus.size() == 1 && !Utilities.noString(sw)) {
       if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
@@ -5918,7 +5953,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcContains(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> swb = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String sw = convertToString(swb);
 
     if (focus.size() != 1) {
@@ -5966,7 +6001,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcStartsWith(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> swb = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String sw = convertToString(swb);
 
     if (focus.size() == 0) {
@@ -6026,7 +6061,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       return result;
     }
 
-    List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> swb = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String sw = convertToString(swb);
     if (swb.size() == 0) {
       // no result
@@ -6050,7 +6085,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       return result;
     }
 
-    List<Base> n1 = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> n1 = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     if (n1.size() == 0) {
       // the start parameter is not present, so return an empty list)
       return result;
@@ -6058,7 +6093,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     int i1 = Integer.parseInt(n1.get(0).primitiveValue());
     int i2 = -1;
     if (exp.parameterCount() == 2) {
-      List<Base> n2 = execute(context, focus, exp.getParameters().get(1), true);
+      List<Base> n2 = execute(context, baseToList(context.thisItem), exp.getParameters().get(1), true);
       if (n2.isEmpty()|| !n2.get(0).isPrimitive() || !Utilities.isInteger(n2.get(0).primitiveValue())) {
         return new ArrayList<Base>();
       }
@@ -6168,7 +6203,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (focus.size() != 1) {
       result.add(new BooleanType(false).noExtensions());
     } else {
-      String url = convertToString(execute(context, focus, expr.getParameters().get(0), true));
+      String url = convertToString(execute(context, baseToList(context.thisItem), expr.getParameters().get(0), true));
       result.add(new BooleanType(hostServices.conformsToProfile(this, context.appInfo,  focus.get(0), url)).noExtensions());
     }
     return result;
@@ -6202,6 +6237,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcIsQuantity(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
+    // also not checking the optional parameter for units
     List<Base> result = new ArrayList<Base>();
     if (focus.size() != 1) {
       result.add(new BooleanType(false).noExtensions());
@@ -6290,7 +6326,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcSkip(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    List<Base> n1 = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> n1 = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     int i1 = Integer.parseInt(n1.get(0).primitiveValue());
 
     List<Base> result = new ArrayList<Base>();
@@ -6480,7 +6516,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcItem(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    String s = convertToString(execute(context, focus, exp.getParameters().get(0), true));
+    String s = convertToString(execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true));
     if (Utilities.isInteger(s) && Integer.parseInt(s) < focus.size()) {
       result.add(focus.get(Integer.parseInt(s)));
     } 
@@ -6549,7 +6585,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       String tail = "";
       StructureDefinition sd = worker.fetchTypeDefinition(url);
       if (sd == null) {
-        sd = worker.fetchResource(StructureDefinition.class, url);
+        sd = profileUtilities.findProfile(url, null); // #TODO: add version correctness here. It's not version correct as is
       }
       if (sd == null) {
         if (url.startsWith(TypeDetails.FP_NS)) {
@@ -6566,14 +6602,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       }
       if (m != null && hasDataType(m.definition)) {
         if (m.fixedType != null)  {
-          StructureDefinition dt = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(m.fixedType, null), sd);
+          StructureDefinition dt = profileUtilities.findProfile(ProfileUtilities.sdNs(m.fixedType, null), sd);
           if (dt == null) {
             throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_TYPE, ProfileUtilities.sdNs(m.fixedType, null), "getChildTypesByName#2");
           }
           sdl.add(dt);
         } else
           for (TypeRefComponent t : m.definition.getType()) {
-            StructureDefinition dt = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(t.getCode(), null));
+            StructureDefinition dt = profileUtilities.findProfile(ProfileUtilities.sdNs(t.getCode(), null), null); // #TODO: Version correctness
             if (dt == null) {
               throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_TYPE, ProfileUtilities.sdNs(t.getCode(), null), "getChildTypesByName#3");
             }
@@ -6746,7 +6782,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   private void addTypeAndDescendents(List<StructureDefinition> sdl, StructureDefinition dt, List<StructureDefinition> types) {
     sdl.add(dt);
     for (StructureDefinition sd : types) {
-      if (sd.hasBaseDefinition() && sd.getBaseDefinition().equals(dt.getUrl()) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+      if (sd.hasBaseDefinition() && sd.getBaseDefinitionNoVersion().equals(dt.getUrl()) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
         addTypeAndDescendents(sdl, sd, types);
       }
     }  
@@ -6804,7 +6840,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
           List<ElementDefinitionMatch> list = new ArrayList<>();
           // for each type, does it have the next node in the path? 
           for (TypeRefComponent tr : ed.getType()) {
-            StructureDefinition nsd = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(tr.getCode(), null), sd);
+            StructureDefinition nsd = profileUtilities.findProfile(ProfileUtilities.sdNs(tr.getCode(), null), sd);
             if (nsd == null) { 
               throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, ed.getType().get(0).getCode(), "getElementDefinition");
             }
@@ -6813,7 +6849,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
           }
           return list;
         }
-        StructureDefinition nsd = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(ed.getType().get(0).getCode(), null), sd);
+        StructureDefinition nsd = profileUtilities.findProfile(ProfileUtilities.sdNs(ed.getType().get(0).getCode(), null), sd);
         if (nsd == null) { 
           throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, ed.getType().get(0).getCode(), "getElementDefinition");
         }
@@ -6877,7 +6913,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         ref = ref.replace(sdt.getUrl()+"#", "#");
         break;
       }
-      sdt = worker.fetchResource(StructureDefinition.class, sdt.getBaseDefinition());
+      sdt = profileUtilities.findProfile(sdt.getBaseDefinition(), sdt);
     }
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       if (ref.equals("#"+ed.getId())) {
@@ -6889,7 +6925,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
 
   public boolean hasLog() {
-    return log != null && log.length() > 0;
+    return traceLog != null && traceLog.length() > 0;
   }
 
 
@@ -6897,8 +6933,8 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (!hasLog()) {
       return "";
     }
-    String s = log.toString();
-    log = new StringBuilder();
+    String s = traceLog.toString();
+    traceLog = new StringBuilder();
     return s;
   }
 
@@ -6962,7 +6998,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         if (element.getTypes().get(0).getTargetProfile().size() > 1) {
           throw makeExceptionPlural(element.getTypes().get(0).getTargetProfile().size(), expr, I18nConstants.FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET, element.getElement().getId());
         }
-        sd = worker.fetchResource(StructureDefinition.class, element.getTypes().get(0).getTargetProfile().get(0).getValue(), profile);
+        sd = profileUtilities.findProfile(element.getTypes().get(0).getTargetProfile().get(0).getValue(), profile);
         if (sd == null) {
           throw makeException(expr, I18nConstants.FHIRPATH_RESOLVE_DISCRIMINATOR_CANT_FIND, element.getTypes().get(0).getTargetProfile(), element.getElement().getId());
         }
@@ -6973,9 +7009,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         for (ElementDefinition t : childDefinitions.getList()) {
           if (t.getPath().endsWith(".extension") && t.hasSliceName()) {
             StructureDefinition exsd = (t.getType() == null || t.getType().isEmpty() || t.getType().get(0).getProfile().isEmpty()) ?
-                null : worker.fetchResource(StructureDefinition.class, t.getType().get(0).getProfile().get(0).getValue(), profile);
-            while (exsd != null && !exsd.getBaseDefinition().equals("http://hl7.org/fhir/StructureDefinition/Extension")) {
-              exsd = worker.fetchResource(StructureDefinition.class, exsd.getBaseDefinition(), exsd);
+                null : profileUtilities.findProfile(t.getType().get(0).getProfile().get(0).getValue(), profile);
+            while (exsd != null && !exsd.getBaseDefinitionNoVersion().equals("http://hl7.org/fhir/StructureDefinition/Extension")) {
+              exsd = profileUtilities.findProfile(exsd.getBaseDefinition(), exsd);
             }
             if (exsd != null && exsd.getUrl().equals(targetUrl)) {
               if (profileUtilities.getChildMap(sd, t, false).getList().isEmpty()) {
@@ -7062,9 +7098,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       throw makeExceptionPlural(ed.getTypes().get(0).getProfile().size(), expr, I18nConstants.FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES, ed.getElement().getId());
     }
     if (ed.getTypes().get(0).hasProfile()) { 
-      return worker.fetchResource(StructureDefinition.class, ed.getTypes().get(0).getProfile().get(0).getValue(), ed.getSrc());
+      return profileUtilities.findProfile(ed.getTypes().get(0).getProfile().get(0).getValue(), ed.getSrc());
     } else {
-      return worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(ed.getTypes().get(0).getCode(), null), ed.getSrc());
+      return profileUtilities.findProfile(ProfileUtilities.sdNs(ed.getTypes().get(0).getCode(), null), ed.getSrc());
     }
   }
 

@@ -43,25 +43,12 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.model.BooleanType;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.DateTimeType;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.IntegerType;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
-import org.hl7.fhir.r5.model.Identifier;
-import org.hl7.fhir.r5.model.Meta;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
-import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
@@ -80,7 +67,6 @@ import org.hl7.fhir.utilities.VersionUtilities;
 
 @Slf4j
 public class ValueSetUtilities extends TerminologyUtilities {
-
 
   public static class ValueSetSorter implements Comparator<ValueSet> {
 
@@ -112,11 +98,34 @@ public class ValueSetUtilities extends TerminologyUtilities {
 
   }
 
-
   public static boolean isServerSide(String url) {
-    return Utilities.existsInList(url, "http://hl7.org/fhir/sid/cvx");
+    // this is required to work around placeholders or bad definitions in THO (cvx)
+    return Utilities.existsInList(url,
+      "http://hl7.org/fhir/sid/cvx",
+      "http://loinc.org",
+      "http://snomed.info/sct",
+      "http://www.nlm.nih.gov/research/umls/rxnorm",
+      "http://www.ama-assn.org/go/cpt",
+      "http://hl7.org/fhir/ndfrt",
+      "http://hl7.org/fhir/sid/ndc", 
+      "http://hl7.org/fhir/sid/icd-10",
+      "http://hl7.org/fhir/sid/icd-9-cm",
+      "http://hl7.org/fhir/sid/icd-10-cm");
   }
-  
+
+  public static boolean isServerSide(Coding c) {
+    return isServerSide(c.getSystem());
+  }
+
+  public static boolean hasServerSide(CodeableConcept cc) {
+    for (Coding c : cc.getCoding()) {
+      if (isServerSide(c)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public static ValueSet makeShareable(ValueSet vs) {
     if (!vs.hasExperimental()) {
       vs.setExperimental(false);
@@ -299,6 +308,13 @@ public class ValueSetUtilities extends TerminologyUtilities {
     return false;
   }
 
+  public static org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent addCodeProperty(ValueSet vs, ValueSetExpansionContainsComponent ctxt, String url, String code, String value) {
+    if (value != null) {
+      return addProperty(vs, ctxt, url, code, new CodeType(value));
+    } else {
+      return null;
+    }
+  }
   public static org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent addProperty(ValueSet vs, ValueSetExpansionContainsComponent ctxt, String url, String code, String value) {
     if (value != null) {
       return addProperty(vs, ctxt, url, code, new StringType(value));
@@ -381,7 +397,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
     Set<String> systems = new HashSet<>();
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
       for (CanonicalType ct : inc.getValueSet()) {
-        ValueSet vsr = ctxt.findTxResource(ValueSet.class, ct.asStringValue(), vs);
+        ValueSet vsr = ctxt.findTxResource(ValueSet.class, ct.asStringValue(), null, vs);
         if (vsr != null) {
           systems.addAll(listSystems(ctxt, vsr));
         }
@@ -479,13 +495,44 @@ public class ValueSetUtilities extends TerminologyUtilities {
   }
 
   public static void setDeprecated(List<ValueSet.ValueSetExpansionPropertyComponent> vsProp, ValueSet.ValueSetExpansionContainsComponent n) {
-    n.addProperty().setCode("status").setValue(new CodeType("deprecated"));
-    for (ValueSet.ValueSetExpansionPropertyComponent o : vsProp) {
-      if ("status".equals(o.getCode())) {
-        return;
+    if (!"deprecated".equals(ValueSetUtilities.getStatus(vsProp, n))) {
+      n.addProperty().setCode("status").setValue(new CodeType("deprecated"));
+      for (ValueSet.ValueSetExpansionPropertyComponent o : vsProp) {
+        if ("status".equals(o.getCode())) {
+          return;
+        }
+      }
+      vsProp.add(new ValueSet.ValueSetExpansionPropertyComponent().setCode("status").setUri("http://hl7.org/fhir/concept-properties#status"));
+    }
+  }
+
+  private static String getStatus(List<ValueSetExpansionPropertyComponent> vsProp, ValueSetExpansionContainsComponent n) {
+    return ValueSetUtilities.getProperty(vsProp, n, "status", "http://hl7.org/fhir/concept-properties#status");
+  }
+
+
+  public static String getProperty(List<ValueSetExpansionPropertyComponent> vsProp, ValueSetExpansionContainsComponent focus, String code, String url) {
+    ValueSet.ValueSetExpansionPropertyComponent pc = null;
+    for (ValueSet.ValueSetExpansionPropertyComponent t : vsProp) {
+      if (t.hasUri() && t.getUri().equals(url)) {
+        pc = t;
       }
     }
-    vsProp.add(new ValueSet.ValueSetExpansionPropertyComponent().setCode("status").setUri("http://hl7.org/fhir/concept-properties#status"));
+    if (pc == null) {
+      for (ValueSet.ValueSetExpansionPropertyComponent t : vsProp) {
+        if (t.hasCode() && t.getCode().equals(code)) {
+          pc = t;
+        }
+      }
+    }
+    if (pc != null) {
+      for (ValueSet.ConceptPropertyComponent t : focus.getProperty()) {
+        if (t.hasCode() && t.getCode().equals(pc.getCode())) {
+          return t.getValue().primitiveValue();
+        }
+      }
+    }
+    return null;
   }
 
 

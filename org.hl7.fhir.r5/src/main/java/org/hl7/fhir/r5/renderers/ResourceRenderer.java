@@ -1,6 +1,5 @@
 package org.hl7.fhir.r5.renderers;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -10,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.poi.ss.formula.eval.ExternalNameEval;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -41,7 +39,7 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper.ElementKind;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -239,7 +237,7 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   public <T extends Resource> void renderCanonical(RenderingStatus status, XhtmlNode x, Class<T> class_, ResourceWrapper canonical) throws UnsupportedEncodingException, IOException {
     if (!renderPrimitiveWithNoValue(status, x, canonical)) {
-      CanonicalResource target = (CanonicalResource) context.getWorker().fetchResource(class_, canonical.primitiveValue(), canonical.getResourceNative());
+      CanonicalResource target = (CanonicalResource) context.getWorker().fetchResource(class_, canonical.primitiveValue(), null, canonical.getResourceNative());
       if (target != null && target.hasWebPath()) {
         if (canonical.primitiveValue().contains("|")) {
           x.ah(context.prefixLocalHref(target.getWebPath())).tx(target.present()+ context.formatPhrase(RenderingContext.RES_REND_VER) +target.getVersion()+")");
@@ -266,7 +264,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       return "";
     }
     String url = canonical.primitiveValue();
-    Resource target = context.getWorker().fetchResource(Resource.class, url, canonical.getResourceNative());
+    Resource target = context.getWorker().fetchResource(Resource.class, url, null, canonical.getResourceNative());
     if (target == null || !(target instanceof CanonicalResource)) {
       return url;       
     } else {
@@ -339,7 +337,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       return;
     }
     String url = canonical.asStringValue();
-    Resource target = context.getWorker().fetchResource(Resource.class, url, res.getResourceNative());
+    Resource target = context.getWorker().fetchResource(Resource.class, url, null, res.getResourceNative());
     if (target == null || !(target instanceof CanonicalResource)) {
       x.code().tx(url);       
     } else {
@@ -355,7 +353,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         }
       } else {
         if (url.contains("|")) {
-          x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present()+ context.formatPhrase(RenderingContext.RES_REND_VER) +cr.getVersion()+")");
+          x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present()+ context.formatPhrase(RenderingContext.RES_REND_VER, cr.getVersion())+")");
         } else {
           x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present());
         }
@@ -655,7 +653,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       if (v.startsWith("mailto:")) { 
         x.ah(v).addText(v.substring(7)); 
       } else { 
-        String link = getLinkForCode(v, null, null);
+        String link = getLinkForCode(v, null, null, uri.getResourceNative());
         if (link != null) {  
           x.ah(context.prefixLocalHref(link)).addText(v);
         } else {
@@ -694,11 +692,11 @@ public abstract class ResourceRenderer extends DataRenderer {
    * @param <T>
    */
   protected <T extends Resource> T findCanonical(Class<T> class_, UriType canonical, ResourceWrapper sourceOfReference) {
-    return context.getContext().fetchResource(class_, canonical.asStringValue(), sourceOfReference.getResourceNative());
+    return context.getContext().fetchResource(class_, canonical.asStringValue(), null, sourceOfReference.getResourceNative());
   }
 
   protected <T extends Resource> T findCanonical(Class<T> class_, String canonical, ResourceWrapper sourceOfReference) {
-    return context.getContext().fetchResource(class_, canonical, sourceOfReference.getResourceNative());
+    return context.getContext().fetchResource(class_, canonical, null, sourceOfReference.getResourceNative());
   }
 
 
@@ -751,7 +749,7 @@ public abstract class ResourceRenderer extends DataRenderer {
           return rr;
         }
       }
-      Resource r = context.getWorker().fetchResource(Resource.class, url, version);
+      Resource r = context.getWorker().fetchResource(Resource.class, url, version, resource == null ? null : resource.getResourceNative());
       if (r != null) {
         return new ResourceWithReference(ResourceReferenceKind.EXTERNAL, url, r.getWebPath(), wrap(r));
       }
@@ -1115,7 +1113,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       }
     }
     if (columns.size() > 0) {
-      XhtmlNode table = x.table("grid", false);
+      XhtmlNode table = x.table("grid", false).markGenerated(!context.forValidResource());
       
       if (provider.getTitle() != null) {
         table.tr().td().colspan(columns.size()).b().tx(provider.getTitle());
@@ -1154,7 +1152,7 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   public boolean genSummaryTable(RenderingStatus status, XhtmlNode x, ResourceWrapper cr) throws IOException {
     if (context.isShowSummaryTable() && cr != null) {
-      XhtmlNode tbl = x.table("grid", false);
+      XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
       genSummaryTableContent(status, tbl, cr);
       return true;
     } else {
@@ -1249,7 +1247,7 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   public void genSummaryTable(RenderingStatus status, XhtmlNode x, CanonicalResource cr) throws IOException {
     if (context.isShowSummaryTable() && cr != null) {
-      XhtmlNode tbl = x.table("grid", false);
+      XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
       genSummaryTableContent(status, tbl, cr);
     }
   }

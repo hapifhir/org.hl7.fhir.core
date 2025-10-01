@@ -145,9 +145,7 @@ public class ValidatorCli {
       defaultCliTask);
   }
 
-  protected void readParamsAndExecuteTask(ValidationContext validationContext, String[] args) throws Exception {
-    TimeTracker tt = new TimeTracker();
-    TimeTracker.Session tts = tt.start("Loading");
+  protected void readGlobalParamsAndExecuteTask(ValidationContext validationContext, String[] args) throws Exception {
 
     if (validationContext.getLocale() != null) {
       Locale.setDefault(validationContext.getLocale());
@@ -190,7 +188,8 @@ public class ValidatorCli {
       return;
     }
 
-    readParamsAndExecuteTask(tt, tts, validationContext, args);
+
+    readParamsAndExecuteTask(validationContext, args);
   }
 
   @SuppressWarnings("checkstyle:systemout")
@@ -252,7 +251,7 @@ public class ValidatorCli {
     args = addAdditionalParamsForIpsParam(args);
     final ValidationContext validationContext = Params.loadValidationContext(args);
     try {
-      validatorCli.readParamsAndExecuteTask(validationContext, args);
+      validatorCli.readGlobalParamsAndExecuteTask(validationContext, args);
     } catch (ENoDump e) {
       log.info(e.getMessage());
     }
@@ -274,7 +273,7 @@ public class ValidatorCli {
         res.add("4.0");
         res.add("-check-ips-codes");
         res.add("-ig");
-        res.add("hl7.fhir.uv.ips#2.0.0");
+        res.add("hl7.fhir.uv.ips#2.0.0-ballot");
         res.add("-profile");
         res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips");
         res.add("-extension");
@@ -287,14 +286,14 @@ public class ValidatorCli {
         res.add("4.0");
         res.add("-check-ips-codes");
         res.add("-ig");
-        res.add("hl7.fhir.au.ips#current");
+        res.add("hl7.fhir.au.ps#current");
         res.add("-profile");
-        res.add("http://hl7.org.au/fhir/ips/StructureDefinition/Bundle-au-ips");
+        res.add("http://hl7.org.au/fhir/ps/StructureDefinition/au-ps-bundle");
         res.add("-extension");
         res.add("any");
         res.add("-bundle");
         res.add("Composition:0");
-        res.add("http://hl7.org.au/fhir/ips/StructureDefinition/Composition-au-ips");
+        res.add("http://hl7.org.au/fhir/ps/StructureDefinition/au-ps-composition");
       } else if (a.startsWith("-ips#")) {
         res.add("-version");
         res.add("4.0");
@@ -335,7 +334,7 @@ public class ValidatorCli {
         res.add("-version");
         res.add("5.0");
         res.add("-ig");
-        res.add("hl7.fhir.uv.sql-on-fhir#current");
+        res.add("org.sql-on-fhir.ig#current");
       } else {
         res.add(a);
       }
@@ -358,27 +357,32 @@ public class ValidatorCli {
       || Params.hasParam(args, "/?"));
   }
 
-  private void readParamsAndExecuteTask(TimeTracker tt, TimeTracker.Session tts, ValidationContext validationContext, String[] params) throws Exception {
+  private void readParamsAndExecuteTask(ValidationContext validationContext, String[] params) throws Exception {
     Display.printCliParamsAndInfo(log, params);
 
     final CliTask cliTask = selectCliTask(validationContext, params);
 
     if (cliTask instanceof ValidationEngineTask) {
+      TimeTracker tt = new TimeTracker();
+      TimeTracker.Session tts = tt.start("Loading");
+
+      if (((ValidationEngineTask) cliTask).inferFhirVersion()) {
+        validationContext.setInferFhirVersion(Boolean.TRUE);
+      }
+
       if (validationContext.getSv() == null) {
         validationContext.setSv(myValidationService.determineVersion(validationContext));
       }
       ValidationEngine validationEngine = getValidationEngine(tt, validationContext);
       tts.end();
-      ((ValidationEngineTask) cliTask).executeTask(myValidationService, validationEngine, validationContext, params, tt, tts);
+      ((ValidationEngineTask) cliTask).executeTask(myValidationService, validationEngine, validationContext, params);
+      log.info("Done. " + tt.report()+". Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
     } else if (cliTask instanceof StandaloneTask) {
-      ((StandaloneTask) cliTask).executeTask(validationContext,params,tt,tts);
+      ((StandaloneTask) cliTask).executeTask(validationContext,params);
+      log.info("Done. Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
     }
 
-    if (validationContext.getAdvisorFile() != null) {
-      log.info("Note: Some validation issues might be hidden by the advisor settings in the file "+ validationContext.getAdvisorFile());
-    }
-    log.info("Done. " + tt.report()+". Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
-    SystemExitManager.finish();
+     SystemExitManager.finish();
   }
 
   private CliTask selectCliTask(ValidationContext validationContext, String[] params) {

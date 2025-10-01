@@ -441,6 +441,18 @@ public class VCLParserTest {
     });
   }
 
+  @Test
+  @DisplayName("Complex multi-part expression")
+  public void testComplexExpression() throws VCLParser.VCLParseException {
+    VCLParser.parse("(http://example.com/cs/meds) (" +
+        "     {concept<<Panadol}.container," +
+        "     {Panadol_500mg_24.unit_of_use}.active_ingredient," +
+        "     concept<<12345," +
+        "     concept^{12346,6374673,9234983,38924839,212,43243}," +
+        "     ingredient^{parent=98765, concept<<Panadol}" +
+        "   )");
+  }
+
   /**
    * Helper method to print ValueSet structure for debugging
    */

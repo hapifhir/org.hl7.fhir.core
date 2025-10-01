@@ -5,13 +5,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 class CodeTypeNullTest {
 
   @Test
   @DisplayName("Test null value toString()")
   void testToString() {
-    CodeType nullCode = new CodeType();
-    System.out.println("Value -> " + nullCode);
+    assertDoesNotThrow(() -> {
+      CodeType nullCode = new CodeType();
+      System.out.println("Value -> " + nullCode);
+    });
   }
 
   @Test

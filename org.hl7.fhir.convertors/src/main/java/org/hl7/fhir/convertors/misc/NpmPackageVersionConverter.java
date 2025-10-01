@@ -407,7 +407,7 @@ public class NpmPackageVersionConverter {
         }
       }
       if (inc.hasSystem()) {
-        CodeSystem cs = context.fetchResource(CodeSystem.class, inc.getSystem(), inc.getVersion());
+        CodeSystem cs = context.fetchResource(CodeSystem.class, inc.getSystem(), inc.getVersion(), valueSet);
         if (cs != null) {
           checkForCoreDependenciesCS(cs);
         }

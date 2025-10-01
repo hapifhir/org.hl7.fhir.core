@@ -22,7 +22,6 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
-import org.hl7.fhir.validation.instance.type.ConceptMapValidator.RelationshipTracker;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
@@ -239,7 +238,7 @@ public class ConceptMapValidator extends BaseValidator {
           if (ref.contains("|")) {
             res.url = ref.substring(0, ref.indexOf("|"));
             res.version = ref.substring(ref.indexOf("|")+1);
-            Resource r = context.fetchResource(Resource.class, res.url, res.version);
+            Resource r = context.fetchResource(Resource.class, res.url, res.version, null);
             if (r != null) {
               if (r instanceof ValueSet) {
                 res.vs = (ValueSet) r;
@@ -249,7 +248,7 @@ public class ConceptMapValidator extends BaseValidator {
               }
             } 
             if (res.vs == null) {
-              res.vs = context.findTxResource(ValueSet.class, res.url, res.version);            
+              res.vs = context.findTxResource(ValueSet.class, res.url, res.version, null);
             }
           } else {
             res.url = ref;
@@ -348,7 +347,7 @@ public class ConceptMapValidator extends BaseValidator {
         }
       }
     }
-    res.cs = context.fetchCodeSystem(res.url, res.version);
+    res.cs = context.fetchCodeSystem(res.url, res.version, vs);
     return res;
   }
 
@@ -559,7 +558,7 @@ public class ConceptMapValidator extends BaseValidator {
       String key = CanonicalType.urlWithVersion(system.url, system.version);
       if (!checkServerURLs.containsKey(key)) {
         IWorkerContext.SystemSupportInformation txInfo = context.getTxSupportInfo(system.url, system.version);
-        supported = VersionUtilities.isThisOrLater(TerminologyClientContext.TX_BATCH_VERSION, txInfo.getTestVersion());
+        supported = txInfo.getTestVersion() != null && VersionUtilities.isThisOrLater(TerminologyClientContext.TX_BATCH_VERSION, txInfo.getTestVersion(), VersionUtilities.VersionPrecision.MINOR);
         checkServerURLs.put(key, supported);
         if (!supported) {
           warning(errors, "2025-07-07", IssueType.NOTSUPPORTED, baseStack, false, I18nConstants.VALUESET_TXVER_BATCH_NOT_SUPPORTED, (txInfo.getTestVersion() == null ? "Not Known" : txInfo.getTestVersion()), system.url + (system.version == null ? "" : "|" + system.version), txInfo.getServer());

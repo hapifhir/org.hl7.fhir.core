@@ -81,17 +81,22 @@ private static TxTestData testData;
   @SuppressWarnings("deprecation")
   @Test
   public void test() throws Exception {
+    if (setup.getSuite().asBoolean("disabled") || setup.getTest().asBoolean("disabled")) {
+      return;
+    }
+    if (!passesModes(setup.getSuite()) || !passesModes(setup.getTest())) {
+      return;
+    }
+
     if (baseEngine == null) {
       baseEngine = TestUtilities.getValidationEngineNoTxServer("hl7.fhir.r5.core#5.0.0", FhirPublication.R5, "5.0.0");
     }
+
     ValidationEngine engine = new ValidationEngine(this.baseEngine);
     for (String s : setup.getSuite().forceArray("setup").asStrings()) {
       // System.out.println(s);
       Resource res = loadResource(s);
       engine.seeResource(res);
-    }
-    if (setup.getSuite().asBoolean("disabled") || setup.getTest().asBoolean("disabled")) {
-      return;
     }
     String reqFile = setup.getTest().asString("request");
     Resource req = reqFile == null ? null : loadResource(reqFile);
@@ -103,11 +108,13 @@ private static TxTestData testData;
     if (fo.exists()) {
       fo.delete();
     }
+
     if (setup.getTest().has("profile")) {
       engine.getContext().setExpansionParameters((org.hl7.fhir.r5.model.Parameters) loadResource(setup.getTest().asString("profile")));
     } else {
       engine.getContext().setExpansionParameters((org.hl7.fhir.r5.model.Parameters) loadResource("parameters-default.json"));
     }
+    engine.getContext().setNoTerminologyServer(true);
     if (setup.getTest().asString("operation").equals("expand")) {
       expand(setup.getTest().str("name"), engine, req, resp, setup.getTest().asString("Accept-Language"), fp, ext);
     } else if (setup.getTest().asString("operation").equals("validate-code")) {
@@ -121,6 +128,24 @@ private static TxTestData testData;
     } else if (!Utilities.existsInList(setup.getTest().asString("operation"), "batch-validate")) { // the internal terminologgy server doesn't implement this method
       Assertions.fail("Unknown Operation "+ setup.getTest().asString("operation"));
     }
+  }
+
+  private boolean passesModes(JsonObject obj) {
+    Set<String> modes = new HashSet<>();
+    modes.add("general");
+
+    if (obj.has("modes")) {
+      for (String mode : obj.getStrings("modes")) {
+        if (modes.contains(mode)) {
+          return true;
+        }
+      }
+    }
+    if (obj.has("mode")) {
+      return modes.contains(obj.asString("mode"));
+    }
+    return true;
+
   }
 
   private void expand(String id, ValidationEngine engine, Resource req, String resp, String lang, String fp, JsonObject ext) throws IOException {

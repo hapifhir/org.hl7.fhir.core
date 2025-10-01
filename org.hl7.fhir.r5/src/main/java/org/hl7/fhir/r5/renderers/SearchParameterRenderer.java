@@ -69,7 +69,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     p.code().tx(spd.getType().toCode());
     addMarkdown(x, spd.getDescription());
 
-    XhtmlNode tbl = x.table("grid", false);
+    XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
     XhtmlNode tr = tbl.tr();
     tr.td().tx(Utilities.pluralize(context.formatPhrase(RenderingContext.GENERAL_RESOURCE), spd.getBase().size()));
     XhtmlNode td = tr.td();
@@ -165,10 +165,10 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     
     if (spd.hasComponent()) {
       x.para().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMPARATORS));
-      tbl = x.table("grid", false);
+      tbl = x.table("grid", false).markGenerated(!context.forValidResource());
       for (SearchParameterComponentComponent t : spd.getComponent()) {
         tr = tbl.tr();
-        SearchParameter tsp = context.getWorker().fetchResource(SearchParameter.class, t.getDefinition(), spd);
+        SearchParameter tsp = context.getWorker().fetchResource(SearchParameter.class, t.getDefinition(), null, spd);
         if (tsp != null && tsp.hasWebPath()) {
           tr.td().ah(context.prefixLocalHref(tsp.getWebPath())).tx(tsp.present());          
         } else {

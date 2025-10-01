@@ -14,15 +14,11 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:6c82c2c5-aeea-48ef-a28f-a92b2d241e99",
-    "timestamp" : "2025-05-06T22:50:54.423Z",
+    "identifier" : "urn:uuid:fac42ef8-8bc9-4e01-a05d-f220611fc3d2",
+    "timestamp" : "2025-09-23T23:47:37.924Z",
     "total" : 5099,
     "offset" : 0,
     "parameter" : [{
-      "name" : "displayLanguage",
-      "valueCode" : "en-US"
-    },
-    {
       "name" : "excludeNested",
       "valueBoolean" : true
     },
@@ -40,10 +36,6 @@ e: {
     },
     {
       "name" : "used-codesystem",
-      "valueUri" : "urn:iso:std:iso:3166:-2|2021"
-    },
-    {
-      "name" : "version",
       "valueUri" : "urn:iso:std:iso:3166:-2|2021"
     }],
     "contains" : [{

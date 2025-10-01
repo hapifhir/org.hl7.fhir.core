@@ -61,6 +61,7 @@ import java.util.zip.ZipInputStream;
 
 import javax.annotation.Nonnull;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
@@ -177,24 +178,22 @@ public class NpmPackage {
   }
 
   public static class PackagedResourceFile {
+    @Getter
     private final String folder;
+    @Getter
     private final String filename;
+    @Getter
     private final String resourceType;
-    protected PackagedResourceFile(String folder, String filename, String resourceType) {
+    @Getter
+    private final boolean example;
+    protected PackagedResourceFile(String folder, String filename, String resourceType, boolean example) {
       super();
       this.folder = folder;
       this.filename = filename;
       this.resourceType = resourceType;
+      this.example = example;
     }
-    public String getFolder() {
-      return folder;
-    }
-    public String getFilename() {
-      return filename;
-    }
-    public String getResourceType() {
-      return resourceType;
-    }
+
     public static class Sorter implements Comparator<PackagedResourceFile> {
 
       @Override
@@ -432,7 +431,7 @@ public class NpmPackage {
    */
   public static NpmPackage empty(PackageGenerator thePackageGenerator) {
     NpmPackage retVal = new NpmPackage();
-    retVal.npm = thePackageGenerator.getRootJsonObject();
+    retVal.npm = PackageHacker.fixPackageOnLoad(thePackageGenerator.getRootJsonObject());
     return retVal;
   }
 
@@ -452,7 +451,7 @@ public class NpmPackage {
   }
 
   public void loadFiles(String path, File source, String... exemptions) throws IOException {
-    this.npm = JsonParser.parseObject(FileUtilities.fileToString(Utilities.path(path, "package", "package.json")));
+    this.npm = PackageHacker.fixPackageOnLoad(JsonParser.parseObject(FileUtilities.fileToString(Utilities.path(path, "package", "package.json"))));
     this.path = path;
 
     File dir = ManagedFileAccess.file(path);
@@ -530,7 +529,7 @@ public class NpmPackage {
     if (!res.folders.get("package").hasFile("package.json") && defType != null) {
       FileUtilities.stringToFile("{ \"type\" : \""+defType.getCode()+"\"}", Utilities.path(res.folders.get("package").folder.getAbsolutePath(), "package.json"));
     }
-    res.npm = JsonParser.parseObject(new String(res.folders.get("package").fetchFile("package.json")));
+    res.npm = PackageHacker.fixPackageOnLoad(JsonParser.parseObject(new String(res.folders.get("package").fetchFile("package.json"))));
     return res;
   }
 
@@ -657,7 +656,7 @@ public class NpmPackage {
     byte[] packageJsonBytes = packageFolder.fetchFile("package.json");
     Validate.notNull(packageJsonBytes, "package/package.json not found in NPM file");
     try {
-      npm = JsonParser.parseObject(packageJsonBytes);
+      npm = PackageHacker.fixPackageOnLoad(JsonParser.parseObject(packageJsonBytes));
     } catch (Exception e) {
       throw new IOException("Error parsing "+(desc == null ? "" : desc+"#")+"package/package.json: "+e.getMessage(), e);
     }
@@ -770,7 +769,7 @@ public class NpmPackage {
     }
     zip.close();         
     try {
-      res.npm = JsonParser.parseObject(res.folders.get("package").fetchFile("package.json"));
+      res.npm = PackageHacker.fixPackageOnLoad(JsonParser.parseObject(res.folders.get("package").fetchFile("package.json")));
     } catch (Exception e) {
       throw new IOException("Error parsing "+(desc == null ? "" : desc+"#")+"package/package.json: "+e.getMessage(), e);
     }
@@ -839,19 +838,38 @@ public class NpmPackage {
   public List<PackagedResourceFile> listAllResources(Collection<String> types) throws IOException {
     List<PackagedResourceFile> res = new ArrayList<PackagedResourceFile>();
     for (NpmPackageFolder folder : folders.values()) {
-      if (types.size() == 0) {
-        for (String s : folder.types.keySet()) {
-          if (folder.types.containsKey(s)) {
-            for (String n : folder.types.get(s)) {
-              res.add(new PackagedResourceFile(folder.folderName, n, s));
+      if (!folder.getFolderName().startsWith("tests")) {
+        if (types.size() == 0) {
+          for (String s : folder.types.keySet()) {
+            if (folder.types.containsKey(s)) {
+              for (String n : folder.types.get(s)) {
+                res.add(new PackagedResourceFile(folder.folderName, n, s, folder.getFolderName().equals("example")));
+              }
+            }
+          }
+        } else {
+          for (String s : types) {
+            if (folder.types.containsKey(s)) {
+              for (String n : folder.types.get(s)) {
+                res.add(new PackagedResourceFile(folder.folderName, n, s, folder.getFolderName().equals("example")));
+              }
             }
           }
         }
-      } else {
-        for (String s : types) {
+      }
+    }
+    Collections.sort(res, new PackagedResourceFile.Sorter());
+    return res;
+  }
+
+  public List<PackagedResourceFile> listAllResources() throws IOException {
+    List<PackagedResourceFile> res = new ArrayList<PackagedResourceFile>();
+    for (NpmPackageFolder folder : folders.values()) {
+      if (!folder.getFolderName().startsWith("tests")) {
+        for (String s : folder.types.keySet()) {
           if (folder.types.containsKey(s)) {
             for (String n : folder.types.get(s)) {
-              res.add(new PackagedResourceFile(folder.folderName, n, s));
+              res.add(new PackagedResourceFile(folder.folderName, n, s, folder.getFolderName().equals("example")));
             }
           }
         }
@@ -1038,7 +1056,7 @@ public class NpmPackage {
    * @param npm
    */
   public void setNpm(JsonObject npm) {
-    this.npm = npm;
+    this.npm = PackageHacker.fixPackageOnLoad(npm);
   }
 
   /**
@@ -1437,7 +1455,7 @@ public class NpmPackage {
     folder.types.get(type).add(name);
     if ("package".equals(folderName) && "package.json".equals(name)) {
       try {
-        npm = JsonParser.parseObject(cnt);
+        npm = PackageHacker.fixPackageOnLoad(JsonParser.parseObject(cnt));
       } catch (IOException e) {
       }
     }

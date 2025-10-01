@@ -5,17 +5,18 @@ import java.io.File;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.cli.Display;
-import org.hl7.fhir.validation.service.utils.EngineMode;
 import org.hl7.fhir.validation.special.PackageReGenerator;
 import org.hl7.fhir.validation.special.PackageReGenerator.ExpansionPackageGeneratorOutputType;
 import org.hl7.fhir.validation.special.PackageReGenerator.ExpansionPackageGeneratorScope;
 import org.slf4j.Logger;
+
+import javax.annotation.Nonnull;
 
 @Slf4j
 public class RePackageTask extends ValidationEngineTask {
@@ -36,8 +37,9 @@ public class RePackageTask extends ValidationEngineTask {
   }
 
   @Override
-  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
-    return validationContext.getMode() == EngineMode.RE_PACKAGE;
+  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
+    return Params.hasParam(args, Params.TX_PACK)
+      || Params.hasParam(args, Params.RE_PACK) ;
   }
 
   @Override
@@ -46,7 +48,7 @@ public class RePackageTask extends ValidationEngineTask {
   }
 
   @Override
-  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
+  public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
     boolean json = validationContext.getFormat() != FhirFormat.XML;
     String output = validationContext.getOutput();
     File f = ManagedFileAccess.file(output);

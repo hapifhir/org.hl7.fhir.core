@@ -482,7 +482,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
       if (sdFocus.getUrl().equals(sdOther.getUrl()) && sdFocus.getVersion().equals(sdOther.getVersion())) {
         return true;
       }
-      sdFocus = ctxt.fetchResource(StructureDefinition.class, sdFocus.getBaseDefinition(), sdFocus);
+      sdFocus = ctxt.fetchResource(StructureDefinition.class, sdFocus.getBaseDefinition(), null,  sdFocus);
     }
     return false;
   }

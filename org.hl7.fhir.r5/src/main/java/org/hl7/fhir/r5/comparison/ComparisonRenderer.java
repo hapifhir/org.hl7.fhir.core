@@ -41,6 +41,7 @@ import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
@@ -108,7 +109,6 @@ public class ComparisonRenderer implements IHostApplicationServices {
   }
 
   private void processList(List<String> list, StringBuilder b, String name) throws IOException {
-    // TODO Auto-generated method stub
     boolean first = true;
     for (String id : list) {
       ResourceComparison comp = session.getCompares().get(id);
@@ -138,12 +138,16 @@ public class ComparisonRenderer implements IHostApplicationServices {
   private void dumpBinaries() throws IOException {
     if (contextLeft != null && contextLeft.getBinaryKeysAsSet() != null) {
       for (String k : contextLeft.getBinaryKeysAsSet()) {
-        FileUtilities.bytesToFile(contextLeft.getBinaryForKey(k), Utilities.path(folder, k));
+        if (!Utilities.isProhibitedBinaryFile(k)) {
+          FileUtilities.bytesToFile(contextLeft.getBinaryForKey(k), Utilities.path(folder, k));
+        }
       }
     }
     if (contextRight != null && contextRight.getBinaryKeysAsSet() != null) {
       for (String k : contextRight.getBinaryKeysAsSet()) {
-        FileUtilities.bytesToFile(contextRight.getBinaryForKey(k), Utilities.path(folder, k));
+        if (!Utilities.isProhibitedBinaryFile(k)) {
+          FileUtilities.bytesToFile(contextRight.getBinaryForKey(k), Utilities.path(folder, k));
+        }
       }
     }
   }

@@ -71,7 +71,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
@@ -380,7 +379,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
       ValueSetExpansionOutcome vse = context.expandVS(exc, false);
       ValueSet valueset = vse.getValueset();
       if (valueset == null)
-        throw failTSE("Error Expanding ValueSet: " + vse.getError());
+        throw failWithTerminologyServiceException("Error Expanding ValueSet: " + vse.getError());
       excludeCodes(valueset.getExpansion(), params);
       return;
     }
@@ -616,7 +615,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
       List<ValueSet> imports, Parameters expParams, List<Extension> extensions) throws FHIRException {
     ValueSetExpansionOutcome vso = context.expandVS(inc, heirarchical);
     if (vso.getError() != null) {
-      throw failTSE("Unable to expand imported value set: " + vso.getError());
+      throw failWithTerminologyServiceException("Unable to expand imported value set: " + vso.getError());
     }
     ValueSet vs = vso.getValueset();
     if (vs.hasVersion()) {
@@ -657,13 +656,13 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
       throws NoTerminologyServiceException, TerminologyServiceException, FHIRException {
     if (cs == null) {
       if (context.isNoTerminologyServer())
-        throw failTSE("Unable to find code system " + inc.getSystem().toString());
+        throw failWithTerminologyServiceException("Unable to find code system " + inc.getSystem().toString());
       else
-        throw failTSE("Unable to find code system " + inc.getSystem().toString());
+        throw failWithTerminologyServiceException("Unable to find code system " + inc.getSystem().toString());
     }
     cs.checkNoModifiers("Code System", "expanding");
     if (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)
-      throw failTSE("Code system " + inc.getSystem().toString() + " is incomplete");
+      throw failWithTerminologyServiceException("Code system " + inc.getSystem().toString() + " is incomplete");
     if (cs.hasVersion())
       if (!existsInParams(exp.getParameter(), "version", new UriType(cs.getUrl() + "|" + cs.getVersion())))
         exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("version")
@@ -695,7 +694,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
             addExampleWarning(exp, cs);
           } else {
             if (checkCodesWhenExpanding) {
-              throw failTSE("Unable to find code '" + c.getCode() + "' in code system " + cs.getUrl());
+              throw failWithTerminologyServiceException("Unable to find code '" + c.getCode() + "' in code system " + cs.getUrl());
             }
           }
         } else {
@@ -708,7 +707,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     }
     if (inc.getFilter().size() > 1) {
       canBeHierarchy = false; // which will bt the case if we get around to supporting this
-      throw failTSE("Multiple filters not handled yet"); // need to and them, and this isn't done yet. But this
+      throw failWithTerminologyServiceException("Multiple filters not handled yet"); // need to and them, and this isn't done yet. But this
                                                          // shouldn't arise in non loinc and snomed value sets
     }
     if (inc.getFilter().size() == 1) {
@@ -720,13 +719,13 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
         // special: all codes in the target code system under the value
         ConceptDefinitionComponent def = getConceptForCode(cs.getConcept(), fc.getValue());
         if (def == null)
-          throw failTSE("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
+          throw failWithTerminologyServiceException("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
         addCodeAndDescendents(cs, inc.getSystem(), def, null, expParams, imports, null, new AllConceptsFilter());
       } else if ("concept".equals(fc.getProperty()) && fc.getOp() == FilterOperator.ISNOTA) {
         // special: all codes in the target code system that are not under the value
         ConceptDefinitionComponent defEx = getConceptForCode(cs.getConcept(), fc.getValue());
         if (defEx == null)
-          throw failTSE("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
+          throw failWithTerminologyServiceException("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
         for (ConceptDefinitionComponent def : cs.getConcept()) {
           addCodeAndDescendents(cs, inc.getSystem(), def, null, expParams, imports, defEx, new AllConceptsFilter());
         }
@@ -734,7 +733,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
         // special: all codes in the target code system under the value
         ConceptDefinitionComponent def = getConceptForCode(cs.getConcept(), fc.getValue());
         if (def == null)
-          throw failTSE("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
+          throw failWithTerminologyServiceException("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
         for (ConceptDefinitionComponent c : def.getConcept())
           addCodeAndDescendents(cs, inc.getSystem(), c, null, expParams, imports, null, new AllConceptsFilter());
         if (def.hasUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK)) {
@@ -836,7 +835,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     return new ETooCostly(msg);
   }
 
-  private TerminologyServiceException failTSE(String msg) {
+  private TerminologyServiceException failWithTerminologyServiceException(String msg) {
     allErrors.add(msg);
     return new TerminologyServiceException(msg);
   }

@@ -8,11 +8,14 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-    
+
   workflow_dispatch:
-   
+
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
+permissions:  # added using https://github.com/step-security/secure-repo
+  contents: read
+
 jobs:
   # This workflow contains a single job called "greet"
   check:
@@ -22,16 +25,21 @@ jobs:
       contents: read  # Only read access to repository contents
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-    - name: Collect module licenses
-      run: mvn clean install -DskipTests
-    - name: Collect module licenses
-      run: mvn license:add-third-party
-    - name: Aggregate licenses
-      run: mvn license:aggregate-add-third-party
-    - name: Set script permissions
-      run: chmod u+x .github/workflows/license-check/license-check.sh
-    - name: Run script
-      run: .github/workflows/license-check/license-check.sh
-      #continue-on-error: true
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        with:
+          egress-policy: audit
+
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Collect module licenses
+        run: mvn clean install -DskipTests
+      - name: Collect module licenses
+        run: mvn license:add-third-party
+      - name: Aggregate licenses
+        run: mvn license:aggregate-add-third-party
+      - name: Set script permissions
+        run: chmod u+x .github/workflows/license-check/license-check.sh
+      - name: Run script
+        run: .github/workflows/license-check/license-check.sh
+        #continue-on-error: true

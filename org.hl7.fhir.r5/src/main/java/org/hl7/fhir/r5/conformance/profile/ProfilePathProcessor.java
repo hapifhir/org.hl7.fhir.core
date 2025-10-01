@@ -21,10 +21,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.utils.UserDataNames;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -200,11 +197,12 @@ public class ProfilePathProcessor {
       // get the current focus of the base, and decide what to do
       ElementDefinition currentBase = cursors.base.getElement().get(cursors.baseCursor);
       String currentBasePath = profileUtilities.fixedPathSource(getContextPathSource(), currentBase.getPath(), getRedirector());
-      
+
       debugProcessPathsIteration(cursors, currentBasePath);
       checkDiffAssignedAndCursor(cursors);
       List<ElementDefinition> diffMatches = profileUtilities.getDiffMatches(getDifferential(), currentBasePath, cursors.diffCursor, getDiffLimit(), getProfileName()); // get a list of matching elements in scope
 
+      int dc = cursors.diffCursor;
       // in the simple case, source is not sliced.
       if (!currentBase.hasSlicing() || currentBasePath.equals(getSlicing().getPath()))
       {
@@ -215,6 +213,20 @@ public class ProfilePathProcessor {
       }
       else {
         processPathWithSlicedBase(currentBase, currentBasePath, diffMatches, typeList, cursors, mapHelper);
+      }
+      // GDG 28-July 2025. this change is for the sd-nested-ext text case
+      // In general, if there's a diffmatch, then once it's processed, the cursor should advance
+      // to account for it being 'used'. But some of the code paths above don't. And the code paths are
+      // complicated. I wrote this expecting it to blow up some existing test cases, but it didn't.
+      // I think it only matters when there's inner content, and the content is missed because the diffCursor
+      // hasn't increased. But actually, it worked just fine to not change any existing test case, and fix
+      // sd-nested-ext. Now maybe we should chase down each of those code paths, and figure out where they
+      // should increment the diffCursor, but that's pretty difficult. Since this *works*, I'm going with this
+      // but it might be something that needs revisiting if other complex slicing with inner matches arises
+      if (diffMatches.size() > 0) {
+        if (dc == cursors.diffCursor) {
+          cursors.diffCursor = cursors.diffCursor + diffMatches.size();
+        }
       }
       first = false;
     }
@@ -394,7 +406,7 @@ public class ProfilePathProcessor {
               outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), src.copy(), true);
               outcome.setId(null);
               String path = outcome.getPath();
-              path = fixForRedirect(path, currentBase.getIdOrPath(), currentBase.getContentReference().substring(currentBase.getContentReference().indexOf("#")+1));
+              path = fixForRedirect(path, currentBase.getPath(), currentBase.getContentReference().substring(currentBase.getContentReference().indexOf("#")+1));
               outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), path, getRedirector(), getContextPathSource()));
               profileUtilities.updateFromBase(outcome, src, getSourceStructureDefinition().getUrl());
               profileUtilities.markExtensions(outcome, false, cursors.baseSource);
@@ -689,7 +701,7 @@ public class ProfilePathProcessor {
           case Unknown:
             throw new FHIRException("Reference to unknown extension " + firstTypeProfile.getValue());
           case Valid:
-            firstTypeStructureDefinition = profileUtilities.getXver().makeDefinition(firstTypeProfile.getValue());
+            firstTypeStructureDefinition = profileUtilities.getXver().getDefinition(firstTypeProfile.getValue());
             profileUtilities.generateSnapshot(profileUtilities.getContext().fetchTypeDefinition("Extension"), firstTypeStructureDefinition, firstTypeStructureDefinition.getUrl(), getWebUrl(), firstTypeStructureDefinition.getName());
         }
       }
@@ -954,10 +966,18 @@ public class ProfilePathProcessor {
         template.getSlicing().setOrdered(false);
         template.getSlicing().addDiscriminator().setType(DiscriminatorType.VALUE).setPath("url");
         addToResult(template);
-      } else {
-        log.error("checkToSeeIfSlicingExists: "+ed.getPath()+":"+ed.getSliceName()+" is not sliced");
+      } else if (isJumpingIntoTypeSlicing(ed, template)) {
+        template.getSlicing().setRules(SlicingRules.CLOSED);
+        template.getSlicing().setOrdered(false);
+        template.getSlicing().addDiscriminator().setType(DiscriminatorType.TYPE).setPath("$this");
+        addToResult(template);
+//        log.error("checkToSeeIfSlicingExists: "+ed.getPath()+":"+ed.getSliceName()+" is not sliced");
       }
     }
+  }
+
+  private boolean isJumpingIntoTypeSlicing(ElementDefinition ed, ElementDefinition template) {
+    return template.getPath().endsWith("[x]") && !template.hasSliceName() && !template.hasSlicing() && ed.hasSliceName() && ed.getType().size() > 0;
   }
 
   private boolean pathsMatch(String path1, String path2) {

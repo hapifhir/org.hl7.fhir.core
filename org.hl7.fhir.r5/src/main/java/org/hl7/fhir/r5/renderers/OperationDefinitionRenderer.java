@@ -65,7 +65,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
  
     if (opd.getKind() == OperationKind.QUERY) {
       if (opd.getSystem()) {
-        x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URLS, "?_query="+opd.getCode()+"&..."));
+        x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, "?_query="+opd.getCode()+"&..."));
       }
       for (Enumeration<VersionIndependentResourceTypesAll> c : opd.getResource()) { 
         if (opd.getType()) 
@@ -75,7 +75,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
       } 
     } else {
       if (opd.getSystem()) {
-        x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URLS, "$"+opd.getCode()));
+        x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, "$"+opd.getCode()));
       }
       for (Enumeration<VersionIndependentResourceTypesAll> c : opd.getResource()) { 
         if (opd.getType()) 
@@ -88,7 +88,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     if (opd.hasInputProfile()) { 
       XhtmlNode p = x.para(); 
       p.tx(context.formatPhrase(RenderingContext.OP_DEF_INPAR)); 
-      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getInputProfile(), opd); 
+      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getInputProfile(), null, opd);
       if (sd == null) { 
         p.pre().tx(opd.getInputProfile());         
       } else { 
@@ -98,7 +98,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     if (opd.hasOutputProfile()) { 
       XhtmlNode p = x.para(); 
       p.tx(context.formatPhrase(RenderingContext.OP_DEF_OUTPAR)); 
-      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getOutputProfile(), opd); 
+      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getOutputProfile(), null, opd);
       if (sd == null) { 
         p.pre().tx(opd.getOutputProfile());         
       } else { 
@@ -108,7 +108,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
 
     x.h3().tx(context.formatPhrase(RenderingContext.GENERAL_PARS));
     //x.para().tx(context.formatPhrase(RenderingContext.GENERAL_PARS)); 
-    XhtmlNode tbl = x.table( "grid", false); 
+    XhtmlNode tbl = x.table( "grid", false).markGenerated(!context.forValidResource());
     XhtmlNode tr = tbl.tr(); 
     tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_USE)); 
     tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_NAME)); 
