@@ -2325,7 +2325,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException {
-    return fetchResourceWithException(class_, uri, version, null);
+    return fetchResourceWithException(class_, uri, null, null);
   }
 
   public <T extends Resource> T fetchResourceWithException(String cls, String uri) throws FHIRException {

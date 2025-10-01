@@ -38,7 +38,6 @@ public class XVerExtensionManagerNew extends XVerExtensionManager {
     String pid = "hl7.fhir.uv.xver-"+targetVersion+"."+sourceVersion;
     if (!context.hasPackage(pid, XVER_VERSION_RELEASE)) {
       try {
-        System.out.println("Load XVer package "+pid);
         context.getManager().loadPackage(pid+"#0.0.1-snapshot-2");
       } catch (IOException e) {
         return XVerExtensionStatus.BadVersion;
