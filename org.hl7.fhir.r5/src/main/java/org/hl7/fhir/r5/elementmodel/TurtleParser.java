@@ -372,8 +372,9 @@ public class TurtleParser extends ParserBase {
       return "<" + ref + ">";
     else if (base != null && ref != null && ref.contains("/"))
       return "<" + Utilities.appendForwardSlash(base) + ref + ">";
-    else
-      return null;
+    else {
+        return FHIR_URI_BASE + ref;
+    }
   }
 
   protected void decorateReference(Complex t, Element coding) {
