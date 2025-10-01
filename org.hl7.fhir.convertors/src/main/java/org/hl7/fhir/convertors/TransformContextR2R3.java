@@ -2,7 +2,7 @@ package org.hl7.fhir.convertors;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.hl7.fhir.dstu3.context.SimpleWorkerContext;
+import org.hl7.fhir.dstu3.support.context.SimpleWorkerContext;
 
 @AllArgsConstructor
 @Data

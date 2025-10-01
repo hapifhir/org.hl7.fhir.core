@@ -1,12 +1,7 @@
 package org.hl7.fhir.utilities.i18n;
 
 import java.text.MessageFormat;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -23,6 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 public abstract class I18nBase {
 
   public static final String KEY_DELIMITER = "_";
+
+  public static final Map<Locale, Set<String>> uncontainedKeys = new HashMap<>();
+
   private Locale locale = null;
   private ResourceBundle messages = null;
   private PluralRules pluralRules = null;
@@ -61,10 +59,10 @@ public abstract class I18nBase {
     if (Locale.ROOT == messages.getLocale()) {
       if (!locale.getLanguage().equals("en")) {
         if (warnedLocales == null) {
-          warnedLocales = new HashSet<String>();
+          warnedLocales = new HashSet<>();
         }
         if (!warnedLocales.contains(locale.toLanguageTag())) {
-          log.warn("The locale " + locale.toLanguageTag() + " is not supported. Messages will default to en-US.");
+          logUncontainedMessage("The locale " + locale.toLanguageTag() + " is not supported. Messages will default to en-US.");
           warnedLocales.add(locale.toLanguageTag());
         }
       }
@@ -99,12 +97,20 @@ public abstract class I18nBase {
     if (!messageKeyExistsForLocale(message)) {
       if (!message.contains(" ")) {
         if (warnAboutMissingMessages && (hasArgs || !message.contains(" "))) {
-          log.warn("Attempting to localize "+typeOfString()+" " + message + ", but no such equivalent message exists for" +
+          Set<String> uncontainedKeys = I18nBase.uncontainedKeys.computeIfAbsent(getLocale(), k -> new HashSet<>());
+          if (!uncontainedKeys.contains(message)) {
+            logUncontainedMessage("Attempting to localize " + typeOfString() + " " + message + ", but no such equivalent message exists for" +
               " the locale " + getLocale());
+            uncontainedKeys.add(message);
+          }
         }
       }
     }
     return messageKeyExistsForLocale(message);
+  }
+
+  protected void logUncontainedMessage(String message) {
+    log.warn(message);
   }
 
   protected String typeOfString() {
@@ -167,7 +173,7 @@ public abstract class I18nBase {
   /**
    * Formats the message with locale correct pluralization using the passed in
    * message arguments.
-   *
+   * </br>
    * In the message properties files, each plural specific message will have a
    * key consisting of a root key and a suffix denoting the plurality rule (_one
    * for singular, _other for multiple in English, for example). Suffixes are

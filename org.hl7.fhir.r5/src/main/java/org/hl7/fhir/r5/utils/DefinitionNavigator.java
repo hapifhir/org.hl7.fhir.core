@@ -205,7 +205,7 @@ public class DefinitionNavigator {
             DefinitionNavigator master = nameMap.get(path);
             ElementDefinition cm = master.current();
             // Skip missing slicing error for extensions: they are implicitly sliced by url
-            if (!cm.hasSlicing()) {
+            if (!diff && !cm.hasSlicing()) {
               String cmPath = cm.getPath();
               boolean isExtension = cmPath.endsWith(".extension")
                                  || cmPath.endsWith(".modifierExtension");
@@ -365,7 +365,7 @@ public class DefinitionNavigator {
 
   private void loadTypedChildren(TypeRefComponent type, Resource src) throws DefinitionException {
     typeOfChildren = null;
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, /* GF#13465 : this somehow needs to be revisited type.hasProfile() ? type.getProfile() : */ type.getWorkingCode(), src);
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, /* GF#13465 : this somehow needs to be revisited type.hasProfile() ? type.getProfile() : */ type.getWorkingCode(), null, src);
     if (sd != null) {
       DefinitionNavigator dn = new DefinitionNavigator(context, sd, diff, followTypes, 0, globalPath, localPath, names, sd.getType());
       typeChildren = dn.children();

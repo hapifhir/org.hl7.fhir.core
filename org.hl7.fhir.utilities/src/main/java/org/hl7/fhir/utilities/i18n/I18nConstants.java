@@ -39,6 +39,7 @@ public class I18nConstants {
   public static final String BUNDLE_BUNDLE_ENTRY_NOPROFILE_TYPE = "Bundle_BUNDLE_Entry_NoProfile_TYPE";
   public static final String BUNDLE_BUNDLE_ENTRY_NOTFOUND = "Bundle_BUNDLE_Entry_NotFound";
   public static final String BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT = "BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT";
+  public static final String BUNDLE_BUNDLE_ENTRY_NOTFOUND_CANNOT = "BUNDLE_BUNDLE_ENTRY_NOTFOUND_CANNOT";
   public static final String BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT = "BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT";
   public static final String BUNDLE_BUNDLE_ENTRY_ORPHAN_DOCUMENT = "Bundle_BUNDLE_Entry_Orphan_DOCUMENT";
   public static final String BUNDLE_BUNDLE_ENTRY_ORPHAN_MESSAGE = "Bundle_BUNDLE_Entry_Orphan_MESSAGE";
@@ -500,6 +501,7 @@ public class I18nConstants {
   public static final String MULTIPLE_LOGICAL_MODELS = "MULTIPLE_LOGICAL_MODELS";
   public static final String MUSTSUPPORT_VAL_MUSTSUPPORT = "MustSupport_VAL_MustSupport";
   public static final String NAMED_ITEMS_ARE_OUT_OF_ORDER_IN_THE_SLICE = "Named_items_are_out_of_order_in_the_slice";
+  public static final String NARRATIVE_NOT_TRANSLATED = "NARRATIVE_NOT_TRANSLATED";
   public static final String NDJSON_EMPTY_LINE_WARNING = "NDJSON_EMPTY_LINE_WARNING";
   public static final String NEEDS_A_SNAPSHOT = "needs_a_snapshot";
   public static final String NODE_TYPE__IS_NOT_ALLOWED = "Node_type__is_not_allowed";
@@ -832,9 +834,6 @@ public class I18nConstants {
   public static final String SM_TARGET_TYPE_UNKNOWN = "SM_TARGET_TYPE_UNKNOWN";
   public static final String SNAPSHOT_EXISTING_PROBLEM = "SNAPSHOT_EXISTING_PROBLEM";
   public static final String SNAPSHOT_IS_EMPTY = "SNAPSHOT_IS_EMPTY";
-  public static final String STATUS_CODE_HINT = "STATUS_CODE_HINT";
-  public static final String STATUS_CODE_HINT_CODE = "STATUS_CODE_HINT_CODE";
-  public static final String STATUS_CODE_WARNING = "STATUS_CODE_WARNING";
   public static final String STATUS_CODE_WARNING_CODE = "STATUS_CODE_WARNING_CODE";
   public static final String STRUCTUREDEFINITION__AT__ILLEGAL_CONSTRAINED_TYPE__FROM__IN_ = "StructureDefinition__at__illegal_constrained_type__from__in_";
   public static final String TERMINOLOGY_PASSTHROUGH_TX_MESSAGE = "Terminology_PassThrough_TX_Message";
@@ -843,7 +842,6 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_BINDING_MISSING2 = "Terminology_TX_Binding_Missing2";
   public static final String TERMINOLOGY_TX_BINDING_NOSERVER = "Terminology_TX_Binding_NoServer";
   public static final String TERMINOLOGY_TX_BINDING_NOSOURCE = "Terminology_TX_Binding_NoSource";
-  public static final String TERMINOLOGY_TX_BINDING_NOSOURCE2 = "Terminology_TX_Binding_NoSource2";
   public static final String TERMINOLOGY_TX_CODE_VALUESET = "Terminology_TX_Code_ValueSet";
   public static final String TERMINOLOGY_TX_CODE_VALUESETMAX = "Terminology_TX_Code_ValueSetMax";
   public static final String TERMINOLOGY_TX_CODE_VALUESET_EXT = "Terminology_TX_Code_ValueSet_Ext";
@@ -1077,6 +1075,7 @@ public class I18nConstants {
   public static final String UNICODE_XML_BAD_CHARS = "UNICODE_XML_BAD_CHARS";
   public static final String UNKNOWN_CODESYSTEM = "UNKNOWN_CODESYSTEM";
   public static final String UNKNOWN_CODESYSTEM_VERSION = "UNKNOWN_CODESYSTEM_VERSION";
+  public static final String UNKNOWN_CODESYSTEM_VERSION_NONE = "UNKNOWN_CODESYSTEM_VERSION_NONE";
   public static final String UNKNOWN_CODE_IN = "Unknown_Code_in";
   public static final String UNKNOWN_CODE_IN_FRAGMENT = "UNKNOWN_CODE_IN_FRAGMENT";
   public static final String UNKNOWN_CODE_IN_VERSION = "Unknown_Code_in_Version";
@@ -1205,6 +1204,10 @@ public class I18nConstants {
   public static final String VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2 = "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2";
   public static final String VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_3 = "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_3";
   public static final String VALUESET_INC_TOO_MANY_CODES = "VALUESET_INC_TOO_MANY_CODES";
+  public static final String VALUESET_INC_NOT_VALIDATING = "VALUESET_INC_NOT_VALIDATING";
+  public static final String VALUESET_INC_NO_SERVER = "VALUESET_INC_NO_SERVER";
+  public static final String VALUESET_INC_NO_BATCH_ON_SERVER = "VALUESET_INC_NO_BATCH_ON_SERVER";
+  public static final String VALUESET_INC_CS_NO_SUPPORT = "VALUESET_INC_CS_NO_SUPPORT";
   public static final String VALUESET_NO_SYSTEM_WARNING = "VALUESET_NO_SYSTEM_WARNING";
   public static final String VALUESET_PARAMETER_MISSING_BINDING_PARAMETER = "VALUESET_PARAMETER_MISSING_BINDING_PARAMETER";
   public static final String VALUESET_PARAMETER_NAME_WARNING = "VALUESET_PARAMETER_NAME_WARNING";
@@ -1434,4 +1437,30 @@ public class I18nConstants {
   public static final String SD_ED_BIND_ALL_LOINC_CODES = "SD_ED_BIND_ALL_LOINC_CODES";
   public static final String SD_ED_BIND_ALLSCT_CODES = "SD_ED_BIND_ALLSCT_CODES";
   public static final String SD_ED_BIND_ALL_CPT_CODES = "SD_ED_BIND_ALL_CPT_CODES";
+  public static final String NO_CODE_PROVIDED = "NO_CODE_PROVIDED";
+  public static final String NO_CODE_PROVIDED_VERSION = "NO_CODE_PROVIDED_VERSION";
+  public static final String RESOURCE_INTERNAL_USE_ONLY = "RESOURCE_INTERNAL_USE_ONLY";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_SID_INCORRECT = "TYPE_SPECIFIC_CHECKS_DT_SID_INCORRECT";
+  public static final String INACTIVE_DISPLAY_FOUND = "INACTIVE_DISPLAY_FOUND";
+  public static final String INACTIVE_CONCEPT_FOUND = "INACTIVE_CONCEPT_FOUND";
+  public static final String DEPRECATED_CONCEPT_FOUND = "DEPRECATED_CONCEPT_FOUND";
+  public static final String CONCEPT_DEPRECATED_IN_VALUESET = "CONCEPT_DEPRECATED_IN_VALUESET";
+  public static final String EXTENSION_EXT_VERSION_NOTALLOWED = "EXTENSION_EXT_VERSION_NOTALLOWED";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_URL_WRONG_HTTPS = "TYPE_SPECIFIC_CHECKS_DT_URL_WRONG_HTTPS";
+  public static final String SYSTEM_VERSION_MULTIPLE_OVERRIDE = "SYSTEM_VERSION_MULTIPLE_OVERRIDE";
+  public static final String SYSTEM_VERSION_MULTIPLE_DEFAULT = "SYSTEM_VERSION_MULTIPLE_DEFAULT";
+  public static final String VALUESET_VERSION_CHECK = "VALUESET_VERSION_CHECK";
+  public static final String UNKNOWN_CODESYSTEM_EXP = "UNKNOWN_CODESYSTEM_EXP";
+  public static final String UNKNOWN_CODESYSTEM_VERSION_EXP_NONE = "UNKNOWN_CODESYSTEM_VERSION_EXP_NONE";
+  public static final String UNKNOWN_CODESYSTEM_VERSION_EXP = "UNKNOWN_CODESYSTEM_VERSION_EXP";
+  public static final String VALUESET_VALUE_MISMATCH = "VALUESET_VALUE_MISMATCH";
+  public static final String VALUESET_VALUE_MISMATCH_CHANGED = "VALUESET_VALUE_MISMATCH_CHANGED";
+  public static final String VALUESET_VALUE_MISMATCH_DEFAULT = "VALUESET_VALUE_MISMATCH_DEFAULT";
+  public static final String TERMINOLOGY_TX_NO_OID_SERVICES = "TERMINOLOGY_TX_NO_OID_SERVICES";
+  public static final String VALIDATION_ADDITIONAL_RESOURCE_NO = "VALIDATION_ADDITIONAL_RESOURCE_NO";
+  public static final String VALIDATION_ADDITIONAL_RESOURCE_NO_WRONG = "VALIDATION_ADDITIONAL_RESOURCE_NO_WRONG";
+  public static final String VALIDATION_ADDITIONAL_RESOURCE_ABSENT = "VALIDATION_ADDITIONAL_RESOURCE_ABSENT";
+  public static final String VALIDATION_ADDITIONAL_RESOURCE_WRONG = "VALIDATION_ADDITIONAL_RESOURCE_WRONG";
+  public static final String RESOURCEDEFINITION_PROPERTY_WRONG_TYPE = "RESOURCEDEFINITION_PROPERTY_WRONG_TYPE";
+  public static final String RESOURCEDEFINITION_PROPERTY_UNKNOWN = "RESOURCEDEFINITION_PROPERTY_UNKNOWN";
 }

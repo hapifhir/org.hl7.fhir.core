@@ -25,8 +25,8 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper.NamedResourceWrapperList;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
-import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManager.XVerExtensionStatus;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerFactory;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
@@ -599,12 +599,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
             StructureDefinition ed = getContext().getWorker().fetchResource(StructureDefinition.class, url);
             if (ed == null) {
               if (xverManager == null) {
-                xverManager = new XVerExtensionManager(context.getWorker());
+                xverManager = XVerExtensionManagerFactory.createExtensionManager(context.getWorker());
               }
               if (xverManager.matchingUrl(url) && xverManager.status(url) == XVerExtensionStatus.Valid) {
-                ed = xverManager.makeDefinition(url);
+                ed = xverManager.getDefinition(url);
                 new ContextUtilities(getContext().getWorker()).generateSnapshot(ed);
-                getContext().getWorker().cacheResource(ed);
+                getContext().getWorker().getManager().cacheResource(ed);
               } 
             }
             if (p.getName().equals("modifierExtension") && ed == null) {

@@ -195,9 +195,14 @@ public class XhtmlNodeList extends XhtmlFluent implements List<XhtmlNode>, java.
 
   @Override
   protected void addChildren(XhtmlNodeList childNodes) {
-    this.addAll(childNodes);    
+    this.addAll(childNodes);
   }
-  
+
+  @Override
+  protected void addChild(XhtmlNode childNode) {
+    this.add(childNode);
+  }
+
   protected int indexOfNode(XhtmlNode node) {
     return indexOf(node);
   }

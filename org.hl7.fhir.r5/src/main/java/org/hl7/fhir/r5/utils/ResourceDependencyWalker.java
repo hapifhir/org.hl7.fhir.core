@@ -111,7 +111,7 @@ public class ResourceDependencyWalker {
       String key = source.getSourcePackage() == null ? value : value+" from "+source.getSourcePackage().getVID();
       if (!processedLinks.contains(key)) {
         processedLinks.add(key);
-        Resource tgt = context.fetchResource(Resource.class, value, source);
+        Resource tgt = context.fetchResource(Resource.class, value, null, source);
         if (tgt == null && Utilities.charCount(value, '/') == 1) {
           tgt = context.fetchResourceById(value.substring(0, value.indexOf('/')), value.substring(value.indexOf('/')+1));
         }

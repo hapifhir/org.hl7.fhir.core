@@ -542,6 +542,12 @@ public class ValidationService {
         log.info("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
       }
       sessionCache.cleanUp();
+
+      if (validationContext.getMode() == EngineMode.INSTALL
+        || validationContext.getMode() == EngineMode.VALIDATION) {
+        validationContext.setInferFhirVersion(Boolean.TRUE);
+      }
+
       if (validationContext.getSv() == null) {
         String sv = determineVersion(validationContext);
         validationContext.setSv(sv);
@@ -581,10 +587,14 @@ public class ValidationService {
     ValidationEngine validationEngine = getValidationEngineBuilder().withVersion(validationContext.getSv()).withTimeTracker(timeTracker)
         .withUserAgent(Common.getValidatorUserAgent()).withThoVersion(Constants.THO_WORKING_VERSION)
         .withExtensionsVersion(Constants.EXTENSIONS_WORKING_VERSION).fromSource(definitions);
-
+    FhirPublication ver = FhirPublication.fromCode(validationContext.getSv());
     log.info("  Loaded FHIR - " + validationEngine.getContext().countAllCaches() + " resources (" + timeTracker.milestone() + ")");
-
-    loadIgsAndExtensions(validationEngine, validationContext, timeTracker);
+    final String lineStart = "  Terminology server " + validationContext.getTxServer();
+    final String txver = validationEngine.setTerminologyServer(validationContext.getTxServer(), validationContext.getTxLog(), ver, !validationContext.getNoEcosystem());
+    log.info(lineStart + " - Version " + txver + " (" + timeTracker.milestone() + ")");
+    validationEngine.setDebug(validationContext.isDoDebug());
+    validationEngine.getContext().setLogger(new Slf4JLoggingService(log));
+    loadIgsAndExtensions(validationEngine, validationContext.getIgs(), validationContext.isRecursive());
     if (validationContext.getTxCache() != null) {
       TerminologyCache cache = new TerminologyCache(new Object(), validationContext.getTxCache());
       validationEngine.getContext().initTxCache(cache);
@@ -671,26 +681,21 @@ public class ValidationService {
     return validationEngine;
   }
 
-  protected void loadIgsAndExtensions(ValidationEngine validationEngine, ValidationContext validationContext, TimeTracker timeTracker) throws IOException, URISyntaxException {
-    FhirPublication ver = FhirPublication.fromCode(validationContext.getSv());
+  protected void loadIgsAndExtensions(ValidationEngine validationEngine, List<String> igs, boolean isRecursive) throws IOException, URISyntaxException {
     IgLoader igLoader = new IgLoader(validationEngine.getPcm(), validationEngine.getContext(), validationEngine.getVersion(), validationEngine.isDebug());
     igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), "hl7.terminology", false);
     if (!VersionUtilities.isR5Ver(validationEngine.getContext().getVersion())) {
       igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), "hl7.fhir.uv.extensions", false);
     }
-    final String lineStart = "  Terminology server " + validationContext.getTxServer();
-    final String txver = validationEngine.setTerminologyServer(validationContext.getTxServer(), validationContext.getTxLog(), ver, !validationContext.getNoEcosystem());
-    log.info(lineStart + " - Version " + txver + " (" + timeTracker.milestone() + ")");
-    validationEngine.setDebug(validationContext.isDoDebug());
-    validationEngine.getContext().setLogger(new Slf4JLoggingService(log));
-    for (String src : validationContext.getIgs()) {
-      igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), src, validationContext.isRecursive());
+
+    for (String src : igs) {
+      igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), src, isRecursive);
     }
     log.info("  Package Summary: "+ validationEngine.getContext().loadedPackageSummary());
   }
 
   public String determineVersion(ValidationContext validationContext) throws IOException {
-    if (validationContext.getMode() != EngineMode.VALIDATION && validationContext.getMode() != EngineMode.INSTALL) {
+    if (!validationContext.isInferFhirVersion()) {
       return "5.0";
     }
     log.info("Scanning for versions (no -version parameter):");
@@ -838,38 +843,47 @@ public class ValidationService {
     }    
   }
 
-  private int cp;
-  private int cs;
-  public void install(ValidationContext validationContext, ValidationEngine validator) throws FHIRException, IOException {
-    cp = 0;
-    cs = 0;
-    log.info("Generating Snapshots");
-    for (String ig : validationContext.getIgs()) {
-      processIG(validator, ig);
+  private int installedPackageCount;
+  private int generatedSnapshotCount;
+
+  /**
+   * @deprecated
+   */
+    @Deprecated(since = "2025-09-19")
+    public void install(ValidationContext validationContext, ValidationEngine validator) throws FHIRException, IOException {
+      install(validationContext.getIgs(), validator);
     }
-    log.info("Installed/Processed "+cp+" packages, generated "+cs+" snapshots");
+
+    public void install(List<String> igs, ValidationEngine validator) throws FHIRException, IOException {
+    installedPackageCount = 0;
+    generatedSnapshotCount = 0;
+    log.info("Generating Snapshots");
+    for (String ig : igs) {
+      installIG(validator, ig);
+    }
+    log.info("Installed/Processed "+ installedPackageCount +" packages, generated "+ generatedSnapshotCount +" snapshots");
   }
 
-  private void processIG(ValidationEngine validator, String ig) throws FHIRException, IOException {
-    validator.loadPackage(ig, null);
-    NpmPackage npm = validator.getPcm().loadPackage(ig);
+  private void installIG(ValidationEngine validationEngine, String ig) throws FHIRException, IOException {
+    validationEngine.loadPackage(ig, null);
+    NpmPackage npm = validationEngine.getPcm().loadPackage(ig);
     if (!npm.isCore()) {
-      for (String d : npm.dependencies()) {
-        processIG(validator, d);
+      for (String dependency : npm.dependencies()) {
+        installIG(validationEngine, dependency);
       }
       log.info("Processing "+ig);
-      cp++;
-      for (String d : npm.listResources("StructureDefinition")) {
-        String filename = npm.getFilePath(d);
-        Resource res = validator.loadResource(FileUtilities.fileToBytes(filename), filename);
-        if (!(res instanceof StructureDefinition))
+      installedPackageCount++;
+      for (String resourceName : npm.listResources("StructureDefinition")) {
+        String filename = npm.getFilePath(resourceName);
+        Resource resource = validationEngine.loadResource(FileUtilities.fileToBytes(filename), filename);
+        if (!(resource instanceof StructureDefinition))
           throw new FHIRException("Require a StructureDefinition for generating a snapshot");
-        StructureDefinition sd = (StructureDefinition) res;
-        if (!sd.hasSnapshot()) {
-          StructureDefinition base = validator.getContext().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
-          cs++;
-          new ProfileUtilities(validator.getContext(), new ArrayList<ValidationMessage>(), null).setAutoFixSliceNames(true).generateSnapshot(base, sd, sd.getUrl(), null, sd.getName());
-          validator.handleOutput(sd, filename, validator.getVersion());
+        StructureDefinition structureDefinition = (StructureDefinition) resource;
+        if (!structureDefinition.hasSnapshot()) {
+          StructureDefinition baseDefinition = validationEngine.getContext().fetchResource(StructureDefinition.class, structureDefinition.getBaseDefinition());
+          generatedSnapshotCount++;
+          new ProfileUtilities(validationEngine.getContext(), new ArrayList<>(), null).setAutoFixSliceNames(true).generateSnapshot(baseDefinition, structureDefinition, structureDefinition.getUrl(), null, structureDefinition.getName());
+          validationEngine.handleOutput(structureDefinition, filename, validationEngine.getVersion());
         }
       }
     }

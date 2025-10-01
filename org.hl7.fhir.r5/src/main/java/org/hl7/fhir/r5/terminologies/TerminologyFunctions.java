@@ -18,7 +18,7 @@ import java.util.List;
 public class TerminologyFunctions {
 
 
-  public static abstract class TerminologyFunctionBase extends IHostApplicationServices.FunctionDefinition {
+  public static abstract class TerminologyFunctionBase extends FHIRPathFunctionDefinition {
 
     protected FHIRException makeExceptionPlural(FHIRPathEngine engine, Integer num, String constName, Object... args) {
       String fmt = engine.getWorker().formatMessagePlural(num, constName, args);

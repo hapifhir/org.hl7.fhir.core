@@ -244,7 +244,7 @@ public class TerminologyClientManager {
           }
         }
         if (ok) {
-          log(vs, s, systems, choices, "Found candidate server "+s);
+          log(vs, s, systems, choices, "Found candidate server " + s);
           return findClient(s, systems, expand);
         }
       }
@@ -356,8 +356,8 @@ public class TerminologyClientManager {
     if (client == null) {
       try {
         client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), server, getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, cacheId, false);
-      } catch (URISyntaxException | IOException e) {
-        throw new TerminologyServiceException(e);
+      } catch (Exception e) {
+        throw new TerminologyServiceException("Error accessing "+server+" for "+CommaSeparatedStringBuilder.join(",", systems)+": "+e.getMessage(), e);
       }
       //client.setTxCache(cache);
       serverList.add(client);
@@ -745,7 +745,7 @@ public class TerminologyClientManager {
         try {
           client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, cacheId, false);
         } catch (URISyntaxException | IOException e) {
-          throw new TerminologyServiceException(e);
+          throw new TerminologyServiceException("Error accessing "+server+" for "+canonical+": "+e.getMessage(), e);
         }
         serverList.add(client);
         serverMap.put(server, client);

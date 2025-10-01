@@ -44,9 +44,7 @@ import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.With;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -56,7 +54,6 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.context.ILoggingService.LogCategory;
-import org.hl7.fhir.r5.context.SimpleWorkerContext.InternalCanonicalResourceProxy;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
@@ -64,7 +61,6 @@ import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.ImplementationGuide;
-import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Questionnaire;
@@ -78,14 +74,14 @@ import org.hl7.fhir.r5.model.StructureMap.StructureMapModelMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
 import org.hl7.fhir.r5.utils.R5Hacker;
 import org.hl7.fhir.r5.utils.UserDataNames;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.ValidatorSession;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerFactory;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.MagicResources;
@@ -98,14 +94,11 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
+import org.hl7.fhir.utilities.npm.IPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
-import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import ca.uhn.fhir.parser.DataFormatException;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.With;
 
 /*
  * This is a stand alone implementation of worker context for use inside a tool.
@@ -116,6 +109,11 @@ import lombok.With;
 @Slf4j
 @MarkedToMoveToAdjunctPackage
 public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerContext {
+
+  public interface ILoaderFactory {
+
+    IContextResourceLoader makeLoader(String version);
+  }
 
   public class InternalCanonicalResourceProxy extends CanonicalResourceProxy {
 
@@ -197,6 +195,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private boolean canNoTS;
   private XVerExtensionManager xverManager;
   private boolean allowLazyLoading = true;
+  private IPackageCacheManager packageCacheManager;
+  @Getter @Setter private ILoaderFactory loaderFactory;
 
   private SimpleWorkerContext() throws IOException, FHIRException {
     super();
@@ -229,6 +229,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     xverManager = other.xverManager;
     allowLazyLoading = other.allowLazyLoading;
     questionnaire = other.questionnaire;
+    packageCacheManager = other.packageCacheManager;
+    loaderFactory = other.loaderFactory;
   }
 
 
@@ -528,31 +530,41 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   
 
   @Override
-  public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader) throws IOException, FHIRException {
-    return loadFromPackageInt(pi, loader, loader == null ? defaultTypesToLoad() : loader.getTypes());
+  public int loadFromPackage(NpmPackage npm, IContextResourceLoader loader) throws IOException, FHIRException {
+    return loadFromPackageInt(npm, loader, loader == null ? defaultTypesToLoad() : loader.getTypes());
   }
-  
+
+  public int loadPackage(NpmPackage npm) throws IOException, FHIRException {
+    IContextResourceLoader loader =  loaderFactory.makeLoader(npm.fhirVersion());
+    return loadFromPackageInt(npm, loader, loader == null ? defaultTypesToLoad() : loader.getTypes());
+  }
+
+  public int loadPackage(String idAndVer) throws IOException, FHIRException {
+    NpmPackage npm = packageCacheManager.loadPackage(idAndVer);
+    IContextResourceLoader loader =  loaderFactory.makeLoader(npm.fhirVersion());
+    return loadFromPackageInt(npm, loader, loader == null ? defaultTypesToLoad() : loader.getTypes());
+  }
+
   public static Set<String> defaultTypesToLoad() {
     // there's no penalty for listing resources that don't exist, so we just all the relevant possibilities for all versions 
     return Utilities.stringSet("CodeSystem", "ValueSet", "ConceptMap", "NamingSystem", 
                          "StructureDefinition", "StructureMap", 
                          "SearchParameter", "OperationDefinition", "CapabilityStatement", "Conformance",
                          "Questionnaire", "ImplementationGuide", "Measure" );
-    
-    
   }
  
   @Override
   public int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws IOException, FHIRException {
     return loadFromPackageAndDependenciesInt(pi, loader, pcm, pi.name()+"#"+pi.version());
   }
+
   public int loadFromPackageAndDependenciesInt(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm, String path) throws IOException, FHIRException {
     int t = 0;
 
     for (String e : pi.dependencies()) {
       if (!loadedPackages.contains(e) && !VersionUtilities.isCorePackage(e)) {
         NpmPackage npm = pcm.loadPackage(e);
-        if (!VersionUtilities.versionsMatch(version, npm.fhirVersion())) {
+        if (!VersionUtilities.versionMatches(version, npm.fhirVersion())) {
           log.info(formatMessage(I18nConstants.PACKAGE_VERSION_MISMATCH, e, version, npm.fhirVersion(), path));
         }
         t = t + loadFromPackageAndDependenciesInt(npm, loader.getNewLoader(npm), pcm, path+" -> "+npm.name()+"#"+npm.version());
@@ -845,8 +857,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   @Override
-  public <T extends Resource> T fetchResource(Class<T> class_, String uri, Resource source) {
-    T resource = super.fetchResource(class_, uri, source);
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version, Resource source) {
+    T resource = super.fetchResource(class_, uri, version, source);
     if (resource instanceof StructureDefinition) {
       StructureDefinition structureDefinition = (StructureDefinition)resource;
       generateSnapshot(structureDefinition, "4");
@@ -883,11 +895,21 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   public XVerExtensionManager getXVer() {
     if (xverManager == null) {
-      xverManager = new XVerExtensionManager(this);
+      xverManager = XVerExtensionManagerFactory.createExtensionManager(this);
     }
    return xverManager;
   }
-  
+
+  @Override
+  public IPackageCacheManager packageManager() {
+    return packageCacheManager;
+  }
+
+  @Override
+  public void setPackageManager(IPackageCacheManager packageCacheManager) {
+    this.packageCacheManager = packageCacheManager;
+  }
+
   public void cachePackage(PackageInformation packageInfo) {
     // nothing yet
   }
@@ -915,7 +937,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       String v = idAndver.substring(idAndver.lastIndexOf("#")+1);
       for (String s : loadedPackages) {
         String v2 = s.substring(s.lastIndexOf("#")+1);
-        if (s.startsWith("hl7.fhir.uv.extensions.") && VersionUtilities.versionsMatch(v, v2)) {
+        if (s.startsWith("hl7.fhir.uv.extensions.") && VersionUtilities.versionMatches(v, v2)) {
           return true;
         }
       }
@@ -952,6 +974,10 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
 
+  // only for testing (and transient)
+  public void setXVerManager(XVerExtensionManager value) {
+    xverManager = value;
+  }
 
 }
 

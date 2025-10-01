@@ -155,5 +155,7 @@ public class UserDataNames {
   public static final String CS_MARKDOWN_FLAG = "CS_MARKDOWN_FLAG";
   public static final String PROFILE_RENDERED_MAPPINGS = "PROFILE_RENDERED_MAPPINGS";
   public static final String EXP_REVIEWED = "EXP_REVIEWED";
-  
-}  
+
+  public static final String RESOURCE_INTERNAL_USE_ONLY = "RESOURCE_INTERNAL_USE_ONLY";
+  public static final String VERSION_PINNED_ON_LOAD = "VERSION_PINNED_ON_LOAD";
+}

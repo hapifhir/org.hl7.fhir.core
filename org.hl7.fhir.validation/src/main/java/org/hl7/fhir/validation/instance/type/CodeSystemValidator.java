@@ -177,7 +177,7 @@ public class CodeSystemValidator extends BaseValidator {
       CodeSystem csSupp = null;
       if ("supplement".equals(content) || supp != null) {      
         if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), !Utilities.noString(supp), I18nConstants.CODESYSTEM_CS_SUPP_NO_SUPP)) {
-          if (context.supportsSystem(supp)) {
+          if (context.getTxSupportInfo(supp, null).isSupported()) {
             csSupp = context.fetchCodeSystem(supp);
             if (csSupp != null) {
               if (csSupp.hasHierarchyMeaningElement() && cs.hasChild("hierarchyMeaning")) {
@@ -483,7 +483,7 @@ public class CodeSystemValidator extends BaseValidator {
       return null;
     } else {
       ValueSet vs = context.findTxResource(ValueSet.class, url);
-      if (vs != null) {        
+      if (vs == null) {
         warning(errors, "2025-01-09", IssueType.NOTFOUND, cs.line(), cs.col(), stack.getLiteralPath(), false, message, url);
       }
       return vs;

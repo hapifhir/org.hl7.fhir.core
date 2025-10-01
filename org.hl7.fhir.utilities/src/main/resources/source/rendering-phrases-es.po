@@ -541,6 +541,16 @@ msgstr ""
 msgid "Summary of System-wide Interactions"
 msgstr ""
 
+# CAPABILITY_SUMM_SYS_OP
+#: CAPABILITY_SUMM_SYS_OP
+msgid "Summary of System-wide Operations"
+msgstr ""
+
+# CAPABILITY_SUMM_SYS_SP
+#: CAPABILITY_SUMM_SYS_SP
+msgid "Summary of System-wide Search Parameters"
+msgstr ""
+
 # CAPABILITY_SUPP
 #: CAPABILITY_SUPP
 msgid "support"
@@ -729,6 +739,11 @@ msgstr ""
 # CODE_SYS_SUPPLEMENT
 #: CODE_SYS_SUPPLEMENT
 msgid "This code system resource is a supplement to"
+msgstr ""
+
+# CODE_SYS_SUPP_CODE_NOT_HERE
+#: CODE_SYS_SUPP_CODE_NOT_HERE
+msgid "This CodeSystem Supplement is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
 msgstr ""
 
 # CODE_SYS_THE_VALUE_SET
@@ -1074,7 +1089,7 @@ msgstr ""
 
 # DATA_REND_MKDWN_LNK
 #: DATA_REND_MKDWN_LNK
-msgid "Unable to resolve markdown link"
+msgid "Unable to resolve markdown link ''{0}''"
 msgstr ""
 
 # DATA_REND_MORNING
@@ -2065,11 +2080,6 @@ msgstr ""
 msgid "URL: [base]/{0}"
 msgstr ""
 
-# OP_DEF_URLS
-#: OP_DEF_URLS
-msgid "URL: [base]/${0}"
-msgstr ""
-
 # OP_DEF_USE
 #: OP_DEF_USE
 msgid "Use"
@@ -2772,7 +2782,7 @@ msgstr ""
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\\"{2}\\\">R4B ({3}.r4b)</a> are available."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
 msgstr ""
 
 # R44B_PROBLEMS
@@ -3058,6 +3068,11 @@ msgstr ""
 msgid "Derived from this {0}"
 msgstr ""
 
+# SDR_DRAFT
+#: SDR_DRAFT
+msgid "This is an draft extension definition; the committee is seeking implementation feedback, and the definition or contents of the extension may change in future versions"
+msgstr ""
+
 # SDR_DRAW_IN
 #: SDR_DRAW_IN
 msgid "Draw in Obligations & Additional Bindings from this {0}"
@@ -3070,12 +3085,17 @@ msgstr ""
 
 # SDR_EXPERIMENTAL
 #: SDR_EXPERIMENTAL
-msgid "This is an experimental extension definition; the committee is seeking implementation feedback, and the definition or contents of the extension may change in future versions"
+msgid "This is an experimental extension definition; the definition is intended for testing purposes, education or evaluation, and the definition is not anticipated to be matured to a point where it is intended for genuine usage."
 msgstr ""
 
 # SDR_EXTENSION_SUMMARY
 #: SDR_EXTENSION_SUMMARY
 msgid "Simple Extension with the type {0}: {1}"
+msgstr ""
+
+# SDR_EXTENSION_SUMMARY_MODIFIER
+#: SDR_EXTENSION_SUMMARY_MODIFIER
+msgid "Simple <b>Modifier</b> Extension with the type {0}: {1}"
 msgstr ""
 
 # SDR_EXT_ANY
@@ -3117,6 +3137,11 @@ msgstr ""
 #: SDR_EXT_EXT
 msgctxt "SDR_EXT_EXT"
 msgid "Extension"
+msgstr ""
+
+# SDR_EXT_MOD
+#: SDR_EXT_MOD
+msgid "This extension is a modifier extension."
 msgstr ""
 
 # SDR_EXT_PATH
@@ -3169,7 +3194,7 @@ msgstr ""
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
-msgid "-- no content: do not translate #25 --"
+msgid "-- no content: do not translate #27 --"
 msgstr ""
 
 # SDR_IMPOSE
@@ -3364,7 +3389,7 @@ msgstr ""
 # SDR_VER_RANGE_SFX
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
-msgid "-- no content: do not translate #26 --"
+msgid "-- no content: do not translate #28 --"
 msgstr ""
 
 # SDR_VER_TO_PFX
@@ -3375,7 +3400,7 @@ msgstr ""
 # SDR_VER_TO_SFX
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
-msgid "-- no content: do not translate #27 --"
+msgid "-- no content: do not translate #29 --"
 msgstr ""
 
 # SDR_VER_UNK
@@ -3647,6 +3672,11 @@ msgstr ""
 msgid "There is a slice with no discriminator at {0}"
 msgstr ""
 
+# SD_XIG_LINK
+#: SD_XIG_LINK
+msgid "<p>You can also check for <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">usages in the FHIR IG Statistics</a></p>"
+msgstr ""
+
 # SEARCH_PAR_ALLOWED
 #: SEARCH_PAR_ALLOWED
 msgid "Allowed:"
@@ -3896,7 +3926,7 @@ msgstr ""
 
 # STRUC_DEF_COMPLEXBRACK
 #: STRUC_DEF_COMPLEXBRACK
-msgid "(complex)"
+msgid "(Complex)"
 msgstr ""
 
 # STRUC_DEF_COMP_DOC
@@ -4357,6 +4387,11 @@ msgstr ""
 # STRUC_DEF_MODIFIER
 #: STRUC_DEF_MODIFIER
 msgid "Is Modifier"
+msgstr ""
+
+# STRUC_DEF_MODIFIER_EXT
+#: STRUC_DEF_MODIFIER_EXT
+msgid "This is a modifier extension"
 msgstr ""
 
 # STRUC_DEF_MUST_SUPPORT
@@ -5384,6 +5419,14 @@ msgstr ""
 #: VALUE_SET_LOINCV
 msgid "Loinc v"
 msgstr ""
+
+# VALUE_SET_NEEDS_SUPPL
+#: VALUE_SET_NEEDS_SUPPL
+msgid "This ValueSet requires the Code system Supplement"
+msgid_plural "This ValueSet requires the Code system Supplements"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 # VALUE_SET_NO
 #: VALUE_SET_NO

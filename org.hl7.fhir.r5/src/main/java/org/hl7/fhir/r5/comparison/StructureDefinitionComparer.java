@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -51,7 +50,6 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
-import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableGenerationMode;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -926,8 +924,8 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
           ex.setProfile(null);
         } else {
           // both have profiles. Is one derived from the other? 
-          StructureDefinition sdex = ((IWorkerContext) ex.getUserData(UserDataNames.COMP_CONTEXT)).fetchResource(StructureDefinition.class, ex.getProfile().get(0).getValue(), nwSource);
-          StructureDefinition sdnw = ctxt.fetchResource(StructureDefinition.class, nw.getProfile().get(0).getValue(), nwSource);
+          StructureDefinition sdex = ((IWorkerContext) ex.getUserData(UserDataNames.COMP_CONTEXT)).fetchResource(StructureDefinition.class, ex.getProfile().get(0).getValue(), null, nwSource);
+          StructureDefinition sdnw = ctxt.fetchResource(StructureDefinition.class, nw.getProfile().get(0).getValue(), null, nwSource);
           if (sdex != null && sdnw != null) {
             if (sdex.getUrl().equals(sdnw.getUrl())) {
               pfound = true;
@@ -954,8 +952,8 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
           ex.setTargetProfile(null);
         } else {
           // both have profiles. Is one derived from the other? 
-          StructureDefinition sdex = ((IWorkerContext) ex.getUserData(UserDataNames.COMP_CONTEXT)).fetchResource(StructureDefinition.class, ex.getTargetProfile().get(0).getValue(), nwSource);
-          StructureDefinition sdnw = ctxt.fetchResource(StructureDefinition.class, nw.getTargetProfile().get(0).getValue(), nwSource);
+          StructureDefinition sdex = ((IWorkerContext) ex.getUserData(UserDataNames.COMP_CONTEXT)).fetchResource(StructureDefinition.class, ex.getTargetProfile().get(0).getValue(), null, nwSource);
+          StructureDefinition sdnw = ctxt.fetchResource(StructureDefinition.class, nw.getTargetProfile().get(0).getValue(), null, nwSource);
           if (sdex != null && sdnw != null) {
             if (matches(sdex, sdnw)) {
               tfound = true;
@@ -1003,10 +1001,10 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
   private boolean derivesFrom(StructureDefinition left, StructureDefinition right, IWorkerContext ctxt) {
     StructureDefinition sd = left;
     while (sd != null) {
-      if (right.getUrl().equals(sd.getBaseDefinition())) {
+      if (right.getUrl().equals(sd.getBaseDefinitionNoVersion())) {
         return true;
       }
-      sd = sd.hasBaseDefinition() ? ctxt.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd) : null;
+      sd = sd.hasBaseDefinition() ? ctxt.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), null, sd) : null;
     }
     return false;
   }
@@ -1069,10 +1067,13 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
               c.setTargetProfile(r.getTargetProfile());
               tfound = true;
             } else if (sdl.getType().equals(sdr.getType())) {
-              ProfileComparison compP = (ProfileComparison) session.compare(sdl, sdr);
-              if (compP != null && compP.getIntersection() != null) {
-                tfound = true;
-                c.addTargetProfile("#"+compP.getId());
+              ResourceComparison compare = session.compare(sdl, sdr);
+              if (compare instanceof ProfileComparison) {
+                ProfileComparison compP = (ProfileComparison) compare;
+                if (compP != null && compP.getIntersection() != null) {
+                  tfound = true;
+                  c.addTargetProfile("#" + compP.getId());
+                }
               }
             }
           }
@@ -1264,7 +1265,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
   }
 
   private StructureDefinition resolveProfile(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, String path, String url, String name, IWorkerContext ctxt, Resource urlSource) {
-    StructureDefinition sd = ctxt.fetchResource(StructureDefinition.class, url, urlSource);
+    StructureDefinition sd = ctxt.fetchResource(StructureDefinition.class, url, null, urlSource);
     if (sd == null) {
       ValidationMessage vm = vmI(IssueSeverity.WARNING, "Unable to resolve profile "+url+" in profile "+name, path);
     }
@@ -1304,7 +1305,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
   private ValueSet resolveVS(StructureDefinition ctxtLeft, String vsRef, Resource src, IWorkerContext ctxt) {
     if (vsRef == null)
       return null;
-    return ctxt.fetchResource(ValueSet.class, vsRef, src);
+    return ctxt.fetchResource(ValueSet.class, vsRef, null, src);
   }
 
   public XhtmlNode renderStructure(ProfileComparison comp, String id, String prefix, String corePath) throws FHIRException, IOException {
@@ -1391,12 +1392,12 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
         nc = sdrRight.genElementNameCell(gen, combined.getRight().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, false, ext, used , ref, sName, null);
       }
       if (combined.hasLeft()) {
-        frame(sdrLeft.genElementCells(new RenderingStatus(), gen, combined.getLeft().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getLeft().getSrc(), typesRow, row, true, ext, used , ref, nc, false, false, sdrLeft.getContext(), children.size() > 0, defPath, anchorPrefix, new ArrayList<ElementDefinition>(), null), leftColor);
+        frame(sdrLeft.genElementCells(new RenderingStatus(), gen, combined.getLeft().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getLeft().getSrc(), typesRow, row, true, ext, used , ref, nc, false, false, sdrLeft.getContext(), children.size() > 0, defPath, anchorPrefix, new ArrayList<ElementDefinition>(), null, false), leftColor);
       } else {
         frame(spacers(row, 4, gen), leftColor);
       }
       if (combined.hasRight()) {
-        frame(sdrRight.genElementCells(new RenderingStatus(), gen, combined.getRight().getDef(), "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, true, ext, used, ref, nc, false, false, sdrRight.getContext(), children.size() > 0, defPath, anchorPrefix, new ArrayList<ElementDefinition>(), null), rightColor);
+        frame(sdrRight.genElementCells(new RenderingStatus(), gen, combined.getRight().getDef(), "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, true, ext, used, ref, nc, false, false, sdrRight.getContext(), children.size() > 0, defPath, anchorPrefix, new ArrayList<ElementDefinition>(), null, false), rightColor);
       } else {
         frame(spacers(row, 4, gen), rightColor);
       }
@@ -1543,7 +1544,7 @@ public String getCanonicalForDefaultContext() {
 }
 
 @Override
-public String getDefinitionsName(Resource r) {
+public String  getDefinitionsName(Resource r) {
   // TODO Auto-generated method stub
   return null;
 }

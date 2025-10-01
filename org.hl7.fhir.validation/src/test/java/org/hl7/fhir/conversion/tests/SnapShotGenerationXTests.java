@@ -36,8 +36,10 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -467,7 +469,7 @@ public class SnapShotGenerationXTests {
           pu.generateSnapshot(base, sd, sd.getUrl(), "http://test.org/profile", sd.getName());
         }
         if (!UtilitiesXTests.context(version).hasResource(StructureDefinition.class, sd.getUrl()))
-          UtilitiesXTests.context(version).cacheResource(sd);
+          UtilitiesXTests.context(version).getManager().cacheResource(sd);
         int ec = 0;
         for (ValidationMessage vm : messages) {
           if (vm.getLevel() == IssueSeverity.ERROR) {
@@ -508,7 +510,11 @@ public class SnapShotGenerationXTests {
         }
       }
       if (ml.size() > 0) {
-        throw new FHIRException("Snapshot Generation failed: " + ml.toString());
+        System.out.println("Snapshot Generation failed for "+test.getSource().getUrl());
+        for (ValidationMessage vm : ml) {
+          System.out.println("   "+vm.summary());
+        }
+        throw new FHIRException("Snapshot Generation failed for "+test.getSource().getUrl());
       }
     } catch (Throwable e) {
       System.out.println("\r\nException: " + e.getMessage());

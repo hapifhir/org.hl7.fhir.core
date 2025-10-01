@@ -118,7 +118,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   private void generateFilters(XhtmlNode x, CodeSystem cs) {
     if (cs.hasFilter()) {
       x.para().b().tx(formatPhrase(RenderingContext.CODESYSTEM_FILTERS));
-      XhtmlNode tbl = x.table("grid", false);
+      XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
       XhtmlNode tr = tbl.tr();
       tr.td().b().tx(formatPhrase(RenderingContext.GENERAL_CODE));
       tr.td().b().tx(formatPhrase(RenderingContext.GENERAL_DESC));
@@ -151,7 +151,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       
       x.para().b().tx(formatPhrase(RenderingContext.GENERAL_PROPS));
       x.para().b().tx(formatPhrase(RenderingContext.CODESYSTEM_PROPS_DESC));
-      XhtmlNode tbl = x.table("grid", false);
+      XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
       XhtmlNode tr = tbl.tr();
       if (hasRendered) {
         tr.td().b().tx(formatPhrase(RenderingContext.GENERAL_NAME));        
@@ -245,7 +245,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       return;
     }
     
-    XhtmlNode t = x.table( "codes", false);
+    XhtmlNode t = x.table( "codes", false).markGenerated(!context.forValidResource());
     boolean definitions = false;
     boolean commentS = false;
     boolean deprecated = false;
@@ -255,8 +255,14 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     boolean ignoreStatus = false;
     boolean isSupplement = cs.getContent() == CodeSystemContentMode.SUPPLEMENT;
     List<PropertyComponent> properties = new ArrayList<>();
+    boolean isManual = false;
     for (PropertyComponent cp : cs.getProperty()) {
-      if (showPropertyInTable(cp)) {
+      if (cp.hasExtension(ExtensionDefinitions.EXT_DISPLAY_HINT)) {
+        isManual = true;
+      }
+    }
+    for (PropertyComponent cp : cs.getProperty()) {
+      if (showPropertyInTable(cp, isManual)) {
         boolean exists = false;
         for (ConceptDefinitionComponent c : cs.getConcept()) {
           exists = exists || conceptsHaveProperty(c, cp);
@@ -271,7 +277,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
     List<String> langs = new ArrayList<>();
     for (ConceptDefinitionComponent c : cs.getConcept()) {
-      commentS = commentS || conceptsHaveComments(c);
+      commentS = commentS || conceptsHaveComments(cs, c);
       deprecated = deprecated || conceptsHaveDeprecated(cs, c, ignoreStatus);
       display = display || conceptsHaveDisplay(c);
       version = version || conceptsHaveVersion(c);
@@ -293,7 +299,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     if (langs.size() >= 2) {
       Collections.sort(langs);
       x.para().b().tx(context.formatPhrase(RenderingContext.GENERAL_ADD_LANG));
-      t = x.table("codes", false);
+      t = x.table("codes", false).markGenerated(!context.forValidResource());
       XhtmlNode tr = t.tr();
       tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
       for (String lang : langs)
@@ -374,34 +380,15 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
   }
 
-  private boolean showPropertyInTable(PropertyComponent cp) {
-    return cp.hasCode();
-//      if (cp.hasExtension(ExtensionDefinitions.EXT_RENDERED_VALUE)) {
-//        return true;
-//      }
-//      if (cp.getCodeElement().hasExtension(ExtensionDefinitions.EXT_RENDERED_VALUE)) {
-//        return true;
-//      }
-//      String uri = cp.getUri();
-//      if (Utilities.noString(uri)){
-//        return true; // do we always want to render properties in this case? Not sure...
-//      }
-//      String code = null;
-//      if (uri.contains("#")) {
-//        code = uri.substring(uri.indexOf("#")+1);
-//        uri = uri.substring(0, uri.indexOf("#"));
-//      }
-//      if (Utilities.existsInList(uri, "http://hl7.org/fhir/concept-properties") || context.getCodeSystemPropList().contains(uri)) {
-//        return true;
-//      };
-//      CodeSystem cs = getContext().getWorker().fetchCodeSystem(uri);
-//      if (cs == null) {
-//        return false;
-//      }
-//      switch ()
-//      return code == null ? false : CodeSystemUtilities.hasCode(cs, code);
+  private boolean showPropertyInTable(PropertyComponent cp, boolean isManual) {
+    if (!isManual) {
+      return cp.hasCode();
+    } else if (cp.hasExtension(ExtensionDefinitions.EXT_DISPLAY_HINT)) {
+      return Utilities.existsInList(cp.getExtensionString(ExtensionDefinitions.EXT_DISPLAY_HINT), "display", "no-link");
+    } else {
+      return false;
+    }
   }
-
 
   private int countConcepts(List<ConceptDefinitionComponent> list) {
     int count = list.size();
@@ -411,11 +398,11 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     return count;
   }
   
-  private boolean conceptsHaveComments(ConceptDefinitionComponent c) {
-    if (ExtensionUtilities.hasCSComment(c))
+  private boolean conceptsHaveComments(CodeSystem cs, ConceptDefinitionComponent c) {
+    if (CodeSystemUtilities.hasCSComments(cs, c))
       return true;
     for (ConceptDefinitionComponent g : c.getConcept())
-      if (conceptsHaveComments(g))
+      if (conceptsHaveComments(cs, g))
         return true;
     return false;
   }
@@ -464,7 +451,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       String s = Utilities.padLeft("", '\u00A0', level*2);
       td.addText(s);
     }
-    String link = isSupplement ? getLinkForCode(cs.getSupplements(), null, c.getCode()) : null;
+    String link = isSupplement ? getLinkForCode(cs.getSupplements(), null, c.getCode(), cs) : null;
     if (link != null) {
       td.ah(context.prefixLocalHref(link)).style( "white-space:nowrap").addText(c.getCode());
     } else {
@@ -597,6 +584,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       for (PropertyComponent pc : properties) {
         td = tr.td();
         boolean first = true;
+        boolean nolink = !Utilities.existsInList(pc.getExtensionString(ExtensionDefinitions.EXT_DISPLAY_HINT), "no-link");
         List<ConceptPropertyComponent> pcvl = CodeSystemUtilities.getPropertyValues(c, pc.getCode());
         for (ConceptPropertyComponent pcv : pcvl) {
           if (pcv.hasValue()) {
@@ -606,19 +594,23 @@ public class CodeSystemRenderer extends TerminologyRenderer {
             } else {
               String pv = pcv.getValue().primitiveValue();
               if (pcv.hasValueStringType() && Utilities.isAbsoluteUrl(pv)) {
-                CanonicalResource cr = (CanonicalResource) context.getContext().fetchResource(Resource.class, pv);
-                if (cr != null) {
-                  if (cr.hasWebPath()) {
-                    td.ah(context.prefixLocalHref(cr.getWebPath()), cr.getVersionedUrl()).tx(cr.present());
-                  } else {
-                    td.ah(cr.getVersionedUrl(), cr.getVersionedUrl()).tx(cr.present());
-                  }
-                } else if (Utilities.isAbsoluteUrlLinkable(pv) && !isInKnownUrlSpace(pv)) {
-                  td.ah(context.prefixLocalHref(pv)).tx(pv);
+                if (nolink) {
+                  td.code(pv);
                 } else {
-                  td.code(pv);                
+                  CanonicalResource cr = (CanonicalResource) context.getContext().fetchResource(Resource.class, pv);
+                  if (cr != null) {
+                    if (cr.hasWebPath()) {
+                      td.ah(context.prefixLocalHref(cr.getWebPath()), cr.getVersionedUrl()).tx(cr.present());
+                    } else {
+                      td.ah(cr.getVersionedUrl(), cr.getVersionedUrl()).tx(cr.present());
+                    }
+                  } else if (Utilities.isAbsoluteUrlLinkable(pv) && !isInKnownUrlSpace(pv)) {
+                    td.ah(context.prefixLocalHref(pv)).tx(pv);
+                  } else {
+                    td.code(pv);
+                  }
                 }
-              } else if ("parent".equals(pcv.getCode())) {              
+              } else if ("parent".equals(pcv.getCode()) && !nolink) {
                 td.ah(context.prefixLocalHref("#"+cs.getId()+"-"+Utilities.nmtokenize(pv))).addText(pv);
               } else {
                 td.addText(pv);
@@ -685,7 +677,8 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
   private String getDisplay(String lang, ConceptDefinitionComponent c) {
     for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) {
-      if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display") && cd.hasLanguage() && cd.getLanguage().equals(lang)) {
+      if ((cd.getUse().is("http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra", "preferredForLanguage") || cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display"))
+          && cd.hasLanguage() && cd.getLanguage().equals(lang)) {
         return cd.getValue();
       }
     }

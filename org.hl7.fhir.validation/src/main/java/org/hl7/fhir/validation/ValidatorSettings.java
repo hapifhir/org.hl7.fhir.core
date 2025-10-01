@@ -28,6 +28,7 @@ public class ValidatorSettings extends ValidationOptions {
   private List<String> certificateFolders = new ArrayList<>();
   private String minVersion;
   private String maxVersion;
+  private boolean useNewXVersionPackages;
 
   public Source getSource() {
     return source;
@@ -121,5 +122,13 @@ public class ValidatorSettings extends ValidationOptions {
 
   public void setMaxVersion(String maxVersion) {
     this.maxVersion =  maxVersion;
+  }
+
+  public boolean isUseNewXVersionPackages() {
+    return useNewXVersionPackages;
+  }
+
+  public void setUseNewXVersionPackages(boolean useNewXVersionPackages) {
+    this.useNewXVersionPackages = useNewXVersionPackages;
   }
 }

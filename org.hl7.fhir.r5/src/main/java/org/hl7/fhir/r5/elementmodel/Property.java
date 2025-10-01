@@ -34,6 +34,7 @@ package org.hl7.fhir.r5.elementmodel;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
@@ -57,11 +58,14 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.Utilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class Property {
 
-	private IWorkerContext context;
+  private IWorkerContext context;
 	private ElementDefinition definition;
 	private StructureDefinition structure;
   private ProfileUtilities profileUtilities;
@@ -166,7 +170,7 @@ public class Property {
       } else {
         path = path.substring(1);
       }
-      StructureDefinition sd = (url == null || url.equals(structure.getUrl())) ? structure : context.fetchResource(StructureDefinition.class, url, structure);
+      StructureDefinition sd = (url == null || url.equals(structure.getUrl())) ? structure : profileUtilities.findProfile(url, structure);
       if (sd == null) {
         throw new Error("Unknown Type in content reference '"+path+"'");        
       }
@@ -436,7 +440,8 @@ public class Property {
               }
             }
             if (!ok) {
-              throw new DefinitionException("Type '"+t+"' is not an acceptable type for '"+elementName+"' on property "+definition.getPath());
+              log.error("Type '"+t+"' (from '"+statedType+"') is not an acceptable type for '"+elementName+"' of type '"+ed.typeSummary()+"' on property "+definition.getPath());
+              return new ArrayList<Property>();
             }
           } else {
             t = elementName.substring(tail(ed.getPath()).length() - 3);
@@ -751,7 +756,7 @@ public class Property {
     }
     if (ed.getType().size() == 1) {
       StructureDefinition sd = context.fetchTypeDefinition(ed.getTypeFirstRep().getWorkingCode());
-      if (sd.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED)) {
+      if (sd != null && sd.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED)) {
         return sd.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED);
       }
     }

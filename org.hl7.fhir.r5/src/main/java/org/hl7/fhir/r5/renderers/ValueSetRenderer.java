@@ -124,7 +124,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       }
       if (vs.hasExtension(ExtensionDefinitions.EXT_VALUESET_PARAMETER)) {
         x.para().b().tx("This ValueSet has parameters");
-        XhtmlNode tbl = x.table("grid");
+        XhtmlNode tbl = x.table("grid").markGenerated(!context.forValidResource());
         XhtmlNode tr = tbl.tr();
         tr.th().tx("Name");
         tr.th().tx("Documentation");
@@ -179,7 +179,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           re = new ConceptMapRenderInstructions(cm.present(), cm.getUrl(), false);
         }
         if (re != null) {
-          ValueSet vst = cm.hasTargetScope() ? getContext().getWorker().findTxResource(ValueSet.class, cm.hasTargetScopeCanonicalType() ? cm.getTargetScopeCanonicalType().getValue() : cm.getTargetScopeUriType().asStringValue(), cm) : null;
+          ValueSet vst = cm.hasTargetScope() ? getContext().getWorker().findTxResource(ValueSet.class, cm.hasTargetScopeCanonicalType() ? cm.getTargetScopeCanonicalType().getValue() : cm.getTargetScopeUriType().asStringValue(), null, cm) : null;
           res.add(new UsedConceptMap(re, vst == null ? cm.getWebPath() : vst.getWebPath(), cm));
         }
       }
@@ -288,7 +288,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     boolean doInactive = checkDoInactive(vs.getExpansion().getContains());    
     boolean doDefinition = checkDoDefinition(vs.getExpansion().getContains());
     
-    XhtmlNode t = x.table("codes", false);
+    XhtmlNode t = x.table("codes", false).markGenerated(!context.forValidResource());
     XhtmlNode tr = t.tr();
     if (doLevel)
       tr.td().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_LEVEL));
@@ -355,7 +355,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       } else {
         x.para().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_ADD_DESIG));
       }
-      t = x.table("codes", false);
+      t = x.table("codes", false).markGenerated(!context.forValidResource());
       tr = t.tr();
       tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
       for (String url : designations.keySet()) {
@@ -665,7 +665,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         x.tx(context.formatPhrase(RenderingContext.VALUE_SET_LOINCV)+v);        
       }
     } else if (Utilities.noString(v)) {
-      CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u, source);
+      CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u, null, source);
       if (cr != null) {
         if (cr.hasWebPath()) {
           x.ah(context.prefixLocalHref(cr.getWebPath())).tx(t+" "+cr.present()+" "+ context.formatPhrase(RenderingContext.VALUE_SET_NO_VERSION)+cr.fhirType()+")");          
@@ -676,7 +676,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         x.tx(t+" "+displaySystem(u)+" "+ context.formatPhrase(RenderingContext.VALUE_SET_NO_VER));
       }
     } else {
-      CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u+"|"+v, source);
+      CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u, v, source);
       if (cr != null) {
         if (cr.hasWebPath()) {
           x.ah(context.prefixLocalHref(cr.getWebPath())).tx(t+" "+cr.present()+" v"+v+" ("+cr.fhirType()+")");          
@@ -1185,7 +1185,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       } else {
         x.para().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_ADD_DESIG));
       }
-      XhtmlNode t = x.table("codes", false);
+      XhtmlNode t = x.table("codes", false).markGenerated(!context.forValidResource());
       XhtmlNode tr = t.tr();
       tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
       for (String url : designations.keySet()) {
@@ -1333,6 +1333,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
       return context.formatPhrase(RenderingContext.VALUE_SET_SYNONYM);
     case "http://terminology.hl7.org/CodeSystem/designation-usage#display":
       return context.formatPhrase(RenderingContext.VALUE_SET_OTHER_DISPLAY);
+    case "http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra#preferredForLanguage":
+      return context.formatPhrase(RenderingContext.VALUE_SET_OTHER_DISPLAY);
     default:
       // As specified in http://www.hl7.org/fhir/valueset-definitions.html#ValueSet.compose.include.concept.designation.use and in http://www.hl7.org/fhir/codesystem-definitions.html#CodeSystem.concept.designation.use the terminology binding is extensible.
       return url;
@@ -1380,7 +1382,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           definitions = getConceptsForCodes(e, inc, vsRes, index);
 
           
-          XhtmlNode t = li.table("none", false);
+          XhtmlNode t = li.table("none", false).markGenerated(!context.forValidResource());
           boolean hasComments = false;
           boolean hasDefinition = false;
           for (ConceptReferenceComponent c : inc.getConcept()) {

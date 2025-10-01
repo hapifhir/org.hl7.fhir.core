@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.fhirpath.IHostApplicationServices.FunctionDefinition;
+import org.hl7.fhir.r5.fhirpath.FHIRPathFunctionDefinition;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
@@ -75,7 +75,7 @@ public class GlobalObject extends Base {
     return null;
   }
 
-  public static class GlobalObjectRandomFunction extends FunctionDefinition {
+  public static class GlobalObjectRandomFunction extends FHIRPathFunctionDefinition {
 
     @Override
     public String name() {

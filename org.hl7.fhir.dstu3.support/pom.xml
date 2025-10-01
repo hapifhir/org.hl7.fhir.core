@@ -6,7 +6,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>6.6.1-SNAPSHOT</version>
+        <version>6.7.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -40,6 +40,7 @@
             <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>org.hl7.fhir.dstu3</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- UCUM -->
