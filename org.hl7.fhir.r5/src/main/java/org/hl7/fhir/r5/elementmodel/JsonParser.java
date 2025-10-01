@@ -201,9 +201,20 @@ public class JsonParser extends ParserBase {
   public Element parse(List<ValidationMessage> errors, JsonObject object, String statedPath) throws FHIRException {
     StructureDefinition sd = resolveLogical(object);
     String name;
-    String path;      
+    String path;
     if (sd == null) {
+      JsonElement rd = object.get("resourceDefinition");
       JsonElement rt = object.get("resourceType");
+      if (rd != null) {
+        if (!rd.isJsonString()) {
+          logError(errors, "2022-11-26", line(object), col(object), "$", IssueType.INVALID, context.formatMessage(I18nConstants.RESOURCEDEFINITION_PROPERTY_WRONG_TYPE, rd.type().toName()), IssueSeverity.ERROR);
+        } else {
+          sd = context.fetchResource(StructureDefinition.class, rd.asString());
+          if (sd == null) {
+            logError(errors, "2022-11-26", line(object), col(object), "$", IssueType.INVALID, context.formatMessage(I18nConstants.RESOURCEDEFINITION_PROPERTY_UNKNOWN, rd.asString()), IssueSeverity.ERROR);
+          }
+        }
+      }
       if (rt == null) {
         logError(errors, ValidationMessage.NO_RULE_DATE, line(object), col(object), "$", IssueType.INVALID, context.formatMessage(I18nConstants.UNABLE_TO_FIND_RESOURCETYPE_PROPERTY), IssueSeverity.FATAL);
         return null;
@@ -213,17 +224,22 @@ public class JsonParser extends ParserBase {
       } else {
         name = rt.asString();
 
-        sd = getDefinition(errors, line(object), col(object), name);
         if (sd == null) {
-         return null;
+          sd = getDefinition(errors, line(object), col(object), name);
         }
+        if (sd == null) {
+          return null;
+        }
+        path = statedPath == null ? name : statedPath;
       }
-      path = statedPath == null ? name : statedPath;
+      name = sd.getType();
+      path = statedPath == null ? sd.getTypeTail() : statedPath;
     } else {
       name = sd.getType();
       path = statedPath == null ? sd.getTypeTail() : statedPath;
     }
     baseElement = new Element(name, new Property(context, sd.getSnapshot().getElement().get(0), sd, this.getProfileUtilities(), this.getContextUtilities())).setFormat(FhirFormat.JSON);
+    baseElement.setResourceDefinition(object.asString("resourceDefinition"));
     checkObject(errors, object, baseElement, path);
     baseElement.markLocation(line(object), col(object));
     baseElement.setType(name);
@@ -282,7 +298,7 @@ public class JsonParser extends ParserBase {
   private void checkNotProcessed(List<ValidationMessage> errors, String path, Element element, boolean hasResourceType, List<JsonProperty> children) {
     if (policy != ValidationPolicy.NONE) {
       for (JsonProperty e : children) {
-        if (hasResourceType && "resourceType".equals(e.getName())) {
+        if (hasResourceType && Utilities.existsInList(e.getName(),"resourceType","resourceDefinition")) {
           // nothing
         } else if (e.getTag() == 0) {
           StructureDefinition sd = element.getProperty().isLogical() ? getContextUtilities().fetchByJsonName(e.getName()) : null;
@@ -810,6 +826,9 @@ public class JsonParser extends ParserBase {
     if (!isSuppressResourceType(e.getProperty())) {
       prop("resourceType", e.getType(), null);
     }
+    if (ExtensionUtilities.readBoolExtension(e.getProperty().getStructure(), ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE)) {
+      prop("resourceDefinition", e.getProperty().getStructure().getVersionedUrl(), null);
+    }
     Set<String> done = new HashSet<String>();
     for (Element child : e.getChildren()) {
       compose(e.getName(), e, done, child);
@@ -845,6 +864,9 @@ public class JsonParser extends ParserBase {
 
     if (!isSuppressResourceType(e.getProperty())) {
       prop("resourceType", e.getType(), linkResolver == null ? null : linkResolver.resolveProperty(e.getProperty()));
+    }
+    if (ExtensionUtilities.readBoolExtension(e.getProperty().getStructure(), ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE)) {
+      prop("resourceDefinition", e.getProperty().getStructure().getVersionedUrl(), null);
     }
     Set<String> done = new HashSet<String>();
     for (Element child : e.getChildren()) {

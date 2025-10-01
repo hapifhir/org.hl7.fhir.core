@@ -16,16 +16,11 @@ import java.util.Map;
 @MarkedToMoveToAdjunctPackage
 public class XVerExtensionManagerNew extends XVerExtensionManager {
 
+  public static final String XVER_VERSION_RELEASE = "0.0.1-snapshot-2";
   private Map<String, JsonObject> lists = new HashMap<>();
-  private final IXverManagerPackageLoader loader;
 
-  public interface IXverManagerPackageLoader {
-    public void loadPackage(String idAndVer) throws IOException;
-  }
-  
-  public XVerExtensionManagerNew(IWorkerContext context, IXverManagerPackageLoader loader) {
+  public XVerExtensionManagerNew(IWorkerContext context) {
     super(context);
-    this.loader = loader;
   }
 
   @Override
@@ -41,9 +36,9 @@ public class XVerExtensionManagerNew extends XVerExtensionManager {
 
     String sourceVersion = VersionUtilities.getNameForVersion(context.getVersion()).toLowerCase();
     String pid = "hl7.fhir.uv.xver-"+targetVersion+"."+sourceVersion;
-    if (!context.hasPackage(pid, "dev")) {
+    if (!context.hasPackage(pid, XVER_VERSION_RELEASE)) {
       try {
-        loader.loadPackage(pid+"#dev");
+        context.getManager().loadPackage(pid+"#0.0.1-snapshot-2");
       } catch (IOException e) {
         return XVerExtensionStatus.BadVersion;
       }

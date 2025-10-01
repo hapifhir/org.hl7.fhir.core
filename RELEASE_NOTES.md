@@ -5,5 +5,3 @@
 ## Other code changes
 
 * no changes
-
-- ping

@@ -216,7 +216,7 @@ public class OpenApiGenerator {
         p.in(ParameterLocation.query).description(spc.getDocumentation());
         p.schema().type(getSchemaType(spc.getType()));
         if (spc.hasDefinition()) {
-          SearchParameter sp = context.fetchResource(SearchParameter.class, spc.getDefinition(), cs);
+          SearchParameter sp = context.fetchResource(SearchParameter.class, spc.getDefinition(), null, cs);
           if (sp != null) {
             p.description(sp.getDescription());
           }
@@ -253,7 +253,7 @@ public class OpenApiGenerator {
         p.in(ParameterLocation.query).description(spc.getDocumentation());
         p.schema().type(getSchemaType(spc.getType()));
         if (spc.hasDefinition()) {
-          SearchParameter sp = context.fetchResource(SearchParameter.class, spc.getDefinition(), cs);
+          SearchParameter sp = context.fetchResource(SearchParameter.class, spc.getDefinition(), null, cs);
           if (sp != null) {
             p.description(sp.getDescription());
           }

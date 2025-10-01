@@ -239,7 +239,7 @@ public class NarrativeGenerationTests {
     context = simpleContext;
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     NpmPackage ips = pcm.loadPackage("hl7.fhir.uv.ips#1.1.0");
-    context.loadFromPackage(ips,  new TestPackageLoader(Utilities.stringSet("StructureDefinition", "ValueSet" )));
+    context.getManager().loadFromPackage(ips,  new TestPackageLoader(Utilities.stringSet("StructureDefinition", "ValueSet" )));
   }
 
   @ParameterizedTest(name = "{index}: file {0}")
@@ -248,9 +248,9 @@ public class NarrativeGenerationTests {
     XhtmlNode.setCheckParaGeneral(true);
     if (test.getRegister() != null) {
       if (test.getRegister().endsWith(".json")) {
-        context.cacheResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getRegister())));
+        context.getManager().cacheResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getRegister())));
       } else {
-        context.cacheResource(new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getRegister())));
+        context.getManager().cacheResource(new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getRegister())));
       }
     }
     RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
