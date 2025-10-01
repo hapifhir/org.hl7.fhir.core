@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
 
+//FIXME extract profiles params
 @Slf4j
 public class ValidateTask extends ValidationEngineTask {
 
@@ -53,6 +54,7 @@ public class ValidateTask extends ValidationEngineTask {
 
   @Override
   public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
+
     if (validationContext.getExpansionParameters() != null) {
       validationEngine.loadExpansionParameters(validationContext.getExpansionParameters());
     }
