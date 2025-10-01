@@ -362,21 +362,8 @@ public class ValidatorCli {
 
     final CliTask cliTask = selectCliTask(validationContext, params);
 
-    if (cliTask instanceof ValidationEngineTask) {
-      TimeTracker tt = new TimeTracker();
-      TimeTracker.Session tts = tt.start("Loading");
-
-      if (((ValidationEngineTask) cliTask).inferFhirVersion()) {
-        validationContext.setInferFhirVersion(Boolean.TRUE);
-      }
-
-      if (validationContext.getSv() == null) {
-        validationContext.setSv(myValidationService.determineVersion(validationContext));
-      }
-      ValidationEngine validationEngine = getValidationEngine(tt, validationContext);
-      tts.end();
-      ((ValidationEngineTask) cliTask).executeTask(myValidationService, validationEngine, validationContext, params);
-      log.info("Done. " + tt.report()+". Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
+    if (cliTask instanceof ValidationServiceTask) {
+      ((ValidationServiceTask) cliTask).executeTask(myValidationService, validationContext, params);
     } else if (cliTask instanceof StandaloneTask) {
       ((StandaloneTask) cliTask).executeTask(validationContext,params);
       log.info("Done. Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
@@ -395,22 +382,6 @@ public class ValidatorCli {
     if (cliTask == null)
       cliTask = defaultCliTask;
     return cliTask;
-  }
-
-  private ValidationEngine getValidationEngine(TimeTracker tt, ValidationContext validationContext) throws Exception {
-    ValidationEngine validationEngine;
-    log.info("  Locale: "+Locale.getDefault().getDisplayCountry()+"/"+Locale.getDefault().getCountry());
-    if (validationContext.getJurisdiction() == null) {
-      log.info("  Jurisdiction: None specified (locale = "+Locale.getDefault().getCountry()+")");
-      log.info("  Note that exceptions and validation failures may happen in the absense of a locale");
-    } else {
-      log.info("  Jurisdiction: "+JurisdictionUtilities.displayJurisdiction(validationContext.getJurisdiction()));
-    }
-
-    log.info("Loading");
-    String definitions = "dev".equals(validationContext.getSv()) ? "hl7.fhir.r5.core#current" : VersionUtilities.packageForVersion(validationContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(validationContext.getSv());
-    validationEngine = myValidationService.initializeValidator(validationContext, definitions, tt);
-    return validationEngine;
   }
 
 }
