@@ -781,16 +781,23 @@ public interface IWorkerContext {
 
 
   // todo: figure these out
+  @Deprecated
   public Map<String, NamingSystem> getNSUrlMap();
 
+  @Deprecated
   public IWorkerContextManager.IPackageLoadingTracker getPackageTracker();
+  @Deprecated
   public IWorkerContext setPackageTracker(IWorkerContextManager.IPackageLoadingTracker packageTracker);
 
+  @Deprecated
   public int getClientRetryCount();
+  @Deprecated
   public IWorkerContext setClientRetryCount(int value);
 
 
+  @Deprecated
   public boolean isForPublication();
+  @Deprecated
   public void setForPublication(boolean value);
 
   public interface ITerminologyOperationDetails {
