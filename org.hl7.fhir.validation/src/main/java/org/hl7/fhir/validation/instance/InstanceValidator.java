@@ -3632,6 +3632,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 }
                 // we resolved one, but if there's no version, check if the reference is potentially ambiguous
                 if (!url.contains("|") && r instanceof CanonicalResource) {
+
                   if (!Utilities.existsInList(context.getBase().getPath(), "ImplementationGuide.dependsOn.uri", "ConceptMap.group.source", "ConceptMap.group.target")) {
                     // ImplementationGuide.dependsOn.version is mandatory, and ConceptMap is checked in the ConceptMap validator
                     Set<String> possibleVersions = fetcher.fetchCanonicalResourceVersions(this, valContext.getAppContext(), url);
@@ -3671,6 +3672,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return url;
     }
     if (context.getExpansionParameters() != null) {
+      for (Parameters.ParametersParameterComponent p : context.getExpansionParameters().getParameter()) {
+        if (Utilities.existsInList(p.getName(), "force-system-version", "force-valueset-version", "force-canonical-version")) {
+          String v = p.getValue().primitiveValue();
+          if (!Utilities.noString(v) && v.startsWith(url)) {
+            return v;
+          }
+        }
+      }
       for (Parameters.ParametersParameterComponent p : context.getExpansionParameters().getParameter()) {
         if (Utilities.existsInList(p.getName(), "system-version", "default-valueset-version", "default-canonical-version")) {
           String v = p.getValue().primitiveValue();
