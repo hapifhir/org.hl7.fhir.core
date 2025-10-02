@@ -684,7 +684,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           x.tx(t+" "+displaySystem(u)+" v"+v+" ("+cr.fhirType()+")");
         }
       } else {
-        x.tx(t+" "+displaySystem(u)+" "+ context.formatPhrase(RenderingContext.GENERAL_VER_LOW)+v);
+        x.tx(t+" "+displaySystem(u)+" "+ context.formatPhrase(RenderingContext.GENERAL_VER_LOW)+" "+v);
       }
     }
   }
@@ -1365,7 +1365,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     Map<String, ConceptDefinitionComponent> definitions = new HashMap<>();
     
     if (inc.hasSystem()) {
-      CodeSystem e = getContext().getWorker().fetchCodeSystem(inc.getSystem());
+      CodeSystem e = getContext().getWorker().findTxResource(CodeSystem.class, inc.getSystem(), inc.getVersion(), vsRes);
       if (inc.getConcept().size() == 0 && inc.getFilter().size() == 0) {
         li.addText(type+" "+ context.formatPhrase(RenderingContext.VALUE_SET_ALL_CODES_DEF) + " ");
         addCsRef(inc, li, e);
@@ -1373,10 +1373,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         if (inc.getConcept().size() > 0) {
           li.addText(type+" "+ context.formatPhrase(RenderingContext.VALUE_SET_THESE_CODES_DEF) + " ");
           addCsRef(inc, li, e);
-          if (inc.hasVersion()) {
-            li.addText(" "+ context.formatPhrase(RenderingContext.GENERAL_VER_LOW) + " ");
-            li.code(inc.getVersion());  
-          }
+
 
           // for performance reasons, we do all the fetching in one batch
           definitions = getConceptsForCodes(e, inc, vsRes, index);
