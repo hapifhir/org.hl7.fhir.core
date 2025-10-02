@@ -110,13 +110,13 @@ public class ValidationService {
 
   private final Map<String, ValidationEngine> baseEngines = new ConcurrentHashMap<>();
 
-  public void putBaseEngine(String key, ValidationContext validationContext) throws IOException, URISyntaxException {
-    if (validationContext.getSv() == null) {
+  public void putBaseEngine(String key, ValidationEngineSettings validationEngineSettings, ValidationContext validationContext) throws IOException, URISyntaxException {
+    if (validationEngineSettings.getSv() == null) {
       throw new IllegalArgumentException("Cannot create a base engine without an explicit version");
     }
-    String definitions = VersionUtilities.packageForVersion(validationContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(validationContext.getSv());
+    String definitions = VersionUtilities.packageForVersion(validationEngineSettings.getSv()) + "#" + VersionUtilities.getCurrentVersion(validationEngineSettings.getSv());
 
-    ValidationEngine baseEngine = buildValidationEngine(validationContext, definitions, new TimeTracker());
+    ValidationEngine baseEngine = buildValidationEngine(validationEngineSettings, validationContext, definitions, new TimeTracker());
     baseEngines.put(key, baseEngine);
   }
 
@@ -142,20 +142,38 @@ public class ValidationService {
   public ValidationResponse validateSources(ValidationRequest request) throws Exception {
 
     TimeTracker timeTracker = new TimeTracker();
-    String sessionId = initializeValidator(request.getValidationContext(), null, timeTracker, request.sessionId);
+
+    final String sessionId;
+    final boolean isShowTimes;
+
+    if (request.getValidationEngineSettings() != null) {
+      //FIXME Until all settings are out of ValidationContext, we must provide a ValidationContext for this to
+      // function, either by accepting an existing one, or by generating a blank one.
+      ValidationContext inferredValidationContext = request.getValidationContext() != null
+        ? request.getValidationContext()
+        : new ValidationContext();
+      sessionId = initializeValidator(request.getValidationEngineSettings(), inferredValidationContext, null, timeTracker, request.sessionId);
+      isShowTimes = request.getValidationEngineSettings().isShowTimes();
+    } else {
+      sessionId = initializeValidator(request.getValidationContext(), null, timeTracker, request.sessionId);
+      isShowTimes = request.getValidationContext().isShowTimes();
+    }
+
     ValidationEngine validationEngine = sessionCache.fetchSessionValidatorEngine(sessionId);
 
     /* Cached validation engines already have expensive setup like loading definitions complete. But it wouldn't make
        sense to rebuild a whole engine to change the language, so we manually change it here.
      */
-    validationEngine.setLanguage(request.getValidationContext().getLang());
-    validationEngine.setLocale(request.getValidationContext().getLocale());
-    if (request.getValidationContext().getProfiles().size() > 0) {
-      log.info("  .. validate " + request.listSourceFiles() + " against " + request.getValidationContext().getProfiles().toString());
-    } else {
-      log.info("  .. validate " + request.listSourceFiles());
+    //FIXME move these to ValidationEngineSettings and after that, an inheritable LocalizationOptions
+    if (request.getValidationContext() != null) {
+      validationEngine.setLanguage(request.getValidationContext().getLang());
+      validationEngine.setLocale(request.getValidationContext().getLocale());
+      if (request.getValidationContext().getProfiles().size() > 0) {
+        log.info("  .. validate " + request.listSourceFiles() + " against " + request.getValidationContext().getProfiles().toString());
+      } else {
+        log.info("  .. validate " + request.listSourceFiles());
+      }
     }
-
     ValidationResponse response = new ValidationResponse().setSessionId(sessionId).setValidationTimes(new HashMap<>());
 
     for (FileInfo fileToValidate : request.getFilesToValidate()) {
@@ -177,15 +195,17 @@ public class ValidationService {
           response.addOutcome(outcome);
       } else {
         ValidatedFragments validatedFragments = validationEngine.validateAsFragments(fileToValidate.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fileToValidate.getFileType()),
-          request.getValidationContext().getProfiles(), messages);
+          //FIXME Replace with ValidationInstanceSettings
+          request.getValidationContext() != null ? request.getValidationContext().getProfiles() : List.of(),
+          messages);
 
         List<ValidationOutcome> validationOutcomes = getValidationOutcomesFromValidatedFragments(fileToValidate, validatedFragments);
         for (ValidationOutcome validationOutcome : validationOutcomes) {
           response.addOutcome(validationOutcome);
         }
 
-        if (request.getValidationContext().isShowTimes()) {
-          response.getValidationTimes().put(fileToValidate.getFileName(), validatedFragments.getValidationTime());
+        if (isShowTimes) {
+            response.getValidationTimes().put(fileToValidate.getFileName(), validatedFragments.getValidationTime());
         }
         
       }
@@ -235,18 +255,22 @@ public class ValidationService {
   }
 
   public VersionSourceInformation scanForVersions(ValidationContext validationContext) throws IOException {
+    return scanForVersions(validationContext.getIgs(), validationContext.isRecursive(), validationContext.getSources());
+  }
+  protected VersionSourceInformation scanForVersions(List<String> igs, boolean isRecursive, List<String> sources) throws IOException {
     VersionSourceInformation versions = new VersionSourceInformation();
     IgLoader igLoader = new IgLoader(
       new FilesystemPackageCacheManager.Builder().build(),
       new SimpleWorkerContext.SimpleWorkerContextBuilder().fromNothing(),
       null);
-    for (String src : validationContext.getIgs()) {
-      igLoader.scanForIgVersion(src, validationContext.isRecursive(), versions);
+    for (String src : igs) {
+      igLoader.scanForIgVersion(src, isRecursive, versions);
     }
-    igLoader.scanForVersions(validationContext.getSources(), versions);
+    igLoader.scanForVersions(sources, versions);
     return versions;
   }
 
+  //FIXME called by ValidateTask
   public void validateSources(ValidationContext validationContext, ValidationEngine validator, ValidatorWatchMode watch, int watchScanDelay, int watchSettleTime) throws Exception {
     if (validationContext.getProfiles().size() > 0) {
       log.info("  Profiles: " + validationContext.getProfiles());
@@ -451,7 +475,7 @@ public class ValidationService {
   public void transform(ValidationContext validationContext, ValidationEngine validator) throws Exception {
     if (validationContext.getSources().size() > 1)
       throw new Exception("Can only have one source when doing a transform (found " + validationContext.getSources() + ")");
-    if (validationContext.getTxServer() == null)
+    if (validationContext.getTxServer() == null) //!VES
       throw new Exception("Must provide a terminology server when doing a transform");
     if (validationContext.getMap() == null)
       throw new Exception("Must provide a map when doing a transform");
@@ -530,51 +554,121 @@ public class ValidationService {
     }
   }
 
+  protected static ValidationEngineSettings getValidationEngineSettings(ValidationContext validationContext) {
+    final boolean inferFhirVersion= ValidationService.isInferFhirVersion(validationContext);
+
+    return new ValidationEngineSettings()
+      .setBaseEngine(validationContext.getBaseEngine())
+      .setSv(validationContext.getSv())
+      .setTargetVer(validationContext.getTargetVer())
+      .setDoNative(validationContext.getCanDoNative())
+      .setAssumeValidRestReferences(validationContext.isAssumeValidRestReferences())
+      .setHintAboutNonMustSupport(validationContext.isHintAboutNonMustSupport())
+      .setSnomedCT(validationContext.getSnomedCTCode())
+      .setNoExtensibleBindingMessages(validationContext.isNoExtensibleBindingMessages())
+      .setInferFhirVersion(inferFhirVersion);
+  }
+
+  protected static boolean isInferFhirVersion(ValidationContext validationContext) {
+    return validationContext.getMode() == EngineMode.INSTALL
+      || validationContext.getMode() == EngineMode.VALIDATION;
+  }
+
+  /**
+   * This method is maintained for backward compatibility, and allows the FHIR definitions string to be explicitly set.
+   * It is strongly advised to use the
+   * {@link ValidationService#initializeValidator(ValidationEngineSettings, ValidationContext, TimeTracker)} method, which sets this
+   * automatically based on the FHIR version information included in the ValidationContext.
+   *
+   * @see ValidationService#initializeValidator(ValidationEngineSettings, ValidationContext, TimeTracker)
+   *
+   * @param definitions explicit FHIR definitions to be used.
+   * @return a sessionId associated with an appropriate ValidationEngine
+   *
+   * @deprecated This method is based on {@link ValidationContext}, which will eventually be replaced.
+   */
+  @Deprecated
+  //DO NOT REMOVE YET. Here for reverse compatibility
   public ValidationEngine initializeValidator(ValidationContext validationContext, String definitions, TimeTracker tt) throws Exception {
-    return sessionCache.fetchSessionValidatorEngine(initializeValidator(validationContext, definitions, tt, null));
+    ValidationEngineSettings validationEngineSettings = getValidationEngineSettings(validationContext);
+    return sessionCache.fetchSessionValidatorEngine(initializeValidator(validationEngineSettings, validationContext, definitions, tt, null));
   }
 
-  public String initializeValidator(ValidationContext validationContext, String definitions, TimeTracker tt, String sessionId) throws Exception {
-    tt.milestone();
+  //TODO Remove ValidationContext
+  public ValidationEngine initializeValidator(ValidationEngineSettings validationEngineSettings, ValidationContext validationContext, TimeTracker tt) throws Exception {
+    return sessionCache.fetchSessionValidatorEngine(initializeValidator(validationEngineSettings, validationContext, null, tt, null));
+  }
 
-    if (!sessionCache.sessionExists(sessionId)) {
-      if (sessionId != null) {
-        log.info("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
-      }
-      sessionCache.cleanUp();
+  /**
+   * Check if there is an entry in the session cache for the passed sessionId and return the key for that session if it
+   * exists. If no entry exists, one will be created from the passed validationContext with a new key, which will be
+   * returned.
+   *
+   * @param validationContext a ValidationContext to be used to generate a ValidationEngine
+   * @param timeTracker an existing TimeTracker to associate with a newly generated ValidationEngine
+   * @param sessionId a key used to look for existing ValidationEngine instances in the cache
+   * @return a sessionId associated with an appropriate ValidationEngine
+   *
+   * @deprecated This method is based on {@link ValidationContext}, which will eventually be replaced.
+   */
+  //DO NOT REMOVE YET. Used in ValidationService to translate a validation request without ValidationEngineSettings
+  public String initializeValidator(ValidationContext validationContext, String definitions, TimeTracker timeTracker, String sessionId) throws Exception {
+    ValidationEngineSettings validationEngineSettings = getValidationEngineSettings(validationContext);
+    return initializeValidator(validationEngineSettings, validationContext, definitions, timeTracker, sessionId);
+  }
 
-      if (validationContext.getMode() == EngineMode.INSTALL
-        || validationContext.getMode() == EngineMode.VALIDATION) {
-        validationContext.setInferFhirVersion(Boolean.TRUE);
-      }
+  @Deprecated
+  //TODO make this private and remove ValidationContext
+  protected String initializeValidator(ValidationEngineSettings validationEngineSettings, ValidationContext validationContext, String definitions, TimeTracker timeTracker, String sessionId) throws Exception {
+    timeTracker.milestone();
 
-      if (validationContext.getSv() == null) {
-        String sv = determineVersion(validationContext);
-        validationContext.setSv(sv);
-      }
-      final String engineDefinitions = definitions != null ? definitions : VersionUtilities.packageForVersion(validationContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(validationContext.getSv());
-
-      ValidationEngine validationEngine = getValidationEngineFromValidationContext(validationContext, engineDefinitions, tt);
-      sessionId = sessionCache.cacheSession(validationEngine);
-      log.info("Cached new session. Cache size = " + sessionCache.getSessionIds().size());
-
-    } else {
+    if (sessionCache.sessionExists(sessionId)) {
       log.info("Cached session exists for session id " + sessionId + ", returning stored validator session id. Cache size = " + sessionCache.getSessionIds().size());
+      return sessionId;
     }
-    return sessionId;
+
+    if (sessionId != null) {
+      log.info("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
+    }
+    sessionCache.cleanUp();
+
+    final ValidationEngine validationEngine = getValidationEngineFromValidationContext(validationEngineSettings, validationContext, definitions, timeTracker);
+    final String newSessionId = sessionCache.cacheSession(validationEngine);
+    log.info("Cached new session with ID " + newSessionId + " . Cache size = " + sessionCache.getSessionIds().size());
+    return newSessionId;
+
   }
 
-  private ValidationEngine getValidationEngineFromValidationContext(ValidationContext validationContext, String definitions, TimeTracker tt) throws Exception {
+  //TODO remove ValidationContext
+  private ValidationEngine getValidationEngineFromValidationContext(ValidationEngineSettings validationEngineSettings, ValidationContext validationContext, String definitions, TimeTracker timeTracker) throws Exception {
+    if (validationEngineSettings.getSv() == null) {
+      final String sv = determineFhirVersion(validationEngineSettings);
+      validationEngineSettings.setSv(sv);
+    }
+
     ValidationEngine validationEngine;
-    if (validationContext.getBaseEngine() != null && hasBaseEngineForKey(validationContext.getBaseEngine())) {
-      validationEngine = new ValidationEngine(getBaseEngine(validationContext.getBaseEngine()));
+    if (validationEngineSettings.getBaseEngine() != null && hasBaseEngineForKey(validationEngineSettings.getBaseEngine())) {
+      ValidationEngine baseEngine = getBaseEngine(validationEngineSettings.getBaseEngine());
+      validationEngine = copyBaseEngine(baseEngine);
     } else {
-      if (definitions == null) {
-        throw new IllegalArgumentException("Cannot create a validator engine (definitions == null)");
-      }
-      validationEngine = buildValidationEngine(validationContext, definitions, tt);
+      final String engineDefinitions = definitions != null ? definitions : getEngineDefinitionsForVersion(validationEngineSettings.getSv());
+      validationEngine = buildValidationEngine(validationEngineSettings, validationContext, engineDefinitions, timeTracker);
     }
     return validationEngine;
+  }
+
+  /**
+   * Here for testing purposes.
+   */
+  protected ValidationEngine copyBaseEngine(ValidationEngine baseEngine) throws IOException {
+    return new ValidationEngine(baseEngine);
+  }
+
+  private static String getEngineDefinitionsForVersion(@Nonnull String fhirVersion) {
+    if ("dev".equals(fhirVersion)) {
+      return "hl7.fhir.r5.core#current";
+    }
+    return VersionUtilities.packageForVersion(fhirVersion) + "#" + VersionUtilities.getCurrentVersion(fhirVersion);
   }
 
   protected ValidationEngine.ValidationEngineBuilder getValidationEngineBuilder() {
@@ -582,12 +676,17 @@ public class ValidationService {
   }
 
   @Nonnull
-  protected ValidationEngine buildValidationEngine(ValidationContext validationContext, String definitions, TimeTracker timeTracker) throws IOException, URISyntaxException {
-    log.info("  Loading FHIR v" + validationContext.getSv() + " from " + definitions);
-    ValidationEngine validationEngine = getValidationEngineBuilder().withVersion(validationContext.getSv()).withTimeTracker(timeTracker)
-        .withUserAgent(Common.getValidatorUserAgent()).withThoVersion(Constants.THO_WORKING_VERSION)
-        .withExtensionsVersion(Constants.EXTENSIONS_WORKING_VERSION).fromSource(definitions);
-    FhirPublication ver = FhirPublication.fromCode(validationContext.getSv());
+  protected ValidationEngine buildValidationEngine(ValidationEngineSettings validationEngineSettings, ValidationContext validationContext, String definitions, TimeTracker timeTracker) throws IOException, URISyntaxException {
+    log.info("  Loading FHIR v" + validationEngineSettings.getSv() + " from " + definitions);
+    ValidationEngine validationEngine = getValidationEngineBuilder()
+      .withVersion(validationEngineSettings.getSv()) //!VES?
+      .withTimeTracker(timeTracker)
+      .withUserAgent(Common.getValidatorUserAgent())
+      .withThoVersion(Constants.THO_WORKING_VERSION)
+      .withExtensionsVersion(Constants.EXTENSIONS_WORKING_VERSION)
+      .fromSource(definitions);
+
+    FhirPublication ver = FhirPublication.fromCode(validationEngineSettings.getSv());
     log.info("  Loaded FHIR - " + validationEngine.getContext().countAllCaches() + " resources (" + timeTracker.milestone() + ")");
     final String lineStart = "  Terminology server " + validationContext.getTxServer();
     final String txver = validationEngine.setTerminologyServer(validationContext.getTxServer(), validationContext.getTxLog(), ver, !validationContext.getNoEcosystem());
@@ -603,50 +702,50 @@ public class ValidationService {
       log.info("  No Terminology Cache");
     } else {
       log.info("  Terminology Cache at "+validationEngine.getContext().getTxCache().getFolder());
-      if (validationContext.isClearTxCache()) {
+      if (validationContext.isClearTxCache()) { //VES
         log.info("  Terminology Cache Entries Cleaned out");
         validationEngine.getContext().getTxCache().clear();
       }
     }
     log.info("  Get set... ");
-    validationEngine.setQuestionnaireMode(validationContext.getQuestionnaireMode());
-    validationEngine.setLevel(validationContext.getLevel());
-    validationEngine.setDoNative(validationContext.isDoNative());
-    validationEngine.setHintAboutNonMustSupport(validationContext.isHintAboutNonMustSupport());
-    for (String s : validationContext.getExtensions()) {
+    validationEngine.setQuestionnaireMode(validationContext.getQuestionnaireMode()); //VES
+    validationEngine.setLevel(validationContext.getLevel()); //VES
+    validationEngine.setDoNative(validationEngineSettings.isDoNative()); //VES
+    validationEngine.setHintAboutNonMustSupport(validationEngineSettings.isHintAboutNonMustSupport()); //VES
+    for (String s : validationContext.getExtensions()) { //VES
       if ("any".equals(s)) {
         validationEngine.setAnyExtensionsAllowed(true);
       } else {
         validationEngine.getExtensionDomains().add(s);
       }
     }
-    validationEngine.getCertSources().addAll(validationContext.getCertSources());
-    validationEngine.getMatchetypes().addAll(validationContext.getMatchetypes());
-    validationEngine.setLanguage(validationContext.getLang());
-    validationEngine.setLocale(validationContext.getLocale());
-    validationEngine.setSnomedExtension(validationContext.getSnomedCTCode());
-    validationEngine.setAssumeValidRestReferences(validationContext.isAssumeValidRestReferences());
-    validationEngine.setShowMessagesFromReferences(validationContext.isShowMessagesFromReferences());
-    validationEngine.setDoImplicitFHIRPathStringConversion(validationContext.isDoImplicitFHIRPathStringConversion());
-    validationEngine.setHtmlInMarkdownCheck(validationContext.getHtmlInMarkdownCheck());
-    validationEngine.setAllowDoubleQuotesInFHIRPath(validationContext.isAllowDoubleQuotesInFHIRPath());
-    validationEngine.setNoExtensibleBindingMessages(validationContext.isNoExtensibleBindingMessages());
-    validationEngine.setNoUnicodeBiDiControlChars(validationContext.isNoUnicodeBiDiControlChars());
-    validationEngine.setNoInvariantChecks(validationContext.isNoInvariants());
-    validationEngine.setDisplayWarnings(validationContext.isDisplayWarnings());
-    validationEngine.setBestPracticeLevel(validationContext.getBestPracticeLevel());
-    validationEngine.setCheckIPSCodes(validationContext.isCheckIPSCodes());
-    validationEngine.setWantInvariantInMessage(validationContext.isWantInvariantsInMessages());
-    validationEngine.setSecurityChecks(validationContext.isSecurityChecks());
-    validationEngine.setCrumbTrails(validationContext.isCrumbTrails());
-    validationEngine.setShowMessageIds(validationContext.isShowMessageIds());
-    validationEngine.setForPublication(validationContext.isForPublication());
-    validationEngine.setShowTimes(validationContext.isShowTimes());
-    validationEngine.setAllowExampleUrls(validationContext.isAllowExampleUrls());
-    validationEngine.setAiService(validationContext.getAIService());
-    validationEngine.setR5BundleRelativeReferencePolicy(validationContext.getR5BundleRelativeReferencePolicy());
+    validationEngine.getCertSources().addAll(validationContext.getCertSources()); //VES
+    validationEngine.getMatchetypes().addAll(validationContext.getMatchetypes()); //VES
+    validationEngine.setLanguage(validationContext.getLang()); //!VES?
+    validationEngine.setLocale(validationContext.getLocale()); //!VES?
+    validationEngine.setSnomedExtension(validationEngineSettings.getSnomedCTCode()); //VES
+    validationEngine.setAssumeValidRestReferences(validationEngineSettings.isAssumeValidRestReferences()); //VES
+    validationEngine.setShowMessagesFromReferences(validationContext.isShowMessagesFromReferences()); //VES
+    validationEngine.setDoImplicitFHIRPathStringConversion(validationContext.isDoImplicitFHIRPathStringConversion()); //VES
+    validationEngine.setHtmlInMarkdownCheck(validationContext.getHtmlInMarkdownCheck()); //VES
+    validationEngine.setAllowDoubleQuotesInFHIRPath(validationContext.isAllowDoubleQuotesInFHIRPath()); //VES
+    validationEngine.setNoExtensibleBindingMessages(validationEngineSettings.isNoExtensibleBindingMessages()); //VES
+    validationEngine.setNoUnicodeBiDiControlChars(validationContext.isNoUnicodeBiDiControlChars()); //VES
+    validationEngine.setNoInvariantChecks(validationContext.isNoInvariants()); //VES
+    validationEngine.setDisplayWarnings(validationContext.isDisplayWarnings()); //VES
+    validationEngine.setBestPracticeLevel(validationContext.getBestPracticeLevel()); //VES
+    validationEngine.setCheckIPSCodes(validationContext.isCheckIPSCodes()); //VES
+    validationEngine.setWantInvariantInMessage(validationContext.isWantInvariantsInMessages()); //VES
+    validationEngine.setSecurityChecks(validationContext.isSecurityChecks()); //VES
+    validationEngine.setCrumbTrails(validationContext.isCrumbTrails()); //VES
+    validationEngine.setShowMessageIds(validationContext.isShowMessageIds()); //VES
+    validationEngine.setForPublication(validationContext.isForPublication()); //VES
+    validationEngine.setShowTimes(validationContext.isShowTimes()); //!VES?
+    validationEngine.setAllowExampleUrls(validationContext.isAllowExampleUrls()); //VES
+    validationEngine.setAiService(validationContext.getAIService()); //VES
+    validationEngine.setR5BundleRelativeReferencePolicy(validationContext.getR5BundleRelativeReferencePolicy()); //VES
     ReferenceValidationPolicy refpol = ReferenceValidationPolicy.CHECK_VALID;
-    if (!validationContext.isDisableDefaultResourceFetcher()) {
+    if (!validationContext.isDisableDefaultResourceFetcher()) { //VES
       StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validationEngine.getPcm(), validationEngine.getContext(), validationEngine);
       validationEngine.setFetcher(fetcher);
       validationEngine.getContext().setLocator(fetcher);
@@ -671,11 +770,11 @@ public class ValidationService {
     } else {
       validationEngine.getPolicyAdvisor().setPolicyAdvisor(new BasePolicyAdvisorForFullValidation(validationEngine.getPolicyAdvisor() == null ? refpol : validationEngine.getPolicyAdvisor().getReferencePolicy()));
     }
-    validationEngine.getBundleValidationRules().addAll(validationContext.getBundleValidationRules());
-    validationEngine.setJurisdiction(CodeSystemUtilities.readCoding(validationContext.getJurisdiction()));
-    validationEngine.setUnknownCodeSystemsCauseErrors(validationContext.isUnknownCodeSystemsCauseErrors());
-    validationEngine.setNoExperimentalContent(validationContext.isNoExperimentalContent());
-    TerminologyCache.setNoCaching(validationContext.isNoInternalCaching());
+    validationEngine.getBundleValidationRules().addAll(validationContext.getBundleValidationRules()); //VES
+    validationEngine.setJurisdiction(CodeSystemUtilities.readCoding(validationContext.getJurisdiction())); //VES
+    validationEngine.setUnknownCodeSystemsCauseErrors(validationContext.isUnknownCodeSystemsCauseErrors()); //VES
+    validationEngine.setNoExperimentalContent(validationContext.isNoExperimentalContent()); //VES
+    TerminologyCache.setNoCaching(validationContext.isNoInternalCaching()); //VES
     validationEngine.prepare(); // generate any missing snapshots
     log.info("  ...go! (" + timeTracker.milestone() + ")");
     return validationEngine;
@@ -694,15 +793,57 @@ public class ValidationService {
     log.info("  Package Summary: "+ validationEngine.getContext().loadedPackageSummary());
   }
 
+  /**
+   * Returns the appropriate FHIR version based on the ValidationContext.
+   * <p/>
+   *
+   * This is evaluated first on required versions for the mode specified in the evaluationContext and then the FHIR
+   * versions specified by the IGs in the context.
+   * <p/>
+   *
+   * 5.0.0 will be returned if no version information can be obtained from IGs.
+   *
+   * @param validationContext The validationContext
+   * @return An appropriate FHIR Version
+   * @throws IOException If IGs cannot be loaded as part of the evaluation.
+   */
+  public String getFhirVersionFromValidationContext(ValidationContext validationContext) throws IOException {
+    return determineVersion(validationContext);
+  }
+
+  /**
+   * @deprecated Use {@link ValidationService#getFhirVersionFromValidationContext } in future versions for the same functionality.
+   */
+  @Deprecated(since = "2025-09-29")
   public String determineVersion(ValidationContext validationContext) throws IOException {
-    if (!validationContext.isInferFhirVersion()) {
+    boolean inferFhirVersion = isInferFhirVersion(validationContext);
+    return determineFhirVersion(inferFhirVersion, validationContext.getIgs(), validationContext.isRecursive(), validationContext.getSources());
+  }
+
+  //FIXME pass along validationEngineSettings
+  public String determineFhirVersion(ValidationEngineSettings validationEngineSettings) throws IOException{
+    return determineFhirVersion(
+      validationEngineSettings.isInferFhirVersion(),
+      validationEngineSettings.getIgs(),
+      //FIXME move isRecursive to ValidationEngineSettings
+      //validationEngineSettings.isRecursive();
+      false,
+      //FIXME move sources to ValidationEngineSettings
+      //validationEngineSettings.getSources();
+      List.of()
+    );
+  }
+
+  private String determineFhirVersion(boolean isInferFhirVersion, List<String> igs, boolean isRecursive, List<String> sources) throws IOException {
+
+    if (!isInferFhirVersion) {
       return "5.0";
     }
     log.info("Scanning for versions (no -version parameter):");
-    VersionSourceInformation versions = scanForVersions(validationContext);
-    for (String s : versions.getReport()) {
-      if (!s.equals("(nothing found)")) {
-        log.info("  " + s);
+    VersionSourceInformation versions = scanForVersions(igs, isRecursive, sources);
+    for (String reportEntry : versions.getReport()) {
+      if (!reportEntry.equals("(nothing found)")) {
+        log.info("  " + reportEntry);
       }
     }
     if (versions.isEmpty()) {

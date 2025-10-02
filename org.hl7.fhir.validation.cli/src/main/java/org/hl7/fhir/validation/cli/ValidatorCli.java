@@ -72,7 +72,6 @@ import org.hl7.fhir.utilities.FileFormat;
 import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccess.WebAccessPolicy;
 import org.hl7.fhir.utilities.settings.FhirSettings;
@@ -83,6 +82,7 @@ import org.hl7.fhir.validation.cli.tasks.*;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.cli.param.Params;
+import org.hl7.fhir.validation.service.model.ValidationEngineSettings;
 
 
 /**
@@ -145,7 +145,7 @@ public class ValidatorCli {
       defaultCliTask);
   }
 
-  protected void readGlobalParamsAndExecuteTask(ValidationContext validationContext, String[] args) throws Exception {
+  protected void readGlobalParamsAndExecuteTask(ValidationEngineSettings validationEngineSettings, ValidationContext validationContext, String[] args) throws Exception {
 
     if (validationContext.getLocale() != null) {
       Locale.setDefault(validationContext.getLocale());
@@ -187,9 +187,7 @@ public class ValidatorCli {
       }
       return;
     }
-
-
-    readParamsAndExecuteTask(validationContext, args);
+    readParamsAndExecuteTask(validationEngineSettings, validationContext, args);
   }
 
   @SuppressWarnings("checkstyle:systemout")
@@ -249,9 +247,11 @@ public class ValidatorCli {
     final ValidatorCli validatorCli = new ValidatorCli(validationService);
 
     args = addAdditionalParamsForIpsParam(args);
-    final ValidationContext validationContext = Params.loadValidationContext(args);
+    final ValidationEngineSettings validationEngineSettings = new ValidationEngineSettings();
+    final ValidationContext validationContext = Params.loadValidationContext(validationEngineSettings,args);
+
     try {
-      validatorCli.readGlobalParamsAndExecuteTask(validationContext, args);
+      validatorCli.readGlobalParamsAndExecuteTask(validationEngineSettings, validationContext, args);
     } catch (ENoDump e) {
       log.info(e.getMessage());
     }
@@ -357,23 +357,20 @@ public class ValidatorCli {
       || Params.hasParam(args, "/?"));
   }
 
-  private void readParamsAndExecuteTask(ValidationContext validationContext, String[] params) throws Exception {
+  private void readParamsAndExecuteTask(ValidationEngineSettings validationEngineSettings, ValidationContext validationContext, String[] params) throws Exception {
     Display.printCliParamsAndInfo(log, params);
 
     final CliTask cliTask = selectCliTask(validationContext, params);
 
     if (cliTask instanceof ValidationEngineTask) {
+
       TimeTracker tt = new TimeTracker();
       TimeTracker.Session tts = tt.start("Loading");
-
       if (((ValidationEngineTask) cliTask).inferFhirVersion()) {
-        validationContext.setInferFhirVersion(Boolean.TRUE);
+        validationEngineSettings.setInferFhirVersion(Boolean.TRUE);
       }
 
-      if (validationContext.getSv() == null) {
-        validationContext.setSv(myValidationService.determineVersion(validationContext));
-      }
-      ValidationEngine validationEngine = getValidationEngine(tt, validationContext);
+      ValidationEngine validationEngine = getValidationEngine(validationEngineSettings, tt, validationContext);
       tts.end();
       ((ValidationEngineTask) cliTask).executeTask(myValidationService, validationEngine, validationContext, params);
       log.info("Done. " + tt.report()+". Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
@@ -397,10 +394,10 @@ public class ValidatorCli {
     return cliTask;
   }
 
-  private ValidationEngine getValidationEngine(TimeTracker tt, ValidationContext validationContext) throws Exception {
+  private ValidationEngine getValidationEngine(ValidationEngineSettings validationEngineSettings, TimeTracker timeTracker, ValidationContext validationContext) throws Exception {
     ValidationEngine validationEngine;
     log.info("  Locale: "+Locale.getDefault().getDisplayCountry()+"/"+Locale.getDefault().getCountry());
-    if (validationContext.getJurisdiction() == null) {
+    if (validationContext.getJurisdiction() == null) { //VES
       log.info("  Jurisdiction: None specified (locale = "+Locale.getDefault().getCountry()+")");
       log.info("  Note that exceptions and validation failures may happen in the absense of a locale");
     } else {
@@ -408,8 +405,7 @@ public class ValidatorCli {
     }
 
     log.info("Loading");
-    String definitions = "dev".equals(validationContext.getSv()) ? "hl7.fhir.r5.core#current" : VersionUtilities.packageForVersion(validationContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(validationContext.getSv());
-    validationEngine = myValidationService.initializeValidator(validationContext, definitions, tt);
+    validationEngine = myValidationService.initializeValidator(validationEngineSettings, validationContext, timeTracker);
     return validationEngine;
   }
 
