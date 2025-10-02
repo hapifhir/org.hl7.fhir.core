@@ -1317,7 +1317,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Override
   public void packageLoaded(String pid, String version) {
     resolvedUrls.clear();
-    
   }
 
   public Resource loadResource(byte[] content, String fn) throws FHIRException, IOException {
