@@ -62,6 +62,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.text.WordUtils;
 import org.hl7.fhir.r5.formats.ParserFactory;
@@ -73,6 +74,7 @@ import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccess.WebAccessPolicy;
 import org.hl7.fhir.utilities.settings.FhirSettings;
@@ -83,6 +85,8 @@ import org.hl7.fhir.validation.cli.tasks.*;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.cli.param.Params;
+
+import static org.hl7.fhir.validation.cli.param.Params.FHIR_SETTINGS_PARAM;
 
 
 /**
@@ -145,12 +149,54 @@ public class ValidatorCli {
       defaultCliTask);
   }
 
-  protected void readGlobalParamsAndExecuteTask(ValidationContext validationContext, String[] args) throws Exception {
+  /**
+   * This POJO tracks multiple params that must be extracted BEFORE ANY task is run.
+   * <p/>
+   * Things like locale and network proxy settings must be applied to the running system, for example, and should not
+   * rely on any individual task to process them.
+   */
+  @NoArgsConstructor
+  public class GlobalParams {
+    @Setter
+    @Getter
+    Locale locale = null;
 
-    if (validationContext.getLocale() != null) {
-      Locale.setDefault(validationContext.getLocale());
+    @Setter
+    @Getter
+    boolean noHttpAccess = false;
+
+    @Setter
+    @Getter
+    boolean authoriseNonConformantTxServers = false;
+
+    @Setter
+    @Getter
+    String proxy;
+
+    @Setter
+    @Getter
+    String httpsProxy;
+
+    @Setter
+    @Getter
+    String proxyAuth;
+
+    @Setter
+    @Getter
+    String fhirSettingsFilePath;
+  }
+
+  protected void readGlobalParamsAndExecuteTask(String[] args) throws Exception {
+
+    //FIXME this whole section should extract a Global Params object that can be passed to 'applyGlobalParams'
+
+    if (Params.hasParam(args, Params.LOCALE)){
+        final String locale = Params.getParam(args,  Params.LOCALE);
+        if (locale == null) {
+          throw new Error("Specified -locale without indicating locale");
+        }
+        Locale.setDefault(Locale.forLanguageTag(locale));
     }
-
     setLogbackConfiguration(args);
 
     if (Params.hasParam(args, Params.NO_HTTP_ACCESS)) {
@@ -166,8 +212,12 @@ public class ValidatorCli {
     Display.displayVersion(log);
     Display.displaySystemInfo(log);
 
-    if (validationContext.getFhirSettingsFile() != null) {
-      FhirSettings.setExplicitFilePath(validationContext.getFhirSettingsFile());
+    if (Params.hasParam(args, Params.FHIR_SETTINGS_PARAM)) {
+      final String fhirSettingsFilePath = Params.getParam(args, Params.FHIR_SETTINGS_PARAM);
+        if (!ManagedFileAccess.file(fhirSettingsFilePath).exists()) {
+          throw new Error("Cannot find fhir-settings file: " + fhirSettingsFilePath);
+        }
+      FhirSettings.setExplicitFilePath(fhirSettingsFilePath);
     }
     ManagedWebAccess.loadFromFHIRSettings();
 
@@ -187,9 +237,7 @@ public class ValidatorCli {
       }
       return;
     }
-
-
-    readParamsAndExecuteTask(validationContext, args);
+    readParamsAndExecuteTask(args);
   }
 
   @SuppressWarnings("checkstyle:systemout")
@@ -249,9 +297,9 @@ public class ValidatorCli {
     final ValidatorCli validatorCli = new ValidatorCli(validationService);
 
     args = addAdditionalParamsForIpsParam(args);
-    final ValidationContext validationContext = Params.loadValidationContext(args);
+
     try {
-      validatorCli.readGlobalParamsAndExecuteTask(validationContext, args);
+      validatorCli.readGlobalParamsAndExecuteTask(args);
     } catch (ENoDump e) {
       log.info(e.getMessage());
     }
@@ -357,15 +405,21 @@ public class ValidatorCli {
       || Params.hasParam(args, "/?"));
   }
 
-  private void readParamsAndExecuteTask(ValidationContext validationContext, String[] params) throws Exception {
-    Display.printCliParamsAndInfo(log, params);
+  //FIXME For temporary testing only. Generating ValidationContext should be pushed down to individual tasks
+  protected ValidationContext loadValidationContext(String[] args) throws Exception {
+    return Params.loadValidationContext(args);
+  }
 
-    final CliTask cliTask = selectCliTask(validationContext, params);
+  private void readParamsAndExecuteTask(String[] args) throws Exception {
+    final ValidationContext validationContext = loadValidationContext(args);
+    Display.printCliParamsAndInfo(log, args);
+
+    final CliTask cliTask = selectCliTask(validationContext, args);
 
     if (cliTask instanceof ValidationServiceTask) {
-      ((ValidationServiceTask) cliTask).executeTask(myValidationService, validationContext, params);
+      ((ValidationServiceTask) cliTask).executeTask(myValidationService, validationContext, args);
     } else if (cliTask instanceof StandaloneTask) {
-      ((StandaloneTask) cliTask).executeTask(validationContext,params);
+      ((StandaloneTask) cliTask).executeTask(validationContext,args);
       log.info("Done. Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
     }
 
