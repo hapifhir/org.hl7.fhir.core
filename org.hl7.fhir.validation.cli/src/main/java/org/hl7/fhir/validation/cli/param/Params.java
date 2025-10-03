@@ -3,6 +3,7 @@ package org.hl7.fhir.validation.cli.param;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 import lombok.extern.slf4j.Slf4j;
@@ -143,7 +144,7 @@ public class Params {
   public static final String FILTER = "-filter";
   public static final String EXTERNALS = "-externals";
   public static final String MODE = "-mode";
-  private static final String FHIR_SETTINGS_PARAM = "-fhir-settings";
+  public static final String FHIR_SETTINGS_PARAM = "-fhir-settings";
   public static final String WATCH_MODE_PARAM = "-watch-mode";
   public static final String WATCH_SCAN_DELAY = "-watch-scan-delay";
   public static final String WATCH_SETTLE_TIME = "-watch-settle-time";
@@ -164,11 +165,11 @@ public class Params {
   }
 
   /**
-   * Fetches the  value for the passed in param from the provided list of params.
+   * Fetches the value for the passed in param from the provided list of params.
    *
    * @param args  Array of params to search.
    * @param param {@link String} param keyword to search for.
-   * @return {@link String} value for the provided param.
+   * @return {@link String} value for the provided param, or null if param is out of bounds
    */
   public static String getParam(String[] args, String param) {
     for (int i = 0; i < args.length - 1; i++) {
@@ -187,12 +188,6 @@ public class Params {
     for (int i = 0; i < args.length; i++) {
       if (args[i].equals(VERSION)) {
         validationContext.setSv(VersionUtilities.getCurrentPackageVersion(args[++i]));
-      } else if (args[i].equals(FHIR_SETTINGS_PARAM)) {
-        final String fhirSettingsFilePath = args[++i];
-        if (! ManagedFileAccess.file(fhirSettingsFilePath).exists()) {
-          throw new Error("Cannot find fhir-settings file: " + fhirSettingsFilePath);
-        }
-        validationContext.setFhirSettingsFile(fhirSettingsFilePath);
       } else if (args[i].equals(OUTPUT)) {
         if (i + 1 == args.length)
           throw new Error("Specified -output without indicating output file");
@@ -597,7 +592,12 @@ public class Params {
             validationContext.setFhirpath(args[++i]);
         else
           throw new Exception("Can only nominate a single -fhirpath parameter");
-      } else if (!Utilities.existsInList(args[i], AUTH_NONCONFORMANT_SERVERS)) {
+      } else if (!Utilities.existsInList(args[i],
+        //The following params are handled outside this loop, so should be ignored.
+        AUTH_NONCONFORMANT_SERVERS,
+        NO_HTTP_ACCESS,
+        FHIR_SETTINGS_PARAM)) {
+        //Any remaining unhandled args become sources
         validationContext.addSource(args[i]);
       }
     }

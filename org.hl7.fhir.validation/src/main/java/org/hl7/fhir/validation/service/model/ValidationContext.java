@@ -1387,6 +1387,7 @@ public class ValidationContext {
       '}';
   }
 
+  @Deprecated
   @SerializedName("fhirSettingsFile")
   @JsonProperty("fhirSettingsFile")
   public ValidationContext setFhirSettingsFile(String fhirSettingsFile) {
@@ -1394,6 +1395,7 @@ public class ValidationContext {
     return this;
   }
 
+  @Deprecated
   @SerializedName("fhirSettingsFile")
   @JsonProperty("fhirSettingsFile")
   public String getFhirSettingsFile() {
