@@ -1,271 +1,275 @@
 msgid ""
 msgstr ""
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && (n%100>19 || n%100<11) ? 0 : (n%10>=2 && n%10<=9) && (n%100>19 || n%100<11) ? 1 : n%1!=0 ? 2: 3);\n"
 "X-Crowdin-Project: orghl7fhircore\n"
 "X-Crowdin-Project-ID: 792848\n"
-"X-Crowdin-Language: uz\n"
+"X-Crowdin-Language: lt\n"
 "X-Crowdin-File: /org.hl7.fhir.utilities/src/main/resources/source/validator-messages-en.po\n"
 "X-Crowdin-File-ID: 238\n"
 "Project-Id-Version: orghl7fhircore\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Language-Team: Uzbek\n"
-"Language: uz_UZ\n"
-"PO-Revision-Date: 2025-09-11 12:32\n"
+"Language-Team: Lithuanian\n"
+"Language: lt_LT\n"
+"PO-Revision-Date: 2025-10-02 12:32\n"
 
 # ABSTRACT_CODE_NOT_ALLOWED
 #: ABSTRACT_CODE_NOT_ALLOWED
 msgid "Code ''{0}#{1}'' is abstract, and not allowed in this context"
-msgstr ""
+msgstr "Kodas ''{0}#{1}'' yra abstraktus ir šiame kontekste neleidžiamas"
 
 # ALL_OK
 #: ALL_OK
 msgid "All OK"
-msgstr ""
+msgstr "Viskas gerai"
 
 # ARRAY_CANNOT_BE_EMPTY
 #: ARRAY_CANNOT_BE_EMPTY
 msgid "Array cannot be empty - the property should not be present if it has no values"
-msgstr ""
+msgstr "Masyvas negali būti tuščias - ypatybė neturėtų būti, jei ji neturi reikšmių"
 
 # ATTEMPT_TO_CHANGE_SLICING
 #: ATTEMPT_TO_CHANGE_SLICING
 msgid "The element at {0} defines the slicing {1} but then an element in the slicing {2} tries to redefine the slicing to {3}"
-msgstr ""
+msgstr "Elementas {0} apibrėžia padalijimą {1} bet tada padalijimo elementas {2} bando iš naujo nukreipti padalijimą į {3}"
 
 # Adding_wrong_path
 #: Adding_wrong_path
 msgid "Adding wrong path"
-msgstr ""
+msgstr "Prideda neteisingą kelią"
 
 # Adding_wrong_path__outcomegetPath___resultPathBase__
 #: Adding_wrong_path__outcomegetPath___resultPathBase__
 msgid "Adding wrong path - outcome.getPath() = {0}, resultPathBase = {1}"
-msgstr ""
+msgstr "Prideda neteisingą kelią - outcome.getPath() = {0}, resultPathBase = {1}"
 
 # Adding_wrong_path_in_profile___vs_
 #: Adding_wrong_path_in_profile___vs_
 msgid "Adding wrong path in profile {0}: {1} vs {2}"
-msgstr ""
+msgstr "Prideda neteisingą kelią profilyje {0}: {1} vs {2}"
 
 # All_observations_should_have_a_performer
 #: All_observations_should_have_a_performer
 msgid "Best Practice Recommendation: In general, all observations should have a performer"
-msgstr ""
+msgstr "Geriausios praktikos rekomendacija: Apskritai, visi stebėjimai turėtų turėti atlikėją"
 
 # All_observations_should_have_a_subject
 #: All_observations_should_have_a_subject
 msgid "Best Practice Recommendation: In general, all observations should have a subject"
-msgstr ""
+msgstr "Geriausios praktikos rekomendacija: Apskritai visi stebėjimai turėtų turėti subjektą"
 
 # All_observations_should_have_an_effectiveDateTime_or_an_effectivePeriod
 #: All_observations_should_have_an_effectiveDateTime_or_an_effectivePeriod
 msgid "Best Practice Recommendation: In general, all observations should have an effective[x] ({0})"
-msgstr ""
+msgstr "Geriausios praktikos rekomendacija: Apskritai visos pastabos turėtų turėti efektyvų[x] ({0})"
 
 # Attempt_to_a_slice_an_element_that_does_not_repeat__from__in_
 #: Attempt_to_a_slice_an_element_that_does_not_repeat__from__in_
 msgid "Attempt to a slice an element that does not repeat: {0}/{1} from {2} in {3}, at element {4} (slice = {5})"
-msgstr ""
+msgstr "Bandymas padalyti elementą, kuris nesikartoja: {0}/{1} iš {2} į {3}, elementas {4} (dalis = {5})"
 
 # Attempt_to_replace_element_name_for_a_nonchoice_type
 #: Attempt_to_replace_element_name_for_a_nonchoice_type
 msgid "Attempt to replace element name for a non-choice type"
-msgstr ""
+msgstr "Bandymas pakeisti nepasirenkamo tipo elemento pavadinimą"
 
 # Attempt_to_use_Terminology_server_when_no_Terminology_server_is_available
 #: Attempt_to_use_Terminology_server_when_no_Terminology_server_is_available
 msgid "Attempt to use Terminology server when no Terminology server is available"
-msgstr ""
+msgstr "Bandyti naudoti terminologijos serverį, kai terminologijos serveris nėra pasiekiamas"
 
 # Attempt_to_use_a_snapshot_on_profile__as__before_it_is_generated
 #: Attempt_to_use_a_snapshot_on_profile__as__before_it_is_generated
 msgid "Attempt to use a snapshot on profile ''{0}'' as {1} before it is generated"
-msgstr ""
+msgstr "Bandymas naudoti momentinę kopiją profilyje ''{0}'' kaip {1} prieš ją sugeneruojant"
 
 # BINDING_ADDITIONAL_D
 #: BINDING_ADDITIONAL_D
 msgid "{0} specified in an additional binding"
-msgstr ""
+msgstr "{0} nurodyta papildomame sujungime"
 
 # BINDING_ADDITIONAL_UC
 #: BINDING_ADDITIONAL_UC
 msgid "{0} specified in an additional binding which applies because {1}"
-msgstr ""
+msgstr "{0} nurodyta papildomame sujungime, kuris taikomas, nes {1}"
 
 # BINDING_ADDITIONAL_USAGE
 #: BINDING_ADDITIONAL_USAGE
 msgid "{0} = {1}"
-msgstr ""
+msgstr "{0} = {1}"
 
 # BINDING_MAX
 #: BINDING_MAX
 msgid "{0} specified in the max binding"
-msgstr ""
+msgstr "{0} nurodyta maksimaliam sujungime"
 
 # BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE
 #: BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE
 msgid "Found {0} matches for ''{1}'' in the bundle ({2})"
-msgstr ""
+msgstr "Rasta {0} sutapimų už ''{1}'' pakete ({2})"
 
 # BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE_FRAGMENT
 #: BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE_FRAGMENT
 msgid "Found {0} matches for fragment {2} in resource ''{1}'' in the bundle ({3})"
-msgstr ""
+msgstr "Rasta {0} fragmento sutapimų {2} resurse ''{1}'' pakete({3})"
 
 # BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED
 #: BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED
 msgid "Except for transactions and batches, each entry in a Bundle must have a fullUrl which is the identity of the resource in the entry"
-msgstr ""
+msgstr "Išskyrus operacijas ir paketinio režimo („batch“) paketus, kiekvienas paketo įrašas turi turėti pilnąUrl, kuris yra įraše esančio resurso tapatybė"
 
 # BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_MULTIPLE_MATCHES
 #: BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_MULTIPLE_MATCHES
 msgid "The {1} resource matched more than one of the allowed profiles ({3})"
-msgstr ""
+msgstr "Į {1} išteklius atitiko daugiau nei vieną leistiną profilį ({3})"
 
 # BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH
 #: BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH
 msgid "The {1} resource did not match any of the allowed profiles (Type {2}: {3})"
-msgstr ""
+msgstr "Į {1} išteklius neatitiko nė vieno leistino profilio (Tipas {2}: {3})"
 
 # BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH_REASON
 #: BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH_REASON
 msgid "The {1} resource did not match the profile {2} because: {3}"
-msgstr ""
+msgstr "Į {1} Išteklius neatitiko profilio {2} nes: {3}"
 
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT
 msgid "Can''t find ''{1}'' in the bundle ({2}). Note that there is a resource in the bundle with the same type and id, but it does not match because of the fullUrl based rules around matching relative references (must be ''{3}'', but found ''{4}'')"
 msgid_plural "Can''t find ''{1}'' in the bundle ({2}). Note that there are {0} resources in the bundle with the same type and id, but they do not match because of the fullUrl based rules around matching relative references (must be ''{3}'', but found these: {4})"
-msgstr[0] ""
+msgstr[0] "Nepavyko rasti ''{1}'' pakete ({2}). Atkreipkite dėmesį, kad pakete yra to paties tipo ir ID išteklius, tačiau jis nesutampa dėl pilnoUrl pagrįstų taisyklių apie susijusių nuorodų atitikimus (turi būti ''{3}'', bet rado ''{4}'')"
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] "Nepavyko rasti ''{1}'' pakete ({2}). Atkreipkite dėmesį, kad yra {0} to paties tipo ir ID paketo ištekliai, tačiau jie nesutampa dėl pilnoUrl pagrįstų taisyklių apie susijusių nuorodų atitikimus (turi būti ''{3}\", bet rado šiuos: {4})"
 
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_CANNOT
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_CANNOT
 msgid "Can''t find ''{1}'' in the bundle ({2}). Note that there is a resource in the bundle with the same type and id, but it does not match because of the fullUrl based rules around matching relative references. Found ''{3}'', but it doesn''t match because of the source fullUrl ''{4}''"
 msgid_plural "Can''t find ''{1}'' in the bundle ({2}). Note that there are {0} resources in the bundle with the same type and id, but they do not match because of the fullUrl based rules around matching relative references. Found ''{3}'', but none of them match because of the source fullUrl ''{4}''"
-msgstr[0] ""
+msgstr[0] "Nepavyko rasti ''{1}'' pakete ({2}). Atkreipkite dėmesį, kad pakete yra to paties tipo ir ID išteklius, tačiau jis nesutampa dėl pilnoUrl pagrįstų taisyklių apie susijusių nuorodų atitikimus. Rasta ''{3}'', bet jis nesutampa dėl šaltinio pilnoUrl ''{4}''"
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] "Nepavyko rasti ''{1}'' pakete ({2}). Atkreipkite dėmesį, kad yra {0} to paties tipo ir ID paketo ištekliai, tačiau jie nesutampa dėl pilnoUrl pagrįstų taisyklių apie susijusių nuorodų atitikimus. Rasta ''{3}'', bet nė vienas iš jų nesutampa dėl šaltinio pilnoUrl ''{4}''"
 
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
 msgctxt "BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT"
 msgid "Can''t find ''{0}'' in the bundle ({1})"
-msgstr ""
+msgstr "Nepavyko rasti ''{0}'' pakete ({1})"
 
 # BUNDLE_BUNDLE_ENTRY_REVERSE_MSG
 #: BUNDLE_BUNDLE_ENTRY_REVERSE_MSG
 msgid "Entry {0} isn''t reachable by traversing forwards from the MessageHeader. Check that this is meant to be included (needed to process the message)"
-msgstr ""
+msgstr "Įrašas {0} nepasiekiamas perkeliant persiuntimus iš MessageHeader. Patikrinkite, ar tai turi būti įtraukta (reikalinga pranešimui apdoroti)"
 
 # BUNDLE_BUNDLE_ENTRY_REVERSE_R4
 #: BUNDLE_BUNDLE_ENTRY_REVERSE_R4
 msgid "Entry {0} isn''t reachable by traversing forwards from the Composition. Only Provenance is approved to be used this way (R4 section 3.3.1)"
-msgstr ""
+msgstr "Įrašas {0} nepasiekiamas pereinant iš kompozicijos. Tokiu būdu leidžiama naudoti tik kilmės vietą (R4 3.3.1 skirsnis)"
 
 # BUNDLE_BUNDLE_ENTRY_REVERSE_R5
 #: BUNDLE_BUNDLE_ENTRY_REVERSE_R5
 msgid "Entry {0} isn''t reachable by traversing forwards from the Composition. Check whether this should be linked directly from the composition if it''s a source of narrative content"
-msgstr ""
+msgstr "Įrašas {0} nepasiekiamas pereinant iš kompozicijos. Patikrinkite, ar tai turėtų būti tiesiogiai susieta su kompozicija, jei tai yra pasakojimo turinio šaltinis"
 
 # BUNDLE_BUNDLE_POSSIBLE_MATCH_NO_FU
 #: BUNDLE_BUNDLE_POSSIBLE_MATCH_NO_FU
 msgid "Entry {0} matches the reference {1} by type and id but it does not match the full target URL {2} by Bundle resolution rules"
-msgstr ""
+msgstr "Įrašas {0} atitinka nuorodą {1} pagal tipą ir ID, bet jis neatitinka viso tikslinio URL {2} pagal Paketo sprendimo taisyklės"
 
 # BUNDLE_BUNDLE_POSSIBLE_MATCH_WRONG_FU
 #: BUNDLE_BUNDLE_POSSIBLE_MATCH_WRONG_FU
 msgid "Entry {0} matches the reference {1} by type and id but its fullUrl {2} does not match the full target URL {3} by Bundle resolution rules"
-msgstr ""
+msgstr "Įrašas {0} atitinka nuorodą {1} pagal tipą ir id, bet jo pilnasUrl {2} neatitinka viso tikslinio URL {3} pagal Paketo sprendimo taisyklės"
 
 # BUNDLE_ENTRY_URL_ABSOLUTE
 #: BUNDLE_ENTRY_URL_ABSOLUTE
 msgid "The fullUrl must be an absolute URL (not ''{0}'')"
-msgstr ""
+msgstr "PilnasUrl turi būti absoliutus URL (ne ''{0}'')"
 
 # BUNDLE_ENTRY_URL_MATCHES_NO_ID
 #: BUNDLE_ENTRY_URL_MATCHES_NO_ID
 msgid "The fullUrl ''{0}'' looks like a RESTful server URL, but the resource has no id"
-msgstr ""
+msgstr "PilnasUrl ''{0}'' atrodo kaip RESTful serverio URL, bet išteklius neturi ID"
 
 # BUNDLE_ENTRY_URL_MATCHES_TYPE_ID
 #: BUNDLE_ENTRY_URL_MATCHES_TYPE_ID
 msgid "The fullUrl ''{0}'' looks like a RESTful server URL, so it must end with the correct type and id (/{1}/{2})"
-msgstr ""
+msgstr "PilnasUrl ''{0}'' atrodo kaip RESTful serverio URL, todėl jis turi baigtis teisingu tipu ir ID (/{1}/{2})"
 
 # BUNDLE_LINK_SEARCH_NO_DUPLICATES
 #: BUNDLE_LINK_SEARCH_NO_DUPLICATES
 msgid "The link relationship type ''{0}'' can only occur once"
-msgstr ""
+msgstr "Nuorodos ryšio tipas ''{0}'' gali pasireikšti tik vieną kartą"
 
 # BUNDLE_LINK_SEARCH_PROHIBITED
 #: BUNDLE_LINK_SEARCH_PROHIBITED
 msgid "The link relationship type ''{0}'' used in search sets is prohibited in this context"
-msgstr ""
+msgstr "Nuorodos ryšio tipas ''{0}\" naudojamas paieškos rinkiniuose šiame kontekste draudžiamas"
 
 # BUNDLE_LINK_STYELSHEET_EXTERNAL
 #: BUNDLE_LINK_STYELSHEET_EXTERNAL
 msgid "External Stylesheets other than https://hl7.org/fhir/fhir.css SHOULD not be used"
-msgstr ""
+msgstr "Išoriniai stiliaus lapai, išskyrus https://hl7.org/fhir/fhir.css NETURĖTŲ būti naudojami"
 
 # BUNDLE_LINK_STYELSHEET_INSECURE
 #: BUNDLE_LINK_STYELSHEET_INSECURE
 msgid "The stylesheet reference is not secure"
-msgstr ""
+msgstr "Stiliaus lapo nuoroda nesaugi"
 
 # BUNDLE_LINK_STYELSHEET_LINKABLE
 #: BUNDLE_LINK_STYELSHEET_LINKABLE
 msgid "The stylesheet reference is not a resolvable link"
-msgstr ""
+msgstr "Stiliaus lapo nuoroda nėra išsprendžiama nuoroda"
 
 # BUNDLE_LINK_STYELSHEET_NOT_FOUND
 #: BUNDLE_LINK_STYELSHEET_NOT_FOUND
 msgid "The stylesheet reference could not be resolved in this bundle"
-msgstr ""
+msgstr "Šiame pakete nepavyko išspręsti stiliaus lapo nuorodos"
 
 # BUNDLE_LINK_UNKNOWN
 #: BUNDLE_LINK_UNKNOWN
 msgid "The link relationship type ''{0}'' is unknown and not allowed in this context"
-msgstr ""
+msgstr "Nuorodos ryšio tipas ''{0}'' yra nežinomas ir šiame kontekste neleidžiamas"
 
 # BUNDLE_POSSSIBLE_MATCHES
 #: BUNDLE_POSSSIBLE_MATCHES
 msgid "The bundle contains no match for {1} by the rules of Bundle reference resolution, but it has multiple resources that match {0} by resource type and id"
-msgstr ""
+msgstr "Rinkinyje nėra atitikmenų {1} pagal paketo nuorodų skiriamosios gebos taisykles, tačiau jame yra keli ištekliai, atitinkantys {0} pagal išteklių tipą ir ID"
 
 # BUNDLE_RULE_INVALID_INDEX
 #: BUNDLE_RULE_INVALID_INDEX
 msgid "Bundle Rules index is invalid ({0})"
-msgstr ""
+msgstr "Paketo taisyklių indeksas neleistinas ({0})"
 
 # BUNDLE_RULE_NONE
 #: BUNDLE_RULE_NONE
 msgid "No Rule"
-msgstr ""
+msgstr "Nėra taisyklės"
 
 # BUNDLE_RULE_PROFILE_UNKNOWN
 #: BUNDLE_RULE_PROFILE_UNKNOWN
 msgid "Bundle Rules profile {1} is unknown for {0}"
-msgstr ""
+msgstr "Paketo taisyklių profilis {1} nežinomas {0}"
 
 # BUNDLE_RULE_UNKNOWN
 #: BUNDLE_RULE_UNKNOWN
 msgid "Bundle Rule refers to invalid resource {0}"
-msgstr ""
+msgstr "Paketo taisyklė nurodo neleistinus išteklius {0}"
 
 # BUNDLE_SEARCH_ENTRY_NO_RESOURCE
 #: BUNDLE_SEARCH_ENTRY_NO_RESOURCE
 msgid "SearchSet Bundle Entries must have resources"
-msgstr ""
+msgstr "SearchSet paketo įrašai privalo turėti išteklių"
 
 # BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID
 #: BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID
 msgid "Search results must have ids"
-msgstr ""
+msgstr "Paieškos rezultatai turi turėti ID"
 
 # BUNDLE_SEARCH_ENTRY_TYPE_NOT_SURE
 #: BUNDLE_SEARCH_ENTRY_TYPE_NOT_SURE
 msgid "Unable to determine if this resource is a valid resource type for this search"
-msgstr ""
+msgstr "Neįmanoma nustatyti, ar šis išteklius yra tinkamas išteklių tipas šiai paieškai"
 
 # BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_MODE
 #: BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_MODE
@@ -703,6 +707,8 @@ msgid "The type ''{1}'' is not valid - must be of type {2}"
 msgid_plural "The type ''{1}'' is not valid - must be one of {0} types: {2}"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # Bundle_BUNDLE_FullUrl_Missing
 #: Bundle_BUNDLE_FullUrl_Missing
@@ -1275,6 +1281,8 @@ msgid "Could not match discriminator ({1}) for slice {2} in profile {3} - the di
 msgid_plural "Could not match any of the {0} discriminators for slice {2} in profile {3} - None of the {1} discriminators {4} have fixed value, binding or existence assertions"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # DISCRIMINATOR_BAD_PATH
 #: DISCRIMINATOR_BAD_PATH
@@ -1352,6 +1360,8 @@ msgid "Wrong whitespace in Display Name ''{4}'' for {1}#{2}. Valid display is {3
 msgid_plural "Wrong whitespace in Display Name ''{4}'' for {1}#{2}. Valid display is one of {0} choices: {3} (for the language(s) ''{5}'')"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # Display_Name_for__should_be_one_of__instead_of
 #: Display_Name_for__should_be_one_of__instead_of
@@ -1359,6 +1369,8 @@ msgid "Wrong Display Name ''{4}'' for {1}#{2}. Valid display is {3} (for the lan
 msgid_plural "Wrong Display Name ''{4}'' for {1}#{2}. Valid display is one of {0} choices: {3} (for the language(s) ''{5}'')"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # Does_not_match_slice_
 #: Does_not_match_slice_
@@ -1834,6 +1846,8 @@ msgid "-- no content: do not translate #4 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} type profiles"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
@@ -1842,6 +1856,8 @@ msgid "-- no content: do not translate #5 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} types"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # FHIRPATH_DISCRIMINATOR_NAME_ALREADY_SLICED
 #: FHIRPATH_DISCRIMINATOR_NAME_ALREADY_SLICED
@@ -1865,6 +1881,8 @@ msgid "-- no content: do not translate #6 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE
@@ -1888,6 +1906,8 @@ msgid "-- no content: do not translate #7 --"
 msgid_plural "Error evaluating FHIRPath expression: focus for {1} can only have one value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # FHIRPATH_HO_HOST_SERVICES
 #: FHIRPATH_HO_HOST_SERVICES
@@ -1906,6 +1926,8 @@ msgid "-- no content: do not translate #8 --"
 msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values ({2})"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # FHIRPATH_LEFT_VALUE_WRONG_TYPE
 #: FHIRPATH_LEFT_VALUE_WRONG_TYPE
@@ -1979,6 +2001,8 @@ msgid "-- no content: do not translate #9 --"
 msgid_plural "Error evaluating FHIRPath expression: parameter {1} can only have one value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # FHIRPATH_PARAM_WRONG
 #: FHIRPATH_PARAM_WRONG
@@ -2012,6 +2036,8 @@ msgid "-- no content: do not translate #10 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # FHIRPATH_RIGHT_VALUE
 #: FHIRPATH_RIGHT_VALUE
@@ -2020,6 +2046,8 @@ msgid "-- no content: do not translate #11 --"
 msgid_plural "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # FHIRPATH_RIGHT_VALUE_WRONG_TYPE
 #: FHIRPATH_RIGHT_VALUE_WRONG_TYPE
@@ -2252,6 +2280,8 @@ msgid "''{1}'' is no longer considered a correct display for code ''{2}'' (statu
 msgid_plural "''{1}'' is no longer considered a correct display for code ''{2}'' (status = {4}). The correct display is one of {3}"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # INVALID_DISPLAY_NAME
 #: INVALID_DISPLAY_NAME
@@ -2855,6 +2885,8 @@ msgid "-- no content: do not translate #12 --"
 msgid_plural "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # Measure_MR_M_None
 #: Measure_MR_M_None
@@ -2902,6 +2934,8 @@ msgid "No valid Display Names found for {1}#{2} in the language {4}"
 msgid_plural "No valid Display Names found for {1}#{2} in the languages {4}"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # NO_VALID_DISPLAY_FOUND_LANG_NONE
 #: NO_VALID_DISPLAY_FOUND_LANG_NONE
@@ -2909,6 +2943,8 @@ msgid "''{5}'' is the default display; the code system {1} has no Display Names 
 msgid_plural "''{5}'' is the default display; the code system {1} has no Display Names found for the language {4}"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # NO_VALID_DISPLAY_FOUND_LANG_SOME
 #: NO_VALID_DISPLAY_FOUND_LANG_SOME
@@ -2916,6 +2952,8 @@ msgid "''{5}'' is the default display; no valid Display Names found for {1}#{2} 
 msgid_plural "''{5}'' is the default display; no valid Display Names found for {1}#{2} in the language {4}"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR
 #: NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR
@@ -2993,6 +3031,8 @@ msgid "The provided code {2} was not found in the value set ''{1}''"
 msgid_plural "None of the provided codes [{2}] are in the value set ''{1}''"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # Not_done_yet
 #: Not_done_yet
@@ -3135,6 +3175,8 @@ msgid "The element definition ``{0}`` in the profile ''{1}'' requires that if a 
 msgid_plural "The element definition ``{0}`` in the profile ''{1}'' requires that if a value is not present, one of the extensions ''{2}'' must be present"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # PROFILE_COMPLIES_WITH_BAD_ELEMENT
 #: PROFILE_COMPLIES_WITH_BAD_ELEMENT
@@ -3738,6 +3780,8 @@ msgid "-- no content: do not translate #13 --"
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # Questionnaire_QR_Item_Order
 #: Questionnaire_QR_Item_Order
@@ -3765,6 +3809,8 @@ msgid "Answer value must be of the type {1} not {2}"
 msgid_plural "Answer value must be one of the {0} types {1} not {2}"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # Questionnaire_QR_Q_None
 #: Questionnaire_QR_Q_None
@@ -4157,6 +4203,8 @@ msgid "The type {0} is not in the list of allowed type {1} in the profile {2}"
 msgid_plural "The type {0} is not in the list of allowed types {1} in the profile {2}"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # SD_ELEMENT_FIXED_WRONG_TYPE
 #: SD_ELEMENT_FIXED_WRONG_TYPE
@@ -5849,6 +5897,8 @@ msgid "This content includes the character {1} (hex value). This character is il
 msgid_plural "This content includes the characters {1} (hex values). These characters are illegal in the XML version of FHIR, and there is generally no valid use for such characters"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # UNKNOWN_CODESYSTEM
 #: UNKNOWN_CODESYSTEM
@@ -6703,6 +6753,8 @@ msgid "Required supplement not found: {1}"
 msgid_plural "Required supplements not found: {1}"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # VALUESET_TOO_COSTLY
 #: VALUESET_TOO_COSTLY
@@ -6925,6 +6977,8 @@ msgid "{3}: max allowed = {7}, but found {0} (from {1})"
 msgid_plural "{3}: max allowed = {7}, but found {0} (from {1})"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # Validation_VAL_Profile_Minimum
 #: Validation_VAL_Profile_Minimum
@@ -6932,6 +6986,8 @@ msgid "{3}: minimum required = {7}, but only found {0} (from {1})"
 msgid_plural "{3}: minimum required = {7}, but only found {0} (from {1})"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # Validation_VAL_Profile_Minimum_SLICE
 #: Validation_VAL_Profile_Minimum_SLICE
@@ -6939,6 +6995,8 @@ msgid "Slice ''{3}'': a matching slice is required, but not found (from {1}). No
 msgid_plural "Slice ''{3}'': minimum required = {0}, but only found {7} (from {1})"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # Validation_VAL_Profile_Minimum_SLICE_EXT
 #: Validation_VAL_Profile_Minimum_SLICE_EXT
@@ -6946,6 +7004,8 @@ msgid "Slice ''{3}'' for extension ''{8}'': a matching slice is required, but no
 msgid_plural "Slice ''{3}'' for extension ''{8}'': minimum required = {0}, but only found {7} (from {1})"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # Validation_VAL_Profile_MultipleMatches
 #: Validation_VAL_Profile_MultipleMatches
@@ -6953,6 +7013,8 @@ msgid "Found multiple matching profiles among {0} choice: {1}"
 msgid_plural "Found multiple matching profiles among {0} choices: {1}"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # Validation_VAL_Profile_NoCheckMax
 #: Validation_VAL_Profile_NoCheckMax
@@ -6960,6 +7022,8 @@ msgid "{3}: Found {0} match, but unable to check max allowed ({2}) due to lack o
 msgid_plural "{3}: Found {0} matches, but unable to check max allowed ({2}) due to lack of slicing validation (from {1})"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # Validation_VAL_Profile_NoCheckMin
 #: Validation_VAL_Profile_NoCheckMin
@@ -6967,6 +7031,8 @@ msgid "{3}: Found {0} match, but unable to check minimum required ({2}) due to l
 msgid_plural "{3}: Found {0} matches, but unable to check minimum required ({2}) due to lack of slicing validation (from {1})"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # Validation_VAL_Profile_NoDefinition
 #: Validation_VAL_Profile_NoDefinition
@@ -7124,6 +7190,8 @@ msgid "URL contains Invalid Character: {1}"
 msgid_plural "URL contains {0} Invalid Characters: {1}"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 # XHTML_XHTML_ATTRIBUTE_XML_SPACE
 #: XHTML_XHTML_ATTRIBUTE_XML_SPACE
