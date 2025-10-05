@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.context;
 
+import org.apache.commons.math3.analysis.function.Exp;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
@@ -184,6 +185,20 @@ public class BaseWorkerContextTests {
     public boolean matches(ValueSet right) {
       return left.getStatus().equals(right.getStatus())
         && left.getCompose().equalsDeep(right.getCompose());
+    }
+  }
+
+  public static class ExpansionOptionsMatcher implements ArgumentMatcher<ExpansionOptions> {
+
+    private final ExpansionOptions left;
+
+    ExpansionOptionsMatcher(ExpansionOptions left) {
+      this.left = left;
+    }
+
+    @Override
+    public boolean matches(ExpansionOptions right) {
+      return left.isHeiarchical() == right.isHeiarchical();
     }
   }
 
@@ -490,7 +505,10 @@ public class BaseWorkerContextTests {
     vs.getCompose().setInactive(true);
     vs.getCompose().getInclude().add(inc);
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)),eq(true));
+    ExpansionOptions opt = new ExpansionOptions().withHeiarchical(true);
+
+
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)), argThat(new ExpansionOptionsMatcher(opt)));
     Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
 
     ValueSetExpansionOutcome actualExpansionResult = context.expandVS(null, inc, true, false);
@@ -512,8 +530,10 @@ public class BaseWorkerContextTests {
     vs.setCompose(new ValueSet.ValueSetComposeComponent());
     vs.getCompose().setInactive(true);
     vs.getCompose().getInclude().add(inc);
+    ExpansionOptions opt = new ExpansionOptions().withHeiarchical(true);
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)),eq(true));
+
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)),argThat(new ExpansionOptionsMatcher(opt)));
 
     TerminologyClientContext terminologyClientContext = context.getTxClientManager().getMaster();
 
@@ -537,8 +557,10 @@ public class BaseWorkerContextTests {
 
     ValueSet vs = new ValueSet();
     vs.setUrl(DUMMY_URL);
+    ExpansionOptions opt = new ExpansionOptions().withHeiarchical(true);
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(vs,true);
+
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(vs,opt);
     Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
 
     Parameters pIn = new Parameters();
@@ -570,8 +592,10 @@ public class BaseWorkerContextTests {
 
     ValueSet vs = new ValueSet();
     vs.setUrl(DUMMY_URL);
+    ExpansionOptions opt = new ExpansionOptions().withHeiarchical(true);
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(vs,true);
+
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(vs,opt);
 
     Parameters pIn = new Parameters();
 
@@ -596,8 +620,10 @@ public class BaseWorkerContextTests {
 
     ValueSet vs = new ValueSet();
     vs.setUrl(DUMMY_URL);
+    ExpansionOptions opt = new ExpansionOptions().withHeiarchical(true);
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(vs,true);
+
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(vs,opt);
 
     Parameters pIn = new Parameters();
 
@@ -611,7 +637,7 @@ public class BaseWorkerContextTests {
 
     Mockito.doReturn(expectedValueSet).when(terminologyClient).expandValueset(eq(vs), argThat(new ParametersMatcher(pInWithDependentResources)));
 
-    ValueSetExpansionOutcome actualExpansionResult = context.expandVS(vs, true,  true, true, pIn, false);
+    ValueSetExpansionOutcome actualExpansionResult = context.expandVS(new ExpansionOptions(true,  true, 0, true, null), vs, pIn, false);
 
     assertEquals(expectedValueSet, actualExpansionResult.getValueset());
 
