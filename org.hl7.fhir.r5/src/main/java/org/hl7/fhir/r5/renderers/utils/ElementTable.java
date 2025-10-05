@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.ExpansionOptions;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CanonicalResource;
@@ -634,7 +635,7 @@ public class ElementTable {
       x.tx(phrase);
       x.ah(vs.getWebPath()).tx(vs.present());
       try {      
-        ValueSetExpansionOutcome exp = context.getContext().expandVS(vs, true, false);
+        ValueSetExpansionOutcome exp = context.getContext().expandVS(ExpansionOptions.cacheNoHeirarchy().withLanguage(context.getLocale().getLanguage()), vs);
         if (!exp.isOk()) {
           x.span().attribute("title", exp.getError()).tx(" (??)");                  
         } else if (exp.getValueset().getExpansion().getContains().size() == 1000) {

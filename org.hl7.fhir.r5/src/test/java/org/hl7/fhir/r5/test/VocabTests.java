@@ -12,6 +12,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.ExpansionOptions;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestPackageLoader;
@@ -147,7 +148,7 @@ public class VocabTests {
   }
 
   private void testExpansion(TestDetails test, ValueSet sourceVS, ValueSet targetVS) throws Exception {
-    ValueSetExpansionOutcome outcome = context.expandVS(sourceVS, false, test.getParameters().containsKey("hierarchical"), true);  
+    ValueSetExpansionOutcome outcome = context.expandVS(new ExpansionOptions().withCacheOk(false).withHeiarchical(test.getParameters().containsKey("hierarchical")).withIncompleteOk(true), sourceVS);
     if (outcome.isOk()) {
       outcome.getValueset().getExpansion().setIdentifier(null);
       outcome.getValueset().getExpansion().setTimestamp(null);
