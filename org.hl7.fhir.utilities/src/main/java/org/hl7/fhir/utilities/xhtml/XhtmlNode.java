@@ -264,9 +264,18 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
 
   public XhtmlNode addComment(String content) {
-    if (!(nodeType == NodeType.Element || nodeType == NodeType.Document)) 
+    if (!(nodeType == NodeType.Element || nodeType == NodeType.Document))
       throw new Error("Wrong node type");
     XhtmlNode node = new XhtmlNode(NodeType.Comment);
+    node.setContent(content);
+    addChildNode(node);
+    return node;
+  }
+
+  public XhtmlNode addCData(String content) {
+    if (!(nodeType == NodeType.Element || nodeType == NodeType.Document))
+      throw new Error("Wrong node type");
+    XhtmlNode node = new XhtmlNode(NodeType.CData);
     node.setContent(content);
     addChildNode(node);
     return node;

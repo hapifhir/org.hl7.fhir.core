@@ -22,6 +22,7 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ElementChoiceGroup;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ExtensionContext;
 import org.hl7.fhir.r5.conformance.profile.SnapshotGenerationPreProcessor;
+import org.hl7.fhir.r5.context.ExpansionOptions;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.formats.IParser;
@@ -2048,7 +2049,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         }
       }
       if (status != null && status.getBinding().hasValueSet()) {
-        ValueSetExpansionOutcome exp = context.getContext().expandVS(status.getBinding().getValueSet(), true, false, -1);
+        ValueSetExpansionOutcome exp = context.getContext().expandVS(ExpansionOptions.cacheNoHeirarchy().withLanguage(context.getLocale().getLanguage()).withMaxCount(-1), status.getBinding().getValueSet());
         if (exp.isOk()) {
           for (ValueSetExpansionContainsComponent cc : exp.getValueset().getExpansion().getContains()) {
             set.add(cc.getCode());

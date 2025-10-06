@@ -28,6 +28,9 @@ public class FHIRPathExpressionFixer {
     if ("txt-2".equals(key)) {
       return "htmlChecks2()";
     }
+    if ("que-7".equals(key)) {
+      return "operator = 'exists' implies (answer is boolean)"; // wrong prior to R5
+    }
     if ("dom-6".equals(key)) {
       return "(%rootResource != $this) or text.`div`.exists()";
     }
