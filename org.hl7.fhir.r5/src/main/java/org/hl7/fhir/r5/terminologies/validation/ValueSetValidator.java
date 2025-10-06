@@ -39,6 +39,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
+import org.hl7.fhir.r5.context.BaseWorkerContext;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.LanguageUtils;
@@ -126,7 +127,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   private Set<String> checkedVersionCombinations = new HashSet<>();
 
 
-  public ValueSetValidator(IWorkerContext context, TerminologyOperationContext opContext, ValidationOptions options, ValueSet source, Parameters expansionProfile, TerminologyClientManager tcm, LanguageSubtagRegistry registry) {
+  public ValueSetValidator(BaseWorkerContext context, TerminologyOperationContext opContext, ValidationOptions options, ValueSet source, Parameters expansionProfile, TerminologyClientManager tcm, LanguageSubtagRegistry registry) {
     super(context, opContext);
     this.valueset = source;
     this.options = options;
@@ -136,7 +137,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     analyseValueSet();
   }
   
-  public ValueSetValidator(IWorkerContext context, TerminologyOperationContext opContext, ValidationOptions options, ValueSet source, ValidationContextCarrier ctxt, Parameters expansionProfile, TerminologyClientManager tcm, LanguageSubtagRegistry registry) {
+  public ValueSetValidator(BaseWorkerContext context, TerminologyOperationContext opContext, ValidationOptions options, ValueSet source, ValidationContextCarrier ctxt, Parameters expansionProfile, TerminologyClientManager tcm, LanguageSubtagRegistry registry) {
     super(context, opContext);
     this.valueset = source;
     this.options = options.copy();

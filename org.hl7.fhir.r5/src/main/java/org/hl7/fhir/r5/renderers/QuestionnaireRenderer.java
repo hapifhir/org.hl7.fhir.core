@@ -11,6 +11,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.ContextUtilities;
+import org.hl7.fhir.r5.context.ExpansionOptions;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.PackageInformation;
@@ -923,7 +924,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         vs = context.getContext().findTxResource(ValueSet.class, i.primitiveValue("answerValueSet"), null, q.getResourceNative());
       } 
       if (vs != null) { 
-        ValueSetExpansionOutcome exp = context.getContext().expandVS(vs, true, false); 
+        ValueSetExpansionOutcome exp = context.getContext().expandVS(ExpansionOptions.cacheNoHeirarchy().withLanguage(context.getLocale().getLanguage()), vs);
         if (exp.getValueset() != null) { 
           for (ValueSetExpansionContainsComponent cc : exp.getValueset().getExpansion().getContains()) { 
             select.option(cc.getCode(), cc.hasDisplay() ? cc.getDisplay() : cc.getCode(), false);     

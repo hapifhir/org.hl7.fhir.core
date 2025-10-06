@@ -12,9 +12,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.ExpansionOptions;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
-import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
@@ -25,10 +25,6 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.ITypeParser;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.npm.NpmPackage;
-import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -147,7 +143,7 @@ public class VocabTests {
   }
 
   private void testExpansion(TestDetails test, ValueSet sourceVS, ValueSet targetVS) throws Exception {
-    ValueSetExpansionOutcome outcome = context.expandVS(sourceVS, false, test.getParameters().containsKey("hierarchical"), true);  
+    ValueSetExpansionOutcome outcome = context.expandVS(new ExpansionOptions().withCacheOk(false).withHierarchical(test.getParameters().containsKey("hierarchical")).withIncompleteOk(true), sourceVS);
     if (outcome.isOk()) {
       outcome.getValueset().getExpansion().setIdentifier(null);
       outcome.getValueset().getExpansion().setTimestamp(null);
