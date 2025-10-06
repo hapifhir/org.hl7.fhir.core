@@ -1,8 +1,7 @@
 ## Validator Changes
 
-* Minor improvements to error messages
+* no changes
 
 ## Other code changes
 
-* NPE fix for some packages
-* Improved version rendering
+* no changes
