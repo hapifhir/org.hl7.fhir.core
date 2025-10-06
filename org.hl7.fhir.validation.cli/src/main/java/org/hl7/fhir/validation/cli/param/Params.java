@@ -18,7 +18,6 @@ import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeRefer
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.ValidatorWatchMode;
-import org.hl7.fhir.validation.service.utils.EngineMode;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
@@ -117,7 +116,7 @@ public class Params {
   public static final String SHOW_TIMES = "-show-times";
   public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
   public static final String OUTPUT_STYLE = "-output-style";
-  public static final String ADVSIOR_FILE = "-advisor-file";
+  public static final String ADVISOR_FILE = "-advisor-file";
   public static final String DO_IMPLICIT_FHIRPATH_STRING_CONVERSION = "-implicit-fhirpath-string-conversions";
   public static final String JURISDICTION = "-jurisdiction";
   public static final String HTML_IN_MARKDOWN = "-html-in-markdown";
@@ -220,21 +219,21 @@ public class Params {
       } else if (args[i].equals(HTTPS_PROXY)) {
         i++;
       } else if (args[i].equals(PROFILE)) {
-        String p = null;
+        String profile = null;
         if (i + 1 == args.length) {
           throw new Error("Specified -profile without indicating profile url");
         } else {
-          p = args[++i];
-          validationContext.addProfile(p);
+          profile = args[++i];
+          validationContext.addProfile(profile);
         }
       } else if (args[i].equals(PROFILES)) {
-        String p = null;
+        String profiles = null;
         if (i + 1 == args.length) {
           throw new Error("Specified -profiles without indicating profile urls");
         } else {
-          p = args[++i];
-          for (String s : p.split("\\,")) {
-            validationContext.addProfile(s);
+          profiles = args[++i];
+          for (String profile : profiles.split("\\,")) {
+            validationContext.addProfile(profile);
           }
         }
       } else if (args[i].equals(OPTION)) {
@@ -268,7 +267,7 @@ public class Params {
         } else {
           profile = args[++i];
         }
-        validationContext.getBundleValidationRules().add(new BundleValidationRule().setRule(rule).setProfile(profile));
+        validationContext.addBundleValidationRule(new BundleValidationRule().setRule(rule).setProfile(profile));
       } else if (args[i].equals(QUESTIONNAIRE)) {
         if (i + 1 == args.length)
           throw new Error("Specified -questionnaire without indicating questionnaire mode");
@@ -287,15 +286,15 @@ public class Params {
         if (i + 1 == args.length)
           throw new Error("Specified -mode without indicating mode");
         else {
-          String q = args[++i];
-          validationContext.getModeParams().add(q);
+          String mode = args[++i];
+          validationContext.addModeParam(mode);
         }
       } else if (args[i].equals(INPUT)) {
         if (i + 1 == args.length)
           throw new Error("Specified -input without providing value");
         else {
-          String inp = args[++i];
-          validationContext.getInputs().add(inp);
+          String input = args[++i];
+          validationContext.addInput(input);
         }
       } else if (args[i].equals(NATIVE)) {
         validationContext.setDoNative(true);
@@ -366,27 +365,27 @@ public class Params {
       } else if (args[i].equals(PACKAGE_NAME)) {
         validationContext.setPackageName(args[++i]);
       } else if (args[i].equals(TX_PACK)) {
-        String pn = args[++i];
-        if (pn != null) {
-          if (pn.contains(",")) {
-            for (String s : pn.split("\\,")) {
-              validationContext.getIgs().add(s);
+        String packageArg = args[++i];
+        if (packageArg != null) {
+          if (packageArg.contains(",")) {
+            for (String packageName : packageArg.split("\\,")) {
+              validationContext.getIgs().add(packageName);
             }
           } else {
-            validationContext.getIgs().add(pn);
+            validationContext.getIgs().add(packageArg);
           }
         }
-        validationContext.getModeParams().add("tx");
-        validationContext.getModeParams().add("expansions");
+        validationContext.addModeParam("tx");
+        validationContext.addModeParam("expansions");
       } else if (args[i].equals(RE_PACK)) {
-        String pn = args[++i];
-        if (pn != null) {
-          if (pn.contains(",")) {
-            for (String s : pn.split("\\,")) {
-              validationContext.getIgs().add(s);
+        String packageArg = args[++i];
+        if (packageArg != null) {
+          if (packageArg.contains(",")) {
+            for (String packageName : packageArg.split("\\,")) {
+              validationContext.getIgs().add(packageName);
             }
           } else {
-            validationContext.getIgs().add(pn);
+            validationContext.getIgs().add(packageArg);
           }
         }
         validationContext.getModeParams().add("tx");
@@ -456,7 +455,7 @@ public class Params {
         validationContext.setShowTimes(true);
       } else if (args[i].equals(OUTPUT_STYLE)) {
         validationContext.setOutputStyle(args[++i]);
-      } else if (args[i].equals(ADVSIOR_FILE)) {
+      } else if (args[i].equals(ADVISOR_FILE)) {
         validationContext.setAdvisorFile(args[++i]);
         File f = ManagedFileAccess.file(validationContext.getAdvisorFile());
         if (!f.exists()) {
