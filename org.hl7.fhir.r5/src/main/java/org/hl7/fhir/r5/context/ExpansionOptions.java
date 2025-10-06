@@ -9,7 +9,7 @@ public class ExpansionOptions {
   private boolean cacheOk;
 
   @Getter @Setter @With
-  boolean heiarchical;
+  private boolean hierarchical;
 
   /**
    * the number of concepts to return.
@@ -20,13 +20,13 @@ public class ExpansionOptions {
    *
    */
   @Getter @Setter @With
-  int maxCount;
+  private int maxCount;
 
   @Getter @Setter @With
-  boolean incompleteOk;
+  private boolean incompleteOk;
 
   @Getter @Setter @With
-  String language;
+  private String language;
 
   public boolean hasLanguage() {
     return language != null;
@@ -37,13 +37,13 @@ public class ExpansionOptions {
 
   public ExpansionOptions(boolean cacheOk, boolean heiarchical, int maxCount, boolean incompleteOk, String language) {
     this.cacheOk = cacheOk;
-    this.heiarchical = heiarchical;
+    this.hierarchical = heiarchical;
     this.maxCount = maxCount;
     this.incompleteOk = incompleteOk;
     this.language = language;
   }
 
   public static ExpansionOptions cacheNoHeirarchy() {
-    return new ExpansionOptions().withCacheOk(true).withHeiarchical(true);
+    return new ExpansionOptions().withCacheOk(true).withHierarchical(true);
   }
 }

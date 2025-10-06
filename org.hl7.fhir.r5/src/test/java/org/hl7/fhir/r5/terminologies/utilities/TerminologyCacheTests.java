@@ -138,7 +138,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
 
       terminologyCacheA.cacheValidation(codeableConceptTokenA, codeableConceptResultA, true);
 
-      expansionTokenA = terminologyCacheA.generateExpandToken(valueSet, new ExpansionOptions().withHeiarchical(true));
+      expansionTokenA = terminologyCacheA.generateExpandToken(valueSet, new ExpansionOptions().withHierarchical(true));
       expansionOutcomeA = new ValueSetExpansionOutcome(valueSet);
 
       terminologyCacheA.cacheExpansion(expansionTokenA, expansionOutcomeA, true);
@@ -162,7 +162,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
         ValidationResult retrievedCodeableConceptResultA = terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions, concept, valueSet, new Parameters()));
         assertNotSame(codeableConceptResultA, retrievedCodeableConceptResultA);
         assertValidationResultEquals(codeableConceptResultA, retrievedCodeableConceptResultA);
-        assertExpansionOutcomeEquals(expansionOutcomeA, terminologyCacheB.getExpansion(terminologyCacheA.generateExpandToken(valueSet, new ExpansionOptions().withHeiarchical(true))));
+        assertExpansionOutcomeEquals(expansionOutcomeA, terminologyCacheB.getExpansion(terminologyCacheA.generateExpandToken(valueSet, new ExpansionOptions().withHierarchical(true))));
 
         deleteTempCacheDirectory(tempCacheDirectory);
     }
@@ -184,7 +184,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       ValidationResult retrievedCodeableConceptResultA = terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions, concept, valueSet, new Parameters()));
       assertNotSame(codeableConceptResultA, retrievedCodeableConceptResultA);
       assertValidationResultEquals(codeableConceptResultA, retrievedCodeableConceptResultA);
-      assertExpansionOutcomeEquals(expansionOutcomeA, terminologyCacheB.getExpansion(terminologyCacheA.generateExpandToken(valueSet, new ExpansionOptions().withHeiarchical(true))));
+      assertExpansionOutcomeEquals(expansionOutcomeA, terminologyCacheB.getExpansion(terminologyCacheA.generateExpandToken(valueSet, new ExpansionOptions().withHierarchical(true))));
 
       deleteTempCacheDirectory(tempCacheDirectory);
     }
@@ -430,8 +430,8 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
   public void testExpansionTokenInclude(ValueSet valueSet, String expectedName, boolean expectedHasVersion) throws IOException, URISyntaxException {
     TerminologyCache terminologyCache = createTerminologyCache();
 
-    TerminologyCache.CacheToken expansionToken = terminologyCache.generateExpandToken(valueSet, new ExpansionOptions().withHeiarchical(false));
-    TerminologyCache.CacheToken expansionTokenHierarchical = terminologyCache.generateExpandToken(valueSet, new ExpansionOptions().withHeiarchical(true));
+    TerminologyCache.CacheToken expansionToken = terminologyCache.generateExpandToken(valueSet, new ExpansionOptions().withHierarchical(false));
+    TerminologyCache.CacheToken expansionTokenHierarchical = terminologyCache.generateExpandToken(valueSet, new ExpansionOptions().withHierarchical(true));
 
     assertEquals(expectedName, expansionToken.getName());
     assertEquals(expectedName, expansionTokenHierarchical.getName());
@@ -449,8 +449,8 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     valueSet.getCompose().setExclude(Arrays.asList(exclude));
     valueSet.getExpansion().setContains(Arrays.asList(containsComponent));
 
-    TerminologyCache.CacheToken expansionToken = terminologyCache.generateExpandToken(valueSet, new ExpansionOptions().withHeiarchical(false));
-    TerminologyCache.CacheToken expansionTokenHierarchical = terminologyCache.generateExpandToken(valueSet, new ExpansionOptions().withHeiarchical(true));
+    TerminologyCache.CacheToken expansionToken = terminologyCache.generateExpandToken(valueSet, new ExpansionOptions().withHierarchical(false));
+    TerminologyCache.CacheToken expansionTokenHierarchical = terminologyCache.generateExpandToken(valueSet, new ExpansionOptions().withHierarchical(true));
 
     JsonElement actualExpansion = jsonParser.parse(expansionToken.getRequest());
     JsonElement expectedExpansion = getJsonFromFile("expansion.json");

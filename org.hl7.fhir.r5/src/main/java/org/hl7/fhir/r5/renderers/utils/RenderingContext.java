@@ -107,7 +107,7 @@ public class RenderingContext extends RenderingI18nContext {
       }
     }
 
-    public Collection<RenderingContext> values() {
+    public Collection<RenderingContext> langValues() {
       return langs.values();
     }
   }
