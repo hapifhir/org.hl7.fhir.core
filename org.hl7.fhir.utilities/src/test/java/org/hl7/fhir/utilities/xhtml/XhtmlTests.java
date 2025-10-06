@@ -71,6 +71,7 @@ public class XhtmlTests {
 
   @Test
   public void testParseCData() throws FHIRFormatError, IOException {
+    // test out handling of CData includes, and doctype comments
     XhtmlNode x = new XhtmlParser().setMustBeWellFormed(true).parse(CDATA_SOURCE, "html");
     Assertions.assertTrue(x != null);
     XhtmlNode body = x.firstNamedDescendent("body");

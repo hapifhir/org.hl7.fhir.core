@@ -325,7 +325,7 @@ public class ValueSetValidator extends BaseValidator {
         ValueSet vs = context.findTxResource(ValueSet.class, v);
         if (vs == null) {
           // we couldn't find it, but it might be an implicit value set 
-          ValueSetExpansionOutcome vse = context.expandVS(new ExpansionOptions().withCacheOk(true).withHeiarchical(false).withMaxCount(0), v);
+          ValueSetExpansionOutcome vse = context.expandVS(new ExpansionOptions().withCacheOk(true).withHierarchical(false).withMaxCount(0), v);
           if (!vse.isOk() ) {
             NodeStack ns = stack.push(ve, i, ve.getProperty().getDefinition(), ve.getProperty().getDefinition());
 

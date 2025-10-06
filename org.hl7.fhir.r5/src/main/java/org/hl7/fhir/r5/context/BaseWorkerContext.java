@@ -927,7 +927,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     vs.setCompose(new ValueSetComposeComponent());
     vs.getCompose().setInactive(!noInactive);
     vs.getCompose().getInclude().add(inc);
-    CacheToken cacheToken = txCache.generateExpandToken(vs, new ExpansionOptions().withHeiarchical(hierarchical));
+    CacheToken cacheToken = txCache.generateExpandToken(vs, new ExpansionOptions().withHierarchical(hierarchical));
     ValueSetExpansionOutcome res;
     res = txCache.getExpansion(cacheToken);
     if (res != null) {
@@ -1010,7 +1010,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return res;
       }
     }
-    p.setParameter("excludeNested", !options.isHeiarchical());
+    p.setParameter("excludeNested", !options.isHierarchical());
     List<String> allErrors = new ArrayList<>();
 
     p.addParameter().setName("cache-id").setValue(new IdType(terminologyClientManager.getCacheId()));
@@ -1115,7 +1115,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       p.addParameter("count", expandCodesLimit);
       p.addParameter("offset", 0);
     }
-    p.setParameter("excludeNested", !options.isHeiarchical());
+    p.setParameter("excludeNested", !options.isHierarchical());
     if (options.isIncompleteOk()) {
       p.setParameter("incomplete-ok", true);
     }

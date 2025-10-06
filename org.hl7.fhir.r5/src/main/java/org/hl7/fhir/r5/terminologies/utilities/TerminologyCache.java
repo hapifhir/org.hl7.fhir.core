@@ -526,13 +526,13 @@ public class TerminologyCache {
     CacheToken ct = new CacheToken();
     nameCacheToken(vs, ct);
     if (vs.hasUrl() && vs.hasVersion()) {
-      ct.request = "{\"hierarchical\" : "+(options.isHeiarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\"}\r\n";
+      ct.request = "{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\"}\r\n";
     } else {
       ValueSet vsc = getVSEssense(vs);
       JsonParser json = new JsonParser();
       json.setOutputStyle(OutputStyle.PRETTY);
       try {
-        ct.request = "{\"hierarchical\" : "+(options.isHeiarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"valueSet\" :"+extracted(json, vsc)+"}\r\n";
+        ct.request = "{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"valueSet\" :"+extracted(json, vsc)+"}\r\n";
       } catch (IOException e) {
         throw new Error(e);
       }
@@ -543,7 +543,7 @@ public class TerminologyCache {
   
   public CacheToken generateExpandToken(String url, ExpansionOptions options) {
     CacheToken ct = new CacheToken();
-    ct.request = "{\"hierarchical\" : "+(options.isHeiarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"url\": \""+Utilities.escapeJson(url)+"\"}\r\n";
+    ct.request = "{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"url\": \""+Utilities.escapeJson(url)+"\"}\r\n";
     ct.key = String.valueOf(hashJson(ct.request));
     return ct;
   }
