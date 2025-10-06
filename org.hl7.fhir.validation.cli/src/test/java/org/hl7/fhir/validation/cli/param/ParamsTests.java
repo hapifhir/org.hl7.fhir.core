@@ -1,6 +1,8 @@
 package org.hl7.fhir.validation.cli.param;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -19,17 +21,10 @@ class ParamsTests {
   }
 
   @Test
-  void testFhirSettingsFile() throws Exception {
-    File tempFile = ManagedFileAccess.fromPath(Files.createTempFile("fhir-settings", "json"));
-    ValidationContext validationContext = Params.loadValidationContext(new String[]{"-fhir-settings", tempFile.getAbsolutePath()});
-    Assertions.assertEquals(tempFile.getAbsolutePath(), validationContext.getFhirSettingsFile());
-  }
-
-  @Test
-  void testFhirSettingsFileDoesntExist() {
-    java.lang.Error error = Assertions.assertThrows(java.lang.Error.class, () -> {
-      Params.loadValidationContext(new String[]{"-fhir-settings", "this-does-not-exist.json"});
-    });
-    assertThat(error.getMessage()).contains("this-does-not-exist.json");
+  void testHasParamAndValue() {
+    assertTrue(Params.hasParamAndValue(new String[]{"-param", "value"}, "-param"));
+    Error expectedError = assertThrows(Error.class, () -> Params.hasParamAndValue(new String[]{"-param"}, "-param"));
+    assertThat(expectedError.getMessage()).contains("-param");
+    assertThat(expectedError.getMessage()).contains("without providing a value");
   }
 }

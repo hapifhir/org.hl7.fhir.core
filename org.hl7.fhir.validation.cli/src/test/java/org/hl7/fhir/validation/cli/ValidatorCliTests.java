@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -7,14 +8,18 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.*;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.List;
 
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.service.ValidatorWatchMode;
 import org.hl7.fhir.validation.cli.tasks.*;
 import org.hl7.fhir.validation.cli.param.Params;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -459,5 +464,20 @@ class ValidatorCliTests {
     cli.readGlobalParamsAndExecuteTask(args);
 
     Mockito.verify(testsTask).executeTask(same(validationContext), eq(args));
+  }
+
+  @Test
+  void testFhirSettingsFile() throws Exception {
+    File tempFile = ManagedFileAccess.fromPath(Files.createTempFile("fhir-settings", "json"));
+    ValidatorCli.GlobalParams globalParams = ValidatorCli.readGlobalParams(new String[]{"-fhir-settings", tempFile.getAbsolutePath()});
+    Assertions.assertEquals(tempFile.getAbsolutePath(), globalParams.getFhirSettingsFilePath());
+  }
+
+  @Test
+  void testFhirSettingsFileDoesntExist() {
+    java.lang.Error error = Assertions.assertThrows(java.lang.Error.class, () -> {
+       ValidatorCli.readGlobalParams(new String[]{"-fhir-settings", "this-does-not-exist.json"});
+    });
+    assertThat(error.getMessage()).contains("this-does-not-exist.json");
   }
 }

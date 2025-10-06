@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -66,27 +67,21 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.text.WordUtils;
 import org.hl7.fhir.r5.formats.ParserFactory;
-import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.utilities.ENoDump;
 import org.hl7.fhir.utilities.FileFormat;
 import org.hl7.fhir.utilities.SystemExitManager;
-import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccess.WebAccessPolicy;
 import org.hl7.fhir.utilities.settings.FhirSettings;
-import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.logging.Level;
 import org.hl7.fhir.validation.cli.logging.LogbackUtilities;
 import org.hl7.fhir.validation.cli.tasks.*;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.cli.param.Params;
-
-import static org.hl7.fhir.validation.cli.param.Params.FHIR_SETTINGS_PARAM;
 
 
 /**
@@ -156,70 +151,90 @@ public class ValidatorCli {
    * rely on any individual task to process them.
    */
   @NoArgsConstructor
-  public class GlobalParams {
+  static class GlobalParams {
     @Setter
     @Getter
-    Locale locale = null;
+    private String localeLanguageTag = null;
+    @Setter
+    @Getter
+    private WebAccessPolicy webAccessPolicy = null;
 
     @Setter
     @Getter
-    boolean noHttpAccess = false;
+    private Boolean allowNonConformantTxServers = null;
 
     @Setter
     @Getter
-    boolean authoriseNonConformantTxServers = false;
+    private String proxy = null;
+    @Setter
+    @Getter
+
+    private String httpsProxy = null;
+    @Setter
+    @Getter
+    private String proxyAuth = null;
 
     @Setter
     @Getter
-    String proxy;
+    private String debugLogFile = null;
 
     @Setter
     @Getter
-    String httpsProxy;
+    private String traceLogFile = null;
 
     @Setter
     @Getter
-    String proxyAuth;
+    private String fhirSettingsFilePath = null;
+  }
 
-    @Setter
-    @Getter
-    String fhirSettingsFilePath;
+  public static GlobalParams readGlobalParams(String[] args) {
+    GlobalParams globalParams = new GlobalParams();
+    if (Params.hasParamAndValue(args, Params.LOCALE)){
+      final String languageTag = Params.getParam(args,  Params.LOCALE);
+      if (languageTag == null) {
+        throw new Error("Specified -locale without indicating locale");
+      }
+      globalParams.setLocaleLanguageTag(languageTag);
+    }
+
+    if (Params.hasParamAndValue(args, Params.DEBUG_LOG)){
+      globalParams.setDebugLogFile(Params.getParam(args, Params.DEBUG_LOG));
+    }
+
+    if (Params.hasParamAndValue(args, Params.DEBUG_LOG)){
+      globalParams.setTraceLogFile(Params.getParam(args, Params.DEBUG_LOG));
+    }
+
+    if (Params.hasParam(args, Params.NO_HTTP_ACCESS)) {
+      globalParams.setWebAccessPolicy(WebAccessPolicy.PROHIBITED);
+    }
+    if (Params.hasParam(args, Params.AUTH_NONCONFORMANT_SERVERS)) {
+      globalParams.setAllowNonConformantTxServers(true);
+    }
+
+    globalParams.setProxy(Params.hasParamAndValue(args, Params.PROXY) ? Params.getParam(args, Params.PROXY) : null);
+    globalParams.setHttpsProxy(Params.hasParamAndValue(args, Params.HTTPS_PROXY) ? Params.getParam(args, Params.HTTPS_PROXY) : null);
+    globalParams.setProxyAuth(Params.hasParamAndValue(args, Params.PROXY_AUTH) ? Params.getParam(args, Params.PROXY_AUTH) : null);
+
+    if (Params.hasParamAndValue(args, Params.FHIR_SETTINGS_PARAM)) {
+      final String fhirSettingsFilePath = Params.getParam(args, Params.FHIR_SETTINGS_PARAM);
+      try {
+        if (!ManagedFileAccess.file(fhirSettingsFilePath).exists()) {
+          throw new Error("Cannot find fhir-settings file: " + fhirSettingsFilePath);
+        }
+      } catch (IOException e) {
+        throw new Error("Error checking fhir-settings file: " + fhirSettingsFilePath);
+      }
+      globalParams.setFhirSettingsFilePath(fhirSettingsFilePath);
+    }
+
+    return globalParams;
   }
 
   protected void readGlobalParamsAndExecuteTask(String[] args) throws Exception {
 
-    //FIXME this whole section should extract a Global Params object that can be passed to 'applyGlobalParams'
-
-    if (Params.hasParam(args, Params.LOCALE)){
-        final String locale = Params.getParam(args,  Params.LOCALE);
-        if (locale == null) {
-          throw new Error("Specified -locale without indicating locale");
-        }
-        Locale.setDefault(Locale.forLanguageTag(locale));
-    }
-    setLogbackConfiguration(args);
-
-    if (Params.hasParam(args, Params.NO_HTTP_ACCESS)) {
-      ManagedWebAccess.setAccessPolicy(WebAccessPolicy.PROHIBITED);
-    }
-
-    if (Params.hasParam(args, Params.AUTH_NONCONFORMANT_SERVERS)) {
-      TerminologyClientContext.setAllowNonConformantServers(true);
-    }      
-    TerminologyClientContext.setCanAllowNonConformantServers(true);
-    setJavaSystemProxyParamsFromParams(args);
-
-    Display.displayVersion(log);
-    Display.displaySystemInfo(log);
-
-    if (Params.hasParam(args, Params.FHIR_SETTINGS_PARAM)) {
-      final String fhirSettingsFilePath = Params.getParam(args, Params.FHIR_SETTINGS_PARAM);
-        if (!ManagedFileAccess.file(fhirSettingsFilePath).exists()) {
-          throw new Error("Cannot find fhir-settings file: " + fhirSettingsFilePath);
-        }
-      FhirSettings.setExplicitFilePath(fhirSettingsFilePath);
-    }
-    ManagedWebAccess.loadFromFHIRSettings();
+    GlobalParams globalParams = readGlobalParams(args);
+    applyGlobalParams(globalParams);
 
     checkCharsetAndWarnIfNotUTF8();
 
@@ -240,26 +255,42 @@ public class ValidatorCli {
     readParamsAndExecuteTask(args);
   }
 
+  private static void applyGlobalParams(GlobalParams globalParams) {
+    if (globalParams.getLocaleLanguageTag() != null){
+        Locale.setDefault(Locale.forLanguageTag(globalParams.getLocaleLanguageTag()));
+    }
+
+    if (globalParams.getDebugLogFile() != null){
+      LogbackUtilities.setLogToFileAndConsole(Level.DEBUG, globalParams.getDebugLogFile());
+    }
+
+    if (globalParams.getTraceLogFile() != null){
+      LogbackUtilities.setLogToFileAndConsole(Level.TRACE, globalParams.getTraceLogFile());
+    }
+
+    if (globalParams.getWebAccessPolicy() != null) {
+      ManagedWebAccess.setAccessPolicy(globalParams.getWebAccessPolicy());
+    }
+
+    if (globalParams.getAllowNonConformantTxServers() != null) {
+      TerminologyClientContext.setAllowNonConformantServers(globalParams.getAllowNonConformantTxServers());
+    }
+    TerminologyClientContext.setCanAllowNonConformantServers(true);
+
+    JavaSystemProxyParamSetter.setJavaSystemProxyParams(globalParams.getProxy(), globalParams.getHttpsProxy(), globalParams.getProxyAuth());
+
+    Display.displayVersion(log);
+    Display.displaySystemInfo(log);
+
+    if (globalParams.getFhirSettingsFilePath() != null) {
+      FhirSettings.setExplicitFilePath(globalParams.getFhirSettingsFilePath());
+    }
+    ManagedWebAccess.loadFromFHIRSettings();
+  }
+
   @SuppressWarnings("checkstyle:systemout")
   private static void checkCharsetAndWarnIfNotUTF8() {
     FileFormat.checkCharsetAndWarnIfNotUTF8(System.out);
-  }
-
-  private static void setLogbackConfiguration(String[] args) {
-    setLogbackConfiguration(args, Params.DEBUG_LOG, Level.DEBUG);
-    setLogbackConfiguration(args, Params.TRACE_LOG, Level.TRACE);
-    //log.debug("Test debug log");
-    //log.trace("Test trace log");
-    //log.info(MarkerFactory.getMarker("marker"), "Test marker interface");
-  }
-
-  private static void setLogbackConfiguration(String[] args, String logParam, Level logLevel) {
-    if (Params.hasParam(args, logParam)) {
-      String logFile = Params.getParam(args, logParam);
-      if (logFile != null) {
-        LogbackUtilities.setLogToFileAndConsole(logLevel, logFile);
-      }
-    }
   }
 
   private void displayHelpForDefaultTask() {
@@ -411,11 +442,11 @@ public class ValidatorCli {
   }
 
   private void readParamsAndExecuteTask(String[] args) throws Exception {
-    final ValidationContext validationContext = loadValidationContext(args);
+
     Display.printCliParamsAndInfo(log, args);
 
-    final CliTask cliTask = selectCliTask(validationContext, args);
-
+    final CliTask cliTask = selectCliTask(args);
+    final ValidationContext validationContext = loadValidationContext(args);
     if (cliTask instanceof ValidationServiceTask) {
       ((ValidationServiceTask) cliTask).executeTask(myValidationService, validationContext, args);
     } else if (cliTask instanceof StandaloneTask) {
@@ -426,10 +457,10 @@ public class ValidatorCli {
      SystemExitManager.finish();
   }
 
-  private CliTask selectCliTask(ValidationContext validationContext, String[] params) {
+  private CliTask selectCliTask(String[] params) {
     CliTask cliTask = null;
     for(CliTask candidateTask : cliTasks) {
-      if (candidateTask.shouldExecuteTask(validationContext, params)) {
+      if (candidateTask.shouldExecuteTask(params)) {
         cliTask = candidateTask;
       }
     }
