@@ -163,6 +163,16 @@ public class Params {
     return Arrays.asList(args).contains(param);
   }
 
+  public static boolean hasParamAndValue(String[] args, String param) {
+    int paramIndex = Arrays.asList(args).indexOf(param);
+    if (paramIndex == -1) {
+      return false;
+    }
+    if (paramIndex + 1 >= args.length) {
+      throw new Error("Used '"+param+"' without providing a value");
+    }
+    return true;
+  }
   /**
    * Fetches the value for the passed in param from the provided list of params.
    *

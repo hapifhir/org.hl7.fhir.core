@@ -39,6 +39,11 @@ public class TxTestsTask extends StandaloneTask{
 
   @Override
   public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
+    return shouldExecuteTask(args);
+  }
+
+  @Override
+  public boolean shouldExecuteTask(@Nonnull String[] args) {
     return Params.hasParam(args, Params.TX_TESTS);
   }
 
