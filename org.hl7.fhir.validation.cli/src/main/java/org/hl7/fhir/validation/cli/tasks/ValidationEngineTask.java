@@ -18,16 +18,10 @@ public abstract class ValidationEngineTask extends ValidationServiceTask{
 
   @Override
   public void executeTask(@Nonnull ValidationService validationService, @Nonnull String[] args) throws Exception {
-    ValidationContext validationContext = loadValidationContext(args);
+    ValidationContext validationContext = Params.loadValidationContext(args);
     executeTask(validationService, validationContext, args);
   }
 
-  //FIXME For temporary testing only. Generating ValidationContext should be pushed down to individual tasks
-  protected ValidationContext loadValidationContext(String[] args) throws Exception {
-    return Params.loadValidationContext(args);
-  }
-
-    //FIXME this actually needs a ValidationEngineSettings object, which should be generated via args
   @Override
   public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
     TimeTracker tt = new TimeTracker();
@@ -46,7 +40,6 @@ public abstract class ValidationEngineTask extends ValidationServiceTask{
     log.info("Done. " + tt.report()+". Max Memory = "+ Utilities.describeSize(Runtime.getRuntime().maxMemory()));
   }
 
-  //FIXME remove ValidationContext from here.
   public abstract void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception;
 
   public boolean inferFhirVersion() {

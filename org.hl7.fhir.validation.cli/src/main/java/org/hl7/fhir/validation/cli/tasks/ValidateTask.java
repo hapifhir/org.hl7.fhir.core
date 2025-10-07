@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
 
-//FIXME extract profiles params
 @Slf4j
 public class ValidateTask extends ValidationEngineTask {
 

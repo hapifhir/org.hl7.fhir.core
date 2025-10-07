@@ -41,7 +41,6 @@ public class TransformTask extends ValidationEngineTask {
     Display.displayHelpDetails(logger,"help/transform.txt");
   }
 
-  //FIXME get rid of ValidationContext usage
   @Override
   public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
     validationService.transform(validationContext, validationEngine);
