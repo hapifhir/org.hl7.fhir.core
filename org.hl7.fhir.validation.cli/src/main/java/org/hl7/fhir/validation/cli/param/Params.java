@@ -2,9 +2,7 @@ package org.hl7.fhir.validation.cli.param;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -168,11 +166,19 @@ public class Params {
     if (paramIndex == -1) {
       return false;
     }
-    if (paramIndex + 1 >= args.length) {
-      throw new Error("Used '"+param+"' without providing a value");
-    }
+    checkIfParamValueInBounds(args, param, paramIndex);
     return true;
   }
+
+  /**
+   * Check if the value for the param is in bounds in the args array.
+   */
+  private static void checkIfParamValueInBounds(String[] args, String param, int paramIndex) {
+    if (paramIndex + 1 >= args.length) {
+      throw new Error("Used '"+ param +"' without providing a value");
+    }
+  }
+
   /**
    * Fetches the value for the passed in param from the provided list of params.
    *
@@ -187,6 +193,16 @@ public class Params {
     return null;
   }
 
+  public static Collection<String> getMultiValueParam(String[] args, String param) {
+    final List<String> output = new LinkedList<>();
+    for (int i = 0; i < args.length - 1; i++) {
+      if (args[i].equals(param)) {
+        checkIfParamValueInBounds(args, param, i);
+        output.add(args[i + 1]);
+      }
+    }
+    return Collections.unmodifiableList(output);
+  }
   /**
    * TODO Don't do this all in one for loop. Use the above methods.
    */

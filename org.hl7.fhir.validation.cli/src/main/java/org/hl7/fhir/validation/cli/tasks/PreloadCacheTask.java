@@ -41,6 +41,11 @@ public class PreloadCacheTask extends StandaloneTask {
 
   @Override
   public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
+    executeTask(args);
+  }
+
+  @Override
+  public void executeTask(@Nonnull String[] args) throws Exception {
     PackageVisitor pv = new PackageCacheDownloader();
     pv.visitPackages();
   }

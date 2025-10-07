@@ -43,6 +43,11 @@ public class SpecialTask extends StandaloneTask{
 
   @Override
   public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
+    executeTask(args);
+  }
+
+    @Override
+  public void executeTask(@Nonnull String[] args) throws Exception {
     String specialMode = Params.getParam(args, Params.SPECIAL);
     if ("r4r5tests".equals(specialMode)) {
       final String target = Params.getParam(args, Params.TARGET);
