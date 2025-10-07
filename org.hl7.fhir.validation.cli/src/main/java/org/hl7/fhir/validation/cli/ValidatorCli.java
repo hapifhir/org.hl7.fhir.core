@@ -201,8 +201,8 @@ public class ValidatorCli {
       globalParams.setDebugLogFile(Params.getParam(args, Params.DEBUG_LOG));
     }
 
-    if (Params.hasParamAndValue(args, Params.DEBUG_LOG)){
-      globalParams.setTraceLogFile(Params.getParam(args, Params.DEBUG_LOG));
+    if (Params.hasParamAndValue(args, Params.TRACE_LOG)){
+      globalParams.setTraceLogFile(Params.getParam(args, Params.TRACE_LOG));
     }
 
     if (Params.hasParam(args, Params.NO_HTTP_ACCESS)) {
@@ -334,14 +334,6 @@ public class ValidatorCli {
     } catch (ENoDump e) {
       log.info(e.getMessage());
     }
-  }
-
-  private static void setJavaSystemProxyParamsFromParams(String[] args) {
-
-    final String proxy = Params.hasParam(args, Params.PROXY) ? Params.getParam(args, Params.PROXY) : null;
-    final String httpsProxy = Params.hasParam(args, Params.HTTPS_PROXY) ? Params.getParam(args, Params.HTTPS_PROXY) : null;
-    final String proxyAuth = Params.hasParam(args, Params.PROXY_AUTH) ? Params.getParam(args, Params.PROXY_AUTH) : null;
-    JavaSystemProxyParamSetter.setJavaSystemProxyParams(proxy, httpsProxy, proxyAuth);
   }
 
   private static String[] addAdditionalParamsForIpsParam(String[] args) {
