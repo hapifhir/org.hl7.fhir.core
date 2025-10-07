@@ -52,6 +52,7 @@ public class RePackageTask extends ValidationEngineTask {
     Display.displayHelpDetails(logger,"help/tx-pack.txt");
   }
 
+  //FIXME get rid of ValidationContext usage
   @Override
   public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
     boolean json = validationContext.getFormat() != FhirFormat.XML;

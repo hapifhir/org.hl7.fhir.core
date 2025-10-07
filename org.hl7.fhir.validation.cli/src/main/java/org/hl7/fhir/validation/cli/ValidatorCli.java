@@ -112,6 +112,7 @@ public class ValidatorCli {
   final List<CliTask> cliTasks;
 
   final CliTask defaultCliTask = new ValidateTask();
+
   protected ValidatorCli(ValidationService validationService) {
     myValidationService = validationService;
     cliTasks = getCliTasks();
@@ -426,21 +427,14 @@ public class ValidatorCli {
       || Params.hasParam(args, "/?"));
   }
 
-  //FIXME For temporary testing only. Generating ValidationContext should be pushed down to individual tasks
-  protected ValidationContext loadValidationContext(String[] args) throws Exception {
-    return Params.loadValidationContext(args);
-  }
-
   private void readParamsAndExecuteTask(String[] args) throws Exception {
 
-
-
     final CliTask cliTask = selectCliTask(args);
-    final ValidationContext validationContext = loadValidationContext(args);
+
     if (cliTask instanceof ValidationServiceTask) {
-      ((ValidationServiceTask) cliTask).executeTask(myValidationService, validationContext, args);
+      ((ValidationServiceTask) cliTask).executeTask(myValidationService, args);
     } else if (cliTask instanceof StandaloneTask) {
-      ((StandaloneTask) cliTask).executeTask(validationContext,args);
+      ((StandaloneTask) cliTask).executeTask(args);
       log.info("Done. Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
     }
 

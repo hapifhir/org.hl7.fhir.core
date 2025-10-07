@@ -42,6 +42,11 @@ public class AiTestsTask extends StandaloneTask{
 
   @Override
   public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
+    executeTask(args);
+  }
+
+  @Override
+  public void executeTask(@Nonnull String[] args) throws Exception {
     String source = Params.getParam(args, Params.SOURCE);
     String config = Params.getParam(args, Params.CONFIG);
     boolean runTests = Params.hasParam(args, Params.RUN_TESTS);
