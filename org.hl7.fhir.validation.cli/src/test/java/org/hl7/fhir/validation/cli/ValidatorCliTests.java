@@ -17,7 +17,6 @@ import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.service.ValidatorWatchMode;
 import org.hl7.fhir.validation.cli.tasks.*;
-import org.hl7.fhir.validation.cli.param.Params;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -210,13 +209,24 @@ class ValidatorCliTests {
   @Test
   void validationEngineTaskSelectionTest() throws Exception {
 
-      Map<String, ValidationEngineTask> argsAndTasks = Map.of(
-        "-compare", compareTask,
-        "-scan", scanTask,
-        "-server", serverTask,
-        "-lang-regen arg1 arg2 arg3", langRegenTask,
-        "-tx-pack package-one,package-two", txPackTask,
-        "-codegen", codeGenTask
+      Map<String, ValidationEngineTask> argsAndTasks = Map.ofEntries(
+        Map.entry("-compare", compareTask),
+        Map.entry("-compile dummyMap.map", compileTask),
+        Map.entry("-convert", convertTask),
+        Map.entry("-fhirpath Patient.id", fhirpathTask),
+        Map.entry("-install", installTask),
+        Map.entry("-lang-transform dummyLang", langTransformTask),
+        Map.entry("-lang-regen arg1 arg2 arg3", langRegenTask),
+        Map.entry("-narrative", narrativeTask),
+        Map.entry("-scan", scanTask),
+        Map.entry("-snapshot", snapshotTask),
+        Map.entry("-spreadsheet", spreadsheetTask),
+        Map.entry("-transform dummyFile.map", transformTask),
+        Map.entry("-to-version 5.0", versionTask),
+        Map.entry("-codegen", codeGenTask),
+        Map.entry("-tx-pack package-one,package-two", txPackTask),
+        Map.entry("-factory source1", instanceFactoryTask),
+        Map.entry("-server", serverTask)
       );
 
       for (Map.Entry<String, ValidationEngineTask> entry : argsAndTasks.entrySet()) {
