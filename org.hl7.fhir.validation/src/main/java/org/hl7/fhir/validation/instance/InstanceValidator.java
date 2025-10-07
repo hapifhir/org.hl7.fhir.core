@@ -3000,8 +3000,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if ("urn:ietf:rfc:3986".equals(system)) {
       String value = element.getNamedChildValue("value", false);
       ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, value == null || isAbsolute(value), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_VALUE, value) && ok; 
-    }
-    if ("https://tools.ietf.org/html/rfc4122".equals(system)) {
+    } else if ("https://tools.ietf.org/html/rfc4122".equals(system)) {
       String value = element.getNamedChildValue("value", false);
       if (value != null) {
         if (value.startsWith("urn:uuid:")) {
@@ -3012,6 +3011,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_WRONG_1, value) && ok;
         }
       }
+    } else if (system!= null && (system.contains("example.org") || system.contains("example.com") || this.context.isKnownIdentifierSystem(system))) {
+      hint(errors, "2025-10-06", IssueType.BUSINESSRULE, element.line(), element.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_SYSTEM_UNKNOWN);
     }
     return ok;
   }

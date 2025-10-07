@@ -75,6 +75,11 @@ public class BaseWorkerContextTests {
     }
 
     @Override
+    public boolean isKnownIdentifierSystem(String system) {
+      return false;
+    }    
+
+    @Override
     public void cachePackage(PackageInformation packageInfo) {
 
     }
@@ -123,7 +128,8 @@ public class BaseWorkerContextTests {
     public String getSpecUrl() {
       return "";
     }
-  };
+
+};
 
   @Mock
   TerminologyCache terminologyCache;
@@ -263,6 +269,11 @@ public class BaseWorkerContextTests {
       public void setPackageManager(IPackageCacheManager manager) {
 
       }
+
+      @Override
+      public boolean isKnownIdentifierSystem(String system) {
+        return false;
+      }    
 
       @Override
       public void cachePackage(PackageInformation packageInfo) {

@@ -703,6 +703,15 @@ public interface IWorkerContext {
   public OperationOutcome validateTxResource(ValidationOptions options, Resource resource);
 
   /**
+   * True if the context or terminology service provider recognizes the specified
+   * identifier system
+   * 
+   * @param system
+   * @return boolean
+   */
+  public boolean isKnownIdentifierSystem(String system);
+
+  /**
    * ask the terminology system whether parent subsumes child.
    *
    * @return true if it does, false if it doesn't, and null if it's not know whether it does
