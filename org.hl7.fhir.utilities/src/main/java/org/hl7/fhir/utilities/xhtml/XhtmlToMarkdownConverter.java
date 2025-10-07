@@ -659,6 +659,7 @@ public class XhtmlToMarkdownConverter {
         break;
       case "button":
       case "input":
+      case "select":
         if (allowForms) {
           throw new Error("not done yet: " + c.getName());
         } else {
