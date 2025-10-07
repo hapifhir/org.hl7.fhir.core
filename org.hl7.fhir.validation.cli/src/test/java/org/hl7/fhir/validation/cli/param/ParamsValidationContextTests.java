@@ -394,6 +394,12 @@ public class ParamsValidationContextTests {
       "source1 source2 source3",
       new ValidationContext().addSource("source1").addSource("source2").addSource("source3")));
 
+    // Global params test
+    objects.add(Arguments.of(
+      "-debug-log debug.log -trace-log trace.log -proxy http://somewhere.org -auth user:pass -https-proxy https://somewhere.org source1",
+      new ValidationContext().addSource("source1")
+    ));
+
     return objects.stream();
   }
 
