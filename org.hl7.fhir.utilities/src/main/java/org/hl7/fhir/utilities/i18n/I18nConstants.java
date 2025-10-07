@@ -950,6 +950,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_WRONG_2 = "TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_WRONG_2";
   public static final String TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_WRONG_3 = "TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_WRONG_3";
   public static final String TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_SYSTEM = "Type_Specific_Checks_DT_Identifier_System";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_SYSTEM_UNKNOWN = "Type_Specific_Checks_DT_Identifier_System_Unknown";
   public static final String TYPE_SPECIFIC_CHECKS_DT_ID_VALID = "Type_Specific_Checks_DT_ID_Valid";
   public static final String TYPE_SPECIFIC_CHECKS_DT_INSTANT_VALID = "Type_Specific_Checks_DT_Instant_Valid";
   public static final String TYPE_SPECIFIC_CHECKS_DT_INTEGER64_VALID = "Type_Specific_Checks_DT_Integer64_Valid";
