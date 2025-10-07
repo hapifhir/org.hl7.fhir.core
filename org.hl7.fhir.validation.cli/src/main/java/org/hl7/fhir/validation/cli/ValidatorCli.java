@@ -191,9 +191,6 @@ public class ValidatorCli {
     GlobalParams globalParams = new GlobalParams();
     if (Params.hasParamAndValue(args, Params.LOCALE)){
       final String languageTag = Params.getParam(args,  Params.LOCALE);
-      if (languageTag == null) {
-        throw new Error("Specified -locale without indicating locale");
-      }
       globalParams.setLocaleLanguageTag(languageTag);
     }
 
@@ -252,6 +249,7 @@ public class ValidatorCli {
       }
       return;
     }
+    Display.printCliParamsAndInfo(log, args);
     readParamsAndExecuteTask(args);
   }
 
@@ -435,7 +433,7 @@ public class ValidatorCli {
 
   private void readParamsAndExecuteTask(String[] args) throws Exception {
 
-    Display.printCliParamsAndInfo(log, args);
+
 
     final CliTask cliTask = selectCliTask(args);
     final ValidationContext validationContext = loadValidationContext(args);
