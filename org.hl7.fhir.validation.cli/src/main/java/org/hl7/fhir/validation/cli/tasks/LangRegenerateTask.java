@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
 
-//FIXME does not require ValidationEngine
 public class LangRegenerateTask extends ValidationEngineTask {
 
   @Override

@@ -7,7 +7,7 @@ import org.hl7.fhir.validation.service.ValidationService;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
-//FIXME extract profiles params
+
 public class CodeGenTask extends ValidationEngineTask {
 
   @Override
