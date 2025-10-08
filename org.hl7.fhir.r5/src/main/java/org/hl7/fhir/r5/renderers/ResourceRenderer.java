@@ -1568,7 +1568,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       x.tx("\uD83D\uDCCD");
       x.tx(actualVersion);
       XhtmlNode span = x.span();
-      span.attribute("opacity", "0.5");
+      span.style("opacity: 0.5");
       span.tx(" → ");
       span.tx(statedVersion);
     } else if (statedVersion != null) {
@@ -1585,7 +1585,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       x.tx(actualVersion);
     } else if (actualVersion != null) {
       x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_FOUND, actualVersion));
-      x.attribute("opacity", "0.5");
+      x.style("opacity: 0.5");
       x.tx("\u23FF");
       x.tx(actualVersion);
     } else if (tgt != null) {

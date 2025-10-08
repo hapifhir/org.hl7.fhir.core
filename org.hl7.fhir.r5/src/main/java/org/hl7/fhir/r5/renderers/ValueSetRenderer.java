@@ -344,8 +344,10 @@ public class ValueSetRenderer extends TerminologyRenderer {
         }
       }
     }
-    tr.td().b().tx(context.formatPhrase(RenderingI18nContext.CANON_REND_JSON));
-    tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_XML));
+    if (context.forPublisher()) {
+      tr.td().b().tx(context.formatPhrase(RenderingI18nContext.CANON_REND_JSON));
+      tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_XML));
+    }
 
     
     addMapHeaders(tr, maps);
@@ -696,9 +698,11 @@ public class ValueSetRenderer extends TerminologyRenderer {
         x.tx(t+" "+displaySystem(u)+" "+ context.formatPhrase(RenderingContext.GENERAL_VER_LOW)+" "+v);
       }
     }
-    XhtmlNode ispan = x.spanClss("copy-text-inline");
-    String copyUrl = v == null ? u : u+"|"+v;
-    ispan.button("btn-copy", context.formatPhrase(RenderingContext.STRUC_DEF_COPY_URL)).attribute("data-clipboard-text", copyUrl);
+    if (context.forPublisher()) {
+      XhtmlNode ispan = x.spanClss("copy-text-inline");
+      String copyUrl = v == null ? u : u + "|" + v;
+      ispan.button("btn-copy", context.formatPhrase(RenderingContext.STRUC_DEF_COPY_URL)).attribute("data-clipboard-text", copyUrl).tx(" ");
+    }
   }
 
   private String describeLoincVer(String v) {
@@ -1070,13 +1074,14 @@ public class ValueSetRenderer extends TerminologyRenderer {
       addLangaugesToRow(c, langs, tr);
     }
 
-    XhtmlNode ispan = tr.td().spanClss("copy-text-inline");
-    String json = makeJson(c, getVersionForSystem(vs.getExpansion().getParameter(), c.getSystem()));
-    ispan.button("btn-copy", context.formatPhrase(RenderingContext.STRUC_DEF_COPY_URL)).attribute("data-clipboard-text", json);
-    ispan = tr.td().spanClss("copy-text-inline");
-    String xml = makeXml(c, getVersionForSystem(vs.getExpansion().getParameter(), c.getSystem()));
-    ispan.button("btn-copy", context.formatPhrase(RenderingContext.STRUC_DEF_COPY_URL)).attribute("data-clipboard-text", xml);
-
+    if (context.forPublisher()) {
+      XhtmlNode ispan = tr.td().spanClss("copy-text-inline");
+      String json = makeJson(c, getVersionForSystem(vs.getExpansion().getParameter(), c.getSystem()));
+      ispan.button("btn-copy", context.formatPhrase(RenderingContext.STRUC_DEF_COPY_CODING)).attribute("data-clipboard-text", json).tx(" ");
+      ispan = tr.td().spanClss("copy-text-inline");
+      String xml = makeXml(c, getVersionForSystem(vs.getExpansion().getParameter(), c.getSystem()));
+      ispan.button("btn-copy", context.formatPhrase(RenderingContext.STRUC_DEF_COPY_CODING)).attribute("data-clipboard-text", xml).tx(" ");
+    }
     for (ValueSetExpansionContainsComponent cc : c.getContains()) {
       addExpansionRowToTable(t, vs, cc, i+1, doLevel, doDefinition, doInactive, doVersion, maps, langs, designations, doDesignations, properties, res);
     }
