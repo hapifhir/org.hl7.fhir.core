@@ -452,6 +452,16 @@ public class ParamsValidationContextTests {
     ));
 
     objects.add(Arguments.of(
+      "-jurisdiction urn:iso:std:iso:3166#",
+      new ValidationContext().setJurisdiction("urn:iso:std:iso:3166#")
+    ));
+
+    objects.add(Arguments.of(
+      "-alt-version 4.0",
+      new ValidationContext().addIg("hl7.fhir.r4.core#4.0")
+    ));
+
+    objects.add(Arguments.of(
       "r5-bundle-relative-reference-policy always source",
       new ValidationContext().addSource("source").setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.ALWAYS)));
 
