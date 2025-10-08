@@ -4,16 +4,22 @@ package org.hl7.fhir.validation.cli.param;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.validation.service.ValidatorWatchMode;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -22,6 +28,30 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class ParamsValidationContextTests {
+
+  private static File dummyFileA;
+  private static String dummyFileAPath;
+
+  private static File dummyFileB;
+  private static String dummyFileBPath;
+
+
+  @BeforeAll
+  public static void beforeAll() throws IOException {
+    dummyFileA = ManagedFileAccess.fromPath(Files.createTempFile("someFile", ".json"));
+    dummyFileAPath = dummyFileA.getAbsolutePath();
+
+    dummyFileB = ManagedFileAccess.fromPath(Files.createTempFile("someFile", ".json"));
+    dummyFileBPath = dummyFileB.getAbsolutePath();
+
+  }
+
+  @AfterAll
+  public static void afterAll() throws IOException {
+    dummyFileA.delete();
+    dummyFileB.delete();
+  }
+
 
   // Created by Claude Sonnet 4.5
   public static Stream<Arguments> testCases() {
@@ -213,6 +243,11 @@ public class ParamsValidationContextTests {
       new ValidationContext().addSource("source").addExtension("https://example.org/ext")));
 
     objects.add(Arguments.of(
+      "-version 5.0",
+      new ValidationContext().setSv("5.0")
+    ));
+
+    objects.add(Arguments.of(
       "-to-version 5.0 source",
       new ValidationContext().addSource("source").setTargetVer("5.0")));
 
@@ -314,6 +349,11 @@ public class ParamsValidationContextTests {
       new ValidationContext().addSource("source").setTxServer(null).setNoEcosystem(true)));
 
     objects.add(Arguments.of(
+      "-tx http://someserver.org source",
+      new ValidationContext().addSource("source").setTxServer("http://someserver.org").setNoEcosystem(true)));
+
+
+    objects.add(Arguments.of(
       "-txLog tx.log source",
       new ValidationContext().addSource("source").setTxLog("tx.log")));
 
@@ -375,6 +415,41 @@ public class ParamsValidationContextTests {
     objects.add(Arguments.of(
       "-ai-service openai source",
       new ValidationContext().addSource("source").setAIService("openai")));
+
+    objects.add(Arguments.of(
+      "-re-package somepackage#1.2.3",
+      new ValidationContext().addIg("somepackage#1.2.3").addModeParam("tx").addModeParam("cnt").addModeParam("api")
+    ));
+
+    objects.add(Arguments.of(
+      "-re-package somepackage#1.2.3,otherpackage#3.2.1",
+      new ValidationContext().addIg("somepackage#1.2.3").addIg("otherpackage#3.2.1").addModeParam("tx").addModeParam("cnt").addModeParam("api")
+    ));
+
+    objects.add(Arguments.of(
+      "-lang-regen param1 param2 param3",
+      new ValidationContext().addLangRegenParam("param1").addLangRegenParam("param2").addLangRegenParam("param3")
+    ));
+
+    objects.add(Arguments.of(
+      "-factory source",
+      new ValidationContext().setSource("source")
+    ));
+
+    objects.add(Arguments.of(
+      "-advisor-file " + dummyFileAPath,
+      new ValidationContext().setAdvisorFile(dummyFileAPath)
+    ));
+
+    objects.add(Arguments.of(
+      "-cert " +dummyFileAPath+ " -cert " + dummyFileBPath,
+      new ValidationContext().addCertSource(dummyFileAPath).addCertSource(dummyFileBPath)
+    ));
+
+    objects.add(Arguments.of(
+      "-matchetype " +dummyFileAPath+ " -matchetype " + dummyFileBPath,
+      new ValidationContext().addMatchetype(dummyFileAPath).addMatchetype(dummyFileBPath)
+    ));
 
     objects.add(Arguments.of(
       "r5-bundle-relative-reference-policy always source",

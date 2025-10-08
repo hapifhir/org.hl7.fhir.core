@@ -326,6 +326,7 @@ public class Params {
       } else if (args[i].equals(RESOLUTION_CONTEXT)) {
         validationContext.setResolutionContext(args[++i]);
       } else if (args[i].equals(DEBUG)) {
+        i++;
         log.warn("Debugging support is now provided through the -debug-log and -trace-log CLI parameters. Use the -help option for detailed instructions.");
       } else if (args[i].equals(SCT)) {
         validationContext.setSnomedCT(args[++i]);
@@ -409,13 +410,13 @@ public class Params {
             validationContext.getIgs().add(packageArg);
           }
         }
-        validationContext.getModeParams().add("tx");
-        validationContext.getModeParams().add("cnt");
-        validationContext.getModeParams().add("api");
+        validationContext.addModeParam("tx");
+        validationContext.addModeParam("cnt");
+        validationContext.addModeParam("api");
       } else if (args[i].equals(PIN)) {
-        validationContext.getModeParams().add("pin");
+        validationContext.addModeParam("pin");
       } else if (args[i].equals(EXPAND)) {
-        validationContext.getModeParams().add("expand");
+        validationContext.addModeParam("expand");
       } else if (args[i].equals(DO_NATIVE)) {
         validationContext.setCanDoNative(true);
       } else if (args[i].equals(NO_NATIVE)) {
@@ -509,7 +510,7 @@ public class Params {
           if (!(new File(s).exists())) {
             throw new Error("Certificate source '"+s+"'  not found");            
           } else {
-            validationContext.getCertSources().add(s);
+            validationContext.addCertSource(s);
           }
         }
       } else if (args[i].equals(MATCHETYPE)) {
@@ -520,7 +521,7 @@ public class Params {
           if (!(new File(s).exists())) {
             throw new Error("-matchetype source '"+s+"'  not found");            
           } else {
-            validationContext.getMatchetypes().add(s);
+            validationContext.addMatchetype(s);
           }
         }} else if (args[i].equals(LOG)) {
         if (i + 1 == args.length)
