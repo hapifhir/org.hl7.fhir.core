@@ -29,6 +29,11 @@ public class TestsTask extends StandaloneTask{
 
   @Override
   public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
+    return shouldExecuteTask(args);
+  }
+
+  @Override
+  public boolean shouldExecuteTask(@Nonnull String[] args) {
     return Params.hasParam(args, Params.TEST);
   }
 
@@ -39,6 +44,11 @@ public class TestsTask extends StandaloneTask{
 
   @Override
   public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
+      executeTask(args);
+    }
+
+    @Override
+  public void executeTask(@Nonnull String[] args) throws Exception {
       final String testModuleParam = Params.getParam(args, Params.TEST_MODULES);
       final String testClassnameFilter = Params.getParam(args, Params.TEST_NAME_FILTER);
       final String testCasesDirectory = Params.getParam(args, Params.TEST);
