@@ -2,8 +2,7 @@ package org.hl7.fhir.validation.cli.param;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Locale;
+import java.util.*;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -142,7 +141,7 @@ public class Params {
   public static final String FILTER = "-filter";
   public static final String EXTERNALS = "-externals";
   public static final String MODE = "-mode";
-  private static final String FHIR_SETTINGS_PARAM = "-fhir-settings";
+  public static final String FHIR_SETTINGS_PARAM = "-fhir-settings";
   public static final String WATCH_MODE_PARAM = "-watch-mode";
   public static final String WATCH_SCAN_DELAY = "-watch-scan-delay";
   public static final String WATCH_SETTLE_TIME = "-watch-settle-time";
@@ -162,12 +161,30 @@ public class Params {
     return Arrays.asList(args).contains(param);
   }
 
+  public static boolean hasParamAndValue(String[] args, String param) {
+    int paramIndex = Arrays.asList(args).indexOf(param);
+    if (paramIndex == -1) {
+      return false;
+    }
+    checkIfParamValueInBounds(args, param, paramIndex);
+    return true;
+  }
+
   /**
-   * Fetches the  value for the passed in param from the provided list of params.
+   * Check if the value for the param is in bounds in the args array.
+   */
+  private static void checkIfParamValueInBounds(String[] args, String param, int paramIndex) {
+    if (paramIndex + 1 >= args.length) {
+      throw new Error("Used '"+ param +"' without providing a value");
+    }
+  }
+
+  /**
+   * Fetches the value for the passed in param from the provided list of params.
    *
    * @param args  Array of params to search.
    * @param param {@link String} param keyword to search for.
-   * @return {@link String} value for the provided param.
+   * @return {@link String} value for the provided param, or null if param is out of bounds
    */
   public static String getParam(String[] args, String param) {
     for (int i = 0; i < args.length - 1; i++) {
@@ -176,6 +193,16 @@ public class Params {
     return null;
   }
 
+  public static Collection<String> getMultiValueParam(String[] args, String param) {
+    final List<String> output = new LinkedList<>();
+    for (int i = 0; i < args.length - 1; i++) {
+      if (args[i].equals(param)) {
+        checkIfParamValueInBounds(args, param, i);
+        output.add(args[i + 1]);
+      }
+    }
+    return Collections.unmodifiableList(output);
+  }
   /**
    * TODO Don't do this all in one for loop. Use the above methods.
    */
@@ -186,12 +213,6 @@ public class Params {
     for (int i = 0; i < args.length; i++) {
       if (args[i].equals(VERSION)) {
         validationContext.setSv(VersionUtilities.getCurrentPackageVersion(args[++i]));
-      } else if (args[i].equals(FHIR_SETTINGS_PARAM)) {
-        final String fhirSettingsFilePath = args[++i];
-        if (! ManagedFileAccess.file(fhirSettingsFilePath).exists()) {
-          throw new Error("Cannot find fhir-settings file: " + fhirSettingsFilePath);
-        }
-        validationContext.setFhirSettingsFile(fhirSettingsFilePath);
       } else if (args[i].equals(OUTPUT)) {
         if (i + 1 == args.length)
           throw new Error("Specified -output without indicating output file");
@@ -596,7 +617,12 @@ public class Params {
             validationContext.setFhirpath(args[++i]);
         else
           throw new Exception("Can only nominate a single -fhirpath parameter");
-      } else if (!Utilities.existsInList(args[i], AUTH_NONCONFORMANT_SERVERS)) {
+      } else if (!Utilities.existsInList(args[i],
+        //The following params are handled outside this loop, so should be ignored.
+        AUTH_NONCONFORMANT_SERVERS,
+        NO_HTTP_ACCESS,
+        FHIR_SETTINGS_PARAM)) {
+        //Any remaining unhandled args become sources
         validationContext.addSource(args[i]);
       }
     }
