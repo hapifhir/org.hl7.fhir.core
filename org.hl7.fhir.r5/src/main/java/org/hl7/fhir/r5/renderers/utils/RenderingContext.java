@@ -1246,5 +1246,9 @@ public class RenderingContext extends RenderingI18nContext {
     return getRules() == GenerationRules.VALID_RESOURCE;
   }
 
+  public boolean forPublisher() {
+    return getRules() == GenerationRules.IG_PUBLISHER;
+  }
+
 
 }
