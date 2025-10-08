@@ -45,7 +45,8 @@ public class LangRegenerateTask extends ValidationEngineTask {
 
   @Override
   public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
-    String core = validationContext.getLangRegenParam().get(0); 
+    //FIXME replace ValidationContext
+    String core = validationContext.getLangRegenParam().get(0);
     String igpub = validationContext.getLangRegenParam().get(1);
     String pascal = validationContext.getLangRegenParam().get(2);
     if (!new File(core).exists()) {
