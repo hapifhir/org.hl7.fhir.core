@@ -569,6 +569,11 @@ public class ValidationContext {
     return this;
   }
 
+  public ValidationContext addCertSource(String certSource) {
+    certSources.add(certSource);
+    return this;
+  }
+
   @SerializedName("matchetypes")
   @JsonProperty("matchetypes")
   public List<String> getMatchetypes() {
@@ -579,6 +584,11 @@ public class ValidationContext {
   @JsonProperty("matchetypes")
   public ValidationContext setMatchetypes(List<String> matchetypes) {
     this.matchetypes = matchetypes;
+    return this;
+  }
+
+  public ValidationContext addMatchetype(String matchetype) {
+    this.matchetypes.add(matchetype);
     return this;
   }
 
@@ -1285,6 +1295,7 @@ public class ValidationContext {
       doNative == that.doNative &&
       hintAboutNonMustSupport == that.hintAboutNonMustSupport &&
       recursive == that.recursive &&
+      showMessagesFromReferences == that.showMessagesFromReferences &&
       doDebug == that.doDebug &&
       assumeValidRestReferences == that.assumeValidRestReferences &&
       checkReferences == that.checkReferences &&
@@ -1295,12 +1306,20 @@ public class ValidationContext {
       noInvariants == that.noInvariants &&
       displayWarnings == that.displayWarnings &&
       wantInvariantsInMessages == that.wantInvariantsInMessages &&
+      doImplicitFHIRPathStringConversion == that.doImplicitFHIRPathStringConversion &&
       allowDoubleQuotesInFHIRPath == that.allowDoubleQuotesInFHIRPath &&
+      disableDefaultResourceFetcher == that.disableDefaultResourceFetcher &&
       checkIPSCodes == that.checkIPSCodes &&
+      noEcosystem == that.noEcosystem &&
+      securityChecks == that.securityChecks &&
+      showTerminologyRouting == that.showTerminologyRouting &&
+      clearTxCache == that.clearTxCache &&
       Objects.equals(extensions, that.extensions) &&
       Objects.equals(certSources, that.certSources) &&
       Objects.equals(matchetypes, that.matchetypes) &&
+      Objects.equals(langTransform, that.langTransform) &&
       Objects.equals(map, that.map) &&
+      Objects.equals(source, that.source) &&
       Objects.equals(resolutionContext, that.resolutionContext) &&
       Objects.equals(htmlInMarkdownCheck, that.htmlInMarkdownCheck) &&
       Objects.equals(output, that.output) &&
@@ -1324,6 +1343,8 @@ public class ValidationContext {
       Objects.equals(profiles, that.profiles) &&
       Objects.equals(options, that.options) &&
       Objects.equals(sources, that.sources) &&
+      Objects.equals(inputs, that.inputs) &&
+      Objects.equals(modeParams, that.modeParams) &&
       Objects.equals(crumbTrails, that.crumbTrails) &&
       Objects.equals(showMessageIds, that.showMessageIds) &&
       Objects.equals(forPublication, that.forPublication) &&
@@ -1335,6 +1356,8 @@ public class ValidationContext {
       Objects.equals(outputStyle, that.outputStyle) &&
       Objects.equals(jurisdiction, that.jurisdiction) &&
       Objects.equals(locations, that.locations) &&
+      Objects.equals(bundleValidationRules, that.bundleValidationRules) &&
+      Objects.equals(fhirSettingsFile, that.fhirSettingsFile) &&
       Objects.equals(watchMode, that.watchMode) &&
       Objects.equals(bestPracticeLevel, that.bestPracticeLevel) &&
       Objects.equals(watchScanDelay, that.watchScanDelay) &&
@@ -1343,7 +1366,10 @@ public class ValidationContext {
       Objects.equals(advisorFile, that.advisorFile) &&
       Objects.equals(expansionParameters, that.expansionParameters) &&
       Objects.equals(format, that.format) &&
-      Objects.equals(watchSettleTime, that.watchSettleTime);
+      Objects.equals(r5BundleRelativeReferencePolicy, that.r5BundleRelativeReferencePolicy) &&
+      Objects.equals(watchSettleTime, that.watchSettleTime) &&
+      Objects.equals(langRegenParam, that.langRegenParam) &&
+      Objects.equals(inferFhirVersion, that.inferFhirVersion);
   }
 
   @Override
@@ -1562,8 +1588,9 @@ public class ValidationContext {
     return this;
   }
 
-  public void addLangRegenParam(String value) {
-    langRegenParam .add(value);    
+  public ValidationContext addLangRegenParam(String value) {
+    langRegenParam.add(value);
+    return this;
   }
 
   public List<String> getLangRegenParam() {
