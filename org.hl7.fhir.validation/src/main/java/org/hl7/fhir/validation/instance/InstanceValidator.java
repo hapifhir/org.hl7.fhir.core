@@ -525,6 +525,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean noInvariantChecks;
   private boolean wantInvariantInMessage;
   private boolean hintAboutNonMustSupport;
+  private boolean strictIdentifierSystems;
   private boolean showMessagesFromReferences;
   @Getter
   @Setter
@@ -670,6 +671,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     settings.setAssumeValidRestReferences(value);
   }
 
+  public void setStrictIdentifierSystems(boolean value) {
+    settings.setStrictIdentifierSystems(value);
+  }
+  
+  public boolean isStrictIdentifierSystems() {
+    return settings.isStrictIdentifierSystems();
+  }
+  
   public boolean isAllowComments() {
     return allowComments;
   }
@@ -3011,8 +3020,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_WRONG_1, value) && ok;
         }
       }
-    } else if (system!= null && (system.contains("example.org") || system.contains("example.com") || this.context.isKnownIdentifierSystem(system))) {
-      hint(errors, "2025-10-06", IssueType.BUSINESSRULE, element.line(), element.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_SYSTEM_UNKNOWN);
+    } else if (isStrictIdentifierSystems()) {
+      if (system!= null && !(system.contains("example.org") || system.contains("example.com") || this.context.isKnownIdentifierSystem(system)))
+        hint(errors, "2025-10-06", IssueType.BUSINESSRULE, element.line(), element.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_SYSTEM_UNKNOWN);
     }
     return ok;
   }

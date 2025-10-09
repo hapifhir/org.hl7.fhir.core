@@ -57,6 +57,7 @@ public class Params {
   public static final String LOCALE = "-locale";
   public static final String EXTENSION = "-extension";
   public static final String HINT_ABOUT_NON_MUST_SUPPORT = "-hintAboutNonMustSupport";
+  public static final String STRICT_IDENTIFIER_SYSTEMS = "-strictIdentifierSystems";
   public static final String TO_VERSION = "-to-version";
   public static final String TX_PACK = "-tx-pack";
   public static final String RE_PACK = "-re-package";
@@ -361,6 +362,8 @@ public class Params {
         validationContext.setWantInvariantsInMessages(true);
       } else if (args[i].equals(HINT_ABOUT_NON_MUST_SUPPORT)) {
         validationContext.setHintAboutNonMustSupport(true);
+      } else if (args[i].equals(STRICT_IDENTIFIER_SYSTEMS)) {
+        validationContext.setStrictIdentifierSystems(true);
       } else if (args[i].equals(TO_VERSION)) {
         validationContext.setTargetVer(args[++i]);
       } else if (args[i].equals(PACKAGE_NAME)) {

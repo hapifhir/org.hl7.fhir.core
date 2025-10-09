@@ -626,6 +626,7 @@ public class ValidationService {
     validationEngine.setLocale(validationContext.getLocale());
     validationEngine.setSnomedExtension(validationContext.getSnomedCTCode());
     validationEngine.setAssumeValidRestReferences(validationContext.isAssumeValidRestReferences());
+    validationEngine.setStrictIdentifierSystems(validationContext.isStrictIdentifierSystems());
     validationEngine.setShowMessagesFromReferences(validationContext.isShowMessagesFromReferences());
     validationEngine.setDoImplicitFHIRPathStringConversion(validationContext.isDoImplicitFHIRPathStringConversion());
     validationEngine.setHtmlInMarkdownCheck(validationContext.getHtmlInMarkdownCheck());
