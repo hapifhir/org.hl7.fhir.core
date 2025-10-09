@@ -99,10 +99,15 @@ public class TerminologyOperationContext {
     note(note);
     if (deadTime != 0 &&  System.currentTimeMillis() > deadTime) {
      log.error("Operation took too long - longer than "+(deadTime - startTime)+"ms");
-      for (String s : notes) {
-        log.error(s);
-      }
-      throw new TerminologyServiceProtectionException(worker.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_TIME, contexts.get(0), EXPANSION_DEAD_TIME_SECS, name+" (local)"), TerminologyServiceErrorClass.TOO_COSTLY, IssueType.TOOCOSTLY);
+     int i = 0;
+     for (String s : notes) {
+       log.error(s);
+       if (i == 100) {
+         log.error("more...");
+         break; // no point dumping more
+       }
+     }
+     throw new TerminologyServiceProtectionException(worker.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_TIME, contexts.get(0), EXPANSION_DEAD_TIME_SECS, name+" (local)"), TerminologyServiceErrorClass.TOO_COSTLY, IssueType.TOOCOSTLY);
     }
   }
   
