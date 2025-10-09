@@ -1,2573 +1,5 @@
 -------------------------------------------------------------------------------------
 {"code" : {
-  "coding" : [{
-    "system" : "http://snomed.info/sct",
-    "code" : "371532007",
-    "display" : "Progress note"
-  }]
-}, "url": "http://hl7.org/fhir/ValueSet/c80-doc-typecodes", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "severity" : "error",
-  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/c80-doc-typecodes|4.0.1'; The provided code 'http://snomed.info/sct#371532007 ('Progress note')' was not found in the value set 'http://hl7.org/fhir/ValueSet/c80-doc-typecodes|4.0.1'; Wrong Display Name 'Progress note' for http://snomed.info/sct#371532007. Valid display is 'Progress report' (en) (for the language(s) 'en-US')",
-  "class" : "UNKNOWN",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
-    },
-    {
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
-    }],
-    "severity" : "information",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "this-code-not-in-vs"
-      }],
-      "text" : "The provided code 'http://snomed.info/sct#371532007 ('Progress note')' was not found in the value set 'http://hl7.org/fhir/ValueSet/c80-doc-typecodes|4.0.1'"
-    },
-    "location" : ["CodeableConcept.coding[0].code"],
-    "expression" : ["CodeableConcept.coding[0].code"]
-  },
-  {
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "Display_Name_for__should_be_one_of__instead_of"
-    },
-    {
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "invalid-display"
-      }],
-      "text" : "Wrong Display Name 'Progress note' for http://snomed.info/sct#371532007. Valid display is 'Progress report' (en) (for the language(s) 'en-US')"
-    },
-    "location" : ["CodeableConcept.coding[0].display"],
-    "expression" : ["CodeableConcept.coding[0].display"]
-  },
-  {
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "TX_GENERAL_CC_ERROR_MESSAGE"
-    },
-    {
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/c80-doc-typecodes|4.0.1'"
-    }
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "text/plain"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "urn:ietf:bcp:13"
-    }]
-  }
-}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "text/plain",
-  "code" : "text/plain",
-  "system" : "urn:ietf:bcp:13",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "text/plain"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "text/plain",
-  "code" : "text/plain",
-  "system" : "urn:ietf:bcp:13",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://snomed.info/sct",
-    "code" : "73761001",
-    "display" : "Colonoscopy (procedure)"
-  }]
-}, "url": "http://hl7.org/fhir/ValueSet/report-codes", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "severity" : "error",
-  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/report-codes|4.0.1'; The provided code 'http://snomed.info/sct#73761001 ('Colonoscopy (procedure)')' was not found in the value set 'http://hl7.org/fhir/ValueSet/report-codes|4.0.1'",
-  "class" : "UNKNOWN",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
-    },
-    {
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
-    }],
-    "severity" : "information",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "this-code-not-in-vs"
-      }],
-      "text" : "The provided code 'http://snomed.info/sct#73761001 ('Colonoscopy (procedure)')' was not found in the value set 'http://hl7.org/fhir/ValueSet/report-codes|4.0.1'"
-    },
-    "location" : ["CodeableConcept.coding[0].code"],
-    "expression" : ["CodeableConcept.coding[0].code"]
-  },
-  {
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "TX_GENERAL_CC_ERROR_MESSAGE"
-    },
-    {
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/report-codes|4.0.1'"
-    }
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://snomed.info/sct",
-    "code" : "10291000132101",
-    "display" : "Portion of mucosa of colon segment seen, but other areas of colon segment not well seen due to staining, residual stool and/or opaque liquid (finding)"
-  }]
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "concept" : [{
-        "code" : "10281000132103",
-        "display" : "0",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Unprepared colon segment with mucosa not seen due to solid stool that cannot be cleared (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa ikke sett, fast avføring tilstede"
-        }]
-      },
-      {
-        "code" : "10291000132101",
-        "display" : "1",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Portion of mucosa of colon segment seen, but other areas of colon segment not well seen due to staining, residual stool and/or opaque liquid (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa delvis sett, farget væske og avføringsrester tilstede."
-        }]
-      },
-      {
-        "code" : "10301000132102",
-        "display" : "2",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Minor amount of residual staining, small fragments of stool and/or opaque liquid, but mucosa of colon segment seen well (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa godt visualisert, små mengder farget væske eller avføring."
-        }]
-      },
-      {
-        "code" : "10311000132100",
-        "display" : "3",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Entire mucosa of colon segment seen well with no residual staining, small fragments of stool or opaque liquid (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa komplett visualisert, ingen farget væske eller avføring."
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "concept" : [{
-        "code" : "NA",
-        "display" : "NA",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "not applicable"
-        }]
-      }]
-    }]
-  },
-  "expansion" : {
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "10281000132103",
-      "display" : "0"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "10291000132101",
-      "display" : "1"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "10301000132102",
-      "display" : "2"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "10311000132100",
-      "display" : "3"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "code" : "NA",
-      "display" : "NA"
-    }]
-  }
-}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Portion of mucosa of the colon segment seen, but other areas of the colon segment are not well seen because of staining, residual stool, or opaque liquid, 1",
-  "code" : "10291000132101",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://snomed.info/sct",
-    "code" : "10301000132102",
-    "display" : "Minor amount of residual staining, small fragments of stool and/or opaque liquid, but mucosa of colon segment seen well (finding)"
-  }]
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "concept" : [{
-        "code" : "10281000132103",
-        "display" : "0",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Unprepared colon segment with mucosa not seen due to solid stool that cannot be cleared (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa ikke sett, fast avføring tilstede"
-        }]
-      },
-      {
-        "code" : "10291000132101",
-        "display" : "1",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Portion of mucosa of colon segment seen, but other areas of colon segment not well seen due to staining, residual stool and/or opaque liquid (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa delvis sett, farget væske og avføringsrester tilstede."
-        }]
-      },
-      {
-        "code" : "10301000132102",
-        "display" : "2",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Minor amount of residual staining, small fragments of stool and/or opaque liquid, but mucosa of colon segment seen well (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa godt visualisert, små mengder farget væske eller avføring."
-        }]
-      },
-      {
-        "code" : "10311000132100",
-        "display" : "3",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Entire mucosa of colon segment seen well with no residual staining, small fragments of stool or opaque liquid (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa komplett visualisert, ingen farget væske eller avføring."
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "concept" : [{
-        "code" : "NA",
-        "display" : "NA",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "not applicable"
-        }]
-      }]
-    }]
-  },
-  "expansion" : {
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "10281000132103",
-      "display" : "0"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "10291000132101",
-      "display" : "1"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "10301000132102",
-      "display" : "2"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "10311000132100",
-      "display" : "3"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "code" : "NA",
-      "display" : "NA"
-    }]
-  }
-}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Minor amount of residual staining, small fragments of stool and/or opaque liquid, but mucosa of colon segment seen well (finding)",
-  "code" : "10301000132102",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://snomed.info/sct",
-    "code" : "10311000132100",
-    "display" : "Entire mucosa of colon segment seen well with no residual staining, small fragments of stool or opaque liquid (finding)"
-  }]
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "concept" : [{
-        "code" : "10281000132103",
-        "display" : "0",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Unprepared colon segment with mucosa not seen due to solid stool that cannot be cleared (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa ikke sett, fast avføring tilstede"
-        }]
-      },
-      {
-        "code" : "10291000132101",
-        "display" : "1",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Portion of mucosa of colon segment seen, but other areas of colon segment not well seen due to staining, residual stool and/or opaque liquid (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa delvis sett, farget væske og avføringsrester tilstede."
-        }]
-      },
-      {
-        "code" : "10301000132102",
-        "display" : "2",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Minor amount of residual staining, small fragments of stool and/or opaque liquid, but mucosa of colon segment seen well (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa godt visualisert, små mengder farget væske eller avføring."
-        }]
-      },
-      {
-        "code" : "10311000132100",
-        "display" : "3",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Entire mucosa of colon segment seen well with no residual staining, small fragments of stool or opaque liquid (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "mukosa komplett visualisert, ingen farget væske eller avføring."
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "concept" : [{
-        "code" : "NA",
-        "display" : "NA",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "not applicable"
-        }]
-      }]
-    }]
-  },
-  "expansion" : {
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "10281000132103",
-      "display" : "0"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "10291000132101",
-      "display" : "1"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "10301000132102",
-      "display" : "2"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "10311000132100",
-      "display" : "3"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "code" : "NA",
-      "display" : "NA"
-    }]
-  }
-}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Entire mucosa of colon segment seen well with no residual staining, small fragments of stool or opaque liquid (finding)",
-  "code" : "10311000132100",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://snomed.info/sct",
-    "code" : "32485007",
-    "display" : "Hospital admission (procedure)"
-  }]
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "concept" : [{
-        "code" : "416406003",
-        "display" : "Undersøkelsen avbrutt",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Procedure discontinued (situation)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "prosedyre avbrutt"
-        }]
-      },
-      {
-        "code" : "103705002",
-        "display" : "Observasjon uten innleggelse",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Patient status observation (procedure)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "observasjon av pasientstatus"
-        }]
-      },
-      {
-        "code" : "32485007",
-        "display" : "Innleggelse",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Hospital admission (procedure)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "sykehusinnleggelse"
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
-      "version" : "4.0.1",
-      "concept" : [{
-        "code" : "nil-known",
-        "display" : "Ingen (med eller uten forlenget prosedyretid)",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Nil Known"
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "concept" : [{
-        "code" : "OTH",
-        "display" : "Annet",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Other"
-        }]
-      }]
-    }]
-  },
-  "expansion" : {
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "416406003",
-      "display" : "Undersøkelsen avbrutt"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "103705002",
-      "display" : "Observasjon uten innleggelse"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "32485007",
-      "display" : "Innleggelse"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
-      "version" : "4.0.1",
-      "code" : "nil-known",
-      "display" : "Ingen (med eller uten forlenget prosedyretid)"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "code" : "OTH",
-      "display" : "Annet"
-    }]
-  }
-}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Hospital admission",
-  "code" : "32485007",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://snomed.info/sct",
-    "code" : "10821000202101",
-    "display" : "Narkose eller dyp sedasjon med anestesistøtte"
-  }]
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "concept" : [{
-        "code" : "10821000202101",
-        "display" : "Narkose eller dyp sedasjon med anestesistøtte",
-        "designation" : [{
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Narkose eller dyp sedasjon med anestesistøtte"
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
-      "concept" : [{
-        "code" : "nil-known",
-        "display" : "Ingen",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Nil Known"
-        }]
-      }]
-    }]
-  },
-  "expansion" : {
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "10821000202101",
-      "display" : "Narkose eller dyp sedasjon med anestesistøtte"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
-      "code" : "nil-known",
-      "display" : "Ingen"
-    }]
-  }
-}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "severity" : "error",
-  "error" : "No valid coding was found for the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-sedation-level'; The provided code 'http://snomed.info/sct#10821000202101 ('Narkose eller dyp sedasjon med anestesistøtte')' was not found in the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-sedation-level'; Unknown code '10821000202101' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
-  "class" : "UNKNOWN",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
-    },
-    {
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
-    }],
-    "severity" : "information",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "this-code-not-in-vs"
-      }],
-      "text" : "The provided code 'http://snomed.info/sct#10821000202101 ('Narkose eller dyp sedasjon med anestesistøtte')' was not found in the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-sedation-level'"
-    },
-    "location" : ["CodeableConcept.coding[0].code"],
-    "expression" : ["CodeableConcept.coding[0].code"]
-  },
-  {
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "Unknown_Code_in_Version"
-    },
-    {
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "invalid-code"
-      }],
-      "text" : "Unknown code '10821000202101' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'"
-    },
-    "location" : ["CodeableConcept.coding[0].code"],
-    "expression" : ["CodeableConcept.coding[0].code"]
-  },
-  {
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "TX_GENERAL_CC_ERROR_MESSAGE"
-    },
-    {
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "No valid coding was found for the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-sedation-level'"
-    }
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://snomed.info/sct",
-    "code" : "712510007",
-    "display" : "Intestinal hemorrhage (disorder)"
-  }]
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "concept" : [{
-        "code" : "712510007",
-        "display" : "Blødning",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Intestinal hemorrhage (disorder)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "blødning i tarm"
-        }]
-      },
-      {
-        "code" : "50008003",
-        "display" : "Perforasjon",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Traumatic perforation of large intestine (disorder)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "traumatisk perforasjon av colon"
-        }]
-      },
-      {
-        "code" : "10341000202100",
-        "display" : "Alvorlig vasovagal reaksjon",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Severe vasovagal reaction (disorder)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "alvorlig vasovagal reaksjon"
-        }]
-      },
-      {
-        "code" : "409622000",
-        "display" : "Respiratorisk",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Respiratory failure (disorder)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "respirasjonssvikt"
-        }]
-      },
-      {
-        "code" : "267037003",
-        "display" : "Kardiovaskulær",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Cardiovascular symptoms (finding)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "kardiovaskulært symptom"
-        }]
-      },
-      {
-        "code" : "416093006",
-        "display" : "Allergisk reaksjon på medikament",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Allergic reaction caused by drug (disorder)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "allergisk reaksjon forårsaket av legemiddel"
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
-      "version" : "4.0.1",
-      "concept" : [{
-        "code" : "nil-known",
-        "display" : "Ingen",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Nil Known"
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "concept" : [{
-        "code" : "OTH",
-        "display" : "Annet",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Other"
-        }]
-      }]
-    }]
-  },
-  "expansion" : {
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "712510007",
-      "display" : "Blødning"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "50008003",
-      "display" : "Perforasjon"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "10341000202100",
-      "display" : "Alvorlig vasovagal reaksjon"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "409622000",
-      "display" : "Respiratorisk"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "267037003",
-      "display" : "Kardiovaskulær"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "416093006",
-      "display" : "Allergisk reaksjon på medikament"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
-      "version" : "4.0.1",
-      "code" : "nil-known",
-      "display" : "Ingen"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "code" : "OTH",
-      "display" : "Annet"
-    }]
-  }
-}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Intestinal hemorrhage (disorder)",
-  "code" : "712510007",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://snomed.info/sct",
-    "code" : "372756006",
-    "display" : "Warfarin (substance)"
-  }]
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "concept" : [{
-        "code" : "387458008",
-        "display" : "Acetylsalisylsyre",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Aspirin (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "acetylsalisylsyre"
-        }]
-      },
-      {
-        "code" : "372756006",
-        "display" : "Warfarin",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Warfarin (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "warfarin"
-        }]
-      },
-      {
-        "code" : "373294004",
-        "display" : "LMWH",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Low molecular weight heparin (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "lavmolekylært heparin"
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
-      "version" : "4.0.1",
-      "concept" : [{
-        "code" : "nil-known",
-        "display" : "Ingen relevante medisiner",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Nil Known"
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "concept" : [{
-        "code" : "OTH",
-        "display" : "Annet",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Other"
-        }]
-      },
-      {
-        "code" : "UNK",
-        "display" : "Ukjent/mangler opplysninger",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "unknown"
-        }]
-      }]
-    },
-    {
-      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
-      "concept" : [{
-        "code" : "andre-blodplatehemmere",
-        "display" : "Andre blodplatehemmere",
-        "designation" : [{
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Andre blodplatehemmere"
-        }]
-      },
-      {
-        "code" : "doak",
-        "display" : "DOAK",
-        "designation" : [{
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "DOAK"
-        }]
-      },
-      {
-        "code" : "andre-antikoagulantia",
-        "display" : "Andre antikoagulantia",
-        "designation" : [{
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Andre antikoagulantia"
-        }]
-      }]
-    }]
-  },
-  "expansion" : {
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "387458008",
-      "display" : "Acetylsalisylsyre"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "372756006",
-      "display" : "Warfarin"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "373294004",
-      "display" : "LMWH"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
-      "version" : "4.0.1",
-      "code" : "nil-known",
-      "display" : "Ingen relevante medisiner"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "code" : "OTH",
-      "display" : "Annet"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "code" : "UNK",
-      "display" : "Ukjent/mangler opplysninger"
-    },
-    {
-      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
-      "code" : "andre-blodplatehemmere",
-      "display" : "Andre blodplatehemmere"
-    },
-    {
-      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
-      "code" : "doak",
-      "display" : "DOAK"
-    },
-    {
-      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
-      "code" : "andre-antikoagulantia",
-      "display" : "Andre antikoagulantia"
-    }]
-  }
-}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Warfarin (substance)",
-  "code" : "372756006",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://snomed.info/sct",
-    "code" : "387458008",
-    "display" : "Aspirin (substance)"
-  }]
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "concept" : [{
-        "code" : "387458008",
-        "display" : "Acetylsalisylsyre",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Aspirin (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "acetylsalisylsyre"
-        }]
-      },
-      {
-        "code" : "372756006",
-        "display" : "Warfarin",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Warfarin (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "warfarin"
-        }]
-      },
-      {
-        "code" : "373294004",
-        "display" : "LMWH",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Low molecular weight heparin (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "lavmolekylært heparin"
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
-      "version" : "4.0.1",
-      "concept" : [{
-        "code" : "nil-known",
-        "display" : "Ingen relevante medisiner",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Nil Known"
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "concept" : [{
-        "code" : "OTH",
-        "display" : "Annet",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Other"
-        }]
-      },
-      {
-        "code" : "UNK",
-        "display" : "Ukjent/mangler opplysninger",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "unknown"
-        }]
-      }]
-    },
-    {
-      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
-      "concept" : [{
-        "code" : "andre-blodplatehemmere",
-        "display" : "Andre blodplatehemmere",
-        "designation" : [{
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Andre blodplatehemmere"
-        }]
-      },
-      {
-        "code" : "doak",
-        "display" : "DOAK",
-        "designation" : [{
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "DOAK"
-        }]
-      },
-      {
-        "code" : "andre-antikoagulantia",
-        "display" : "Andre antikoagulantia",
-        "designation" : [{
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Andre antikoagulantia"
-        }]
-      }]
-    }]
-  },
-  "expansion" : {
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "387458008",
-      "display" : "Acetylsalisylsyre"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "372756006",
-      "display" : "Warfarin"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "373294004",
-      "display" : "LMWH"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
-      "version" : "4.0.1",
-      "code" : "nil-known",
-      "display" : "Ingen relevante medisiner"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "code" : "OTH",
-      "display" : "Annet"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "code" : "UNK",
-      "display" : "Ukjent/mangler opplysninger"
-    },
-    {
-      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
-      "code" : "andre-blodplatehemmere",
-      "display" : "Andre blodplatehemmere"
-    },
-    {
-      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
-      "code" : "doak",
-      "display" : "DOAK"
-    },
-    {
-      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
-      "code" : "andre-antikoagulantia",
-      "display" : "Andre antikoagulantia"
-    }]
-  }
-}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Aspirin (substance)",
-  "code" : "387458008",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://snomed.info/sct",
-    "code" : "372756006",
-    "display" : "Warfarin (substance)"
-  }]
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "concept" : [{
-        "code" : "387560008",
-        "display" : "Alfentanil",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Alfentanil (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "alfentanil"
-        }]
-      },
-      {
-        "code" : "373492002",
-        "display" : "Fentanyl",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Fentanyl (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "fentanyl"
-        }]
-      },
-      {
-        "code" : "395739004",
-        "display" : "Buscopan",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Scopolamine butylbromide (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "scopolaminebutylbromide"
-        }]
-      },
-      {
-        "code" : "387298007",
-        "display" : "Petidine",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Pethidine (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "petidin"
-        }]
-      },
-      {
-        "code" : "373476007",
-        "display" : "Midazolam",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Midazolam (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "midazolam"
-        }]
-      },
-      {
-        "code" : "387423006",
-        "display" : "Propofol",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Propofol (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "propofol"
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "concept" : [{
-        "code" : "OTH",
-        "display" : "Annet",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Other"
-        }]
-      }]
-    }]
-  },
-  "expansion" : {
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "387560008",
-      "display" : "Alfentanil"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "373492002",
-      "display" : "Fentanyl"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "395739004",
-      "display" : "Buscopan"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "387298007",
-      "display" : "Petidine"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "373476007",
-      "display" : "Midazolam"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "387423006",
-      "display" : "Propofol"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "code" : "OTH",
-      "display" : "Annet"
-    }]
-  }
-}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "severity" : "error",
-  "error" : "No valid coding was found for the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-medication'; The provided code 'http://snomed.info/sct#372756006 ('Warfarin (substance)')' was not found in the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-medication'",
-  "class" : "UNKNOWN",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
-    },
-    {
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
-    }],
-    "severity" : "information",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "this-code-not-in-vs"
-      }],
-      "text" : "The provided code 'http://snomed.info/sct#372756006 ('Warfarin (substance)')' was not found in the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-medication'"
-    },
-    "location" : ["CodeableConcept.coding[0].code"],
-    "expression" : ["CodeableConcept.coding[0].code"]
-  },
-  {
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "TX_GENERAL_CC_ERROR_MESSAGE"
-    },
-    {
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "No valid coding was found for the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-medication'"
-    }
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://snomed.info/sct",
-    "code" : "387458008",
-    "display" : "Aspirin (substance)"
-  }]
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "concept" : [{
-        "code" : "387560008",
-        "display" : "Alfentanil",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Alfentanil (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "alfentanil"
-        }]
-      },
-      {
-        "code" : "373492002",
-        "display" : "Fentanyl",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Fentanyl (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "fentanyl"
-        }]
-      },
-      {
-        "code" : "395739004",
-        "display" : "Buscopan",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Scopolamine butylbromide (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "scopolaminebutylbromide"
-        }]
-      },
-      {
-        "code" : "387298007",
-        "display" : "Petidine",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Pethidine (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "petidin"
-        }]
-      },
-      {
-        "code" : "373476007",
-        "display" : "Midazolam",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Midazolam (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "midazolam"
-        }]
-      },
-      {
-        "code" : "387423006",
-        "display" : "Propofol",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Propofol (substance)"
-        },
-        {
-          "language" : "no",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "propofol"
-        }]
-      }]
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "concept" : [{
-        "code" : "OTH",
-        "display" : "Annet",
-        "designation" : [{
-          "language" : "en",
-          "use" : {
-            "system" : "http://snomed.info/sct",
-            "code" : "900000000000003001",
-            "display" : "Fully specified name"
-          },
-          "value" : "Other"
-        }]
-      }]
-    }]
-  },
-  "expansion" : {
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "387560008",
-      "display" : "Alfentanil"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "373492002",
-      "display" : "Fentanyl"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "395739004",
-      "display" : "Buscopan"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "387298007",
-      "display" : "Petidine"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "373476007",
-      "display" : "Midazolam"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "387423006",
-      "display" : "Propofol"
-    },
-    {
-      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-      "version" : "2018-08-12",
-      "code" : "OTH",
-      "display" : "Annet"
-    }]
-  }
-}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
-  "severity" : "error",
-  "error" : "No valid coding was found for the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-medication'; The provided code 'http://snomed.info/sct#387458008 ('Aspirin (substance)')' was not found in the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-medication'",
-  "class" : "UNKNOWN",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
-    },
-    {
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
-    }],
-    "severity" : "information",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "this-code-not-in-vs"
-      }],
-      "text" : "The provided code 'http://snomed.info/sct#387458008 ('Aspirin (substance)')' was not found in the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-medication'"
-    },
-    "location" : ["CodeableConcept.coding[0].code"],
-    "expression" : ["CodeableConcept.coding[0].code"]
-  },
-  {
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "TX_GENERAL_CC_ERROR_MESSAGE"
-    },
-    {
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "No valid coding was found for the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-medication'"
-    }
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "urn:oid:2.16.840.1.113883.6.238",
-  "code" : "2106-3",
-  "display" : "White"
-}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.2.575", "version": "20250419", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "White",
-  "code" : "2106-3",
-  "system" : "urn:oid:2.16.840.1.113883.6.238",
-  "version" : "1.2",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "urn:oid:2.16.840.1.113883.6.238",
-  "code" : "1002-5",
-  "display" : "American Indian or Alaska Native"
-}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.2.575", "version": "20250419", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "American Indian or Alaska Native",
-  "code" : "1002-5",
-  "system" : "urn:oid:2.16.840.1.113883.6.238",
-  "version" : "1.2",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "urn:oid:2.16.840.1.113883.6.238",
-  "code" : "2028-9",
-  "display" : "Asian"
-}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.2.575", "version": "20250419", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Asian",
-  "code" : "2028-9",
-  "system" : "urn:oid:2.16.840.1.113883.6.238",
-  "version" : "1.2",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "urn:oid:2.16.840.1.113883.6.238",
-  "code" : "1586-7",
-  "display" : "Shoshone"
-}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1267.25", "version": "20250419", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Shoshone",
-  "code" : "1586-7",
-  "system" : "urn:oid:2.16.840.1.113883.6.238",
-  "version" : "1.2",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "urn:oid:2.16.840.1.113883.6.238",
-  "code" : "2036-2",
-  "display" : "Filipino"
-}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1267.25", "version": "20250419", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Filipino",
-  "code" : "2036-2",
-  "system" : "urn:oid:2.16.840.1.113883.6.238",
-  "version" : "1.2",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "urn:oid:2.16.840.1.113883.6.238",
-  "code" : "2135-2",
-  "display" : "Hispanic or Latino"
-}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.40.2.48.3", "version": "20250419", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Hispanic or Latino",
-  "code" : "2135-2",
-  "system" : "urn:oid:2.16.840.1.113883.6.238",
-  "version" : "1.2",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "urn:oid:2.16.840.1.113883.6.238",
-  "code" : "2184-0",
-  "display" : "Dominican"
-}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.40.2.48.1", "version": "20250419", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Dominican",
-  "code" : "2184-0",
-  "system" : "urn:oid:2.16.840.1.113883.6.238",
-  "version" : "1.2",
-  "severity" : "error",
-  "error" : "The provided code 'urn:oid:2.16.840.1.113883.6.238#2184-0 ('Dominican')' was not found in the value set 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.40.2.48.1|20250419'",
-  "class" : "UNKNOWN",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
-    },
-    {
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'urn:oid:2.16.840.1.113883.6.238#2184-0 ('Dominican')' was not found in the value set 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.40.2.48.1|20250419'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "urn:oid:2.16.840.1.113883.6.238",
-  "code" : "2148-5",
-  "display" : "Mexican"
-}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.40.2.48.1", "version": "20250419", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Mexican",
-  "code" : "2148-5",
-  "system" : "urn:oid:2.16.840.1.113883.6.238",
-  "version" : "1.2",
-  "severity" : "error",
-  "error" : "The provided code 'urn:oid:2.16.840.1.113883.6.238#2148-5 ('Mexican')' was not found in the value set 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.40.2.48.1|20250419'",
-  "class" : "UNKNOWN",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
-    },
-    {
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'urn:oid:2.16.840.1.113883.6.238#2148-5 ('Mexican')' was not found in the value set 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.40.2.48.1|20250419'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/731000124108",
-  "code" : "373066001"
-}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1267.16", "version": "20241005", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Yes (qualifier value)",
-  "code" : "373066001",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/731000124108/version/20250301",
-  "server" : "http://local.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
   "code" : "application/pdf"
 }, "valueSet" :{
   "resourceType" : "ValueSet",
@@ -3787,6 +1219,151 @@ v: {
   "display" : "English",
   "code" : "en",
   "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "371532007",
+    "display" : "Progress note"
+  }]
+}, "url": "http://hl7.org/fhir/ValueSet/c80-doc-typecodes", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "severity" : "error",
+  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/c80-doc-typecodes|4.0.1'; The provided code 'http://snomed.info/sct#371532007 ('Progress note')' was not found in the value set 'http://hl7.org/fhir/ValueSet/c80-doc-typecodes|4.0.1'; Wrong Display Name 'Progress note' for http://snomed.info/sct#371532007. Valid display is 'Progress report' (en) (for the language(s) 'en-US')",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://snomed.info/sct#371532007 ('Progress note')' was not found in the value set 'http://hl7.org/fhir/ValueSet/c80-doc-typecodes|4.0.1'"
+    },
+    "location" : ["CodeableConcept.coding[0].code"],
+    "expression" : ["CodeableConcept.coding[0].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Display_Name_for__should_be_one_of__instead_of"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Progress note' for http://snomed.info/sct#371532007. Valid display is 'Progress report' (en) (for the language(s) 'en-US')"
+    },
+    "location" : ["CodeableConcept.coding[0].display"],
+    "expression" : ["CodeableConcept.coding[0].display"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "TX_GENERAL_CC_ERROR_MESSAGE"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/c80-doc-typecodes|4.0.1'"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "text/plain"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:13"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "text/plain",
+  "code" : "text/plain",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "text/plain"
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "text/plain",
+  "code" : "text/plain",
+  "system" : "urn:ietf:bcp:13",
   "server" : "https://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -5457,6 +3034,2138 @@ v: {
 {"code" : {
   "coding" : [{
     "system" : "http://snomed.info/sct",
+    "code" : "73761001",
+    "display" : "Colonoscopy (procedure)"
+  }]
+}, "url": "http://hl7.org/fhir/ValueSet/report-codes", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "severity" : "error",
+  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/report-codes|4.0.1'; The provided code 'http://snomed.info/sct#73761001 ('Colonoscopy (procedure)')' was not found in the value set 'http://hl7.org/fhir/ValueSet/report-codes|4.0.1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://snomed.info/sct#73761001 ('Colonoscopy (procedure)')' was not found in the value set 'http://hl7.org/fhir/ValueSet/report-codes|4.0.1'"
+    },
+    "location" : ["CodeableConcept.coding[0].code"],
+    "expression" : ["CodeableConcept.coding[0].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "TX_GENERAL_CC_ERROR_MESSAGE"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/report-codes|4.0.1'"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "10291000132101",
+    "display" : "Portion of mucosa of colon segment seen, but other areas of colon segment not well seen due to staining, residual stool and/or opaque liquid (finding)"
+  }]
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://snomed.info/sct",
+      "concept" : [{
+        "code" : "10281000132103",
+        "display" : "0",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Unprepared colon segment with mucosa not seen due to solid stool that cannot be cleared (finding)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "mukosa ikke sett, fast avføring tilstede"
+        }]
+      },
+      {
+        "code" : "10291000132101",
+        "display" : "1",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Portion of mucosa of colon segment seen, but other areas of colon segment not well seen due to staining, residual stool and/or opaque liquid (finding)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "mukosa delvis sett, farget væske og avføringsrester tilstede."
+        }]
+      },
+      {
+        "code" : "10301000132102",
+        "display" : "2",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Minor amount of residual staining, small fragments of stool and/or opaque liquid, but mucosa of colon segment seen well (finding)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "mukosa godt visualisert, små mengder farget væske eller avføring."
+        }]
+      },
+      {
+        "code" : "10311000132100",
+        "display" : "3",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Entire mucosa of colon segment seen well with no residual staining, small fragments of stool or opaque liquid (finding)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "mukosa komplett visualisert, ingen farget væske eller avføring."
+        }]
+      }]
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+      "version" : "2018-08-12",
+      "concept" : [{
+        "code" : "NA",
+        "display" : "NA",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "not applicable"
+        }]
+      }]
+    }]
+  },
+  "expansion" : {
+    "contains" : [{
+      "system" : "http://snomed.info/sct",
+      "code" : "10281000132103",
+      "display" : "0"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "10291000132101",
+      "display" : "1"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "10301000132102",
+      "display" : "2"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "10311000132100",
+      "display" : "3"
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+      "version" : "2018-08-12",
+      "code" : "NA",
+      "display" : "NA"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Portion of mucosa of the colon segment seen, but other areas of the colon segment are not well seen because of staining, residual stool, or opaque liquid, 1",
+  "code" : "10291000132101",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "10301000132102",
+    "display" : "Minor amount of residual staining, small fragments of stool and/or opaque liquid, but mucosa of colon segment seen well (finding)"
+  }]
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://snomed.info/sct",
+      "concept" : [{
+        "code" : "10281000132103",
+        "display" : "0",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Unprepared colon segment with mucosa not seen due to solid stool that cannot be cleared (finding)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "mukosa ikke sett, fast avføring tilstede"
+        }]
+      },
+      {
+        "code" : "10291000132101",
+        "display" : "1",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Portion of mucosa of colon segment seen, but other areas of colon segment not well seen due to staining, residual stool and/or opaque liquid (finding)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "mukosa delvis sett, farget væske og avføringsrester tilstede."
+        }]
+      },
+      {
+        "code" : "10301000132102",
+        "display" : "2",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Minor amount of residual staining, small fragments of stool and/or opaque liquid, but mucosa of colon segment seen well (finding)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "mukosa godt visualisert, små mengder farget væske eller avføring."
+        }]
+      },
+      {
+        "code" : "10311000132100",
+        "display" : "3",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Entire mucosa of colon segment seen well with no residual staining, small fragments of stool or opaque liquid (finding)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "mukosa komplett visualisert, ingen farget væske eller avføring."
+        }]
+      }]
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+      "version" : "2018-08-12",
+      "concept" : [{
+        "code" : "NA",
+        "display" : "NA",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "not applicable"
+        }]
+      }]
+    }]
+  },
+  "expansion" : {
+    "contains" : [{
+      "system" : "http://snomed.info/sct",
+      "code" : "10281000132103",
+      "display" : "0"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "10291000132101",
+      "display" : "1"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "10301000132102",
+      "display" : "2"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "10311000132100",
+      "display" : "3"
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+      "version" : "2018-08-12",
+      "code" : "NA",
+      "display" : "NA"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Minor amount of residual staining, small fragments of stool and/or opaque liquid, but mucosa of colon segment seen well (finding)",
+  "code" : "10301000132102",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "10311000132100",
+    "display" : "Entire mucosa of colon segment seen well with no residual staining, small fragments of stool or opaque liquid (finding)"
+  }]
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://snomed.info/sct",
+      "concept" : [{
+        "code" : "10281000132103",
+        "display" : "0",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Unprepared colon segment with mucosa not seen due to solid stool that cannot be cleared (finding)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "mukosa ikke sett, fast avføring tilstede"
+        }]
+      },
+      {
+        "code" : "10291000132101",
+        "display" : "1",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Portion of mucosa of colon segment seen, but other areas of colon segment not well seen due to staining, residual stool and/or opaque liquid (finding)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "mukosa delvis sett, farget væske og avføringsrester tilstede."
+        }]
+      },
+      {
+        "code" : "10301000132102",
+        "display" : "2",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Minor amount of residual staining, small fragments of stool and/or opaque liquid, but mucosa of colon segment seen well (finding)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "mukosa godt visualisert, små mengder farget væske eller avføring."
+        }]
+      },
+      {
+        "code" : "10311000132100",
+        "display" : "3",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Entire mucosa of colon segment seen well with no residual staining, small fragments of stool or opaque liquid (finding)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "mukosa komplett visualisert, ingen farget væske eller avføring."
+        }]
+      }]
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+      "version" : "2018-08-12",
+      "concept" : [{
+        "code" : "NA",
+        "display" : "NA",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "not applicable"
+        }]
+      }]
+    }]
+  },
+  "expansion" : {
+    "contains" : [{
+      "system" : "http://snomed.info/sct",
+      "code" : "10281000132103",
+      "display" : "0"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "10291000132101",
+      "display" : "1"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "10301000132102",
+      "display" : "2"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "10311000132100",
+      "display" : "3"
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+      "version" : "2018-08-12",
+      "code" : "NA",
+      "display" : "NA"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Entire mucosa of colon segment seen well with no residual staining, small fragments of stool or opaque liquid (finding)",
+  "code" : "10311000132100",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "32485007",
+    "display" : "Hospital admission (procedure)"
+  }]
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://snomed.info/sct",
+      "concept" : [{
+        "code" : "416406003",
+        "display" : "Undersøkelsen avbrutt",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Procedure discontinued (situation)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "prosedyre avbrutt"
+        }]
+      },
+      {
+        "code" : "103705002",
+        "display" : "Observasjon uten innleggelse",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Patient status observation (procedure)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "observasjon av pasientstatus"
+        }]
+      },
+      {
+        "code" : "32485007",
+        "display" : "Innleggelse",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Hospital admission (procedure)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "sykehusinnleggelse"
+        }]
+      }]
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
+      "version" : "4.0.1",
+      "concept" : [{
+        "code" : "nil-known",
+        "display" : "Ingen (med eller uten forlenget prosedyretid)",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Nil Known"
+        }]
+      }]
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+      "version" : "2018-08-12",
+      "concept" : [{
+        "code" : "OTH",
+        "display" : "Annet",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Other"
+        }]
+      }]
+    }]
+  },
+  "expansion" : {
+    "contains" : [{
+      "system" : "http://snomed.info/sct",
+      "code" : "416406003",
+      "display" : "Undersøkelsen avbrutt"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "103705002",
+      "display" : "Observasjon uten innleggelse"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "32485007",
+      "display" : "Innleggelse"
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
+      "version" : "4.0.1",
+      "code" : "nil-known",
+      "display" : "Ingen (med eller uten forlenget prosedyretid)"
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+      "version" : "2018-08-12",
+      "code" : "OTH",
+      "display" : "Annet"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Hospital admission",
+  "code" : "32485007",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "10821000202101",
+    "display" : "Narkose eller dyp sedasjon med anestesistøtte"
+  }]
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://snomed.info/sct",
+      "concept" : [{
+        "code" : "10821000202101",
+        "display" : "Narkose eller dyp sedasjon med anestesistøtte",
+        "designation" : [{
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Narkose eller dyp sedasjon med anestesistøtte"
+        }]
+      }]
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
+      "concept" : [{
+        "code" : "nil-known",
+        "display" : "Ingen",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Nil Known"
+        }]
+      }]
+    }]
+  },
+  "expansion" : {
+    "contains" : [{
+      "system" : "http://snomed.info/sct",
+      "code" : "10821000202101",
+      "display" : "Narkose eller dyp sedasjon med anestesistøtte"
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
+      "code" : "nil-known",
+      "display" : "Ingen"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "No valid coding was found for the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-sedation-level'; The provided code 'http://snomed.info/sct#10821000202101 ('Narkose eller dyp sedasjon med anestesistøtte')' was not found in the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-sedation-level'; Unknown code '10821000202101' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://snomed.info/sct#10821000202101 ('Narkose eller dyp sedasjon med anestesistøtte')' was not found in the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-sedation-level'"
+    },
+    "location" : ["CodeableConcept.coding[0].code"],
+    "expression" : ["CodeableConcept.coding[0].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Unknown_Code_in_Version"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Unknown code '10821000202101' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'"
+    },
+    "location" : ["CodeableConcept.coding[0].code"],
+    "expression" : ["CodeableConcept.coding[0].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "TX_GENERAL_CC_ERROR_MESSAGE"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "No valid coding was found for the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-sedation-level'"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "712510007",
+    "display" : "Intestinal hemorrhage (disorder)"
+  }]
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://snomed.info/sct",
+      "concept" : [{
+        "code" : "712510007",
+        "display" : "Blødning",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Intestinal hemorrhage (disorder)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "blødning i tarm"
+        }]
+      },
+      {
+        "code" : "50008003",
+        "display" : "Perforasjon",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Traumatic perforation of large intestine (disorder)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "traumatisk perforasjon av colon"
+        }]
+      },
+      {
+        "code" : "10341000202100",
+        "display" : "Alvorlig vasovagal reaksjon",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Severe vasovagal reaction (disorder)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "alvorlig vasovagal reaksjon"
+        }]
+      },
+      {
+        "code" : "409622000",
+        "display" : "Respiratorisk",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Respiratory failure (disorder)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "respirasjonssvikt"
+        }]
+      },
+      {
+        "code" : "267037003",
+        "display" : "Kardiovaskulær",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Cardiovascular symptoms (finding)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "kardiovaskulært symptom"
+        }]
+      },
+      {
+        "code" : "416093006",
+        "display" : "Allergisk reaksjon på medikament",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Allergic reaction caused by drug (disorder)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "allergisk reaksjon forårsaket av legemiddel"
+        }]
+      }]
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
+      "version" : "4.0.1",
+      "concept" : [{
+        "code" : "nil-known",
+        "display" : "Ingen",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Nil Known"
+        }]
+      }]
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+      "version" : "2018-08-12",
+      "concept" : [{
+        "code" : "OTH",
+        "display" : "Annet",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Other"
+        }]
+      }]
+    }]
+  },
+  "expansion" : {
+    "contains" : [{
+      "system" : "http://snomed.info/sct",
+      "code" : "712510007",
+      "display" : "Blødning"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "50008003",
+      "display" : "Perforasjon"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "10341000202100",
+      "display" : "Alvorlig vasovagal reaksjon"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "409622000",
+      "display" : "Respiratorisk"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "267037003",
+      "display" : "Kardiovaskulær"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "416093006",
+      "display" : "Allergisk reaksjon på medikament"
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
+      "version" : "4.0.1",
+      "code" : "nil-known",
+      "display" : "Ingen"
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+      "version" : "2018-08-12",
+      "code" : "OTH",
+      "display" : "Annet"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Intestinal hemorrhage (disorder)",
+  "code" : "712510007",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "372756006",
+    "display" : "Warfarin (substance)"
+  }]
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://snomed.info/sct",
+      "concept" : [{
+        "code" : "387458008",
+        "display" : "Acetylsalisylsyre",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Aspirin (substance)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "acetylsalisylsyre"
+        }]
+      },
+      {
+        "code" : "372756006",
+        "display" : "Warfarin",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Warfarin (substance)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "warfarin"
+        }]
+      },
+      {
+        "code" : "373294004",
+        "display" : "LMWH",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Low molecular weight heparin (substance)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "lavmolekylært heparin"
+        }]
+      }]
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
+      "version" : "4.0.1",
+      "concept" : [{
+        "code" : "nil-known",
+        "display" : "Ingen relevante medisiner",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Nil Known"
+        }]
+      }]
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+      "version" : "2018-08-12",
+      "concept" : [{
+        "code" : "OTH",
+        "display" : "Annet",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Other"
+        }]
+      },
+      {
+        "code" : "UNK",
+        "display" : "Ukjent/mangler opplysninger",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "unknown"
+        }]
+      }]
+    },
+    {
+      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
+      "concept" : [{
+        "code" : "andre-blodplatehemmere",
+        "display" : "Andre blodplatehemmere",
+        "designation" : [{
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Andre blodplatehemmere"
+        }]
+      },
+      {
+        "code" : "doak",
+        "display" : "DOAK",
+        "designation" : [{
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "DOAK"
+        }]
+      },
+      {
+        "code" : "andre-antikoagulantia",
+        "display" : "Andre antikoagulantia",
+        "designation" : [{
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Andre antikoagulantia"
+        }]
+      }]
+    }]
+  },
+  "expansion" : {
+    "contains" : [{
+      "system" : "http://snomed.info/sct",
+      "code" : "387458008",
+      "display" : "Acetylsalisylsyre"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "372756006",
+      "display" : "Warfarin"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "373294004",
+      "display" : "LMWH"
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
+      "version" : "4.0.1",
+      "code" : "nil-known",
+      "display" : "Ingen relevante medisiner"
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+      "version" : "2018-08-12",
+      "code" : "OTH",
+      "display" : "Annet"
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+      "version" : "2018-08-12",
+      "code" : "UNK",
+      "display" : "Ukjent/mangler opplysninger"
+    },
+    {
+      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
+      "code" : "andre-blodplatehemmere",
+      "display" : "Andre blodplatehemmere"
+    },
+    {
+      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
+      "code" : "doak",
+      "display" : "DOAK"
+    },
+    {
+      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
+      "code" : "andre-antikoagulantia",
+      "display" : "Andre antikoagulantia"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Warfarin (substance)",
+  "code" : "372756006",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "387458008",
+    "display" : "Aspirin (substance)"
+  }]
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://snomed.info/sct",
+      "concept" : [{
+        "code" : "387458008",
+        "display" : "Acetylsalisylsyre",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Aspirin (substance)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "acetylsalisylsyre"
+        }]
+      },
+      {
+        "code" : "372756006",
+        "display" : "Warfarin",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Warfarin (substance)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "warfarin"
+        }]
+      },
+      {
+        "code" : "373294004",
+        "display" : "LMWH",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Low molecular weight heparin (substance)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "lavmolekylært heparin"
+        }]
+      }]
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
+      "version" : "4.0.1",
+      "concept" : [{
+        "code" : "nil-known",
+        "display" : "Ingen relevante medisiner",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Nil Known"
+        }]
+      }]
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+      "version" : "2018-08-12",
+      "concept" : [{
+        "code" : "OTH",
+        "display" : "Annet",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Other"
+        }]
+      },
+      {
+        "code" : "UNK",
+        "display" : "Ukjent/mangler opplysninger",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "unknown"
+        }]
+      }]
+    },
+    {
+      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
+      "concept" : [{
+        "code" : "andre-blodplatehemmere",
+        "display" : "Andre blodplatehemmere",
+        "designation" : [{
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Andre blodplatehemmere"
+        }]
+      },
+      {
+        "code" : "doak",
+        "display" : "DOAK",
+        "designation" : [{
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "DOAK"
+        }]
+      },
+      {
+        "code" : "andre-antikoagulantia",
+        "display" : "Andre antikoagulantia",
+        "designation" : [{
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Andre antikoagulantia"
+        }]
+      }]
+    }]
+  },
+  "expansion" : {
+    "contains" : [{
+      "system" : "http://snomed.info/sct",
+      "code" : "387458008",
+      "display" : "Acetylsalisylsyre"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "372756006",
+      "display" : "Warfarin"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "373294004",
+      "display" : "LMWH"
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
+      "version" : "4.0.1",
+      "code" : "nil-known",
+      "display" : "Ingen relevante medisiner"
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+      "version" : "2018-08-12",
+      "code" : "OTH",
+      "display" : "Annet"
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+      "version" : "2018-08-12",
+      "code" : "UNK",
+      "display" : "Ukjent/mangler opplysninger"
+    },
+    {
+      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
+      "code" : "andre-blodplatehemmere",
+      "display" : "Andre blodplatehemmere"
+    },
+    {
+      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
+      "code" : "doak",
+      "display" : "DOAK"
+    },
+    {
+      "system" : "http://ehelse.no/fhir/CodeSystem/colonoscopy-model-specific-codes",
+      "code" : "andre-antikoagulantia",
+      "display" : "Andre antikoagulantia"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Aspirin (substance)",
+  "code" : "387458008",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "372756006",
+    "display" : "Warfarin (substance)"
+  }]
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://snomed.info/sct",
+      "concept" : [{
+        "code" : "387560008",
+        "display" : "Alfentanil",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Alfentanil (substance)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "alfentanil"
+        }]
+      },
+      {
+        "code" : "373492002",
+        "display" : "Fentanyl",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Fentanyl (substance)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "fentanyl"
+        }]
+      },
+      {
+        "code" : "395739004",
+        "display" : "Buscopan",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Scopolamine butylbromide (substance)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "scopolaminebutylbromide"
+        }]
+      },
+      {
+        "code" : "387298007",
+        "display" : "Petidine",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Pethidine (substance)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "petidin"
+        }]
+      },
+      {
+        "code" : "373476007",
+        "display" : "Midazolam",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Midazolam (substance)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "midazolam"
+        }]
+      },
+      {
+        "code" : "387423006",
+        "display" : "Propofol",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Propofol (substance)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "propofol"
+        }]
+      }]
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+      "version" : "2018-08-12",
+      "concept" : [{
+        "code" : "OTH",
+        "display" : "Annet",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Other"
+        }]
+      }]
+    }]
+  },
+  "expansion" : {
+    "contains" : [{
+      "system" : "http://snomed.info/sct",
+      "code" : "387560008",
+      "display" : "Alfentanil"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "373492002",
+      "display" : "Fentanyl"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "395739004",
+      "display" : "Buscopan"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "387298007",
+      "display" : "Petidine"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "373476007",
+      "display" : "Midazolam"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "387423006",
+      "display" : "Propofol"
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+      "version" : "2018-08-12",
+      "code" : "OTH",
+      "display" : "Annet"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "severity" : "error",
+  "error" : "No valid coding was found for the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-medication'; The provided code 'http://snomed.info/sct#372756006 ('Warfarin (substance)')' was not found in the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-medication'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://snomed.info/sct#372756006 ('Warfarin (substance)')' was not found in the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-medication'"
+    },
+    "location" : ["CodeableConcept.coding[0].code"],
+    "expression" : ["CodeableConcept.coding[0].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "TX_GENERAL_CC_ERROR_MESSAGE"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "No valid coding was found for the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-medication'"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "387458008",
+    "display" : "Aspirin (substance)"
+  }]
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://snomed.info/sct",
+      "concept" : [{
+        "code" : "387560008",
+        "display" : "Alfentanil",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Alfentanil (substance)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "alfentanil"
+        }]
+      },
+      {
+        "code" : "373492002",
+        "display" : "Fentanyl",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Fentanyl (substance)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "fentanyl"
+        }]
+      },
+      {
+        "code" : "395739004",
+        "display" : "Buscopan",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Scopolamine butylbromide (substance)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "scopolaminebutylbromide"
+        }]
+      },
+      {
+        "code" : "387298007",
+        "display" : "Petidine",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Pethidine (substance)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "petidin"
+        }]
+      },
+      {
+        "code" : "373476007",
+        "display" : "Midazolam",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Midazolam (substance)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "midazolam"
+        }]
+      },
+      {
+        "code" : "387423006",
+        "display" : "Propofol",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Propofol (substance)"
+        },
+        {
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "propofol"
+        }]
+      }]
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+      "version" : "2018-08-12",
+      "concept" : [{
+        "code" : "OTH",
+        "display" : "Annet",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Other"
+        }]
+      }]
+    }]
+  },
+  "expansion" : {
+    "contains" : [{
+      "system" : "http://snomed.info/sct",
+      "code" : "387560008",
+      "display" : "Alfentanil"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "373492002",
+      "display" : "Fentanyl"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "395739004",
+      "display" : "Buscopan"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "387298007",
+      "display" : "Petidine"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "373476007",
+      "display" : "Midazolam"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "387423006",
+      "display" : "Propofol"
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+      "version" : "2018-08-12",
+      "code" : "OTH",
+      "display" : "Annet"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "severity" : "error",
+  "error" : "No valid coding was found for the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-medication'; The provided code 'http://snomed.info/sct#387458008 ('Aspirin (substance)')' was not found in the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-medication'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://snomed.info/sct#387458008 ('Aspirin (substance)')' was not found in the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-medication'"
+    },
+    "location" : ["CodeableConcept.coding[0].code"],
+    "expression" : ["CodeableConcept.coding[0].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "TX_GENERAL_CC_ERROR_MESSAGE"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "No valid coding was found for the value set 'http://ehelse.no/fhir/ValueSet/no-colonoscopy-medication'"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
     "version" : "http://snomed.info/sct/900000000000207008/version/20210731",
     "code" : "27113001",
     "display" : "Body weight (observable entity)"
@@ -5671,7 +5380,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "status-check"
       }],
-      "text" : "Reference to draft CodeSystem urn:iso:std:iso:11073:10101|2024-12-05 from fhir.tx.support.r4#0.31.0"
+      "text" : "Reference to draft CodeSystem urn:iso:std:iso:11073:10101|2024-12-05 from fhir.tx.support.r4#0.32.0"
     }
   }]
 }
@@ -5773,7 +5482,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "status-check"
       }],
-      "text" : "Reference to draft CodeSystem urn:iso:std:iso:11073:10101|2024-12-05 from fhir.tx.support.r4#0.31.0"
+      "text" : "Reference to draft CodeSystem urn:iso:std:iso:11073:10101|2024-12-05 from fhir.tx.support.r4#0.32.0"
     }
   }]
 }
@@ -6527,7 +6236,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "status-check"
       }],
-      "text" : "Reference to draft CodeSystem urn:iso:std:iso:11073:10101|2024-12-05 from fhir.tx.support.r4#0.31.0"
+      "text" : "Reference to draft CodeSystem urn:iso:std:iso:11073:10101|2024-12-05 from fhir.tx.support.r4#0.32.0"
     }
   }]
 }
@@ -6602,7 +6311,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "status-check"
       }],
-      "text" : "Reference to draft CodeSystem urn:iso:std:iso:11073:10101|2024-12-05 from fhir.tx.support.r4#0.31.0"
+      "text" : "Reference to draft CodeSystem urn:iso:std:iso:11073:10101|2024-12-05 from fhir.tx.support.r4#0.32.0"
     }
   }]
 }
@@ -7079,6 +6788,352 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "code" : "2106-3",
+  "display" : "White"
+}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.2.575", "version": "20250419", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "White",
+  "code" : "2106-3",
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "version" : "1.2",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "code" : "1002-5",
+  "display" : "American Indian or Alaska Native"
+}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.2.575", "version": "20250419", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "American Indian or Alaska Native",
+  "code" : "1002-5",
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "version" : "1.2",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "code" : "2028-9",
+  "display" : "Asian"
+}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.2.575", "version": "20250419", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Asian",
+  "code" : "2028-9",
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "version" : "1.2",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "code" : "1586-7",
+  "display" : "Shoshone"
+}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1267.25", "version": "20250419", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Shoshone",
+  "code" : "1586-7",
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "version" : "1.2",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "code" : "2036-2",
+  "display" : "Filipino"
+}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1267.25", "version": "20250419", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Filipino",
+  "code" : "2036-2",
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "version" : "1.2",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "code" : "2135-2",
+  "display" : "Hispanic or Latino"
+}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.40.2.48.3", "version": "20250419", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Hispanic or Latino",
+  "code" : "2135-2",
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "version" : "1.2",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "code" : "2184-0",
+  "display" : "Dominican"
+}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.40.2.48.1", "version": "20250419", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Dominican",
+  "code" : "2184-0",
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "version" : "1.2",
+  "severity" : "error",
+  "error" : "The provided code 'urn:oid:2.16.840.1.113883.6.238#2184-0 ('Dominican')' was not found in the value set 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.40.2.48.1|20250419'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code 'urn:oid:2.16.840.1.113883.6.238#2184-0 ('Dominican')' was not found in the value set 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.40.2.48.1|20250419'"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "code" : "2148-5",
+  "display" : "Mexican"
+}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.40.2.48.1", "version": "20250419", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Mexican",
+  "code" : "2148-5",
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "version" : "1.2",
+  "severity" : "error",
+  "error" : "The provided code 'urn:oid:2.16.840.1.113883.6.238#2148-5 ('Mexican')' was not found in the value set 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.40.2.48.1|20250419'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code 'urn:oid:2.16.840.1.113883.6.238#2148-5 ('Mexican')' was not found in the value set 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.40.2.48.1|20250419'"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/731000124108",
+  "code" : "373066001"
+}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1267.16", "version": "20241005", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Yes (qualifier value)",
+  "code" : "373066001",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/731000124108/version/20250301",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "OK"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "https://www.usps.com/"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Oklahoma",
+  "code" : "OK",
+  "system" : "https://www.usps.com/",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "OK"
+}, "url": "http://terminology.hl7.org/ValueSet/USPS-State", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Oklahoma",
+  "code" : "OK",
+  "system" : "https://www.usps.com/",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
   "code" : "AU"
 }, "valueSet" :{
   "resourceType" : "ValueSet",
@@ -7133,7 +7188,7 @@ v: {
 v: {
   "code" : "AU",
   "severity" : "error",
-  "error" : "The provided code '#AU' was not found in the value set 'urn:uuid:a2c17b05-5f00-49a4-bf78-dd38af63feed'; The System URI could not be determined for the code 'AU' in the ValueSet 'urn:uuid:a2c17b05-5f00-49a4-bf78-dd38af63feed'",
+  "error" : "The provided code '#AU' was not found in the value set 'urn:uuid:ede4bfca-e805-4776-878f-d17b8bea49cd'; The System URI could not be determined for the code 'AU' in the ValueSet 'urn:uuid:ede4bfca-e805-4776-878f-d17b8bea49cd'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
   "issues" : {
@@ -7154,7 +7209,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "cannot-infer"
       }],
-      "text" : "The System URI could not be determined for the code 'AU' in the ValueSet 'urn:uuid:a2c17b05-5f00-49a4-bf78-dd38af63feed'"
+      "text" : "The System URI could not be determined for the code 'AU' in the ValueSet 'urn:uuid:ede4bfca-e805-4776-878f-d17b8bea49cd'"
     },
     "location" : ["code"],
     "expression" : ["code"]
@@ -7175,7 +7230,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "not-in-vs"
       }],
-      "text" : "The provided code '#AU' was not found in the value set 'urn:uuid:a2c17b05-5f00-49a4-bf78-dd38af63feed'"
+      "text" : "The provided code '#AU' was not found in the value set 'urn:uuid:ede4bfca-e805-4776-878f-d17b8bea49cd'"
     },
     "location" : ["code"],
     "expression" : ["code"]
@@ -7232,7 +7287,7 @@ v: {
 v: {
   "code" : "Australia",
   "severity" : "error",
-  "error" : "The provided code '#Australia' was not found in the value set 'urn:uuid:14f04537-8243-4150-a823-3c962352f1c4'; The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:14f04537-8243-4150-a823-3c962352f1c4'",
+  "error" : "The provided code '#Australia' was not found in the value set 'urn:uuid:0270afaa-f304-40fa-bc48-21b05c085f93'; The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:0270afaa-f304-40fa-bc48-21b05c085f93'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
   "issues" : {
@@ -7253,7 +7308,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "cannot-infer"
       }],
-      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:14f04537-8243-4150-a823-3c962352f1c4'"
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:0270afaa-f304-40fa-bc48-21b05c085f93'"
     },
     "location" : ["code"],
     "expression" : ["code"]
@@ -7274,7 +7329,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "not-in-vs"
       }],
-      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:14f04537-8243-4150-a823-3c962352f1c4'"
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:0270afaa-f304-40fa-bc48-21b05c085f93'"
     },
     "location" : ["code"],
     "expression" : ["code"]
@@ -7306,7 +7361,7 @@ v: {
 v: {
   "code" : "Australia",
   "severity" : "error",
-  "error" : "The provided code '#Australia' was not found in the value set 'urn:uuid:562de0d4-4a5c-453f-b797-ee88f22a919e'; The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:562de0d4-4a5c-453f-b797-ee88f22a919e'",
+  "error" : "The provided code '#Australia' was not found in the value set 'urn:uuid:2d76af6a-f2da-4e96-a1fd-ef0c8cecadaf'; The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:2d76af6a-f2da-4e96-a1fd-ef0c8cecadaf'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
   "issues" : {
@@ -7327,7 +7382,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "cannot-infer"
       }],
-      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:562de0d4-4a5c-453f-b797-ee88f22a919e'"
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:2d76af6a-f2da-4e96-a1fd-ef0c8cecadaf'"
     },
     "location" : ["code"],
     "expression" : ["code"]
@@ -7348,7 +7403,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "not-in-vs"
       }],
-      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:562de0d4-4a5c-453f-b797-ee88f22a919e'"
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:2d76af6a-f2da-4e96-a1fd-ef0c8cecadaf'"
     },
     "location" : ["code"],
     "expression" : ["code"]
@@ -7462,7 +7517,7 @@ v: {
 v: {
   "code" : "[%payloadFormat%]",
   "severity" : "error",
-  "error" : "The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:ec8c26cb-1e49-46b6-a093-b91e9dd9694f'; The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:ec8c26cb-1e49-46b6-a093-b91e9dd9694f'",
+  "error" : "The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:4af35c89-17cf-431d-b2ad-a1ad964646e2'; The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:4af35c89-17cf-431d-b2ad-a1ad964646e2'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
   "issues" : {
@@ -7483,7 +7538,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "cannot-infer"
       }],
-      "text" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:ec8c26cb-1e49-46b6-a093-b91e9dd9694f'"
+      "text" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:4af35c89-17cf-431d-b2ad-a1ad964646e2'"
     },
     "location" : ["code"],
     "expression" : ["code"]
@@ -7504,7 +7559,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "not-in-vs"
       }],
-      "text" : "The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:ec8c26cb-1e49-46b6-a093-b91e9dd9694f'"
+      "text" : "The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:4af35c89-17cf-431d-b2ad-a1ad964646e2'"
     },
     "location" : ["code"],
     "expression" : ["code"]
@@ -7530,62 +7585,6 @@ v: {
   "display" : "English (Australia)",
   "code" : "en-AU",
   "system" : "urn:ietf:bcp:47",
-  "server" : "https://tx-dev.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "OK"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "https://www.usps.com/"
-    }]
-  }
-}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Oklahoma",
-  "code" : "OK",
-  "system" : "https://www.usps.com/",
-  "server" : "https://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "OK"
-}, "url": "http://terminology.hl7.org/ValueSet/USPS-State", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Oklahoma",
-  "code" : "OK",
-  "system" : "https://www.usps.com/",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
