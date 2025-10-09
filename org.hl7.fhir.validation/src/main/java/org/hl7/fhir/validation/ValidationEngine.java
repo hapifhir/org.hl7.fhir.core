@@ -239,6 +239,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private String aiService;
   @Getter @Setter private boolean allowExampleUrls;
   @Getter @Setter private boolean showMessagesFromReferences;
+  @Getter @Setter private boolean strictIdentifierSystems;
   @Getter @Setter private boolean doImplicitFHIRPathStringConversion;
   @Getter @Setter private HtmlInMarkdownCheck htmlInMarkdownCheck;
   @Getter @Setter private boolean allowDoubleQuotesInFHIRPath;
@@ -300,6 +301,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     aiService = other.aiService;
     allowExampleUrls = other.allowExampleUrls;
     showMessagesFromReferences = other.showMessagesFromReferences;
+    strictIdentifierSystems = other.strictIdentifierSystems;
     doImplicitFHIRPathStringConversion = other.doImplicitFHIRPathStringConversion;
     htmlInMarkdownCheck = other.htmlInMarkdownCheck;
     allowDoubleQuotesInFHIRPath = other.allowDoubleQuotesInFHIRPath;
@@ -963,6 +965,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.setForPublication(forPublication);
     validator.setAllowExamples(allowExampleUrls);
     validator.setShowMessagesFromReferences(showMessagesFromReferences);
+    validator.setStrictIdentifierSystems(strictIdentifierSystems);
     validator.getContext().getManager().setLocale(locale);
     validator.setFetcher(this);
     validator.getImplementationGuides().addAll(igs);
