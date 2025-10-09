@@ -20,6 +20,12 @@ public class ValidationContextUtilities {
     validationContext.setBaseEngine(validationEngineParameters.getBaseEngine());
   }
 
+  public static void addWatchParameters(ValidationContext validationContext, WatchParameters watchParameters) {
+    validationContext.setWatchMode(watchParameters.getWatchMode());
+    validationContext.setWatchScanDelay(watchParameters.getWatchScanDelay());
+    validationContext.setWatchSettleTime(watchParameters.getWatchSettleTime());
+  }
+
   public static ValidationEngineParameters getValidationEngineParameters(ValidationContext validationContext) {
     ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
     validationEngineParameters.setInferFhirVersion(validationContext.isInferFhirVersion());
@@ -35,5 +41,13 @@ public class ValidationContextUtilities {
     }
     validationEngineParameters.setBaseEngine(validationContext.getBaseEngine());
     return validationEngineParameters;
+  }
+
+  public static WatchParameters getWatchParameters(ValidationContext validationContext) {
+    WatchParameters watchParameters = new WatchParameters();
+    watchParameters.setWatchMode(validationContext.getWatchMode());
+    watchParameters.setWatchScanDelay(validationContext.getWatchScanDelay());
+    watchParameters.setWatchSettleTime(validationContext.getWatchSettleTime());
+    return watchParameters;
   }
 }
