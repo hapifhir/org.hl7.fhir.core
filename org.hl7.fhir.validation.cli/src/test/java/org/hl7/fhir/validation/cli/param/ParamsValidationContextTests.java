@@ -6,6 +6,7 @@ import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
+import org.hl7.fhir.validation.cli.param.parsers.ValidationContextParamParser;
 import org.hl7.fhir.validation.service.ValidatorWatchMode;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.model.ValidationContext;
@@ -13,6 +14,7 @@ import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -21,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Stream;
@@ -486,6 +489,11 @@ public class ParamsValidationContextTests {
       new ValidationContext().addSource("source1")
     ));
 
+    //These are also just skipped
+    objects.add(Arguments.of("-authorise-non-conformant-tx-servers -no-http-access -fhir-settings source1",
+      new ValidationContext().addSource("source1")
+    ));
+
     //These use values
     objects.add(Arguments.of(
       "-debug-log debug.log -trace-log trace.log -proxy http://somewhere.org -auth user:pass -https-proxy https://somewhere.org source1",
@@ -495,10 +503,21 @@ public class ParamsValidationContextTests {
     return objects.stream();
   }
 
+  @Disabled
   @ParameterizedTest
   @MethodSource("testCases")
   void testParamsToValidationContext(String argsLine, ValidationContext expectedValidationContext) throws Exception {
     ValidationContext actualValidationContext = Params.loadValidationContext(argsLine.split("\\s"));
+    assertThat(actualValidationContext).isEqualTo(expectedValidationContext);
+  }
+
+  @ParameterizedTest
+  @MethodSource("testCases")
+  void testValidationContextParamParser(String argsLine, ValidationContext expectedValidationContext) throws Exception {
+    ValidationContextParamParser parser = new ValidationContextParamParser();
+    String[] argArray = argsLine.split("\\s");
+    parser.parseArgs(Arg.of(argArray));
+    ValidationContext actualValidationContext = parser.getParameterObject();
     assertThat(actualValidationContext).isEqualTo(expectedValidationContext);
   }
 }

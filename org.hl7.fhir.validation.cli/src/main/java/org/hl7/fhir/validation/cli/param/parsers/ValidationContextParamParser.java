@@ -1,211 +1,63 @@
-package org.hl7.fhir.validation.cli.param;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
+package org.hl7.fhir.validation.cli.param.parsers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
-import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
-import org.hl7.fhir.validation.service.model.ValidationContext;
-import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.validation.cli.param.Arg;
+import org.hl7.fhir.validation.cli.param.IParamParser;
 import org.hl7.fhir.validation.service.ValidatorWatchMode;
+import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
+import org.hl7.fhir.validation.service.model.ValidationContext;
+import org.hl7.fhir.validation.service.model.ValidationContextUtilities;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Locale;
+
+
+import static org.hl7.fhir.validation.cli.param.Params.*;
+
 @Slf4j
-public class Params {
+public class ValidationContextParamParser implements IParamParser<ValidationContext> {
+  ValidationEngineParametersParser validationEngineParameters = new ValidationEngineParametersParser();
+  ValidationContext validationContext = new ValidationContext();
 
-  public static final String VERSION = "-version";
-  public static final String TEST_VERSION = "-test-version";
-  public static final String ALT_VERSION = "-alt-version";
-  public static final String OUTPUT = "-output";
-
-  public static final String OUTPUT_SUFFIX = "-outputSuffix";
-  public static final String LEVEL = "-level";
-  public static final String HTML_OUTPUT = "-html-output";
-  public static final String PROXY = "-proxy";
-
-  public static final String HTTPS_PROXY = "-https-proxy";
-  public static final String PROXY_AUTH = "-auth";
-  public static final String PROFILE = "-profile";
-  public static final String PROFILES = "-profiles";
-  public static final String CONFIG = "-config";
-  public static final String OPTION = "-option";
-  public static final String OPTIONS = "-options";
-  public static final String BUNDLE = "-bundle";
-  public static final String QUESTIONNAIRE = "-questionnaire";
-  public static final String NATIVE = "-native";
-  public static final String ASSUME_VALID_REST_REF = "-assumeValidRestReferences";
-  public static final String CHECK_REFERENCES = "-check-references";
-  public static final String RESOLUTION_CONTEXT = "-resolution-context";
-  public static final String DEBUG = "-debug";
-  public static final String DEBUG_LOG = "-debug-log";
-  public static final String TRACE_LOG = "-trace-log";
-  public static final String SCT = "-sct";
-  public static final String RECURSE = "-recurse";
-  public static final String SHOW_MESSAGES_FROM_REFERENCES = "-showReferenceMessages";
-  public static final String LOCALE = "-locale";
-  public static final String EXTENSION = "-extension";
-  public static final String HINT_ABOUT_NON_MUST_SUPPORT = "-hintAboutNonMustSupport";
-  public static final String TO_VERSION = "-to-version";
-  public static final String TX_PACK = "-tx-pack";
-  public static final String RE_PACK = "-re-package";
-  public static final String PACKAGE_NAME = "-package-name";
-  public static final String PIN = "-pin";
-  public static final String EXPAND = "-expand";
-  public static final String DO_NATIVE = "-do-native";
-  public static final String NO_NATIVE = "-no-native";
-  public static final String COMPILE = "-compile";
-  public static final String CODEGEN = "-codegen";
-  public static final String FACTORY = "-factory";
-  public static final String TRANSFORM = "-transform";
-  public static final String FORMAT = "-format";
-  public static final String LANG_TRANSFORM = "-lang-transform";
-  public static final String LANG_REGEN = "-lang-regen";
-  public static final String EXP_PARAMS = "-expansion-parameters";
-  public static final String NARRATIVE = "-narrative";
-  public static final String SNAPSHOT = "-snapshot";
-  public static final String INSTALL = "-install";
-  public static final String SCAN = "-scan";
-  public static final String TERMINOLOGY = "-tx";
-  public static final String TERMINOLOGY_LOG = "-txLog";
-  public static final String TERMINOLOGY_CACHE = "-txCache";
-  public static final String TERMINOLOGY_ROUTING = "-tx-routing";
-  public static final String TERMINOLOGY_CACHE_CLEAR = "-clear-tx-cache";
-  public static final String LOG = "-log";
-  public static final String LANGUAGE = "-language";
-  public static final String IMPLEMENTATION_GUIDE = "-ig";
-  public static final String DEFINITION = "-defn";
-  public static final String MAP = "-map";
-  public static final String X = "-x";
-  public static final String CONVERT = "-convert";
-  public static final String FHIRPATH = "-fhirpath";
-  public static final String TEST = "-tests";
-  public static final String TX_TESTS = "txTests";
-  public static final String AI_TESTS = "-aiTests";
-  public static final String HELP = "help";
-  public static final String COMPARE = "-compare";
-  public static final String SERVER = "-server";
-  public static final String SPREADSHEET = "-spreadsheet";
-  public static final String DESTINATION = "-dest";
-  public static final String LEFT = "-left";
-  public static final String RIGHT = "-right";
-  public static final String NO_INTERNAL_CACHING = "-no-internal-caching";
-
-  public static final String PRELOAD_CACHE = "-preload-cache";
-  public static final String NO_EXTENSIBLE_BINDING_WARNINGS = "-no-extensible-binding-warnings";
-  public static final String NO_UNICODE_BIDI_CONTROL_CHARS = "-no_unicode_bidi_control_chars";
-  public static final String NO_INVARIANTS = "-no-invariants";
-  public static final String DISPLAY_WARNINGS = "-display-issues-are-warnings";
-  public static final String WANT_INVARIANTS_IN_MESSAGES = "-want-invariants-in-messages";
-  public static final String SECURITY_CHECKS = "-security-checks";
-  public static final String CRUMB_TRAIL = "-crumb-trails";
-  public static final String SHOW_MESSAGE_IDS = "-show-message-ids";
-  public static final String FOR_PUBLICATION = "-forPublication";
-  public static final String AI_SERVICE = "-ai-service";
-  public static final String VERBOSE = "-verbose";
-  public static final String SHOW_TIMES = "-show-times";
-  public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
-  public static final String OUTPUT_STYLE = "-output-style";
-  public static final String ADVISOR_FILE = "-advisor-file";
-  public static final String DO_IMPLICIT_FHIRPATH_STRING_CONVERSION = "-implicit-fhirpath-string-conversions";
-  public static final String JURISDICTION = "-jurisdiction";
-  public static final String HTML_IN_MARKDOWN = "-html-in-markdown";
-  public static final String SRC_LANG = "-src-lang";
-  public static final String TGT_LANG = "-tgt-lang";
-  public static final String ALLOW_DOUBLE_QUOTES = "-allow-double-quotes-in-fhirpath";
-  public static final String DISABLE_DEFAULT_RESOURCE_FETCHER = "-disable-default-resource-fetcher";
-  public static final String CHECK_IPS_CODES = "-check-ips-codes";
-  public static final String BEST_PRACTICE = "-best-practice";
-  public static final String UNKNOWN_CODESYSTEMS_CAUSE_ERROR = "-unknown-codesystems-cause-errors";
-  public static final String NO_EXPERIMENTAL_CONTENT = "-no-experimental-content";
-
-  public static final String RUN_TESTS = "-run-tests";
-
-  public static final String TEST_MODULES = "-test-modules";
-
-  public static final String TEST_NAME_FILTER = "-test-classname-filter";
-  public static final String CERT = "-cert";
-  public static final String SPECIAL = "-special";
-  public static final String TARGET = "-target";
-  public static final String SOURCE = "-source";
-  public static final String INPUT = "-input";
-  public static final String FILTER = "-filter";
-  public static final String EXTERNALS = "-externals";
-  public static final String MODE = "-mode";
-  public static final String FHIR_SETTINGS_PARAM = "-fhir-settings";
-  public static final String WATCH_MODE_PARAM = "-watch-mode";
-  public static final String WATCH_SCAN_DELAY = "-watch-scan-delay";
-  public static final String WATCH_SETTLE_TIME = "-watch-settle-time";
-  public static final String NO_HTTP_ACCESS = "-no-http-access";
-  public static final String AUTH_NONCONFORMANT_SERVERS = "-authorise-non-conformant-tx-servers";
-  public static final String R5_REF_POLICY = "r5-bundle-relative-reference-policy";
-  public static final String MATCHETYPE = "-matchetype";
-
-  /**
-   * Checks the list of passed in params to see if it contains the passed in param.
-   *
-   * @param args  Array of params to search.
-   * @param param {@link String} param to search for.
-   * @return {@link Boolean#TRUE} if the list contains the given param.
-   */
-  public static boolean hasParam(String[] args, String param) {
-    return Arrays.asList(args).contains(param);
+  @Override
+  public ValidationContext getParameterObject() {
+    return validationContext;
   }
 
-  public static boolean hasParamAndValue(String[] args, String param) {
-    int paramIndex = Arrays.asList(args).indexOf(param);
-    if (paramIndex == -1) {
-      return false;
-    }
-    checkIfParamValueInBounds(args, param, paramIndex);
-    return true;
-  }
-
-  /**
-   * Check if the value for the param is in bounds in the args array.
-   */
-  private static void checkIfParamValueInBounds(String[] args, String param, int paramIndex) {
-    if (paramIndex + 1 >= args.length) {
-      throw new Error("Used '"+ param +"' without providing a value");
+  @Override
+  public void parseArgs(Arg[] args) {
+    try {
+      validationEngineParameters.parseArgs(args);
+      String[] unprocessedArgs = filterProcessedArgs(args);
+      this.validationContext = loadValidationContext(unprocessedArgs);
+      ValidationContextUtilities.addValidationEngineParameters(this.validationContext, validationEngineParameters.getParameterObject());
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
     }
   }
 
-  /**
-   * Fetches the value for the passed in param from the provided list of params.
-   *
-   * @param args  Array of params to search.
-   * @param param {@link String} param keyword to search for.
-   * @return {@link String} value for the provided param, or null if param is out of bounds
-   */
-  public static String getParam(String[] args, String param) {
-    for (int i = 0; i < args.length - 1; i++) {
-      if (args[i].equals(param)) return args[i + 1];
-    }
-    return null;
-  }
-
-  public static Collection<String> getMultiValueParam(String[] args, String param) {
-    final List<String> output = new LinkedList<>();
-    for (int i = 0; i < args.length - 1; i++) {
-      if (args[i].equals(param)) {
-        checkIfParamValueInBounds(args, param, i);
-        output.add(args[i + 1]);
+  private String[] filterProcessedArgs(Arg[] args) {
+    ArrayList<String> unprocessedArgs = new ArrayList<>();
+    for (Arg arg : args) {
+      if (!arg.isProcessed()) {
+        unprocessedArgs.add(arg.getValue());
       }
     }
-    return Collections.unmodifiableList(output);
+    return unprocessedArgs.toArray(new String[0]);
   }
-  /**
-   * TODO Don't do this all in one for loop. Use the above methods.
-   */
+
   public static ValidationContext loadValidationContext(String[] args) throws Exception {
     ValidationContext validationContext = new ValidationContext();
 
@@ -229,6 +81,16 @@ public class Params {
           throw new Error("Specified -html-output without indicating output file");
         else
           validationContext.setHtmlOutput(args[++i]);
+      } else if (args[i].equals(DEBUG_LOG)) {
+        i++;
+      } else if (args[i].equals(TRACE_LOG)) {
+        i++;
+      } else if (args[i].equals(PROXY)) {
+        i++; // ignore next parameter
+      } else if (args[i].equals(PROXY_AUTH)) {
+        i++;
+      } else if (args[i].equals(HTTPS_PROXY)) {
+        i++;
       } else if (args[i].equals(PROFILE)) {
         String profile = null;
         if (i + 1 == args.length) {
@@ -332,7 +194,7 @@ public class Params {
         else {
           String q = args[++i];
           if (!HtmlInMarkdownCheck.isValidCode(q)) {
-            throw new Error("Specified "+HTML_IN_MARKDOWN+" with na invalid code - must be ignore, warning, or error");            
+            throw new Error("Specified "+HTML_IN_MARKDOWN+" with na invalid code - must be ignore, warning, or error");
           } else {
             validationContext.setHtmlInMarkdownCheck(HtmlInMarkdownCheck.fromCode(q));
           }
@@ -414,7 +276,7 @@ public class Params {
       } else if (args[i].equals(TRANSFORM)) {
         validationContext.setMap(args[++i]);
       } else if (args[i].equals(FORMAT)) {
-        validationContext.setFormat(FhirFormat.fromCode(args[++i]));
+        validationContext.setFormat(Manager.FhirFormat.fromCode(args[++i]));
       } else if (args[i].equals(LANG_TRANSFORM)) {
         validationContext.setLangTransform(args[++i]);
       } else if (args[i].equals(LANG_REGEN)) {
@@ -442,7 +304,7 @@ public class Params {
       } else if (args[i].equals(AI_SERVICE)) {
         validationContext.setAIService(args[++i]);
       } else if (args[i].equals(R5_REF_POLICY)) {
-        validationContext.setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.fromCode(args[++i]));
+        validationContext.setR5BundleRelativeReferencePolicy(ValidationOptions.R5BundleRelativeReferencePolicy.fromCode(args[++i]));
       } else if (args[i].equals(UNKNOWN_CODESYSTEMS_CAUSE_ERROR)) {
         validationContext.setUnknownCodeSystemsCauseErrors(true);
       } else if (args[i].equals(NO_EXPERIMENTAL_CONTENT)) {
@@ -451,14 +313,14 @@ public class Params {
         validationContext.setCrumbTrails(true);
         validationContext.setShowMessageIds(true);
       } else if (args[i].equals(ALLOW_EXAMPLE_URLS)) {
-        String bl = args[++i]; 
+        String bl = args[++i];
         if ("true".equals(bl)) {
           validationContext.setAllowExampleUrls(true);
         } else if ("false".equals(bl)) {
           validationContext.setAllowExampleUrls(false);
         } else {
-          throw new Error("Value for "+ALLOW_EXAMPLE_URLS+" not understood: "+bl);          
-        }          
+          throw new Error("Value for "+ALLOW_EXAMPLE_URLS+" not understood: "+bl);
+        }
       } else if (args[i].equals(TERMINOLOGY_ROUTING)) {
         validationContext.setShowTerminologyRouting(true);
       } else if (args[i].equals(TERMINOLOGY_CACHE_CLEAR)) {
@@ -498,7 +360,7 @@ public class Params {
         else {
           String s = args[++i];
           if (!(new File(s).exists())) {
-            throw new Error("Certificate source '"+s+"'  not found");            
+            throw new Error("Certificate source '"+s+"'  not found");
           } else {
             validationContext.addCertSource(s);
           }
@@ -509,7 +371,7 @@ public class Params {
         else {
           String s = args[++i];
           if (!(new File(s).exists())) {
-            throw new Error("-matchetype source '"+s+"'  not found");            
+            throw new Error("-matchetype source '"+s+"'  not found");
           } else {
             validationContext.addMatchetype(s);
           }
@@ -592,11 +454,11 @@ public class Params {
           validationContext.setWatchScanDelay(readInteger(WATCH_SCAN_DELAY, args[++i]));
         }
       } else if (args[i].equals(WATCH_SETTLE_TIME)) {
-          if (i + 1 == args.length) {
-            throw new Error("Specified -watch-mode without indicating mode value");
-          } else {
-            validationContext.setWatchSettleTime(readInteger(WATCH_SETTLE_TIME, args[++i]));
-          }      } else if (args[i].startsWith(X)) {
+        if (i + 1 == args.length) {
+          throw new Error("Specified -watch-mode without indicating mode value");
+        } else {
+          validationContext.setWatchSettleTime(readInteger(WATCH_SETTLE_TIME, args[++i]));
+        }      } else if (args[i].startsWith(X)) {
         i++;
       } else if (args[i].equals(SERVER)) {
         i++;
@@ -608,25 +470,16 @@ public class Params {
             validationContext.setFhirpath(args[++i]);
         else
           throw new Exception("Can only nominate a single -fhirpath parameter");
-      } else if (Utilities.existsInList(args[i],
-        DEBUG_LOG,
-        TRACE_LOG,
-        PROXY,
-        PROXY_AUTH,
-        HTTPS_PROXY)) {
-          //DO NOTHING Those params are handled outside this loop, so should be ignored along with their values.
-          i++;
-      } else if (Utilities.existsInList(args[i],
+      } else if (!Utilities.existsInList(args[i],
+        //The following params are handled outside this loop, so should be ignored.
         AUTH_NONCONFORMANT_SERVERS,
         NO_HTTP_ACCESS,
         FHIR_SETTINGS_PARAM)) {
-        //DO NOTHING Those params are handled outside this loop, so should be ignored.
-      } else {}
         //Any remaining unhandled args become sources
         validationContext.addSource(args[i]);
       }
     }
-    
+
     return validationContext;
   }
 
@@ -635,38 +488,16 @@ public class Params {
       return BestPracticeWarningLevel.Warning;
     }
     switch (s.toLowerCase()) {
-    case "warning" : return BestPracticeWarningLevel.Warning;
-    case "error" : return BestPracticeWarningLevel.Error;
-    case "hint" : return BestPracticeWarningLevel.Hint;
-    case "ignore" : return BestPracticeWarningLevel.Ignore;
-    case "w" : return BestPracticeWarningLevel.Warning;
-    case "e" : return BestPracticeWarningLevel.Error;
-    case "h" : return BestPracticeWarningLevel.Hint;
-    case "i" : return BestPracticeWarningLevel.Ignore;
+      case "warning" : return BestPracticeWarningLevel.Warning;
+      case "error" : return BestPracticeWarningLevel.Error;
+      case "hint" : return BestPracticeWarningLevel.Hint;
+      case "ignore" : return BestPracticeWarningLevel.Ignore;
+      case "w" : return BestPracticeWarningLevel.Warning;
+      case "e" : return BestPracticeWarningLevel.Error;
+      case "h" : return BestPracticeWarningLevel.Hint;
+      case "i" : return BestPracticeWarningLevel.Ignore;
     }
     throw new Error("The best-practice level ''"+s+"'' is not valid");
-  }
-
-  private static int readInteger(String name, String value) {
-    if (!Utilities.isInteger(value)) {
-      throw new Error("Unable to read "+value+" provided for '"+name+"' - must be an integer");
-    }
-    return Integer.parseInt(value);
-  }
-
-  private static ValidatorWatchMode readWatchMode(String s) {
-    if (s == null) {
-      return ValidatorWatchMode.NONE;
-    }
-    switch (s.toLowerCase()) {
-    case "all" : return ValidatorWatchMode.ALL;
-    case "none" : return ValidatorWatchMode.NONE;
-    case "single" : return ValidatorWatchMode.SINGLE;
-    case "a" : return ValidatorWatchMode.ALL;
-    case "n" : return ValidatorWatchMode.NONE;
-    case "s" : return ValidatorWatchMode.SINGLE;
-    }
-    throw new Error("The watch mode ''"+s+"'' is not valid");
   }
 
   private static String processJurisdiction(String s) {
@@ -674,97 +505,33 @@ public class Params {
       return s;
     } else {
       String v = JurisdictionUtilities.getJurisdictionFromLocale(s);
-      if (v != null) { 
-        return v;        
+      if (v != null) {
+        return v;
       } else {
         throw new FHIRException("Unable to understand Jurisdiction '"+s+"'");
       }
     }
   }
 
-  public static String getTerminologyServerLog(String[] args) throws IOException {
-    String txLog = null;
-    if (hasParam(args, "-txLog")) {
-      txLog = getParam(args, "-txLog");
-      ManagedFileAccess.file(txLog).delete();
+  private static ValidatorWatchMode readWatchMode(String s) {
+    if (s == null) {
+      return ValidatorWatchMode.NONE;
     }
-    return txLog;
+    switch (s.toLowerCase()) {
+      case "all" : return ValidatorWatchMode.ALL;
+      case "none" : return ValidatorWatchMode.NONE;
+      case "single" : return ValidatorWatchMode.SINGLE;
+      case "a" : return ValidatorWatchMode.ALL;
+      case "n" : return ValidatorWatchMode.NONE;
+      case "s" : return ValidatorWatchMode.SINGLE;
+    }
+    throw new Error("The watch mode ''"+s+"'' is not valid");
   }
 
-  public static void checkIGFileReferences(String[] args) {
-    for (int i = 0; i < args.length; i++) {
-      if (IMPLEMENTATION_GUIDE.equals(args[i])) {
-        if (i + 1 == args.length)
-          throw new Error("Specified -ig without indicating ig file");
-        else {
-          String s = args[++i];
-          if (!s.startsWith("hl7.fhir.core-")) {
-            log.info("Load Package: " + s);
-          }
-        }
-      }
+  private static int readInteger(String name, String value) {
+    if (!Utilities.isInteger(value)) {
+      throw new Error("Unable to read "+value+" provided for '"+name+"' - must be an integer");
     }
-  }
-
-  public static String getVersion(String[] args) {
-    String v = Params.getParam(args, "-version");
-    if (v == null) {
-      v = "5.0";
-      for (int i = 0; i < args.length; i++) {
-        if ("-ig".equals(args[i])) {
-          if (i + 1 == args.length)
-            throw new Error("Specified -ig without indicating ig file");
-          else {
-            String n = args[i + 1];
-            v = getVersionFromIGName(v, n);
-          }
-        }
-      }
-    } else if (VersionUtilities.isR2Ver(v)) {
-      v = "1.0";
-    } else if (VersionUtilities.isR2BVer(v)) {
-      v = "1.4";
-    } else if (VersionUtilities.isR3Ver(v)) {
-      v = "3.0";
-    } else if (VersionUtilities.isR4Ver(v)) {
-      v = "4.0";
-    } else if (VersionUtilities.isR4BVer(v)) {
-      v = "4.3";
-    } else if (VersionUtilities.isR5Ver(v)) {
-      v = "5.0";
-    } else if (VersionUtilities.isR6Ver(v)) {
-      v = "6.0";
-    }
-    return v;
-  }
-
-  /**
-   * Evaluates the current implementation guide file name and sets the current version accordingly.
-   * <p>
-   * If igFileName is not one of the known patterns, will return whatever value is passed in as default.
-   *
-   * @param defaultValue Version to return if no associated version can be determined from passed in igFileName
-   * @param igFileName   Name of the implementation guide
-   * @return
-   */
-  public static String getVersionFromIGName(String defaultValue, String igFileName) {
-    if (igFileName.equals("hl7.fhir.core")) {
-      defaultValue = "5.0";
-    } else if (igFileName.startsWith("hl7.fhir.core#")) {
-      defaultValue = VersionUtilities.getCurrentPackageVersion(igFileName.substring(14));
-    } else if (igFileName.startsWith("hl7.fhir.r2.core#") || igFileName.equals("hl7.fhir.r2.core")) {
-      defaultValue = "1.0";
-    } else if (igFileName.startsWith("hl7.fhir.r2b.core#") || igFileName.equals("hl7.fhir.r2b.core")) {
-      defaultValue = "1.4";
-    } else if (igFileName.startsWith("hl7.fhir.r3.core#") || igFileName.equals("hl7.fhir.r3.core")) {
-      defaultValue = "3.0";
-    } else if (igFileName.startsWith("hl7.fhir.r4.core#") || igFileName.equals("hl7.fhir.r4.core")) {
-      defaultValue = "4.0";
-    } else if (igFileName.startsWith("hl7.fhir.r5.core#") || igFileName.equals("hl7.fhir.r5.core")) {
-      defaultValue = "5.0";
-    } else if (igFileName.startsWith("hl7.fhir.r6.core#") || igFileName.equals("hl7.fhir.r6.core")) {
-      defaultValue = "6.0";
-    }
-    return defaultValue;
+    return Integer.parseInt(value);
   }
 }
