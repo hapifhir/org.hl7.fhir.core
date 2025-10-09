@@ -4,7 +4,6 @@ import lombok.Getter;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.r5.context.IWorkerContext.ITerminologyOperationDetails;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
@@ -534,7 +533,20 @@ public interface IWorkerContext {
    * @param heiarchical - whether to accept a heirarchical expansion
    * @return the expansion, or information about how the expansion failed
    */
+  @Deprecated
   public ValueSetExpansionOutcome expandVS(ValueSet source, boolean cacheOk, boolean heiarchical);
+
+
+  /**
+   * ValueSet Expansion - see $expand
+   *
+   * Note that caching makes a real performance difference, so turn it off with care.
+   *
+   * @param options - controls the expansion process (overrides expansion parameters)
+   * @param source - the valueset to expand
+   * @return the expansion, or information about how the expansion failed
+   */
+  public ValueSetExpansionOutcome expandVS(ExpansionOptions options, ValueSet source);
 
   /**
    * ValueSet Expansion - see $expand
@@ -547,19 +559,8 @@ public interface IWorkerContext {
    * @param count - maximum concepts to return
    * @return the expansion, or information about how the expansion failed
    */
+  @Deprecated
   public ValueSetExpansionOutcome expandVS(ValueSet source, boolean cacheOk, boolean heiarchical, int count);
-
-  /**
-   * ValueSet Expansion - see $expand
-   *
-   * Note that caching makes a real performance difference, so turn it off with care.
-   *
-   * @param source - the valueset to expand
-   * @param cacheOk - whether to look in the cache for an expansion
-   * @param heiarchical - whether to accept a heirarchical expansion
-   * @return the expansion, or information about how the expansion failed
-   */
-  public ValueSetExpansionOutcome expandVS(ValueSet source, boolean cacheOk, boolean heiarchical, boolean incompleteOk);
 
   /**
    * ValueSet Expansion - see $expand
@@ -570,13 +571,12 @@ public interface IWorkerContext {
    * resolved, it'll be passed to the terminology service directly, and some terminology
    * servers will expand value sets that they won't return.
    *
+   * @param options - controls the expansion process (overrides expansion parameters)
    * @param uri - valueset uri.
-   * @param cacheOk - whether to look in the cache for an expansion
-   * @param heiarchical - whether to accept a heirarchical expansion
    * @return the expansion, or information about how the expansion failed
    */
-  public ValueSetExpansionOutcome expandVS(String uri, boolean cacheOk, boolean heiarchical, int count); // set to 0 to just check existence
-  
+  public ValueSetExpansionOutcome expandVS(ExpansionOptions options, String uri); // set to 0 to just check existence
+
   /**
    * ValueSet Expansion - see $expand, but resolves the binding first
    *  
@@ -584,18 +584,8 @@ public interface IWorkerContext {
    * @return
    * @throws FHIRException 
    */
+  @Deprecated
   public ValueSetExpansionOutcome expandVS(Resource src, ElementDefinitionBindingComponent binding, boolean cacheOk, boolean heiarchical) throws FHIRException;
-
-  /**
-   * Value set expanion inside the internal expansion engine - used 
-   * for references to supported system (see "supportsSystem") for
-   * which there is no value set. 
-   * 
-   * @param inc
-   * @return
-   * @throws FHIRException 
-   */
-  ValueSetExpansionOutcome expandVS(ITerminologyOperationDetails opCtxt, ConceptSetComponent inc, boolean hierarchical, boolean noInactive) throws TerminologyServiceException;
 
   /**
    * Validation of a code - consult the terminology infrstructure and/or service
@@ -809,7 +799,4 @@ public interface IWorkerContext {
   @Deprecated
   public void setForPublication(boolean value);
 
-  public interface ITerminologyOperationDetails {
-    public void seeSupplement(CodeSystem supp);
-  }
 }
