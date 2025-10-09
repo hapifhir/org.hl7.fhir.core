@@ -28,7 +28,8 @@ import static org.hl7.fhir.validation.cli.param.Params.*;
 @Slf4j
 public class ValidationContextParamParser implements IParamParser<ValidationContext> {
 
-  ValidationEngineParametersParser validationEngineParameters = new ValidationEngineParametersParser();
+  ValidationEngineParametersParser validationEngineParametersParser = new ValidationEngineParametersParser();
+  WatchParametersParser watchParametersParser = new WatchParametersParser();
   ValidationContext validationContext = new ValidationContext();
 
   @Override
@@ -39,10 +40,12 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
   @Override
   public void parseArgs(Arg[] args) {
     try {
-      validationEngineParameters.parseArgs(args);
+      validationEngineParametersParser.parseArgs(args);
+      watchParametersParser.parseArgs(args);
       String[] unprocessedArgs = filterProcessedArgs(args);
       this.validationContext = loadValidationContext(unprocessedArgs);
-      ValidationContextUtilities.addValidationEngineParameters(this.validationContext, validationEngineParameters.getParameterObject());
+      ValidationContextUtilities.addValidationEngineParameters(this.validationContext, validationEngineParametersParser.getParameterObject());
+      ValidationContextUtilities.addWatchParameters(this.validationContext, this.watchParametersParser.getParameterObject());
     } catch (Exception e) {
       log.error(e.getMessage(), e);
     }
@@ -63,9 +66,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
 
     // load the parameters - so order doesn't matter
     for (int i = 0; i < args.length; i++) {
-      if (args[i].equals(VERSION)) {
-        validationContext.setSv(VersionUtilities.getCurrentPackageVersion(args[++i]));
-      } else if (args[i].equals(OUTPUT)) {
+      if (args[i].equals(OUTPUT)) {
         if (i + 1 == args.length)
           throw new Error("Specified -output without indicating output file");
         else
@@ -169,10 +170,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
           String input = args[++i];
           validationContext.addInput(input);
         }
-      } else if (args[i].equals(NATIVE)) {
-        validationContext.setDoNative(true);
-      } else if (args[i].equals(ASSUME_VALID_REST_REF)) {
-        validationContext.setAssumeValidRestReferences(true);
       } else if (args[i].equals(CHECK_REFERENCES)) {
         validationContext.setCheckReferences(true);
       } else if (args[i].equals(RESOLUTION_CONTEXT)) {
@@ -180,8 +177,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
       } else if (args[i].equals(DEBUG)) {
         i++;
         log.warn("Debugging support is now provided through the -debug-log and -trace-log CLI parameters. Use the -help option for detailed instructions.");
-      } else if (args[i].equals(SCT)) {
-        validationContext.setSnomedCT(args[++i]);
       } else if (args[i].equals(RECURSE)) {
         validationContext.setRecursive(true);
       } else if (args[i].equals(SHOW_MESSAGES_FROM_REFERENCES)) {
@@ -216,8 +211,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         validationContext.getExtensions().add(args[++i]);
       } else if (args[i].equals(NO_INTERNAL_CACHING)) {
         validationContext.setNoInternalCaching(true);
-      } else if (args[i].equals(NO_EXTENSIBLE_BINDING_WARNINGS)) {
-        validationContext.setNoExtensibleBindingMessages(true);
       } else if (args[i].equals(ALLOW_DOUBLE_QUOTES)) {
         validationContext.setAllowDoubleQuotesInFHIRPath(true);
       } else if (args[i].equals(DISABLE_DEFAULT_RESOURCE_FETCHER)) {
@@ -232,10 +225,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         validationContext.setDisplayWarnings(true);
       } else if (args[i].equals(WANT_INVARIANTS_IN_MESSAGES)) {
         validationContext.setWantInvariantsInMessages(true);
-      } else if (args[i].equals(HINT_ABOUT_NON_MUST_SUPPORT)) {
-        validationContext.setHintAboutNonMustSupport(true);
-      } else if (args[i].equals(TO_VERSION)) {
-        validationContext.setTargetVer(args[++i]);
       } else if (args[i].equals(PACKAGE_NAME)) {
         validationContext.setPackageName(args[++i]);
       } else if (args[i].equals(TX_PACK)) {
@@ -400,25 +389,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
           throw new Error("Specified -jurisdiction without indicating jurisdiction");
         else
           validationContext.setJurisdiction(processJurisdiction(args[++i]));
-      } else if (args[i].equals(IMPLEMENTATION_GUIDE) || args[i].equals(DEFINITION)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified " + args[i] + " without indicating ig file");
-        else {
-          String s = args[++i];
-          String version = getVersionFromIGName(null, s);
-          if (version == null) {
-            validationContext.addIg(s);
-          } else {
-            String v = getParam(args, VERSION);
-            if (v != null && !v.equals(version)) {
-              throw new Error("Parameters are inconsistent: specified version is "+v+" but -ig parameter "+s+" implies a different version");
-            } else if (validationContext.getSv() != null && !version.equals(validationContext.getSv())) {
-              throw new Error("Parameters are inconsistent: multiple -ig parameters implying differetion versions ("+ validationContext.getSv()+","+version+")");
-            } else {
-              validationContext.setSv(version);
-            }
-          }
-        }
       } else if (args[i].equals(ALT_VERSION)) {
         if (i + 1 == args.length)
           throw new Error("Specified " + args[i] + " without indicating version");
@@ -441,25 +411,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         } else {
           throw new Exception("Can only nominate a single -map parameter");
         }
-      } else if (args[i].equals(WATCH_MODE_PARAM)) {
-        if (i + 1 == args.length) {
-          throw new Error("Specified -watch-mode without indicating mode value");
-        } else {
-          validationContext.setWatchMode(readWatchMode(args[++i]));
-        }
-      } else if (args[i].equals(WATCH_SCAN_DELAY)) {
-        if (i + 1 == args.length) {
-          throw new Error("Specified -watch-scan-delay without indicating mode value");
-        } else {
-          validationContext.setWatchScanDelay(readInteger(WATCH_SCAN_DELAY, args[++i]));
-        }
-      } else if (args[i].equals(WATCH_SETTLE_TIME)) {
-        if (i + 1 == args.length) {
-          throw new Error("Specified -watch-mode without indicating mode value");
-        } else {
-          validationContext.setWatchSettleTime(readInteger(WATCH_SETTLE_TIME, args[++i]));
-        }      } else if (args[i].startsWith(X)) {
-        i++;
       } else if (args[i].equals(SERVER)) {
         i++;
       } else if (args[i].equals(FHIRPATH)) {
