@@ -619,11 +619,11 @@ public class ValidationService {
     validationEngine.setLevel(validationContext.getLevel());
     validationEngine.setDoNative(validationContext.isDoNative());
     validationEngine.setHintAboutNonMustSupport(validationContext.isHintAboutNonMustSupport());
-    for (String s : validationContext.getExtensions()) {
-      if ("any".equals(s)) {
-        validationEngine.setAnyExtensionsAllowed(true);
+    for (String extension : validationContext.getExtensions()) {
+      if ("any".equals(extension)) {
+        validationEngine.setAnyExtensionsAllowed(true); //FIXME InstanceValidatorParameters
       } else {
-        validationEngine.getExtensionDomains().add(s);
+        validationEngine.getExtensionDomains().add(extension);
       }
     }
     validationEngine.getCertSources().addAll(validationContext.getCertSources());

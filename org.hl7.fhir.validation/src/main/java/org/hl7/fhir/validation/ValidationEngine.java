@@ -928,6 +928,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     context.dropResource(type, id);
   }
 
+  //FIXME this should get the default InstanceValidatorParameters
+  //another method should allow for setting ValidationInstanceParameters by default
   public InstanceValidator getValidator(FhirFormat format) throws FHIRException, IOException {
     InstanceValidator validator = new InstanceValidator(context, null, null, new ValidatorSession(), new ValidatorSettings());
     context.getTxClientManager().setUsage("validation");

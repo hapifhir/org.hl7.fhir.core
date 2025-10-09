@@ -13,6 +13,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
+import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -368,7 +369,101 @@ public class ValidationContext {
   private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy;
   
   private List<String> langRegenParam = new ArrayList<>();
-  
+
+  /**
+   * Default constructor
+   */
+  public ValidationContext() {
+  }
+
+  /**
+   * Copy constructor that performs a deep copy of the provided ValidationContext.
+   * All collections are copied to new instances with their contents.
+   *
+   * @param other the ValidationContext to copy
+   */
+  public ValidationContext(ValidationContext other) {
+    this.baseEngine = other.baseEngine;
+    this.doNative = other.doNative;
+    this.hintAboutNonMustSupport = other.hintAboutNonMustSupport;
+    this.recursive = other.recursive;
+    this.showMessagesFromReferences = other.showMessagesFromReferences;
+    this.doDebug = other.doDebug;
+    this.assumeValidRestReferences = other.assumeValidRestReferences;
+    this.checkReferences = other.checkReferences;
+    this.resolutionContext = other.resolutionContext;
+    this.canDoNative = other.canDoNative;
+    this.noInternalCaching = other.noInternalCaching;
+    this.noExtensibleBindingMessages = other.noExtensibleBindingMessages;
+    this.noUnicodeBiDiControlChars = other.noUnicodeBiDiControlChars;
+    this.noInvariants = other.noInvariants;
+    this.displayWarnings = other.displayWarnings;
+    this.wantInvariantsInMessages = other.wantInvariantsInMessages;
+    this.doImplicitFHIRPathStringConversion = other.doImplicitFHIRPathStringConversion;
+    this.htmlInMarkdownCheck = other.htmlInMarkdownCheck;
+    this.allowDoubleQuotesInFHIRPath = other.allowDoubleQuotesInFHIRPath;
+    this.disableDefaultResourceFetcher = other.disableDefaultResourceFetcher;
+    this.checkIPSCodes = other.checkIPSCodes;
+    this.langTransform = other.langTransform;
+    this.map = other.map;
+    this.source = other.source;
+    this.output = other.output;
+    this.outputSuffix = other.outputSuffix;
+    this.htmlOutput = other.htmlOutput;
+    this.txServer = other.txServer;
+    this.sv = other.sv;
+    this.txLog = other.txLog;
+    this.txCache = other.txCache;
+    this.mapLog = other.mapLog;
+    this.lang = other.lang;
+    this.fhirpath = other.fhirpath;
+    this.snomedCT = other.snomedCT;
+    this.targetVer = other.targetVer;
+    this.packageName = other.packageName;
+    this.noEcosystem = other.noEcosystem;
+    this.extensions = new ArrayList<>(other.extensions);
+    this.certSources = new ArrayList<>(other.certSources);
+    this.matchetypes = new ArrayList<>(other.matchetypes);
+    this.igs = new ArrayList<>(other.igs);
+    this.questionnaireMode = other.questionnaireMode;
+    this.level = other.level;
+    this.options = new ArrayList<>(other.options);
+    this.profiles = new ArrayList<>(other.profiles);
+    this.sources = new ArrayList<>(other.sources);
+    this.inputs = new ArrayList<>(other.inputs);
+    this.modeParams = new HashSet<>(other.modeParams);
+    this.mode = other.mode;
+    this.securityChecks = other.securityChecks;
+    this.crumbTrails = other.crumbTrails;
+    this.showMessageIds = other.showMessageIds;
+    this.forPublication = other.forPublication;
+    this.aiService = other.aiService;
+    this.allowExampleUrls = other.allowExampleUrls;
+    this.showTimes = other.showTimes;
+    this.showTerminologyRouting = other.showTerminologyRouting;
+    this.clearTxCache = other.clearTxCache;
+    this.locale = other.locale;
+    this.locations = new HashMap<>(other.locations);
+    this.outputStyle = other.outputStyle;
+    this.bundleValidationRules = new ArrayList<>(other.bundleValidationRules);
+    this.jurisdiction = other.jurisdiction;
+    this.srcLang = other.srcLang;
+    this.tgtLang = other.tgtLang;
+    this.fhirSettingsFile = other.fhirSettingsFile;
+    this.watchMode = other.watchMode;
+    this.watchScanDelay = other.watchScanDelay;
+    this.watchSettleTime = other.watchSettleTime;
+    this.bestPracticeLevel = other.bestPracticeLevel;
+    this.unknownCodeSystemsCauseErrors = other.unknownCodeSystemsCauseErrors;
+    this.noExperimentalContent = other.noExperimentalContent;
+    this.advisorFile = other.advisorFile;
+    this.expansionParameters = other.expansionParameters;
+    this.format = other.format;
+    this.r5BundleRelativeReferencePolicy = other.r5BundleRelativeReferencePolicy;
+    this.langRegenParam = new ArrayList<>(other.langRegenParam);
+    this.inferFhirVersion = other.inferFhirVersion;
+  }
+
   @SerializedName("baseEngine")
   @JsonProperty("baseEngine")
   public String getBaseEngine() {
@@ -977,35 +1072,12 @@ public class ValidationContext {
   @SerializedName("snomedCT")
   @JsonProperty("snomedCT")
   public String getSnomedCTCode() {
-    if ("intl".equals(snomedCT)) return "900000000000207008";
-    if ("us".equals(snomedCT)) return "731000124108";
-    if ("us+icd10cm".equals(snomedCT)) return "5991000124107";
-    if ("uk/clinical".equals(snomedCT)) return "999000021000000109";
-    if ("uk".equals(snomedCT)) return "83821000000107";
-    if ("au".equals(snomedCT)) return "32506021000036107";
-    if ("at".equals(snomedCT)) return "11000234105";
-    if ("ca".equals(snomedCT)) return "20611000087101";
-    if ("ca-en".equals(snomedCT)) return "20621000087109";
-    if ("ca-fr".equals(snomedCT)) return "20611000087101";
-    if ("nl".equals(snomedCT)) return "11000146104";
-    if ("se".equals(snomedCT)) return "45991000052106";
-    if ("es".equals(snomedCT)) return "449081005";
-    if ("es-ES".equals(snomedCT)) return "900000001000122104";
-    if ("ar".equals(snomedCT)) return "11000221109";
-    if ("dk".equals(snomedCT)) return "554471000005108";
-    if ("be".equals(snomedCT)) return "11000172109";
-    if ("ee".equals(snomedCT)) return "11000181102";
-    if ("fi".equals(snomedCT)) return "11000229106";
-    if ("de".equals(snomedCT)) return "11000274103";
-    if ("in".equals(snomedCT)) return "1121000189102";
-    if ("ie".equals(snomedCT)) return "11000220105";
-    if ("nl".equals(snomedCT)) return "11000146104";
-    if ("nz".equals(snomedCT)) return "21000210109";
-    if ("no".equals(snomedCT)) return "51000202101";
-    if ("kr".equals(snomedCT)) return "11000267109";
-    if ("se".equals(snomedCT)) return "45991000052106";
-    if ("ch".equals(snomedCT)) return "2011000195101";
-    if ("uy".equals(snomedCT)) return "5631000179106";
+    String number = SnomedUtilities.getCodeFromAlias(snomedCT);
+    if (number != null) return number;
+    return snomedCT;
+  }
+
+  public String getSnomedCT(){
     return snomedCT;
   }
 
