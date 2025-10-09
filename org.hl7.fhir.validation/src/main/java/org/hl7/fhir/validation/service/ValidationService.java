@@ -142,7 +142,7 @@ public class ValidationService {
   public ValidationResponse validateSources(ValidationRequest request) throws Exception {
 
     TimeTracker timeTracker = new TimeTracker();
-    //FIXME Replace ValidationContext
+    
     String sessionId = initializeValidator(request.getValidationContext(), null, timeTracker, request.sessionId);
     ValidationEngine validationEngine = sessionCache.fetchSessionValidatorEngine(sessionId);
 
@@ -248,7 +248,7 @@ public class ValidationService {
     return versions;
   }
 
-  //FIXME replace ValidationContext
+  
   public void validateSources(ValidationContext validationContext, ValidationEngine validator, ValidatorWatchMode watch, int watchScanDelay, int watchSettleTime) throws Exception {
     if (validationContext.getProfiles().size() > 0) {
       log.info("  Profiles: " + validationContext.getProfiles());
@@ -417,7 +417,7 @@ public class ValidationService {
     log.info(validator.evaluateFhirPath(validationContext.getSources().get(0), validationContext.getFhirpath()));
   }
 
-  //FIXME replace ValidationContext
+  
   public void generateSnapshot(ValidationContext validationContext, ValidationEngine validator) throws Exception {
 
       if (!((validationContext.getOutput() == null) ^ (validationContext.getOutputSuffix() == null))) {
@@ -443,7 +443,7 @@ public class ValidationService {
 
   }
 
-  //FIXME replace ValidationContext
+  
   public void generateNarrative(ValidationContext validationContext, ValidationEngine validator) throws Exception {
     Resource r = validator.generate(validationContext.getSources().get(0), validationContext.getSv());
     log.info(" ...generated narrative successfully");
@@ -452,7 +452,7 @@ public class ValidationService {
     }
   }
 
-  //FIXME replace ValidationContext
+  
   public void transform(ValidationContext validationContext, ValidationEngine validator) throws Exception {
     if (validationContext.getSources().size() > 1)
       throw new Exception("Can only have one source when doing a transform (found " + validationContext.getSources() + ")");
@@ -512,7 +512,7 @@ public class ValidationService {
     }
   }
 
-  //FIXME replace ValidationContext
+  
   public void transformVersion(ValidationContext validationContext, ValidationEngine validator) throws Exception {
     if (validationContext.getSources().size() > 1) {
       throw new Exception("Can only have one source when converting versions (found " + validationContext.getSources() + ")");
@@ -722,7 +722,7 @@ public class ValidationService {
     throw new IllegalArgumentException("-> Multiple versions found. Specify a particular version using the -version parameter");
   }
 
-  //FIXME replace ValidationContext
+  
   public void generateSpreadsheet(ValidationContext validationContext, ValidationEngine validator) throws Exception {
     CanonicalResource cr = validator.loadCanonicalResource(validationContext.getSources().get(0), validationContext.getSv());
     boolean ok = true;
@@ -744,7 +744,7 @@ public class ValidationService {
     }
   }
 
-  //FIXME replace ValidationContext
+  
   public void transformLang(ValidationContext validationContext, ValidationEngine validator) throws IOException {
     switch (validationContext.getLangTransform()) {
     case "extract":
@@ -758,7 +758,7 @@ public class ValidationService {
     }
   }
 
-  //FIXME replace ValidationContext
+  
   private void transformLangExtract(ValidationContext validationContext, ValidationEngine validator) throws IOException {
     String dst = validationContext.getOutput();
     FileUtilities.createDirectory(dst);
@@ -791,7 +791,7 @@ public class ValidationService {
     log.info("Done - produced "+(po.fileCount()+xliff.fileCount()) + " files in "+dst);
   }
 
-  //FIXME replace ValidationContext
+  
   private void transformLangInject(ValidationContext validationContext, ValidationEngine validator) throws IOException {
     String dst = validationContext.getOutput();
     FileUtilities.createDirectory(dst);
