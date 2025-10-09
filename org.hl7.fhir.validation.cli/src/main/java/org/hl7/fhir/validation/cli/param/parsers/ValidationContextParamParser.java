@@ -23,11 +23,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 
-
 import static org.hl7.fhir.validation.cli.param.Params.*;
 
 @Slf4j
 public class ValidationContextParamParser implements IParamParser<ValidationContext> {
+
   ValidationEngineParametersParser validationEngineParameters = new ValidationEngineParametersParser();
   ValidationContext validationContext = new ValidationContext();
 
