@@ -621,7 +621,7 @@ public class Params {
         NO_HTTP_ACCESS,
         FHIR_SETTINGS_PARAM)) {
         //DO NOTHING Those params are handled outside this loop, so should be ignored.
-      } else {}
+      } else {
         //Any remaining unhandled args become sources
         validationContext.addSource(args[i]);
       }
