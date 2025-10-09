@@ -621,6 +621,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String STRUC_DEF_CONT_RULE = "STRUC_DEF_CONT_RULE";
   public static final String STRUC_DEF_CONT_TYPE = "STRUC_DEF_CONT_TYPE";
   public static final String STRUC_DEF_COPY_URL = "STRUC_DEF_COPY_URL";
+  public static final String STRUC_DEF_COPY_CODING = "STRUC_DEF_COPY_CODING";
   public static final String STRUC_DEF_CURR = "STRUC_DEF_CURR";
   public static final String STRUC_DEF_CURR_RULE = "STRUC_DEF_CURR_RULE";
   public static final String STRUC_DEF_DATE = "STRUC_DEF_DATE";

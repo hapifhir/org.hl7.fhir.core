@@ -41,6 +41,11 @@ public class ValidateTask extends ValidationEngineTask {
 
   @Override
   public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
+    return shouldExecuteTask(args);
+  }
+
+  @Override
+  public boolean shouldExecuteTask(@Nonnull String[] args) {
     // There is no explicit way to trigger a validation task.
     // It is the default task.
     return false;
@@ -53,6 +58,7 @@ public class ValidateTask extends ValidationEngineTask {
 
   @Override
   public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
+
     if (validationContext.getExpansionParameters() != null) {
       validationEngine.loadExpansionParameters(validationContext.getExpansionParameters());
     }

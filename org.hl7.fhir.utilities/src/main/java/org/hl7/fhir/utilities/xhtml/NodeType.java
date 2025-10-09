@@ -31,7 +31,7 @@ package org.hl7.fhir.utilities.xhtml;
 
 
 
-public enum NodeType { Element, Text, Comment, DocType, Document, Instruction;
+public enum NodeType { Element, Text, Comment, DocType, Document, Instruction, CData;
 
   public String toCode() {
     switch (this) {
@@ -41,6 +41,7 @@ public enum NodeType { Element, Text, Comment, DocType, Document, Instruction;
     case Element: return "@element";
     case Instruction: return "@instruction";
     case Text: return "@text";
+    case CData: return "@cdata";
     default: return "@??";
     }
   }

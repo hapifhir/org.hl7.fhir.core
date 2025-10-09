@@ -74,6 +74,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.r5.context.BaseWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.LanguageUtils;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
@@ -178,11 +179,11 @@ public class ValueSetExpander extends ValueSetProcessBase {
   private AcceptLanguageHeader langs;
   private List<Token> designations = new ArrayList<>();
 
-  public ValueSetExpander(IWorkerContext context, TerminologyOperationContext opContext) {
+  public ValueSetExpander(BaseWorkerContext context, TerminologyOperationContext opContext) {
     super(context, opContext);
   }
 
-  public ValueSetExpander(IWorkerContext context, TerminologyOperationContext opContext, List<String> allErrors) {
+  public ValueSetExpander(BaseWorkerContext context, TerminologyOperationContext opContext, List<String> allErrors) {
     super(context, opContext);
     this.allErrors = allErrors;
   }

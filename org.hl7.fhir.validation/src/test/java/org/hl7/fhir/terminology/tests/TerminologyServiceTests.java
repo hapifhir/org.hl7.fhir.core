@@ -15,6 +15,7 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.ExpansionOptions;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
@@ -161,7 +162,7 @@ private static TxTestData testData;
     if (lang != null && !p.hasParameter("displayLanguage")) {
       p.addParameter("displayLanguage", new CodeType(lang));
     }
-    ValueSetExpansionOutcome vse = engine.getContext().expandVS(vs, false, hierarchical, false, p, true);
+    ValueSetExpansionOutcome vse = engine.getContext().expandVS(new ExpansionOptions( false, hierarchical, 0, false, null), vs,p, true);
     if (resp.contains("\"ValueSet\"")) {
       if (vse.getValueset() == null) {
         Assertions.fail(vse.getError());

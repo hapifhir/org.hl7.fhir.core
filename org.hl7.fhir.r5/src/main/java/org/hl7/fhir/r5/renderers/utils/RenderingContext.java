@@ -4,14 +4,7 @@ import java.io.IOException;
 import java.text.NumberFormat;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -112,6 +105,10 @@ public class RenderingContext extends RenderingI18nContext {
       for (RenderingContext rc : langs.values()) {
         rc.setNoHeader(b);
       }
+    }
+
+    public Collection<RenderingContext> langValues() {
+      return langs.values();
     }
   }
 
@@ -1247,6 +1244,10 @@ public class RenderingContext extends RenderingI18nContext {
 
   public boolean forValidResource() {
     return getRules() == GenerationRules.VALID_RESOURCE;
+  }
+
+  public boolean forPublisher() {
+    return getRules() == GenerationRules.IG_PUBLISHER;
   }
 
 

@@ -126,15 +126,11 @@ import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
-import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
+import org.hl7.fhir.r5.terminologies.utilities.*;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedCodeSystem;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
-import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
-import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
-import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
 import org.hl7.fhir.r5.utils.PackageHackerR5;
@@ -948,15 +944,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return expandVS(vs, cacheOk, heirarchical);
   }
 
-
-  @Override
-  public ValueSetExpansionOutcome expandVS(ITerminologyOperationDetails opCtxt, ConceptSetComponent inc, boolean hierarchical, boolean noInactive) throws TerminologyServiceException {
+  public ValueSetExpansionOutcome expandVS(ValueSetProcessBase.TerminologyOperationDetails opCtxt, ConceptSetComponent inc, boolean hierarchical, boolean noInactive) throws TerminologyServiceException {
     ValueSet vs = new ValueSet();
     vs.setStatus(PublicationStatus.ACTIVE);
     vs.setCompose(new ValueSetComposeComponent());
     vs.getCompose().setInactive(!noInactive);
     vs.getCompose().getInclude().add(inc);
-    CacheToken cacheToken = txCache.generateExpandToken(vs, hierarchical);
+    CacheToken cacheToken = txCache.generateExpandToken(vs, new ExpansionOptions().withHierarchical(hierarchical));
     ValueSetExpansionOutcome res;
     res = txCache.getExpansion(cacheToken);
     if (res != null) {
@@ -1018,7 +1012,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
-  public ValueSetExpansionOutcome expandVS(String url, boolean cacheOk, boolean hierarchical, int count) {
+  public ValueSetExpansionOutcome expandVS(ExpansionOptions options, String url) {
     if (expansionParameters.get() == null)
       throw new Error(formatMessage(I18nConstants.NO_EXPANSION_PARAMETERS_PROVIDED));
     if (noTerminologyServer) {
@@ -1026,20 +1020,20 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
     Parameters p = getExpansionParameters();
-    p.addParameter("count", count);
+    p.addParameter("count", options.getMaxCount());
     p.addParameter("url", new UriType(url));
     p.setParameter("_limit",new IntegerType("10000"));
     p.setParameter("_incomplete", new BooleanType("true"));
 
-    CacheToken cacheToken = txCache.generateExpandToken(url, hierarchical);
+    CacheToken cacheToken = txCache.generateExpandToken(url, options);
     ValueSetExpansionOutcome res;
-    if (cacheOk) {
+    if (options.isCacheOk()) {
       res = txCache.getExpansion(cacheToken);
       if (res != null) {
         return res;
       }
     }
-    p.setParameter("excludeNested", !hierarchical);
+    p.setParameter("excludeNested", !options.isHierarchical());
     List<String> allErrors = new ArrayList<>();
 
     p.addParameter().setName("cache-id").setValue(new IdType(terminologyClientManager.getCacheId()));
@@ -1070,19 +1064,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return res;
   }
 
-  @Override
-  public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean heirarchical, boolean incompleteOk) {
-    if (expansionParameters.get() == null)
-      throw new Error(formatMessage(I18nConstants.NO_EXPANSION_PARAMETERS_PROVIDED));
-
-    return expandVS(vs, cacheOk, heirarchical, incompleteOk, getExpansionParameters());
-  }
-
   public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean hierarchical, boolean incompleteOk, Parameters pIn)  {
-    return expandVS(vs, cacheOk, hierarchical, incompleteOk, pIn, false);
+    return expandVS(new ExpansionOptions(cacheOk, hierarchical, 0, incompleteOk, null), vs, pIn, false);
   }
-  
-  public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean hierarchical, boolean incompleteOk, Parameters pIn, boolean noLimits)  {
+
+  public ValueSetExpansionOutcome expandVS(ExpansionOptions options, ValueSet vs)  {
+    return expandVS(options, vs, getExpansionParameters(), false);
+  }
+
+  public ValueSetExpansionOutcome expandVS(ExpansionOptions options, ValueSet vs, Parameters pIn, boolean noLimits)  {
     if (pIn == null) {
       throw new Error(formatMessage(I18nConstants.NO_PARAMETERS_PROVIDED_TO_EXPANDVS));
     }
@@ -1124,6 +1114,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     p.setParameter("_limit",new IntegerType("10000"));
     p.setParameter("_incomplete", new BooleanType("true"));
+    if (options.hasLanguage()) {
+      p.setParameter("displayLanguage", new CodeType(options.getLanguage()));
+    }
     if (vs.hasExpansion()) {
       return new ValueSetExpansionOutcome(vs.copy());
     }
@@ -1145,14 +1138,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       p.addParameter("count", expandCodesLimit);
       p.addParameter("offset", 0);
     }
-    p.setParameter("excludeNested", !hierarchical);
-    if (incompleteOk) {
+    p.setParameter("excludeNested", !options.isHierarchical());
+    if (options.isIncompleteOk()) {
       p.setParameter("incomplete-ok", true);
     }
 
-    CacheToken cacheToken = txCache.generateExpandToken(vs, hierarchical);
+    CacheToken cacheToken = txCache.generateExpandToken(vs, options);
     ValueSetExpansionOutcome res;
-    if (cacheOk) {
+    if (options.isCacheOk()) {
       res = txCache.getExpansion(cacheToken);
       if (res != null) {
         return res;
@@ -1693,7 +1686,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return new ValueSetValidator(this, new TerminologyOperationContext(this, options, "validation"), options, vs, getExpansionParameters(), terminologyClientManager, registry);
   }
 
-  protected Parameters constructParameters(ITerminologyOperationDetails opCtxt, TerminologyClientContext tcd, ValueSet vs, boolean hierarchical) {
+  protected Parameters constructParameters(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tcd, ValueSet vs, boolean hierarchical) {
     Parameters p = getExpansionParameters();
     p.setParameter("includeDefinition", false);
     p.setParameter("excludeNested", !hierarchical);
@@ -1947,11 +1940,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return processValidationResult(pOut, vs == null ? null : vs.getUrl(), tc.getClient().getAddress());
   }
 
-  protected void addServerValidationParameters(ITerminologyOperationDetails opCtxt, TerminologyClientContext terminologyClientContext, ValueSet vs, Parameters pin, ValidationOptions options) {
+  protected void addServerValidationParameters(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext terminologyClientContext, ValueSet vs, Parameters pin, ValidationOptions options) {
     addServerValidationParameters(opCtxt, terminologyClientContext, vs, pin, options, null);
   }
   
-  protected void addServerValidationParameters(ITerminologyOperationDetails opCtxt, TerminologyClientContext terminologyClientContext, ValueSet vs, Parameters pin, ValidationOptions options, Set<String> systems) {
+  protected void addServerValidationParameters(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext terminologyClientContext, ValueSet vs, Parameters pin, ValidationOptions options, Set<String> systems) {
     boolean cache = false;
     if (vs != null) {
       if (terminologyClientContext != null && terminologyClientContext.isTxCaching() && terminologyClientContext.getCacheId() != null && vs.getUrl() != null && terminologyClientContext.getCached().contains(vs.getUrl()+"|"+ vs.getVersion())) {
@@ -2008,7 +2001,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     pin.addParameter("diagnostics", true);
   }
 
-  private boolean addDependentResources(ITerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, ValueSet vs) {
+  private boolean addDependentResources(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, ValueSet vs) {
     boolean cache = false;
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
       cache = addDependentResources(opCtxt, tc, pin, inc, vs) || cache;
@@ -2019,7 +2012,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return cache;
   }
 
-  private boolean addDependentResources(ITerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, ConceptSetComponent inc, Resource src) {
+  private boolean addDependentResources(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, ConceptSetComponent inc, Resource src) {
     boolean cache = false;
     for (CanonicalType c : inc.getValueSet()) {
       ValueSet vs = fetchResource(ValueSet.class, c.getValue(), null, src);
@@ -2045,7 +2038,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return cache;
   }
 
-  public boolean addDependentCodeSystem(ITerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, String sys, Resource src) {
+  public boolean addDependentCodeSystem(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, String sys, Resource src) {
     boolean cache = false;
     CodeSystem cs = fetchResource(CodeSystem.class, sys, null, src);
     if (cs != null && !hasCanonicalResource(pin, "tx-resource", cs.getVUrl()) && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
