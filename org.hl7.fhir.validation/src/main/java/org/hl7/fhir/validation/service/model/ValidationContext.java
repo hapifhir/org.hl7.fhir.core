@@ -42,6 +42,10 @@ public class ValidationContext {
   @SerializedName("hintAboutNonMustSupport")
   private
   boolean hintAboutNonMustSupport = false;
+  @JsonProperty("strictIdentifierSystems")
+  @SerializedName("strictIdentifierSystems")
+  private
+  boolean strictIdentifierSystems = false;  
   @JsonProperty("recursive")
   @SerializedName("recursive")
   private
@@ -592,6 +596,19 @@ public class ValidationContext {
   @JsonProperty("hintAboutNonMustSupport")
   public ValidationContext setHintAboutNonMustSupport(boolean hintAboutNonMustSupport) {
     this.hintAboutNonMustSupport = hintAboutNonMustSupport;
+    return this;
+  }
+
+  @SerializedName("strictIdentifierSystems")
+  @JsonProperty("strictIdentifierSystems")
+  public boolean isStrictIdentifierSystems() {
+    return strictIdentifierSystems;
+  }
+
+  @SerializedName("strictIdentifierSystems")
+  @JsonProperty("strictIdentifierSystems")
+  public ValidationContext setStrictIdentifierSystems(boolean strictIdentifierSystems) {
+    this.strictIdentifierSystems = strictIdentifierSystems;
     return this;
   }
 
@@ -1284,6 +1301,7 @@ public class ValidationContext {
     return Objects.equals(baseEngine, that.baseEngine) &&
       doNative == that.doNative &&
       hintAboutNonMustSupport == that.hintAboutNonMustSupport &&
+      strictIdentifierSystems == that.strictIdentifierSystems &&
       recursive == that.recursive &&
       doDebug == that.doDebug &&
       assumeValidRestReferences == that.assumeValidRestReferences &&
@@ -1348,7 +1366,7 @@ public class ValidationContext {
 
   @Override
   public int hashCode() {
-    return Objects.hash(baseEngine, doNative, extensions, certSources, matchetypes, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, checkReferences,canDoNative, noInternalCaching, resolutionContext, aiService,
+    return Objects.hash(baseEngine, doNative, extensions, certSources, matchetypes, hintAboutNonMustSupport, strictIdentifierSystems, recursive, doDebug, assumeValidRestReferences, checkReferences,canDoNative, noInternalCaching, resolutionContext, aiService,
       noExtensibleBindingMessages, noInvariants, displayWarnings, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
       targetVer, packageName, igs, questionnaireMode, level, profiles, options, sources, inputs, mode, locale, locations, crumbTrails, showMessageIds, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars,
       watchMode, watchScanDelay, watchSettleTime, bestPracticeLevel, unknownCodeSystemsCauseErrors, noExperimentalContent, advisorFile, expansionParameters, format, htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
@@ -1363,6 +1381,7 @@ public class ValidationContext {
       ", certSources=" + certSources +
       ", matchetypes=" + matchetypes +
       ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +
+      ", strictIdentifierSystems=" + strictIdentifierSystems +
       ", recursive=" + recursive +
       ", doDebug=" + doDebug +
       ", assumeValidRestReferences=" + assumeValidRestReferences +
