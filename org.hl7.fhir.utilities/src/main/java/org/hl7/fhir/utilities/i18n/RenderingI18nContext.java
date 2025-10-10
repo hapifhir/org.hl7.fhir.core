@@ -182,6 +182,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CODE_SYS_UNDEF_HIER = "CODE_SYS_UNDEF_HIER";
   public static final String CODE_SYS_UNKN_MODE = "CODE_SYS_UNKN_MODE";
   public static final String GENERAL_VALUESET = "GENERAL_VALUESET";
+  public static final String GENERAL_CODESYSTEM = "GENERAL_CODESYSTEM";
   public static final String GENERAL_COMMENT = "GENERAL_COMMENT";
   public static final String CONC_MAP_CODES = "CONC_MAP_CODES";
   public static final String CONC_MAP_CODE_SYS_UNSPEC = "CONC_MAP_CODE_SYS_UNSPEC";
@@ -620,6 +621,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String STRUC_DEF_CONT_RULE = "STRUC_DEF_CONT_RULE";
   public static final String STRUC_DEF_CONT_TYPE = "STRUC_DEF_CONT_TYPE";
   public static final String STRUC_DEF_COPY_URL = "STRUC_DEF_COPY_URL";
+  public static final String STRUC_DEF_COPY_CODING = "STRUC_DEF_COPY_CODING";
   public static final String STRUC_DEF_CURR = "STRUC_DEF_CURR";
   public static final String STRUC_DEF_CURR_RULE = "STRUC_DEF_CURR_RULE";
   public static final String STRUC_DEF_DATE = "STRUC_DEF_DATE";
@@ -1117,6 +1119,8 @@ public class RenderingI18nContext extends I18nBase {
   public static final String VS_VERSION_FOUND = "VS_VERSION_FOUND";
   public static final String VS_VERSION_NONE = "VS_VERSION_NONE";
   public static final String VS_VERSION_NOTHING = "VS_VERSION_NOTHING";
+  public static final String VS_VERSION_NOTHING_TEXT = "VS_VERSION_NOTHING_TEXT";
+  public static final String CS_VERSION_NOTHING_TEXT = "CS_VERSION_NOTHING_TEXT";
 
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";
