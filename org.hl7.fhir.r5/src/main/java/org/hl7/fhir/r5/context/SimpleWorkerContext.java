@@ -321,7 +321,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       SimpleWorkerContext context = getSimpleWorkerContextInstance();
       context.setAllowLoadingDuplicates(allowLoadingDuplicates);      
       context.version = pi.fhirVersion();
-      context.terminologyClientManager.setFactory(loader.txFactory());
+      if (loader != null) {
+        context.terminologyClientManager.setFactory(loader.txFactory());
+      }
       context.loadFromPackage(pi, loader);
       context.finishLoading(genSnapshots);
       if (defaultExpParams) {
