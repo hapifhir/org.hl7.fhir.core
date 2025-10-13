@@ -553,6 +553,19 @@ public class ValueSetValidator extends ValueSetProcessBase {
         }
       }
     }
+
+    if (!requiredSupplements.isEmpty()) {
+      List<CodeSystem> additionalSupplements = new ArrayList<>();
+      for (String s : requiredSupplements) {
+        CodeSystem scs = context.findTxResource(CodeSystem.class, s);
+        if (scs != null && cs.getUrl().equals(scs.getSupplements())) {
+          additionalSupplements.add(scs);
+        }
+      }
+      if (!additionalSupplements.isEmpty()) {
+        cs = CodeSystemUtilities.mergeSupplements(cs, additionalSupplements);
+      }
+    }
     return cs;
   }
 
@@ -1952,6 +1965,12 @@ public class ValueSetValidator extends ValueSetProcessBase {
   private boolean codeInConceptFilter(CodeSystem cs, ConceptSetFilterComponent f, String code) throws FHIRException {
     switch (f.getOp()) {
     case ISA: return codeInConceptIsAFilter(cs, f, code, false);
+    case EQUAL:
+      if (f.getValue() == null) {
+        return false;
+      }
+      DataType d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
+      return d != null && f.getValue().equals(d.primitiveValue());
     case ISNOTA: return !codeInConceptIsAFilter(cs, f, code, false);
     case DESCENDENTOF: return codeInConceptIsAFilter(cs, f, code, true); 
     default:

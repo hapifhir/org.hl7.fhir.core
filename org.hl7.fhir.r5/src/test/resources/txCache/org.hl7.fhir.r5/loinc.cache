@@ -1,0 +1,929 @@
+-------------------------------------------------------------------------------------
+{"hierarchical" : true, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "A."
+        }],
+        "code" : "LA20752-4",
+        "display" : "Within 24 hours"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "B."
+        }],
+        "code" : "LA20753-2",
+        "display" : "After 24 hours but before 3 days"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "C."
+        }],
+        "code" : "LA20754-0",
+        "display" : "Three days or later"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "D."
+        }],
+        "code" : "LA4489-6",
+        "display" : "Unknown"
+      }]
+    }]
+  }
+}}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:4cebb452-43ce-42c4-8b34-ea1afac4e818",
+    "timestamp" : "2025-10-10T00:45:27.883Z",
+    "total" : 4,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.81"
+    }],
+    "property" : [{
+      "code" : "label",
+      "uri" : "http://hl7.org/fhir/concept-properties#label"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA20752-4",
+      "display" : "Within 24 hours",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "A."
+      }]
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA20753-2",
+      "display" : "After 24 hours but before 3 days",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "B."
+      }]
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA20754-0",
+      "display" : "Three days or later",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "C."
+      }]
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA4489-6",
+      "display" : "Unknown",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "D."
+      }]
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : true, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "filter" : [{
+        "property" : "LIST",
+        "op" : "=",
+        "value" : "LL715-4"
+      }]
+    }]
+  }
+}}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:e821af50-91d7-4e1c-9be4-da9cca78c0cb",
+    "timestamp" : "2025-10-10T00:45:29.144Z",
+    "total" : 8,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.81"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA11165-0",
+      "display" : "Platelet anisocytosis"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA11168-4",
+      "display" : "Platelet clump"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA11167-6",
+      "display" : "Platelet large fragments"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA11166-8",
+      "display" : "Platelet satellitism"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA11169-2",
+      "display" : "Platelets.agranular"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA11170-0",
+      "display" : "Platelets.giant"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA11172-6",
+      "display" : "Platelets.large"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA11171-8",
+      "display" : "Platelets.small"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : true, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : false,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "A."
+        }],
+        "code" : "LA20752-4",
+        "display" : "Within 24 hours"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "B."
+        }],
+        "code" : "LA20753-2",
+        "display" : "After 24 hours but before 3 days"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "C."
+        }],
+        "code" : "LA20754-0",
+        "display" : "Three days or later"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "D."
+        }],
+        "code" : "LA4489-6",
+        "display" : "Unknown"
+      }]
+    }]
+  }
+}}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:130a8bcf-e1dd-46fc-8b28-7f5fb70f8ac8",
+    "timestamp" : "2025-10-10T00:45:30.291Z",
+    "total" : 4,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.81"
+    }],
+    "property" : [{
+      "code" : "label",
+      "uri" : "http://hl7.org/fhir/concept-properties#label"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA20752-4",
+      "display" : "Within 24 hours",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "A."
+      }]
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA20753-2",
+      "display" : "After 24 hours but before 3 days",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "B."
+      }]
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA20754-0",
+      "display" : "Three days or later",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "C."
+      }]
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA4489-6",
+      "display" : "Unknown",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "D."
+      }]
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP43571-6"
+}, "valueSet" :null, "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters"
+}}####
+v: {
+  "code" : "LP43571-6",
+  "system" : "http://loinc.org",
+  "severity" : "error",
+  "error" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.81'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Unknown_Code_in_Version"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.81'"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : true, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : false,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "5932-9",
+        "display" : "Cholesterol [Presence] in Blood by Test strip"
+      }]
+    }]
+  }
+}}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:1612120a-9a58-4abf-bb16-9b3e36bdea7d",
+    "timestamp" : "2025-10-10T00:45:35.369Z",
+    "total" : 1,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.81"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "5932-9",
+      "display" : "Cholesterol [Presence] in Blood by Test strip"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "38269-7"
+}, "valueSet" :null, "langs":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters"
+}}####
+v: {
+  "display" : "Study report Skeletal system DXA",
+  "code" : "38269-7",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : true, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "LA6557-8",
+        "display" : "No verbal response (>2yrs); no vocal response (<=2yrs)"
+      },
+      {
+        "code" : "LA6558-6",
+        "display" : "Incomprehensible sounds"
+      },
+      {
+        "code" : "LA6559-4",
+        "display" : "Inappropriate words"
+      },
+      {
+        "code" : "LA6560-2",
+        "display" : "Confused"
+      },
+      {
+        "code" : "LA6561-0",
+        "display" : "Oriented"
+      }]
+    }]
+  }
+}}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:f257aba2-eb8d-4b2b-87bc-3282defa76b7",
+    "timestamp" : "2025-10-10T00:45:42.799Z",
+    "total" : 5,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.81"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA6557-8",
+      "display" : "No verbal response (>2 yrs); no vocal response (<=2 yrs)"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6558-6",
+      "display" : "Incomprehensible sounds"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6559-4",
+      "display" : "Inappropriate words"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6560-2",
+      "display" : "Confused"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6561-0",
+      "display" : "Oriented"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : true, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "LA6562-8",
+        "display" : "No motor response"
+      },
+      {
+        "code" : "LA6563-6",
+        "display" : "Extension to pain"
+      },
+      {
+        "code" : "LA6564-4",
+        "display" : "Flexion to pain"
+      },
+      {
+        "code" : "LA6565-1",
+        "display" : "Withdrawl from pain"
+      },
+      {
+        "code" : "LA6566-9",
+        "display" : "Localizing pain"
+      },
+      {
+        "code" : "LA6567-7",
+        "display" : "Obeys commands"
+      }]
+    }]
+  }
+}}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:0064c4fe-ac16-431a-94c5-e2660c7cad63",
+    "timestamp" : "2025-10-10T00:45:44.044Z",
+    "total" : 6,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.81"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA6562-8",
+      "display" : "No motor response"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6563-6",
+      "display" : "Extension to pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6564-4",
+      "display" : "Flexion to pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6565-1",
+      "display" : "Withdrawal from pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6566-9",
+      "display" : "Localizing pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6567-7",
+      "display" : "Obeys commands"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : true, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "LA6553-7",
+        "display" : "No eye opening"
+      },
+      {
+        "code" : "LA6554-5",
+        "display" : "Eye opening to pain"
+      },
+      {
+        "code" : "LA6555-2",
+        "display" : "Eye opening to verbal command"
+      },
+      {
+        "code" : "LA6556-0",
+        "display" : "Eyes open spontaneously"
+      }]
+    }]
+  }
+}}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:e777497f-bc3d-4407-b3aa-af82b266152b",
+    "timestamp" : "2025-10-10T00:45:45.280Z",
+    "total" : 4,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.81"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA6553-7",
+      "display" : "No eye opening"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6554-5",
+      "display" : "Eye opening to pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6555-2",
+      "display" : "Eye opening to verbal command"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6556-0",
+      "display" : "Eyes open spontaneously"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : true, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : false,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "LA6562-8",
+        "display" : "No motor response"
+      },
+      {
+        "code" : "LA6563-6",
+        "display" : "Extension to pain"
+      },
+      {
+        "code" : "LA6564-4",
+        "display" : "Flexion to pain"
+      },
+      {
+        "code" : "LA6565-1",
+        "display" : "Withdrawl from pain"
+      },
+      {
+        "code" : "LA6566-9",
+        "display" : "Localizing pain"
+      },
+      {
+        "code" : "LA6567-7",
+        "display" : "Obeys commands"
+      }]
+    }]
+  }
+}}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:2f6e1c35-27f3-495f-9743-9facf1d83e97",
+    "timestamp" : "2025-10-10T00:45:46.512Z",
+    "total" : 6,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.81"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA6562-8",
+      "display" : "No motor response"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6563-6",
+      "display" : "Extension to pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6564-4",
+      "display" : "Flexion to pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6565-1",
+      "display" : "Withdrawal from pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6566-9",
+      "display" : "Localizing pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6567-7",
+      "display" : "Obeys commands"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : true, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : false,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "LA6557-8",
+        "display" : "No verbal response (>2yrs); no vocal response (<=2yrs)"
+      },
+      {
+        "code" : "LA6558-6",
+        "display" : "Incomprehensible sounds"
+      },
+      {
+        "code" : "LA6559-4",
+        "display" : "Inappropriate words"
+      },
+      {
+        "code" : "LA6560-2",
+        "display" : "Confused"
+      },
+      {
+        "code" : "LA6561-0",
+        "display" : "Oriented"
+      }]
+    }]
+  }
+}}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:6591ed07-718a-4b33-aa54-6062870aff7c",
+    "timestamp" : "2025-10-10T00:45:47.732Z",
+    "total" : 5,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.81"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA6557-8",
+      "display" : "No verbal response (>2 yrs); no vocal response (<=2 yrs)"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6558-6",
+      "display" : "Incomprehensible sounds"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6559-4",
+      "display" : "Inappropriate words"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6560-2",
+      "display" : "Confused"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6561-0",
+      "display" : "Oriented"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : true, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : false,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "LA6553-7",
+        "display" : "No eye opening"
+      },
+      {
+        "code" : "LA6554-5",
+        "display" : "Eye opening to pain"
+      },
+      {
+        "code" : "LA6555-2",
+        "display" : "Eye opening to verbal command"
+      },
+      {
+        "code" : "LA6556-0",
+        "display" : "Eyes open spontaneously"
+      }]
+    }]
+  }
+}}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:5123b8d6-1578-4b67-8658-f7ad98676083",
+    "timestamp" : "2025-10-10T00:45:48.944Z",
+    "total" : 4,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.81"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA6553-7",
+      "display" : "No eye opening"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6554-5",
+      "display" : "Eye opening to pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6555-2",
+      "display" : "Eye opening to verbal command"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6556-0",
+      "display" : "Eyes open spontaneously"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
