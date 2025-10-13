@@ -1323,6 +1323,18 @@ public class ValueSetExpander extends ValueSetProcessBase {
             requiredSupplements.remove(s);
           }
         }
+        if (!requiredSupplements.isEmpty()) {
+          List<CodeSystem> additionalSupplements = new ArrayList<>();
+          for (String s : requiredSupplements) {
+            CodeSystem scs = context.findTxResource(CodeSystem.class, s);
+            if (scs != null && cs.getUrl().equals(scs.getSupplements())) {
+              additionalSupplements.add(scs);
+            }
+          }
+          if (!additionalSupplements.isEmpty()) {
+            cs = CodeSystemUtilities.mergeSupplements(cs, additionalSupplements);
+          }
+        }
         doInternalIncludeCodes(inc, exp, expParams, imports, cs, noInactive, valueSet, vspath);
       }
     }
