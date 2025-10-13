@@ -1,0 +1,12 @@
+{
+  "http://ontariohealth.ca/fhir/questionnaire/ValueSet/on-questionnaire-question-item-type" : null,
+  "http://example.org/fhir/example2" : null,
+  "http://example.org/fhir/example1" : null,
+  "http://somewhere/something-else" : null,
+  "http://hl7.org/fhir/ValueSet/concept-properties" : {
+    "server" : "https://tx-dev.fhir.org/r5",
+    "filename" : "vs-f7b91afc-bebb-42a4-abd6-0128200c6a94.json"
+  },
+  "http://hl7.org/fhir/us/vrdr/ValueSet/vrdr-PlaceOfDeath" : null,
+  "http://somewhere/something" : null
+}
