@@ -26,6 +26,11 @@ public class ValidationContextUtilities {
     validationContext.setWatchSettleTime(watchParameters.getWatchSettleTime());
   }
 
+  public static void addTransformLangParameters(ValidationContext validationContext, TransformLangParameters transformLangParameters) {
+    validationContext.setSrcLang(transformLangParameters.getSrcLang());
+    validationContext.setTgtLang(transformLangParameters.getTgtLang());
+  }
+
   public static ValidationEngineParameters getValidationEngineParameters(ValidationContext validationContext) {
     ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
     validationEngineParameters.setInferFhirVersion(validationContext.isInferFhirVersion());
@@ -49,5 +54,12 @@ public class ValidationContextUtilities {
     watchParameters.setWatchScanDelay(validationContext.getWatchScanDelay());
     watchParameters.setWatchSettleTime(validationContext.getWatchSettleTime());
     return watchParameters;
+  }
+
+  public static TransformLangParameters getTransformLangParameters(ValidationContext validationContext) {
+    TransformLangParameters transformLangParameters = new TransformLangParameters();
+    transformLangParameters.setSrcLang(validationContext.getSrcLang());
+    transformLangParameters.setTgtLang(validationContext.getTgtLang());
+    return transformLangParameters;
   }
 }

@@ -15,6 +15,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.validation.cli.param.parsers.GlobalParametersParser;
+import org.hl7.fhir.validation.cli.param.parsers.TransformLangParameterParser;
 import org.hl7.fhir.validation.cli.param.parsers.ValidationEngineParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.WatchParametersParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
@@ -108,8 +109,6 @@ public class Params {
   public static final String DO_IMPLICIT_FHIRPATH_STRING_CONVERSION = "-implicit-fhirpath-string-conversions";
   public static final String JURISDICTION = "-jurisdiction";
   public static final String HTML_IN_MARKDOWN = "-html-in-markdown";
-  public static final String SRC_LANG = "-src-lang";
-  public static final String TGT_LANG = "-tgt-lang";
   public static final String ALLOW_DOUBLE_QUOTES = "-allow-double-quotes-in-fhirpath";
   public static final String DISABLE_DEFAULT_RESOURCE_FETCHER = "-disable-default-resource-fetcher";
   public static final String CHECK_IPS_CODES = "-check-ips-codes";
@@ -506,12 +505,12 @@ public class Params {
           throw new Error("Specified -language without indicating language");
         else
           validationContext.setLang(args[++i]);
-      } else if (args[i].equals(SRC_LANG)) {
+      } else if (args[i].equals(TransformLangParameterParser.SRC_LANG)) {
         if (i + 1 == args.length)
           throw new Error("Specified -src-lang without indicating file");
         else
           validationContext.setSrcLang(args[++i]);
-      } else if (args[i].equals(TGT_LANG)) {
+      } else if (args[i].equals(TransformLangParameterParser.TGT_LANG)) {
         if (i + 1 == args.length)
           throw new Error("Specified -tgt-lang without indicating file");
         else
