@@ -2,32 +2,23 @@ package org.hl7.fhir.convertors.misc;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
 import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
-import org.hl7.fhir.r5.model.SearchParameter;
-import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -121,9 +112,12 @@ public class ProfileVersionAdaptor {
     // third pass, unsupported complex data types
     ElementDefinition lastExt = null;
     ElementDefinition group = null;
-    for (int i = 0; i < sd.getDifferential().getElement().size(); i++) {
+
+    int i = 0;
+    while (i < sd.getDifferential().getElement().size()) {
       ElementDefinition ed = sd.getDifferential().getElement().get(i);
       if (ed.getPath().contains(".value")) {
+        Map<String, ElementDefinition> children = loadValueChildren(sd.getDifferential(), ed, i);
         if (ed.getType().size() > 1) {
           if (ed.getType().removeIf(tr -> !tcu.isDatatype(tr.getWorkingCode()))) {
             log.add(new ConversionMessage("Remove types from the element " + ed.getIdOrPath(), ConversionMessageStatus.WARNING));
@@ -155,11 +149,12 @@ public class ProfileVersionAdaptor {
             offset = addDatatypeSlice(sd, offset, insPoint, lastExt, tr.getCode());
 
             // now, a slice extension for each thing in the data type differential
-            for (ElementDefinition ted : type.getDifferential().getElement()) {
-              if (ted.getPath().contains(".")) { // skip the root
+            for (ElementDefinition elementFromType : type.getDifferential().getElement()) {
+              if (elementFromType.getPath().contains(".")) { // skip the root
+                ElementDefinition constraintFromExtension = children.get(elementFromType.getPath().substring(elementFromType.getPath().indexOf(".") + 1));
                 ElementDefinition base = lastExt;
                 int bo = 0;
-                int cc = Utilities.charCount(ted.getPath(), '.');
+                int cc = Utilities.charCount(elementFromType.getPath(), '.');
                 if (cc > 2) {
                   throw new DefinitionException("type is deeper than 2?");
                 } else if (cc == 2) {
@@ -168,49 +163,58 @@ public class ProfileVersionAdaptor {
                 } else {
                   // nothing
                 }
-                ElementDefinition ned = new ElementDefinition(base.getPath());
-                ned.setSliceName(ted.getName());
-                ned.setShort(ted.getShort());
-                ned.setDefinition(ted.getDefinition());
-                ned.setComment(ted.getComment());
-                ned.setMin(ted.getMin());
-                ned.setMax(ted.getMax());
-                offset = addDiffElement(sd, insPoint - bo, offset, ned);
+                ElementDefinition newBaseElementDefinition = new ElementDefinition(base.getPath());
+                newBaseElementDefinition.setSliceName(elementFromType.getName());
+                if (constraintFromExtension != null) {
+                  newBaseElementDefinition.setShortElement(constraintFromExtension.hasShort() ? constraintFromExtension.getShortElement() : elementFromType.getShortElement());
+                  newBaseElementDefinition.setDefinitionElement(constraintFromExtension.hasDefinition() ? constraintFromExtension.getDefinitionElement() : elementFromType.getDefinitionElement());
+                  newBaseElementDefinition.setCommentElement(constraintFromExtension.hasComment() ? constraintFromExtension.getCommentElement() : elementFromType.getCommentElement());
+                  newBaseElementDefinition.setMinElement(constraintFromExtension.hasMin() ? constraintFromExtension.getMinElement() : elementFromType.getMinElement());
+                  newBaseElementDefinition.setMaxElement(constraintFromExtension.hasMax() ? constraintFromExtension.getMaxElement() : elementFromType.getMaxElement());
+                } else {
+                  newBaseElementDefinition.setShortElement(elementFromType.getShortElement());
+                  newBaseElementDefinition.setDefinitionElement(elementFromType.getDefinitionElement());
+                  newBaseElementDefinition.setCommentElement(elementFromType.getCommentElement());
+                  newBaseElementDefinition.setMinElement(elementFromType.getMinElement());
+                  newBaseElementDefinition.setMaxElement(elementFromType.getMaxElement());
+                }
+
+                offset = addDiffElement(sd, insPoint - bo, offset, newBaseElementDefinition);
                 // set the extensions to 0
-                ElementDefinition need = new ElementDefinition(base.getPath() + ".extension");
-                need.setMax("0");
-                offset = addDiffElement(sd, insPoint - bo, offset, need);
+                ElementDefinition newExtensionElementDefinition = new ElementDefinition(base.getPath() + ".extension");
+                newExtensionElementDefinition.setMax("0");
+                offset = addDiffElement(sd, insPoint - bo, offset, newExtensionElementDefinition);
                 // fix the url 
-                ned = new ElementDefinition(base.getPath() + ".url");
-                ned.setFixed(new UriType(ted.getName()));
-                offset = addDiffElement(sd, insPoint - bo, offset, ned);
+                ElementDefinition newUrlElementDefinition = new ElementDefinition(base.getPath() + ".url");
+                newUrlElementDefinition.setFixed(new UriType(elementFromType.getName()));
+                offset = addDiffElement(sd, insPoint - bo, offset, newUrlElementDefinition);
                 // set the value 
-                ned = new ElementDefinition(base.getPath() + ".value[x]");
-                ned.setMin(1);
-                offset = addDiffElement(sd, insPoint - bo, offset, ned);
-                if (ted.getType().size() == 1 && Utilities.existsInList(ted.getTypeFirstRep().getWorkingCode(), "Element", "BackboneElement")) {
-                  need.setMax("*");
-                  ned.setMin(0);
-                  ned.setMax("0");
-                  ned.getType().clear();
-                  group = need;
+                ElementDefinition newValueElementDefinition = new ElementDefinition(base.getPath() + ".value[x]");
+                newValueElementDefinition.setMin(1);
+                offset = addDiffElement(sd, insPoint - bo, offset, newValueElementDefinition);
+                if (elementFromType.getType().size() == 1 && Utilities.existsInList(elementFromType.getTypeFirstRep().getWorkingCode(), "Element", "BackboneElement")) {
+                  newExtensionElementDefinition.setMax("*");
+                  newValueElementDefinition.setMin(0);
+                  newValueElementDefinition.setMax("0");
+                  newValueElementDefinition.getType().clear();
+                  group = newExtensionElementDefinition;
                   group.getSlicing().setRules(SlicingRules.OPEN).setOrdered(false).addDiscriminator().setType(DiscriminatorType.VALUE).setPath("url");
                 } else {
                   Set<String> types = new HashSet<>();
-                  for (TypeRefComponent ttr : ted.getType()) {
+                  for (TypeRefComponent ttr : (constraintFromExtension != null && constraintFromExtension.hasType() ? constraintFromExtension : elementFromType).getType()) {
                     TypeRefComponent ntr = checkTypeReference(ttr, types);
                     if (ntr != null) {
                       types.add(ntr.getWorkingCode());
-                      ned.addType(ntr);
+                      newValueElementDefinition.addType(ntr);
                     }
                   }
-                  if (ned.getType().isEmpty()) {
+                  if (newValueElementDefinition.getType().isEmpty()) {
                     throw new DefinitionException("No types?");
                   }
-                  if (ed.hasBinding() && "concept".equals(ted.getName())) {
-                    ned.setBinding(ed.getBinding());
+                  if (ed.hasBinding() && "concept".equals(elementFromType.getName())) { // codeablereference, we have to move the binding down one
+                    newValueElementDefinition.setBinding(ed.getBinding());
                   } else {
-                    ned.setBinding(ted.getBinding());
+                    newValueElementDefinition.setBinding(elementFromType.getBinding());
                   }
                 }
               }
@@ -221,6 +225,7 @@ public class ProfileVersionAdaptor {
       if (ed.getPath().endsWith(".extension")) {
         lastExt = ed;
       }
+      i++;
     }
     if (!log.isEmpty()) {
       if (!sd.hasExtension(ExtensionDefinitions.EXT_FMM_LEVEL) || ExtensionUtilities.readIntegerExtension(sd, ExtensionDefinitions.EXT_FMM_LEVEL, 0) > 2) {
@@ -236,6 +241,18 @@ public class ProfileVersionAdaptor {
     snapshotQueue.add(sd);
     tCtxt.cacheResource(sd);
     return sd;
+  }
+
+  private Map<String, ElementDefinition> loadValueChildren(StructureDefinition.StructureDefinitionDifferentialComponent differential, ElementDefinition ved, int i) {
+    Map<String, ElementDefinition> children = new HashMap<>();
+    String pathPrefix = ved.getPath();
+    i++;
+    while (i < differential.getElement().size() && differential.getElement().get(i).getPath().startsWith(pathPrefix)) {
+      ElementDefinition ed = differential.getElement().get(i);
+      children.put(ed.getPath().substring(pathPrefix.length()+1), ed);
+      differential.getElement().remove(i);
+    }
+    return children;
   }
 
   public void generateSnapshots(List<ConversionMessage> log) {

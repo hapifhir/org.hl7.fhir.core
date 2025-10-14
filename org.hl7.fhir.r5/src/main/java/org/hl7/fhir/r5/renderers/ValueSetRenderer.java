@@ -1064,7 +1064,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         first = false;
         XhtmlNode span = td.span(null, mapping.comp.getRelationship().toString());
         span.addText(getCharForRelationship(mapping.comp));
-        addRefToCode(td, mapping.group.getTarget(), null, m.getLink(), mapping.comp.getCode(), vs);
+        addRefToCode(td, mapping.group.getTarget(), m.getLink(), mapping.comp.getCode(), null, vs);
         if (!Utilities.noString(mapping.comp.getComment()))
           td.i().tx("("+mapping.comp.getComment()+")");
       }
