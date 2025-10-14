@@ -8,6 +8,16 @@ import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
 
 public class ValidationEngineParametersParser implements IParamParser<ValidationEngineParameters> {
 
+  public static final String NATIVE = "-native";
+  public static final String SCT = "-sct";
+  public static final String HINT_ABOUT_NON_MUST_SUPPORT = "-hintAboutNonMustSupport";
+  public static final String ASSUME_VALID_REST_REF = "-assumeValidRestReferences";
+  public static final String NO_EXTENSIBLE_BINDING_WARNINGS = "-no-extensible-binding-warnings";
+  public static final String VERSION = "-version";
+  public static final String TO_VERSION = "-to-version";
+  public static final String IMPLEMENTATION_GUIDE = "-ig";
+  public static final String DEFINITION = "-defn";
+
   ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
   @Override
   public ValidationEngineParameters getParameterObject() {
@@ -20,28 +30,28 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
       if (args[i].isProcessed()) {
         continue;
       }
-      if (args[i].getValue().equals(Params.NATIVE)) {
+      if (args[i].getValue().equals(NATIVE)) {
         validationEngineParameters.setDoNative(true);
         args[i].setProcessed(true);
-      } else if (args[i].getValue().equals(Params.SCT)) {
+      } else if (args[i].getValue().equals(SCT)) {
         validationEngineParameters.setSnomedCT(args[i + 1].getValue());
         Arg.setProcessed(args, i,  2, true);
-      } else if (args[i].getValue().equals(Params.HINT_ABOUT_NON_MUST_SUPPORT)) {
+      } else if (args[i].getValue().equals(HINT_ABOUT_NON_MUST_SUPPORT)) {
         validationEngineParameters.setHintAboutNonMustSupport(true);
         args[i].setProcessed(true);
-      } else if (args[i].getValue().equals(Params.ASSUME_VALID_REST_REF)) {
+      } else if (args[i].getValue().equals(ASSUME_VALID_REST_REF)) {
         validationEngineParameters.setAssumeValidRestReferences(true);
         args[i].setProcessed(true);
-      } else if (args[i].getValue().equals(Params.NO_EXTENSIBLE_BINDING_WARNINGS)) {
+      } else if (args[i].getValue().equals(NO_EXTENSIBLE_BINDING_WARNINGS)) {
         validationEngineParameters.setNoExtensibleBindingMessages(true);
         args[i].setProcessed(true);
-      } else if (args[i].getValue().equals(Params.VERSION)) {
+      } else if (args[i].getValue().equals(VERSION)) {
         validationEngineParameters.setSv(VersionUtilities.getCurrentPackageVersion(args[i + 1].getValue()));
         Arg.setProcessed(args, i, 2, true);
-      } else if (args[i].getValue().equals(Params.TO_VERSION)) {
+      } else if (args[i].getValue().equals(TO_VERSION)) {
         validationEngineParameters.setTargetVer(args[i + 1].getValue());
         Arg.setProcessed(args, i, 2, true);
-      } else if (args[i].getValue().equals(Params.IMPLEMENTATION_GUIDE) || args[i].getValue().equals(Params.DEFINITION)) {
+      } else if (args[i].getValue().equals(IMPLEMENTATION_GUIDE) || args[i].getValue().equals(DEFINITION)) {
         if (i + 1 == args.length)
           throw new Error("Specified " + args[i] + " without indicating ig file");
         else {
@@ -50,7 +60,7 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
           if (igVersion == null) {
             validationEngineParameters.addIg(ig);
           } else {
-            String explicitParamVersion = Arg.getParam(args, Params.VERSION);
+            String explicitParamVersion = Arg.getParam(args, VERSION);
             if (explicitParamVersion != null && !explicitParamVersion.equals(igVersion)) {
               throw new Error("Parameters are inconsistent: specified version is "+explicitParamVersion+" but -ig parameter "+ig+" implies a different version");
             } else if (validationEngineParameters.getSv() != null && !igVersion.equals(validationEngineParameters.getSv())) {

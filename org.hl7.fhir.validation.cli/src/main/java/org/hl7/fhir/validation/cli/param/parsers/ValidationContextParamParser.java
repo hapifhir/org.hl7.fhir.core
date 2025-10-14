@@ -28,6 +28,7 @@ import static org.hl7.fhir.validation.cli.param.Params.*;
 @Slf4j
 public class ValidationContextParamParser implements IParamParser<ValidationContext> {
 
+  GlobalParametersParser globalParser = new GlobalParametersParser();
   ValidationEngineParametersParser validationEngineParametersParser = new ValidationEngineParametersParser();
   WatchParametersParser watchParametersParser = new WatchParametersParser();
   ValidationContext validationContext = new ValidationContext();
@@ -40,6 +41,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
   @Override
   public void parseArgs(Arg[] args) {
     try {
+      globalParser.parseArgs(args);
       validationEngineParametersParser.parseArgs(args);
       watchParametersParser.parseArgs(args);
       String[] unprocessedArgs = filterProcessedArgs(args);
@@ -82,16 +84,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
           throw new Error("Specified -html-output without indicating output file");
         else
           validationContext.setHtmlOutput(args[++i]);
-      } else if (args[i].equals(DEBUG_LOG)) {
-        i++;
-      } else if (args[i].equals(TRACE_LOG)) {
-        i++;
-      } else if (args[i].equals(PROXY)) {
-        i++; // ignore next parameter
-      } else if (args[i].equals(PROXY_AUTH)) {
-        i++;
-      } else if (args[i].equals(HTTPS_PROXY)) {
-        i++;
       } else if (args[i].equals(PROFILE)) {
         String profile = null;
         if (i + 1 == args.length) {
@@ -174,7 +166,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         validationContext.setCheckReferences(true);
       } else if (args[i].equals(RESOLUTION_CONTEXT)) {
         validationContext.setResolutionContext(args[++i]);
-      } else if (args[i].equals(DEBUG)) {
+      } else if (args[i].equals(GlobalParametersParser.DEBUG)) {
         i++;
         log.warn("Debugging support is now provided through the -debug-log and -trace-log CLI parameters. Use the -help option for detailed instructions.");
       } else if (args[i].equals(RECURSE)) {
@@ -201,7 +193,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
           String q = args[++i];
           validationContext.setBestPracticeLevel(readBestPractice(q));
         }
-      } else if (args[i].equals(LOCALE)) {
+      } else if (args[i].equals(GlobalParametersParser.LOCALE)) {
         if (i + 1 == args.length) {
           throw new Error("Specified -locale without indicating locale");
         } else {
@@ -411,8 +403,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         } else {
           throw new Exception("Can only nominate a single -map parameter");
         }
-      } else if (args[i].equals(SERVER)) {
-        i++;
       } else if (args[i].equals(FHIRPATH)) {
         if (validationContext.getFhirpath() == null)
           if (i + 1 == args.length)
@@ -421,11 +411,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
             validationContext.setFhirpath(args[++i]);
         else
           throw new Exception("Can only nominate a single -fhirpath parameter");
-      } else if (!Utilities.existsInList(args[i],
-        //The following params are handled outside this loop, so should be ignored.
-        AUTH_NONCONFORMANT_SERVERS,
-        NO_HTTP_ACCESS,
-        FHIR_SETTINGS_PARAM)) {
+      } else {
         //Any remaining unhandled args become sources
         validationContext.addSource(args[i]);
       }

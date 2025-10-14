@@ -78,8 +78,8 @@ import org.hl7.fhir.utilities.http.ManagedWebAccess.WebAccessPolicy;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.cli.logging.Level;
 import org.hl7.fhir.validation.cli.logging.LogbackUtilities;
+import org.hl7.fhir.validation.cli.param.parsers.GlobalParametersParser;
 import org.hl7.fhir.validation.cli.tasks.*;
-import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.cli.param.Params;
 
@@ -190,32 +190,32 @@ public class ValidatorCli {
 
   public static GlobalParams readGlobalParams(String[] args) {
     GlobalParams globalParams = new GlobalParams();
-    if (Params.hasParamAndValue(args, Params.LOCALE)){
-      final String languageTag = Params.getParam(args,  Params.LOCALE);
+    if (Params.hasParamAndValue(args, GlobalParametersParser.LOCALE)){
+      final String languageTag = Params.getParam(args,  GlobalParametersParser.LOCALE);
       globalParams.setLocaleLanguageTag(languageTag);
     }
 
-    if (Params.hasParamAndValue(args, Params.DEBUG_LOG)){
-      globalParams.setDebugLogFile(Params.getParam(args, Params.DEBUG_LOG));
+    if (Params.hasParamAndValue(args, GlobalParametersParser.DEBUG_LOG)){
+      globalParams.setDebugLogFile(Params.getParam(args, GlobalParametersParser.DEBUG_LOG));
     }
 
-    if (Params.hasParamAndValue(args, Params.TRACE_LOG)){
-      globalParams.setTraceLogFile(Params.getParam(args, Params.TRACE_LOG));
+    if (Params.hasParamAndValue(args, GlobalParametersParser.TRACE_LOG)){
+      globalParams.setTraceLogFile(Params.getParam(args, GlobalParametersParser.TRACE_LOG));
     }
 
-    if (Params.hasParam(args, Params.NO_HTTP_ACCESS)) {
+    if (Params.hasParam(args, GlobalParametersParser.NO_HTTP_ACCESS)) {
       globalParams.setWebAccessPolicy(WebAccessPolicy.PROHIBITED);
     }
-    if (Params.hasParam(args, Params.AUTH_NONCONFORMANT_SERVERS)) {
+    if (Params.hasParam(args, GlobalParametersParser.AUTH_NONCONFORMANT_SERVERS)) {
       globalParams.setAllowNonConformantTxServers(true);
     }
 
-    globalParams.setProxy(Params.hasParamAndValue(args, Params.PROXY) ? Params.getParam(args, Params.PROXY) : null);
-    globalParams.setHttpsProxy(Params.hasParamAndValue(args, Params.HTTPS_PROXY) ? Params.getParam(args, Params.HTTPS_PROXY) : null);
-    globalParams.setProxyAuth(Params.hasParamAndValue(args, Params.PROXY_AUTH) ? Params.getParam(args, Params.PROXY_AUTH) : null);
+    globalParams.setProxy(Params.hasParamAndValue(args, GlobalParametersParser.PROXY) ? Params.getParam(args, GlobalParametersParser.PROXY) : null);
+    globalParams.setHttpsProxy(Params.hasParamAndValue(args, GlobalParametersParser.HTTPS_PROXY) ? Params.getParam(args, GlobalParametersParser.HTTPS_PROXY) : null);
+    globalParams.setProxyAuth(Params.hasParamAndValue(args, GlobalParametersParser.PROXY_AUTH) ? Params.getParam(args, GlobalParametersParser.PROXY_AUTH) : null);
 
-    if (Params.hasParamAndValue(args, Params.FHIR_SETTINGS_PARAM)) {
-      final String fhirSettingsFilePath = Params.getParam(args, Params.FHIR_SETTINGS_PARAM);
+    if (Params.hasParamAndValue(args, GlobalParametersParser.FHIR_SETTINGS_PARAM)) {
+      final String fhirSettingsFilePath = Params.getParam(args, GlobalParametersParser.FHIR_SETTINGS_PARAM);
       try {
         if (!ManagedFileAccess.file(fhirSettingsFilePath).exists()) {
           throw new Error("Cannot find fhir-settings file: " + fhirSettingsFilePath);

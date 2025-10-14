@@ -6,10 +6,11 @@ import org.hl7.fhir.validation.cli.param.IParamParser;
 import org.hl7.fhir.validation.service.ValidatorWatchMode;
 import org.hl7.fhir.validation.service.model.WatchParameters;
 
-import static org.hl7.fhir.validation.cli.param.Params.*;
-
 public class WatchParametersParser implements IParamParser<WatchParameters> {
 
+  public static final String WATCH_MODE_PARAM = "-watch-mode";
+  public static final String WATCH_SCAN_DELAY = "-watch-scan-delay";
+  public static final String WATCH_SETTLE_TIME = "-watch-settle-time";
   private final WatchParameters watchParameters = new WatchParameters();
 
   @Override
