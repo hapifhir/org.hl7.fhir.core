@@ -318,6 +318,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     jurisdiction = other.jurisdiction;
     unknownCodeSystemsCauseErrors = other.unknownCodeSystemsCauseErrors;
     r5BundleRelativeReferencePolicy = other.r5BundleRelativeReferencePolicy;
+    displayWarnings = other.displayWarnings;
+    showMessageIds = other.showMessageIds;
+    noExperimentalContent = other.noExperimentalContent;
+    bestPracticeLevel = other.bestPracticeLevel;
   }
   
   /**
@@ -1272,7 +1276,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     }
     if (url.contains("*") && !url.contains("?")) {
       if (cu == null) {
-        cu = new ContextUtilities(context);
+        Lcu = new ContextUtilities(context);
       }
       List<StructureMap> maps = cu.listMaps(url);
       if (!maps.isEmpty()) {

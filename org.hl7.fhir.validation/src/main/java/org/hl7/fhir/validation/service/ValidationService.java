@@ -184,7 +184,7 @@ public class ValidationService {
           response.addOutcome(validationOutcome);
         }
 
-        if (request.getValidationContext().isShowTimes()) {
+        if (validationEngine.isShowTimes()) {
           response.getValidationTimes().put(fileToValidate.getFileName(), validatedFragments.getValidationTime());
         }
         
