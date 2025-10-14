@@ -31,6 +31,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
   GlobalParametersParser globalParser = new GlobalParametersParser();
   ValidationEngineParametersParser validationEngineParametersParser = new ValidationEngineParametersParser();
   WatchParametersParser watchParametersParser = new WatchParametersParser();
+  TransformLangParameterParser transformLangParameterParser = new TransformLangParameterParser();
   ValidationContext validationContext = new ValidationContext();
 
   @Override
@@ -44,10 +45,12 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
       globalParser.parseArgs(args);
       validationEngineParametersParser.parseArgs(args);
       watchParametersParser.parseArgs(args);
+      transformLangParameterParser.parseArgs(args);
       String[] unprocessedArgs = filterProcessedArgs(args);
       this.validationContext = loadValidationContext(unprocessedArgs);
       ValidationContextUtilities.addValidationEngineParameters(this.validationContext, validationEngineParametersParser.getParameterObject());
       ValidationContextUtilities.addWatchParameters(this.validationContext, this.watchParametersParser.getParameterObject());
+      ValidationContextUtilities.addTransformLangParameters(this.validationContext, this.transformLangParameterParser.getParameterObject());
     } catch (Exception e) {
       log.error(e.getMessage(), e);
     }
@@ -366,16 +369,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
           throw new Error("Specified -language without indicating language");
         else
           validationContext.setLang(args[++i]);
-      } else if (args[i].equals(SRC_LANG)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified -src-lang without indicating file");
-        else
-          validationContext.setSrcLang(args[++i]);
-      } else if (args[i].equals(TGT_LANG)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified -tgt-lang without indicating file");
-        else
-          validationContext.setTgtLang(args[++i]);
       } else if (args[i].equals(JURISDICTION)) {
         if (i + 1 == args.length)
           throw new Error("Specified -jurisdiction without indicating jurisdiction");
