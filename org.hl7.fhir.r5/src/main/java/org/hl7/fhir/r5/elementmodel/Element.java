@@ -840,7 +840,7 @@ public class Element extends Base implements NamedItem {
 
   public String getNamedChildValueSingle(String... names) {
     for (String name : names) {
-      String result = getNamedChildValueSingle(name, true);
+      String result = getNamedChildValueSingle(name, false);
       if (result != null) {
         return result;
       }

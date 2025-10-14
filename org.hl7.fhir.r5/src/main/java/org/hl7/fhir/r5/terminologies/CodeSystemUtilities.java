@@ -906,22 +906,22 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     if (value instanceof CodeType) {
       return PropertyType.CODE;
     }
-    if (value instanceof CodeType) {
+    if (value instanceof Coding) {
       return PropertyType.CODING;
     }
-    if (value instanceof CodeType) {
+    if (value instanceof StringType) {
       return PropertyType.STRING;
     }
-    if (value instanceof CodeType) {
+    if (value instanceof IntegerType) {
       return PropertyType.INTEGER;
     }
-    if (value instanceof CodeType) {
+    if (value instanceof BooleanType) {
       return PropertyType.BOOLEAN;
     }
-    if (value instanceof CodeType) {
+    if (value instanceof DateTimeType) {
       return PropertyType.DATETIME;
     }
-    if (value instanceof CodeType) {
+    if (value instanceof DecimalType) {
       return PropertyType.DECIMAL;
     }
     throw new FHIRException("Unsupported property value for a CodeSystem Property: "+value.fhirType());
