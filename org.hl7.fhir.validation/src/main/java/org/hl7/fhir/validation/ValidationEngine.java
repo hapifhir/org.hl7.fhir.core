@@ -1276,7 +1276,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     }
     if (url.contains("*") && !url.contains("?")) {
       if (cu == null) {
-        Lcu = new ContextUtilities(context);
+        cu = new ContextUtilities(context);
       }
       List<StructureMap> maps = cu.listMaps(url);
       if (!maps.isEmpty()) {
