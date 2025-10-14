@@ -14,6 +14,9 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
+import org.hl7.fhir.validation.cli.param.parsers.GlobalParametersParser;
+import org.hl7.fhir.validation.cli.param.parsers.ValidationEngineParametersParser;
+import org.hl7.fhir.validation.cli.param.parsers.WatchParametersParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.ValidatorWatchMode;
@@ -23,7 +26,6 @@ import org.hl7.fhir.validation.service.utils.ValidationLevel;
 @Slf4j
 public class Params {
 
-  public static final String VERSION = "-version";
   public static final String TEST_VERSION = "-test-version";
   public static final String ALT_VERSION = "-alt-version";
   public static final String OUTPUT = "-output";
@@ -31,10 +33,7 @@ public class Params {
   public static final String OUTPUT_SUFFIX = "-outputSuffix";
   public static final String LEVEL = "-level";
   public static final String HTML_OUTPUT = "-html-output";
-  public static final String PROXY = "-proxy";
 
-  public static final String HTTPS_PROXY = "-https-proxy";
-  public static final String PROXY_AUTH = "-auth";
   public static final String PROFILE = "-profile";
   public static final String PROFILES = "-profiles";
   public static final String CONFIG = "-config";
@@ -42,20 +41,11 @@ public class Params {
   public static final String OPTIONS = "-options";
   public static final String BUNDLE = "-bundle";
   public static final String QUESTIONNAIRE = "-questionnaire";
-  public static final String NATIVE = "-native";
-  public static final String ASSUME_VALID_REST_REF = "-assumeValidRestReferences";
   public static final String CHECK_REFERENCES = "-check-references";
   public static final String RESOLUTION_CONTEXT = "-resolution-context";
-  public static final String DEBUG = "-debug";
-  public static final String DEBUG_LOG = "-debug-log";
-  public static final String TRACE_LOG = "-trace-log";
-  public static final String SCT = "-sct";
   public static final String RECURSE = "-recurse";
   public static final String SHOW_MESSAGES_FROM_REFERENCES = "-showReferenceMessages";
-  public static final String LOCALE = "-locale";
   public static final String EXTENSION = "-extension";
-  public static final String HINT_ABOUT_NON_MUST_SUPPORT = "-hintAboutNonMustSupport";
-  public static final String TO_VERSION = "-to-version";
   public static final String TX_PACK = "-tx-pack";
   public static final String RE_PACK = "-re-package";
   public static final String PACKAGE_NAME = "-package-name";
@@ -93,7 +83,6 @@ public class Params {
   public static final String AI_TESTS = "-aiTests";
   public static final String HELP = "help";
   public static final String COMPARE = "-compare";
-  public static final String SERVER = "-server";
   public static final String SPREADSHEET = "-spreadsheet";
   public static final String DESTINATION = "-dest";
   public static final String LEFT = "-left";
@@ -141,12 +130,6 @@ public class Params {
   public static final String FILTER = "-filter";
   public static final String EXTERNALS = "-externals";
   public static final String MODE = "-mode";
-  public static final String FHIR_SETTINGS_PARAM = "-fhir-settings";
-  public static final String WATCH_MODE_PARAM = "-watch-mode";
-  public static final String WATCH_SCAN_DELAY = "-watch-scan-delay";
-  public static final String WATCH_SETTLE_TIME = "-watch-settle-time";
-  public static final String NO_HTTP_ACCESS = "-no-http-access";
-  public static final String AUTH_NONCONFORMANT_SERVERS = "-authorise-non-conformant-tx-servers";
   public static final String R5_REF_POLICY = "r5-bundle-relative-reference-policy";
   public static final String MATCHETYPE = "-matchetype";
 
@@ -211,7 +194,7 @@ public class Params {
 
     // load the parameters - so order doesn't matter
     for (int i = 0; i < args.length; i++) {
-      if (args[i].equals(VERSION)) {
+      if (args[i].equals(ValidationEngineParametersParser.VERSION)) {
         validationContext.setSv(VersionUtilities.getCurrentPackageVersion(args[++i]));
       } else if (args[i].equals(OUTPUT)) {
         if (i + 1 == args.length)
@@ -307,18 +290,18 @@ public class Params {
           String input = args[++i];
           validationContext.addInput(input);
         }
-      } else if (args[i].equals(NATIVE)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.NATIVE)) {
         validationContext.setDoNative(true);
-      } else if (args[i].equals(ASSUME_VALID_REST_REF)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.ASSUME_VALID_REST_REF)) {
         validationContext.setAssumeValidRestReferences(true);
       } else if (args[i].equals(CHECK_REFERENCES)) {
         validationContext.setCheckReferences(true);
       } else if (args[i].equals(RESOLUTION_CONTEXT)) {
         validationContext.setResolutionContext(args[++i]);
-      } else if (args[i].equals(DEBUG)) {
+      } else if (args[i].equals(GlobalParametersParser.DEBUG)) {
         i++;
         log.warn("Debugging support is now provided through the -debug-log and -trace-log CLI parameters. Use the -help option for detailed instructions.");
-      } else if (args[i].equals(SCT)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.SCT)) {
         validationContext.setSnomedCT(args[++i]);
       } else if (args[i].equals(RECURSE)) {
         validationContext.setRecursive(true);
@@ -344,7 +327,7 @@ public class Params {
           String q = args[++i];
           validationContext.setBestPracticeLevel(readBestPractice(q));
         }
-      } else if (args[i].equals(LOCALE)) {
+      } else if (args[i].equals(GlobalParametersParser.LOCALE)) {
         if (i + 1 == args.length) {
           throw new Error("Specified -locale without indicating locale");
         } else {
@@ -370,9 +353,9 @@ public class Params {
         validationContext.setDisplayWarnings(true);
       } else if (args[i].equals(WANT_INVARIANTS_IN_MESSAGES)) {
         validationContext.setWantInvariantsInMessages(true);
-      } else if (args[i].equals(HINT_ABOUT_NON_MUST_SUPPORT)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.HINT_ABOUT_NON_MUST_SUPPORT)) {
         validationContext.setHintAboutNonMustSupport(true);
-      } else if (args[i].equals(TO_VERSION)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.TO_VERSION)) {
         validationContext.setTargetVer(args[++i]);
       } else if (args[i].equals(PACKAGE_NAME)) {
         validationContext.setPackageName(args[++i]);
@@ -547,7 +530,7 @@ public class Params {
           if (version == null) {
             validationContext.addIg(s);
           } else {
-            String v = getParam(args, VERSION);
+            String v = getParam(args, ValidationEngineParametersParser.VERSION);
             if (v != null && !v.equals(version)) {
               throw new Error("Parameters are inconsistent: specified version is "+v+" but -ig parameter "+s+" implies a different version");
             } else if (validationContext.getSv() != null && !version.equals(validationContext.getSv())) {
@@ -579,26 +562,24 @@ public class Params {
         } else {
           throw new Exception("Can only nominate a single -map parameter");
         }
-      } else if (args[i].equals(WATCH_MODE_PARAM)) {
+      } else if (args[i].equals(WatchParametersParser.WATCH_MODE_PARAM)) {
         if (i + 1 == args.length) {
           throw new Error("Specified -watch-mode without indicating mode value");
         } else {
           validationContext.setWatchMode(readWatchMode(args[++i]));
         }
-      } else if (args[i].equals(WATCH_SCAN_DELAY)) {
+      } else if (args[i].equals(WatchParametersParser.WATCH_SCAN_DELAY)) {
         if (i + 1 == args.length) {
           throw new Error("Specified -watch-scan-delay without indicating mode value");
         } else {
-          validationContext.setWatchScanDelay(readInteger(WATCH_SCAN_DELAY, args[++i]));
+          validationContext.setWatchScanDelay(readInteger(WatchParametersParser.WATCH_SCAN_DELAY, args[++i]));
         }
-      } else if (args[i].equals(WATCH_SETTLE_TIME)) {
+      } else if (args[i].equals(WatchParametersParser.WATCH_SETTLE_TIME)) {
           if (i + 1 == args.length) {
             throw new Error("Specified -watch-mode without indicating mode value");
           } else {
-            validationContext.setWatchSettleTime(readInteger(WATCH_SETTLE_TIME, args[++i]));
+            validationContext.setWatchSettleTime(readInteger(WatchParametersParser.WATCH_SETTLE_TIME, args[++i]));
           }      } else if (args[i].startsWith(X)) {
-        i++;
-      } else if (args[i].equals(SERVER)) {
         i++;
       } else if (args[i].equals(FHIRPATH)) {
         if (validationContext.getFhirpath() == null)
@@ -609,17 +590,18 @@ public class Params {
         else
           throw new Exception("Can only nominate a single -fhirpath parameter");
       } else if (Utilities.existsInList(args[i],
-        DEBUG_LOG,
-        TRACE_LOG,
-        PROXY,
-        PROXY_AUTH,
-        HTTPS_PROXY)) {
+        GlobalParametersParser.DEBUG_LOG,
+        GlobalParametersParser.TRACE_LOG,
+        GlobalParametersParser.PROXY,
+        GlobalParametersParser.PROXY_AUTH,
+        GlobalParametersParser.HTTPS_PROXY,
+        GlobalParametersParser.SERVER)) {
           //DO NOTHING Those params are handled outside this loop, so should be ignored along with their values.
           i++;
       } else if (Utilities.existsInList(args[i],
-        AUTH_NONCONFORMANT_SERVERS,
-        NO_HTTP_ACCESS,
-        FHIR_SETTINGS_PARAM)) {
+        GlobalParametersParser.AUTH_NONCONFORMANT_SERVERS,
+        GlobalParametersParser.NO_HTTP_ACCESS,
+        GlobalParametersParser.FHIR_SETTINGS_PARAM)) {
         //DO NOTHING Those params are handled outside this loop, so should be ignored.
       } else {
         //Any remaining unhandled args become sources
