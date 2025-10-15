@@ -24,6 +24,7 @@ public class ValidatorSettings extends ValidationOptions {
   private BestPracticeWarningLevel bpWarnings = BestPracticeWarningLevel.Warning; // @configuration
   private List<UsageContext> usageContexts = new ArrayList<UsageContext>(); // @configuration
   private boolean assumeValidRestReferences;
+  private boolean strictIdentifierSystems;
   private Map<String, byte[]> certificates = new HashMap<>();
   private List<String> certificateFolders = new ArrayList<>();
   private String minVersion;
@@ -59,6 +60,12 @@ public class ValidatorSettings extends ValidationOptions {
   }
   public void setAssumeValidRestReferences(boolean assumeValidRestReferences) {
     this.assumeValidRestReferences = assumeValidRestReferences;
+  }
+  public boolean isStrictIdentifierSystems() {
+    return strictIdentifierSystems;
+  }
+  public void setStrictIdentifierSystems(boolean strictIdentifierSystems) {
+    this.strictIdentifierSystems = strictIdentifierSystems;
   }
   public boolean isForPublication() {
     return forPublication;

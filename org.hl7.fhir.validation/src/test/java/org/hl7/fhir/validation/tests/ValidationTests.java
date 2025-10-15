@@ -422,6 +422,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     val.setSignatureServices(this);
     if (content.has("logical") == false) {
       val.setAssumeValidRestReferences(content.has("assumeValidRestReferences") ? content.get("assumeValidRestReferences").getAsBoolean() : false);
+      val.setStrictIdentifierSystems(content.has("strictIdentifierSystems") ? content.get("strictIdentifierSystems").getAsBoolean() : false);
       logOutput(String.format("Start Validating (%d to set up)", (System.nanoTime() - setup) / 1000000));
       Element res = val.validate(null, errors, new ByteArrayInputStream(testCaseContent), fmt);
       logOutput(val.reportTimes());
@@ -496,6 +497,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
         val.getContext().getManager().cacheResource(sd);
       }
       val.setAssumeValidRestReferences(profile.has("assumeValidRestReferences") ? profile.get("assumeValidRestReferences").getAsBoolean() : false);
+      val.setStrictIdentifierSystems(profile.has("strictIdentifierSystems") ? profile.get("strictIdentifierSystems").getAsBoolean() : false);
       List<ValidationMessage> errorsProfile = new ArrayList<ValidationMessage>();
       val.validate(null, errorsProfile, new ByteArrayInputStream(testCaseContent), fmt, asSdList(sd));
       logOutput(val.reportTimes());

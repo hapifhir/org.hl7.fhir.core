@@ -315,6 +315,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private final CanonicalResourceManager<ActorDefinition> actors = new CanonicalResourceManager<ActorDefinition>(false, minimalMemory);
   private final CanonicalResourceManager<Requirements> requirements = new CanonicalResourceManager<Requirements>(false, minimalMemory);
   private final CanonicalResourceManager<NamingSystem> systems = new CanonicalResourceManager<NamingSystem>(false, minimalMemory);
+  private Map<String, NamingSystem> identifierSystems;
   private Map<String, NamingSystem> systemUrlMap;
 
   private LanguageSubtagRegistry registry;
@@ -406,11 +407,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       operations.copy(other.operations);
       systems.copy(other.systems);
       systemUrlMap = null;
+      identifierSystems = null;
       guides.copy(other.guides);
       capstmts.copy(other.capstmts);
       measures.copy(other.measures);
       libraries.copy(other.libraries);
-
       allowLoadingDuplicates = other.allowLoadingDuplicates;
       name = other.name;
       txLog = other.txLog;
@@ -440,7 +441,29 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
   
-  
+  @Override
+  public boolean isKnownIdentifierSystem(String system) {
+    if (identifierSystems == null) {
+      identifierSystems = new HashMap<>();
+      List<NamingSystem> nsl = systems.getList();
+      for (NamingSystem ns : nsl) {
+        if (ns.getKind().equals(NamingSystem.NamingSystemType.IDENTIFIER)) {
+          for (NamingSystemUniqueIdComponent nsc : ns.getUniqueId()) {
+            if (nsc.getPreferred() && nsc.getType().equals(NamingSystemIdentifierType.URI)) {
+              if (identifierSystems.containsKey(nsc.getValue()))
+                System.out.println("Multiple naming system instances with the same preferred URI " + nsc.getValue() + "(" + ns.getUrl() + " and " + identifierSystems.get(nsc.getValue()).getUrl());
+              else {
+                identifierSystems.put(nsc.getValue(),  ns);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return identifierSystems.containsKey(system);
+  }
+    
   public void cacheResource(Resource r) throws FHIRException {
     cacheResourceFromPackage(r, null);  
   }
@@ -650,7 +673,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         } else if (r instanceof StructureMap) {
           transforms.see((StructureMap) m, packageInfo);
         } else if (r instanceof NamingSystem) {
-          systems.see((NamingSystem) m, packageInfo);
+          systems.see((NamingSystem) r, packageInfo);
           systemUrlMap = null;
         } else if (r instanceof Requirements) {
           requirements.see((Requirements) m, packageInfo);
