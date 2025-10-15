@@ -26,7 +26,7 @@ public class Params {
 
   public static final String TEST_VERSION = "-test-version";
   public static final String ALT_VERSION = "-alt-version";
-  
+
   public static final String LEVEL = "-level";
   public static final String HTML_OUTPUT = "-html-output";
 
@@ -38,7 +38,6 @@ public class Params {
   public static final String BUNDLE = "-bundle";
   public static final String QUESTIONNAIRE = "-questionnaire";
   public static final String CHECK_REFERENCES = "-check-references";
-  public static final String RESOLUTION_CONTEXT = "-resolution-context";
   public static final String RECURSE = "-recurse";
   public static final String SHOW_MESSAGES_FROM_REFERENCES = "-showReferenceMessages";
   public static final String EXTENSION = "-extension";
@@ -61,7 +60,6 @@ public class Params {
   public static final String SNAPSHOT = "-snapshot";
   public static final String INSTALL = "-install";
   public static final String SCAN = "-scan";
-  public static final String TERMINOLOGY = "-tx";
   public static final String TERMINOLOGY_LOG = "-txLog";
   public static final String TERMINOLOGY_CACHE = "-txCache";
   public static final String TERMINOLOGY_ROUTING = "-tx-routing";
@@ -94,13 +92,11 @@ public class Params {
   public static final String CRUMB_TRAIL = "-crumb-trails";
   public static final String SHOW_MESSAGE_IDS = "-show-message-ids";
   public static final String FOR_PUBLICATION = "-forPublication";
-  public static final String AI_SERVICE = "-ai-service";
   public static final String VERBOSE = "-verbose";
   public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
   public static final String OUTPUT_STYLE = "-output-style";
   public static final String ADVISOR_FILE = "-advisor-file";
   public static final String DO_IMPLICIT_FHIRPATH_STRING_CONVERSION = "-implicit-fhirpath-string-conversions";
-  public static final String JURISDICTION = "-jurisdiction";
   public static final String HTML_IN_MARKDOWN = "-html-in-markdown";
   public static final String ALLOW_DOUBLE_QUOTES = "-allow-double-quotes-in-fhirpath";
   public static final String DISABLE_DEFAULT_RESOURCE_FETCHER = "-disable-default-resource-fetcher";
@@ -114,7 +110,6 @@ public class Params {
   public static final String TEST_MODULES = "-test-modules";
 
   public static final String TEST_NAME_FILTER = "-test-classname-filter";
-  public static final String CERT = "-cert";
   public static final String SPECIAL = "-special";
   public static final String TARGET = "-target";
   public static final String SOURCE = "-source";
@@ -288,7 +283,7 @@ public class Params {
         validationContext.setAssumeValidRestReferences(true);
       } else if (args[i].equals(CHECK_REFERENCES)) {
         validationContext.setCheckReferences(true);
-      } else if (args[i].equals(RESOLUTION_CONTEXT)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.RESOLUTION_CONTEXT)) {
         validationContext.setResolutionContext(args[++i]);
       } else if (args[i].equals(GlobalParametersParser.DEBUG)) {
         i++;
@@ -414,7 +409,7 @@ public class Params {
         validationContext.setShowMessageIds(true);
       } else if (args[i].equals(FOR_PUBLICATION)) {
         validationContext.setForPublication(true);
-      } else if (args[i].equals(AI_SERVICE)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.AI_SERVICE)) {
         validationContext.setAIService(args[++i]);
       } else if (args[i].equals(R5_REF_POLICY)) {
         validationContext.setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.fromCode(args[++i]));
@@ -450,7 +445,7 @@ public class Params {
         } else if (!Utilities.existsInList(Utilities.getFileExtension(f.getName()), "json", "txt")) {
           throw new Error("Advisor file "+ validationContext.getAdvisorFile()+" must be a .json or a .txt file");
         }
-      } else if (args[i].equals(TERMINOLOGY)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.TERMINOLOGY)) {
         if (i + 1 == args.length)
           throw new Error("Specified -tx without indicating terminology server");
         else {
@@ -467,7 +462,7 @@ public class Params {
           throw new Error("Specified -txCache without indicating file");
         else
           validationContext.setTxCache(args[++i]);
-      } else if (args[i].equals(CERT)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.CERT)) {
         if (i + 1 == args.length)
           throw new Error("Specified -txCache without indicating file");
         else {
@@ -508,7 +503,7 @@ public class Params {
           throw new Error("Specified -tgt-lang without indicating file");
         else
           validationContext.setTgtLang(args[++i]);
-      } else if (args[i].equals(JURISDICTION)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.JURISDICTION)) {
         if (i + 1 == args.length)
           throw new Error("Specified -jurisdiction without indicating jurisdiction");
         else
