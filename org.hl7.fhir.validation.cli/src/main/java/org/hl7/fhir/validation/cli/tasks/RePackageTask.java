@@ -1,6 +1,7 @@
 package org.hl7.fhir.validation.cli.tasks;
 
 import java.io.File;
+import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -66,14 +67,9 @@ public class RePackageTask extends ValidationEngineTask {
       t = ExpansionPackageGeneratorOutputType.TGZ;
     } 
     ExpansionPackageGeneratorScope scope = ExpansionPackageGeneratorScope.IG_ONLY;
-    int c = -1;
-    for (int i = 0; i < args.length; i++) {
-      if ("-scope".equals(args[i])) {
-        c = i;
-      }
-    }
-    if (c < args.length - 1) {
-      switch (args[c+1].toLowerCase()) {
+    int scopeArgumentIndex = getArgumentIndex("-scope", args);
+    if (scopeArgumentIndex < args.length - 1) {
+      switch (args[scopeArgumentIndex+1].toLowerCase()) {
       case "ig" :
         scope = ExpansionPackageGeneratorScope.IG_ONLY;
         break;
@@ -84,9 +80,10 @@ public class RePackageTask extends ValidationEngineTask {
         scope = ExpansionPackageGeneratorScope.EVERYTHING;
         break;
       default: 
-        log.warn("Unknown scope "+args[c+1]);
+        log.warn("Unknown scope "+args[scopeArgumentIndex+1]);
       }
     }
+
     IWorkerContext ctxt = validationEngine.getContext();
     PackageReGenerator ep = new PackageReGenerator().setContext(ctxt).setScope(scope);
     ep.setNpmId(validationContext.getPackageName());
@@ -98,6 +95,25 @@ public class RePackageTask extends ValidationEngineTask {
     }
     ep.setOutput(output).setOutputType(t).setJson(json);
     ep.setModes(validationContext.getModeParams());
+
+    int ignoreListArgumentIndex = getArgumentIndex("-ignoreList", args);
+    if(ignoreListArgumentIndex != -1)
+      ep.addIgnoreList(List.of(args[ignoreListArgumentIndex+1].split(",")));
+
+    int includeListArgumentIndex = getArgumentIndex("-includeList", args);
+    if(includeListArgumentIndex != -1)
+      ep.addIncludeList(List.of(args[includeListArgumentIndex+1].split(",")));
+
     ep.generateExpansionPackage();
+  }
+
+  private static int getArgumentIndex(String variableName, String[] args) {
+    int c = -1;
+    for (int i = 0; i < args.length; i++) {
+      if (variableName.equals(args[i])) {
+        c = i;
+      }
+    }
+    return c;
   }
 }

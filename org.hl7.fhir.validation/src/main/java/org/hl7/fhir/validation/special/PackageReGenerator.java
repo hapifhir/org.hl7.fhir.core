@@ -2,7 +2,6 @@ package org.hl7.fhir.validation.special;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,7 +13,6 @@ import java.util.Set;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
-import org.hl7.fhir.dstu2016may.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -58,7 +56,6 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.validation.IgLoader;
-import org.hl7.fhir.validation.special.PackageReGenerator.TerminologyResourceEntry;
 
 /**
  * Given a package id, and an expansion parameters, 
@@ -72,6 +69,14 @@ import org.hl7.fhir.validation.special.PackageReGenerator.TerminologyResourceEnt
 @Slf4j
 public class PackageReGenerator {
 
+  public void setIgnoreList(List<String> ignoreList) {
+    this.ignoreList = ignoreList;
+  }
+
+  public void setIncludeList(List<String> includeList) {
+    this.includeList = includeList;
+  }
+
   public static class TerminologyResourceEntry {
     public ValueSet valueSet;
     public Set<String> sources = new HashSet<>();
@@ -80,10 +85,12 @@ public class PackageReGenerator {
 
   public static void main(String[] args) throws Exception {
     new PackageReGenerator()
-      .addPackage("hl7.fhir.us.davinci-alerts")
+      .addPackage("ch.fhir.ig.ch-core")
       .setJson(true)
+      .addIgnoreList(List.of("http://fhir.ch/ig/ch-core/StructureDefinition/ch-core-patient-epr","http://fhir.ch/ig/ch-core/StructureDefinition/ch-core-claim", "urn:ietf:bcp:47"))
       .setOutputType(ExpansionPackageGeneratorOutputType.TGZ)
-      .setOutput("/Users/grahamegrieve/temp/vs-output.tgz")
+      .setOutput("/Users/jkiddo/temp/some-output.tgz")
+      .setModes(Set.of("cnt"))
       .generateExpansionPackage();
   }
   
@@ -104,7 +111,22 @@ public class PackageReGenerator {
   private boolean json;
   private IWorkerContext context;
   private String npmId;
-  
+  private List<String> ignoreList = new ArrayList<>();
+  private List<String> includeList = new ArrayList<>();
+
+  public PackageReGenerator() {
+    super();
+  }
+
+  public PackageReGenerator addIgnoreList(List<String> ignoreList) {
+    this.ignoreList = ignoreList;
+    return this;
+  }
+
+  public PackageReGenerator addIncludeList(List<String> includeList) {
+    this.includeList = includeList;
+    return this;
+  }
 
   public PackageReGenerator addPackage(String packageId) {
     packages.add(packageId);
@@ -294,9 +316,11 @@ public class PackageReGenerator {
   }
 
   private void processResource(CanonicalResource res) {
-    if (res == null) {
+    if (res == null)
       return;
-    }
+    if(ignoreList.contains(res.getUrl()))
+      return;
+
     if (set.contains(res.getVersionedUrl())) {
       return;
     }
@@ -739,9 +763,9 @@ public class PackageReGenerator {
     return list;
   }
 
-  public void setModes(Set<String> modeParams) {
+  public PackageReGenerator setModes(Set<String> modeParams) {
     this.modeParams = modeParams;
-    
+    return this;
   }
 
 }
