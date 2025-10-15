@@ -1,10 +1,16 @@
 package org.hl7.fhir.validation.cli.param.parsers;
 
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.IParamParser;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
+
+import java.io.File;
+import java.io.IOException;
 
 public class ValidationEngineParametersParser implements IParamParser<ValidationEngineParameters> {
 
@@ -13,6 +19,11 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
   public static final String VERSION = "-version";
   public static final String IMPLEMENTATION_GUIDE = "-ig";
   public static final String DEFINITION = "-defn";
+  public static final String RESOLUTION_CONTEXT = "-resolution-context";
+  public static final String JURISDICTION = "-jurisdiction";
+  public static final String AI_SERVICE = "-ai-service";
+  public static final String CERT = "-cert";
+  public static final String TERMINOLOGY = "-tx";
 
   ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
   @Override
@@ -55,6 +66,59 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
           }
           Arg.setProcessed(args, i, 2, true);
         }
+      } else if (args[i].getValue().equals(RESOLUTION_CONTEXT)) {
+        validationEngineParameters.setResolutionContext(args[i + 1].getValue());
+        Arg.setProcessed(args, i, 2, true);
+      } else if (args[i].getValue().equals(JURISDICTION)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -jurisdiction without indicating jurisdiction");
+        else {
+          validationEngineParameters.setJurisdiction(processJurisdiction(args[i + 1].getValue()));
+          Arg.setProcessed(args, i, 2, true);
+        }
+      } else if (args[i].getValue().equals(AI_SERVICE)) {
+        validationEngineParameters.setAIService(args[i + 1].getValue());
+        Arg.setProcessed(args, i, 2, true);
+      } else if (args[i].getValue().equals(CERT)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -cert without indicating file");
+        else {
+          String s = args[i + 1].getValue();
+          File file;
+          try {
+            file = ManagedFileAccess.file(s);
+          } catch (IOException e) {
+            throw new Error("Exception accessing certificate source '"+s+"'");
+          }
+          if (!file.exists()) {
+            throw new Error("Certificate source '"+s+"' not found");
+          } else {
+            validationEngineParameters.addCertSource(s);
+          }
+          Arg.setProcessed(args, i, 2, true);
+        }
+      } else if (args[i].getValue().equals(TERMINOLOGY)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -tx without indicating terminology server");
+        else {
+          String txServer = args[i + 1].getValue();
+          validationEngineParameters.setTxServer("n/a".equals(txServer) ? null : txServer);
+          validationEngineParameters.setNoEcosystem(true);
+          Arg.setProcessed(args, i, 2, true);
+        }
+      }
+    }
+  }
+
+  private static String processJurisdiction(String s) {
+    if (s.startsWith("urn:iso:std:iso:3166#") || s.startsWith("urn:iso:std:iso:3166:-2#") || s.startsWith("http://unstats.un.org/unsd/methods/m49/m49.htm#")) {
+      return s;
+    } else {
+      String v = JurisdictionUtilities.getJurisdictionFromLocale(s);
+      if (v != null) {
+        return v;
+      } else {
+        throw new FHIRException("Unable to understand Jurisdiction '"+s+"'");
       }
     }
   }

@@ -165,8 +165,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         }
       } else if (args[i].equals(CHECK_REFERENCES)) {
         validationContext.setCheckReferences(true);
-      } else if (args[i].equals(RESOLUTION_CONTEXT)) {
-        validationContext.setResolutionContext(args[++i]);
       } else if (args[i].equals(GlobalParametersParser.DEBUG)) {
         i++;
         log.warn("Debugging support is now provided through the -debug-log and -trace-log CLI parameters. Use the -help option for detailed instructions.");
@@ -283,8 +281,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         validationContext.setShowMessageIds(true);
       } else if (args[i].equals(FOR_PUBLICATION)) {
         validationContext.setForPublication(true);
-      } else if (args[i].equals(AI_SERVICE)) {
-        validationContext.setAIService(args[++i]);
       } else if (args[i].equals(R5_REF_POLICY)) {
         validationContext.setR5BundleRelativeReferencePolicy(ValidationOptions.R5BundleRelativeReferencePolicy.fromCode(args[++i]));
       } else if (args[i].equals(UNKNOWN_CODESYSTEMS_CAUSE_ERROR)) {
@@ -317,13 +313,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         } else if (!Utilities.existsInList(Utilities.getFileExtension(f.getName()), "json", "txt")) {
           throw new Error("Advisor file "+ validationContext.getAdvisorFile()+" must be a .json or a .txt file");
         }
-      } else if (args[i].equals(TERMINOLOGY)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified -tx without indicating terminology server");
-        else {
-          validationContext.setTxServer("n/a".equals(args[++i]) ? null : args[i]);
-          validationContext.setNoEcosystem(true);
-        }
       } else if (args[i].equals(TERMINOLOGY_LOG)) {
         if (i + 1 == args.length)
           throw new Error("Specified -txLog without indicating file");
@@ -334,17 +323,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
           throw new Error("Specified -txCache without indicating file");
         else
           validationContext.setTxCache(args[++i]);
-      } else if (args[i].equals(CERT)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified -txCache without indicating file");
-        else {
-          String s = args[++i];
-          if (!(new File(s).exists())) {
-            throw new Error("Certificate source '"+s+"'  not found");
-          } else {
-            validationContext.addCertSource(s);
-          }
-        }
       } else if (args[i].equals(MATCHETYPE)) {
         if (i + 1 == args.length)
           throw new Error("Specified -matchetype without indicating file");
@@ -365,11 +343,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
           throw new Error("Specified -language without indicating language");
         else
           validationContext.setLang(args[++i]);
-      } else if (args[i].equals(JURISDICTION)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified -jurisdiction without indicating jurisdiction");
-        else
-          validationContext.setJurisdiction(processJurisdiction(args[++i]));
       } else if (args[i].equals(ALT_VERSION)) {
         if (i + 1 == args.length)
           throw new Error("Specified " + args[i] + " without indicating version");
@@ -424,40 +397,5 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
       case "i" : return BestPracticeWarningLevel.Ignore;
     }
     throw new Error("The best-practice level ''"+s+"'' is not valid");
-  }
-
-  private static String processJurisdiction(String s) {
-    if (s.startsWith("urn:iso:std:iso:3166#") || s.startsWith("urn:iso:std:iso:3166:-2#") || s.startsWith("http://unstats.un.org/unsd/methods/m49/m49.htm#")) {
-      return s;
-    } else {
-      String v = JurisdictionUtilities.getJurisdictionFromLocale(s);
-      if (v != null) {
-        return v;
-      } else {
-        throw new FHIRException("Unable to understand Jurisdiction '"+s+"'");
-      }
-    }
-  }
-
-  private static ValidatorWatchMode readWatchMode(String s) {
-    if (s == null) {
-      return ValidatorWatchMode.NONE;
-    }
-    switch (s.toLowerCase()) {
-      case "all" : return ValidatorWatchMode.ALL;
-      case "none" : return ValidatorWatchMode.NONE;
-      case "single" : return ValidatorWatchMode.SINGLE;
-      case "a" : return ValidatorWatchMode.ALL;
-      case "n" : return ValidatorWatchMode.NONE;
-      case "s" : return ValidatorWatchMode.SINGLE;
-    }
-    throw new Error("The watch mode ''"+s+"'' is not valid");
-  }
-
-  private static int readInteger(String name, String value) {
-    if (!Utilities.isInteger(value)) {
-      throw new Error("Unable to read "+value+" provided for '"+name+"' - must be an integer");
-    }
-    return Integer.parseInt(value);
   }
 }

@@ -16,6 +16,7 @@ import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.validation.cli.param.parsers.OutputParametersParser;
+import org.hl7.fhir.validation.cli.param.parsers.ValidationEngineParametersParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.special.TxTester;
@@ -65,7 +66,7 @@ public class TxTestsTask extends StandaloneTask{
   public void executeTask(@Nonnull String[] args) throws Exception {
       String output = Params.getParam(args, OutputParametersParser.OUTPUT);
       String version = Params.getParam(args, Params.TEST_VERSION);
-      final String tx = Params.getParam(args, Params.TERMINOLOGY);
+      final String tx = Params.getParam(args, ValidationEngineParametersParser.TERMINOLOGY);
       final String filter = Params.getParam(args, Params.FILTER);
       final String externals = Params.getParam(args, Params.EXTERNALS);
       if (output == null ) {

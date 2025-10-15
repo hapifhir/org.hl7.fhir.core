@@ -14,6 +14,14 @@ public class ValidationContextUtilities {
       validationContext.addIg(ig);
     }
     validationContext.setBaseEngine(validationEngineParameters.getBaseEngine());
+    validationContext.setResolutionContext(validationEngineParameters.getResolutionContext());
+    validationContext.setJurisdiction(validationEngineParameters.getJurisdiction());
+    validationContext.setAIService(validationEngineParameters.getAIService());
+    for (String certSource : validationEngineParameters.getCertSources()) {
+      validationContext.addCertSource(certSource);
+    }
+    validationContext.setTxServer(validationEngineParameters.getTxServer());
+    validationContext.setNoEcosystem(validationEngineParameters.getNoEcosystem());
   }
 
   public static void addWatchParameters(ValidationContext validationContext, WatchParameters watchParameters) {
@@ -53,6 +61,14 @@ public class ValidationContextUtilities {
       validationEngineParameters.addIg(ig);
     }
     validationEngineParameters.setBaseEngine(validationContext.getBaseEngine());
+    validationEngineParameters.setResolutionContext(validationContext.getResolutionContext());
+    validationEngineParameters.setJurisdiction(validationContext.getJurisdiction());
+    validationEngineParameters.setAIService(validationContext.getAIService());
+    for (String certSource : validationContext.getCertSources()) {
+      validationEngineParameters.addCertSource(certSource);
+    }
+    validationEngineParameters.setTxServer(validationContext.getTxServer());
+    validationEngineParameters.setNoEcosystem(validationContext.getNoEcosystem());
     return validationEngineParameters;
   }
 
