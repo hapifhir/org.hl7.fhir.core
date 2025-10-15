@@ -10,9 +10,6 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
 
   public static final String NATIVE = "-native";
   public static final String SCT = "-sct";
-  public static final String HINT_ABOUT_NON_MUST_SUPPORT = "-hintAboutNonMustSupport";
-  public static final String ASSUME_VALID_REST_REF = "-assumeValidRestReferences";
-  public static final String NO_EXTENSIBLE_BINDING_WARNINGS = "-no-extensible-binding-warnings";
   public static final String VERSION = "-version";
   public static final String IMPLEMENTATION_GUIDE = "-ig";
   public static final String DEFINITION = "-defn";
@@ -35,15 +32,6 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
       } else if (args[i].getValue().equals(SCT)) {
         validationEngineParameters.setSnomedCT(args[i + 1].getValue());
         Arg.setProcessed(args, i,  2, true);
-      } else if (args[i].getValue().equals(HINT_ABOUT_NON_MUST_SUPPORT)) {
-        validationEngineParameters.setHintAboutNonMustSupport(true);
-        args[i].setProcessed(true);
-      } else if (args[i].getValue().equals(ASSUME_VALID_REST_REF)) {
-        validationEngineParameters.setAssumeValidRestReferences(true);
-        args[i].setProcessed(true);
-      } else if (args[i].getValue().equals(NO_EXTENSIBLE_BINDING_WARNINGS)) {
-        validationEngineParameters.setNoExtensibleBindingMessages(true);
-        args[i].setProcessed(true);
       } else if (args[i].getValue().equals(VERSION)) {
         validationEngineParameters.setSv(VersionUtilities.getCurrentPackageVersion(args[i + 1].getValue()));
         Arg.setProcessed(args, i, 2, true);

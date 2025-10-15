@@ -9,9 +9,6 @@ public class ValidationContextUtilities {
     validationContext.setInferFhirVersion(validationEngineParameters.isInferFhirVersion());
     validationContext.setDoNative(validationEngineParameters.isDoNative());
     validationContext.setSnomedCT(validationEngineParameters.getSnomedCT());
-    validationContext.setHintAboutNonMustSupport(validationEngineParameters.isHintAboutNonMustSupport());
-    validationContext.setAssumeValidRestReferences(validationEngineParameters.isAssumeValidRestReferences());
-    validationContext.setNoExtensibleBindingMessages(validationEngineParameters.isNoExtensibleBindingMessages());
     validationContext.setSv(validationEngineParameters.getSv());
     for (String ig : validationEngineParameters.getIgs()) {
       validationContext.addIg(ig);
@@ -34,14 +31,18 @@ public class ValidationContextUtilities {
     validationContext.setTargetVer(transformVersionParameters.getTargetVer());
   }
 
+  public static void addInstanceValidatorParameters(ValidationContext validationContext, InstanceValidatorParameters instanceValidatorParameters) {
+    validationContext.setAssumeValidRestReferences(instanceValidatorParameters.isAssumeValidRestReferences());
+    validationContext.setNoExtensibleBindingMessages(instanceValidatorParameters.isNoExtensibleBindingMessages());
+    validationContext.setShowTimes(instanceValidatorParameters.isShowTimes());
+    validationContext.setHintAboutNonMustSupport(instanceValidatorParameters.isHintAboutNonMustSupport());
+  }
+
   public static ValidationEngineParameters getValidationEngineParameters(ValidationContext validationContext) {
     ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
     validationEngineParameters.setInferFhirVersion(validationContext.isInferFhirVersion());
     validationEngineParameters.setDoNative(validationContext.isDoNative());
     validationEngineParameters.setSnomedCT(validationContext.getSnomedCT());
-    validationEngineParameters.setHintAboutNonMustSupport(validationContext.isHintAboutNonMustSupport());
-    validationEngineParameters.setAssumeValidRestReferences(validationContext.isAssumeValidRestReferences());
-    validationEngineParameters.setNoExtensibleBindingMessages(validationContext.isNoExtensibleBindingMessages());
     validationEngineParameters.setSv(validationContext.getSv());
     for (String ig : validationContext.getIgs()) {
       validationEngineParameters.addIg(ig);
@@ -69,5 +70,14 @@ public class ValidationContextUtilities {
     TransformVersionParameters transformVersionParameters = new TransformVersionParameters();
     transformVersionParameters.setTargetVer(validationContext.getTargetVer());
     return transformVersionParameters;
+  }
+
+  public static InstanceValidatorParameters getInstanceValidatorParameters(ValidationContext validationContext) {
+    InstanceValidatorParameters instanceValidatorParameters = new InstanceValidatorParameters();
+    instanceValidatorParameters.setAssumeValidRestReferences(validationContext.isAssumeValidRestReferences());
+    instanceValidatorParameters.setNoExtensibleBindingMessages(validationContext.isNoExtensibleBindingMessages());
+    instanceValidatorParameters.setShowTimes(validationContext.isShowTimes());
+    instanceValidatorParameters.setHintAboutNonMustSupport(validationContext.isHintAboutNonMustSupport());
+    return instanceValidatorParameters;
   }
 }

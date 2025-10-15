@@ -88,7 +88,6 @@ public class Params {
   public static final String NO_INTERNAL_CACHING = "-no-internal-caching";
 
   public static final String PRELOAD_CACHE = "-preload-cache";
-  public static final String NO_EXTENSIBLE_BINDING_WARNINGS = "-no-extensible-binding-warnings";
   public static final String NO_UNICODE_BIDI_CONTROL_CHARS = "-no_unicode_bidi_control_chars";
   public static final String NO_INVARIANTS = "-no-invariants";
   public static final String DISPLAY_WARNINGS = "-display-issues-are-warnings";
@@ -99,7 +98,6 @@ public class Params {
   public static final String FOR_PUBLICATION = "-forPublication";
   public static final String AI_SERVICE = "-ai-service";
   public static final String VERBOSE = "-verbose";
-  public static final String SHOW_TIMES = "-show-times";
   public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
   public static final String OUTPUT_STYLE = "-output-style";
   public static final String ADVISOR_FILE = "-advisor-file";
@@ -288,7 +286,7 @@ public class Params {
         }
       } else if (args[i].equals(ValidationEngineParametersParser.NATIVE)) {
         validationContext.setDoNative(true);
-      } else if (args[i].equals(ValidationEngineParametersParser.ASSUME_VALID_REST_REF)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.ASSUME_VALID_REST_REF)) {
         validationContext.setAssumeValidRestReferences(true);
       } else if (args[i].equals(CHECK_REFERENCES)) {
         validationContext.setCheckReferences(true);
@@ -333,7 +331,7 @@ public class Params {
         validationContext.getExtensions().add(args[++i]);
       } else if (args[i].equals(NO_INTERNAL_CACHING)) {
         validationContext.setNoInternalCaching(true);
-      } else if (args[i].equals(NO_EXTENSIBLE_BINDING_WARNINGS)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.NO_EXTENSIBLE_BINDING_WARNINGS)) {
         validationContext.setNoExtensibleBindingMessages(true);
       } else if (args[i].equals(ALLOW_DOUBLE_QUOTES)) {
         validationContext.setAllowDoubleQuotesInFHIRPath(true);
@@ -349,7 +347,7 @@ public class Params {
         validationContext.setDisplayWarnings(true);
       } else if (args[i].equals(WANT_INVARIANTS_IN_MESSAGES)) {
         validationContext.setWantInvariantsInMessages(true);
-      } else if (args[i].equals(ValidationEngineParametersParser.HINT_ABOUT_NON_MUST_SUPPORT)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.HINT_ABOUT_NON_MUST_SUPPORT)) {
         validationContext.setHintAboutNonMustSupport(true);
       } else if (args[i].equals(TransformVersionParametersParser.TO_VERSION)) {
         validationContext.setTargetVer(args[++i]);
@@ -442,7 +440,7 @@ public class Params {
         validationContext.setShowTerminologyRouting(true);
       } else if (args[i].equals(TERMINOLOGY_CACHE_CLEAR)) {
         validationContext.setClearTxCache(true);
-      } else if (args[i].equals(SHOW_TIMES)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.SHOW_TIMES)) {
         validationContext.setShowTimes(true);
       } else if (args[i].equals(OUTPUT_STYLE)) {
         validationContext.setOutputStyle(args[++i]);

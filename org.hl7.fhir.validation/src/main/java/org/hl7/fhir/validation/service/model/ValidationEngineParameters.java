@@ -69,23 +69,6 @@ public class ValidationEngineParameters {
     return this;
   }
 
-  @JsonProperty("hintAboutNonMustSupport")
-  @SerializedName("hintAboutNonMustSupport")
-  private boolean hintAboutNonMustSupport = false;
-
-  @SerializedName("hintAboutNonMustSupport")
-  @JsonProperty("hintAboutNonMustSupport")
-  public boolean isHintAboutNonMustSupport() {
-    return hintAboutNonMustSupport;
-  }
-
-  @SerializedName("hintAboutNonMustSupport")
-  @JsonProperty("hintAboutNonMustSupport")
-  public ValidationEngineParameters setHintAboutNonMustSupport(boolean hintAboutNonMustSupport) {
-    this.hintAboutNonMustSupport = hintAboutNonMustSupport;
-    return this;
-  }
-
   @JsonProperty("snomedCT")
   @SerializedName("snomedCT")
   private String snomedCT = "900000000000207008";
@@ -106,42 +89,6 @@ public class ValidationEngineParameters {
   @JsonProperty("snomedCT")
   public ValidationEngineParameters setSnomedCT(String snomedCT) {
     this.snomedCT = snomedCT;
-    return this;
-  }
-
-  //TODO MOVE ME TO ValidatorInstanceParameters
-  @JsonProperty("assumeValidRestReferences")
-  @SerializedName("assumeValidRestReferences")
-  private boolean assumeValidRestReferences = false;
-
-  @SerializedName("assumeValidRestReferences")
-  @JsonProperty("assumeValidRestReferences")
-  public boolean isAssumeValidRestReferences() {
-    return assumeValidRestReferences;
-  }
-
-  @SerializedName("assumeValidRestReferences")
-  @JsonProperty("assumeValidRestReferences")
-  public ValidationEngineParameters setAssumeValidRestReferences(boolean assumeValidRestReferences) {
-    this.assumeValidRestReferences = assumeValidRestReferences;
-    return this;
-  }
-
-  //TODO MOVE ME TO ValidatorInstanceParameters
-  @JsonProperty("noExtensibleBindingMessages")
-  @SerializedName("noExtensibleBindingMessages")
-  private boolean noExtensibleBindingMessages = false;
-
-  @SerializedName("noExtensibleBindingMessages")
-  @JsonProperty("noExtensibleBindingMessages")
-  public boolean isNoExtensibleBindingMessages() {
-    return noExtensibleBindingMessages;
-  }
-
-  @SerializedName("noExtensibleBindingMessages")
-  @JsonProperty("noExtensibleBindingMessages")
-  public ValidationEngineParameters setNoExtensibleBindingMessages(boolean noExtensibleBindingMessages) {
-    this.noExtensibleBindingMessages = noExtensibleBindingMessages;
     return this;
   }
 
@@ -171,20 +118,6 @@ public class ValidationEngineParameters {
     return this;
   }
 
-  //FIXME move to ValidationInstanceSettings
-  @JsonProperty("showTimes")
-  @SerializedName("showTimes")
-  private
-  boolean showTimes = false;
-
-  public boolean isShowTimes() {
-    return showTimes;
-  }
-
-  public void setShowTimes(boolean showTimes) {
-    this.showTimes = showTimes;
-  }
-
   private Boolean inferFhirVersion = true;
 
   public Boolean isInferFhirVersion() {
@@ -203,10 +136,7 @@ public class ValidationEngineParameters {
     ValidationEngineParameters that = (ValidationEngineParameters) o;
     return Objects.equals(baseEngine, that.baseEngine)
       && doNative == that.doNative
-      && hintAboutNonMustSupport == that.hintAboutNonMustSupport
-      && assumeValidRestReferences == that.assumeValidRestReferences
       && snomedCT.equals(that.snomedCT)
-      && noExtensibleBindingMessages == that.noExtensibleBindingMessages
       && sv.equals(that.sv)
       && isInferFhirVersion() == that.isInferFhirVersion();
   }
@@ -216,10 +146,7 @@ public class ValidationEngineParameters {
     return Objects.hash(
       baseEngine,
       doNative,
-      hintAboutNonMustSupport,
-      assumeValidRestReferences,
       snomedCT,
-      noExtensibleBindingMessages,
       sv,
       inferFhirVersion);
   }
@@ -229,10 +156,7 @@ public class ValidationEngineParameters {
     return "ValidationContext{" +
       "baseEngine=" + baseEngine +
       ", doNative=" + doNative +
-      ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +
-      ", assumeValidRestReferences=" + assumeValidRestReferences +
       ", snomedCT=" + snomedCT +
-      ", noExtensibleBindingMessages=" + noExtensibleBindingMessages +
       ", sv=" + sv +
       ", inferFhirVersion=" + inferFhirVersion +
       "}";
