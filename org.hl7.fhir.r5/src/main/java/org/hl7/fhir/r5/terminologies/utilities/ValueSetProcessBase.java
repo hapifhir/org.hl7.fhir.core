@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.r5.context.BaseWorkerContext;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContext.ITerminologyOperationDetails;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.BooleanType;
@@ -61,7 +61,7 @@ public class ValueSetProcessBase {
     }
   }
 
-  public static class TerminologyOperationDetails implements ITerminologyOperationDetails {
+  public static class TerminologyOperationDetails {
 
     private List<String> supplements;
 
@@ -70,7 +70,6 @@ public class ValueSetProcessBase {
       this.supplements = supplements;
     }
 
-    @Override
     public void seeSupplement(CodeSystem supp) {
       supplements.remove(supp.getUrl());
       supplements.remove(supp.getVersionedUrl());
@@ -100,13 +99,13 @@ public class ValueSetProcessBase {
       }
     }
   }
-  protected IWorkerContext context;
+  protected BaseWorkerContext context;
   private ContextUtilities cu;
   protected TerminologyOperationContext opContext;
   protected List<String> requiredSupplements = new ArrayList<>();
   protected List<String> allErrors = new ArrayList<>();
 
-  protected ValueSetProcessBase(IWorkerContext context, TerminologyOperationContext opContext) {
+  protected ValueSetProcessBase(BaseWorkerContext context, TerminologyOperationContext opContext) {
     super();
     this.context = context;
     this.opContext = opContext;

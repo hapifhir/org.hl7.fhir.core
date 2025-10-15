@@ -1,94 +1,5 @@
 -------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "LP43571-6"
-}, "valueSet" :null, "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters"
-}}####
-v: {
-  "code" : "LP43571-6",
-  "system" : "http://loinc.org",
-  "severity" : "error",
-  "error" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.81'",
-  "class" : "UNKNOWN",
-  "server" : "https://tx-dev.fhir.org/r5",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "Unknown_Code_in_Version"
-    },
-    {
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r5"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "invalid-code"
-      }],
-      "text" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.81'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "inactive" : false,
-    "include" : [{
-      "system" : "http://loinc.org",
-      "concept" : [{
-        "code" : "5932-9",
-        "display" : "Cholesterol [Presence] in Blood by Test strip"
-      }]
-    }]
-  }
-}}####
-e: {
-  "source" : tx-dev.fhir.org,
-  "valueSet" : {
-  "resourceType" : "ValueSet",
-  "status" : "active",
-  "expansion" : {
-    "identifier" : "urn:uuid:4f4546c1-3c56-4e2a-bd1b-4da739f6d21f",
-    "timestamp" : "2025-09-23T23:11:55.666Z",
-    "total" : 1,
-    "offset" : 0,
-    "parameter" : [{
-      "name" : "excludeNested",
-      "valueBoolean" : true
-    },
-    {
-      "name" : "offset",
-      "valueInteger" : 0
-    },
-    {
-      "name" : "count",
-      "valueInteger" : 1000
-    },
-    {
-      "name" : "used-codesystem",
-      "valueUri" : "http://loinc.org|2.81"
-    }],
-    "contains" : [{
-      "system" : "http://loinc.org",
-      "code" : "5932-9",
-      "display" : "Cholesterol [Presence] in Blood by Test strip"
-    }]
-  }
-},
-  "error" : ""
-}
--------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
+{"hierarchical" : true, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : true,
@@ -135,13 +46,13 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:7bd7fb8b-6fd5-4539-9bc8-9852d79a364b",
-    "timestamp" : "2025-09-23T23:13:14.337Z",
+    "identifier" : "urn:uuid:4cebb452-43ce-42c4-8b34-ea1afac4e818",
+    "timestamp" : "2025-10-10T00:45:27.883Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
-      "valueBoolean" : true
+      "valueBoolean" : false
     },
     {
       "name" : "offset",
@@ -200,7 +111,7 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
+{"hierarchical" : true, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : true,
@@ -220,13 +131,13 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:912005b2-3ad8-48ce-8a3d-8ad7818722a7",
-    "timestamp" : "2025-09-23T23:13:15.466Z",
+    "identifier" : "urn:uuid:e821af50-91d7-4e1c-9be4-da9cca78c0cb",
+    "timestamp" : "2025-10-10T00:45:29.144Z",
     "total" : 8,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
-      "valueBoolean" : true
+      "valueBoolean" : false
     },
     {
       "name" : "offset",
@@ -285,7 +196,7 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
+{"hierarchical" : true, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : false,
@@ -332,13 +243,13 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:a5776a06-172a-4988-b934-d423814602e3",
-    "timestamp" : "2025-09-23T23:13:16.407Z",
+    "identifier" : "urn:uuid:130a8bcf-e1dd-46fc-8b28-7f5fb70f8ac8",
+    "timestamp" : "2025-10-10T00:45:30.291Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
-      "valueBoolean" : true
+      "valueBoolean" : false
     },
     {
       "name" : "offset",
@@ -399,6 +310,96 @@ e: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
+  "code" : "LP43571-6"
+}, "valueSet" :null, "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters"
+}}####
+v: {
+  "code" : "LP43571-6",
+  "system" : "http://loinc.org",
+  "severity" : "error",
+  "error" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.81'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Unknown_Code_in_Version"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.81'"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : true, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : false,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "5932-9",
+        "display" : "Cholesterol [Presence] in Blood by Test strip"
+      }]
+    }]
+  }
+}}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:1612120a-9a58-4abf-bb16-9b3e36bdea7d",
+    "timestamp" : "2025-10-10T00:45:35.369Z",
+    "total" : 1,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.81"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "5932-9",
+      "display" : "Cholesterol [Presence] in Blood by Test strip"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
   "code" : "38269-7"
 }, "valueSet" :null, "langs":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters"
@@ -416,7 +417,7 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
+{"hierarchical" : true, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : true,
@@ -451,13 +452,13 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:753397cc-7604-45ec-a11d-ee7971891465",
-    "timestamp" : "2025-09-23T23:13:20.135Z",
+    "identifier" : "urn:uuid:f257aba2-eb8d-4b2b-87bc-3282defa76b7",
+    "timestamp" : "2025-10-10T00:45:42.799Z",
     "total" : 5,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
-      "valueBoolean" : true
+      "valueBoolean" : false
     },
     {
       "name" : "offset",
@@ -501,7 +502,7 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
+{"hierarchical" : true, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : true,
@@ -540,13 +541,13 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:3ba6c91b-a4f1-42f6-b890-58a2cd427d01",
-    "timestamp" : "2025-09-23T23:13:21.249Z",
+    "identifier" : "urn:uuid:0064c4fe-ac16-431a-94c5-e2660c7cad63",
+    "timestamp" : "2025-10-10T00:45:44.044Z",
     "total" : 6,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
-      "valueBoolean" : true
+      "valueBoolean" : false
     },
     {
       "name" : "offset",
@@ -595,7 +596,7 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
+{"hierarchical" : true, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : true,
@@ -626,13 +627,13 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:f36d3f6b-252f-48fb-bbf0-97896ad2e953",
-    "timestamp" : "2025-09-23T23:13:22.369Z",
+    "identifier" : "urn:uuid:e777497f-bc3d-4407-b3aa-af82b266152b",
+    "timestamp" : "2025-10-10T00:45:45.280Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
-      "valueBoolean" : true
+      "valueBoolean" : false
     },
     {
       "name" : "offset",
@@ -671,7 +672,7 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
+{"hierarchical" : true, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : false,
@@ -710,13 +711,13 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:152fb1a1-2814-4a92-aef3-d5174b15065b",
-    "timestamp" : "2025-09-23T23:13:23.423Z",
+    "identifier" : "urn:uuid:2f6e1c35-27f3-495f-9743-9facf1d83e97",
+    "timestamp" : "2025-10-10T00:45:46.512Z",
     "total" : 6,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
-      "valueBoolean" : true
+      "valueBoolean" : false
     },
     {
       "name" : "offset",
@@ -765,7 +766,7 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
+{"hierarchical" : true, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : false,
@@ -800,13 +801,13 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:a4cb3437-f12d-4ad3-9872-005da1424259",
-    "timestamp" : "2025-09-23T23:13:24.534Z",
+    "identifier" : "urn:uuid:6591ed07-718a-4b33-aa54-6062870aff7c",
+    "timestamp" : "2025-10-10T00:45:47.732Z",
     "total" : 5,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
-      "valueBoolean" : true
+      "valueBoolean" : false
     },
     {
       "name" : "offset",
@@ -850,7 +851,7 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
+{"hierarchical" : true, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : false,
@@ -881,13 +882,13 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:1a083ae7-e84a-4975-92d0-89f626714ac6",
-    "timestamp" : "2025-09-23T23:13:25.665Z",
+    "identifier" : "urn:uuid:5123b8d6-1578-4b67-8658-f7ad98676083",
+    "timestamp" : "2025-10-10T00:45:48.944Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
-      "valueBoolean" : true
+      "valueBoolean" : false
     },
     {
       "name" : "offset",

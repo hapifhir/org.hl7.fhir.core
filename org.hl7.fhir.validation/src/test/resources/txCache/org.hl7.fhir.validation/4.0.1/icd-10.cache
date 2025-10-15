@@ -21,7 +21,8 @@ v: {
   "code" : "C18.0",
   "system" : "http://hl7.org/fhir/sid/icd-10",
   "version" : "2019-covid-expanded",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }

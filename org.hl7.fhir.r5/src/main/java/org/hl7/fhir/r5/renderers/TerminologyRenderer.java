@@ -176,8 +176,8 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
       li.code(inc.getSystem());
     }
 
-    li.addText(" "+ context.formatPhrase(RenderingContext.GENERAL_VER_LOW) + " ");
-    XhtmlNode td = li.span();
+    XhtmlNode span = li.span();
+    span.addText(" "+ context.formatPhrase(RenderingContext.GENERAL_VER_LOW) + " ");
 
     if (cs != null && cs.getContent() == Enumerations.CodeSystemContentMode.NOTPRESENT) {
       cs = null;
@@ -186,7 +186,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     String actualVersion = cs == null ? null : cs.getVersion();
     boolean fromPackages = cs == null ? false : cs.hasSourcePackage();
     boolean fromThisPackage = cs == null ? false : !Utilities.isAbsoluteUrlLinkable(cs.getWebPath());
-    renderVersionReference(context, cs, statedVersion, actualVersion, fromPackages, td, fromThisPackage, context.formatPhrase(RenderingContext.GENERAL_CODESYSTEM), RenderingI18nContext.CS_VERSION_NOTHING_TEXT);
+    renderVersionReference(context, cs, statedVersion, actualVersion, fromPackages, span, fromThisPackage, context.formatPhrase(RenderingContext.GENERAL_CODESYSTEM), RenderingI18nContext.CS_VERSION_NOTHING_TEXT);
   }
 
   private String getSpecialReference(String system) {
