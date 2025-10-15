@@ -502,7 +502,7 @@ public class ParamsValidationContextTests {
     return objects.stream();
   }
 
-  @Disabled
+
   @ParameterizedTest
   @MethodSource("testCases")
   void testParamsToValidationContext(String argsLine, ValidationContext expectedValidationContext) throws Exception {

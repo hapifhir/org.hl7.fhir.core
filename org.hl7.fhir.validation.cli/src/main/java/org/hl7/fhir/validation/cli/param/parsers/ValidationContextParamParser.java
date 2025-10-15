@@ -30,6 +30,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
 
   GlobalParametersParser globalParser = new GlobalParametersParser();
   ValidationEngineParametersParser validationEngineParametersParser = new ValidationEngineParametersParser();
+  InstanceValidatorParametersParser instanceValidatorParametersParser = new InstanceValidatorParametersParser();
   WatchParametersParser watchParametersParser = new WatchParametersParser();
   TransformLangParameterParser transformLangParameterParser = new TransformLangParameterParser();
   TransformVersionParametersParser transformVersionParameterParser = new TransformVersionParametersParser();
@@ -45,12 +46,14 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
     try {
       globalParser.parseArgs(args);
       validationEngineParametersParser.parseArgs(args);
+      instanceValidatorParametersParser.parseArgs(args);
       watchParametersParser.parseArgs(args);
       transformLangParameterParser.parseArgs(args);
       transformVersionParameterParser.parseArgs(args);
       String[] unprocessedArgs = filterProcessedArgs(args);
       this.validationContext = loadValidationContext(unprocessedArgs);
       ValidationContextUtilities.addValidationEngineParameters(this.validationContext, validationEngineParametersParser.getParameterObject());
+      ValidationContextUtilities.addInstanceValidatorParameters(this.validationContext, this.instanceValidatorParametersParser.getParameterObject());
       ValidationContextUtilities.addWatchParameters(this.validationContext, this.watchParametersParser.getParameterObject());
       ValidationContextUtilities.addTransformLangParameters(this.validationContext, this.transformLangParameterParser.getParameterObject());
       ValidationContextUtilities.addTransformVersionParameters(this.validationContext, this.transformVersionParameterParser.getParameterObject());
@@ -312,8 +315,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         validationContext.setShowTerminologyRouting(true);
       } else if (args[i].equals(TERMINOLOGY_CACHE_CLEAR)) {
         validationContext.setClearTxCache(true);
-      } else if (args[i].equals(SHOW_TIMES)) {
-        validationContext.setShowTimes(true);
       } else if (args[i].equals(OUTPUT_STYLE)) {
         validationContext.setOutputStyle(args[++i]);
       } else if (args[i].equals(ADVISOR_FILE)) {
