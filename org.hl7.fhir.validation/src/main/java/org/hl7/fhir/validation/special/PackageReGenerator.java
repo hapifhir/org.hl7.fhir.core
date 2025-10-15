@@ -69,14 +69,6 @@ import org.hl7.fhir.validation.IgLoader;
 @Slf4j
 public class PackageReGenerator {
 
-  public void setIgnoreList(List<String> ignoreList) {
-    this.ignoreList = ignoreList;
-  }
-
-  public void setIncludeList(List<String> includeList) {
-    this.includeList = includeList;
-  }
-
   public static class TerminologyResourceEntry {
     public ValueSet valueSet;
     public Set<String> sources = new HashSet<>();
@@ -129,7 +121,12 @@ public class PackageReGenerator {
   }
 
   public PackageReGenerator addPackage(String packageId) {
-    packages.add(packageId);
+    addPackages(List.of(packageId));
+    return this;
+  }
+
+  public PackageReGenerator addPackages(List<String> packageIds) {
+    packages.addAll(packageIds);
     return this;
   }
   
@@ -202,8 +199,9 @@ public class PackageReGenerator {
     return npmId;
   }
 
-  public void setNpmId(String npmId) {
+  public PackageReGenerator setNpmId(String npmId) {
     this.npmId = npmId;
+    return this;
   }
 
 

@@ -1,12 +1,11 @@
 package org.hl7.fhir.validation.cli.tasks;
 
-import java.io.File;
 import java.util.List;
+import java.util.Objects;
 
+import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.service.model.ValidationContext;
@@ -57,63 +56,45 @@ public class RePackageTask extends ValidationEngineTask {
   public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
     boolean json = validationContext.getFormat() != FhirFormat.XML;
     String output = validationContext.getOutput();
-    File f = ManagedFileAccess.file(output);
-    ExpansionPackageGeneratorOutputType t = ExpansionPackageGeneratorOutputType.FOLDER;
-    if (f.exists() && f.isDirectory()) {
-      t = ExpansionPackageGeneratorOutputType.FOLDER;
-    } else if (output.endsWith(".zip")) {
-      t = ExpansionPackageGeneratorOutputType.ZIP;
-    } else if (output.endsWith(".tgz")) {
-      t = ExpansionPackageGeneratorOutputType.TGZ;
-    } 
-    ExpansionPackageGeneratorScope scope = ExpansionPackageGeneratorScope.IG_ONLY;
-    int scopeArgumentIndex = getArgumentIndex("-scope", args);
-    if (scopeArgumentIndex < args.length - 1) {
-      switch (args[scopeArgumentIndex+1].toLowerCase()) {
-      case "ig" :
-        scope = ExpansionPackageGeneratorScope.IG_ONLY;
-        break;
-      case "igs" : 
-        scope = ExpansionPackageGeneratorScope.ALL_IGS;
-        break;
-      case "core" :
-        scope = ExpansionPackageGeneratorScope.EVERYTHING;
-        break;
-      default: 
-        log.warn("Unknown scope "+args[scopeArgumentIndex+1]);
-      }
+
+    PackageReGenerator packageReGenerator = new PackageReGenerator()
+      .setContext(validationEngine.getContext())
+      .setOutput(output)
+      .setOutputType(getExpansionPackageGeneratorOutputType(output))
+      .setJson(json)
+      .setModes(validationContext.getModeParams())
+      .setNpmId(validationContext.getPackageName())
+      .addPackages(validationContext.getIgs());
+
+    switch (Objects.requireNonNull(Params.getParam(args, "-scope")))
+    {
+      case "ig": packageReGenerator.setScope(ExpansionPackageGeneratorScope.IG_ONLY); break;
+      case "igs": packageReGenerator.setScope(ExpansionPackageGeneratorScope.ALL_IGS); break;
+      case "core": packageReGenerator.setScope(ExpansionPackageGeneratorScope.EVERYTHING); break;
     }
 
-    IWorkerContext ctxt = validationEngine.getContext();
-    PackageReGenerator ep = new PackageReGenerator().setContext(ctxt).setScope(scope);
-    ep.setNpmId(validationContext.getPackageName());
-    for (String s : validationContext.getIgs()) {
-      ep.addPackage(s);
-    }
     if (validationContext.getExpansionParameters() != null) {
       validationEngine.loadExpansionParameters(validationContext.getExpansionParameters());
     }
-    ep.setOutput(output).setOutputType(t).setJson(json);
-    ep.setModes(validationContext.getModeParams());
 
-    int ignoreListArgumentIndex = getArgumentIndex("-ignoreList", args);
-    if(ignoreListArgumentIndex != -1)
-      ep.addIgnoreList(List.of(args[ignoreListArgumentIndex+1].split(",")));
+    String ignoreList = Params.getParam(args, "-ignore-list");
+    if(!Strings.isNullOrEmpty(ignoreList))
+      packageReGenerator.addIgnoreList(List.of(ignoreList.split(",")));
 
-    int includeListArgumentIndex = getArgumentIndex("-includeList", args);
-    if(includeListArgumentIndex != -1)
-      ep.addIncludeList(List.of(args[includeListArgumentIndex+1].split(",")));
+    String includeList = Params.getParam(args, "-include-list");
+    if(!Strings.isNullOrEmpty(includeList))
+      packageReGenerator.addIncludeList(List.of(includeList.split(",")));
 
-    ep.generateExpansionPackage();
+    packageReGenerator.generateExpansionPackage();
   }
 
-  private static int getArgumentIndex(String variableName, String[] args) {
-    int c = -1;
-    for (int i = 0; i < args.length; i++) {
-      if (variableName.equals(args[i])) {
-        c = i;
-      }
+  private static ExpansionPackageGeneratorOutputType getExpansionPackageGeneratorOutputType(String output) {
+
+    if (output.endsWith(".zip")) {
+      return ExpansionPackageGeneratorOutputType.ZIP;
+    } else if (output.endsWith(".tgz")) {
+      return ExpansionPackageGeneratorOutputType.TGZ;
     }
-    return c;
+    return ExpansionPackageGeneratorOutputType.FOLDER;
   }
 }

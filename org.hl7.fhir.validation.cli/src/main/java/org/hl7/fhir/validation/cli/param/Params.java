@@ -149,6 +149,8 @@ public class Params {
   public static final String AUTH_NONCONFORMANT_SERVERS = "-authorise-non-conformant-tx-servers";
   public static final String R5_REF_POLICY = "r5-bundle-relative-reference-policy";
   public static final String MATCHETYPE = "-matchetype";
+  public static final String SCOPE = "-scope";
+  public static final String IGNORE_LIST = "-ignore-list";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -617,6 +619,9 @@ public class Params {
             validationContext.setFhirpath(args[++i]);
         else
           throw new Exception("Can only nominate a single -fhirpath parameter");
+      } else if (args[i].equals(SCOPE) || args[i].equals(IGNORE_LIST)) {
+        // this is only here to skip the step below which is not helping
+        i++;
       } else if (!Utilities.existsInList(args[i],
         //The following params are handled outside this loop, so should be ignored.
         AUTH_NONCONFORMANT_SERVERS,
