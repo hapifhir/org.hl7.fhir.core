@@ -14,7 +14,6 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
   public static final String ASSUME_VALID_REST_REF = "-assumeValidRestReferences";
   public static final String NO_EXTENSIBLE_BINDING_WARNINGS = "-no-extensible-binding-warnings";
   public static final String VERSION = "-version";
-  public static final String TO_VERSION = "-to-version";
   public static final String IMPLEMENTATION_GUIDE = "-ig";
   public static final String DEFINITION = "-defn";
 
@@ -47,9 +46,6 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
         args[i].setProcessed(true);
       } else if (args[i].getValue().equals(VERSION)) {
         validationEngineParameters.setSv(VersionUtilities.getCurrentPackageVersion(args[i + 1].getValue()));
-        Arg.setProcessed(args, i, 2, true);
-      } else if (args[i].getValue().equals(TO_VERSION)) {
-        validationEngineParameters.setTargetVer(args[i + 1].getValue());
         Arg.setProcessed(args, i, 2, true);
       } else if (args[i].getValue().equals(IMPLEMENTATION_GUIDE) || args[i].getValue().equals(DEFINITION)) {
         if (i + 1 == args.length)

@@ -13,7 +13,6 @@ public class ValidationContextUtilities {
     validationContext.setAssumeValidRestReferences(validationEngineParameters.isAssumeValidRestReferences());
     validationContext.setNoExtensibleBindingMessages(validationEngineParameters.isNoExtensibleBindingMessages());
     validationContext.setSv(validationEngineParameters.getSv());
-    validationContext.setTargetVer(validationEngineParameters.getTargetVer());
     for (String ig : validationEngineParameters.getIgs()) {
       validationContext.addIg(ig);
     }
@@ -31,6 +30,10 @@ public class ValidationContextUtilities {
     validationContext.setTgtLang(transformLangParameters.getTgtLang());
   }
 
+  public static void addTransformVersionParameters(ValidationContext validationContext, TransformVersionParameters transformVersionParameters) {
+    validationContext.setTargetVer(transformVersionParameters.getTargetVer());
+  }
+
   public static ValidationEngineParameters getValidationEngineParameters(ValidationContext validationContext) {
     ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
     validationEngineParameters.setInferFhirVersion(validationContext.isInferFhirVersion());
@@ -40,7 +43,6 @@ public class ValidationContextUtilities {
     validationEngineParameters.setAssumeValidRestReferences(validationContext.isAssumeValidRestReferences());
     validationEngineParameters.setNoExtensibleBindingMessages(validationContext.isNoExtensibleBindingMessages());
     validationEngineParameters.setSv(validationContext.getSv());
-    validationEngineParameters.setTargetVer(validationContext.getTargetVer());
     for (String ig : validationContext.getIgs()) {
       validationEngineParameters.addIg(ig);
     }
@@ -61,5 +63,11 @@ public class ValidationContextUtilities {
     transformLangParameters.setSrcLang(validationContext.getSrcLang());
     transformLangParameters.setTgtLang(validationContext.getTgtLang());
     return transformLangParameters;
+  }
+
+  public static TransformVersionParameters getTransformVersionParameters(ValidationContext validationContext) {
+    TransformVersionParameters transformVersionParameters = new TransformVersionParameters();
+    transformVersionParameters.setTargetVer(validationContext.getTargetVer());
+    return transformVersionParameters;
   }
 }
