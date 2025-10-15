@@ -26,9 +26,7 @@ public class Params {
 
   public static final String TEST_VERSION = "-test-version";
   public static final String ALT_VERSION = "-alt-version";
-  public static final String OUTPUT = "-output";
-
-  public static final String OUTPUT_SUFFIX = "-outputSuffix";
+  
   public static final String LEVEL = "-level";
   public static final String HTML_OUTPUT = "-html-output";
 
@@ -190,12 +188,12 @@ public class Params {
     for (int i = 0; i < args.length; i++) {
       if (args[i].equals(ValidationEngineParametersParser.VERSION)) {
         validationContext.setSv(VersionUtilities.getCurrentPackageVersion(args[++i]));
-      } else if (args[i].equals(OUTPUT)) {
+      } else if (args[i].equals(OutputParametersParser.OUTPUT)) {
         if (i + 1 == args.length)
           throw new Error("Specified -output without indicating output file");
         else
           validationContext.setOutput(args[++i]);
-      } else if (args[i].equals(OUTPUT_SUFFIX)) {
+      } else if (args[i].equals(OutputParametersParser.OUTPUT_SUFFIX)) {
         if (i + 1 == args.length)
           throw new Error("Specified -outputSuffix without indicating output suffix");
         else

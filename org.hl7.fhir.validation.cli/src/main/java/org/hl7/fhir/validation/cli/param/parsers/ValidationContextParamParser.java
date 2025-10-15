@@ -31,6 +31,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
   GlobalParametersParser globalParser = new GlobalParametersParser();
   ValidationEngineParametersParser validationEngineParametersParser = new ValidationEngineParametersParser();
   InstanceValidatorParametersParser instanceValidatorParametersParser = new InstanceValidatorParametersParser();
+  OutputParametersParser outputParametersParser = new OutputParametersParser();
   WatchParametersParser watchParametersParser = new WatchParametersParser();
   TransformLangParameterParser transformLangParameterParser = new TransformLangParameterParser();
   TransformVersionParametersParser transformVersionParameterParser = new TransformVersionParametersParser();
@@ -47,6 +48,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
       globalParser.parseArgs(args);
       validationEngineParametersParser.parseArgs(args);
       instanceValidatorParametersParser.parseArgs(args);
+      outputParametersParser.parseArgs(args);
       watchParametersParser.parseArgs(args);
       transformLangParameterParser.parseArgs(args);
       transformVersionParameterParser.parseArgs(args);
@@ -54,6 +56,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
       this.validationContext = loadValidationContext(unprocessedArgs);
       ValidationContextUtilities.addValidationEngineParameters(this.validationContext, validationEngineParametersParser.getParameterObject());
       ValidationContextUtilities.addInstanceValidatorParameters(this.validationContext, this.instanceValidatorParametersParser.getParameterObject());
+      ValidationContextUtilities.addOutputParameters(this.validationContext, this.outputParametersParser.getParameterObject());
       ValidationContextUtilities.addWatchParameters(this.validationContext, this.watchParametersParser.getParameterObject());
       ValidationContextUtilities.addTransformLangParameters(this.validationContext, this.transformLangParameterParser.getParameterObject());
       ValidationContextUtilities.addTransformVersionParameters(this.validationContext, this.transformVersionParameterParser.getParameterObject());
@@ -77,18 +80,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
 
     // load the parameters - so order doesn't matter
     for (int i = 0; i < args.length; i++) {
-      if (args[i].equals(OUTPUT)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified -output without indicating output file");
-        else
-          validationContext.setOutput(args[++i]);
-      } else if (args[i].equals(OUTPUT_SUFFIX)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified -outputSuffix without indicating output suffix");
-        else
-          validationContext.setOutputSuffix(args[++i]);
-      }
-      else if (args[i].equals(HTML_OUTPUT)) {
+       if (args[i].equals(HTML_OUTPUT)) {
         if (i + 1 == args.length)
           throw new Error("Specified -html-output without indicating output file");
         else

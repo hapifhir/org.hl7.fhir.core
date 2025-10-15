@@ -38,6 +38,11 @@ public class ValidationContextUtilities {
     validationContext.setHintAboutNonMustSupport(instanceValidatorParameters.isHintAboutNonMustSupport());
   }
 
+  public static void addOutputParameters(ValidationContext validationContext, OutputParameters outputParameters) {
+    validationContext.setOutput(outputParameters.getOutput());
+    validationContext.setOutputSuffix(outputParameters.getOutputSuffix());
+  }
+
   public static ValidationEngineParameters getValidationEngineParameters(ValidationContext validationContext) {
     ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
     validationEngineParameters.setInferFhirVersion(validationContext.isInferFhirVersion());
@@ -79,5 +84,12 @@ public class ValidationContextUtilities {
     instanceValidatorParameters.setShowTimes(validationContext.isShowTimes());
     instanceValidatorParameters.setHintAboutNonMustSupport(validationContext.isHintAboutNonMustSupport());
     return instanceValidatorParameters;
+  }
+
+  public static OutputParameters getOutputParameters(ValidationContext validationContext) {
+    OutputParameters outputParameters = new OutputParameters();
+    outputParameters.setOutput(validationContext.getOutput());
+    outputParameters.setOutputSuffix(validationContext.getOutputSuffix());
+    return outputParameters;
   }
 }
