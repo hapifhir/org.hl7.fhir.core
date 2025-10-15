@@ -599,11 +599,16 @@ public class XhtmlParser {
         addTextNode(node, s);
         readChar();
         if (peekChar() == '!') {
-          String sc = readToCommentEnd(true);
-          // moved the validator
-          //          if (sc.startsWith("DOCTYPE"))
-          //            throw new FHIRFormatError("Malformed XHTML: Found a DocType declaration, and these are not allowed (XXE security vulnerability protection)");
-          node.addComment(sc).setLocation(markLocation());
+          readChar();
+          String sc;
+          if (peekChar() == '[') {
+            sc = readCData();
+            node.addCData(sc).setLocation(markLocation());
+          } else {
+            pushChar('!');
+            sc = readToCommentEnd(true);
+            node.addComment(sc).setLocation(markLocation());
+          }
         } else if (peekChar() == '?')
           node.addComment(readToTagEnd()).setLocation(markLocation());
         else if (peekChar() == '/') {
@@ -871,7 +876,7 @@ public class XhtmlParser {
     return s.toString();
   }
 
-  private String readToCommentEnd(boolean simple) throws IOException, FHIRFormatError 
+  private String readToCommentEnd(boolean simple) throws IOException, FHIRFormatError
   {
     if (peekChar() == '!')
       readChar();
@@ -926,6 +931,18 @@ public class XhtmlParser {
       parseDoctypeEntities(s.toString());
     }
     return s.toString();
+  }
+
+  private String readCData() throws IOException, FHIRFormatError {
+    StringBuilder s = new StringBuilder();
+    boolean done = false;
+    while (!done) {
+      s.append(readChar());
+      done = s.toString().endsWith("]]>");
+    }
+    String res = s.toString().substring(7);
+    res = res.substring(0, res.length()-3);
+    return res;
   }
 
   private void parseDoctypeEntities(String s) {
