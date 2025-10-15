@@ -32,6 +32,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
   ValidationEngineParametersParser validationEngineParametersParser = new ValidationEngineParametersParser();
   WatchParametersParser watchParametersParser = new WatchParametersParser();
   TransformLangParameterParser transformLangParameterParser = new TransformLangParameterParser();
+  TransformVersionParametersParser transformVersionParameterParser = new TransformVersionParametersParser();
   ValidationContext validationContext = new ValidationContext();
 
   @Override
@@ -46,11 +47,13 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
       validationEngineParametersParser.parseArgs(args);
       watchParametersParser.parseArgs(args);
       transformLangParameterParser.parseArgs(args);
+      transformVersionParameterParser.parseArgs(args);
       String[] unprocessedArgs = filterProcessedArgs(args);
       this.validationContext = loadValidationContext(unprocessedArgs);
       ValidationContextUtilities.addValidationEngineParameters(this.validationContext, validationEngineParametersParser.getParameterObject());
       ValidationContextUtilities.addWatchParameters(this.validationContext, this.watchParametersParser.getParameterObject());
       ValidationContextUtilities.addTransformLangParameters(this.validationContext, this.transformLangParameterParser.getParameterObject());
+      ValidationContextUtilities.addTransformVersionParameters(this.validationContext, this.transformVersionParameterParser.getParameterObject());
     } catch (Exception e) {
       log.error(e.getMessage(), e);
     }

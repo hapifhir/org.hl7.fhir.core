@@ -14,10 +14,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
-import org.hl7.fhir.validation.cli.param.parsers.GlobalParametersParser;
-import org.hl7.fhir.validation.cli.param.parsers.TransformLangParameterParser;
-import org.hl7.fhir.validation.cli.param.parsers.ValidationEngineParametersParser;
-import org.hl7.fhir.validation.cli.param.parsers.WatchParametersParser;
+import org.hl7.fhir.validation.cli.param.parsers.*;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.ValidatorWatchMode;
@@ -354,7 +351,7 @@ public class Params {
         validationContext.setWantInvariantsInMessages(true);
       } else if (args[i].equals(ValidationEngineParametersParser.HINT_ABOUT_NON_MUST_SUPPORT)) {
         validationContext.setHintAboutNonMustSupport(true);
-      } else if (args[i].equals(ValidationEngineParametersParser.TO_VERSION)) {
+      } else if (args[i].equals(TransformVersionParametersParser.TO_VERSION)) {
         validationContext.setTargetVer(args[++i]);
       } else if (args[i].equals(PACKAGE_NAME)) {
         validationContext.setPackageName(args[++i]);

@@ -51,24 +51,6 @@ public class ValidationEngineParameters {
     return this;
   }
 
-  @JsonProperty("targetVer")
-  @SerializedName("targetVer")
-  private
-  String targetVer = null;
-
-  @SerializedName("targetVer")
-  @JsonProperty("targetVer")
-  public String getTargetVer() {
-    return targetVer;
-  }
-
-  @SerializedName("targetVer")
-  @JsonProperty("targetVer")
-  public ValidationEngineParameters setTargetVer(String targetVer) {
-    this.targetVer = targetVer;
-    return this;
-  }
-
   @JsonProperty("doNative")
   @SerializedName("doNative")
   private
@@ -127,6 +109,7 @@ public class ValidationEngineParameters {
     return this;
   }
 
+  //TODO MOVE ME TO ValidatorInstanceParameters
   @JsonProperty("assumeValidRestReferences")
   @SerializedName("assumeValidRestReferences")
   private boolean assumeValidRestReferences = false;
@@ -144,6 +127,7 @@ public class ValidationEngineParameters {
     return this;
   }
 
+  //TODO MOVE ME TO ValidatorInstanceParameters
   @JsonProperty("noExtensibleBindingMessages")
   @SerializedName("noExtensibleBindingMessages")
   private boolean noExtensibleBindingMessages = false;
@@ -224,7 +208,6 @@ public class ValidationEngineParameters {
       && snomedCT.equals(that.snomedCT)
       && noExtensibleBindingMessages == that.noExtensibleBindingMessages
       && sv.equals(that.sv)
-      && targetVer.equals(that.targetVer)
       && isInferFhirVersion() == that.isInferFhirVersion();
   }
 
@@ -238,7 +221,6 @@ public class ValidationEngineParameters {
       snomedCT,
       noExtensibleBindingMessages,
       sv,
-      targetVer,
       inferFhirVersion);
   }
 
@@ -252,7 +234,6 @@ public class ValidationEngineParameters {
       ", snomedCT=" + snomedCT +
       ", noExtensibleBindingMessages=" + noExtensibleBindingMessages +
       ", sv=" + sv +
-      ", targetVer=" + targetVer +
       ", inferFhirVersion=" + inferFhirVersion +
       "}";
   }
