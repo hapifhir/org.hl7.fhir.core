@@ -23,23 +23,43 @@ public class TransformVersionParameters {
     return this;
   }
 
+  @JsonProperty("canDoNative")
+  @SerializedName("canDoNative")
+  private
+  boolean canDoNative = false;
+
+  @SerializedName("canDoNative")
+  @JsonProperty("canDoNative")
+  public boolean getCanDoNative() {
+    return canDoNative;
+  }
+
+  @SerializedName("canDoNative")
+  @JsonProperty("canDoNative")
+  public TransformVersionParameters setCanDoNative(boolean canDoNative) {
+    this.canDoNative = canDoNative;
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     TransformVersionParameters that = (TransformVersionParameters) o;
-    return Objects.equals(targetVer, that.targetVer);
+    return canDoNative == that.canDoNative
+      && Objects.equals(targetVer, that.targetVer);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(targetVer);
+    return Objects.hash(canDoNative, targetVer);
   }
 
   @Override
   public String toString() {
     return "TransformVersionParameters{" +
-      "targetVer='" + targetVer + '\'' +
+      "canDoNative=" + canDoNative +
+      ", targetVer='" + targetVer + '\'' +
       '}';
   }
 }

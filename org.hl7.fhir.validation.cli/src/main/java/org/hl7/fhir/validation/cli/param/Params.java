@@ -44,8 +44,6 @@ public class Params {
   public static final String PACKAGE_NAME = "-package-name";
   public static final String PIN = "-pin";
   public static final String EXPAND = "-expand";
-  public static final String DO_NATIVE = "-do-native";
-  public static final String NO_NATIVE = "-no-native";
   public static final String COMPILE = "-compile";
   public static final String CODEGEN = "-codegen";
   public static final String FACTORY = "-factory";
@@ -367,9 +365,9 @@ public class Params {
         validationContext.addModeParam("pin");
       } else if (args[i].equals(EXPAND)) {
         validationContext.addModeParam("expand");
-      } else if (args[i].equals(DO_NATIVE)) {
+      } else if (args[i].equals(TransformVersionParametersParser.DO_NATIVE)) {
         validationContext.setCanDoNative(true);
-      } else if (args[i].equals(NO_NATIVE)) {
+      } else if (args[i].equals(TransformVersionParametersParser.NO_NATIVE)) {
         validationContext.setCanDoNative(false);
       } else if (args[i].equals(TRANSFORM)) {
         validationContext.setMap(args[++i]);
