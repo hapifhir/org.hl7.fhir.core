@@ -121,20 +121,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
             validationContext.addOption(s);
           }
         }
-      } else if (args[i].equals(BUNDLE)) {
-        String profile = null;
-        String rule = null;
-        if (i + 1 == args.length) {
-          throw new Error("Specified -profile without indicating bundle rule ");
-        } else {
-          rule = args[++i];
-        }
-        if (i + 1 == args.length) {
-          throw new Error("Specified -profile without indicating profile source");
-        } else {
-          profile = args[++i];
-        }
-        validationContext.addBundleValidationRule(new BundleValidationRule().setRule(rule).setProfile(profile));
       } else if (args[i].equals(QUESTIONNAIRE)) {
         if (i + 1 == args.length)
           throw new Error("Specified -questionnaire without indicating questionnaire mode");
@@ -200,8 +186,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         validationContext.getExtensions().add(args[++i]);
       } else if (args[i].equals(NO_INTERNAL_CACHING)) {
         validationContext.setNoInternalCaching(true);
-      } else if (args[i].equals(ALLOW_DOUBLE_QUOTES)) {
-        validationContext.setAllowDoubleQuotesInFHIRPath(true);
       } else if (args[i].equals(DISABLE_DEFAULT_RESOURCE_FETCHER)) {
         validationContext.setDisableDefaultResourceFetcher(true);
       } else if (args[i].equals(NO_UNICODE_BIDI_CONTROL_CHARS)) {
@@ -299,14 +283,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         validationContext.setShowTerminologyRouting(true);
       } else if (args[i].equals(OUTPUT_STYLE)) {
         validationContext.setOutputStyle(args[++i]);
-      } else if (args[i].equals(ADVISOR_FILE)) {
-        validationContext.setAdvisorFile(args[++i]);
-        File f = ManagedFileAccess.file(validationContext.getAdvisorFile());
-        if (!f.exists()) {
-          throw new Error("Cannot find advisor file "+ validationContext.getAdvisorFile());
-        } else if (!Utilities.existsInList(Utilities.getFileExtension(f.getName()), "json", "txt")) {
-          throw new Error("Advisor file "+ validationContext.getAdvisorFile()+" must be a .json or a .txt file");
-        }
       } else if (args[i].equals(MATCHETYPE)) {
         if (i + 1 == args.length)
           throw new Error("Specified -matchetype without indicating file");
