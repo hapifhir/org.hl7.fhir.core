@@ -221,10 +221,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         validationContext.addModeParam("pin");
       } else if (args[i].equals(EXPAND)) {
         validationContext.addModeParam("expand");
-      } else if (args[i].equals(DO_NATIVE)) {
-        validationContext.setCanDoNative(true);
-      } else if (args[i].equals(NO_NATIVE)) {
-        validationContext.setCanDoNative(false);
       } else if (args[i].equals(TRANSFORM)) {
         validationContext.setMap(args[++i]);
       } else if (args[i].equals(FORMAT)) {

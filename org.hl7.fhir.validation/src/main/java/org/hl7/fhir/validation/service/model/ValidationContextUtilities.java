@@ -48,6 +48,7 @@ public class ValidationContextUtilities {
 
   public static void addTransformVersionParameters(ValidationContext validationContext, TransformVersionParameters transformVersionParameters) {
     validationContext.setTargetVer(transformVersionParameters.getTargetVer());
+    validationContext.setCanDoNative(transformVersionParameters.getCanDoNative());
   }
 
   public static void addInstanceValidatorParameters(ValidationContext validationContext, InstanceValidatorParameters instanceValidatorParameters) {
@@ -112,6 +113,7 @@ public class ValidationContextUtilities {
   public static TransformVersionParameters getTransformVersionParameters(ValidationContext validationContext) {
     TransformVersionParameters transformVersionParameters = new TransformVersionParameters();
     transformVersionParameters.setTargetVer(validationContext.getTargetVer());
+    transformVersionParameters.setCanDoNative(validationContext.getCanDoNative());
     return transformVersionParameters;
   }
 
