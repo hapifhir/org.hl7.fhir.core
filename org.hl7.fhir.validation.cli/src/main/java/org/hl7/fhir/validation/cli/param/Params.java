@@ -34,10 +34,8 @@ public class Params {
   public static final String CONFIG = "-config";
   public static final String OPTION = "-option";
   public static final String OPTIONS = "-options";
-  public static final String QUESTIONNAIRE = "-questionnaire";
   public static final String RECURSE = "-recurse";
   public static final String SHOW_MESSAGES_FROM_REFERENCES = "-showReferenceMessages";
-  public static final String EXTENSION = "-extension";
   public static final String TX_PACK = "-tx-pack";
   public static final String RE_PACK = "-re-package";
   public static final String PACKAGE_NAME = "-package-name";
@@ -76,9 +74,7 @@ public class Params {
 
   public static final String PRELOAD_CACHE = "-preload-cache";
   public static final String NO_UNICODE_BIDI_CONTROL_CHARS = "-no_unicode_bidi_control_chars";
-  public static final String NO_INVARIANTS = "-no-invariants";
   public static final String DISPLAY_WARNINGS = "-display-issues-are-warnings";
-  public static final String WANT_INVARIANTS_IN_MESSAGES = "-want-invariants-in-messages";
   public static final String SECURITY_CHECKS = "-security-checks";
   public static final String CRUMB_TRAIL = "-crumb-trails";
   public static final String SHOW_MESSAGE_IDS = "-show-message-ids";
@@ -103,7 +99,6 @@ public class Params {
   public static final String FILTER = "-filter";
   public static final String EXTERNALS = "-externals";
   public static final String MODE = "-mode";
-  public static final String R5_REF_POLICY = "r5-bundle-relative-reference-policy";
   public static final String MATCHETYPE = "-matchetype";
 
   /**
@@ -235,7 +230,7 @@ public class Params {
           profile = args[++i];
         }
         validationContext.addBundleValidationRule(new BundleValidationRule().setRule(rule).setProfile(profile));
-      } else if (args[i].equals(QUESTIONNAIRE)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.QUESTIONNAIRE)) {
         if (i + 1 == args.length)
           throw new Error("Specified -questionnaire without indicating questionnaire mode");
         else {
@@ -306,7 +301,7 @@ public class Params {
         } else {
           validationContext.setLocale(Locale.forLanguageTag(args[++i]));
         }
-      } else if (args[i].equals(EXTENSION)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.EXTENSION)) {
         validationContext.getExtensions().add(args[++i]);
       } else if (args[i].equals(NO_INTERNAL_CACHING)) {
         validationContext.setNoInternalCaching(true);
@@ -320,11 +315,11 @@ public class Params {
         validationContext.setCheckIPSCodes(true);
       } else if (args[i].equals(NO_UNICODE_BIDI_CONTROL_CHARS)) {
         validationContext.setNoUnicodeBiDiControlChars(true);
-      } else if (args[i].equals(NO_INVARIANTS)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.NO_INVARIANTS)) {
         validationContext.setNoInvariants(true);
       } else if (args[i].equals(DISPLAY_WARNINGS)) {
         validationContext.setDisplayWarnings(true);
-      } else if (args[i].equals(WANT_INVARIANTS_IN_MESSAGES)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.WANT_INVARIANTS_IN_MESSAGES)) {
         validationContext.setWantInvariantsInMessages(true);
       } else if (args[i].equals(InstanceValidatorParametersParser.HINT_ABOUT_NON_MUST_SUPPORT)) {
         validationContext.setHintAboutNonMustSupport(true);
@@ -397,7 +392,7 @@ public class Params {
         validationContext.setForPublication(true);
       } else if (args[i].equals(ValidationEngineParametersParser.AI_SERVICE)) {
         validationContext.setAIService(args[++i]);
-      } else if (args[i].equals(R5_REF_POLICY)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.R5_REF_POLICY)) {
         validationContext.setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.fromCode(args[++i]));
       } else if (args[i].equals(UNKNOWN_CODESYSTEMS_CAUSE_ERROR)) {
         validationContext.setUnknownCodeSystemsCauseErrors(true);
