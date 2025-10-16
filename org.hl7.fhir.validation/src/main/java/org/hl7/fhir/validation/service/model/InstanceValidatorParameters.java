@@ -74,6 +74,42 @@ public class InstanceValidatorParameters {
     return this;
   }
 
+  @JsonProperty("htmlOutput")
+  @SerializedName("htmlOutput")
+  private
+  String htmlOutput = null;
+
+  @SerializedName("htmlOutput")
+  @JsonProperty("htmlOutput")
+  public String getHtmlOutput() {
+    return htmlOutput;
+  }
+
+  @SerializedName("htmlOutput")
+  @JsonProperty("htmlOutput")
+  public InstanceValidatorParameters setHtmlOutput(String htmlOutput) {
+    this.htmlOutput = htmlOutput;
+    return this;
+  }
+
+  @JsonProperty("outputStyle")
+  @SerializedName("outputStyle")
+  private
+  String outputStyle = null;
+
+  @SerializedName("outputStyle")
+  @JsonProperty("outputStyle")
+  public String getOutputStyle() {
+    return outputStyle;
+  }
+
+  @SerializedName("outputStyle")
+  @JsonProperty("outputStyle")
+  public InstanceValidatorParameters setOutputStyle(String outputStyle) {
+    this.outputStyle = outputStyle;
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -82,12 +118,14 @@ public class InstanceValidatorParameters {
     return assumeValidRestReferences == that.assumeValidRestReferences
       && noExtensibleBindingMessages == that.noExtensibleBindingMessages
       && showTimes == that.showTimes
-      && hintAboutNonMustSupport == that.hintAboutNonMustSupport;
+      && hintAboutNonMustSupport == that.hintAboutNonMustSupport
+      && Objects.equals(htmlOutput, that.htmlOutput)
+      && Objects.equals(outputStyle, that.outputStyle);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, noExtensibleBindingMessages, showTimes, hintAboutNonMustSupport);
+    return Objects.hash(assumeValidRestReferences, noExtensibleBindingMessages, showTimes, hintAboutNonMustSupport, htmlOutput, outputStyle);
   }
 
   @Override
@@ -97,6 +135,8 @@ public class InstanceValidatorParameters {
       ", noExtensibleBindingMessages=" + noExtensibleBindingMessages +
       ", showTimes=" + showTimes +
       ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +
+      ", htmlOutput='" + htmlOutput + '\'' +
+      ", outputStyle='" + outputStyle + '\'' +
       '}';
   }
 }

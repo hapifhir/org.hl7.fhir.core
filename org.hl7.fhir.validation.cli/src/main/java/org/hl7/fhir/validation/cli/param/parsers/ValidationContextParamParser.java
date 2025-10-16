@@ -80,12 +80,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
 
     // load the parameters - so order doesn't matter
     for (int i = 0; i < args.length; i++) {
-       if (args[i].equals(HTML_OUTPUT)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified -html-output without indicating output file");
-        else
-          validationContext.setHtmlOutput(args[++i]);
-      } else if (args[i].equals(PROFILE)) {
+       if (args[i].equals(PROFILE)) {
         String profile = null;
         if (i + 1 == args.length) {
           throw new Error("Specified -profile without indicating profile url");
@@ -269,8 +264,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         }
       } else if (args[i].equals(TERMINOLOGY_ROUTING)) {
         validationContext.setShowTerminologyRouting(true);
-      } else if (args[i].equals(OUTPUT_STYLE)) {
-        validationContext.setOutputStyle(args[++i]);
       } else if (args[i].equals(MATCHETYPE)) {
         if (i + 1 == args.length)
           throw new Error("Specified -matchetype without indicating file");

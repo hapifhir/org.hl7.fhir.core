@@ -28,7 +28,6 @@ public class Params {
   public static final String ALT_VERSION = "-alt-version";
 
   public static final String LEVEL = "-level";
-  public static final String HTML_OUTPUT = "-html-output";
 
   public static final String PROFILE = "-profile";
   public static final String PROFILES = "-profiles";
@@ -86,7 +85,6 @@ public class Params {
   public static final String FOR_PUBLICATION = "-forPublication";
   public static final String VERBOSE = "-verbose";
   public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
-  public static final String OUTPUT_STYLE = "-output-style";
   public static final String HTML_IN_MARKDOWN = "-html-in-markdown";
   public static final String DISABLE_DEFAULT_RESOURCE_FETCHER = "-disable-default-resource-fetcher";
   public static final String BEST_PRACTICE = "-best-practice";
@@ -182,7 +180,7 @@ public class Params {
         else
           validationContext.setOutputSuffix(args[++i]);
       }
-      else if (args[i].equals(HTML_OUTPUT)) {
+      else if (args[i].equals(InstanceValidatorParametersParser.HTML_OUTPUT)) {
         if (i + 1 == args.length)
           throw new Error("Specified -html-output without indicating output file");
         else
@@ -423,7 +421,7 @@ public class Params {
         validationContext.setClearTxCache(true);
       } else if (args[i].equals(InstanceValidatorParametersParser.SHOW_TIMES)) {
         validationContext.setShowTimes(true);
-      } else if (args[i].equals(OUTPUT_STYLE)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.OUTPUT_STYLE)) {
         validationContext.setOutputStyle(args[++i]);
       } else if (args[i].equals(ValidationEngineParametersParser.ADVISOR_FILE)) {
         validationContext.setAdvisorFile(args[++i]);
