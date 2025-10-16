@@ -66,7 +66,7 @@ public class RePackageTask extends ValidationEngineTask {
       .setNpmId(validationContext.getPackageName())
       .addPackages(validationContext.getIgs());
 
-    switch (Objects.requireNonNull(Params.getParam(args, "-scope")))
+    switch (Objects.requireNonNull(Params.getParam(args, Params.SCOPE)))
     {
       case "ig": packageReGenerator.setScope(ExpansionPackageGeneratorScope.IG_ONLY); break;
       case "igs": packageReGenerator.setScope(ExpansionPackageGeneratorScope.ALL_IGS); break;
@@ -77,13 +77,9 @@ public class RePackageTask extends ValidationEngineTask {
       validationEngine.loadExpansionParameters(validationContext.getExpansionParameters());
     }
 
-    String ignoreList = Params.getParam(args, "-ignore-list");
+    String ignoreList = Params.getParam(args, Params.IGNORE_LIST);
     if(!Strings.isNullOrEmpty(ignoreList))
       packageReGenerator.addIgnoreList(List.of(ignoreList.split(",")));
-
-    String includeList = Params.getParam(args, "-include-list");
-    if(!Strings.isNullOrEmpty(includeList))
-      packageReGenerator.addIncludeList(List.of(includeList.split(",")));
 
     packageReGenerator.generateExpansionPackage();
   }

@@ -3,6 +3,7 @@ package org.hl7.fhir.validation.special;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -76,14 +77,17 @@ public class PackageReGenerator {
   }
 
   public static void main(String[] args) throws Exception {
+    String tmpdir = Files.createTempDirectory("repackage").toFile().getAbsolutePath();
+
     new PackageReGenerator()
       .addPackage("ch.fhir.ig.ch-core")
       .setJson(true)
-      .addIgnoreList(List.of("http://fhir.ch/ig/ch-core/StructureDefinition/ch-core-patient-epr","http://fhir.ch/ig/ch-core/StructureDefinition/ch-core-claim", "urn:ietf:bcp:47"))
+      .addIgnoreList(List.of("http://fhir.ch/ig/ch-core/StructureDefinition/ch-core-patient-epr", "http://fhir.ch/ig/ch-core/StructureDefinition/ch-core-claim", "urn:ietf:bcp:47"))
       .setOutputType(ExpansionPackageGeneratorOutputType.TGZ)
-      .setOutput("/Users/jkiddo/temp/some-output.tgz")
+      .setOutput(tmpdir + "/some-output.tgz")
       .setModes(Set.of("cnt"))
       .generateExpansionPackage();
+
   }
   
   public enum ExpansionPackageGeneratorOutputType {
@@ -104,7 +108,6 @@ public class PackageReGenerator {
   private IWorkerContext context;
   private String npmId;
   private List<String> ignoreList = new ArrayList<>();
-  private List<String> includeList = new ArrayList<>();
 
   public PackageReGenerator() {
     super();
@@ -112,11 +115,6 @@ public class PackageReGenerator {
 
   public PackageReGenerator addIgnoreList(List<String> ignoreList) {
     this.ignoreList = ignoreList;
-    return this;
-  }
-
-  public PackageReGenerator addIncludeList(List<String> includeList) {
-    this.includeList = includeList;
     return this;
   }
 
