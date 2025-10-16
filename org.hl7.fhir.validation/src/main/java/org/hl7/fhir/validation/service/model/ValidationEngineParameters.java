@@ -384,6 +384,69 @@ public class ValidationEngineParameters {
     return this;
   }
 
+  @JsonProperty("locale")
+  @SerializedName("locale")
+  private
+  String locale = Locale.ENGLISH.toLanguageTag();
+
+  @SerializedName("locale")
+  @JsonProperty("locale")
+  public String getLanguageCode() {
+    return locale;
+  }
+
+  public Locale getLocale() {
+    return Locale.forLanguageTag(this.locale);
+  }
+
+  @SerializedName("locale")
+  @JsonProperty("locale")
+  public ValidationEngineParameters setLocale(String languageString) {
+    this.locale = languageString;
+    return this;
+  }
+
+  public ValidationEngineParameters setLocale(Locale locale) {
+    this.locale = locale.getLanguage();
+    return this;
+  }
+
+  @JsonProperty("lang")
+  @SerializedName("lang")
+  private
+  String lang = null;
+
+  @SerializedName("lang")
+  @JsonProperty("lang")
+  public String getLang() {
+    return lang;
+  }
+
+  @SerializedName("lang")
+  @JsonProperty("lang")
+  public ValidationEngineParameters setLang(String lang) {
+    this.lang = lang;
+    return this;
+  }
+
+  @JsonProperty("checkReferences")
+  @SerializedName("checkReferences")
+  private
+  boolean checkReferences = false;
+
+  @SerializedName("checkReferences")
+  @JsonProperty("checkReferences")
+  public boolean isCheckReferences() {
+    return checkReferences;
+  }
+
+  @SerializedName("checkReferences")
+  @JsonProperty("checkReferences")
+  public ValidationEngineParameters setCheckReferences(boolean checkReferences) {
+    this.checkReferences = checkReferences;
+    return this;
+  }
+
   private Boolean inferFhirVersion = true;
 
   public Boolean isInferFhirVersion() {
@@ -410,6 +473,7 @@ public class ValidationEngineParameters {
       && checkIPSCodes == that.checkIPSCodes
       && doImplicitFHIRPathStringConversion == that.doImplicitFHIRPathStringConversion
       && allowDoubleQuotesInFHIRPath == that.allowDoubleQuotesInFHIRPath
+      && checkReferences == that.checkReferences
       && Objects.equals(resolutionContext, that.resolutionContext)
       && Objects.equals(jurisdiction, that.jurisdiction)
       && Objects.equals(aiService, that.aiService)
@@ -418,7 +482,9 @@ public class ValidationEngineParameters {
       && Objects.equals(txLog, that.txLog)
       && Objects.equals(txCache, that.txCache)
       && Objects.equals(advisorFile, that.advisorFile)
-      && Objects.equals(bundleValidationRules, that.bundleValidationRules);
+      && Objects.equals(bundleValidationRules, that.bundleValidationRules)
+      && Objects.equals(locale, that.locale)
+      && Objects.equals(lang, that.lang);
   }
 
   @Override
@@ -442,7 +508,10 @@ public class ValidationEngineParameters {
       doImplicitFHIRPathStringConversion,
       allowDoubleQuotesInFHIRPath,
       advisorFile,
-      bundleValidationRules);
+      bundleValidationRules,
+      locale,
+      lang,
+      checkReferences);
   }
 
   @Override
@@ -467,6 +536,9 @@ public class ValidationEngineParameters {
       ", allowDoubleQuotesInFHIRPath=" + allowDoubleQuotesInFHIRPath +
       ", advisorFile='" + advisorFile + '\'' +
       ", bundleValidationRules=" + bundleValidationRules +
+      ", locale='" + locale + '\'' +
+      ", lang='" + lang + '\'' +
+      ", checkReferences=" + checkReferences +
       "}";
   }
 }

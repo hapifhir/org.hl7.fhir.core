@@ -30,6 +30,9 @@ public class ValidationContextUtilities {
     validationContext.setAllowDoubleQuotesInFHIRPath(validationEngineParameters.isAllowDoubleQuotesInFHIRPath());
     validationContext.setAdvisorFile(validationEngineParameters.getAdvisorFile());
     validationContext.setBundleValidationRules(validationEngineParameters.getBundleValidationRules());
+    validationContext.setLocale(validationEngineParameters.getLanguageCode());
+    validationContext.setLang(validationEngineParameters.getLang());
+    validationContext.setCheckReferences(validationEngineParameters.isCheckReferences());
   }
 
   public static void addWatchParameters(ValidationContext validationContext, WatchParameters watchParameters) {
@@ -85,6 +88,9 @@ public class ValidationContextUtilities {
     validationEngineParameters.setAllowDoubleQuotesInFHIRPath(validationContext.isAllowDoubleQuotesInFHIRPath());
     validationEngineParameters.setAdvisorFile(validationContext.getAdvisorFile());
     validationEngineParameters.setBundleValidationRules(validationContext.getBundleValidationRules());
+    validationEngineParameters.setLocale(validationContext.getLanguageCode());
+    validationEngineParameters.setLang(validationContext.getLang());
+    validationEngineParameters.setCheckReferences(validationContext.isCheckReferences());
     return validationEngineParameters;
   }
 

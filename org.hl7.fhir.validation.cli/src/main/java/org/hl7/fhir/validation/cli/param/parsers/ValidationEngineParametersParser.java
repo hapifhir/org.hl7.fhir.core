@@ -13,6 +13,7 @@ import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 public class ValidationEngineParametersParser implements IParamParser<ValidationEngineParameters> {
 
@@ -34,6 +35,9 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
   public static final String ALLOW_DOUBLE_QUOTES = "-allow-double-quotes-in-fhirpath";
   public static final String ADVISOR_FILE = "-advisor-file";
   public static final String BUNDLE = "-bundle";
+  public static final String LOCALE = "-locale";
+  public static final String LANGUAGE = "-language";
+  public static final String CHECK_REFERENCES = "-check-references";
 
   ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
   @Override
@@ -175,6 +179,23 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
             Arg.setProcessed(args, i, 3, true);
           }
         }
+      } else if (args[i].getValue().equals(LOCALE)) {
+        if (i + 1 == args.length) {
+          throw new Error("Specified -locale without indicating locale");
+        } else {
+          validationEngineParameters.setLocale(Locale.forLanguageTag(args[i + 1].getValue()));
+          Arg.setProcessed(args, i, 2, true);
+        }
+      } else if (args[i].getValue().equals(LANGUAGE)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -language without indicating language");
+        else {
+          validationEngineParameters.setLang(args[i + 1].getValue());
+          Arg.setProcessed(args, i, 2, true);
+        }
+      } else if (args[i].getValue().equals(CHECK_REFERENCES)) {
+        validationEngineParameters.setCheckReferences(true);
+        args[i].setProcessed(true);
       }
     }
   }

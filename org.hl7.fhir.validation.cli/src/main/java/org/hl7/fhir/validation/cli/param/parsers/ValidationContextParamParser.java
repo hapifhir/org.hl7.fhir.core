@@ -149,8 +149,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
           String input = args[++i];
           validationContext.addInput(input);
         }
-      } else if (args[i].equals(CHECK_REFERENCES)) {
-        validationContext.setCheckReferences(true);
       } else if (args[i].equals(GlobalParametersParser.DEBUG)) {
         i++;
         log.warn("Debugging support is now provided through the -debug-log and -trace-log CLI parameters. Use the -help option for detailed instructions.");
@@ -175,12 +173,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         else {
           String q = args[++i];
           validationContext.setBestPracticeLevel(readBestPractice(q));
-        }
-      } else if (args[i].equals(GlobalParametersParser.LOCALE)) {
-        if (i + 1 == args.length) {
-          throw new Error("Specified -locale without indicating locale");
-        } else {
-          validationContext.setLocale(Locale.forLanguageTag(args[++i]));
         }
       } else if (args[i].equals(EXTENSION)) {
         validationContext.getExtensions().add(args[++i]);
@@ -298,11 +290,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
           throw new Error("Specified -log without indicating file");
         else
           validationContext.setMapLog(args[++i]);
-      } else if (args[i].equals(LANGUAGE)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified -language without indicating language");
-        else
-          validationContext.setLang(args[++i]);
       } else if (args[i].equals(ALT_VERSION)) {
         if (i + 1 == args.length)
           throw new Error("Specified " + args[i] + " without indicating version");

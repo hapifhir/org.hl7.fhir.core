@@ -36,7 +36,6 @@ public class Params {
   public static final String OPTION = "-option";
   public static final String OPTIONS = "-options";
   public static final String QUESTIONNAIRE = "-questionnaire";
-  public static final String CHECK_REFERENCES = "-check-references";
   public static final String RECURSE = "-recurse";
   public static final String SHOW_MESSAGES_FROM_REFERENCES = "-showReferenceMessages";
   public static final String EXTENSION = "-extension";
@@ -61,7 +60,6 @@ public class Params {
   public static final String SCAN = "-scan";
   public static final String TERMINOLOGY_ROUTING = "-tx-routing";
   public static final String LOG = "-log";
-  public static final String LANGUAGE = "-language";
   public static final String IMPLEMENTATION_GUIDE = "-ig";
   public static final String DEFINITION = "-defn";
   public static final String MAP = "-map";
@@ -273,7 +271,7 @@ public class Params {
         validationContext.setDoNative(true);
       } else if (args[i].equals(InstanceValidatorParametersParser.ASSUME_VALID_REST_REF)) {
         validationContext.setAssumeValidRestReferences(true);
-      } else if (args[i].equals(CHECK_REFERENCES)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.CHECK_REFERENCES)) {
         validationContext.setCheckReferences(true);
       } else if (args[i].equals(ValidationEngineParametersParser.RESOLUTION_CONTEXT)) {
         validationContext.setResolutionContext(args[++i]);
@@ -480,7 +478,7 @@ public class Params {
           throw new Error("Specified -log without indicating file");
         else
           validationContext.setMapLog(args[++i]);
-      } else if (args[i].equals(LANGUAGE)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.LANGUAGE)) {
         if (i + 1 == args.length)
           throw new Error("Specified -language without indicating language");
         else
