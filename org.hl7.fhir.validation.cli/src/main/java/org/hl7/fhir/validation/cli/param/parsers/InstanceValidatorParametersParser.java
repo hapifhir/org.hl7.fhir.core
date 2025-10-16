@@ -10,6 +10,8 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
   public static final String NO_EXTENSIBLE_BINDING_WARNINGS = "-no-extensible-binding-warnings";
   public static final String SHOW_TIMES = "-show-times";
   public static final String HINT_ABOUT_NON_MUST_SUPPORT = "-hintAboutNonMustSupport";
+  public static final String HTML_OUTPUT = "-html-output";
+  public static final String OUTPUT_STYLE = "-output-style";
 
   InstanceValidatorParameters instanceValidatorParameters = new InstanceValidatorParameters();
 
@@ -36,6 +38,16 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
       } else if (args[i].getValue().equals(HINT_ABOUT_NON_MUST_SUPPORT)) {
         instanceValidatorParameters.setHintAboutNonMustSupport(true);
         args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(HTML_OUTPUT)) {
+        if (i + 1 == args.length) {
+          throw new Error("Specified -html-output without indicating output file");
+        } else {
+          instanceValidatorParameters.setHtmlOutput(args[i + 1].getValue());
+          Arg.setProcessed(args, i, 2, true);
+        }
+      } else if (args[i].getValue().equals(OUTPUT_STYLE)) {
+        instanceValidatorParameters.setOutputStyle(args[i + 1].getValue());
+        Arg.setProcessed(args, i, 2, true);
       }
     }
   }

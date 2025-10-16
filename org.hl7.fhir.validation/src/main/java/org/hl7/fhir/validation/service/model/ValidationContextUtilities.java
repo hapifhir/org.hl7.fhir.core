@@ -56,6 +56,8 @@ public class ValidationContextUtilities {
     validationContext.setNoExtensibleBindingMessages(instanceValidatorParameters.isNoExtensibleBindingMessages());
     validationContext.setShowTimes(instanceValidatorParameters.isShowTimes());
     validationContext.setHintAboutNonMustSupport(instanceValidatorParameters.isHintAboutNonMustSupport());
+    validationContext.setHtmlOutput(instanceValidatorParameters.getHtmlOutput());
+    validationContext.setOutputStyle(instanceValidatorParameters.getOutputStyle());
   }
 
   public static void addOutputParameters(ValidationContext validationContext, OutputParameters outputParameters) {
@@ -123,6 +125,8 @@ public class ValidationContextUtilities {
     instanceValidatorParameters.setNoExtensibleBindingMessages(validationContext.isNoExtensibleBindingMessages());
     instanceValidatorParameters.setShowTimes(validationContext.isShowTimes());
     instanceValidatorParameters.setHintAboutNonMustSupport(validationContext.isHintAboutNonMustSupport());
+    instanceValidatorParameters.setHtmlOutput(validationContext.getHtmlOutput());
+    instanceValidatorParameters.setOutputStyle(validationContext.getOutputStyle());
     return instanceValidatorParameters;
   }
 
