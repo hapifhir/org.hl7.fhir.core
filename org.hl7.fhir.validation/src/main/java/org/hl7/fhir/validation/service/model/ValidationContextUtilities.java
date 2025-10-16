@@ -27,6 +27,9 @@ public class ValidationContextUtilities {
     validationContext.setClearTxCache(validationEngineParameters.isClearTxCache());
     validationContext.setCheckIPSCodes(validationEngineParameters.isCheckIPSCodes());
     validationContext.setDoImplicitFHIRPathStringConversion(validationEngineParameters.isDoImplicitFHIRPathStringConversion());
+    validationContext.setAllowDoubleQuotesInFHIRPath(validationEngineParameters.isAllowDoubleQuotesInFHIRPath());
+    validationContext.setAdvisorFile(validationEngineParameters.getAdvisorFile());
+    validationContext.setBundleValidationRules(validationEngineParameters.getBundleValidationRules());
   }
 
   public static void addWatchParameters(ValidationContext validationContext, WatchParameters watchParameters) {
@@ -79,6 +82,9 @@ public class ValidationContextUtilities {
     validationEngineParameters.setClearTxCache(validationContext.isClearTxCache());
     validationEngineParameters.setCheckIPSCodes(validationContext.isCheckIPSCodes());
     validationEngineParameters.setDoImplicitFHIRPathStringConversion(validationContext.isDoImplicitFHIRPathStringConversion());
+    validationEngineParameters.setAllowDoubleQuotesInFHIRPath(validationContext.isAllowDoubleQuotesInFHIRPath());
+    validationEngineParameters.setAdvisorFile(validationContext.getAdvisorFile());
+    validationEngineParameters.setBundleValidationRules(validationContext.getBundleValidationRules());
     return validationEngineParameters;
   }
 

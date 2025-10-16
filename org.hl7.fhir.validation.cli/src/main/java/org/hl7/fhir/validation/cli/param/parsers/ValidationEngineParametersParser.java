@@ -2,6 +2,8 @@ package org.hl7.fhir.validation.cli.param.parsers;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
+import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.cli.param.Arg;
@@ -29,6 +31,9 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
   public static final String TERMINOLOGY_CACHE_CLEAR = "-clear-tx-cache";
   public static final String CHECK_IPS_CODES = "-check-ips-codes";
   public static final String DO_IMPLICIT_FHIRPATH_STRING_CONVERSION = "-implicit-fhirpath-string-conversions";
+  public static final String ALLOW_DOUBLE_QUOTES = "-allow-double-quotes-in-fhirpath";
+  public static final String ADVISOR_FILE = "-advisor-file";
+  public static final String BUNDLE = "-bundle";
 
   ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
   @Override
@@ -134,6 +139,42 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
       } else if (args[i].getValue().equals(DO_IMPLICIT_FHIRPATH_STRING_CONVERSION)) {
         validationEngineParameters.setDoImplicitFHIRPathStringConversion(true);
         args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(ALLOW_DOUBLE_QUOTES)) {
+        validationEngineParameters.setAllowDoubleQuotesInFHIRPath(true);
+        args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(ADVISOR_FILE)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -advisor-file without indicating file");
+        else {
+          String advisorFile = args[i + 1].getValue();
+          File f;
+          try {
+            f = ManagedFileAccess.file(advisorFile);
+          } catch (IOException e) {
+            throw new Error("Exception accessing advisor file '"+advisorFile+"'");
+          }
+          if (!f.exists()) {
+            throw new Error("Cannot find advisor file "+ advisorFile);
+          } else if (!Utilities.existsInList(Utilities.getFileExtension(f.getName()), "json", "txt")) {
+            throw new Error("Advisor file "+ advisorFile +" must be a .json or a .txt file");
+          } else {
+            validationEngineParameters.setAdvisorFile(advisorFile);
+          }
+          Arg.setProcessed(args, i, 2, true);
+        }
+      } else if (args[i].getValue().equals(BUNDLE)) {
+        if (i + 1 == args.length) {
+          throw new Error("Specified -bundle without indicating bundle rule");
+        } else {
+          String rule = args[i + 1].getValue();
+          if (i + 2 == args.length) {
+            throw new Error("Specified -bundle without indicating profile source");
+          } else {
+            String profile = args[i + 2].getValue();
+            validationEngineParameters.addBundleValidationRule(new BundleValidationRule().setRule(rule).setProfile(profile));
+            Arg.setProcessed(args, i, 3, true);
+          }
+        }
       }
     }
   }

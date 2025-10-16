@@ -35,7 +35,6 @@ public class Params {
   public static final String CONFIG = "-config";
   public static final String OPTION = "-option";
   public static final String OPTIONS = "-options";
-  public static final String BUNDLE = "-bundle";
   public static final String QUESTIONNAIRE = "-questionnaire";
   public static final String CHECK_REFERENCES = "-check-references";
   public static final String RECURSE = "-recurse";
@@ -92,9 +91,7 @@ public class Params {
   public static final String VERBOSE = "-verbose";
   public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
   public static final String OUTPUT_STYLE = "-output-style";
-  public static final String ADVISOR_FILE = "-advisor-file";
   public static final String HTML_IN_MARKDOWN = "-html-in-markdown";
-  public static final String ALLOW_DOUBLE_QUOTES = "-allow-double-quotes-in-fhirpath";
   public static final String DISABLE_DEFAULT_RESOURCE_FETCHER = "-disable-default-resource-fetcher";
   public static final String BEST_PRACTICE = "-best-practice";
   public static final String UNKNOWN_CODESYSTEMS_CAUSE_ERROR = "-unknown-codesystems-cause-errors";
@@ -230,7 +227,7 @@ public class Params {
             validationContext.addOption(s);
           }
         }
-      } else if (args[i].equals(BUNDLE)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.BUNDLE)) {
         String profile = null;
         String rule = null;
         if (i + 1 == args.length) {
@@ -321,7 +318,7 @@ public class Params {
         validationContext.setNoInternalCaching(true);
       } else if (args[i].equals(InstanceValidatorParametersParser.NO_EXTENSIBLE_BINDING_WARNINGS)) {
         validationContext.setNoExtensibleBindingMessages(true);
-      } else if (args[i].equals(ALLOW_DOUBLE_QUOTES)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.ALLOW_DOUBLE_QUOTES)) {
         validationContext.setAllowDoubleQuotesInFHIRPath(true);
       } else if (args[i].equals(DISABLE_DEFAULT_RESOURCE_FETCHER)) {
         validationContext.setDisableDefaultResourceFetcher(true);
@@ -432,7 +429,7 @@ public class Params {
         validationContext.setShowTimes(true);
       } else if (args[i].equals(OUTPUT_STYLE)) {
         validationContext.setOutputStyle(args[++i]);
-      } else if (args[i].equals(ADVISOR_FILE)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.ADVISOR_FILE)) {
         validationContext.setAdvisorFile(args[++i]);
         File f = ManagedFileAccess.file(validationContext.getAdvisorFile());
         if (!f.exists()) {

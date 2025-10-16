@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
+import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
@@ -324,6 +325,65 @@ public class ValidationEngineParameters {
     return this;
   }
 
+  @JsonProperty("allowDoubleQuotesInFHIRPath")
+  @SerializedName("allowDoubleQuotesInFHIRPath")
+  private
+  boolean allowDoubleQuotesInFHIRPath = false;
+
+  @SerializedName("allowDoubleQuotesInFHIRPath")
+  @JsonProperty("allowDoubleQuotesInFHIRPath")
+  public boolean isAllowDoubleQuotesInFHIRPath() {
+    return allowDoubleQuotesInFHIRPath;
+  }
+
+  @SerializedName("allowDoubleQuotesInFHIRPath")
+  @JsonProperty("allowDoubleQuotesInFHIRPath")
+  public ValidationEngineParameters setAllowDoubleQuotesInFHIRPath(boolean allowDoubleQuotesInFHIRPath) {
+    this.allowDoubleQuotesInFHIRPath = allowDoubleQuotesInFHIRPath;
+    return this;
+  }
+
+  @JsonProperty("advisorFile")
+  @SerializedName("advisorFile")
+  private
+  String advisorFile;
+
+  @SerializedName("advisorFile")
+  @JsonProperty("advisorFile")
+  public String getAdvisorFile() {
+    return advisorFile;
+  }
+
+  @SerializedName("advisorFile")
+  @JsonProperty("advisorFile")
+  public ValidationEngineParameters setAdvisorFile(String advisorFile) {
+    this.advisorFile = advisorFile;
+    return this;
+  }
+
+  @JsonProperty("bundleValidationRules")
+  @SerializedName("bundleValidationRules")
+  private
+  List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
+
+  @SerializedName("bundleValidationRules")
+  @JsonProperty("bundleValidationRules")
+  public List<BundleValidationRule> getBundleValidationRules() {
+    return bundleValidationRules;
+  }
+
+  @SerializedName("bundleValidationRules")
+  @JsonProperty("bundleValidationRules")
+  public ValidationEngineParameters setBundleValidationRules(List<BundleValidationRule> bundleValidationRules) {
+    this.bundleValidationRules = bundleValidationRules;
+    return this;
+  }
+
+  public ValidationEngineParameters addBundleValidationRule(BundleValidationRule bundleValidationRule) {
+    this.bundleValidationRules.add(bundleValidationRule);
+    return this;
+  }
+
   private Boolean inferFhirVersion = true;
 
   public Boolean isInferFhirVersion() {
@@ -349,13 +409,16 @@ public class ValidationEngineParameters {
       && clearTxCache == that.clearTxCache
       && checkIPSCodes == that.checkIPSCodes
       && doImplicitFHIRPathStringConversion == that.doImplicitFHIRPathStringConversion
+      && allowDoubleQuotesInFHIRPath == that.allowDoubleQuotesInFHIRPath
       && Objects.equals(resolutionContext, that.resolutionContext)
       && Objects.equals(jurisdiction, that.jurisdiction)
       && Objects.equals(aiService, that.aiService)
       && Objects.equals(certSources, that.certSources)
       && Objects.equals(txServer, that.txServer)
       && Objects.equals(txLog, that.txLog)
-      && Objects.equals(txCache, that.txCache);
+      && Objects.equals(txCache, that.txCache)
+      && Objects.equals(advisorFile, that.advisorFile)
+      && Objects.equals(bundleValidationRules, that.bundleValidationRules);
   }
 
   @Override
@@ -376,7 +439,10 @@ public class ValidationEngineParameters {
       txCache,
       clearTxCache,
       checkIPSCodes,
-      doImplicitFHIRPathStringConversion);
+      doImplicitFHIRPathStringConversion,
+      allowDoubleQuotesInFHIRPath,
+      advisorFile,
+      bundleValidationRules);
   }
 
   @Override
@@ -398,6 +464,9 @@ public class ValidationEngineParameters {
       ", clearTxCache=" + clearTxCache +
       ", checkIPSCodes=" + checkIPSCodes +
       ", doImplicitFHIRPathStringConversion=" + doImplicitFHIRPathStringConversion +
+      ", allowDoubleQuotesInFHIRPath=" + allowDoubleQuotesInFHIRPath +
+      ", advisorFile='" + advisorFile + '\'' +
+      ", bundleValidationRules=" + bundleValidationRules +
       "}";
   }
 }
