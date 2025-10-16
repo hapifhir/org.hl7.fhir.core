@@ -620,7 +620,7 @@ public class Params {
         else
           throw new Exception("Can only nominate a single -fhirpath parameter");
       } else if (args[i].equals(SCOPE) || args[i].equals(IGNORE_LIST)) {
-        // this is only here to skip the step below which is not helping
+        //These two params are processed later by the RePackageTask and not included in ValidationContext.
         i++;
       } else if (!Utilities.existsInList(args[i],
         //The following params are handled outside this loop, so should be ignored.

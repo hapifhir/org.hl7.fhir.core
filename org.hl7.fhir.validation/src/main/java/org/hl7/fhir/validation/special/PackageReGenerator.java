@@ -77,17 +77,13 @@ public class PackageReGenerator {
   }
 
   public static void main(String[] args) throws Exception {
-    String tmpdir = Files.createTempDirectory("repackage").toFile().getAbsolutePath();
 
     new PackageReGenerator()
-      .addPackage("ch.fhir.ig.ch-core")
+      .addPackage("hl7.fhir.us.davinci-alerts")
       .setJson(true)
-      .addIgnoreList(List.of("http://fhir.ch/ig/ch-core/StructureDefinition/ch-core-patient-epr", "http://fhir.ch/ig/ch-core/StructureDefinition/ch-core-claim", "urn:ietf:bcp:47"))
       .setOutputType(ExpansionPackageGeneratorOutputType.TGZ)
-      .setOutput(tmpdir + "/some-output.tgz")
-      .setModes(Set.of("cnt"))
+      .setOutput("/Users/grahamegrieve/temp/vs-output.tgz")
       .generateExpansionPackage();
-
   }
   
   public enum ExpansionPackageGeneratorOutputType {
@@ -321,7 +317,7 @@ public class PackageReGenerator {
       return;
     }
     set.add(res.getVersionedUrl());
-    
+
     if (scope == ExpansionPackageGeneratorScope.EVERYTHING || !isCore(res.getSourcePackage())) {
       resources.add(res);
       if (res.hasSourcePackage()) {
