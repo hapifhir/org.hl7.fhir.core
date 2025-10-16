@@ -2,7 +2,11 @@ package org.hl7.fhir.validation.service.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
+import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
+import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class InstanceValidatorParameters {
@@ -110,6 +114,92 @@ public class InstanceValidatorParameters {
     return this;
   }
 
+  @JsonProperty("r5BundleRelativeReferencePolicy")
+  @SerializedName("r5BundleRelativeReferencePolicy")
+  private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy;
+
+  public R5BundleRelativeReferencePolicy getR5BundleRelativeReferencePolicy() {
+    return r5BundleRelativeReferencePolicy;
+  }
+
+  public InstanceValidatorParameters setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
+    this.r5BundleRelativeReferencePolicy = r5BundleRelativeReferencePolicy;
+    return this;
+  }
+
+  @JsonProperty("extensions")
+  @SerializedName("extensions")
+  private List<String> extensions = new ArrayList<String>();
+
+  @SerializedName("extensions")
+  @JsonProperty("extensions")
+  public List<String> getExtensions() {
+    return extensions;
+  }
+
+  @SerializedName("extensions")
+  @JsonProperty("extensions")
+  public InstanceValidatorParameters setExtensions(List<String> extensions) {
+    this.extensions = extensions;
+    return this;
+  }
+
+  public InstanceValidatorParameters addExtension(String extension) {
+    this.extensions.add(extension);
+    return this;
+  }
+
+  @JsonProperty("wantInvariantsInMessages")
+  @SerializedName("wantInvariantsInMessages")
+  private boolean wantInvariantsInMessages = false;
+
+  @SerializedName("wantInvariantsInMessages")
+  @JsonProperty("wantInvariantsInMessages")
+  public boolean isWantInvariantsInMessages() {
+    return wantInvariantsInMessages;
+  }
+
+  @SerializedName("wantInvariantsInMessages")
+  @JsonProperty("wantInvariantsInMessages")
+  public InstanceValidatorParameters setWantInvariantsInMessages(boolean wantInvariantsInMessages) {
+    this.wantInvariantsInMessages = wantInvariantsInMessages;
+    return this;
+  }
+
+  @JsonProperty("noInvariants")
+  @SerializedName("noInvariants")
+  private boolean noInvariants = false;
+
+  @SerializedName("noInvariants")
+  @JsonProperty("noInvariants")
+  public boolean isNoInvariants() {
+    return noInvariants;
+  }
+
+  @SerializedName("noInvariants")
+  @JsonProperty("noInvariants")
+  public InstanceValidatorParameters setNoInvariants(boolean noInvariants) {
+    this.noInvariants = noInvariants;
+    return this;
+  }
+
+  @JsonProperty("questionnaire")
+  @SerializedName("questionnaire")
+  private QuestionnaireMode questionnaireMode = QuestionnaireMode.CHECK;
+
+  @SerializedName("questionnaire")
+  @JsonProperty("questionnaire")
+  public QuestionnaireMode getQuestionnaireMode() {
+    return questionnaireMode;
+  }
+
+  @SerializedName("questionnaire")
+  @JsonProperty("questionnaire")
+  public InstanceValidatorParameters setQuestionnaireMode(QuestionnaireMode questionnaireMode) {
+    this.questionnaireMode = questionnaireMode;
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -119,13 +209,18 @@ public class InstanceValidatorParameters {
       && noExtensibleBindingMessages == that.noExtensibleBindingMessages
       && showTimes == that.showTimes
       && hintAboutNonMustSupport == that.hintAboutNonMustSupport
+      && wantInvariantsInMessages == that.wantInvariantsInMessages
+      && noInvariants == that.noInvariants
       && Objects.equals(htmlOutput, that.htmlOutput)
-      && Objects.equals(outputStyle, that.outputStyle);
+      && Objects.equals(outputStyle, that.outputStyle)
+      && Objects.equals(r5BundleRelativeReferencePolicy, that.r5BundleRelativeReferencePolicy)
+      && Objects.equals(extensions, that.extensions)
+      && Objects.equals(questionnaireMode, that.questionnaireMode);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, noExtensibleBindingMessages, showTimes, hintAboutNonMustSupport, htmlOutput, outputStyle);
+    return Objects.hash(assumeValidRestReferences, noExtensibleBindingMessages, showTimes, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode);
   }
 
   @Override
@@ -137,6 +232,11 @@ public class InstanceValidatorParameters {
       ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +
       ", htmlOutput='" + htmlOutput + '\'' +
       ", outputStyle='" + outputStyle + '\'' +
+      ", r5BundleRelativeReferencePolicy=" + r5BundleRelativeReferencePolicy +
+      ", extensions=" + extensions +
+      ", wantInvariantsInMessages=" + wantInvariantsInMessages +
+      ", noInvariants=" + noInvariants +
+      ", questionnaireMode=" + questionnaireMode +
       '}';
   }
 }

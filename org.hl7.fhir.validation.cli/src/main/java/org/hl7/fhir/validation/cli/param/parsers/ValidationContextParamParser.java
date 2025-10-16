@@ -116,13 +116,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
             validationContext.addOption(s);
           }
         }
-      } else if (args[i].equals(QUESTIONNAIRE)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified -questionnaire without indicating questionnaire mode");
-        else {
-          String questionnaireMode = args[++i];
-          validationContext.setQuestionnaireMode(QuestionnaireMode.fromCode(questionnaireMode));
-        }
       } else if (args[i].equals(LEVEL)) {
         if (i + 1 == args.length)
           throw new Error("Specified -level without indicating level mode");
@@ -169,20 +162,14 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
           String q = args[++i];
           validationContext.setBestPracticeLevel(readBestPractice(q));
         }
-      } else if (args[i].equals(EXTENSION)) {
-        validationContext.getExtensions().add(args[++i]);
       } else if (args[i].equals(NO_INTERNAL_CACHING)) {
         validationContext.setNoInternalCaching(true);
       } else if (args[i].equals(DISABLE_DEFAULT_RESOURCE_FETCHER)) {
         validationContext.setDisableDefaultResourceFetcher(true);
       } else if (args[i].equals(NO_UNICODE_BIDI_CONTROL_CHARS)) {
         validationContext.setNoUnicodeBiDiControlChars(true);
-      } else if (args[i].equals(NO_INVARIANTS)) {
-        validationContext.setNoInvariants(true);
       } else if (args[i].equals(DISPLAY_WARNINGS)) {
         validationContext.setDisplayWarnings(true);
-      } else if (args[i].equals(WANT_INVARIANTS_IN_MESSAGES)) {
-        validationContext.setWantInvariantsInMessages(true);
       } else if (args[i].equals(PACKAGE_NAME)) {
         validationContext.setPackageName(args[++i]);
       } else if (args[i].equals(TX_PACK)) {
@@ -244,8 +231,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         validationContext.setShowMessageIds(true);
       } else if (args[i].equals(FOR_PUBLICATION)) {
         validationContext.setForPublication(true);
-      } else if (args[i].equals(R5_REF_POLICY)) {
-        validationContext.setR5BundleRelativeReferencePolicy(ValidationOptions.R5BundleRelativeReferencePolicy.fromCode(args[++i]));
       } else if (args[i].equals(UNKNOWN_CODESYSTEMS_CAUSE_ERROR)) {
         validationContext.setUnknownCodeSystemsCauseErrors(true);
       } else if (args[i].equals(NO_EXPERIMENTAL_CONTENT)) {

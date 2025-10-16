@@ -58,6 +58,11 @@ public class ValidationContextUtilities {
     validationContext.setHintAboutNonMustSupport(instanceValidatorParameters.isHintAboutNonMustSupport());
     validationContext.setHtmlOutput(instanceValidatorParameters.getHtmlOutput());
     validationContext.setOutputStyle(instanceValidatorParameters.getOutputStyle());
+    validationContext.setR5BundleRelativeReferencePolicy(instanceValidatorParameters.getR5BundleRelativeReferencePolicy());
+    validationContext.setExtensions(instanceValidatorParameters.getExtensions());
+    validationContext.setWantInvariantsInMessages(instanceValidatorParameters.isWantInvariantsInMessages());
+    validationContext.setNoInvariants(instanceValidatorParameters.isNoInvariants());
+    validationContext.setQuestionnaireMode(instanceValidatorParameters.getQuestionnaireMode());
   }
 
   public static void addOutputParameters(ValidationContext validationContext, OutputParameters outputParameters) {
@@ -127,6 +132,11 @@ public class ValidationContextUtilities {
     instanceValidatorParameters.setHintAboutNonMustSupport(validationContext.isHintAboutNonMustSupport());
     instanceValidatorParameters.setHtmlOutput(validationContext.getHtmlOutput());
     instanceValidatorParameters.setOutputStyle(validationContext.getOutputStyle());
+    instanceValidatorParameters.setR5BundleRelativeReferencePolicy(validationContext.getR5BundleRelativeReferencePolicy());
+    instanceValidatorParameters.setExtensions(validationContext.getExtensions());
+    instanceValidatorParameters.setWantInvariantsInMessages(validationContext.isWantInvariantsInMessages());
+    instanceValidatorParameters.setNoInvariants(validationContext.isNoInvariants());
+    instanceValidatorParameters.setQuestionnaireMode(validationContext.getQuestionnaireMode());
     return instanceValidatorParameters;
   }
 
