@@ -22,6 +22,11 @@ public class ValidationContextUtilities {
     }
     validationContext.setTxServer(validationEngineParameters.getTxServer());
     validationContext.setNoEcosystem(validationEngineParameters.getNoEcosystem());
+    validationContext.setTxLog(validationEngineParameters.getTxLog());
+    validationContext.setTxCache(validationEngineParameters.getTxCache());
+    validationContext.setClearTxCache(validationEngineParameters.isClearTxCache());
+    validationContext.setCheckIPSCodes(validationEngineParameters.isCheckIPSCodes());
+    validationContext.setDoImplicitFHIRPathStringConversion(validationEngineParameters.isDoImplicitFHIRPathStringConversion());
   }
 
   public static void addWatchParameters(ValidationContext validationContext, WatchParameters watchParameters) {
@@ -69,6 +74,11 @@ public class ValidationContextUtilities {
     }
     validationEngineParameters.setTxServer(validationContext.getTxServer());
     validationEngineParameters.setNoEcosystem(validationContext.getNoEcosystem());
+    validationEngineParameters.setTxLog(validationContext.getTxLog());
+    validationEngineParameters.setTxCache(validationContext.getTxCache());
+    validationEngineParameters.setClearTxCache(validationContext.isClearTxCache());
+    validationEngineParameters.setCheckIPSCodes(validationContext.isCheckIPSCodes());
+    validationEngineParameters.setDoImplicitFHIRPathStringConversion(validationContext.isDoImplicitFHIRPathStringConversion());
     return validationEngineParameters;
   }
 

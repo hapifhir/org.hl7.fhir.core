@@ -1,6 +1,7 @@
 package org.hl7.fhir.validation.cli.tasks;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.validation.cli.param.parsers.ValidationEngineParametersParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.cli.Display;
 import org.hl7.fhir.validation.cli.param.Params;
@@ -57,7 +58,7 @@ public class TestsTask extends StandaloneTask{
         System.exit(1);
       }
 
-      final String txCacheDirectory = Params.getParam(args, Params.TERMINOLOGY_CACHE);
+      final String txCacheDirectory = Params.getParam(args, ValidationEngineParametersParser.TERMINOLOGY_CACHE);
       assert TestExecutorParams.isValidModuleParam(testModuleParam) : "Invalid test module param: " + testModuleParam;
       final String[] moduleNamesArg = TestExecutorParams.parseModuleParam(testModuleParam);
 

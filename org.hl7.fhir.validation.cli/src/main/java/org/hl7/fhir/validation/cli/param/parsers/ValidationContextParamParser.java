@@ -172,8 +172,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         validationContext.setRecursive(true);
       } else if (args[i].equals(SHOW_MESSAGES_FROM_REFERENCES)) {
         validationContext.setShowMessagesFromReferences(true);
-      } else if (args[i].equals(DO_IMPLICIT_FHIRPATH_STRING_CONVERSION)) {
-        validationContext.setDoImplicitFHIRPathStringConversion(true);
       } else if (args[i].equals(HTML_IN_MARKDOWN)) {
         if (i + 1 == args.length)
           throw new Error("Specified "+HTML_IN_MARKDOWN+" without indicating mode");
@@ -206,8 +204,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         validationContext.setAllowDoubleQuotesInFHIRPath(true);
       } else if (args[i].equals(DISABLE_DEFAULT_RESOURCE_FETCHER)) {
         validationContext.setDisableDefaultResourceFetcher(true);
-      } else if (args[i].equals(CHECK_IPS_CODES)) {
-        validationContext.setCheckIPSCodes(true);
       } else if (args[i].equals(NO_UNICODE_BIDI_CONTROL_CHARS)) {
         validationContext.setNoUnicodeBiDiControlChars(true);
       } else if (args[i].equals(NO_INVARIANTS)) {
@@ -301,8 +297,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         }
       } else if (args[i].equals(TERMINOLOGY_ROUTING)) {
         validationContext.setShowTerminologyRouting(true);
-      } else if (args[i].equals(TERMINOLOGY_CACHE_CLEAR)) {
-        validationContext.setClearTxCache(true);
       } else if (args[i].equals(OUTPUT_STYLE)) {
         validationContext.setOutputStyle(args[++i]);
       } else if (args[i].equals(ADVISOR_FILE)) {
@@ -313,16 +307,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         } else if (!Utilities.existsInList(Utilities.getFileExtension(f.getName()), "json", "txt")) {
           throw new Error("Advisor file "+ validationContext.getAdvisorFile()+" must be a .json or a .txt file");
         }
-      } else if (args[i].equals(TERMINOLOGY_LOG)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified -txLog without indicating file");
-        else
-          validationContext.setTxLog(args[++i]);
-      } else if (args[i].equals(TERMINOLOGY_CACHE)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified -txCache without indicating file");
-        else
-          validationContext.setTxCache(args[++i]);
       } else if (args[i].equals(MATCHETYPE)) {
         if (i + 1 == args.length)
           throw new Error("Specified -matchetype without indicating file");

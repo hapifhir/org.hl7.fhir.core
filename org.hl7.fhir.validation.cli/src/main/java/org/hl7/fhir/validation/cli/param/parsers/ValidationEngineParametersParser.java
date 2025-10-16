@@ -24,6 +24,11 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
   public static final String AI_SERVICE = "-ai-service";
   public static final String CERT = "-cert";
   public static final String TERMINOLOGY = "-tx";
+  public static final String TERMINOLOGY_LOG = "-txLog";
+  public static final String TERMINOLOGY_CACHE = "-txCache";
+  public static final String TERMINOLOGY_CACHE_CLEAR = "-clear-tx-cache";
+  public static final String CHECK_IPS_CODES = "-check-ips-codes";
+  public static final String DO_IMPLICIT_FHIRPATH_STRING_CONVERSION = "-implicit-fhirpath-string-conversions";
 
   ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
   @Override
@@ -106,6 +111,29 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
           validationEngineParameters.setNoEcosystem(true);
           Arg.setProcessed(args, i, 2, true);
         }
+      } else if (args[i].getValue().equals(TERMINOLOGY_LOG)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -txLog without indicating file");
+        else {
+          validationEngineParameters.setTxLog(args[i + 1].getValue());
+          Arg.setProcessed(args, i, 2, true);
+        }
+      } else if (args[i].getValue().equals(TERMINOLOGY_CACHE)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -txCache without indicating file");
+        else {
+          validationEngineParameters.setTxCache(args[i + 1].getValue());
+          Arg.setProcessed(args, i, 2, true);
+        }
+      } else if (args[i].getValue().equals(TERMINOLOGY_CACHE_CLEAR)) {
+        validationEngineParameters.setClearTxCache(true);
+        args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(CHECK_IPS_CODES)) {
+        validationEngineParameters.setCheckIPSCodes(true);
+        args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(DO_IMPLICIT_FHIRPATH_STRING_CONVERSION)) {
+        validationEngineParameters.setDoImplicitFHIRPathStringConversion(true);
+        args[i].setProcessed(true);
       }
     }
   }

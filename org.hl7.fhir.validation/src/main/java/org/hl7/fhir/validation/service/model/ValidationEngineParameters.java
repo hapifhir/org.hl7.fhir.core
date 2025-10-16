@@ -234,6 +234,96 @@ public class ValidationEngineParameters {
     return this;
   }
 
+  @JsonProperty("txLog")
+  @SerializedName("txLog")
+  private
+  String txLog = null;
+
+  @SerializedName("txLog")
+  @JsonProperty("txLog")
+  public String getTxLog() {
+    return txLog;
+  }
+
+  @SerializedName("txLog")
+  @JsonProperty("txLog")
+  public ValidationEngineParameters setTxLog(String txLog) {
+    this.txLog = txLog;
+    return this;
+  }
+
+  @JsonProperty("txCache")
+  @SerializedName("txCache")
+  private
+  String txCache = null;
+
+  @SerializedName("txCache")
+  @JsonProperty("txCache")
+  public String getTxCache() {
+    return txCache;
+  }
+
+  @SerializedName("txCache")
+  @JsonProperty("txCache")
+  public ValidationEngineParameters setTxCache(String txCache) {
+    this.txCache = txCache;
+    return this;
+  }
+
+  @JsonProperty("clearTxCache")
+  @SerializedName("clearTxCache")
+  private
+  boolean clearTxCache = false;
+
+  @SerializedName("clearTxCache")
+  @JsonProperty("clearTxCache")
+  public boolean isClearTxCache() {
+    return clearTxCache;
+  }
+
+  @SerializedName("clearTxCache")
+  @JsonProperty("clearTxCache")
+  public ValidationEngineParameters setClearTxCache(boolean clearTxCache) {
+    this.clearTxCache = clearTxCache;
+    return this;
+  }
+
+  @JsonProperty("checkIPSCodes")
+  @SerializedName("checkIPSCodes")
+  private
+  boolean checkIPSCodes;
+
+  @SerializedName("checkIPSCodes")
+  @JsonProperty("checkIPSCodes")
+  public boolean isCheckIPSCodes() {
+    return checkIPSCodes;
+  }
+
+  @SerializedName("checkIPSCodes")
+  @JsonProperty("checkIPSCodes")
+  public ValidationEngineParameters setCheckIPSCodes(boolean checkIPSCodes) {
+    this.checkIPSCodes = checkIPSCodes;
+    return this;
+  }
+
+  @JsonProperty("doImplicitFHIRPathStringConversion")
+  @SerializedName("doImplicitFHIRPathStringConversion")
+  private
+  boolean doImplicitFHIRPathStringConversion = false;
+
+  @SerializedName("doImplicitFHIRPathStringConversion")
+  @JsonProperty("doImplicitFHIRPathStringConversion")
+  public boolean isDoImplicitFHIRPathStringConversion() {
+    return doImplicitFHIRPathStringConversion;
+  }
+
+  @SerializedName("doImplicitFHIRPathStringConversion")
+  @JsonProperty("doImplicitFHIRPathStringConversion")
+  public ValidationEngineParameters setDoImplicitFHIRPathStringConversion(boolean doImplicitFHIRPathStringConversion) {
+    this.doImplicitFHIRPathStringConversion = doImplicitFHIRPathStringConversion;
+    return this;
+  }
+
   private Boolean inferFhirVersion = true;
 
   public Boolean isInferFhirVersion() {
@@ -256,11 +346,16 @@ public class ValidationEngineParameters {
       && sv.equals(that.sv)
       && isInferFhirVersion() == that.isInferFhirVersion()
       && noEcosystem == that.noEcosystem
+      && clearTxCache == that.clearTxCache
+      && checkIPSCodes == that.checkIPSCodes
+      && doImplicitFHIRPathStringConversion == that.doImplicitFHIRPathStringConversion
       && Objects.equals(resolutionContext, that.resolutionContext)
       && Objects.equals(jurisdiction, that.jurisdiction)
       && Objects.equals(aiService, that.aiService)
       && Objects.equals(certSources, that.certSources)
-      && Objects.equals(txServer, that.txServer);
+      && Objects.equals(txServer, that.txServer)
+      && Objects.equals(txLog, that.txLog)
+      && Objects.equals(txCache, that.txCache);
   }
 
   @Override
@@ -276,7 +371,12 @@ public class ValidationEngineParameters {
       aiService,
       certSources,
       txServer,
-      noEcosystem);
+      noEcosystem,
+      txLog,
+      txCache,
+      clearTxCache,
+      checkIPSCodes,
+      doImplicitFHIRPathStringConversion);
   }
 
   @Override
@@ -293,6 +393,11 @@ public class ValidationEngineParameters {
       ", certSources=" + certSources +
       ", txServer='" + txServer + '\'' +
       ", noEcosystem=" + noEcosystem +
+      ", txLog='" + txLog + '\'' +
+      ", txCache='" + txCache + '\'' +
+      ", clearTxCache=" + clearTxCache +
+      ", checkIPSCodes=" + checkIPSCodes +
+      ", doImplicitFHIRPathStringConversion=" + doImplicitFHIRPathStringConversion +
       "}";
   }
 }

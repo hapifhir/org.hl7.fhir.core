@@ -60,10 +60,7 @@ public class Params {
   public static final String SNAPSHOT = "-snapshot";
   public static final String INSTALL = "-install";
   public static final String SCAN = "-scan";
-  public static final String TERMINOLOGY_LOG = "-txLog";
-  public static final String TERMINOLOGY_CACHE = "-txCache";
   public static final String TERMINOLOGY_ROUTING = "-tx-routing";
-  public static final String TERMINOLOGY_CACHE_CLEAR = "-clear-tx-cache";
   public static final String LOG = "-log";
   public static final String LANGUAGE = "-language";
   public static final String IMPLEMENTATION_GUIDE = "-ig";
@@ -96,11 +93,9 @@ public class Params {
   public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
   public static final String OUTPUT_STYLE = "-output-style";
   public static final String ADVISOR_FILE = "-advisor-file";
-  public static final String DO_IMPLICIT_FHIRPATH_STRING_CONVERSION = "-implicit-fhirpath-string-conversions";
   public static final String HTML_IN_MARKDOWN = "-html-in-markdown";
   public static final String ALLOW_DOUBLE_QUOTES = "-allow-double-quotes-in-fhirpath";
   public static final String DISABLE_DEFAULT_RESOURCE_FETCHER = "-disable-default-resource-fetcher";
-  public static final String CHECK_IPS_CODES = "-check-ips-codes";
   public static final String BEST_PRACTICE = "-best-practice";
   public static final String UNKNOWN_CODESYSTEMS_CAUSE_ERROR = "-unknown-codesystems-cause-errors";
   public static final String NO_EXPERIMENTAL_CONTENT = "-no-experimental-content";
@@ -294,7 +289,7 @@ public class Params {
         validationContext.setRecursive(true);
       } else if (args[i].equals(SHOW_MESSAGES_FROM_REFERENCES)) {
         validationContext.setShowMessagesFromReferences(true);
-      } else if (args[i].equals(DO_IMPLICIT_FHIRPATH_STRING_CONVERSION)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.DO_IMPLICIT_FHIRPATH_STRING_CONVERSION)) {
         validationContext.setDoImplicitFHIRPathStringConversion(true);
       } else if (args[i].equals(HTML_IN_MARKDOWN)) {
         if (i + 1 == args.length)
@@ -330,7 +325,7 @@ public class Params {
         validationContext.setAllowDoubleQuotesInFHIRPath(true);
       } else if (args[i].equals(DISABLE_DEFAULT_RESOURCE_FETCHER)) {
         validationContext.setDisableDefaultResourceFetcher(true);
-      } else if (args[i].equals(CHECK_IPS_CODES)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.CHECK_IPS_CODES)) {
         validationContext.setCheckIPSCodes(true);
       } else if (args[i].equals(NO_UNICODE_BIDI_CONTROL_CHARS)) {
         validationContext.setNoUnicodeBiDiControlChars(true);
@@ -431,7 +426,7 @@ public class Params {
         }          
       } else if (args[i].equals(TERMINOLOGY_ROUTING)) {
         validationContext.setShowTerminologyRouting(true);
-      } else if (args[i].equals(TERMINOLOGY_CACHE_CLEAR)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.TERMINOLOGY_CACHE_CLEAR)) {
         validationContext.setClearTxCache(true);
       } else if (args[i].equals(InstanceValidatorParametersParser.SHOW_TIMES)) {
         validationContext.setShowTimes(true);
@@ -452,12 +447,12 @@ public class Params {
           validationContext.setTxServer("n/a".equals(args[++i]) ? null : args[i]);
           validationContext.setNoEcosystem(true);
         }
-      } else if (args[i].equals(TERMINOLOGY_LOG)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.TERMINOLOGY_LOG)) {
         if (i + 1 == args.length)
           throw new Error("Specified -txLog without indicating file");
         else
           validationContext.setTxLog(args[++i]);
-      } else if (args[i].equals(TERMINOLOGY_CACHE)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.TERMINOLOGY_CACHE)) {
         if (i + 1 == args.length)
           throw new Error("Specified -txCache without indicating file");
         else
