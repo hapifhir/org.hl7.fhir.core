@@ -94,6 +94,12 @@ public class ValidationContextUtilities {
     validationContext.setMap(mapParameters.getMap());
   }
 
+  public static void addCodeGenParameters(ValidationContext validationContext, CodeGenParameters codeGenParameters) {
+    for (String option : codeGenParameters.getOptions()) {
+      validationContext.addOption(option);
+    }
+  }
+
   public static ValidationEngineParameters getValidationEngineParameters(ValidationContext validationContext) {
     ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
     validationEngineParameters.setInferFhirVersion(validationContext.isInferFhirVersion());
@@ -193,5 +199,11 @@ public class ValidationContextUtilities {
     MapParameters mapParameters = new MapParameters();
     mapParameters.setMap(validationContext.getMap());
     return mapParameters;
+  }
+
+  public static CodeGenParameters getCodeGenParameters(ValidationContext validationContext) {
+    CodeGenParameters codeGenParameters = new CodeGenParameters();
+    codeGenParameters.setOptions(new ArrayList<>(validationContext.getOptions()));
+    return codeGenParameters;
   }
 }

@@ -29,8 +29,6 @@ public class Params {
   public static final String PROFILE = "-profile";
   public static final String PROFILES = "-profiles";
   public static final String CONFIG = "-config";
-  public static final String OPTION = "-option";
-  public static final String OPTIONS = "-options";
   public static final String RECURSE = "-recurse";
   public static final String SHOW_MESSAGES_FROM_REFERENCES = "-showReferenceMessages";
   public static final String TX_PACK = "-tx-pack";
@@ -181,7 +179,7 @@ public class Params {
             validationContext.addProfile(profile);
           }
         }
-      } else if (args[i].equals(OPTION)) {
+      } else if (args[i].equals(CodeGenParametersParser.OPTION)) {
         String p = null;
         if (i + 1 == args.length) {
           throw new Error("Specified -option without indicating option value");
@@ -189,7 +187,7 @@ public class Params {
           p = args[++i];
           validationContext.addOption(p);
         }
-      } else if (args[i].equals(OPTIONS)) {
+      } else if (args[i].equals(CodeGenParametersParser.OPTIONS)) {
         String p = null;
         if (i + 1 == args.length) {
           throw new Error("Specified -options without indicating option values");
