@@ -243,6 +243,22 @@ public class InstanceValidatorParameters {
   @SerializedName("allowExampleUrls")
   private boolean allowExampleUrls = false;
 
+  @JsonProperty("showMessagesFromReferences")
+  @SerializedName("showMessagesFromReferences")
+  private boolean showMessagesFromReferences = false;
+
+  @JsonProperty("securityChecks")
+  @SerializedName("securityChecks")
+  private boolean securityChecks = false;
+
+  @JsonProperty("noExperimentalContent")
+  @SerializedName("noExperimentalContent")
+  private boolean noExperimentalContent;
+
+  @JsonProperty("showTerminologyRouting")
+  @SerializedName("showTerminologyRouting")
+  private boolean showTerminologyRouting = false;
+
   @JsonProperty("matchetypes")
   @SerializedName("matchetypes")
   private List<String> matchetypes = new ArrayList<String>();
@@ -361,6 +377,54 @@ public class InstanceValidatorParameters {
     return this;
   }
 
+  @SerializedName("showMessagesFromReferences")
+  @JsonProperty("showMessagesFromReferences")
+  public boolean isShowMessagesFromReferences() {
+    return showMessagesFromReferences;
+  }
+
+  @SerializedName("showMessagesFromReferences")
+  @JsonProperty("showMessagesFromReferences")
+  public InstanceValidatorParameters setShowMessagesFromReferences(boolean showMessagesFromReferences) {
+    this.showMessagesFromReferences = showMessagesFromReferences;
+    return this;
+  }
+
+  @SerializedName("securityChecks")
+  @JsonProperty("securityChecks")
+  public boolean isSecurityChecks() {
+    return securityChecks;
+  }
+
+  @SerializedName("securityChecks")
+  @JsonProperty("securityChecks")
+  public InstanceValidatorParameters setSecurityChecks(boolean securityChecks) {
+    this.securityChecks = securityChecks;
+    return this;
+  }
+
+  @SerializedName("noExperimentalContent")
+  @JsonProperty("noExperimentalContent")
+  public boolean isNoExperimentalContent() {
+    return noExperimentalContent;
+  }
+
+  @SerializedName("noExperimentalContent")
+  @JsonProperty("noExperimentalContent")
+  public InstanceValidatorParameters setNoExperimentalContent(boolean noExperimentalContent) {
+    this.noExperimentalContent = noExperimentalContent;
+    return this;
+  }
+
+  public boolean isShowTerminologyRouting() {
+    return showTerminologyRouting;
+  }
+
+  public InstanceValidatorParameters setShowTerminologyRouting(boolean showTerminologyRouting) {
+    this.showTerminologyRouting = showTerminologyRouting;
+    return this;
+  }
+
   @SerializedName("matchetypes")
   @JsonProperty("matchetypes")
   public List<String> getMatchetypes() {
@@ -397,6 +461,10 @@ public class InstanceValidatorParameters {
       && crumbTrails == that.crumbTrails
       && showMessageIds == that.showMessageIds
       && allowExampleUrls == that.allowExampleUrls
+      && showMessagesFromReferences == that.showMessagesFromReferences
+      && securityChecks == that.securityChecks
+      && noExperimentalContent == that.noExperimentalContent
+      && showTerminologyRouting == that.showTerminologyRouting
       && Objects.equals(htmlOutput, that.htmlOutput)
       && Objects.equals(outputStyle, that.outputStyle)
       && Objects.equals(r5BundleRelativeReferencePolicy, that.r5BundleRelativeReferencePolicy)
@@ -410,7 +478,7 @@ public class InstanceValidatorParameters {
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, noExtensibleBindingMessages, showTimes, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, displayWarnings, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, matchetypes);
+    return Objects.hash(assumeValidRestReferences, noExtensibleBindingMessages, showTimes, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, displayWarnings, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, matchetypes);
   }
 
   @Override
@@ -437,6 +505,10 @@ public class InstanceValidatorParameters {
       ", crumbTrails=" + crumbTrails +
       ", showMessageIds=" + showMessageIds +
       ", allowExampleUrls=" + allowExampleUrls +
+      ", showMessagesFromReferences=" + showMessagesFromReferences +
+      ", securityChecks=" + securityChecks +
+      ", noExperimentalContent=" + noExperimentalContent +
+      ", showTerminologyRouting=" + showTerminologyRouting +
       ", matchetypes=" + matchetypes +
       '}';
   }

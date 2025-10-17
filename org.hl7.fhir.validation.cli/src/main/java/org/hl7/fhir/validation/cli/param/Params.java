@@ -30,7 +30,6 @@ public class Params {
   public static final String PROFILES = "-profiles";
   public static final String CONFIG = "-config";
   public static final String RECURSE = "-recurse";
-  public static final String SHOW_MESSAGES_FROM_REFERENCES = "-showReferenceMessages";
   public static final String TX_PACK = "-tx-pack";
   public static final String RE_PACK = "-re-package";
   public static final String PACKAGE_NAME = "-package-name";
@@ -46,7 +45,6 @@ public class Params {
   public static final String SNAPSHOT = "-snapshot";
   public static final String INSTALL = "-install";
   public static final String SCAN = "-scan";
-  public static final String TERMINOLOGY_ROUTING = "-tx-routing";
   public static final String LOG = "-log";
   public static final String IMPLEMENTATION_GUIDE = "-ig";
   public static final String DEFINITION = "-defn";
@@ -64,9 +62,7 @@ public class Params {
   public static final String NO_INTERNAL_CACHING = "-no-internal-caching";
 
   public static final String PRELOAD_CACHE = "-preload-cache";
-  public static final String SECURITY_CHECKS = "-security-checks";
   public static final String DISABLE_DEFAULT_RESOURCE_FETCHER = "-disable-default-resource-fetcher";
-  public static final String NO_EXPERIMENTAL_CONTENT = "-no-experimental-content";
 
   public static final String RUN_TESTS = "-run-tests";
 
@@ -254,7 +250,7 @@ public class Params {
         validationContext.setSnomedCT(args[++i]);
       } else if (args[i].equals(RECURSE)) {
         validationContext.setRecursive(true);
-      } else if (args[i].equals(SHOW_MESSAGES_FROM_REFERENCES)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.SHOW_MESSAGES_FROM_REFERENCES)) {
         validationContext.setShowMessagesFromReferences(true);
       } else if (args[i].equals(ValidationEngineParametersParser.DO_IMPLICIT_FHIRPATH_STRING_CONVERSION)) {
         validationContext.setDoImplicitFHIRPathStringConversion(true);
@@ -363,7 +359,7 @@ public class Params {
         // TODO setBaseTestingUtils test directory
         //This did nothing? RUN_TESTS has no corresponding shouldExecuteTask
         //validationContext.setMode(EngineMode.RUN_TESTS);
-      } else if (args[i].equals(SECURITY_CHECKS)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.SECURITY_CHECKS)) {
         validationContext.setSecurityChecks(true);
       } else if (args[i].equals(InstanceValidatorParametersParser.CRUMB_TRAIL)) {
         validationContext.setCrumbTrails(true);
@@ -377,7 +373,7 @@ public class Params {
         validationContext.setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.fromCode(args[++i]));
       } else if (args[i].equals(InstanceValidatorParametersParser.UNKNOWN_CODESYSTEMS_CAUSE_ERROR)) {
         validationContext.setUnknownCodeSystemsCauseErrors(true);
-      } else if (args[i].equals(NO_EXPERIMENTAL_CONTENT)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.NO_EXPERIMENTAL_CONTENT)) {
         validationContext.setNoExperimentalContent(true);
       } else if (args[i].equals(InstanceValidatorParametersParser.VERBOSE)) {
         validationContext.setCrumbTrails(true);
@@ -391,7 +387,7 @@ public class Params {
         } else {
           throw new Error("Value for "+InstanceValidatorParametersParser.ALLOW_EXAMPLE_URLS+" not understood: "+bl);
         }          
-      } else if (args[i].equals(TERMINOLOGY_ROUTING)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.TERMINOLOGY_ROUTING)) {
         validationContext.setShowTerminologyRouting(true);
       } else if (args[i].equals(ValidationEngineParametersParser.TERMINOLOGY_CACHE_CLEAR)) {
         validationContext.setClearTxCache(true);

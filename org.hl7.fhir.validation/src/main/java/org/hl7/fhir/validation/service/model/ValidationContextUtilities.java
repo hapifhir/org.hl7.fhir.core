@@ -78,6 +78,10 @@ public class ValidationContextUtilities {
     validationContext.setCrumbTrails(instanceValidatorParameters.isCrumbTrails());
     validationContext.setShowMessageIds(instanceValidatorParameters.isShowMessageIds());
     validationContext.setAllowExampleUrls(instanceValidatorParameters.isAllowExampleUrls());
+    validationContext.setShowMessagesFromReferences(instanceValidatorParameters.isShowMessagesFromReferences());
+    validationContext.setSecurityChecks(instanceValidatorParameters.isSecurityChecks());
+    validationContext.setNoExperimentalContent(instanceValidatorParameters.isNoExperimentalContent());
+    validationContext.setShowTerminologyRouting(instanceValidatorParameters.isShowTerminologyRouting());
     validationContext.setMatchetypes(new ArrayList<>(instanceValidatorParameters.getMatchetypes()));
   }
 
@@ -178,6 +182,10 @@ public class ValidationContextUtilities {
     instanceValidatorParameters.setCrumbTrails(validationContext.isCrumbTrails());
     instanceValidatorParameters.setShowMessageIds(validationContext.isShowMessageIds());
     instanceValidatorParameters.setAllowExampleUrls(validationContext.isAllowExampleUrls());
+    instanceValidatorParameters.setShowMessagesFromReferences(validationContext.isShowMessagesFromReferences());
+    instanceValidatorParameters.setSecurityChecks(validationContext.isSecurityChecks());
+    instanceValidatorParameters.setNoExperimentalContent(validationContext.isNoExperimentalContent());
+    instanceValidatorParameters.setShowTerminologyRouting(validationContext.isShowTerminologyRouting());
     instanceValidatorParameters.setMatchetypes(new ArrayList<>(validationContext.getMatchetypes()));
     return instanceValidatorParameters;
   }

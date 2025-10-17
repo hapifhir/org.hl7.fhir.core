@@ -34,6 +34,10 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
   public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
   public static final String VERBOSE = "-verbose";
   public static final String MATCHETYPE = "-matchetype";
+  public static final String SHOW_MESSAGES_FROM_REFERENCES = "-showReferenceMessages";
+  public static final String SECURITY_CHECKS = "-security-checks";
+  public static final String NO_EXPERIMENTAL_CONTENT = "-no-experimental-content";
+  public static final String TERMINOLOGY_ROUTING = "-tx-routing";
 
   InstanceValidatorParameters instanceValidatorParameters = new InstanceValidatorParameters();
 
@@ -178,6 +182,18 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
           }
           Arg.setProcessed(args, i, 2, true);
         }
+      } else if (args[i].getValue().equals(SHOW_MESSAGES_FROM_REFERENCES)) {
+        instanceValidatorParameters.setShowMessagesFromReferences(true);
+        args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(SECURITY_CHECKS)) {
+        instanceValidatorParameters.setSecurityChecks(true);
+        args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(NO_EXPERIMENTAL_CONTENT)) {
+        instanceValidatorParameters.setNoExperimentalContent(true);
+        args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(TERMINOLOGY_ROUTING)) {
+        instanceValidatorParameters.setShowTerminologyRouting(true);
+        args[i].setProcessed(true);
       }
     }
   }
