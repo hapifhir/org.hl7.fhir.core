@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli.param.parsers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.IParamParser;
@@ -11,6 +12,7 @@ import org.hl7.fhir.validation.cli.param.IParamParser;
  * ote that this does not produce a Parameters object at the moment. It returns null because these params are
  * meant to receive special treatment in ValidatorCli.
  */
+@Slf4j
 public class GlobalParametersParser implements IParamParser<Object> {
   public static final String PROXY = "-proxy";
   public static final String HTTPS_PROXY = "-https-proxy";
@@ -32,7 +34,10 @@ public class GlobalParametersParser implements IParamParser<Object> {
   @Override
   public void parseArgs(Arg[] args) {
     for (int i = 0; i < args.length; i++) {
-    if (Utilities.existsInList(args[i].getValue(),
+      if (args[i].equals(GlobalParametersParser.DEBUG)) {
+        log.warn("Debugging support is now provided through the -debug-log and -trace-log CLI parameters. Use the -help option for detailed instructions.");
+        args[i].setProcessed(true);
+      } else if (Utilities.existsInList(args[i].getValue(),
       DEBUG_LOG,
       TRACE_LOG,
       PROXY,
