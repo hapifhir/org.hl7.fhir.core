@@ -414,12 +414,12 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   
   public static boolean isInactive(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent def) throws FHIRException {
     StandardsStatus ss = ExtensionUtilities.getStandardsStatus(def);
-    if (ss == StandardsStatus.DEPRECATED || ss == StandardsStatus.WITHDRAWN) {
+    if (ss == StandardsStatus.WITHDRAWN) {
       return true;
     }
     for (ConceptPropertyComponent p : def.getProperty()) {
       if ("status".equals(p.getCode()) && p.hasValueStringType()) {
-        return "inactive".equals(p.getValueStringType().primitiveValue()) || "retired".equals(p.getValueStringType().primitiveValue()) || "deprecated".equals(p.getValueStringType().primitiveValue());
+        return Utilities.existsInList(p.getValueStringType().primitiveValue(), "inactive", "retired");
       }
       if ("inactive".equals(p.getCode()) && p.hasValueBooleanType()) {
         return p.getValueBooleanType().getValue();
@@ -906,22 +906,22 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     if (value instanceof CodeType) {
       return PropertyType.CODE;
     }
-    if (value instanceof CodeType) {
+    if (value instanceof Coding) {
       return PropertyType.CODING;
     }
-    if (value instanceof CodeType) {
+    if (value instanceof StringType) {
       return PropertyType.STRING;
     }
-    if (value instanceof CodeType) {
+    if (value instanceof IntegerType) {
       return PropertyType.INTEGER;
     }
-    if (value instanceof CodeType) {
+    if (value instanceof BooleanType) {
       return PropertyType.BOOLEAN;
     }
-    if (value instanceof CodeType) {
+    if (value instanceof DateTimeType) {
       return PropertyType.DATETIME;
     }
-    if (value instanceof CodeType) {
+    if (value instanceof DecimalType) {
       return PropertyType.DECIMAL;
     }
     throw new FHIRException("Unsupported property value for a CodeSystem Property: "+value.fhirType());

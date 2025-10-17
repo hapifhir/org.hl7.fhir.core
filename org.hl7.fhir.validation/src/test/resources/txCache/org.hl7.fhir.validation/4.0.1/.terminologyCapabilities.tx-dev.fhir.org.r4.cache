@@ -6,7 +6,7 @@
   "name" : "FHIRReferenceServerTerminologyCapabilities",
   "title" : "FHIR Reference Server Terminology Capability Statement",
   "status" : "active",
-  "date" : "2025-09-08T07:20:33.064Z",
+  "date" : "2025-10-12T20:04:52.814Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -12013,6 +12013,12 @@
     "uri" : "http://www.whocc.no/atc",
     "version" : [{
       "code" : "2025"
+    }]
+  },
+  {
+    "uri" : "https://fevir.net/sevco",
+    "version" : [{
+      "code" : "2.0"
     }]
   },
   {

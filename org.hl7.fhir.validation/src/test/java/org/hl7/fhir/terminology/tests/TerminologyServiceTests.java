@@ -15,6 +15,7 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.ExpansionOptions;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
@@ -81,7 +82,6 @@ private static TxTestData testData;
   @SuppressWarnings("deprecation")
   @Test
   public void test() throws Exception {
-
     if (setup.getSuite().asBoolean("disabled") || setup.getTest().asBoolean("disabled")) {
       return;
     }
@@ -92,6 +92,7 @@ private static TxTestData testData;
     if (baseEngine == null) {
       baseEngine = TestUtilities.getValidationEngineNoTxServer("hl7.fhir.r5.core#5.0.0", FhirPublication.R5, "5.0.0");
     }
+
     ValidationEngine engine = new ValidationEngine(this.baseEngine);
     for (String s : setup.getSuite().forceArray("setup").asStrings()) {
       // System.out.println(s);
@@ -108,11 +109,13 @@ private static TxTestData testData;
     if (fo.exists()) {
       fo.delete();
     }
+
     if (setup.getTest().has("profile")) {
       engine.getContext().setExpansionParameters((org.hl7.fhir.r5.model.Parameters) loadResource(setup.getTest().asString("profile")));
     } else {
       engine.getContext().setExpansionParameters((org.hl7.fhir.r5.model.Parameters) loadResource("parameters-default.json"));
     }
+    engine.getContext().setNoTerminologyServer(true);
     if (setup.getTest().asString("operation").equals("expand")) {
       expand(setup.getTest().str("name"), engine, req, resp, setup.getTest().asString("Accept-Language"), fp, ext);
     } else if (setup.getTest().asString("operation").equals("validate-code")) {
@@ -159,7 +162,7 @@ private static TxTestData testData;
     if (lang != null && !p.hasParameter("displayLanguage")) {
       p.addParameter("displayLanguage", new CodeType(lang));
     }
-    ValueSetExpansionOutcome vse = engine.getContext().expandVS(vs, false, hierarchical, false, p, true);
+    ValueSetExpansionOutcome vse = engine.getContext().expandVS(new ExpansionOptions( false, hierarchical, 0, false, null), vs,p, true);
     if (resp.contains("\"ValueSet\"")) {
       if (vse.getValueset() == null) {
         Assertions.fail(vse.getError());

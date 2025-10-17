@@ -52,7 +52,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Slf4j
-public class IgLoader implements IValidationEngineLoader, XVerExtensionManagerNew.IXverManagerPackageLoader {
+public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.ILoaderFactory {
 
   /**
    * This is used in testing to allow tests to deal with unreleased packages 
@@ -884,7 +884,6 @@ public class IgLoader implements IValidationEngineLoader, XVerExtensionManagerNe
   }
 
 
-  @Override
   public void loadPackage(String idAndVer) throws IOException {
     NpmPackage npm = packageCacheManager.loadPackage(idAndVer);
     if (npm == null) {
@@ -906,6 +905,11 @@ public class IgLoader implements IValidationEngineLoader, XVerExtensionManagerNe
     loader.setPatchUrls(VersionUtilities.isCorePackage(npm.id()));
     int count = getContext().loadFromPackage(npm, loader);
     log.info(packageLoadLine + " - " + count + " resources (" + getContext().clock().milestone() + ")");
+  }
+
+  @Override
+  public IContextResourceLoader makeLoader(String version) {
+    return ValidatorUtils.loaderForVersion(version);
   }
 
 }

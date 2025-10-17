@@ -170,7 +170,7 @@ public class Property {
       } else {
         path = path.substring(1);
       }
-      StructureDefinition sd = (url == null || url.equals(structure.getUrl())) ? structure : context.fetchResource(StructureDefinition.class, url, structure);
+      StructureDefinition sd = (url == null || url.equals(structure.getUrl())) ? structure : profileUtilities.findProfile(url, structure);
       if (sd == null) {
         throw new Error("Unknown Type in content reference '"+path+"'");        
       }

@@ -10,18 +10,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
-import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
-import org.hl7.fhir.r5.model.Questionnaire;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
@@ -31,6 +25,7 @@ import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CanonicalPair;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 @MarkedToMoveToAdjunctPackage
@@ -151,7 +146,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     }
   }
 
-  protected <T extends Resource> void addCsRef(ConceptSetComponent inc, XhtmlNode li, T cs) {
+  protected void addCsRef(ConceptSetComponent inc, XhtmlNode li, CodeSystem cs) {
     String ref = null;
     boolean addHtml = true;
     if (cs != null) {
@@ -180,8 +175,19 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     } else {
       li.code(inc.getSystem());
     }
-  }
 
+    XhtmlNode span = li.span();
+    span.addText(" "+ context.formatPhrase(RenderingContext.GENERAL_VER_LOW) + " ");
+
+    if (cs != null && cs.getContent() == Enumerations.CodeSystemContentMode.NOTPRESENT) {
+      cs = null;
+    }
+    String statedVersion = inc.getVersion();
+    String actualVersion = cs == null ? null : cs.getVersion();
+    boolean fromPackages = cs == null ? false : cs.hasSourcePackage();
+    boolean fromThisPackage = cs == null ? false : !Utilities.isAbsoluteUrlLinkable(cs.getWebPath());
+    renderVersionReference(context, cs, statedVersion, actualVersion, fromPackages, span, fromThisPackage, context.formatPhrase(RenderingContext.GENERAL_CODESYSTEM), RenderingI18nContext.CS_VERSION_NOTHING_TEXT);
+  }
 
   private String getSpecialReference(String system) {
     if ("http://snomed.info/sct".equals(system))
@@ -275,11 +281,11 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     }      
     CanonicalResource vs = (CanonicalResource) res;
     if (vs == null)
-      vs = getContext().getWorker().findTxResource(ValueSet.class, value, source);
+      vs = getContext().getWorker().findTxResource(ValueSet.class, value, null, source);
     if (vs == null)
-      vs = getContext().getWorker().fetchResource(StructureDefinition.class, value, source);
+      vs = getContext().getWorker().fetchResource(StructureDefinition.class, value, null, source);
     if (vs == null)
-      vs = getContext().getWorker().fetchResource(Questionnaire.class, value, source);
+      vs = getContext().getWorker().fetchResource(Questionnaire.class, value, null, source);
     if (vs != null) {
       String ref = (String) vs.getWebPath();
 

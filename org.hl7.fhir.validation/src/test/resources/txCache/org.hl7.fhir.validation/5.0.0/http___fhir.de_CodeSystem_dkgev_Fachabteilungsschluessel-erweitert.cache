@@ -18,7 +18,7 @@ v: {
   "code" : "3600",
   "system" : "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert",
   "version" : "1.5.0",
-  "server" : "http://local.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

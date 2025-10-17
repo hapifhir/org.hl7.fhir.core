@@ -1,13 +1,12 @@
 package org.hl7.fhir.utilities.xhtml;
 
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.IOException;
 
-import org.hl7.fhir.exceptions.FHIRFormatError;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class XhtmlTests {
 
@@ -32,6 +31,28 @@ public class XhtmlTests {
           "</script>\r\n"+
           "  </body>\r\n"+
           "</html>\r\n";
+  private static final String CDATA_SOURCE = "\n" +
+    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+    "<!DOCTYPE HTML>\n" +
+    "\n" +
+    "<html xml:lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" dir=\"ltr\">\n" +
+    "  <head>\n" +
+    "    <title>IG Parameter Codes - FHIR Tooling Extensions IG v0.8.0</title>\n" +
+    "  </head>\n" +
+    "  <body onload=\"document.body.style.opacity='1'\">\n" +
+    "\n" +
+    "    <div class=\"col-12\">\n" +
+    "    \n" +
+    "<![CDATA[\n" +
+    "  {\"resourceType\":\"CodeSystem\"}\n" +
+    "]]>\n" +
+    "  \n" +
+    "\n" +
+    "\n" +
+    "</div>\n" +
+    "  </body>\n" +
+    "</html>\n" +
+    "\n";
 
   @Test
   public void testToStringOnNullType()
@@ -46,4 +67,25 @@ public class XhtmlTests {
     XhtmlNode x = new XhtmlParser().setMustBeWellFormed(true).parse(SOURCE_SCRIPT, "html"); 
     Assertions.assertTrue(x != null);
   }
+
+
+  @Test
+  public void testParseCData() throws FHIRFormatError, IOException {
+    // test out handling of CData includes, and doctype comments
+    XhtmlNode x = new XhtmlParser().setMustBeWellFormed(true).parse(CDATA_SOURCE, "html");
+    Assertions.assertTrue(x != null);
+    XhtmlNode body = x.firstNamedDescendent("body");
+    Assertions.assertTrue(body != null);
+    XhtmlNode div = body.firstNamedDescendent("div");
+    Assertions.assertTrue(div != null);
+    XhtmlNode cdata = null;
+    for (XhtmlNode c : div.getChildNodes()) {
+      if (c.getNodeType() == NodeType.CData) {
+        cdata = c;
+      }
+    }
+    Assertions.assertTrue(cdata != null);
+    Assertions.assertEquals("\n  {\"resourceType\":\"CodeSystem\"}\n", cdata.getContent());
+  }
+
 }

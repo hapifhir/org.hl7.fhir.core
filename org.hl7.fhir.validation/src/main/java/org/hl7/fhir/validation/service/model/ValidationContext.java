@@ -460,6 +460,11 @@ public class ValidationContext {
     return this;
   }
 
+  public ValidationContext addBundleValidationRule(BundleValidationRule bundleValidationRule) {
+    this.bundleValidationRules.add(bundleValidationRule);
+    return this;
+  }
+
   public ValidationContext addIg(String ig) {
     if (this.igs == null) {
       this.igs = new ArrayList<>();
@@ -546,6 +551,11 @@ public class ValidationContext {
     return this;
   }
 
+  public ValidationContext addExtension(String extension) {
+    this.extensions.add(extension);
+    return this;
+  }
+
   @SerializedName("certSources")
   @JsonProperty("certSources")
   public List<String> getCertSources() {
@@ -619,8 +629,9 @@ public class ValidationContext {
 
   @SerializedName("doImplicitFHIRPathStringConversion")
   @JsonProperty("doImplicitFHIRPathStringConversion")
-  public void setDoImplicitFHIRPathStringConversion(boolean doImplicitFHIRPathStringConversion) {
+  public ValidationContext setDoImplicitFHIRPathStringConversion(boolean doImplicitFHIRPathStringConversion) {
     this.doImplicitFHIRPathStringConversion = doImplicitFHIRPathStringConversion;
+    return this;
   }
 
   @SerializedName("htmlInMarkdownCheck")
@@ -631,8 +642,9 @@ public class ValidationContext {
 
   @SerializedName("htmlInMarkdownCheck")
   @JsonProperty("htmlInMarkdownCheck")
-  public void setHtmlInMarkdownCheck(HtmlInMarkdownCheck htmlInMarkdownCheck) {
+  public ValidationContext setHtmlInMarkdownCheck(HtmlInMarkdownCheck htmlInMarkdownCheck) {
     this.htmlInMarkdownCheck = htmlInMarkdownCheck;
+    return this;
   }
 
   @SerializedName("allowDoubleQuotesInFHIRPath")
@@ -643,8 +655,9 @@ public class ValidationContext {
 
   @SerializedName("allowDoubleQuotesInFHIRPath")
   @JsonProperty("allowDoubleQuotesInFHIRPath")
-  public void setAllowDoubleQuotesInFHIRPath(boolean allowDoubleQuotesInFHIRPath) {
+  public ValidationContext setAllowDoubleQuotesInFHIRPath(boolean allowDoubleQuotesInFHIRPath) {
     this.allowDoubleQuotesInFHIRPath = allowDoubleQuotesInFHIRPath;
+    return this;
   }
 
   @SerializedName("disableDefaultResourceFetcher")
@@ -740,16 +753,20 @@ public class ValidationContext {
 
   @SerializedName("mode")
   @JsonProperty("mode")
+  @Deprecated(since = "2025-09-25")
   public EngineMode getMode() {
     return mode;
   }
 
   @SerializedName("mode")
   @JsonProperty("mode")
+  @Deprecated(since = "2025-09-25")
   public ValidationContext setMode(EngineMode mode) {
     this.mode = mode;
     return this;
   }
+
+
 
   @SerializedName("output")
   @JsonProperty("output")
@@ -815,11 +832,20 @@ public class ValidationContext {
     return inputs;
   }
 
+  public ValidationContext addInput(String input) {
+    inputs.add(input);
+    return this;
+  }
 
   @SerializedName("modeParams")
   @JsonProperty("modeParams")
   public Set<String> getModeParams() {
     return modeParams;
+  }
+
+  public ValidationContext addModeParam(String modeParam) {
+    modeParams.add(modeParam);
+    return this;
   }
 
   @SerializedName("sources")
@@ -1079,8 +1105,9 @@ public class ValidationContext {
 
   @SerializedName("noInvariants")
   @JsonProperty("noInvariants")
-  public void setNoInvariants(boolean noInvariants) {
+  public ValidationContext setNoInvariants(boolean noInvariants) {
     this.noInvariants = noInvariants;
+    return this;
   }
 
   @SerializedName("displayWarnings")
@@ -1091,8 +1118,9 @@ public class ValidationContext {
 
   @SerializedName("displayWarnings")
   @JsonProperty("displayWarnings")
-  public void setDisplayWarnings(boolean displayWarnings) {
+  public ValidationContext setDisplayWarnings(boolean displayWarnings) {
     this.displayWarnings = displayWarnings;
+    return this;
   }
 
   @SerializedName("wantInvariantsInMessages")
@@ -1103,8 +1131,9 @@ public class ValidationContext {
 
   @SerializedName("wantInvariantsInMessages")
   @JsonProperty("wantInvariantsInMessages")
-  public void setWantInvariantsInMessages(boolean wantInvariantsInMessages) {
+  public ValidationContext setWantInvariantsInMessages(boolean wantInvariantsInMessages) {
     this.wantInvariantsInMessages = wantInvariantsInMessages;
+    return this;
   }
 
   @SerializedName("securityChecks")
@@ -1124,96 +1153,108 @@ public class ValidationContext {
     return crumbTrails;
   }
 
-  public void setCrumbTrails(boolean crumbTrails) {
+  public ValidationContext setCrumbTrails(boolean crumbTrails) {
     this.crumbTrails = crumbTrails;
+    return this;
   }
 
   public boolean isShowMessageIds() {
     return showMessageIds;
   }
 
-  public void setShowMessageIds(boolean showMessageIds) {
+  public ValidationContext setShowMessageIds(boolean showMessageIds) {
     this.showMessageIds = showMessageIds;
+    return this;
   }
 
   public boolean isForPublication() {
     return forPublication;
   }
 
-  public void setForPublication(boolean forPublication) {
+  public ValidationContext setForPublication(boolean forPublication) {
     this.forPublication = forPublication;
+    return this;
   }
 
   public String getAIService() {
     return aiService;
   }
 
-  public void setAIService(String aiService) {
+  public ValidationContext setAIService(String aiService) {
     this.aiService = aiService;
+    return this;
   }
   
   public R5BundleRelativeReferencePolicy getR5BundleRelativeReferencePolicy() {
     return r5BundleRelativeReferencePolicy;
   }
 
-  public void setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
+  public ValidationContext setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
     this.r5BundleRelativeReferencePolicy = r5BundleRelativeReferencePolicy;
+    return this;
   }
 
   public boolean isAllowExampleUrls() {
     return allowExampleUrls;
   }
 
-  public void setAllowExampleUrls(boolean allowExampleUrls) {
+  public ValidationContext setAllowExampleUrls(boolean allowExampleUrls) {
     this.allowExampleUrls = allowExampleUrls;
+    return this;
   }
 
   public boolean isShowTimes() {
     return showTimes;
   }
 
-  public void setShowTimes(boolean showTimes) {
+  public ValidationContext setShowTimes(boolean showTimes) {
     this.showTimes = showTimes;
+    return this;
   }
 
   public boolean isShowTerminologyRouting() {
     return showTerminologyRouting;
   }
 
-  public void setShowTerminologyRouting(boolean showTerminologyRouting) {
+  public ValidationContext setShowTerminologyRouting(boolean showTerminologyRouting) {
     this.showTerminologyRouting = showTerminologyRouting;
+    return this;
   }
 
   public boolean isClearTxCache() {
     return clearTxCache;
   }
 
-  public void setClearTxCache(boolean clearTxCache) {
+  public ValidationContext setClearTxCache(boolean clearTxCache) {
     this.clearTxCache = clearTxCache;
+    return this;
   }
 
   public String getOutputStyle() {
     return outputStyle;
   }
 
-  public void setOutputStyle(String outputStyle) {
+  public ValidationContext setOutputStyle(String outputStyle) {
     this.outputStyle = outputStyle;
+    return this;
   }
 
   public boolean isNoUnicodeBiDiControlChars() {
     return noUnicodeBiDiControlChars;
   }
 
-  public void setNoUnicodeBiDiControlChars(boolean noUnicodeBiDiControlChars) {
+  public ValidationContext setNoUnicodeBiDiControlChars(boolean noUnicodeBiDiControlChars) {
     this.noUnicodeBiDiControlChars = noUnicodeBiDiControlChars;
+    return this;
   }
 
   public String getJurisdiction() {
     return jurisdiction;
   }
 
-  public void setJurisdiction(String jurisdiction) {
+  public ValidationContext setJurisdiction(String jurisdiction) {
     this.jurisdiction = jurisdiction;
+    return this;
   }
 
 
@@ -1221,16 +1262,18 @@ public class ValidationContext {
     return srcLang;
   }
 
-  public void setSrcLang(String srcLang) {
+  public ValidationContext setSrcLang(String srcLang) {
     this.srcLang = srcLang;
+    return this;
   }
 
   public String getTgtLang() {
     return tgtLang;
   }
 
-  public void setTgtLang(String tgtLang) {
+  public ValidationContext setTgtLang(String tgtLang) {
     this.tgtLang = tgtLang;
+    return this;
   }
 
   @Override
@@ -1383,6 +1426,7 @@ public class ValidationContext {
       '}';
   }
 
+  @Deprecated
   @SerializedName("fhirSettingsFile")
   @JsonProperty("fhirSettingsFile")
   public ValidationContext setFhirSettingsFile(String fhirSettingsFile) {
@@ -1390,6 +1434,7 @@ public class ValidationContext {
     return this;
   }
 
+  @Deprecated
   @SerializedName("fhirSettingsFile")
   @JsonProperty("fhirSettingsFile")
   public String getFhirSettingsFile() {
@@ -1417,8 +1462,9 @@ public class ValidationContext {
 
   @SerializedName("watchScanDelay")
   @JsonProperty("watchScanDelay")
-  public void setWatchScanDelay(int watchScanDelay) {
+  public ValidationContext setWatchScanDelay(int watchScanDelay) {
     this.watchScanDelay = watchScanDelay;
+    return this;
   }
 
   @SerializedName("watchSettleTime")
@@ -1429,8 +1475,9 @@ public class ValidationContext {
 
   @SerializedName("watchSettleTime")
   @JsonProperty("watchSettleTime")
-  public void setWatchSettleTime(int watchSettleTime) {
+  public ValidationContext setWatchSettleTime(int watchSettleTime) {
     this.watchSettleTime = watchSettleTime;
+    return this;
   }
 
 
@@ -1457,8 +1504,9 @@ public class ValidationContext {
 
   @SerializedName("unknownCodeSystemsCauseErrors")
   @JsonProperty("unknownCodeSystemsCauseErrors")
-  public void setUnknownCodeSystemsCauseErrors(boolean unknownCodeSystemsCauseErrors) {
+  public ValidationContext setUnknownCodeSystemsCauseErrors(boolean unknownCodeSystemsCauseErrors) {
     this.unknownCodeSystemsCauseErrors = unknownCodeSystemsCauseErrors;
+    return this;
   }
 
   @SerializedName("noExperimentalContent")
@@ -1470,8 +1518,9 @@ public class ValidationContext {
 
   @SerializedName("noExperimentalContent")
   @JsonProperty("noExperimentalContent")
-  public void setNoExperimentalContent(boolean noExperimentalContent) {
+  public ValidationContext setNoExperimentalContent(boolean noExperimentalContent) {
     this.noExperimentalContent = noExperimentalContent;
+    return this;
   }
 
   @SerializedName("advisorFile")
@@ -1482,8 +1531,9 @@ public class ValidationContext {
 
   @SerializedName("advisorFile")
   @JsonProperty("advisorFile")
-  public void setAdvisorFile(String advisorFile) {
+  public ValidationContext setAdvisorFile(String advisorFile) {
     this.advisorFile = advisorFile;
+    return this;
   }
 
   @SerializedName("expansionParameters")
@@ -1494,8 +1544,9 @@ public class ValidationContext {
 
   @SerializedName("expansionParameters")
   @JsonProperty("expansionParameters")
-  public void setExpansionParameters(String expansionParameters) {
+  public ValidationContext setExpansionParameters(String expansionParameters) {
     this.expansionParameters = expansionParameters;
+    return this;
   }
 
   @SerializedName("format")
@@ -1506,8 +1557,9 @@ public class ValidationContext {
 
   @SerializedName("format")
   @JsonProperty("format")
-  public void setFormat(FhirFormat format) {
+  public ValidationContext setFormat(FhirFormat format) {
     this.format = format;
+    return this;
   }
 
   public void addLangRegenParam(String value) {
@@ -1516,6 +1568,17 @@ public class ValidationContext {
 
   public List<String> getLangRegenParam() {
     return langRegenParam;
+  }
+
+  private Boolean inferFhirVersion = true;
+
+  public Boolean isInferFhirVersion() {
+    return inferFhirVersion;
+  }
+
+  public ValidationContext setInferFhirVersion(Boolean inferFhirVersion) {
+    this.inferFhirVersion = inferFhirVersion;
+    return this;
   }
 
 }

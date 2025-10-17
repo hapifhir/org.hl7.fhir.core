@@ -50,8 +50,7 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
     private JsonObject test;
   }
 
-  private static final String SERVER = FhirSettings.getTxFhirLocal();  
-  // private static final String SERVER = "https://r4.ontoserver.csiro.au/fhir";
+  private static final String SERVER = FhirSettings.getTxFhirLocal();
 
   private static boolean localTxRunning() throws IOException {
     return ManagedFileAccess.file("/Users/grahamegrieve/work/server/server").exists();
@@ -63,7 +62,7 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
   public static Iterable<Object[]> data() throws IOException {
     Map<String, JsonObjectPair> examples = new HashMap<String, JsonObjectPair>();
     try {
-      txtests = TxTestData.loadTestDataFromFolder(new File("/Users/grahamegrieve/work/fhir-tx-ecosystem-ig/tests"), "test-cases.json");
+      txtests = TxTestData.loadTestDataFromFolder(new File("/Users/grahamegrieve/igs/tx-ecosystem-ig/tests"), "test-cases.json");
       // txtests = TxTestData.loadTestDataFromPackage("hl7.fhir.uv.tx-ecosystem#dev");
 
       String contents = txtests.load("test-cases.json");

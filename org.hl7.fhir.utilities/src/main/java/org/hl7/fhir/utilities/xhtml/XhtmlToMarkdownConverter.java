@@ -2,9 +2,9 @@ package org.hl7.fhir.utilities.xhtml;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -34,6 +34,8 @@ public class XhtmlToMarkdownConverter {
   private boolean ignoreGeneratedTables;
   @Getter @Setter
   private boolean aiMode;
+  @Getter @Setter
+  private boolean processUnknown;
 
   public XhtmlToMarkdownConverter(boolean allowForms) {
     this.allowForms = allowForms;
@@ -104,12 +106,14 @@ public class XhtmlToMarkdownConverter {
       case "img":
       case "br":
       case "wbr":
-      case "code":
       case "del":
       case "sup":
       case "sub":
       case "u":
       case "b":
+        paragraph(b, c, true, false, allowParagraphs);
+        break;
+      case "code":
         paragraph(b, c, true, false, allowParagraphs);
         break;
       case "div":
@@ -161,19 +165,38 @@ public class XhtmlToMarkdownConverter {
         b.append("\r\n");
         break;
       case "pre":
-        b.append("````\r\n");
+        b.append("```\r\n");
+        XhtmlNode code = c.getElement("code");
+        if (code != null) {
+          b.append(code.toLiteralText());
+        } else {
+          b.append(c.toLiteralText());
+        }
+        b.append("\r\n```\r\n");
+        break;
+      case "para":
+        // in error....
         convert(b, c, allowParagraphs);
-        b.append("\r\n````\r\n");
+        break;
+      case "tr":
+      case "td":
+      case "th":
+        // badly formed tables are ignored
+        convert(b, c, allowParagraphs);
+        break;
+      case "title":
+        b.append("# " + toMDText(c.allText()));
+        if (allowParagraphs) {para(b); }
+        break;
+      case "style":
+      case "script":
         break;
       // these are ignored if we're in 'page' mode - we just process the content
       case "html":
       case "head":
       case "meta":
       case "link":
-      case "style":
-      case "script":
       case "stylesheet":
-      case "title":
       case "button":
       case "nav":
       case "body":
@@ -184,10 +207,31 @@ public class XhtmlToMarkdownConverter {
           break;
         }
       case "svg":
+      case "object": // for svgs?
         // do nothing
         break;
+      case "details":
+        break;
+      case "header":
+        break;
+      case "footer":
+        break;
+      case "embed":
+        break;
+      case "mark":
+        break;
+      case "map":
+        break;
+      case "center":
+      case "font":
+        convert(b, c, allowParagraphs);
+        break;
       default:
-        throw new Error("not done yet: " + c.getName());
+        if (processUnknown) {
+          convert(b, c, allowParagraphs);
+        } else {
+          throw new FHIRException("Illegal HTML element: " + c.getName());
+        }
     }
   }
 
@@ -195,7 +239,7 @@ public class XhtmlToMarkdownConverter {
     String clss = x.getAttribute("class");
     if (clss != null) {
       for (String f : classFilters) {
-        if (clss.matches(f)) {
+        if (clss.matches(f) || clss.contains(f)) {
           return false;
         }
       }
@@ -261,12 +305,12 @@ public class XhtmlToMarkdownConverter {
       for (XhtmlNode row : rows) {
         List<XhtmlNode> cells = cells(row);
         if (!cells.isEmpty()) {
-          b.append(headings.get(0) + ": ");
+          b.append("* "+headings.get(0) + ": ");
           paragraph(b, cells.get(0), false, true, false);
           b.append("\r\n");
           for (int i = 1; i < cells.size(); i++) {
             String h = i < headings.size() ? headings.get(i) : "?";
-            b.append("  " + h + ": ");
+            b.append("  * " + h + ": ");
             paragraph(b, cells.get(i), false, true, false);
             b.append("\r\n");
           }
@@ -332,15 +376,18 @@ public class XhtmlToMarkdownConverter {
         switch (child.getName()) {
           case "tbody":
             headerRow = processChildNodesForTable(rows, child, false);
+            break;
           case "thead":
           case "tfoot":
             processChildNodesForTable(rows, child, false);
+            break;
           case "tr":
-            if (headerRow == null && (header || hasTHs(child))) {
+            if (headerRow == null && (header || hasTHs(child)) || hasBoldedTDs(child)) {
               headerRow = child;
             } else {
               rows.add(child);
             }
+            break;
           default:
             // ignore
         }
@@ -358,19 +405,45 @@ public class XhtmlToMarkdownConverter {
     return false;
   }
 
+  private boolean hasBoldedTDs(XhtmlNode x) {
+    for (XhtmlNode child : x.getChildNodes()) {
+      if ("td".equals(child.getName())) {
+        return child.firstNamedDescendent("b") != null;
+      }
+    }
+    return false;
+  }
+
   private void convertUL(StringBuilder b, XhtmlNode x) {
 
     for (XhtmlNode c : x.getChildNodes()) {
       if ("li".equals(c.getName())) {
         b.append("* ");
-        paragraph(b, c, true, true, true);
+        int count = c.countChildrenByName("p");
+        if (count == 0) {
+          paragraph(b, c, true, false, true);
+        } else if (count == 1) {
+          paragraph(b, c.firstNamedDescendent("p"), true, false, true);
+        } else { // count > 1
+          boolean first = true;
+          for (XhtmlNode g : c.getChildNodes()) {
+            if ("p".equals(g.getName())) {
+              if (first) {
+                first = false;
+              } else {
+                b.append("\r\n\r\n  ");
+              }
+              paragraph(b, g, true, false, true);
+            }
+          }
+        }
       }
     }
   }
 
   private void convertLI(StringBuilder b, XhtmlNode x) {
     b.append("* ");
-    paragraph(b, x, true, true, true);
+    paragraph(b, x, true, false, true);
   }
 
   private void convertOL(StringBuilder b, XhtmlNode x) {
@@ -390,13 +463,13 @@ public class XhtmlToMarkdownConverter {
     if (x.getNodeType() == NodeType.Text) {
       addText(b, trim, x.getContent());
     } else if (x.getName() != null && !Utilities.existsInList(x.getName(), "p", "li", "td", "th", "blockquote")) {
-      part(b, x, trim, allowParagraphs);
+      part(b, x, trim, allowParagraphs, true);
     } else {
       for (XhtmlNode c : x.getChildNodes()) {
         if (c.getNodeType() == NodeType.Text) {
           addText(b, trim, c.getContent());
         } else if (c.getName() != null) {
-          part(b, c, trim, allowParagraphs);
+          part(b, c, trim, allowParagraphs, true);
         }
       }
       if (mark && allowParagraphs) {
@@ -455,7 +528,7 @@ public class XhtmlToMarkdownConverter {
     return result.toString();
   }
 
-  public void part(StringBuilder b, XhtmlNode c, boolean trim, boolean allowParagraphs) throws Error {
+  public void part(StringBuilder b, XhtmlNode c, boolean trim, boolean allowParagraphs, boolean inPara) throws Error {
     if (!elementPasses(c)) {
       return;
     }
@@ -464,12 +537,12 @@ public class XhtmlToMarkdownConverter {
       case "a":
         if (c.hasAttribute("href") && hasSomeChildren(c)) {
           b.append("[");
-          process(b, c, trim, allowParagraphs);
+          process(b, c, trim, allowParagraphs, inPara);
           b.append("](");
           b.append(fixRef(c.getAttribute("href")));
           b.append(")");
         } else {
-          process(b, c, trim, allowParagraphs);
+          process(b, c, trim, allowParagraphs, inPara);
         }
         break;
       case "img":
@@ -481,35 +554,48 @@ public class XhtmlToMarkdownConverter {
           b.append(")");
         }
         break;
+      case "samp":
+        b.append("`");
+        process(b, c, trim, false, inPara);
+        b.append("`");
+        break;
       case "code":
+        String ticks = inPara ? "`" : "```";
+        b.append(ticks);
+        process(b, c, trim, allowParagraphs, inPara);
+        b.append(ticks);
+        break;
       case "pre":
         b.append("```");
-        process(b, c, trim, allowParagraphs);
+        process(b, c, trim, allowParagraphs, inPara);
         b.append("```");
+        break;
       case "strong":
       case "em":
       case "b":
+      case "mark":
         b.append("**");
-        process(b, c, trim, allowParagraphs);
+        process(b, c, trim, allowParagraphs, inPara);
         b.append("**");
         break;
       case "u":
         b.append("_");
-        process(b, c, trim, allowParagraphs);
+        process(b, c, trim, allowParagraphs, inPara);
         b.append("_");
         break;
       case "i":
         b.append("*");
-        process(b, c, trim, allowParagraphs);
+        process(b, c, trim, allowParagraphs, inPara);
         b.append("*");
         break;
       case "span":
       case "sup":
       case "sub":
       case "s":
-        process(b, c, trim, allowParagraphs);
+        process(b, c, trim, allowParagraphs, inPara);
         break;
       case "div":
+      case "title":
       case "h1":
       case "h2":
       case "h3":
@@ -526,7 +612,7 @@ public class XhtmlToMarkdownConverter {
         if (!trim && allowParagraphs) {
           para(b);
         }
-        process(b, c, trim, allowParagraphs);
+        process(b, c, trim, allowParagraphs, inPara);
         break;
       case "ul":
         if (allowParagraphs) para(b);
@@ -550,20 +636,30 @@ public class XhtmlToMarkdownConverter {
         if (allowParagraphs) para(b);
         b.append("-------");
         if (allowParagraphs) para(b);
+        break;
       case "del":
       case "dl":
       case "dd":
+      case "dt":
       case "tt":
-        process(b, c, trim, allowParagraphs);
+      case "font":
+        process(b, c, trim, allowParagraphs, inPara);
+        break;
+      case "tr": // badly formed tables are ignored
+      case "td":
+      case "th":
+        process(b, c, trim, allowParagraphs, inPara);
+        break;
       case "br":
         if (allowParagraphs) para(b);
-        process(b, c, trim, allowParagraphs);
+        process(b, c, trim, allowParagraphs, inPara);
         break;
       case "wbr":
         para(b);
         break;
       case "button":
       case "input":
+      case "select":
         if (allowForms) {
           throw new Error("not done yet: " + c.getName());
         } else {
@@ -573,8 +669,34 @@ public class XhtmlToMarkdownConverter {
       case "svg":
         // not clear what, if anything, we should do with svg
         break;
+      case "object": case "embed":
+        // not clear what, if anything, we should do with object if it's an svg, else we ignore it
+        break;
+      case "script":
+        // nothing
+        break;
+      case "base":
+        // nothing
+        break;
       default:
-        throw new Error("part not done yet: " + c.getName());
+        if (processUnknown) {
+          // for weird stuff found on hl7.org/fhir
+          if ("A".equals(c.getName())) {
+            if (c.hasAttribute("href") && hasSomeChildren(c)) {
+              b.append("[");
+              process(b, c, trim, allowParagraphs, inPara);
+              b.append("](");
+              b.append(fixRef(c.getAttribute("href")));
+              b.append(")");
+            } else {
+              process(b, c, trim, allowParagraphs, inPara);
+            }
+          } else {
+            process(b, c, trim, allowParagraphs, inPara);
+          }
+        } else {
+          throw new FHIRException("illegal html element: " + c.getName() + " (" + c.allText() + ")");
+        }
     }
   }
 
@@ -614,14 +736,31 @@ public class XhtmlToMarkdownConverter {
     return true;
   }
 
-  private void process(StringBuilder b, XhtmlNode x, boolean trim, boolean allowParagraphs) {
+  private void process(StringBuilder b, XhtmlNode x, boolean trim, boolean allowParagraphs, boolean inPara) {
     for (XhtmlNode c : x.getChildNodes()) {
       if (c.getNodeType() == NodeType.Text) {
         addText(b, true, c.getContent());
       } else if (c.getName() != null) {
-        part(b, c, trim, allowParagraphs);
+        part(b, c, trim, allowParagraphs, inPara);
       }
     }
   }
 
+  public void configureForIGs(boolean processUnknown) {
+    getImageFilters().add("^tbl_.*");
+    getImageFilters().add("^icon_.*");
+    getImageFilters().add("^assets\\/*");
+    getImageFilters().add("^https://hl7\\.org/.*");
+    getImageFilters().add("^tree-filter");
+    getIdFilters().add("^segment-header");
+    getIdFilters().add("^segment-navbar");
+    getIdFilters().add("^publish-box");
+    getIdFilters().add("^segment-footer");
+    getIdFilters().add("^ppprofile");
+    getClassFilters().add("nav-tabs");
+    getClassFilters().add("markdown-toc");
+    setIgnoreGeneratedTables(true);
+    setAiMode(true);
+    this.processUnknown = processUnknown;
+  }
 }

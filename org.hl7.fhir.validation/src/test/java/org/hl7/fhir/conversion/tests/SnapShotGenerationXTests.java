@@ -9,6 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.convertors.loaders.XVersionLoader;
+import org.hl7.fhir.convertors.misc.ProfileVersionAdaptor;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -17,6 +18,7 @@ import org.hl7.fhir.r5.conformance.profile.BindingResolution;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.AllowUnknownProfile;
+import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
@@ -96,6 +98,7 @@ public class SnapShotGenerationXTests {
     private boolean newSliceProcessing;
     private boolean debug;
     private String version;
+    private String targetVersion;
 
     private List<Rule> rules = new ArrayList<>();
     private StructureDefinition source;
@@ -114,6 +117,7 @@ public class SnapShotGenerationXTests {
       register = test.getAttribute("register");
       regex = test.getAttribute("regex");
       version = test.getAttribute("version");
+      targetVersion = test.getAttribute("targetVersion");
       Element rule = XMLUtil.getFirstChild(test);
       while (rule != null && rule.getNodeName().equals("rule")) {
         rules.add(new Rule(rule));
@@ -183,6 +187,10 @@ public class SnapShotGenerationXTests {
 
     public boolean isDebug() {
       return debug;
+    }
+
+    public boolean hasConvert() {
+      return !Utilities.noString(targetVersion);
     }
   }
 
@@ -430,6 +438,7 @@ public class SnapShotGenerationXTests {
     fp.setHostServices(context);
     messages = new ArrayList<ValidationMessage>();
 
+    StructureDefinition sd = null;
     if (test.isFail()) {
       try {
         testGen(true, test);
@@ -446,7 +455,10 @@ public class SnapShotGenerationXTests {
 
       }
     } else { 
-      testGen(false, test);
+      sd = testGen(false, test);
+    }
+    if (test.hasConvert()) {
+      testConvert(test, sd);
     }
 
     for (Rule r : test.getRules()) {
@@ -456,7 +468,41 @@ public class SnapShotGenerationXTests {
     }
   }
 
-  private void testGen(boolean fail, TestDetails test) throws Exception {
+  private void testConvert(TestDetails test, StructureDefinition sd) throws IOException {
+    SimpleWorkerContext src = UtilitiesXTests.context(version);
+    SimpleWorkerContext tgt = UtilitiesXTests.context(test.targetVersion);
+    ProfileVersionAdaptor pva = new ProfileVersionAdaptor(src, tgt);
+    List<ProfileVersionAdaptor.ConversionMessage> log = new ArrayList<>();
+    StructureDefinition output = pva.convert(sd, log);
+    pva.generateSnapshots(log);
+    Assertions.assertNotNull(output);
+
+    String folder = Utilities.path("[tmp]", "snapshotX");
+    FileUtilities.createDirectory(folder);
+    StructureDefinition actual = null;
+    StructureDefinition expected = null;
+    boolean json = false;
+    if (TestingUtilities.findTestResource("rX", "snapshot-generation", test.getId() + "-output.json")) {
+      json = true;
+      expected = (StructureDefinition) XVersionLoader.loadJson(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", test.getId() + "-output-"+test.targetVersion+".json"));
+    } else {
+      expected = (StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", test.getId() + "-output-"+test.targetVersion+".xml"));
+    }
+
+    if (json) {
+      XVersionLoader.saveJson(version, output, ManagedFileAccess.outStream(Utilities.path(folder, test.getId() + "-output-"+test.targetVersion+".json")));
+      actual = (StructureDefinition) XVersionLoader.loadJson(version, ManagedFileAccess.inStream(Utilities.path(folder, test.getId() + "-output-"+test.targetVersion+".json")));
+    } else {
+      XVersionLoader.saveXml(version, output, ManagedFileAccess.outStream(Utilities.path(folder, test.getId() + "-output-"+test.targetVersion+".xml")));
+      actual = (StructureDefinition) XVersionLoader.loadXml(version, ManagedFileAccess.inStream(Utilities.path(folder, test.getId() + "-output-"+test.targetVersion+".xml")));
+    }
+    actual.setText(null);
+    expected.setText(null);
+    actual.setIdBase(expected.getIdBase());
+    Assertions.assertTrue(actual.equalsDeep(expected), "Output does not match expected for "+test.targetVersion);
+  }
+
+  private StructureDefinition testGen(boolean fail, TestDetails test) throws Exception {
     if (!Utilities.noString(test.register)) {
       List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
       ProfileUtilities pu = new ProfileUtilities(UtilitiesXTests.context(version), messages, null);
@@ -469,7 +515,7 @@ public class SnapShotGenerationXTests {
           pu.generateSnapshot(base, sd, sd.getUrl(), "http://test.org/profile", sd.getName());
         }
         if (!UtilitiesXTests.context(version).hasResource(StructureDefinition.class, sd.getUrl()))
-          UtilitiesXTests.context(version).cacheResource(sd);
+          UtilitiesXTests.context(version).getManager().cacheResource(sd);
         int ec = 0;
         for (ValidationMessage vm : messages) {
           if (vm.getLevel() == IssueSeverity.ERROR) {
@@ -551,6 +597,7 @@ public class SnapShotGenerationXTests {
       actual.setIdBase(expected.getIdBase());
       Assertions.assertTrue(actual.equalsDeep(expected), "Output does not match expected");
     }
+    return output;
   }
 
   private String makeTempDir() throws IOException {

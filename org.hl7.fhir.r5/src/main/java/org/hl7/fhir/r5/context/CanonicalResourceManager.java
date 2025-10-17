@@ -11,10 +11,7 @@ import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
-import org.hl7.fhir.utilities.NaturalOrderComparator;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.*;
 
 /**
  * This manages a cached list of resources, and provides high speed access by URL / URL+version, and assumes that patch version doesn't matter for access
@@ -685,7 +682,22 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         String mm = VersionUtilities.getMajMin(version);
         if (mm != null && map.containsKey(system + "|" + mm))
           return map.get(system + "|" + mm).getResource();
-
+      }
+      if (VersionUtilities.isSemVerWithWildcards(version)) {
+        List<CachedCanonicalResource<T>> matches = new ArrayList<>();
+        for (CachedCanonicalResource<T> t : list) {
+          if (system.equals(t.getUrl()) && t.getVersion() != null && VersionUtilities.versionMatches(version, t.getVersion())) {
+            matches.add(t);
+          }
+        }
+        if (matches.isEmpty()) {
+          return null;
+        } else {
+          if (matches.size() > 1) {
+            Collections.sort(matches, new MetadataResourceVersionComparator<CachedCanonicalResource<T>>());
+          }
+          return matches.get(matches.size() - 1).getResource();
+        }
       }
       return null;
     }
@@ -741,8 +753,25 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         return map.get(system+"|"+version).getResource();
       if (mm != null && map.containsKey(system+"|"+mm))
         return map.get(system+"|"+mm).getResource();
-      else
+      else {
+        List<CachedCanonicalResource<T>> list = listForUrl.get(system);
+        if (list != null) {
+          List<CachedCanonicalResource<T>> matches = new ArrayList<>();
+          for (CachedCanonicalResource<T> t : list) {
+            if (VersionUtilities.isSemVerWithWildcards(version) && VersionUtilities.isSemVer(t.getVersion()) && VersionUtilities.versionMatches(version, t.getVersion())) {
+              matches.add(t);
+            }
+          }
+          if (!matches.isEmpty()) {
+            if (matches.size() > 1) {
+              Collections.sort(matches, new MetadataResourceVersionComparator<CachedCanonicalResource<T>>());
+            }
+            return matches.get(matches.size() - 1).getResource();
+          }
+        }
         return null;
+      }
+
     }
   }
   

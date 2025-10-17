@@ -36,6 +36,7 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
@@ -170,7 +171,6 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     vCurr = null;
     igLoader = null;
     manifest = null;
-    XVerExtensionManagerFactory.setLoader(null);
     System.gc();
   }
 
@@ -314,7 +314,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
         String contents = TestingUtilities.loadTestResource("validator", filename);
         CanonicalResource mr = (CanonicalResource) loadResource(filename, contents);
         logOutput("load resource " + mr.getUrl());
-        val.getContext().cacheResource(mr);
+        val.getContext().getManager().cacheResource(mr);
         if (mr instanceof ImplementationGuide) {
           val.getImplementationGuides().add((ImplementationGuide) mr);
         }
@@ -326,7 +326,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
         String contents = TestingUtilities.loadTestResource("validator", filename);
         CanonicalResource mr = (CanonicalResource) loadResource(filename, contents, "5.0.0");
         logOutput("load resource " + mr.getUrl());
-        val.getContext().cacheResource(mr);
+        val.getContext().getManager().cacheResource(mr);
         if (mr instanceof ImplementationGuide) {
           val.getImplementationGuides().add((ImplementationGuide) mr);
         }
@@ -342,7 +342,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
         String contents = TestingUtilities.loadTestResource("validator", filename);
         StructureDefinition sd = loadProfile(filename, contents, messages, val.getSettings().isDebug(), val.getContext());
         logOutput("load resource " + sd.getUrl());
-        val.getContext().cacheResource(sd);
+        val.getContext().getManager().cacheResource(sd);
       }
     }
     List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
@@ -355,18 +355,18 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     StructureDefinition sd = null;
     if (content.has("ips")) {
       val.setCheckIPSCodes(true);
-      val.getContext().loadFromPackage(loadPackage("hl7.fhir.uv.ips#1.1.0"), ValidatorUtils.loaderForVersion("4.0.1"));
+      val.getContext().getManager().loadFromPackage(loadPackage("hl7.fhir.uv.ips#1.1.0"), ValidatorUtils.loaderForVersion("4.0.1"));
       if (content.get("ips").getAsString().equals("uv")) {
         sd = val.getContext().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips");
         val.getBundleValidationRules().add(new BundleValidationRule().setRule("Composition:0").setProfile("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips"));
       } else if (content.get("ips").getAsString().equals("au")) {
-        val.getContext().loadFromPackage(loadPackage("hl7.fhir.au.base#current"), ValidatorUtils.loaderForVersion("4.0.1"));
-        val.getContext().loadFromPackage(loadPackage("hl7.fhir.au.core#current"), ValidatorUtils.loaderForVersion("4.0.1"));
-        val.getContext().loadFromPackage(loadPackage("hl7.fhir.au.ips#current"), ValidatorUtils.loaderForVersion("4.0.1"));
+        val.getContext().getManager().loadFromPackage(loadPackage("hl7.fhir.au.base#current"), ValidatorUtils.loaderForVersion("4.0.1"));
+        val.getContext().getManager().loadFromPackage(loadPackage("hl7.fhir.au.core#current"), ValidatorUtils.loaderForVersion("4.0.1"));
+        val.getContext().getManager().loadFromPackage(loadPackage("hl7.fhir.au.ips#current"), ValidatorUtils.loaderForVersion("4.0.1"));
         sd = val.getContext().fetchResource(StructureDefinition.class, "http://hl7.org.au/fhir/ips/StructureDefinition/Bundle-au-ips");
         val.getBundleValidationRules().add(new BundleValidationRule().setRule("Composition:0").setProfile("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips"));
       } else if (content.get("ips").getAsString().equals("nz")) {
-        val.getContext().loadFromPackage(loadPackage("tewhatuora.fhir.nzps#current"), ValidatorUtils.loaderForVersion("4.0.1"));
+        val.getContext().getManager().loadFromPackage(loadPackage("tewhatuora.fhir.nzps#current"), ValidatorUtils.loaderForVersion("4.0.1"));
         sd = val.getContext().fetchResource(StructureDefinition.class, "https://standards.digital.health.nz/fhir/StructureDefinition/nzps-bundle");
         val.getBundleValidationRules().add(new BundleValidationRule().setRule("Composition:0").setProfile("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips"));
       } else {
@@ -397,7 +397,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       val.setHtmlInMarkdownCheck(HtmlInMarkdownCheck.ERROR);
     }
     if (content.has("new-xver-mode")) {
-      XVerExtensionManagerFactory.setLoader(new IgLoader(new FilesystemPackageCacheManager.Builder().build(), (SimpleWorkerContext) val.getContext(), val.getContext().getVersion()));
+      XVerExtensionManagerFactory.setNewLoader(true);
     }
 
     XVerExtensionManager xv = XVerExtensionManagerFactory.createExtensionManager(val.getContext());
@@ -473,7 +473,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
           String contents = TestingUtilities.loadTestResource("validator", filename);
           CanonicalResource mr = (CanonicalResource) loadResource(filename, contents);
           logOutput("load resource " + mr.getUrl());
-          val.getContext().cacheResource(mr);
+          val.getContext().getManager().cacheResource(mr);
           if (mr instanceof ImplementationGuide) {
             val.getImplementationGuides().add((ImplementationGuide) mr);
           }
@@ -493,7 +493,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
         version = content.has("version") ? content.get("version").getAsString() : version;
         sd = loadProfile(filename, contents, messages, val.getSettings().isDebug(), val.getContext());
         logOutput("load resource " + sd.getUrl());
-        val.getContext().cacheResource(sd);
+        val.getContext().getManager().cacheResource(sd);
       }
       val.setAssumeValidRestReferences(profile.has("assumeValidRestReferences") ? profile.get("assumeValidRestReferences").getAsBoolean() : false);
       List<ValidationMessage> errorsProfile = new ArrayList<ValidationMessage>();
@@ -515,7 +515,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
             new ContextUtilities(val.getContext()).generateSnapshot((StructureDefinition) mr);
           }
           logOutput("load resource " + mr.getUrl());
-          val.getContext().cacheResource(mr);
+          val.getContext().getManager().cacheResource(mr);
         }
       }
       if (logical.has("packages")) {

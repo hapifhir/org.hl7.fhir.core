@@ -18,7 +18,7 @@ v: {
   "code" : "NC_000019.8:g.1171707G>A",
   "system" : "http://varnomen.hgvs.org",
   "version" : "2.0",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -45,7 +45,7 @@ v: {
   "code" : "NC_000019.8:g.1171707G>A",
   "system" : "http://varnomen.hgvs.org",
   "version" : "2.0",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -73,7 +73,7 @@ v: {
   "severity" : "error",
   "error" : "Unknown code 'NC_000019.8:g.1171707G>AXXX' in the CodeSystem 'http://varnomen.hgvs.org' version '2.0'",
   "class" : "UNKNOWN",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -84,7 +84,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -122,7 +122,7 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://varnomen.hgvs.org#NC_000019.8:g.1171707G>AXXX' was not found in the value set 'http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0'; Unknown code 'NC_000019.8:g.1171707G>AXXX' in the CodeSystem 'http://varnomen.hgvs.org' version '2.0'",
   "class" : "UNKNOWN",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -133,7 +133,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -154,7 +154,7 @@ v: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",

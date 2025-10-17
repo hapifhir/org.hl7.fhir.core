@@ -55,6 +55,7 @@ import org.hl7.fhir.convertors.loaders.loaderR5.R3ToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
 import org.hl7.fhir.r5.context.IContextResourceLoader;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.FileUtilities;
@@ -78,9 +79,9 @@ import com.google.gson.JsonSyntaxException;
 public class UtilitiesXTests {
   private static final boolean SHOW_DIFF = true;
   
-	static public Map<String, IWorkerContext> fcontexts;
+	static public Map<String, SimpleWorkerContext> fcontexts;
 	
-	public static IWorkerContext context(String version) {
+	public static SimpleWorkerContext context(String version) {
     if (fcontexts == null) {
       fcontexts = new HashMap<>();
     }
@@ -88,7 +89,7 @@ public class UtilitiesXTests {
 	    FilesystemPackageCacheManager pcm;
 	    try {
 	      pcm = new FilesystemPackageCacheManager.Builder().build();
-	      IWorkerContext fcontext = TestingUtilities.getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(version), version), loaderForVersion(version));
+	      SimpleWorkerContext fcontext = TestingUtilities.getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(version), version), loaderForVersion(version));
 	      fcontext.setUcumService(new UcumEssenceService(UtilitiesXTests.loadTestResourceStream("ucum", "ucum-essence.xml")));
 	      fcontext.setExpansionParameters(new Parameters());
 	      fcontexts.put(version, fcontext);
