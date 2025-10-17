@@ -45,7 +45,6 @@ public class Params {
   public static final String SNAPSHOT = "-snapshot";
   public static final String INSTALL = "-install";
   public static final String SCAN = "-scan";
-  public static final String LOG = "-log";
   public static final String IMPLEMENTATION_GUIDE = "-ig";
   public static final String DEFINITION = "-defn";
   public static final String X = "-x";
@@ -59,10 +58,8 @@ public class Params {
   public static final String DESTINATION = "-dest";
   public static final String LEFT = "-left";
   public static final String RIGHT = "-right";
-  public static final String NO_INTERNAL_CACHING = "-no-internal-caching";
 
   public static final String PRELOAD_CACHE = "-preload-cache";
-  public static final String DISABLE_DEFAULT_RESOURCE_FETCHER = "-disable-default-resource-fetcher";
 
   public static final String RUN_TESTS = "-run-tests";
 
@@ -280,13 +277,13 @@ public class Params {
         }
       } else if (args[i].equals(InstanceValidatorParametersParser.EXTENSION)) {
         validationContext.getExtensions().add(args[++i]);
-      } else if (args[i].equals(NO_INTERNAL_CACHING)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.NO_INTERNAL_CACHING)) {
         validationContext.setNoInternalCaching(true);
       } else if (args[i].equals(InstanceValidatorParametersParser.NO_EXTENSIBLE_BINDING_WARNINGS)) {
         validationContext.setNoExtensibleBindingMessages(true);
       } else if (args[i].equals(ValidationEngineParametersParser.ALLOW_DOUBLE_QUOTES)) {
         validationContext.setAllowDoubleQuotesInFHIRPath(true);
-      } else if (args[i].equals(DISABLE_DEFAULT_RESOURCE_FETCHER)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.DISABLE_DEFAULT_RESOURCE_FETCHER)) {
         validationContext.setDisableDefaultResourceFetcher(true);
       } else if (args[i].equals(ValidationEngineParametersParser.CHECK_IPS_CODES)) {
         validationContext.setCheckIPSCodes(true);
@@ -441,7 +438,8 @@ public class Params {
           } else {
             validationContext.addMatchetype(s);
           }
-        }} else if (args[i].equals(LOG)) {
+        }
+      } else if (args[i].equals(ValidationEngineParametersParser.LOG)) {
         if (i + 1 == args.length)
           throw new Error("Specified -log without indicating file");
         else

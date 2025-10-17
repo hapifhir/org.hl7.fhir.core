@@ -39,6 +39,9 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
   public static final String LANGUAGE = "-language";
   public static final String CHECK_REFERENCES = "-check-references";
   public static final String ALT_VERSION = "-alt-version";
+  public static final String NO_INTERNAL_CACHING = "-no-internal-caching";
+  public static final String DISABLE_DEFAULT_RESOURCE_FETCHER = "-disable-default-resource-fetcher";
+  public static final String LOG = "-log";
 
   ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
   @Override
@@ -209,6 +212,19 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
           String pid = VersionUtilities.packageForVersion(v);
           pid = pid + "#"+VersionUtilities.getCurrentPackageVersion(v);
           validationEngineParameters.addIg(pid);
+          Arg.setProcessed(args, i, 2, true);
+        }
+      } else if (args[i].getValue().equals(NO_INTERNAL_CACHING)) {
+        validationEngineParameters.setNoInternalCaching(true);
+        args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(DISABLE_DEFAULT_RESOURCE_FETCHER)) {
+        validationEngineParameters.setDisableDefaultResourceFetcher(true);
+        args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(LOG)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -log without indicating file");
+        else {
+          validationEngineParameters.setMapLog(args[i + 1].getValue());
           Arg.setProcessed(args, i, 2, true);
         }
       }

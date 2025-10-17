@@ -447,6 +447,60 @@ public class ValidationEngineParameters {
     return this;
   }
 
+  @JsonProperty("noInternalCaching")
+  @SerializedName("noInternalCaching")
+  private
+  boolean noInternalCaching = false;
+
+  @SerializedName("noInternalCaching")
+  @JsonProperty("noInternalCaching")
+  public boolean isNoInternalCaching() {
+    return noInternalCaching;
+  }
+
+  @SerializedName("noInternalCaching")
+  @JsonProperty("noInternalCaching")
+  public ValidationEngineParameters setNoInternalCaching(boolean noInternalCaching) {
+    this.noInternalCaching = noInternalCaching;
+    return this;
+  }
+
+  @JsonProperty("disableDefaultResourceFetcher")
+  @SerializedName("disableDefaultResourceFetcher")
+  private
+  boolean disableDefaultResourceFetcher = false;
+
+  @SerializedName("disableDefaultResourceFetcher")
+  @JsonProperty("disableDefaultResourceFetcher")
+  public boolean isDisableDefaultResourceFetcher() {
+    return disableDefaultResourceFetcher;
+  }
+
+  @SerializedName("disableDefaultResourceFetcher")
+  @JsonProperty("disableDefaultResourceFetcher")
+  public ValidationEngineParameters setDisableDefaultResourceFetcher(boolean disableDefaultResourceFetcher) {
+    this.disableDefaultResourceFetcher = disableDefaultResourceFetcher;
+    return this;
+  }
+
+  @JsonProperty("mapLog")
+  @SerializedName("mapLog")
+  private
+  String mapLog = null;
+
+  @SerializedName("mapLog")
+  @JsonProperty("mapLog")
+  public String getMapLog() {
+    return mapLog;
+  }
+
+  @SerializedName("mapLog")
+  @JsonProperty("mapLog")
+  public ValidationEngineParameters setMapLog(String mapLog) {
+    this.mapLog = mapLog;
+    return this;
+  }
+
   private Boolean inferFhirVersion = true;
 
   public Boolean isInferFhirVersion() {
@@ -474,6 +528,8 @@ public class ValidationEngineParameters {
       && doImplicitFHIRPathStringConversion == that.doImplicitFHIRPathStringConversion
       && allowDoubleQuotesInFHIRPath == that.allowDoubleQuotesInFHIRPath
       && checkReferences == that.checkReferences
+      && noInternalCaching == that.noInternalCaching
+      && disableDefaultResourceFetcher == that.disableDefaultResourceFetcher
       && Objects.equals(resolutionContext, that.resolutionContext)
       && Objects.equals(jurisdiction, that.jurisdiction)
       && Objects.equals(aiService, that.aiService)
@@ -484,7 +540,8 @@ public class ValidationEngineParameters {
       && Objects.equals(advisorFile, that.advisorFile)
       && Objects.equals(bundleValidationRules, that.bundleValidationRules)
       && Objects.equals(locale, that.locale)
-      && Objects.equals(lang, that.lang);
+      && Objects.equals(lang, that.lang)
+      && Objects.equals(mapLog, that.mapLog);
   }
 
   @Override
@@ -511,7 +568,10 @@ public class ValidationEngineParameters {
       bundleValidationRules,
       locale,
       lang,
-      checkReferences);
+      checkReferences,
+      noInternalCaching,
+      disableDefaultResourceFetcher,
+      mapLog);
   }
 
   @Override
@@ -539,6 +599,9 @@ public class ValidationEngineParameters {
       ", locale='" + locale + '\'' +
       ", lang='" + lang + '\'' +
       ", checkReferences=" + checkReferences +
+      ", noInternalCaching=" + noInternalCaching +
+      ", disableDefaultResourceFetcher=" + disableDefaultResourceFetcher +
+      ", mapLog='" + mapLog + '\'' +
       "}";
   }
 }

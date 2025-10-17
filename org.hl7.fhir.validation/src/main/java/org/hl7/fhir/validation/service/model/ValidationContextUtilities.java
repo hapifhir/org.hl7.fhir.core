@@ -35,6 +35,9 @@ public class ValidationContextUtilities {
     validationContext.setLocale(validationEngineParameters.getLanguageCode());
     validationContext.setLang(validationEngineParameters.getLang());
     validationContext.setCheckReferences(validationEngineParameters.isCheckReferences());
+    validationContext.setNoInternalCaching(validationEngineParameters.isNoInternalCaching());
+    validationContext.setDisableDefaultResourceFetcher(validationEngineParameters.isDisableDefaultResourceFetcher());
+    validationContext.setMapLog(validationEngineParameters.getMapLog());
   }
 
   public static void addWatchParameters(ValidationContext validationContext, WatchParameters watchParameters) {
@@ -133,6 +136,9 @@ public class ValidationContextUtilities {
     validationEngineParameters.setLocale(validationContext.getLanguageCode());
     validationEngineParameters.setLang(validationContext.getLang());
     validationEngineParameters.setCheckReferences(validationContext.isCheckReferences());
+    validationEngineParameters.setNoInternalCaching(validationContext.isNoInternalCaching());
+    validationEngineParameters.setDisableDefaultResourceFetcher(validationContext.isDisableDefaultResourceFetcher());
+    validationEngineParameters.setMapLog(validationContext.getMapLog());
     return validationEngineParameters;
   }
 
