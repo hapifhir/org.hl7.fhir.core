@@ -1,16 +1,21 @@
 package org.hl7.fhir.validation.cli.tasks;
 
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Objects;
 
+import ca.uhn.fhir.context.FhirContext;
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.utilities.http.HTTPRequest;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
@@ -54,12 +59,12 @@ public class RePackageTask extends ValidationEngineTask {
   @Override
   public boolean shouldExecuteTask(@Nonnull String[] args) {
     return Params.hasParam(args, Params.TX_PACK)
-      || Params.hasParam(args, Params.RE_PACK) ;
+      || Params.hasParam(args, Params.RE_PACK);
   }
 
   @Override
   public void logHelp(Logger logger) {
-    Display.displayHelpDetails(logger,"help/tx-pack.txt");
+    Display.displayHelpDetails(logger, "help/tx-pack.txt");
   }
 
   @Override
@@ -76,11 +81,16 @@ public class RePackageTask extends ValidationEngineTask {
       .setNpmId(validationContext.getPackageName())
       .addPackages(validationContext.getIgs());
 
-    switch (Objects.requireNonNull(Params.getParam(args, Params.SCOPE)))
-    {
-      case "ig": packageReGenerator.setScope(ExpansionPackageGeneratorScope.IG_ONLY); break;
-      case "igs": packageReGenerator.setScope(ExpansionPackageGeneratorScope.ALL_IGS); break;
-      case "core": packageReGenerator.setScope(ExpansionPackageGeneratorScope.EVERYTHING); break;
+    switch (Objects.requireNonNull(Params.getParam(args, Params.SCOPE))) {
+      case "ig":
+        packageReGenerator.setScope(ExpansionPackageGeneratorScope.IG_ONLY);
+        break;
+      case "igs":
+        packageReGenerator.setScope(ExpansionPackageGeneratorScope.ALL_IGS);
+        break;
+      case "core":
+        packageReGenerator.setScope(ExpansionPackageGeneratorScope.EVERYTHING);
+        break;
     }
 
     if (validationContext.getExpansionParameters() != null) {
@@ -88,47 +98,18 @@ public class RePackageTask extends ValidationEngineTask {
     }
 
     String ignoreList = Params.getParam(args, Params.IGNORE_LIST);
-    if(!Strings.isNullOrEmpty(ignoreList))
+    if (!Strings.isNullOrEmpty(ignoreList))
       packageReGenerator.addIgnoreList(List.of(ignoreList.split(",")));
 
-    String includeList = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient,http://hl7.dk/fhir/core/StructureDefinition/dk-core-patient";
-    if(!Strings.isNullOrEmpty(includeList))
-    {
-      List<String> canonicals = List.of(includeList.split(","));
-      List<CanonicalResource> canonicalResourece = loadPackagesToCache(canonicals, validationEngine.getPcm());
-      packageReGenerator.addIncludeList(canonicalResourece);
+    //String includeList = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient,http://hl7.dk/fhir/core/StructureDefinition/dk-core-patient";
+    String includeList = Params.getParam(args, Params.INCLUDE_LIST);
+    if (!Strings.isNullOrEmpty(includeList)) {
+      List<CanonicalResource> canonicalResources = loadResources(List.of(includeList.split(",")), validationEngine.getPcm());
+      packageReGenerator.addIncludeList(canonicalResources);
     }
 
     packageReGenerator.generateExpansionPackage();
-  }
 
-  private List<CanonicalResource> loadPackagesToCache(List<String> canonicals, FilesystemPackageCacheManager pcm) {
-
-    List<CanonicalResource> canonicalResources = new java.util.ArrayList<>();
-    try {
-      for (String canonical : canonicals) {
-        String encoded = URLEncoder.encode(canonical, "UTF-8");
-        HTTPRequest request = new HTTPRequest().withUrl("https://packages2.fhir.org/packages/catalog?op=find&canonical=" + encoded).withMethod(HTTPRequest.HttpMethod.GET);
-        HTTPResult response = ManagedWebAccess.httpCall(request);
-
-        JsonArray catalogs = new Gson().fromJson(response.getContentAsString(), JsonArray.class);
-        JsonObject catalog = catalogs.get(0).getAsJsonObject();
-        String packageId = catalog.get("name").getAsString();
-        String version = catalog.get("version").getAsString();
-
-        NpmPackage npmPackage = pcm.loadPackage(packageId, version);
-        if (npmPackage == null) {
-          log.error("Unable to load package {}#{} for canonical {}", packageId, version, canonical);
-        } else {
-          log.info("Loaded package {}#{} for canonical {}", packageId, version, canonical);
-        }
-        npmPackage.loadByCanonical(canonical);
-        //canonicalResourece.add()
-      }
-    } catch (Exception e) {
-      log.error("Error loading packages for canonicals", e);
-    }
-    return canonicalResources;
   }
 
   private static ExpansionPackageGeneratorOutputType getExpansionPackageGeneratorOutputType(String output) {
@@ -140,4 +121,52 @@ public class RePackageTask extends ValidationEngineTask {
     }
     return ExpansionPackageGeneratorOutputType.FOLDER;
   }
+
+  private List<CanonicalResource> loadResources(List<String> canonicals, FilesystemPackageCacheManager pcm) {
+
+    List<CanonicalResource> canonicalResources = new java.util.ArrayList<>();
+    try {
+      for (String canonical : canonicals) {
+        String encoded = URLEncoder.encode(canonical, "UTF-8");
+        HTTPRequest request = new HTTPRequest().withUrl("https://packages2.fhir.org/packages/catalog?op=find&canonical=" + encoded).withMethod(HTTPRequest.HttpMethod.GET);
+        HTTPResult response = ManagedWebAccess.httpCall(request);
+
+        JsonArray catalogs = new Gson().fromJson(response.getContentAsString(), JsonArray.class);
+        if (!catalogs.isEmpty())
+        {
+          JsonObject catalog = catalogs.get(0).getAsJsonObject();
+          String packageId = catalog.get("name").getAsString();
+          String version = catalog.get("version").getAsString();
+          String fhirVersion = catalog.get("fhirVersion").getAsString();
+
+          NpmPackage npmPackage = pcm.loadPackage(packageId, version);
+          if (npmPackage == null) {
+            log.error("Unable to load package {}#{} for canonical {}", packageId, version, canonical);
+          } else {
+            log.info("Loaded package {}#{} for canonical {}", packageId, version, canonical);
+          }
+
+          InputStream stream = npmPackage.loadByCanonical(canonical);
+          CanonicalResource canonicalResource;
+          if ("4.0.1".equals(fhirVersion)) {
+            IBaseResource r4resource = new org.hl7.fhir.r4.formats.JsonParser().parse(stream);
+            canonicalResource = (CanonicalResource) VersionConvertorFactory_40_50.convertResource((org.hl7.fhir.r4.model.Resource) r4resource);
+          } else if ("5.0.0".equals(fhirVersion)) {
+            canonicalResource = (CanonicalResource) new org.hl7.fhir.r5.formats.JsonParser().parse(stream);
+          } else
+            throw new Exception("Unsupported FHIR version " + fhirVersion);
+          canonicalResource.setSourcePackage(new PackageInformation(npmPackage));
+          canonicalResources.add(canonicalResource);
+        }
+        else {
+          log.error("Unable to find package for canonical {}", canonical);
+        }
+      }
+    } catch (Exception e) {
+      log.error("Error loading packages for canonicals", e);
+    }
+    return canonicalResources;
+  }
+
+
 }
