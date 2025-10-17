@@ -492,7 +492,7 @@ public class Params {
             }
           }
         }
-      } else if (args[i].equals(ALT_VERSION)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.ALT_VERSION)) {
         if (i + 1 == args.length)
           throw new Error("Specified " + args[i] + " without indicating version");
         else {

@@ -38,6 +38,7 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
   public static final String LOCALE = "-locale";
   public static final String LANGUAGE = "-language";
   public static final String CHECK_REFERENCES = "-check-references";
+  public static final String ALT_VERSION = "-alt-version";
 
   ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
   @Override
@@ -196,6 +197,20 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
       } else if (args[i].getValue().equals(CHECK_REFERENCES)) {
         validationEngineParameters.setCheckReferences(true);
         args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(ALT_VERSION)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified " + args[i] + " without indicating version");
+        else {
+          String s = args[i + 1].getValue();
+          String v = VersionUtilities.getMajMin(s);
+          if (v == null) {
+            throw new Error("Unsupported FHIR Version "+s);
+          }
+          String pid = VersionUtilities.packageForVersion(v);
+          pid = pid + "#"+VersionUtilities.getCurrentPackageVersion(v);
+          validationEngineParameters.addIg(pid);
+          Arg.setProcessed(args, i, 2, true);
+        }
       }
     }
   }
