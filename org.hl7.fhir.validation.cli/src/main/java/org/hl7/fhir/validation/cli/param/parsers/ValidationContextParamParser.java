@@ -205,19 +205,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
           throw new Error("Specified -log without indicating file");
         else
           validationContext.setMapLog(args[++i]);
-      } else if (args[i].equals(ALT_VERSION)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified " + args[i] + " without indicating version");
-        else {
-          String s = args[++i];
-          String v = VersionUtilities.getMajMin(s);
-          if (v == null) {
-            throw new Error("Unsupported FHIR Version "+s);
-          }
-          String pid = VersionUtilities.packageForVersion(v);
-          pid = pid + "#"+VersionUtilities.getCurrentPackageVersion(v);
-          validationContext.addIg(pid);
-        }
       } else {
         //Any remaining unhandled args become sources
         validationContext.addSource(args[i]);
