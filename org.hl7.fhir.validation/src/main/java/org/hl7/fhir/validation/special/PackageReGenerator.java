@@ -3,7 +3,6 @@ package org.hl7.fhir.validation.special;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -104,6 +103,7 @@ public class PackageReGenerator {
   private IWorkerContext context;
   private String npmId;
   private List<String> ignoreList = new ArrayList<>();
+  private List<CanonicalResource> includeList = new ArrayList<>();
 
   public PackageReGenerator() {
     super();
@@ -113,6 +113,12 @@ public class PackageReGenerator {
     this.ignoreList = ignoreList;
     return this;
   }
+
+  public PackageReGenerator addIncludeList(List<CanonicalResource> includeList) {
+    this.includeList = includeList;
+    return this;
+  }
+
 
   public PackageReGenerator addPackage(String packageId) {
     addPackages(List.of(packageId));
