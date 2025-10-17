@@ -25,8 +25,7 @@ import org.hl7.fhir.validation.service.utils.ValidationLevel;
 public class Params {
 
   public static final String TEST_VERSION = "-test-version";
-  public static final String ALT_VERSION = "-alt-version";
-
+  
   public static final String PROFILE = "-profile";
   public static final String PROFILES = "-profiles";
   public static final String CONFIG = "-config";
