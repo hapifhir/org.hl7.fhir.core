@@ -273,6 +273,10 @@ public class PackageReGenerator {
         StructureDefinition sd = (StructureDefinition) new JsonParser().parse(npm.loadResource(res));
         processSD(sd, npm.id());
       }
+
+      for (CanonicalResource res : includeList) {
+        processResource(res);
+      }
       if (modeParams.contains("expansions")) {
         log.info("Generating Expansions");
         for (String n : Utilities.sorted(entries.keySet())) {
