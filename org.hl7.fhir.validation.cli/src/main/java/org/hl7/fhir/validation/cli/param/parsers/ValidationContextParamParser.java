@@ -104,10 +104,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         }
       } else if (args[i].equals(RECURSE)) {
         validationContext.setRecursive(true);
-      } else if (args[i].equals(NO_INTERNAL_CACHING)) {
-        validationContext.setNoInternalCaching(true);
-      } else if (args[i].equals(DISABLE_DEFAULT_RESOURCE_FETCHER)) {
-        validationContext.setDisableDefaultResourceFetcher(true);
       } else if (args[i].equals(PACKAGE_NAME)) {
         validationContext.setPackageName(args[++i]);
       } else if (args[i].equals(TX_PACK)) {
@@ -157,11 +153,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         // TODO setBaseTestingUtils test directory
         //This did nothing? RUN_TESTS has no corresponding shouldExecuteTask
         //validationContext.setMode(EngineMode.RUN_TESTS);
-      } else if (args[i].equals(LOG)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified -log without indicating file");
-        else
-          validationContext.setMapLog(args[++i]);
       } else {
         //Any remaining unhandled args become sources
         validationContext.addSource(args[i]);
