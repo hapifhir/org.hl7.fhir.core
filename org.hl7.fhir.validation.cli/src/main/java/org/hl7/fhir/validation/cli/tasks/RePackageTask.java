@@ -1,11 +1,11 @@
 package org.hl7.fhir.validation.cli.tasks;
 
-import java.io.File;
+import java.util.List;
+import java.util.Objects;
 
+import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.service.model.ValidationContext;
@@ -57,48 +57,41 @@ public class RePackageTask extends ValidationEngineTask {
     //FIXME replace ValidationContext
     boolean json = validationContext.getFormat() != FhirFormat.XML;
     String output = validationContext.getOutput();
-    File f = ManagedFileAccess.file(output);
-    ExpansionPackageGeneratorOutputType t = ExpansionPackageGeneratorOutputType.FOLDER;
-    if (f.exists() && f.isDirectory()) {
-      t = ExpansionPackageGeneratorOutputType.FOLDER;
-    } else if (output.endsWith(".zip")) {
-      t = ExpansionPackageGeneratorOutputType.ZIP;
-    } else if (output.endsWith(".tgz")) {
-      t = ExpansionPackageGeneratorOutputType.TGZ;
-    } 
-    ExpansionPackageGeneratorScope scope = ExpansionPackageGeneratorScope.IG_ONLY;
-    int c = -1;
-    for (int i = 0; i < args.length; i++) {
-      if ("-scope".equals(args[i])) {
-        c = i;
-      }
+
+    PackageReGenerator packageReGenerator = new PackageReGenerator()
+      .setContext(validationEngine.getContext())
+      .setOutput(output)
+      .setOutputType(getExpansionPackageGeneratorOutputType(output))
+      .setJson(json)
+      .setModes(validationContext.getModeParams())
+      .setNpmId(validationContext.getPackageName())
+      .addPackages(validationContext.getIgs());
+
+    switch (Objects.requireNonNull(Params.getParam(args, Params.SCOPE)))
+    {
+      case "ig": packageReGenerator.setScope(ExpansionPackageGeneratorScope.IG_ONLY); break;
+      case "igs": packageReGenerator.setScope(ExpansionPackageGeneratorScope.ALL_IGS); break;
+      case "core": packageReGenerator.setScope(ExpansionPackageGeneratorScope.EVERYTHING); break;
     }
-    if (c < args.length - 1) {
-      switch (args[c+1].toLowerCase()) {
-      case "ig" :
-        scope = ExpansionPackageGeneratorScope.IG_ONLY;
-        break;
-      case "igs" : 
-        scope = ExpansionPackageGeneratorScope.ALL_IGS;
-        break;
-      case "core" :
-        scope = ExpansionPackageGeneratorScope.EVERYTHING;
-        break;
-      default: 
-        log.warn("Unknown scope "+args[c+1]);
-      }
-    }
-    IWorkerContext ctxt = validationEngine.getContext();
-    PackageReGenerator ep = new PackageReGenerator().setContext(ctxt).setScope(scope);
-    ep.setNpmId(validationContext.getPackageName());
-    for (String s : validationContext.getIgs()) {
-      ep.addPackage(s);
-    }
+
     if (validationContext.getExpansionParameters() != null) {
       validationEngine.loadExpansionParameters(validationContext.getExpansionParameters());
     }
-    ep.setOutput(output).setOutputType(t).setJson(json);
-    ep.setModes(validationContext.getModeParams());
-    ep.generateExpansionPackage();
+
+    String ignoreList = Params.getParam(args, Params.IGNORE_LIST);
+    if(!Strings.isNullOrEmpty(ignoreList))
+      packageReGenerator.addIgnoreList(List.of(ignoreList.split(",")));
+
+    packageReGenerator.generateExpansionPackage();
+  }
+
+  private static ExpansionPackageGeneratorOutputType getExpansionPackageGeneratorOutputType(String output) {
+
+    if (output.endsWith(".zip")) {
+      return ExpansionPackageGeneratorOutputType.ZIP;
+    } else if (output.endsWith(".tgz")) {
+      return ExpansionPackageGeneratorOutputType.TGZ;
+    }
+    return ExpansionPackageGeneratorOutputType.FOLDER;
   }
 }
