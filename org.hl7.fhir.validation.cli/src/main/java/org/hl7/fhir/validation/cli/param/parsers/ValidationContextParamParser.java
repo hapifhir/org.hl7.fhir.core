@@ -117,9 +117,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
           String mode = args[++i];
           validationContext.addModeParam(mode);
         }
-      } else if (args[i].equals(GlobalParametersParser.DEBUG)) {
-        i++;
-        log.warn("Debugging support is now provided through the -debug-log and -trace-log CLI parameters. Use the -help option for detailed instructions.");
       } else if (args[i].equals(RECURSE)) {
         validationContext.setRecursive(true);
       } else if (args[i].equals(SHOW_MESSAGES_FROM_REFERENCES)) {
