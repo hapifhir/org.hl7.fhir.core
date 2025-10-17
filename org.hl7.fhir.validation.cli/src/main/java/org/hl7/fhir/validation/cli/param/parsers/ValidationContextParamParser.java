@@ -5,7 +5,6 @@ import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.IParamParser;
-import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.model.ValidationContextUtilities;
 
@@ -126,23 +125,10 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         validationContext.setRecursive(true);
       } else if (args[i].equals(SHOW_MESSAGES_FROM_REFERENCES)) {
         validationContext.setShowMessagesFromReferences(true);
-      } else if (args[i].equals(HTML_IN_MARKDOWN)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified "+HTML_IN_MARKDOWN+" without indicating mode");
-        else {
-          String q = args[++i];
-          if (!HtmlInMarkdownCheck.isValidCode(q)) {
-            throw new Error("Specified "+HTML_IN_MARKDOWN+" with na invalid code - must be ignore, warning, or error");
-          } else {
-            validationContext.setHtmlInMarkdownCheck(HtmlInMarkdownCheck.fromCode(q));
-          }
-        }
       } else if (args[i].equals(NO_INTERNAL_CACHING)) {
         validationContext.setNoInternalCaching(true);
       } else if (args[i].equals(DISABLE_DEFAULT_RESOURCE_FETCHER)) {
         validationContext.setDisableDefaultResourceFetcher(true);
-      } else if (args[i].equals(NO_UNICODE_BIDI_CONTROL_CHARS)) {
-        validationContext.setNoUnicodeBiDiControlChars(true);
       } else if (args[i].equals(PACKAGE_NAME)) {
         validationContext.setPackageName(args[++i]);
       } else if (args[i].equals(TX_PACK)) {
@@ -198,24 +184,8 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         //validationContext.setMode(EngineMode.RUN_TESTS);
       } else if (args[i].equals(SECURITY_CHECKS)) {
         validationContext.setSecurityChecks(true);
-      } else if (args[i].equals(CRUMB_TRAIL)) {
-        validationContext.setCrumbTrails(true);
-      } else if (args[i].equals(SHOW_MESSAGE_IDS)) {
-        validationContext.setShowMessageIds(true);
       } else if (args[i].equals(NO_EXPERIMENTAL_CONTENT)) {
         validationContext.setNoExperimentalContent(true);
-      } else if (args[i].equals(VERBOSE)) {
-        validationContext.setCrumbTrails(true);
-        validationContext.setShowMessageIds(true);
-      } else if (args[i].equals(ALLOW_EXAMPLE_URLS)) {
-        String bl = args[++i];
-        if ("true".equals(bl)) {
-          validationContext.setAllowExampleUrls(true);
-        } else if ("false".equals(bl)) {
-          validationContext.setAllowExampleUrls(false);
-        } else {
-          throw new Error("Value for "+ALLOW_EXAMPLE_URLS+" not understood: "+bl);
-        }
       } else if (args[i].equals(TERMINOLOGY_ROUTING)) {
         validationContext.setShowTerminologyRouting(true);
       } else if (args[i].equals(MATCHETYPE)) {

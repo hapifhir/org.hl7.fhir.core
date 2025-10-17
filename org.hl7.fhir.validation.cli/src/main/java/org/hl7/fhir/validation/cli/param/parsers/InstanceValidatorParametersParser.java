@@ -4,6 +4,7 @@ import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.IParamParser;
+import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
@@ -26,6 +27,12 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
   public static final String LEVEL = "-level";
   public static final String BEST_PRACTICE = "-best-practice";
   public static final String FOR_PUBLICATION = "-forPublication";
+  public static final String HTML_IN_MARKDOWN = "-html-in-markdown";
+  public static final String NO_UNICODE_BIDI_CONTROL_CHARS = "-no_unicode_bidi_control_chars";
+  public static final String CRUMB_TRAIL = "-crumb-trails";
+  public static final String SHOW_MESSAGE_IDS = "-show-message-ids";
+  public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
+  public static final String VERBOSE = "-verbose";
 
   InstanceValidatorParameters instanceValidatorParameters = new InstanceValidatorParameters();
 
@@ -118,6 +125,46 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
       } else if (args[i].getValue().equals(FOR_PUBLICATION)) {
         instanceValidatorParameters.setForPublication(true);
         args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(HTML_IN_MARKDOWN)) {
+        if (i + 1 == args.length) {
+          throw new Error("Specified " + HTML_IN_MARKDOWN + " without indicating mode");
+        } else {
+          String q = args[i + 1].getValue();
+          if (!HtmlInMarkdownCheck.isValidCode(q)) {
+            throw new Error("Specified " + HTML_IN_MARKDOWN + " with na invalid code - must be ignore, warning, or error");
+          } else {
+            instanceValidatorParameters.setHtmlInMarkdownCheck(HtmlInMarkdownCheck.fromCode(q));
+          }
+          Arg.setProcessed(args, i, 2, true);
+        }
+      } else if (args[i].getValue().equals(NO_UNICODE_BIDI_CONTROL_CHARS)) {
+        instanceValidatorParameters.setNoUnicodeBiDiControlChars(true);
+        args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(CRUMB_TRAIL)) {
+        instanceValidatorParameters.setCrumbTrails(true);
+        args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(SHOW_MESSAGE_IDS)) {
+        instanceValidatorParameters.setShowMessageIds(true);
+        args[i].setProcessed(true);
+      }else if (args[i].getValue().equals(VERBOSE)) {
+        instanceValidatorParameters.setCrumbTrails(true);
+        instanceValidatorParameters.setShowMessageIds(true);
+        args[i].setProcessed(true);
+      }
+      else if (args[i].getValue().equals(ALLOW_EXAMPLE_URLS)) {
+        if (i + 1 == args.length) {
+          throw new Error("Specified " + ALLOW_EXAMPLE_URLS + " without indicating value");
+        } else {
+          String bl = args[i + 1].getValue();
+          if ("true".equals(bl)) {
+            instanceValidatorParameters.setAllowExampleUrls(true);
+          } else if ("false".equals(bl)) {
+            instanceValidatorParameters.setAllowExampleUrls(false);
+          } else {
+            throw new Error("Value for " + ALLOW_EXAMPLE_URLS + " not understood: " + bl);
+          }
+          Arg.setProcessed(args, i, 2, true);
+        }
       }
     }
   }
