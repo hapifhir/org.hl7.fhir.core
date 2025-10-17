@@ -80,6 +80,10 @@ public class ValidationContextUtilities {
     validationContext.setOutputSuffix(outputParameters.getOutputSuffix());
   }
 
+  public static void addFHIRPathParameters(ValidationContext validationContext, FHIRPathParameters fhirPathParameters) {
+    validationContext.setFhirpath(fhirPathParameters.getFhirpath());
+  }
+
   public static ValidationEngineParameters getValidationEngineParameters(ValidationContext validationContext) {
     ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
     validationEngineParameters.setInferFhirVersion(validationContext.isInferFhirVersion());
@@ -165,5 +169,11 @@ public class ValidationContextUtilities {
     outputParameters.setOutput(validationContext.getOutput());
     outputParameters.setOutputSuffix(validationContext.getOutputSuffix());
     return outputParameters;
+  }
+
+  public static FHIRPathParameters getFHIRPathParameters(ValidationContext validationContext) {
+    FHIRPathParameters fhirPathParameters = new FHIRPathParameters();
+    fhirPathParameters.setFhirpath(validationContext.getFhirpath());
+    return fhirPathParameters;
   }
 }

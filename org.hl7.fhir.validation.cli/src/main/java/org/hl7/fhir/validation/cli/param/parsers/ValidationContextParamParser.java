@@ -23,6 +23,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
   WatchParametersParser watchParametersParser = new WatchParametersParser();
   TransformLangParameterParser transformLangParameterParser = new TransformLangParameterParser();
   TransformVersionParametersParser transformVersionParameterParser = new TransformVersionParametersParser();
+  FHIRPathParametersParser fhirPathParametersParser = new FHIRPathParametersParser();
   ValidationContext validationContext = new ValidationContext();
 
   @Override
@@ -40,6 +41,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
       watchParametersParser.parseArgs(args);
       transformLangParameterParser.parseArgs(args);
       transformVersionParameterParser.parseArgs(args);
+      fhirPathParametersParser.parseArgs(args);
       String[] unprocessedArgs = filterProcessedArgs(args);
       this.validationContext = loadValidationContext(unprocessedArgs);
       ValidationContextUtilities.addValidationEngineParameters(this.validationContext, validationEngineParametersParser.getParameterObject());
@@ -48,6 +50,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
       ValidationContextUtilities.addWatchParameters(this.validationContext, this.watchParametersParser.getParameterObject());
       ValidationContextUtilities.addTransformLangParameters(this.validationContext, this.transformLangParameterParser.getParameterObject());
       ValidationContextUtilities.addTransformVersionParameters(this.validationContext, this.transformVersionParameterParser.getParameterObject());
+      ValidationContextUtilities.addFHIRPathParameters(this.validationContext, this.fhirPathParametersParser.getParameterObject());
     } catch (Exception e) {
       log.error(e.getMessage(), e);
     }
@@ -225,14 +228,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         } else {
           throw new Exception("Can only nominate a single -map parameter");
         }
-      } else if (args[i].equals(FHIRPATH)) {
-        if (validationContext.getFhirpath() == null)
-          if (i + 1 == args.length)
-            throw new Error("Specified -fhirpath without indicating a FHIRPath expression");
-          else
-            validationContext.setFhirpath(args[++i]);
-        else
-          throw new Exception("Can only nominate a single -fhirpath parameter");
       } else {
         //Any remaining unhandled args become sources
         validationContext.addSource(args[i]);
