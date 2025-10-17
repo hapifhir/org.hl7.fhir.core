@@ -20,6 +20,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
   ValidationEngineParametersParser validationEngineParametersParser = new ValidationEngineParametersParser();
   InstanceValidatorParametersParser instanceValidatorParametersParser = new InstanceValidatorParametersParser();
   OutputParametersParser outputParametersParser = new OutputParametersParser();
+  CodeGenParametersParser codeGenParametersParser = new CodeGenParametersParser();
   WatchParametersParser watchParametersParser = new WatchParametersParser();
   TransformLangParameterParser transformLangParameterParser = new TransformLangParameterParser();
   TransformVersionParametersParser transformVersionParameterParser = new TransformVersionParametersParser();
@@ -39,6 +40,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
       validationEngineParametersParser.parseArgs(args);
       instanceValidatorParametersParser.parseArgs(args);
       outputParametersParser.parseArgs(args);
+      codeGenParametersParser.parseArgs(args);
       watchParametersParser.parseArgs(args);
       transformLangParameterParser.parseArgs(args);
       transformVersionParameterParser.parseArgs(args);
@@ -49,6 +51,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
       ValidationContextUtilities.addValidationEngineParameters(this.validationContext, validationEngineParametersParser.getParameterObject());
       ValidationContextUtilities.addInstanceValidatorParameters(this.validationContext, this.instanceValidatorParametersParser.getParameterObject());
       ValidationContextUtilities.addOutputParameters(this.validationContext, this.outputParametersParser.getParameterObject());
+      ValidationContextUtilities.addCodeGenParameters(this.validationContext, this.codeGenParametersParser.getParameterObject());
       ValidationContextUtilities.addWatchParameters(this.validationContext, this.watchParametersParser.getParameterObject());
       ValidationContextUtilities.addTransformLangParameters(this.validationContext, this.transformLangParameterParser.getParameterObject());
       ValidationContextUtilities.addTransformVersionParameters(this.validationContext, this.transformVersionParameterParser.getParameterObject());
@@ -90,24 +93,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
           profiles = args[++i];
           for (String profile : profiles.split("\\,")) {
             validationContext.addProfile(profile);
-          }
-        }
-      } else if (args[i].equals(OPTION)) {
-        String p = null;
-        if (i + 1 == args.length) {
-          throw new Error("Specified -option without indicating option value");
-        } else {
-          p = args[++i];
-          validationContext.addOption(p);
-        }
-      } else if (args[i].equals(OPTIONS)) {
-        String p = null;
-        if (i + 1 == args.length) {
-          throw new Error("Specified -options without indicating option values");
-        } else {
-          p = args[++i];
-          for (String s : p.split("\\,")) {
-            validationContext.addOption(s);
           }
         }
       } else if (args[i].equals(MODE)) {
