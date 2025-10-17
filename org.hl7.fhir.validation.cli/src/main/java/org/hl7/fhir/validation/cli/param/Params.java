@@ -39,10 +39,8 @@ public class Params {
   public static final String PACKAGE_NAME = "-package-name";
   public static final String PIN = "-pin";
   public static final String EXPAND = "-expand";
-  public static final String COMPILE = "-compile";
   public static final String CODEGEN = "-codegen";
   public static final String FACTORY = "-factory";
-  public static final String TRANSFORM = "-transform";
   public static final String FORMAT = "-format";
   public static final String LANG_TRANSFORM = "-lang-transform";
   public static final String LANG_REGEN = "-lang-regen";
@@ -55,7 +53,6 @@ public class Params {
   public static final String LOG = "-log";
   public static final String IMPLEMENTATION_GUIDE = "-ig";
   public static final String DEFINITION = "-defn";
-  public static final String MAP = "-map";
   public static final String X = "-x";
   public static final String CONVERT = "-convert";
   public static final String TEST = "-tests";
@@ -349,7 +346,7 @@ public class Params {
         validationContext.setCanDoNative(true);
       } else if (args[i].equals(TransformVersionParametersParser.NO_NATIVE)) {
         validationContext.setCanDoNative(false);
-      } else if (args[i].equals(TRANSFORM)) {
+      } else if (args[i].equals(MapParametersParser.TRANSFORM)) {
         validationContext.setMap(args[++i]);
       } else if (args[i].equals(FORMAT)) {
         validationContext.setFormat(FhirFormat.fromCode(args[++i]));
@@ -361,7 +358,7 @@ public class Params {
         validationContext.addLangRegenParam(args[++i]);
       } else if (args[i].equals(EXP_PARAMS)) {
         validationContext.setExpansionParameters(args[++i]);
-      } else if (args[i].equals(COMPILE)) {
+      } else if (args[i].equals(MapParametersParser.COMPILE)) {
         validationContext.setMap(args[++i]);
       } else if (args[i].equals(FACTORY)) {
         validationContext.setSource(args[++i]);
@@ -508,7 +505,7 @@ public class Params {
           pid = pid + "#"+VersionUtilities.getCurrentPackageVersion(v);
           validationContext.addIg(pid);
         }
-      } else if (args[i].equals(MAP)) {
+      } else if (args[i].equals(MapParametersParser.MAP)) {
         if (validationContext.getMap() == null) {
           if (i + 1 == args.length)
             throw new Error("Specified -map without indicating map file");
