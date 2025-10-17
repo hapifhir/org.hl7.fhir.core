@@ -2,8 +2,8 @@ package org.hl7.fhir.validation.special;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,7 +14,6 @@ import java.util.Set;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
-import org.hl7.fhir.dstu2016may.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -58,7 +57,6 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.validation.IgLoader;
-import org.hl7.fhir.validation.special.PackageReGenerator.TerminologyResourceEntry;
 
 /**
  * Given a package id, and an expansion parameters, 
@@ -79,6 +77,7 @@ public class PackageReGenerator {
   }
 
   public static void main(String[] args) throws Exception {
+
     new PackageReGenerator()
       .addPackage("hl7.fhir.us.davinci-alerts")
       .setJson(true)
@@ -104,10 +103,24 @@ public class PackageReGenerator {
   private boolean json;
   private IWorkerContext context;
   private String npmId;
-  
+  private List<String> ignoreList = new ArrayList<>();
+
+  public PackageReGenerator() {
+    super();
+  }
+
+  public PackageReGenerator addIgnoreList(List<String> ignoreList) {
+    this.ignoreList = ignoreList;
+    return this;
+  }
 
   public PackageReGenerator addPackage(String packageId) {
-    packages.add(packageId);
+    addPackages(List.of(packageId));
+    return this;
+  }
+
+  public PackageReGenerator addPackages(List<String> packageIds) {
+    packages.addAll(packageIds);
     return this;
   }
   
@@ -180,8 +193,9 @@ public class PackageReGenerator {
     return npmId;
   }
 
-  public void setNpmId(String npmId) {
+  public PackageReGenerator setNpmId(String npmId) {
     this.npmId = npmId;
+    return this;
   }
 
 
@@ -294,14 +308,16 @@ public class PackageReGenerator {
   }
 
   private void processResource(CanonicalResource res) {
-    if (res == null) {
+    if (res == null)
       return;
-    }
+    if(ignoreList.contains(res.getUrl()))
+      return;
+
     if (set.contains(res.getVersionedUrl())) {
       return;
     }
     set.add(res.getVersionedUrl());
-    
+
     if (scope == ExpansionPackageGeneratorScope.EVERYTHING || !isCore(res.getSourcePackage())) {
       resources.add(res);
       if (res.hasSourcePackage()) {
@@ -739,9 +755,9 @@ public class PackageReGenerator {
     return list;
   }
 
-  public void setModes(Set<String> modeParams) {
+  public PackageReGenerator setModes(Set<String> modeParams) {
     this.modeParams = modeParams;
-    
+    return this;
   }
 
 }
