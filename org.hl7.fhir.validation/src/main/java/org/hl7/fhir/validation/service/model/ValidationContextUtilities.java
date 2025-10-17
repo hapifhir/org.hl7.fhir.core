@@ -63,6 +63,11 @@ public class ValidationContextUtilities {
     validationContext.setWantInvariantsInMessages(instanceValidatorParameters.isWantInvariantsInMessages());
     validationContext.setNoInvariants(instanceValidatorParameters.isNoInvariants());
     validationContext.setQuestionnaireMode(instanceValidatorParameters.getQuestionnaireMode());
+    validationContext.setDisplayWarnings(instanceValidatorParameters.isDisplayWarnings());
+    validationContext.setUnknownCodeSystemsCauseErrors(instanceValidatorParameters.isUnknownCodeSystemsCauseErrors());
+    validationContext.setLevel(instanceValidatorParameters.getLevel());
+    validationContext.setBestPracticeLevel(instanceValidatorParameters.getBestPracticeLevel());
+    validationContext.setForPublication(instanceValidatorParameters.isForPublication());
   }
 
   public static void addOutputParameters(ValidationContext validationContext, OutputParameters outputParameters) {
@@ -137,6 +142,11 @@ public class ValidationContextUtilities {
     instanceValidatorParameters.setWantInvariantsInMessages(validationContext.isWantInvariantsInMessages());
     instanceValidatorParameters.setNoInvariants(validationContext.isNoInvariants());
     instanceValidatorParameters.setQuestionnaireMode(validationContext.getQuestionnaireMode());
+    instanceValidatorParameters.setDisplayWarnings(validationContext.isDisplayWarnings());
+    instanceValidatorParameters.setUnknownCodeSystemsCauseErrors(validationContext.isUnknownCodeSystemsCauseErrors());
+    instanceValidatorParameters.setLevel(validationContext.getLevel());
+    instanceValidatorParameters.setBestPracticeLevel(validationContext.getBestPracticeLevel());
+    instanceValidatorParameters.setForPublication(validationContext.isForPublication());
     return instanceValidatorParameters;
   }
 

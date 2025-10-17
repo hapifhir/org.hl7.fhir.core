@@ -1,27 +1,16 @@
 package org.hl7.fhir.validation.cli.param.parsers;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
-import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
-import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
-import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.IParamParser;
-import org.hl7.fhir.validation.service.ValidatorWatchMode;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.model.ValidationContextUtilities;
-import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
-import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import static org.hl7.fhir.validation.cli.param.Params.*;
 
@@ -116,13 +105,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
             validationContext.addOption(s);
           }
         }
-      } else if (args[i].equals(LEVEL)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified -level without indicating level mode");
-        else {
-          String q = args[++i];
-          validationContext.setLevel(ValidationLevel.fromCode(q));
-        }
       } else if (args[i].equals(MODE)) {
         if (i + 1 == args.length)
           throw new Error("Specified -mode without indicating mode");
@@ -155,21 +137,12 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
             validationContext.setHtmlInMarkdownCheck(HtmlInMarkdownCheck.fromCode(q));
           }
         }
-      } else if (args[i].equals(BEST_PRACTICE)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified "+BEST_PRACTICE+" without indicating mode");
-        else {
-          String q = args[++i];
-          validationContext.setBestPracticeLevel(readBestPractice(q));
-        }
       } else if (args[i].equals(NO_INTERNAL_CACHING)) {
         validationContext.setNoInternalCaching(true);
       } else if (args[i].equals(DISABLE_DEFAULT_RESOURCE_FETCHER)) {
         validationContext.setDisableDefaultResourceFetcher(true);
       } else if (args[i].equals(NO_UNICODE_BIDI_CONTROL_CHARS)) {
         validationContext.setNoUnicodeBiDiControlChars(true);
-      } else if (args[i].equals(DISPLAY_WARNINGS)) {
-        validationContext.setDisplayWarnings(true);
       } else if (args[i].equals(PACKAGE_NAME)) {
         validationContext.setPackageName(args[++i]);
       } else if (args[i].equals(TX_PACK)) {
@@ -229,10 +202,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         validationContext.setCrumbTrails(true);
       } else if (args[i].equals(SHOW_MESSAGE_IDS)) {
         validationContext.setShowMessageIds(true);
-      } else if (args[i].equals(FOR_PUBLICATION)) {
-        validationContext.setForPublication(true);
-      } else if (args[i].equals(UNKNOWN_CODESYSTEMS_CAUSE_ERROR)) {
-        validationContext.setUnknownCodeSystemsCauseErrors(true);
       } else if (args[i].equals(NO_EXPERIMENTAL_CONTENT)) {
         validationContext.setNoExperimentalContent(true);
       } else if (args[i].equals(VERBOSE)) {
@@ -301,22 +270,5 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
     }
 
     return validationContext;
-  }
-
-  private static BestPracticeWarningLevel readBestPractice(String s) {
-    if (s == null) {
-      return BestPracticeWarningLevel.Warning;
-    }
-    switch (s.toLowerCase()) {
-      case "warning" : return BestPracticeWarningLevel.Warning;
-      case "error" : return BestPracticeWarningLevel.Error;
-      case "hint" : return BestPracticeWarningLevel.Hint;
-      case "ignore" : return BestPracticeWarningLevel.Ignore;
-      case "w" : return BestPracticeWarningLevel.Warning;
-      case "e" : return BestPracticeWarningLevel.Error;
-      case "h" : return BestPracticeWarningLevel.Hint;
-      case "i" : return BestPracticeWarningLevel.Ignore;
-    }
-    throw new Error("The best-practice level ''"+s+"'' is not valid");
   }
 }

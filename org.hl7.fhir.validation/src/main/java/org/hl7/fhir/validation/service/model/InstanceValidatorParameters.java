@@ -2,8 +2,10 @@ package org.hl7.fhir.validation.service.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
+import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
+import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -200,6 +202,87 @@ public class InstanceValidatorParameters {
     return this;
   }
 
+  @JsonProperty("displayWarnings")
+  @SerializedName("displayWarnings")
+  private boolean displayWarnings = false;
+
+  @JsonProperty("unknownCodeSystemsCauseErrors")
+  @SerializedName("unknownCodeSystemsCauseErrors")
+  private boolean unknownCodeSystemsCauseErrors;
+
+  @JsonProperty("level")
+  @SerializedName("level")
+  private ValidationLevel level = ValidationLevel.HINTS;
+
+  @JsonProperty("bestPracticeLevel")
+  @SerializedName("bestPracticeLevel")
+  private BestPracticeWarningLevel bestPracticeLevel = BestPracticeWarningLevel.Warning;
+
+  @JsonProperty("forPublication")
+  @SerializedName("forPublication")
+  private boolean forPublication = false;
+
+  @SerializedName("displayWarnings")
+  @JsonProperty("displayWarnings")
+  public boolean isDisplayWarnings() {
+    return displayWarnings;
+  }
+
+  @SerializedName("displayWarnings")
+  @JsonProperty("displayWarnings")
+  public InstanceValidatorParameters setDisplayWarnings(boolean displayWarnings) {
+    this.displayWarnings = displayWarnings;
+    return this;
+  }
+
+  @SerializedName("unknownCodeSystemsCauseErrors")
+  @JsonProperty("unknownCodeSystemsCauseErrors")
+  public boolean isUnknownCodeSystemsCauseErrors() {
+    return unknownCodeSystemsCauseErrors;
+  }
+
+  @SerializedName("unknownCodeSystemsCauseErrors")
+  @JsonProperty("unknownCodeSystemsCauseErrors")
+  public InstanceValidatorParameters setUnknownCodeSystemsCauseErrors(boolean unknownCodeSystemsCauseErrors) {
+    this.unknownCodeSystemsCauseErrors = unknownCodeSystemsCauseErrors;
+    return this;
+  }
+
+  @SerializedName("level")
+  @JsonProperty("level")
+  public ValidationLevel getLevel() {
+    return level;
+  }
+
+  @SerializedName("level")
+  @JsonProperty("level")
+  public InstanceValidatorParameters setLevel(ValidationLevel level) {
+    this.level = level;
+    return this;
+  }
+
+  @SerializedName("bestPracticeLevel")
+  @JsonProperty("bestPracticeLevel")
+  public BestPracticeWarningLevel getBestPracticeLevel() {
+    return bestPracticeLevel;
+  }
+
+  @SerializedName("bestPracticeLevel")
+  @JsonProperty("bestPracticeLevel")
+  public InstanceValidatorParameters setBestPracticeLevel(BestPracticeWarningLevel bestPracticeLevel) {
+    this.bestPracticeLevel = bestPracticeLevel;
+    return this;
+  }
+
+  public boolean isForPublication() {
+    return forPublication;
+  }
+
+  public InstanceValidatorParameters setForPublication(boolean forPublication) {
+    this.forPublication = forPublication;
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -211,16 +294,21 @@ public class InstanceValidatorParameters {
       && hintAboutNonMustSupport == that.hintAboutNonMustSupport
       && wantInvariantsInMessages == that.wantInvariantsInMessages
       && noInvariants == that.noInvariants
+      && displayWarnings == that.displayWarnings
+      && unknownCodeSystemsCauseErrors == that.unknownCodeSystemsCauseErrors
+      && forPublication == that.forPublication
       && Objects.equals(htmlOutput, that.htmlOutput)
       && Objects.equals(outputStyle, that.outputStyle)
       && Objects.equals(r5BundleRelativeReferencePolicy, that.r5BundleRelativeReferencePolicy)
       && Objects.equals(extensions, that.extensions)
-      && Objects.equals(questionnaireMode, that.questionnaireMode);
+      && Objects.equals(questionnaireMode, that.questionnaireMode)
+      && Objects.equals(level, that.level)
+      && Objects.equals(bestPracticeLevel, that.bestPracticeLevel);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, noExtensibleBindingMessages, showTimes, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode);
+    return Objects.hash(assumeValidRestReferences, noExtensibleBindingMessages, showTimes, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, displayWarnings, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication);
   }
 
   @Override
@@ -237,6 +325,11 @@ public class InstanceValidatorParameters {
       ", wantInvariantsInMessages=" + wantInvariantsInMessages +
       ", noInvariants=" + noInvariants +
       ", questionnaireMode=" + questionnaireMode +
+      ", displayWarnings=" + displayWarnings +
+      ", unknownCodeSystemsCauseErrors=" + unknownCodeSystemsCauseErrors +
+      ", level=" + level +
+      ", bestPracticeLevel=" + bestPracticeLevel +
+      ", forPublication=" + forPublication +
       '}';
   }
 }
