@@ -81,6 +81,8 @@ public class Params {
   public static final String FILTER = "-filter";
   public static final String EXTERNALS = "-externals";
   public static final String MODE = "-mode";
+  public static final String SCOPE = "-scope";
+  public static final String IGNORE_LIST = "-ignore-list";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -538,6 +540,9 @@ public class Params {
             validationContext.setFhirpath(args[++i]);
         else
           throw new Exception("Can only nominate a single -fhirpath parameter");
+      } else if (args[i].equals(SCOPE) || args[i].equals(IGNORE_LIST)) {
+        //These two params are processed later by the RePackageTask and not included in ValidationContext.
+        i++;
       } else if (Utilities.existsInList(args[i],
         GlobalParametersParser.DEBUG_LOG,
         GlobalParametersParser.TRACE_LOG,
