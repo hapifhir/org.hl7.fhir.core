@@ -68,6 +68,11 @@ public class ValidationContextUtilities {
     validationContext.setLevel(instanceValidatorParameters.getLevel());
     validationContext.setBestPracticeLevel(instanceValidatorParameters.getBestPracticeLevel());
     validationContext.setForPublication(instanceValidatorParameters.isForPublication());
+    validationContext.setHtmlInMarkdownCheck(instanceValidatorParameters.getHtmlInMarkdownCheck());
+    validationContext.setNoUnicodeBiDiControlChars(instanceValidatorParameters.isNoUnicodeBiDiControlChars());
+    validationContext.setCrumbTrails(instanceValidatorParameters.isCrumbTrails());
+    validationContext.setShowMessageIds(instanceValidatorParameters.isShowMessageIds());
+    validationContext.setAllowExampleUrls(instanceValidatorParameters.isAllowExampleUrls());
   }
 
   public static void addOutputParameters(ValidationContext validationContext, OutputParameters outputParameters) {
@@ -147,6 +152,11 @@ public class ValidationContextUtilities {
     instanceValidatorParameters.setLevel(validationContext.getLevel());
     instanceValidatorParameters.setBestPracticeLevel(validationContext.getBestPracticeLevel());
     instanceValidatorParameters.setForPublication(validationContext.isForPublication());
+    instanceValidatorParameters.setHtmlInMarkdownCheck(validationContext.getHtmlInMarkdownCheck());
+    instanceValidatorParameters.setNoUnicodeBiDiControlChars(validationContext.isNoUnicodeBiDiControlChars());
+    instanceValidatorParameters.setCrumbTrails(validationContext.isCrumbTrails());
+    instanceValidatorParameters.setShowMessageIds(validationContext.isShowMessageIds());
+    instanceValidatorParameters.setAllowExampleUrls(validationContext.isAllowExampleUrls());
     return instanceValidatorParameters;
   }
 

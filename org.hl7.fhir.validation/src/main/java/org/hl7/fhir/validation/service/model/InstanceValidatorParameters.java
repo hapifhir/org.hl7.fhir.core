@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
+import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
@@ -222,6 +223,26 @@ public class InstanceValidatorParameters {
   @SerializedName("forPublication")
   private boolean forPublication = false;
 
+  @JsonProperty("htmlInMarkdownCheck")
+  @SerializedName("htmlInMarkdownCheck")
+  private HtmlInMarkdownCheck htmlInMarkdownCheck = HtmlInMarkdownCheck.WARNING;
+
+  @JsonProperty("noUnicodeBiDiControlChars")
+  @SerializedName("noUnicodeBiDiControlChars")
+  private boolean noUnicodeBiDiControlChars = false;
+
+  @JsonProperty("crumbTrails")
+  @SerializedName("crumbTrails")
+  private boolean crumbTrails = false;
+
+  @JsonProperty("showMessageIds")
+  @SerializedName("showMessageIds")
+  private boolean showMessageIds = false;
+
+  @JsonProperty("allowExampleUrls")
+  @SerializedName("allowExampleUrls")
+  private boolean allowExampleUrls = false;
+
   @SerializedName("displayWarnings")
   @JsonProperty("displayWarnings")
   public boolean isDisplayWarnings() {
@@ -283,6 +304,59 @@ public class InstanceValidatorParameters {
     return this;
   }
 
+  @SerializedName("htmlInMarkdownCheck")
+  @JsonProperty("htmlInMarkdownCheck")
+  public HtmlInMarkdownCheck getHtmlInMarkdownCheck() {
+    return htmlInMarkdownCheck;
+  }
+
+  @SerializedName("htmlInMarkdownCheck")
+  @JsonProperty("htmlInMarkdownCheck")
+  public InstanceValidatorParameters setHtmlInMarkdownCheck(HtmlInMarkdownCheck htmlInMarkdownCheck) {
+    this.htmlInMarkdownCheck = htmlInMarkdownCheck;
+    return this;
+  }
+
+  @SerializedName("noUnicodeBiDiControlChars")
+  @JsonProperty("noUnicodeBiDiControlChars")
+  public boolean isNoUnicodeBiDiControlChars() {
+    return noUnicodeBiDiControlChars;
+  }
+
+  @SerializedName("noUnicodeBiDiControlChars")
+  @JsonProperty("noUnicodeBiDiControlChars")
+  public InstanceValidatorParameters setNoUnicodeBiDiControlChars(boolean noUnicodeBiDiControlChars) {
+    this.noUnicodeBiDiControlChars = noUnicodeBiDiControlChars;
+    return this;
+  }
+
+  public boolean isCrumbTrails() {
+    return crumbTrails;
+  }
+
+  public InstanceValidatorParameters setCrumbTrails(boolean crumbTrails) {
+    this.crumbTrails = crumbTrails;
+    return this;
+  }
+
+  public boolean isShowMessageIds() {
+    return showMessageIds;
+  }
+
+  public InstanceValidatorParameters setShowMessageIds(boolean showMessageIds) {
+    this.showMessageIds = showMessageIds;
+    return this;
+  }
+
+  public boolean isAllowExampleUrls() {
+    return allowExampleUrls;
+  }
+
+  public InstanceValidatorParameters setAllowExampleUrls(boolean allowExampleUrls) {
+    this.allowExampleUrls = allowExampleUrls;
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -297,18 +371,23 @@ public class InstanceValidatorParameters {
       && displayWarnings == that.displayWarnings
       && unknownCodeSystemsCauseErrors == that.unknownCodeSystemsCauseErrors
       && forPublication == that.forPublication
+      && noUnicodeBiDiControlChars == that.noUnicodeBiDiControlChars
+      && crumbTrails == that.crumbTrails
+      && showMessageIds == that.showMessageIds
+      && allowExampleUrls == that.allowExampleUrls
       && Objects.equals(htmlOutput, that.htmlOutput)
       && Objects.equals(outputStyle, that.outputStyle)
       && Objects.equals(r5BundleRelativeReferencePolicy, that.r5BundleRelativeReferencePolicy)
       && Objects.equals(extensions, that.extensions)
       && Objects.equals(questionnaireMode, that.questionnaireMode)
       && Objects.equals(level, that.level)
-      && Objects.equals(bestPracticeLevel, that.bestPracticeLevel);
+      && Objects.equals(bestPracticeLevel, that.bestPracticeLevel)
+      && Objects.equals(htmlInMarkdownCheck, that.htmlInMarkdownCheck);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, noExtensibleBindingMessages, showTimes, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, displayWarnings, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication);
+    return Objects.hash(assumeValidRestReferences, noExtensibleBindingMessages, showTimes, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, displayWarnings, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls);
   }
 
   @Override
@@ -330,6 +409,11 @@ public class InstanceValidatorParameters {
       ", level=" + level +
       ", bestPracticeLevel=" + bestPracticeLevel +
       ", forPublication=" + forPublication +
+      ", htmlInMarkdownCheck=" + htmlInMarkdownCheck +
+      ", noUnicodeBiDiControlChars=" + noUnicodeBiDiControlChars +
+      ", crumbTrails=" + crumbTrails +
+      ", showMessageIds=" + showMessageIds +
+      ", allowExampleUrls=" + allowExampleUrls +
       '}';
   }
 }
