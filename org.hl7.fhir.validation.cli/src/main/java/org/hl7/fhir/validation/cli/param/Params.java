@@ -27,8 +27,6 @@ public class Params {
   public static final String TEST_VERSION = "-test-version";
   public static final String ALT_VERSION = "-alt-version";
 
-  public static final String LEVEL = "-level";
-
   public static final String PROFILE = "-profile";
   public static final String PROFILES = "-profiles";
   public static final String CONFIG = "-config";
@@ -74,17 +72,13 @@ public class Params {
 
   public static final String PRELOAD_CACHE = "-preload-cache";
   public static final String NO_UNICODE_BIDI_CONTROL_CHARS = "-no_unicode_bidi_control_chars";
-  public static final String DISPLAY_WARNINGS = "-display-issues-are-warnings";
   public static final String SECURITY_CHECKS = "-security-checks";
   public static final String CRUMB_TRAIL = "-crumb-trails";
   public static final String SHOW_MESSAGE_IDS = "-show-message-ids";
-  public static final String FOR_PUBLICATION = "-forPublication";
   public static final String VERBOSE = "-verbose";
   public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
   public static final String HTML_IN_MARKDOWN = "-html-in-markdown";
   public static final String DISABLE_DEFAULT_RESOURCE_FETCHER = "-disable-default-resource-fetcher";
-  public static final String BEST_PRACTICE = "-best-practice";
-  public static final String UNKNOWN_CODESYSTEMS_CAUSE_ERROR = "-unknown-codesystems-cause-errors";
   public static final String NO_EXPERIMENTAL_CONTENT = "-no-experimental-content";
 
   public static final String RUN_TESTS = "-run-tests";
@@ -237,7 +231,7 @@ public class Params {
           String questionnaireMode = args[++i];
           validationContext.setQuestionnaireMode(QuestionnaireMode.fromCode(questionnaireMode));
         }
-      } else if (args[i].equals(LEVEL)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.LEVEL)) {
         if (i + 1 == args.length)
           throw new Error("Specified -level without indicating level mode");
         else {
@@ -288,9 +282,9 @@ public class Params {
             validationContext.setHtmlInMarkdownCheck(HtmlInMarkdownCheck.fromCode(q));
           }
         }
-      } else if (args[i].equals(BEST_PRACTICE)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.BEST_PRACTICE)) {
         if (i + 1 == args.length)
-          throw new Error("Specified "+BEST_PRACTICE+" without indicating mode");
+          throw new Error("Specified "+InstanceValidatorParametersParser.BEST_PRACTICE+" without indicating mode");
         else {
           String q = args[++i];
           validationContext.setBestPracticeLevel(readBestPractice(q));
@@ -317,7 +311,7 @@ public class Params {
         validationContext.setNoUnicodeBiDiControlChars(true);
       } else if (args[i].equals(InstanceValidatorParametersParser.NO_INVARIANTS)) {
         validationContext.setNoInvariants(true);
-      } else if (args[i].equals(DISPLAY_WARNINGS)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.DISPLAY_WARNINGS)) {
         validationContext.setDisplayWarnings(true);
       } else if (args[i].equals(InstanceValidatorParametersParser.WANT_INVARIANTS_IN_MESSAGES)) {
         validationContext.setWantInvariantsInMessages(true);
@@ -388,13 +382,13 @@ public class Params {
         validationContext.setCrumbTrails(true);
       } else if (args[i].equals(SHOW_MESSAGE_IDS)) {
         validationContext.setShowMessageIds(true);
-      } else if (args[i].equals(FOR_PUBLICATION)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.FOR_PUBLICATION)) {
         validationContext.setForPublication(true);
       } else if (args[i].equals(ValidationEngineParametersParser.AI_SERVICE)) {
         validationContext.setAIService(args[++i]);
       } else if (args[i].equals(InstanceValidatorParametersParser.R5_REF_POLICY)) {
         validationContext.setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.fromCode(args[++i]));
-      } else if (args[i].equals(UNKNOWN_CODESYSTEMS_CAUSE_ERROR)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.UNKNOWN_CODESYSTEMS_CAUSE_ERROR)) {
         validationContext.setUnknownCodeSystemsCauseErrors(true);
       } else if (args[i].equals(NO_EXPERIMENTAL_CONTENT)) {
         validationContext.setNoExperimentalContent(true);

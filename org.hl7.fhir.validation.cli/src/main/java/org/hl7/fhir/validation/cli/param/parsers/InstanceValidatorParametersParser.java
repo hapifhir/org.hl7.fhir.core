@@ -1,10 +1,12 @@
 package org.hl7.fhir.validation.cli.param.parsers;
 
+import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.IParamParser;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
+import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
 public class InstanceValidatorParametersParser implements IParamParser<InstanceValidatorParameters> {
 
@@ -19,6 +21,11 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
   public static final String WANT_INVARIANTS_IN_MESSAGES = "-want-invariants-in-messages";
   public static final String NO_INVARIANTS = "-no-invariants";
   public static final String QUESTIONNAIRE = "-questionnaire";
+  public static final String DISPLAY_WARNINGS = "-display-issues-are-warnings";
+  public static final String UNKNOWN_CODESYSTEMS_CAUSE_ERROR = "-unknown-codesystems-cause-errors";
+  public static final String LEVEL = "-level";
+  public static final String BEST_PRACTICE = "-best-practice";
+  public static final String FOR_PUBLICATION = "-forPublication";
 
   InstanceValidatorParameters instanceValidatorParameters = new InstanceValidatorParameters();
 
@@ -86,7 +93,49 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
           );
           Arg.setProcessed(args, i, 2, true);
         }
+      } else if (args[i].getValue().equals(DISPLAY_WARNINGS)) {
+        instanceValidatorParameters.setDisplayWarnings(true);
+        args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(UNKNOWN_CODESYSTEMS_CAUSE_ERROR)) {
+        instanceValidatorParameters.setUnknownCodeSystemsCauseErrors(true);
+        args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(LEVEL)) {
+        if (i + 1 == args.length) {
+          throw new Error("Specified -level without indicating level mode");
+        } else {
+          String q = args[i + 1].getValue();
+          instanceValidatorParameters.setLevel(ValidationLevel.fromCode(q));
+          Arg.setProcessed(args, i, 2, true);
+        }
+      } else if (args[i].getValue().equals(BEST_PRACTICE)) {
+        if (i + 1 == args.length) {
+          throw new Error("Specified " + BEST_PRACTICE + " without indicating mode");
+        } else {
+          String q = args[i + 1].getValue();
+          instanceValidatorParameters.setBestPracticeLevel(readBestPractice(q));
+          Arg.setProcessed(args, i, 2, true);
+        }
+      } else if (args[i].getValue().equals(FOR_PUBLICATION)) {
+        instanceValidatorParameters.setForPublication(true);
+        args[i].setProcessed(true);
       }
     }
+  }
+
+  private static BestPracticeWarningLevel readBestPractice(String s) {
+    if (s == null) {
+      return BestPracticeWarningLevel.Warning;
+    }
+    switch (s.toLowerCase()) {
+      case "warning" : return BestPracticeWarningLevel.Warning;
+      case "error" : return BestPracticeWarningLevel.Error;
+      case "hint" : return BestPracticeWarningLevel.Hint;
+      case "ignore" : return BestPracticeWarningLevel.Ignore;
+      case "w" : return BestPracticeWarningLevel.Warning;
+      case "e" : return BestPracticeWarningLevel.Error;
+      case "h" : return BestPracticeWarningLevel.Hint;
+      case "i" : return BestPracticeWarningLevel.Ignore;
+    }
+    throw new Error("The best-practice level ''" + s + "'' is not valid");
   }
 }
