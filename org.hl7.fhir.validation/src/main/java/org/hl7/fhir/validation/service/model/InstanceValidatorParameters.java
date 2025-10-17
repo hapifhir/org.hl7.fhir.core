@@ -243,6 +243,10 @@ public class InstanceValidatorParameters {
   @SerializedName("allowExampleUrls")
   private boolean allowExampleUrls = false;
 
+  @JsonProperty("matchetypes")
+  @SerializedName("matchetypes")
+  private List<String> matchetypes = new ArrayList<String>();
+
   @SerializedName("displayWarnings")
   @JsonProperty("displayWarnings")
   public boolean isDisplayWarnings() {
@@ -357,6 +361,24 @@ public class InstanceValidatorParameters {
     return this;
   }
 
+  @SerializedName("matchetypes")
+  @JsonProperty("matchetypes")
+  public List<String> getMatchetypes() {
+    return matchetypes;
+  }
+
+  @SerializedName("matchetypes")
+  @JsonProperty("matchetypes")
+  public InstanceValidatorParameters setMatchetypes(List<String> matchetypes) {
+    this.matchetypes = matchetypes;
+    return this;
+  }
+
+  public InstanceValidatorParameters addMatchetype(String matchetype) {
+    this.matchetypes.add(matchetype);
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -382,12 +404,13 @@ public class InstanceValidatorParameters {
       && Objects.equals(questionnaireMode, that.questionnaireMode)
       && Objects.equals(level, that.level)
       && Objects.equals(bestPracticeLevel, that.bestPracticeLevel)
-      && Objects.equals(htmlInMarkdownCheck, that.htmlInMarkdownCheck);
+      && Objects.equals(htmlInMarkdownCheck, that.htmlInMarkdownCheck)
+      && Objects.equals(matchetypes, that.matchetypes);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, noExtensibleBindingMessages, showTimes, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, displayWarnings, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls);
+    return Objects.hash(assumeValidRestReferences, noExtensibleBindingMessages, showTimes, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, displayWarnings, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, matchetypes);
   }
 
   @Override
@@ -414,6 +437,7 @@ public class InstanceValidatorParameters {
       ", crumbTrails=" + crumbTrails +
       ", showMessageIds=" + showMessageIds +
       ", allowExampleUrls=" + allowExampleUrls +
+      ", matchetypes=" + matchetypes +
       '}';
   }
 }
