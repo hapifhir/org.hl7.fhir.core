@@ -203,7 +203,7 @@ public class WebTemplateRenderer extends ResourceRenderer {
       switch (code) {
       case "SNOMED-CT" : 
         pfx = "SCT:";
-        link = getLinkForCode("http://snomed.info/sct", null, value);
+        link = getLinkForCode("http://snomed.info/sct", null, value, item.getResourceNative());
         ValidationResult vr = context.getContext().validateCode(context.getTerminologyServiceOptions(), "http://snomed.info/sct", null, value, null);
         if (vr.isOk()) {
           hint = "SNOMED CT "+value+": "+vr.getDisplay();
@@ -211,7 +211,7 @@ public class WebTemplateRenderer extends ResourceRenderer {
         break;
       case "LOINC" :
         pfx = "LN:";
-        link = getLinkForCode("http://loinc.org", null, value);
+        link = getLinkForCode("http://loinc.org", null, value, item.getResourceNative());
         vr = context.getContext().validateCode(context.getTerminologyServiceOptions(), "http://loinc.org", null, value, null);
         if (vr.isOk()) {
           hint = "LOINC "+value+": "+vr.getDisplay();

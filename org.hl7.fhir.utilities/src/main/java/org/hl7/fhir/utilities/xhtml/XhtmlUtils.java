@@ -13,7 +13,7 @@ public class XhtmlUtils {
       // todo - should we try another way?
       log.error("XHTML content could not be parsed from "+desc, e);
       log.error(source);
-      return "Unparseable HTML";
+      return "Unparseable HTML Source ("+e.getMessage()+")";
     }
   }
 

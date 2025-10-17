@@ -18,9 +18,12 @@ public class JavaSystemProxyParamSetter {
   public static final String JAVA_USE_SYSTEM_PROXIES = "java.net.useSystemProxies";
 
   protected static void setJavaSystemProxyParams(String proxy, String httpsProxy, String proxyAuth) {
-    setProxyHostSystemProperties(proxy, HTTP_PROXY_HOST, HTTP_PROXY_PORT);
-    setProxyHostSystemProperties(httpsProxy, HTTPS_PROXY_HOST, HTTPS_PROXY_PORT);
-
+    if (proxy != null) {
+      setProxyHostSystemProperties(proxy, HTTP_PROXY_HOST, HTTP_PROXY_PORT);
+    }
+    if  (httpsProxy != null) {
+      setProxyHostSystemProperties(httpsProxy, HTTPS_PROXY_HOST, HTTPS_PROXY_PORT);
+    }
     if (proxyAuth != null) {
       assert proxy != null || httpsProxy != null: "Cannot set PROXY_AUTH without setting PROXY...";
       String[] p = proxyAuth.split(":");

@@ -1,0 +1,19 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:ietf:bcp:47",
+  "code" : "fr-CA"
+}, "valueSet" :null, "langs":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters"
+}}####
+v: {
+  "display" : "French (Region=Canada)",
+  "code" : "fr-CA",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

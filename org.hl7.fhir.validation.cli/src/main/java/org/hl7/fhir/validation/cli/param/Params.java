@@ -2,8 +2,7 @@ package org.hl7.fhir.validation.cli.param;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Locale;
+import java.util.*;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -18,7 +17,6 @@ import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeRefer
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.ValidatorWatchMode;
-import org.hl7.fhir.validation.service.utils.EngineMode;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
@@ -117,7 +115,7 @@ public class Params {
   public static final String SHOW_TIMES = "-show-times";
   public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
   public static final String OUTPUT_STYLE = "-output-style";
-  public static final String ADVSIOR_FILE = "-advisor-file";
+  public static final String ADVISOR_FILE = "-advisor-file";
   public static final String DO_IMPLICIT_FHIRPATH_STRING_CONVERSION = "-implicit-fhirpath-string-conversions";
   public static final String JURISDICTION = "-jurisdiction";
   public static final String HTML_IN_MARKDOWN = "-html-in-markdown";
@@ -143,7 +141,7 @@ public class Params {
   public static final String FILTER = "-filter";
   public static final String EXTERNALS = "-externals";
   public static final String MODE = "-mode";
-  private static final String FHIR_SETTINGS_PARAM = "-fhir-settings";
+  public static final String FHIR_SETTINGS_PARAM = "-fhir-settings";
   public static final String WATCH_MODE_PARAM = "-watch-mode";
   public static final String WATCH_SCAN_DELAY = "-watch-scan-delay";
   public static final String WATCH_SETTLE_TIME = "-watch-settle-time";
@@ -151,6 +149,8 @@ public class Params {
   public static final String AUTH_NONCONFORMANT_SERVERS = "-authorise-non-conformant-tx-servers";
   public static final String R5_REF_POLICY = "r5-bundle-relative-reference-policy";
   public static final String MATCHETYPE = "-matchetype";
+  public static final String SCOPE = "-scope";
+  public static final String IGNORE_LIST = "-ignore-list";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -163,12 +163,30 @@ public class Params {
     return Arrays.asList(args).contains(param);
   }
 
+  public static boolean hasParamAndValue(String[] args, String param) {
+    int paramIndex = Arrays.asList(args).indexOf(param);
+    if (paramIndex == -1) {
+      return false;
+    }
+    checkIfParamValueInBounds(args, param, paramIndex);
+    return true;
+  }
+
   /**
-   * Fetches the  value for the passed in param from the provided list of params.
+   * Check if the value for the param is in bounds in the args array.
+   */
+  private static void checkIfParamValueInBounds(String[] args, String param, int paramIndex) {
+    if (paramIndex + 1 >= args.length) {
+      throw new Error("Used '"+ param +"' without providing a value");
+    }
+  }
+
+  /**
+   * Fetches the value for the passed in param from the provided list of params.
    *
    * @param args  Array of params to search.
    * @param param {@link String} param keyword to search for.
-   * @return {@link String} value for the provided param.
+   * @return {@link String} value for the provided param, or null if param is out of bounds
    */
   public static String getParam(String[] args, String param) {
     for (int i = 0; i < args.length - 1; i++) {
@@ -177,6 +195,16 @@ public class Params {
     return null;
   }
 
+  public static Collection<String> getMultiValueParam(String[] args, String param) {
+    final List<String> output = new LinkedList<>();
+    for (int i = 0; i < args.length - 1; i++) {
+      if (args[i].equals(param)) {
+        checkIfParamValueInBounds(args, param, i);
+        output.add(args[i + 1]);
+      }
+    }
+    return Collections.unmodifiableList(output);
+  }
   /**
    * TODO Don't do this all in one for loop. Use the above methods.
    */
@@ -187,12 +215,6 @@ public class Params {
     for (int i = 0; i < args.length; i++) {
       if (args[i].equals(VERSION)) {
         validationContext.setSv(VersionUtilities.getCurrentPackageVersion(args[++i]));
-      } else if (args[i].equals(FHIR_SETTINGS_PARAM)) {
-        final String fhirSettingsFilePath = args[++i];
-        if (! ManagedFileAccess.file(fhirSettingsFilePath).exists()) {
-          throw new Error("Cannot find fhir-settings file: " + fhirSettingsFilePath);
-        }
-        validationContext.setFhirSettingsFile(fhirSettingsFilePath);
       } else if (args[i].equals(OUTPUT)) {
         if (i + 1 == args.length)
           throw new Error("Specified -output without indicating output file");
@@ -220,21 +242,21 @@ public class Params {
       } else if (args[i].equals(HTTPS_PROXY)) {
         i++;
       } else if (args[i].equals(PROFILE)) {
-        String p = null;
+        String profile = null;
         if (i + 1 == args.length) {
           throw new Error("Specified -profile without indicating profile url");
         } else {
-          p = args[++i];
-          validationContext.addProfile(p);
+          profile = args[++i];
+          validationContext.addProfile(profile);
         }
       } else if (args[i].equals(PROFILES)) {
-        String p = null;
+        String profiles = null;
         if (i + 1 == args.length) {
           throw new Error("Specified -profiles without indicating profile urls");
         } else {
-          p = args[++i];
-          for (String s : p.split("\\,")) {
-            validationContext.addProfile(s);
+          profiles = args[++i];
+          for (String profile : profiles.split("\\,")) {
+            validationContext.addProfile(profile);
           }
         }
       } else if (args[i].equals(OPTION)) {
@@ -268,7 +290,7 @@ public class Params {
         } else {
           profile = args[++i];
         }
-        validationContext.getBundleValidationRules().add(new BundleValidationRule().setRule(rule).setProfile(profile));
+        validationContext.addBundleValidationRule(new BundleValidationRule().setRule(rule).setProfile(profile));
       } else if (args[i].equals(QUESTIONNAIRE)) {
         if (i + 1 == args.length)
           throw new Error("Specified -questionnaire without indicating questionnaire mode");
@@ -287,15 +309,15 @@ public class Params {
         if (i + 1 == args.length)
           throw new Error("Specified -mode without indicating mode");
         else {
-          String q = args[++i];
-          validationContext.getModeParams().add(q);
+          String mode = args[++i];
+          validationContext.addModeParam(mode);
         }
       } else if (args[i].equals(INPUT)) {
         if (i + 1 == args.length)
           throw new Error("Specified -input without providing value");
         else {
-          String inp = args[++i];
-          validationContext.getInputs().add(inp);
+          String input = args[++i];
+          validationContext.addInput(input);
         }
       } else if (args[i].equals(NATIVE)) {
         validationContext.setDoNative(true);
@@ -363,36 +385,30 @@ public class Params {
         validationContext.setHintAboutNonMustSupport(true);
       } else if (args[i].equals(TO_VERSION)) {
         validationContext.setTargetVer(args[++i]);
-        validationContext.setMode(EngineMode.VERSION);
       } else if (args[i].equals(PACKAGE_NAME)) {
         validationContext.setPackageName(args[++i]);
-        if (!hasParam(args, "-re-package")) {
-          validationContext.setMode(EngineMode.CODEGEN);
-        }
       } else if (args[i].equals(TX_PACK)) {
-        validationContext.setMode(EngineMode.RE_PACKAGE);
-        String pn = args[++i];
-        if (pn != null) {
-          if (pn.contains(",")) {
-            for (String s : pn.split("\\,")) {
-              validationContext.getIgs().add(s);
+        String packageArg = args[++i];
+        if (packageArg != null) {
+          if (packageArg.contains(",")) {
+            for (String packageName : packageArg.split("\\,")) {
+              validationContext.getIgs().add(packageName);
             }
           } else {
-            validationContext.getIgs().add(pn);
+            validationContext.getIgs().add(packageArg);
           }
         }
-        validationContext.getModeParams().add("tx");
-        validationContext.getModeParams().add("expansions");
+        validationContext.addModeParam("tx");
+        validationContext.addModeParam("expansions");
       } else if (args[i].equals(RE_PACK)) {
-        validationContext.setMode(EngineMode.RE_PACKAGE);
-        String pn = args[++i];
-        if (pn != null) {
-          if (pn.contains(",")) {
-            for (String s : pn.split("\\,")) {
-              validationContext.getIgs().add(s);
+        String packageArg = args[++i];
+        if (packageArg != null) {
+          if (packageArg.contains(",")) {
+            for (String packageName : packageArg.split("\\,")) {
+              validationContext.getIgs().add(packageName);
             }
           } else {
-            validationContext.getIgs().add(pn);
+            validationContext.getIgs().add(packageArg);
           }
         }
         validationContext.getModeParams().add("tx");
@@ -408,38 +424,24 @@ public class Params {
         validationContext.setCanDoNative(false);
       } else if (args[i].equals(TRANSFORM)) {
         validationContext.setMap(args[++i]);
-        validationContext.setMode(EngineMode.TRANSFORM);
       } else if (args[i].equals(FORMAT)) {
         validationContext.setFormat(FhirFormat.fromCode(args[++i]));
       } else if (args[i].equals(LANG_TRANSFORM)) {
         validationContext.setLangTransform(args[++i]);
-        validationContext.setMode(EngineMode.LANG_TRANSFORM);
       } else if (args[i].equals(LANG_REGEN)) {
         validationContext.addLangRegenParam(args[++i]);
         validationContext.addLangRegenParam(args[++i]);
         validationContext.addLangRegenParam(args[++i]);
-        validationContext.setMode(EngineMode.LANG_REGEN);
       } else if (args[i].equals(EXP_PARAMS)) {
         validationContext.setExpansionParameters(args[++i]);
       } else if (args[i].equals(COMPILE)) {
         validationContext.setMap(args[++i]);
-        validationContext.setMode(EngineMode.COMPILE);
-      } else if (args[i].equals(CODEGEN)) {
-        validationContext.setMode(EngineMode.CODEGEN);
       } else if (args[i].equals(FACTORY)) {
-        validationContext.setMode(EngineMode.FACTORY);
         validationContext.setSource(args[++i]);
-      } else if (args[i].equals(NARRATIVE)) {
-        validationContext.setMode(EngineMode.NARRATIVE);
-      } else if (args[i].equals(SPREADSHEET)) {
-        validationContext.setMode(EngineMode.SPREADSHEET);
-      } else if (args[i].equals(SNAPSHOT)) {
-        validationContext.setMode(EngineMode.SNAPSHOT);
-      } else if (args[i].equals(INSTALL)) {
-        validationContext.setMode(EngineMode.INSTALL);
       } else if (args[i].equals(RUN_TESTS)) {
         // TODO setBaseTestingUtils test directory
-        validationContext.setMode(EngineMode.RUN_TESTS);
+        //This did nothing? RUN_TESTS has no corresponding shouldExecuteTask
+        //validationContext.setMode(EngineMode.RUN_TESTS);
       } else if (args[i].equals(SECURITY_CHECKS)) {
         validationContext.setSecurityChecks(true);
       } else if (args[i].equals(CRUMB_TRAIL)) {
@@ -476,7 +478,7 @@ public class Params {
         validationContext.setShowTimes(true);
       } else if (args[i].equals(OUTPUT_STYLE)) {
         validationContext.setOutputStyle(args[++i]);
-      } else if (args[i].equals(ADVSIOR_FILE)) {
+      } else if (args[i].equals(ADVISOR_FILE)) {
         validationContext.setAdvisorFile(args[++i]);
         File f = ManagedFileAccess.file(validationContext.getAdvisorFile());
         if (!f.exists()) {
@@ -484,8 +486,6 @@ public class Params {
         } else if (!Utilities.existsInList(Utilities.getFileExtension(f.getName()), "json", "txt")) {
           throw new Error("Advisor file "+ validationContext.getAdvisorFile()+" must be a .json or a .txt file");
         }
-      } else if (args[i].equals(SCAN)) {
-        validationContext.setMode(EngineMode.SCAN);
       } else if (args[i].equals(TERMINOLOGY)) {
         if (i + 1 == args.length)
           throw new Error("Specified -tx without indicating terminology server");
@@ -609,12 +609,9 @@ public class Params {
             validationContext.setWatchSettleTime(readInteger(WATCH_SETTLE_TIME, args[++i]));
           }      } else if (args[i].startsWith(X)) {
         i++;
-      } else if (args[i].equals(CONVERT)) {
-        validationContext.setMode(EngineMode.CONVERT);
       } else if (args[i].equals(SERVER)) {
         i++;
       } else if (args[i].equals(FHIRPATH)) {
-        validationContext.setMode(EngineMode.FHIRPATH);
         if (validationContext.getFhirpath() == null)
           if (i + 1 == args.length)
             throw new Error("Specified -fhirpath without indicating a FHIRPath expression");
@@ -622,7 +619,15 @@ public class Params {
             validationContext.setFhirpath(args[++i]);
         else
           throw new Exception("Can only nominate a single -fhirpath parameter");
-      } else if (!Utilities.existsInList(args[i], AUTH_NONCONFORMANT_SERVERS)) {
+      } else if (args[i].equals(SCOPE) || args[i].equals(IGNORE_LIST)) {
+        //These two params are processed later by the RePackageTask and not included in ValidationContext.
+        i++;
+      } else if (!Utilities.existsInList(args[i],
+        //The following params are handled outside this loop, so should be ignored.
+        AUTH_NONCONFORMANT_SERVERS,
+        NO_HTTP_ACCESS,
+        FHIR_SETTINGS_PARAM)) {
+        //Any remaining unhandled args become sources
         validationContext.addSource(args[i]);
       }
     }

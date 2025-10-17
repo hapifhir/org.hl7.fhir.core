@@ -71,11 +71,11 @@ public class ComparisonSession {
   }
 
   public ResourceComparison compare(String left, Resource leftSource, String right, Resource rightSource) throws DefinitionException, FHIRFormatError, IOException {
-    CanonicalResource l = (CanonicalResource) contextLeft.fetchResource(Resource.class, left, leftSource);
+    CanonicalResource l = (CanonicalResource) contextLeft.fetchResource(Resource.class, left, null, leftSource);
     if (l == null) {
       throw new DefinitionException("Unable to resolve "+left);
     }
-    CanonicalResource r = (CanonicalResource) contextRight.fetchResource(Resource.class, right, rightSource);
+    CanonicalResource r = (CanonicalResource) contextRight.fetchResource(Resource.class, right, null, rightSource);
     if (r == null) {
       throw new DefinitionException("Unable to resolve "+right);
     }

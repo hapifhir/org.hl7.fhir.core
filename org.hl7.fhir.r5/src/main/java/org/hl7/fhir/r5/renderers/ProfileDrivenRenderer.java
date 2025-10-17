@@ -604,7 +604,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
               if (xverManager.matchingUrl(url) && xverManager.status(url) == XVerExtensionStatus.Valid) {
                 ed = xverManager.getDefinition(url);
                 new ContextUtilities(getContext().getWorker()).generateSnapshot(ed);
-                getContext().getWorker().cacheResource(ed);
+                getContext().getWorker().getManager().cacheResource(ed);
               } 
             }
             if (p.getName().equals("modifierExtension") && ed == null) {

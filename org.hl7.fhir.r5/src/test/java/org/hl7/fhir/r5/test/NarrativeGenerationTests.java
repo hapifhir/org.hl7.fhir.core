@@ -29,6 +29,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.ITypeParser;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.StructureDefinitionRendererMode;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
@@ -233,10 +234,12 @@ public class NarrativeGenerationTests {
 
   @BeforeAll
   public static void setUp() throws IOException {
-    context = TestingUtilities.getSharedWorkerContext("5.0.0");
+    var simpleContext = TestingUtilities.getSharedWorkerContext("5.0.0");
+    simpleContext.connectToTSServer(new TerminologyClientR5.TerminologyClientR5Factory(), "http://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
+    context = simpleContext;
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     NpmPackage ips = pcm.loadPackage("hl7.fhir.uv.ips#1.1.0");
-    context.loadFromPackage(ips,  new TestPackageLoader(Utilities.stringSet("StructureDefinition", "ValueSet" )));
+    context.getManager().loadFromPackage(ips,  new TestPackageLoader(Utilities.stringSet("StructureDefinition", "ValueSet" )));
   }
 
   @ParameterizedTest(name = "{index}: file {0}")
@@ -245,9 +248,9 @@ public class NarrativeGenerationTests {
     XhtmlNode.setCheckParaGeneral(true);
     if (test.getRegister() != null) {
       if (test.getRegister().endsWith(".json")) {
-        context.cacheResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getRegister())));
+        context.getManager().cacheResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getRegister())));
       } else {
-        context.cacheResource(new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getRegister())));
+        context.getManager().cacheResource(new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getRegister())));
       }
     }
     RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);

@@ -1,9 +1,9 @@
 package org.hl7.fhir.validation.cli.tasks;
 
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
-import org.hl7.fhir.validation.service.utils.EngineMode;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
@@ -27,7 +27,13 @@ public class CodeGenTask extends ValidationEngineTask {
 
   @Override
   public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
-    return validationContext.getMode() == EngineMode.CODEGEN;
+    return shouldExecuteTask(args);
+  }
+
+  @Override
+  public boolean shouldExecuteTask(@Nonnull String[] args) {
+    return Params.hasParam(args, Params.CODEGEN)
+      || (Params.hasParam(args, Params.PACKAGE_NAME) && !Params.hasParam(args, Params.RE_PACK));
   }
 
   @Override

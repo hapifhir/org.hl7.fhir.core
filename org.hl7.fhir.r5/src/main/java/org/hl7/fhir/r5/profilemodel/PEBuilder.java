@@ -332,7 +332,7 @@ public class PEBuilder {
 
 
   private StructureDefinition getProfile(String url, String version) {
-    return context.fetchResource(StructureDefinition.class, url, version);
+    return context.fetchResource(StructureDefinition.class, url, version, null);
   }
 //
 //  protected List<PEDefinition> listChildren(boolean allFixed, StructureDefinition profileStructure, ElementDefinition definition, TypeRefComponent t, CanonicalType u) {

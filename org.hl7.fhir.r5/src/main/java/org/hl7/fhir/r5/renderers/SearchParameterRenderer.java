@@ -168,7 +168,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       tbl = x.table("grid", false).markGenerated(!context.forValidResource());
       for (SearchParameterComponentComponent t : spd.getComponent()) {
         tr = tbl.tr();
-        SearchParameter tsp = context.getWorker().fetchResource(SearchParameter.class, t.getDefinition(), spd);
+        SearchParameter tsp = context.getWorker().fetchResource(SearchParameter.class, t.getDefinition(), null, spd);
         if (tsp != null && tsp.hasWebPath()) {
           tr.td().ah(context.prefixLocalHref(tsp.getWebPath())).tx(tsp.present());          
         } else {

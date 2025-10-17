@@ -189,6 +189,9 @@ public class VersionUtilities {
     if (isR4Ver(v)) {
       return "4.0.1";
     }
+    if (isR4BVer(v)) {
+      return "4.3.0";
+    }
     if (isR5Ver(v)) {
       return "5.0.0";
     }
@@ -860,7 +863,7 @@ public class VersionUtilities {
    * 2.0.* matches 2.0.0, 2.0.1, and not 2.0.0-something or 2.0.0+something
    * 2.0.0-* matches 2.0.0-prerelease or any other label but not 2.0.0+build
    * 2.0.0+* matches 2.0.0+build or any other build but not 2.0.0 or 2.0.0-prerelease
-   * 2.0.x-x matches 2.0.1-prerelease or 2.0.1-prerelease but not 2.0.0 or 2.0.1
+   * 2.0.x-* matches 2.0.1-prerelease or 2.0.1-prerelease but not 2.0.0 or 2.0.1
    * 2.0? matches 2.0, 2.0.1, 2.0.0-build etc - anything that starts with 2.0
    * 2.0.1? matches 2.0.1, 2.0.1-release, 2.0.1+build etc - anything that starts with 2.0.1
    * 2.x? matches 2.anything (weird thing to do)

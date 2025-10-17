@@ -261,7 +261,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
         pidMap.put(pid+"|"+ver, null);
       }
       if (pi != null) {
-        context.loadFromPackage(pi, null);
+        context.getManager().loadFromPackage(pi, null);
         return pi.hasCanonical(url) ||  context.fetchResource(Resource.class, url) != null;
       }
     }

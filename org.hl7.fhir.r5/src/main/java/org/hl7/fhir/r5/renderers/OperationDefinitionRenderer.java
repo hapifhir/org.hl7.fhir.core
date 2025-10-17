@@ -88,7 +88,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     if (opd.hasInputProfile()) { 
       XhtmlNode p = x.para(); 
       p.tx(context.formatPhrase(RenderingContext.OP_DEF_INPAR)); 
-      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getInputProfile(), opd); 
+      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getInputProfile(), null, opd);
       if (sd == null) { 
         p.pre().tx(opd.getInputProfile());         
       } else { 
@@ -98,7 +98,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     if (opd.hasOutputProfile()) { 
       XhtmlNode p = x.para(); 
       p.tx(context.formatPhrase(RenderingContext.OP_DEF_OUTPAR)); 
-      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getOutputProfile(), opd); 
+      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getOutputProfile(), null, opd);
       if (sd == null) { 
         p.pre().tx(opd.getOutputProfile());         
       } else { 

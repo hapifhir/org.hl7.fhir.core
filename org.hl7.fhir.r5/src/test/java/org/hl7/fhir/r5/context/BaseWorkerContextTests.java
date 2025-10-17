@@ -16,6 +16,7 @@ import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
+import org.hl7.fhir.utilities.npm.IPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -47,7 +48,7 @@ public class BaseWorkerContextTests {
   private static final String DUMMY_URL = "dummyUrl";
 
   @Spy
-  BaseWorkerContext context = new BaseWorkerContext(){
+  BaseWorkerContext context = new BaseWorkerContext() {
     @Override
     public String getVersion() {
       return "4.0.1";
@@ -64,6 +65,16 @@ public class BaseWorkerContextTests {
     }
 
     @Override
+    public IPackageCacheManager packageManager() {
+      return null;
+    }
+
+    @Override
+    public void setPackageManager(IPackageCacheManager manager) {
+
+    }
+
+    @Override
     public void cachePackage(PackageInformation packageInfo) {
 
     }
@@ -75,6 +86,16 @@ public class BaseWorkerContextTests {
 
     @Override
     public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
+      return 0;
+    }
+
+    @Override
+    public int loadPackage(NpmPackage pi) throws FileNotFoundException, IOException, FHIRException {
+      return 0;
+    }
+
+    @Override
+    public int loadPackage(String idAndVer) throws FileNotFoundException, IOException, FHIRException {
       return 0;
     }
 
@@ -166,6 +187,26 @@ public class BaseWorkerContextTests {
     }
   }
 
+  public static class ExpansionOptionsMatcher implements ArgumentMatcher<ExpansionOptions> {
+
+    private final ExpansionOptions left;
+
+    ExpansionOptionsMatcher(ExpansionOptions left) {
+      this.left = left;
+    }
+
+    @Override
+    public boolean matches(ExpansionOptions right) {
+      return left.isHierarchical() == right.isHierarchical()
+        && left.isIncompleteOk() == right.isIncompleteOk()
+        && left.getMaxCount() == right.getMaxCount()
+        && left.isCacheOk() == right.isCacheOk()
+        && (left.hasLanguage()
+        ? left.getLanguage().equals(right.getLanguage())
+        : !right.hasLanguage());
+    }
+  }
+
   public static class CodingMatcher implements ArgumentMatcher<Coding> {
     final private Coding left;
 
@@ -234,6 +275,16 @@ public class BaseWorkerContextTests {
       }
 
       @Override
+      public IPackageCacheManager packageManager() {
+        return null;
+      }
+
+      @Override
+      public void setPackageManager(IPackageCacheManager manager) {
+
+      }
+
+      @Override
       public void cachePackage(PackageInformation packageInfo) {
 
       }
@@ -249,9 +300,19 @@ public class BaseWorkerContextTests {
       }
 
       @Override
-        public int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException {
-            return 0;
-        }
+      public int loadPackage(NpmPackage pi) throws FileNotFoundException, IOException, FHIRException {
+        return 0;
+      }
+
+      @Override
+      public int loadPackage(String idAndVer) throws FileNotFoundException, IOException, FHIRException {
+        return 0;
+      }
+
+      @Override
+      public int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException {
+        return 0;
+      }
 
       @Override
       public boolean hasPackage(String id, String ver) {
@@ -274,7 +335,7 @@ public class BaseWorkerContextTests {
       }
 
       @Override
-      public <T extends Resource> List<T> fetchResourcesByUrl(Class<T> class_, String url) {
+      public <T extends Resource> List<T> fetchResourceVersions(Class<T> class_, String url) {
         return new ArrayList<>();
       }
 
@@ -449,7 +510,10 @@ public class BaseWorkerContextTests {
     vs.getCompose().setInactive(true);
     vs.getCompose().getInclude().add(inc);
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)),eq(true));
+    ExpansionOptions opt = new ExpansionOptions().withHierarchical(true);
+
+
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)), argThat(new ExpansionOptionsMatcher(opt)));
     Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
 
     ValueSetExpansionOutcome actualExpansionResult = context.expandVS(null, inc, true, false);
@@ -471,8 +535,10 @@ public class BaseWorkerContextTests {
     vs.setCompose(new ValueSet.ValueSetComposeComponent());
     vs.getCompose().setInactive(true);
     vs.getCompose().getInclude().add(inc);
+    ExpansionOptions opt = new ExpansionOptions().withHierarchical(true);
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)),eq(true));
+
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)),argThat(new ExpansionOptionsMatcher(opt)));
 
     TerminologyClientContext terminologyClientContext = context.getTxClientManager().getMaster();
 
@@ -492,17 +558,41 @@ public class BaseWorkerContextTests {
   }
 
   @Test
-  public void testExpandValueSet4ArgsWithCache() throws IOException {
+  void testExpandValueSetDeprecated() {
+    assertDoesNotThrow(() -> {
+
+      ValueSet vs = new ValueSet();
+      vs.setUrl(DUMMY_URL);
+
+      //This is the ExpansionOptions as it should be generated for the deprecated method
+      ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true).withIncompleteOk(true).withMaxCount(0);
+
+      //This is the actual test. The ExpansionOptions generated should match the one above, and the rest of the test
+      //should then be able to run without exception.
+      Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(same(vs), argThat(new ExpansionOptionsMatcher(opt)));
+      Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
+
+      Parameters pIn = new Parameters();
+
+      context.expandVS(vs, true, true, true, pIn);
+    });
+
+  }
+
+
+  @Test
+  public void testExpandValueSetWithOptionsWithCache() throws IOException {
 
     ValueSet vs = new ValueSet();
     vs.setUrl(DUMMY_URL);
+    ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true);
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(vs,true);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(vs,opt);
     Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
 
     Parameters pIn = new Parameters();
 
-    ValueSetExpansionOutcome actualExpansionResult = context.expandVS(vs, true,  true, true, pIn);
+    ValueSetExpansionOutcome actualExpansionResult = context.expandVS(opt, vs, pIn, false);
 
     assertEquals(expectedExpansionResult, actualExpansionResult);
 
@@ -525,12 +615,13 @@ public class BaseWorkerContextTests {
   }
 
   @Test
-  public void testExpandValueSet4ArgsWithValueSetExpanderSimple() throws IOException {
+  public void testExpandValueSetWithOptionsWithValueSetExpanderSimple() throws IOException {
 
     ValueSet vs = new ValueSet();
     vs.setUrl(DUMMY_URL);
+    ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true);
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(vs,true);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(vs,opt);
 
     Parameters pIn = new Parameters();
 
@@ -541,7 +632,7 @@ public class BaseWorkerContextTests {
 
     Mockito.doReturn(valueSetExpanderSimple).when(context).constructValueSetExpanderSimple(argThat(new ValidationOptionsFhirPublicationMatcher(vs.getFHIRPublicationVersion())));
 
-    ValueSetExpansionOutcome actualExpansionResult = context.expandVS(vs, true,  true, true, pIn);
+    ValueSetExpansionOutcome actualExpansionResult = context.expandVS(opt, vs, pIn, false);
 
     assertEquals(expectedExpansionResult, actualExpansionResult);
 
@@ -551,12 +642,13 @@ public class BaseWorkerContextTests {
   }
 
   @Test
-  public void testExpandValueSet4ArgsWithClient() throws IOException {
+  public void testExpandValueSetWithOptionsWithClient() throws IOException {
 
     ValueSet vs = new ValueSet();
     vs.setUrl(DUMMY_URL);
+    ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true);
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(vs,true);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(vs,opt);
 
     Parameters pIn = new Parameters();
 
@@ -570,7 +662,7 @@ public class BaseWorkerContextTests {
 
     Mockito.doReturn(expectedValueSet).when(terminologyClient).expandValueset(eq(vs), argThat(new ParametersMatcher(pInWithDependentResources)));
 
-    ValueSetExpansionOutcome actualExpansionResult = context.expandVS(vs, true,  true, true, pIn, false);
+    ValueSetExpansionOutcome actualExpansionResult = context.expandVS(opt, vs, pIn, false);
 
     assertEquals(expectedValueSet, actualExpansionResult.getValueset());
 

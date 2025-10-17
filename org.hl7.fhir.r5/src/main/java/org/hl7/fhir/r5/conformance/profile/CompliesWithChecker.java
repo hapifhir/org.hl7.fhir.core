@@ -156,7 +156,9 @@ public class CompliesWithChecker {
   private String valuesToString(List<DataType> diffValues) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("|"); 
     for (DataType dt : diffValues) {
-      b.append(dt.toString());
+      if (dt != null) {
+        b.append(dt.toString());
+      }
     }
     return b.toString();
   }

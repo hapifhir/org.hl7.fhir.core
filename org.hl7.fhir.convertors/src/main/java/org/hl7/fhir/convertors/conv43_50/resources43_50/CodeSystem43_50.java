@@ -20,6 +20,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations;
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -56,13 +57,15 @@ public class CodeSystem43_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.CodeSystem tgt = new org.hl7.fhir.r5.model.CodeSystem();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyDomainResource(src, tgt);
+    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_VERSION_ALGORITHM);
     if (src.hasUrl())
       tgt.setUrlElement(Uri43_50.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.r4b.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier43_50.convertIdentifier(t));
     if (src.hasVersion())
       tgt.setVersionElement(String43_50.convertString(src.getVersionElement()));
+    if (src.hasExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM))
+      tgt.setVersionAlgorithm(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getExtensionByUrl(VersionConvertorConstants.EXT_VERSION_ALGORITHM).getValue()));
     if (src.hasName())
       tgt.setNameElement(String43_50.convertString(src.getNameElement()));
     if (src.hasTitle())
@@ -123,6 +126,10 @@ public class CodeSystem43_50 {
       tgt.addIdentifier(Identifier43_50.convertIdentifier(t));
     if (src.hasVersion())
       tgt.setVersionElement(String43_50.convertString(src.getVersionElement()));
+    if (src.hasVersionAlgorithm()) {
+      tgt.addExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM,
+        ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getVersionAlgorithm()));
+    }
     if (src.hasName())
       tgt.setNameElement(String43_50.convertString(src.getNameElement()));
     if (src.hasTitle())

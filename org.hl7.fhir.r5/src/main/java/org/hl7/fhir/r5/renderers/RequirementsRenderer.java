@@ -42,7 +42,7 @@ public class RequirementsRenderer extends ResourceRenderer {
     if (req.has("actor")) {
       List<ResourceWrapper> actors = req.children("actor");
       if (actors.size() == 1) {
-        ActorDefinition acd = context.getWorker().fetchResource(ActorDefinition.class, actors.get(0).primitiveValue(), req.getResourceNative());
+        ActorDefinition acd = context.getWorker().fetchResource(ActorDefinition.class, actors.get(0).primitiveValue(), null, req.getResourceNative());
         XhtmlNode p = x.para();
         p.tx(context.formatPhrase(RenderingContext.REQ_ACTOR)+" ");
         renderCanonical(status, p, ActorDefinition.class, actors.get(0));
@@ -112,7 +112,7 @@ public class RequirementsRenderer extends ResourceRenderer {
           String url = stmt.primitiveValue("derivedFrom");
           String key = url.contains("#") ? url.substring(url.indexOf("#")+1) : "";
           if (url.contains("#")) { url = url.substring(0, url.indexOf("#")); };
-          Requirements reqr = context.getWorker().fetchResource(Requirements.class, url, req.getResourceNative());
+          Requirements reqr = context.getWorker().fetchResource(Requirements.class, url, null, req.getResourceNative());
           if (reqr != null) {
             RequirementsStatementComponent stmtr = reqr.findStatement(key);
             if (stmtr != null) {
@@ -134,7 +134,7 @@ public class RequirementsRenderer extends ResourceRenderer {
             if (url.contains("#")) {
               url = url.substring(0, url.indexOf("#"));
             }
-            Resource r = context.getWorker().fetchResource(Resource.class, url, req.getResourceNative());
+            Resource r = context.getWorker().fetchResource(Resource.class, url, null, req.getResourceNative());
             if (r != null) {
               String desc = getResourceDescription(r, null);
               li.ah(context.prefixLocalHref(c.primitiveValue())).tx(desc);
@@ -168,7 +168,7 @@ public class RequirementsRenderer extends ResourceRenderer {
               if (url.contains("#")) {
                 url = url.substring(0, url.indexOf("#"));
               }
-              Resource r = context.getWorker().fetchResource(Resource.class, url, req.getResourceNative());
+              Resource r = context.getWorker().fetchResource(Resource.class, url, null, req.getResourceNative());
               ResourceWithReference t = null;
               if (r == null && context.getResolver() != null) {
                 t = context.getResolver().resolve(context, url, null);                

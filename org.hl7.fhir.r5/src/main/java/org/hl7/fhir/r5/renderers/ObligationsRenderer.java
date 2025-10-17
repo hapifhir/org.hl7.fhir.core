@@ -8,13 +8,7 @@ import java.util.List;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.model.ActorDefinition;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.UsageContext;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
@@ -360,7 +354,7 @@ public class ObligationsRenderer extends Renderer {
           children.tx(displayForUsage(uc.getCode()));
           children.tx("=");
         }
-        CodeResolution ccr = this.cr.resolveCode(uc.getValueCodeableConcept());
+        CodeResolution ccr = this.cr.resolveCode(uc.getValueCodeableConcept(), profile);
         children.ah(context.prefixLocalHref(ccr.getLink()), ccr.getHint()).tx(ccr.getDisplay());
       }
       children.tx(")");
@@ -590,9 +584,9 @@ public class ObligationsRenderer extends Renderer {
           children.b().tx(c.toUpperCase());
           children.tx(":");
         }
-        CodeResolution cr = this.cr.resolveCode("http://hl7.org/fhir/CodeSystem/obligation", code);
+        CodeResolution cr = this.cr.resolveCode("http://hl7.org/fhir/CodeSystem/obligation", code, profile);
         if (cr == null) {
-          cr = this.cr.resolveCode("http://hl7.org/fhir/tools/CodeSystem/obligation", code);
+          cr = this.cr.resolveCode("http://hl7.org/fhir/tools/CodeSystem/obligation", code, profile);
         }
         code = code.replace("will-", "").replace("can-", "");
         if (cr.getLink() != null) {

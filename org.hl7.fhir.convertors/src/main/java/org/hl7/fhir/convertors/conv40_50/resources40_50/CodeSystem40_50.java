@@ -2,7 +2,9 @@ package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
 import java.util.stream.Collectors;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
+import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Coding40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
@@ -56,13 +58,15 @@ public class CodeSystem40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.CodeSystem tgt = new org.hl7.fhir.r5.model.CodeSystem();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_VERSION_ALGORITHM);
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_50.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     if (src.hasVersion())
       tgt.setVersionElement(String40_50.convertString(src.getVersionElement()));
+    if (src.hasExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM))
+      tgt.setVersionAlgorithm(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getExtensionByUrl(VersionConvertorConstants.EXT_VERSION_ALGORITHM).getValue()));
     if (src.hasName())
       tgt.setNameElement(String40_50.convertString(src.getNameElement()));
     if (src.hasTitle())
@@ -123,6 +127,10 @@ public class CodeSystem40_50 {
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     if (src.hasVersion())
       tgt.setVersionElement(String40_50.convertString(src.getVersionElement()));
+    if (src.hasVersionAlgorithm()) {
+      tgt.addExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM,
+        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getVersionAlgorithm()));
+    }
     if (src.hasName())
       tgt.setNameElement(String40_50.convertString(src.getNameElement()));
     if (src.hasTitle())

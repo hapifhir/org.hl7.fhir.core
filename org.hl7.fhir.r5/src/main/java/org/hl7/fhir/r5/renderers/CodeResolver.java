@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.renderers;
 
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 @MarkedToMoveToAdjunctPackage
@@ -43,7 +44,7 @@ public interface CodeResolver {
     
   }
   
-  public CodeResolution resolveCode(String system, String code);
-  public CodeResolution resolveCode(Coding code);
-  public CodeResolution resolveCode(CodeableConcept code);
+  public CodeResolution resolveCode(String system, String code, Resource source);
+  public CodeResolution resolveCode(Coding code, Resource source);
+  public CodeResolution resolveCode(CodeableConcept code, Resource source);
 }

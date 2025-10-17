@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.r5.context.ExpansionOptions;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
@@ -324,7 +325,7 @@ public class ValueSetValidator extends BaseValidator {
         ValueSet vs = context.findTxResource(ValueSet.class, v);
         if (vs == null) {
           // we couldn't find it, but it might be an implicit value set 
-          ValueSetExpansionOutcome vse = context.expandVS(v, true, false, 0);
+          ValueSetExpansionOutcome vse = context.expandVS(new ExpansionOptions().withCacheOk(true).withHierarchical(false).withMaxCount(0), v);
           if (!vse.isOk() ) {
             NodeStack ns = stack.push(ve, i, ve.getProperty().getDefinition(), ve.getProperty().getDefinition());
 
@@ -381,10 +382,10 @@ public class ValueSetValidator extends BaseValidator {
     CodeSystemChecker csChecker = getSystemValidator(system, errors);
     CodeSystem cs = null;
     if (!Utilities.noString(system)) {
-      cs = context.fetchCodeSystem(system, version);
+      cs = context.fetchCodeSystem(system, version, null);
       if (cs == null) {
         // can we get it from a terminology server? 
-        cs = context.findTxResource(CodeSystem.class, system, version);
+        cs = context.findTxResource(CodeSystem.class, system, version, null);
       }
       boolean validateConcepts = true;
       if (cs != null) { // if it's null, we can't analyse this
@@ -405,7 +406,7 @@ public class ValueSetValidator extends BaseValidator {
             break;
           case NOTPRESENT:
             // what happens next depends on whether we can validate this codeSystem
-            if (!context.isServerSideSystem(cs.getUrl())) {
+            if (!context.getTxSupportInfo(cs.getUrl(), cs.getVersion()).isServerSide()) {
               validateConcepts = false;
               warning(errors, "2024-03-06", IssueType.INVALID, stack, false, version == null ? I18nConstants.VALUESET_INCLUDE_CS_CONTENT : I18nConstants.VALUESET_INCLUDE_CSVER_CONTENT, system, cs.getContent().toCode(), version);
             }
@@ -429,7 +430,7 @@ public class ValueSetValidator extends BaseValidator {
             }
           }
         }
-        ValueSet vs = context.findTxResource(ValueSet.class, system, version);
+        ValueSet vs = context.findTxResource(ValueSet.class, system, version, null);
         if (vs != null) {
           validateConcepts = false;
           List<String> systems = TerminologyUtilities.listSystems(vs);

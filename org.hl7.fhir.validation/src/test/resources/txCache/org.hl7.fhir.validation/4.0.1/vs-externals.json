@@ -1,72 +1,25 @@
 {
-  "http://loinc.org|2.76" : null,
-  "http://terminology.hl7.org/ValueSet/v3-ActCoverageTypeCode|2014-03-26" : {
-    "server" : "http://local.fhir.org/r4",
-    "filename" : "vs-42616565-ab2a-4fb2-bc51-43852dd0f735.json"
-  },
-  "http://terminology.hl7.org/ValueSet/v3-ActCode|2018-08-12" : {
-    "server" : "http://local.fhir.org/r4",
-    "filename" : "vs-b7b3e13d-d4c8-4f91-93fc-bb54219ea491.json"
-  },
-  "http://terminology.hl7.org/ValueSet/v3-FamilyMember|2014-03-26" : {
-    "server" : "http://local.fhir.org/r4",
-    "filename" : "vs-0bb23879-a55c-4ce2-b812-5701582ff205.json"
-  },
-  "http://snomed.info/sct|http://snomed.info/sct/32506021000036107" : null,
+  "http://example.org/invalid-valueset-canonical" : null,
+  "http://hl7.org/fhir/us/davinci-hrex/ValueSet/hrex-endpoint-name" : null,
   "http://fhir.ch/ig/ch-ig/ValueSet/ch-ig-example" : null,
   "http://hl7.org/fhir/us/qicore/ValueSet/qicore-negation-reason" : null,
   "http://fhir.ch/ig/ch-ig/ValueSet/OrganizationType" : null,
-  "http://terminology.hl7.org/ValueSet/v3-SecurityIntegrityObservationValue|2014-03-26" : {
-    "server" : "http://local.fhir.org/r4",
-    "filename" : "vs-f214cf2c-e5e6-42f1-8492-ae47303ffcc8.json"
-  },
+  "http://hl7.org/fhir/test/CodeSystem/big" : null,
   "https://fhir.kbv.de/ValueSet/KBV_VS_SFHIR_ICD_SEITENLOKALISATION" : null,
-  "http://hl7.org/fhir/test/CodeSystem/big|null" : null,
+  "#f3b2bd36-199b-4591-b4db-f49db0912b62" : null,
   "http://fhir.abda.de/eRezeptAbgabedaten/ValueSet/DAV-VS-ERP-DEUEV-Anlage-8" : null,
   "#VSPHQ9" : null,
-  "http://terminology.hl7.org/ValueSet/v3-Compartment|2014-03-26" : {
-    "server" : "http://local.fhir.org/r4",
-    "filename" : "vs-9460ab0e-26d2-4300-afa1-7baad66929b9.json"
-  },
-  "http://snomed.info/sct|http://snomed.info/sct/731000124108" : null,
-  "http://terminology.hl7.org/ValueSet/v3-InformationSensitivityPolicy|2014-03-26" : {
-    "server" : "http://local.fhir.org/r4",
-    "filename" : "vs-df61c8fd-985c-43bf-8adc-b48c3cef607d.json"
-  },
-  "#f3b2bd36-199b-4591-b4db-f49db0912b6|null" : null,
-  "#c1|null" : null,
-  "http://example.org/invalid-valueset-canonical" : null,
-  "http://hl7.org/fhir/us/davinci-hrex/ValueSet/hrex-endpoint-name" : null,
-  "http://terminology.hl7.org/ValueSet/v3-ActUSPrivacyLaw|2018-08-12" : {
-    "server" : "http://local.fhir.org/r4",
-    "filename" : "vs-9f3db68a-7dfe-4e07-93cc-29f2ea242958.json"
-  },
-  "http://terminology.hl7.org/ValueSet/v3-ActEncounterCode|2014-03-26" : {
-    "server" : "http://local.fhir.org/r4",
-    "filename" : "vs-ce9f35fc-2bd8-4ea4-9f50-dbd5473ac14b.json"
-  },
-  "http://terminology.hl7.org/ValueSet/v3-SecurityControlObservationValue|2014-03-26" : {
-    "server" : "http://local.fhir.org/r4",
-    "filename" : "vs-ccc945d6-64bb-4ccd-b16c-0318eb6a3420.json"
-  },
-  "http://something/something|null" : null,
-  "http://hl7.org/fhir/CodeSystem/c1|null" : null,
-  "http://terminology.hl7.org/ValueSet/v3-ActConsentType|2014-03-26" : {
-    "server" : "http://local.fhir.org/r4",
-    "filename" : "vs-097d4577-f463-40a7-bd1b-ea4dec136f99.json"
-  },
+  "#c1" : null,
   "#options-1" : null,
-  "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9|null" : null,
-  "#f3b2bd36-199b-4591-b4db-f49db0912b62|null" : null,
+  "http://something/something" : null,
+  "http://loinc.org" : null,
   "https://sqlonfhir-dstu2.azurewebsites.net/fhir/ValueSet/administrative-gender" : null,
   "http://hl7.org/fhir/smart-app-launch/ValueSet/user-access-category" : null,
   "https://healthterminologies.gov.au/fhir/ValueSet/australian-immunisation-register-vaccine-1" : {
     "server" : "https://tx.ontoserver.csiro.au/fhir",
-    "filename" : "vs-4fad5e4e-bf64-44a2-bc55-1409a4632940.json"
+    "filename" : "vs-615e461e-448a-46a4-90aa-30f2787f592e.json"
   },
-  "http://terminology.hl7.org/ValueSet/v3-ServiceDeliveryLocationRoleType|2014-03-26" : {
-    "server" : "http://local.fhir.org/r4",
-    "filename" : "vs-2a487130-2d7c-4baa-91a1-6db1e72e55b4.json"
-  },
-  "https://sqlonfhir-ci2.azurewebsites.net/fhir/ValueSet/hcxdir-locality" : null
+  "http://hl7.org/fhir/CodeSystem/c1" : null,
+  "https://sqlonfhir-ci2.azurewebsites.net/fhir/ValueSet/hcxdir-locality" : null,
+  "#f3b2bd36-199b-4591-b4db-f49db0912b6" : null
 }

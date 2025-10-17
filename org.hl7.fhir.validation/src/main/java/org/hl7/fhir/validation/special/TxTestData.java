@@ -89,7 +89,7 @@ public class TxTestData {
 
   private static InputStream loadFile(File folder, String filename) throws IOException {
     File f = ManagedFileAccess.file(Utilities.path(folder.getAbsolutePath(), filename));
-    
+
     return ManagedFileAccess.inStream(f);
   }
  

@@ -19154,6 +19154,18 @@ The primary difference between a medicationstatement and a medicationadministrat
          * Added in R6
          */
         CLINICALASSESSMENT,
+      /**
+       * Added in R6
+       */
+      DEVICEALERT,
+      /**
+       * Added in R6
+       */
+      INSURANCEPRODUCT,
+      /**
+       * Added in R6
+       */
+      PERSONALRELATIONSHIP,
         /**
            * added to help the parsers
          */
@@ -19571,13 +19583,39 @@ The primary difference between a medicationstatement and a medicationadministrat
             return MOLECULARDEFINITION;
           if ("ClinicalAssessment".equals(codeString))
             return CLINICALASSESSMENT;
-          
+          if ("DeviceAlert".equals(codeString))
+            return DEVICEALERT;
+          if ("InsuranceProduct".equals(codeString))
+            return INSURANCEPRODUCT;
+          if ("PersonalRelationship".equals(codeString))
+            return PERSONALRELATIONSHIP;
         throw new FHIRException("Unknown VersionIndependentResourceTypesAll code '"+codeString+"'");
         }
         public static boolean isValidCode(String codeString) {
             if (codeString == null || "".equals(codeString))
                 return false;
-          return Utilities.existsInList(codeString, "Account", "ActivityDefinition", "ActorDefinition", "AdministrableProductDefinition", "AdverseEvent", "AllergyIntolerance", "Appointment", "AppointmentResponse", "ArtifactAssessment", "AuditEvent", "Basic", "Binary", "BiologicallyDerivedProduct", "BiologicallyDerivedProductDispense", "BodyStructure", "Bundle", "CanonicalResource", "CapabilityStatement", "CarePlan", "CareTeam", "ChargeItem", "ChargeItemDefinition", "Citation", "Claim", "ClaimResponse", "ClinicalImpression", "ClinicalUseDefinition", "CodeSystem", "Communication", "CommunicationRequest", "CompartmentDefinition", "Composition", "ConceptMap", "Condition", "ConditionDefinition", "Consent", "Contract", "Coverage", "CoverageEligibilityRequest", "CoverageEligibilityResponse", "DetectedIssue", "Device", "DeviceAssociation", "DeviceDefinition", "DeviceDispense", "DeviceMetric", "DeviceRequest", "DeviceUsage", "DiagnosticReport", "DocumentReference", "DomainResource", "Encounter", "EncounterHistory", "Endpoint", "EnrollmentRequest", "EnrollmentResponse", "EpisodeOfCare", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable", "ExampleScenario", "ExplanationOfBenefit", "FamilyMemberHistory", "Flag", "FormularyItem", "GenomicStudy", "Goal", "GraphDefinition", "Group", "GuidanceResponse", "HealthcareService", "ImagingSelection", "ImagingStudy", "Immunization", "ImmunizationEvaluation", "ImmunizationRecommendation", "ImplementationGuide", "Ingredient", "InsurancePlan", "InventoryItem", "InventoryReport", "Invoice", "Library", "Linkage", "List", "Location", "ManufacturedItemDefinition", "Measure", "MeasureReport", "Medication", "MedicationAdministration", "MedicationDispense", "MedicationKnowledge", "MedicationRequest", "MedicationStatement", "MedicinalProductDefinition", "MessageDefinition", "MessageHeader", "MetadataResource", "MolecularSequence", "NamingSystem", "NutritionIntake", "NutritionOrder", "NutritionProduct", "Observation", "ObservationDefinition", "OperationDefinition", "OperationOutcome", "Organization", "OrganizationAffiliation", "PackagedProductDefinition", "Parameters", "Patient", "PaymentNotice", "PaymentReconciliation", "Permission", "Person", "PlanDefinition", "Practitioner", "PractitionerRole", "Procedure", "Provenance", "Questionnaire", "QuestionnaireResponse", "RegulatedAuthorization", "RelatedPerson", "RequestOrchestration", "Requirements", "ResearchStudy", "ResearchSubject", "Resource", "RiskAssessment", "Schedule", "SearchParameter", "ServiceRequest", "Slot", "Specimen", "SpecimenDefinition", "StructureDefinition", "StructureMap", "Subscription", "SubscriptionStatus", "SubscriptionTopic", "Substance", "SubstanceDefinition", "SubstanceNucleicAcid", "SubstancePolymer", "SubstanceProtein", "SubstanceReferenceInformation", "SubstanceSourceMaterial", "SupplyDelivery", "SupplyRequest", "Task", "TerminologyCapabilities", "TestPlan", "TestReport", "TestScript", "Transport", "ValueSet", "VerificationResult", "VisionPrescription", "BodySite", "CatalogEntry", "Conformance", "DataElement", "DeviceComponent", "DeviceUseRequest", "DeviceUseStatement", "DiagnosticOrder", "DocumentManifest", "EffectEvidenceSynthesis", "EligibilityRequest", "EligibilityResponse", "ExpansionProfile", "ImagingManifest", "ImagingObjectSelection", "Media", "MedicationOrder", "MedicationUsage", "MedicinalProduct", "MedicinalProductAuthorization", "MedicinalProductContraindication", "MedicinalProductIndication", "MedicinalProductIngredient", "MedicinalProductInteraction", "MedicinalProductManufactured", "MedicinalProductPackaged", "MedicinalProductPharmaceutical", "MedicinalProductUndesirableEffect", "Order", "OrderResponse", "ProcedureRequest", "ProcessRequest", "ProcessResponse", "ReferralRequest", "RequestGroup", "ResearchDefinition", "ResearchElementDefinition", "RiskEvidenceSynthesis", "Sequence", "ServiceDefinition", "SubstanceSpecification");
+          return Utilities.existsInList(codeString, "Account", "ActivityDefinition", "ActorDefinition", "AdministrableProductDefinition", "AdverseEvent", "AllergyIntolerance",
+            "Appointment", "AppointmentResponse", "ArtifactAssessment", "AuditEvent", "Basic", "Binary", "BiologicallyDerivedProduct", "BiologicallyDerivedProductDispense", "BodyStructure", "Bundle",
+            "CanonicalResource", "CapabilityStatement", "CarePlan", "CareTeam", "ChargeItem", "ChargeItemDefinition", "Citation", "Claim", "ClaimResponse", "ClinicalImpression", "ClinicalUseDefinition",
+            "CodeSystem", "Communication", "CommunicationRequest", "CompartmentDefinition", "Composition", "ConceptMap", "Condition", "ConditionDefinition", "Consent", "Contract", "Coverage",
+            "CoverageEligibilityRequest", "CoverageEligibilityResponse", "DetectedIssue", "Device", "DeviceAssociation", "DeviceDefinition", "DeviceDispense", "DeviceMetric", "DeviceRequest",
+            "DeviceUsage", "DiagnosticReport", "DocumentReference", "DomainResource", "Encounter", "EncounterHistory", "Endpoint", "EnrollmentRequest", "EnrollmentResponse", "EpisodeOfCare",
+            "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable", "ExampleScenario", "ExplanationOfBenefit", "FamilyMemberHistory", "Flag", "FormularyItem", "GenomicStudy", "Goal",
+            "GraphDefinition", "Group", "GuidanceResponse", "HealthcareService", "ImagingSelection", "ImagingStudy", "Immunization", "ImmunizationEvaluation", "ImmunizationRecommendation",
+            "ImplementationGuide", "Ingredient", "InsurancePlan", "InventoryItem", "InventoryReport", "Invoice", "Library", "Linkage", "List", "Location", "ManufacturedItemDefinition", "Measure",
+            "MeasureReport", "Medication", "MedicationAdministration", "MedicationDispense", "MedicationKnowledge", "MedicationRequest", "MedicationStatement", "MedicinalProductDefinition",
+            "MessageDefinition", "MessageHeader", "MetadataResource", "MolecularSequence", "NamingSystem", "NutritionIntake", "NutritionOrder", "NutritionProduct", "Observation", "ObservationDefinition",
+            "OperationDefinition", "OperationOutcome", "Organization", "OrganizationAffiliation", "PackagedProductDefinition", "Parameters", "Patient", "PaymentNotice", "PaymentReconciliation",
+            "Permission", "Person", "PlanDefinition", "Practitioner", "PractitionerRole", "Procedure", "Provenance", "Questionnaire", "QuestionnaireResponse", "RegulatedAuthorization", "RelatedPerson",
+            "RequestOrchestration", "Requirements", "ResearchStudy", "ResearchSubject", "Resource", "RiskAssessment", "Schedule", "SearchParameter", "ServiceRequest", "Slot", "Specimen",
+            "SpecimenDefinition", "StructureDefinition", "StructureMap", "Subscription", "SubscriptionStatus", "SubscriptionTopic", "Substance", "SubstanceDefinition", "SubstanceNucleicAcid",
+            "SubstancePolymer", "SubstanceProtein", "SubstanceReferenceInformation", "SubstanceSourceMaterial", "SupplyDelivery", "SupplyRequest", "Task", "TerminologyCapabilities", "TestPlan",
+            "TestReport", "TestScript", "Transport", "ValueSet", "VerificationResult", "VisionPrescription", "BodySite", "CatalogEntry", "Conformance", "DataElement", "DeviceComponent", "DeviceUseRequest",
+            "DeviceUseStatement", "DiagnosticOrder", "DocumentManifest", "EffectEvidenceSynthesis", "EligibilityRequest", "EligibilityResponse", "ExpansionProfile", "ImagingManifest",
+            "ImagingObjectSelection", "Media", "MedicationOrder", "MedicationUsage", "MedicinalProduct", "MedicinalProductAuthorization", "MedicinalProductContraindication", "MedicinalProductIndication",
+            "MedicinalProductIngredient", "MedicinalProductInteraction", "MedicinalProductManufactured", "MedicinalProductPackaged", "MedicinalProductPharmaceutical", "MedicinalProductUndesirableEffect",
+            "Order", "OrderResponse", "ProcedureRequest", "ProcessRequest", "ProcessResponse", "ReferralRequest", "RequestGroup", "ResearchDefinition", "ResearchElementDefinition", "RiskEvidenceSynthesis",
+            "Sequence", "ServiceDefinition", "SubstanceSpecification", "MolecularDefinition", "ClinicalAssessment", "DeviceAlert", "InsuranceProduct", "PersonalRelationship");
         }
         public String toCode() {
           switch (this) {
@@ -19786,6 +19824,9 @@ The primary difference between a medicationstatement and a medicationadministrat
             case SUBSTANCESPECIFICATION: return "SubstanceSpecification";
             case MOLECULARDEFINITION: return "MolecularDefinition";
             case CLINICALASSESSMENT: return "ClinicalAssessment";
+            case DEVICEALERT: return "DeviceAlert";
+            case INSURANCEPRODUCT: return "InsuranceProduct";
+            case PERSONALRELATIONSHIP: return "PersonalRelationship";
             case NULL: return null;
             default: return "?";
           }
@@ -19997,6 +20038,9 @@ The primary difference between a medicationstatement and a medicationadministrat
             case SUBSTANCESPECIFICATION: return "http://hl7.org/fhir/fhir-old-types";
             case MOLECULARDEFINITION: return "http://hl7.org/fhir/fhir-old-types";
             case CLINICALASSESSMENT: return "http://hl7.org/fhir/fhir-types";
+            case DEVICEALERT: return "http://hl7.org/fhir/fhir-types";
+            case INSURANCEPRODUCT: return "http://hl7.org/fhir/fhir-types";
+            case PERSONALRELATIONSHIP: return "http://hl7.org/fhir/fhir-types";
             case NULL: return null;
             default: return "?";
           }
@@ -20208,6 +20252,9 @@ The primary difference between a medicationstatement and a medicationadministrat
             case SUBSTANCESPECIFICATION: return "";
             case MOLECULARDEFINITION: return "";
             case CLINICALASSESSMENT: return "";
+            case DEVICEALERT: return "";
+            case INSURANCEPRODUCT: return "";
+            case PERSONALRELATIONSHIP: return "";
             case NULL: return null;
             default: return "?";
           }
@@ -20419,6 +20466,9 @@ The primary difference between a medicationstatement and a medicationadministrat
             case SUBSTANCESPECIFICATION: return "SubstanceSpecification";
             case MOLECULARDEFINITION: return "MolecularDefinition";
             case CLINICALASSESSMENT: return "ClinicalAssessment";
+            case INSURANCEPRODUCT: return "InsuranceProduct";
+            case DEVICEALERT: return "DeviceAlert";
+            case PERSONALRELATIONSHIP: return "PersonalRelationship";
             case NULL: return null;
             default: return "?";
           }
@@ -20840,8 +20890,14 @@ The primary difference between a medicationstatement and a medicationadministrat
         return VersionIndependentResourceTypesAll.MOLECULARDEFINITION;
       if ("ClinicalAssessment".equals(codeString))
         return VersionIndependentResourceTypesAll.CLINICALASSESSMENT;
-        throw new IllegalArgumentException("Unknown VersionIndependentResourceTypesAll code '"+codeString+"'");
-        }
+      if ("DeviceAlert".equals(codeString))
+        return VersionIndependentResourceTypesAll.DEVICEALERT;
+      if ("InsuranceProduct".equals(codeString))
+        return VersionIndependentResourceTypesAll.INSURANCEPRODUCT;
+      if ("PersonalRelationship".equals(codeString))
+        return VersionIndependentResourceTypesAll.PERSONALRELATIONSHIP;
+      throw new IllegalArgumentException("Unknown VersionIndependentResourceTypesAll code '"+codeString+"'");
+    }
 
         public Enumeration<VersionIndependentResourceTypesAll> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
@@ -21261,6 +21317,12 @@ The primary difference between a medicationstatement and a medicationadministrat
             return new Enumeration<VersionIndependentResourceTypesAll>(this, VersionIndependentResourceTypesAll.MOLECULARDEFINITION, code);
           if ("ClinicalAssessment".equals(codeString))
             return new Enumeration<VersionIndependentResourceTypesAll>(this, VersionIndependentResourceTypesAll.CLINICALASSESSMENT, code);
+          if ("DeviceAlert".equals(codeString))
+            return new Enumeration<VersionIndependentResourceTypesAll>(this, VersionIndependentResourceTypesAll.DEVICEALERT, code);
+          if ("InsuranceProduct".equals(codeString))
+            return new Enumeration<VersionIndependentResourceTypesAll>(this, VersionIndependentResourceTypesAll.INSURANCEPRODUCT, code);
+          if ("PersonalRelationship".equals(codeString))
+            return new Enumeration<VersionIndependentResourceTypesAll>(this, VersionIndependentResourceTypesAll.PERSONALRELATIONSHIP, code);
         throw new FHIRException("Unknown VersionIndependentResourceTypesAll code '"+codeString+"'");
         }
     public String toCode(VersionIndependentResourceTypesAll code) {
@@ -21674,6 +21736,14 @@ The primary difference between a medicationstatement and a medicationadministrat
         return "SubstanceSpecification";
       if (code == VersionIndependentResourceTypesAll.MOLECULARDEFINITION)
         return "MolecularDefinition";
+      if (code == VersionIndependentResourceTypesAll.CLINICALASSESSMENT)
+        return "ClinicalAssessment";
+      if (code == VersionIndependentResourceTypesAll.DEVICEALERT)
+        return "DeviceAlert";
+      if (code == VersionIndependentResourceTypesAll.INSURANCEPRODUCT)
+        return "InsuranceProduct";
+      if (code == VersionIndependentResourceTypesAll.PERSONALRELATIONSHIP)
+        return "PersonalRelationship";
       return "?";
    }
     public String toSystem(VersionIndependentResourceTypesAll code) {

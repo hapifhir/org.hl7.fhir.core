@@ -1365,7 +1365,7 @@ public class CanonicalResourceManagerTests {
      */
   @Test
   // This timeout value was evaluated based on an observed time of 1400 ms for a single run, with a tolerance of 20%.
-  @Timeout(value = 1500, unit = TimeUnit.MILLISECONDS)
+  @Timeout(value = 1680, unit = TimeUnit.MILLISECONDS)
   public void testCachedCanonicalResourceGetWithMultiThread() {
     //Create a single resource and then try to get it with multiple threads.
     CanonicalResourceManager<ValueSet> resourceManager = new CanonicalResourceManager<>(true, false);

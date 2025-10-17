@@ -1238,7 +1238,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
   } 
 
-  public String getLinkForCode(String system, String version, String code) { 
+  public String getLinkForCode(String system, String version, String code, Resource source) {
     if ("http://snomed.info/sct".equals(system)) { 
       return SnomedUtilities.getSctLink(version, code, context.getContext().getExpansionParameters());
     } else if ("http://loinc.org".equals(system)) { 
@@ -1266,7 +1266,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         return "https://en.wikipedia.org/wiki/ISO_3166-2"; 
       } 
     } else { 
-      CodeSystem cs = context.getWorker().fetchCodeSystem(system, version); 
+      CodeSystem cs = context.getWorker().fetchCodeSystem(system, version, source);
       if (cs != null && cs.hasWebPath()) { 
         if (!Utilities.noString(code)) { 
           return cs.getWebPath()+"#"+cs.getId()+"-"+Utilities.nmtokenize(code); 
@@ -1278,8 +1278,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return null; 
   } 
 
-  public CodeResolution resolveCode(String system, String code) { 
-    return resolveCode(new Coding().setSystem(system).setCode(code)); 
+  public CodeResolution resolveCode(String system, String code, Resource source) {
+    return resolveCode(new Coding().setSystem(system).setCode(code), source);
   } 
 
   public CodeResolution resolveCode(ResourceWrapper c) { 
@@ -1300,19 +1300,19 @@ public class DataRenderer extends Renderer implements CodeResolver {
     CodeSystem cs = context.getWorker().fetchCodeSystem(c.primitiveValue("system")); 
     systemLink = cs != null ? cs.getWebPath() : null; 
     systemName = cs != null ? crPresent(cs) : displaySystem(c.primitiveValue("system")); 
-    link = getLinkForCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code")); 
+    link = getLinkForCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code"), c.getResourceNative());
 
     hint = systemName+": "+display+(c.has("version") ? " "+ context.formatPhrase(RenderingContext.DATA_REND_VERSION, c.primitiveValue("version"), ")") : ""); 
     return new CodeResolution(systemName, systemLink, link, display, hint); 
   } 
 
-  public CodeResolution resolveCode(Coding code) {
+  public CodeResolution resolveCode(Coding code, Resource source) {
     return resolveCode(wrapNC(code));
   }
 
-  public CodeResolution resolveCode(CodeableConcept code) { 
+  public CodeResolution resolveCode(CodeableConcept code, Resource source) {
     if (code.hasCoding()) { 
-      return resolveCode(code.getCodingFirstRep()); 
+      return resolveCode(code.getCodingFirstRep(), source);
     } else { 
       return new CodeResolution(null, null, null, code.getText(), code.getText()); 
     } 
@@ -1325,7 +1325,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       s = lookupCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code")); 
 
     String sn = displaySystem(c.primitiveValue("system"));
-    String link = getLinkForCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code"));
+    String link = getLinkForCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code"), c.getResourceNative());
     XhtmlNode xi = link != null ? x.ah(context.prefixLocalHref(link)) : x;    
     xi.tx(sn);
     xi.tx(" "); 

@@ -542,6 +542,12 @@ public class ValidationService {
         log.info("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
       }
       sessionCache.cleanUp();
+
+      if (validationContext.getMode() == EngineMode.INSTALL
+        || validationContext.getMode() == EngineMode.VALIDATION) {
+        validationContext.setInferFhirVersion(Boolean.TRUE);
+      }
+
       if (validationContext.getSv() == null) {
         String sv = determineVersion(validationContext);
         validationContext.setSv(sv);
@@ -689,7 +695,7 @@ public class ValidationService {
   }
 
   public String determineVersion(ValidationContext validationContext) throws IOException {
-    if (validationContext.getMode() != EngineMode.VALIDATION && validationContext.getMode() != EngineMode.INSTALL) {
+    if (!validationContext.isInferFhirVersion()) {
       return "5.0";
     }
     log.info("Scanning for versions (no -version parameter):");

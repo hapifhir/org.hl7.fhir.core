@@ -14,7 +14,8 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.xhtml.XhtmlNode; 
+import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 @MarkedToMoveToAdjunctPackage
 public class DiagnosticReportRenderer extends ResourceRenderer { 
@@ -51,7 +52,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
       h2.tx(") "); 
     } 
     XhtmlNode tbl = x.table("grid", false); 
-    XhtmlNode tr; 
+    XhtmlNode tr;
     if (dr.has("subject")) { 
       tr = tbl.tr(); 
       tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_SUBJ)); 

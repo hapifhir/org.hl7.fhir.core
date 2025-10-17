@@ -214,7 +214,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
       path = d.substring(d.indexOf("#")+1);
       d = d.substring(0, d.indexOf("#"));
     }
-    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, src);
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, null, src);
     if (sd != null) {
       String url = sd.getWebPath();
       if (url != null) {
@@ -235,7 +235,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
       path = d.substring(d.indexOf("#")+1);
       d = d.substring(0, d.indexOf("#"));
     }
-    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, src);
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, null, src);
     if (sd != null) {
       String url = sd.getWebPath();
       if (url != null) {

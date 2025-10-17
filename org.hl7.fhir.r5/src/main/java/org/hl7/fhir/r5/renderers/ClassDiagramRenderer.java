@@ -910,7 +910,7 @@ public class ClassDiagramRenderer {
                   first = false;
                 else 
                   div.tx(ls.see(" | "));
-                StructureDefinition sdt = context.fetchResource(StructureDefinition.class, p.asStringValue(), sd);
+                StructureDefinition sdt = context.fetchResource(StructureDefinition.class, p.asStringValue(), null, sd);
                 String s = sdt == null ? tail(p.asStringValue()) : sdt.getName();
                 ls.check(html, div, left, top, s.length(), null);
                 encodeType(div, ls, s);

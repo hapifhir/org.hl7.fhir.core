@@ -238,7 +238,7 @@ public class ConceptMapValidator extends BaseValidator {
           if (ref.contains("|")) {
             res.url = ref.substring(0, ref.indexOf("|"));
             res.version = ref.substring(ref.indexOf("|")+1);
-            Resource r = context.fetchResource(Resource.class, res.url, res.version);
+            Resource r = context.fetchResource(Resource.class, res.url, res.version, null);
             if (r != null) {
               if (r instanceof ValueSet) {
                 res.vs = (ValueSet) r;
@@ -248,7 +248,7 @@ public class ConceptMapValidator extends BaseValidator {
               }
             } 
             if (res.vs == null) {
-              res.vs = context.findTxResource(ValueSet.class, res.url, res.version);            
+              res.vs = context.findTxResource(ValueSet.class, res.url, res.version, null);
             }
           } else {
             res.url = ref;
@@ -347,7 +347,7 @@ public class ConceptMapValidator extends BaseValidator {
         }
       }
     }
-    res.cs = context.fetchCodeSystem(res.url, res.version);
+    res.cs = context.fetchCodeSystem(res.url, res.version, vs);
     return res;
   }
 
