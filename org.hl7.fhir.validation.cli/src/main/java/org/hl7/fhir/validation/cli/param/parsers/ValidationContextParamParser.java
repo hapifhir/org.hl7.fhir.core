@@ -104,8 +104,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         }
       } else if (args[i].equals(RECURSE)) {
         validationContext.setRecursive(true);
-      } else if (args[i].equals(SHOW_MESSAGES_FROM_REFERENCES)) {
-        validationContext.setShowMessagesFromReferences(true);
       } else if (args[i].equals(NO_INTERNAL_CACHING)) {
         validationContext.setNoInternalCaching(true);
       } else if (args[i].equals(DISABLE_DEFAULT_RESOURCE_FETCHER)) {
@@ -159,12 +157,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         // TODO setBaseTestingUtils test directory
         //This did nothing? RUN_TESTS has no corresponding shouldExecuteTask
         //validationContext.setMode(EngineMode.RUN_TESTS);
-      } else if (args[i].equals(SECURITY_CHECKS)) {
-        validationContext.setSecurityChecks(true);
-      } else if (args[i].equals(NO_EXPERIMENTAL_CONTENT)) {
-        validationContext.setNoExperimentalContent(true);
-      } else if (args[i].equals(TERMINOLOGY_ROUTING)) {
-        validationContext.setShowTerminologyRouting(true);
       } else if (args[i].equals(LOG)) {
         if (i + 1 == args.length)
           throw new Error("Specified -log without indicating file");
