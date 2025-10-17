@@ -16,6 +16,7 @@ import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.validation.cli.param.parsers.OutputParametersParser;
+import org.hl7.fhir.validation.cli.param.parsers.TransformLangParameterParser;
 import org.hl7.fhir.validation.cli.param.parsers.ValidationEngineParametersParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.cli.param.Params;
@@ -76,7 +77,7 @@ public class TxTestsTask extends StandaloneTask{
         version = "current";
       }
       TxTester txTester = new TxTester(new TxTester.InternalTxLoader(version), tx, false, loadExternals(externals));
-      List<String> inputs = new ArrayList<>(Params.getMultiValueParam(args, Params.INPUT));
+      List<String> inputs = new ArrayList<>(Params.getMultiValueParam(args, TransformLangParameterParser.INPUT));
       for (String input : inputs) {
         txTester.addLoader(new TxTester.InternalTxLoader(input, true));
       }

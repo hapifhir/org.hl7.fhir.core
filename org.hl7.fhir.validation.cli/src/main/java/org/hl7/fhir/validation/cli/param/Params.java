@@ -78,7 +78,6 @@ public class Params {
   public static final String SPECIAL = "-special";
   public static final String TARGET = "-target";
   public static final String SOURCE = "-source";
-  public static final String INPUT = "-input";
   public static final String FILTER = "-filter";
   public static final String EXTERNALS = "-externals";
   public static final String MODE = "-mode";
@@ -233,7 +232,7 @@ public class Params {
           String mode = args[++i];
           validationContext.addModeParam(mode);
         }
-      } else if (args[i].equals(INPUT)) {
+      } else if (args[i].equals(TransformLangParameterParser.INPUT)) {
         if (i + 1 == args.length)
           throw new Error("Specified -input without providing value");
         else {
