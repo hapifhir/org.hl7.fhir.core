@@ -58,7 +58,6 @@ public class Params {
   public static final String MAP = "-map";
   public static final String X = "-x";
   public static final String CONVERT = "-convert";
-  public static final String FHIRPATH = "-fhirpath";
   public static final String TEST = "-tests";
   public static final String TX_TESTS = "txTests";
   public static final String AI_TESTS = "-aiTests";
@@ -537,7 +536,7 @@ public class Params {
             validationContext.setWatchSettleTime(readInteger(WatchParametersParser.WATCH_SETTLE_TIME, args[++i]));
           }      } else if (args[i].startsWith(X)) {
         i++;
-      } else if (args[i].equals(FHIRPATH)) {
+      } else if (args[i].equals(FHIRPathParametersParser.FHIRPATH)) {
         if (validationContext.getFhirpath() == null)
           if (i + 1 == args.length)
             throw new Error("Specified -fhirpath without indicating a FHIRPath expression");
