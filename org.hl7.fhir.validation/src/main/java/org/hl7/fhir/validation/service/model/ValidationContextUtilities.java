@@ -1,5 +1,7 @@
 package org.hl7.fhir.validation.service.model;
 
+import java.util.ArrayList;
+
 /**
  * This class is intended to provide backward compatibility for the ValidationContext class.
  */
@@ -73,6 +75,7 @@ public class ValidationContextUtilities {
     validationContext.setCrumbTrails(instanceValidatorParameters.isCrumbTrails());
     validationContext.setShowMessageIds(instanceValidatorParameters.isShowMessageIds());
     validationContext.setAllowExampleUrls(instanceValidatorParameters.isAllowExampleUrls());
+    validationContext.setMatchetypes(new ArrayList<>(instanceValidatorParameters.getMatchetypes()));
   }
 
   public static void addOutputParameters(ValidationContext validationContext, OutputParameters outputParameters) {
@@ -165,6 +168,7 @@ public class ValidationContextUtilities {
     instanceValidatorParameters.setCrumbTrails(validationContext.isCrumbTrails());
     instanceValidatorParameters.setShowMessageIds(validationContext.isShowMessageIds());
     instanceValidatorParameters.setAllowExampleUrls(validationContext.isAllowExampleUrls());
+    instanceValidatorParameters.setMatchetypes(new ArrayList<>(validationContext.getMatchetypes()));
     return instanceValidatorParameters;
   }
 

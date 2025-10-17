@@ -25,7 +25,7 @@ import org.hl7.fhir.validation.service.utils.ValidationLevel;
 public class Params {
 
   public static final String TEST_VERSION = "-test-version";
-  
+
   public static final String PROFILE = "-profile";
   public static final String PROFILES = "-profiles";
   public static final String CONFIG = "-config";
@@ -82,7 +82,6 @@ public class Params {
   public static final String FILTER = "-filter";
   public static final String EXTERNALS = "-externals";
   public static final String MODE = "-mode";
-  public static final String MATCHETYPE = "-matchetype";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -437,7 +436,7 @@ public class Params {
             validationContext.addCertSource(s);
           }
         }
-      } else if (args[i].equals(MATCHETYPE)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.MATCHETYPE)) {
         if (i + 1 == args.length)
           throw new Error("Specified -matchetype without indicating file");
         else {

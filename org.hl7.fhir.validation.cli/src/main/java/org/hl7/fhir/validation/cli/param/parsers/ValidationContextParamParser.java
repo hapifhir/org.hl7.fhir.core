@@ -190,17 +190,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         validationContext.setNoExperimentalContent(true);
       } else if (args[i].equals(TERMINOLOGY_ROUTING)) {
         validationContext.setShowTerminologyRouting(true);
-      } else if (args[i].equals(MATCHETYPE)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified -matchetype without indicating file");
-        else {
-          String s = args[++i];
-          if (!(new File(s).exists())) {
-            throw new Error("-matchetype source '"+s+"'  not found");
-          } else {
-            validationContext.addMatchetype(s);
-          }
-        }} else if (args[i].equals(LOG)) {
+      } else if (args[i].equals(LOG)) {
         if (i + 1 == args.length)
           throw new Error("Specified -log without indicating file");
         else
