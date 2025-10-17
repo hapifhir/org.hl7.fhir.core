@@ -84,6 +84,10 @@ public class ValidationContextUtilities {
     validationContext.setFhirpath(fhirPathParameters.getFhirpath());
   }
 
+  public static void addMapParameters(ValidationContext validationContext, MapParameters mapParameters) {
+    validationContext.setMap(mapParameters.getMap());
+  }
+
   public static ValidationEngineParameters getValidationEngineParameters(ValidationContext validationContext) {
     ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
     validationEngineParameters.setInferFhirVersion(validationContext.isInferFhirVersion());
@@ -175,5 +179,11 @@ public class ValidationContextUtilities {
     FHIRPathParameters fhirPathParameters = new FHIRPathParameters();
     fhirPathParameters.setFhirpath(validationContext.getFhirpath());
     return fhirPathParameters;
+  }
+
+  public static MapParameters getMapParameters(ValidationContext validationContext) {
+    MapParameters mapParameters = new MapParameters();
+    mapParameters.setMap(validationContext.getMap());
+    return mapParameters;
   }
 }

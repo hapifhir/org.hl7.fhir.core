@@ -23,6 +23,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
   WatchParametersParser watchParametersParser = new WatchParametersParser();
   TransformLangParameterParser transformLangParameterParser = new TransformLangParameterParser();
   TransformVersionParametersParser transformVersionParameterParser = new TransformVersionParametersParser();
+  MapParametersParser mapParametersParser = new MapParametersParser();
   FHIRPathParametersParser fhirPathParametersParser = new FHIRPathParametersParser();
   ValidationContext validationContext = new ValidationContext();
 
@@ -41,6 +42,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
       watchParametersParser.parseArgs(args);
       transformLangParameterParser.parseArgs(args);
       transformVersionParameterParser.parseArgs(args);
+      mapParametersParser.parseArgs(args);
       fhirPathParametersParser.parseArgs(args);
       String[] unprocessedArgs = filterProcessedArgs(args);
       this.validationContext = loadValidationContext(unprocessedArgs);
@@ -50,6 +52,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
       ValidationContextUtilities.addWatchParameters(this.validationContext, this.watchParametersParser.getParameterObject());
       ValidationContextUtilities.addTransformLangParameters(this.validationContext, this.transformLangParameterParser.getParameterObject());
       ValidationContextUtilities.addTransformVersionParameters(this.validationContext, this.transformVersionParameterParser.getParameterObject());
+      ValidationContextUtilities.addMapParameters(this.validationContext, this.mapParametersParser.getParameterObject());
       ValidationContextUtilities.addFHIRPathParameters(this.validationContext, this.fhirPathParametersParser.getParameterObject());
     } catch (Exception e) {
       log.error(e.getMessage(), e);
@@ -165,8 +168,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         validationContext.addModeParam("pin");
       } else if (args[i].equals(EXPAND)) {
         validationContext.addModeParam("expand");
-      } else if (args[i].equals(TRANSFORM)) {
-        validationContext.setMap(args[++i]);
       } else if (args[i].equals(FORMAT)) {
         validationContext.setFormat(Manager.FhirFormat.fromCode(args[++i]));
       } else if (args[i].equals(LANG_TRANSFORM)) {
@@ -177,8 +178,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         validationContext.addLangRegenParam(args[++i]);
       } else if (args[i].equals(EXP_PARAMS)) {
         validationContext.setExpansionParameters(args[++i]);
-      } else if (args[i].equals(COMPILE)) {
-        validationContext.setMap(args[++i]);
       } else if (args[i].equals(FACTORY)) {
         validationContext.setSource(args[++i]);
       } else if (args[i].equals(RUN_TESTS)) {
@@ -218,15 +217,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
           String pid = VersionUtilities.packageForVersion(v);
           pid = pid + "#"+VersionUtilities.getCurrentPackageVersion(v);
           validationContext.addIg(pid);
-        }
-      } else if (args[i].equals(MAP)) {
-        if (validationContext.getMap() == null) {
-          if (i + 1 == args.length)
-            throw new Error("Specified -map without indicating map file");
-          else
-            validationContext.setMap(args[++i]);
-        } else {
-          throw new Exception("Can only nominate a single -map parameter");
         }
       } else {
         //Any remaining unhandled args become sources
