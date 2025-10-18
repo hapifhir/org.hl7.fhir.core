@@ -126,7 +126,7 @@ public class RePackageTask extends ValidationEngineTask {
     try {
       for (String canonical : canonicals) {
         String encoded = URLEncoder.encode(canonical, "UTF-8");
-        HTTPRequest request = new HTTPRequest().withUrl("https://packages2.fhir.org/packages/catalog?op=find&canonical=" + encoded).withMethod(HTTPRequest.HttpMethod.GET);
+        HTTPRequest request = new HTTPRequest().withUrl("https://packages2.fhir.org/packages/catalog?canonical=" + encoded).withMethod(HTTPRequest.HttpMethod.GET);
         HTTPResult response = ManagedWebAccess.httpCall(request);
 
         JsonArray catalogs = new Gson().fromJson(response.getContentAsString(), JsonArray.class);
