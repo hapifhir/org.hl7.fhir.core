@@ -79,9 +79,9 @@ import com.google.gson.JsonSyntaxException;
 public class UtilitiesXTests {
   private static final boolean SHOW_DIFF = true;
   
-	static public Map<String, IWorkerContext> fcontexts;
+	static public Map<String, SimpleWorkerContext> fcontexts;
 	
-	public static IWorkerContext context(String version) {
+	public static SimpleWorkerContext context(String version) {
     if (fcontexts == null) {
       fcontexts = new HashMap<>();
     }

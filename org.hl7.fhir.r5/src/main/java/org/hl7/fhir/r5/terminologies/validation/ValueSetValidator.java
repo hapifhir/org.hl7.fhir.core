@@ -253,6 +253,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
           String version = determineVersion(c.getSystem(), c.getVersion(), va);
           CodeSystem cs = resolveCodeSystem(c.getSystem(), version, valueset);
           ValidationResult res = null;
+          if (cs != null) {
+            checkVersion(null, c.getSystem(), cs.getVersion(), va, null);
+          }
           if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.SUPPLEMENT)) {
             if (context.isNoTerminologyServer()) {
               if (c.hasVersion()) {
@@ -347,15 +350,15 @@ public class ValueSetValidator extends ValueSetProcessBase {
         i++;
       }
       if (result == null) {
-        String msgid = null;
-        if (!unknownValueSets.isEmpty()) {
-          msgid = I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_VS;
-          msg = context.formatMessage(msgid, valueset.getVersionedUrl(), CommaSeparatedStringBuilder.join(", ", unknownValueSets));
-        } else {
-          msgid = I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_CS;
-          msg = context.formatMessage(msgid, valueset.getVersionedUrl(), b.toString());
-        }
-        info.getIssues().addAll(makeIssue(IssueSeverity.WARNING, unknownSystems.isEmpty() && unknownValueSets.isEmpty() ? IssueType.CODEINVALID : IssueType.NOTFOUND, null, msg, OpIssueCode.VSProcessing, null, msgid));
+//        String msgid = null;
+//        if (!unknownValueSets.isEmpty()) {
+//          msgid = I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_VS;
+//          msg = context.formatMessage(msgid, valueset.getVersionedUrl(), CommaSeparatedStringBuilder.join(", ", unknownValueSets));
+//        } else {
+//          msgid = I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_CS;
+//          msg = context.formatMessage(msgid, valueset.getVersionedUrl(), b.toString());
+//        }
+//        info.getIssues().addAll(makeIssue(IssueSeverity.WARNING, unknownSystems.isEmpty() && unknownValueSets.isEmpty() ? IssueType.CODEINVALID : IssueType.NOTFOUND, null, msg, OpIssueCode.VSProcessing, null, msgid));
       } else if (!result) {
         // to match Ontoserver
         OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR, org.hl7.fhir.r5.model.OperationOutcome.IssueType.CODEINVALID);
@@ -550,6 +553,19 @@ public class ValueSetValidator extends ValueSetProcessBase {
         }
       }
     }
+
+    if (!requiredSupplements.isEmpty()) {
+      List<CodeSystem> additionalSupplements = new ArrayList<>();
+      for (String s : requiredSupplements) {
+        CodeSystem scs = context.findTxResource(CodeSystem.class, s);
+        if (scs != null && cs.getUrl().equals(scs.getSupplements())) {
+          additionalSupplements.add(scs);
+        }
+      }
+      if (!additionalSupplements.isEmpty()) {
+        cs = CodeSystemUtilities.mergeSupplements(cs, additionalSupplements);
+      }
+    }
     return cs;
   }
 
@@ -633,7 +649,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
         inExpansion = checkExpansion(code);
         inInclude = checkInclude(code);
         String workingVersion = getCodeSystemVersionFromValueSet(system, code.getCode());
-        String wv = determineVersion(path, system, workingVersion, code.getVersion(), issues);
+        CodeSystem csa = context.fetchCodeSystem(system); // get the latest
+        VersionAlgorithm va = csa == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(csa.getVersionAlgorithm());
+        String wv = determineVersion(path, system, workingVersion, code.getVersion(), issues, va);
         CodeSystem cs = resolveCodeSystem(system, wv, null);
         if (cs == null) {
           if (!VersionUtilities.isR6Plus(context.getVersion()) && "urn:ietf:bcp:13".equals(system) && Utilities.existsInList(code.getCode(), "xml", "json", "ttl") && "http://hl7.org/fhir/ValueSet/mimetypes".equals(valueset.getUrl())) {
@@ -754,7 +772,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
       inInclude = checkInclude(code);
     }
     String valueSetImpliedVersion = getCodeSystemVersionFromValueSet(system, code.getCode());
-    String wv = determineVersion(path, system, valueSetImpliedVersion, code.getVersion(), issues);
+    CodeSystem csa = context.fetchCodeSystem(system); // get the latest
+    VersionAlgorithm va = csa == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(csa.getVersionAlgorithm());
+    String wv = determineVersion(path, system, valueSetImpliedVersion, code.getVersion(), issues, va);
     if (!checkRequiredSupplements(info)) {
       return new ValidationResult(IssueSeverity.ERROR, issues.get(issues.size()-1).getDetails().getText(), issues);
     }
@@ -780,13 +800,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
 //              msgid = I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_CS;
 //              m = context.formatMessage(I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_CS, valueset.getVersionedUrl(), CommaSeparatedStringBuilder.join(",", unknownSystems));
             } else if (!unknownValueSets.isEmpty()) {
-              msgid = I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_VS;
-              res.addMessage(info.getIssues().get(0).getDetails().getText());
-              m = context.formatMessage(I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_VS, valueset.getVersionedUrl(), CommaSeparatedStringBuilder.join(",", unknownValueSets));
+//              msgid = I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_VS;
+//              res.addMessage(info.getIssues().get(0).getDetails().getText());
+//              m = context.formatMessage(I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_VS, valueset.getVersionedUrl(), CommaSeparatedStringBuilder.join(",", unknownValueSets));
             } else {
               // not sure why we'd get to here?
-              msgid = I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_;
-              m = context.formatMessage(I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl());
+//              msgid = I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_;
+//              m = context.formatMessage(I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl());
             }
             if (m != null) {
               res.addMessage(m);
@@ -1530,10 +1550,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return result;
   }
 
-  private String determineVersion(String path, @Nonnull String system, String versionVS, String versionCoding, List<OperationOutcomeIssueComponent> issues) {
-    CodeSystem csa = context.fetchCodeSystem(system); // get the latest
+  private String determineVersion(String path, @Nonnull String system, String versionVS, String versionCoding, List<OperationOutcomeIssueComponent> issues, VersionAlgorithm va) {
     Resource source = valueset;
-    VersionAlgorithm va = csa == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(csa.getVersionAlgorithm());
 
     // phase 1: get correct system version
     String result = determineVersion(system, versionVS, va);
@@ -1725,7 +1743,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (system == null || !system.equals(vsi.getSystem()))
       return false;
     // ok, we need the code system
-    String actualVersion = determineVersion(path, system, vsi.getVersion(), version, issues);
+    CodeSystem csa = context.fetchCodeSystem(system); //
+    VersionAlgorithm va = csa == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(csa.getVersionAlgorithm());
+    String actualVersion = determineVersion(path, system, vsi.getVersion(), version, issues, va);
     CodeSystem cs = resolveCodeSystem(system, actualVersion, valueset);
     if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)) {
       if (throwToServer) {
@@ -1765,16 +1785,24 @@ public class ValueSetValidator extends ValueSetProcessBase {
       } else {
         info.setErr(TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
         if (unknownSystems != null) {
-          if (version == null) {
+          if (actualVersion == null) {
             unknownSystems.add(system);
           } else {
-            unknownSystems.add(system+"|"+version);          
+             unknownSystems.add(system+"|"+actualVersion);
+          }
+        }
+        Set<String> versions = resolveCodeSystemVersions(system);
+        if (!versions.isEmpty()) {
+          String msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION, system, actualVersion, CommaSeparatedStringBuilder.join(",", Utilities.sorted(versions)));
+          if (!hasIssue(issues, msg)) {
+            issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, Utilities.noString(path) ? "version" : path + "." + "system", msg, OpIssueCode.NotFound, null, I18nConstants.UNKNOWN_CODESYSTEM_VERSION));
           }
         }
         return null;
       }
     } else {
       info.setFoundVersion(cs.getVersion());
+      checkVersion(path, vsi.getSystem(), cs.getVersion(), va, issues);
       checkCanonical(info.getIssues(), path, cs, valueset);
       if ((valueset.getCompose().hasInactive() && !valueset.getCompose().getInactive()) || options.isActiveOnly()) {
         if (CodeSystemUtilities.isInactive(cs, code)) {
@@ -1937,6 +1965,12 @@ public class ValueSetValidator extends ValueSetProcessBase {
   private boolean codeInConceptFilter(CodeSystem cs, ConceptSetFilterComponent f, String code) throws FHIRException {
     switch (f.getOp()) {
     case ISA: return codeInConceptIsAFilter(cs, f, code, false);
+    case EQUAL:
+      if (f.getValue() == null) {
+        return false;
+      }
+      DataType d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
+      return d != null && f.getValue().equals(d.primitiveValue());
     case ISNOTA: return !codeInConceptIsAFilter(cs, f, code, false);
     case DESCENDENTOF: return codeInConceptIsAFilter(cs, f, code, true); 
     default:
