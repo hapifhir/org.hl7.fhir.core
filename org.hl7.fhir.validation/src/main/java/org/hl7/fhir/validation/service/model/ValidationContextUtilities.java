@@ -86,6 +86,8 @@ public class ValidationContextUtilities {
     validationContext.setNoExperimentalContent(instanceValidatorParameters.isNoExperimentalContent());
     validationContext.setShowTerminologyRouting(instanceValidatorParameters.isShowTerminologyRouting());
     validationContext.setMatchetypes(new ArrayList<>(instanceValidatorParameters.getMatchetypes()));
+    validationContext.setExpansionParameters(instanceValidatorParameters.getExpansionParameters());
+    validationContext.setProfiles(instanceValidatorParameters.getProfiles());
   }
 
   public static void addOutputParameters(ValidationContext validationContext, OutputParameters outputParameters) {
@@ -193,6 +195,8 @@ public class ValidationContextUtilities {
     instanceValidatorParameters.setNoExperimentalContent(validationContext.isNoExperimentalContent());
     instanceValidatorParameters.setShowTerminologyRouting(validationContext.isShowTerminologyRouting());
     instanceValidatorParameters.setMatchetypes(new ArrayList<>(validationContext.getMatchetypes()));
+    instanceValidatorParameters.setExpansionParameters(validationContext.getExpansionParameters());
+    instanceValidatorParameters.setProfiles(validationContext.getProfiles());
     return instanceValidatorParameters;
   }
 

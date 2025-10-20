@@ -75,25 +75,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
 
     // load the parameters - so order doesn't matter
     for (int i = 0; i < args.length; i++) {
-       if (args[i].equals(PROFILE)) {
-        String profile = null;
-        if (i + 1 == args.length) {
-          throw new Error("Specified -profile without indicating profile url");
-        } else {
-          profile = args[++i];
-          validationContext.addProfile(profile);
-        }
-      } else if (args[i].equals(PROFILES)) {
-        String profiles = null;
-        if (i + 1 == args.length) {
-          throw new Error("Specified -profiles without indicating profile urls");
-        } else {
-          profiles = args[++i];
-          for (String profile : profiles.split("\\,")) {
-            validationContext.addProfile(profile);
-          }
-        }
-      } else if (args[i].equals(MODE)) {
+       if (args[i].equals(MODE)) {
         if (i + 1 == args.length)
           throw new Error("Specified -mode without indicating mode");
         else {
@@ -143,8 +125,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         validationContext.addLangRegenParam(args[++i]);
         validationContext.addLangRegenParam(args[++i]);
         validationContext.addLangRegenParam(args[++i]);
-      } else if (args[i].equals(EXP_PARAMS)) {
-        validationContext.setExpansionParameters(args[++i]);
       } else if (args[i].equals(FACTORY)) {
         validationContext.setSource(args[++i]);
       } else {
