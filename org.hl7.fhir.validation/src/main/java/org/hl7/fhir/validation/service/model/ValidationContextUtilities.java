@@ -125,6 +125,10 @@ public class ValidationContextUtilities {
     }
   }
 
+  public static void addPackageNameParameters(ValidationContext validationContext, PackageNameParameters packageNameParameters) {
+    validationContext.setPackageName(packageNameParameters.getPackageName());
+  }
+
   public static ValidationEngineParameters getValidationEngineParameters(ValidationContext validationContext) {
     ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
     validationEngineParameters.setInferFhirVersion(validationContext.isInferFhirVersion());
@@ -253,5 +257,11 @@ public class ValidationContextUtilities {
     LangRegenParameters langRegenParameters = new LangRegenParameters();
     langRegenParameters.setLangRegenParam(new ArrayList<>(validationContext.getLangRegenParam()));
     return langRegenParameters;
+  }
+
+  public static PackageNameParameters getPackageNameParameters(ValidationContext validationContext) {
+    PackageNameParameters packageNameParameters = new PackageNameParameters();
+    packageNameParameters.setPackageName(validationContext.getPackageName());
+    return packageNameParameters;
   }
 }
