@@ -61,8 +61,6 @@ public class Params {
 
   public static final String PRELOAD_CACHE = "-preload-cache";
 
-  public static final String RUN_TESTS = "-run-tests";
-
   public static final String TEST_MODULES = "-test-modules";
 
   public static final String TEST_NAME_FILTER = "-test-classname-filter";
@@ -352,7 +350,7 @@ public class Params {
         validationContext.setMap(args[++i]);
       } else if (args[i].equals(FACTORY)) {
         validationContext.setSource(args[++i]);
-      } else if (args[i].equals(RUN_TESTS)) {
+      } else if (args[i].equals(GlobalParametersParser.RUN_TESTS)) {
         // TODO setBaseTestingUtils test directory
         //This did nothing? RUN_TESTS has no corresponding shouldExecuteTask
         //validationContext.setMode(EngineMode.RUN_TESTS);
