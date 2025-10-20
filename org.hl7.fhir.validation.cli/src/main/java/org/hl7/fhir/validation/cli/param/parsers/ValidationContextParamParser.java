@@ -2,13 +2,11 @@ package org.hl7.fhir.validation.cli.param.parsers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.IParamParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.model.ValidationContextUtilities;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import static org.hl7.fhir.validation.cli.param.Params.*;
@@ -149,10 +147,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         validationContext.setExpansionParameters(args[++i]);
       } else if (args[i].equals(FACTORY)) {
         validationContext.setSource(args[++i]);
-      } else if (args[i].equals(RUN_TESTS)) {
-        // TODO setBaseTestingUtils test directory
-        //This did nothing? RUN_TESTS has no corresponding shouldExecuteTask
-        //validationContext.setMode(EngineMode.RUN_TESTS);
       } else {
         //Any remaining unhandled args become sources
         validationContext.addSource(args[i]);

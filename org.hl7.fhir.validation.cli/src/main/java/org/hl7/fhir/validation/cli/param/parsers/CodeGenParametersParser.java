@@ -3,7 +3,6 @@ package org.hl7.fhir.validation.cli.param.parsers;
 import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.IParamParser;
 import org.hl7.fhir.validation.service.model.CodeGenParameters;
-import org.hl7.fhir.validation.service.model.FHIRPathParameters;
 
 public class CodeGenParametersParser implements IParamParser<CodeGenParameters> {
 
