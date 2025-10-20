@@ -130,6 +130,10 @@ public class ValidationContextUtilities {
     validationContext.setPackageName(packageNameParameters.getPackageName());
   }
 
+  public static void addInstanceFactoryParameters(ValidationContext validationContext, InstanceFactoryParameters instanceFactoryParameters) {
+    validationContext.setSource(instanceFactoryParameters.getSource());
+  }
+
   public static ValidationEngineParameters getValidationEngineParameters(ValidationContext validationContext) {
     ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
     validationEngineParameters.setInferFhirVersion(validationContext.isInferFhirVersion());
@@ -265,5 +269,11 @@ public class ValidationContextUtilities {
     PackageNameParameters packageNameParameters = new PackageNameParameters();
     packageNameParameters.setPackageName(validationContext.getPackageName());
     return packageNameParameters;
+  }
+
+  public static InstanceFactoryParameters getInstanceFactoryParameters(ValidationContext validationContext) {
+    InstanceFactoryParameters instanceFactoryParameters = new InstanceFactoryParameters();
+    instanceFactoryParameters.setSource(validationContext.getSource());
+    return instanceFactoryParameters;
   }
 }

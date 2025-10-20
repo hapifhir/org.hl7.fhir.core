@@ -15,6 +15,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
 
   GlobalParametersParser globalParser = new GlobalParametersParser();
   ValidationEngineParametersParser validationEngineParametersParser = new ValidationEngineParametersParser();
+  InstanceFactoryParametersParser instanceFactoryParametersParser = new InstanceFactoryParametersParser();
   InstanceValidatorParametersParser instanceValidatorParametersParser = new InstanceValidatorParametersParser();
   OutputParametersParser outputParametersParser = new OutputParametersParser();
   PackageNameParametersParser packageNameParametersParser = new PackageNameParametersParser();
@@ -38,6 +39,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
     try {
       globalParser.parseArgs(args);
       validationEngineParametersParser.parseArgs(args);
+      instanceFactoryParametersParser.parseArgs(args);
       instanceValidatorParametersParser.parseArgs(args);
       outputParametersParser.parseArgs(args);
       packageNameParametersParser.parseArgs(args);
@@ -52,6 +54,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
       String[] unprocessedArgs = filterProcessedArgs(args);
       this.validationContext = loadValidationContext(unprocessedArgs);
       ValidationContextUtilities.addValidationEngineParameters(this.validationContext, validationEngineParametersParser.getParameterObject());
+      ValidationContextUtilities.addInstanceFactoryParameters(this.validationContext, instanceFactoryParametersParser.getParameterObject());
       ValidationContextUtilities.addInstanceValidatorParameters(this.validationContext, this.instanceValidatorParametersParser.getParameterObject());
       ValidationContextUtilities.addOutputParameters(this.validationContext, this.outputParametersParser.getParameterObject());
       ValidationContextUtilities.addPackageNameParameters(this.validationContext, this.packageNameParametersParser.getParameterObject());
@@ -85,8 +88,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
     for (int i = 0; i < args.length; i++) {
       if (args[i].equals(RECURSE)) {
         validationContext.setRecursive(true);
-      } else if (args[i].equals(FACTORY)) {
-        validationContext.setSource(args[++i]);
       } else {
         //Any remaining unhandled args become sources
         validationContext.addSource(args[i]);
