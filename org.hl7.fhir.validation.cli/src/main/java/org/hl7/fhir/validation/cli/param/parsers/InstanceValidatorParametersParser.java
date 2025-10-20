@@ -38,6 +38,9 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
   public static final String SECURITY_CHECKS = "-security-checks";
   public static final String NO_EXPERIMENTAL_CONTENT = "-no-experimental-content";
   public static final String TERMINOLOGY_ROUTING = "-tx-routing";
+  public static final String PROFILE = "-profile";
+  public static final String PROFILES = "-profiles";
+  public static final String EXP_PARAMS = "-expansion-parameters";
 
   InstanceValidatorParameters instanceValidatorParameters = new InstanceValidatorParameters();
 
@@ -194,6 +197,31 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
       } else if (args[i].getValue().equals(TERMINOLOGY_ROUTING)) {
         instanceValidatorParameters.setShowTerminologyRouting(true);
         args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(PROFILE)) {
+        if (i + 1 == args.length) {
+          throw new Error("Specified -profile without indicating profile url");
+        } else {
+          String profile = args[i + 1].getValue();
+          instanceValidatorParameters.addProfile(profile);
+          Arg.setProcessed(args, i, 2, true);
+        }
+      } else if (args[i].getValue().equals(PROFILES)) {
+        if (i + 1 == args.length) {
+          throw new Error("Specified -profiles without indicating profile urls");
+        } else {
+          String profiles = args[i + 1].getValue();
+          for (String profile : profiles.split("\\,")) {
+            instanceValidatorParameters.addProfile(profile);
+          }
+          Arg.setProcessed(args, i, 2, true);
+        }
+      } else if (args[i].getValue().equals(EXP_PARAMS)) {
+        if (i + 1 == args.length) {
+          throw new Error("Specified -expansion-parameters without indicating expansion parameters");
+        } else {
+          instanceValidatorParameters.setExpansionParameters(args[i + 1].getValue());
+          Arg.setProcessed(args, i, 2, true);
+        }
       }
     }
   }

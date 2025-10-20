@@ -263,6 +263,14 @@ public class InstanceValidatorParameters {
   @SerializedName("matchetypes")
   private List<String> matchetypes = new ArrayList<String>();
 
+  @JsonProperty("expansionParameters")
+  @SerializedName("expansionParameters")
+  private String expansionParameters;
+
+  @JsonProperty("profiles")
+  @SerializedName("profiles")
+  private List<String> profiles = new ArrayList<String>();
+
   @SerializedName("displayWarnings")
   @JsonProperty("displayWarnings")
   public boolean isDisplayWarnings() {
@@ -443,6 +451,40 @@ public class InstanceValidatorParameters {
     return this;
   }
 
+  @SerializedName("expansionParameters")
+  @JsonProperty("expansionParameters")
+  public String getExpansionParameters() {
+    return expansionParameters;
+  }
+
+  @SerializedName("expansionParameters")
+  @JsonProperty("expansionParameters")
+  public InstanceValidatorParameters setExpansionParameters(String expansionParameters) {
+    this.expansionParameters = expansionParameters;
+    return this;
+  }
+
+  @SerializedName("profiles")
+  @JsonProperty("profiles")
+  public List<String> getProfiles() {
+    return profiles;
+  }
+
+  @SerializedName("profiles")
+  @JsonProperty("profiles")
+  public InstanceValidatorParameters setProfiles(List<String> profiles) {
+    this.profiles = profiles;
+    return this;
+  }
+
+  public InstanceValidatorParameters addProfile(String profile) {
+    if (this.profiles == null) {
+      this.profiles = new ArrayList<>();
+    }
+    this.profiles.add(profile);
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -473,12 +515,14 @@ public class InstanceValidatorParameters {
       && Objects.equals(level, that.level)
       && Objects.equals(bestPracticeLevel, that.bestPracticeLevel)
       && Objects.equals(htmlInMarkdownCheck, that.htmlInMarkdownCheck)
-      && Objects.equals(matchetypes, that.matchetypes);
+      && Objects.equals(matchetypes, that.matchetypes)
+      && Objects.equals(expansionParameters, that.expansionParameters)
+      && Objects.equals(profiles, that.profiles);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, noExtensibleBindingMessages, showTimes, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, displayWarnings, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, matchetypes);
+    return Objects.hash(assumeValidRestReferences, noExtensibleBindingMessages, showTimes, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, displayWarnings, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, matchetypes, expansionParameters, profiles);
   }
 
   @Override
@@ -510,6 +554,8 @@ public class InstanceValidatorParameters {
       ", noExperimentalContent=" + noExperimentalContent +
       ", showTerminologyRouting=" + showTerminologyRouting +
       ", matchetypes=" + matchetypes +
+      ", expansionParameters='" + expansionParameters + '\'' +
+      ", profiles=" + profiles +
       '}';
   }
 }
