@@ -22,6 +22,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
   WatchParametersParser watchParametersParser = new WatchParametersParser();
   TransformLangParameterParser transformLangParameterParser = new TransformLangParameterParser();
   TransformVersionParametersParser transformVersionParameterParser = new TransformVersionParametersParser();
+  LangRegenParametersParser langRegenParametersParser = new LangRegenParametersParser();
   MapParametersParser mapParametersParser = new MapParametersParser();
   FHIRPathParametersParser fhirPathParametersParser = new FHIRPathParametersParser();
   RePackageParametersParser rePackageParametersParser = new RePackageParametersParser();
@@ -43,6 +44,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
       watchParametersParser.parseArgs(args);
       transformLangParameterParser.parseArgs(args);
       transformVersionParameterParser.parseArgs(args);
+      langRegenParametersParser.parseArgs(args);
       mapParametersParser.parseArgs(args);
       fhirPathParametersParser.parseArgs(args);
       rePackageParametersParser.parseArgs(args);
@@ -55,6 +57,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
       ValidationContextUtilities.addWatchParameters(this.validationContext, this.watchParametersParser.getParameterObject());
       ValidationContextUtilities.addTransformLangParameters(this.validationContext, this.transformLangParameterParser.getParameterObject());
       ValidationContextUtilities.addTransformVersionParameters(this.validationContext, this.transformVersionParameterParser.getParameterObject());
+      ValidationContextUtilities.addLangRegenParameters(this.validationContext, this.langRegenParametersParser.getParameterObject());
       ValidationContextUtilities.addMapParameters(this.validationContext, this.mapParametersParser.getParameterObject());
       ValidationContextUtilities.addFHIRPathParameters(this.validationContext, this.fhirPathParametersParser.getParameterObject());
       ValidationContextUtilities.addRePackageParameters(this.validationContext, this.rePackageParametersParser.getParameterObject());
@@ -84,10 +87,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
         validationContext.setPackageName(args[++i]);
       } else if (args[i].equals(LANG_TRANSFORM)) {
         validationContext.setLangTransform(args[++i]);
-      } else if (args[i].equals(LANG_REGEN)) {
-        validationContext.addLangRegenParam(args[++i]);
-        validationContext.addLangRegenParam(args[++i]);
-        validationContext.addLangRegenParam(args[++i]);
       } else if (args[i].equals(FACTORY)) {
         validationContext.setSource(args[++i]);
       } else {

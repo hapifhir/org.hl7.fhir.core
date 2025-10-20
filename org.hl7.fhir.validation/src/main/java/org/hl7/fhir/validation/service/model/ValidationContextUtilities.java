@@ -119,6 +119,12 @@ public class ValidationContextUtilities {
     validationContext.setFormat(rePackageParameters.getFormat());
   }
 
+  public static void addLangRegenParameters(ValidationContext validationContext, LangRegenParameters langRegenParameters) {
+    for (String param : langRegenParameters.getLangRegenParam()) {
+      validationContext.addLangRegenParam(param);
+    }
+  }
+
   public static ValidationEngineParameters getValidationEngineParameters(ValidationContext validationContext) {
     ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
     validationEngineParameters.setInferFhirVersion(validationContext.isInferFhirVersion());
@@ -241,5 +247,11 @@ public class ValidationContextUtilities {
     rePackageParameters.setModeParams(validationContext.getModeParams());
     rePackageParameters.setFormat(validationContext.getFormat());
     return rePackageParameters;
+  }
+
+  public static LangRegenParameters getLangRegenParameters(ValidationContext validationContext) {
+    LangRegenParameters langRegenParameters = new LangRegenParameters();
+    langRegenParameters.setLangRegenParam(new ArrayList<>(validationContext.getLangRegenParam()));
+    return langRegenParameters;
   }
 }
