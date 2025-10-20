@@ -35,7 +35,7 @@ public class Params {
   public static final String PACKAGE_NAME = "-package-name";
 
   public static final String CODEGEN = "-codegen";
-  public static final String FACTORY = "-factory";
+
   public static final String EXP_PARAMS = "-expansion-parameters";
   public static final String NARRATIVE = "-narrative";
   public static final String SNAPSHOT = "-snapshot";
@@ -344,7 +344,7 @@ public class Params {
         validationContext.setExpansionParameters(args[++i]);
       } else if (args[i].equals(MapParametersParser.COMPILE)) {
         validationContext.setMap(args[++i]);
-      } else if (args[i].equals(FACTORY)) {
+      } else if (args[i].equals(InstanceFactoryParametersParser.FACTORY)) {
         validationContext.setSource(args[++i]);
       } else if (args[i].equals(GlobalParametersParser.RUN_TESTS)) {
         // TODO setBaseTestingUtils test directory
