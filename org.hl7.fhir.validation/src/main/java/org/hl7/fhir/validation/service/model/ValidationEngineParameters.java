@@ -73,6 +73,24 @@ public class ValidationEngineParameters {
     return this;
   }
 
+  @JsonProperty("recursive")
+  @SerializedName("recursive")
+  private
+  boolean recursive = false;
+
+  @SerializedName("recursive")
+  @JsonProperty("recursive")
+  public boolean isRecursive() {
+    return recursive;
+  }
+
+  @SerializedName("recursive")
+  @JsonProperty("recursive")
+  public ValidationEngineParameters setRecursive(boolean recursive) {
+    this.recursive = recursive;
+    return this;
+  }
+
   @JsonProperty("snomedCT")
   @SerializedName("snomedCT")
   private String snomedCT = "900000000000207008";
@@ -519,6 +537,7 @@ public class ValidationEngineParameters {
     ValidationEngineParameters that = (ValidationEngineParameters) o;
     return Objects.equals(baseEngine, that.baseEngine)
       && doNative == that.doNative
+      && recursive == that.recursive
       && snomedCT.equals(that.snomedCT)
       && sv.equals(that.sv)
       && isInferFhirVersion() == that.isInferFhirVersion()
@@ -549,6 +568,7 @@ public class ValidationEngineParameters {
     return Objects.hash(
       baseEngine,
       doNative,
+      recursive,
       snomedCT,
       sv,
       inferFhirVersion,
@@ -579,6 +599,7 @@ public class ValidationEngineParameters {
     return "ValidationEngineParameters{" +
       "baseEngine=" + baseEngine +
       ", doNative=" + doNative +
+      ", recursive=" + recursive +
       ", snomedCT=" + snomedCT +
       ", sv=" + sv +
       ", inferFhirVersion=" + inferFhirVersion +

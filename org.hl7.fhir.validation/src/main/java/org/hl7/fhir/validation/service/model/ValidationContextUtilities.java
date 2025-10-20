@@ -1,6 +1,7 @@
 package org.hl7.fhir.validation.service.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is intended to provide backward compatibility for the ValidationContext class.
@@ -10,6 +11,7 @@ public class ValidationContextUtilities {
   public static void addValidationEngineParameters(ValidationContext validationContext, ValidationEngineParameters validationEngineParameters) {
     validationContext.setInferFhirVersion(validationEngineParameters.isInferFhirVersion());
     validationContext.setDoNative(validationEngineParameters.isDoNative());
+    validationContext.setRecursive(validationEngineParameters.isRecursive());
     validationContext.setSnomedCT(validationEngineParameters.getSnomedCT());
     validationContext.setSv(validationEngineParameters.getSv());
     for (String ig : validationEngineParameters.getIgs()) {
@@ -44,6 +46,12 @@ public class ValidationContextUtilities {
     validationContext.setWatchMode(watchParameters.getWatchMode());
     validationContext.setWatchScanDelay(watchParameters.getWatchScanDelay());
     validationContext.setWatchSettleTime(watchParameters.getWatchSettleTime());
+  }
+
+  public static void addUnprocessedParameters(ValidationContext validationContext, List<String> unprocessedParameters) {
+    for (String unprocessedParam : unprocessedParameters) {
+      validationContext.addSource(unprocessedParam);
+    }
   }
 
   public static void addTransformLangParameters(ValidationContext validationContext, TransformLangParameters transformLangParameters) {
@@ -138,6 +146,7 @@ public class ValidationContextUtilities {
     ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
     validationEngineParameters.setInferFhirVersion(validationContext.isInferFhirVersion());
     validationEngineParameters.setDoNative(validationContext.isDoNative());
+    validationEngineParameters.setRecursive(validationContext.isRecursive());
     validationEngineParameters.setSnomedCT(validationContext.getSnomedCT());
     validationEngineParameters.setSv(validationContext.getSv());
     for (String ig : validationContext.getIgs()) {
