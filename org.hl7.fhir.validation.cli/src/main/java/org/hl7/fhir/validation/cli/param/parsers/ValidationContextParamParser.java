@@ -6,10 +6,6 @@ import org.hl7.fhir.validation.cli.param.IParamParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.model.ValidationContextUtilities;
 
-import java.util.ArrayList;
-
-import static org.hl7.fhir.validation.cli.param.Params.*;
-
 @Slf4j
 public class ValidationContextParamParser implements IParamParser<ValidationContext> {
 
@@ -27,6 +23,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
   MapParametersParser mapParametersParser = new MapParametersParser();
   FHIRPathParametersParser fhirPathParametersParser = new FHIRPathParametersParser();
   RePackageParametersParser rePackageParametersParser = new RePackageParametersParser();
+  UnprocessedParametersParser unprocessedParametersParser = new UnprocessedParametersParser();
   ValidationContext validationContext = new ValidationContext();
 
   @Override
@@ -51,8 +48,8 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
       mapParametersParser.parseArgs(args);
       fhirPathParametersParser.parseArgs(args);
       rePackageParametersParser.parseArgs(args);
-      String[] unprocessedArgs = filterProcessedArgs(args);
-      this.validationContext = loadValidationContext(unprocessedArgs);
+      unprocessedParametersParser.parseArgs(args);
+
       ValidationContextUtilities.addValidationEngineParameters(this.validationContext, validationEngineParametersParser.getParameterObject());
       ValidationContextUtilities.addInstanceFactoryParameters(this.validationContext, instanceFactoryParametersParser.getParameterObject());
       ValidationContextUtilities.addInstanceValidatorParameters(this.validationContext, this.instanceValidatorParametersParser.getParameterObject());
@@ -66,34 +63,9 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
       ValidationContextUtilities.addMapParameters(this.validationContext, this.mapParametersParser.getParameterObject());
       ValidationContextUtilities.addFHIRPathParameters(this.validationContext, this.fhirPathParametersParser.getParameterObject());
       ValidationContextUtilities.addRePackageParameters(this.validationContext, this.rePackageParametersParser.getParameterObject());
+      ValidationContextUtilities.addUnprocessedParameters(this.validationContext, this.unprocessedParametersParser.getParameterObject());
     } catch (Exception e) {
       log.error(e.getMessage(), e);
     }
-  }
-
-  private String[] filterProcessedArgs(Arg[] args) {
-    ArrayList<String> unprocessedArgs = new ArrayList<>();
-    for (Arg arg : args) {
-      if (!arg.isProcessed()) {
-        unprocessedArgs.add(arg.getValue());
-      }
-    }
-    return unprocessedArgs.toArray(new String[0]);
-  }
-
-  public static ValidationContext loadValidationContext(String[] args) throws Exception {
-    ValidationContext validationContext = new ValidationContext();
-
-    // load the parameters - so order doesn't matter
-    for (int i = 0; i < args.length; i++) {
-      if (args[i].equals(RECURSE)) {
-        validationContext.setRecursive(true);
-      } else {
-        //Any remaining unhandled args become sources
-        validationContext.addSource(args[i]);
-      }
-    }
-
-    return validationContext;
   }
 }

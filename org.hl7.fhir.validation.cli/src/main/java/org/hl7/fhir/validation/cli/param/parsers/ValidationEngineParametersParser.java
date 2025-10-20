@@ -18,6 +18,7 @@ import java.util.Locale;
 public class ValidationEngineParametersParser implements IParamParser<ValidationEngineParameters> {
 
   public static final String NATIVE = "-native";
+  public static final String RECURSE = "-recurse";
   public static final String SCT = "-sct";
   public static final String VERSION = "-version";
   public static final String IMPLEMENTATION_GUIDE = "-ig";
@@ -57,6 +58,9 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
       }
       if (args[i].getValue().equals(NATIVE)) {
         validationEngineParameters.setDoNative(true);
+        args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(RECURSE)) {
+        validationEngineParameters.setRecursive(true);
         args[i].setProcessed(true);
       } else if (args[i].getValue().equals(SCT)) {
         validationEngineParameters.setSnomedCT(args[i + 1].getValue());
