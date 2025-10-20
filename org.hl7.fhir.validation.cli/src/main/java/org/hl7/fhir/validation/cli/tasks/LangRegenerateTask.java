@@ -5,6 +5,7 @@ import java.io.File;
 import org.hl7.fhir.utilities.i18n.POGenerator;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.param.Params;
+import org.hl7.fhir.validation.cli.param.parsers.LangRegenParametersParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.slf4j.Logger;
@@ -35,7 +36,7 @@ public class LangRegenerateTask extends ValidationEngineTask {
 
   @Override
   public boolean shouldExecuteTask(@Nonnull String[] args) {
-    return Params.hasParam(args, Params.LANG_REGEN);
+    return Params.hasParam(args, LangRegenParametersParser.LANG_REGEN);
   }
 
   @Override

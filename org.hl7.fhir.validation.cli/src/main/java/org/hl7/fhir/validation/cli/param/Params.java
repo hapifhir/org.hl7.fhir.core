@@ -33,11 +33,10 @@ public class Params {
   public static final String TX_PACK = "-tx-pack";
 
   public static final String PACKAGE_NAME = "-package-name";
-  
+
   public static final String CODEGEN = "-codegen";
   public static final String FACTORY = "-factory";
   public static final String LANG_TRANSFORM = "-lang-transform";
-  public static final String LANG_REGEN = "-lang-regen";
   public static final String EXP_PARAMS = "-expansion-parameters";
   public static final String NARRATIVE = "-narrative";
   public static final String SNAPSHOT = "-snapshot";
@@ -338,7 +337,7 @@ public class Params {
         validationContext.setFormat(FhirFormat.fromCode(args[++i]));
       } else if (args[i].equals(LANG_TRANSFORM)) {
         validationContext.setLangTransform(args[++i]);
-      } else if (args[i].equals(LANG_REGEN)) {
+      } else if (args[i].equals(LangRegenParametersParser.LANG_REGEN)) {
         validationContext.addLangRegenParam(args[++i]);
         validationContext.addLangRegenParam(args[++i]);
         validationContext.addLangRegenParam(args[++i]);
