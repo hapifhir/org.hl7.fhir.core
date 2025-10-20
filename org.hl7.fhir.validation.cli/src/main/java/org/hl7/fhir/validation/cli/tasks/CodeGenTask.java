@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.cli.tasks;
 
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.param.Params;
+import org.hl7.fhir.validation.cli.param.parsers.RePackageParametersParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.slf4j.Logger;
@@ -33,7 +34,7 @@ public class CodeGenTask extends ValidationEngineTask {
   @Override
   public boolean shouldExecuteTask(@Nonnull String[] args) {
     return Params.hasParam(args, Params.CODEGEN)
-      || (Params.hasParam(args, Params.PACKAGE_NAME) && !Params.hasParam(args, Params.RE_PACK));
+      || (Params.hasParam(args, Params.PACKAGE_NAME) && !Params.hasParam(args, RePackageParametersParser.RE_PACK));
   }
 
   @Override
