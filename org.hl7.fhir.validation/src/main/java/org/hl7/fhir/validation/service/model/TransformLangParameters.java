@@ -17,6 +17,11 @@ public class TransformLangParameters {
   private
   String tgtLang = null;
 
+  @JsonProperty("langTransform")
+  @SerializedName("langTransform")
+  private
+  String langTransform = null;
+
   @JsonProperty("inputs")
   @SerializedName("inputs")
   private List<String> inputs = new ArrayList<String>();
@@ -36,6 +41,19 @@ public class TransformLangParameters {
 
   public TransformLangParameters setTgtLang(String tgtLang) {
     this.tgtLang = tgtLang;
+    return this;
+  }
+
+  @SerializedName("langTransform")
+  @JsonProperty("langTransform")
+  public String getLangTransform() {
+    return langTransform;
+  }
+
+  @SerializedName("langTransform")
+  @JsonProperty("langTransform")
+  public TransformLangParameters setLangTransform(String langTransform) {
+    this.langTransform = langTransform;
     return this;
   }
 
@@ -64,6 +82,7 @@ public class TransformLangParameters {
     TransformLangParameters that = (TransformLangParameters) o;
     return Objects.equals(srcLang, that.srcLang)
       && Objects.equals(tgtLang, that.tgtLang)
+      && Objects.equals(langTransform, that.langTransform)
       && Objects.equals(inputs, that.inputs);
   }
 
@@ -72,6 +91,7 @@ public class TransformLangParameters {
     return Objects.hash(
       srcLang,
       tgtLang,
+      langTransform,
       inputs);
   }
 
@@ -80,6 +100,7 @@ public class TransformLangParameters {
     return "TransformLangParameters{" +
       "srcLang='" + srcLang + '\'' +
       ", tgtLang='" + tgtLang + '\'' +
+      ", langTransform='" + langTransform + '\'' +
       ", inputs=" + inputs +
       "}";
   }

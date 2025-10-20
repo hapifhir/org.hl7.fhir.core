@@ -49,6 +49,7 @@ public class ValidationContextUtilities {
   public static void addTransformLangParameters(ValidationContext validationContext, TransformLangParameters transformLangParameters) {
     validationContext.setSrcLang(transformLangParameters.getSrcLang());
     validationContext.setTgtLang(transformLangParameters.getTgtLang());
+    validationContext.setLangTransform(transformLangParameters.getLangTransform());
     for (String input : transformLangParameters.getInputs()) {
       validationContext.addInput(input);
     }
@@ -176,6 +177,7 @@ public class ValidationContextUtilities {
     TransformLangParameters transformLangParameters = new TransformLangParameters();
     transformLangParameters.setSrcLang(validationContext.getSrcLang());
     transformLangParameters.setTgtLang(validationContext.getTgtLang());
+    transformLangParameters.setLangTransform(validationContext.getLangTransform());
     transformLangParameters.setInputs(new ArrayList<>(validationContext.getInputs()));
     return transformLangParameters;
   }

@@ -1,7 +1,6 @@
 package org.hl7.fhir.validation.cli.param.parsers;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.IParamParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
@@ -21,7 +20,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
   PackageNameParametersParser packageNameParametersParser = new PackageNameParametersParser();
   CodeGenParametersParser codeGenParametersParser = new CodeGenParametersParser();
   WatchParametersParser watchParametersParser = new WatchParametersParser();
-  TransformLangParameterParser transformLangParameterParser = new TransformLangParameterParser();
+  TransformLangParametersParser transformLangParametersParser = new TransformLangParametersParser();
   TransformVersionParametersParser transformVersionParameterParser = new TransformVersionParametersParser();
   LangRegenParametersParser langRegenParametersParser = new LangRegenParametersParser();
   MapParametersParser mapParametersParser = new MapParametersParser();
@@ -44,7 +43,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
       packageNameParametersParser.parseArgs(args);
       codeGenParametersParser.parseArgs(args);
       watchParametersParser.parseArgs(args);
-      transformLangParameterParser.parseArgs(args);
+      transformLangParametersParser.parseArgs(args);
       transformVersionParameterParser.parseArgs(args);
       langRegenParametersParser.parseArgs(args);
       mapParametersParser.parseArgs(args);
@@ -58,7 +57,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
       ValidationContextUtilities.addPackageNameParameters(this.validationContext, this.packageNameParametersParser.getParameterObject());
       ValidationContextUtilities.addCodeGenParameters(this.validationContext, this.codeGenParametersParser.getParameterObject());
       ValidationContextUtilities.addWatchParameters(this.validationContext, this.watchParametersParser.getParameterObject());
-      ValidationContextUtilities.addTransformLangParameters(this.validationContext, this.transformLangParameterParser.getParameterObject());
+      ValidationContextUtilities.addTransformLangParameters(this.validationContext, this.transformLangParametersParser.getParameterObject());
       ValidationContextUtilities.addTransformVersionParameters(this.validationContext, this.transformVersionParameterParser.getParameterObject());
       ValidationContextUtilities.addLangRegenParameters(this.validationContext, this.langRegenParametersParser.getParameterObject());
       ValidationContextUtilities.addMapParameters(this.validationContext, this.mapParametersParser.getParameterObject());
@@ -86,8 +85,6 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
     for (int i = 0; i < args.length; i++) {
       if (args[i].equals(RECURSE)) {
         validationContext.setRecursive(true);
-      } else if (args[i].equals(LANG_TRANSFORM)) {
-        validationContext.setLangTransform(args[++i]);
       } else if (args[i].equals(FACTORY)) {
         validationContext.setSource(args[++i]);
       } else {

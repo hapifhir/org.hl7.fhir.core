@@ -36,7 +36,6 @@ public class Params {
 
   public static final String CODEGEN = "-codegen";
   public static final String FACTORY = "-factory";
-  public static final String LANG_TRANSFORM = "-lang-transform";
   public static final String EXP_PARAMS = "-expansion-parameters";
   public static final String NARRATIVE = "-narrative";
   public static final String SNAPSHOT = "-snapshot";
@@ -220,7 +219,7 @@ public class Params {
           String mode = args[++i];
           validationContext.addModeParam(mode);
         }
-      } else if (args[i].equals(TransformLangParameterParser.INPUT)) {
+      } else if (args[i].equals(TransformLangParametersParser.INPUT)) {
         if (i + 1 == args.length)
           throw new Error("Specified -input without providing value");
         else {
@@ -335,7 +334,7 @@ public class Params {
         validationContext.setMap(args[++i]);
       } else if (args[i].equals(RePackageParametersParser.FORMAT)) {
         validationContext.setFormat(FhirFormat.fromCode(args[++i]));
-      } else if (args[i].equals(LANG_TRANSFORM)) {
+      } else if (args[i].equals(TransformLangParametersParser.LANG_TRANSFORM)) {
         validationContext.setLangTransform(args[++i]);
       } else if (args[i].equals(LangRegenParametersParser.LANG_REGEN)) {
         validationContext.addLangRegenParam(args[++i]);
@@ -444,12 +443,12 @@ public class Params {
           throw new Error("Specified -language without indicating language");
         else
           validationContext.setLang(args[++i]);
-      } else if (args[i].equals(TransformLangParameterParser.SRC_LANG)) {
+      } else if (args[i].equals(TransformLangParametersParser.SRC_LANG)) {
         if (i + 1 == args.length)
           throw new Error("Specified -src-lang without indicating file");
         else
           validationContext.setSrcLang(args[++i]);
-      } else if (args[i].equals(TransformLangParameterParser.TGT_LANG)) {
+      } else if (args[i].equals(TransformLangParametersParser.TGT_LANG)) {
         if (i + 1 == args.length)
           throw new Error("Specified -tgt-lang without indicating file");
         else
