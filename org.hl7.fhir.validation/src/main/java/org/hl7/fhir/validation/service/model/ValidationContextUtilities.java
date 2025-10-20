@@ -109,6 +109,16 @@ public class ValidationContextUtilities {
     }
   }
 
+  public static void addRePackageParameters(ValidationContext validationContext, RePackageParameters rePackageParameters) {
+    for (String ig : rePackageParameters.getPackages()) {
+      validationContext.addIg(ig);
+    }
+    for (String modeParam : rePackageParameters.getModeParams()) {
+      validationContext.addModeParam(modeParam);
+    }
+    validationContext.setFormat(rePackageParameters.getFormat());
+  }
+
   public static ValidationEngineParameters getValidationEngineParameters(ValidationContext validationContext) {
     ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
     validationEngineParameters.setInferFhirVersion(validationContext.isInferFhirVersion());
@@ -223,5 +233,13 @@ public class ValidationContextUtilities {
     CodeGenParameters codeGenParameters = new CodeGenParameters();
     codeGenParameters.setOptions(new ArrayList<>(validationContext.getOptions()));
     return codeGenParameters;
+  }
+
+  public static RePackageParameters getRePackageParameters(ValidationContext validationContext) {
+    RePackageParameters rePackageParameters = new RePackageParameters();
+    rePackageParameters.setPackages(new ArrayList<>(validationContext.getIgs()));
+    rePackageParameters.setModeParams(validationContext.getModeParams());
+    rePackageParameters.setFormat(validationContext.getFormat());
+    return rePackageParameters;
   }
 }

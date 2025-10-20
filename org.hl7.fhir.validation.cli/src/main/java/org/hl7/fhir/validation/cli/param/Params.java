@@ -31,13 +31,11 @@ public class Params {
   public static final String CONFIG = "-config";
   public static final String RECURSE = "-recurse";
   public static final String TX_PACK = "-tx-pack";
-  public static final String RE_PACK = "-re-package";
+
   public static final String PACKAGE_NAME = "-package-name";
-  public static final String PIN = "-pin";
-  public static final String EXPAND = "-expand";
+  
   public static final String CODEGEN = "-codegen";
   public static final String FACTORY = "-factory";
-  public static final String FORMAT = "-format";
   public static final String LANG_TRANSFORM = "-lang-transform";
   public static final String LANG_REGEN = "-lang-regen";
   public static final String EXP_PARAMS = "-expansion-parameters";
@@ -312,7 +310,7 @@ public class Params {
         }
         validationContext.addModeParam("tx");
         validationContext.addModeParam("expansions");
-      } else if (args[i].equals(RE_PACK)) {
+      } else if (args[i].equals(RePackageParametersParser.RE_PACK)) {
         String packageArg = args[++i];
         if (packageArg != null) {
           if (packageArg.contains(",")) {
@@ -326,9 +324,9 @@ public class Params {
         validationContext.addModeParam("tx");
         validationContext.addModeParam("cnt");
         validationContext.addModeParam("api");
-      } else if (args[i].equals(PIN)) {
+      } else if (args[i].equals(RePackageParametersParser.PIN)) {
         validationContext.addModeParam("pin");
-      } else if (args[i].equals(EXPAND)) {
+      } else if (args[i].equals(RePackageParametersParser.EXPAND)) {
         validationContext.addModeParam("expand");
       } else if (args[i].equals(TransformVersionParametersParser.DO_NATIVE)) {
         validationContext.setCanDoNative(true);
@@ -336,7 +334,7 @@ public class Params {
         validationContext.setCanDoNative(false);
       } else if (args[i].equals(MapParametersParser.TRANSFORM)) {
         validationContext.setMap(args[++i]);
-      } else if (args[i].equals(FORMAT)) {
+      } else if (args[i].equals(RePackageParametersParser.FORMAT)) {
         validationContext.setFormat(FhirFormat.fromCode(args[++i]));
       } else if (args[i].equals(LANG_TRANSFORM)) {
         validationContext.setLangTransform(args[++i]);

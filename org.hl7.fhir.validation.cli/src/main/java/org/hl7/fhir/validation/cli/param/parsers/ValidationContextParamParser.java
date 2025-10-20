@@ -24,6 +24,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
   TransformVersionParametersParser transformVersionParameterParser = new TransformVersionParametersParser();
   MapParametersParser mapParametersParser = new MapParametersParser();
   FHIRPathParametersParser fhirPathParametersParser = new FHIRPathParametersParser();
+  RePackageParametersParser rePackageParametersParser = new RePackageParametersParser();
   ValidationContext validationContext = new ValidationContext();
 
   @Override
@@ -44,6 +45,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
       transformVersionParameterParser.parseArgs(args);
       mapParametersParser.parseArgs(args);
       fhirPathParametersParser.parseArgs(args);
+      rePackageParametersParser.parseArgs(args);
       String[] unprocessedArgs = filterProcessedArgs(args);
       this.validationContext = loadValidationContext(unprocessedArgs);
       ValidationContextUtilities.addValidationEngineParameters(this.validationContext, validationEngineParametersParser.getParameterObject());
@@ -55,6 +57,7 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
       ValidationContextUtilities.addTransformVersionParameters(this.validationContext, this.transformVersionParameterParser.getParameterObject());
       ValidationContextUtilities.addMapParameters(this.validationContext, this.mapParametersParser.getParameterObject());
       ValidationContextUtilities.addFHIRPathParameters(this.validationContext, this.fhirPathParametersParser.getParameterObject());
+      ValidationContextUtilities.addRePackageParameters(this.validationContext, this.rePackageParametersParser.getParameterObject());
     } catch (Exception e) {
       log.error(e.getMessage(), e);
     }
@@ -75,50 +78,10 @@ public class ValidationContextParamParser implements IParamParser<ValidationCont
 
     // load the parameters - so order doesn't matter
     for (int i = 0; i < args.length; i++) {
-       if (args[i].equals(MODE)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified -mode without indicating mode");
-        else {
-          String mode = args[++i];
-          validationContext.addModeParam(mode);
-        }
-      } else if (args[i].equals(RECURSE)) {
+      if (args[i].equals(RECURSE)) {
         validationContext.setRecursive(true);
       } else if (args[i].equals(PACKAGE_NAME)) {
         validationContext.setPackageName(args[++i]);
-      } else if (args[i].equals(TX_PACK)) {
-        String packageArg = args[++i];
-        if (packageArg != null) {
-          if (packageArg.contains(",")) {
-            for (String packageName : packageArg.split("\\,")) {
-              validationContext.getIgs().add(packageName);
-            }
-          } else {
-            validationContext.getIgs().add(packageArg);
-          }
-        }
-        validationContext.addModeParam("tx");
-        validationContext.addModeParam("expansions");
-      } else if (args[i].equals(RE_PACK)) {
-        String packageArg = args[++i];
-        if (packageArg != null) {
-          if (packageArg.contains(",")) {
-            for (String packageName : packageArg.split("\\,")) {
-              validationContext.getIgs().add(packageName);
-            }
-          } else {
-            validationContext.getIgs().add(packageArg);
-          }
-        }
-        validationContext.addModeParam("tx");
-        validationContext.addModeParam("cnt");
-        validationContext.addModeParam("api");
-      } else if (args[i].equals(PIN)) {
-        validationContext.addModeParam("pin");
-      } else if (args[i].equals(EXPAND)) {
-        validationContext.addModeParam("expand");
-      } else if (args[i].equals(FORMAT)) {
-        validationContext.setFormat(Manager.FhirFormat.fromCode(args[++i]));
       } else if (args[i].equals(LANG_TRANSFORM)) {
         validationContext.setLangTransform(args[++i]);
       } else if (args[i].equals(LANG_REGEN)) {

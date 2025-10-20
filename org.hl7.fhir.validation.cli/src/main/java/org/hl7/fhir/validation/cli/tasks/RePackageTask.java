@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.param.Params;
+import org.hl7.fhir.validation.cli.param.parsers.RePackageParametersParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.cli.Display;
@@ -44,7 +45,7 @@ public class RePackageTask extends ValidationEngineTask {
   @Override
   public boolean shouldExecuteTask(@Nonnull String[] args) {
     return Params.hasParam(args, Params.TX_PACK)
-      || Params.hasParam(args, Params.RE_PACK) ;
+      || Params.hasParam(args, RePackageParametersParser.RE_PACK) ;
   }
 
   @Override
