@@ -28,7 +28,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A POJO for storing the flags/values for the CLI validator.
+ * <p/>
+ * @deprecated This POJO is in the process of being replaced by more modular task-based POJOs (Such as
+ * ValidationEngineParameters, InstanceValidatorParameters). It should not be used by downstream projects. It will still
+ * be used internally while the replacement is in progress, but will eventually be removed altogether.
  */
+@Deprecated(since="2025-10-21")
 public class ValidationContext {
 
   @JsonProperty("baseEngine")

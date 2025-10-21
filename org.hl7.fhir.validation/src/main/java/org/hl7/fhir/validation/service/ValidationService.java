@@ -621,7 +621,7 @@ public class ValidationService {
     validationEngine.setHintAboutNonMustSupport(validationContext.isHintAboutNonMustSupport());
     for (String extension : validationContext.getExtensions()) {
       if ("any".equals(extension)) {
-        validationEngine.setAnyExtensionsAllowed(true); //FIXME InstanceValidatorParameters
+        validationEngine.setAnyExtensionsAllowed(true);
       } else {
         validationEngine.getExtensionDomains().add(extension);
       }

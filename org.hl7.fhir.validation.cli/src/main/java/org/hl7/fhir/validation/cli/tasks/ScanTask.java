@@ -46,7 +46,6 @@ public class ScanTask extends ValidationEngineTask {
   @Override
   public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
     Scanner validationScanner = new Scanner(validationEngine.getContext(), validationEngine.getValidator(null), validationEngine.getIgLoader(), validationEngine.getFhirPathEngine());
-    //FIXME replace ValidationContext
     validationScanner.validateScan(validationContext.getOutput(), validationContext.getSources());
   }
 

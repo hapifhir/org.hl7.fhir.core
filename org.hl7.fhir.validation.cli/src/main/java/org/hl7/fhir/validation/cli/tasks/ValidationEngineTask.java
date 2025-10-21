@@ -22,7 +22,6 @@ public abstract class ValidationEngineTask extends ValidationServiceTask{
     executeTask(validationService, validationContext, args);
   }
 
-  //FIXME replace ValidationContext
   @Override
   public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
     TimeTracker tt = new TimeTracker();
@@ -34,14 +33,12 @@ public abstract class ValidationEngineTask extends ValidationServiceTask{
     log.info("Done. " + tt.report()+". Max Memory = "+ Utilities.describeSize(Runtime.getRuntime().maxMemory()));
   }
 
-  //FIXME replace ValidationContext
   public abstract void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception;
 
   public boolean inferFhirVersion() {
     return false;
   }
 
-  //FIXME Replace ValidationContext with ValidationEngineSettings
   private ValidationEngine getValidationEngine(ValidationService validationService, TimeTracker tt, ValidationContext validationContext) throws Exception {
     if (inferFhirVersion()) {
       validationContext.setInferFhirVersion(Boolean.TRUE);

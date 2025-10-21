@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class is intended to provide backward compatibility for the ValidationContext class.
+ * This class is intended to provide backward compatibility for the deprecated ValidationContext class.
+ * <p/>
+ * Its usage is strongly discouraged.
  */
 @Deprecated(since="2025-10-08")
 public class ValidationContextUtilities {
