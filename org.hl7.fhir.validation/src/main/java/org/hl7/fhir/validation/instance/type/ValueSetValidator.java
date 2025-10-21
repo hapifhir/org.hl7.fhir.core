@@ -460,7 +460,7 @@ public class ValueSetValidator extends BaseValidator {
             var si = context.getTxSupportInfo(system, version);
             if (concepts.size() > 1 && !si.isSupported()) {
               hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_CS_NO_SUPPORT, si.getServer());
-            } else if (concepts.size() > 1 && !VersionUtilities.isThisOrLater("1.7.8", si.getTestVersion(), VersionUtilities.VersionPrecision.PATCH)) {
+            } else if (concepts.size() > 1 && (si.getTestVersion() == null || !VersionUtilities.isThisOrLater("1.7.8", si.getTestVersion(), VersionUtilities.VersionPrecision.PATCH))) {
               hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_NO_BATCH_ON_SERVER, si.getServer());
             } else {
               try {
