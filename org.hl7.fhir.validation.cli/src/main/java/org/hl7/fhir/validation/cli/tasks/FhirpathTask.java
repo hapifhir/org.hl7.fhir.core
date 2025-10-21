@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.cli.tasks;
 
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.param.Params;
+import org.hl7.fhir.validation.cli.param.parsers.FHIRPathParametersParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.cli.Display;
@@ -34,7 +35,7 @@ public class FhirpathTask extends ValidationEngineTask {
 
   @Override
   public boolean shouldExecuteTask(@Nonnull String[] args) {
-    return Params.hasParam(args, Params.FHIRPATH);
+    return Params.hasParam(args, FHIRPathParametersParser.FHIRPATH);
   }
 
   @Override
