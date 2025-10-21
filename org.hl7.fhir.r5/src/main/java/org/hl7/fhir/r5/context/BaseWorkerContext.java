@@ -2110,6 +2110,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     String version = null;
     boolean inactive = false;
     String status = null;
+    String diagnostics = null;
     List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
     Set<String> unknownSystems = new HashSet<>();
 
@@ -2128,6 +2129,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           version = ((PrimitiveType<?>) p.getValue()).asStringValue();
         } else if (p.getName().equals("code")) {
           code = ((PrimitiveType<?>) p.getValue()).asStringValue();
+        } else if (p.getName().equals("diagnostics")) {
+          diagnostics = ((PrimitiveType<?>) p.getValue()).asStringValue();
         } else if (p.getName().equals("inactive")) {
           inactive = "true".equals(((PrimitiveType<?>) p.getValue()).asStringValue());
         } else if (p.getName().equals("status")) {
@@ -2221,6 +2224,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     res.setUnknownSystems(unknownSystems);
     res.setServer(server);
     res.setParameters(pOut);
+    res.setDiagnostics(diagnostics);
     return res;
   }
 

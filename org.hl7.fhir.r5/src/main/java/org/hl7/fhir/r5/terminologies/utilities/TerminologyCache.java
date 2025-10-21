@@ -768,6 +768,10 @@ public class TerminologyCache {
             if (first) first = false; else sw.write(",\r\n");
             sw.write("  \"inactive\" : true");
           }
+          if (ce.v.getDiagnostics() != null) {
+            if (first) first = false; else sw.write(",\r\n");
+            sw.write("  \"diagnostics\" : \""+Utilities.escapeJson(ce.v.getDiagnostics()).trim()+"\"");
+          }
           if (ce.v.getUnknownSystems() != null) {
             if (first) first = false; else sw.write(",\r\n");
             sw.write("  \"unknown-systems\" : \""+Utilities.escapeJson(CommaSeparatedStringBuilder.join(",", ce.v.getUnknownSystems())).trim()+"\"");
@@ -873,6 +877,7 @@ public class TerminologyCache {
       ce.v.setUnknownSystems(CommaSeparatedStringBuilder.toSet(unknownSystems));
       ce.v.setServer(server);
       ce.v.setStatus(inactive, status);
+      ce.v.setDiagnostics(loadJS(o.get("diagnostics")));
       if (oo != null) {
         ce.v.setIssues(oo.getIssue());
       }
