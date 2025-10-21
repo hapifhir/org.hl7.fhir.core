@@ -318,6 +318,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     jurisdiction = other.jurisdiction;
     unknownCodeSystemsCauseErrors = other.unknownCodeSystemsCauseErrors;
     r5BundleRelativeReferencePolicy = other.r5BundleRelativeReferencePolicy;
+    displayWarnings = other.displayWarnings;
+    showMessageIds = other.showMessageIds;
+    noExperimentalContent = other.noExperimentalContent;
+    bestPracticeLevel = other.bestPracticeLevel;
   }
   
   /**
@@ -933,8 +937,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     context.getTxClientManager().setUsage("validation");
     validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
     validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
-    validator.getExtensionDomains().clear();
-    validator.getExtensionDomains().addAll(extensionDomains);
+
+
     validator.getSettings().getCertificateFolders().clear(); // they should be empty though
     validator.getSettings().getCertificates().clear();
     validator.getSettings().getCertificateFolders().addAll(FhirSettings.getCertificateSources());
@@ -946,6 +950,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         validator.getSettings().getCertificates().put(s, FileUtilities.fileToBytes(f));
       }
     }
+    validator.getExtensionDomains().clear();
     validator.getExtensionDomains().addAll(extensionDomains);
     validator.setNoInvariantChecks(isNoInvariantChecks());
     validator.setWantInvariantInMessage(isWantInvariantInMessage());

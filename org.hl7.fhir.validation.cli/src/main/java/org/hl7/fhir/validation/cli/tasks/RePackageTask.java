@@ -14,6 +14,7 @@ import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.utilities.npm.*;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.param.Params;
+import org.hl7.fhir.validation.cli.param.parsers.RePackageParametersParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.cli.Display;
@@ -49,7 +50,7 @@ public class RePackageTask extends ValidationEngineTask {
 
   @Override
   public boolean shouldExecuteTask(@Nonnull String[] args) {
-    return Params.hasParam(args, Params.TX_PACK) || Params.hasParam(args, Params.RE_PACK);
+    return Params.hasParam(args, RePackageParametersParser.TX_PACK) || Params.hasParam(args, RePackageParametersParser.RE_PACK);
   }
 
   @Override
@@ -77,7 +78,7 @@ public class RePackageTask extends ValidationEngineTask {
       .addPackages(validationContext.getIgs());
 
 
-    switch (Objects.requireNonNull(Params.getParam(args, Params.SCOPE))) {
+    switch (Objects.requireNonNull(Params.getParam(args, RePackageParametersParser.SCOPE))) {
       case "ig":
         packageReGenerator.setScope(ExpansionPackageGeneratorScope.IG_ONLY);
         break;
@@ -93,16 +94,16 @@ public class RePackageTask extends ValidationEngineTask {
       validationEngine.loadExpansionParameters(validationContext.getExpansionParameters());
     }
 
-    String ignoreList = Params.getParam(args, Params.IGNORE_LIST);
+    String ignoreList = Params.getParam(args, RePackageParametersParser.IGNORE_LIST);
     if (!Strings.isNullOrEmpty(ignoreList)) packageReGenerator.setIgnoreList(List.of(ignoreList.split(",")));
 
-    String includeList = Params.getParam(args, Params.INCLUDE_LIST);
+    String includeList = Params.getParam(args, RePackageParametersParser.INCLUDE_LIST);
     if (!Strings.isNullOrEmpty(includeList)) {
       List<CanonicalResource> canonicalResources = loadResources(List.of(includeList.split(",")), validationEngine.getPcm());
       packageReGenerator.setIncludeList(canonicalResources);
     }
 
-    if(Boolean.parseBoolean(Params.getParam(args, Params.INCLUDE_CONFORMS_TO))){
+    if(Boolean.parseBoolean(Params.getParam(args, RePackageParametersParser.INCLUDE_CONFORMS_TO))){
       packageReGenerator.setIncludeConformsTo(true);
     }
 
@@ -145,7 +146,7 @@ public class RePackageTask extends ValidationEngineTask {
           }
         }
       }
-      
+
     } catch (Exception e) {
       log.error("Error loading packages for canonicals", e);
     }
