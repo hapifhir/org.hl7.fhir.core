@@ -58,6 +58,7 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.validation.IgLoader;
+import lombok.Getter;
 
 /**
  * Given a package id, and an expansion parameters, 
@@ -219,11 +220,7 @@ public class PackageReGenerator {
   private Set<String> sourcePackages = new HashSet<>();
   private Map<String, TerminologyResourceEntry> entries = new HashMap<>();
   private Set<String> modeParams;
-
-  public List<CanonicalResource> getResources() {
-    return resources;
-  }
-
+  @Getter
   private List<CanonicalResource> resources = new ArrayList<>();
   private Set<String> set = new HashSet<>();
   
@@ -801,7 +798,6 @@ public class PackageReGenerator {
         Base c = getConstantParam(node);
         if (c != null) {
           CanonicalResource dependency = (CanonicalResource) context.fetchResource(Resource.class, c.primitiveValue());
-          System.out.println(dependency.getTitle());
           processResource(dependency);
         }
       }
