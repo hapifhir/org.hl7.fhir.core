@@ -18,33 +18,21 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.fhirpath.ExpressionNode;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CapabilityStatement;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementDocumentComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceOperationComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.NamingSystem;
-import org.hl7.fhir.r5.model.OperationDefinition;
 import org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent;
-import org.hl7.fhir.r5.model.PackageInformation;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.Property;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.SearchParameter.SearchParameterComponentComponent;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.NPMPackageGenerator;
@@ -104,6 +92,7 @@ public class PackageReGenerator {
   private IWorkerContext context;
   private String npmId;
   private List<String> ignoreList = new ArrayList<>();
+  private FHIRPathEngine pathEngine;
 
   public PackageReGenerator() {
     super();
@@ -307,7 +296,7 @@ public class PackageReGenerator {
     log.info("Done");
   }
 
-  private void processResource(CanonicalResource res) {
+  private void processResource(CanonicalResource res) throws IOException {
     if (res == null)
       return;
     if(ignoreList.contains(res.getUrl()))
@@ -343,7 +332,7 @@ public class PackageReGenerator {
     return Utilities.existsInList(pi, "hl7.terminology");
   }
 
-  private void chaseDependencies(CanonicalResource res) {
+  private void chaseDependencies(CanonicalResource res) throws IOException {
     if (res instanceof CodeSystem) {
       chaseDependenciesCS((CodeSystem) res);
     }
@@ -365,7 +354,7 @@ public class PackageReGenerator {
     }
   }
 
-  private void chaseDependenciesCS(CodeSystem cs) {
+  private void chaseDependenciesCS(CodeSystem cs) throws IOException {
     if (cs.hasSupplements()) {
       processResource(context.fetchResource(CodeSystem.class, cs.getSupplements()));      
     }
@@ -376,7 +365,7 @@ public class PackageReGenerator {
     }
   }
 
-  private void chaseDependenciesVS(ValueSet vs) {
+  private void chaseDependenciesVS(ValueSet vs) throws IOException {
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
       chaseDependenciesVS(inc, vs);
     }
@@ -385,14 +374,14 @@ public class PackageReGenerator {
     }
   }
 
-  private void chaseDependenciesVS(ConceptSetComponent inc, ValueSet vs) {
+  private void chaseDependenciesVS(ConceptSetComponent inc, ValueSet vs) throws IOException {
     for (CanonicalType c : inc.getValueSet()) {
       processResource(context.fetchResource(ValueSet.class, c.primitiveValue()));
     }
     processResource(context.fetchResource(CodeSystem.class, inc.getSystem(), inc.getVersion(), vs));
   }
 
-  private void chaseDependenciesSD(StructureDefinition sd) {
+  private void chaseDependenciesSD(StructureDefinition sd) throws IOException {
     if (sd.hasBaseDefinition()) {
       processResource(context.fetchResource(StructureDefinition.class, sd.getBaseDefinition()));
     }
@@ -401,6 +390,13 @@ public class PackageReGenerator {
         processResource(context.fetchResource(ValueSet.class, ed.getBinding().getValueSet()));
         for (ElementDefinitionBindingAdditionalComponent adb : ed.getBinding().getAdditional()) {
           processResource(context.fetchResource(ValueSet.class, adb.getValueSet()));          
+        }
+        for (ElementDefinition.ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
+          if (inv.hasExpression()) {
+            FHIRPathEngine fpe = getEngine(sd);
+            ExpressionNode node = fpe.parse(inv.getExpression());
+            processExpression(node);
+          }
         }
       }
       for (TypeRefComponent tr : ed.getType()) {
@@ -415,10 +411,44 @@ public class PackageReGenerator {
         }
       }
     }
-    
   }
 
-  private void chaseDependenciesCS(CapabilityStatement cs) {
+  private void processExpression(ExpressionNode node) throws IOException {
+    if (node != null) {
+      if (node.getFunction() == ExpressionNode.Function.ConformsTo || node.getFunction() == ExpressionNode.Function.MemberOf) {
+        Base c = getConstantParam(node);
+        if (c != null) {
+          processResource((CanonicalResource) context.fetchResource(Resource.class, c.primitiveValue()));
+        }
+      }
+      processExpression(node.getInner());
+      processExpression(node.getGroup());
+      processExpression(node.getOpNext());
+      for (ExpressionNode p : node.getParameters()) {
+        processExpression(p);
+      }
+    }
+  }
+
+  private Base getConstantParam(ExpressionNode node) {
+      if (!node.getParameters().isEmpty()) {
+        List<Base> list = pathEngine.evaluate(null, node.getParameters().get(0));
+        return list.isEmpty() ? null : list.get(0);
+    }
+    return null;
+  }
+
+  private FHIRPathEngine getEngine(StructureDefinition sd) throws IOException {
+    if (pathEngine == null) {
+      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
+      NpmPackage npm = pcm.loadPackage(VersionUtilities.packageForVersion(sd.getFhirVersionElement().primitiveValue()));
+      SimpleWorkerContext ctxt = new SimpleWorkerContext.SimpleWorkerContextBuilder().fromPackage(npm);
+      pathEngine = new FHIRPathEngine(ctxt);
+    }
+    return pathEngine;
+  }
+
+  private void chaseDependenciesCS(CapabilityStatement cs) throws IOException {
     for (CanonicalType c : cs.getInstantiates()) {
       processResource(context.fetchResource(CapabilityStatement.class, c.primitiveValue()));
     }
@@ -465,7 +495,7 @@ public class PackageReGenerator {
     }
   }
 
-  private void chaseDependenciesOD(OperationDefinition od) {
+  private void chaseDependenciesOD(OperationDefinition od) throws IOException {
     if (od.hasBase()) {
       processResource(context.fetchResource(SearchParameter.class, od.getBase()));
     }
@@ -486,7 +516,7 @@ public class PackageReGenerator {
     }
   }
 
-  private void chaseDependenciesSP(SearchParameter sp) {
+  private void chaseDependenciesSP(SearchParameter sp) throws IOException {
     if (sp.hasDerivedFrom()) {
       processResource(context.fetchResource(SearchParameter.class, sp.getDerivedFrom()));
     }
