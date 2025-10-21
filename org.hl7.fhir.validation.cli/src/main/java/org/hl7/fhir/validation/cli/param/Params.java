@@ -24,51 +24,6 @@ import org.hl7.fhir.validation.service.utils.ValidationLevel;
 @Slf4j
 public class Params {
 
-  public static final String TEST_VERSION = "-test-version";
-
-  public static final String PROFILE = "-profile";
-  public static final String PROFILES = "-profiles";
-  public static final String CONFIG = "-config";
-  public static final String RECURSE = "-recurse";
-  public static final String TX_PACK = "-tx-pack";
-
-  public static final String PACKAGE_NAME = "-package-name";
-
-  public static final String CODEGEN = "-codegen";
-
-  public static final String EXP_PARAMS = "-expansion-parameters";
-  public static final String NARRATIVE = "-narrative";
-  public static final String SNAPSHOT = "-snapshot";
-  public static final String INSTALL = "-install";
-  public static final String SCAN = "-scan";
-  public static final String IMPLEMENTATION_GUIDE = "-ig";
-  public static final String DEFINITION = "-defn";
-  public static final String X = "-x";
-  public static final String CONVERT = "-convert";
-  public static final String TEST = "-tests";
-  public static final String TX_TESTS = "txTests";
-  public static final String AI_TESTS = "-aiTests";
-  public static final String HELP = "help";
-  public static final String COMPARE = "-compare";
-  public static final String SPREADSHEET = "-spreadsheet";
-  public static final String DESTINATION = "-dest";
-  public static final String LEFT = "-left";
-  public static final String RIGHT = "-right";
-
-  public static final String PRELOAD_CACHE = "-preload-cache";
-
-  public static final String TEST_MODULES = "-test-modules";
-
-  public static final String TEST_NAME_FILTER = "-test-classname-filter";
-  public static final String SPECIAL = "-special";
-  public static final String TARGET = "-target";
-  public static final String SOURCE = "-source";
-  public static final String FILTER = "-filter";
-  public static final String EXTERNALS = "-externals";
-  public static final String MODE = "-mode";
-  public static final String SCOPE = "-scope";
-  public static final String IGNORE_LIST = "-ignore-list";
-
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
    *
@@ -148,7 +103,7 @@ public class Params {
           throw new Error("Specified -html-output without indicating output file");
         else
           validationContext.setHtmlOutput(args[++i]);
-      } else if (args[i].equals(PROFILE)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.PROFILE)) {
         String profile = null;
         if (i + 1 == args.length) {
           throw new Error("Specified -profile without indicating profile url");
@@ -156,7 +111,7 @@ public class Params {
           profile = args[++i];
           validationContext.addProfile(profile);
         }
-      } else if (args[i].equals(PROFILES)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.PROFILES)) {
         String profiles = null;
         if (i + 1 == args.length) {
           throw new Error("Specified -profiles without indicating profile urls");
@@ -212,7 +167,7 @@ public class Params {
           String q = args[++i];
           validationContext.setLevel(ValidationLevel.fromCode(q));
         }
-      } else if (args[i].equals(MODE)) {
+      } else if (args[i].equals(TxTestsParametersParser.MODE)) {
         if (i + 1 == args.length)
           throw new Error("Specified -mode without indicating mode");
         else {
@@ -239,7 +194,7 @@ public class Params {
         log.warn("Debugging support is now provided through the -debug-log and -trace-log CLI parameters. Use the -help option for detailed instructions.");
       } else if (args[i].equals(ValidationEngineParametersParser.SCT)) {
         validationContext.setSnomedCT(args[++i]);
-      } else if (args[i].equals(RECURSE)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.RECURSE)) {
         validationContext.setRecursive(true);
       } else if (args[i].equals(InstanceValidatorParametersParser.SHOW_MESSAGES_FROM_REFERENCES)) {
         validationContext.setShowMessagesFromReferences(true);
@@ -293,9 +248,9 @@ public class Params {
         validationContext.setHintAboutNonMustSupport(true);
       } else if (args[i].equals(TransformVersionParametersParser.TO_VERSION)) {
         validationContext.setTargetVer(args[++i]);
-      } else if (args[i].equals(PACKAGE_NAME)) {
+      } else if (args[i].equals(PackageNameParametersParser.PACKAGE_NAME)) {
         validationContext.setPackageName(args[++i]);
-      } else if (args[i].equals(TX_PACK)) {
+      } else if (args[i].equals(RePackageParametersParser.TX_PACK)) {
         String packageArg = args[++i];
         if (packageArg != null) {
           if (packageArg.contains(",")) {
@@ -340,7 +295,7 @@ public class Params {
         validationContext.addLangRegenParam(args[++i]);
         validationContext.addLangRegenParam(args[++i]);
         validationContext.addLangRegenParam(args[++i]);
-      } else if (args[i].equals(EXP_PARAMS)) {
+      } else if (args[i].equals(InstanceValidatorParametersParser.EXP_PARAMS)) {
         validationContext.setExpansionParameters(args[++i]);
       } else if (args[i].equals(MapParametersParser.COMPILE)) {
         validationContext.setMap(args[++i]);
@@ -458,7 +413,7 @@ public class Params {
           throw new Error("Specified -jurisdiction without indicating jurisdiction");
         else
           validationContext.setJurisdiction(processJurisdiction(args[++i]));
-      } else if (args[i].equals(IMPLEMENTATION_GUIDE) || args[i].equals(DEFINITION)) {
+      } else if (args[i].equals(ValidationEngineParametersParser.IMPLEMENTATION_GUIDE) || args[i].equals(ValidationEngineParametersParser.DEFINITION)) {
         if (i + 1 == args.length)
           throw new Error("Specified " + args[i] + " without indicating ig file");
         else {
@@ -516,7 +471,8 @@ public class Params {
             throw new Error("Specified -watch-mode without indicating mode value");
           } else {
             validationContext.setWatchSettleTime(readInteger(WatchParametersParser.WATCH_SETTLE_TIME, args[++i]));
-          }      } else if (args[i].startsWith(X)) {
+          }
+      } else if (args[i].startsWith(GlobalParametersParser.X)) {
         i++;
       } else if (args[i].equals(FHIRPathParametersParser.FHIRPATH)) {
         if (validationContext.getFhirpath() == null)
@@ -526,7 +482,7 @@ public class Params {
             validationContext.setFhirpath(args[++i]);
         else
           throw new Exception("Can only nominate a single -fhirpath parameter");
-      } else if (args[i].equals(SCOPE) || args[i].equals(IGNORE_LIST)) {
+      } else if (args[i].equals(RePackageParametersParser.SCOPE) || args[i].equals(RePackageParametersParser.IGNORE_LIST)) {
         //These two params are processed later by the RePackageTask and not included in ValidationContext.
         i++;
       } else if (Utilities.existsInList(args[i],
@@ -611,53 +567,6 @@ public class Params {
       ManagedFileAccess.file(txLog).delete();
     }
     return txLog;
-  }
-
-  public static void checkIGFileReferences(String[] args) {
-    for (int i = 0; i < args.length; i++) {
-      if (IMPLEMENTATION_GUIDE.equals(args[i])) {
-        if (i + 1 == args.length)
-          throw new Error("Specified -ig without indicating ig file");
-        else {
-          String s = args[++i];
-          if (!s.startsWith("hl7.fhir.core-")) {
-            log.info("Load Package: " + s);
-          }
-        }
-      }
-    }
-  }
-
-  public static String getVersion(String[] args) {
-    String v = Params.getParam(args, "-version");
-    if (v == null) {
-      v = "5.0";
-      for (int i = 0; i < args.length; i++) {
-        if ("-ig".equals(args[i])) {
-          if (i + 1 == args.length)
-            throw new Error("Specified -ig without indicating ig file");
-          else {
-            String n = args[i + 1];
-            v = getVersionFromIGName(v, n);
-          }
-        }
-      }
-    } else if (VersionUtilities.isR2Ver(v)) {
-      v = "1.0";
-    } else if (VersionUtilities.isR2BVer(v)) {
-      v = "1.4";
-    } else if (VersionUtilities.isR3Ver(v)) {
-      v = "3.0";
-    } else if (VersionUtilities.isR4Ver(v)) {
-      v = "4.0";
-    } else if (VersionUtilities.isR4BVer(v)) {
-      v = "4.3";
-    } else if (VersionUtilities.isR5Ver(v)) {
-      v = "5.0";
-    } else if (VersionUtilities.isR6Ver(v)) {
-      v = "6.0";
-    }
-    return v;
   }
 
   /**
