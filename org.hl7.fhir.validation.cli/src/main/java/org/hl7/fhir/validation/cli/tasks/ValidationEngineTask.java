@@ -6,7 +6,8 @@ import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.cli.param.Params;
+import org.hl7.fhir.validation.cli.param.Arg;
+import org.hl7.fhir.validation.cli.param.parsers.ValidationContextParamParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 
@@ -18,7 +19,9 @@ public abstract class ValidationEngineTask extends ValidationServiceTask{
 
   @Override
   public void executeTask(@Nonnull ValidationService validationService, @Nonnull String[] args) throws Exception {
-    ValidationContext validationContext = Params.loadValidationContext(args);
+    ValidationContextParamParser parser = new ValidationContextParamParser();
+    parser.parseArgs(Arg.of(args));
+    ValidationContext validationContext = parser.getParameterObject();
     executeTask(validationService, validationContext, args);
   }
 

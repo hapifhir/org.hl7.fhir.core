@@ -5,10 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
-import java.util.Locale;
 
-import org.hl7.fhir.validation.service.model.ValidationContext;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class ParamsTests {
@@ -22,7 +19,7 @@ class ParamsTests {
   }
 
   @Test
-  void testMultipleParamAndValue() throws Exception {
+  void testMultipleParamAndValue() {
     String[] args = new String[]{"-input", "first", "-input", "second", "meh"};
     Collection<String> values = Params.getMultiValueParam(args, "-input");
     assertThat(values).containsExactly("first", "second");

@@ -501,14 +501,6 @@ public class ParamsValidationContextTests {
     return objects.stream();
   }
 
-
-  @ParameterizedTest
-  @MethodSource("testCases")
-  void testParamsToValidationContext(String argsLine, ValidationContext expectedValidationContext) throws Exception {
-    ValidationContext actualValidationContext = Params.loadValidationContext(argsLine.split("\\s"));
-    assertThat(actualValidationContext).isEqualTo(expectedValidationContext);
-  }
-
   @ParameterizedTest
   @MethodSource("testCases")
   void testValidationContextParamParser(String argsLine, ValidationContext expectedValidationContext) throws Exception {
