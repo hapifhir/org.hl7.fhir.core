@@ -1,25 +1,17 @@
 package org.hl7.fhir.validation.cli.tasks;
 
 import java.io.InputStream;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.Objects;
 
 import com.google.common.base.Strings;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.PackageInformation;
-import org.hl7.fhir.utilities.http.HTTPRequest;
-import org.hl7.fhir.utilities.http.HTTPResult;
-import org.hl7.fhir.utilities.http.ManagedWebAccess;
-import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.npm.*;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.service.model.ValidationContext;
@@ -66,7 +58,11 @@ public class RePackageTask extends ValidationEngineTask {
   }
 
   @Override
-  public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
+  public void executeTask(
+    @Nonnull ValidationService validationService,
+    @Nonnull ValidationEngine validationEngine,
+    @Nonnull ValidationContext validationContext,
+    @Nonnull String[] args) throws Exception {
     boolean json = validationContext.getFormat() != FhirFormat.XML;
     String output = validationContext.getOutput();
 
@@ -98,12 +94,16 @@ public class RePackageTask extends ValidationEngineTask {
     }
 
     String ignoreList = Params.getParam(args, Params.IGNORE_LIST);
-    if (!Strings.isNullOrEmpty(ignoreList)) packageReGenerator.addIgnoreList(List.of(ignoreList.split(",")));
+    if (!Strings.isNullOrEmpty(ignoreList)) packageReGenerator.setIgnoreList(List.of(ignoreList.split(",")));
 
     String includeList = Params.getParam(args, Params.INCLUDE_LIST);
     if (!Strings.isNullOrEmpty(includeList)) {
       List<CanonicalResource> canonicalResources = loadResources(List.of(includeList.split(",")), validationEngine.getPcm());
-      packageReGenerator.addIncludeList(canonicalResources);
+      packageReGenerator.setIncludeList(canonicalResources);
+    }
+
+    if(Boolean.parseBoolean(Params.getParam(args, Params.INCLUDE_CONFORMS_TO))){
+      packageReGenerator.setIncludeConformsTo(true);
     }
 
     packageReGenerator.generateExpansionPackage();
@@ -122,45 +122,54 @@ public class RePackageTask extends ValidationEngineTask {
 
   private List<CanonicalResource> loadResources(List<String> canonicals, FilesystemPackageCacheManager pcm) {
 
+    PackageClient packageClient = new PackageClient(PackageServer.primaryServer());
+
     List<CanonicalResource> canonicalResources = new java.util.ArrayList<>();
     try {
       for (String canonical : canonicals) {
-        String encoded = URLEncoder.encode(canonical, "UTF-8");
-        HTTPRequest request = new HTTPRequest().withUrl("https://packages2.fhir.org/packages/catalog?canonical=" + encoded).withMethod(HTTPRequest.HttpMethod.GET);
-        HTTPResult response = ManagedWebAccess.httpCall(request);
 
-        JsonArray catalogs = new Gson().fromJson(response.getContentAsString(), JsonArray.class);
-        if (!catalogs.isEmpty()) {
-          JsonObject catalog = catalogs.get(0).getAsJsonObject();
-          String packageId = catalog.get("name").getAsString();
-          String version = catalog.get("version").getAsString();
-          String fhirVersion = catalog.get("fhirVersion").getAsString();
+        List<PackageInfo> results = packageClient.search(null, null, null, false, canonical);
+        if (results.size() > 0) {
 
-          NpmPackage npmPackage = pcm.loadPackage(packageId, version);
+          //We'll only take the first one as determine that as the most recent and relevant one
+          PackageInfo result = results.get(0);
+          
+          NpmPackage npmPackage = pcm.loadPackage(result.getId(), result.getVersion());
           if (npmPackage == null) {
-            log.error("Unable to load package {}#{} for canonical {}", packageId, version, canonical);
+            log.error("Unable to load package {}#{} for canonical {}", result.getId(), result.getVersion(), canonical);
           } else {
-            log.info("Loaded package {}#{} for canonical {}", packageId, version, canonical);
+            log.info("Loaded package {}#{} for canonical {}", result.getId(), result.getVersion(), canonical);
+            CanonicalResource resource = getCanonicalResource(canonical, npmPackage);
+            if (resource != null)
+              canonicalResources.add(resource);
           }
-
-          InputStream stream = npmPackage.loadByCanonical(canonical);
-          CanonicalResource canonicalResource;
-          if ("4.0.1".equals(fhirVersion)) {
-            IBaseResource r4resource = new org.hl7.fhir.r4.formats.JsonParser().parse(stream);
-            canonicalResource = (CanonicalResource) VersionConvertorFactory_40_50.convertResource((org.hl7.fhir.r4.model.Resource) r4resource);
-          } else if ("5.0.0".equals(fhirVersion)) {
-            canonicalResource = (CanonicalResource) new org.hl7.fhir.r5.formats.JsonParser().parse(stream);
-          } else throw new Exception("Unsupported FHIR version " + fhirVersion);
-          canonicalResource.setSourcePackage(new PackageInformation(npmPackage));
-          canonicalResources.add(canonicalResource);
-        } else {
-          log.error("Unable to find package for canonical {}", canonical);
         }
       }
+      
     } catch (Exception e) {
       log.error("Error loading packages for canonicals", e);
     }
     return canonicalResources;
+  }
+
+  private static CanonicalResource getCanonicalResource(String canonical, NpmPackage npmPackage) throws Exception {
+    InputStream stream = npmPackage.loadByCanonical(canonical);
+    CanonicalResource canonicalResource;
+    if (stream == null) {
+      log.warn("Unable to load package {}#{} for canonical {}", npmPackage.name(), npmPackage.version(), canonical);
+      return null;
+    }
+    if ("4.0.1".equals(npmPackage.fhirVersion())) {
+      IBaseResource r4resource = new org.hl7.fhir.r4.formats.JsonParser().parse(stream);
+      canonicalResource = (CanonicalResource) VersionConvertorFactory_40_50.convertResource((org.hl7.fhir.r4.model.Resource) r4resource);
+    } else if ("5.0.0".equals(npmPackage.fhirVersion())) {
+      canonicalResource = (CanonicalResource) new org.hl7.fhir.r5.formats.JsonParser().parse(stream);
+    } else {
+      log.warn("Unsupported FHIR version {} for package {}", npmPackage.fhirVersion(), npmPackage.name());
+      return null;
+    }
+    canonicalResource.setSourcePackage(new PackageInformation(npmPackage));
+    return canonicalResource;
   }
 
 

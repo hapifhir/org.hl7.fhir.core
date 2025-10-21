@@ -152,6 +152,7 @@ public class Params {
   public static final String SCOPE = "-scope";
   public static final String IGNORE_LIST = "-ignore-list";
   public static final String INCLUDE_LIST = "-include-list";
+  public static final String INCLUDE_CONFORMS_TO = "-include-conforms-to";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -620,7 +621,7 @@ public class Params {
             validationContext.setFhirpath(args[++i]);
         else
           throw new Exception("Can only nominate a single -fhirpath parameter");
-      } else if (args[i].equals(SCOPE) || args[i].equals(IGNORE_LIST) || args[i].equals(INCLUDE_LIST)) {
+      } else if (args[i].equals(SCOPE) || args[i].equals(IGNORE_LIST) || args[i].equals(INCLUDE_LIST) || args[i].equals(INCLUDE_CONFORMS_TO)) {
         //These three params are processed later by the RePackageTask and not included in ValidationContext.
         i++;
       } else if (!Utilities.existsInList(args[i],
