@@ -44,7 +44,7 @@ public class RePackageTask extends ValidationEngineTask {
 
   @Override
   public boolean shouldExecuteTask(@Nonnull String[] args) {
-    return Params.hasParam(args, Params.TX_PACK)
+    return Params.hasParam(args, RePackageParametersParser.TX_PACK)
       || Params.hasParam(args, RePackageParametersParser.RE_PACK) ;
   }
 
@@ -68,7 +68,7 @@ public class RePackageTask extends ValidationEngineTask {
       .setNpmId(validationContext.getPackageName())
       .addPackages(validationContext.getIgs());
 
-    switch (Objects.requireNonNull(Params.getParam(args, Params.SCOPE)))
+    switch (Objects.requireNonNull(Params.getParam(args, RePackageParametersParser.SCOPE)))
     {
       case "ig": packageReGenerator.setScope(ExpansionPackageGeneratorScope.IG_ONLY); break;
       case "igs": packageReGenerator.setScope(ExpansionPackageGeneratorScope.ALL_IGS); break;
@@ -79,7 +79,7 @@ public class RePackageTask extends ValidationEngineTask {
       validationEngine.loadExpansionParameters(validationContext.getExpansionParameters());
     }
 
-    String ignoreList = Params.getParam(args, Params.IGNORE_LIST);
+    String ignoreList = Params.getParam(args, RePackageParametersParser.IGNORE_LIST);
     if(!Strings.isNullOrEmpty(ignoreList))
       packageReGenerator.addIgnoreList(List.of(ignoreList.split(",")));
 

@@ -8,8 +8,9 @@ public class CodeGenParametersParser implements IParamParser<CodeGenParameters> 
 
   public static final String OPTION = "-option";
   public static final String OPTIONS = "-options";
+    public static final String CODEGEN = "-codegen";
 
-  CodeGenParameters codeGenParameters = new CodeGenParameters();
+    CodeGenParameters codeGenParameters = new CodeGenParameters();
   @Override
   public CodeGenParameters getParameterObject() {
     return codeGenParameters;

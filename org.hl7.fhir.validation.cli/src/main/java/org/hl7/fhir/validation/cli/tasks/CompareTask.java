@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.param.parsers.CompareParametersParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ComparisonService;
 import org.hl7.fhir.validation.service.ValidationService;
@@ -39,7 +40,7 @@ public class CompareTask extends ValidationEngineTask {
 
   @Override
   public boolean shouldExecuteTask(@Nonnull String[] args) {
-    return Params.hasParam(args, Params.COMPARE);
+    return Params.hasParam(args, CompareParametersParser.COMPARE);
   }
 
   @Override
@@ -50,14 +51,14 @@ public class CompareTask extends ValidationEngineTask {
   @Override
   public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
     Display.printCliParamsAndInfo(log, args);
-    if (!destinationDirectoryValid(Params.getParam(args, Params.DESTINATION))) {
+    if (!destinationDirectoryValid(Params.getParam(args, CompareParametersParser.DESTINATION))) {
       return;
     }
 
     validationEngine.loadPackage(CommonPackages.ID_PUBPACK, null);
-    String left = Params.getParam(args, Params.LEFT);
-    String right = Params.getParam(args, Params.RIGHT);
-    ComparisonService.doLeftRightComparison(left, right, Params.getParam(args, Params.DESTINATION), validationEngine);
+    String left = Params.getParam(args, CompareParametersParser.LEFT);
+    String right = Params.getParam(args, CompareParametersParser.RIGHT);
+    ComparisonService.doLeftRightComparison(left, right, Params.getParam(args, CompareParametersParser.DESTINATION), validationEngine);
   }
 
   private boolean destinationDirectoryValid(String dest) throws IOException {

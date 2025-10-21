@@ -7,6 +7,10 @@ import org.hl7.fhir.validation.service.model.MapParameters;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class takes any unprocessed parameters (normally used as sources for validation, etc) and puts them in a list of
+ * strings.
+ */
 public class UnprocessedParametersParser implements IParamParser<List<String>> {
   List<String> unprocessedParams =  new ArrayList<>();
 

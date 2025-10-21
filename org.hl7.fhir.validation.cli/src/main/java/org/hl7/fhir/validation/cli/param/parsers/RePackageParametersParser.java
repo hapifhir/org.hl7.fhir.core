@@ -5,15 +5,16 @@ import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.IParamParser;
 import org.hl7.fhir.validation.service.model.RePackageParameters;
 
-import static org.hl7.fhir.validation.cli.param.Params.MODE;
-import static org.hl7.fhir.validation.cli.param.Params.TX_PACK;
-
 public class RePackageParametersParser implements IParamParser<RePackageParameters> {
 
   public static final String RE_PACK = "-re-package";
   public static final String PIN = "-pin";
   public static final String EXPAND = "-expand";
   public static final String FORMAT = "-format";
+  public static final String TX_PACK = "-tx-pack";
+  public static final String SCOPE = "-scope";
+  public static final String IGNORE_LIST = "-ignore-list";
+  public static final String MODE = "-mode";
 
   RePackageParameters rePackageParameters = new RePackageParameters();
 

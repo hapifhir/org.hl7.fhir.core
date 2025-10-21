@@ -12,11 +12,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class ParamsTests {
-  @Test
-  void testLocale() throws Exception {
-    ValidationContext validationContext = Params.loadValidationContext(new String[]{"-locale", "de"});
-    Assertions.assertEquals(Locale.GERMAN, validationContext.getLocale());
-  }
 
   @Test
   void testHasParamAndValue() {

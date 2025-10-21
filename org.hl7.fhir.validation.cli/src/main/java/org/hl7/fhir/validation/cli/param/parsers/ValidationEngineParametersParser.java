@@ -73,7 +73,7 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
           throw new Error("Specified " + args[i] + " without indicating ig file");
         else {
           String ig = args[i + 1].getValue();
-          String igVersion = Params.getVersionFromIGName(null, ig);
+          String igVersion = getVersionFromIGName(null, ig);
           if (igVersion == null) {
             validationEngineParameters.addIg(ig);
           } else {
@@ -246,5 +246,26 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
         throw new FHIRException("Unable to understand Jurisdiction '"+s+"'");
       }
     }
+  }
+
+  public static String getVersionFromIGName(String defaultValue, String igFileName) {
+    if (igFileName.equals("hl7.fhir.core")) {
+      defaultValue = "5.0";
+    } else if (igFileName.startsWith("hl7.fhir.core#")) {
+      defaultValue = VersionUtilities.getCurrentPackageVersion(igFileName.substring(14));
+    } else if (igFileName.startsWith("hl7.fhir.r2.core#") || igFileName.equals("hl7.fhir.r2.core")) {
+      defaultValue = "1.0";
+    } else if (igFileName.startsWith("hl7.fhir.r2b.core#") || igFileName.equals("hl7.fhir.r2b.core")) {
+      defaultValue = "1.4";
+    } else if (igFileName.startsWith("hl7.fhir.r3.core#") || igFileName.equals("hl7.fhir.r3.core")) {
+      defaultValue = "3.0";
+    } else if (igFileName.startsWith("hl7.fhir.r4.core#") || igFileName.equals("hl7.fhir.r4.core")) {
+      defaultValue = "4.0";
+    } else if (igFileName.startsWith("hl7.fhir.r5.core#") || igFileName.equals("hl7.fhir.r5.core")) {
+      defaultValue = "5.0";
+    } else if (igFileName.startsWith("hl7.fhir.r6.core#") || igFileName.equals("hl7.fhir.r6.core")) {
+      defaultValue = "6.0";
+    }
+    return defaultValue;
   }
 }

@@ -26,8 +26,9 @@ public class GlobalParametersParser implements IParamParser<Object> {
   public static final String AUTH_NONCONFORMANT_SERVERS = "-authorise-non-conformant-tx-servers";
   public static final String SERVER = "-server";
   public static final String RUN_TESTS = "-run-tests";
+  public static final String X = "-x";
 
-  @Override
+    @Override
   public Object getParameterObject() {
     return null;
   }
@@ -51,6 +52,7 @@ public class GlobalParametersParser implements IParamParser<Object> {
       AUTH_NONCONFORMANT_SERVERS,
       NO_HTTP_ACCESS,
       FHIR_SETTINGS_PARAM,
+        X, // Not used anywhere?
         RUN_TESTS // Processed by AITestsTask
       )) {
       //DO NOTHING Those params are handled outside this loop, so should be ignored.

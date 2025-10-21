@@ -105,6 +105,7 @@ import org.hl7.fhir.validation.cli.param.Params;
 @Slf4j
 public class ValidatorCli {
 
+  public static final String HELP = "help";
   private final static ValidationService validationService = new ValidationService();
   
   protected ValidationService myValidationService;
@@ -237,7 +238,7 @@ public class ValidatorCli {
     checkCharsetAndWarnIfNotUTF8();
 
     if (shouldDisplayHelpToUser(args)) {
-      String helpTarget = Params.getParam(args, "-" + Params.HELP);
+      String helpTarget = Params.getParam(args, "-" + HELP);
       if (helpTarget != null) {
         cliTasks.stream()
           .filter(task -> helpTarget.equals(task.getName()))
@@ -420,8 +421,8 @@ public class ValidatorCli {
 
   private boolean shouldDisplayHelpToUser(String[] args) {
     return (args.length == 0
-      || Params.hasParam(args, Params.HELP)
-      || Params.hasParam(args, "-" + Params.HELP)
+      || Params.hasParam(args, HELP)
+      || Params.hasParam(args, "-" + HELP)
       || Params.hasParam(args, "?")
       || Params.hasParam(args, "-?")
       || Params.hasParam(args, "/?"));
