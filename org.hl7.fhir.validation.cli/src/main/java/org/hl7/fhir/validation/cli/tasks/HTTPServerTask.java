@@ -5,6 +5,8 @@ import org.hl7.fhir.validation.FhirValidatorHttpService;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.Display;
 import org.hl7.fhir.validation.cli.param.Params;
+import org.hl7.fhir.validation.cli.param.parsers.GlobalParametersParser;
+import org.hl7.fhir.validation.cli.param.parsers.WatchParametersParser;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.slf4j.Logger;
@@ -36,7 +38,7 @@ public class HTTPServerTask extends ValidationEngineTask {
 
   @Override
   public boolean shouldExecuteTask(@Nonnull String[] args) {
-    return Params.hasParam(args, Params.SERVER);
+    return Params.hasParam(args, GlobalParametersParser.SERVER);
   }
 
   public void logHelp(Logger logger) {
@@ -47,7 +49,7 @@ public class HTTPServerTask extends ValidationEngineTask {
   public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
     checkForInvalidArgs(args);
     validationEngine.setLogValidationProgress(false);
-    FhirValidatorHttpService service = new FhirValidatorHttpService(validationEngine, Integer.parseInt(Params.getParam(args, Params.SERVER)));
+    FhirValidatorHttpService service = new FhirValidatorHttpService(validationEngine, Integer.parseInt(Params.getParam(args, GlobalParametersParser.SERVER)));
     service.startServer();
     log.info("Press any key to stop the server...");
     System.in.read();
@@ -56,9 +58,9 @@ public class HTTPServerTask extends ValidationEngineTask {
 
   private void checkForInvalidArgs(String[] args) {
     final String[] invalidParams = {
-      Params.WATCH_MODE_PARAM,
-      Params.WATCH_SCAN_DELAY,
-      Params.WATCH_SETTLE_TIME
+      WatchParametersParser.WATCH_MODE_PARAM,
+      WatchParametersParser.WATCH_SCAN_DELAY,
+      WatchParametersParser.WATCH_SETTLE_TIME
     };
     final String warningText = " is not supported in server mode and will be ignored.";
     for (String invalidParam : invalidParams) {
