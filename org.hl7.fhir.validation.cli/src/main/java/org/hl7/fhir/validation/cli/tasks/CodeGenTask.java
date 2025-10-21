@@ -46,7 +46,6 @@ public class CodeGenTask extends ValidationEngineTask {
 
   @Override
   public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
-    //FIXME replace ValidationContext
     validationService.codeGen(validationContext, validationEngine);
   }
 
