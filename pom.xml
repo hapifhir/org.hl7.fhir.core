@@ -47,7 +47,7 @@
         <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
         <checkstyle_config_location>${project.basedir}</checkstyle_config_location>
         <logback-classic.version>1.5.15</logback-classic.version>
-        <logback.version>1.5.15</logback.version>
+        <logback.version>1.5.19</logback.version>
     </properties>
 
     <name>HL7 Core Artifacts</name>
