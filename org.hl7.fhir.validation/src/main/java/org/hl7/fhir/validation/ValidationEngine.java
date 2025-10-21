@@ -318,6 +318,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     jurisdiction = other.jurisdiction;
     unknownCodeSystemsCauseErrors = other.unknownCodeSystemsCauseErrors;
     r5BundleRelativeReferencePolicy = other.r5BundleRelativeReferencePolicy;
+    displayWarnings = other.displayWarnings;
+    showMessageIds = other.showMessageIds;
+    noExperimentalContent = other.noExperimentalContent;
+    bestPracticeLevel = other.bestPracticeLevel;
   }
   
   /**
