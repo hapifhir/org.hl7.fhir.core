@@ -133,7 +133,7 @@ public class RePackageTask extends ValidationEngineTask {
 
           //We'll only take the first one as determine that as the most recent and relevant one
           PackageInfo result = results.get(0);
-          
+
           NpmPackage npmPackage = pcm.loadPackage(result.getId(), result.getVersion());
           if (npmPackage == null) {
             log.error("Unable to load package {}#{} for canonical {}", result.getId(), result.getVersion(), canonical);

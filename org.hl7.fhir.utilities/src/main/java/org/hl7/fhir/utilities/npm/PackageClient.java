@@ -141,7 +141,7 @@ public class PackageClient {
     if (!Utilities.noString(fhirVersion)) {
       params.append("fhirversion="+fhirVersion);
     }
-    if (!Utilities.noString(fhirVersion)) {
+    if (!Utilities.noString(canonical)) {
       params.append("canonical="+canonical);
     }
     if (preRelease) {
