@@ -82,7 +82,6 @@ public class PackageReGenerator {
     IG_ONLY, ALL_IGS, EVERYTHING
   }
 
-  private FHIRPathEngine fhirPathEngine;
   private boolean includeConformsTo;
   private List<String> packages = new ArrayList<String>();
   private Parameters expansionParameters = new Parameters(); 
@@ -315,7 +314,7 @@ public class PackageReGenerator {
     log.info("Done");
   }
 
-  private void processResource(CanonicalResource res) throws IOException {
+  private void processResource(CanonicalResource res) {
     if (res == null)
       return;
     if(ignoreList.contains(res.getUrl()))
@@ -351,7 +350,7 @@ public class PackageReGenerator {
     return Utilities.existsInList(pi, "hl7.terminology");
   }
 
-  private void chaseDependencies(CanonicalResource res) throws IOException {
+  private void chaseDependencies(CanonicalResource res) {
     if (res instanceof CodeSystem) {
       chaseDependenciesCS((CodeSystem) res);
     }
@@ -373,7 +372,7 @@ public class PackageReGenerator {
     }
   }
 
-  private void chaseDependenciesCS(CodeSystem cs) throws IOException {
+  private void chaseDependenciesCS(CodeSystem cs) {
     if (cs.hasSupplements()) {
       processResource(context.fetchResource(CodeSystem.class, cs.getSupplements()));      
     }
@@ -384,7 +383,7 @@ public class PackageReGenerator {
     }
   }
 
-  private void chaseDependenciesVS(ValueSet vs) throws IOException {
+  private void chaseDependenciesVS(ValueSet vs) {
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
       chaseDependenciesVS(inc, vs);
     }
@@ -393,14 +392,14 @@ public class PackageReGenerator {
     }
   }
 
-  private void chaseDependenciesVS(ConceptSetComponent inc, ValueSet vs) throws IOException {
+  private void chaseDependenciesVS(ConceptSetComponent inc, ValueSet vs) {
     for (CanonicalType c : inc.getValueSet()) {
       processResource(context.fetchResource(ValueSet.class, c.primitiveValue()));
     }
     processResource(context.fetchResource(CodeSystem.class, inc.getSystem(), inc.getVersion(), vs));
   }
 
-  private void chaseDependenciesSD(StructureDefinition sd) throws IOException {
+  private void chaseDependenciesSD(StructureDefinition sd) {
     if (sd.hasBaseDefinition()) {
       processResource(context.fetchResource(StructureDefinition.class, sd.getBaseDefinition()));
     }
@@ -413,8 +412,7 @@ public class PackageReGenerator {
         if(includeConformsTo) {
           for (ElementDefinition.ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
             if (inv.hasExpression()) {
-              FHIRPathEngine fpe = getEngine(sd);
-              ExpressionNode node = fpe.parse(inv.getExpression());
+              ExpressionNode node = pathEngine.parse(inv.getExpression());
               processExpression(node);
             }
           }
@@ -434,7 +432,7 @@ public class PackageReGenerator {
     }
   }
 
-  private void processExpression(ExpressionNode node) throws IOException {
+  private void processExpression(ExpressionNode node) {
     if (node != null) {
       if (node.getFunction() == ExpressionNode.Function.ConformsTo || node.getFunction() == ExpressionNode.Function.MemberOf) {
         Base c = getConstantParam(node);
@@ -459,17 +457,7 @@ public class PackageReGenerator {
     return null;
   }
 
-  private FHIRPathEngine getEngine(StructureDefinition sd) throws IOException {
-    if (pathEngine == null) {
-      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
-      NpmPackage npm = pcm.loadPackage(VersionUtilities.packageForVersion(sd.getFhirVersionElement().primitiveValue()));
-      SimpleWorkerContext ctxt = new SimpleWorkerContext.SimpleWorkerContextBuilder().fromPackage(npm);
-      pathEngine = new FHIRPathEngine(ctxt);
-    }
-    return pathEngine;
-  }
-
-  private void chaseDependenciesCS(CapabilityStatement cs) throws IOException {
+  private void chaseDependenciesCS(CapabilityStatement cs) {
     for (CanonicalType c : cs.getInstantiates()) {
       processResource(context.fetchResource(CapabilityStatement.class, c.primitiveValue()));
     }
@@ -516,7 +504,7 @@ public class PackageReGenerator {
     }
   }
 
-  private void chaseDependenciesOD(OperationDefinition od) throws IOException {
+  private void chaseDependenciesOD(OperationDefinition od) {
     if (od.hasBase()) {
       processResource(context.fetchResource(SearchParameter.class, od.getBase()));
     }
@@ -537,7 +525,7 @@ public class PackageReGenerator {
     }
   }
 
-  private void chaseDependenciesSP(SearchParameter sp) throws IOException {
+  private void chaseDependenciesSP(SearchParameter sp) {
     if (sp.hasDerivedFrom()) {
       processResource(context.fetchResource(SearchParameter.class, sp.getDerivedFrom()));
     }
@@ -801,7 +789,7 @@ public class PackageReGenerator {
       }
       list.add(npm);
     }
-    fhirPathEngine = new FHIRPathEngine(context);
+    pathEngine = new FHIRPathEngine(context);
     if (cu == null) {
       cu = new ContextUtilities(context);
     }
