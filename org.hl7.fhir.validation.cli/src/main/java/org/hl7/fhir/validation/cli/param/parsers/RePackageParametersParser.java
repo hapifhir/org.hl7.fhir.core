@@ -15,6 +15,8 @@ public class RePackageParametersParser implements IParamParser<RePackageParamete
   public static final String SCOPE = "-scope";
   public static final String IGNORE_LIST = "-ignore-list";
   public static final String MODE = "-mode";
+  public static final String INCLUDE_LIST = "-include-list";
+  public static final String INCLUDE_CONFORMS_TO = "-include-conforms-to";
 
   RePackageParameters rePackageParameters = new RePackageParameters();
 
@@ -77,6 +79,9 @@ public class RePackageParametersParser implements IParamParser<RePackageParamete
       } else if (args[i].getValue().equals(EXPAND)) {
         rePackageParameters.addModeParam("expand");
         args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(SCOPE) || args[i].getValue().equals(IGNORE_LIST) || args[i].getValue().equals(INCLUDE_LIST) || args[i].getValue().equals(INCLUDE_CONFORMS_TO)) {
+        //These params are processed later by the RePackageTask and not included in ValidationContext.
+        Arg.setProcessed(args, i, 2, true);
       } else if (args[i].getValue().equals(FORMAT)) {
         if (i + 1 == args.length) {
           throw new Error("Specified -format without indicating format value");
