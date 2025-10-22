@@ -3,7 +3,6 @@ package org.hl7.fhir.validation.special;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -45,6 +44,7 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.validation.IgLoader;
+import lombok.Getter;
 
 /**
  * Given a package id, and an expansion parameters, 
@@ -82,6 +82,8 @@ public class PackageReGenerator {
     IG_ONLY, ALL_IGS, EVERYTHING
   }
 
+  private FHIRPathEngine fhirPathEngine;
+  private boolean includeConformsTo;
   private List<String> packages = new ArrayList<String>();
   private Parameters expansionParameters = new Parameters(); 
   private ExpansionPackageGeneratorScope scope = ExpansionPackageGeneratorScope.EVERYTHING;
@@ -93,15 +95,27 @@ public class PackageReGenerator {
   private String npmId;
   private List<String> ignoreList = new ArrayList<>();
   private FHIRPathEngine pathEngine;
+  private List<CanonicalResource> includeList = new ArrayList<>();
 
   public PackageReGenerator() {
     super();
   }
 
-  public PackageReGenerator addIgnoreList(List<String> ignoreList) {
+  public void setIncludeConformsTo(boolean includeConformsTo) {
+    this.includeConformsTo = includeConformsTo;
+  }
+
+
+  public PackageReGenerator setIgnoreList(List<String> ignoreList) {
     this.ignoreList = ignoreList;
     return this;
   }
+
+  public PackageReGenerator setIncludeList(List<CanonicalResource> includeList) {
+    this.includeList = includeList;
+    return this;
+  }
+
 
   public PackageReGenerator addPackage(String packageId) {
     addPackages(List.of(packageId));
@@ -193,7 +207,8 @@ public class PackageReGenerator {
   private Set<String> sourcePackages = new HashSet<>();
   private Map<String, TerminologyResourceEntry> entries = new HashMap<>();
   private Set<String> modeParams;
-  private List<CanonicalResource> resources = new ArrayList<CanonicalResource>();
+  @Getter
+  private List<CanonicalResource> resources = new ArrayList<>();
   private Set<String> set = new HashSet<>();
   
   public void generateExpansionPackage() throws IOException {
@@ -255,6 +270,10 @@ public class PackageReGenerator {
       for (String res : npm.listResources("StructureDefinition")) {
         StructureDefinition sd = (StructureDefinition) new JsonParser().parse(npm.loadResource(res));
         processSD(sd, npm.id());
+      }
+
+      for (CanonicalResource res : includeList) {
+        processResource(res);
       }
       if (modeParams.contains("expansions")) {
         log.info("Generating Expansions");
@@ -391,11 +410,13 @@ public class PackageReGenerator {
         for (ElementDefinitionBindingAdditionalComponent adb : ed.getBinding().getAdditional()) {
           processResource(context.fetchResource(ValueSet.class, adb.getValueSet()));          
         }
-        for (ElementDefinition.ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
-          if (inv.hasExpression()) {
-            FHIRPathEngine fpe = getEngine(sd);
-            ExpressionNode node = fpe.parse(inv.getExpression());
-            processExpression(node);
+        if(includeConformsTo) {
+          for (ElementDefinition.ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
+            if (inv.hasExpression()) {
+              FHIRPathEngine fpe = getEngine(sd);
+              ExpressionNode node = fpe.parse(inv.getExpression());
+              processExpression(node);
+            }
           }
         }
       }
@@ -772,6 +793,7 @@ public class PackageReGenerator {
         loader.loadPackage(npm, true);
         context = ctxt;
         context.getManager().setExpansionParameters(expansionParameters);
+
         loader.loadPackage(npm, true);    
       } else {
         var loader = new IgLoader(pcm, (SimpleWorkerContext) context, context.getVersion());
@@ -779,6 +801,7 @@ public class PackageReGenerator {
       }
       list.add(npm);
     }
+    fhirPathEngine = new FHIRPathEngine(context);
     if (cu == null) {
       cu = new ContextUtilities(context);
     }
