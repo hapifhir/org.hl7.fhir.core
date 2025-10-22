@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
-import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
@@ -27,23 +26,6 @@ public class InstanceValidatorParameters {
   @JsonProperty("assumeValidRestReferences")
   public InstanceValidatorParameters setAssumeValidRestReferences(boolean assumeValidRestReferences) {
     this.assumeValidRestReferences = assumeValidRestReferences;
-    return this;
-  }
-
-  @JsonProperty("noExtensibleBindingMessages")
-  @SerializedName("noExtensibleBindingMessages")
-  private boolean noExtensibleBindingMessages = false;
-
-  @SerializedName("noExtensibleBindingMessages")
-  @JsonProperty("noExtensibleBindingMessages")
-  public boolean isNoExtensibleBindingMessages() {
-    return noExtensibleBindingMessages;
-  }
-
-  @SerializedName("noExtensibleBindingMessages")
-  @JsonProperty("noExtensibleBindingMessages")
-  public InstanceValidatorParameters setNoExtensibleBindingMessages(boolean noExtensibleBindingMessages) {
-    this.noExtensibleBindingMessages = noExtensibleBindingMessages;
     return this;
   }
 
@@ -203,10 +185,6 @@ public class InstanceValidatorParameters {
     return this;
   }
 
-  @JsonProperty("displayWarnings")
-  @SerializedName("displayWarnings")
-  private boolean displayWarnings = false;
-
   @JsonProperty("unknownCodeSystemsCauseErrors")
   @SerializedName("unknownCodeSystemsCauseErrors")
   private boolean unknownCodeSystemsCauseErrors;
@@ -270,19 +248,6 @@ public class InstanceValidatorParameters {
   @JsonProperty("profiles")
   @SerializedName("profiles")
   private List<String> profiles = new ArrayList<String>();
-
-  @SerializedName("displayWarnings")
-  @JsonProperty("displayWarnings")
-  public boolean isDisplayWarnings() {
-    return displayWarnings;
-  }
-
-  @SerializedName("displayWarnings")
-  @JsonProperty("displayWarnings")
-  public InstanceValidatorParameters setDisplayWarnings(boolean displayWarnings) {
-    this.displayWarnings = displayWarnings;
-    return this;
-  }
 
   @SerializedName("unknownCodeSystemsCauseErrors")
   @JsonProperty("unknownCodeSystemsCauseErrors")
@@ -485,18 +450,111 @@ public class InstanceValidatorParameters {
     return this;
   }
 
+  @JsonProperty("doImplicitFHIRPathStringConversion")
+  @SerializedName("doImplicitFHIRPathStringConversion")
+  private
+  boolean doImplicitFHIRPathStringConversion = false;
+
+  @SerializedName("doImplicitFHIRPathStringConversion")
+  @JsonProperty("doImplicitFHIRPathStringConversion")
+  public boolean isDoImplicitFHIRPathStringConversion() {
+    return doImplicitFHIRPathStringConversion;
+  }
+
+  @SerializedName("doImplicitFHIRPathStringConversion")
+  @JsonProperty("doImplicitFHIRPathStringConversion")
+  public InstanceValidatorParameters setDoImplicitFHIRPathStringConversion(boolean doImplicitFHIRPathStringConversion) {
+    this.doImplicitFHIRPathStringConversion = doImplicitFHIRPathStringConversion;
+    return this;
+  }
+
+  @JsonProperty("allowDoubleQuotesInFHIRPath")
+  @SerializedName("allowDoubleQuotesInFHIRPath")
+  private
+  boolean allowDoubleQuotesInFHIRPath = false;
+
+  @SerializedName("allowDoubleQuotesInFHIRPath")
+  @JsonProperty("allowDoubleQuotesInFHIRPath")
+  public boolean isAllowDoubleQuotesInFHIRPath() {
+    return allowDoubleQuotesInFHIRPath;
+  }
+
+  @SerializedName("allowDoubleQuotesInFHIRPath")
+  @JsonProperty("allowDoubleQuotesInFHIRPath")
+  public InstanceValidatorParameters setAllowDoubleQuotesInFHIRPath(boolean allowDoubleQuotesInFHIRPath) {
+    this.allowDoubleQuotesInFHIRPath = allowDoubleQuotesInFHIRPath;
+    return this;
+  }
+
+  @JsonProperty("checkIPSCodes")
+  @SerializedName("checkIPSCodes")
+  private
+  boolean checkIPSCodes;
+
+  @SerializedName("checkIPSCodes")
+  @JsonProperty("checkIPSCodes")
+  public boolean isCheckIPSCodes() {
+    return checkIPSCodes;
+  }
+
+  @SerializedName("checkIPSCodes")
+  @JsonProperty("checkIPSCodes")
+  public InstanceValidatorParameters setCheckIPSCodes(boolean checkIPSCodes) {
+    this.checkIPSCodes = checkIPSCodes;
+    return this;
+  }
+
+  @JsonProperty("bundleValidationRules")
+  @SerializedName("bundleValidationRules")
+  private
+  List<org.hl7.fhir.r5.utils.validation.BundleValidationRule> bundleValidationRules = new ArrayList<>();
+
+  @SerializedName("bundleValidationRules")
+  @JsonProperty("bundleValidationRules")
+  public List<org.hl7.fhir.r5.utils.validation.BundleValidationRule> getBundleValidationRules() {
+    return bundleValidationRules;
+  }
+
+  @SerializedName("bundleValidationRules")
+  @JsonProperty("bundleValidationRules")
+  public InstanceValidatorParameters setBundleValidationRules(List<org.hl7.fhir.r5.utils.validation.BundleValidationRule> bundleValidationRules) {
+    this.bundleValidationRules = bundleValidationRules;
+    return this;
+  }
+
+  public InstanceValidatorParameters addBundleValidationRule(org.hl7.fhir.r5.utils.validation.BundleValidationRule bundleValidationRule) {
+    this.bundleValidationRules.add(bundleValidationRule);
+    return this;
+  }
+
+  @JsonProperty("jurisdiction")
+  @SerializedName("jurisdiction")
+  private
+  String jurisdiction = org.hl7.fhir.r5.terminologies.JurisdictionUtilities.getJurisdictionFromLocale(java.util.Locale.getDefault().getCountry());
+
+  @SerializedName("jurisdiction")
+  @JsonProperty("jurisdiction")
+  public String getJurisdiction() {
+    return jurisdiction;
+  }
+
+  @SerializedName("jurisdiction")
+  @JsonProperty("jurisdiction")
+  public InstanceValidatorParameters setJurisdiction(String jurisdiction) {
+    this.jurisdiction = jurisdiction;
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     InstanceValidatorParameters that = (InstanceValidatorParameters) o;
     return assumeValidRestReferences == that.assumeValidRestReferences
-      && noExtensibleBindingMessages == that.noExtensibleBindingMessages
       && showTimes == that.showTimes
       && hintAboutNonMustSupport == that.hintAboutNonMustSupport
       && wantInvariantsInMessages == that.wantInvariantsInMessages
       && noInvariants == that.noInvariants
-      && displayWarnings == that.displayWarnings
       && unknownCodeSystemsCauseErrors == that.unknownCodeSystemsCauseErrors
       && forPublication == that.forPublication
       && noUnicodeBiDiControlChars == that.noUnicodeBiDiControlChars
@@ -507,6 +565,9 @@ public class InstanceValidatorParameters {
       && securityChecks == that.securityChecks
       && noExperimentalContent == that.noExperimentalContent
       && showTerminologyRouting == that.showTerminologyRouting
+      && doImplicitFHIRPathStringConversion == that.doImplicitFHIRPathStringConversion
+      && allowDoubleQuotesInFHIRPath == that.allowDoubleQuotesInFHIRPath
+      && checkIPSCodes == that.checkIPSCodes
       && Objects.equals(htmlOutput, that.htmlOutput)
       && Objects.equals(outputStyle, that.outputStyle)
       && Objects.equals(r5BundleRelativeReferencePolicy, that.r5BundleRelativeReferencePolicy)
@@ -517,19 +578,20 @@ public class InstanceValidatorParameters {
       && Objects.equals(htmlInMarkdownCheck, that.htmlInMarkdownCheck)
       && Objects.equals(matchetypes, that.matchetypes)
       && Objects.equals(expansionParameters, that.expansionParameters)
-      && Objects.equals(profiles, that.profiles);
+      && Objects.equals(profiles, that.profiles)
+      && Objects.equals(bundleValidationRules, that.bundleValidationRules)
+      && Objects.equals(jurisdiction, that.jurisdiction);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, noExtensibleBindingMessages, showTimes, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, displayWarnings, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, matchetypes, expansionParameters, profiles);
+    return Objects.hash(assumeValidRestReferences, showTimes, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, matchetypes, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction);
   }
 
   @Override
   public String toString() {
     return "InstanceValidatorParameters{" +
       "assumeValidRestReferences=" + assumeValidRestReferences +
-      ", noExtensibleBindingMessages=" + noExtensibleBindingMessages +
       ", showTimes=" + showTimes +
       ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +
       ", htmlOutput='" + htmlOutput + '\'' +
@@ -539,7 +601,6 @@ public class InstanceValidatorParameters {
       ", wantInvariantsInMessages=" + wantInvariantsInMessages +
       ", noInvariants=" + noInvariants +
       ", questionnaireMode=" + questionnaireMode +
-      ", displayWarnings=" + displayWarnings +
       ", unknownCodeSystemsCauseErrors=" + unknownCodeSystemsCauseErrors +
       ", level=" + level +
       ", bestPracticeLevel=" + bestPracticeLevel +
@@ -556,6 +617,11 @@ public class InstanceValidatorParameters {
       ", matchetypes=" + matchetypes +
       ", expansionParameters='" + expansionParameters + '\'' +
       ", profiles=" + profiles +
+      ", doImplicitFHIRPathStringConversion=" + doImplicitFHIRPathStringConversion +
+      ", allowDoubleQuotesInFHIRPath=" + allowDoubleQuotesInFHIRPath +
+      ", checkIPSCodes=" + checkIPSCodes +
+      ", bundleValidationRules=" + bundleValidationRules +
+      ", jurisdiction='" + jurisdiction + '\'' +
       '}';
   }
 }

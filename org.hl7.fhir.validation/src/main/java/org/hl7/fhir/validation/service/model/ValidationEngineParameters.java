@@ -158,23 +158,6 @@ public class ValidationEngineParameters {
     return this;
   }
 
-  @JsonProperty("jurisdiction")
-  @SerializedName("jurisdiction")
-  private
-  String jurisdiction = JurisdictionUtilities.getJurisdictionFromLocale(Locale.getDefault().getCountry());
-
-  @SerializedName("jurisdiction")
-  @JsonProperty("jurisdiction")
-  public String getJurisdiction() {
-    return jurisdiction;
-  }
-
-  @SerializedName("jurisdiction")
-  @JsonProperty("jurisdiction")
-  public ValidationEngineParameters setJurisdiction(String jurisdiction) {
-    this.jurisdiction = jurisdiction;
-    return this;
-  }
 
   @JsonProperty("aiService")
   @SerializedName("aiService")
@@ -307,60 +290,6 @@ public class ValidationEngineParameters {
     return this;
   }
 
-  @JsonProperty("checkIPSCodes")
-  @SerializedName("checkIPSCodes")
-  private
-  boolean checkIPSCodes;
-
-  @SerializedName("checkIPSCodes")
-  @JsonProperty("checkIPSCodes")
-  public boolean isCheckIPSCodes() {
-    return checkIPSCodes;
-  }
-
-  @SerializedName("checkIPSCodes")
-  @JsonProperty("checkIPSCodes")
-  public ValidationEngineParameters setCheckIPSCodes(boolean checkIPSCodes) {
-    this.checkIPSCodes = checkIPSCodes;
-    return this;
-  }
-
-  @JsonProperty("doImplicitFHIRPathStringConversion")
-  @SerializedName("doImplicitFHIRPathStringConversion")
-  private
-  boolean doImplicitFHIRPathStringConversion = false;
-
-  @SerializedName("doImplicitFHIRPathStringConversion")
-  @JsonProperty("doImplicitFHIRPathStringConversion")
-  public boolean isDoImplicitFHIRPathStringConversion() {
-    return doImplicitFHIRPathStringConversion;
-  }
-
-  @SerializedName("doImplicitFHIRPathStringConversion")
-  @JsonProperty("doImplicitFHIRPathStringConversion")
-  public ValidationEngineParameters setDoImplicitFHIRPathStringConversion(boolean doImplicitFHIRPathStringConversion) {
-    this.doImplicitFHIRPathStringConversion = doImplicitFHIRPathStringConversion;
-    return this;
-  }
-
-  @JsonProperty("allowDoubleQuotesInFHIRPath")
-  @SerializedName("allowDoubleQuotesInFHIRPath")
-  private
-  boolean allowDoubleQuotesInFHIRPath = false;
-
-  @SerializedName("allowDoubleQuotesInFHIRPath")
-  @JsonProperty("allowDoubleQuotesInFHIRPath")
-  public boolean isAllowDoubleQuotesInFHIRPath() {
-    return allowDoubleQuotesInFHIRPath;
-  }
-
-  @SerializedName("allowDoubleQuotesInFHIRPath")
-  @JsonProperty("allowDoubleQuotesInFHIRPath")
-  public ValidationEngineParameters setAllowDoubleQuotesInFHIRPath(boolean allowDoubleQuotesInFHIRPath) {
-    this.allowDoubleQuotesInFHIRPath = allowDoubleQuotesInFHIRPath;
-    return this;
-  }
-
   @JsonProperty("advisorFile")
   @SerializedName("advisorFile")
   private
@@ -376,29 +305,6 @@ public class ValidationEngineParameters {
   @JsonProperty("advisorFile")
   public ValidationEngineParameters setAdvisorFile(String advisorFile) {
     this.advisorFile = advisorFile;
-    return this;
-  }
-
-  @JsonProperty("bundleValidationRules")
-  @SerializedName("bundleValidationRules")
-  private
-  List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
-
-  @SerializedName("bundleValidationRules")
-  @JsonProperty("bundleValidationRules")
-  public List<BundleValidationRule> getBundleValidationRules() {
-    return bundleValidationRules;
-  }
-
-  @SerializedName("bundleValidationRules")
-  @JsonProperty("bundleValidationRules")
-  public ValidationEngineParameters setBundleValidationRules(List<BundleValidationRule> bundleValidationRules) {
-    this.bundleValidationRules = bundleValidationRules;
-    return this;
-  }
-
-  public ValidationEngineParameters addBundleValidationRule(BundleValidationRule bundleValidationRule) {
-    this.bundleValidationRules.add(bundleValidationRule);
     return this;
   }
 
@@ -519,6 +425,40 @@ public class ValidationEngineParameters {
     return this;
   }
 
+  @JsonProperty("displayWarnings")
+  @SerializedName("displayWarnings")
+  private boolean displayWarnings = false;
+
+  @SerializedName("displayWarnings")
+  @JsonProperty("displayWarnings")
+  public boolean isDisplayWarnings() {
+    return displayWarnings;
+  }
+
+  @SerializedName("displayWarnings")
+  @JsonProperty("displayWarnings")
+  public ValidationEngineParameters setDisplayWarnings(boolean displayWarnings) {
+    this.displayWarnings = displayWarnings;
+    return this;
+  }
+
+  @JsonProperty("noExtensibleBindingMessages")
+  @SerializedName("noExtensibleBindingMessages")
+  private boolean noExtensibleBindingMessages = false;
+
+  @SerializedName("noExtensibleBindingMessages")
+  @JsonProperty("noExtensibleBindingMessages")
+  public boolean isNoExtensibleBindingMessages() {
+    return noExtensibleBindingMessages;
+  }
+
+  @SerializedName("noExtensibleBindingMessages")
+  @JsonProperty("noExtensibleBindingMessages")
+  public ValidationEngineParameters setNoExtensibleBindingMessages(boolean noExtensibleBindingMessages) {
+    this.noExtensibleBindingMessages = noExtensibleBindingMessages;
+    return this;
+  }
+
   private Boolean inferFhirVersion = true;
 
   public Boolean isInferFhirVersion() {
@@ -543,21 +483,18 @@ public class ValidationEngineParameters {
       && isInferFhirVersion() == that.isInferFhirVersion()
       && noEcosystem == that.noEcosystem
       && clearTxCache == that.clearTxCache
-      && checkIPSCodes == that.checkIPSCodes
-      && doImplicitFHIRPathStringConversion == that.doImplicitFHIRPathStringConversion
-      && allowDoubleQuotesInFHIRPath == that.allowDoubleQuotesInFHIRPath
       && checkReferences == that.checkReferences
       && noInternalCaching == that.noInternalCaching
       && disableDefaultResourceFetcher == that.disableDefaultResourceFetcher
+      && displayWarnings == that.displayWarnings
+      && noExtensibleBindingMessages == that.noExtensibleBindingMessages
       && Objects.equals(resolutionContext, that.resolutionContext)
-      && Objects.equals(jurisdiction, that.jurisdiction)
       && Objects.equals(aiService, that.aiService)
       && Objects.equals(certSources, that.certSources)
       && Objects.equals(txServer, that.txServer)
       && Objects.equals(txLog, that.txLog)
       && Objects.equals(txCache, that.txCache)
       && Objects.equals(advisorFile, that.advisorFile)
-      && Objects.equals(bundleValidationRules, that.bundleValidationRules)
       && Objects.equals(locale, that.locale)
       && Objects.equals(lang, that.lang)
       && Objects.equals(mapLog, that.mapLog);
@@ -573,7 +510,6 @@ public class ValidationEngineParameters {
       sv,
       inferFhirVersion,
       resolutionContext,
-      jurisdiction,
       aiService,
       certSources,
       txServer,
@@ -581,17 +517,15 @@ public class ValidationEngineParameters {
       txLog,
       txCache,
       clearTxCache,
-      checkIPSCodes,
-      doImplicitFHIRPathStringConversion,
-      allowDoubleQuotesInFHIRPath,
       advisorFile,
-      bundleValidationRules,
       locale,
       lang,
       checkReferences,
       noInternalCaching,
       disableDefaultResourceFetcher,
-      mapLog);
+      mapLog,
+      displayWarnings,
+      noExtensibleBindingMessages);
   }
 
   @Override
@@ -604,7 +538,6 @@ public class ValidationEngineParameters {
       ", sv=" + sv +
       ", inferFhirVersion=" + inferFhirVersion +
       ", resolutionContext='" + resolutionContext + '\'' +
-      ", jurisdiction='" + jurisdiction + '\'' +
       ", aiService='" + aiService + '\'' +
       ", certSources=" + certSources +
       ", txServer='" + txServer + '\'' +
@@ -612,17 +545,15 @@ public class ValidationEngineParameters {
       ", txLog='" + txLog + '\'' +
       ", txCache='" + txCache + '\'' +
       ", clearTxCache=" + clearTxCache +
-      ", checkIPSCodes=" + checkIPSCodes +
-      ", doImplicitFHIRPathStringConversion=" + doImplicitFHIRPathStringConversion +
-      ", allowDoubleQuotesInFHIRPath=" + allowDoubleQuotesInFHIRPath +
       ", advisorFile='" + advisorFile + '\'' +
-      ", bundleValidationRules=" + bundleValidationRules +
       ", locale='" + locale + '\'' +
       ", lang='" + lang + '\'' +
       ", checkReferences=" + checkReferences +
       ", noInternalCaching=" + noInternalCaching +
       ", disableDefaultResourceFetcher=" + disableDefaultResourceFetcher +
       ", mapLog='" + mapLog + '\'' +
+      ", displayWarnings=" + displayWarnings +
+      ", noExtensibleBindingMessages=" + noExtensibleBindingMessages +
       "}";
   }
 }

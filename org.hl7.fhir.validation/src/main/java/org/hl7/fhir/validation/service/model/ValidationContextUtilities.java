@@ -21,7 +21,6 @@ public class ValidationContextUtilities {
     }
     validationContext.setBaseEngine(validationEngineParameters.getBaseEngine());
     validationContext.setResolutionContext(validationEngineParameters.getResolutionContext());
-    validationContext.setJurisdiction(validationEngineParameters.getJurisdiction());
     validationContext.setAIService(validationEngineParameters.getAIService());
     for (String certSource : validationEngineParameters.getCertSources()) {
       validationContext.addCertSource(certSource);
@@ -31,17 +30,15 @@ public class ValidationContextUtilities {
     validationContext.setTxLog(validationEngineParameters.getTxLog());
     validationContext.setTxCache(validationEngineParameters.getTxCache());
     validationContext.setClearTxCache(validationEngineParameters.isClearTxCache());
-    validationContext.setCheckIPSCodes(validationEngineParameters.isCheckIPSCodes());
-    validationContext.setDoImplicitFHIRPathStringConversion(validationEngineParameters.isDoImplicitFHIRPathStringConversion());
-    validationContext.setAllowDoubleQuotesInFHIRPath(validationEngineParameters.isAllowDoubleQuotesInFHIRPath());
     validationContext.setAdvisorFile(validationEngineParameters.getAdvisorFile());
-    validationContext.setBundleValidationRules(validationEngineParameters.getBundleValidationRules());
     validationContext.setLocale(validationEngineParameters.getLanguageCode());
     validationContext.setLang(validationEngineParameters.getLang());
     validationContext.setCheckReferences(validationEngineParameters.isCheckReferences());
     validationContext.setNoInternalCaching(validationEngineParameters.isNoInternalCaching());
     validationContext.setDisableDefaultResourceFetcher(validationEngineParameters.isDisableDefaultResourceFetcher());
     validationContext.setMapLog(validationEngineParameters.getMapLog());
+    validationContext.setDisplayWarnings(validationEngineParameters.isDisplayWarnings());
+    validationContext.setNoExtensibleBindingMessages(validationEngineParameters.isNoExtensibleBindingMessages());
   }
 
   public static void addWatchParameters(ValidationContext validationContext, WatchParameters watchParameters) {
@@ -72,7 +69,6 @@ public class ValidationContextUtilities {
 
   public static void addInstanceValidatorParameters(ValidationContext validationContext, InstanceValidatorParameters instanceValidatorParameters) {
     validationContext.setAssumeValidRestReferences(instanceValidatorParameters.isAssumeValidRestReferences());
-    validationContext.setNoExtensibleBindingMessages(instanceValidatorParameters.isNoExtensibleBindingMessages());
     validationContext.setShowTimes(instanceValidatorParameters.isShowTimes());
     validationContext.setHintAboutNonMustSupport(instanceValidatorParameters.isHintAboutNonMustSupport());
     validationContext.setHtmlOutput(instanceValidatorParameters.getHtmlOutput());
@@ -82,7 +78,6 @@ public class ValidationContextUtilities {
     validationContext.setWantInvariantsInMessages(instanceValidatorParameters.isWantInvariantsInMessages());
     validationContext.setNoInvariants(instanceValidatorParameters.isNoInvariants());
     validationContext.setQuestionnaireMode(instanceValidatorParameters.getQuestionnaireMode());
-    validationContext.setDisplayWarnings(instanceValidatorParameters.isDisplayWarnings());
     validationContext.setUnknownCodeSystemsCauseErrors(instanceValidatorParameters.isUnknownCodeSystemsCauseErrors());
     validationContext.setLevel(instanceValidatorParameters.getLevel());
     validationContext.setBestPracticeLevel(instanceValidatorParameters.getBestPracticeLevel());
@@ -99,6 +94,11 @@ public class ValidationContextUtilities {
     validationContext.setMatchetypes(new ArrayList<>(instanceValidatorParameters.getMatchetypes()));
     validationContext.setExpansionParameters(instanceValidatorParameters.getExpansionParameters());
     validationContext.setProfiles(instanceValidatorParameters.getProfiles());
+    validationContext.setDoImplicitFHIRPathStringConversion(instanceValidatorParameters.isDoImplicitFHIRPathStringConversion());
+    validationContext.setAllowDoubleQuotesInFHIRPath(instanceValidatorParameters.isAllowDoubleQuotesInFHIRPath());
+    validationContext.setCheckIPSCodes(instanceValidatorParameters.isCheckIPSCodes());
+    validationContext.setBundleValidationRules(new ArrayList<>(instanceValidatorParameters.getBundleValidationRules()));
+    validationContext.setJurisdiction(instanceValidatorParameters.getJurisdiction());
   }
 
   public static void addOutputParameters(ValidationContext validationContext, OutputParameters outputParameters) {
@@ -156,7 +156,6 @@ public class ValidationContextUtilities {
     }
     validationEngineParameters.setBaseEngine(validationContext.getBaseEngine());
     validationEngineParameters.setResolutionContext(validationContext.getResolutionContext());
-    validationEngineParameters.setJurisdiction(validationContext.getJurisdiction());
     validationEngineParameters.setAIService(validationContext.getAIService());
     for (String certSource : validationContext.getCertSources()) {
       validationEngineParameters.addCertSource(certSource);
@@ -166,17 +165,15 @@ public class ValidationContextUtilities {
     validationEngineParameters.setTxLog(validationContext.getTxLog());
     validationEngineParameters.setTxCache(validationContext.getTxCache());
     validationEngineParameters.setClearTxCache(validationContext.isClearTxCache());
-    validationEngineParameters.setCheckIPSCodes(validationContext.isCheckIPSCodes());
-    validationEngineParameters.setDoImplicitFHIRPathStringConversion(validationContext.isDoImplicitFHIRPathStringConversion());
-    validationEngineParameters.setAllowDoubleQuotesInFHIRPath(validationContext.isAllowDoubleQuotesInFHIRPath());
     validationEngineParameters.setAdvisorFile(validationContext.getAdvisorFile());
-    validationEngineParameters.setBundleValidationRules(validationContext.getBundleValidationRules());
     validationEngineParameters.setLocale(validationContext.getLanguageCode());
     validationEngineParameters.setLang(validationContext.getLang());
     validationEngineParameters.setCheckReferences(validationContext.isCheckReferences());
     validationEngineParameters.setNoInternalCaching(validationContext.isNoInternalCaching());
     validationEngineParameters.setDisableDefaultResourceFetcher(validationContext.isDisableDefaultResourceFetcher());
     validationEngineParameters.setMapLog(validationContext.getMapLog());
+    validationEngineParameters.setDisplayWarnings(validationContext.isDisplayWarnings());
+    validationEngineParameters.setNoExtensibleBindingMessages(validationContext.isNoExtensibleBindingMessages());
     return validationEngineParameters;
   }
 
@@ -207,7 +204,6 @@ public class ValidationContextUtilities {
   public static InstanceValidatorParameters getInstanceValidatorParameters(ValidationContext validationContext) {
     InstanceValidatorParameters instanceValidatorParameters = new InstanceValidatorParameters();
     instanceValidatorParameters.setAssumeValidRestReferences(validationContext.isAssumeValidRestReferences());
-    instanceValidatorParameters.setNoExtensibleBindingMessages(validationContext.isNoExtensibleBindingMessages());
     instanceValidatorParameters.setShowTimes(validationContext.isShowTimes());
     instanceValidatorParameters.setHintAboutNonMustSupport(validationContext.isHintAboutNonMustSupport());
     instanceValidatorParameters.setHtmlOutput(validationContext.getHtmlOutput());
@@ -217,7 +213,6 @@ public class ValidationContextUtilities {
     instanceValidatorParameters.setWantInvariantsInMessages(validationContext.isWantInvariantsInMessages());
     instanceValidatorParameters.setNoInvariants(validationContext.isNoInvariants());
     instanceValidatorParameters.setQuestionnaireMode(validationContext.getQuestionnaireMode());
-    instanceValidatorParameters.setDisplayWarnings(validationContext.isDisplayWarnings());
     instanceValidatorParameters.setUnknownCodeSystemsCauseErrors(validationContext.isUnknownCodeSystemsCauseErrors());
     instanceValidatorParameters.setLevel(validationContext.getLevel());
     instanceValidatorParameters.setBestPracticeLevel(validationContext.getBestPracticeLevel());
@@ -234,6 +229,11 @@ public class ValidationContextUtilities {
     instanceValidatorParameters.setMatchetypes(new ArrayList<>(validationContext.getMatchetypes()));
     instanceValidatorParameters.setExpansionParameters(validationContext.getExpansionParameters());
     instanceValidatorParameters.setProfiles(validationContext.getProfiles());
+    instanceValidatorParameters.setDoImplicitFHIRPathStringConversion(validationContext.isDoImplicitFHIRPathStringConversion());
+    instanceValidatorParameters.setAllowDoubleQuotesInFHIRPath(validationContext.isAllowDoubleQuotesInFHIRPath());
+    instanceValidatorParameters.setCheckIPSCodes(validationContext.isCheckIPSCodes());
+    instanceValidatorParameters.setBundleValidationRules(new ArrayList<>(validationContext.getBundleValidationRules()));
+    instanceValidatorParameters.setJurisdiction(validationContext.getJurisdiction());
     return instanceValidatorParameters;
   }
 
