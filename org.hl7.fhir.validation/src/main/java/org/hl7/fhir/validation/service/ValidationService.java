@@ -590,9 +590,13 @@ public class ValidationService {
   @Nonnull
   protected ValidationEngine buildValidationEngine(ValidationContext validationContext, String definitions, TimeTracker timeTracker) throws IOException, URISyntaxException {
     log.info("  Loading FHIR v" + validationContext.getSv() + " from " + definitions);
-    ValidationEngine validationEngine = getValidationEngineBuilder().withVersion(validationContext.getSv()).withTimeTracker(timeTracker)
-        .withUserAgent(Common.getValidatorUserAgent()).withThoVersion(Constants.THO_WORKING_VERSION)
-        .withExtensionsVersion(Constants.EXTENSIONS_WORKING_VERSION).fromSource(definitions);
+    ValidationEngine validationEngine = getValidationEngineBuilder()
+      .withVersion(validationContext.getSv())
+      .withTimeTracker(timeTracker)
+      .withUserAgent(Common.getValidatorUserAgent())
+      .withThoVersion(Constants.THO_WORKING_VERSION)
+      .withExtensionsVersion(Constants.EXTENSIONS_WORKING_VERSION)
+      .fromSource(definitions);
     FhirPublication ver = FhirPublication.fromCode(validationContext.getSv());
     log.info("  Loaded FHIR - " + validationEngine.getContext().countAllCaches() + " resources (" + timeTracker.milestone() + ")");
     final String lineStart = "  Terminology server " + validationContext.getTxServer();
