@@ -5,6 +5,8 @@ import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Objects;
+
 @MarkedToMoveToAdjunctPackage
 public class BundleValidationRule {
   @JsonProperty("rule")
@@ -50,5 +52,19 @@ public class BundleValidationRule {
 
   public void setChecked(boolean checked) {
     this.checked = checked;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    BundleValidationRule that = (BundleValidationRule) o;
+    return Objects.equals(profile, that.profile) &&
+           Objects.equals(rule, that.rule);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(profile, rule);
   }
 }
