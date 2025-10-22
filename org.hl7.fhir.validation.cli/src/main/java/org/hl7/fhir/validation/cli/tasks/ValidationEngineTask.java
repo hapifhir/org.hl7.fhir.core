@@ -6,7 +6,8 @@ import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.cli.param.Params;
+import org.hl7.fhir.validation.cli.param.Arg;
+import org.hl7.fhir.validation.cli.param.parsers.ValidationContextParamParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 
@@ -18,7 +19,9 @@ public abstract class ValidationEngineTask extends ValidationServiceTask{
 
   @Override
   public void executeTask(@Nonnull ValidationService validationService, @Nonnull String[] args) throws Exception {
-    ValidationContext validationContext = Params.loadValidationContext(args);
+    ValidationContextParamParser parser = new ValidationContextParamParser();
+    parser.parseArgs(Arg.of(args));
+    ValidationContext validationContext = parser.getParameterObject();
     executeTask(validationService, validationContext, args);
   }
 
@@ -27,13 +30,6 @@ public abstract class ValidationEngineTask extends ValidationServiceTask{
     TimeTracker tt = new TimeTracker();
     TimeTracker.Session tts = tt.start("Loading");
 
-    if (inferFhirVersion()) {
-      validationContext.setInferFhirVersion(Boolean.TRUE);
-    }
-
-    if (validationContext.getSv() == null) {
-      validationContext.setSv(validationService.determineVersion(validationContext));
-    }
     ValidationEngine validationEngine = getValidationEngine(validationService, tt, validationContext);
     tts.end();
     executeTask(validationService, validationEngine, validationContext, args);
@@ -47,6 +43,14 @@ public abstract class ValidationEngineTask extends ValidationServiceTask{
   }
 
   private ValidationEngine getValidationEngine(ValidationService validationService, TimeTracker tt, ValidationContext validationContext) throws Exception {
+    if (inferFhirVersion()) {
+      validationContext.setInferFhirVersion(Boolean.TRUE);
+    }
+
+    if (validationContext.getSv() == null) {
+      validationContext.setSv(validationService.determineVersion(validationContext));
+    }
+
     ValidationEngine validationEngine;
     log.info("  Locale: "+ Locale.getDefault().getDisplayCountry()+"/"+Locale.getDefault().getCountry());
     if (validationContext.getJurisdiction() == null) {
