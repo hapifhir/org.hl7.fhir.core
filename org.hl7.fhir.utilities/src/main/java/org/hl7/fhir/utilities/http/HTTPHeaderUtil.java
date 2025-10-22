@@ -42,4 +42,8 @@ public class HTTPHeaderUtil {
     }
     return null;
   }
+
+  public static boolean hasHeader(Iterable<HTTPHeader> headers, String s) {
+    return getSingleHeader(headers, s) != null;
+  }
 }
