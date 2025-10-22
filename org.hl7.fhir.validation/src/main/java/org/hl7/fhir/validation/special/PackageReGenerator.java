@@ -443,8 +443,10 @@ public class PackageReGenerator {
       processExpression(node.getInner());
       processExpression(node.getGroup());
       processExpression(node.getOpNext());
-      for (ExpressionNode p : node.getParameters()) {
-        processExpression(p);
+      if(node.getParameters() != null) {
+        for (ExpressionNode p : node.getParameters()) {
+          processExpression(p);
+        }
       }
     }
   }
