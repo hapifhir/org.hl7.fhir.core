@@ -235,16 +235,25 @@ public class ValidationService {
     return outcome;
   }
 
+  @Deprecated
   public VersionSourceInformation scanForVersions(ValidationContext validationContext) throws IOException {
-    VersionSourceInformation versions = new VersionSourceInformation();
+    List<String> igs = validationContext.getIgs();
+    List<String> sources = validationContext.getSources();
+    boolean isRecursive  = validationContext.isRecursive();
+    return scanForVersions(igs, sources, isRecursive);
+  }
+
+  public VersionSourceInformation scanForVersions(List<String> igs, List<String> sources, boolean isRecursive) throws IOException {
+   VersionSourceInformation versions = new VersionSourceInformation();
     IgLoader igLoader = new IgLoader(
       new FilesystemPackageCacheManager.Builder().build(),
       new SimpleWorkerContext.SimpleWorkerContextBuilder().fromNothing(),
       null);
-    for (String src : validationContext.getIgs()) {
-      igLoader.scanForIgVersion(src, validationContext.isRecursive(), versions);
+
+    for (String src : igs) {
+      igLoader.scanForIgVersion(src, isRecursive, versions);
     }
-    igLoader.scanForVersions(validationContext.getSources(), versions);
+    igLoader.scanForVersions(sources, versions);
     return versions;
   }
 
@@ -705,11 +714,15 @@ public class ValidationService {
   }
 
   public String determineVersion(ValidationContext validationContext) throws IOException {
-    if (!validationContext.isInferFhirVersion()) {
+    return determineVersion(validationContext.getIgs(), validationContext.getSources(), validationContext.isRecursive(), validationContext.isInferFhirVersion());
+  }
+
+  public String determineVersion(List<String> igs, List<String> sources, boolean isRecursive, boolean isInferFhirVersion) throws IOException {
+    if (!isInferFhirVersion) {
       return "5.0";
     }
     log.info("Scanning for versions (no -version parameter):");
-    VersionSourceInformation versions = scanForVersions(validationContext);
+    VersionSourceInformation versions = scanForVersions(igs, sources, isRecursive);
     for (String s : versions.getReport()) {
       if (!s.equals("(nothing found)")) {
         log.info("  " + s);
