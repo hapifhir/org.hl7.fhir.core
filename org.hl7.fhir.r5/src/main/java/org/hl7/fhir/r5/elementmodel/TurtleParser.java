@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -81,6 +82,7 @@ public class TurtleParser extends ParserBase {
 
   public static String FHIR_URI_BASE = "http://hl7.org/fhir/";
   public static String FHIR_VERSION_BASE = "http://build.fhir.org/";
+  public static String FHIR_BASE_PREFIX = "fhir:";
 
   public TurtleParser(IWorkerContext context) {
     super(context);
@@ -346,15 +348,15 @@ public class TurtleParser extends ParserBase {
 
     Subject subject;
     if (hasModifierExtension(e)) 
-      subject = section.triple(subjId, "a", "fhir:_" + e.getType());
+      subject = section.triple(subjId, "a", FHIR_BASE_PREFIX + "_" + getClassName(e.getType()));
     else 
-      subject = section.triple(subjId, "a", "fhir:" + e.getType());
+      subject = section.triple(subjId, "a", FHIR_BASE_PREFIX + getClassName(e.getType()));
 
     if (ExtensionUtilities.readBoolExtension(e.getProperty().getStructure(), ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE)) {
       subject.linkedPredicate("fhir:resourceDefinition", e.getProperty().getStructure().getVersionedUrl(), null, null);
     }
 
-    subject.linkedPredicate("fhir:nodeRole", "fhir:treeRoot", linkResolver == null ? null : linkResolver.resolvePage("rdf.html#tree-root"), null);
+    subject.linkedPredicate(FHIR_BASE_PREFIX + "nodeRole", FHIR_BASE_PREFIX + "treeRoot", linkResolver == null ? null : linkResolver.resolvePage("rdf.html#tree-root"), null);
 
     for (Element child : e.getChildren()) {
       composeElement(section, subject, child, null);
@@ -385,13 +387,13 @@ public class TurtleParser extends ParserBase {
   protected void decorateReference(Complex t, Element coding) {
     String refURI = getReferenceURI(coding.getChildValue("reference"));
     if(refURI != null)
-      t.linkedPredicate("fhir:link", refURI, linkResolver == null ? null : linkResolver.resolvePage("rdf.html#reference"), null);
+      t.linkedPredicate(FHIR_BASE_PREFIX + "link", refURI, linkResolver == null ? null : linkResolver.resolvePage("rdf.html#reference"), null);
   }
 
   protected void decorateCanonical(Complex t, Element canonical) {
     String refURI = getReferenceURI(canonical.primitiveValue());
     if(refURI != null)
-      t.linkedPredicate("fhir:link", refURI, linkResolver == null ? null : linkResolver.resolvePage("rdf.html#reference"), null);
+      t.linkedPredicate(FHIR_BASE_PREFIX + "link", refURI, linkResolver == null ? null : linkResolver.resolvePage("rdf.html#reference"), null);
   }
 
   private String genSubjectId(Element e) {
@@ -432,18 +434,18 @@ public class TurtleParser extends ParserBase {
     Complex t;
     if (element.getSpecial() == SpecialElement.BUNDLE_ENTRY && parent != null && parent.getNamedChildValue("fullUrl") != null) {
       String url = "<"+parent.getNamedChildValue("fullUrl")+">";
-      ctxt.linkedPredicate("fhir:"+en, url, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.getProperty().isList());
+      ctxt.linkedPredicate(FHIR_BASE_PREFIX+en, url, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.getProperty().isList());
       t = section.subject(url);
     } else {
-      t = ctxt.linkedPredicate("fhir:"+en, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.getProperty().isList());
+      t = ctxt.linkedPredicate(FHIR_BASE_PREFIX+en, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.getProperty().isList());
     }
     if (element.getProperty().getName().endsWith("[x]")) {
-      t.linkedPredicate("a", "fhir:" + element.fhirType(), linkResolver == null ? null : linkResolver.resolveType(element.fhirType()), null);
+      t.linkedPredicate("a", FHIR_BASE_PREFIX+getClassName(element.fhirType()), linkResolver == null ? null : linkResolver.resolveType(element.fhirType()), null);
     }
     if (element.getSpecial() != null)
-      t.linkedPredicate("a", "fhir:"+element.fhirType(), linkResolver == null ? null : linkResolver.resolveType(element.fhirType()), null);
+      t.linkedPredicate("a", FHIR_BASE_PREFIX+getClassName(element.fhirType()), linkResolver == null ? null : linkResolver.resolveType(element.fhirType()), null);
     if (element.hasValue())
-      t.linkedPredicate("fhir:v", ttlLiteral(element.getValue(), element.getType()), linkResolver == null ? null : linkResolver.resolveType(element.getType()), null);
+      t.linkedPredicate(FHIR_BASE_PREFIX + "v", ttlLiteral(element.getValue(), element.getType()), linkResolver == null ? null : linkResolver.resolveType(element.getType()), null);
 
     if ("Coding".equals(element.getType()))
       decorateCoding(t, element, section);
@@ -457,7 +459,7 @@ public class TurtleParser extends ParserBase {
       if (refURI != null) {
         String uriType = getURIType(refURI);
         if(uriType != null && !section.hasSubject(refURI))
-          section.triple(refURI, "a", "fhir:" + uriType);
+          section.triple(refURI, "a", FHIR_BASE_PREFIX + getClassName(uriType));
       }
     }
 
@@ -466,7 +468,7 @@ public class TurtleParser extends ParserBase {
       if (refURI != null) {
         String uriType = getURIType(refURI);
         if(uriType != null && !section.hasSubject(refURI))
-          section.triple(refURI, "a", "fhir:" + uriType);
+          section.triple(refURI, "a", FHIR_BASE_PREFIX + getClassName(uriType));
       }
     }
 
@@ -504,6 +506,11 @@ public class TurtleParser extends ParserBase {
       return "_" + en;
     else
       return en;
+  }
+
+  public static String getClassName(String element) {
+    // Uppercase first letter
+    return element.substring(0, 1).toUpperCase() + element.substring(1);
   }
 
   static public String ttlLiteral(String value, String type) {
