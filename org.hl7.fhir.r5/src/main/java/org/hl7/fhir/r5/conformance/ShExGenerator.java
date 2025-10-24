@@ -39,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.hl7.fhir.r5.elementmodel.TurtleParser;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
@@ -406,6 +407,8 @@ public class ShExGenerator {
         add("fhir", FHIR).
         add("fhirvs", FHIR_VS).render());
 
+    shex_def.add("header", "# ShEx Version 2.2\n" + shex_def.getAttribute("header"));
+
     Collections.sort(structures, new SortById());
     StringBuilder shapeDefinitions = new StringBuilder();
 
@@ -484,9 +487,10 @@ public class ShExGenerator {
       if (references.size() > 0) {
         shapeDefinitions.append("\n#---------------------- Reference Types -------------------\n");
         for (String r : references) {
-          shapeDefinitions.append("\n").append(tmplt(TYPED_REFERENCE_TEMPLATE).add("refType", r).render()).append("\n");
+          var rClassName = TurtleParser.getClassName(r);
+          shapeDefinitions.append("\n").append(tmplt(TYPED_REFERENCE_TEMPLATE).add("refType", rClassName).render()).append("\n");
           if (!"Resource".equals(r) && !known_resources.contains(r))
-            shapeDefinitions.append("\n").append(tmplt(TARGET_REFERENCE_TEMPLATE).add("refType", r).render()).append("\n");
+            shapeDefinitions.append("\n").append(tmplt(TARGET_REFERENCE_TEMPLATE).add("refType", rClassName).render()).append("\n");
         }
       }
 
@@ -622,7 +626,7 @@ public class ShExGenerator {
               rootTmpl = "\n";
 
             ST resource_decl = tmplt(RESOURCE_DECL_TEMPLATE).
-              add("id", sd.getId()).
+              add("id", TurtleParser.getClassName(sd.getId())).
               add("root", rootTmpl);
 
             shape_defn.add("resourceDecl", resource_decl.render());
@@ -749,9 +753,9 @@ public class ShExGenerator {
             continue;  // some erroneous context of use may use a URL; ignore them
           }
           String[] backRefs = toStore.split("\\.");
-          toStore = "a [fhir:" + backRefs[0] + "]";
+          toStore = "a [fhir:" + TurtleParser.getClassName(backRefs[0]) + "]";
           for (int i = 1; i < backRefs.length; i++)
-            toStore = "^fhir:" + backRefs[i] + " {" + toStore + "}";
+            toStore = "^fhir:" + TurtleParser.getClassName(backRefs[i]) + " {" + toStore + "}";
 
           if (!contextOfUse.contains(toStore)) {
             contextOfUse.add(toStore);
