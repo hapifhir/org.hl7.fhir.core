@@ -139,9 +139,19 @@ public class PathBuilder {
       return;
     }
 
+    String adjustedTarget = args[0];
+    // We check for "path is child of target" for security reasons.  However, it's legitimate for us to
+    // traverse up a level to access assets in the root if we're in a language sub-folder.  
+    // It's very difficult for us to know if we're in a language sub-folder.  However, if we check that
+    // the parent folder is only 2 characters in length, we're exceptionally unlikely to run into an issue
+    // as the chances an IG's name would only be 2 characters long is about nil.  As such, this should
+    // still be safe.
+    if (args.length==2 && args[1].startsWith("..\\assets\\") && adjustedTarget.length()>3 && adjustedTarget.substring(adjustedTarget.length()-3,adjustedTarget.length()-2).equals("\\")) {
+      adjustedTarget = adjustedTarget.substring(0, adjustedTarget.length()-3);
+    }
     final String target = requiredTarget != null
       ? requiredTarget
-      : args[0];
+      : adjustedTarget;
 
     if (!Path.of(path).normalize().startsWith(Path.of(replaceVariables(target)).normalize())) {
       throw new RuntimeException("Computed path does not start with first element: " + String.join(", ", args));
