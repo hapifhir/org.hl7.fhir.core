@@ -520,7 +520,6 @@ public class ValueSetValidator extends BaseValidator {
     }
   }
 
-
   private boolean validateValueSetIncludeConcept(List<ValidationMessage> errors, Element concept, NodeStack stackInc, NodeStack stack, String system, String version, CodeSystemChecker slv, boolean locallyKnownCodeSystem) {
     String code = concept.getChildValue("code");
     String display = concept.getChildValue("display");
@@ -528,7 +527,7 @@ public class ValueSetValidator extends BaseValidator {
 
     if (!noTerminologyChecks) {
       if (version == null) {
-        ValidationResult vv = context.validateCode(ValidationOptions.defaults().withExampleOK(), new Coding(system, code, null), null);
+        ValidationResult vv = context.validateCode(ValidationOptions.defaults().withExampleOK(), new Coding(system, code, display), null);
         if (vv.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
           if (isExampleUrl(system)) {
             if (settings.isAllowExamples()) {
@@ -569,7 +568,7 @@ public class ValueSetValidator extends BaseValidator {
     String display = concept.getChildValue("display");
     slv.checkConcept(code, display);
 
-    Coding c = new Coding(system, code, null);
+    Coding c = new Coding(system, code, display);
     if (version != null) {
       c.setVersion(version);
     }
