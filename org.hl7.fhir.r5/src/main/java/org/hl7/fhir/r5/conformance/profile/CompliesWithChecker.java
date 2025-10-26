@@ -106,42 +106,46 @@ public class CompliesWithChecker {
           checkCompliesWith(messages, cpath+":"+cnChild.current().getSliceName(), cc, anChild, true);
         }
       } else {
-        List<ElementDefinitionSlicingDiscriminatorComponent> discriminators = new ArrayList<>();
-        if (slicingCompliesWith(messages, cpath, anChild.current(), cnChild.current(), discriminators)) {
-          List<DefinitionNavigator> processed = new ArrayList<DefinitionNavigator>();
-          for (DefinitionNavigator anSlice : anChild.slices()) {
-            String spath = cpath+":"+anSlice.current().getSliceName();
-            List<DataType> discriminatorValues = new ArrayList<>();
-            List<DefinitionNavigator> cnSlices = findMatchingSlices(cnChild.slices(), discriminators, anSlice, discriminatorValues);
-            if (cnSlices.isEmpty() && anSlice.current().getSlicing().getRules() != SlicingRules.CLOSED) {
-              // if it's closed, then we just don't have any. But if it's not closed, we need the slice 
-              messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, cpath, 
-                  context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_NO_SLICE, spath, discriminatorsToString(discriminators), 
-                      valuesToString(discriminatorValues)), IssueSeverity.ERROR));                      
-            }
-            for (DefinitionNavigator cnSlice : cnSlices) {
-              spath = cpath+":"+cnSlice.current().getSliceName();
-              if (!processed.contains(cnSlice)) {
-                // it's weird if it does - is that a problem?
-                processed.add(cnSlice);
-              }
-              checkCompliesWith(messages, spath, cnSlice, anSlice, false);
-            }
-          }
-          for (DefinitionNavigator cnSlice : cnChild.slices()) {
-            if (!processed.contains(cnSlice)) {
-              if (anChild.current().getSlicing().getRules() != SlicingRules.OPEN) {
-                messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, cpath, 
-                    context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_EXTRA_SLICE, cpath, cnSlice.current().getSliceName()), IssueSeverity.ERROR));
-              }
-              String spath = cpath+":"+cnSlice.current().getSliceName();
-              checkCompliesWith(messages, spath, cnSlice, anChild, true);
-            }
-          }            
-        }
+        checkByDiscriminator(messages, anChild, cpath, cnChild);
       }
     } else {
       checkCompliesWith(messages, cpath, cnChild, anChild, false);
+    }
+  }
+
+  private void checkByDiscriminator(List<ValidationMessage> messages, DefinitionNavigator anChild, String cpath, DefinitionNavigator cnChild) {
+    List<ElementDefinitionSlicingDiscriminatorComponent> discriminators = new ArrayList<>();
+    if (slicingCompliesWith(messages, cpath, anChild.current(), cnChild.current(), discriminators)) {
+      List<DefinitionNavigator> processed = new ArrayList<DefinitionNavigator>();
+      for (DefinitionNavigator anSlice : anChild.slices()) {
+        String spath = cpath +":"+anSlice.current().getSliceName();
+        List<DataType> discriminatorValues = new ArrayList<>();
+        List<DefinitionNavigator> cnSlices = findMatchingSlices(cnChild.slices(), discriminators, anSlice, discriminatorValues);
+        if (cnSlices.isEmpty() && anSlice.current().getSlicing().getRules() != SlicingRules.CLOSED) {
+          // if it's closed, then we just don't have any. But if it's not closed, we need the slice
+          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, cpath,
+              context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_NO_SLICE, spath, discriminatorsToString(discriminators),
+                  valuesToString(discriminatorValues)), IssueSeverity.ERROR));
+        }
+        for (DefinitionNavigator cnSlice : cnSlices) {
+          spath = cpath +":"+cnSlice.current().getSliceName();
+          if (!processed.contains(cnSlice)) {
+            // it's weird if it does - is that a problem?
+            processed.add(cnSlice);
+          }
+          checkCompliesWith(messages, spath, cnSlice, anSlice, false);
+        }
+      }
+      for (DefinitionNavigator cnSlice : cnChild.slices()) {
+        if (!processed.contains(cnSlice)) {
+          if (anChild.current().getSlicing().getRules() != SlicingRules.OPEN) {
+            messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, cpath,
+                context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_EXTRA_SLICE, cpath, cnSlice.current().getSliceName()), IssueSeverity.ERROR));
+          }
+          String spath = cpath +":"+cnSlice.current().getSliceName();
+          checkCompliesWith(messages, spath, cnSlice, anChild, true);
+        }
+      }
     }
   }
 
@@ -313,6 +317,8 @@ public class CompliesWithChecker {
     if (p != null && path.contains(".")) {
       return getByPath(p, path.substring(path.indexOf(".")+1)); 
     } else {
+      // we might need to look at the profile pointed to from the type
+
       return p;
     }
   }
