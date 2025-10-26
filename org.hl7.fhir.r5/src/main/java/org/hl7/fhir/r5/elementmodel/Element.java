@@ -1801,4 +1801,13 @@ public class Element extends Base implements NamedItem {
     return xhtml != null;
   }
 
+  public boolean isElementOf(String... paths) {
+    for (String s : paths) {
+      if (s.equals(property.getDefinition().getBase().getPath())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 }
