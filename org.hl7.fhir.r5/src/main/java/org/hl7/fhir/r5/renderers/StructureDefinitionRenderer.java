@@ -1056,9 +1056,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         rows.add(row); 
       if (!used.used && !element.hasSlicing()) { 
         for (Cell cell : row.getCells()) 
-          for (Piece p : cell.getPieces()) { 
-            p.setStyle("text-decoration:line-through"); 
-            p.setReference(null); 
+          for (Piece p : cell.getPieces()) {
+            if (!p.isUnderived()) {
+              p.setStyle("text-decoration:line-through");
+            } else {
+              p.setStyle("font-style: italic");
+            }
+            //p.setReference(null);
           } 
       } else { 
         if (slicingRow != originalRow && !children.isEmpty()) { 
@@ -1542,501 +1546,573 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   public Cell generateDescription(RenderingStatus status, HierarchicalTableGenerator gen, Row row, ElementDefinition definition, ElementDefinition fallback, boolean used, String baseURL, String url, StructureDefinition profile, String corePath, String imagePath, boolean root, boolean logicalModel, boolean allInvariants, ElementDefinition valueDefn, boolean snapshot, boolean mustSupportOnly, boolean allowSubRows, RenderingContext rc, List<ElementDefinition> inScopeElements, ResourceWrapper res) throws IOException, FHIRException {
-    Cell c = gen.new Cell(); 
-    row.getCells().add(c); 
- 
-    if (used) { 
-      if (logicalModel && ExtensionUtilities.hasAnyOfExtensions(profile, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED)) { 
-        if (root) { 
-          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_XML_NAME))+": ", null).addStyle("font-weight:bold")); 
-          c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED), null));         
-        } else if (!root && ExtensionUtilities.hasAnyOfExtensions(definition, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED) &&  
-            !ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED).equals(ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED))) { 
-          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_XML_NAME))+": ", null).addStyle("font-weight:bold")); 
-          c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED), null));         
-        } 
-      } 
-      if (root) { 
-        if (profile != null && profile.getAbstract()) { 
-          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_ABSTRACT)+" " +(profile.getDerivation() == TypeDerivationRule.CONSTRAINT ? "profile" : "type")+". ", null)); 
- 
-          List<StructureDefinition> children = new ArrayList<>(); 
-          for (StructureDefinition sd : context.getWorker().fetchResourcesByType(StructureDefinition.class)) { 
-            if (sd.hasBaseDefinition() && sd.getBaseDefinitionNoVersion().equals(profile.getUrl())) {
-              children.add(sd); 
-            } 
-          } 
-          if (!children.isEmpty()) { 
-            c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_CHILD) +" "+(profile.getDerivation() == TypeDerivationRule.CONSTRAINT ? "profiles" : "types")+": ", null)); 
-            boolean first = true; 
-            for (StructureDefinition sd : children) { 
-              if (first) first = false; else c.addPiece(gen.new Piece(null, ", ", null)); 
-              c.addPiece(gen.new Piece(sd.getWebPath(), sd.getName(), null)); 
-            } 
-          } 
+    Cell c = gen.new Cell();
+    row.getCells().add(c);
+
+    if (logicalModel && ExtensionUtilities.hasAnyOfExtensions(profile, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED)) {
+      if (root) {
+        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_XML_NAME)) + ": ", null).addStyle("font-weight:bold"));
+        c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED), null));
+      } else if (!root && ExtensionUtilities.hasAnyOfExtensions(definition, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED) &&
+        !ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED).equals(ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED))) {
+        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_XML_NAME)) + ": ", null).addStyle("font-weight:bold"));
+        c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED), null));
+      }
+    }
+    if (root) {
+      if (profile != null && profile.getAbstract()) {
+        if (!c.getPieces().isEmpty()) {
+          c.addPiece(gen.new Piece("br"));
+        }
+        c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_ABSTRACT) + " " + (profile.getDerivation() == TypeDerivationRule.CONSTRAINT ? "profile" : "type") + ". ", null));
+
+        List<StructureDefinition> children = new ArrayList<>();
+        for (StructureDefinition sd : context.getWorker().fetchResourcesByType(StructureDefinition.class)) {
+          if (sd.hasBaseDefinition() && sd.getBaseDefinitionNoVersion().equals(profile.getUrl())) {
+            children.add(sd);
+          }
+        }
+        if (!children.isEmpty()) {
+          c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_CHILD) + " " + (profile.getDerivation() == TypeDerivationRule.CONSTRAINT ? "profiles" : "types") + ": ", null));
+          boolean first = true;
+          for (StructureDefinition sd : children) {
+            if (first) first = false;
+            else c.addPiece(gen.new Piece(null, ", ", null));
+            c.addPiece(gen.new Piece(sd.getWebPath(), sd.getName(), null));
+          }
         }
       }
-      if (definition.getPath().endsWith("url") && definition.hasFixed()) { 
-        c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, "\""+buildJson(definition.getFixed())+"\"", null).addStyle("color: darkgreen"))); 
-      } else { 
-        if (definition != null && definition.hasShort()) { 
-          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          c.addPiece(checkForNoChange(definition.getShortElement(), gen.new Piece(null, gt(definition.getShortElement()), null))); 
-        } else if (fallback != null && fallback.hasShort()) { 
-          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          c.addPiece(gen.new Piece(null, gt(fallback.getShortElement()), null).addStyle("opacity: 0.5")); 
-        } 
-        if (url != null) { 
-          if (!c.getPieces().isEmpty())  
-            c.addPiece(gen.new Piece("br")); 
-          String fullUrl = url.startsWith("#") ? baseURL+url : url; 
-          StructureDefinition ed = context.getProfileUtilities().findProfile(url, profile); 
-          String ref = null; 
-          String ref2 = null; 
-          String fixedUrl = null; 
-          if (ed != null) { 
-            ref = ed.getWebPath();            
-            fixedUrl = getFixedUrl(ed); 
-            if (fixedUrl != null) {// if its null, we guess that it's not a profiled extension? 
-              if (fixedUrl.equals(url)) 
-                fixedUrl = null; 
-              else { 
-                StructureDefinition ed2 = context.getProfileUtilities().findProfile(fixedUrl, profile);
-                if (ed2 != null) { 
-                  String p2 = ed2.getWebPath(); 
-                  if (p2 != null) { 
-                    ref2 = p2.startsWith("http:") || context.getRules() == GenerationRules.IG_PUBLISHER ? p2 : Utilities.pathURL(corePath, p2); 
-                  }                               
-                } 
-              } 
-            } 
-          } 
-          if (fixedUrl == null) { 
-            if (!Utilities.noString(fullUrl)) { 
-              c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_URL))+": ", null).addStyle("font-weight:bold")); 
-              c.getPieces().add(gen.new Piece(ref, fullUrl, null)); 
-            } 
-          } else {  
-            // reference to a profile take on the extension show the base URL 
-            c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_URL))+": ", null).addStyle("font-weight:bold")); 
-            c.getPieces().add(gen.new Piece(ref2, fixedUrl, null)); 
-            c.getPieces().add(gen.new Piece(null, (" "+context.formatPhrase(RenderingContext.STRUC_DEF_PROFILED)+" ")+" ", null).addStyle("font-weight:bold")); 
-            c.getPieces().add(gen.new Piece(ref, fullUrl, null)); 
- 
-          } 
+    }
+    if (definition.getPath().endsWith("url") && definition.hasFixed()) {
+      c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, "\"" + buildJson(definition.getFixed()) + "\"", null).addStyle("color: darkgreen")));
+    } else {
+      if (definition != null && definition.hasShort()) {
+        if (!c.getPieces().isEmpty()) {
+          c.addPiece(gen.new Piece("br"));
         }
-
-        if (root) {
-          if (profile.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
-            List<SourcedElementDefinition> ancestors = new ArrayList<>();
-            getAncestorElements(new ArrayList<>(), profile, ancestors);
-            if (ancestors.size() > 0) {
-              c.addPiece(gen.new Piece("br"));
-              c.addPiece(gen.new Piece("br"));
-              c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_ELEMENTS), null));
-              boolean first = true;
-              for (SourcedElementDefinition ed : ancestors) {
-                if (first)
-                  first = false;
-                else
-                  c.addPiece(gen.new Piece(null, ", ", null));
-                c.addPiece(gen.new Piece(ed.getProfile().getWebPath(), (isAttr(ed) ? "@" : "") + ed.getDefinition().getName(), ed.getDefinition().getDefinition()));
-              }
-            }
-          }
+        Piece piece = checkForNoChange(definition.getShortElement(), gen.new Piece(null, gt(definition.getShortElement()), null));
+        if (!definition.getShortElement().hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS)) {
+          piece.setUnderived(true);
         }
-
-        if (definition.hasSlicing()) { 
-          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_SLICE))+": ", null).addStyle("font-weight:bold")); 
-          c.getPieces().add(gen.new Piece(null, describeSlice(definition.getSlicing()), null)); 
-        } 
-        if (!definition.getPath().contains(".") && ExtensionUtilities.hasExtension(profile, ExtensionDefinitions.EXT_BINDING_STYLE)) { 
-          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_BINDING))+": ", null).addStyle("font-weight:bold")); 
-          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_TYPE_SET)+" "), null)); 
-          c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_BINDING_STYLE), null)); 
-          c.getPieces().add(gen.new Piece(null, " "+context.formatPhrase(RenderingContext.STRUC_DEF_BINDING_STYLE), null));             
-        } 
-        if (definition.hasValueAlternatives()) { 
-          addCanonicalList(gen, c, definition.getValueAlternatives(), "The primitive value may be replaced by the extension", true, profile);
-        } 
-        if (definition.hasExtension(ExtensionDefinitions.EXT_IMPLIED_PREFIX)) { 
-          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_ELE_READ)+" "), null));           
-          Piece piece = gen.new Piece("code"); 
-          piece.addHtml(new XhtmlNode(NodeType.Text).setContent(ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_IMPLIED_PREFIX))); 
-          c.getPieces().add(piece);           
-          c.getPieces().add(gen.new Piece(null, " "+ (context.formatPhrase(RenderingContext.STRUC_DEF_PREFIXED)), null));           
+        c.addPiece(piece);
+      } else if (fallback != null && fallback.hasShort()) {
+        if (!c.getPieces().isEmpty()) {
+          c.addPiece(gen.new Piece("br"));
         }
-        if (root && ProfileUtilities.isModifierExtension(profile)) {
-          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
-          c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_MODIFIER_EXT), null).addStyle("font-weight:bold"));
-
+        Piece piece = gen.new Piece(null, gt(fallback.getShortElement()), null).addStyle("opacity: 0.5");
+        if (!definition.getShortElement().hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS)) {
+          piece.setUnderived(true);
         }
-
-        if (definition.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED)) {
-          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          String es = definition.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED);
-          if ("named-elements".equals(es)) { 
-            if (rc.hasLink(KnownLinkType.JSON_NAMES)) { 
-              c.getPieces().add(gen.new Piece(rc.getLink(KnownLinkType.JSON_NAMES, true), context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON), null));                         
-            } else { 
-              c.getPieces().add(gen.new Piece(ExtensionDefinitions.WEB_EXTENSION_STYLE, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON), null));
-            } 
-          } 
-        } 
-        if (definition.typeSummary().equals("Narrative")) {
-          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          Set<String> statusCodes = determineNarrativeStatus(definition, profile, snapshot);
-          List<String> langCtrl = ExtensionUtilities.readStringExtensions(definition, ExtensionDefinitions.EXT_NARRATIVE_LANGUAGE_CONTROL);
-          String level = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_NARRATIVE_SOURCE_CONTROL);
-          // what do we want to do here? 
-          // the narrative might be constrained in these ways: 
-          //  extension http://hl7.org/fhir/StructureDefinition/narrative-language-control 
-          //  extension http://hl7.org/fhir/StructureDefinition/narrative-source-control
-          //  restrictions on status 
-          // direct linkage to data requirements 
-          if ((statusCodes.isEmpty() || statusCodes.size() == 4) && level == null && langCtrl.isEmpty()) {
-            c.getPieces().add(gen.new Piece(null, "This profile does not constrain the narrative in regard to content, language, or traceability to data elements", null).addStyle("font-weight:bold")); 
-          } else { 
-            if ((statusCodes.isEmpty() || statusCodes.size() == 4)) {
-              c.getPieces().add(gen.new Piece(null, "This profile does not constrain the narrative content by fixing the status codes", null).addStyle("font-weight:bold"));               
-            } else {
-              c.getPieces().add(gen.new Piece(null, "This profile constrains the narrative content by fixing the status codes to "+CommaSeparatedStringBuilder.join2(", ", " and ", statusCodes), null).addStyle("font-weight:bold")); 
-            }
-            c.addPiece(gen.new Piece("br")); 
-            String ltx = null;
-            if (langCtrl.isEmpty()) {
-              ltx = "This profile does not constrain the narrative in regard to language specific sections";               
-            } else if (langCtrl.size() == 1 && langCtrl.get(0).equals("_no")) {
-              ltx = "This profile constrains the narrative to not contain any language specific sections";               
-            } else if (langCtrl.size() == 1 && langCtrl.get(0).equals("_yes")) {
-              ltx = "This profile constrains the narrative to contain language sections, but doesn't make rules about them";  
-            } else {
-              int i = langCtrl.indexOf("_resource");
-              if (i == -1) {
-                ltx = "This profile constrains the narrative to contain language sections for the languages "+CommaSeparatedStringBuilder.join2(", ", " and ", langCtrl);                  
-              } else {
-                langCtrl.remove(i);
-                if (langCtrl.size() == 0) {
-                  ltx = "This profile constrains the narrative to contain a language sections in the same language as the resource";
-                } else {
-                  ltx = "This profile constrains the narrative to contain a language sections in the same language as the resource, and also for the languages "+CommaSeparatedStringBuilder.join2(", ", " and ", langCtrl);
+        c.addPiece(piece);
+      }
+      if (url != null) {
+        if (!c.getPieces().isEmpty())
+          c.addPiece(gen.new Piece("br"));
+        String fullUrl = url.startsWith("#") ? baseURL + url : url;
+        StructureDefinition ed = context.getProfileUtilities().findProfile(url, profile);
+        String ref = null;
+        String ref2 = null;
+        String fixedUrl = null;
+        if (ed != null) {
+          ref = ed.getWebPath();
+          fixedUrl = getFixedUrl(ed);
+          if (fixedUrl != null) {// if its null, we guess that it's not a profiled extension?
+            if (fixedUrl.equals(url))
+              fixedUrl = null;
+            else {
+              StructureDefinition ed2 = context.getProfileUtilities().findProfile(fixedUrl, profile);
+              if (ed2 != null) {
+                String p2 = ed2.getWebPath();
+                if (p2 != null) {
+                  ref2 = p2.startsWith("http:") || context.getRules() == GenerationRules.IG_PUBLISHER ? p2 : Utilities.pathURL(corePath, p2);
                 }
               }
             }
-            c.getPieces().add(gen.new Piece(null, ltx, null).addStyle("font-weight:bold"));
-            c.addPiece(gen.new Piece("br")); 
-            
-            if (level == null) {
-              c.getPieces().add(gen.new Piece(null, "This profile does not constrain the narrative in regard to traceability to data elements", null).addStyle("font-weight:bold"));               
-            } else {
-              c.getPieces().add(gen.new Piece(null, "This profile indicates that if there are elements in the narrative without a source-type class, and "+level+" will be emitted", null).addStyle("font-weight:bold"));               
+          }
+        }
+        if (fixedUrl == null) {
+          if (!Utilities.noString(fullUrl)) {
+            c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_URL)) + ": ", null).addStyle("font-weight:bold"));
+            c.getPieces().add(gen.new Piece(ref, fullUrl, null));
+          }
+        } else {
+          // reference to a profile take on the extension show the base URL
+          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_URL)) + ": ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(ref2, fixedUrl, null));
+          c.getPieces().add(gen.new Piece(null, (" " + context.formatPhrase(RenderingContext.STRUC_DEF_PROFILED) + " ") + " ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(ref, fullUrl, null));
+
+        }
+      }
+
+      if (root) {
+        if (profile.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+          List<SourcedElementDefinition> ancestors = new ArrayList<>();
+          getAncestorElements(new ArrayList<>(), profile, ancestors);
+          if (ancestors.size() > 0) {
+            c.addPiece(gen.new Piece("br"));
+            c.addPiece(gen.new Piece("br"));
+            c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_ELEMENTS), null));
+            boolean first = true;
+            for (SourcedElementDefinition ed : ancestors) {
+              if (first)
+                first = false;
+              else
+                c.addPiece(gen.new Piece(null, ", ", null));
+              c.addPiece(gen.new Piece(ed.getProfile().getWebPath(), (isAttr(ed) ? "@" : "") + ed.getDefinition().getName(), ed.getDefinition().getDefinition()));
             }
           }
         }
-        if (definition.hasExtension(ExtensionDefinitions.EXT_DATE_FORMAT)) { 
-          String df = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_DATE_FORMAT); 
-          if (df != null) { 
-            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_DATE, df)+" "), null)); 
-          } 
-        } 
-        if (definition.hasExtension(ExtensionDefinitions.EXT_ID_EXPECTATION)) { 
-          String ide = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_ID_EXPECTATION); 
-          if (ide.equals("optional")) { 
-            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_ID_IS), null));      
-          } else if (ide.equals("required")) { 
-            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_ID_MAY), null));      
-          } else if (ide.equals("required")) { 
-            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_ID_NOT_ALLOW), null));      
-          } 
-        } 
-        if (definition.hasExtension(ExtensionDefinitions.EXT_ID_CHOICE_GROUP)) { 
-          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_CHOICE_GRP))+": ", null).addStyle("font-weight:bold")); 
-          c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_REPEAT), null)); 
-        } 
-        if (definition.hasExtension(ExtensionDefinitions.EXT_XML_NAME, ExtensionDefinitions.EXT_XML_NAME_DEPRECATED)) { 
-          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          if (definition.hasExtension(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED)) { 
-            c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_XML))+": ", null).addStyle("font-weight:bold")); 
-            c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ExtensionDefinitions.EXT_XML_NAME, ExtensionDefinitions.EXT_XML_NAME_DEPRECATED), null)); 
-            c.getPieces().add(gen.new Piece(null, " (", null)); 
-            c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED), null)); 
-            c.getPieces().add(gen.new Piece(null, ")", null));             
-          } else { 
-            c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_XML_ELE))+": ", null).addStyle("font-weight:bold")); 
-            c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ExtensionDefinitions.EXT_XML_NAME, ExtensionDefinitions.EXT_XML_NAME_DEPRECATED), null)); 
-          }             
-        } else if (definition.hasExtension(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED)) { 
-          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_XML_NAME))+": ", null).addStyle("font-weight:bold")); 
-          c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED), null));           
-        } 
-        if (definition.hasExtension(ExtensionDefinitions.EXT_JSON_EMPTY)) { 
-          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          String code = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_JSON_EMPTY); 
-          if ("present".equals(code)) { 
-            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_JSON_INFERRED), null));      
-          } else { 
-            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_JSON_ARRAY), null));      
-          } 
-        } 
-        String jn = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_JSON_NAME, ExtensionDefinitions.EXT_JSON_NAME_DEPRECATED); 
-        if (!Utilities.noString(jn)) { 
-          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          if (definition.getPath().contains(".")) { 
-            c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_JSON_NAME))+": ", null).addStyle("font-weight:bold")); 
-            c.getPieces().add(gen.new Piece(null, jn, null)); 
-          } else { 
-            c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_JSON_TYPE))+": ", null).addStyle("font-weight:bold")); 
-            Piece piece = gen.new Piece("code"); 
-            piece.addHtml(new XhtmlNode(NodeType.Text).setContent(jn)); 
-            c.getPieces().add(piece);             
-          } 
-        } 
- 
-        if (ExtensionUtilities.readBoolExtension(definition, ExtensionDefinitions.EXT_JSON_PRIMITIVE_CHOICE)) { 
-          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_JSON_INFERRED), null));      
-        } 
-        if (ExtensionUtilities.readBoolExtension(definition, ExtensionDefinitions.EXT_JSON_NULLABLE)) { 
-          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_JSON_NULL), null));      
-        } 
-        if (definition.hasExtension(ExtensionDefinitions.EXT_JSON_PROP_KEY)) { 
-          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          String code = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_JSON_PROP_KEY); 
-          c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_SINGLE_JSON_OBJECTS, code), null));      
-        }       
-        if (definition.hasExtension(ExtensionDefinitions.EXT_TYPE_SPEC)) { 
-          for (Extension e : definition.getExtensionsByUrl(ExtensionDefinitions.EXT_TYPE_SPEC)) { 
-            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            String cond = ExtensionUtilities.readStringExtension(e, "condition"); 
-            String type = ExtensionUtilities.readStringExtension(e, "type"); 
-            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_JSON_IF), null));           
-            Piece piece = gen.new Piece("code"); 
-            piece.addHtml(new XhtmlNode(NodeType.Text).setContent(cond)); 
-            c.getPieces().add(piece);           
-            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_THEN_TYPE)+" ", null));           
-            StructureDefinition sd = context.getWorker().fetchTypeDefinition(type); 
-            if (sd == null) { 
-              piece = gen.new Piece("code");
-              piece.addHtml(new XhtmlNode(NodeType.Text).setContent(type));
-              c.getPieces().add(piece);
-            } else { 
-              c.getPieces().add(gen.new Piece(sd.getWebPath(), sd.getTypeName(), null));           
-            } 
-          } 
-        } 
-        if (root) { 
-          if (ExtensionUtilities.readBoolExtension(profile, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_OLD)) {
-            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_OBLIG_ADD), null).addStyle("font-weight:bold"));           
-          } 
-          addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ExtensionDefinitions.EXT_OBLIGATION_INHERITS_NEW, ExtensionDefinitions.EXT_OBLIGATION_INHERITS_OLD), "This profile picks up obligations and additional bindings from the profile", true, profile);
-          addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE), "This profile also imposes the profile", true, profile);
-          addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_COMPLIES_WITH_PROFILE), "This profile also complies with the profile", true, profile);
- 
-          if (profile.getKind() == StructureDefinitionKind.LOGICAL) { 
-            Extension lt = ExtensionUtilities.getExtension(profile, ExtensionDefinitions.EXT_LOGICAL_TARGET); 
-            List<Extension> tc = ExtensionUtilities.getExtensions(profile, ExtensionDefinitions.EXT_TYPE_CHARACTERISTICS);
-            Boolean canBeTarget = checkCanBeTarget(lt, tc);
-            if (canBeTarget == null) {
-              // don't say anything
-            } else if (canBeTarget) {
-              if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-              c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_CAN_TARGET), null).addStyle("font-weight:bold"));                       
-            } else {
-              if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-              c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_NOT_MARK), null).addStyle("font-weight:bold"));                       
-            }
-            
-            String ps = ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_PROFILE_STYLE); 
-            if (ps != null) { 
-              if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-              if ("cda".equals(ps)) { 
-                c.addPiece(gen.new Piece(null,context.formatPhrase(RenderingContext.STRUC_DEF_TEMPLATEID), null).addStyle("font-weight:bold")); 
-              } else { 
-                c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_UNKNOWN_APPROACH, ps)+" ", null).addStyle("font-weight:bold")); 
-              }               
-            } 
-            Extension lc = ExtensionUtilities.getExtension(profile, ExtensionDefinitions.EXT_LOGICAL_CONTAINER); 
-            if (lc != null && lc.hasValueUriType()) { 
-              if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-              c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_LOGICAL_CONT))+": ", context.formatPhrase(RenderingContext.STRUC_DEF_ROOT)).addStyle("font-weight:bold")); 
-               
-              String uri = lc.getValue().primitiveValue(); 
-              StructureDefinition lct = context.getContext().fetchTypeDefinition(uri); 
-              if (lct != null) { 
-                c.addPiece(gen.new Piece(lct.getWebPath(), lct.present(), null));                        
-              } else { 
-                c.addPiece(gen.new Piece(null, uri, null));                        
-              } 
-            } 
-          } 
-        } 
-        if (definition != null) { 
-          ElementDefinitionBindingComponent binding = null; 
-          if (valueDefn != null && valueDefn.hasBinding() && !valueDefn.getBinding().isEmpty()) 
-            binding = makeUnifiedBinding(valueDefn.getBinding(), valueDefn); 
-          else if (definition.hasBinding()) 
-            binding = makeUnifiedBinding(definition.getBinding(), definition); 
-          if (binding!=null && !binding.isEmpty()) { 
-            if (!c.getPieces().isEmpty())  
-              c.addPiece(gen.new Piece("binding", "br")); 
-            if (!binding.hasValueSet()) {
-              c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, (context.formatPhrase(RenderingContext.GENERAL_BINDING_NO_VS_1))+": ", null).addStyle("font-weight:bold"))); 
-              if (binding.hasStrength()) { 
-                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", null, " (", null))); 
-                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", corePath+"terminologies.html#"+binding.getStrength().toCode(), egt(binding.getStrengthElement()), binding.getStrength().getDefinition())));                             
-                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", null, ")", null))); 
-                if (binding.getStrength().testable()) {
-                  c.getPieces().add(gen.new Piece("binding", null, " ", null)); 
-                  c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, "\u26A0", context.formatPhrase(RenderingContext.GENERAL_BINDING_NO_VS_2))).addStyle("font-weight:bold; color: #c97a18"));
-                }
-              } 
-              c.getPieces().add(gen.new Piece("binding", null, ": ", null)); 
-              if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) { 
-                c.addMarkdownNoPara("binding", PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()))); 
-              } else {
-                c.addMarkdownNoPara("binding", context.formatPhrase(RenderingContext.GENERAL_BINDING_NO_DESC));
-              }
-            } else {
-              BindingResolution br = context.getPkp() == null ? makeNullBr(binding) : context.getPkp().resolveBinding(profile, binding, definition.getPath()); 
-              c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, (context.formatPhrase(RenderingContext.GENERAL_BINDING))+": ", null).addStyle("font-weight:bold"))); 
-              c.getPieces().add(checkForNoChange(binding.getValueSetElement(), checkAddExternalFlag(br, gen.new Piece("binding", br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !context.getPkp().prependLinks() ? br.url : corePath+br.url, br.display, br.uri)))); 
-              if (binding.hasStrength()) { 
-                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", null, " (", null))); 
-                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", corePath+"terminologies.html#"+binding.getStrength().toCode(), egt(binding.getStrengthElement()), binding.getStrength().getDefinition())));                             
-                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", null, ")", null))); 
-              } 
-              if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) { 
-                c.getPieces().add(gen.new Piece("binding", null, ": ", null)); 
-                c.addMarkdownNoPara("binding", PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()))); 
-              }  
-            }
-            AdditionalBindingsRenderer abr = new AdditionalBindingsRenderer(context.getPkp(), corePath, profile, definition.getPath(), rc, null, this); 
-            abr.seeAdditionalBindings(definition, null, false); 
-            if (binding.hasExtension(ExtensionDefinitions.EXT_MAX_VALUESET)) { 
-              abr.seeMaxBinding(ExtensionUtilities.getExtension(binding, ExtensionDefinitions.EXT_MAX_VALUESET)); 
-            } 
-            if (binding.hasExtension(ExtensionDefinitions.EXT_MIN_VALUESET)) { 
-              abr.seeMinBinding(ExtensionUtilities.getExtension(binding, ExtensionDefinitions.EXT_MIN_VALUESET)); 
-            } 
-            if (binding.hasExtension(ExtensionDefinitions.EXT_BINDING_ADDITIONAL)) { 
-              abr.seeAdditionalBindings(binding.getExtensionsByUrl(ExtensionDefinitions.EXT_BINDING_ADDITIONAL)); 
-            } 
-            abr.render(gen, c); 
+      }
+
+      if (definition.hasSlicing()) {
+        if (!c.getPieces().isEmpty()) {
+          c.addPiece(gen.new Piece("br"));
+        }
+        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_SLICE)) + ": ", null).addStyle("font-weight:bold"));
+        c.getPieces().add(gen.new Piece(null, describeSlice(definition.getSlicing()), null));
+      }
+      if (!definition.getPath().contains(".") && ExtensionUtilities.hasExtension(profile, ExtensionDefinitions.EXT_BINDING_STYLE)) {
+        if (!c.getPieces().isEmpty()) {
+          c.addPiece(gen.new Piece("br"));
+        }
+        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_BINDING)) + ": ", null).addStyle("font-weight:bold"));
+        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_TYPE_SET) + " "), null));
+        c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_BINDING_STYLE), null));
+        c.getPieces().add(gen.new Piece(null, " " + context.formatPhrase(RenderingContext.STRUC_DEF_BINDING_STYLE), null));
+      }
+      if (definition.hasValueAlternatives()) {
+        addCanonicalList(gen, c, definition.getValueAlternatives(), "The primitive value may be replaced by the extension", true, profile);
+      }
+      if (definition.hasExtension(ExtensionDefinitions.EXT_IMPLIED_PREFIX)) {
+        if (!c.getPieces().isEmpty()) {
+          c.addPiece(gen.new Piece("br"));
+        }
+        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_ELE_READ) + " "), null));
+        Piece piece = gen.new Piece("code");
+        piece.addHtml(new XhtmlNode(NodeType.Text).setContent(ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_IMPLIED_PREFIX)));
+        c.getPieces().add(piece);
+        c.getPieces().add(gen.new Piece(null, " " + (context.formatPhrase(RenderingContext.STRUC_DEF_PREFIXED)), null));
+      }
+      if (root && ProfileUtilities.isModifierExtension(profile)) {
+        if (!c.getPieces().isEmpty()) {
+          c.addPiece(gen.new Piece("br"));
+        }
+        c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_MODIFIER_EXT), null).addStyle("font-weight:bold"));
+
+      }
+
+      if (definition.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED)) {
+        if (!c.getPieces().isEmpty()) {
+          c.addPiece(gen.new Piece("br"));
+        }
+        String es = definition.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED);
+        if ("named-elements".equals(es)) {
+          if (rc.hasLink(KnownLinkType.JSON_NAMES)) {
+            c.getPieces().add(gen.new Piece(rc.getLink(KnownLinkType.JSON_NAMES, true), context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON), null));
+          } else {
+            c.getPieces().add(gen.new Piece(ExtensionDefinitions.WEB_EXTENSION_STYLE, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON), null));
           }
-          
-          boolean firstConstraint = true;
-          for (ElementDefinitionConstraintComponent inv : definition.getConstraint()) { 
+        }
+      }
+      if (definition.typeSummary().equals("Narrative")) {
+        if (!c.getPieces().isEmpty()) {
+          c.addPiece(gen.new Piece("br"));
+        }
+        Set<String> statusCodes = determineNarrativeStatus(definition, profile, snapshot);
+        List<String> langCtrl = ExtensionUtilities.readStringExtensions(definition, ExtensionDefinitions.EXT_NARRATIVE_LANGUAGE_CONTROL);
+        String level = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_NARRATIVE_SOURCE_CONTROL);
+        // what do we want to do here?
+        // the narrative might be constrained in these ways:
+        //  extension http://hl7.org/fhir/StructureDefinition/narrative-language-control
+        //  extension http://hl7.org/fhir/StructureDefinition/narrative-source-control
+        //  restrictions on status
+        // direct linkage to data requirements
+        if ((statusCodes.isEmpty() || statusCodes.size() == 4) && level == null && langCtrl.isEmpty()) {
+          c.getPieces().add(gen.new Piece(null, "This profile does not constrain the narrative in regard to content, language, or traceability to data elements", null).addStyle("font-weight:bold"));
+        } else {
+          if ((statusCodes.isEmpty() || statusCodes.size() == 4)) {
+            c.getPieces().add(gen.new Piece(null, "This profile does not constrain the narrative content by fixing the status codes", null).addStyle("font-weight:bold"));
+          } else {
+            c.getPieces().add(gen.new Piece(null, "This profile constrains the narrative content by fixing the status codes to " + CommaSeparatedStringBuilder.join2(", ", " and ", statusCodes), null).addStyle("font-weight:bold"));
+          }
+          c.addPiece(gen.new Piece("br"));
+          String ltx = null;
+          if (langCtrl.isEmpty()) {
+            ltx = "This profile does not constrain the narrative in regard to language specific sections";
+          } else if (langCtrl.size() == 1 && langCtrl.get(0).equals("_no")) {
+            ltx = "This profile constrains the narrative to not contain any language specific sections";
+          } else if (langCtrl.size() == 1 && langCtrl.get(0).equals("_yes")) {
+            ltx = "This profile constrains the narrative to contain language sections, but doesn't make rules about them";
+          } else {
+            int i = langCtrl.indexOf("_resource");
+            if (i == -1) {
+              ltx = "This profile constrains the narrative to contain language sections for the languages " + CommaSeparatedStringBuilder.join2(", ", " and ", langCtrl);
+            } else {
+              langCtrl.remove(i);
+              if (langCtrl.size() == 0) {
+                ltx = "This profile constrains the narrative to contain a language sections in the same language as the resource";
+              } else {
+                ltx = "This profile constrains the narrative to contain a language sections in the same language as the resource, and also for the languages " + CommaSeparatedStringBuilder.join2(", ", " and ", langCtrl);
+              }
+            }
+          }
+          c.getPieces().add(gen.new Piece(null, ltx, null).addStyle("font-weight:bold"));
+          c.addPiece(gen.new Piece("br"));
+
+          if (level == null) {
+            c.getPieces().add(gen.new Piece(null, "This profile does not constrain the narrative in regard to traceability to data elements", null).addStyle("font-weight:bold"));
+          } else {
+            c.getPieces().add(gen.new Piece(null, "This profile indicates that if there are elements in the narrative without a source-type class, and " + level + " will be emitted", null).addStyle("font-weight:bold"));
+          }
+        }
+      }
+      if (definition.hasExtension(ExtensionDefinitions.EXT_DATE_FORMAT)) {
+        String df = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_DATE_FORMAT);
+        if (df != null) {
+          if (!c.getPieces().isEmpty()) {
+            c.addPiece(gen.new Piece("br"));
+          }
+          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_DATE, df) + " "), null));
+        }
+      }
+      if (definition.hasExtension(ExtensionDefinitions.EXT_ID_EXPECTATION)) {
+        String ide = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_ID_EXPECTATION);
+        if (ide.equals("optional")) {
+          if (!c.getPieces().isEmpty()) {
+            c.addPiece(gen.new Piece("br"));
+          }
+          c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_ID_IS), null));
+        } else if (ide.equals("required")) {
+          if (!c.getPieces().isEmpty()) {
+            c.addPiece(gen.new Piece("br"));
+          }
+          c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_ID_MAY), null));
+        } else if (ide.equals("required")) {
+          if (!c.getPieces().isEmpty()) {
+            c.addPiece(gen.new Piece("br"));
+          }
+          c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_ID_NOT_ALLOW), null));
+        }
+      }
+      if (definition.hasExtension(ExtensionDefinitions.EXT_ID_CHOICE_GROUP)) {
+        if (!c.getPieces().isEmpty()) {
+          c.addPiece(gen.new Piece("br"));
+        }
+        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_CHOICE_GRP)) + ": ", null).addStyle("font-weight:bold"));
+        c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_REPEAT), null));
+      }
+      if (definition.hasExtension(ExtensionDefinitions.EXT_XML_NAME, ExtensionDefinitions.EXT_XML_NAME_DEPRECATED)) {
+        if (!c.getPieces().isEmpty()) {
+          c.addPiece(gen.new Piece("br"));
+        }
+        if (definition.hasExtension(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED)) {
+          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_XML)) + ": ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ExtensionDefinitions.EXT_XML_NAME, ExtensionDefinitions.EXT_XML_NAME_DEPRECATED), null));
+          c.getPieces().add(gen.new Piece(null, " (", null));
+          c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED), null));
+          c.getPieces().add(gen.new Piece(null, ")", null));
+        } else {
+          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_XML_ELE)) + ": ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ExtensionDefinitions.EXT_XML_NAME, ExtensionDefinitions.EXT_XML_NAME_DEPRECATED), null));
+        }
+      } else if (definition.hasExtension(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED)) {
+        if (!c.getPieces().isEmpty()) {
+          c.addPiece(gen.new Piece("br"));
+        }
+        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_XML_NAME)) + ": ", null).addStyle("font-weight:bold"));
+        c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED), null));
+      }
+      if (definition.hasExtension(ExtensionDefinitions.EXT_JSON_EMPTY)) {
+        if (!c.getPieces().isEmpty()) {
+          c.addPiece(gen.new Piece("br"));
+        }
+        String code = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_JSON_EMPTY);
+        if ("present".equals(code)) {
+          c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_JSON_INFERRED), null));
+        } else {
+          c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_JSON_ARRAY), null));
+        }
+      }
+      String jn = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_JSON_NAME, ExtensionDefinitions.EXT_JSON_NAME_DEPRECATED);
+      if (!Utilities.noString(jn)) {
+        if (!c.getPieces().isEmpty()) {
+          c.addPiece(gen.new Piece("br"));
+        }
+        if (definition.getPath().contains(".")) {
+          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_JSON_NAME)) + ": ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, jn, null));
+        } else {
+          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_JSON_TYPE)) + ": ", null).addStyle("font-weight:bold"));
+          Piece piece = gen.new Piece("code");
+          piece.addHtml(new XhtmlNode(NodeType.Text).setContent(jn));
+          c.getPieces().add(piece);
+        }
+      }
+
+      if (ExtensionUtilities.readBoolExtension(definition, ExtensionDefinitions.EXT_JSON_PRIMITIVE_CHOICE)) {
+        if (!c.getPieces().isEmpty()) {
+          c.addPiece(gen.new Piece("br"));
+        }
+        c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_JSON_INFERRED), null));
+      }
+      if (ExtensionUtilities.readBoolExtension(definition, ExtensionDefinitions.EXT_JSON_NULLABLE)) {
+        if (!c.getPieces().isEmpty()) {
+          c.addPiece(gen.new Piece("br"));
+        }
+        c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_JSON_NULL), null));
+      }
+      if (definition.hasExtension(ExtensionDefinitions.EXT_JSON_PROP_KEY)) {
+        if (!c.getPieces().isEmpty()) {
+          c.addPiece(gen.new Piece("br"));
+        }
+        String code = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_JSON_PROP_KEY);
+        c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_SINGLE_JSON_OBJECTS, code), null));
+      }
+      if (definition.hasExtension(ExtensionDefinitions.EXT_TYPE_SPEC)) {
+        for (Extension e : definition.getExtensionsByUrl(ExtensionDefinitions.EXT_TYPE_SPEC)) {
+          if (!c.getPieces().isEmpty()) {
+            c.addPiece(gen.new Piece("br"));
+          }
+          String cond = ExtensionUtilities.readStringExtension(e, "condition");
+          String type = ExtensionUtilities.readStringExtension(e, "type");
+          c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_JSON_IF), null));
+          Piece piece = gen.new Piece("code");
+          piece.addHtml(new XhtmlNode(NodeType.Text).setContent(cond));
+          c.getPieces().add(piece);
+          c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_THEN_TYPE) + " ", null));
+          StructureDefinition sd = context.getWorker().fetchTypeDefinition(type);
+          if (sd == null) {
+            piece = gen.new Piece("code");
+            piece.addHtml(new XhtmlNode(NodeType.Text).setContent(type));
+            c.getPieces().add(piece);
+          } else {
+            c.getPieces().add(gen.new Piece(sd.getWebPath(), sd.getTypeName(), null));
+          }
+        }
+      }
+      if (root) {
+        if (ExtensionUtilities.readBoolExtension(profile, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_OLD)) {
+          if (!c.getPieces().isEmpty()) {
+            c.addPiece(gen.new Piece("br"));
+          }
+          c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_OBLIG_ADD), null).addStyle("font-weight:bold"));
+        }
+        addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ExtensionDefinitions.EXT_OBLIGATION_INHERITS_NEW, ExtensionDefinitions.EXT_OBLIGATION_INHERITS_OLD), "This profile picks up obligations and additional bindings from the profile", true, profile);
+        addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE), "This profile also imposes the profile", true, profile);
+        addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_COMPLIES_WITH_PROFILE), "This profile also complies with the profile", true, profile);
+
+        if (profile.getKind() == StructureDefinitionKind.LOGICAL) {
+          Extension lt = ExtensionUtilities.getExtension(profile, ExtensionDefinitions.EXT_LOGICAL_TARGET);
+          List<Extension> tc = ExtensionUtilities.getExtensions(profile, ExtensionDefinitions.EXT_TYPE_CHARACTERISTICS);
+          Boolean canBeTarget = checkCanBeTarget(lt, tc);
+          if (canBeTarget == null) {
+            // don't say anything
+          } else if (canBeTarget) {
+            if (!c.getPieces().isEmpty()) {
+              c.addPiece(gen.new Piece("br"));
+            }
+            c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_CAN_TARGET), null).addStyle("font-weight:bold"));
+          } else {
+            if (!c.getPieces().isEmpty()) {
+              c.addPiece(gen.new Piece("br"));
+            }
+            c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_NOT_MARK), null).addStyle("font-weight:bold"));
+          }
+
+          String ps = ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_PROFILE_STYLE);
+          if (ps != null) {
+            if (!c.getPieces().isEmpty()) {
+              c.addPiece(gen.new Piece("br"));
+            }
+            if ("cda".equals(ps)) {
+              c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_TEMPLATEID), null).addStyle("font-weight:bold"));
+            } else {
+              c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_UNKNOWN_APPROACH, ps) + " ", null).addStyle("font-weight:bold"));
+            }
+          }
+          Extension lc = ExtensionUtilities.getExtension(profile, ExtensionDefinitions.EXT_LOGICAL_CONTAINER);
+          if (lc != null && lc.hasValueUriType()) {
+            if (!c.getPieces().isEmpty()) {
+              c.addPiece(gen.new Piece("br"));
+            }
+            c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_LOGICAL_CONT)) + ": ", context.formatPhrase(RenderingContext.STRUC_DEF_ROOT)).addStyle("font-weight:bold"));
+
+            String uri = lc.getValue().primitiveValue();
+            StructureDefinition lct = context.getContext().fetchTypeDefinition(uri);
+            if (lct != null) {
+              c.addPiece(gen.new Piece(lct.getWebPath(), lct.present(), null));
+            } else {
+              c.addPiece(gen.new Piece(null, uri, null));
+            }
+          }
+        }
+      }
+      if (definition != null) {
+        ElementDefinitionBindingComponent binding = null;
+        if (valueDefn != null && valueDefn.hasBinding() && !valueDefn.getBinding().isEmpty())
+          binding = makeUnifiedBinding(valueDefn.getBinding(), valueDefn);
+        else if (definition.hasBinding())
+          binding = makeUnifiedBinding(definition.getBinding(), definition);
+        if (binding != null && !binding.isEmpty()) {
+          if (!c.getPieces().isEmpty())
+            c.addPiece(gen.new Piece("binding", "br"));
+          if (!binding.hasValueSet()) {
+            c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, (context.formatPhrase(RenderingContext.GENERAL_BINDING_NO_VS_1)) + ": ", null).addStyle("font-weight:bold")));
+            if (binding.hasStrength()) {
+              c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", null, " (", null)));
+              c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", corePath + "terminologies.html#" + binding.getStrength().toCode(), egt(binding.getStrengthElement()), binding.getStrength().getDefinition())));
+              c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", null, ")", null)));
+              if (binding.getStrength().testable()) {
+                c.getPieces().add(gen.new Piece("binding", null, " ", null));
+                c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, "\u26A0", context.formatPhrase(RenderingContext.GENERAL_BINDING_NO_VS_2))).addStyle("font-weight:bold; color: #c97a18"));
+              }
+            }
+            c.getPieces().add(gen.new Piece("binding", null, ": ", null));
+            if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) {
+              c.addMarkdownNoPara("binding", PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement())));
+            } else {
+              c.addMarkdownNoPara("binding", context.formatPhrase(RenderingContext.GENERAL_BINDING_NO_DESC));
+            }
+          } else {
+            BindingResolution br = context.getPkp() == null ? makeNullBr(binding) : context.getPkp().resolveBinding(profile, binding, definition.getPath());
+            c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, (context.formatPhrase(RenderingContext.GENERAL_BINDING)) + ": ", null).addStyle("font-weight:bold")));
+            c.getPieces().add(checkForNoChange(binding.getValueSetElement(), checkAddExternalFlag(br, gen.new Piece("binding", br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !context.getPkp().prependLinks() ? br.url : corePath + br.url, br.display, br.uri))));
+            if (binding.hasStrength()) {
+              c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", null, " (", null)));
+              c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", corePath + "terminologies.html#" + binding.getStrength().toCode(), egt(binding.getStrengthElement()), binding.getStrength().getDefinition())));
+              c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", null, ")", null)));
+            }
+            if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) {
+              c.getPieces().add(gen.new Piece("binding", null, ": ", null));
+              c.addMarkdownNoPara("binding", PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement())));
+            }
+          }
+          AdditionalBindingsRenderer abr = new AdditionalBindingsRenderer(context.getPkp(), corePath, profile, definition.getPath(), rc, null, this);
+          abr.seeAdditionalBindings(definition, null, false);
+          if (binding.hasExtension(ExtensionDefinitions.EXT_MAX_VALUESET)) {
+            abr.seeMaxBinding(ExtensionUtilities.getExtension(binding, ExtensionDefinitions.EXT_MAX_VALUESET));
+          }
+          if (binding.hasExtension(ExtensionDefinitions.EXT_MIN_VALUESET)) {
+            abr.seeMinBinding(ExtensionUtilities.getExtension(binding, ExtensionDefinitions.EXT_MIN_VALUESET));
+          }
+          if (binding.hasExtension(ExtensionDefinitions.EXT_BINDING_ADDITIONAL)) {
+            abr.seeAdditionalBindings(binding.getExtensionsByUrl(ExtensionDefinitions.EXT_BINDING_ADDITIONAL));
+          }
+          abr.render(gen, c);
+        }
+
+        boolean firstConstraint = true;
+        for (ElementDefinitionConstraintComponent inv : definition.getConstraint()) {
 //            if (!inv.hasSource() || profile == null || inv.getSource().equals(profile.getUrl()) || allInvariants) { 
-            if (!inv.hasSource() || profile == null || inv.getSource().equals(profile.getUrl()) || (allInvariants && !isAbstractBaseProfile(inv.getSource(), profile) && !"http://hl7.org/fhir/StructureDefinition/Extension".equals(inv.getSource()) && !"http://hl7.org/fhir/StructureDefinition/Element".equals(inv.getSource()))) {
-              if (firstConstraint) {
-                if (!c.getPieces().isEmpty())  
-                  c.addPiece(gen.new Piece("constraint", "br"));
-                c.addPiece(gen.new Piece("constraint", null, "Constraints: ", null));
-                firstConstraint = false;
-                
-              } else
-                c.addPiece(gen.new Piece("constraint", null, ", ", null)); 
-              c.getPieces().add(checkForNoChange(inv, gen.new Piece("constraint", null, inv.getKey(), gt(inv.getHumanElement())).addStyle("font-weight:bold"))); 
-            } 
-          } 
-          if ((definition.hasBase() && "*".equals(definition.getBase().getMax())) || (definition.hasMax() && "*".equals(definition.getMax()))) { 
-            if (c.getPieces().size() > 0) 
-              c.addPiece(gen.new Piece("br")); 
-            if (definition.hasOrderMeaning()) { 
-              c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_REPEAT_ELE, definition.getOrderMeaning()), null)); 
-            } else { 
-              // don't show this, this it's important: c.getPieces().add(gen.new Piece(null, "This repeating element has no defined order", null)); 
-            }            
-          } 
-          if (definition.hasFixed()) { 
-            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_FIXED))+": ", null).addStyle("font-weight:bold"))); 
-            if (!useTableForFixedValues || !allowSubRows || definition.getFixed().isPrimitive()) { 
-              String s = buildJson(definition.getFixed()); 
-              String link = null; 
-              if (Utilities.isAbsoluteUrl(s) && context.getPkp() != null) 
-                link = context.getPkp().getLinkForUrl(corePath, s); 
-              c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(link, s, null).addStyle("color: darkgreen"))); 
-            } else { 
-              c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_AS_SHOWN), null).addStyle("color: darkgreen"))); 
-              genFixedValue(gen, row, definition.getFixed(), snapshot, false, corePath, false); 
-            } 
-            if (isCoded(definition.getFixed()) && !hasDescription(definition.getFixed())) { 
-              Piece p = describeCoded(gen, definition.getFixed()); 
-              if (p != null) 
-                c.getPieces().add(p); 
-            } 
-          } else if (definition.hasPattern()) { 
-            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_REQ_PATT))+": ", null).addStyle("font-weight:bold"))); 
-            if (!useTableForFixedValues || !allowSubRows || definition.getPattern().isPrimitive()) 
-              c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, buildJson(definition.getPattern()), null).addStyle("color: darkgreen"))); 
-            else { 
-              c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_LEAST_FOLLOW), null).addStyle("color: darkgreen"))); 
-              genFixedValue(gen, row, definition.getPattern(), snapshot, true, corePath, mustSupportOnly); 
-            } 
-          } else if (definition.hasExample()) { 
-            for (ElementDefinitionExampleComponent ex : definition.getExample()) { 
-              if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-              c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_EXAMPLE))+("".equals("General")? "" : " "+ex.getLabel())+": ", null).addStyle("font-weight:bold"))); 
-              c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, buildJson(ex.getValue()), null).addStyle("color: darkgreen"))); 
-            } 
-          } 
- 
-          ObligationsRenderer obr = new ObligationsRenderer(corePath, profile, definition.getPath(), rc, null, this, false); 
-          if (definition.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) { 
-            obr.seeObligations(definition.getExtensionsByUrl(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)); 
-          } 
-          if (!definition.getPath().contains(".") && profile.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) { 
-            obr.seeObligations(profile.getExtensionsByUrl(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)); 
-          } 
-          obr.renderTable(status, res, gen, c, inScopeElements);
-          if (definition.hasMaxLength() && definition.getMaxLength()!=0) { 
-            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, context.formatPhrase(RenderingContext.GENERAL_MAX_LENGTH), null).addStyle("font-weight:bold"))); 
-            c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, Integer.toString(definition.getMaxLength()), null).addStyle("color: darkgreen"))); 
-          } 
-          if (definition.hasExtension(ExtensionDefinitions.EXT_MIN_LENGTH)) {
-            int min = ExtensionUtilities.readIntegerExtension(definition, ExtensionDefinitions.EXT_MIN_LENGTH, 0);
-            if (min > 0) {
-              if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
-              c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.GENERAL_MIN_LENGTH), null).addStyle("font-weight:bold")); 
-              c.getPieces().add(gen.new Piece(null, Integer.toString(min), null).addStyle("color: darkgreen"));
+          if (!inv.hasSource() || profile == null || inv.getSource().equals(profile.getUrl()) || (allInvariants && !isAbstractBaseProfile(inv.getSource(), profile) && !"http://hl7.org/fhir/StructureDefinition/Extension".equals(inv.getSource()) && !"http://hl7.org/fhir/StructureDefinition/Element".equals(inv.getSource()))) {
+            if (firstConstraint) {
+              if (!c.getPieces().isEmpty())
+                c.addPiece(gen.new Piece("constraint", "br"));
+              c.addPiece(gen.new Piece("constraint", null, "Constraints: ", null));
+              firstConstraint = false;
+
+            } else
+              c.addPiece(gen.new Piece("constraint", null, ", ", null));
+            c.getPieces().add(checkForNoChange(inv, gen.new Piece("constraint", null, inv.getKey(), gt(inv.getHumanElement())).addStyle("font-weight:bold")));
+          }
+        }
+        if ((definition.hasBase() && "*".equals(definition.getBase().getMax())) || (definition.hasMax() && "*".equals(definition.getMax()))) {
+          if (c.getPieces().size() > 0)
+            c.addPiece(gen.new Piece("br"));
+          if (definition.hasOrderMeaning()) {
+            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_REPEAT_ELE, definition.getOrderMeaning()), null));
+          } else {
+            // don't show this, this it's important: c.getPieces().add(gen.new Piece(null, "This repeating element has no defined order", null));
+          }
+        }
+        if (definition.hasFixed()) {
+          if (!c.getPieces().isEmpty()) {
+            c.addPiece(gen.new Piece("br"));
+          }
+          c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_FIXED)) + ": ", null).addStyle("font-weight:bold")));
+          if (!useTableForFixedValues || !allowSubRows || definition.getFixed().isPrimitive()) {
+            String s = buildJson(definition.getFixed());
+            String link = null;
+            if (Utilities.isAbsoluteUrl(s) && context.getPkp() != null)
+              link = context.getPkp().getLinkForUrl(corePath, s);
+            c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(link, s, null).addStyle("color: darkgreen")));
+          } else {
+            c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_AS_SHOWN), null).addStyle("color: darkgreen")));
+            genFixedValue(gen, row, definition.getFixed(), snapshot, false, corePath, false);
+          }
+          if (isCoded(definition.getFixed()) && !hasDescription(definition.getFixed())) {
+            Piece p = describeCoded(gen, definition.getFixed());
+            if (p != null)
+              c.getPieces().add(p);
+          }
+        } else if (definition.hasPattern()) {
+          if (!c.getPieces().isEmpty()) {
+            c.addPiece(gen.new Piece("br"));
+          }
+          c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_REQ_PATT)) + ": ", null).addStyle("font-weight:bold")));
+          if (!useTableForFixedValues || !allowSubRows || definition.getPattern().isPrimitive())
+            c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, buildJson(definition.getPattern()), null).addStyle("color: darkgreen")));
+          else {
+            c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_LEAST_FOLLOW), null).addStyle("color: darkgreen")));
+            genFixedValue(gen, row, definition.getPattern(), snapshot, true, corePath, mustSupportOnly);
+          }
+        } else if (definition.hasExample()) {
+          for (ElementDefinitionExampleComponent ex : definition.getExample()) {
+            if (!c.getPieces().isEmpty()) {
+              c.addPiece(gen.new Piece("br"));
             }
-          } 
-          if (profile != null) { 
-            for (StructureDefinitionMappingComponent md : profile.getMapping()) { 
-              if (md.hasExtension(ExtensionDefinitions.EXT_TABLE_NAME)) { 
-                ElementDefinitionMappingComponent map = null; 
-                for (ElementDefinitionMappingComponent m : definition.getMapping())  
-                  if (m.getIdentity().equals(md.getIdentity())) 
-                    map = m; 
-                if (map != null) { 
-                  for (int i = 0; i<definition.getMapping().size(); i++){ 
-                    c.addPiece(gen.new Piece("br")); 
-                    c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(md, ExtensionDefinitions.EXT_TABLE_NAME)+": " + map.getMap(), null)); 
-                  } 
-                } 
-              } 
-            } 
-          } 
-        } 
-      } 
-    } 
-    return c; 
-  } 
+            c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_EXAMPLE)) + ("".equals("General") ? "" : " " + ex.getLabel()) + ": ", null).addStyle("font-weight:bold")));
+            c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, buildJson(ex.getValue()), null).addStyle("color: darkgreen")));
+          }
+        }
+
+        ObligationsRenderer obr = new ObligationsRenderer(corePath, profile, definition.getPath(), rc, null, this, false);
+        if (definition.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) {
+          obr.seeObligations(definition.getExtensionsByUrl(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS));
+        }
+        if (!definition.getPath().contains(".") && profile.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) {
+          obr.seeObligations(profile.getExtensionsByUrl(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS));
+        }
+        obr.renderTable(status, res, gen, c, inScopeElements);
+        if (definition.hasMaxLength() && definition.getMaxLength() != 0) {
+          if (!c.getPieces().isEmpty()) {
+            c.addPiece(gen.new Piece("br"));
+          }
+          c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, context.formatPhrase(RenderingContext.GENERAL_MAX_LENGTH), null).addStyle("font-weight:bold")));
+          c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, Integer.toString(definition.getMaxLength()), null).addStyle("color: darkgreen")));
+        }
+        if (definition.hasExtension(ExtensionDefinitions.EXT_MIN_LENGTH)) {
+          int min = ExtensionUtilities.readIntegerExtension(definition, ExtensionDefinitions.EXT_MIN_LENGTH, 0);
+          if (min > 0) {
+            if (!c.getPieces().isEmpty()) {
+              c.addPiece(gen.new Piece("br"));
+            }
+            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.GENERAL_MIN_LENGTH), null).addStyle("font-weight:bold"));
+            c.getPieces().add(gen.new Piece(null, Integer.toString(min), null).addStyle("color: darkgreen"));
+          }
+        }
+        if (profile != null) {
+          for (StructureDefinitionMappingComponent md : profile.getMapping()) {
+            if (md.hasExtension(ExtensionDefinitions.EXT_TABLE_NAME)) {
+              ElementDefinitionMappingComponent map = null;
+              for (ElementDefinitionMappingComponent m : definition.getMapping())
+                if (m.getIdentity().equals(md.getIdentity()))
+                  map = m;
+              if (map != null) {
+                for (int i = 0; i < definition.getMapping().size(); i++) {
+                  c.addPiece(gen.new Piece("br"));
+                  c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(md, ExtensionDefinitions.EXT_TABLE_NAME) + ": " + map.getMap(), null));
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return c;
+  }
 
   private Set<String> determineNarrativeStatus(ElementDefinition definition, StructureDefinition profile, boolean snapshot) {
     Set<String> set = new HashSet<>();
@@ -2177,7 +2253,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
   private Piece checkForNoChange(Element source, Piece piece) { 
     if (source.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS)) { 
-      piece.addStyle("opacity: 0.5"); 
+      piece.addStyle("opacity: 0.5");
     } 
     return piece; 
   } 
