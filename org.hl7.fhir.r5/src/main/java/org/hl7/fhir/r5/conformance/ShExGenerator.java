@@ -577,7 +577,7 @@ public class ShExGenerator {
     if (bd!=null) {
       var className = TurtleParser.getClassName(bd);
       addImport("<" + className + ">");
-      sId += "> EXTENDS @<" + className + ">";
+      sId += "> EXTENDS @<" + className;
     }
 
     return sId;
@@ -589,7 +589,7 @@ public class ShExGenerator {
     if (bd!=null) {
       var className = TurtleParser.getClassName(bd);
       addImport("<" + className + ">");
-      bd = "> EXTENDS @<" + className + ">";
+      bd = "> EXTENDS @<" + className;
     }
     return bd;
   }
