@@ -1347,9 +1347,9 @@ public class ShExGenerator {
 
     element_def = tmplt(ELEMENT_TEMPLATE);
     if (id.endsWith("[x]")) {
-      element_def.add("id", "fhir:" + TurtleParser.getClassName(shortId.replace("[x]", "")));
+      element_def.add("id", "fhir:" + shortId.replace("[x]", ""));
     } else {
-      element_def.add("id", "fhir:" + TurtleParser.getClassName(shortId) + " ");
+      element_def.add("id", "fhir:" + shortId + " ");
     }
 
     List<ElementDefinition> children = profileUtilities.getChildList(sd, ed);
