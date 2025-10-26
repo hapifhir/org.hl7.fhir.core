@@ -444,8 +444,16 @@ public class TurtleParser extends ParserBase {
     }
     if (element.getSpecial() != null)
       t.linkedPredicate("a", FHIR_BASE_PREFIX+getClassName(element.fhirType()), linkResolver == null ? null : linkResolver.resolveType(element.fhirType()), null);
-    if (element.hasValue())
-      t.linkedPredicate(FHIR_BASE_PREFIX + "v", ttlLiteral(element.getValue(), element.getType()), linkResolver == null ? null : linkResolver.resolveType(element.getType()), null);
+    if (element.hasValue()) {
+        String elementLiteral = null;
+        if ("xhtml".equals(element.getType())) {
+          elementLiteral = new XhtmlComposer(XhtmlComposer.XML, false).setCanonical(true).compose(element.getXhtml());;
+        } else {
+          elementLiteral = element.getValue();
+        }
+        t.linkedPredicate(FHIR_BASE_PREFIX + "v", ttlLiteral(elementLiteral, element.getType()), linkResolver == null ? null : linkResolver.resolveType(element.getType()), null);
+    }
+      
 
     if ("Coding".equals(element.getType()))
       decorateCoding(t, element, section);
@@ -473,11 +481,7 @@ public class TurtleParser extends ParserBase {
     }
 
     for (Element child : element.getChildren()) {
-      if ("xhtml".equals(child.getType())) {
-        String childfn = getFormalName(child);
-        t.predicate("fhir:" + childfn, ttlLiteral(new XhtmlComposer(XhtmlComposer.XML, false).setCanonical(true).compose(child.getXhtml()), child.getType()));
-      } else
-        composeElement(section, t, child, element);
+      composeElement(section, t, child, element);
     }
   }
 
