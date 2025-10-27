@@ -261,99 +261,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter
   private InstanceValidatorParameters defaultInstanceValidatorParameters = new InstanceValidatorParameters();
 
-
-  /**
-   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
-   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
-   * using this method.
-   * @since 2025-10-24
-   */
-  @Deprecated(since = "2025-10-24")
-  public boolean isAllowExampleUrls() {
-    return defaultInstanceValidatorParameters.isAllowExampleUrls();
-  }
-
-  /**
-   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
-   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
-   * using this method.
-   * @since 2025-10-24
-   */
-  @Deprecated(since = "2025-10-24")
-  public ValidationEngine setAllowExampleUrls(boolean allowExampleUrls) {
-    defaultInstanceValidatorParameters.setAllowExampleUrls(allowExampleUrls);
-    return this;
-  }
-
-  /**
-   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
-   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
-   * using this method.
-   * @since 2025-10-24
-   */
-  @Deprecated(since = "2025-10-24")
-  public boolean isAllowDoubleQuotesInFHIRPath() {
-    return defaultInstanceValidatorParameters.isAllowDoubleQuotesInFHIRPath();
-  }
-
-  /**
-   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
-   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
-   * using this method.
-   * @since 2025-10-24
-   */
-  @Deprecated(since = "2025-10-24")
-  public ValidationEngine setAllowDoubleQuotesInFHIRPath(boolean allowDoubleQuotesInFHIRPath) {
-    defaultInstanceValidatorParameters.setAllowDoubleQuotesInFHIRPath(allowDoubleQuotesInFHIRPath);
-    return this;
-  }
-
-  /**
-   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
-   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
-   * using this method.
-   * @since 2025-10-24
-   */
-  @Deprecated(since = "2025-10-24")
-  public boolean isShowMessagesFromReferences() {
-    return defaultInstanceValidatorParameters.isShowMessagesFromReferences();
-  }
-
-  /**
-   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
-   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
-   * using this method.
-   * @since 2025-10-24
-   */
-  @Deprecated(since = "2025-10-24")
-  public ValidationEngine setShowMessagesFromReferences(boolean showMessagesFromReferences) {
-    defaultInstanceValidatorParameters.setShowMessagesFromReferences(showMessagesFromReferences);
-    return this;
-  }
-
-  /**
-   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
-   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
-   * using this method.
-   * @since 2025-10-24
-   */
-  @Deprecated(since = "2025-10-24")
-  public boolean isHintAboutNonMustSupport() {
-    return defaultInstanceValidatorParameters.isHintAboutNonMustSupport();
-  }
-
-  /**
-   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
-   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
-   * using this method.
-   * @since 2025-10-24
-   */
-  @Deprecated(since = "2025-10-24")
-  public ValidationEngine setHintAboutNonMustSupport(boolean hintAboutNonMustSupport) {
-    defaultInstanceValidatorParameters.setHintAboutNonMustSupport(hintAboutNonMustSupport);
-    return this;
-  }
-
   private ContextUtilities cu = null;
 
   /**
@@ -1471,4 +1378,100 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return SpecialValidationAction.CHECK_RULE;
   }
 
+  /*
+  * What follows below are the set of methods that used to refer to fields in ValidationEngine that have now been moved
+  * to defaultInstanceValidatorParameters. Usages of these methods is strongly discouraged as they will later be removed.
+  * */
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public boolean isAllowExampleUrls() {
+    return defaultInstanceValidatorParameters.isAllowExampleUrls();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setAllowExampleUrls(boolean allowExampleUrls) {
+    defaultInstanceValidatorParameters.setAllowExampleUrls(allowExampleUrls);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public boolean isAllowDoubleQuotesInFHIRPath() {
+    return defaultInstanceValidatorParameters.isAllowDoubleQuotesInFHIRPath();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setAllowDoubleQuotesInFHIRPath(boolean allowDoubleQuotesInFHIRPath) {
+    defaultInstanceValidatorParameters.setAllowDoubleQuotesInFHIRPath(allowDoubleQuotesInFHIRPath);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public boolean isShowMessagesFromReferences() {
+    return defaultInstanceValidatorParameters.isShowMessagesFromReferences();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setShowMessagesFromReferences(boolean showMessagesFromReferences) {
+    defaultInstanceValidatorParameters.setShowMessagesFromReferences(showMessagesFromReferences);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public boolean isHintAboutNonMustSupport() {
+    return defaultInstanceValidatorParameters.isHintAboutNonMustSupport();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setHintAboutNonMustSupport(boolean hintAboutNonMustSupport) {
+    defaultInstanceValidatorParameters.setHintAboutNonMustSupport(hintAboutNonMustSupport);
+    return this;
+  }
 }
