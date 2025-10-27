@@ -23,13 +23,13 @@ msgstr "Type : {0}"
 #: ACTOR_DERIVED_FROM
 msgctxt "ACTOR_DERIVED_FROM"
 msgid "Derived From"
-msgstr ""
+msgstr "Dérivé de"
 
 # ACTOR_DERIVED_FROM_NONE
 #: ACTOR_DERIVED_FROM_NONE
 msgctxt "ACTOR_DERIVED_FROM_NONE"
 msgid "(none)"
-msgstr ""
+msgstr "(aucun)"
 
 # ADD_BIND_ADD_BIND
 #: ADD_BIND_ADD_BIND
@@ -39,23 +39,23 @@ msgstr "Bindings Additionnels"
 # ADD_BIND_ALL_REP
 #: ADD_BIND_ALL_REP
 msgid "All repeats"
-msgstr ""
+msgstr "Toutes les répétitions"
 
 # ADD_BIND_ANY
 #: ADD_BIND_ANY
 msgid "Any"
-msgstr ""
+msgstr "N'importe lequel"
 
 # ADD_BIND_ANY_REP
 #: ADD_BIND_ANY_REP
 msgid "any repeat"
-msgstr ""
+msgstr "n'importe quelle répétition"
 
 # ADD_BIND_CURR_BIND
 #: ADD_BIND_CURR_BIND
 msgctxt "ADD_BIND_CURR_BIND"
 msgid "Current"
-msgstr ""
+msgstr "Courant•e"
 
 # ADD_BIND_DESIG_SYS
 #: ADD_BIND_DESIG_SYS
@@ -114,17 +114,17 @@ msgstr "Requis"
 #: ADD_BIND_UI
 msgctxt "ADD_BIND_UI"
 msgid "UI"
-msgstr ""
+msgstr "UI"
 
 # ADD_BIND_UI_BIND
 #: ADD_BIND_UI_BIND
 msgid "UI Binding"
-msgstr ""
+msgstr "Binding UI"
 
 # ADD_BIND_UNKNOWN_PUR
 #: ADD_BIND_UNKNOWN_PUR
 msgid "Unknown code for purpose"
-msgstr ""
+msgstr "Code inconnu pour l'objectif"
 
 # ADD_BIND_VALID_EXT
 #: ADD_BIND_VALID_EXT
@@ -139,37 +139,37 @@ msgstr "Les validateurs vont vérifier ce binding (strength = requis)"
 # ADD_BIND_VALUE_COMP
 #: ADD_BIND_VALUE_COMP
 msgid "This value set is a component of the base value set"
-msgstr ""
+msgstr "Ce jeu de valeurs (ValueSet) est un composant du jeu de valeurs de base"
 
 # BUNDLE_DOCUMENT_CONTENT
 #: BUNDLE_DOCUMENT_CONTENT
 msgid "Document Content"
-msgstr ""
+msgstr "Contenu du document"
 
 # BUNDLE_DOCUMENT_DETAILS
 #: BUNDLE_DOCUMENT_DETAILS
 msgid "Document Details"
-msgstr ""
+msgstr "Détails du document"
 
 # BUNDLE_ETAG
 #: BUNDLE_ETAG
 msgid "ETag = {0}"
-msgstr ""
+msgstr "ETag = {0}"
 
 # BUNDLE_HEADER_DOCUMENT_CONTENTS
 #: BUNDLE_HEADER_DOCUMENT_CONTENTS
 msgid "Additional Resources Included in Document"
-msgstr ""
+msgstr "Ressources supplémentaires incluses dans le document"
 
 # BUNDLE_HEADER_ENTRY
 #: BUNDLE_HEADER_ENTRY
 msgid "Entry {0}"
-msgstr ""
+msgstr "Entrée {0}"
 
 # BUNDLE_HEADER_ENTRY_URL
 #: BUNDLE_HEADER_ENTRY_URL
 msgid "Entry {0} - fullUrl = {1}"
-msgstr ""
+msgstr "Entrée {0} - fullUrl = {1}"
 
 # BUNDLE_HEADER_ROOT
 #: BUNDLE_HEADER_ROOT
@@ -179,32 +179,32 @@ msgstr "Bundle {0} de type {1}"
 # BUNDLE_IF_MATCH
 #: BUNDLE_IF_MATCH
 msgid "If-Match = {0}"
-msgstr ""
+msgstr "If-Match = {0}"
 
 # BUNDLE_IF_MOD
 #: BUNDLE_IF_MOD
 msgid "If-Modified-Since = {0}"
-msgstr ""
+msgstr "If-Modified-Since = {0}"
 
 # BUNDLE_IF_NONE
 #: BUNDLE_IF_NONE
 msgid "If-None-Exist = {0}"
-msgstr ""
+msgstr "If-None-Exist = {0}"
 
 # BUNDLE_IF_NON_MATCH
 #: BUNDLE_IF_NON_MATCH
 msgid "If-None-Match = {0}"
-msgstr ""
+msgstr "If-None-Match = {0}"
 
 # BUNDLE_LAST_MOD
 #: BUNDLE_LAST_MOD
 msgid "LastModified = {0}"
-msgstr ""
+msgstr "LastModified = {0}"
 
 # BUNDLE_LOCATION
 #: BUNDLE_LOCATION
 msgid "Location = {0}"
-msgstr ""
+msgstr "Location = {0}"
 
 # BUNDLE_REQUEST
 #: BUNDLE_REQUEST
@@ -224,7 +224,7 @@ msgstr "Réponse :"
 # BUNDLE_REV_EXCP
 #: BUNDLE_REV_EXCP
 msgid "Exception generating narrative: {0}"
-msgstr ""
+msgstr "Exception lors de la génération du narratif : {0}"
 
 # BUNDLE_SEARCH
 #: BUNDLE_SEARCH
@@ -234,7 +234,7 @@ msgstr "Recherche :"
 # BUNDLE_SEARCH_MODE
 #: BUNDLE_SEARCH_MODE
 msgid "Mode = {0}"
-msgstr ""
+msgstr "Mode = {0}"
 
 # BUNDLE_SEARCH_SCORE
 #: BUNDLE_SEARCH_SCORE
@@ -244,12 +244,12 @@ msgstr "Score = {0}"
 # BUNDLE_SUMMARY
 #: BUNDLE_SUMMARY
 msgid "{0} Bundle, {1} Entries"
-msgstr ""
+msgstr "Bundle {0}, {1} entrées"
 
 # BUND_REND_INVALID_DOC
 #: BUND_REND_INVALID_DOC
 msgid "Invalid document ''{0}'' - first entry is not a Composition ({0})"
-msgstr ""
+msgstr "Document invalide ''{0}'' - la première entrée n'est pas une Composition ({0})"
 
 # CANON_REND_COMMITTEE
 #: CANON_REND_COMMITTEE
@@ -269,17 +269,17 @@ msgstr "Maturité"
 # CANON_REND_PUBLISHER
 #: CANON_REND_PUBLISHER
 msgid "Publisher"
-msgstr ""
+msgstr "Éditeur"
 
 # CANON_REND_SOURCE_RES
 #: CANON_REND_SOURCE_RES
 msgid "Source Resource"
-msgstr ""
+msgstr "Ressource source"
 
 # CANON_REND_TURTLE
 #: CANON_REND_TURTLE
 msgid "Turtle"
-msgstr ""
+msgstr "Turtle"
 
 # CAPABILITY_ADD_SUPP_PROF
 #: CAPABILITY_ADD_SUPP_PROF
@@ -289,7 +289,7 @@ msgstr "Profils additionnels supportés :"
 # CAPABILITY_BASE_SYS
 #: CAPABILITY_BASE_SYS
 msgid "Base System Profile"
-msgstr ""
+msgstr "Profil système de base"
 
 # CAPABILITY_COMB_SEARCH_PAR
 #: CAPABILITY_COMB_SEARCH_PAR
@@ -299,12 +299,12 @@ msgstr "Paramètres de recherche combinés"
 # CAPABILITY_CORS_NO
 #: CAPABILITY_CORS_NO
 msgid "Enable CORS: no"
-msgstr ""
+msgstr "Activer CORS : non"
 
 # CAPABILITY_CORS_YES
 #: CAPABILITY_CORS_YES
 msgid "Enable CORS: yes"
-msgstr ""
+msgstr "Activer CORS : oui"
 
 # CAPABILITY_CREATE_INT
 #: CAPABILITY_CREATE_INT
@@ -319,12 +319,12 @@ msgstr "DELETE d'une nouvelle ressource (interaction delete)"
 # CAPABILITY_DOCUMENT_CAPS
 #: CAPABILITY_DOCUMENT_CAPS
 msgid "FHIR Document Capabilities"
-msgstr ""
+msgstr "Capacités des documents FHIR"
 
 # CAPABILITY_ENDPOINTS
 #: CAPABILITY_ENDPOINTS
 msgid "Endpoint(s)"
-msgstr ""
+msgstr "Point(s) d'accès"
 
 # CAPABILITY_ERR_DET
 #: CAPABILITY_ERR_DET
@@ -334,7 +334,7 @@ msgstr "Erreur détectée"
 # CAPABILITY_EXT_OP
 #: CAPABILITY_EXT_OP
 msgid "Extended Operations"
-msgstr ""
+msgstr "Opérations étendues"
 
 # CAPABILITY_FHIR
 #: CAPABILITY_FHIR
@@ -349,12 +349,12 @@ msgstr "Version de FHIR : {0}"
 # CAPABILITY_HISTORY_INT
 #: CAPABILITY_HISTORY_INT
 msgid "GET changes to a resource (history interaction on instance)"
-msgstr ""
+msgstr "GET des changements d'une ressource (interaction history sur l'instance)"
 
 # CAPABILITY_HISTORY_TYPE
 #: CAPABILITY_HISTORY_TYPE
 msgid "GET changes for all resources of the type (history interaction on type)"
-msgstr ""
+msgstr "GET des changements pour toutes les ressources du type (interaction history sur le type)"
 
 # CAPABILITY_IMP_VER
 #: CAPABILITY_IMP_VER
@@ -389,12 +389,12 @@ msgstr "PEUT prendre en charge les guides d'implémentation suivants"
 # CAPABILITY_MESSAGING_CAP
 #: CAPABILITY_MESSAGING_CAP
 msgid "Messaging Capability"
-msgstr ""
+msgstr "Messaging Capability"
 
 # CAPABILITY_MESSAGING_CAPS
 #: CAPABILITY_MESSAGING_CAPS
 msgid "FHIR Messaging Capabilities"
-msgstr ""
+msgstr "FHIR Messaging Capabilities"
 
 # CAPABILITY_MULT_EXT
 #: CAPABILITY_MULT_EXT
@@ -419,12 +419,12 @@ msgstr "Opération"
 # CAPABILITY_OTH_RES_ENB
 #: CAPABILITY_OTH_RES_ENB
 msgid "The other resources enabled for"
-msgstr ""
+msgstr "Les autres ressources activées pour"
 
 # CAPABILITY_PATCH_INT
 #: CAPABILITY_PATCH_INT
 msgid "PATCH a new resource version (patch interaction)"
-msgstr ""
+msgstr "PATCH d'une nouvelle version de ressource (interaction patch)"
 
 # CAPABILITY_PROF_CONF
 #: CAPABILITY_PROF_CONF
@@ -439,7 +439,7 @@ msgstr "Mapping du Profil"
 # CAPABILITY_PROF_RES_DOC
 #: CAPABILITY_PROF_RES_DOC
 msgid "Document Resource Profile"
-msgstr ""
+msgstr "Profil de ressource de document"
 
 # CAPABILITY_PUB_BY
 #: CAPABILITY_PUB_BY
@@ -459,7 +459,7 @@ msgstr "GET d'une ressource (interaction read)"
 # CAPABILITY_REF_PROF
 #: CAPABILITY_REF_PROF
 msgid "Reference Policy"
-msgstr ""
+msgstr "Politique de référence"
 
 # CAPABILITY_REQ_RECOM
 #: CAPABILITY_REQ_RECOM
@@ -469,32 +469,32 @@ msgstr "Paramètres de recherche requis et recommandés"
 # CAPABILITY_REST_CAPS
 #: CAPABILITY_REST_CAPS
 msgid "FHIR RESTful Capabilities"
-msgstr ""
+msgstr "Capacités RESTful FHIR"
 
 # CAPABILITY_REST_CONFIG
 #: CAPABILITY_REST_CONFIG
 msgid "REST Configuration: {0}"
-msgstr ""
+msgstr "Configuration REST : {0}"
 
 # CAPABILITY_RES_CONF
 #: CAPABILITY_RES_CONF
 msgid "Resource Conformance: {0}"
-msgstr ""
+msgstr "Conformité de la ressource : {0}"
 
 # CAPABILITY_RES_ENB
 #: CAPABILITY_RES_ENB
 msgid "The linked resources enabled for"
-msgstr ""
+msgstr "Les ressources liées activées pour"
 
 # CAPABILITY_RES_OPER
 #: CAPABILITY_RES_OPER
 msgid "The operations on the resource (if any)"
-msgstr ""
+msgstr "Les opérations sur la ressource (le cas échéant)"
 
 # CAPABILITY_RES_PRO
 #: CAPABILITY_RES_PRO
 msgid "Capabilities by Resource/Profile"
-msgstr ""
+msgstr "Capacités par ressource/profil"
 
 # CAPABILITY_RES_TYP
 #: CAPABILITY_RES_TYP
@@ -504,7 +504,7 @@ msgstr "Type de Ressource"
 # CAPABILITY_REV_PROF
 #: CAPABILITY_REV_PROF
 msgid "The relevant profiles (if any)"
-msgstr ""
+msgstr "Les profils pertinents (le cas échéant)"
 
 # CAPABILITY_SEARCHES
 #: CAPABILITY_SEARCHES
@@ -514,7 +514,7 @@ msgstr "Recherches"
 # CAPABILITY_SEARCH_INT
 #: CAPABILITY_SEARCH_INT
 msgid "GET all set of resources of the type (search interaction)"
-msgstr ""
+msgstr "GET de l'ensemble des ressources du type (interaction search)"
 
 # CAPABILITY_SEARCH_PAR
 #: CAPABILITY_SEARCH_PAR
@@ -539,62 +539,62 @@ msgstr "Le tableau récapitulatif liste les ressources faisant partie de cette c
 # CAPABILITY_SUMM_SYS_INT
 #: CAPABILITY_SUMM_SYS_INT
 msgid "Summary of System-wide Interactions"
-msgstr ""
+msgstr "Résumé des interactions au niveau du système"
 
 # CAPABILITY_SUMM_SYS_OP
 #: CAPABILITY_SUMM_SYS_OP
 msgid "Summary of System-wide Operations"
-msgstr ""
+msgstr "Résumé des opérations au niveau du système"
 
 # CAPABILITY_SUMM_SYS_SP
 #: CAPABILITY_SUMM_SYS_SP
 msgid "Summary of System-wide Search Parameters"
-msgstr ""
+msgstr "Résumé des paramètres de recherche au niveau du système"
 
 # CAPABILITY_SUPP
 #: CAPABILITY_SUPP
 msgid "support"
-msgstr ""
+msgstr "support"
 
 # CAPABILITY_SUPPS
 #: CAPABILITY_SUPPS
 msgid "Supports"
-msgstr ""
+msgstr "Supporte"
 
 # CAPABILITY_SUPPS_THE
 #: CAPABILITY_SUPPS_THE
 msgid "Supports the"
-msgstr ""
+msgstr "Supporte le/la"
 
 # CAPABILITY_SUPP_FORM
 #: CAPABILITY_SUPP_FORM
 msgid "Supported Formats:"
-msgstr ""
+msgstr "Formats supportés :"
 
 # CAPABILITY_SUPP_MSGS
 #: CAPABILITY_SUPP_MSGS
 msgid "Supported Message(s)"
-msgstr ""
+msgstr "Message(s) supporté(s)"
 
 # CAPABILITY_SUPP_PATCH_FORM
 #: CAPABILITY_SUPP_PATCH_FORM
 msgid "Supported Patch Formats:"
-msgstr ""
+msgstr "Formats Patch supportés :"
 
 # CAPABILITY_SUPP_PROFS
 #: CAPABILITY_SUPP_PROFS
 msgid "Supported Profiles"
-msgstr ""
+msgstr "Profils supportés"
 
 # CAPABILITY_SUPP_THE
 #: CAPABILITY_SUPP_THE
 msgid "support the"
-msgstr ""
+msgstr "supporte le/la"
 
 # CAPABILITY_TYPS
 #: CAPABILITY_TYPS
 msgid "Types"
-msgstr ""
+msgstr "Types"
 
 # CAPABILITY_TYP_PRES
 #: CAPABILITY_TYP_PRES
@@ -604,17 +604,17 @@ msgstr "!!les types sont seulement présents si au moins une des ressources les 
 # CAPABILITY_UPDATE_INT
 #: CAPABILITY_UPDATE_INT
 msgid "PUT a new resource version (update interaction)"
-msgstr ""
+msgstr "PUT d'une nouvelle version de ressource (interaction update)"
 
 # CAPABILITY_VREAD_INT
 #: CAPABILITY_VREAD_INT
 msgid "GET past versions of resources (vread interaction)"
-msgstr ""
+msgstr "GET des versions passées des ressources (interaction vread)"
 
 # CAPABILTY_ALLOW_CAP
 #: CAPABILTY_ALLOW_CAP
 msgid "Any FHIR capability may be ''allowed'' by the system unless explicitly marked as ''SHALL NOT''. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case."
-msgstr ""
+msgstr "Toute capacité FHIR peut être ''autorisée'' par le système sauf si elle est explicitement marquée comme ''SHALL NOT''. Quelques éléments sont marqués comme MAY dans le guide d'implémentation pour souligner leur pertinence potentielle pour le cas d'usage."
 
 # CAPABILTY_SHALL_SUPP
 #: CAPABILTY_SHALL_SUPP
@@ -664,7 +664,7 @@ msgstr "Filtres"
 # CODESYSTEM_FILTER_OP
 #: CODESYSTEM_FILTER_OP
 msgid "Op"
-msgstr ""
+msgstr "Op"
 
 # CODESYSTEM_PROPS_DESC
 #: CODESYSTEM_PROPS_DESC
@@ -704,12 +704,12 @@ msgstr "Quelques concepts représentatifs sont inclus dans la ressource du syst�
 # CODE_SYS_FEAT
 #: CODE_SYS_FEAT
 msgid "features"
-msgstr ""
+msgstr "fonctionnalités"
 
 # CODE_SYS_FOR_OID
 #: CODE_SYS_FOR_OID
 msgid "{0} (for OID based terminology systems)"
-msgstr ""
+msgstr "{0} (pour les systèmes de terminologie basés sur OID)"
 
 # CODE_SYS_FRAGMENT
 #: CODE_SYS_FRAGMENT
@@ -719,7 +719,7 @@ msgstr "Un sous-ensemble des concepts de la terminologie de référence (CodeSys
 # CODE_SYS_IN_A_HIERARCHY
 #: CODE_SYS_IN_A_HIERARCHY
 msgid "in a {0} hierarchy"
-msgstr ""
+msgstr "dans une hiérarchie {0}"
 
 # CODE_SYS_NOTPRESENT
 #: CODE_SYS_NOTPRESENT
@@ -739,27 +739,27 @@ msgstr "(remplacé par"
 # CODE_SYS_SUPPLEMENT
 #: CODE_SYS_SUPPLEMENT
 msgid "This code system resource is a supplement to"
-msgstr ""
+msgstr "Cette ressource de terminologie de référence (CodeSystem) est un supplément à"
 
 # CODE_SYS_SUPP_CODE_NOT_HERE
 #: CODE_SYS_SUPP_CODE_NOT_HERE
 msgid "This CodeSystem Supplement is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr ""
+msgstr "Ce supplément de terminologie de référence (CodeSystem) n'est pas utilisé ici; il peut être utilisé ailleurs (par exemple spécifications et/ou implémentations qui utilisent ce contenu)"
 
 # CODE_SYS_THE_VALUE_SET
 #: CODE_SYS_THE_VALUE_SET
 msgid "{0} is the value set for all codes in this code system"
-msgstr ""
+msgstr "{0} est le jeu de valeurs (ValueSet) pour tous les codes de cette terminologie de référence (CodeSystem)"
 
 # CODE_SYS_UNDEF_HIER
 #: CODE_SYS_UNDEF_HIER
 msgid "in an undefined hierarchy"
-msgstr ""
+msgstr "dans une hiérarchie non définie"
 
 # CODE_SYS_UNKN_MODE
 #: CODE_SYS_UNKN_MODE
 msgid "Unknown CodeSystemContentMode mode"
-msgstr ""
+msgstr "Mode CodeSystemContentMode inconnu"
 
 # CONC_MAP_CODES
 #: CONC_MAP_CODES
@@ -769,22 +769,22 @@ msgstr "Codes"
 # CONC_MAP_CODE_SYS_UNSPEC
 #: CONC_MAP_CODE_SYS_UNSPEC
 msgid "unspecified code system"
-msgstr ""
+msgstr "terminologie de référence (CodeSystem) non spécifiée"
 
 # CONC_MAP_FRM
 #: CONC_MAP_FRM
 msgid "from"
-msgstr ""
+msgstr "de"
 
 # CONC_MAP_FROM
 #: CONC_MAP_FROM
 msgid "Mapping from"
-msgstr ""
+msgstr "Mapping de"
 
 # CONC_MAP_GRP
 #: CONC_MAP_GRP
 msgid "Group {0}"
-msgstr ""
+msgstr "Groupe {0}"
 
 # CONC_MAP_NOT_SPEC
 #: CONC_MAP_NOT_SPEC
@@ -799,72 +799,72 @@ msgstr "relation"
 # CONC_MAP_SOURCE
 #: CONC_MAP_SOURCE
 msgid "Source Code"
-msgstr ""
+msgstr "Code source"
 
 # CONC_MAP_SOURCE_CARD
 #: CONC_MAP_SOURCE_CARD
 msgctxt "CONC_MAP_SOURCE_CARD"
 msgid "Card."
-msgstr ""
+msgstr "Card."
 
 # CONC_MAP_SOURCE_TYPE
 #: CONC_MAP_SOURCE_TYPE
 msgctxt "CONC_MAP_SOURCE_TYPE"
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 # CONC_MAP_SRC_DET
 #: CONC_MAP_SRC_DET
 msgid "Source Concept Details"
-msgstr ""
+msgstr "Détails du concept source"
 
 # CONC_MAP_TO
 #: CONC_MAP_TO
 msgctxt "CONC_MAP_TO"
 msgid "to"
-msgstr ""
+msgstr "vers"
 
 # CONC_MAP_TRGT
 #: CONC_MAP_TRGT
 msgid "Target Code"
-msgstr ""
+msgstr "Code cible"
 
 # CONC_MAP_TRGT_CARD
 #: CONC_MAP_TRGT_CARD
 msgctxt "CONC_MAP_TRGT_CARD"
 msgid "Card."
-msgstr ""
+msgstr "Card."
 
 # CONC_MAP_TRGT_DET
 #: CONC_MAP_TRGT_DET
 msgid "Target Concept Details"
-msgstr ""
+msgstr "Détails du concept cible"
 
 # CONC_MAP_TRGT_TYPE
 #: CONC_MAP_TRGT_TYPE
 msgctxt "CONC_MAP_TRGT_TYPE"
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 # DATA_REND_AFTERNOON
 #: DATA_REND_AFTERNOON
 msgid "Afternoon"
-msgstr ""
+msgstr "Après-midi"
 
 # DATA_REND_AFTERNOON_EARLY
 #: DATA_REND_AFTERNOON_EARLY
 msgid "Early Afternoon"
-msgstr ""
+msgstr "Début d'après-midi"
 
 # DATA_REND_AFTERNOON_LATE
 #: DATA_REND_AFTERNOON_LATE
 msgid "Late Afternoon"
-msgstr ""
+msgstr "Fin d'après-midi"
 
 # DATA_REND_AFTER_SLEEP
 #: DATA_REND_AFTER_SLEEP
 msgid "After Sleep"
-msgstr ""
+msgstr "Après le sommeil"
 
 # DATA_REND_AFTRBKFST
 #: DATA_REND_AFTRBKFST
@@ -915,12 +915,12 @@ msgstr "{0} : {1}"
 # DATA_REND_ATT_URL
 #: DATA_REND_ATT_URL
 msgid "{0} @ {1}"
-msgstr ""
+msgstr "{0} @ {1}"
 
 # DATA_REND_BASE64
 #: DATA_REND_BASE64
 msgid "(base64 data - {0} base64 chars)"
-msgstr ""
+msgstr "(données base64 - {0} caractères base64)"
 
 # DATA_REND_BFBKFST
 #: DATA_REND_BFBKFST
@@ -950,47 +950,47 @@ msgstr "avant le coucher"
 # DATA_REND_BY
 #: DATA_REND_BY
 msgid "By"
-msgstr ""
+msgstr "Par"
 
 # DATA_REND_CODES
 #: DATA_REND_CODES
 msgid "Codes:"
-msgstr ""
+msgstr "Codes :"
 
 # DATA_REND_COND
 #: DATA_REND_COND
 msgid "Condition"
-msgstr ""
+msgstr "Condition"
 
 # DATA_REND_COUNT
 #: DATA_REND_COUNT
 msgid "Count {0}"
-msgstr ""
+msgstr "Nombre {0}"
 
 # DATA_REND_CURRENCY
 #: DATA_REND_CURRENCY
 msgid "{1} {0}"
-msgstr ""
+msgstr "{1} {0}"
 
 # DATA_REND_DATA
 #: DATA_REND_DATA
 msgid "Data: {0}"
-msgstr ""
+msgstr "Données : {0}"
 
 # DATA_REND_DETAILS
 #: DATA_REND_DETAILS
 msgid "(Details: {0}  code"
-msgstr ""
+msgstr "(Détails : code {0}"
 
 # DATA_REND_DETAILS_STATED
 #: DATA_REND_DETAILS_STATED
 msgid "(Details: {0} code {1} = ''{2}'')"
-msgstr ""
+msgstr "(Détails : code {0} {1} = ''{2}'')"
 
 # DATA_REND_DETAILS_STATED_ND
 #: DATA_REND_DETAILS_STATED_ND
 msgid "(Details: {0} code {1})"
-msgstr ""
+msgstr "(Détails : code {0} {1})"
 
 # DATA_REND_DICOM
 #: DATA_REND_DICOM
@@ -1000,7 +1000,7 @@ msgstr "DICOM"
 # DATA_REND_DIM
 #: DATA_REND_DIM
 msgid "Dimensions: {0}"
-msgstr ""
+msgstr "Dimensions : {0}"
 
 # DATA_REND_DURATION
 #: DATA_REND_DURATION
@@ -1015,17 +1015,17 @@ msgstr "Erreur : {0}"
 # DATA_REND_EVENING
 #: DATA_REND_EVENING
 msgid "Evening"
-msgstr ""
+msgstr "Soir"
 
 # DATA_REND_EVENING_EARLY
 #: DATA_REND_EVENING_EARLY
 msgid "Early Evening"
-msgstr ""
+msgstr "Début de soirée"
 
 # DATA_REND_EVENING_LATE
 #: DATA_REND_EVENING_LATE
 msgid "Late Evening"
-msgstr ""
+msgstr "Fin de soirée"
 
 # DATA_REND_EVENTS
 #: DATA_REND_EVENTS
@@ -1035,22 +1035,22 @@ msgstr "Evenements : {0}"
 # DATA_REND_EXCEPTION
 #: DATA_REND_EXCEPTION
 msgid "Exception"
-msgstr ""
+msgstr "Exception"
 
 # DATA_REND_FACT
 #: DATA_REND_FACT
 msgid "Factor: {0}"
-msgstr ""
+msgstr "Facteur : {0}"
 
 # DATA_REND_FAX
 #: DATA_REND_FAX
 msgid "Fax: {0}"
-msgstr ""
+msgstr "Fax : {0}"
 
 # DATA_REND_GLN
 #: DATA_REND_GLN
 msgid "Global Location Number"
-msgstr ""
+msgstr "Numéro de localisation mondiale"
 
 # DATA_REND_ICD
 #: DATA_REND_ICD
@@ -1060,7 +1060,7 @@ msgstr "CIM-9"
 # DATA_REND_IMMEDIATE
 #: DATA_REND_IMMEDIATE
 msgid "Immediate"
-msgstr ""
+msgstr "Immédiat"
 
 # DATA_REND_INT
 #: DATA_REND_INT
@@ -1080,7 +1080,7 @@ msgstr "LOINC"
 # DATA_REND_LOWER
 #: DATA_REND_LOWER
 msgid "Lower: {0}"
-msgstr ""
+msgstr "Inférieur : {0}"
 
 # DATA_REND_MEALS
 #: DATA_REND_MEALS
@@ -1095,57 +1095,57 @@ msgstr "!!Impossible de résoudre le lien markdown"
 # DATA_REND_MORNING
 #: DATA_REND_MORNING
 msgid "Morning"
-msgstr ""
+msgstr "Matin"
 
 # DATA_REND_MORNING_EARLY
 #: DATA_REND_MORNING_EARLY
 msgid "Early Morning"
-msgstr ""
+msgstr "Tôt le matin"
 
 # DATA_REND_MORNING_LATE
 #: DATA_REND_MORNING_LATE
 msgid "Late Morning"
-msgstr ""
+msgstr "Fin de matinée"
 
 # DATA_REND_NIGHT
 #: DATA_REND_NIGHT
 msgid "Night"
-msgstr ""
+msgstr "Nuit"
 
 # DATA_REND_NOON
 #: DATA_REND_NOON
 msgid "Noon"
-msgstr ""
+msgstr "Midi"
 
 # DATA_REND_NOT_STAT
 #: DATA_REND_NOT_STAT
 msgid "[not stated]"
-msgstr ""
+msgstr "[non précisé]"
 
 # DATA_REND_NO_DISP
 #: DATA_REND_NO_DISP
 msgid "No display for {0}"
-msgstr ""
+msgstr "Pas d'affichage pour {0}"
 
 # DATA_REND_ONCE
 #: DATA_REND_ONCE
 msgid "Once"
-msgstr ""
+msgstr "Une fois"
 
 # DATA_REND_ONGOING
 #: DATA_REND_ONGOING
 msgid "(ongoing)"
-msgstr ""
+msgstr "(en cours)"
 
 # DATA_REND_ORIGIN
 #: DATA_REND_ORIGIN
 msgid "Origin: {0}"
-msgstr ""
+msgstr "Origine : {0}"
 
 # DATA_REND_PER
 #: DATA_REND_PER
 msgid "per"
-msgstr ""
+msgstr "par"
 
 # DATA_REND_PERIOD
 #: DATA_REND_PERIOD
@@ -1165,7 +1165,7 @@ msgstr "RxNorm"
 # DATA_REND_SEARCH
 #: DATA_REND_SEARCH
 msgid "Search on: {0}"
-msgstr ""
+msgstr "Recherche sur : {0}"
 
 # DATA_REND_SNOMED
 #: DATA_REND_SNOMED
@@ -1175,7 +1175,7 @@ msgstr "SNOMED CT"
 # DATA_REND_SORT
 #: DATA_REND_SORT
 msgid "Sort"
-msgstr ""
+msgstr "Tri"
 
 # DATA_REND_SOURCE
 #: DATA_REND_SOURCE
@@ -1185,7 +1185,7 @@ msgstr "source"
 # DATA_REND_STARTING
 #: DATA_REND_STARTING
 msgid "Starting {0}"
-msgstr ""
+msgstr "Démarrage {0}"
 
 # DATA_REND_THESE_CODES
 #: DATA_REND_THESE_CODES
@@ -1195,12 +1195,12 @@ msgstr "Un de ces codes :"
 # DATA_REND_TIMING
 #: DATA_REND_TIMING
 msgid "Timing"
-msgstr ""
+msgstr "Timing"
 
 # DATA_REND_TO_DO
 #: DATA_REND_TO_DO
 msgid "to do: {0}"
-msgstr ""
+msgstr "à faire : {0}"
 
 # DATA_REND_UNKNWN
 #: DATA_REND_UNKNWN
@@ -1210,42 +1210,42 @@ msgstr "inconnu"
 # DATA_REND_UNRD_EX
 #: DATA_REND_UNRD_EX
 msgid "WARNING: Unrenderable Modifier Extension!"
-msgstr ""
+msgstr "ATTENTION : Modifier Extension non affichable !"
 
 # DATA_REND_UNTIL
 #: DATA_REND_UNTIL
 msgid "Until {0}"
-msgstr ""
+msgstr "Jusqu'à {0}"
 
 # DATA_REND_UP
 #: DATA_REND_UP
 msgid "Upper: {0}"
-msgstr ""
+msgstr "Supérieur : {0}"
 
 # DATA_REND_USE
 #: DATA_REND_USE
 msgid "use:"
-msgstr ""
+msgstr "utilisation :"
 
 # DATA_REND_VALUESET
 #: DATA_REND_VALUESET
 msgid "In ValueSet"
-msgstr ""
+msgstr "Dans le jeu de valeurs (ValueSet)"
 
 # DATA_REND_VERSION
 #: DATA_REND_VERSION
 msgid "(version = {0} {1}"
-msgstr ""
+msgstr "(version = {0} {1}"
 
 # DIAG_REP_REND_AGE
 #: DIAG_REP_REND_AGE
 msgid "Age"
-msgstr ""
+msgstr "Âge"
 
 # DIAG_REP_REND_CODECON
 #: DIAG_REP_REND_CODECON
 msgid "Coded Conclusions:"
-msgstr ""
+msgstr "Conclusions codées :"
 
 # DIAG_REP_REND_ERR
 #: DIAG_REP_REND_ERR
@@ -1255,7 +1255,7 @@ msgstr "Erreur :"
 # DIAG_REP_REND_FOR
 #: DIAG_REP_REND_FOR
 msgid "for"
-msgstr ""
+msgstr "pour"
 
 # DIAG_REP_REND_IDENTIFIER
 #: DIAG_REP_REND_IDENTIFIER
@@ -1275,22 +1275,22 @@ msgstr "Observation"
 # DIAG_REP_REND_PER
 #: DIAG_REP_REND_PER
 msgid "Performer"
-msgstr ""
+msgstr "Exécutant"
 
 # DIAG_REP_REND_REFRAN
 #: DIAG_REP_REND_REFRAN
 msgid "Reference Range"
-msgstr ""
+msgstr "Plage de référence"
 
 # DIAG_REP_REND_REP
 #: DIAG_REP_REND_REP
 msgid "Reported"
-msgstr ""
+msgstr "Rapporté"
 
 # DIAG_REP_REND_REPDET
 #: DIAG_REP_REND_REPDET
 msgid "Report Details"
-msgstr ""
+msgstr "Détails du rapport"
 
 # DIAG_REP_REND_UNABLE
 #: DIAG_REP_REND_UNABLE
@@ -1300,23 +1300,23 @@ msgstr "Impossible d'obtenir les détails du patient"
 # DIAG_REP_REND_WHEN
 #: DIAG_REP_REND_WHEN
 msgid "When For"
-msgstr ""
+msgstr "When For"
 
 # DIAG_REP_SUMMARY
 #: DIAG_REP_SUMMARY
 msgid "Diagnostic Report for ''{0}'' for ''{1}''"
-msgstr ""
+msgstr "Rapport de diagnostic pour ''{0}'' pour ''{1}''"
 
 # DIAG_REP_UNSPECIFIED_CODE
 #: DIAG_REP_UNSPECIFIED_CODE
 msgid "Unspecified Report Type"
-msgstr ""
+msgstr "Type de rapport non spécifié"
 
 # DIAG_REP_UNSPECIFIED_SUBJECT
 #: DIAG_REP_UNSPECIFIED_SUBJECT
 msgctxt "DIAG_REP_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
-msgstr ""
+msgstr "Sujet non spécifié"
 
 # DOCUMENT_SUMMARY
 #: DOCUMENT_SUMMARY
@@ -1326,92 +1326,92 @@ msgstr ""
 # EXAMPLE_SCEN_STEP_SCEN
 #: EXAMPLE_SCEN_STEP_SCEN
 msgid "Step {0}  - See scenario {1}"
-msgstr ""
+msgstr "Étape {0} - Voir le scénario {1}"
 
 # EX_SCEN_ALT
 #: EX_SCEN_ALT
 msgid "Alternative {0}"
-msgstr ""
+msgstr "Alternative {0}"
 
 # EX_SCEN_BEL
 #: EX_SCEN_BEL
 msgid "below"
-msgstr ""
+msgstr "ci-dessous"
 
 # EX_SCEN_CONTA
 #: EX_SCEN_CONTA
 msgid "Contains:"
-msgstr ""
+msgstr "Contient :"
 
 # EX_SCEN_ERR_REN
 #: EX_SCEN_ERR_REN
 msgid "Error rendering ExampleScenario {0}"
-msgstr ""
+msgstr "Erreur lors de l'affichage de ExampleScenario {0}"
 
 # EX_SCEN_FVER
 #: EX_SCEN_FVER
 msgid "FHIR version"
-msgstr ""
+msgstr "Version FHIR"
 
 # EX_SCEN_IN
 #: EX_SCEN_IN
 msgid "Initiator"
-msgstr ""
+msgstr "Initiateur"
 
 # EX_SCEN_OTH
 #: EX_SCEN_OTH
 msgid "See other scenario"
-msgstr ""
+msgstr "Voir autre scénario"
 
 # EX_SCEN_POSTCON
 #: EX_SCEN_POSTCON
 msgid "Post-conditions:"
-msgstr ""
+msgstr "Post-conditions :"
 
 # EX_SCEN_PRECON
 #: EX_SCEN_PRECON
 msgid "Pre-conditions:"
-msgstr ""
+msgstr "Pré-conditions :"
 
 # EX_SCEN_PROC
 #: EX_SCEN_PROC
 msgid "Process: {0}"
-msgstr ""
+msgstr "Processus : {0}"
 
 # EX_SCEN_REC
 #: EX_SCEN_REC
 msgid "Receiver"
-msgstr ""
+msgstr "Récepteur"
 
 # EX_SCEN_RES
 #: EX_SCEN_RES
 msgid "Response"
-msgstr ""
+msgstr "Réponse"
 
 # EX_SCEN_SEE
 #: EX_SCEN_SEE
 msgid "See subprocess"
-msgstr ""
+msgstr "Voir sous-processus"
 
 # EX_SCEN_STEP
 #: EX_SCEN_STEP
 msgid "Step"
-msgstr ""
+msgstr "Étape"
 
 # EX_SCEN_TIME
 #: EX_SCEN_TIME
 msgid "... time passes ..."
-msgstr ""
+msgstr "... le temps passe ..."
 
 # EX_SCEN_UN
 #: EX_SCEN_UN
 msgid "Unknown ExampleScenario Renderer Mode {0}"
-msgstr ""
+msgstr "Mode de rendu ExampleScenario inconnu {0}"
 
 # EX_SCEN_UN_ACT
 #: EX_SCEN_UN_ACT
 msgid "Unable to find referenced actor {0}"
-msgstr ""
+msgstr "Impossible de trouver l'acteur référencé {0}"
 
 # FMM_TABLE
 #: FMM_TABLE
@@ -1421,7 +1421,7 @@ msgstr ""
 # GENERAL_ADDITIONAL_BINDING
 #: GENERAL_ADDITIONAL_BINDING
 msgid "This element has additional bindings"
-msgstr ""
+msgstr "Cet élément a des bindings additionnels"
 
 # GENERAL_ADD_LANG
 #: GENERAL_ADD_LANG
@@ -1431,32 +1431,32 @@ msgstr "Affichages en langues supplémentaires"
 # GENERAL_BINDING
 #: GENERAL_BINDING
 msgid "Binding"
-msgstr ""
+msgstr "Binding"
 
 # GENERAL_BINDINGS
 #: GENERAL_BINDINGS
 msgid "Bindings"
-msgstr ""
+msgstr "Bindings"
 
 # GENERAL_BINDING_NO_DESC
 #: GENERAL_BINDING_NO_DESC
 msgid "No description provided"
-msgstr ""
+msgstr "Aucune description fournie"
 
 # GENERAL_BINDING_NO_VS_1
 #: GENERAL_BINDING_NO_VS_1
 msgid "Binding Description"
-msgstr ""
+msgstr "Description du binding"
 
 # GENERAL_BINDING_NO_VS_2
 #: GENERAL_BINDING_NO_VS_2
 msgid "This binding doesn''t define a testable ValueSet"
-msgstr ""
+msgstr "Ce binding ne définit pas de jeu de valeurs (ValueSet) testable"
 
 # GENERAL_BIND_MIN_ALLOW
 #: GENERAL_BIND_MIN_ALLOW
 msgid "The minimum allowable value set - any conformant system SHALL support all these codes"
-msgstr ""
+msgstr "Le jeu de valeurs minimum autorisé - tout système conforme DOIT supporter tous ces codes"
 
 # GENERAL_CARD
 #: GENERAL_CARD
