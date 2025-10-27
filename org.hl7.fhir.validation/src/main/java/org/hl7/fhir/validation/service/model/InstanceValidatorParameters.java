@@ -12,6 +12,42 @@ import java.util.List;
 import java.util.Objects;
 
 public class InstanceValidatorParameters {
+
+  public InstanceValidatorParameters() {}
+
+  public InstanceValidatorParameters(InstanceValidatorParameters defaultInstanceValidatorParameters) {
+    this.assumeValidRestReferences = defaultInstanceValidatorParameters.assumeValidRestReferences;
+    this.showTimes = defaultInstanceValidatorParameters.showTimes;
+    this.hintAboutNonMustSupport = defaultInstanceValidatorParameters.hintAboutNonMustSupport;
+    this.htmlOutput = defaultInstanceValidatorParameters.htmlOutput;
+    this.outputStyle = defaultInstanceValidatorParameters.outputStyle;
+    this.r5BundleRelativeReferencePolicy = defaultInstanceValidatorParameters.r5BundleRelativeReferencePolicy;
+    this.extensions = new ArrayList<>(defaultInstanceValidatorParameters.extensions);
+    this.wantInvariantsInMessages = defaultInstanceValidatorParameters.wantInvariantsInMessages;
+    this.noInvariants = defaultInstanceValidatorParameters.noInvariants;
+    this.questionnaireMode = defaultInstanceValidatorParameters.questionnaireMode;
+    this.unknownCodeSystemsCauseErrors = defaultInstanceValidatorParameters.unknownCodeSystemsCauseErrors;
+    this.level = defaultInstanceValidatorParameters.level;
+    this.bestPracticeLevel = defaultInstanceValidatorParameters.bestPracticeLevel;
+    this.forPublication = defaultInstanceValidatorParameters.forPublication;
+    this.htmlInMarkdownCheck = defaultInstanceValidatorParameters.htmlInMarkdownCheck;
+    this.noUnicodeBiDiControlChars = defaultInstanceValidatorParameters.noUnicodeBiDiControlChars;
+    this.crumbTrails = defaultInstanceValidatorParameters.crumbTrails;
+    this.showMessageIds = defaultInstanceValidatorParameters.showMessageIds;
+    this.allowExampleUrls = defaultInstanceValidatorParameters.allowExampleUrls;
+    this.showMessagesFromReferences = defaultInstanceValidatorParameters.showMessagesFromReferences;
+    this.securityChecks = defaultInstanceValidatorParameters.securityChecks;
+    this.noExperimentalContent = defaultInstanceValidatorParameters.noExperimentalContent;
+    this.showTerminologyRouting = defaultInstanceValidatorParameters.showTerminologyRouting;
+    this.expansionParameters = defaultInstanceValidatorParameters.expansionParameters;
+    this.profiles = new ArrayList<>(defaultInstanceValidatorParameters.profiles);
+    this.doImplicitFHIRPathStringConversion = defaultInstanceValidatorParameters.doImplicitFHIRPathStringConversion;
+    this.allowDoubleQuotesInFHIRPath = defaultInstanceValidatorParameters.allowDoubleQuotesInFHIRPath;
+    this.checkIPSCodes = defaultInstanceValidatorParameters.checkIPSCodes;
+    this.bundleValidationRules = new ArrayList<>(defaultInstanceValidatorParameters.bundleValidationRules);
+    this.jurisdiction = defaultInstanceValidatorParameters.jurisdiction;
+  }
+
   @JsonProperty("assumeValidRestReferences")
   @SerializedName("assumeValidRestReferences")
   private boolean assumeValidRestReferences = false;
@@ -237,10 +273,6 @@ public class InstanceValidatorParameters {
   @SerializedName("showTerminologyRouting")
   private boolean showTerminologyRouting = false;
 
-  @JsonProperty("matchetypes")
-  @SerializedName("matchetypes")
-  private List<String> matchetypes = new ArrayList<String>();
-
   @JsonProperty("expansionParameters")
   @SerializedName("expansionParameters")
   private String expansionParameters;
@@ -395,24 +427,6 @@ public class InstanceValidatorParameters {
 
   public InstanceValidatorParameters setShowTerminologyRouting(boolean showTerminologyRouting) {
     this.showTerminologyRouting = showTerminologyRouting;
-    return this;
-  }
-
-  @SerializedName("matchetypes")
-  @JsonProperty("matchetypes")
-  public List<String> getMatchetypes() {
-    return matchetypes;
-  }
-
-  @SerializedName("matchetypes")
-  @JsonProperty("matchetypes")
-  public InstanceValidatorParameters setMatchetypes(List<String> matchetypes) {
-    this.matchetypes = matchetypes;
-    return this;
-  }
-
-  public InstanceValidatorParameters addMatchetype(String matchetype) {
-    this.matchetypes.add(matchetype);
     return this;
   }
 
@@ -576,7 +590,6 @@ public class InstanceValidatorParameters {
       && Objects.equals(level, that.level)
       && Objects.equals(bestPracticeLevel, that.bestPracticeLevel)
       && Objects.equals(htmlInMarkdownCheck, that.htmlInMarkdownCheck)
-      && Objects.equals(matchetypes, that.matchetypes)
       && Objects.equals(expansionParameters, that.expansionParameters)
       && Objects.equals(profiles, that.profiles)
       && Objects.equals(bundleValidationRules, that.bundleValidationRules)
@@ -585,7 +598,7 @@ public class InstanceValidatorParameters {
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, showTimes, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, matchetypes, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction);
+    return Objects.hash(assumeValidRestReferences, showTimes, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction);
   }
 
   @Override
@@ -614,7 +627,6 @@ public class InstanceValidatorParameters {
       ", securityChecks=" + securityChecks +
       ", noExperimentalContent=" + noExperimentalContent +
       ", showTerminologyRouting=" + showTerminologyRouting +
-      ", matchetypes=" + matchetypes +
       ", expansionParameters='" + expansionParameters + '\'' +
       ", profiles=" + profiles +
       ", doImplicitFHIRPathStringConversion=" + doImplicitFHIRPathStringConversion +

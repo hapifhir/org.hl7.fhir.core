@@ -112,6 +112,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.validation.BaseValidator.ValidationControl;
 import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
+import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.service.model.ValidatedFragments;
 import org.hl7.fhir.validation.service.model.ValidationTime;
 import org.hl7.fhir.validation.service.IPackageInstaller;
@@ -261,6 +262,41 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private Coding jurisdiction;
   @Getter @Setter private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy;
 
+  @Getter @Setter
+  private InstanceValidatorParameters defaultInstanceValidatorParameters = new InstanceValidatorParameters();
+
+
+  /**
+   * @deprecated Use defaultInstanceValidatorParameters.isAllowExampleUrls() instead
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public boolean isAllowExampleUrls() {
+    return defaultInstanceValidatorParameters.isAllowExampleUrls();
+  }
+
+
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setAllowExampleUrls(boolean allowExampleUrls) {
+    defaultInstanceValidatorParameters.setAllowExampleUrls(allowExampleUrls);
+    return this;
+  }
+
+
+  @Deprecated(since = "2025-10-24")
+  public boolean isAllowDoubleQuotesInFHIRPath() {
+    return defaultInstanceValidatorParameters.isAllowDoubleQuotesInFHIRPath();
+  }
+
+  /**
+   * @deprecated Use defaultInstanceValidatorParameters.setAllowDoubleQuotesInFHIRPath() instead
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setAllowDoubleQuotesInFHIRPath(boolean allowDoubleQuotesInFHIRPath) {
+    defaultInstanceValidatorParameters.setAllowDoubleQuotesInFHIRPath(allowDoubleQuotesInFHIRPath);
+    return this;
+  }
 
   private ContextUtilities cu = null;
   
@@ -935,9 +971,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public InstanceValidator getValidator(FhirFormat format) throws FHIRException, IOException {
     InstanceValidator validator = new InstanceValidator(context, null, null, new ValidatorSession(), new ValidatorSettings());
     context.getTxClientManager().setUsage("validation");
-    validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
-    validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
 
+    validator.initializeFromParameters(defaultInstanceValidatorParameters);
 
     validator.getSettings().getCertificateFolders().clear(); // they should be empty though
     validator.getSettings().getCertificates().clear();
@@ -950,10 +985,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         validator.getSettings().getCertificates().put(s, FileUtilities.fileToBytes(f));
       }
     }
-    validator.getExtensionDomains().clear();
-    validator.getExtensionDomains().addAll(extensionDomains);
-    validator.setNoInvariantChecks(isNoInvariantChecks());
-    validator.setWantInvariantInMessage(isWantInvariantInMessage());
+
     validator.setValidationLanguage(language);
     validator.getSettings().setDisplayWarningMode(isDisplayWarnings());
     if (language != null) {
@@ -963,37 +995,24 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     }
     validator.setAssumeValidRestReferences(assumeValidRestReferences);
     validator.setNoExtensibleWarnings(noExtensibleBindingMessages);
-    validator.setSecurityChecks(securityChecks);
-    validator.setCrumbTrails(crumbTrails);
-    validator.setForPublication(forPublication);
-    validator.setAllowExamples(allowExampleUrls);
-    validator.setShowMessagesFromReferences(showMessagesFromReferences);
+
     validator.getContext().getManager().setLocale(locale);
     validator.setFetcher(this);
     validator.getImplementationGuides().addAll(igs);
-    validator.getBundleValidationRules().addAll(bundleValidationRules);
     validator.getValidationControl().putAll(validationControl);
-    validator.setQuestionnaireMode(questionnaireMode);
-    validator.getSettings().setLevel(level);
-    validator.setHtmlInMarkdownCheck(htmlInMarkdownCheck);
-    validator.setBestPracticeWarningLevel(bestPracticeLevel);
-    validator.setAllowDoubleQuotesInFHIRPath(allowDoubleQuotesInFHIRPath);
-    validator.setNoUnicodeBiDiControlChars(noUnicodeBiDiControlChars);
-    validator.setDoImplicitFHIRPathStringConversion(doImplicitFHIRPathStringConversion);
-    validator.setCheckIPSCodes(checkIPSCodes);
     validator.setAIService(aiService);
-    validator.getSettings().setR5BundleRelativeReferencePolicy(r5BundleRelativeReferencePolicy);
+
+    validator.setCheckIPSCodes(checkIPSCodes);
+
     validator.setCacheFolder(context.getTxCache().getFolder());
     if (format == FhirFormat.SHC) {
       igLoader.loadIg(getIgs(), getBinaries(), SHCParser.CURRENT_PACKAGE, true);      
     }
-    validator.setJurisdiction(jurisdiction);
+
     validator.setLogProgress(logValidationProgress);
     if (policyAdvisor != null) {
       validator.setPolicyAdvisor(policyAdvisor);
     }
-    validator.setUnknownCodeSystemsCauseErrors(unknownCodeSystemsCauseErrors);
-    validator.setNoExperimentalContent(noExperimentalContent);
     return validator;
   }
 

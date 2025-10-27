@@ -36,6 +36,7 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
   public static final String LOG = "-log";
   public static final String DISPLAY_WARNINGS = "-display-issues-are-warnings";
   public static final String NO_EXTENSIBLE_BINDING_WARNINGS = "-no-extensible-binding-warnings";
+  public static final String MATCHETYPE = "-matchetype";
 
   ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
   @Override
@@ -201,6 +202,18 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
       } else if (args[i].getValue().equals(NO_EXTENSIBLE_BINDING_WARNINGS)) {
         validationEngineParameters.setNoExtensibleBindingMessages(true);
         args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(MATCHETYPE)) {
+        if (i + 1 == args.length) {
+          throw new Error("Specified -matchetype without indicating file");
+        } else {
+          String s = args[i + 1].getValue();
+          if (!(new java.io.File(s).exists())) {
+            throw new Error("-matchetype source '" + s + "'  not found");
+          } else {
+            validationEngineParameters.addMatchetype(s);
+          }
+          Arg.setProcessed(args, i, 2, true);
+        }
       }
     }
   }

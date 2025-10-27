@@ -39,6 +39,7 @@ public class ValidationContextUtilities {
     validationContext.setMapLog(validationEngineParameters.getMapLog());
     validationContext.setDisplayWarnings(validationEngineParameters.isDisplayWarnings());
     validationContext.setNoExtensibleBindingMessages(validationEngineParameters.isNoExtensibleBindingMessages());
+    validationContext.setMatchetypes(new ArrayList<>(validationEngineParameters.getMatchetypes()));
   }
 
   public static void addWatchParameters(ValidationContext validationContext, WatchParameters watchParameters) {
@@ -91,7 +92,6 @@ public class ValidationContextUtilities {
     validationContext.setSecurityChecks(instanceValidatorParameters.isSecurityChecks());
     validationContext.setNoExperimentalContent(instanceValidatorParameters.isNoExperimentalContent());
     validationContext.setShowTerminologyRouting(instanceValidatorParameters.isShowTerminologyRouting());
-    validationContext.setMatchetypes(new ArrayList<>(instanceValidatorParameters.getMatchetypes()));
     validationContext.setExpansionParameters(instanceValidatorParameters.getExpansionParameters());
     validationContext.setProfiles(instanceValidatorParameters.getProfiles());
     validationContext.setDoImplicitFHIRPathStringConversion(instanceValidatorParameters.isDoImplicitFHIRPathStringConversion());
@@ -174,6 +174,7 @@ public class ValidationContextUtilities {
     validationEngineParameters.setMapLog(validationContext.getMapLog());
     validationEngineParameters.setDisplayWarnings(validationContext.isDisplayWarnings());
     validationEngineParameters.setNoExtensibleBindingMessages(validationContext.isNoExtensibleBindingMessages());
+    validationEngineParameters.setMatchetypes(new ArrayList<>(validationContext.getMatchetypes()));
     return validationEngineParameters;
   }
 
@@ -226,7 +227,6 @@ public class ValidationContextUtilities {
     instanceValidatorParameters.setSecurityChecks(validationContext.isSecurityChecks());
     instanceValidatorParameters.setNoExperimentalContent(validationContext.isNoExperimentalContent());
     instanceValidatorParameters.setShowTerminologyRouting(validationContext.isShowTerminologyRouting());
-    instanceValidatorParameters.setMatchetypes(new ArrayList<>(validationContext.getMatchetypes()));
     instanceValidatorParameters.setExpansionParameters(validationContext.getExpansionParameters());
     instanceValidatorParameters.setProfiles(validationContext.getProfiles());
     instanceValidatorParameters.setDoImplicitFHIRPathStringConversion(validationContext.isDoImplicitFHIRPathStringConversion());
