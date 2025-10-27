@@ -3,6 +3,7 @@ package org.hl7.fhir.utilities.npm;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -17,7 +18,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FilesystemPackageManagerLockTests {
@@ -219,7 +219,7 @@ public class FilesystemPackageManagerLockTests {
   }
 
 
-  @Test
+  @RepeatedTest(100)
   public void testReadWhenLockFileIsDeleted() throws InterruptedException, TimeoutException, IOException {
 
     final FilesystemPackageCacheManagerLocks.PackageLock packageLock = filesystemPackageCacheLockManager.getPackageLock(DUMMY_PACKAGE);
