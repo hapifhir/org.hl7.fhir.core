@@ -638,6 +638,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     setUnknownCodeSystemsCauseErrors(parameters.isUnknownCodeSystemsCauseErrors());
     setNoExperimentalContent(parameters.isNoExperimentalContent());
+    setCheckIPSCodes(parameters.isCheckIPSCodes());
   }
 
   @Override

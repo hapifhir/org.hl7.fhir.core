@@ -229,7 +229,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private IValidatorResourceFetcher fetcher;
   @Getter @Setter private IValidationPolicyAdvisor policyAdvisor;
   @Getter @Setter private IWorkerContextManager.ICanonicalResourceLocator locator;
-  @Getter @Setter private boolean assumeValidRestReferences;
   @Getter @Setter private boolean noExtensibleBindingMessages;
   @Getter @Setter private boolean noUnicodeBiDiControlChars;
   @Getter @Setter private boolean securityChecks;
@@ -239,8 +238,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private String aiService;
   @Getter @Setter private boolean doImplicitFHIRPathStringConversion;
   @Getter @Setter private HtmlInMarkdownCheck htmlInMarkdownCheck;
-  @Getter @Setter private boolean checkIPSCodes;
-  @Getter @Setter private BestPracticeWarningLevel bestPracticeLevel;
   @Getter @Setter private boolean unknownCodeSystemsCauseErrors;
   @Getter @Setter private boolean noExperimentalContent;
   @Getter @Setter private Locale locale;
@@ -250,7 +247,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private List<String> matchetypes = new ArrayList<>();
 
   @Getter @Setter private boolean showTimes;
-  @Getter @Setter private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
   @Getter @Setter private QuestionnaireMode questionnaireMode;
   @Getter @Setter private ValidationLevel level = ValidationLevel.HINTS;
   @Getter @Setter private FHIRPathEngine fhirPathEngine;
@@ -289,7 +285,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     fetcher = other.fetcher;
     policyAdvisor = other.policyAdvisor;
     locator = other.locator;
-    assumeValidRestReferences = other.assumeValidRestReferences;
     noExtensibleBindingMessages = other.noExtensibleBindingMessages;
     noUnicodeBiDiControlChars = other.noUnicodeBiDiControlChars;
     securityChecks = other.securityChecks;
@@ -298,14 +293,12 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     aiService = other.aiService;
     doImplicitFHIRPathStringConversion = other.doImplicitFHIRPathStringConversion;
     htmlInMarkdownCheck = other.htmlInMarkdownCheck;
-    checkIPSCodes = other.checkIPSCodes;
     locale = other.locale;
     igs.addAll(other.igs);
     extensionDomains.addAll(other.extensionDomains);
     certSources.addAll(other.certSources);
     matchetypes.addAll(other.matchetypes);
     showTimes = other.showTimes;
-    bundleValidationRules.addAll(other.bundleValidationRules);
     questionnaireMode = other.questionnaireMode;
     level = other.level;
     fhirPathEngine = other.fhirPathEngine;
@@ -316,7 +309,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     displayWarnings = other.displayWarnings;
     showMessageIds = other.showMessageIds;
     noExperimentalContent = other.noExperimentalContent;
-    bestPracticeLevel = other.bestPracticeLevel;
     defaultInstanceValidatorParameters = new InstanceValidatorParameters(other.defaultInstanceValidatorParameters);
   }
 
@@ -953,7 +945,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         locale = Locale.forLanguageTag(language);
       }
     }
-    validator.setAssumeValidRestReferences(assumeValidRestReferences);
+    validator.setAssumeValidRestReferences(isAssumeValidRestReferences());
     validator.setNoExtensibleWarnings(noExtensibleBindingMessages);
 
     validator.getContext().getManager().setLocale(locale);
@@ -962,7 +954,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.getValidationControl().putAll(validationControl);
     validator.setAIService(aiService);
 
-    validator.setCheckIPSCodes(checkIPSCodes);
+    validator.setCheckIPSCodes(isCheckIPSCodes());
 
     validator.setCacheFolder(context.getTxCache().getFolder());
     if (format == FhirFormat.SHC) {
@@ -1472,6 +1464,98 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Deprecated(since = "2025-10-24")
   public ValidationEngine setHintAboutNonMustSupport(boolean hintAboutNonMustSupport) {
     defaultInstanceValidatorParameters.setHintAboutNonMustSupport(hintAboutNonMustSupport);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public boolean isAssumeValidRestReferences() {
+    return defaultInstanceValidatorParameters.isAssumeValidRestReferences();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setAssumeValidRestReferences(boolean assumeValidRestReferences) {
+    defaultInstanceValidatorParameters.setAssumeValidRestReferences(assumeValidRestReferences);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public BestPracticeWarningLevel getBestPracticeLevel() {
+    return defaultInstanceValidatorParameters.getBestPracticeLevel();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setBestPracticeLevel(BestPracticeWarningLevel bestPracticeLevel) {
+    defaultInstanceValidatorParameters.setBestPracticeLevel(bestPracticeLevel);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public List<BundleValidationRule> getBundleValidationRules() {
+    return defaultInstanceValidatorParameters.getBundleValidationRules();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setBundleValidationRules(List<BundleValidationRule> bundleValidationRules) {
+    defaultInstanceValidatorParameters.setBundleValidationRules(bundleValidationRules);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public boolean isCheckIPSCodes() {
+    return defaultInstanceValidatorParameters.isCheckIPSCodes();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setCheckIPSCodes(boolean checkIPSCodes) {
+    defaultInstanceValidatorParameters.setCheckIPSCodes(checkIPSCodes);
     return this;
   }
 }
