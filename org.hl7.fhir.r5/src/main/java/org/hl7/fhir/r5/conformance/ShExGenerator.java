@@ -127,7 +127,7 @@ public class ShExGenerator {
     "$comment$\n<$id$> CLOSED { $fhirType$ " +
       "\n    $resourceDecl$" +
       "\n    $elements$" +
-      "\n    $contextOfUse$" +
+//      "\n    $contextOfUse$" +
       "\n} $constraints$ \n";
 
   // Base DataTypes
@@ -241,8 +241,8 @@ public class ShExGenerator {
     "\n    fhir:Element.id @<id>?;" +
     "\n    fhir:Element.extension @<Extension>*;" +
     "\n    " + FHIR_LINK_PREDICATE + " @<$refType$> OR CLOSED {a [fhir:$refType$]}?;" +
-    "\n    fhir:Reference.reference @<string>?;" +
-    "\n    fhir:Reference.display @<string>?;" +
+    "\n    fhir:Reference.reference @<String>?;" +
+    "\n    fhir:Reference.display @<String>?;" +
     // "\n    fhir:index xsd:integer?" +
     "\n}";
 
@@ -597,7 +597,7 @@ public class ShExGenerator {
       bd = els[els.length - 1];
     }
 
-    return bd;
+    return capitalizeIfPrimitive(bd);
   }
 
   private String getBaseTypeName(ElementDefinition ed){
@@ -609,7 +609,7 @@ public class ShExGenerator {
 
   private String getExtendedType(StructureDefinition sd){
     String bd = getBaseTypeName(sd);
-    String sId = sd.getId();
+    String sId = capitalizeIfPrimitive(sd.getId());
 
     if (bd!=null) {
       var className = TurtleParser.getClassName(bd);
@@ -645,9 +645,6 @@ public class ShExGenerator {
 
     ST shape_defn;
     // Resources are either incomplete items or consist of everything that is defined as a resource (completeModel)
-    //    if (sd.getName().equals("ActivityDefinition")){
-    //      debug("ActivityDefinition found");
-    //    }
 
     var className = TurtleParser.getClassName(sd.getName());
 
@@ -666,17 +663,16 @@ public class ShExGenerator {
           (shortIdException.contains(btn)))
           rootTmpl = "\n";
 
+        String id = capitalizeIfPrimitive(sd.getId());
+
         ST resource_decl = tmplt(RESOURCE_DECL_TEMPLATE).
-          add("id", TurtleParser.getClassName(sd.getId())).
+          add("id", id).
           add("root", rootTmpl);
 
         shape_defn.add("resourceDecl", resource_decl.render());
       }
     }
-
     shape_defn.add("fhirType", " ");
-
-
 
     // Generate the defining elements
     List<String> elements = new ArrayList<String>();
@@ -756,6 +752,10 @@ public class ShExGenerator {
       }
     }
 
+    if (sd.getName().equals("uri")) {
+      elements.add("fhir:l IRI?;");
+    }
+
     if (toProcessConstraints(sd)) {
       // Constraints for differential to cover constraints on SD itself without any elements of its own
       for (ElementDefinition ded : sd.getDifferential().getElement()) {
@@ -788,40 +788,73 @@ public class ShExGenerator {
 
     shape_defn.add("constraints", constraintStr);
 
-    String contextOfUseStr = "";
-    ArrayList<String> contextOfUse = new ArrayList<String>();
-    if (!sd.getContext().isEmpty()) {
-      for (StructureDefinition.StructureDefinitionContextComponent uc : sd.getContext()) {
-        if (!uc.getExpression().isEmpty()) {
-          String toStore = uc.getExpression();
-          log.debug("CONTEXT-OF-USE FOUND: " + toStore);
-          if (toStore.indexOf("http") != -1) {
-            log.debug("\t\tWARNING: CONTEXT-OF-USE SKIPPED as it has 'http' in it, might be a URL, instead of '.' delimited string");
-            continue;  // some erroneous context of use may use a URL; ignore them
-          }
-          String[] backRefs = toStore.split("\\.");
-          toStore = "a [fhir:" + TurtleParser.getClassName(backRefs[0]) + "]";
-          for (int i = 1; i < backRefs.length; i++)
-            toStore = "^fhir:" + TurtleParser.getClassName(backRefs[i]) + " {" + toStore + "}";
-
-          toStore = removeMultipleX(toStore);
-          if (!contextOfUse.contains(toStore)) {
-            contextOfUse.add(toStore);
-          }
-        }
-      }
-
-      if (!contextOfUse.isEmpty()) {
-        if (contextOfUse.size() > 1)
-          contextOfUseStr = "^fhir:extension { " + StringUtils.join(contextOfUse, "} OR \n      {") + "}\n";
-        else
-          contextOfUseStr = "^fhir:extension { " + contextOfUse.get(0) + "}\n";
-      }
-    }
-
-    shape_defn.add("contextOfUse", contextOfUseStr);
+//    String contextOfUseStr = "";
+//    ArrayList<String> contextOfUse = new ArrayList<String>();
+//    if (!sd.getContext().isEmpty()) {
+//      for (StructureDefinition.StructureDefinitionContextComponent uc : sd.getContext()) {
+//        if (!uc.getExpression().isEmpty()) {
+//          String toStore = uc.getExpression();
+//          debug("CONTEXT-OF-USE FOUND: " + toStore);
+//          if (toStore.indexOf("http") != -1) {
+//            debug("\t\tWARNING: CONTEXT-OF-USE SKIPPED as it has 'http' in it, might be a URL, instead of '.' delimited string");
+//            continue;  // some erroneous context of use may use a URL; ignore them
+//          }
+//          String[] backRefs = toStore.split("\\.");
+//          toStore = "a [fhir:" + capitalizeIfPrimitive(backRefs[0]) + "]";
+//          for (int i = 1; i < backRefs.length; i++)
+//              toStore = "^fhir:" + capitalizeIfPrimitive(backRefs[i]) + " {" + toStore + "}";
+//
+//          toStore = removeMultipleX(toStore);
+//          if (!contextOfUse.contains(toStore)) {
+//            contextOfUse.add(toStore);
+//          }
+//        }
+//      }
+//
+//      if (!contextOfUse.isEmpty()) {
+//        if (contextOfUse.size() > 1)
+//          contextOfUseStr = "^fhir:extension { " + StringUtils.join(contextOfUse, "} OR \n      {") + "}\n";
+//        else
+//          contextOfUseStr = "^fhir:extension { " + contextOfUse.get(0) + "}\n";
+//      }
+//    }
+//
+//    shape_defn.add("contextOfUse", contextOfUseStr);
 
     return shape_defn.render();
+  }
+
+  /**
+   * Capitalize the first character of the string if it is a listed primitive type
+   * @param name
+   * @return
+   */
+  private String capitalizeIfPrimitive(String name) {
+    if (name == null || name.isEmpty()) return name;
+    if ("base64Binary".equals(name) ||
+      "boolean".equals(name) ||
+      "canonical".equals(name) ||
+      "code".equals(name) ||
+      "date".equals(name) ||
+      "dateTime".equals(name) ||
+      "decimal".equals(name) ||
+      "id".equals(name) ||
+      "instant".equals(name) ||
+      "integer".equals(name) ||
+      "integer64".equals(name) ||
+      "markdown".equals(name) ||
+      "oid".equals(name) ||
+      "positiveInt".equals(name) ||
+      "string".equals(name) ||
+      "time".equals(name) ||
+      "unsignedInt".equals(name) ||
+      "uri".equals(name) ||
+      "url".equals(name) ||
+      "uuid".equals(name) ||
+      "xhtml".equals(name)) {
+      return name.substring(0, 1).toUpperCase() + name.substring(1);
+    }
+    return name;
   }
 
   /**
@@ -1393,7 +1426,7 @@ public class ShExGenerator {
 
     element_def = tmplt(ELEMENT_TEMPLATE);
     if (id.endsWith("[x]")) {
-      element_def.add("id", "fhir:" + removeMultipleX(shortId));
+      element_def.add("id", "fhir:" + removeMultipleX(shortId) + " {rdf:type IRI} AND ");
     } else {
       element_def.add("id", "fhir:" + removeMultipleX(shortId) + " ");
     }
@@ -1415,9 +1448,7 @@ public class ShExGenerator {
     String refChoices = "";
     List<String> refValues = new ArrayList<String>();
     if (id.endsWith("[x]")) {
-      //defn = " (" + genChoiceTypes(sd, ed, shortId) + ")";
-      defn = " " + genChoiceTypes(sd, ed, removeMultipleX(shortId)) + " ";
-      //defn += " AND { rdf:type IRI } ";
+      defn = " " + genChoiceTypes(sd, ed, removeMultipleX(shortId));
     } else {
       if (ed.getType().size() == 1) {
         // Single entry
@@ -1575,6 +1606,7 @@ public class ShExGenerator {
     if(ed.hasFixed()) {
       addldef = tmplt(FIXED_VALUE_TEMPLATE).add("val", ed.getFixed().primitiveValue()).render();
     }
+<<<<<<< variant A
     return tmplt(SIMPLE_ELEMENT_DEFN_TEMPLATE).add("typ", TurtleParser.getClassName(typ)).add("vsdef", addldef).render();
   }
 
@@ -1584,6 +1616,9 @@ public class ShExGenerator {
      }
 
      return str;
+>>>>>>> variant B
+    return tmplt(SIMPLE_ELEMENT_DEFN_TEMPLATE).add("typ", capitalizeIfPrimitive(typ)).add("vsdef", addldef).render();
+======= end
   }
 
   private String removeMultipleX(String str) {
@@ -1785,7 +1820,7 @@ public class ShExGenerator {
       else
         choiceEntries.add(entry);
     }
-    return StringUtils.join(choiceEntries, " OR \n\t\t\t");
+    return "(" + StringUtils.join(choiceEntries, " OR \n\t\t\t") + ")";
   }
 
   /**
