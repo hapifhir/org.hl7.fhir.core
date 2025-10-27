@@ -9,7 +9,10 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 /**
  * FilesystemPackageCacheManagerLocks relies on the existence of .lock files to prevent access to packages being written
@@ -104,13 +107,17 @@ public class LockfileTestProcessUtility {
         channel.write(buff);
         System.out.println("File "+lockFileName+" is locked. Waiting for " + seconds + " seconds to release. ");
         Thread.sleep(seconds * 1000L);
-
-        // Normally this would used ManagedFileAccess. We cannot however, use this here, as this class uses no
+       // Normally this would used ManagedFileAccess. We cannot however, use this here, as this class uses no
         // dependencies outside of core Java. See class javadoc for details.
-        lockFile.renameTo(File.createTempFile(lockFile.getName(), ".lock-renamed", lockFile.getParentFile()));
-
+        Path tempDeleteDir = Files.createTempDirectory("temp_deleted_files");
+        Path tempFilePath = tempDeleteDir.resolve(lockFile.getName());
+        tempDeleteDir.toFile().deleteOnExit();
+        tempFilePath.toFile().deleteOnExit();
+        System.out.println("Atomic move  "+lockFile.getAbsolutePath()+" to " + tempFilePath.toAbsolutePath());
+        Files.move(lockFile.toPath(), tempFilePath, StandardCopyOption.ATOMIC_MOVE );
         fileLock.release();
         channel.close();
+
         System.out.println(System.currentTimeMillis());
         System.out.println("File "+lockFileName+" is released.");
 
