@@ -470,6 +470,46 @@ public class ValidationEngineParameters {
     return this;
   }
 
+  @JsonProperty("doDebug")
+  @SerializedName("doDebug")
+  private
+  boolean doDebug = false;
+
+  @SerializedName("doDebug")
+  @JsonProperty("doDebug")
+  public boolean isDoDebug() {
+    return doDebug;
+  }
+
+  @SerializedName("doDebug")
+  @JsonProperty("doDebug")
+  public ValidationEngineParameters setDoDebug(boolean doDebug) {
+    this.doDebug = doDebug;
+    return this;
+  }
+
+  @JsonProperty("matchetypes")
+  @SerializedName("matchetypes")
+  private List<String> matchetypes = new ArrayList<String>();
+
+  @SerializedName("matchetypes")
+  @JsonProperty("matchetypes")
+  public List<String> getMatchetypes() {
+    return matchetypes;
+  }
+
+  @SerializedName("matchetypes")
+  @JsonProperty("matchetypes")
+  public ValidationEngineParameters setMatchetypes(List<String> matchetypes) {
+    this.matchetypes = matchetypes;
+    return this;
+  }
+
+  public ValidationEngineParameters addMatchetype(String matchetype) {
+    this.matchetypes.add(matchetype);
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -497,7 +537,8 @@ public class ValidationEngineParameters {
       && Objects.equals(advisorFile, that.advisorFile)
       && Objects.equals(locale, that.locale)
       && Objects.equals(lang, that.lang)
-      && Objects.equals(mapLog, that.mapLog);
+      && Objects.equals(mapLog, that.mapLog)
+      && Objects.equals(matchetypes, that.matchetypes);
   }
 
   @Override
@@ -525,7 +566,8 @@ public class ValidationEngineParameters {
       disableDefaultResourceFetcher,
       mapLog,
       displayWarnings,
-      noExtensibleBindingMessages);
+      noExtensibleBindingMessages,
+      matchetypes);
   }
 
   @Override
@@ -554,6 +596,7 @@ public class ValidationEngineParameters {
       ", mapLog='" + mapLog + '\'' +
       ", displayWarnings=" + displayWarnings +
       ", noExtensibleBindingMessages=" + noExtensibleBindingMessages +
+      ", matchetypes=" + matchetypes +
       "}";
   }
 }
