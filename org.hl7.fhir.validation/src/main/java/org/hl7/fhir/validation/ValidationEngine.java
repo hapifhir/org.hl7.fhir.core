@@ -220,7 +220,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private boolean displayWarnings;
   @Getter @Setter private boolean logValidationProgress;
   @Getter @Setter private boolean wantInvariantInMessage;
-  @Getter @Setter private boolean hintAboutNonMustSupport;
   @Getter @Setter private boolean anyExtensionsAllowed = false;
   @Getter @Setter private String version;
   @Getter @Setter private String language;
@@ -238,11 +237,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private boolean showMessageIds;
   @Getter @Setter private boolean forPublication;
   @Getter @Setter private String aiService;
-  @Getter @Setter private boolean allowExampleUrls;
-  @Getter @Setter private boolean showMessagesFromReferences;
   @Getter @Setter private boolean doImplicitFHIRPathStringConversion;
   @Getter @Setter private HtmlInMarkdownCheck htmlInMarkdownCheck;
-  @Getter @Setter private boolean allowDoubleQuotesInFHIRPath;
   @Getter @Setter private boolean checkIPSCodes;
   @Getter @Setter private BestPracticeWarningLevel bestPracticeLevel;
   @Getter @Setter private boolean unknownCodeSystemsCauseErrors;
@@ -267,7 +263,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
 
   /**
-   * @deprecated Use defaultInstanceValidatorParameters.isAllowExampleUrls() instead
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
    * @since 2025-10-24
    */
   @Deprecated(since = "2025-10-24")
@@ -275,21 +273,33 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return defaultInstanceValidatorParameters.isAllowExampleUrls();
   }
 
-
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
   @Deprecated(since = "2025-10-24")
   public ValidationEngine setAllowExampleUrls(boolean allowExampleUrls) {
     defaultInstanceValidatorParameters.setAllowExampleUrls(allowExampleUrls);
     return this;
   }
 
-
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
   @Deprecated(since = "2025-10-24")
   public boolean isAllowDoubleQuotesInFHIRPath() {
     return defaultInstanceValidatorParameters.isAllowDoubleQuotesInFHIRPath();
   }
 
   /**
-   * @deprecated Use defaultInstanceValidatorParameters.setAllowDoubleQuotesInFHIRPath() instead
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
    * @since 2025-10-24
    */
   @Deprecated(since = "2025-10-24")
@@ -298,13 +308,59 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return this;
   }
 
-  private ContextUtilities cu = null;
-  
   /**
-   * Creating a validation engine is an expensive operation - takes seconds. 
-   * Once you have a validation engine created, you can quickly clone it to 
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public boolean isShowMessagesFromReferences() {
+    return defaultInstanceValidatorParameters.isShowMessagesFromReferences();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setShowMessagesFromReferences(boolean showMessagesFromReferences) {
+    defaultInstanceValidatorParameters.setShowMessagesFromReferences(showMessagesFromReferences);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public boolean isHintAboutNonMustSupport() {
+    return defaultInstanceValidatorParameters.isHintAboutNonMustSupport();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setHintAboutNonMustSupport(boolean hintAboutNonMustSupport) {
+    defaultInstanceValidatorParameters.setHintAboutNonMustSupport(hintAboutNonMustSupport);
+    return this;
+  }
+
+  private ContextUtilities cu = null;
+
+  /**
+   * Creating a validation engine is an expensive operation - takes seconds.
+   * Once you have a validation engine created, you can quickly clone it to
    * get one that can load packages without affecting other uses
-   * 
+   *
    * @param other
    * @throws FHIRException
    * @throws IOException
@@ -316,7 +372,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     doNative = other.doNative;
     noInvariantChecks = other.noInvariantChecks;
     wantInvariantInMessage = other.wantInvariantInMessage;
-    hintAboutNonMustSupport = other.hintAboutNonMustSupport;
     anyExtensionsAllowed = other.anyExtensionsAllowed;
     version = other.version;
     language = other.language;
@@ -334,11 +389,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     crumbTrails = other.crumbTrails;
     forPublication = other.forPublication;
     aiService = other.aiService;
-    allowExampleUrls = other.allowExampleUrls;
-    showMessagesFromReferences = other.showMessagesFromReferences;
     doImplicitFHIRPathStringConversion = other.doImplicitFHIRPathStringConversion;
     htmlInMarkdownCheck = other.htmlInMarkdownCheck;
-    allowDoubleQuotesInFHIRPath = other.allowDoubleQuotesInFHIRPath;
     checkIPSCodes = other.checkIPSCodes;
     locale = other.locale;
     igs.addAll(other.igs);
@@ -358,8 +410,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     showMessageIds = other.showMessageIds;
     noExperimentalContent = other.noExperimentalContent;
     bestPracticeLevel = other.bestPracticeLevel;
+    defaultInstanceValidatorParameters = new InstanceValidatorParameters(other.defaultInstanceValidatorParameters);
   }
-  
+
   /**
    * Systems that host the ValidationEngine can use this to control what validation the validator performs.
    * <p>
@@ -407,11 +460,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
     @With
     private final ILoggingService loggingService;
-    
+
     @With
     private String thoVersion;
-    
-    @With 
+
+    @With
     private String extensionsVersion;
 
     private static final boolean USE_ECOSYSTEM_DEFAULT = true;
@@ -453,7 +506,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     public ValidationEngineBuilder withNoTerminologyServer() {
       return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, null, null, txVersion, useEcosystem, timeTracker, true, loggingService, thoVersion, extensionsVersion);
     }
-    
+
     public ValidationEngine fromNothing() throws IOException {
       NpmPackageIndexBuilder.setExtensionFactory(new SQLiteINpmPackageIndexBuilderDBImpl.SQLiteINpmPackageIndexBuilderDBImplFactory());
       ValidationEngine engine = new ValidationEngine();
@@ -474,7 +527,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       ValidationEngine engine = new ValidationEngine();
       engine.loadCoreDefinitions(src, false, terminologyCachePath, userAgent, timeTracker, loggingService);
       engine.getContext().setCanRunWithoutTerminology(canRunWithoutTerminologyServer);
-      engine.getContext().setPackageTracker(engine);    
+      engine.getContext().setPackageTracker(engine);
       if (txServer != null) {
         engine.setTerminologyServer(txServer, txLog, txVersion, useEcosystem);
       }
@@ -507,7 +560,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         engine.loadPackage(pid, thoVersion);
       }
     }
-    
+
     private void loadExt(ValidationEngine engine) throws FHIRException, IOException {
       String pid = null;
       if (VersionUtilities.isR3Ver(version)) {
@@ -524,7 +577,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       }
       if (pid != null) {
         engine.loadPackage(pid, extensionsVersion);
-      }    
+      }
     }
 
   }
@@ -690,7 +743,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     Bundle results = new Bundle();
     results.setType(Bundle.BundleType.COLLECTION);
     boolean found = false;
-    
+
     for (SourceFile ref : refs) {
       if (ref.isProcess()) {
         found = true;
@@ -701,7 +754,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     } else if (!first && delay != 0) {
       Thread.sleep(delay);
     }
-    
+
     // round one: try to read them all natively
     // Ignore if it fails.The purpose of this is to make dependencies 
     // available for other resources to depend on. if it fails to load, there'll be an error if there's
@@ -718,13 +771,13 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         }
       }
     }
-    
+
     for (SourceFile ref : refs) {
       if ((ref.isProcess() || all) && ref.getCnt() != null) {
         TimeTracker.Session tts = context.clock().start("validation");
         context.clock().milestone();
         log.info("  Validate " + ref.getRef());
-        
+
         try {
           OperationOutcome outcome = validate(ref.getRef(), ref.getCnt().getFocus(), ref.getCnt().getCntType(), profiles, record);
           ExtensionUtilities.addStringExtension(outcome, ExtensionDefinitions.EXT_OO_FILE, ref.getRef());
@@ -782,12 +835,12 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       List<ValidationMessage> mtErrors = new ArrayList<ValidationMessage>();
       mv.compare(mtErrors, res.fhirType(), exp, res);
       if (mtErrors.isEmpty()) {
-        vm.setMessage(vm.getMessage()+" - All OK"); 
+        vm.setMessage(vm.getMessage()+" - All OK");
       } else {
         messages.addAll(mtErrors);
       }
     }
-    
+
     if (showTimes) {
       log.info(location + ": " + validator.reportTimes());
     }
@@ -840,7 +893,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     if (sourceSD.getKind() == StructureDefinition.StructureDefinitionKind.LOGICAL) {
       parser.setLogical(sourceSD);
     }
-    org.hl7.fhir.r5.elementmodel.Element src = parser.parseSingle(new ByteArrayInputStream(source.getBytes()), null);    
+    org.hl7.fhir.r5.elementmodel.Element src = parser.parseSingle(new ByteArrayInputStream(source.getBytes()), null);
     scu.transform(null, src, map, resource);
     resource.populatePaths(null);
     return resource;
@@ -869,7 +922,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
     return Manager.build(getContext(), structureDefinition);
   }
-  
+
   private StructureDefinition getSourceResourceFromStructureMap(StructureMap map) {
 	StructureMap.StructureMapGroupComponent g = map.getGroup().get(0);
 	String type = null;
@@ -879,8 +932,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 	      throw new DefinitionException("This engine does not support multiple source inputs");
 	    else
 	      type = inp.getType();
-	}	  
-	  
+	}
+
 	String sourceTypeUrl = null;
 	for (StructureMap.StructureMapStructureComponent component : map.getStructure()) {
 	  if (component.getMode() == StructureMap.StructureMapModelMode.SOURCE
@@ -889,7 +942,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 	    break;
 	  }
 	}
-	    
+
 	StructureDefinition structureDefinition = null;
 	for (StructureDefinition sd : this.context.fetchResourcesByType(StructureDefinition.class)) {
 	  if (sd.getUrl().equalsIgnoreCase(sourceTypeUrl)) {
@@ -1006,7 +1059,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
     validator.setCacheFolder(context.getTxCache().getFolder());
     if (format == FhirFormat.SHC) {
-      igLoader.loadIg(getIgs(), getBinaries(), SHCParser.CURRENT_PACKAGE, true);      
+      igLoader.loadIg(getIgs(), getBinaries(), SHCParser.CURRENT_PACKAGE, true);
     }
 
     validator.setLogProgress(logValidationProgress);
@@ -1277,7 +1330,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       resolvedUrls.put(type+"|"+url, true);
       return true;
     }
-    if (SIDUtilities.isKnownSID(url) || 
+    if (SIDUtilities.isKnownSID(url) ||
         Utilities.existsInList(url, "http://hl7.org/fhir/w5", "http://hl7.org/fhir/fivews", "http://hl7.org/fhir/workflow", "http://hl7.org/fhir/ConsentPolicy/opt-out", "http://hl7.org/fhir/ConsentPolicy/opt-in")) {
       resolvedUrls.put(type+"|"+url, true);
       return true;
@@ -1302,7 +1355,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       if (!maps.isEmpty()) {
         return true;
       }
-      
+
     }
     if (fetcher != null) {
       try {
@@ -1379,7 +1432,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public List<StructureDefinition> getImpliedProfilesForResource(IResourceValidator validator, Object appContext,
       String stackPath, ElementDefinition definition, StructureDefinition structure, Element resource, boolean valid,
       IMessagingServices msgServices, List<ValidationMessage> messages) {
-    return new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID).getImpliedProfilesForResource(validator, appContext, stackPath, 
+    return new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID).getImpliedProfilesForResource(validator, appContext, stackPath,
           definition, structure, resource, valid, msgServices, messages);
   }
 
