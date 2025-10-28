@@ -160,6 +160,8 @@ public class XhtmlComposer {
       writeDocument(indent, node);
     } else if (node.getNodeType() == NodeType.Text) {
       writeText(node);
+    } else if (node.getNodeType() == NodeType.CData) {
+      writeCData(indent, node, noPrettyOverride);
     } else if (node.getNodeType() == null) {
       throw new Error("Null node type");
     } else {
@@ -286,6 +288,10 @@ public class XhtmlComposer {
 
   private void writeComment(String indent, XhtmlNode node, boolean noPrettyOverride) throws IOException {
     dst.append(indent + "<!-- " + node.getContent().trim() + " -->" + (pretty && !noPrettyOverride ? "\r\n" : ""));
+  }
+
+  private void writeCData(String indent, XhtmlNode node, boolean noPrettyOverride) throws IOException {
+    dst.append(indent + "<![CDATA[" + node.getContent() + "]]>" + (pretty && !noPrettyOverride ? "\r\n" : ""));
   }
 
   private void writeDocType(XhtmlNode node) throws IOException {
