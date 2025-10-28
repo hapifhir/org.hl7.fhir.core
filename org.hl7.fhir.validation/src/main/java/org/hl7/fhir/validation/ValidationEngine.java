@@ -217,7 +217,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private SimpleWorkerContext context;
   @Getter @Setter private Map<String, ByteProvider> binaries = new HashMap<>();
   @Getter @Setter private boolean doNative;
-  @Getter @Setter private boolean noInvariantChecks;
   @Getter @Setter private boolean displayWarnings;
   @Getter @Setter private boolean logValidationProgress;
   @Getter @Setter private boolean wantInvariantInMessage;
@@ -231,7 +230,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private IValidationPolicyAdvisor policyAdvisor;
   @Getter @Setter private IWorkerContextManager.ICanonicalResourceLocator locator;
   @Getter @Setter private boolean noExtensibleBindingMessages;
-  @Getter @Setter private boolean noUnicodeBiDiControlChars;
   @Getter @Setter private boolean securityChecks;
   @Getter @Setter private boolean showMessageIds;
   @Getter @Setter private String aiService;
@@ -243,7 +241,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private List<String> matchetypes = new ArrayList<>();
 
   @Getter @Setter private boolean showTimes;
-  @Getter @Setter private QuestionnaireMode questionnaireMode;
   @Getter @Setter private FHIRPathEngine fhirPathEngine;
   @Getter @Setter private IgLoader igLoader;
   @Getter @Setter private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy;
@@ -267,7 +264,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     context = new SimpleWorkerContext(other.context);
     binaries.putAll(other.binaries);
     doNative = other.doNative;
-    noInvariantChecks = other.noInvariantChecks;
     wantInvariantInMessage = other.wantInvariantInMessage;
     anyExtensionsAllowed = other.anyExtensionsAllowed;
     version = other.version;
@@ -280,7 +276,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     policyAdvisor = other.policyAdvisor;
     locator = other.locator;
     noExtensibleBindingMessages = other.noExtensibleBindingMessages;
-    noUnicodeBiDiControlChars = other.noUnicodeBiDiControlChars;
     securityChecks = other.securityChecks;
     aiService = other.aiService;
     locale = other.locale;
@@ -289,7 +284,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     certSources.addAll(other.certSources);
     matchetypes.addAll(other.matchetypes);
     showTimes = other.showTimes;
-    questionnaireMode = other.questionnaireMode;
     fhirPathEngine = other.fhirPathEngine;
     igLoader = other.igLoader;
     unknownCodeSystemsCauseErrors = other.unknownCodeSystemsCauseErrors;
@@ -1705,6 +1699,75 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Deprecated(since = "2025-10-24")
   public ValidationEngine setNoExperimentalContent(boolean noExperimentalContent) {
     defaultInstanceValidatorParameters.setNoExperimentalContent(noExperimentalContent);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public boolean isNoInvariantChecks() {
+    return defaultInstanceValidatorParameters.isNoInvariants();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setNoInvariantChecks(boolean noInvariantChecks) {
+    defaultInstanceValidatorParameters.setNoInvariants(noInvariantChecks);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public boolean isNoUnicodeBiDiControlChars() {
+    return defaultInstanceValidatorParameters.isNoUnicodeBiDiControlChars();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setNoUnicodeBiDiControlChars(boolean noUnicodeBiDiControlChars) {
+    defaultInstanceValidatorParameters.setNoUnicodeBiDiControlChars(noUnicodeBiDiControlChars);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public QuestionnaireMode getQuestionnaireMode() {
+    return defaultInstanceValidatorParameters.getQuestionnaireMode();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setQuestionnaireMode(QuestionnaireMode questionnaireMode) {
+    defaultInstanceValidatorParameters.setQuestionnaireMode(questionnaireMode);
     return this;
   }
 }
