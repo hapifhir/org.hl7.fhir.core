@@ -73,6 +73,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
@@ -234,9 +235,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private boolean securityChecks;
   @Getter @Setter private boolean showMessageIds;
   @Getter @Setter private String aiService;
-  @Getter @Setter private HtmlInMarkdownCheck htmlInMarkdownCheck;
   @Getter @Setter private boolean unknownCodeSystemsCauseErrors;
-  @Getter @Setter private boolean noExperimentalContent;
   @Getter @Setter private Locale locale;
   @Getter @Setter private List<ImplementationGuide> igs = new ArrayList<>();
   @Getter @Setter private List<String> extensionDomains = new ArrayList<>();
@@ -245,10 +244,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   @Getter @Setter private boolean showTimes;
   @Getter @Setter private QuestionnaireMode questionnaireMode;
-  @Getter @Setter private ValidationLevel level = ValidationLevel.HINTS;
   @Getter @Setter private FHIRPathEngine fhirPathEngine;
   @Getter @Setter private IgLoader igLoader;
-  @Getter @Setter private Coding jurisdiction;
   @Getter @Setter private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy;
 
   @Getter @Setter
@@ -286,7 +283,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     noUnicodeBiDiControlChars = other.noUnicodeBiDiControlChars;
     securityChecks = other.securityChecks;
     aiService = other.aiService;
-    htmlInMarkdownCheck = other.htmlInMarkdownCheck;
     locale = other.locale;
     igs.addAll(other.igs);
     extensionDomains.addAll(other.extensionDomains);
@@ -294,15 +290,12 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     matchetypes.addAll(other.matchetypes);
     showTimes = other.showTimes;
     questionnaireMode = other.questionnaireMode;
-    level = other.level;
     fhirPathEngine = other.fhirPathEngine;
     igLoader = other.igLoader;
-    jurisdiction = other.jurisdiction;
     unknownCodeSystemsCauseErrors = other.unknownCodeSystemsCauseErrors;
     r5BundleRelativeReferencePolicy = other.r5BundleRelativeReferencePolicy;
     displayWarnings = other.displayWarnings;
     showMessageIds = other.showMessageIds;
-    noExperimentalContent = other.noExperimentalContent;
     defaultInstanceValidatorParameters = new InstanceValidatorParameters(other.defaultInstanceValidatorParameters);
   }
 
@@ -1619,6 +1612,99 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Deprecated(since = "2025-10-24")
   public ValidationEngine setForPublication(boolean forPublication) {
     defaultInstanceValidatorParameters.setForPublication(forPublication);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public HtmlInMarkdownCheck getHtmlInMarkdownCheck() {
+    return defaultInstanceValidatorParameters.getHtmlInMarkdownCheck();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setHtmlInMarkdownCheck(HtmlInMarkdownCheck htmlInMarkdownCheck) {
+    defaultInstanceValidatorParameters.setHtmlInMarkdownCheck(htmlInMarkdownCheck);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public Coding getJurisdiction() {
+    return CodeSystemUtilities.readCoding(defaultInstanceValidatorParameters.getJurisdiction());
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setJurisdiction(Coding jurisdiction) {
+    // This may not be entirely correct, but this also a completely unused method.
+    defaultInstanceValidatorParameters.setJurisdiction(jurisdiction.getCode());
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationLevel getLevel() {
+    return defaultInstanceValidatorParameters.getLevel();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setLevel(ValidationLevel level) {
+    defaultInstanceValidatorParameters.setLevel(level);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public boolean isNoExperimentalContent() {
+    return defaultInstanceValidatorParameters.isNoExperimentalContent();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setNoExperimentalContent(boolean noExperimentalContent) {
+    defaultInstanceValidatorParameters.setNoExperimentalContent(noExperimentalContent);
     return this;
   }
 }
