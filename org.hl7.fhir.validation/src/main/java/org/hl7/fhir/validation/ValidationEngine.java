@@ -230,8 +230,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private IValidationPolicyAdvisor policyAdvisor;
   @Getter @Setter private IWorkerContextManager.ICanonicalResourceLocator locator;
   @Getter @Setter private boolean noExtensibleBindingMessages;
-  @Getter @Setter private boolean securityChecks;
-  @Getter @Setter private boolean showMessageIds;
   @Getter @Setter private String aiService;
   @Getter @Setter private boolean unknownCodeSystemsCauseErrors;
   @Getter @Setter private Locale locale;
@@ -243,7 +241,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private boolean showTimes;
   @Getter @Setter private FHIRPathEngine fhirPathEngine;
   @Getter @Setter private IgLoader igLoader;
-  @Getter @Setter private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy;
 
   @Getter @Setter
   private InstanceValidatorParameters defaultInstanceValidatorParameters = new InstanceValidatorParameters();
@@ -276,7 +273,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     policyAdvisor = other.policyAdvisor;
     locator = other.locator;
     noExtensibleBindingMessages = other.noExtensibleBindingMessages;
-    securityChecks = other.securityChecks;
     aiService = other.aiService;
     locale = other.locale;
     igs.addAll(other.igs);
@@ -287,9 +283,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     fhirPathEngine = other.fhirPathEngine;
     igLoader = other.igLoader;
     unknownCodeSystemsCauseErrors = other.unknownCodeSystemsCauseErrors;
-    r5BundleRelativeReferencePolicy = other.r5BundleRelativeReferencePolicy;
     displayWarnings = other.displayWarnings;
-    showMessageIds = other.showMessageIds;
     defaultInstanceValidatorParameters = new InstanceValidatorParameters(other.defaultInstanceValidatorParameters);
   }
 
@@ -1768,6 +1762,75 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Deprecated(since = "2025-10-24")
   public ValidationEngine setQuestionnaireMode(QuestionnaireMode questionnaireMode) {
     defaultInstanceValidatorParameters.setQuestionnaireMode(questionnaireMode);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public R5BundleRelativeReferencePolicy getR5BundleRelativeReferencePolicy() {
+    return defaultInstanceValidatorParameters.getR5BundleRelativeReferencePolicy();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
+    defaultInstanceValidatorParameters.setR5BundleRelativeReferencePolicy(r5BundleRelativeReferencePolicy);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public boolean isSecurityChecks() {
+    return defaultInstanceValidatorParameters.isSecurityChecks();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setSecurityChecks(boolean securityChecks) {
+    defaultInstanceValidatorParameters.setSecurityChecks(securityChecks);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public boolean isShowMessageIds() {
+    return defaultInstanceValidatorParameters.isShowMessageIds();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setShowMessageIds(boolean showMessageIds) {
+    defaultInstanceValidatorParameters.setShowMessageIds(showMessageIds);
     return this;
   }
 }
