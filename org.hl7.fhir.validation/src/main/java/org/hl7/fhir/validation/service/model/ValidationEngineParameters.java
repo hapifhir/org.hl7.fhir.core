@@ -488,6 +488,24 @@ public class ValidationEngineParameters {
     return this;
   }
 
+  @JsonProperty("showTimes")
+  @SerializedName("showTimes")
+  private
+  boolean showTimes = false;
+
+  @SerializedName("showTimes")
+  @JsonProperty("showTimes")
+  public boolean isShowTimes() {
+    return showTimes;
+  }
+
+  @SerializedName("showTimes")
+  @JsonProperty("showTimes")
+  public ValidationEngineParameters setShowTimes(boolean showTimes) {
+    this.showTimes = showTimes;
+    return this;
+  }
+
   @JsonProperty("matchetypes")
   @SerializedName("matchetypes")
   private List<String> matchetypes = new ArrayList<String>();
@@ -528,6 +546,8 @@ public class ValidationEngineParameters {
       && disableDefaultResourceFetcher == that.disableDefaultResourceFetcher
       && displayWarnings == that.displayWarnings
       && noExtensibleBindingMessages == that.noExtensibleBindingMessages
+      && doDebug == that.doDebug
+      && showTimes == that.showTimes
       && Objects.equals(resolutionContext, that.resolutionContext)
       && Objects.equals(aiService, that.aiService)
       && Objects.equals(certSources, that.certSources)
@@ -567,6 +587,8 @@ public class ValidationEngineParameters {
       mapLog,
       displayWarnings,
       noExtensibleBindingMessages,
+      doDebug,
+      showTimes,
       matchetypes);
   }
 
@@ -596,6 +618,8 @@ public class ValidationEngineParameters {
       ", mapLog='" + mapLog + '\'' +
       ", displayWarnings=" + displayWarnings +
       ", noExtensibleBindingMessages=" + noExtensibleBindingMessages +
+      ", doDebug=" + doDebug +
+      ", showTimes=" + showTimes +
       ", matchetypes=" + matchetypes +
       "}";
   }

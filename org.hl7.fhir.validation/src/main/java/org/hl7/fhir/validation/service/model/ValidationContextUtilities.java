@@ -39,6 +39,7 @@ public class ValidationContextUtilities {
     validationContext.setMapLog(validationEngineParameters.getMapLog());
     validationContext.setDisplayWarnings(validationEngineParameters.isDisplayWarnings());
     validationContext.setNoExtensibleBindingMessages(validationEngineParameters.isNoExtensibleBindingMessages());
+    validationContext.setShowTimes(validationEngineParameters.isShowTimes());
     validationContext.setMatchetypes(new ArrayList<>(validationEngineParameters.getMatchetypes()));
   }
 
@@ -70,7 +71,6 @@ public class ValidationContextUtilities {
 
   public static void addInstanceValidatorParameters(ValidationContext validationContext, InstanceValidatorParameters instanceValidatorParameters) {
     validationContext.setAssumeValidRestReferences(instanceValidatorParameters.isAssumeValidRestReferences());
-    validationContext.setShowTimes(instanceValidatorParameters.isShowTimes());
     validationContext.setHintAboutNonMustSupport(instanceValidatorParameters.isHintAboutNonMustSupport());
     validationContext.setHtmlOutput(instanceValidatorParameters.getHtmlOutput());
     validationContext.setOutputStyle(instanceValidatorParameters.getOutputStyle());
@@ -174,6 +174,7 @@ public class ValidationContextUtilities {
     validationEngineParameters.setMapLog(validationContext.getMapLog());
     validationEngineParameters.setDisplayWarnings(validationContext.isDisplayWarnings());
     validationEngineParameters.setNoExtensibleBindingMessages(validationContext.isNoExtensibleBindingMessages());
+    validationEngineParameters.setShowTimes(validationContext.isShowTimes());
     validationEngineParameters.setMatchetypes(new ArrayList<>(validationContext.getMatchetypes()));
     return validationEngineParameters;
   }
@@ -205,7 +206,6 @@ public class ValidationContextUtilities {
   public static InstanceValidatorParameters getInstanceValidatorParameters(ValidationContext validationContext) {
     InstanceValidatorParameters instanceValidatorParameters = new InstanceValidatorParameters();
     instanceValidatorParameters.setAssumeValidRestReferences(validationContext.isAssumeValidRestReferences());
-    instanceValidatorParameters.setShowTimes(validationContext.isShowTimes());
     instanceValidatorParameters.setHintAboutNonMustSupport(validationContext.isHintAboutNonMustSupport());
     instanceValidatorParameters.setHtmlOutput(validationContext.getHtmlOutput());
     instanceValidatorParameters.setOutputStyle(validationContext.getOutputStyle());

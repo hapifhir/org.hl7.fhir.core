@@ -673,6 +673,7 @@ public class ValidationService {
 
     validationEngine.getCertSources().addAll(validationEngineParameters.getCertSources());
     validationEngine.getMatchetypes().addAll(validationEngineParameters.getMatchetypes());
+    validationEngine.setShowTimes(validationEngineParameters.isShowTimes());
     validationEngine.setLanguage(validationEngineParameters.getLang());
     validationEngine.setLocale(validationEngineParameters.getLocale());
     validationEngine.setSnomedExtension(validationEngineParameters.getSnomedCTCode());
