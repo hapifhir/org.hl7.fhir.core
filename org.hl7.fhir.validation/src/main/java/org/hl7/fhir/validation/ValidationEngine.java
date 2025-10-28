@@ -240,7 +240,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private FHIRPathEngine fhirPathEngine;
   @Getter @Setter private IgLoader igLoader;
 
-  @Getter @Setter
+  @Getter
   private InstanceValidatorParameters defaultInstanceValidatorParameters = new InstanceValidatorParameters();
 
   private ContextUtilities cu = null;
@@ -305,6 +305,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   }
 
+  private ValidationEngine(InstanceValidatorParameters instanceValidatorParameters)  {
+    this.defaultInstanceValidatorParameters = instanceValidatorParameters;
+  }
+
   public static class ValidationEngineBuilder {
 
     @With
@@ -337,6 +341,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     @With
     private String extensionsVersion;
 
+    @With
+    private InstanceValidatorParameters defaultInstanceValidatorParameters;
+
     private static final boolean USE_ECOSYSTEM_DEFAULT = true;
 
     public ValidationEngineBuilder() {
@@ -352,9 +359,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       loggingService = new org.hl7.fhir.r5.context.Slf4JLoggingService(LoggerFactory.getLogger(ValidationEngine.class));
       thoVersion = null;
       extensionsVersion = null;
+      defaultInstanceValidatorParameters = new InstanceValidatorParameters();
     }
 
-    private ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, boolean useEcosystem, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, String thoVersion, String extensionsVersion) {
+    private ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, boolean useEcosystem, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, String thoVersion, String extensionsVersion, InstanceValidatorParameters defaultInstanceValidatorParameters) {
       this.terminologyCachePath = terminologyCachePath;
       this.userAgent = userAgent;
       this.version = version;
@@ -367,19 +375,20 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       this.useEcosystem = useEcosystem;
       this.thoVersion = thoVersion;
       this.extensionsVersion = extensionsVersion;
+      this.defaultInstanceValidatorParameters = defaultInstanceValidatorParameters;
    }
 
     public ValidationEngineBuilder withTxServer(String txServer, String txLog, FhirPublication txVersion, boolean useEcosystem) {
-      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, useEcosystem, timeTracker, canRunWithoutTerminologyServer, loggingService, thoVersion, extensionsVersion);
+      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, useEcosystem, timeTracker, canRunWithoutTerminologyServer, loggingService, thoVersion, extensionsVersion, defaultInstanceValidatorParameters);
     }
 
     public ValidationEngineBuilder withNoTerminologyServer() {
-      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, null, null, txVersion, useEcosystem, timeTracker, true, loggingService, thoVersion, extensionsVersion);
+      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, null, null, txVersion, useEcosystem, timeTracker, true, loggingService, thoVersion, extensionsVersion, defaultInstanceValidatorParameters);
     }
 
     public ValidationEngine fromNothing() throws IOException {
       NpmPackageIndexBuilder.setExtensionFactory(new SQLiteINpmPackageIndexBuilderDBImpl.SQLiteINpmPackageIndexBuilderDBImplFactory());
-      ValidationEngine engine = new ValidationEngine();
+      ValidationEngine engine = new ValidationEngine(defaultInstanceValidatorParameters);
       SimpleWorkerContext.SimpleWorkerContextBuilder contextBuilder = new SimpleWorkerContext.SimpleWorkerContextBuilder().withLoggingService(loggingService);
       if (terminologyCachePath != null)
         contextBuilder = contextBuilder.withTerminologyCachePath(terminologyCachePath);
@@ -394,7 +403,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     }
 
     public ValidationEngine fromSource(String src) throws IOException, URISyntaxException {
-      ValidationEngine engine = new ValidationEngine();
+      ValidationEngine engine = new ValidationEngine(defaultInstanceValidatorParameters);
       engine.loadCoreDefinitions(src, false, terminologyCachePath, userAgent, timeTracker, loggingService);
       engine.getContext().setCanRunWithoutTerminology(canRunWithoutTerminologyServer);
       engine.getContext().setPackageTracker(engine);
@@ -916,7 +925,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         locale = Locale.forLanguageTag(language);
       }
     }
-    validator.setAssumeValidRestReferences(isAssumeValidRestReferences());
+    validator.setAssumeValidRestReferences(defaultInstanceValidatorParameters.isAssumeValidRestReferences());
     validator.setNoExtensibleWarnings(noExtensibleBindingMessages);
 
     validator.getContext().getManager().setLocale(locale);
@@ -925,7 +934,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.getValidationControl().putAll(validationControl);
     validator.setAIService(aiService);
 
-    validator.setCheckIPSCodes(isCheckIPSCodes());
+    validator.setCheckIPSCodes(defaultInstanceValidatorParameters.isCheckIPSCodes());
 
     validator.setCacheFolder(context.getTxCache().getFolder());
     if (format == FhirFormat.SHC) {

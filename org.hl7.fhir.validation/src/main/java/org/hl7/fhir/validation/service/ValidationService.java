@@ -305,8 +305,8 @@ public class ValidationService {
 
         PrintStream dst = null;
         ValidationOutputRenderer renderer = makeValidationOutputRenderer(validationContext);
-        renderer.setCrumbTrails(validator.isCrumbTrails());
-        renderer.setShowMessageIds(validator.isShowMessageIds());
+        renderer.setCrumbTrails(validationContext.isCrumbTrails());
+        renderer.setShowMessageIds(validationContext.isShowMessageIds());
         renderer.setRunDate(runDate);
         if (renderer.isSingleFile()) {
           if (validationContext.getOutput() == null) {
@@ -641,6 +641,7 @@ public class ValidationService {
   protected ValidationEngine buildValidationEngine(ValidationEngineParameters validationEngineParameters, InstanceValidatorParameters defaultInstanceValidatorParameters, String definitions, TimeTracker timeTracker) throws IOException, URISyntaxException {
     log.info("  Loading FHIR v" + validationEngineParameters.getSv() + " from " + definitions);
     ValidationEngine validationEngine = getValidationEngineBuilder()
+      .withDefaultInstanceValidatorParameters(new InstanceValidatorParameters(defaultInstanceValidatorParameters))
       .withVersion(validationEngineParameters.getSv())
       .withTimeTracker(timeTracker)
       .withUserAgent(Common.getValidatorUserAgent())
@@ -709,8 +710,6 @@ public class ValidationService {
     }
     TerminologyCache.setNoCaching(validationEngineParameters.isNoInternalCaching());
 
-    InstanceValidatorParameters instanceValidatorParameters = new InstanceValidatorParameters(defaultInstanceValidatorParameters);
-    validationEngine.setDefaultInstanceValidatorParameters(instanceValidatorParameters);
 
     validationEngine.prepare(); // generate any missing snapshots
     log.info("  ...go! (" + timeTracker.milestone() + ")");
