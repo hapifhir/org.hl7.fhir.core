@@ -232,11 +232,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private boolean noExtensibleBindingMessages;
   @Getter @Setter private boolean noUnicodeBiDiControlChars;
   @Getter @Setter private boolean securityChecks;
-  @Getter @Setter private boolean crumbTrails;
   @Getter @Setter private boolean showMessageIds;
-  @Getter @Setter private boolean forPublication;
   @Getter @Setter private String aiService;
-  @Getter @Setter private boolean doImplicitFHIRPathStringConversion;
   @Getter @Setter private HtmlInMarkdownCheck htmlInMarkdownCheck;
   @Getter @Setter private boolean unknownCodeSystemsCauseErrors;
   @Getter @Setter private boolean noExperimentalContent;
@@ -288,10 +285,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     noExtensibleBindingMessages = other.noExtensibleBindingMessages;
     noUnicodeBiDiControlChars = other.noUnicodeBiDiControlChars;
     securityChecks = other.securityChecks;
-    crumbTrails = other.crumbTrails;
-    forPublication = other.forPublication;
     aiService = other.aiService;
-    doImplicitFHIRPathStringConversion = other.doImplicitFHIRPathStringConversion;
     htmlInMarkdownCheck = other.htmlInMarkdownCheck;
     locale = other.locale;
     igs.addAll(other.igs);
@@ -1556,6 +1550,75 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Deprecated(since = "2025-10-24")
   public ValidationEngine setCheckIPSCodes(boolean checkIPSCodes) {
     defaultInstanceValidatorParameters.setCheckIPSCodes(checkIPSCodes);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public boolean isCrumbTrails() {
+    return defaultInstanceValidatorParameters.isCrumbTrails();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setCrumbTrails(boolean crumbTrails) {
+    defaultInstanceValidatorParameters.setCrumbTrails(crumbTrails);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public boolean isDoImplicitFHIRPathStringConversion() {
+    return defaultInstanceValidatorParameters.isDoImplicitFHIRPathStringConversion();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setDoImplicitFHIRPathStringConversion(boolean doImplicitFHIRPathStringConversion) {
+    defaultInstanceValidatorParameters.setDoImplicitFHIRPathStringConversion(doImplicitFHIRPathStringConversion);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public boolean isForPublication() {
+    return defaultInstanceValidatorParameters.isForPublication();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setForPublication(boolean forPublication) {
+    defaultInstanceValidatorParameters.setForPublication(forPublication);
     return this;
   }
 }
