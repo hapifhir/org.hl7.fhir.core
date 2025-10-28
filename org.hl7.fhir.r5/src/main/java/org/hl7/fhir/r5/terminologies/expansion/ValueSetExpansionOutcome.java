@@ -51,11 +51,13 @@ public class ValueSetExpansionOutcome {
     this.error = error;
     this.errorClass = errorClass;
     this.fromServer = fromServer;
-    this.allErrors.addAll(errList);
+    if (errList != null) {
+      this.allErrors.addAll(errList);
+    }
     if (!allErrors.contains(error)) {
       allErrors.add(error);
     }
-    if (!errList.contains(error)) {
+    if (errList == null || !errList.contains(error)) {
       errList.add(error);
     }
   }

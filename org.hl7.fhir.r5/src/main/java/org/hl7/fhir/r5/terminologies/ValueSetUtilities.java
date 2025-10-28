@@ -61,6 +61,7 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
 import org.hl7.fhir.r5.utils.CanonicalResourceUtilities;
 
 import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.NaturalOrderComparator;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -78,7 +79,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
       if (c == 0) {
         String ver1 = o1.getVersion();
         String ver2 = o2.getVersion();
-        c = VersionUtilities.compareVersions(ver1, ver2);
+        c = compareVersions(ver1, ver2);
         if (c == 0) {
           String d1 = o1.getDateElement().asStringValue();
           String d2 = o2.getDateElement().asStringValue();
@@ -86,6 +87,22 @@ public class ValueSetUtilities extends TerminologyUtilities {
         }
       }
       return c;
+    }
+
+    private int compareVersions(String v1, String v2) {
+      if (v1 == null && v2 == null) {
+        return 0;
+      } else if (v1 == null) {
+        return -1; // this order is deliberate
+      } else if (v2 == null) {
+        return 1;
+      } else if (VersionUtilities.isSemVer(v1) && VersionUtilities.isSemVer(v2)) {
+        return VersionUtilities.compareVersions(v1, v2);
+      } else if (Utilities.isInteger(v1) && Utilities.isInteger(v2)) {
+        return Integer.compare(Integer.parseInt(v1), Integer.parseInt(v2));
+      } else {
+        return new NaturalOrderComparator<String>().compare(v1, v2);
+      }
     }
 
     private int compareString(String s1, String s2) {

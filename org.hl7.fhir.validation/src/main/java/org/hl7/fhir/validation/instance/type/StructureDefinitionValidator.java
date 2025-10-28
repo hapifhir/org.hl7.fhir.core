@@ -522,7 +522,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     List<String> versionList = VersionUtilities.iterateCorePublishedVersions(startVer, endVer);
     for (String v : versionList) {
       IWorkerContext ctxt;
-      if (VersionUtilities.versionMatches(context.getVersion(), v)) {
+      if (VersionUtilities.versionMatches(v, context.getVersion())) {
         ctxt = context;
       } else {
         if (!session.getOtherVersions().containsKey(v)) {

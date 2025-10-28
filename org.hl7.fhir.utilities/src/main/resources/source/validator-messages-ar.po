@@ -1443,6 +1443,11 @@ msgstr "تحتوي خريطة المفاهيم على رموز كثيرة جدا
 msgid "The presence of the concept ''{1}'' in the system ''{0}'' in the value set {3} is marked with a status of {2} and its use should be reviewed"
 msgstr ""
 
+# CONFORMANCE_STATEMENT_WORD
+#: CONFORMANCE_STATEMENT_WORD
+msgid "The html source contains the word ''{0}'' but it is not in a text phrase marked as a conformance clause"
+msgstr ""
+
 # CONTAINED_ORPHAN_DOM3
 #: CONTAINED_ORPHAN_DOM3
 #, fuzzy
@@ -1526,6 +1531,11 @@ msgstr[2] ""
 msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
+
+# DEPRECATED_CONCEPT_FOUND
+#: DEPRECATED_CONCEPT_FOUND
+msgid "The concept ''{1}'' is deprecated and its use should be reviewed"
+msgstr ""
 
 # DISCRIMINATOR_BAD_PATH
 #: DISCRIMINATOR_BAD_PATH
@@ -3484,6 +3494,11 @@ msgstr "تسمية أمان مكررة {0} {0}"
 msgid "The element {0} is not marked as ''mustSupport'' in the profile {1}. Consider not using the element, or marking the element as must-Support in the profile"
 msgstr "لم يتم وضع علامة {0} على العنصر {0} كـ \"يجب أن يدعم\" في الملف الشخصي {1}. ضع في اعتبارك عدم استخدام العنصر، أو وضع علامة \"يجب أن يدعم\" في ملف التعريف"
 
+# NARRATIVE_NOT_TRANSLATED
+#: NARRATIVE_NOT_TRANSLATED
+msgid "\"The narrative includes custom content for the default language ({0}), but does not include translated content for the {1} language, so the default language has been used"
+msgstr ""
+
 # NDJSON_EMPTY_LINE_WARNING
 #: NDJSON_EMPTY_LINE_WARNING
 #, fuzzy
@@ -3875,8 +3890,8 @@ msgstr "عدم تطابق في التقسيم إلى شرائح عند {0}: ال
 # PROFILE_COMPLIES_WITH_SLICING_NO_SLICE
 #: PROFILE_COMPLIES_WITH_SLICING_NO_SLICE
 #, fuzzy
-msgid "Mismatch in slicing at {0}: no slice found for the discriminators {1} with the values {2}"
-msgstr "عدم تطابق في التقسيم إلى شرائح عند {0}: لم يتم العثور على أي شريحة للمميزات {1} مع القيم {2}"
+msgid "Mismatch in slicing at {0}: no slice found for the discriminator {1} with the values {2}"
+msgstr "!!عدم تطابق في التقسيم إلى شرائح عند {0}: لم يتم العثور على أي شريحة للمميزات {1} مع القيم {2}"
 
 # PROFILE_COMPLIES_WITH_SLICING_ORDER
 #: PROFILE_COMPLIES_WITH_SLICING_ORDER
@@ -4656,6 +4671,16 @@ msgstr "فشل إحضار ''{0}''. تفاصيل النظام: {1}: {2}"
 #, fuzzy
 msgid "Request took too long to process (>{0}sec)"
 msgstr "استغرقت معالجة الطلب وقتاً طويلاً جداً (>{0}ثانية)"
+
+# RESOURCEDEFINITION_PROPERTY_UNKNOWN
+#: RESOURCEDEFINITION_PROPERTY_UNKNOWN
+msgid "The ''resourceDefinition'' is ''{0}'', but no additional resource is known for that reference"
+msgstr ""
+
+# RESOURCEDEFINITION_PROPERTY_WRONG_TYPE
+#: RESOURCEDEFINITION_PROPERTY_WRONG_TYPE
+msgid "The JSON element for ''resourceDefinition'' has the wrong JSON type: {0}"
+msgstr ""
 
 # RESOURCETYPE_PROPERTY_WRONG_TYPE
 #: RESOURCETYPE_PROPERTY_WRONG_TYPE
@@ -5804,8 +5829,18 @@ msgstr "لقطة الملف الشخصي ''{0}'' فارغة. عادةً ما ي�
 # STATUS_CODE_WARNING_CODE
 #: STATUS_CODE_WARNING_CODE
 #, fuzzy
-msgid "The code ''{1}'' is valid but is {0}"
-msgstr "الرمز ''{1}'' صالح ولكنه {0}"
+msgid "The concept ''{1}'' is valid but is {0}"
+msgstr "!!الرمز ''{1}'' صالح ولكنه {0}"
+
+# SYSTEM_VERSION_MULTIPLE_DEFAULT
+#: SYSTEM_VERSION_MULTIPLE_DEFAULT
+msgid "Multiple default versions found for system {0}: ''{1}'', ''{2}'');"
+msgstr ""
+
+# SYSTEM_VERSION_MULTIPLE_OVERRIDE
+#: SYSTEM_VERSION_MULTIPLE_OVERRIDE
+msgid "Multiple version overrides found for system {0}: ''{1}'', ''{2}'');"
+msgstr ""
 
 # Same_id_on_multiple_elements__in_
 #: Same_id_on_multiple_elements__in_
@@ -5854,6 +5889,11 @@ msgstr "تعذر التأكد من أن الرموز المقدمة هي من م
 #, fuzzy
 msgid "Could not confirm that the codes provided are from the required value set {0} because there is no terminology service"
 msgstr "تعذر التأكد من أن الرموز المقدمة هي من مجموعة القيم المطلوبة {0} لعدم وجود خدمة مصطلحات"
+
+# TERMINOLOGY_TX_NO_OID_SERVICES
+#: TERMINOLOGY_TX_NO_OID_SERVICES
+msgid "OIDs cannot be verified because the context of use does not provide OID services"
+msgstr ""
 
 # TERMINOLOGY_TX_OID_MULTIPLE_MATCHES
 #: TERMINOLOGY_TX_OID_MULTIPLE_MATCHES
@@ -6328,6 +6368,11 @@ msgstr "قيمة عنوان URL ''{0}'' غير صالحة لعدم وجود هد
 msgid "The URL value ''{0}'' might be wrong because it appears to point to an internal target, but there is no matching target"
 msgstr "قد تكون قيمة عنوان URL ''{0}'' خاطئة لأنه يبدو أنها تشير إلى هدف داخلي، ولكن لا يوجد هدف مطابق"
 
+# TYPE_SPECIFIC_CHECKS_DT_URL_WRONG_HTTPS
+#: TYPE_SPECIFIC_CHECKS_DT_URL_WRONG_HTTPS
+msgid "A definition could not be found for Canonical URL ''{0}'' but a definition can be found for ''{1}'' - change from https: to http:"
+msgstr ""
+
 # TYPE_SPECIFIC_CHECKS_DT_XHTML_ACTIVE_HREF
 #: TYPE_SPECIFIC_CHECKS_DT_XHTML_ACTIVE_HREF
 #, fuzzy
@@ -6415,14 +6460,8 @@ msgstr "تعذر التحقق من صحة القيمة المقدمة ([{0}]) ف
 # Terminology_TX_Binding_NoSource
 #: Terminology_TX_Binding_NoSource
 #, fuzzy
-msgid "Binding for path {0} has no source, so can''t be checked"
-msgstr "الارتباط للمسار {0} ليس له مصدر، لذا لا يمكن التحقق منه"
-
-# Terminology_TX_Binding_NoSource2
-#: Terminology_TX_Binding_NoSource2
-#, fuzzy
-msgid "Binding has no source, so can''t be checked"
-msgstr "الربط ليس له مصدر، لذا لا يمكن التحقق منه"
+msgid "Binding for path {0} in profile {1} has no source, so can''t be checked"
+msgstr "!!الارتباط للمسار {0} ليس له مصدر، لذا لا يمكن التحقق منه"
 
 # Terminology_TX_Code_ValueSet
 #: Terminology_TX_Code_ValueSet
@@ -7084,11 +7123,26 @@ msgstr[5] ""
 msgid "A definition for CodeSystem ''{0}'' could not be found, so the code cannot be validated"
 msgstr "تعذّر العثور على تعريف ل CodeSystem ''{0}''، لذلك لا يمكن التحقق من صحة الرمز"
 
+# UNKNOWN_CODESYSTEM_EXP
+#: UNKNOWN_CODESYSTEM_EXP
+msgid "A definition for CodeSystem ''{0}'' could not be found, so the value set cannot be expanded"
+msgstr ""
+
 # UNKNOWN_CODESYSTEM_VERSION
 #: UNKNOWN_CODESYSTEM_VERSION
 #, fuzzy
 msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the code cannot be validated. Valid versions: {2}"
 msgstr "تعذّر العثور على تعريف لنظام CodeSystem ''{0}'' الإصدار ''{1}''، لذلك لا يمكن التحقق من صحة الرمز. إصدارات صالحة: {2}"
+
+# UNKNOWN_CODESYSTEM_VERSION_EXP
+#: UNKNOWN_CODESYSTEM_VERSION_EXP
+msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the value set cannot be expanded. Valid versions: {2}"
+msgstr ""
+
+# UNKNOWN_CODESYSTEM_VERSION_EXP_NONE
+#: UNKNOWN_CODESYSTEM_VERSION_EXP_NONE
+msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the value set cannot be expanded. No versions of this code system are known"
+msgstr ""
 
 # UNKNOWN_CODESYSTEM_VERSION_NONE
 #: UNKNOWN_CODESYSTEM_VERSION_NONE
@@ -7484,6 +7538,26 @@ msgstr "إصدار غير مدعوم R2B"
 #, fuzzy
 msgid "Unexpected internal condition - no source on diff element"
 msgstr "حالة داخلية غير متوقعة - لا يوجد مصدر على عنصر الفرق"
+
+# VALIDATION_ADDITIONAL_RESOURCE_ABSENT
+#: VALIDATION_ADDITIONAL_RESOURCE_ABSENT
+msgid "This resource is an additional resource, so must have a resourceDefinition of ''{0}''"
+msgstr ""
+
+# VALIDATION_ADDITIONAL_RESOURCE_NO
+#: VALIDATION_ADDITIONAL_RESOURCE_NO
+msgid "This resource is not an additional resource, so should not have a resourceDefinition of ''{0}''"
+msgstr ""
+
+# VALIDATION_ADDITIONAL_RESOURCE_NO_WRONG
+#: VALIDATION_ADDITIONAL_RESOURCE_NO_WRONG
+msgid "The value for resourceDefinition of ''{0}'' does not match the required value of ''{1}''. In addition, this is not an additional resource, and shouldn''t have a resourceDefinition at all"
+msgstr ""
+
+# VALIDATION_ADDITIONAL_RESOURCE_WRONG
+#: VALIDATION_ADDITIONAL_RESOURCE_WRONG
+msgid "The value for resourceDefinition of ''{0}'' must be ''{1}''"
+msgstr ""
 
 # VALIDATION_AI_FAILED
 #: VALIDATION_AI_FAILED
@@ -7970,6 +8044,11 @@ msgstr "النظام ''{0}'' هو في الواقع مجموعة قيم، وال
 msgid "The system ''{0}'' is actually a value set, which itself refers to the systems {1}"
 msgstr "النظام \"{0}\" هو في الواقع مجموعة قيم، والتي تشير في حد ذاتها إلى الأنظمة {1}"
 
+# VALUESET_INC_CS_NO_SUPPORT
+#: VALUESET_INC_CS_NO_SUPPORT
+msgid "The concepts in the value set include have not been validated because the code system is not known, and no terminology service supports it"
+msgstr ""
+
 # VALUESET_INC_NOT_VALIDATING
 #: VALUESET_INC_NOT_VALIDATING
 msgid "The concepts in the value set include have not been validated because the validator is configured not to check them"
@@ -8148,6 +8227,26 @@ msgstr "الخاصية ''{0}'' غير معروفة للنظام ''{1}''، لذل
 #, fuzzy
 msgid "No definition can be found for the system {1}, and the property ''{0}'' is not a generally known property, so the property might not be valid, or understood by the terminology ecosystem. In case it''s useful, the list of generally known properties for all systems is {2}"
 msgstr "لا يمكن العثور على تعريف للنظام {1}، كما أن الخاصية \" {0}\" ليست خاصية معروفة عموماً، لذلك قد لا تكون الخاصية صالحة، أو مفهومة من قبل منظومة المصطلحات. في حال كان ذلك مفيدًا، فإن قائمة الخصائص المعروفة عمومًا لجميع الأنظمة هي {2}"
+
+# VALUESET_VALUE_MISMATCH
+#: VALUESET_VALUE_MISMATCH
+msgid "The code system ''{0}'' version ''{1}'' in the ValueSet include is different to the one in the value (''{2}'')"
+msgstr ""
+
+# VALUESET_VALUE_MISMATCH_CHANGED
+#: VALUESET_VALUE_MISMATCH_CHANGED
+msgid "The code system ''{0}'' version ''{1}'' resulting from the version ''{2}'' in the ValueSet include is different to the one in the value (''{3}'')"
+msgstr ""
+
+# VALUESET_VALUE_MISMATCH_DEFAULT
+#: VALUESET_VALUE_MISMATCH_DEFAULT
+msgid "The code system ''{0}'' version ''{1}'' for the versionless include in the ValueSet include is different to the one in the value (''{3}'')"
+msgstr ""
+
+# VALUESET_VERSION_CHECK
+#: VALUESET_VERSION_CHECK
+msgid "The version ''{1}'' is not allowed for system ''{0}'': required to be ''{2}'' by a version-check parameter"
+msgstr ""
 
 # VIEWDEFINITION_COLLECTION_NEEDED1
 #: VIEWDEFINITION_COLLECTION_NEEDED1

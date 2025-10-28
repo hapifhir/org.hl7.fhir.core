@@ -409,14 +409,6 @@ public class PackageReGenerator {
         for (ElementDefinitionBindingAdditionalComponent adb : ed.getBinding().getAdditional()) {
           processResource(context.fetchResource(ValueSet.class, adb.getValueSet()));          
         }
-        if(includeConformsTo) {
-          for (ElementDefinition.ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
-            if (inv.hasExpression()) {
-              ExpressionNode node = pathEngine.parse(inv.getExpression());
-              processExpression(node);
-            }
-          }
-        }
       }
       for (TypeRefComponent tr : ed.getType()) {
         if (Utilities.isAbsoluteUrl(tr.getCode())) {
@@ -427,6 +419,14 @@ public class PackageReGenerator {
         }
         for (CanonicalType c : tr.getTargetProfile()) {
           processResource((CanonicalResource) context.fetchResource(Resource.class, c.primitiveValue()));
+        }
+      }
+      if(includeConformsTo) {
+        for (ElementDefinition.ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
+          if (inv.hasExpression()) {
+            ExpressionNode node = pathEngine.parse(inv.getExpression());
+            processExpression(node);
+          }
         }
       }
     }
