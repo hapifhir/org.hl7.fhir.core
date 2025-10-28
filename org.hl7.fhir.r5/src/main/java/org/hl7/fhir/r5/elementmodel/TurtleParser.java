@@ -391,12 +391,6 @@ public class TurtleParser extends ParserBase {
       t.linkedPredicate(FHIR_BASE_PREFIX + "l", refURI, linkResolver == null ? null : linkResolver.resolvePage("rdf.html#reference"), null);
   }
 
-  protected void decorateCanonical(Complex t, Element canonical) {
-    String refURI = getReferenceURI(canonical.primitiveValue());
-    if(refURI != null)
-      t.linkedPredicate(FHIR_BASE_PREFIX + "l", refURI, linkResolver == null ? null : linkResolver.resolvePage("rdf.html#reference"), null);
-  }
-
   private String genSubjectId(Element e) {
     String id = e.getChildValue("id");
     if (base == null || id == null)
