@@ -1,6 +1,5 @@
 package org.hl7.fhir.r5.elementmodel;
 
-import java.io.IOException;
 import java.io.PrintStream;
 
 /*
@@ -1801,7 +1800,7 @@ public class Element extends Base implements NamedItem {
     return xhtml != null;
   }
 
-  public boolean isElementOf(String... paths) {
+  public boolean isElementForPath(String... paths) {
     for (String s : paths) {
       if (s.equals(property.getDefinition().getBase().getPath())) {
         return true;
