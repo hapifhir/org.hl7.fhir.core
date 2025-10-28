@@ -227,7 +227,7 @@ public class ShExGenerator {
   private static String CONCEPT_REFERENCES_TEMPLATE = "a NONLITERAL*;";
 
   // Untyped resource has the extra link entry
-  private static String RESOURCE_LINK_TEMPLATE = "fhir:link IRI?;";
+  private static String RESOURCE_LINK_TEMPLATE = "fhir:l IRI?;";
 
   // Extension template
   // No longer used -- we emit the actual definition
@@ -239,7 +239,7 @@ public class ShExGenerator {
   private static String TYPED_REFERENCE_TEMPLATE = "\n<$refType$Reference> CLOSED {" +
     "\n    fhir:Element.id @<id>?;" +
     "\n    fhir:Element.extension @<Extension>*;" +
-    "\n    fhir:link @<$refType$> OR CLOSED {a [fhir:$refType$]}?;" +
+    "\n    fhir:l @<$refType$> OR CLOSED {a [fhir:$refType$]}?;" +
     "\n    fhir:Reference.reference @<String>?;" +
     "\n    fhir:Reference.display @<String>?;" +
     // "\n    fhir:index xsd:integer?" +
@@ -1431,7 +1431,7 @@ public class ShExGenerator {
         oneOrMoreTypes.add(defnToStore);
     } else {
       if (!refChoices.isEmpty()) {
-        defn += " AND {fhir:link \n\t\t\t@<" +
+        defn += " AND {fhir:l \n\t\t\t@<" +
           refChoices.replaceAll("_OR_", "> OR \n\t\t\t@<") + "> ? }";
       }
     }
@@ -1695,7 +1695,7 @@ public class ShExGenerator {
       }
 
       if (!refValues.isEmpty())
-        choiceEntries.add("(" + entry + " AND {fhir:link " + StringUtils.join(refValues, " OR \n\t\t\t ") + " }) ");
+        choiceEntries.add("(" + entry + " AND {fhir:l " + StringUtils.join(refValues, " OR \n\t\t\t ") + " }) ");
       else
         choiceEntries.add(entry);
     }
@@ -1740,7 +1740,7 @@ public class ShExGenerator {
     if (oneOrMoreType.indexOf(ONE_OR_MORE_CHOICES) != -1) {
       oomType = oneOrMoreType.replaceAll(ONE_OR_MORE_CHOICES, "_");
       origType = oneOrMoreType.split(ONE_OR_MORE_CHOICES)[0];
-      restriction = "AND {fhir:link \n\t\t\t@<";
+      restriction = "AND {fhir:l \n\t\t\t@<";
 
       String choices = oneOrMoreType.split(ONE_OR_MORE_CHOICES)[1];
       restriction += choices.replaceAll("_OR_", "> OR \n\t\t\t@<") + "> }";

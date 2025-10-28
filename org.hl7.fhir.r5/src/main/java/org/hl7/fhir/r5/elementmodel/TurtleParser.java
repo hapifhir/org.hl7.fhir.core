@@ -376,24 +376,25 @@ public class TurtleParser extends ParserBase {
   }
 
   protected String getReferenceURI(String ref) {
-    if (ref != null && (ref.startsWith("http://") || ref.startsWith("https://")))
+    if (ref != null && (ref.startsWith("http://") || ref.startsWith("https://") || ref.startsWith("urn:") || ref.startsWith("#")))
       return "<" + ref + ">";
     else if (base != null && ref != null && ref.contains("/"))
       return "<" + Utilities.appendForwardSlash(base) + ref + ">";
-    else
-      return null;
+    else if (ref != null) {
+        return "fhir:" + ref;
+    } else return null;
   }
 
   protected void decorateReference(Complex t, Element coding) {
     String refURI = getReferenceURI(coding.getChildValue("reference"));
     if(refURI != null)
-      t.linkedPredicate(FHIR_BASE_PREFIX + "link", refURI, linkResolver == null ? null : linkResolver.resolvePage("rdf.html#reference"), null);
+      t.linkedPredicate(FHIR_BASE_PREFIX + "l", refURI, linkResolver == null ? null : linkResolver.resolvePage("rdf.html#reference"), null);
   }
 
   protected void decorateCanonical(Complex t, Element canonical) {
     String refURI = getReferenceURI(canonical.primitiveValue());
     if(refURI != null)
-      t.linkedPredicate(FHIR_BASE_PREFIX + "link", refURI, linkResolver == null ? null : linkResolver.resolvePage("rdf.html#reference"), null);
+      t.linkedPredicate(FHIR_BASE_PREFIX + "l", refURI, linkResolver == null ? null : linkResolver.resolvePage("rdf.html#reference"), null);
   }
 
   private String genSubjectId(Element e) {
@@ -452,6 +453,7 @@ public class TurtleParser extends ParserBase {
           elementLiteral = element.getValue();
         }
         t.linkedPredicate(FHIR_BASE_PREFIX + "v", ttlLiteral(elementLiteral, element.getType()), linkResolver == null ? null : linkResolver.resolveType(element.getType()), null);
+        linkURI(t, element.getValue(), element.getType());
     }
       
 
@@ -459,8 +461,6 @@ public class TurtleParser extends ParserBase {
       decorateCoding(t, element, section);
     if (Utilities.existsInList(element.getType(), "Reference"))
       decorateReference(t, element);
-    else if (Utilities.existsInList(element.getType(), "canonical"))
-      decorateCanonical(t, element);
 
     if("canonical".equals(element.getType())) {
       String refURI = element.primitiveValue();
@@ -569,6 +569,24 @@ public class TurtleParser extends ParserBase {
     } else {
       return value;	
     }		
+  }
+
+  private void linkURI(Complex t, String value, String type) {
+	if (type.equals("canonical") || type.equals("oid") || type.equals("uri") || type.equals("url") || type.equals("uuid")) {
+	  String versioned = value;
+	  if (versioned.contains("|")) {
+		  String[] parts = versioned.split("\\|", 2);
+		  String url = parts[0];
+		  String version = parts[1];
+		  String separator = "";
+		  if (url.contains("?")) separator = "&";
+		  else separator = "?";
+		  versioned = url + separator + "version=" + version;
+	  }
+	  String refURI = getReferenceURI(versioned);
+	  if (refURI != null)
+        t.linkedPredicate("fhir:l", getReferenceURI(versioned), linkResolver == null ? null : linkResolver.resolveType(type), null);
+    }
   }
 
   protected void decorateCoding(Complex t, Element coding, Section section) throws FHIRException {
