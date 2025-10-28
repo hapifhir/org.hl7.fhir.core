@@ -1167,7 +1167,7 @@ public class StructureMapValidator extends BaseValidator {
     List<ElementDefinitionSource> result = new ArrayList<>();
     List<ElementDefinition> children = profileUtilities.getChildList(sd, ed);
     if (children == null || children.isEmpty()) {
-      getElementDefinitionChildrenFromTypes(result, sd, ed, type, element);
+      getElementDefinitionChildrenFromTypes(result, ed, type, element);
     } else {
       for (ElementDefinition t : children) {
         if (t.getNameBase().equals(element)) {
@@ -1197,25 +1197,32 @@ public class StructureMapValidator extends BaseValidator {
     return result;
   }
 
-  private void getElementDefinitionChildrenFromTypes(List<ElementDefinitionSource> result, StructureDefinition sd, ElementDefinition ed, String type, String element) {
+  private void getElementDefinitionChildrenFromTypes(List<ElementDefinitionSource> result, ElementDefinition ed, String type, String element) {
     for (TypeRefComponent td : ed.getType()) {
       String tn = td.getWorkingCode();
       StructureDefinition sdt = context.fetchTypeDefinition(tn);
-      if (sdt != null && isSpecialisation(sdt, type)) {
-        sdt = context.fetchTypeDefinition(type);
-      }
-      if (type == null || typeMatches(tn, type) || (sdt != null && sdt.getType().equals(type))) {
-        if (sdt != null) {
-          for (ElementDefinition t : sdt.getSnapshot().getElement()) {
-            if (Utilities.charCount(t.getPath(), '.') == 1 && t.getNameBase().equals(element)) {
-              result.add(new ElementDefinitionSource(sdt, t));
-            }
-          }
+      if (sdt != null) {
+        if (isSpecialisation(sdt, type)) {
+          addElementsToResult(result, type, element, tn, context.fetchTypeDefinition(type));
         } else {
-          log.info("Unable to find type "+type);
+          addElementsToResult(result, type, element, tn, sdt);
         }
       }
-    }    
+    }
+  }
+
+  private void addElementsToResult(List<ElementDefinitionSource> result, String type, String element, String tn, StructureDefinition sdt) {
+    if (type == null || typeMatches(tn, type) || (sdt != null && sdt.getType().equals(type))) {
+      if (sdt != null) {
+        for (ElementDefinition t : sdt.getSnapshot().getElement()) {
+          if (Utilities.charCount(t.getPath(), '.') == 1 && t.getNameBase().equals(element)) {
+            result.add(new ElementDefinitionSource(sdt, t));
+          }
+        }
+      } else {
+        log.info("Unable to find type " + type);
+      }
+    }
   }
 
   private boolean isSpecialisation(StructureDefinition sdt, String type) {
