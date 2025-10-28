@@ -17,7 +17,6 @@ public class InstanceValidatorParameters {
 
   public InstanceValidatorParameters(InstanceValidatorParameters defaultInstanceValidatorParameters) {
     this.assumeValidRestReferences = defaultInstanceValidatorParameters.assumeValidRestReferences;
-    this.showTimes = defaultInstanceValidatorParameters.showTimes;
     this.hintAboutNonMustSupport = defaultInstanceValidatorParameters.hintAboutNonMustSupport;
     this.htmlOutput = defaultInstanceValidatorParameters.htmlOutput;
     this.outputStyle = defaultInstanceValidatorParameters.outputStyle;
@@ -62,23 +61,6 @@ public class InstanceValidatorParameters {
   @JsonProperty("assumeValidRestReferences")
   public InstanceValidatorParameters setAssumeValidRestReferences(boolean assumeValidRestReferences) {
     this.assumeValidRestReferences = assumeValidRestReferences;
-    return this;
-  }
-
-  @JsonProperty("showTimes")
-  @SerializedName("showTimes")
-  private boolean showTimes = false;
-
-  @SerializedName("showTimes")
-  @JsonProperty("showTimes")
-  public boolean isShowTimes() {
-    return showTimes;
-  }
-
-  @SerializedName("showTimes")
-  @JsonProperty("showTimes")
-  public InstanceValidatorParameters setShowTimes(boolean showTimes) {
-    this.showTimes = showTimes;
     return this;
   }
 
@@ -565,7 +547,6 @@ public class InstanceValidatorParameters {
     if (o == null || getClass() != o.getClass()) return false;
     InstanceValidatorParameters that = (InstanceValidatorParameters) o;
     return assumeValidRestReferences == that.assumeValidRestReferences
-      && showTimes == that.showTimes
       && hintAboutNonMustSupport == that.hintAboutNonMustSupport
       && wantInvariantsInMessages == that.wantInvariantsInMessages
       && noInvariants == that.noInvariants
@@ -598,14 +579,13 @@ public class InstanceValidatorParameters {
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, showTimes, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction);
+    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction);
   }
 
   @Override
   public String toString() {
     return "InstanceValidatorParameters{" +
       "assumeValidRestReferences=" + assumeValidRestReferences +
-      ", showTimes=" + showTimes +
       ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +
       ", htmlOutput='" + htmlOutput + '\'' +
       ", outputStyle='" + outputStyle + '\'' +

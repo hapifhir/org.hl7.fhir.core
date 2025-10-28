@@ -219,7 +219,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private boolean doNative;
   @Getter @Setter private boolean displayWarnings;
   @Getter @Setter private boolean logValidationProgress;
-  @Getter @Setter private boolean wantInvariantInMessage;
   @Getter @Setter private boolean anyExtensionsAllowed = false;
   @Getter @Setter private String version;
   @Getter @Setter private String language;
@@ -231,7 +230,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private IWorkerContextManager.ICanonicalResourceLocator locator;
   @Getter @Setter private boolean noExtensibleBindingMessages;
   @Getter @Setter private String aiService;
-  @Getter @Setter private boolean unknownCodeSystemsCauseErrors;
   @Getter @Setter private Locale locale;
   @Getter @Setter private List<ImplementationGuide> igs = new ArrayList<>();
   @Getter @Setter private List<String> extensionDomains = new ArrayList<>();
@@ -261,7 +259,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     context = new SimpleWorkerContext(other.context);
     binaries.putAll(other.binaries);
     doNative = other.doNative;
-    wantInvariantInMessage = other.wantInvariantInMessage;
     anyExtensionsAllowed = other.anyExtensionsAllowed;
     version = other.version;
     language = other.language;
@@ -282,7 +279,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     showTimes = other.showTimes;
     fhirPathEngine = other.fhirPathEngine;
     igLoader = other.igLoader;
-    unknownCodeSystemsCauseErrors = other.unknownCodeSystemsCauseErrors;
     displayWarnings = other.displayWarnings;
     defaultInstanceValidatorParameters = new InstanceValidatorParameters(other.defaultInstanceValidatorParameters);
   }
@@ -1831,6 +1827,52 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Deprecated(since = "2025-10-24")
   public ValidationEngine setShowMessageIds(boolean showMessageIds) {
     defaultInstanceValidatorParameters.setShowMessageIds(showMessageIds);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public boolean isUnknownCodeSystemsCauseErrors() {
+    return defaultInstanceValidatorParameters.isUnknownCodeSystemsCauseErrors();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setUnknownCodeSystemsCauseErrors(boolean unknownCodeSystemsCauseErrors) {
+    defaultInstanceValidatorParameters.setUnknownCodeSystemsCauseErrors(unknownCodeSystemsCauseErrors);
+    return this;
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public boolean isWantInvariantInMessage() {
+    return defaultInstanceValidatorParameters.isWantInvariantsInMessages();
+  }
+
+  /**
+   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
+   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
+   * using this method.
+   * @since 2025-10-24
+   */
+  @Deprecated(since = "2025-10-24")
+  public ValidationEngine setWantInvariantInMessage(boolean wantInvariantInMessage) {
+    defaultInstanceValidatorParameters.setWantInvariantsInMessages(wantInvariantInMessage);
     return this;
   }
 }

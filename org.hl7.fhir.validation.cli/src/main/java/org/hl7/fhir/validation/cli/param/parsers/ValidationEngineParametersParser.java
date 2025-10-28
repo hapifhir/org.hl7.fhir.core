@@ -36,6 +36,7 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
   public static final String LOG = "-log";
   public static final String DISPLAY_WARNINGS = "-display-issues-are-warnings";
   public static final String NO_EXTENSIBLE_BINDING_WARNINGS = "-no-extensible-binding-warnings";
+  public static final String SHOW_TIMES = "-show-times";
   public static final String MATCHETYPE = "-matchetype";
 
   ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
@@ -201,6 +202,9 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
         args[i].setProcessed(true);
       } else if (args[i].getValue().equals(NO_EXTENSIBLE_BINDING_WARNINGS)) {
         validationEngineParameters.setNoExtensibleBindingMessages(true);
+        args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(SHOW_TIMES)) {
+        validationEngineParameters.setShowTimes(true);
         args[i].setProcessed(true);
       } else if (args[i].getValue().equals(MATCHETYPE)) {
         if (i + 1 == args.length) {
