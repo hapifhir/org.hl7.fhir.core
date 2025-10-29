@@ -317,7 +317,7 @@ public class ValidationService {
         log.info("");
 
         PrintStream dst = null;
-        ValidationOutputRenderer renderer = makeValidationOutputRenderer(validationContext);
+        ValidationOutputRenderer renderer = makeValidationOutputRenderer(validationContext.getOutput(), validationContext.getOutputStyle());
         renderer.setCrumbTrails(validationContext.isCrumbTrails());
         renderer.setShowMessageIds(validationContext.isShowMessageIds());
         renderer.setRunDate(runDate);
@@ -403,15 +403,15 @@ public class ValidationService {
     return error;
   }
 
-  private ValidationOutputRenderer makeValidationOutputRenderer(ValidationContext validationContext) {
-    String style = validationContext.getOutputStyle();
+  private ValidationOutputRenderer makeValidationOutputRenderer(String output, String style) {
+
     // adding to this list?
     // Must document the option at https://confluence.hl7.org/display/FHIR/Using+the+FHIR+Validator#UsingtheFHIRValidator-ManagingOutput
     // if you're going to make a PR, document the link where the outputstyle is documented, along with a sentence that describes it, in the PR notes
     if (Utilities.noString(style)) {
-      if (validationContext.getOutput() == null) {
+      if (output == null) {
         return new DefaultRenderer();
-      } else if (validationContext.getOutput().endsWith(".json")) {
+      } else if (output.endsWith(".json")) {
         return new NativeRenderer(FhirFormat.JSON);
       } else {
         return new NativeRenderer(FhirFormat.XML);
