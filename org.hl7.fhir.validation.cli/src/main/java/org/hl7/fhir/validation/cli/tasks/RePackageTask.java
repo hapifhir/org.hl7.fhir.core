@@ -91,7 +91,7 @@ public class RePackageTask extends ValidationEngineTask {
     }
 
     if (validationContext.getExpansionParameters() != null) {
-      //FIXME Get this from InstanceValidatorParameters? Or RePackageParameters?
+      //TODO Get this from InstanceValidatorParameters? Or RePackageParameters?
       validationEngine.loadExpansionParameters(validationContext.getExpansionParameters());
     }
 
