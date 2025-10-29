@@ -1328,14 +1328,15 @@ public class DataRenderer extends Renderer implements CodeResolver {
     String link = getLinkForCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code"), c.getResourceNative());
     XhtmlNode xi = link != null ? x.ah(context.prefixLocalHref(link)) : x;    
     xi.tx(sn);
-    xi.tx(" "); 
+    xi.tx(": ");
 
     xi.tx(c.primitiveValue("code"));
     
     if (!Utilities.noString(s)) { 
-      x.tx(": "); 
-      x.tx(s); 
-    } 
+      x.tx(" (");
+      x.tx(s);
+      x.tx(" )");
+    }
     if (c.has("version")) { 
       x.tx(" "+context.formatPhrase(RenderingContext.DATA_REND_VERSION, c.primitiveValue("version"), ")")); 
     } 
