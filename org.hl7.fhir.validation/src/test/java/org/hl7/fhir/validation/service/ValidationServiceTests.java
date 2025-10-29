@@ -59,7 +59,7 @@ class ValidationServiceTests {
 
     List<FileInfo> filesToValidate = getFilesToValidate();
 
-    ValidationRequest request = new ValidationRequest().setValidationContext(new ValidationContext().setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"))).setFilesToValidate(filesToValidate);
+    ValidationRequest request = new ValidationRequest().setValidationEngineParameters(new ValidationEngineParameters().setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"))).setFilesToValidate(filesToValidate);
     // Validation run 1...nothing cached yet
     myService.validateSources(request);
     verify(sessionCache, Mockito.times(1)).cacheSession(ArgumentMatchers.any(ValidationEngine.class));
@@ -87,13 +87,13 @@ class ValidationServiceTests {
 
     ValidationService myService = Mockito.spy(new ValidationService());
 
-    ValidationContext baseContext = new ValidationContext().setBaseEngine("myDummyKey").setSv("4.0.1").setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"));
-    myService.putBaseEngine("myDummyKey", baseContext);
+    ValidationEngineParameters baseContext = new ValidationEngineParameters().setBaseEngine("myDummyKey").setSv("4.0.1").setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"));
+    myService.putBaseEngine("myDummyKey", baseContext, null);
     verify(myService, Mockito.times(1)).buildValidationEngine(any(), any(), any(), any());
 
     {
       final List<FileInfo> filesToValidate = getFilesToValidate();
-      final ValidationRequest request = new ValidationRequest().setValidationContext(new ValidationContext().setSv("4.0.1")).setFilesToValidate(filesToValidate);
+      final ValidationRequest request = new ValidationRequest().setValidationEngineParameters(new ValidationEngineParameters().setSv("4.0.1")).setFilesToValidate(filesToValidate);
       myService.validateSources(request);
 
       verify(myService, Mockito.times(0)).getBaseEngine("myDummyKey");
@@ -102,7 +102,7 @@ class ValidationServiceTests {
 
     {
       final List<FileInfo> filesToValidate = getFilesToValidate();
-      final ValidationRequest request = new ValidationRequest().setValidationContext(new ValidationContext().setBaseEngine("myDummyKey")).setFilesToValidate(filesToValidate);
+      final ValidationRequest request = new ValidationRequest().setValidationEngineParameters(new ValidationEngineParameters().setBaseEngine("myDummyKey")).setFilesToValidate(filesToValidate);
       myService.validateSources(request);
 
       verify(myService, Mockito.times(1)).getBaseEngine("myDummyKey");

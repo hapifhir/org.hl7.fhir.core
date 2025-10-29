@@ -7,6 +7,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeRefer
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -15,7 +16,7 @@ public class InstanceValidatorParameters {
 
   public InstanceValidatorParameters() {}
 
-  public InstanceValidatorParameters(InstanceValidatorParameters defaultInstanceValidatorParameters) {
+  public InstanceValidatorParameters(@Nonnull InstanceValidatorParameters defaultInstanceValidatorParameters) {
     this.assumeValidRestReferences = defaultInstanceValidatorParameters.assumeValidRestReferences;
     this.hintAboutNonMustSupport = defaultInstanceValidatorParameters.hintAboutNonMustSupport;
     this.htmlOutput = defaultInstanceValidatorParameters.htmlOutput;

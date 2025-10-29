@@ -11,16 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -133,6 +124,8 @@ import lombok.Setter;
 import lombok.With;
 import lombok.experimental.Accessors;
 
+import javax.annotation.Nonnull;
+
 /*
 Copyright (c) 2011+, HL7, Inc
 All rights reserved.
@@ -241,7 +234,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private IgLoader igLoader;
 
   @Getter
-  private InstanceValidatorParameters defaultInstanceValidatorParameters = new InstanceValidatorParameters();
+  @Nonnull
+  private final InstanceValidatorParameters defaultInstanceValidatorParameters;
 
   private ContextUtilities cu = null;
 
@@ -299,14 +293,14 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
    * the validation framework in their own implementation context
    */
   @Getter @Setter private Map<String, ValidationControl> validationControl = new HashMap<>();
-  private Map<String, Boolean> resolvedUrls = new HashMap<>();
+  private final Map<String, Boolean> resolvedUrls = new HashMap<>();
 
   private ValidationEngine()  {
-
+    defaultInstanceValidatorParameters = new InstanceValidatorParameters();
   }
 
   private ValidationEngine(InstanceValidatorParameters instanceValidatorParameters)  {
-    this.defaultInstanceValidatorParameters = instanceValidatorParameters;
+    this.defaultInstanceValidatorParameters = Objects.requireNonNullElseGet(instanceValidatorParameters, InstanceValidatorParameters::new);
   }
 
   public static class ValidationEngineBuilder {
@@ -341,7 +335,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     @With
     private String extensionsVersion;
 
-    @With
+    @Nonnull
     private InstanceValidatorParameters defaultInstanceValidatorParameters;
 
     private static final boolean USE_ECOSYSTEM_DEFAULT = true;
@@ -384,6 +378,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
     public ValidationEngineBuilder withNoTerminologyServer() {
       return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, null, null, txVersion, useEcosystem, timeTracker, true, loggingService, thoVersion, extensionsVersion, defaultInstanceValidatorParameters);
+    }
+
+    public ValidationEngineBuilder withDefaultInstanceValidatorParameters(InstanceValidatorParameters defaultInstanceValidatorParameters) {
+      final InstanceValidatorParameters instanceValidatorParameters = defaultInstanceValidatorParameters == null ? new InstanceValidatorParameters(): defaultInstanceValidatorParameters;
+      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, useEcosystem, timeTracker, canRunWithoutTerminologyServer, loggingService, thoVersion, extensionsVersion, instanceValidatorParameters);
     }
 
     public ValidationEngine fromNothing() throws IOException {
