@@ -744,7 +744,7 @@ msgstr "Cette ressource de terminologie de référence (CodeSystem) est un suppl
 # CODE_SYS_SUPP_CODE_NOT_HERE
 #: CODE_SYS_SUPP_CODE_NOT_HERE
 msgid "This CodeSystem Supplement is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr "Ce supplément de terminologie de référence (CodeSystem) n'est pas utilisé ici; il peut être utilisé ailleurs (par exemple spécifications et/ou implémentations qui utilisent ce contenu)"
+msgstr "Ce supplément de terminologie de référence (CodeSystem) n\'est pas utilisé ici; il peut être utilisé ailleurs (par exemple spécifications et/ou implémentations qui utilisent ce contenu)"
 
 # CODE_SYS_THE_VALUE_SET
 #: CODE_SYS_THE_VALUE_SET
@@ -5659,4 +5659,5 @@ msgstr ""
 #: _NA
 msgid "n/a"
 msgstr "n/a"
+
 
