@@ -27,6 +27,33 @@ jobs:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
+      - name: Strip outdated translation markers before Crowdin sync
+        run: |
+          # Remove '!!' prefix from msgstr entries in PO files
+          # The '!!' marker indicates outdated translations that should be cleared for Crowdin's Translation Memory to handle
+          python3 << 'PYTHON_SCRIPT'
+          import os
+          import re
+          import glob
+
+          # Find all PO files
+          po_files = glob.glob('org.hl7.fhir.utilities/src/main/resources/source/*.po')
+
+          for file_path in po_files:
+              print(f"Processing {file_path}...")
+              with open(file_path, 'r', encoding='utf-8') as f:
+                  content = f.read()
+
+              # Strip !! prefix from msgstr entries, handling both single and multi-line cases
+              # Pattern matches: msgstr "!!..." or msgstr[N] "!!..."
+              content = re.sub(r'(msgstr(?:\[\d+\])?\s+")(!!+)', r'\1', content)
+
+              with open(file_path, 'w', encoding='utf-8') as f:
+                  f.write(content)
+
+          print(f"Stripped outdated translation markers from {len(po_files)} PO files")
+          PYTHON_SCRIPT
+
       - name: Synchronize with Crowdin
         uses: crowdin/github-action@590c05e09a29f392b203faf4d6aa8e0cd32c7835 # v2.9.1
         with:
