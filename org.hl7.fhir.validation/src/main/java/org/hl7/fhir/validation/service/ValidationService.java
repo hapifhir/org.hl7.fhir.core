@@ -159,24 +159,37 @@ public class ValidationService {
 
     TimeTracker timeTracker = new TimeTracker();
 
-    // The getMode() method is deprecated, but may still be in use by web services.
-    if (request.getValidationContext().getMode() == EngineMode.INSTALL
-      || request.getValidationContext().getMode() == EngineMode.VALIDATION) {
-      request.getValidationContext().setInferFhirVersion(Boolean.TRUE);
-    }
+    final ValidationEngineParameters validationEngineParameters;
+    final InstanceValidatorParameters instanceValidatorParameters;
+    final List<String> sources;
 
-    String sessionId = initializeValidator(request.getValidationContext(), null, timeTracker, request.sessionId);
+    if (request.getValidationContext() != null) {
+      validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(request.getValidationContext());
+      instanceValidatorParameters = ValidationContextUtilities.getInstanceValidatorParameters(request.getValidationContext());
+      sources = request.getValidationContext().getSources();
+      // The getMode() method is deprecated, but may still be in use by web services.
+      if (request.getValidationContext().getMode() == EngineMode.INSTALL
+        || request.getValidationContext().getMode() == EngineMode.VALIDATION) {
+        validationEngineParameters.setInferFhirVersion(Boolean.TRUE);
+      }
+
+    } else {
+      validationEngineParameters = request.getValidationEngineParameters();
+      instanceValidatorParameters = request.getInstanceValidatorParameters() == null? new InstanceValidatorParameters() : request.getInstanceValidatorParameters();
+      sources = request.getSources();
+    }
+    String sessionId = initializeValidator(validationEngineParameters, instanceValidatorParameters, null,  timeTracker, sources, request.sessionId);
     ValidationEngine validationEngine = sessionCache.fetchSessionValidatorEngine(sessionId);
 
     /* Cached validation engines already have expensive setup like loading definitions complete. But it wouldn't make
        sense to rebuild a whole engine to change the language, so we manually change it here.
      */
-    validationEngine.setLanguage(request.getValidationContext().getLang());
-    validationEngine.setLocale(request.getValidationContext().getLocale());
-    if (request.getValidationContext().getProfiles().size() > 0) {
-      log.info("  .. validate " + request.listSourceFiles() + " against " + request.getValidationContext().getProfiles().toString());
-    } else {
+    validationEngine.setLanguage(validationEngineParameters.getLang());
+    validationEngine.setLocale(validationEngineParameters.getLocale());
+    if (instanceValidatorParameters.getProfiles().isEmpty()) {
       log.info("  .. validate " + request.listSourceFiles());
+    } else {
+      log.info("  .. validate " + request.listSourceFiles() + " against " + instanceValidatorParameters.getProfiles().toString());
     }
 
     ValidationResponse response = new ValidationResponse().setSessionId(sessionId).setValidationTimes(new HashMap<>());
@@ -200,14 +213,14 @@ public class ValidationService {
           response.addOutcome(outcome);
       } else {
         ValidatedFragments validatedFragments = validationEngine.validateAsFragments(fileToValidate.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fileToValidate.getFileType()),
-          request.getValidationContext().getProfiles(), messages);
+          instanceValidatorParameters.getProfiles(), messages);
 
         List<ValidationOutcome> validationOutcomes = getValidationOutcomesFromValidatedFragments(fileToValidate, validatedFragments);
         for (ValidationOutcome validationOutcome : validationOutcomes) {
           response.addOutcome(validationOutcome);
         }
 
-        if (request.getValidationContext().isShowTimes()) {
+        if (validationEngineParameters.isShowTimes()) {
           response.getValidationTimes().put(fileToValidate.getFileName(), validatedFragments.getValidationTime());
         }
         
@@ -586,9 +599,9 @@ public class ValidationService {
 
   @Deprecated
   public String initializeValidator(ValidationContext validationContext, String definitions, TimeTracker tt, String sessionId) throws Exception {
-      ValidationEngineParameters params = ValidationContextUtilities.getValidationEngineParameters(validationContext);
+      ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
       InstanceValidatorParameters defaultInstanceValidatorParams = ValidationContextUtilities.getInstanceValidatorParameters(validationContext);
-      return initializeValidator(params, defaultInstanceValidatorParams, definitions, tt, validationContext.getSources(), sessionId);
+      return initializeValidator(validationEngineParameters, defaultInstanceValidatorParams, definitions, tt, validationContext.getSources(), sessionId);
   }
 
   // Used by:
@@ -640,8 +653,9 @@ public class ValidationService {
   @Nonnull
   protected ValidationEngine buildValidationEngine(ValidationEngineParameters validationEngineParameters, InstanceValidatorParameters defaultInstanceValidatorParameters, String definitions, TimeTracker timeTracker) throws IOException, URISyntaxException {
     log.info("  Loading FHIR v" + validationEngineParameters.getSv() + " from " + definitions);
+    final InstanceValidatorParameters instanceValidatorParameters = defaultInstanceValidatorParameters == null ? new InstanceValidatorParameters(): defaultInstanceValidatorParameters;
     ValidationEngine validationEngine = getValidationEngineBuilder()
-      .withDefaultInstanceValidatorParameters(new InstanceValidatorParameters(defaultInstanceValidatorParameters))
+      .withDefaultInstanceValidatorParameters(new InstanceValidatorParameters(instanceValidatorParameters))
       .withVersion(validationEngineParameters.getSv())
       .withTimeTracker(timeTracker)
       .withUserAgent(Common.getValidatorUserAgent())
