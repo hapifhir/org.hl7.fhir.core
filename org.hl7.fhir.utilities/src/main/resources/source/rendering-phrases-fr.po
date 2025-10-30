@@ -3320,8 +3320,8 @@ msgstr ""
 
 # SDR_SRC_IG
 #: SDR_SRC_IG
-msgid "this IG"
-msgstr "cet IG"
+msgid "This IG"
+msgstr "!!cet IG"
 
 # SDR_SUPP
 #: SDR_SUPP
@@ -3974,6 +3974,11 @@ msgstr ""
 msgid "Content/Rules for all Types"
 msgstr ""
 
+# STRUC_DEF_COPY_CODING
+#: STRUC_DEF_COPY_CODING
+msgid "Click to Copy as Coding"
+msgstr ""
+
 # STRUC_DEF_COPY_URL
 #: STRUC_DEF_COPY_URL
 msgid "Click to Copy URL"
@@ -4199,6 +4204,11 @@ msgstr ""
 # STRUC_DEF_IF
 #: STRUC_DEF_IF
 msgid "If"
+msgstr ""
+
+# STRUC_DEF_IMPLEMENTS
+#: STRUC_DEF_IMPLEMENTS
+msgid "Interfaces Implemented"
 msgstr ""
 
 # STRUC_DEF_IMPOSE_PROFILE
@@ -5632,7 +5642,7 @@ msgstr ""
 
 # VS_VERSION_NOTHING_TEXT
 #: VS_VERSION_NOTHING_TEXT
-msgid "Not Stated"
+msgid "Not State"
 msgstr ""
 
 # VS_VERSION_STATED
@@ -5659,5 +5669,4 @@ msgstr ""
 #: _NA
 msgid "n/a"
 msgstr "n/a"
-
 
