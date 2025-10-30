@@ -69,6 +69,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 @MarkedToMoveToAdjunctPackage
 public class RenderingContext extends RenderingI18nContext {
 
+
   public enum DesignationMode {
     ALL,
     LANGUAGES,
