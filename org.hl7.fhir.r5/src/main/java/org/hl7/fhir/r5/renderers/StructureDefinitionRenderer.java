@@ -1669,6 +1669,25 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             }
           }
         }
+        if (profile.hasExtension(ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS)) {
+          c.getPieces().add(gen.new Piece("br"));
+          c.getPieces().add(gen.new Piece(spec("uml.html#interfaces"), context.formatPhrase(RenderingContext.STRUC_DEF_IMPLEMENTS), null));
+          boolean first = true;
+          for (Extension fi : profile.getExtensionsByUrl(ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS)) {
+            if (first) {
+              c.getPieces().add(gen.new Piece(null, ": ", null));
+              first = false;
+            } else {
+              c.getPieces().add(gen.new Piece(null, ", ", null));
+            }
+            StructureDefinition sdt = context.getWorker().fetchResource(StructureDefinition.class, fi.getValue().primitiveValue());
+            if (sdt != null) {
+              c.getPieces().add(gen.new Piece(sdt.getWebPath(), sdt.present(), sdt.getDescription()));
+            } else {
+              c.getPieces().add(gen.new Piece(null, fi.getValue().primitiveValue(), "Unknown: "+fi.getValue().primitiveValue()));
+            }
+          }
+        }
       }
 
       if (definition.hasSlicing()) {
