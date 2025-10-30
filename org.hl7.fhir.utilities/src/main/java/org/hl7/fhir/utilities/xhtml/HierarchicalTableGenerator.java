@@ -76,6 +76,8 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -150,6 +152,7 @@ public class HierarchicalTableGenerator {
     private String tagImg;
     private Map<String, String> attributes;
     private XhtmlNodeList children;
+    @Getter @Setter private boolean underived;
     
     public Piece(String tag) {
       super();
