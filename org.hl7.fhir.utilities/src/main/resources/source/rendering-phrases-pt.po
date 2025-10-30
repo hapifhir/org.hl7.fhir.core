@@ -4907,6 +4907,11 @@ msgstr "Não é permitido um id neste contexto"
 msgid "If"
 msgstr "Se"
 
+# STRUC_DEF_IMPLEMENTS
+#: STRUC_DEF_IMPLEMENTS
+msgid "Interfaces Implemented"
+msgstr ""
+
 # STRUC_DEF_IMPOSE_PROFILE
 #: STRUC_DEF_IMPOSE_PROFILE
 #, fuzzy
@@ -6609,7 +6614,7 @@ msgstr ""
 
 # VS_VERSION_NOTHING_TEXT
 #: VS_VERSION_NOTHING_TEXT
-msgid "Not Stated"
+msgid "Not State"
 msgstr ""
 
 # VS_VERSION_STATED

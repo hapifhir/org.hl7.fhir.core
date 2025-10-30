@@ -3843,7 +3843,7 @@ msgstr "يمكن الاطلاع على إرشادات حول كيفية تفسي
 #, fuzzy
 msgctxt "SDR_GUIDANCE_SFX"
 msgid "-- no content: do not translate #118 --"
-msgstr "!!!!!!!!!!-- لا يوجد محتوى: لا تترجم #121 ---"
+msgstr "!!!!!!!!!!!!-- لا يوجد محتوى: لا تترجم #121 ---"
 
 # SDR_IMPOSE
 #: SDR_IMPOSE
@@ -4070,7 +4070,7 @@ msgstr "إصدارات FHIR"
 #, fuzzy
 msgctxt "SDR_VER_RANGE_SFX"
 msgid "-- no content: do not translate #119 --"
-msgstr "!!!!!!!!!!-- لا يوجد محتوى: لا تترجم #122 --"
+msgstr "!!!!!!!!!!!!-- لا يوجد محتوى: لا تترجم #122 --"
 
 # SDR_VER_TO_PFX
 #: SDR_VER_TO_PFX
@@ -4083,7 +4083,7 @@ msgstr "إصدارات FHIR حتى"
 #, fuzzy
 msgctxt "SDR_VER_TO_SFX"
 msgid "-- no content: do not translate #120 --"
-msgstr "!!!!!!!!!!-- لا يوجد محتوى: لا تترجم #123 --"
+msgstr "!!!!!!!!!!!!-- لا يوجد محتوى: لا تترجم #123 --"
 
 # SDR_VER_UNK
 #: SDR_VER_UNK
@@ -5047,6 +5047,11 @@ msgstr "المعرف غير مسموح به في هذا السياق"
 #, fuzzy
 msgid "If"
 msgstr "إذا كان"
+
+# STRUC_DEF_IMPLEMENTS
+#: STRUC_DEF_IMPLEMENTS
+msgid "Interfaces Implemented"
+msgstr ""
 
 # STRUC_DEF_IMPOSE_PROFILE
 #: STRUC_DEF_IMPOSE_PROFILE
@@ -6766,7 +6771,7 @@ msgstr ""
 
 # VS_VERSION_NOTHING_TEXT
 #: VS_VERSION_NOTHING_TEXT
-msgid "Not Stated"
+msgid "Not State"
 msgstr ""
 
 # VS_VERSION_STATED

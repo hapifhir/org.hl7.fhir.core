@@ -4200,6 +4200,11 @@ msgstr ""
 msgid "If"
 msgstr ""
 
+# STRUC_DEF_IMPLEMENTS
+#: STRUC_DEF_IMPLEMENTS
+msgid "Interfaces Implemented"
+msgstr ""
+
 # STRUC_DEF_IMPOSE_PROFILE
 #: STRUC_DEF_IMPOSE_PROFILE
 msgid "Impose Profile"
@@ -5629,7 +5634,7 @@ msgstr ""
 
 # VS_VERSION_NOTHING_TEXT
 #: VS_VERSION_NOTHING_TEXT
-msgid "Not Stated"
+msgid "Not State"
 msgstr ""
 
 # VS_VERSION_STATED
