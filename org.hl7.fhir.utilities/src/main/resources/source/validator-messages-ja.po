@@ -1,8 +1,21 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: orghl7fhircore\n"
+"X-Crowdin-Project-ID: 792848\n"
+"X-Crowdin-Language: ja\n"
+"X-Crowdin-File: /org.hl7.fhir.utilities/src/main/resources/source/validator-messages-en.po\n"
+"X-Crowdin-File-ID: 238\n"
+"Project-Id-Version: orghl7fhircore\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: Japanese\n"
+"Language: ja_JP\n"
+"PO-Revision-Date: 2025-10-30 18:26\n"
 
 # ABSTRACT_CODE_NOT_ALLOWED
 #: ABSTRACT_CODE_NOT_ALLOWED
 msgid "Code ''{0}#{1}'' is abstract, and not allowed in this context"
-msgstr ""
+msgstr "コード ''{0}#{1}'' は抽象的であり、このコンテキストでは許可されていません"
 
 # ALL_OK
 #: ALL_OK
@@ -37,17 +50,17 @@ msgstr "プロファイル {0} で誤ったパスを追加しています: {1} v
 # All_observations_should_have_a_performer
 #: All_observations_should_have_a_performer
 msgid "Best Practice Recommendation: In general, all observations should have a performer"
-msgstr "!!すべてのObservationにはperformerが必要です"
+msgstr "すべてのObservationにはperformerが必要です"
 
 # All_observations_should_have_a_subject
 #: All_observations_should_have_a_subject
 msgid "Best Practice Recommendation: In general, all observations should have a subject"
-msgstr "!!すべてのObservationにはsubjectが必要です"
+msgstr "すべてのObservationにはsubjectが必要です"
 
 # All_observations_should_have_an_effectiveDateTime_or_an_effectivePeriod
 #: All_observations_should_have_an_effectiveDateTime_or_an_effectivePeriod
 msgid "Best Practice Recommendation: In general, all observations should have an effective[x] ({0})"
-msgstr "!!すべてのObservationにはeffectiveDateTimeまたはeffectivePeriodが必要です"
+msgstr "すべてのObservationにはeffectiveDateTimeまたはeffectivePeriodが必要です"
 
 # Attempt_to_a_slice_an_element_that_does_not_repeat__from__in_
 #: Attempt_to_a_slice_an_element_that_does_not_repeat__from__in_
@@ -72,32 +85,32 @@ msgstr "プロファイル ''{0}'' のsnapshotを生成する前に {1} とし�
 # BINDING_ADDITIONAL_D
 #: BINDING_ADDITIONAL_D
 msgid "{0} specified in an additional binding"
-msgstr ""
+msgstr "{0}が追加バインディングで指定されています"
 
 # BINDING_ADDITIONAL_UC
 #: BINDING_ADDITIONAL_UC
 msgid "{0} specified in an additional binding which applies because {1}"
-msgstr ""
+msgstr "{1}のため適用される追加バインディングで{0}が指定されています"
 
 # BINDING_ADDITIONAL_USAGE
 #: BINDING_ADDITIONAL_USAGE
 msgid "{0} = {1}"
-msgstr ""
+msgstr "{0} = {1}"
 
 # BINDING_MAX
 #: BINDING_MAX
 msgid "{0} specified in the max binding"
-msgstr ""
+msgstr "{0} が最大バインディングで指定されています"
 
 # BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE
 #: BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE
 msgid "Found {0} matches for ''{1}'' in the bundle ({2})"
-msgstr ""
+msgstr "バンドル（{2}）内で ''{1}'' に対して {0} 件の一致が見つかりました"
 
 # BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE_FRAGMENT
 #: BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE_FRAGMENT
 msgid "Found {0} matches for fragment {2} in resource ''{1}'' in the bundle ({3})"
-msgstr ""
+msgstr "バンドル ( {3} ) 内のリソース '' {1} 内のフラグメント{2}に対して{0}件の 一致が見つかりました"
 
 # BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED
 #: BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED
@@ -107,12 +120,12 @@ msgstr "トランザクションとバッチを除き、Bundleの各エントリ
 # BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_MULTIPLE_MATCHES
 #: BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_MULTIPLE_MATCHES
 msgid "The {1} resource matched more than one of the allowed profiles ({3})"
-msgstr ""
+msgstr "{1} リソースが許可されたプロファイル ({3}) の複数にマッチしました"
 
 # BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH
 #: BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH
 msgid "The {1} resource did not match any of the allowed profiles (Type {2}: {3})"
-msgstr ""
+msgstr "{1}リソースは許可されたプロファイルのいずれにも一致しませんでした（タイプ{2}: {3}）"
 
 # BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH_REASON
 #: BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH_REASON
@@ -124,7 +137,6 @@ msgstr ""
 msgid "Can''t find ''{1}'' in the bundle ({2}). Note that there is a resource in the bundle with the same type and id, but it does not match because of the fullUrl based rules around matching relative references (must be ''{3}'', but found ''{4}'')"
 msgid_plural "Can''t find ''{1}'' in the bundle ({2}). Note that there are {0} resources in the bundle with the same type and id, but they do not match because of the fullUrl based rules around matching relative references (must be ''{3}'', but found these: {4})"
 msgstr[0] ""
-msgstr[1] ""
 
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_CANNOT
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_CANNOT
@@ -136,7 +148,7 @@ msgstr[0] ""
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
 msgctxt "BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT"
 msgid "Can''t find ''{0}'' in the bundle ({1})"
-msgstr ""
+msgstr "バンドル”{1}”で({0})が見つかりません"
 
 # BUNDLE_BUNDLE_ENTRY_REVERSE_MSG
 #: BUNDLE_BUNDLE_ENTRY_REVERSE_MSG
@@ -161,22 +173,22 @@ msgstr "エントリ{0}はタイプとIDでreference {1}と一致しますが、
 # BUNDLE_BUNDLE_POSSIBLE_MATCH_WRONG_FU
 #: BUNDLE_BUNDLE_POSSIBLE_MATCH_WRONG_FU
 msgid "Entry {0} matches the reference {1} by type and id but its fullUrl {2} does not match the full target URL {3} by Bundle resolution rules"
-msgstr "!!エントリ{0}はタイプとIDでreference {1}と一致しますが、そのfullUrl {2}はBundle解決ルールによりfull target URL {3}と一致しません"
+msgstr "エントリ{0}はタイプとIDでreference {1}と一致しますが、そのfullUrl {2}はBundle解決ルールによりfull target URL {3}と一致しません"
 
 # BUNDLE_ENTRY_URL_ABSOLUTE
 #: BUNDLE_ENTRY_URL_ABSOLUTE
 msgid "The fullUrl must be an absolute URL (not ''{0}'')"
-msgstr ""
+msgstr "fullUrlは絶対URL（''{0}''ではない）である必要があります"
 
 # BUNDLE_ENTRY_URL_MATCHES_NO_ID
 #: BUNDLE_ENTRY_URL_MATCHES_NO_ID
 msgid "The fullUrl ''{0}'' looks like a RESTful server URL, but the resource has no id"
-msgstr ""
+msgstr "fullUrl ''{0}'' は RESTful サーバー URL のように見えますが、リソースに ID がありません"
 
 # BUNDLE_ENTRY_URL_MATCHES_TYPE_ID
 #: BUNDLE_ENTRY_URL_MATCHES_TYPE_ID
 msgid "The fullUrl ''{0}'' looks like a RESTful server URL, so it must end with the correct type and id (/{1}/{2})"
-msgstr ""
+msgstr "fullUrl ''{0}'' はRESTfulサーバーのURLのようですが、正しいタイプとid (/{1}/{2}) で終わる必要があります"
 
 # BUNDLE_LINK_SEARCH_NO_DUPLICATES
 #: BUNDLE_LINK_SEARCH_NO_DUPLICATES
@@ -595,7 +607,11 @@ msgstr ""
 # Bad_file_path_error
 #: Bad_file_path_error
 msgid "** Error: The file name you passed in, ''{0}'', doesn''t exist on the local filesystem. Please verify that this is valid file location **"
-msgstr "!!\n********************\n* あなたが指定したファイル名、 ''{0}'' はローカルファイルシステム上に存在しません。\n* これが有効なファイルの場所であることを確認してください。\n********************\n\n"
+msgstr "\n"
+"********************\n"
+"* あなたが指定したファイル名、 ''{0}'' はローカルファイルシステム上に存在しません。\n"
+"* これが有効なファイルの場所であることを確認してください。\n"
+"********************\n\n"
 
 # Base__Derived_profiles_have_different_types____vs___
 #: Base__Derived_profiles_have_different_types____vs___
@@ -661,7 +677,7 @@ msgstr "タイプ''{1}''の{0}リソースに対するプロファイルが見�
 #: Bundle_BUNDLE_Entry_NotFound
 msgctxt "Bundle_BUNDLE_Entry_NotFound"
 msgid "Can''t find ''{0}'' in the bundle ({1})"
-msgstr ""
+msgstr "バンドル\"{1}\"で({0})が見つかりません"
 
 # Bundle_BUNDLE_Entry_Orphan_DOCUMENT
 #: Bundle_BUNDLE_Entry_Orphan_DOCUMENT
@@ -688,7 +704,6 @@ msgstr "タイプ''{0}''は有効ではありません - {1}でなければな�
 msgid "The type ''{1}'' is not valid - must be of type {2}"
 msgid_plural "The type ''{1}'' is not valid - must be one of {0} types: {2}"
 msgstr[0] "タイプ''{1}''は有効ではありません - タイプ{2}でなければなりません"
-msgstr[1] "タイプ''{1}''は有効ではありません - {0}タイプのうちの一つでなければなりません: {2}"
 
 # Bundle_BUNDLE_FullUrl_Missing
 #: Bundle_BUNDLE_FullUrl_Missing
@@ -728,7 +743,7 @@ msgstr "{0} が期待されましたが、{1} のイベント要素が見つか�
 # CANONICAL_MULTIPLE_VERSIONS_KNOWN
 #: CANONICAL_MULTIPLE_VERSIONS_KNOWN
 msgid "The version {2} for the {0} {1} is not known. These versions are known: {3}"
-msgstr ""
+msgstr "{0} {1}のバージョン{2}は不明です。既知のバージョン: {3}"
 
 # CDATA_is_not_allowed
 #: CDATA_is_not_allowed
@@ -738,27 +753,27 @@ msgstr "CDATAは許可されていません"
 # CDA_UNKNOWN_TEMPLATE
 #: CDA_UNKNOWN_TEMPLATE
 msgid "The CDA Template {0} is not known"
-msgstr ""
+msgstr "CDAテンプレート{0}は不明です"
 
 # CDA_UNKNOWN_TEMPLATE_EXT
 #: CDA_UNKNOWN_TEMPLATE_EXT
 msgid "The CDA Template {0} / {1} is not known"
-msgstr ""
+msgstr "CDAテンプレート {0} / {1} は不明です"
 
 # CODESYSTEM_CONCEPT_NO_DEFINITION
 #: CODESYSTEM_CONCEPT_NO_DEFINITION
 msgid "HL7 Defined CodeSystems should ensure that every concept has a definition"
-msgstr ""
+msgstr "HL7定義コードシステムでは、すべてのコンセプトにdefinitionが含まれていることを確認する必要があります"
 
 # CODESYSTEM_CONCEPT_NO_DISPLAY
 #: CODESYSTEM_CONCEPT_NO_DISPLAY
 msgid "HL7 Defined CodeSystems should ensure that every concept has a display"
-msgstr ""
+msgstr "HL7定義のCodeSystemでは、すべてのコンセプトにdisplayが含まれていることを確認する必要があります"
 
 # CODESYSTEM_CS_COMPLETE_AND_EMPTY
 #: CODESYSTEM_CS_COMPLETE_AND_EMPTY
 msgid "When a CodeSystem has content = ''complete'', it doesn't make sense for there to be no concepts defined"
-msgstr ""
+msgstr "CodeSystemでcontent = ''complete''の場合、定義されたコンセプトが存在しないことは意味がありません"
 
 # CODESYSTEM_CS_COUNT_COMPLETE_WRONG
 #: CODESYSTEM_CS_COUNT_COMPLETE_WRONG
@@ -773,7 +788,7 @@ msgstr "CodeSystem.contentがfragment/exampleであるにもかかわらず、co
 # CODESYSTEM_CS_COUNT_NOTPRESENT_ZERO
 #: CODESYSTEM_CS_COUNT_NOTPRESENT_ZERO
 msgid "The code system has no content, but the exceeds the stated total number is 0 concepts - check that this isn''t a complete code system that has no concepts, or update/remove the stated count"
-msgstr "!!CodeSystem.contentがnot-presentであるにもかかわらず、CodeSystem.countに0より大きい値が指定されています。これがconceptを持たないcompleteなコードシステムであることを確認するか、countの値を更新/削除してください。"
+msgstr "CodeSystem.contentがnot-presentであるにもかかわらず、CodeSystem.countに0より大きい値が指定されています。これがconceptを持たないcompleteなコードシステムであることを確認するか、countの値を更新/削除してください。"
 
 # CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED
 #: CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED
@@ -803,12 +818,12 @@ msgstr "CodeSystemsがsupplementである場合は{0} 要素に対する明確�
 # CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_MISSING
 #: CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_MISSING
 msgid "CodeSystem Supplements with a content value of ''supplement'' SHALL have a supplements element that specifies which code system is being supplemented"
-msgstr "!!CodeSystem Supplementsは、ontent要素の値が'supplement'である場合、どのコードシステムが補足されているかを指定するsupplements要素を持つべきです"
+msgstr "CodeSystem Supplementsは、ontent要素の値が'supplement'である場合、どのコードシステムが補足されているかを指定するsupplements要素を持つべきです"
 
 # CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_WRONG
 #: CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_WRONG
 msgid "CodeSystem Supplements SHALL have a content value of ''supplement''"
-msgstr "!!CodeSystem Supplementsは、content要素の値が'supplement'であるべきです"
+msgstr "CodeSystem Supplementsは、content要素の値が'supplement'であるべきです"
 
 # CODESYSTEM_CS_NONHL7_MISSING_ELEMENT
 #: CODESYSTEM_CS_NONHL7_MISSING_ELEMENT
@@ -858,7 +873,7 @@ msgstr ""
 # CODESYSTEM_CS_UNK_EXPANSION
 #: CODESYSTEM_CS_UNK_EXPANSION
 msgid "The code provided ({2}) is not in the expansion in the value set {0}, and a code is required from this value set. The system {1} could not be found."
-msgstr "!!提供されたコード（{2}）は、ValueSet {0}のexpansionには含まれておらず、このValueSetからコードが必要です。system {1}は未知です。"
+msgstr "提供されたコード（{2}）は、ValueSet {0}のexpansionには含まれておらず、このValueSetからコードが必要です。system {1}は未知です。"
 
 # CODESYSTEM_CS_VS_EXP_MISMATCH
 #: CODESYSTEM_CS_VS_EXP_MISMATCH
@@ -1003,7 +1018,7 @@ msgstr "公開されたcode systemsはCodeSystem.{0}の存在を推奨してい�
 # CODESYSTEM_SHAREABLE_EXTRA_MISSING_HL7
 #: CODESYSTEM_SHAREABLE_EXTRA_MISSING_HL7
 msgid "Code systems published by HL7 SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} should be present, but it is not"
-msgstr "!!公開されたcode systemsはCodeSystem.{0}の存在を推奨しているShareableCodeSystemプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
+msgstr "公開されたcode systemsはCodeSystem.{0}の存在を推奨しているShareableCodeSystemプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
 
 # CODESYSTEM_SHAREABLE_MISSING
 #: CODESYSTEM_SHAREABLE_MISSING
@@ -1013,7 +1028,7 @@ msgstr "公開されたcode systemsはCodeSystem.{0}の存在を必須として�
 # CODESYSTEM_SHAREABLE_MISSING_HL7
 #: CODESYSTEM_SHAREABLE_MISSING_HL7
 msgid "Code systems published by HL7 SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} is mandatory, but it is not present"
-msgstr "!!公開されたcode systemsはCodeSystem.{0}の存在を必須としているShareableCodeSystemプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
+msgstr "公開されたcode systemsはCodeSystem.{0}の存在を必須としているShareableCodeSystemプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
 
 # CODESYSTEM_SUPP_NO_DISPLAY
 #: CODESYSTEM_SUPP_NO_DISPLAY
@@ -1048,7 +1063,7 @@ msgstr "source code ''{0}'' はValue Set {1} で有効ではありません"
 # CONCEPTMAP_GROUP_SOURCE_DISPLAY_INVALID
 #: CONCEPTMAP_GROUP_SOURCE_DISPLAY_INVALID
 msgid "The source display ''{0}'' for the code ''{2}'' is not valid. Possible displays: {1}"
-msgstr "!!source display ''{0}'' は有効ではありません。可能性のあるcode {1}"
+msgstr "source display ''{0}'' は有効ではありません。可能性のあるcode {1}"
 
 # CONCEPTMAP_GROUP_SOURCE_INCOMPLETE
 #: CONCEPTMAP_GROUP_SOURCE_INCOMPLETE
@@ -1083,7 +1098,7 @@ msgstr "target code ''{0}'' はValue Set {1} で有効ではありません"
 # CONCEPTMAP_GROUP_TARGET_DISPLAY_INVALID
 #: CONCEPTMAP_GROUP_TARGET_DISPLAY_INVALID
 msgid "The target display ''{0}'' for the code ''{2}'' is not valid. Possible displays: {1}"
-msgstr "!!target display ''{0}'' は有効ではありません。可能なdisplayは {1} です"
+msgstr "target display ''{0}'' は有効ではありません。可能なdisplayは {1} です"
 
 # CONCEPTMAP_GROUP_TARGET_DUPLICATION
 #: CONCEPTMAP_GROUP_TARGET_DUPLICATION
@@ -1128,7 +1143,7 @@ msgstr "systemが提供されていないため、プレーンなコードは使
 # CONCEPTMAP_GROUP_TARGET_PROPERTY_TYPE_UNKNOWN_SYSTEM
 #: CONCEPTMAP_GROUP_TARGET_PROPERTY_TYPE_UNKNOWN_SYSTEM
 msgid "The code system {0} could not be found, so code values can''t be checked"
-msgstr "!!system {0} は未知なので、コードの値をチェックすることはできません"
+msgstr "system {0} は未知なので、コードの値をチェックすることはできません"
 
 # CONCEPTMAP_GROUP_TARGET_SERVER_SIDE
 #: CONCEPTMAP_GROUP_TARGET_SERVER_SIDE
@@ -1148,7 +1163,7 @@ msgstr "公開されたコンセプトマップはConceptMap.{0}の存在を推�
 # CONCEPTMAP_SHAREABLE_EXTRA_MISSING_HL7
 #: CONCEPTMAP_SHAREABLE_EXTRA_MISSING_HL7
 msgid "Concept maps published by HL7 SHALL conform to the ShareableConceptMap profile, which says that the element ConceptMap.{0} should be present, but it is not"
-msgstr "!!公開されたコンセプトマップはConceptMap.{0}の存在を必須としているShareableConceptMapプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
+msgstr "公開されたコンセプトマップはConceptMap.{0}の存在を必須としているShareableConceptMapプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
 
 # CONCEPTMAP_SHAREABLE_MISSING
 #: CONCEPTMAP_SHAREABLE_MISSING
@@ -1158,7 +1173,7 @@ msgstr "公開されたコンセプトマップはConceptMap.{0}の存在を必�
 # CONCEPTMAP_SHAREABLE_MISSING_HL7
 #: CONCEPTMAP_SHAREABLE_MISSING_HL7
 msgid "Concept maps published by HL7 SHALL conform to the ShareableConceptMap profile, which says that the element ConceptMap.{0} is mandatory, but it is not present"
-msgstr "!!公開されたコンセプトマップはConceptMap.{0}の存在を必須としているShareableConceptMapプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
+msgstr "公開されたコンセプトマップはConceptMap.{0}の存在を必須としているShareableConceptMapプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
 
 # CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM
 #: CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM
@@ -1253,7 +1268,7 @@ msgstr "拡張中にコードが見つかりました。しかしながら: {0}"
 # Coding_has_no_system__cannot_validate
 #: Coding_has_no_system__cannot_validate
 msgid "Coding has no system. A code with no system has no defined meaning, and it cannot be validated. A system should be provided"
-msgstr "!!Codingにはsystemがない - 検証できません"
+msgstr "Codingにはsystemがない - 検証できません"
 
 # Contained_resource_does_not_appear_to_be_a_FHIR_resource_unknown_name_
 #: Contained_resource_does_not_appear_to_be_a_FHIR_resource_unknown_name_
@@ -1265,7 +1280,6 @@ msgstr "含まれているリソースはFHIRリソースではないようで�
 msgid "Could not match discriminator ({1}) for slice {2} in profile {3} - the discriminator {4} does not have fixed value, binding or existence assertions"
 msgid_plural "Could not match any of the {0} discriminators for slice {2} in profile {3} - None of the {1} discriminators {4} have fixed value, binding or existence assertions"
 msgstr[0] "スライス {1} のdiscriminator ({0}) をプロファイル {2} に一致させることができませんでした - discriminator {3} は固定値、バインディング、存在アサーションを持っていません"
-msgstr[1] "スライス {2} のいずれのdiscriminator ({1}) もプロファイル {3} に一致させることができませんでした - {0} discriminator {4} のいずれも固定値、バインディング、存在アサーションを持っていません"
 
 # DEPRECATED_CONCEPT_FOUND
 #: DEPRECATED_CONCEPT_FOUND
@@ -1325,7 +1339,7 @@ msgstr "タイプのルートを見つけられませんでした: {0}"
 # Differential_does_not_have_a_slice__b_of_____in_profile_
 #: Differential_does_not_have_a_slice__b_of_____in_profile_
 msgid "Differential in profile {5} does not have a slice at {6} (on {0}, position {1} of {2} / {3} / {4})"
-msgstr "!!プロファイル {5} のdifferantialには {6} のスライスがありません ( {0} 上、位置 {1} の {2} / {3} / {4})"
+msgstr "プロファイル {5} のdifferantialには {6} のスライスがありません ( {0} 上、位置 {1} の {2} / {3} / {4})"
 
 # Differential_walks_into____but_the_base_does_not_and_there_is_not_a_single_fixed_type_The_type_is__This_is_not_handled_yet
 #: Differential_walks_into____but_the_base_does_not_and_there_is_not_a_single_fixed_type_The_type_is__This_is_not_handled_yet
@@ -1347,14 +1361,12 @@ msgstr "discriminator ({0}) はタイプに基づいていますが、{2} のス
 msgid "Wrong whitespace in Display Name ''{4}'' for {1}#{2}. Valid display is {3} (for the language(s) ''{5}'')"
 msgid_plural "Wrong whitespace in Display Name ''{4}'' for {1}#{2}. Valid display is one of {0} choices: {3} (for the language(s) ''{5}'')"
 msgstr[0] ""
-msgstr[1] ""
 
 # Display_Name_for__should_be_one_of__instead_of
 #: Display_Name_for__should_be_one_of__instead_of
 msgid "Wrong Display Name ''{4}'' for {1}#{2}. Valid display is {3} (for the language(s) ''{5}'')"
 msgid_plural "Wrong Display Name ''{4}'' for {1}#{2}. Valid display is one of {0} choices: {3} (for the language(s) ''{5}'')"
 msgstr[0] "{1}#{2} の誤ったdisplay ''{4}'' - {3} であるべきです (言語 ''{5}'' のため)"
-msgstr[1] "{1}#{2} の誤ったdisplay ''{4}'' - {0} の選択肢のうちの一つであるべきです: {3} (言語 ''{5}'' のため)"
 
 # Does_not_match_slice_
 #: Does_not_match_slice_
@@ -1374,7 +1386,7 @@ msgstr ""
 # ED_INVARIANT_DIFF_NO_SOURCE
 #: ED_INVARIANT_DIFF_NO_SOURCE
 msgid "The invariant {0} defined in the differential must have no source, or the source must be the same as the profile ({1} vs {2})"
-msgstr "!!differantialで定義された不変 {0} はソースを持たないか、ソースはプロファイルと同じでなければなりません"
+msgstr "differantialで定義された不変 {0} はソースを持たないか、ソースはプロファイルと同じでなければなりません"
 
 # ED_INVARIANT_EXPRESSION_CONFLICT
 #: ED_INVARIANT_EXPRESSION_CONFLICT
@@ -1389,7 +1401,7 @@ msgstr "制約 ''{0}'' の式 ''{1}'' でエラーが発生しました: {2}"
 # ED_INVARIANT_KEY_ALREADY_USED
 #: ED_INVARIANT_KEY_ALREADY_USED
 msgid "The constraint key ''{0}'' already exists at the location ''{1}'' with a different expression (''{2}'')"
-msgstr "!!制約キー ''{0}'' は既に基本プロファイル ''{1}'' に存在します"
+msgstr "制約キー ''{0}'' は既に基本プロファイル ''{1}'' に存在します"
 
 # ED_INVARIANT_NO_EXPRESSION
 #: ED_INVARIANT_NO_EXPRESSION
@@ -1439,12 +1451,12 @@ msgstr "extension {0} はコンテキスト {1} を指定しますが、バリ�
 # EXTENSION_EXTM_CONTEXT_WRONG_XVER
 #: EXTENSION_EXTM_CONTEXT_WRONG_XVER
 msgid "The modifier extension {0} from FHIR version {3} is not allowed to be used at this point (this element is {2}; allowed for this version = {1}; this is a warning since contexts may be renamed between FHIR versions)"
-msgstr "!!FHIRバージョン {3} のmodifier extension {0} はこの時点では使用できません (許可されているもの = {1}; この要素は [{2}; これはコンテキストがFHIRバージョン間で名称変更される可能性があるための警告です)"
+msgstr "FHIRバージョン {3} のmodifier extension {0} はこの時点では使用できません (許可されているもの = {1}; この要素は [{2}; これはコンテキストがFHIRバージョン間で名称変更される可能性があるための警告です)"
 
 # EXTENSION_EXTP_CONTEXT_WRONG_XVER
 #: EXTENSION_EXTP_CONTEXT_WRONG_XVER
 msgid "The extension {0} from FHIR version {3} is not allowed to be used at this point (this element is {2}; allowed for this version = {1}; this is a warning since contexts may be renamed between FHIR versions)"
-msgstr "!!FHIRバージョン {3} の拡張 {0} はこの時点では使用できません (許可されているもの = {1}; この要素は [{2}; これはコンテキストがFHIRバージョン間で名称変更される可能性があるための警告です)"
+msgstr "FHIRバージョン {3} の拡張 {0} はこの時点では使用できません (許可されているもの = {1}; この要素は [{2}; これはコンテキストがFHIRバージョン間で名称変更される可能性があるための警告です)"
 
 # EXTENSION_EXT_VERSION_NOTALLOWED
 #: EXTENSION_EXT_VERSION_NOTALLOWED
@@ -1589,12 +1601,12 @@ msgstr "パッケージ {1}#{2} から {0} の読み取りエラー: {3}"
 # Error_validating_code_running_without_terminology_services
 #: Error_validating_code_running_without_terminology_services
 msgid "Unable to validate code ''{0}'' in system ''{1}'' because the validator is running without terminology services"
-msgstr "!!コードの検証エラー: 用語サービス無しで実行中"
+msgstr "コードの検証エラー: 用語サービス無しで実行中"
 
 # Extension_EXTM_Context_Wrong
 #: Extension_EXTM_Context_Wrong
 msgid "The modifier extension {0} is not allowed to be used at this point (this element is {2}; allowed = {1})"
-msgstr "!!modifierExtension {0} はこの時点では使用できません (許可されているもの = {1}; この要素は {2})"
+msgstr "modifierExtension {0} はこの時点では使用できません (許可されているもの = {1}; この要素は {2})"
 
 # Extension_EXTM_Context_Wrong_VER
 #: Extension_EXTM_Context_Wrong_VER
@@ -1605,7 +1617,7 @@ msgstr ""
 #: Extension_EXTP_Context_Wrong
 msgctxt "Extension_EXTP_Context_Wrong"
 msgid "The extension {0} is not allowed to be used at this point (this element is {2}; allowed for this version = {1})"
-msgstr "!!extension {0} はこの時点では使用できません (許可されているもの = {1}; この要素は {2})"
+msgstr "extension {0} はこの時点では使用できません (許可されているもの = {1}; この要素は {2})"
 
 # Extension_EXTP_Context_Wrong_VER
 #: Extension_EXTP_Context_Wrong_VER
@@ -1681,12 +1693,12 @@ msgstr "未知のextension {0}"
 # Extension_EXT_Unknown_NotHere
 #: Extension_EXT_Unknown_NotHere
 msgid "The extension {0} could not be found so is not allowed here"
-msgstr "!!extension {0} は未知であり、ここでは許可されていません"
+msgstr "extension {0} は未知であり、ここでは許可されていません"
 
 # Extension_EXT_Url_NotFound
 #: Extension_EXT_Url_NotFound
 msgid "Extension.url is required in order to identify, use and validate the extension"
-msgstr "!!Extension.urlは必須です"
+msgstr "Extension.urlは必須です"
 
 # Extension_EXT_Version_Internal
 #: Extension_EXT_Version_Internal
@@ -1751,7 +1763,7 @@ msgstr "FHIRPath式の評価エラー: タイプ {0} と {1} の値を比較す�
 # FHIRPATH_CHECK_FAILED
 #: FHIRPATH_CHECK_FAILED
 msgid "Error evaluating FHIRPath expression: Check failed with message ''{0}''"
-msgstr "!!FHIRPath式の評価エラー: チェック {0} が失敗しました"
+msgstr "FHIRPath式の評価エラー: チェック {0} が失敗しました"
 
 # FHIRPATH_CHOICE_NO_TYPE_SPECIFIER
 #: FHIRPATH_CHOICE_NO_TYPE_SPECIFIER
@@ -1816,28 +1828,26 @@ msgstr "discriminatorで無効な式構文 (グループ ''{0}'')"
 # FHIRPATH_DISCRIMINATOR_CANT_FIND
 #: FHIRPATH_DISCRIMINATOR_CANT_FIND
 msgid "Unable to resolve discriminator in definitions: ''{0}'' in profile ''{1}'' on element ''{2}'', looking in profile ''{3}''"
-msgstr "!!定義内でdiscriminatorを解決できません: プロファイル {1} の要素 {2} に対する{0}、プロファイル {3} を確認中に"
+msgstr "定義内でdiscriminatorを解決できません: プロファイル {1} の要素 {2} に対する{0}、プロファイル {3} を確認中に"
 
 # FHIRPATH_DISCRIMINATOR_CANT_FIND_EXTENSION
 #: FHIRPATH_DISCRIMINATOR_CANT_FIND_EXTENSION
 msgid "Unable to resolve discriminator ''{0}'' on ''{2}'' found in the definitions because the extension ''{1}'' wasn''t found in the profile ''{3}''"
-msgstr "!!定義内でdiscriminator {0} を {2} 上で見つけたが、extension {1} がプロファイル {3} に見つからなかったため解決できません"
+msgstr "定義内でdiscriminator {0} を {2} 上で見つけたが、extension {1} がプロファイル {3} に見つからなかったため解決できません"
 
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES"
-msgid "-- no content: do not translate #43 --"
+msgid "-- no content: do not translate #4 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} type profiles"
 msgstr[0] ""
-msgstr[1] "識別子のエラー {1}: 子がなく、{0} タイプのプロファイル"
 
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES"
-msgid "-- no content: do not translate #44 --"
+msgid "-- no content: do not translate #5 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} types"
 msgstr[0] ""
-msgstr[1] "識別子のエラー {1}: 子がなく、{0} タイプ"
 
 # FHIRPATH_DISCRIMINATOR_NAME_ALREADY_SLICED
 #: FHIRPATH_DISCRIMINATOR_NAME_ALREADY_SLICED
@@ -1857,10 +1867,9 @@ msgstr "discriminatorでのofType()の使用が無効 - タイプにコードが
 # FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES"
-msgid "-- no content: do not translate #45 --"
+msgid "-- no content: do not translate #6 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
 msgstr[0] ""
-msgstr[1] "discriminatorでのresolve()の使用が無効 - {0} 可能なタイプが {1} に複数存在します (一つだけでなければならない)"
 
 # FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE
@@ -1880,10 +1889,9 @@ msgstr "discriminatorでのofType()の使用が無効 - 要素 {0} にタイプ�
 # FHIRPATH_FOCUS
 #: FHIRPATH_FOCUS
 msgctxt "FHIRPATH_FOCUS"
-msgid "-- no content: do not translate #46 --"
+msgid "-- no content: do not translate #7 --"
 msgid_plural "Error evaluating FHIRPath expression: focus for {1} can only have one value, but has {0} values"
 msgstr[0] ""
-msgstr[1] "FHIRPath式の評価エラー: {0}のフォーカスは1つの値を持つことができますが、{0}の値があります"
 
 # FHIRPATH_HO_HOST_SERVICES
 #: FHIRPATH_HO_HOST_SERVICES
@@ -1898,10 +1906,9 @@ msgstr ""
 # FHIRPATH_LEFT_VALUE
 #: FHIRPATH_LEFT_VALUE
 msgctxt "FHIRPATH_LEFT_VALUE"
-msgid "-- no content: do not translate #47 --"
+msgid "-- no content: do not translate #8 --"
 msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values ({2})"
 msgstr[0] ""
-msgstr[1] "FHIRPath式の評価エラー: {1}への左オペランドは1つの値しか持つことができませんが、{0}の値があります"
 
 # FHIRPATH_LEFT_VALUE_WRONG_TYPE
 #: FHIRPATH_LEFT_VALUE_WRONG_TYPE
@@ -1971,7 +1978,7 @@ msgstr "FHIRPath式の評価エラー: 関数 {0} は順序付けされたコレ
 # FHIRPATH_PARAMETER_CARD
 #: FHIRPATH_PARAMETER_CARD
 msgctxt "FHIRPATH_PARAMETER_CARD"
-msgid "-- no content: do not translate #48 --"
+msgid "-- no content: do not translate #9 --"
 msgid_plural "Error evaluating FHIRPath expression: parameter {1} can only have one value, but has {0} values"
 msgstr[0] ""
 
@@ -2003,18 +2010,16 @@ msgstr "resolve()の使用に問題 - {1}上のプロファイル{0}を解決で
 # FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 #: FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 msgctxt "FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET"
-msgid "-- no content: do not translate #49 --"
+msgid "-- no content: do not translate #10 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
 msgstr[0] ""
-msgstr[1] "discriminatorでのresolve()の使用が無効 - {1}に{0}の可能なターゲットタイププロファイルが複数存在します (一つだけでなければならない)"
 
 # FHIRPATH_RIGHT_VALUE
 #: FHIRPATH_RIGHT_VALUE
 msgctxt "FHIRPATH_RIGHT_VALUE"
-msgid "-- no content: do not translate #50 --"
+msgid "-- no content: do not translate #11 --"
 msgid_plural "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
-msgstr[1] "FHIRPath式の評価エラー: {1}への右オペランドは1つの値しか持つことができませんが、{0}の値があります"
 
 # FHIRPATH_RIGHT_VALUE_WRONG_TYPE
 #: FHIRPATH_RIGHT_VALUE_WRONG_TYPE
@@ -2029,7 +2034,7 @@ msgstr "FHIRPath式の評価エラー: 関数 {0} は順序付けされた文字
 # FHIRPATH_STRING_SING_ONLY
 #: FHIRPATH_STRING_SING_ONLY
 msgid "Error evaluating FHIRPath expression: The function {0} can only be used on string, uri, url, code, id but found {1}"
-msgstr "!!FHIRPath式の評価エラー: 関数 {0} は文字列、URI、code、idに対してのみ使用できますが、{1} を見つけました"
+msgstr "FHIRPath式の評価エラー: 関数 {0} は文字列、URI、code、idに対してのみ使用できますが、{1} を見つけました"
 
 # FHIRPATH_UNABLE_BOOLEAN
 #: FHIRPATH_UNABLE_BOOLEAN
@@ -2039,7 +2044,7 @@ msgstr "booleanとして評価できません: {0}"
 # FHIRPATH_UNKNOWN_CONSTANT
 #: FHIRPATH_UNKNOWN_CONSTANT
 msgid "Error evaluating FHIRPath expression: Invalid FHIRPath Constant {0}"
-msgstr "!!FHIRPath式の評価エラー: 無効なFHIR定数 {0}"
+msgstr "FHIRPath式の評価エラー: 無効なFHIR定数 {0}"
 
 # FHIRPATH_UNKNOWN_CONTEXT
 #: FHIRPATH_UNKNOWN_CONTEXT
@@ -2113,7 +2118,7 @@ msgstr ""
 
 # HTA_LOINC_MESSAGE
 #: HTA_LOINC_MESSAGE
-msgid "This material contains content from <a href=\\"http://loinc.org\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\"http://loinc.org/license\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
+msgid "This material contains content from <a href=\\\"http://loinc.org\\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\\"http://loinc.org/license\\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
 msgstr ""
 
 # HTA_SCT_DESC
@@ -2123,7 +2128,7 @@ msgstr ""
 
 # HTA_SCT_MESSAGE
 #: HTA_SCT_MESSAGE
-msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\"https://www.snomed.org/get-snomed\\">https://www.snomed.org/get-snomed</a> or <a href=\\"mailto:info@snomed.org\\">info@snomed.org</a>."
+msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> or <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
 msgstr ""
 
 # IG_DEPENDENCY_CAN_VERSION_ALONE
@@ -2255,7 +2260,7 @@ msgstr ""
 # INV_FAILED
 #: INV_FAILED
 msgid "Constraint failed: {0}"
-msgstr "!!ルール {0} が失敗しました"
+msgstr "ルール {0} が失敗しました"
 
 # INV_FAILED_SOURCE
 #: INV_FAILED_SOURCE
@@ -2275,7 +2280,7 @@ msgstr "{1}内のdifferentialにおける無効なパス ''{0}'': 無効な文�
 # Illegal_path__in_differential_in__must_start_with_
 #: Illegal_path__in_differential_in__must_start_with_
 msgid "Invalid path ''{0}'' in input differential in {1}: must start with {2}.{3}"
-msgstr "!!{1}内のdifferantialにおける無効なパス ''{0}'': {2}.{3}で始まる必要があります"
+msgstr "{1}内のdifferantialにおける無効なパス ''{0}'': {2}.{3}で始まる必要があります"
 
 # Illegal_path__in_differential_in__name_portion_exceeds_64_chars_in_length
 #: Illegal_path__in_differential_in__name_portion_exceeds_64_chars_in_length
@@ -2300,7 +2305,7 @@ msgstr "未処理の固定値タイプ {0}"
 # Internal_error___type_not_known_
 #: Internal_error___type_not_known_
 msgid "Internal error - type not known {0}"
-msgstr "!!内部エラー - タイプが未知 {0}"
+msgstr "内部エラー - タイプが未知 {0}"
 
 # Invalid_slicing__there_is_more_than_one_type_slice_at__but_one_of_them__has_min__1_so_the_other_slices_cannot_exist
 #: Invalid_slicing__there_is_more_than_one_type_slice_at__but_one_of_them__has_min__1_so_the_other_slices_cannot_exist
@@ -2375,7 +2380,7 @@ msgstr "スクリプト {0}: 解析サイクルで終了していない文字列
 # LIQUID_UNKNOWN_FILTER
 #: LIQUID_UNKNOWN_FILTER
 msgid "Unknown Liquid filter ''{0}''"
-msgstr "!!未知のLiquidフィルター '''{0}'''"
+msgstr "未知のLiquidフィルター '''{0}'''"
 
 # LIQUID_UNKNOWN_FLOW_STMT
 #: LIQUID_UNKNOWN_FLOW_STMT
@@ -2845,10 +2850,9 @@ msgstr ""
 # MULTIPLE_LOGICAL_MODELS
 #: MULTIPLE_LOGICAL_MODELS
 msgctxt "MULTIPLE_LOGICAL_MODELS"
-msgid "-- no content: do not translate #51 --"
+msgid "-- no content: do not translate #12 --"
 msgid_plural "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
 msgstr[0] ""
-msgstr[1] "提供されたプロファイルに {0} 個の論理モデルが見つかったため、論理モデルを解析できません（一つだけでなければならず、{1}個見つかりました）"
 
 # Measure_MR_M_None
 #: Measure_MR_M_None
@@ -2900,21 +2904,18 @@ msgstr ""
 msgid "No valid Display Names found for {1}#{2} in the language {4}"
 msgid_plural "No valid Display Names found for {1}#{2} in the languages {4}"
 msgstr[0] "言語 {4} で {1}#{2} の有効なdisplayが見つかりません"
-msgstr[1] "言語 {4} で {1}#{2} の有効なdisplayが見つかりません"
 
 # NO_VALID_DISPLAY_FOUND_LANG_NONE
 #: NO_VALID_DISPLAY_FOUND_LANG_NONE
 msgid "''{5}'' is the default display; the code system {1} has no Display Names for the language {4}"
 msgid_plural "''{5}'' is the default display; the code system {1} has no Display Names found for the language {4}"
 msgstr[0] ""
-msgstr[1] ""
 
 # NO_VALID_DISPLAY_FOUND_LANG_SOME
 #: NO_VALID_DISPLAY_FOUND_LANG_SOME
 msgid "''{5}'' is the default display; no valid Display Names found for {1}#{2} in the language {4}"
 msgid_plural "''{5}'' is the default display; no valid Display Names found for {1}#{2} in the language {4}"
 msgstr[0] ""
-msgstr[1] ""
 
 # NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR
 #: NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR
@@ -2991,7 +2992,6 @@ msgstr "ノードタイプ {0} は許可されていません"
 msgid "The provided code {2} was not found in the value set ''{1}''"
 msgid_plural "None of the provided codes [{2}] are in the value set ''{1}''"
 msgstr[0] "提供されたcode {2} は、ValueSet ''{1}''にありません"
-msgstr[1] "提供されたcode [{2}] のうちどれも、ValueSet ''{1}''に含まれていません"
 
 # Not_done_yet
 #: Not_done_yet
@@ -3133,7 +3133,6 @@ msgstr ""
 msgid "The element definition ``{0}`` in the profile ''{1}'' requires that if a value is not present, the extension ''{2}'' must be present"
 msgid_plural "The element definition ``{0}`` in the profile ''{1}'' requires that if a value is not present, one of the extensions ''{2}'' must be present"
 msgstr[0] "プロファイル ''{1}'' の要素定義 {0} では、値が存在しない場合、extension ''{2}'' が存在する必要があります"
-msgstr[1] "プロファイル ''{1}'' の要素定義 {0} では、値が存在しない場合、extension ''{2}'' のいずれかが存在する必要があります"
 
 # PROFILE_COMPLIES_WITH_BAD_ELEMENT
 #: PROFILE_COMPLIES_WITH_BAD_ELEMENT
@@ -3288,7 +3287,7 @@ msgstr ""
 # QUESTIONNAIRE_QR_ITEM_BADOPTION_CS
 #: QUESTIONNAIRE_QR_ITEM_BADOPTION_CS
 msgid "The code provided {1} cannot be validated in the options value set ({2}) in the questionnaire because the system {0} could not be found"
-msgstr "!!提供されたコード {1} はQuestionnaireのオプションValueSet（{2}）で検証できません。システム {0} は未知です"
+msgstr "提供されたコード {1} はQuestionnaireのオプションValueSet（{2}）で検証できません。システム {0} は未知です"
 
 # QUESTIONNAIRE_QR_ITEM_BAD_ATTACHMENT_LENGTH
 #: QUESTIONNAIRE_QR_ITEM_BAD_ATTACHMENT_LENGTH
@@ -3603,7 +3602,7 @@ msgstr "派生に参照されるQuestionnaire ''{0}'' が見つかりません�
 # Questionnaire_QR_Item_BadOption
 #: Questionnaire_QR_Item_BadOption
 msgid "The code ''{1}'' in the system ''{0}'' is not in the options value set ({2}) specified by the questionnaire. Terminology Error: {3}"
-msgstr "!!提供されたコード {1}（システム {0}）はQuestionnaireのオプションValueSet（{2}）には存在しません: {3}"
+msgstr "提供されたコード {1}（システム {0}）はQuestionnaireのオプションValueSet（{2}）には存在しません: {3}"
 
 # Questionnaire_QR_Item_Coding
 #: Questionnaire_QR_Item_Coding
@@ -3628,7 +3627,7 @@ msgstr "DISPLAYタイプ以外のアイテムは、アイテムを持つべき�
 # Questionnaire_QR_Item_Group
 #: Questionnaire_QR_Item_Group
 msgid "Items of type {0} should not have answers"
-msgstr "!!グループタイプのアイテムは回答を持つべきではありません"
+msgstr "グループタイプのアイテムは回答を持つべきではありません"
 
 # Questionnaire_QR_Item_GroupAnswer
 #: Questionnaire_QR_Item_GroupAnswer
@@ -3648,17 +3647,17 @@ msgstr "必須アイテム ''{0}'' に対する回答が見つかりません"
 # Questionnaire_QR_Item_NoCoding
 #: Questionnaire_QR_Item_NoCoding
 msgid "The code {0}::{1} is not in the set of permitted values"
-msgstr "!!コード {0}::{1} は有効なオプションではありません"
+msgstr "コード {0}::{1} は有効なオプションではありません"
 
 # Questionnaire_QR_Item_NoDate
 #: Questionnaire_QR_Item_NoDate
 msgid "The date {0} is not in the set of permitted values"
-msgstr "!!日付 {0} は有効なオプションではありません"
+msgstr "日付 {0} は有効なオプションではありません"
 
 # Questionnaire_QR_Item_NoInteger
 #: Questionnaire_QR_Item_NoInteger
 msgid "The integer {0} is not in the set of permitted values"
-msgstr "!!整数 {0} は有効なオプションではありません"
+msgstr "整数 {0} は有効なオプションではありません"
 
 # Questionnaire_QR_Item_NoLinkId
 #: Questionnaire_QR_Item_NoLinkId
@@ -3698,12 +3697,12 @@ msgstr "オプションリストにはtime型のオプション値がありま�
 # Questionnaire_QR_Item_NoString
 #: Questionnaire_QR_Item_NoString
 msgid "The string {0} is not in the set of permitted values"
-msgstr "!!文字列 {0} は有効なオプションではありません"
+msgstr "文字列 {0} は有効なオプションではありません"
 
 # Questionnaire_QR_Item_NoTime
 #: Questionnaire_QR_Item_NoTime
 msgid "The time {0} is not in the set of permitted values"
-msgstr "!!時間 {0} は有効なオプションではありません"
+msgstr "時間 {0} は有効なオプションではありません"
 
 # Questionnaire_QR_Item_NoType
 #: Questionnaire_QR_Item_NoType
@@ -3733,10 +3732,9 @@ msgstr "このLinkIdを持つ回答アイテムは1つだけ許可されます"
 # Questionnaire_QR_Item_OnlyOneI
 #: Questionnaire_QR_Item_OnlyOneI
 msgctxt "Questionnaire_QR_Item_OnlyOneI"
-msgid "-- no content: do not translate #52 --"
+msgid "-- no content: do not translate #13 --"
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
-msgstr[0] "!!LinkId {1} を持つ回答アイテムは1つだけ許可されます - {0} 個のアイテムが見つかりました"
-msgstr[1] ""
+msgstr[0] ""
 
 # Questionnaire_QR_Item_Order
 #: Questionnaire_QR_Item_Order
@@ -3763,7 +3761,6 @@ msgstr "オプションリストが提供されていないため、時間型の
 msgid "Answer value must be of the type {1} not {2}"
 msgid_plural "Answer value must be one of the {0} types {1} not {2}"
 msgstr[0] "回答値は {1}型でなければなりません"
-msgstr[1] "回答値は {0} 型のいずれかでなければなりません ({1})"
 
 # Questionnaire_QR_Q_None
 #: Questionnaire_QR_Q_None
@@ -3783,7 +3780,7 @@ msgstr "このenableWhenルール ({0}) のターゲットは、質問自体の�
 # Questionnaire_Q_EnableWhen_IsInner
 #: Questionnaire_Q_EnableWhen_IsInner
 msgid "Questions with an enableWhen cannot refer to an inner question for its enableWhen condition"
-msgstr "!!enableWhenを持つ質問は、そのenableWhen条件について内部質問を参照することはできません"
+msgstr "enableWhenを持つ質問は、そのenableWhen条件について内部質問を参照することはできません"
 
 # Questionnaire_Q_EnableWhen_NoLink
 #: Questionnaire_Q_EnableWhen_NoLink
@@ -3903,12 +3900,12 @@ msgstr "参照URL {1} によって示されるタイプ ''{0}'' は、この要�
 # Reference_REF_CantMatchChoice
 #: Reference_REF_CantMatchChoice
 msgid "Unable to find a profile match for {0} among choices: {1}"
-msgstr "!!選択肢 {1} の中からprofile {0} のマッチを見つけることができません"
+msgstr "選択肢 {1} の中からprofile {0} のマッチを見つけることができません"
 
 # Reference_REF_CantMatchType
 #: Reference_REF_CantMatchType
 msgid "Unable to find a profile match for {0} (by type) among choices: {1}"
-msgstr "!!選択肢 {1} の中からprofile {0}（タイプ別）のマッチを見つけることができません"
+msgstr "選択肢 {1} の中からprofile {0}（タイプ別）のマッチを見つけることができません"
 
 # Reference_REF_CantResolve
 #: Reference_REF_CantResolve
@@ -3923,12 +3920,12 @@ msgstr "profile参照 ''{0}'' を解決できません"
 # Reference_REF_Format1
 #: Reference_REF_Format1
 msgid "Relative URLs must be of the format [ResourceName]/[id], or a search URL is allowed ([type]?parameters. Encountered {0})"
-msgstr "!!相対URLは[ResourceName]/[id]の形式でなければならず、または検索URL（[type]?parameters）が許可されます。 {0} に遭遇しました"
+msgstr "相対URLは[ResourceName]/[id]の形式でなければならず、または検索URL（[type]?parameters）が許可されます。 {0} に遭遇しました"
 
 # Reference_REF_Format2
 #: Reference_REF_Format2
 msgid "Relative URLs must be of the format [ResourceName]/[id]. Encountered {0}"
-msgstr "!!相対URLは[ResourceName]/[id]の形式でなければならない。 {0} に遭遇しました"
+msgstr "相対URLは[ResourceName]/[id]の形式でなければならない。 {0} に遭遇しました"
 
 # Reference_REF_MultipleMatches
 #: Reference_REF_MultipleMatches
@@ -4043,7 +4040,7 @@ msgstr ""
 # SD_CONTEXT_SHOULD_NOT_BE_ELEMENT
 #: SD_CONTEXT_SHOULD_NOT_BE_ELEMENT
 msgid "Review the extension type for {1}: extensions should not have a context of {0} unless it''s really intended that they can be used anywhere"
-msgstr "!!extensionタイプを確認してください：extensionはそれらが本当にどこでも使用できることを意図したものではない限り、 {0} のコンテキストを持つべきではありません"
+msgstr "extensionタイプを確認してください：extensionはそれらが本当にどこでも使用できることを意図したものではない限り、 {0} のコンテキストを持つべきではありません"
 
 # SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH
 #: SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH
@@ -4148,7 +4145,7 @@ msgstr "プロファイル {0} はmodifier extensionのためのものですが�
 # SD_ED_TYPE_PROFILE_UNKNOWN
 #: SD_ED_TYPE_PROFILE_UNKNOWN
 msgid "Unable to resolve profile {0}"
-msgstr "!!!!!!!!!!!!!!!!プロファイル {0} を解決できません"
+msgstr "プロファイル {0} を解決できません"
 
 # SD_ED_TYPE_PROFILE_WRONG
 #: SD_ED_TYPE_PROFILE_WRONG
@@ -4165,7 +4162,6 @@ msgstr "プロファイル {0} はタイプ {1} のためのもので、これ�
 msgid "The type {0} is not in the list of allowed type {1} in the profile {2}"
 msgid_plural "The type {0} is not in the list of allowed types {1} in the profile {2}"
 msgstr[0] "type {0} はプロファイル {2} で許可されたtypeのリスト {1} にありません"
-msgstr[1] "type {0} はプロファイル {2} で許可されたtypeのリスト {1} にありません"
 
 # SD_ELEMENT_FIXED_WRONG_TYPE
 #: SD_ELEMENT_FIXED_WRONG_TYPE
@@ -4315,12 +4311,12 @@ msgstr "要素 ''{0}'' は、基本 (''{2}'') とは異なるバインディン�
 # SD_OBGLIGATION_PROFILE_PATH_WRONG
 #: SD_OBGLIGATION_PROFILE_PATH_WRONG
 msgid "The element ''{0}'' path value of ''{1}'' doesn''t match the base path ''{2}''"
-msgstr "!!要素 ''{0}'' のパス値 ''{1}'' は、基本パス ''{2}'' と一致しません"
+msgstr "要素 ''{0}'' のパス値 ''{1}'' は、基本パス ''{2}'' と一致しません"
 
 # SD_OBGLIGATION_PROFILE_UKNOWN
 #: SD_OBGLIGATION_PROFILE_UKNOWN
 msgid "The profile is marked as an obligation profile, but its correctness cannot be checked since the base profile ''{0}'' is not known"
-msgstr "!!!!プロファイルはobligationプロファイルとしてマークされていますが、基本プロファイル ''{0}'' が不明なため、その正確さを確認することはできません"
+msgstr "プロファイルはobligationプロファイルとしてマークされていますが、基本プロファイル ''{0}'' が不明なため、その正確さを確認することはできません"
 
 # SD_OBGLIGATION_PROFILE_UNMATCHED
 #: SD_OBGLIGATION_PROFILE_UNMATCHED
@@ -4400,7 +4396,7 @@ msgstr "タイプ {0} は、FHIR仕様で定義されていないため、合法
 # SD_TYPE_NOT_LOGICAL
 #: SD_TYPE_NOT_LOGICAL
 msgid "The type {0} can only be defined if the kind is ''logical'' not {1}"
-msgstr "!!タイプ {0} は、種類が 'logical' でない {1} の場合にのみ定義できます"
+msgstr "タイプ {0} は、種類が 'logical' でない {1} の場合にのみ定義できます"
 
 # SD_TYPE_NOT_MATCH_NS
 #: SD_TYPE_NOT_MATCH_NS
@@ -4505,17 +4501,17 @@ msgstr "スライシングは評価できません：{0}"
 # SM_DEPENDENT_PARAM_MODE_MISMATCH
 #: SM_DEPENDENT_PARAM_MODE_MISMATCH
 msgid "The parameter {0} refers to the variable {1} but its mode is {2} which is not the same as the mode required for the group {3}"
-msgstr "!!パラメータ {0} は変数 {1} を参照していますが、そのモードは {2} であり、これはグループ {3} で必要とされるモードと同じではありません"
+msgstr "パラメータ {0} は変数 {1} を参照していますが、そのモードは {2} であり、これはグループ {3} で必要とされるモードと同じではありません"
 
 # SM_DEPENDENT_PARAM_NOT_FOUND
 #: SM_DEPENDENT_PARAM_NOT_FOUND
 msgid "The {1} parameter ''{0}'' was not found. Known variables: {2}"
-msgstr "!!{1} パラメータ ''{0}'' は見つかりませんでした"
+msgstr "{1} パラメータ ''{0}'' は見つかりませんでした"
 
 # SM_DEPENDENT_PARAM_TYPE_MISMATCH
 #: SM_DEPENDENT_PARAM_TYPE_MISMATCH
 msgid "The parameter ''{0}'' refers to the variable ''{1}'' but its type is ''{2}'' which is not compatible with the type required for the group ''{3}'', which is ''{4}'' (from map ''{5}'')"
-msgstr "!!パラメータ ''{0}'' は変数 ''{1}'' を参照していますが、そのタイプは ''{2}'' であり、これはグループ ''{3}'' で必要とされるタイプと互換性がありません。必要なタイプは ''{4}'' （マップ ''{5}'' から）"
+msgstr "パラメータ ''{0}'' は変数 ''{1}'' を参照していますが、そのタイプは ''{2}'' であり、これはグループ ''{3}'' で必要とされるタイプと互換性がありません。必要なタイプは ''{4}'' （マップ ''{5}'' から）"
 
 # SM_DEPENDENT_PARAM_TYPE_MISMATCH_DUPLICATE
 #: SM_DEPENDENT_PARAM_TYPE_MISMATCH_DUPLICATE
@@ -4595,7 +4591,7 @@ msgstr "listRuleIdは、一度だけ実行できるルールであるため、�
 # SM_ORPHAN_GROUP
 #: SM_ORPHAN_GROUP
 msgid "The group {0} is not called successfully from within this mapping script, and does not have types on its inputs, so type verification is not possible"
-msgstr "!!グループ {0} はこのマッピングスクリプト内から正常に呼び出されておらず、それの入力にタイプがないため、タイプの確認はできません"
+msgstr "グループ {0} はこのマッピングスクリプト内から正常に呼び出されておらず、それの入力にタイプがないため、タイプの確認はできません"
 
 # SM_RULEGROUP_NOT_FOUND
 #: SM_RULEGROUP_NOT_FOUND
@@ -4795,12 +4791,12 @@ msgstr "生成されたsnapshotには、元の提供されたsnapshot{0}と要�
 # SNAPSHOT_IS_EMPTY
 #: SNAPSHOT_IS_EMPTY
 msgid "The snapshot for the profile ''{0}'' is empty. This is usually due to a processing error logged elsewhere"
-msgstr "!!!!プロファイル''{0}''のsnapshotが空です（これは起こるべきではありません）"
+msgstr "プロファイル''{0}''のsnapshotが空です（これは起こるべきではありません）"
 
 # STATUS_CODE_WARNING_CODE
 #: STATUS_CODE_WARNING_CODE
 msgid "The concept ''{1}'' is valid but is {0}"
-msgstr "!!The code ''{1}'' is valid but is {0}"
+msgstr "The code ''{1}'' is valid but is {0}"
 
 # SYSTEM_VERSION_MULTIPLE_DEFAULT
 #: SYSTEM_VERSION_MULTIPLE_DEFAULT
@@ -4875,12 +4871,12 @@ msgstr "システムURL ''{0}''が誤ってhttps：で始まっています。ht
 # TERMINOLOGY_TX_SYSTEM_NOT_USABLE
 #: TERMINOLOGY_TX_SYSTEM_NOT_USABLE
 msgid "The definition for the Code System with URI ''{0}'' doesn''t provide any codes so the code cannot be validated"
-msgstr "!!URIが''{0}''のCodeSystemの定義にはcodeが提供されていないため、codeを検証できません"
+msgstr "URIが''{0}''のCodeSystemの定義にはcodeが提供されていないため、codeを検証できません"
 
 # TERMINOLOGY_TX_SYSTEM_NO_CODE
 #: TERMINOLOGY_TX_SYSTEM_NO_CODE
 msgid "A code with no system has no defined meaning, and it cannot be validated. A system should be provided"
-msgstr "!!systemが提供されていないコードは定義された意味がありません。systemを提供する必要があります"
+msgstr "systemが提供されていないコードは定義された意味がありません。systemを提供する必要があります"
 
 # TERMINOLOGY_TX_SYSTEM_WRONG_BUILD
 #: TERMINOLOGY_TX_SYSTEM_WRONG_BUILD
@@ -4945,22 +4941,22 @@ msgstr "サーバーはバッチ検証リクエストからnullを返しまし�
 # TYPE_CHECKS_FIXED_CC
 #: TYPE_CHECKS_FIXED_CC
 msgid "The fixed value [system {0}, code {1}, and display ''{2}''] defined in the profile {3} not found. Issues: {4}"
-msgstr "!!!!!!!!!!!!!!!!!!プロファイル{3}で定義されたパターン[system {0}、code {1}、およびdisplay ''{2}'']が見つかりません。問題: {4}"
+msgstr "プロファイル{3}で定義されたパターン[system {0}、code {1}、およびdisplay ''{2}'']が見つかりません。問題: {4}"
 
 # TYPE_CHECKS_FIXED_CC_US
 #: TYPE_CHECKS_FIXED_CC_US
 msgid "The fixed value [system {0}, code {1}, display ''{2}'' and userSelected {5}] defined in the profile {3} not found. Issues: {4}"
-msgstr "!!!!!!!!!!!!!!!!!!プロファイル{3}で定義されたパターン[system {0}、code {1}、display ''{2}''およびuserSelected {5}]が見つかりません。問題: {4}"
+msgstr "プロファイル{3}で定義されたパターン[system {0}、code {1}、display ''{2}''およびuserSelected {5}]が見つかりません。問題: {4}"
 
 # TYPE_CHECKS_PATTERN_CC
 #: TYPE_CHECKS_PATTERN_CC
 msgid "The pattern [system {0}, code {1}, and display ''{2}''] defined in the profile {3} not found. Issues: {4}"
-msgstr "!!!!!!!!!!!!!!!!!!プロファイル{3}で定義されたパターン[system {0}、code {1}、およびdisplay ''{2}'']が見つかりません。問題: {4}"
+msgstr "プロファイル{3}で定義されたパターン[system {0}、code {1}、およびdisplay ''{2}'']が見つかりません。問題: {4}"
 
 # TYPE_CHECKS_PATTERN_CC_US
 #: TYPE_CHECKS_PATTERN_CC_US
 msgid "The pattern [system {0}, code {1}, display ''{2}'' and userSelected {5}] defined in the profile {3} not found. Issues: {4}"
-msgstr "!!!!!!!!!!!!!!!!!!プロファイル{3}で定義されたパターン[system {0}、code {1}、display ''{2}''およびuserSelected {5}]が見つかりません。問題: {4}"
+msgstr "プロファイル{3}で定義されたパターン[system {0}、code {1}、display ''{2}''およびuserSelected {5}]が見つかりません。問題: {4}"
 
 # TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE
 #: TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE
@@ -5040,7 +5036,7 @@ msgstr ""
 # TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE
 #: TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE
 msgid "A definition could not be found for Canonical URL ''{0}''"
-msgstr "!!Canonical URL ''{0}'' は解決できません"
+msgstr "Canonical URL ''{0}'' は解決できません"
 
 # TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE_NC
 #: TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE_NC
@@ -5305,7 +5301,7 @@ msgstr "Type specifierに一致するものはなく、基底型 {0} は有効�
 # Terminology_PassThrough_TX_Message
 #: Terminology_PassThrough_TX_Message
 msgid "{0} (for ''{1}#{2}'')"
-msgstr "!!{0} for ''{1}#{2}''"
+msgstr "{0} for ''{1}#{2}''"
 
 # Terminology_TX_Binding_CantCheck
 #: Terminology_TX_Binding_CantCheck
@@ -5330,7 +5326,7 @@ msgstr "用語サーバーが存在しないため、提供された値（[{0}]�
 # Terminology_TX_Binding_NoSource
 #: Terminology_TX_Binding_NoSource
 msgid "Binding for path {0} in profile {1} has no source, so can''t be checked"
-msgstr "!!パス{0}のバインディングにはソースがないため、チェックできません"
+msgstr "パス{0}のバインディングにはソースがないため、チェックできません"
 
 # Terminology_TX_Code_ValueSet
 #: Terminology_TX_Code_ValueSet
@@ -5375,17 +5371,17 @@ msgstr "提供されたcodingがValueSet{0}に含まれていることを確認�
 # Terminology_TX_Confirm_4a
 #: Terminology_TX_Confirm_4a
 msgid "The code provided ({2}) was not found in the value set {0}, and a code from this value set is required: {1}"
-msgstr "!!提供されたcode（{2}）がValueSet{0}に含まれていません。このValueSetからのcodeが必要です：{1}"
+msgstr "提供されたcode（{2}）がValueSet{0}に含まれていません。このValueSetからのcodeが必要です：{1}"
 
 # Terminology_TX_Confirm_5
 #: Terminology_TX_Confirm_5
 msgid "The code provided ({1}) is not in the value set {0}, and a code should come from this value set unless it has no suitable code (the validator cannot judge what is suitable)"
-msgstr "!!!!提供されたcodeがValueSet{0}に含まれていることを確認できませんでした。適切なコードがない場合を除き、このValueSetからのcodeが必要です（バリデータは何が適切か判断できません）"
+msgstr "提供されたcodeがValueSet{0}に含まれていることを確認できませんでした。適切なコードがない場合を除き、このValueSetからのcodeが必要です（バリデータは何が適切か判断できません）"
 
 # Terminology_TX_Confirm_6
 #: Terminology_TX_Confirm_6
 msgid "The code provided ({1}) is not in the value set {0}, and a code is recommended to come from this value set"
-msgstr "!!!!提供されたcodeがValueSet {0}に含まれていることを確認できませんでした。このValueSetからのcodeが推奨されています"
+msgstr "提供されたcodeがValueSet {0}に含まれていることを確認できませんでした。このValueSetからのcodeが推奨されています"
 
 # Terminology_TX_Display_Wrong
 #: Terminology_TX_Display_Wrong
@@ -5425,17 +5421,17 @@ msgstr "提供されたcodeは最大ValueSet {0}に含まれていません。�
 # Terminology_TX_NoValid_12
 #: Terminology_TX_NoValid_12
 msgid "The Coding provided ({2}) was not found in the value set {0}, and a code is required from this value set. {1}"
-msgstr "!!提供されたCoding（{2}）がValueSet{0}に含まれていません。このValueSetからのcodeが必要です。{1}"
+msgstr "提供されたCoding（{2}）がValueSet{0}に含まれていません。このValueSetからのcodeが必要です。{1}"
 
 # Terminology_TX_NoValid_13
 #: Terminology_TX_NoValid_13
 msgid "The Coding provided ({2}) was not found in the value set {0}, and a code should come from this value set unless it has no suitable code (note that the validator cannot judge what is suitable). {1}"
-msgstr "!!提供されたCoding（{2}）がValueSet{0}に含まれていません。適切なcodeがない場合を除き、このValueSetからのcodeが必要です（バリデータは何が適切か判断できません）。{1}"
+msgstr "提供されたCoding（{2}）がValueSet{0}に含まれていません。適切なcodeがない場合を除き、このValueSetからのcodeが必要です（バリデータは何が適切か判断できません）。{1}"
 
 # Terminology_TX_NoValid_14
 #: Terminology_TX_NoValid_14
 msgid "The Coding provided ({2}) was not found in the value set {0}, and a code is recommended to come from this value set. {1}"
-msgstr "!!提供されたCoding（{2}）がValueSet{0}に含まれていません。このValueSetからのcodeが推奨されます。{1}"
+msgstr "提供されたCoding（{2}）がValueSet{0}に含まれていません。このValueSetからのcodeが推奨されます。{1}"
 
 # Terminology_TX_NoValid_15
 #: Terminology_TX_NoValid_15
@@ -5445,17 +5441,17 @@ msgstr "用語サーバーが存在しないため、提供された値（''{0}'
 # Terminology_TX_NoValid_16
 #: Terminology_TX_NoValid_16
 msgid "The value provided (''{0}'') was not found in the value set {1}, and a code is required from this value set {2}"
-msgstr "!!提供された値（''{0}''）はValueSet {1}に含まれていません。このValueSetからのcodeが必要です）{2}"
+msgstr "提供された値（''{0}''）はValueSet {1}に含まれていません。このValueSetからのcodeが必要です）{2}"
 
 # Terminology_TX_NoValid_17
 #: Terminology_TX_NoValid_17
 msgid "The value provided (''{0}'') was not found in the value set {1}, and a code should come from this value set unless it has no suitable code (note that the validator cannot judge what is suitable) {2}"
-msgstr "!!提供された値（''{0}''）はValueSet {1}に含まれていません。適切なコードがない場合を除き、このValueSetからのcodeが必要です（バリデータは何が適切か判断できません）{2}"
+msgstr "提供された値（''{0}''）はValueSet {1}に含まれていません。適切なコードがない場合を除き、このValueSetからのcodeが必要です（バリデータは何が適切か判断できません）{2}"
 
 # Terminology_TX_NoValid_18
 #: Terminology_TX_NoValid_18
 msgid "The value provided (''{0}'') was not found in the value set {1}, and a code is recommended to come from this value set{2}"
-msgstr "!!!!提供された値（''{0}''）はValueSet{1}に含まれていません。このValueSetからのcodeが推奨されています）{2}"
+msgstr "提供された値（''{0}''）はValueSet{1}に含まれていません。このValueSetからのcodeが推奨されています）{2}"
 
 # Terminology_TX_NoValid_1_CC
 #: Terminology_TX_NoValid_1_CC
@@ -5470,22 +5466,22 @@ msgstr "提供されたcodingのいずれもがValueSet{0}に含まれていま�
 # Terminology_TX_NoValid_3_CC
 #: Terminology_TX_NoValid_3_CC
 msgid "None of the codings provided are in the value set {0}, and a coding is recommended to come from this value set (codes = {1})"
-msgstr "!!提供されたcodingのいずれもがValueSet{0}に含まれていないません。このValueSetからのcodingが推奨されています）（codes = {1}）"
+msgstr "提供されたcodingのいずれもがValueSet{0}に含まれていないません。このValueSetからのcodingが推奨されています）（codes = {1}）"
 
 # Terminology_TX_NoValid_4
 #: Terminology_TX_NoValid_4
 msgid "The Coding provided ({2}) was not found in the value set {0}, and a code is required from this value set {1}"
-msgstr "!!提供されたCoding（{2}）がValueSet{0}に含まれていません。このValueSetからのcodeが必要です{1}"
+msgstr "提供されたCoding（{2}）がValueSet{0}に含まれていません。このValueSetからのcodeが必要です{1}"
 
 # Terminology_TX_NoValid_5
 #: Terminology_TX_NoValid_5
 msgid "The Coding provided ({2}) was not found in the value set {0}, and a code should come from this value set unless it has no suitable code (the validator cannot judge what is suitable) {1}"
-msgstr "!!提供されたCoding（{2}）がValueSet{0}に含まれていません。適切なコードがない場合を除き、このValueSetからのcodeが必要です（バリデータは何が適切か判断できません）{1}"
+msgstr "提供されたCoding（{2}）がValueSet{0}に含まれていません。適切なコードがない場合を除き、このValueSetからのcodeが必要です（バリデータは何が適切か判断できません）{1}"
 
 # Terminology_TX_NoValid_6
 #: Terminology_TX_NoValid_6
 msgid "The Coding provided ({2}) was not found in the value set {0}, and a code is recommended to come from this value set {1}"
-msgstr "!!提供されたCoding（{2}）がValueSet{0}に含まれていません。このValueSetからのcodeが推奨されています {1}"
+msgstr "提供されたCoding（{2}）がValueSet{0}に含まれていません。このValueSetからのcodeが推奨されています {1}"
 
 # Terminology_TX_NoValid_7
 #: Terminology_TX_NoValid_7
@@ -5530,12 +5526,12 @@ msgstr "CodingがCodeSystemではなく、ValueSetを参照しています（''{
 # Terminology_TX_ValueSet_NotFound
 #: Terminology_TX_ValueSet_NotFound
 msgid "ValueSet ''{0}'' not found"
-msgstr "!!ValueSet {0}が見つかりません"
+msgstr "ValueSet {0}が見つかりません"
 
 # Terminology_TX_ValueSet_NotFound_CS
 #: Terminology_TX_ValueSet_NotFound_CS
 msgid "Found a reference to a CodeSystem ''{0}'' where a ValueSet belongs"
-msgstr "!!ValueSetがあるべき場所にCodeSystem（{0}）への参照が見つかりました"
+msgstr "ValueSetがあるべき場所にCodeSystem（{0}）への参照が見つかりました"
 
 # Text_should_not_be_present
 #: Text_should_not_be_present
@@ -5550,7 +5546,7 @@ msgstr "ベースsnapshotはスライスをclosedとしてマークしていま�
 # This__cannot_be_parsed_as_a_FHIR_object_no_namespace
 #: This__cannot_be_parsed_as_a_FHIR_object_no_namespace
 msgid "This ''{0}'' cannot be parsed (no namespace on the XML Root element)"
-msgstr "!!これはFHIRオブジェクトとして解析できません（名前空間がありません）"
+msgstr "これはFHIRオブジェクトとして解析できません（名前空間がありません）"
 
 # This_base_property_must_be_an_Array_not_
 #: This_base_property_must_be_an_Array_not_
@@ -5560,22 +5556,22 @@ msgstr "このベースプロパティは配列でなければなりません。
 # This_cannot_be_parsed_as_a_FHIR_object_no_name
 #: This_cannot_be_parsed_as_a_FHIR_object_no_name
 msgid "This content cannot be parsed (no name)"
-msgstr "!!これはFHIRオブジェクトとして解析できません（名前がありません）"
+msgstr "これはFHIRオブジェクトとして解析できません（名前がありません）"
 
 # This_does_not_appear_to_be_a_FHIR_resource_unknown_name_
 #: This_does_not_appear_to_be_a_FHIR_resource_unknown_name_
 msgid "This content cannot be parsed (unknown or unrecognized resource name ''{0}'')"
-msgstr "!!これはFHIRリソースではないようです（未知の名前''{0}''）"
+msgstr "これはFHIRリソースではないようです（未知の名前''{0}''）"
 
 # This_does_not_appear_to_be_a_FHIR_resource_unknown_namespacename_
 #: This_does_not_appear_to_be_a_FHIR_resource_unknown_namespacename_
 msgid "This content cannot be parsed (unknown or unrecognized XML Root element namespace/name ''{0}::{1}'')"
-msgstr "!!これはFHIRリソースではないようです（未知の名前空間/名前''{0}::{1}''）"
+msgstr "これはFHIRリソースではないようです（未知の名前空間/名前''{0}::{1}''）"
 
 # This_element_does_not_match_any_known_slice_
 #: This_element_does_not_match_any_known_slice_
 msgid "This element does not match any known slice {0} (this may not be a problem, but you should check that it''s not intended to match a slice)"
-msgstr "!!この要素はどの既知のスライスとも一致しません {0}"
+msgstr "この要素はどの既知のスライスとも一致しません {0}"
 
 # This_property_must_be__not_
 #: This_property_must_be__not_
@@ -5595,7 +5591,7 @@ msgstr "このプロパティはURIまたはbnodeでなければならず、{0}�
 # This_property_must_be_an_Array_not_
 #: This_property_must_be_an_Array_not_
 msgid "The property {1} must be a JSON Array, not {0} (at {2})"
-msgstr "!!プロパティ{1}はJSON配列でなければならず、{0}ではありません（{2}で）"
+msgstr "プロパティ{1}はJSON配列でなければならず、{0}ではありません（{2}で）"
 
 # This_property_must_be_an_object_not_
 #: This_property_must_be_an_object_not_
@@ -5630,7 +5626,7 @@ msgstr "値 ''{0}'' は、合理的な年の範囲外です - データ入力エ
 # Type_Specific_Checks_DT_DateTime_Regex
 #: Type_Specific_Checks_DT_DateTime_Regex
 msgid "Not a valid instant format: ''{0}''"
-msgstr "!!instant ''{0}'' は有効ではありません（正規表現による）"
+msgstr "instant ''{0}'' は有効ではありません（正規表現による）"
 
 # Type_Specific_Checks_DT_DateTime_TZ
 #: Type_Specific_Checks_DT_DateTime_TZ
@@ -5640,22 +5636,22 @@ msgstr "日付に時間がある場合、タイムゾーンを持たなければ
 # Type_Specific_Checks_DT_DateTime_Valid
 #: Type_Specific_Checks_DT_DateTime_Valid
 msgid "Not a valid date/time format: ''{0}''"
-msgstr "!!有効な日付/時間ではありません ({0})"
+msgstr "有効な日付/時間ではありません ({0})"
 
 # Type_Specific_Checks_DT_Date_Valid
 #: Type_Specific_Checks_DT_Date_Valid
 msgid "Not a valid date format: ''{0}''"
-msgstr "!!有効な日付ではありません ({0})"
+msgstr "有効な日付ではありません ({0})"
 
 # Type_Specific_Checks_DT_Decimal_GT
 #: Type_Specific_Checks_DT_Decimal_GT
 msgid "decimal value is greater than permitted maximum value of {0}"
-msgstr "!!!!!!値は許可された最大値 {0} を超えています"
+msgstr "値は許可された最大値 {0} を超えています"
 
 # Type_Specific_Checks_DT_Decimal_LT
 #: Type_Specific_Checks_DT_Decimal_LT
 msgid "decimal value is less than permitted minimum value of {0}"
-msgstr "!!!!!!値は許可された最小値 {0} を下回っています"
+msgstr "値は許可された最小値 {0} を下回っています"
 
 # Type_Specific_Checks_DT_Decimal_Range
 #: Type_Specific_Checks_DT_Decimal_Range
@@ -5690,12 +5686,12 @@ msgstr "値 ''{0}'' は有効なinteger64ではありません"
 # Type_Specific_Checks_DT_Integer_GT
 #: Type_Specific_Checks_DT_Integer_GT
 msgid "integer value is greater than permitted maximum value of {0}"
-msgstr "!!!!!!値は許可された最大値 {0} を超えています"
+msgstr "値は許可された最大値 {0} を超えています"
 
 # Type_Specific_Checks_DT_Integer_LT
 #: Type_Specific_Checks_DT_Integer_LT
 msgid "integer value is less than permitted minimum value of {0}"
-msgstr "!!!!!!値は許可された最小値 {0} を下回っています"
+msgstr "値は許可された最小値 {0} を下回っています"
 
 # Type_Specific_Checks_DT_Integer_LT0
 #: Type_Specific_Checks_DT_Integer_LT0
@@ -5790,7 +5786,7 @@ msgstr "URIの値には空白があってはなりません(''{0}'')"
 # Type_Specific_Checks_DT_URL_Resolve
 #: Type_Specific_Checks_DT_URL_Resolve
 msgid "No definition could be found for URL value ''{0}''"
-msgstr "!!URL値 ''{0}'' は解決できません"
+msgstr "URL値 ''{0}'' は解決できません"
 
 # Type_Specific_Checks_DT_UUID_Strat
 #: Type_Specific_Checks_DT_UUID_Strat
@@ -5845,7 +5841,7 @@ msgstr "system {0}のプロパティフィルターをop = {1}で処理するこ
 # UNABLE_TO_INFER_CODESYSTEM
 #: UNABLE_TO_INFER_CODESYSTEM
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}''"
-msgstr "!!!!!!!!!!!!!!!!ValueSet {1}内のコード{0}のシステムURIを決定できませんでした"
+msgstr "ValueSet {1}内のコード{0}のシステムURIを決定できませんでした"
 
 # UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT
 #: UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT
@@ -5872,12 +5868,11 @@ msgstr "終端されていない制御文字を含むUnicodeシーケンス（CV
 msgid "This content includes the character {1} (hex value). This character is illegal in the XML version of FHIR, and there is generally no valid use for such characters"
 msgid_plural "This content includes the characters {1} (hex values). These characters are illegal in the XML version of FHIR, and there is generally no valid use for such characters"
 msgstr[0] "この内容には文字{1}（16進数値）が含まれています。この文字はFHIRのXMLバージョンでは不適合で、通常、そのような文字を有効に使用することはありません"
-msgstr[1] "この内容には文字{1}（16進数値）が含まれています。これらの文字はFHIRのXMLバージョンでは不適合で、通常、そのような文字を有効に使用することはありません"
 
 # UNKNOWN_CODESYSTEM
 #: UNKNOWN_CODESYSTEM
 msgid "A definition for CodeSystem ''{0}'' could not be found, so the code cannot be validated"
-msgstr "!!!!!!!!CodeSystem {0}は未知です"
+msgstr "CodeSystem {0}は未知です"
 
 # UNKNOWN_CODESYSTEM_EXP
 #: UNKNOWN_CODESYSTEM_EXP
@@ -5887,7 +5882,7 @@ msgstr ""
 # UNKNOWN_CODESYSTEM_VERSION
 #: UNKNOWN_CODESYSTEM_VERSION
 msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the code cannot be validated. Valid versions: {2}"
-msgstr "!!CodeSystem {0}のバージョン{1}は未知です。有効なバージョン: {2}"
+msgstr "CodeSystem {0}のバージョン{1}は未知です。有効なバージョン: {2}"
 
 # UNKNOWN_CODESYSTEM_VERSION_EXP
 #: UNKNOWN_CODESYSTEM_VERSION_EXP
@@ -5907,7 +5902,7 @@ msgstr ""
 # UNKNOWN_CODE_IN_FRAGMENT
 #: UNKNOWN_CODE_IN_FRAGMENT
 msgid "Unknown Code ''{0}'' in the CodeSystem ''{1}'' version ''{2}'' - note that the code system is labeled as a fragment, so the code may be valid in some other fragment"
-msgstr "!!system''{1}''で未知のコード''{0}'' - CodeSystemは断片としてラベル付けされているため、そのコードは他の断片では有効である可能性があります"
+msgstr "system''{1}''で未知のコード''{0}'' - CodeSystemは断片としてラベル付けされているため、そのコードは他の断片では有効である可能性があります"
 
 # UNKNOWN_PROPERTY
 #: UNKNOWN_PROPERTY
@@ -6062,17 +6057,17 @@ msgstr "systemを解決できません - ValueSetがありません"
 # Unable_to_resolve_system__value_set_expansion_has_multiple_systems
 #: Unable_to_resolve_system__value_set_expansion_has_multiple_systems
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': value set expansion has multiple systems"
-msgstr "!!systemを解決できません - ValueSetのexpansionに複数のsystemがあります"
+msgstr "systemを解決できません - ValueSetのexpansionに複数のsystemがあります"
 
 # Unable_to_resolve_system__value_set_has_imports
 #: Unable_to_resolve_system__value_set_has_imports
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': value set has imports"
-msgstr "!!systemを解決できません - ValueSetにインポートがあります"
+msgstr "systemを解決できません - ValueSetにインポートがあります"
 
 # Unable_to_resolve_system__value_set_has_include_with_filter
 #: Unable_to_resolve_system__value_set_has_include_with_filter
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': include #{2} has a filter on system {3}: {4}"
-msgstr "!!!!systemを解決できません - ValueSet {0}のインクルード#{1}にsystem {2}のフィルターがあります"
+msgstr "systemを解決できません - ValueSet {0}のインクルード#{1}にsystem {2}のフィルターがあります"
 
 # Unable_to_resolve_system__value_set_has_include_with_no_system
 #: Unable_to_resolve_system__value_set_has_include_with_no_system
@@ -6082,22 +6077,22 @@ msgstr "systemを解決できません - ValueSet {0}のインクルード#{1}�
 # Unable_to_resolve_system__value_set_has_include_with_unknown_system
 #: Unable_to_resolve_system__value_set_has_include_with_unknown_system
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': include #{2} has system {3} which could not be found, and the server returned error {4}"
-msgstr "!!systemを解決できません - ValueSet {0}のインクルード#{1}には未知のsystem{2}があり、サーバーはエラー{3}を返しました"
+msgstr "systemを解決できません - ValueSet {0}のインクルード#{1}には未知のsystem{2}があり、サーバーはエラー{3}を返しました"
 
 # Unable_to_resolve_system__value_set_has_multiple_matches
 #: Unable_to_resolve_system__value_set_has_multiple_matches
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': value set expansion has multiple matches: {2}"
-msgstr "!!systemを解決できません - ValueSetのexpansionに複数の一致があります: {0}"
+msgstr "systemを解決できません - ValueSetのexpansionに複数の一致があります: {0}"
 
 # Unable_to_resolve_system__value_set_has_no_includes_or_expansion
 #: Unable_to_resolve_system__value_set_has_no_includes_or_expansion
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': value set has no includes or expansion"
-msgstr "!!systemを解決できません - ValueSet{0}にはインクルードまたは展開がありません"
+msgstr "systemを解決できません - ValueSet{0}にはインクルードまたは展開がありません"
 
 # Unable_to_resolve_value_Set_
 #: Unable_to_resolve_value_Set_
 msgid "A definition for the value Set ''{0}'' could not be found"
-msgstr "!!ValueSet{0}を解決できません"
+msgstr "ValueSet{0}を解決できません"
 
 # Unable_to_validate_code_without_using_server
 #: Unable_to_validate_code_without_using_server
@@ -6167,12 +6162,12 @@ msgstr "{1}で未知の型{0}"
 # Unrecognised_extension_context_
 #: Unrecognised_extension_context_
 msgid "Unrecognized extension context {0}"
-msgstr "!!認識できないextensionコンテキスト{0}"
+msgstr "認識できないextensionコンテキスト{0}"
 
 # Unrecognised_predicate_
 #: Unrecognised_predicate_
 msgid "Unrecognized predicate ''{0}''"
-msgstr "!!認識できない述語''{0}''"
+msgstr "認識できない述語''{0}''"
 
 # Unrecognised_property_
 #: Unrecognised_property_
@@ -6337,7 +6332,7 @@ msgstr ""
 # VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED
 #: VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED
 msgid "Profile {1} identifies {0} as a dependency (using the extension http://hl7.org/fhir/StructureDefinition/structuredefinition-dependencies), but this profile could not be found"
-msgstr "!!プロファイル {1} が依存関係 {2} を特定しています（extension http://hl7.org/fhir/StructureDefinition/structuredefinition-dependencies を使用）が、このプロファイルは見つかりませんでした"
+msgstr "プロファイル {1} が依存関係 {2} を特定しています（extension http://hl7.org/fhir/StructureDefinition/structuredefinition-dependencies を使用）が、このプロファイルは見つかりませんでした"
 
 # VALIDATION_VAL_PROFILE_MINIMUM_MAGIC
 #: VALIDATION_VAL_PROFILE_MINIMUM_MAGIC
@@ -6397,17 +6392,17 @@ msgstr "プロファイルはこのバージョンのFHIRのためのもので�
 # VALIDATION_VAL_PROFILE_UNKNOWN_ERROR
 #: VALIDATION_VAL_PROFILE_UNKNOWN_ERROR
 msgid "Profile reference ''{0}'' has not been checked because it could not be found, and fetching it resulted in the error {1}"
-msgstr "!!プロファイル参照''{0}''は未知のため、確認されていません。取得はエラー {1}により失敗しました"
+msgstr "プロファイル参照''{0}''は未知のため、確認されていません。取得はエラー {1}により失敗しました"
 
 # VALIDATION_VAL_PROFILE_UNKNOWN_ERROR_NETWORK
 #: VALIDATION_VAL_PROFILE_UNKNOWN_ERROR_NETWORK
 msgid "Profile reference ''{0}'' has not been checked because it could not be found, and the host {1} cannot be found"
-msgstr "!!プロファイル参照''{0}''は未知のため、確認されていません。ホスト {1} が見つかりません"
+msgstr "プロファイル参照''{0}''は未知のため、確認されていません。ホスト {1} が見つかりません"
 
 # VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY
 #: VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY
 msgid "Profile reference ''{0}'' has not been checked because it could not be found, and the validator is set to not fetch unknown profiles"
-msgstr "!!プロファイル参照''{0}''は未知のため、確認されていません。バリデーターは未知のプロファイルを取得しない設定になっています"
+msgstr "プロファイル参照''{0}''は未知のため、確認されていません。バリデーターは未知のプロファイルを取得しない設定になっています"
 
 # VALIDATION_VAL_STATUS_INCONSISTENT
 #: VALIDATION_VAL_STATUS_INCONSISTENT
@@ -6547,7 +6542,7 @@ msgstr "この含有物には表示ありのconceptと表示なしのconceptが�
 # VALUESET_CONCEPT_DISPLAY_SCT_TAG_MIXED
 #: VALUESET_CONCEPT_DISPLAY_SCT_TAG_MIXED
 msgid "This SNOMED-CT based include has some concepts with semantic tags (FSN terms) and some without (preferred terms) - check that this is what is intended (examples for FSN: {0} and examples for no FSN: {1})"
-msgstr "!!!!このSNOMED-CTベースの含有物には、セマンティックタグ（FSN用語）付きのconceptとそれ無し（優先用語）のconceptが混在しています - 意図した通りか確認してください"
+msgstr "このSNOMED-CTベースの含有物には、セマンティックタグ（FSN用語）付きのconceptとそれ無し（優先用語）のconceptが混在しています - 意図した通りか確認してください"
 
 # VALUESET_EXAMPLE_SYSTEM_ERROR
 #: VALUESET_EXAMPLE_SYSTEM_ERROR
@@ -6612,12 +6607,12 @@ msgstr ""
 # VALUESET_INCLUDE_INVALID_CONCEPT_CODE
 #: VALUESET_INCLUDE_INVALID_CONCEPT_CODE
 msgid "The code ''{1}'' is not valid in the system {0} ({2})"
-msgstr "!!code''{1}''はsystem{0}では有効ではありません"
+msgstr "code''{1}''はsystem{0}では有効ではありません"
 
 # VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER
 #: VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER
 msgid "The code ''{2}'' is not valid in the system {0} version {1} ({2})"
-msgstr "!!code''{2}''はsystem {0}のversion {1}では有効ではありません"
+msgstr "code''{2}''はsystem {0}のversion {1}では有効ではありません"
 
 # VALUESET_INCLUDE_SYSTEM_ABSOLUTE
 #: VALUESET_INCLUDE_SYSTEM_ABSOLUTE
@@ -6677,12 +6672,12 @@ msgstr ""
 # VALUESET_INC_TOO_MANY_CODES
 #: VALUESET_INC_TOO_MANY_CODES
 msgid "The value set include has too many concepts to validate ({0}), so each individual code has not been checked"
-msgstr "!!!!value setに大量のcodeが含まれるため、バリデーションできません: {0}"
+msgstr "value setに大量のcodeが含まれるため、バリデーションできません: {0}"
 
 # VALUESET_NO_SYSTEM_WARNING
 #: VALUESET_NO_SYSTEM_WARNING
 msgid "No System specified, so Concepts and Filters can''t be checked"
-msgstr "!!systemが指定されていないため、conceptとfilterは確認できません"
+msgstr "systemが指定されていないため、conceptとfilterは確認できません"
 
 # VALUESET_PARAMETER_MISSING_BINDING_PARAMETER
 #: VALUESET_PARAMETER_MISSING_BINDING_PARAMETER
@@ -6749,7 +6744,7 @@ msgstr "公開されたvalue setsはValueSet.{0}の存在を推奨しているSh
 # VALUESET_SHAREABLE_EXTRA_MISSING_HL7
 #: VALUESET_SHAREABLE_EXTRA_MISSING_HL7
 msgid "Value sets published by HL7 SHALL conform to the ShareableValueSet profile, which says that the element ValueSet.{0} should be present, but it is not"
-msgstr "!!公開されたvalue setsはValueSet.{0}の存在を推奨しているShareableValueSetプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
+msgstr "公開されたvalue setsはValueSet.{0}の存在を推奨しているShareableValueSetプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
 
 # VALUESET_SHAREABLE_MISSING
 #: VALUESET_SHAREABLE_MISSING
@@ -6759,19 +6754,18 @@ msgstr "公開されたvalue setsはValueSet.{0}の存在を必須としてい�
 # VALUESET_SHAREABLE_MISSING_HL7
 #: VALUESET_SHAREABLE_MISSING_HL7
 msgid "Value sets published by HL7 SHALL conform to the ShareableValueSet profile, which says that the element ValueSet.{0} is mandatory, but it is not present"
-msgstr "!!公開されたvalue setsはValueSet.{0}の存在を必須としているShareableValueSetプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
+msgstr "公開されたvalue setsはValueSet.{0}の存在を必須としているShareableValueSetプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
 
 # VALUESET_SUPPLEMENT_MISSING
 #: VALUESET_SUPPLEMENT_MISSING
 msgid "Required supplement not found: {1}"
 msgid_plural "Required supplements not found: {1}"
 msgstr[0] "必要なsupplementが見つかりません: {1}"
-msgstr[1] "必要なsupplementが見つかりません: {1}"
 
 # VALUESET_TOO_COSTLY
 #: VALUESET_TOO_COSTLY
 msgid "The value set ''{0}'' expansion has too many codes to display ({1})"
-msgstr "!!ValueSet {0}には多すぎるコードがあり、表示できません({1})"
+msgstr "ValueSet {0}には多すぎるコードがあり、表示できません({1})"
 
 # VALUESET_TOO_COSTLY_COUNT
 #: VALUESET_TOO_COSTLY_COUNT
@@ -6781,7 +6775,7 @@ msgstr ""
 # VALUESET_TOO_COSTLY_TIME
 #: VALUESET_TOO_COSTLY_TIME
 msgid "The value set ''{0}'' {2} took too long to process (>{1}sec)"
-msgstr "!!!!ValueSet {0}の処理に時間がかかっています (>{1}sec)"
+msgstr "ValueSet {0}の処理に時間がかかっています (>{1}sec)"
 
 # VALUESET_TXVER_BATCH_NOT_SUPPORTED
 #: VALUESET_TXVER_BATCH_NOT_SUPPORTED
@@ -6991,7 +6985,7 @@ msgstr "メッセージの最初のエントリはMessageHeaderでなければ�
 # Validation_VAL_Content_Unknown
 #: Validation_VAL_Content_Unknown
 msgid "Unrecognized Content {0}"
-msgstr "!!認識できない内容 {0}"
+msgstr "認識できない内容 {0}"
 
 # Validation_VAL_NoType
 #: Validation_VAL_NoType
@@ -7008,49 +7002,42 @@ msgstr "プロファイル{0}、要素は複数のスライスに一致します
 msgid "{3}: max allowed = {7}, but found {0} (from {1})"
 msgid_plural "{3}: max allowed = {7}, but found {0} (from {1})"
 msgstr[0] "{3}: 最大許容値 = {7}、見つかった値 = {0} (from {1})"
-msgstr[1] "{3}: 最大許容値 = {7}、見つかった値 = {0} (from {1})"
 
 # Validation_VAL_Profile_Minimum
 #: Validation_VAL_Profile_Minimum
 msgid "{3}: minimum required = {7}, but only found {0} (from {1})"
 msgid_plural "{3}: minimum required = {7}, but only found {0} (from {1})"
 msgstr[0] "{3}: 最小必要値 = {7}、見つかった値 = {0} (from {1})"
-msgstr[1] "{3}: 最小必要値 = {7}、見つかった値 = {0} (from {1})"
 
 # Validation_VAL_Profile_Minimum_SLICE
 #: Validation_VAL_Profile_Minimum_SLICE
 msgid "Slice ''{3}'': a matching slice is required, but not found (from {1}). Note that other slices are allowed in addition to this required slice"
 msgid_plural "Slice ''{3}'': minimum required = {0}, but only found {7} (from {1})"
 msgstr[0] ""
-msgstr[1] ""
 
 # Validation_VAL_Profile_Minimum_SLICE_EXT
 #: Validation_VAL_Profile_Minimum_SLICE_EXT
 msgid "Slice ''{3}'' for extension ''{8}'': a matching slice is required, but not found (from {1}). Note that other slices are allowed in addition to this required slice"
 msgid_plural "Slice ''{3}'' for extension ''{8}'': minimum required = {0}, but only found {7} (from {1})"
 msgstr[0] ""
-msgstr[1] ""
 
 # Validation_VAL_Profile_MultipleMatches
 #: Validation_VAL_Profile_MultipleMatches
 msgid "Found multiple matching profiles among {0} choice: {1}"
 msgid_plural "Found multiple matching profiles among {0} choices: {1}"
 msgstr[0] "{0}の選択肢の中で複数の一致するプロファイルが見つかりました: {1}"
-msgstr[1] "{0}の選択肢の中で複数の一致するプロファイルが見つかりました: {1}"
 
 # Validation_VAL_Profile_NoCheckMax
 #: Validation_VAL_Profile_NoCheckMax
 msgid "{3}: Found {0} match, but unable to check max allowed ({2}) due to lack of slicing validation (from {1})"
 msgid_plural "{3}: Found {0} matches, but unable to check max allowed ({2}) due to lack of slicing validation (from {1})"
 msgstr[0] "{3}: {0}の一致が見つかりましたが、スライス検証がないため最大許容値({2})をチェックできません (from {1})"
-msgstr[1] "{3}: {0}の一致が見つかりましたが、スライス検証がないため最大許容値({2})をチェックできません (from {1})"
 
 # Validation_VAL_Profile_NoCheckMin
 #: Validation_VAL_Profile_NoCheckMin
 msgid "{3}: Found {0} match, but unable to check minimum required ({2}) due to lack of slicing validation (from {1})"
 msgid_plural "{3}: Found {0} matches, but unable to check minimum required ({2}) due to lack of slicing validation (from {1})"
 msgstr[0] "{3}: {0}の一致が見つかりましたが、スライス検証がないため最小必要値({2})をチェックできません (from {1})"
-msgstr[1] "{3}: {0}の一致が見つかりましたが、スライス検証がないため最小必要値({2})をチェックできません (from {1})"
 
 # Validation_VAL_Profile_NoDefinition
 #: Validation_VAL_Profile_NoDefinition
@@ -7070,7 +7057,7 @@ msgstr "StructureDefinition {0}にはsnapshotがありません - 検証はsnaps
 # Validation_VAL_Profile_NoType
 #: Validation_VAL_Profile_NoType
 msgid "The type of element {0} is not known - it could not be determined from the information available. Valid types at this point are {1}"
-msgstr "!!要素{0}の型が未知であり、無効です。この時点で有効な型は{1}です"
+msgstr "要素{0}の型が未知であり、無効です。この時点で有効な型は{1}です"
 
 # Validation_VAL_Profile_NotAllowed
 #: Validation_VAL_Profile_NotAllowed
@@ -7095,7 +7082,7 @@ msgstr "プロファイル {0}によると、順序付けされたスライス�
 # Validation_VAL_Profile_Unknown
 #: Validation_VAL_Profile_Unknown
 msgid "Profile reference ''{0}'' has not been checked because it could not be found"
-msgstr "!!プロファイル参照''{0}''は未知のため、確認されていません"
+msgstr "プロファイル参照''{0}''は未知のため、確認されていません"
 
 # Validation_VAL_Profile_WrongType
 #: Validation_VAL_Profile_WrongType
@@ -7207,7 +7194,6 @@ msgstr "URLは''({1})''のため有効ではありません：{0}"
 msgid "URL contains Invalid Character: {1}"
 msgid_plural "URL contains {0} Invalid Characters: {1}"
 msgstr[0] "URLに無効な文字({1})が含まれています"
-msgstr[1] "URLに{0}個の無効な文字({1})が含まれています"
 
 # XHTML_XHTML_ATTRIBUTE_XML_SPACE
 #: XHTML_XHTML_ATTRIBUTE_XML_SPACE
@@ -7242,7 +7228,7 @@ msgstr ""
 # XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA
 #: XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA
 msgid "Invalid element name inside a paragraph in the XHTML (''{0}'')"
-msgstr "!!段落内のXHTMLの要素名が無効です(''{0}'')"
+msgstr "段落内のXHTMLの要素名が無効です(''{0}'')"
 
 # XHTML_XHTML_Element_Illegal
 #: XHTML_XHTML_Element_Illegal
@@ -7307,7 +7293,7 @@ msgstr ""
 # _DT_Fixed_Wrong
 #: _DT_Fixed_Wrong
 msgid "Value is ''{0}'' but is fixed to ''{1}'' in the profile {2}"
-msgstr "!!!!値は ''{0}'' ですが、 ''{1}'' でなければなりません"
+msgstr "値は ''{0}'' ですが、 ''{1}'' でなければなりません"
 
 # _has_children__and_multiple_types__in_profile_
 #: _has_children__and_multiple_types__in_profile_
@@ -7422,5 +7408,5 @@ msgstr "XML属性{0}に無効な文字があります"
 # xml_encoding_invalid
 #: xml_encoding_invalid
 msgid "The XML encoding is invalid (must be UTF-8, not ''{0}'')"
-msgstr "!!XMLエンコーディングが無効です（UTF-8でなければなりません）"
+msgstr "XMLエンコーディングが無効です（UTF-8でなければなりません）"
 
