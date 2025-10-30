@@ -292,12 +292,20 @@ public class ValidationService {
     return versions;
   }
 
-  
+  @Deprecated
   public void validateSources(ValidationContext validationContext, ValidationEngine validator, ValidatorWatchMode watch, int watchScanDelay, int watchSettleTime) throws Exception {
-    if (validationContext.getProfiles().size() > 0) {
-      log.info("  Profiles: " + validationContext.getProfiles());
+    WatchParameters watchParameters = ValidationContextUtilities.getWatchParameters(validationContext);
+    InstanceValidatorParameters instanceValidatorParameters = ValidationContextUtilities.getInstanceValidatorParameters(validationContext);
+    List<String> sources = validationContext.getSources();
+    OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
+    validateSources(validator, instanceValidatorParameters, sources, outputParameters, watchParameters);
+  }
+
+    public void validateSources(ValidationEngine validationEngine, InstanceValidatorParameters instanceValidatorParameters, List<String> sources, OutputParameters output, WatchParameters watchParameters) throws Exception {
+    if (!instanceValidatorParameters.getProfiles().isEmpty()) {
+      log.info("  Profiles: " + instanceValidatorParameters.getProfiles());
     }
-    IgLoader igLoader = new IgLoader(validator.getPcm(), validator.getContext(), validator.getVersion());
+    IgLoader igLoader = new IgLoader(validationEngine.getPcm(), validationEngine.getContext(), validationEngine.getVersion());
         
     List<ValidationRecord> records = new ArrayList<>();
     List<SourceFile> refs = new ArrayList<>();
@@ -307,29 +315,29 @@ public class ValidationService {
 
     do {
       long start = System.currentTimeMillis();
-      Resource r = validator.validate(validationContext.getSources(), validationContext.getProfiles(), refs, records, igLoader, watch == ValidatorWatchMode.ALL, watchSettleTime, first);
+      Resource r = validationEngine.validate(sources, instanceValidatorParameters.getProfiles(), refs, records, igLoader, watchParameters.getWatchMode() == ValidatorWatchMode.ALL, watchParameters.getWatchSettleTime(), first);
       first = false;
       boolean statusNeeded = false;
       if (r != null) {
         statusNeeded = true;
         MemoryMXBean mbean = ManagementFactory.getMemoryMXBean();
-        log.info("Done. " + validator.getContext().clock().report()+". Memory = "+Utilities.describeSize(mbean.getHeapMemoryUsage().getUsed()+mbean.getNonHeapMemoryUsage().getUsed()));
+        log.info("Done. " + validationEngine.getContext().clock().report()+". Memory = "+Utilities.describeSize(mbean.getHeapMemoryUsage().getUsed()+mbean.getNonHeapMemoryUsage().getUsed()));
         log.info("");
 
         PrintStream dst = null;
-        ValidationOutputRenderer renderer = makeValidationOutputRenderer(validationContext.getOutput(), validationContext.getOutputStyle());
-        renderer.setCrumbTrails(validationContext.isCrumbTrails());
-        renderer.setShowMessageIds(validationContext.isShowMessageIds());
+        ValidationOutputRenderer renderer = makeValidationOutputRenderer(output.getOutput(), instanceValidatorParameters.getOutputStyle());
+        renderer.setCrumbTrails(instanceValidatorParameters.isCrumbTrails());
+        renderer.setShowMessageIds(instanceValidatorParameters.isShowMessageIds());
         renderer.setRunDate(runDate);
         if (renderer.isSingleFile()) {
-          if (validationContext.getOutput() == null) {
+          if (output.getOutput() == null) {
             dst = new PrintStream(new Slf4JOutputStream());
           } else {
-            dst = new PrintStream(ManagedFileAccess.outStream(Utilities.path(validationContext.getOutput())));
+            dst = new PrintStream(ManagedFileAccess.outStream(Utilities.path(output.getOutput())));
           }
           renderer.setOutput(dst);
         } else {
-          File dir = ManagedFileAccess.file(validationContext.getOutput());
+          File dir = ManagedFileAccess.file(output.getOutput());
           if (!dir.isDirectory()) {
             throw new Error("The output location "+dir.getAbsolutePath()+" must be an existing directory for the output style "+renderer.getStyleCode());
           }
@@ -359,36 +367,36 @@ public class ValidationService {
           renderer.finish();
         }
 
-        if (validationContext.getOutput() != null && dst != null) {
+        if (output.getOutput() != null && dst != null) {
           dst.close();
         }
 
-        if (validationContext.getHtmlOutput() != null) {
+        if (instanceValidatorParameters.getHtmlOutput() != null) {
           String html = new HTMLOutputGenerator(records).generate(System.currentTimeMillis() - start);
-          FileUtilities.stringToFile(html, validationContext.getHtmlOutput());
-          log.info("HTML Summary in " + validationContext.getHtmlOutput());
+          FileUtilities.stringToFile(html, instanceValidatorParameters.getHtmlOutput());
+          log.info("HTML Summary in " + instanceValidatorParameters.getHtmlOutput());
         }
 
-        if (validationContext.isShowTerminologyRouting()) {
+        if (instanceValidatorParameters.isShowTerminologyRouting()) {
           log.info("");
           log.info("Terminology Routing Dump ---------------------------------------");
-          if (validator.getContext().getTxClientManager().getInternalLog().isEmpty()) {
+          if (validationEngine.getContext().getTxClientManager().getInternalLog().isEmpty()) {
             log.info("(nothing happened)");
           } else {
-            for (InternalLogEvent logEvent : validator.getContext().getTxClientManager().getInternalLog()) {
+            for (InternalLogEvent logEvent : validationEngine.getContext().getTxClientManager().getInternalLog()) {
               log.info(logEvent.getMessage()+" -> "+logEvent.getServer()+" (for VS "+logEvent.getVs()+" with systems '"+logEvent.getSystems()+"', choices = '"+logEvent.getChoices()+"')");
             }
           }
-          validator.getContext().getTxClientManager().getInternalLog().clear();
+          validationEngine.getContext().getTxClientManager().getInternalLog().clear();
         }
       }
-      if (watch != ValidatorWatchMode.NONE) {
+      if (watchParameters.getWatchMode() != ValidatorWatchMode.NONE) {
         if (statusNeeded) {
-          log.info("Watching for changes ("+Integer.toString(watchScanDelay)+"ms cycle)");
+          log.info("Watching for changes ("+Integer.toString(watchParameters.getWatchScanDelay())+"ms cycle)");
         }
-        Thread.sleep(watchScanDelay);
+        Thread.sleep(watchParameters.getWatchScanDelay());
       }
-    } while (watch != ValidatorWatchMode.NONE);
+    } while (watchParameters.getWatchMode() != ValidatorWatchMode.NONE);
     if (ec > 0) {
       SystemExitManager.setError(1);
     }
