@@ -448,7 +448,12 @@ public class TurtleParserR6 extends ParserBase {
           elementLiteral = element.getValue();
         }
         t.linkedPredicate(FHIR_BASE_PREFIX + "v", ttlLiteral(elementLiteral, element.getType()), linkResolver == null ? null : linkResolver.resolveType(element.getType()), null);
-        linkURI(t, element.getValue(), element.getType());
+        if (element.getXhtml() != null) {
+          String s = new XhtmlComposer(true, false).compose(element.getXhtml());
+          linkURI(t, s, element.getType());
+        } else {
+          linkURI(t, element.getValue(), element.getType());
+        }
     }
       
 
