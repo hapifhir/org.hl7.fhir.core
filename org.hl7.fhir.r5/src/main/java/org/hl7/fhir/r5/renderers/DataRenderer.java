@@ -1335,7 +1335,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (!Utilities.noString(s)) { 
       x.tx(" (");
       x.tx(s);
-      x.tx(" )");
+      x.tx(")");
     }
     if (c.has("version")) { 
       x.tx(" "+context.formatPhrase(RenderingContext.DATA_REND_VERSION, c.primitiveValue("version"), ")")); 
