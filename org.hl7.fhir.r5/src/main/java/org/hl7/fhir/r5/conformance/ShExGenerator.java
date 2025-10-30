@@ -160,16 +160,13 @@ public class ShExGenerator {
 
   // Resource Definition
   //      an open shape of type Resource.  Used when completeModel = false.
-  private static String RESOURCE_SHAPE_TEMPLATE =
-    "$comment$\n<Resource> {" +
-      "\n    $elements$" +
-      "\n    $contextOfUse$" +
-      "\n} $constraints$ \n";
+  private static String SYNTHETIC_RESTRICTION_TEMPLATE =
+    "<$restriction$> EXTENDS <$base$> {} $constraints$ \n";
 
   // If we have knowledge of all of the possible resources available to us (completeModel = true), we can build
   // a model of all possible resources.
   private static String COMPLETE_RESOURCE_TEMPLATE =
-    "<Resource>  @<$resources$>" +
+    "<_AnyResource>  @<$resources$>" +
       "\n\n";
 
   // Resource Declaration
@@ -499,6 +496,8 @@ public class ShExGenerator {
       if (completeModel && known_resources.size() > 0) {
         shapeDefinitions.append("\n").append(tmplt(COMPLETE_RESOURCE_TEMPLATE)
           .add("resources", StringUtils.join(known_resources, "> OR\n\t@<")).render());
+        shapeDefinitions.append("\n").append(tmplt(SYNTHETIC_RESTRICTION_TEMPLATE)
+          .add("restriction", "SimpleQuantity").add("base", "Quantity").render());
         List<String> all_entries = new ArrayList<String>();
         for (String kr : known_resources)
           all_entries.add(tmplt(ALL_ENTRY_TEMPLATE).add("id", TurtleParser.getClassName(kr)).render());
@@ -601,46 +600,38 @@ public class ShExGenerator {
    * @return ShEx definition
    */
   private String genShapeDefinition(StructureDefinition sd, boolean top_level) {
-    // xhtml is treated as an atom
-    if("xhtml".equals(sd.getName()) || (completeModel && "Resource".equals(sd.getName())))
-      return "";
-
     ST shape_defn;
     // Resources are either incomplete items or consist of everything that is defined as a resource (completeModel)
     //    if (sd.getName().equals("ActivityDefinition")){
     //      debug("ActivityDefinition found");
     //    }
 
-      var className = TurtleParser.getClassName(sd.getName());
+    var className = TurtleParser.getClassName(sd.getName());
 
-      if("Resource".equals(className)) {
-        shape_defn = tmplt(RESOURCE_SHAPE_TEMPLATE);
-        known_resources.add(className);
-        } else {
-        shape_defn = tmplt(SHAPE_DEFINITION_TEMPLATE).add("id", TurtleParser.getClassName(getExtendedType(sd)));
-        known_resources.add(className);
+    shape_defn = tmplt(SHAPE_DEFINITION_TEMPLATE).add("id", TurtleParser.getClassName(getExtendedType(sd)));
+    known_resources.add(className);
 
-        if (baseDataTypes.contains(sd.getType())) {
-          shape_defn.add("resourceDecl", "\n");
-        } else {
-          if ("Element".equals(sd.getName()))
-            shape_defn.add("resourceDecl", tmplt(ROOT_TEMPLATE).render());
-          else {
-            String rootTmpl = tmplt(ROOT_TEMPLATE).render();
-            String btn = getBaseTypeName(sd);
-            if ((baseDataTypes.contains(btn))||
-              (shortIdException.contains(btn)))
-              rootTmpl = "\n";
+    if (baseDataTypes.contains(sd.getType())) {
+      shape_defn.add("resourceDecl", "\n");
+    } else {
+      if ("Element".equals(sd.getName()))
+        shape_defn.add("resourceDecl", tmplt(ROOT_TEMPLATE).render());
+      else {
+        String rootTmpl = tmplt(ROOT_TEMPLATE).render();
+        String btn = getBaseTypeName(sd);
+        if ((baseDataTypes.contains(btn)) ||
+          (shortIdException.contains(btn)))
+          rootTmpl = "\n";
 
-            ST resource_decl = tmplt(RESOURCE_DECL_TEMPLATE).
-              add("id", TurtleParser.getClassName(sd.getId())).
-              add("root", rootTmpl);
+        ST resource_decl = tmplt(RESOURCE_DECL_TEMPLATE).
+          add("id", TurtleParser.getClassName(sd.getId())).
+          add("root", rootTmpl);
 
-            shape_defn.add("resourceDecl", resource_decl.render());
-          }
-        }
+        shape_defn.add("resourceDecl", resource_decl.render());
       }
-      shape_defn.add("fhirType", " ");
+    }
+
+    shape_defn.add("fhirType", " ");
 
     // Generate the defining elements
     List<String> elements = new ArrayList<String>();
@@ -1577,8 +1568,6 @@ public class ShExGenerator {
       primitive_entry.add("typ", "xsd:string");
       return primitive_entry.render();
 
-    } else if(typ.getWorkingCode().equals("xhtml")) {
-      return tmplt(XHTML_TYPE_TEMPLATE).render();
     } else {
       datatypes.add(typ.getWorkingCode());
       return simpleElement(sd, ed, typ.getWorkingCode());
