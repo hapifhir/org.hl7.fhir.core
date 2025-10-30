@@ -1,23 +1,36 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: orghl7fhircore\n"
+"X-Crowdin-Project-ID: 792848\n"
+"X-Crowdin-Language: ja\n"
+"X-Crowdin-File: /org.hl7.fhir.utilities/src/main/resources/source/rendering-phrases-en.po\n"
+"X-Crowdin-File-ID: 236\n"
+"Project-Id-Version: orghl7fhircore\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: Japanese\n"
+"Language: ja_JP\n"
+"PO-Revision-Date: 2025-10-30 18:26\n"
 
 # ACTOR_DEF_ACT
 #: ACTOR_DEF_ACT
 msgid "Actor: {0}"
-msgstr ""
+msgstr "アクター: {0}"
 
 # ACTOR_DEF_CAP
 #: ACTOR_DEF_CAP
 msgid "Capabilities:"
-msgstr ""
+msgstr "機能:"
 
 # ACTOR_DEF_DER
 #: ACTOR_DEF_DER
 msgid "Derived from:"
-msgstr ""
+msgstr "派生元:"
 
 # ACTOR_DEF_TYP
 #: ACTOR_DEF_TYP
 msgid "Type: {0}"
-msgstr ""
+msgstr "タイプ: {0}"
 
 # ACTOR_DERIVED_FROM
 #: ACTOR_DERIVED_FROM
@@ -34,122 +47,122 @@ msgstr ""
 # ADD_BIND_ADD_BIND
 #: ADD_BIND_ADD_BIND
 msgid "Additional Bindings"
-msgstr ""
+msgstr "追加バインディング"
 
 # ADD_BIND_ALL_REP
 #: ADD_BIND_ALL_REP
 msgid "All repeats"
-msgstr ""
+msgstr "すべての繰り返し"
 
 # ADD_BIND_ANY
 #: ADD_BIND_ANY
 msgid "Any"
-msgstr ""
+msgstr "任意"
 
 # ADD_BIND_ANY_REP
 #: ADD_BIND_ANY_REP
 msgid "any repeat"
-msgstr ""
+msgstr "任意の繰り返し"
 
 # ADD_BIND_CURR_BIND
 #: ADD_BIND_CURR_BIND
 msgctxt "ADD_BIND_CURR_BIND"
 msgid "Current"
-msgstr ""
+msgstr "現在"
 
 # ADD_BIND_DESIG_SYS
 #: ADD_BIND_DESIG_SYS
 msgid "This value set is a good set of codes to start with when designing your system"
-msgstr ""
+msgstr "このバリューセットは、システムを設計する際の開始点として適したコードセットです"
 
 # ADD_BIND_EXT_PREF
 #: ADD_BIND_EXT_PREF
 msgid "A required binding, for use when the binding strength is ''extensible'' or ''preferred''"
-msgstr ""
+msgstr "バインディング強度が「extensible」または「preferred」の場合に使用する必須バインディング"
 
 # ADD_BIND_EX_BIND
 #: ADD_BIND_EX_BIND
 msgctxt "ADD_BIND_EX_BIND"
 msgid "Extensible"
-msgstr ""
+msgstr "拡張可能"
 
 # ADD_BIND_GIVEN_CONT
 #: ADD_BIND_GIVEN_CONT
 msgid "This value set is provided to user look up in a given context"
-msgstr ""
+msgstr "このバリューセットは、指定されたコンテキストでユーザーが検索するために提供されます"
 
 # ADD_BIND_MAX
 #: ADD_BIND_MAX
 msgid "Max Binding"
-msgstr ""
+msgstr "最大バインディング"
 
 # ADD_BIND_MIN
 #: ADD_BIND_MIN
 msgid "Min Binding"
-msgstr ""
+msgstr "最小バインディング"
 
 # ADD_BIND_NEW_REC
 #: ADD_BIND_NEW_REC
 msgid "New records are required to use this value set, but legacy records may use other codes"
-msgstr ""
+msgstr "新しいレコードはこのバリューセットの使用が必要ですが、従来のレコードは他のコードを使用する場合があります"
 
 # ADD_BIND_PREF_BIND
 #: ADD_BIND_PREF_BIND
 msgctxt "ADD_BIND_PREF_BIND"
 msgid "Preferred"
-msgstr ""
+msgstr "推奨"
 
 # ADD_BIND_RECOM_VALUE_SET
 #: ADD_BIND_RECOM_VALUE_SET
 msgid "This is the value set that is recommended (documentation should explain why)"
-msgstr ""
+msgstr "これは推奨されるバリューセットです（ドキュメントで理由を説明する必要があります）"
 
 # ADD_BIND_REQ_BIND
 #: ADD_BIND_REQ_BIND
 msgctxt "ADD_BIND_REQ_BIND"
 msgid "Required"
-msgstr ""
+msgstr "必須"
 
 # ADD_BIND_UI
 #: ADD_BIND_UI
 msgctxt "ADD_BIND_UI"
 msgid "UI"
-msgstr ""
+msgstr "UI"
 
 # ADD_BIND_UI_BIND
 #: ADD_BIND_UI_BIND
 msgid "UI Binding"
-msgstr ""
+msgstr "UIバインディング"
 
 # ADD_BIND_UNKNOWN_PUR
 #: ADD_BIND_UNKNOWN_PUR
 msgid "Unknown code for purpose"
-msgstr ""
+msgstr "目的の不明なコード"
 
 # ADD_BIND_VALID_EXT
 #: ADD_BIND_VALID_EXT
 msgid "Validators will check this binding (strength = extensible)"
-msgstr ""
+msgstr "バリデータはこのバインディングをチェックします(strength = extensible)"
 
 # ADD_BIND_VALID_REQ
 #: ADD_BIND_VALID_REQ
 msgid "Validators will check this binding (strength = required)"
-msgstr ""
+msgstr "バリデータはこのバインディングをチェックします(strength = required)"
 
 # ADD_BIND_VALUE_COMP
 #: ADD_BIND_VALUE_COMP
 msgid "This value set is a component of the base value set"
-msgstr ""
+msgstr "このバリューセットは、基本バリューセットのコンポーネントです"
 
 # BUNDLE_DOCUMENT_CONTENT
 #: BUNDLE_DOCUMENT_CONTENT
 msgid "Document Content"
-msgstr ""
+msgstr "ドキュメントの内容"
 
 # BUNDLE_DOCUMENT_DETAILS
 #: BUNDLE_DOCUMENT_DETAILS
 msgid "Document Details"
-msgstr ""
+msgstr "ドキュメントの詳細"
 
 # BUNDLE_ETAG
 #: BUNDLE_ETAG
@@ -159,7 +172,7 @@ msgstr "ETag = {0}"
 # BUNDLE_HEADER_DOCUMENT_CONTENTS
 #: BUNDLE_HEADER_DOCUMENT_CONTENTS
 msgid "Additional Resources Included in Document"
-msgstr ""
+msgstr "ドキュメントに含まれる追加リソース"
 
 # BUNDLE_HEADER_ENTRY
 #: BUNDLE_HEADER_ENTRY
@@ -224,7 +237,7 @@ msgstr "Response:"
 # BUNDLE_REV_EXCP
 #: BUNDLE_REV_EXCP
 msgid "Exception generating narrative: {0}"
-msgstr ""
+msgstr "ナラティブ生成例外: {0}"
 
 # BUNDLE_SEARCH
 #: BUNDLE_SEARCH
@@ -244,107 +257,107 @@ msgstr "Score = {0}"
 # BUNDLE_SUMMARY
 #: BUNDLE_SUMMARY
 msgid "{0} Bundle, {1} Entries"
-msgstr ""
+msgstr "{0} バンドル、{1} エントリ"
 
 # BUND_REND_INVALID_DOC
 #: BUND_REND_INVALID_DOC
 msgid "Invalid document ''{0}'' - first entry is not a Composition ({0})"
-msgstr ""
+msgstr "無効なドキュメント ''{0}'' - 最初のエントリがComposition ({0}) ではありません"
 
 # CANON_REND_COMMITTEE
 #: CANON_REND_COMMITTEE
 msgid "Committee"
-msgstr ""
+msgstr "委員会"
 
 # CANON_REND_JSON
 #: CANON_REND_JSON
 msgid "JSON"
-msgstr ""
+msgstr "JSON"
 
 # CANON_REND_MATURITY
 #: CANON_REND_MATURITY
 msgid "Maturity"
-msgstr ""
+msgstr "成熟度"
 
 # CANON_REND_PUBLISHER
 #: CANON_REND_PUBLISHER
 msgid "Publisher"
-msgstr ""
+msgstr "発行者"
 
 # CANON_REND_SOURCE_RES
 #: CANON_REND_SOURCE_RES
 msgid "Source Resource"
-msgstr ""
+msgstr "ソースリソース"
 
 # CANON_REND_TURTLE
 #: CANON_REND_TURTLE
 msgid "Turtle"
-msgstr ""
+msgstr "Turtle"
 
 # CAPABILITY_ADD_SUPP_PROF
 #: CAPABILITY_ADD_SUPP_PROF
 msgid "Additional supported profiles:"
-msgstr ""
+msgstr "追加でサポートされるプロファイル:"
 
 # CAPABILITY_BASE_SYS
 #: CAPABILITY_BASE_SYS
 msgid "Base System Profile"
-msgstr ""
+msgstr "基本システムプロファイル"
 
 # CAPABILITY_COMB_SEARCH_PAR
 #: CAPABILITY_COMB_SEARCH_PAR
 msgid "Combined Search Parameters"
-msgstr ""
+msgstr "複合検索パラメータ"
 
 # CAPABILITY_CORS_NO
 #: CAPABILITY_CORS_NO
 msgid "Enable CORS: no"
-msgstr ""
+msgstr "CORS有効化：無効"
 
 # CAPABILITY_CORS_YES
 #: CAPABILITY_CORS_YES
 msgid "Enable CORS: yes"
-msgstr ""
+msgstr "CORS有効化：有効"
 
 # CAPABILITY_CREATE_INT
 #: CAPABILITY_CREATE_INT
 msgid "POST a new resource (create interaction)"
-msgstr ""
+msgstr "新しいリソースをPOSTします (インタラクションを作成)"
 
 # CAPABILITY_DELETE_INT
 #: CAPABILITY_DELETE_INT
 msgid "DELETE a resource (delete interaction)"
-msgstr ""
+msgstr "リソースをDELETEします（インタラクションを削除）"
 
 # CAPABILITY_DOCUMENT_CAPS
 #: CAPABILITY_DOCUMENT_CAPS
 msgid "FHIR Document Capabilities"
-msgstr ""
+msgstr "FHIRドキュメント機能"
 
 # CAPABILITY_ENDPOINTS
 #: CAPABILITY_ENDPOINTS
 msgid "Endpoint(s)"
-msgstr ""
+msgstr "エンドポイント"
 
 # CAPABILITY_ERR_DET
 #: CAPABILITY_ERR_DET
 msgid "Error detected"
-msgstr ""
+msgstr "エラーが検出されました"
 
 # CAPABILITY_EXT_OP
 #: CAPABILITY_EXT_OP
 msgid "Extended Operations"
-msgstr ""
+msgstr "拡張操作"
 
 # CAPABILITY_FHIR
 #: CAPABILITY_FHIR
 msgid "Core FHIR Resource"
-msgstr ""
+msgstr "コアFHIRリソース"
 
 # CAPABILITY_FHIR_VER
 #: CAPABILITY_FHIR_VER
 msgid "FHIR Version: {0}"
-msgstr ""
+msgstr "FHIRバージョン: {0}"
 
 # CAPABILITY_HISTORY_INT
 #: CAPABILITY_HISTORY_INT
@@ -634,22 +647,22 @@ msgstr ""
 # CODESYSTEM_CONTENT_EXAMPLE
 #: CODESYSTEM_CONTENT_EXAMPLE
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides some code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>that are example only</b>:"
-msgstr "!!この<param name=\\\"cased\\\"/>コードシステム <param name=\\\"cs\\\"/> はいくつかの例コード<if test=\\\"code-count != 1\\\">たち</if><param name=\\\"h\\\"/>を提供します:"
+msgstr "この<param name=\\\"cased\\\"/>コードシステム <param name=\\\"cs\\\"/> はいくつかの例コード<if test=\\\"code-count != 1\\\">たち</if><param name=\\\"h\\\"/>を提供します:"
 
 # CODESYSTEM_CONTENT_FRAGMENT
 #: CODESYSTEM_CONTENT_FRAGMENT
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides <b>a fragment</b> that includes following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr "!!この<param name=\\\"cased\\\"/>コードシステム <param name=\\\"cs\\\"/> は以下のコード<param name=\\\"h\\\"/>を含むフラグメントを提供します:"
+msgstr "この<param name=\\\"cased\\\"/>コードシステム <param name=\\\"cs\\\"/> は以下のコード<param name=\\\"h\\\"/>を含むフラグメントを提供します:"
 
 # CODESYSTEM_CONTENT_NOTPRESENT
 #: CODESYSTEM_CONTENT_NOTPRESENT
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines codes<param name=\"h\"/>, but no codes are represented here"
-msgstr "!!このコードシステム <param name=\\\"cs\\\"/> はコード<param name=\\\"h\\\"/>を定義しますが、ここではコードは表現されていません"
+msgstr "このコードシステム <param name=\\\"cs\\\"/> はコード<param name=\\\"h\\\"/>を定義しますが、ここではコードは表現されていません"
 
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
 msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
-msgstr "!!!!このコードシステム <param name=\\\"cs\\\"/> は次のコードに {0} を定義します:"
+msgstr "このコードシステム <param name=\\\"cs\\\"/> は次のコードに {0} を定義します:"
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
@@ -1391,7 +1404,7 @@ msgstr ""
 # EX_SCEN_RES
 #: EX_SCEN_RES
 msgid "Response"
-msgstr ""
+msgstr "Response"
 
 # EX_SCEN_SEE
 #: EX_SCEN_SEE
@@ -1711,7 +1724,7 @@ msgstr ""
 # GENERAL_REQUEST
 #: GENERAL_REQUEST
 msgid "Request"
-msgstr ""
+msgstr "Request"
 
 # GENERAL_REQUIRED
 #: GENERAL_REQUIRED
@@ -1775,7 +1788,7 @@ msgstr ""
 # GENERAL_TODO
 #: GENERAL_TODO
 msgid "Not done yet"
-msgstr ""
+msgstr "まだ終わっていません"
 
 # GENERAL_TYPE
 #: GENERAL_TYPE
@@ -2103,7 +2116,7 @@ msgstr ""
 # OP_OUT_OK
 #: OP_OUT_OK
 msgid "All OK"
-msgstr ""
+msgstr "すべてOK"
 
 # OP_OUT_SEV
 #: OP_OUT_SEV
@@ -2176,7 +2189,6 @@ msgstr ""
 msgid "Contained Resource"
 msgid_plural "Contained Resources"
 msgstr[0] ""
-msgstr[1] ""
 
 # PAT_DECEASED
 #: PAT_DECEASED
@@ -2208,14 +2220,12 @@ msgstr ""
 msgid "Language:"
 msgid_plural "Languages:"
 msgstr[0] ""
-msgstr[1] ""
 
 # PAT_LANG_HINT
 #: PAT_LANG_HINT
 msgid "Language spoken"
 msgid_plural "Languages spoken"
 msgstr[0] ""
-msgstr[1] ""
 
 # PAT_LANG_PREFERRED
 #: PAT_LANG_PREFERRED
@@ -2313,14 +2323,12 @@ msgstr ""
 msgid "Other Id:"
 msgid_plural "Other Ids:"
 msgstr[0] ""
-msgstr[1] ""
 
 # PAT_OTHER_ID_HINT
 #: PAT_OTHER_ID_HINT
 msgid "Other Id (see the one above)"
 msgid_plural "Other Ids (see the one above)"
 msgstr[0] ""
-msgstr[1] ""
 
 # PAT_PERIOD
 #: PAT_PERIOD
@@ -2787,7 +2795,7 @@ msgstr ""
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\\"{2}\\\">R4B ({3}.r4b)</a> are available."
 msgstr ""
 
 # R44B_PROBLEMS
@@ -3199,7 +3207,7 @@ msgstr ""
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
-msgid "-- no content: do not translate #40 --"
+msgid "-- no content: do not translate #1 --"
 msgstr ""
 
 # SDR_IMPOSE
@@ -3389,7 +3397,7 @@ msgstr ""
 # SDR_VER_RANGE_SFX
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
-msgid "-- no content: do not translate #41 --"
+msgid "-- no content: do not translate #2 --"
 msgstr ""
 
 # SDR_VER_TO_PFX
@@ -3400,7 +3408,7 @@ msgstr ""
 # SDR_VER_TO_SFX
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
-msgid "-- no content: do not translate #42 --"
+msgid "-- no content: do not translate #3 --"
 msgstr ""
 
 # SDR_VER_UNK
@@ -3659,7 +3667,6 @@ msgstr ""
 msgid "The element {0} is sliced based on the value of {1}"
 msgid_plural "The element {0} is sliced based on the values of {1}"
 msgstr[0] ""
-msgstr[1] ""
 
 # SD_SUMMARY_SLICES
 #: SD_SUMMARY_SLICES
@@ -5366,7 +5373,6 @@ msgstr ""
 msgid "Import all the codes that are contained in"
 msgid_plural "Import all the codes that are contained in the intersection of"
 msgstr[0] ""
-msgstr[1] ""
 
 # VALUE_SET_IN
 #: VALUE_SET_IN
