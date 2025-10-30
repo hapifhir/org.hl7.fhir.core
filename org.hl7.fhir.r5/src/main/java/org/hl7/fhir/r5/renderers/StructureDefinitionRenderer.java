@@ -347,11 +347,17 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
   private class DataValueWithStatus extends ItemWithStatus { 
-    DataType value; 
-    protected DataValueWithStatus(DataType value) { 
-      this.value = value; 
-    } 
- 
+    DataType value;
+    private final DataRenderer renderer;
+    private final RenderingStatus status;
+
+
+    protected DataValueWithStatus(DataType value, DataRenderer renderer, RenderingStatus status) {
+      this.value = value;
+      this.renderer = renderer;
+      this.status = status;
+    }
+
     protected boolean matches(ItemWithStatus other) { 
       return ((ValueWithStatus) other).value.equalsDeep(value); 
     } 
@@ -360,9 +366,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
       if (value.hasUserData(UserDataNames.render_link)) { 
         f = f.ah(context.prefixLocalHref(value.getUserString(UserDataNames.render_link))); 
-      } 
-      f.tx(summarize(value)); 
-    } 
+      }
+      ResourceWrapper v = ResourceWrapper.forType(renderer.context.getContextUtilities(), value);
+      renderer.renderDataType(status, f, v);
+    }
  
   } 
    
@@ -1659,6 +1666,25 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               else
                 c.addPiece(gen.new Piece(null, ", ", null));
               c.addPiece(gen.new Piece(ed.getProfile().getWebPath(), (isAttr(ed) ? "@" : "") + ed.getDefinition().getName(), ed.getDefinition().getDefinition()));
+            }
+          }
+        }
+        if (profile.hasExtension(ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS)) {
+          c.getPieces().add(gen.new Piece("br"));
+          c.getPieces().add(gen.new Piece(spec("uml.html#interfaces"), context.formatPhrase(RenderingContext.STRUC_DEF_IMPLEMENTS), null));
+          boolean first = true;
+          for (Extension fi : profile.getExtensionsByUrl(ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS)) {
+            if (first) {
+              c.getPieces().add(gen.new Piece(null, ": ", null));
+              first = false;
+            } else {
+              c.getPieces().add(gen.new Piece(null, ", ", null));
+            }
+            StructureDefinition sdt = context.getWorker().fetchResource(StructureDefinition.class, fi.getValue().primitiveValue());
+            if (sdt != null) {
+              c.getPieces().add(gen.new Piece(sdt.getWebPath(), sdt.present(), sdt.getDescription()));
+            } else {
+              c.getPieces().add(gen.new Piece(null, fi.getValue().primitiveValue(), "Unknown: "+fi.getValue().primitiveValue()));
             }
           }
         }
@@ -5258,12 +5284,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     StatusList<DataValueWithStatus> list = new StatusList<>(); 
     for (DataType v : originalList) { 
       if (!v.isEmpty()) { 
-        list.add(new DataValueWithStatus(v)); 
+        list.add(new DataValueWithStatus(v, this, new RenderingStatus()));
       } 
     } 
     if (compareList != null && mode != GEN_MODE_DIFF) { 
       for (DataType v : compareList) { 
-        list.merge(new DataValueWithStatus(v)); 
+        list.merge(new DataValueWithStatus(v, this, new RenderingStatus()));
       }       
     } 
     if (list.size() == 0) { 

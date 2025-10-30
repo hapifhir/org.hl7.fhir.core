@@ -744,7 +744,7 @@ msgstr "Cette ressource de terminologie de référence (CodeSystem) est un suppl
 # CODE_SYS_SUPP_CODE_NOT_HERE
 #: CODE_SYS_SUPP_CODE_NOT_HERE
 msgid "This CodeSystem Supplement is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr "Ce supplément de terminologie de référence (CodeSystem) n'est pas utilisé ici; il peut être utilisé ailleurs (par exemple spécifications et/ou implémentations qui utilisent ce contenu)"
+msgstr "Ce supplément de terminologie de référence (CodeSystem) n\'est pas utilisé ici; il peut être utilisé ailleurs (par exemple spécifications et/ou implémentations qui utilisent ce contenu)"
 
 # CODE_SYS_THE_VALUE_SET
 #: CODE_SYS_THE_VALUE_SET
@@ -1513,7 +1513,7 @@ msgstr "Conformité"
 #: GENERAL_CONSTRAINTS
 msgctxt "GENERAL_CONSTRAINTS"
 msgid "Constraints"
-msgstr ""
+msgstr "Contraintes"
 
 # GENERAL_CONTACT
 #: GENERAL_CONTACT
@@ -1544,7 +1544,7 @@ msgstr "{0} : {1}"
 # GENERAL_DEFINING_URL
 #: GENERAL_DEFINING_URL
 msgid "Defining URL"
-msgstr ""
+msgstr "URL de définition"
 
 # GENERAL_DEFINITION
 #: GENERAL_DEFINITION
@@ -1596,7 +1596,7 @@ msgstr "Filtre"
 #: GENERAL_FIXED_VALUE
 msgctxt "GENERAL_FIXED_VALUE"
 msgid "Fixed Value: {0}"
-msgstr ""
+msgstr "Valeur fixe : {0}"
 
 # GENERAL_FLAGS
 #: GENERAL_FLAGS
@@ -1626,7 +1626,7 @@ msgstr "Longueur minimales :"
 # GENERAL_MODIFIERS
 #: GENERAL_MODIFIERS
 msgid "Modifiers"
-msgstr ""
+msgstr "Modificateurs"
 
 # GENERAL_NAME
 #: GENERAL_NAME
@@ -1653,7 +1653,7 @@ msgstr "Obligations"
 #: GENERAL_OBLIGATIONS
 msgctxt "GENERAL_OBLIGATIONS"
 msgid "Obligations"
-msgstr ""
+msgstr "Obligations"
 
 # GENERAL_OID
 #: GENERAL_OID
@@ -1674,7 +1674,7 @@ msgstr "Paramètres"
 #: GENERAL_PATTERN_VALUE
 msgctxt "GENERAL_PATTERN_VALUE"
 msgid "Pattern Value: {0}"
-msgstr ""
+msgstr "Valeur du modèle : {0}"
 
 # GENERAL_PREFERRED
 #: GENERAL_PREFERRED
@@ -1722,7 +1722,7 @@ msgstr "Requis"
 # GENERAL_REQUIRED_BINDING
 #: GENERAL_REQUIRED_BINDING
 msgid "Required Binding to ValueSet {0}"
-msgstr ""
+msgstr "Binding requis au jeu de valeurs (ValueSet) {0}"
 
 # GENERAL_RESOURCE
 #: GENERAL_RESOURCE
@@ -1739,7 +1739,7 @@ msgstr "Label de sécurité"
 #: GENERAL_SOURCE
 msgctxt "GENERAL_SOURCE"
 msgid "Source"
-msgstr ""
+msgstr "Source"
 
 # GENERAL_SRC
 #: GENERAL_SRC
@@ -1749,7 +1749,7 @@ msgstr "Source"
 # GENERAL_STARTER
 #: GENERAL_STARTER
 msgid "Starter"
-msgstr ""
+msgstr "Démarrage"
 
 # GENERAL_STATUS
 #: GENERAL_STATUS
@@ -1786,12 +1786,12 @@ msgstr "Type"
 # GENERAL_TYPE_PROFILE
 #: GENERAL_TYPE_PROFILE
 msgid "This element has profiles on it's type: {0}"
-msgstr ""
+msgstr "Cet élément a des profils sur son type : {0}"
 
 # GENERAL_TYPE_TARGET_PROFILE
 #: GENERAL_TYPE_TARGET_PROFILE
 msgid "This element has restrictions/profiles on it's targets: {0}"
-msgstr ""
+msgstr "Cet élément a des restrictions/profils sur ses cibles : {0}"
 
 # GENERAL_UCUM
 #: GENERAL_UCUM
@@ -1826,17 +1826,17 @@ msgstr "Jeu de valeurs (Value Set)"
 # GENERAL_VALUE_BOUNDED
 #: GENERAL_VALUE_BOUNDED
 msgid "The value must be between {0} and {1} (or equal)"
-msgstr ""
+msgstr "La valeur doit être comprise entre {0} et {1} (ou égale)"
 
 # GENERAL_VALUE_MAX
 #: GENERAL_VALUE_MAX
 msgid "The value must be less or equal to {0}"
-msgstr ""
+msgstr "La valeur doit être inférieure ou égale à {0}"
 
 # GENERAL_VALUE_MIN
 #: GENERAL_VALUE_MIN
 msgid "The value must be greater or equal to {0}"
-msgstr ""
+msgstr "La valeur doit être supérieure ou égale à {0}"
 
 # GENERAL_VER
 #: GENERAL_VER
@@ -1911,7 +1911,7 @@ msgstr "Editeur"
 # LIB_REND_END
 #: LIB_REND_END
 msgid "Endorser"
-msgstr ""
+msgstr "Approbateur"
 
 # LIB_REND_NOCONT
 #: LIB_REND_NOCONT
@@ -1926,27 +1926,27 @@ msgstr "Participants"
 # LIB_REND_REQ
 #: LIB_REND_REQ
 msgid "Data Requirements"
-msgstr ""
+msgstr "Exigences de données"
 
 # LIB_REND_REV
 #: LIB_REND_REV
 msgid "Reviewer"
-msgstr ""
+msgstr "Relecteur"
 
 # LIB_REND_SHOW
 #: LIB_REND_SHOW
 msgid "Content not shown - ("
-msgstr ""
+msgstr "Contenu non affiché - ("
 
 # LIB_REND_SIZE
 #: LIB_REND_SIZE
 msgid ", size = {0}"
-msgstr ""
+msgstr ", taille = {0}"
 
 # LIST_REND_CODE
 #: LIST_REND_CODE
 msgid "Code: {0}"
-msgstr ""
+msgstr "Code : {0}"
 
 # LIST_REND_DAT
 #: LIST_REND_DAT
@@ -1966,7 +1966,7 @@ msgstr "Supprimé"
 # LIST_REND_ENC
 #: LIST_REND_ENC
 msgid "Encounter:"
-msgstr ""
+msgstr "Rencontre :"
 
 # LIST_REND_FLAG
 #: LIST_REND_FLAG
@@ -1976,7 +1976,7 @@ msgstr "Drapeau"
 # LIST_REND_ITEM
 #: LIST_REND_ITEM
 msgid "Items"
-msgstr ""
+msgstr "Éléments"
 
 # LIST_REND_MODE
 #: LIST_REND_MODE
@@ -2027,7 +2027,7 @@ msgstr "Niveau de maturité : {0}"
 # MATURITY_PUBLISHER
 #: MATURITY_PUBLISHER
 msgid "Publisher: {0}"
-msgstr ""
+msgstr "Éditeur : {0}"
 
 # MATURITY_STATUS
 #: MATURITY_STATUS
@@ -2038,7 +2038,7 @@ msgstr "Statut"
 # MATURITY_STDS_STATUS
 #: MATURITY_STDS_STATUS
 msgid "Standards Status: {0}"
-msgstr ""
+msgstr "Statut de standard : {0}"
 
 # NAME_SYS_IDEN
 #: NAME_SYS_IDEN
@@ -2053,7 +2053,7 @@ msgstr "Période"
 # OBLIGATION_SOURCE
 #: OBLIGATION_SOURCE
 msgid "This obligation is defined in the profile {0}"
-msgstr ""
+msgstr "Cette obligation est définie dans le profil {0}"
 
 # OBLIG_ACT
 #: OBLIG_ACT
@@ -2068,7 +2068,7 @@ msgstr "Elements"
 # OP_DEF_INPAR
 #: OP_DEF_INPAR
 msgid "Input parameters Profile:"
-msgstr ""
+msgstr "Profil des paramètres d'entrée :"
 
 # OP_DEF_OFFIC
 #: OP_DEF_OFFIC
@@ -2078,7 +2078,7 @@ msgstr "L'URL officielle pour cette operation definition est :"
 # OP_DEF_OUTPAR
 #: OP_DEF_OUTPAR
 msgid "Output parameters Profile:"
-msgstr ""
+msgstr "Profil des paramètres de sortie :"
 
 # OP_DEF_SCO
 #: OP_DEF_SCO
@@ -2093,7 +2093,7 @@ msgstr "URL : [base]/{0}"
 # OP_DEF_USE
 #: OP_DEF_USE
 msgid "Use"
-msgstr ""
+msgstr "Utilisation"
 
 # OP_OUT_DIAG
 #: OP_OUT_DIAG
@@ -2103,33 +2103,33 @@ msgstr "Diagnostics"
 # OP_OUT_OK
 #: OP_OUT_OK
 msgid "All OK"
-msgstr ""
+msgstr "Tout est OK"
 
 # OP_OUT_SEV
 #: OP_OUT_SEV
 msgid "Severity"
-msgstr ""
+msgstr "Sévérité"
 
 # OP_OUT_SRC
 #: OP_OUT_SRC
 msgctxt "OP_OUT_SRC"
 msgid "Source"
-msgstr ""
+msgstr "Source"
 
 # OP_OUT_SUMM
 #: OP_OUT_SUMM
 msgid "OperationOutcome ({0} Error(s), {1} Warning(s), {2} Hint(s))"
-msgstr ""
+msgstr "Résultat d'opération ({0} Erreur(s), {1} Avertissement(s), {2} Information(s))"
 
 # OP_OUT_SUMM_ALL_OK
 #: OP_OUT_SUMM_ALL_OK
 msgid "OperationOutcome (ALL OK)"
-msgstr ""
+msgstr "Résultat d'opération (TOUT EST OK)"
 
 # OP_OUT_SUMM_NOHINT
 #: OP_OUT_SUMM_NOHINT
 msgid "OperationOutcome ({0} Error(s), {1} Warning(s))"
-msgstr ""
+msgstr "Résultat d'opération ({0} Erreur(s), {1} Avertissement(s))"
 
 # PARS_SUMMARY_LIST
 #: PARS_SUMMARY_LIST
@@ -2144,12 +2144,12 @@ msgstr "Paramètres ({0} paramètres)"
 # PAT_ACTIVE
 #: PAT_ACTIVE
 msgid "Active:"
-msgstr ""
+msgstr "Actif :"
 
 # PAT_ACTIVE_HINT
 #: PAT_ACTIVE_HINT
 msgid "Record is active"
-msgstr ""
+msgstr "L'enregistrement est actif"
 
 # PAT_ALT_NAME
 #: PAT_ALT_NAME
@@ -2164,7 +2164,7 @@ msgstr "Noms alternatifs (voir plus bas)"
 # PAT_CONTACT
 #: PAT_CONTACT
 msgid "Contact Detail"
-msgstr ""
+msgstr "Coordonnées"
 
 # PAT_CONTACT_HINT
 #: PAT_CONTACT_HINT
@@ -2231,22 +2231,22 @@ msgstr "Liens :"
 # PAT_LINKS_HINT
 #: PAT_LINKS_HINT
 msgid "Patient Links"
-msgstr ""
+msgstr "Liens du patient"
 
 # PAT_LINK_REFER
 #: PAT_LINK_REFER
 msgid "Please refer to"
-msgstr ""
+msgstr "Veuillez vous référer à"
 
 # PAT_LINK_REPL
 #: PAT_LINK_REPL
 msgid "This record replaces"
-msgstr ""
+msgstr "Cet enregistrement remplace"
 
 # PAT_LINK_REPLBY
 #: PAT_LINK_REPLBY
 msgid "This record replaced by"
-msgstr ""
+msgstr "Cet enregistrement est remplacé par"
 
 # PAT_LINK_SEE
 #: PAT_LINK_SEE
@@ -2266,7 +2266,7 @@ msgstr "Statut Marital connu du Patient"
 # PAT_MO
 #: PAT_MO
 msgid "Managing Organization"
-msgstr ""
+msgstr "Organisation gestionnaire"
 
 # PAT_MUL_BIRTH
 #: PAT_MUL_BIRTH
@@ -2276,17 +2276,17 @@ msgstr "Naissance Multiple :"
 # PAT_MUL_BIRTH_HINT
 #: PAT_MUL_BIRTH_HINT
 msgid "Known multipleBirth status of Patient"
-msgstr ""
+msgstr "Statut de naissance multiple connu du patient"
 
 # PAT_NOK_CONTACT_HINT
 #: PAT_NOK_CONTACT_HINT
 msgid "Patient contact"
-msgstr ""
+msgstr "Contact du patient"
 
 # PAT_NOM_CONTACT
 #: PAT_NOM_CONTACT
 msgid "Nominated Contact:"
-msgstr ""
+msgstr "Contact désigné :"
 
 # PAT_NO_DOB
 #: PAT_NO_DOB
@@ -2296,7 +2296,7 @@ msgstr "Date de Naissance inconnue"
 # PAT_NO_GENDER
 #: PAT_NO_GENDER
 msgid "(no stated gender)"
-msgstr ""
+msgstr "(sexe non précisé)"
 
 # PAT_NO_NAME
 #: PAT_NO_NAME
@@ -2306,21 +2306,21 @@ msgstr "Patient Anonyme"
 # PAT_ORG
 #: PAT_ORG
 msgid "Organization:"
-msgstr ""
+msgstr "Organisation :"
 
 # PAT_OTHER_ID
 #: PAT_OTHER_ID
 msgid "Other Id:"
 msgid_plural "Other Ids:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Autre identifiant :"
+msgstr[1] "Autres identifiants :"
 
 # PAT_OTHER_ID_HINT
 #: PAT_OTHER_ID_HINT
 msgid "Other Id (see the one above)"
 msgid_plural "Other Ids (see the one above)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Autre identifiant (voir ci-dessus)"
+msgstr[1] "Autres identifiants (voir ci-dessus)"
 
 # PAT_PERIOD
 #: PAT_PERIOD
@@ -2340,22 +2340,22 @@ msgstr "Relations :"
 # PROF_DRIV_ERR_GEN_NARR
 #: PROF_DRIV_ERR_GEN_NARR
 msgid "Error Generating Narrative for"
-msgstr ""
+msgstr "Erreur lors de la génération du narratif pour"
 
 # PROF_DRIV_EXCP
 #: PROF_DRIV_EXCP
 msgid "Exception Generating Narrative: {0}"
-msgstr ""
+msgstr "Exception lors de la génération du narratif : {0}"
 
 # PROF_DRIV_FEXCP
 #: PROF_DRIV_FEXCP
 msgid "Cannot find definition for {0}"
-msgstr ""
+msgstr "Impossible de trouver la définition pour {0}"
 
 # PROF_DRIV_GEN_NARR
 #: PROF_DRIV_GEN_NARR
 msgid "{0} {1}"
-msgstr ""
+msgstr "{0} {1}"
 
 # PROF_DRIV_GEN_NARR_TECH
 #: PROF_DRIV_GEN_NARR_TECH
@@ -2371,7 +2371,7 @@ msgstr "{0} : {1}"
 # PROF_DRIV_SUMM_PROP
 #: PROF_DRIV_SUMM_PROP
 msgid "{0} = {1}"
-msgstr ""
+msgstr "{0} = {1}"
 
 # PROV_ACT
 #: PROV_ACT
@@ -2381,258 +2381,258 @@ msgstr "Activité"
 # PROV_AGE
 #: PROV_AGE
 msgid "Agents"
-msgstr ""
+msgstr "Agents"
 
 # PROV_BEHALF
 #: PROV_BEHALF
 msgid "On Behalf Of"
-msgstr ""
+msgstr "Au nom de"
 
 # PROV_FOR
 #: PROV_FOR
 msgid "Provenance for {0}"
-msgstr ""
+msgstr "Provenance pour {0}"
 
 # PROV_OCC
 #: PROV_OCC
 msgid "Occurrence"
-msgstr ""
+msgstr "Occurrence"
 
 # PROV_POL
 #: PROV_POL
 msgid "Policy"
-msgstr ""
+msgstr "Politique"
 
 # PROV_PROV
 #: PROV_PROV
 msgid "Provenance for"
-msgstr ""
+msgstr "Provenance pour"
 
 # PROV_PROVE
 #: PROV_PROVE
 msgid "Provenance for:"
-msgstr ""
+msgstr "Provenance pour :"
 
 # PROV_REC
 #: PROV_REC
 msgid "Recorded"
-msgstr ""
+msgstr "Enregistré"
 
 # PROV_ROLE
 #: PROV_ROLE
 msgid "Role"
-msgstr ""
+msgstr "Rôle"
 
 # PROV_WHO
 #: PROV_WHO
 msgid "who"
-msgstr ""
+msgstr "qui"
 
 # QUEST_ADD_INFO
 #: QUEST_ADD_INFO
 msgid "Additional information about the item"
-msgstr ""
+msgstr "Informations supplémentaires sur l'élément"
 
 # QUEST_ALLOWED
 #: QUEST_ALLOWED
 msgid "Allowed Answers"
-msgstr ""
+msgstr "Réponses autorisées"
 
 # QUEST_ANSW
 #: QUEST_ANSW
 msgid "Answer options for {0}"
-msgstr ""
+msgstr "Options de réponse pour {0}"
 
 # QUEST_ANSWER
 #: QUEST_ANSWER
 msgid "Answer"
-msgstr ""
+msgstr "Réponse"
 
 # QUEST_ANSWERS
 #: QUEST_ANSWERS
 msgid "Answers"
-msgstr ""
+msgstr "Réponses"
 
 # QUEST_APP
 #: QUEST_APP
 msgid "Approval Date"
-msgstr ""
+msgstr "Date d'approbation"
 
 # QUEST_ARE_TRUE
 #: QUEST_ARE_TRUE
 msgid "?? are true:"
-msgstr ""
+msgstr "?? sont vrais :"
 
 # QUEST_ATTRIBUTES
 #: QUEST_ATTRIBUTES
 msgid "Other attributes of the item"
-msgstr ""
+msgstr "Autres attributs de l'élément"
 
 # QUEST_CALC
 #: QUEST_CALC
 msgid "Calculated Value"
-msgstr ""
+msgstr "Valeur calculée"
 
 # QUEST_CAND
 #: QUEST_CAND
 msgid "Candidates"
-msgstr ""
+msgstr "Candidats"
 
 # QUEST_CAT
 #: QUEST_CAT
 msgid "Category: {0}"
-msgstr ""
+msgstr "Catégorie : {0}"
 
 # QUEST_CONT
 #: QUEST_CONT
 msgid "Context"
-msgstr ""
+msgstr "Contexte"
 
 # QUEST_DERIVED
 #: QUEST_DERIVED
 msgctxt "QUEST_DERIVED"
 msgid "Derived From"
-msgstr ""
+msgstr "Dérivé de"
 
 # QUEST_DISPLAY
 #: QUEST_DISPLAY
 msgid "Is optional to display"
-msgstr ""
+msgstr "L'affichage est optionnel"
 
 # QUEST_DISPLAY_CAT
 #: QUEST_DISPLAY_CAT
 msgid "Display Category"
-msgstr ""
+msgstr "Catégorie d'affichage"
 
 # QUEST_EFF_PERIOD
 #: QUEST_EFF_PERIOD
 msgid "Effective Period"
-msgstr ""
+msgstr "Période d'application"
 
 # QUEST_EN
 #: QUEST_EN
 msgid "Enable When"
-msgstr ""
+msgstr "Activer quand"
 
 # QUEST_ENABLE
 #: QUEST_ENABLE
 msgid "Enable When:"
-msgstr ""
+msgstr "Activer quand :"
 
 # QUEST_EXP
 #: QUEST_EXP
 msgid "Expressions:"
-msgstr ""
+msgstr "Expressions :"
 
 # QUEST_GROUP
 #: QUEST_GROUP
 msgid "Group"
-msgstr ""
+msgstr "Groupe"
 
 # QUEST_HIDDEN
 #: QUEST_HIDDEN
 msgid "Is a hidden item"
-msgstr ""
+msgstr "Est un élément masqué"
 
 # QUEST_HIDDEN_ITEM
 #: QUEST_HIDDEN_ITEM
 msgid "Hidden Item"
-msgstr ""
+msgstr "Élément masqué"
 
 # QUEST_ID
 #: QUEST_ID
 msgid "Link Id"
-msgstr ""
+msgstr "Id de lien"
 
 # QUEST_INITIAL
 #: QUEST_INITIAL
 msgid "Initial Value:"
-msgstr ""
+msgstr "Valeur initiale :"
 
 # QUEST_INITIALLY
 #: QUEST_INITIALLY
 msgid "(initially selected)"
-msgstr ""
+msgstr "(sélectionné initialement)"
 
 # QUEST_INITIAL_ANSWER
 #: QUEST_INITIAL_ANSWER
 msgid "Initial Answer"
-msgstr ""
+msgstr "Réponse initiale"
 
 # QUEST_INT
 #: QUEST_INT
 msgid "Initial Values"
-msgstr ""
+msgstr "Valeurs initiales"
 
 # QUEST_ITEM
 #: QUEST_ITEM
 msgid "Item"
-msgstr ""
+msgstr "Élément"
 
 # QUEST_ITEM_CONT
 #: QUEST_ITEM_CONT
 msgid "Item Context"
-msgstr ""
+msgstr "Contexte de l'élément"
 
 # QUEST_LINK
 #: QUEST_LINK
 msgid "The linkID for the item"
-msgstr ""
+msgstr "Le linkID de l'élément"
 
 # QUEST_LINKED
 #: QUEST_LINKED
 msgid "Is linked to an observation"
-msgstr ""
+msgstr "Est lié à une observation"
 
 # QUEST_LINKID
 #: QUEST_LINKID
 msgid "LinkID"
-msgstr ""
+msgstr "LinkID"
 
 # QUEST_MAND
 #: QUEST_MAND
 msgid "Mandatory"
-msgstr ""
+msgstr "Obligatoire"
 
 # QUEST_MAX_LENGTH
 #: QUEST_MAX_LENGTH
 msgid "Max Length"
-msgstr ""
+msgstr "Longueur maximale"
 
 # QUEST_NLM
 #: QUEST_NLM
 msgid "NLM Forms Library"
-msgstr ""
+msgstr "Bibliothèque de formulaires NLM"
 
 # QUEST_NONE_SPEC
 #: QUEST_NONE_SPEC
 msgid "None specified"
-msgstr ""
+msgstr "Aucun spécifié"
 
 # QUEST_OBSERVATION
 #: QUEST_OBSERVATION
 msgid "Observation Link Period"
-msgstr ""
+msgstr "Période de lien d'observation"
 
 # QUEST_OPT
 #: QUEST_OPT
 msgid "Options Sets"
-msgstr ""
+msgstr "Ensembles d'options"
 
 # QUEST_OPTIONS
 #: QUEST_OPTIONS
 msgid "Options:"
-msgstr ""
+msgstr "Options :"
 
 # QUEST_ORIENTATION
 #: QUEST_ORIENTATION
 msgid "Orientation: {0}"
-msgstr ""
+msgstr "Orientation : {0}"
 
 # QUEST_PREFIX
 #: QUEST_PREFIX
 msgid "Prefix"
-msgstr ""
+msgstr "Préfixe"
 
 # QUEST_PUB
 #: QUEST_PUB
@@ -2642,188 +2642,188 @@ msgstr "Date de publication"
 # QUEST_QUEST
 #: QUEST_QUEST
 msgid "Questionnaire"
-msgstr ""
+msgstr "Questionnaire"
 
 # QUEST_QUESTION
 #: QUEST_QUESTION
 msgid "Questionnaire:"
-msgstr ""
+msgstr "Questionnaire :"
 
 # QUEST_READONLY
 #: QUEST_READONLY
 msgid "Is Read Only"
-msgstr ""
+msgstr "Est en lecture seule"
 
 # QUEST_READ_ONLY
 #: QUEST_READ_ONLY
 msgid "Read Only"
-msgstr ""
+msgstr "Lecture seule"
 
 # QUEST_REP
 #: QUEST_REP
 msgid "Repeats"
-msgstr ""
+msgstr "Se répète"
 
 # QUEST_RESP_ROOT
 #: QUEST_RESP_ROOT
 msgid "QuestionnaireResponseRoot"
-msgstr ""
+msgstr "QuestionnaireResponseRoot"
 
 # QUEST_REV_DATE
 #: QUEST_REV_DATE
 msgid "Last Review Date"
-msgstr ""
+msgstr "Date de dernière révision"
 
 # QUEST_ROOT
 #: QUEST_ROOT
 msgid "QuestionnaireRoot"
-msgstr ""
+msgstr "QuestionnaireRoot"
 
 # QUEST_STRUCT
 #: QUEST_STRUCT
 msgid "Structure"
-msgstr ""
+msgstr "Structure"
 
 # QUEST_SUBJECT
 #: QUEST_SUBJECT
 msgid "Can change the subject of the questionnaire"
-msgstr ""
+msgstr "Peut modifier le sujet du questionnaire"
 
 # QUEST_SUB_TYPE
 #: QUEST_SUB_TYPE
 msgid "Subject Type"
-msgstr ""
+msgstr "Type de sujet"
 
 # QUEST_SUMMARY
 #: QUEST_SUMMARY
 msgid "Response to Questionnaire ''{0}'' about ''{1}''"
-msgstr ""
+msgstr "Réponse au questionnaire ''{0}'' à propos de ''{1}''"
 
 # QUEST_TEXT
 #: QUEST_TEXT
 msgid "Text"
-msgstr ""
+msgstr "Texte"
 
 # QUEST_TEXTFOR
 #: QUEST_TEXTFOR
 msgid "Text for the item"
-msgstr ""
+msgstr "Texte de l'élément"
 
 # QUEST_TIMES
 #: QUEST_TIMES
 msgid "Minimum and Maximum # of times the item can appear in the instance"
-msgstr ""
+msgstr "Nombre minimum et maximum de fois que l'élément peut apparaître dans l'instance"
 
 # QUEST_TRUE
 #: QUEST_TRUE
 msgid "are true:"
-msgstr ""
+msgstr "sont vrais :"
 
 # QUEST_TRY
 #: QUEST_TRY
 msgid "Try this questionnaire out:"
-msgstr ""
+msgstr "Essayer ce questionnaire :"
 
 # QUEST_TRY_QUEST
 #: QUEST_TRY_QUEST
 msgid "Try this QuestionnaireResponse out:"
-msgstr ""
+msgstr "Essayer cette QuestionnaireResponse :"
 
 # QUEST_TYPE_ITEM
 #: QUEST_TYPE_ITEM
 msgid "The type of the item"
-msgstr ""
+msgstr "Le type de l'élément"
 
 # QUEST_UNKNOWN_MODE
 #: QUEST_UNKNOWN_MODE
 msgid "Unknown QuestionnaireResponse Renderer Mode"
-msgstr ""
+msgstr "Mode de rendu QuestionnaireResponse inconnu"
 
 # QUEST_UNSPECIFIED_QUESTIONNAIRE
 #: QUEST_UNSPECIFIED_QUESTIONNAIRE
 msgid "Unspecified Questionnaire"
-msgstr ""
+msgstr "Questionnaire non spécifié"
 
 # QUEST_UNSPECIFIED_SUBJECT
 #: QUEST_UNSPECIFIED_SUBJECT
 msgctxt "QUEST_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
-msgstr ""
+msgstr "Sujet non spécifié"
 
 # QUEST_VALUE
 #: QUEST_VALUE
 msgid "Value Set:"
-msgstr ""
+msgstr "Jeu de valeurs (ValueSet) :"
 
 # R44B_DERIVES_FROM
 #: R44B_DERIVES_FROM
 msgid "derives from"
-msgstr ""
+msgstr "dérive de"
 
 # R44B_HAS_TARGET
 #: R44B_HAS_TARGET
 msgid "has target"
-msgstr ""
+msgstr "a pour cible"
 
 # R44B_HAS_TYPE
 #: R44B_HAS_TYPE
 msgid "has type"
-msgstr ""
+msgstr "a pour type"
 
 # R44B_NOT_COMP
 #: R44B_NOT_COMP
 msgid "This is an {0} IG that is not compatible with {1}\" because"
-msgstr ""
+msgstr "Ceci est un IG {0} qui n'est pas compatible avec {1}\" car"
 
 # R44B_NOT_IN
 #: R44B_NOT_IN
 msgid "The following resources are not in the {0} version"
-msgstr ""
+msgstr "Les ressources suivantes ne sont pas dans la version {0}"
 
 # R44B_ONLY_IN
 #: R44B_ONLY_IN
 msgid "The following resources are only in the {0} version"
-msgstr ""
+msgstr "Les ressources suivantes sont uniquement dans la version {0}"
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
 msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
-msgstr ""
+msgstr "Les packages pour <a href=\"{0}\">R4 ({1}.r4)</a> et <a href=\\"{2}\\">R4B ({3}.r4b)</a> sont disponibles."
 
 # R44B_PROBLEMS
 #: R44B_PROBLEMS
 msgid "While checking for {0} compatibility, the following {1} problems were found"
-msgstr ""
+msgstr "Lors de la vérification de la compatibilité {0}, les {1} problèmes suivants ont été trouvés"
 
 # R44B_REFERS_TO
 #: R44B_REFERS_TO
 msgid "<a href=\"{0}\">{1}}</a> refers to the canonical type at {2}"
-msgstr ""
+msgstr "<a href=\"{0}\">{1}}</a> fait référence au type canonique à {2}"
 
 # R44B_USE_OK
 #: R44B_USE_OK
 msgid "This is an {0} IG. None of the features it uses are changed in {1}, so it can be used as is with {1} systems."
-msgstr ""
+msgstr "Ceci est un IG {0}. Aucune des fonctionnalités qu'il utilise n'est modifiée dans {1}, il peut donc être utilisé tel quel avec les systèmes {1}."
 
 # R44B_WRONG_MSG
 #: R44B_WRONG_MSG
 msgid "Something went wrong with the cross-version analysis because"
-msgstr ""
+msgstr "Une erreur s'est produite lors de l'analyse inter-versions car"
 
 # REND_ADDED
 #: REND_ADDED
 msgid "Added:"
-msgstr ""
+msgstr "Ajouté :"
 
 # REND_CHANGED
 #: REND_CHANGED
 msgid "Changed:"
-msgstr ""
+msgstr "Modifié :"
 
 # REND_REMOVED
 #: REND_REMOVED
 msgid "Removed:"
-msgstr ""
+msgstr "Supprimé :"
 
 # REND_ROW_CHANGED_SINCE_WAS
 #: REND_ROW_CHANGED_SINCE_WAS
@@ -2853,17 +2853,17 @@ msgstr "Ce contenu a été changé depuis {0} (valeur précédente : ''{1}'')"
 # REND_STANDARDS
 #: REND_STANDARDS
 msgid "Standards Status = {0}"
-msgstr ""
+msgstr "Statut de standard = {0}"
 
 # REQ_ACTOR
 #: REQ_ACTOR
 msgid "These requirements apply to the actor"
-msgstr ""
+msgstr "Ces exigences s'appliquent à l'acteur"
 
 # REQ_DERIVE
 #: REQ_DERIVE
 msgid "These requirements derive from"
-msgstr ""
+msgstr "Ces exigences dérivent de"
 
 # REQ_DERIVED
 #: REQ_DERIVED
@@ -2873,12 +2873,12 @@ msgstr "Dérive de :"
 # REQ_FOLLOWING_ACTOR
 #: REQ_FOLLOWING_ACTOR
 msgid "These requirements apply to the following actors:"
-msgstr ""
+msgstr "Ces exigences s'appliquent aux acteurs suivants :"
 
 # REQ_FOLLOWING_REQ
 #: REQ_FOLLOWING_REQ
 msgid "These requirements are derived from the following requirements:"
-msgstr ""
+msgstr "Ces exigences sont dérivées des exigences suivantes :"
 
 # REQ_LINKS
 #: REQ_LINKS
@@ -3321,7 +3321,7 @@ msgstr ""
 # SDR_SRC_IG
 #: SDR_SRC_IG
 msgid "This IG"
-msgstr ""
+msgstr "!!cet IG"
 
 # SDR_SUPP
 #: SDR_SUPP
@@ -4204,6 +4204,11 @@ msgstr ""
 # STRUC_DEF_IF
 #: STRUC_DEF_IF
 msgid "If"
+msgstr ""
+
+# STRUC_DEF_IMPLEMENTS
+#: STRUC_DEF_IMPLEMENTS
+msgid "Interfaces Implemented"
 msgstr ""
 
 # STRUC_DEF_IMPOSE_PROFILE
@@ -5169,7 +5174,7 @@ msgstr ""
 # VALUE_SET_AUS
 #: VALUE_SET_AUS
 msgid "Australian Edition"
-msgstr "!!Australien"
+msgstr "Edition Australienne"
 
 # VALUE_SET_BE
 #: VALUE_SET_BE
@@ -5637,7 +5642,7 @@ msgstr ""
 
 # VS_VERSION_NOTHING_TEXT
 #: VS_VERSION_NOTHING_TEXT
-msgid "Not Stated"
+msgid "Not State"
 msgstr ""
 
 # VS_VERSION_STATED

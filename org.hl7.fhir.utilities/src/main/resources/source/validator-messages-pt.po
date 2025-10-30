@@ -7706,6 +7706,16 @@ msgstr "Não é possível aplicar um filtro regex à propriedade ''{0}'' (normal
 msgid "Found a circularity pointing to {0} processing ValueSet with pathway {1}"
 msgstr "Encontrada uma circularidade que aponta para o processamento de {0} ValueSet com o percurso {1}"
 
+# VALUESET_CODE_CONCEPT_HINT
+#: VALUESET_CODE_CONCEPT_HINT
+msgid "The display ''{0}'' is not valid in the Code system ''{0}''. Note that the display in the ValueSet does not have to match; this check exists to help check that it''s not accidentally the wrong code"
+msgstr ""
+
+# VALUESET_CODE_CONCEPT_HINT_VER
+#: VALUESET_CODE_CONCEPT_HINT_VER
+msgid "The display ''{0}'' is not valid in the Code system ''{0}'' version ''{2}''. Note that the display in the ValueSet does not have to match; this check exists to help check that it''s not accidentally the wrong code"
+msgstr ""
+
 # VALUESET_CONCEPT_DISPLAY_PRESENCE_MIXED
 #: VALUESET_CONCEPT_DISPLAY_PRESENCE_MIXED
 #, fuzzy
