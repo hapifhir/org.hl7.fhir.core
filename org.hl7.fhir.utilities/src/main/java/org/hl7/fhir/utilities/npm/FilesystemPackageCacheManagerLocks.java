@@ -264,14 +264,14 @@ public class FilesystemPackageCacheManagerLocks {
         try {
           result = function.get();
         } finally {
-
-          lockFile.renameTo(ManagedFileAccess.file(File.createTempFile(lockFile.getName(), ".lock-renamed").getAbsolutePath()));
+          File tempFile = ManagedFileAccess.file(File.createTempFile(lockFile.getName(), ".lock-renamed").getAbsolutePath());
+          Files.move(lockFile.toPath(), tempFile.toPath(), StandardCopyOption.ATOMIC_MOVE );
 
           fileLock.release();
           channel.close();
 
-          if (!lockFile.delete()) {
-            lockFile.deleteOnExit();
+          if (!tempFile.delete()) {
+            tempFile.deleteOnExit();
           }
 
           lock.writeLock().unlock();
