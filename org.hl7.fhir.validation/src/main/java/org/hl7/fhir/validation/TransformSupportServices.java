@@ -9,7 +9,7 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r5.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -23,12 +23,12 @@ public class TransformSupportServices implements ITransformerServices {
   private final PrintWriter mapLog;
   private final SimpleWorkerContext context;
   private List<Base> outputs;
-  private IEvaluationContext validatorService;
+  private IHostApplicationServices validatorService;
 
   public TransformSupportServices(List<Base> outputs,
                                   PrintWriter mapLog,
                                   SimpleWorkerContext context,
-                                  IEvaluationContext validatorService) {
+                                  IHostApplicationServices validatorService) {
     this.outputs = outputs;
     this.mapLog = mapLog;
     this.context = context;
