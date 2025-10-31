@@ -1,17 +1,19 @@
 package org.hl7.fhir.validation.cli.tasks;
 
-import java.io.PrintStream;
-
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
-import org.hl7.fhir.validation.service.utils.Display;
+import org.hl7.fhir.validation.cli.Display;
+import org.slf4j.Logger;
 
+import javax.annotation.Nonnull;
+
+@Slf4j
 public class ValidateTask extends ValidationEngineTask {
 
   final static String[][] PLACEHOLDERS = {
@@ -38,32 +40,46 @@ public class ValidateTask extends ValidationEngineTask {
   }
 
   @Override
-  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
+  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
+    return shouldExecuteTask(args);
+  }
+
+  @Override
+  public boolean shouldExecuteTask(@Nonnull String[] args) {
     // There is no explicit way to trigger a validation task.
     // It is the default task.
     return false;
   }
 
   @Override
-  public void printHelp(PrintStream out) {
-    Display.displayHelpDetails(out,"help/validate.txt", PLACEHOLDERS);
+  public void logHelp(Logger logger) {
+    Display.displayHelpDetails(logger,"help/validate.txt", PLACEHOLDERS);
   }
 
   @Override
-  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
+  public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
     if (validationContext.getExpansionParameters() != null) {
+      //TODO Get this from InstanceValidatorParameters
       validationEngine.loadExpansionParameters(validationContext.getExpansionParameters());
     }
     
     for (String s : validationContext.getProfiles()) {
       if (!validationEngine.getContext().hasResource(StructureDefinition.class, s) && !validationEngine.getContext().hasResource(ImplementationGuide.class, s)) {
-        System.out.println("  Fetch Profile from " + s);
+        log.info("  Fetch Profile from " + s);
         validationEngine.loadProfile(validationContext.getLocations().getOrDefault(s, s));
       }
     }
-    System.out.println("Validating");
+    log.info("Validating");
 
     validationService.validateSources(validationContext, validationEngine, validationContext.getWatchMode(), validationContext.getWatchScanDelay(), validationContext.getWatchSettleTime());
 
+    if (validationContext.getAdvisorFile() != null) {
+      log.info("Note: Some validation issues might be hidden by the advisor settings in the file "+ validationContext.getAdvisorFile());
+    }
+  }
+
+  @Override
+  public boolean inferFhirVersion() {
+    return true;
   }
 }

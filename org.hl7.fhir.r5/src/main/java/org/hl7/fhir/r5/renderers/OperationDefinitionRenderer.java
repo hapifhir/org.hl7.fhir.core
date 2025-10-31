@@ -6,6 +6,8 @@ import java.io.UnsupportedEncodingException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.FHIRTypes;
@@ -13,6 +15,7 @@ import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.OperationDefinition;
 import org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent;
+import org.hl7.fhir.r5.model.OperationDefinition.OperationKind;
 import org.hl7.fhir.r5.model.OperationDefinition.OperationParameterScope;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -20,7 +23,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.StandardsStatus;
@@ -60,19 +63,32 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
       x.pre().tx(opd.getUrl()); 
       addMarkdown(x, opd.getDescription());} 
  
-    if (opd.getSystem()) 
-      x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URLS, opd.getCode())); 
-    for (Enumeration<VersionIndependentResourceTypesAll> c : opd.getResource()) { 
-      if (opd.getType()) 
-        x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, c.getCode()+"/$"+opd.getCode())); 
-      if (opd.getInstance()) 
-        x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, c.getCode()+"/[id]/$"+opd.getCode())); 
-    } 
- 
+    if (opd.getKind() == OperationKind.QUERY) {
+      if (opd.getSystem()) {
+        x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, "?_query="+opd.getCode()+"&..."));
+      }
+      for (Enumeration<VersionIndependentResourceTypesAll> c : opd.getResource()) { 
+        if (opd.getType()) 
+          x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, c.getCode()+"?_query="+opd.getCode()+"&...")); 
+        if (opd.getInstance()) 
+          x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, c.getCode()+"/[id]?_query="+opd.getCode()+"&...")); 
+      } 
+    } else {
+      if (opd.getSystem()) {
+        x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, "$"+opd.getCode()));
+      }
+      for (Enumeration<VersionIndependentResourceTypesAll> c : opd.getResource()) { 
+        if (opd.getType()) 
+          x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, c.getCode()+"/$"+opd.getCode())); 
+        if (opd.getInstance()) 
+          x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, c.getCode()+"/[id]/$"+opd.getCode())); 
+      } 
+    }
+
     if (opd.hasInputProfile()) { 
       XhtmlNode p = x.para(); 
       p.tx(context.formatPhrase(RenderingContext.OP_DEF_INPAR)); 
-      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getInputProfile(), opd); 
+      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getInputProfile(), null, opd);
       if (sd == null) { 
         p.pre().tx(opd.getInputProfile());         
       } else { 
@@ -82,7 +98,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     if (opd.hasOutputProfile()) { 
       XhtmlNode p = x.para(); 
       p.tx(context.formatPhrase(RenderingContext.OP_DEF_OUTPAR)); 
-      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getOutputProfile(), opd); 
+      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getOutputProfile(), null, opd);
       if (sd == null) { 
         p.pre().tx(opd.getOutputProfile());         
       } else { 
@@ -92,7 +108,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
 
     x.h3().tx(context.formatPhrase(RenderingContext.GENERAL_PARS));
     //x.para().tx(context.formatPhrase(RenderingContext.GENERAL_PARS)); 
-    XhtmlNode tbl = x.table( "grid", false); 
+    XhtmlNode tbl = x.table( "grid", false).markGenerated(!context.forValidResource());
     XhtmlNode tr = tbl.tr(); 
     tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_USE)); 
     tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_NAME)); 
@@ -126,7 +142,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     tr.td().addText(p.getUse().toString()); 
     XhtmlNode td = tr.td(); 
     td.addText(path+p.getName()); 
-    StandardsStatus ss = ToolingExtensions.getStandardsStatus(p); 
+    StandardsStatus ss = ExtensionUtilities.getStandardsStatus(p);
     genStandardsStatus(td, ss); 
     td = tr.td(); 
     if (p.hasScope()) { 
@@ -142,9 +158,9 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     StructureDefinition sd = actualType != null ? context.getWorker().fetchTypeDefinition(actualType) : null; 
     if (sd == null) {
       td.tx(p.hasType() ? actualType : "");  
-    } else if (sd.getAbstract() && p.hasExtension(ToolingExtensions.EXT_ALLOWED_TYPE)) {  
+    } else if (sd.getAbstract() && p.hasExtension(ExtensionDefinitions.EXT_ALLOWED_TYPE)) {
       boolean first = true;  
-      for (Extension ex : p.getExtensionsByUrl(ToolingExtensions.EXT_ALLOWED_TYPE)) {  
+      for (Extension ex : p.getExtensionsByUrl(ExtensionDefinitions.EXT_ALLOWED_TYPE)) {  
         if (first) first = false; else td.tx(" | ");  
         String s = ex.getValue().primitiveValue();  
         StructureDefinition sdt = context.getWorker().fetchTypeDefinition(s);  
@@ -183,7 +199,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     if (p.hasSearchType()) { 
       td.br(); 
       td.tx("("); 
-      td.ah(context.prefixLocalHref(context.getLink(KnownLinkType.SPEC) == null ? "search.html#"+p.getSearchType().toCode() : Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "search.html#"+p.getSearchType().toCode()))).tx(p.getSearchType().toCode());        
+      td.ah(context.prefixLocalHref(context.getLink(KnownLinkType.SPEC, true) == null ? "search.html#"+p.getSearchType().toCode() : Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), "search.html#"+p.getSearchType().toCode()))).tx(p.getSearchType().toCode());        
       td.tx(")"); 
     } 
     td = tr.td(); 

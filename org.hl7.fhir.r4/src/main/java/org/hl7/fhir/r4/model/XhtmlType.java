@@ -37,17 +37,17 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-public class XhtmlType extends Element {
+
+public class XhtmlType extends PrimitiveType<String> {
 
   private Narrative place;
-
+  
   public XhtmlType(Narrative place) {
     super();
     this.place = place;
   }
 
   public XhtmlType() {
-    this(new Narrative());
     // "<div xmlns=\""+FormatUtilities.XHTML_NS+"\"></div>"
   }
 
@@ -70,11 +70,15 @@ public class XhtmlType extends Element {
   }
 
   @Override
-  public Element copy() {
+  public PrimitiveType<String> copy() {
     return null;
   }
 
-  public XhtmlNode getValue() {
+  public String getValue() {
+    return primitiveValue();
+  }
+
+  public XhtmlNode getXhtml() {
     return place == null ? new XhtmlNode(NodeType.Element, "div") : place.getDiv();
   }
 
@@ -95,27 +99,47 @@ public class XhtmlType extends Element {
   @Override
   public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
     if ("value".equals(name))
-      return new Base[] { this };
+      return new Base[] {this};
     return super.getProperty(hash, name, checkValid);
   }
 
   @Override
   public String primitiveValue() {
-    try {
-      return new XhtmlComposer(false).compose(getValue());
-    } catch (IOException e) {
-    }
-    return null;
+    return new XhtmlComposer(false).compose(getXhtml());
   }
-
+  
   @Override
   public boolean isPrimitive() {
     return true;
   }
-
+  
   @Override
   public boolean hasPrimitiveValue() {
     return true;
   }
+
+  @Override
+  protected String encode(String theValue) {
+    return theValue;
+  }
+
+  @Override
+  protected String parse(String theValue) {
+    return theValue;
+  }
+
+  public Narrative getPlace() {
+    return place;
+  }
+
+  public void setPlace(Narrative place) {
+    this.place = place;
+  }
+
+  @Override
+  public Base setXhtml(XhtmlNode node) {
+    return place.setDiv(node);
+  }
+  
 
 }

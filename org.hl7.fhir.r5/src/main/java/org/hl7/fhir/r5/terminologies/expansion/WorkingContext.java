@@ -24,7 +24,9 @@ class WorkingContext {
   private Integer offsetParam;
   private Integer countParam; // allowed count. Because of internal processing, we allow more 
   
-  private int extraCount; // running count. This might be more than actually seen if we call out to an external server and only get the first 1000 codes
+  // running count. This might be more than actually seen if we call out to an external server and only get the first 1000 codes
+  private int extraCount;
+  private List<String> countIncompleteSystems = new ArrayList<>(); // because we saw some of something we depend on, and then we lose control if we see anything else in the same system 
   private boolean noTotal; // we lost count of the correct total
   
   public List<ValueSetExpansionContainsComponent> getCodes() {
@@ -113,6 +115,10 @@ class WorkingContext {
 
   public int getStatedTotal() {
     return codes.size() + extraCount;
+  }
+
+  public List<String> getCountIncompleteSystems() {
+    return countIncompleteSystems;
   }
 
 }

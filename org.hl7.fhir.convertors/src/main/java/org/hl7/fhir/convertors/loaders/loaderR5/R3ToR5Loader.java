@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /*
@@ -44,6 +45,7 @@ import org.hl7.fhir.dstu3.formats.XmlParser;
 import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IContextResourceLoader;
+import org.hl7.fhir.r5.context.SimpleWorkerContext.PackageResourceLoader;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
@@ -57,7 +59,7 @@ public class R3ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
 
   private final BaseAdvisor_30_50 advisor = new BaseAdvisor_30_50();
 
-  public R3ToR5Loader(List<String> types, ILoaderKnowledgeProviderR5 lkp) {
+  public R3ToR5Loader(Set<String> types, ILoaderKnowledgeProviderR5 lkp) {
     super(types, lkp);
   }
 
@@ -98,6 +100,7 @@ public class R3ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
     if (patchUrls) {
       for (BundleEntryComponent be : b.getEntry()) {
         if (be.hasResource()) {
+          inspectResource(be.getResource());
           doPatchUrls(be.getResource());
         }          
       }
@@ -121,6 +124,7 @@ public class R3ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
     if (killPrimitives) {
       throw new FHIRException("Cannot kill primitives when using deferred loading");
     }
+    inspectResource(r5);
     if (patchUrls) {
       doPatchUrls(r5);
     }
@@ -142,4 +146,14 @@ public class R3ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
     return new TerminologyClientFactory(versionString());
   }
 
+  @Override
+  public Set<String> reviewActualTypes(Set<String> types) {
+    // this isn't correct, but we don't care anymore for R3 IGs
+    return types;
+  }
+  
+  @Override
+  public PackageResourceLoader editInfo(PackageResourceLoader pri) {
+    return pri;
+  }
 }

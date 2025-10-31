@@ -360,7 +360,7 @@ public class Specimen extends DomainResource {
     }
 
     public boolean hasCollectedDateTimeType() {
-      return this != null && this.collected instanceof DateTimeType;
+        return this.collected instanceof DateTimeType;
     }
 
     /**
@@ -377,7 +377,7 @@ public class Specimen extends DomainResource {
     }
 
     public boolean hasCollectedPeriod() {
-      return this != null && this.collected instanceof Period;
+        return this.collected instanceof Period;
     }
 
     public boolean hasCollected() {
@@ -527,7 +527,7 @@ public class Specimen extends DomainResource {
     }
 
     public boolean hasFastingStatusCodeableConcept() {
-      return this != null && this.fastingStatus instanceof CodeableConcept;
+        return this.fastingStatus instanceof CodeableConcept;
     }
 
     /**
@@ -545,7 +545,7 @@ public class Specimen extends DomainResource {
     }
 
     public boolean hasFastingStatusDuration() {
-      return this != null && this.fastingStatus instanceof Duration;
+        return this.fastingStatus instanceof Duration;
     }
 
     public boolean hasFastingStatus() {
@@ -1054,28 +1054,6 @@ public class Specimen extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Substance> getAdditiveTarget() {
-      if (this.additiveTarget == null)
-        this.additiveTarget = new ArrayList<Substance>();
-      return this.additiveTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Substance addAdditiveTarget() {
-      Substance r = new Substance();
-      if (this.additiveTarget == null)
-        this.additiveTarget = new ArrayList<Substance>();
-      this.additiveTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #time} (A record of the time or period when the specimen
      *         processing occurred. For example the time of sample fixation or the
      *         period of time the sample was in formalin.)
@@ -1099,7 +1077,7 @@ public class Specimen extends DomainResource {
     }
 
     public boolean hasTimeDateTimeType() {
-      return this != null && this.time instanceof DateTimeType;
+        return this.time instanceof DateTimeType;
     }
 
     /**
@@ -1117,7 +1095,7 @@ public class Specimen extends DomainResource {
     }
 
     public boolean hasTimePeriod() {
-      return this != null && this.time instanceof Period;
+        return this.time instanceof Period;
     }
 
     public boolean hasTime() {
@@ -1633,7 +1611,7 @@ public class Specimen extends DomainResource {
     }
 
     public boolean hasAdditiveCodeableConcept() {
-      return this != null && this.additive instanceof CodeableConcept;
+        return this.additive instanceof CodeableConcept;
     }
 
     /**
@@ -1650,7 +1628,7 @@ public class Specimen extends DomainResource {
     }
 
     public boolean hasAdditiveReference() {
-      return this != null && this.additive instanceof Reference;
+        return this.additive instanceof Reference;
     }
 
     public boolean hasAdditive() {
@@ -2402,28 +2380,6 @@ public class Specimen extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Specimen> getParentTarget() {
-    if (this.parentTarget == null)
-      this.parentTarget = new ArrayList<Specimen>();
-    return this.parentTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Specimen addParentTarget() {
-    Specimen r = new Specimen();
-    if (this.parentTarget == null)
-      this.parentTarget = new ArrayList<Specimen>();
-    this.parentTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #request} (Details concerning a service request that required
    *         a specimen to be collected.)
    */
@@ -2476,28 +2432,6 @@ public class Specimen extends DomainResource {
       addRequest();
     }
     return getRequest().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<ServiceRequest> getRequestTarget() {
-    if (this.requestTarget == null)
-      this.requestTarget = new ArrayList<ServiceRequest>();
-    return this.requestTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public ServiceRequest addRequestTarget() {
-    ServiceRequest r = new ServiceRequest();
-    if (this.requestTarget == null)
-      this.requestTarget = new ArrayList<ServiceRequest>();
-    this.requestTarget.add(r);
-    return r;
   }
 
   /**

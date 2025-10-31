@@ -42,7 +42,9 @@ public class FileUtilities {
 
   public static void bytesToFile(final byte[] bytes, final String path) throws IOException {
     try (final OutputStream sw = ManagedFileAccess.outStream(ManagedFileAccess.csfile(path))) {
-      sw.write(bytes);
+      if (bytes != null) {
+        sw.write(bytes);
+      }
     }
   }
   
@@ -65,10 +67,18 @@ public class FileUtilities {
   public static byte[] stringToBytes(final String content) throws IOException {
     return content.getBytes(StandardCharsets.UTF_8);
   }
-  
+
   public static void stringToFile(final String content, final String path) throws IOException  {
     final File file = ManagedFileAccess.csfile(path);
     stringToFile(content, file);
+  }
+
+  public static void stringToFileIfDifferent(final String content, final String path) throws IOException  {
+    final File file = ManagedFileAccess.csfile(path);
+    String current = file.exists() ? fileToString(file) : null;
+    if (current == null || !current.equals(content)) {
+      stringToFile(content, file);
+    }
   }
 
   public static void stringToFile(final String content, final File file) throws IOException {
@@ -137,6 +147,11 @@ public class FileUtilities {
   public static String[] fileToLines(File file) throws FileNotFoundException, IOException {
     Pattern LINE_SEP_PATTERN = Pattern.compile("\\R");
     return LINE_SEP_PATTERN.split(fileToString(file));
+  }
+
+  public static String[] streamToLines(InputStream stream) throws FileNotFoundException, IOException {
+    Pattern LINE_SEP_PATTERN = Pattern.compile("\\R");
+    return LINE_SEP_PATTERN.split(streamToString(stream));
   }
 
   public static String streamToString(final InputStream input) throws IOException  {
@@ -531,6 +546,11 @@ public class FileUtilities {
       }
     }
     
+  }
+
+  public static boolean isEmptyDirectory(File dst) {
+    File[] files = dst.listFiles();
+    return files == null || files.length == 0;
   }
 
 }

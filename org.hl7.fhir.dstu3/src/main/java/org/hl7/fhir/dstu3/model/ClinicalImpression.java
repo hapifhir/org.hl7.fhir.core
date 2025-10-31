@@ -283,16 +283,6 @@ public class ClinicalImpression extends DomainResource {
           return getItem().get(0);
         }
 
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getItemTarget() { 
-          if (this.itemTarget == null)
-            this.itemTarget = new ArrayList<Resource>();
-          return this.itemTarget;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("code", "CodeableConcept", "A name/code for the group (\"set\") of investigations. Typically, this will be something like \"signs\", \"symptoms\", \"clinical\", \"diagnostic\", but the list is not constrained, and others such groups such as (exposure|family|travel|nutitirional) history may be used.", 0, 1, code));
@@ -472,8 +462,8 @@ public class ClinicalImpression extends DomainResource {
           return (CodeableConcept) this.item;
         }
 
-        public boolean hasItemCodeableConcept() { 
-          return this != null && this.item instanceof CodeableConcept;
+        public boolean hasItemCodeableConcept() {
+            return this.item instanceof CodeableConcept;
         }
 
         /**
@@ -487,8 +477,8 @@ public class ClinicalImpression extends DomainResource {
           return (Reference) this.item;
         }
 
-        public boolean hasItemReference() { 
-          return this != null && this.item instanceof Reference;
+        public boolean hasItemReference() {
+            return this.item instanceof Reference;
         }
 
         public boolean hasItem() { 
@@ -1140,8 +1130,8 @@ public class ClinicalImpression extends DomainResource {
       return (DateTimeType) this.effective;
     }
 
-    public boolean hasEffectiveDateTimeType() { 
-      return this != null && this.effective instanceof DateTimeType;
+    public boolean hasEffectiveDateTimeType() {
+        return this.effective instanceof DateTimeType;
     }
 
     /**
@@ -1155,8 +1145,8 @@ public class ClinicalImpression extends DomainResource {
       return (Period) this.effective;
     }
 
-    public boolean hasEffectivePeriod() { 
-      return this != null && this.effective instanceof Period;
+    public boolean hasEffectivePeriod() {
+        return this.effective instanceof Period;
     }
 
     public boolean hasEffective() { 
@@ -1361,16 +1351,6 @@ public class ClinicalImpression extends DomainResource {
         addProblem();
       }
       return getProblem().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getProblemTarget() { 
-      if (this.problemTarget == null)
-        this.problemTarget = new ArrayList<Resource>();
-      return this.problemTarget;
     }
 
     /**
@@ -1696,28 +1676,6 @@ public class ClinicalImpression extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<RiskAssessment> getPrognosisReferenceTarget() { 
-      if (this.prognosisReferenceTarget == null)
-        this.prognosisReferenceTarget = new ArrayList<RiskAssessment>();
-      return this.prognosisReferenceTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public RiskAssessment addPrognosisReferenceTarget() { 
-      RiskAssessment r = new RiskAssessment();
-      if (this.prognosisReferenceTarget == null)
-        this.prognosisReferenceTarget = new ArrayList<RiskAssessment>();
-      this.prognosisReferenceTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #action} (Action taken as part of assessment procedure.)
      */
     public List<Reference> getAction() { 
@@ -1768,16 +1726,6 @@ public class ClinicalImpression extends DomainResource {
         addAction();
       }
       return getAction().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getActionTarget() { 
-      if (this.actionTarget == null)
-        this.actionTarget = new ArrayList<Resource>();
-      return this.actionTarget;
     }
 
     /**

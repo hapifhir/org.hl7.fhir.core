@@ -2780,16 +2780,6 @@ public class ClaimResponse extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getProviderTarget() {
-      if (this.providerTarget == null)
-        this.providerTarget = new ArrayList<Resource>();
-      return this.providerTarget;
-    }
-
-    /**
      * @return {@link #productOrService} (When the value is a group code then this
      *         item collects a set of related claim details, otherwise this contains
      *         the product, service, drug or other billing code for the item.)
@@ -2950,7 +2940,7 @@ public class ClaimResponse extends DomainResource {
     }
 
     public boolean hasServicedDateType() {
-      return this != null && this.serviced instanceof DateType;
+        return this.serviced instanceof DateType;
     }
 
     /**
@@ -2967,7 +2957,7 @@ public class ClaimResponse extends DomainResource {
     }
 
     public boolean hasServicedPeriod() {
-      return this != null && this.serviced instanceof Period;
+        return this.serviced instanceof Period;
     }
 
     public boolean hasServiced() {
@@ -3005,7 +2995,7 @@ public class ClaimResponse extends DomainResource {
     }
 
     public boolean hasLocationCodeableConcept() {
-      return this != null && this.location instanceof CodeableConcept;
+        return this.location instanceof CodeableConcept;
     }
 
     /**
@@ -3021,7 +3011,7 @@ public class ClaimResponse extends DomainResource {
     }
 
     public boolean hasLocationAddress() {
-      return this != null && this.location instanceof Address;
+        return this.location instanceof Address;
     }
 
     /**
@@ -3037,7 +3027,7 @@ public class ClaimResponse extends DomainResource {
     }
 
     public boolean hasLocationReference() {
-      return this != null && this.location instanceof Reference;
+        return this.location instanceof Reference;
     }
 
     public boolean hasLocation() {
@@ -9395,28 +9385,6 @@ public class ClaimResponse extends DomainResource {
       addCommunicationRequest();
     }
     return getCommunicationRequest().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<CommunicationRequest> getCommunicationRequestTarget() {
-    if (this.communicationRequestTarget == null)
-      this.communicationRequestTarget = new ArrayList<CommunicationRequest>();
-    return this.communicationRequestTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public CommunicationRequest addCommunicationRequestTarget() {
-    CommunicationRequest r = new CommunicationRequest();
-    if (this.communicationRequestTarget == null)
-      this.communicationRequestTarget = new ArrayList<CommunicationRequest>();
-    this.communicationRequestTarget.add(r);
-    return r;
   }
 
   /**

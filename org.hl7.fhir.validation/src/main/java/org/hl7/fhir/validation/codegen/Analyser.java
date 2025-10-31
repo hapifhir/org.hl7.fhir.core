@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
@@ -17,9 +18,9 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
+
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
 
 public class Analyser {
 
@@ -41,6 +42,7 @@ public class Analyser {
     Analysis res = new Analysis(definitions, sd);
 
     StructureDefinition sdb = definitions.getStructures().get(sd.getBaseDefinition());
+   
     if (sdb == null && sd.hasBaseDefinition()) {
       sdb = definitions.getContext().fetchTypeDefinition(sd.getBaseDefinition());
     }
@@ -150,7 +152,11 @@ public class Analyser {
     }
     
     if (tn == null) {
-      if (e.getType().size() > 0 && !e.hasContentReference() && pu.getChildList(analysis.getStructure(), e).isEmpty()) { // !isAbstractType(e.getType().get(0).getCode())
+      if (e.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED) &&
+        "named-elements".equals(e.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED))) {
+        tn = "NamedElementExtension";
+        e.setUserData("java.type", tn);
+      } else if (e.getType().size() > 0 && !e.hasContentReference() && pu.getChildList(analysis.getStructure(), e).isEmpty()) { // !isAbstractType(e.getType().get(0).getCode())
         tn = getTypeName(e);
         if (e.typeSummary().equals("xml:lang"))
           tn = "CodeType";
@@ -160,6 +166,9 @@ public class Analyser {
           tn ="DataType";
         else if (definitions.hasPrimitiveType(tn))
           tn = upFirst(tn)+"Type";
+        if (tn.contains("-")) {
+          tn = tn.replace("-", "_");
+        }
         e.setUserData("java.type", tn);
       } else {
         if (e.hasContentReference()) {
@@ -261,13 +270,20 @@ public class Analyser {
   
   protected String getTypeName(ElementDefinition e) throws Exception {
     if (e.getType().size() > 1) {
+      boolean allPrimitive = true;
+      for (TypeRefComponent tr : e.getType()) {
+        allPrimitive = allPrimitive && Utilities.existsInList(tr.getWorkingCode(), "string", "boolean", "integer", "decimal");
+      }
+      if (allPrimitive) {
+        e.setUserData(UserDataNames.JGEN_ALL_PRIMITIVE, true);
+      }
       return "DataType";
     } else if (e.getType().size() == 0) {
       throw new Exception("not supported");
     } else {
       TypeRefComponent tr = e.getType().get(0);
-      if (tr.hasExtension(ToolingExtensions.EXT_FHIR_TYPE)) {
-        return tr.getExtensionString(ToolingExtensions.EXT_FHIR_TYPE);
+      if (tr.hasExtension(ExtensionDefinitions.EXT_FHIR_TYPE)) {
+        return tr.getExtensionString(ExtensionDefinitions.EXT_FHIR_TYPE);
       } else {
         String type = tr.getCode();
         if (Utilities.isAbsoluteUrl(type)) {

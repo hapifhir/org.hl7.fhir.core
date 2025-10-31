@@ -2,12 +2,12 @@ package org.hl7.fhir.r5.terminologies.utilities;
 
 import java.util.*;
 
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
 public class ValidationResult {
@@ -16,7 +16,7 @@ public class ValidationResult {
   private String system;
   private String version;
   private IssueSeverity severity;
-  private List<String> messages = new ArrayList<>();
+  private Set<String> messages = new HashSet<>();
   private TerminologyServiceErrorClass errorClass;
   private String txLink;
   private String diagnostics;
@@ -27,6 +27,7 @@ public class ValidationResult {
   private String status;
   private String server;
   private boolean errorIsDisplayIssue;
+  private Parameters parameters;
   
   @Override
   public String toString() {
@@ -65,6 +66,28 @@ public class ValidationResult {
     }
     if (issues != null) {
       this.issues.addAll(issues);
+      for (OperationOutcomeIssueComponent issue : issues) {
+        if (issue.getSeverity() == OperationOutcome.IssueSeverity.ERROR || message == null) {
+          String msg = issue.getDetails().getText();
+          if (!this.messages.contains(msg)) {
+            this.messages.add(msg);
+          }
+        }
+      }
+    }
+  }
+
+  public ValidationResult(IssueSeverity severity, String message1, String message2, List<OperationOutcomeIssueComponent> issues) {
+    this.severity = severity;
+    if (message1 != null) {
+      this.messages.add(message1);
+    }
+    if (message2 != null) {
+      this.messages.add(message2);
+    }
+    if (issues != null) {
+      this.issues.addAll(issues);
+      mineIssues(issues);
     }
   }
 
@@ -86,6 +109,7 @@ public class ValidationResult {
     this.preferredDisplay = preferredDisplay;
     if (issues != null) {
       this.issues.addAll(issues);
+      mineIssues(issues);
     }
   }
   public ValidationResult(IssueSeverity severity, List<String> messages, String system, String version, ConceptDefinitionComponent definition, String preferredDisplay, List<OperationOutcomeIssueComponent>  issues) {
@@ -97,6 +121,7 @@ public class ValidationResult {
     this.preferredDisplay = preferredDisplay;
     if (issues != null) {
       this.issues.addAll(issues);
+      mineIssues(issues);
     }
   }
 
@@ -108,9 +133,19 @@ public class ValidationResult {
     this.errorClass = errorClass;
     if (issues != null) {
       this.issues.addAll(issues);
+      mineIssues(issues);
     }
   }
 
+  public void mineIssues(List<OperationOutcomeIssueComponent> issues) {
+    for (OperationOutcomeIssueComponent iss : issues) {
+      if (iss.getSeverity() == OperationOutcome.IssueSeverity.ERROR) {
+        if (!messages.contains(iss.getDetails().getText())) {
+          messages.add(iss.getDetails().getText());
+        }
+      }
+    }
+  }
   public boolean isOk() {
     return severity == null || severity == IssueSeverity.INFORMATION || severity == IssueSeverity.WARNING || errorIsDisplayIssue;
   }
@@ -167,8 +202,7 @@ public class ValidationResult {
     if (messages.size() == 0) {
       return null;
     }
-    Collections.sort(messages);
-    return CommaSeparatedStringBuilder.join("; ", messages);
+    return CommaSeparatedStringBuilder.join("; ", Utilities.sorted(messages));
   }
 
   public String getTrimmedMessage() {
@@ -208,7 +242,7 @@ public class ValidationResult {
   }
   
   public ValidationResult addMessage(String message) {
-    if (message != null) {
+    if (message != null && !this.messages.contains(message)) {
       this.messages.add(message);
     }
     return this;
@@ -419,6 +453,51 @@ public class ValidationResult {
     this.errorIsDisplayIssue = errorIsDisplayIssue;
     return this;
   }
-  
-  
+
+  public Parameters getParameters() {
+    return parameters;
+  }
+
+  public void setParameters(Parameters parameters) {
+    this.parameters = parameters;
+    
+  }
+
+
+  public Parameters getOrMakeParameters() {
+    if (parameters == null) {
+      Parameters p = new Parameters();
+      p.addParameter("result", isOk());
+      if (getMessage() != null) {
+        p.addParameter("message", getMessage());
+      }
+      if (getDisplay() != null) {
+        p.addParameter("display", getDisplay());
+      }
+      if (getSystem() != null) {
+        p.addParameter("system", new UriType(getSystem()));
+      }
+      if (getVersion() != null) {
+        p.addParameter("version", getVersion());
+      }
+      if (getCode() != null) {
+        p.addParameter("code", new CodeType(getCode()));
+      }
+      if (getCodeableConcept() != null) {
+        p.addParameter("codeableConcept", getCodeableConcept());
+      }
+      if (issues != null && !issues.isEmpty()) {
+        OperationOutcome oo = new OperationOutcome();
+        oo.getIssue().addAll(issues);
+        p.addParameter().setName("issues").setResource(oo);
+      }
+      return p;
+    } else {
+      return parameters;
+    }
+  }
+
+  public boolean hasIssues() {
+    return issues != null && !issues.isEmpty();
+  }
 }

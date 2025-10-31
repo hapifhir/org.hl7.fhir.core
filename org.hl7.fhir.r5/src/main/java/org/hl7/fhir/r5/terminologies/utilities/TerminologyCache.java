@@ -36,11 +36,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.ExpansionOptions;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.*;
@@ -72,8 +75,10 @@ import com.google.gson.JsonPrimitive;
  *
  */
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class TerminologyCache {
-  
+
+
   public static class SourcedCodeSystem {
     private String server;
     private CodeSystem cs;
@@ -282,21 +287,26 @@ public class TerminologyCache {
   @Getter private int requestCount;
   @Getter private int hitCount;
   @Getter private int networkCount;
-  private Map<String, CapabilityStatement> capabilityStatementCache = new HashMap<>();
-  private Map<String, TerminologyCapabilities> terminologyCapabilitiesCache = new HashMap<>();
+
+  private final static long CAPABILITY_CACHE_EXPIRATION_HOURS = 24;
+  private final static long CAPABILITY_CACHE_EXPIRATION_MILLISECONDS = CAPABILITY_CACHE_EXPIRATION_HOURS * 60 * 60 * 1000;
+  private final long capabilityCacheExpirationMilliseconds;
+  private final TerminologyCapabilitiesCache<CapabilityStatement> capabilityStatementCache;
+  private final TerminologyCapabilitiesCache<TerminologyCapabilities> terminologyCapabilitiesCache;
   private Map<String, NamedCache> caches = new HashMap<String, NamedCache>();
   private Map<String, SourcedValueSetEntry> vsCache = new HashMap<>();
   private Map<String, SourcedCodeSystemEntry> csCache = new HashMap<>();
   private Map<String, String> serverMap = new HashMap<>();
-  @Getter @Setter private static boolean noCaching;
 
+  @Getter @Setter private static boolean noCaching;
   @Getter @Setter private static boolean cacheErrors;
 
-
-  // use lock from the context
-  public TerminologyCache(Object lock, String folder) throws FileNotFoundException, IOException, FHIRException {
+  protected TerminologyCache(Object lock, String folder, Long capabilityCacheExpirationMilliseconds) throws FileNotFoundException, IOException, FHIRException {
     super();
-    this.lock = lock;
+   this.lock = lock;
+   this.capabilityCacheExpirationMilliseconds = capabilityCacheExpirationMilliseconds;
+   capabilityStatementCache = new CommonsTerminologyCapabilitiesCache<>(capabilityCacheExpirationMilliseconds, TimeUnit.MILLISECONDS);
+   terminologyCapabilitiesCache = new CommonsTerminologyCapabilitiesCache<>(capabilityCacheExpirationMilliseconds, TimeUnit.MILLISECONDS);
     if (folder == null) {
       folder = Utilities.path("[tmp]", "default-tx-cache");
     } else if ("n/a".equals(folder)) {
@@ -316,9 +326,14 @@ public class TerminologyCache {
       if (!f.exists()) {
         throw new IOException("Unable to create terminology cache at "+folder);
       }
-      checkVersion();      
+      checkVersion();
       load();
     }
+  }
+
+  // use lock from the context
+  public TerminologyCache(Object lock, String folder) throws IOException, FHIRException {
+    this(lock, folder, CAPABILITY_CACHE_EXPIRATION_MILLISECONDS);
   }
 
   private void checkVersion() throws IOException {
@@ -326,7 +341,7 @@ public class TerminologyCache {
     if (verFile.exists()) {
       String ver = FileUtilities.fileToString(verFile);
       if (!ver.equals(FIXED_CACHE_VERSION)) {
-        System.out.println("Terminology Cache Version has changed from 1 to "+FIXED_CACHE_VERSION+", so clearing txCache");
+        log.info("Terminology Cache Version has changed from 1 to "+FIXED_CACHE_VERSION+", so clearing txCache");
         clear();
       }
       FileUtilities.stringToFile(FIXED_CACHE_VERSION, verFile);
@@ -507,17 +522,17 @@ public class TerminologyCache {
     return vsc;
   }
 
-  public CacheToken generateExpandToken(ValueSet vs, boolean hierarchical) {
+  public CacheToken generateExpandToken(ValueSet vs, ExpansionOptions options) {
     CacheToken ct = new CacheToken();
     nameCacheToken(vs, ct);
     if (vs.hasUrl() && vs.hasVersion()) {
-      ct.request = "{\"hierarchical\" : "+(hierarchical ? "true" : "false")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\"}\r\n";      
+      ct.request = "{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\"}\r\n";
     } else {
       ValueSet vsc = getVSEssense(vs);
       JsonParser json = new JsonParser();
       json.setOutputStyle(OutputStyle.PRETTY);
       try {
-        ct.request = "{\"hierarchical\" : "+(hierarchical ? "true" : "false")+", \"valueSet\" :"+extracted(json, vsc)+"}\r\n";
+        ct.request = "{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"valueSet\" :"+extracted(json, vsc)+"}\r\n";
       } catch (IOException e) {
         throw new Error(e);
       }
@@ -526,9 +541,9 @@ public class TerminologyCache {
     return ct;
   }
   
-  public CacheToken generateExpandToken(String url, boolean hierarchical) {
+  public CacheToken generateExpandToken(String url, ExpansionOptions options) {
     CacheToken ct = new CacheToken();
-    ct.request = "{\"hierarchical\" : "+(hierarchical ? "true" : "false")+", \"url\": \""+Utilities.escapeJson(url)+"\"}\r\n";      
+    ct.request = "{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"url\": \""+Utilities.escapeJson(url)+"\"}\r\n";
     ct.key = String.valueOf(hashJson(ct.request));
     return ct;
   }
@@ -676,7 +691,7 @@ public class TerminologyCache {
       sw.write(json.composeString(resource).trim());
       sw.close();
     } catch (Exception e) {
-      System.out.println("error saving capability statement "+e.getMessage());
+      log.error("error saving capability statement "+e.getMessage(), e);
     }
   }
 
@@ -753,9 +768,17 @@ public class TerminologyCache {
             if (first) first = false; else sw.write(",\r\n");
             sw.write("  \"inactive\" : true");
           }
+          if (ce.v.getDiagnostics() != null) {
+            if (first) first = false; else sw.write(",\r\n");
+            sw.write("  \"diagnostics\" : \""+Utilities.escapeJson(ce.v.getDiagnostics()).trim()+"\"");
+          }
           if (ce.v.getUnknownSystems() != null) {
             if (first) first = false; else sw.write(",\r\n");
             sw.write("  \"unknown-systems\" : \""+Utilities.escapeJson(CommaSeparatedStringBuilder.join(",", ce.v.getUnknownSystems())).trim()+"\"");
+          }
+          if (ce.v.getParameters() != null) {
+            if (first) first = false; else sw.write(",\r\n");
+            sw.write("  \"parameters\" : "+json.composeString(ce.v.getParameters()).trim()+"\r\n");
           }
           if (ce.v.getIssues() != null) {
             if (first) first = false; else sw.write(",\r\n");
@@ -769,7 +792,7 @@ public class TerminologyCache {
       }      
       sw.close();
     } catch (Exception e) {
-      System.out.println("error saving "+nc.name+": "+e.getMessage());
+      log.error("error saving "+nc.name+": "+e.getMessage(), e);
     }
   }
 
@@ -780,7 +803,10 @@ public class TerminologyCache {
     return fn.startsWith(CAPABILITY_STATEMENT_TITLE) || fn.startsWith(TERMINOLOGY_CAPABILITIES_TITLE);
   }
 
-  private void loadCapabilityCache(String fn) {
+  private void loadCapabilityCache(String fn) throws IOException {
+    if (TerminologyCapabilitiesCache.cacheFileHasExpired(Utilities.path(folder, fn), capabilityCacheExpirationMilliseconds)) {
+      return;
+    }
     try {
       String src = FileUtilities.fileToString(Utilities.path(folder, fn));
       String serverId = Utilities.getFileNameForName(fn).replace(CACHE_FILE_EXTENSION, "");
@@ -844,20 +870,25 @@ public class TerminologyCache {
       boolean inactive = "true".equals(loadJS(o.get("inactive")));
       String unknownSystems = loadJS(o.get("unknown-systems"));
       OperationOutcome oo = o.has("issues") ? (OperationOutcome) new JsonParser().parse(o.getAsJsonObject("issues")) : null;
+      Parameters p = o.has("parameters") ? (Parameters) new JsonParser().parse(o.getAsJsonObject("parameters")) : null;
       t = loadJS(o.get("class")); 
       TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t) ;
       ce.v = new ValidationResult(severity, error, system, version, new ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code), display, null).setErrorClass(errorClass);
       ce.v.setUnknownSystems(CommaSeparatedStringBuilder.toSet(unknownSystems));
       ce.v.setServer(server);
       ce.v.setStatus(inactive, status);
+      ce.v.setDiagnostics(loadJS(o.get("diagnostics")));
       if (oo != null) {
         ce.v.setIssues(oo.getIssue());
+      }
+      if (p != null) {
+        ce.v.setParameters(p);
       }
     }
     return ce;
   }
 
-  private void loadNamedCache(String fn) {
+  private void loadNamedCache(String fn) throws IOException {
     int c = 0;
     try {
       String src = FileUtilities.fileToString(Utilities.path(folder, fn));
@@ -887,8 +918,7 @@ public class TerminologyCache {
         caches.put(nc.name, nc);
       }        
     } catch (Exception e) {
-      System.out.println("Error loading "+fn+": "+e.getMessage()+" entry "+c+" - ignoring it");
-      e.printStackTrace();
+      log.error("Error loading "+fn+": "+e.getMessage()+" entry "+c+" - ignoring it", e);
     }
   }
 
@@ -927,7 +957,7 @@ public class TerminologyCache {
         }
       }
     } catch (Exception e) {
-      System.out.println("Error loading vs external cache: "+e.getMessage());
+      log.error("Error loading vs external cache: "+e.getMessage(), e);
     }
     try {
       File f = ManagedFileAccess.file(Utilities.path(folder, "cs-externals.json"));
@@ -943,7 +973,7 @@ public class TerminologyCache {
         }
       }
     } catch (Exception e) {
-      System.out.println("Error loading vs external cache: "+e.getMessage());
+      log.error("Error loading vs external cache: "+e.getMessage(), e);
     }
   }
 
@@ -959,7 +989,10 @@ public class TerminologyCache {
   }
 
   public String hashJson(String s) {
-    return String.valueOf(s.trim().hashCode());
+    return String.valueOf(s
+      .trim()
+      .replaceAll("\\r\\n?", "\n")
+      .hashCode());
   }
 
   // management
@@ -1209,4 +1242,12 @@ public class TerminologyCache {
   }
 
 
+  public String getReport() {
+    int c = 0;
+    for (NamedCache nc : caches.values()) {
+      c += nc.list.size();
+    }
+    return "txCache report: "+
+      c+" entries in "+caches.size()+" buckets + "+vsCache.size()+" VS, "+csCache.size()+" CS & "+serverMap.size()+" SM. Hitcount = "+hitCount+"/"+requestCount+", "+networkCount;
+  }
 }

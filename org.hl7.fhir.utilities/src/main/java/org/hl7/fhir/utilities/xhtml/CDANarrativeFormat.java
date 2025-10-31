@@ -86,50 +86,51 @@ public class CDANarrativeFormat {
       return;
     case Node.ELEMENT_NODE:
       Element e = (Element) n;
-      if (n.getNodeName().equals("br"))
+      if (n.getNodeName().equals("br")) {
         processBreak(e, xn);
-      else if (n.getNodeName().equals("caption"))
+      } else if (n.getNodeName().equals("caption")) {
         processCaption(e, xn);
-      else if (n.getNodeName().equals("col"))
+      } else if (n.getNodeName().equals("col")) {
         processCol(e, xn);
-      else if (n.getNodeName().equals("colgroup"))
+      } else if (n.getNodeName().equals("colgroup")) {
         processColGroup(e, xn);
-      else if (n.getNodeName().equals("content"))
+      } else if (n.getNodeName().equals("content")) {
         processContent(e, xn);
-      else if (n.getNodeName().equals("footnote"))
+      } else if (n.getNodeName().equals("footnote")) {
         processFootNote(e, xn);
-      else if (n.getNodeName().equals("footnoteRef"))
+      } else if (n.getNodeName().equals("footnoteRef")) {
         processFootNodeRef(e, xn);
-      else if (n.getNodeName().equals("item"))
+      } else if (n.getNodeName().equals("item")) {
         processItem(e, xn);
-      else if (n.getNodeName().equals("linkHtml"))
+      } else if (n.getNodeName().equals("linkHtml") || n.getNodeName().equals("a")) {
         processlinkHtml(e, xn);
-      else if (n.getNodeName().equals("list"))
+      } else if (n.getNodeName().equals("list")) {
         processList(e, xn);
-      else if (n.getNodeName().equals("paragraph"))
+      } else if (n.getNodeName().equals("paragraph")) {
         processParagraph(e, xn);
-      else if (n.getNodeName().equals("renderMultiMedia"))
+      } else if (n.getNodeName().equals("renderMultiMedia")) {
         processRenderMultiMedia(e, xn);
-      else if (n.getNodeName().equals("sub"))
+      } else if (n.getNodeName().equals("sub")) {
         processSub(e, xn);
-      else if (n.getNodeName().equals("sup"))
+      } else if (n.getNodeName().equals("sup")) {
         processSup(e, xn);
-      else if (n.getNodeName().equals("table"))
+      } else if (n.getNodeName().equals("table")) {
         processTable(e, xn);
-      else if (n.getNodeName().equals("tbody"))
+      } else if (n.getNodeName().equals("tbody")) {
         processTBody(e, xn);
-      else if (n.getNodeName().equals("td"))
+      } else if (n.getNodeName().equals("td")) {
         processTd(e, xn);
-      else if (n.getNodeName().equals("tfoot"))
+      } else if (n.getNodeName().equals("tfoot")) {
         processTFoot(e, xn);
-      else if (n.getNodeName().equals("th"))
+      } else if (n.getNodeName().equals("th")) {
         processTh(e, xn);
-      else if (n.getNodeName().equals("thead"))
+      } else if (n.getNodeName().equals("thead")) {
         processTHead(e, xn);
-      else if (n.getNodeName().equals("tr"))
+      } else if (n.getNodeName().equals("tr")) {
         processTr(e, xn);
-      else
-        throw new FHIRException("Unknown element "+n.getNodeName());
+      } else {
+        throw new FHIRException("Unknown element " + n.getNodeName());
+      }
     }
   }
 
@@ -138,7 +139,7 @@ public class CDANarrativeFormat {
   }
 
   private void processCaption(Element e, XhtmlNode xn) throws FHIRException {
-    XhtmlNode xc = xn.addTag("h2");
+    XhtmlNode xc = xn.addTag("caption");
     processAttributes(e, xc, "ID", "language", "styleCode");
     processChildren(e, xc);
   }
@@ -257,6 +258,12 @@ public class CDANarrativeFormat {
     processChildren(e, xc);
   }
 
+  private void processLinkHtml(Element e, XhtmlNode xn) throws FHIRException {
+    XhtmlNode xc = xn.addTag("linkHtml");
+    processAttributes(e, xc, "ID", "language", "styleCode", "align", "char", "charoff", "valign");
+    processChildren(e, xc);
+  }
+
   private void processAttributes(Element element, XhtmlNode xn, String... names) {
     for (String n : names) {
       if (element.hasAttribute(n)) {
@@ -361,7 +368,7 @@ public class CDANarrativeFormat {
     case Element:
       if (n.getName().equals("br"))
         processBreak(xml, n);
-      else if (n.getName().equals("h2"))
+      else if (n.getName().equals("h2") || n.getName().equals("caption"))
         processCaption(xml, n);
       else if (n.getName().equals("col"))
         processCol(xml, n);
@@ -399,6 +406,8 @@ public class CDANarrativeFormat {
         processTh(xml, n);
       else if (n.getName().equals("thead"))
         processTHead(xml, n);
+      else if (n.getName().equals("a"))
+        processA(xml, n);
       else if (n.getName().equals("tr"))
         processTr(xml, n);
       else
@@ -549,6 +558,13 @@ public class CDANarrativeFormat {
     xml.enter("tr");
     processChildren(xml, n);
     xml.exit("tr");
+  }
+
+  private void processA(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+    processAttributes(n, xml, "id", "language", "styleCode", "align", "char", "charoff", "valign");
+    xml.enter("linkHtml");
+    processChildren(xml, n);
+    xml.exit("linkHtml");
   }
 
   private void processAttributes(XhtmlNode xn, IXMLWriter xml, String... names) throws IOException {

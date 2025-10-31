@@ -29,7 +29,8 @@ public class I18nCoverageTest {
     Locale.GERMAN,
     Locale.forLanguageTag("es"),
     Locale.forLanguageTag("nl"),
-    Locale.forLanguageTag("ja")
+    Locale.forLanguageTag("ja"),
+    Locale.forLanguageTag("pt")
   );
 
   final Locale sourceLocale = Locale.ENGLISH;
@@ -272,7 +273,6 @@ public class I18nCoverageTest {
   private static I18nTestClass getI18nTestClass(Locale locale) {
     I18nTestClass testClass = new I18nTestClass();
     testClass.setLocale(locale);
-    testClass.setPluralRules(locale);
     return testClass;
   }
 

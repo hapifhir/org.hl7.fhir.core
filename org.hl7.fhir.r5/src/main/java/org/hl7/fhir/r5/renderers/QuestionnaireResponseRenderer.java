@@ -73,9 +73,9 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     if (context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics()) {
       model.setDocoImg(HierarchicalTableGenerator.help16AsData());   
     } else {
-      model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "help16.png"));
+      model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), "help16.png"));
     }
-    model.setDocoRef(context.getLink(KnownLinkType.SPEC)+"formats.html#table");
+    model.setDocoRef(context.getLink(KnownLinkType.SPEC, true)+"formats.html#table");
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_LINKID), context.formatPhrase(RenderingContext.QUEST_LINK), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_TEXT), context.formatPhrase(RenderingContext.QUEST_TEXTFOR), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.GENERAL_DEFINITION), context.formatPhrase(RenderingContext.QUEST_TIMES), null, 0));
@@ -214,7 +214,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
       path = d.substring(d.indexOf("#")+1);
       d = d.substring(0, d.indexOf("#"));
     }
-    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, src);
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, null, src);
     if (sd != null) {
       String url = sd.getWebPath();
       if (url != null) {
@@ -235,7 +235,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
       path = d.substring(d.indexOf("#")+1);
       d = d.substring(0, d.indexOf("#"));
     }
-    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, src);
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, null, src);
     if (sd != null) {
       String url = sd.getWebPath();
       if (url != null) {
@@ -398,7 +398,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //    }
 //    
 ////  if (i.hasExtension(" http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-choiceOrientation")) {
-////  String code = ToolingExtensions.readStringExtension(i,  "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-choiceOrientation");
+////  String code = ExtensionUtilities.readStringExtension(i,  "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-choiceOrientation");
 ////  flags.addPiece(gen.new Piece("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-observationLinkPeriod", null, "Orientation: "+code).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("alt", "icon").attribute("src", Utilities.path(context.getLocalPrefix(), "icon-qi-"+code+".png"))));
 ////}
 //
@@ -408,16 +408,16 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //    XhtmlNode flags = item(ul, "Flags");
 //    item(ul, "linkId", i.getLinkId());
 //    
-//    if (ToolingExtensions.readBoolExtension(i, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-isSubject")) {
+//    if (ExtensionUtilities.readBoolExtension(i, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-isSubject")) {
 //      hasFlag = true;
 //      flags.ah(getSDCLink("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-isSubject", "Can change the subject of the QuestionnaireResponse").img(Utilities.path(context.getLocalPrefix(), "icon-qi-subject.png"));
 //    }
-//    if (ToolingExtensions.readBoolExtension(i, "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-hidden")) {
+//    if (ExtensionUtilities.readBoolExtension(i, "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-hidden")) {
 //      hasFlag = true;
 //      flags.ah(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "extension-QuestionnaireResponse-hidden.html"), "Is a hidden item").img(Utilities.path(context.getLocalPrefix(), "icon-qi-hidden.png"));
 //      d.style("background-color: #eeeeee");
 //    }
-//    if (ToolingExtensions.readBoolExtension(i, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-optionalDisplay")) {
+//    if (ExtensionUtilities.readBoolExtension(i, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-optionalDisplay")) {
 //      hasFlag = true;
 //      flags.ah(getSDCLink("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-optionalDisplay", "Is optional to display").img(Utilities.path(context.getLocalPrefix(), "icon-qi-optional.png"));
 //    }
@@ -566,12 +566,12 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
   private boolean renderLinks(RenderingStatus status, XhtmlNode x, ResourceWrapper q) {
     x.para().tx(context.formatPhrase(RenderingContext.QUEST_TRY_QUEST));
     XhtmlNode ul = x.ul();
-    ul.li().ah("http://todo.nlm.gov/path?mode=ig&src="+Utilities.pathURL(context.getLink(KnownLinkType.SELF), "package.tgz")+"&q="+q.getId()+".json").tx(context.formatPhrase(RenderingContext.QUEST_NLM));
+    ul.li().ah("http://todo.nlm.gov/path?mode=ig&src="+Utilities.pathURL(context.getLink(KnownLinkType.SELF, false), "package.tgz")+"&q="+q.getId()+".json").tx(context.formatPhrase(RenderingContext.QUEST_NLM));
     return false;
   }
 
 //  private boolean renderDefns(XhtmlNode x, QuestionnaireResponse q) throws IOException {
-//    XhtmlNode tbl = x.table("dict");
+//    XhtmlNode tbl = x.table("dict").markGenerated();
 //    boolean ext = false;
 //    ext = renderRootDefinition(tbl, q, new ArrayList<>()) || ext;
 //    for (QuestionnaireItemComponent qi : q.getItem()) {
@@ -652,7 +652,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //    defn(tbl, "Required", qi.getRequired(), true);
 //    defn(tbl, "Repeats", qi.getRepeats(), true);
 //    defn(tbl, "Read Only", qi.getReadOnly(), false);
-//    if (ToolingExtensions.readBoolExtension(qi, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-isSubject")) {
+//    if (ExtensionUtilities.readBoolExtension(qi, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-isSubject")) {
 //      defn(tbl, "Subject", "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-isSubject", "This element changes who the subject of the question is", null);
 //    }
 //    
@@ -693,10 +693,10 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //      tr.td().ah("http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-displayCategory").tx(context.formatPhrase(RenderingContext.QUEST_DISPLAY_CAT));
 //      render(tr.td(), qi.getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-displayCategory").getValue());
 //    }
-//    if (ToolingExtensions.readBoolExtension(qi, "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-hidden")) {
+//    if (ExtensionUtilities.readBoolExtension(qi, "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-hidden")) {
 //      defn(tbl, "Hidden Item", "https://hl7.org/fhir/R4/extension-questionnaire-displayCategory.html", "This item is a hidden question", null);
 //    }
-//    if (ToolingExtensions.readBoolExtension(qi, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-optionalDisplay")) {
+//    if (ExtensionUtilities.readBoolExtension(qi, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-optionalDisplay")) {
 //      defn(tbl, "Hidden Item", "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-optionalDisplay", "This item is optional to display", null);
 //    }
 //    

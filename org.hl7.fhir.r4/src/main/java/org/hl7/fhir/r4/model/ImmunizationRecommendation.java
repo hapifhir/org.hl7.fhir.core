@@ -601,7 +601,7 @@ public class ImmunizationRecommendation extends DomainResource {
     }
 
     public boolean hasDoseNumberPositiveIntType() {
-      return this != null && this.doseNumber instanceof PositiveIntType;
+        return this.doseNumber instanceof PositiveIntType;
     }
 
     /**
@@ -618,7 +618,7 @@ public class ImmunizationRecommendation extends DomainResource {
     }
 
     public boolean hasDoseNumberStringType() {
-      return this != null && this.doseNumber instanceof StringType;
+        return this.doseNumber instanceof StringType;
     }
 
     public boolean hasDoseNumber() {
@@ -659,7 +659,7 @@ public class ImmunizationRecommendation extends DomainResource {
     }
 
     public boolean hasSeriesDosesPositiveIntType() {
-      return this != null && this.seriesDoses instanceof PositiveIntType;
+        return this.seriesDoses instanceof PositiveIntType;
     }
 
     /**
@@ -676,7 +676,7 @@ public class ImmunizationRecommendation extends DomainResource {
     }
 
     public boolean hasSeriesDosesStringType() {
-      return this != null && this.seriesDoses instanceof StringType;
+        return this.seriesDoses instanceof StringType;
     }
 
     public boolean hasSeriesDoses() {
@@ -753,16 +753,6 @@ public class ImmunizationRecommendation extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getSupportingImmunizationTarget() {
-      if (this.supportingImmunizationTarget == null)
-        this.supportingImmunizationTarget = new ArrayList<Resource>();
-      return this.supportingImmunizationTarget;
-    }
-
-    /**
      * @return {@link #supportingPatientInformation} (Patient Information that
      *         supports the status and recommendation. This includes patient
      *         observations, adverse reactions and allergy/intolerance information.)
@@ -818,16 +808,6 @@ public class ImmunizationRecommendation extends DomainResource {
         addSupportingPatientInformation();
       }
       return getSupportingPatientInformation().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getSupportingPatientInformationTarget() {
-      if (this.supportingPatientInformationTarget == null)
-        this.supportingPatientInformationTarget = new ArrayList<Resource>();
-      return this.supportingPatientInformationTarget;
     }
 
     protected void listChildren(List<Property> children) {

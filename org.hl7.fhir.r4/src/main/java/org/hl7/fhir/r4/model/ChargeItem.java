@@ -1149,28 +1149,6 @@ public class ChargeItem extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<ChargeItem> getPartOfTarget() {
-    if (this.partOfTarget == null)
-      this.partOfTarget = new ArrayList<ChargeItem>();
-    return this.partOfTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public ChargeItem addPartOfTarget() {
-    ChargeItem r = new ChargeItem();
-    if (this.partOfTarget == null)
-      this.partOfTarget = new ArrayList<ChargeItem>();
-    this.partOfTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #code} (A code that identifies the charge, like a billing
    *         code.)
    */
@@ -1312,7 +1290,7 @@ public class ChargeItem extends DomainResource {
   }
 
   public boolean hasOccurrenceDateTimeType() {
-    return this != null && this.occurrence instanceof DateTimeType;
+      return this.occurrence instanceof DateTimeType;
   }
 
   /**
@@ -1329,7 +1307,7 @@ public class ChargeItem extends DomainResource {
   }
 
   public boolean hasOccurrencePeriod() {
-    return this != null && this.occurrence instanceof Period;
+      return this.occurrence instanceof Period;
   }
 
   /**
@@ -1346,7 +1324,7 @@ public class ChargeItem extends DomainResource {
   }
 
   public boolean hasOccurrenceTiming() {
-    return this != null && this.occurrence instanceof Timing;
+      return this.occurrence instanceof Timing;
   }
 
   public boolean hasOccurrence() {
@@ -2031,16 +2009,6 @@ public class ChargeItem extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getServiceTarget() {
-    if (this.serviceTarget == null)
-      this.serviceTarget = new ArrayList<Resource>();
-    return this.serviceTarget;
-  }
-
-  /**
    * @return {@link #product} (Identifies the device, food, drug or other product
    *         being charged either by type code or reference to an instance.)
    */
@@ -2062,7 +2030,7 @@ public class ChargeItem extends DomainResource {
   }
 
   public boolean hasProductReference() {
-    return this != null && this.product instanceof Reference;
+      return this.product instanceof Reference;
   }
 
   /**
@@ -2079,7 +2047,7 @@ public class ChargeItem extends DomainResource {
   }
 
   public boolean hasProductCodeableConcept() {
-    return this != null && this.product instanceof CodeableConcept;
+      return this.product instanceof CodeableConcept;
   }
 
   public boolean hasProduct() {
@@ -2150,28 +2118,6 @@ public class ChargeItem extends DomainResource {
       addAccount();
     }
     return getAccount().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Account> getAccountTarget() {
-    if (this.accountTarget == null)
-      this.accountTarget = new ArrayList<Account>();
-    return this.accountTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Account addAccountTarget() {
-    Account r = new Account();
-    if (this.accountTarget == null)
-      this.accountTarget = new ArrayList<Account>();
-    this.accountTarget.add(r);
-    return r;
   }
 
   /**
@@ -2283,16 +2229,6 @@ public class ChargeItem extends DomainResource {
       addSupportingInformation();
     }
     return getSupportingInformation().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getSupportingInformationTarget() {
-    if (this.supportingInformationTarget == null)
-      this.supportingInformationTarget = new ArrayList<Resource>();
-    return this.supportingInformationTarget;
   }
 
   protected void listChildren(List<Property> children) {

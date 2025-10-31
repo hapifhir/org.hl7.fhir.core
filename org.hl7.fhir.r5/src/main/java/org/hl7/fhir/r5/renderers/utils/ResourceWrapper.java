@@ -415,6 +415,8 @@ public abstract class ResourceWrapper {
   public abstract boolean hasNarrative();
   public abstract void setNarrative(XhtmlNode x, String status, boolean multiLangMode, Locale locale, boolean isPretty) throws IOException;
   public abstract String getId();
+  public abstract boolean hasId();
+  public abstract ResourceWrapper setId(String id);
 
   public void markLanguage(XhtmlNode x, Locale locale) {
     x.setAttribute("lang", locale.toLanguageTag());

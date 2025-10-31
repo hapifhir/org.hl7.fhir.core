@@ -1,0 +1,11 @@
+Editors for the various languages (git tags):
+
+* EN: Java Core Developers
+* DE: ? Patrick Warner?
+* ES: Diego Kaminker ()
+* FR: Nicolas Riss (nriss)
+* JA: Hisashi Osanai (hosanai)
+* NL: Alexander Henket (ahenket)
+* PT:  Jose Costa Teixeira (costateixeira)
+* PT_BR: Italo ()
+* RU: Vadim Peretokin (vadi2)

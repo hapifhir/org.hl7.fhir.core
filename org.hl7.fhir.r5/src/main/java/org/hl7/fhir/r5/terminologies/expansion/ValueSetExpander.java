@@ -66,22 +66,19 @@ import java.text.MessageFormat;
  * 
  */
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.r5.context.BaseWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.LanguageUtils;
-import org.hl7.fhir.r5.extensions.ExtensionConstants;
-import org.hl7.fhir.r5.extensions.ExtensionsUtils;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -120,50 +117,26 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
-import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander.UnknownValueSetException;
 import org.hl7.fhir.r5.terminologies.providers.CodeSystemProvider;
 import org.hl7.fhir.r5.terminologies.providers.CodeSystemProviderExtension;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
-import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase.OpIssueCode;
-import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase.TerminologyOperationDetails;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 
+import javax.annotation.Nonnull;
+
 @MarkedToMoveToAdjunctPackage
 public class ValueSetExpander extends ValueSetProcessBase {
-
-
-  public class UnknownValueSetException extends FHIRException {
-
-    protected UnknownValueSetException() {
-      super();
-    }
-
-    protected UnknownValueSetException(String message, Throwable cause) {
-      super(message, cause);
-    }
-    
-    protected UnknownValueSetException(String message) {
-      super(message);
-    }
-
-    protected UnknownValueSetException(Throwable cause) {
-      super(cause);
-    }
-
-  }
 
   public class Token {
     private String system;
@@ -192,23 +165,25 @@ public class ValueSetExpander extends ValueSetProcessBase {
   private static final String VS_EXP_IMPORT_ERROR_TOO_COSTLY = null;
   
   private ValueSet focus;
-  private List<String> allErrors = new ArrayList<>();
   private int maxExpansionSize = 1000;
   private WorkingContext dwc = new WorkingContext();
-  
+
+  @Getter @Setter
+  private boolean noTerminologyServer;
   private boolean checkCodesWhenExpanding;
   private boolean includeAbstract = true;
   private boolean debug;
+  private boolean reportingOnVersionsInContains;
   private Set<String> sources = new HashSet<>();
 
   private AcceptLanguageHeader langs;
   private List<Token> designations = new ArrayList<>();
 
-  public ValueSetExpander(IWorkerContext context, TerminologyOperationContext opContext) {
+  public ValueSetExpander(BaseWorkerContext context, TerminologyOperationContext opContext) {
     super(context, opContext);
   }
 
-  public ValueSetExpander(IWorkerContext context, TerminologyOperationContext opContext, List<String> allErrors) {
+  public ValueSetExpander(BaseWorkerContext context, TerminologyOperationContext opContext, List<String> allErrors) {
     super(context, opContext);
     this.allErrors = allErrors;
   }
@@ -217,9 +192,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
     maxExpansionSize = theMaxExpansionSize;
   }
   
-  private ValueSetExpansionContainsComponent addCode(WorkingContext wc, String system, String code, String display, String dispLang, ValueSetExpansionContainsComponent parent, List<ConceptDefinitionDesignationComponent> designations, Parameters expParams, 
-      boolean isAbstract, boolean inactive, List<ValueSet> filters, boolean noInactive, boolean deprecated, List<ValueSetExpansionPropertyComponent> vsProp, 
-      List<ConceptPropertyComponent> csProps, CodeSystem cs, List<org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent> expProps, List<Extension> csExtList, List<Extension> vsExtList, ValueSetExpansionComponent exp) throws ETooCostly {
+  private ValueSetExpansionContainsComponent addCode(WorkingContext wc, String system, String version, String code, String display, String dispLang, ValueSetExpansionContainsComponent parent, List<ConceptDefinitionDesignationComponent> designations, Parameters expParams,
+      boolean isAbstract, boolean inactive, List<ValueSet> filters, boolean noInactive, boolean deprecated, List<ValueSetExpansionPropertyComponent> vsProp,
+      List<ConceptPropertyComponent> csProps, CodeSystem cs, List<org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent> expProps,
+      List<Extension> csExtList, List<Extension> vsExtList, ValueSetExpansionComponent exp, String vstatus) throws OperationIsTooCostly {
     opContext.deadCheck("addCode"+code);
     
     if (filters != null && !filters.isEmpty() && !filterContainsCode(filters, system, code, exp))
@@ -231,43 +207,47 @@ public class ValueSetExpander extends ValueSetProcessBase {
     ValueSetExpansionContainsComponent n = new ValueSet.ValueSetExpansionContainsComponent();
     n.setSystem(system);
     n.setCode(code);
+    n.setVersion(version);
     if (isAbstract) {
       n.setAbstract(true);
     }
     if (inactive) {
       n.setInactive(true);
-    }
-    if (deprecated) {
+      ValueSetUtilities.addCodeProperty(focus, n, "http://hl7.org/fhir/concept-properties#status", "status", vstatus);
+    } else if (!Utilities.noString(vstatus) && !Utilities.existsInList(vstatus.toLowerCase(), "active")) {
+      ValueSetUtilities.addCodeProperty(focus, n, "http://hl7.org/fhir/concept-properties#status", "status", vstatus);
+    } else if (deprecated) {
       ValueSetUtilities.setDeprecated(vsProp, n);
     }
-    if (ExtensionsUtils.hasExtension(csExtList, "http://hl7.org/fhir/StructureDefinition/codesystem-label")) {
-      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#label", "label", ExtensionsUtils.getExtensionValue(csExtList, "http://hl7.org/fhir/StructureDefinition/codesystem-label"));
+    if (ExtensionUtilities.hasExtension(csExtList, "http://hl7.org/fhir/StructureDefinition/codesystem-label")) {
+      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#label", "label", ExtensionUtilities.getExtensionValue(csExtList, "http://hl7.org/fhir/StructureDefinition/codesystem-label"));
     }
-    if (ExtensionsUtils.hasExtension(vsExtList, "http://hl7.org/fhir/StructureDefinition/valueset-label")) {
-      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#label", "label", ExtensionsUtils.getExtensionValue(vsExtList, "http://hl7.org/fhir/StructureDefinition/valueset-label"));
+    if (ExtensionUtilities.hasExtension(vsExtList, "http://hl7.org/fhir/StructureDefinition/valueset-label")) {
+      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#label", "label", ExtensionUtilities.getExtensionValue(vsExtList, "http://hl7.org/fhir/StructureDefinition/valueset-label"));
     }
-    if (ExtensionsUtils.hasExtension(csExtList, "http://hl7.org/fhir/StructureDefinition/codesystem-conceptOrder")) {
-      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#order", "order", convertToDecimal(ExtensionsUtils.getExtensionValue(csExtList, "http://hl7.org/fhir/StructureDefinition/codesystem-conceptOrder")));
+    if (ExtensionUtilities.hasExtension(csExtList, "http://hl7.org/fhir/StructureDefinition/codesystem-conceptOrder")) {
+      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#order", "order", convertToDecimal(ExtensionUtilities.getExtensionValue(csExtList, "http://hl7.org/fhir/StructureDefinition/codesystem-conceptOrder")));
     }
-    if (ExtensionsUtils.hasExtension(vsExtList, "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder")) {
-      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#order", "order", convertToDecimal(ExtensionsUtils.getExtensionValue(vsExtList, "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder")));
+    if (ExtensionUtilities.hasExtension(vsExtList, "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder")) {
+      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#order", "order", convertToDecimal(ExtensionUtilities.getExtensionValue(vsExtList, "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder")));
     }
-    if (ExtensionsUtils.hasExtension(csExtList, "http://hl7.org/fhir/StructureDefinition/itemWeight")) {
-      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#itemWeight", "weight", ExtensionsUtils.getExtensionValue(csExtList, "http://hl7.org/fhir/StructureDefinition/itemWeight"));
+    if (ExtensionUtilities.hasExtension(csExtList, "http://hl7.org/fhir/StructureDefinition/itemWeight")) {
+      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#itemWeight", "weight", ExtensionUtilities.getExtensionValue(csExtList, "http://hl7.org/fhir/StructureDefinition/itemWeight"));
     }
-    if (ExtensionsUtils.hasExtension(vsExtList, "http://hl7.org/fhir/StructureDefinition/itemWeight")) {
-      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#itemWeight", "weight", ExtensionsUtils.getExtensionValue(vsExtList, "http://hl7.org/fhir/StructureDefinition/itemWeight"));
+    if (ExtensionUtilities.hasExtension(vsExtList, "http://hl7.org/fhir/StructureDefinition/itemWeight")) {
+      ValueSetUtilities.addProperty(focus, n, "http://hl7.org/fhir/concept-properties#itemWeight", "weight", ExtensionUtilities.getExtensionValue(vsExtList, "http://hl7.org/fhir/StructureDefinition/itemWeight"));
     }
-    ExtensionsUtils.copyExtensions(csExtList, n.getExtension(), 
+    ExtensionUtilities.copyExtensions(csExtList, n.getExtension(),
         "http://hl7.org/fhir/StructureDefinition/coding-sctdescid", 
         "http://hl7.org/fhir/StructureDefinition/rendering-style", 
         "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
         "http://hl7.org/fhir/StructureDefinition/codesystem-alternate");
-    
-    ExtensionsUtils.copyExtensions(vsExtList, n.getExtension(), 
+
+    ExtensionUtilities.copyExtensions(vsExtList, n.getExtension(),
         "http://hl7.org/fhir/StructureDefinition/valueset-supplement", 
         "http://hl7.org/fhir/StructureDefinition/valueset-deprecated",
         "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
+        "http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status",
         "http://hl7.org/fhir/StructureDefinition/coding-sctdescid", 
         "http://hl7.org/fhir/StructureDefinition/rendering-style", 
         "http://hl7.org/fhir/StructureDefinition/rendering-xhtml");
@@ -280,7 +260,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (designations == null) {
         designations = new ArrayList<>();
       }
-      designations.add(new ConceptDefinitionDesignationComponent().setLanguage(dispLang).setValue(display).setUse(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/designation-usage").setCode("display")));
+      designations.add(new ConceptDefinitionDesignationComponent().setLanguage(dispLang).setValue(display).setUse(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra").setCode("preferredForLanguage")));
       pref = findMatchingDesignation(designations);
       if (pref != null) {
         n.setDisplay(pref.getValue());
@@ -305,7 +285,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
             d.setUse(t.getUse());
           }
           for (Extension ext : t.getExtension()) {
-            if (Utilities.existsInList(ext.getUrl(), "http://hl7.org/fhir/StructureDefinition/coding-sctdescid")) {
+            if (Utilities.existsInList(ext.getUrl(), "http://hl7.org/fhir/StructureDefinition/coding-sctdescid", "http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status")) {
               d.addExtension(ext);
             }
           }
@@ -479,7 +459,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
   private boolean isDisplay(ConceptDefinitionDesignationComponent cd, boolean def) {
-    return (def && !cd.hasUse()) || (cd.hasUse() && cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display"));
+    return (def && !cd.hasUse())
+      || (cd.hasUse() && cd.getUse().is("http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra", "preferredForLanguage"))
+      || (cd.hasUse() && cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display"));
   }
 
   private boolean filterContainsCode(List<ValueSet> filters, String system, String code, ValueSetExpansionComponent exp) {
@@ -515,13 +497,15 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return null;
   }
 
-  private void addCodeAndDescendents(WorkingContext wc, ValueSetExpansionContainsComponent focus, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filters, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc, ValueSetExpansionComponent exp, String langDisplay)  throws FHIRException, ETooCostly {
+  private void addCodeAndDescendents(WorkingContext wc, ValueSetExpansionContainsComponent focus, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filters, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc, ValueSetExpansionComponent exp, String langDisplay)  throws FHIRException, OperationIsTooCostly {
     opContext.deadCheck("addCodeAndDescendents");
     focus.checkNoModifiers("Expansion.contains", "expanding");
     ValueSetExpansionContainsComponent np = null;
     for (String code : getCodesForConcept(focus, expParams)) {
-      ValueSetExpansionContainsComponent t = addCode(wc, focus.getSystem(), code, focus.getDisplay(), langDisplay, parent, 
-           convert(focus.getDesignation()), expParams, focus.getAbstract(), focus.getInactive(), filters, noInactive, false, vsProps, makeCSProps(focus.getExtensionString(ToolingExtensions.EXT_DEFINITION), null), null, focus.getProperty(), null, focus.getExtension(), exp);
+      String vstatus = determineStatus(vsSrc, focus);
+      ValueSetExpansionContainsComponent t = addCode(wc, focus.getSystem(), focus.getVersion(), code, focus.getDisplay(), langDisplay, parent,
+           convert(focus.getDesignation()), expParams, focus.getAbstract(), focus.getInactive(), filters, noInactive, false,
+        vsProps, makeCSProps(focus.getExtensionString(ExtensionDefinitions.EXT_DEFINITION), null), null, focus.getProperty(), null, focus.getExtension(), exp, vstatus);
       if (np == null) {
         np = t;
       }
@@ -529,7 +513,18 @@ public class ValueSetExpander extends ValueSetProcessBase {
     for (ValueSetExpansionContainsComponent c : focus.getContains())
       addCodeAndDescendents(wc, c, np, expParams, filters, noInactive, vsProps, vsSrc, exp, langDisplay);
   }
-  
+
+  private String determineStatus(ValueSet vs, ValueSetExpansionContainsComponent focus) {
+    String vstatus = ValueSetUtilities.getProperty(vs.getExpansion().getProperty(), focus, "status", "http://hl7.org/fhir/concept-properties#status");
+    if (vstatus == null) {
+      vstatus = focus.getExtensionString(ExtensionDefinitions.EXT_STANDARDS_STATUS);
+    }
+    if (Utilities.existsInList(vstatus, "retired")) {
+      return null;
+    }
+    return vstatus;
+  }
+
   private String getLang(ValueSet vsSrc) {
     if (vsSrc.hasLanguage()) {
       return vsSrc.getLanguage();
@@ -578,8 +573,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return list;
   }
 
-  private void addCodeAndDescendents(WorkingContext wc, CodeSystem cs, String system, ConceptDefinitionComponent def, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filters, 
-        ConceptDefinitionComponent exclusion, ConceptFilter filterFunc, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, List<WorkingContext> otherFilters, ValueSetExpansionComponent exp)  throws FHIRException, ETooCostly {
+  private void addCodeAndDescendents(WorkingContext wc, CodeSystem cs, String system, String version, ConceptDefinitionComponent def, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filters,
+        ConceptDefinitionComponent exclusion, ConceptFilter filterFunc, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, List<WorkingContext> otherFilters, ValueSetExpansionComponent exp)  throws FHIRException, OperationIsTooCostly {
     opContext.deadCheck("addCodeAndDescendents");
     def.checkNoModifiers("Code in Code System", "expanding");
     if (exclusion != null) {
@@ -590,27 +585,40 @@ public class ValueSetExpander extends ValueSetProcessBase {
     boolean abs = CodeSystemUtilities.isNotSelectable(cs, def);
     boolean inc = CodeSystemUtilities.isInactive(cs, def);
     boolean dep = CodeSystemUtilities.isDeprecated(cs, def, false);
+    String vstatus = determineStatus(cs, def);
     if ((includeAbstract || !abs)  && filterFunc.includeConcept(cs, def) && passesOtherFilters(otherFilters, cs, def.getCode())) {
       for (String code : getCodesForConcept(def, expParams)) {
-        ValueSetExpansionContainsComponent t = addCode(wc, system, code, def.getDisplay(), cs.getLanguage(), parent, def.getDesignation(), expParams, abs, inc, filters, noInactive, dep, vsProps, makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), null, exp);
+        ValueSetExpansionContainsComponent t = addCode(wc, system, version, code, def.getDisplay(), cs.getLanguage(), parent, def.getDesignation(), expParams,
+          abs, inc, filters, noInactive, dep, vsProps, makeCSProps(def.getDefinition(), def.getProperty()), cs,
+          null, def.getExtension(), null, exp, vstatus) ;
         if (np == null) {
           np = t;
         }
       }
     }
     for (ConceptDefinitionComponent c : def.getConcept()) {
-      addCodeAndDescendents(wc, cs, system, c, np, expParams, filters, exclusion, filterFunc, noInactive, vsProps, otherFilters, exp);
+      addCodeAndDescendents(wc, cs, system, version, c, np, expParams, filters, exclusion, filterFunc, noInactive, vsProps, otherFilters, exp);
     }
     if (def.hasUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK)) {
       List<ConceptDefinitionComponent> children = (List<ConceptDefinitionComponent>) def.getUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK);
       for (ConceptDefinitionComponent c : children)
-        addCodeAndDescendents(wc, cs, system, c, np, expParams, filters, exclusion, filterFunc, noInactive, vsProps, otherFilters, exp);
+        addCodeAndDescendents(wc, cs, system, version, c, np, expParams, filters, exclusion, filterFunc, noInactive, vsProps, otherFilters, exp);
     }
   }
 
+  private String determineStatus(CodeSystem cs, ConceptDefinitionComponent def) {
+    String vstatus = CodeSystemUtilities.getStatus(cs, def);
+    if (vstatus == null) {
+      vstatus = def.getExtensionString(ExtensionDefinitions.EXT_STANDARDS_STATUS);
+    }
+    if (Utilities.existsInList(vstatus, "retired")) {
+      return null;
+    }
+    return vstatus;
+  }
 
   private void excludeCodeAndDescendents(WorkingContext wc, CodeSystem cs, String system, ConceptDefinitionComponent def, Parameters expParams, List<ValueSet> filters, 
-      ConceptDefinitionComponent exclusion, ConceptFilter filterFunc, List<WorkingContext> otherFilters, ValueSetExpansionComponent exp)  throws FHIRException, ETooCostly {
+      ConceptDefinitionComponent exclusion, ConceptFilter filterFunc, List<WorkingContext> otherFilters, ValueSetExpansionComponent exp)  throws FHIRException, OperationIsTooCostly {
     opContext.deadCheck("excludeCodeAndDescendents");
     def.checkNoModifiers("Code in Code System", "expanding");
     if (exclusion != null) {
@@ -634,7 +642,6 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
   }
 
-
   private List<String> getCodesForConcept(ConceptDefinitionComponent focus, Parameters expParams) {
     List<String> codes = new ArrayList<>();
     codes.add(focus.getCode());
@@ -647,7 +654,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
   private static boolean hasUse(ConceptPropertyComponent p, List<String> uses) {
-    for (Extension ext : p.getExtensionsByUrl(ToolingExtensions.EXT_CS_ALTERNATE_USE)) {
+    for (Extension ext : p.getExtensionsByUrl(ExtensionDefinitions.EXT_CS_ALTERNATE_USE)) {
       if (ext.hasValueCoding() && Utilities.existsInList(ext.getValueCoding().getCode(), uses)) {
         return true;
       }
@@ -657,10 +664,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
   
 
-  private void addCodes(ValueSetExpansionComponent expand, List<ValueSetExpansionParameterComponent> params, Parameters expParams, List<ValueSet> filters, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc, ValueSetExpansionComponent exp) throws ETooCostly, FHIRException {
+  private void addCodes(ValueSetExpansionComponent expand, List<ValueSetExpansionParameterComponent> params, Parameters expParams, List<ValueSet> filters, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc, ValueSetExpansionComponent exp) throws OperationIsTooCostly, FHIRException {
     if (expand != null) {
       if (expand.getContains().size() > maxExpansionSize)
-        throw failCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, vsSrc.getUrl(), ">" + Integer.toString(expand.getContains().size())));
+        throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, vsSrc.getUrl(), ">" + Integer.toString(expand.getContains().size())));
       for (ValueSetExpansionParameterComponent p : expand.getParameter()) {
         if (!existsInParams(params, p.getName(), p.getValue()))
           params.add(p);
@@ -678,7 +685,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     wc.getExcludeKeys().add(s);
   }
 
-  private void excludeCodes(WorkingContext wc, ConceptSetComponent exc, Parameters expParams, ValueSetExpansionComponent exp, ValueSet vs, String vspath) throws FHIRException, FileNotFoundException, ETooCostly, IOException {
+  private void excludeCodes(WorkingContext wc, ConceptSetComponent exc, Parameters expParams, ValueSetExpansionComponent exp, ValueSet vs, String vspath) throws FHIRException, FileNotFoundException, OperationIsTooCostly, IOException {
     opContext.deadCheck("excludeCodes");
     exc.checkNoModifiers("Compose.exclude", "expanding");
     if (exc.hasSystem() && exc.getConcept().size() == 0 && exc.getFilter().size() == 0) {
@@ -690,8 +697,13 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     
     if (exc.hasSystem()) {
+      String sv = exc.getSystem()+(exc.hasVersion() ? "#"+exc.getVersion(): "");
+      if (dwc.getCountIncompleteSystems().contains(sv)) {
+        dwc.setNoTotal(true);
+      }
+
       CodeSystem cs = context.fetchSupplementedCodeSystem(exc.getSystem());
-      if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) && context.supportsSystem(exc.getSystem(), opContext.getOptions().getFhirVersion())) {
+      if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) && context.getTxSupportInfo(exc.getSystem(), exc.getVersion()).isSupported()) {
         ValueSetExpansionOutcome vse = context.expandVS(new TerminologyOperationDetails(requiredSupplements), exc, false, false);
         ValueSet valueset = vse.getValueset();
         if (valueset.hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
@@ -760,7 +772,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       } else {
         throw e;
       }
-    } catch (ETooCostly e) {
+    } catch (OperationIsTooCostly e) {
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.TOO_COSTLY, allErrors, false);
     } catch (UnknownValueSetException e) {
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.VALUESET_UNKNOWN, allErrors, false);
@@ -774,7 +786,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
   }
 
-  public ValueSetExpansionOutcome expandInternal(ValueSet source, Parameters expParams) throws FHIRException, FileNotFoundException, ETooCostly, IOException, CodeSystemProviderExtension {
+  public ValueSetExpansionOutcome expandInternal(ValueSet source, Parameters expParams) throws FHIRException, FileNotFoundException, OperationIsTooCostly, IOException, CodeSystemProviderExtension {
     if (expParams == null)
       expParams = makeDefaultExpansion();
     altCodeParams.seeParameters(expParams);
@@ -786,13 +798,13 @@ public class ValueSetExpander extends ValueSetProcessBase {
     focus.getExpansion().setTimestampElement(DateTimeType.now());
     focus.getExpansion().setIdentifier(Factory.createUUID()); 
     checkCanonical(focus.getExpansion(), focus, focus);
-    for (Extension ext : focus.getCompose().getExtensionsByUrl("http://hl7.org/fhir/tools/StructureDefinion/valueset-expansion-param")) {
+    for (Extension ext : focus.getCompose().getExtensionsByUrl(ExtensionDefinitions.EXT_VS_EXP_PARAM_NEW, ExtensionDefinitions.EXT_VS_EXP_PARAM_OLD)) {
       processParameter(ext.getExtensionString("name"), ext.getExtensionByUrl("value").getValue());
     }
     for (ParametersParameterComponent p : expParams.getParameter()) {
       processParameter(p.getName(), p.getValue());
     }
-    for (Extension s : focus.getExtensionsByUrl(ExtensionConstants.EXT_VSSUPPLEMENT)) {
+    for (Extension s : focus.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
       requiredSupplements.add(s.getValue().primitiveValue());
     }
     if (langs == null && focus.hasLanguage()) {
@@ -810,9 +822,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
     if (dwc.getCount() > maxExpansionSize && dwc.getOffsetParam() + dwc.getCountParam() == 0) {
       if (dwc.isNoTotal()) {
-        throw failCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)));        
+        throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)));
       } else {
-        throw failCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_COUNT, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize), MessageFormat.format("{0,number,#}", dwc.getCount())));
+        throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_COUNT, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize), MessageFormat.format("{0,number,#}", dwc.getCount())));
       }
     } else if (dwc.isCanBeHierarchy() && ((dwc.getCountParam() == 0) || dwc.getCountParam() > dwc.getCodes().size())) {
       for (ValueSetExpansionContainsComponent c : dwc.getRoots()) {
@@ -834,6 +846,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
           i++;
         }
       }
+    }
+
+    if (!reportingOnVersionsInContains) {
+      stripVersions(focus.getExpansion().getContains());
     }
 
     if (dwc.hasOffsetParam()) {
@@ -894,7 +910,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
   }
   
-  public ValueSetExpansionOutcome doExpand(ValueSet source, Parameters expParams) throws FHIRException, ETooCostly, FileNotFoundException, IOException, CodeSystemProviderExtension {
+  public ValueSetExpansionOutcome doExpand(ValueSet source, Parameters expParams) throws FHIRException, OperationIsTooCostly, FileNotFoundException, IOException, CodeSystemProviderExtension {
     if (expParams == null)
       expParams = makeDefaultExpansion();
     altCodeParams.seeParameters(expParams);
@@ -906,13 +922,13 @@ public class ValueSetExpander extends ValueSetProcessBase {
     focus.getExpansion().setTimestampElement(DateTimeType.now());
     focus.getExpansion().setIdentifier(Factory.createUUID()); 
     checkCanonical(focus.getExpansion(), focus, focus);
-    for (Extension ext : focus.getCompose().getExtensionsByUrl("http://hl7.org/fhir/tools/StructureDefinion/valueset-expansion-param")) {
+    for (Extension ext : focus.getCompose().getExtensionsByUrl(ExtensionDefinitions.EXT_VS_EXP_PARAM_NEW, ExtensionDefinitions.EXT_VS_EXP_PARAM_OLD)) {
       processParameter(ext.getExtensionString("name"), ext.getExtensionByUrl("value").getValue());
     }
     for (ParametersParameterComponent p : expParams.getParameter()) {
       processParameter(p.getName(), p.getValue());
     }
-    for (Extension s : focus.getExtensionsByUrl(ExtensionConstants.EXT_VSSUPPLEMENT)) {
+    for (Extension s : focus.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
       requiredSupplements.add(s.getValue().primitiveValue());
     }
     if (langs == null && focus.hasLanguage()) {
@@ -930,9 +946,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
     if (dwc.getCount() > maxExpansionSize && dwc.getOffsetParam() + dwc.getCountParam() == 0) {
       if (dwc.isNoTotal()) {
-        throw failCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)));        
+        throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)));
       } else {
-        throw failCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_COUNT, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize), MessageFormat.format("{0,number,#}", dwc.getCount())));
+        throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_COUNT, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize), MessageFormat.format("{0,number,#}", dwc.getCount())));
       }
     } else if (dwc.isCanBeHierarchy() && ((dwc.getCountParam() == 0) || dwc.getCountParam() > dwc.getCodes().size())) {
       for (ValueSetExpansionContainsComponent c : dwc.getRoots()) {
@@ -954,6 +970,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
           i++;
         }
       }
+    }
+    if (!reportingOnVersionsInContains) {
+      stripVersions(focus.getExpansion().getContains());
     }
 
     if (dwc.hasOffsetParam()) {
@@ -978,6 +997,13 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return new ValueSetExpansionOutcome(focus);
   }
 
+  private void stripVersions(List<ValueSetExpansionContainsComponent> contains) {
+    for (ValueSetExpansionContainsComponent c : contains) {
+      c.setVersion(null);
+      stripVersions(c.getContains());
+    }
+  }
+
 
   private Parameters makeDefaultExpansion() {
     Parameters res = new Parameters();
@@ -998,10 +1024,13 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
   private void handleCompose(ValueSetComposeComponent compose, ValueSetExpansionComponent exp, Parameters expParams, String ctxt, List<Extension> extensions, ValueSet valueSet)
-      throws ETooCostly, FileNotFoundException, IOException, FHIRException, CodeSystemProviderExtension {
+      throws OperationIsTooCostly, FileNotFoundException, IOException, FHIRException, CodeSystemProviderExtension {
     compose.checkNoModifiers("ValueSet.compose", "expanding");
     String vspath = "ValueSet["+valueSet.getVersionedUrl()+"].compose";
-    
+
+    // scan first to see if we need to report versions
+    reportingOnVersionsInContains = checkForDifferingVersions(compose);
+
     // Exclude comes first because we build up a map of things to exclude
     int c = 0;
     for (ConceptSetComponent inc : compose.getExclude()) {
@@ -1022,6 +1051,33 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
   }
 
+  private boolean checkForDifferingVersions(ValueSetComposeComponent compose) {
+    Map<String, String> vlist = new HashMap<>();
+    for (ConceptSetComponent inc : compose.getExclude()) {
+      if (checkForVersionDuplicates(vlist, inc)) {
+        return true;
+      }
+    }
+    for (ConceptSetComponent inc : compose.getInclude()) {
+      if (checkForVersionDuplicates(vlist, inc)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean checkForVersionDuplicates(Map<String, String> vlist, ConceptSetComponent inc) {
+    if (vlist.containsKey(inc.getSystem())) {
+      String v = vlist.get(inc.getSystem());
+      if ((v == null && inc.getVersion() != null) || (v != null && !v.equals(inc.getVersion()))) {
+        return true;
+      }
+    } else {
+      vlist.put(inc.getSystem(), inc.getVersion());
+    }
+    return false;
+  }
+
   /**
    * returns true if activeOnly = true 
    * @param expParams
@@ -1036,18 +1092,18 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return false;
   }
 
-  private ValueSet importValueSet(WorkingContext wc, String value, ValueSetExpansionComponent exp, Parameters expParams, boolean noInactive, ValueSet valueSet) throws ETooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
+  private ValueSet importValueSet(WorkingContext wc, String value, ValueSetExpansionComponent exp, Parameters expParams, boolean noInactive, ValueSet valueSet) throws OperationIsTooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
     if (value == null)
-      throw fail(I18nConstants.VS_EXP_IMPORT_NULL, true);
+      throw fail(I18nConstants.VS_EXP_IMPORT_NULL);
     String url = getCu().pinValueSet(value, expParams);
-    ValueSet vs = context.findTxResource(ValueSet.class, url, valueSet);
+    ValueSet vs = context.findTxResource(ValueSet.class, url, null, valueSet);
     if (vs == null) {
       boolean pinned = !url.equals(value);
       String ver = pinned ? url.substring(value.length()+1) : null;
-      if (context.fetchResource(CodeSystem.class, url, valueSet) != null) {
-        throw failNotFound(pinned ? I18nConstants.VS_EXP_IMPORT_CS_PINNED : I18nConstants.VS_EXP_IMPORT_CS, true, value, ver);
+      if (context.fetchResource(CodeSystem.class, url, null, valueSet) != null) {
+        throw failWithUnknownVSException(pinned ? I18nConstants.VS_EXP_IMPORT_CS_PINNED : I18nConstants.VS_EXP_IMPORT_CS, true, value, ver);
       } else  {
-        throw failNotFound(pinned ? I18nConstants.VS_EXP_IMPORT_UNK_PINNED : I18nConstants.VS_EXP_IMPORT_UNK, true, value, ver);
+        throw failWithUnknownVSException(pinned ? I18nConstants.VS_EXP_IMPORT_UNK_PINNED : I18nConstants.VS_EXP_IMPORT_UNK, true, value, ver);
       }
     }
     checkCanonical(exp, vs, focus);
@@ -1060,12 +1116,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if (vso.getError() != null) {
       addErrors(vso.getAllErrors());
       if (vso.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNKNOWN) {  
-        throw failUnk(I18nConstants.VS_EXP_IMPORT_ERROR, true, vs.getUrl(), vso.getError());
+        throw failWithUnknownVSException(I18nConstants.VS_EXP_IMPORT_ERROR, true, vs.getUrl(), vso.getError());
       } else {
-        throw fail(I18nConstants.VS_EXP_IMPORT_ERROR, true, vs.getUrl(), vso.getError());
+        throw fail(I18nConstants.VS_EXP_IMPORT_ERROR, vs.getUrl(), vso.getError());
       }
     } else if (vso.getValueset() == null) {
-      throw fail(I18nConstants.VS_EXP_IMPORT_FAIL, true, vs.getUrl());      
+      throw fail(I18nConstants.VS_EXP_IMPORT_FAIL, vs.getUrl());
     }
     sources.addAll(expander.sources);
     if (vs.hasVersion() || REPORT_VERSION_ANYWAY) {
@@ -1075,9 +1131,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     ValueSetExpansionComponent evs = vso.getValueset().getExpansion();
     for (Extension ex : evs.getExtension()) {
-      if (ex.getUrl().equals(ToolingExtensions.EXT_EXP_TOOCOSTLY)) {
+      if (ex.getUrl().equals(ExtensionDefinitions.EXT_EXP_TOOCOSTLY)) {
         if (ex.getValue() instanceof BooleanType) {
-          exp.getExtension().add(new Extension(ToolingExtensions.EXT_EXP_TOOCOSTLY).setValue(new CanonicalType(value)));
+          exp.getExtension().add(new Extension(ExtensionDefinitions.EXT_EXP_TOOCOSTLY).setValue(new CanonicalType(value)));
         } else {
           exp.getExtension().add(ex);
         }
@@ -1100,18 +1156,18 @@ public class ValueSetExpander extends ValueSetProcessBase {
   
 
 
-  private ValueSet importValueSetForExclude(WorkingContext wc, String value, ValueSetExpansionComponent exp, Parameters expParams, boolean noInactive, ValueSet valueSet) throws ETooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
+  private ValueSet importValueSetForExclude(WorkingContext wc, String value, ValueSetExpansionComponent exp, Parameters expParams, boolean noInactive, ValueSet valueSet) throws OperationIsTooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
     if (value == null)
-      throw fail(I18nConstants.VS_EXP_IMPORT_NULL_X, true);  
+      throw fail(I18nConstants.VS_EXP_IMPORT_NULL_X);
     String url = getCu().pinValueSet(value, expParams);
-    ValueSet vs = context.findTxResource(ValueSet.class, url, valueSet);
+    ValueSet vs = context.findTxResource(ValueSet.class, url, null, valueSet);
     if (vs == null) {
       boolean pinned = !url.equals(value);
       String ver = pinned ? url.substring(value.length()+1) : null;
-      if (context.fetchResource(CodeSystem.class, url, valueSet) != null) {
-        throw fail(pinned ? I18nConstants.VS_EXP_IMPORT_CS_PINNED_X : I18nConstants.VS_EXP_IMPORT_CS_X, true, value, ver);
+      if (context.fetchResource(CodeSystem.class, url, null, valueSet) != null) {
+        throw fail(pinned ? I18nConstants.VS_EXP_IMPORT_CS_PINNED_X : I18nConstants.VS_EXP_IMPORT_CS_X, value, ver);
       } else  {
-        throw fail(pinned ? I18nConstants.VS_EXP_IMPORT_UNK_PINNED_X : I18nConstants.VS_EXP_IMPORT_UNK_X, true, value, ver);
+        throw fail(pinned ? I18nConstants.VS_EXP_IMPORT_UNK_PINNED_X : I18nConstants.VS_EXP_IMPORT_UNK_X, value, ver);
       }
     }
     checkCanonical(exp, vs, focus);
@@ -1124,9 +1180,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
     sources.addAll(expander.sources);
     if (vso.getError() != null) {
       addErrors(vso.getAllErrors());
-      throw fail(I18nConstants.VS_EXP_IMPORT_ERROR_X, true, vs.getUrl(), vso.getError());
+      throw fail(I18nConstants.VS_EXP_IMPORT_ERROR_X, vs.getUrl(), vso.getError());
     } else if (vso.getValueset() == null) {
-      throw fail(I18nConstants.VS_EXP_IMPORT_FAIL_X, true, vs.getUrl());      
+      throw fail(I18nConstants.VS_EXP_IMPORT_FAIL_X, vs.getUrl());
     }
     
     if (vs.hasVersion() || REPORT_VERSION_ANYWAY) {
@@ -1135,8 +1191,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
         exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("used-valueset").setValue(u));
     }
     for (Extension ex : vso.getValueset().getExpansion().getExtension()) {
-      if (ex.getUrl().equals(ToolingExtensions.EXT_EXP_TOOCOSTLY)) {
-        throw fail(VS_EXP_IMPORT_ERROR_TOO_COSTLY, true, vs.getUrl());
+      if (ex.getUrl().equals(ExtensionDefinitions.EXT_EXP_TOOCOSTLY)) {
+        throw fail(VS_EXP_IMPORT_ERROR_TOO_COSTLY, vs.getUrl());
       } 
     }
     return vso.getValueset();
@@ -1179,7 +1235,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
   }
 
-  private int copyImportContains(List<ValueSetExpansionContainsComponent> list, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filter, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc, ValueSetExpansionComponent exp) throws FHIRException, ETooCostly {
+  private int copyImportContains(List<ValueSetExpansionContainsComponent> list, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filter, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc, ValueSetExpansionComponent exp) throws FHIRException, OperationIsTooCostly {
     int count = 0;
     opContext.deadCheck("copyImportContains");
     
@@ -1189,8 +1245,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     for (ValueSetExpansionContainsComponent c : list) {
       c.checkNoModifiers("Imported Expansion in Code System", "expanding");
-      ValueSetExpansionContainsComponent np = addCode(dwc, c.getSystem(), c.getCode(), c.getDisplay(), lang, parent, translateDesignations(c), expParams, c.getAbstract(), c.getInactive(), 
-          filter, noInactive, false, vsProps, makeCSProps(c.getExtensionString(ToolingExtensions.EXT_DEFINITION), null), null, c.getProperty(), null, c.getExtension(), exp);
+      String vstatus = determineStatus(vsSrc, c);
+      ValueSetExpansionContainsComponent np = addCode(dwc, c.getSystem(), c.getVersion(), c.getCode(), c.getDisplay(), lang, parent, translateDesignations(c), expParams,
+            c.getAbstract(), c.getInactive(), filter, noInactive, false, vsProps, makeCSProps(c.getExtensionString(ExtensionDefinitions.EXT_DEFINITION), null),
+        null, c.getProperty(), null, c.getExtension(), exp, vstatus);
       if (np != null) {
         count++;
       }
@@ -1215,7 +1273,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return list;
   }
 
-  private void includeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, boolean heirarchical, boolean noInactive, List<Extension> extensions, ValueSet valueSet, String vspath) throws ETooCostly, FileNotFoundException, IOException, FHIRException, CodeSystemProviderExtension {
+  private void includeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, boolean heirarchical, boolean noInactive, List<Extension> extensions, ValueSet valueSet, String vspath) throws OperationIsTooCostly, FileNotFoundException, IOException, FHIRException, CodeSystemProviderExtension {
     opContext.deadCheck("includeCodes");
     inc.checkNoModifiers("Compose.include", "expanding");
     List<ValueSet> imports = new ArrayList<ValueSet>();
@@ -1232,8 +1290,32 @@ public class ValueSetExpander extends ValueSetProcessBase {
       base.checkNoModifiers("Imported ValueSet", "expanding");
       copyImportContains(base.getExpansion().getContains(), null, expParams, imports, noInactive, base.getExpansion().getProperty(), base, exp);
     } else {
-      CodeSystem cs = context.fetchSupplementedCodeSystem(inc.getSystem());
-      if (ValueSetUtilities.isServerSide(inc.getSystem()) || (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT))) {
+      String sv = inc.getSystem()+(inc.hasVersion() ? "#"+inc.getVersion(): "");
+      if (dwc.getCountIncompleteSystems().contains(sv)) {
+        dwc.setNoTotal(true);
+      }
+      String version = determineVersion(inc.getSystem(), inc.getVersion(), exp, expParams);
+      CodeSystem cs = context.fetchSupplementedCodeSystem(inc.getSystem(), version, valueSet);
+      if (cs != null) {
+        checkVersion(inc.getSystem(), cs.getVersion(), exp, expParams);
+      }
+      if (cs == null && noTerminologyServer) {
+        if (version == null) {
+          throw failWithIssue(IssueType.NOTFOUND, OpIssueCode.NotFound, null, I18nConstants.UNKNOWN_CODESYSTEM_EXP, inc.getSystem());
+        } else {
+          List<CodeSystem> list = context.fetchResourceVersions(CodeSystem.class, inc.getSystem());
+          if (list.size() == 0) {
+            throw failWithIssue(IssueType.NOTFOUND, OpIssueCode.NotFound, null, I18nConstants.UNKNOWN_CODESYSTEM_VERSION_EXP_NONE, inc.getSystem(), version);
+          } else {
+            List<String> versions = new ArrayList<>();
+            for (CodeSystem c : list) {
+              versions.add(c.getVersion());
+            }
+            Collections.sort(versions);
+            throw failWithIssue(IssueType.NOTFOUND, OpIssueCode.NotFound, null, I18nConstants.UNKNOWN_CODESYSTEM_VERSION_EXP, inc.getSystem(), version, CommaSeparatedStringBuilder.join(",", versions));
+          }
+        }
+      } else if (ValueSetUtilities.isServerSide(inc.getSystem()) || (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT))) {
         doServerIncludeCodes(inc, heirarchical, exp, imports, expParams, extensions, noInactive, valueSet.getExpansion().getProperty());
       } else {
         if (cs.hasUserData(UserDataNames.tx_known_supplements)) {
@@ -1241,12 +1323,112 @@ public class ValueSetExpander extends ValueSetProcessBase {
             requiredSupplements.remove(s);
           }
         }
+        if (!requiredSupplements.isEmpty()) {
+          List<CodeSystem> additionalSupplements = new ArrayList<>();
+          for (String s : requiredSupplements) {
+            CodeSystem scs = context.findTxResource(CodeSystem.class, s);
+            if (scs != null && cs.getUrl().equals(scs.getSupplements())) {
+              additionalSupplements.add(scs);
+            }
+          }
+          if (!additionalSupplements.isEmpty()) {
+            cs = CodeSystemUtilities.mergeSupplements(cs, additionalSupplements);
+          }
+        }
         doInternalIncludeCodes(inc, exp, expParams, imports, cs, noInactive, valueSet, vspath);
       }
     }
   }
 
-  private void doServerIncludeCodes(ConceptSetComponent inc, boolean heirarchical, ValueSetExpansionComponent exp, List<ValueSet> imports, Parameters expParams, List<Extension> extensions, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps) throws FHIRException, CodeSystemProviderExtension, ETooCostly {
+  private String determineVersion(@Nonnull String system, @Nonnull String version, @Nonnull ValueSetExpansionComponent exp, @Nonnull Parameters expParams) {
+    String result = version;
+    List<ParametersParameterComponent> rules = new ArrayList<>();
+    for (ParametersParameterComponent p : expParams.getParameter()) {
+      if ("force-system-version".equalsIgnoreCase(p.getName()) && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
+        rules.add(p);
+      }
+      if ("system-version".equalsIgnoreCase(p.getName()) && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
+        rules.add(p);
+      }
+      if ("check-system-version".equalsIgnoreCase(p.getName()) && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
+        rules.add(p);
+      }
+    }
+    boolean b = false;
+    for (ParametersParameterComponent t : rules) {
+      if ("force-system-version".equals(t.getName())) {
+        String tv = t.getValue().primitiveValue().substring(system.length() + 1);
+        if (!b) {
+          result = tv;
+          if (!hasParam(exp, t.getName(), t.getValue().primitiveValue())) {
+            exp.addParameter(t.getName(), new UriType(t.getValue().primitiveValue()));
+          }
+        } else if (!tv.equals(result)) {
+          throw failWithIssue(IssueType.EXCEPTION, OpIssueCode.VersionError, null, I18nConstants.SYSTEM_VERSION_MULTIPLE_OVERRIDE, system, result, tv);
+        }
+      }
+    }
+    if (Utilities.noString(result)) {
+      b = false;
+      for (ParametersParameterComponent t : rules) {
+        if ("system-version".equals(t.getName())) {
+          String tv = t.getValue().primitiveValue().substring(system.length() + 1);
+          if (!b) {
+            result = tv;
+            if (!hasParam(exp, t.getName(), t.getValue().primitiveValue())) {
+              exp.addParameter(t.getName(), new UriType(t.getValue().primitiveValue()));
+            }
+          } else if (!tv.equals(result)) {
+            throw failWithIssue(IssueType.EXCEPTION, OpIssueCode.VersionError, null, I18nConstants.SYSTEM_VERSION_MULTIPLE_DEFAULT, system, result, tv);
+          }
+        }
+      }
+    }
+    for (ParametersParameterComponent t : rules) {
+      if ("check-system-version".equals(t.getName())) {
+        String tv = t.getValue().primitiveValue().substring(system.length() + 1);
+        if (Utilities.noString(result)) {
+          result = tv;
+          if (!hasParam(exp, t.getName(), t.getValue().primitiveValue())) {
+            exp.addParameter(t.getName(), new UriType(t.getValue().primitiveValue()));
+          }
+        }
+      }
+    }
+    return result;
+  }
+
+  private void checkVersion(@Nonnull String system, @Nonnull String version, @Nonnull ValueSetExpansionComponent exp, @Nonnull Parameters expParams) {
+    String result = version;
+    List<ParametersParameterComponent> rules = new ArrayList<>();
+    for (ParametersParameterComponent p : expParams.getParameter()) {
+      if ("check-system-version".equalsIgnoreCase(p.getName()) && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
+        rules.add(p);
+      }
+    }
+    for (ParametersParameterComponent t : rules) {
+      String tv = t.getValue().primitiveValue().substring(system.length() + 1);
+      if (Utilities.noString(result)) {
+        result = tv;
+        if (!hasParam(exp, t.getName(), t.getValue().primitiveValue())) {
+          exp.addParameter(t.getName(), new UriType(t.getValue().primitiveValue()));
+        }
+      } else if (!versionsMatch(system, result, tv)) {
+        throw failWithIssue(IssueType.EXCEPTION, OpIssueCode.VersionError, null, I18nConstants.VALUESET_VERSION_CHECK, system, result, tv);
+      }
+    }
+  }
+
+  private boolean hasParam(ValueSetExpansionComponent exp, String name, String s) {
+    for (ValueSetExpansionParameterComponent t : exp.getParameter()) {
+      if (t.getName().equals(name) && t.getValue().primitiveValue() != null && t.getValue().primitiveValue().equals(s)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private void doServerIncludeCodes(ConceptSetComponent inc, boolean heirarchical, ValueSetExpansionComponent exp, List<ValueSet> imports, Parameters expParams, List<Extension> extensions, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps) throws FHIRException, CodeSystemProviderExtension, OperationIsTooCostly {
     opContext.deadCheck("doServerIncludeCodes");
     CodeSystemProvider csp = CodeSystemProvider.factory(inc.getSystem());
     if (csp != null) {
@@ -1269,7 +1451,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
       }
     }
     if (vs.getExpansion().hasTotal()) {
-      // 0 for now... dwc.incExtraCount(!vs.getExpansion().getTotal());
+      dwc.incExtraCount(vs.getExpansion().getTotal() - countContains(vs.getExpansion().getContains()));
+      dwc.getCountIncompleteSystems().add(inc.getSystem()+(inc.hasVersion() ? "#"+inc.getVersion(): ""));
     } else {
       dwc.setNoTotal(true);
     }
@@ -1279,8 +1462,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
       }
     }
     for (Extension ex : vs.getExpansion().getExtension()) {
-      if (Utilities.existsInList(ex.getUrl(), ToolingExtensions.EXT_EXP_TOOCOSTLY, "http://hl7.org/fhir/StructureDefinition/valueset-unclosed")) {
-        if (!ExtensionsUtils.hasExtension(extensions, ex.getUrl())) {
+      if (Utilities.existsInList(ex.getUrl(), ExtensionDefinitions.EXT_EXP_TOOCOSTLY, "http://hl7.org/fhir/StructureDefinition/valueset-unclosed")) {
+        if (!ExtensionUtilities.hasExtension(extensions, ex.getUrl())) {
           extensions.add(ex);
         }
       }
@@ -1291,7 +1474,17 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
 
-  public void doInternalIncludeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, List<ValueSet> imports, CodeSystem cs, boolean noInactive, Resource vsSrc, String vspath) throws NoTerminologyServiceException, TerminologyServiceException, FHIRException, ETooCostly {
+  private int countContains(List<ValueSetExpansionContainsComponent> contains) {
+    int count = contains.size();
+    for (ValueSetExpansionContainsComponent cc : contains) {
+      if (cc.hasContains()) {
+        count += countContains(cc.getContains());
+      }
+    }
+    return count;
+  }
+
+  public void doInternalIncludeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, List<ValueSet> imports, CodeSystem cs, boolean noInactive, Resource vsSrc, String vspath) throws NoTerminologyServiceException, TerminologyServiceException, FHIRException, OperationIsTooCostly {
     opContext.deadCheck("doInternalIncludeCodes");
     if (cs == null) {
       if (context.isNoTerminologyServer())
@@ -1319,7 +1512,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if (inc.getConcept().size() == 0 && inc.getFilter().size() == 0) {
       // special case - add all the code system
       for (ConceptDefinitionComponent def : cs.getConcept()) {
-        addCodeAndDescendents(dwc, cs, inc.getSystem(), def, null, expParams, imports, null, new AllConceptsFilter(allErrors), noInactive, exp.getProperty(), null, exp);
+        addCodeAndDescendents(dwc, cs, inc.getSystem(), cs.getVersion(), def, null, expParams, imports, null, new AllConceptsFilter(allErrors), noInactive, exp.getProperty(), null, exp);
       }
       if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
         addFragmentWarning(exp, cs);
@@ -1350,8 +1543,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
           def.checkNoModifiers("Code in Code System", "expanding");
           inactive = CodeSystemUtilities.isInactive(cs, def);
           isAbstract = CodeSystemUtilities.isNotSelectable(cs, def);
-          addCode(dwc, inc.getSystem(), c.getCode(), !Utilities.noString(c.getDisplay()) ? c.getDisplay() : def.getDisplay(), c.hasDisplay() ? vsSrc.getLanguage() : cs.getLanguage(), null, mergeDesignations(def, convertDesignations(c.getDesignation())), 
-              expParams, isAbstract, inactive, imports, noInactive, false, exp.getProperty(), makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), c.getExtension(), exp);
+          String vstatus = determineStatus(cs, def);
+          addCode(dwc, inc.getSystem(), cs.getVersion(), c.getCode(), !Utilities.noString(c.getDisplay()) ? c.getDisplay() : def.getDisplay(), c.hasDisplay() ? vsSrc.getLanguage() : cs.getLanguage(),
+            null, mergeDesignations(def, convertDesignations(c.getDesignation())), expParams, isAbstract, inactive, imports, noInactive, false,
+            exp.getProperty(), makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), c.getExtension(), exp, vstatus);
         }
       }
     }
@@ -1376,11 +1571,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
   private void processFilter(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, List<ValueSet> imports, CodeSystem cs, boolean noInactive, 
       ConceptSetFilterComponent fc, WorkingContext wc, List<WorkingContext> filters, boolean exclude, String vspath)
-      throws ETooCostly {
+      throws OperationIsTooCostly {
     
     if (!fc.hasValue() || fc.getValue() == null) {
       List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
-      issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, vspath+".value", context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM_FILTER_WITH_NO_VALUE, cs.getUrl(), fc.getProperty(), fc.getOp().toCode()), OpIssueCode.VSProcessing, null)); 
+      issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, vspath+".value", context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM_FILTER_WITH_NO_VALUE,
+        cs.getUrl(), fc.getProperty(), fc.getOp().toCode()), OpIssueCode.VSProcessing, null, I18nConstants.UNABLE_TO_HANDLE_SYSTEM_FILTER_WITH_NO_VALUE));
       throw new VSCheckerException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM_FILTER_WITH_NO_VALUE, cs.getUrl(), fc.getProperty(), fc.getOp().toCode()), issues, TerminologyServiceErrorClass.INTERNAL_ERROR);
     }
     opContext.deadCheck("processFilter");
@@ -1392,7 +1588,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (exclude) {
         excludeCodeAndDescendents(wc, cs, inc.getSystem(), def, null, imports, null, new AllConceptsFilter(allErrors), filters, exp);
       } else {
-        addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, null, new AllConceptsFilter(allErrors), noInactive, exp.getProperty(), filters, exp);
+        addCodeAndDescendents(wc, cs, inc.getSystem(), cs.getVersion(), def, null, expParams, imports, null, new AllConceptsFilter(allErrors), noInactive, exp.getProperty(), filters, exp);
       }
     } else if ("concept".equals(fc.getProperty()) && fc.getOp() == FilterOperator.ISNOTA) {
       // special: all codes in the target code system that are not under the value
@@ -1403,7 +1599,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         if (exclude) {
           excludeCodeAndDescendents(wc, cs, inc.getSystem(), def, null, imports, defEx, new AllConceptsFilter(allErrors), filters, exp);
         } else {
-          addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, defEx, new AllConceptsFilter(allErrors), noInactive, exp.getProperty(), filters, exp);
+          addCodeAndDescendents(wc, cs, inc.getSystem(), cs.getVersion(), def, null, expParams, imports, defEx, new AllConceptsFilter(allErrors), noInactive, exp.getProperty(), filters, exp);
         }
       }
     } else if ("concept".equals(fc.getProperty()) && fc.getOp() == FilterOperator.DESCENDENTOF) {
@@ -1415,7 +1611,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         if (exclude) {
           excludeCodeAndDescendents(wc, cs, inc.getSystem(), c, null, imports, null, new AllConceptsFilter(allErrors), filters, exp);
         } else {
-          addCodeAndDescendents(wc, cs, inc.getSystem(), c, null, expParams, imports, null, new AllConceptsFilter(allErrors), noInactive, exp.getProperty(), filters, exp);
+          addCodeAndDescendents(wc, cs, inc.getSystem(), cs.getVersion(), c, null, expParams, imports, null, new AllConceptsFilter(allErrors), noInactive, exp.getProperty(), filters, exp);
         }
       if (def.hasUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK)) {
         List<ConceptDefinitionComponent> children = (List<ConceptDefinitionComponent>) def.getUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK);
@@ -1423,7 +1619,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
           if (exclude) {
             excludeCodeAndDescendents(wc, cs, inc.getSystem(), c, null, imports, null, new AllConceptsFilter(allErrors), filters, exp);
           } else {
-            addCodeAndDescendents(wc, cs, inc.getSystem(), c, null, expParams, imports, null, new AllConceptsFilter(allErrors), noInactive, exp.getProperty(), filters, exp);
+            addCodeAndDescendents(wc, cs, inc.getSystem(), cs.getVersion(), c, null, expParams, imports, null, new AllConceptsFilter(allErrors), noInactive, exp.getProperty(), filters, exp);
           }
         }
       }
@@ -1440,8 +1636,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
               if (exclude) {
                 excludeCode(wc, inc.getSystem(), code);
               } else {
-                addCode(wc, inc.getSystem(), code, def.getDisplay(), cs.getLanguage(), null, def.getDesignation(), expParams, CodeSystemUtilities.isNotSelectable(cs, def), CodeSystemUtilities.isInactive(cs, def),
-                  imports, noInactive, false, exp.getProperty(), makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), null, exp);
+                String vstatus = determineStatus(cs, def);
+                addCode(wc, inc.getSystem(), inc.getVersion(), code, def.getDisplay(), cs.getLanguage(), null, def.getDesignation(), expParams, CodeSystemUtilities.isNotSelectable(cs, def), CodeSystemUtilities.isInactive(cs, def),
+                  imports, noInactive, false, exp.getProperty(), makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), null, exp, vstatus);
               }
             }
           }
@@ -1453,7 +1650,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         if (exclude) {
           excludeCodeAndDescendents(wc, cs, inc.getSystem(), def, null, imports, null, pf, filters, exp);
         } else {
-          addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, null, pf, noInactive, exp.getProperty(), filters, exp);
+          addCodeAndDescendents(wc, cs, inc.getSystem(), cs.getVersion(), def, null, expParams, imports, null, pf, noInactive, exp.getProperty(), filters, exp);
         }
       }
     } else if (isKnownProperty(fc.getProperty(), cs)) {
@@ -1462,7 +1659,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         if (exclude) {
           excludeCodeAndDescendents(wc, cs, inc.getSystem(), def, null, imports, null, pf, filters, exp);
         } else {
-          addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, null, pf, noInactive, exp.getProperty(), filters, exp);
+          addCodeAndDescendents(wc, cs, inc.getSystem(), cs.getVersion(), def, null, expParams, imports, null, pf, noInactive, exp.getProperty(), filters, exp);
         }
       }
     } else if ("code".equals(fc.getProperty()) && fc.getOp() == FilterOperator.REGEX) {
@@ -1470,7 +1667,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         if (exclude) {
           excludeCodeAndDescendents(wc, cs, inc.getSystem(), def, null, imports, null, new RegexFilter(allErrors, fc.getValue()), filters, exp);
         } else {
-          addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, null, new RegexFilter(allErrors, fc.getValue()), noInactive, exp.getProperty(), filters, exp);
+          addCodeAndDescendents(wc, cs, inc.getSystem(), cs.getVersion(), def, null, expParams, imports, null, new RegexFilter(allErrors, fc.getValue()), noInactive, exp.getProperty(), filters, exp);
         }
       }
     } else {
@@ -1535,38 +1732,6 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
   private String key(ValueSetExpansionContainsComponent c) {
     return key(c.getSystem(), c.getCode());
-  }
-
-  private FHIRException fail(String msgId, boolean check, Object... params) {
-    String msg = context.formatMessage(msgId, params);
-    allErrors.add(msg);
-    return new FHIRException(msg);
-  }
-
-  private UnknownValueSetException failUnk(String msgId, boolean check, Object... params) {
-    String msg = context.formatMessage(msgId, params);
-    allErrors.add(msg);
-    return new UnknownValueSetException(msg);
-  }
-
-  private UnknownValueSetException failNotFound(String msgId, boolean check, Object... params) {
-    String msg = context.formatMessage(msgId, params);
-    allErrors.add(msg);
-    return new UnknownValueSetException(msg);
-  }
-
-  private ETooCostly failCostly(String msg) {
-    allErrors.add(msg);
-    return new ETooCostly(msg);
-  }
-
-  private TerminologyServiceException failTSE(String msg) {
-    allErrors.add(msg);
-    return new TerminologyServiceException(msg);
-  }
-
-  public Collection<? extends String> getAllErrors() {
-    return allErrors;
   }
 
   public boolean isCheckCodesWhenExpanding() {

@@ -2925,16 +2925,6 @@ public class Consent extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getConsentingPartyTarget() { 
-      if (this.consentingPartyTarget == null)
-        this.consentingPartyTarget = new ArrayList<Resource>();
-      return this.consentingPartyTarget;
-    }
-
-    /**
      * @return {@link #actor} (Who or what is controlled by this consent. Use group to identify a set of actors by some property they share (e.g. 'admitting officers').)
      */
     public List<ConsentActorComponent> getActor() { 
@@ -3094,28 +3084,6 @@ public class Consent extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Organization> getOrganizationTarget() { 
-      if (this.organizationTarget == null)
-        this.organizationTarget = new ArrayList<Organization>();
-      return this.organizationTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Organization addOrganizationTarget() { 
-      Organization r = new Organization();
-      if (this.organizationTarget == null)
-        this.organizationTarget = new ArrayList<Organization>();
-      this.organizationTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #source} (The source on which this consent statement is based. The source might be a scanned original paper form, or a reference to a consent that links back to such a source, a reference to a document repository (e.g. XDS) that stores the original consent document.)
      */
     public Type getSource() { 
@@ -3133,8 +3101,8 @@ public class Consent extends DomainResource {
       return (Attachment) this.source;
     }
 
-    public boolean hasSourceAttachment() { 
-      return this != null && this.source instanceof Attachment;
+    public boolean hasSourceAttachment() {
+        return this.source instanceof Attachment;
     }
 
     /**
@@ -3148,8 +3116,8 @@ public class Consent extends DomainResource {
       return (Identifier) this.source;
     }
 
-    public boolean hasSourceIdentifier() { 
-      return this != null && this.source instanceof Identifier;
+    public boolean hasSourceIdentifier() {
+        return this.source instanceof Identifier;
     }
 
     /**
@@ -3163,8 +3131,8 @@ public class Consent extends DomainResource {
       return (Reference) this.source;
     }
 
-    public boolean hasSourceReference() { 
-      return this != null && this.source instanceof Reference;
+    public boolean hasSourceReference() {
+        return this.source instanceof Reference;
     }
 
     public boolean hasSource() { 

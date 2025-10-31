@@ -318,8 +318,8 @@ public class Provenance extends DomainResource {
           return (UriType) this.who;
         }
 
-        public boolean hasWhoUriType() { 
-          return this != null && this.who instanceof UriType;
+        public boolean hasWhoUriType() {
+            return this.who instanceof UriType;
         }
 
         /**
@@ -333,8 +333,8 @@ public class Provenance extends DomainResource {
           return (Reference) this.who;
         }
 
-        public boolean hasWhoReference() { 
-          return this != null && this.who instanceof Reference;
+        public boolean hasWhoReference() {
+            return this.who instanceof Reference;
         }
 
         public boolean hasWho() { 
@@ -369,8 +369,8 @@ public class Provenance extends DomainResource {
           return (UriType) this.onBehalfOf;
         }
 
-        public boolean hasOnBehalfOfUriType() { 
-          return this != null && this.onBehalfOf instanceof UriType;
+        public boolean hasOnBehalfOfUriType() {
+            return this.onBehalfOf instanceof UriType;
         }
 
         /**
@@ -384,8 +384,8 @@ public class Provenance extends DomainResource {
           return (Reference) this.onBehalfOf;
         }
 
-        public boolean hasOnBehalfOfReference() { 
-          return this != null && this.onBehalfOf instanceof Reference;
+        public boolean hasOnBehalfOfReference() {
+            return this.onBehalfOf instanceof Reference;
         }
 
         public boolean hasOnBehalfOf() { 
@@ -706,8 +706,8 @@ public class Provenance extends DomainResource {
           return (UriType) this.what;
         }
 
-        public boolean hasWhatUriType() { 
-          return this != null && this.what instanceof UriType;
+        public boolean hasWhatUriType() {
+            return this.what instanceof UriType;
         }
 
         /**
@@ -721,8 +721,8 @@ public class Provenance extends DomainResource {
           return (Reference) this.what;
         }
 
-        public boolean hasWhatReference() { 
-          return this != null && this.what instanceof Reference;
+        public boolean hasWhatReference() {
+            return this.what instanceof Reference;
         }
 
         /**
@@ -736,8 +736,8 @@ public class Provenance extends DomainResource {
           return (Identifier) this.what;
         }
 
-        public boolean hasWhatIdentifier() { 
-          return this != null && this.what instanceof Identifier;
+        public boolean hasWhatIdentifier() {
+            return this.what instanceof Identifier;
         }
 
         public boolean hasWhat() { 
@@ -1114,16 +1114,6 @@ public class Provenance extends DomainResource {
         addTarget();
       }
       return getTarget().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getTargetTarget() { 
-      if (this.targetTarget == null)
-        this.targetTarget = new ArrayList<Resource>();
-      return this.targetTarget;
     }
 
     /**

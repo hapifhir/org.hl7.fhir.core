@@ -1,5 +1,6 @@
 package org.hl7.fhir.r4b.utils.structuremap;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
 
 /*
@@ -50,7 +51,7 @@ import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r4b.fhirpath.TypeDetails;
 import org.hl7.fhir.r4b.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r4b.fhirpath.FHIRLexer.FHIRLexerException;
-import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4b.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r4b.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.fhirpath.TypeDetails.ProfiledType;
 import org.hl7.fhir.r4b.model.*;
@@ -77,6 +78,7 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -99,6 +101,7 @@ import java.util.*;
  * @author Grahame Grieve
  */
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class StructureMapUtilities {
 
   public class ResolvedGroup {
@@ -114,9 +117,9 @@ public class StructureMapUtilities {
   private static final boolean RENDER_MULTIPLE_TARGETS_ONELINE = true;
   private static final String AUTO_VAR_NAME = "vvv";
 
-  private class FHIRPathHostServices implements IEvaluationContext {
+  private class FHIRPathHostServices implements IHostApplicationServices {
 
-    public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant)
+    public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode)
         throws PathEngineException {
       Variables vars = (Variables) appContext;
       List<Base> list = new ArrayList<Base>();
@@ -131,7 +134,7 @@ public class StructureMapUtilities {
     }
 
     @Override
-    public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
+    public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
       if (!(appContext instanceof VariablesForProfiling))
         throw new Error(
             "Internal Logic Error (wrong type '" + appContext.getClass().getName() + "' in resolveConstantType)");
@@ -188,6 +191,11 @@ public class StructureMapUtilities {
     @Override
     public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
       throw new Error("Not Implemented Yet");
+    }
+
+    @Override
+    public boolean paramIsType(String name, int index) {
+      return false;
     }
 
   }
@@ -1255,7 +1263,7 @@ public class StructureMapUtilities {
     if (getServices() != null)
       getServices().log(cnt);
     else
-      System.out.println(cnt);
+      log.info(cnt);
   }
 
   /**
@@ -1346,7 +1354,7 @@ public class StructureMapUtilities {
             && rule.getTargetFirstRep().getTransform() == StructureMapTransform.CREATE
             && !rule.getTargetFirstRep().hasParameter()) {
           // simple inferred, map by type
-          System.out.println(v.summary());
+          log.info(v.summary());
           Base src = v.get(VariableMode.INPUT, rule.getSourceFirstRep().getVariable());
           Base tgt = v.get(VariableMode.OUTPUT, rule.getTargetFirstRep().getVariable());
           String srcType = src.fhirType();

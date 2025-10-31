@@ -42,6 +42,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -50,7 +51,6 @@ import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r4b.conformance.ProfileUtilities;
   import org.hl7.fhir.r4b.context.CanonicalResourceManager.CanonicalResourceProxy;
-  import org.hl7.fhir.r4b.context.IWorkerContext.ILoggingService.LogCategory;
 import org.hl7.fhir.r4b.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r4b.model.BooleanType;
 import org.hl7.fhir.r4b.model.Bundle;
@@ -123,8 +123,11 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import com.google.gson.JsonObject;
+import org.slf4j.MarkerFactory;
+import org.slf4j.event.Level;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
   public class ResourceProxy {
@@ -235,7 +238,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private boolean canRunWithoutTerminology;
   protected boolean noTerminologyServer;
   private int expandCodesLimit = 1000;
-  protected ILoggingService logger;
+
   protected Parameters expParameters;
   private TranslationServices translator = new NullTranslator();
   protected TerminologyCache txCache;
@@ -246,13 +249,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public BaseWorkerContext() throws FileNotFoundException, IOException, FHIRException {
     txCache = new TerminologyCache(lock, null);
-    setValidationMessageLanguage(getLocale());
     clock = new TimeTracker();
   }
 
   public BaseWorkerContext(Locale locale) throws FileNotFoundException, IOException, FHIRException {
+    setLocale(locale);
     txCache = new TerminologyCache(lock, null);
-    setValidationMessageLanguage(locale);
     clock = new TimeTracker();
   }
 
@@ -300,7 +302,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (other.txCache != null)
         txCache = other.txCache.copy();
       expandCodesLimit = other.expandCodesLimit;
-      logger = other.logger;
       expParameters = other.expParameters;
     }
   }
@@ -389,7 +390,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
         map.put(r.getId(), new ResourceProxy(r));
       } else {
-        System.out.println("Ignore " + r.fhirType() + "/" + r.getId() + " from package " + packageInfo.toString());
+       log.info("Ignore " + r.fhirType() + "/" + r.getId() + " from package " + packageInfo.toString());
       }
 
       if (r instanceof CodeSystem || r instanceof NamingSystem) {
@@ -535,7 +536,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         map.put(r.getUrl(), rl.get(rl.size() - 1));
         T latest = null;
         for (T t : rl) {
-          if (VersionUtilities.versionsCompatible(t.getVersion(), r.getVersion())) {
+          if (VersionUtilities.versionMatches(t.getVersion(), r.getVersion())) {
             latest = t;
           }
         }
@@ -602,17 +603,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
         if (txcaps == null) {
           try {
-            log("Terminology server: Check for supported code systems for " + system);
+            log.info("Terminology server: Check for supported code systems for " + system);
             setTxCaps(txClient.getTerminologyCapabilities());
           } catch (Exception e) {
             if (canRunWithoutTerminology) {
               noTerminologyServer = true;
-              log("==============!! Running without terminology server !! ==============");
+              log.info("==============!! Running without terminology server !! ==============");
               if (txClient != null) {
-                log("txServer = " + txClient.getAddress());
-                log("Error = " + e.getMessage() + "");
+                log.info("txServer = " + txClient.getAddress());
+                log.info("Error = " + e.getMessage() + "");
               }
-              log("=====================================================================");
+              log.info("=====================================================================");
               return false;
             } else {
               e.printStackTrace();
@@ -628,21 +629,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  private void log(String message) {
-    if (logger != null) {
-      logger.logMessage(message);
-    } else {
-      System.out.println(message);
-    }
-  }
-
   protected void tlog(String msg) {
     if (tlogging) {
-      if (logger != null) {
-        logger.logDebugMessage(LogCategory.TX, msg);
-      } else {
-        System.out.println("-tx: " + msg);
-      }
+      log.makeLoggingEventBuilder(Level.DEBUG)
+        .addMarker(MarkerFactory.getMarker("tx"))
+        .setMessage(msg)
+        .log();
     }
   }
 
@@ -1292,8 +1284,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.canRunWithoutTerminology = canRunWithoutTerminology;
   }
 
+  @Deprecated
   public void setLogger(ILoggingService logger) {
-    this.logger = logger;
+
   }
 
   public Parameters getExpansionParameters() {
@@ -2026,8 +2019,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
+  @Deprecated
   public ILoggingService getLogger() {
-    return logger;
+    return null;
   }
 
   @Override
@@ -2152,7 +2146,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 //          new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
         }
       } catch (Exception e) {
-//        System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
+        // DO NOTHING
       }
     }
   }

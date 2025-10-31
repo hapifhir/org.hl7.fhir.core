@@ -1147,8 +1147,8 @@ public class Composition extends DomainResource {
           return (Identifier) this.target;
         }
 
-        public boolean hasTargetIdentifier() { 
-          return this != null && this.target instanceof Identifier;
+        public boolean hasTargetIdentifier() {
+            return this.target instanceof Identifier;
         }
 
         /**
@@ -1162,8 +1162,8 @@ public class Composition extends DomainResource {
           return (Reference) this.target;
         }
 
-        public boolean hasTargetReference() { 
-          return this != null && this.target instanceof Reference;
+        public boolean hasTargetReference() {
+            return this.target instanceof Reference;
         }
 
         public boolean hasTarget() { 
@@ -1479,16 +1479,6 @@ public class Composition extends DomainResource {
             addDetail();
           }
           return getDetail().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getDetailTarget() { 
-          if (this.detailTarget == null)
-            this.detailTarget = new ArrayList<Resource>();
-          return this.detailTarget;
         }
 
         protected void listChildren(List<Property> children) {
@@ -1934,16 +1924,6 @@ public class Composition extends DomainResource {
             addEntry();
           }
           return getEntry().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getEntryTarget() { 
-          if (this.entryTarget == null)
-            this.entryTarget = new ArrayList<Resource>();
-          return this.entryTarget;
         }
 
         /**
@@ -2692,16 +2672,6 @@ public class Composition extends DomainResource {
         addAuthor();
       }
       return getAuthor().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getAuthorTarget() { 
-      if (this.authorTarget == null)
-        this.authorTarget = new ArrayList<Resource>();
-      return this.authorTarget;
     }
 
     /**

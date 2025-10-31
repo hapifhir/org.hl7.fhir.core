@@ -9,11 +9,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.ContextUtilities;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -22,9 +24,9 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper.NamedResourceWrapperList;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
-import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
+
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManager.XVerExtensionStatus;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerFactory;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
@@ -32,6 +34,7 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class ProfileDrivenRenderer extends ResourceRenderer {
 
   private Set<String> containedIds = new HashSet<>();
@@ -53,10 +56,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         generateByProfile(status, r, sd, r, ed, context.getProfileUtilities().getChildList(sd, ed), x, r.fhirType(), context.isTechnicalMode(), 0);
       }
     } catch (Exception e) {
-      if (DEBUG) {
-        System.out.println(context.formatPhrase(RenderingContext.PROF_DRIV_ERR_GEN_NARR) +r.fhirType()+"/"+r.getId()+": "+e.getMessage());
-        e.printStackTrace();
-      }
+      log.debug(context.formatPhrase(RenderingContext.PROF_DRIV_ERR_GEN_NARR) +r.fhirType()+"/"+r.getId()+": "+e.getMessage(), e);
       x.para().b().style("color: maroon").tx(context.formatPhrase(RenderingContext.PROF_DRIV_EXCP, e.getMessage())+" ");
     }
   }
@@ -346,12 +346,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
              name = name.substring(0, name.length() - 3);
            if (showCodeDetails || !isDefaultValue(displayHints, p.getValues())) {
 
-             para.b().addText(name);
+             markBoilerplate(para.b()).addText(name);
              para.tx(": ");
              if (renderAsList(child) && p.getValues().size() > 1) {
                XhtmlNode list = x.ul();
                for (ResourceWrapper v : p.getValues())
-                 renderLeaf(status, res, v, profile, child, x, list.li(), false, showCodeDetails, displayHints, indent);
+                 renderLeaf(status, res, v, profile, child, x, xlinkNarrative(list.li(), v), false, showCodeDetails, displayHints, indent);
              } else {
                boolean first = true;
                for (ResourceWrapper v : p.getValues()) {
@@ -360,7 +360,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
                  } else {
                    para.tx(", ");
                  }
-                 renderLeaf(status, res, v, profile, child, x, para, false, showCodeDetails, displayHints, indent);
+                 renderLeaf(status, res, v, profile, child, x, spanIfTracking(para, v), false, showCodeDetails, displayHints, indent);
                }
              }
            }
@@ -599,12 +599,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
             StructureDefinition ed = getContext().getWorker().fetchResource(StructureDefinition.class, url);
             if (ed == null) {
               if (xverManager == null) {
-                xverManager = new XVerExtensionManager(context.getWorker());
+                xverManager = XVerExtensionManagerFactory.createExtensionManager(context.getWorker());
               }
               if (xverManager.matchingUrl(url) && xverManager.status(url) == XVerExtensionStatus.Valid) {
-                ed = xverManager.makeDefinition(url);
+                ed = xverManager.getDefinition(url);
                 new ContextUtilities(getContext().getWorker()).generateSnapshot(ed);
-                getContext().getWorker().cacheResource(ed);
+                getContext().getWorker().getManager().cacheResource(ed);
               } 
             }
             if (p.getName().equals("modifierExtension") && ed == null) {
@@ -638,7 +638,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
   private Map<String, String> readDisplayHints(ElementDefinition defn) throws DefinitionException {
     Map<String, String> hints = new HashMap<String, String>();
     if (defn != null) {
-      String displayHint = ToolingExtensions.getDisplayHint(defn);
+      String displayHint = ExtensionUtilities.getDisplayHint(defn);
       if (!Utilities.noString(displayHint)) {
         String[] list = displayHint.split(";");
         for (String item : list) {

@@ -703,16 +703,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getOutcomeReferenceTarget() { 
-          if (this.outcomeReferenceTarget == null)
-            this.outcomeReferenceTarget = new ArrayList<Resource>();
-          return this.outcomeReferenceTarget;
-        }
-
-        /**
          * @return {@link #progress} (Notes about the adherence/status/progress of the activity.)
          */
         public List<Annotation> getProgress() { 
@@ -1364,28 +1354,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Condition> getReasonReferenceTarget() { 
-          if (this.reasonReferenceTarget == null)
-            this.reasonReferenceTarget = new ArrayList<Condition>();
-          return this.reasonReferenceTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Condition addReasonReferenceTarget() { 
-          Condition r = new Condition();
-          if (this.reasonReferenceTarget == null)
-            this.reasonReferenceTarget = new ArrayList<Condition>();
-          this.reasonReferenceTarget.add(r);
-          return r;
-        }
-
-        /**
          * @return {@link #goal} (Internal reference that identifies the goals that this activity is intended to contribute towards meeting.)
          */
         public List<Reference> getGoal() { 
@@ -1436,28 +1404,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
             addGoal();
           }
           return getGoal().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Goal> getGoalTarget() { 
-          if (this.goalTarget == null)
-            this.goalTarget = new ArrayList<Goal>();
-          return this.goalTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Goal addGoalTarget() { 
-          Goal r = new Goal();
-          if (this.goalTarget == null)
-            this.goalTarget = new ArrayList<Goal>();
-          this.goalTarget.add(r);
-          return r;
         }
 
         /**
@@ -1617,8 +1563,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return (Timing) this.scheduled;
         }
 
-        public boolean hasScheduledTiming() { 
-          return this != null && this.scheduled instanceof Timing;
+        public boolean hasScheduledTiming() {
+            return this.scheduled instanceof Timing;
         }
 
         /**
@@ -1632,8 +1578,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return (Period) this.scheduled;
         }
 
-        public boolean hasScheduledPeriod() { 
-          return this != null && this.scheduled instanceof Period;
+        public boolean hasScheduledPeriod() {
+            return this.scheduled instanceof Period;
         }
 
         /**
@@ -1647,8 +1593,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return (StringType) this.scheduled;
         }
 
-        public boolean hasScheduledStringType() { 
-          return this != null && this.scheduled instanceof StringType;
+        public boolean hasScheduledStringType() {
+            return this.scheduled instanceof StringType;
         }
 
         public boolean hasScheduled() { 
@@ -1763,16 +1709,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getPerformerTarget() { 
-          if (this.performerTarget == null)
-            this.performerTarget = new ArrayList<Resource>();
-          return this.performerTarget;
-        }
-
-        /**
          * @return {@link #product} (Identifies the food, drug or other product to be consumed or supplied in the activity.)
          */
         public Type getProduct() { 
@@ -1790,8 +1726,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return (CodeableConcept) this.product;
         }
 
-        public boolean hasProductCodeableConcept() { 
-          return this != null && this.product instanceof CodeableConcept;
+        public boolean hasProductCodeableConcept() {
+            return this.product instanceof CodeableConcept;
         }
 
         /**
@@ -1805,8 +1741,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return (Reference) this.product;
         }
 
-        public boolean hasProductReference() { 
-          return this != null && this.product instanceof Reference;
+        public boolean hasProductReference() {
+            return this.product instanceof Reference;
         }
 
         public boolean hasProduct() { 
@@ -2617,16 +2553,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getDefinitionTarget() { 
-      if (this.definitionTarget == null)
-        this.definitionTarget = new ArrayList<Resource>();
-      return this.definitionTarget;
-    }
-
-    /**
      * @return {@link #basedOn} (A care plan that is fulfilled in whole or in part by this care plan.)
      */
     public List<Reference> getBasedOn() { 
@@ -2677,28 +2603,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         addBasedOn();
       }
       return getBasedOn().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<CarePlan> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<CarePlan>();
-      return this.basedOnTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public CarePlan addBasedOnTarget() { 
-      CarePlan r = new CarePlan();
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<CarePlan>();
-      this.basedOnTarget.add(r);
-      return r;
     }
 
     /**
@@ -2755,28 +2659,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<CarePlan> getReplacesTarget() { 
-      if (this.replacesTarget == null)
-        this.replacesTarget = new ArrayList<CarePlan>();
-      return this.replacesTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public CarePlan addReplacesTarget() { 
-      CarePlan r = new CarePlan();
-      if (this.replacesTarget == null)
-        this.replacesTarget = new ArrayList<CarePlan>();
-      this.replacesTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #partOf} (A larger care plan of which this particular care plan is a component or step.)
      */
     public List<Reference> getPartOf() { 
@@ -2829,27 +2711,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       return getPartOf().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<CarePlan> getPartOfTarget() { 
-      if (this.partOfTarget == null)
-        this.partOfTarget = new ArrayList<CarePlan>();
-      return this.partOfTarget;
-    }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public CarePlan addPartOfTarget() { 
-      CarePlan r = new CarePlan();
-      if (this.partOfTarget == null)
-        this.partOfTarget = new ArrayList<CarePlan>();
-      this.partOfTarget.add(r);
-      return r;
-    }
 
     /**
      * @return {@link #status} (Indicates whether the plan is currently being acted upon, represents future intentions or is now a historical record.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
@@ -3248,16 +3110,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getAuthorTarget() { 
-      if (this.authorTarget == null)
-        this.authorTarget = new ArrayList<Resource>();
-      return this.authorTarget;
-    }
-
-    /**
      * @return {@link #careTeam} (Identifies all people and organizations who are expected to be involved in the care envisioned by this plan.)
      */
     public List<Reference> getCareTeam() { 
@@ -3308,28 +3160,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         addCareTeam();
       }
       return getCareTeam().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<CareTeam> getCareTeamTarget() { 
-      if (this.careTeamTarget == null)
-        this.careTeamTarget = new ArrayList<CareTeam>();
-      return this.careTeamTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public CareTeam addCareTeamTarget() { 
-      CareTeam r = new CareTeam();
-      if (this.careTeamTarget == null)
-        this.careTeamTarget = new ArrayList<CareTeam>();
-      this.careTeamTarget.add(r);
-      return r;
     }
 
     /**
@@ -3386,28 +3216,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Condition> getAddressesTarget() { 
-      if (this.addressesTarget == null)
-        this.addressesTarget = new ArrayList<Condition>();
-      return this.addressesTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Condition addAddressesTarget() { 
-      Condition r = new Condition();
-      if (this.addressesTarget == null)
-        this.addressesTarget = new ArrayList<Condition>();
-      this.addressesTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #supportingInfo} (Identifies portions of the patient's record that specifically influenced the formation of the plan.  These might include co-morbidities, recent procedures, limitations, recent assessments, etc.)
      */
     public List<Reference> getSupportingInfo() { 
@@ -3461,16 +3269,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getSupportingInfoTarget() { 
-      if (this.supportingInfoTarget == null)
-        this.supportingInfoTarget = new ArrayList<Resource>();
-      return this.supportingInfoTarget;
-    }
-
-    /**
      * @return {@link #goal} (Describes the intended objective(s) of carrying out the care plan.)
      */
     public List<Reference> getGoal() { 
@@ -3521,28 +3319,6 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         addGoal();
       }
       return getGoal().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Goal> getGoalTarget() { 
-      if (this.goalTarget == null)
-        this.goalTarget = new ArrayList<Goal>();
-      return this.goalTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Goal addGoalTarget() { 
-      Goal r = new Goal();
-      if (this.goalTarget == null)
-        this.goalTarget = new ArrayList<Goal>();
-      this.goalTarget.add(r);
-      return r;
     }
 
     /**

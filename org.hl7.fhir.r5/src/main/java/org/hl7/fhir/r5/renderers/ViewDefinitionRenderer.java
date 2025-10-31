@@ -16,7 +16,7 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.sql.Column;
 import org.hl7.fhir.r5.utils.sql.ColumnKind;
@@ -111,7 +111,7 @@ public class ViewDefinitionRenderer extends ResourceRenderer {
         hasNotes = hasNotes || !Utilities.noString(col.getNotes());
       }
       
-      XhtmlNode t2 = x.table("grid", false);
+      XhtmlNode t2 = x.table("grid", false).markGenerated(!context.forValidResource());
       XhtmlNode tr = t2.tr();
       tr.th().tx("Name");
       tr.th().tx("Fhir Type");
@@ -135,7 +135,7 @@ public class ViewDefinitionRenderer extends ResourceRenderer {
     if (vd.has("constant")) {
       x.para().tx("Constants:");
 
-      XhtmlNode t2 = x.table("grid", false);
+      XhtmlNode t2 = x.table("grid", false).markGenerated(!context.forValidResource());
       XhtmlNode tr = t2.tr();
       tr.th().tx("Name");
       tr.th().tx("Value");
@@ -155,7 +155,7 @@ public class ViewDefinitionRenderer extends ResourceRenderer {
     if (context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics()) { 
       model.setDocoImg(HierarchicalTableGenerator.help16AsData());     
     } else { 
-      model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "help16.png")); 
+      model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), "help16.png")); 
     }  
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Item"), (context.formatPhrase(RenderingContext.QUEST_LINK)), null, 0)); 
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Coll"), (context.formatPhrase(RenderingContext.QUEST_TEXTFOR)), null, 0)); 

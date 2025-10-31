@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv30_50.resources30_50;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.ContactDetail30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.UsageContext30_50;
@@ -21,10 +22,8 @@ import org.hl7.fhir.r5.model.BooleanType;
 
 public class ValueSet30_50 {
 
-  public static final String EXTENSIBLE_EXTENSION_URL = "http://hl7.org/fhir/StructureDefinition/valueset-extensible";
-
   private static final String[] IGNORED_EXTENSION_URLS = new String[]{
-    EXTENSIBLE_EXTENSION_URL
+    VersionConvertorConstants.EXT_VS_EXTENSIBLE
   };
   public static org.hl7.fhir.dstu3.model.ValueSet.ConceptReferenceComponent convertConceptReferenceComponent(org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent src) throws FHIRException {
     if (src == null)
@@ -226,7 +225,7 @@ public class ValueSet30_50 {
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown30_50.convertMarkdown(src.getCopyrightElement()));
     if (src.hasExtensible())
-      tgt.addExtension(EXTENSIBLE_EXTENSION_URL, new BooleanType(src.getExtensible()));
+      tgt.addExtension(VersionConvertorConstants.EXT_VS_EXTENSIBLE, new BooleanType(src.getExtensible()));
     if (src.hasCompose())
       tgt.setCompose(convertValueSetComposeComponent(src.getCompose()));
     if (src.hasExpansion())
@@ -271,8 +270,8 @@ public class ValueSet30_50 {
       tgt.setPurposeElement(MarkDown30_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown30_50.convertMarkdown(src.getCopyrightElement()));
-    if (src.hasExtension(EXTENSIBLE_EXTENSION_URL))
-      tgt.setExtensible(((BooleanType) src.getExtensionByUrl(EXTENSIBLE_EXTENSION_URL).getValue()).booleanValue());
+    if (src.hasExtension(VersionConvertorConstants.EXT_VS_EXTENSIBLE))
+      tgt.setExtensible(((BooleanType) src.getExtensionByUrl(VersionConvertorConstants.EXT_VS_EXTENSIBLE).getValue()).booleanValue());
     if (src.hasCompose())
       tgt.setCompose(convertValueSetComposeComponent(src.getCompose()));
     if (src.hasExpansion())

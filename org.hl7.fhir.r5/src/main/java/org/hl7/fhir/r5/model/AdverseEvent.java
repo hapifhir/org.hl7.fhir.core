@@ -553,8 +553,8 @@ public class AdverseEvent extends DomainResource {
           return (CodeableConcept) this.instance;
         }
 
-        public boolean hasInstanceCodeableConcept() { 
-          return this != null && this.instance instanceof CodeableConcept;
+        public boolean hasInstanceCodeableConcept() {
+            return this.instance instanceof CodeableConcept;
         }
 
         /**
@@ -568,8 +568,8 @@ public class AdverseEvent extends DomainResource {
           return (Reference) this.instance;
         }
 
-        public boolean hasInstanceReference() { 
-          return this != null && this.instance instanceof Reference;
+        public boolean hasInstanceReference() {
+            return this.instance instanceof Reference;
         }
 
         public boolean hasInstance() { 
@@ -1066,8 +1066,8 @@ public class AdverseEvent extends DomainResource {
           return (Reference) this.item;
         }
 
-        public boolean hasItemReference() { 
-          return this != null && this.item instanceof Reference;
+        public boolean hasItemReference() {
+            return this.item instanceof Reference;
         }
 
         /**
@@ -1081,8 +1081,8 @@ public class AdverseEvent extends DomainResource {
           return (CodeableConcept) this.item;
         }
 
-        public boolean hasItemCodeableConcept() { 
-          return this != null && this.item instanceof CodeableConcept;
+        public boolean hasItemCodeableConcept() {
+            return this.item instanceof CodeableConcept;
         }
 
         public boolean hasItem() { 
@@ -1274,8 +1274,8 @@ public class AdverseEvent extends DomainResource {
           return (Reference) this.item;
         }
 
-        public boolean hasItemReference() { 
-          return this != null && this.item instanceof Reference;
+        public boolean hasItemReference() {
+            return this.item instanceof Reference;
         }
 
         /**
@@ -1289,8 +1289,8 @@ public class AdverseEvent extends DomainResource {
           return (CodeableConcept) this.item;
         }
 
-        public boolean hasItemCodeableConcept() { 
-          return this != null && this.item instanceof CodeableConcept;
+        public boolean hasItemCodeableConcept() {
+            return this.item instanceof CodeableConcept;
         }
 
         public boolean hasItem() { 
@@ -1482,8 +1482,8 @@ public class AdverseEvent extends DomainResource {
           return (Reference) this.item;
         }
 
-        public boolean hasItemReference() { 
-          return this != null && this.item instanceof Reference;
+        public boolean hasItemReference() {
+            return this.item instanceof Reference;
         }
 
         /**
@@ -1497,8 +1497,8 @@ public class AdverseEvent extends DomainResource {
           return (CodeableConcept) this.item;
         }
 
-        public boolean hasItemCodeableConcept() { 
-          return this != null && this.item instanceof CodeableConcept;
+        public boolean hasItemCodeableConcept() {
+            return this.item instanceof CodeableConcept;
         }
 
         public boolean hasItem() { 
@@ -1690,8 +1690,8 @@ public class AdverseEvent extends DomainResource {
           return (Reference) this.item;
         }
 
-        public boolean hasItemReference() { 
-          return this != null && this.item instanceof Reference;
+        public boolean hasItemReference() {
+            return this.item instanceof Reference;
         }
 
         /**
@@ -1705,8 +1705,8 @@ public class AdverseEvent extends DomainResource {
           return (CodeableConcept) this.item;
         }
 
-        public boolean hasItemCodeableConcept() { 
-          return this != null && this.item instanceof CodeableConcept;
+        public boolean hasItemCodeableConcept() {
+            return this.item instanceof CodeableConcept;
         }
 
         public boolean hasItem() { 
@@ -2332,8 +2332,8 @@ public class AdverseEvent extends DomainResource {
       return (DateTimeType) this.occurrence;
     }
 
-    public boolean hasOccurrenceDateTimeType() { 
-      return this != null && this.occurrence instanceof DateTimeType;
+    public boolean hasOccurrenceDateTimeType() {
+        return this.occurrence instanceof DateTimeType;
     }
 
     /**
@@ -2347,8 +2347,8 @@ public class AdverseEvent extends DomainResource {
       return (Period) this.occurrence;
     }
 
-    public boolean hasOccurrencePeriod() { 
-      return this != null && this.occurrence instanceof Period;
+    public boolean hasOccurrencePeriod() {
+        return this.occurrence instanceof Period;
     }
 
     /**
@@ -2362,8 +2362,8 @@ public class AdverseEvent extends DomainResource {
       return (Timing) this.occurrence;
     }
 
-    public boolean hasOccurrenceTiming() { 
-      return this != null && this.occurrence instanceof Timing;
+    public boolean hasOccurrenceTiming() {
+        return this.occurrence instanceof Timing;
     }
 
     public boolean hasOccurrence() { 

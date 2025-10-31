@@ -313,28 +313,6 @@ public class MedicationKnowledge extends DomainResource {
       return getReference().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<MedicationKnowledge> getReferenceTarget() {
-      if (this.referenceTarget == null)
-        this.referenceTarget = new ArrayList<MedicationKnowledge>();
-      return this.referenceTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public MedicationKnowledge addReferenceTarget() {
-      MedicationKnowledge r = new MedicationKnowledge();
-      if (this.referenceTarget == null)
-        this.referenceTarget = new ArrayList<MedicationKnowledge>();
-      this.referenceTarget.add(r);
-      return r;
-    }
-
     protected void listChildren(List<Property> children) {
       super.listChildren(children);
       children.add(new Property("type", "CodeableConcept",
@@ -826,7 +804,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     public boolean hasItemCodeableConcept() {
-      return this != null && this.item instanceof CodeableConcept;
+        return this.item instanceof CodeableConcept;
     }
 
     /**
@@ -843,7 +821,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     public boolean hasItemReference() {
-      return this != null && this.item instanceof Reference;
+        return this.item instanceof Reference;
     }
 
     public boolean hasItem() {
@@ -1831,7 +1809,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     public boolean hasIndicationCodeableConcept() {
-      return this != null && this.indication instanceof CodeableConcept;
+        return this.indication instanceof CodeableConcept;
     }
 
     /**
@@ -1848,7 +1826,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     public boolean hasIndicationReference() {
-      return this != null && this.indication instanceof Reference;
+        return this.indication instanceof Reference;
     }
 
     public boolean hasIndication() {
@@ -2468,7 +2446,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     public boolean hasCharacteristicCodeableConcept() {
-      return this != null && this.characteristic instanceof CodeableConcept;
+        return this.characteristic instanceof CodeableConcept;
     }
 
     /**
@@ -2485,7 +2463,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     public boolean hasCharacteristicQuantity() {
-      return this != null && this.characteristic instanceof Quantity;
+        return this.characteristic instanceof Quantity;
     }
 
     public boolean hasCharacteristic() {
@@ -3348,7 +3326,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     public boolean hasValueCodeableConcept() {
-      return this != null && this.value instanceof CodeableConcept;
+        return this.value instanceof CodeableConcept;
     }
 
     /**
@@ -3364,7 +3342,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     public boolean hasValueStringType() {
-      return this != null && this.value instanceof StringType;
+        return this.value instanceof StringType;
     }
 
     /**
@@ -3380,7 +3358,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     public boolean hasValueQuantity() {
-      return this != null && this.value instanceof Quantity;
+        return this.value instanceof Quantity;
     }
 
     /**
@@ -3396,7 +3374,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     public boolean hasValueBase64BinaryType() {
-      return this != null && this.value instanceof Base64BinaryType;
+        return this.value instanceof Base64BinaryType;
     }
 
     public boolean hasValue() {
@@ -5727,28 +5705,6 @@ public class MedicationKnowledge extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Medication> getAssociatedMedicationTarget() {
-    if (this.associatedMedicationTarget == null)
-      this.associatedMedicationTarget = new ArrayList<Medication>();
-    return this.associatedMedicationTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Medication addAssociatedMedicationTarget() {
-    Medication r = new Medication();
-    if (this.associatedMedicationTarget == null)
-      this.associatedMedicationTarget = new ArrayList<Medication>();
-    this.associatedMedicationTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #productType} (Category of the medication or product (e.g.
    *         branded product, therapeutic moeity, generic product, innovator
    *         product, etc.).)
@@ -6383,28 +6339,6 @@ public class MedicationKnowledge extends DomainResource {
       addContraindication();
     }
     return getContraindication().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<DetectedIssue> getContraindicationTarget() {
-    if (this.contraindicationTarget == null)
-      this.contraindicationTarget = new ArrayList<DetectedIssue>();
-    return this.contraindicationTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public DetectedIssue addContraindicationTarget() {
-    DetectedIssue r = new DetectedIssue();
-    if (this.contraindicationTarget == null)
-      this.contraindicationTarget = new ArrayList<DetectedIssue>();
-    this.contraindicationTarget.add(r);
-    return r;
   }
 
   /**

@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Annotation40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
@@ -43,8 +44,6 @@ import org.hl7.fhir.r5.model.Enumerations;
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
 public class CommunicationRequest40_50 {
-
-  public final static String EXT_PAYLOAD_CONTENT = "http://hl7.org/fhir/4.0/StructureDefinition/extension-CommunicationRequest.payload.content";
 
   public static org.hl7.fhir.r5.model.CommunicationRequest convertCommunicationRequest(org.hl7.fhir.r4.model.CommunicationRequest src) throws FHIRException {
     if (src == null)
@@ -281,10 +280,10 @@ public class CommunicationRequest40_50 {
       return null;
     org.hl7.fhir.r5.model.CommunicationRequest.CommunicationRequestPayloadComponent tgt = new org.hl7.fhir.r5.model.CommunicationRequest.CommunicationRequestPayloadComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
-    if (org.hl7.fhir.r4.utils.ToolingExtensions.hasExtension(src, EXT_PAYLOAD_CONTENT)) {
-      org.hl7.fhir.r4.model.Extension e = org.hl7.fhir.r4.utils.ToolingExtensions.getExtension(src, EXT_PAYLOAD_CONTENT);
+    if (org.hl7.fhir.r4.utils.ToolingExtensions.hasExtension(src, VersionConvertorConstants.EXT_PAYLOAD_CONTENT)) {
+      org.hl7.fhir.r4.model.Extension e = org.hl7.fhir.r4.utils.ToolingExtensions.getExtension(src, VersionConvertorConstants.EXT_PAYLOAD_CONTENT);
       tgt.setContent(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(e.getValue()));
-      org.hl7.fhir.r5.utils.ToolingExtensions.removeExtension(tgt, EXT_PAYLOAD_CONTENT);
+      org.hl7.fhir.r5.extensions.ExtensionUtilities.removeExtension(tgt, VersionConvertorConstants.EXT_PAYLOAD_CONTENT);
     } else if (src.hasContent()) {
       org.hl7.fhir.r4.model.Type content = src.getContent();
       if (content instanceof org.hl7.fhir.r4.model.StringType) {
@@ -310,7 +309,7 @@ public class CommunicationRequest40_50 {
         if (code.hasText())
           tgt.setContent(new org.hl7.fhir.r4.model.StringType(code.getText()));
         if (code.hasCoding() || code.hasExtension()) {
-          org.hl7.fhir.r4.model.Extension e = new org.hl7.fhir.r4.model.Extension(EXT_PAYLOAD_CONTENT);
+          org.hl7.fhir.r4.model.Extension e = new org.hl7.fhir.r4.model.Extension(VersionConvertorConstants.EXT_PAYLOAD_CONTENT);
           e.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(code));
           tgt.addExtension(e);
         }

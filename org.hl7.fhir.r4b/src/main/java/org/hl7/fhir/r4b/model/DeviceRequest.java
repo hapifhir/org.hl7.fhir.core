@@ -126,7 +126,7 @@ public class DeviceRequest extends DomainResource {
     }
 
     public boolean hasValueCodeableConcept() {
-      return this != null && this.value instanceof CodeableConcept;
+        return this.value instanceof CodeableConcept;
     }
 
     /**
@@ -142,7 +142,7 @@ public class DeviceRequest extends DomainResource {
     }
 
     public boolean hasValueQuantity() {
-      return this != null && this.value instanceof Quantity;
+        return this.value instanceof Quantity;
     }
 
     /**
@@ -158,7 +158,7 @@ public class DeviceRequest extends DomainResource {
     }
 
     public boolean hasValueRange() {
-      return this != null && this.value instanceof Range;
+        return this.value instanceof Range;
     }
 
     /**
@@ -174,7 +174,7 @@ public class DeviceRequest extends DomainResource {
     }
 
     public boolean hasValueBooleanType() {
-      return this != null && this.value instanceof BooleanType;
+        return this.value instanceof BooleanType;
     }
 
     public boolean hasValue() {
@@ -1106,7 +1106,7 @@ public class DeviceRequest extends DomainResource {
   }
 
   public boolean hasCodeReference() {
-    return this != null && this.code instanceof Reference;
+      return this.code instanceof Reference;
   }
 
   /**
@@ -1122,7 +1122,7 @@ public class DeviceRequest extends DomainResource {
   }
 
   public boolean hasCodeCodeableConcept() {
-    return this != null && this.code instanceof CodeableConcept;
+      return this.code instanceof CodeableConcept;
   }
 
   public boolean hasCode() {
@@ -1272,7 +1272,7 @@ public class DeviceRequest extends DomainResource {
   }
 
   public boolean hasOccurrenceDateTimeType() {
-    return this != null && this.occurrence instanceof DateTimeType;
+      return this.occurrence instanceof DateTimeType;
   }
 
   /**
@@ -1292,7 +1292,7 @@ public class DeviceRequest extends DomainResource {
   }
 
   public boolean hasOccurrencePeriod() {
-    return this != null && this.occurrence instanceof Period;
+      return this.occurrence instanceof Period;
   }
 
   /**
@@ -1312,7 +1312,7 @@ public class DeviceRequest extends DomainResource {
   }
 
   public boolean hasOccurrenceTiming() {
-    return this != null && this.occurrence instanceof Timing;
+      return this.occurrence instanceof Timing;
   }
 
   public boolean hasOccurrence() {

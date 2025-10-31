@@ -1694,8 +1694,8 @@ public class PlanDefinition extends MetadataResource {
           return (Quantity) this.detail;
         }
 
-        public boolean hasDetailQuantity() { 
-          return this != null && this.detail instanceof Quantity;
+        public boolean hasDetailQuantity() {
+          return this.detail instanceof Quantity;
         }
 
         /**
@@ -1709,8 +1709,8 @@ public class PlanDefinition extends MetadataResource {
           return (Range) this.detail;
         }
 
-        public boolean hasDetailRange() { 
-          return this != null && this.detail instanceof Range;
+        public boolean hasDetailRange() {
+          return this.detail instanceof Range;
         }
 
         /**
@@ -1724,8 +1724,8 @@ public class PlanDefinition extends MetadataResource {
           return (CodeableConcept) this.detail;
         }
 
-        public boolean hasDetailCodeableConcept() { 
-          return this != null && this.detail instanceof CodeableConcept;
+        public boolean hasDetailCodeableConcept() {
+          return this.detail instanceof CodeableConcept;
         }
 
         public boolean hasDetail() { 
@@ -2820,8 +2820,8 @@ public class PlanDefinition extends MetadataResource {
           return (DateTimeType) this.timing;
         }
 
-        public boolean hasTimingDateTimeType() { 
-          return this != null && this.timing instanceof DateTimeType;
+        public boolean hasTimingDateTimeType() {
+          return this.timing instanceof DateTimeType;
         }
 
         /**
@@ -2835,8 +2835,8 @@ public class PlanDefinition extends MetadataResource {
           return (Period) this.timing;
         }
 
-        public boolean hasTimingPeriod() { 
-          return this != null && this.timing instanceof Period;
+        public boolean hasTimingPeriod() {
+          return this.timing instanceof Period;
         }
 
         /**
@@ -2850,8 +2850,8 @@ public class PlanDefinition extends MetadataResource {
           return (Duration) this.timing;
         }
 
-        public boolean hasTimingDuration() { 
-          return this != null && this.timing instanceof Duration;
+        public boolean hasTimingDuration() {
+          return this.timing instanceof Duration;
         }
 
         /**
@@ -2865,8 +2865,8 @@ public class PlanDefinition extends MetadataResource {
           return (Range) this.timing;
         }
 
-        public boolean hasTimingRange() { 
-          return this != null && this.timing instanceof Range;
+        public boolean hasTimingRange() {
+          return this.timing instanceof Range;
         }
 
         /**
@@ -2880,8 +2880,8 @@ public class PlanDefinition extends MetadataResource {
           return (Timing) this.timing;
         }
 
-        public boolean hasTimingTiming() { 
-          return this != null && this.timing instanceof Timing;
+        public boolean hasTimingTiming() {
+          return this.timing instanceof Timing;
         }
 
         public boolean hasTiming() { 
@@ -4500,8 +4500,8 @@ public class PlanDefinition extends MetadataResource {
           return (Duration) this.offset;
         }
 
-        public boolean hasOffsetDuration() { 
-          return this != null && this.offset instanceof Duration;
+        public boolean hasOffsetDuration() {
+          return this.offset instanceof Duration;
         }
 
         /**
@@ -4515,8 +4515,8 @@ public class PlanDefinition extends MetadataResource {
           return (Range) this.offset;
         }
 
-        public boolean hasOffsetRange() { 
-          return this != null && this.offset instanceof Range;
+        public boolean hasOffsetRange() {
+          return this.offset instanceof Range;
         }
 
         public boolean hasOffset() { 
@@ -6570,28 +6570,6 @@ public class PlanDefinition extends MetadataResource {
         addLibrary();
       }
       return getLibrary().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Library> getLibraryTarget() { 
-      if (this.libraryTarget == null)
-        this.libraryTarget = new ArrayList<Library>();
-      return this.libraryTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Library addLibraryTarget() { 
-      Library r = new Library();
-      if (this.libraryTarget == null)
-        this.libraryTarget = new ArrayList<Library>();
-      this.libraryTarget.add(r);
-      return r;
     }
 
     /**

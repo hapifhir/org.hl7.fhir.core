@@ -8,21 +8,23 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.r5.context.ExpansionOptions;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Kind;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.TerminologyUtilities;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationAction;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationRule;
@@ -38,6 +40,7 @@ import org.hl7.fhir.validation.codesystem.BCP47Checker;
 import org.hl7.fhir.validation.codesystem.CPTChecker;
 import org.hl7.fhir.validation.codesystem.CodeSystemBasedChecker;
 import org.hl7.fhir.validation.codesystem.CodeSystemChecker;
+import org.hl7.fhir.validation.codesystem.CodeSystemChecker.StringWithFlag;
 import org.hl7.fhir.validation.codesystem.GeneralCodeSystemChecker;
 import org.hl7.fhir.validation.codesystem.LoincChecker;
 import org.hl7.fhir.validation.codesystem.RxNormChecker;
@@ -47,6 +50,7 @@ import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
+@Slf4j
 public class ValueSetValidator extends BaseValidator {
 
   public class ParameterDeclaration {
@@ -104,6 +108,7 @@ public class ValueSetValidator extends BaseValidator {
     private EnumSet<PropertyOperation> ops;
     private List<String> codeList = new ArrayList<>();
     private boolean change;
+    private boolean active;
 
     protected PropertyValidationRules(PropertyFilterType type, CodeValidationRule codeValidation, PropertyOperation... ops) {
       super();
@@ -146,6 +151,13 @@ public class ValueSetValidator extends BaseValidator {
     }
     public PropertyValidationRules setChange(boolean change) {
       this.change = change;
+      return this;
+    }
+    public boolean isActive() {
+      return active;
+    }
+    public PropertyValidationRules setActive(boolean active) {
+      this.active = active;
       return this;
     }
 
@@ -207,13 +219,14 @@ public class ValueSetValidator extends BaseValidator {
     if (!VersionUtilities.isR2Ver(context.getVersion())) {
       List<ParameterDeclaration> parameters = new ArrayList<ValueSetValidator.ParameterDeclaration>(); 
       int i = 0;
-      for (Element ext : vs.getExtensions(ToolingExtensions.EXT_VALUESET_PARAMETER)) {
+      for (Element ext : vs.getExtensions(ExtensionDefinitions.EXT_VALUESET_PARAMETER)) {
         Element n = ext.getExtension("name");
         if (n != null) {
           Element d = ext.getExtension("documentation");
           NodeStack estack = stack.push(ext, i, null, null);
           String name = n.getNamedChildValue("value");
           if (d == null) {                     
+            warning(errors, "2025-03-22", IssueType.BUSINESSRULE, estack, name.startsWith("p-"), I18nConstants.VALUESET_PARAMETER_NO_DOCO, name);               
             parameters.add(new ParameterDeclaration(ext, n.primitiveValue(), null));            
           } else {
             parameters.add(new ParameterDeclaration(ext, name, d == null ? null : d.getNamedChildValue("value")));
@@ -302,7 +315,6 @@ public class ValueSetValidator extends BaseValidator {
     }      
 
     if (policyAdvisor.policyForSpecialValidation((IResourceValidator) parent, valContext.getAppContext(), SpecialValidationRule.VALUESET_IMPORT_CHECKS, stack.getLiteralPath(), vsSrc, include) == SpecialValidationAction.CHECK_RULE) {
-
       List<Element> valuesets = include.getChildrenByName("valueSet");
       int i = 0;
       for (Element ve : valuesets) {
@@ -310,7 +322,7 @@ public class ValueSetValidator extends BaseValidator {
         ValueSet vs = context.findTxResource(ValueSet.class, v);
         if (vs == null) {
           // we couldn't find it, but it might be an implicit value set 
-          ValueSetExpansionOutcome vse = context.expandVS(v, true, false, 0);
+          ValueSetExpansionOutcome vse = context.expandVS(new ExpansionOptions().withCacheOk(true).withHierarchical(false).withMaxCount(0), v);
           if (!vse.isOk() ) {
             NodeStack ns = stack.push(ve, i, ve.getProperty().getDefinition(), ve.getProperty().getDefinition());
 
@@ -353,6 +365,7 @@ public class ValueSetValidator extends BaseValidator {
       }
       if (version == null) {
         CodeSystem cs = context.fetchCodeSystem(system);
+
         if (cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(system) && fetcher != null) {
           Set<String> possibleVersions = fetcher.fetchCanonicalResourceVersions(null, valContext.getAppContext(), system);
           warning(errors, NO_RULE_DATE, IssueType.INVALID,  stack, possibleVersions.size() <= 1, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS, 
@@ -366,13 +379,14 @@ public class ValueSetValidator extends BaseValidator {
     CodeSystemChecker csChecker = getSystemValidator(system, errors);
     CodeSystem cs = null;
     if (!Utilities.noString(system)) {
-      cs = context.fetchCodeSystem(system, version);
+      cs = context.fetchCodeSystem(system, version, null);
       if (cs == null) {
         // can we get it from a terminology server? 
-        cs = context.findTxResource(CodeSystem.class, system, version);
+        cs = context.findTxResource(CodeSystem.class, system, version, null);
       }
       boolean validateConcepts = true;
       if (cs != null) { // if it's null, we can't analyse this
+        ok = rule(errors, "2025-07-15", IssueType.BUSINESSRULE, stack.getLiteralPath(), !cs.hasUserData(UserDataNames.RESOURCE_INTERNAL_USE_ONLY), I18nConstants.RESOURCE_INTERNAL_USE_ONLY, "CodeSystem", cs.getSourcePackage() != null ? cs.getSourcePackage().getVID() : "??") && ok;
         if (cs.getContent() == null) {
           warning(errors, "2024-03-06", IssueType.INVALID, stack, false, version == null ? I18nConstants.VALUESET_INCLUDE_CS_CONTENT : I18nConstants.VALUESET_INCLUDE_CSVER_CONTENT, system, "null", version);             
         } else {
@@ -387,6 +401,13 @@ public class ValueSetValidator extends BaseValidator {
             validateConcepts = false;
             ok = rule(errors, "2024-03-06", IssueType.INVALID, stack, false, version == null ? I18nConstants.VALUESET_INCLUDE_CS_SUPPLEMENT : I18nConstants.VALUESET_INCLUDE_CSVER_SUPPLEMENT, system, cs.getSupplements(), version) && ok;             
             break;
+          case NOTPRESENT:
+            // what happens next depends on whether we can validate this codeSystem
+            if (!context.getTxSupportInfo(cs.getUrl(), cs.getVersion()).isServerSide()) {
+              validateConcepts = false;
+              warning(errors, "2024-03-06", IssueType.INVALID, stack, false, version == null ? I18nConstants.VALUESET_INCLUDE_CS_CONTENT : I18nConstants.VALUESET_INCLUDE_CSVER_CONTENT, system, cs.getContent().toCode(), version);
+            }
+            break;
           default:
             break;
           }
@@ -394,9 +415,19 @@ public class ValueSetValidator extends BaseValidator {
       } else {
         if (system.startsWith("urn:oid:")) {
           List<CodeSystem> csl = cu.fetchByIdentifier(CodeSystem.class, system);
-          ok = rule(errors, "2025-01-09", IssueType.INVALID, stack, csl.isEmpty(), I18nConstants.VALUESET_INCLUDE_WRONG_CS_OID, system) && ok;
+          if (!csl.isEmpty()) {
+            if (csl.size() == 1) {
+              ok = rule(errors, "2025-01-09", IssueType.INVALID, stack, csl.isEmpty(), I18nConstants.VALUESET_INCLUDE_WRONG_CS_OID, system, csl.get(0).getUrl()) && ok;
+            } else {
+              List<String> ids = new ArrayList<>();
+              for (CodeSystem c : csl) {
+                ids.add(c.getVersionedUrl());
+              }
+              ok = rule(errors, "2025-01-09", IssueType.INVALID, stack, csl.isEmpty(), I18nConstants.VALUESET_INCLUDE_WRONG_CS_OID_PLURAL, system, CommaSeparatedStringBuilder.join(",", ids)) && ok;
+            }
+          }
         }
-        ValueSet vs = context.findTxResource(ValueSet.class, system, version);
+        ValueSet vs = context.findTxResource(ValueSet.class, system, version, null);
         if (vs != null) {
           validateConcepts = false;
           List<String> systems = TerminologyUtilities.listSystems(vs);
@@ -418,8 +449,17 @@ public class ValueSetValidator extends BaseValidator {
           boolean first = true;
           if (concepts.size() > TOO_MANY_CODES_TO_VALIDATE) {
             hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_TOO_MANY_CODES, concepts.size());
-          } else {        
-            if (((InstanceValidator) parent).isValidateValueSetCodesOnTxServer() && !context.isNoTerminologyServer()) {
+          } else if (!((InstanceValidator) parent).isValidateValueSetCodesOnTxServer()) {
+            hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_NOT_VALIDATING, concepts.size());
+          } else if (context.isNoTerminologyServer()) {
+            hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_NO_SERVER, concepts.size());
+          } else {
+            var si = context.getTxSupportInfo(system, version);
+            if (concepts.size() > 1 && !si.isSupported()) {
+              hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_CS_NO_SUPPORT, si.getServer());
+            } else if (concepts.size() > 1 && (si.getTestVersion() == null || !VersionUtilities.isThisOrLater("1.7.8", si.getTestVersion(), VersionUtilities.VersionPrecision.PATCH))) {
+              hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_NO_BATCH_ON_SERVER, si.getServer());
+            } else {
               try {
                 for (Element concept : concepts) {
                   // we treat the first differently because we want to know if the system is worth validating. if it is, then we batch the rest
@@ -429,13 +469,13 @@ public class ValueSetValidator extends BaseValidator {
                   } else if (systemOk) {
                     batch.add(prepareValidateValueSetIncludeConcept(errors, concept, stack.push(concept, cc, null, null), system, version, csChecker));
                     if (batch.size() > VALIDATION_BATCH_SIZE) {
-                      executeValidationBatch(errors, vsid, retired, system, version, batch);
+                      executeValidationBatch(errors, vsid, retired, system, version, batch, stack);
                       batch.clear();
                     }
                   }
                   cc++;
-                }    
-                executeValidationBatch(errors, vsid, retired, system, version, batch);
+                }
+                executeValidationBatch(errors, vsid, retired, system, version, batch, stack);
               } catch (Exception e) {
                 ok = false;
                 VSCodingValidationRequest cv = batch.get(0);
@@ -458,26 +498,25 @@ public class ValueSetValidator extends BaseValidator {
   }
 
   private void executeValidationBatch(List<ValidationMessage> errors, String vsid, boolean retired, String system,
-      String version, List<VSCodingValidationRequest> batch) {
+      String version, List<VSCodingValidationRequest> batch, NodeStack baseStack) {
     if (batch.size() > 0) {
-      long t = System.currentTimeMillis();
-      if (settings.isDebug()) {
-        System.out.println("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
-      }
-      context.validateCodeBatch(ValidationOptions.defaults().withExampleOK(), batch, null);
-      if (settings.isDebug()) {
-        System.out.println("  :   .. "+(System.currentTimeMillis()-t)+"ms");
-      }
-      for (VSCodingValidationRequest cv : batch) {
-        if (version == null) {
-          warningOrError(!retired, errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode(), cv.getResult().getMessage());
-        } else {
-          warningOrError(!retired, errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, cv.getCoding().getCode(), cv.getResult().getMessage());
+      IWorkerContext.SystemSupportInformation txInfo = context.getTxSupportInfo(system, version);
+      if (warning(errors, "2025-07-07", IssueType.NOTSUPPORTED, baseStack,  txInfo.getTestVersion() != null && VersionUtilities.isThisOrLater(TerminologyClientContext.TX_BATCH_VERSION, txInfo.getTestVersion(), VersionUtilities.VersionPrecision.MINOR), I18nConstants.VALUESET_TXVER_BATCH_NOT_SUPPORTED, (txInfo.getTestVersion() == null ? "Not Known" : txInfo.getTestVersion()), system+(version == null ? "" : "|"+version), txInfo.getServer())) {
+        long t = System.currentTimeMillis();
+        log.debug("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
+        context.validateCodeBatch(ValidationOptions.defaults().withExampleOK().setDisplayWarningMode(true), batch, null, false);
+        log.debug("  :   .. "+(System.currentTimeMillis()-t)+"ms");
+        for (VSCodingValidationRequest cv : batch) {
+          if (version == null) {
+            warningOrError(!retired, errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode(), cv.getResult().getMessage());
+          } else {
+            warningOrError(!retired, errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, cv.getCoding().getCode(), cv.getResult().getMessage());
+          }
+          processConceptIssues(errors, cv.getStack().getElement(), cv.getStack(), system, version, cv.getResult(), cv.getCoding().getDisplay());
         }
       }
     }
   }
-
 
   private boolean validateValueSetIncludeConcept(List<ValidationMessage> errors, Element concept, NodeStack stackInc, NodeStack stack, String system, String version, CodeSystemChecker slv, boolean locallyKnownCodeSystem) {
     String code = concept.getChildValue("code");
@@ -486,7 +525,7 @@ public class ValueSetValidator extends BaseValidator {
 
     if (!noTerminologyChecks) {
       if (version == null) {
-        ValidationResult vv = context.validateCode(ValidationOptions.defaults().withExampleOK(), new Coding(system, code, null), null);
+        ValidationResult vv = context.validateCode(ValidationOptions.defaults().withExampleOK().setDisplayWarningMode(true), new Coding(system, code, display), null);
         if (vv.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
           if (isExampleUrl(system)) {
             if (settings.isAllowExamples()) {
@@ -501,19 +540,23 @@ public class ValueSetValidator extends BaseValidator {
         } else {
           boolean ok = vv.isOk();
           rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack, ok, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, code, vv.getMessage());
-          if (vv.getMessage() != null) {
+          if (vv.hasIssues()) {
+            processConceptIssues(errors, concept, stack, system, version, vv, display);
+          } else if (vv.getMessage() != null) {
             hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack, false, vv.getMessage());
           }
         }
       } else {
-        ValidationResult vv = context.validateCode(ValidationOptions.defaults().withExampleOK(), new Coding(system, code, null).setVersion(version), null);
+        ValidationResult vv = context.validateCode(ValidationOptions.defaults().withExampleOK().setDisplayWarningMode(true), new Coding(system, code, display).setVersion(version), null);
         if (vv.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
           warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stackInc.getLiteralPath(), false, I18nConstants.VALUESET_UNC_SYSTEM_WARNING_VER, system+"#"+version, vv.getMessage());            
           return false;        
         } else {
           boolean ok = vv.isOk();
           rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack, ok, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, code, vv.getMessage());
-          if (vv.getMessage() != null) {
+          if (vv.hasIssues()) {
+            processConceptIssues(errors, concept, stack, system, version, vv, display);
+          } else if (vv.getMessage() != null) {
             hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack, false, vv.getMessage());
           }
         }
@@ -522,12 +565,25 @@ public class ValueSetValidator extends BaseValidator {
     return true;
   }
 
+  private void processConceptIssues(List<ValidationMessage> errors, Element concept, NodeStack stack, String system, String version, ValidationResult vv, String display) {
+    for (OperationOutcome.OperationOutcomeIssueComponent iss : vv.getIssues()) {
+      if (iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "invalid-code")) {
+        // already handled.
+      } else if (iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "invalid-display")) {
+        hint(errors, "2025-10-30", IssueType.INFORMATIONAL, stack, false, version == null ? I18nConstants.VALUESET_CODE_CONCEPT_HINT :  I18nConstants.VALUESET_CODE_CONCEPT_HINT_VER, display, system, version);
+      } else {
+        var validationMessage = buildValidationMessage(vv.getTxLink(), vv.getDiagnostics(), concept.line(), concept.col(), stack.getLiteralPath(), iss);
+        errors.add(validationMessage);
+      }
+    }
+  }
+
   private VSCodingValidationRequest prepareValidateValueSetIncludeConcept(List<ValidationMessage> errors, Element concept, NodeStack stack, String system, String version, CodeSystemChecker slv) {
     String code = concept.getChildValue("code");
     String display = concept.getChildValue("display");
     slv.checkConcept(code, display);
 
-    Coding c = new Coding(system, code, null);
+    Coding c = new Coding(system, code, display);
     if (version != null) {
       c.setVersion(version);
     }
@@ -540,7 +596,7 @@ public class ValueSetValidator extends BaseValidator {
     String op = filter.getChildValue("op");
     Element ve = filter.getNamedChild("value");
     String value = ve == null ? null : ve.primitiveValue();
-    Element expr = ve == null ? null : ve.getExtension(ToolingExtensions.EXT_CQF_EXP);
+    Element expr = ve == null ? null : ve.getExtension(ExtensionDefinitions.EXT_CQF_EXP);
     
     if (property != null) {
       List<String> knownNames = new ArrayList<String>();
@@ -603,7 +659,16 @@ public class ValueSetValidator extends BaseValidator {
           } else {
             ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, expr == null, I18nConstants.VALUESET_BAD_FILTER_EXPR_AND_VALUE) && ok;
             
-            if ("exists".equals(op)) {
+            if (rules.isActive()) {
+              StringWithFlag msg = csChecker.checkFilterValue(system, version, property, op, value, rules, ValidationOptions.defaults());
+              if (msg == null) {
+                // nothing
+              } else if (msg.isFail()) {
+                warning(errors, "2025-06-16", IssueType.INVALID, stack, msg == null, I18nConstants.VALUESET_BAD_FILTER_VALUE_CANT_CHECK, property, value, msg.getMsg());
+              } else {
+                ok = rule(errors, "2025-06-16", IssueType.INVALID, stack, msg == null, I18nConstants.VALUESET_BAD_FILTER_VALUE_INVALID, property, value, msg.getMsg()) && ok;                
+              }
+            } else if ("exists".equals(op)) {
               ok = checkFilterValue(errors, stack, system, version, ok, property, op, value,  new PropertyValidationRules(PropertyFilterType.Boolean, null)) && ok;
             } else if ("regex".equals(op)) {
               String err = null;
@@ -686,10 +751,12 @@ public class ValueSetValidator extends BaseValidator {
             I18nConstants.VALUESET_BAD_FILTER_VALUE_CODE, property, value) && ok;
         if (!noTerminologyChecks && (rules.getCodeValidation() == CodeValidationRule.Error || rules.getCodeValidation() == CodeValidationRule.Warning)) {
           ValidationResult vr = context.validateCode(settings, system, version, value, null);
-          if (rules.getCodeValidation() == CodeValidationRule.Error) {
-            ok = rule(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), vr.isOk(), rules.isChange() ? I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_CHANGE : I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage()) && ok;
+          if (vr.isOk()) {
+            warning(errors, "2025-06-04", IssueType.INVALID, stack.getLiteralPath(), !vr.isInactive(), I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_INACTIVE, property, value, system);            
+          } else if (rules.getCodeValidation() == CodeValidationRule.Error) {
+            ok = rule(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), false, rules.isChange() ? I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_CHANGE : I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage()) && ok;
           } else {
-            warning(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), vr.isOk(), rules.isChange() ? I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_CHANGE : I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage());
+            warning(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), false, rules.isChange() ? I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_CHANGE : I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage());
           }
         }
         break;
@@ -721,9 +788,16 @@ public class ValueSetValidator extends BaseValidator {
             I18nConstants.VALUESET_BAD_FILTER_VALUE_INTEGER, property, value) && ok;
         break;
       case Coding :
-        Coding code = Coding.fromLiteral(value);
+        Coding code;
+        if (value.matches("[a-zA-Z][a-zA-Z0-9+.-]*:[^\\s|]+\\|\\S+")) {
+          warning(errors, "2025-07-10", IssueType.INVALID, stack, false, I18nConstants.VALUESET_BAD_FILTER_VALUE_CODED_LEGACY, property, value);
+          code = new Coding().setSystem(value.substring(0, value.lastIndexOf("|"))).setCode(value.substring(value.lastIndexOf("|") + 1));
+        } else {
+          code = Coding.fromLiteral(value);
+        }
+
         if (code == null) {
-          ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, false, I18nConstants.VALUESET_BAD_FILTER_VALUE_CODED, property, value) && ok;
+          ok = rule(errors, "2025-07-10", IssueType.INVALID, stack, false, I18nConstants.VALUESET_BAD_FILTER_VALUE_CODED, property, value) && ok;
         } else if (!noTerminologyChecks) {
           ValidationResult vr = context.validateCode(settings, code, null);
           ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, vr.isOk(), I18nConstants.VALUESET_BAD_FILTER_VALUE_CODED_INVALID, property, value, vr.getMessage()) && ok;

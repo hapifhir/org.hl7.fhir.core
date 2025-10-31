@@ -43,26 +43,30 @@ import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.FHIRLexer;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.ExpressionNodeWithOffset;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r5.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
+import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.Tuple;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.KeyIssuer;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 @MarkedToMoveToAdjunctPackage
-public class LiquidEngine implements IEvaluationContext {
+public class LiquidEngine implements IHostApplicationServices {
 
   public static class LiquidForLoopObject extends Base {
 
@@ -160,12 +164,13 @@ public class LiquidEngine implements IEvaluationContext {
     public String fetchInclude(LiquidEngine engine, String name);
   }
 
-  private IEvaluationContext externalHostServices;
+  private IHostApplicationServices externalHostServices;
   private FHIRPathEngine engine;
   private ILiquidEngineIncludeResolver includeResolver;
   private ILiquidRenderingSupport renderingSupport;
   private MarkDownProcessor processor = new MarkDownProcessor(Dialect.COMMON_MARK);
   private Map<String, Base> vars = new HashMap<>();
+  private KeyIssuer keyIssuer;
   
   private class LiquidEngineContext {
     private Object externalContext;
@@ -194,12 +199,13 @@ public class LiquidEngine implements IEvaluationContext {
     }
   }
 
-  public LiquidEngine(IWorkerContext context, IEvaluationContext hostServices) {
+  public LiquidEngine(IWorkerContext context, IHostApplicationServices hostServices) {
     super();
     this.externalHostServices = hostServices;
     engine = new FHIRPathEngine(context);
     engine.setHostServices(this);
     engine.setLiquidMode(true);
+    engine.setCheckWithHostServicesBeforeHand(true);
   }
 
   public ILiquidEngineIncludeResolver getIncludeResolver() {
@@ -906,7 +912,7 @@ public class LiquidEngine implements IEvaluationContext {
   }
 
   @Override
-  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
+  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
     if (ctxt.loopVars.containsKey(name))
       return new ArrayList<Base>(Arrays.asList(ctxt.loopVars.get(name)));
@@ -914,15 +920,15 @@ public class LiquidEngine implements IEvaluationContext {
       return new ArrayList<Base>(Arrays.asList(ctxt.globalVars.get(name)));
     if (externalHostServices == null)
       return new ArrayList<Base>();
-    return externalHostServices.resolveConstant(engine, ctxt.externalContext, name, beforeContext, explicitConstant);
+    return externalHostServices.resolveConstant(engine, ctxt.externalContext, name, mode);
   }
 
   @Override
-  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
+  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     if (externalHostServices == null)
       return null;
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
-    return externalHostServices.resolveConstantType(engine, ctxt.externalContext, name, explicitConstant);
+    return externalHostServices.resolveConstantType(engine, ctxt.externalContext, name, mode);
   }
 
   @Override
@@ -934,6 +940,10 @@ public class LiquidEngine implements IEvaluationContext {
 
   @Override
   public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
+    // we define one function here: ensureId()
+    if (keyIssuer != null && "ensureId".equals(functionName)) {
+      return new FunctionDetails("Id for element, and make a unique one if it doens't exist", 0, 0);
+    }
     if (externalHostServices == null)
       return null;
     return externalHostServices.resolveFunction(engine, functionName);
@@ -941,6 +951,9 @@ public class LiquidEngine implements IEvaluationContext {
 
   @Override
   public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters) throws PathEngineException {
+    if (keyIssuer != null && "ensureId".equals(functionName)) {
+      return new TypeDetails(CollectionStatus.SINGLETON, "string");
+    }
     if (externalHostServices == null)
       return null;
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
@@ -949,6 +962,15 @@ public class LiquidEngine implements IEvaluationContext {
 
   @Override
   public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
+    if (keyIssuer != null && "ensureId".equals(functionName)) {
+      Base b = focus.get(0);
+      if (b.getIdBase() == null) {
+        b.setIdBase(keyIssuer.issueKey());
+      }
+      List<Base> res = new ArrayList<Base>();
+      res.add(new IdType(b.getIdBase()));
+      return res;
+    }
     if (externalHostServices == null)
       return null;
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;

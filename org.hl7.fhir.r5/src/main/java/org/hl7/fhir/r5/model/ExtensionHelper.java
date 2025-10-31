@@ -1,5 +1,8 @@
 package org.hl7.fhir.r5.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -98,6 +101,25 @@ public class ExtensionHelper {
    * @param name the identity of the extension of interest
    * @return The extension, if on this element, else null. will check modifier extensions too, if appropriate
    */
+  public static List<Extension> getExtensionList(Element element, String name) {
+    List<Extension> res = new ArrayList<>();
+    
+    if (element != null && element instanceof BackboneElement) { 
+      res.addAll(getExtensionList((BackboneElement) element, name));
+    } else if (name != null && element != null) {
+      for (Extension e : element.getExtension()) {
+        if (name.equals(e.getUrl())) {
+          res.add(e);
+        }
+      }
+    }
+    return res;
+  }
+  
+  /**
+   * @param name the identity of the extension of interest
+   * @return The extension, if on this element, else null. will check modifier extensions too, if appropriate
+   */
   public static Extension getExtension(DomainResource resource, String name) {
     
     if (name == null || resource == null || !resource.hasExtension())
@@ -131,6 +153,31 @@ public class ExtensionHelper {
     return null;
   }
 
+  /**
+   * @param name the identity of the extension of interest
+   * @return The extension, if on this element, else null. will check modifier extensions too
+   */
+  public static List<Extension> getExtensionList(BackboneElement element, String name) {
+    List<Extension> res = new ArrayList<>();
+
+    if (name != null && element != null) {
+      if (element.hasModifierExtension()) {
+        for (Extension e : element.getModifierExtension()) {
+          if (name.equals(e.getUrl()))
+            res.add(e);
+        }
+      }
+      if (element.hasExtension()) {
+        for (Extension e : element.getExtension()) {
+          if (name.equals(e.getUrl()))
+            res.add(e);
+        }
+      }
+    }
+    return res;
+  }
+
+  
   /**
    * set the value of an extension on the element. if value == null, make sure it doesn't exist
    * 

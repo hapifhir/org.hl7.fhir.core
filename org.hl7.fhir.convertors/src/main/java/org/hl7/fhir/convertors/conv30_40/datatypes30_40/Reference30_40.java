@@ -16,10 +16,10 @@ public class Reference30_40 {
     return tgt;
   }
 
-  public static org.hl7.fhir.dstu3.model.Reference convertReference(org.hl7.fhir.r4.model.Reference src) throws FHIRException {
+  public static org.hl7.fhir.dstu3.model.Reference convertReference(org.hl7.fhir.r4.model.Reference src, String... extensionUrlsToIgnore) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.dstu3.model.Reference tgt = new org.hl7.fhir.dstu3.model.Reference();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt, extensionUrlsToIgnore);
     if (src.hasReference()) tgt.setReference(src.getReference());
     if (src.hasIdentifier()) tgt.setIdentifier(Identifier30_40.convertIdentifier(src.getIdentifier()));
     if (src.hasDisplay()) tgt.setDisplayElement(String30_40.convertString(src.getDisplayElement()));

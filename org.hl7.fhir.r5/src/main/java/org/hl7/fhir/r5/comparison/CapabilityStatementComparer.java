@@ -10,6 +10,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.comparison.StructureDefinitionComparer.ProfileComparison;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -28,7 +29,7 @@ import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
@@ -262,8 +263,8 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
   }
 
   private void compareExpectations(StructuralMatch<Element> combined, Element left, Element right, String path, CapabilityStatementComparison res, Element union, Element intersection) {
-    List<Extension> l = left.getExtensionsByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT);
-    List<Extension> r = right.getExtensionsByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT);
+    List<Extension> l = left.getExtensionsByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT);
+    List<Extension> r = right.getExtensionsByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT);
     if (l.size() == 1 || r.size() == 1) {
       if (l.size() == 0) {
         union.addExtension(r.get(0).copy());
@@ -283,8 +284,8 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
           sm.getMessages().add(new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, path+".extension('http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation')", "Changed value for expectation: '"+ls+"' vs '"+rs+"'", IssueSeverity.WARNING));
           String lowest = lower(ls, rs) ? ls : rs;
           String highest = lower(ls, rs) ? rs : ls;
-          union.addExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT, new CodeType(lowest));
-          intersection.addExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT, new CodeType(highest));
+          union.addExtension(ExtensionDefinitions.EXT_CAP_STMT_EXPECT, new CodeType(lowest));
+          intersection.addExtension(ExtensionDefinitions.EXT_CAP_STMT_EXPECT, new CodeType(highest));
         }
       }
     }
@@ -481,7 +482,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
       if (sdFocus.getUrl().equals(sdOther.getUrl()) && sdFocus.getVersion().equals(sdOther.getVersion())) {
         return true;
       }
-      sdFocus = ctxt.fetchResource(StructureDefinition.class, sdFocus.getBaseDefinition(), sdFocus);
+      sdFocus = ctxt.fetchResource(StructureDefinition.class, sdFocus.getBaseDefinition(), null,  sdFocus);
     }
     return false;
   }

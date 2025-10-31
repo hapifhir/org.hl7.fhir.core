@@ -1,16 +1,19 @@
 package org.hl7.fhir.r5.renderers;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -35,10 +38,12 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper.ElementKind;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
+
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -46,6 +51,8 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 @MarkedToMoveToAdjunctPackage
 public abstract class ResourceRenderer extends DataRenderer {
+
+  private static final String EXT_NS_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.url";
 
   public enum RendererType {
     NATIVE, PROFILE, LIQUID
@@ -96,9 +103,34 @@ public abstract class ResourceRenderer extends DataRenderer {
   public XhtmlNode buildNarrative(ResourceWrapper dr) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     buildNarrative(new RenderingStatus(), x, dr);
+    checkForDuplicateIds(x);
     return x;
   }
   
+  private void checkForDuplicateIds(XhtmlNode x) {
+    if (context.isTrackNarrativeSource()) {
+      Set<String> ids = new HashSet<>();
+      checkForDuplicateIds(ids, x);
+    }
+  }
+
+  private void checkForDuplicateIds(Set<String> ids, XhtmlNode x) {
+    if (x.hasAttribute("id")) {
+      String id = x.getAttribute("id");
+      if (ids.contains(id)) {
+        throw new Error("Duplicate id '"+id+"' on "+x.allText());
+      } else {
+        ids.add(id);
+      }
+    }
+    if (x.hasChildren()) {
+      for (XhtmlNode c : x.getChildNodes()) {
+        checkForDuplicateIds(ids, c);
+      }
+    }
+    
+  }
+
   /**
    * given a resource, update it's narrative with the best rendering available. 
    * 
@@ -206,7 +238,7 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   public <T extends Resource> void renderCanonical(RenderingStatus status, XhtmlNode x, Class<T> class_, ResourceWrapper canonical) throws UnsupportedEncodingException, IOException {
     if (!renderPrimitiveWithNoValue(status, x, canonical)) {
-      CanonicalResource target = (CanonicalResource) context.getWorker().fetchResource(class_, canonical.primitiveValue(), canonical.getResourceNative());
+      CanonicalResource target = (CanonicalResource) context.getWorker().fetchResource(class_, canonical.primitiveValue(), null, canonical.getResourceNative());
       if (target != null && target.hasWebPath()) {
         if (canonical.primitiveValue().contains("|")) {
           x.ah(context.prefixLocalHref(target.getWebPath())).tx(target.present()+ context.formatPhrase(RenderingContext.RES_REND_VER) +target.getVersion()+")");
@@ -233,7 +265,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       return "";
     }
     String url = canonical.primitiveValue();
-    Resource target = context.getWorker().fetchResource(Resource.class, url, canonical.getResourceNative());
+    Resource target = context.getWorker().fetchResource(Resource.class, url, null, canonical.getResourceNative());
     if (target == null || !(target instanceof CanonicalResource)) {
       return url;       
     } else {
@@ -306,7 +338,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       return;
     }
     String url = canonical.asStringValue();
-    Resource target = context.getWorker().fetchResource(Resource.class, url, res.getResourceNative());
+    Resource target = context.getWorker().fetchResource(Resource.class, url, null, res.getResourceNative());
     if (target == null || !(target instanceof CanonicalResource)) {
       x.code().tx(url);       
     } else {
@@ -322,7 +354,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         }
       } else {
         if (url.contains("|")) {
-          x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present()+ context.formatPhrase(RenderingContext.RES_REND_VER) +cr.getVersion()+")");
+          x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present()+ context.formatPhrase(RenderingContext.RES_REND_VER, cr.getVersion())+")");
         } else {
           x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present());
         }
@@ -330,12 +362,13 @@ public abstract class ResourceRenderer extends DataRenderer {
     }     
   }
 
-  // todo: if (r.hasExtension(ToolingExtensions.EXT_TARGET_ID) || r.hasExtension(ToolingExtensions.EXT_TARGET_PATH)) {
+  // todo: if (r.hasExtension(ExtensionDefinitions.EXT_TARGET_ID) || r.hasExtension(ExtensionDefinitions.EXT_TARGET_PATH)) {
   @Override
   public void renderReference(RenderingStatus status, XhtmlNode x, ResourceWrapper type) throws FHIRFormatError, DefinitionException, IOException {
     if (type == null) {
       return;
     }
+    xlinkNarrative(x, type);
     ResourceWrapper display = null;
     ResourceWrapper actual = null;
     ResourceWrapper id = null;
@@ -449,15 +482,15 @@ public abstract class ResourceRenderer extends DataRenderer {
       if ((tr == null || (tr.getWebPath() != null && !tr.getWebPath().startsWith("#"))) && name != null) {
         text.append(" \""+name+"\"");
       }
-      if (r.hasExtension(ToolingExtensions.EXT_TARGET_ID) || r.hasExtension(ToolingExtensions.EXT_TARGET_PATH)) {
+      if (r.hasExtension(ExtensionDefinitions.EXT_TARGET_ID) || r.hasExtension(ExtensionDefinitions.EXT_TARGET_PATH)) {
         text.append("(");
-        for (Extension ex : r.getExtensionsByUrl(ToolingExtensions.EXT_TARGET_ID)) {
+        for (Extension ex : r.getExtensionsByUrl(ExtensionDefinitions.EXT_TARGET_ID)) {
           if (ex.hasValue()) {
             text.append(", ");
             text.append("#"+ex.getValue().primitiveValue());
           }
         }
-        for (Extension ex : r.getExtensionsByUrl(ToolingExtensions.EXT_TARGET_PATH)) {
+        for (Extension ex : r.getExtensionsByUrl(ExtensionDefinitions.EXT_TARGET_PATH)) {
           if (ex.hasValue()) {
             text.append(", ");
             text.append("/#"+ex.getValue().primitiveValue());
@@ -524,15 +557,15 @@ public abstract class ResourceRenderer extends DataRenderer {
       if ((trt == null || (trt.getWebPath() != null && !trt.getWebPath().startsWith("#"))) && name != null) {
         text.append(" \""+name+"\"");
       }
-      if (r.hasExtension(ToolingExtensions.EXT_TARGET_ID) || r.hasExtension(ToolingExtensions.EXT_TARGET_PATH)) {
+      if (r.hasExtension(ExtensionDefinitions.EXT_TARGET_ID) || r.hasExtension(ExtensionDefinitions.EXT_TARGET_PATH)) {
         text.append("(");
-        for (ResourceWrapper ex : r.extensions(ToolingExtensions.EXT_TARGET_ID)) {
+        for (ResourceWrapper ex : r.extensions(ExtensionDefinitions.EXT_TARGET_ID)) {
           if (ex.has("value")) {
             text.append(", ");
             text.append("#"+ex.primitiveValue("value"));
           }
         }
-        for (ResourceWrapper ex : r.extensions(ToolingExtensions.EXT_TARGET_PATH)) {
+        for (ResourceWrapper ex : r.extensions(ExtensionDefinitions.EXT_TARGET_PATH)) {
           if (ex.has("value")) {
             text.append(", ");
             text.append("#"+ex.primitiveValue("value"));
@@ -621,7 +654,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       if (v.startsWith("mailto:")) { 
         x.ah(v).addText(v.substring(7)); 
       } else { 
-        String link = getLinkForCode(v, null, null);
+        String link = getLinkForCode(v, null, null, uri.getResourceNative());
         if (link != null) {  
           x.ah(context.prefixLocalHref(link)).addText(v);
         } else {
@@ -660,11 +693,11 @@ public abstract class ResourceRenderer extends DataRenderer {
    * @param <T>
    */
   protected <T extends Resource> T findCanonical(Class<T> class_, UriType canonical, ResourceWrapper sourceOfReference) {
-    return context.getContext().fetchResource(class_, canonical.asStringValue(), sourceOfReference.getResourceNative());
+    return context.getContext().fetchResource(class_, canonical.asStringValue(), null, sourceOfReference.getResourceNative());
   }
 
   protected <T extends Resource> T findCanonical(Class<T> class_, String canonical, ResourceWrapper sourceOfReference) {
-    return context.getContext().fetchResource(class_, canonical, sourceOfReference.getResourceNative());
+    return context.getContext().fetchResource(class_, canonical, null, sourceOfReference.getResourceNative());
   }
 
 
@@ -717,7 +750,7 @@ public abstract class ResourceRenderer extends DataRenderer {
           return rr;
         }
       }
-      Resource r = context.getWorker().fetchResource(Resource.class, url, version);
+      Resource r = context.getWorker().fetchResource(Resource.class, url, version, resource == null ? null : resource.getResourceNative());
       if (r != null) {
         return new ResourceWithReference(ResourceReferenceKind.EXTERNAL, url, r.getWebPath(), wrap(r));
       }
@@ -807,13 +840,13 @@ public abstract class ResourceRenderer extends DataRenderer {
   protected void generateCopyright(XhtmlNode x, ResourceWrapper cs) {
     XhtmlNode p = x.para();
     p.b().tx(getContext().formatPhrase(RenderingContext.RESOURCE_COPYRIGHT));
-    smartAddText(p, " " + context.getTranslated(cs.child("copyright")));
+    p.addTextWithLineBreaks(" " + context.getTranslated(cs.child("copyright")));
   }
   
   protected void generateCopyrightTableRow(XhtmlNode tbl, ResourceWrapper cs) {
     XhtmlNode tr = tbl.tr();
     tr.td().b().tx(getContext().formatPhrase(RenderingContext.RESOURCE_COPYRIGHT));
-    smartAddText(tr.td(), " " + context.getTranslated(cs.child("copyright")));
+    tr.td().addTextWithLineBreaks(" " + context.getTranslated(cs.child("copyright")));
   }
 
   public String displayReference(Resource res, Reference r) throws UnsupportedEncodingException, IOException {
@@ -834,7 +867,7 @@ public abstract class ResourceRenderer extends DataRenderer {
    }
 
    protected void renderCommitteeLink(XhtmlNode x, CanonicalResource cr) {
-     String code = ToolingExtensions.readStringExtension(cr, ToolingExtensions.EXT_WORKGROUP);
+     String code = ExtensionUtilities.readStringExtension(cr, ExtensionDefinitions.EXT_WORKGROUP);
      CodeSystem cs = context.getWorker().fetchCodeSystem("http://terminology.hl7.org/CodeSystem/hl7-work-group");
      if (cs == null || !cs.hasWebPath())
        x.tx(code);
@@ -873,39 +906,30 @@ public abstract class ResourceRenderer extends DataRenderer {
     return renderResourceTechDetails(r, x, (context.isContained() && r.getId() != null ? "#"+r.getId() : r.getId()));
   }
   
-  protected XhtmlNode renderResourceTechDetails(ResourceWrapper r, XhtmlNode x, String desc) throws UnsupportedEncodingException, FHIRException, IOException {
+  protected XhtmlNode renderResourceTechDetails(ResourceWrapper r, XhtmlNode x, String id) throws UnsupportedEncodingException, FHIRException, IOException {
     XhtmlNode p = x.para().attribute("class", "res-header-id");
-    String ft = context.getTranslatedCode(r.fhirType(), "http://hl7.org/fhir/fhir-types");
-    if (desc == null) { 
-      p.b().tx(context.formatPhrase(context.isTechnicalMode() && !isInner() ? RenderingContext.PROF_DRIV_GEN_NARR_TECH : RenderingContext.PROF_DRIV_GEN_NARR, ft, ""));      
-    } else {
-      p.b().tx(context.formatPhrase(context.isTechnicalMode() && !isInner() ? RenderingContext.PROF_DRIV_GEN_NARR_TECH : RenderingContext.PROF_DRIV_GEN_NARR, ft, desc));
+    markGenerated(p);
+    if (!context.isNoHeader()) {
+      String ft = context.getTranslatedCode(r.fhirType(), VersionUtilities.getResourceTypesUrl(context.getContext().getVersion()));
+      if (id == null) { 
+        p.b().tx(context.formatPhrase(context.isTechnicalMode() && !isInner() ? RenderingContext.PROF_DRIV_GEN_NARR_TECH : RenderingContext.PROF_DRIV_GEN_NARR, ft, ""));      
+      } else {
+        p.b().tx(context.formatPhrase(context.isTechnicalMode() && !isInner() ? RenderingContext.PROF_DRIV_GEN_NARR_TECH : RenderingContext.PROF_DRIV_GEN_NARR, ft, id));
+      }
     }
 
     // first thing we do is lay down the resource anchors. 
     if (!Utilities.noString(r.getId())) {
-      if (!context.isSecondaryLang()) {
-        String sid = r.getScopedId();
-        if (sid != null) {
-          if (!context.hasAnchor(sid)) {
-            context.addAnchor(sid);
-            x.an(context.prefixAnchor(sid));
-          }
-          sid = "hc"+sid;
-          if (!context.hasAnchor(sid)) {
-            context.addAnchor(sid);
-            x.an(context.prefixAnchor(sid));
-          }
+      String sid = r.getScopedId();
+      if (sid != null && !willRenderId(r)) {
+        if (!context.hasAnchor(sid)) {
+          context.addAnchor(sid);
+          x.an(context.prefixAnchor(sid));
         }
-      }
-      if (context.getLocale() != null) {
-        String langSuffix = "-"+context.getLocale().toLanguageTag();
-        if (r.getScopedId() != null) {
-          String sid = r.getScopedId()+langSuffix;
-          if (!context.hasAnchor(sid)) {
-            context.addAnchor(sid);
-            x.an(context.prefixAnchor(sid));
-          }
+        sid = "hc"+sid;
+        if (!context.hasAnchor(sid)) {
+          context.addAnchor(sid);
+          x.an(context.prefixAnchor(sid));
         }
       }
     }
@@ -1001,6 +1025,10 @@ public abstract class ResourceRenderer extends DataRenderer {
     return null;
   }
 
+  protected boolean willRenderId(ResourceWrapper r) {
+    return false;
+  }
+
   protected XhtmlNode plateStyle(XhtmlNode para) {
     return para.style("margin-bottom: 0px");
   }
@@ -1086,7 +1114,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       }
     }
     if (columns.size() > 0) {
-      XhtmlNode table = x.table("grid", false);
+      XhtmlNode table = x.table("grid", false).markGenerated(!context.forValidResource());
       
       if (provider.getTitle() != null) {
         table.tr().td().colspan(columns.size()).b().tx(provider.getTitle());
@@ -1123,10 +1151,13 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
   
 
-  public void genSummaryTable(RenderingStatus status, XhtmlNode x, ResourceWrapper cr) throws IOException {
+  public boolean genSummaryTable(RenderingStatus status, XhtmlNode x, ResourceWrapper cr) throws IOException {
     if (context.isShowSummaryTable() && cr != null) {
-      XhtmlNode tbl = x.table("grid", false);
+      XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
       genSummaryTableContent(status, tbl, cr);
+      return true;
+    } else {
+      return false;
     }
   }
   
@@ -1135,26 +1166,26 @@ public abstract class ResourceRenderer extends DataRenderer {
     XhtmlNode tr;
     if (cr.has("url")) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)+":");
-      tr.td().code().tx(cr.primitiveValue("url"));
-    } else if (cr.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.url")) {
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)+":");
+      xlinkNarrative(tr.td(), cr.child("url")).code().tx(cr.primitiveValue("url"));
+    } else if (cr.hasExtension(EXT_NS_URL)) {
       status.setExtensions(true);
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)+":");
-      tr.td().code().tx(cr.extensionString("http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.url"));
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)+":");
+      xlinkNarrative(tr.td(), cr.extension(EXT_NS_URL)).code().tx(cr.extensionString(EXT_NS_URL));
     } else if (!context.isContained()) {                                          
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL));
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL));
       tr.td();      
     }
     if (cr.has("version")) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
       renderDataType(status, tr.td(), cr.child("version"));
     } else if (cr.hasExtension("http://terminology.hl7.org/StructureDefinition/ext-namingsystem-version")) {
       status.setExtensions(true);
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
       renderDataType(status, tr.td(), cr.extensionValue("http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.version"));
     }
 
@@ -1163,53 +1194,53 @@ public abstract class ResourceRenderer extends DataRenderer {
     
     if (name != null) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_NAME)+":");
-      tr.td().tx(name);
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_NAME)+":");
+      xlinkNarrative(tr.td(), cr.child("name")).tx(name);
     }
     
     if (title != null && !title.equalsIgnoreCase(name)) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_TITLE)+":");
-      tr.td().tx(title);
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_TITLE)+":");
+      xlinkNarrative(tr.td(), cr.child("title")).tx(title);
     }
 
     if (cr.has("status") && !context.isContained()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_STATUS)+":");
-      tr.td().tx(describeStatus(status, cr));
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_STATUS)+":");
+      xlinkNarrative(tr.td(), cr.child("status")).tx(describeStatus(status, cr));
     }
 
     if (cr.has("description")) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_DEFINITION)+":");
-      tr.td().markdown(context.getTranslated(cr.child("description")), "description");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINITION)+":");
+      xlinkNarrative(tr.td(), cr.child("description")).markdown(context.getTranslated(cr.child("description")), "description");
     }
 
     if (cr.has("publisher")) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.CANON_REND_PUBLISHER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.CANON_REND_PUBLISHER)+":");
       buildPublisherLinks( tr.td(), cr);
     }
     
-    if (cr.hasExtension(ToolingExtensions.EXT_WORKGROUP)) {
+    if (cr.hasExtension(ExtensionDefinitions.EXT_WORKGROUP)) {
       status.setExtensions(true);
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
       renderCommitteeLink(tr.td(), cr);
     }
 
     if (cr.has("copyright")) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_COPYRIGHT)+":");
-      tr.td().markdown(context.getTranslated(cr.child("copyright")), "copyright");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_COPYRIGHT)+":");
+      xlinkNarrative(tr.td(), cr.child("copyright")).markdown(context.getTranslated(cr.child("copyright")), "copyright");
     }
     
-    if (cr.hasExtension(ToolingExtensions.EXT_FMM_LEVEL)) {
+    if (cr.hasExtension(ExtensionDefinitions.EXT_FMM_LEVEL)) {
       status.setExtensions(true);
       // Use hard-coded spec link to point to current spec because DSTU2 had maturity listed on a different page
       tr = tbl.tr();
-      tr.td().ah("http://hl7.org/fhir/versions.html#maturity", "Maturity Level").attribute("class", "fmm").tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
-      renderDataType(status, tr.td(), cr.extensionValue(ToolingExtensions.EXT_FMM_LEVEL));
+      markBoilerplate(tr.td()).ah("http://hl7.org/fhir/versions.html#maturity", "Maturity Level").attribute("class", "fmm").tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
+      renderDataType(status, tr.td(), cr.extensionValue(ExtensionDefinitions.EXT_FMM_LEVEL));
     }    
   }
 
@@ -1217,7 +1248,7 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   public void genSummaryTable(RenderingStatus status, XhtmlNode x, CanonicalResource cr) throws IOException {
     if (context.isShowSummaryTable() && cr != null) {
-      XhtmlNode tbl = x.table("grid", false);
+      XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
       genSummaryTableContent(status, tbl, cr);
     }
   }
@@ -1227,27 +1258,27 @@ public abstract class ResourceRenderer extends DataRenderer {
     XhtmlNode tr;
     if (cr.hasUrl()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)+":");
       tr.td().code().tx(cr.getUrl());
-    } else if (cr.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.url")) {
+    } else if (cr.hasExtension(EXT_NS_URL)) {
       status.setExtensions(true);
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL));
-      tr.td().code().tx(ToolingExtensions.readStringExtension(cr, "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.url")+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL));
+      tr.td().code().tx(ExtensionUtilities.readStringExtension(cr, EXT_NS_URL)+":");
     } else if (!context.isContained()) {                                          
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL));
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL));
       tr.td();      
     }
     if (cr.hasVersion()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
       tr.td().tx(cr.getVersion());
     } else if (cr.hasExtension("http://terminology.hl7.org/StructureDefinition/ext-namingsystem-version")) {
       status.setExtensions(true);
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
-      tr.td().tx(ToolingExtensions.readStringExtension(cr, "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.version"));
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
+      tr.td().tx(ExtensionUtilities.readStringExtension(cr, "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.version"));
     }
 
     String name = cr.hasName() ? context.getTranslated(cr.getNameElement()) : null;
@@ -1255,59 +1286,59 @@ public abstract class ResourceRenderer extends DataRenderer {
     
     if (name != null) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_NAME)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_NAME)+":");
       tr.td().tx(name);
     }
     
     if (title != null && !title.equalsIgnoreCase(name)) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_TITLE)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_TITLE)+":");
       tr.td().tx(title);
     }
 
     if (cr.hasStatus() && !context.isContained()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_STATUS)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_STATUS)+":");
       tr.td().tx(describeStatus(status, cr));
     }
 
     if (cr.hasDescription()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_DEFINITION)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINITION)+":");
       tr.td().markdown(cr.getDescription(), "description");
     }
 
     if (cr.hasPublisher()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.CANON_REND_PUBLISHER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.CANON_REND_PUBLISHER)+":");
       buildPublisherLinks(tr.td(), cr);
     }
     
-    if (cr.hasExtension(ToolingExtensions.EXT_WORKGROUP)) {
+    if (cr.hasExtension(ExtensionDefinitions.EXT_WORKGROUP)) {
       status.setExtensions(true);
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
       renderCommitteeLink(tr.td(), cr);
     }
 
     if (cr.hasCopyright()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_COPYRIGHT)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_COPYRIGHT)+":");
       tr.td().markdown(cr.getDescription(), "copyright");      
     }
     
-    if (ToolingExtensions.hasExtension(cr, ToolingExtensions.EXT_FMM_LEVEL)) {
+    if (ExtensionUtilities.hasExtension(cr, ExtensionDefinitions.EXT_FMM_LEVEL)) {
       status.setExtensions(true);
       // Use hard-coded spec link to point to current spec because DSTU2 had maturity listed on a different page
       tr = tbl.tr();
-      tr.td().ah("http://hl7.org/fhir/versions.html#maturity", "Maturity Level").attribute("class", "fmm").tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
-      tr.td().tx(ToolingExtensions.readStringExtension(cr, ToolingExtensions.EXT_FMM_LEVEL));
+      markBoilerplate(tr.td()).ah("http://hl7.org/fhir/versions.html#maturity", "Maturity Level").attribute("class", "fmm").tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
+      tr.td().tx(ExtensionUtilities.readStringExtension(cr, ExtensionDefinitions.EXT_FMM_LEVEL));
     }    
   }
 
 
   protected void renderCommitteeLink(XhtmlNode x, ResourceWrapper cr) {
-    String code = cr.extensionString(ToolingExtensions.EXT_WORKGROUP);
+    String code = cr.extensionString(ExtensionDefinitions.EXT_WORKGROUP);
     CodeSystem cs = context.getContext().fetchCodeSystem("http://terminology.hl7.org/CodeSystem/hl7-work-group");
     if (cs == null || !cs.hasWebPath())
       x.tx(code);
@@ -1358,7 +1389,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       String name = cd.has("name") ? cd.primitiveValue("name") : cr.primitiveValue("publisher");
       if (cd.has("telecom")) {
         if (first) first = false; else x.tx(". ");
-        renderContactW(x, name, cd.children("telecom"));
+        renderContactW(spanIfTracking(x, cd), name, cd.children("telecom"));
       }
     }
   }
@@ -1432,18 +1463,18 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   protected String describeStatus(RenderingStatus status, ResourceWrapper cr) {
     String s = describeStatus(cr.primitiveValue("status"), cr.primitiveValue("experimental"), cr.child("date"), cr.extensionString("http://hl7.org/fhir/StructureDefinition/valueset-deprecated"));
-    if (cr.hasExtension(ToolingExtensions.EXT_STANDARDS_STATUS)) {
+    if (cr.hasExtension(ExtensionDefinitions.EXT_STANDARDS_STATUS)) {
       status.setExtensions(true);
-      s = s + presentStandardsStatus(cr.extensionString(ToolingExtensions.EXT_STANDARDS_STATUS));
+      s = s + presentStandardsStatus(cr.extensionString(ExtensionDefinitions.EXT_STANDARDS_STATUS));
     }
     return s;
   }
 
   protected String describeStatus(RenderingStatus status, CanonicalResource cr) {
-    String s = describeStatus(cr.getStatus(), cr.hasExperimental() ? cr.getExperimental() : false, cr.hasDate() ? cr.getDateElement() : null, ToolingExtensions.readBooleanExtension(cr, "http://hl7.org/fhir/StructureDefinition/valueset-deprecated"));
-    if (cr.hasExtension(ToolingExtensions.EXT_STANDARDS_STATUS)) {
+    String s = describeStatus(cr.getStatus(), cr.hasExperimental() ? cr.getExperimental() : false, cr.hasDate() ? cr.getDateElement() : null, ExtensionUtilities.readBooleanExtension(cr, "http://hl7.org/fhir/StructureDefinition/valueset-deprecated"));
+    if (cr.hasExtension(ExtensionDefinitions.EXT_STANDARDS_STATUS)) {
       status.setExtensions(true);
-      s = s + presentStandardsStatus(ToolingExtensions.readStringExtension(cr, ToolingExtensions.EXT_STANDARDS_STATUS));
+      s = s + presentStandardsStatus(ExtensionUtilities.readStringExtension(cr, ExtensionDefinitions.EXT_STANDARDS_STATUS));
     }
     return s;
   }
@@ -1523,4 +1554,48 @@ public abstract class ResourceRenderer extends DataRenderer {
     svg.attribute("height", "20").attribute("width", "20").attribute("viewBox", "0 0 1792 1792").attribute("class", "self-link");
     path.attribute("d", pathData).attribute("fill", "navy");
   }
+
+
+  public static void renderVersionReference(RenderingContext context, Resource tgt, String statedVersion, String actualVersion, boolean fromPackages, XhtmlNode x, boolean fromThisPackage, String type, String none_phrase) {
+    if (statedVersion != null && actualVersion != null && !statedVersion.equals(actualVersion) && fromPackages) {
+      x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_WILDCARD_BY_PACKAGE, statedVersion, actualVersion));
+      x.tx("\uD83D\uDCCD");
+      x.tx(actualVersion);
+      x.tx(" → ");
+      x.tx(statedVersion);
+    } else if (statedVersion != null && actualVersion != null && !statedVersion.equals(actualVersion) && fromPackages) {
+      x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_WILDCARD, statedVersion, actualVersion));
+      x.tx("\uD83D\uDCCD");
+      x.tx(actualVersion);
+      XhtmlNode span = x.span();
+      span.style("opacity: 0.5");
+      span.tx(" → ");
+      span.tx(statedVersion);
+    } else if (statedVersion != null) {
+      x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_STATED, statedVersion));
+      x.tx("\uD83D\uDCCD");
+      x.tx(actualVersion);
+    } else if (fromThisPackage) {
+      x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_THIS_PACKAGE));
+      x.tx("\uD83D\uDCE6");
+      x.tx(actualVersion);
+    } else if (fromPackages) {
+      x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_BY_PACKAGE, actualVersion));
+      x.tx("\uD83D\uDCE6");
+      x.tx(actualVersion);
+    } else if (actualVersion != null) {
+      x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_FOUND, actualVersion));
+      x.style("opacity: 0.5");
+      x.tx("\u23FF");
+      x.tx(actualVersion);
+    } else if (tgt != null) {
+      x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_NONE, type));
+      x.tx("\u2205");
+      x.tx(actualVersion);
+    } else {
+      x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_NOTHING, type));
+      x.tx(none_phrase == null ? "?" : context.formatPhrase(none_phrase));
+    }
+  }
+
 };

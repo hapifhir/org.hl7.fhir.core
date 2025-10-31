@@ -1797,7 +1797,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasTopicCodeableConcept() {
-      return this != null && this.topic instanceof CodeableConcept;
+        return this.topic instanceof CodeableConcept;
     }
 
     /**
@@ -1813,7 +1813,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasTopicReference() {
-      return this != null && this.topic instanceof Reference;
+        return this.topic instanceof Reference;
     }
 
     public boolean hasTopic() {
@@ -4156,16 +4156,6 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReferenceTarget() {
-      if (this.referenceTarget == null)
-        this.referenceTarget = new ArrayList<Resource>();
-      return this.referenceTarget;
-    }
-
-    /**
      * @return {@link #role} (How the party participates in the offer.)
      */
     public CodeableConcept getRole() {
@@ -4406,7 +4396,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueBooleanType() {
-      return this != null && this.value instanceof BooleanType;
+        return this.value instanceof BooleanType;
     }
 
     /**
@@ -4425,7 +4415,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueDecimalType() {
-      return this != null && this.value instanceof DecimalType;
+        return this.value instanceof DecimalType;
     }
 
     /**
@@ -4444,7 +4434,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueIntegerType() {
-      return this != null && this.value instanceof IntegerType;
+        return this.value instanceof IntegerType;
     }
 
     /**
@@ -4463,7 +4453,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueDateType() {
-      return this != null && this.value instanceof DateType;
+        return this.value instanceof DateType;
     }
 
     /**
@@ -4482,7 +4472,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueDateTimeType() {
-      return this != null && this.value instanceof DateTimeType;
+        return this.value instanceof DateTimeType;
     }
 
     /**
@@ -4501,7 +4491,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueTimeType() {
-      return this != null && this.value instanceof TimeType;
+        return this.value instanceof TimeType;
     }
 
     /**
@@ -4520,7 +4510,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueStringType() {
-      return this != null && this.value instanceof StringType;
+        return this.value instanceof StringType;
     }
 
     /**
@@ -4539,7 +4529,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueUriType() {
-      return this != null && this.value instanceof UriType;
+        return this.value instanceof UriType;
     }
 
     /**
@@ -4558,7 +4548,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueAttachment() {
-      return this != null && this.value instanceof Attachment;
+        return this.value instanceof Attachment;
     }
 
     /**
@@ -4577,7 +4567,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueCoding() {
-      return this != null && this.value instanceof Coding;
+        return this.value instanceof Coding;
     }
 
     /**
@@ -4596,7 +4586,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueQuantity() {
-      return this != null && this.value instanceof Quantity;
+        return this.value instanceof Quantity;
     }
 
     /**
@@ -4615,7 +4605,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueReference() {
-      return this != null && this.value instanceof Reference;
+        return this.value instanceof Reference;
     }
 
     public boolean hasValue() {
@@ -5151,16 +5141,6 @@ public class Contract extends DomainResource {
         addTypeReference();
       }
       return getTypeReference().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getTypeReferenceTarget() {
-      if (this.typeReferenceTarget == null)
-        this.typeReferenceTarget = new ArrayList<Resource>();
-      return this.typeReferenceTarget;
     }
 
     /**
@@ -6877,7 +6857,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasEntityCodeableConcept() {
-      return this != null && this.entity instanceof CodeableConcept;
+        return this.entity instanceof CodeableConcept;
     }
 
     /**
@@ -6894,7 +6874,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasEntityReference() {
-      return this != null && this.entity instanceof Reference;
+        return this.entity instanceof Reference;
     }
 
     public boolean hasEntity() {
@@ -8668,7 +8648,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasOccurrenceDateTimeType() {
-      return this != null && this.occurrence instanceof DateTimeType;
+        return this.occurrence instanceof DateTimeType;
     }
 
     /**
@@ -8684,7 +8664,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasOccurrencePeriod() {
-      return this != null && this.occurrence instanceof Period;
+        return this.occurrence instanceof Period;
     }
 
     /**
@@ -8700,7 +8680,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasOccurrenceTiming() {
-      return this != null && this.occurrence instanceof Timing;
+        return this.occurrence instanceof Timing;
     }
 
     public boolean hasOccurrence() {
@@ -8770,16 +8750,6 @@ public class Contract extends DomainResource {
         addRequester();
       }
       return getRequester().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getRequesterTarget() {
-      if (this.requesterTarget == null)
-        this.requesterTarget = new ArrayList<Resource>();
-      return this.requesterTarget;
     }
 
     /**
@@ -9157,16 +9127,6 @@ public class Contract extends DomainResource {
         addReasonReference();
       }
       return getReasonReference().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() {
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
     }
 
     /**
@@ -10211,16 +10171,6 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReferenceTarget() {
-      if (this.referenceTarget == null)
-        this.referenceTarget = new ArrayList<Resource>();
-      return this.referenceTarget;
-    }
-
-    /**
      * @return {@link #role} (Role type of agent assigned roles in this Contract.)
      */
     public CodeableConcept getRole() {
@@ -10816,7 +10766,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasContentAttachment() {
-      return this != null && this.content instanceof Attachment;
+        return this.content instanceof Attachment;
     }
 
     /**
@@ -10834,7 +10784,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasContentReference() {
-      return this != null && this.content instanceof Reference;
+        return this.content instanceof Reference;
     }
 
     public boolean hasContent() {
@@ -11056,7 +11006,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasContentAttachment() {
-      return this != null && this.content instanceof Attachment;
+        return this.content instanceof Attachment;
     }
 
     /**
@@ -11072,7 +11022,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasContentReference() {
-      return this != null && this.content instanceof Reference;
+        return this.content instanceof Reference;
     }
 
     public boolean hasContent() {
@@ -11290,7 +11240,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasContentAttachment() {
-      return this != null && this.content instanceof Attachment;
+        return this.content instanceof Attachment;
     }
 
     /**
@@ -11307,7 +11257,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasContentReference() {
-      return this != null && this.content instanceof Reference;
+        return this.content instanceof Reference;
     }
 
     public boolean hasContent() {
@@ -12407,16 +12357,6 @@ public class Contract extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getSubjectTarget() {
-    if (this.subjectTarget == null)
-      this.subjectTarget = new ArrayList<Resource>();
-    return this.subjectTarget;
-  }
-
-  /**
    * @return {@link #authority} (A formally or informally recognized grouping of
    *         people, principals, organizations, or jurisdictions formed for the
    *         purpose of achieving some form of collective action such as the
@@ -12472,28 +12412,6 @@ public class Contract extends DomainResource {
       addAuthority();
     }
     return getAuthority().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Organization> getAuthorityTarget() {
-    if (this.authorityTarget == null)
-      this.authorityTarget = new ArrayList<Organization>();
-    return this.authorityTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Organization addAuthorityTarget() {
-    Organization r = new Organization();
-    if (this.authorityTarget == null)
-      this.authorityTarget = new ArrayList<Organization>();
-    this.authorityTarget.add(r);
-    return r;
   }
 
   /**
@@ -12554,28 +12472,6 @@ public class Contract extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Location> getDomainTarget() {
-    if (this.domainTarget == null)
-      this.domainTarget = new ArrayList<Location>();
-    return this.domainTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Location addDomainTarget() {
-    Location r = new Location();
-    if (this.domainTarget == null)
-      this.domainTarget = new ArrayList<Location>();
-    this.domainTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #site} (Sites in which the contract is complied with,
    *         exercised, or in force.)
    */
@@ -12628,28 +12524,6 @@ public class Contract extends DomainResource {
       addSite();
     }
     return getSite().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Location> getSiteTarget() {
-    if (this.siteTarget == null)
-      this.siteTarget = new ArrayList<Location>();
-    return this.siteTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Location addSiteTarget() {
-    Location r = new Location();
-    if (this.siteTarget == null)
-      this.siteTarget = new ArrayList<Location>();
-    this.siteTarget.add(r);
-    return r;
   }
 
   /**
@@ -13013,7 +12887,7 @@ public class Contract extends DomainResource {
   }
 
   public boolean hasTopicCodeableConcept() {
-    return this != null && this.topic instanceof CodeableConcept;
+      return this.topic instanceof CodeableConcept;
   }
 
   /**
@@ -13030,7 +12904,7 @@ public class Contract extends DomainResource {
   }
 
   public boolean hasTopicReference() {
-    return this != null && this.topic instanceof Reference;
+      return this.topic instanceof Reference;
   }
 
   public boolean hasTopic() {
@@ -13277,16 +13151,6 @@ public class Contract extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getSupportingInfoTarget() {
-    if (this.supportingInfoTarget == null)
-      this.supportingInfoTarget = new ArrayList<Resource>();
-    return this.supportingInfoTarget;
-  }
-
-  /**
    * @return {@link #relevantHistory} (Links to Provenance records for past
    *         versions of this Contract definition, derivative, or instance, which
    *         identify key state transitions or updates that are likely to be
@@ -13344,28 +13208,6 @@ public class Contract extends DomainResource {
       addRelevantHistory();
     }
     return getRelevantHistory().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Provenance> getRelevantHistoryTarget() {
-    if (this.relevantHistoryTarget == null)
-      this.relevantHistoryTarget = new ArrayList<Provenance>();
-    return this.relevantHistoryTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Provenance addRelevantHistoryTarget() {
-    Provenance r = new Provenance();
-    if (this.relevantHistoryTarget == null)
-      this.relevantHistoryTarget = new ArrayList<Provenance>();
-    this.relevantHistoryTarget.add(r);
-    return r;
   }
 
   /**
@@ -13623,7 +13465,7 @@ public class Contract extends DomainResource {
   }
 
   public boolean hasLegallyBindingAttachment() {
-    return this != null && this.legallyBinding instanceof Attachment;
+      return this.legallyBinding instanceof Attachment;
   }
 
   /**
@@ -13642,7 +13484,7 @@ public class Contract extends DomainResource {
   }
 
   public boolean hasLegallyBindingReference() {
-    return this != null && this.legallyBinding instanceof Reference;
+      return this.legallyBinding instanceof Reference;
   }
 
   public boolean hasLegallyBinding() {

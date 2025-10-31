@@ -12,7 +12,7 @@ import org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.Mark
 import org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.String14_30;
 import org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.Uri14_30;
 import org.hl7.fhir.convertors.conv14_30.resources14_30.Enumerations14_30;
-import org.hl7.fhir.dstu3.conformance.ProfileUtilities;
+import org.hl7.fhir.dstu3.support.conformance.ProfileUtilities;
 import org.hl7.fhir.dstu3.model.ElementDefinition;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -274,7 +274,7 @@ public class ElementDefinition14_30 {
       if (src.getCode().equals("Reference")) tgt.setTargetProfile(u.getValue());
       else tgt.setProfile(u.getValue());
     }
-    for (org.hl7.fhir.dstu2016may.model.Extension t : src.getExtensionsByUrl(VersionConvertorConstants.PROFILE_EXTENSION)) {
+    for (org.hl7.fhir.dstu2016may.model.Extension t : src.getExtensionsByUrl(VersionConvertorConstants.EXT_PROFILE_EXTENSION)) {
       String s = ((org.hl7.fhir.dstu2016may.model.PrimitiveType<String>) t.getValue()).getValue();
       tgt.setProfile(s);
     }
@@ -294,7 +294,7 @@ public class ElementDefinition14_30 {
       }
       if (src.hasProfile()) {
         if (src.getCode().equals("Reference")) {
-          org.hl7.fhir.dstu2016may.model.Extension t = new org.hl7.fhir.dstu2016may.model.Extension(VersionConvertorConstants.PROFILE_EXTENSION);
+          org.hl7.fhir.dstu2016may.model.Extension t = new org.hl7.fhir.dstu2016may.model.Extension(VersionConvertorConstants.EXT_PROFILE_EXTENSION);
           t.setValue(new org.hl7.fhir.dstu2016may.model.StringType(src.getProfile()));
           tgt.addExtension(t);
         } else tgt.addProfile(src.getProfile());

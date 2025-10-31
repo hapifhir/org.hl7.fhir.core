@@ -36,15 +36,15 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger {
-
-  private static final boolean DEBUG = false;
 
   private boolean req = false;
   private PrintStream file;
@@ -60,9 +60,8 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
 
   @Override
   public void logRequest(String method, String url, List<String> headers, byte[] body) {
-    if (DEBUG) {
-      System.out.println(" txlog req: " + method + " " + url + " " + present(body));
-    }
+    log.debug(" txlog req: " + method + " " + url + " " + present(body));
+
     if (file == null)
       return;
     String id = nextId();
@@ -88,14 +87,14 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
 
   @Override
   public void logResponse(String outcome, List<String> headers, byte[] body, long start) {
-    if (DEBUG) {
-      System.out.println(" txlog resp: " + outcome + " " + present(body));
-    }
+
+    log.debug(" txlog resp: " + outcome + " " + present(body));
+
 
     if (file == null)
       return;
     if (!req) {
-      System.out.println("Record Response without request");
+      log.debug("Record Response without request");
     }
     req = false;
     file.println("<pre>");

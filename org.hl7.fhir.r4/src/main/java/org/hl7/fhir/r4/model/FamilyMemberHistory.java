@@ -421,7 +421,7 @@ public class FamilyMemberHistory extends DomainResource {
     }
 
     public boolean hasOnsetAge() {
-      return this != null && this.onset instanceof Age;
+        return this.onset instanceof Age;
     }
 
     /**
@@ -439,7 +439,7 @@ public class FamilyMemberHistory extends DomainResource {
     }
 
     public boolean hasOnsetRange() {
-      return this != null && this.onset instanceof Range;
+        return this.onset instanceof Range;
     }
 
     /**
@@ -457,7 +457,7 @@ public class FamilyMemberHistory extends DomainResource {
     }
 
     public boolean hasOnsetPeriod() {
-      return this != null && this.onset instanceof Period;
+        return this.onset instanceof Period;
     }
 
     /**
@@ -475,7 +475,7 @@ public class FamilyMemberHistory extends DomainResource {
     }
 
     public boolean hasOnsetStringType() {
-      return this != null && this.onset instanceof StringType;
+        return this.onset instanceof StringType;
     }
 
     public boolean hasOnset() {
@@ -1524,7 +1524,7 @@ public class FamilyMemberHistory extends DomainResource {
   }
 
   public boolean hasBornPeriod() {
-    return this != null && this.born instanceof Period;
+      return this.born instanceof Period;
   }
 
   /**
@@ -1541,7 +1541,7 @@ public class FamilyMemberHistory extends DomainResource {
   }
 
   public boolean hasBornDateType() {
-    return this != null && this.born instanceof DateType;
+      return this.born instanceof DateType;
   }
 
   /**
@@ -1558,7 +1558,7 @@ public class FamilyMemberHistory extends DomainResource {
   }
 
   public boolean hasBornStringType() {
-    return this != null && this.born instanceof StringType;
+      return this.born instanceof StringType;
   }
 
   public boolean hasBorn() {
@@ -1598,7 +1598,7 @@ public class FamilyMemberHistory extends DomainResource {
   }
 
   public boolean hasAgeAge() {
-    return this != null && this.age instanceof Age;
+      return this.age instanceof Age;
   }
 
   /**
@@ -1615,7 +1615,7 @@ public class FamilyMemberHistory extends DomainResource {
   }
 
   public boolean hasAgeRange() {
-    return this != null && this.age instanceof Range;
+      return this.age instanceof Range;
   }
 
   /**
@@ -1632,7 +1632,7 @@ public class FamilyMemberHistory extends DomainResource {
   }
 
   public boolean hasAgeStringType() {
-    return this != null && this.age instanceof StringType;
+      return this.age instanceof StringType;
   }
 
   public boolean hasAge() {
@@ -1727,7 +1727,7 @@ public class FamilyMemberHistory extends DomainResource {
   }
 
   public boolean hasDeceasedBooleanType() {
-    return this != null && this.deceased instanceof BooleanType;
+      return this.deceased instanceof BooleanType;
   }
 
   /**
@@ -1745,7 +1745,7 @@ public class FamilyMemberHistory extends DomainResource {
   }
 
   public boolean hasDeceasedAge() {
-    return this != null && this.deceased instanceof Age;
+      return this.deceased instanceof Age;
   }
 
   /**
@@ -1763,7 +1763,7 @@ public class FamilyMemberHistory extends DomainResource {
   }
 
   public boolean hasDeceasedRange() {
-    return this != null && this.deceased instanceof Range;
+      return this.deceased instanceof Range;
   }
 
   /**
@@ -1781,7 +1781,7 @@ public class FamilyMemberHistory extends DomainResource {
   }
 
   public boolean hasDeceasedDateType() {
-    return this != null && this.deceased instanceof DateType;
+      return this.deceased instanceof DateType;
   }
 
   /**
@@ -1799,7 +1799,7 @@ public class FamilyMemberHistory extends DomainResource {
   }
 
   public boolean hasDeceasedStringType() {
-    return this != null && this.deceased instanceof StringType;
+      return this.deceased instanceof StringType;
   }
 
   public boolean hasDeceased() {
@@ -1928,16 +1928,6 @@ public class FamilyMemberHistory extends DomainResource {
       addReasonReference();
     }
     return getReasonReference().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getReasonReferenceTarget() {
-    if (this.reasonReferenceTarget == null)
-      this.reasonReferenceTarget = new ArrayList<Resource>();
-    return this.reasonReferenceTarget;
   }
 
   /**

@@ -39,7 +39,6 @@ import java.util.List;
 import org.hl7.fhir.dstu3.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.dstu3.model.Enumerations.PublicationStatusEnumFactory;
 // added from java-adornments.txt:
-import org.hl7.fhir.dstu3.utils.StructureMapUtilities;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -2053,14 +2052,6 @@ public class StructureMap extends MetadataResource {
 
   }
 
-// added from java-adornments.txt:
-
-  public String toString() {
-    return StructureMapUtilities.groupToString(this);
-  }
-
-
-// end addition
   }
 
     @Block()
@@ -3017,14 +3008,6 @@ public class StructureMap extends MetadataResource {
 
   }
 
-// added from java-adornments.txt:
-
-  public String toString() {
-    return StructureMapUtilities.ruleToString(this);
-  }
-
-
-// end addition
   }
 
     @Block()
@@ -3977,14 +3960,6 @@ public class StructureMap extends MetadataResource {
 
   }
 
-// added from java-adornments.txt:
-
-  public String toString() {
-    return StructureMapUtilities.sourceToString(this);
-  }
-
-
-// end addition
   }
 
     @Block()
@@ -4688,14 +4663,7 @@ public class StructureMap extends MetadataResource {
 
   }
 
-// added from java-adornments.txt:
 
-  public String toString() {
-    return StructureMapUtilities.targetToString(this);
-  }
-
-
-// end addition
   }
 
     @Block()
@@ -4742,8 +4710,8 @@ public class StructureMap extends MetadataResource {
           return (IdType) this.value;
         }
 
-        public boolean hasValueIdType() { 
-          return this != null && this.value instanceof IdType;
+        public boolean hasValueIdType() {
+            return this.value instanceof IdType;
         }
 
         /**
@@ -4757,8 +4725,8 @@ public class StructureMap extends MetadataResource {
           return (StringType) this.value;
         }
 
-        public boolean hasValueStringType() { 
-          return this != null && this.value instanceof StringType;
+        public boolean hasValueStringType() {
+            return this.value instanceof StringType;
         }
 
         /**
@@ -4772,8 +4740,8 @@ public class StructureMap extends MetadataResource {
           return (BooleanType) this.value;
         }
 
-        public boolean hasValueBooleanType() { 
-          return this != null && this.value instanceof BooleanType;
+        public boolean hasValueBooleanType() {
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -4787,8 +4755,8 @@ public class StructureMap extends MetadataResource {
           return (IntegerType) this.value;
         }
 
-        public boolean hasValueIntegerType() { 
-          return this != null && this.value instanceof IntegerType;
+        public boolean hasValueIntegerType() {
+            return this.value instanceof IntegerType;
         }
 
         /**
@@ -4802,8 +4770,8 @@ public class StructureMap extends MetadataResource {
           return (DecimalType) this.value;
         }
 
-        public boolean hasValueDecimalType() { 
-          return this != null && this.value instanceof DecimalType;
+        public boolean hasValueDecimalType() {
+            return this.value instanceof DecimalType;
         }
 
         public boolean hasValue() { 
@@ -6776,13 +6744,5 @@ public class StructureMap extends MetadataResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
-// added from java-adornments.txt:
-
-  public String toString() {
-    return StructureMapUtilities.render(this);
-  }
-
-
-// end addition
 
 }

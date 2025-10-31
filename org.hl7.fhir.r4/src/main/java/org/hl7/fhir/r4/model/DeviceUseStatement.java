@@ -530,28 +530,6 @@ public class DeviceUseStatement extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<ServiceRequest> getBasedOnTarget() {
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<ServiceRequest>();
-    return this.basedOnTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public ServiceRequest addBasedOnTarget() {
-    ServiceRequest r = new ServiceRequest();
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<ServiceRequest>();
-    this.basedOnTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #status} (A code representing the patient or other source's
    *         judgment about the state of the device used that this statement is
    *         about. Generally this will be active or completed.). This is the
@@ -711,16 +689,6 @@ public class DeviceUseStatement extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getDerivedFromTarget() {
-    if (this.derivedFromTarget == null)
-      this.derivedFromTarget = new ArrayList<Resource>();
-    return this.derivedFromTarget;
-  }
-
-  /**
    * @return {@link #timing} (How often the device was used.)
    */
   public Type getTiming() {
@@ -740,7 +708,7 @@ public class DeviceUseStatement extends DomainResource {
   }
 
   public boolean hasTimingTiming() {
-    return this != null && this.timing instanceof Timing;
+      return this.timing instanceof Timing;
   }
 
   /**
@@ -756,7 +724,7 @@ public class DeviceUseStatement extends DomainResource {
   }
 
   public boolean hasTimingPeriod() {
-    return this != null && this.timing instanceof Period;
+      return this.timing instanceof Period;
   }
 
   /**
@@ -772,7 +740,7 @@ public class DeviceUseStatement extends DomainResource {
   }
 
   public boolean hasTimingDateTimeType() {
-    return this != null && this.timing instanceof DateTimeType;
+      return this.timing instanceof DateTimeType;
   }
 
   public boolean hasTiming() {
@@ -1049,16 +1017,6 @@ public class DeviceUseStatement extends DomainResource {
       addReasonReference();
     }
     return getReasonReference().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getReasonReferenceTarget() {
-    if (this.reasonReferenceTarget == null)
-      this.reasonReferenceTarget = new ArrayList<Resource>();
-    return this.reasonReferenceTarget;
   }
 
   /**

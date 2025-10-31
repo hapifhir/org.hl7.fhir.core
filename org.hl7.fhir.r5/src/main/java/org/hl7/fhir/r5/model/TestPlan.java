@@ -1417,8 +1417,8 @@ public class TestPlan extends CanonicalResource {
           return (StringType) this.source;
         }
 
-        public boolean hasSourceStringType() { 
-          return this != null && this.source instanceof StringType;
+        public boolean hasSourceStringType() {
+            return this.source instanceof StringType;
         }
 
         /**
@@ -1432,8 +1432,8 @@ public class TestPlan extends CanonicalResource {
           return (Reference) this.source;
         }
 
-        public boolean hasSourceReference() { 
-          return this != null && this.source instanceof Reference;
+        public boolean hasSourceReference() {
+            return this.source instanceof Reference;
         }
 
         public boolean hasSource() { 
@@ -1703,8 +1703,8 @@ public class TestPlan extends CanonicalResource {
           return (StringType) this.source;
         }
 
-        public boolean hasSourceStringType() { 
-          return this != null && this.source instanceof StringType;
+        public boolean hasSourceStringType() {
+            return this.source instanceof StringType;
         }
 
         /**
@@ -1718,8 +1718,8 @@ public class TestPlan extends CanonicalResource {
           return (Reference) this.source;
         }
 
-        public boolean hasSourceReference() { 
-          return this != null && this.source instanceof Reference;
+        public boolean hasSourceReference() {
+            return this.source instanceof Reference;
         }
 
         public boolean hasSource() { 
@@ -2609,8 +2609,8 @@ public class TestPlan extends CanonicalResource {
       return (StringType) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmStringType() { 
-      return this != null && this.versionAlgorithm instanceof StringType;
+    public boolean hasVersionAlgorithmStringType() {
+        return this.versionAlgorithm instanceof StringType;
     }
 
     /**
@@ -2624,8 +2624,8 @@ public class TestPlan extends CanonicalResource {
       return (Coding) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmCoding() { 
-      return this != null && this.versionAlgorithm instanceof Coding;
+    public boolean hasVersionAlgorithmCoding() {
+        return this.versionAlgorithm instanceof Coding;
     }
 
     public boolean hasVersionAlgorithm() { 

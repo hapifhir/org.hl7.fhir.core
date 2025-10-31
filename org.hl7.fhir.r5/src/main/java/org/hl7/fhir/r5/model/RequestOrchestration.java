@@ -944,8 +944,8 @@ public class RequestOrchestration extends DomainResource {
           return (DateTimeType) this.timing;
         }
 
-        public boolean hasTimingDateTimeType() { 
-          return this != null && this.timing instanceof DateTimeType;
+        public boolean hasTimingDateTimeType() {
+            return this.timing instanceof DateTimeType;
         }
 
         /**
@@ -959,8 +959,8 @@ public class RequestOrchestration extends DomainResource {
           return (Age) this.timing;
         }
 
-        public boolean hasTimingAge() { 
-          return this != null && this.timing instanceof Age;
+        public boolean hasTimingAge() {
+            return this.timing instanceof Age;
         }
 
         /**
@@ -974,8 +974,8 @@ public class RequestOrchestration extends DomainResource {
           return (Period) this.timing;
         }
 
-        public boolean hasTimingPeriod() { 
-          return this != null && this.timing instanceof Period;
+        public boolean hasTimingPeriod() {
+            return this.timing instanceof Period;
         }
 
         /**
@@ -989,8 +989,8 @@ public class RequestOrchestration extends DomainResource {
           return (Duration) this.timing;
         }
 
-        public boolean hasTimingDuration() { 
-          return this != null && this.timing instanceof Duration;
+        public boolean hasTimingDuration() {
+            return this.timing instanceof Duration;
         }
 
         /**
@@ -1004,8 +1004,8 @@ public class RequestOrchestration extends DomainResource {
           return (Range) this.timing;
         }
 
-        public boolean hasTimingRange() { 
-          return this != null && this.timing instanceof Range;
+        public boolean hasTimingRange() {
+            return this.timing instanceof Range;
         }
 
         /**
@@ -1019,8 +1019,8 @@ public class RequestOrchestration extends DomainResource {
           return (Timing) this.timing;
         }
 
-        public boolean hasTimingTiming() { 
-          return this != null && this.timing instanceof Timing;
+        public boolean hasTimingTiming() {
+            return this.timing instanceof Timing;
         }
 
         public boolean hasTiming() { 
@@ -1425,8 +1425,8 @@ public class RequestOrchestration extends DomainResource {
           return (CanonicalType) this.definition;
         }
 
-        public boolean hasDefinitionCanonicalType() { 
-          return this != null && this.definition instanceof CanonicalType;
+        public boolean hasDefinitionCanonicalType() {
+            return this.definition instanceof CanonicalType;
         }
 
         /**
@@ -1440,8 +1440,8 @@ public class RequestOrchestration extends DomainResource {
           return (UriType) this.definition;
         }
 
-        public boolean hasDefinitionUriType() { 
-          return this != null && this.definition instanceof UriType;
+        public boolean hasDefinitionUriType() {
+            return this.definition instanceof UriType;
         }
 
         public boolean hasDefinition() { 
@@ -3339,8 +3339,8 @@ public class RequestOrchestration extends DomainResource {
           return (Duration) this.offset;
         }
 
-        public boolean hasOffsetDuration() { 
-          return this != null && this.offset instanceof Duration;
+        public boolean hasOffsetDuration() {
+            return this.offset instanceof Duration;
         }
 
         /**
@@ -3354,8 +3354,8 @@ public class RequestOrchestration extends DomainResource {
           return (Range) this.offset;
         }
 
-        public boolean hasOffsetRange() { 
-          return this != null && this.offset instanceof Range;
+        public boolean hasOffsetRange() {
+            return this.offset instanceof Range;
         }
 
         public boolean hasOffset() { 
@@ -3804,8 +3804,8 @@ public class RequestOrchestration extends DomainResource {
           return (CanonicalType) this.actor;
         }
 
-        public boolean hasActorCanonicalType() { 
-          return this != null && this.actor instanceof CanonicalType;
+        public boolean hasActorCanonicalType() {
+            return this.actor instanceof CanonicalType;
         }
 
         /**
@@ -3819,8 +3819,8 @@ public class RequestOrchestration extends DomainResource {
           return (Reference) this.actor;
         }
 
-        public boolean hasActorReference() { 
-          return this != null && this.actor instanceof Reference;
+        public boolean hasActorReference() {
+            return this.actor instanceof Reference;
         }
 
         public boolean hasActor() { 

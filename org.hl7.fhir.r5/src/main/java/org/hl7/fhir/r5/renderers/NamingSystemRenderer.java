@@ -8,13 +8,14 @@ import java.util.List;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -47,7 +48,7 @@ public class NamingSystemRenderer extends ResourceRenderer {
 
   public void render(RenderingStatus status, XhtmlNode x, NamingSystem ns) throws FHIRFormatError, DefinitionException, IOException {
     x.h3().tx(context.formatPhrase(RenderingContext.GENERAL_SUMM));
-    XhtmlNode tbl = x.table("grid", false); 
+    XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
     row(tbl, (context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)), ns.getUrl());
     if (ns.hasVersion()) {
       row(tbl, (context.formatPhrase(RenderingContext.GENERAL_VER)), ns.getVersion());
@@ -65,7 +66,7 @@ public class NamingSystemRenderer extends ResourceRenderer {
     if (ns.hasPublisher()) {
       row(tbl, (context.formatPhrase(RenderingContext.CANON_REND_PUBLISHER)), gt(ns.getPublisherElement()));
     }
-    if (ns.hasExtension(ToolingExtensions.EXT_WORKGROUP)) {
+    if (ns.hasExtension(ExtensionDefinitions.EXT_WORKGROUP)) {
       renderCommitteeLink(row(tbl, "Committee"), ns);
     }
     if (CodeSystemUtilities.hasOID(ns)) {
@@ -92,7 +93,7 @@ public class NamingSystemRenderer extends ResourceRenderer {
       }
     }
     x.h3().tx(context.formatPhrase(RenderingContext.NAME_SYS_IDEN));
-    XhtmlNode tbl = x.table("grid", false);
+    XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
     XhtmlNode tr = tbl.tr();
     tr.td().b().tx((context.formatPhrase(RenderingContext.GENERAL_TYPE)));
     tr.td().b().tx((context.formatPhrase(RenderingContext.GENERAL_VALUE)));

@@ -418,7 +418,7 @@ public class Goal extends DomainResource {
     }
 
     public boolean hasDetailQuantity() {
-      return this != null && this.detail instanceof Quantity;
+        return this.detail instanceof Quantity;
     }
 
     /**
@@ -440,7 +440,7 @@ public class Goal extends DomainResource {
     }
 
     public boolean hasDetailRange() {
-      return this != null && this.detail instanceof Range;
+        return this.detail instanceof Range;
     }
 
     /**
@@ -462,7 +462,7 @@ public class Goal extends DomainResource {
     }
 
     public boolean hasDetailCodeableConcept() {
-      return this != null && this.detail instanceof CodeableConcept;
+        return this.detail instanceof CodeableConcept;
     }
 
     /**
@@ -484,7 +484,7 @@ public class Goal extends DomainResource {
     }
 
     public boolean hasDetailStringType() {
-      return this != null && this.detail instanceof StringType;
+        return this.detail instanceof StringType;
     }
 
     /**
@@ -506,7 +506,7 @@ public class Goal extends DomainResource {
     }
 
     public boolean hasDetailBooleanType() {
-      return this != null && this.detail instanceof BooleanType;
+        return this.detail instanceof BooleanType;
     }
 
     /**
@@ -528,7 +528,7 @@ public class Goal extends DomainResource {
     }
 
     public boolean hasDetailIntegerType() {
-      return this != null && this.detail instanceof IntegerType;
+        return this.detail instanceof IntegerType;
     }
 
     /**
@@ -550,7 +550,7 @@ public class Goal extends DomainResource {
     }
 
     public boolean hasDetailRatio() {
-      return this != null && this.detail instanceof Ratio;
+        return this.detail instanceof Ratio;
     }
 
     public boolean hasDetail() {
@@ -597,7 +597,7 @@ public class Goal extends DomainResource {
     }
 
     public boolean hasDueDateType() {
-      return this != null && this.due instanceof DateType;
+        return this.due instanceof DateType;
     }
 
     /**
@@ -614,7 +614,7 @@ public class Goal extends DomainResource {
     }
 
     public boolean hasDueDuration() {
-      return this != null && this.due instanceof Duration;
+        return this.due instanceof Duration;
     }
 
     public boolean hasDue() {
@@ -1386,7 +1386,7 @@ public class Goal extends DomainResource {
   }
 
   public boolean hasStartDateType() {
-    return this != null && this.start instanceof DateType;
+      return this.start instanceof DateType;
   }
 
   /**
@@ -1403,7 +1403,7 @@ public class Goal extends DomainResource {
   }
 
   public boolean hasStartCodeableConcept() {
-    return this != null && this.start instanceof CodeableConcept;
+      return this.start instanceof CodeableConcept;
   }
 
   public boolean hasStart() {
@@ -1689,16 +1689,6 @@ public class Goal extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getAddressesTarget() {
-    if (this.addressesTarget == null)
-      this.addressesTarget = new ArrayList<Resource>();
-    return this.addressesTarget;
-  }
-
-  /**
    * @return {@link #note} (Any comments related to the goal.)
    */
   public List<Annotation> getNote() {
@@ -1860,28 +1850,6 @@ public class Goal extends DomainResource {
       addOutcomeReference();
     }
     return getOutcomeReference().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Observation> getOutcomeReferenceTarget() {
-    if (this.outcomeReferenceTarget == null)
-      this.outcomeReferenceTarget = new ArrayList<Observation>();
-    return this.outcomeReferenceTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Observation addOutcomeReferenceTarget() {
-    Observation r = new Observation();
-    if (this.outcomeReferenceTarget == null)
-      this.outcomeReferenceTarget = new ArrayList<Observation>();
-    this.outcomeReferenceTarget.add(r);
-    return r;
   }
 
   protected void listChildren(List<Property> children) {

@@ -1,31 +1,30 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Attachment30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Coding30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Period30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.*;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Instant30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
 import org.hl7.fhir.dstu3.model.DocumentReference;
 import org.hl7.fhir.dstu3.model.Enumeration;
 import org.hl7.fhir.dstu3.model.Enumerations;
 import org.hl7.fhir.exceptions.FHIRException;
 
+import java.util.Date;
+
 public class DocumentReference30_40 {
 
-  public static org.hl7.fhir.r4.model.InstantType convertDateTimeToInstant(org.hl7.fhir.dstu3.model.DateTimeType src) throws FHIRException {
-    org.hl7.fhir.r4.model.InstantType tgt = new org.hl7.fhir.r4.model.InstantType(src.getValueAsString());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    return tgt;
-  }
+  private static final String[] IGNORED_EXTENSION_URLS = new String[]{
+    VersionConvertorConstants.EXT_DOC_REF_CREATED
+  };
 
   public static org.hl7.fhir.dstu3.model.DocumentReference convertDocumentReference(org.hl7.fhir.r4.model.DocumentReference src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.DocumentReference tgt = new org.hl7.fhir.dstu3.model.DocumentReference();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt, IGNORED_EXTENSION_URLS);
     if (src.hasMasterIdentifier())
       tgt.setMasterIdentifier(Identifier30_40.convertIdentifier(src.getMasterIdentifier()));
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
@@ -41,7 +40,9 @@ public class DocumentReference30_40 {
     if (src.hasSubject())
       tgt.setSubject(Reference30_40.convertReference(src.getSubject()));
     if (src.hasDateElement())
-      tgt.setCreatedElement(convertInstantToDateTime(src.getDateElement()));
+      tgt.setIndexedElement(Instant30_40.convertInstant(src.getDateElement()));
+    if (src.hasExtension(VersionConvertorConstants.EXT_DOC_REF_CREATED))
+      tgt.setCreatedElement(convertCreatedExtension(src));
     if (src.hasAuthenticator())
       tgt.setAuthenticator(Reference30_40.convertReference(src.getAuthenticator()));
     if (src.hasCustodian())
@@ -80,8 +81,10 @@ public class DocumentReference30_40 {
       tgt.addCategory(CodeableConcept30_40.convertCodeableConcept(src.getClass_()));
     if (src.hasSubject())
       tgt.setSubject(Reference30_40.convertReference(src.getSubject()));
+    if (src.hasIndexed())
+      tgt.setDateElement(Instant30_40.convertInstant(src.getIndexedElement()));
     if (src.hasCreated())
-      tgt.setDateElement(convertDateTimeToInstant(src.getCreatedElement()));
+      tgt.addExtension(getExtensionForDocumentReferenceCreated(src.getCreated()));
     if (src.hasAuthenticator())
       tgt.setAuthenticator(Reference30_40.convertReference(src.getAuthenticator()));
     if (src.hasCustodian())
@@ -390,5 +393,24 @@ public class DocumentReference30_40 {
        }
 }
     return tgt;
+  }
+
+
+  private static org.hl7.fhir.dstu3.model.DateTimeType convertCreatedExtension(org.hl7.fhir.r4.model.DocumentReference src) {
+    org.hl7.fhir.r4.model.Extension extension = src.getExtensionByUrl(VersionConvertorConstants.EXT_DOC_REF_CREATED);
+    if (extension == null || extension.isEmpty()) {
+      return null;
+    }
+    if (extension.getValue() == null || extension.getValue().isEmpty()) {
+      return null;
+    }
+    return DateTime30_40.convertDateTime(extension.getValue().dateTimeValue());
+  }
+
+  public static org.hl7.fhir.r4.model.Extension getExtensionForDocumentReferenceCreated(Date created) {
+    org.hl7.fhir.r4.model.Extension extension = new org.hl7.fhir.r4.model.Extension();
+    extension.setUrl(VersionConvertorConstants.EXT_DOC_REF_CREATED);
+    extension.setValue(new org.hl7.fhir.r4.model.InstantType(created));
+    return extension;
   }
 }

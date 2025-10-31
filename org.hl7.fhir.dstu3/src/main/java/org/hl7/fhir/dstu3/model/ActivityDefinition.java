@@ -4078,28 +4078,6 @@ The primary difference between a medication statement and a medication administr
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Library> getLibraryTarget() { 
-      if (this.libraryTarget == null)
-        this.libraryTarget = new ArrayList<Library>();
-      return this.libraryTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Library addLibraryTarget() { 
-      Library r = new Library();
-      if (this.libraryTarget == null)
-        this.libraryTarget = new ArrayList<Library>();
-      this.libraryTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #kind} (A description of the kind of resource the activity definition is representing. For example, a MedicationRequest, a ProcedureRequest, or a CommunicationRequest. Typically, but not always, this is a Request resource.). This is the underlying object with id, value and extensions. The accessor "getKind" gives direct access to the value
      */
     public Enumeration<ActivityDefinitionKind> getKindElement() { 
@@ -4190,8 +4168,8 @@ The primary difference between a medication statement and a medication administr
       return (Timing) this.timing;
     }
 
-    public boolean hasTimingTiming() { 
-      return this != null && this.timing instanceof Timing;
+    public boolean hasTimingTiming() {
+      return this.timing instanceof Timing;
     }
 
     /**
@@ -4205,8 +4183,8 @@ The primary difference between a medication statement and a medication administr
       return (DateTimeType) this.timing;
     }
 
-    public boolean hasTimingDateTimeType() { 
-      return this != null && this.timing instanceof DateTimeType;
+    public boolean hasTimingDateTimeType() {
+      return this.timing instanceof DateTimeType;
     }
 
     /**
@@ -4220,8 +4198,8 @@ The primary difference between a medication statement and a medication administr
       return (Period) this.timing;
     }
 
-    public boolean hasTimingPeriod() { 
-      return this != null && this.timing instanceof Period;
+    public boolean hasTimingPeriod() {
+      return this.timing instanceof Period;
     }
 
     /**
@@ -4235,8 +4213,8 @@ The primary difference between a medication statement and a medication administr
       return (Range) this.timing;
     }
 
-    public boolean hasTimingRange() { 
-      return this != null && this.timing instanceof Range;
+    public boolean hasTimingRange() {
+      return this.timing instanceof Range;
     }
 
     public boolean hasTiming() { 
@@ -4368,8 +4346,8 @@ The primary difference between a medication statement and a medication administr
       return (Reference) this.product;
     }
 
-    public boolean hasProductReference() { 
-      return this != null && this.product instanceof Reference;
+    public boolean hasProductReference() {
+      return this.product instanceof Reference;
     }
 
     /**
@@ -4383,8 +4361,8 @@ The primary difference between a medication statement and a medication administr
       return (CodeableConcept) this.product;
     }
 
-    public boolean hasProductCodeableConcept() { 
-      return this != null && this.product instanceof CodeableConcept;
+    public boolean hasProductCodeableConcept() {
+      return this.product instanceof CodeableConcept;
     }
 
     public boolean hasProduct() { 

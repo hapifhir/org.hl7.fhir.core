@@ -1,13 +1,21 @@
 <configuration>
 
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+	<statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+
+	<logger name="org.sqlite.core.NativeDB" level="off" />
+
+	<appender name="CONSOLE_APPENDER" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
 		<encoder>
-			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} [%file:%line] %msg%n</pattern>
+			<pattern>%msg%n</pattern>
 		</encoder>
+		<immediateFlush>true</immediateFlush>
 	</appender>
 
 	<root level="info">
-		<appender-ref ref="STDOUT" />
+		<appender-ref ref="CONSOLE_APPENDER" />
 	</root>
 
 </configuration>

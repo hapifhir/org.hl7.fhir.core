@@ -30,25 +30,19 @@ package org.hl7.fhir.r5.elementmodel;
  */
 
 
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.List;
-
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -57,6 +51,13 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @MarkedToMoveToAdjunctPackage
 public abstract class ParserBase {
@@ -95,6 +96,7 @@ public abstract class ParserBase {
   protected IDigitalSignatureServices signatureServices;
   private ProfileUtilities profileUtilities;
   private ContextUtilities contextUtilities;
+  protected Set<String> canonicalFilter = new HashSet<>();
 
 	public ParserBase(IWorkerContext context, ProfileUtilities utilities) {
 		super();
@@ -161,14 +163,14 @@ public abstract class ParserBase {
 	
 	protected StructureDefinition getDefinition(List<ValidationMessage> errors, int line, int col, String ns, String name) throws FHIRFormatError {
 	  if (logical != null) {
-	    String expectedName = ToolingExtensions.readStringExtension(logical, ToolingExtensions.EXT_XML_NAME);
+	    String expectedName = ExtensionUtilities.readStringExtension(logical, ExtensionDefinitions.EXT_XML_NAME);
 	    if (expectedName == null) {
 	      expectedName = logical.getType();
 	      if (Utilities.isAbsoluteUrl(expectedName)) {
 	        expectedName = expectedName.substring(expectedName.lastIndexOf("/")+1);
 	      }
 	    }
-	    String expectedNamespace = ToolingExtensions.readStringExtension(logical, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED);
+	    String expectedNamespace = ExtensionUtilities.readStringExtension(logical, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED);
 	    if (matchesNamespace(expectedNamespace, ns) && matchesName(expectedName, name)) {
 	      return logical;
 	    } else {
@@ -191,9 +193,9 @@ public abstract class ParserBase {
   	  for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
   	    if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/de-")) {
   	      String type = urlTail(sd.getType());
-          if(name.equals(type) && (ns == null || ns.equals(FormatUtilities.FHIR_NS)) && !ToolingExtensions.hasAnyOfExtensions(sd, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED))
+          if(name.equals(type) && (ns == null || ns.equals(FormatUtilities.FHIR_NS)) && !ExtensionUtilities.hasAnyOfExtensions(sd, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED))
   	        return sd;
-  	      String sns = ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED);
+  	      String sns = ExtensionUtilities.readStringExtension(sd, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED);
   	      if ((name.equals(type) || name.equals(sd.getName())) && ns != null && ns.equals(sns))
   	        return sd;
   	    }
@@ -336,6 +338,13 @@ public abstract class ParserBase {
   public ContextUtilities getContextUtilities() {
     return contextUtilities;
   }
+
+  public void setCanonicalFilter(String... paths) {
+    canonicalFilter.clear();
+    for (String p : paths) {
+      canonicalFilter.add(p);
+    }
+  }
   
-  
+
 }

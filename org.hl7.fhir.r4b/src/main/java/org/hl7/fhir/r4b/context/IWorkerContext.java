@@ -578,6 +578,7 @@ public interface IWorkerContext {
 
   String formatMessagePlural(Integer pl, String theMessage, Object... theMessageArguments);
 
+  @Deprecated
   void setValidationMessageLanguage(Locale locale);
 
   class ValidationResult {
@@ -692,6 +693,18 @@ public interface IWorkerContext {
       } else {
         return null;
       }
+    }
+
+    public Parameters getOrMakeParameters() {
+      Parameters p = new Parameters();
+      p.addParameter("result", isOk());
+      if (getMessage() != null) {
+        p.addParameter("message", getMessage());
+      }
+      if (getDisplay() != null) {
+        p.addParameter("display", getDisplay());
+      }
+      return p;
     }
   }
 

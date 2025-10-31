@@ -10,12 +10,14 @@ public class FileFormat {
     return Charset.defaultCharset().equals(StandardCharsets.UTF_8);
   }
 
+  private static final String WARNING = "WARNING: Default file encoding is " + Charset.defaultCharset() + " which may cause unexpected results.\n"
+    + "         To fix this issue, run this program with the parameter '-Dfile.encoding=UTF-8'\n"
+    + "         Future releases may not be able to run at all with encoding " + Charset.defaultCharset() + "\n";
+
   public static void checkCharsetAndWarnIfNotUTF8(PrintStream out) {
     if (fileEncodingIsUtf8()) return;
-    out.println("");
-    out.println("WARNING: Default file encoding is " + Charset.defaultCharset() + " which may cause unexpected results. ");
-    out.println("         To fix this issue, run this program with the parameter '-Dfile.encoding=UTF-8'");
-    out.println("         Future releases may not be able to run at all with encoding " + Charset.defaultCharset());
-    out.println("");
+    out.println();
+    out.print(WARNING);
+    out.println();
   }
 }

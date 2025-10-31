@@ -177,7 +177,7 @@ public class CodeSystemValidator extends BaseValidator {
       CodeSystem csSupp = null;
       if ("supplement".equals(content) || supp != null) {      
         if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), !Utilities.noString(supp), I18nConstants.CODESYSTEM_CS_SUPP_NO_SUPP)) {
-          if (context.supportsSystem(supp, options.getFhirVersion())) {
+          if (context.getTxSupportInfo(supp, null).isSupported()) {
             csSupp = context.fetchCodeSystem(supp);
             if (csSupp != null) {
               if (csSupp.hasHierarchyMeaningElement() && cs.hasChild("hierarchyMeaning")) {
@@ -473,8 +473,24 @@ public class CodeSystemValidator extends BaseValidator {
     if (VersionUtilities.isR5Plus(context.getVersion())) {
       return false;
     } else {
-      return Utilities.existsInList(uri, "http://hl7.org/fhir/concept-properties#status", "http://hl7.org/fhir/concept-properties#retirementDate", 
-          "http://hl7.org/fhir/concept-properties#deprecationDate","http://hl7.org/fhir/concept-properties#parent","http://hl7.org/fhir/concept-properties#child","http://hl7.org/fhir/concept-properties#notSelectable");
+      return Utilities.existsInList(uri,
+        // this list is from R6
+        "http://hl7.org/fhir/concept-properties#status", // : code	A property that indicates the status of the concept. If the property is identified by this URL, then it SHALL use at least these status values (where appropriate):
+        "http://hl7.org/fhir/concept-properties#inactive", //  : boolean	True if the concept is not considered active - e.g. not a valid concept any more. Property type is boolean, default value is false
+        "http://hl7.org/fhir/concept-properties#effectiveDate", //  : date	The date at which the concept status was last changed
+        "http://hl7.org/fhir/concept-properties#deprecationDate", //  : date	Date Concept was deprecated
+        "http://hl7.org/fhir/concept-properties#retirementDate", // : date	Date Concept was retired
+        "http://hl7.org/fhir/concept-properties#notSelectable", // : boolean	This concept is a grouping concept and not intended to be used in the normal use of the code system (though may be used for filters etc.). This is also known as 'Abstract'
+        "http://hl7.org/fhir/concept-properties#parent", // : code	An immediate parent of the concept in the hierarchy
+        "http://hl7.org/fhir/concept-properties#child", // : code	An immediate child of the concept in the hierarchy
+        "http://hl7.org/fhir/concept-properties#partOf", // : code	The concept identified in this property (by its code) contains this concept as a component
+        "http://hl7.org/fhir/concept-properties#synonym", // : code	This property contains an alternative code that may be used to identify this concept instead of the primary code (deprecated: use alternateCode, and see the discussion below)
+        "http://hl7.org/fhir/concept-properties#alternateCode", // : code	This property contains the code for another representation of this concept, with the same real-world meaning, in this code system
+        "http://hl7.org/fhir/concept-properties#comment", // : string	A string that provides additional detail pertinent to the use or understanding of the concept
+        "http://hl7.org/fhir/concept-properties#itemWeight", // : decimal	A numeric value that allows the comparison (less than, greater than) or other numerical manipulation of a concept (e.g. Adding up components of a score). Scores are usually a whole number, but occasionally decimals are encountered in scores
+        "http://hl7.org/fhir/concept-properties#order", // : decimal	A property that indicates the order of the concept amongst its siblings in the code system e.g. severity. The code system specific purpose of the ordering is defined elsewhere
+        "http://hl7.org/fhir/concept-properties#definition" // : string	The definition of the concept. This corresponds to CodeSystem.concept.definition and is not used in the definition of CodeSystems but is used when clients request the definition property be included in an expansion
+      );
     }
   }
 
@@ -483,7 +499,7 @@ public class CodeSystemValidator extends BaseValidator {
       return null;
     } else {
       ValueSet vs = context.findTxResource(ValueSet.class, url);
-      if (vs != null) {        
+      if (vs == null) {
         warning(errors, "2025-01-09", IssueType.NOTFOUND, cs.line(), cs.col(), stack.getLiteralPath(), false, message, url);
       }
       return vs;
@@ -608,11 +624,17 @@ public class CodeSystemValidator extends BaseValidator {
     Element value = property.getNamedChild("value");
     if (code != null) {
       PropertyDef defn = properties.get(code);
-      if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), defn != null, I18nConstants.CODESYSTEM_PROPERTY_UNDEFINED, code) &&
-          rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), value != null, I18nConstants.CODESYSTEM_PROPERTY_NO_VALUE, code) &&
-          rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), value.fhirType().equals(defn.type), I18nConstants.CODESYSTEM_PROPERTY_WRONG_TYPE, code, value.fhirType(), defn.type)) {
-        if ("code".equals(value.fhirType())) {
-          checkCodeProperty(errors, cs, stack, defn, value.primitiveValue(), codes, supplements);
+      warning(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), defn != null, I18nConstants.CODESYSTEM_PROPERTY_UNDEFINED, code);
+
+      if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), value != null, I18nConstants.CODESYSTEM_PROPERTY_NO_VALUE, code)) {
+        if (defn != null) {
+          if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), value.fhirType().equals(defn.type), I18nConstants.CODESYSTEM_PROPERTY_WRONG_TYPE, code, value.fhirType(), defn.type)) {
+            if ("code".equals(value.fhirType())) {
+              checkCodeProperty(errors, cs, stack, defn, value.primitiveValue(), codes, supplements);
+            }
+          } else {
+            ok = false;
+          }
         }
       } else {
         ok = false;

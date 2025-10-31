@@ -571,7 +571,7 @@ public class GuidanceResponse extends DomainResource {
   }
 
   public boolean hasModuleUriType() {
-    return this != null && this.module instanceof UriType;
+      return this.module instanceof UriType;
   }
 
   /**
@@ -588,7 +588,7 @@ public class GuidanceResponse extends DomainResource {
   }
 
   public boolean hasModuleCanonicalType() {
-    return this != null && this.module instanceof CanonicalType;
+      return this.module instanceof CanonicalType;
   }
 
   /**
@@ -605,7 +605,7 @@ public class GuidanceResponse extends DomainResource {
   }
 
   public boolean hasModuleCodeableConcept() {
-    return this != null && this.module instanceof CodeableConcept;
+      return this.module instanceof CodeableConcept;
   }
 
   public boolean hasModule() {
@@ -1031,16 +1031,6 @@ public class GuidanceResponse extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getReasonReferenceTarget() {
-    if (this.reasonReferenceTarget == null)
-      this.reasonReferenceTarget = new ArrayList<Resource>();
-    return this.reasonReferenceTarget;
-  }
-
-  /**
    * @return {@link #note} (Provides a mechanism to communicate additional
    *         information about the response.)
    */
@@ -1150,28 +1140,6 @@ public class GuidanceResponse extends DomainResource {
       addEvaluationMessage();
     }
     return getEvaluationMessage().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<OperationOutcome> getEvaluationMessageTarget() {
-    if (this.evaluationMessageTarget == null)
-      this.evaluationMessageTarget = new ArrayList<OperationOutcome>();
-    return this.evaluationMessageTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public OperationOutcome addEvaluationMessageTarget() {
-    OperationOutcome r = new OperationOutcome();
-    if (this.evaluationMessageTarget == null)
-      this.evaluationMessageTarget = new ArrayList<OperationOutcome>();
-    this.evaluationMessageTarget.add(r);
-    return r;
   }
 
   /**

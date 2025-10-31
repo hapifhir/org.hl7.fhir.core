@@ -1084,16 +1084,6 @@ public class DocumentReference extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getEncounterTarget() {
-      if (this.encounterTarget == null)
-        this.encounterTarget = new ArrayList<Resource>();
-      return this.encounterTarget;
-    }
-
-    /**
      * @return {@link #event} (This list of codes represents the main clinical acts,
      *         such as a colonoscopy or an appendectomy, being documented. In some
      *         cases, the event is inherent in the type Code, such as a "History and
@@ -1340,16 +1330,6 @@ public class DocumentReference extends DomainResource {
         addRelated();
       }
       return getRelated().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getRelatedTarget() {
-      if (this.relatedTarget == null)
-        this.relatedTarget = new ArrayList<Resource>();
-      return this.relatedTarget;
     }
 
     protected void listChildren(List<Property> children) {
@@ -2269,16 +2249,6 @@ public class DocumentReference extends DomainResource {
       addAuthor();
     }
     return getAuthor().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getAuthorTarget() {
-    if (this.authorTarget == null)
-      this.authorTarget = new ArrayList<Resource>();
-    return this.authorTarget;
   }
 
   /**

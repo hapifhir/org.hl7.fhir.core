@@ -13,9 +13,6 @@
     "uri" : "http://fdasis.nlm.nih.gov"
   },
   {
-    "uri" : "http://fhir.ohdsi.org/CodeSystem/concepts"
-  },
-  {
     "uri" : "http://healthit.gov/nhin/purposeofuse"
   },
   {
@@ -2851,6 +2848,51 @@
     "uri" : "http://snomed.info/sct"
   },
   {
+    "uri" : "http://snomed.info/sct"
+  },
+  {
+    "uri" : "http://snomed.info/sct"
+  },
+  {
+    "uri" : "http://snomed.info/sct"
+  },
+  {
+    "uri" : "http://snomed.info/sct"
+  },
+  {
+    "uri" : "http://snomed.info/sct"
+  },
+  {
+    "uri" : "http://snomed.info/sct"
+  },
+  {
+    "uri" : "http://snomed.info/sct"
+  },
+  {
+    "uri" : "http://snomed.info/sct"
+  },
+  {
+    "uri" : "http://snomed.info/sct"
+  },
+  {
+    "uri" : "http://snomed.info/sct"
+  },
+  {
+    "uri" : "http://snomed.info/sct"
+  },
+  {
+    "uri" : "http://snomed.info/sct"
+  },
+  {
+    "uri" : "http://snomed.info/sct"
+  },
+  {
+    "uri" : "http://snomed.info/sct"
+  },
+  {
+    "uri" : "http://snomed.info/sct"
+  },
+  {
     "uri" : "http://standardterms.edqm.eu"
   },
   {
@@ -5380,6 +5422,9 @@
     "uri" : "http://www.whocc.no/atc"
   },
   {
+    "uri" : "https://fhir-terminology.ohdsi.org"
+  },
+  {
     "uri" : "https://www.cms.gov/Medicare/Medicare-Fee-for-Service-Payment/HospitalAcqCond/Coding"
   },
   {
@@ -5404,10 +5449,13 @@
     "uri" : "urn:iso:std:iso:11073:10101"
   },
   {
+    "uri" : "urn:iso:std:iso:3166:-2"
+  },
+  {
     "uri" : "urn:iso:std:iso:3166"
   },
   {
-    "uri" : "urn:iso:std:iso:3166:-2"
+    "uri" : "urn:iso:std:iso:3166"
   },
   {
     "uri" : "urn:iso:std:iso:4217"

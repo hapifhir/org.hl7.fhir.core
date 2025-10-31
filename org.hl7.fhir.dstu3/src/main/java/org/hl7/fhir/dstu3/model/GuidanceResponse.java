@@ -715,8 +715,8 @@ public class GuidanceResponse extends DomainResource {
       return (CodeableConcept) this.reason;
     }
 
-    public boolean hasReasonCodeableConcept() { 
-      return this != null && this.reason instanceof CodeableConcept;
+    public boolean hasReasonCodeableConcept() {
+        return this.reason instanceof CodeableConcept;
     }
 
     /**
@@ -730,8 +730,8 @@ public class GuidanceResponse extends DomainResource {
       return (Reference) this.reason;
     }
 
-    public boolean hasReasonReference() { 
-      return this != null && this.reason instanceof Reference;
+    public boolean hasReasonReference() {
+        return this.reason instanceof Reference;
     }
 
     public boolean hasReason() { 
@@ -852,28 +852,6 @@ public class GuidanceResponse extends DomainResource {
         addEvaluationMessage();
       }
       return getEvaluationMessage().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<OperationOutcome> getEvaluationMessageTarget() { 
-      if (this.evaluationMessageTarget == null)
-        this.evaluationMessageTarget = new ArrayList<OperationOutcome>();
-      return this.evaluationMessageTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public OperationOutcome addEvaluationMessageTarget() { 
-      OperationOutcome r = new OperationOutcome();
-      if (this.evaluationMessageTarget == null)
-        this.evaluationMessageTarget = new ArrayList<OperationOutcome>();
-      this.evaluationMessageTarget.add(r);
-      return r;
     }
 
     /**

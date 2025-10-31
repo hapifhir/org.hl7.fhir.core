@@ -1,12 +1,14 @@
 package org.hl7.fhir.convertors.loaders.loaderR5;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IContextResourceLoader;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -18,7 +20,6 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -35,14 +36,15 @@ import lombok.experimental.Accessors;
 public abstract class BaseLoaderR5 implements IContextResourceLoader {
 
   protected final String URL_BASE = "http://hl7.org/fhir/";
-  protected final String URL_ELEMENT_DEF_NAMESPACE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace";
+
   protected boolean patchUrls;
   @Getter @Setter protected boolean killPrimitives;
-  @Getter protected List<String> types = new ArrayList<>();
+  @Getter protected Set<String> types = new HashSet<>();
   protected ILoaderKnowledgeProviderR5 lkp;
   private boolean loadProfiles = true;
+  protected Set<String> tags = new HashSet<>();
 
-  public BaseLoaderR5(List<String> types, ILoaderKnowledgeProviderR5 lkp) {
+  public BaseLoaderR5(Set<String> types, ILoaderKnowledgeProviderR5 lkp) {
     super();
     this.types.addAll(types);
     this.lkp = lkp;
@@ -75,9 +77,9 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
     if (VersionUtilities.isR5Plus(npm.fhirVersion())) {
       return new R5ToR5Loader(types, lkp.forNewPackage(npm));
     } else if (VersionUtilities.isR4BVer(npm.fhirVersion())) {
-      return new R4BToR5Loader(types, lkp.forNewPackage(npm), npm.version());
+      return new R4BToR5Loader(types, lkp.forNewPackage(npm), npm.fhirVersion());
     } else if (VersionUtilities.isR4Ver(npm.fhirVersion())) {
-      return new R4ToR5Loader(types, lkp.forNewPackage(npm), npm.version());
+      return new R4ToR5Loader(types, lkp.forNewPackage(npm), npm.fhirVersion());
     } else if (VersionUtilities.isR3Ver(npm.fhirVersion())) {
       return new R3ToR5Loader(types, lkp.forNewPackage(npm));
     } else if (VersionUtilities.isR2Ver(npm.fhirVersion())) {
@@ -125,7 +127,7 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
         StructureDefinition sd = (StructureDefinition) cr;
         sd.setBaseDefinition(patchUrl(sd.getBaseDefinition(), sd.fhirType()));
         new ProfileUtilities(null, null, null, null).setIds(sd, false);
-        sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
+        sd.addExtension().setUrl(ExtensionDefinitions.EXT_XML_NAMESPACE).setValue(new UriType(URL_BASE));
         for (ElementDefinition ed : sd.getSnapshot().getElement())
           patchUrl(ed);
         for (ElementDefinition ed : sd.getDifferential().getElement())
@@ -167,10 +169,10 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
       for (CanonicalType s : tr.getTargetProfile()) {
         s.setValue(patchUrl(s.getValue(), "StructureDefinition"));
       }
-      if (tr.hasExtension(ToolingExtensions.EXT_FHIR_TYPE)) {
-        String code = ToolingExtensions.readStringExtension(tr, ToolingExtensions.EXT_FHIR_TYPE);
+      if (tr.hasExtension(ExtensionDefinitions.EXT_FHIR_TYPE)) {
+        String code = ExtensionUtilities.readStringExtension(tr, ExtensionDefinitions.EXT_FHIR_TYPE);
         String url = URL_BASE+versionString()+"/StructureDefinition/"+code;
-        ToolingExtensions.setUrlExtension(tr, ToolingExtensions.EXT_FHIR_TYPE, url);
+        ExtensionUtilities.setUrlExtension(tr, ExtensionDefinitions.EXT_FHIR_TYPE, url);
       }
       for (CanonicalType c : tr.getProfile()) {
         c.setValue(patchUrl(c.getValue(), "StructureDefinition"));
@@ -203,6 +205,19 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
       return false;
     } else {
       return true;
+    }
+  }
+
+  public BaseLoaderR5 addTag(String tag) {
+    if (tag != null) {
+      tags.add(tag);
+    }
+    return this;
+  }
+
+  protected void inspectResource(Resource res) {
+    for (String t : tags) {
+      res.setUserData(t, true);
     }
   }
 }

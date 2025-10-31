@@ -683,7 +683,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     public boolean hasCollectedDateTimeType() {
-      return this != null && this.collected instanceof DateTimeType;
+        return this.collected instanceof DateTimeType;
     }
 
     /**
@@ -699,7 +699,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     public boolean hasCollectedPeriod() {
-      return this != null && this.collected instanceof Period;
+        return this.collected instanceof Period;
     }
 
     public boolean hasCollected() {
@@ -1107,7 +1107,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     public boolean hasTimeDateTimeType() {
-      return this != null && this.time instanceof DateTimeType;
+        return this.time instanceof DateTimeType;
     }
 
     /**
@@ -1123,7 +1123,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     public boolean hasTimePeriod() {
-      return this != null && this.time instanceof Period;
+        return this.time instanceof Period;
     }
 
     public boolean hasTime() {
@@ -1445,7 +1445,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     public boolean hasTimeDateTimeType() {
-      return this != null && this.time instanceof DateTimeType;
+        return this.time instanceof DateTimeType;
     }
 
     /**
@@ -1461,7 +1461,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     public boolean hasTimePeriod() {
-      return this != null && this.time instanceof Period;
+        return this.time instanceof Period;
     }
 
     public boolean hasTime() {
@@ -2439,28 +2439,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<ServiceRequest> getRequestTarget() {
-    if (this.requestTarget == null)
-      this.requestTarget = new ArrayList<ServiceRequest>();
-    return this.requestTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public ServiceRequest addRequestTarget() {
-    ServiceRequest r = new ServiceRequest();
-    if (this.requestTarget == null)
-      this.requestTarget = new ArrayList<ServiceRequest>();
-    this.requestTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #quantity} (Number of discrete units within this product.).
    *         This is the underlying object with id, value and extensions. The
    *         accessor "getQuantity" gives direct access to the value
@@ -2562,28 +2540,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
       addParent();
     }
     return getParent().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<BiologicallyDerivedProduct> getParentTarget() {
-    if (this.parentTarget == null)
-      this.parentTarget = new ArrayList<BiologicallyDerivedProduct>();
-    return this.parentTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public BiologicallyDerivedProduct addParentTarget() {
-    BiologicallyDerivedProduct r = new BiologicallyDerivedProduct();
-    if (this.parentTarget == null)
-      this.parentTarget = new ArrayList<BiologicallyDerivedProduct>();
-    this.parentTarget.add(r);
-    return r;
   }
 
   /**

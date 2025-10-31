@@ -17,6 +17,7 @@ import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
@@ -65,6 +66,7 @@ import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
 
+@Slf4j
 public class NpmPackageVersionConverter {
 
   private static final int BUFFER_SIZE = 1024;
@@ -125,7 +127,7 @@ public class NpmPackageVersionConverter {
       byte[] cnv = convertResource(res);
       String fn = "package/"+res.fhirType()+"-"+res.getId()+".json";
       if (output.containsKey(fn)) {
-        System.out.println("Duplicate resource "+fn);
+        log.warn("Duplicate resource "+fn);
       } else {
         output.put(fn, cnv);
       }
@@ -345,9 +347,7 @@ public class NpmPackageVersionConverter {
       throw new Error("Unknown version " + currentVersion + " -> " + version);
     } catch (Exception ex) {
       errors.add("Error converting " + n + ": " + ex.getMessage());
-
-      System.out.println("Error converting " + n + ": " + ex.getMessage());
-      ex.printStackTrace();
+      log.error("Error converting " + n + ": " + ex.getMessage(), ex);
       return null;
     }
   }
@@ -407,7 +407,7 @@ public class NpmPackageVersionConverter {
         }
       }
       if (inc.hasSystem()) {
-        CodeSystem cs = context.fetchResource(CodeSystem.class, inc.getSystem(), inc.getVersion());
+        CodeSystem cs = context.fetchResource(CodeSystem.class, inc.getSystem(), inc.getVersion(), valueSet);
         if (cs != null) {
           checkForCoreDependenciesCS(cs);
         }

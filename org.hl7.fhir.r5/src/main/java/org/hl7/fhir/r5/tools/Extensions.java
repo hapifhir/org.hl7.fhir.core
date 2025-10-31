@@ -1,8 +1,11 @@
 package org.hl7.fhir.r5.tools;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.extensions.ExtensionsUtils;
+
+
 import java.util.List;
 import java.math.BigDecimal;
 
@@ -44,7 +47,7 @@ import java.math.BigDecimal;
 public class Extensions {
   
 // -- BindingDefinition -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/binding-definition|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/binding-definition|0.6.0-cibuild
 // Binding Definition
 
   public static Extension makeBindingDefinition(String value) {
@@ -52,7 +55,7 @@ public class Extensions {
   }
 
 // -- TerminologyBindingStyleEXT -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-binding-style|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-binding-style|0.6.0-cibuild
 // Terminology Binding Style Extension
 
   public static Extension makeTerminologyBindingStyleEXT(String value) {
@@ -60,16 +63,16 @@ public class Extensions {
   }
 
   public static StructureDefinition addTerminologyBindingStyleEXT(StructureDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_TERMINOLOGY_BINDING_STYLE_E_X_T, new CodeType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_TERMINOLOGY_BINDING_STYLE_E_X_T, new CodeType(value));
     return context;
   }
 
   public static List<String> getTerminologyBindingStyleEXTList(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_TERMINOLOGY_BINDING_STYLE_E_X_T);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_TERMINOLOGY_BINDING_STYLE_E_X_T);
   }
 
 // -- DateFormat -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-date-format|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-date-format|0.6.0-cibuild
 // Date Format String
 
   public static Extension makeDateFormat(String value) {
@@ -77,16 +80,16 @@ public class Extensions {
   }
 
   public static ElementDefinition addDateFormat(ElementDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_DATE_FORMAT, new StringType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_DATE_FORMAT, new StringType(value));
     return context;
   }
 
   public static List<String> getDateFormatList(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_DATE_FORMAT);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_DATE_FORMAT);
   }
 
 // -- DateRulesControl -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-date-rules|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-date-rules|0.6.0-cibuild
 // Date Validation Rules control
 
   public static Extension makeDateRulesControl(String value) {
@@ -94,16 +97,16 @@ public class Extensions {
   }
 
   public static ElementDefinition addDateRulesControl(ElementDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_DATE_RULES_CONTROL, new StringType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_DATE_RULES_CONTROL, new StringType(value));
     return context;
   }
 
   public static List<String> getDateRulesControlList(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_DATE_RULES_CONTROL);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_DATE_RULES_CONTROL);
   }
 
 // -- ExtensionStylesEXT -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/extension-style|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/extension-style|0.6.0-cibuild
 // Extension Style Extension
 
   public static Extension makeExtensionStylesEXT(String value) {
@@ -111,16 +114,16 @@ public class Extensions {
   }
 
   public static StructureDefinition addExtensionStylesEXT(StructureDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_EXTENSION_STYLES_E_X_T, new CodeType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_EXTENSION_STYLES_E_X_T, new CodeType(value));
     return context;
   }
 
   public static List<String> getExtensionStylesEXTList(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_EXTENSION_STYLES_E_X_T);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_EXTENSION_STYLES_E_X_T);
   }
 
 // -- IdExpectationExt -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/id-expectation|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/id-expectation|0.6.0-cibuild
 // Id Expectation Extension
 
   public static Extension makeIdExpectationExt(String value) {
@@ -128,16 +131,16 @@ public class Extensions {
   }
 
   public static ElementDefinition addIdExpectationExt(ElementDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_ID_EXPECTATION_EXT, new CodeType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_ID_EXPECTATION_EXT, new CodeType(value));
     return context;
   }
 
   public static List<String> getIdExpectationExtList(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_ID_EXPECTATION_EXT);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_ID_EXPECTATION_EXT);
   }
 
 // -- ActorExampleURL -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/ig-actor-example-url|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/ig-actor-example-url|0.6.0-cibuild
 // Actor Example URL
 
   public static Extension makeActorExampleURL(String value) {
@@ -145,16 +148,16 @@ public class Extensions {
   }
 
   public static ActorDefinition addActorExampleURL(ActorDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_ACTOR_EXAMPLE_U_R_L, new UrlType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_ACTOR_EXAMPLE_U_R_L, new UrlType(value));
     return context;
   }
 
   public static List<String> getActorExampleURLList(ActorDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_ACTOR_EXAMPLE_U_R_L);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_ACTOR_EXAMPLE_U_R_L);
   }
 
 // -- ActorForExample -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/ig-example-actor|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/ig-example-actor|0.6.0-cibuild
 // Actor For Example
 
   public static Extension makeActorForExample(String value) {
@@ -162,7 +165,7 @@ public class Extensions {
   }
 
 // -- IGInternalDependency -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/ig-internal-dependency|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/ig-internal-dependency|0.6.0-cibuild
 // IG Internal Dependency
 
   public static Extension makeIGInternalDependency(String value) {
@@ -170,7 +173,7 @@ public class Extensions {
   }
 
 // -- IGLinkDependency -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/ig-link-dependency|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/ig-link-dependency|0.6.0-cibuild
 // IG Link Dependency
 
   public static Extension makeIGLinkDependency(String value) {
@@ -178,7 +181,7 @@ public class Extensions {
   }
 
 // -- IGPublisherLoadAsResource -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/ig-load-as-resource|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/ig-load-as-resource|0.6.0-cibuild
 // IGPublisher Load As Resource
 
   public static Extension makeIGPublisherLoadAsResource(boolean value) {
@@ -186,16 +189,16 @@ public class Extensions {
   }
 
   public static StructureDefinition addIGPublisherLoadAsResource(StructureDefinition context, boolean value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_IGPUBLISHER_LOAD_AS_RESOURCE, new BooleanType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_IGPUBLISHER_LOAD_AS_RESOURCE, new BooleanType(value));
     return context;
   }
 
   public static List<Boolean> getIGPublisherLoadAsResourceList(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionBooleanList(context, ExtensionConstants.EXT_IGPUBLISHER_LOAD_AS_RESOURCE);
+    return ExtensionUtilities.getExtensionBooleanList(context, ExtensionConstants.EXT_IGPUBLISHER_LOAD_AS_RESOURCE);
   }
 
 // -- IGPageName -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/ig-page-name|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/ig-page-name|0.6.0-cibuild
 // IG Page Name
 
   public static Extension makeIGPageName(String value) {
@@ -203,7 +206,7 @@ public class Extensions {
   }
 
 // -- IGPublisherUseAsResourceId -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/ig-use-as-resource-id|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/ig-use-as-resource-id|0.6.0-cibuild
 // IGPublisher Use As Resource Id
 
   public static Extension makeIGPublisherUseAsResourceId(boolean value) {
@@ -211,16 +214,16 @@ public class Extensions {
   }
 
   public static ElementDefinition addIGPublisherUseAsResourceId(ElementDefinition context, boolean value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_IGPUBLISHER_USE_AS_RESOURCE_ID, new BooleanType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_IGPUBLISHER_USE_AS_RESOURCE_ID, new BooleanType(value));
     return context;
   }
 
   public static List<Boolean> getIGPublisherUseAsResourceIdList(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionBooleanList(context, ExtensionConstants.EXT_IGPUBLISHER_USE_AS_RESOURCE_ID);
+    return ExtensionUtilities.getExtensionBooleanList(context, ExtensionConstants.EXT_IGPUBLISHER_USE_AS_RESOURCE_ID);
   }
 
 // -- IGPublisherBundle -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/igpublisher-bundle|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/igpublisher-bundle|0.6.0-cibuild
 // IG Publisher Bundle
 
   public static Extension makeIGPublisherBundle(String value) {
@@ -228,7 +231,7 @@ public class Extensions {
   }
 
 // -- IGDependencyComment -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/implementationguide-dependency-comment|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/implementationguide-dependency-comment|0.6.0-cibuild
 // IG Dependency Comment
 
   public static Extension makeIGDependencyComment(String value) {
@@ -236,7 +239,7 @@ public class Extensions {
   }
 
 // -- BinaryResourceFormat -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/implementationguide-resource-format|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/implementationguide-resource-format|0.6.0-cibuild
 // Binary Resource Format
 
   public static Extension makeBinaryResourceFormat(String value) {
@@ -244,7 +247,7 @@ public class Extensions {
   }
 
 // -- BinaryResourceLogical -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/implementationguide-resource-logical|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/implementationguide-resource-logical|0.6.0-cibuild
 // Binary Resource Logical
 
   public static Extension makeBinaryResourceLogical(String value) {
@@ -252,7 +255,7 @@ public class Extensions {
   }
 
 // -- ImpliedStringPrefix -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/implied-string-prefix|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/implied-string-prefix|0.6.0-cibuild
 // Implied String Prefix
 
   public static Extension makeImpliedStringPrefix(String value) {
@@ -260,16 +263,16 @@ public class Extensions {
   }
 
   public static ElementDefinition addImpliedStringPrefix(ElementDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_IMPLIED_STRING_PREFIX, new StringType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_IMPLIED_STRING_PREFIX, new StringType(value));
     return context;
   }
 
   public static List<String> getImpliedStringPrefixList(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_IMPLIED_STRING_PREFIX);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_IMPLIED_STRING_PREFIX);
   }
 
 // -- InheritObligations -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/inherit-obligations|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/inherit-obligations|0.6.0-cibuild
 // Inherit Obligations
 
   public static Extension makeInheritObligations(String value) {
@@ -277,16 +280,16 @@ public class Extensions {
   }
 
   public static StructureDefinition addInheritObligations(StructureDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_INHERIT_OBLIGATIONS, new CanonicalType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_INHERIT_OBLIGATIONS, new CanonicalType(value));
     return context;
   }
 
   public static List<String> getInheritObligationsList(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_INHERIT_OBLIGATIONS);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_INHERIT_OBLIGATIONS);
   }
 
 // -- JsonEmptyBehavior -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/json-empty-behavior|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/json-empty-behavior|0.6.0-cibuild
 // Json Empty Behavior Extension
 
   public static Extension makeJsonEmptyBehavior(String value) {
@@ -294,16 +297,16 @@ public class Extensions {
   }
 
   public static ElementDefinition addJsonEmptyBehavior(ElementDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_JSON_EMPTY_BEHAVIOR, new CodeType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_JSON_EMPTY_BEHAVIOR, new CodeType(value));
     return context;
   }
 
   public static List<String> getJsonEmptyBehaviorList(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_JSON_EMPTY_BEHAVIOR);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_JSON_EMPTY_BEHAVIOR);
   }
 
 // -- JsonPropertyName -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/json-name|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/json-name|0.6.0-cibuild
 // Json Property Name Extension
 
   public static Extension makeJsonPropertyName(String value) {
@@ -311,16 +314,16 @@ public class Extensions {
   }
 
   public static ElementDefinition addJsonPropertyName(ElementDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_JSON_PROPERTY_NAME, new StringType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_JSON_PROPERTY_NAME, new StringType(value));
     return context;
   }
 
   public static List<String> getJsonPropertyNameList(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_JSON_PROPERTY_NAME);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_JSON_PROPERTY_NAME);
   }
 
 // -- JsonNullableExt -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/json-nullable|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/json-nullable|0.6.0-cibuild
 // Json Nullable Extension
 
   public static Extension makeJsonNullableExt(boolean value) {
@@ -328,16 +331,16 @@ public class Extensions {
   }
 
   public static ElementDefinition setJsonNullableExt(ElementDefinition context, boolean value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_JSON_NULLABLE_EXT, new BooleanType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_JSON_NULLABLE_EXT, new BooleanType(value));
     return context;
   }
 
   public static Boolean getJsonNullableExt(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionBoolean(context, ExtensionConstants.EXT_JSON_NULLABLE_EXT);
+    return ExtensionUtilities.getExtensionBoolean(context, ExtensionConstants.EXT_JSON_NULLABLE_EXT);
   }
 
 // -- JsonPrimitiveChoiceExt -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/json-primitive-choice|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/json-primitive-choice|0.6.0-cibuild
 // Json Primitive Choice Extension
 
   public static Extension makeJsonPrimitiveChoiceExt(boolean value) {
@@ -345,16 +348,16 @@ public class Extensions {
   }
 
   public static ElementDefinition setJsonPrimitiveChoiceExt(ElementDefinition context, boolean value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_JSON_PRIMITIVE_CHOICE_EXT, new BooleanType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_JSON_PRIMITIVE_CHOICE_EXT, new BooleanType(value));
     return context;
   }
 
   public static Boolean getJsonPrimitiveChoiceExt(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionBoolean(context, ExtensionConstants.EXT_JSON_PRIMITIVE_CHOICE_EXT);
+    return ExtensionUtilities.getExtensionBoolean(context, ExtensionConstants.EXT_JSON_PRIMITIVE_CHOICE_EXT);
   }
 
 // -- JsonPropertyKey -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/json-property-key|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/json-property-key|0.6.0-cibuild
 // Json Property Key Extension
 
   public static Extension makeJsonPropertyKey(String value) {
@@ -362,16 +365,16 @@ public class Extensions {
   }
 
   public static ElementDefinition addJsonPropertyKey(ElementDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_JSON_PROPERTY_KEY, new CodeType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_JSON_PROPERTY_KEY, new CodeType(value));
     return context;
   }
 
   public static List<String> getJsonPropertyKeyList(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_JSON_PROPERTY_KEY);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_JSON_PROPERTY_KEY);
   }
 
 // -- JsonSuppressResourceType -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/json-suppress-resourcetype|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/json-suppress-resourcetype|0.6.0-cibuild
 // Json Suppress resourceType Property
 
   public static Extension makeJsonSuppressResourceType(boolean value) {
@@ -379,16 +382,16 @@ public class Extensions {
   }
 
   public static StructureDefinition addJsonSuppressResourceType(StructureDefinition context, boolean value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_JSON_SUPPRESS_RESOURCE_TYPE, new BooleanType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_JSON_SUPPRESS_RESOURCE_TYPE, new BooleanType(value));
     return context;
   }
 
   public static List<Boolean> getJsonSuppressResourceTypeList(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionBooleanList(context, ExtensionConstants.EXT_JSON_SUPPRESS_RESOURCE_TYPE);
+    return ExtensionUtilities.getExtensionBooleanList(context, ExtensionConstants.EXT_JSON_SUPPRESS_RESOURCE_TYPE);
   }
 
 // -- LogicalContainer -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/logical-container|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/logical-container|0.6.0-cibuild
 // Logical Container
 
   public static Extension makeLogicalContainer(String value) {
@@ -396,16 +399,16 @@ public class Extensions {
   }
 
   public static StructureDefinition setLogicalContainer(StructureDefinition context, String value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_LOGICAL_CONTAINER, new UriType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_LOGICAL_CONTAINER, new UriType(value));
     return context;
   }
 
   public static String getLogicalContainer(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionString(context, ExtensionConstants.EXT_LOGICAL_CONTAINER);
+    return ExtensionUtilities.getExtensionString(context, ExtensionConstants.EXT_LOGICAL_CONTAINER);
   }
 
 // -- LogicalTarget -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/logical-target|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/logical-target|0.6.0-cibuild
 // Logical Target
 
   public static Extension makeLogicalTarget(boolean value) {
@@ -413,16 +416,16 @@ public class Extensions {
   }
 
   public static StructureDefinition setLogicalTarget(StructureDefinition context, boolean value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_LOGICAL_TARGET, new BooleanType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_LOGICAL_TARGET, new BooleanType(value));
     return context;
   }
 
   public static Boolean getLogicalTarget(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionBoolean(context, ExtensionConstants.EXT_LOGICAL_TARGET);
+    return ExtensionUtilities.getExtensionBoolean(context, ExtensionConstants.EXT_LOGICAL_TARGET);
   }
 
 // -- MatchetypeFlag -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/matchetype|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/matchetype|0.6.0-cibuild
 // Matchetype Flag
 
   public static Extension makeMatchetypeFlag(String value) {
@@ -430,16 +433,16 @@ public class Extensions {
   }
 
   public static Resource addMatchetypeFlag(Resource context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_MATCHETYPE_FLAG, new CodeType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_MATCHETYPE_FLAG, new CodeType(value));
     return context;
   }
 
   public static List<String> getMatchetypeFlagList(Resource context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_MATCHETYPE_FLAG);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_MATCHETYPE_FLAG);
   }
 
 // -- MatchetypeCountFlag -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/matchetype-count|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/matchetype-count|0.6.0-cibuild
 // Matchetype Count Flag
 
   public static Extension makeMatchetypeCountFlag(String value) {
@@ -447,16 +450,16 @@ public class Extensions {
   }
 
   public static Element addMatchetypeCountFlag(Element context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_MATCHETYPE_COUNT_FLAG, new StringType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_MATCHETYPE_COUNT_FLAG, new StringType(value));
     return context;
   }
 
   public static List<String> getMatchetypeCountFlagList(Element context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_MATCHETYPE_COUNT_FLAG);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_MATCHETYPE_COUNT_FLAG);
   }
 
 // -- MatchetypeOptionalFlag -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/matchetype-optional|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/matchetype-optional|0.6.0-cibuild
 // Matchetype Optional Flag
 
   public static Extension makeMatchetypeOptionalFlag(String value) {
@@ -468,25 +471,25 @@ public class Extensions {
   }
 
   public static Element addMatchetypeOptionalFlag(Element context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_MATCHETYPE_OPTIONAL_FLAG, new StringType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_MATCHETYPE_OPTIONAL_FLAG, new StringType(value));
     return context;
   }
 
   public static List<String> getMatchetypeOptionalFlagStringList(Element context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_MATCHETYPE_OPTIONAL_FLAG);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_MATCHETYPE_OPTIONAL_FLAG);
   }
 
   public static Element addMatchetypeOptionalFlag(Element context, boolean value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_MATCHETYPE_OPTIONAL_FLAG, new BooleanType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_MATCHETYPE_OPTIONAL_FLAG, new BooleanType(value));
     return context;
   }
 
   public static List<Boolean> getMatchetypeOptionalFlagBooleanList(Element context) {
-    return ExtensionsUtils.getExtensionBooleanList(context, ExtensionConstants.EXT_MATCHETYPE_OPTIONAL_FLAG);
+    return ExtensionUtilities.getExtensionBooleanList(context, ExtensionConstants.EXT_MATCHETYPE_OPTIONAL_FLAG);
   }
 
 // -- NoBinding -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/no-binding|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/no-binding|0.6.0-cibuild
 // No Binding Extension
 
   public static Extension makeNoBinding(boolean value) {
@@ -494,16 +497,16 @@ public class Extensions {
   }
 
   public static ElementDefinition setNoBinding(ElementDefinition context, boolean value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_NO_BINDING, new BooleanType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_NO_BINDING, new BooleanType(value));
     return context;
   }
 
   public static Boolean getNoBinding(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionBoolean(context, ExtensionConstants.EXT_NO_BINDING);
+    return ExtensionUtilities.getExtensionBoolean(context, ExtensionConstants.EXT_NO_BINDING);
   }
 
 // -- ObligationProfile -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/obligation-profile|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/obligation-profile|0.6.0-cibuild
 // Obligation Profile Flag
 
   public static Extension makeObligationProfile(boolean value) {
@@ -511,16 +514,16 @@ public class Extensions {
   }
 
   public static StructureDefinition addObligationProfile(StructureDefinition context, boolean value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_OBLIGATION_PROFILE, new BooleanType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_OBLIGATION_PROFILE, new BooleanType(value));
     return context;
   }
 
   public static List<Boolean> getObligationProfileList(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionBooleanList(context, ExtensionConstants.EXT_OBLIGATION_PROFILE);
+    return ExtensionUtilities.getExtensionBooleanList(context, ExtensionConstants.EXT_OBLIGATION_PROFILE);
   }
 
 // -- PackageScope -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/package-scope|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/package-scope|0.6.0-cibuild
 // Package Scope
 
   public static Extension makePackageScope(String value) {
@@ -528,16 +531,16 @@ public class Extensions {
   }
 
   public static ImplementationGuide addPackageScope(ImplementationGuide context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_PACKAGE_SCOPE, new CodeType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_PACKAGE_SCOPE, new CodeType(value));
     return context;
   }
 
   public static List<String> getPackageScopeList(ImplementationGuide context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_PACKAGE_SCOPE);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_PACKAGE_SCOPE);
   }
 
 // -- ProfileMapping -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/profile-mapping|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/profile-mapping|0.6.0-cibuild
 // Profile Mapping Extension
 
   public static Extension makeProfileMapping(DataType value) {
@@ -545,7 +548,7 @@ public class Extensions {
   }
 
 // -- ResourceSortExt -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/resource-sort|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/resource-sort|0.6.0-cibuild
 // Resource Sort Extension
 
   public static Extension makeResourceSortExt(int value) {
@@ -553,7 +556,7 @@ public class Extensions {
   }
 
 // -- SearchParameterBaseType -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/searchparameter-base-type|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/searchparameter-base-type|0.6.0-cibuild
 // Search Parameter Base Type
 
   public static Extension makeSearchParameterBaseType(String value) {
@@ -561,7 +564,7 @@ public class Extensions {
   }
 
 // -- SnapshotBaseVersion -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/snapshot-base-version|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/snapshot-base-version|0.6.0-cibuild
 // Snapshot Base Version
 
   public static Extension makeSnapshotBaseVersion(String value) {
@@ -569,7 +572,7 @@ public class Extensions {
   }
 
 // -- ExtensionSnapshotBehavior -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/snapshot-behavior|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/snapshot-behavior|0.6.0-cibuild
 // Extension Snapshot Behavior
 
   public static Extension makeExtensionSnapshotBehavior(String value) {
@@ -577,16 +580,33 @@ public class Extensions {
   }
 
   public static StructureDefinition addExtensionSnapshotBehavior(StructureDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_EXTENSION_SNAPSHOT_BEHAVIOR, new CodeType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_EXTENSION_SNAPSHOT_BEHAVIOR, new CodeType(value));
     return context;
   }
 
   public static List<String> getExtensionSnapshotBehaviorList(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_EXTENSION_SNAPSHOT_BEHAVIOR);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_EXTENSION_SNAPSHOT_BEHAVIOR);
+  }
+
+// -- ExtensionSnapshotSource -------------------------------------
+// http://hl7.org/fhir/tools/StructureDefinition/snapshot-source|0.6.0-cibuild
+// Extension Snapshot Source
+
+  public static Extension makeExtensionSnapshotSource(String value) {
+    return new Extension(ExtensionConstants.EXT_EXTENSION_SNAPSHOT_SOURCE).setValue(new CanonicalType(value));
+  }
+
+  public static StructureDefinition addExtensionSnapshotSource(StructureDefinition context, String value) {
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_EXTENSION_SNAPSHOT_SOURCE, new CanonicalType(value));
+    return context;
+  }
+
+  public static List<String> getExtensionSnapshotSourceList(StructureDefinition context) {
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_EXTENSION_SNAPSHOT_SOURCE);
   }
 
 // -- RenderingEngineViewHintsExt -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/view-hint|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/view-hint|0.6.0-cibuild
 // Viewing Hints for Rendering Engines (Extension)
 
   public static Extension makeRenderingEngineViewHintsExt(String value) {
@@ -594,25 +614,25 @@ public class Extensions {
   }
 
   public static ElementDefinition setRenderingEngineViewHintsExt(ElementDefinition context, String value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_RENDERING_ENGINE_VIEW_HINTS_EXT, new CodeType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_RENDERING_ENGINE_VIEW_HINTS_EXT, new CodeType(value));
     return context;
   }
 
   public static String getRenderingEngineViewHintsExt(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionString(context, ExtensionConstants.EXT_RENDERING_ENGINE_VIEW_HINTS_EXT);
+    return ExtensionUtilities.getExtensionString(context, ExtensionConstants.EXT_RENDERING_ENGINE_VIEW_HINTS_EXT);
   }
 
   public static StructureDefinition setRenderingEngineViewHintsExt(StructureDefinition context, String value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_RENDERING_ENGINE_VIEW_HINTS_EXT, new CodeType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_RENDERING_ENGINE_VIEW_HINTS_EXT, new CodeType(value));
     return context;
   }
 
   public static String getRenderingEngineViewHintsExt(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionString(context, ExtensionConstants.EXT_RENDERING_ENGINE_VIEW_HINTS_EXT);
+    return ExtensionUtilities.getExtensionString(context, ExtensionConstants.EXT_RENDERING_ENGINE_VIEW_HINTS_EXT);
   }
 
 // -- WebSource -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/web-source|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/web-source|0.6.0-cibuild
 // Web Source
 
   public static Extension makeWebSource(String value) {
@@ -620,16 +640,16 @@ public class Extensions {
   }
 
   public static CanonicalResource setWebSource(CanonicalResource context, String value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_WEB_SOURCE, new UrlType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_WEB_SOURCE, new UrlType(value));
     return context;
   }
 
   public static String getWebSource(CanonicalResource context) {
-    return ExtensionsUtils.getExtensionString(context, ExtensionConstants.EXT_WEB_SOURCE);
+    return ExtensionUtilities.getExtensionString(context, ExtensionConstants.EXT_WEB_SOURCE);
   }
 
 // -- XMLChoiceGroup -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/xml-choice-group|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/xml-choice-group|0.6.0-cibuild
 // XML Choice Group
 
   public static Extension makeXMLChoiceGroup(boolean value) {
@@ -637,16 +657,16 @@ public class Extensions {
   }
 
   public static ElementDefinition addXMLChoiceGroup(ElementDefinition context, boolean value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_XMLCHOICE_GROUP, new BooleanType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_XMLCHOICE_GROUP, new BooleanType(value));
     return context;
   }
 
   public static List<Boolean> getXMLChoiceGroupList(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionBooleanList(context, ExtensionConstants.EXT_XMLCHOICE_GROUP);
+    return ExtensionUtilities.getExtensionBooleanList(context, ExtensionConstants.EXT_XMLCHOICE_GROUP);
   }
 
 // -- XmlElementName -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/xml-name|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/xml-name|0.6.0-cibuild
 // Xml Element Name Extension
 
   public static Extension makeXmlElementName(String value) {
@@ -654,25 +674,25 @@ public class Extensions {
   }
 
   public static ElementDefinition addXmlElementName(ElementDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_XML_ELEMENT_NAME, new StringType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_XML_ELEMENT_NAME, new StringType(value));
     return context;
   }
 
   public static List<String> getXmlElementNameList(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_XML_ELEMENT_NAME);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_XML_ELEMENT_NAME);
   }
 
   public static StructureDefinition addXmlElementName(StructureDefinition context, String value) {
-    ExtensionsUtils.addExtension(context, ExtensionConstants.EXT_XML_ELEMENT_NAME, new StringType(value));
+    ExtensionUtilities.addExtension(context, ExtensionConstants.EXT_XML_ELEMENT_NAME, new StringType(value));
     return context;
   }
 
   public static List<String> getXmlElementNameList(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionStringList(context, ExtensionConstants.EXT_XML_ELEMENT_NAME);
+    return ExtensionUtilities.getExtensionStringList(context, ExtensionConstants.EXT_XML_ELEMENT_NAME);
   }
 
 // -- Namespace -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/xml-namespace|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/xml-namespace|0.6.0-cibuild
 // Namespace
 
   public static Extension makeNamespace(String value) {
@@ -680,25 +700,25 @@ public class Extensions {
   }
 
   public static ElementDefinition setNamespace(ElementDefinition context, String value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_NAMESPACE, new UriType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_NAMESPACE, new UriType(value));
     return context;
   }
 
   public static String getNamespace(ElementDefinition context) {
-    return ExtensionsUtils.getExtensionString(context, ExtensionConstants.EXT_NAMESPACE);
+    return ExtensionUtilities.getExtensionString(context, ExtensionConstants.EXT_NAMESPACE);
   }
 
   public static StructureDefinition setNamespace(StructureDefinition context, String value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_NAMESPACE, new UriType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_NAMESPACE, new UriType(value));
     return context;
   }
 
   public static String getNamespace(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionString(context, ExtensionConstants.EXT_NAMESPACE);
+    return ExtensionUtilities.getExtensionString(context, ExtensionConstants.EXT_NAMESPACE);
   }
 
 // -- XmlNoOrder -------------------------------------
-// http://hl7.org/fhir/tools/StructureDefinition/xml-no-order|0.5.0-SNAPSHOT
+// http://hl7.org/fhir/tools/StructureDefinition/xml-no-order|0.6.0-cibuild
 // No Order in XML
 
   public static Extension makeXmlNoOrder(boolean value) {
@@ -706,12 +726,12 @@ public class Extensions {
   }
 
   public static StructureDefinition setXmlNoOrder(StructureDefinition context, boolean value) {
-    ExtensionsUtils.setExtension(context, ExtensionConstants.EXT_XML_NO_ORDER, new BooleanType(value));
+    ExtensionUtilities.setExtension(context, ExtensionConstants.EXT_XML_NO_ORDER, new BooleanType(value));
     return context;
   }
 
   public static Boolean getXmlNoOrder(StructureDefinition context) {
-    return ExtensionsUtils.getExtensionBoolean(context, ExtensionConstants.EXT_XML_NO_ORDER);
+    return ExtensionUtilities.getExtensionBoolean(context, ExtensionConstants.EXT_XML_NO_ORDER);
   }
 
 

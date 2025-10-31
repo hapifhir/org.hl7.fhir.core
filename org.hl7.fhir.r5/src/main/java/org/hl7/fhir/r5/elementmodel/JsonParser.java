@@ -55,6 +55,8 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
 import org.hl7.fhir.r5.elementmodel.JsonParser.ILogicalModelResolver;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonCreator;
@@ -63,7 +65,7 @@ import org.hl7.fhir.r5.formats.JsonCreatorDirect;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.FileUtilities;
@@ -81,6 +83,7 @@ import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 
@@ -177,8 +180,6 @@ public class JsonParser extends ParserBase {
     List<ValidatedFragment> res = new ArrayList<>();
     res.add(focusFragment);
 
-//    long  t =System.currentTimeMillis()-start;
-//    System.out.println("json parser: "+(t)+"ms, "+(content.length/1024)+"kb "+(t == 0 ? "" : " @ "+(content.length / t)+"kb/s"));
     return res;
   }
 
@@ -200,9 +201,20 @@ public class JsonParser extends ParserBase {
   public Element parse(List<ValidationMessage> errors, JsonObject object, String statedPath) throws FHIRException {
     StructureDefinition sd = resolveLogical(object);
     String name;
-    String path;      
+    String path;
     if (sd == null) {
+      JsonElement rd = object.get("resourceDefinition");
       JsonElement rt = object.get("resourceType");
+      if (rd != null) {
+        if (!rd.isJsonString()) {
+          logError(errors, "2022-11-26", line(object), col(object), "$", IssueType.INVALID, context.formatMessage(I18nConstants.RESOURCEDEFINITION_PROPERTY_WRONG_TYPE, rd.type().toName()), IssueSeverity.ERROR);
+        } else {
+          sd = context.fetchResource(StructureDefinition.class, rd.asString());
+          if (sd == null) {
+            logError(errors, "2022-11-26", line(object), col(object), "$", IssueType.INVALID, context.formatMessage(I18nConstants.RESOURCEDEFINITION_PROPERTY_UNKNOWN, rd.asString()), IssueSeverity.ERROR);
+          }
+        }
+      }
       if (rt == null) {
         logError(errors, ValidationMessage.NO_RULE_DATE, line(object), col(object), "$", IssueType.INVALID, context.formatMessage(I18nConstants.UNABLE_TO_FIND_RESOURCETYPE_PROPERTY), IssueSeverity.FATAL);
         return null;
@@ -212,17 +224,22 @@ public class JsonParser extends ParserBase {
       } else {
         name = rt.asString();
 
-        sd = getDefinition(errors, line(object), col(object), name);
         if (sd == null) {
-         return null;
+          sd = getDefinition(errors, line(object), col(object), name);
         }
+        if (sd == null) {
+          return null;
+        }
+        path = statedPath == null ? name : statedPath;
       }
-      path = statedPath == null ? name : statedPath;
+      name = sd.getType();
+      path = statedPath == null ? sd.getTypeTail() : statedPath;
     } else {
       name = sd.getType();
       path = statedPath == null ? sd.getTypeTail() : statedPath;
     }
     baseElement = new Element(name, new Property(context, sd.getSnapshot().getElement().get(0), sd, this.getProfileUtilities(), this.getContextUtilities())).setFormat(FhirFormat.JSON);
+    baseElement.setResourceDefinition(object.asString("resourceDefinition"));
     checkObject(errors, object, baseElement, path);
     baseElement.markLocation(line(object), col(object));
     baseElement.setType(name);
@@ -281,7 +298,9 @@ public class JsonParser extends ParserBase {
   private void checkNotProcessed(List<ValidationMessage> errors, String path, Element element, boolean hasResourceType, List<JsonProperty> children) {
     if (policy != ValidationPolicy.NONE) {
       for (JsonProperty e : children) {
-        if (e.getTag() == 0) {
+        if (hasResourceType && Utilities.existsInList(e.getName(),"resourceType","resourceDefinition")) {
+          // nothing
+        } else if (e.getTag() == 0) {
           StructureDefinition sd = element.getProperty().isLogical() ? getContextUtilities().fetchByJsonName(e.getName()) : null;
           if (sd != null) {
             Property property = new Property(context, sd.getSnapshot().getElementFirstRep(), sd, element.getProperty().getUtils(), element.getProperty().getContextUtils());
@@ -298,8 +317,6 @@ public class JsonParser extends ParserBase {
                 }
               }
             }
-          } else if (hasResourceType && "resourceType".equals(e.getName())) {
-            // nothing
           } else {
             JsonProperty p = getFoundJsonPropertyByName(e.getName(), children);
             if (p != null) {
@@ -809,6 +826,9 @@ public class JsonParser extends ParserBase {
     if (!isSuppressResourceType(e.getProperty())) {
       prop("resourceType", e.getType(), null);
     }
+    if (ExtensionUtilities.readBoolExtension(e.getProperty().getStructure(), ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE)) {
+      prop("resourceDefinition", e.getProperty().getStructure().getVersionedUrl(), null);
+    }
     Set<String> done = new HashSet<String>();
     for (Element child : e.getChildren()) {
       compose(e.getName(), e, done, child);
@@ -820,8 +840,8 @@ public class JsonParser extends ParserBase {
 
   private boolean isSuppressResourceType(Property property) {
     StructureDefinition sd = property.getStructure();
-    if (sd != null && sd.hasExtension(ToolingExtensions.EXT_SUPPRESS_RESOURCE_TYPE)) {
-      return ToolingExtensions.readBoolExtension(sd, ToolingExtensions.EXT_SUPPRESS_RESOURCE_TYPE);
+    if (sd != null && sd.hasExtension(ExtensionDefinitions.EXT_SUPPRESS_RESOURCE_TYPE)) {
+      return ExtensionUtilities.readBoolExtension(sd, ExtensionDefinitions.EXT_SUPPRESS_RESOURCE_TYPE);
     } else {
       return false;
     }
@@ -845,6 +865,9 @@ public class JsonParser extends ParserBase {
     if (!isSuppressResourceType(e.getProperty())) {
       prop("resourceType", e.getType(), linkResolver == null ? null : linkResolver.resolveProperty(e.getProperty()));
     }
+    if (ExtensionUtilities.readBoolExtension(e.getProperty().getStructure(), ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE)) {
+      prop("resourceDefinition", e.getProperty().getStructure().getVersionedUrl(), null);
+    }
     Set<String> done = new HashSet<String>();
     for (Element child : e.getChildren()) {
       compose(e.getName(), e, done, child);
@@ -854,6 +877,9 @@ public class JsonParser extends ParserBase {
   }
 
   private void compose(String path, Element e, Set<String> done, Element child) throws IOException {
+    if (canonicalFilter.contains(child.getPath())) {
+      return;
+    }
     checkComposeComments(child);
     if (wantCompose(path, child)) {
       boolean isList = child.hasElementProperty() ? child.getElementProperty().isList() : child.getProperty().isList();
@@ -880,7 +906,7 @@ public class JsonParser extends ParserBase {
           }
         }
         if (!skipList) {
-          if (child.getProperty().getDefinition().hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY))
+          if (child.getProperty().getDefinition().hasExtension(ExtensionDefinitions.EXT_JSON_PROP_KEY))
             composeKeyList(path, list);
           else 
             composeList(list.get(0).getName(), path, list);
@@ -891,7 +917,7 @@ public class JsonParser extends ParserBase {
 
   
   private void composeKeyList(String path, List<Element> list) throws IOException {
-    String keyName = list.get(0).getProperty().getDefinition().getExtensionString(ToolingExtensions.EXT_JSON_PROP_KEY);
+    String keyName = list.get(0).getProperty().getDefinition().getExtensionString(ExtensionDefinitions.EXT_JSON_PROP_KEY);
     json.name(list.get(0).getName());
     json.beginObject();
     for (Element e: list) {
@@ -988,10 +1014,12 @@ public class JsonParser extends ParserBase {
       json.name(name);
     }
     String type = item.getType();
-    if (Utilities.existsInList(type, "boolean")) {
-      json.value(item.getValue().trim().equals("true") ? new Boolean(true) : new Boolean(false));
+    if (item.hasXhtml()) {
+      json.value(new XhtmlComposer(XhtmlComposer.XML, false).setCanonical(json.isCanonical()).compose(item.getXhtml()));
+    } else if (Utilities.existsInList(type, "boolean")) {
+      json.value(item.getValue().trim().equals("true") ? Boolean.valueOf(true) : Boolean.valueOf(false));
     } else if (Utilities.existsInList(type, "integer", "unsignedInt", "positiveInt")) {
-      json.value(new Integer(item.getValue()));
+      json.value(Integer.valueOf(item.getValue()));
     } else if (Utilities.existsInList(type, "decimal")) {
       try {
         json.value(new BigDecimal(item.getValue()));
@@ -1005,8 +1033,9 @@ public class JsonParser extends ParserBase {
 
   private void compose(String name, String path, Element element) throws IOException {
     if (element.isPrimitive() || isPrimitive(element.getType())) {
-      if (element.hasValue())
+      if (element.hasXhtml() || element.hasValue()) {
         primitiveValue(name, element);
+      }
       name = "_"+name;
       if (!markedXhtml && element.getType().equals("xhtml"))
         json.anchor("end-xhtml");
@@ -1024,7 +1053,7 @@ public class JsonParser extends ParserBase {
         }
       }
 
-      if ("named-elements".equals(element.getProperty().getDefinition().getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE))) {
+      if ("named-elements".equals(element.getProperty().getDefinition().getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED))) {
         composeNamedChildren(path + "." + element.getJsonName(), element);        
       } else {
         Set<String> done = new HashSet<String>();

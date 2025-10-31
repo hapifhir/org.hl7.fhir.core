@@ -391,6 +391,11 @@ public abstract class DomainResource extends Resource
   }
 
   public boolean hasExtension(String url) {
+    for (Extension next : getModifierExtension()) {
+      if (url.equals(next.getUrl())) {
+        return true;
+      }
+    }
     for (Extension e : getExtension())
       if (url.equals(e.getUrl()))
         return true;
@@ -401,6 +406,11 @@ public abstract class DomainResource extends Resource
     org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
     ArrayList<Extension> retVal = new ArrayList<Extension>();
     for (Extension next : getExtension()) {
+      if (theUrl.equals(next.getUrl())) {
+        retVal.add(next);
+      }
+    }
+    for (Extension next : getModifierExtension()) {
       if (theUrl.equals(next.getUrl())) {
         retVal.add(next);
       }

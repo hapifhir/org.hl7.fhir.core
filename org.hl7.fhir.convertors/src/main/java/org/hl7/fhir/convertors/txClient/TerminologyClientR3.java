@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.txClient;
 
 import java.net.URISyntaxException;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Map;
 
 /*
@@ -37,17 +36,17 @@ import java.util.Map;
 
 import org.hl7.fhir.convertors.conv30_50.resources30_50.TerminologyCapabilities30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.dstu3.model.Resource;
-import org.hl7.fhir.dstu3.utils.client.FHIRToolingClient;
+import org.hl7.fhir.dstu3.support.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.dstu3.support.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
+import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -127,6 +126,20 @@ public class TerminologyClientR3 implements ITerminologyClient {
   }
 
   @Override
+  public Parameters batchValidateCS(Parameters pin) throws FHIRException {
+    org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(pin);
+    p2 = client.operateType(org.hl7.fhir.dstu3.model.CodeSystem.class, "batch-validate-code", p2);
+    return (Parameters) VersionConvertorFactory_30_50.convertResource(p2);
+  }
+
+  @Override
+  public Parameters batchValidateVS(Parameters pin) throws FHIRException {
+    org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(pin);
+    p2 = client.operateType(org.hl7.fhir.dstu3.model.ValueSet.class, "batch-validate-code", p2);
+    return (Parameters) VersionConvertorFactory_30_50.convertResource(p2);
+  }
+
+  @Override
   public ITerminologyClient setTimeoutFactor(int i) {
     client.setTimeoutFactor(i);
     return this;
@@ -175,7 +188,7 @@ public class TerminologyClientR3 implements ITerminologyClient {
   }
 
   @Override
-  public Bundle validateBatch(Bundle batch) {
+  public Bundle batch(Bundle batch) {
     return (Bundle) VersionConvertorFactory_30_50.convertResource(client.transaction((org.hl7.fhir.dstu3.model.Bundle) VersionConvertorFactory_30_50.convertResource(batch)));
   }
 
@@ -272,6 +285,22 @@ public class TerminologyClientR3 implements ITerminologyClient {
   public void setConversionLogger(ITerminologyConversionLogger logger) {
     // TODO Auto-generated method stub
     
+  }
+
+  @Override
+  public OperationOutcome validateResource(org.hl7.fhir.r5.model.Resource res) {
+    try {
+      org.hl7.fhir.dstu3.model.Resource r2 = VersionConvertorFactory_30_50.convertResource(res);
+      Resource p2 = client.validate(r2, null);
+      return (OperationOutcome) VersionConvertorFactory_30_50.convertResource(p2);
+    } catch (EFhirClientException e) {
+      if (e.getServerErrors().size() == 1) {
+        OperationOutcome op =  (OperationOutcome)VersionConvertorFactory_30_50.convertResource(e.getServerErrors().get(0));
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
+      } else {
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), e);        
+      }
+    }
   }
 
 }

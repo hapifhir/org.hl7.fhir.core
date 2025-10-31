@@ -1,6 +1,5 @@
 package org.hl7.fhir.r5.test;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -16,8 +15,6 @@ import org.hl7.fhir.r5.conformance.profile.BindingResolution;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
@@ -27,17 +24,18 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ITypeParser;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.StructureDefinitionRendererMode;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
-import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -55,7 +53,7 @@ import org.xml.sax.SAXException;
 
 public class NarrativeGenerationTests {
 
-  public class TestProfileKnowledgeProvider implements ProfileKnowledgeProvider {
+  public static class TestProfileKnowledgeProvider implements ProfileKnowledgeProvider {
 
     private IWorkerContext context;
 
@@ -79,7 +77,7 @@ public class NarrativeGenerationTests {
 
     @Override
     public boolean hasLinkFor(String typeSimple) {
-      throw new NotImplementedException();      
+      return false;
     }
 
     @Override
@@ -129,9 +127,15 @@ public class NarrativeGenerationTests {
       return null;
     }
 
+    @Override
+    public String getDefinitionsName(Resource r) {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
   }
 
-  public class TestTypeParser implements ITypeParser {
+  public static class TestTypeParser implements ITypeParser {
 
     @Override
     public Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException {
@@ -164,6 +168,7 @@ public class NarrativeGenerationTests {
     private boolean pretty;
     private boolean meta;
     private boolean technical;
+    private boolean track;
     private String register;
     private String prefix;
 
@@ -183,6 +188,7 @@ public class NarrativeGenerationTests {
         prefix = null;
       }
       header = "true".equals(test.getAttribute("header"));
+      track = "true".equals(test.getAttribute("track"));
       pretty = !"false".equals(test.getAttribute("pretty"));
       meta = "true".equals(test.getAttribute("meta"));
       technical = "technical".equals(test.getAttribute("mode"));
@@ -206,6 +212,10 @@ public class NarrativeGenerationTests {
 
     public String getRegister() {
       return register;
+    }
+
+    public boolean isTrack() {
+      return track;
     } 
     
   }
@@ -224,10 +234,12 @@ public class NarrativeGenerationTests {
 
   @BeforeAll
   public static void setUp() throws IOException {
-    context = TestingUtilities.getSharedWorkerContext("5.0.0");
+    var simpleContext = TestingUtilities.getSharedWorkerContext("5.0.0");
+    simpleContext.connectToTSServer(new TerminologyClientR5.TerminologyClientR5Factory(), "http://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
+    context = simpleContext;
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     NpmPackage ips = pcm.loadPackage("hl7.fhir.uv.ips#1.1.0");
-    context.loadFromPackage(ips,  new TestPackageLoader(Utilities.strings("StructureDefinition", "ValueSet" )));
+    context.getManager().loadFromPackage(ips,  new TestPackageLoader(Utilities.stringSet("StructureDefinition", "ValueSet" )));
   }
 
   @ParameterizedTest(name = "{index}: file {0}")
@@ -236,14 +248,15 @@ public class NarrativeGenerationTests {
     XhtmlNode.setCheckParaGeneral(true);
     if (test.getRegister() != null) {
       if (test.getRegister().endsWith(".json")) {
-        context.cacheResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getRegister())));
+        context.getManager().cacheResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getRegister())));
       } else {
-        context.cacheResource(new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getRegister())));
+        context.getManager().cacheResource(new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getRegister())));
       }
     }
     RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     rc.setDestDir(Utilities.path("[tmp]", "narrative"));
     rc.setShowSummaryTable(test.isHeader());
+    rc.setTrackNarrativeSource(test.isTrack());
     rc.setDefinitionsTarget("test.html");
     rc.setTerminologyServiceOptions(TerminologyServiceOptions.defaults());
     rc.setParser(new TestTypeParser());
@@ -256,6 +269,8 @@ public class NarrativeGenerationTests {
     rc.setMode(test.technical ? ResourceRendererMode.TECHNICAL : ResourceRendererMode.END_USER);
     rc.setProfileUtilities(new ProfileUtilities(rc.getContext(), null, new TestProfileKnowledgeProvider(rc.getContext())));
         
+    rc.setTesting(true);
+    
     if (test.getSDMode() != null) {
       rc.setStructureMode(StructureDefinitionRendererMode.valueOf(test.getSDMode().toUpperCase()));
     }

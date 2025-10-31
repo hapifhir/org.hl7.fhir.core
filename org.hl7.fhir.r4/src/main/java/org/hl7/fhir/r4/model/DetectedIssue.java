@@ -601,16 +601,6 @@ public class DetectedIssue extends DomainResource {
       return getDetail().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getDetailTarget() {
-      if (this.detailTarget == null)
-        this.detailTarget = new ArrayList<Resource>();
-      return this.detailTarget;
-    }
-
     protected void listChildren(List<Property> children) {
       super.listChildren(children);
       children.add(new Property("code", "CodeableConcept",
@@ -1535,7 +1525,7 @@ public class DetectedIssue extends DomainResource {
   }
 
   public boolean hasIdentifiedDateTimeType() {
-    return this != null && this.identified instanceof DateTimeType;
+      return this.identified instanceof DateTimeType;
   }
 
   /**
@@ -1552,7 +1542,7 @@ public class DetectedIssue extends DomainResource {
   }
 
   public boolean hasIdentifiedPeriod() {
-    return this != null && this.identified instanceof Period;
+      return this.identified instanceof Period;
   }
 
   public boolean hasIdentified() {
@@ -1675,16 +1665,6 @@ public class DetectedIssue extends DomainResource {
       addImplicated();
     }
     return getImplicated().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getImplicatedTarget() {
-    if (this.implicatedTarget == null)
-      this.implicatedTarget = new ArrayList<Resource>();
-    return this.implicatedTarget;
   }
 
   /**

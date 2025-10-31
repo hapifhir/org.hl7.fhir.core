@@ -9,6 +9,9 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.ExpansionOptions;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeableConcept;
@@ -27,7 +30,7 @@ import org.hl7.fhir.r5.renderers.DataRenderer;
 import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.ElementTable.HintDrivenGroupingEngine;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonArray;
@@ -151,8 +154,8 @@ public class ElementTable {
     }
     
     public ElementTableGroupingState groupState(ElementDefinition ed) {
-      if (ed.hasExtension(ToolingExtensions.EXT_PROFILE_VIEW_HINT)) {
-        List<Extension> exl = ed.getExtensionsByUrl(ToolingExtensions.EXT_PROFILE_VIEW_HINT);
+      if (ed.hasExtension(ExtensionDefinitions.EXT_PROFILE_VIEW_HINT)) {
+        List<Extension> exl = ed.getExtensionsByUrl(ExtensionDefinitions.EXT_PROFILE_VIEW_HINT);
         for (Extension ex : exl) {
           if ("element-view-group".equals(ex.getExtensionString("name")) ) {
             return ElementTableGroupingState.DEFINES_GROUP;
@@ -163,16 +166,16 @@ public class ElementTable {
     }
     
     public ElementTableGrouping getGroup(ElementDefinition ed) {
-      if (ed.hasExtension(ToolingExtensions.EXT_PROFILE_VIEW_HINT)) {
+      if (ed.hasExtension(ExtensionDefinitions.EXT_PROFILE_VIEW_HINT)) {
         String n = null;
         int order = 0;
-        List<Extension> exl = ed.getExtensionsByUrl(ToolingExtensions.EXT_PROFILE_VIEW_HINT);
+        List<Extension> exl = ed.getExtensionsByUrl(ExtensionDefinitions.EXT_PROFILE_VIEW_HINT);
         for (Extension ex : exl) {
           if ("element-view-group".equals(ex.getExtensionString("name")) ) {
             n = ex.getExtensionString("value");
           }
           if ("element-view-order".equals(ex.getExtensionString("name")) ) {
-            order = ToolingExtensions.readIntegerExtension(ex, "value", 0);
+            order = ExtensionUtilities.readIntegerExtension(ex, "value", 0);
           }
         }
         if (n != null) {
@@ -218,56 +221,63 @@ public class ElementTable {
     private String valueSet;
     private List<TypeRefComponent> types;
     private List<CanonicalType> list;
+    private Resource source;
 
-    public static TableElementConstraint makeValue(TableElementConstraintType type, String path, DataType value) {
+    public static TableElementConstraint makeValue(TableElementConstraintType type, String path, DataType value, Resource source) {
       TableElementConstraint self = new TableElementConstraint();
       self.type = type;
       self.path = path;
       self.value = value;
+      self.source = source;
       return self;
     }
 
-    public static TableElementConstraint makeValueVS(TableElementConstraintType type, String path, DataType value, BindingStrength strength, String valueSet) {
+    public static TableElementConstraint makeValueVS(TableElementConstraintType type, String path, DataType value, BindingStrength strength, String valueSet, Resource source) {
       TableElementConstraint self = new TableElementConstraint();
       self.type = type;
       self.path = path;
       self.value = value;
       self.strength = strength;
       self.valueSet = valueSet;
+      self.source = source;
       return self;
     }
 
-    public static TableElementConstraint makeRange(TableElementConstraintType type, String path, DataType value, DataType value2) {
+    public static TableElementConstraint makeRange(TableElementConstraintType type, String path, DataType value, DataType value2, Resource source) {
       TableElementConstraint self = new TableElementConstraint();
       self.type = type;
       self.path = path;
       self.value = value;
       self.value2 = value2;
+      self.source = source;
       return self;
     }
 
-    public static TableElementConstraint makeBinding(TableElementConstraintType type, String path, BindingStrength strength, String valueSet) {
+    public static TableElementConstraint makeBinding(TableElementConstraintType type, String path, BindingStrength strength, String valueSet, Resource source) {
       TableElementConstraint self = new TableElementConstraint();
       self.type = type;
       self.path = path;
       self.strength = strength;
       self.valueSet = valueSet;
+      self.source = source;
       return self;
     }
 
-    public static TableElementConstraint makeTypes(TableElementConstraintType type, String path, List<TypeRefComponent> types) {
+    public static TableElementConstraint makeTypes(TableElementConstraintType type, String path, List<TypeRefComponent> types, Resource source) {
       TableElementConstraint self = new TableElementConstraint();
       self.type = type;
       self.path = path;
       self.types = types;
+      self.source = source;
       return self;
     }
 
-    public static TableElementConstraint makeList(TableElementConstraintType type, String path, List<CanonicalType> list) {
+    public static TableElementConstraint makeList(TableElementConstraintType type, String path, List<CanonicalType> list, Resource source) {
       TableElementConstraint self = new TableElementConstraint();
       self.type = type;
       self.path = path;
       self.list = list;
+      self.source = source;
       return self;
     }
 
@@ -613,11 +623,11 @@ public class ElementTable {
   private void renderBindingConstraint(XhtmlNode x, TableElementConstraint c) {
     String name = c.path == null ? "value" : c.path;
     x.code().tx(name);
-    renderBinding(x, c, " is bound to "); 
+    renderBinding(x, c, " is bound to ");
   }
 
   private void renderBinding(XhtmlNode x, TableElementConstraint c, String phrase) {
-    ValueSet vs = context.getContext().findTxResource(ValueSet.class, c.valueSet);
+    ValueSet vs = context.getContext().findTxResource(ValueSet.class, c.valueSet, null, c.source);
     if (vs == null) {
       x.tx(phrase+"an unknown valueset ");
       x.code().tx(c.valueSet);      
@@ -625,7 +635,7 @@ public class ElementTable {
       x.tx(phrase);
       x.ah(vs.getWebPath()).tx(vs.present());
       try {      
-        ValueSetExpansionOutcome exp = context.getContext().expandVS(vs, true, false);
+        ValueSetExpansionOutcome exp = context.getContext().expandVS(ExpansionOptions.cacheNoHeirarchy().withLanguage(context.getLocale().getLanguage()), vs);
         if (!exp.isOk()) {
           x.span().attribute("title", exp.getError()).tx(" (??)");                  
         } else if (exp.getValueset().getExpansion().getContains().size() == 1000) {
@@ -637,7 +647,7 @@ public class ElementTable {
           XhtmlNode ul = x.ul();
           for (ValueSetExpansionContainsComponent cc : exp.getValueset().getExpansion().getContains()) {
 
-            String url = cc.hasSystem() && cc.hasCode() ? dr.getLinkForCode(cc.getSystem(), cc.getVersion(), cc.getCode()) : null; 
+            String url = cc.hasSystem() && cc.hasCode() ? dr.getLinkForCode(cc.getSystem(), cc.getVersion(), cc.getCode(), c.source) : null;
             var li = ul.li();
             li.ahOrNot(url).tx(dr.displayCodeSource(cc.getSystem(), cc.getVersion())+": "+cc.getCode());
             if (cc.hasDisplay()) {
@@ -707,13 +717,13 @@ public class ElementTable {
     default:
       break;
     }
-    renderValue(x, c.value);
+    renderValue(x, c.value, c.source);
     if (c.strength != null && c.valueSet != null) {
       renderBinding(x, c, " from ");
     }
   }
 
-  public void renderValue(XhtmlNode x, DataType v) throws IOException {
+  public void renderValue(XhtmlNode x, DataType v, Resource source) throws IOException {
     if (v.isPrimitive()) {
       String s = v.primitiveValue();
       if (Utilities.isAbsoluteUrl(s)) {
@@ -729,21 +739,21 @@ public class ElementTable {
         x.code().tx(s);
       }
     } else if (v instanceof Quantity) {
-      genQuantity(x, (Quantity) v);        
+      genQuantity(x, (Quantity) v, source);
     } else if (v instanceof Coding) {
-      genCoding(x, (Coding) v);
+      genCoding(x, (Coding) v, source);
     } else if (v instanceof CodeableConcept) {
-      genCodeableConcept(x, (CodeableConcept) v);
+      genCodeableConcept(x, (CodeableConcept) v, source);
     } else {
       dr.renderBase(new RenderingStatus(), x, v);
     }
   }
 
-  private void genCodeableConcept(XhtmlNode div, CodeableConcept cc) {
+  private void genCodeableConcept(XhtmlNode div, CodeableConcept cc, Resource source) {
     boolean first = true;
     for (Coding c : cc.getCoding()) {
       if (first) first = false; else div.tx(",");
-      genCoding(div, c);
+      genCoding(div, c, source);
     }
     if (cc.hasText()) {
       div.code().tx(" \""+cc.getText()+"\"");      
@@ -751,8 +761,8 @@ public class ElementTable {
     
   }
 
-  public void genQuantity(XhtmlNode div, Quantity q) {
-    String url = q.hasSystem() && q.hasUnit() ? dr.getLinkForCode(q.getSystem(), null, q.getCode()) : null; 
+  public void genQuantity(XhtmlNode div, Quantity q, Resource source) {
+    String url = q.hasSystem() && q.hasUnit() ? dr.getLinkForCode(q.getSystem(), null, q.getCode(), source) : null;
     var code = div.code();
     if (q.hasComparator()) {
       code.tx(q.getComparator().toCode());
@@ -761,8 +771,8 @@ public class ElementTable {
     code.ahOrNot(url).tx(q.getUnit());
   }
 
-  public void genCoding(XhtmlNode div, Coding c) {
-    String url = c.hasSystem() && c.hasCode() ? dr.getLinkForCode(c.getSystem(), c.getVersion(), c.getCode()) : null; 
+  public void genCoding(XhtmlNode div, Coding c, Resource source) {
+    String url = c.hasSystem() && c.hasCode() ? dr.getLinkForCode(c.getSystem(), c.getVersion(), c.getCode(), source) : null;
     var code = div.code();
     code.ahOrNot(url).tx(dr.displayCodeSource(c.getSystem(), c.getVersion())+": "+c.getCode());
     if (c.hasDisplay()) {
@@ -779,15 +789,15 @@ public class ElementTable {
     String name = c.path == null ? "value" : c.path;
     if (c.value != null && c.value2 != null) {
       x.tx(name + " between ");
-      renderValue(x, c.value);
+      renderValue(x, c.value, c.source);
       x.tx(" and " );
-      renderValue(x, c.value2);
+      renderValue(x, c.value2, c.source);
     } else if (c.value != null) {
       x.tx(name + " more than ");
-      renderValue(x, c.value);
+      renderValue(x, c.value, c.source);
     } else  {
       x.tx(name + " less than ");
-      renderValue(x, c.value2);
+      renderValue(x, c.value2, c.source);
     }
   }
 

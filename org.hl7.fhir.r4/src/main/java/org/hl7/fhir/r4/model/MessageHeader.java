@@ -1762,7 +1762,7 @@ public class MessageHeader extends DomainResource {
   }
 
   public boolean hasEventCoding() {
-    return this != null && this.event instanceof Coding;
+      return this.event instanceof Coding;
   }
 
   /**
@@ -1782,7 +1782,7 @@ public class MessageHeader extends DomainResource {
   }
 
   public boolean hasEventUriType() {
-    return this != null && this.event instanceof UriType;
+      return this.event instanceof UriType;
   }
 
   public boolean hasEvent() {
@@ -2206,16 +2206,6 @@ public class MessageHeader extends DomainResource {
       addFocus();
     }
     return getFocus().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getFocusTarget() {
-    if (this.focusTarget == null)
-      this.focusTarget = new ArrayList<Resource>();
-    return this.focusTarget;
   }
 
   /**

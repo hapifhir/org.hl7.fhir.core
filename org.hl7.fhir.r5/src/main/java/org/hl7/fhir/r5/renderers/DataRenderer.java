@@ -20,6 +20,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.BackboneType;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BaseDateTimeType;
@@ -48,7 +49,7 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
@@ -172,17 +173,6 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
   } 
 
-  protected void smartAddText(XhtmlNode p, String text) { 
-    if (text == null) 
-      return; 
-
-    String[] lines = text.split("\\r\\n"); 
-    for (int i = 0; i < lines.length; i++) { 
-      if (i > 0) 
-        p.br(); 
-      p.addText(lines[i]); 
-    } 
-  } 
 
   // -- 3. General Purpose Terminology Support ----------------------------------------- 
 
@@ -231,7 +221,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       case "11000221109" : return "AR"+dt;      
       case "11000234105" : return "AT"+dt;  
       case "20621000087109" : return "CA-EN"+dt; 
-      case "20611000087101" : return "CA-FR"+dt;
+      case "20611000087101" : return "CA"+dt; // was FR, but was repurposed for the canadian edition early 2024
       case "11000181102 " : return "EE"+dt;
       case "11000229106" : return "FI"+dt;
       case "11000274103" : return "DE"+dt;
@@ -245,7 +235,12 @@ public class DataRenderer extends Renderer implements CodeResolver {
       case "999000021000000109" : return "UK+Clinical"+dt;  
       case "5631000179106" : return "UY"+dt;
       case "5991000124107" : return "US+ICD10CM"+dt;
-      default: return "??"+dt;  
+      case "21000325107": return "CH"+dt;
+      case "11000279109": return "CZ"+dt;
+      case "11000181102": return "ES"+dt;
+      case "51000202101": return "NO"+dt;
+      case "827022005": return "IPS"+dt;
+      default: return "??"+dt;
       }       
     } else { 
       return version; 
@@ -589,7 +584,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   // -- 6. Data type Rendering ----------------------------------------------  
 
   public static String display(IWorkerContext context, DataType type) { 
-    return new DataRenderer(new RenderingContext(context, null, null, "http://hl7.org/fhir/R4", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE)).displayDataType(type); 
+    return new DataRenderer(new RenderingContext(context, null, null, "http://hl7.org/fhir/R4", "", context.getLocale(), ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE)).displayDataType(type);
   } 
 
   public String displayBase(Base b) { 
@@ -790,7 +785,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   }
 
   public boolean renderDataType(RenderingStatus status, XhtmlNode x, ResourceWrapper type) throws FHIRFormatError, DefinitionException, IOException {
-    return renderDataType(status, null, x, type);
+    return renderDataType(status, x, x, type);
   }
   
   public boolean renderDataType(RenderingStatus status, XhtmlNode parent, XhtmlNode x, ResourceWrapper type) throws FHIRFormatError, DefinitionException, IOException { 
@@ -811,7 +806,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       renderCanonical(status, x, type); 
       break;
     case "Annotation": 
-      renderAnnotation(status, x, type); 
+      renderAnnotation(status, parent, x, type); 
       break;
     case "Coding": 
       renderCodingWithDetails(status, x, type); 
@@ -988,16 +983,16 @@ public class DataRenderer extends Renderer implements CodeResolver {
     for (Extension ext : prim.getExtension()) {
       if (first) first = false; else x.tx(", ");
       String url = ext.getUrl();
-      if (url.equals(ToolingExtensions.EXT_DAR)) {
+      if (url.equals(ExtensionDefinitions.EXT_DAR)) {
         x.tx("Absent because : ");
         displayCode(x, wrapNC(ext.getValue()));
-      } else if (url.equals(ToolingExtensions.EXT_NF)) {
+      } else if (url.equals(ExtensionDefinitions.EXT_NF)) {
         x.tx("Null because: ");
         displayCode(x, wrapNC(ext.getValue()));
-      } else if (url.equals(ToolingExtensions.EXT_OT)) {
+      } else if (url.equals(ExtensionDefinitions.EXT_OT)) {
         x.code().tx("Text: ");
         displayCode(x, wrapNC(ext.getValue()));
-      } else if (url.equals(ToolingExtensions.EXT_CQF_EXP)) {
+      } else if (url.equals(ExtensionDefinitions.EXT_CQF_EXP)) {
         x.code().tx("Value calculated by: ");
         renderExpression(status, x, wrapNC(ext.getValue()));
       } else {
@@ -1022,16 +1017,16 @@ public class DataRenderer extends Renderer implements CodeResolver {
     for (ResourceWrapper ext : prim.extensions()) {
       if (first) first = false; else x.tx(", ");
       String url = ext.primitiveValue("url");
-      if (url.equals(ToolingExtensions.EXT_DAR)) {
+      if (url.equals(ExtensionDefinitions.EXT_DAR)) {
         x.tx("Absent because : ");
         displayCode(x, ext.child("value"));
-      } else if (url.equals(ToolingExtensions.EXT_NF)) {
+      } else if (url.equals(ExtensionDefinitions.EXT_NF)) {
         x.tx("Null because: ");
         displayCode(x, ext.child("value"));
-      } else if (url.equals(ToolingExtensions.EXT_OT)) {
+      } else if (url.equals(ExtensionDefinitions.EXT_OT)) {
         x.code().tx("Text: ");
         displayCode(x, ext.child("value"));
-      } else if (url.equals(ToolingExtensions.EXT_CQF_EXP)) {
+      } else if (url.equals(ExtensionDefinitions.EXT_CQF_EXP)) {
         x.code().tx("Value calculated by: ");
         renderExpression(status, x, ext.child("value"));
       } else {
@@ -1094,40 +1089,31 @@ public class DataRenderer extends Renderer implements CodeResolver {
     checkRenderExtensions(status, x, uri);
   } 
   
-  protected void renderAnnotation(RenderingStatus status, XhtmlNode x, ResourceWrapper a) throws FHIRException { 
-    StringBuilder b = new StringBuilder(); 
+  protected void renderAnnotation(RenderingStatus status, XhtmlNode parent, XhtmlNode x, ResourceWrapper a) throws FHIRException, IOException { 
     if (a.has("text")) { 
-      b.append(context.getTranslated(a.child("text"))); 
-    } 
-
-    if (a.has("text") && (a.has("author") || a.has("time"))) { 
-      b.append(" ("); 
+      addMarkdown(parent.blockquote(), context.getTranslated(a.child("text")));
     } 
 
     if (a.has("author")) { 
-      b.append(context.formatPhrase(RenderingContext.DATA_REND_BY) + " "); 
+      x.tx(context.formatPhrase(RenderingContext.DATA_REND_BY) + " "); 
       ResourceWrapper auth = a.child("author");
       if (auth.fhirType().equals("Reference")) { 
-        b.append(auth.primitiveValue("reference")); 
+        x.tx(auth.primitiveValue("reference")); 
       } else if (auth.fhirType().equals("string")) { 
-        b.append(context.getTranslated(auth)); 
+        x.tx(context.getTranslated(auth)); 
       } 
     } 
 
 
     if (a.has("time")) { 
-      if (b.length() > 0) { 
-        b.append(" "); 
+      if (a.has("author")) { 
+        x.tx(" "); 
       } 
-      b.append("@").append(displayDateTime(a.child("time"))); 
+      x.tx("@");
+      x.tx(displayDateTime(a.child("time"))); 
     } 
-    if (a.has("text") && (a.has("author") || a.has("time"))) { 
-      b.append(")"); 
-    } 
-
-
-    x.addText(b.toString()); 
-  } 
+    
+  }
 
   public String displayCoding(ResourceWrapper c) { 
     String s = ""; 
@@ -1252,7 +1238,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
   } 
 
-  public String getLinkForCode(String system, String version, String code) { 
+  public String getLinkForCode(String system, String version, String code, Resource source) {
     if ("http://snomed.info/sct".equals(system)) { 
       return SnomedUtilities.getSctLink(version, code, context.getContext().getExpansionParameters());
     } else if ("http://loinc.org".equals(system)) { 
@@ -1280,7 +1266,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         return "https://en.wikipedia.org/wiki/ISO_3166-2"; 
       } 
     } else { 
-      CodeSystem cs = context.getWorker().fetchCodeSystem(system, version); 
+      CodeSystem cs = context.getWorker().fetchCodeSystem(system, version, source);
       if (cs != null && cs.hasWebPath()) { 
         if (!Utilities.noString(code)) { 
           return cs.getWebPath()+"#"+cs.getId()+"-"+Utilities.nmtokenize(code); 
@@ -1292,8 +1278,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return null; 
   } 
 
-  public CodeResolution resolveCode(String system, String code) { 
-    return resolveCode(new Coding().setSystem(system).setCode(code)); 
+  public CodeResolution resolveCode(String system, String code, Resource source) {
+    return resolveCode(new Coding().setSystem(system).setCode(code), source);
   } 
 
   public CodeResolution resolveCode(ResourceWrapper c) { 
@@ -1314,19 +1300,19 @@ public class DataRenderer extends Renderer implements CodeResolver {
     CodeSystem cs = context.getWorker().fetchCodeSystem(c.primitiveValue("system")); 
     systemLink = cs != null ? cs.getWebPath() : null; 
     systemName = cs != null ? crPresent(cs) : displaySystem(c.primitiveValue("system")); 
-    link = getLinkForCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code")); 
+    link = getLinkForCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code"), c.getResourceNative());
 
     hint = systemName+": "+display+(c.has("version") ? " "+ context.formatPhrase(RenderingContext.DATA_REND_VERSION, c.primitiveValue("version"), ")") : ""); 
     return new CodeResolution(systemName, systemLink, link, display, hint); 
   } 
 
-  public CodeResolution resolveCode(Coding code) {
+  public CodeResolution resolveCode(Coding code, Resource source) {
     return resolveCode(wrapNC(code));
   }
 
-  public CodeResolution resolveCode(CodeableConcept code) { 
+  public CodeResolution resolveCode(CodeableConcept code, Resource source) {
     if (code.hasCoding()) { 
-      return resolveCode(code.getCodingFirstRep()); 
+      return resolveCode(code.getCodingFirstRep(), source);
     } else { 
       return new CodeResolution(null, null, null, code.getText(), code.getText()); 
     } 
@@ -1339,17 +1325,18 @@ public class DataRenderer extends Renderer implements CodeResolver {
       s = lookupCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code")); 
 
     String sn = displaySystem(c.primitiveValue("system"));
-    String link = getLinkForCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code"));
+    String link = getLinkForCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code"), c.getResourceNative());
     XhtmlNode xi = link != null ? x.ah(context.prefixLocalHref(link)) : x;    
     xi.tx(sn);
-    xi.tx(" "); 
+    xi.tx(": ");
 
     xi.tx(c.primitiveValue("code"));
     
     if (!Utilities.noString(s)) { 
-      x.tx(": "); 
-      x.tx(s); 
-    } 
+      x.tx(" (");
+      x.tx(s);
+      x.tx(")");
+    }
     if (c.has("version")) { 
       x.tx(" "+context.formatPhrase(RenderingContext.DATA_REND_VERSION, c.primitiveValue("version"), ")")); 
     } 
@@ -1452,7 +1439,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
 
     if (status.isShowCodeDetails()) { 
-      x.addText(s+" "); 
+      x.addTextWithLineBreaks(s+" "); 
       XhtmlNode sp = x.span("background: LightGoldenRodYellow; margin: 4px; border: 1px solid khaki", null); 
       sp.tx(" ("); 
       boolean first = true; 
@@ -1491,7 +1478,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         } 
       } 
 
-      x.span(null, context.formatPhrase(RenderingContext.DATA_REND_CODES) +b.toString()).addText(s); 
+      x.span(null, context.formatPhrase(RenderingContext.DATA_REND_CODES) +b.toString()).addTextWithLineBreaks(s); 
     }       
     checkRenderExtensions(status, x, cc);
   } 
@@ -1627,7 +1614,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (name.has("use") && !"usual".equals(name.primitiveValue("use"))) { 
       s.append("("+context.getTranslatedCode(name.primitiveValue("use"), "http://hl7.org/fhir/name-use")+")");
     }
-    x.addText(s.toString());       
+    x.addTextWithLineBreaks(s.toString());       
     checkRenderExtensions(status, x, name);
   } 
 
@@ -1666,7 +1653,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
   protected void renderAddress(RenderingStatus status, XhtmlNode x, ResourceWrapper address) throws FHIRFormatError, DefinitionException, IOException { 
-    x.addText(displayAddress(address));       
+    x.addTextWithLineBreaks(displayAddress(address));       
     checkRenderExtensions(status, x, address);
   } 
 

@@ -32,15 +32,15 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
-import org.hl7.fhir.r4.model.Contract.AnswerComponent;
-import org.hl7.fhir.r5.fhirpath.ExpressionNode;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
+import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.validation.codegen.JavaParserJsonGenerator.TypeSpecifier;
 
@@ -109,7 +109,6 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
   }
   
   private void generateParser(Analysis analysis) throws Exception {
-
     if (analysis.getAncestor().getName().equals("Resource")) {
       pRes.append("    } else if (xpp.getName().equals(\""+analysis.getName()+"\")) {\r\n      return parse"+analysis.getClassName()+"(xpp);\r\n");
       cRes.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(\""+analysis.getName()+"\", ("+analysis.getClassName()+")resource);\r\n");
@@ -188,7 +187,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
 
     parser.append("  protected "+ts.getResName()+" "+ts.getFnName()+"(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {\r\n");
     parser.append("    String xsiType = xpp.getAttributeValue(\"xsi\", \"type\");\r\n");
-    for (Extension ex : ts.getEd().getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC)) {
+    for (Extension ex : ts.getEd().getExtensionsByUrl(ExtensionDefinitions.EXT_TYPE_SPEC)) {
       parser.append("    if (\""+Utilities.urlTail(ex.getExtensionString("type"))+"\".equals(xsiType)) {\r\n");
       parser.append("      return parse"+Utilities.urlTail(ex.getExtensionString("type"))+"(xpp);\r\n");
       parser.append("    }\r\n");
@@ -200,6 +199,20 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
 
   private void genInnerAbstract(Analysis analysis, TypeInfo ti) throws IOException, Exception {
     String tn = ti.getName();
+    String stn = (ti == analysis.getRootType() ? tn : analysis.getClassName()+"."+tn);
+    String pfx = (ti.getDefn().isInlineType()) && !tn.startsWith(analysis.getClassName()) ? analysis.getClassName() : "";
+
+
+    parser.append("  protected "+stn+" parse"+pfx+tn+"(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {\r\n");
+    parser.append("    String type = xpp.getAttributeValue(\"http://www.w3.org/2001/XMLSchema-instance\", \"type\");\r\n");      
+    parser.append("    switch (type) {\r\n");            
+    for (Entry<String, String> e : getConcreteDescendents(analysis, ti).entrySet()) {
+      parser.append("    case \""+e.getKey()+"\": return parse"+e.getValue()+"(xpp);\r\n");      
+    }
+    parser.append("    default: throw new FHIRException(\"Unsupported type '\"+type+\"'\");\r\n");      
+    parser.append("    }\r\n");            
+    parser.append("  }\r\n\r\n");    
+
     parser.append("  protected boolean parse"+upFirst(tn).replace(".", "")+"Content(int eventType, XmlPullParser xpp, "+tn+" res) throws XmlPullParserException, IOException, FHIRFormatError {\r\n");
     boolean first = true;
     if (!analysis.isInterface()) {
@@ -223,11 +236,15 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
     parser.append("    }\r\n");
     parser.append("    return true;\r\n");
     parser.append("  }\r\n\r\n");
+    
   }
 
   private void genElement(Analysis analysis, TypeInfo ti, ElementDefinition ed, ElementDefinition inh, boolean first) throws Exception {
     String name = ed.getName();
-    if (name.endsWith("[x]") || name.equals("[type]")) {
+    if (isNamedElementExtensions(ed)) {
+      parser.append("    "+(!first ? "} else " : "")+"if (eventType == XmlPullParser.START_TAG && xpp.getName().equals(\""+name+"\")) {\r\n");
+      parser.append("    // todo: Named Element Extensions\r\n");
+    } else if (name.endsWith("[x]") || name.equals("[type]")) {
       String en = name.endsWith("[x]") && !name.equals("[x]") ? name.replace("[x]", "") : "value";
       String pfx = name.endsWith("[x]") && !name.equals("[x]") ? name.replace("[x]", "") : "";
       parser.append("    "+(!first ? "} else " : "")+"if (eventType == XmlPullParser.START_TAG && nameIsTypeName(xpp, \""+pfx+"\")) {\r\n");
@@ -246,9 +263,11 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
         }
         prsr = "parseEnumeration(xpp, "+en+".NULL, new "+en.substring(0, en.indexOf("."))+"."+en.substring(en.indexOf(".")+1)+"EnumFactory())"; // en+".fromCode(parseString(xpp))";
         // parseEnumeration(xpp, Narrative.NarrativeStatus.additional, new Narrative.NarrativeStatusEnumFactory())
+      } else if (ed.hasUserData(UserDataNames.JGEN_ALL_PRIMITIVE)) {
+        prsr = "parseNativePrimitive(xpp)";
       } else {   
         String tn = ed.getUserString("java.type");
-        if (ed.hasExtension(ToolingExtensions.EXT_TYPE_SPEC)) {
+        if (ed.hasExtension(ExtensionDefinitions.EXT_TYPE_SPEC)) {
           typeSpecifiers.add(new TypeSpecifier("parse"+upFirst(tn), tn, ed));
         }
         if (tn.contains("Reference("))
@@ -271,7 +290,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
       }
       if (ed.unbounded()) {
         parser.append("    "+(!first ? "} else " : "")+"if (eventType == XmlPullParser.START_TAG && xpp.getName().equals(\""+name+"\")) {\r\n");
-        parser.append("      res.get"+upFirst(getElementName(name, false))+"().add("+prsr+");\r\n");
+        parser.append("      res.get"+upFirst(getElementName(name, false))+"List().add("+prsr+");\r\n");
       } else if (inh != null && inh.unbounded()) {
         parser.append("    "+(!first ? "} else " : "")+"if (eventType == XmlPullParser.START_TAG && xpp.getName().equals(\""+name+"\")) {\r\n");
         parser.append("      res.add"+upFirst(getElementName(name, false))+(!ed.typeSummary().equals("xhtml") && (isPrimitive(ed) || ed.typeSummary().startsWith("canonical(")) ? "Element" : "")+"("+prsr+");\r\n");
@@ -347,7 +366,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
   private void genTypeSpecifierCompose(TypeSpecifier ts) {
     composer.append("  protected void "+ts.getFnName()+"(String name, "+ts.getResName()+" element) throws IOException {\r\n");
     boolean first = true;
-    for (Extension ex : ts.getEd().getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC)) {
+    for (Extension ex : ts.getEd().getExtensionsByUrl(ExtensionDefinitions.EXT_TYPE_SPEC)) {
       String tn = Utilities.urlTail(ex.getExtensionString("type"));
       composer.append("    "+(first ? "":"} else ")+"if (element instanceof "+tn+") {\r\n");
       composer.append("      compose"+tn+"(name, ("+tn+") element);\r\n");
@@ -363,6 +382,22 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
 
   private void genInnerAbstractComposer(Analysis analysis, TypeInfo ti) throws IOException, Exception {
     String tn = ti.getName();
+    String stn = (ti == analysis.getRootType() ? tn : analysis.getClassName()+"."+tn);
+    String pfx = (ti.getDefn().isInlineType()) && !tn.startsWith(analysis.getClassName()) ? analysis.getClassName() : "";
+    
+    composer.append("  protected void compose"+pfx+tn+"(String name, "+stn+" element) throws IOException {\r\n");
+    composer.append("    if (element != null) {\r\n");
+    composer.append("      xml.attribute(\"xsi:type\", element.fhirType());\r\n");
+    composer.append("      switch (element.fhirType()) {\r\n");            
+    for (Entry<String, String> e : getConcreteDescendents(analysis, ti).entrySet()) {
+      composer.append("      case \""+e.getKey()+"\":\r\n");      
+      composer.append("        compose"+e.getValue()+"(name, ("+e.getValue()+") element);\r\n");      
+      composer.append("        break;\r\n");      
+    }
+    composer.append("      default: throw new FHIRException(\"Unsupported type '\"+element.fhirType()+\"'\");\r\n");      
+    composer.append("      }\r\n");    
+    composer.append("    }\r\n");    
+    composer.append("  }\r\n\r\n");    
     
     composer.append("  protected void compose"+tn+"Elements("+tn+" element) throws IOException {\r\n");
     composer.append("    compose"+ti.getAncestorName()+"Elements(element);\r\n");
@@ -379,7 +414,10 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
 
   private void genElementCompose(Analysis analysis, TypeInfo ti, ElementDefinition ed, ElementDefinition inh) throws Exception {
     String name = ed.getName();
-    if (name.endsWith("[x]") || name.equals("[type]")) {
+    if (isNamedElementExtensions(ed)) {
+      parser.append("    // todo: Named Element Extensions\r\n");
+     
+    } else if (name.endsWith("[x]") || name.equals("[type]")) {
       String en = name.endsWith("[x]") && !name.equals("[x]") ? name.replace("[x]", "") : "value";
       String pfx = name.endsWith("[x]") ? name.replace("[x]", "") : "";
       composer.append("    if (element.has"+upFirst(getElementName(en, false))+"()) {\r\n");
@@ -398,6 +436,9 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
         } else {
           en = analysis.getClassName()+"."+ei.getName();
         }
+      } else if (ed.hasUserData(UserDataNames.JGEN_ALL_PRIMITIVE)) {
+        tn = ed.getUserString("java.type");
+        comp = "composeNativePrimitive";
       } else {   
         if (tn.equals("XhtmlNode")) {
           tn = "xhtml";
@@ -419,13 +460,13 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
         }
       }
       
-      if (ed.hasExtension(ToolingExtensions.EXT_TYPE_SPEC)) {
+      if (ed.hasExtension(ExtensionDefinitions.EXT_TYPE_SPEC)) {
         typeSpecifiers.add(new TypeSpecifier(comp, tn, ed));
       }
       if (ed.unbounded()) {
         if (en != null) {
           composer.append("      if (element.has"+upFirst(getElementName(name, false))+"()) \r\n");
-          composer.append("        for (Enumeration<"+en+"> e : element.get"+upFirst(getElementName(name, false))+"()) \r\n");
+          composer.append("        for (Enumeration<"+en+"> e : element.get"+upFirst(getElementName(name, false))+"List()) \r\n");
           composer.append("          composeEnumeration(\""+name+"\", e, new "+en+"EnumFactory());\r\n");
         } else {
           String stn = ed.isInlineType() || ed.hasContentReference() ? analysis.getClassName()+"."+tn : tn;
@@ -433,9 +474,9 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
 
           composer.append("    if (element.has"+upFirst(getElementName(name, false))+"()) { \r\n");
           if (stn.contains(".") || !stn.contains("Component")) {
-            composer.append("      for ("+stn+" e : element.get"+upFirst(getElementName(name, false))+"()) \r\n");
+            composer.append("      for ("+stn+" e : element.get"+upFirst(getElementName(name, false))+"List()) \r\n");
           } else {
-            composer.append("      for ("+analysis.getName()+"."+stn+" e : element.get"+upFirst(getElementName(name, false))+"()) \r\n");            
+            composer.append("      for ("+analysis.getName()+"."+stn+" e : element.get"+upFirst(getElementName(name, false))+"List()) \r\n");            
           }
           if (ed.typeSummary().equals("Resource")) { 
             composer.append("        {\r\n");

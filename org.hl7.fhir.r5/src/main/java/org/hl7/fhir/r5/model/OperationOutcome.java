@@ -34,9 +34,11 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
@@ -1379,7 +1381,7 @@ For resource issues, this will be a simple XPath limited to element names, repet
       // added from java-adornments.txt:
       @Override 
       public String toString() { 
-        String srvr = hasExtension(ToolingExtensions.EXT_ISSUE_SERVER) ? " (from "+getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER)+")" : "";
+        String srvr = hasExtension(ExtensionDefinitions.EXT_ISSUE_SERVER) ? " (from "+getExtensionString(ExtensionDefinitions.EXT_ISSUE_SERVER)+")" : "";
         if (getExpression().size() == 1) { 
           return getSeverity().toCode()+"/"+getCode().toCode()+" @ "+getExpression().get(0)+(hasDiagnostics() ? " "+getDiagnostics() : "")+": "+getDetails().getText()+srvr; 
         } else { 
@@ -1431,6 +1433,15 @@ For resource issues, this will be a simple XPath limited to element names, repet
         }
       }  
 
+      public String getText() {
+        if (getDetails().hasText()) {
+          return getDetails().getText();
+        }
+        if (hasDiagnostics()) {
+          return getDiagnostics();
+        }
+        return null;
+      }
       // end addition
     }
 

@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
@@ -37,6 +38,7 @@ import org.hl7.fhir.validation.instance.InstanceValidator;
 
 import lombok.Getter;
 
+@Slf4j
 public class Scanner {
 
   private static final int BUFFER_SIZE = 4096;
@@ -58,7 +60,7 @@ public class Scanner {
       throw new Exception("Output parameter required when scanning");
     if (!(ManagedFileAccess.file(output).isDirectory()))
       throw new Exception("Output '" + output + "' must be a directory when scanning");
-    System.out.println("  .. scan " + sources + " against loaded IGs");
+    log.info("  .. scan " + sources + " against loaded IGs");
     Set<String> urls = new HashSet<>();
     for (ImplementationGuide ig : getContext().allImplementationGuides()) {
       if (ig.getUrl().contains("/ImplementationGuide") && !ig.getUrl().equals("http://hl7.org/fhir/ImplementationGuide/fhir"))
@@ -66,7 +68,7 @@ public class Scanner {
     }
     List<ScanOutputItem> res = validateScan(sources, urls);
     genScanOutput(output, res);
-    System.out.println("Done. output in " + Utilities.path(output, "scan.html"));
+    log.info("Done. output in " + Utilities.path(output, "scan.html"));
   }
 
   protected List<ScanOutputItem> validateScan(List<String> sources, Set<String> guides) throws FHIRException, IOException, EOperationOutcome {
@@ -80,7 +82,7 @@ public class Scanner {
       List<ValidationMessage> messages = new ArrayList<>();
       Element e = null;
       try {
-        System.out.println("Validate " + ref);
+        log.info("Validate " + ref);
         messages.clear();
         e = getValidator().validate(null, messages, new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());
         res.add(new ScanOutputItem(ref.getRef(), null, null, ValidatorUtils.messagesToOutcome(messages, getContext(), getFhirPathEngine())));
@@ -91,12 +93,12 @@ public class Scanner {
         String rt = e.fhirType();
         for (String u : guides) {
           ImplementationGuide ig = getContext().fetchResource(ImplementationGuide.class, u);
-          System.out.println("Check Guide " + ig.getUrl());
+          log.info("Check Guide " + ig.getUrl());
           String canonical = ig.getUrl().contains("/Impl") ? ig.getUrl().substring(0, ig.getUrl().indexOf("/Impl")) : ig.getUrl();
           String url = getGlobal(ig, rt);
           if (url != null) {
             try {
-              System.out.println("Validate " + ref + " against " + ig.getUrl());
+              log.info("Validate " + ref + " against " + ig.getUrl());
               messages.clear();
               getValidator().validate(null, messages, new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType(), url);
               res.add(new ScanOutputItem(ref.getRef(), ig, null, ValidatorUtils.messagesToOutcome(messages, getContext(), getFhirPathEngine())));
@@ -110,7 +112,7 @@ public class Scanner {
               done.add(sd.getUrl());
               if (sd.getUrl().startsWith(canonical) && rt.equals(sd.getType())) {
                 try {
-                  System.out.println("Validate " + ref + " against " + sd.getUrl());
+                  log.info("Validate " + ref + " against " + sd.getUrl());
                   messages.clear();
                   validator.validate(null, messages, new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType(), Collections.singletonList(sd));
                   res.add(new ScanOutputItem(ref.getRef(), ig, sd, ValidatorUtils.messagesToOutcome(messages, getContext(), getFhirPathEngine())));

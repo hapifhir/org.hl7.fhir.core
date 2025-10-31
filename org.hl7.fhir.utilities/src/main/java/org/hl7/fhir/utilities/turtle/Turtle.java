@@ -417,7 +417,7 @@ public class Turtle {
 
   public String asHtml(boolean prism) throws Exception {
     StringBuilder b = new StringBuilder();
-    b.append("<pre class=\"rdf\" style=\"white-space: pre; overflow: hidden\">"+(prism ? "<code class=\"language-turtle\">" : "")+"\r\n");
+    b.append("<pre class=\"rdf\" data-fhir=\"generated\" style=\"white-space: pre; overflow: hidden\">"+(prism ? "<code class=\"language-turtle\">" : "")+"\r\n");
     commitPrefixes(b);
     for (Section s : sections) {
       commitSection(b, s);
@@ -1067,7 +1067,6 @@ public class Turtle {
 	//	
 	//	public void importTtl(Section sct, String ttl) throws Exception {
 	//		if (!Utilities.noString(ttl)) {
-	//			//        System.out.println("import ttl: "+ttl);
 	//			Lexer lexer = new Lexer(ttl);
 	//			String subject = null;
 	//			String predicate = null;
@@ -1332,8 +1331,7 @@ public class Turtle {
 	//
 	//	public void importTtl(Section sct, String ttl) throws Exception {
 	//		if (!Utilities.noString(ttl)) {
-	//			//        System.out.println("import ttl: "+ttl);
-	//			Lexer lexer = new Lexer(ttl);
+  //			Lexer lexer = new Lexer(ttl);
 	//			String subject = null;
 	//			String predicate = null;
 	//			while (!lexer.done()) {

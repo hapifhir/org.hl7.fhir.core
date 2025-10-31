@@ -35,9 +35,9 @@ steps:
             <password>$(GIT_PAT)</password>
           </server>
           <server>
-            <id>ossrh</id>
-            <username>$(SONATYPE_USER)</username>
-            <password>$(SONATYPE_PASS)</password>
+            <id>central</id>
+            <username>$(MAVEN_CENTRAL_USER)</username>
+            <password>$(MAVEN_CENTRAL_PASS)</password>
           </server>
           <server>
             <id>$(PGP_KEYNAME)</id>

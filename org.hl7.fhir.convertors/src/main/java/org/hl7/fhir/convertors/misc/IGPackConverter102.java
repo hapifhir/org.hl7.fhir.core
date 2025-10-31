@@ -1,8 +1,5 @@
 package org.hl7.fhir.convertors.misc;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
@@ -51,6 +48,7 @@ import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@SuppressWarnings("checkstyle:systemout")
 public class IGPackConverter102 extends BaseAdvisor_10_30 {
 
   private final Bundle cslist = new Bundle();

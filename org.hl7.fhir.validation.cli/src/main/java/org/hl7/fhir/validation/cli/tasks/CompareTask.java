@@ -1,19 +1,22 @@
 package org.hl7.fhir.validation.cli.tasks;
 
 import java.io.IOException;
-import java.io.PrintStream;
 
-import org.hl7.fhir.utilities.TimeTracker;
-import org.hl7.fhir.utilities.VersionUtilities;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.param.parsers.CompareParametersParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ComparisonService;
 import org.hl7.fhir.validation.service.ValidationService;
-import org.hl7.fhir.validation.service.utils.Display;
+import org.hl7.fhir.validation.cli.Display;
 import org.hl7.fhir.validation.cli.param.Params;
+import org.slf4j.Logger;
 
+import javax.annotation.Nonnull;
+
+@Slf4j
 public class CompareTask extends ValidationEngineTask {
   @Override
   public String getName() {
@@ -31,42 +34,42 @@ public class CompareTask extends ValidationEngineTask {
   }
 
   @Override
-  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
-    return Params.hasParam(args, Params.COMPARE);
+  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
+    return shouldExecuteTask(args);
   }
 
   @Override
-  public void printHelp(PrintStream out) {
-    Display.displayHelpDetails(out,"help/compare.txt");
+  public boolean shouldExecuteTask(@Nonnull String[] args) {
+    return Params.hasParam(args, CompareParametersParser.COMPARE);
   }
 
   @Override
-  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
-    Display.printCliParamsAndInfo(args);
-    if (!destinationDirectoryValid(Params.getParam(args, Params.DESTINATION))) {
+  public void logHelp(Logger logger) {
+    Display.displayHelpDetails(logger,"help/compare.txt");
+  }
+
+  @Override
+  public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
+    Display.printCliParamsAndInfo(log, args);
+    if (!destinationDirectoryValid(Params.getParam(args, CompareParametersParser.DESTINATION))) {
       return;
     }
-    if (validationContext.getSv() == null) {
-      validationContext.setSv(validationService.determineVersion(validationContext));
-    }
-    String v = VersionUtilities.getCurrentVersion(validationContext.getSv());
-    String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
-    ValidationEngine validator = validationService.initializeValidator(validationContext, definitions, tt);
-    validator.loadPackage(CommonPackages.ID_PUBPACK, null);
-    String left = Params.getParam(args, Params.LEFT);
-    String right = Params.getParam(args, Params.RIGHT);
-    ComparisonService.doLeftRightComparison(left, right, Params.getParam(args, Params.DESTINATION), validator);
+
+    validationEngine.loadPackage(CommonPackages.ID_PUBPACK, null);
+    String left = Params.getParam(args, CompareParametersParser.LEFT);
+    String right = Params.getParam(args, CompareParametersParser.RIGHT);
+    ComparisonService.doLeftRightComparison(left, right, Params.getParam(args, CompareParametersParser.DESTINATION), validationEngine);
   }
 
   private boolean destinationDirectoryValid(String dest) throws IOException {
     if (dest == null) {
-      System.out.println("no -dest parameter provided");
+      log.info("no -dest parameter provided");
       return false;
     } else if (!ManagedFileAccess.file(dest).isDirectory()) {
-      System.out.println("Specified destination (-dest parameter) is not valid: \"" + dest + "\")");
+      log.info("Specified destination (-dest parameter) is not valid: \"" + dest + "\")");
       return false;
     } else {
-      System.out.println("Valid destination directory provided: \"" + dest + "\")");
+      log.info("Valid destination directory provided: \"" + dest + "\")");
       return true;
     }
   }

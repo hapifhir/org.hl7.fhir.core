@@ -1,12 +1,13 @@
 package org.hl7.fhir.validation.cli.tasks;
 
 import org.hl7.fhir.convertors.analytics.PackageVisitor;
-import org.hl7.fhir.utilities.TimeTracker;
+import org.hl7.fhir.validation.cli.param.parsers.PreLoadCacheParametersParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.packages.PackageCacheDownloader;
+import org.slf4j.Logger;
 
-import java.io.PrintStream;
+import javax.annotation.Nonnull;
 
 public class PreloadCacheTask extends StandaloneTask {
   @Override
@@ -25,17 +26,27 @@ public class PreloadCacheTask extends StandaloneTask {
   }
 
   @Override
-  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
-    return Params.hasParam(args, Params.PRELOAD_CACHE);
+  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
+    return shouldExecuteTask(args);
   }
 
   @Override
-  public void printHelp(PrintStream out) {
+  public boolean shouldExecuteTask(@Nonnull String[] args) {
+    return Params.hasParam(args, PreLoadCacheParametersParser.PRELOAD_CACHE);
+  }
+
+  @Override
+  public void logHelp(Logger logger) {
 
   }
 
   @Override
-  public void executeTask(ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
+  public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
+    executeTask(args);
+  }
+
+  @Override
+  public void executeTask(@Nonnull String[] args) throws Exception {
     PackageVisitor pv = new PackageCacheDownloader();
     pv.visitPackages();
   }

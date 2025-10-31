@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.utils.validation;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.UUIDUtilities;
 
@@ -17,6 +18,7 @@ public class ValidatorSession {
   
   private Map<String, Object> objects = new HashMap<>();
   protected String sessionId;
+  private Map<String, IWorkerContext> otherVersions;
   
   public ValidatorSession() {
     super();
@@ -34,4 +36,13 @@ public class ValidatorSession {
   public void close() {
     objects.clear();
   }
+
+  public Map<String, IWorkerContext> getOtherVersions() {
+    if (otherVersions == null) {
+      otherVersions = new HashMap<String, IWorkerContext>();
+    }
+    return otherVersions;
+  }
+  
+  
 }

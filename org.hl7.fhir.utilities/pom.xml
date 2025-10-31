@@ -5,12 +5,14 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>6.5.20-SNAPSHOT</version>
+        <version>6.7.7-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>org.hl7.fhir.utilities</artifactId>
     <packaging>bundle</packaging>
+
+    <name>HL7 Core Artifact - Utilities</name>
 
     <properties>
         <checkstyle_config_location>${project.parent.basedir}</checkstyle_config_location>
@@ -79,11 +81,6 @@
 
         <!-- XML Utilities -->
         <dependency>
-            <groupId>net.sf.saxon</groupId>
-            <artifactId>Saxon-HE</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>org.ogce</groupId>
             <artifactId>xpp3</artifactId>
             <optional>true</optional>
@@ -92,7 +89,7 @@
         <dependency>
             <groupId>com.ibm.icu</groupId>
             <artifactId>icu4j</artifactId>
-            <version>72.1</version>
+            <version>77.1</version>
         </dependency>
 
         <dependency>
@@ -112,6 +109,13 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>

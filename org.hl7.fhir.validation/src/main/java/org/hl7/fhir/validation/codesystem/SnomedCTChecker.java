@@ -8,12 +8,20 @@ import javax.annotation.Nonnull;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator.CodeValidationRule;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator.PropertyFilterType;
@@ -205,7 +213,7 @@ public class SnomedCTChecker extends CodeSystemChecker {
   @Override
   public PropertyValidationRules rulesForFilter(String property, EnumSet<PropertyOperation> ops) {
     switch (property) {
-    case "constraint": return null; // for now 
+    case "constraint": return new PropertyValidationRules(PropertyFilterType.String, null, addToOps(ops, PropertyOperation.Equals)).setActive(true);
     case "expressions": return new PropertyValidationRules(PropertyFilterType.Boolean, null, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In));
     case "inactive": return new PropertyValidationRules(PropertyFilterType.Boolean, null, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In));
     case "concept": return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, addToOps(ops, PropertyOperation.IsA, PropertyOperation.IsNotA, PropertyOperation.In, PropertyOperation.DescendentOf, PropertyOperation.DescendentLeaf));
@@ -213,4 +221,41 @@ public class SnomedCTChecker extends CodeSystemChecker {
       return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In));
     }
   }
+  
+  @Override
+  public StringWithFlag checkFilterValue(String system, String version, String property, String op, String value, PropertyValidationRules rules, ValidationOptions options) {
+    ValueSet vs = new ValueSet();
+    vs.setStatus(PublicationStatus.DRAFT);
+    vs.getCompose().addInclude().setSystem(system).setVersion(version).addFilter().setProperty("constraint").setOp(FilterOperator.EQUAL).setValue(value);
+    
+    try {
+      return process(context.validateTxResource(options, vs));
+    } catch (EFhirClientException e) {
+      return process(e.getServerError());
+    } catch (Exception e) {
+      return new StringWithFlag(e.getMessage(), false);
+    }
+  }
+
+  private StringWithFlag process(OperationOutcome oo) {
+    for (OperationOutcomeIssueComponent iss : oo.getIssue()) {
+      if (hasLocation(iss, "ValueSet.include.filter.value[0]")) {
+        return new StringWithFlag(iss.getText(), false);
+      }
+    }
+    if (oo.getIssue().size() == 1 && oo.getIssueFirstRep().getLocation().size() == 0) {
+      return new StringWithFlag(oo.getIssueFirstRep().getText(), true);
+    }
+    return null;
+  }
+
+  private boolean hasLocation(OperationOutcomeIssueComponent iss, String path) {
+    for (StringType loc : iss.getLocation()) {
+      if (path.equals(loc.getValue())) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
 }

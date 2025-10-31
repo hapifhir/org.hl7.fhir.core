@@ -101,7 +101,7 @@ public class MedicinalProductInteraction extends DomainResource {
     }
 
     public boolean hasItemReference() {
-      return this != null && this.item instanceof Reference;
+        return this.item instanceof Reference;
     }
 
     /**
@@ -118,7 +118,7 @@ public class MedicinalProductInteraction extends DomainResource {
     }
 
     public boolean hasItemCodeableConcept() {
-      return this != null && this.item instanceof CodeableConcept;
+        return this.item instanceof CodeableConcept;
     }
 
     public boolean hasItem() {
@@ -410,16 +410,6 @@ public class MedicinalProductInteraction extends DomainResource {
       addSubject();
     }
     return getSubject().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getSubjectTarget() {
-    if (this.subjectTarget == null)
-      this.subjectTarget = new ArrayList<Resource>();
-    return this.subjectTarget;
   }
 
   /**

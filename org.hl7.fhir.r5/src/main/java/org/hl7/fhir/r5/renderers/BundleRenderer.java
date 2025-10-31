@@ -15,6 +15,8 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -44,15 +46,16 @@ public class BundleRenderer extends ResourceRenderer {
       // nothing
     } else {
       int start = 0;
+      
       XhtmlNode root = x;
+      List<ResourceWrapper> filter = new ArrayList<>();
       if ("document".equals(b.primitiveValue("type"))) {
         if (entries.isEmpty() || (entries.get(0).has("resource") && !"Composition".equals(entries.get(0).child("resource").fhirType())))
           throw new FHIRException(context.formatPhrase(RenderingContext.BUND_REND_INVALID_DOC, b.getId(), entries.get(0).child("resource").fhirType()+"')"));
-        renderDocument(status, root, b, entries);
+        renderDocument(status, root, b, entries, filter);
         if (!context.isTechnicalMode()) {
           return;
         }
-        start = 1;
         root.hr();
         root.h2().addText(formatPhrase(RenderingContext.BUNDLE_HEADER_DOCUMENT_CONTENTS));
       } else {
@@ -62,7 +65,7 @@ public class BundleRenderer extends ResourceRenderer {
       int i = 0;
       for (ResourceWrapper be : entries) {
         i++;
-        if (i >= start) {
+        if (!filter.contains(be)) {
           String link = null;
           if (be.has("fullUrl")) {
             link = makeInternalBundleLink(b, be.primitiveValue("fullUrl"));
@@ -122,12 +125,11 @@ public class BundleRenderer extends ResourceRenderer {
             root.para().addText(formatPhrase(RenderingContext.BUNDLE_RESOURCE, r.fhirType()));
             XhtmlNode xn = r.getNarrative();
             if (xn == null || xn.isEmpty()) {
+              xn = new XhtmlNode(NodeType.Element, "div");
               ResourceRenderer rr = RendererFactory.factory(r, context);
               try {
-                xn = new XhtmlNode(NodeType.Element, "div"); 
                 rr.buildNarrative(new RenderingStatus(), xn, r);
               } catch (Exception e) {
-                xn = new XhtmlNode();
                 xn.para().b().tx(context.formatPhrase(RenderingContext.BUNDLE_REV_EXCP, e.getMessage()) + " ");
               }
             } else {
@@ -146,7 +148,8 @@ public class BundleRenderer extends ResourceRenderer {
     }
   }
 
-  private void renderDocument(RenderingStatus status, XhtmlNode x, ResourceWrapper b, List<ResourceWrapper> entries) throws UnsupportedEncodingException, FHIRException, IOException, EOperationOutcome {
+  private void renderDocument(RenderingStatus status, XhtmlNode x, ResourceWrapper b, List<ResourceWrapper> entries, List<ResourceWrapper> filter) throws UnsupportedEncodingException, FHIRException, IOException, EOperationOutcome {
+    
     // from the spec:
     //
     // When the document is presented for human consumption, applications SHOULD present the collated narrative portions in order:
@@ -155,8 +158,9 @@ public class BundleRenderer extends ResourceRenderer {
     // * The section.text Narratives
 
     ResourceWrapper comp = (ResourceWrapper) entries.get(0).child("resource");
+    filter.add(entries.get(0));
     
-    XhtmlNode sum = renderResourceTechDetails(b, docSection(x, "Document Details"), comp.primitiveValueMN("title", "name"));
+    XhtmlNode sum = renderResourceTechDetails(b, docSection(x, formatPhrase(RenderingI18nContext.BUNDLE_DOCUMENT_DETAILS)), comp.primitiveValueMN("title", "name"));
     List<ResourceWrapper> subjectList = comp.children("subject");
     if (sum != null) {
       XhtmlNode p = sum.para();
@@ -178,7 +182,7 @@ public class BundleRenderer extends ResourceRenderer {
       x.hr();
     }
 
-    List<ResourceWrapper> subjects = resolveReferences(entries, subjectList);
+    List<ResourceWrapper> subjects = resolveReferences(entries, subjectList, filter);
     int i = 0;
     for (ResourceWrapper subject : subjects) {
       XhtmlNode sec = docSection(x, "Document Subject");
@@ -194,7 +198,7 @@ public class BundleRenderer extends ResourceRenderer {
       i++;
     }
     x.hr();
-    XhtmlNode sec = docSection(x, "Document Content");
+    XhtmlNode sec = docSection(x, formatPhrase(RenderingI18nContext.BUNDLE_DOCUMENT_CONTENT));
     if (comp.hasNarrative()) {
       sec.addChildren(comp.getNarrative());
       sec.hr();
@@ -249,7 +253,7 @@ public class BundleRenderer extends ResourceRenderer {
     // children
   }
 
-  private List<ResourceWrapper> resolveReferences(List<ResourceWrapper> entries, List<ResourceWrapper> baselist) throws UnsupportedEncodingException, FHIRException, IOException {
+  private List<ResourceWrapper> resolveReferences(List<ResourceWrapper> entries, List<ResourceWrapper> baselist, List<ResourceWrapper> filter) throws UnsupportedEncodingException, FHIRException, IOException {
     List<ResourceWrapper> list = new ArrayList<>();
     if (baselist != null) {
       for (ResourceWrapper base : baselist) {
@@ -261,6 +265,7 @@ public class BundleRenderer extends ResourceRenderer {
             if (entry.has("fullUrl")) {
               String fu = entry.primitiveValue("fullUrl");
               if (ref.equals(fu)) {
+//                filter.add(entry);
                 res = entry.child("resource");
               }
             }
@@ -268,6 +273,7 @@ public class BundleRenderer extends ResourceRenderer {
               String type = entry.child("resource").fhirType();
               String id = entry.child("resource").primitiveValue("id");
               if (ref.equals(type+"/"+id)) {
+//                filter.add(entry);
                 res = entry.child("resource");
               }
             }

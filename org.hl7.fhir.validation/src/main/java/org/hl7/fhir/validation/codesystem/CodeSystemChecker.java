@@ -7,12 +7,13 @@ import javax.annotation.Nonnull;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.ValidatorSettings;
@@ -24,15 +25,32 @@ import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public abstract class CodeSystemChecker extends BaseValidator {
 
+  public class StringWithFlag {
+
+    private String msg;
+    private boolean fail;
+    public StringWithFlag(String msg, boolean fail) {
+      super();
+      this.msg = msg;
+      this.fail = fail;
+    }
+    public String getMsg() {
+      return msg;
+    }
+    public boolean isFail() {
+      return fail;
+    }
+
+  }
   private boolean noDisplay = false;
   private boolean hasDisplay = false;
   protected List<ValidationMessage> errors;
-  
+
   protected CodeSystemChecker(IWorkerContext context, @Nonnull ValidatorSettings settings, XVerExtensionManager xverManager, List<ValidationMessage> errors, ValidatorSession session) {
     super(context, settings, xverManager, session);
     this.errors = errors;
   }
-  
+
   public void checkConcept(String code, String display) {
     if (Utilities.noString(display)) {
       noDisplay = true;
@@ -40,7 +58,7 @@ public abstract class CodeSystemChecker extends BaseValidator {
       hasDisplay = true;
     }      
   }
-  
+
   public void finish(Element inc, NodeStack stack) {
     hint(errors, "2023-07-21", IssueType.BUSINESSRULE, inc.line(), inc.col(), stack.getLiteralPath(), !(noDisplay && hasDisplay), I18nConstants.VALUESET_CONCEPT_DISPLAY_PRESENCE_MIXED);           
   }
@@ -63,14 +81,14 @@ public abstract class CodeSystemChecker extends BaseValidator {
     knownNames.add("comment");
     knownNames.add("itemWeight");
   } 
-  
+
 
   protected void addName(List<String> knownNames, String code) {
     if (code != null && !knownNames.contains(code)) {
       knownNames.add(code);
     }    
   }
-  
+
   protected EnumSet<PropertyOperation> addToOps(EnumSet<PropertyOperation> set, PropertyOperation... ops) {
     for (PropertyOperation op : ops) {
       set.add(op);
@@ -83,17 +101,17 @@ public abstract class CodeSystemChecker extends BaseValidator {
     case "concept" :
       return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, 
           VersionUtilities.isR5Plus(context.getVersion()) ?
-            addToOps(ops, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf,  
-              PropertyOperation.DescendentLeaf, PropertyOperation.IsNotA,  PropertyOperation.Generalizes, PropertyOperation.ChildOf, PropertyOperation.NotIn) :      
-            addToOps(ops, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf,   
-              PropertyOperation.IsNotA,  PropertyOperation.Generalizes, PropertyOperation.NotIn));
+              addToOps(ops, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf,  
+                  PropertyOperation.DescendentLeaf, PropertyOperation.IsNotA,  PropertyOperation.Generalizes, PropertyOperation.ChildOf, PropertyOperation.NotIn) :      
+                    addToOps(ops, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf,   
+                        PropertyOperation.IsNotA,  PropertyOperation.Generalizes, PropertyOperation.NotIn));
     case "code" : 
       return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, 
           VersionUtilities.isR5Plus(context.getVersion()) ?
-            addToOps(ops, PropertyOperation.RegEx, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf,  
-              PropertyOperation.DescendentLeaf, PropertyOperation.IsNotA,  PropertyOperation.Generalizes, PropertyOperation.ChildOf, PropertyOperation.NotIn) :      
-            addToOps(ops, PropertyOperation.RegEx, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf,   
-              PropertyOperation.IsNotA,  PropertyOperation.Generalizes, PropertyOperation.NotIn));
+              addToOps(ops, PropertyOperation.RegEx, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf,  
+                  PropertyOperation.DescendentLeaf, PropertyOperation.IsNotA,  PropertyOperation.Generalizes, PropertyOperation.ChildOf, PropertyOperation.NotIn) :      
+                    addToOps(ops, PropertyOperation.RegEx, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf,   
+                        PropertyOperation.IsNotA,  PropertyOperation.Generalizes, PropertyOperation.NotIn));
     case "status" : return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.None, ops);
     case "inactive" : return new PropertyValidationRules(PropertyFilterType.Boolean,null,  ops);
     case "effectiveDate" : return new PropertyValidationRules(PropertyFilterType.DateTime, null, ops);
@@ -109,5 +127,14 @@ public abstract class CodeSystemChecker extends BaseValidator {
     }
     return null;
   }
-  
+
+  public String checkFilterValue(String system, String version, String property, String op, String value, PropertyValidationRules rules) {
+    return null;
+  }
+
+  public StringWithFlag checkFilterValue(String system, String version, String property, String op, String value,
+      PropertyValidationRules rules, ValidationOptions options) {
+    return null;
+  }
+
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.SearchComparator;
 import org.hl7.fhir.r5.model.Enumerations.SearchModifierCode;
@@ -21,7 +22,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
@@ -57,7 +58,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
   public void render(RenderingStatus status, XhtmlNode x, SearchParameter spd) throws IOException, FHIRException, EOperationOutcome {
     XhtmlNode h2 = x.h2();
     h2.addText(spd.getName());
-    StandardsStatus ss = ToolingExtensions.getStandardsStatus(spd);
+    StandardsStatus ss = ExtensionUtilities.getStandardsStatus(spd);
     if (ss != context.getDefaultStandardsStatus()) {
       genStandardsStatus(h2, ss);
     }
@@ -68,7 +69,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     p.code().tx(spd.getType().toCode());
     addMarkdown(x, spd.getDescription());
 
-    XhtmlNode tbl = x.table("grid", false);
+    XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
     XhtmlNode tr = tbl.tr();
     tr.td().tx(Utilities.pluralize(context.formatPhrase(RenderingContext.GENERAL_RESOURCE), spd.getBase().size()));
     XhtmlNode td = tr.td();
@@ -99,7 +100,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       tr.td().tx(Utilities.pluralize(context.formatPhrase(RenderingContext.SEARCH_PAR_REND_TARGET), spd.getTarget().size()));
       td = tr.td();
       if (isAllConcreteResources(spd.getTarget())) {
-        td.ah(context.prefixLocalHref(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "resourcelist.html"))).tx(context.formatPhrase(RenderingContext.SEARCH_PAR_RES));
+        td.ah(context.prefixLocalHref(Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), "resourcelist.html"))).tx(context.formatPhrase(RenderingContext.SEARCH_PAR_RES));
       } else {
         for (Enumeration<VersionIndependentResourceTypesAll> t : spd.getTarget()) {
           StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.getCode());
@@ -164,10 +165,10 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     
     if (spd.hasComponent()) {
       x.para().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMPARATORS));
-      tbl = x.table("grid", false);
+      tbl = x.table("grid", false).markGenerated(!context.forValidResource());
       for (SearchParameterComponentComponent t : spd.getComponent()) {
         tr = tbl.tr();
-        SearchParameter tsp = context.getWorker().fetchResource(SearchParameter.class, t.getDefinition(), spd);
+        SearchParameter tsp = context.getWorker().fetchResource(SearchParameter.class, t.getDefinition(), null, spd);
         if (tsp != null && tsp.hasWebPath()) {
           tr.td().ah(context.prefixLocalHref(tsp.getWebPath())).tx(tsp.present());          
         } else {

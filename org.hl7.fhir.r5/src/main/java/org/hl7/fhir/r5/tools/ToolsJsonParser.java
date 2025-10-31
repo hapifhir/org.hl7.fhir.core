@@ -107,19 +107,19 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
       JsonArray array = getJArray(json, "selections");
       for (int i = 0; i < array.size(); i++) {
         if (array.get(i).isJsonNull()) {
-          res.getSelections().add(new UriType());
+          res.getSelectionsList().add(new UriType());
         } else {;
-          res.getSelections().add(parseUri(array.get(i).getAsString()));
+          res.getSelectionsList().add(parseUri(array.get(i).getAsString()));
         }
       }
     };
     if (json.has("_selections")) {
       JsonArray array = getJArray(json, "_selections");
       for (int i = 0; i < array.size(); i++) {
-        if (i == res.getSelections().size())
-          res.getSelections().add(parseUri(null));
+        if (i == res.getSelectionsList().size())
+          res.getSelectionsList().add(parseUri(null));
         if (array.get(i) instanceof JsonObject) 
-          parseElementProperties(array.get(i).getAsJsonObject(), res.getSelections().get(i));
+          parseElementProperties(array.get(i).getAsJsonObject(), res.getSelectionsList().get(i));
       }
     };
     if (json.has("draftOrders"))
@@ -179,7 +179,8 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
   }
 
   protected void parseCDSHooksExtensionsProperties(JsonObject json, CDSHooksExtensions res) throws IOException, FHIRFormatError {
-    parseElementProperties(json, res);
+    parseBaseProperties(json, res);
+    // todo: Named Element Extensions
   }
 
   protected CDSHooksRequest parseCDSHooksRequest(JsonObject json) throws IOException, FHIRFormatError {
@@ -209,7 +210,7 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
     if (json.has("prefetch")) {
       JsonArray array = getJArray(json, "prefetch");
       for (int i = 0; i < array.size(); i++) {
-        res.getPrefetch().add(parseCDSHooksRequestPrefetchComponent(array.get(i).getAsJsonObject()));
+        res.getPrefetchList().add(parseCDSHooksRequestPrefetchComponent(array.get(i).getAsJsonObject()));
       }
     };
   }
@@ -288,13 +289,13 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
     if (json.has("cards")) {
       JsonArray array = getJArray(json, "cards");
       for (int i = 0; i < array.size(); i++) {
-        res.getCards().add(parseCDSHooksResponseCardsComponent(array.get(i).getAsJsonObject()));
+        res.getCardsList().add(parseCDSHooksResponseCardsComponent(array.get(i).getAsJsonObject()));
       }
     };
     if (json.has("systemActions")) {
       JsonArray array = getJArray(json, "systemActions");
       for (int i = 0; i < array.size(); i++) {
-        res.getSystemActions().add(parseCDSHooksResponseCardsSuggestionsActionsComponent(array.get(i).getAsJsonObject()));
+        res.getSystemActionsList().add(parseCDSHooksResponseCardsSuggestionsActionsComponent(array.get(i).getAsJsonObject()));
       }
     };
   }
@@ -328,7 +329,7 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
     if (json.has("suggestions")) {
       JsonArray array = getJArray(json, "suggestions");
       for (int i = 0; i < array.size(); i++) {
-        res.getSuggestions().add(parseCDSHooksResponseCardsSuggestionsComponent(array.get(i).getAsJsonObject()));
+        res.getSuggestionsList().add(parseCDSHooksResponseCardsSuggestionsComponent(array.get(i).getAsJsonObject()));
       }
     };
     if (json.has("selectionBehavior"))
@@ -338,13 +339,13 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
     if (json.has("overrideReasons")) {
       JsonArray array = getJArray(json, "overrideReasons");
       for (int i = 0; i < array.size(); i++) {
-        res.getOverrideReasons().add(parseCoding(array.get(i).getAsJsonObject()));
+        res.getOverrideReasonsList().add(parseCoding(array.get(i).getAsJsonObject()));
       }
     };
     if (json.has("links")) {
       JsonArray array = getJArray(json, "links");
       for (int i = 0; i < array.size(); i++) {
-        res.getLinks().add(parseCDSHooksResponseCardsLinksComponent(array.get(i).getAsJsonObject()));
+        res.getLinksList().add(parseCDSHooksResponseCardsLinksComponent(array.get(i).getAsJsonObject()));
       }
     };
   }
@@ -396,7 +397,7 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
     if (json.has("actions")) {
       JsonArray array = getJArray(json, "actions");
       for (int i = 0; i < array.size(); i++) {
-        res.getActions().add(parseCDSHooksResponseCardsSuggestionsActionsComponent(array.get(i).getAsJsonObject()));
+        res.getActionsList().add(parseCDSHooksResponseCardsSuggestionsActionsComponent(array.get(i).getAsJsonObject()));
       }
     };
   }
@@ -462,7 +463,7 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
     if (json.has("services")) {
       JsonArray array = getJArray(json, "services");
       for (int i = 0; i < array.size(); i++) {
-        res.getServices().add(parseCDSHooksServicesServicesComponent(array.get(i).getAsJsonObject()));
+        res.getServicesList().add(parseCDSHooksServicesServicesComponent(array.get(i).getAsJsonObject()));
       }
     };
   }
@@ -498,7 +499,7 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
     if (json.has("prefetch")) {
       JsonArray array = getJArray(json, "prefetch");
       for (int i = 0; i < array.size(); i++) {
-        res.getPrefetch().add(parseCDSHooksServicesServicesPrefetchComponent(array.get(i).getAsJsonObject()));
+        res.getPrefetchList().add(parseCDSHooksServicesServicesPrefetchComponent(array.get(i).getAsJsonObject()));
       }
     };
   }
@@ -552,13 +553,13 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
     if (json.has("mode")) {
       JsonArray array = getJArray(json, "mode");
       for (int i = 0; i < array.size(); i++) {
-        res.getMode().add(parseTestCasesModeComponent(array.get(i).getAsJsonObject()));
+        res.getModeList().add(parseTestCasesModeComponent(array.get(i).getAsJsonObject()));
       }
     };
     if (json.has("suite")) {
       JsonArray array = getJArray(json, "suite");
       for (int i = 0; i < array.size(); i++) {
-        res.getSuite().add(parseTestCasesSuiteComponent(array.get(i).getAsJsonObject()));
+        res.getSuiteList().add(parseTestCasesSuiteComponent(array.get(i).getAsJsonObject()));
       }
     };
   }
@@ -604,19 +605,19 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
     if (json.has("resource")) {
       JsonArray array = getJArray(json, "resource");
       for (int i = 0; i < array.size(); i++) {
-        res.getResource().add(parseTestCasesSuiteResourceComponent(array.get(i).getAsJsonObject()));
+        res.getResourceList().add(parseTestCasesSuiteResourceComponent(array.get(i).getAsJsonObject()));
       }
     };
     if (json.has("parameter")) {
       JsonArray array = getJArray(json, "parameter");
       for (int i = 0; i < array.size(); i++) {
-        res.getParameter().add(parseTestCasesSuiteParameterComponent(array.get(i).getAsJsonObject()));
+        res.getParameterList().add(parseTestCasesSuiteParameterComponent(array.get(i).getAsJsonObject()));
       }
     };
     if (json.has("test")) {
       JsonArray array = getJArray(json, "test");
       for (int i = 0; i < array.size(); i++) {
-        res.getTest().add(parseTestCasesSuiteTestComponent(array.get(i).getAsJsonObject()));
+        res.getTestList().add(parseTestCasesSuiteTestComponent(array.get(i).getAsJsonObject()));
       }
     };
   }
@@ -693,19 +694,19 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
     if (json.has("parameter")) {
       JsonArray array = getJArray(json, "parameter");
       for (int i = 0; i < array.size(); i++) {
-        res.getParameter().add(parseTestCasesSuiteParameterComponent(array.get(i).getAsJsonObject()));
+        res.getParameterList().add(parseTestCasesSuiteParameterComponent(array.get(i).getAsJsonObject()));
       }
     };
     if (json.has("input")) {
       JsonArray array = getJArray(json, "input");
       for (int i = 0; i < array.size(); i++) {
-        res.getInput().add(parseTestCasesSuiteResourceComponent(array.get(i).getAsJsonObject()));
+        res.getInputList().add(parseTestCasesSuiteResourceComponent(array.get(i).getAsJsonObject()));
       }
     };
     if (json.has("output")) {
       JsonArray array = getJArray(json, "output");
       for (int i = 0; i < array.size(); i++) {
-        res.getOutput().add(parseTestCasesSuiteResourceComponent(array.get(i).getAsJsonObject()));
+        res.getOutputList().add(parseTestCasesSuiteResourceComponent(array.get(i).getAsJsonObject()));
       }
     };
   }
@@ -750,15 +751,15 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
         composeIdExtras("encounterId", element.getEncounterIdElement(), false);
       }
       if (element.hasSelections()) {
-        if (anyHasValue(element.getSelections())) {
+        if (anyHasValue(element.getSelectionsList())) {
           openArray("selections");
-          for (UriType e : element.getSelections()) 
-            composeUriCore(null, e, e != element.getSelections().get(element.getSelections().size()-1));
+          for (UriType e : element.getSelectionsList()) 
+            composeUriCore(null, e, e != element.getSelectionsList().get(element.getSelectionsList().size()-1));
           closeArray();
         }
-        if (anyHasExtras(element.getSelections())) {
+        if (anyHasExtras(element.getSelectionsList())) {
           openArray("_selections");
-          for (UriType e : element.getSelections()) 
+          for (UriType e : element.getSelectionsList()) 
             composeUriExtras(null, e, true);
           closeArray();
         }
@@ -828,7 +829,8 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
   }
 
   protected void composeCDSHooksExtensionsProperties(CDSHooksExtensions element) throws IOException {
-    composeElementProperties(element);
+    composeBaseProperties(element);
+     // todo: Named Element Extensions
   }
 
   protected void composeCDSHooksRequest(String name, CDSHooksRequest element) throws IOException {
@@ -861,7 +863,7 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
       }
       if (element.hasPrefetch()) {
         openArray("prefetch");
-        for (CDSHooksRequest.CDSHooksRequestPrefetchComponent e : element.getPrefetch()) 
+        for (CDSHooksRequest.CDSHooksRequestPrefetchComponent e : element.getPrefetchList()) 
           composeCDSHooksRequestPrefetchComponent(null, e);
         closeArray();
       };
@@ -948,13 +950,13 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
     composeCDSHooksElementProperties(element);
       if (element.hasCards()) {
         openArray("cards");
-        for (CDSHooksResponse.CDSHooksResponseCardsComponent e : element.getCards()) 
+        for (CDSHooksResponse.CDSHooksResponseCardsComponent e : element.getCardsList()) 
           composeCDSHooksResponseCardsComponent(null, e);
         closeArray();
       };
       if (element.hasSystemActions()) {
         openArray("systemActions");
-        for (CDSHooksResponse.CDSHooksResponseCardsSuggestionsActionsComponent e : element.getSystemActions()) 
+        for (CDSHooksResponse.CDSHooksResponseCardsSuggestionsActionsComponent e : element.getSystemActionsList()) 
           composeCDSHooksResponseCardsSuggestionsActionsComponent(null, e);
         closeArray();
       };
@@ -991,7 +993,7 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
       }
       if (element.hasSuggestions()) {
         openArray("suggestions");
-        for (CDSHooksResponse.CDSHooksResponseCardsSuggestionsComponent e : element.getSuggestions()) 
+        for (CDSHooksResponse.CDSHooksResponseCardsSuggestionsComponent e : element.getSuggestionsList()) 
           composeCDSHooksResponseCardsSuggestionsComponent(null, e);
         closeArray();
       };
@@ -1001,13 +1003,13 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
       }
       if (element.hasOverrideReasons()) {
         openArray("overrideReasons");
-        for (Coding e : element.getOverrideReasons()) 
+        for (Coding e : element.getOverrideReasonsList()) 
           composeCoding(null, e);
         closeArray();
       };
       if (element.hasLinks()) {
         openArray("links");
-        for (CDSHooksResponse.CDSHooksResponseCardsLinksComponent e : element.getLinks()) 
+        for (CDSHooksResponse.CDSHooksResponseCardsLinksComponent e : element.getLinksList()) 
           composeCDSHooksResponseCardsLinksComponent(null, e);
         closeArray();
       };
@@ -1064,7 +1066,7 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
       }
       if (element.hasActions()) {
         openArray("actions");
-        for (CDSHooksResponse.CDSHooksResponseCardsSuggestionsActionsComponent e : element.getActions()) 
+        for (CDSHooksResponse.CDSHooksResponseCardsSuggestionsActionsComponent e : element.getActionsList()) 
           composeCDSHooksResponseCardsSuggestionsActionsComponent(null, e);
         closeArray();
       };
@@ -1139,7 +1141,7 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
     composeCDSHooksElementProperties(element);
       if (element.hasServices()) {
         openArray("services");
-        for (CDSHooksServices.CDSHooksServicesServicesComponent e : element.getServices()) 
+        for (CDSHooksServices.CDSHooksServicesServicesComponent e : element.getServicesList()) 
           composeCDSHooksServicesServicesComponent(null, e);
         closeArray();
       };
@@ -1177,7 +1179,7 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
       }
       if (element.hasPrefetch()) {
         openArray("prefetch");
-        for (CDSHooksServices.CDSHooksServicesServicesPrefetchComponent e : element.getPrefetch()) 
+        for (CDSHooksServices.CDSHooksServicesServicesPrefetchComponent e : element.getPrefetchList()) 
           composeCDSHooksServicesServicesPrefetchComponent(null, e);
         closeArray();
       };
@@ -1234,13 +1236,13 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
       }
       if (element.hasMode()) {
         openArray("mode");
-        for (TestCases.TestCasesModeComponent e : element.getMode()) 
+        for (TestCases.TestCasesModeComponent e : element.getModeList()) 
           composeTestCasesModeComponent(null, e);
         closeArray();
       };
       if (element.hasSuite()) {
         openArray("suite");
-        for (TestCases.TestCasesSuiteComponent e : element.getSuite()) 
+        for (TestCases.TestCasesSuiteComponent e : element.getSuiteList()) 
           composeTestCasesSuiteComponent(null, e);
         closeArray();
       };
@@ -1290,19 +1292,19 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
       }
       if (element.hasResource()) {
         openArray("resource");
-        for (TestCases.TestCasesSuiteResourceComponent e : element.getResource()) 
+        for (TestCases.TestCasesSuiteResourceComponent e : element.getResourceList()) 
           composeTestCasesSuiteResourceComponent(null, e);
         closeArray();
       };
       if (element.hasParameter()) {
         openArray("parameter");
-        for (TestCases.TestCasesSuiteParameterComponent e : element.getParameter()) 
+        for (TestCases.TestCasesSuiteParameterComponent e : element.getParameterList()) 
           composeTestCasesSuiteParameterComponent(null, e);
         closeArray();
       };
       if (element.hasTest()) {
         openArray("test");
-        for (TestCases.TestCasesSuiteTestComponent e : element.getTest()) 
+        for (TestCases.TestCasesSuiteTestComponent e : element.getTestList()) 
           composeTestCasesSuiteTestComponent(null, e);
         closeArray();
       };
@@ -1388,19 +1390,19 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
       }
       if (element.hasParameter()) {
         openArray("parameter");
-        for (TestCases.TestCasesSuiteParameterComponent e : element.getParameter()) 
+        for (TestCases.TestCasesSuiteParameterComponent e : element.getParameterList()) 
           composeTestCasesSuiteParameterComponent(null, e);
         closeArray();
       };
       if (element.hasInput()) {
         openArray("input");
-        for (TestCases.TestCasesSuiteResourceComponent e : element.getInput()) 
+        for (TestCases.TestCasesSuiteResourceComponent e : element.getInputList()) 
           composeTestCasesSuiteResourceComponent(null, e);
         closeArray();
       };
       if (element.hasOutput()) {
         openArray("output");
-        for (TestCases.TestCasesSuiteResourceComponent e : element.getOutput()) 
+        for (TestCases.TestCasesSuiteResourceComponent e : element.getOutputList()) 
           composeTestCasesSuiteResourceComponent(null, e);
         closeArray();
       };

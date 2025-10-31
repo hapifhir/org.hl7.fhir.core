@@ -1,0 +1,5045 @@
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "urn:iso:std:iso:3166:-2"
+    }]
+  }
+}}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:e1af9a17-63cc-461a-8e3a-9e2e8eff5d0d",
+    "timestamp" : "2025-10-09T06:44:29.320Z",
+    "total" : 5099,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "warning-draft",
+      "valueUri" : "urn:iso:std:iso:3166:-2|2021"
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "urn:iso:std:iso:3166:-2|2021"
+    }],
+    "contains" : [{
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-BAL",
+      "display" : "Balkh"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-BAM",
+      "display" : "Bāmyān"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-BDG",
+      "display" : "Bādghīs"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-BDS",
+      "display" : "Badakhshān"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-BGL",
+      "display" : "Baghlān"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-DAY",
+      "display" : "Dāykundī"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-FRA",
+      "display" : "Farāh"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-FYB",
+      "display" : "Fāryāb"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-GHA",
+      "display" : "Ghaznī"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-GHO",
+      "display" : "Ghōr"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-HEL",
+      "display" : "Helmand"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-HER",
+      "display" : "Herāt"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-JOW",
+      "display" : "Jowzjān"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-KAB",
+      "display" : "Kābul"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-KAN",
+      "display" : "Kandahār"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-KAP",
+      "display" : "Kāpīsā"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-KDZ",
+      "display" : "Kunduz"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-KHO",
+      "display" : "Khōst"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-KNR",
+      "display" : "Kunar"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-LAG",
+      "display" : "Laghmān"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-LOG",
+      "display" : "Lōgar"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-NAN",
+      "display" : "Nangarhār"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-NIM",
+      "display" : "Nīmrōz"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-NUR",
+      "display" : "Nūristān"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-PAN",
+      "display" : "Panjshayr"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-PAR",
+      "display" : "Parwān"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-PIA",
+      "display" : "Paktiyā"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-PKA",
+      "display" : "Paktīkā"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-SAM",
+      "display" : "Samangān"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-SAR",
+      "display" : "Sar-e Pul"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-TAK",
+      "display" : "Takhār"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-URU",
+      "display" : "Uruzgān"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-WAR",
+      "display" : "Wardak"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AF-ZAB",
+      "display" : "Zābul"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AX-AX",
+      "display" : "Åland Islands"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-01",
+      "display" : "Berat"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-02",
+      "display" : "Durrës"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-03",
+      "display" : "Elbasan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-04",
+      "display" : "Fier"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-05",
+      "display" : "Gjirokastër"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-06",
+      "display" : "Korçë"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-07",
+      "display" : "Kukës"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-08",
+      "display" : "Lezhë"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-09",
+      "display" : "Dibër"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-10",
+      "display" : "Shkodër"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-11",
+      "display" : "Tiranë"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-12",
+      "display" : "Vlorë"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-BR",
+      "display" : "Berat"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-BU",
+      "display" : "Bulqizë"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-DI",
+      "display" : "Dibër"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-DL",
+      "display" : "Delvinë"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-DR",
+      "display" : "Durrës"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-DV",
+      "display" : "Devoll"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-EL",
+      "display" : "Elbasan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-ER",
+      "display" : "Kolonjë"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-FR",
+      "display" : "Fier"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-GJ",
+      "display" : "Gjirokastër"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-GR",
+      "display" : "Gramsh"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-HA",
+      "display" : "Has"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-KA",
+      "display" : "Kavajë"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-KB",
+      "display" : "Kurbin"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-KC",
+      "display" : "Kuçovë"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-KO",
+      "display" : "Korçë"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-KR",
+      "display" : "Krujë"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-KU",
+      "display" : "Kukës"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-LB",
+      "display" : "Librazhd"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-LE",
+      "display" : "Lezhë"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-LU",
+      "display" : "Lushnjë"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-MK",
+      "display" : "Mallakastër"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-MM",
+      "display" : "Malësi e Madhe"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-MR",
+      "display" : "Mirditë"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-MT",
+      "display" : "Mat"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-PG",
+      "display" : "Pogradec"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-PQ",
+      "display" : "Peqin"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-PR",
+      "display" : "Përmet"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-PU",
+      "display" : "Pukë"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-SH",
+      "display" : "Shkodër"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-SK",
+      "display" : "Skrapar"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-SR",
+      "display" : "Sarandë"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-TE",
+      "display" : "Tepelenë"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-TP",
+      "display" : "Tropojë"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-TR",
+      "display" : "Tiranë"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AL-VL",
+      "display" : "Vlorë"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-01",
+      "display" : "Adrar"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-02",
+      "display" : "Chlef"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-03",
+      "display" : "Laghouat"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-04",
+      "display" : "Oum el Bouaghi"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-05",
+      "display" : "Batna"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-06",
+      "display" : "Béjaïa"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-07",
+      "display" : "Biskra"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-08",
+      "display" : "Béchar"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-09",
+      "display" : "Blida"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-10",
+      "display" : "Bouira"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-11",
+      "display" : "Tamanrasset"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-12",
+      "display" : "Tébessa"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-13",
+      "display" : "Tlemcen"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-14",
+      "display" : "Tiaret"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-15",
+      "display" : "Tizi Ouzou"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-16",
+      "display" : "Alger"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-17",
+      "display" : "Djelfa"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-18",
+      "display" : "Jijel"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-19",
+      "display" : "Sétif"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-20",
+      "display" : "Saïda"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-21",
+      "display" : "Skikda"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-22",
+      "display" : "Sidi Bel Abbès"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-23",
+      "display" : "Annaba"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-24",
+      "display" : "Guelma"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-25",
+      "display" : "Constantine"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-26",
+      "display" : "Médéa"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-27",
+      "display" : "Mostaganem"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-28",
+      "display" : "Msila"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-29",
+      "display" : "Mascara"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-30",
+      "display" : "Ouargla"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-31",
+      "display" : "Oran"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-32",
+      "display" : "El Bayadh"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-33",
+      "display" : "Illizi"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-34",
+      "display" : "Bordj Bou Arréridj"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-35",
+      "display" : "Boumerdès"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-36",
+      "display" : "El Tarf"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-37",
+      "display" : "Tindouf"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-38",
+      "display" : "Tissemsilt"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-39",
+      "display" : "El Oued"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-40",
+      "display" : "Khenchela"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-41",
+      "display" : "Souk Ahras"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-42",
+      "display" : "Tipaza"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-43",
+      "display" : "Mila"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-44",
+      "display" : "Aïn Defla"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-45",
+      "display" : "Naama"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-46",
+      "display" : "Aïn Témouchent"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-47",
+      "display" : "Ghardaïa"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "DZ-48",
+      "display" : "Relizane"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AS-AS",
+      "display" : "American Samoa"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AD-02",
+      "display" : "Canillo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AD-03",
+      "display" : "Encamp"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AD-04",
+      "display" : "La Massana"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AD-05",
+      "display" : "Ordino"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AD-06",
+      "display" : "Sant Julià de Lòria"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AD-07",
+      "display" : "Andorra la Vella"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AD-08",
+      "display" : "Escaldes-Engordany"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AO-BGO",
+      "display" : "Bengo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AO-BGU",
+      "display" : "Benguela"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AO-BIE",
+      "display" : "Bié"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AO-CAB",
+      "display" : "Cabinda"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AO-CCU",
+      "display" : "Kuando Kubango"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AO-CNN",
+      "display" : "Cunene"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AO-CNO",
+      "display" : "Kwanza Norte"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AO-CUS",
+      "display" : "Kwanza Sul"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AO-HUA",
+      "display" : "Huambo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AO-HUI",
+      "display" : "Huíla"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AO-LNO",
+      "display" : "Lunda Norte"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AO-LSU",
+      "display" : "Lunda Sul"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AO-LUA",
+      "display" : "Luanda"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AO-MAL",
+      "display" : "Malange"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AO-MOX",
+      "display" : "Moxico"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AO-NAM",
+      "display" : "Namibe"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AO-UIG",
+      "display" : "Uíge"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AO-ZAI",
+      "display" : "Zaire"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AI-AI",
+      "display" : "Anguilla"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AQ-AQ",
+      "display" : "Antarctica"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AG-03",
+      "display" : "Saint George"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AG-04",
+      "display" : "Saint John"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AG-05",
+      "display" : "Saint Mary"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AG-06",
+      "display" : "Saint Paul"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AG-07",
+      "display" : "Saint Peter"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AG-08",
+      "display" : "Saint Philip"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AG-10",
+      "display" : "Barbuda"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AG-11",
+      "display" : "Redonda"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-A",
+      "display" : "Salta"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-B",
+      "display" : "Buenos Aires"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-C",
+      "display" : "Ciudad Autónoma de Buenos Aires"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-D",
+      "display" : "San Luis"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-E",
+      "display" : "Entre Ríos"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-F",
+      "display" : "La Rioja"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-G",
+      "display" : "Santiago del Estero"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-H",
+      "display" : "Chaco"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-J",
+      "display" : "San Juan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-K",
+      "display" : "Catamarca"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-L",
+      "display" : "La Pampa"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-M",
+      "display" : "Mendoza"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-N",
+      "display" : "Misiones"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-P",
+      "display" : "Formosa"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-Q",
+      "display" : "Neuquén"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-R",
+      "display" : "Río Negro"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-S",
+      "display" : "Santa Fe"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-T",
+      "display" : "Tucumán"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-U",
+      "display" : "Chubut"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-V",
+      "display" : "Tierra del Fuego"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-W",
+      "display" : "Corrientes"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-X",
+      "display" : "Córdoba"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-Y",
+      "display" : "Jujuy"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AR-Z",
+      "display" : "Santa Cruz"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AM-AG",
+      "display" : "Aragac̣otn"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AM-AR",
+      "display" : "Ararat"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AM-AV",
+      "display" : "Armavir"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AM-ER",
+      "display" : "Erevan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AM-GR",
+      "display" : "Geġark'unik'"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AM-KT",
+      "display" : "Kotayk'"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AM-LO",
+      "display" : "Loṙi"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AM-SH",
+      "display" : "Širak"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AM-SU",
+      "display" : "Syunik'"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AM-TV",
+      "display" : "Tavuš"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AM-VD",
+      "display" : "Vayoć Jor"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AW-AW",
+      "display" : "Aruba"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AU-ACT",
+      "display" : "Australian Capital Territory"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AU-NSW",
+      "display" : "New South Wales"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AU-NT",
+      "display" : "Northern Territory"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AU-QLD",
+      "display" : "Queensland"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AU-SA",
+      "display" : "South Australia"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AU-TAS",
+      "display" : "Tasmania"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AU-VIC",
+      "display" : "Victoria"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AU-WA",
+      "display" : "Western Australia"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AT-1",
+      "display" : "Burgenland"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AT-2",
+      "display" : "Kärnten"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AT-3",
+      "display" : "Niederösterreich"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AT-4",
+      "display" : "Oberösterreich"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AT-5",
+      "display" : "Salzburg"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AT-6",
+      "display" : "Steiermark"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AT-7",
+      "display" : "Tirol"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AT-8",
+      "display" : "Vorarlberg"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AT-9",
+      "display" : "Wien"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-ABS",
+      "display" : "Abşeron"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-AGA",
+      "display" : "Ağstafa"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-AGC",
+      "display" : "Ağcabәdi"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-AGM",
+      "display" : "Ağdam"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-AGS",
+      "display" : "Ağdaş"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-AGU",
+      "display" : "Ağsu"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-AST",
+      "display" : "Astara"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-BA",
+      "display" : "Bakı"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-BAB",
+      "display" : "Babək"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-BAL",
+      "display" : "Balakən"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-BAR",
+      "display" : "Bərdə"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-BEY",
+      "display" : "Beyləqan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-BIL",
+      "display" : "Biləsuvar"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-CAB",
+      "display" : "Cəbrayıl"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-CAL",
+      "display" : "Cəlilabad"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-CUL",
+      "display" : "Culfa"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-DAS",
+      "display" : "Daşkəsən"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-FUZ",
+      "display" : "Füzuli"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-GAD",
+      "display" : "Gədəbəy"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-GA",
+      "display" : "Gәncә"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-GOR",
+      "display" : "Goranboy"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-GOY",
+      "display" : "Göyçay"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-GYG",
+      "display" : "Göygöl"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-HAC",
+      "display" : "Hacıqabul"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-IMI",
+      "display" : "İmişli"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-ISM",
+      "display" : "İsmayıllı"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-KAL",
+      "display" : "Kəlbəcər"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-KAN",
+      "display" : "Kǝngǝrli"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-KUR",
+      "display" : "Kürdəmir"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-LAC",
+      "display" : "Laçın"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-LA",
+      "display" : "Lәnkәran"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-LAN",
+      "display" : "Lənkəran"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-LER",
+      "display" : "Lerik"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-MAS",
+      "display" : "Masallı"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-MI",
+      "display" : "Mingәçevir"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-NA",
+      "display" : "Naftalan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-NEF",
+      "display" : "Neftçala"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-NV",
+      "display" : "Naxçıvan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-NX",
+      "display" : "Naxçıvan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-OGU",
+      "display" : "Oğuz"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-ORD",
+      "display" : "Ordubad"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-QAB",
+      "display" : "Qәbәlә"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-QAX",
+      "display" : "Qax"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-QAZ",
+      "display" : "Qazax"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-QBA",
+      "display" : "Quba"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-QBI",
+      "display" : "Qubadlı"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-QOB",
+      "display" : "Qobustan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-QUS",
+      "display" : "Qusar"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-SAB",
+      "display" : "Sabirabad"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-SAD",
+      "display" : "Sәdәrәk"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-SAH",
+      "display" : "Şahbuz"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-SAK",
+      "display" : "Şәki"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-SAL",
+      "display" : "Salyan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-SAR",
+      "display" : "Şәrur"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-SA",
+      "display" : "Şәki"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-SAT",
+      "display" : "Saatlı"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-SBN",
+      "display" : "Şabran"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-SIY",
+      "display" : "Siyәzәn"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-SKR",
+      "display" : "Şәmkir"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-SMI",
+      "display" : "Şamaxı"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-SM",
+      "display" : "Sumqayıt"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-SMX",
+      "display" : "Samux"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-SR",
+      "display" : "Şirvan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-SUS",
+      "display" : "Şuşa"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-TAR",
+      "display" : "Tәrtәr"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-TOV",
+      "display" : "Tovuz"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-UCA",
+      "display" : "Ucar"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-XAC",
+      "display" : "Xaçmaz"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-XA",
+      "display" : "Xankәndi"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-XCI",
+      "display" : "Xocalı"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-XIZ",
+      "display" : "Xızı"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-XVD",
+      "display" : "Xocavәnd"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-YAR",
+      "display" : "Yardımlı"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-YEV",
+      "display" : "Yevlax"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-YE",
+      "display" : "Yevlax"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-ZAN",
+      "display" : "Zәngilan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-ZAQ",
+      "display" : "Zaqatala"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "AZ-ZAR",
+      "display" : "Zәrdab"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-AK",
+      "display" : "Acklins"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-BI",
+      "display" : "Bimini"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-BP",
+      "display" : "Black Point"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-BY",
+      "display" : "Berry Islands"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-CE",
+      "display" : "Central Eleuthera"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-CI",
+      "display" : "Cat Island"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-CK",
+      "display" : "Crooked Island and Long Cay"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-CO",
+      "display" : "Central Abaco"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-CS",
+      "display" : "Central Andros"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-EG",
+      "display" : "East Grand Bahama"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-EX",
+      "display" : "Exuma"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-FP",
+      "display" : "City of Freeport"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-GC",
+      "display" : "Grand Cay"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-HI",
+      "display" : "Harbour Island"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-HT",
+      "display" : "Hope Town"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-IN",
+      "display" : "Inagua"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-LI",
+      "display" : "Long Island"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-MC",
+      "display" : "Mangrove Cay"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-MG",
+      "display" : "Mayaguana"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-MI",
+      "display" : "Moore's Island"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-NE",
+      "display" : "North Eleuthera"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-NO",
+      "display" : "North Abaco"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-NS",
+      "display" : "North Andros"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-RC",
+      "display" : "Rum Cay"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-RI",
+      "display" : "Ragged Island"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-SA",
+      "display" : "South Andros"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-SE",
+      "display" : "South Eleuthera"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-SO",
+      "display" : "South Abaco"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-SS",
+      "display" : "San Salvador"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-SW",
+      "display" : "Spanish Wells"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BS-WG",
+      "display" : "West Grand Bahama"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BH-13",
+      "display" : "Al Manāmah"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BH-14",
+      "display" : "Al Janūbīyah"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BH-15",
+      "display" : "Al Muḩarraq"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BH-16",
+      "display" : "Al Wusţá"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BH-17",
+      "display" : "Ash Shamālīyah"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-01",
+      "display" : "Bandarban"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-02",
+      "display" : "Barguna"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-03",
+      "display" : "Bogra"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-04",
+      "display" : "Brahmanbaria"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-05",
+      "display" : "Bagerhat"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-06",
+      "display" : "Barisal"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-07",
+      "display" : "Bhola"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-08",
+      "display" : "Comilla"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-09",
+      "display" : "Chandpur"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-10",
+      "display" : "Chittagong"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-11",
+      "display" : "Cox's Bazar"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-12",
+      "display" : "Chuadanga"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-13",
+      "display" : "Dhaka"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-14",
+      "display" : "Dinajpur"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-15",
+      "display" : "Faridpur"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-16",
+      "display" : "Feni"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-17",
+      "display" : "Gopalganj"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-18",
+      "display" : "Gazipur"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-19",
+      "display" : "Gaibandha"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-20",
+      "display" : "Habiganj"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-21",
+      "display" : "Jamalpur"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-22",
+      "display" : "Jessore"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-23",
+      "display" : "Jhenaidah"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-24",
+      "display" : "Jaipurhat"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-25",
+      "display" : "Jhalakati"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-26",
+      "display" : "Kishoreganj"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-27",
+      "display" : "Khulna"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-28",
+      "display" : "Kurigram"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-29",
+      "display" : "Khagrachari"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-30",
+      "display" : "Kushtia"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-31",
+      "display" : "Lakshmipur"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-32",
+      "display" : "Lalmonirhat"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-33",
+      "display" : "Manikganj"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-34",
+      "display" : "Mymensingh"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-35",
+      "display" : "Munshiganj"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-36",
+      "display" : "Madaripur"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-37",
+      "display" : "Magura"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-38",
+      "display" : "Moulvibazar"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-39",
+      "display" : "Meherpur"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-40",
+      "display" : "Narayanganj"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-41",
+      "display" : "Netrakona"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-42",
+      "display" : "Narsingdi"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-43",
+      "display" : "Narail"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-44",
+      "display" : "Natore"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-45",
+      "display" : "Nawabganj"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-46",
+      "display" : "Nilphamari"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-47",
+      "display" : "Noakhali"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-48",
+      "display" : "Naogaon"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-49",
+      "display" : "Pabna"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-50",
+      "display" : "Pirojpur"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-51",
+      "display" : "Patuakhali"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-52",
+      "display" : "Panchagarh"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-53",
+      "display" : "Rajbari"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-54",
+      "display" : "Rajshahi"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-55",
+      "display" : "Rangpur"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-56",
+      "display" : "Rangamati"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-57",
+      "display" : "Sherpur"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-58",
+      "display" : "Satkhira"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-59",
+      "display" : "Sirajganj"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-60",
+      "display" : "Sylhet"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-61",
+      "display" : "Sunamganj"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-62",
+      "display" : "Shariatpur"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-63",
+      "display" : "Tangail"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-64",
+      "display" : "Thakurgaon"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-A",
+      "display" : "Barisal"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-B",
+      "display" : "Chittagong"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-C",
+      "display" : "Dhaka"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-D",
+      "display" : "Khulna"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-E",
+      "display" : "Rajshahi"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-F",
+      "display" : "Rangpur"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BD-G",
+      "display" : "Sylhet"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BB-01",
+      "display" : "Christ Church"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BB-02",
+      "display" : "Saint Andrew"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BB-03",
+      "display" : "Saint George"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BB-04",
+      "display" : "Saint James"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BB-05",
+      "display" : "Saint John"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BB-06",
+      "display" : "Saint Joseph"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BB-07",
+      "display" : "Saint Lucy"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BB-08",
+      "display" : "Saint Michael"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BB-09",
+      "display" : "Saint Peter"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BB-10",
+      "display" : "Saint Philip"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BB-11",
+      "display" : "Saint Thomas"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BY-BR",
+      "display" : "Bresckaja voblasć"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BY-HM",
+      "display" : "Gorod Minsk"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BY-HO",
+      "display" : "Gomel'skaja oblast'"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BY-HR",
+      "display" : "Grodnenskaja oblast'"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BY-MA",
+      "display" : "Mahilioŭskaja voblasć"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BY-MI",
+      "display" : "Minskaja oblast'"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BY-VI",
+      "display" : "Viciebskaja voblasć"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BE-BRU",
+      "display" : "Brussels Hoofdstedelijk Gewest"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BE-VAN",
+      "display" : "Antwerpen"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BE-VBR",
+      "display" : "Vlaams-Brabant"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BE-VLG",
+      "display" : "Vlaams Gewest"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BE-VLI",
+      "display" : "Limburg"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BE-VOV",
+      "display" : "Oost-Vlaanderen"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BE-VWV",
+      "display" : "West-Vlaanderen"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BE-WAL",
+      "display" : "wallonne, Région"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BE-WBR",
+      "display" : "Brabant wallon"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BE-WHT",
+      "display" : "Hainaut"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BE-WLG",
+      "display" : "Liège"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BE-WLX",
+      "display" : "Luxembourg"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BE-WNA",
+      "display" : "Namur"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BZ-BZ",
+      "display" : "Belize"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BZ-CY",
+      "display" : "Cayo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BZ-CZL",
+      "display" : "Corozal"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BZ-OW",
+      "display" : "Orange Walk"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BZ-SC",
+      "display" : "Stann Creek"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BZ-TOL",
+      "display" : "Toledo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BJ-AK",
+      "display" : "Atakora"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BJ-AL",
+      "display" : "Alibori"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BJ-AQ",
+      "display" : "Atlantique"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BJ-BO",
+      "display" : "Borgou"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BJ-CO",
+      "display" : "Collines"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BJ-DO",
+      "display" : "Donga"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BJ-KO",
+      "display" : "Kouffo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BJ-LI",
+      "display" : "Littoral"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BJ-MO",
+      "display" : "Mono"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BJ-OU",
+      "display" : "Ouémé"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BJ-PL",
+      "display" : "Plateau"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BJ-ZO",
+      "display" : "Zou"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BM-BM",
+      "display" : "Bermuda"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BT-11",
+      "display" : "Paro"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BT-12",
+      "display" : "Chhukha"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BT-13",
+      "display" : "Ha"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BT-14",
+      "display" : "Samtse"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BT-15",
+      "display" : "Thimphu"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BT-21",
+      "display" : "Tsirang"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BT-22",
+      "display" : "Dagana"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BT-23",
+      "display" : "Punakha"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BT-24",
+      "display" : "Wangdue Phodrang"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BT-31",
+      "display" : "Sarpang"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BT-32",
+      "display" : "Trongsa"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BT-33",
+      "display" : "Bumthang"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BT-34",
+      "display" : "Zhemgang"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BT-41",
+      "display" : "Trashigang"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BT-42",
+      "display" : "Monggar"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BT-43",
+      "display" : "Pemagatshel"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BT-44",
+      "display" : "Lhuentse"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BT-45",
+      "display" : "Samdrup Jongkha"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BT-GA",
+      "display" : "Gasa"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BT-TY",
+      "display" : "Trashi Yangtse"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BO-B",
+      "display" : "El Beni"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BO-C",
+      "display" : "Cochabamba"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BO-H",
+      "display" : "Chuquisaca"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BO-L",
+      "display" : "La Paz"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BO-N",
+      "display" : "Pando"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BO-O",
+      "display" : "Oruro"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BO-P",
+      "display" : "Potosí"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BO-S",
+      "display" : "Santa Cruz"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BO-T",
+      "display" : "Tarija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BQ-BO",
+      "display" : "Bonaire"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BQ-SA",
+      "display" : "Saba"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BQ-SE",
+      "display" : "Sint Eustatius"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BA-01",
+      "display" : "Unsko-sanska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BA-02",
+      "display" : "Posavska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BA-03",
+      "display" : "Tuzlanska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BA-04",
+      "display" : "Zeničko-dobojska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BA-05",
+      "display" : "Bosansko-podrinjska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BA-06",
+      "display" : "Srednjobosanska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BA-07",
+      "display" : "Hercegovačko-neretvanska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BA-08",
+      "display" : "Zapadnohercegovačka županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BA-09",
+      "display" : "Kanton Sarajevo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BA-10",
+      "display" : "Kanton br. 10"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BA-BIH",
+      "display" : "Federacija Bosne i Hercegovine"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BA-BRC",
+      "display" : "Brčko distrikt"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BA-SRP",
+      "display" : "Republika Srpska"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BW-CE",
+      "display" : "Central"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BW-CH",
+      "display" : "Chobe"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BW-FR",
+      "display" : "Francistown"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BW-GA",
+      "display" : "Gaborone"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BW-GH",
+      "display" : "Ghanzi"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BW-JW",
+      "display" : "Jwaneng"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BW-KG",
+      "display" : "Kgalagadi"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BW-KL",
+      "display" : "Kgatleng"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BW-KW",
+      "display" : "Kweneng"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BW-LO",
+      "display" : "Lobatse"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BW-NE",
+      "display" : "North East"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BW-NW",
+      "display" : "North West"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BW-SE",
+      "display" : "South East"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BW-SO",
+      "display" : "Southern"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BW-SP",
+      "display" : "Selibe Phikwe"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BW-ST",
+      "display" : "Sowa Town"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BV-BV",
+      "display" : "Bouvet Island"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-AC",
+      "display" : "Acre"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-AL",
+      "display" : "Alagoas"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-AM",
+      "display" : "Amazonas"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-AP",
+      "display" : "Amapá"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-BA",
+      "display" : "Bahia"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-CE",
+      "display" : "Ceará"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-DF",
+      "display" : "Distrito Federal"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-ES",
+      "display" : "Espírito Santo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-GO",
+      "display" : "Goiás"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-MA",
+      "display" : "Maranhão"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-MG",
+      "display" : "Minas Gerais"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-MS",
+      "display" : "Mato Grosso do Sul"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-MT",
+      "display" : "Mato Grosso"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-PA",
+      "display" : "Pará"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-PB",
+      "display" : "Paraíba"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-PE",
+      "display" : "Pernambuco"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-PI",
+      "display" : "Piauí"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-PR",
+      "display" : "Paraná"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-RJ",
+      "display" : "Rio de Janeiro"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-RN",
+      "display" : "Rio Grande do Norte"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-RO",
+      "display" : "Rondônia"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-RR",
+      "display" : "Roraima"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-RS",
+      "display" : "Rio Grande do Sul"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-SC",
+      "display" : "Santa Catarina"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-SE",
+      "display" : "Sergipe"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-SP",
+      "display" : "São Paulo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BR-TO",
+      "display" : "Tocantins"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "IO-IO",
+      "display" : "British Indian Ocean Territory"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BN-BE",
+      "display" : "Belait"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BN-BM",
+      "display" : "Brunei-Muara"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BN-TE",
+      "display" : "Temburong"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BN-TU",
+      "display" : "Tutong"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-01",
+      "display" : "Blagoevgrad"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-02",
+      "display" : "Burgas"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-03",
+      "display" : "Varna"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-04",
+      "display" : "Veliko Tarnovo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-05",
+      "display" : "Vidin"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-06",
+      "display" : "Vratsa"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-07",
+      "display" : "Gabrovo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-08",
+      "display" : "Dobrich"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-09",
+      "display" : "Kardzhali"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-10",
+      "display" : "Kyustendil"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-11",
+      "display" : "Lovech"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-12",
+      "display" : "Montana"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-13",
+      "display" : "Pazardzhik"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-14",
+      "display" : "Pernik"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-15",
+      "display" : "Pleven"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-16",
+      "display" : "Plovdiv"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-17",
+      "display" : "Razgrad"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-18",
+      "display" : "Ruse"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-19",
+      "display" : "Silistra"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-20",
+      "display" : "Sliven"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-21",
+      "display" : "Smolyan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-22",
+      "display" : "Sofia"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-23",
+      "display" : "Sofia"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-24",
+      "display" : "Stara Zagora"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-25",
+      "display" : "Targovishte"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-26",
+      "display" : "Haskovo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-27",
+      "display" : "Shumen"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BG-28",
+      "display" : "Yambol"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-01",
+      "display" : "Boucle du Mouhoun"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-02",
+      "display" : "Cascades"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-03",
+      "display" : "Centre"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-04",
+      "display" : "Centre-Est"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-05",
+      "display" : "Centre-Nord"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-06",
+      "display" : "Centre-Ouest"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-07",
+      "display" : "Centre-Sud"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-08",
+      "display" : "Est"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-09",
+      "display" : "Hauts-Bassins"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-10",
+      "display" : "Nord"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-11",
+      "display" : "Plateau-Central"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-12",
+      "display" : "Sahel"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-13",
+      "display" : "Sud-Ouest"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-BAL",
+      "display" : "Balé"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-BAM",
+      "display" : "Bam"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-BAN",
+      "display" : "Banwa"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-BAZ",
+      "display" : "Bazèga"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-BGR",
+      "display" : "Bougouriba"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-BLG",
+      "display" : "Boulgou"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-BLK",
+      "display" : "Boulkiemdé"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-COM",
+      "display" : "Comoé"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-GAN",
+      "display" : "Ganzourgou"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-GNA",
+      "display" : "Gnagna"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-GOU",
+      "display" : "Gourma"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-HOU",
+      "display" : "Houet"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-IOB",
+      "display" : "Ioba"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-KAD",
+      "display" : "Kadiogo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-KEN",
+      "display" : "Kénédougou"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-KMD",
+      "display" : "Komondjari"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-KMP",
+      "display" : "Kompienga"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-KOP",
+      "display" : "Koulpélogo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-KOS",
+      "display" : "Kossi"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-KOT",
+      "display" : "Kouritenga"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-KOW",
+      "display" : "Kourwéogo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-LER",
+      "display" : "Léraba"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-LOR",
+      "display" : "Loroum"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-MOU",
+      "display" : "Mouhoun"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-NAM",
+      "display" : "Namentenga"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-NAO",
+      "display" : "Nahouri"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-NAY",
+      "display" : "Nayala"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-NOU",
+      "display" : "Noumbiel"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-OUB",
+      "display" : "Oubritenga"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-OUD",
+      "display" : "Oudalan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-PAS",
+      "display" : "Passoré"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-PON",
+      "display" : "Poni"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-SEN",
+      "display" : "Séno"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-SIS",
+      "display" : "Sissili"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-SMT",
+      "display" : "Sanmatenga"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-SNG",
+      "display" : "Sanguié"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-SOM",
+      "display" : "Soum"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-SOR",
+      "display" : "Sourou"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-TAP",
+      "display" : "Tapoa"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-TUI",
+      "display" : "Tui"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-YAG",
+      "display" : "Yagha"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-YAT",
+      "display" : "Yatenga"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-ZIR",
+      "display" : "Ziro"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-ZON",
+      "display" : "Zondoma"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BF-ZOU",
+      "display" : "Zoundwéogo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BI-BB",
+      "display" : "Bubanza"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BI-BL",
+      "display" : "Bujumbura Rural"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BI-BM",
+      "display" : "Bujumbura Mairie"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BI-BR",
+      "display" : "Bururi"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BI-CA",
+      "display" : "Cankuzo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BI-CI",
+      "display" : "Cibitoke"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BI-GI",
+      "display" : "Gitega"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BI-KI",
+      "display" : "Kirundo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BI-KR",
+      "display" : "Karuzi"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BI-KY",
+      "display" : "Kayanza"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BI-MA",
+      "display" : "Makamba"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BI-MU",
+      "display" : "Muramvya"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BI-MW",
+      "display" : "Mwaro"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BI-MY",
+      "display" : "Muyinga"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BI-NG",
+      "display" : "Ngozi"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BI-RT",
+      "display" : "Rutana"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "BI-RY",
+      "display" : "Ruyigi"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-10",
+      "display" : "Krâchéh"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-11",
+      "display" : "Môndól Kiri"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-12",
+      "display" : "Phnom Penh"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-13",
+      "display" : "Preăh Vihéar"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-14",
+      "display" : "Prey Veaeng"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-15",
+      "display" : "Pousaat"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-16",
+      "display" : "Rotanak Kiri"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-17",
+      "display" : "Siem Reab"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-18",
+      "display" : "Krŏng Preăh Sihanouk"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-19",
+      "display" : "Stoĕng Trêng"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-1",
+      "display" : "Bântéay Méanchey"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-20",
+      "display" : "Svaay Rieng"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-21",
+      "display" : "Taakaev"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-22",
+      "display" : "Ŏtdâr Méanchey"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-23",
+      "display" : "Krong Kaeb"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-24",
+      "display" : "Krŏng Pailĭn"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-2",
+      "display" : "Baat Dambang"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-3",
+      "display" : "Kampong Chaam"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-4",
+      "display" : "Kampong Chhnang"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-5",
+      "display" : "Kâmpóng Spœ"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-6",
+      "display" : "Kâmpóng Thum"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-7",
+      "display" : "Kampot"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-8",
+      "display" : "Kandaal"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KH-9",
+      "display" : "Kaoh Kong"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CM-AD",
+      "display" : "Adamaoua"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CM-CE",
+      "display" : "Centre"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CM-EN",
+      "display" : "Extrême-Nord"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CM-ES",
+      "display" : "East"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CM-LT",
+      "display" : "Littoral"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CM-NO",
+      "display" : "Nord"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CM-NW",
+      "display" : "Nord-Ouest"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CM-OU",
+      "display" : "Ouest"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CM-SU",
+      "display" : "South"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CM-SW",
+      "display" : "South-West"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CA-AB",
+      "display" : "Alberta"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CA-BC",
+      "display" : "British Columbia"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CA-MB",
+      "display" : "Manitoba"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CA-NB",
+      "display" : "New Brunswick"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CA-NL",
+      "display" : "Newfoundland and Labrador"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CA-NS",
+      "display" : "Nova Scotia"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CA-NT",
+      "display" : "Northwest Territories"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CA-NU",
+      "display" : "Nunavut"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CA-ON",
+      "display" : "Ontario"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CA-PE",
+      "display" : "Prince Edward Island"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CA-QC",
+      "display" : "Quebec"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CA-SK",
+      "display" : "Saskatchewan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CA-YT",
+      "display" : "Yukon"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-B",
+      "display" : "Ilhas de Barlavento"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-BR",
+      "display" : "Brava"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-BV",
+      "display" : "Boa Vista"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-CA",
+      "display" : "Santa Catarina"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-CF",
+      "display" : "Santa Catarina do Fogo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-CR",
+      "display" : "Santa Cruz"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-MA",
+      "display" : "Maio"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-MO",
+      "display" : "Mosteiros"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-PA",
+      "display" : "Paul"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-PN",
+      "display" : "Porto Novo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-PR",
+      "display" : "Praia"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-RB",
+      "display" : "Ribeira Brava"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-RG",
+      "display" : "Ribeira Grande"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-RS",
+      "display" : "Ribeira Grande de Santiago"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-SD",
+      "display" : "São Domingos"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-SF",
+      "display" : "São Filipe"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-S",
+      "display" : "Ilhas de Sotavento"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-SL",
+      "display" : "Sal"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-SM",
+      "display" : "São Miguel"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-SO",
+      "display" : "São Lourenço dos Órgãos"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-SS",
+      "display" : "São Salvador do Mundo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-SV",
+      "display" : "São Vicente"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-TA",
+      "display" : "Tarrafal"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CV-TS",
+      "display" : "Tarrafal de São Nicolau"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KY-KY",
+      "display" : "Cayman Islands"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CF-AC",
+      "display" : "Ouham"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CF-BB",
+      "display" : "Bamïngï-Bangoran"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CF-BGF",
+      "display" : "Bangî"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CF-BK",
+      "display" : "Basse-Kotto"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CF-HK",
+      "display" : "Haute-Kotto"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CF-HM",
+      "display" : "Haut-Mbomou"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CF-HS",
+      "display" : "Haute-Sangha / Mambéré-Kadéï"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CF-KB",
+      "display" : "Gïrïbïngï"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CF-KG",
+      "display" : "Kemö-Gïrïbïngï"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CF-LB",
+      "display" : "Lobaye"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CF-MB",
+      "display" : "Mbomou"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CF-MP",
+      "display" : "Ömbëlä-Pökö"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CF-NM",
+      "display" : "Nana-Mambéré"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CF-OP",
+      "display" : "Ouham-Pendé"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CF-SE",
+      "display" : "Sangä"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CF-UK",
+      "display" : "Ouaka"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CF-VK",
+      "display" : "Vakaga"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-BA",
+      "display" : "Al Baţḩah"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-BG",
+      "display" : "Baḩr al Ghazāl"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-BO",
+      "display" : "Borkou"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-CB",
+      "display" : "Chari-Baguirmi"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-EE",
+      "display" : "Ennedi-Est"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-EO",
+      "display" : "Ennedi-Ouest"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-GR",
+      "display" : "Guéra"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-HL",
+      "display" : "Hadjer Lamis"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-KA",
+      "display" : "Kanem"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-LC",
+      "display" : "Al Buḩayrah"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-LO",
+      "display" : "Logone-Occidental"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-LR",
+      "display" : "Logone-Oriental"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-MA",
+      "display" : "Mandoul"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-MC",
+      "display" : "Moyen-Chari"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-ME",
+      "display" : "Mayo-Kebbi-Est"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-MO",
+      "display" : "Mayo-Kebbi-Ouest"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-ND",
+      "display" : "Madīnat Injamīnā"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-OD",
+      "display" : "Ouaddaï"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-SA",
+      "display" : "Salamat"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-SI",
+      "display" : "Sila"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-TA",
+      "display" : "Tandjilé"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-TI",
+      "display" : "Tibastī"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "TD-WF",
+      "display" : "Wadi Fira"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CL-AI",
+      "display" : "Aysén"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CL-AN",
+      "display" : "Antofagasta"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CL-AP",
+      "display" : "Arica y Parinacota"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CL-AR",
+      "display" : "Araucanía"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CL-AT",
+      "display" : "Atacama"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CL-BI",
+      "display" : "Biobío"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CL-CO",
+      "display" : "Coquimbo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CL-LI",
+      "display" : "Libertador General Bernardo O'Higgins"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CL-LL",
+      "display" : "Los Lagos"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CL-LR",
+      "display" : "Los Ríos"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CL-MA",
+      "display" : "Magallanes"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CL-ML",
+      "display" : "Maule"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CL-RM",
+      "display" : "Región Metropolitana de Santiago"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CL-TA",
+      "display" : "Tarapacá"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CL-VS",
+      "display" : "Valparaíso"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-11",
+      "display" : "Beijing"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-12",
+      "display" : "Tianjin"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-13",
+      "display" : "Hebei"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-14",
+      "display" : "Shanxi"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-15",
+      "display" : "Nei Mongol"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-21",
+      "display" : "Liaoning"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-22",
+      "display" : "Jilin"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-23",
+      "display" : "Heilongjiang"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-31",
+      "display" : "Shanghai"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-32",
+      "display" : "Jiangsu"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-33",
+      "display" : "Zhejiang"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-34",
+      "display" : "Anhui"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-35",
+      "display" : "Fujian"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-36",
+      "display" : "Jiangxi"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-37",
+      "display" : "Shandong"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-41",
+      "display" : "Henan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-42",
+      "display" : "Hubei"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-43",
+      "display" : "Hunan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-44",
+      "display" : "Guangdong"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-45",
+      "display" : "Guangxi"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-46",
+      "display" : "Hainan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-50",
+      "display" : "Chongqing"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-51",
+      "display" : "Sichuan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-52",
+      "display" : "Guizhou"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-53",
+      "display" : "Yunnan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-54",
+      "display" : "Xizang"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-61",
+      "display" : "Shaanxi"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-62",
+      "display" : "Gansu"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-63",
+      "display" : "Qinghai"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-64",
+      "display" : "Ningxia"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-65",
+      "display" : "Xinjiang"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-71",
+      "display" : "Taiwan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-91",
+      "display" : "Hong Kong"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CN-92",
+      "display" : "Aomen"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CX-CX",
+      "display" : "Christmas Island"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CC-CC",
+      "display" : "Cocos  Islands"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-AMA",
+      "display" : "Amazonas"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-ANT",
+      "display" : "Antioquia"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-ARA",
+      "display" : "Arauca"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-ATL",
+      "display" : "Atlántico"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-BOL",
+      "display" : "Bolívar"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-BOY",
+      "display" : "Boyacá"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-CAL",
+      "display" : "Caldas"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-CAQ",
+      "display" : "Caquetá"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-CAS",
+      "display" : "Casanare"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-CAU",
+      "display" : "Cauca"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-CES",
+      "display" : "Cesar"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-CHO",
+      "display" : "Chocó"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-COR",
+      "display" : "Córdoba"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-CUN",
+      "display" : "Cundinamarca"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-DC",
+      "display" : "Distrito Capital de Bogotá"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-GUA",
+      "display" : "Guainía"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-GUV",
+      "display" : "Guaviare"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-HUI",
+      "display" : "Huila"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-LAG",
+      "display" : "La Guajira"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-MAG",
+      "display" : "Magdalena"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-MET",
+      "display" : "Meta"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-NAR",
+      "display" : "Nariño"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-NSA",
+      "display" : "Norte de Santander"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-PUT",
+      "display" : "Putumayo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-QUI",
+      "display" : "Quindío"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-RIS",
+      "display" : "Risaralda"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-SAN",
+      "display" : "Santander"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-SAP",
+      "display" : "San Andrés, Providencia y Santa Catalina"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-SUC",
+      "display" : "Sucre"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-TOL",
+      "display" : "Tolima"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-VAC",
+      "display" : "Valle del Cauca"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-VAU",
+      "display" : "Vaupés"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CO-VID",
+      "display" : "Vichada"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KM-A",
+      "display" : "Andjouân"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KM-G",
+      "display" : "Andjazîdja"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "KM-M",
+      "display" : "Mohéli"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CG-11",
+      "display" : "Bouenza"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CG-12",
+      "display" : "Pool"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CG-13",
+      "display" : "Sangha"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CG-14",
+      "display" : "Plateaux"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CG-15",
+      "display" : "Cuvette-Ouest"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CG-16",
+      "display" : "Pointe-Noire"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CG-2",
+      "display" : "Lékoumou"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CG-5",
+      "display" : "Kouilou"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CG-7",
+      "display" : "Likouala"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CG-8",
+      "display" : "Cuvette"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CG-9",
+      "display" : "Niari"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CG-BZV",
+      "display" : "Brazzaville"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CD-BC",
+      "display" : "Bas-Congo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CD-BN",
+      "display" : "Bandundu"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CD-EQ",
+      "display" : "Équateur"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CD-KA",
+      "display" : "Katanga"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CD-KE",
+      "display" : "Kasai-Oriental"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CD-KN",
+      "display" : "Kinshasa"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CD-KW",
+      "display" : "Kasai-Occidental"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CD-MA",
+      "display" : "Maniema"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CD-NK",
+      "display" : "Nord-Kivu"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CD-OR",
+      "display" : "Orientale"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CD-SK",
+      "display" : "Sud-Kivu"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CK-CK",
+      "display" : "Cook Islands"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CR-A",
+      "display" : "Alajuela"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CR-C",
+      "display" : "Cartago"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CR-G",
+      "display" : "Guanacaste"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CR-H",
+      "display" : "Heredia"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CR-L",
+      "display" : "Limón"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CR-P",
+      "display" : "Puntarenas"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CR-SJ",
+      "display" : "San José"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CI-01",
+      "display" : "Lagunes"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CI-02",
+      "display" : "Haut-Sassandra"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CI-03",
+      "display" : "Savanes"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CI-04",
+      "display" : "Vallée du Bandama"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CI-05",
+      "display" : "Moyen-Comoé"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CI-06",
+      "display" : "18 Montagnes"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CI-07",
+      "display" : "Lacs"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CI-08",
+      "display" : "Zanzan"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CI-09",
+      "display" : "Bas-Sassandra"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CI-10",
+      "display" : "Denguélé"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CI-11",
+      "display" : "Nzi-Comoé"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CI-12",
+      "display" : "Marahoué"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CI-13",
+      "display" : "Sud-Comoé"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CI-14",
+      "display" : "Worodougou"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CI-15",
+      "display" : "Sud-Bandama"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CI-16",
+      "display" : "Agnébi"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CI-17",
+      "display" : "Bafing"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CI-18",
+      "display" : "Fromager"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CI-19",
+      "display" : "Moyen-Cavally"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "HR-01",
+      "display" : "Zagrebačka županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "HR-02",
+      "display" : "Krapinsko-zagorska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "HR-03",
+      "display" : "Sisačko-moslavačka županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "HR-04",
+      "display" : "Karlovačka županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "HR-05",
+      "display" : "Varaždinska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "HR-06",
+      "display" : "Koprivničko-križevačka županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "HR-07",
+      "display" : "Bjelovarsko-bilogorska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "HR-08",
+      "display" : "Primorsko-goranska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "HR-09",
+      "display" : "Ličko-senjska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "HR-10",
+      "display" : "Virovitičko-podravska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "HR-11",
+      "display" : "Požeško-slavonska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "HR-12",
+      "display" : "Brodsko-posavska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "HR-13",
+      "display" : "Zadarska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "HR-14",
+      "display" : "Osječko-baranjska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "HR-15",
+      "display" : "Šibensko-kninska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "HR-16",
+      "display" : "Vukovarsko-srijemska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "HR-17",
+      "display" : "Splitsko-dalmatinska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "HR-18",
+      "display" : "Istarska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "HR-19",
+      "display" : "Dubrovačko-neretvanska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "HR-20",
+      "display" : "Međimurska županija"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "HR-21",
+      "display" : "Grad Zagreb"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CU-01",
+      "display" : "Pinar del Río"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CU-03",
+      "display" : "La Habana"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CU-04",
+      "display" : "Matanzas"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CU-05",
+      "display" : "Villa Clara"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CU-06",
+      "display" : "Cienfuegos"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CU-07",
+      "display" : "Sancti Spíritus"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CU-08",
+      "display" : "Ciego de Ávila"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CU-09",
+      "display" : "Camagüey"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CU-10",
+      "display" : "Las Tunas"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CU-11",
+      "display" : "Holguín"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CU-12",
+      "display" : "Granma"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CU-13",
+      "display" : "Santiago de Cuba"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CU-14",
+      "display" : "Guantánamo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CU-15",
+      "display" : "Artemisa"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CU-16",
+      "display" : "Mayabeque"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CU-99",
+      "display" : "Isla de la Juventud"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CW-CW",
+      "display" : "Curaçao"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CY-01",
+      "display" : "Lefkoşa"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CY-02",
+      "display" : "Lemesos"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CY-03",
+      "display" : "Larnaka"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CY-04",
+      "display" : "Ammochostos"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CY-05",
+      "display" : "Baf"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CY-06",
+      "display" : "Girne"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-101",
+      "display" : "Praha 1"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-102",
+      "display" : "Praha 2"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-103",
+      "display" : "Praha 3"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-104",
+      "display" : "Praha 4"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-105",
+      "display" : "Praha 5"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-106",
+      "display" : "Praha 6"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-107",
+      "display" : "Praha 7"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-108",
+      "display" : "Praha 8"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-109",
+      "display" : "Praha 9"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-10A",
+      "display" : "Praha 10"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-10B",
+      "display" : "Praha 11"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-10C",
+      "display" : "Praha 12"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-10D",
+      "display" : "Praha 13"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-10E",
+      "display" : "Praha 14"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-10F",
+      "display" : "Praha 15"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-201",
+      "display" : "Benešov"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-202",
+      "display" : "Beroun"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-203",
+      "display" : "Kladno"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-204",
+      "display" : "Kolín"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-205",
+      "display" : "Kutná Hora"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-206",
+      "display" : "Mělník"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-207",
+      "display" : "Mladá Boleslav"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-208",
+      "display" : "Nymburk"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-209",
+      "display" : "Praha-východ"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-20A",
+      "display" : "Praha-západ"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-20B",
+      "display" : "Příbram"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-20C",
+      "display" : "Rakovník"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-311",
+      "display" : "České Budějovice"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-312",
+      "display" : "Český Krumlov"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-313",
+      "display" : "Jindřichův Hradec"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-314",
+      "display" : "Písek"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-315",
+      "display" : "Prachatice"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-316",
+      "display" : "Strakonice"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-317",
+      "display" : "Tábor"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-321",
+      "display" : "Domažlice"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-322",
+      "display" : "Klatovy"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-323",
+      "display" : "Plzeň-město"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-324",
+      "display" : "Plzeň-jih"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-325",
+      "display" : "Plzeň-sever"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-326",
+      "display" : "Rokycany"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-327",
+      "display" : "Tachov"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-411",
+      "display" : "Cheb"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-412",
+      "display" : "Karlovy Vary"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-413",
+      "display" : "Sokolov"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-421",
+      "display" : "Děčín"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-422",
+      "display" : "Chomutov"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-423",
+      "display" : "Litoměřice"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-424",
+      "display" : "Louny"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-425",
+      "display" : "Most"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-426",
+      "display" : "Teplice"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-427",
+      "display" : "Ústí nad Labem"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-511",
+      "display" : "Česká Lípa"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-512",
+      "display" : "Jablonec nad Nisou"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-513",
+      "display" : "Liberec"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166:-2",
+      "code" : "CZ-514",
+      "display" : "Semily"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------

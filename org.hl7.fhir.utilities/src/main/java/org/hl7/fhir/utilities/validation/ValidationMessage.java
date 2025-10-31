@@ -3,6 +3,7 @@ package org.hl7.fhir.utilities.validation;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -68,13 +69,14 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import lombok.Getter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 
-public class ValidationMessage implements Comparator<ValidationMessage>, Comparable<ValidationMessage>
-{
+public class ValidationMessage implements Comparator<ValidationMessage>, Comparable<ValidationMessage> {
+
   public enum Source {
     ExampleValidator, 
     ProfileValidator, 
@@ -557,6 +559,8 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   private List<ValidationMessage> sliceInfo;
   private int count;
 
+  @Getter private String diagnostics;
+
   /**
    * Constructor
    */
@@ -999,6 +1003,129 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
 
   public boolean hasSliceInfo() {
     return sliceInfo != null && !sliceInfo.isEmpty();
-  }  
-  
+  }
+
+  public boolean preciseMatch(ValidationMessage other) {
+    if (other == null) {
+      return false;
+    }
+
+    // Compare source
+    if (this.source != other.source) {
+      return false;
+    }
+
+    // Compare server
+    if (!Objects.equals(this.server, other.server)) {
+      return false;
+    }
+
+    // Compare line
+    if (this.line != other.line) {
+      return false;
+    }
+
+    // Compare col
+    if (this.col != other.col) {
+      return false;
+    }
+
+    // Compare location
+    if (!Objects.equals(this.location, other.location)) {
+      return false;
+    }
+
+    // Compare message
+    if (!Objects.equals(this.message, other.message)) {
+      return false;
+    }
+
+    // Compare messageId
+    if (!Objects.equals(this.messageId, other.messageId)) {
+      return false;
+    }
+
+    // Compare type
+    if (this.type != other.type) {
+      return false;
+    }
+
+    // Compare level
+    if (this.level != other.level) {
+      return false;
+    }
+
+    // Compare html
+    if (!Objects.equals(this.html, other.html)) {
+      return false;
+    }
+
+    // Compare locationLink
+    if (!Objects.equals(this.locationLink, other.locationLink)) {
+      return false;
+    }
+
+    // Compare txLink
+    if (!Objects.equals(this.txLink, other.txLink)) {
+      return false;
+    }
+
+    // Compare sliceHtml
+    if (!Objects.equals(this.sliceHtml, other.sliceHtml)) {
+      return false;
+    }
+
+    // Compare slicingHint
+    if (this.slicingHint != other.slicingHint) {
+      return false;
+    }
+
+    // Compare signpost
+    if (this.signpost != other.signpost) {
+      return false;
+    }
+
+    // Compare criticalSignpost
+    if (this.criticalSignpost != other.criticalSignpost) {
+      return false;
+    }
+
+    // Compare ruleDate
+    if (!Objects.equals(this.ruleDate, other.ruleDate)) {
+      return false;
+    }
+
+    // Compare matched
+    if (this.matched != other.matched) {
+      return false;
+    }
+
+    // Compare ignorableError
+    if (this.ignorableError != other.ignorableError) {
+      return false;
+    }
+
+    // Compare invId
+    if (!Objects.equals(this.invId, other.invId)) {
+      return false;
+    }
+
+    // Compare comment
+    if (!Objects.equals(this.comment, other.comment)) {
+      return false;
+    }
+
+    // Compare sliceInfo
+    if (!Objects.equals(this.sliceInfo, other.sliceInfo)) {
+      return false;
+    }
+
+
+    return true;
+  }
+
+  public ValidationMessage setDiagnostics(String diagnostics) {
+    this.diagnostics = diagnostics;
+    return this;
+  }
 }

@@ -1,16 +1,22 @@
 package org.hl7.fhir.utilities;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.SystemUtils;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.junit.jupiter.api.Assertions;
@@ -45,6 +51,17 @@ class UtilitiesTest {
 
   public static final String OSX_USER_DIR = System.getProperty("user.home") + "/";
   public static final String OSX_JAVA_HOME = getNormalizedJavaHomeDir() + "/";
+
+  public static Stream<Arguments> getHttpParameters() {
+    return Stream.of(
+        Arguments.of("param1", "value="),
+        Arguments.of("param2", "value2"),
+        Arguments.of("param3", "value%"),
+        Arguments.of("param4", "value&"),
+        Arguments.of("param5", "value_1"),
+        Arguments.of("param6", "urn:oid:1.2.3.4.5"));
+  }
+
   @Test
   @DisplayName("Test Utilities.path maps temp directory correctly")
   public void testTempDirPath() throws IOException {
@@ -397,7 +414,29 @@ class UtilitiesTest {
       Assertions.assertEquals(left[i], right[i], "String["+i+"] differs");
     }
     Assertions.assertEquals(left.length, right.length, "String[].length() differs");
-    
+  }
+
+  @ParameterizedTest
+  @MethodSource("getHttpParameters")
+  void testEncodeUriParam(String key, String value) {
+    String encoded = Utilities.encodeUriParam(key, value);
+    List<NameValuePair> actual = URLEncodedUtils.parse(encoded, StandardCharsets.UTF_8);
+    assertThat(actual).hasSize(1);
+    assertThat(actual.get(0).getName()).isEqualTo(key);
+    assertThat(actual.get(0).getValue()).isEqualTo(value);
+  }
+
+  @Test
+  void testAppendStringArray() {
+    String[] a = new String[] {"A", "B"};
+    String[] b = new String[] {"C", "D", "E"};
+    String[] result = Utilities.concatStringArray(a, b);
+    assertThat(result).hasSize(5);
+    assertThat(result[0]).isEqualTo("A");
+    assertThat(result[1]).isEqualTo("B");
+    assertThat(result[2]).isEqualTo("C");
+    assertThat(result[3]).isEqualTo("D");
+    assertThat(result[4]).isEqualTo("E");
   }
 }
 

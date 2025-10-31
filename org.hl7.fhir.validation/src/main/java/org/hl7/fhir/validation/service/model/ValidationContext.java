@@ -13,6 +13,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
+import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -27,7 +28,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A POJO for storing the flags/values for the CLI validator.
+ * <p/>
+ * @deprecated This POJO is in the process of being replaced by more modular task-based POJOs (Such as
+ * ValidationEngineParameters, InstanceValidatorParameters). It should not be used by downstream projects. It will still
+ * be used internally while the replacement is in progress, but will eventually be removed altogether.
  */
+@Deprecated(since="2025-10-21")
 public class ValidationContext {
 
   @JsonProperty("baseEngine")
@@ -188,6 +194,14 @@ public class ValidationContext {
   @SerializedName("extensions")
   private
   List<String> extensions = new ArrayList<String>();
+  @JsonProperty("certSources")
+  @SerializedName("certSources")
+  private
+  List<String> certSources = new ArrayList<String>();
+  @JsonProperty("matchetypes")
+  @SerializedName("matchetypes")
+  private
+  List<String> matchetypes = new ArrayList<String>();
   @JsonProperty("igs")
   @SerializedName("igs")
   private
@@ -359,6 +373,102 @@ public class ValidationContext {
   @SerializedName("r5BundleRelativeReferencePolicy")
   private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy;
   
+  private List<String> langRegenParam = new ArrayList<>();
+
+  /**
+   * Default constructor
+   */
+  public ValidationContext() {
+  }
+
+  /**
+   * Copy constructor that performs a deep copy of the provided ValidationContext.
+   * All collections are copied to new instances with their contents.
+   *
+   * @param other the ValidationContext to copy
+   */
+  public ValidationContext(ValidationContext other) {
+    this.baseEngine = other.baseEngine;
+    this.doNative = other.doNative;
+    this.hintAboutNonMustSupport = other.hintAboutNonMustSupport;
+    this.recursive = other.recursive;
+    this.showMessagesFromReferences = other.showMessagesFromReferences;
+    this.doDebug = other.doDebug;
+    this.assumeValidRestReferences = other.assumeValidRestReferences;
+    this.checkReferences = other.checkReferences;
+    this.resolutionContext = other.resolutionContext;
+    this.canDoNative = other.canDoNative;
+    this.noInternalCaching = other.noInternalCaching;
+    this.noExtensibleBindingMessages = other.noExtensibleBindingMessages;
+    this.noUnicodeBiDiControlChars = other.noUnicodeBiDiControlChars;
+    this.noInvariants = other.noInvariants;
+    this.displayWarnings = other.displayWarnings;
+    this.wantInvariantsInMessages = other.wantInvariantsInMessages;
+    this.doImplicitFHIRPathStringConversion = other.doImplicitFHIRPathStringConversion;
+    this.htmlInMarkdownCheck = other.htmlInMarkdownCheck;
+    this.allowDoubleQuotesInFHIRPath = other.allowDoubleQuotesInFHIRPath;
+    this.disableDefaultResourceFetcher = other.disableDefaultResourceFetcher;
+    this.checkIPSCodes = other.checkIPSCodes;
+    this.langTransform = other.langTransform;
+    this.map = other.map;
+    this.source = other.source;
+    this.output = other.output;
+    this.outputSuffix = other.outputSuffix;
+    this.htmlOutput = other.htmlOutput;
+    this.txServer = other.txServer;
+    this.sv = other.sv;
+    this.txLog = other.txLog;
+    this.txCache = other.txCache;
+    this.mapLog = other.mapLog;
+    this.lang = other.lang;
+    this.fhirpath = other.fhirpath;
+    this.snomedCT = other.snomedCT;
+    this.targetVer = other.targetVer;
+    this.packageName = other.packageName;
+    this.noEcosystem = other.noEcosystem;
+    this.extensions = new ArrayList<>(other.extensions);
+    this.certSources = new ArrayList<>(other.certSources);
+    this.matchetypes = new ArrayList<>(other.matchetypes);
+    this.igs = new ArrayList<>(other.igs);
+    this.questionnaireMode = other.questionnaireMode;
+    this.level = other.level;
+    this.options = new ArrayList<>(other.options);
+    this.profiles = new ArrayList<>(other.profiles);
+    this.sources = new ArrayList<>(other.sources);
+    this.inputs = new ArrayList<>(other.inputs);
+    this.modeParams = new HashSet<>(other.modeParams);
+    this.mode = other.mode;
+    this.securityChecks = other.securityChecks;
+    this.crumbTrails = other.crumbTrails;
+    this.showMessageIds = other.showMessageIds;
+    this.forPublication = other.forPublication;
+    this.aiService = other.aiService;
+    this.allowExampleUrls = other.allowExampleUrls;
+    this.showTimes = other.showTimes;
+    this.showTerminologyRouting = other.showTerminologyRouting;
+    this.clearTxCache = other.clearTxCache;
+    this.locale = other.locale;
+    this.locations = new HashMap<>(other.locations);
+    this.outputStyle = other.outputStyle;
+    this.bundleValidationRules = new ArrayList<>(other.bundleValidationRules);
+    this.jurisdiction = other.jurisdiction;
+    this.srcLang = other.srcLang;
+    this.tgtLang = other.tgtLang;
+    this.fhirSettingsFile = other.fhirSettingsFile;
+    this.watchMode = other.watchMode;
+    this.watchScanDelay = other.watchScanDelay;
+    this.watchSettleTime = other.watchSettleTime;
+    this.bestPracticeLevel = other.bestPracticeLevel;
+    this.unknownCodeSystemsCauseErrors = other.unknownCodeSystemsCauseErrors;
+    this.noExperimentalContent = other.noExperimentalContent;
+    this.advisorFile = other.advisorFile;
+    this.expansionParameters = other.expansionParameters;
+    this.format = other.format;
+    this.r5BundleRelativeReferencePolicy = other.r5BundleRelativeReferencePolicy;
+    this.langRegenParam = new ArrayList<>(other.langRegenParam);
+    this.inferFhirVersion = other.inferFhirVersion;
+  }
+
   @SerializedName("baseEngine")
   @JsonProperty("baseEngine")
   public String getBaseEngine() {
@@ -450,6 +560,11 @@ public class ValidationContext {
     return this;
   }
 
+  public ValidationContext addBundleValidationRule(BundleValidationRule bundleValidationRule) {
+    this.bundleValidationRules.add(bundleValidationRule);
+    return this;
+  }
+
   public ValidationContext addIg(String ig) {
     if (this.igs == null) {
       this.igs = new ArrayList<>();
@@ -536,6 +651,47 @@ public class ValidationContext {
     return this;
   }
 
+  public ValidationContext addExtension(String extension) {
+    this.extensions.add(extension);
+    return this;
+  }
+
+  @SerializedName("certSources")
+  @JsonProperty("certSources")
+  public List<String> getCertSources() {
+    return certSources;
+  }
+
+  @SerializedName("certSources")
+  @JsonProperty("certSources")
+  public ValidationContext setCertSources(List<String> certSources) {
+    this.certSources = certSources;
+    return this;
+  }
+
+  public ValidationContext addCertSource(String certSource) {
+    certSources.add(certSource);
+    return this;
+  }
+
+  @SerializedName("matchetypes")
+  @JsonProperty("matchetypes")
+  public List<String> getMatchetypes() {
+    return matchetypes;
+  }
+
+  @SerializedName("matchetypes")
+  @JsonProperty("matchetypes")
+  public ValidationContext setMatchetypes(List<String> matchetypes) {
+    this.matchetypes = matchetypes;
+    return this;
+  }
+
+  public ValidationContext addMatchetype(String matchetype) {
+    this.matchetypes.add(matchetype);
+    return this;
+  }
+
   @SerializedName("hintAboutNonMustSupport")
   @JsonProperty("hintAboutNonMustSupport")
   public boolean isHintAboutNonMustSupport() {
@@ -583,8 +739,9 @@ public class ValidationContext {
 
   @SerializedName("doImplicitFHIRPathStringConversion")
   @JsonProperty("doImplicitFHIRPathStringConversion")
-  public void setDoImplicitFHIRPathStringConversion(boolean doImplicitFHIRPathStringConversion) {
+  public ValidationContext setDoImplicitFHIRPathStringConversion(boolean doImplicitFHIRPathStringConversion) {
     this.doImplicitFHIRPathStringConversion = doImplicitFHIRPathStringConversion;
+    return this;
   }
 
   @SerializedName("htmlInMarkdownCheck")
@@ -595,8 +752,9 @@ public class ValidationContext {
 
   @SerializedName("htmlInMarkdownCheck")
   @JsonProperty("htmlInMarkdownCheck")
-  public void setHtmlInMarkdownCheck(HtmlInMarkdownCheck htmlInMarkdownCheck) {
+  public ValidationContext setHtmlInMarkdownCheck(HtmlInMarkdownCheck htmlInMarkdownCheck) {
     this.htmlInMarkdownCheck = htmlInMarkdownCheck;
+    return this;
   }
 
   @SerializedName("allowDoubleQuotesInFHIRPath")
@@ -607,8 +765,9 @@ public class ValidationContext {
 
   @SerializedName("allowDoubleQuotesInFHIRPath")
   @JsonProperty("allowDoubleQuotesInFHIRPath")
-  public void setAllowDoubleQuotesInFHIRPath(boolean allowDoubleQuotesInFHIRPath) {
+  public ValidationContext setAllowDoubleQuotesInFHIRPath(boolean allowDoubleQuotesInFHIRPath) {
     this.allowDoubleQuotesInFHIRPath = allowDoubleQuotesInFHIRPath;
+    return this;
   }
 
   @SerializedName("disableDefaultResourceFetcher")
@@ -704,16 +863,20 @@ public class ValidationContext {
 
   @SerializedName("mode")
   @JsonProperty("mode")
+  @Deprecated(since = "2025-09-25")
   public EngineMode getMode() {
     return mode;
   }
 
   @SerializedName("mode")
   @JsonProperty("mode")
+  @Deprecated(since = "2025-09-25")
   public ValidationContext setMode(EngineMode mode) {
     this.mode = mode;
     return this;
   }
+
+
 
   @SerializedName("output")
   @JsonProperty("output")
@@ -779,11 +942,20 @@ public class ValidationContext {
     return inputs;
   }
 
+  public ValidationContext addInput(String input) {
+    inputs.add(input);
+    return this;
+  }
 
   @SerializedName("modeParams")
   @JsonProperty("modeParams")
   public Set<String> getModeParams() {
     return modeParams;
+  }
+
+  public ValidationContext addModeParam(String modeParam) {
+    modeParams.add(modeParam);
+    return this;
   }
 
   @SerializedName("sources")
@@ -905,35 +1077,12 @@ public class ValidationContext {
   @SerializedName("snomedCT")
   @JsonProperty("snomedCT")
   public String getSnomedCTCode() {
-    if ("intl".equals(snomedCT)) return "900000000000207008";
-    if ("us".equals(snomedCT)) return "731000124108";
-    if ("us+icd10cm".equals(snomedCT)) return "5991000124107";
-    if ("uk/clinical".equals(snomedCT)) return "999000021000000109";
-    if ("uk".equals(snomedCT)) return "83821000000107";
-    if ("au".equals(snomedCT)) return "32506021000036107";
-    if ("at".equals(snomedCT)) return "11000234105";
-    if ("ca".equals(snomedCT)) return "20621000087109";
-    if ("ca-en".equals(snomedCT)) return "20621000087109";
-    if ("ca-fr".equals(snomedCT)) return "20611000087101";
-    if ("nl".equals(snomedCT)) return "11000146104";
-    if ("se".equals(snomedCT)) return "45991000052106";
-    if ("es".equals(snomedCT)) return "449081005";
-    if ("es-ES".equals(snomedCT)) return "900000001000122104";
-    if ("ar".equals(snomedCT)) return "11000221109";
-    if ("dk".equals(snomedCT)) return "554471000005108";
-    if ("be".equals(snomedCT)) return "11000172109";
-    if ("ee".equals(snomedCT)) return "11000181102";
-    if ("fi".equals(snomedCT)) return "11000229106";
-    if ("de".equals(snomedCT)) return "11000274103";
-    if ("in".equals(snomedCT)) return "1121000189102";
-    if ("ie".equals(snomedCT)) return "11000220105";
-    if ("nl".equals(snomedCT)) return "11000146104";
-    if ("nz".equals(snomedCT)) return "21000210109";
-    if ("no".equals(snomedCT)) return "51000202101";
-    if ("kr".equals(snomedCT)) return "11000267109";
-    if ("se".equals(snomedCT)) return "45991000052106";
-    if ("ch".equals(snomedCT)) return "2011000195101";
-    if ("uy".equals(snomedCT)) return "5631000179106";
+    String number = SnomedUtilities.getCodeFromAlias(snomedCT);
+    if (number != null) return number;
+    return snomedCT;
+  }
+
+  public String getSnomedCT(){
     return snomedCT;
   }
 
@@ -1043,8 +1192,9 @@ public class ValidationContext {
 
   @SerializedName("noInvariants")
   @JsonProperty("noInvariants")
-  public void setNoInvariants(boolean noInvariants) {
+  public ValidationContext setNoInvariants(boolean noInvariants) {
     this.noInvariants = noInvariants;
+    return this;
   }
 
   @SerializedName("displayWarnings")
@@ -1055,8 +1205,9 @@ public class ValidationContext {
 
   @SerializedName("displayWarnings")
   @JsonProperty("displayWarnings")
-  public void setDisplayWarnings(boolean displayWarnings) {
+  public ValidationContext setDisplayWarnings(boolean displayWarnings) {
     this.displayWarnings = displayWarnings;
+    return this;
   }
 
   @SerializedName("wantInvariantsInMessages")
@@ -1067,8 +1218,9 @@ public class ValidationContext {
 
   @SerializedName("wantInvariantsInMessages")
   @JsonProperty("wantInvariantsInMessages")
-  public void setWantInvariantsInMessages(boolean wantInvariantsInMessages) {
+  public ValidationContext setWantInvariantsInMessages(boolean wantInvariantsInMessages) {
     this.wantInvariantsInMessages = wantInvariantsInMessages;
+    return this;
   }
 
   @SerializedName("securityChecks")
@@ -1088,96 +1240,108 @@ public class ValidationContext {
     return crumbTrails;
   }
 
-  public void setCrumbTrails(boolean crumbTrails) {
+  public ValidationContext setCrumbTrails(boolean crumbTrails) {
     this.crumbTrails = crumbTrails;
+    return this;
   }
 
   public boolean isShowMessageIds() {
     return showMessageIds;
   }
 
-  public void setShowMessageIds(boolean showMessageIds) {
+  public ValidationContext setShowMessageIds(boolean showMessageIds) {
     this.showMessageIds = showMessageIds;
+    return this;
   }
 
   public boolean isForPublication() {
     return forPublication;
   }
 
-  public void setForPublication(boolean forPublication) {
+  public ValidationContext setForPublication(boolean forPublication) {
     this.forPublication = forPublication;
+    return this;
   }
 
   public String getAIService() {
     return aiService;
   }
 
-  public void setAIService(String aiService) {
+  public ValidationContext setAIService(String aiService) {
     this.aiService = aiService;
+    return this;
   }
   
   public R5BundleRelativeReferencePolicy getR5BundleRelativeReferencePolicy() {
     return r5BundleRelativeReferencePolicy;
   }
 
-  public void setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
+  public ValidationContext setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
     this.r5BundleRelativeReferencePolicy = r5BundleRelativeReferencePolicy;
+    return this;
   }
 
   public boolean isAllowExampleUrls() {
     return allowExampleUrls;
   }
 
-  public void setAllowExampleUrls(boolean allowExampleUrls) {
+  public ValidationContext setAllowExampleUrls(boolean allowExampleUrls) {
     this.allowExampleUrls = allowExampleUrls;
+    return this;
   }
 
   public boolean isShowTimes() {
     return showTimes;
   }
 
-  public void setShowTimes(boolean showTimes) {
+  public ValidationContext setShowTimes(boolean showTimes) {
     this.showTimes = showTimes;
+    return this;
   }
 
   public boolean isShowTerminologyRouting() {
     return showTerminologyRouting;
   }
 
-  public void setShowTerminologyRouting(boolean showTerminologyRouting) {
+  public ValidationContext setShowTerminologyRouting(boolean showTerminologyRouting) {
     this.showTerminologyRouting = showTerminologyRouting;
+    return this;
   }
 
   public boolean isClearTxCache() {
     return clearTxCache;
   }
 
-  public void setClearTxCache(boolean clearTxCache) {
+  public ValidationContext setClearTxCache(boolean clearTxCache) {
     this.clearTxCache = clearTxCache;
+    return this;
   }
 
   public String getOutputStyle() {
     return outputStyle;
   }
 
-  public void setOutputStyle(String outputStyle) {
+  public ValidationContext setOutputStyle(String outputStyle) {
     this.outputStyle = outputStyle;
+    return this;
   }
 
   public boolean isNoUnicodeBiDiControlChars() {
     return noUnicodeBiDiControlChars;
   }
 
-  public void setNoUnicodeBiDiControlChars(boolean noUnicodeBiDiControlChars) {
+  public ValidationContext setNoUnicodeBiDiControlChars(boolean noUnicodeBiDiControlChars) {
     this.noUnicodeBiDiControlChars = noUnicodeBiDiControlChars;
+    return this;
   }
 
   public String getJurisdiction() {
     return jurisdiction;
   }
 
-  public void setJurisdiction(String jurisdiction) {
+  public ValidationContext setJurisdiction(String jurisdiction) {
     this.jurisdiction = jurisdiction;
+    return this;
   }
 
 
@@ -1185,16 +1349,18 @@ public class ValidationContext {
     return srcLang;
   }
 
-  public void setSrcLang(String srcLang) {
+  public ValidationContext setSrcLang(String srcLang) {
     this.srcLang = srcLang;
+    return this;
   }
 
   public String getTgtLang() {
     return tgtLang;
   }
 
-  public void setTgtLang(String tgtLang) {
+  public ValidationContext setTgtLang(String tgtLang) {
     this.tgtLang = tgtLang;
+    return this;
   }
 
   @Override
@@ -1206,6 +1372,7 @@ public class ValidationContext {
       doNative == that.doNative &&
       hintAboutNonMustSupport == that.hintAboutNonMustSupport &&
       recursive == that.recursive &&
+      showMessagesFromReferences == that.showMessagesFromReferences &&
       doDebug == that.doDebug &&
       assumeValidRestReferences == that.assumeValidRestReferences &&
       checkReferences == that.checkReferences &&
@@ -1216,10 +1383,20 @@ public class ValidationContext {
       noInvariants == that.noInvariants &&
       displayWarnings == that.displayWarnings &&
       wantInvariantsInMessages == that.wantInvariantsInMessages &&
+      doImplicitFHIRPathStringConversion == that.doImplicitFHIRPathStringConversion &&
       allowDoubleQuotesInFHIRPath == that.allowDoubleQuotesInFHIRPath &&
+      disableDefaultResourceFetcher == that.disableDefaultResourceFetcher &&
       checkIPSCodes == that.checkIPSCodes &&
+      noEcosystem == that.noEcosystem &&
+      securityChecks == that.securityChecks &&
+      showTerminologyRouting == that.showTerminologyRouting &&
+      clearTxCache == that.clearTxCache &&
       Objects.equals(extensions, that.extensions) &&
+      Objects.equals(certSources, that.certSources) &&
+      Objects.equals(matchetypes, that.matchetypes) &&
+      Objects.equals(langTransform, that.langTransform) &&
       Objects.equals(map, that.map) &&
+      Objects.equals(source, that.source) &&
       Objects.equals(resolutionContext, that.resolutionContext) &&
       Objects.equals(htmlInMarkdownCheck, that.htmlInMarkdownCheck) &&
       Objects.equals(output, that.output) &&
@@ -1243,6 +1420,8 @@ public class ValidationContext {
       Objects.equals(profiles, that.profiles) &&
       Objects.equals(options, that.options) &&
       Objects.equals(sources, that.sources) &&
+      Objects.equals(inputs, that.inputs) &&
+      Objects.equals(modeParams, that.modeParams) &&
       Objects.equals(crumbTrails, that.crumbTrails) &&
       Objects.equals(showMessageIds, that.showMessageIds) &&
       Objects.equals(forPublication, that.forPublication) &&
@@ -1254,6 +1433,8 @@ public class ValidationContext {
       Objects.equals(outputStyle, that.outputStyle) &&
       Objects.equals(jurisdiction, that.jurisdiction) &&
       Objects.equals(locations, that.locations) &&
+      Objects.equals(bundleValidationRules, that.bundleValidationRules) &&
+      Objects.equals(fhirSettingsFile, that.fhirSettingsFile) &&
       Objects.equals(watchMode, that.watchMode) &&
       Objects.equals(bestPracticeLevel, that.bestPracticeLevel) &&
       Objects.equals(watchScanDelay, that.watchScanDelay) &&
@@ -1262,12 +1443,15 @@ public class ValidationContext {
       Objects.equals(advisorFile, that.advisorFile) &&
       Objects.equals(expansionParameters, that.expansionParameters) &&
       Objects.equals(format, that.format) &&
-      Objects.equals(watchSettleTime, that.watchSettleTime);
+      Objects.equals(r5BundleRelativeReferencePolicy, that.r5BundleRelativeReferencePolicy) &&
+      Objects.equals(watchSettleTime, that.watchSettleTime) &&
+      Objects.equals(langRegenParam, that.langRegenParam) &&
+      Objects.equals(inferFhirVersion, that.inferFhirVersion);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(baseEngine, doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, checkReferences,canDoNative, noInternalCaching, resolutionContext, aiService,
+    return Objects.hash(baseEngine, doNative, extensions, certSources, matchetypes, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, checkReferences,canDoNative, noInternalCaching, resolutionContext, aiService,
       noExtensibleBindingMessages, noInvariants, displayWarnings, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
       targetVer, packageName, igs, questionnaireMode, level, profiles, options, sources, inputs, mode, locale, locations, crumbTrails, showMessageIds, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars,
       watchMode, watchScanDelay, watchSettleTime, bestPracticeLevel, unknownCodeSystemsCauseErrors, noExperimentalContent, advisorFile, expansionParameters, format, htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
@@ -1279,6 +1463,8 @@ public class ValidationContext {
       "baseEngine=" + baseEngine +
       ", doNative=" + doNative +
       ", extensions=" + extensions +
+      ", certSources=" + certSources +
+      ", matchetypes=" + matchetypes +
       ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +
       ", recursive=" + recursive +
       ", doDebug=" + doDebug +
@@ -1343,6 +1529,7 @@ public class ValidationContext {
       '}';
   }
 
+  @Deprecated
   @SerializedName("fhirSettingsFile")
   @JsonProperty("fhirSettingsFile")
   public ValidationContext setFhirSettingsFile(String fhirSettingsFile) {
@@ -1350,6 +1537,7 @@ public class ValidationContext {
     return this;
   }
 
+  @Deprecated
   @SerializedName("fhirSettingsFile")
   @JsonProperty("fhirSettingsFile")
   public String getFhirSettingsFile() {
@@ -1377,8 +1565,9 @@ public class ValidationContext {
 
   @SerializedName("watchScanDelay")
   @JsonProperty("watchScanDelay")
-  public void setWatchScanDelay(int watchScanDelay) {
+  public ValidationContext setWatchScanDelay(int watchScanDelay) {
     this.watchScanDelay = watchScanDelay;
+    return this;
   }
 
   @SerializedName("watchSettleTime")
@@ -1389,8 +1578,9 @@ public class ValidationContext {
 
   @SerializedName("watchSettleTime")
   @JsonProperty("watchSettleTime")
-  public void setWatchSettleTime(int watchSettleTime) {
+  public ValidationContext setWatchSettleTime(int watchSettleTime) {
     this.watchSettleTime = watchSettleTime;
+    return this;
   }
 
 
@@ -1417,8 +1607,9 @@ public class ValidationContext {
 
   @SerializedName("unknownCodeSystemsCauseErrors")
   @JsonProperty("unknownCodeSystemsCauseErrors")
-  public void setUnknownCodeSystemsCauseErrors(boolean unknownCodeSystemsCauseErrors) {
+  public ValidationContext setUnknownCodeSystemsCauseErrors(boolean unknownCodeSystemsCauseErrors) {
     this.unknownCodeSystemsCauseErrors = unknownCodeSystemsCauseErrors;
+    return this;
   }
 
   @SerializedName("noExperimentalContent")
@@ -1430,8 +1621,9 @@ public class ValidationContext {
 
   @SerializedName("noExperimentalContent")
   @JsonProperty("noExperimentalContent")
-  public void setNoExperimentalContent(boolean noExperimentalContent) {
+  public ValidationContext setNoExperimentalContent(boolean noExperimentalContent) {
     this.noExperimentalContent = noExperimentalContent;
+    return this;
   }
 
   @SerializedName("advisorFile")
@@ -1442,8 +1634,9 @@ public class ValidationContext {
 
   @SerializedName("advisorFile")
   @JsonProperty("advisorFile")
-  public void setAdvisorFile(String advisorFile) {
+  public ValidationContext setAdvisorFile(String advisorFile) {
     this.advisorFile = advisorFile;
+    return this;
   }
 
   @SerializedName("expansionParameters")
@@ -1454,8 +1647,9 @@ public class ValidationContext {
 
   @SerializedName("expansionParameters")
   @JsonProperty("expansionParameters")
-  public void setExpansionParameters(String expansionParameters) {
+  public ValidationContext setExpansionParameters(String expansionParameters) {
     this.expansionParameters = expansionParameters;
+    return this;
   }
 
   @SerializedName("format")
@@ -1466,8 +1660,29 @@ public class ValidationContext {
 
   @SerializedName("format")
   @JsonProperty("format")
-  public void setFormat(FhirFormat format) {
+  public ValidationContext setFormat(FhirFormat format) {
     this.format = format;
+    return this;
+  }
+
+  public ValidationContext addLangRegenParam(String value) {
+    langRegenParam.add(value);
+    return this;
+  }
+
+  public List<String> getLangRegenParam() {
+    return langRegenParam;
+  }
+
+  private Boolean inferFhirVersion = true;
+
+  public Boolean isInferFhirVersion() {
+    return inferFhirVersion;
+  }
+
+  public ValidationContext setInferFhirVersion(Boolean inferFhirVersion) {
+    this.inferFhirVersion = inferFhirVersion;
+    return this;
   }
 
 }

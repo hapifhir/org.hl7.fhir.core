@@ -1921,8 +1921,8 @@ public class Patient extends DomainResource {
       return (BooleanType) this.deceased;
     }
 
-    public boolean hasDeceasedBooleanType() { 
-      return this != null && this.deceased instanceof BooleanType;
+    public boolean hasDeceasedBooleanType() {
+        return this.deceased instanceof BooleanType;
     }
 
     /**
@@ -1936,8 +1936,8 @@ public class Patient extends DomainResource {
       return (DateTimeType) this.deceased;
     }
 
-    public boolean hasDeceasedDateTimeType() { 
-      return this != null && this.deceased instanceof DateTimeType;
+    public boolean hasDeceasedDateTimeType() {
+        return this.deceased instanceof DateTimeType;
     }
 
     public boolean hasDeceased() { 
@@ -2049,8 +2049,8 @@ public class Patient extends DomainResource {
       return (BooleanType) this.multipleBirth;
     }
 
-    public boolean hasMultipleBirthBooleanType() { 
-      return this != null && this.multipleBirth instanceof BooleanType;
+    public boolean hasMultipleBirthBooleanType() {
+        return this.multipleBirth instanceof BooleanType;
     }
 
     /**
@@ -2064,8 +2064,8 @@ public class Patient extends DomainResource {
       return (IntegerType) this.multipleBirth;
     }
 
-    public boolean hasMultipleBirthIntegerType() { 
-      return this != null && this.multipleBirth instanceof IntegerType;
+    public boolean hasMultipleBirthIntegerType() {
+        return this.multipleBirth instanceof IntegerType;
     }
 
     public boolean hasMultipleBirth() { 
@@ -2316,16 +2316,6 @@ public class Patient extends DomainResource {
         addGeneralPractitioner();
       }
       return getGeneralPractitioner().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getGeneralPractitionerTarget() { 
-      if (this.generalPractitionerTarget == null)
-        this.generalPractitionerTarget = new ArrayList<Resource>();
-      return this.generalPractitionerTarget;
     }
 
     /**

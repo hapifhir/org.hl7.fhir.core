@@ -296,8 +296,8 @@ public class Medication extends DomainResource {
           return (Ratio) this.strength;
         }
 
-        public boolean hasStrengthRatio() { 
-          return this != null && this.strength instanceof Ratio;
+        public boolean hasStrengthRatio() {
+            return this.strength instanceof Ratio;
         }
 
         /**
@@ -311,8 +311,8 @@ public class Medication extends DomainResource {
           return (CodeableConcept) this.strength;
         }
 
-        public boolean hasStrengthCodeableConcept() { 
-          return this != null && this.strength instanceof CodeableConcept;
+        public boolean hasStrengthCodeableConcept() {
+            return this.strength instanceof CodeableConcept;
         }
 
         /**
@@ -326,8 +326,8 @@ public class Medication extends DomainResource {
           return (Quantity) this.strength;
         }
 
-        public boolean hasStrengthQuantity() { 
-          return this != null && this.strength instanceof Quantity;
+        public boolean hasStrengthQuantity() {
+            return this.strength instanceof Quantity;
         }
 
         public boolean hasStrength() { 

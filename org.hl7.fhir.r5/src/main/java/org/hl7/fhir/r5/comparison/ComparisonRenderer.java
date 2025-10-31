@@ -1,7 +1,6 @@
 package org.hl7.fhir.r5.comparison;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -12,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -27,7 +27,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r5.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.liquid.LiquidEngine;
@@ -41,11 +41,13 @@ import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
 @MarkedToMoveToAdjunctPackage
-public class ComparisonRenderer implements IEvaluationContext {
+@Slf4j
+public class ComparisonRenderer implements IHostApplicationServices {
 
   private IWorkerContext contextLeft;
   private IWorkerContext contextRight;
@@ -107,7 +109,6 @@ public class ComparisonRenderer implements IEvaluationContext {
   }
 
   private void processList(List<String> list, StringBuilder b, String name) throws IOException {
-    // TODO Auto-generated method stub
     boolean first = true;
     for (String id : list) {
       ResourceComparison comp = session.getCompares().get(id);
@@ -119,8 +120,7 @@ public class ComparisonRenderer implements IEvaluationContext {
         try {
           renderComparison(id, comp);
         } catch (Exception e) {
-          System.out.println("Exception rendering "+id+": "+e.getMessage());          
-          e.printStackTrace();
+          log.error("Exception rendering "+id+": "+e.getMessage(), e);
         }
         b.append(comp.toTable());
         //"<li><a href=\""+comp.getId()+".html\">"+Utilities.escapeXml(comp.summary())+"</a></li>\r\n"
@@ -138,12 +138,16 @@ public class ComparisonRenderer implements IEvaluationContext {
   private void dumpBinaries() throws IOException {
     if (contextLeft != null && contextLeft.getBinaryKeysAsSet() != null) {
       for (String k : contextLeft.getBinaryKeysAsSet()) {
-        FileUtilities.bytesToFile(contextLeft.getBinaryForKey(k), Utilities.path(folder, k));
+        if (!Utilities.isProhibitedBinaryFile(k)) {
+          FileUtilities.bytesToFile(contextLeft.getBinaryForKey(k), Utilities.path(folder, k));
+        }
       }
     }
     if (contextRight != null && contextRight.getBinaryKeysAsSet() != null) {
       for (String k : contextRight.getBinaryKeysAsSet()) {
-        FileUtilities.bytesToFile(contextRight.getBinaryForKey(k), Utilities.path(folder, k));
+        if (!Utilities.isProhibitedBinaryFile(k)) {
+          FileUtilities.bytesToFile(contextRight.getBinaryForKey(k), Utilities.path(folder, k));
+        }
       }
     }
   }
@@ -307,21 +311,21 @@ public class ComparisonRenderer implements IEvaluationContext {
   }
 
   @Override
-  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
-    @SuppressWarnings("unchecked")
+  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     Map<String, Base> vars = (Map<String, Base>) appContext;
     List<Base> res = new ArrayList<>();
-    if (vars.containsKey(name)) {
-      res.add(vars.get(name));
+    if (mode == FHIRPathConstantEvaluationMode.EXPLICIT) {
+      if (vars.containsKey(name)) {
+        res.add(vars.get(name));
+      }
     }
     return res;
   }
 
   @Override
-  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
-    @SuppressWarnings("unchecked")
+  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     Map<String, Base> vars = (Map<String, Base>) appContext;
-    Base b = vars.get(name);
+    Base b = mode == FHIRPathConstantEvaluationMode.EXPLICIT ? vars.get(name) : null;
     return new TypeDetails(CollectionStatus.SINGLETON, b == null ? "Base" : b.fhirType());
   }
 

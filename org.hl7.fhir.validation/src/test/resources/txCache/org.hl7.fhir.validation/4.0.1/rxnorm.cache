@@ -1,16 +1,18 @@
 -------------------------------------------------------------------------------------
 {"code" : {
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "code" : "1000990",
-  "display" : "oxymetazoline hydrochloride 0.5 MG/ML Nasal Spray"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "coding" : [{
+    "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+    "code" : "1000990",
+    "display" : "oxymetazoline hydrochloride 0.5 MG/ML Nasal Spray"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -18,8 +20,9 @@ v: {
   "display" : "oxymetazoline hydrochloride 0.5 MG/ML Nasal Spray",
   "code" : "1000990",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "02032025",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "??",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -27,17 +30,19 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "code" : "1010603",
-  "display" : "Suboxone 2 MG / 0.5 MG Sublingual Film"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "coding" : [{
+    "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+    "code" : "1010603",
+    "display" : "Suboxone 2 MG / 0.5 MG Sublingual Film"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -45,8 +50,9 @@ v: {
   "display" : "buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film [Suboxone]",
   "code" : "1010603",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "02032025",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "??",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -54,17 +60,19 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "code" : "1298088",
-  "display" : "Flurazepam Hydrochloride 15 MG Oral Capsule"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "coding" : [{
+    "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+    "code" : "1298088",
+    "display" : "Flurazepam Hydrochloride 15 MG Oral Capsule"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -72,8 +80,9 @@ v: {
   "display" : "flurazepam hydrochloride 15 MG Oral Capsule",
   "code" : "1298088",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "02032025",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "??",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -81,17 +90,19 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "code" : "1010600",
-  "display" : "buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "coding" : [{
+    "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+    "code" : "1010600",
+    "display" : "buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -99,8 +110,9 @@ v: {
   "display" : "buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film",
   "code" : "1010600",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "02032025",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "??",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -108,43 +120,19 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "code" : "1591957"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
+  "coding" : [{
+    "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+    "code" : "428759",
+    "display" : "metformin 250 MG Oral Tablet"
   }]
-}}####
-v: {
-  "display" : "Mircera",
-  "code" : "1591957",
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "02032025",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "code" : "428759",
-  "display" : "metformin 250 MG Oral Tablet"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "r5BundleRelativeReferencePolicy":"always", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -152,8 +140,9 @@ v: {
   "display" : "metformin 250 MG Oral Tablet",
   "code" : "428759",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "02032025",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "??",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -161,17 +150,19 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "code" : "428759",
-  "display" : "metformin 250 MG Oral Tablet"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "r5BundleRelativeReferencePolicy":"always", "profile": {
+  "coding" : [{
+    "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+    "code" : "428759",
+    "display" : "metformin 250 MG Oral Tablet"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -179,8 +170,8 @@ v: {
   "display" : "metformin 250 MG Oral Tablet",
   "code" : "428759",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "02032025",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "??",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

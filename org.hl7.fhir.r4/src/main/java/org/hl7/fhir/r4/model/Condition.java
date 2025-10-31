@@ -176,16 +176,6 @@ public class Condition extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getAssessmentTarget() {
-      if (this.assessmentTarget == null)
-        this.assessmentTarget = new ArrayList<Resource>();
-      return this.assessmentTarget;
-    }
-
-    /**
      * @return {@link #type} (The kind of staging, such as pathological or clinical
      *         staging.)
      */
@@ -538,16 +528,6 @@ public class Condition extends DomainResource {
         addDetail();
       }
       return getDetail().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getDetailTarget() {
-      if (this.detailTarget == null)
-        this.detailTarget = new ArrayList<Resource>();
-      return this.detailTarget;
     }
 
     protected void listChildren(List<Property> children) {
@@ -1300,7 +1280,7 @@ public class Condition extends DomainResource {
   }
 
   public boolean hasOnsetDateTimeType() {
-    return this != null && this.onset instanceof DateTimeType;
+      return this.onset instanceof DateTimeType;
   }
 
   /**
@@ -1317,7 +1297,7 @@ public class Condition extends DomainResource {
   }
 
   public boolean hasOnsetAge() {
-    return this != null && this.onset instanceof Age;
+      return this.onset instanceof Age;
   }
 
   /**
@@ -1334,7 +1314,7 @@ public class Condition extends DomainResource {
   }
 
   public boolean hasOnsetPeriod() {
-    return this != null && this.onset instanceof Period;
+      return this.onset instanceof Period;
   }
 
   /**
@@ -1351,7 +1331,7 @@ public class Condition extends DomainResource {
   }
 
   public boolean hasOnsetRange() {
-    return this != null && this.onset instanceof Range;
+      return this.onset instanceof Range;
   }
 
   /**
@@ -1368,7 +1348,7 @@ public class Condition extends DomainResource {
   }
 
   public boolean hasOnsetStringType() {
-    return this != null && this.onset instanceof StringType;
+      return this.onset instanceof StringType;
   }
 
   public boolean hasOnset() {
@@ -1415,7 +1395,7 @@ public class Condition extends DomainResource {
   }
 
   public boolean hasAbatementDateTimeType() {
-    return this != null && this.abatement instanceof DateTimeType;
+      return this.abatement instanceof DateTimeType;
   }
 
   /**
@@ -1435,7 +1415,7 @@ public class Condition extends DomainResource {
   }
 
   public boolean hasAbatementAge() {
-    return this != null && this.abatement instanceof Age;
+      return this.abatement instanceof Age;
   }
 
   /**
@@ -1455,7 +1435,7 @@ public class Condition extends DomainResource {
   }
 
   public boolean hasAbatementPeriod() {
-    return this != null && this.abatement instanceof Period;
+      return this.abatement instanceof Period;
   }
 
   /**
@@ -1475,7 +1455,7 @@ public class Condition extends DomainResource {
   }
 
   public boolean hasAbatementRange() {
-    return this != null && this.abatement instanceof Range;
+      return this.abatement instanceof Range;
   }
 
   /**
@@ -1495,7 +1475,7 @@ public class Condition extends DomainResource {
   }
 
   public boolean hasAbatementStringType() {
-    return this != null && this.abatement instanceof StringType;
+      return this.abatement instanceof StringType;
   }
 
   public boolean hasAbatement() {

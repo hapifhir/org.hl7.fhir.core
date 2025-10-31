@@ -1010,8 +1010,8 @@ public class Contract extends DomainResource {
           return (CodeableConcept) this.entity;
         }
 
-        public boolean hasEntityCodeableConcept() { 
-          return this != null && this.entity instanceof CodeableConcept;
+        public boolean hasEntityCodeableConcept() {
+          return this.entity instanceof CodeableConcept;
         }
 
         /**
@@ -1025,8 +1025,8 @@ public class Contract extends DomainResource {
           return (Reference) this.entity;
         }
 
-        public boolean hasEntityReference() { 
-          return this != null && this.entity instanceof Reference;
+        public boolean hasEntityReference() {
+          return this.entity instanceof Reference;
         }
 
         public boolean hasEntity() { 
@@ -1853,16 +1853,6 @@ public class Contract extends DomainResource {
             addTopic();
           }
           return getTopic().get(0);
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Resource> getTopicTarget() { 
-          if (this.topicTarget == null)
-            this.topicTarget = new ArrayList<Resource>();
-          return this.topicTarget;
         }
 
         /**
@@ -2889,8 +2879,8 @@ public class Contract extends DomainResource {
           return (CodeableConcept) this.entity;
         }
 
-        public boolean hasEntityCodeableConcept() { 
-          return this != null && this.entity instanceof CodeableConcept;
+        public boolean hasEntityCodeableConcept() {
+          return this.entity instanceof CodeableConcept;
         }
 
         /**
@@ -2904,8 +2894,8 @@ public class Contract extends DomainResource {
           return (Reference) this.entity;
         }
 
-        public boolean hasEntityReference() { 
-          return this != null && this.entity instanceof Reference;
+        public boolean hasEntityReference() {
+          return this.entity instanceof Reference;
         }
 
         public boolean hasEntity() { 
@@ -3468,8 +3458,8 @@ public class Contract extends DomainResource {
           return (Attachment) this.content;
         }
 
-        public boolean hasContentAttachment() { 
-          return this != null && this.content instanceof Attachment;
+        public boolean hasContentAttachment() {
+          return this.content instanceof Attachment;
         }
 
         /**
@@ -3483,8 +3473,8 @@ public class Contract extends DomainResource {
           return (Reference) this.content;
         }
 
-        public boolean hasContentReference() { 
-          return this != null && this.content instanceof Reference;
+        public boolean hasContentReference() {
+          return this.content instanceof Reference;
         }
 
         public boolean hasContent() { 
@@ -3662,8 +3652,8 @@ public class Contract extends DomainResource {
           return (Attachment) this.content;
         }
 
-        public boolean hasContentAttachment() { 
-          return this != null && this.content instanceof Attachment;
+        public boolean hasContentAttachment() {
+          return this.content instanceof Attachment;
         }
 
         /**
@@ -3677,8 +3667,8 @@ public class Contract extends DomainResource {
           return (Reference) this.content;
         }
 
-        public boolean hasContentReference() { 
-          return this != null && this.content instanceof Reference;
+        public boolean hasContentReference() {
+          return this.content instanceof Reference;
         }
 
         public boolean hasContent() { 
@@ -3856,8 +3846,8 @@ public class Contract extends DomainResource {
           return (Attachment) this.content;
         }
 
-        public boolean hasContentAttachment() { 
-          return this != null && this.content instanceof Attachment;
+        public boolean hasContentAttachment() {
+          return this.content instanceof Attachment;
         }
 
         /**
@@ -3871,8 +3861,8 @@ public class Contract extends DomainResource {
           return (Reference) this.content;
         }
 
-        public boolean hasContentReference() { 
-          return this != null && this.content instanceof Reference;
+        public boolean hasContentReference() {
+          return this.content instanceof Reference;
         }
 
         public boolean hasContent() { 
@@ -4404,16 +4394,6 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getSubjectTarget() { 
-      if (this.subjectTarget == null)
-        this.subjectTarget = new ArrayList<Resource>();
-      return this.subjectTarget;
-    }
-
-    /**
      * @return {@link #topic} (The matter of concern in the context of this agreement.)
      */
     public List<Reference> getTopic() { 
@@ -4464,16 +4444,6 @@ public class Contract extends DomainResource {
         addTopic();
       }
       return getTopic().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getTopicTarget() { 
-      if (this.topicTarget == null)
-        this.topicTarget = new ArrayList<Resource>();
-      return this.topicTarget;
     }
 
     /**
@@ -4530,28 +4500,6 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Organization> getAuthorityTarget() { 
-      if (this.authorityTarget == null)
-        this.authorityTarget = new ArrayList<Organization>();
-      return this.authorityTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Organization addAuthorityTarget() { 
-      Organization r = new Organization();
-      if (this.authorityTarget == null)
-        this.authorityTarget = new ArrayList<Organization>();
-      this.authorityTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #domain} (Recognized governance framework or system operating with a circumscribed scope in accordance with specified principles, policies, processes or procedures for managing rights, actions, or behaviors of parties or principals relative to resources.)
      */
     public List<Reference> getDomain() { 
@@ -4602,28 +4550,6 @@ public class Contract extends DomainResource {
         addDomain();
       }
       return getDomain().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Location> getDomainTarget() { 
-      if (this.domainTarget == null)
-        this.domainTarget = new ArrayList<Location>();
-      return this.domainTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Location addDomainTarget() { 
-      Location r = new Location();
-      if (this.domainTarget == null)
-        this.domainTarget = new ArrayList<Location>();
-      this.domainTarget.add(r);
-      return r;
     }
 
     /**
@@ -5140,8 +5066,8 @@ public class Contract extends DomainResource {
       return (Attachment) this.binding;
     }
 
-    public boolean hasBindingAttachment() { 
-      return this != null && this.binding instanceof Attachment;
+    public boolean hasBindingAttachment() {
+      return this.binding instanceof Attachment;
     }
 
     /**
@@ -5155,8 +5081,8 @@ public class Contract extends DomainResource {
       return (Reference) this.binding;
     }
 
-    public boolean hasBindingReference() { 
-      return this != null && this.binding instanceof Reference;
+    public boolean hasBindingReference() {
+      return this.binding instanceof Reference;
     }
 
     public boolean hasBinding() { 

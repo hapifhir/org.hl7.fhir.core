@@ -1715,16 +1715,6 @@ public class MedicationRequest extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getDefinitionTarget() { 
-      if (this.definitionTarget == null)
-        this.definitionTarget = new ArrayList<Resource>();
-      return this.definitionTarget;
-    }
-
-    /**
      * @return {@link #basedOn} (A plan or request that is fulfilled in whole or in part by this medication request.)
      */
     public List<Reference> getBasedOn() { 
@@ -1775,16 +1765,6 @@ public class MedicationRequest extends DomainResource {
         addBasedOn();
       }
       return getBasedOn().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<Resource>();
-      return this.basedOnTarget;
     }
 
     /**
@@ -1996,8 +1976,8 @@ public class MedicationRequest extends DomainResource {
       return (CodeableConcept) this.medication;
     }
 
-    public boolean hasMedicationCodeableConcept() { 
-      return this != null && this.medication instanceof CodeableConcept;
+    public boolean hasMedicationCodeableConcept() {
+        return this.medication instanceof CodeableConcept;
     }
 
     /**
@@ -2011,8 +1991,8 @@ public class MedicationRequest extends DomainResource {
       return (Reference) this.medication;
     }
 
-    public boolean hasMedicationReference() { 
-      return this != null && this.medication instanceof Reference;
+    public boolean hasMedicationReference() {
+        return this.medication instanceof Reference;
     }
 
     public boolean hasMedication() { 
@@ -2158,16 +2138,6 @@ public class MedicationRequest extends DomainResource {
         addSupportingInformation();
       }
       return getSupportingInformation().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getSupportingInformationTarget() { 
-      if (this.supportingInformationTarget == null)
-        this.supportingInformationTarget = new ArrayList<Resource>();
-      return this.supportingInformationTarget;
     }
 
     /**
@@ -2391,16 +2361,6 @@ public class MedicationRequest extends DomainResource {
         addReasonReference();
       }
       return getReasonReference().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
     }
 
     /**
@@ -2655,28 +2615,6 @@ public class MedicationRequest extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<DetectedIssue> getDetectedIssueTarget() { 
-      if (this.detectedIssueTarget == null)
-        this.detectedIssueTarget = new ArrayList<DetectedIssue>();
-      return this.detectedIssueTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public DetectedIssue addDetectedIssueTarget() { 
-      DetectedIssue r = new DetectedIssue();
-      if (this.detectedIssueTarget == null)
-        this.detectedIssueTarget = new ArrayList<DetectedIssue>();
-      this.detectedIssueTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #eventHistory} (Links to Provenance records for past versions of this resource or fulfilling request or event resources that identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the resource.)
      */
     public List<Reference> getEventHistory() { 
@@ -2727,28 +2665,6 @@ public class MedicationRequest extends DomainResource {
         addEventHistory();
       }
       return getEventHistory().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Provenance> getEventHistoryTarget() { 
-      if (this.eventHistoryTarget == null)
-        this.eventHistoryTarget = new ArrayList<Provenance>();
-      return this.eventHistoryTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Provenance addEventHistoryTarget() { 
-      Provenance r = new Provenance();
-      if (this.eventHistoryTarget == null)
-        this.eventHistoryTarget = new ArrayList<Provenance>();
-      this.eventHistoryTarget.add(r);
-      return r;
     }
 
       protected void listChildren(List<Property> children) {

@@ -43,6 +43,7 @@ import org.hl7.fhir.instance.model.api.IDomainResource;
 
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.Description;
+
 /**
  * A resource that includes narrative, extensions, and contained resources.
  */
@@ -242,6 +243,11 @@ public abstract class DomainResource extends Resource implements IBaseHasExtensi
           retVal.add(next);
         }
       }
+      for (Extension next : getModifierExtension()) {
+        if (theUrl.equals(next.getUrl())) {
+          retVal.add(next);
+        }
+      }
       return Collections.unmodifiableList(retVal);
     }
 
@@ -432,6 +438,11 @@ public abstract class DomainResource extends Resource implements IBaseHasExtensi
 
 
       public boolean hasExtension(String url) {
+        for (Extension next : getModifierExtension()) {
+          if (url.equals(next.getUrl())) {
+            return true;
+          }
+        }
         for (Extension e : getExtension())
           if (url.equals(e.getUrl()))
             return true;
@@ -446,10 +457,21 @@ public abstract class DomainResource extends Resource implements IBaseHasExtensi
             retVal.add(next);
           }
         }
+        for (Extension next : getModifierExtension()) {
+          if (theUrl.equals(next.getUrl())) {
+            retVal.add(next);
+          }
+        }
         if (retVal.size() == 0)
           return null;
         else {
-          org.apache.commons.lang3.Validate.isTrue(retVal.size() == 1, "Url "+theUrl+" must have only one match");
+          boolean allValuesIdentical = true;
+          if (retVal.size() > 1) {
+            for (Extension next : retVal) {
+              allValuesIdentical = allValuesIdentical && next.value.equalsDeep(retVal.get(0).value);
+            }
+          }
+          org.apache.commons.lang3.Validate.isTrue(retVal.size() == 1 || allValuesIdentical, "Url "+theUrl+" must have only one match");
           return retVal.get(0);
         }
       }

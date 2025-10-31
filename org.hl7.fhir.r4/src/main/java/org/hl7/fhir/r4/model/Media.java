@@ -662,16 +662,6 @@ public class Media extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getBasedOnTarget() {
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<Resource>();
-    return this.basedOnTarget;
-  }
-
-  /**
    * @return {@link #partOf} (A larger event of which this particular event is a
    *         component or step.)
    */
@@ -724,16 +714,6 @@ public class Media extends DomainResource {
       addPartOf();
     }
     return getPartOf().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getPartOfTarget() {
-    if (this.partOfTarget == null)
-      this.partOfTarget = new ArrayList<Resource>();
-    return this.partOfTarget;
   }
 
   /**
@@ -985,7 +965,7 @@ public class Media extends DomainResource {
   }
 
   public boolean hasCreatedDateTimeType() {
-    return this != null && this.created instanceof DateTimeType;
+      return this.created instanceof DateTimeType;
   }
 
   /**
@@ -1002,7 +982,7 @@ public class Media extends DomainResource {
   }
 
   public boolean hasCreatedPeriod() {
-    return this != null && this.created instanceof Period;
+      return this.created instanceof Period;
   }
 
   public boolean hasCreated() {

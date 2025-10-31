@@ -1,6 +1,5 @@
 package org.hl7.fhir.convertors.misc;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -51,6 +50,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+@SuppressWarnings("checkstyle:systemout")
 public class CountryCodesConverter {
 
 

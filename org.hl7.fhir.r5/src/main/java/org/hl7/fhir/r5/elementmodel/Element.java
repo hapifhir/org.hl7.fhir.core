@@ -39,11 +39,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.extensions.ExtensionsUtils;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -56,7 +59,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.TypeConvertor;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.ElementDecoration;
 import org.hl7.fhir.utilities.ElementDecoration.DecorationType;
@@ -67,6 +70,7 @@ import org.hl7.fhir.utilities.NamedItemList.NamedItem;
 import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 /**
@@ -81,6 +85,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  */
 @MarkedToMoveToAdjunctPackage
 public class Element extends Base implements NamedItem {
+
   public class SliceDefinition {
 
     private StructureDefinition profile;
@@ -169,6 +174,7 @@ public class Element extends Base implements NamedItem {
   private Object nativeObject;
   private List<SliceDefinition> sliceDefinitions;
   private boolean elided;
+  @Getter @Setter private String resourceDefinition;
   
 	public Element(String name) {
 		super();
@@ -227,6 +233,9 @@ public class Element extends Base implements NamedItem {
 	}
 
 	public String getValue() {
+	  if (xhtml != null) {
+	    throw new Error("Don't use getValue() for xhtml");
+	  }
 		return value;
 	}
 
@@ -494,7 +503,7 @@ public class Element extends Base implements NamedItem {
     }
 
     int i = 0;
-    if (childForValue == null)
+    if (childForValue == null) {
       for (Property p : property.getChildProperties(this.name, type)) {
         int t = -1;
         for (int c =0; c < children.size(); c++) {
@@ -516,6 +525,7 @@ public class Element extends Base implements NamedItem {
           break;
         }
       }
+    }
     
     if (childForValue == null)
       throw new Error("Cannot set property "+name+" on "+this.name);
@@ -674,9 +684,11 @@ public class Element extends Base implements NamedItem {
 
 	@Override
 	public String primitiveValue() {
-		if (isPrimitive() || value != null)
-		  return value;
-		else {
+    if (isPrimitive() || value != null)
+      return value;
+    else if (hasXhtml()) {
+      return new XhtmlComposer(XhtmlComposer.XML, false).setCanonical(false).compose(xhtml);
+    } else {
 			if (canHavePrimitiveValue() && children != null) {
 				for (Element c : children) {
 					if (c.getName().equals("value"))
@@ -742,7 +754,7 @@ public class Element extends Base implements NamedItem {
   public Element getNamedChild(String name) {
     return getNamedChild(name, true);
   }
-  
+
   public Element getNamedChild(String name, boolean exception) {
     if (children == null)
       return null;
@@ -756,22 +768,45 @@ public class Element extends Base implements NamedItem {
         return l.get(0);
       }
     } else {
-      
+
     }
     Element result = null;
-    
+
     for (Element child : children) {
       if (child.getName() != null && name != null && child.getProperty() != null && child.getProperty().getDefinition() != null && child.fhirType() != null) {
         if (child.getName().equals(name) || (child.getName().length() >  child.fhirType().length() && child.getName().substring(0, child.getName().length() - child.fhirType().length()).equals(name) && child.getProperty().getDefinition().isChoice())) {
           if (result == null)
             result = child;
-          else 
+          else
             throw new Error("Attempt to read a single element when there is more than one present ("+name+")");
         }
       }
     }
-	  return result;
-	}
+    return result;
+  }
+
+  public Element getNamedChildSingle(String name, boolean exception) {
+    if (children == null)
+      return null;
+    if (children.size() > 20) {
+      List<Element> l = children.getByName(name);
+      if (l == null || l.size() == 0) {
+        // try the other way (in case of complicated naming rules)
+      } else if (l.size() > 1 && exception) {
+        throw new Error("Attempt to read a single element when there is more than one present ("+name+")");
+      } else {
+        return l.get(0);
+      }
+    }
+    for (Element child : children) {
+      if (child.getName() != null && name != null && child.getProperty() != null && child.getProperty().getDefinition() != null && child.fhirType() != null) {
+        if (child.getName().equals(name) || (child.getName().length() >  child.fhirType().length() && child.getName().substring(0, child.getName().length() - child.fhirType().length()).equals(name) && child.getProperty().getDefinition().isChoice())) {
+          return child;
+        }
+      }
+    }
+    return null;
+  }
 
   public void getNamedChildren(String name, List<Element> list) {
   	if (children != null)
@@ -787,26 +822,47 @@ public class Element extends Base implements NamedItem {
       }
   }
 
-  public String getNamedChildValue(String name) {
-    return getNamedChildValue(name, true);
+  public String getNamedChildValue(String... names) {
+    for (String name : names) {
+      String result = getNamedChildValue(name, true);
+      if (result != null) {
+        return result;
+      }
+    }
+    return null;
   }
-  
+
   public String getNamedChildValue(String name, boolean exception) {
-  	Element child = getNamedChild(name, exception);
-  	return child == null ? null : child.value;
+    Element child = getNamedChild(name, exception);
+    return child == null ? null : child.value;
+  }
+
+  public String getNamedChildValueSingle(String... names) {
+    for (String name : names) {
+      String result = getNamedChildValueSingle(name, false);
+      if (result != null) {
+        return result;
+      }
+    }
+    return null;
+  }
+
+  public String getNamedChildValueSingle(String name, boolean exception) {
+    Element child = getNamedChildSingle(name, exception);
+    return child == null ? null : child.value;
   }
 
   public void getNamedChildrenWithWildcard(String string, List<Element> values) {
-	  Validate.isTrue(string.endsWith("[x]"));
-	  
-	  String start = string.substring(0, string.length() - 3);
-	  	if (children != null) {
-	  		for (Element child : children) { 
-	  			if (child.getName().startsWith(start)) {
-	  				values.add(child);
-	  			}
-	  		}
-	  	}
+    Validate.isTrue(string.endsWith("[x]"));
+
+    String start = string.substring(0, string.length() - 3);
+    if (children != null) {
+      for (Element child : children) { 
+        if (child.getName().startsWith(start)) {
+          values.add(child);
+        }
+      }
+    }
   }
 
   
@@ -816,6 +872,7 @@ public class Element extends Base implements NamedItem {
 
 	public Element setXhtml(XhtmlNode xhtml) {
 		this.xhtml = xhtml;
+    value = new XhtmlComposer(true, false).compose(xhtml);
 		return this;
  	}
 
@@ -851,6 +908,17 @@ public class Element extends Base implements NamedItem {
     return getNamedChild(name, exception) != null;
   }
 
+  public boolean canHaveChild(String name) {
+    for (Property p : property.getChildProperties(this.name, type)) {
+      if (name.equals(p.getName())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  
+  
   public boolean hasChildren(String name) {
     if (children != null)
       for (Element child : children) 
@@ -1133,6 +1201,16 @@ public class Element extends Base implements NamedItem {
     return null;
   }
 
+  public Element getExtension(String... urls) {
+    for (String url : urls) {
+      Element e = getExtension(url);
+      if (e != null) {
+        return e;
+      }
+    }
+    return null;
+  }
+
   public String getExtensionString(String url) {
     if (children != null) {
       for (Element child : children) {
@@ -1332,9 +1410,9 @@ public class Element extends Base implements NamedItem {
     this.source = source;
   }
 
+  @SuppressWarnings("checkstyle:systemout")
   public void printToOutput() {
     printToOutput(System.out, "");
-    
   }
 
   public void printToOutput(PrintStream stream) {
@@ -1549,7 +1627,7 @@ public class Element extends Base implements NamedItem {
     for (Element e : getChildren()) {
       if (e.fhirType().equals("Extension")) {
         String url = e.getNamedChildValue("url", false);
-        if (ToolingExtensions.EXT_TRANSLATION.equals(url)) {
+        if (ExtensionDefinitions.EXT_TRANSLATION.equals(url)) {
           String l = null;
           String v = null;
           for (Element g : e.getChildren()) {
@@ -1572,8 +1650,8 @@ public class Element extends Base implements NamedItem {
   }
 
   public String getBasePath() {
-    if (property.getStructure().hasExtension(ToolingExtensions.EXT_RESOURCE_IMPLEMENTS)) {
-      StructureDefinition sd = property.getContext().fetchResource(StructureDefinition.class, ExtensionsUtils.getExtensionString(property.getStructure(), ToolingExtensions.EXT_RESOURCE_IMPLEMENTS));
+    if (property.getStructure().hasExtension(ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS)) {
+      StructureDefinition sd = property.getContext().fetchResource(StructureDefinition.class, ExtensionUtilities.readStringExtension(property.getStructure(), ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS));
       if (sd != null) {
         ElementDefinition ed = sd.getSnapshot().getElementByPath(property.getDefinition().getPath().replace(property.getStructure().getType(), sd.getType()));
         if (ed != null) {
@@ -1588,7 +1666,7 @@ public class Element extends Base implements NamedItem {
     for (Element e : getChildren()) {
       if (e.fhirType().equals("Extension")) {
         String url = e.getNamedChildValue("url", false);
-        if (ToolingExtensions.EXT_TRANSLATION.equals(url)) {
+        if (ExtensionDefinitions.EXT_TRANSLATION.equals(url)) {
           String l = null;
           Element v = null;
           for (Element g : e.getChildren()) {
@@ -1614,7 +1692,7 @@ public class Element extends Base implements NamedItem {
       }
     }
     Element t = addElement("extension");
-    t.addElement("url").setValue(ToolingExtensions.EXT_TRANSLATION);
+    t.addElement("url").setValue(ExtensionDefinitions.EXT_TRANSLATION);
 
     Element ext = t.addElement("extension");
     ext.addElement("url").setValue("lang");
@@ -1654,13 +1732,15 @@ public class Element extends Base implements NamedItem {
   }
 
   public void removeExtension(String url) {
-    List<Element> rem = new ArrayList<>();
-    for (Element e : children) {
-      if ("extension".equals(e.getName()) && url.equals(e.getChildValue("url"))) {
-        rem.add(e);
+    if (children != null) {
+      List<Element> rem = new ArrayList<>();
+      for (Element e : children) {
+        if ("extension".equals(e.getName()) && url.equals(e.getChildValue("url"))) {
+          rem.add(e);
+        }
       }
+      children.removeAll(rem);
     }
-    children.removeAll(rem);
   }
 
   public void addSliceDefinition(StructureDefinition profile, ElementDefinition definition, ElementDefinition slice) {
@@ -1709,10 +1789,24 @@ public class Element extends Base implements NamedItem {
 
   public String getStatedResourceId() {
     for (Property p : getProperty().getChildProperties(null)) {
-      if (ToolingExtensions.readBoolExtension(p.getDefinition(), ToolingExtensions.EXT_USE_AS_RESOURCE_ID)) {
+      if (ExtensionUtilities.readBoolExtension(p.getDefinition(), ExtensionDefinitions.EXT_USE_AS_RESOURCE_ID)) {
         return getNamedChildValue(p.getName());
       }
     }
     return null;
   }
+
+  public boolean hasXhtml() {
+    return xhtml != null;
+  }
+
+  public boolean isElementForPath(String... paths) {
+    for (String s : paths) {
+      if (s.equals(property.getDefinition().getBase().getPath())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 }

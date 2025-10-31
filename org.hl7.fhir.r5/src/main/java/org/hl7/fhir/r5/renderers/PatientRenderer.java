@@ -7,12 +7,10 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.Attachment;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
@@ -121,37 +119,37 @@ public class PatientRenderer extends ResourceRenderer {
       if (n == null) {
         x.b().tx(context.formatPhrase(RenderingContext.PAT_NO_NAME)); // todo: is this appropriate?  
       } else {
-        renderDataType(status, x.b(), n);
+        renderDataType(status, xlinkNarrative(x.b(), n), n);
       }
       x.tx(" ");
       if (gender == null) {
         x.tx(context.formatPhrase(RenderingContext.PAT_NO_GENDER));
       } else {
-        x.tx(gender);
+        spanIfTracking(x, pat.child("gender")).tx(gender);
       }
       x.tx(", ");
       if (dt == null) {
         x.tx(context.formatPhrase(RenderingContext.PAT_NO_DOB));
       } else {
-        x.tx(context.formatPhrase(RenderingContext.PAT_DOB, displayDateTime(dt)));
+        spanIfTracking(x, dt).tx(context.formatPhrase(RenderingContext.PAT_DOB, displayDateTime(dt)));
       }
       if (id != null) {
         x.tx(" ( ");      
-        renderDataType(status, x, id);
+        renderDataType(status, spanIfTracking(x, id), id);
         x.tx(")");      
       }
     } else {
       // banner
-      makeBanner(x.para()).tx(buildSummary(pat));
+      makeBanner(x.para(), pat).tx(buildSummary(pat));
       x.hr();
       XhtmlNode tbl;
       if (hasRenderablePhoto(pat)) {
-        tbl = x.table("none", true);
+        tbl = x.table(null, true).markGenerated(!context.forValidResource());
         XhtmlNode tr = tbl.tr();
-        tbl = tr.td().table("grid", false);
+        tbl = tr.td().table("grid", false).markGenerated(!context.forValidResource());
         renderPhoto(tr.td(), pat);
       } else {
-        tbl = x.table("grid", false);
+        tbl = x.table("grid", false).markGenerated(!context.forValidResource());
       }
 
       // the table has 4 columns
@@ -262,10 +260,10 @@ public class PatientRenderer extends ResourceRenderer {
             XhtmlNode ul = td.ul();
             for (ResourceWrapper s : list) {
               XhtmlNode li = ul.li();
-              renderDataType(status, li, s.child("value"));
+              renderDataType(status, xlinkNarrative(li, s.child("value")), s.child("value"));
             }
           } else {
-            renderDataType(status, td, list.get(0).child("value"));
+            renderDataType(status, xlinkNarrative(td, list.get(0).child("value")), list.get(0).child("value"));
           }
         } else {
           for (ResourceWrapper ext : list) {
@@ -283,14 +281,14 @@ public class PatientRenderer extends ResourceRenderer {
                   for (ResourceWrapper t : s.extensions()) {
                     if (first) first = false; else li.tx("; ");
                     li.tx(t.primitiveValue("url")+"=");
-                    renderDataType(status, li, t.child("value"));
+                    renderDataType(status, xlinkNarrative(li, t.child("value")), t.child("value"));
                   }
                 } else {
-                  renderDataType(status, li, s.child("value"));
+                  renderDataType(status, xlinkNarrative(li, s.child("value")), s.child("value"));
                 }
               }
             } else {
-              renderDataType(status, td, ext.child("value"));
+              renderDataType(status, xlinkNarrative(td, ext.child("value")), ext.child("value"));
             }
           }
         }
@@ -315,11 +313,11 @@ public class PatientRenderer extends ResourceRenderer {
       XhtmlNode td = tr.td();
       td.colspan("3");
       if (ids.size() == 1) {
-        renderDataType(status, td, ids.get(0));
+        renderDataType(status, xlinkNarrative(td, ids.get(0)), ids.get(0));
       } else { 
         XhtmlNode ul = td.ul();
         for (ResourceWrapper i : ids) {
-          renderDataType(status, ul.li(), i);
+          renderDataType(status, xlinkNarrative(ul.li(), i), i);
         }
       }
     }
@@ -345,7 +343,7 @@ public class PatientRenderer extends ResourceRenderer {
       XhtmlNode td = tr.td();
       td.colspan("3");
       if (langs.size() == 1) {
-        renderDataType(status, td, langs.get(0));
+        renderDataType(status, xlinkNarrative(td, langs.get(0)), langs.get(0));
         if (prefLang != null) {
           td.tx(" "+context.formatPhrase(RenderingContext.PAT_LANG_PREFERRED));
         }
@@ -353,7 +351,7 @@ public class PatientRenderer extends ResourceRenderer {
         XhtmlNode ul = td.ul();
         for (ResourceWrapper i : langs) {
           XhtmlNode li = ul.li();
-          renderDataType(status, li, i);
+          renderDataType(status, xlinkNarrative(li, i), i);
           if (i == prefLang) {
             li.tx(" "+context.formatPhrase(RenderingContext.PAT_LANG_PREFERRED));;
           }
@@ -367,10 +365,12 @@ public class PatientRenderer extends ResourceRenderer {
   public class NamedReferance {
 
     private String name;
+    private ResourceWrapper type;
     private ResourceWrapper reference;
 
-    public NamedReferance(String name, ResourceWrapper ref) {
+    public NamedReferance(String name, ResourceWrapper type, ResourceWrapper ref) {
       this.name = name;
+      this.type = type;
       this.reference = ref;
     }
 
@@ -382,6 +382,10 @@ public class PatientRenderer extends ResourceRenderer {
       return reference;
     }
 
+    public ResourceWrapper getType() {
+      return type;
+    }
+
   }
 
 
@@ -389,18 +393,18 @@ public class PatientRenderer extends ResourceRenderer {
     List<NamedReferance> refs = new ArrayList<>();
     List<ResourceWrapper> pw = r.children("generalPractitioner");
     for (ResourceWrapper t : pw) {
-      refs.add(new NamedReferance(context.formatPhrase(RenderingContext.PAT_GP), t));
+      refs.add(new NamedReferance(context.formatPhrase(RenderingContext.PAT_GP), null, t));
     }
     pw = r.children("managingOrganization");
     for (ResourceWrapper t : pw) {
-      refs.add(new NamedReferance(context.formatPhrase(RenderingContext.PAT_MO), t));
+      refs.add(new NamedReferance(context.formatPhrase(RenderingContext.PAT_MO), null, t));
     }
     pw = r.children("link");
     for (ResourceWrapper t : pw) {
       ResourceWrapper o = t.firstChild("other");
       ResourceWrapper l = t.firstChild("type");
       if (l != null && o != null) {
-        refs.add(new NamedReferance(describeLinkedRecord(l.primitiveValue()), o));        
+        refs.add(new NamedReferance(describeLinkedRecord(l.primitiveValue()), l,   o));        
       }
     }
 
@@ -412,7 +416,11 @@ public class PatientRenderer extends ResourceRenderer {
       XhtmlNode ul = td.ul();
       for (NamedReferance ref : refs) {
         XhtmlNode li = ul.li();
-        li.tx(ref.getName());
+        if (ref.getType() != null) {
+          spanIfTracking(li, ref.getType()).tx(ref.getName());
+        } else {
+          li.tx(ref.getName());
+        }
         li.tx(": ");
         renderReference(status, li, ref.getReference());        
       }
@@ -459,7 +467,7 @@ public class PatientRenderer extends ResourceRenderer {
     XhtmlNode li;
     if (name != null) {
       li = ul.li();
-      renderDataType(status, li, name);
+      renderDataType(status, xlinkNarrative(li, name), name);
       if (gender != null) {
         li.tx(" "+"("+gender+")");
       }
@@ -473,24 +481,24 @@ public class PatientRenderer extends ResourceRenderer {
       boolean first = true;
       for (ResourceWrapper rel : rels) {
         if (first) first = false; else li.tx(", ");
-        renderDataType(status, li, rel);
+        renderDataType(status, xlinkNarrative(li, rel), rel);
       }      
     }
     if (add != null) {
-      renderDataType(status, ul.li(), add);
+      renderDataType(status, xlinkNarrative(ul.li(), add), add);
     }
     for (ResourceWrapper cp : tels) {
-      renderDataType(status, ul.li(), cp);
+      renderDataType(status, xlinkNarrative(ul.li(), cp), cp);
     }
     if (organization != null) {
       li = ul.li();
       li.tx(context.formatPhrase(RenderingContext.PAT_ORG));
-      renderDataType(status, li, organization);
+      renderDataType(status, xlinkNarrative(li, organization), organization);
     }
     if (period != null) {
       li = ul.li();
       li.tx(context.formatPhrase(RenderingContext.PAT_PERIOD));
-      renderDataType(status, li, period);
+      renderDataType(status, xlinkNarrative(li, period), period);
     }
   }
 
@@ -509,11 +517,11 @@ public class PatientRenderer extends ResourceRenderer {
       XhtmlNode td = tr.td();
       td.colspan("3");
       if (names.size() == 1) {
-        renderDataType(status, td, names.get(0));
+        renderDataType(status, xlinkNarrative(td, names.get(0)), names.get(0));
       } else {
         XhtmlNode ul = td.ul();
         for (ResourceWrapper n : names) {
-          renderDataType(status, ul.li(), n);
+          renderDataType(status,xlinkNarrative(ul.li(), n), n);
         }
       }
     }
@@ -529,17 +537,17 @@ public class PatientRenderer extends ResourceRenderer {
       td.colspan("3");
       if (tels.size() + adds.size() == 1) {
         if (adds.isEmpty()) {
-          renderDataType(status, td, tels.get(0));
+          renderDataType(status, xlinkNarrative(td, tels.get(0)), tels.get(0));
         } else {
-          renderDataType(status, td, adds.get(0));
+          renderDataType(status, xlinkNarrative(td, adds.get(0)), adds.get(0));
         }
       } else {
         XhtmlNode ul = td.ul();
         for (ResourceWrapper n : tels) {
-          renderDataType(status, ul.li(), n);
+          renderDataType(status, xlinkNarrative(ul.li(), n), n);
         }
         for (ResourceWrapper n : adds) {
-          renderDataType(status, ul.li(), n);
+          renderDataType(status, xlinkNarrative(ul.li(), n), n);
         }
       }
     }
@@ -572,7 +580,7 @@ public class PatientRenderer extends ResourceRenderer {
           if (pos == count) {
             td.colspan("3");
           }
-          renderDataType(status, td, a.get(0));
+          renderDataType(status, xlinkNarrative(td, a.get(0)), a.get(0));
         }
       }      
       if (r.has("deceased[x]")) {
@@ -584,7 +592,7 @@ public class PatientRenderer extends ResourceRenderer {
           if (pos == count) {
             td.colspan("3");
           }
-          renderDataType(status, td, a.get(0));
+          renderDataType(status, xlinkNarrative(td, a.get(0)), a.get(0));
         }
       }      
       if (r.has("maritalStatus")) {
@@ -599,7 +607,7 @@ public class PatientRenderer extends ResourceRenderer {
           if (pos == count) {
             td.colspan("3");
           }
-          renderDataType(status, td, a.get(0));
+          renderDataType(status, xlinkNarrative(td, a.get(0)), a.get(0));
         }
       }      
       if (r.has("multipleBirth[x]")) {
@@ -614,7 +622,7 @@ public class PatientRenderer extends ResourceRenderer {
           if (pos == count) {
             td.colspan("3");
           }
-          renderDataType(status, td, a.get(0));
+          renderDataType(status, xlinkNarrative(td, a.get(0)), a.get(0));
         }
       }      
     }  
@@ -625,6 +633,7 @@ public class PatientRenderer extends ResourceRenderer {
     td.setAttribute("title", title);
     td.tx(text);
     td.style("background-color: #f3f5da");
+    markBoilerplate(td);
   }
 
   private void nameCell(XhtmlNode tr, String text, String title, String link) {
@@ -636,6 +645,7 @@ public class PatientRenderer extends ResourceRenderer {
       td.tx(text);
     }
     td.style("background-color: #f3f5da");
+    markBoilerplate(td);
   }
 
   private void renderPhoto(XhtmlNode td, ResourceWrapper r) throws UnsupportedEncodingException, FHIRException, IOException {
@@ -650,7 +660,7 @@ public class PatientRenderer extends ResourceRenderer {
           if (context.isInlineGraphics() || Utilities.noString(context.getDestDir()) || ext == null) {
             td.img("data:"+ct+";base64,"+att.primitiveValue("data"), "patient photo");
           } else {
-            String n = UUID.randomUUID().toString().toLowerCase()+ext;
+            String n = context.getRandomName(r.getId())+ext;
             FileUtilities.bytesToFile(cnt, ManagedFileAccess.file(Utilities.path(context.getDestDir(), n)));
             context.registerFile(n);
             td.img(n, context.formatPhrase(RenderingContext.PAT_PHOTO));            
@@ -689,8 +699,9 @@ public class PatientRenderer extends ResourceRenderer {
     return false;
   }
 
-  private XhtmlNode makeBanner(XhtmlNode para) {
+  private XhtmlNode makeBanner(XhtmlNode para, ResourceWrapper res) {
     para.style("border: 1px #661aff solid; background-color: #e6e6ff; padding: 10px;");
+    xlinkNarrative(para, res);
     return para;
   }
 }

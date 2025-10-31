@@ -1,7 +1,9 @@
 package org.hl7.fhir.validation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.UsageContext;
@@ -21,7 +23,13 @@ public class ValidatorSettings extends ValidationOptions {
   private boolean warnOnDraftOrExperimental; // @configuration 
   private BestPracticeWarningLevel bpWarnings = BestPracticeWarningLevel.Warning; // @configuration
   private List<UsageContext> usageContexts = new ArrayList<UsageContext>(); // @configuration
-  
+  private boolean assumeValidRestReferences;
+  private Map<String, byte[]> certificates = new HashMap<>();
+  private List<String> certificateFolders = new ArrayList<>();
+  private String minVersion;
+  private String maxVersion;
+  private boolean useNewXVersionPackages;
+
   public Source getSource() {
     return source;
   }
@@ -45,6 +53,12 @@ public class ValidatorSettings extends ValidationOptions {
   }
   public void setAllowExamples(boolean allowExamples) {
     this.allowExamples = allowExamples;
+  }
+  public boolean isAssumeValidRestReferences() {
+    return assumeValidRestReferences;
+  }
+  public void setAssumeValidRestReferences(boolean assumeValidRestReferences) {
+    this.assumeValidRestReferences = assumeValidRestReferences;
   }
   public boolean isForPublication() {
     return forPublication;
@@ -81,6 +95,40 @@ public class ValidatorSettings extends ValidationOptions {
   public List<UsageContext> getUsageContexts() {
     return usageContexts;
   }
-  
-  
+  public Map<String, byte[]> getCertificates() {
+    return certificates;
+  }
+  public void setCertificates(Map<String, byte[]> certificates) {
+    this.certificates = certificates;
+  }
+  public List<String> getCertificateFolders() {
+    return certificateFolders;
+  }
+  public void setCertificateFolders(List<String> certificateFolders) {
+    this.certificateFolders = certificateFolders;
+  }
+
+  public String getMinVersion() {
+    return minVersion;
+  }
+
+  public String getMaxVersion() {
+    return maxVersion;
+  }
+
+  public void setMinVersion(String minVersion) {
+    this.minVersion =  minVersion;
+  }
+
+  public void setMaxVersion(String maxVersion) {
+    this.maxVersion =  maxVersion;
+  }
+
+  public boolean isUseNewXVersionPackages() {
+    return useNewXVersionPackages;
+  }
+
+  public void setUseNewXVersionPackages(boolean useNewXVersionPackages) {
+    this.useNewXVersionPackages = useNewXVersionPackages;
+  }
 }

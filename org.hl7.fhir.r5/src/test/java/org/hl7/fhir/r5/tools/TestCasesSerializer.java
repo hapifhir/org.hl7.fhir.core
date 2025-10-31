@@ -17,7 +17,7 @@ class TestCasesSerializer {
 
   @Test
   void testJson() throws IOException {
-    ToolsParser.register();
+    ToolsRegistration.register();
     byte[] cnt = TestingUtilities.loadTestResourceBytes("r5", "testcases.json");
     TestCases tc = (TestCases) new JsonParser().parse(cnt);
     byte[] cnt2 = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeBytes(tc);
@@ -31,7 +31,7 @@ class TestCasesSerializer {
 
   @Test
   void testXml() throws IOException {
-    ToolsParser.register();
+    ToolsRegistration.register();
     byte[] cnt = TestingUtilities.loadTestResourceBytes("r5", "testcases.xml");
     TestCases tc = (TestCases) new XmlParser().parse(cnt);
     byte[] cnt2 = new XmlParser().composeBytes(tc);

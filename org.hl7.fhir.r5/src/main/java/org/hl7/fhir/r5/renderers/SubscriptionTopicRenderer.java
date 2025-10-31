@@ -31,7 +31,7 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
     renderResourceTechDetails(st, x);
     genSummaryTable(status, x, (CanonicalResource) st.getResourceNative());
 
-    XhtmlNode tbl = x.table("grid", false);
+    XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
     XhtmlNode ttr = tbl.tr();
     ttr.td().b().tx("SubscriptionTopic");
     ttr.td().tx(context.getTranslated(st.has("title") ? st.child("title") : st.child("name")));
@@ -65,7 +65,7 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
             md.append(context.formatPhrase(RenderingContext.SUB_TOPIC_CREATE, qc.primitiveValue("resultForCreate")+"\r\n")+" ");
           }
           if (qc.has("current")) {
-            md.append(context.formatPhrase(RenderingContext.SUB_TOPIC_CREATE, qc.primitiveValue("current")+"\r\n")+" ");
+            md.append(context.formatPhrase(RenderingContext.SUB_TOPIC_CURR, qc.primitiveValue("current")+"\r\n")+" ");
           }
           if (qc.has("previous")) {
             md.append(context.formatPhrase(RenderingContext.SUB_TOPIC_DELETE, qc.primitiveValue("resultForDelete")+"\r\n")+" ");

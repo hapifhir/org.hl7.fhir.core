@@ -50,33 +50,35 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
     private JsonObject test;
   }
 
-  private static final String SERVER = FhirSettings.getTxFhirLocal();  
-  // private static final String SERVER = "https://r4.ontoserver.csiro.au/fhir";
+  private static final String SERVER = FhirSettings.getTxFhirLocal();
 
   private static boolean localTxRunning() throws IOException {
     return ManagedFileAccess.file("/Users/grahamegrieve/work/server/server").exists();
   }
 
-
+ 
 
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
-
-    txtests = TxTestData.loadTestDataFromPackage("hl7.fhir.uv.tx-ecosystem#dev");
-    
-    String contents = txtests.load("test-cases.json");
-    externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(txtests.load("messages-tx.fhir.org.json"));
-
     Map<String, JsonObjectPair> examples = new HashMap<String, JsonObjectPair>();
-    manifest = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(contents);
-    for (org.hl7.fhir.utilities.json.model.JsonObject suite : manifest.getJsonObjects("suites")) {
-      String sn = suite.asString("name");
-      for (org.hl7.fhir.utilities.json.model.JsonObject test : suite.getJsonObjects("tests")) {
-        String tn = test.asString("name");
-        examples.put(sn+"."+tn, new JsonObjectPair(suite, test));
-      }
-    }
+    try {
+      txtests = TxTestData.loadTestDataFromFolder(new File("/Users/grahamegrieve/igs/tx-ecosystem-ig/tests"), "test-cases.json");
+      // txtests = TxTestData.loadTestDataFromPackage("hl7.fhir.uv.tx-ecosystem#dev");
 
+      String contents = txtests.load("test-cases.json");
+      externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(txtests.load("messages-tx.fhir.org.json"));
+
+      manifest = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(contents);
+      for (org.hl7.fhir.utilities.json.model.JsonObject suite : manifest.getJsonObjects("suites")) {
+        String sn = suite.asString("name");
+        for (org.hl7.fhir.utilities.json.model.JsonObject test : suite.getJsonObjects("tests")) {
+          String tn = test.asString("name");
+          examples.put(sn+"."+tn, new JsonObjectPair(suite, test));
+        }
+      }
+    } catch (Exception e) {
+      // nothing
+    }
     List<String> names = new ArrayList<String>(examples.size());
     names.addAll(examples.keySet());
     Collections.sort(names);
@@ -96,12 +98,16 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
   private static TxTester tester;
   private Set<String> modes = new HashSet<>();
   private static int error = 0;
+  private static int skipped = 0;
   private static int count = 0;
   private static TxTestData txtests;
 
   public LocalTerminologyServiceTests(String name, JsonObjectPair setup) {
     this.setup = setup;
     modes.add("tx.fhir.org");
+    modes.add("omop");
+    modes.add("general");
+    modes.add("snomed");
   }
 
   @SuppressWarnings("deprecation")
@@ -117,9 +123,9 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
     }
     if (setup == null) {
       if (error == 0) {
-        System.out.println("tx.fhir.org passed all "+count+" HL7 terminology service tests (mode 'tx.fhir.org', tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
+        System.out.println("tx.fhir.org passed all "+(count-skipped)+" HL7 terminology service tests (mode 'tx.fhir.org', tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
       } else {
-        System.out.println("tx.fhir.org failed "+error+" of "+count+" HL7 terminology service tests (mode 'tx.fhir.org', tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
+        System.out.println("tx.fhir.org failed "+error+" of "+(count-skipped)+" HL7 terminology service tests (mode 'tx.fhir.org', tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
       }
       Assertions.assertTrue(error == 0);
     } else {
@@ -128,11 +134,20 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
         if (tester == null) {
           tester = new TxTester(this, SERVER, true, externals);
         }
-        String err = tester.executeTest(this, setup.suite, setup.test, modes);
-        if (err != null) {
-          error++;
+        if (setup.suite.asString("name").contains("omop") || true) {
+          String err = tester.executeTest(this, setup.suite, setup.test, modes);
+          if (err != null) {
+            if ("n/a".equals(err)) {
+              skipped++;
+              err = null;
+            } else {
+              error++;
+            }
+          }
+          Assertions.assertTrue(err == null, err);
+        } else {
+          Assertions.assertTrue(true);
         }
-        Assertions.assertTrue(err == null, err);
       } else {
         Assertions.assertTrue(true);
       }

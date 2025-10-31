@@ -142,7 +142,7 @@ public class MedicinalProductContraindication extends DomainResource {
     }
 
     public boolean hasMedicationCodeableConcept() {
-      return this != null && this.medication instanceof CodeableConcept;
+        return this.medication instanceof CodeableConcept;
     }
 
     /**
@@ -160,7 +160,7 @@ public class MedicinalProductContraindication extends DomainResource {
     }
 
     public boolean hasMedicationReference() {
-      return this != null && this.medication instanceof Reference;
+        return this.medication instanceof Reference;
     }
 
     public boolean hasMedication() {
@@ -494,16 +494,6 @@ public class MedicinalProductContraindication extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getSubjectTarget() {
-    if (this.subjectTarget == null)
-      this.subjectTarget = new ArrayList<Resource>();
-    return this.subjectTarget;
-  }
-
-  /**
    * @return {@link #disease} (The disease, symptom or procedure for the
    *         contraindication.)
    */
@@ -665,28 +655,6 @@ public class MedicinalProductContraindication extends DomainResource {
       addTherapeuticIndication();
     }
     return getTherapeuticIndication().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<MedicinalProductIndication> getTherapeuticIndicationTarget() {
-    if (this.therapeuticIndicationTarget == null)
-      this.therapeuticIndicationTarget = new ArrayList<MedicinalProductIndication>();
-    return this.therapeuticIndicationTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public MedicinalProductIndication addTherapeuticIndicationTarget() {
-    MedicinalProductIndication r = new MedicinalProductIndication();
-    if (this.therapeuticIndicationTarget == null)
-      this.therapeuticIndicationTarget = new ArrayList<MedicinalProductIndication>();
-    this.therapeuticIndicationTarget.add(r);
-    return r;
   }
 
   /**

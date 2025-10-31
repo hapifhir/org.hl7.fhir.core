@@ -92,7 +92,6 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
-@Deprecated
 public class ToolingExtensions {
 
   // validated
@@ -109,7 +108,7 @@ public class ToolingExtensions {
   public static final String EXT_JSON_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type";
   public static final String EXT_XML_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-type";
   public static final String EXT_REGEX = "http://hl7.org/fhir/StructureDefinition/structuredefinition-regex";
-  public static final String EXT_EXPRESSION = "http://hl7.org/fhir/StructureDefinition/structuredefinition-expression";
+  public static final String EXT_EXPRESSION = "http://hl7.org/fhir/3.0/StructureDefinition/extension-ElementDefinition.constraint.expression";
   public static final String EXT_SEARCH_EXPRESSION = "http://hl7.org/fhir/StructureDefinition/searchparameter-expression";
 
   // unregistered?

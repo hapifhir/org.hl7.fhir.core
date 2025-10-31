@@ -436,8 +436,8 @@ public class SupplyRequest extends DomainResource {
           return (CodeableConcept) this.item;
         }
 
-        public boolean hasItemCodeableConcept() { 
-          return this != null && this.item instanceof CodeableConcept;
+        public boolean hasItemCodeableConcept() {
+          return this.item instanceof CodeableConcept;
         }
 
         /**
@@ -451,8 +451,8 @@ public class SupplyRequest extends DomainResource {
           return (Reference) this.item;
         }
 
-        public boolean hasItemReference() { 
-          return this != null && this.item instanceof Reference;
+        public boolean hasItemReference() {
+          return this.item instanceof Reference;
         }
 
         public boolean hasItem() { 
@@ -1151,8 +1151,8 @@ public class SupplyRequest extends DomainResource {
       return (DateTimeType) this.occurrence;
     }
 
-    public boolean hasOccurrenceDateTimeType() { 
-      return this != null && this.occurrence instanceof DateTimeType;
+    public boolean hasOccurrenceDateTimeType() {
+      return this.occurrence instanceof DateTimeType;
     }
 
     /**
@@ -1166,8 +1166,8 @@ public class SupplyRequest extends DomainResource {
       return (Period) this.occurrence;
     }
 
-    public boolean hasOccurrencePeriod() { 
-      return this != null && this.occurrence instanceof Period;
+    public boolean hasOccurrencePeriod() {
+      return this.occurrence instanceof Period;
     }
 
     /**
@@ -1181,8 +1181,8 @@ public class SupplyRequest extends DomainResource {
       return (Timing) this.occurrence;
     }
 
-    public boolean hasOccurrenceTiming() { 
-      return this != null && this.occurrence instanceof Timing;
+    public boolean hasOccurrenceTiming() {
+      return this.occurrence instanceof Timing;
     }
 
     public boolean hasOccurrence() { 
@@ -1326,28 +1326,6 @@ public class SupplyRequest extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Organization> getSupplierTarget() { 
-      if (this.supplierTarget == null)
-        this.supplierTarget = new ArrayList<Organization>();
-      return this.supplierTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Organization addSupplierTarget() { 
-      Organization r = new Organization();
-      if (this.supplierTarget == null)
-        this.supplierTarget = new ArrayList<Organization>();
-      this.supplierTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #reason} (Why the supply item was requested.)
      */
     public Type getReason() { 
@@ -1365,8 +1343,8 @@ public class SupplyRequest extends DomainResource {
       return (CodeableConcept) this.reason;
     }
 
-    public boolean hasReasonCodeableConcept() { 
-      return this != null && this.reason instanceof CodeableConcept;
+    public boolean hasReasonCodeableConcept() {
+      return this.reason instanceof CodeableConcept;
     }
 
     /**
@@ -1380,8 +1358,8 @@ public class SupplyRequest extends DomainResource {
       return (Reference) this.reason;
     }
 
-    public boolean hasReasonReference() { 
-      return this != null && this.reason instanceof Reference;
+    public boolean hasReasonReference() {
+      return this.reason instanceof Reference;
     }
 
     public boolean hasReason() { 

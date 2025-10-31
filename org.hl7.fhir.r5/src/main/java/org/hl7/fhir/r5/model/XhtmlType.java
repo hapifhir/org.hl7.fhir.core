@@ -107,11 +107,7 @@ public class XhtmlType extends PrimitiveType<String> {
 
   @Override
   public String primitiveValue() {
-    try {
-      return new XhtmlComposer(false).compose(getXhtml());
-    } catch (IOException e) {
-    }
-    return null;
+    return new XhtmlComposer(false).compose(getXhtml());
   }  
   
   @Override
@@ -140,6 +136,11 @@ public class XhtmlType extends PrimitiveType<String> {
 
   public void setPlace(Narrative place) {
     this.place = place;
+  }
+
+  @Override
+  public Base setXhtml(XhtmlNode node) {
+    return place.setDiv(node);
   }
   
 

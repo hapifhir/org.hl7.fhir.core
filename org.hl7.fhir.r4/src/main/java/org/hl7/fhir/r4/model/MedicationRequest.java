@@ -1637,7 +1637,7 @@ public class MedicationRequest extends DomainResource {
     }
 
     public boolean hasAllowedBooleanType() {
-      return this != null && this.allowed instanceof BooleanType;
+        return this.allowed instanceof BooleanType;
     }
 
     /**
@@ -1654,7 +1654,7 @@ public class MedicationRequest extends DomainResource {
     }
 
     public boolean hasAllowedCodeableConcept() {
-      return this != null && this.allowed instanceof CodeableConcept;
+        return this.allowed instanceof CodeableConcept;
     }
 
     public boolean hasAllowed() {
@@ -2649,7 +2649,7 @@ public class MedicationRequest extends DomainResource {
   }
 
   public boolean hasReportedBooleanType() {
-    return this != null && this.reported instanceof BooleanType;
+      return this.reported instanceof BooleanType;
   }
 
   /**
@@ -2668,7 +2668,7 @@ public class MedicationRequest extends DomainResource {
   }
 
   public boolean hasReportedReference() {
-    return this != null && this.reported instanceof Reference;
+      return this.reported instanceof Reference;
   }
 
   public boolean hasReported() {
@@ -2714,7 +2714,7 @@ public class MedicationRequest extends DomainResource {
   }
 
   public boolean hasMedicationCodeableConcept() {
-    return this != null && this.medication instanceof CodeableConcept;
+      return this.medication instanceof CodeableConcept;
   }
 
   /**
@@ -2733,7 +2733,7 @@ public class MedicationRequest extends DomainResource {
   }
 
   public boolean hasMedicationReference() {
-    return this != null && this.medication instanceof Reference;
+      return this.medication instanceof Reference;
   }
 
   public boolean hasMedication() {
@@ -2913,16 +2913,6 @@ public class MedicationRequest extends DomainResource {
       addSupportingInformation();
     }
     return getSupportingInformation().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getSupportingInformationTarget() {
-    if (this.supportingInformationTarget == null)
-      this.supportingInformationTarget = new ArrayList<Resource>();
-    return this.supportingInformationTarget;
   }
 
   /**
@@ -3270,16 +3260,6 @@ public class MedicationRequest extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getReasonReferenceTarget() {
-    if (this.reasonReferenceTarget == null)
-      this.reasonReferenceTarget = new ArrayList<Resource>();
-    return this.reasonReferenceTarget;
-  }
-
-  /**
    * @return {@link #instantiatesCanonical} (The URL pointing to a protocol,
    *         guideline, orderset, or other definition that is adhered to in whole
    *         or in part by this MedicationRequest.)
@@ -3475,16 +3455,6 @@ public class MedicationRequest extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getBasedOnTarget() {
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<Resource>();
-    return this.basedOnTarget;
-  }
-
-  /**
    * @return {@link #groupIdentifier} (A shared identifier common to all requests
    *         that were authorized more or less simultaneously by a single author,
    *         representing the identifier of the requisition or prescription.)
@@ -3594,16 +3564,6 @@ public class MedicationRequest extends DomainResource {
       addInsurance();
     }
     return getInsurance().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getInsuranceTarget() {
-    if (this.insuranceTarget == null)
-      this.insuranceTarget = new ArrayList<Resource>();
-    return this.insuranceTarget;
   }
 
   /**
@@ -3895,28 +3855,6 @@ public class MedicationRequest extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<DetectedIssue> getDetectedIssueTarget() {
-    if (this.detectedIssueTarget == null)
-      this.detectedIssueTarget = new ArrayList<DetectedIssue>();
-    return this.detectedIssueTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public DetectedIssue addDetectedIssueTarget() {
-    DetectedIssue r = new DetectedIssue();
-    if (this.detectedIssueTarget == null)
-      this.detectedIssueTarget = new ArrayList<DetectedIssue>();
-    this.detectedIssueTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #eventHistory} (Links to Provenance records for past versions
    *         of this resource or fulfilling request or event resources that
    *         identify key state transitions or updates that are likely to be
@@ -3971,28 +3909,6 @@ public class MedicationRequest extends DomainResource {
       addEventHistory();
     }
     return getEventHistory().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Provenance> getEventHistoryTarget() {
-    if (this.eventHistoryTarget == null)
-      this.eventHistoryTarget = new ArrayList<Provenance>();
-    return this.eventHistoryTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Provenance addEventHistoryTarget() {
-    Provenance r = new Provenance();
-    if (this.eventHistoryTarget == null)
-      this.eventHistoryTarget = new ArrayList<Provenance>();
-    this.eventHistoryTarget.add(r);
-    return r;
   }
 
   protected void listChildren(List<Property> children) {

@@ -650,16 +650,6 @@ public class MedicationStatement extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getBasedOnTarget() {
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<Resource>();
-    return this.basedOnTarget;
-  }
-
-  /**
    * @return {@link #partOf} (A larger event of which this particular event is a
    *         component or step.)
    */
@@ -712,16 +702,6 @@ public class MedicationStatement extends DomainResource {
       addPartOf();
     }
     return getPartOf().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getPartOfTarget() {
-    if (this.partOfTarget == null)
-      this.partOfTarget = new ArrayList<Resource>();
-    return this.partOfTarget;
   }
 
   /**
@@ -889,7 +869,7 @@ public class MedicationStatement extends DomainResource {
   }
 
   public boolean hasMedicationCodeableConcept() {
-    return this != null && this.medication instanceof CodeableConcept;
+      return this.medication instanceof CodeableConcept;
   }
 
   /**
@@ -908,7 +888,7 @@ public class MedicationStatement extends DomainResource {
   }
 
   public boolean hasMedicationReference() {
-    return this != null && this.medication instanceof Reference;
+      return this.medication instanceof Reference;
   }
 
   public boolean hasMedication() {
@@ -1049,7 +1029,7 @@ public class MedicationStatement extends DomainResource {
   }
 
   public boolean hasEffectiveDateTimeType() {
-    return this != null && this.effective instanceof DateTimeType;
+      return this.effective instanceof DateTimeType;
   }
 
   /**
@@ -1067,7 +1047,7 @@ public class MedicationStatement extends DomainResource {
   }
 
   public boolean hasEffectivePeriod() {
-    return this != null && this.effective instanceof Period;
+      return this.effective instanceof Period;
   }
 
   public boolean hasEffective() {
@@ -1257,16 +1237,6 @@ public class MedicationStatement extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getDerivedFromTarget() {
-    if (this.derivedFromTarget == null)
-      this.derivedFromTarget = new ArrayList<Resource>();
-    return this.derivedFromTarget;
-  }
-
-  /**
    * @return {@link #reasonCode} (A reason for why the medication is being/was
    *         taken.)
    */
@@ -1374,16 +1344,6 @@ public class MedicationStatement extends DomainResource {
       addReasonReference();
     }
     return getReasonReference().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getReasonReferenceTarget() {
-    if (this.reasonReferenceTarget == null)
-      this.reasonReferenceTarget = new ArrayList<Resource>();
-    return this.reasonReferenceTarget;
   }
 
   /**

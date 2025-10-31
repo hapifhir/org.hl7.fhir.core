@@ -76,6 +76,8 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -85,8 +87,10 @@ import org.commonmark.renderer.html.HtmlRenderer;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 
 
@@ -95,6 +99,7 @@ public class HierarchicalTableGenerator {
     XML, XHTML
   }
 
+  // used in older versions, where translation is not set up
   public static final String TEXT_ICON_REFERENCE = "Reference to another Resource";
   public static final String TEXT_ICON_PRIMITIVE = "Primitive Data Type";
   public static final String TEXT_ICON_KEY = "JSON Key Value";
@@ -120,6 +125,8 @@ public class HierarchicalTableGenerator {
   public static final int CONTINUE_SLICE = 5;
   private static final String BACKGROUND_ALT_COLOR = "#F7F7F7";
   public static boolean ACTIVE_TABLES = false;
+  public static String uuid = UUIDUtilities.makeUuidLC();
+  private static Set<String> KNOWN_ROLES = Set.of("binding", "constraint", "obligation");;
 
   public enum TextAlignment {
     LEFT, CENTER, RIGHT;  
@@ -145,6 +152,7 @@ public class HierarchicalTableGenerator {
     private String tagImg;
     private Map<String, String> attributes;
     private XhtmlNodeList children;
+    @Getter @Setter private boolean underived;
     
     public Piece(String tag) {
       super();
@@ -156,6 +164,19 @@ public class HierarchicalTableGenerator {
       this.reference = reference;
       this.text = text;
       this.hint = hint;
+    }
+    public Piece(String role, String tag) {
+      super();
+      this.tag = tag;
+      this.setRole(role);
+    }
+    
+    public Piece(String role, String reference, String text, String hint) {
+      super();
+      this.reference = reference;
+      this.text = text;
+      this.hint = hint;
+      this.setRole(role);
     }
     public String getReference() {
       return reference;
@@ -178,6 +199,19 @@ public class HierarchicalTableGenerator {
       return style;
     }
 
+    public String getRole() {
+      if (attributes == null) {
+        return null;
+      } else {
+        for (String s : attributes.get("class").split("\\ ")) {
+          if (KNOWN_ROLES.contains(s)) {
+            return s;
+          }
+        }
+        return null;
+      }
+    }
+
     public Piece setTag(String tag) {
       this.tag = tag;
       return this;
@@ -190,6 +224,25 @@ public class HierarchicalTableGenerator {
 
     public void setHint(String hint) {
       this.hint = hint;
+    }
+
+    public void setRole(String role) {
+      if (!KNOWN_ROLES.contains(role)) {
+        throw new Error("Unknown role "+role);
+      }
+      setClass(role);
+    }
+
+    public Piece setClass(String role) {
+      if (attributes == null) {
+        attributes = new HashMap<String, String>();
+      }
+      if (attributes.containsKey("class")) {
+        attributes.put("class", attributes.get("class") + " "+ role);
+      } else {
+        attributes.put("class", role);
+      }
+      return this;
     }
 
     public Piece setStyle(String style) {
@@ -243,6 +296,10 @@ public class HierarchicalTableGenerator {
       this.tagImg = tagImg;
       return this;
     }
+
+    public boolean hasAttributes() {
+      return attributes != null && attributes.size() > 0;
+    }
     
   }
   
@@ -295,7 +352,7 @@ public class HierarchicalTableGenerator {
     public Cell addMarkdownNoPara(String md) {
       return addMarkdownNoPara(md, null);
     }
-    
+
     public Cell addMarkdownNoPara(String md, String style) {
       try {
         Parser parser = Parser.builder().build();
@@ -303,6 +360,26 @@ public class HierarchicalTableGenerator {
         HtmlRenderer renderer = HtmlRenderer.builder().escapeHtml(true).build();
         String html = renderer.render(document);  
         pieces.addAll(htmlToParagraphPieces(html, style));
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      return this;
+    }
+
+    public Cell addMarkdownNoPara(String role, String md, String style) {
+      try {
+        Parser parser = Parser.builder().build();
+        Node document = parser.parse(md);
+        HtmlRenderer renderer = HtmlRenderer.builder().escapeHtml(true).build();
+        String html = renderer.render(document);  
+        List<Piece> hp = htmlToParagraphPieces(html, style);
+        // Trim unwanted trailing line-breaks
+        while (!hp.isEmpty() && hp.get(hp.size()-1).getTag() != null && hp.get(hp.size()-1).getTag().equals("br"))
+          hp.remove(hp.size()-1);
+        for (Piece p : hp) {
+          p.setRole(role);
+        }
+        pieces.addAll(hp);
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -509,6 +586,8 @@ public class HierarchicalTableGenerator {
 
   public class Title extends Cell {
     private int width;
+    private boolean filter;
+    private Map<String, String> checkboxes = new HashMap<String, String>();
 
     public Title(String prefix, String reference, String text, String hint, String suffix, int width) {
       super(prefix, reference, text, hint, suffix);
@@ -525,6 +604,24 @@ public class HierarchicalTableGenerator {
       super.setStyle(value);
       return this;
     }
+
+    public boolean isFilter() {
+      return filter;
+    }
+
+    public void setFilter(boolean filter) {
+      this.filter = filter;
+    }
+
+    public Map<String, String> getCheckboxes() {
+      return checkboxes;
+    }
+
+    public void setCheckboxes(Map<String, String> checkboxes) {
+      this.checkboxes = checkboxes;
+    }
+    
+    
   }
   
   public class Row {
@@ -766,14 +863,19 @@ public class HierarchicalTableGenerator {
     if (mode == TableGenerationMode.XML) {
       model.setDocoImg(help16AsData());     
     } else {
-      model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
+      model.setDocoImg(Utilities.pathURL(ManagedWebAccess.makeSecureRef(prefix), "help16.png"));
     }
     model.setDocoRef(Utilities.pathURL("https://build.fhir.org/ig/FHIR/ig-guidance", "readingIgs.html#table-views"));
     model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_NAME), i18n.formatPhrase(RenderingI18nContext.GENERAL_LOGICAL_NAME), null, 0));
     model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_FLAGS), i18n.formatPhrase(RenderingI18nContext.SD_HEAD_FLAGS_DESC), null, 0));
     model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_CARD), i18n.formatPhrase(RenderingI18nContext.SD_HEAD_CARD_DESC), null, 0));
     model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_TYPE), i18n.formatPhrase(RenderingI18nContext.SD_GRID_HEAD_TYPE_DESC), null, 100));
-    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_DESC_CONST), i18n.formatPhrase(RenderingI18nContext.SD_HEAD_DESC_DESC), null, 0));
+    Title t = new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_DESC_CONST), i18n.formatPhrase(RenderingI18nContext.SD_HEAD_DESC_DESC), null, 0);
+    t.setFilter(true);
+    t.checkboxes.put(i18n.formatPhrase(RenderingI18nContext.GENERAL_OBLIGATIONS), "obligation");
+    t.checkboxes.put(i18n.formatPhrase(RenderingI18nContext.GENERAL_CONSTRAINTS), "constraint");
+    t.checkboxes.put(i18n.formatPhrase(RenderingI18nContext.GENERAL_BINDINGS), "binding");
+    model.getTitles().add(t);
     if (isLogical) {
       model.getTitles().add(new Title(null, prefix+"structuredefinition.html#logical", "Implemented As", "How this logical data item is implemented in a concrete resource", null, 0));
     }
@@ -788,9 +890,9 @@ public class HierarchicalTableGenerator {
     if (mode == TableGenerationMode.XML) {
       model.setDocoImg(help16AsData());    
     } else {
-      model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
+      model.setDocoImg(Utilities.pathURL(ManagedWebAccess.makeSecureRef(prefix), "help16.png"));
     }
-    model.setDocoRef(Utilities.pathURL(prefix, "formats.html#table"));    
+    model.setDocoRef(Utilities.pathURL(ManagedWebAccess.makeSecureRef(prefix), "formats.html#table"));    
     model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_NAME), i18n.formatPhrase(RenderingI18nContext.GENERAL_LOGICAL_NAME), null, 0));
     model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_FLAGS_L), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_FLAGS_L_DESC), null, 0).setStyle("border-left: 1px grey solid"));
     model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_CARD_L), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_CARD_L_DESC), null, 0));
@@ -816,8 +918,29 @@ public class HierarchicalTableGenerator {
     return model;
   }
 
+
+  public String treeFilterJS(String mid, Map<String, String> checkboxes) {
+    String js= "  // "+uuid+"\n";
+    
+    for (String s : Utilities.sorted(checkboxes.keySet())) {
+      String id = "cb"+mid+"-"+checkboxes.get(s);
+      js += "document.getElementById('"+id+"').checked = 'false' != localStorage.getItem('ht-table-states-"+checkboxes.get(s)+"');\n";
+      js += "filterDesc(document.getElementById('"+mid+"'), '"+checkboxes.get(s)+"', document.getElementById('cb"+mid+"-"+checkboxes.get(s)+"').checked, document.getElementById('pp"+mid+"'));\n";
+    }
+
+    return js;
+  }
+
   public XhtmlNode generate(TableModel model, String imagePath, int border, Set<String> outputTracker) throws IOException, FHIRException  {
     checkModel(model);
+    boolean script = false;
+    Map<String, String> checkboxes = null;
+    for (Title t : model.getTitles()) {
+      script = script || t.isFilter() || t.getCheckboxes().size() > 0;
+      if (t.getCheckboxes().size() > 0) {
+        checkboxes  = t.getCheckboxes();
+      }
+    }
     XhtmlNode table = new XhtmlNode(NodeType.Element, "table").setAttribute("border", Integer.toString(border)).setAttribute("cellspacing", "0").setAttribute("cellpadding", "0");
     if (model.active) {
       table.setAttribute("fhir", "generated-heirarchy"); // deprecated - will be removed once everyone has dealt with the change
@@ -827,9 +950,9 @@ public class HierarchicalTableGenerator {
       table.setAttribute("id", model.getId());
     }
     if (model.isBorder()) {
-      table.setAttribute("style", "border: 2px black solid; font-size: 11px; font-family: verdana; vertical-align: top;");
+      table.style("border: 2px black solid; font-size: 11px; font-family: verdana; vertical-align: top;");
     } else {
-      table.setAttribute("style", "border: " + border + "px #F0F0F0 solid; font-size: 11px; font-family: verdana; vertical-align: top;");
+      table.style("border: " + border + "px #F0F0F0 solid; font-size: 11px; font-family: verdana; vertical-align: top;");
     }
     if (model.isShowHeadings()) {
       XhtmlNode tr = table.addTag("tr");
@@ -837,21 +960,21 @@ public class HierarchicalTableGenerator {
         tr.setAttribute("fhir", "generated-heirarchy"); // deprecated - will be removed once everyone has dealt with the change
         tr.setAttribute("data-fhir", "generated-heirarchy");
       }
-      tr.setAttribute("style", "border: " + Integer.toString(1 + border) + "px #F0F0F0 solid; font-size: 11px; font-family: verdana; vertical-align: top");
+      tr.style("border: " + Integer.toString(1 + border) + "px #F0F0F0 solid; font-size: 11px; font-family: verdana; vertical-align: top");
       XhtmlNode tc = null;
       for (Title t : model.getTitles()) {
-        tc = renderCell(tr, t, "th", null, null, null, false, null, "white", 0, imagePath, border, outputTracker, model, null, true);
+        tc = renderCell(tr, t, "th", null, null, null, false, null, "white", 0, imagePath, border, outputTracker, model, null, true, model.active && t.isFilter(), model.getId(), t.getCheckboxes());
         if (t.width != 0)
-          tc.setAttribute("style", "width: "+Integer.toString(t.width)+"px");
+          tc.style("width: "+Integer.toString(t.width)+"px");
       }
       if (tc != null && model.getDocoRef() != null) {
-        XhtmlNode a = tc.addTag("span").setAttribute("style", "float: right").addTag("a").setAttribute("title", "Legend for this format").setAttribute("href", model.getDocoRef());
+        XhtmlNode a = tc.addTag("span").style("float: right").addTag("a").setAttribute("title", "Legend for this format").setAttribute("href", model.getDocoRef());
         if (mode == TableGenerationMode.XHTML) {
           a.setAttribute("no-external", "true"); // deprecated - will be removed once everyone has dealt with the change
           a.setAttribute("data-no-external", "true");
         }
         XhtmlNode img = a.addTag("img");
-        img.setAttribute("alt", "doco").setAttribute("style", "background-color: inherit").setAttribute("src", model.getDocoImg());
+        img.setAttribute("alt", "doco").style("background-color: inherit").setAttribute("src", model.getDocoImg());
         if (model.isActive()) {
           img.setAttribute("onLoad", "fhirTableInit(this)");
         }
@@ -873,8 +996,11 @@ public class HierarchicalTableGenerator {
       tc.addTag("br");
       XhtmlNode a = tc.addTag("a").setAttribute("title", i18n.formatPhrase(RenderingI18nContext.SD_LEGEND)).setAttribute("href", model.getDocoRef());
       if (model.getDocoImg() != null)
-        a.addTag("img").setAttribute("alt", "doco").setAttribute("style", "background-color: inherit").setAttribute("src", model.getDocoImg());
+        a.addTag("img").setAttribute("alt", "doco").style("background-color: inherit").setAttribute("src", model.getDocoImg());
       a.addText(" "+i18n.formatPhrase(RenderingI18nContext.SD_DOCO));
+    }
+    if (model.active && script) {
+      table.addTag("script").setAttribute("type", "text/javascript").tx(treeFilterJS(model.getId(), checkboxes));      
     }
     return table;
   }
@@ -898,13 +1024,13 @@ public class HierarchicalTableGenerator {
     
     String lineStyle = r.getTopLine() == null ? "" : "; border-top: 1px solid "+r.getTopLine();
     
-    tr.setAttribute("style", "border: " + border + "px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: "+color+(r.getOpacity() == null ? "" : "; opacity: "+r.getOpacity())+lineStyle);
+    tr.style("border: " + border + "px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: "+color+(r.getOpacity() == null ? "" : "; opacity: "+r.getOpacity())+lineStyle);
     if (model.isActive()) {
       tr.setAttribute("id", r.getId());
     }
     boolean first = true;
     for (Cell t : r.getCells()) {
-      renderCell(tr, t, "td", first ? r.getIcon() : null, first ? r.getHint() : null, first ? indents : null, !r.getSubRows().isEmpty(), first ? r.getAnchor() : null, color, r.getLineColor(), imagePath, border, outputTracker, model, r, first);
+      renderCell(tr, t, "td", first ? r.getIcon() : null, first ? r.getHint() : null, first ? indents : null, !r.getSubRows().isEmpty(), first ? r.getAnchor() : null, color, r.getLineColor(), imagePath, border, outputTracker, model, r, first, false, model.getId(), null);
       first = false;
     }
     table.addText("\r\n");
@@ -923,7 +1049,7 @@ public class HierarchicalTableGenerator {
   }
 
 
-  private XhtmlNode renderCell(XhtmlNode tr, Cell c, String name, String icon, String hint, List<Integer> indents, boolean hasChildren, String anchor, String color, int lineColor, String imagePath, int border, Set<String> outputTracker, TableModel table, Row row, boolean suppressExternals) throws IOException  {
+  private XhtmlNode renderCell(XhtmlNode tr, Cell c, String name, String icon, String hint, List<Integer> indents, boolean hasChildren, String anchor, String color, int lineColor, String imagePath, int border, Set<String> outputTracker, TableModel table, Row row, boolean suppressExternals, boolean filter, String mid, Map<String, String> checkboxes) throws IOException  {
     XhtmlNode tc = tr.addTag(name);
     tc.setAttribute("class", "hierarchy");
     if (c.span > 1) {
@@ -942,23 +1068,23 @@ public class HierarchicalTableGenerator {
     }
 
     if (indents != null) {
-      itc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_spacer.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
-      tc.setAttribute("style", "vertical-align: top; text-align : left; "+(c.cellStyle != null  && c.cellStyle.contains("background-color") ? "" : "background-color: "+color+"; ")+"border: "+ border +"px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap"+(treelines ? "; background-image: url("+imagePath+checkExists(indents, hasChildren, lineColor, outputTracker)+")" : "")+(c.cellStyle != null ? ";"+c.cellStyle : "")+lineStyle);
+      itc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_spacer.png")).style("background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+      tc.style("vertical-align: top; text-align : var(--ig-left,left); "+(c.cellStyle != null  && c.cellStyle.contains("background-color") ? "" : "background-color: "+color+"; ")+"border: "+ border +"px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap"+(treelines ? "; background-image: url("+imagePath+checkExists(indents, hasChildren, lineColor, outputTracker)+")" : "")+(c.cellStyle != null ? ";"+c.cellStyle : "")+lineStyle);
       for (int i = 0; i < indents.size()-1; i++) {
         switch (indents.get(i)) {
           case NEW_REGULAR:
           case NEW_SLICER:
           case NEW_SLICE:
-            itc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_blank.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+            itc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_blank.png")).style("background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
             break;
           case CONTINUE_REGULAR:
-            itc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vline.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+            itc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vline.png")).style("background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
             break;
           case CONTINUE_SLICER:
-            itc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vline_slicer.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+            itc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vline_slicer.png")).style("background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
             break;
           case CONTINUE_SLICE:
-            itc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vline_slice.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+            itc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vline_slice.png")).style("background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
             break;
           default:
             throw new Error("Unrecognized indent level: " + indents.get(i));
@@ -969,22 +1095,22 @@ public class HierarchicalTableGenerator {
         XhtmlNode img = itc.addTag("img");
         switch (indents.get(indents.size()-1)) {
         case NEW_REGULAR:
-          img.setAttribute("src", srcFor(imagePath, "tbl_vjoin_end"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+          img.setAttribute("src", srcFor(imagePath, "tbl_vjoin_end"+sfx+".png")).style("background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
           break;
         case NEW_SLICER:
-          img.setAttribute("src", srcFor(imagePath, "tbl_vjoin_end_slicer"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+          img.setAttribute("src", srcFor(imagePath, "tbl_vjoin_end_slicer"+sfx+".png")).style("background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
           break;
         case NEW_SLICE:
-          img.setAttribute("src", srcFor(imagePath, "tbl_vjoin_end_slice"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+          img.setAttribute("src", srcFor(imagePath, "tbl_vjoin_end_slice"+sfx+".png")).style("background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
           break;
         case CONTINUE_REGULAR:
-          img.setAttribute("src", srcFor(imagePath, "tbl_vjoin"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+          img.setAttribute("src", srcFor(imagePath, "tbl_vjoin"+sfx+".png")).style("background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
           break;
         case CONTINUE_SLICER:
-          img.setAttribute("src", srcFor(imagePath, "tbl_vjoin_slicer"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+          img.setAttribute("src", srcFor(imagePath, "tbl_vjoin_slicer"+sfx+".png")).style("background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
           break;
         case CONTINUE_SLICE:
-          img.setAttribute("src", srcFor(imagePath, "tbl_vjoin_slice"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+          img.setAttribute("src", srcFor(imagePath, "tbl_vjoin_slice"+sfx+".png")).style("background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
           break;
         default:
           throw new Error("Unrecognized indent level: " + indents.get(indents.size()-1));
@@ -995,13 +1121,13 @@ public class HierarchicalTableGenerator {
       }
     }
     else {
-      tc.setAttribute("style", "vertical-align: top; text-align : left; "+(c.cellStyle != null  && c.cellStyle.contains("background-color") ? "" : "background-color: "+color+"; ")+"border: "+ border +"px #F0F0F0 solid; padding:0px 4px 0px 4px"+(c.cellStyle != null ? ";"+c.cellStyle : "")+lineStyle);
+      tc.style("vertical-align: top; text-align : var(--ig-left,left); "+(c.cellStyle != null  && c.cellStyle.contains("background-color") ? "" : "background-color: "+color+"; ")+"border: "+ border +"px #F0F0F0 solid; padding:0px 4px 0px 4px"+(c.cellStyle != null ? ";"+c.cellStyle : "")+lineStyle);
     }
     if (c.innerTable) {
       itc = itr.td();
     }
     if (!Utilities.noString(icon)) {
-      XhtmlNode img = itc.addTag("img").setAttribute("alt", "icon").setAttribute("src", srcFor(imagePath, icon)).setAttribute("class", "hierarchy").setAttribute("style", "background-color: "+color+"; background-color: inherit").setAttribute("alt", ".");
+      XhtmlNode img = itc.addTag("img").setAttribute("alt", "icon").setAttribute("src", srcFor(imagePath, icon)).setAttribute("class", "hierarchy").style("background-color: "+color+"; background-color: inherit").setAttribute("alt", ".");
       if (hint != null)
         img.setAttribute("title", hint);
       itc.addText(" ");
@@ -1020,6 +1146,9 @@ public class HierarchicalTableGenerator {
         }
       } else if (!Utilities.noString(p.getReference())) {
         XhtmlNode a = addStyle(itc.addTag("a"), p);
+        if (p.attributes != null)
+          for (String n : p.attributes.keySet())
+            a.setAttribute(n, p.attributes.get(n));
         a.setAttribute("href", prefixLocalHref(p.getReference()));
         if (mode == TableGenerationMode.XHTML && suppressExternals) {
           a.setAttribute("no-external", "true"); // deprecated - will be removed once everyone has dealt with the change
@@ -1042,12 +1171,18 @@ public class HierarchicalTableGenerator {
           itc.addChildNodes(p.getChildren());
         }
       } else { 
-        if (!Utilities.noString(p.getHint())) {
+        if (!Utilities.noString(p.getHint()) || p.hasAttributes()) {
           XhtmlNode s = addStyle(itc.addTag("span"), p);
+          if (p.attributes != null)
+            for (String n : p.attributes.keySet())
+              s.setAttribute(n, p.attributes.get(n));
           s.setAttribute("title", p.getHint());
           s.addText(p.getText());
         } else if (p.getStyle() != null) {
           XhtmlNode s = addStyle(itc.addTag("span"), p);
+          if (p.attributes != null)
+            for (String n : p.attributes.keySet())
+              s.setAttribute(n, p.attributes.get(n));
           s.addText(p.getText());
         } else {
           itc.addText(p.getText());
@@ -1064,13 +1199,81 @@ public class HierarchicalTableGenerator {
     if (makeTargets && !Utilities.noString(anchor)) {
       tc.addTag("a").setAttribute("name", prefixAnchor(nmTokenize(anchor))).addText(" ");
     }
+    if (filter) {
+      itc.nbsp();itc.nbsp();itc.nbsp();itc.nbsp();
+      XhtmlNode span = itc.span();
+      span.style("font-weight: normal");
+      span.tx("Filter: ");
+      XhtmlNode input = span.input("filter", "text", null, 10);
+      input.style("border: 1px #F0F0F0 solid; background-color: rgb(254, 254, 231);");
+      input.setAttribute("onInput", "filterTree(document.getElementById('"+mid+"'), event.target.value)");
+      if (checkboxes != null) {
+        span.tx(" ");
+        span.img("tree-filter.png", "Filters").setAttribute("onClick", "showPanel(event.target, document.getElementById('"+mid+"'), document.getElementById('pp"+mid+"'))");
+        XhtmlNode popupPanel = span.div();
+        popupPanel.attribute("id", "pp"+mid);
+        popupPanel.style("display: none; position: fixed; opacity : 1.0; background-color: rgb(254, 254, 231); border: 1px solid #ccc; padding: 10px; "+
+            "boxShadow: 0 2px 5px rgba(0,0,0,0.2); zIndex: 1000; borderRadius: 4px");
+        for (String s : Utilities.sorted(checkboxes.keySet())) {
+          String v = checkboxes.get(s);
+          popupPanel.tx(s);
+          popupPanel.tx(" ");
+          input = popupPanel.input(v, "checkbox", null, 1);
+          input.setAttribute("id", "cb"+mid+"-"+checkboxes.get(s));
+          input.setAttribute("checked", "true");
+          input.setAttribute("onClick", "filterDesc(document.getElementById('"+mid+"'), '"+v+"',event.target.checked, document.getElementById('pp"+mid+"'))");
+          popupPanel.br();
+        }
+      }
+    }
     return tc;
   }
 
 
+  /**
+   * this is used to generate a simplified form while reusing all the massive amount of code that goes into the generation of the table
+   *
+   * no heirarchy, no headings, no border
+   */
+  public XhtmlNode generateAttributeTable(TableModel model, String imagePath, int border, Set<String> outputTracker) throws IOException, FHIRException  {
+    checkModel(model);
+    boolean script = false;
+    XhtmlNode table = new XhtmlNode(NodeType.Element, "table").setAttribute("border", Integer.toString(border)).setAttribute("cellspacing", "0").setAttribute("cellpadding", "0");
+    Counter counter = new Counter();
+    for (Row r : model.getRows().get(0).getSubRows()) {
+      renderAttributeRow(table, r, 0, imagePath, border, outputTracker, counter, model);
+    }
+    return table;
+  }
+
+
+  private void renderAttributeRow(XhtmlNode table, Row r, int indent, String imagePath, int border, Set<String> outputTracker, Counter counter, TableModel model) throws IOException  {
+    if (!r.partnerRow) {
+      counter.row();
+    }
+    XhtmlNode tr = table.addTag("tr");
+    String color = "white";
+    if (r.getColor() != null)
+      color = r.getColor();
+    else if (model.isAlternating()  && counter.isOdd())
+      color = BACKGROUND_ALT_COLOR;
+
+    String lineStyle = r.getTopLine() == null ? "" : "; border-top: 1px solid "+r.getTopLine();
+
+    tr.style("border: " + border + "px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: "+color+(r.getOpacity() == null ? "" : "; opacity: "+r.getOpacity())+lineStyle);
+    boolean first = true;
+    for (Cell t : r.getCells()) {
+      renderCell(tr, t, "td", first ? r.getIcon() : null, first ? r.getHint() : null, null, !r.getSubRows().isEmpty(), first ? r.getAnchor() : null, color, r.getLineColor(), imagePath, border, outputTracker, model, r, first, false, model.getId(), null);
+      first = false;
+    }
+    table.addText("\r\n");
+  }
+
+
+
   private XhtmlNode addStyle(XhtmlNode node, Piece p) {
     if (p.getStyle() != null)
-      node.setAttribute("style", p.getStyle());
+      node.style(p.getStyle());
     return node;
   }
 
@@ -1292,6 +1495,10 @@ public class HierarchicalTableGenerator {
 
   public void setTreelines(boolean treelines) {
     this.treelines = treelines;
+  }
+
+  public static void forTesting() {
+    uuid = "d5a880ec-5909-47f0-8053-be62dc5dc2b0";
   }
   
 }

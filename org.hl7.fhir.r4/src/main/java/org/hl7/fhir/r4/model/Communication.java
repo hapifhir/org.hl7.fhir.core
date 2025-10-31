@@ -519,7 +519,7 @@ public class Communication extends DomainResource {
     }
 
     public boolean hasContentStringType() {
-      return this != null && this.content instanceof StringType;
+        return this.content instanceof StringType;
     }
 
     /**
@@ -536,7 +536,7 @@ public class Communication extends DomainResource {
     }
 
     public boolean hasContentAttachment() {
-      return this != null && this.content instanceof Attachment;
+        return this.content instanceof Attachment;
     }
 
     /**
@@ -553,7 +553,7 @@ public class Communication extends DomainResource {
     }
 
     public boolean hasContentReference() {
-      return this != null && this.content instanceof Reference;
+        return this.content instanceof Reference;
     }
 
     public boolean hasContent() {
@@ -1257,16 +1257,6 @@ public class Communication extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getBasedOnTarget() {
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<Resource>();
-    return this.basedOnTarget;
-  }
-
-  /**
    * @return {@link #partOf} (Part of this action.)
    */
   public List<Reference> getPartOf() {
@@ -1318,16 +1308,6 @@ public class Communication extends DomainResource {
       addPartOf();
     }
     return getPartOf().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getPartOfTarget() {
-    if (this.partOfTarget == null)
-      this.partOfTarget = new ArrayList<Resource>();
-    return this.partOfTarget;
   }
 
   /**
@@ -1383,28 +1363,6 @@ public class Communication extends DomainResource {
       addInResponseTo();
     }
     return getInResponseTo().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Communication> getInResponseToTarget() {
-    if (this.inResponseToTarget == null)
-      this.inResponseToTarget = new ArrayList<Communication>();
-    return this.inResponseToTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Communication addInResponseToTarget() {
-    Communication r = new Communication();
-    if (this.inResponseToTarget == null)
-      this.inResponseToTarget = new ArrayList<Communication>();
-    this.inResponseToTarget.add(r);
-    return r;
   }
 
   /**
@@ -1781,16 +1739,6 @@ public class Communication extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getAboutTarget() {
-    if (this.aboutTarget == null)
-      this.aboutTarget = new ArrayList<Resource>();
-    return this.aboutTarget;
-  }
-
-  /**
    * @return {@link #encounter} (The Encounter during which this Communication was
    *         created or to which the creation of this record is tightly
    *         associated.)
@@ -2016,16 +1964,6 @@ public class Communication extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getRecipientTarget() {
-    if (this.recipientTarget == null)
-      this.recipientTarget = new ArrayList<Resource>();
-    return this.recipientTarget;
-  }
-
-  /**
    * @return {@link #sender} (The entity (e.g. person, organization, clinical
    *         information system, or device) which was the source of the
    *         communication.)
@@ -2184,16 +2122,6 @@ public class Communication extends DomainResource {
       addReasonReference();
     }
     return getReasonReference().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getReasonReferenceTarget() {
-    if (this.reasonReferenceTarget == null)
-      this.reasonReferenceTarget = new ArrayList<Resource>();
-    return this.reasonReferenceTarget;
   }
 
   /**

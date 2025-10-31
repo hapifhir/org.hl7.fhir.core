@@ -45,6 +45,7 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -90,6 +91,8 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
 import ca.uhn.fhir.parser.DataFormatException;
+import org.slf4j.MarkerFactory;
+import org.slf4j.event.Level;
 
 /*
  * This is a stand alone implementation of worker context for use inside a tool.
@@ -98,6 +101,7 @@ import ca.uhn.fhir.parser.DataFormatException;
  */
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerContext, ProfileKnowledgeProvider {
 
   public static class PackageResourceLoader extends CanonicalResourceProxy {
@@ -268,7 +272,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       try {
         res.loadDefinitionItem(name, new ByteArrayInputStream(source.get(name)), loader, null, pi);
       } catch (Exception e) {
-        System.out.println("Error loading " + name + ": " + e.getMessage());
+        log.error("Error loading " + name + ": " + e.getMessage());
         throw new FHIRException("Error loading " + name + ": " + e.getMessage(), e);
       }
     }
@@ -339,7 +343,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       Bundle bnd = (Bundle) f;
       for (BundleEntryComponent e : bnd.getEntry()) {
         if (e.getFullUrl() == null) {
-          logger.logDebugMessage(LogCategory.CONTEXT, "unidentified resource in " + name + " (no fullUrl)");
+          logContextDebugMessage("unidentified resource in " + name + " (no fullUrl)");
         }
         if (filter == null || filter.isOkToLoad(e.getResource())) {
           String path = loader != null ? loader.getResourcePath(e.getResource()) : null;
@@ -358,6 +362,13 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         cacheResource(f);
       }
     }
+  }
+
+  private void logContextDebugMessage(String message) {
+    log.makeLoggingEventBuilder(Level.DEBUG)
+      .addMarker(MarkerFactory.getMarker(LogCategory.CONTEXT.name().toLowerCase()))
+      .setMessage(message)
+      .log();
   }
 
   private void loadFromFileJson(InputStream stream, String name, IContextResourceLoader loader, ILoadFilter filter,
@@ -428,9 +439,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     for (String e : pi.dependencies()) {
       if (!loadedPackages.contains(e) && !VersionUtilities.isCorePackage(e)) {
         NpmPackage npm = pcm.loadPackage(e);
-        if (!VersionUtilities.versionsMatch(version, npm.fhirVersion())) {
-          System.out
-              .println(formatMessage(I18nConstants.PACKAGE_VERSION_MISMATCH, e, version, npm.fhirVersion(), path));
+        if (!VersionUtilities.versionMatches(version, npm.fhirVersion())) {
+          log.warn(formatMessage(I18nConstants.PACKAGE_VERSION_MISMATCH, e, version, npm.fhirVersion(), path));
         }
         t = t + loadFromPackageAndDependenciesInt(npm, loader.getNewLoader(npm), pcm,
             path + " -> " + npm.name() + "#" + npm.version());
@@ -444,7 +454,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       throws FileNotFoundException, IOException, FHIRException {
     int t = 0;
     if (progress) {
-      System.out.println("Load Package " + pi.name() + "#" + pi.version());
+      log.info("Load Package " + pi.name() + "#" + pi.version());
     }
     if (loadedPackages.contains(pi.id() + "#" + pi.version())) {
       return 0;
@@ -671,11 +681,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
           // FileOutputStream(Utilities.path("[tmp]", "snapshot",
           // tail(sd.getUrl())+".xml")), sd);
         } catch (Exception e) {
-          System.out.println("Unable to generate snapshot for " + tail(sd.getUrl()) + " from "
-              + tail(sd.getBaseDefinition()) + " because " + e.getMessage());
-          if (true) {
-            e.printStackTrace();
-          }
+          log.error("Unable to generate snapshot for " + tail(sd.getUrl()) + " from "
+              + tail(sd.getBaseDefinition()) + " because " + e.getMessage(), e);
         }
         result.add(sd);
         set.add(sd);
@@ -770,7 +777,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         generateSnapshot(p);
       } catch (Exception e) {
         // not sure what to do in this case?
-        System.out.println("Unable to generate snapshot for " + uri + ": " + e.getMessage());
+        log.warn("Unable to generate snapshot for " + uri + ": " + e.getMessage());
       }
     }
     return r;

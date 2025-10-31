@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+
 public class NamedItemList<T extends org.hl7.fhir.utilities.NamedItemList.NamedItem> implements Collection<T> {
   public interface NamedItem {
     public String getListName();
@@ -157,5 +158,9 @@ public class NamedItemList<T extends org.hl7.fhir.utilities.NamedItemList.NamedI
 
   public void clearMap() {
     map = null;
+  }
+
+  public int indexOf(T child) {
+    return list.indexOf(child);
   }
 }

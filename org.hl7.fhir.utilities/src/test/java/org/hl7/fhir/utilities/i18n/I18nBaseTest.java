@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,13 +17,47 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import com.ibm.icu.text.PluralRules;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 class I18nBaseTest {
 
   public static final String BAD_STRING_ARG = "THIS_DOES_NOT_EXIST";
   public static final String ARG_1 = "test arg";
+
+  @Test
+  void testDefaultLocale() {
+    I18nTestClass testClass = new I18nTestClass();
+    assertEquals(Locale.getDefault(), testClass.getLocale());
+    // Intuitively, this is expected to be Locale.getDefault(), BUT Messages.properties has no locale, thus resolves to
+    // Locale.ROOT, which is the "" locale.
+    assertEquals(Locale.ROOT, testClass.getMessages().getLocale());
+    assertEquals(PluralRules.forLocale(Locale.getDefault()), testClass.getPluralRules());
+  }
+
+  @Test
+  void testSetLocale() {
+    I18nTestClass testClass = new I18nTestClass();
+    testClass.setLocale(Locale.GERMAN);
+    assertEquals(Locale.GERMAN, testClass.getLocale());
+    assertEquals(Locale.GERMAN, testClass.getMessages().getLocale());
+    assertEquals( PluralRules.forLocale(Locale.GERMAN), testClass.getPluralRules());
+  }
+
+  @Test
+  void setUnknownLocale() {
+    I18nTestClass testClass = new I18nTestClass();
+    Locale locale = Locale.forLanguageTag("lv-LV");
+    testClass.setLocale(locale);
+    assertEquals(locale, testClass.getLocale());
+    // Intuitively, this is expected to be Locale.getDefault(), BUT Messages.properties has no locale, thus resolves to
+    // Locale.ROOT, which is the "" locale.
+    assertEquals(Locale.ROOT, testClass.getMessages().getLocale());
+    assertEquals(PluralRules.forLocale(Locale.getDefault()), testClass.getPluralRules());
+
+  }
 
   @Test
   @DisplayName("Test argument substitution with initializing Locale.")
@@ -46,6 +82,16 @@ class I18nBaseTest {
     Object[] testArgs = {ARG_1};
     System.out.println(result);
     assertEquals(form.format(testArgs), result);
+  }
+
+  @Test
+  void testFormatMessageWithEscapedQuotes() {
+    I18nTestClass testClass = new I18nTestClass();
+    ResourceBundle loadedBundle = ResourceBundle.getBundle("Messages", new Locale("pt"));
+    testClass.setLocale(new Locale("pt"));
+    String result = testClass.formatMessage(I18nConstants.HTA_SCT_MESSAGE, "test");
+    MessageFormat form = new MessageFormat(loadedBundle.getString(I18nConstants.HTA_SCT_MESSAGE));
+
   }
 
   @Test
@@ -95,6 +141,20 @@ class I18nBaseTest {
   void testFormatMessageForNonExistentMessage() {
     I18nTestClass testClass = new I18nTestClass();
     assertEquals(BAD_STRING_ARG, testClass.formatMessage(BAD_STRING_ARG, ARG_1));
+  }
+
+  @Test
+  @DisplayName("Assert that a warning is only logged once for a non-existent message.")
+  void testOnlyOneLogForNonExistentMessages() {
+    I18nTestClass testClass = Mockito.spy(new I18nTestClass());
+
+    assertEquals(BAD_STRING_ARG, testClass.formatMessage(BAD_STRING_ARG, ARG_1));
+
+    verify(testClass).logUncontainedMessage(anyString());
+
+    assertEquals(BAD_STRING_ARG, testClass.formatMessage(BAD_STRING_ARG, ARG_1));
+
+    verify(testClass).logUncontainedMessage(anyString());
   }
 
   @Test

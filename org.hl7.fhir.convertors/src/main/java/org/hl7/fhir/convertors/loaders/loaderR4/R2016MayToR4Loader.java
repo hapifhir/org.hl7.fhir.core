@@ -52,6 +52,7 @@ import org.hl7.fhir.r4.model.MetadataResource;
 import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4.model.UriType;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 
 public class R2016MayToR4Loader extends BaseLoaderR4 implements IContextResourceLoader {
 
@@ -102,7 +103,7 @@ public class R2016MayToR4Loader extends BaseLoaderR4 implements IContextResource
         new ProfileUtilities(null, null, null).setIds(sd, false);
         if (patchUrls) {
           sd.setUrl(sd.getUrl().replace(URL_BASE, "http://hl7.org/fhir/2016May/"));
-          sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
+          sd.addExtension().setUrl(ExtensionDefinitions.EXT_XML_NAMESPACE).setValue(new UriType(URL_BASE));
         }
       }
     }

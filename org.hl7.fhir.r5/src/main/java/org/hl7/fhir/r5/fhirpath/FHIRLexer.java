@@ -321,7 +321,8 @@ public class FHIRLexer {
       } else if (Utilities.isWhitespace(source.charAt(cursor))) {
         last13 = currentLocation.checkChar(source.charAt(cursor), last13);
         cursor++;
-        currentLocation.incColumn();
+        // checkChar increments the position
+        // currentLocation.incColumn();
       } else {
         done = true;
       }

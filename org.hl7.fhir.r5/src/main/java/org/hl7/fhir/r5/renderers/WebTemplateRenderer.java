@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -19,7 +20,7 @@ import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.sql.Column;
 import org.hl7.fhir.r5.utils.sql.ColumnKind;
@@ -37,6 +38,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Title;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class WebTemplateRenderer extends ResourceRenderer {
   
   public WebTemplateRenderer(RenderingContext context) { 
@@ -63,7 +65,7 @@ public class WebTemplateRenderer extends ResourceRenderer {
     if (context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics()) { 
       model.setDocoImg(HierarchicalTableGenerator.help16AsData());     
     } else { 
-      model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "help16.png")); 
+      model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), "help16.png")); 
     }  
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Name"), (context.formatPhrase(RenderingContext.QUEST_LINK)), null, 0)); 
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Card."), (context.formatPhrase(RenderingContext.QUEST_TEXTFOR)), null, 0)); 
@@ -201,7 +203,7 @@ public class WebTemplateRenderer extends ResourceRenderer {
       switch (code) {
       case "SNOMED-CT" : 
         pfx = "SCT:";
-        link = getLinkForCode("http://snomed.info/sct", null, value);
+        link = getLinkForCode("http://snomed.info/sct", null, value, item.getResourceNative());
         ValidationResult vr = context.getContext().validateCode(context.getTerminologyServiceOptions(), "http://snomed.info/sct", null, value, null);
         if (vr.isOk()) {
           hint = "SNOMED CT "+value+": "+vr.getDisplay();
@@ -209,7 +211,7 @@ public class WebTemplateRenderer extends ResourceRenderer {
         break;
       case "LOINC" :
         pfx = "LN:";
-        link = getLinkForCode("http://loinc.org", null, value);
+        link = getLinkForCode("http://loinc.org", null, value, item.getResourceNative());
         vr = context.getContext().validateCode(context.getTerminologyServiceOptions(), "http://loinc.org", null, value, null);
         if (vr.isOk()) {
           hint = "LOINC "+value+": "+vr.getDisplay();
@@ -219,7 +221,7 @@ public class WebTemplateRenderer extends ResourceRenderer {
         // what is this?
         break;
       default: 
-        System.out.println("?");
+        log.warn("?");
       }
       cell.addPiece(gen.new Piece(null, " ", null));
       cell.addPiece(gen.new Piece(link, pfx+value, hint));      

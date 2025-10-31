@@ -1,9 +1,5 @@
 package org.hl7.fhir.r4b.conformance;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -37,6 +33,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.*;
 
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -47,8 +45,7 @@ import org.hl7.fhir.r4b.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r4b.elementmodel.ObjectConverter;
 import org.hl7.fhir.r4b.elementmodel.Property;
 import org.hl7.fhir.r4b.fhirpath.ExpressionNode;
-import org.hl7.fhir.r4b.fhirpath.FHIRLexer;
-import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine;
+  import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r4b.fhirpath.ExpressionNode.Kind;
 import org.hl7.fhir.r4b.fhirpath.ExpressionNode.Operation;
 import org.hl7.fhir.r4b.formats.IParser;
@@ -97,8 +94,7 @@ import org.hl7.fhir.r4b.model.ValueSet;
 import org.hl7.fhir.r4b.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r4b.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r4b.renderers.TerminologyRenderer;
-import org.hl7.fhir.r4b.renderers.spreadsheets.SpreadsheetGenerator;
-import org.hl7.fhir.r4b.renderers.utils.RenderingContext;
+  import org.hl7.fhir.r4b.renderers.utils.RenderingContext;
 import org.hl7.fhir.r4b.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4b.utils.PublicationHacker;
 import org.hl7.fhir.r4b.utils.ToolingExtensions;
@@ -151,6 +147,7 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
  *
  */
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class ProfileUtilities extends TranslatingUtilities {
 
   public class ElementDefinitionResolution {
@@ -329,6 +326,9 @@ public class ProfileUtilities extends TranslatingUtilities {
     "http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version"}));
 
   private boolean useTableForFixedValues = true;
+
+  @Setter
+  @Deprecated
   private boolean debug;
 
   // note that ProfileUtilities are used re-entrantly internally, so nothing with
@@ -746,16 +746,16 @@ public class ProfileUtilities extends TranslatingUtilities {
         updateMaps(base, derived);
 
         setIds(derived, false);
-        if (debug) {
-          System.out.println("Differential: ");
+
+          log.debug("Differential: ");
           for (ElementDefinition ed : derived.getDifferential().getElement())
-            System.out.println("  " + ed.getId() + " : " + typeSummaryWithProfile(ed) + "[" + ed.getMin() + ".."
+            log.debug("  " + ed.getId() + " : " + typeSummaryWithProfile(ed) + "[" + ed.getMin() + ".."
                 + ed.getMax() + "]" + sliceSummary(ed) + "  " + constraintSummary(ed));
-          System.out.println("Snapshot: ");
+          log.debug("Snapshot: ");
           for (ElementDefinition ed : derived.getSnapshot().getElement())
-            System.out.println("  " + ed.getId() + " : " + typeSummaryWithProfile(ed) + "[" + ed.getMin() + ".."
+            log.debug("  " + ed.getId() + " : " + typeSummaryWithProfile(ed) + "[" + ed.getMin() + ".."
                 + ed.getMax() + "]" + sliceSummary(ed) + "  " + constraintSummary(ed));
-        }
+
         CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
         // Check that all differential elements have a corresponding snapshot element
         int ce = 0;
@@ -783,17 +783,17 @@ public class ProfileUtilities extends TranslatingUtilities {
           String msg = "The profile " + derived.getUrl() + " has " + ce + " " + Utilities.pluralize("element", ce)
               + " in the differential (" + b.toString()
               + ") that don't have a matching element in the snapshot: check that the path and definitions are legal in the differential (including order)";
-          System.out.println("Error in snapshot generation: " + msg);
-          if (!debug) {
-            System.out.println("Differential: ");
+          log.error("Error in snapshot generation: " + msg);
+
+          log.error("Differential: ");
             for (ElementDefinition ed : derived.getDifferential().getElement())
-              System.out.println("  " + ed.getId() + " = " + ed.getPath() + " : " + typeSummaryWithProfile(ed) + "["
+              log.error("  " + ed.getId() + " = " + ed.getPath() + " : " + typeSummaryWithProfile(ed) + "["
                   + ed.getMin() + ".." + ed.getMax() + "]" + sliceSummary(ed) + "  " + constraintSummary(ed));
-            System.out.println("Snapshot: ");
+          log.error("Snapshot: ");
             for (ElementDefinition ed : derived.getSnapshot().getElement())
-              System.out.println("  " + ed.getId() + " = " + ed.getPath() + " : " + typeSummaryWithProfile(ed) + "["
+              log.error("  " + ed.getId() + " = " + ed.getPath() + " : " + typeSummaryWithProfile(ed) + "["
                   + ed.getMin() + ".." + ed.getMax() + "]" + sliceSummary(ed) + "  " + constraintSummary(ed));
-          }
+
           if (exception)
             throw new DefinitionException(msg);
           else
@@ -940,7 +940,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     List<ElementDefinition> children = getChildren(derived, element);
     List<ElementChoiceGroup> groups = readChoices(element, children);
     for (ElementChoiceGroup group : groups) {
-//      System.out.println(children);
+
       String mandated = null;
       Set<String> names = new HashSet<>();
       for (ElementDefinition ed : children) {
@@ -1185,11 +1185,11 @@ public class ProfileUtilities extends TranslatingUtilities {
       String contextPathSrc, String contextPathDst, boolean trimDifferential, String contextName, String resultPathBase,
       boolean slicingDone, ElementDefinition slicer, String typeSlicingPath, List<ElementRedirection> redirector,
       StructureDefinition srcSD) throws DefinitionException, FHIRException {
-    if (debug) {
-      System.out.println(indent + "PP @ " + resultPathBase + " / " + contextPathSrc + " : base = " + baseCursor + " to "
+
+      log.debug(indent + "PP @ " + resultPathBase + " / " + contextPathSrc + " : base = " + baseCursor + " to "
           + baseLimit + ", diff = " + diffCursor + " to " + diffLimit + " (slicing = " + slicingDone + ", k "
           + (redirector == null ? "null" : redirector.toString()) + ")");
-    }
+
     ElementDefinition res = null;
     List<TypeSlice> typeList = new ArrayList<>();
     // just repeat processing entries until we run out of our allowed scope (1st
@@ -1198,8 +1198,8 @@ public class ProfileUtilities extends TranslatingUtilities {
       // get the current focus of the base, and decide what to do
       ElementDefinition currentBase = base.getElement().get(baseCursor);
       String cpath = fixedPathSource(contextPathSrc, currentBase.getPath(), redirector);
-      if (debug) {
-        System.out.println(indent + " - " + cpath + ": base = " + baseCursor + " ("
+
+        log.debug(indent + " - " + cpath + ": base = " + baseCursor + " ("
             + descED(base.getElement(), baseCursor) + ") to " + baseLimit + " (" + descED(base.getElement(), baseLimit)
             + "), diff = " + diffCursor + " (" + descED(differential.getElement(), diffCursor) + ") to " + diffLimit
             + " (" + descED(differential.getElement(), diffLimit) + ") " + "(slicingDone = " + slicingDone
@@ -1207,7 +1207,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             + (differential.getElement().size() > diffCursor ? differential.getElement().get(diffCursor).getPath()
                 : "n/a")
             + ")");
-      }
+
       List<ElementDefinition> diffMatches = getDiffMatches(differential, cpath, diffCursor, diffLimit, profileName); // get
                                                                                                                      // a
                                                                                                                      // list
@@ -1291,7 +1291,7 @@ public class ProfileUtilities extends TranslatingUtilities {
                   while (nbl < base.getElement().size()
                       && base.getElement().get(nbl).getPath().startsWith(tgt.getElement().getPath() + "."))
                     nbl++;
-                  System.out.println("Test!");
+                  log.info("Test!");
                   processPaths(indent + "  ", result, base, differential, nbc, start, nbl - 1, diffCursor - 1, url,
                       webUrl, profileName, tgt.getElement().getPath(), outcome.getPath(), trimDifferential, contextName,
                       resultPathBase, false, null, null, redirectorStack(redirector, outcome, cpath), srcSD);
@@ -2433,8 +2433,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         return true;
       }
       if (tr.getWorkingCode().equals(t.getCode())) {
-        System.out
-            .println("Type error: use of a simple type \"" + t.getCode() + "\" wrongly constraining " + base.getPath());
+        log.warn("Type error: use of a simple type \"" + t.getCode() + "\" wrongly constraining " + base.getPath());
         return true;
       }
     }
@@ -2842,19 +2841,19 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
       }
       if (sd == null)
-        System.out.println("Failed to find referenced profile: " + type.getProfile());
+        log.warn("Failed to find referenced profile: " + type.getProfile());
     }
     if (sd == null)
       sd = context.fetchTypeDefinition(type.getWorkingCode());
     if (sd == null)
-      System.out.println("XX: failed to find profle for type: " + type.getWorkingCode()); // debug GJM
+      log.warn("XX: failed to find profle for type: " + type.getWorkingCode()); // debug GJM
     return sd;
   }
 
   private StructureDefinition getProfileForDataType(String type) {
     StructureDefinition sd = context.fetchTypeDefinition(type);
     if (sd == null)
-      System.out.println("XX: failed to find profle for type: " + type); // debug GJM
+      log.warn("XX: failed to find profle for type: " + type); // debug GJM
     return sd;
   }
 
@@ -2977,10 +2976,9 @@ public class ProfileUtilities extends TranslatingUtilities {
               // generating snapshots
               // added processRelatives parameter to deal with this (well, to try)
               if (processRelatives && webUrl != null && !issLocalFileName(url, localFilenames)) {
-//                System.out.println("Making "+url+" relative to '"+webUrl+"'");
                 b.append(webUrl);
               } else {
-//                System.out.println("Not making "+url+" relative to '"+webUrl+"'");
+                //DO NOTHING
               }
               i = i + 1;
             }
@@ -3157,7 +3155,6 @@ public class ProfileUtilities extends TranslatingUtilities {
 //      if (ok != (statedPath.equals(path) || (path.endsWith("[x]") && statedPath.length() > path.length() - 2 &&
 //            statedPath.substring(0, path.length()-3).equals(path.substring(0, path.length()-3)) &&
 //            (statedPath.length() < path.length() || !statedPath.substring(path.length()).contains("."))))) {
-//        System.out.println("mismatch in paths: "+statedPath +" vs " +path);
 //      }
       if (ok) {
         /*
@@ -5003,7 +5000,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         } else {
           StructureDefinition sd = context.fetchTypeDefinition(t);
           if (sd == null) {
-            System.out.println("Unable to find " + t);
+            log.warn("Unable to find " + t);
             sd = context.fetchTypeDefinition(t);
           } else if (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) {
             choicerow.getCells().add(gen.new Cell(null, null,
@@ -5630,7 +5627,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             Cell c = gen.new Cell();
             row.getCells().add(c);
             c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref + ed.getPath()
-                : (VersionUtilities.isThisOrLater("4.1", context.getVersion())
+                : (VersionUtilities.isThisOrLater("4.1", context.getVersion(), VersionUtilities.VersionPrecision.MINOR)
                     ? corePath + "types-definitions.html#" + ed.getBase().getPath()
                     : corePath + "element-definitions.html#" + ed.getBase().getPath())),
                 t.getName(), null));
@@ -7415,11 +7412,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
   public boolean isDebug() {
-    return debug;
-  }
-
-  public void setDebug(boolean debug) {
-    this.debug = debug;
+    return false;
   }
 
   public String getDefWebRoot() {

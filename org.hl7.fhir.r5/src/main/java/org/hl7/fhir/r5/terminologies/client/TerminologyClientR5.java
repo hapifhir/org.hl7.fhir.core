@@ -39,6 +39,7 @@ import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
@@ -57,7 +58,7 @@ public class TerminologyClientR5 implements ITerminologyClient {
 
     @Override
     public ITerminologyClient makeClient(String id, String url, String userAgent, ToolingClientLogger logger) throws URISyntaxException {
-      return new TerminologyClientR5(id, checkEndsWith("/r4", url), userAgent);
+      return new TerminologyClientR5(id, checkEndsWith("/r5", url), userAgent);
     }
 
     private String checkEndsWith(String term, String url) {
@@ -135,6 +136,11 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
 
   @Override
+  public Parameters batchValidateCS(Parameters pin) {
+    return client.operateType(CodeSystem.class, "batch-validate-code", pin);
+  }
+
+  @Override
   public Parameters subsumes(Parameters pin) {
     return client.operateType(CodeSystem.class, "subsumes", pin);
   }
@@ -142,6 +148,11 @@ public class TerminologyClientR5 implements ITerminologyClient {
   @Override
   public Parameters validateVS(Parameters pin) {
     return client.operateType(ValueSet.class, "validate-code", pin);
+  }
+
+  @Override
+  public Parameters batchValidateVS(Parameters pin) {
+    return client.operateType(ValueSet.class, "batch-validate-code", pin);
   }
 
   @Override
@@ -193,7 +204,7 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
 
   @Override
-  public Bundle validateBatch(Bundle batch) {
+  public Bundle batch(Bundle batch) {
     return client.transaction(batch);
   }
 
@@ -281,5 +292,7 @@ public class TerminologyClientR5 implements ITerminologyClient {
     
   }
 
-
+  public OperationOutcome validateResource(Resource res) {
+    return client.validate(res, res.getId());
+  }
 }

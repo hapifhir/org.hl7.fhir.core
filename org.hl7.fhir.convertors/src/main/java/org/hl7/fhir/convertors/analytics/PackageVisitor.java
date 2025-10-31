@@ -7,6 +7,7 @@ import java.util.*;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.FileUtilities;
@@ -28,6 +29,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+@Slf4j
 public class PackageVisitor {
 
   private PackageServer clientPackageServer = null;
@@ -157,7 +159,7 @@ public class PackageVisitor {
   }
 
   public void visitPackages() throws IOException, ParserConfigurationException, SAXException, FHIRException, EOperationOutcome {
-    System.out.println("Finding packages");
+    log.info("Finding packages");
     pc = clientPackageServer == null
       ? new PackageClient(PackageServer.primaryServer())
       : new PackageClient(clientPackageServer);
@@ -170,14 +172,14 @@ public class PackageVisitor {
 
     Map<String, String> cpidMap = getAllCIPackages();
     Set<String> cpidSet = new HashSet<>();
-    System.out.println("Go: "+cpidMap.size()+" current packages");
+    log.info("Go: "+cpidMap.size()+" current packages");
     int i = 0;
     for (String s : cpidMap.keySet()) {
       processCurrentPackage(cpidMap.get(s), s, cpidSet, i, cpidMap.size()); 
       i++;
     }
 
-    System.out.println("Go: "+pidList.size()+" published packages");
+    log.info("Go: "+pidList.size()+" published packages");
     i = 0;
     for (String pid : pidList) {  
       if (pid != null) {
@@ -190,7 +192,7 @@ public class PackageVisitor {
                 processPackage(pid, v, i, pidList.size());          
               }
             } else if (vList.isEmpty()) {
-              System.out.println("No Packages for "+pid);
+              log.info("No Packages for "+pid);
             } else {
               processPackage(pid, vList.get(vList.size() - 1), i, pidList.size());
             }
@@ -216,7 +218,7 @@ public class PackageVisitor {
               processPackage(pid, v, i, objects.size());          
             }
           } else if (vList.isEmpty()) {
-            System.out.println("No Packages for "+pid);
+            log.info("No Packages for "+pid);
           } else {
             processPackage(pid, vList.get(vList.size() - 1), i, objects.size());
           }
@@ -254,37 +256,35 @@ public class PackageVisitor {
               context = processor.startPackage(ctxt);
               ok = true;
             } catch (Exception e) {
-              System.out.println("####### Error loading "+pid+"#current["+fv+"]: ####### "+e.getMessage());
+              log.error("####### Error loading "+pid+"#current["+fv+"]: ####### "+e.getMessage());
               //                e.printStackTrace();
             }
             if (ok) {
               int c = 0;
-              for (String type : resourceTypes) {
-                for (String s : npm.listResources(type)) {
-                  c++;
-                  try {
-                    processor.processResource(ctxt, context, type, s, FileUtilities.streamToBytes(npm.load("package", s)));
-                  } catch (Exception e) {
-                    System.out.println("####### Error loading "+pid+"#current["+fv+"]/"+type+" ####### "+e.getMessage());
-                    //                e.printStackTrace();
-                  }
+              for (PackagedResourceFile pri : npm.listAllResources(resourceTypes)) {
+                c++;
+                try {
+                  processor.processResource(ctxt, context, pri.getResourceType(), pri.getFilename(), FileUtilities.streamToBytes(npm.load(pri.getFolder(), pri.getFilename())));
+                } catch (Exception e) {
+                  log.error("####### Error loading "+pid+"#current["+fv+"]/"+pri.getResourceType()+" ####### "+e.getMessage());
+                  //                e.printStackTrace();
                 }
               }
               processor.finishPackage(ctxt);
-              System.out.println("Processed: "+pid+"#current: "+c+" resources ("+i+" of "+t+", "+(ms2-ms1)+"/"+(System.currentTimeMillis()-ms2)+"ms)");
+              log.info("Processed: "+pid+"#current: "+c+" resources ("+i+" of "+t+", "+(ms2-ms1)+"/"+(System.currentTimeMillis()-ms2)+"ms)");
             }
           } else {
-            System.out.println("Ignored: "+pid+"#current: no version");            
+            log.info("Ignored: "+pid+"#current: no version");
           }
         }
       }
     } catch (Exception e) {      
-      System.out.println("Unable to process: "+pid+"#current: "+e.getMessage());      
+      log.error("Unable to process: "+pid+"#current: "+e.getMessage());
     }
   }
 
   private Map<String, String> getAllCIPackages() throws IOException {
-    System.out.println("Fetch https://build.fhir.org/ig/qas.json");
+    log.info("Fetch https://build.fhir.org/ig/qas.json");
     Map<String, String> res = new HashMap<>();
     if (current) {
       JsonArray json = (JsonArray) JsonParser.parseFromUrl("https://build.fhir.org/ig/qas.json");
@@ -295,7 +295,7 @@ public class PackageVisitor {
           if (!res.containsKey(pid)) {
             res.put(pid, url);
           } else if (!url.equals(res.get(pid))) {
-            System.out.println("Ignore "+url+" already encountered "+pid +" @ "+res.get(pid));
+            log.warn("Ignore "+url+" already encountered "+pid +" @ "+res.get(pid));
           }
         }
       }
@@ -315,7 +315,7 @@ public class PackageVisitor {
 
   private Set<String> getAllPackages() throws IOException, ParserConfigurationException, SAXException {
     Set<String> list = new HashSet<>();
-    for (PackageInfo i : pc.search(null, null, null, false)) {
+    for (PackageInfo i : pc.search(null, null, null, false, null)) {
       list.add(i.getId());
     }    
     JsonObject json = JsonParser.parseObjectFromUrl("https://fhir.github.io/ig-registry/fhir-ig-list.json");
@@ -331,7 +331,7 @@ public class PackageVisitor {
   }
 
   private void processFeed(Set<String> list, String str) throws IOException, ParserConfigurationException, SAXException {
-    System.out.println("Feed "+str);
+    log.info("Feed "+str);
     try {
 
       HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), str+"?nocache=" + System.currentTimeMillis());
@@ -346,7 +346,7 @@ public class PackageVisitor {
         }
       }
     } catch (Exception e) {
-      System.out.println("   "+e.getMessage());
+      log.error("   "+e.getMessage());
     }
   }
 
@@ -357,14 +357,14 @@ public class PackageVisitor {
     try {
       npm = pcm.loadPackage(pid, v);
     } catch (Throwable e) {
-      System.out.println("Unable to load package: "+pid+"#"+v+": "+e.getMessage());
+      log.error("Unable to load package: "+pid+"#"+v+": "+e.getMessage());
       return;
     }
 
     try {
       fv = npm.fhirVersion();
     } catch (Throwable e) {
-      System.out.println("Unable to identify package FHIR version:: "+pid+"#"+v+": "+e.getMessage());
+      log.error("Unable to identify package FHIR version:: "+pid+"#"+v+": "+e.getMessage());
     }
     if (corePackages || !corePackage(npm)) {
       PackageContext ctxt = new PackageContext(pid+"#"+v, npm, fv);
@@ -374,8 +374,7 @@ public class PackageVisitor {
         context = processor.startPackage(ctxt);
         ok = true;
       } catch (Exception e) {
-        System.out.println("####### Error loading package  "+pid+"#"+v +"["+fv+"]: "+e.getMessage());
-        e.printStackTrace();
+        log.error("####### Error loading package  "+pid+"#"+v +"["+fv+"]: "+e.getMessage(), e);
       }
       if (ok) {
         int c = 0;
@@ -385,13 +384,12 @@ public class PackageVisitor {
             try {
               processor.processResource(ctxt, context, p.getResourceType(), p.getFilename(), FileUtilities.streamToBytes(npm.load(p.getFolder(), p.getFilename())));
             } catch (Exception e) {
-              System.out.println("####### Error loading "+pid+"#"+v +"["+fv+"]/"+p.getResourceType()+" ####### "+e.getMessage());
-              e.printStackTrace();
+              log.error("####### Error loading "+pid+"#"+v +"["+fv+"]/"+p.getResourceType()+" ####### "+e.getMessage(), e);
             }
           }
         }    
         processor.finishPackage(ctxt);
-        System.out.println("Processed: "+pid+"#"+v+": "+c+" resources ("+i+" of "+t+")");  
+        log.info("Processed: "+pid+"#"+v+": "+c+" resources ("+i+" of "+t+")");
       }
     }
   }

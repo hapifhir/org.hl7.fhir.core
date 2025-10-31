@@ -2519,7 +2519,7 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   public boolean hasSubjectCodeableConcept() {
-    return this != null && this.subject instanceof CodeableConcept;
+    return this.subject instanceof CodeableConcept;
   }
 
   /**
@@ -2536,7 +2536,7 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   public boolean hasSubjectReference() {
-    return this != null && this.subject instanceof Reference;
+    return this.subject instanceof Reference;
   }
 
   public boolean hasSubject() {
@@ -3980,7 +3980,7 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   public boolean hasTimingTiming() {
-    return this != null && this.timing instanceof Timing;
+    return this.timing instanceof Timing;
   }
 
   /**
@@ -3997,7 +3997,7 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   public boolean hasTimingDateTimeType() {
-    return this != null && this.timing instanceof DateTimeType;
+    return this.timing instanceof DateTimeType;
   }
 
   /**
@@ -4014,7 +4014,7 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   public boolean hasTimingAge() {
-    return this != null && this.timing instanceof Age;
+    return this.timing instanceof Age;
   }
 
   /**
@@ -4031,7 +4031,7 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   public boolean hasTimingPeriod() {
-    return this != null && this.timing instanceof Period;
+    return this.timing instanceof Period;
   }
 
   /**
@@ -4048,7 +4048,7 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   public boolean hasTimingRange() {
-    return this != null && this.timing instanceof Range;
+    return this.timing instanceof Range;
   }
 
   /**
@@ -4065,7 +4065,7 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   public boolean hasTimingDuration() {
-    return this != null && this.timing instanceof Duration;
+    return this.timing instanceof Duration;
   }
 
   public boolean hasTiming() {
@@ -4215,7 +4215,7 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   public boolean hasProductReference() {
-    return this != null && this.product instanceof Reference;
+    return this.product instanceof Reference;
   }
 
   /**
@@ -4232,7 +4232,7 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   public boolean hasProductCodeableConcept() {
-    return this != null && this.product instanceof CodeableConcept;
+    return this.product instanceof CodeableConcept;
   }
 
   public boolean hasProduct() {
@@ -4442,28 +4442,6 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<SpecimenDefinition> getSpecimenRequirementTarget() {
-    if (this.specimenRequirementTarget == null)
-      this.specimenRequirementTarget = new ArrayList<SpecimenDefinition>();
-    return this.specimenRequirementTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public SpecimenDefinition addSpecimenRequirementTarget() {
-    SpecimenDefinition r = new SpecimenDefinition();
-    if (this.specimenRequirementTarget == null)
-      this.specimenRequirementTarget = new ArrayList<SpecimenDefinition>();
-    this.specimenRequirementTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #observationRequirement} (Defines observation requirements for
    *         the action to be performed, such as body weight or surface area.)
    */
@@ -4520,28 +4498,6 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<ObservationDefinition> getObservationRequirementTarget() {
-    if (this.observationRequirementTarget == null)
-      this.observationRequirementTarget = new ArrayList<ObservationDefinition>();
-    return this.observationRequirementTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public ObservationDefinition addObservationRequirementTarget() {
-    ObservationDefinition r = new ObservationDefinition();
-    if (this.observationRequirementTarget == null)
-      this.observationRequirementTarget = new ArrayList<ObservationDefinition>();
-    this.observationRequirementTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #observationResultRequirement} (Defines the observations that
    *         are expected to be produced by the action.)
    */
@@ -4595,28 +4551,6 @@ public class ActivityDefinition extends MetadataResource {
       addObservationResultRequirement();
     }
     return getObservationResultRequirement().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<ObservationDefinition> getObservationResultRequirementTarget() {
-    if (this.observationResultRequirementTarget == null)
-      this.observationResultRequirementTarget = new ArrayList<ObservationDefinition>();
-    return this.observationResultRequirementTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public ObservationDefinition addObservationResultRequirementTarget() {
-    ObservationDefinition r = new ObservationDefinition();
-    if (this.observationResultRequirementTarget == null)
-      this.observationResultRequirementTarget = new ArrayList<ObservationDefinition>();
-    this.observationResultRequirementTarget.add(r);
-    return r;
   }
 
   /**

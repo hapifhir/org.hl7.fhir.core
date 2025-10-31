@@ -19,6 +19,18 @@ msgstr ""
 msgid "Type: {0}"
 msgstr ""
 
+# ACTOR_DERIVED_FROM
+#: ACTOR_DERIVED_FROM
+msgctxt "ACTOR_DERIVED_FROM"
+msgid "Derived From"
+msgstr ""
+
+# ACTOR_DERIVED_FROM_NONE
+#: ACTOR_DERIVED_FROM_NONE
+msgctxt "ACTOR_DERIVED_FROM_NONE"
+msgid "(none)"
+msgstr ""
+
 # ADD_BIND_ADD_BIND
 #: ADD_BIND_ADD_BIND
 msgid "Additional Bindings"
@@ -127,6 +139,16 @@ msgstr ""
 # ADD_BIND_VALUE_COMP
 #: ADD_BIND_VALUE_COMP
 msgid "This value set is a component of the base value set"
+msgstr ""
+
+# BUNDLE_DOCUMENT_CONTENT
+#: BUNDLE_DOCUMENT_CONTENT
+msgid "Document Content"
+msgstr ""
+
+# BUNDLE_DOCUMENT_DETAILS
+#: BUNDLE_DOCUMENT_DETAILS
+msgid "Document Details"
 msgstr ""
 
 # BUNDLE_ETAG
@@ -519,6 +541,16 @@ msgstr ""
 msgid "Summary of System-wide Interactions"
 msgstr ""
 
+# CAPABILITY_SUMM_SYS_OP
+#: CAPABILITY_SUMM_SYS_OP
+msgid "Summary of System-wide Operations"
+msgstr ""
+
+# CAPABILITY_SUMM_SYS_SP
+#: CAPABILITY_SUMM_SYS_SP
+msgid "Summary of System-wide Search Parameters"
+msgstr ""
+
 # CAPABILITY_SUPP
 #: CAPABILITY_SUPP
 msgid "support"
@@ -709,6 +741,11 @@ msgstr ""
 msgid "This code system resource is a supplement to"
 msgstr ""
 
+# CODE_SYS_SUPP_CODE_NOT_HERE
+#: CODE_SYS_SUPP_CODE_NOT_HERE
+msgid "This CodeSystem Supplement is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
+msgstr ""
+
 # CODE_SYS_THE_VALUE_SET
 #: CODE_SYS_THE_VALUE_SET
 msgid "{0} is the value set for all codes in this code system"
@@ -764,6 +801,18 @@ msgstr ""
 msgid "Source Code"
 msgstr ""
 
+# CONC_MAP_SOURCE_CARD
+#: CONC_MAP_SOURCE_CARD
+msgctxt "CONC_MAP_SOURCE_CARD"
+msgid "Card."
+msgstr ""
+
+# CONC_MAP_SOURCE_TYPE
+#: CONC_MAP_SOURCE_TYPE
+msgctxt "CONC_MAP_SOURCE_TYPE"
+msgid "Type"
+msgstr ""
+
 # CONC_MAP_SRC_DET
 #: CONC_MAP_SRC_DET
 msgid "Source Concept Details"
@@ -771,6 +820,7 @@ msgstr ""
 
 # CONC_MAP_TO
 #: CONC_MAP_TO
+msgctxt "CONC_MAP_TO"
 msgid "to"
 msgstr ""
 
@@ -779,9 +829,26 @@ msgstr ""
 msgid "Target Code"
 msgstr ""
 
+# CONC_MAP_TRGT_CARD
+#: CONC_MAP_TRGT_CARD
+msgctxt "CONC_MAP_TRGT_CARD"
+msgid "Card."
+msgstr ""
+
 # CONC_MAP_TRGT_DET
 #: CONC_MAP_TRGT_DET
 msgid "Target Concept Details"
+msgstr ""
+
+# CONC_MAP_TRGT_TYPE
+#: CONC_MAP_TRGT_TYPE
+msgctxt "CONC_MAP_TRGT_TYPE"
+msgid "Type"
+msgstr ""
+
+# CS_VERSION_NOTHING_TEXT
+#: CS_VERSION_NOTHING_TEXT
+msgid "Not Stated (use latest from terminology server)"
 msgstr ""
 
 # DATA_REND_AFTERNOON
@@ -1027,7 +1094,7 @@ msgstr ""
 
 # DATA_REND_MKDWN_LNK
 #: DATA_REND_MKDWN_LNK
-msgid "Unable to resolve markdown link"
+msgid "Unable to resolve markdown link ''{0}''"
 msgstr ""
 
 # DATA_REND_MORNING
@@ -1353,7 +1420,12 @@ msgstr ""
 
 # FMM_TABLE
 #: FMM_TABLE
-msgid "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
+msgid "<table class=\"cols\" data-fhir=\"generated\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
+msgstr ""
+
+# GENERAL_ADDITIONAL_BINDING
+#: GENERAL_ADDITIONAL_BINDING
+msgid "This element has additional bindings"
 msgstr ""
 
 # GENERAL_ADD_LANG
@@ -1366,14 +1438,24 @@ msgstr ""
 msgid "Binding"
 msgstr ""
 
+# GENERAL_BINDINGS
+#: GENERAL_BINDINGS
+msgid "Bindings"
+msgstr ""
+
 # GENERAL_BINDING_NO_DESC
 #: GENERAL_BINDING_NO_DESC
 msgid "No description provided"
 msgstr ""
 
-# GENERAL_BINDING_NO_VS
-#: GENERAL_BINDING_NO_VS
-msgid "Binding Description (No ValueSet)"
+# GENERAL_BINDING_NO_VS_1
+#: GENERAL_BINDING_NO_VS_1
+msgid "Binding Description"
+msgstr ""
+
+# GENERAL_BINDING_NO_VS_2
+#: GENERAL_BINDING_NO_VS_2
+msgid "This binding doesn''t define a testable ValueSet"
 msgstr ""
 
 # GENERAL_BIND_MIN_ALLOW
@@ -1383,6 +1465,7 @@ msgstr ""
 
 # GENERAL_CARD
 #: GENERAL_CARD
+msgctxt "GENERAL_CARD"
 msgid "Card."
 msgstr ""
 
@@ -1394,6 +1477,11 @@ msgstr ""
 # GENERAL_CODE
 #: GENERAL_CODE
 msgid "Code"
+msgstr ""
+
+# GENERAL_CODESYSTEM
+#: GENERAL_CODESYSTEM
+msgid "Code System"
 msgstr ""
 
 # GENERAL_COMMENT
@@ -1419,6 +1507,12 @@ msgstr ""
 # GENERAL_CONFORMANCE
 #: GENERAL_CONFORMANCE
 msgid "Conformance"
+msgstr ""
+
+# GENERAL_CONSTRAINTS
+#: GENERAL_CONSTRAINTS
+msgctxt "GENERAL_CONSTRAINTS"
+msgid "Constraints"
 msgstr ""
 
 # GENERAL_CONTACT
@@ -1454,6 +1548,7 @@ msgstr ""
 
 # GENERAL_DEFINITION
 #: GENERAL_DEFINITION
+msgctxt "GENERAL_DEFINITION"
 msgid "Definition"
 msgstr ""
 
@@ -1495,6 +1590,12 @@ msgstr ""
 # GENERAL_FILTER
 #: GENERAL_FILTER
 msgid "Filter"
+msgstr ""
+
+# GENERAL_FIXED_VALUE
+#: GENERAL_FIXED_VALUE
+msgctxt "GENERAL_FIXED_VALUE"
+msgid "Fixed Value: {0}"
 msgstr ""
 
 # GENERAL_FLAGS
@@ -1544,6 +1645,13 @@ msgstr ""
 
 # GENERAL_OBLIG
 #: GENERAL_OBLIG
+msgctxt "GENERAL_OBLIG"
+msgid "Obligations"
+msgstr ""
+
+# GENERAL_OBLIGATIONS
+#: GENERAL_OBLIGATIONS
+msgctxt "GENERAL_OBLIGATIONS"
 msgid "Obligations"
 msgstr ""
 
@@ -1562,6 +1670,12 @@ msgstr ""
 msgid "Parameters"
 msgstr ""
 
+# GENERAL_PATTERN_VALUE
+#: GENERAL_PATTERN_VALUE
+msgctxt "GENERAL_PATTERN_VALUE"
+msgid "Pattern Value: {0}"
+msgstr ""
+
 # GENERAL_PREFERRED
 #: GENERAL_PREFERRED
 msgctxt "GENERAL_PREFERRED"
@@ -1570,6 +1684,7 @@ msgstr ""
 
 # GENERAL_PROF
 #: GENERAL_PROF
+msgctxt "GENERAL_PROF"
 msgid "Profile"
 msgstr ""
 
@@ -1604,14 +1719,26 @@ msgctxt "GENERAL_REQUIRED"
 msgid "Required"
 msgstr ""
 
+# GENERAL_REQUIRED_BINDING
+#: GENERAL_REQUIRED_BINDING
+msgid "Required Binding to ValueSet {0}"
+msgstr ""
+
 # GENERAL_RESOURCE
 #: GENERAL_RESOURCE
+msgctxt "GENERAL_RESOURCE"
 msgid "Resource"
 msgstr ""
 
 # GENERAL_SECURITY_LABEL
 #: GENERAL_SECURITY_LABEL
 msgid "Security Label"
+msgstr ""
+
+# GENERAL_SOURCE
+#: GENERAL_SOURCE
+msgctxt "GENERAL_SOURCE"
+msgid "Source"
 msgstr ""
 
 # GENERAL_SRC
@@ -1652,7 +1779,18 @@ msgstr ""
 
 # GENERAL_TYPE
 #: GENERAL_TYPE
+msgctxt "GENERAL_TYPE"
 msgid "Type"
+msgstr ""
+
+# GENERAL_TYPE_PROFILE
+#: GENERAL_TYPE_PROFILE
+msgid "This element has profiles on it's type: {0}"
+msgstr ""
+
+# GENERAL_TYPE_TARGET_PROFILE
+#: GENERAL_TYPE_TARGET_PROFILE
+msgid "This element has restrictions/profiles on it's targets: {0}"
 msgstr ""
 
 # GENERAL_UCUM
@@ -1683,6 +1821,21 @@ msgstr ""
 # GENERAL_VALUESET
 #: GENERAL_VALUESET
 msgid "Value Set"
+msgstr ""
+
+# GENERAL_VALUE_BOUNDED
+#: GENERAL_VALUE_BOUNDED
+msgid "The value must be between {0} and {1} (or equal)"
+msgstr ""
+
+# GENERAL_VALUE_MAX
+#: GENERAL_VALUE_MAX
+msgid "The value must be less or equal to {0}"
+msgstr ""
+
+# GENERAL_VALUE_MIN
+#: GENERAL_VALUE_MIN
+msgid "The value must be greater or equal to {0}"
 msgstr ""
 
 # GENERAL_VER
@@ -1897,6 +2050,11 @@ msgstr ""
 msgid "Period"
 msgstr ""
 
+# OBLIGATION_SOURCE
+#: OBLIGATION_SOURCE
+msgid "This obligation is defined in the profile {0}"
+msgstr ""
+
 # OBLIG_ACT
 #: OBLIG_ACT
 msgid "Actor"
@@ -1932,11 +2090,6 @@ msgstr ""
 msgid "URL: [base]/{0}"
 msgstr ""
 
-# OP_DEF_URLS
-#: OP_DEF_URLS
-msgid "URL: [base]/${0}"
-msgstr ""
-
 # OP_DEF_USE
 #: OP_DEF_USE
 msgid "Use"
@@ -1959,6 +2112,7 @@ msgstr ""
 
 # OP_OUT_SRC
 #: OP_OUT_SRC
+msgctxt "OP_OUT_SRC"
 msgid "Source"
 msgstr ""
 
@@ -2341,6 +2495,7 @@ msgstr ""
 
 # QUEST_DERIVED
 #: QUEST_DERIVED
+msgctxt "QUEST_DERIVED"
 msgid "Derived From"
 msgstr ""
 
@@ -2605,6 +2760,61 @@ msgstr ""
 msgid "Value Set:"
 msgstr ""
 
+# R44B_DERIVES_FROM
+#: R44B_DERIVES_FROM
+msgid "derives from"
+msgstr ""
+
+# R44B_HAS_TARGET
+#: R44B_HAS_TARGET
+msgid "has target"
+msgstr ""
+
+# R44B_HAS_TYPE
+#: R44B_HAS_TYPE
+msgid "has type"
+msgstr ""
+
+# R44B_NOT_COMP
+#: R44B_NOT_COMP
+msgid "This is an {0} IG that is not compatible with {1}\" because"
+msgstr ""
+
+# R44B_NOT_IN
+#: R44B_NOT_IN
+msgid "The following resources are not in the {0} version"
+msgstr ""
+
+# R44B_ONLY_IN
+#: R44B_ONLY_IN
+msgid "The following resources are only in the {0} version"
+msgstr ""
+
+# R44B_PACKAGE_REF
+#: R44B_PACKAGE_REF
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
+msgstr ""
+
+# R44B_PROBLEMS
+#: R44B_PROBLEMS
+msgid "While checking for {0} compatibility, the following {1} problems were found"
+msgstr ""
+
+# R44B_REFERS_TO
+#: R44B_REFERS_TO
+msgid "<a href=\"{0}\">{1}}</a> refers to the canonical type at {2}"
+msgstr ""
+
+# R44B_USE_OK
+#: R44B_USE_OK
+msgid "This is an {0} IG. None of the features it uses are changed in {1}, so it can be used as is with {1} systems."
+msgstr ""
+
+# R44B_WRONG_MSG
+#: R44B_WRONG_MSG
+msgid "Something went wrong with the cross-version analysis because"
+msgstr ""
+
 # REND_ADDED
 #: REND_ADDED
 msgid "Added:"
@@ -2766,6 +2976,508 @@ msgstr ""
 msgid "version: {0}"
 msgstr ""
 
+# SDR_ALL_ELEM
+#: SDR_ALL_ELEM
+msgid "**ALL** elements"
+msgstr ""
+
+# SDR_ALL_EXT
+#: SDR_ALL_EXT
+msgid "**ALL** extensions"
+msgstr ""
+
+# SDR_ANY_ORDER
+#: SDR_ANY_ORDER
+msgid "// sliced by {0} in any order"
+msgstr ""
+
+# SDR_BP
+#: SDR_BP
+msgid "best practice"
+msgstr ""
+
+# SDR_CAPSTMT
+#: SDR_CAPSTMT
+msgid "CapabilityStatements using this {0}"
+msgstr ""
+
+# SDR_CH_DET
+#: SDR_CH_DET
+msgid "New Content"
+msgstr ""
+
+# SDR_CH_NO
+#: SDR_CH_NO
+msgid "No changes"
+msgstr ""
+
+# SDR_CLICK_COPY
+#: SDR_CLICK_COPY
+msgid "Click to copy URL"
+msgstr ""
+
+# SDR_CODE_FROM
+#: SDR_CODE_FROM
+msgid "(a valid code from {0})"
+msgstr ""
+
+# SDR_COMPLY
+#: SDR_COMPLY
+msgid "Comply with this profile {0}"
+msgstr ""
+
+# SDR_CONCEPT_DOMAIN
+#: SDR_CONCEPT_DOMAIN
+msgid "Concept Domain"
+msgstr ""
+
+# SDR_CONT_CH_DET_CS
+#: SDR_CONT_CH_DET_CS
+msgid "The list of codes defined by the code system has changed"
+msgstr ""
+
+# SDR_CONT_CH_DET_SD
+#: SDR_CONT_CH_DET_SD
+msgid "The data elements list has changed"
+msgstr ""
+
+# SDR_CONT_CH_DET_VS
+#: SDR_CONT_CH_DET_VS
+msgid "The logical definition of the value set has changed"
+msgstr ""
+
+# SDR_CONT_CH_NO
+#: SDR_CONT_CH_NO
+msgid "Unable to evaluate changes to content"
+msgstr ""
+
+# SDR_DEFN_CH_DET_CS
+#: SDR_DEFN_CH_DET_CS
+msgctxt "SDR_DEFN_CH_DET_CS"
+msgid "One or more text definitions/displays have changed"
+msgstr ""
+
+# SDR_DEFN_CH_DET_SD
+#: SDR_DEFN_CH_DET_SD
+msgid "One or more text definitions, invariants or bindings have changed"
+msgstr ""
+
+# SDR_DEFN_CH_DET_VS
+#: SDR_DEFN_CH_DET_VS
+msgctxt "SDR_DEFN_CH_DET_VS"
+msgid "One or more text definitions/displays have changed"
+msgstr ""
+
+# SDR_DEFN_CH_NO
+#: SDR_DEFN_CH_NO
+msgid "Unable to evaluate changes to definitions"
+msgstr ""
+
+# SDR_DERIVED
+#: SDR_DERIVED
+msgid "Derived from this {0}"
+msgstr ""
+
+# SDR_DRAFT
+#: SDR_DRAFT
+msgid "This is an draft extension definition; the committee is seeking implementation feedback, and the definition or contents of the extension may change in future versions"
+msgstr ""
+
+# SDR_DRAW_IN
+#: SDR_DRAW_IN
+msgid "Draw in Obligations & Additional Bindings from this {0}"
+msgstr ""
+
+# SDR_EXAMPLE
+#: SDR_EXAMPLE
+msgid "Examples for this {0}"
+msgstr ""
+
+# SDR_EXPERIMENTAL
+#: SDR_EXPERIMENTAL
+msgid "This is an experimental extension definition; the definition is intended for testing purposes, education or evaluation, and the definition is not anticipated to be matured to a point where it is intended for genuine usage."
+msgstr ""
+
+# SDR_EXTENSION_SUMMARY
+#: SDR_EXTENSION_SUMMARY
+msgid "Simple Extension with the type {0}: {1}"
+msgstr ""
+
+# SDR_EXTENSION_SUMMARY_MODIFIER
+#: SDR_EXTENSION_SUMMARY_MODIFIER
+msgid "Simple <b>Modifier</b> Extension with the type {0}: {1}"
+msgstr ""
+
+# SDR_EXT_ANY
+#: SDR_EXT_ANY
+msgid "This extension does not specify which elements it should be used on"
+msgstr ""
+
+# SDR_EXT_CHANGED
+#: SDR_EXT_CHANGED
+msgid "The extension is represented a little differently in {0}"
+msgstr ""
+
+# SDR_EXT_CTXT_PATH
+#: SDR_EXT_CTXT_PATH
+msgid "In addition, the extension can only be used when this FHIRPath expression is true"
+msgstr ""
+
+# SDR_EXT_CTXT_PATHS
+#: SDR_EXT_CTXT_PATHS
+msgid "In addition, the extension can only be used when these FHIRPath expressions are true"
+msgstr ""
+
+# SDR_EXT_DEPR
+#: SDR_EXT_DEPR
+msgid "This extension is deprecated and should no longer be used"
+msgstr ""
+
+# SDR_EXT_ELEM
+#: SDR_EXT_ELEM
+msgid "This extension may be used on the following element(s)"
+msgstr ""
+
+# SDR_EXT_ELEM_ID
+#: SDR_EXT_ELEM_ID
+msgid "Element ID"
+msgstr ""
+
+# SDR_EXT_EXT
+#: SDR_EXT_EXT
+msgctxt "SDR_EXT_EXT"
+msgid "Extension"
+msgstr ""
+
+# SDR_EXT_MOD
+#: SDR_EXT_MOD
+msgid "This extension is a modifier extension."
+msgstr ""
+
+# SDR_EXT_PATH
+#: SDR_EXT_PATH
+msgctxt "SDR_EXT_PATH"
+msgid "Path"
+msgstr ""
+
+# SDR_EXT_UNCHANGED
+#: SDR_EXT_UNCHANGED
+msgid "The extension is unchanged in {0}"
+msgstr ""
+
+# SDR_EXT_VER_PFX
+#: SDR_EXT_VER_PFX
+msgid "This extension is allowed for use with"
+msgstr ""
+
+# SDR_EXT_VER_SFX
+#: SDR_EXT_VER_SFX
+msgid "."
+msgstr ""
+
+# SDR_FIXED_VALUE
+#: SDR_FIXED_VALUE
+msgctxt "SDR_FIXED_VALUE"
+msgid "Fixed Value: {0}"
+msgstr ""
+
+# SDR_FROM
+#: SDR_FROM
+msgid "From {0}"
+msgstr ""
+
+# SDR_FROM_ELEM
+#: SDR_FROM_ELEM
+msgid "// from Element: <a href=\"{0}\">extension</a>"
+msgstr ""
+
+# SDR_GUIDANCE_HERE
+#: SDR_GUIDANCE_HERE
+msgid "here"
+msgstr ""
+
+# SDR_GUIDANCE_PFX
+#: SDR_GUIDANCE_PFX
+msgid "Guidance on how to interpret the contents of this table can be found"
+msgstr ""
+
+# SDR_GUIDANCE_SFX
+#: SDR_GUIDANCE_SFX
+msgctxt "SDR_GUIDANCE_SFX"
+msgid "-- no content: do not translate #27 --"
+msgstr ""
+
+# SDR_IMPOSE
+#: SDR_IMPOSE
+msgid "Impose this profile {0}"
+msgstr ""
+
+# SDR_INTRP_CH_DET_VS
+#: SDR_INTRP_CH_DET_VS
+msgid "The expansion has changed"
+msgstr ""
+
+# SDR_INTRP_CH_NO_VS
+#: SDR_INTRP_CH_NO_VS
+msgid "Unable to evaluate changes to the expansion"
+msgstr ""
+
+# SDR_LIMITED_ONE
+#: SDR_LIMITED_ONE
+msgid "This element is an array in the base standard, but the profile only allows one element"
+msgstr ""
+
+# SDR_META_CH_DET
+#: SDR_META_CH_DET
+msgid "The resource metadata has changed ({0})"
+msgstr ""
+
+# SDR_META_CH_NO
+#: SDR_META_CH_NO
+msgid "Unable to evaluate changes to metadata"
+msgstr ""
+
+# SDR_MOD
+#: SDR_MOD
+msgid "(this element modifies the meaning of other elements)"
+msgstr ""
+
+# SDR_MOD_SUPP
+#: SDR_MOD_SUPP
+msgid "(this element modifies the meaning of other elements, and must be supported)"
+msgstr ""
+
+# SDR_MULTIPLE_PROFILES
+#: SDR_MULTIPLE_PROFILES
+msgid "Multiple profiles are not supported at this time"
+msgstr ""
+
+# SDR_NOT_DONE_CC
+#: SDR_NOT_DONE_CC
+msgid "Error describing concept - not done yet (no codings, no text)"
+msgstr ""
+
+# SDR_NOT_GEN
+#: SDR_NOT_GEN
+msgid "Generating text summary of fixed value not yet done for type {0}"
+msgstr ""
+
+# SDR_NOT_HANDLED_EXT
+#: SDR_NOT_HANDLED_EXT
+msgid "Not handled yet: complex extension ''{0}''"
+msgstr ""
+
+# SDR_NOT_USED
+#: SDR_NOT_USED
+msgid "This {0} is not used by any profiles in this Implementation Guide"
+msgstr ""
+
+# SDR_OFF_URL
+#: SDR_OFF_URL
+msgid "The official URL for this profile is"
+msgstr ""
+
+# SDR_ONE_OF
+#: SDR_ONE_OF
+msgid "One of these {0}"
+msgstr ""
+
+# SDR_ONLY_ONE
+#: SDR_ONLY_ONE
+msgid "Only One!"
+msgstr ""
+
+# SDR_PATTERN_VALUE
+#: SDR_PATTERN_VALUE
+msgctxt "SDR_PATTERN_VALUE"
+msgid "Pattern Value: {0}"
+msgstr ""
+
+# SDR_PRIM_VALUE
+#: SDR_PRIM_VALUE
+msgid "Primitive Value {0}"
+msgstr ""
+
+# SDR_REFER
+#: SDR_REFER
+msgid "Refer to this {0}"
+msgstr ""
+
+# SDR_REQUIRED
+#: SDR_REQUIRED
+msgid "This element is required"
+msgstr ""
+
+# SDR_SEARCH
+#: SDR_SEARCH
+msgid "Search Parameters using this {0}"
+msgstr ""
+
+# SDR_SORTED
+#: SDR_SORTED
+msgid "// sliced by {0} in the specified order {1}"
+msgstr ""
+
+# SDR_SRC_FHIR
+#: SDR_SRC_FHIR
+msgid "FHIR Std."
+msgstr ""
+
+# SDR_SRC_IG
+#: SDR_SRC_IG
+msgid "This IG"
+msgstr ""
+
+# SDR_SUPP
+#: SDR_SUPP
+msgid "(this element must be supported)"
+msgstr ""
+
+# SDR_UNK_EXT
+#: SDR_UNK_EXT
+msgid "Not handled yet: unknown extension ''{0}''"
+msgstr ""
+
+# SDR_USAGE
+#: SDR_USAGE
+msgid "Usages"
+msgstr ""
+
+# SDR_USE
+#: SDR_USE
+msgid "Use this {0}"
+msgstr ""
+
+# SDR_VER_BEF
+#: SDR_VER_BEF
+msgid "For versions until {0}"
+msgstr ""
+
+# SDR_VER_FOR
+#: SDR_VER_FOR
+msgid "For version {0}"
+msgstr ""
+
+# SDR_VER_FROM_PFX
+#: SDR_VER_FROM_PFX
+msgctxt "SDR_VER_FROM_PFX"
+msgid "FHIR versions"
+msgstr ""
+
+# SDR_VER_FROM_SFX
+#: SDR_VER_FROM_SFX
+msgid "and after"
+msgstr ""
+
+# SDR_VER_ON
+#: SDR_VER_ON
+msgid "For versions {0} onwards"
+msgstr ""
+
+# SDR_VER_RANGE
+#: SDR_VER_RANGE
+msgid "For versions {0} to {1}"
+msgstr ""
+
+# SDR_VER_RANGE_MID
+#: SDR_VER_RANGE_MID
+msgctxt "SDR_VER_RANGE_MID"
+msgid "to"
+msgstr ""
+
+# SDR_VER_RANGE_PFX
+#: SDR_VER_RANGE_PFX
+msgctxt "SDR_VER_RANGE_PFX"
+msgid "FHIR versions"
+msgstr ""
+
+# SDR_VER_RANGE_SFX
+#: SDR_VER_RANGE_SFX
+msgctxt "SDR_VER_RANGE_SFX"
+msgid "-- no content: do not translate #28 --"
+msgstr ""
+
+# SDR_VER_TO_PFX
+#: SDR_VER_TO_PFX
+msgid "FHIR versions up to"
+msgstr ""
+
+# SDR_VER_TO_SFX
+#: SDR_VER_TO_SFX
+msgctxt "SDR_VER_TO_SFX"
+msgid "-- no content: do not translate #29 --"
+msgstr ""
+
+# SDR_VER_UNK
+#: SDR_VER_UNK
+msgid "For unknown versions"
+msgstr ""
+
+# SDT_DEF
+#: SDT_DEF
+msgctxt "SDT_DEF"
+msgid "Definition"
+msgstr ""
+
+# SDT_DT
+#: SDT_DT
+msgid "DataType"
+msgstr ""
+
+# SDT_DT_PROF
+#: SDT_DT_PROF
+msgid "DataType Profile"
+msgstr ""
+
+# SDT_EXTENSION
+#: SDT_EXTENSION
+msgctxt "SDT_EXTENSION"
+msgid "Extension"
+msgstr ""
+
+# SDT_LM
+#: SDT_LM
+msgctxt "SDT_LM"
+msgid "Logical Model"
+msgstr ""
+
+# SDT_LM_PROF
+#: SDT_LM_PROF
+msgid "Logical Model Profile"
+msgstr ""
+
+# SDT_OBLIGATION_PROFILE
+#: SDT_OBLIGATION_PROFILE
+msgid "Obligation Profile"
+msgstr ""
+
+# SDT_ORIGINAL_SOURCE
+#: SDT_ORIGINAL_SOURCE
+msgid "Original Source"
+msgstr ""
+
+# SDT_PT
+#: SDT_PT
+msgid "Primitive Type"
+msgstr ""
+
+# SDT_PT_PROF
+#: SDT_PT_PROF
+msgid "Primitive Type Profile"
+msgstr ""
+
+# SDT_RES
+#: SDT_RES
+msgctxt "SDT_RES"
+msgid "Resource"
+msgstr ""
+
+# SDT_RES_PROF
+#: SDT_RES_PROF
+msgctxt "SDT_RES_PROF"
+msgid "Profile"
+msgstr ""
+
 # SD_COMP_HEAD_CARD_L
 #: SD_COMP_HEAD_CARD_L
 msgid "L Card."
@@ -2917,11 +3629,6 @@ msgstr ""
 msgid "Mandatory: {0} {1}"
 msgstr ""
 
-# SD_SUMMARY_MAPPINGS
-#: SD_SUMMARY_MAPPINGS
-msgid "Mappings for {0} ({2}{1}{3})"
-msgstr ""
-
 # SD_SUMMARY_MISSING_EXTENSION
 #: SD_SUMMARY_MISSING_EXTENSION
 msgid "Unable to summarise extension {0} (no extension found)"
@@ -2968,6 +3675,11 @@ msgstr ""
 # SD_SUMMARY_SLICE_NONE
 #: SD_SUMMARY_SLICE_NONE
 msgid "There is a slice with no discriminator at {0}"
+msgstr ""
+
+# SD_XIG_LINK
+#: SD_XIG_LINK
+msgid "<p>You can also check for <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">usages in the FHIR IG Statistics</a></p>"
 msgstr ""
 
 # SEARCH_PAR_ALLOWED
@@ -3022,6 +3734,7 @@ msgstr ""
 
 # SEARCH_PAR_NONE
 #: SEARCH_PAR_NONE
+msgctxt "SEARCH_PAR_NONE"
 msgid "(none)"
 msgstr ""
 
@@ -3038,6 +3751,21 @@ msgstr ""
 # SEARCH_PAR_RES
 #: SEARCH_PAR_RES
 msgid "All Resources"
+msgstr ""
+
+# STATUS_MSG_AUTOBUILD
+#: STATUS_MSG_AUTOBUILD
+msgid "{0}, published by {1}. This guide is not an authorized publication; it is the continuous build for version {2}  built by the FHIR (HL7&reg; FHIR&reg; Standard) CI Build. This version is based on the current content of <a href=''{3}''>{3}</a> and changes regularly. See the <a href=''{4}/history.html''>Directory of published versions</a>"
+msgstr ""
+
+# STATUS_MSG_LOCAL_BUILD
+#: STATUS_MSG_LOCAL_BUILD
+msgid "{0} - Local Development build (v{1}) built by the FHIR (HL7® FHIR® Standard) Build Tools. See the <a href=''{2}/history.html''>Directory of published versions</a>"
+msgstr ""
+
+# STATUS_MSG_PUBLICATION_HOLDER
+#: STATUS_MSG_PUBLICATION_HOLDER
+msgid "Publication Build: This will be filled in by the publication tooling"
 msgstr ""
 
 # STRUC_DEF_ABSTRACT
@@ -3063,11 +3791,6 @@ msgstr ""
 # STRUC_DEF_ALL_ACTORS
 #: STRUC_DEF_ALL_ACTORS
 msgid "All Actors"
-msgstr ""
-
-# STRUC_DEF_ALL_MAP_KEY
-#: STRUC_DEF_ALL_MAP_KEY
-msgid "All Mappings are Empty"
 msgstr ""
 
 # STRUC_DEF_ALL_SLICES
@@ -3208,7 +3931,7 @@ msgstr ""
 
 # STRUC_DEF_COMPLEXBRACK
 #: STRUC_DEF_COMPLEXBRACK
-msgid "(complex)"
+msgid "(Complex)"
 msgstr ""
 
 # STRUC_DEF_COMP_DOC
@@ -3238,6 +3961,7 @@ msgstr ""
 
 # STRUC_DEF_CONSTRAINTS
 #: STRUC_DEF_CONSTRAINTS
+msgctxt "STRUC_DEF_CONSTRAINTS"
 msgid "Constraints"
 msgstr ""
 
@@ -3254,6 +3978,11 @@ msgstr ""
 # STRUC_DEF_CONT_TYPE
 #: STRUC_DEF_CONT_TYPE
 msgid "Content/Rules for all Types"
+msgstr ""
+
+# STRUC_DEF_COPY_CODING
+#: STRUC_DEF_COPY_CODING
+msgid "Click to Copy as Coding"
 msgstr ""
 
 # STRUC_DEF_COPY_URL
@@ -3483,6 +4212,11 @@ msgstr ""
 msgid "If"
 msgstr ""
 
+# STRUC_DEF_IMPLEMENTS
+#: STRUC_DEF_IMPLEMENTS
+msgid "Interfaces Implemented"
+msgstr ""
+
 # STRUC_DEF_IMPOSE_PROFILE
 #: STRUC_DEF_IMPOSE_PROFILE
 msgid "Impose Profile"
@@ -3600,6 +4334,7 @@ msgstr ""
 
 # STRUC_DEF_LOGICAL
 #: STRUC_DEF_LOGICAL
+msgctxt "STRUC_DEF_LOGICAL"
 msgid "Logical Model"
 msgstr ""
 
@@ -3667,6 +4402,11 @@ msgstr ""
 # STRUC_DEF_MODIFIER
 #: STRUC_DEF_MODIFIER
 msgid "Is Modifier"
+msgstr ""
+
+# STRUC_DEF_MODIFIER_EXT
+#: STRUC_DEF_MODIFIER_EXT
+msgid "This is a modifier extension"
 msgstr ""
 
 # STRUC_DEF_MUST_SUPPORT
@@ -3766,6 +4506,7 @@ msgstr ""
 
 # STRUC_DEF_PATH
 #: STRUC_DEF_PATH
+msgctxt "STRUC_DEF_PATH"
 msgid "Path"
 msgstr ""
 
@@ -4175,6 +4916,11 @@ msgstr ""
 msgid "* create result = {0}"
 msgstr ""
 
+# SUB_TOPIC_CURR
+#: SUB_TOPIC_CURR
+msgid "* current = {0}"
+msgstr ""
+
 # SUB_TOPIC_DELETE
 #: SUB_TOPIC_DELETE
 msgid "* delete result = {0}"
@@ -4433,7 +5179,7 @@ msgstr ""
 
 # VALUE_SET_AUS
 #: VALUE_SET_AUS
-msgid "Australian"
+msgid "Australian Edition"
 msgstr ""
 
 # VALUE_SET_BE
@@ -4441,14 +5187,14 @@ msgstr ""
 msgid "Belgian Edition"
 msgstr ""
 
+# VALUE_SET_CA
+#: VALUE_SET_CA
+msgid "Canadian Edition"
+msgstr ""
+
 # VALUE_SET_CA_EN
 #: VALUE_SET_CA_EN
 msgid "Canadian English Edition"
-msgstr ""
-
-# VALUE_SET_CA_FR
-#: VALUE_SET_CA_FR
-msgid "Canadian Canadian French Edition"
 msgstr ""
 
 # VALUE_SET_CH
@@ -4689,6 +5435,14 @@ msgstr ""
 msgid "Loinc v"
 msgstr ""
 
+# VALUE_SET_NEEDS_SUPPL
+#: VALUE_SET_NEEDS_SUPPL
+msgid "This ValueSet requires the Code system Supplement"
+msgid_plural "This ValueSet requires the Code system Supplements"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
 # VALUE_SET_NO
 #: VALUE_SET_NO
 msgid "Norwegian Edition"
@@ -4854,9 +5608,69 @@ msgstr ""
 msgid ", where the codes are contained in"
 msgstr ""
 
+# VSR_LOGICAL
+#: VSR_LOGICAL
+msgid "Logical Definition (CLD)"
+msgstr ""
+
+# VSR_NO_DEF
+#: VSR_NO_DEF
+msgid "No formal definition provided for this value set"
+msgstr ""
+
+# VSR_TRIGGER
+#: VSR_TRIGGER
+msgid "Used as a trigger criteria in"
+msgstr ""
+
 # VS_ABSTRACT_CODE_HINT
 #: VS_ABSTRACT_CODE_HINT
 msgid "This code is not selectable (''Abstract'')"
+msgstr ""
+
+# VS_VERSION_BY_PACKAGE
+#: VS_VERSION_BY_PACKAGE
+msgid "Version is not explicitly stated, which means it is fixed to {0}, the version found through the package references"
+msgstr ""
+
+# VS_VERSION_FOUND
+#: VS_VERSION_FOUND
+msgid "Version is not explicity stated. When building this specification, the most recent version {0} has been used"
+msgstr ""
+
+# VS_VERSION_NONE
+#: VS_VERSION_NONE
+msgid "Version is not explicity stated, and the target {0} has no stated version either"
+msgstr ""
+
+# VS_VERSION_NOTHING
+#: VS_VERSION_NOTHING
+msgid "Version is not explicity stated. No matching {0} found"
+msgstr ""
+
+# VS_VERSION_NOTHING_TEXT
+#: VS_VERSION_NOTHING_TEXT
+msgid "Not State"
+msgstr ""
+
+# VS_VERSION_STATED
+#: VS_VERSION_STATED
+msgid "Version is explicitly stated to be {0}"
+msgstr ""
+
+# VS_VERSION_THIS_PACKAGE
+#: VS_VERSION_THIS_PACKAGE
+msgid "Version is not explicitly stated, which means it is fixed to the version provided in this specification"
+msgstr ""
+
+# VS_VERSION_WILDCARD
+#: VS_VERSION_WILDCARD
+msgid "Version is stated to be {0}. When building this specification, the most recent matching version {1} has been used"
+msgstr ""
+
+# VS_VERSION_WILDCARD_BY_PACKAGE
+#: VS_VERSION_WILDCARD_BY_PACKAGE
+msgid "Version is stated to be {0}, which means it is fixed to {1}, the version found through the package references"
 msgstr ""
 
 # _NA

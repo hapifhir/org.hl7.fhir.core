@@ -330,16 +330,6 @@ public class ClinicalImpression extends DomainResource {
       return getItem().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getItemTarget() {
-      if (this.itemTarget == null)
-        this.itemTarget = new ArrayList<Resource>();
-      return this.itemTarget;
-    }
-
     protected void listChildren(List<Property> children) {
       super.listChildren(children);
       children.add(new Property("code", "CodeableConcept",
@@ -1429,7 +1419,7 @@ public class ClinicalImpression extends DomainResource {
   }
 
   public boolean hasEffectiveDateTimeType() {
-    return this != null && this.effective instanceof DateTimeType;
+      return this.effective instanceof DateTimeType;
   }
 
   /**
@@ -1446,7 +1436,7 @@ public class ClinicalImpression extends DomainResource {
   }
 
   public boolean hasEffectivePeriod() {
-    return this != null && this.effective instanceof Period;
+      return this.effective instanceof Period;
   }
 
   public boolean hasEffective() {
@@ -1680,16 +1670,6 @@ public class ClinicalImpression extends DomainResource {
       addProblem();
     }
     return getProblem().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getProblemTarget() {
-    if (this.problemTarget == null)
-      this.problemTarget = new ArrayList<Resource>();
-    return this.problemTarget;
   }
 
   /**
@@ -2041,28 +2021,6 @@ public class ClinicalImpression extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<RiskAssessment> getPrognosisReferenceTarget() {
-    if (this.prognosisReferenceTarget == null)
-      this.prognosisReferenceTarget = new ArrayList<RiskAssessment>();
-    return this.prognosisReferenceTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public RiskAssessment addPrognosisReferenceTarget() {
-    RiskAssessment r = new RiskAssessment();
-    if (this.prognosisReferenceTarget == null)
-      this.prognosisReferenceTarget = new ArrayList<RiskAssessment>();
-    this.prognosisReferenceTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #supportingInfo} (Information supporting the clinical
    *         impression.)
    */
@@ -2115,16 +2073,6 @@ public class ClinicalImpression extends DomainResource {
       addSupportingInfo();
     }
     return getSupportingInfo().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getSupportingInfoTarget() {
-    if (this.supportingInfoTarget == null)
-      this.supportingInfoTarget = new ArrayList<Resource>();
-    return this.supportingInfoTarget;
   }
 
   /**

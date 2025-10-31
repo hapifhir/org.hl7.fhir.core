@@ -2596,7 +2596,7 @@ public class RequestGroup extends DomainResource {
     }
 
     public boolean hasTimingDateTimeType() {
-      return this != null && this.timing instanceof DateTimeType;
+        return this.timing instanceof DateTimeType;
     }
 
     /**
@@ -2613,7 +2613,7 @@ public class RequestGroup extends DomainResource {
     }
 
     public boolean hasTimingAge() {
-      return this != null && this.timing instanceof Age;
+        return this.timing instanceof Age;
     }
 
     /**
@@ -2630,7 +2630,7 @@ public class RequestGroup extends DomainResource {
     }
 
     public boolean hasTimingPeriod() {
-      return this != null && this.timing instanceof Period;
+        return this.timing instanceof Period;
     }
 
     /**
@@ -2647,7 +2647,7 @@ public class RequestGroup extends DomainResource {
     }
 
     public boolean hasTimingDuration() {
-      return this != null && this.timing instanceof Duration;
+        return this.timing instanceof Duration;
     }
 
     /**
@@ -2664,7 +2664,7 @@ public class RequestGroup extends DomainResource {
     }
 
     public boolean hasTimingRange() {
-      return this != null && this.timing instanceof Range;
+        return this.timing instanceof Range;
     }
 
     /**
@@ -2681,7 +2681,7 @@ public class RequestGroup extends DomainResource {
     }
 
     public boolean hasTimingTiming() {
-      return this != null && this.timing instanceof Timing;
+        return this.timing instanceof Timing;
     }
 
     public boolean hasTiming() {
@@ -2753,16 +2753,6 @@ public class RequestGroup extends DomainResource {
         addParticipant();
       }
       return getParticipant().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getParticipantTarget() {
-      if (this.participantTarget == null)
-        this.participantTarget = new ArrayList<Resource>();
-      return this.participantTarget;
     }
 
     /**
@@ -4232,7 +4222,7 @@ public class RequestGroup extends DomainResource {
     }
 
     public boolean hasOffsetDuration() {
-      return this != null && this.offset instanceof Duration;
+        return this.offset instanceof Duration;
     }
 
     /**
@@ -4249,7 +4239,7 @@ public class RequestGroup extends DomainResource {
     }
 
     public boolean hasOffsetRange() {
-      return this != null && this.offset instanceof Range;
+        return this.offset instanceof Range;
     }
 
     public boolean hasOffset() {
@@ -4914,16 +4904,6 @@ public class RequestGroup extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getBasedOnTarget() {
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<Resource>();
-    return this.basedOnTarget;
-  }
-
-  /**
    * @return {@link #replaces} (Completed or terminated request(s) whose function
    *         is taken by this new request.)
    */
@@ -4976,16 +4956,6 @@ public class RequestGroup extends DomainResource {
       addReplaces();
     }
     return getReplaces().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getReplacesTarget() {
-    if (this.replacesTarget == null)
-      this.replacesTarget = new ArrayList<Resource>();
-    return this.replacesTarget;
   }
 
   /**
@@ -5517,16 +5487,6 @@ public class RequestGroup extends DomainResource {
       addReasonReference();
     }
     return getReasonReference().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getReasonReferenceTarget() {
-    if (this.reasonReferenceTarget == null)
-      this.reasonReferenceTarget = new ArrayList<Resource>();
-    return this.reasonReferenceTarget;
   }
 
   /**

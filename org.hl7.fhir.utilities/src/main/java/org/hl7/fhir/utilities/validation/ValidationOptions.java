@@ -45,6 +45,7 @@ public class ValidationOptions {
   private boolean exampleOK = false;
   private FhirPublication fhirVersion;
   private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy = R5BundleRelativeReferencePolicy.DEFAULT;
+  private boolean isDefaultLang = false;
   
   public ValidationOptions() { this(FhirPublication.R5); }
 
@@ -57,11 +58,14 @@ public class ValidationOptions {
     super();
     if (!Utilities.noString(language)) {
       langs = new AcceptLanguageHeader(language, false);
+      isDefaultLang = false;
     }
   }
 
   public static ValidationOptions defaults() {
-    return new ValidationOptions(FhirPublication.R5, "en, en-US");
+    ValidationOptions vo = new ValidationOptions(FhirPublication.R5, "en, en-US");
+    vo.isDefaultLang  = true;
+    return vo;
   }
   
   /**
@@ -169,10 +173,16 @@ public class ValidationOptions {
     n.useServer = false;
     return n;
   }
-  
+
   public ValidationOptions withNoClient() {
     ValidationOptions n = this.copy();
     n.useClient = false;
+    return n;
+  }
+
+  public ValidationOptions withUseClient(boolean value) {
+    ValidationOptions n = this.copy();
+    n.useClient = value;
     return n;
   }
 
@@ -227,25 +237,27 @@ public class ValidationOptions {
   }
 
   public ValidationOptions addLanguage(String language) {
-    if (this.langs == null) {
+    if (this.langs == null || isDefaultLang) {
       langs = new AcceptLanguageHeader(language, false);
     } else {
       langs.add(language);
+      isDefaultLang = false;
     }
     return this;
   }
 
   public ValidationOptions setLanguages(String language) {
     langs = new AcceptLanguageHeader(language, false);
+    isDefaultLang = false;
     return this;
   }
 
-  public ValidationOptions setNoServer(boolean useServer) {
+  public ValidationOptions setUseServer(boolean useServer) {
     this.useServer = useServer;
     return this;
   }
   
-  public ValidationOptions setNoClient(boolean useClient) {
+  public ValidationOptions setUseClient(boolean useClient) {
     this.useClient = useClient;
     return this;
   }
@@ -327,6 +339,7 @@ public class ValidationOptions {
   public ValidationOptions copy() {
     ValidationOptions n = new ValidationOptions(fhirVersion);
     n.langs = langs == null ? null : langs.copy();
+    n.isDefaultLang = isDefaultLang;
     n.useServer = useServer;
     n.useClient = useClient;
     n.guessSystem = guessSystem; 

@@ -849,7 +849,7 @@ public class MedicationAdministration extends DomainResource {
     }
 
     public boolean hasRateRatio() {
-      return this != null && this.rate instanceof Ratio;
+        return this.rate instanceof Ratio;
     }
 
     /**
@@ -869,7 +869,7 @@ public class MedicationAdministration extends DomainResource {
     }
 
     public boolean hasRateQuantity() {
-      return this != null && this.rate instanceof Quantity;
+        return this.rate instanceof Quantity;
     }
 
     public boolean hasRate() {
@@ -1587,16 +1587,6 @@ public class MedicationAdministration extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getPartOfTarget() {
-    if (this.partOfTarget == null)
-      this.partOfTarget = new ArrayList<Resource>();
-    return this.partOfTarget;
-  }
-
-  /**
    * @return {@link #status} (Will generally be set to show that the
    *         administration has been completed. For some long running
    *         administrations such as infusions, it is possible for an
@@ -1767,7 +1757,7 @@ public class MedicationAdministration extends DomainResource {
   }
 
   public boolean hasMedicationCodeableConcept() {
-    return this != null && this.medication instanceof CodeableConcept;
+      return this.medication instanceof CodeableConcept;
   }
 
   /**
@@ -1786,7 +1776,7 @@ public class MedicationAdministration extends DomainResource {
   }
 
   public boolean hasMedicationReference() {
-    return this != null && this.medication instanceof Reference;
+      return this.medication instanceof Reference;
   }
 
   public boolean hasMedication() {
@@ -1964,16 +1954,6 @@ public class MedicationAdministration extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getSupportingInformationTarget() {
-    if (this.supportingInformationTarget == null)
-      this.supportingInformationTarget = new ArrayList<Resource>();
-    return this.supportingInformationTarget;
-  }
-
-  /**
    * @return {@link #effective} (A specific date/time or interval of time during
    *         which the administration took place (or did not take place, when the
    *         'notGiven' attribute is true). For many administrations, such as
@@ -1999,7 +1979,7 @@ public class MedicationAdministration extends DomainResource {
   }
 
   public boolean hasEffectiveDateTimeType() {
-    return this != null && this.effective instanceof DateTimeType;
+      return this.effective instanceof DateTimeType;
   }
 
   /**
@@ -2018,7 +1998,7 @@ public class MedicationAdministration extends DomainResource {
   }
 
   public boolean hasEffectivePeriod() {
-    return this != null && this.effective instanceof Period;
+      return this.effective instanceof Period;
   }
 
   public boolean hasEffective() {
@@ -2204,16 +2184,6 @@ public class MedicationAdministration extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getReasonReferenceTarget() {
-    if (this.reasonReferenceTarget == null)
-      this.reasonReferenceTarget = new ArrayList<Resource>();
-    return this.reasonReferenceTarget;
-  }
-
-  /**
    * @return {@link #request} (The original request, instruction or authority to
    *         perform the administration.)
    */
@@ -2319,28 +2289,6 @@ public class MedicationAdministration extends DomainResource {
       addDevice();
     }
     return getDevice().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Device> getDeviceTarget() {
-    if (this.deviceTarget == null)
-      this.deviceTarget = new ArrayList<Device>();
-    return this.deviceTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Device addDeviceTarget() {
-    Device r = new Device();
-    if (this.deviceTarget == null)
-      this.deviceTarget = new ArrayList<Device>();
-    this.deviceTarget.add(r);
-    return r;
   }
 
   /**
@@ -2477,28 +2425,6 @@ public class MedicationAdministration extends DomainResource {
       addEventHistory();
     }
     return getEventHistory().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Provenance> getEventHistoryTarget() {
-    if (this.eventHistoryTarget == null)
-      this.eventHistoryTarget = new ArrayList<Provenance>();
-    return this.eventHistoryTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public Provenance addEventHistoryTarget() {
-    Provenance r = new Provenance();
-    if (this.eventHistoryTarget == null)
-      this.eventHistoryTarget = new ArrayList<Provenance>();
-    this.eventHistoryTarget.add(r);
-    return r;
   }
 
   protected void listChildren(List<Property> children) {

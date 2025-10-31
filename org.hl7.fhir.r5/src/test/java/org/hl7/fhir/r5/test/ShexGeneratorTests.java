@@ -4,20 +4,32 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
+import lombok.extern.slf4j.Slf4j;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.conformance.ShExGenerator;
 import org.hl7.fhir.r5.conformance.ShExGenerator.HTMLLinkPolicy;
 
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.FileUtilities;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+@Slf4j
 public class ShexGeneratorTests {
   public ShExGenerator shexGenerator;
 
@@ -42,6 +54,26 @@ public class ShexGeneratorTests {
     //    this.doTestSingleSD(name.toLowerCase(), cat, name,
     //      false, ShExGenerator.ConstraintTranslationPolicy.ALL,
     //      true, true, false, processConstraints);
+  }
+
+  @Test
+  public void testCompleteModel() throws FHIRException, IOException, UcumException {
+      var workerContext = TestingUtilities.getSharedWorkerContext();
+      ShExGenerator shgen = new ShExGenerator(workerContext);
+      shgen.completeModel = true;
+      shgen.withComments = false;
+      Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), "fhir.shex");
+      List<StructureDefinition> list = new ArrayList<StructureDefinition>();
+      for (StructureDefinition sd : new ContextUtilities(workerContext).allStructures()) {
+        if (sd.getKind() == StructureDefinition.StructureDefinitionKind.LOGICAL)
+          // Skip logical models
+          continue;
+        // Include <Base> which has no derivation
+        if (sd.getDerivation() == null || sd.getDerivation() == TypeDerivationRule.SPECIALIZATION)
+          list.add(sd);
+      }
+      System.out.println("Generating Complete FHIR ShEx to " + outPath.toString());
+      FileUtilities.stringToFile(shgen.generate(HTMLLinkPolicy.NONE, list), outPath.toString());
   }
 
   @Test
@@ -124,5 +156,45 @@ public class ShexGeneratorTests {
     doTest("Element", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }
 
+  final static String SHEX_STRING_A ="""
+  #IgnoreMe
+  fhirvs:aaa [\"a\" \"b\"]
+  """;
+  final static String SHEX_STRING_A_IGNORE_START ="""
+  #IgnoreMeA
+  fhirvs:aaa [\"a\" \"b\"]
+  """;
+
+  final static String SHEX_STRING_A_IGNORE_END ="""
+  #IgnoreMe
+  fhirvs:aaa [\"a\" \"b\" \"c\"]
+  """;
+
+  final static String SHEX_STRING_B = """
+  #IgnoreMe
+  fhirvs:bbb [\"a\" \"b\"]
+  """;;
+  final static String SHEX_STRING_MISSING = "";
+
+  public static Stream<Arguments> stringsToCompare() {
+    return Stream.of(
+      Arguments.of(SHEX_STRING_A, null, 3),
+      Arguments.of(SHEX_STRING_A, SHEX_STRING_A, 0),
+      Arguments.of(SHEX_STRING_A, SHEX_STRING_A_IGNORE_START, 0),
+      Arguments.of(SHEX_STRING_A, SHEX_STRING_A_IGNORE_END, 0),
+      Arguments.of(SHEX_STRING_A, SHEX_STRING_B, -1),
+      Arguments.of(SHEX_STRING_A, SHEX_STRING_MISSING, 3)
+      );
+  }
+
+  @ParameterizedTest(name = "ShExComparator: {0} compareTo {1} = {2}")
+  @MethodSource("stringsToCompare")
+  public void testShExComparator(String o1, String o2, int aCompareBExpected) {
+    ShExGenerator.ShExComparator comparator = new ShExGenerator.ShExComparator();
+    int aCompareB = comparator.compare(o1, o2);
+    int bCompareA = comparator.compare(o2, o1);
+    assertThat(aCompareB).isEqualTo(aCompareBExpected);
+    assertThat(aCompareB).isEqualTo(-bCompareA);
+  }
 
 }

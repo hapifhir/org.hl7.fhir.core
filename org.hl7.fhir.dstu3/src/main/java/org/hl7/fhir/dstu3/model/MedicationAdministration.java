@@ -693,8 +693,8 @@ The dosage instructions should reflect the dosage of the medication that was adm
           return (Ratio) this.rate;
         }
 
-        public boolean hasRateRatio() { 
-          return this != null && this.rate instanceof Ratio;
+        public boolean hasRateRatio() {
+            return this.rate instanceof Ratio;
         }
 
         /**
@@ -708,8 +708,8 @@ The dosage instructions should reflect the dosage of the medication that was adm
           return (SimpleQuantity) this.rate;
         }
 
-        public boolean hasRateSimpleQuantity() { 
-          return this != null && this.rate instanceof SimpleQuantity;
+        public boolean hasRateSimpleQuantity() {
+            return this.rate instanceof SimpleQuantity;
         }
 
         public boolean hasRate() { 
@@ -1237,16 +1237,6 @@ The dosage instructions should reflect the dosage of the medication that was adm
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getDefinitionTarget() { 
-      if (this.definitionTarget == null)
-        this.definitionTarget = new ArrayList<Resource>();
-      return this.definitionTarget;
-    }
-
-    /**
      * @return {@link #partOf} (A larger event of which this particular event is a component or step.)
      */
     public List<Reference> getPartOf() { 
@@ -1297,16 +1287,6 @@ The dosage instructions should reflect the dosage of the medication that was adm
         addPartOf();
       }
       return getPartOf().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getPartOfTarget() { 
-      if (this.partOfTarget == null)
-        this.partOfTarget = new ArrayList<Resource>();
-      return this.partOfTarget;
     }
 
     /**
@@ -1396,8 +1376,8 @@ The dosage instructions should reflect the dosage of the medication that was adm
       return (CodeableConcept) this.medication;
     }
 
-    public boolean hasMedicationCodeableConcept() { 
-      return this != null && this.medication instanceof CodeableConcept;
+    public boolean hasMedicationCodeableConcept() {
+        return this.medication instanceof CodeableConcept;
     }
 
     /**
@@ -1411,8 +1391,8 @@ The dosage instructions should reflect the dosage of the medication that was adm
       return (Reference) this.medication;
     }
 
-    public boolean hasMedicationReference() { 
-      return this != null && this.medication instanceof Reference;
+    public boolean hasMedicationReference() {
+        return this.medication instanceof Reference;
     }
 
     public boolean hasMedication() { 
@@ -1561,16 +1541,6 @@ The dosage instructions should reflect the dosage of the medication that was adm
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getSupportingInformationTarget() { 
-      if (this.supportingInformationTarget == null)
-        this.supportingInformationTarget = new ArrayList<Resource>();
-      return this.supportingInformationTarget;
-    }
-
-    /**
      * @return {@link #effective} (A specific date/time or interval of time during which the administration took place (or did not take place, when the 'notGiven' attribute is true). For many administrations, such as swallowing a tablet the use of dateTime is more appropriate.)
      */
     public Type getEffective() { 
@@ -1588,8 +1558,8 @@ The dosage instructions should reflect the dosage of the medication that was adm
       return (DateTimeType) this.effective;
     }
 
-    public boolean hasEffectiveDateTimeType() { 
-      return this != null && this.effective instanceof DateTimeType;
+    public boolean hasEffectiveDateTimeType() {
+        return this.effective instanceof DateTimeType;
     }
 
     /**
@@ -1603,8 +1573,8 @@ The dosage instructions should reflect the dosage of the medication that was adm
       return (Period) this.effective;
     }
 
-    public boolean hasEffectivePeriod() { 
-      return this != null && this.effective instanceof Period;
+    public boolean hasEffectivePeriod() {
+        return this.effective instanceof Period;
     }
 
     public boolean hasEffective() { 
@@ -1879,16 +1849,6 @@ The dosage instructions should reflect the dosage of the medication that was adm
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
-    }
-
-    /**
      * @return {@link #prescription} (The original request, instruction or authority to perform the administration.)
      */
     public Reference getPrescription() { 
@@ -1983,28 +1943,6 @@ The dosage instructions should reflect the dosage of the medication that was adm
         addDevice();
       }
       return getDevice().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Device> getDeviceTarget() { 
-      if (this.deviceTarget == null)
-        this.deviceTarget = new ArrayList<Device>();
-      return this.deviceTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Device addDeviceTarget() { 
-      Device r = new Device();
-      if (this.deviceTarget == null)
-        this.deviceTarget = new ArrayList<Device>();
-      this.deviceTarget.add(r);
-      return r;
     }
 
     /**
@@ -2135,28 +2073,6 @@ The dosage instructions should reflect the dosage of the medication that was adm
         addEventHistory();
       }
       return getEventHistory().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Provenance> getEventHistoryTarget() { 
-      if (this.eventHistoryTarget == null)
-        this.eventHistoryTarget = new ArrayList<Provenance>();
-      return this.eventHistoryTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Provenance addEventHistoryTarget() { 
-      Provenance r = new Provenance();
-      if (this.eventHistoryTarget == null)
-        this.eventHistoryTarget = new ArrayList<Provenance>();
-      this.eventHistoryTarget.add(r);
-      return r;
     }
 
       protected void listChildren(List<Property> children) {

@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.terminologies.utilities;
 
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -15,6 +16,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import java.util.ArrayList;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class TerminologyOperationContext {
 
   public static class TerminologyServiceProtectionException extends FHIRException {
@@ -96,12 +98,16 @@ public class TerminologyOperationContext {
   public void deadCheck(String note) {
     note(note);
     if (deadTime != 0 &&  System.currentTimeMillis() > deadTime) {
-      System.out.println();
-      System.out.println("Operation took too long - longer than "+(deadTime - startTime)+"ms");
-      for (String s : notes) {
-        System.out.println(s);
-      }
-      throw new TerminologyServiceProtectionException(worker.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_TIME, contexts.get(0), EXPANSION_DEAD_TIME_SECS, name+" (local)"), TerminologyServiceErrorClass.TOO_COSTLY, IssueType.TOOCOSTLY);
+     log.error("Operation took too long - longer than "+(deadTime - startTime)+"ms");
+     int i = 0;
+     for (String s : notes) {
+       log.error(s);
+       if (i == 100) {
+         log.error("more...");
+         break; // no point dumping more
+       }
+     }
+     throw new TerminologyServiceProtectionException(worker.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_TIME, contexts.get(0), EXPANSION_DEAD_TIME_SECS, name+" (local)"), TerminologyServiceErrorClass.TOO_COSTLY, IssueType.TOOCOSTLY);
     }
   }
   

@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CompartmentDefinition;
 import org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent;
@@ -66,6 +67,7 @@ changes for James
 - add hasX
   
 */
+@Slf4j
 public class JavaResourceGenerator extends JavaBaseGenerator {
 
   public enum JavaGenClass { Type, Resource, Constraint }
@@ -334,12 +336,12 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		      if (n.endsWith("[]")) {
 		        n = Utilities.capitalize(n.substring(0, n.length()-2));
 		        write("      @Override\r\n");
-		        write("      public List<"+t+"> get"+n+"() {\r\n");
+		        write("      public List<"+t+"> get"+n+"List() {\r\n");
 		        write("        return new ArrayList<>();\r\n");
 		        write("      }\r\n");
 		        write("      \r\n");
 		        write("      @Override\r\n");
-		        write("      public CanonicalResource set"+n+"(List<"+t+"> the"+n+") {\r\n");
+		        write("      public CanonicalResource set"+n+"List(List<"+t+"> the"+n+") {\r\n");
 		        write("        return this;\r\n");
 		        write("      }\r\n");
 		        write("      \r\n");
@@ -741,7 +743,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 
   private void jdoc(String indent, String text) throws IOException {
     write(indent+"/**\r\n");
-		write(indent+" * "+text+"\r\n");
+		write(indent+" * "+text.replace("*/", "* /")+"\r\n");
 		write(indent+" */\r\n");
   }
 
@@ -753,7 +755,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     write(indent+"    super.listChildren(children);\r\n");
 	  for (ElementDefinition e : children) {
       if (!isInterface && !e.typeSummary().equals("xhtml")) {
-	      write(indent+"    children.add(new Property(\""+e.getName()+"\", \""+resolvedTypeCode(e)+"\", \""+Utilities.escapeJava(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+"));\r\n");
+	      write(indent+"    children.add(new Property(\""+e.getName()+"\", \""+resolvedTypeCode(e)+"\", \""+Utilities.escapeJava(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+(e.unbounded() ? "List" : "")+"));\r\n");
       }
 	  }
 	  write(indent+"  }\r\n\r\n");  
@@ -763,7 +765,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     for (ElementDefinition e : children) {
       if (!isInterface && !e.typeSummary().equals("xhtml")) {
         write(indent+"    case "+propId(e.getName())+": /*"+e.getName()+"*/ ");
-        write(" return new Property(\""+e.getName()+"\", \""+resolvedTypeCode(e)+"\", \""+Utilities.escapeJava(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+");\r\n");
+        write(" return new Property(\""+e.getName()+"\", \""+resolvedTypeCode(e)+"\", \""+Utilities.escapeJava(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+(e.unbounded() ? "List" : "")+");\r\n");
         if (e.getName().endsWith("[x]")) {
           String n = e.getName().substring(0, e.getName().length()-3);
           write(indent+"    case "+propId(n)+": /*"+n+"*/ ");
@@ -833,30 +835,43 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       }
     }
     return tn.toString();
-	}
+  }
 
-private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent) throws Exception {
-  List<ElementDefinition> children = ti.getChildren();
-  boolean isInterface = analysis.isInterface();
-  List<ElementDefinition> inheritedChildren = ti.getInheritedChildren();
-  
+  private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent) throws Exception {
+    List<ElementDefinition> children = ti.getChildren();
+    boolean isInterface = analysis.isInterface();
+    List<ElementDefinition> inheritedChildren = ti.getInheritedChildren();
+
     write(indent+"  @Override\r\n");
     write(indent+"  public Base makeProperty(int hash, String name) throws FHIRException {\r\n");
     write(indent+"    switch (hash) {\r\n");
     for (ElementDefinition e : children) {
-      if (!isInterface) { 
-        ElementDefinition inh = inheritedChildren == null ? null : matchingInheritedElement(inheritedChildren, e, analysis.getName());
-        String tn = e.getUserString("java.type");
-        if (!e.typeSummary().equals("xhtml")) {
-          genPropMaker(indent, e, tn, e.getName(), inh);
+      String tn = e.getUserString("java.type");
+      StructureDefinition sd = findType(e, tn);
+      boolean abstractTarget = false;
+      if (sd != null) {
+        abstractTarget = sd.getAbstract() && !sd.getUrl().equals("http://hl7.org/fhir/StructureDefinition/Element") && !sd.getUrl().equals("http://hl7.org/fhir/StructureDefinition/BackboneElement");
+      } else {
+        abstractTarget = Utilities.existsInList(e.typeSummary(),"Base");
+      }
+      if (!isInterface) {
+        if (abstractTarget) {
+          write(indent+"    case "+propId(e.getName())+": /*div*/\r\n");
+          write("          throw new Error(\"Unable to make an instance of the abstract property '"+e.getName()+"'\");\r\n");
         } else {
-          write(indent+"    case "+propId("div")+": /*div*/\r\n");
-          write("          if (div == null)\r\n");
-          write("            div = new XhtmlNode(NodeType.Element, \"div\");\r\n");
-          write("          return new StringType(new org.hl7.fhir.utilities.xhtml.XhtmlComposer(true).composeEx(this.div));\r\n");
+          ElementDefinition inh = inheritedChildren == null ? null : matchingInheritedElement(inheritedChildren, e, analysis.getName());
+          if (!e.typeSummary().equals("xhtml")) {
+            genPropMaker(indent, e, tn, e.getName(), inh);
+          } else {
+            write(indent+"    case "+propId("div")+": /*div*/\r\n");
+            write("          if (div == null)\r\n");
+            write("            div = new XhtmlNode(NodeType.Element, \"div\");\r\n");
+            write("          return new StringType(new org.hl7.fhir.utilities.xhtml.XhtmlComposer(true).composeEx(this.div));\r\n");
+          }
+          if (e.getName().endsWith("[x]")) {
+            genPropMaker(indent, e, tn, e.getName().replace("[x]", ""), inh);
+          }
         }
-        if (e.getName().endsWith("[x]"))
-          genPropMaker(indent, e, tn, e.getName().replace("[x]", ""), inh);
       }
     }
     write(indent+"    default: return super.makeProperty(hash, name);\r\n");
@@ -928,7 +943,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
           }
         }
         if (e.unbounded()) {
-          write(indent+"      this.get"+upFirst(getElementName(name, false))+"().add("+cn+"); // "+tn+"\r\n");
+          write(indent+"      this.get"+upFirst(getElementName(name, false))+"List().add("+cn+"); // "+tn+"\r\n");
         } else {
           write(indent+"      this."+getElementName(name, true)+" = "+cn+"; // "+tn+"\r\n");
         }
@@ -981,7 +996,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
           }
         }
         if (e.unbounded()) {
-          write(indent+"      this.get"+upFirst(getElementName(name, false))+"().add("+cn+"); // "+tn+"\r\n");
+          write(indent+"      this.get"+upFirst(getElementName(name, false))+"List().add("+cn+"); // "+tn+"\r\n");
         } else {
           write(indent+"      this."+getElementName(name, true)+" = "+cn+"; // "+tn+"\r\n");
         }
@@ -1005,7 +1020,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
         String name = e.getName().replace("[x]", "");
         write(indent+"    case "+propId(name)+": /*"+name+"*/ ");
         if (e.unbounded()) {
-          write("return this."+getElementName(name, true)+" == null ? new Base[0] : this."+getElementName(name, true)+".toArray(new Base[this."+getElementName(name, true)+".size()]); // "+tn+"\r\n");
+          write("return this."+getElementName(name, true)+"List == null ? new Base[0] : this."+getElementName(name, true)+"List.toArray(new Base[this."+getElementName(name, true)+"List.size()]); // "+tn+"\r\n");
         } else if (e.typeSummary().equals("xhtml")) {
           write("return this."+getElementName(name, true)+" == null ? new Base[0] : new Base[] {new StringType(new org.hl7.fhir.utilities.xhtml.XhtmlComposer(true).composeEx(this."+getElementName(name, true)+"))}; // "+tn+"\r\n");
         } else {
@@ -1268,7 +1283,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		  }
 		}
     if (vse == null) {
-      System.out.println("Unable to expand enum value set "+vs.getVersionedUrl());
+      log.info("Unable to expand enum value set "+vs.getVersionedUrl());
       return;
     }
     
@@ -1455,7 +1470,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
     generateIsEmpty(analysis, ti, true);
     generateFhirType(e.getPath());
     if (config.getAdornments().containsKey(tn)) {
-      write("// added from java-adornments.txt:\r\n");
+      write("// Additional Code from "+tn+".java:\r\n");
       write(config.getAdornments().get(tn)+"\r\n");
       write("// end addition\r\n");
     }
@@ -1497,6 +1512,9 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
           col = col+4;
         }
         String name = getElementName(c.getName(), true);
+        if (c.unbounded()) {
+          name = name + "List";
+        }
         if (name.endsWith("[x]"))
           name = name.substring(0, name.length()-3);
         write("compareDeep("+name+", o."+name+", true)");
@@ -1533,6 +1551,9 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
           String name = getElementName(c.getName(), true);
           if (name.endsWith("[x]"))
             name = name.substring(0, name.length()-3);
+          if (c.unbounded()) {
+            name = name+"List";
+          }
           write("compareValues("+name+", o."+name+", true)");
           col = col+21 + name.length()*2;
           if (col > 100) {
@@ -1573,10 +1594,10 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 	      String name = getElementName(c.getName(), true);
 	      if (c.unbounded()) {
 	        String ctn = c.getUserString("java.type");
-	        write("        if ("+name+" != null) {\r\n");
-	        write("          dst."+name+" = new ArrayList<"+ctn+">();\r\n");
-	        write("          for ("+ctn+" i : "+name+")\r\n");
-	        write("            dst."+name+".add(i.copy());\r\n");
+	        write("        if ("+name+"List != null) {\r\n");
+	        write("          dst."+name+"List = new ArrayList<"+ctn+">();\r\n");
+	        write("          for ("+ctn+" i : "+name+"List)\r\n");
+	        write("            dst."+name+"List.add(i.copy());\r\n");
 	        write("        };\r\n");
 	      } else {
 	        if (name.endsWith("[x]"))
@@ -1614,6 +1635,9 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
         String name = getElementName(c.getName(), true);
         if (name.endsWith("[x]"))
           name = name.substring(0, name.length()-3);
+        if (c.unbounded()) {
+          name = name + "List";
+        }
         write(name);
         col = col + name.length() + 2;
         if (col > 100) {
@@ -1655,7 +1679,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 //			if (tn == null && e.hasContentReference())
 //				writeWithHash(indent+"protected List<"+tn+"> "+getElementName(e.getName(), true)+";\r\n");
 //			else {
-			  writeWithHash(indent+"protected List<"+tn+"> "+getElementName(e.getName(), true)+";\r\n");
+			  writeWithHash(indent+"protected List<"+tn+"> "+getElementName(e.getName(), true)+"List;\r\n");
 //			}
 			write("\r\n");
 		} else {
@@ -1827,8 +1851,13 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
   }
 	private void generateAccessors(Analysis analysis, TypeInfo ti, ElementDefinition e, String indent, ElementDefinition inh) throws Exception {
 		String tn = e.getUserString("java.type");
-		StructureDefinition sd = e.hasType() ? definitions.getStructures().get(pfxType(e.getTypeFirstRep().getCode())) : null;
-		boolean abstractTarget = (sd != null) && sd.getAbstract() && !sd.getUrl().equals("http://hl7.org/fhir/StructureDefinition/Element")&& !sd.getUrl().equals("http://hl7.org/fhir/StructureDefinition/BackboneElement");
+		StructureDefinition sd = findType(e, tn);
+		boolean abstractTarget = false;
+		if (sd != null) {
+		  abstractTarget = sd.getAbstract() && !sd.getUrl().equals("http://hl7.org/fhir/StructureDefinition/Element") && !sd.getUrl().equals("http://hl7.org/fhir/StructureDefinition/BackboneElement");
+		} else {
+      abstractTarget = Utilities.existsInList(e.typeSummary(),"Base");
+		}
 		String className = ti.getName();
 
 		if (Utilities.noString(tn)) {
@@ -1856,7 +1885,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		  } else {
 		    listGenericType = tn;
 		  }
-		  write(indent+"public List<"+listGenericType+"> get"+getTitle(getElementName(e.getName(), false))+"() { \r\n");
+		  write(indent+"public List<"+listGenericType+"> get"+getTitle(getElementName(e.getName(), false))+"List() { \r\n");
 		  if (!e.unbounded()) {
         write(indent+"  List<"+listGenericType+"> list = new ArrayList<"+listGenericType+">();\r\n");
         write(indent+"  if (this."+getElementName(e.getName(), true)+" == null) {\r\n");
@@ -1864,9 +1893,9 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
         write(indent+"  }\r\n");
         write(indent+"  return list;\r\n");
 		  } else {
-		    write(indent+"  if (this."+getElementName(e.getName(), true)+" == null)\r\n");
-		    write(indent+"    this."+getElementName(e.getName(), true)+" = new ArrayList<"+listGenericType+">();\r\n");
-		    write(indent+"  return this."+getElementName(e.getName(), true)+";\r\n");
+		    write(indent+"  if (this."+getElementName(e.getName(), true)+"List == null)\r\n");
+		    write(indent+"    this."+getElementName(e.getName(), true)+"List = new ArrayList<"+listGenericType+">();\r\n");
+		    write(indent+"  return this."+getElementName(e.getName(), true)+"List;\r\n");
 		  }
 		  write(indent+"}\r\n\r\n");
 
@@ -1874,7 +1903,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		   * setXXX(List<foo>) for repeating type
 		   */
 		  jdoc(indent, "@return Returns a reference to <code>this</code> for easy method chaining");
-		  write(indent+"public " + className + " set"+getTitle(getElementName(e.getName(), false))+"(" + "List<"+listGenericType+"> the" + getTitle(getElementName(e.getName(), false)) + ") { \r\n");
+		  write(indent+"public " + className + " set"+getTitle(getElementName(e.getName(), false))+"List(" + "List<"+listGenericType+"> the" + getTitle(getElementName(e.getName(), false)) + ") { \r\n");
 		  if (!e.unbounded()) {
         write(indent+"  if (the" + getTitle(getElementName(e.getName(), false)) + ".size() == 0) {\r\n");
         write(indent+"    this."+getElementName(e.getName(), true)+" = null;\r\n");
@@ -1884,7 +1913,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
         write(indent+"    throw new Error(\"Cannot have more than one "+e.getPath()+"\");\r\n");
         write(indent+"  }\r\n");
 		  } else {
-		    write(indent+"  this."+getElementName(e.getName(), true)+" = the" + getTitle(getElementName(e.getName(), false)) + ";\r\n");
+		    write(indent+"  this."+getElementName(e.getName(), true)+"List = the" + getTitle(getElementName(e.getName(), false)) + ";\r\n");
 		  }
       write(indent+"  return this;\r\n");
 		  write(indent+"}\r\n\r\n");
@@ -1896,9 +1925,9 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		  if (!e.unbounded()) {
         write(indent+"  return this."+getElementName(e.getName(), true)+" != null && !this."+getElementName(e.getName(), true)+".isEmpty();\r\n");	    
 		  } else {
-  		  write(indent+"  if (this."+getElementName(e.getName(), true)+" == null)\r\n");
+  		  write(indent+"  if (this."+getElementName(e.getName(), true)+"List == null)\r\n");
   		  write(indent+"    return false;\r\n");
-  		  write(indent+"  for ("+tn+" item : this."+getElementName(e.getName(), true)+")\r\n");
+  		  write(indent+"  for ("+tn+" item : this."+getElementName(e.getName(), true)+"List)\r\n");
   		  write(indent+"    if (!item.isEmpty())\r\n");
   		  write(indent+"      return true;\r\n");
   		  write(indent+"  return false;\r\n");
@@ -1921,9 +1950,9 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
           write(indent+"  return this."+getElementName(e.getName(), true)+";\r\n");
 		    } else {
   		    write(indent+"  "+tn+" t = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+");\r\n");
-  		    write(indent+"  if (this."+getElementName(e.getName(), true)+" == null)\r\n");
-  		    write(indent+"    this."+getElementName(e.getName(), true)+" = new ArrayList<"+tn+">();\r\n");
-  		    write(indent+"  this."+getElementName(e.getName(), true)+".add(t);\r\n");
+  		    write(indent+"  if (this."+getElementName(e.getName(), true)+"List == null)\r\n");
+  		    write(indent+"    this."+getElementName(e.getName(), true)+"List = new ArrayList<"+tn+">();\r\n");
+  		    write(indent+"  this."+getElementName(e.getName(), true)+"List.add(t);\r\n");
   		    write(indent+"  return t;\r\n");
 		    }
 		    write(indent+"}\r\n");
@@ -1936,9 +1965,9 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		    write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value) { //1\r\n");
 		    write(indent+"  "+tn+" t = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+");\r\n");
 		    write(indent+"  t.setValue(value);\r\n");
-		    write(indent+"  if (this."+getElementName(e.getName(), true)+" == null)\r\n");
-		    write(indent+"    this."+getElementName(e.getName(), true)+" = new ArrayList<"+tn+">();\r\n");
-		    write(indent+"  this."+getElementName(e.getName(), true)+".add(t);\r\n");
+		    write(indent+"  if (this."+getElementName(e.getName(), true)+"List == null)\r\n");
+		    write(indent+"    this."+getElementName(e.getName(), true)+"List = new ArrayList<"+tn+">();\r\n");
+		    write(indent+"  this."+getElementName(e.getName(), true)+"List.add(t);\r\n");
 		    write(indent+"  return this;\r\n");
 		    write(indent+"}\r\n");
 		    write("\r\n");
@@ -1948,9 +1977,9 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		     */
 		    jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
 		    write(indent+"public boolean has"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value) { \r\n");
-		    write(indent+"  if (this."+getElementName(e.getName(), true)+" == null)\r\n");
+		    write(indent+"  if (this."+getElementName(e.getName(), true)+"List == null)\r\n");
 		    write(indent+"    return false;\r\n");
-		    write(indent+"  for ("+tn+" v : this."+getElementName(e.getName(), true)+")\r\n");
+		    write(indent+"  for ("+tn+" v : this."+getElementName(e.getName(), true)+"List)\r\n");
 		    if (isJavaPrimitive(e) && !tn.startsWith("Enum")) // GG: not sure why this is different? 
 		      write(indent+"    if (v.getValue().equals(value)) // "+e.typeSummary()+"\r\n");
 		    else
@@ -1962,12 +1991,12 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		  } else {
 		    if (!definitions.hasResource(tn)) {
 		      if (abstractTarget) {
-		        System.out.println(e.getPath()+" is abstract");
+		        log.info(e.getPath()+" is abstract");
 		      } else {
 		        /*
 		         * addXXX() for repeatable composite
 		         */
-		        write(indent+"public "+tn+" add"+getTitle(getElementName(e.getName(), false))+"() { //3\r\n");
+		        write(indent+"public "+tn+" add"+getTitle(getElementName(e.getName(), false))+"() { //3a\r\n");
 		        if (!e.unbounded()) {
 		          write(indent+"  if (this."+getElementName(e.getName(), true)+" == null) {\r\n");
 		          write(indent+"    this."+getElementName(e.getName(), true)+" = new "+tn+"();\r\n");
@@ -1977,9 +2006,9 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		          write(indent+"  return this."+getElementName(e.getName(), true)+";\r\n");		        
 		        } else {
 		          write(indent+"  "+tn+" t = new "+tn+"();\r\n");
-		          write(indent+"  if (this."+getElementName(e.getName(), true)+" == null)\r\n");
-		          write(indent+"    this."+getElementName(e.getName(), true)+" = new ArrayList<"+tn+">();\r\n");
-		          write(indent+"  this."+getElementName(e.getName(), true)+".add(t);\r\n");
+		          write(indent+"  if (this."+getElementName(e.getName(), true)+"List == null)\r\n");
+		          write(indent+"    this."+getElementName(e.getName(), true)+"List = new ArrayList<"+tn+">();\r\n");
+		          write(indent+"  this."+getElementName(e.getName(), true)+"List.add(t);\r\n");
 		          write(indent+"  return t;\r\n");
 		        }
 		        write(indent+"}\r\n");
@@ -1988,7 +2017,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		      /*
 		       * addXXX(foo) for repeatable composite
 		       */
-		      write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t) { //3\r\n");
+		      write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t) { //3b\r\n");
 		      if (!e.unbounded()) {
             write(indent+"  if (this."+getElementName(e.getName(), true)+" == null) {\r\n");
             write(indent+"    this."+getElementName(e.getName(), true)+" = t;\r\n");
@@ -1998,9 +2027,9 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		      } else {
 		        write(indent+"  if (t == null)\r\n");
 		        write(indent+"    return this;\r\n");
-		        write(indent+"  if (this."+getElementName(e.getName(), true)+" == null)\r\n");
-		        write(indent+"    this."+getElementName(e.getName(), true)+" = new ArrayList<"+tn+">();\r\n");
-		        write(indent+"  this."+getElementName(e.getName(), true)+".add(t);\r\n");
+		        write(indent+"  if (this."+getElementName(e.getName(), true)+"List == null)\r\n");
+		        write(indent+"    this."+getElementName(e.getName(), true)+"List = new ArrayList<"+tn+">();\r\n");
+		        write(indent+"  this."+getElementName(e.getName(), true)+"List.add(t);\r\n");
 		      }
           write(indent+"  return this;\r\n");
 		      write(indent+"}\r\n");
@@ -2009,12 +2038,12 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		      /*
 		       * addXXX(foo) for repeatable composite
 		       */
-		      write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t) { //3\r\n");
+		      write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t) { //3c\r\n");
 		      write(indent+"  if (t == null)\r\n");
 		      write(indent+"    return this;\r\n");
-		      write(indent+"  if (this."+getElementName(e.getName(), true)+" == null)\r\n");
-		      write(indent+"    this."+getElementName(e.getName(), true)+" = new ArrayList<"+tn+">();\r\n");
-		      write(indent+"  this."+getElementName(e.getName(), true)+".add(t);\r\n");
+		      write(indent+"  if (this."+getElementName(e.getName(), true)+"List == null)\r\n");
+		      write(indent+"    this."+getElementName(e.getName(), true)+"List = new ArrayList<"+tn+">();\r\n");
+		      write(indent+"  this."+getElementName(e.getName(), true)+"List.add(t);\r\n");
 		      write(indent+"  return this;\r\n");
 		      write(indent+"}\r\n");
 		      write("\r\n");          
@@ -2023,11 +2052,11 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		    /*
 		     * getXXXFirstRep() for repeatable element
 		     */
-		    if (!"DomainResource".equals(className)) {
+		    if (!"DomainResource".equals(className) && !abstractTarget) {
 		      jdoc(indent, "@return The first repetition of repeating field {@link #"+getElementName(e.getName(), true)+"}, creating it if it does not already exist {3}");
 		      write(indent+"public "+tn+" get"+getTitle(getElementName(e.getName(), false))+"FirstRep() { \r\n");
 		      if (e.unbounded()) {
-		        write(indent+"  if (get"+getTitle(getElementName(e.getName(), false))+"().isEmpty()) {\r\n");
+		        write(indent+"  if (get"+getTitle(getElementName(e.getName(), false))+"List().isEmpty()) {\r\n");
 		      } else {
             write(indent+"  if ("+getElementName(e.getName(), false)+" == null) {\r\n");
 		      }
@@ -2038,7 +2067,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		      }
 		      write(indent+"  }\r\n");
           if (e.unbounded()) {
-  		      write(indent+"  return get"+getTitle(getElementName(e.getName(), false))+"().get(0);\r\n");
+  		      write(indent+"  return get"+getTitle(getElementName(e.getName(), false))+"List().get(0);\r\n");
           } else {
             write(indent+"  return "+getElementName(e.getName(), false)+";\r\n");            
           }
@@ -2158,7 +2187,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
             write(indent+"}\r\n");
             write("\r\n");
             write(indent+"public boolean has"+getTitle(getElementName(e.getName(), false))+ttn+"() { \r\n");
-            write(indent+"  return this != null && this."+getElementName(e.getName(), true)+" instanceof "+ttn+";\r\n");
+            write(indent+"  return this."+getElementName(e.getName(), true)+" != null && this."+getElementName(e.getName(), true)+" instanceof "+ttn+";\r\n");
             write(indent+"}\r\n");
             write("\r\n");
           }
@@ -2189,6 +2218,19 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 
 	}
 
+  private StructureDefinition findType(ElementDefinition e, String tn) {
+    StructureDefinition sd = e.hasType() ? definitions.getStructures().get(pfxType(e.getTypeFirstRep().getCode())) : null;
+		if (sd == null) {
+		  for (StructureDefinition t : definitions.getStructures().getList()) {
+		    if (tn.equals(t.getName().replace("-", "_"))) {
+		      sd = t;
+		      break;
+		    }
+		  }
+		}
+    return sd;
+  }
+
   private String pfxType(String code) {
     return "http://hl7.org/fhir/StructureDefinition/"+code;
   }
@@ -2218,12 +2260,12 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 //      } else {
         listGenericType = tn;
 //      }
-      write(indent+"public abstract List<"+listGenericType+"> get"+getTitle(getElementName(e.getName(), false))+"(); \r\n");
+      write(indent+"public abstract List<"+listGenericType+"> get"+getTitle(getElementName(e.getName(), false))+"List(); \r\n");
       /*
        * setXXX(List<foo>) for repeating type
        */
       jdoc(indent, "@return Returns a reference to <code>this</code> for easy method chaining");
-      write(indent+"public abstract " + ti.getName() + " set"+getTitle(getElementName(e.getName(), false))+"(" + "List<"+listGenericType+"> the" + getTitle(getElementName(e.getName(), false)) + "); \r\n");
+      write(indent+"public abstract " + ti.getName() + " set"+getTitle(getElementName(e.getName(), false))+"List(" + "List<"+listGenericType+"> the" + getTitle(getElementName(e.getName(), false)) + "); \r\n");
 
       /*
        * hasXXX() for repeatable type
@@ -2253,17 +2295,17 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
           /*
            * addXXX() for repeatable composite
            */
-          write(indent+"public abstract "+tn+" add"+getTitle(getElementName(e.getName(), false))+"(); //3\r\n");
+          write(indent+"public abstract "+tn+" add"+getTitle(getElementName(e.getName(), false))+"(); //3d\r\n");
 
           /*
            * addXXX(foo) for repeatable composite
            */
-          write(indent+"public abstract "+ti.getName()+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t); //3\r\n");
+          write(indent+"public abstract "+ti.getName()+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t); //3e\r\n");
         } else {
           /*
            * addXXX(foo) for repeatable composite
            */
-          write(indent+"public abstract "+ti.getName()+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t); //3\r\n");
+          write(indent+"public abstract "+ti.getName()+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t); //3f\r\n");
         }
 
         /*
@@ -2362,7 +2404,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
   }
 
   private void generateUnimplementedAccessors(Analysis analysis, TypeInfo ti, ElementDefinition e, String indent) throws Exception {
-    System.out.println("   .. unimplemented: "+e.getPath());
+    log.info("   .. unimplemented: "+e.getPath());
     String tn = e.getUserString("java.type");
     String className = ti.getName();
 
@@ -2393,14 +2435,14 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
       } else {
         listGenericType = tn;
       }
-      write(indent+"public List<"+listGenericType+"> get"+getTitle(getElementName(e.getName(), false))+"() { \r\n");
+      write(indent+"public List<"+listGenericType+"> get"+getTitle(getElementName(e.getName(), false))+"List() { \r\n");
       write(indent+"  return new ArrayList<>();\r\n");
       write(indent+"}\r\n");
       /*
        * setXXX(List<foo>) for repeating type
        */
       jdoc(indent, "@return Returns a reference to <code>this</code> for easy method chaining");
-      write(indent+"public " + className + " set"+getTitle(getElementName(e.getName(), false))+"(" + "List<"+listGenericType+"> the" + getTitle(getElementName(e.getName(), false)) + ") { \r\n");
+      write(indent+"public " + className + " set"+getTitle(getElementName(e.getName(), false))+"List(" + "List<"+listGenericType+"> the" + getTitle(getElementName(e.getName(), false)) + ") { \r\n");
       write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
       write(indent+"}\r\n");
 
@@ -2440,21 +2482,21 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
           /*
            * addXXX() for repeatable composite
            */
-          write(indent+"public "+tn+" add"+getTitle(getElementName(e.getName(), false))+"() { //3\r\n");
+          write(indent+"public "+tn+" add"+getTitle(getElementName(e.getName(), false))+"() { //3g\r\n");
           write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
           write(indent+"}\r\n");
 
           /*
            * addXXX(foo) for repeatable composite
            */
-          write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t) { //3\r\n");
+          write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t) { //3h\r\n");
           write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
           write(indent+"}\r\n");
         } else {
           /*
            * addXXX(foo) for repeatable composite
            */
-          write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t) { //3\r\n");
+          write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t) { //3i\r\n");
           write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
           write(indent+"}\r\n");
         }

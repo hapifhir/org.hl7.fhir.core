@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>6.5.20-SNAPSHOT</version>
+        <version>6.7.7-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -13,6 +13,8 @@
 
     <artifactId>org.hl7.fhir.report</artifactId>
     <packaging>bundle</packaging>
+
+    <name>HL7 Core Artifact - Report</name>
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
@@ -35,6 +37,16 @@
                     <artifactId>ST4</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>org.hl7.fhir.model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>org.hl7.fhir.support</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>

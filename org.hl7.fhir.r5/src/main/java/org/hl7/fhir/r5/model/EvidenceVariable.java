@@ -772,8 +772,8 @@ public class EvidenceVariable extends MetadataResource {
           return (Quantity) this.instances;
         }
 
-        public boolean hasInstancesQuantity() { 
-          return this != null && this.instances instanceof Quantity;
+        public boolean hasInstancesQuantity() {
+            return this.instances instanceof Quantity;
         }
 
         /**
@@ -787,8 +787,8 @@ public class EvidenceVariable extends MetadataResource {
           return (Range) this.instances;
         }
 
-        public boolean hasInstancesRange() { 
-          return this != null && this.instances instanceof Range;
+        public boolean hasInstancesRange() {
+            return this.instances instanceof Range;
         }
 
         public boolean hasInstances() { 
@@ -823,8 +823,8 @@ public class EvidenceVariable extends MetadataResource {
           return (Quantity) this.duration;
         }
 
-        public boolean hasDurationQuantity() { 
-          return this != null && this.duration instanceof Quantity;
+        public boolean hasDurationQuantity() {
+            return this.duration instanceof Quantity;
         }
 
         /**
@@ -838,8 +838,8 @@ public class EvidenceVariable extends MetadataResource {
           return (Range) this.duration;
         }
 
-        public boolean hasDurationRange() { 
-          return this != null && this.duration instanceof Range;
+        public boolean hasDurationRange() {
+            return this.duration instanceof Range;
         }
 
         public boolean hasDuration() { 
@@ -1457,8 +1457,8 @@ public class EvidenceVariable extends MetadataResource {
           return (CodeableConcept) this.value;
         }
 
-        public boolean hasValueCodeableConcept() { 
-          return this != null && this.value instanceof CodeableConcept;
+        public boolean hasValueCodeableConcept() {
+            return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -1472,8 +1472,8 @@ public class EvidenceVariable extends MetadataResource {
           return (BooleanType) this.value;
         }
 
-        public boolean hasValueBooleanType() { 
-          return this != null && this.value instanceof BooleanType;
+        public boolean hasValueBooleanType() {
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -1487,8 +1487,8 @@ public class EvidenceVariable extends MetadataResource {
           return (Quantity) this.value;
         }
 
-        public boolean hasValueQuantity() { 
-          return this != null && this.value instanceof Quantity;
+        public boolean hasValueQuantity() {
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -1502,8 +1502,8 @@ public class EvidenceVariable extends MetadataResource {
           return (Range) this.value;
         }
 
-        public boolean hasValueRange() { 
-          return this != null && this.value instanceof Range;
+        public boolean hasValueRange() {
+            return this.value instanceof Range;
         }
 
         /**
@@ -1517,8 +1517,8 @@ public class EvidenceVariable extends MetadataResource {
           return (Reference) this.value;
         }
 
-        public boolean hasValueReference() { 
-          return this != null && this.value instanceof Reference;
+        public boolean hasValueReference() {
+            return this.value instanceof Reference;
         }
 
         /**
@@ -1532,8 +1532,8 @@ public class EvidenceVariable extends MetadataResource {
           return (IdType) this.value;
         }
 
-        public boolean hasValueIdType() { 
-          return this != null && this.value instanceof IdType;
+        public boolean hasValueIdType() {
+            return this.value instanceof IdType;
         }
 
         public boolean hasValue() { 
@@ -2311,8 +2311,8 @@ public class EvidenceVariable extends MetadataResource {
           return (CodeableConcept) this.event;
         }
 
-        public boolean hasEventCodeableConcept() { 
-          return this != null && this.event instanceof CodeableConcept;
+        public boolean hasEventCodeableConcept() {
+            return this.event instanceof CodeableConcept;
         }
 
         /**
@@ -2326,8 +2326,8 @@ public class EvidenceVariable extends MetadataResource {
           return (Reference) this.event;
         }
 
-        public boolean hasEventReference() { 
-          return this != null && this.event instanceof Reference;
+        public boolean hasEventReference() {
+            return this.event instanceof Reference;
         }
 
         /**
@@ -2341,8 +2341,8 @@ public class EvidenceVariable extends MetadataResource {
           return (DateTimeType) this.event;
         }
 
-        public boolean hasEventDateTimeType() { 
-          return this != null && this.event instanceof DateTimeType;
+        public boolean hasEventDateTimeType() {
+            return this.event instanceof DateTimeType;
         }
 
         /**
@@ -2356,8 +2356,8 @@ public class EvidenceVariable extends MetadataResource {
           return (IdType) this.event;
         }
 
-        public boolean hasEventIdType() { 
-          return this != null && this.event instanceof IdType;
+        public boolean hasEventIdType() {
+            return this.event instanceof IdType;
         }
 
         public boolean hasEvent() { 
@@ -2726,8 +2726,8 @@ public class EvidenceVariable extends MetadataResource {
           return (CodeableConcept) this.value;
         }
 
-        public boolean hasValueCodeableConcept() { 
-          return this != null && this.value instanceof CodeableConcept;
+        public boolean hasValueCodeableConcept() {
+            return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -2741,8 +2741,8 @@ public class EvidenceVariable extends MetadataResource {
           return (Quantity) this.value;
         }
 
-        public boolean hasValueQuantity() { 
-          return this != null && this.value instanceof Quantity;
+        public boolean hasValueQuantity() {
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -2756,8 +2756,8 @@ public class EvidenceVariable extends MetadataResource {
           return (Range) this.value;
         }
 
-        public boolean hasValueRange() { 
-          return this != null && this.value instanceof Range;
+        public boolean hasValueRange() {
+            return this.value instanceof Range;
         }
 
         public boolean hasValue() { 
@@ -3326,8 +3326,8 @@ See guidance around (not) making local changes to elements [here](canonicalresou
       return (StringType) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmStringType() { 
-      return this != null && this.versionAlgorithm instanceof StringType;
+    public boolean hasVersionAlgorithmStringType() {
+        return this.versionAlgorithm instanceof StringType;
     }
 
     /**
@@ -3341,8 +3341,8 @@ See guidance around (not) making local changes to elements [here](canonicalresou
       return (Coding) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmCoding() { 
-      return this != null && this.versionAlgorithm instanceof Coding;
+    public boolean hasVersionAlgorithmCoding() {
+        return this.versionAlgorithm instanceof Coding;
     }
 
     public boolean hasVersionAlgorithm() { 

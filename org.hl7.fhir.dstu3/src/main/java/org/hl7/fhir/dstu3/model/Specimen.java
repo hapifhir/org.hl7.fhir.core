@@ -297,8 +297,8 @@ public class Specimen extends DomainResource {
           return (DateTimeType) this.collected;
         }
 
-        public boolean hasCollectedDateTimeType() { 
-          return this != null && this.collected instanceof DateTimeType;
+        public boolean hasCollectedDateTimeType() {
+            return this.collected instanceof DateTimeType;
         }
 
         /**
@@ -312,8 +312,8 @@ public class Specimen extends DomainResource {
           return (Period) this.collected;
         }
 
-        public boolean hasCollectedPeriod() { 
-          return this != null && this.collected instanceof Period;
+        public boolean hasCollectedPeriod() {
+            return this.collected instanceof Period;
         }
 
         public boolean hasCollected() { 
@@ -753,28 +753,6 @@ public class Specimen extends DomainResource {
         }
 
         /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public List<Substance> getAdditiveTarget() { 
-          if (this.additiveTarget == null)
-            this.additiveTarget = new ArrayList<Substance>();
-          return this.additiveTarget;
-        }
-
-        /**
-         * @deprecated Use Reference#setResource(IBaseResource) instead
-         */
-        @Deprecated
-        public Substance addAdditiveTarget() { 
-          Substance r = new Substance();
-          if (this.additiveTarget == null)
-            this.additiveTarget = new ArrayList<Substance>();
-          this.additiveTarget.add(r);
-          return r;
-        }
-
-        /**
          * @return {@link #time} (A record of the time or period when the specimen processing occurred.  For example the time of sample fixation or the period of time the sample was in formalin.)
          */
         public Type getTime() { 
@@ -792,8 +770,8 @@ public class Specimen extends DomainResource {
           return (DateTimeType) this.time;
         }
 
-        public boolean hasTimeDateTimeType() { 
-          return this != null && this.time instanceof DateTimeType;
+        public boolean hasTimeDateTimeType() {
+            return this.time instanceof DateTimeType;
         }
 
         /**
@@ -807,8 +785,8 @@ public class Specimen extends DomainResource {
           return (Period) this.time;
         }
 
-        public boolean hasTimePeriod() { 
-          return this != null && this.time instanceof Period;
+        public boolean hasTimePeriod() {
+            return this.time instanceof Period;
         }
 
         public boolean hasTime() { 
@@ -1238,8 +1216,8 @@ public class Specimen extends DomainResource {
           return (CodeableConcept) this.additive;
         }
 
-        public boolean hasAdditiveCodeableConcept() { 
-          return this != null && this.additive instanceof CodeableConcept;
+        public boolean hasAdditiveCodeableConcept() {
+            return this.additive instanceof CodeableConcept;
         }
 
         /**
@@ -1253,8 +1231,8 @@ public class Specimen extends DomainResource {
           return (Reference) this.additive;
         }
 
-        public boolean hasAdditiveReference() { 
-          return this != null && this.additive instanceof Reference;
+        public boolean hasAdditiveReference() {
+            return this.additive instanceof Reference;
         }
 
         public boolean hasAdditive() { 
@@ -1878,28 +1856,6 @@ public class Specimen extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Specimen> getParentTarget() { 
-      if (this.parentTarget == null)
-        this.parentTarget = new ArrayList<Specimen>();
-      return this.parentTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Specimen addParentTarget() { 
-      Specimen r = new Specimen();
-      if (this.parentTarget == null)
-        this.parentTarget = new ArrayList<Specimen>();
-      this.parentTarget.add(r);
-      return r;
-    }
-
-    /**
      * @return {@link #request} (Details concerning a test or procedure request that required a specimen to be collected.)
      */
     public List<Reference> getRequest() { 
@@ -1950,28 +1906,6 @@ public class Specimen extends DomainResource {
         addRequest();
       }
       return getRequest().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<ProcedureRequest> getRequestTarget() { 
-      if (this.requestTarget == null)
-        this.requestTarget = new ArrayList<ProcedureRequest>();
-      return this.requestTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public ProcedureRequest addRequestTarget() { 
-      ProcedureRequest r = new ProcedureRequest();
-      if (this.requestTarget == null)
-        this.requestTarget = new ArrayList<ProcedureRequest>();
-      this.requestTarget.add(r);
-      return r;
     }
 
     /**

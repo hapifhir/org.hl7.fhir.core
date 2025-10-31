@@ -1722,16 +1722,6 @@ public class CoverageEligibilityRequest extends DomainResource {
       return getDetail().get(0);
     }
 
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getDetailTarget() {
-      if (this.detailTarget == null)
-        this.detailTarget = new ArrayList<Resource>();
-      return this.detailTarget;
-    }
-
     protected void listChildren(List<Property> children) {
       super.listChildren(children);
       children.add(new Property("supportingInfoSequence", "positiveInt",
@@ -2142,7 +2132,7 @@ public class CoverageEligibilityRequest extends DomainResource {
     }
 
     public boolean hasDiagnosisCodeableConcept() {
-      return this != null && this.diagnosis instanceof CodeableConcept;
+        return this.diagnosis instanceof CodeableConcept;
     }
 
     /**
@@ -2159,7 +2149,7 @@ public class CoverageEligibilityRequest extends DomainResource {
     }
 
     public boolean hasDiagnosisReference() {
-      return this != null && this.diagnosis instanceof Reference;
+        return this.diagnosis instanceof Reference;
     }
 
     public boolean hasDiagnosis() {
@@ -2786,7 +2776,7 @@ public class CoverageEligibilityRequest extends DomainResource {
   }
 
   public boolean hasServicedDateType() {
-    return this != null && this.serviced instanceof DateType;
+      return this.serviced instanceof DateType;
   }
 
   /**
@@ -2803,7 +2793,7 @@ public class CoverageEligibilityRequest extends DomainResource {
   }
 
   public boolean hasServicedPeriod() {
-    return this != null && this.serviced instanceof Period;
+      return this.serviced instanceof Period;
   }
 
   public boolean hasServiced() {

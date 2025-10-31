@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.context.ILoggingService;
 import org.hl7.fhir.r5.model.Bundle;
@@ -22,6 +23,7 @@ import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.ImplicitValueSets;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext.TerminologyClientContextUseType;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
@@ -33,11 +35,15 @@ import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
 @MarkedToMoveToAdjunctPackage
 public class TerminologyClientManager {
+
+  private ImplicitValueSets implicitValueSets;
+
   public class ServerOptionList {
     private List<String> authoritative = new ArrayList<String>();
     private List<String> candidates = new ArrayList<String>();
@@ -163,6 +169,7 @@ public class TerminologyClientManager {
     this.factory = factory;
     this.cacheId = cacheId;
     this.logger = logger;
+    implicitValueSets = new ImplicitValueSets(null);
   }
   
   public String getCacheId() {
@@ -237,7 +244,7 @@ public class TerminologyClientManager {
           }
         }
         if (ok) {
-          log(vs, s, systems, choices, "Found candidate server "+s);
+          log(vs, s, systems, choices, "Found candidate server " + s);
           return findClient(s, systems, expand);
         }
       }
@@ -255,6 +262,24 @@ public class TerminologyClientManager {
         log(vs, serverList.get(0).getAddress(), systems, choices, "Use primary server for "+uri);
         return serverList.get(0);
       }
+    }
+
+
+    // no agreement - take the one that is must authoritative
+    Map<String, Integer> counts = new HashMap<>();
+    for (ServerOptionList ol : choices) {
+      for (String s : ol.authoritative) {
+        counts.put(s, counts.getOrDefault(s, 0) + 1);
+      }
+    }
+    // Find the maximum
+    String max = counts.entrySet().stream()
+        .max(Map.Entry.comparingByValue())
+        .map(Map.Entry::getKey)
+        .orElse(null);
+    if (max != null) {
+      log(vs, max, systems, choices, "Found most authoritative server "+max);
+      return findClient(max, systems, expand);
     }
 
     // no agreement? Then what we do depends     
@@ -313,9 +338,7 @@ public class TerminologyClientManager {
       if (!hasMessage(msg)) {
         internalLog.add(new InternalLogEvent(msg, vs, request));
       }
-      if (logger.isDebugLogging()) {
-        e.printStackTrace();
-      }
+      logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
     }
     return null; 
   }
@@ -328,14 +351,15 @@ public class TerminologyClientManager {
   }
 
   private TerminologyClientContext findClient(String server, Set<String> systems, boolean expand) {
+    server = ManagedWebAccess.makeSecureRef(server);
     TerminologyClientContext client = serverMap.get(server);
     if (client == null) {
       try {
-        client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), server, getMasterClient().getUserAgent(), getMasterClient().getLogger()), cacheId, false);
-      } catch (URISyntaxException e) {
-        throw new TerminologyServiceException(e);
+        client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), server, getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, cacheId, false);
+      } catch (Exception e) {
+        throw new TerminologyServiceException("Error accessing "+server+" for "+CommaSeparatedStringBuilder.join(",", systems)+": "+e.getMessage(), e);
       }
-      client.setTxCache(cache);
+      //client.setTxCache(cache);
       serverList.add(client);
       serverMap.put(server, client);
     }
@@ -407,9 +431,7 @@ public class TerminologyClientManager {
       if (!hasMessage(msg)) {
         internalLog.add(new InternalLogEvent(msg, url, request));
       }
-      if (logger.isDebugLogging()) {
-        e.printStackTrace();
-      }
+      logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
     }
     return new ServerOptionList( getMasterClient().getAddress());
     
@@ -454,15 +476,14 @@ public class TerminologyClientManager {
     }
   }
 
-  public TerminologyClientContext setMasterClient(ITerminologyClient client, boolean useEcosystem) {
+  public TerminologyClientContext setMasterClient(ITerminologyClient client, boolean useEcosystem) throws IOException {
     this.useEcosystem = useEcosystem;
-    TerminologyClientContext details = new TerminologyClientContext(client, cacheId, true);
-    details.setTxCache(cache);
+    TerminologyClientContext terminologyClientContext = new TerminologyClientContext(client, cache, cacheId,true);
     serverList.clear();
-    serverList.add(details);
-    serverMap.put(client.getAddress(), details);  
+    serverList.add(terminologyClientContext);
+    serverMap.put(client.getAddress(), terminologyClientContext);
     monitorServiceURL = Utilities.pathURL(Utilities.getDirectoryForURL(client.getAddress()), "tx-reg");
-    return details;
+    return terminologyClientContext;
   }
   
   public TerminologyClientContext getMaster() {
@@ -544,6 +565,7 @@ public class TerminologyClientManager {
 
   public void setExpansionParameters(Parameters expParameters) {
     this.expParameters = expParameters;
+    implicitValueSets = new ImplicitValueSets(expParameters);
   }
 
   public String getUsage() {
@@ -561,7 +583,7 @@ public class TerminologyClientManager {
     String request = null;
     boolean isImplicit = false;
     String iVersion = null;
-    if (ValueSetUtilities.isImplicitSCTValueSet(canonical)) {
+    if (implicitValueSets.isImplicitSCTValueSet(canonical)) {
       isImplicit = true;
       iVersion = canonical.substring(0, canonical.indexOf("?fhir_vs"));
       if ("http://snomed.info/sct".equals(iVersion) && canonical.contains("|")) {
@@ -569,7 +591,7 @@ public class TerminologyClientManager {
       } 
       iVersion = ValueSetUtilities.versionFromExpansionParams(expParameters, "http://snomed.info/sct", iVersion); 
       request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&url="+Utilities.URLEncode("http://snomed.info/sct"+(iVersion == null ? "": "|"+iVersion)));
-    } else if (ValueSetUtilities.isImplicitLoincValueSet(canonical)) {
+    } else if (implicitValueSets.isImplicitLoincValueSet(canonical)) {
       isImplicit = true;
       iVersion = null;
       if (canonical.contains("|")) {
@@ -616,9 +638,7 @@ public class TerminologyClientManager {
           if (!hasMessage(msg)) {
             internalLog.add(new InternalLogEvent(msg, canonical, request));
           }
-          if (logger.isDebugLogging()) {
-            e.printStackTrace();
-          }
+          logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
           ecosystemfailCount++;
           if (ecosystemfailCount > 3) {
             useEcosystem = false;
@@ -629,11 +649,11 @@ public class TerminologyClientManager {
       TerminologyClientContext client = serverMap.get(server);
       if (client == null) {
         try {
-          client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), server, getMasterClient().getUserAgent(), getMasterClient().getLogger()), cacheId, false);
-        } catch (URISyntaxException e) {
+          client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, cacheId, false);
+        } catch (URISyntaxException | IOException e) {
           throw new TerminologyServiceException(e);
         }
-        client.setTxCache(cache);
+
         serverList.add(client);
         serverMap.put(server, client);
       }
@@ -654,7 +674,7 @@ public class TerminologyClientManager {
           try {
             ValueSet vs = client.getClient().expandValueset(null, p);
             if (vs != null) {
-              return new SourcedValueSet(server, ValueSetUtilities.makeImplicitValueSet(canonical, iVersion));
+              return new SourcedValueSet(server, implicitValueSets.generateImplicitValueSet(canonical, iVersion));
             }
           } catch (Exception e) {
             return null;
@@ -686,9 +706,7 @@ public class TerminologyClientManager {
       if (!hasMessage(msg)) {
         internalLog.add(new InternalLogEvent(msg, canonical, request));
       }
-      if (logger.isDebugLogging()) {
-        e.printStackTrace();
-      }
+      logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
       return null;
     }
   }
@@ -725,11 +743,10 @@ public class TerminologyClientManager {
       TerminologyClientContext client = serverMap.get(server);
       if (client == null) {
         try {
-          client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), server, getMasterClient().getUserAgent(), getMasterClient().getLogger()), cacheId, false);
-        } catch (URISyntaxException e) {
-          throw new TerminologyServiceException(e);
+          client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, cacheId, false);
+        } catch (URISyntaxException | IOException e) {
+          throw new TerminologyServiceException("Error accessing "+server+" for "+canonical+": "+e.getMessage(), e);
         }
-        client.setTxCache(cache);
         serverList.add(client);
         serverMap.put(server, client);
       }
@@ -766,9 +783,7 @@ public class TerminologyClientManager {
       if (!hasMessage(msg)) {
         internalLog.add(new InternalLogEvent(msg, canonical, request));
       }
-      if (logger.isDebugLogging()) {
-        e.printStackTrace();
-      }
+      logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
       return null;
     }
   }

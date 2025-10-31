@@ -25,6 +25,7 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
  * @author grahame
  *
  */
+@SuppressWarnings("checkstyle:systemout")
 public class PackageHacker {
 
   private static boolean useSecureReferences = false;
@@ -247,6 +248,18 @@ public class PackageHacker {
     }
   }
 
+
+  public static JsonObject fixPackageOnLoad(JsonObject npm)  {
+    String ref = npm.asString("url");
+    if (ref != null) {
+      String nref = fixPackageUrl(ref);
+      if (!nref.equals(ref)) {
+        npm.set("url", nref);
+      }
+    }
+    return npm;
+  }
+
   public static String fixPackageUrl(String webref) {
     if (webref == null) {
       return null;
@@ -279,7 +292,9 @@ public class PackageHacker {
     if (webref.contains("hl7.org/fhir/us/core/STU4.0.0")) {
       return webref.replace("hl7.org/fhir/us/core/STU4.0.0", "hl7.org/fhir/us/core/STU4");
     }
-
+    if (webref.equals("http://hl7.org/fhir/us/core/v311")) {
+      return "https://hl7.org/fhir/us/core/STU3.1.1";
+    }
     if (isUseSecureReferences()) {
       return webref.replace("http://hl7.org/fhir", "https://hl7.org/fhir").replace("http://build.fhir.org", "https://build.fhir.org");
     } else {

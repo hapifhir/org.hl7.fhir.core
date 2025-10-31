@@ -34,12 +34,15 @@ package org.hl7.fhir.r5.elementmodel;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.model.Constants;
@@ -49,17 +52,20 @@ import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.r5.utils.TypesUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.Utilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class Property {
 
-	private IWorkerContext context;
+  private IWorkerContext context;
 	private ElementDefinition definition;
 	private StructureDefinition structure;
   private ProfileUtilities profileUtilities;
@@ -97,28 +103,28 @@ public class Property {
 	}
 
   public String getJsonName() {
-    if (definition.hasExtension(ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED)) {
-      return ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED);
+    if (definition.hasExtension(ExtensionDefinitions.EXT_JSON_NAME, ExtensionDefinitions.EXT_JSON_NAME_DEPRECATED)) {
+      return ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_JSON_NAME, ExtensionDefinitions.EXT_JSON_NAME_DEPRECATED);
     } else {
       return getName();
     }
   }
 
   public String getXmlName() {
-    if (definition.hasExtension(ToolingExtensions.EXT_XML_NAME)) {
-      return ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_XML_NAME);
-    } else if (definition.hasExtension(ToolingExtensions.EXT_XML_NAME_DEPRECATED)) {
-      return ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_XML_NAME_DEPRECATED);
+    if (definition.hasExtension(ExtensionDefinitions.EXT_XML_NAME)) {
+      return ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_XML_NAME);
+    } else if (definition.hasExtension(ExtensionDefinitions.EXT_XML_NAME_DEPRECATED)) {
+      return ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_XML_NAME_DEPRECATED);
     } else {
       return getName();
     }
   }
 
   public String getXmlNamespace() {
-    if (ToolingExtensions.hasAnyOfExtensions(definition, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED)) {
-      return ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED);
-    } else if (ToolingExtensions.hasAnyOfExtensions(structure, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED)) {
-      return ToolingExtensions.readStringExtension(structure, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED);
+    if (ExtensionUtilities.hasAnyOfExtensions(definition, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED)) {
+      return ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED);
+    } else if (ExtensionUtilities.hasAnyOfExtensions(structure, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED)) {
+      return ExtensionUtilities.readStringExtension(structure, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED);
     } else {
       return FormatUtilities.FHIR_NS;
     }
@@ -164,7 +170,7 @@ public class Property {
       } else {
         path = path.substring(1);
       }
-      StructureDefinition sd = (url == null || url.equals(structure.getUrl())) ? structure : context.fetchResource(StructureDefinition.class, url, structure);
+      StructureDefinition sd = (url == null || url.equals(structure.getUrl())) ? structure : profileUtilities.findProfile(url, structure);
       if (sd == null) {
         throw new Error("Unknown Type in content reference '"+path+"'");        
       }
@@ -194,8 +200,8 @@ public class Property {
 				String name = elementName.substring(tail.length()-3);
         return isPrimitive(lowFirst(name)) ? lowFirst(name) : name;        
 			} else {
-	      if (ToolingExtensions.hasExtension(ed, "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype"))
-	        return ToolingExtensions.readStringExtension(ed, "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype");
+	      if (ExtensionUtilities.hasExtension(ed, "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype"))
+	        return ExtensionUtilities.readStringExtension(ed, "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype");
         throw new Error("logic error, gettype when types > 1, name mismatch for "+elementName+" on at "+ed.getPath());
 			}
     } else if (ed.getType().get(0).getCode() == null) {
@@ -312,7 +318,7 @@ public class Property {
    * @return
    */
   public boolean isJsonList() {
-    if (definition.hasExtension(ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED)) {
+    if (definition.hasExtension(ExtensionDefinitions.EXT_JSON_NAME, ExtensionDefinitions.EXT_JSON_NAME_DEPRECATED)) {
       return !"1".equals(definition.getMax());
     } else {
       return !"1".equals(definition.getBase().hasMax() ? definition.getBase().getMax() : definition.getMax());
@@ -409,8 +415,8 @@ public class Property {
           // ok, it's polymorphic
           if (ed.hasRepresentation(PropertyRepresentation.TYPEATTR) || isCDA) {
             t = statedType;
-            if (t == null && ToolingExtensions.hasExtension(ed, "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype"))
-              t = ToolingExtensions.readStringExtension(ed, "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype");
+            if (t == null && ExtensionUtilities.hasExtension(ed, "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype"))
+              t = ExtensionUtilities.readStringExtension(ed, "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype");
             boolean ok = false;
             for (TypeRefComponent tr : ed.getType()) { 
               if (tr.getWorkingCode().equals(t)) 
@@ -434,7 +440,8 @@ public class Property {
               }
             }
             if (!ok) {
-              throw new DefinitionException("Type '"+t+"' is not an acceptable type for '"+elementName+"' on property "+definition.getPath());
+              log.error("Type '"+t+"' (from '"+statedType+"') is not an acceptable type for '"+elementName+"' of type '"+ed.typeSummary()+"' on property "+definition.getPath());
+              return new ArrayList<Property>();
             }
           } else {
             t = elementName.substring(tail(ed.getPath()).length() - 3);
@@ -586,24 +593,24 @@ public class Property {
 
 
   public boolean isJsonKeyArray() {
-    return definition.hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY);
+    return definition.hasExtension(ExtensionDefinitions.EXT_JSON_PROP_KEY);
   }
 
 
   public String getJsonKeyProperty() {
-    return ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_PROP_KEY);
+    return ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_JSON_PROP_KEY);
   }
 
 
   public boolean hasTypeSpecifier() {
-    return definition.hasExtension(ToolingExtensions.EXT_TYPE_SPEC);
+    return definition.hasExtension(ExtensionDefinitions.EXT_TYPE_SPEC);
   }
 
 
   public List<StringPair> getTypeSpecifiers() {
     List<StringPair> res = new ArrayList<>();
-    for (Extension e : definition.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC)) {
-      res.add(new StringPair(ToolingExtensions.readStringExtension(e,  "condition"), ToolingExtensions.readStringExtension(e,  "type")));
+    for (Extension e : definition.getExtensionsByUrl(ExtensionDefinitions.EXT_TYPE_SPEC)) {
+      res.add(new StringPair(ExtensionUtilities.readStringExtension(e,  "condition"), ExtensionUtilities.readStringExtension(e,  "type")));
     }
     return res;
   }
@@ -618,17 +625,17 @@ public class Property {
 
 
   public boolean hasImpliedPrefix() {
-    return definition.hasExtension(ToolingExtensions.EXT_IMPLIED_PREFIX);
+    return definition.hasExtension(ExtensionDefinitions.EXT_IMPLIED_PREFIX);
   }
 
 
   public String getImpliedPrefix() {
-    return ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_IMPLIED_PREFIX);
+    return ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_IMPLIED_PREFIX);
   }
 
 
   public boolean isNullable() {    
-    return ToolingExtensions.readBoolExtension(definition, ToolingExtensions.EXT_JSON_NULLABLE);
+    return ExtensionUtilities.readBoolExtension(definition, ExtensionDefinitions.EXT_JSON_NULLABLE);
   }
 
 
@@ -638,8 +645,8 @@ public class Property {
 
 
   public boolean canBeEmpty() {
-    if (definition.hasExtension(ToolingExtensions.EXT_JSON_EMPTY)) {
-      return !"absent".equals(ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_EMPTY));
+    if (definition.hasExtension(ExtensionDefinitions.EXT_JSON_EMPTY)) {
+      return !"absent".equals(ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_JSON_EMPTY));
     } else {
       return false;
     }
@@ -659,7 +666,7 @@ public class Property {
   }
 
   public boolean isJsonPrimitiveChoice() {
-    return ToolingExtensions.readBoolExtension(definition, ToolingExtensions.EXT_JSON_PRIMITIVE_CHOICE);
+    return ExtensionUtilities.readBoolExtension(definition, ExtensionDefinitions.EXT_JSON_PRIMITIVE_CHOICE);
   }
 
   public Object typeSummary() {
@@ -672,12 +679,12 @@ public class Property {
 
 
   public boolean hasJsonName() {
-    return definition.hasExtension(ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED);
+    return definition.hasExtension(ExtensionDefinitions.EXT_JSON_NAME, ExtensionDefinitions.EXT_JSON_NAME_DEPRECATED);
   }
 
 
   public boolean isTranslatable() {
-    boolean ok = ToolingExtensions.readBoolExtension(definition, ToolingExtensions.EXT_TRANSLATABLE);
+    boolean ok = ExtensionUtilities.readBoolExtension(definition, ExtensionDefinitions.EXT_TRANSLATABLE);
     if (!ok && !definition.getPath().endsWith(".id") && !definition.getPath().endsWith(".linkId") && !Utilities.existsInList(definition.getBase().getPath(), "Resource.id", "Reference.reference", "Coding.version", "Identifier.value", "SampledData.offsets", "SampledData.data", "ContactPoint.value")) {
       String t = getType();
       ok = Utilities.existsInList(t, "string", "markdown");
@@ -742,5 +749,17 @@ public class Property {
     return false;
   }
 
-
+  public String getExtensionStyle() {
+    ElementDefinition ed = getDefinition();
+    if (ed.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED)) {
+      return ed.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED);
+    }
+    if (ed.getType().size() == 1) {
+      StructureDefinition sd = context.fetchTypeDefinition(ed.getTypeFirstRep().getWorkingCode());
+      if (sd != null && sd.hasExtension(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED)) {
+        return sd.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED);
+      }
+    }
+    return null;
+  }
 }

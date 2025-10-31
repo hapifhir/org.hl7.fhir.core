@@ -1,0 +1,60 @@
+The validator can be run as an http server:
+
+java -jar validator_cli.jar -server 8080 -version 4.0
+   -ig hl7.fhir.us.carin-bb#1.1.0 -ig hl7.fhir.us.davinci-crd#1.0.0
+
+Parameters:
+
+-server: tell the validator what port to run on
+-version Maj.Min - the version to use. You can leave this out and let the validator infer this, but it's there so that you can compare profiles across versions. E.g. if you specify -version 4.0, the profiles will both be treated as R4 profiles, even if they aren't
+-ig - a repeating parameter that specifies the packages to load, that contain the IGs/profiles you want to load before using the server
+-tx - tx server to use
+Server
+------
+
+The server is lightweight server - it doesn't have all the facilities or flexibility of the full validator.fhir.org - run
+that server if you want a full-blown server. This HTTP server is a lightweight in process server. The idea is that
+you run this server as a in-process server - tell it what version to run, hook it up to a terminology server, load
+the relevant IGs for the context, and then use it to validate.
+
+FHIR Validator HTTP Service - validateResource Endpoint
+
+USAGE:
+  POST /validateResource
+
+HEADERS:
+  Content-Type: application/fhir+json or application/fhir+xml
+  Accept: application/fhir+json or application/fhir+xml (optional, defaults to JSON)
+
+BODY:
+  FHIR resource as JSON or XML
+
+QUERY PARAMETERS (all optional):
+  profiles=<url1,url2,...>           - Comma-separated profile URLs to validate against
+  resourceIdRule=OPTIONAL|REQUIRED|PROHIBITED  - Resource ID requirement (default: OPTIONAL)
+  anyExtensionsAllowed=true|false    - Allow undefined extensions (default: true)
+  bpWarnings=Ignore|Hint|Warning|Error  - Best practice warning level (default: Ignore)
+  displayOption=Ignore|Check|CheckCaseAndSpace|CheckCase|CheckSpace  - Coding.display validation (default: Ignore)
+
+EXAMPLES:
+
+Basic validation:
+  curl -X POST http://localhost:8080/validateResource \
+    -H "Content-Type: application/fhir+json" \
+    -d '{"resourceType":"Patient","name":[{"family":"Doe"}]}'
+
+With profile validation:
+  curl -X POST "http://localhost:8080/validateResource?profiles=http://hl7.org/fhir/StructureDefinition/Patient" \
+    -H "Content-Type: application/fhir+json" \
+    -d @patient.json
+
+Strict validation:
+  curl -X POST "http://localhost:8080/validateResource?resourceIdRule=REQUIRED&anyExtensionsAllowed=false&bpWarnings=Error" \
+    -H "Content-Type: application/fhir+json" \
+    -d @resource.json
+
+RESPONSE:
+  200 OK - OperationOutcome with validation results
+  400 Bad Request - Invalid parameters or malformed resource
+  405 Method Not Allowed - Non-POST method
+  500 Internal Server Error - Validation engine error

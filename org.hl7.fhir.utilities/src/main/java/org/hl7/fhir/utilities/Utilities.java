@@ -14,12 +14,23 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
 
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.message.BasicNameValuePair;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.settings.FhirSettings;
@@ -128,6 +139,56 @@ public class Utilities {
 
   public static boolean isValidId(String id) {
     return id.matches("[A-Za-z0-9\\-\\.]{1,64}");
+  }
+
+  public static String[] concatStringArray(String[] array1, String[] array2) {
+    String[] result = new String[array1.length + array2.length];
+    System.arraycopy(array1, 0, result, 0, array1.length);
+    System.arraycopy(array2, 0, result, array1.length, array2.length);
+    return result;
+  }
+
+  private static final Set<String> EXCLUDED_FILES = Set.of(
+    "arch-uml1.png", "arch-uml2.png", "arch-uml3.png", "change.png", "conformance-module-resources.png", "dt-map.png",
+    "fhr.icns", "financial-module.png", "genomics-image10.png", "genomics-image16.png", "genomics-image19.png", "genomics-image24.png", "medication-definition-and-prescribing-resources.png", "pkb.png", "res-map.png", "sdmap.details",
+    "terminology-module-relationships.png", "togaf.png", "workflow-relations.png", "xver-paths-1.0.json", "xver-paths-1.4.json", "xver-paths-3.0.json", "xver-paths-4.0.json", "xver-paths-5.0.json", "zachman.png",
+    "13f2d978-cac6-493f-a3cf-16c32e3ad411.png", "951ae1e2-60d2-457e-9ce2-42e37f122808.gif", "action-and-activity-definition.png", "administration-module-interactions.png", "administration-module-person.png", "administration-module-prov-dir.png", "administration-module-research.png", "administration-module-scheduling.png", "basic-product-structure-simpler.png", "basic-product-structure-simplest.png",
+    "basic-product-structure.png", "cands1.png", "cands2.png", "claim-3-tiers.png", "clinicalreasoning-cdshooks-approach.png", "clinicalreasoning-components-diagram.jpg", "clinicalreasoning-ig-types.png",
+    "clinicalreasoning-knowledge-artifact-distribution.png", "clinicalreasoning-knowledge-artifact-types.png", "clinicalreasoning-measure-report-individual.png", "clinicalreasoning-measure-report-patient-list.png", "clinicalreasoning-measure-report-population.png", "clinicalreasoning-measure-structure.png", "'complex-pack-2(mix-and-device).png'", "'complex-pack-3(tablet-and-cream).png'",
+    "consent-provisions-example.png", "consent-provisions.png", "diagnostic-module-resources.png", "examplescenario-example-laborder.png", "examplescenario-example.png", "framework-2.png", "genomics-image02.png", "genomics-image03.png", "genomics-image04.png",
+    "genomics-image07.png", "genomics-image08.png", "genomics-image09.png", "genomics-image11.png", "genomics-image13.png", "genomics-image14.png", "genomics-image17.png", "genomics-image18.png", "genomics-image21.png", "genomics-image23.png",
+    "genomics-image25.png", "genomics-image29.png", "genomics-image30.png", "genomics-image36.png", "genomics-image37.png", "icon-administration.png", "icon-clinical.png", "icon-documentation.png", "icon-fhir-720.png", "icon-implementation.png",
+    "icon-infrastructure.png", "layout.png", "legal_state_machine_final.png", "manufactured-item-components.png", "manufactured-item-without-components.png", "packages-and-backbone.png", "packages-for-products-1.png", "parent-child-structure-1.png", "parent-child-structure-2.png",
+    "parent-child-structure-3.png", "researchstudy-profile-proposal.png", "researchstudy-state-machine.png", "researchsubject-state-machine.png", "saif.png", "security-layout.png", "shot.png", "slicing.png", "spec.internals", "treestructure.png", "validation-oo.json",
+    "watermark.png", "workflow-optionb.png", "workflow-optionc.png", "workflow-optionf.png", "workflow-optiong.png", "workflow-optionh-a.png", "workflow-optionh.png", "workflow-optioni.png", "workflow-optionl.png", "administration.jpg"
+  );
+
+  // work around bad practices in past binary handling
+  public static boolean isProhibitedBinaryFile(String k) {
+    return !EXCLUDED_FILES.contains(k);
+  }
+
+  public static String insertBreakingSpaces(String text, Set<Character> breakingChars) {
+    if (text == null || text.isEmpty() || breakingChars == null || breakingChars.isEmpty()) {
+      return text;
+    }
+
+    StringBuilder result = new StringBuilder();
+    int charsSinceLastBreak = 0;
+
+    for (int i = 0; i < text.length(); i++) {
+      char currentChar = text.charAt(i);
+      result.append(currentChar);
+      charsSinceLastBreak++;
+
+      // If we've gone 20+ chars and current char is a breaking char, insert zero-width space
+      if (charsSinceLastBreak >= 20 && breakingChars.contains(currentChar)) {
+        result.append('\u200B');
+        charsSinceLastBreak = 0;
+      }
+    }
+
+    return result.toString();
   }
 
   public enum DecimalStatus {
@@ -241,6 +302,24 @@ public class Utilities {
         b.append("&amp;");
       else if (c == '"')
         b.append("&quot;");
+      else
+        b.append(c);
+    }
+    return b.toString();
+  }
+
+  public static String escapeXmlText(String doco) {
+    if (doco == null)
+      return "";
+
+    StringBuilder b = new StringBuilder();
+    for (char c : doco.toCharArray()) {
+      if (c == '<')
+        b.append("&lt;");
+      else if (c == '>')
+        b.append("&gt;");
+      else if (c == '&')
+        b.append("&amp;");
       else
         b.append(c);
     }
@@ -492,26 +571,28 @@ public class Utilities {
   }
 
   /**
-   * Composes a path string using by concatenating the passed arguments.
-   *
-   * This method does not check for unintentional access to areas of the file
-   * system outside of the first entry. ONLY USE THIS METHOD IN CASES WHERE YOU
-   * ARE CERTAIN THE COMPOSED PATH IS NOT MALICIOUS.
-   *
-   * @param args
-   * @return
-   * @throws IOException
-   *
-   * @see PathBuilder#buildPath(String...)
-   */
-  @Deprecated
-  public static String uncheckedPath(String... args) throws IOException {
-    return PathBuilder.getPathBuilder()
-        .withRequireNonRootFirstEntry(false)
-        .withRequireNonNullNonEmptyFirstEntry(false)
-        .withRequirePathIsChildOfTarget(false)
-        .buildPath(args);
-  }
+     * Composes a path string using by concatenating the passed arguments.
+     *
+     * This method does not check for unintentional access to areas of the file
+     * system outside of the first entry. ONLY USE THIS METHOD IN CASES WHERE YOU
+     * ARE CERTAIN THE COMPOSED PATH IS NOT MALICIOUS.
+     *
+     * @param args
+     * @return
+     * @throws IOException
+     *
+     * @see PathBuilder#buildPath(String...)
+     */
+    @Deprecated
+    public static String uncheckedPath(String... args) throws IOException {
+      return PathBuilder.getPathBuilder()
+          .withRequireNonRootFirstEntry(false)
+          .withRequireNonNullNonEmptyFirstEntry(false)
+          .withRequirePathIsChildOfTarget(false)
+          .buildPath(args);
+    }
+
+
 
 
   public static String pathURL(String... args) {
@@ -713,8 +794,17 @@ public class Utilities {
     return encodeUriParam(string);
   }
 
+  public static String encodeUriParam(String key, String value) {
+    new BasicNameValuePair(key, value);
+    return URLEncodedUtils.format(Collections.singletonList(new BasicNameValuePair(key, value)), StandardCharsets.UTF_8);
+  }
+
+  @Deprecated
+  /* The following should not be used, as encodeUriParam automatically adds the key. The implementation below is a hack
+  * that ensures both methods are using apache utils to do the encoding. */
   public static String encodeUriParam(String param) {
-    return URLEncoder.encode(param, StandardCharsets.UTF_8);
+    String dummyEncode = encodeUriParam("dummy", param);
+    return dummyEncode.substring("dummy=".length());
   }
 
   public static String normalize(String s) {
@@ -953,6 +1043,20 @@ public class Utilities {
     return res;
   }
 
+
+  public static int startCharCount(String s, char c) {
+    int res = 0;
+    for (char ch : s.toCharArray()) {
+      if (ch == c) {
+        res++;
+      } else {
+        break;
+      }
+    } 
+    return res;
+  }
+
+  
   public static boolean equals(String one, String two) {
     if (one == null && two == null)
       return true;
@@ -1667,6 +1771,14 @@ public class Utilities {
     return ret;
   }
 
+  public static Set<String> stringSet(String... members) {
+    Set<String> ret = new HashSet<>();
+    for (String m : members) {
+      ret.add(m);
+    }
+    return ret;
+  }
+
   public static List<String> splitStrings(String src, String regex) {
     List<String> ret = new ArrayList<>();
     for (String m : src.split(regex)) {
@@ -1860,6 +1972,15 @@ public class Utilities {
     List<String> newList = new ArrayList<>(oldList);
     newList.add(newItem);
     return newList;
+  }
+
+  public static String limitString(String text, int length) {
+    text = text.trim();
+    if (text.length() > length) {
+      return text.substring(0, length-1)+"...";
+    } else {
+      return text;
+    }
   }
 
 

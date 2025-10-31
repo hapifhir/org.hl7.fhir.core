@@ -288,7 +288,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     if (!complex)
       for (ParametersParameterComponent p : params.getParameter())
         if (p.getValue() instanceof PrimitiveType)
-          ps += p.getName() + "=" + Utilities.encodeUriParam(((PrimitiveType) p.getValue()).asStringValue()) + "&";
+          ps += Utilities.encodeUriParam(p.getName(), ((PrimitiveType) p.getValue()).asStringValue()) + "&";
     ResourceRequest<T> result;
     URI url = resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps);
     if (complex) {
@@ -334,6 +334,25 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
           ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat()), false),
           withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(true),
           "POST " + resourceClass.getName() + (id != null ? "/" + id : "") + "/$validate", timeoutLong);
+      if (result.isUnsuccessfulRequest()) {
+        throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(),
+            (OperationOutcome) result.getPayload());
+      }
+    } catch (Exception e) {
+      handleException(0, "An error has occurred while trying to validate this resource", e);
+    }
+    return (OperationOutcome) result.getPayload();
+  }
+
+  @SuppressWarnings("unchecked")
+  public <T extends Resource> OperationOutcome validate(Resource resource, String id) {
+    recordUse();
+    ResourceRequest<T> result = null;
+    try {
+      result = client.issuePostRequest(resourceAddress.resolveValidateUri(resource.fhirType(), id),
+          ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat()), false),
+          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(true),
+          "POST " + resource.fhirType() + (id != null ? "/" + id : "") + "/$validate", timeoutLong);
       if (result.isUnsuccessfulRequest()) {
         throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(),
             (OperationOutcome) result.getPayload());
@@ -581,6 +600,22 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
 
   private void recordUse() {
     useCount++;    
+  }
+
+  public Parameters subsumes(Map<String, String> params) {
+    recordUse();
+    org.hl7.fhir.r4.utils.client.network.ResourceRequest<Resource> result = null;
+    try {
+      result = client.issueGetResourceRequest(resourceAddress.resolveOperationUri(CodeSystem.class, "subsumes", params),
+          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(false), "CodeSystem/$subsumes", timeoutNormal);
+    } catch (IOException e) {
+      throw new FHIRException(e);
+    }
+    if (result.isUnsuccessfulRequest()) {
+      throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(),
+          (OperationOutcome) result.getPayload());
+    }
+    return (Parameters) result.getPayload();
   }
 
   

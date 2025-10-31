@@ -9,13 +9,8 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.profile.BindingResolution;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
-import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.UsageContext;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
 import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
@@ -214,7 +209,7 @@ public class AdditionalBindingsRenderer {
     if (bindings.isEmpty()) {
       return;
     } else {
-      Piece piece = gen.new Piece("table").attr("class", "grid");
+      Piece piece = gen.new Piece("binding", "table").setClass("grid");
       c.getPieces().add(piece);
       render(piece.getChildren(), false);
     }
@@ -293,7 +288,15 @@ public class AdditionalBindingsRenderer {
           XhtmlNode td = tr.td();
           for (UsageContext uc : binding.usages) {
             td.sep(", ");
-            new DataRenderer(context).renderBase(new RenderingStatus(), td, uc);
+            Coding c = uc.getCode();
+            renderUsageCode(td, c);
+            td.tx(" = ");
+            if (uc.hasValueCodeableConcept() && !uc.getValueCodeableConcept().hasText() && uc.getValueCodeableConcept().getCoding().size() == 1) {
+              c = uc.getValueCodeableConcept().getCodingFirstRep();
+              renderUsageCode(td, c);
+            } else if (uc.getValue() != null) {
+              new DataRenderer(context).renderBase(new RenderingStatus(), td, uc.getValue());
+            }
           }
         } else {
           tr.td();          
@@ -313,6 +316,32 @@ public class AdditionalBindingsRenderer {
           tr.td().style("font-size: 11px");
         }
       }
+    }
+  }
+
+  private void renderUsageCode(XhtmlNode td, Coding c) throws IOException {
+    boolean rendered = false;
+    if (!c.hasDisplay()) {
+      if (c.hasSystem() && c.getSystem().contains("/StructureDefinition/")) {
+        StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, c.getSystem());
+        if (sd != null && sd.hasName()) {
+          rendered = true;
+          td.ah(sd.getWebPath()).tx(sd.getName());
+          td.tx("#");
+          td.code().tx(c.getCode());
+        }
+      } else {
+        CodeSystem cs = context.getContext().fetchCodeSystem(c.getSystem());
+        if (cs != null && cs.hasName()) {
+          rendered = true;
+          td.ah(cs.getWebPath()).tx(cs.getName());
+          td.tx("#");
+          td.code().tx(c.getCode());
+        }
+      }
+    }
+    if (!rendered) {
+      new DataRenderer(context).renderBase(new RenderingStatus(), td, c);
     }
   }
 
@@ -400,18 +429,18 @@ public class AdditionalBindingsRenderer {
     return !bindings.isEmpty();
   }
 
-  public void render(XhtmlNodeList children, List<ElementDefinitionBindingAdditionalComponent> list) {
+  public void render(XhtmlNodeList children, List<ElementDefinitionBindingAdditionalComponent> list, StructureDefinition sd) {
     if (list.size() == 1) {
-      render(children, list.get(0));
+      render(children, list.get(0), sd);
     } else {
       XhtmlNode ul = children.ul();
       for (ElementDefinitionBindingAdditionalComponent b : list) {
-        render(ul.li().getChildNodes(), b);
+        render(ul.li().getChildNodes(), b, sd);
       }
     }
   }
 
-  private void render(XhtmlNodeList children, ElementDefinitionBindingAdditionalComponent b) {
+  private void render(XhtmlNodeList children, ElementDefinitionBindingAdditionalComponent b, StructureDefinition sd) {
     if (b.getValueSet() == null) {
       return; // what should happen?
     }
@@ -438,7 +467,7 @@ public class AdditionalBindingsRenderer {
           children.tx(displayForUsage(uc.getCode()));
           children.tx("=");
         }
-        CodeResolution ccr = cr.resolveCode(uc.getValueCodeableConcept());
+        CodeResolution ccr = cr.resolveCode(uc.getValueCodeableConcept(), sd);
         children.ah(context.prefixLocalHref(ccr.getLink()), ccr.getHint()).tx(ccr.getDisplay());
       }
       children.tx(")");

@@ -14,6 +14,7 @@ public abstract class XhtmlFluent {
   protected abstract XhtmlNode addTag(int index, String string);
   protected abstract XhtmlNode addText(String cnt);
   protected abstract void addChildren(XhtmlNodeList childNodes);
+  protected abstract void addChild(XhtmlNode childNode);
   protected abstract int indexOfNode(XhtmlNode node);
   
   public XhtmlNode h1() {
@@ -59,9 +60,9 @@ public abstract class XhtmlFluent {
   public XhtmlNode table(String clss, boolean forPresentation) {
     XhtmlNode res = addTag("table");
     if (!Utilities.noString(clss))
-      res.setAttribute("class", clss);
+      res.clss(clss);
     if (forPresentation) {
-      res.setAttribute("role", "presentation");
+      res.clss("presentation");
     }
     return res;
   }
@@ -148,6 +149,17 @@ public abstract class XhtmlFluent {
   
   public XhtmlNode tx(String cnt) {
     return addText(cnt);
+  }
+
+  /**
+   * used in i18n when we don't know if there'll be text, but if there is, it needs to be separated
+   * 
+   * @param cnt
+   */
+  public void stx(String cnt) {
+    if (!Utilities.noString(cnt)) {
+      addText(" "+cnt);
+    }
   }
 
   public XhtmlNode tx(int cnt) {
@@ -298,6 +310,38 @@ public abstract class XhtmlFluent {
       }
       addChildren(m.getChildNodes());
    }        
+  }
+
+  public void markdownSimple(String md, String source) throws IOException {
+    if (md != null) {
+      String s = new MarkDownProcessor(Dialect.COMMON_MARK).process(md, source);
+      XhtmlParser p = new XhtmlParser();
+      XhtmlNode m;
+      try {
+        m = p.parse("<div>"+s+"</div>", "div");
+      } catch (org.hl7.fhir.exceptions.FHIRFormatError e) {
+        throw new FHIRFormatError(e.getMessage(), e);
+      }
+      boolean first = true;
+      for (XhtmlNode c : m.getChildNodes()) {
+        if ("div".equals(c.getName())) {
+          for (XhtmlNode c1 : c.getChildNodes()) {
+            if ("p".equals(c1.getName())) {
+              if (first) first = false;
+              else br();
+              addChildren(c1.getChildNodes());
+            } else {
+              addChild(c1);
+            }
+          }
+        } else  if ("p".equals(c.getName())) {
+          if (first) first = false; else br();
+          addChildren(c.getChildNodes());
+        } else {
+          addChild(c);
+        }
+      }
+    }
   }
 
   public void innerHTML(String html) throws IOException {

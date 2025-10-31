@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv10_40.resources10_40;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Reference10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.CodeableConcept10_40;
@@ -19,7 +20,7 @@ public class Medication10_40 {
       tgt.setCode(CodeableConcept10_40.convertCodeableConcept(src.getCode()));
     if (src.hasIsBrandElement())
       tgt.addExtension(
-        "http://hl7.org/fhir/3.0/StructureDefinition/extension-Medication.isBrand",
+        VersionConvertorConstants.EXT_MED_ISBRAND,
         Boolean10_40.convertBoolean(src.getIsBrandElement())
       );
     if (src.hasManufacturer())
@@ -36,13 +37,13 @@ public class Medication10_40 {
       org.hl7.fhir.dstu2.model.Medication.MedicationPackageComponent package_ = src.getPackage();
       if (package_.hasContainer())
         tgt.addExtension(
-          "http://hl7.org/fhir/3.0/StructureDefinition/extension-Medication.package.container",
+          VersionConvertorConstants.EXT_MED_PACK_CONTAINER,
           CodeableConcept10_40.convertCodeableConcept(package_.getContainer())
         );
       for (org.hl7.fhir.dstu2.model.Medication.MedicationPackageContentComponent c : package_.getContent())
         tgt.addExtension(
-          "http://hl7.org/fhir/3.0/StructureDefinition/extension-Medication.package.content",
-          content(c)
+          VersionConvertorConstants.EXT_MED_PACK_CONTENT,
+          Medication10_40.content(c)
         );
     }
     return tgt;
@@ -60,24 +61,6 @@ public class Medication10_40 {
     return tgt;
   }
 
-  private static org.hl7.fhir.r4.model.Extension content(org.hl7.fhir.dstu2.model.Medication.MedicationPackageContentComponent src) {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Extension tgt = new org.hl7.fhir.r4.model.Extension();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
-    if (src.hasItem())
-      tgt.addExtension(
-        "http://hl7.org/fhir/3.0/StructureDefinition/extension-Medication.package.content",
-        Reference10_40.convertReference(src.getItem())
-      );
-    if (src.hasAmount())
-      tgt.addExtension(
-        "http://hl7.org/fhir/3.0/StructureDefinition/extension-Medication.package.content.amount",
-        SimpleQuantity10_40.convertSimpleQuantity(src.getAmount())
-      );
-    return tgt;
-  }
-
   private static org.hl7.fhir.r4.model.Medication.MedicationIngredientComponent convertMedicationIngridient(org.hl7.fhir.dstu2.model.Medication.MedicationProductIngredientComponent src) {
     if (src == null || src.isEmpty())
       return null;
@@ -87,6 +70,24 @@ public class Medication10_40 {
       tgt.setItem(Reference10_40.convertReference(src.getItem()));
     if (src.hasAmount())
       tgt.setStrength(Ratio10_40.convertRatio(src.getAmount()));
+    return tgt;
+  }
+
+  public static org.hl7.fhir.r4.model.Extension content(org.hl7.fhir.dstu2.model.Medication.MedicationPackageContentComponent src) {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r4.model.Extension tgt = new org.hl7.fhir.r4.model.Extension();
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    if (src.hasItem())
+      tgt.addExtension(
+        VersionConvertorConstants.EXT_MED_PACK_CONTENT,
+        Reference10_40.convertReference(src.getItem())
+      );
+    if (src.hasAmount())
+      tgt.addExtension(
+        VersionConvertorConstants.EXT_MED_PACK_AMOUNT,
+        SimpleQuantity10_40.convertSimpleQuantity(src.getAmount())
+      );
     return tgt;
   }
 }

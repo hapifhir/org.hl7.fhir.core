@@ -10,13 +10,16 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@SuppressWarnings("checkstyle:systemout")
 public class OMOPImporter {
 
   public class Tracker {
@@ -85,15 +88,20 @@ public class OMOPImporter {
   private Map<String, String> vocabularies = new HashMap<>();
   private Map<String, String> domains = new HashMap<>();
   private Map<String, String> classes = new HashMap<>();
+  private Set<String> conceptFilter = null;
 
   public static void main(String[] args) throws Exception {
-    new OMOPImporter().process(args[0], args[1]); 
+    new OMOPImporter().process(args[0], args[1], args.length > 2 ? args[2] : null); 
     // "/Users/grahamegrieve/Downloads/vocabulary_download_v5_{97cc5432-0dc9-4f14-9da2-d0624129d2f7}_1688068174909");
     // /Users/grahamegrieve/temp/omop/omop.db
   }
 
-  private void process(String folder, String dest) throws ClassNotFoundException, SQLException, FHIRException, FileNotFoundException, IOException {
+  private void process(String folder, String dest, String filter) throws ClassNotFoundException, SQLException, FHIRException, FileNotFoundException, IOException {
     connect(dest);
+    
+    if (filter != null) {
+      processFilter(filter);
+    }
 
     processRelationships(folder, true);
     processVocabularies(folder, true);
@@ -108,10 +116,20 @@ public class OMOPImporter {
   }
 
 
+  private void processFilter(String filter) throws FHIRException, IOException {
+    conceptFilter = new HashSet<String>();
+    CSVReader csv = new CSVReader(new FileInputStream(filter));
+    csv.readHeaders();
+    while (csv.line()) {
+      conceptFilter.add(csv.cell("concept_id"));
+    }
+    
+  }
+
   private void connect(String dest) throws SQLException, ClassNotFoundException, IOException {
     //    Class.forName("com.mysql.jdbc.Driver");  
     //    con = DriverManager.getConnection("jdbc:mysql://localhost:3306/omop?useSSL=false","root",{pwd}); 
-    ManagedFileAccess.file("/Users/grahamegrieve/temp/omop/omop.db").delete();
+    ManagedFileAccess.file(dest).delete();
     con = DriverManager.getConnection("jdbc:sqlite:"+dest); 
   }
   private void processRelationships(String folder, boolean process) throws FHIRException, FileNotFoundException, IOException, SQLException {
@@ -495,25 +513,31 @@ public class OMOPImporter {
         "INSERT INTO `Concepts` (`concept_id`, `concept_name`, `domain_id`, `vocabulary_id`, `concept_class_id`, `standard_concept`, `concept_code`, `valid_start_date`, `valid_end_date`, `invalid_reason`) "+
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"); 
     while (csv.line()) {
-      try {
-        pstmt.setString(1, csv.cell("concept_id"));
-        pstmt.setString(2, csv.cell("concept_name"));
-        pstmt.setString(3, domains.get(csv.cell("domain_id")));
-        pstmt.setString(4, vocabularies.get(csv.cell("vocabulary_id")));
-        pstmt.setString(5, classes.get(csv.cell("concept_class_id")));
-        pstmt.setString(6, csv.cell("standard_concept"));
-        pstmt.setString(7, csv.cell("concept_code"));
-        pstmt.setString(8, date(csv.cell("valid_start_date")));
-        pstmt.setString(9, date(csv.cell("valid_end_date")));
-        pstmt.setString(10, csv.cell("invalid_reason"));
-        pstmt.executeUpdate();
-      } catch (Exception e) {
-        t.error(e.getMessage());
+      if (conceptFilter == null || conceptFilter.contains(csv.cell("concept_id")) || isMetaConcept(csv.cell("concept_id"), csv.cell("domain_id"))) {
+        try {
+          pstmt.setString(1, csv.cell("concept_id"));
+          pstmt.setString(2, csv.cell("concept_name"));
+          pstmt.setString(3, domains.get(csv.cell("domain_id")));
+          pstmt.setString(4, vocabularies.get(csv.cell("vocabulary_id")));
+          pstmt.setString(5, classes.get(csv.cell("concept_class_id")));
+          pstmt.setString(6, csv.cell("standard_concept"));
+          pstmt.setString(7, csv.cell("concept_code"));
+          pstmt.setString(8, date(csv.cell("valid_start_date")));
+          pstmt.setString(9, date(csv.cell("valid_end_date")));
+          pstmt.setString(10, csv.cell("invalid_reason"));
+          pstmt.executeUpdate();
+        } catch (Exception e) {
+          t.error(e.getMessage());
+        }
       }
       t.step();
     }
     csv.close();    
     t.done();
+  }
+
+  private boolean isMetaConcept(String cell, String domain) {
+    return domains.containsValue(cell) || vocabularies.containsValue(cell) || "Language".equals(domain); 
   }
 
   private void processConceptSynonyms(String folder, boolean process) throws FHIRException, FileNotFoundException, IOException, SQLException {
@@ -553,13 +577,15 @@ public class OMOPImporter {
     
     PreparedStatement pstmt = con.prepareStatement("INSERT INTO `ConceptSynonyms` (`concept_id`, `concept_synonym_name`, `language_concept_id`) VALUES (?, ?, ?)");
     while (csv.line()) {
-      try {
-        pstmt.setString(1, csv.cell("concept_id"));
-        pstmt.setString(2, csv.cell("concept_synonym_name"));
-        pstmt.setString(3, csv.cell("language_concept_id"));
-        pstmt.executeUpdate();
-      } catch (Exception e) {
-        t.error(e.getMessage());
+      if (conceptFilter == null || conceptFilter.contains(csv.cell("concept_id")) || isMetaConcept(csv.cell("concept_id"), null)) {
+        try {
+          pstmt.setString(1, csv.cell("concept_id"));
+          pstmt.setString(2, csv.cell("concept_synonym_name"));
+          pstmt.setString(3, csv.cell("language_concept_id"));
+          pstmt.executeUpdate();
+        } catch (Exception e) {
+          t.error(e.getMessage());
+        }
       }
       t.step();
     }
@@ -649,16 +675,18 @@ public class OMOPImporter {
 
     PreparedStatement pstmt = con.prepareStatement("INSERT INTO `ConceptRelationships` (`concept_id_1`, `concept_id_2`, `relationship_id`, `valid_start_date`, `valid_end_date`, `invalid_reason`) VALUES (?, ?, ?, ?, ?, ?)");
     while (csv.line()) {
-      try {
-        pstmt.setString(1, csv.cell("concept_id_1"));
-        pstmt.setString(2, csv.cell("concept_id_2"));
-        pstmt.setString(3, relationships.get(csv.cell("relationship_id")));
-        pstmt.setString(4, csv.cell("valid_start_date"));
-        pstmt.setString(5, date(csv.cell("valid_end_date")));
-        pstmt.setString(6, date(csv.cell("invalid_reason")));
-        pstmt.executeUpdate();
-      } catch (Exception e) {
-        t.error(e.getMessage());
+      if (conceptFilter == null || ((conceptFilter.contains(csv.cell("concept_id_1")) || isMetaConcept(csv.cell("concept_id_1"), null)) && (conceptFilter.contains(csv.cell("concept_id_2")) || isMetaConcept(csv.cell("concept_id_2"), null)))) {
+        try {
+          pstmt.setString(1, csv.cell("concept_id_1"));
+          pstmt.setString(2, csv.cell("concept_id_2"));
+          pstmt.setString(3, relationships.get(csv.cell("relationship_id")));
+          pstmt.setString(4, csv.cell("valid_start_date"));
+          pstmt.setString(5, date(csv.cell("valid_end_date")));
+          pstmt.setString(6, date(csv.cell("invalid_reason")));
+          pstmt.executeUpdate();
+        } catch (Exception e) {
+          t.error(e.getMessage());
+        }
       }
       t.step();
     }

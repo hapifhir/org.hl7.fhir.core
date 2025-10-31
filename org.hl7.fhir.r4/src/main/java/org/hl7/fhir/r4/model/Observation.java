@@ -1000,7 +1000,7 @@ public class Observation extends DomainResource {
     }
 
     public boolean hasValueQuantity() {
-      return this != null && this.value instanceof Quantity;
+        return this.value instanceof Quantity;
     }
 
     /**
@@ -1017,7 +1017,7 @@ public class Observation extends DomainResource {
     }
 
     public boolean hasValueCodeableConcept() {
-      return this != null && this.value instanceof CodeableConcept;
+        return this.value instanceof CodeableConcept;
     }
 
     /**
@@ -1034,7 +1034,7 @@ public class Observation extends DomainResource {
     }
 
     public boolean hasValueStringType() {
-      return this != null && this.value instanceof StringType;
+        return this.value instanceof StringType;
     }
 
     /**
@@ -1051,7 +1051,7 @@ public class Observation extends DomainResource {
     }
 
     public boolean hasValueBooleanType() {
-      return this != null && this.value instanceof BooleanType;
+        return this.value instanceof BooleanType;
     }
 
     /**
@@ -1068,7 +1068,7 @@ public class Observation extends DomainResource {
     }
 
     public boolean hasValueIntegerType() {
-      return this != null && this.value instanceof IntegerType;
+        return this.value instanceof IntegerType;
     }
 
     /**
@@ -1085,7 +1085,7 @@ public class Observation extends DomainResource {
     }
 
     public boolean hasValueRange() {
-      return this != null && this.value instanceof Range;
+        return this.value instanceof Range;
     }
 
     /**
@@ -1102,7 +1102,7 @@ public class Observation extends DomainResource {
     }
 
     public boolean hasValueRatio() {
-      return this != null && this.value instanceof Ratio;
+        return this.value instanceof Ratio;
     }
 
     /**
@@ -1119,7 +1119,7 @@ public class Observation extends DomainResource {
     }
 
     public boolean hasValueSampledData() {
-      return this != null && this.value instanceof SampledData;
+        return this.value instanceof SampledData;
     }
 
     /**
@@ -1136,7 +1136,7 @@ public class Observation extends DomainResource {
     }
 
     public boolean hasValueTimeType() {
-      return this != null && this.value instanceof TimeType;
+        return this.value instanceof TimeType;
     }
 
     /**
@@ -1153,7 +1153,7 @@ public class Observation extends DomainResource {
     }
 
     public boolean hasValueDateTimeType() {
-      return this != null && this.value instanceof DateTimeType;
+        return this.value instanceof DateTimeType;
     }
 
     /**
@@ -1170,7 +1170,7 @@ public class Observation extends DomainResource {
     }
 
     public boolean hasValuePeriod() {
-      return this != null && this.value instanceof Period;
+        return this.value instanceof Period;
     }
 
     public boolean hasValue() {
@@ -2101,16 +2101,6 @@ public class Observation extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getBasedOnTarget() {
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<Resource>();
-    return this.basedOnTarget;
-  }
-
-  /**
    * @return {@link #partOf} (A larger event of which this particular Observation
    *         is a component or step. For example, an observation as part of a
    *         procedure.)
@@ -2164,16 +2154,6 @@ public class Observation extends DomainResource {
       addPartOf();
     }
     return getPartOf().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getPartOfTarget() {
-    if (this.partOfTarget == null)
-      this.partOfTarget = new ArrayList<Resource>();
-    return this.partOfTarget;
   }
 
   /**
@@ -2434,16 +2414,6 @@ public class Observation extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getFocusTarget() {
-    if (this.focusTarget == null)
-      this.focusTarget = new ArrayList<Resource>();
-    return this.focusTarget;
-  }
-
-  /**
    * @return {@link #encounter} (The healthcare event (e.g. a patient and
    *         healthcare provider interaction) during which this observation is
    *         made.)
@@ -2529,7 +2499,7 @@ public class Observation extends DomainResource {
   }
 
   public boolean hasEffectiveDateTimeType() {
-    return this != null && this.effective instanceof DateTimeType;
+      return this.effective instanceof DateTimeType;
   }
 
   /**
@@ -2550,7 +2520,7 @@ public class Observation extends DomainResource {
   }
 
   public boolean hasEffectivePeriod() {
-    return this != null && this.effective instanceof Period;
+      return this.effective instanceof Period;
   }
 
   /**
@@ -2571,7 +2541,7 @@ public class Observation extends DomainResource {
   }
 
   public boolean hasEffectiveTiming() {
-    return this != null && this.effective instanceof Timing;
+      return this.effective instanceof Timing;
   }
 
   /**
@@ -2592,7 +2562,7 @@ public class Observation extends DomainResource {
   }
 
   public boolean hasEffectiveInstantType() {
-    return this != null && this.effective instanceof InstantType;
+      return this.effective instanceof InstantType;
   }
 
   public boolean hasEffective() {
@@ -2732,16 +2702,6 @@ public class Observation extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getPerformerTarget() {
-    if (this.performerTarget == null)
-      this.performerTarget = new ArrayList<Resource>();
-    return this.performerTarget;
-  }
-
-  /**
    * @return {@link #value} (The information determined as a result of making the
    *         observation, if the information has a simple value.)
    */
@@ -2763,7 +2723,7 @@ public class Observation extends DomainResource {
   }
 
   public boolean hasValueQuantity() {
-    return this != null && this.value instanceof Quantity;
+      return this.value instanceof Quantity;
   }
 
   /**
@@ -2780,7 +2740,7 @@ public class Observation extends DomainResource {
   }
 
   public boolean hasValueCodeableConcept() {
-    return this != null && this.value instanceof CodeableConcept;
+      return this.value instanceof CodeableConcept;
   }
 
   /**
@@ -2797,7 +2757,7 @@ public class Observation extends DomainResource {
   }
 
   public boolean hasValueStringType() {
-    return this != null && this.value instanceof StringType;
+      return this.value instanceof StringType;
   }
 
   /**
@@ -2814,7 +2774,7 @@ public class Observation extends DomainResource {
   }
 
   public boolean hasValueBooleanType() {
-    return this != null && this.value instanceof BooleanType;
+      return this.value instanceof BooleanType;
   }
 
   /**
@@ -2831,7 +2791,7 @@ public class Observation extends DomainResource {
   }
 
   public boolean hasValueIntegerType() {
-    return this != null && this.value instanceof IntegerType;
+      return this.value instanceof IntegerType;
   }
 
   /**
@@ -2848,7 +2808,7 @@ public class Observation extends DomainResource {
   }
 
   public boolean hasValueRange() {
-    return this != null && this.value instanceof Range;
+      return this.value instanceof Range;
   }
 
   /**
@@ -2865,7 +2825,7 @@ public class Observation extends DomainResource {
   }
 
   public boolean hasValueRatio() {
-    return this != null && this.value instanceof Ratio;
+      return this.value instanceof Ratio;
   }
 
   /**
@@ -2882,7 +2842,7 @@ public class Observation extends DomainResource {
   }
 
   public boolean hasValueSampledData() {
-    return this != null && this.value instanceof SampledData;
+      return this.value instanceof SampledData;
   }
 
   /**
@@ -2899,7 +2859,7 @@ public class Observation extends DomainResource {
   }
 
   public boolean hasValueTimeType() {
-    return this != null && this.value instanceof TimeType;
+      return this.value instanceof TimeType;
   }
 
   /**
@@ -2916,7 +2876,7 @@ public class Observation extends DomainResource {
   }
 
   public boolean hasValueDateTimeType() {
-    return this != null && this.value instanceof DateTimeType;
+      return this.value instanceof DateTimeType;
   }
 
   /**
@@ -2933,7 +2893,7 @@ public class Observation extends DomainResource {
   }
 
   public boolean hasValuePeriod() {
-    return this != null && this.value instanceof Period;
+      return this.value instanceof Period;
   }
 
   public boolean hasValue() {
@@ -3354,16 +3314,6 @@ public class Observation extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getHasMemberTarget() {
-    if (this.hasMemberTarget == null)
-      this.hasMemberTarget = new ArrayList<Resource>();
-    return this.hasMemberTarget;
-  }
-
-  /**
    * @return {@link #derivedFrom} (The target resource that represents a
    *         measurement from which this observation value is derived. For
    *         example, a calculated anion gap or a fetal measurement based on an
@@ -3418,16 +3368,6 @@ public class Observation extends DomainResource {
       addDerivedFrom();
     }
     return getDerivedFrom().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getDerivedFromTarget() {
-    if (this.derivedFromTarget == null)
-      this.derivedFromTarget = new ArrayList<Resource>();
-    return this.derivedFromTarget;
   }
 
   /**

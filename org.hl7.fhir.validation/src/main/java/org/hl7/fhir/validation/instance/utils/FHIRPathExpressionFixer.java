@@ -28,6 +28,9 @@ public class FHIRPathExpressionFixer {
     if ("txt-2".equals(key)) {
       return "htmlChecks2()";
     }
+    if ("que-7".equals(key)) {
+      return "operator = 'exists' implies (answer is boolean)"; // wrong prior to R5
+    }
     if ("dom-6".equals(key)) {
       return "(%rootResource != $this) or text.`div`.exists()";
     }
@@ -63,7 +66,11 @@ public class FHIRPathExpressionFixer {
     if (expr.equals("clinicalStatus.exists() or verificationStatus.coding.where(system='http://terminology.hl7.org/CodeSystem/condition-ver-status' and code = 'entered-in-error').exists() or category.select($this='problem-list-item').empty()")) {
       return "(verificationStatus.coding.where(system='http://terminology.hl7.org/CodeSystem/condition-ver-status' and code = 'entered-in-error').exists() and category.coding.exists(system='http://terminology.hl7.org/CodeSystem/condition-category' and code ='problem-list-item').empty()) implies (clinicalStatus.exists())";
     }
-    
+
+    // R4
+    if (r4 && "offset.empty() or (when.exists() and ((when in ('C' | 'CM' | 'CD' | 'CV')).not()))".equals(expr)) {
+      return "offset.empty() or (when.exists() and when.select($this in ('C' | 'CM' | 'CD' | 'CV')).allFalse())";
+    }
     // R5 ballot
     if (expr.equals("url.matches('([^|#])*')")) {
       return ("$this.matches('([^|#])*')");

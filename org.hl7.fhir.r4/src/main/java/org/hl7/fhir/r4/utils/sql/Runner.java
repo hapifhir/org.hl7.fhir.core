@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
@@ -12,7 +13,7 @@ import org.hl7.fhir.r4.fhirpath.ExpressionNode;
 import org.hl7.fhir.r4.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r4.fhirpath.TypeDetails;
 import org.hl7.fhir.r4.fhirpath.ExpressionNode.CollectionStatus;
-import org.hl7.fhir.r4.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r4.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.model.Base64BinaryType;
@@ -23,14 +24,8 @@ import org.hl7.fhir.r4.model.IntegerType;
 import org.hl7.fhir.r4.model.Property;
 import org.hl7.fhir.r4.model.StringType;
 import org.hl7.fhir.r4.model.ValueSet;
-import org.hl7.fhir.r4.utils.sql.Cell;
-import org.hl7.fhir.r4.utils.sql.Column;
-import org.hl7.fhir.r4.utils.sql.Provider;
-import org.hl7.fhir.r4.utils.sql.Storage;
-import org.hl7.fhir.r4.utils.sql.Store;
-import org.hl7.fhir.r4.utils.sql.Validator;
-import org.hl7.fhir.r4.utils.sql.Value;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
@@ -58,7 +53,8 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
  */
 
 @MarkedToMoveToAdjunctPackage
-public class Runner implements IEvaluationContext {
+@Slf4j
+public class Runner implements IHostApplicationServices {
   
   public interface IRunnerObserver {
     public void handleRow(Base resource, int total, int cursor);
@@ -302,7 +298,7 @@ public class Runner implements IEvaluationContext {
     }
     Column col = (Column) column.getUserData("column");
     if (col == null) {
-      System.out.println("Error");
+      log.error("Error");
     } else {
       for (List<Cell> row : rows) {
         Cell c = cell(row, col.getName());
@@ -419,9 +415,9 @@ public class Runner implements IEvaluationContext {
   }
 
   @Override
-  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
+  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     List<Base> list = new ArrayList<Base>();
-    if (explicitConstant) {
+    if (mode == FHIRPathConstantEvaluationMode.EXPLICIT) {
       JsonObject vd = (JsonObject) appContext;
       JsonObject constant = findConstant(vd, name);
       if (constant != null) {
@@ -435,8 +431,8 @@ public class Runner implements IEvaluationContext {
   }
 
   @Override
-  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
-    if (explicitConstant) {
+  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
+    if (mode == FHIRPathConstantEvaluationMode.EXPLICIT) {
       JsonObject vd = (JsonObject) appContext;
       JsonObject constant = findConstant(vd, name.substring(1));
       if (constant != null) {

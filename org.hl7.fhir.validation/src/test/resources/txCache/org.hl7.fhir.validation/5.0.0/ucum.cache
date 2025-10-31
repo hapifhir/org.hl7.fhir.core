@@ -9,7 +9,7 @@
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -18,7 +18,7 @@ v: {
   "code" : "mm[Hg]",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -35,7 +35,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -44,7 +44,7 @@ v: {
   "code" : "mm[Hg]",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -61,7 +61,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -70,7 +70,33 @@ v: {
   "code" : "cm",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
+  "code" : "uV"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "uV",
+  "code" : "uV",
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.2",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -87,7 +113,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -96,7 +122,7 @@ v: {
   "code" : "/min",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -113,7 +139,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -122,7 +148,7 @@ v: {
   "code" : "mmol/L",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -139,7 +165,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -148,7 +174,7 @@ v: {
   "code" : "mL",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -165,7 +191,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -174,7 +200,7 @@ v: {
   "code" : "Cel",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -191,7 +217,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -200,7 +226,7 @@ v: {
   "code" : "[lb_av]",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -218,7 +244,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -227,7 +253,7 @@ v: {
   "code" : "{score}",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -245,7 +271,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -254,7 +280,7 @@ v: {
   "code" : "mL",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -272,7 +298,7 @@ v: {
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
   },
   {
-    "name" : "displayLanguage",
+    "name" : "defaultDisplayLanguage",
     "valueCode" : "en-US"
   }]
 }}####
@@ -281,7 +307,7 @@ v: {
   "code" : "d",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "http://tx-dev.fhir.org/r5",
+  "server" : "https://tx-dev.fhir.org/r5",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

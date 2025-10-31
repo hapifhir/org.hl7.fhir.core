@@ -121,6 +121,21 @@ public class Manager {
       } 
       return fmt;
     }
+
+    public String toMimeType() {
+      switch (this) {
+      case FML: return "text/fhir+fml";
+      case JSON: return "application/fhir+json";
+      case NDJSON: return "application/fhir+ndjson";
+      case SHC: return "application/shc";
+      case SHL: return "application/shl";
+      case TEXT: return "text/plain";
+      case TURTLE: return "application/fhir+turtle";
+      case VBAR: return "application/x-hl7-v2";
+      case XML: return "application/fhir+xml";
+      }
+      return "??";
+    }
   }
   
   public static List<ValidatedFragment> parse(IWorkerContext context, InputStream source, FhirFormat inputFormat) throws FHIRFormatError, DefinitionException, IOException, FHIRException {
@@ -148,7 +163,7 @@ public class Manager {
     case VBAR : return new VerticalBarParser(context);
     case SHC : return new SHCParser(context);
     case SHL : return new SHLParser(context);
-    case FML : return new FmlParser(context);
+    case FML : return new FmlParser(context, null);
     case TEXT : throw new Error("Programming logic error: do not call makeParser for a text resource");
     }
     return null;

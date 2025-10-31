@@ -1,20 +1,16 @@
 package org.hl7.fhir.utilities.xhtml;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
-import org.hl7.fhir.utilities.xhtml.NodeType;
-import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
-import org.hl7.fhir.utilities.xhtml.XhtmlNode;
-import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 public class XhtmlNodeTest {
 
@@ -140,6 +136,13 @@ public class XhtmlNodeTest {
     Assertions.assertEquals("http://www.w3.org/1999/xlink", x.getChildNodes().get(0).getChildNodes().get(1).getAttributes().get("xmlns:xlink"));
   }
 
+  @Test
+  public void testParseSvgComment() throws FHIRFormatError, IOException {
+    XhtmlNode x = new XhtmlParser().parse(BaseTestingUtilities.loadTestResource("xhtml", "svg-comment.svg"), "svg");
+
+    Assertions.assertNotNull(x);
+  }
+
 
   @Test
   public void testParseSvgElements() throws FHIRFormatError, IOException {
@@ -227,5 +230,61 @@ public class XhtmlNodeTest {
     Assertions.assertEquals("<div>&#x1F637;</div>", html);
   }
 
+  @Test
+  public void testFirstNamedDescendent() throws IOException {
+    XhtmlNode x = new XhtmlParser().parse("<div><p>test</p></div>", "div");
+    Assertions.assertEquals("test", x.firstNamedDescendent("p").allText());
+  }
+
+  @Test
+  public void testFirstNamedDescendentNotFound() throws IOException {
+    XhtmlNode x = new XhtmlParser().parse("<div><p>test</p></div>", "div");
+    Assertions.assertNull(x.firstNamedDescendent("span"));
+  }
+
+  @Test
+  public void testFirstNamedDescendentMultipleMatches() throws IOException {
+    XhtmlNode x = new XhtmlParser().parse("<div><p>first</p><p>second</p></div>", "div");
+    Assertions.assertEquals("first", x.firstNamedDescendent("p").allText());
+  }
+
+  @Test
+  public void testFirstNamedDescendentNestedStructure() throws IOException {
+    XhtmlNode x = new XhtmlParser().parse("<div><section><p>nested</p></section><p>top-level</p></div>", "div");
+    Assertions.assertEquals("nested", x.firstNamedDescendent("p").allText());
+  }
+
+  @Test
+  public void testFirstNamedDescendentDeepNesting() throws IOException {
+    XhtmlNode x = new XhtmlParser().parse("<div><a><b><c><span>deep</span></c></b></a></div>", "div");
+    Assertions.assertEquals("deep", x.firstNamedDescendent("span").allText());
+  }
+
+  @Test
+  public void testFirstNamedDescendentEmptyTree() throws IOException {
+    XhtmlNode x = new XhtmlParser().parse("<div></div>", "div");
+    Assertions.assertNull(x.firstNamedDescendent("p"));
+  }
+
+  @Test
+  public void testFirstNamedDescendentSelfMatch() throws IOException {
+    XhtmlNode x = new XhtmlParser().parse("<p>self</p>", "p");
+    Assertions.assertNotNull(x.firstNamedDescendent("p"));
+  }
+
+  @Test
+  public void testFirstNamedDescendentWithAttributes() throws IOException {
+    XhtmlNode x = new XhtmlParser().parse("<div><p class='test'>content</p></div>", "div");
+    XhtmlNode result = x.firstNamedDescendent("p");
+    Assertions.assertEquals("content", result.allText());
+    Assertions.assertEquals("test", result.getAttribute("class"));
+  }
+
+  @Test
+  public void testFirstNamedDescendentMixedContent() throws IOException {
+    XhtmlNode x = new XhtmlParser().parse("<div>text<p>paragraph</p>more text<span>span</span></div>", "div");
+    Assertions.assertEquals("paragraph", x.firstNamedDescendent("p").allText());
+    Assertions.assertEquals("span", x.firstNamedDescendent("span").allText());
+  }
 
 }

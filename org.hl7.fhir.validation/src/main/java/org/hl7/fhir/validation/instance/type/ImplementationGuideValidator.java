@@ -2,10 +2,13 @@ package org.hl7.fhir.validation.instance.type;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.model.ImplementationGuide;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -46,9 +49,9 @@ public class ImplementationGuideValidator extends BaseValidator {
     }
 
     if (isHL7Org(ig)) {
-      ok = rule(errors, "2025-02-13", IssueType.BUSINESSRULE, ig.line(), ig.col(), stack.getLiteralPath(), ig.hasExtension(ToolingExtensions.EXT_STANDARDS_STATUS), I18nConstants.IG_HL7_STANDARDS_STATUS_REQUIRED) && ok;               
-      ok = rule(errors, "2025-02-13", IssueType.BUSINESSRULE, ig.line(), ig.col(), stack.getLiteralPath(), ig.hasExtension(ToolingExtensions.EXT_WORKGROUP), I18nConstants.IG_HL7_WG_REQUIRED) && ok;               
-      warning(errors, "2025-02-13", IssueType.BUSINESSRULE, ig.line(), ig.col(), stack.getLiteralPath(), ig.hasExtension(ToolingExtensions.EXT_FMM_LEVEL), I18nConstants.IG_HL7_FMM_SHOULD);               
+      ok = rule(errors, "2025-02-13", IssueType.BUSINESSRULE, ig.line(), ig.col(), stack.getLiteralPath(), ig.hasExtension(ExtensionDefinitions.EXT_STANDARDS_STATUS), I18nConstants.IG_HL7_STANDARDS_STATUS_REQUIRED) && ok;
+      ok = rule(errors, "2025-02-13", IssueType.BUSINESSRULE, ig.line(), ig.col(), stack.getLiteralPath(), ig.hasExtension(ExtensionDefinitions.EXT_WORKGROUP), I18nConstants.IG_HL7_WG_REQUIRED) && ok;               
+      warning(errors, "2025-02-13", IssueType.BUSINESSRULE, ig.line(), ig.col(), stack.getLiteralPath(), ig.hasExtension(ExtensionDefinitions.EXT_FMM_LEVEL), I18nConstants.IG_HL7_FMM_SHOULD);               
     }
     return ok;
   }
@@ -73,8 +76,10 @@ public class ImplementationGuideValidator extends BaseValidator {
     ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), packageId == null || packageId.matches(FilesystemPackageCacheManager.PACKAGE_REGEX), I18nConstants.IG_DEPENDENCY_INVALID_PACKAGEID, packageId) && ok;         
 
     try {
+      ImplementationGuide fetchedIgDependency = context.fetchResource(ImplementationGuide.class, url);
+      warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), fetchedIgDependency != null, I18nConstants.IG_DEPENDENCY_INVALID_URL, url);                   
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
-      if (url != null && packageId != null) {
+      if (url != null && packageId != null && (fetchedIgDependency == null || !fetchedIgDependency.hasUserData(UserDataNames.IG_FAKE))) {
         String pid = pcm.getPackageId(url);
         String canonical = pcm.getPackageUrl(packageId);
         ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), pid == null || pid.equals(packageId) || packageId.startsWith(pid+"."+VersionUtilities.getNameForVersion(context.getVersion()).toLowerCase()), I18nConstants.IG_DEPENDENCY_CLASH_PACKAGEID, url, pid, packageId) && ok;         
@@ -90,7 +95,7 @@ public class ImplementationGuideValidator extends BaseValidator {
         if (warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), npm != null, I18nConstants.IG_DEPENDENCY_PACKAGE_UNKNOWN, packageId+"#"+version)) {
           if (!fvl.isEmpty()) {
             String pver = npm.fhirVersion();
-            if (!VersionUtilities.versionsMatch(pver, fvl)) {
+            if (!VersionUtilities.versionMatchesList(pver, fvl)) {
               if (Utilities.existsInList(packageId, "hl7.fhir.uv.extensions", "hl7.fhir.uv.tools", "hl7.terminology")) {
                 ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), false, I18nConstants.IG_DEPENDENCY_VERSION_ERROR, CommaSeparatedStringBuilder.join(",", fvl), packageId+"#"+version, pver, 
                     packageId+"."+VersionUtilities.getNameForVersion(fvl.get(0)).toLowerCase()) && ok;                           
@@ -104,13 +109,15 @@ public class ImplementationGuideValidator extends BaseValidator {
           try {
             PackageClient pc = new PackageClient(PackageServer.primaryServer());
             List<PackageInfo> list = pc.getVersions(packageId);
-            String lver = pcm.getLatestVersion(packageId);
+            Collections.sort(list, new org.hl7.fhir.utilities.npm.PackageInfo.PackageInfoVersionSorter());
+            String lver = pcm.getLatestVersion(packageId, true);
+            String date = null;
             for (PackageInfo t : list) {
               if (!t.getVersion().contains("-")) {
                 lver = t.getVersion();
               }
             }
-            if (lver != null && !VersionUtilities.versionsMatch(version, lver) && isMoreThanXMonthsAgo(npm.dateAsLocalDate(), DATE_WARNING_CUTOFF)) {
+            if (lver != null && !"current".equals(lver) && !"current".equals(version) && !VersionUtilities.versionMatches(version, lver) && isMoreThanXMonthsAgo(npm.dateAsLocalDate(), DATE_WARNING_CUTOFF)) {
               warning(errors, "2025-03-06", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), false, I18nConstants.IG_DEPENDENCY_VERSION_WARNING_OLD, packageId+"#"+version, lver, npm.dateAsLocalDate().toString());            
             }
           } catch (Exception e) {

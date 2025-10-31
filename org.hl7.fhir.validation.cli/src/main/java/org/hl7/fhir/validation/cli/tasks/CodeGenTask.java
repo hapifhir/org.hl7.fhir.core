@@ -1,12 +1,15 @@
 package org.hl7.fhir.validation.cli.tasks;
 
-import java.io.PrintStream;
-
-import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.param.Params;
+import org.hl7.fhir.validation.cli.param.parsers.CodeGenParametersParser;
+import org.hl7.fhir.validation.cli.param.parsers.PackageNameParametersParser;
+import org.hl7.fhir.validation.cli.param.parsers.RePackageParametersParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
-import org.hl7.fhir.validation.service.utils.EngineMode;
+import org.slf4j.Logger;
+
+import javax.annotation.Nonnull;
 
 public class CodeGenTask extends ValidationEngineTask {
 
@@ -26,17 +29,23 @@ public class CodeGenTask extends ValidationEngineTask {
   }
 
   @Override
-  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
-    return validationContext.getMode() == EngineMode.CODEGEN;
+  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
+    return shouldExecuteTask(args);
   }
 
   @Override
-  public void printHelp(PrintStream out) {
+  public boolean shouldExecuteTask(@Nonnull String[] args) {
+    return Params.hasParam(args, CodeGenParametersParser.CODEGEN)
+      || (Params.hasParam(args, PackageNameParametersParser.PACKAGE_NAME) && !Params.hasParam(args, RePackageParametersParser.RE_PACK));
+  }
+
+  @Override
+  public void logHelp(Logger logger) {
 
   }
 
   @Override
-  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
+  public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
     validationService.codeGen(validationContext, validationEngine);
   }
 

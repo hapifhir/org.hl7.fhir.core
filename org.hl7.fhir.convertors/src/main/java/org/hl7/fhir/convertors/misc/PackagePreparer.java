@@ -48,6 +48,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
  * C:\work\fhirserver\resources\resources\dicom
  *
  */
+@SuppressWarnings("checkstyle:systemout")
 public class PackagePreparer {
 
 

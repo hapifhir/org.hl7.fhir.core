@@ -227,8 +227,8 @@ public class Signature extends Type implements ICompositeType {
       return (UriType) this.who;
     }
 
-    public boolean hasWhoUriType() { 
-      return this != null && this.who instanceof UriType;
+    public boolean hasWhoUriType() {
+        return this.who instanceof UriType;
     }
 
     /**
@@ -242,8 +242,8 @@ public class Signature extends Type implements ICompositeType {
       return (Reference) this.who;
     }
 
-    public boolean hasWhoReference() { 
-      return this != null && this.who instanceof Reference;
+    public boolean hasWhoReference() {
+        return this.who instanceof Reference;
     }
 
     public boolean hasWho() { 
@@ -278,8 +278,8 @@ public class Signature extends Type implements ICompositeType {
       return (UriType) this.onBehalfOf;
     }
 
-    public boolean hasOnBehalfOfUriType() { 
-      return this != null && this.onBehalfOf instanceof UriType;
+    public boolean hasOnBehalfOfUriType() {
+        return this.onBehalfOf instanceof UriType;
     }
 
     /**
@@ -293,8 +293,8 @@ public class Signature extends Type implements ICompositeType {
       return (Reference) this.onBehalfOf;
     }
 
-    public boolean hasOnBehalfOfReference() { 
-      return this != null && this.onBehalfOf instanceof Reference;
+    public boolean hasOnBehalfOfReference() {
+        return this.onBehalfOf instanceof Reference;
     }
 
     public boolean hasOnBehalfOf() { 

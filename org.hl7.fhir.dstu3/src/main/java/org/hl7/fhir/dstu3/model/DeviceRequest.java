@@ -932,16 +932,6 @@ public class DeviceRequest extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getDefinitionTarget() { 
-      if (this.definitionTarget == null)
-        this.definitionTarget = new ArrayList<Resource>();
-      return this.definitionTarget;
-    }
-
-    /**
      * @return {@link #basedOn} (Plan/proposal/order fulfilled by this request.)
      */
     public List<Reference> getBasedOn() { 
@@ -995,16 +985,6 @@ public class DeviceRequest extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getBasedOnTarget() { 
-      if (this.basedOnTarget == null)
-        this.basedOnTarget = new ArrayList<Resource>();
-      return this.basedOnTarget;
-    }
-
-    /**
      * @return {@link #priorRequest} (The request takes the place of the referenced completed or terminated request(s).)
      */
     public List<Reference> getPriorRequest() { 
@@ -1055,16 +1035,6 @@ public class DeviceRequest extends DomainResource {
         addPriorRequest();
       }
       return getPriorRequest().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getPriorRequestTarget() { 
-      if (this.priorRequestTarget == null)
-        this.priorRequestTarget = new ArrayList<Resource>();
-      return this.priorRequestTarget;
     }
 
     /**
@@ -1231,8 +1201,8 @@ public class DeviceRequest extends DomainResource {
       return (Reference) this.code;
     }
 
-    public boolean hasCodeReference() { 
-      return this != null && this.code instanceof Reference;
+    public boolean hasCodeReference() {
+      return this.code instanceof Reference;
     }
 
     /**
@@ -1246,8 +1216,8 @@ public class DeviceRequest extends DomainResource {
       return (CodeableConcept) this.code;
     }
 
-    public boolean hasCodeCodeableConcept() { 
-      return this != null && this.code instanceof CodeableConcept;
+    public boolean hasCodeCodeableConcept() {
+      return this.code instanceof CodeableConcept;
     }
 
     public boolean hasCode() { 
@@ -1360,8 +1330,8 @@ public class DeviceRequest extends DomainResource {
       return (DateTimeType) this.occurrence;
     }
 
-    public boolean hasOccurrenceDateTimeType() { 
-      return this != null && this.occurrence instanceof DateTimeType;
+    public boolean hasOccurrenceDateTimeType() {
+      return this.occurrence instanceof DateTimeType;
     }
 
     /**
@@ -1375,8 +1345,8 @@ public class DeviceRequest extends DomainResource {
       return (Period) this.occurrence;
     }
 
-    public boolean hasOccurrencePeriod() { 
-      return this != null && this.occurrence instanceof Period;
+    public boolean hasOccurrencePeriod() {
+      return this.occurrence instanceof Period;
     }
 
     /**
@@ -1390,8 +1360,8 @@ public class DeviceRequest extends DomainResource {
       return (Timing) this.occurrence;
     }
 
-    public boolean hasOccurrenceTiming() { 
-      return this != null && this.occurrence instanceof Timing;
+    public boolean hasOccurrenceTiming() {
+      return this.occurrence instanceof Timing;
     }
 
     public boolean hasOccurrence() { 
@@ -1651,16 +1621,6 @@ public class DeviceRequest extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
-    }
-
-    /**
      * @return {@link #supportingInfo} (Additional clinical information about the patient that may influence the request fulfilment.  For example, this may includes body where on the subject's the device will be used ( i.e. the target site).)
      */
     public List<Reference> getSupportingInfo() { 
@@ -1711,16 +1671,6 @@ public class DeviceRequest extends DomainResource {
         addSupportingInfo();
       }
       return getSupportingInfo().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getSupportingInfoTarget() { 
-      if (this.supportingInfoTarget == null)
-        this.supportingInfoTarget = new ArrayList<Resource>();
-      return this.supportingInfoTarget;
     }
 
     /**
@@ -1827,28 +1777,6 @@ public class DeviceRequest extends DomainResource {
         addRelevantHistory();
       }
       return getRelevantHistory().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Provenance> getRelevantHistoryTarget() { 
-      if (this.relevantHistoryTarget == null)
-        this.relevantHistoryTarget = new ArrayList<Provenance>();
-      return this.relevantHistoryTarget;
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public Provenance addRelevantHistoryTarget() { 
-      Provenance r = new Provenance();
-      if (this.relevantHistoryTarget == null)
-        this.relevantHistoryTarget = new ArrayList<Provenance>();
-      this.relevantHistoryTarget.add(r);
-      return r;
     }
 
       protected void listChildren(List<Property> children) {

@@ -34,8 +34,11 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
@@ -76,13 +79,13 @@ public abstract class DataType extends Element implements IBaseDatatype, IElemen
 
   public String getTranslation(String l) throws FHIRException {
     for (Extension e : getExtension()) {
-      if (e.getUrl().equals(ToolingExtensions.EXT_TRANSLATION)) {
-        String lang = ToolingExtensions.readStringExtension(e, "lang");
+      if (e.getUrl().equals(ExtensionDefinitions.EXT_TRANSLATION)) {
+        String lang = ExtensionUtilities.readStringExtension(e, "lang");
         if (lang.equals(l))
           return e.getExtensionString("content");
       }
     }
-    return null;
+    return primitiveValue();
   }
   
   public boolean isTranslatable() {

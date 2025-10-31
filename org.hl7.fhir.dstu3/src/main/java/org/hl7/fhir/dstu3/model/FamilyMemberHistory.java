@@ -299,8 +299,8 @@ public class FamilyMemberHistory extends DomainResource {
           return (Age) this.onset;
         }
 
-        public boolean hasOnsetAge() { 
-          return this != null && this.onset instanceof Age;
+        public boolean hasOnsetAge() {
+            return this.onset instanceof Age;
         }
 
         /**
@@ -314,8 +314,8 @@ public class FamilyMemberHistory extends DomainResource {
           return (Range) this.onset;
         }
 
-        public boolean hasOnsetRange() { 
-          return this != null && this.onset instanceof Range;
+        public boolean hasOnsetRange() {
+            return this.onset instanceof Range;
         }
 
         /**
@@ -329,8 +329,8 @@ public class FamilyMemberHistory extends DomainResource {
           return (Period) this.onset;
         }
 
-        public boolean hasOnsetPeriod() { 
-          return this != null && this.onset instanceof Period;
+        public boolean hasOnsetPeriod() {
+            return this.onset instanceof Period;
         }
 
         /**
@@ -344,8 +344,8 @@ public class FamilyMemberHistory extends DomainResource {
           return (StringType) this.onset;
         }
 
-        public boolean hasOnsetStringType() { 
-          return this != null && this.onset instanceof StringType;
+        public boolean hasOnsetStringType() {
+            return this.onset instanceof StringType;
         }
 
         public boolean hasOnset() { 
@@ -864,16 +864,6 @@ public class FamilyMemberHistory extends DomainResource {
     }
 
     /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getDefinitionTarget() { 
-      if (this.definitionTarget == null)
-        this.definitionTarget = new ArrayList<Resource>();
-      return this.definitionTarget;
-    }
-
-    /**
      * @return {@link #status} (A code specifying the status of the record of the family history of a specific family member.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public Enumeration<FamilyHistoryStatus> getStatusElement() { 
@@ -1220,8 +1210,8 @@ public class FamilyMemberHistory extends DomainResource {
       return (Period) this.born;
     }
 
-    public boolean hasBornPeriod() { 
-      return this != null && this.born instanceof Period;
+    public boolean hasBornPeriod() {
+        return this.born instanceof Period;
     }
 
     /**
@@ -1235,8 +1225,8 @@ public class FamilyMemberHistory extends DomainResource {
       return (DateType) this.born;
     }
 
-    public boolean hasBornDateType() { 
-      return this != null && this.born instanceof DateType;
+    public boolean hasBornDateType() {
+        return this.born instanceof DateType;
     }
 
     /**
@@ -1250,8 +1240,8 @@ public class FamilyMemberHistory extends DomainResource {
       return (StringType) this.born;
     }
 
-    public boolean hasBornStringType() { 
-      return this != null && this.born instanceof StringType;
+    public boolean hasBornStringType() {
+        return this.born instanceof StringType;
     }
 
     public boolean hasBorn() { 
@@ -1286,8 +1276,8 @@ public class FamilyMemberHistory extends DomainResource {
       return (Age) this.age;
     }
 
-    public boolean hasAgeAge() { 
-      return this != null && this.age instanceof Age;
+    public boolean hasAgeAge() {
+        return this.age instanceof Age;
     }
 
     /**
@@ -1301,8 +1291,8 @@ public class FamilyMemberHistory extends DomainResource {
       return (Range) this.age;
     }
 
-    public boolean hasAgeRange() { 
-      return this != null && this.age instanceof Range;
+    public boolean hasAgeRange() {
+        return this.age instanceof Range;
     }
 
     /**
@@ -1316,8 +1306,8 @@ public class FamilyMemberHistory extends DomainResource {
       return (StringType) this.age;
     }
 
-    public boolean hasAgeStringType() { 
-      return this != null && this.age instanceof StringType;
+    public boolean hasAgeStringType() {
+        return this.age instanceof StringType;
     }
 
     public boolean hasAge() { 
@@ -1397,8 +1387,8 @@ public class FamilyMemberHistory extends DomainResource {
       return (BooleanType) this.deceased;
     }
 
-    public boolean hasDeceasedBooleanType() { 
-      return this != null && this.deceased instanceof BooleanType;
+    public boolean hasDeceasedBooleanType() {
+        return this.deceased instanceof BooleanType;
     }
 
     /**
@@ -1412,8 +1402,8 @@ public class FamilyMemberHistory extends DomainResource {
       return (Age) this.deceased;
     }
 
-    public boolean hasDeceasedAge() { 
-      return this != null && this.deceased instanceof Age;
+    public boolean hasDeceasedAge() {
+        return this.deceased instanceof Age;
     }
 
     /**
@@ -1427,8 +1417,8 @@ public class FamilyMemberHistory extends DomainResource {
       return (Range) this.deceased;
     }
 
-    public boolean hasDeceasedRange() { 
-      return this != null && this.deceased instanceof Range;
+    public boolean hasDeceasedRange() {
+        return this.deceased instanceof Range;
     }
 
     /**
@@ -1442,8 +1432,8 @@ public class FamilyMemberHistory extends DomainResource {
       return (DateType) this.deceased;
     }
 
-    public boolean hasDeceasedDateType() { 
-      return this != null && this.deceased instanceof DateType;
+    public boolean hasDeceasedDateType() {
+        return this.deceased instanceof DateType;
     }
 
     /**
@@ -1457,8 +1447,8 @@ public class FamilyMemberHistory extends DomainResource {
       return (StringType) this.deceased;
     }
 
-    public boolean hasDeceasedStringType() { 
-      return this != null && this.deceased instanceof StringType;
+    public boolean hasDeceasedStringType() {
+        return this.deceased instanceof StringType;
     }
 
     public boolean hasDeceased() { 
@@ -1579,16 +1569,6 @@ public class FamilyMemberHistory extends DomainResource {
         addReasonReference();
       }
       return getReasonReference().get(0);
-    }
-
-    /**
-     * @deprecated Use Reference#setResource(IBaseResource) instead
-     */
-    @Deprecated
-    public List<Resource> getReasonReferenceTarget() { 
-      if (this.reasonReferenceTarget == null)
-        this.reasonReferenceTarget = new ArrayList<Resource>();
-      return this.reasonReferenceTarget;
     }
 
     /**

@@ -293,7 +293,7 @@ public class SupplyDelivery extends DomainResource {
     }
 
     public boolean hasItemCodeableConcept() {
-      return this != null && this.item instanceof CodeableConcept;
+        return this.item instanceof CodeableConcept;
     }
 
     /**
@@ -312,7 +312,7 @@ public class SupplyDelivery extends DomainResource {
     }
 
     public boolean hasItemReference() {
-      return this != null && this.item instanceof Reference;
+        return this.item instanceof Reference;
     }
 
     public boolean hasItem() {
@@ -751,28 +751,6 @@ public class SupplyDelivery extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<SupplyRequest> getBasedOnTarget() {
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<SupplyRequest>();
-    return this.basedOnTarget;
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public SupplyRequest addBasedOnTarget() {
-    SupplyRequest r = new SupplyRequest();
-    if (this.basedOnTarget == null)
-      this.basedOnTarget = new ArrayList<SupplyRequest>();
-    this.basedOnTarget.add(r);
-    return r;
-  }
-
-  /**
    * @return {@link #partOf} (A larger event of which this particular event is a
    *         component or step.)
    */
@@ -825,16 +803,6 @@ public class SupplyDelivery extends DomainResource {
       addPartOf();
     }
     return getPartOf().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getPartOfTarget() {
-    if (this.partOfTarget == null)
-      this.partOfTarget = new ArrayList<Resource>();
-    return this.partOfTarget;
   }
 
   /**
@@ -1018,7 +986,7 @@ public class SupplyDelivery extends DomainResource {
   }
 
   public boolean hasOccurrenceDateTimeType() {
-    return this != null && this.occurrence instanceof DateTimeType;
+      return this.occurrence instanceof DateTimeType;
   }
 
   /**
@@ -1034,7 +1002,7 @@ public class SupplyDelivery extends DomainResource {
   }
 
   public boolean hasOccurrencePeriod() {
-    return this != null && this.occurrence instanceof Period;
+      return this.occurrence instanceof Period;
   }
 
   /**
@@ -1050,7 +1018,7 @@ public class SupplyDelivery extends DomainResource {
   }
 
   public boolean hasOccurrenceTiming() {
-    return this != null && this.occurrence instanceof Timing;
+      return this.occurrence instanceof Timing;
   }
 
   public boolean hasOccurrence() {
@@ -1220,16 +1188,6 @@ public class SupplyDelivery extends DomainResource {
       addReceiver();
     }
     return getReceiver().get(0);
-  }
-
-  /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getReceiverTarget() {
-    if (this.receiverTarget == null)
-      this.receiverTarget = new ArrayList<Resource>();
-    return this.receiverTarget;
   }
 
   protected void listChildren(List<Property> children) {

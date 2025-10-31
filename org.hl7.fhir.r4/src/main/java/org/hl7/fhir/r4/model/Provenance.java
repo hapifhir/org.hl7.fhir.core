@@ -1263,16 +1263,6 @@ public class Provenance extends DomainResource {
   }
 
   /**
-   * @deprecated Use Reference#setResource(IBaseResource) instead
-   */
-  @Deprecated
-  public List<Resource> getTargetTarget() {
-    if (this.targetTarget == null)
-      this.targetTarget = new ArrayList<Resource>();
-    return this.targetTarget;
-  }
-
-  /**
    * @return {@link #occurred} (The period during which the activity occurred.)
    */
   public Type getOccurred() {
@@ -1292,7 +1282,7 @@ public class Provenance extends DomainResource {
   }
 
   public boolean hasOccurredPeriod() {
-    return this != null && this.occurred instanceof Period;
+      return this.occurred instanceof Period;
   }
 
   /**
@@ -1308,7 +1298,7 @@ public class Provenance extends DomainResource {
   }
 
   public boolean hasOccurredDateTimeType() {
-    return this != null && this.occurred instanceof DateTimeType;
+      return this.occurred instanceof DateTimeType;
   }
 
   public boolean hasOccurred() {

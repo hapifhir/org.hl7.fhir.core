@@ -510,7 +510,7 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
          */
         @Child(name = "suggestions", type = {CDSHooksElement.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Suggest a set of changes in the context of the current activity", formalDefinition="Allows a service to suggest a set of changes in the context of the current activity (e.g. changing the dose of a medication currently being prescribed, for the order-sign activity)." )
-        protected List<CDSHooksResponseCardsSuggestionsComponent> suggestions;
+        protected List<CDSHooksResponseCardsSuggestionsComponent> suggestionsList;
 
         /**
          * Describes the intended selection behavior of the suggestions in the card. Allowed values are: at-most-one, indicating that the user may choose none or at most one of the suggestions; any, indicating that the end user may choose any number of suggestions including none of them and all of them
@@ -525,16 +525,16 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
          */
         @Child(name = "overrideReasons", type = {Coding.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Can be selected by the end user when overriding a card without taking the suggested recommendations.", formalDefinition="Override reasons can be selected by the end user when overriding a card without taking the suggested recommendations. The CDS service MAY return a list of override reasons to the CDS client." )
-        protected List<Coding> overrideReasons;
+        protected List<Coding> overrideReasonsList;
 
         /**
          * Allows a service to suggest a link to an app that the user might want to run for additional information or to help guide a decision.
          */
         @Child(name = "links", type = {CDSHooksElement.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Link to an app that the user might want to run for additional information or to help guide a decision", formalDefinition="Allows a service to suggest a link to an app that the user might want to run for additional information or to help guide a decision." )
-        protected List<CDSHooksResponseCardsLinksComponent> links;
+        protected List<CDSHooksResponseCardsLinksComponent> linksList;
 
-        private static final long serialVersionUID = 1127708051L;
+        private static final long serialVersionUID = -1553644263L;
 
     /**
      * Constructor
@@ -766,43 +766,43 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         /**
          * @return {@link #suggestions} (Allows a service to suggest a set of changes in the context of the current activity (e.g. changing the dose of a medication currently being prescribed, for the order-sign activity).)
          */
-        public List<CDSHooksResponseCardsSuggestionsComponent> getSuggestions() { 
-          if (this.suggestions == null)
-            this.suggestions = new ArrayList<CDSHooksResponseCardsSuggestionsComponent>();
-          return this.suggestions;
+        public List<CDSHooksResponseCardsSuggestionsComponent> getSuggestionsList() { 
+          if (this.suggestionsList == null)
+            this.suggestionsList = new ArrayList<CDSHooksResponseCardsSuggestionsComponent>();
+          return this.suggestionsList;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public CDSHooksResponseCardsComponent setSuggestions(List<CDSHooksResponseCardsSuggestionsComponent> theSuggestions) { 
-          this.suggestions = theSuggestions;
+        public CDSHooksResponseCardsComponent setSuggestionsList(List<CDSHooksResponseCardsSuggestionsComponent> theSuggestions) { 
+          this.suggestionsList = theSuggestions;
           return this;
         }
 
         public boolean hasSuggestions() { 
-          if (this.suggestions == null)
+          if (this.suggestionsList == null)
             return false;
-          for (CDSHooksResponseCardsSuggestionsComponent item : this.suggestions)
+          for (CDSHooksResponseCardsSuggestionsComponent item : this.suggestionsList)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public CDSHooksResponseCardsSuggestionsComponent addSuggestions() { //3
+        public CDSHooksResponseCardsSuggestionsComponent addSuggestions() { //3a
           CDSHooksResponseCardsSuggestionsComponent t = new CDSHooksResponseCardsSuggestionsComponent();
-          if (this.suggestions == null)
-            this.suggestions = new ArrayList<CDSHooksResponseCardsSuggestionsComponent>();
-          this.suggestions.add(t);
+          if (this.suggestionsList == null)
+            this.suggestionsList = new ArrayList<CDSHooksResponseCardsSuggestionsComponent>();
+          this.suggestionsList.add(t);
           return t;
         }
 
-        public CDSHooksResponseCardsComponent addSuggestions(CDSHooksResponseCardsSuggestionsComponent t) { //3
+        public CDSHooksResponseCardsComponent addSuggestions(CDSHooksResponseCardsSuggestionsComponent t) { //3b
           if (t == null)
             return this;
-          if (this.suggestions == null)
-            this.suggestions = new ArrayList<CDSHooksResponseCardsSuggestionsComponent>();
-          this.suggestions.add(t);
+          if (this.suggestionsList == null)
+            this.suggestionsList = new ArrayList<CDSHooksResponseCardsSuggestionsComponent>();
+          this.suggestionsList.add(t);
           return this;
         }
 
@@ -810,10 +810,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
          * @return The first repetition of repeating field {@link #suggestions}, creating it if it does not already exist {3}
          */
         public CDSHooksResponseCardsSuggestionsComponent getSuggestionsFirstRep() { 
-          if (getSuggestions().isEmpty()) {
+          if (getSuggestionsList().isEmpty()) {
             addSuggestions();
           }
-          return getSuggestions().get(0);
+          return getSuggestionsList().get(0);
         }
 
         /**
@@ -868,43 +868,43 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         /**
          * @return {@link #overrideReasons} (Override reasons can be selected by the end user when overriding a card without taking the suggested recommendations. The CDS service MAY return a list of override reasons to the CDS client.)
          */
-        public List<Coding> getOverrideReasons() { 
-          if (this.overrideReasons == null)
-            this.overrideReasons = new ArrayList<Coding>();
-          return this.overrideReasons;
+        public List<Coding> getOverrideReasonsList() { 
+          if (this.overrideReasonsList == null)
+            this.overrideReasonsList = new ArrayList<Coding>();
+          return this.overrideReasonsList;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public CDSHooksResponseCardsComponent setOverrideReasons(List<Coding> theOverrideReasons) { 
-          this.overrideReasons = theOverrideReasons;
+        public CDSHooksResponseCardsComponent setOverrideReasonsList(List<Coding> theOverrideReasons) { 
+          this.overrideReasonsList = theOverrideReasons;
           return this;
         }
 
         public boolean hasOverrideReasons() { 
-          if (this.overrideReasons == null)
+          if (this.overrideReasonsList == null)
             return false;
-          for (Coding item : this.overrideReasons)
+          for (Coding item : this.overrideReasonsList)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public Coding addOverrideReasons() { //3
+        public Coding addOverrideReasons() { //3a
           Coding t = new Coding();
-          if (this.overrideReasons == null)
-            this.overrideReasons = new ArrayList<Coding>();
-          this.overrideReasons.add(t);
+          if (this.overrideReasonsList == null)
+            this.overrideReasonsList = new ArrayList<Coding>();
+          this.overrideReasonsList.add(t);
           return t;
         }
 
-        public CDSHooksResponseCardsComponent addOverrideReasons(Coding t) { //3
+        public CDSHooksResponseCardsComponent addOverrideReasons(Coding t) { //3b
           if (t == null)
             return this;
-          if (this.overrideReasons == null)
-            this.overrideReasons = new ArrayList<Coding>();
-          this.overrideReasons.add(t);
+          if (this.overrideReasonsList == null)
+            this.overrideReasonsList = new ArrayList<Coding>();
+          this.overrideReasonsList.add(t);
           return this;
         }
 
@@ -912,52 +912,52 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
          * @return The first repetition of repeating field {@link #overrideReasons}, creating it if it does not already exist {3}
          */
         public Coding getOverrideReasonsFirstRep() { 
-          if (getOverrideReasons().isEmpty()) {
+          if (getOverrideReasonsList().isEmpty()) {
             addOverrideReasons();
           }
-          return getOverrideReasons().get(0);
+          return getOverrideReasonsList().get(0);
         }
 
         /**
          * @return {@link #links} (Allows a service to suggest a link to an app that the user might want to run for additional information or to help guide a decision.)
          */
-        public List<CDSHooksResponseCardsLinksComponent> getLinks() { 
-          if (this.links == null)
-            this.links = new ArrayList<CDSHooksResponseCardsLinksComponent>();
-          return this.links;
+        public List<CDSHooksResponseCardsLinksComponent> getLinksList() { 
+          if (this.linksList == null)
+            this.linksList = new ArrayList<CDSHooksResponseCardsLinksComponent>();
+          return this.linksList;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public CDSHooksResponseCardsComponent setLinks(List<CDSHooksResponseCardsLinksComponent> theLinks) { 
-          this.links = theLinks;
+        public CDSHooksResponseCardsComponent setLinksList(List<CDSHooksResponseCardsLinksComponent> theLinks) { 
+          this.linksList = theLinks;
           return this;
         }
 
         public boolean hasLinks() { 
-          if (this.links == null)
+          if (this.linksList == null)
             return false;
-          for (CDSHooksResponseCardsLinksComponent item : this.links)
+          for (CDSHooksResponseCardsLinksComponent item : this.linksList)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public CDSHooksResponseCardsLinksComponent addLinks() { //3
+        public CDSHooksResponseCardsLinksComponent addLinks() { //3a
           CDSHooksResponseCardsLinksComponent t = new CDSHooksResponseCardsLinksComponent();
-          if (this.links == null)
-            this.links = new ArrayList<CDSHooksResponseCardsLinksComponent>();
-          this.links.add(t);
+          if (this.linksList == null)
+            this.linksList = new ArrayList<CDSHooksResponseCardsLinksComponent>();
+          this.linksList.add(t);
           return t;
         }
 
-        public CDSHooksResponseCardsComponent addLinks(CDSHooksResponseCardsLinksComponent t) { //3
+        public CDSHooksResponseCardsComponent addLinks(CDSHooksResponseCardsLinksComponent t) { //3b
           if (t == null)
             return this;
-          if (this.links == null)
-            this.links = new ArrayList<CDSHooksResponseCardsLinksComponent>();
-          this.links.add(t);
+          if (this.linksList == null)
+            this.linksList = new ArrayList<CDSHooksResponseCardsLinksComponent>();
+          this.linksList.add(t);
           return this;
         }
 
@@ -965,10 +965,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
          * @return The first repetition of repeating field {@link #links}, creating it if it does not already exist {3}
          */
         public CDSHooksResponseCardsLinksComponent getLinksFirstRep() { 
-          if (getLinks().isEmpty()) {
+          if (getLinksList().isEmpty()) {
             addLinks();
           }
-          return getLinks().get(0);
+          return getLinksList().get(0);
         }
 
         protected void listChildren(List<Property> children) {
@@ -978,10 +978,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
           children.add(new Property("detail", "markdown", "Optional detailed information to display; if provided MUST be represented in (GitHub Flavored) Markdown. (For non-urgent cards, the CDS Client MAY hide these details until the user clicks a link like 'view more details...').", 0, 1, detail));
           children.add(new Property("indicator", "code", "Urgency/importance of what this card conveys. Allowed values, in order of increasing urgency, are: info, warning, critical.", 0, 1, indicator));
           children.add(new Property("source", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "The source should be the primary source of guidance for the decision support the card represents.", 0, 1, source));
-          children.add(new Property("suggestions", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "Allows a service to suggest a set of changes in the context of the current activity (e.g. changing the dose of a medication currently being prescribed, for the order-sign activity).", 0, java.lang.Integer.MAX_VALUE, suggestions));
+          children.add(new Property("suggestions", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "Allows a service to suggest a set of changes in the context of the current activity (e.g. changing the dose of a medication currently being prescribed, for the order-sign activity).", 0, java.lang.Integer.MAX_VALUE, suggestionsList));
           children.add(new Property("selectionBehavior", "code", "Describes the intended selection behavior of the suggestions in the card. Allowed values are: at-most-one, indicating that the user may choose none or at most one of the suggestions; any, indicating that the end user may choose any number of suggestions including none of them and all of them", 0, 1, selectionBehavior));
-          children.add(new Property("overrideReasons", "Coding", "Override reasons can be selected by the end user when overriding a card without taking the suggested recommendations. The CDS service MAY return a list of override reasons to the CDS client.", 0, java.lang.Integer.MAX_VALUE, overrideReasons));
-          children.add(new Property("links", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "Allows a service to suggest a link to an app that the user might want to run for additional information or to help guide a decision.", 0, java.lang.Integer.MAX_VALUE, links));
+          children.add(new Property("overrideReasons", "Coding", "Override reasons can be selected by the end user when overriding a card without taking the suggested recommendations. The CDS service MAY return a list of override reasons to the CDS client.", 0, java.lang.Integer.MAX_VALUE, overrideReasonsList));
+          children.add(new Property("links", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "Allows a service to suggest a link to an app that the user might want to run for additional information or to help guide a decision.", 0, java.lang.Integer.MAX_VALUE, linksList));
         }
 
         @Override
@@ -992,10 +992,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
           case -1335224239: /*detail*/  return new Property("detail", "markdown", "Optional detailed information to display; if provided MUST be represented in (GitHub Flavored) Markdown. (For non-urgent cards, the CDS Client MAY hide these details until the user clicks a link like 'view more details...').", 0, 1, detail);
           case -711999985: /*indicator*/  return new Property("indicator", "code", "Urgency/importance of what this card conveys. Allowed values, in order of increasing urgency, are: info, warning, critical.", 0, 1, indicator);
           case -896505829: /*source*/  return new Property("source", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "The source should be the primary source of guidance for the decision support the card represents.", 0, 1, source);
-          case -1525319953: /*suggestions*/  return new Property("suggestions", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "Allows a service to suggest a set of changes in the context of the current activity (e.g. changing the dose of a medication currently being prescribed, for the order-sign activity).", 0, java.lang.Integer.MAX_VALUE, suggestions);
+          case -1525319953: /*suggestions*/  return new Property("suggestions", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "Allows a service to suggest a set of changes in the context of the current activity (e.g. changing the dose of a medication currently being prescribed, for the order-sign activity).", 0, java.lang.Integer.MAX_VALUE, suggestionsList);
           case 168639486: /*selectionBehavior*/  return new Property("selectionBehavior", "code", "Describes the intended selection behavior of the suggestions in the card. Allowed values are: at-most-one, indicating that the user may choose none or at most one of the suggestions; any, indicating that the end user may choose any number of suggestions including none of them and all of them", 0, 1, selectionBehavior);
-          case -1554410173: /*overrideReasons*/  return new Property("overrideReasons", "Coding", "Override reasons can be selected by the end user when overriding a card without taking the suggested recommendations. The CDS service MAY return a list of override reasons to the CDS client.", 0, java.lang.Integer.MAX_VALUE, overrideReasons);
-          case 102977465: /*links*/  return new Property("links", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "Allows a service to suggest a link to an app that the user might want to run for additional information or to help guide a decision.", 0, java.lang.Integer.MAX_VALUE, links);
+          case -1554410173: /*overrideReasons*/  return new Property("overrideReasons", "Coding", "Override reasons can be selected by the end user when overriding a card without taking the suggested recommendations. The CDS service MAY return a list of override reasons to the CDS client.", 0, java.lang.Integer.MAX_VALUE, overrideReasonsList);
+          case 102977465: /*links*/  return new Property("links", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "Allows a service to suggest a link to an app that the user might want to run for additional information or to help guide a decision.", 0, java.lang.Integer.MAX_VALUE, linksList);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1009,10 +1009,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         case -1335224239: /*detail*/ return this.detail == null ? new Base[0] : new Base[] {this.detail}; // MarkdownType
         case -711999985: /*indicator*/ return this.indicator == null ? new Base[0] : new Base[] {this.indicator}; // Enumeration<CDSIndicatorCodesVS>
         case -896505829: /*source*/ return this.source == null ? new Base[0] : new Base[] {this.source}; // CDSHooksResponseCardsSourceComponent
-        case -1525319953: /*suggestions*/ return this.suggestions == null ? new Base[0] : this.suggestions.toArray(new Base[this.suggestions.size()]); // CDSHooksResponseCardsSuggestionsComponent
+        case -1525319953: /*suggestions*/ return this.suggestionsList == null ? new Base[0] : this.suggestionsList.toArray(new Base[this.suggestionsList.size()]); // CDSHooksResponseCardsSuggestionsComponent
         case 168639486: /*selectionBehavior*/ return this.selectionBehavior == null ? new Base[0] : new Base[] {this.selectionBehavior}; // Enumeration<CDSSelectionBehaviorCodesVS>
-        case -1554410173: /*overrideReasons*/ return this.overrideReasons == null ? new Base[0] : this.overrideReasons.toArray(new Base[this.overrideReasons.size()]); // Coding
-        case 102977465: /*links*/ return this.links == null ? new Base[0] : this.links.toArray(new Base[this.links.size()]); // CDSHooksResponseCardsLinksComponent
+        case -1554410173: /*overrideReasons*/ return this.overrideReasonsList == null ? new Base[0] : this.overrideReasonsList.toArray(new Base[this.overrideReasonsList.size()]); // Coding
+        case 102977465: /*links*/ return this.linksList == null ? new Base[0] : this.linksList.toArray(new Base[this.linksList.size()]); // CDSHooksResponseCardsLinksComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1038,17 +1038,17 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
           this.source = (CDSHooksResponseCardsSourceComponent) value; // CDSHooksResponseCardsSourceComponent
           return value;
         case -1525319953: // suggestions
-          this.getSuggestions().add((CDSHooksResponseCardsSuggestionsComponent) value); // CDSHooksResponseCardsSuggestionsComponent
+          this.getSuggestionsList().add((CDSHooksResponseCardsSuggestionsComponent) value); // CDSHooksResponseCardsSuggestionsComponent
           return value;
         case 168639486: // selectionBehavior
           value = new CDSSelectionBehaviorCodesVSEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.selectionBehavior = (Enumeration) value; // Enumeration<CDSSelectionBehaviorCodesVS>
           return value;
         case -1554410173: // overrideReasons
-          this.getOverrideReasons().add(TypeConvertor.castToCoding(value)); // Coding
+          this.getOverrideReasonsList().add(TypeConvertor.castToCoding(value)); // Coding
           return value;
         case 102977465: // links
-          this.getLinks().add((CDSHooksResponseCardsLinksComponent) value); // CDSHooksResponseCardsLinksComponent
+          this.getLinksList().add((CDSHooksResponseCardsLinksComponent) value); // CDSHooksResponseCardsLinksComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1069,14 +1069,14 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         } else if (name.equals("source")) {
           this.source = (CDSHooksResponseCardsSourceComponent) value; // CDSHooksResponseCardsSourceComponent
         } else if (name.equals("suggestions")) {
-          this.getSuggestions().add((CDSHooksResponseCardsSuggestionsComponent) value); // CDSHooksResponseCardsSuggestionsComponent
+          this.getSuggestionsList().add((CDSHooksResponseCardsSuggestionsComponent) value); // CDSHooksResponseCardsSuggestionsComponent
         } else if (name.equals("selectionBehavior")) {
           value = new CDSSelectionBehaviorCodesVSEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.selectionBehavior = (Enumeration) value; // Enumeration<CDSSelectionBehaviorCodesVS>
         } else if (name.equals("overrideReasons")) {
-          this.getOverrideReasons().add(TypeConvertor.castToCoding(value)); // Coding
+          this.getOverrideReasonsList().add(TypeConvertor.castToCoding(value)); // Coding
         } else if (name.equals("links")) {
-          this.getLinks().add((CDSHooksResponseCardsLinksComponent) value); // CDSHooksResponseCardsLinksComponent
+          this.getLinksList().add((CDSHooksResponseCardsLinksComponent) value); // CDSHooksResponseCardsLinksComponent
         } else
           return super.setProperty(name, value);
         return value;
@@ -1162,21 +1162,21 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         dst.detail = detail == null ? null : detail.copy();
         dst.indicator = indicator == null ? null : indicator.copy();
         dst.source = source == null ? null : source.copy();
-        if (suggestions != null) {
-          dst.suggestions = new ArrayList<CDSHooksResponseCardsSuggestionsComponent>();
-          for (CDSHooksResponseCardsSuggestionsComponent i : suggestions)
-            dst.suggestions.add(i.copy());
+        if (suggestionsList != null) {
+          dst.suggestionsList = new ArrayList<CDSHooksResponseCardsSuggestionsComponent>();
+          for (CDSHooksResponseCardsSuggestionsComponent i : suggestionsList)
+            dst.suggestionsList.add(i.copy());
         };
         dst.selectionBehavior = selectionBehavior == null ? null : selectionBehavior.copy();
-        if (overrideReasons != null) {
-          dst.overrideReasons = new ArrayList<Coding>();
-          for (Coding i : overrideReasons)
-            dst.overrideReasons.add(i.copy());
+        if (overrideReasonsList != null) {
+          dst.overrideReasonsList = new ArrayList<Coding>();
+          for (Coding i : overrideReasonsList)
+            dst.overrideReasonsList.add(i.copy());
         };
-        if (links != null) {
-          dst.links = new ArrayList<CDSHooksResponseCardsLinksComponent>();
-          for (CDSHooksResponseCardsLinksComponent i : links)
-            dst.links.add(i.copy());
+        if (linksList != null) {
+          dst.linksList = new ArrayList<CDSHooksResponseCardsLinksComponent>();
+          for (CDSHooksResponseCardsLinksComponent i : linksList)
+            dst.linksList.add(i.copy());
         };
       }
 
@@ -1188,9 +1188,9 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
           return false;
         CDSHooksResponseCardsComponent o = (CDSHooksResponseCardsComponent) other_;
         return compareDeep(uuid, o.uuid, true) && compareDeep(summary, o.summary, true) && compareDeep(detail, o.detail, true)
-           && compareDeep(indicator, o.indicator, true) && compareDeep(source, o.source, true) && compareDeep(suggestions, o.suggestions, true)
-           && compareDeep(selectionBehavior, o.selectionBehavior, true) && compareDeep(overrideReasons, o.overrideReasons, true)
-           && compareDeep(links, o.links, true);
+           && compareDeep(indicator, o.indicator, true) && compareDeep(source, o.source, true) && compareDeep(suggestionsList, o.suggestionsList, true)
+           && compareDeep(selectionBehavior, o.selectionBehavior, true) && compareDeep(overrideReasonsList, o.overrideReasonsList, true)
+           && compareDeep(linksList, o.linksList, true);
       }
 
       @Override
@@ -1207,7 +1207,7 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(uuid, summary, detail, indicator
-          , source, suggestions, selectionBehavior, overrideReasons, links);
+          , source, suggestionsList, selectionBehavior, overrideReasonsList, linksList);
       }
 
   public String fhirType() {
@@ -1617,9 +1617,9 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
          */
         @Child(name = "actions", type = {CDSHooksElement.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Defines a suggested action (all apply)", formalDefinition="Defines a suggested action. Within a suggestion, all actions are logically AND'd together, such that a user selecting a suggestion selects all of the actions within it" )
-        protected List<CDSHooksResponseCardsSuggestionsActionsComponent> actions;
+        protected List<CDSHooksResponseCardsSuggestionsActionsComponent> actionsList;
 
-        private static final long serialVersionUID = -1402230190L;
+        private static final long serialVersionUID = 89077716L;
 
     /**
      * Constructor
@@ -1778,43 +1778,43 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         /**
          * @return {@link #actions} (Defines a suggested action. Within a suggestion, all actions are logically AND'd together, such that a user selecting a suggestion selects all of the actions within it)
          */
-        public List<CDSHooksResponseCardsSuggestionsActionsComponent> getActions() { 
-          if (this.actions == null)
-            this.actions = new ArrayList<CDSHooksResponseCardsSuggestionsActionsComponent>();
-          return this.actions;
+        public List<CDSHooksResponseCardsSuggestionsActionsComponent> getActionsList() { 
+          if (this.actionsList == null)
+            this.actionsList = new ArrayList<CDSHooksResponseCardsSuggestionsActionsComponent>();
+          return this.actionsList;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public CDSHooksResponseCardsSuggestionsComponent setActions(List<CDSHooksResponseCardsSuggestionsActionsComponent> theActions) { 
-          this.actions = theActions;
+        public CDSHooksResponseCardsSuggestionsComponent setActionsList(List<CDSHooksResponseCardsSuggestionsActionsComponent> theActions) { 
+          this.actionsList = theActions;
           return this;
         }
 
         public boolean hasActions() { 
-          if (this.actions == null)
+          if (this.actionsList == null)
             return false;
-          for (CDSHooksResponseCardsSuggestionsActionsComponent item : this.actions)
+          for (CDSHooksResponseCardsSuggestionsActionsComponent item : this.actionsList)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public CDSHooksResponseCardsSuggestionsActionsComponent addActions() { //3
+        public CDSHooksResponseCardsSuggestionsActionsComponent addActions() { //3a
           CDSHooksResponseCardsSuggestionsActionsComponent t = new CDSHooksResponseCardsSuggestionsActionsComponent();
-          if (this.actions == null)
-            this.actions = new ArrayList<CDSHooksResponseCardsSuggestionsActionsComponent>();
-          this.actions.add(t);
+          if (this.actionsList == null)
+            this.actionsList = new ArrayList<CDSHooksResponseCardsSuggestionsActionsComponent>();
+          this.actionsList.add(t);
           return t;
         }
 
-        public CDSHooksResponseCardsSuggestionsComponent addActions(CDSHooksResponseCardsSuggestionsActionsComponent t) { //3
+        public CDSHooksResponseCardsSuggestionsComponent addActions(CDSHooksResponseCardsSuggestionsActionsComponent t) { //3b
           if (t == null)
             return this;
-          if (this.actions == null)
-            this.actions = new ArrayList<CDSHooksResponseCardsSuggestionsActionsComponent>();
-          this.actions.add(t);
+          if (this.actionsList == null)
+            this.actionsList = new ArrayList<CDSHooksResponseCardsSuggestionsActionsComponent>();
+          this.actionsList.add(t);
           return this;
         }
 
@@ -1822,10 +1822,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
          * @return The first repetition of repeating field {@link #actions}, creating it if it does not already exist {3}
          */
         public CDSHooksResponseCardsSuggestionsActionsComponent getActionsFirstRep() { 
-          if (getActions().isEmpty()) {
+          if (getActionsList().isEmpty()) {
             addActions();
           }
-          return getActions().get(0);
+          return getActionsList().get(0);
         }
 
         protected void listChildren(List<Property> children) {
@@ -1833,7 +1833,7 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
           children.add(new Property("label", "string", "Human-readable label to display for this suggestion", 0, 1, label));
           children.add(new Property("uuid", "uuid", "Unique identifier, used for auditing and logging suggestions", 0, 1, uuid));
           children.add(new Property("isRecommended", "boolean", "When there are multiple suggestions, allows a service to indicate that a specific suggestion is recommended from all the available suggestions on the card", 0, 1, isRecommended));
-          children.add(new Property("actions", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "Defines a suggested action. Within a suggestion, all actions are logically AND'd together, such that a user selecting a suggestion selects all of the actions within it", 0, java.lang.Integer.MAX_VALUE, actions));
+          children.add(new Property("actions", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "Defines a suggested action. Within a suggestion, all actions are logically AND'd together, such that a user selecting a suggestion selects all of the actions within it", 0, java.lang.Integer.MAX_VALUE, actionsList));
         }
 
         @Override
@@ -1842,7 +1842,7 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
           case 102727412: /*label*/  return new Property("label", "string", "Human-readable label to display for this suggestion", 0, 1, label);
           case 3601339: /*uuid*/  return new Property("uuid", "uuid", "Unique identifier, used for auditing and logging suggestions", 0, 1, uuid);
           case 27884241: /*isRecommended*/  return new Property("isRecommended", "boolean", "When there are multiple suggestions, allows a service to indicate that a specific suggestion is recommended from all the available suggestions on the card", 0, 1, isRecommended);
-          case -1161803523: /*actions*/  return new Property("actions", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "Defines a suggested action. Within a suggestion, all actions are logically AND'd together, such that a user selecting a suggestion selects all of the actions within it", 0, java.lang.Integer.MAX_VALUE, actions);
+          case -1161803523: /*actions*/  return new Property("actions", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "Defines a suggested action. Within a suggestion, all actions are logically AND'd together, such that a user selecting a suggestion selects all of the actions within it", 0, java.lang.Integer.MAX_VALUE, actionsList);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1854,7 +1854,7 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         case 102727412: /*label*/ return this.label == null ? new Base[0] : new Base[] {this.label}; // StringType
         case 3601339: /*uuid*/ return this.uuid == null ? new Base[0] : new Base[] {this.uuid}; // UuidType
         case 27884241: /*isRecommended*/ return this.isRecommended == null ? new Base[0] : new Base[] {this.isRecommended}; // BooleanType
-        case -1161803523: /*actions*/ return this.actions == null ? new Base[0] : this.actions.toArray(new Base[this.actions.size()]); // CDSHooksResponseCardsSuggestionsActionsComponent
+        case -1161803523: /*actions*/ return this.actionsList == null ? new Base[0] : this.actionsList.toArray(new Base[this.actionsList.size()]); // CDSHooksResponseCardsSuggestionsActionsComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1873,7 +1873,7 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
           this.isRecommended = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1161803523: // actions
-          this.getActions().add((CDSHooksResponseCardsSuggestionsActionsComponent) value); // CDSHooksResponseCardsSuggestionsActionsComponent
+          this.getActionsList().add((CDSHooksResponseCardsSuggestionsActionsComponent) value); // CDSHooksResponseCardsSuggestionsActionsComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1889,7 +1889,7 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         } else if (name.equals("isRecommended")) {
           this.isRecommended = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("actions")) {
-          this.getActions().add((CDSHooksResponseCardsSuggestionsActionsComponent) value); // CDSHooksResponseCardsSuggestionsActionsComponent
+          this.getActionsList().add((CDSHooksResponseCardsSuggestionsActionsComponent) value); // CDSHooksResponseCardsSuggestionsActionsComponent
         } else
           return super.setProperty(name, value);
         return value;
@@ -1948,10 +1948,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         dst.label = label == null ? null : label.copy();
         dst.uuid = uuid == null ? null : uuid.copy();
         dst.isRecommended = isRecommended == null ? null : isRecommended.copy();
-        if (actions != null) {
-          dst.actions = new ArrayList<CDSHooksResponseCardsSuggestionsActionsComponent>();
-          for (CDSHooksResponseCardsSuggestionsActionsComponent i : actions)
-            dst.actions.add(i.copy());
+        if (actionsList != null) {
+          dst.actionsList = new ArrayList<CDSHooksResponseCardsSuggestionsActionsComponent>();
+          for (CDSHooksResponseCardsSuggestionsActionsComponent i : actionsList)
+            dst.actionsList.add(i.copy());
         };
       }
 
@@ -1963,7 +1963,7 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
           return false;
         CDSHooksResponseCardsSuggestionsComponent o = (CDSHooksResponseCardsSuggestionsComponent) other_;
         return compareDeep(label, o.label, true) && compareDeep(uuid, o.uuid, true) && compareDeep(isRecommended, o.isRecommended, true)
-           && compareDeep(actions, o.actions, true);
+           && compareDeep(actionsList, o.actionsList, true);
       }
 
       @Override
@@ -1979,7 +1979,7 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(label, uuid, isRecommended
-          , actions);
+          , actionsList);
       }
 
   public String fhirType() {
@@ -2759,16 +2759,16 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
      */
     @Child(name = "cards", type = {CDSHooksElement.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="An array of Cards that provide information, suggested actions, and links", formalDefinition="An array of Cards. Cards can provide a combination of information (for reading), suggested actions (to be applied if a user selects them), and links (to launch an app if the user selects them)." )
-    protected List<CDSHooksResponseCardsComponent> cards;
+    protected List<CDSHooksResponseCardsComponent> cardsList;
 
     /**
      * An array of Actions that the CDS Service proposes to auto-apply
      */
     @Child(name = "systemActions", type = {CDSHooksResponseCardsSuggestionsActionsComponent.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="An array of Actions that the CDS Service proposes to auto-apply", formalDefinition="An array of Actions that the CDS Service proposes to auto-apply" )
-    protected List<CDSHooksResponseCardsSuggestionsActionsComponent> systemActions;
+    protected List<CDSHooksResponseCardsSuggestionsActionsComponent> systemActionsList;
 
-    private static final long serialVersionUID = -628481977L;
+    private static final long serialVersionUID = -131860217L;
 
   /**
    * Constructor
@@ -2780,43 +2780,43 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
     /**
      * @return {@link #cards} (An array of Cards. Cards can provide a combination of information (for reading), suggested actions (to be applied if a user selects them), and links (to launch an app if the user selects them).)
      */
-    public List<CDSHooksResponseCardsComponent> getCards() { 
-      if (this.cards == null)
-        this.cards = new ArrayList<CDSHooksResponseCardsComponent>();
-      return this.cards;
+    public List<CDSHooksResponseCardsComponent> getCardsList() { 
+      if (this.cardsList == null)
+        this.cardsList = new ArrayList<CDSHooksResponseCardsComponent>();
+      return this.cardsList;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public CDSHooksResponse setCards(List<CDSHooksResponseCardsComponent> theCards) { 
-      this.cards = theCards;
+    public CDSHooksResponse setCardsList(List<CDSHooksResponseCardsComponent> theCards) { 
+      this.cardsList = theCards;
       return this;
     }
 
     public boolean hasCards() { 
-      if (this.cards == null)
+      if (this.cardsList == null)
         return false;
-      for (CDSHooksResponseCardsComponent item : this.cards)
+      for (CDSHooksResponseCardsComponent item : this.cardsList)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public CDSHooksResponseCardsComponent addCards() { //3
+    public CDSHooksResponseCardsComponent addCards() { //3a
       CDSHooksResponseCardsComponent t = new CDSHooksResponseCardsComponent();
-      if (this.cards == null)
-        this.cards = new ArrayList<CDSHooksResponseCardsComponent>();
-      this.cards.add(t);
+      if (this.cardsList == null)
+        this.cardsList = new ArrayList<CDSHooksResponseCardsComponent>();
+      this.cardsList.add(t);
       return t;
     }
 
-    public CDSHooksResponse addCards(CDSHooksResponseCardsComponent t) { //3
+    public CDSHooksResponse addCards(CDSHooksResponseCardsComponent t) { //3b
       if (t == null)
         return this;
-      if (this.cards == null)
-        this.cards = new ArrayList<CDSHooksResponseCardsComponent>();
-      this.cards.add(t);
+      if (this.cardsList == null)
+        this.cardsList = new ArrayList<CDSHooksResponseCardsComponent>();
+      this.cardsList.add(t);
       return this;
     }
 
@@ -2824,52 +2824,52 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
      * @return The first repetition of repeating field {@link #cards}, creating it if it does not already exist {3}
      */
     public CDSHooksResponseCardsComponent getCardsFirstRep() { 
-      if (getCards().isEmpty()) {
+      if (getCardsList().isEmpty()) {
         addCards();
       }
-      return getCards().get(0);
+      return getCardsList().get(0);
     }
 
     /**
      * @return {@link #systemActions} (An array of Actions that the CDS Service proposes to auto-apply)
      */
-    public List<CDSHooksResponseCardsSuggestionsActionsComponent> getSystemActions() { 
-      if (this.systemActions == null)
-        this.systemActions = new ArrayList<CDSHooksResponseCardsSuggestionsActionsComponent>();
-      return this.systemActions;
+    public List<CDSHooksResponseCardsSuggestionsActionsComponent> getSystemActionsList() { 
+      if (this.systemActionsList == null)
+        this.systemActionsList = new ArrayList<CDSHooksResponseCardsSuggestionsActionsComponent>();
+      return this.systemActionsList;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public CDSHooksResponse setSystemActions(List<CDSHooksResponseCardsSuggestionsActionsComponent> theSystemActions) { 
-      this.systemActions = theSystemActions;
+    public CDSHooksResponse setSystemActionsList(List<CDSHooksResponseCardsSuggestionsActionsComponent> theSystemActions) { 
+      this.systemActionsList = theSystemActions;
       return this;
     }
 
     public boolean hasSystemActions() { 
-      if (this.systemActions == null)
+      if (this.systemActionsList == null)
         return false;
-      for (CDSHooksResponseCardsSuggestionsActionsComponent item : this.systemActions)
+      for (CDSHooksResponseCardsSuggestionsActionsComponent item : this.systemActionsList)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public CDSHooksResponseCardsSuggestionsActionsComponent addSystemActions() { //3
+    public CDSHooksResponseCardsSuggestionsActionsComponent addSystemActions() { //3a
       CDSHooksResponseCardsSuggestionsActionsComponent t = new CDSHooksResponseCardsSuggestionsActionsComponent();
-      if (this.systemActions == null)
-        this.systemActions = new ArrayList<CDSHooksResponseCardsSuggestionsActionsComponent>();
-      this.systemActions.add(t);
+      if (this.systemActionsList == null)
+        this.systemActionsList = new ArrayList<CDSHooksResponseCardsSuggestionsActionsComponent>();
+      this.systemActionsList.add(t);
       return t;
     }
 
-    public CDSHooksResponse addSystemActions(CDSHooksResponseCardsSuggestionsActionsComponent t) { //3
+    public CDSHooksResponse addSystemActions(CDSHooksResponseCardsSuggestionsActionsComponent t) { //3b
       if (t == null)
         return this;
-      if (this.systemActions == null)
-        this.systemActions = new ArrayList<CDSHooksResponseCardsSuggestionsActionsComponent>();
-      this.systemActions.add(t);
+      if (this.systemActionsList == null)
+        this.systemActionsList = new ArrayList<CDSHooksResponseCardsSuggestionsActionsComponent>();
+      this.systemActionsList.add(t);
       return this;
     }
 
@@ -2877,23 +2877,23 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
      * @return The first repetition of repeating field {@link #systemActions}, creating it if it does not already exist {3}
      */
     public CDSHooksResponseCardsSuggestionsActionsComponent getSystemActionsFirstRep() { 
-      if (getSystemActions().isEmpty()) {
+      if (getSystemActionsList().isEmpty()) {
         addSystemActions();
       }
-      return getSystemActions().get(0);
+      return getSystemActionsList().get(0);
     }
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("cards", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "An array of Cards. Cards can provide a combination of information (for reading), suggested actions (to be applied if a user selects them), and links (to launch an app if the user selects them).", 0, java.lang.Integer.MAX_VALUE, cards));
-        children.add(new Property("systemActions", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksResponse@CDSHooksResponse.cards.suggestions.actions", "An array of Actions that the CDS Service proposes to auto-apply", 0, java.lang.Integer.MAX_VALUE, systemActions));
+        children.add(new Property("cards", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "An array of Cards. Cards can provide a combination of information (for reading), suggested actions (to be applied if a user selects them), and links (to launch an app if the user selects them).", 0, java.lang.Integer.MAX_VALUE, cardsList));
+        children.add(new Property("systemActions", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksResponse@CDSHooksResponse.cards.suggestions.actions", "An array of Actions that the CDS Service proposes to auto-apply", 0, java.lang.Integer.MAX_VALUE, systemActionsList));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case 94431075: /*cards*/  return new Property("cards", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "An array of Cards. Cards can provide a combination of information (for reading), suggested actions (to be applied if a user selects them), and links (to launch an app if the user selects them).", 0, java.lang.Integer.MAX_VALUE, cards);
-        case 867134414: /*systemActions*/  return new Property("systemActions", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksResponse@CDSHooksResponse.cards.suggestions.actions", "An array of Actions that the CDS Service proposes to auto-apply", 0, java.lang.Integer.MAX_VALUE, systemActions);
+        case 94431075: /*cards*/  return new Property("cards", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "An array of Cards. Cards can provide a combination of information (for reading), suggested actions (to be applied if a user selects them), and links (to launch an app if the user selects them).", 0, java.lang.Integer.MAX_VALUE, cardsList);
+        case 867134414: /*systemActions*/  return new Property("systemActions", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksResponse@CDSHooksResponse.cards.suggestions.actions", "An array of Actions that the CDS Service proposes to auto-apply", 0, java.lang.Integer.MAX_VALUE, systemActionsList);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -2902,8 +2902,8 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 94431075: /*cards*/ return this.cards == null ? new Base[0] : this.cards.toArray(new Base[this.cards.size()]); // CDSHooksResponseCardsComponent
-        case 867134414: /*systemActions*/ return this.systemActions == null ? new Base[0] : this.systemActions.toArray(new Base[this.systemActions.size()]); // CDSHooksResponseCardsSuggestionsActionsComponent
+        case 94431075: /*cards*/ return this.cardsList == null ? new Base[0] : this.cardsList.toArray(new Base[this.cardsList.size()]); // CDSHooksResponseCardsComponent
+        case 867134414: /*systemActions*/ return this.systemActionsList == null ? new Base[0] : this.systemActionsList.toArray(new Base[this.systemActionsList.size()]); // CDSHooksResponseCardsSuggestionsActionsComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -2913,10 +2913,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 94431075: // cards
-          this.getCards().add((CDSHooksResponseCardsComponent) value); // CDSHooksResponseCardsComponent
+          this.getCardsList().add((CDSHooksResponseCardsComponent) value); // CDSHooksResponseCardsComponent
           return value;
         case 867134414: // systemActions
-          this.getSystemActions().add((CDSHooksResponseCardsSuggestionsActionsComponent) value); // CDSHooksResponseCardsSuggestionsActionsComponent
+          this.getSystemActionsList().add((CDSHooksResponseCardsSuggestionsActionsComponent) value); // CDSHooksResponseCardsSuggestionsActionsComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2926,9 +2926,9 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("cards")) {
-          this.getCards().add((CDSHooksResponseCardsComponent) value); // CDSHooksResponseCardsComponent
+          this.getCardsList().add((CDSHooksResponseCardsComponent) value); // CDSHooksResponseCardsComponent
         } else if (name.equals("systemActions")) {
-          this.getSystemActions().add((CDSHooksResponseCardsSuggestionsActionsComponent) value); // CDSHooksResponseCardsSuggestionsActionsComponent
+          this.getSystemActionsList().add((CDSHooksResponseCardsSuggestionsActionsComponent) value); // CDSHooksResponseCardsSuggestionsActionsComponent
         } else
           return super.setProperty(name, value);
         return value;
@@ -2979,15 +2979,15 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
 
       public void copyValues(CDSHooksResponse dst) {
         super.copyValues(dst);
-        if (cards != null) {
-          dst.cards = new ArrayList<CDSHooksResponseCardsComponent>();
-          for (CDSHooksResponseCardsComponent i : cards)
-            dst.cards.add(i.copy());
+        if (cardsList != null) {
+          dst.cardsList = new ArrayList<CDSHooksResponseCardsComponent>();
+          for (CDSHooksResponseCardsComponent i : cardsList)
+            dst.cardsList.add(i.copy());
         };
-        if (systemActions != null) {
-          dst.systemActions = new ArrayList<CDSHooksResponseCardsSuggestionsActionsComponent>();
-          for (CDSHooksResponseCardsSuggestionsActionsComponent i : systemActions)
-            dst.systemActions.add(i.copy());
+        if (systemActionsList != null) {
+          dst.systemActionsList = new ArrayList<CDSHooksResponseCardsSuggestionsActionsComponent>();
+          for (CDSHooksResponseCardsSuggestionsActionsComponent i : systemActionsList)
+            dst.systemActionsList.add(i.copy());
         };
       }
 
@@ -3002,7 +3002,8 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         if (!(other_ instanceof CDSHooksResponse))
           return false;
         CDSHooksResponse o = (CDSHooksResponse) other_;
-        return compareDeep(cards, o.cards, true) && compareDeep(systemActions, o.systemActions, true);
+        return compareDeep(cardsList, o.cardsList, true) && compareDeep(systemActionsList, o.systemActionsList, true)
+          ;
       }
 
       @Override
@@ -3016,7 +3017,8 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(cards, systemActions);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(cardsList, systemActionsList
+          );
       }
 
 
