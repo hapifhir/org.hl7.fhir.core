@@ -200,7 +200,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
     vs.addIdentifier().setSystem("urn:ietf:rfc:3986").setValue(oid);
   }
 
-  public static void markStatus(ValueSet vs, String wg, StandardsStatus status, String pckage, String fmm, IWorkerContext context, String normativeVersion) throws FHIRException {
+  public static void markStatus(ValueSet vs, String wg, StandardsStatus status, String fmm, IWorkerContext context, String normativeVersion) throws FHIRException {
     if (vs.hasUserData(UserDataNames.render_external_link))
       return;
     
@@ -214,13 +214,6 @@ public class ValueSetUtilities extends TerminologyUtilities {
       StandardsStatus ss = ExtensionUtilities.getStandardsStatus(vs);
       if (ss == null || ss.isLowerThan(status)) 
         ExtensionUtilities.setStandardsStatus(vs, status, normativeVersion);
-      if (pckage != null) {
-        if (!vs.hasUserData(UserDataNames.kindling_ballot_package))        
-          vs.setUserData(UserDataNames.kindling_ballot_package, pckage);
-        else if (!pckage.equals(vs.getUserString(UserDataNames.kindling_ballot_package)))
-          if (!"infrastructure".equals(vs.getUserString(UserDataNames.kindling_ballot_package)))
-          log.warn("Value Set "+vs.getUrl()+": ownership clash "+pckage+" vs "+vs.getUserString(UserDataNames.kindling_ballot_package));
-      }
       if (status == StandardsStatus.NORMATIVE) {
         vs.setStatus(PublicationStatus.ACTIVE);
       }
@@ -232,13 +225,13 @@ public class ValueSetUtilities extends TerminologyUtilities {
       }
     }
     if (vs.hasUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM))
-      CodeSystemUtilities.markStatus((CodeSystem) vs.getUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM), wg, status, pckage, fmm, normativeVersion);
+      CodeSystemUtilities.markStatus((CodeSystem) vs.getUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM), wg, status, fmm, normativeVersion);
     else if (status == StandardsStatus.NORMATIVE && context != null) {
       for (ConceptSetComponent csc : vs.getCompose().getInclude()) {
         if (csc.hasSystem()) {
           CodeSystem cs = context.fetchCodeSystem(csc.getSystem());
           if (cs != null) {
-            CodeSystemUtilities.markStatus(cs, wg, status, pckage, fmm, normativeVersion);
+            CodeSystemUtilities.markStatus(cs, wg, status, fmm, normativeVersion);
           }
         }
       }
