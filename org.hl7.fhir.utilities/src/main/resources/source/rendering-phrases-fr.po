@@ -1,3 +1,16 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Crowdin-Project: orghl7fhircore\n"
+"X-Crowdin-Project-ID: 792848\n"
+"X-Crowdin-Language: fr\n"
+"X-Crowdin-File: /org.hl7.fhir.utilities/src/main/resources/source/rendering-phrases-en.po\n"
+"X-Crowdin-File-ID: 236\n"
+"Project-Id-Version: orghl7fhircore\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: French\n"
+"Language: fr_FR\n"
+"PO-Revision-Date: 2025-10-31 01:17\n"
 
 # ACTOR_DEF_ACT
 #: ACTOR_DEF_ACT
@@ -744,7 +757,7 @@ msgstr "Cette ressource de terminologie de référence (CodeSystem) est un suppl
 # CODE_SYS_SUPP_CODE_NOT_HERE
 #: CODE_SYS_SUPP_CODE_NOT_HERE
 msgid "This CodeSystem Supplement is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr "Ce supplément de terminologie de référence (CodeSystem) n\'est pas utilisé ici; il peut être utilisé ailleurs (par exemple spécifications et/ou implémentations qui utilisent ce contenu)"
+msgstr "Ce supplément de terminologie de référence (CodeSystem) n'est pas utilisé ici; il peut être utilisé ailleurs (par exemple spécifications et/ou implémentations qui utilisent ce contenu)"
 
 # CODE_SYS_THE_VALUE_SET
 #: CODE_SYS_THE_VALUE_SET
@@ -1739,7 +1752,7 @@ msgstr "Label de sécurité"
 #: GENERAL_SOURCE
 msgctxt "GENERAL_SOURCE"
 msgid "Source"
-msgstr "Source"
+msgstr ""
 
 # GENERAL_SRC
 #: GENERAL_SRC
@@ -2114,7 +2127,7 @@ msgstr "Sévérité"
 #: OP_OUT_SRC
 msgctxt "OP_OUT_SRC"
 msgid "Source"
-msgstr "Source"
+msgstr ""
 
 # OP_OUT_SUMM
 #: OP_OUT_SUMM
@@ -2355,7 +2368,7 @@ msgstr "Impossible de trouver la définition pour {0}"
 # PROF_DRIV_GEN_NARR
 #: PROF_DRIV_GEN_NARR
 msgid "{0} {1}"
-msgstr "{0} {1}"
+msgstr ""
 
 # PROF_DRIV_GEN_NARR_TECH
 #: PROF_DRIV_GEN_NARR_TECH
@@ -2371,7 +2384,7 @@ msgstr "{0} : {1}"
 # PROF_DRIV_SUMM_PROP
 #: PROF_DRIV_SUMM_PROP
 msgid "{0} = {1}"
-msgstr "{0} = {1}"
+msgstr ""
 
 # PROV_ACT
 #: PROV_ACT
@@ -2381,7 +2394,7 @@ msgstr "Activité"
 # PROV_AGE
 #: PROV_AGE
 msgid "Agents"
-msgstr "Agents"
+msgstr ""
 
 # PROV_BEHALF
 #: PROV_BEHALF
@@ -2396,7 +2409,7 @@ msgstr "Provenance pour {0}"
 # PROV_OCC
 #: PROV_OCC
 msgid "Occurrence"
-msgstr "Occurrence"
+msgstr ""
 
 # PROV_POL
 #: PROV_POL
@@ -2587,7 +2600,7 @@ msgstr "Est lié à une observation"
 # QUEST_LINKID
 #: QUEST_LINKID
 msgid "LinkID"
-msgstr "LinkID"
+msgstr ""
 
 # QUEST_MAND
 #: QUEST_MAND
@@ -2642,7 +2655,7 @@ msgstr "Date de publication"
 # QUEST_QUEST
 #: QUEST_QUEST
 msgid "Questionnaire"
-msgstr "Questionnaire"
+msgstr ""
 
 # QUEST_QUESTION
 #: QUEST_QUESTION
@@ -2667,7 +2680,7 @@ msgstr "Se répète"
 # QUEST_RESP_ROOT
 #: QUEST_RESP_ROOT
 msgid "QuestionnaireResponseRoot"
-msgstr "QuestionnaireResponseRoot"
+msgstr ""
 
 # QUEST_REV_DATE
 #: QUEST_REV_DATE
@@ -2677,12 +2690,12 @@ msgstr "Date de dernière révision"
 # QUEST_ROOT
 #: QUEST_ROOT
 msgid "QuestionnaireRoot"
-msgstr "QuestionnaireRoot"
+msgstr ""
 
 # QUEST_STRUCT
 #: QUEST_STRUCT
 msgid "Structure"
-msgstr "Structure"
+msgstr ""
 
 # QUEST_SUBJECT
 #: QUEST_SUBJECT
@@ -2787,8 +2800,8 @@ msgstr "Les ressources suivantes sont uniquement dans la version {0}"
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
-msgstr "Les packages pour <a href=\"{0}\">R4 ({1}.r4)</a> et <a href=\\"{2}\\">R4B ({3}.r4b)</a> sont disponibles."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\\"{2}\\\">R4B ({3}.r4b)</a> are available."
+msgstr "Les packages pour <a href=\"{0}\">R4 ({1}.r4)</a> et <a href=\\\"{2}\\\">R4B ({3}.r4b)</a> sont disponibles."
 
 # R44B_PROBLEMS
 #: R44B_PROBLEMS
@@ -2884,7 +2897,7 @@ msgstr "Ces exigences sont dérivées des exigences suivantes :"
 #: REQ_LINKS
 msgctxt "REQ_LINKS"
 msgid "Links:"
-msgstr ""
+msgstr "Liens :"
 
 # REQ_SATISFIED
 #: REQ_SATISFIED
@@ -2959,7 +2972,7 @@ msgstr ""
 # RES_REND_UNKNOWN
 #: RES_REND_UNKNOWN
 msgid "Unknown"
-msgstr ""
+msgstr "Inconnu(e)"
 
 # RES_REND_UPDATED
 #: RES_REND_UPDATED
@@ -3199,7 +3212,7 @@ msgstr ""
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
-msgid "-- no content: do not translate #53 --"
+msgid "-- no content: do not translate #1 --"
 msgstr ""
 
 # SDR_IMPOSE
@@ -3389,7 +3402,7 @@ msgstr ""
 # SDR_VER_RANGE_SFX
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
-msgid "-- no content: do not translate #54 --"
+msgid "-- no content: do not translate #2 --"
 msgstr ""
 
 # SDR_VER_TO_PFX
@@ -3400,7 +3413,7 @@ msgstr ""
 # SDR_VER_TO_SFX
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
-msgid "-- no content: do not translate #55 --"
+msgid "-- no content: do not translate #3 --"
 msgstr ""
 
 # SDR_VER_UNK
@@ -3412,7 +3425,7 @@ msgstr ""
 #: SDT_DEF
 msgctxt "SDT_DEF"
 msgid "Definition"
-msgstr ""
+msgstr "Définition"
 
 # SDT_DT
 #: SDT_DT
@@ -3465,13 +3478,13 @@ msgstr ""
 #: SDT_RES
 msgctxt "SDT_RES"
 msgid "Resource"
-msgstr ""
+msgstr "Ressource"
 
 # SDT_RES_PROF
 #: SDT_RES_PROF
 msgctxt "SDT_RES_PROF"
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 # SD_COMP_HEAD_CARD_L
 #: SD_COMP_HEAD_CARD_L
@@ -3806,7 +3819,7 @@ msgstr ""
 #: STRUC_DEF_AND
 msgctxt "STRUC_DEF_AND"
 msgid "and"
-msgstr ""
+msgstr "et"
 
 # STRUC_DEF_APPROP_CON
 #: STRUC_DEF_APPROP_CON
@@ -3836,7 +3849,7 @@ msgstr ""
 # STRUC_DEF_BLACK
 #: STRUC_DEF_BLACK
 msgid "black"
-msgstr ""
+msgstr "noir "
 
 # STRUC_DEF_BUSINESS_ID
 #: STRUC_DEF_BUSINESS_ID
@@ -3916,7 +3929,7 @@ msgstr ""
 # STRUC_DEF_COMMENT
 #: STRUC_DEF_COMMENT
 msgid "Comments:"
-msgstr ""
+msgstr "Commentaires:"
 
 # STRUC_DEF_COMPLEX
 #: STRUC_DEF_COMPLEX
@@ -3936,7 +3949,7 @@ msgstr ""
 # STRUC_DEF_COMP_EX
 #: STRUC_DEF_COMP_EX
 msgid "(Complex Extension)"
-msgstr ""
+msgstr "(Extension complexe)"
 
 # STRUC_DEF_COMP_PROF
 #: STRUC_DEF_COMP_PROF
@@ -4048,7 +4061,7 @@ msgstr "Cet élément primitif doit avoir une valeur"
 # STRUC_DEF_ELEMENT
 #: STRUC_DEF_ELEMENT
 msgid "element"
-msgstr ""
+msgstr "element"
 
 # STRUC_DEF_ELEMENTS
 #: STRUC_DEF_ELEMENTS
@@ -4094,12 +4107,12 @@ msgstr "exemple"
 #: STRUC_DEF_EXT
 msgctxt "STRUC_DEF_EXT"
 msgid "Extensible"
-msgstr ""
+msgstr "Extensible"
 
 # STRUC_DEF_EXTENSIBLE
 #: STRUC_DEF_EXTENSIBLE
 msgid "extensible"
-msgstr ""
+msgstr "extensible"
 
 # STRUC_DEF_EXTENSIONS
 #: STRUC_DEF_EXTENSIONS
@@ -4517,7 +4530,7 @@ msgstr ""
 # STRUC_DEF_PREFERRED
 #: STRUC_DEF_PREFERRED
 msgid "preferred"
-msgstr ""
+msgstr "préféré"
 
 # STRUC_DEF_PREFIXED
 #: STRUC_DEF_PREFIXED
@@ -4612,7 +4625,7 @@ msgstr ""
 # STRUC_DEF_REQUIRED
 #: STRUC_DEF_REQUIRED
 msgid "required"
-msgstr ""
+msgstr "requis"
 
 # STRUC_DEF_REQUIRED_PATT
 #: STRUC_DEF_REQUIRED_PATT
@@ -4838,7 +4851,7 @@ msgstr ""
 # STRUC_DEF_URLS
 #: STRUC_DEF_URLS
 msgid "URL:"
-msgstr ""
+msgstr "URL:"
 
 # STRUC_DEF_VALID
 #: STRUC_DEF_VALID
@@ -5174,7 +5187,7 @@ msgstr ""
 # VALUE_SET_AUS
 #: VALUE_SET_AUS
 msgid "Australian Edition"
-msgstr "Edition Australienne"
+msgstr "!!Australien"
 
 # VALUE_SET_BE
 #: VALUE_SET_BE
