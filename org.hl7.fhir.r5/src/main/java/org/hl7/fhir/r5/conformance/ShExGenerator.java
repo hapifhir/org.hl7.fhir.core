@@ -1609,14 +1609,6 @@ public class ShExGenerator {
     return tmplt(SIMPLE_ELEMENT_DEFN_TEMPLATE).add("typ", capitalizeIfPrimitive(typ)).add("vsdef", addldef).render();
   }
 
-  private String removeMultipleX(String str) {
-     if ((str != null) && (!"".equals(str))) {
-       str = str.replaceAll("\\[x\\]", "");
-     }
-
-     return str;
-  }
-
   // TODO: inspect
   private String removeMultipleX(String str) {
     if ((str != null) && (!"".equals(str))) {
@@ -1633,7 +1625,10 @@ public class ShExGenerator {
   }
 
   private void addInnerType(StructureDefinition sd, ElementDefinition ed){
-    if ((!innerTypeNames.contains(ed.getPath())) && (ed.getPath().startsWith(sd.getName()))) {
+    if (!ed.getPath().startsWith(sd.getName()))
+      throw new AssertionError("Expected element path " + ed.getPath() + " to start wtih " + sd.getName());
+    if (!ed.getType().isEmpty() && // if there's no type, the element's type is defined by a reference to another element
+      !innerTypeNames.contains(ed.getPath())) {
       innerTypes.add(new ImmutablePair<StructureDefinition, ElementDefinition>(sd, ed));
       innerTypeNames.add(ed.getPath());
     }
