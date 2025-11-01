@@ -269,7 +269,7 @@ public class ShExGenerator {
    * uniq_structures -- set of structures on the to be generated list...
    * doDataTypes -- whether or not to emit the data types.
    */
-  private HashSet<Pair<StructureDefinition, ElementDefinition>> innerTypes, emittedInnerTypes;
+  private LinkedHashSet<Pair<StructureDefinition, ElementDefinition>> innerTypes, emittedInnerTypes;
   private List<String> innerTypeNames;
 
   private List<String> oneOrMoreTypes;
@@ -280,12 +280,12 @@ public class ShExGenerator {
 
   private List<String> unMappedFunctions;
 
-  private HashSet<String> datatypes, emittedDatatypes;
-  private HashSet<String> references;
+  private LinkedHashSet<String> datatypes, emittedDatatypes;
+  private LinkedHashSet<String> references;
   private LinkedList<StructureDefinition> uniq_structures;
-  private HashSet<String> uniq_structure_urls;
-  private HashSet<ValueSet> required_value_sets;
-  private HashSet<String> known_resources;          // Used when generating a full definition
+  private LinkedHashSet<String> uniq_structure_urls;
+  private LinkedHashSet<ValueSet> required_value_sets;
+  private LinkedHashSet<String> known_resources;          // Used when generating a full definition
 
   // List of URLs of Excluded Structure Definitions from ShEx Schema generation.
   private List<String> excludedSDUrls;
@@ -302,17 +302,17 @@ public class ShExGenerator {
     super();
     this.context = context;
     profileUtilities = new ProfileUtilities(context, null, null);
-    innerTypes = new HashSet<Pair<StructureDefinition, ElementDefinition>>();
+    innerTypes = new LinkedHashSet<Pair<StructureDefinition, ElementDefinition>>();
     innerTypeNames = new ArrayList<String>();
     oneOrMoreTypes = new ArrayList<String>();
     constraintsList = new ArrayList<String>();
     unMappedFunctions = new ArrayList<String>();
-    emittedInnerTypes = new HashSet<Pair<StructureDefinition, ElementDefinition>>();
-    datatypes = new HashSet<String>();
-    emittedDatatypes = new HashSet<String>();
-    references = new HashSet<String>();
-    required_value_sets = new HashSet<ValueSet>();
-    known_resources = new HashSet<String>();
+    emittedInnerTypes = new LinkedHashSet<Pair<StructureDefinition, ElementDefinition>>();
+    datatypes = new LinkedHashSet<String>();
+    emittedDatatypes = new LinkedHashSet<String>();
+    references = new LinkedHashSet<String>();
+    required_value_sets = new LinkedHashSet<ValueSet>();
+    known_resources = new LinkedHashSet<String>();
     excludedSDUrls = new ArrayList<String>();
     selectedExtensions = new ArrayList<StructureDefinition>();
     selectedExtensionUrls = new ArrayList<String>();
@@ -426,7 +426,7 @@ public class ShExGenerator {
     // For unknown reasons, the list of structures carries duplicates.
     // We remove them.  Also, it is possible for the same sd to have multiple hashes...
     uniq_structures = new LinkedList<StructureDefinition>();
-    uniq_structure_urls = new HashSet<String>();
+    uniq_structure_urls = new LinkedHashSet<String>();
     StringBuffer allStructures = new StringBuffer("");
     for (StructureDefinition sd : structures) {
       // Exclusion Criteria for constraints
@@ -547,7 +547,7 @@ public class ShExGenerator {
       });
 
         for (String svs : sortedVS) {
-          shapeDefinitions.append("\n").append("#value_set_begins\n" + svs + "#value_set_ends");
+            shapeDefinitions.append("\n").append(/*"#value_set_begins\n" +*/ svs /*+ "#value_set_ends"*/);
         }
       }
 
@@ -563,7 +563,7 @@ public class ShExGenerator {
     StringBuffer allImports = new StringBuffer("");
     if (!imports.isEmpty()) {
 
-      if (oneOrMoreTypes.size() > 0)
+      if (false && oneOrMoreTypes.size() > 0)
         imports.add("aux");
 
       uniq_structures.forEach((StructureDefinition sdstruct) -> {
@@ -753,7 +753,7 @@ public class ShExGenerator {
     }
 
     if (sd.getName().equals("uri")) {
-      elements.add("fhir:l IRI?;");
+      elements.add(FHIR_LINK_PREDICATE + " IRI?;");
     }
 
     if (toProcessConstraints(sd)) {
@@ -1281,7 +1281,7 @@ public class ShExGenerator {
   private String emitInnerTypes() {
     StringBuilder itDefs = new StringBuilder();
     while(emittedInnerTypes.size() < innerTypes.size()) {
-      for (Pair<StructureDefinition, ElementDefinition> it : new HashSet<Pair<StructureDefinition, ElementDefinition>>(innerTypes)) {
+      for (Pair<StructureDefinition, ElementDefinition> it : new LinkedHashSet<Pair<StructureDefinition, ElementDefinition>>(innerTypes)) {
         if ((!emittedInnerTypes.contains(it))
           // && (it.getRight().hasBase() && it.getRight().getBase().getPath().startsWith(it.getLeft().getName()))
         ){
@@ -1316,7 +1316,7 @@ public class ShExGenerator {
   private String emitDataTypes() {
     StringBuilder dtDefs = new StringBuilder();
     while (emittedDatatypes.size() < datatypes.size()) {
-      for (String dt : new HashSet<String>(datatypes)) {
+      for (String dt : new LinkedHashSet<String>(datatypes)) {
         if (!emittedDatatypes.contains(dt)) {
           StructureDefinition sd = context.fetchResource(StructureDefinition.class,
             ProfileUtilities.sdNs(dt, null));
@@ -1509,11 +1509,11 @@ public class ShExGenerator {
           oneOrMoreTypes.add(origTypeDef);
       }
 
-      for (String refType : refValues) {
-        String toStoreRT = ONE_OR_MORE_PREFIX + refType;
-        if (!oneOrMoreTypes.contains(toStoreRT))
-          oneOrMoreTypes.add(toStoreRT);
-      }
+//      for (String refType : refValues) {
+//        String toStoreRT = ONE_OR_MORE_PREFIX + refType;
+//        if (!oneOrMoreTypes.contains(toStoreRT))
+//          oneOrMoreTypes.add(toStoreRT);
+//      }
 
       String defnToStore = defn;
       if (!refChoices.isEmpty()) {
@@ -1606,19 +1606,7 @@ public class ShExGenerator {
     if(ed.hasFixed()) {
       addldef = tmplt(FIXED_VALUE_TEMPLATE).add("val", ed.getFixed().primitiveValue()).render();
     }
-<<<<<<< variant A
-    return tmplt(SIMPLE_ELEMENT_DEFN_TEMPLATE).add("typ", TurtleParser.getClassName(typ)).add("vsdef", addldef).render();
-  }
-
-  private String removeMultipleX(String str) {
-     if ((str != null) && (!"".equals(str))) {
-       str = str.replaceAll("\\[x\\]", "");
-     }
-
-     return str;
->>>>>>> variant B
     return tmplt(SIMPLE_ELEMENT_DEFN_TEMPLATE).add("typ", capitalizeIfPrimitive(typ)).add("vsdef", addldef).render();
-======= end
   }
 
   private String removeMultipleX(String str) {
@@ -1876,10 +1864,13 @@ public class ShExGenerator {
     addImport(restriction);
     one_or_more_type.add("comment", "");
 
-    if (origType.indexOf(".") == -1)
-      return "\n#oneOrMore_begin\n" + one_or_more_type.render() + "\n#oneOrMore_end\n";
+    String rendered = one_or_more_type.render();
+    if (rendered.trim().isEmpty())
+      throw new RuntimeException("genOneOrMoreType(" + oneOrMoreType + ") got empty string");
+    if (false && origType.indexOf(".") == -1)
+      return "\n#oneOrMore_begin\n" + rendered + "\n#oneOrMore_end\n";
 
-    return one_or_more_type.render();
+    return rendered;
   }
 
   /**
