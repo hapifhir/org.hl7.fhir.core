@@ -115,7 +115,7 @@ public class ShExGenerator {
 
   private static String ALL_ENTRY_TEMPLATE = "(NOT { fhir:nodeRole [fhir:treeRoot] ; a [fhir:$id$] } OR @<$id$>)";
 
-  // imports to avoid (this is a bug is FHIR R5
+  // imports to avoid (this is a bug is FHIR R5 TODO: verify
   public static List<String> importsToAvoid = Arrays.asList("http:", "HealthCareService", "rendering-xhtml");
 
   // Shape Definition
@@ -685,7 +685,7 @@ public class ShExGenerator {
       elements.add(tmplt(CONCEPT_REFERENCES_TEMPLATE).render());
     else if (sdn.equals("Reference"))
       elements.add(tmplt(RESOURCE_LINK_TEMPLATE).render());
-    else if (sdn.equals("canonical"))
+    else if (sdn.equals("canonical")) // TODO: inspect
       elements.add(tmplt(RESOURCE_LINK_TEMPLATE).render());
 
     String root_comment = null;
@@ -778,7 +778,7 @@ public class ShExGenerator {
     }
 
     shape_defn.add("elements", StringUtils.join(elements, "\n"));
-    shape_defn.add("comment", root_comment == null? " " : "# " + root_comment.replaceAll("\n", "\n#"));
+    shape_defn.add("comment", root_comment == null? " " : "# " + root_comment.replaceAll("\n", "\n#")); // TODO: inspect
 
     String constraintStr = "";
 
@@ -940,7 +940,7 @@ public class ShExGenerator {
           break;
         case "NotEquals":
           if (!node.getOpNext().getKind().equals(ExpressionNode.Kind.Name)) {
-            ops = " {fhir:v  [. -";
+            ops = " {fhir:v [ . -";
             endOps = "]} ";
             toQuote = true;
           } else {
@@ -1194,7 +1194,7 @@ public class ShExGenerator {
       else{
         String mT = (mainTxt != null) ? mainTxt.trim() : "";
         String dR = (mT.startsWith(".") || mT.startsWith("{") || mT.startsWith("[")) ? "" : ".";
-
+        // TODO: inspect
         String replacement = "CALLER" + dR + mT;
         if (".".equals(mT))
           replacement = "CALLER " + dR + mT;
@@ -1452,7 +1452,7 @@ public class ShExGenerator {
     } else {
       if (ed.getType().size() == 1) {
         // Single entry
-        if ((defn.isEmpty())||(typ.equals(sd.getName()))||("xhtml".equals(sd.getName())))
+        if ((defn.isEmpty())||(typ.equals(sd.getName()))||("xhtml".equals(sd.getName()))) // TODO: inspect
           defn = genTypeRef(sd, ed, id, ed.getType().get(0));
       } else if (ed.getContentReference() != null) {
         // Reference to another element
@@ -1617,6 +1617,15 @@ public class ShExGenerator {
      return str;
   }
 
+  // TODO: inspect
+  private String removeMultipleX(String str) {
+    if ((str != null) && (!"".equals(str))) {
+      str = str.replaceAll("\\[x\\]", "");
+    }
+
+    return str;
+  }
+
   private String vsprefix(String uri) {
     if(uri.startsWith(FHIR_VS))
       return "fhirvs:" + uri.replace(FHIR_VS, "");
@@ -1688,6 +1697,8 @@ public class ShExGenerator {
       primitive_entry.add("typ", "xsd:string");
       return primitive_entry.render();
 
+    } else if(typ.getWorkingCode().equals("xhtml")) { // TODO: inspect
+      return tmplt(XHTML_TYPE_TEMPLATE).render();
     } else {
       datatypes.add(typ.getWorkingCode());
       return simpleElement(sd, ed, typ.getWorkingCode());
@@ -1883,8 +1894,7 @@ public class ShExGenerator {
     String path = ed.hasBase() ? ed.getBase().getPath() : ed.getPath();
     ST element_reference = tmplt(SHAPE_DEFINITION_TEMPLATE);
     element_reference.add("resourceDecl", "");  // Not a resource
-    // element_reference.add("id", TurtleParser.getClassName(path + getExtendedType(ed)));
-    element_reference.add("id", removeMultipleX(path) + getExtendedType(ed));
+    element_reference.add("id", TurtleParser.getClassName(removeMultipleX(path) + getExtendedType(ed)));
     element_reference.add("fhirType", " ");
     String comment = ed.getShort();
     element_reference.add("comment", comment == null? " " : "# " + comment);
