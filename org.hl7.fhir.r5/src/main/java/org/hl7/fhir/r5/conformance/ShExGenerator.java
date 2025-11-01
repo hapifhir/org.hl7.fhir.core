@@ -95,6 +95,7 @@ public class ShExGenerator {
   private static String FHIR = "http://hl7.org/fhir/";
   private static String FHIR_VS = FHIR + "ValueSet/";
   private static String FHIR_LINK_PREDICATE = "fhir:l";
+
   private static String HEADER_TEMPLATE =
     "PREFIX fhir: <$fhir$> \n" +
       "PREFIX fhirvs: <$fhirvs$>\n" +
@@ -102,7 +103,7 @@ public class ShExGenerator {
       "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n";
       //"BASE <http://hl7.org/fhir/shape/>\n";
 
-  private static String IMPORT_TEMPLATE = "IMPORT <$import$$fileExt$>\n";
+  private static String IMPORT_TEMPLATE = "\n#imported_begin \nIMPORT <$import$$fileExt$>\n#imported_end";
 
   // Start template for single (open) entry
   private static String START_TEMPLATE = "\n\nstart=@<$id$> AND {fhir:nodeRole [fhir:treeRoot]}\n";
@@ -268,21 +269,23 @@ public class ShExGenerator {
    * uniq_structures -- set of structures on the to be generated list...
    * doDataTypes -- whether or not to emit the data types.
    */
-  private HashSet<Pair<StructureDefinition, ElementDefinition>> innerTypes, emittedInnerTypes;
-  private List<String> innerTypeNames; // TODO: inspect
+  private LinkedHashSet<Pair<StructureDefinition, ElementDefinition>> innerTypes, emittedInnerTypes;
+  private List<String> innerTypeNames;
 
   private List<String> oneOrMoreTypes;
+
+
 
   private List<String> constraintsList;
 
   private List<String> unMappedFunctions;
 
-  private HashSet<String> datatypes, emittedDatatypes;
-  private HashSet<String> references;
+  private LinkedHashSet<String> datatypes, emittedDatatypes;
+  private LinkedHashSet<String> references;
   private LinkedList<StructureDefinition> uniq_structures;
-  private HashSet<String> uniq_structure_urls;
-  private HashSet<ValueSet> required_value_sets;
-  private HashSet<String> known_resources;          // Used when generating a full definition
+  private LinkedHashSet<String> uniq_structure_urls;
+  private LinkedHashSet<ValueSet> required_value_sets;
+  private LinkedHashSet<String> known_resources;          // Used when generating a full definition
 
   // List of URLs of Excluded Structure Definitions from ShEx Schema generation.
   private List<String> excludedSDUrls;
@@ -299,17 +302,17 @@ public class ShExGenerator {
     super();
     this.context = context;
     profileUtilities = new ProfileUtilities(context, null, null);
-    innerTypes = new HashSet<Pair<StructureDefinition, ElementDefinition>>();
-    innerTypeNames = new ArrayList<String>(); // TODO: inspect
+    innerTypes = new LinkedHashSet<Pair<StructureDefinition, ElementDefinition>>();
+    innerTypeNames = new ArrayList<String>();
     oneOrMoreTypes = new ArrayList<String>();
     constraintsList = new ArrayList<String>();
     unMappedFunctions = new ArrayList<String>();
-    emittedInnerTypes = new HashSet<Pair<StructureDefinition, ElementDefinition>>();
-    datatypes = new HashSet<String>();
-    emittedDatatypes = new HashSet<String>();
-    references = new HashSet<String>();
-    required_value_sets = new HashSet<ValueSet>();
-    known_resources = new HashSet<String>();
+    emittedInnerTypes = new LinkedHashSet<Pair<StructureDefinition, ElementDefinition>>();
+    datatypes = new LinkedHashSet<String>();
+    emittedDatatypes = new LinkedHashSet<String>();
+    references = new LinkedHashSet<String>();
+    required_value_sets = new LinkedHashSet<ValueSet>();
+    known_resources = new LinkedHashSet<String>();
     excludedSDUrls = new ArrayList<String>();
     selectedExtensions = new ArrayList<StructureDefinition>();
     selectedExtensionUrls = new ArrayList<String>();
@@ -322,7 +325,7 @@ public class ShExGenerator {
     List<StructureDefinition> list = new ArrayList<StructureDefinition>();
     list.add(structure);
     innerTypes.clear();
-    innerTypeNames.clear(); //TODO: inspect
+    innerTypeNames.clear();
     oneOrMoreTypes.clear();
     constraintsList.clear();
     unMappedFunctions.clear();
@@ -423,10 +426,10 @@ public class ShExGenerator {
     // For unknown reasons, the list of structures carries duplicates.
     // We remove them.  Also, it is possible for the same sd to have multiple hashes...
     uniq_structures = new LinkedList<StructureDefinition>();
-    uniq_structure_urls = new HashSet<String>();
+    uniq_structure_urls = new LinkedHashSet<String>();
     StringBuffer allStructures = new StringBuffer("");
     for (StructureDefinition sd : structures) {
-      // Exclusion Criteria...
+      // Exclusion Criteria for constraints
       if ((excludedSDUrls != null) &&
         (excludedSDUrls.contains(sd.getUrl()))) {
         log.trace("SKIPPED Generating ShEx for " + sd.getName() + "  [ " + sd.getUrl() + " ] !");
@@ -541,10 +544,10 @@ public class ShExGenerator {
               return 0;
             }
           }
-        });
+      });
 
         for (String svs : sortedVS) {
-          shapeDefinitions.append("\n").append("#value_set_begins\n" + svs + "#value_set_ends");
+            shapeDefinitions.append("\n").append(/*"#value_set_begins\n" +*/ svs /*+ "#value_set_ends"*/);
         }
       }
 
@@ -559,6 +562,10 @@ public class ShExGenerator {
 
     StringBuffer allImports = new StringBuffer("");
     if (!imports.isEmpty()) {
+
+      if (false && oneOrMoreTypes.size() > 0)
+        imports.add("aux");
+
       uniq_structures.forEach((StructureDefinition sdstruct) -> {
           imports.removeIf(s -> s.contains(TurtleParser.getClassName(sdstruct.getName())));
       });
@@ -590,7 +597,7 @@ public class ShExGenerator {
       bd = els[els.length - 1];
     }
 
-    return bd;
+    return capitalizeIfPrimitive(bd);
   }
 
   private String getBaseTypeName(ElementDefinition ed){
@@ -602,7 +609,7 @@ public class ShExGenerator {
 
   private String getExtendedType(StructureDefinition sd){
     String bd = getBaseTypeName(sd);
-    String sId = sd.getId();
+    String sId = capitalizeIfPrimitive(sd.getId());
 
     if (bd!=null) {
       var className = TurtleParser.getClassName(bd);
@@ -631,11 +638,13 @@ public class ShExGenerator {
    * @return ShEx definition
    */
   private String genShapeDefinition(StructureDefinition sd, boolean top_level) {
+    // xhtml is treated as an atom
+    //if("xhtml".equals(sd.getName()) || (completeModel && "Resource".equals(sd.getName())))
+    // if(completeModel && "Resource".equals(sd.getName()))
+    //   return "";
+
     ST shape_defn;
     // Resources are either incomplete items or consist of everything that is defined as a resource (completeModel)
-    //    if (sd.getName().equals("ActivityDefinition")){
-    //      debug("ActivityDefinition found");
-    //    }
 
     var className = TurtleParser.getClassName(sd.getName());
 
@@ -654,14 +663,15 @@ public class ShExGenerator {
           (shortIdException.contains(btn)))
           rootTmpl = "\n";
 
+        String id = capitalizeIfPrimitive(sd.getId());
+
         ST resource_decl = tmplt(RESOURCE_DECL_TEMPLATE).
-          add("id", TurtleParser.getClassName(sd.getId())).
+          add("id", id).
           add("root", rootTmpl);
 
         shape_defn.add("resourceDecl", resource_decl.render());
       }
     }
-
     shape_defn.add("fhirType", " ");
 
     // Generate the defining elements
@@ -727,6 +737,8 @@ public class ShExGenerator {
             }
           }
         }
+
+
         elements.add(elementDefinition);
       }
       else {
@@ -741,7 +753,7 @@ public class ShExGenerator {
     }
 
     if (sd.getName().equals("uri")) {
-      elements.add("fhir:l IRI?;");
+      elements.add(FHIR_LINK_PREDICATE + " IRI?;");
     }
 
     if (toProcessConstraints(sd)) {
@@ -782,16 +794,17 @@ public class ShExGenerator {
 //      for (StructureDefinition.StructureDefinitionContextComponent uc : sd.getContext()) {
 //        if (!uc.getExpression().isEmpty()) {
 //          String toStore = uc.getExpression();
-//          log.debug("CONTEXT-OF-USE FOUND: " + toStore);
+//          debug("CONTEXT-OF-USE FOUND: " + toStore);
 //          if (toStore.indexOf("http") != -1) {
-//            log.debug("\t\tWARNING: CONTEXT-OF-USE SKIPPED as it has 'http' in it, might be a URL, instead of '.' delimited string");
+//            debug("\t\tWARNING: CONTEXT-OF-USE SKIPPED as it has 'http' in it, might be a URL, instead of '.' delimited string");
 //            continue;  // some erroneous context of use may use a URL; ignore them
 //          }
 //          String[] backRefs = toStore.split("\\.");
-//          toStore = "a [fhir:" + TurtleParser.getClassName(backRefs[0]) + "]";
+//          toStore = "a [fhir:" + capitalizeIfPrimitive(backRefs[0]) + "]";
 //          for (int i = 1; i < backRefs.length; i++)
-//            toStore = "^fhir:" + TurtleParser.getClassName(backRefs[i]) + " {" + toStore + "}";
+//              toStore = "^fhir:" + capitalizeIfPrimitive(backRefs[i]) + " {" + toStore + "}";
 //
+//          toStore = removeMultipleX(toStore);
 //          if (!contextOfUse.contains(toStore)) {
 //            contextOfUse.add(toStore);
 //          }
@@ -809,6 +822,39 @@ public class ShExGenerator {
 //    shape_defn.add("contextOfUse", contextOfUseStr);
 
     return shape_defn.render();
+  }
+
+  /**
+   * Capitalize the first character of the string if it is a listed primitive type
+   * @param name
+   * @return
+   */
+  private String capitalizeIfPrimitive(String name) {
+    if (name == null || name.isEmpty()) return name;
+    if ("base64Binary".equals(name) ||
+      "boolean".equals(name) ||
+      "canonical".equals(name) ||
+      "code".equals(name) ||
+      "date".equals(name) ||
+      "dateTime".equals(name) ||
+      "decimal".equals(name) ||
+      "id".equals(name) ||
+      "instant".equals(name) ||
+      "integer".equals(name) ||
+      "integer64".equals(name) ||
+      "markdown".equals(name) ||
+      "oid".equals(name) ||
+      "positiveInt".equals(name) ||
+      "string".equals(name) ||
+      "time".equals(name) ||
+      "unsignedInt".equals(name) ||
+      "uri".equals(name) ||
+      "url".equals(name) ||
+      "uuid".equals(name) ||
+      "xhtml".equals(name)) {
+      return name.substring(0, 1).toUpperCase() + name.substring(1);
+    }
+    return name;
   }
 
   /**
@@ -1138,7 +1184,7 @@ public class ShExGenerator {
   private String positionParts(String funCall, String mainTxt, String nextText, int depth, boolean complete){
     if (funCall.indexOf("CALLER") != -1) {
       if (depth == 0) {
-        String toReturn = funCall.replaceFirst("CALLER", mainTxt);
+        String toReturn = funCall.replaceFirst("CALLER", mainTxt + "");
         if (complete)
           toReturn =  toReturn ;
 
@@ -1235,7 +1281,7 @@ public class ShExGenerator {
   private String emitInnerTypes() {
     StringBuilder itDefs = new StringBuilder();
     while(emittedInnerTypes.size() < innerTypes.size()) {
-      for (Pair<StructureDefinition, ElementDefinition> it : new HashSet<Pair<StructureDefinition, ElementDefinition>>(innerTypes)) {
+      for (Pair<StructureDefinition, ElementDefinition> it : new LinkedHashSet<Pair<StructureDefinition, ElementDefinition>>(innerTypes)) {
         if ((!emittedInnerTypes.contains(it))
           // && (it.getRight().hasBase() && it.getRight().getBase().getPath().startsWith(it.getLeft().getName()))
         ){
@@ -1270,7 +1316,7 @@ public class ShExGenerator {
   private String emitDataTypes() {
     StringBuilder dtDefs = new StringBuilder();
     while (emittedDatatypes.size() < datatypes.size()) {
-      for (String dt : new HashSet<String>(datatypes)) {
+      for (String dt : new LinkedHashSet<String>(datatypes)) {
         if (!emittedDatatypes.contains(dt)) {
           StructureDefinition sd = context.fetchResource(StructureDefinition.class,
             ProfileUtilities.sdNs(dt, null));
@@ -1426,7 +1472,6 @@ public class ShExGenerator {
         defn = simpleElement(sd, ed, refPath);
       }
 
-
       if (ed.hasType() && (ed.getType().get(0).getWorkingCode().equals("Reference"))) {
         if (ed.getType().get(0).hasTargetProfile()) {
 
@@ -1439,6 +1484,10 @@ public class ShExGenerator {
       }
 
       if (!refValues.isEmpty()) {
+        // First store the original type, if not already there
+//        if (!oneOrMoreTypes.contains(defn))
+//          oneOrMoreTypes.add(defn);
+
         Collections.sort(refValues);
         refChoices = StringUtils.join(refValues, "_OR_");
       }
@@ -1460,11 +1509,11 @@ public class ShExGenerator {
           oneOrMoreTypes.add(origTypeDef);
       }
 
-      for (String refType : refValues) {
-        String toStoreRT = ONE_OR_MORE_PREFIX + refType;
-        if (!oneOrMoreTypes.contains(toStoreRT))
-          oneOrMoreTypes.add(toStoreRT);
-      }
+//      for (String refType : refValues) {
+//        String toStoreRT = ONE_OR_MORE_PREFIX + refType;
+//        if (!oneOrMoreTypes.contains(toStoreRT))
+//          oneOrMoreTypes.add(toStoreRT);
+//      }
 
       String defnToStore = defn;
       if (!refChoices.isEmpty()) {
@@ -1496,17 +1545,12 @@ public class ShExGenerator {
 
   private void addImport(String typeDefn) {
       if ((typeDefn != null) && (!typeDefn.isEmpty())) {
-  //        String importType = StringUtils.substringBetween(typeDefn, "<", ">");
-  //        if ((importType.indexOf(ONE_OR_MORE_PREFIX) == -1) &&
-  //          (!imports.contains(importType)))
-  //            imports.add(importType);
-  //    }
-        Pattern p = Pattern.compile("<([^\\s>/]+)");
+         Pattern p = Pattern.compile("<([^\\s>/]+)");
         Matcher m = p.matcher(typeDefn);
         while (m.find()) {
           String tag = m.group(1);
 
-          if (importsToAvoid.contains(tag))  // TODO: inspect
+          if (importsToAvoid.contains(tag)) // TODO: inspect
             continue;
 
           if (tag.indexOf(ONE_OR_MORE_PREFIX) != -1) {
@@ -1562,7 +1606,15 @@ public class ShExGenerator {
     if(ed.hasFixed()) {
       addldef = tmplt(FIXED_VALUE_TEMPLATE).add("val", ed.getFixed().primitiveValue()).render();
     }
-    return tmplt(SIMPLE_ELEMENT_DEFN_TEMPLATE).add("typ", TurtleParser.getClassName(typ)).add("vsdef", addldef).render();
+    return tmplt(SIMPLE_ELEMENT_DEFN_TEMPLATE).add("typ", capitalizeIfPrimitive(typ)).add("vsdef", addldef).render();
+  }
+
+  private String removeMultipleX(String str) {
+     if ((str != null) && (!"".equals(str))) {
+       str = str.replaceAll("\\[x\\]", "");
+     }
+
+     return str;
   }
 
   // TODO: inspect
@@ -1823,10 +1875,13 @@ public class ShExGenerator {
     addImport(restriction);
     one_or_more_type.add("comment", "");
 
-    if (origType.indexOf(".") == -1) // TODO: inspect
-      return "\n#oneOrMore_begin\n" + one_or_more_type.render() + "\n#oneOrMore_end\n";
+    String rendered = one_or_more_type.render();
+    if (rendered.trim().isEmpty())
+      throw new RuntimeException("genOneOrMoreType(" + oneOrMoreType + ") got empty string");
+    if (false && origType.indexOf(".") == -1)
+      return "\n#oneOrMore_begin\n" + rendered + "\n#oneOrMore_end\n";
 
-    return one_or_more_type.render();
+    return rendered;
   }
 
   /**
