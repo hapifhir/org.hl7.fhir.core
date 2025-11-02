@@ -130,6 +130,8 @@ public class ShExGenerator {
 //      "\n    $contextOfUse$" +
       "\n} $constraints$ \n";
 
+  private static String DATATYPE_DEFINITION_TEMPLATE =
+    "$comment$\n<$id$> $datatype$ $constraints$\n";
   // Base DataTypes
   private List<String> baseDataTypes = Arrays.asList(
     "DataType",
@@ -165,7 +167,7 @@ public class ShExGenerator {
   // Resource Definition
   //      an open shape of type Resource.  Used when completeModel = false.
   private static String SYNTHETIC_RESTRICTION_TEMPLATE =
-    "<$restriction$> EXTENDS <$base$> {} $constraints$ \n";
+    "<$restriction$> EXTENDS <$base$> {} \n";
 
   // If we have knowledge of all of the possible resources available to us (completeModel = true), we can build
   // a model of all possible resources.
@@ -219,7 +221,7 @@ public class ShExGenerator {
   private static String REFERENCE_DEFN_TEMPLATE = "@<$ref$Reference>";
 
   // What we emit for an xhtml
-  private static String XHTML_TYPE_TEMPLATE = "xsd:string";
+  private static String XHTML_TYPE_TEMPLATE = "rdf:XMLLiteral";
 
   // Additional type for Coding
   private static String CONCEPT_REFERENCE_TEMPLATE = "a NONLITERAL?;";
@@ -642,6 +644,14 @@ public class ShExGenerator {
     //if("xhtml".equals(sd.getName()) || (completeModel && "Resource".equals(sd.getName())))
     // if(completeModel && "Resource".equals(sd.getName()))
     //   return "";
+    if("xhtml".equals(sd.getName())) {
+      return tmplt(DATATYPE_DEFINITION_TEMPLATE)
+        .add("id", capitalizeIfPrimitive("xhtml"))
+        .add("datatype", "rdf:XMLLiteral")
+        .add("comment", "")
+        .add("constraints", "")
+        .render();
+    }
 
     ST shape_defn;
     // Resources are either incomplete items or consist of everything that is defined as a resource (completeModel)
