@@ -298,15 +298,32 @@ public class ValidationService {
     InstanceValidatorParameters instanceValidatorParameters = ValidationContextUtilities.getInstanceValidatorParameters(validationContext);
     List<String> sources = validationContext.getSources();
     OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
-    validateSources(validator, instanceValidatorParameters, sources, outputParameters, watchParameters);
+    ValidateSourceParameters.builder().watchParameters(watchParameters);
+    validateSources(validator, new ValidateSourceParameters(instanceValidatorParameters, sources, outputParameters, watchParameters));
   }
 
-    public void validateSources(ValidationEngine validationEngine, InstanceValidatorParameters instanceValidatorParameters, List<String> sources, OutputParameters output, WatchParameters watchParameters) throws Exception {
+  /**
+   * Uses the passed validationEngine to validate a set of sources.
+   *
+   * @param validationEngine the engine to use for
+   * @param validateSourceParameters the parameters used for validation
+   * @throws Exception if the validation setup or actual validation fails..
+   */
+  public void validateSources(ValidationEngine validationEngine, ValidateSourceParameters validateSourceParameters) throws Exception {
+    InstanceValidatorParameters instanceValidatorParameters =
+      validateSourceParameters.instanceValidatorParameters() == null
+        ? validationEngine.getDefaultInstanceValidatorParameters()
+        : validateSourceParameters.instanceValidatorParameters();
+
+    WatchParameters watchParameters = validateSourceParameters.watchParameters() == null
+        ? new WatchParameters()
+      : validateSourceParameters.watchParameters();
+
     if (!instanceValidatorParameters.getProfiles().isEmpty()) {
       log.info("  Profiles: " + instanceValidatorParameters.getProfiles());
     }
     IgLoader igLoader = new IgLoader(validationEngine.getPcm(), validationEngine.getContext(), validationEngine.getVersion());
-        
+
     List<ValidationRecord> records = new ArrayList<>();
     List<SourceFile> refs = new ArrayList<>();
 
@@ -315,59 +332,59 @@ public class ValidationService {
 
     do {
       long start = System.currentTimeMillis();
-      Resource r = validationEngine.validate(sources, instanceValidatorParameters.getProfiles(), refs, records, igLoader, watchParameters.getWatchMode() == ValidatorWatchMode.ALL, watchParameters.getWatchSettleTime(), first);
+      Resource resource = validationEngine.validate(validateSourceParameters.sources(), instanceValidatorParameters.getProfiles(), refs, records, igLoader, watchParameters.getWatchMode() == ValidatorWatchMode.ALL, watchParameters.getWatchSettleTime(), first);
       first = false;
       boolean statusNeeded = false;
-      if (r != null) {
+      if (resource != null) {
         statusNeeded = true;
         MemoryMXBean mbean = ManagementFactory.getMemoryMXBean();
-        log.info("Done. " + validationEngine.getContext().clock().report()+". Memory = "+Utilities.describeSize(mbean.getHeapMemoryUsage().getUsed()+mbean.getNonHeapMemoryUsage().getUsed()));
+        log.info("Done. " + validationEngine.getContext().clock().report() + ". Memory = " + Utilities.describeSize(mbean.getHeapMemoryUsage().getUsed() + mbean.getNonHeapMemoryUsage().getUsed()));
         log.info("");
 
         PrintStream dst = null;
-        ValidationOutputRenderer renderer = makeValidationOutputRenderer(output.getOutput(), instanceValidatorParameters.getOutputStyle());
+        ValidationOutputRenderer renderer = makeValidationOutputRenderer(validateSourceParameters.output().getOutput(), instanceValidatorParameters.getOutputStyle());
         renderer.setCrumbTrails(instanceValidatorParameters.isCrumbTrails());
         renderer.setShowMessageIds(instanceValidatorParameters.isShowMessageIds());
         renderer.setRunDate(runDate);
         if (renderer.isSingleFile()) {
-          if (output.getOutput() == null) {
+          if (validateSourceParameters.output().getOutput() == null) {
             dst = new PrintStream(new Slf4JOutputStream());
           } else {
-            dst = new PrintStream(ManagedFileAccess.outStream(Utilities.path(output.getOutput())));
+            dst = new PrintStream(ManagedFileAccess.outStream(Utilities.path(validateSourceParameters.output().getOutput())));
           }
           renderer.setOutput(dst);
         } else {
-          File dir = ManagedFileAccess.file(output.getOutput());
+          File dir = ManagedFileAccess.file(validateSourceParameters.output().getOutput());
           if (!dir.isDirectory()) {
-            throw new Error("The output location "+dir.getAbsolutePath()+" must be an existing directory for the output style "+renderer.getStyleCode());
+            throw new Error("The output location " + dir.getAbsolutePath() + " must be an existing directory for the output style " + renderer.getStyleCode());
           }
           renderer.setFolder(dir);
         }
 
-        if (r instanceof Bundle) {
+        if (resource instanceof Bundle) {
           if (renderer.handlesBundleDirectly()) {
-            renderer.render((Bundle) r);
+            renderer.render((Bundle) resource);
           } else {
-            renderer.start(((Bundle) r).getEntry().size() > 1);
-            for (Bundle.BundleEntryComponent e : ((Bundle) r).getEntry()) {
+            renderer.start(((Bundle) resource).getEntry().size() > 1);
+            for (Bundle.BundleEntryComponent e : ((Bundle) resource).getEntry()) {
               OperationOutcome op = (OperationOutcome) e.getResource();
               ec = ec + countErrors(op);
               renderer.render(op);
             }
             renderer.finish();
           }
-        } else if (r == null) {
+        } else if (resource == null) {
           ec = ec + 1;
           log.info("No output from validation - nothing to validate");
         } else {
           renderer.start(false);
-          OperationOutcome op = (OperationOutcome) r;
+          OperationOutcome op = (OperationOutcome) resource;
           ec = countErrors(op);
-          renderer.render((OperationOutcome) r);
+          renderer.render((OperationOutcome) resource);
           renderer.finish();
         }
 
-        if (output.getOutput() != null && dst != null) {
+        if (validateSourceParameters.output().getOutput() != null && dst != null) {
           dst.close();
         }
 
@@ -384,7 +401,7 @@ public class ValidationService {
             log.info("(nothing happened)");
           } else {
             for (InternalLogEvent logEvent : validationEngine.getContext().getTxClientManager().getInternalLog()) {
-              log.info(logEvent.getMessage()+" -> "+logEvent.getServer()+" (for VS "+logEvent.getVs()+" with systems '"+logEvent.getSystems()+"', choices = '"+logEvent.getChoices()+"')");
+              log.info(logEvent.getMessage() + " -> " + logEvent.getServer() + " (for VS " + logEvent.getVs() + " with systems '" + logEvent.getSystems() + "', choices = '" + logEvent.getChoices() + "')");
             }
           }
           validationEngine.getContext().getTxClientManager().getInternalLog().clear();
@@ -392,11 +409,12 @@ public class ValidationService {
       }
       if (watchParameters.getWatchMode() != ValidatorWatchMode.NONE) {
         if (statusNeeded) {
-          log.info("Watching for changes ("+Integer.toString(watchParameters.getWatchScanDelay())+"ms cycle)");
+          log.info("Watching for changes (" + Integer.toString(watchParameters.getWatchScanDelay()) + "ms cycle)");
         }
         Thread.sleep(watchParameters.getWatchScanDelay());
       }
     } while (watchParameters.getWatchMode() != ValidatorWatchMode.NONE);
+    
     if (ec > 0) {
       SystemExitManager.setError(1);
     }
