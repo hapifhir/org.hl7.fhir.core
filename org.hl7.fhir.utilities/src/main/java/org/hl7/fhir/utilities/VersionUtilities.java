@@ -842,10 +842,8 @@ public class VersionUtilities {
       res.add("DeviceDefinition");
       res.add("EventDefinition");
       res.add("Evidence");
-      res.add("EvidenceReport");
       res.add("EvidenceVariable");
       res.add("ExampleScenario");
-      res.add("GraphDefinition");
       res.add("Group");
       res.add("ImplementationGuide");
       res.add("Library");
@@ -863,8 +861,6 @@ public class VersionUtilities {
       res.add("StructureMap");
       res.add("SubscriptionTopic");
       res.add("TerminologyCapabilities");
-      res.add("TestPlan");
-      res.add("TestScript");
       res.add("ValueSet");
     }
     return res;
