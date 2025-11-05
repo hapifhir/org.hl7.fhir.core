@@ -522,31 +522,38 @@ public class ValidationService {
     }
   }
 
-  
   public void transform(ValidationContext validationContext, ValidationEngine validator) throws Exception {
-    if (validationContext.getSources().size() > 1)
-      throw new Exception("Can only have one source when doing a transform (found " + validationContext.getSources() + ")");
-    if (validationContext.getTxServer() == null)
+    MapParameters mapParameters = ValidationContextUtilities.getMapParameters(validationContext);
+    ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
+    OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
+    List<String> sources = validationContext.getSources();
+    transform(validator, new TransformParameters(validationEngineParameters, mapParameters, sources, outputParameters));
+  }
+
+  public void transform(ValidationEngine validationEngine, TransformParameters transformParameters) throws Exception {
+    if (transformParameters.sources().size() > 1)
+      throw new Exception("Can only have one source when doing a transform (found " + transformParameters.sources() + ")");
+    if (transformParameters.validationEngineParameters().getTxServer() == null)
       throw new Exception("Must provide a terminology server when doing a transform");
-    if (validationContext.getMap() == null)
+    if (transformParameters.mapParameters().getMap() == null)
       throw new Exception("Must provide a map when doing a transform");
     try {
-      ContextUtilities cu = new ContextUtilities(validator.getContext());
+      ContextUtilities cu = new ContextUtilities(validationEngine.getContext());
       List<StructureDefinition> structures =  cu.allStructures();
       for (StructureDefinition sd : structures) {
         if (!sd.hasSnapshot()) {
           cu.generateSnapshot(sd);
         }
       }
-      validator.setMapLog(validationContext.getMapLog());
-      org.hl7.fhir.r5.elementmodel.Element r = validator.transform(validationContext.getSources().get(0), validationContext.getMap());
+      validationEngine.setMapLog(transformParameters.validationEngineParameters().getMapLog());
+      org.hl7.fhir.r5.elementmodel.Element r = validationEngine.transform(transformParameters.sources().get(0), transformParameters.mapParameters().getMap());
       log.info(" ...success");
-      if (validationContext.getOutput() != null) {
-        FileOutputStream s = ManagedFileAccess.outStream(validationContext.getOutput());
-        if (validationContext.getOutput() != null && validationContext.getOutput().endsWith(".json"))
-          new org.hl7.fhir.r5.elementmodel.JsonParser(validator.getContext()).compose(r, s, IParser.OutputStyle.PRETTY, null);
+      if (transformParameters.outputParameters().getOutput() != null) {
+        FileOutputStream s = ManagedFileAccess.outStream(transformParameters.outputParameters().getOutput());
+        if (transformParameters.outputParameters().getOutput() != null && transformParameters.outputParameters().getOutput().endsWith(".json"))
+          new org.hl7.fhir.r5.elementmodel.JsonParser(validationEngine.getContext()).compose(r, s, IParser.OutputStyle.PRETTY, null);
         else
-          new org.hl7.fhir.r5.elementmodel.XmlParser(validator.getContext()).compose(r, s, IParser.OutputStyle.PRETTY, null);
+          new org.hl7.fhir.r5.elementmodel.XmlParser(validationEngine.getContext()).compose(r, s, IParser.OutputStyle.PRETTY, null);
         s.close();
       }
     } catch (Exception e) {
@@ -628,6 +635,10 @@ public class ValidationService {
       ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
       InstanceValidatorParameters defaultInstanceValidatorParams = ValidationContextUtilities.getInstanceValidatorParameters(validationContext);
       return initializeValidator(validationEngineParameters, defaultInstanceValidatorParams, definitions, tt, validationContext.getSources(), sessionId);
+  }
+
+  public ValidationEngine initializeValidator(ValidationEngineParameters validationEngineParameters, InstanceValidatorParameters defaultInstanceValidatorParameters, String definitions, TimeTracker tt, List<String> sources) throws Exception{
+    return sessionCache.fetchSessionValidatorEngine(initializeValidator(validationEngineParameters, defaultInstanceValidatorParameters, definitions, tt, sources, null));
   }
 
   // Used by:
