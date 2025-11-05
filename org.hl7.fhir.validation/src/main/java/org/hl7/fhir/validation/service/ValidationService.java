@@ -459,24 +459,29 @@ public class ValidationService {
     }
   }
 
-  public void convertSources(ValidationContext validationContext, ValidationEngine validator) throws Exception {
+  @Deprecated(since="2025-11-05")
+  public void convertSources(ValidationContext validationContext, ValidationEngine validationEngine) throws Exception {
+    OutputParameters outputParameters =  ValidationContextUtilities.getOutputParameters(validationContext);
+    List<String> sources = validationContext.getSources();
+    convertSources(validationEngine, sources, outputParameters.getOutput(), outputParameters.getOutputSuffix());
+  }
 
-      if (!((validationContext.getOutput() == null) ^ (validationContext.getOutputSuffix() == null))) {
+    public void convertSources(ValidationEngine validationEngine, List<String> sources, String output, String outputSuffix) throws Exception {
+      if (!((output == null) ^ (outputSuffix == null))) {
         throw new Exception("Convert requires one of {-output, -outputSuffix} parameter to be set");
       }
 
-      List<String> sources = validationContext.getSources();
-      if ((sources.size() == 1) && (validationContext.getOutput() != null)) {
+      if ((sources.size() == 1) && (output != null)) {
         log.info(" ...convert");
-        validator.convert(sources.get(0), validationContext.getOutput());
+        validationEngine.convert(sources.get(0), output);
       } else {
-        if (validationContext.getOutputSuffix() == null) {
+        if (outputSuffix == null) {
           throw new Exception("Converting multiple/wildcard sources requires a -outputSuffix parameter to be set");
         }
         for (int i = 0; i < sources.size(); i++) {
-            String output = sources.get(i) + "." + validationContext.getOutputSuffix();
-            validator.convert(sources.get(i), output);
-            log.info(" ...convert [" + i +  "] (" + sources.get(i) + " to " + output + ")");
+            String outputPath = sources.get(i) + "." + outputSuffix;
+            validationEngine.convert(sources.get(i), outputPath);
+            log.info(" ...convert [" + i +  "] (" + sources.get(i) + " to " + outputPath + ")");
         }
       }
   }
