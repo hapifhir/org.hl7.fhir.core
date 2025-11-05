@@ -486,27 +486,32 @@ public class ValidationService {
     log.info(validator.evaluateFhirPath(validationContext.getSources().get(0), validationContext.getFhirpath()));
   }
 
-  
-  public void generateSnapshot(ValidationContext validationContext, ValidationEngine validator) throws Exception {
+  @Deprecated(since="2025-11-05")
+  public void generateSnapshot(ValidationContext validationContext, ValidationEngine validationEngine) throws Exception {
+    ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
+    OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
+    List<String> sources = validationContext.getSources();
+    generateSnapshot(validationEngine, new GenerateSnapshotParameters(validationEngineParameters, sources, outputParameters.getOutput(), outputParameters.getOutputSuffix()));
+  }
 
-      if (!((validationContext.getOutput() == null) ^ (validationContext.getOutputSuffix() == null))) {
+    public void generateSnapshot(ValidationEngine validationEngine, GenerateSnapshotParameters generateSnapshotParameters) throws Exception {
+      if (!((generateSnapshotParameters.output() == null) ^ (generateSnapshotParameters.outputSuffix() == null))) {
         throw new Exception("Snapshot generation requires one of {-output, -outputSuffix} parameter to be set");
       }
 
-      List<String> sources = validationContext.getSources();
-      if ((sources.size() == 1) && (validationContext.getOutput() != null)) {
-        StructureDefinition r = validator.snapshot(sources.get(0), validationContext.getSv());
+      if ((generateSnapshotParameters.sources().size() == 1) && (generateSnapshotParameters.output() != null)) {
+        StructureDefinition r = validationEngine.snapshot(generateSnapshotParameters.sources().get(0), generateSnapshotParameters.validationEngineParameters().getSv());
         log.info(" ...generated snapshot successfully");
-        validator.handleOutput(r, validationContext.getOutput(), validationContext.getSv());
+        validationEngine.handleOutput(r, generateSnapshotParameters.output(), generateSnapshotParameters.validationEngineParameters().getSv());
       } else {
-        if (validationContext.getOutputSuffix() == null) {
+        if (generateSnapshotParameters.outputSuffix() == null) {
           throw new Exception("Snapshot generation for multiple/wildcard sources requires a -outputSuffix parameter to be set");
         }
-        for (int i = 0; i < sources.size(); i++) {
-          StructureDefinition r = validator.snapshot(sources.get(i), validationContext.getSv());
-          String output = sources.get(i) + "." + validationContext.getOutputSuffix();
-          validator.handleOutput(r, output, validationContext.getSv());
-          log.info(" ...generated snapshot [" + i +  "] successfully (" + sources.get(i) + " to " + output + ")");
+        for (int i = 0; i < generateSnapshotParameters.sources().size(); i++) {
+          StructureDefinition r = validationEngine.snapshot(generateSnapshotParameters.sources().get(i), generateSnapshotParameters.validationEngineParameters().getSv());
+          String outputDest = generateSnapshotParameters.sources().get(i) + "." + generateSnapshotParameters.outputSuffix();
+          validationEngine.handleOutput(r, outputDest, generateSnapshotParameters.validationEngineParameters().getSv());
+          log.info(" ...generated snapshot [" + i +  "] successfully (" + generateSnapshotParameters.sources().get(i) + " to " + outputDest + ")");
         }
       }
 
