@@ -1,9 +1,10 @@
 package org.hl7.fhir.validation.cli.tasks;
 
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.cli.param.parsers.FHIRPathParametersParser;
-import org.hl7.fhir.validation.service.model.ValidationContext;
+import org.hl7.fhir.validation.service.model.FHIRPathParameters;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.cli.Display;
 
@@ -39,8 +40,33 @@ public class FhirpathTask extends ValidationEngineTask {
   }
 
   @Override
-  public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
-    validationService.evaluateFhirpath(validationContext, validationEngine);
+  protected FhirPathTaskInstance getValidationEngineTaskInstance(Arg[] args) {
+    return new FhirPathTaskInstance(args);
   }
 
+  protected class FhirPathTaskInstance extends ValidationEngineTaskInstance {
+
+    FHIRPathParameters fhirPathParameters;
+
+    FhirPathTaskInstance(Arg[] args) {
+      super(args);
+    }
+
+    @Override
+    protected boolean usesInstanceValidatorParameters() {
+      return false;
+    }
+
+    @Override
+    protected void buildTaskSpecificParametersFromArgs(Arg[] args) {
+      FHIRPathParametersParser fhirPathParametersParser = new FHIRPathParametersParser();
+      fhirPathParametersParser.parseArgs(args);
+      fhirPathParameters = fhirPathParametersParser.getParameterObject();
+    }
+
+    @Override
+    protected void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine) throws Exception {
+      validationService.evaluateFhirpath(validationEngine, fhirPathParameters.getFhirpath(), sources);
+    }
+  }
 }

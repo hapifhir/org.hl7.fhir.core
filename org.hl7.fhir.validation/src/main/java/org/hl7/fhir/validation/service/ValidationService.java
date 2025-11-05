@@ -481,9 +481,16 @@ public class ValidationService {
       }
   }
 
-  public void evaluateFhirpath(ValidationContext validationContext, ValidationEngine validator) throws Exception {
-    log.info(" ...evaluating " + validationContext.getFhirpath());
-    log.info(validator.evaluateFhirPath(validationContext.getSources().get(0), validationContext.getFhirpath()));
+  @Deprecated(since="2025-11-05")
+  public void evaluateFhirpath(ValidationContext validationContext, ValidationEngine validationEngine) throws Exception {
+    FHIRPathParameters fhirPathParameters = ValidationContextUtilities.getFHIRPathParameters(validationContext);
+    List<String> sources = validationContext.getSources();
+    evaluateFhirpath(validationEngine, fhirPathParameters.getFhirpath(), sources);
+  }
+
+  public void evaluateFhirpath(ValidationEngine validationEngine, String fhirPath, List<String> sources) throws Exception {
+    log.info(" ...evaluating " + fhirPath);
+    log.info(validationEngine.evaluateFhirPath(sources.get(0), fhirPath));
   }
 
   @Deprecated(since="2025-11-05")
