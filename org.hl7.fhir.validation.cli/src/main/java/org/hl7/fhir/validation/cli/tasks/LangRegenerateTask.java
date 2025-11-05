@@ -3,16 +3,15 @@ package org.hl7.fhir.validation.cli.tasks;
 import java.io.File;
 
 import org.hl7.fhir.utilities.i18n.POGenerator;
-import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.cli.param.parsers.LangRegenParametersParser;
-import org.hl7.fhir.validation.service.model.ValidationContext;
-import org.hl7.fhir.validation.service.ValidationService;
+import org.hl7.fhir.validation.service.model.LangRegenParameters;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
 
-public class LangRegenerateTask extends ValidationEngineTask {
+public class LangRegenerateTask extends StandaloneTask {
 
   @Override
   public String getName() {
@@ -40,10 +39,15 @@ public class LangRegenerateTask extends ValidationEngineTask {
   }
 
   @Override
-  public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
-    String core = validationContext.getLangRegenParam().get(0);
-    String igpub = validationContext.getLangRegenParam().get(1);
-    String pascal = validationContext.getLangRegenParam().get(2);
+  public void executeTask(@Nonnull String[] stringArgs) throws Exception {
+    LangRegenParametersParser langRegenParametersParser = new LangRegenParametersParser();
+    Arg[] args = Arg.of(stringArgs);
+    langRegenParametersParser.parseArgs(args);
+    LangRegenParameters langRegenParameters = new LangRegenParameters();
+
+    String core = langRegenParameters.getLangRegenParam().get(0);
+    String igpub = langRegenParameters.getLangRegenParam().get(1);
+    String pascal = langRegenParameters.getLangRegenParam().get(2);
     if (!new File(core).exists()) {
       throw new Error("Did not find fhir hapi core source from https://github.com/hapifhir/org.hl7.fhir.core at "+core);      
     }
