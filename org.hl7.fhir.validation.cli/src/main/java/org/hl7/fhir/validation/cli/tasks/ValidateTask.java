@@ -6,12 +6,17 @@ import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.service.model.ValidationContext;
+import org.hl7.fhir.validation.cli.param.Arg;
+import org.hl7.fhir.validation.cli.param.parsers.OutputParametersParser;
+import org.hl7.fhir.validation.cli.param.parsers.WatchParametersParser;
+import org.hl7.fhir.validation.service.ValidateSourceParameters;
+import org.hl7.fhir.validation.service.model.*;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.cli.Display;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 @Slf4j
 public class ValidateTask extends ValidationEngineTask {
@@ -56,25 +61,53 @@ public class ValidateTask extends ValidationEngineTask {
     Display.displayHelpDetails(logger,"help/validate.txt", PLACEHOLDERS);
   }
 
-  @Override
-  public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
-    if (validationContext.getExpansionParameters() != null) {
-      //TODO Get this from InstanceValidatorParameters
-      validationEngine.loadExpansionParameters(validationContext.getExpansionParameters());
+  protected ValidationEngineTaskInstance getValidationEngineTaskInstance(Arg[] args){
+    return new ValidateTaskInstance(args);
+  }
+
+  protected class ValidateTaskInstance extends ValidationEngineTaskInstance {
+
+    WatchParameters watchParameters;
+    OutputParameters outputParameters;
+
+    ValidateTaskInstance(Arg[] args) {
+      super(args);
     }
-    
-    for (String s : validationContext.getProfiles()) {
-      if (!validationEngine.getContext().hasResource(StructureDefinition.class, s) && !validationEngine.getContext().hasResource(ImplementationGuide.class, s)) {
-        log.info("  Fetch Profile from " + s);
-        validationEngine.loadProfile(validationContext.getLocations().getOrDefault(s, s));
+
+    @Override
+    protected boolean usesInstanceValidatorParameters() {
+      return true;
+    }
+
+    @Override
+    protected void buildTaskSpecificParametersFromArgs(Arg[] args) {
+      WatchParametersParser watchParametersParser = new WatchParametersParser();
+      OutputParametersParser outputParametersParser = new OutputParametersParser();
+      watchParametersParser.parseArgs(args);
+      outputParametersParser.parseArgs(args);
+      watchParameters = watchParametersParser.getParameterObject();
+      outputParameters = outputParametersParser.getParameterObject();
+    }
+
+    @Override
+    protected void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine) throws Exception {
+      if (instanceValidatorParameters.getExpansionParameters() != null) {
+        validationEngine.loadExpansionParameters(instanceValidatorParameters.getExpansionParameters());
       }
-    }
-    log.info("Validating");
 
-    validationService.validateSources(validationContext, validationEngine, validationContext.getWatchMode(), validationContext.getWatchScanDelay(), validationContext.getWatchSettleTime());
+      for (String s : instanceValidatorParameters.getProfiles()) {
+        if (!validationEngine.getContext().hasResource(StructureDefinition.class, s) && !validationEngine.getContext().hasResource(ImplementationGuide.class, s)) {
+          log.info("  Fetch Profile from " + s);
+          //FIXME where did locations come from?
+          //validationEngine.loadProfile(validationEngineParameters.getLocations().getOrDefault(s, s));
+        }
+      }
+      log.info("Validating");
+      validationService.validateSources(validationEngine, new ValidateSourceParameters(instanceValidatorParameters, sources, outputParameters, watchParameters));
 
-    if (validationContext.getAdvisorFile() != null) {
-      log.info("Note: Some validation issues might be hidden by the advisor settings in the file "+ validationContext.getAdvisorFile());
+      if (validationEngineParameters.getAdvisorFile() != null) {
+        log.info("Note: Some validation issues might be hidden by the advisor settings in the file "+ validationEngineParameters.getAdvisorFile());
+      }
     }
   }
 
