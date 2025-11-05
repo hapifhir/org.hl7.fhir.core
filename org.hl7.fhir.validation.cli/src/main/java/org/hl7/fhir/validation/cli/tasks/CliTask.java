@@ -13,9 +13,6 @@ public abstract class CliTask {
 
   public abstract boolean isHidden();
 
-  @Deprecated(since="2025-10-06")
-  public abstract boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args);
-
   public abstract boolean shouldExecuteTask(@Nonnull String[] args);
 
   public abstract void logHelp(Logger logger);

@@ -44,11 +44,6 @@ public class TxTestsTask extends StandaloneTask{
   }
 
   @Override
-  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
-    return shouldExecuteTask(args);
-  }
-
-  @Override
   public boolean shouldExecuteTask(@Nonnull String[] args) {
     return Params.hasParam(args, TxTestsParametersParser.TX_TESTS);
   }
@@ -57,12 +52,6 @@ public class TxTestsTask extends StandaloneTask{
   public void logHelp(Logger logger) {
 
   }
-
-  @Override
-  public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
-    executeTask(args);
-  }
-
 
   @Override
   public void executeTask(@Nonnull String[] args) throws Exception {

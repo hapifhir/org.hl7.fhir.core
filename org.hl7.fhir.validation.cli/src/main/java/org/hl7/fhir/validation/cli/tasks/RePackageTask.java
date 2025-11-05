@@ -43,10 +43,6 @@ public class RePackageTask extends ValidationEngineTask {
     return false;
   }
 
-  @Override
-  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
-    return shouldExecuteTask(args);
-  }
 
   @Override
   public boolean shouldExecuteTask(@Nonnull String[] args) {

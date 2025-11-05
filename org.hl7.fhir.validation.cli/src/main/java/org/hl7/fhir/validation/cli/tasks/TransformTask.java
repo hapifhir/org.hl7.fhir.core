@@ -5,14 +5,11 @@ import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.cli.param.parsers.MapParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.OutputParametersParser;
-import org.hl7.fhir.validation.cli.param.parsers.WatchParametersParser;
 import org.hl7.fhir.validation.service.TransformParameters;
 import org.hl7.fhir.validation.service.model.MapParameters;
 import org.hl7.fhir.validation.service.model.OutputParameters;
-import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.cli.Display;
-import org.hl7.fhir.validation.service.model.WatchParameters;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
@@ -32,11 +29,6 @@ public class TransformTask extends ValidationEngineTask {
   @Override
   public boolean isHidden() {
     return false;
-  }
-
-  @Override
-  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
-    return shouldExecuteTask(args);
   }
 
   @Override
