@@ -1,8 +1,11 @@
 package org.hl7.fhir.validation.cli.tasks;
 
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.cli.param.parsers.ConvertParametersParser;
+import org.hl7.fhir.validation.cli.param.parsers.OutputParametersParser;
+import org.hl7.fhir.validation.service.model.OutputParameters;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.cli.Display;
@@ -42,4 +45,35 @@ public class ConvertTask extends ValidationEngineTask {
     validationService.convertSources(validationContext, validationEngine);
   }
 
+  @Override
+  protected ConvertTaskInstance getValidationEngineTaskInstance(Arg[] args) {
+    return new ConvertTaskInstance(args);
+  }
+
+  protected class ConvertTaskInstance extends ValidationEngineTaskInstance {
+
+    OutputParameters outputParameters = new OutputParameters();
+
+
+    ConvertTaskInstance(Arg[] args) {
+      super(args);
+    }
+
+    @Override
+    protected boolean usesInstanceValidatorParameters() {
+      return false;
+    }
+
+    @Override
+    protected void buildTaskSpecificParametersFromArgs(Arg[] args) {
+      OutputParametersParser outputParametersParser = new OutputParametersParser();
+      outputParametersParser.parseArgs(args);
+      outputParameters = outputParametersParser.getParameterObject();
+    }
+
+    @Override
+    protected void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine) throws Exception {
+      validationService.convertSources(validationEngine, sources, outputParameters.getOutput(), outputParameters.getOutputSuffix());
+    }
+  }
 }
