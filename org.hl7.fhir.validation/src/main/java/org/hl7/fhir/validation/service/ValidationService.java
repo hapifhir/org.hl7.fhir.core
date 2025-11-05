@@ -292,7 +292,7 @@ public class ValidationService {
     return versions;
   }
 
-  @Deprecated
+  @Deprecated(since="2025-11-05")
   public void validateSources(ValidationContext validationContext, ValidationEngine validator, ValidatorWatchMode watch, int watchScanDelay, int watchSettleTime) throws Exception {
     WatchParameters watchParameters = ValidationContextUtilities.getWatchParameters(validationContext);
     InstanceValidatorParameters instanceValidatorParameters = ValidationContextUtilities.getInstanceValidatorParameters(validationContext);
@@ -521,6 +521,7 @@ public class ValidationService {
     }
   }
 
+  @Deprecated(since="2025-11-05")
   public void transform(ValidationContext validationContext, ValidationEngine validator) throws Exception {
     MapParameters mapParameters = ValidationContextUtilities.getMapParameters(validationContext);
     ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
@@ -588,6 +589,7 @@ public class ValidationService {
     }
   }
 
+  @Deprecated(since="2025-11-05")
   public void transformVersion(ValidationContext validationContext, ValidationEngine validationEngine) throws Exception {
       ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
       org.hl7.fhir.validation.service.model.TransformVersionParameters transformVersionParameters = ValidationContextUtilities.getTransformVersionParameters(validationContext);
@@ -812,21 +814,28 @@ public class ValidationService {
     throw new IllegalArgumentException("-> Multiple versions found. Specify a particular version using the -version parameter");
   }
 
-  
+  @Deprecated(since="2025-11-05")
   public void generateSpreadsheet(ValidationContext validationContext, ValidationEngine validator) throws Exception {
-    CanonicalResource cr = validator.loadCanonicalResource(validationContext.getSources().get(0), validationContext.getSv());
+    ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
+    OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
+    List<String> sources = validationContext.getSources();
+    generateSpreadsheet(validator, validationEngineParameters, sources, outputParameters.getOutput());
+  }
+
+    public void generateSpreadsheet(ValidationEngine validationEngine, ValidationEngineParameters validationEngineParameters, List<String> sources, String output) throws Exception {
+    CanonicalResource cr = validationEngine.loadCanonicalResource(sources.get(0), validationEngineParameters.getSv());
     boolean ok = true;
     if (cr instanceof StructureDefinition) {
-      new StructureDefinitionSpreadsheetGenerator(validator.getContext(), false, false).renderStructureDefinition((StructureDefinition) cr, false).finish(ManagedFileAccess.outStream(validationContext.getOutput()));
+      new StructureDefinitionSpreadsheetGenerator(validationEngine.getContext(), false, false).renderStructureDefinition((StructureDefinition) cr, false).finish(ManagedFileAccess.outStream(output));
     } else if (cr instanceof CodeSystem) {
-      new CodeSystemSpreadsheetGenerator(validator.getContext()).renderCodeSystem((CodeSystem) cr).finish(ManagedFileAccess.outStream(validationContext.getOutput()));
+      new CodeSystemSpreadsheetGenerator(validationEngine.getContext()).renderCodeSystem((CodeSystem) cr).finish(ManagedFileAccess.outStream(output));
     } else if (cr instanceof ValueSet) {
-      new ValueSetSpreadsheetGenerator(validator.getContext()).renderValueSet((ValueSet) cr).finish(ManagedFileAccess.outStream(validationContext.getOutput()));
+      new ValueSetSpreadsheetGenerator(validationEngine.getContext()).renderValueSet((ValueSet) cr).finish(ManagedFileAccess.outStream(output));
     } else if (cr instanceof ConceptMap) {
-      new ConceptMapSpreadsheetGenerator(validator.getContext()).renderConceptMap((ConceptMap) cr).finish(ManagedFileAccess.outStream(validationContext.getOutput()));
+      new ConceptMapSpreadsheetGenerator(validationEngine.getContext()).renderConceptMap((ConceptMap) cr).finish(ManagedFileAccess.outStream(output));
     } else {
       ok = false;
-      log.info(" ...Unable to generate spreadsheet for "+ validationContext.getSources().get(0)+": no way to generate a spreadsheet for a "+cr.fhirType());
+      log.info(" ...Unable to generate spreadsheet for "+ sources.get(0)+": no way to generate a spreadsheet for a "+cr.fhirType());
     }
 
     if (ok) {
