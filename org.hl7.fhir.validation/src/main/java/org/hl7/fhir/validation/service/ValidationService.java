@@ -517,19 +517,20 @@ public class ValidationService {
 
   }
 
-  public void generateNarrative(ValidationContext validationContext, ValidationEngine validator) throws Exception {
+  @Deprecated(since="2025-11-05")
+  public void generateNarrative(ValidationContext validationContext, ValidationEngine validationEngine) throws Exception {
     ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
     OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
     List<String> sources = validationContext.getSources();
-    generateNarrative(validator, new GenerateNarrativeParameters(validationEngineParameters, sources, outputParameters.getOutput()));
+    generateNarrative(validationEngine, new GenerateNarrativeParameters(validationEngineParameters, sources, outputParameters.getOutput()));
   }
 
 
-  public void generateNarrative(ValidationEngine validator, GenerateNarrativeParameters generateNarrativeParameters) throws Exception {
-    Resource r = validator.generate(generateNarrativeParameters.sources().get(0), generateNarrativeParameters.validationEngineParameters().getSv());
+  public void generateNarrative(ValidationEngine validationEngine, GenerateNarrativeParameters generateNarrativeParameters) throws Exception {
+    Resource r = validationEngine.generate(generateNarrativeParameters.sources().get(0), generateNarrativeParameters.validationEngineParameters().getSv());
     log.info(" ...generated narrative successfully");
     if (generateNarrativeParameters.output() != null) {
-      validator.handleOutput(r, generateNarrativeParameters.output(), generateNarrativeParameters.validationEngineParameters().getSv());
+      validationEngine.handleOutput(r, generateNarrativeParameters.output(), generateNarrativeParameters.validationEngineParameters().getSv());
     }
   }
 
@@ -855,75 +856,80 @@ public class ValidationService {
     }
   }
 
-  
-  public void transformLang(ValidationContext validationContext, ValidationEngine validator) throws IOException {
-    switch (validationContext.getLangTransform()) {
+  @Deprecated(since="2025-11-05")
+  public void transformLang(ValidationContext validationContext, ValidationEngine validationEngine) throws IOException {
+    org.hl7.fhir.validation.service.model.TransformLangParameters transformLangParameters = ValidationContextUtilities.getTransformLangParameters(validationContext);
+    OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
+    List<String> sources = validationContext.getSources();
+    transformLang(validationEngine, new TransformLangParameters(transformLangParameters.getLangTransform(), transformLangParameters.getInputs(), transformLangParameters.getSrcLang(), transformLangParameters.getTgtLang(), sources, outputParameters.getOutput()));
+  }
+
+    public void transformLang(ValidationEngine validationEngine, TransformLangParameters transformLangParameters) throws IOException {
+    switch (transformLangParameters.langTransform()) {
     case "extract":
-      transformLangExtract(validationContext, validator);
+      transformLangExtract(validationEngine, transformLangParameters.srcLang(), transformLangParameters.tgtLang(), transformLangParameters.sources(), transformLangParameters.output());
       break;
     case "inject":
-      transformLangInject(validationContext, validator);
+      transformLangInject(validationEngine, transformLangParameters.inputs(), transformLangParameters.sources(), transformLangParameters.output());
       break;
     default:
-      log.info(" ...Unknown lang transform mode "+ validationContext.getLangTransform());
+      log.info(" ...Unknown lang transform mode "+ transformLangParameters.langTransform());
     }
   }
 
   
-  private void transformLangExtract(ValidationContext validationContext, ValidationEngine validator) throws IOException {
-    String dst = validationContext.getOutput();
-    FileUtilities.createDirectory(dst);
-    PoGetTextProducer po = new PoGetTextProducer(dst, ".", false);
-    XLIFFProducer xliff = new XLIFFProducer(dst, ".", false);
-    JsonLangFileProducer jl = new JsonLangFileProducer(dst, ".", false);
+  private void transformLangExtract(ValidationEngine validator, String srcLang, String tgtLang, List<String> sources, String output) throws IOException {
+    FileUtilities.createDirectory(output);
+    PoGetTextProducer po = new PoGetTextProducer(output, ".", false);
+    XLIFFProducer xliff = new XLIFFProducer(output, ".", false);
+    JsonLangFileProducer jl = new JsonLangFileProducer(output, ".", false);
     
     List<SourceFile> refs = new ArrayList<>();
-    ValidatorUtils.parseSources(validationContext.getSources(), refs, validator.getContext());
+    ValidatorUtils.parseSources(sources, refs, validator.getContext());
     for (SourceFile ref : refs) {
       log.info("  Extract Translations from " + ref);
       org.hl7.fhir.validation.Content cnt = validator.getIgLoader().loadContent(ref.getRef(), "translate", false, true);
       Element e = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());
-      LanguageProducerSession ps = po.startSession(e.fhirType()+"-"+e.getIdBase(), validationContext.getSrcLang());
-      LanguageProducerLanguageSession psl = ps.forLang(validationContext.getTgtLang());
+      LanguageProducerSession ps = po.startSession(e.fhirType()+"-"+e.getIdBase(), srcLang);
+      LanguageProducerLanguageSession psl = ps.forLang(tgtLang);
       new LanguageUtils(validator.getContext()).generateTranslations(e, psl);
       psl.finish();
       ps.finish();
-      ps = xliff.startSession(e.fhirType()+"-"+e.getIdBase(), validationContext.getSrcLang());
-      psl = ps.forLang(validationContext.getTgtLang());
+      ps = xliff.startSession(e.fhirType()+"-"+e.getIdBase(), srcLang);
+      psl = ps.forLang(tgtLang);
       new LanguageUtils(validator.getContext()).generateTranslations(e, psl);
       psl.finish();
       ps.finish(); 
-      ps = jl.startSession(e.fhirType()+"-"+e.getIdBase(), validationContext.getSrcLang());
-      psl = ps.forLang(validationContext.getTgtLang());
+      ps = jl.startSession(e.fhirType()+"-"+e.getIdBase(), srcLang);
+      psl = ps.forLang(tgtLang);
       new LanguageUtils(validator.getContext()).generateTranslations(e, psl);
       psl.finish();
       ps.finish(); 
     }
-    log.info("Done - produced "+(po.fileCount()+xliff.fileCount()) + " files in "+dst);
+    log.info("Done - produced "+(po.fileCount()+xliff.fileCount()) + " files in "+ output);
   }
 
   
-  private void transformLangInject(ValidationContext validationContext, ValidationEngine validator) throws IOException {
-    String dst = validationContext.getOutput();
-    FileUtilities.createDirectory(dst);
+  private void transformLangInject(ValidationEngine validator, List<String> inputs, List<String> sources, String output) throws IOException {
+    FileUtilities.createDirectory(output);
     
     List<TranslationUnit> translations = new ArrayList<>();
-    for (String input : validationContext.getInputs()) {
+    for (String input : inputs) {
       loadTranslationSource(translations, input);
     }
     
     List<SourceFile> refs = new ArrayList<>();
-    ValidatorUtils.parseSources(validationContext.getSources(), refs, validator.getContext());
+    ValidatorUtils.parseSources(sources, refs, validator.getContext());
     int t = 0;
     for (SourceFile ref : refs) {
       log.info("  Inject Translations into " + ref);
       org.hl7.fhir.validation.Content cnt = validator.getIgLoader().loadContent(ref.getRef(), "translate", false, true);
       Element e = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());      
       t = t + new LanguageUtils(validator.getContext()).importFromTranslations(e, translations);
-      Manager.compose(validator.getContext(), e, ManagedFileAccess.outStream(Utilities.path(dst, ManagedFileAccess.file(ref.getRef()).getName())), cnt.getCntType(),
+      Manager.compose(validator.getContext(), e, ManagedFileAccess.outStream(Utilities.path(output, ManagedFileAccess.file(ref.getRef()).getName())), cnt.getCntType(),
           OutputStyle.PRETTY, null);
     }
-    log.info("Done - imported "+t+" translations into "+refs.size()+ " in "+dst);
+    log.info("Done - imported "+t+" translations into "+refs.size()+ " in "+ output);
   }
   
   private void loadTranslationSource(List<TranslationUnit> translations, String input) throws IOException {
