@@ -1076,13 +1076,20 @@ public class ValidationService {
     }
   }
 
+  @Deprecated(since="2025-11-05")
   public void instanceFactory(ValidationContext validationContext, ValidationEngine validationEngine) throws IOException {
+      InstanceFactoryParameters instanceFactoryParameters = ValidationContextUtilities.getInstanceFactoryParameters(validationContext);
+      instanceFactory(validationEngine, instanceFactoryParameters.getSource());
+    }
+
+
+    public void instanceFactory(ValidationEngine validationEngine, String source) throws IOException {
     boolean ok = true;
-    if (validationContext.getSource() == null) {
+    if (source == null) {
       log.info("Must specify a source (-version)");
       ok = false;
-    } else if (!ManagedFileAccess.file(validationContext.getSource()).exists()) {
-      log.info("Factory source '"+ validationContext.getSource()+"' not found");
+    } else if (!ManagedFileAccess.file(source).exists()) {
+      log.info("Factory source '"+ source+"' not found");
       ok = false;
     }
 
@@ -1099,11 +1106,11 @@ public class ValidationService {
       fpe.setHostServices(hs);
       LiquidEngine liquid = new LiquidEngine(validationEngine.getContext(), hs);
       
-      String path = FileUtilities.getDirectoryForFile(validationContext.getSource());
+      String path = FileUtilities.getDirectoryForFile(source);
       String logPath = Utilities.path(path, "log");
       FileUtilities.createDirectory(logPath);
                   
-      JsonObject json = JsonParser.parseObjectFromFile(validationContext.getSource());
+      JsonObject json = JsonParser.parseObjectFromFile(source);
       for (JsonObject fact : json.forceArray("factories").asJsonObjects()) {
         TestDataFactory tdf = new TestDataFactory(validationEngine.getContext(), fact, liquid, fpe, "http://hl7.org/fhir/test", path, logPath, new HashMap<>(), new Locale("us"));
         tdf.setTesting(true); // no randomness
