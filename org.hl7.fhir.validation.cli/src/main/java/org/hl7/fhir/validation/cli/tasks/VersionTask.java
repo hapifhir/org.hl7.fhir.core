@@ -1,10 +1,12 @@
 package org.hl7.fhir.validation.cli.tasks;
 
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.Params;
+import org.hl7.fhir.validation.cli.param.parsers.OutputParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.TransformVersionParametersParser;
-import org.hl7.fhir.validation.cli.param.parsers.ValidationEngineParametersParser;
-import org.hl7.fhir.validation.service.model.ValidationContext;
+import org.hl7.fhir.validation.service.model.TransformVersionParameters;
+import org.hl7.fhir.validation.service.model.OutputParameters;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.cli.Display;
 import org.slf4j.Logger;
@@ -38,9 +40,43 @@ public class VersionTask extends ValidationEngineTask {
     Display.displayHelpDetails(logger,"help/version.txt");
   }
 
+
   @Override
-  public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
-    validationService.transformVersion(validationContext, validationEngine);
+  protected VersionTaskInstance getValidationEngineTaskInstance(Arg[] args) {
+    return new VersionTaskInstance(args);
   }
 
+  protected class VersionTaskInstance extends ValidationEngineTaskInstance {
+
+    TransformVersionParameters transformVersionParameters;
+    OutputParameters outputParameters;
+
+    VersionTaskInstance(Arg[] args) {
+      super(args);
+    }
+
+    @Override
+    protected boolean usesInstanceValidatorParameters() {
+      return false;
+    }
+
+    @Override
+    protected void buildTaskSpecificParametersFromArgs(Arg[] args) {
+      TransformVersionParametersParser transformVersionParametersParser = new TransformVersionParametersParser();
+      OutputParametersParser outputParametersParser = new OutputParametersParser();
+      transformVersionParametersParser.parseArgs(args);
+      outputParametersParser.parseArgs(args);
+      transformVersionParameters = transformVersionParametersParser.getParameterObject();
+      outputParameters =  outputParametersParser.getParameterObject();
+    }
+
+    @Override
+    protected void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine) throws Exception {
+      org.hl7.fhir.validation.service.TransformVersionParameters serviceParameters = new org.hl7.fhir.validation.service.TransformVersionParameters(
+        validationEngineParameters, this.transformVersionParameters.getTargetVer(),
+        this.transformVersionParameters.getCanDoNative(),  sources, outputParameters.getOutput()
+      );
+      validationService.transformVersion(validationEngine,  serviceParameters);
+    }
+  }
 }

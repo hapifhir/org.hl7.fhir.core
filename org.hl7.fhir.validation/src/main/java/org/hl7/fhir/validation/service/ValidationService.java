@@ -298,7 +298,6 @@ public class ValidationService {
     InstanceValidatorParameters instanceValidatorParameters = ValidationContextUtilities.getInstanceValidatorParameters(validationContext);
     List<String> sources = validationContext.getSources();
     OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
-    ValidateSourceParameters.builder().watchParameters(watchParameters);
     validateSources(validator, new ValidateSourceParameters(instanceValidatorParameters, sources, outputParameters, watchParameters));
   }
 
@@ -589,24 +588,31 @@ public class ValidationService {
     }
   }
 
-  
-  public void transformVersion(ValidationContext validationContext, ValidationEngine validator) throws Exception {
-    if (validationContext.getSources().size() > 1) {
-      throw new Exception("Can only have one source when converting versions (found " + validationContext.getSources() + ")");
+  public void transformVersion(ValidationContext validationContext, ValidationEngine validationEngine) throws Exception {
+      ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
+      org.hl7.fhir.validation.service.model.TransformVersionParameters transformVersionParameters = ValidationContextUtilities.getTransformVersionParameters(validationContext);
+      OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
+      List<String> sources = validationContext.getSources();
+      transformVersion(validationEngine, new TransformVersionParameters(validationEngineParameters, transformVersionParameters.getTargetVer(), transformVersionParameters.getCanDoNative(), sources, outputParameters.getOutput()));
+  }
+
+    public void transformVersion(ValidationEngine validationEngine, TransformVersionParameters transformVersionParameters) throws Exception {
+    if (transformVersionParameters.sources().size() > 1) {
+      throw new Exception("Can only have one source when converting versions (found " + transformVersionParameters.sources() + ")");
     }
-    if (validationContext.getTargetVer() == null) {
+    if (transformVersionParameters.targetVer() == null) {
       throw new Exception("Must provide a map when converting versions");
     }
-    if (validationContext.getOutput() == null) {
+    if (transformVersionParameters.output() == null) {
       throw new Exception("Must nominate an output when converting versions");
     }
     try {
-      if (validationContext.getMapLog() != null) {
-        validator.setMapLog(validationContext.getMapLog());
+      if (transformVersionParameters.validationEngineParameters().getMapLog() != null) {
+        validationEngine.setMapLog(transformVersionParameters.validationEngineParameters().getMapLog());
       }
-      byte[] r = validator.transformVersion(validationContext.getSources().get(0), validationContext.getTargetVer(), validationContext.getOutput().endsWith(".json") ? Manager.FhirFormat.JSON : Manager.FhirFormat.XML, validationContext.getCanDoNative());
+      byte[] r = validationEngine.transformVersion(transformVersionParameters.sources().get(0), transformVersionParameters.targetVer(), transformVersionParameters.output().endsWith(".json") ? Manager.FhirFormat.JSON : Manager.FhirFormat.XML, transformVersionParameters.canDoNative());
       log.info(" ...success");
-      FileUtilities.bytesToFile(r, validationContext.getOutput());
+      FileUtilities.bytesToFile(r, transformVersionParameters.output());
     } catch (Exception e) {
       log.info(" ...Failure: " + e.getMessage());
       e.printStackTrace();
