@@ -527,7 +527,7 @@ public class ValidationService {
     ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
     OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
     List<String> sources = validationContext.getSources();
-    transform(validator, new TransformParameters(validationEngineParameters, mapParameters, sources, outputParameters));
+    transform(validator, new TransformParameters(validationEngineParameters, mapParameters.getMap(), sources, outputParameters.getOutput()));
   }
 
   public void transform(ValidationEngine validationEngine, TransformParameters transformParameters) throws Exception {
@@ -535,7 +535,7 @@ public class ValidationService {
       throw new Exception("Can only have one source when doing a transform (found " + transformParameters.sources() + ")");
     if (transformParameters.validationEngineParameters().getTxServer() == null)
       throw new Exception("Must provide a terminology server when doing a transform");
-    if (transformParameters.mapParameters().getMap() == null)
+    if (transformParameters.map() == null)
       throw new Exception("Must provide a map when doing a transform");
     try {
       ContextUtilities cu = new ContextUtilities(validationEngine.getContext());
@@ -546,11 +546,11 @@ public class ValidationService {
         }
       }
       validationEngine.setMapLog(transformParameters.validationEngineParameters().getMapLog());
-      org.hl7.fhir.r5.elementmodel.Element r = validationEngine.transform(transformParameters.sources().get(0), transformParameters.mapParameters().getMap());
+      org.hl7.fhir.r5.elementmodel.Element r = validationEngine.transform(transformParameters.sources().get(0), transformParameters.map());
       log.info(" ...success");
-      if (transformParameters.outputParameters().getOutput() != null) {
-        FileOutputStream s = ManagedFileAccess.outStream(transformParameters.outputParameters().getOutput());
-        if (transformParameters.outputParameters().getOutput() != null && transformParameters.outputParameters().getOutput().endsWith(".json"))
+      if (transformParameters.output() != null) {
+        FileOutputStream s = ManagedFileAccess.outStream(transformParameters.output());
+        if (transformParameters.output() != null && transformParameters.output().endsWith(".json"))
           new org.hl7.fhir.r5.elementmodel.JsonParser(validationEngine.getContext()).compose(r, s, IParser.OutputStyle.PRETTY, null);
         else
           new org.hl7.fhir.r5.elementmodel.XmlParser(validationEngine.getContext()).compose(r, s, IParser.OutputStyle.PRETTY, null);
