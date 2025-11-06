@@ -41,6 +41,11 @@ public class CompileTask extends ValidationEngineTask {
   }
 
   @Override
+  public boolean usesInstanceValidatorParameters() {
+    return false;
+  }
+
+  @Override
   protected CompileTaskInstance getValidationEngineTaskInstance(Arg[] args) {
     return new CompileTaskInstance(args);
   }
@@ -52,11 +57,6 @@ public class CompileTask extends ValidationEngineTask {
 
     CompileTaskInstance(Arg[] args) {
       super(args);
-    }
-
-    @Override
-    protected boolean usesInstanceValidatorParameters() {
-      return false;
     }
 
     @Override

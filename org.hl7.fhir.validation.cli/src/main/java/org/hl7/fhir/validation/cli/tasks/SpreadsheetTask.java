@@ -44,17 +44,17 @@ public class SpreadsheetTask extends ValidationEngineTask {
     return new SpreadsheetTaskInstance(args);
   }
 
+  @Override
+  public boolean usesInstanceValidatorParameters() {
+    return false;
+  }
+
   protected class SpreadsheetTaskInstance extends ValidationEngineTaskInstance {
 
     OutputParameters outputParameters;
 
     SpreadsheetTaskInstance(Arg[] args) {
       super(args);
-    }
-
-    @Override
-    protected boolean usesInstanceValidatorParameters() {
-      return false;
     }
 
     @Override

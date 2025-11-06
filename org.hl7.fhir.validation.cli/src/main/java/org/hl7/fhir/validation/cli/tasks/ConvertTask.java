@@ -44,17 +44,17 @@ public class ConvertTask extends ValidationEngineTask {
     return new ConvertTaskInstance(args);
   }
 
+  @Override
+  public boolean usesInstanceValidatorParameters() {
+    return false;
+  }
+
   protected class ConvertTaskInstance extends ValidationEngineTaskInstance {
 
     OutputParameters outputParameters = new OutputParameters();
 
     ConvertTaskInstance(Arg[] args) {
       super(args);
-    }
-
-    @Override
-    protected boolean usesInstanceValidatorParameters() {
-      return false;
     }
 
     @Override

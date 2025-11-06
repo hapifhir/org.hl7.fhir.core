@@ -49,6 +49,11 @@ public class CompareTask extends ValidationEngineTask {
     return new CompareTaskInstance(args);
   }
 
+  @Override
+  public boolean usesInstanceValidatorParameters() {
+    return false;
+  }
+
   protected class CompareTaskInstance extends ValidationEngineTaskInstance {
 
     String destinationDirectory;
@@ -57,11 +62,6 @@ public class CompareTask extends ValidationEngineTask {
 
     CompareTaskInstance(Arg[] args) {
       super(args);
-    }
-
-    @Override
-    protected boolean usesInstanceValidatorParameters() {
-      return false;
     }
 
     @Override

@@ -46,6 +46,11 @@ public class VersionTask extends ValidationEngineTask {
     return new VersionTaskInstance(args);
   }
 
+  @Override
+  public boolean usesInstanceValidatorParameters() {
+    return false;
+  }
+
   protected class VersionTaskInstance extends ValidationEngineTaskInstance {
 
     TransformVersionParameters transformVersionParameters;
@@ -53,11 +58,6 @@ public class VersionTask extends ValidationEngineTask {
 
     VersionTaskInstance(Arg[] args) {
       super(args);
-    }
-
-    @Override
-    protected boolean usesInstanceValidatorParameters() {
-      return false;
     }
 
     @Override

@@ -44,17 +44,17 @@ public class NarrativeTask extends ValidationEngineTask {
     return new NarrativeTaskInstance(args);
   }
 
+  @Override
+  public boolean usesInstanceValidatorParameters() {
+    return false;
+  }
+
   protected class NarrativeTaskInstance extends ValidationEngineTaskInstance {
 
     OutputParameters outputParameters;
 
     NarrativeTaskInstance(Arg[] args) {
       super(args);
-    }
-
-    @Override
-    protected boolean usesInstanceValidatorParameters() {
-      return false;
     }
 
     @Override
