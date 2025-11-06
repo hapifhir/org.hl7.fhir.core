@@ -1040,46 +1040,56 @@ public class ValidationService {
     }
   }
 
+  @Deprecated(since="2024-11-06")
   public void codeGen(ValidationContext validationContext, ValidationEngine validationEngine) throws IOException {
+    ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
+    InstanceValidatorParameters instanceValidatorParameters = ValidationContextUtilities.getInstanceValidatorParameters(validationContext);
+    PackageNameParameters packageNameParameters = ValidationContextUtilities.getPackageNameParameters(validationContext);
+    org.hl7.fhir.validation.service.model.CodeGenParameters codeGenParameters = ValidationContextUtilities.getCodeGenParameters(validationContext);
+    OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
+    codeGen(validationEngine, new CodeGenParameters(validationEngineParameters.getSv(), instanceValidatorParameters.getProfiles(), codeGenParameters.getOptions(), packageNameParameters.getPackageName(), outputParameters.getOutput()));
+    }
+
+  public void codeGen(ValidationEngine validationEngine, CodeGenParameters codeGenParameters) throws IOException {
     boolean ok = true;
-    if (validationContext.getProfiles().isEmpty()) {
+    if (codeGenParameters.profiles().isEmpty()) {
       log.info("Must specify at least one profile to generate code for with -profile or -profiles ");
       ok = false;
     }
-    if (validationContext.getPackageName() == null) {
+    if (codeGenParameters.packageName() == null) {
       log.info("Must provide a Java package name (-package-name)");
       ok = false;
     }
-    if (validationContext.getSv() == null) {
+    if (codeGenParameters.version() == null) {
       log.info("Must specify a version (-version)");
       ok = false;
-    } else if (!VersionUtilities.isR4Ver(validationContext.getSv()) && !VersionUtilities.isR5Ver(validationContext.getSv())) {
+    } else if (!VersionUtilities.isR4Ver(codeGenParameters.version()) && !VersionUtilities.isR5Ver(codeGenParameters.version())) {
       log.info("Only versions 4 and 5 are supported (-version)");
       ok = false;
     }
-    if (validationContext.getOutput() == null) {
+    if (codeGenParameters.output() == null) {
       log.info("Must provide an output directory (-output)");
       ok = false;
     }
-    FileUtilities.createDirectory(validationContext.getOutput());
+    FileUtilities.createDirectory(codeGenParameters.output());
     if (ok) {
       PECodeGenerator gen = new PECodeGenerator(validationEngine.getContext());
-      gen.setFolder(validationContext.getOutput());
+      gen.setFolder(codeGenParameters.output());
       gen.setExtensionPolicy(ExtensionPolicy.Complexes);
-      gen.setNarrative(validationContext.getOptions().contains("narrative"));
-      gen.setMeta(validationContext.getOptions().contains("meta"));
+      gen.setNarrative(codeGenParameters.options().contains("narrative"));
+      gen.setMeta(codeGenParameters.options().contains("meta"));
       gen.setLanguage(Locale.getDefault().toLanguageTag());
-      gen.setContained(validationContext.getOptions().contains("contained"));
-      gen.setKeyElementsOnly(!validationContext.getOptions().contains("all-elements"));
+      gen.setContained(codeGenParameters.options().contains("contained"));
+      gen.setKeyElementsOnly(!codeGenParameters.options().contains("all-elements"));
       gen.setGenDate(new SimpleDateFormat().format(new Date()));
-      gen.setPkgName(validationContext.getPackageName());
-      if (VersionUtilities.isR4Ver(validationContext.getSv())) {
+      gen.setPkgName(codeGenParameters.packageName());
+      if (VersionUtilities.isR4Ver(codeGenParameters.version())) {
         gen.setVersion("r4");
       } else {
         gen.setVersion("r5");
       }
 
-      for (String profile : validationContext.getProfiles()) {
+      for (String profile : codeGenParameters.profiles()) {
         if (profile.endsWith("*")) {
           for (StructureDefinition sd : validationEngine.getContext().fetchResourcesByType(StructureDefinition.class)) {
             if (sd.getUrl().startsWith(profile.replace("*", ""))) {
