@@ -1,11 +1,15 @@
 package org.hl7.fhir.validation.cli.tasks;
 
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.cli.param.parsers.CodeGenParametersParser;
+import org.hl7.fhir.validation.cli.param.parsers.OutputParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.PackageNameParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.RePackageParametersParser;
-import org.hl7.fhir.validation.service.model.ValidationContext;
+import org.hl7.fhir.validation.service.model.CodeGenParameters;
+import org.hl7.fhir.validation.service.model.OutputParameters;
+import org.hl7.fhir.validation.service.model.PackageNameParameters;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.slf4j.Logger;
 
@@ -36,12 +40,51 @@ public class CodeGenTask extends ValidationEngineTask {
 
   @Override
   public void logHelp(Logger logger) {
-
+    // Not written yet.
   }
 
   @Override
-  public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
-    validationService.codeGen(validationContext, validationEngine);
+  protected CodeGenTaskInstance getValidationEngineTaskInstance(Arg[] args) {
+    return new CodeGenTaskInstance(args);
   }
 
+  protected class CodeGenTaskInstance extends ValidationEngineTaskInstance {
+
+    CodeGenParameters codeGenParameters;
+    PackageNameParameters packageNameParameters;
+    OutputParameters outputParameters;
+
+    CodeGenTaskInstance(Arg[] args) {
+      super(args);
+    }
+
+    @Override
+    protected boolean usesInstanceValidatorParameters() {
+      return false;
+    }
+
+    @Override
+    protected void buildTaskSpecificParametersFromArgs(Arg[] args) {
+      CodeGenParametersParser codeGenParametersParser = new CodeGenParametersParser();
+      PackageNameParametersParser packageNameParametersParser = new PackageNameParametersParser();
+      OutputParametersParser outputParametersParser = new OutputParametersParser();
+      codeGenParametersParser.parseArgs(args);
+      packageNameParametersParser.parseArgs(args);
+      outputParametersParser.parseArgs(args);
+      codeGenParameters = codeGenParametersParser.getParameterObject();
+      packageNameParameters = packageNameParametersParser.getParameterObject();
+      outputParameters = outputParametersParser.getParameterObject();
+    }
+
+    @Override
+    protected void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine) throws Exception {
+      validationService.codeGen(validationEngine, new org.hl7.fhir.validation.service.CodeGenParameters(
+        validationEngineParameters.getSv(),
+        instanceValidatorParameters.getProfiles(),
+        codeGenParameters.getOptions(),
+        packageNameParameters.getPackageName(),
+        outputParameters.getOutput()
+      ));
+    }
+  }
 }
