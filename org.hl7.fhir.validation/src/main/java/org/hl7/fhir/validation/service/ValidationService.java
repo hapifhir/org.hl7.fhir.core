@@ -558,6 +558,7 @@ public class ValidationService {
   public void transform(ValidationEngine validationEngine, TransformParameters transformParameters) throws Exception {
     if (transformParameters.sources().size() > 1)
       throw new Exception("Can only have one source when doing a transform (found " + transformParameters.sources() + ")");
+    //FIXME maybe check the engine to see if it has a server instead?
     if (transformParameters.validationEngineParameters().getTxServer() == null)
       throw new Exception("Must provide a terminology server when doing a transform");
     if (transformParameters.map() == null)
@@ -570,6 +571,7 @@ public class ValidationService {
           cu.generateSnapshot(sd);
         }
       }
+      //FIXME add mapLog to transformParameters
       validationEngine.setMapLog(transformParameters.validationEngineParameters().getMapLog());
       org.hl7.fhir.r5.elementmodel.Element r = validationEngine.transform(transformParameters.sources().get(0), transformParameters.map());
       log.info(" ...success");
@@ -587,26 +589,35 @@ public class ValidationService {
     }
   }
 
-  public void compile(ValidationContext validationContext, ValidationEngine validator) throws Exception {
-    if (validationContext.getSources().size() > 0)
-      throw new Exception("Cannot specify sources when compling transform (found " + validationContext.getSources() + ")");
-    if (validationContext.getMap() == null)
+  @Deprecated(since="2025-11-06")
+  public void compile(ValidationContext validationContext, ValidationEngine validationEngine) throws Exception {
+    ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
+    MapParameters mapParameters = ValidationContextUtilities.getMapParameters(validationContext);
+    OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
+    List<String> sources = validationContext.getSources();
+    compile(validationEngine, mapParameters.getMap(), validationEngineParameters.getMapLog(), sources, outputParameters.getOutput());
+  }
+
+    public void compile(ValidationEngine validationEngine, String map, String mapLog, List<String> sources, String output) throws Exception {
+    if (sources.size() > 0)
+      throw new Exception("Cannot specify sources when compling transform (found " + sources + ")");
+    if (map == null)
       throw new Exception("Must provide a map when compiling a transform");
-    if (validationContext.getOutput() == null)
+    if (output == null)
       throw new Exception("Must provide an output name when compiling a transform");
     try {
-      ContextUtilities cu = new ContextUtilities(validator.getContext());
+      ContextUtilities cu = new ContextUtilities(validationEngine.getContext());
       List<StructureDefinition> structures = cu.allStructures();
       for (StructureDefinition sd : structures) {
         if (!sd.hasSnapshot()) {
           cu.generateSnapshot(sd);
         }
       }
-      validator.setMapLog(validationContext.getMapLog());
-      StructureMap map = validator.compile(validationContext.getMap());
-      if (map == null)
-        throw new Exception("Unable to locate map " + validationContext.getMap());
-      validator.handleOutput(map, validationContext.getOutput(), validator.getVersion());
+      validationEngine.setMapLog(mapLog);
+      StructureMap structureMap = validationEngine.compile(map);
+      if (structureMap == null)
+        throw new Exception("Unable to locate map " + map);
+      validationEngine.handleOutput(structureMap, output, validationEngine.getVersion());
       log.info(" ...success");
     } catch (Exception e) {
       log.info(" ...Failure: " + e.getMessage());
@@ -634,6 +645,7 @@ public class ValidationService {
       throw new Exception("Must nominate an output when converting versions");
     }
     try {
+      //FIXME add mapLog to transformVersionParameters
       if (transformVersionParameters.validationEngineParameters().getMapLog() != null) {
         validationEngine.setMapLog(transformVersionParameters.validationEngineParameters().getMapLog());
       }

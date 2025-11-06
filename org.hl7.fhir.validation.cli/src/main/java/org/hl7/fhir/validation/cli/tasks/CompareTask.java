@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.parsers.CompareParametersParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ComparisonService;
@@ -44,28 +45,58 @@ public class CompareTask extends ValidationEngineTask {
   }
 
   @Override
-  public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
-    Display.printCliParamsAndInfo(log, args);
-    if (!destinationDirectoryValid(Params.getParam(args, CompareParametersParser.DESTINATION))) {
-      return;
-    }
-
-    validationEngine.loadPackage(CommonPackages.ID_PUBPACK, null);
-    String left = Params.getParam(args, CompareParametersParser.LEFT);
-    String right = Params.getParam(args, CompareParametersParser.RIGHT);
-    ComparisonService.doLeftRightComparison(left, right, Params.getParam(args, CompareParametersParser.DESTINATION), validationEngine);
+  protected CompareTaskInstance getValidationEngineTaskInstance(Arg[] args) {
+    return new CompareTaskInstance(args);
   }
 
-  private boolean destinationDirectoryValid(String dest) throws IOException {
-    if (dest == null) {
-      log.info("no -dest parameter provided");
+  protected class CompareTaskInstance extends ValidationEngineTaskInstance {
+
+    String destinationDirectory;
+    String left;
+    String right;
+
+    CompareTaskInstance(Arg[] args) {
+      super(args);
+    }
+
+    @Override
+    protected boolean usesInstanceValidatorParameters() {
       return false;
-    } else if (!ManagedFileAccess.file(dest).isDirectory()) {
-      log.info("Specified destination (-dest parameter) is not valid: \"" + dest + "\")");
-      return false;
-    } else {
-      log.info("Valid destination directory provided: \"" + dest + "\")");
-      return true;
+    }
+
+    @Override
+    protected void buildTaskSpecificParametersFromArgs(Arg[] args) {
+      try {
+        Display.printCliParamsAndInfo(log, Arg.of(args));
+      }  catch (Exception e) {
+        log.warn("Error printing CLI parameters: " + e.getMessage(), e);
+      }
+      destinationDirectory = Arg.getParam(args, CompareParametersParser.DESTINATION);
+      left =  Arg.getParam(args, CompareParametersParser.LEFT);
+      right =  Arg.getParam(args, CompareParametersParser.RIGHT);
+    }
+
+    @Override
+    protected void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine) throws Exception {
+     
+      if (!destinationDirectoryValid(destinationDirectory)) {
+        return;
+      }
+      validationEngine.loadPackage(CommonPackages.ID_PUBPACK, null);
+      ComparisonService.doLeftRightComparison(left, right, destinationDirectory, validationEngine);
+    }
+
+    private boolean destinationDirectoryValid(String dest) throws IOException {
+      if (dest == null) {
+        log.info("no -dest parameter provided");
+        return false;
+      } else if (!ManagedFileAccess.file(dest).isDirectory()) {
+        log.info("Specified destination (-dest parameter) is not valid: \"" + dest + "\")");
+        return false;
+      } else {
+        log.info("Valid destination directory provided: \"" + dest + "\")");
+        return true;
+      }
     }
   }
 }
