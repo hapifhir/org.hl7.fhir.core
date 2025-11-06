@@ -44,17 +44,17 @@ public class FhirpathTask extends ValidationEngineTask {
     return new FhirPathTaskInstance(args);
   }
 
+  @Override
+  public boolean usesInstanceValidatorParameters() {
+    return false;
+  }
+
   protected class FhirPathTaskInstance extends ValidationEngineTaskInstance {
 
     FHIRPathParameters fhirPathParameters;
 
     FhirPathTaskInstance(Arg[] args) {
       super(args);
-    }
-
-    @Override
-    protected boolean usesInstanceValidatorParameters() {
-      return false;
     }
 
     @Override

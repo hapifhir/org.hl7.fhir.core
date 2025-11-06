@@ -46,6 +46,11 @@ public class LangTransformTask extends ValidationEngineTask {
     return new LangTransformTaskInstance(args);
   }
 
+  @Override
+  public boolean usesInstanceValidatorParameters() {
+    return false;
+  }
+
   protected class LangTransformTaskInstance extends ValidationEngineTaskInstance {
 
     TransformLangParameters transformLangParameters;
@@ -53,11 +58,6 @@ public class LangTransformTask extends ValidationEngineTask {
 
     LangTransformTaskInstance(Arg[] args) {
       super(args);
-    }
-
-    @Override
-    protected boolean usesInstanceValidatorParameters() {
-      return false;
     }
 
     @Override

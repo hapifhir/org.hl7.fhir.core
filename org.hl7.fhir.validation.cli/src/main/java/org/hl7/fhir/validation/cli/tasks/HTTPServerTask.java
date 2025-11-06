@@ -62,17 +62,17 @@ public class HTTPServerTask extends ValidationEngineTask {
     return new HTTPServerTaskInstance(args);
   }
 
+  @Override
+  public boolean usesInstanceValidatorParameters() {
+    return true;
+  }
+
   protected class HTTPServerTaskInstance extends ValidationEngineTaskInstance {
 
     String port;
 
     HTTPServerTaskInstance(Arg[] args) {
       super(args);
-    }
-
-    @Override
-    protected boolean usesInstanceValidatorParameters() {
-      return true;
     }
 
     @Override

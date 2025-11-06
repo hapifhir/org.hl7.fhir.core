@@ -46,15 +46,15 @@ public class InstallTask extends ValidationEngineTask {
     return new InstallTaskInstance(args);
   }
 
+  @Override
+  public boolean usesInstanceValidatorParameters() {
+    return false;
+  }
+
   protected class InstallTaskInstance extends ValidationEngineTaskInstance {
 
     InstallTaskInstance(Arg[] args) {
       super(args);
-    }
-
-    @Override
-    protected boolean usesInstanceValidatorParameters() {
-      return false;
     }
 
     @Override

@@ -46,6 +46,11 @@ public class TransformTask extends ValidationEngineTask {
     return new TransformTaskInstance(args);
   }
 
+  @Override
+  public boolean usesInstanceValidatorParameters() {
+    return false;
+  }
+
   protected class TransformTaskInstance extends ValidationEngineTaskInstance {
 
     MapParameters mapParameters;
@@ -53,11 +58,6 @@ public class TransformTask extends ValidationEngineTask {
 
     TransformTaskInstance(Arg[] args) {
       super(args);
-    }
-
-    @Override
-    protected boolean usesInstanceValidatorParameters() {
-      return false;
     }
 
     @Override

@@ -46,17 +46,17 @@ public class SnapshotTask extends ValidationEngineTask {
     return new SnapshotTaskInstance(args);
   }
 
+  @Override
+  public boolean usesInstanceValidatorParameters() {
+    return false;
+  }
+
   protected class SnapshotTaskInstance extends ValidationEngineTaskInstance {
 
     OutputParameters outputParameters;
 
     SnapshotTaskInstance(Arg[] args) {
       super(args);
-    }
-
-    @Override
-    protected boolean usesInstanceValidatorParameters() {
-      return false;
     }
 
     @Override

@@ -61,6 +61,11 @@ public class RePackageTask extends ValidationEngineTask {
   protected RePackageTaskInstance getValidationEngineTaskInstance(Arg[] args) {
     return new RePackageTaskInstance(args);
   }
+  @Override
+  public boolean usesInstanceValidatorParameters() {
+    return true;
+  }
+
 
   protected class RePackageTaskInstance extends ValidationEngineTaskInstance {
 
@@ -70,11 +75,6 @@ public class RePackageTask extends ValidationEngineTask {
 
     RePackageTaskInstance(Arg[] args) {
       super(args);
-    }
-
-    @Override
-    protected boolean usesInstanceValidatorParameters() {
-      return true;
     }
 
     @Override
@@ -94,7 +94,6 @@ public class RePackageTask extends ValidationEngineTask {
     protected void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine) throws Exception {
       boolean json = rePackageParameters.getFormat() != FhirFormat.XML;
       String output = outputParameters.getOutput();
-
 
       PackageReGenerator packageReGenerator = new PackageReGenerator()
         .setContext(validationEngine.getContext())

@@ -45,17 +45,17 @@ public class ScanTask extends ValidationEngineTask {
     return new ScanTaskInstance(args);
   }
 
+  @Override
+  public boolean usesInstanceValidatorParameters() {
+    return false;
+  }
+
   protected class ScanTaskInstance extends ValidationEngineTaskInstance {
 
     OutputParameters outputParameters;
 
     ScanTaskInstance(Arg[] args) {
       super(args);
-    }
-
-    @Override
-    protected boolean usesInstanceValidatorParameters() {
-      return false;
     }
 
     @Override

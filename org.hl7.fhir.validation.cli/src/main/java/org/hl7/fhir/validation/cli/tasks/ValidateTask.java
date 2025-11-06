@@ -60,6 +60,11 @@ public class ValidateTask extends ValidationEngineTask {
     return new ValidateTaskInstance(args);
   }
 
+  @Override
+  public boolean usesInstanceValidatorParameters() {
+    return true;
+  }
+
   protected class ValidateTaskInstance extends ValidationEngineTaskInstance {
 
     WatchParameters watchParameters;
@@ -67,11 +72,6 @@ public class ValidateTask extends ValidationEngineTask {
 
     ValidateTaskInstance(Arg[] args) {
       super(args);
-    }
-
-    @Override
-    protected boolean usesInstanceValidatorParameters() {
-      return true;
     }
 
     @Override

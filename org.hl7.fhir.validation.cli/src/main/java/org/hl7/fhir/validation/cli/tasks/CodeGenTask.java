@@ -48,6 +48,11 @@ public class CodeGenTask extends ValidationEngineTask {
     return new CodeGenTaskInstance(args);
   }
 
+  @Override
+  public boolean usesInstanceValidatorParameters() {
+    return true;
+  }
+
   protected class CodeGenTaskInstance extends ValidationEngineTaskInstance {
 
     CodeGenParameters codeGenParameters;
@@ -56,11 +61,6 @@ public class CodeGenTask extends ValidationEngineTask {
 
     CodeGenTaskInstance(Arg[] args) {
       super(args);
-    }
-
-    @Override
-    protected boolean usesInstanceValidatorParameters() {
-      return false;
     }
 
     @Override

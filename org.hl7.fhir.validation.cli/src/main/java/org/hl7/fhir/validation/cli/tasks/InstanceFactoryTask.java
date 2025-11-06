@@ -43,17 +43,17 @@ public class InstanceFactoryTask extends ValidationEngineTask {
     return new InstanceFactoryTaskInstance(args);
   }
 
+  @Override
+  public boolean usesInstanceValidatorParameters() {
+    return false;
+  }
+
   protected class InstanceFactoryTaskInstance extends ValidationEngineTaskInstance {
 
     InstanceFactoryParameters instanceFactoryParameters;
 
     InstanceFactoryTaskInstance(Arg[] args) {
       super(args);
-    }
-
-    @Override
-    protected boolean usesInstanceValidatorParameters() {
-      return false;
     }
 
     @Override
