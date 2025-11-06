@@ -66,7 +66,7 @@ public class SpreadsheetTask extends ValidationEngineTask {
 
     @Override
     protected void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine) throws Exception {
-      validationService.generateSpreadsheet(validationEngine, validationEngineParameters, sources, outputParameters.getOutput());
+      validationService.generateSpreadsheet(validationEngine, validationEngineParameters.getSv(), sources, outputParameters.getOutput());
     }
   }
 }

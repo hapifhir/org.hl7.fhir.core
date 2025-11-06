@@ -18,7 +18,6 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
-import java.util.List;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -77,7 +76,7 @@ class ValidationEngineTaskTests {
   ValidationEngine validationEngine;
 
   @BeforeEach
-  public void setUp() throws Exception {
+  void setUp() throws Exception {
     when(validationService.determineVersion(anyList(), anyList(), anyBoolean(), anyBoolean())).thenReturn("5.0.1");
   }
 
@@ -164,9 +163,10 @@ class ValidationEngineTaskTests {
 
   @Test
   void spreadsheetTest() throws Exception {
+    mockGetValidator(false);
     String[] args = {"-spreadsheet"};
     spreadsheetTask.executeTask(validationService, args);
-    verify(validationService).generateSpreadsheet(any(ValidationContext.class), same(validationEngine));
+    verify(validationService).generateSpreadsheet(same(validationEngine), eq("5.0.1"),  isNull(), isNull());
   }
 
   @Test

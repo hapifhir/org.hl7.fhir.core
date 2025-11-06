@@ -856,11 +856,11 @@ public class ValidationService {
     ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
     OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
     List<String> sources = validationContext.getSources();
-    generateSpreadsheet(validator, validationEngineParameters, sources, outputParameters.getOutput());
+    generateSpreadsheet(validator, validationEngineParameters.getSv(), sources, outputParameters.getOutput());
   }
 
-    public void generateSpreadsheet(ValidationEngine validationEngine, ValidationEngineParameters validationEngineParameters, List<String> sources, String output) throws Exception {
-    CanonicalResource cr = validationEngine.loadCanonicalResource(sources.get(0), validationEngineParameters.getSv());
+    public void generateSpreadsheet(ValidationEngine validationEngine, String version, List<String> sources, String output) throws Exception {
+    CanonicalResource cr = validationEngine.loadCanonicalResource(sources.get(0), version);
     boolean ok = true;
     if (cr instanceof StructureDefinition) {
       new StructureDefinitionSpreadsheetGenerator(validationEngine.getContext(), false, false).renderStructureDefinition((StructureDefinition) cr, false).finish(ManagedFileAccess.outStream(output));
