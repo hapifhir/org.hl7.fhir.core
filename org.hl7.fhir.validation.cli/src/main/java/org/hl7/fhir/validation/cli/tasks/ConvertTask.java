@@ -6,7 +6,6 @@ import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.cli.param.parsers.ConvertParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.OutputParametersParser;
 import org.hl7.fhir.validation.service.model.OutputParameters;
-import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.cli.Display;
 import org.slf4j.Logger;
@@ -41,11 +40,6 @@ public class ConvertTask extends ValidationEngineTask {
   }
 
   @Override
-  public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
-    validationService.convertSources(validationContext, validationEngine);
-  }
-
-  @Override
   protected ConvertTaskInstance getValidationEngineTaskInstance(Arg[] args) {
     return new ConvertTaskInstance(args);
   }
@@ -53,7 +47,6 @@ public class ConvertTask extends ValidationEngineTask {
   protected class ConvertTaskInstance extends ValidationEngineTaskInstance {
 
     OutputParameters outputParameters = new OutputParameters();
-
 
     ConvertTaskInstance(Arg[] args) {
       super(args);
