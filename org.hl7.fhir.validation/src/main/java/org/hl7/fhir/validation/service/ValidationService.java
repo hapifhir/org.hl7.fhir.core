@@ -534,15 +534,15 @@ public class ValidationService {
     ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
     OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
     List<String> sources = validationContext.getSources();
-    generateNarrative(validationEngine, new GenerateNarrativeParameters(validationEngineParameters, sources, outputParameters.getOutput()));
+    generateNarrative(validationEngine, new GenerateNarrativeParameters(validationEngineParameters.getSv(), sources, outputParameters.getOutput()));
   }
 
 
   public void generateNarrative(ValidationEngine validationEngine, GenerateNarrativeParameters generateNarrativeParameters) throws Exception {
-    Resource r = validationEngine.generate(generateNarrativeParameters.sources().get(0), generateNarrativeParameters.validationEngineParameters().getSv());
+    Resource r = validationEngine.generate(generateNarrativeParameters.sources().get(0), generateNarrativeParameters.version());
     log.info(" ...generated narrative successfully");
     if (generateNarrativeParameters.output() != null) {
-      validationEngine.handleOutput(r, generateNarrativeParameters.output(), generateNarrativeParameters.validationEngineParameters().getSv());
+      validationEngine.handleOutput(r, generateNarrativeParameters.output(), generateNarrativeParameters.version());
     }
   }
 
