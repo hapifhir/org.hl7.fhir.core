@@ -59,6 +59,7 @@ public class ConvertTask extends ValidationEngineTask {
 
     @Override
     protected void buildTaskSpecificParametersFromArgs(Arg[] args) {
+      Arg.setProcessed(args, ConvertParametersParser.CONVERT, true);
       OutputParametersParser outputParametersParser = new OutputParametersParser();
       outputParametersParser.parseArgs(args);
       outputParameters = outputParametersParser.getParameterObject();

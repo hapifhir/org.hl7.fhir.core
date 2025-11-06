@@ -47,8 +47,6 @@ public abstract class ValidationEngineTask extends ValidationServiceTask{
       sources = unprocessedParametersParser.getParameterObject();
     }
 
-
-
     protected abstract void buildTaskSpecificParametersFromArgs(Arg[] args);
 
     protected abstract void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine) throws Exception;
