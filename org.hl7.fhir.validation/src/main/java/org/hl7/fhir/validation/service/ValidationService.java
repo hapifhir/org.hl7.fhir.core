@@ -558,7 +558,6 @@ public class ValidationService {
   public void transform(ValidationEngine validationEngine, TransformParameters transformParameters) throws Exception {
     if (transformParameters.sources().size() > 1)
       throw new Exception("Can only have one source when doing a transform (found " + transformParameters.sources() + ")");
-    //FIXME maybe check the engine to see if it has a server instead?
     if (transformParameters.txServer() == null)
       throw new Exception("Must provide a terminology server when doing a transform");
     if (transformParameters.map() == null)
@@ -571,7 +570,6 @@ public class ValidationService {
           cu.generateSnapshot(sd);
         }
       }
-      //FIXME add mapLog to transformParameters
       validationEngine.setMapLog(transformParameters.mapLog());
       org.hl7.fhir.r5.elementmodel.Element r = validationEngine.transform(transformParameters.sources().get(0), transformParameters.map());
       log.info(" ...success");
@@ -645,7 +643,6 @@ public class ValidationService {
       throw new Exception("Must nominate an output when converting versions");
     }
     try {
-      //FIXME add mapLog to transformVersionParameters
       if (transformVersionParameters.mapLog() != null) {
         validationEngine.setMapLog(transformVersionParameters.mapLog());
       }
