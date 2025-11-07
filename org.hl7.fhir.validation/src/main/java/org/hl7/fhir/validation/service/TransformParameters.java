@@ -6,8 +6,9 @@ import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
 import java.util.List;
 
 @Builder
-public record TransformParameters(ValidationEngineParameters validationEngineParameters,
-                                  String map,
+public record TransformParameters(String map,
+                                  String mapLog,
+                                  String txServer,
                                   List<String> sources,
                                   String output) {
 }

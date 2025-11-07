@@ -298,7 +298,7 @@ public class ValidationService {
     InstanceValidatorParameters instanceValidatorParameters = ValidationContextUtilities.getInstanceValidatorParameters(validationContext);
     List<String> sources = validationContext.getSources();
     OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
-    validateSources(validator, new ValidateSourceParameters(instanceValidatorParameters, sources, outputParameters, watchParameters));
+    validateSources(validator, new ValidateSourceParameters(instanceValidatorParameters, sources, outputParameters.getOutput(), watchParameters));
   }
 
   /**
@@ -341,19 +341,19 @@ public class ValidationService {
         log.info("");
 
         PrintStream dst = null;
-        ValidationOutputRenderer renderer = makeValidationOutputRenderer(validateSourceParameters.output().getOutput(), instanceValidatorParameters.getOutputStyle());
+        ValidationOutputRenderer renderer = makeValidationOutputRenderer(validateSourceParameters.output(), instanceValidatorParameters.getOutputStyle());
         renderer.setCrumbTrails(instanceValidatorParameters.isCrumbTrails());
         renderer.setShowMessageIds(instanceValidatorParameters.isShowMessageIds());
         renderer.setRunDate(runDate);
         if (renderer.isSingleFile()) {
-          if (validateSourceParameters.output().getOutput() == null) {
+          if (validateSourceParameters.output() == null) {
             dst = new PrintStream(new Slf4JOutputStream());
           } else {
-            dst = new PrintStream(ManagedFileAccess.outStream(Utilities.path(validateSourceParameters.output().getOutput())));
+            dst = new PrintStream(ManagedFileAccess.outStream(Utilities.path(validateSourceParameters.output())));
           }
           renderer.setOutput(dst);
         } else {
-          File dir = ManagedFileAccess.file(validateSourceParameters.output().getOutput());
+          File dir = ManagedFileAccess.file(validateSourceParameters.output());
           if (!dir.isDirectory()) {
             throw new Error("The output location " + dir.getAbsolutePath() + " must be an existing directory for the output style " + renderer.getStyleCode());
           }
@@ -383,7 +383,7 @@ public class ValidationService {
           renderer.finish();
         }
 
-        if (validateSourceParameters.output().getOutput() != null && dst != null) {
+        if (validateSourceParameters.output() != null && dst != null) {
           dst.close();
         }
 
@@ -503,7 +503,7 @@ public class ValidationService {
     ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
     OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
     List<String> sources = validationContext.getSources();
-    generateSnapshot(validationEngine, new GenerateSnapshotParameters(validationEngineParameters, sources, outputParameters.getOutput(), outputParameters.getOutputSuffix()));
+    generateSnapshot(validationEngine, new GenerateSnapshotParameters(validationEngineParameters.getSv(), sources, outputParameters.getOutput(), outputParameters.getOutputSuffix()));
   }
 
     public void generateSnapshot(ValidationEngine validationEngine, GenerateSnapshotParameters generateSnapshotParameters) throws Exception {
@@ -512,17 +512,17 @@ public class ValidationService {
       }
 
       if ((generateSnapshotParameters.sources().size() == 1) && (generateSnapshotParameters.output() != null)) {
-        StructureDefinition r = validationEngine.snapshot(generateSnapshotParameters.sources().get(0), generateSnapshotParameters.validationEngineParameters().getSv());
+        StructureDefinition r = validationEngine.snapshot(generateSnapshotParameters.sources().get(0), generateSnapshotParameters.version());
         log.info(" ...generated snapshot successfully");
-        validationEngine.handleOutput(r, generateSnapshotParameters.output(), generateSnapshotParameters.validationEngineParameters().getSv());
+        validationEngine.handleOutput(r, generateSnapshotParameters.output(), generateSnapshotParameters.version());
       } else {
         if (generateSnapshotParameters.outputSuffix() == null) {
           throw new Exception("Snapshot generation for multiple/wildcard sources requires a -outputSuffix parameter to be set");
         }
         for (int i = 0; i < generateSnapshotParameters.sources().size(); i++) {
-          StructureDefinition r = validationEngine.snapshot(generateSnapshotParameters.sources().get(i), generateSnapshotParameters.validationEngineParameters().getSv());
+          StructureDefinition r = validationEngine.snapshot(generateSnapshotParameters.sources().get(i), generateSnapshotParameters.version());
           String outputDest = generateSnapshotParameters.sources().get(i) + "." + generateSnapshotParameters.outputSuffix();
-          validationEngine.handleOutput(r, outputDest, generateSnapshotParameters.validationEngineParameters().getSv());
+          validationEngine.handleOutput(r, outputDest, generateSnapshotParameters.version());
           log.info(" ...generated snapshot [" + i +  "] successfully (" + generateSnapshotParameters.sources().get(i) + " to " + outputDest + ")");
         }
       }
@@ -547,19 +547,19 @@ public class ValidationService {
   }
 
   @Deprecated(since="2025-11-05")
-  public void transform(ValidationContext validationContext, ValidationEngine validator) throws Exception {
+  public void transform(ValidationContext validationContext, ValidationEngine validationEngine) throws Exception {
     MapParameters mapParameters = ValidationContextUtilities.getMapParameters(validationContext);
     ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
     OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
     List<String> sources = validationContext.getSources();
-    transform(validator, new TransformParameters(validationEngineParameters, mapParameters.getMap(), sources, outputParameters.getOutput()));
+    transform(validationEngine, new TransformParameters(mapParameters.getMap(), validationEngineParameters.getMapLog(), validationEngineParameters.getTxServer(), sources, outputParameters.getOutput()));
   }
 
   public void transform(ValidationEngine validationEngine, TransformParameters transformParameters) throws Exception {
     if (transformParameters.sources().size() > 1)
       throw new Exception("Can only have one source when doing a transform (found " + transformParameters.sources() + ")");
     //FIXME maybe check the engine to see if it has a server instead?
-    if (transformParameters.validationEngineParameters().getTxServer() == null)
+    if (transformParameters.txServer() == null)
       throw new Exception("Must provide a terminology server when doing a transform");
     if (transformParameters.map() == null)
       throw new Exception("Must provide a map when doing a transform");
@@ -572,7 +572,7 @@ public class ValidationService {
         }
       }
       //FIXME add mapLog to transformParameters
-      validationEngine.setMapLog(transformParameters.validationEngineParameters().getMapLog());
+      validationEngine.setMapLog(transformParameters.mapLog());
       org.hl7.fhir.r5.elementmodel.Element r = validationEngine.transform(transformParameters.sources().get(0), transformParameters.map());
       log.info(" ...success");
       if (transformParameters.output() != null) {
@@ -631,7 +631,7 @@ public class ValidationService {
       org.hl7.fhir.validation.service.model.TransformVersionParameters transformVersionParameters = ValidationContextUtilities.getTransformVersionParameters(validationContext);
       OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
       List<String> sources = validationContext.getSources();
-      transformVersion(validationEngine, new TransformVersionParameters(validationEngineParameters, transformVersionParameters.getTargetVer(), transformVersionParameters.getCanDoNative(), sources, outputParameters.getOutput()));
+      transformVersion(validationEngine, new TransformVersionParameters(transformVersionParameters.getTargetVer(), validationEngineParameters.getMapLog(), transformVersionParameters.getCanDoNative(), sources, outputParameters.getOutput()));
   }
 
     public void transformVersion(ValidationEngine validationEngine, TransformVersionParameters transformVersionParameters) throws Exception {
@@ -646,8 +646,8 @@ public class ValidationService {
     }
     try {
       //FIXME add mapLog to transformVersionParameters
-      if (transformVersionParameters.validationEngineParameters().getMapLog() != null) {
-        validationEngine.setMapLog(transformVersionParameters.validationEngineParameters().getMapLog());
+      if (transformVersionParameters.mapLog() != null) {
+        validationEngine.setMapLog(transformVersionParameters.mapLog());
       }
       byte[] r = validationEngine.transformVersion(transformVersionParameters.sources().get(0), transformVersionParameters.targetVer(), transformVersionParameters.output().endsWith(".json") ? Manager.FhirFormat.JSON : Manager.FhirFormat.XML, transformVersionParameters.canDoNative());
       log.info(" ...success");

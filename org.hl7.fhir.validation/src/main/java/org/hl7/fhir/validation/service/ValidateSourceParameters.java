@@ -22,5 +22,5 @@ import java.util.List;
  */
 @Builder
 public record ValidateSourceParameters(InstanceValidatorParameters instanceValidatorParameters, @Nonnull List<String> sources,
-                                       @Nonnull OutputParameters output, WatchParameters watchParameters) {
+                                       String output, WatchParameters watchParameters) {
 }

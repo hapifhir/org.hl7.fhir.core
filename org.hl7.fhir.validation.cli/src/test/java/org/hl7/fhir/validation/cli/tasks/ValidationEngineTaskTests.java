@@ -2,13 +2,11 @@ package org.hl7.fhir.validation.cli.tasks;
 
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.service.GenerateNarrativeParameters;
-import org.hl7.fhir.validation.service.TransformLangParameters;
-import org.hl7.fhir.validation.service.ValidationService;
-import org.hl7.fhir.validation.service.ValidatorWatchMode;
+import org.hl7.fhir.validation.service.*;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
+import org.hl7.fhir.validation.service.model.WatchParameters;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +16,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -156,9 +155,11 @@ class ValidationEngineTaskTests {
 
   @Test
   void snapshotTest() throws Exception {
+    mockGetValidator(false);
     String[] args = {"-snapshot"};
     snapshotTask.executeTask(validationService, args);
-    verify(validationService).generateSnapshot(any(ValidationContext.class), same(validationEngine));
+    verify(validationService).generateSnapshot(same(validationEngine),
+      eq(new GenerateSnapshotParameters("5.0.1", Collections.emptyList(), null, null)));
   }
 
   @Test
@@ -166,31 +167,42 @@ class ValidationEngineTaskTests {
     mockGetValidator(false);
     String[] args = {"-spreadsheet"};
     spreadsheetTask.executeTask(validationService, args);
-    verify(validationService).generateSpreadsheet(same(validationEngine), eq("5.0.1"),  isNull(), isNull());
+    verify(validationService).generateSpreadsheet(same(validationEngine), eq("5.0.1"),  eq(Collections.emptyList()), isNull());
   }
 
   @Test
   void transformTest() throws Exception {
+    mockGetValidator(false);
     String[] args = {"-transform", "dummyFile.map", "dummySource.json"};
     transformTask.executeTask(validationService, args);
-    verify(validationService).transform(any(ValidationContext.class), same(validationEngine));
+    verify(validationService).transform(same(validationEngine), eq(
+      new TransformParameters("dummyFile.map", null, "http://tx.fhir.org", List.of("dummySource.json"), null)
+    ));
   }
 
   @Test
   void versionTest() throws Exception {
+    mockGetValidator(false);
     String[] args = {"-to-version", "1.2.3"};
     versionTask.executeTask(validationService, args);
-    verify(validationService).transformVersion(any(ValidationContext.class), same(validationEngine));
+    verify(validationService).transformVersion(same(validationEngine),
+    eq(new TransformVersionParameters("1.2.3", null, false, Collections.emptyList(), null)));
   }
 
   @Test
   void validateTest() throws Exception {
+    mockGetValidator(true);
     String[] args = {"meh"};
-    ValidatorWatchMode watchMode = ValidatorWatchMode.NONE;
-    int watchScanDelay = 1000;
-    int watchSettleTime = 100;
+
     validateTask.executeTask(validationService, args);
-    Mockito.verify(validationService).validateSources(any(ValidationContext.class), same(validationEngine), eq(watchMode), eq(watchScanDelay), eq(watchSettleTime));
+    Mockito.verify(validationService).validateSources(same(validationEngine), eq(
+      new ValidateSourceParameters(
+        new InstanceValidatorParameters(),
+        List.of("meh"),
+        null,
+        new WatchParameters()
+      )
+    ));
 
   }
 }
