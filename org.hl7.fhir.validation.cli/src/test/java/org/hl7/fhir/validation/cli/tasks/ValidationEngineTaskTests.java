@@ -90,9 +90,17 @@ class ValidationEngineTaskTests {
 
   @Test
   void codeGenTest() throws Exception {
+    mockGetValidator(true);
     String[] args = {"-codegen"};
     codeGenTask.executeTask(validationService, args);
-    verify(validationService).codeGen(any(ValidationContext.class), same(validationEngine));
+    verify(validationService).codeGen(same(validationEngine),
+      eq(new CodeGenParameters(
+        "5.0.1",
+            Collections.emptyList(),
+            Collections.emptyList(),
+        null,
+        null
+      )));
   }
 
   @Test
