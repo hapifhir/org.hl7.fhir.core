@@ -8,7 +8,6 @@ import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.parsers.CompareParametersParser;
-import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ComparisonService;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.cli.Display;

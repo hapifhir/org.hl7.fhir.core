@@ -5,7 +5,6 @@ import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.cli.param.parsers.InstanceFactoryParametersParser;
 import org.hl7.fhir.validation.service.model.InstanceFactoryParameters;
-import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.slf4j.Logger;
 

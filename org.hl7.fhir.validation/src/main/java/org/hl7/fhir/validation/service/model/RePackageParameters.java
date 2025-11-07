@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+@Deprecated(since="2025-11-07")
 public class RePackageParameters {
 
   @JsonProperty("packages")

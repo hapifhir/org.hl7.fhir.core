@@ -67,7 +67,7 @@ public class NarrativeTask extends ValidationEngineTask {
 
     @Override
     protected void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine) throws Exception {
-      validationService.generateNarrative(validationEngine, new org.hl7.fhir.validation.service.GenerateNarrativeParameters(validationEngineParameters.getSv(), sources, outputParameters.getOutput()));
+      validationService.generateNarrative(validationEngine,validationEngineParameters.getSv(), sources, outputParameters.getOutput());
     }
   }
 }

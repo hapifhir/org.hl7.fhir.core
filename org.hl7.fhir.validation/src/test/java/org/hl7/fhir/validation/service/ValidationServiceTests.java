@@ -20,7 +20,6 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -138,8 +137,7 @@ class ValidationServiceTests {
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
-    ValidationContext validationContext = getValidationContextSingleSource();
-    validationService.convertSources(validationContext.setOutput(DUMMY_OUTPUT),validationEngine);
+    validationService.convertSources(validationEngine, SINGLE_SOURCE_LIST, DUMMY_OUTPUT, null);
 
     verify(validationEngine).convert(DUMMY_SOURCE, DUMMY_OUTPUT);
   }
@@ -151,8 +149,7 @@ class ValidationServiceTests {
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
-    ValidationContext validationContext = getValidationContextSingleSource();
-    assertThrows( Exception.class, () -> validationService.convertSources(validationContext,validationEngine));
+    assertThrows( Exception.class, () -> validationService.convertSources(validationEngine, SINGLE_SOURCE_LIST,  null, null));
   }
 
 
@@ -164,8 +161,7 @@ class ValidationServiceTests {
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
-    ValidationContext validationContext = getValidationContextMultipleSource();
-    assertThrows( Exception.class, () -> validationService.convertSources(validationContext,validationEngine)
+    assertThrows( Exception.class, () -> validationService.convertSources(validationEngine, MULTIPLE_SOURCE_LIST, null, null)
     );
   }
 
@@ -176,8 +172,7 @@ class ValidationServiceTests {
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
-    ValidationContext validationContext = getValidationContextMultipleSource();
-    validationService.convertSources(validationContext.setOutputSuffix(DUMMY_OUTPUT),validationEngine);
+    validationService.convertSources(validationEngine, MULTIPLE_SOURCE_LIST, null, DUMMY_OUTPUT);
     verify(validationEngine).convert(eq(DUMMY_SOURCE1), and(startsWith(DUMMY_SOURCE1), endsWith(DUMMY_OUTPUT)));
     verify(validationEngine).convert(eq(DUMMY_SOURCE2), and(startsWith(DUMMY_SOURCE2), endsWith(DUMMY_OUTPUT)));
     verify(validationEngine).convert(eq(DUMMY_SOURCE3), and(startsWith(DUMMY_SOURCE3), endsWith(DUMMY_OUTPUT)));
@@ -191,8 +186,8 @@ class ValidationServiceTests {
     ValidationEngine validationEngine = mock(ValidationEngine.class);
     StructureDefinition structureDefinition = mock(StructureDefinition.class);
     when(validationEngine.snapshot(DUMMY_SOURCE, DUMMY_SV)).thenReturn(structureDefinition);
-    ValidationContext validationContext = getValidationContextSingleSource();
-    validationService.generateSnapshot(validationContext.setOutput(DUMMY_OUTPUT).setSv(DUMMY_SV),validationEngine);
+
+    validationService.generateSnapshot(validationEngine, new GenerateSnapshotParameters(DUMMY_SV, SINGLE_SOURCE_LIST, DUMMY_OUTPUT, null));
 
     verify(validationEngine).snapshot(DUMMY_SOURCE, DUMMY_SV);
     verify(validationEngine).handleOutput(structureDefinition, DUMMY_OUTPUT, DUMMY_SV);
@@ -205,8 +200,7 @@ class ValidationServiceTests {
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
-    ValidationContext validationContext = getValidationContextSingleSource();
-    assertThrows( Exception.class, () -> validationService.generateSnapshot(validationContext.setSv(DUMMY_SV),validationEngine));
+    assertThrows( Exception.class, () -> validationService.generateSnapshot(validationEngine, new GenerateSnapshotParameters(DUMMY_SV, SINGLE_SOURCE_LIST, null, null)));
   }
 
   @Test
@@ -216,8 +210,7 @@ class ValidationServiceTests {
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
-    ValidationContext validationContext = getValidationContextMultipleSource();
-    assertThrows( Exception.class, () -> validationService.generateSnapshot(validationContext.setOutput(DUMMY_OUTPUT).setSv(DUMMY_SV),validationEngine)
+    assertThrows( Exception.class, () -> validationService.generateSnapshot(validationEngine, new GenerateSnapshotParameters(DUMMY_SV, MULTIPLE_SOURCE_LIST, DUMMY_OUTPUT, null))
     );
   }
 
@@ -237,8 +230,7 @@ class ValidationServiceTests {
     when(validationEngine.snapshot(DUMMY_SOURCE3, DUMMY_SV)).thenReturn(structureDefinition3);
 
 
-    ValidationContext validationContext = getValidationContextMultipleSource();
-    validationService.generateSnapshot(validationContext.setOutputSuffix(DUMMY_OUTPUT).setSv(DUMMY_SV),validationEngine);
+    validationService.generateSnapshot(validationEngine, new GenerateSnapshotParameters(DUMMY_SV, MULTIPLE_SOURCE_LIST, null, DUMMY_OUTPUT));
     verify(validationEngine).snapshot(DUMMY_SOURCE1, DUMMY_SV);
     verify(validationEngine).handleOutput(eq(structureDefinition1), and(startsWith(DUMMY_SOURCE1),endsWith(DUMMY_OUTPUT)), eq(DUMMY_SV));
     verify(validationEngine).snapshot(DUMMY_SOURCE2, DUMMY_SV);
@@ -248,16 +240,10 @@ class ValidationServiceTests {
 
   }
 
-  private ValidationContext getValidationContextSingleSource() {
-    ValidationContext validationContext;
-    validationContext = new ValidationContext().setSources(Arrays.asList(DUMMY_SOURCE));
-    return validationContext;
-  }
-  private ValidationContext getValidationContextMultipleSource() {
-    ValidationContext validationContext;
-    validationContext = new ValidationContext().setSources(Arrays.asList(DUMMY_SOURCE1, DUMMY_SOURCE2, DUMMY_SOURCE3));
-    return validationContext;
-  }
+  private final List<String> SINGLE_SOURCE_LIST = List.of(DUMMY_SOURCE);
+
+  private final List<String> MULTIPLE_SOURCE_LIST = List.of(DUMMY_SOURCE1, DUMMY_SOURCE2, DUMMY_SOURCE3);
+
 
   /*  This is a particularly long way to test that fields in ValidationEngine are
       set to expected default values.

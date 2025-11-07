@@ -4,7 +4,6 @@ import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.validation.ai.AITests;
 import org.hl7.fhir.validation.cli.param.parsers.AITestsParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.GlobalParametersParser;
-import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.slf4j.Logger;
 

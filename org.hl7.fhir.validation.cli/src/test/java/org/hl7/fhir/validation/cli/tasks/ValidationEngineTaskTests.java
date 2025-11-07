@@ -4,7 +4,6 @@ import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.service.*;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
-import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
 import org.hl7.fhir.validation.service.model.WatchParameters;
 import org.junit.jupiter.api.BeforeEach;
@@ -156,9 +155,8 @@ class ValidationEngineTaskTests {
     mockGetValidator(false);
     String[] args = {"-narrative"};
     narrativeTask.executeTask(validationService, args);
-    verify(validationService).generateNarrative(same(validationEngine), eq(new GenerateNarrativeParameters(
-      "5.0.1", Collections.emptyList(), null
-    )));
+    verify(validationService).generateNarrative(same(validationEngine), eq(
+      "5.0.1"), eq(Collections.emptyList()), isNull());
   }
 
   @Test

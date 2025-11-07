@@ -111,7 +111,7 @@ public class ValidationService {
 
 
 
-  @Deprecated
+  @Deprecated(since="2025-11-07")
   public void putBaseEngine(String key, ValidationContext validationContext) throws IOException, URISyntaxException {
       ValidationEngineParameters  validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
       InstanceValidatorParameters instanceValidatorParameters = ValidationContextUtilities.getInstanceValidatorParameters(validationContext);
@@ -270,7 +270,7 @@ public class ValidationService {
     return outcome;
   }
 
-  @Deprecated
+  @Deprecated(since="2025-11-07")
   public VersionSourceInformation scanForVersions(ValidationContext validationContext) throws IOException {
     List<String> igs = validationContext.getIgs();
     List<String> sources = validationContext.getSources();
@@ -534,15 +534,16 @@ public class ValidationService {
     ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
     OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
     List<String> sources = validationContext.getSources();
-    generateNarrative(validationEngine, new GenerateNarrativeParameters(validationEngineParameters.getSv(), sources, outputParameters.getOutput()));
+    generateNarrative(validationEngine, validationEngineParameters.getSv(), sources, outputParameters.getOutput());
   }
 
 
-  public void generateNarrative(ValidationEngine validationEngine, GenerateNarrativeParameters generateNarrativeParameters) throws Exception {
-    Resource r = validationEngine.generate(generateNarrativeParameters.sources().get(0), generateNarrativeParameters.version());
+  public void generateNarrative(ValidationEngine validationEngine, String version, List<String> sources,
+                                String output) throws Exception {
+    Resource r = validationEngine.generate(sources.get(0), version);
     log.info(" ...generated narrative successfully");
-    if (generateNarrativeParameters.output() != null) {
-      validationEngine.handleOutput(r, generateNarrativeParameters.output(), generateNarrativeParameters.version());
+    if (output != null) {
+      validationEngine.handleOutput(r, output, version);
     }
   }
 
@@ -664,15 +665,13 @@ public class ValidationService {
    * @return
    * @throws Exception
    */
-  //FIXME maybe to avoid making a duplicate method, we should just call
-  // initializeValidator(validationEngineParameters, defaultInstanceValidatorParameters,  definitions, tt, sources,
-  // sessionId) with a null sessionId.
-  @Deprecated
+
+  @Deprecated(since="2025-11-07")
   public ValidationEngine initializeValidator(ValidationContext validationContext, String definitions, TimeTracker tt) throws Exception {
     return sessionCache.fetchSessionValidatorEngine(initializeValidator(validationContext, definitions, tt, null));
   }
 
-  @Deprecated
+  @Deprecated(since="2025-11-07")
   public String initializeValidator(ValidationContext validationContext, String definitions, TimeTracker tt, String sessionId) throws Exception {
       ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
       InstanceValidatorParameters defaultInstanceValidatorParams = ValidationContextUtilities.getInstanceValidatorParameters(validationContext);
@@ -822,6 +821,7 @@ public class ValidationService {
     log.info("  Package Summary: "+ validationEngine.getContext().loadedPackageSummary());
   }
 
+  @Deprecated(since="2025-11-07")
   public String determineVersion(ValidationContext validationContext) throws IOException {
     return determineVersion(validationContext.getIgs(), validationContext.getSources(), validationContext.isRecursive(), validationContext.isInferFhirVersion());
   }
