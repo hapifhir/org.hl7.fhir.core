@@ -93,8 +93,8 @@ public class ValidateTask extends ValidationEngineTask {
       for (String s : instanceValidatorParameters.getProfiles()) {
         if (!validationEngine.getContext().hasResource(StructureDefinition.class, s) && !validationEngine.getContext().hasResource(ImplementationGuide.class, s)) {
           log.info("  Fetch Profile from " + s);
-          //FIXME where did locations come from?
-          //validationEngine.loadProfile(validationEngineParameters.getLocations().getOrDefault(s, s));
+          //TODO locations appears to never be set via the CLI or anywhere else. Maybe this was left over debugging?
+          validationEngine.loadProfile(validationEngineParameters.getLocations().getOrDefault(s, s));
         }
       }
       log.info("Validating");
