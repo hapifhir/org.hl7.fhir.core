@@ -7,6 +7,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.param.Arg;
+import org.hl7.fhir.validation.cli.param.parsers.GlobalParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.InstanceValidatorParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.UnprocessedParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.ValidationEngineParametersParser;
@@ -57,6 +58,9 @@ public abstract class ValidationEngineTask extends ValidationServiceTask{
   @Override
   public void executeTask(@Nonnull ValidationService validationService, @Nonnull String[] stringArgs) throws Exception {
     Arg[] args = Arg.of(stringArgs);
+
+    GlobalParametersParser globalParametersParser = new GlobalParametersParser();
+    globalParametersParser.parseArgs(args);
 
     TimeTracker timeTracker = new TimeTracker();
     TimeTracker.Session timeTrackerSession = timeTracker.start("Loading");
