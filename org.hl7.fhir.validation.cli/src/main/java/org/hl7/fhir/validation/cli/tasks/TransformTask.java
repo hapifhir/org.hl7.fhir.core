@@ -72,7 +72,7 @@ public class TransformTask extends ValidationEngineTask {
 
     @Override
     protected void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine) throws Exception {
-      TransformParameters transformParameters = new TransformParameters(validationEngineParameters,mapParameters.getMap(),sources,outputParameters.getOutput());
+      TransformParameters transformParameters = new TransformParameters(mapParameters.getMap(), validationEngineParameters.getMapLog(), validationEngineParameters.getTxServer(), sources,outputParameters.getOutput());
       validationService.transform(validationEngine,  transformParameters);
     }
   }

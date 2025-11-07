@@ -61,6 +61,7 @@ public class SnapshotTask extends ValidationEngineTask {
 
     @Override
     protected void buildTaskSpecificParametersFromArgs(Arg[] args) {
+      Arg.setProcessed(args, SnapshotParametersParser.SNAPSHOT, true);
       OutputParametersParser outputParametersParser = new OutputParametersParser();
       outputParametersParser.parseArgs(args);
       outputParameters = outputParametersParser.getParameterObject();
@@ -68,7 +69,7 @@ public class SnapshotTask extends ValidationEngineTask {
 
     @Override
     protected void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine) throws Exception {
-      validationService.generateSnapshot(validationEngine, new GenerateSnapshotParameters(validationEngineParameters, sources, outputParameters.getOutput(), outputParameters.getOutputSuffix()));
+      validationService.generateSnapshot(validationEngine, new GenerateSnapshotParameters(validationEngineParameters.getSv(), sources, outputParameters.getOutput(), outputParameters.getOutputSuffix()));
     }
   }
 }

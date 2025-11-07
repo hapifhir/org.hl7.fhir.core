@@ -59,6 +59,7 @@ public class SpreadsheetTask extends ValidationEngineTask {
 
     @Override
     protected void buildTaskSpecificParametersFromArgs(Arg[] args) {
+      Arg.setProcessed(args, SpreadsheetParamsParser.SPREADSHEET, true);
       OutputParametersParser outputParametersParser = new OutputParametersParser();
       outputParametersParser.parseArgs(args);
       outputParameters = outputParametersParser.getParameterObject();

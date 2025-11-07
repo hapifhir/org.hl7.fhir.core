@@ -98,7 +98,7 @@ public class ValidateTask extends ValidationEngineTask {
         }
       }
       log.info("Validating");
-      validationService.validateSources(validationEngine, new ValidateSourceParameters(instanceValidatorParameters, sources, outputParameters, watchParameters));
+      validationService.validateSources(validationEngine, new ValidateSourceParameters(instanceValidatorParameters, sources, outputParameters.getOutput(), watchParameters));
 
       if (validationEngineParameters.getAdvisorFile() != null) {
         log.info("Note: Some validation issues might be hidden by the advisor settings in the file "+ validationEngineParameters.getAdvisorFile());

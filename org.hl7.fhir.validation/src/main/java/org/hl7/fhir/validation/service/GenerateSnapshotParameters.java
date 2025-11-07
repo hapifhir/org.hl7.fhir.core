@@ -4,6 +4,6 @@ import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
 
 import java.util.List;
 
-public record GenerateSnapshotParameters(ValidationEngineParameters validationEngineParameters, List<String> sources,
+public record GenerateSnapshotParameters(String version, List<String> sources,
                                          String output, String outputSuffix) {
 }

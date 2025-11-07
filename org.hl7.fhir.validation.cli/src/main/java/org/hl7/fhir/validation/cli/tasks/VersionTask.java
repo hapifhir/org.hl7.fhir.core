@@ -73,7 +73,7 @@ public class VersionTask extends ValidationEngineTask {
     @Override
     protected void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine) throws Exception {
       org.hl7.fhir.validation.service.TransformVersionParameters serviceParameters = new org.hl7.fhir.validation.service.TransformVersionParameters(
-        validationEngineParameters, this.transformVersionParameters.getTargetVer(),
+        this.transformVersionParameters.getTargetVer(), validationEngineParameters.getMapLog(),
         this.transformVersionParameters.getCanDoNative(),  sources, outputParameters.getOutput()
       );
       validationService.transformVersion(validationEngine,  serviceParameters);
