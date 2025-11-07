@@ -62,6 +62,9 @@ class ValidatorCliTests {
   };
 
   @Spy
+  HTTPClientTask clientTask;
+
+  @Spy
   CompileTask compileTask;
 
   @Spy
@@ -184,6 +187,7 @@ class ValidatorCliTests {
       rePackageTask,
       instanceFactoryTask,
       serverTask,
+      clientTask,
       //validate is the default
       validateTask
     );
@@ -277,7 +281,8 @@ class ValidatorCliTests {
       "-aiTests", aiTestsTask,
       "-special", specialTask,
       "-tests", testsTask,
-      "-lang-regen arg1 arg2 arg3", langRegenTask
+      "-lang-regen arg1 arg2 arg3", langRegenTask,
+      "-client", clientTask
     );
 
     for (Map.Entry<String, StandaloneTask> entry : argsAndTasks.entrySet()) {
