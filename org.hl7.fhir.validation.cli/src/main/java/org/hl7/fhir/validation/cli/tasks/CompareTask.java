@@ -65,11 +65,6 @@ public class CompareTask extends ValidationEngineTask {
 
     @Override
     protected void buildTaskSpecificParametersFromArgs(Arg[] args) {
-      try {
-        Display.printCliParamsAndInfo(log, Arg.of(args));
-      }  catch (Exception e) {
-        log.warn("Error printing CLI parameters: " + e.getMessage(), e);
-      }
       destinationDirectory = Arg.getParam(args, CompareParametersParser.DESTINATION);
       left =  Arg.getParam(args, CompareParametersParser.LEFT);
       right =  Arg.getParam(args, CompareParametersParser.RIGHT);
