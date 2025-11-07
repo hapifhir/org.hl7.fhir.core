@@ -5,6 +5,7 @@ import java.io.File;
 import org.hl7.fhir.utilities.i18n.POGenerator;
 import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.Params;
+import org.hl7.fhir.validation.cli.param.parsers.GlobalParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.LangRegenParametersParser;
 import org.hl7.fhir.validation.service.model.LangRegenParameters;
 import org.slf4j.Logger;
@@ -41,7 +42,9 @@ public class LangRegenerateTask extends StandaloneTask {
   @Override
   public void executeTask(@Nonnull String[] stringArgs) throws Exception {
     LangRegenParametersParser langRegenParametersParser = new LangRegenParametersParser();
+    GlobalParametersParser globalParametersParser = new GlobalParametersParser();
     Arg[] args = Arg.of(stringArgs);
+    globalParametersParser.parseArgs(args);
     langRegenParametersParser.parseArgs(args);
     LangRegenParameters langRegenParameters = new LangRegenParameters();
 
