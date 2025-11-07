@@ -7,9 +7,7 @@ import org.hl7.fhir.validation.cli.param.parsers.OutputParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.TransformLangParametersParser;
 import org.hl7.fhir.validation.service.model.OutputParameters;
 import org.hl7.fhir.validation.service.model.TransformLangParameters;
-import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
-import org.hl7.fhir.validation.service.utils.EngineMode;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;

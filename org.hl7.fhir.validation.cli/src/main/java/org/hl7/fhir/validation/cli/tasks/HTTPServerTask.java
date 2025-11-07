@@ -9,7 +9,6 @@ import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.cli.param.parsers.GlobalParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.WatchParametersParser;
 import org.hl7.fhir.validation.service.ValidationService;
-import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;

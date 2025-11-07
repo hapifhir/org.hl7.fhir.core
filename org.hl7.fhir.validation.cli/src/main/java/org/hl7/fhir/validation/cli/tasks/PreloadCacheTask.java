@@ -2,7 +2,6 @@ package org.hl7.fhir.validation.cli.tasks;
 
 import org.hl7.fhir.convertors.analytics.PackageVisitor;
 import org.hl7.fhir.validation.cli.param.parsers.PreLoadCacheParametersParser;
-import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.packages.PackageCacheDownloader;
 import org.slf4j.Logger;

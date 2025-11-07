@@ -6,7 +6,6 @@ import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.cli.param.parsers.OutputParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.SpreadsheetParamsParser;
 import org.hl7.fhir.validation.service.model.OutputParameters;
-import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.slf4j.Logger;
 

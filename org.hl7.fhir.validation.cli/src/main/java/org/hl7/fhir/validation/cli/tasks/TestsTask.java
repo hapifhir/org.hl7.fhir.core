@@ -3,7 +3,6 @@ package org.hl7.fhir.validation.cli.tasks;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.validation.cli.param.parsers.TestsParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.ValidationEngineParametersParser;
-import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.cli.Display;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.testexecutor.TestExecutor;

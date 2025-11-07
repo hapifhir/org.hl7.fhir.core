@@ -19,7 +19,6 @@ import org.hl7.fhir.validation.cli.param.parsers.OutputParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.TransformLangParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.TxTestsParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.ValidationEngineParametersParser;
-import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.special.TxTester;
 import org.slf4j.Logger;

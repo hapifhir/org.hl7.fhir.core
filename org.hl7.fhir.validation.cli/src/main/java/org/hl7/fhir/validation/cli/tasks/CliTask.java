@@ -1,6 +1,5 @@
 package org.hl7.fhir.validation.cli.tasks;
 
-import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
