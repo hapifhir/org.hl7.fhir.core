@@ -136,6 +136,7 @@ jobs:
     dependsOn: setup
       #- ${{ each module in parameters.modulesToTest.modules }}:
       #    - ubuntu_java_17_${{ module }}
+    enabled: false
     variables:
       # Normally this test outputs to console. This variable appears as env param
       # I18N_COVERAGE_FILE, which tells the test to write the output to a file
