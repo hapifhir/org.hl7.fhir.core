@@ -64,9 +64,12 @@ jobs:
       - name: Extract branch name
         if: always()
         id: extract_branch
+        env:
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
         run: |
-          if [ "${{ github.event_name }}" == "pull_request" ]; then
-            echo "branch_name=${{ github.head_ref }}" >> $GITHUB_OUTPUT
+          if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
+            echo "branch_name=$GITHUB_HEAD_REF" >> $GITHUB_OUTPUT
           else
             echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
           fi

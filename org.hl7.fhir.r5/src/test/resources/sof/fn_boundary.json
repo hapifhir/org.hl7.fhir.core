@@ -231,7 +231,7 @@
               {
                 "name": "date",
                 "path": "birthDate.lowBoundary()",
-                "type": "date"
+                "type": "dateTime"
               }
             ]
           }
@@ -261,7 +261,7 @@
               {
                 "name": "date",
                 "path": "birthDate.highBoundary()",
-                "type": "date"
+                "type": "dateTime"
               }
             ]
           }

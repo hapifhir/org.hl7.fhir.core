@@ -470,6 +470,64 @@ public class ValidationEngineParameters {
     return this;
   }
 
+  @JsonProperty("doDebug")
+  @SerializedName("doDebug")
+  private
+  boolean doDebug = false;
+
+  @SerializedName("doDebug")
+  @JsonProperty("doDebug")
+  public boolean isDoDebug() {
+    return doDebug;
+  }
+
+  @SerializedName("doDebug")
+  @JsonProperty("doDebug")
+  public ValidationEngineParameters setDoDebug(boolean doDebug) {
+    this.doDebug = doDebug;
+    return this;
+  }
+
+  @JsonProperty("showTimes")
+  @SerializedName("showTimes")
+  private
+  boolean showTimes = false;
+
+  @SerializedName("showTimes")
+  @JsonProperty("showTimes")
+  public boolean isShowTimes() {
+    return showTimes;
+  }
+
+  @SerializedName("showTimes")
+  @JsonProperty("showTimes")
+  public ValidationEngineParameters setShowTimes(boolean showTimes) {
+    this.showTimes = showTimes;
+    return this;
+  }
+
+  @JsonProperty("matchetypes")
+  @SerializedName("matchetypes")
+  private List<String> matchetypes = new ArrayList<String>();
+
+  @SerializedName("matchetypes")
+  @JsonProperty("matchetypes")
+  public List<String> getMatchetypes() {
+    return matchetypes;
+  }
+
+  @SerializedName("matchetypes")
+  @JsonProperty("matchetypes")
+  public ValidationEngineParameters setMatchetypes(List<String> matchetypes) {
+    this.matchetypes = matchetypes;
+    return this;
+  }
+
+  public ValidationEngineParameters addMatchetype(String matchetype) {
+    this.matchetypes.add(matchetype);
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -488,6 +546,8 @@ public class ValidationEngineParameters {
       && disableDefaultResourceFetcher == that.disableDefaultResourceFetcher
       && displayWarnings == that.displayWarnings
       && noExtensibleBindingMessages == that.noExtensibleBindingMessages
+      && doDebug == that.doDebug
+      && showTimes == that.showTimes
       && Objects.equals(resolutionContext, that.resolutionContext)
       && Objects.equals(aiService, that.aiService)
       && Objects.equals(certSources, that.certSources)
@@ -497,7 +557,8 @@ public class ValidationEngineParameters {
       && Objects.equals(advisorFile, that.advisorFile)
       && Objects.equals(locale, that.locale)
       && Objects.equals(lang, that.lang)
-      && Objects.equals(mapLog, that.mapLog);
+      && Objects.equals(mapLog, that.mapLog)
+      && Objects.equals(matchetypes, that.matchetypes);
   }
 
   @Override
@@ -525,7 +586,10 @@ public class ValidationEngineParameters {
       disableDefaultResourceFetcher,
       mapLog,
       displayWarnings,
-      noExtensibleBindingMessages);
+      noExtensibleBindingMessages,
+      doDebug,
+      showTimes,
+      matchetypes);
   }
 
   @Override
@@ -554,6 +618,9 @@ public class ValidationEngineParameters {
       ", mapLog='" + mapLog + '\'' +
       ", displayWarnings=" + displayWarnings +
       ", noExtensibleBindingMessages=" + noExtensibleBindingMessages +
+      ", doDebug=" + doDebug +
+      ", showTimes=" + showTimes +
+      ", matchetypes=" + matchetypes +
       "}";
   }
 }

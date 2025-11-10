@@ -864,7 +864,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       CodeSystem cs = getFetchedCodeSystem(c.getSystem(), c.getVersion(), source);
       if (cs != null) {
         ConceptDefinitionComponent cd = CodeSystemUtilities.getCode(cs, c.getCode());
-        if (cd != null && !cd.hasDefinition()) {
+        if (cd != null && cd.hasDefinition()) {
           return true;
         }
       }
