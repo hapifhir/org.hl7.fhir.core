@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.npm;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 import java.io.File;
@@ -113,15 +114,24 @@ public class LockfileTestProcessUtility {
         Path tempFilePath = tempDeleteDir.resolve(lockFile.getName());
         tempDeleteDir.toFile().deleteOnExit();
         tempFilePath.toFile().deleteOnExit();
-        System.out.println("Atomic move  "+lockFile.getAbsolutePath()+" to " + tempFilePath.toAbsolutePath());
-        Files.move(lockFile.toPath(), tempFilePath, StandardCopyOption.ATOMIC_MOVE );
+        final File toDelete;
+        if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
+          System.out.println("Rename "+lockFile.getAbsolutePath()+" to " + tempFilePath.toAbsolutePath());
+          toDelete = lockFile;
+          lockFile.renameTo(File.createTempFile(lockFile.getName(), ".lock-renamed", lockFile.getParentFile()));
+        } else {
+          System.out.println("Atomic move  "+lockFile.getAbsolutePath()+" to " + tempFilePath.toAbsolutePath());
+          toDelete = tempFilePath.toFile();
+          Files.move(lockFile.toPath(), tempFilePath, StandardCopyOption.ATOMIC_MOVE );
+        }
+
         fileLock.release();
         channel.close();
 
         System.out.println(System.currentTimeMillis());
         System.out.println("File "+lockFileName+" is released.");
-
-        lockFile.delete();
+        toDelete.deleteOnExit();
+        toDelete.delete();
       }}finally {
       if (lockFile.exists()) {
         lockFile.delete();
