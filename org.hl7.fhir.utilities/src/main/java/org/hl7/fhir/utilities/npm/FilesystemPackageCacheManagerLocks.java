@@ -3,6 +3,7 @@ package org.hl7.fhir.utilities.npm;
 import lombok.Getter;
 import lombok.With;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.SystemUtils;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
@@ -264,14 +265,21 @@ public class FilesystemPackageCacheManagerLocks {
         try {
           result = function.get();
         } finally {
-          File tempFile = ManagedFileAccess.file(File.createTempFile(lockFile.getName(), ".lock-renamed").getAbsolutePath());
-          Files.move(lockFile.toPath(), tempFile.toPath(), StandardCopyOption.ATOMIC_MOVE );
+          final File toDelete;
 
+          // Windows based file systems consider files locked
+          if (SystemUtils.IS_OS_WINDOWS) {
+            toDelete = lockFile;
+            lockFile.renameTo(File.createTempFile(toDelete.getName(), ".lock-renamed", lockFile.getParentFile()));
+          } else {
+            toDelete = ManagedFileAccess.file(File.createTempFile(lockFile.getName(), ".lock-renamed", lockFile.getParentFile()).getAbsolutePath());
+            Files.move(lockFile.toPath(), toDelete.toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+          }
           fileLock.release();
           channel.close();
 
-          if (!tempFile.delete()) {
-            tempFile.deleteOnExit();
+          if (!toDelete.delete()) {
+            toDelete.deleteOnExit();
           }
 
           lock.writeLock().unlock();
