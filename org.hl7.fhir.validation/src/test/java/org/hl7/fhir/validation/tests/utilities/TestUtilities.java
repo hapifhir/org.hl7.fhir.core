@@ -15,6 +15,7 @@ import org.hl7.fhir.utilities.tests.TestConstants;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
+import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 
 public class TestUtilities {
 
@@ -51,8 +52,7 @@ public class TestUtilities {
   }
 
 
-  public static ValidationEngine getValidationEngineNoTxServer(java.lang.String src, FhirPublication version, java.lang.String vString) throws Exception {
-//    TestingUtilities.injectCorePackageLoader();
+  public static ValidationEngine getValidationEngineNoTxServer(java.lang.String src, java.lang.String vString) throws Exception {
 
    final ValidationEngine validationEngine = new ValidationEngine.ValidationEngineBuilder()
       .withCanRunWithoutTerminologyServer(true)
@@ -63,11 +63,17 @@ public class TestUtilities {
     validationEngine.setLocale(Locale.US);
     return validationEngine;
   }
+
   public static ValidationEngine getValidationEngine(java.lang.String src, java.lang.String txServer, FhirPublication version, java.lang.String vString) throws Exception {
+      return getValidationEngine(src, txServer, version, vString, new InstanceValidatorParameters());
+    }
+
+    public static ValidationEngine getValidationEngine(java.lang.String src, java.lang.String txServer, FhirPublication version, java.lang.String vString, InstanceValidatorParameters instanceValidatorParameters) throws Exception {
     TestingUtilities.injectCorePackageLoader();
     ValidationEngine validationEngine = null;
     if ("n/a".equals(txServer)) {
       validationEngine = new ValidationEngine.ValidationEngineBuilder()
+          .withDefaultInstanceValidatorParameters(instanceValidatorParameters)
           .withVersion(vString)
           .withUserAgent(TestConstants.USER_AGENT)
           .withNoTerminologyServer()
@@ -76,6 +82,7 @@ public class TestUtilities {
           .fromSource(src);      
     } else {
       validationEngine = new ValidationEngine.ValidationEngineBuilder()
+        .withDefaultInstanceValidatorParameters(instanceValidatorParameters)
         .withVersion(vString)
         .withUserAgent(TestConstants.USER_AGENT)
         .withTerminologyCachePath(getTerminologyCacheDirectory(vString))
