@@ -216,7 +216,7 @@ public class PackageClient {
     } else {
       String v = list.get(0).getVersion();
       for (PackageInfo p : list) {
-        if (VersionUtilities.isThisOrLater(v, p.getVersion(), VersionUtilities.VersionPrecision.MINOR)) {
+        if (VersionUtilities.isThisOrLater(v, p.getVersion(), VersionUtilities.VersionPrecision.FULL)) {
           v = p.getVersion();
         }
       }
