@@ -15,7 +15,6 @@ import org.hl7.fhir.validation.service.utils.ValidationLevel;
 public class InstanceValidatorParametersParser implements IParamParser<InstanceValidatorParameters> {
 
   public static final String ASSUME_VALID_REST_REF = "-assumeValidRestReferences";
-  public static final String SHOW_TIMES = "-show-times";
   public static final String HINT_ABOUT_NON_MUST_SUPPORT = "-hintAboutNonMustSupport";
   public static final String HTML_OUTPUT = "-html-output";
   public static final String OUTPUT_STYLE = "-output-style";
@@ -34,7 +33,6 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
   public static final String SHOW_MESSAGE_IDS = "-show-message-ids";
   public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
   public static final String VERBOSE = "-verbose";
-  public static final String MATCHETYPE = "-matchetype";
   public static final String SHOW_MESSAGES_FROM_REFERENCES = "-showReferenceMessages";
   public static final String SECURITY_CHECKS = "-security-checks";
   public static final String NO_EXPERIMENTAL_CONTENT = "-no-experimental-content";
@@ -63,9 +61,6 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
       }
       if (args[i].getValue().equals(ASSUME_VALID_REST_REF)) {
         instanceValidatorParameters.setAssumeValidRestReferences(true);
-        args[i].setProcessed(true);
-      } else if (args[i].getValue().equals(SHOW_TIMES)) {
-        instanceValidatorParameters.setShowTimes(true);
         args[i].setProcessed(true);
       } else if (args[i].getValue().equals(HINT_ABOUT_NON_MUST_SUPPORT)) {
         instanceValidatorParameters.setHintAboutNonMustSupport(true);
@@ -170,18 +165,6 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
             instanceValidatorParameters.setAllowExampleUrls(false);
           } else {
             throw new Error("Value for " + ALLOW_EXAMPLE_URLS + " not understood: " + bl);
-          }
-          Arg.setProcessed(args, i, 2, true);
-        }
-      } else if (args[i].getValue().equals(MATCHETYPE)) {
-        if (i + 1 == args.length) {
-          throw new Error("Specified -matchetype without indicating file");
-        } else {
-          String s = args[i + 1].getValue();
-          if (!(new java.io.File(s).exists())) {
-            throw new Error("-matchetype source '" + s + "'  not found");
-          } else {
-            instanceValidatorParameters.addMatchetype(s);
           }
           Arg.setProcessed(args, i, 2, true);
         }

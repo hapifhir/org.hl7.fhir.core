@@ -12,17 +12,75 @@ public class ValidationRequest {
   @JsonProperty("validationContext")
   @JsonAlias("cliContext") // alias for jackson deserialization
   @SerializedName(value="validationContext", alternate={"cliContext"})
+  @Deprecated(since="2025-10-21")
   private
   ValidationContext validationContext;
+
+  @JsonProperty("validationContext")
+  @Deprecated(since="2025-10-21")
+  public ValidationContext getValidationContext() {
+    return validationContext;
+  }
+
+  @JsonProperty("validationContext")
+  @Deprecated(since="2025-10-21")
+  public ValidationRequest setValidationContext(ValidationContext validationContext) {
+    this.validationContext = validationContext;
+    return this;
+  }
 
   @JsonProperty("filesToValidate")
   @SerializedName("filesToValidate")
   private
   List<FileInfo> filesToValidate = new ArrayList<>();
 
-  @JsonProperty("validationContext")
-  public ValidationContext getValidationContext() {
-    return validationContext;
+
+  @JsonProperty("validationEngineParameters")
+  @SerializedName("validationEngineParameters")
+  private
+  ValidationEngineParameters validationEngineParameters;
+
+  @JsonProperty("validationEngineParameters")
+  public ValidationEngineParameters getValidationEngineParameters() {
+    return validationEngineParameters;
+  }
+
+  @JsonProperty("validationEngineParameters")
+  public ValidationRequest setValidationEngineParameters(ValidationEngineParameters validationEngineParameters) {
+    this.validationEngineParameters = validationEngineParameters;
+    return this;
+  }
+
+  @JsonProperty("instanceValidatorParameters")
+  @SerializedName("instanceValidatorParameters")
+  private
+  InstanceValidatorParameters instanceValidatorParameters;
+
+  @JsonProperty("instanceValidatorParameters")
+  public InstanceValidatorParameters getInstanceValidatorParameters() {
+    return instanceValidatorParameters;
+  }
+
+  @JsonProperty("instanceValidatorParameters")
+  public ValidationRequest setInstanceValidatorParameters(InstanceValidatorParameters instanceValidatorParameters) {
+    this.instanceValidatorParameters = instanceValidatorParameters;
+    return this;
+  }
+
+  @JsonProperty("sources")
+  @SerializedName("sources")
+  private
+  List<String> sources = new ArrayList<>();
+
+  @JsonProperty("sources")
+  public List<String> getSources() {
+    return sources;
+  }
+
+  @JsonProperty("sources")
+  public ValidationRequest setSources(List<String> sources) {
+    this.sources = sources;
+    return this;
   }
 
   @JsonProperty("sessionId")
@@ -43,11 +101,7 @@ public class ValidationRequest {
     this.sessionId = sessionToken;
   }
 
-  @JsonProperty("validationContext")
-  public ValidationRequest setValidationContext(ValidationContext validationContext) {
-    this.validationContext = validationContext;
-    return this;
-  }
+
 
   @Deprecated
   @JsonProperty("cliContext")

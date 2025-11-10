@@ -3223,7 +3223,7 @@ msgstr "Рекомендации по толкованию содержимог�
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
 msgid "-- no content: do not translate #92 --"
-msgstr "!!!!!!!!!!!!!!!!!!!!-- no content: do not translate #97 --"
+msgstr "!!!!!!!!!!!!!!!!!!!!!!-- no content: do not translate #97 --"
 
 # SDR_IMPOSE
 #: SDR_IMPOSE
@@ -3413,7 +3413,7 @@ msgstr "Версии FHIR"
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
 msgid "-- no content: do not translate #93 --"
-msgstr "!!!!!!!!!!!!!!!!!!!!-- no content: do not translate #98 --"
+msgstr "!!!!!!!!!!!!!!!!!!!!!!-- no content: do not translate #98 --"
 
 # SDR_VER_TO_PFX
 #: SDR_VER_TO_PFX
@@ -3424,7 +3424,7 @@ msgstr "Версии FHIR до"
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
 msgid "-- no content: do not translate #94 --"
-msgstr "!!!!!!!!!!!!!!!!!!!!-- no content: do not translate #99 --"
+msgstr "!!!!!!!!!!!!!!!!!!!!!!-- no content: do not translate #99 --"
 
 # SDR_VER_UNK
 #: SDR_VER_UNK
@@ -4230,6 +4230,11 @@ msgstr "Идентификатор в этом контексте не допу�
 #: STRUC_DEF_IF
 msgid "If"
 msgstr "Если"
+
+# STRUC_DEF_IMPLEMENTS
+#: STRUC_DEF_IMPLEMENTS
+msgid "Interfaces Implemented"
+msgstr ""
 
 # STRUC_DEF_IMPOSE_PROFILE
 #: STRUC_DEF_IMPOSE_PROFILE
@@ -5665,7 +5670,7 @@ msgstr ""
 
 # VS_VERSION_NOTHING_TEXT
 #: VS_VERSION_NOTHING_TEXT
-msgid "Not Stated"
+msgid "Not State"
 msgstr ""
 
 # VS_VERSION_STATED

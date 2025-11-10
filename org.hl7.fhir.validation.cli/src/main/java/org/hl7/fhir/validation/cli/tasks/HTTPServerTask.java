@@ -51,9 +51,11 @@ public class HTTPServerTask extends ValidationEngineTask {
     validationEngine.setLogValidationProgress(false);
     FhirValidatorHttpService service = new FhirValidatorHttpService(validationEngine, Integer.parseInt(Params.getParam(args, GlobalParametersParser.SERVER)));
     service.startServer();
-    log.info("Press any key to stop the server...");
-    System.in.read();
-    service.stop();
+    log.info("Press ctrl-c to stop the server, or use the client to ask the server to stop (-client -stop)");
+    while (true) {
+      Thread.sleep(100);
+    }
+    // service.stop();
   }
 
   private void checkForInvalidArgs(String[] args) {

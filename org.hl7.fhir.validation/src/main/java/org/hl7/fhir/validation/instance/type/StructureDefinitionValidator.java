@@ -59,6 +59,12 @@ import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
+/**
+ * todo:
+ *
+ * Update the publisher so that if it sees must-support on an repeating element, it will hint the author that this should be clarified in the must-support documentation, and if it sees a mix of must-support values on slicer and slices, this will become warning. Same for obligations that don't make clear whether they apply to the set or the individual elements. Make an IG parameter so authors can advise the validator that they do, in fact, document this for must-support
+ * from FHIR-50391
+ */
 public class StructureDefinitionValidator extends BaseValidator {
 
   public class SourcedInvariant {

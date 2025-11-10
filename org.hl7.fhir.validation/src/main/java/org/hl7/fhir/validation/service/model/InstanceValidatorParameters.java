@@ -7,11 +7,47 @@ import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeRefer
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class InstanceValidatorParameters {
+
+  public InstanceValidatorParameters() {}
+
+  public InstanceValidatorParameters(@Nonnull InstanceValidatorParameters defaultInstanceValidatorParameters) {
+    this.assumeValidRestReferences = defaultInstanceValidatorParameters.assumeValidRestReferences;
+    this.hintAboutNonMustSupport = defaultInstanceValidatorParameters.hintAboutNonMustSupport;
+    this.htmlOutput = defaultInstanceValidatorParameters.htmlOutput;
+    this.outputStyle = defaultInstanceValidatorParameters.outputStyle;
+    this.r5BundleRelativeReferencePolicy = defaultInstanceValidatorParameters.r5BundleRelativeReferencePolicy;
+    this.extensions = new ArrayList<>(defaultInstanceValidatorParameters.extensions);
+    this.wantInvariantsInMessages = defaultInstanceValidatorParameters.wantInvariantsInMessages;
+    this.noInvariants = defaultInstanceValidatorParameters.noInvariants;
+    this.questionnaireMode = defaultInstanceValidatorParameters.questionnaireMode;
+    this.unknownCodeSystemsCauseErrors = defaultInstanceValidatorParameters.unknownCodeSystemsCauseErrors;
+    this.level = defaultInstanceValidatorParameters.level;
+    this.bestPracticeLevel = defaultInstanceValidatorParameters.bestPracticeLevel;
+    this.forPublication = defaultInstanceValidatorParameters.forPublication;
+    this.htmlInMarkdownCheck = defaultInstanceValidatorParameters.htmlInMarkdownCheck;
+    this.noUnicodeBiDiControlChars = defaultInstanceValidatorParameters.noUnicodeBiDiControlChars;
+    this.crumbTrails = defaultInstanceValidatorParameters.crumbTrails;
+    this.showMessageIds = defaultInstanceValidatorParameters.showMessageIds;
+    this.allowExampleUrls = defaultInstanceValidatorParameters.allowExampleUrls;
+    this.showMessagesFromReferences = defaultInstanceValidatorParameters.showMessagesFromReferences;
+    this.securityChecks = defaultInstanceValidatorParameters.securityChecks;
+    this.noExperimentalContent = defaultInstanceValidatorParameters.noExperimentalContent;
+    this.showTerminologyRouting = defaultInstanceValidatorParameters.showTerminologyRouting;
+    this.expansionParameters = defaultInstanceValidatorParameters.expansionParameters;
+    this.profiles = new ArrayList<>(defaultInstanceValidatorParameters.profiles);
+    this.doImplicitFHIRPathStringConversion = defaultInstanceValidatorParameters.doImplicitFHIRPathStringConversion;
+    this.allowDoubleQuotesInFHIRPath = defaultInstanceValidatorParameters.allowDoubleQuotesInFHIRPath;
+    this.checkIPSCodes = defaultInstanceValidatorParameters.checkIPSCodes;
+    this.bundleValidationRules = new ArrayList<>(defaultInstanceValidatorParameters.bundleValidationRules);
+    this.jurisdiction = defaultInstanceValidatorParameters.jurisdiction;
+  }
+
   @JsonProperty("assumeValidRestReferences")
   @SerializedName("assumeValidRestReferences")
   private boolean assumeValidRestReferences = false;
@@ -26,23 +62,6 @@ public class InstanceValidatorParameters {
   @JsonProperty("assumeValidRestReferences")
   public InstanceValidatorParameters setAssumeValidRestReferences(boolean assumeValidRestReferences) {
     this.assumeValidRestReferences = assumeValidRestReferences;
-    return this;
-  }
-
-  @JsonProperty("showTimes")
-  @SerializedName("showTimes")
-  private boolean showTimes = false;
-
-  @SerializedName("showTimes")
-  @JsonProperty("showTimes")
-  public boolean isShowTimes() {
-    return showTimes;
-  }
-
-  @SerializedName("showTimes")
-  @JsonProperty("showTimes")
-  public InstanceValidatorParameters setShowTimes(boolean showTimes) {
-    this.showTimes = showTimes;
     return this;
   }
 
@@ -237,10 +256,6 @@ public class InstanceValidatorParameters {
   @SerializedName("showTerminologyRouting")
   private boolean showTerminologyRouting = false;
 
-  @JsonProperty("matchetypes")
-  @SerializedName("matchetypes")
-  private List<String> matchetypes = new ArrayList<String>();
-
   @JsonProperty("expansionParameters")
   @SerializedName("expansionParameters")
   private String expansionParameters;
@@ -398,24 +413,6 @@ public class InstanceValidatorParameters {
     return this;
   }
 
-  @SerializedName("matchetypes")
-  @JsonProperty("matchetypes")
-  public List<String> getMatchetypes() {
-    return matchetypes;
-  }
-
-  @SerializedName("matchetypes")
-  @JsonProperty("matchetypes")
-  public InstanceValidatorParameters setMatchetypes(List<String> matchetypes) {
-    this.matchetypes = matchetypes;
-    return this;
-  }
-
-  public InstanceValidatorParameters addMatchetype(String matchetype) {
-    this.matchetypes.add(matchetype);
-    return this;
-  }
-
   @SerializedName("expansionParameters")
   @JsonProperty("expansionParameters")
   public String getExpansionParameters() {
@@ -551,7 +548,6 @@ public class InstanceValidatorParameters {
     if (o == null || getClass() != o.getClass()) return false;
     InstanceValidatorParameters that = (InstanceValidatorParameters) o;
     return assumeValidRestReferences == that.assumeValidRestReferences
-      && showTimes == that.showTimes
       && hintAboutNonMustSupport == that.hintAboutNonMustSupport
       && wantInvariantsInMessages == that.wantInvariantsInMessages
       && noInvariants == that.noInvariants
@@ -576,7 +572,6 @@ public class InstanceValidatorParameters {
       && Objects.equals(level, that.level)
       && Objects.equals(bestPracticeLevel, that.bestPracticeLevel)
       && Objects.equals(htmlInMarkdownCheck, that.htmlInMarkdownCheck)
-      && Objects.equals(matchetypes, that.matchetypes)
       && Objects.equals(expansionParameters, that.expansionParameters)
       && Objects.equals(profiles, that.profiles)
       && Objects.equals(bundleValidationRules, that.bundleValidationRules)
@@ -585,14 +580,13 @@ public class InstanceValidatorParameters {
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, showTimes, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, matchetypes, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction);
+    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction);
   }
 
   @Override
   public String toString() {
     return "InstanceValidatorParameters{" +
       "assumeValidRestReferences=" + assumeValidRestReferences +
-      ", showTimes=" + showTimes +
       ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +
       ", htmlOutput='" + htmlOutput + '\'' +
       ", outputStyle='" + outputStyle + '\'' +
@@ -614,7 +608,6 @@ public class InstanceValidatorParameters {
       ", securityChecks=" + securityChecks +
       ", noExperimentalContent=" + noExperimentalContent +
       ", showTerminologyRouting=" + showTerminologyRouting +
-      ", matchetypes=" + matchetypes +
       ", expansionParameters='" + expansionParameters + '\'' +
       ", profiles=" + profiles +
       ", doImplicitFHIRPathStringConversion=" + doImplicitFHIRPathStringConversion +

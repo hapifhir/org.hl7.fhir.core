@@ -196,7 +196,7 @@ public class VersionUtilities {
       return "5.0.0";
     }
     if (isR6Ver(v)) {
-      return "6.0.0";
+      return "6.0.0-ballot3";
     }
     return v;
   }
@@ -791,7 +791,7 @@ public class VersionUtilities {
       res.add("ValueSet");
     }
 
-    if (isR5Ver(version) || isR6Ver(version)) {
+    if (isR5Ver(version)) {
       res.add("ActorDefinition");
       res.add("ActivityDefinition");
       res.add("CapabilityStatement");
@@ -826,6 +826,41 @@ public class VersionUtilities {
       res.add("TerminologyCapabilities");
       res.add("TestPlan");
       res.add("TestScript");
+      res.add("ValueSet");
+    }
+    if (isR6Ver(version)) {
+      res.add("ActorDefinition");
+      res.add("ActivityDefinition");
+      res.add("CapabilityStatement");
+      res.add("ChargeItemDefinition");
+      res.add("Citation");
+      res.add("ClinicalUseDefinition");
+      res.add("CodeSystem");
+      res.add("CompartmentDefinition");
+      res.add("ConceptMap");
+      res.add("ConditionDefinition");
+      res.add("DeviceDefinition");
+      res.add("EventDefinition");
+      res.add("Evidence");
+      res.add("EvidenceVariable");
+      res.add("ExampleScenario");
+      res.add("Group");
+      res.add("ImplementationGuide");
+      res.add("Library");
+      res.add("Measure");
+      res.add("MessageDefinition");
+      res.add("NamingSystem");
+      res.add("ObservationDefinition");
+      res.add("OperationDefinition");
+      res.add("PlanDefinition");
+      res.add("Questionnaire");
+      res.add("Requirements");
+      res.add("SearchParameter");
+      res.add("SpecimenDefinition");
+      res.add("StructureDefinition");
+      res.add("StructureMap");
+      res.add("SubscriptionTopic");
+      res.add("TerminologyCapabilities");
       res.add("ValueSet");
     }
     return res;
