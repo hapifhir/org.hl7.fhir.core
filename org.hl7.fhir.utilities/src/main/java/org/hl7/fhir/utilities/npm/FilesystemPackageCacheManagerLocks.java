@@ -17,6 +17,8 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -242,10 +244,21 @@ public class FilesystemPackageCacheManagerLocks {
       cacheLock.getLock().writeLock().lock();
       lock.writeLock().lock();
 
+      Set<OpenOption> openOptions = new HashSet<>();
+      openOptions.add(StandardOpenOption.CREATE);
+      openOptions.add(StandardOpenOption.WRITE);
+      openOptions.add(StandardOpenOption.READ);
+
+      //Windows does not allow renaming or deletion of 'open' files, so we rely on this option to delete the file after
+      //use.
+      if (SystemUtils.IS_OS_WINDOWS) {
+        openOptions.add(StandardOpenOption.DELETE_ON_CLOSE);
+      }
+
        /*TODO Eventually, this logic should exist in a Lockfile class so that it isn't duplicated between the main code and
           the test code.
         */
-      try (FileChannel channel = new RandomAccessFile(lockFile, "rw").getChannel()) {
+      try (FileChannel channel = FileChannel.open(lockFile.toPath(), openOptions)) {
 
         FileLock fileLock = channel.tryLock(0, Long.MAX_VALUE, false);
 
@@ -257,9 +270,10 @@ public class FilesystemPackageCacheManagerLocks {
           throw new IOException("Failed to acquire lock on file: " + lockFile.getName());
         }
 
-        if (!lockFile.isFile()) {
+        if (!lockFile.isFile() && !lockFile.exists()) {
           final ByteBuffer buff = ByteBuffer.wrap(String.valueOf(ProcessHandle.current().pid()).getBytes(StandardCharsets.UTF_8));
-          channel.write(buff);
+          final int bytesWritten = channel.write(buff);
+          log.trace(bytesWritten + " bytes written to lock file: " + lockFile.getName());
         }
         T result = null;
         try {
@@ -267,27 +281,22 @@ public class FilesystemPackageCacheManagerLocks {
         } finally {
           final File toDelete = ManagedFileAccess.file(File.createTempFile(lockFile.getName(), ".lock-renamed", lockFile.getParentFile()).getAbsolutePath());
 
-          final CopyOption[] copyOptions;
-          // Windows based file systems consider files locked
-          if (SystemUtils.IS_OS_WINDOWS) {
-            copyOptions = new CopyOption[]{StandardCopyOption.REPLACE_EXISTING};
-          } else {
-            copyOptions = new CopyOption[]{ StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING};
+          // Windows based file systems do not allow renames for 'open' files so we cannot do this.
+          if (!SystemUtils.IS_OS_WINDOWS) {
+            Files.move(lockFile.toPath(), toDelete.toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
           }
-
-          Files.move(lockFile.toPath(), toDelete.toPath(), copyOptions);
 
           fileLock.release();
-          channel.close();
 
-          try {
-            Files.delete(toDelete.toPath());
-          } catch (IOException e) {
-            log.error("Error while deleting temporary file: {}", toDelete.getAbsolutePath(), e);
-            toDelete.deleteOnExit();
+          // Non-Windows file systems will have atomically renamed the file at this point, so we should clean it up.
+          if (!SystemUtils.IS_OS_WINDOWS) {
+            try {
+              Files.delete(toDelete.toPath());
+            } catch (IOException e) {
+              log.error("Error while deleting temporary file: {}", toDelete.getAbsolutePath(), e);
+              toDelete.deleteOnExit();
+            }
           }
-
-
 
           lock.writeLock().unlock();
           cacheLock.getLock().writeLock().unlock();

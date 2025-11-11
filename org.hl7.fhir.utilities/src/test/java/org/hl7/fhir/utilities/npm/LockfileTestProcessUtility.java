@@ -10,10 +10,9 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * FilesystemPackageCacheManagerLocks relies on the existence of .lock files to prevent access to packages being written
@@ -101,7 +100,18 @@ public class LockfileTestProcessUtility {
 
     File lockFile = Paths.get(path,lockFileName).toFile();
 
-    try (FileChannel channel = new RandomAccessFile(lockFile.getAbsolutePath(), "rw").getChannel()) {
+    Set<OpenOption> openOptions = new HashSet<>();
+    openOptions.add(StandardOpenOption.CREATE);
+    openOptions.add(StandardOpenOption.WRITE);
+    openOptions.add(StandardOpenOption.READ);
+
+    //Windows does not allow renaming or deletion of 'open' files, so we rely on this option to delete the file after
+    //use.
+    if (isSystemWindows()) {
+      openOptions.add(StandardOpenOption.DELETE_ON_CLOSE);
+    }
+
+    try (FileChannel channel = FileChannel.open(lockFile.toPath(), openOptions)) {
       FileLock fileLock = channel.tryLock(0, Long.MAX_VALUE, false);
       if (fileLock != null) {
         final ByteBuffer buff = ByteBuffer.wrap("Hello world".getBytes(StandardCharsets.UTF_8));
@@ -114,28 +124,27 @@ public class LockfileTestProcessUtility {
         Path tempFilePath = tempDeleteDir.resolve(lockFile.getName());
         tempDeleteDir.toFile().deleteOnExit();
         tempFilePath.toFile().deleteOnExit();
-        final File toDelete;
-        if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
-          System.out.println("Rename "+lockFile.getAbsolutePath()+" to " + tempFilePath.toAbsolutePath());
-          toDelete = lockFile;
-          lockFile.renameTo(File.createTempFile(lockFile.getName(), ".lock-renamed", lockFile.getParentFile()));
-        } else {
+        final File toDelete = tempFilePath.toFile();
+        if (!isSystemWindows()) {
           System.out.println("Atomic move  "+lockFile.getAbsolutePath()+" to " + tempFilePath.toAbsolutePath());
-          toDelete = tempFilePath.toFile();
           Files.move(lockFile.toPath(), tempFilePath, StandardCopyOption.ATOMIC_MOVE );
         }
 
         fileLock.release();
         channel.close();
 
-        System.out.println(System.currentTimeMillis());
-        System.out.println("File "+lockFileName+" is released.");
-        toDelete.deleteOnExit();
-        toDelete.delete();
-      }}finally {
-      if (lockFile.exists()) {
-        lockFile.delete();
+        System.out.println("File "+lockFileName+" is released at " + System.currentTimeMillis() );
+        if (!isSystemWindows()) {
+          if (!toDelete.delete()) {
+            System.err.println("Could not delete "+lockFile.getAbsolutePath());
+            toDelete.deleteOnExit();
+          }
+        }
       }
     }
+  }
+
+  private static boolean isSystemWindows() {
+    return System.getProperty("os.name").toLowerCase().startsWith("windows");
   }
 }
