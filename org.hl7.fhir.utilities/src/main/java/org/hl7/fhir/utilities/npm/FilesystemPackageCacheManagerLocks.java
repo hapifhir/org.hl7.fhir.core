@@ -284,7 +284,7 @@ public class FilesystemPackageCacheManagerLocks {
         try {
           result = function.get();
         } finally {
-          final File toDelete = ManagedFileAccess.file(File.createTempFile(lockFile.getName(), ".lock-renamed", lockFile.getParentFile()).getAbsolutePath());
+          final File toDelete = ManagedFileAccess.file(File.createTempFile(lockFile.getName(), ".lock-deletion", lockFile.getParentFile()).getAbsolutePath());
 
           // Windows based file systems do not allow renames for 'open' files so we cannot do this.
           if (!SystemUtils.IS_OS_WINDOWS) {
@@ -298,7 +298,7 @@ public class FilesystemPackageCacheManagerLocks {
             try {
               Files.delete(toDelete.toPath());
             } catch (IOException e) {
-              log.error("Error while deleting temporary file: {}", toDelete.getAbsolutePath(), e);
+              log.warn("Error while deleting lock file: {} File will be set to delete on exit", toDelete.getAbsolutePath(), e);
               toDelete.deleteOnExit();
             }
           }
