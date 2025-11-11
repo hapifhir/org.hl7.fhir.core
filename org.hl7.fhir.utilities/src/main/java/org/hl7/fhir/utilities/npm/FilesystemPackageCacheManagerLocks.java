@@ -10,6 +10,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
@@ -124,6 +125,8 @@ public class FilesystemPackageCacheManagerLocks {
           channel.close();
           return true;
         }
+      } catch (FileNotFoundException e) {
+        logSystemSpecificFileNotFoundException(e);
       }
       return false;});
     }
@@ -155,6 +158,8 @@ public class FilesystemPackageCacheManagerLocks {
             throw new IOException("Lock file exists, but is not locked by a process: " + lockFile.getName());
           }
           log.debug("File is locked ('"+lockFile.getAbsolutePath()+"').");
+        } catch (FileNotFoundException e) {
+          logSystemSpecificFileNotFoundException(e);
         }
       }
       try {
@@ -306,6 +311,14 @@ public class FilesystemPackageCacheManagerLocks {
         Thread.currentThread().interrupt();
         throw new IOException("Thread interrupted while waiting for lock", e);
       }
+    }
+  }
+
+  private static void logSystemSpecificFileNotFoundException(FileNotFoundException e) {
+    if (SystemUtils.IS_OS_WINDOWS && e.getMessage().contains("The process cannot access the file because it is being used by another process")) {
+      log.trace("Windows reported a FileNotFoundException whose actual cause is that the file is locked by another process: {}", String.valueOf(e));
+    } else {
+      log.warn("Unexpected FileNotFoundException while evaluating is a lock file: ", e);
     }
   }
 
