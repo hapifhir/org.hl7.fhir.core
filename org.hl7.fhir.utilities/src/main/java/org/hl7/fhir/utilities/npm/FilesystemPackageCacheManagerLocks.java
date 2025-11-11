@@ -265,22 +265,29 @@ public class FilesystemPackageCacheManagerLocks {
         try {
           result = function.get();
         } finally {
-          final File toDelete;
+          final File toDelete = ManagedFileAccess.file(File.createTempFile(lockFile.getName(), ".lock-renamed", lockFile.getParentFile()).getAbsolutePath());
 
+          final CopyOption[] copyOptions;
           // Windows based file systems consider files locked
           if (SystemUtils.IS_OS_WINDOWS) {
-            toDelete = lockFile;
-            lockFile.renameTo(File.createTempFile(toDelete.getName(), ".lock-renamed", lockFile.getParentFile()));
+            copyOptions = new CopyOption[]{StandardCopyOption.REPLACE_EXISTING};
           } else {
-            toDelete = ManagedFileAccess.file(File.createTempFile(lockFile.getName(), ".lock-renamed", lockFile.getParentFile()).getAbsolutePath());
-            Files.move(lockFile.toPath(), toDelete.toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+            copyOptions = new CopyOption[]{ StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING};
           }
+
+          Files.move(lockFile.toPath(), toDelete.toPath(), copyOptions);
+
           fileLock.release();
           channel.close();
 
-          if (!toDelete.delete()) {
+          try {
+            Files.delete(toDelete.toPath());
+          } catch (IOException e) {
+            log.error("Error while deleting temporary file: {}", toDelete.getAbsolutePath(), e);
             toDelete.deleteOnExit();
           }
+
+
 
           lock.writeLock().unlock();
           cacheLock.getLock().writeLock().unlock();
