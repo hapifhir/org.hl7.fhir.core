@@ -294,9 +294,15 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     for (File f : Objects.requireNonNull(cacheFolder.listFiles())) {
       if (f.isDirectory()) {
         FileUtilities.atomicDeleteDirectory(f.getAbsolutePath());
-
-      } else if (!f.getName().equals("packages.ini")) {
-        FileUtils.forceDelete(f);
+      } else if (!f.getName().equals("packages.ini")
+        // These files are package locks. They could interfere with running processes.
+        ) {
+        if (f.getName().endsWith(".lock")
+          || f.getName().endsWith(".lock-deletion")) {
+          log.warn("Encountered package lock while clearing cache: {} It is possible that another process is modifying this cache. Deletion was not attempted.", f.getAbsolutePath());
+        } else {
+          FileUtils.forceDelete(f);
+        }
       }
 
     }
