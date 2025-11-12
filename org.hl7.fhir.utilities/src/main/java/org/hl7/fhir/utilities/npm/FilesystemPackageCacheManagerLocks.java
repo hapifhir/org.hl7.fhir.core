@@ -284,17 +284,20 @@ public class FilesystemPackageCacheManagerLocks {
         try {
           result = function.get();
         } finally {
-          final File toDelete = ManagedFileAccess.file(File.createTempFile(lockFile.getName(), ".lock-deletion", lockFile.getParentFile()).getAbsolutePath());
+          final File toDelete;
 
           // Windows based file systems do not allow renames for 'open' files so we cannot do this.
           if (!SystemUtils.IS_OS_WINDOWS) {
+            toDelete = ManagedFileAccess.file(File.createTempFile(lockFile.getName(), ".lock-deletion", lockFile.getParentFile()).getAbsolutePath());
             Files.move(lockFile.toPath(), toDelete.toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+          } else {
+            toDelete = null;
           }
 
           fileLock.release();
 
           // Non-Windows file systems will have atomically renamed the file at this point, so we should clean it up.
-          if (!SystemUtils.IS_OS_WINDOWS) {
+          if (toDelete != null) {
             try {
               Files.delete(toDelete.toPath());
             } catch (IOException e) {
