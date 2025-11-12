@@ -263,17 +263,9 @@ public class FilesystemPackageCacheManagerLocks {
        /*TODO Eventually, this logic should exist in a Lockfile class so that it isn't duplicated between the main code and
           the test code.
         */
-      try (FileChannel channel = FileChannel.open(lockFile.toPath(), openOptions)) {
+      try (FileChannel channel = getFileChannel(openOptions))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  {
 
-        FileLock fileLock = channel.tryLock(0, Long.MAX_VALUE, false);
-
-        if (fileLock == null) {
-          waitForLockFileDeletion(lockFile, resolvedLockParameters);
-          fileLock = channel.tryLock(0, Long.MAX_VALUE, false);
-        }
-        if (fileLock == null) {
-          throw new IOException("Failed to acquire lock on file: " + lockFile.getName());
-        }
+        final FileLock fileLock = getFileLock(channel, resolvedLockParameters);
 
         if (!lockFile.isFile() && !lockFile.exists()) {
           final ByteBuffer buff = ByteBuffer.wrap(String.valueOf(ProcessHandle.current().pid()).getBytes(StandardCharsets.UTF_8));
@@ -314,6 +306,32 @@ public class FilesystemPackageCacheManagerLocks {
         Thread.currentThread().interrupt();
         throw new IOException("Thread interrupted while waiting for lock", e);
       }
+    }
+
+    private FileChannel getFileChannel(Set<OpenOption> openOptions) throws IOException, InterruptedException {
+      final int retries = 5;
+      for (int i = 0; i < retries; i++) {
+        try {
+          return FileChannel.open(lockFile.toPath(), openOptions);
+        } catch (java.nio.file.AccessDeniedException e) {
+          log.debug(e.getMessage(), e);
+        }
+        Thread.sleep(20);
+      }
+      throw new IOException("Unable to get file lock after " + retries + " retries.");
+    }
+
+    private FileLock getFileLock(FileChannel channel, LockParameters resolvedLockParameters) throws IOException, InterruptedException {
+      FileLock fileLock = channel.tryLock(0, Long.MAX_VALUE, false);
+
+      if (fileLock == null) {
+        waitForLockFileDeletion(lockFile, resolvedLockParameters);
+        fileLock = channel.tryLock(0, Long.MAX_VALUE, false);
+      }
+      if (fileLock == null) {
+        throw new IOException("Failed to acquire lock on file: " + lockFile.getName());
+      }
+      return fileLock;
     }
   }
 
