@@ -243,7 +243,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    */
   protected void cleanUpCorruptPackages() throws IOException {
     for (File file : Objects.requireNonNull(cacheFolder.listFiles())) {
-      if (file.getName().endsWith(".lock")) {
+      if (FilesystemPackageCacheManagerLocks.isLockFile(file.getName())) {
         if (locks.getCacheLock().canLockFileBeHeldByThisProcess(file)) {
           String packageDirectoryName = file.getName().substring(0, file.getName().length() - 5);
           log.info("Detected potential incomplete package installed in cache: " + packageDirectoryName + ". Attempting to delete");
@@ -297,9 +297,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       } else if (!f.getName().equals("packages.ini")
         // These files are package locks. They could interfere with running processes.
         ) {
-        if (f.getName().endsWith(".lock")
-          || f.getName().endsWith(".lock-deletion")) {
-          log.warn("Encountered package lock while clearing cache: {} It is possible that another process is modifying this cache. Deletion was not attempted.", f.getAbsolutePath());
+        if (FilesystemPackageCacheManagerLocks.isLockFile(f.getName())) {
+          log.warn("Encountered package lock while clearing cache: {} It is possible that another process is modifying this cache. Lock-file deletion was not attempted.", f.getAbsolutePath());
         } else {
           FileUtils.forceDelete(f);
         }
