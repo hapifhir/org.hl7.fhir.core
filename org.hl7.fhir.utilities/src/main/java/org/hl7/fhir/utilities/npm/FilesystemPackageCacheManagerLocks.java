@@ -30,6 +30,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class FilesystemPackageCacheManagerLocks {
 
   private static final ConcurrentHashMap<File, FilesystemPackageCacheManagerLocks> cacheFolderLockManagers = new ConcurrentHashMap<>();
+  public static final String LOCKFILE_EXTENSION = ".lock";
+  private static final String LOCK_DELETION_EXTENSION = ".lock-deletion";
 
   @Getter
   private final CacheLock cacheLock = new CacheLock();
@@ -280,7 +282,7 @@ public class FilesystemPackageCacheManagerLocks {
 
           // Windows based file systems do not allow renames for 'open' files so we cannot do this.
           if (!SystemUtils.IS_OS_WINDOWS) {
-            toDelete = ManagedFileAccess.file(File.createTempFile(lockFile.getName(), ".lock-deletion", lockFile.getParentFile()).getAbsolutePath());
+            toDelete = ManagedFileAccess.file(File.createTempFile(lockFile.getName(), LOCK_DELETION_EXTENSION, lockFile.getParentFile()).getAbsolutePath());
             Files.move(lockFile.toPath(), toDelete.toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
           } else {
             toDelete = null;
@@ -344,7 +346,11 @@ public class FilesystemPackageCacheManagerLocks {
   }
 
   public synchronized PackageLock getPackageLock(String packageName) throws IOException {
-    File lockFile = ManagedFileAccess.file(Utilities.path(cacheFolder.getAbsolutePath(), packageName + ".lock"));
+    File lockFile = ManagedFileAccess.file(Utilities.path(cacheFolder.getAbsolutePath(), packageName + LOCKFILE_EXTENSION));
     return packageLocks.computeIfAbsent(lockFile, (k) -> new PackageLock(k, new ReentrantReadWriteLock()));
+  }
+
+  public static boolean isLockFile(String fileName) {
+    return fileName.endsWith(LOCKFILE_EXTENSION) || fileName.endsWith(LOCK_DELETION_EXTENSION);
   }
 }

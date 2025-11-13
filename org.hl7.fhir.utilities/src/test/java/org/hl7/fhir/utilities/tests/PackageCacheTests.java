@@ -16,25 +16,26 @@ import org.junit.jupiter.api.Test;
 public class PackageCacheTests {
 
   @Test
-  public void testPath() throws IOException {
+  void testPath() throws IOException {
     FilesystemPackageCacheManager cache = new FilesystemPackageCacheManager.Builder().withTestingCacheFolder().build();
-    NpmPackage npm = cache.loadPackage(CommonPackages.ID_PUBPACK, CommonPackages.VER_PUBPACK);
+    NpmPackage packageToDelete = cache.loadPackage(CommonPackages.ID_PUBPACK, CommonPackages.VER_PUBPACK);
+    Assertions.assertNotNull(packageToDelete);
     cache.clear();
     List<String> list = cache.listPackages();
     if (!list.isEmpty()) {
       System.out.println("remaining packages: "+list);
     }
     Assertions.assertTrue(list.isEmpty(), "List should be true but is "+list);
-    npm = cache.loadPackage(CommonPackages.ID_PUBPACK, CommonPackages.VER_PUBPACK);
-    npm.loadAllFiles();
-    Assertions.assertNotNull(npm);
+    NpmPackage packageToTest = cache.loadPackage(CommonPackages.ID_PUBPACK, CommonPackages.VER_PUBPACK);
+    packageToTest.loadAllFiles();
+    Assertions.assertNotNull(packageToTest);
     File dir = ManagedFileAccess.file(Utilities.path("[tmp]", "cache"));
     if (dir.exists()) {
       FileUtilities.clearDirectory(dir.getAbsolutePath());
     } else {
       FileUtilities.createDirectory(dir.getAbsolutePath());
     }
-    npm.save(dir);
+    packageToTest.save(dir);
     NpmPackage npm2 = cache.loadPackage(CommonPackages.ID_PUBPACK, "file:" + dir.getAbsolutePath());
     Assertions.assertNotNull(npm2);
     list = cache.listPackages();
@@ -63,7 +64,7 @@ public class PackageCacheTests {
   public void testLastReleasedVersion() throws IOException {
     FilesystemPackageCacheManager cache = new FilesystemPackageCacheManager.Builder().withTestingCacheFolder().build();
     cache.clear();
-    Assertions.assertEquals("0.0.8", cache.loadPackage(CommonPackages.ID_PUBPACK, "0.0.8").version());
+    Assertions.assertEquals("0.2.3", cache.loadPackage(CommonPackages.ID_PUBPACK, "0.2.3").version());
     Assertions.assertEquals(CommonPackages.VER_PUBPACK, cache.loadPackage(CommonPackages.ID_PUBPACK).version());    
   }
   
