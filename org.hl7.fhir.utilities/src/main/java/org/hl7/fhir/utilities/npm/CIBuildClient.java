@@ -27,7 +27,7 @@ public class CIBuildClient {
   private final long ciQueryInterval;
 
   @Getter
-  private static long ciLastQueriedTimeStamp = 0;
+  private long ciLastQueriedTimeStamp = 0;
 
   @Getter
   private JsonArray ciBuildInfo;
