@@ -7,6 +7,7 @@ import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.model.ValidationContextUtilities;
 
 @Slf4j
+@Deprecated(since="2025-11-07")
 public class ValidationContextParamParser implements IParamParser<ValidationContext> {
 
   GlobalParametersParser globalParser = new GlobalParametersParser();

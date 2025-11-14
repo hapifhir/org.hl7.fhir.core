@@ -143,6 +143,7 @@ public class ValidatorCli {
       new RePackageTask(),
       new InstanceFactoryTask(),
       new HTTPServerTask(),
+      new HTTPClientTask(),
       defaultCliTask);
   }
 

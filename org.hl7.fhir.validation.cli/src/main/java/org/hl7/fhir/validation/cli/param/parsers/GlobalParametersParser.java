@@ -36,7 +36,7 @@ public class GlobalParametersParser implements IParamParser<Object> {
   @Override
   public void parseArgs(Arg[] args) {
     for (int i = 0; i < args.length; i++) {
-      if (args[i].equals(GlobalParametersParser.DEBUG)) {
+      if (args[i].getValue().equals(GlobalParametersParser.DEBUG)) {
         log.warn("Debugging support is now provided through the -debug-log and -trace-log CLI parameters. Use the -help option for detailed instructions.");
         args[i].setProcessed(true);
       } else if (Utilities.existsInList(args[i].getValue(),

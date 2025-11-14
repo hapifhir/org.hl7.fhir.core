@@ -88,6 +88,14 @@ public class Arg {
     return -1;
   }
 
+  public static void setProcessed(Arg[] args, String valueToMatch, boolean processed) {
+    for (Arg arg : args) {
+      if (arg.getValue().equals(valueToMatch)) {
+        arg.setProcessed(processed);
+      }
+    }
+  }
+
   public static Collection<String> getMultiValueParam(Arg[] args, String param) {
     final List<String> output = new LinkedList<>();
     for (int i = 0; i < args.length - 1; i++) {
