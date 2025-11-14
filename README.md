@@ -43,7 +43,7 @@ The following is an overview of modules used in this project:
 * **org.fhir.fhir.dstu2016may**: Object models and utilities for an early STU3 candidate still used by some implementers
 * **org.fhir.fhir.convertors**: Code to convert between versions, and other version independence code - uses all the above projects
 * **org.fhir.fhir.validation**: The FHIR Java validator (note: based on R5 internally, but validates all the above versions)
-* **org.fhir.fhir.validation.cli**: Holder project for releasing the FHIR validator as as single fat jar 
+* **org.fhir.fhir.validation.cli**: Holder project for releasing the FHIR validator as a single fat jar 
 
 ## Internationalization
 
@@ -259,7 +259,7 @@ For more detailed instructions on cutting a release, please read [the wiki][Link
 
 Have you found an issue? Do you have a feature request? Great! Submit it [here][Link-GithubIssues] and we'll try to fix it as soon as possible.
 
-This project is maintained by [Grahame Grieve][Link-grahameGithub], [James Agnew][Link-jamesGithub], [David Otasek][Link-davidGithub] and [Mark Iantorno][Link-markGithub] on behalf of the FHIR community.
+This project is maintained by [Grahame Grieve][Link-grahameGithub], [James Agnew][Link-jamesGithub], [David Otasek][Link-davidGithub], and [Mark Iantorno][Link-markGithub] on behalf of the FHIR community.
 
 
 [Link-ConfluenceValidator]: https://confluence.hl7.org/display/FHIR/Using+the+FHIR+Validator
