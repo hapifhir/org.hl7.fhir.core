@@ -153,29 +153,35 @@ public class CIBuildClient {
   }
 
   private void updateFromCIServer() throws IOException {
-    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), rootUrl + "/ig/qas.json?nocache=" + System.currentTimeMillis());
-    res.checkThrowException();
+    try {
+      HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), rootUrl + "/ig/qas.json?nocache=" + System.currentTimeMillis());
+      res.checkThrowException();
 
-    ciBuildInfo = (JsonArray) JsonParser.parse(FileUtilities.bytesToString(res.getContent()));
+      ciBuildInfo = (JsonArray) JsonParser.parse(FileUtilities.bytesToString(res.getContent()));
 
-    List<BuildRecord> builds = new ArrayList<>();
+      List<BuildRecord> builds = new ArrayList<>();
 
-    for (JsonElement n : ciBuildInfo) {
-      JsonObject j = (JsonObject) n;
-      if (j.has("url") && j.has("package-id") && j.asString("package-id").contains(".")) {
-        String packageUrl = j.asString("url");
-        if (packageUrl.contains("/ImplementationGuide/"))
-          packageUrl = packageUrl.substring(0, packageUrl.indexOf("/ImplementationGuide/"));
-        builds.add(new BuildRecord(packageUrl, j.asString("package-id"), getRepo(j.asString("repo")), readDate(j.asString("date"))));
+      for (JsonElement n : ciBuildInfo) {
+        JsonObject j = (JsonObject) n;
+        if (j.has("url") && j.has("package-id") && j.asString("package-id").contains(".")) {
+          String packageUrl = j.asString("url");
+          if (packageUrl.contains("/ImplementationGuide/"))
+            packageUrl = packageUrl.substring(0, packageUrl.indexOf("/ImplementationGuide/"));
+          builds.add(new BuildRecord(packageUrl, j.asString("package-id"), getRepo(j.asString("repo")), readDate(j.asString("date"))));
+        }
       }
-    }
-    Collections.sort(builds, new BuildRecordSorter());
-    for (BuildRecord build : builds) {
-      if (!ciPackageUrls.containsKey(build.getPackageId())) {
-        ciPackageUrls.put(build.getPackageId(), rootUrl + "/ig/" + build.getRepo());
+      Collections.sort(builds, new BuildRecordSorter());
+      for (BuildRecord build : builds) {
+        if (!ciPackageUrls.containsKey(build.getPackageId())) {
+          ciPackageUrls.put(build.getPackageId(), rootUrl + "/ig/" + build.getRepo());
+        }
       }
+    } catch (IOException e) {
+      ciLastQueriedTimeStamp = System.currentTimeMillis();
+      throw e;
+    } finally {
+      ciLastQueriedTimeStamp = System.currentTimeMillis();
     }
-    ciLastQueriedTimeStamp = System.currentTimeMillis();
   }
 
   private String getRepo(String path) {
