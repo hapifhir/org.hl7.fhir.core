@@ -17,7 +17,7 @@ public class JavaSystemProxyParamSetter {
   public static final String JAVA_DISABLED_PROXY_SCHEMES = "jdk.http.auth.proxying.disabledSchemes";
   public static final String JAVA_USE_SYSTEM_PROXIES = "java.net.useSystemProxies";
 
-  protected static void setJavaSystemProxyParams(String proxy, String httpsProxy, String proxyAuth) {
+  public static void setJavaSystemProxyParams(String proxy, String httpsProxy, String proxyAuth) {
     if (proxy != null) {
       setProxyHostSystemProperties(proxy, HTTP_PROXY_HOST, HTTP_PROXY_PORT);
     }
