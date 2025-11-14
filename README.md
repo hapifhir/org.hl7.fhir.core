@@ -17,9 +17,9 @@ Please maintain this README.md as a linkable document, as other documentation ma
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/hapifhir/org.hl7.fhir.core/badge)](https://scorecard.dev/viewer/?uri=github.com/hapifhir/org.hl7.fhir.core) [![CodeQL](https://github.com/hapifhir/org.hl7.fhir.core/actions/workflows/codeql.yml/badge.svg)](https://github.com/hapifhir/org.hl7.fhir.core/actions/workflows/codeql.yml) [![OWASP Security Scans](https://github.com/hapifhir/org.hl7.fhir.core/actions/workflows/owasp.yml/badge.svg)](https://github.com/hapifhir/org.hl7.fhir.core/actions/workflows/owasp.yml) [![Trivy Security Scans](https://github.com/hapifhir/org.hl7.fhir.core/actions/workflows/trivy.yml/badge.svg)](https://github.com/hapifhir/org.hl7.fhir.core/actions/workflows/trivy.yml)
 
 
-|                        CI Status (master)                        | 
-|:----------------------------------------------------------------:|
-| [![Build Status][Badge-BuildPipeline]][Link-AzureMasterPipeline] |
+|                        CI Status (master)                        |                   Current Release                    |           Snapshot           |
+|:----------------------------------------------------------------:|:----------------------------------------------------:|:----------------------------:|
+| [![Build Status][Badge-BuildPipeline]][Link-AzureMasterPipeline] | [![Badge-maven-release-core]][Link-GithubZipRelease] | ![Badge-maven-snapshot-core] |
 
 This java project provides:
 
