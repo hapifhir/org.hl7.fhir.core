@@ -563,5 +563,15 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     return null;
   }
 
+  public NamingSystem fetchNamingSystem(String url) {
+    for (NamingSystem ns : context.fetchResourcesByType(NamingSystem.class)) {
+      for (NamingSystemUniqueIdComponent id : ns.getUniqueId()) {
+        if (url.equals(id.getValue())) {
+          return ns;
+        }
+      }
+    }
+    return null;
+  }
 }
 
