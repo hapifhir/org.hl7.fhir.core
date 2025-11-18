@@ -578,19 +578,6 @@ public class ValueSetRenderer extends TerminologyRenderer {
     return count;
   }
 
-
-  private void addCSRef(XhtmlNode x, String url, String version, ValueSet vs) {
-    CodeSystem cs = getFetchedCodeSystem(url, version, vs);
-    if (cs == null) {
-      x.code(url);
-    } else if (cs.hasWebPath()) {
-      x.ah(context.prefixLocalHref(cs.getWebPath())).tx(cs.present());
-    } else {
-      x.code(url);
-      x.tx(" ("+cs.present()+")");
-    }
-  }
-
   @SuppressWarnings("rawtypes")
   private void generateVersionNotice(XhtmlNode x, ValueSetExpansionComponent expansion, Resource vs) {
 
