@@ -170,7 +170,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return canonicalTitle(r);
   }
 
-  public static class SourcedElementDefinition {
+  public enum RenderStyle { 
+ 
+  } 
+ 
+  public static class SourcedElementDefinition { 
     private StructureDefinition profile; 
     private ElementDefinition definition; 
      
@@ -202,7 +206,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
   } 
  
-  private enum ListItemStatus { New, Unchanged, Removed}
+  private enum ListItemStatus { New, Unchanged, Removed}; 
  
   private abstract class ItemWithStatus { 
     ListItemStatus status = ListItemStatus.New; // new, unchanged, removed     
@@ -241,8 +245,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         return false; 
       } 
     } 
-
-    @Override
+     
     public boolean add(T item) { 
       if (item != null) { 
         return super.add(item); 
@@ -1402,7 +1405,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             res.add(addCell(row, gen.new Cell(null, null, "?gen-e1? "+element.getType().get(0).getProfile(), null, null))); 
             res.add(generateDescription(status, gen, row, element, (ElementDefinition) element.getUserData(UserDataNames.SNAPSHOT_DERIVATION_POINTER), profile == null ? "" : profile.getUrl(), eurl, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot, mustSupport, allowSubRows, rc, inScopeElements, resource));
           } else { 
-            String name = element.hasSliceName() ? element.getSliceName() : urlFragmentOrTail(eurl);
+            String name = element.hasSliceName() ? element.getSliceName() : urltail(eurl); 
 //          disable 26-02-2025 GDG - this just makes things inconsistent, and why do this?  nameCell.getPieces().get(0).setText(name); 
             // left.getPieces().get(0).setReference((String) extDefn.getExtensionStructure().getTag("filename")); 
             nameCell.getPieces().get(0).setHint((context.formatPhrase(RenderingContext.STRUC_DEF_EX_URL, extDefn.getUrl()))); 
@@ -1524,7 +1527,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
  
-  private String urlFragmentOrTail(String path) {
+  private String urltail(String path) { 
     if (path.contains("#")) 
       return path.substring(path.lastIndexOf('#')+1); 
     if (path.contains("/")) 
