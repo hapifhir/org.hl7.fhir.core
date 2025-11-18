@@ -3136,19 +3136,6 @@ public class ProfileUtilities extends TranslatingUtilities {
     
   }
 
-
-//  private String describeExtension(ElementDefinition ed) {
-//    if (!ed.hasType() || !ed.getTypeFirstRep().hasProfile())
-//      return "";
-//    return "$"+urlTail(ed.getTypeFirstRep().getProfile());
-//  }
-//
-
-  private String urlTail(String profile) {
-    return profile.contains("/") ? profile.substring(profile.lastIndexOf("/")+1) : profile;
-  }
-
-
   private String checkName(String name) {
 //    if (name.contains("."))
 ////      throw new Exception("Illegal name "+name+": no '.'");
