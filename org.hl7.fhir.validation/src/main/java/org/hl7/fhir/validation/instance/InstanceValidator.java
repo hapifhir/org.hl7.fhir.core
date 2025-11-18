@@ -513,6 +513,24 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return false;
     }
 
+    @Override
+    public Base findContainingResource(Object appContext, Base item) {
+      if (item instanceof Element) {
+        Element element = (Element) item;
+        while (element != null && !(element.isResource() && element.getSpecial() != SpecialElement.CONTAINED)) {
+          element = element.getParentForValidator();
+        }
+        if (element != null) {
+          return element;
+        }
+      }
+      if (item instanceof Resource) {
+        return item;
+      }
+      // now it gets hard
+      return null; // for now
+    }
+
   }
   private FHIRPathEngine fpe;
 
@@ -8224,7 +8242,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     
     valContext.setProfile(profile);
-    
+
+    if ("bundle-observation-device-exists".equals(inv.getKey())) {
+      DebugUtilities.breakpoint();
+    }
     boolean invOK;
     String msg;
     try {
