@@ -592,4 +592,7 @@ public class Runner implements IHostApplicationServices {
   }
 
 
+  public Base findContainingResource(Object appContext, Base item) {
+    return null;
+  }
 }
