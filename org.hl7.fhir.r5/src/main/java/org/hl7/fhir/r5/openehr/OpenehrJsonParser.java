@@ -40,7 +40,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 
 import org.hl7.fhir.r5.formats.JsonCreator;
-import org.hl7.fhir.r5.formats.JsonParserBase;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.utilities.Utilities;
 
