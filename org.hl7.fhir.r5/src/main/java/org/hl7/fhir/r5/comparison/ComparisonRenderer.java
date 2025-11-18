@@ -384,4 +384,8 @@ public class ComparisonRenderer implements IHostApplicationServices {
     
   }
 
+
+  public Base findContainingResource(Object appContext, Base item) {
+    return null;
+  }
 }
