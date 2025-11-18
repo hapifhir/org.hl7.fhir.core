@@ -8243,9 +8243,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     
     valContext.setProfile(profile);
 
-    if ("bundle-observation-device-exists".equals(inv.getKey())) {
-      DebugUtilities.breakpoint();
-    }
     boolean invOK;
     String msg;
     try {
