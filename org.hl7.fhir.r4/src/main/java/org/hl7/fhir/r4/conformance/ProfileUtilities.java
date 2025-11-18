@@ -2935,7 +2935,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             generateDescription(gen, row, element, null, used.used, profile.getUrl(), eurl, profile, corePath,
                 imagePath, root, logicalModel, allInvariants, snapshot);
           } else {
-            String name = urltail(eurl);
+            String name = urlFragmentOrTail(eurl);
             left.getPieces().get(0).setText(name);
             // left.getPieces().get(0).setReference((String)
             // extDefn.getExtensionStructure().getTag("filename"));
@@ -3250,7 +3250,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       return null;
   }
 
-  private String urltail(String path) {
+  private String urlFragmentOrTail(String path) {
     if (path.contains("#"))
       return path.substring(path.lastIndexOf('#') + 1);
     if (path.contains("/"))
