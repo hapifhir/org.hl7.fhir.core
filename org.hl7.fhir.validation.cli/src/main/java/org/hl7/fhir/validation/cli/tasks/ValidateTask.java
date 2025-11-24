@@ -58,8 +58,8 @@ public class ValidateTask extends ValidationEngineTask {
 
   @Override
   public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
-
     if (validationContext.getExpansionParameters() != null) {
+      //TODO Get this from InstanceValidatorParameters
       validationEngine.loadExpansionParameters(validationContext.getExpansionParameters());
     }
     

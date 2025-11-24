@@ -15,6 +15,10 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
+import org.hl7.fhir.validation.cli.param.parsers.OutputParametersParser;
+import org.hl7.fhir.validation.cli.param.parsers.TransformLangParametersParser;
+import org.hl7.fhir.validation.cli.param.parsers.TxTestsParametersParser;
+import org.hl7.fhir.validation.cli.param.parsers.ValidationEngineParametersParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.special.TxTester;
@@ -46,7 +50,7 @@ public class TxTestsTask extends StandaloneTask{
 
   @Override
   public boolean shouldExecuteTask(@Nonnull String[] args) {
-    return Params.hasParam(args, Params.TX_TESTS);
+    return Params.hasParam(args, TxTestsParametersParser.TX_TESTS);
   }
 
   @Override
@@ -62,11 +66,11 @@ public class TxTestsTask extends StandaloneTask{
 
   @Override
   public void executeTask(@Nonnull String[] args) throws Exception {
-      String output = Params.getParam(args, Params.OUTPUT);
-      String version = Params.getParam(args, Params.TEST_VERSION);
-      final String tx = Params.getParam(args, Params.TERMINOLOGY);
-      final String filter = Params.getParam(args, Params.FILTER);
-      final String externals = Params.getParam(args, Params.EXTERNALS);
+      String output = Params.getParam(args, OutputParametersParser.OUTPUT);
+      String version = Params.getParam(args, TxTestsParametersParser.TEST_VERSION);
+      final String tx = Params.getParam(args, ValidationEngineParametersParser.TERMINOLOGY);
+      final String filter = Params.getParam(args, TxTestsParametersParser.FILTER);
+      final String externals = Params.getParam(args, TxTestsParametersParser.EXTERNALS);
       if (output == null ) {
         output = Utilities.path("[tmp]");
       }
@@ -74,12 +78,12 @@ public class TxTestsTask extends StandaloneTask{
         version = "current";
       }
       TxTester txTester = new TxTester(new TxTester.InternalTxLoader(version), tx, false, loadExternals(externals));
-      List<String> inputs = new ArrayList<>(Params.getMultiValueParam(args, Params.INPUT));
+      List<String> inputs = new ArrayList<>(Params.getMultiValueParam(args, TransformLangParametersParser.INPUT));
       for (String input : inputs) {
         txTester.addLoader(new TxTester.InternalTxLoader(input, true));
       }
 
-    Set<String> modeParams = new HashSet<>(Params.getMultiValueParam(args, Params.MODE));
+    Set<String> modeParams = new HashSet<>(Params.getMultiValueParam(args, TxTestsParametersParser.MODE));
     Set<String> modes = new HashSet<>();
     modes.add("general");
     for (String m : modeParams) {

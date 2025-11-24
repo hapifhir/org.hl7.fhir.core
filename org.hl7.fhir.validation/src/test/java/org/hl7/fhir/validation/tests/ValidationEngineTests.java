@@ -26,6 +26,7 @@ import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.service.StandAloneValidatorFetcher;
+import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -228,10 +229,10 @@ public class ValidationEngineTests {
   public void test301() throws Exception {
     if (!TestUtilities.silent)
       System.out.println("Test301: Validate observation301.xml against Core");
-    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, FhirPublication.STU3, "3.0.2");
+    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, FhirPublication.STU3, "3.0.2", new InstanceValidatorParameters().setAllowExampleUrls(true));
     CacheVerificationLogger logger = new CacheVerificationLogger();
     ve.getContext().getTxClientManager().getMasterClient().setLogger(logger);
-    ve.setAllowExampleUrls(true);
+
     if (!TestUtilities.silent)
       System.out.println("  .. load USCore");
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "observation301.xml"), null);
@@ -374,12 +375,12 @@ public class ValidationEngineTests {
 
   @Test
   public void testResolveAbsoluteValid() throws Exception {
-    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
+    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1", new InstanceValidatorParameters().setShowMessagesFromReferences(true));
     StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(ve.getPcm(), ve.getContext(), ve);
     ve.setFetcher(fetcher);
     ve.getContext().setLocator(fetcher);
     ve.setPolicyAdvisor(fetcher);
-    ve.setShowMessagesFromReferences(true);
+
     fetcher.setReferencePolicy(ReferenceValidationPolicy.CHECK_VALID);
     ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Observation.json")));
     ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Patient.json")));

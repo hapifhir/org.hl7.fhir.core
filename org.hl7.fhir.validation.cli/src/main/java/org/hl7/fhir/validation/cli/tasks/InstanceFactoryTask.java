@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.cli.tasks;
 
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.param.Params;
+import org.hl7.fhir.validation.cli.param.parsers.InstanceFactoryParametersParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.slf4j.Logger;
@@ -17,7 +18,7 @@ public class InstanceFactoryTask extends ValidationEngineTask {
 
   @Override
   public String getDisplayName() {
-    return "Excecute Instance Factory";
+    return "Execute Instance Factory";
   }
 
   @Override
@@ -32,7 +33,7 @@ public class InstanceFactoryTask extends ValidationEngineTask {
 
   @Override
   public boolean shouldExecuteTask(@Nonnull String[] args) {
-    return Params.hasParam(args, Params.FACTORY);
+    return Params.hasParam(args, InstanceFactoryParametersParser.FACTORY);
   }
 
   @Override

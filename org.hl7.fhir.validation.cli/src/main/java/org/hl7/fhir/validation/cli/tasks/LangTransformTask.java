@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.cli.tasks;
 
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.param.Params;
+import org.hl7.fhir.validation.cli.param.parsers.TransformLangParametersParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.service.utils.EngineMode;
@@ -33,7 +34,7 @@ public class LangTransformTask extends ValidationEngineTask {
 
   @Override
   public boolean shouldExecuteTask(@Nonnull String[] args) {
-    return Params.hasParam(args, Params.LANG_TRANSFORM);
+    return Params.hasParam(args, TransformLangParametersParser.LANG_TRANSFORM);
   }
 
   @Override

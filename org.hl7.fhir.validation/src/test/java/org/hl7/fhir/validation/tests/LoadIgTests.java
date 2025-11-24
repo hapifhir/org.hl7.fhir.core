@@ -24,7 +24,7 @@ public class LoadIgTests {
 
       ValidationEngine hl7Validator = new ValidationEngine.ValidationEngineBuilder().fromSource(definitions);
       hl7Validator.setDoNative(false);
-      hl7Validator.setAnyExtensionsAllowed(true);
+      hl7Validator.setAnyExtensionsAllowed(true); //
       hl7Validator.prepare();
       IgLoader igLoader = new IgLoader(hl7Validator.getPcm(), hl7Validator.getContext(), hl7Validator.getVersion(), true);
 

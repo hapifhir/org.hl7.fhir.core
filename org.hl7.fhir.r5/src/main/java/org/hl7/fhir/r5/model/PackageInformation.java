@@ -110,4 +110,8 @@ public class PackageInformation {
     boolean b = id.startsWith("hl7.fhir.r") && id.endsWith(".core");
     return b;
   }
+
+  public boolean isExtensionsPack() {
+    return id.equals("hl7.fhir.uv.extensions");
+  }
 }

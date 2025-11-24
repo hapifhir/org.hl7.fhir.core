@@ -14,23 +14,11 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.r5.model.Constants;
-import org.hl7.fhir.r5.model.ContactDetail;
-import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
-import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
-import org.hl7.fhir.r5.model.Reference;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceReferenceKind;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
@@ -340,7 +328,13 @@ public abstract class ResourceRenderer extends DataRenderer {
     String url = canonical.asStringValue();
     Resource target = context.getWorker().fetchResource(Resource.class, url, null, res.getResourceNative());
     if (target == null || !(target instanceof CanonicalResource)) {
-      x.code().tx(url);       
+      NamingSystem ns = context.getContextUtilities().fetchNamingSystem(url);
+      if (ns != null) {
+        x.code().tx(url);
+        x.tx(" ("+ns.present()+")");
+      } else {
+        x.code().tx(url);
+      }
     } else {
       CanonicalResource cr = (CanonicalResource) target;
       if (!target.hasWebPath()) {

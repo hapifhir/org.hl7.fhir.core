@@ -25,7 +25,7 @@ public class PackageValidator {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     
     PackageClient pc = new PackageClient(PackageServer.primaryServer());
-    for (PackageInfo t : pc.search(null, null, null, false)) {
+    for (PackageInfo t : pc.search(null, null, null, false, null)) {
       log.info("Check Package "+t.getId());
       List<PackageInfo> vl = pc.getVersions(t.getId());
       PackageInfo v = vl.get(vl.size()-1);

@@ -110,4 +110,9 @@ public class LiquidJsonTest extends BaseHostServices {
     // TODO Auto-generated method stub
     return false;
   }
+
+
+  public Base findContainingResource(Object appContext, Base item) {
+    return null;
+  }
 }

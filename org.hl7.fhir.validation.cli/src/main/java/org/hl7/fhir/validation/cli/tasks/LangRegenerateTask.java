@@ -5,6 +5,7 @@ import java.io.File;
 import org.hl7.fhir.utilities.i18n.POGenerator;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.param.Params;
+import org.hl7.fhir.validation.cli.param.parsers.LangRegenParametersParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.slf4j.Logger;
@@ -35,7 +36,7 @@ public class LangRegenerateTask extends ValidationEngineTask {
 
   @Override
   public boolean shouldExecuteTask(@Nonnull String[] args) {
-    return Params.hasParam(args, Params.LANG_REGEN);
+    return Params.hasParam(args, LangRegenParametersParser.LANG_REGEN);
   }
 
   @Override
@@ -45,7 +46,7 @@ public class LangRegenerateTask extends ValidationEngineTask {
 
   @Override
   public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
-    String core = validationContext.getLangRegenParam().get(0); 
+    String core = validationContext.getLangRegenParam().get(0);
     String igpub = validationContext.getLangRegenParam().get(1);
     String pascal = validationContext.getLangRegenParam().get(2);
     if (!new File(core).exists()) {

@@ -59,7 +59,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     XhtmlNode h2 = x.h2();
     h2.addText(spd.getName());
     StandardsStatus ss = ExtensionUtilities.getStandardsStatus(spd);
-    if (ss != context.getDefaultStandardsStatus()) {
+    if (context.isShowStandardsStatus() && ss != context.getDefaultStandardsStatus()) {
       genStandardsStatus(h2, ss);
     }
     XhtmlNode p =  x.para();

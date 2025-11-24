@@ -14,12 +14,12 @@ Please maintain this README.md as a linkable document, as other documentation ma
 --->
 
 # HAPI FHIR - HL7 FHIR Core Artifacts
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/hapifhir/org.hl7.fhir.core/badge)](https://scorecard.dev/viewer/?uri=github.com/hapifhir/org.hl7.fhir.core)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/hapifhir/org.hl7.fhir.core/badge)](https://scorecard.dev/viewer/?uri=github.com/hapifhir/org.hl7.fhir.core) [![CodeQL](https://github.com/hapifhir/org.hl7.fhir.core/actions/workflows/codeql.yml/badge.svg)](https://github.com/hapifhir/org.hl7.fhir.core/actions/workflows/codeql.yml) [![OWASP Security Scans](https://github.com/hapifhir/org.hl7.fhir.core/actions/workflows/owasp.yml/badge.svg)](https://github.com/hapifhir/org.hl7.fhir.core/actions/workflows/owasp.yml) [![Trivy Security Scans](https://github.com/hapifhir/org.hl7.fhir.core/actions/workflows/trivy.yml/badge.svg)](https://github.com/hapifhir/org.hl7.fhir.core/actions/workflows/trivy.yml)
 
 
-| CI Status (master) | 
-| :---: |
-| [![Build Status][Badge-BuildPipeline]][Link-AzureMasterPipeline] |
+|                        CI Status (master)                        |                   Current Release                    |           Snapshot           |
+|:----------------------------------------------------------------:|:----------------------------------------------------:|:----------------------------:|
+| [![Build Status][Badge-BuildPipeline]][Link-AzureMasterPipeline] | [![Badge-maven-release-core]][Link-GithubZipRelease] | ![Badge-maven-snapshot-core] |
 
 This java project provides:
 
@@ -43,7 +43,7 @@ The following is an overview of modules used in this project:
 * **org.fhir.fhir.dstu2016may**: Object models and utilities for an early STU3 candidate still used by some implementers
 * **org.fhir.fhir.convertors**: Code to convert between versions, and other version independence code - uses all the above projects
 * **org.fhir.fhir.validation**: The FHIR Java validator (note: based on R5 internally, but validates all the above versions)
-* **org.fhir.fhir.validation.cli**: Holder project for releasing the FHIR validator as as single fat jar 
+* **org.fhir.fhir.validation.cli**: Holder project for releasing the FHIR validator as a single fat jar 
 
 ## Internationalization
 
@@ -107,15 +107,23 @@ The built binary for the FHIR command-line validator is released through [GitHub
 All build artifacts are published on [Maven Central][Link-MavenCentral]. 
 
 ### Current Versions 
-| Project |                                      Current Release                                      |
-| :---: |:-----------------------------------------------------------------------------------------:|
-| org.hl7.fhir.validation.cli |         [![Release Artifacts][Badge-r5MavenCentralRelease]][Link-cliMavenCentralRelease]          |
-| org.hl7.fhir.validation |  [![Release Artifacts][Badge-validationMavenCentralRelease]][Link-validationMavenCentralRelease]  |
-| org.hl7.fhir.dstu2 |       [![Release Artifacts][Badge-dstu2MavenCentralRelease]][Link-dstu2MavenCentralRelease]       |
-| org.hl7.fhir.dstu2016may | [![Release Artifacts][Badge-dstu2016mayMavenCentralRelease]][Link-dstu2016mayMavenCentralRelease] |
-| org.hl7.fhir.dstu3 |       [![Release Artifacts][Badge-dstu3MavenCentralRelease]][Link-dstu3MavenCentralRelease]       |
-| org.hl7.fhir.r4 |          [![Release Artifacts][Badge-r4MavenCentralRelease]][Link-r4MavenCentralRelease]          |
-| org.hl7.fhir.r5 |          [![Release Artifacts][Badge-r5MavenCentralRelease]][Link-r5MavenCentralRelease]          |
+
+|          Artifact           |                                  Release                                   |                Snapshot                |
+|:---------------------------:|:--------------------------------------------------------------------------:|:--------------------------------------:|
+|      org.hl7.fhir.core      |           [![Badge-maven-release-core]][Link-maven-release-core]           |      ![Badge-maven-snapshot-core]      |
+|   org.hl7.fhir.convertors   |     [![Badge-maven-release-convertors]][Link-maven-release-convertors]     |   ![Badge-maven-snapshot-convertors]   |
+|     org.hl7.fhir.dstu2      |          [![Badge-maven-release-dstu2]][Link-maven-release-dstu2]          |     ![Badge-maven-snapshot-dstu2]      |
+|  org.hl7.fhir.dstu2016may   |    [![Badge-maven-release-dstu2016may]][Link-maven-release-dstu2016may]    |  ![Badge-maven-snapshot-dstu2016may]   |
+|     org.hl7.fhir.dstu3      |          [![Badge-maven-release-dstu3]][Link-maven-release-dstu3]          |     ![Badge-maven-snapshot-dstu3]      |
+| org.hl7.fhir.dstu3.support  |  [![Badge-maven-release-dstu3-support]][Link-maven-release-dstu3-support]  | ![Badge-maven-snapshot-dstu3-support]  |
+|     org.hl7.fhir.model      |          [![Badge-maven-release-model]][Link-maven-release-model]          |     ![Badge-maven-snapshot-model]      |
+|       org.hl7.fhir.r4       |             [![Badge-maven-release-r4]][Link-maven-release-r4]             |       ![Badge-maven-snapshot-r4]       |
+|      org.hl7.fhir.r4b       |            [![Badge-maven-release-r4b]][Link-maven-release-r4b]            |      ![Badge-maven-snapshot-r4b]       |
+|       org.hl7.fhir.r5       |             [![Badge-maven-release-r5]][Link-maven-release-r5]             |       ![Badge-maven-snapshot-r5]       |
+|    org.hl7.fhir.support     |        [![Badge-maven-release-support]][Link-maven-release-support]        |    ![Badge-maven-snapshot-support]     |
+|   org.hl7.fhir.utilities    |      [![Badge-maven-release-utilities]][Link-maven-release-utilities]      |   ![Badge-maven-snapshot-utilities]    |
+|   org.hl7.fhir.validation   |     [![Badge-maven-release-validation]][Link-maven-release-validation]     |   ![Badge-maven-snapshot-validation]   |
+
 
 To use the most recent SNAPSHOT builds of these artifacts in your project will need to add the following repository to your `pom.xml` or `build.gradle.kts` file.
 
@@ -146,12 +154,14 @@ repositories {
             includeModule("ca.uhn.hapi.fhir", "org.hl7.fhir.dstu2")
             includeModule("ca.uhn.hapi.fhir", "org.hl7.fhir.dstu2016may")
             includeModule("ca.uhn.hapi.fhir", "org.hl7.fhir.dstu3")
+            includeModule("ca.uhn.hapi.fhir", "org.hl7.fhir.dstu3.support")
+            includeModule("ca.uhn.hapi.fhir", "org.hl7.fhir.model")
             includeModule("ca.uhn.hapi.fhir", "org.hl7.fhir.r4")
             includeModule("ca.uhn.hapi.fhir", "org.hl7.fhir.r4b")
             includeModule("ca.uhn.hapi.fhir", "org.hl7.fhir.r5")
+            includeModule("ca.uhn.hapi.fhir", "org.hl7.fhir.support")
             includeModule("ca.uhn.hapi.fhir", "org.hl7.fhir.convertors")
             includeModule("ca.uhn.hapi.fhir", "org.hl7.fhir.validation")
-            includeModule("ca.uhn.hapi.fhir", "org.hl7.fhir.validation.cli")
         }
     }
 }
@@ -159,19 +169,19 @@ repositories {
 
 After adding the necessary repositories, you can include the libraries as follows:
 
-##### org.hl7.fhir.validation.cli
+##### org.hl7.fhir.validation
 ###### Maven
 ```xml
 <dependency>
     <groupId>ca.uhn.hapi.fhir</groupId>
-    <artifactId>org.hl7.fhir.validation.cli</artifactId>
+    <artifactId>org.hl7.fhir.validation</artifactId>
     <version>(latest version)</version>
 </dependency>
 ```
 
 ###### Gradle
 ```groovy
-compile group: 'ca.uhn.hapi.fhir', name: 'org.hl7.fhir.validation.cli', version: '(latest version)'
+compile group: 'ca.uhn.hapi.fhir', name: 'org.hl7.fhir.validation', version: '(latest version)'
 ```
 
 ##### org.hl7.fhir.dstu2
@@ -249,19 +259,12 @@ For more detailed instructions on cutting a release, please read [the wiki][Link
 
 Have you found an issue? Do you have a feature request? Great! Submit it [here][Link-GithubIssues] and we'll try to fix it as soon as possible.
 
-This project is maintained by [Grahame Grieve][Link-grahameGithub], [James Agnew][Link-jamesGithub], [David Otasek][Link-davidGithub] and [Mark Iantorno][Link-markGithub] on behalf of the FHIR community.
+This project is maintained by [Grahame Grieve][Link-grahameGithub], [James Agnew][Link-jamesGithub], [David Otasek][Link-davidGithub], and [Mark Iantorno][Link-markGithub] on behalf of the FHIR community.
 
 
 [Link-ConfluenceValidator]: https://confluence.hl7.org/display/FHIR/Using+the+FHIR+Validator
 
 [Link-SnapshotPipeline]: https://dev.azure.com/fhir-pipelines/fhir-core-library/_build/latest?definitionId=17&branchName=master
-[Link-dstu2MavenCentralRelease]: https://central.sonatype.com/artifact/ca.uhn.hapi.fhir/org.hl7.fhir.dstu2 "Maven Central Release"
-[Link-dstu2016mayMavenCentralRelease]: https://central.sonatype.com/artifact/ca.uhn.hapi.fhir/org.hl7.fhir.dstu2016may "Maven Central Release"
-[Link-dstu3MavenCentralRelease]: https://central.sonatype.com/artifact/ca.uhn.hapi.fhir/org.hl7.fhir.dstu3 "Maven Central Release"
-[Link-r4MavenCentralRelease]: https://central.sonatype.com/artifact/ca.uhn.hapi.fhir/org.hl7.fhir.r4 "Maven Central Release"
-[Link-r5MavenCentralRelease]: https://central.sonatype.com/artifact/ca.uhn.hapi.fhir/org.hl7.fhir.r5 "Maven Central Release"
-[Link-cliMavenCentralRelease]: https://github.com/hapifhir/org.hl7.fhir.core/releases/latest/download/validator_cli.jar
-[Link-validationMavenCentralRelease]: https://central.sonatype.com/artifact/ca.uhn.hapi.fhir/org.hl7.fhir.validation "Maven Central Release"
 
 [Link-AzureProject]: https://dev.azure.com/fhir-pipelines/fhir-core-library
 [Link-AzureMasterPipeline]: https://dev.azure.com/fhir-pipelines/fhir-core-library/_build/latest?definitionId=29&branchName=master
@@ -281,10 +284,49 @@ This project is maintained by [Grahame Grieve][Link-grahameGithub], [James Agnew
 
 [Badge-BuildPipeline]: https://dev.azure.com/fhir-pipelines/fhir-core-library/_apis/build/status/Master%20Branch%20Pipeline?branchName=master
 [Badge-SnapshotPipeline]: https://dev.azure.com/fhir-pipelines/fhir-core-library/_apis/build/status/Module%20SNAPSHOT%20Publisher?branchName=master
-[Badge-dstu2MavenCentralRelease]: https://img.shields.io/maven-central/v/ca.uhn.hapi.fhir/org.hl7.fhir.dstu2 "Maven Central Releases"
-[Badge-dstu2016mayMavenCentralRelease]: https://img.shields.io/maven-central/v/ca.uhn.hapi.fhir/org.hl7.fhir.dstu2016may "Maven Central Releases"
-[Badge-dstu3MavenCentralRelease]: https://img.shields.io/maven-central/v/ca.uhn.hapi.fhir/org.hl7.fhir.dstu3 "Maven Central Releases"
-[Badge-r4MavenCentralRelease]: https://img.shields.io/maven-central/v/ca.uhn.hapi.fhir/org.hl7.fhir.r4 "Maven Central Releases"
-[Badge-r5MavenCentralRelease]: https://img.shields.io/maven-central/v/ca.uhn.hapi.fhir/org.hl7.fhir.r5 "Maven Central Releases"
-[Badge-cliMavenCentralRelease]: https://img.shields.io/maven-central/v/ca.uhn.hapi.fhir/org.hl7.fhir.validation.cli "Maven Central Releases"
-[Badge-validationMavenCentralRelease]: https://img.shields.io/maven-central/v/ca.uhn.hapi.fhir/org.hl7.fhir.validation "Maven Central Releases"
+
+<!--- Maven Release Links --->
+[Link-maven-release-core]: https://central.sonatype.com/artifact/ca.uhn.hapi.fhir/org.hl7.fhir.core
+[Link-maven-release-convertors]: https://central.sonatype.com/artifact/ca.uhn.hapi.fhir/org.hl7.fhir.convertors
+[Link-maven-release-dstu2]: https://central.sonatype.com/artifact/ca.uhn.hapi.fhir/org.hl7.fhir.dstu2
+[Link-maven-release-dstu2016may]: https://central.sonatype.com/artifact/ca.uhn.hapi.fhir/org.hl7.fhir.dstu2016may
+[Link-maven-release-dstu3]: https://central.sonatype.com/artifact/ca.uhn.hapi.fhir/org.hl7.fhir.dstu3
+[Link-maven-release-dstu3-support]: https://central.sonatype.com/artifact/ca.uhn.hapi.fhir/org.hl7.fhir.dstu3.support
+[Link-maven-release-model]: https://central.sonatype.com/artifact/ca.uhn.hapi.fhir/org.hl7.fhir.model
+[Link-maven-release-r4]: https://central.sonatype.com/artifact/ca.uhn.hapi.fhir/org.hl7.fhir.r4
+[Link-maven-release-r4b]: https://central.sonatype.com/artifact/ca.uhn.hapi.fhir/org.hl7.fhir.r4b
+[Link-maven-release-r5]: https://central.sonatype.com/artifact/ca.uhn.hapi.fhir/org.hl7.fhir.r5
+[Link-maven-release-support]: https://central.sonatype.com/artifact/ca.uhn.hapi.fhir/org.hl7.fhir.support
+[Link-maven-release-utilities]: https://central.sonatype.com/artifact/ca.uhn.hapi.fhir/org.hl7.fhir.utilities
+[Link-maven-release-validation]: https://central.sonatype.com/artifact/ca.uhn.hapi.fhir/org.hl7.fhir.validation
+
+<!--- Maven Release Badges --->
+[Badge-maven-release-core]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.core%2Fmaven-metadata.xml
+[Badge-maven-release-convertors]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.convertors%2Fmaven-metadata.xml
+[Badge-maven-release-dstu2]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.dstu2%2Fmaven-metadata.xml
+[Badge-maven-release-dstu2016may]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.dstu2016may%2Fmaven-metadata.xml
+[Badge-maven-release-dstu3]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.dstu3%2Fmaven-metadata.xml
+[Badge-maven-release-dstu3-support]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.dstu3.support%2Fmaven-metadata.xml
+[Badge-maven-release-model]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.model%2Fmaven-metadata.xml
+[Badge-maven-release-r4]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.r4%2Fmaven-metadata.xml
+[Badge-maven-release-r4b]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.r4b%2Fmaven-metadata.xml
+[Badge-maven-release-r5]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.r5%2Fmaven-metadata.xml
+[Badge-maven-release-support]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.support%2Fmaven-metadata.xml
+[Badge-maven-release-utilities]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.utilities%2Fmaven-metadata.xml
+[Badge-maven-release-validation]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.validation%2Fmaven-metadata.xml
+
+<!--- Maven SNAPSHOT badges --->
+[Badge-maven-snapshot-core]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.core%2Fmaven-metadata.xml
+[Badge-maven-snapshot-convertors]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.convertors%2Fmaven-metadata.xml
+[Badge-maven-snapshot-dstu2]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.dstu2%2Fmaven-metadata.xml
+[Badge-maven-snapshot-dstu2016may]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.dstu2016may%2Fmaven-metadata.xml
+[Badge-maven-snapshot-dstu3]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.dstu3%2Fmaven-metadata.xml
+[Badge-maven-snapshot-dstu3-support]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.dstu3.support%2Fmaven-metadata.xml
+[Badge-maven-snapshot-model]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.model%2Fmaven-metadata.xml
+[Badge-maven-snapshot-r4]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.r4%2Fmaven-metadata.xml
+[Badge-maven-snapshot-r4b]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.r4b%2Fmaven-metadata.xml
+[Badge-maven-snapshot-r5]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.r5%2Fmaven-metadata.xml
+[Badge-maven-snapshot-support]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.support%2Fmaven-metadata.xml
+[Badge-maven-snapshot-utilities]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.utilities%2Fmaven-metadata.xml
+[Badge-maven-snapshot-validation]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.validation%2Fmaven-metadata.xml
+
