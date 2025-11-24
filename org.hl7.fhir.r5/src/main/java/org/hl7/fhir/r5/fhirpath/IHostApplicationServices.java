@@ -112,6 +112,17 @@ public interface IHostApplicationServices {
    */
   public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException;
 
+  /**
+   * given an item, return the resource that contains it.
+   *
+   * You can't tell this from the item itself
+   *
+   * @param appContext
+   * @param item
+   * @return
+   */
+  public Base findContainingResource(Object appContext, Base item);
+
   public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException;
 
   /*

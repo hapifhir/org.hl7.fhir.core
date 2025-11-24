@@ -1048,6 +1048,9 @@ public class LiquidEngine implements IHostApplicationServices {
   public FHIRPathEngine getEngine() {
     return engine;
   }
-  
-  
+
+
+  public Base findContainingResource(Object appContext, Base item) {
+    return null;
+  }
 }

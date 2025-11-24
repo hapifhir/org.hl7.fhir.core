@@ -570,7 +570,8 @@ public class ValueSetValidator extends BaseValidator {
       if (iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "invalid-code")) {
         // already handled.
       } else if (iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "invalid-display")) {
-        hint(errors, "2025-10-30", IssueType.INFORMATIONAL, stack, false, version == null ? I18nConstants.VALUESET_CODE_CONCEPT_HINT :  I18nConstants.VALUESET_CODE_CONCEPT_HINT_VER, display, system, version);
+        hint(errors, "2025-10-30", IssueType.INFORMATIONAL, stack, false,
+          version == null ? I18nConstants.VALUESET_CODE_CONCEPT_HINT :  I18nConstants.VALUESET_CODE_CONCEPT_HINT_VER, display, system, version, iss.getDetails().getText());
       } else {
         var validationMessage = buildValidationMessage(vv.getTxLink(), vv.getDiagnostics(), concept.line(), concept.col(), stack.getLiteralPath(), iss);
         errors.add(validationMessage);

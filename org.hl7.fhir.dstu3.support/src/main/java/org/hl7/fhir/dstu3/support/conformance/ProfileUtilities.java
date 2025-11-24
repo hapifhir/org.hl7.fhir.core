@@ -2090,7 +2090,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             row.getCells().add(gen.new Cell(null, null, "?? "+element.getType().get(0).getProfile(), null, null));
             generateDescription(gen, row, element, null, used.used, profile.getUrl(), element.getType().get(0).getProfile(), profile, corePath, imagePath, root, logicalModel, allInvariants);
           } else {
-            String name = urltail(element.getType().get(0).getProfile());
+            String name = urlFragmentOrTail(element.getType().get(0).getProfile());
             left.getPieces().get(0).setText(name);
             // left.getPieces().get(0).setReference((String) extDefn.getExtensionStructure().getTag("filename"));
             left.getPieces().get(0).setHint(translate("sd.table", "Extension URL")+" = "+extDefn.getUrl());
@@ -2271,7 +2271,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private String urltail(String path) {
+  private String urlFragmentOrTail(String path) {
     if (path.contains("#"))
       return path.substring(path.lastIndexOf('#')+1);
     if (path.contains("/"))
@@ -3135,19 +3135,6 @@ public class ProfileUtilities extends TranslatingUtilities {
     // second path - fix up any broken path based id references
     
   }
-
-
-//  private String describeExtension(ElementDefinition ed) {
-//    if (!ed.hasType() || !ed.getTypeFirstRep().hasProfile())
-//      return "";
-//    return "$"+urlTail(ed.getTypeFirstRep().getProfile());
-//  }
-//
-
-  private String urlTail(String profile) {
-    return profile.contains("/") ? profile.substring(profile.lastIndexOf("/")+1) : profile;
-  }
-
 
   private String checkName(String name) {
 //    if (name.contains("."))

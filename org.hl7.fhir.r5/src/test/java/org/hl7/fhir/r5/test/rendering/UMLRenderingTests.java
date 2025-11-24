@@ -131,7 +131,7 @@ public class UMLRenderingTests {
     }
     sd.setWebPath("http://test/path/"+sd.getId());
     ClassDiagramRenderer cdr = new ClassDiagramRenderer(source, dest, sd.getId(), null, rc, null);
-    return cdr.buildClassDiagram(sd);
+    return cdr.buildClassDiagram(sd, null);
   }
 
   private String makeProfileSvg(TestCasesSuiteTestComponent test) throws FHIRFormatError, IOException {
@@ -152,7 +152,7 @@ public class UMLRenderingTests {
     rc.getProfileUtilities().generateSnapshot(sdBase, sd, sd.getUrl(), "http://hl7.org/fhir/test", sd.getName());
     
     ClassDiagramRenderer cdr = new ClassDiagramRenderer(source, dest, sd.getId(), null, rc, null);
-    return cdr.buildConstraintDiagram(sd);
+    return cdr.buildConstraintDiagram(sd, null);
   }
 
   private String makeSummarySvg(TestCasesSuiteTestComponent test) throws Exception {
