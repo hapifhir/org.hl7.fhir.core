@@ -1,7 +1,5 @@
 package org.hl7.fhir.r4b.renderers;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,10 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -27,7 +23,6 @@ import org.hl7.fhir.r4b.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r4b.model.Coding;
 import org.hl7.fhir.r4b.model.ConceptMap;
 import org.hl7.fhir.r4b.model.DataType;
-import org.hl7.fhir.r4b.model.DomainResource;
 import org.hl7.fhir.r4b.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r4b.model.Extension;
 import org.hl7.fhir.r4b.model.ExtensionHelper;
@@ -56,7 +51,7 @@ import com.google.common.collect.Multimap;
 
 /**
  * Rendering framework:
- * 
+ * <p/>
  * See R5 rendering framework to render R4B resources
  * 
  */
@@ -384,18 +379,6 @@ public class ValueSetRenderer extends TerminologyRenderer {
       count = count + conceptCount(c.getContains());
     }
     return count;
-  }
-
-  private void addCSRef(XhtmlNode x, String url) {
-    CodeSystem cs = getContext().getWorker().fetchCodeSystem(url);
-    if (cs == null) {
-      x.code(url);
-    } else if (cs.hasUserData("path")) {
-      x.ah(cs.getUserString("path")).tx(cs.present());
-    } else {
-      x.code(url);
-      x.tx(" (" + cs.present() + ")");
-    }
   }
 
   @SuppressWarnings("rawtypes")
