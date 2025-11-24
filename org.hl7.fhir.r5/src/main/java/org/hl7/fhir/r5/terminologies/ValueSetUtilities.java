@@ -143,28 +143,21 @@ public class ValueSetUtilities extends TerminologyUtilities {
     return false;
   }
 
-  public static ValueSet makeShareable(ValueSet vs) {
+  public static ValueSet makeShareable(ValueSet vs, boolean extension) {
     if (!vs.hasExperimental()) {
       vs.setExperimental(false);
     }
-    if (!vs.hasMeta())
-      vs.setMeta(new Meta());
-    for (UriType t : vs.getMeta().getProfile()) 
-      if (t.getValue().equals("http://hl7.org/fhir/StructureDefinition/shareablevalueset"))
-        return vs;
-    vs.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareablevalueset"));
+    if (extension) {
+      if (!vs.hasMeta())
+        vs.setMeta(new Meta());
+      for (UriType t : vs.getMeta().getProfile())
+        if (t.getValue().equals("http://hl7.org/fhir/StructureDefinition/shareablevalueset"))
+          return vs;
+      vs.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareablevalueset"));
+    }
     return vs;
   }
 
-  public static boolean makeVSShareable(ValueSet vs) {
-    if (!vs.hasMeta())
-      vs.setMeta(new Meta());
-    for (UriType t : vs.getMeta().getProfile()) 
-      if (t.getValue().equals("http://hl7.org/fhir/StructureDefinition/shareablevalueset"))
-        return false;
-    vs.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareablevalueset"));
-    return true;
-  }
 
   public static void checkShareable(ValueSet vs) {
     if (!vs.hasMeta())

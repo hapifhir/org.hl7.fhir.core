@@ -88,18 +88,18 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
       for (ValueSetExpansionContainsComponent c : vso.getValueset().getExpansion().getContains()) {
         if (code.equals(c.getCode()) && (system == null || system.equals(c.getSystem())))
           return true;
-        if (codeinExpansion(c, system, code)) 
+        if (codeInExpansion(c, system, code))
           return true;
       }
     }
     return false;
   }
 
-  private boolean codeinExpansion(ValueSetExpansionContainsComponent cnt, String system, String code) {
+  private boolean codeInExpansion(ValueSetExpansionContainsComponent cnt, String system, String code) {
     for (ValueSetExpansionContainsComponent c : cnt.getContains()) {
       if (code.equals(c.getCode()) && system.equals(c.getSystem().toString()))
         return true;
-      if (codeinExpansion(c, system, code)) 
+      if (codeInExpansion(c, system, code))
         return true;
     }
     return false;
@@ -127,7 +127,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
     CodeSystem def = context.fetchCodeSystem(system);
     if (def != null && def.getContent() == CodeSystemContentMode.COMPLETE) {
       if (!def.getCaseSensitive()) {
-        // well, ok, it's not case sensitive - we'll check that too now
+        // well, ok, it's not case-sensitive - we'll check that too now
         for (ConceptReferenceComponent cc : vsi.getConcept())
           if (cc.getCode().equalsIgnoreCase(code)) {
             return false;

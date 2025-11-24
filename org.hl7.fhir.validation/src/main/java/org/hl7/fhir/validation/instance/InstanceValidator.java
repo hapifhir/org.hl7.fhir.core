@@ -513,6 +513,24 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return false;
     }
 
+    @Override
+    public Base findContainingResource(Object appContext, Base item) {
+      if (item instanceof Element) {
+        Element element = (Element) item;
+        while (element != null && !(element.isResource() && element.getSpecial() != SpecialElement.CONTAINED)) {
+          element = element.getParentForValidator();
+        }
+        if (element != null) {
+          return element;
+        }
+      }
+      if (item instanceof Resource) {
+        return item;
+      }
+      // now it gets hard
+      return null; // for now
+    }
+
   }
   private FHIRPathEngine fpe;
 
@@ -8224,7 +8242,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     
     valContext.setProfile(profile);
-    
+
     boolean invOK;
     String msg;
     try {
@@ -8247,12 +8265,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         msg = msg + " (log: " + msg + ")";
       }
       String msgId = null;
+      String mSrc = settings.isForPublication() ? inv.getHuman() + " ("+inv.getExpression()+")" : inv.getHuman();
       if (inv.hasSource()) {
-        msg = context.formatMessage(I18nConstants.INV_FAILED_SOURCE, inv.getKey() + ": '" + inv.getHuman()+"'", inv.getSource())+msg;
+        msg = context.formatMessage(I18nConstants.INV_FAILED_SOURCE, inv.getKey(), mSrc, inv.getSource())+msg;
         msgId = inv.getSource()+"#"+inv.getKey();
       } else {
         msgId = profile.getUrl()+"#"+inv.getKey();
-        msg = context.formatMessage(I18nConstants.INV_FAILED, inv.getKey() + ": '" + (settings.isForPublication() ? inv.getHuman() + " ("+inv.getExpression()+")" : inv.getHuman())+"'")+msg;
+        msg = context.formatMessage(I18nConstants.INV_FAILED, inv.getKey(), mSrc)+msg;
       }
       String invId = (inv.hasSource() ? inv.getSource() : profile.getUrl()) + "#"+inv.getKey();
       
