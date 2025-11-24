@@ -5660,7 +5660,11 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         Base res = null;
         if (s.startsWith("#")) {
           String t = s.substring(1);
-          Property p = context.rootResource.getChildByName("contained");
+          Base containingResource = hostServices.findContainingResource(context.appInfo, item); // this turns out to be complicated
+          if (containingResource == null) {
+            containingResource = context.getRootResource();
+          }
+          Property p = containingResource.getChildByName("contained");
           if (p != null) {
             for (Base c : p.getValues()) {
               if (t.equals(c.getIdBase())) {
