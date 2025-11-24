@@ -466,34 +466,22 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return null;
   }
 
-  public static CodeSystem makeShareable(@Nonnull CodeSystem cs) {
-    if (!cs.hasExperimental()) {
-      cs.setExperimental(false);
-    }
-
-    if (!cs.hasMeta())
-      cs.setMeta(new Meta());
-    for (UriType t : cs.getMeta().getProfile()) 
-      if ("http://hl7.org/fhir/StructureDefinition/shareablecodesystem".equals(t.getValue()))
-        return cs;
-    cs.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareablecodesystem"));
-    return cs;
-  }
-
-  public static boolean checkMakeShareable(@Nonnull CodeSystem cs) {
+  public static boolean makeShareable(@Nonnull CodeSystem cs, boolean extension) {
     boolean changed = false;
     if (!cs.hasExperimental()) {
       cs.setExperimental(false);
       changed = true;
     }
 
-    if (!cs.hasMeta())
-      cs.setMeta(new Meta());
-    for (UriType t : cs.getMeta().getProfile()) 
-      if ("http://hl7.org/fhir/StructureDefinition/shareablecodesystem".equals(t.getValue()))
-        return changed;
-    cs.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareablecodesystem"));
-    return true;
+    if (extension) {
+      if (!cs.hasMeta())
+        cs.setMeta(new Meta());
+      for (UriType t : cs.getMeta().getProfile())
+        if ("http://hl7.org/fhir/StructureDefinition/shareablecodesystem".equals(t.getValue()))
+          return changed;
+      cs.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareablecodesystem"));
+    }
+    return changed;
   }
 
   public static void setOID(@Nonnull CodeSystem cs, @Nonnull String oid) {
