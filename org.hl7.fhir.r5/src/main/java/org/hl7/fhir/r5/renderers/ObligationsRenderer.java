@@ -434,7 +434,7 @@ public class ObligationsRenderer extends Renderer {
       }
 
       XhtmlNode actorId = tr.td().style("font-size: 11px");
-      if (!ob.actors.isEmpty() || ob.compare.actors.isEmpty()) {
+      if (!ob.actors.isEmpty() ||  ob.compare == null || ob.compare.actors.isEmpty()) {
         boolean firstActor = true;
         for (CanonicalType anActor : ob.actors) {
           ActorDefinition ad = context.getContext().fetchResource(ActorDefinition.class, anActor.getCanonical());

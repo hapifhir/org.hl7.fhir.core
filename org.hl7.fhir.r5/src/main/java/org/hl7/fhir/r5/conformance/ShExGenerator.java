@@ -39,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.hl7.fhir.r5.elementmodel.TurtleParser;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
@@ -82,6 +83,8 @@ public class ShExGenerator {
   public boolean processConstraints = false;   // set to false - to skip processing constraints
 
   public ConstraintTranslationPolicy constraintPolicy = ConstraintTranslationPolicy.ALL;
+
+  private static String SHEX_VERSION = "2.2";
 
   private static String SHEX_TEMPLATE =
       "$header$\n" +
@@ -224,7 +227,7 @@ public class ShExGenerator {
   private static String CONCEPT_REFERENCES_TEMPLATE = "a NONLITERAL*;";
 
   // Untyped resource has the extra link entry
-  private static String RESOURCE_LINK_TEMPLATE = "fhir:link IRI?;";
+  private static String RESOURCE_LINK_TEMPLATE = "fhir:l IRI?;";
 
   // Extension template
   // No longer used -- we emit the actual definition
@@ -236,9 +239,9 @@ public class ShExGenerator {
   private static String TYPED_REFERENCE_TEMPLATE = "\n<$refType$Reference> CLOSED {" +
     "\n    fhir:Element.id @<id>?;" +
     "\n    fhir:Element.extension @<Extension>*;" +
-    "\n    fhir:link @<$refType$> OR CLOSED {a [fhir:$refType$]}?;" +
-    "\n    fhir:Reference.reference @<string>?;" +
-    "\n    fhir:Reference.display @<string>?;" +
+    "\n    fhir:l @<$refType$> OR CLOSED {a [fhir:$refType$]}?;" +
+    "\n    fhir:Reference.reference @<String>?;" +
+    "\n    fhir:Reference.display @<String>?;" +
     // "\n    fhir:index xsd:integer?" +
     "\n}";
 
@@ -397,7 +400,7 @@ public class ShExGenerator {
     String start_cmd;
     if(completeModel || structures.get(0).getKind().equals(StructureDefinition.StructureDefinitionKind.RESOURCE))
       start_cmd = completeModel? tmplt(ALL_START_TEMPLATE).render() :
-        tmplt(START_TEMPLATE).add("id", structures.get(0).getId()).render();
+        tmplt(START_TEMPLATE).add("id", TurtleParser.getClassName(structures.get(0).getId())).render();
     else
       start_cmd = "";
 
@@ -405,6 +408,8 @@ public class ShExGenerator {
       tmplt(HEADER_TEMPLATE).
         add("fhir", FHIR).
         add("fhirvs", FHIR_VS).render());
+
+    shex_def.add("header", "\n# ShEx Version " + SHEX_VERSION);
 
     Collections.sort(structures, new SortById());
     StringBuilder shapeDefinitions = new StringBuilder();
@@ -484,9 +489,10 @@ public class ShExGenerator {
       if (references.size() > 0) {
         shapeDefinitions.append("\n#---------------------- Reference Types -------------------\n");
         for (String r : references) {
-          shapeDefinitions.append("\n").append(tmplt(TYPED_REFERENCE_TEMPLATE).add("refType", r).render()).append("\n");
-          if (!"Resource".equals(r) && !known_resources.contains(r))
-            shapeDefinitions.append("\n").append(tmplt(TARGET_REFERENCE_TEMPLATE).add("refType", r).render()).append("\n");
+          var rClassName = TurtleParser.getClassName(r);
+          shapeDefinitions.append("\n").append(tmplt(TYPED_REFERENCE_TEMPLATE).add("refType", rClassName).render()).append("\n");
+          if (!"Resource".equals(rClassName) && !known_resources.contains(rClassName))
+            shapeDefinitions.append("\n").append(tmplt(TARGET_REFERENCE_TEMPLATE).add("refType", rClassName).render()).append("\n");
         }
       }
 
@@ -495,7 +501,7 @@ public class ShExGenerator {
           .add("resources", StringUtils.join(known_resources, "> OR\n\t@<")).render());
         List<String> all_entries = new ArrayList<String>();
         for (String kr : known_resources)
-          all_entries.add(tmplt(ALL_ENTRY_TEMPLATE).add("id", kr).render());
+          all_entries.add(tmplt(ALL_ENTRY_TEMPLATE).add("id", TurtleParser.getClassName(kr)).render());
         shapeDefinitions.append("\n").append(tmplt(ALL_TEMPLATE)
           .add("all_entries", StringUtils.join(all_entries, " OR\n\t")).render());
       }
@@ -524,7 +530,7 @@ public class ShExGenerator {
     StringBuffer allImports = new StringBuffer("");
     if (!imports.isEmpty()) {
       uniq_structures.forEach((StructureDefinition sdstruct) -> {
-          imports.removeIf(s -> s.contains(sdstruct.getName()));
+          imports.removeIf(s -> s.contains(TurtleParser.getClassName(sdstruct.getName())));
       });
 
       imports.sort(Comparator.comparingInt(String::length));
@@ -569,8 +575,9 @@ public class ShExGenerator {
     String sId = sd.getId();
 
     if (bd!=null) {
-      addImport("<" + bd + ">");
-      sId += "> EXTENDS @<" + bd;
+      var className = TurtleParser.getClassName(bd);
+      addImport("<" + className + ">");
+      sId += "> EXTENDS @<" + className;
     }
 
     return sId;
@@ -580,8 +587,9 @@ public class ShExGenerator {
     String bd = getBaseTypeName(ed);
     //if (bd != null  && !baseDataTypes.contains(bd)) {
     if (bd!=null) {
-      addImport("<" + bd + ">");
-      bd = "> EXTENDS @<" + bd;
+      var className = TurtleParser.getClassName(bd);
+      addImport("<" + className + ">");
+      bd = "> EXTENDS @<" + className;
     }
     return bd;
   }
@@ -602,12 +610,15 @@ public class ShExGenerator {
     //    if (sd.getName().equals("ActivityDefinition")){
     //      debug("ActivityDefinition found");
     //    }
-      if("Resource".equals(sd.getName())) {
+
+      var className = TurtleParser.getClassName(sd.getName());
+
+      if("Resource".equals(className)) {
         shape_defn = tmplt(RESOURCE_SHAPE_TEMPLATE);
-        known_resources.add(sd.getName());
+        known_resources.add(className);
         } else {
-        shape_defn = tmplt(SHAPE_DEFINITION_TEMPLATE).add("id", getExtendedType(sd));
-        known_resources.add(sd.getName());
+        shape_defn = tmplt(SHAPE_DEFINITION_TEMPLATE).add("id", TurtleParser.getClassName(getExtendedType(sd)));
+        known_resources.add(className);
 
         if (baseDataTypes.contains(sd.getType())) {
           shape_defn.add("resourceDecl", "\n");
@@ -622,7 +633,7 @@ public class ShExGenerator {
               rootTmpl = "\n";
 
             ST resource_decl = tmplt(RESOURCE_DECL_TEMPLATE).
-              add("id", sd.getId()).
+              add("id", TurtleParser.getClassName(sd.getId())).
               add("root", rootTmpl);
 
             shape_defn.add("resourceDecl", resource_decl.render());
@@ -749,9 +760,9 @@ public class ShExGenerator {
             continue;  // some erroneous context of use may use a URL; ignore them
           }
           String[] backRefs = toStore.split("\\.");
-          toStore = "a [fhir:" + backRefs[0] + "]";
+          toStore = "a [fhir:" + TurtleParser.getClassName(backRefs[0]) + "]";
           for (int i = 1; i < backRefs.length; i++)
-            toStore = "^fhir:" + backRefs[i] + " {" + toStore + "}";
+            toStore = "^fhir:" + TurtleParser.getClassName(backRefs[i]) + " {" + toStore + "}";
 
           if (!contextOfUse.contains(toStore)) {
             contextOfUse.add(toStore);
@@ -1391,7 +1402,8 @@ public class ShExGenerator {
 
           ed.getType().get(0).getTargetProfile().forEach((CanonicalType tps) -> {
             String els[] = tps.getValue().split("/");
-            refValues.add(els[els.length - 1]);
+            String shapeName = els[els.length - 1];
+            refValues.add(TurtleParser.getClassName(shapeName));
           });
         }
       }
@@ -1419,7 +1431,7 @@ public class ShExGenerator {
         oneOrMoreTypes.add(defnToStore);
     } else {
       if (!refChoices.isEmpty()) {
-        defn += " AND {fhir:link \n\t\t\t@<" +
+        defn += " AND {fhir:l \n\t\t\t@<" +
           refChoices.replaceAll("_OR_", "> OR \n\t\t\t@<") + "> ? }";
       }
     }
@@ -1501,7 +1513,7 @@ public class ShExGenerator {
     if(ed.hasFixed()) {
       addldef = tmplt(FIXED_VALUE_TEMPLATE).add("val", ed.getFixed().primitiveValue()).render();
     }
-    return tmplt(SIMPLE_ELEMENT_DEFN_TEMPLATE).add("typ", typ).add("vsdef", addldef).render();
+    return tmplt(SIMPLE_ELEMENT_DEFN_TEMPLATE).add("typ", TurtleParser.getClassName(typ)).add("vsdef", addldef).render();
   }
 
   private String vsprefix(String uri) {
@@ -1683,7 +1695,7 @@ public class ShExGenerator {
       }
 
       if (!refValues.isEmpty())
-        choiceEntries.add("(" + entry + " AND {fhir:link " + StringUtils.join(refValues, " OR \n\t\t\t ") + " }) ");
+        choiceEntries.add("(" + entry + " AND {fhir:l " + StringUtils.join(refValues, " OR \n\t\t\t ") + " }) ");
       else
         choiceEntries.add(entry);
     }
@@ -1728,7 +1740,7 @@ public class ShExGenerator {
     if (oneOrMoreType.indexOf(ONE_OR_MORE_CHOICES) != -1) {
       oomType = oneOrMoreType.replaceAll(ONE_OR_MORE_CHOICES, "_");
       origType = oneOrMoreType.split(ONE_OR_MORE_CHOICES)[0];
-      restriction = "AND {fhir:link \n\t\t\t@<";
+      restriction = "AND {fhir:l \n\t\t\t@<";
 
       String choices = oneOrMoreType.split(ONE_OR_MORE_CHOICES)[1];
       restriction += choices.replaceAll("_OR_", "> OR \n\t\t\t@<") + "> }";
@@ -1736,8 +1748,8 @@ public class ShExGenerator {
 
     origType = origType.replaceAll(ONE_OR_MORE_PREFIX, "");
 
-    one_or_more_type.add("oomType", oomType);
-    one_or_more_type.add("origType", origType);
+    one_or_more_type.add("oomType", TurtleParser.getClassName(oomType));
+    one_or_more_type.add("origType", TurtleParser.getClassName(origType));
     one_or_more_type.add("restriction", restriction);
     addImport(origType);
     addImport(restriction);
@@ -1755,7 +1767,7 @@ public class ShExGenerator {
     String path = ed.hasBase() ? ed.getBase().getPath() : ed.getPath();
     ST element_reference = tmplt(SHAPE_DEFINITION_TEMPLATE);
     element_reference.add("resourceDecl", "");  // Not a resource
-    element_reference.add("id", path + getExtendedType(ed));
+    element_reference.add("id", TurtleParser.getClassName(path + getExtendedType(ed)));
     element_reference.add("fhirType", " ");
     String comment = ed.getShort();
     element_reference.add("comment", comment == null? " " : "# " + comment);
@@ -1821,7 +1833,7 @@ public class ShExGenerator {
     ST shex_ref = tmplt(REFERENCE_DEFN_TEMPLATE);
 
     String ref = getTypeName(typ);
-    shex_ref.add("id", id);
+    shex_ref.add("id", TurtleParser.getClassName(id));
     shex_ref.add("ref", ref);
     references.add(ref);
     return shex_ref.render();

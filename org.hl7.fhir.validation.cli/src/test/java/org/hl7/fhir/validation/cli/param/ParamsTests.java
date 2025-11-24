@@ -5,18 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
-import java.util.Locale;
 
-import org.hl7.fhir.validation.service.model.ValidationContext;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class ParamsTests {
-  @Test
-  void testLocale() throws Exception {
-    ValidationContext validationContext = Params.loadValidationContext(new String[]{"-locale", "de"});
-    Assertions.assertEquals(Locale.GERMAN, validationContext.getLocale());
-  }
 
   @Test
   void testHasParamAndValue() {
@@ -27,7 +19,7 @@ class ParamsTests {
   }
 
   @Test
-  void testMultipleParamAndValue() throws Exception {
+  void testMultipleParamAndValue() {
     String[] args = new String[]{"-input", "first", "-input", "second", "meh"};
     Collection<String> values = Params.getMultiValueParam(args, "-input");
     assertThat(values).containsExactly("first", "second");

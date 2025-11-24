@@ -497,4 +497,7 @@ public class ValidationResult {
     }
   }
 
+  public boolean hasIssues() {
+    return issues != null && !issues.isEmpty();
+  }
 }
