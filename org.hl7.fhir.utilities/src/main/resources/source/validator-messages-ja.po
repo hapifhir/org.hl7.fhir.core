@@ -2254,12 +2254,12 @@ msgstr ""
 
 # INV_FAILED
 #: INV_FAILED
-msgid "Constraint failed: {0}"
-msgstr "!!ルール {0} が失敗しました"
+msgid "Constraint failed: {0}: ''{1}''"
+msgstr "!!!!ルール {0} が失敗しました"
 
 # INV_FAILED_SOURCE
 #: INV_FAILED_SOURCE
-msgid "Constraint failed: {0} (defined in {1})"
+msgid "Constraint failed: {0}: ''{1}'' (defined in {2})"
 msgstr ""
 
 # Illegal_path__in_differential_in__illegal_character_
@@ -4157,8 +4157,8 @@ msgstr "プロファイル {0} はタイプ {1} のためのものですが、 {
 
 # SD_ED_TYPE_PROFILE_WRONG_TARGET
 #: SD_ED_TYPE_PROFILE_WRONG_TARGET
-msgid "Profile {0} is for type {1}, which is not a {4} (which is required because the {3} element has type {2})"
-msgstr "プロファイル {0} はタイプ {1} のためのもので、これは {4} ではありません（これは必要です、なぜなら {3} 要素はタイプ {2} だからです）"
+msgid "Profile {0} is for type {1}, which is not a {4} (which is required because the {3} element has the type {2})"
+msgstr "!!プロファイル {0} はタイプ {1} のためのもので、これは {4} ではありません（これは必要です、なぜなら {3} 要素はタイプ {2} だからです）"
 
 # SD_ED_TYPE_PROFILE_WRONG_TYPE
 #: SD_ED_TYPE_PROFILE_WRONG_TYPE
@@ -6541,12 +6541,14 @@ msgstr "ValuSetのpathway {1}を処理中に{0}への循環参照が見つかり
 
 # VALUESET_CODE_CONCEPT_HINT
 #: VALUESET_CODE_CONCEPT_HINT
-msgid "The display ''{0}'' is not valid in the Code system ''{0}''. Note that the display in the ValueSet does not have to match; this check exists to help check that it''s not accidentally the wrong code"
+msgctxt "VALUESET_CODE_CONCEPT_HINT"
+msgid "{3}. Note that the display in the ValueSet does not have to match; this check exists to help check that it''s not accidentally the wrong code"
 msgstr ""
 
 # VALUESET_CODE_CONCEPT_HINT_VER
 #: VALUESET_CODE_CONCEPT_HINT_VER
-msgid "The display ''{0}'' is not valid in the Code system ''{0}'' version ''{2}''. Note that the display in the ValueSet does not have to match; this check exists to help check that it''s not accidentally the wrong code"
+msgctxt "VALUESET_CODE_CONCEPT_HINT_VER"
+msgid "{3}. Note that the display in the ValueSet does not have to match; this check exists to help check that it''s not accidentally the wrong code"
 msgstr ""
 
 # VALUESET_CONCEPT_DISPLAY_PRESENCE_MIXED

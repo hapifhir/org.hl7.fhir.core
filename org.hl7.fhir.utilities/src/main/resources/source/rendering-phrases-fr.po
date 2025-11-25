@@ -5618,7 +5618,7 @@ msgstr "Utilisé comme critère de déclenchement dans"
 # VS_ABSTRACT_CODE_HINT
 #: VS_ABSTRACT_CODE_HINT
 msgid "This code is not selectable (''Abstract'')"
-msgstr "Ce code n'est pas sélectionnable ("Abstrait")"
+msgstr "Ce code n'est pas sélectionnable (\"Abstrait\")"
 
 # VS_VERSION_BY_PACKAGE
 #: VS_VERSION_BY_PACKAGE

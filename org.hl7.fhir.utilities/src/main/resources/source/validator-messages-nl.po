@@ -2270,13 +2270,13 @@ msgstr "Ongeldige displayLanguage: ''{0}''"
 
 # INV_FAILED
 #: INV_FAILED
-msgid "Constraint failed: {0}"
-msgstr "Fout bij constraint: {0}"
+msgid "Constraint failed: {0}: ''{1}''"
+msgstr "!!Fout bij constraint: {0}"
 
 # INV_FAILED_SOURCE
 #: INV_FAILED_SOURCE
-msgid "Constraint failed: {0} (defined in {1})"
-msgstr "Constraint faalde: {0} (gedefinieerd in {1})"
+msgid "Constraint failed: {0}: ''{1}'' (defined in {2})"
+msgstr "!!Constraint faalde: {0} (gedefinieerd in {1})"
 
 # Illegal_path__in_differential_in__illegal_character_
 #: Illegal_path__in_differential_in__illegal_character_
@@ -4241,8 +4241,8 @@ msgstr "Profiel {0} is voor type {1}, met het {3} element heeft type {2}"
 
 # SD_ED_TYPE_PROFILE_WRONG_TARGET
 #: SD_ED_TYPE_PROFILE_WRONG_TARGET
-msgid "Profile {0} is for type {1}, which is not a {4} (which is required because the {3} element has type {2})"
-msgstr "Profiel {0} is voor type {1}, wat geen {4} is (welke wordt vereist om het {3} element type {2} heeft)"
+msgid "Profile {0} is for type {1}, which is not a {4} (which is required because the {3} element has the type {2})"
+msgstr "!!Profiel {0} is voor type {1}, wat geen {4} is (welke wordt vereist om het {3} element type {2} heeft)"
 
 # SD_ED_TYPE_PROFILE_WRONG_TYPE
 #: SD_ED_TYPE_PROFILE_WRONG_TYPE
@@ -6634,12 +6634,14 @@ msgstr "Recursieve verwijzing {0} gevonden bij verwerking van ValueSet met pathw
 
 # VALUESET_CODE_CONCEPT_HINT
 #: VALUESET_CODE_CONCEPT_HINT
-msgid "The display ''{0}'' is not valid in the Code system ''{0}''. Note that the display in the ValueSet does not have to match; this check exists to help check that it''s not accidentally the wrong code"
+msgctxt "VALUESET_CODE_CONCEPT_HINT"
+msgid "{3}. Note that the display in the ValueSet does not have to match; this check exists to help check that it''s not accidentally the wrong code"
 msgstr ""
 
 # VALUESET_CODE_CONCEPT_HINT_VER
 #: VALUESET_CODE_CONCEPT_HINT_VER
-msgid "The display ''{0}'' is not valid in the Code system ''{0}'' version ''{2}''. Note that the display in the ValueSet does not have to match; this check exists to help check that it''s not accidentally the wrong code"
+msgctxt "VALUESET_CODE_CONCEPT_HINT_VER"
+msgid "{3}. Note that the display in the ValueSet does not have to match; this check exists to help check that it''s not accidentally the wrong code"
 msgstr ""
 
 # VALUESET_CONCEPT_DISPLAY_SCT_TAG_MIXED
