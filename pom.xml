@@ -419,12 +419,6 @@
                         <redirectTestOutputToFile>false</redirectTestOutputToFile>
                         <!-- For JUnit5 use an excludedInSurefire tag to exclude a test from surefire executions -->
                         <excludedGroups>excludedInSurefire</excludedGroups>
-                        <includes>
-                            <include>**/Test*.java</include>
-                            <include>**/*Test.java</include>
-                            <include>**/*Tests.java</include>
-                            <include>**/*TestCase.java</include>
-                        </includes>
                     </configuration>
                 </plugin>
 
