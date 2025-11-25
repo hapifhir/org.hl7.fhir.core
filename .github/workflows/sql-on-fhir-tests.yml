@@ -1,0 +1,85 @@
+name: SQL on FHIR Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  test:
+    name: Run SQL on FHIR Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Harden the runner
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        with:
+          egress-policy: audit
+
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@7a6d8a8234af8eb26422e24e3006232cccaa061b # v4.6.0
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Run R4 SQL on FHIR tests
+        continue-on-error: true
+        run: |
+          mvn test -pl org.hl7.fhir.r4 -Dtest=SqlOnFhirRunnerTests
+
+      - name: Run R5 SQL on FHIR tests
+        continue-on-error: true
+        run: |
+          mvn test -pl org.hl7.fhir.r5 -Dtest=SqlOnFhirRunnerTests
+
+      - name: Collect test reports
+        if: always()
+        run: |
+          mkdir -p reports
+          if [ -f org.hl7.fhir.r4/target/sof-test-report.json ]; then
+            cp org.hl7.fhir.r4/target/sof-test-report.json reports/r4-sof-test-report.json
+          fi
+          if [ -f org.hl7.fhir.r5/target/sof-test-report.json ]; then
+            cp org.hl7.fhir.r5/target/sof-test-report.json reports/r5-sof-test-report.json
+          fi
+
+      - name: Upload test reports as artifacts
+        if: always()
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        with:
+          name: sql-on-fhir-test-reports
+          path: reports/
+          retention-days: 30
+
+      - name: Extract branch name
+        if: always()
+        id: extract_branch
+        env:
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
+            echo "branch_name=$GITHUB_HEAD_REF" >> $GITHUB_OUTPUT
+          else
+            echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Deploy to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e # v4.0.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./reports
+          publish_branch: gh-pages
+          destination_dir: sql-on-fhir/${{ steps.extract_branch.outputs.branch_name }}
+          keep_files: true

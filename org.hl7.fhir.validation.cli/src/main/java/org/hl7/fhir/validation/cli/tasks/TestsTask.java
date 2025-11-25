@@ -1,7 +1,8 @@
 package org.hl7.fhir.validation.cli.tasks;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.validation.service.model.ValidationContext;
+import org.hl7.fhir.validation.cli.param.parsers.TestsParametersParser;
+import org.hl7.fhir.validation.cli.param.parsers.ValidationEngineParametersParser;
 import org.hl7.fhir.validation.cli.Display;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.testexecutor.TestExecutor;
@@ -28,13 +29,8 @@ public class TestsTask extends StandaloneTask{
   }
 
   @Override
-  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
-    return shouldExecuteTask(args);
-  }
-
-  @Override
   public boolean shouldExecuteTask(@Nonnull String[] args) {
-    return Params.hasParam(args, Params.TEST);
+    return Params.hasParam(args, TestsParametersParser.TEST);
   }
 
   @Override
@@ -42,22 +38,18 @@ public class TestsTask extends StandaloneTask{
     Display.displayHelpDetails(logger,"help/tests.txt");
   }
 
-  @Override
-  public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
-      executeTask(args);
-    }
 
     @Override
   public void executeTask(@Nonnull String[] args) throws Exception {
-      final String testModuleParam = Params.getParam(args, Params.TEST_MODULES);
-      final String testClassnameFilter = Params.getParam(args, Params.TEST_NAME_FILTER);
-      final String testCasesDirectory = Params.getParam(args, Params.TEST);
+      final String testModuleParam = Params.getParam(args, TestsParametersParser.TEST_MODULES);
+      final String testClassnameFilter = Params.getParam(args, TestsParametersParser.TEST_NAME_FILTER);
+      final String testCasesDirectory = Params.getParam(args, TestsParametersParser.TEST);
       if (testCasesDirectory == null) {
         log.error("No fhir-test-cases directory provided. Required usage: -tests <fhir-test-cases-directory>");
         System.exit(1);
       }
 
-      final String txCacheDirectory = Params.getParam(args, Params.TERMINOLOGY_CACHE);
+      final String txCacheDirectory = Params.getParam(args, ValidationEngineParametersParser.TERMINOLOGY_CACHE);
       assert TestExecutorParams.isValidModuleParam(testModuleParam) : "Invalid test module param: " + testModuleParam;
       final String[] moduleNamesArg = TestExecutorParams.parseModuleParam(testModuleParam);
 

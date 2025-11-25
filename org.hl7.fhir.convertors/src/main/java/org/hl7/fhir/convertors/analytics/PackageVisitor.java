@@ -315,7 +315,7 @@ public class PackageVisitor {
 
   private Set<String> getAllPackages() throws IOException, ParserConfigurationException, SAXException {
     Set<String> list = new HashSet<>();
-    for (PackageInfo i : pc.search(null, null, null, false)) {
+    for (PackageInfo i : pc.search(null, null, null, false, null)) {
       list.add(i.getId());
     }    
     JsonObject json = JsonParser.parseObjectFromUrl("https://fhir.github.io/ig-registry/fhir-ig-list.json");

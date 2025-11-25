@@ -6,7 +6,7 @@
   "name" : "FHIRReferenceServerTerminologyCapabilities",
   "title" : "FHIR Reference Server Terminology Capability Statement",
   "status" : "active",
-  "date" : "2025-10-12T20:10:27.521Z",
+  "date" : "2025-11-23T19:00:03.982Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -1839,6 +1839,12 @@
   {
     "uri" : "http://snomed.info/sct",
     "version" : [{
+      "code" : "http://snomed.info/sct/449081005/version/20250510"
+    }]
+  },
+  {
+    "uri" : "http://snomed.info/sct",
+    "version" : [{
       "code" : "http://snomed.info/sct/45991000052106/version/20220531"
     }]
   },
@@ -1851,7 +1857,7 @@
   {
     "uri" : "http://snomed.info/sct",
     "version" : [{
-      "code" : "http://snomed.info/sct/554471000005108/version/20250331"
+      "code" : "http://snomed.info/sct/554471000005108/version/20250930"
     }]
   },
   {
@@ -2139,7 +2145,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/artifact-relationship-type",
     "version" : [{
-      "code" : "1.0.0"
+      "code" : "2.0.0"
     }]
   },
   {
@@ -2151,7 +2157,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/artifact-version-policy-codes",
     "version" : [{
-      "code" : "1.0.0"
+      "code" : "2.0.0"
     }]
   },
   {
@@ -2278,6 +2284,12 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/catalogType",
     "version" : [{
       "code" : "4.0.1"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/cdshooks-card-type",
+    "version" : [{
+      "code" : "1.0.0"
     }]
   },
   {
@@ -2559,7 +2571,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/condition-category",
     "version" : [{
-      "code" : "1.0.1"
+      "code" : "2.0.0"
     }]
   },
   {
@@ -2893,6 +2905,12 @@
     }]
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/crd-coverage-detail",
+    "version" : [{
+      "code" : "1.0.0"
+    }]
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/data-absent-reason",
     "version" : [{
       "code" : "1.0.0"
@@ -2948,6 +2966,18 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-priority",
+    "version" : [{
+      "code" : "1.0.0"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/deviceassociation-relationship",
+    "version" : [{
+      "code" : "1.0.0"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/deviceassociation-status-reason",
     "version" : [{
       "code" : "1.0.0"
     }]
@@ -3523,6 +3553,12 @@
     }]
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/group-code",
+    "version" : [{
+      "code" : "1.0.0"
+    }]
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/guide-parameter-code",
     "version" : [{
       "code" : "1.0.0"
@@ -3573,7 +3609,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/hl7-work-group",
     "version" : [{
-      "code" : "8.0.0"
+      "code" : "9.0.0"
     }]
   },
   {
@@ -3765,7 +3801,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/list-order",
     "version" : [{
-      "code" : "1.0.1"
+      "code" : "2.0.0"
     }]
   },
   {
@@ -4111,6 +4147,12 @@
     }]
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/nutritionintake-status-reason",
+    "version" : [{
+      "code" : "1.0.0"
+    }]
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/object-role",
     "version" : [{
       "code" : "1.1.0"
@@ -4125,7 +4167,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/observation-category",
     "version" : [{
-      "code" : "1.0.1"
+      "code" : "2.0.0"
     }]
   },
   {
@@ -4341,7 +4383,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
     "version" : [{
-      "code" : "1.1.0"
+      "code" : "2.0.0"
     }]
   },
   {
@@ -4465,6 +4507,12 @@
     }]
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/research-study-party-role",
+    "version" : [{
+      "code" : "1.0.0"
+    }]
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/research-study-phase",
     "version" : [{
       "code" : "1.0.0"
@@ -4498,12 +4546,18 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/research-study-reason-stopped",
     "version" : [{
       "code" : "4.0.1"
+    }]
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/research-study-status",
+    "version" : [{
+      "code" : "1.0.0"
     }]
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/research-subject-milestone",
     "version" : [{
-      "code" : "1.0.1"
+      "code" : "2.0.0"
     }]
   },
   {
@@ -7665,7 +7719,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0396",
     "version" : [{
-      "code" : "4.1.0"
+      "code" : "4.2.0"
     }]
   },
   {
@@ -11919,7 +11973,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/variable-role",
     "version" : [{
-      "code" : "2.0.0"
+      "code" : "2.0.1"
     }]
   },
   {

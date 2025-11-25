@@ -7055,7 +7055,94 @@ public PropertyComponent getProperty(String code) {
       return getSupplements().equals(cs.getUrl());
     }
   }
-  
+
+
+  public CodeSystem copyHeader() {
+    CodeSystem dst = new CodeSystem();
+    copyHeaderValues(dst);
+    return dst;
+  }
+
+  public void copyHeaderValues(CodeSystem dst) {
+    super.copyValues(dst);
+    dst.text = null; // todo: we don't want to copy that and then delete it
+    dst.url = url == null ? null : url.copy();
+    if (identifier != null) {
+      dst.identifier = new ArrayList<Identifier>();
+      for (Identifier i : identifier)
+        dst.identifier.add(i.copy());
+    };
+    dst.version = version == null ? null : version.copy();
+    dst.versionAlgorithm = versionAlgorithm == null ? null : versionAlgorithm.copy();
+    dst.name = name == null ? null : name.copy();
+    dst.title = title == null ? null : title.copy();
+    dst.status = status == null ? null : status.copy();
+    dst.experimental = experimental == null ? null : experimental.copy();
+    dst.date = date == null ? null : date.copy();
+    dst.publisher = publisher == null ? null : publisher.copy();
+    if (contact != null) {
+      dst.contact = new ArrayList<ContactDetail>();
+      for (ContactDetail i : contact)
+        dst.contact.add(i.copy());
+    };
+    dst.description = description == null ? null : description.copy();
+    if (useContext != null) {
+      dst.useContext = new ArrayList<UsageContext>();
+      for (UsageContext i : useContext)
+        dst.useContext.add(i.copy());
+    };
+    if (jurisdiction != null) {
+      dst.jurisdiction = new ArrayList<CodeableConcept>();
+      for (CodeableConcept i : jurisdiction)
+        dst.jurisdiction.add(i.copy());
+    };
+    dst.purpose = purpose == null ? null : purpose.copy();
+    dst.copyright = copyright == null ? null : copyright.copy();
+    dst.copyrightLabel = copyrightLabel == null ? null : copyrightLabel.copy();
+    dst.approvalDate = approvalDate == null ? null : approvalDate.copy();
+    dst.lastReviewDate = lastReviewDate == null ? null : lastReviewDate.copy();
+    dst.effectivePeriod = effectivePeriod == null ? null : effectivePeriod.copy();
+    if (topic != null) {
+      dst.topic = new ArrayList<CodeableConcept>();
+      for (CodeableConcept i : topic)
+        dst.topic.add(i.copy());
+    };
+    if (author != null) {
+      dst.author = new ArrayList<ContactDetail>();
+      for (ContactDetail i : author)
+        dst.author.add(i.copy());
+    };
+    if (editor != null) {
+      dst.editor = new ArrayList<ContactDetail>();
+      for (ContactDetail i : editor)
+        dst.editor.add(i.copy());
+    };
+    if (reviewer != null) {
+      dst.reviewer = new ArrayList<ContactDetail>();
+      for (ContactDetail i : reviewer)
+        dst.reviewer.add(i.copy());
+    };
+    if (endorser != null) {
+      dst.endorser = new ArrayList<ContactDetail>();
+      for (ContactDetail i : endorser)
+        dst.endorser.add(i.copy());
+    };
+    if (relatedArtifact != null) {
+      dst.relatedArtifact = new ArrayList<RelatedArtifact>();
+      for (RelatedArtifact i : relatedArtifact)
+        dst.relatedArtifact.add(i.copy());
+    };
+    dst.caseSensitive = caseSensitive == null ? null : caseSensitive.copy();
+    dst.valueSet = valueSet == null ? null : valueSet.copy();
+    dst.hierarchyMeaning = hierarchyMeaning == null ? null : hierarchyMeaning.copy();
+    dst.compositional = compositional == null ? null : compositional.copy();
+    dst.versionNeeded = versionNeeded == null ? null : versionNeeded.copy();
+    dst.content = content == null ? null : content.copy();
+    dst.supplements = supplements == null ? null : supplements.copy();
+    dst.count = count == null ? null : count.copy();
+  }
+
+
 // end addition
 
 

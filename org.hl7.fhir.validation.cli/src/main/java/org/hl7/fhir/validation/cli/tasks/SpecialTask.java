@@ -2,7 +2,7 @@ package org.hl7.fhir.validation.cli.tasks;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
-import org.hl7.fhir.validation.service.model.ValidationContext;
+import org.hl7.fhir.validation.cli.param.parsers.SpecialParametersParser;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.special.R4R5MapTester;
 import org.slf4j.Logger;
@@ -27,13 +27,8 @@ public class SpecialTask extends StandaloneTask{
   }
 
   @Override
-  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
-    return shouldExecuteTask(args);
-  }
-
-  @Override
   public boolean shouldExecuteTask(@Nonnull String[] args) {
-    return Params.hasParam(args, Params.SPECIAL);
+    return Params.hasParam(args, SpecialParametersParser.SPECIAL);
   }
 
   @Override
@@ -41,18 +36,13 @@ public class SpecialTask extends StandaloneTask{
 
   }
 
-  @Override
-  public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
-    executeTask(args);
-  }
-
     @Override
   public void executeTask(@Nonnull String[] args) throws Exception {
-    String specialMode = Params.getParam(args, Params.SPECIAL);
+    String specialMode = Params.getParam(args, SpecialParametersParser.SPECIAL);
     if ("r4r5tests".equals(specialMode)) {
-      final String target = Params.getParam(args, Params.TARGET);
-      final String source = Params.getParam(args, Params.SOURCE);
-      final String filter = Params.getParam(args, Params.FILTER);
+      final String target = Params.getParam(args, SpecialParametersParser.TARGET);
+      final String source = Params.getParam(args, SpecialParametersParser.SOURCE);
+      final String filter = Params.getParam(args, SpecialParametersParser.FILTER);
       if (ManagedFileAccess.file(target).exists()) {
         new R4R5MapTester().testMaps(target, source, filter);
       }
