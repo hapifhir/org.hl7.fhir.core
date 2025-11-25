@@ -46,11 +46,10 @@ public class LangRegenerateTask extends StandaloneTask {
     Arg[] args = Arg.of(stringArgs);
     globalParametersParser.parseArgs(args);
     langRegenParametersParser.parseArgs(args);
-    LangRegenParameters langRegenParameters = new LangRegenParameters();
 
-    String core = langRegenParameters.getLangRegenParam().get(0);
-    String igpub = langRegenParameters.getLangRegenParam().get(1);
-    String pascal = langRegenParameters.getLangRegenParam().get(2);
+    String core = langRegenParametersParser.getParameterObject().getLangRegenParam().get(0);
+    String igpub = langRegenParametersParser.getParameterObject().getLangRegenParam().get(1);
+    String pascal = langRegenParametersParser.getParameterObject().getLangRegenParam().get(2);
     if (!new File(core).exists()) {
       throw new Error("Did not find fhir hapi core source from https://github.com/hapifhir/org.hl7.fhir.core at "+core);      
     }
