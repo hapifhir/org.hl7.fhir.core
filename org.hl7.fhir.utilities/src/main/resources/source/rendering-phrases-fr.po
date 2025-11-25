@@ -2787,8 +2787,8 @@ msgstr "Les ressources suivantes sont uniquement dans la version {0}"
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
-msgstr "Les packages pour <a href=\"{0}\">R4 ({1}.r4)</a> et <a href=\\"{2}\\">R4B ({3}.r4b)</a> sont disponibles."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\"{2}\">R4B ({3}.r4b)</a> are available."
+msgstr "Les packages pour <a href=\"{0}\">R4 ({1}.r4)</a> et <a href=\"{2}\">R4B ({3}.r4b)</a> sont disponibles."
 
 # R44B_PROBLEMS
 #: R44B_PROBLEMS
