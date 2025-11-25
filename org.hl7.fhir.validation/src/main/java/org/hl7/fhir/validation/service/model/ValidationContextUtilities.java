@@ -1,6 +1,7 @@
 package org.hl7.fhir.validation.service.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -41,6 +42,7 @@ public class ValidationContextUtilities {
     validationContext.setNoExtensibleBindingMessages(validationEngineParameters.isNoExtensibleBindingMessages());
     validationContext.setShowTimes(validationEngineParameters.isShowTimes());
     validationContext.setMatchetypes(new ArrayList<>(validationEngineParameters.getMatchetypes()));
+    validationContext.setLocations(new HashMap<>(validationEngineParameters.getLocations()));
   }
 
   public static void addWatchParameters(ValidationContext validationContext, WatchParameters watchParameters) {
@@ -176,6 +178,7 @@ public class ValidationContextUtilities {
     validationEngineParameters.setNoExtensibleBindingMessages(validationContext.isNoExtensibleBindingMessages());
     validationEngineParameters.setShowTimes(validationContext.isShowTimes());
     validationEngineParameters.setMatchetypes(new ArrayList<>(validationContext.getMatchetypes()));
+    validationEngineParameters.setLocations(new HashMap<>(validationContext.getLocations()));
     return validationEngineParameters;
   }
 

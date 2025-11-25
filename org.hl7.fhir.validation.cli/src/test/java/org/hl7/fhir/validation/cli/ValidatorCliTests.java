@@ -8,15 +8,16 @@ import static org.mockito.Mockito.*;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.service.model.ValidationContext;
+import org.hl7.fhir.validation.service.ValidateSourceParameters;
+import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.service.ValidationService;
-import org.hl7.fhir.validation.service.ValidatorWatchMode;
 import org.hl7.fhir.validation.cli.tasks.*;
+import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,17 @@ import javax.annotation.Nonnull;
 @ExtendWith(MockitoExtension.class)
 class ValidatorCliTests {
 
+  /**
+   * This is called to avoid actual execution of some long running tasks that slow down these tests.
+   *
+   * @param usesInstanceValidatorParameters if the task parses and uses instanceValidatorParameters
+   * @throws Exception won't be thrown but is required
+   */
+  void mockServiceCalls(boolean usesInstanceValidatorParameters) throws Exception {
+    validationService.determineVersion(Collections.EMPTY_LIST, Collections.EMPTY_LIST, false, false);
+    validationService.initializeValidator(new ValidationEngineParameters(), usesInstanceValidatorParameters ? new InstanceValidatorParameters() : null, "", new TimeTracker(), new ArrayList<>());
+  }
+
   @Mock
   ValidationService validationService;
 
@@ -44,16 +56,20 @@ class ValidatorCliTests {
   @Spy
   HTTPServerTask serverTask =  new HTTPServerTask() {
     @Override
-    public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
+    public void executeTask(@Nonnull ValidationService validationService, @Nonnull String[] stringArgs) throws Exception {
       // We're not testing the task itself, just how ValidatorCli decides to execute it
     }
   };
+
+  @Spy
+  HTTPClientTask clientTask;
 
   @Spy
   CompileTask compileTask;
 
   @Spy
   FhirpathTask fhirpathTask;
+
   @Spy
   InstallTask installTask;
 
@@ -63,7 +79,7 @@ class ValidatorCliTests {
   @Spy
   LangRegenerateTask langRegenTask = new LangRegenerateTask(){
   @Override
-  public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
+  public void executeTask(@Nonnull String[] args) throws Exception {
     // We're not testing the task itself, just how ValidatorCli decides to execute it
   }
   };
@@ -100,7 +116,7 @@ class ValidatorCliTests {
     }
   };
   
-@Spy
+  @Spy
   AiTestsTask aiTestsTask = new AiTestsTask() {
     @Override
     public void executeTask(@Nonnull String[] args) {
@@ -119,10 +135,10 @@ class ValidatorCliTests {
   CodeGenTask codeGenTask;
 
   @Spy
-  RePackageTask txPackTask = new RePackageTask() {
+  RePackageTask rePackageTask = new RePackageTask() {
     @Override
-    public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) {
-      // We're not testing the task itself, just how ValidatorCli decides to execute it
+    public void executeTask(@Nonnull ValidationService validationService, @Nonnull String[] stringArgs) throws Exception {
+      mockServiceCalls(true);
     }
   };
 
@@ -132,8 +148,8 @@ class ValidatorCliTests {
   @Spy
   ScanTask scanTask = new ScanTask() {
     @Override
-    public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) {
-      // We're not testing the task itself, just how ValidatorCli decides to execute it
+    public void executeTask(@Nonnull ValidationService validationService, @Nonnull String[] stringArgs) throws Exception {
+      mockServiceCalls(false);
     }
   };
   @Spy
@@ -168,9 +184,10 @@ class ValidatorCliTests {
       transformTask,
       versionTask,
       codeGenTask,
-      txPackTask,
+      rePackageTask,
       instanceFactoryTask,
       serverTask,
+      clientTask,
       //validate is the default
       validateTask
     );
@@ -185,9 +202,13 @@ class ValidatorCliTests {
     });
   }
 
-  public ValidatorCli mockValidatorCliWithService() throws Exception {
-    when(validationService.determineVersion(any(ValidationContext.class))).thenReturn("5.0.1");
-    when(validationService.initializeValidator(Mockito.any(ValidationContext.class), anyString(), any(org.hl7.fhir.utilities.TimeTracker.class))).thenReturn(validationEngine);
+  public ValidatorCli mockValidatorCliWithService(boolean usesInstanceValidatorParams) throws Exception {
+    when(validationService.determineVersion(anyList(), anyList(), anyBoolean(), anyBoolean())).thenReturn("5.0.1");
+    if (usesInstanceValidatorParams) {
+      when(validationService.initializeValidator(any(ValidationEngineParameters.class), any(InstanceValidatorParameters.class), anyString(), any(TimeTracker.class), anyList())).thenReturn(validationEngine);
+    } else {
+      when(validationService.initializeValidator(any(ValidationEngineParameters.class), isNull(), anyString(), any(TimeTracker.class), anyList())).thenReturn(validationEngine);
+    }
     return mockValidatorCli();
   }
 
@@ -216,7 +237,6 @@ class ValidatorCliTests {
         Map.entry("-fhirpath Patient.id", fhirpathTask),
         Map.entry("-install", installTask),
         Map.entry("-lang-transform dummyLang", langTransformTask),
-        Map.entry("-lang-regen arg1 arg2 arg3", langRegenTask),
         Map.entry("-narrative", narrativeTask),
         Map.entry("-scan", scanTask),
         Map.entry("-snapshot", snapshotTask),
@@ -224,17 +244,19 @@ class ValidatorCliTests {
         Map.entry("-transform dummyFile.map", transformTask),
         Map.entry("-to-version 5.0", versionTask),
         Map.entry("-codegen", codeGenTask),
-        Map.entry("-tx-pack package-one,package-two", txPackTask),
+        Map.entry("-tx-pack package-one,package-two", rePackageTask),
         Map.entry("-factory source1", instanceFactoryTask),
         Map.entry("-server", serverTask)
       );
 
       for (Map.Entry<String, ValidationEngineTask> entry : argsAndTasks.entrySet()) {
         String[] args = entry.getKey().split("\\s");
-
-        ValidatorCli cli = mockValidatorCliWithService();
-        cli.readGlobalParamsAndExecuteTask(args);
-        Mockito.verify(entry.getValue()).executeTask(same(validationService), eq(args));
+        if (entry.getKey().equals("-to-version 5.0")) {
+          System.out.println(Arrays.toString(args));
+          ValidatorCli cli = mockValidatorCliWithService(entry.getValue().usesInstanceValidatorParameters());
+          cli.readGlobalParamsAndExecuteTask(args);
+          Mockito.verify(entry.getValue()).executeTask(same(validationService), eq(args));
+        }
       }
   }
 
@@ -244,13 +266,11 @@ class ValidatorCliTests {
   void defaultTaskSelectionTest() throws Exception {
     final String[] args = new String[]{"dummyFile.json"};
 
-    ValidatorCli cli = mockValidatorCliWithService();
-    ValidatorWatchMode watchMode = ValidatorWatchMode.NONE;
-    int watchScanDelay = 1000;
-    int watchSettleTime = 100;
+    ValidatorCli cli = mockValidatorCliWithService(validateTask.usesInstanceValidatorParameters());
 
     cli.readGlobalParamsAndExecuteTask(args);
-    Mockito.verify(validationService).validateSources(any(ValidationContext.class), same(validationEngine), eq(watchMode), eq(watchScanDelay), eq(watchSettleTime));
+    Mockito.verify(validationService).validateSources(
+      same(validationEngine),any(ValidateSourceParameters.class));
   }
 
   @Test
@@ -260,7 +280,9 @@ class ValidatorCliTests {
       "-preload-cache", preloadCacheTask,
       "-aiTests", aiTestsTask,
       "-special", specialTask,
-      "-tests", testsTask
+      "-tests", testsTask,
+      "-lang-regen arg1 arg2 arg3", langRegenTask,
+      "-client", clientTask
     );
 
     for (Map.Entry<String, StandaloneTask> entry : argsAndTasks.entrySet()) {
@@ -274,21 +296,21 @@ class ValidatorCliTests {
   @Test
   void inferredCodeGenTest() throws Exception{
     final String[] args = new String[]{"-package-name", "mypackage"};
-    ValidatorCli cli = mockValidatorCliWithService();
+    ValidatorCli cli = mockValidatorCliWithService(codeGenTask.usesInstanceValidatorParameters());
     cli.readGlobalParamsAndExecuteTask(args);
-    Mockito.verify(codeGenTask).executeTask(same(validationService), same(validationEngine), any(ValidationContext.class), eq(args));
+    Mockito.verify(codeGenTask).executeTask(same(validationService), eq(args));
   }
 
   @Test
   void rePackageTaskTest() throws Exception{
     final String[] args = new String[]{"-re-package", "-package-name", "mypackage"};
 
-    ValidatorCli cli = mockValidatorCliWithService();
+    ValidatorCli cli = mockValidatorCli();
     cli.readGlobalParamsAndExecuteTask(args);
-    Mockito.verify(txPackTask).executeTask(same(validationService), same(validationEngine), any(ValidationContext.class), eq(args));
+    Mockito.verify(rePackageTask).executeTask(same(validationService), eq(args));
 
     // Make sure -package-name doesn't cause codeGenTask execution
-    Mockito.verify(codeGenTask, never()).executeTask(same(validationService), same(validationEngine), any(ValidationContext.class), eq(args));
+    Mockito.verify(codeGenTask, never()).executeTask(same(validationService), eq(args));
   }
 
   @Test

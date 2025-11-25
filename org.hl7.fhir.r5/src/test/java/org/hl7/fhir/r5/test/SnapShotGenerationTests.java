@@ -464,6 +464,11 @@ public class SnapShotGenerationTests {
     public boolean paramIsType(String name, int index) {
       return false;
     }
+
+
+    public Base findContainingResource(Object appContext, Base item) {
+      return null;
+    }
   }
 
   private static FHIRPathEngine fp;

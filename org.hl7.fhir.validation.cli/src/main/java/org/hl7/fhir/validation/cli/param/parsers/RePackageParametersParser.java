@@ -4,6 +4,10 @@ import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.IParamParser;
 import org.hl7.fhir.validation.service.model.RePackageParameters;
+import org.hl7.fhir.validation.special.PackageReGenerator;
+
+import java.util.List;
+import java.util.Objects;
 
 public class RePackageParametersParser implements IParamParser<RePackageParameters> {
 
@@ -13,8 +17,9 @@ public class RePackageParametersParser implements IParamParser<RePackageParamete
   public static final String FORMAT = "-format";
   public static final String TX_PACK = "-tx-pack";
   public static final String SCOPE = "-scope";
-  public static final String IGNORE_LIST = "-ignore-list";
   public static final String MODE = "-mode";
+
+  public static final String IGNORE_LIST = "-ignore-list";
   public static final String INCLUDE_LIST = "-include-list";
   public static final String INCLUDE_CONFORMS_TO = "-include-conforms-to";
 
@@ -79,9 +84,6 @@ public class RePackageParametersParser implements IParamParser<RePackageParamete
       } else if (args[i].getValue().equals(EXPAND)) {
         rePackageParameters.addModeParam("expand");
         args[i].setProcessed(true);
-      } else if (args[i].getValue().equals(SCOPE) || args[i].getValue().equals(IGNORE_LIST) || args[i].getValue().equals(INCLUDE_LIST) || args[i].getValue().equals(INCLUDE_CONFORMS_TO)) {
-        //These params are processed later by the RePackageTask and not included in ValidationContext.
-        Arg.setProcessed(args, i, 2, true);
       } else if (args[i].getValue().equals(FORMAT)) {
         if (i + 1 == args.length) {
           throw new Error("Specified -format without indicating format value");
@@ -89,7 +91,49 @@ public class RePackageParametersParser implements IParamParser<RePackageParamete
           rePackageParameters.setFormat(Manager.FhirFormat.fromCode(args[i + 1].getValue()));
           Arg.setProcessed(args, i, 2, true);
         }
+      } else if (args[i].getValue().equals(IGNORE_LIST)) {
+        if (i + 1 == args.length) {
+          throw new Error("Specified -ignore-list without a resource list");
+        } else {
+          rePackageParameters.setIgnoreList(List.of(args[i + 1].getValue().split(",")));
+          Arg.setProcessed(args, i, 2, true);
+        }
+      }
+      else if (args[i].getValue().equals(INCLUDE_LIST)) {
+        if (i + 1 == args.length) {
+          throw new Error("Specified -include-list without a resource list");
+        } else {
+          rePackageParameters.setIncludeList(List.of(args[i + 1].getValue().split(",")));
+          Arg.setProcessed(args, i, 2, true);
+        }
+      }
+      else if (args[i].getValue().equals(INCLUDE_CONFORMS_TO)) {
+        if (i + 1 == args.length) {
+          throw new Error("Specified -include-conforms-to without a value");
+        } else {
+          if (Boolean.parseBoolean(args[i + 1].getValue())) {
+            rePackageParameters.setIncludeConformsTo(true);
+          }
+          Arg.setProcessed(args, i, 2, true);
+        }
+      }
+      else if (args[i].getValue().equals(SCOPE)) {
+        if (i + 1 == args.length) {
+          throw new Error("Specified -scope without a value");
+        } else {
+          rePackageParameters.setScope(getScopeFromString(args[i + 1].getValue()));
+          Arg.setProcessed(args, i, 2, true);
+        }
       }
     }
+  }
+
+  private PackageReGenerator.ExpansionPackageGeneratorScope getScopeFromString(String scope) {
+    return switch (Objects.requireNonNull(scope)) {
+      case "ig" -> PackageReGenerator.ExpansionPackageGeneratorScope.IG_ONLY;
+      case "igs" -> PackageReGenerator.ExpansionPackageGeneratorScope.ALL_IGS;
+      case "core" -> PackageReGenerator.ExpansionPackageGeneratorScope.EVERYTHING;
+      default -> null;
+    };
   }
 }

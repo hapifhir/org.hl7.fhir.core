@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Deprecated(since="2025-11-07")
 public class TransformLangParameters {
   @JsonProperty("srcLang")
   @SerializedName("srcLang")

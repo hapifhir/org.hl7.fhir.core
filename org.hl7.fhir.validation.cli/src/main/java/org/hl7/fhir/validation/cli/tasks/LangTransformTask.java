@@ -1,11 +1,13 @@
 package org.hl7.fhir.validation.cli.tasks;
 
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.Params;
+import org.hl7.fhir.validation.cli.param.parsers.OutputParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.TransformLangParametersParser;
-import org.hl7.fhir.validation.service.model.ValidationContext;
+import org.hl7.fhir.validation.service.model.OutputParameters;
+import org.hl7.fhir.validation.service.model.TransformLangParameters;
 import org.hl7.fhir.validation.service.ValidationService;
-import org.hl7.fhir.validation.service.utils.EngineMode;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
@@ -28,11 +30,6 @@ public class LangTransformTask extends ValidationEngineTask {
   }
 
   @Override
-  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
-    return shouldExecuteTask(args);
-  }
-
-  @Override
   public boolean shouldExecuteTask(@Nonnull String[] args) {
     return Params.hasParam(args, TransformLangParametersParser.LANG_TRANSFORM);
   }
@@ -43,8 +40,46 @@ public class LangTransformTask extends ValidationEngineTask {
   }
 
   @Override
-  public void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine, @Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
-    validationService.transformLang(validationContext, validationEngine);
+  protected LangTransformTaskInstance getValidationEngineTaskInstance(Arg[] args) {
+    return new LangTransformTaskInstance(args);
   }
 
+  @Override
+  public boolean usesInstanceValidatorParameters() {
+    return false;
+  }
+
+  protected class LangTransformTaskInstance extends ValidationEngineTaskInstance {
+
+    TransformLangParameters transformLangParameters;
+    OutputParameters outputParameters;
+
+    LangTransformTaskInstance(Arg[] args) {
+      super(args);
+    }
+
+    @Override
+    protected void buildTaskSpecificParametersFromArgs(Arg[] args) {
+      TransformLangParametersParser transformLangParametersParser = new TransformLangParametersParser();
+      OutputParametersParser outputParametersParser = new OutputParametersParser();
+
+      transformLangParametersParser.parseArgs(args);
+      outputParametersParser.parseArgs(args);
+
+      transformLangParameters = transformLangParametersParser.getParameterObject();
+      outputParameters = outputParametersParser.getParameterObject();
+    }
+
+    @Override
+    protected void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine) throws Exception {
+      validationService.transformLang(validationEngine, new org.hl7.fhir.validation.service.TransformLangParameters(
+        transformLangParameters.getLangTransform(),
+        transformLangParameters.getInputs(),
+        transformLangParameters.getSrcLang(),
+        transformLangParameters.getTgtLang(),
+        sources,
+        outputParameters.getOutput()
+      ));
+    }
+  }
 }

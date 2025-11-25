@@ -8,10 +8,7 @@ import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
 public class ValidationEngineParameters {
   //NOT A COMMAND LINE OPTION
@@ -528,6 +525,24 @@ public class ValidationEngineParameters {
     return this;
   }
 
+  @JsonProperty("locations")
+  @SerializedName("locations")
+  private
+  Map<String, String> locations = new HashMap<String, String>();
+
+  @SerializedName("locations")
+  @JsonProperty("locations")
+  public Map<String, String> getLocations() {
+    return locations;
+  }
+
+  @SerializedName("locations")
+  @JsonProperty("locations")
+  public ValidationEngineParameters setLocations(Map<String, String> locations) {
+    this.locations = locations;
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -558,7 +573,8 @@ public class ValidationEngineParameters {
       && Objects.equals(locale, that.locale)
       && Objects.equals(lang, that.lang)
       && Objects.equals(mapLog, that.mapLog)
-      && Objects.equals(matchetypes, that.matchetypes);
+      && Objects.equals(matchetypes, that.matchetypes)
+      && Objects.equals(locations, that.locations);
   }
 
   @Override
@@ -589,7 +605,8 @@ public class ValidationEngineParameters {
       noExtensibleBindingMessages,
       doDebug,
       showTimes,
-      matchetypes);
+      matchetypes,
+      locations);
   }
 
   @Override
@@ -621,6 +638,7 @@ public class ValidationEngineParameters {
       ", doDebug=" + doDebug +
       ", showTimes=" + showTimes +
       ", matchetypes=" + matchetypes +
+      ", locations=" + locations +
       "}";
   }
 }

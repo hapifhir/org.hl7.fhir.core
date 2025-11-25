@@ -6,6 +6,7 @@ import org.hl7.fhir.validation.service.ValidatorWatchMode;
 
 import java.util.Objects;
 
+@Deprecated(since="2025-11-07")
 public class WatchParameters {
   @JsonProperty("watchMode")
   @SerializedName("watchMode")

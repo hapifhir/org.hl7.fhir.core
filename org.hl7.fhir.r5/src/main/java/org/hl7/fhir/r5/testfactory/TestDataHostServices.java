@@ -77,4 +77,7 @@ public class TestDataHostServices extends BaseHostServices {
     throw new NotImplementedException("Not done yet (TestDataHostServices.resolveValueSet)"); // cause I don't know when we 'd need to do this
   }
 
+  public Base findContainingResource(Object appContext, Base item) {
+    return null;
+  }
 }
