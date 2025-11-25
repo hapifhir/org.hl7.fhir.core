@@ -3,7 +3,6 @@ package org.hl7.fhir.validation.special;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,33 +17,21 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.fhirpath.ExpressionNode;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CapabilityStatement;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementDocumentComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceOperationComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.NamingSystem;
-import org.hl7.fhir.r5.model.OperationDefinition;
 import org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent;
-import org.hl7.fhir.r5.model.PackageInformation;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.Property;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.SearchParameter.SearchParameterComponentComponent;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.NPMPackageGenerator;
@@ -57,6 +44,7 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.validation.IgLoader;
+import lombok.Getter;
 
 /**
  * Given a package id, and an expansion parameters, 
@@ -94,6 +82,7 @@ public class PackageReGenerator {
     IG_ONLY, ALL_IGS, EVERYTHING
   }
 
+  private boolean includeConformsTo;
   private List<String> packages = new ArrayList<String>();
   private Parameters expansionParameters = new Parameters(); 
   private ExpansionPackageGeneratorScope scope = ExpansionPackageGeneratorScope.EVERYTHING;
@@ -104,15 +93,28 @@ public class PackageReGenerator {
   private IWorkerContext context;
   private String npmId;
   private List<String> ignoreList = new ArrayList<>();
+  private FHIRPathEngine pathEngine;
+  private List<CanonicalResource> includeList = new ArrayList<>();
 
   public PackageReGenerator() {
     super();
   }
 
-  public PackageReGenerator addIgnoreList(List<String> ignoreList) {
+  public void setIncludeConformsTo(boolean includeConformsTo) {
+    this.includeConformsTo = includeConformsTo;
+  }
+
+
+  public PackageReGenerator setIgnoreList(List<String> ignoreList) {
     this.ignoreList = ignoreList;
     return this;
   }
+
+  public PackageReGenerator setIncludeList(List<CanonicalResource> includeList) {
+    this.includeList = includeList;
+    return this;
+  }
+
 
   public PackageReGenerator addPackage(String packageId) {
     addPackages(List.of(packageId));
@@ -204,7 +206,8 @@ public class PackageReGenerator {
   private Set<String> sourcePackages = new HashSet<>();
   private Map<String, TerminologyResourceEntry> entries = new HashMap<>();
   private Set<String> modeParams;
-  private List<CanonicalResource> resources = new ArrayList<CanonicalResource>();
+  @Getter
+  private List<CanonicalResource> resources = new ArrayList<>();
   private Set<String> set = new HashSet<>();
   
   public void generateExpansionPackage() throws IOException {
@@ -266,6 +269,10 @@ public class PackageReGenerator {
       for (String res : npm.listResources("StructureDefinition")) {
         StructureDefinition sd = (StructureDefinition) new JsonParser().parse(npm.loadResource(res));
         processSD(sd, npm.id());
+      }
+
+      for (CanonicalResource res : includeList) {
+        processResource(res);
       }
       if (modeParams.contains("expansions")) {
         log.info("Generating Expansions");
@@ -414,8 +421,42 @@ public class PackageReGenerator {
           processResource((CanonicalResource) context.fetchResource(Resource.class, c.primitiveValue()));
         }
       }
+      if(includeConformsTo) {
+        for (ElementDefinition.ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
+          if (inv.hasExpression()) {
+            ExpressionNode node = pathEngine.parse(inv.getExpression());
+            processExpression(node);
+          }
+        }
+      }
     }
-    
+  }
+
+  private void processExpression(ExpressionNode node) {
+    if (node != null) {
+      if (node.getFunction() == ExpressionNode.Function.ConformsTo || node.getFunction() == ExpressionNode.Function.MemberOf) {
+        Base c = getConstantParam(node);
+        if (c != null) {
+          processResource((CanonicalResource) context.fetchResource(Resource.class, c.primitiveValue()));
+        }
+      }
+      processExpression(node.getInner());
+      processExpression(node.getGroup());
+      processExpression(node.getOpNext());
+      if(node.getParameters() != null) {
+        for (ExpressionNode p : node.getParameters()) {
+          processExpression(p);
+        }
+      }
+    }
+  }
+
+  private Base getConstantParam(ExpressionNode node) {
+      if (!node.getParameters().isEmpty()) {
+        List<Base> list = pathEngine.evaluate(null, node.getParameters().get(0));
+        return list.isEmpty() ? null : list.get(0);
+    }
+    return null;
   }
 
   private void chaseDependenciesCS(CapabilityStatement cs) {
@@ -742,6 +783,7 @@ public class PackageReGenerator {
         loader.loadPackage(npm, true);
         context = ctxt;
         context.getManager().setExpansionParameters(expansionParameters);
+
         loader.loadPackage(npm, true);    
       } else {
         var loader = new IgLoader(pcm, (SimpleWorkerContext) context, context.getVersion());
@@ -749,6 +791,7 @@ public class PackageReGenerator {
       }
       list.add(npm);
     }
+    pathEngine = new FHIRPathEngine(context);
     if (cu == null) {
       cu = new ContextUtilities(context);
     }

@@ -235,7 +235,6 @@ public class ProfileUtilities extends TranslatingUtilities {
   private static final String ROW_COLOR_FATAL = "#ff9999";
   private static final String ROW_COLOR_WARNING = "#ffebcc";
   private static final String ROW_COLOR_HINT = "#ebf5ff";
-  private static final String ROW_COLOR_NOT_MUST_SUPPORT = "#d6eaf8";
   public static final int STATUS_OK = 0;
   public static final int STATUS_HINT = 1;
   public static final int STATUS_WARNING = 2;
@@ -2935,7 +2934,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             generateDescription(gen, row, element, null, used.used, profile.getUrl(), eurl, profile, corePath,
                 imagePath, root, logicalModel, allInvariants, snapshot);
           } else {
-            String name = urltail(eurl);
+            String name = urlFragmentOrTail(eurl);
             left.getPieces().get(0).setText(name);
             // left.getPieces().get(0).setReference((String)
             // extDefn.getExtensionStructure().getTag("filename"));
@@ -3250,7 +3249,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       return null;
   }
 
-  private String urltail(String path) {
+  private String urlFragmentOrTail(String path) {
     if (path.contains("#"))
       return path.substring(path.lastIndexOf('#') + 1);
     if (path.contains("/"))
@@ -4603,46 +4602,6 @@ public class ProfileUtilities extends TranslatingUtilities {
     // second path - fix up any broken path based id references
 
   }
-
-//  private String describeExtension(ElementDefinition ed) {
-//    if (!ed.hasType() || !ed.getTypeFirstRep().hasProfile())
-//      return "";
-//    return "$"+urlTail(ed.getTypeFirstRep().getProfile());
-//  }
-//
-
-  private String urlTail(String profile) {
-    return profile.contains("/") ? profile.substring(profile.lastIndexOf("/") + 1) : profile;
-  }
-
-  private String checkName(String name) {
-//    if (name.contains("."))
-////      throw new Exception("Illegal name "+name+": no '.'");
-//    if (name.contains(" "))
-//      throw new Exception("Illegal name "+name+": no spaces");
-    StringBuilder b = new StringBuilder();
-    for (char c : name.toCharArray()) {
-      if (!Utilities.existsInList(c, '.', ' ', ':', '"', '\'', '(', ')', '&', '[', ']'))
-        b.append(c);
-    }
-    return b.toString().toLowerCase();
-  }
-
-  private int charCount(String path, char t) {
-    int res = 0;
-    for (char ch : path.toCharArray()) {
-      if (ch == t)
-        res++;
-    }
-    return res;
-  }
-
-//
-//private void generateForChild(TextStreamWriter txt,
-//    StructureDefinition structure, ElementDefinition child) {
-//  // TODO Auto-generated method stub
-//
-//}
 
   private interface ExampleValueAccessor {
     Type getExampleValue(ElementDefinition ed);

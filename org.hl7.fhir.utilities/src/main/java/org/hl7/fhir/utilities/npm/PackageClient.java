@@ -130,23 +130,26 @@ public class PackageClient {
     }
   }
 
-  public List<PackageInfo> search(String name, String canonical, String fhirVersion, boolean preRelease) throws IOException {
+  public List<PackageInfo> search(String name, String pkgCanonical, String fhirVersion, boolean preRelease, String canonical) throws IOException {
     CommaSeparatedStringBuilder params = new CommaSeparatedStringBuilder("&");
     if (!Utilities.noString(name)) {
       params.append("name="+name);
     }
-    if (!Utilities.noString(canonical)) {
-      params.append("pkgcanonical="+canonical);
+    if (!Utilities.noString(pkgCanonical)) {
+      params.append("pkgcanonical="+pkgCanonical);
     }
     if (!Utilities.noString(fhirVersion)) {
       params.append("fhirversion="+fhirVersion);
+    }
+    if (!Utilities.noString(canonical)) {
+      params.append("canonical="+canonical);
     }
     if (preRelease) {
       params.append("prerelease="+preRelease);
     }
     List<PackageInfo> res = new ArrayList<>();
     try {
-      JsonArray json = fetchJsonArray(Utilities.pathURL(address, "catalog?")+params.toString());
+      JsonArray json = fetchJsonArray(Utilities.pathURL(address, "catalog?")+ params);
       boolean hasDates = true;
       for (JsonObject obj : json.asJsonObjects()) {
         Instant d = obj.has("date") ? obj.asDate("date") : null;
@@ -213,7 +216,7 @@ public class PackageClient {
     } else {
       String v = list.get(0).getVersion();
       for (PackageInfo p : list) {
-        if (VersionUtilities.isThisOrLater(v, p.getVersion(), VersionUtilities.VersionPrecision.MINOR)) {
+        if (VersionUtilities.isThisOrLater(v, p.getVersion(), VersionUtilities.VersionPrecision.FULL)) {
           v = p.getVersion();
         }
       }

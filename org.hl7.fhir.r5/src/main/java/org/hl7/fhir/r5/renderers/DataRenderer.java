@@ -1297,9 +1297,18 @@ public class DataRenderer extends Renderer implements CodeResolver {
       display = c.primitiveValue("code"); 
     } 
 
-    CodeSystem cs = context.getWorker().fetchCodeSystem(c.primitiveValue("system")); 
-    systemLink = cs != null ? cs.getWebPath() : null; 
-    systemName = cs != null ? crPresent(cs) : displaySystem(c.primitiveValue("system")); 
+    CodeSystem cs = context.getWorker().fetchCodeSystem(c.primitiveValue("system"));
+    NamingSystem ns = null;
+    if (cs == null) {
+      ns = context.getContextUtilities().fetchNamingSystem(c.primitiveValue("system"));
+    }
+    if (ns != null) {
+      systemLink = null;
+      systemName = ns.present();
+    } else {
+      systemLink = cs != null ? cs.getWebPath() : null;
+      systemName = cs != null ? crPresent(cs) : displaySystem(c.primitiveValue("system"));
+    }
     link = getLinkForCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code"), c.getResourceNative());
 
     hint = systemName+": "+display+(c.has("version") ? " "+ context.formatPhrase(RenderingContext.DATA_REND_VERSION, c.primitiveValue("version"), ")") : ""); 
@@ -1328,14 +1337,15 @@ public class DataRenderer extends Renderer implements CodeResolver {
     String link = getLinkForCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code"), c.getResourceNative());
     XhtmlNode xi = link != null ? x.ah(context.prefixLocalHref(link)) : x;    
     xi.tx(sn);
-    xi.tx(" "); 
+    xi.tx(": ");
 
     xi.tx(c.primitiveValue("code"));
     
     if (!Utilities.noString(s)) { 
-      x.tx(": "); 
-      x.tx(s); 
-    } 
+      x.tx(" (");
+      x.tx(s);
+      x.tx(")");
+    }
     if (c.has("version")) { 
       x.tx(" "+context.formatPhrase(RenderingContext.DATA_REND_VERSION, c.primitiveValue("version"), ")")); 
     } 

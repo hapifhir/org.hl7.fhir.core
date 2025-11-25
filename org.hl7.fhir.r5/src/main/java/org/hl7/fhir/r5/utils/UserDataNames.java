@@ -134,7 +134,6 @@ public class UserDataNames {
   public static final String pub_context_resource = "igpub.context.resource";
   public static final String pub_no_load_deps = "no-load-deps";
 
-  public static final String kindling_ballot_package = "ballot.package";
   public static final String archetypeSource = "archetype-source";
   public static final String archetypeName = "archetype-name";
   public static final String VS_EXPANSION_SOURCE = "VS_EXPANSION_SOURCE";
