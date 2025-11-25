@@ -90,7 +90,7 @@ private static TxTestData testData;
     }
 
     if (baseEngine == null) {
-      baseEngine = TestUtilities.getValidationEngineNoTxServer("hl7.fhir.r5.core#5.0.0", FhirPublication.R5, "5.0.0");
+      baseEngine = TestUtilities.getValidationEngineNoTxServer("hl7.fhir.r5.core#5.0.0", "5.0.0");
     }
 
     ValidationEngine engine = new ValidationEngine(this.baseEngine);

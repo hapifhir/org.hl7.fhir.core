@@ -323,9 +323,23 @@ public class XmlParser extends ParserBase {
     return null;
   }
 
-  public Element parse(List<ValidationMessage> errors, org.w3c.dom.Element base, String type) throws Exception {
+  public Element parse(List<ValidationMessage> errors, org.w3c.dom.Element base, String typeName) throws Exception {
+    String typeTail = null;
+    String type = typeName;
+    if (typeName.contains(".")) {
+      typeTail = typeName.substring(typeName.indexOf('.') + 1);
+      type = typeName.substring(0, typeName.indexOf('.'));
+    }
+
     StructureDefinition sd = getDefinition(errors, 0, 0, FormatUtilities.FHIR_NS, type);
-    Element result = new Element(base.getLocalName(), new Property(context, sd.getSnapshot().getElement().get(0), sd, getProfileUtilities(), getContextUtilities())).setFormat(FhirFormat.XML).setNativeObject(base);
+    if (sd == null) {
+      throw new FHIRException("Unable to find definition for type "+type);
+    }
+    ElementDefinition ed = sd.getSnapshot().getElement().get(0);
+    if (typeTail != null) {
+      ed = sd.getSnapshot().getElementByPath(typeName);
+    }
+    Element result = new Element(base.getLocalName(), new Property(context, ed, sd, getProfileUtilities(), getContextUtilities())).setFormat(FhirFormat.XML).setNativeObject(base);
     result.setPath(base.getLocalName());
     String path = "/"+pathPrefix(base.getNamespaceURI())+base.getLocalName();
     checkElement(errors, base, result, path, result.getProperty(), false);

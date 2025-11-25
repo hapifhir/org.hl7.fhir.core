@@ -221,4 +221,5 @@ public class ExtensionDefinitions {
   public static final String EXT_ADDITIONAL_COMPARTMENT = "http://hl7.org/fhir/tools/StructureDefinition/additional-resource-compartment";
   public static final String EXT_ADDITIONAL_REFERENCE = "http://hl7.org/fhir/tools/StructureDefinition/additional-resource-reference";
   public static final String EXT_ADDITIONAL_RESOURCE = "http://hl7.org/fhir/tools/StructureDefinition/additional-resource";
+  public static final String EXT_IG_EXPANSION_PARAMETERS = "http://hl7.org/fhir/tools/StructureDefinition/expansion-parameters";
 }

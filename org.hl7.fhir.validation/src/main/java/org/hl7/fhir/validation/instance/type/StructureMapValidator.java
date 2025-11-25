@@ -633,6 +633,7 @@ public class StructureMapValidator extends BaseValidator {
           }            
           
           List<ElementDefinitionSource> els = getElementDefinitions(v.getSd(), v.getEd(), v.getType(), element);
+
           if (rule(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), !els.isEmpty(), I18nConstants.SM_SOURCE_PATH_INVALID, context, element, path)) {
             if (warning(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), els.size() == 1, I18nConstants.SM_TARGET_PATH_MULTIPLE_MATCHES, context, element, v.getEd().getPath()+"."+element, render(els))) {
               ElementDefinitionSource el = els.get(0);
@@ -1166,7 +1167,7 @@ public class StructureMapValidator extends BaseValidator {
     List<ElementDefinitionSource> result = new ArrayList<>();
     List<ElementDefinition> children = profileUtilities.getChildList(sd, ed);
     if (children == null || children.isEmpty()) {
-      getElementDefinitionChildrenFromTypes(result, sd, ed, type, element);
+      getElementDefinitionChildrenFromTypes(result, ed, type, element);
     } else {
       for (ElementDefinition t : children) {
         if (t.getNameBase().equals(element)) {
@@ -1196,23 +1197,43 @@ public class StructureMapValidator extends BaseValidator {
     return result;
   }
 
-  private void getElementDefinitionChildrenFromTypes(List<ElementDefinitionSource> result, StructureDefinition sd, ElementDefinition ed, String type, String element) {
+  private void getElementDefinitionChildrenFromTypes(List<ElementDefinitionSource> result, ElementDefinition ed, String type, String element) {
     for (TypeRefComponent td : ed.getType()) {
       String tn = td.getWorkingCode();
       StructureDefinition sdt = context.fetchTypeDefinition(tn);
-      if (type == null || tn.equals(type) || (sdt != null && sdt.getType().equals(type))) {
-        StructureDefinition tsd = context.fetchTypeDefinition(td.getWorkingCode());
-        if (tsd != null) {
-          for (ElementDefinition t : tsd.getSnapshot().getElement()) {
-            if (Utilities.charCount(t.getPath(), '.') == 1 && t.getNameBase().equals(element)) {
-              result.add(new ElementDefinitionSource(tsd, t));
-            }
-          }
+      if (sdt != null) {
+        if (isSpecialisation(sdt, type)) {
+          addElementsToResult(result, type, element, tn, context.fetchTypeDefinition(type));
         } else {
-          log.info("Unable to find type "+type);
+          addElementsToResult(result, type, element, tn, sdt);
         }
       }
-    }    
+    }
+  }
+
+  private void addElementsToResult(List<ElementDefinitionSource> result, String type, String element, String tn, StructureDefinition sdt) {
+    if (type == null || typeMatches(tn, type) || (sdt != null && sdt.getType().equals(type))) {
+      if (sdt != null) {
+        for (ElementDefinition t : sdt.getSnapshot().getElement()) {
+          if (Utilities.charCount(t.getPath(), '.') == 1 && t.getNameBase().equals(element)) {
+            result.add(new ElementDefinitionSource(sdt, t));
+          }
+        }
+      } else {
+        log.info("Unable to find type " + type);
+      }
+    }
+  }
+
+  private boolean isSpecialisation(StructureDefinition sdt, String type) {
+    StructureDefinition t = context.fetchTypeDefinition(type);
+    while (t != null) {
+      if (t == sdt) {
+        return true;
+      }
+      t = context.fetchResource(StructureDefinition.class, t.getBaseDefinition());
+    }
+    return false;
   }
 
   private boolean isLessOrEqual(String value, String limit) {
@@ -1398,7 +1419,7 @@ public class StructureMapValidator extends BaseValidator {
       return true;
     } else {
       for (TypeRefComponent tr : v.getEd().getType()) {
-        if (type.equals(tr.getWorkingCode()) || type.equals("http://hl7.org/fhir/StructureDefinition/"+tr.getWorkingCode())) {
+        if (typeMatches(type, tr.getWorkingCode())) {
           return true;
         }
       }
@@ -1415,6 +1436,16 @@ public class StructureMapValidator extends BaseValidator {
       }
       return false;
     }
+  }
+
+  private boolean typeMatches(String t1, String t2) {
+    if (!Utilities.isAbsoluteUrl(t1)) {
+      t1 = "http://hl7.org/fhir/StructureDefinition/"+t1;
+    }
+    if (!Utilities.isAbsoluteUrl(t1)) {
+      t2 = "http://hl7.org/fhir/StructureDefinition/"+t2;
+    }
+    return t1.equals(t2);
   }
 
   private VariableDefn getParameter(List<ValidationMessage> errors, Element param, NodeStack pstack, VariableSet variables, StructureMapInputMode mode) {

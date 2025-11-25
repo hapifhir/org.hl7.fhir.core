@@ -4848,7 +4848,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               used.used, profile == null ? "" : profile.getUrl(), eurl, profile, corePath, imagePath, root,
               logicalModel, allInvariants, snapshot, mustSupport, allowSubRows, rc));
         } else {
-          String name = element.hasSliceName() ? element.getSliceName() : urltail(eurl);
+          String name = element.hasSliceName() ? element.getSliceName() : urlFragmentOrTail(eurl);
           nameCell.getPieces().get(0).setText(name);
           // left.getPieces().get(0).setReference((String)
           // extDefn.getExtensionStructure().getTag("filename"));
@@ -5191,7 +5191,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       return null;
   }
 
-  private String urltail(String path) {
+  private String urlFragmentOrTail(String path) {
     if (path.contains("#"))
       return path.substring(path.lastIndexOf('#') + 1);
     if (path.contains("/"))

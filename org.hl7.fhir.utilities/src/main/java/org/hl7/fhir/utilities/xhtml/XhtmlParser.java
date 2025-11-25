@@ -934,15 +934,21 @@ public class XhtmlParser {
   }
 
   private String readCData() throws IOException, FHIRFormatError {
-    StringBuilder s = new StringBuilder();
-    boolean done = false;
-    while (!done) {
-      s.append(readChar());
-      done = s.toString().endsWith("]]>");
+    StringBuilder b = new StringBuilder();
+    char c;
+    while (true) {
+      c = readChar();
+      if (c == END_OF_CHARS) {
+        throw new IllegalStateException("Stream ended before finding ']]>' terminator");
+      }
+      b.append(c);
+      if (c == '>' && b.length() >= 3 &&
+        b.charAt(b.length() - 2) == ']' &&
+        b.charAt(b.length() - 3) == ']') {
+        break;
+      }
     }
-    String res = s.toString().substring(7);
-    res = res.substring(0, res.length()-3);
-    return res;
+    return b.substring(7, b.length() - 3);
   }
 
   private void parseDoctypeEntities(String s) {

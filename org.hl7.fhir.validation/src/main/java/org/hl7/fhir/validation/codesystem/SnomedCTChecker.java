@@ -239,7 +239,7 @@ public class SnomedCTChecker extends CodeSystemChecker {
 
   private StringWithFlag process(OperationOutcome oo) {
     for (OperationOutcomeIssueComponent iss : oo.getIssue()) {
-      if (hasLocation(iss, "ValueSet.include.filter.value[0]")) {
+      if (hasLocation(iss, "ValueSet.include.filter.value[0]", "ValueSet.compose.include[0].filter[0].value")) {
         return new StringWithFlag(iss.getText(), false);
       }
     }
@@ -249,10 +249,12 @@ public class SnomedCTChecker extends CodeSystemChecker {
     return null;
   }
 
-  private boolean hasLocation(OperationOutcomeIssueComponent iss, String path) {
+  private boolean hasLocation(OperationOutcomeIssueComponent iss, String... paths) {
     for (StringType loc : iss.getLocation()) {
-      if (path.equals(loc.getValue())) {
-        return true;
+      for (String path : paths) {
+        if (path.equals(loc.getValue())) {
+          return true;
+        }
       }
     }
     return false;

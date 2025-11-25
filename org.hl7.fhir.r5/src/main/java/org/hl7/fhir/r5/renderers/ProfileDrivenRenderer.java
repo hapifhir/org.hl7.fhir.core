@@ -255,6 +255,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     for (ElementDefinition e : elements) {
       if (e.getPath().equals(path) && e.hasContentReference()) {
         String ref = e.getContentReference();
+        if (ref.contains("#")) {
+          ref = ref.substring(ref.indexOf("#"));
+        }
         ElementDefinition t = null;
         // now, resolve the name
         for (ElementDefinition e1 : elements) {

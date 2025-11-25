@@ -873,6 +873,11 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   }
 
   @Override
+  public Base findContainingResource(Object appContext, Base item) {
+    return null;
+  }
+
+  @Override
   public Element fetch(IResourceValidator validator, Object appContext, String url) throws FHIRFormatError, DefinitionException, IOException, FHIRException {
     Element res = null;
     if (url.equals("Patient/test")) {

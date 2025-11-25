@@ -69,13 +69,14 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import lombok.Getter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 
-public class ValidationMessage implements Comparator<ValidationMessage>, Comparable<ValidationMessage>
-{
+public class ValidationMessage implements Comparator<ValidationMessage>, Comparable<ValidationMessage> {
+
   public enum Source {
     ExampleValidator, 
     ProfileValidator, 
@@ -557,6 +558,8 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   private String comment;
   private List<ValidationMessage> sliceInfo;
   private int count;
+
+  @Getter private String diagnostics;
 
   /**
    * Constructor
@@ -1119,5 +1122,10 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
 
 
     return true;
+  }
+
+  public ValidationMessage setDiagnostics(String diagnostics) {
+    this.diagnostics = diagnostics;
+    return this;
   }
 }

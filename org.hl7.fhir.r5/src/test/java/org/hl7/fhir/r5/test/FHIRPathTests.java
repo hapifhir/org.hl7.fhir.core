@@ -80,6 +80,11 @@ public class FHIRPathTests {
     }
 
     @Override
+    public Base findContainingResource(Object appContext, Base item) {
+      return null;
+    }
+
+    @Override
     public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException {
       if (url.equals("http://hl7.org/fhir/StructureDefinition/Patient"))
         return true;

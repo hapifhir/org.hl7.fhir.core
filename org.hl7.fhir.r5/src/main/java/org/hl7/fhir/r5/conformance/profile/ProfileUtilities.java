@@ -3012,7 +3012,7 @@ public class ProfileUtilities {
         if (!Base.compareDeep(derived.getType(), base.getType(), false)) {
           if (base.hasType()) {
             for (TypeRefComponent ts : derived.getType()) {
-              checkTypeDerivation(purl, derivedSrc, base, derived, ts, path, derivedSrc.getDerivation() == TypeDerivationRule.SPECIALIZATION);
+              checkTypeDerivation(purl, srcSD, base, derived, ts, path, derivedSrc.getDerivation() == TypeDerivationRule.SPECIALIZATION);
             }
           }
           base.getType().clear();

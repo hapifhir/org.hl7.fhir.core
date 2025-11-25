@@ -108,4 +108,23 @@ public class FHIRPathHostServices implements IHostApplicationServices {
   public boolean paramIsType(String name, int index) {
     return false;
   }
+
+  @Override
+  public Base findContainingResource(Object appContext, Base item) {
+    if (item instanceof Element) {
+      Element element = (Element) item;
+      while (element != null && !(element.isResource() && element.getSpecial() != Element.SpecialElement.CONTAINED)) {
+        element = element.getParentForValidator();
+      }
+      if (element != null) {
+        return element;
+      }
+    }
+    if (item instanceof Resource) {
+      return item;
+    }
+    // now it gets hard
+    return null; // for now
+  }
+
 }

@@ -129,7 +129,7 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
 
   private String getPackageUrl(String packageId, PackageServer server) throws IOException {
     PackageClient pc = myClientFactory.apply(server);
-    List<PackageInfo> res = pc.search(packageId, null, null, false);
+    List<PackageInfo> res = pc.search(packageId, null, null, false, null);
     if (res.size() == 0) {
       return null;
     } else {
@@ -157,7 +157,7 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
       return null;
     }
     PackageClient pc = myClientFactory.apply(server);
-    List<PackageInfo> res = pc.search(null, canonical, null, false);
+    List<PackageInfo> res = pc.search(null, canonical, null, false, null);
     if (res.size() == 0) {
       return null;
     } else {
