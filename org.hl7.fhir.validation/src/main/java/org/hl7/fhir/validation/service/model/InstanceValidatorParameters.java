@@ -18,6 +18,7 @@ public class InstanceValidatorParameters {
 
   public InstanceValidatorParameters(@Nonnull InstanceValidatorParameters defaultInstanceValidatorParameters) {
     this.assumeValidRestReferences = defaultInstanceValidatorParameters.assumeValidRestReferences;
+    this.strictIdentifierSystems = defaultInstanceValidatorParameters.strictIdentifierSystems;
     this.hintAboutNonMustSupport = defaultInstanceValidatorParameters.hintAboutNonMustSupport;
     this.htmlOutput = defaultInstanceValidatorParameters.htmlOutput;
     this.outputStyle = defaultInstanceValidatorParameters.outputStyle;
@@ -65,6 +66,25 @@ public class InstanceValidatorParameters {
     return this;
   }
 
+
+  @JsonProperty("strictIdentifierSystems")
+  @SerializedName("strictIdentifierSystems")
+  private boolean strictIdentifierSystems = false;
+
+  @SerializedName("strictIdentifierSystems")
+  @JsonProperty("strictIdentifierSystems")
+  public boolean isStrictIdentifierSystems() {
+    return strictIdentifierSystems;
+  }
+
+  @SerializedName("strictIdentifierSystems")
+  @JsonProperty("strictIdentifierSystems")
+  public InstanceValidatorParameters setStrictIdentifierSystems(boolean strictIdentifierSystems) {
+    this.strictIdentifierSystems = strictIdentifierSystems;
+    return this;
+  }
+
+  
   @JsonProperty("hintAboutNonMustSupport")
   @SerializedName("hintAboutNonMustSupport")
   private boolean hintAboutNonMustSupport = false;
@@ -548,6 +568,7 @@ public class InstanceValidatorParameters {
     if (o == null || getClass() != o.getClass()) return false;
     InstanceValidatorParameters that = (InstanceValidatorParameters) o;
     return assumeValidRestReferences == that.assumeValidRestReferences
+      && strictIdentifierSystems == that.strictIdentifierSystems
       && hintAboutNonMustSupport == that.hintAboutNonMustSupport
       && wantInvariantsInMessages == that.wantInvariantsInMessages
       && noInvariants == that.noInvariants
@@ -580,13 +601,14 @@ public class InstanceValidatorParameters {
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction);
+    return Objects.hash(assumeValidRestReferences, strictIdentifierSystems, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction);
   }
 
   @Override
   public String toString() {
     return "InstanceValidatorParameters{" +
       "assumeValidRestReferences=" + assumeValidRestReferences +
+      ", strictIdentifierSystems=" + strictIdentifierSystems +
       ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +
       ", htmlOutput='" + htmlOutput + '\'' +
       ", outputStyle='" + outputStyle + '\'' +
