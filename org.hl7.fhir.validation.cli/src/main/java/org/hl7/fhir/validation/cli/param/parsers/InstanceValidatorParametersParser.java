@@ -1,5 +1,8 @@
 package org.hl7.fhir.validation.cli.param.parsers;
 
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
+import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.cli.param.Arg;
@@ -12,8 +15,6 @@ import org.hl7.fhir.validation.service.utils.ValidationLevel;
 public class InstanceValidatorParametersParser implements IParamParser<InstanceValidatorParameters> {
 
   public static final String ASSUME_VALID_REST_REF = "-assumeValidRestReferences";
-  public static final String NO_EXTENSIBLE_BINDING_WARNINGS = "-no-extensible-binding-warnings";
-  public static final String SHOW_TIMES = "-show-times";
   public static final String HINT_ABOUT_NON_MUST_SUPPORT = "-hintAboutNonMustSupport";
   public static final String HTML_OUTPUT = "-html-output";
   public static final String OUTPUT_STYLE = "-output-style";
@@ -22,7 +23,6 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
   public static final String WANT_INVARIANTS_IN_MESSAGES = "-want-invariants-in-messages";
   public static final String NO_INVARIANTS = "-no-invariants";
   public static final String QUESTIONNAIRE = "-questionnaire";
-  public static final String DISPLAY_WARNINGS = "-display-issues-are-warnings";
   public static final String UNKNOWN_CODESYSTEMS_CAUSE_ERROR = "-unknown-codesystems-cause-errors";
   public static final String LEVEL = "-level";
   public static final String BEST_PRACTICE = "-best-practice";
@@ -33,7 +33,6 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
   public static final String SHOW_MESSAGE_IDS = "-show-message-ids";
   public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
   public static final String VERBOSE = "-verbose";
-  public static final String MATCHETYPE = "-matchetype";
   public static final String SHOW_MESSAGES_FROM_REFERENCES = "-showReferenceMessages";
   public static final String SECURITY_CHECKS = "-security-checks";
   public static final String NO_EXPERIMENTAL_CONTENT = "-no-experimental-content";
@@ -41,6 +40,11 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
   public static final String PROFILE = "-profile";
   public static final String PROFILES = "-profiles";
   public static final String EXP_PARAMS = "-expansion-parameters";
+  public static final String CHECK_IPS_CODES = "-check-ips-codes";
+  public static final String DO_IMPLICIT_FHIRPATH_STRING_CONVERSION = "-implicit-fhirpath-string-conversions";
+  public static final String ALLOW_DOUBLE_QUOTES = "-allow-double-quotes-in-fhirpath";
+  public static final String BUNDLE = "-bundle";
+  public static final String JURISDICTION = "-jurisdiction";
 
   InstanceValidatorParameters instanceValidatorParameters = new InstanceValidatorParameters();
 
@@ -57,12 +61,6 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
       }
       if (args[i].getValue().equals(ASSUME_VALID_REST_REF)) {
         instanceValidatorParameters.setAssumeValidRestReferences(true);
-        args[i].setProcessed(true);
-      } else if (args[i].getValue().equals(NO_EXTENSIBLE_BINDING_WARNINGS)) {
-        instanceValidatorParameters.setNoExtensibleBindingMessages(true);
-        args[i].setProcessed(true);
-      } else if (args[i].getValue().equals(SHOW_TIMES)) {
-        instanceValidatorParameters.setShowTimes(true);
         args[i].setProcessed(true);
       } else if (args[i].getValue().equals(HINT_ABOUT_NON_MUST_SUPPORT)) {
         instanceValidatorParameters.setHintAboutNonMustSupport(true);
@@ -108,9 +106,6 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
           );
           Arg.setProcessed(args, i, 2, true);
         }
-      } else if (args[i].getValue().equals(DISPLAY_WARNINGS)) {
-        instanceValidatorParameters.setDisplayWarnings(true);
-        args[i].setProcessed(true);
       } else if (args[i].getValue().equals(UNKNOWN_CODESYSTEMS_CAUSE_ERROR)) {
         instanceValidatorParameters.setUnknownCodeSystemsCauseErrors(true);
         args[i].setProcessed(true);
@@ -173,18 +168,6 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
           }
           Arg.setProcessed(args, i, 2, true);
         }
-      } else if (args[i].getValue().equals(MATCHETYPE)) {
-        if (i + 1 == args.length) {
-          throw new Error("Specified -matchetype without indicating file");
-        } else {
-          String s = args[i + 1].getValue();
-          if (!(new java.io.File(s).exists())) {
-            throw new Error("-matchetype source '" + s + "'  not found");
-          } else {
-            instanceValidatorParameters.addMatchetype(s);
-          }
-          Arg.setProcessed(args, i, 2, true);
-        }
       } else if (args[i].getValue().equals(SHOW_MESSAGES_FROM_REFERENCES)) {
         instanceValidatorParameters.setShowMessagesFromReferences(true);
         args[i].setProcessed(true);
@@ -222,6 +205,35 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
           instanceValidatorParameters.setExpansionParameters(args[i + 1].getValue());
           Arg.setProcessed(args, i, 2, true);
         }
+      } else if (args[i].getValue().equals(CHECK_IPS_CODES)) {
+        instanceValidatorParameters.setCheckIPSCodes(true);
+        args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(DO_IMPLICIT_FHIRPATH_STRING_CONVERSION)) {
+        instanceValidatorParameters.setDoImplicitFHIRPathStringConversion(true);
+        args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(ALLOW_DOUBLE_QUOTES)) {
+        instanceValidatorParameters.setAllowDoubleQuotesInFHIRPath(true);
+        args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(BUNDLE)) {
+        if (i + 1 == args.length) {
+          throw new Error("Specified -bundle without indicating bundle rule");
+        } else {
+          String rule = args[i + 1].getValue();
+          if (i + 2 == args.length) {
+            throw new Error("Specified -bundle without indicating profile source");
+          } else {
+            String profile = args[i + 2].getValue();
+            instanceValidatorParameters.addBundleValidationRule(new BundleValidationRule().setRule(rule).setProfile(profile));
+            Arg.setProcessed(args, i, 3, true);
+          }
+        }
+      } else if (args[i].getValue().equals(JURISDICTION)) {
+        if (i + 1 == args.length) {
+          throw new Error("Specified -jurisdiction without indicating jurisdiction");
+        } else {
+          instanceValidatorParameters.setJurisdiction(processJurisdiction(args[i + 1].getValue()));
+          Arg.setProcessed(args, i, 2, true);
+        }
       }
     }
   }
@@ -241,5 +253,18 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
       case "i" : return BestPracticeWarningLevel.Ignore;
     }
     throw new Error("The best-practice level ''" + s + "'' is not valid");
+  }
+
+  private static String processJurisdiction(String s) {
+    if (s.startsWith("urn:iso:std:iso:3166#") || s.startsWith("urn:iso:std:iso:3166:-2#") || s.startsWith("http://unstats.un.org/unsd/methods/m49/m49.htm#")) {
+      return s;
+    } else {
+      String v = JurisdictionUtilities.getJurisdictionFromLocale(s);
+      if (v != null) {
+        return v;
+      } else {
+        throw new FHIRException("Unable to understand Jurisdiction '"+s+"'");
+      }
+    }
   }
 }

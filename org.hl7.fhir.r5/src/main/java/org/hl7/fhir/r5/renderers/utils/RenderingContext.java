@@ -6,6 +6,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
@@ -68,6 +70,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  */
 @MarkedToMoveToAdjunctPackage
 public class RenderingContext extends RenderingI18nContext {
+
 
   public enum DesignationMode {
     ALL,
@@ -343,7 +346,8 @@ public class RenderingContext extends RenderingI18nContext {
   private int randomTracker;
   private boolean testing;
   private PackageInformation pi;
-  
+  @Getter @Setter boolean showStandardsStatus;
+
   /**
    * 
    * @param workerContext - access to all related resources that might be needed

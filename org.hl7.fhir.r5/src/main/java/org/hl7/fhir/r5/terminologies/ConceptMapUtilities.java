@@ -194,17 +194,19 @@ public class ConceptMapUtilities {
   }
 
 
-  public static ConceptMap makeShareable(ConceptMap cm) {
+  public static ConceptMap makeShareable(ConceptMap cm, boolean extension) {
     if (!cm.hasExperimental()) {
       cm.setExperimental(false);
     }
 
-    if (!cm.hasMeta())
-      cm.setMeta(new Meta());
-    for (UriType t : cm.getMeta().getProfile()) 
-      if ("http://hl7.org/fhir/StructureDefinition/shareableconceptmap".equals(t.getValue()))
-        return cm;
-    cm.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareableconceptmap"));
+    if (extension) {
+      if (!cm.hasMeta())
+        cm.setMeta(new Meta());
+      for (UriType t : cm.getMeta().getProfile())
+        if ("http://hl7.org/fhir/StructureDefinition/shareableconceptmap".equals(t.getValue()))
+          return cm;
+      cm.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareableconceptmap"));
+    }
     return cm;
   }
 

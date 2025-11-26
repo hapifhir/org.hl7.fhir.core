@@ -115,6 +115,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingCompo
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
@@ -162,6 +163,7 @@ import org.hl7.fhir.validation.ai.CodeAndTextValidationRequest;
 import org.hl7.fhir.validation.ai.CodeAndTextValidationResult;
 import org.hl7.fhir.validation.ai.CodeAndTextValidator;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
+import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.codesystem.CodingsObserver;
 import org.hl7.fhir.validation.instance.type.BundleValidator;
@@ -511,6 +513,24 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return false;
     }
 
+    @Override
+    public Base findContainingResource(Object appContext, Base item) {
+      if (item instanceof Element) {
+        Element element = (Element) item;
+        while (element != null && !(element.isResource() && element.getSpecial() != SpecialElement.CONTAINED)) {
+          element = element.getParentForValidator();
+        }
+        if (element != null) {
+          return element;
+        }
+      }
+      if (item instanceof Resource) {
+        return item;
+      }
+      // now it gets hard
+      return null; // for now
+    }
+
   }
   private FHIRPathEngine fpe;
 
@@ -599,6 +619,44 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     fpe.setAllowDoubleQuotes(allowDoubleQuotesInFHIRPath);
     codingObserver = new CodingsObserver(theContext, settings, xverManager, session);
     oids = new OIDUtilities();
+  }
+
+  public void initializeFromParameters(InstanceValidatorParameters parameters) {
+    setHintAboutNonMustSupport(parameters.isHintAboutNonMustSupport());
+    getExtensionDomains().clear();
+    for (String extension : parameters.getExtensions()) {
+      if ("any".equals(extension)) {
+        setAnyExtensionsAllowed(true);
+      } else {
+        extensionDomains.add(extension);
+      }
+    }
+    setNoInvariantChecks(parameters.isNoInvariants());
+    setWantInvariantInMessage(parameters.isWantInvariantsInMessages());
+
+    setAssumeValidRestReferences(parameters.isAssumeValidRestReferences());
+    setSecurityChecks(parameters.isSecurityChecks());
+    setCrumbTrails(parameters.isCrumbTrails());
+
+    setForPublication(parameters.isForPublication());
+    setAllowExamples(parameters.isAllowExampleUrls());
+
+    setShowMessagesFromReferences(parameters.isShowMessagesFromReferences());
+
+    getBundleValidationRules().addAll(parameters.getBundleValidationRules());
+    setQuestionnaireMode(parameters.getQuestionnaireMode());
+    getSettings().setLevel(parameters.getLevel());
+    setHtmlInMarkdownCheck(parameters.getHtmlInMarkdownCheck());
+    setBestPracticeWarningLevel(parameters.getBestPracticeLevel());
+    setAllowDoubleQuotesInFHIRPath(parameters.isAllowDoubleQuotesInFHIRPath());
+    setNoUnicodeBiDiControlChars(parameters.isNoUnicodeBiDiControlChars());
+    setDoImplicitFHIRPathStringConversion(parameters.isDoImplicitFHIRPathStringConversion());
+    getSettings().setR5BundleRelativeReferencePolicy(parameters.getR5BundleRelativeReferencePolicy());
+    setJurisdiction(CodeSystemUtilities.readCoding(parameters.getJurisdiction()));
+
+    setUnknownCodeSystemsCauseErrors(parameters.isUnknownCodeSystemsCauseErrors());
+    setNoExperimentalContent(parameters.isNoExperimentalContent());
+    setCheckIPSCodes(parameters.isCheckIPSCodes());
   }
 
   @Override
@@ -8184,7 +8242,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     
     valContext.setProfile(profile);
-    
+
     boolean invOK;
     String msg;
     try {
@@ -8207,12 +8265,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         msg = msg + " (log: " + msg + ")";
       }
       String msgId = null;
+      String mSrc = settings.isForPublication() ? inv.getHuman() + " ("+inv.getExpression()+")" : inv.getHuman();
       if (inv.hasSource()) {
-        msg = context.formatMessage(I18nConstants.INV_FAILED_SOURCE, inv.getKey() + ": '" + inv.getHuman()+"'", inv.getSource())+msg;
+        msg = context.formatMessage(I18nConstants.INV_FAILED_SOURCE, inv.getKey(), mSrc, inv.getSource())+msg;
         msgId = inv.getSource()+"#"+inv.getKey();
       } else {
         msgId = profile.getUrl()+"#"+inv.getKey();
-        msg = context.formatMessage(I18nConstants.INV_FAILED, inv.getKey() + ": '" + (settings.isForPublication() ? inv.getHuman() + " ("+inv.getExpression()+")" : inv.getHuman())+"'")+msg;
+        msg = context.formatMessage(I18nConstants.INV_FAILED, inv.getKey(), mSrc)+msg;
       }
       String invId = (inv.hasSource() ? inv.getSource() : profile.getUrl()) + "#"+inv.getKey();
       

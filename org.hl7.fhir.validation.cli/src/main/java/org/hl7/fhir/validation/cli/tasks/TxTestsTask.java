@@ -19,7 +19,6 @@ import org.hl7.fhir.validation.cli.param.parsers.OutputParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.TransformLangParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.TxTestsParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.ValidationEngineParametersParser;
-import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.special.TxTester;
 import org.slf4j.Logger;
@@ -44,11 +43,6 @@ public class TxTestsTask extends StandaloneTask{
   }
 
   @Override
-  public boolean shouldExecuteTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) {
-    return shouldExecuteTask(args);
-  }
-
-  @Override
   public boolean shouldExecuteTask(@Nonnull String[] args) {
     return Params.hasParam(args, TxTestsParametersParser.TX_TESTS);
   }
@@ -57,12 +51,6 @@ public class TxTestsTask extends StandaloneTask{
   public void logHelp(Logger logger) {
 
   }
-
-  @Override
-  public void executeTask(@Nonnull ValidationContext validationContext, @Nonnull String[] args) throws Exception {
-    executeTask(args);
-  }
-
 
   @Override
   public void executeTask(@Nonnull String[] args) throws Exception {
