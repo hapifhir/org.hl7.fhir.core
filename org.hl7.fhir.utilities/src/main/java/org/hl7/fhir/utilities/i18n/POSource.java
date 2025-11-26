@@ -12,6 +12,8 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
+import static org.hl7.fhir.utilities.i18n.POUtilities.isOutdated;
+
 @Slf4j
 public class POSource {
 
@@ -121,7 +123,7 @@ public class POSource {
           i++;
           s += POUtilities.trimQuotes(lines[i]);
         }
-        while (s.startsWith("!!")) {
+        while (isOutdated(s)) {
           s = s.substring(2);
         }
         if (c != poObject.getMsgstr().size()) {
