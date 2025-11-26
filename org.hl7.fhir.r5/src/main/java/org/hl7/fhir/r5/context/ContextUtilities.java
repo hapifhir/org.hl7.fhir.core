@@ -43,6 +43,8 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 @MarkedToMoveToAdjunctPackage
 @Slf4j
 public class ContextUtilities implements ProfileKnowledgeProvider {
+  
+  static public final String NO_PREFERRED_URI = "No Preferred URI Declared";
 
   private IWorkerContext context;
   private XVerExtensionManager xverManager;
@@ -51,6 +53,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   private List<String> canonicalResourceNames;
   private List<String> concreteResourceNames;
   private Set<String> concreteResourceNameSet;
+  private Map<String, String> identifierSystemPreferredUris;
   @Setter
   private List<String> suppressedMappings;
   @Getter
@@ -576,5 +579,50 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     }
     return null;
   }
+  
+  public String preferredIdentifierSystem(String system) {
+    if (identifierSystemPreferredUris == null) {
+      identifierSystemPreferredUris = new HashMap<>();
+      // Yes, getNSUrlMap is deprecated, however I'm not supposed to change IWorkerContext, and
+      // context doesn't provide any other way of accessing the collection of loaded NamingSystems
+      List<NamingSystem> nsl = new ArrayList<NamingSystem>(context.getNSUrlMap().values());
+      for (NamingSystem ns : nsl) {
+        if (ns.getKind().equals(NamingSystem.NamingSystemType.IDENTIFIER)) {
+          String preferred = null;
+          List<String> alternates = new ArrayList<String>();
+          for (NamingSystemUniqueIdComponent nsc : ns.getUniqueId()) {
+            if (nsc.getType().equals(NamingSystemIdentifierType.URI)) {
+              if (nsc.getPreferred()) {
+                if (preferred==null)
+                  preferred = nsc.getValue();
+                else
+                  log.warn("Multiple preferred URIs are declared within Naming System " + ns.getUrl() + "#" + ns.getVersion());
+              } else {
+                if (!alternates.contains(nsc.getValue()))
+                  alternates.add(nsc.getValue());
+              }
+            }
+          }
+          
+          if (preferred == null && !alternates.isEmpty())
+            log.warn("No preferred URI defined in Naming System " + ns.getUrl() + "#" + ns.getVersion());
+          
+          if (preferred != null)
+            identifierSystemPreferredUris.put(preferred, preferred);
+          if (!alternates.isEmpty()) {
+            if (preferred == null)
+              preferred = NO_PREFERRED_URI;
+            for (String altUri: alternates) {
+              identifierSystemPreferredUris.put(altUri,  preferred);
+            }
+          }
+        }
+      }
+    }
+    if (identifierSystemPreferredUris.containsKey(system)) {
+      return identifierSystemPreferredUris.get(system);
+    }
+    
+    return null;
+  }
 }
-

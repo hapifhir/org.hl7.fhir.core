@@ -545,6 +545,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean noInvariantChecks;
   private boolean wantInvariantInMessage;
   private boolean hintAboutNonMustSupport;
+  private boolean strictIdentifierSystems;
   private boolean showMessagesFromReferences;
   @Getter
   @Setter
@@ -728,6 +729,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     settings.setAssumeValidRestReferences(value);
   }
 
+  public void setStrictIdentifierSystems(boolean value) {
+    settings.setStrictIdentifierSystems(value);
+  }
+  
+  public boolean isStrictIdentifierSystems() {
+    return settings.isStrictIdentifierSystems();
+  }
+  
   public boolean isAllowComments() {
     return allowComments;
   }
@@ -2178,7 +2187,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               res.setCode(list.get(0).primitiveValue());
             } else if ("Coding.system[fmt:OID]".equals(m)) {
               String oid = list.get(0).primitiveValue();
-              String url = new ContextUtilities(context).oid2Uri(oid);
+              String url = cu.oid2Uri(oid);
               if (url != null) {
                 res.setSystem(url);
               } else {
@@ -3058,8 +3067,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if ("urn:ietf:rfc:3986".equals(system)) {
       String value = element.getNamedChildValue("value", false);
       ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, value == null || isAbsolute(value), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_VALUE, value) && ok; 
-    }
-    if ("https://tools.ietf.org/html/rfc4122".equals(system)) {
+    } else if ("https://tools.ietf.org/html/rfc4122".equals(system)) {
       String value = element.getNamedChildValue("value", false);
       if (value != null) {
         if (value.startsWith("urn:uuid:")) {
@@ -3069,6 +3077,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         } else {
           ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_WRONG_1, value) && ok;
         }
+      }
+    } else if (isStrictIdentifierSystems() && system != null) {
+      if (!(system.contains("example.org") || system.contains("example.com"))) {
+        String preferred = cu.preferredIdentifierSystem(system);
+        if (preferred == null)
+          hint(errors, "2025-11-26", IssueType.BUSINESSRULE, element.line(), element.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_SYSTEM_UNKNOWN);
+        else if (!preferred.equals(system))
+          hint(errors, "2025-11-26", IssueType.BUSINESSRULE, element.line(), element.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_SYSTEM_NOT_PREFERRED, system, preferred);
       }
     }
     return ok;
@@ -8552,7 +8568,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public void checkAllInvariants() {
-    for (StructureDefinition sd : new ContextUtilities(context).allStructures()) {
+    for (StructureDefinition sd : cu.allStructures()) {
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
         for (ElementDefinition ed : sd.getSnapshot().getElement()) {
           for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {

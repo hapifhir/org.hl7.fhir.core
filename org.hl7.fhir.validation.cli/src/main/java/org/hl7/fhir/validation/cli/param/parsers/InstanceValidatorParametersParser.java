@@ -15,6 +15,7 @@ import org.hl7.fhir.validation.service.utils.ValidationLevel;
 public class InstanceValidatorParametersParser implements IParamParser<InstanceValidatorParameters> {
 
   public static final String ASSUME_VALID_REST_REF = "-assumeValidRestReferences";
+  public static final String STRICT_IDENTIFIER_SYSTEMS = "-strictIdentifierSystems";
   public static final String HINT_ABOUT_NON_MUST_SUPPORT = "-hintAboutNonMustSupport";
   public static final String HTML_OUTPUT = "-html-output";
   public static final String OUTPUT_STYLE = "-output-style";
@@ -61,6 +62,9 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
       }
       if (args[i].getValue().equals(ASSUME_VALID_REST_REF)) {
         instanceValidatorParameters.setAssumeValidRestReferences(true);
+        args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(STRICT_IDENTIFIER_SYSTEMS)) {
+        instanceValidatorParameters.setStrictIdentifierSystems(true);
         args[i].setProcessed(true);
       } else if (args[i].getValue().equals(HINT_ABOUT_NON_MUST_SUPPORT)) {
         instanceValidatorParameters.setHintAboutNonMustSupport(true);
