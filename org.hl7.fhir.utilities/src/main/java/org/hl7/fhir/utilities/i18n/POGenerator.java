@@ -396,7 +396,7 @@ public class POGenerator {
           poObject.setOldMsgId(poObject.getMsgid());
         }
         poObject.setMsgid(value);
-        if (poObject.getMsgstr().size() > 0 && !Utilities.noString(poObject.getMsgstr().get(0))) {
+        if (!poObject.getMsgstr().isEmpty() && !Utilities.noString(poObject.getMsgstr().get(0))) {
           poObject.getMsgstr().set(0, "!!"+poObject.getMsgstr().get(0));
         }
       } else {
