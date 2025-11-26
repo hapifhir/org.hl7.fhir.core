@@ -1,6 +1,9 @@
 package org.hl7.fhir.utilities.i18n;
 
 public class POUtilities {
+
+  public static final String OUTDATED_PREFIX = "!!";
+
   static String trimQuotes(String s) {
     s = s.trim();
     if (s.startsWith("\"")) {
@@ -28,4 +31,15 @@ public class POUtilities {
     */
     return s.replaceAll(WRAP_REGEX, "\\\\\"");
   }
+
+  public static boolean isOutdated(String text) {
+    return text.startsWith(OUTDATED_PREFIX);
+  }
+  
+  public static String tagAsOutdated(String text) {
+    if (isOutdated(text)) {
+      return text;
+    }
+    return OUTDATED_PREFIX + text;
+   }
 }
