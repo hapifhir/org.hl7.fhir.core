@@ -75,8 +75,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 
-public class ValidationMessage implements Comparator<ValidationMessage>, Comparable<ValidationMessage>
-{
+public class ValidationMessage implements Comparator<ValidationMessage>, Comparable<ValidationMessage> {
 
   public enum Source {
     ExampleValidator, 

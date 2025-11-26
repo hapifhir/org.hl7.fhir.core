@@ -4,15 +4,50 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
-import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class InstanceValidatorParameters {
+
+  public InstanceValidatorParameters() {}
+
+  public InstanceValidatorParameters(@Nonnull InstanceValidatorParameters defaultInstanceValidatorParameters) {
+    this.assumeValidRestReferences = defaultInstanceValidatorParameters.assumeValidRestReferences;
+    this.hintAboutNonMustSupport = defaultInstanceValidatorParameters.hintAboutNonMustSupport;
+    this.htmlOutput = defaultInstanceValidatorParameters.htmlOutput;
+    this.outputStyle = defaultInstanceValidatorParameters.outputStyle;
+    this.r5BundleRelativeReferencePolicy = defaultInstanceValidatorParameters.r5BundleRelativeReferencePolicy;
+    this.extensions = new ArrayList<>(defaultInstanceValidatorParameters.extensions);
+    this.wantInvariantsInMessages = defaultInstanceValidatorParameters.wantInvariantsInMessages;
+    this.noInvariants = defaultInstanceValidatorParameters.noInvariants;
+    this.questionnaireMode = defaultInstanceValidatorParameters.questionnaireMode;
+    this.unknownCodeSystemsCauseErrors = defaultInstanceValidatorParameters.unknownCodeSystemsCauseErrors;
+    this.level = defaultInstanceValidatorParameters.level;
+    this.bestPracticeLevel = defaultInstanceValidatorParameters.bestPracticeLevel;
+    this.forPublication = defaultInstanceValidatorParameters.forPublication;
+    this.htmlInMarkdownCheck = defaultInstanceValidatorParameters.htmlInMarkdownCheck;
+    this.noUnicodeBiDiControlChars = defaultInstanceValidatorParameters.noUnicodeBiDiControlChars;
+    this.crumbTrails = defaultInstanceValidatorParameters.crumbTrails;
+    this.showMessageIds = defaultInstanceValidatorParameters.showMessageIds;
+    this.allowExampleUrls = defaultInstanceValidatorParameters.allowExampleUrls;
+    this.showMessagesFromReferences = defaultInstanceValidatorParameters.showMessagesFromReferences;
+    this.securityChecks = defaultInstanceValidatorParameters.securityChecks;
+    this.noExperimentalContent = defaultInstanceValidatorParameters.noExperimentalContent;
+    this.showTerminologyRouting = defaultInstanceValidatorParameters.showTerminologyRouting;
+    this.expansionParameters = defaultInstanceValidatorParameters.expansionParameters;
+    this.profiles = new ArrayList<>(defaultInstanceValidatorParameters.profiles);
+    this.doImplicitFHIRPathStringConversion = defaultInstanceValidatorParameters.doImplicitFHIRPathStringConversion;
+    this.allowDoubleQuotesInFHIRPath = defaultInstanceValidatorParameters.allowDoubleQuotesInFHIRPath;
+    this.checkIPSCodes = defaultInstanceValidatorParameters.checkIPSCodes;
+    this.bundleValidationRules = new ArrayList<>(defaultInstanceValidatorParameters.bundleValidationRules);
+    this.jurisdiction = defaultInstanceValidatorParameters.jurisdiction;
+  }
+
   @JsonProperty("assumeValidRestReferences")
   @SerializedName("assumeValidRestReferences")
   private boolean assumeValidRestReferences = false;
@@ -27,40 +62,6 @@ public class InstanceValidatorParameters {
   @JsonProperty("assumeValidRestReferences")
   public InstanceValidatorParameters setAssumeValidRestReferences(boolean assumeValidRestReferences) {
     this.assumeValidRestReferences = assumeValidRestReferences;
-    return this;
-  }
-
-  @JsonProperty("noExtensibleBindingMessages")
-  @SerializedName("noExtensibleBindingMessages")
-  private boolean noExtensibleBindingMessages = false;
-
-  @SerializedName("noExtensibleBindingMessages")
-  @JsonProperty("noExtensibleBindingMessages")
-  public boolean isNoExtensibleBindingMessages() {
-    return noExtensibleBindingMessages;
-  }
-
-  @SerializedName("noExtensibleBindingMessages")
-  @JsonProperty("noExtensibleBindingMessages")
-  public InstanceValidatorParameters setNoExtensibleBindingMessages(boolean noExtensibleBindingMessages) {
-    this.noExtensibleBindingMessages = noExtensibleBindingMessages;
-    return this;
-  }
-
-  @JsonProperty("showTimes")
-  @SerializedName("showTimes")
-  private boolean showTimes = false;
-
-  @SerializedName("showTimes")
-  @JsonProperty("showTimes")
-  public boolean isShowTimes() {
-    return showTimes;
-  }
-
-  @SerializedName("showTimes")
-  @JsonProperty("showTimes")
-  public InstanceValidatorParameters setShowTimes(boolean showTimes) {
-    this.showTimes = showTimes;
     return this;
   }
 
@@ -203,10 +204,6 @@ public class InstanceValidatorParameters {
     return this;
   }
 
-  @JsonProperty("displayWarnings")
-  @SerializedName("displayWarnings")
-  private boolean displayWarnings = false;
-
   @JsonProperty("unknownCodeSystemsCauseErrors")
   @SerializedName("unknownCodeSystemsCauseErrors")
   private boolean unknownCodeSystemsCauseErrors;
@@ -259,10 +256,6 @@ public class InstanceValidatorParameters {
   @SerializedName("showTerminologyRouting")
   private boolean showTerminologyRouting = false;
 
-  @JsonProperty("matchetypes")
-  @SerializedName("matchetypes")
-  private List<String> matchetypes = new ArrayList<String>();
-
   @JsonProperty("expansionParameters")
   @SerializedName("expansionParameters")
   private String expansionParameters;
@@ -270,19 +263,6 @@ public class InstanceValidatorParameters {
   @JsonProperty("profiles")
   @SerializedName("profiles")
   private List<String> profiles = new ArrayList<String>();
-
-  @SerializedName("displayWarnings")
-  @JsonProperty("displayWarnings")
-  public boolean isDisplayWarnings() {
-    return displayWarnings;
-  }
-
-  @SerializedName("displayWarnings")
-  @JsonProperty("displayWarnings")
-  public InstanceValidatorParameters setDisplayWarnings(boolean displayWarnings) {
-    this.displayWarnings = displayWarnings;
-    return this;
-  }
 
   @SerializedName("unknownCodeSystemsCauseErrors")
   @JsonProperty("unknownCodeSystemsCauseErrors")
@@ -433,24 +413,6 @@ public class InstanceValidatorParameters {
     return this;
   }
 
-  @SerializedName("matchetypes")
-  @JsonProperty("matchetypes")
-  public List<String> getMatchetypes() {
-    return matchetypes;
-  }
-
-  @SerializedName("matchetypes")
-  @JsonProperty("matchetypes")
-  public InstanceValidatorParameters setMatchetypes(List<String> matchetypes) {
-    this.matchetypes = matchetypes;
-    return this;
-  }
-
-  public InstanceValidatorParameters addMatchetype(String matchetype) {
-    this.matchetypes.add(matchetype);
-    return this;
-  }
-
   @SerializedName("expansionParameters")
   @JsonProperty("expansionParameters")
   public String getExpansionParameters() {
@@ -485,18 +447,110 @@ public class InstanceValidatorParameters {
     return this;
   }
 
+  @JsonProperty("doImplicitFHIRPathStringConversion")
+  @SerializedName("doImplicitFHIRPathStringConversion")
+  private
+  boolean doImplicitFHIRPathStringConversion = false;
+
+  @SerializedName("doImplicitFHIRPathStringConversion")
+  @JsonProperty("doImplicitFHIRPathStringConversion")
+  public boolean isDoImplicitFHIRPathStringConversion() {
+    return doImplicitFHIRPathStringConversion;
+  }
+
+  @SerializedName("doImplicitFHIRPathStringConversion")
+  @JsonProperty("doImplicitFHIRPathStringConversion")
+  public InstanceValidatorParameters setDoImplicitFHIRPathStringConversion(boolean doImplicitFHIRPathStringConversion) {
+    this.doImplicitFHIRPathStringConversion = doImplicitFHIRPathStringConversion;
+    return this;
+  }
+
+  @JsonProperty("allowDoubleQuotesInFHIRPath")
+  @SerializedName("allowDoubleQuotesInFHIRPath")
+  private
+  boolean allowDoubleQuotesInFHIRPath = false;
+
+  @SerializedName("allowDoubleQuotesInFHIRPath")
+  @JsonProperty("allowDoubleQuotesInFHIRPath")
+  public boolean isAllowDoubleQuotesInFHIRPath() {
+    return allowDoubleQuotesInFHIRPath;
+  }
+
+  @SerializedName("allowDoubleQuotesInFHIRPath")
+  @JsonProperty("allowDoubleQuotesInFHIRPath")
+  public InstanceValidatorParameters setAllowDoubleQuotesInFHIRPath(boolean allowDoubleQuotesInFHIRPath) {
+    this.allowDoubleQuotesInFHIRPath = allowDoubleQuotesInFHIRPath;
+    return this;
+  }
+
+  @JsonProperty("checkIPSCodes")
+  @SerializedName("checkIPSCodes")
+  private
+  boolean checkIPSCodes;
+
+  @SerializedName("checkIPSCodes")
+  @JsonProperty("checkIPSCodes")
+  public boolean isCheckIPSCodes() {
+    return checkIPSCodes;
+  }
+
+  @SerializedName("checkIPSCodes")
+  @JsonProperty("checkIPSCodes")
+  public InstanceValidatorParameters setCheckIPSCodes(boolean checkIPSCodes) {
+    this.checkIPSCodes = checkIPSCodes;
+    return this;
+  }
+
+  @JsonProperty("bundleValidationRules")
+  @SerializedName("bundleValidationRules")
+  private
+  List<org.hl7.fhir.r5.utils.validation.BundleValidationRule> bundleValidationRules = new ArrayList<>();
+
+  @SerializedName("bundleValidationRules")
+  @JsonProperty("bundleValidationRules")
+  public List<org.hl7.fhir.r5.utils.validation.BundleValidationRule> getBundleValidationRules() {
+    return bundleValidationRules;
+  }
+
+  @SerializedName("bundleValidationRules")
+  @JsonProperty("bundleValidationRules")
+  public InstanceValidatorParameters setBundleValidationRules(List<org.hl7.fhir.r5.utils.validation.BundleValidationRule> bundleValidationRules) {
+    this.bundleValidationRules = bundleValidationRules;
+    return this;
+  }
+
+  public InstanceValidatorParameters addBundleValidationRule(org.hl7.fhir.r5.utils.validation.BundleValidationRule bundleValidationRule) {
+    this.bundleValidationRules.add(bundleValidationRule);
+    return this;
+  }
+
+  @JsonProperty("jurisdiction")
+  @SerializedName("jurisdiction")
+  private
+  String jurisdiction = org.hl7.fhir.r5.terminologies.JurisdictionUtilities.getJurisdictionFromLocale(java.util.Locale.getDefault().getCountry());
+
+  @SerializedName("jurisdiction")
+  @JsonProperty("jurisdiction")
+  public String getJurisdiction() {
+    return jurisdiction;
+  }
+
+  @SerializedName("jurisdiction")
+  @JsonProperty("jurisdiction")
+  public InstanceValidatorParameters setJurisdiction(String jurisdiction) {
+    this.jurisdiction = jurisdiction;
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     InstanceValidatorParameters that = (InstanceValidatorParameters) o;
     return assumeValidRestReferences == that.assumeValidRestReferences
-      && noExtensibleBindingMessages == that.noExtensibleBindingMessages
-      && showTimes == that.showTimes
       && hintAboutNonMustSupport == that.hintAboutNonMustSupport
       && wantInvariantsInMessages == that.wantInvariantsInMessages
       && noInvariants == that.noInvariants
-      && displayWarnings == that.displayWarnings
       && unknownCodeSystemsCauseErrors == that.unknownCodeSystemsCauseErrors
       && forPublication == that.forPublication
       && noUnicodeBiDiControlChars == that.noUnicodeBiDiControlChars
@@ -507,6 +561,9 @@ public class InstanceValidatorParameters {
       && securityChecks == that.securityChecks
       && noExperimentalContent == that.noExperimentalContent
       && showTerminologyRouting == that.showTerminologyRouting
+      && doImplicitFHIRPathStringConversion == that.doImplicitFHIRPathStringConversion
+      && allowDoubleQuotesInFHIRPath == that.allowDoubleQuotesInFHIRPath
+      && checkIPSCodes == that.checkIPSCodes
       && Objects.equals(htmlOutput, that.htmlOutput)
       && Objects.equals(outputStyle, that.outputStyle)
       && Objects.equals(r5BundleRelativeReferencePolicy, that.r5BundleRelativeReferencePolicy)
@@ -515,22 +572,21 @@ public class InstanceValidatorParameters {
       && Objects.equals(level, that.level)
       && Objects.equals(bestPracticeLevel, that.bestPracticeLevel)
       && Objects.equals(htmlInMarkdownCheck, that.htmlInMarkdownCheck)
-      && Objects.equals(matchetypes, that.matchetypes)
       && Objects.equals(expansionParameters, that.expansionParameters)
-      && Objects.equals(profiles, that.profiles);
+      && Objects.equals(profiles, that.profiles)
+      && Objects.equals(bundleValidationRules, that.bundleValidationRules)
+      && Objects.equals(jurisdiction, that.jurisdiction);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, noExtensibleBindingMessages, showTimes, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, displayWarnings, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, matchetypes, expansionParameters, profiles);
+    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction);
   }
 
   @Override
   public String toString() {
     return "InstanceValidatorParameters{" +
       "assumeValidRestReferences=" + assumeValidRestReferences +
-      ", noExtensibleBindingMessages=" + noExtensibleBindingMessages +
-      ", showTimes=" + showTimes +
       ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +
       ", htmlOutput='" + htmlOutput + '\'' +
       ", outputStyle='" + outputStyle + '\'' +
@@ -539,7 +595,6 @@ public class InstanceValidatorParameters {
       ", wantInvariantsInMessages=" + wantInvariantsInMessages +
       ", noInvariants=" + noInvariants +
       ", questionnaireMode=" + questionnaireMode +
-      ", displayWarnings=" + displayWarnings +
       ", unknownCodeSystemsCauseErrors=" + unknownCodeSystemsCauseErrors +
       ", level=" + level +
       ", bestPracticeLevel=" + bestPracticeLevel +
@@ -553,9 +608,13 @@ public class InstanceValidatorParameters {
       ", securityChecks=" + securityChecks +
       ", noExperimentalContent=" + noExperimentalContent +
       ", showTerminologyRouting=" + showTerminologyRouting +
-      ", matchetypes=" + matchetypes +
       ", expansionParameters='" + expansionParameters + '\'' +
       ", profiles=" + profiles +
+      ", doImplicitFHIRPathStringConversion=" + doImplicitFHIRPathStringConversion +
+      ", allowDoubleQuotesInFHIRPath=" + allowDoubleQuotesInFHIRPath +
+      ", checkIPSCodes=" + checkIPSCodes +
+      ", bundleValidationRules=" + bundleValidationRules +
+      ", jurisdiction='" + jurisdiction + '\'' +
       '}';
   }
 }
