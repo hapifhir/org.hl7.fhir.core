@@ -3353,7 +3353,7 @@ msgstr "الموارد التالية موجودة في إصدار {0} فقط ف
 #: R44B_PACKAGE_REF
 #, fuzzy
 msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\"{2}\">R4B ({3}.r4b)</a> are available."
-msgstr "!!تتوفر حزم لكل من <a href=\"{0}\">R4 ({1}.r4)</a> و <a href=\"{2} \\\">R4B ({3}.r4b)</a>."
+msgstr "!!تتوفر حزم لكل من <a href=\"{0}\">R4 ({1}.r4)</a> و <a href=\"{2} \">R4B ({3}.r4b)</a>."
 
 # R44B_PROBLEMS
 #: R44B_PROBLEMS
