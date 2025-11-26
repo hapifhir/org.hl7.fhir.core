@@ -804,12 +804,12 @@ msgstr "CodeSysteme SOLLTEN KEINEN angegebenen Wert f\u00fcr das Element {0} hab
 # CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_MISSING
 #: CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_MISSING
 msgid "CodeSystem Supplements with a content value of ''supplement'' SHALL have a supplements element that specifies which code system is being supplemented"
-msgstr "!!CodeSystem-Erg\u00e4nzungen mit dem Content-Wert \\\"supplement\\\" M\u00dcSSEN ein supplements-Element haben, das angibt, welches Codesystem erg\u00e4nzt wird."
+msgstr "!!CodeSystem-Erg\u00e4nzungen mit dem Content-Wert \"supplement\" M\u00dcSSEN ein supplements-Element haben, das angibt, welches Codesystem erg\u00e4nzt wird."
 
 # CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_WRONG
 #: CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_WRONG
 msgid "CodeSystem Supplements SHALL have a content value of ''supplement''"
-msgstr "!!CodeSystem Supplements M\u00dcSSEN einen Content-Wert von \\\"supplement\\\" haben."
+msgstr "!!CodeSystem Supplements M\u00dcSSEN einen Content-Wert von \"supplement\" haben."
 
 # CODESYSTEM_CS_NONHL7_MISSING_ELEMENT
 #: CODESYSTEM_CS_NONHL7_MISSING_ELEMENT
