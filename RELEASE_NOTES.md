@@ -14,3 +14,4 @@
 * Fix path issues rendering UML diagrams
 * Fix parsing of backbone element fragments
 * Fix valueset definition rendering
+* Updates to MedicationRequest conversion between R3 and R4
