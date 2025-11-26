@@ -925,6 +925,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       }
     }
     validator.setAssumeValidRestReferences(defaultInstanceValidatorParameters.isAssumeValidRestReferences());
+    validator.setStrictIdentifierSystems(defaultInstanceValidatorParameters.isStrictIdentifierSystems());
     validator.setNoExtensibleWarnings(noExtensibleBindingMessages);
 
     validator.getContext().getManager().setLocale(locale);
