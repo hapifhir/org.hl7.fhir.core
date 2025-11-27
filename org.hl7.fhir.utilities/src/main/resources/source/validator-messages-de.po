@@ -4238,7 +4238,7 @@ msgstr "Das Element {0} hat Typen/Profile/Ziele, die als must-support markiert s
 # SD_NESTED_MUST_SUPPORT_SNAPSHOT
 #: SD_NESTED_MUST_SUPPORT_SNAPSHOT
 msgid "The element {0} has types/profiles/targets that are marked as must support, but the element itself is not marked as must-support"
-msgstr "Das Element {0} hat Typen/Profile/Ziele, die als \\\"must support\\\" gekennzeichnet sind, aber das Element selbst ist nicht als \\\"must support\\\" gekennzeichnet"
+msgstr "Das Element {0} hat Typen/Profile/Ziele, die als \"must support\" gekennzeichnet sind, aber das Element selbst ist nicht als \"must support\" gekennzeichnet"
 
 # SD_NO_CONTEXT_INV_WHEN_NOT_EXTENSION
 #: SD_NO_CONTEXT_INV_WHEN_NOT_EXTENSION
