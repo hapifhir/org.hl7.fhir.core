@@ -373,18 +373,18 @@ public class POGenerator {
     }
   }
 
-  private void updatePOObject(POObject poObject, PluralMode mode, String value) {
+  private void updatePOObject(POObject poObject, PluralMode mode, String originatingMsgid) {
     poObject.setOrphan(false);
     if (poObject.getComment() == null) {
       poObject.setComment(poObject.getId());
     }
     if (mode == PluralMode.NONE) {
-      if (!value.equals(poObject.getMsgid())) {
+      if (!originatingMsgid.equals(poObject.getMsgid())) {
         // the english string has changed, and the other language string is now out of date
         if (poObject.getOldMsgId() != null && !poObject.getMsgstr().isEmpty()) {
           poObject.setOldMsgId(poObject.getMsgid());
         }
-        poObject.setMsgid(value);
+        poObject.setMsgid(originatingMsgid);
         for (int i = 0; i < poObject.getMsgstr().size(); i++) {
           if (!Utilities.noString(poObject.getMsgstr().get(i))) {
             poObject.getMsgstr().set(i, tagAsOutdated(poObject.getMsgstr().get(i)));
@@ -394,12 +394,12 @@ public class POGenerator {
         poObject.setOldMsgId(null);
       }
     } else if (mode == PluralMode.ONE) {
-      if (!value.equals(poObject.getMsgid())) {
+      if (!originatingMsgid.equals(poObject.getMsgid())) {
         // the english string has changed, and the other language string is now out of date 
         if (poObject.getOldMsgId() != null && !poObject.getMsgstr().isEmpty()) {
           poObject.setOldMsgId(poObject.getMsgid());
         }
-        poObject.setMsgid(value);
+        poObject.setMsgid(originatingMsgid);
         if (!poObject.getMsgstr().isEmpty() && !Utilities.noString(poObject.getMsgstr().get(0))) {
           poObject.getMsgstr().set(0, tagAsOutdated(poObject.getMsgstr().get(0)));
         }
@@ -407,12 +407,12 @@ public class POGenerator {
         poObject.setOldMsgId(null);
       }
     } else if (mode == PluralMode.OTHER) {
-      if (!value.equals(poObject.getMsgidPlural())) {
+      if (!originatingMsgid.equals(poObject.getMsgidPlural())) {
         // the english string has changed, and the other language string is now out of date 
 //        if (o.oldMsgId != null) {
 //          o.oldMsgId = o.msgid;
 //        }
-        poObject.setMsgidPlural(value);
+        poObject.setMsgidPlural(originatingMsgid);
         if (poObject.getMsgstr().size() > 1 && !Utilities.noString(poObject.getMsgstr().get(1))) {
           poObject.getMsgstr().set(1, tagAsOutdated(poObject.getMsgstr().get(1)));
         }
