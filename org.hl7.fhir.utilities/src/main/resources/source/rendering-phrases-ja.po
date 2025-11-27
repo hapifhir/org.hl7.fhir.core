@@ -644,12 +644,12 @@ msgstr "!!この<param name=\"cased\"/>コードシステム <param name=\"cs\"/
 # CODESYSTEM_CONTENT_NOTPRESENT
 #: CODESYSTEM_CONTENT_NOTPRESENT
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines codes<param name=\"h\"/>, but no codes are represented here"
-msgstr "!!このコードシステム <param name=\\\"cs\\\"/> はコード<param name=\\\"h\\\"/>を定義しますが、ここではコードは表現されていません"
+msgstr "!!このコードシステム <param name=\"cs\"/> はコード<param name=\"h\"/>を定義しますが、ここではコードは表現されていません"
 
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
 msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
-msgstr "!!!!このコードシステム <param name=\\\"cs\\\"/> は次のコードに {0} を定義します:"
+msgstr "!!!!このコードシステム <param name=\"cs\"/> は次のコードに {0} を定義します:"
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
