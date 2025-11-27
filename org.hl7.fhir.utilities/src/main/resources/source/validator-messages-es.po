@@ -1007,7 +1007,7 @@ msgstr "!!The ShareableCodeSystem profile recommends that the {0} element se com
 # CODESYSTEM_SHAREABLE_EXTRA_MISSING_HL7
 #: CODESYSTEM_SHAREABLE_EXTRA_MISSING_HL7
 msgid "Code systems published by HL7 SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} should be present, but it is not"
-msgstr "!!!!El perfil ShareableValueSet recomienda que el elemento {0} se complete, pero no se encontró. Los conjuntos de valores publicados por HL7 DEBEN conformar al perfil ShareableValueSet"
+msgstr "!!El perfil ShareableValueSet recomienda que el elemento {0} se complete, pero no se encontró. Los conjuntos de valores publicados por HL7 DEBEN conformar al perfil ShareableValueSet"
 
 # CODESYSTEM_SHAREABLE_MISSING
 #: CODESYSTEM_SHAREABLE_MISSING
@@ -1017,7 +1017,7 @@ msgstr "!!El perfil ShareableValueSet dice que el elemento {0} es obligatorio, p
 # CODESYSTEM_SHAREABLE_MISSING_HL7
 #: CODESYSTEM_SHAREABLE_MISSING_HL7
 msgid "Code systems published by HL7 SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} is mandatory, but it is not present"
-msgstr "!!!!El perfil ShareableValueSet dice que el elemento {0} es obligatorio, pero no se encontró. Los conjuntos de valores publicados por HL7 DEBEN conformar al perfil ShareableValueSet"
+msgstr "!!El perfil ShareableValueSet dice que el elemento {0} es obligatorio, pero no se encontró. Los conjuntos de valores publicados por HL7 DEBEN conformar al perfil ShareableValueSet"
 
 # CODESYSTEM_SUPP_NO_DISPLAY
 #: CODESYSTEM_SUPP_NO_DISPLAY
@@ -2273,7 +2273,7 @@ msgstr ""
 # INV_FAILED
 #: INV_FAILED
 msgid "Constraint failed: {0}: ''{1}''"
-msgstr "!!!!La regla {0} falló"
+msgstr "!!La regla {0} falló"
 
 # INV_FAILED_SOURCE
 #: INV_FAILED_SOURCE
@@ -2758,7 +2758,7 @@ msgstr "!!El perfil ShareableMeasure recomienda que el elemento {0} se complete,
 # MEASURE_SHAREABLE_EXTRA_MISSING_HL7
 #: MEASURE_SHAREABLE_EXTRA_MISSING_HL7
 msgid "Measures published by HL7 SHALL conform to the ShareableMeasure profile, which says that the element Measure.{0} should be present, but it is not"
-msgstr "!!!!El perfil ShareableMeasure recomienda que el elemento {0} se complete, pero no se encontró. Las medidas publicadas por HL7 DEBEN conformar al perfil ShareableMeasure"
+msgstr "!!El perfil ShareableMeasure recomienda que el elemento {0} se complete, pero no se encontró. Las medidas publicadas por HL7 DEBEN conformar al perfil ShareableMeasure"
 
 # MEASURE_SHAREABLE_MISSING
 #: MEASURE_SHAREABLE_MISSING
@@ -2768,7 +2768,7 @@ msgstr "!!El perfil ShareableMeasure dice que el elemento {0} es obligatorio, pe
 # MEASURE_SHAREABLE_MISSING_HL7
 #: MEASURE_SHAREABLE_MISSING_HL7
 msgid "Measures published by HL7 SHALL conform to the ShareableMeasure profile, which says that the element Measure.{0} is mandatory, but it is not present"
-msgstr "!!!!El perfil ShareableMeasure dice que el elemento {0} es obligatorio, pero no se encontró. Las medidas publicadas por HL7 DEBEN conformar al perfil ShareableMeasure"
+msgstr "!!El perfil ShareableMeasure dice que el elemento {0} es obligatorio, pero no se encontró. Las medidas publicadas por HL7 DEBEN conformar al perfil ShareableMeasure"
 
 # MSG_DEPENDS_ON_DEPRECATED
 #: MSG_DEPENDS_ON_DEPRECATED
@@ -4174,7 +4174,7 @@ msgstr "El perfil {0}  es para una extensión modificante pero el elemento {3} n
 # SD_ED_TYPE_PROFILE_UNKNOWN
 #: SD_ED_TYPE_PROFILE_UNKNOWN
 msgid "Unable to resolve profile {0}"
-msgstr "!!!!!!!!!!!!!!!!Imposible resolver el perfil {0}"
+msgstr "!!Imposible resolver el perfil {0}"
 
 # SD_ED_TYPE_PROFILE_WRONG
 #: SD_ED_TYPE_PROFILE_WRONG
@@ -4972,22 +4972,22 @@ msgstr "El servidor devolvió null sobre una solicitud de validación en lote"
 # TYPE_CHECKS_FIXED_CC
 #: TYPE_CHECKS_FIXED_CC
 msgid "The fixed value [system {0}, code {1}, and display ''{2}''] defined in the profile {3} not found. Issues: {4}"
-msgstr "!!!!!!!!!!!!!!!!!!El patrón [system {0}, code {1}, y display ''{2}''] definidos en el perfil {3} no se han encontrado. Problemas: {4}"
+msgstr "!!El patrón [system {0}, code {1}, y display ''{2}''] definidos en el perfil {3} no se han encontrado. Problemas: {4}"
 
 # TYPE_CHECKS_FIXED_CC_US
 #: TYPE_CHECKS_FIXED_CC_US
 msgid "The fixed value [system {0}, code {1}, display ''{2}'' and userSelected {5}] defined in the profile {3} not found. Issues: {4}"
-msgstr "!!!!!!!!!!!!!!!!!!El patrón [system {0}, code {1}, display ''{2}'' y userSelected {5}] definidos en el perfil {3} no se han encontrado. Problemas: {4}"
+msgstr "!!El patrón [system {0}, code {1}, display ''{2}'' y userSelected {5}] definidos en el perfil {3} no se han encontrado. Problemas: {4}"
 
 # TYPE_CHECKS_PATTERN_CC
 #: TYPE_CHECKS_PATTERN_CC
 msgid "The pattern [system {0}, code {1}, and display ''{2}''] defined in the profile {3} not found. Issues: {4}"
-msgstr "!!!!!!!!!!!!!!!!!!El patrón [system {0}, code {1}, y display ''{2}''] definidos en el perfil {3} no se han encontrado. Problemas: {4}"
+msgstr "!!El patrón [system {0}, code {1}, y display ''{2}''] definidos en el perfil {3} no se han encontrado. Problemas: {4}"
 
 # TYPE_CHECKS_PATTERN_CC_US
 #: TYPE_CHECKS_PATTERN_CC_US
 msgid "The pattern [system {0}, code {1}, display ''{2}'' and userSelected {5}] defined in the profile {3} not found. Issues: {4}"
-msgstr "!!!!!!!!!!!!!!!!!!El patrón  [system {0}, code {1}, display ''{2}'' y userSelected {5}] definidos en el perfil {3} no se han encontrado. Problemas: {4}"
+msgstr "!!El patrón  [system {0}, code {1}, display ''{2}'' y userSelected {5}] definidos en el perfil {3} no se han encontrado. Problemas: {4}"
 
 # TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE
 #: TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE
@@ -5407,12 +5407,12 @@ msgstr "!!El código provisto ({2}) no está en el conjunto de valores {0}, y un
 # Terminology_TX_Confirm_5
 #: Terminology_TX_Confirm_5
 msgid "The code provided ({1}) is not in the value set {0}, and a code should come from this value set unless it has no suitable code (the validator cannot judge what is suitable)"
-msgstr "!!!!No se pudo confirmar que los códigos provistos vengan de este conjunto de valores {0}, y deberian provenir de este conjunto de valores a menos que no haya un código apropiado (el validador no pudo juzgar si era o no apropiado)"
+msgstr "!!No se pudo confirmar que los códigos provistos vengan de este conjunto de valores {0}, y deberian provenir de este conjunto de valores a menos que no haya un código apropiado (el validador no pudo juzgar si era o no apropiado)"
 
 # Terminology_TX_Confirm_6
 #: Terminology_TX_Confirm_6
 msgid "The code provided ({1}) is not in the value set {0}, and a code is recommended to come from this value set"
-msgstr "!!!!No se pudo confirmar que los códigos provistos vengan de este conjunto de valores {0}, y se recomienda que los códigos provengan de este conjunto de valores"
+msgstr "!!No se pudo confirmar que los códigos provistos vengan de este conjunto de valores {0}, y se recomienda que los códigos provengan de este conjunto de valores"
 
 # Terminology_TX_Display_Wrong
 #: Terminology_TX_Display_Wrong
@@ -5482,7 +5482,7 @@ msgstr "!!El valor provisto (''{0}'') no está en el conjunto de valores{1}, y d
 # Terminology_TX_NoValid_18
 #: Terminology_TX_NoValid_18
 msgid "The value provided (''{0}'') was not found in the value set {1}, and a code is recommended to come from this value set{2}"
-msgstr "!!!!El valor provisto (''{0}'') no está en el conjunto de valores{1}, y se recomienda que el código provengan de este conjunto de valores){2}"
+msgstr "!!El valor provisto (''{0}'') no está en el conjunto de valores{1}, y se recomienda que el código provengan de este conjunto de valores){2}"
 
 # Terminology_TX_NoValid_1_CC
 #: Terminology_TX_NoValid_1_CC
@@ -5622,7 +5622,7 @@ msgstr "Esta propiedad debe ser una URI o bnode, no {0}"
 # This_property_must_be_an_Array_not_
 #: This_property_must_be_an_Array_not_
 msgid "The property {1} must be a JSON Array, not {0} (at {2})"
-msgstr "!!!!Esta propiedad debe ser un Array, no {0}"
+msgstr "!!Esta propiedad debe ser un Array, no {0}"
 
 # This_property_must_be_an_object_not_
 #: This_property_must_be_an_object_not_
@@ -5677,12 +5677,12 @@ msgstr "!!No es una fecha válida ({0})"
 # Type_Specific_Checks_DT_Decimal_GT
 #: Type_Specific_Checks_DT_Decimal_GT
 msgid "decimal value is greater than permitted maximum value of {0}"
-msgstr "!!!!!!el valor es mayor que el valor máximo permitido de {0}"
+msgstr "!!el valor es mayor que el valor máximo permitido de {0}"
 
 # Type_Specific_Checks_DT_Decimal_LT
 #: Type_Specific_Checks_DT_Decimal_LT
 msgid "decimal value is less than permitted minimum value of {0}"
-msgstr "!!!!!!el valor es menor que el valor mínimo permitido de {0}"
+msgstr "!!el valor es menor que el valor mínimo permitido de {0}"
 
 # Type_Specific_Checks_DT_Decimal_Range
 #: Type_Specific_Checks_DT_Decimal_Range
@@ -5717,12 +5717,12 @@ msgstr "El valor ''{0}'' no es un integer64 válido"
 # Type_Specific_Checks_DT_Integer_GT
 #: Type_Specific_Checks_DT_Integer_GT
 msgid "integer value is greater than permitted maximum value of {0}"
-msgstr "!!!!!!el valor es mayor que el valor máximo permitido de {0}"
+msgstr "!!el valor es mayor que el valor máximo permitido de {0}"
 
 # Type_Specific_Checks_DT_Integer_LT
 #: Type_Specific_Checks_DT_Integer_LT
 msgid "integer value is less than permitted minimum value of {0}"
-msgstr "!!!!!!el valor es menor que el valor mínimo permitido de {0}"
+msgstr "!!el valor es menor que el valor mínimo permitido de {0}"
 
 # Type_Specific_Checks_DT_Integer_LT0
 #: Type_Specific_Checks_DT_Integer_LT0
@@ -6100,7 +6100,7 @@ msgstr "!!Incapaz de resolver el sistema - el conjunto de valores tiene imports"
 # Unable_to_resolve_system__value_set_has_include_with_filter
 #: Unable_to_resolve_system__value_set_has_include_with_filter
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': include #{2} has a filter on system {3}: {4}"
-msgstr "!!!!Incapaz de resolver el sistema - conjunto de valores {0} include #{1} tiene un filtro en system {2}"
+msgstr "!!Incapaz de resolver el sistema - conjunto de valores {0} include #{1} tiene un filtro en system {2}"
 
 # Unable_to_resolve_system__value_set_has_include_with_no_system
 #: Unable_to_resolve_system__value_set_has_include_with_no_system
@@ -6789,7 +6789,7 @@ msgstr "!!El perfil ShareableValueSet recomienda que el elemento {0} se complete
 # VALUESET_SHAREABLE_EXTRA_MISSING_HL7
 #: VALUESET_SHAREABLE_EXTRA_MISSING_HL7
 msgid "Value sets published by HL7 SHALL conform to the ShareableValueSet profile, which says that the element ValueSet.{0} should be present, but it is not"
-msgstr "!!!!El perfil ShareableValueSet recomienda que el elemento {0} se complete, pero no se encontró.Los conjuntos de valores publicados por HL7 DEBEN conformar al perfil ShareableValueSet"
+msgstr "!!El perfil ShareableValueSet recomienda que el elemento {0} se complete, pero no se encontró.Los conjuntos de valores publicados por HL7 DEBEN conformar al perfil ShareableValueSet"
 
 # VALUESET_SHAREABLE_MISSING
 #: VALUESET_SHAREABLE_MISSING
@@ -6799,7 +6799,7 @@ msgstr "!!El perfil ShareableValueSet dice que el elemento {0} es obligatorio, p
 # VALUESET_SHAREABLE_MISSING_HL7
 #: VALUESET_SHAREABLE_MISSING_HL7
 msgid "Value sets published by HL7 SHALL conform to the ShareableValueSet profile, which says that the element ValueSet.{0} is mandatory, but it is not present"
-msgstr "!!!!El perfil ShareableValueSet dice que el elemento {0} es obligatorio, pero no se encontró. Los conjuntos de valores publicados por HL7 DEBEN conformar al perfil ShareableValueSet"
+msgstr "!!El perfil ShareableValueSet dice que el elemento {0} es obligatorio, pero no se encontró. Los conjuntos de valores publicados por HL7 DEBEN conformar al perfil ShareableValueSet"
 
 # VALUESET_SUPPLEMENT_MISSING
 #: VALUESET_SUPPLEMENT_MISSING
@@ -7356,7 +7356,7 @@ msgstr ""
 # _DT_Fixed_Wrong
 #: _DT_Fixed_Wrong
 msgid "Value is ''{0}'' but is fixed to ''{1}'' in the profile {2}"
-msgstr "!!!!El valor es ''{0}'' but debe ser ''{1}''"
+msgstr "!!El valor es ''{0}'' but debe ser ''{1}''"
 
 # _has_children__and_multiple_types__in_profile_
 #: _has_children__and_multiple_types__in_profile_

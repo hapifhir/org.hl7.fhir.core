@@ -1683,7 +1683,7 @@ msgstr "Não foi possível encontrar o ator referenciado {0}"
 #: FMM_TABLE
 #, fuzzy
 msgid "<table class=\"cols\" data-fhir=\"generated\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
-msgstr "!!!!<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Nível de maturidade</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Estado normalizado\">{2}</a></td></tr></tbody></table>"
+msgstr "!!<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Nível de maturidade</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Estado normalizado\">{2}</a></td></tr></tbody></table>"
 
 # GENERAL_ADDITIONAL_BINDING
 #: GENERAL_ADDITIONAL_BINDING
