@@ -3185,7 +3185,7 @@ msgstr "De {0} ''{1}'' is gedefinieerd in het geclaimde profiel, maar ontbreekt"
 # PROFILE_COMPLIES_WITH_NOT_VALID
 #: PROFILE_COMPLIES_WITH_NOT_VALID
 msgid "The {0} value of ''{2}'' on the path {3} does not comply with the value ''{1}'' from the claimed profile"
-msgstr "!!!!De {0} waarde van ''{2}'' komt niet overeen met de waarde ''{1}''"
+msgstr "!!De {0} waarde van ''{2}'' komt niet overeen met de waarde ''{1}''"
 
 # PROFILE_COMPLIES_WITH_NO_VS
 #: PROFILE_COMPLIES_WITH_NO_VS
@@ -7321,7 +7321,7 @@ msgstr[1] "URL bevat {0} ongeldige tekens ({1})"
 # XHTML_XHTML_ATTRIBUTE_XML_SPACE
 #: XHTML_XHTML_ATTRIBUTE_XML_SPACE
 msgid "The attribute ''xml:space'' is legal but has a fixed value of ''preserve''. Its use is discouraged"
-msgstr "!!!!Het attribuut ''xml:space'' is geldig maar heeft vaste waarde ''preserve''. Dit gebruik wordt afgeraden"
+msgstr "!!Het attribuut ''xml:space'' is geldig maar heeft vaste waarde ''preserve''. Dit gebruik wordt afgeraden"
 
 # XHTML_XHTML_DOCTYPE_ILLEGAL
 #: XHTML_XHTML_Attribute_Illegal

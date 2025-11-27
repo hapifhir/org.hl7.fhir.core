@@ -1004,7 +1004,7 @@ msgstr "!!Das ShareableCodeSystem-Profil empfiehlt, dass das Element {0} bef\u00
 # CODESYSTEM_SHAREABLE_EXTRA_MISSING_HL7
 #: CODESYSTEM_SHAREABLE_EXTRA_MISSING_HL7
 msgid "Code systems published by HL7 SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} should be present, but it is not"
-msgstr "!!!!Das ShareableCodeSystem-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es wird nicht gefunden. HL7 Published Code-Systeme M\u00dcSSEN dem ShareableCodeSystem-Profil entsprechen"
+msgstr "!!Das ShareableCodeSystem-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es wird nicht gefunden. HL7 Published Code-Systeme M\u00dcSSEN dem ShareableCodeSystem-Profil entsprechen"
 
 # CODESYSTEM_SHAREABLE_MISSING
 #: CODESYSTEM_SHAREABLE_MISSING
@@ -1014,7 +1014,7 @@ msgstr "!!Das ShareableCodeSystem-Profil sagt, dass das {0}-Element obligatorisc
 # CODESYSTEM_SHAREABLE_MISSING_HL7
 #: CODESYSTEM_SHAREABLE_MISSING_HL7
 msgid "Code systems published by HL7 SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} is mandatory, but it is not present"
-msgstr "!!!!Das ShareableCodeSystem-Profil sagt, dass das {0}-Element obligatorisch ist, aber es wird nicht gefunden. HL7 Published Code-Systeme M\u00dcSSEN dem ShareableCodeSystem-Profil entsprechen"
+msgstr "!!Das ShareableCodeSystem-Profil sagt, dass das {0}-Element obligatorisch ist, aber es wird nicht gefunden. HL7 Published Code-Systeme M\u00dcSSEN dem ShareableCodeSystem-Profil entsprechen"
 
 # CODESYSTEM_SUPP_NO_DISPLAY
 #: CODESYSTEM_SUPP_NO_DISPLAY
@@ -1149,7 +1149,7 @@ msgstr "!!Das ShareableConceptMap-Profil empfiehlt, dass das Element {0} bef\u00
 # CONCEPTMAP_SHAREABLE_EXTRA_MISSING_HL7
 #: CONCEPTMAP_SHAREABLE_EXTRA_MISSING_HL7
 msgid "Concept maps published by HL7 SHALL conform to the ShareableConceptMap profile, which says that the element ConceptMap.{0} should be present, but it is not"
-msgstr "!!!!Das ShareableConceptMap-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es wird nicht gefunden. HL7 Published Concept Maps M\u00dcSSEN mit dem ShareableConceptMap-Profil \u00fcbereinstimmen"
+msgstr "!!Das ShareableConceptMap-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es wird nicht gefunden. HL7 Published Concept Maps M\u00dcSSEN mit dem ShareableConceptMap-Profil \u00fcbereinstimmen"
 
 # CONCEPTMAP_SHAREABLE_MISSING
 #: CONCEPTMAP_SHAREABLE_MISSING
@@ -1159,7 +1159,7 @@ msgstr "!!Das ShareableConceptMap-Profil sagt, dass das {0}-Element obligatorisc
 # CONCEPTMAP_SHAREABLE_MISSING_HL7
 #: CONCEPTMAP_SHAREABLE_MISSING_HL7
 msgid "Concept maps published by HL7 SHALL conform to the ShareableConceptMap profile, which says that the element ConceptMap.{0} is mandatory, but it is not present"
-msgstr "!!!!Das ShareableConceptMap-Profil sagt, dass das {0}-Element obligatorisch ist, aber es wird nicht gefunden. HL7 Published Concept Maps M\u00dcSSEN mit dem ShareableConceptMap-Profil \u00fcbereinstimmen"
+msgstr "!!Das ShareableConceptMap-Profil sagt, dass das {0}-Element obligatorisch ist, aber es wird nicht gefunden. HL7 Published Concept Maps M\u00dcSSEN mit dem ShareableConceptMap-Profil \u00fcbereinstimmen"
 
 # CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM
 #: CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM
@@ -2258,7 +2258,7 @@ msgstr ""
 # INV_FAILED
 #: INV_FAILED
 msgid "Constraint failed: {0}: ''{1}''"
-msgstr "!!!!Regel {0} fehlgeschlagen"
+msgstr "!!Regel {0} fehlgeschlagen"
 
 # INV_FAILED_SOURCE
 #: INV_FAILED_SOURCE
@@ -2743,7 +2743,7 @@ msgstr "!!Das ShareableMeasure-Profil empfiehlt, dass das Element {0} ausgef\u00
 # MEASURE_SHAREABLE_EXTRA_MISSING_HL7
 #: MEASURE_SHAREABLE_EXTRA_MISSING_HL7
 msgid "Measures published by HL7 SHALL conform to the ShareableMeasure profile, which says that the element Measure.{0} should be present, but it is not"
-msgstr "!!!!Das ShareableMeasure-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es wird nicht gefunden. HL7 Published Measures M\u00dcSSEN dem ShareableMeasure-Profil entsprechen"
+msgstr "!!Das ShareableMeasure-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es wird nicht gefunden. HL7 Published Measures M\u00dcSSEN dem ShareableMeasure-Profil entsprechen"
 
 # MEASURE_SHAREABLE_MISSING
 #: MEASURE_SHAREABLE_MISSING
@@ -2753,7 +2753,7 @@ msgstr "!!Das ShareableMeasure-Profil sagt, dass das {0}-Element obligatorisch i
 # MEASURE_SHAREABLE_MISSING_HL7
 #: MEASURE_SHAREABLE_MISSING_HL7
 msgid "Measures published by HL7 SHALL conform to the ShareableMeasure profile, which says that the element Measure.{0} is mandatory, but it is not present"
-msgstr "!!!!Das ShareableMeasure-Profil sagt, dass das {0}-Element obligatorisch ist, aber es wird nicht gefunden. HL7 Published Measures M\u00dcSSEN dem ShareableMeasure-Profil entsprechen"
+msgstr "!!Das ShareableMeasure-Profil sagt, dass das {0}-Element obligatorisch ist, aber es wird nicht gefunden. HL7 Published Measures M\u00dcSSEN dem ShareableMeasure-Profil entsprechen"
 
 # MSG_DEPENDS_ON_DEPRECATED
 #: MSG_DEPENDS_ON_DEPRECATED
@@ -4151,7 +4151,7 @@ msgstr "Profil {0} ist f\u00fcr eine Modifier-Extension, aber das Element {3} is
 # SD_ED_TYPE_PROFILE_UNKNOWN
 #: SD_ED_TYPE_PROFILE_UNKNOWN
 msgid "Unable to resolve profile {0}"
-msgstr "!!!!!!!!!!!!!!!!Profil {0} kann nicht aufgel\u00f6st werden"
+msgstr "!!Profil {0} kann nicht aufgel\u00f6st werden"
 
 # SD_ED_TYPE_PROFILE_WRONG
 #: SD_ED_TYPE_PROFILE_WRONG
@@ -4598,7 +4598,7 @@ msgstr "Eine Liste ruleId sollte nicht angegeben werden, da es sich um eine Rege
 # SM_ORPHAN_GROUP
 #: SM_ORPHAN_GROUP
 msgid "The group {0} is not called successfully from within this mapping script, and does not have types on its inputs, so type verification is not possible"
-msgstr "!!!!Die Gruppe {0} wird nicht von diesem Mapping-Skript aus aufgerufen und hat keine Typen f\u00fcr ihre Inputs definiert, so dass eine Typenpr\u00fcfung nicht m\u00f6glich ist"
+msgstr "!!Die Gruppe {0} wird nicht von diesem Mapping-Skript aus aufgerufen und hat keine Typen f\u00fcr ihre Inputs definiert, so dass eine Typenpr\u00fcfung nicht m\u00f6glich ist"
 
 # SM_RULEGROUP_NOT_FOUND
 #: SM_RULEGROUP_NOT_FOUND
@@ -4948,22 +4948,22 @@ msgstr "Der Server gibt bei einer Batch-Validierungsanfrage null zur\u00fcck"
 # TYPE_CHECKS_FIXED_CC
 #: TYPE_CHECKS_FIXED_CC
 msgid "The fixed value [system {0}, code {1}, and display ''{2}''] defined in the profile {3} not found. Issues: {4}"
-msgstr "!!!!!!!!!!!!!!!!!!Das im Profil {3} definierte Muster [System {0}, Code {1}, und Anzeige ''{2}''] wurde nicht gefunden. Probleme: {4}"
+msgstr "!!Das im Profil {3} definierte Muster [System {0}, Code {1}, und Anzeige ''{2}''] wurde nicht gefunden. Probleme: {4}"
 
 # TYPE_CHECKS_FIXED_CC_US
 #: TYPE_CHECKS_FIXED_CC_US
 msgid "The fixed value [system {0}, code {1}, display ''{2}'' and userSelected {5}] defined in the profile {3} not found. Issues: {4}"
-msgstr "!!!!!!!!!!!!!!!!!!Das im Profil {3} definierte Pattern [System {0}, Code {1}, Anzeige ''{2}'' und userSelected {5}] wurde nicht gefunden. Probleme: {4}"
+msgstr "!!Das im Profil {3} definierte Pattern [System {0}, Code {1}, Anzeige ''{2}'' und userSelected {5}] wurde nicht gefunden. Probleme: {4}"
 
 # TYPE_CHECKS_PATTERN_CC
 #: TYPE_CHECKS_PATTERN_CC
 msgid "The pattern [system {0}, code {1}, and display ''{2}''] defined in the profile {3} not found. Issues: {4}"
-msgstr "!!!!!!!!!!!!!!!!!!Das im Profil {3} definierte Pattern [System {0}, Code {1}, und Anzeige ''{2}''] wurde nicht gefunden. Probleme: {4}"
+msgstr "!!Das im Profil {3} definierte Pattern [System {0}, Code {1}, und Anzeige ''{2}''] wurde nicht gefunden. Probleme: {4}"
 
 # TYPE_CHECKS_PATTERN_CC_US
 #: TYPE_CHECKS_PATTERN_CC_US
 msgid "The pattern [system {0}, code {1}, display ''{2}'' and userSelected {5}] defined in the profile {3} not found. Issues: {4}"
-msgstr "!!!!!!!!!!!!!!!!!!Das im Profil {3} definierte Pattern [System {0}, Code {1}, Anzeige ''{2}'' und userSelected {5}] wurde nicht gefunden. Probleme: {4}"
+msgstr "!!Das im Profil {3} definierte Pattern [System {0}, Code {1}, Anzeige ''{2}'' und userSelected {5}] wurde nicht gefunden. Probleme: {4}"
 
 # TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE
 #: TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE
@@ -5383,12 +5383,12 @@ msgstr "!!Der angegebene Code ({2}) befindet sich nicht im ValueSet {0}, und es 
 # Terminology_TX_Confirm_5
 #: Terminology_TX_Confirm_5
 msgid "The code provided ({1}) is not in the value set {0}, and a code should come from this value set unless it has no suitable code (the validator cannot judge what is suitable)"
-msgstr "!!!!Konnte nicht best\u00e4tigen, dass die angegebenen Codes im ValueSet {0} enthalten sind, und ein Code sollte aus diesem ValueSet stammen. Es sei denn, er hat enth\u00e4lt keinen geeigneten Code"
+msgstr "!!Konnte nicht best\u00e4tigen, dass die angegebenen Codes im ValueSet {0} enthalten sind, und ein Code sollte aus diesem ValueSet stammen. Es sei denn, er hat enth\u00e4lt keinen geeigneten Code"
 
 # Terminology_TX_Confirm_6
 #: Terminology_TX_Confirm_6
 msgid "The code provided ({1}) is not in the value set {0}, and a code is recommended to come from this value set"
-msgstr "!!!!Konnte nicht best\u00e4tigen, dass die angegebenen Codes im ValueSet {0} enthalten sind, und es wird empfohlen, einen Code aus diesem ValueSet zu verwenden."
+msgstr "!!Konnte nicht best\u00e4tigen, dass die angegebenen Codes im ValueSet {0} enthalten sind, und es wird empfohlen, einen Code aus diesem ValueSet zu verwenden."
 
 # Terminology_TX_Display_Wrong
 #: Terminology_TX_Display_Wrong
@@ -5458,7 +5458,7 @@ msgstr "!!Der angegebene Wert (''{0}'') ist nicht im Valueset {1}, und ein Code 
 # Terminology_TX_NoValid_18
 #: Terminology_TX_NoValid_18
 msgid "The value provided (''{0}'') was not found in the value set {1}, and a code is recommended to come from this value set{2}"
-msgstr "!!!!Der angegebene Wert (''{0}'') ist nicht im Valueset {1}, und es wird empfohlen, einen Code aus diesem Valueset zu verwenden){2}"
+msgstr "!!Der angegebene Wert (''{0}'') ist nicht im Valueset {1}, und es wird empfohlen, einen Code aus diesem Valueset zu verwenden){2}"
 
 # Terminology_TX_NoValid_1_CC
 #: Terminology_TX_NoValid_1_CC
@@ -5653,12 +5653,12 @@ msgstr "!!Kein g\u00fcltiges Datum ({0})"
 # Type_Specific_Checks_DT_Decimal_GT
 #: Type_Specific_Checks_DT_Decimal_GT
 msgid "decimal value is greater than permitted maximum value of {0}"
-msgstr "!!!!!!Wert ist gr\u00f6\u00dfer als der zul\u00e4ssige H\u00f6chstwert von {0}"
+msgstr "!!Wert ist gr\u00f6\u00dfer als der zul\u00e4ssige H\u00f6chstwert von {0}"
 
 # Type_Specific_Checks_DT_Decimal_LT
 #: Type_Specific_Checks_DT_Decimal_LT
 msgid "decimal value is less than permitted minimum value of {0}"
-msgstr "!!!!!!Wert ist kleiner als der zul\u00e4ssige Mindestwert von {0}"
+msgstr "!!Wert ist kleiner als der zul\u00e4ssige Mindestwert von {0}"
 
 # Type_Specific_Checks_DT_Decimal_Range
 #: Type_Specific_Checks_DT_Decimal_Range
@@ -5693,12 +5693,12 @@ msgstr "Der Wert ''{0}'' ist keine g\u00fcltige integer64"
 # Type_Specific_Checks_DT_Integer_GT
 #: Type_Specific_Checks_DT_Integer_GT
 msgid "integer value is greater than permitted maximum value of {0}"
-msgstr "!!!!!!Wert gr\u00f6\u00dfer als der zul\u00e4ssige Maximalwert von {0}"
+msgstr "!!Wert gr\u00f6\u00dfer als der zul\u00e4ssige Maximalwert von {0}"
 
 # Type_Specific_Checks_DT_Integer_LT
 #: Type_Specific_Checks_DT_Integer_LT
 msgid "integer value is less than permitted minimum value of {0}"
-msgstr "!!!!!!Wert ist kleiner als der zul\u00e4ssige Mindestwert von {0}"
+msgstr "!!Wert ist kleiner als der zul\u00e4ssige Mindestwert von {0}"
 
 # Type_Specific_Checks_DT_Integer_LT0
 #: Type_Specific_Checks_DT_Integer_LT0
@@ -5848,7 +5848,7 @@ msgstr "System {0} Property Filter mit op = {1} kann nicht verarbeitet werden"
 # UNABLE_TO_INFER_CODESYSTEM
 #: UNABLE_TO_INFER_CODESYSTEM
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}''"
-msgstr "!!!!!!!!!!!!!!!!Die System-URI konnte f\u00fcr den Code {0} im ValueSet {1} nicht ermittelt werden"
+msgstr "!!Die System-URI konnte f\u00fcr den Code {0} im ValueSet {1} nicht ermittelt werden"
 
 # UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT
 #: UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT
@@ -5880,7 +5880,7 @@ msgstr[1] ""
 # UNKNOWN_CODESYSTEM
 #: UNKNOWN_CODESYSTEM
 msgid "A definition for CodeSystem ''{0}'' could not be found, so the code cannot be validated"
-msgstr "!!!!!!!!Das CodeSystem {0} ist unbekannt"
+msgstr "!!Das CodeSystem {0} ist unbekannt"
 
 # UNKNOWN_CODESYSTEM_EXP
 #: UNKNOWN_CODESYSTEM_EXP
@@ -6075,7 +6075,7 @@ msgstr "!!System nicht aufl\u00f6sbar - ValueSet enth\u00e4lt Importe"
 # Unable_to_resolve_system__value_set_has_include_with_filter
 #: Unable_to_resolve_system__value_set_has_include_with_filter
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': include #{2} has a filter on system {3}: {4}"
-msgstr "!!!!System kann nicht aufgel\u00f6st werden - ValueSet {0} include #{1} hat einen Filter auf System {2}"
+msgstr "!!System kann nicht aufgel\u00f6st werden - ValueSet {0} include #{1} hat einen Filter auf System {2}"
 
 # Unable_to_resolve_system__value_set_has_include_with_no_system
 #: Unable_to_resolve_system__value_set_has_include_with_no_system
@@ -6764,7 +6764,7 @@ msgstr "!!Das ShareableValueSet-Profil empfiehlt, dass das Element {0} gef\u00fc
 # VALUESET_SHAREABLE_EXTRA_MISSING_HL7
 #: VALUESET_SHAREABLE_EXTRA_MISSING_HL7
 msgid "Value sets published by HL7 SHALL conform to the ShareableValueSet profile, which says that the element ValueSet.{0} should be present, but it is not"
-msgstr "!!!!Das ShareableValueSet-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es wird nicht gefunden. HL7 Published ValueSets M\u00dcSSEN mit dem ShareableValueSet-Profil \u00fcbereinstimmen"
+msgstr "!!Das ShareableValueSet-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es wird nicht gefunden. HL7 Published ValueSets M\u00dcSSEN mit dem ShareableValueSet-Profil \u00fcbereinstimmen"
 
 # VALUESET_SHAREABLE_MISSING
 #: VALUESET_SHAREABLE_MISSING
@@ -6774,7 +6774,7 @@ msgstr "!!Das ShareableValueSet-Profil sagt, dass das {0}-Element obligatorisch 
 # VALUESET_SHAREABLE_MISSING_HL7
 #: VALUESET_SHAREABLE_MISSING_HL7
 msgid "Value sets published by HL7 SHALL conform to the ShareableValueSet profile, which says that the element ValueSet.{0} is mandatory, but it is not present"
-msgstr "!!!!Das ShareableValueSet-Profil sagt, dass das {0}-Element obligatorisch ist, aber es wird nicht gefunden. HL7 Published ValueSets M\u00dcSSEN mit dem ShareableValueSet-Profil \u00fcbereinstimmen"
+msgstr "!!Das ShareableValueSet-Profil sagt, dass das {0}-Element obligatorisch ist, aber es wird nicht gefunden. HL7 Published ValueSets M\u00dcSSEN mit dem ShareableValueSet-Profil \u00fcbereinstimmen"
 
 # VALUESET_SUPPLEMENT_MISSING
 #: VALUESET_SUPPLEMENT_MISSING
@@ -7322,7 +7322,7 @@ msgstr ""
 # _DT_Fixed_Wrong
 #: _DT_Fixed_Wrong
 msgid "Value is ''{0}'' but is fixed to ''{1}'' in the profile {2}"
-msgstr "!!!!Der Wert ist ''{0}'', muss aber ''{1}'' sein."
+msgstr "!!Der Wert ist ''{0}'', muss aber ''{1}'' sein."
 
 # _has_children__and_multiple_types__in_profile_
 #: _has_children__and_multiple_types__in_profile_

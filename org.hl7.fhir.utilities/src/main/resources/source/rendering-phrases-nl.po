@@ -1421,7 +1421,7 @@ msgstr "Kan gerefereerde actor {0} niet vinden"
 # FMM_TABLE
 #: FMM_TABLE
 msgid "<table class=\"cols\" data-fhir=\"generated\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
-msgstr "!!!!<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Volwassenheidsniveau</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standaard status\">{2}</a></td></tr></tbody></table>"
+msgstr "!!<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Volwassenheidsniveau</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standaard status\">{2}</a></td></tr></tbody></table>"
 
 # GENERAL_ADDITIONAL_BINDING
 #: GENERAL_ADDITIONAL_BINDING

@@ -649,7 +649,7 @@ msgstr "!!このコードシステム <param name=\"cs\"/> はコード<param na
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
 msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
-msgstr "!!!!このコードシステム <param name=\"cs\"/> は次のコードに {0} を定義します:"
+msgstr "!!このコードシステム <param name=\"cs\"/> は次のコードに {0} を定義します:"
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED

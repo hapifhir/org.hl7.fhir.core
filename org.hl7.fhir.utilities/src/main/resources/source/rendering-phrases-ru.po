@@ -1434,7 +1434,7 @@ msgstr "Не удалось найти ссылающегося актера {0}
 # FMM_TABLE
 #: FMM_TABLE
 msgid "<table class=\"cols\" data-fhir=\"generated\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
-msgstr "!!!!<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Уровень зрелости</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
+msgstr "!!<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Уровень зрелости</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
 
 # GENERAL_ADDITIONAL_BINDING
 #: GENERAL_ADDITIONAL_BINDING
@@ -3223,7 +3223,7 @@ msgstr "Рекомендации по толкованию содержимог�
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
 msgid "-- no content: do not translate #92 --"
-msgstr "!!!!!!!!!!!!!!!!!!!!!!!!-- no content: do not translate #97 --"
+msgstr "!!-- no content: do not translate #97 --"
 
 # SDR_IMPOSE
 #: SDR_IMPOSE
@@ -3413,7 +3413,7 @@ msgstr "Версии FHIR"
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
 msgid "-- no content: do not translate #93 --"
-msgstr "!!!!!!!!!!!!!!!!!!!!!!!!-- no content: do not translate #98 --"
+msgstr "!!-- no content: do not translate #98 --"
 
 # SDR_VER_TO_PFX
 #: SDR_VER_TO_PFX
@@ -3424,7 +3424,7 @@ msgstr "Версии FHIR до"
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
 msgid "-- no content: do not translate #94 --"
-msgstr "!!!!!!!!!!!!!!!!!!!!!!!!-- no content: do not translate #99 --"
+msgstr "!!-- no content: do not translate #99 --"
 
 # SDR_VER_UNK
 #: SDR_VER_UNK
