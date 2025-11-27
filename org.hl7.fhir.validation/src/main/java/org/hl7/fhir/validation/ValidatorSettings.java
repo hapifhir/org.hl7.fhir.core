@@ -1,10 +1,8 @@
 package org.hl7.fhir.validation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import lombok.Getter;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
@@ -29,6 +27,9 @@ public class ValidatorSettings extends ValidationOptions {
   private String minVersion;
   private String maxVersion;
   private boolean useNewXVersionPackages;
+
+  @Getter private Set<String> jwtHeaderList = buildJadesHeaders();
+
 
   public Source getSource() {
     return source;
@@ -131,4 +132,18 @@ public class ValidatorSettings extends ValidationOptions {
   public void setUseNewXVersionPackages(boolean useNewXVersionPackages) {
     this.useNewXVersionPackages = useNewXVersionPackages;
   }
+
+  private static Set<String> buildJadesHeaders() {
+    Set<String> stringSet = new HashSet<>();
+    // see https://github.com/hapifhir/org.hl7.fhir.core/issues/2209
+    stringSet.add("srCms");
+    stringSet.add("iat");
+    stringSet.add("alg");
+    stringSet.add("typ");
+    stringSet.add("x5c");
+    stringSet.add("sigD");
+    stringSet.add("version"); // custom for Eeva Turkka
+    return stringSet;
+  }
+
 }
