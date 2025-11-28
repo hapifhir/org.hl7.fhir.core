@@ -2123,8 +2123,8 @@ msgstr "LOINC"
 # HTA_LOINC_MESSAGE
 #: HTA_LOINC_MESSAGE
 #, fuzzy
-msgid "This material contains content from <a href=\\"http://loinc.org\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\"http://loinc.org/license\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
-msgstr "Dit materiaal bevat content uit <a href=\\"http://loinc.org\\">LOINC</a>. Op LOINC rust kopierecht &copy; 1995-2020, Regenstrief Institute, Inc. en de Logical Observation Identifiers Names and Codes (LOINC) Committee. Deze is kosteloos beschikbaar onder de <a href=\\"http://loinc.org/license\\">licentie</a> (Engels). LOINC&reg; is een in de Verenigde Staten geregistreerd handelsmerk van Regenstrief Institute, Inc."
+msgid "This material contains content from <a href=\"http://loinc.org\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\"http://loinc.org/license\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
+msgstr "Dit materiaal bevat content uit <a href=\"http://loinc.org\">LOINC</a>. Op LOINC rust kopierecht &copy; 1995-2020, Regenstrief Institute, Inc. en de Logical Observation Identifiers Names and Codes (LOINC) Committee. Deze is kosteloos beschikbaar onder de <a href=\"http://loinc.org/license\">licentie</a> (Engels). LOINC&reg; is een in de Verenigde Staten geregistreerd handelsmerk van Regenstrief Institute, Inc."
 
 # HTA_SCT_DESC
 #: HTA_SCT_DESC
@@ -2134,8 +2134,8 @@ msgstr "SNOMED Clinical Terms&reg; (SNOMED CT&reg;)"
 # HTA_SCT_MESSAGE
 #: HTA_SCT_MESSAGE
 #, fuzzy
-msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\"https://www.snomed.org/get-snomed\\">https://www.snomed.org/get-snomed</a> or <a href=\\"mailto:info@snomed.org\\">info@snomed.org</a>."
-msgstr "Dit materiaal bevat content waarop kopierecht van SNOMED International rust. Implementers van deze specificaties moeten de juiste SNOMED CT Affiliate licentie hebben - neem voor meer informatie contact op via <a href=\\"https://www.snomed.org/get-snomed\\">https://www.snomed.org/get-snomed</a> of <a href=\\"mailto:info@snomed.org\\">info@snomed.org</a>."
+msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\"https://www.snomed.org/get-snomed\">https://www.snomed.org/get-snomed</a> or <a href=\"mailto:info@snomed.org\">info@snomed.org</a>."
+msgstr "Dit materiaal bevat content waarop kopierecht van SNOMED International rust. Implementers van deze specificaties moeten de juiste SNOMED CT Affiliate licentie hebben - neem voor meer informatie contact op via <a href=\"https://www.snomed.org/get-snomed\">https://www.snomed.org/get-snomed</a> of <a href=\"mailto:info@snomed.org\">info@snomed.org</a>."
 
 # IG_DEPENDENCY_CAN_VERSION_ALONE
 #: IG_DEPENDENCY_CAN_VERSION_ALONE
@@ -3185,7 +3185,7 @@ msgstr "De {0} ''{1}'' is gedefinieerd in het geclaimde profiel, maar ontbreekt"
 # PROFILE_COMPLIES_WITH_NOT_VALID
 #: PROFILE_COMPLIES_WITH_NOT_VALID
 msgid "The {0} value of ''{2}'' on the path {3} does not comply with the value ''{1}'' from the claimed profile"
-msgstr "!!!!De {0} waarde van ''{2}'' komt niet overeen met de waarde ''{1}''"
+msgstr "!!De {0} waarde van ''{2}'' komt niet overeen met de waarde ''{1}''"
 
 # PROFILE_COMPLIES_WITH_NO_VS
 #: PROFILE_COMPLIES_WITH_NO_VS
@@ -7321,7 +7321,7 @@ msgstr[1] "URL bevat {0} ongeldige tekens ({1})"
 # XHTML_XHTML_ATTRIBUTE_XML_SPACE
 #: XHTML_XHTML_ATTRIBUTE_XML_SPACE
 msgid "The attribute ''xml:space'' is legal but has a fixed value of ''preserve''. Its use is discouraged"
-msgstr "!!!!Het attribuut ''xml:space'' is geldig maar heeft vaste waarde ''preserve''. Dit gebruik wordt afgeraden"
+msgstr "!!Het attribuut ''xml:space'' is geldig maar heeft vaste waarde ''preserve''. Dit gebruik wordt afgeraden"
 
 # XHTML_XHTML_DOCTYPE_ILLEGAL
 #: XHTML_XHTML_Attribute_Illegal
