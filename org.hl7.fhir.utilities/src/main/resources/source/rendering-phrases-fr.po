@@ -2787,8 +2787,8 @@ msgstr "Les ressources suivantes sont uniquement dans la version {0}"
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
-msgstr "Les packages pour <a href=\"{0}\">R4 ({1}.r4)</a> et <a href=\\"{2}\\">R4B ({3}.r4b)</a> sont disponibles."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\"{2}\">R4B ({3}.r4b)</a> are available."
+msgstr "Les packages pour <a href=\"{0}\">R4 ({1}.r4)</a> et <a href=\"{2}\">R4B ({3}.r4b)</a> sont disponibles."
 
 # R44B_PROBLEMS
 #: R44B_PROBLEMS
@@ -5618,7 +5618,7 @@ msgstr "Utilisé comme critère de déclenchement dans"
 # VS_ABSTRACT_CODE_HINT
 #: VS_ABSTRACT_CODE_HINT
 msgid "This code is not selectable (''Abstract'')"
-msgstr "Ce code n'est pas sélectionnable ("Abstrait")"
+msgstr "Ce code n'est pas sélectionnable (\"Abstrait\")"
 
 # VS_VERSION_BY_PACKAGE
 #: VS_VERSION_BY_PACKAGE
@@ -5627,17 +5627,17 @@ msgstr "La version n'est pas explicitement indiquée, ce qui signifie qu'elle es
 
 # VS_VERSION_FOUND
 #: VS_VERSION_FOUND
-msgid "Version is not explicity stated. When building this specification, the most recent version {0} has been used"
+msgid "Version is not explicitly stated. When building this specification, the most recent version {0} has been used"
 msgstr "La version n'est pas explicitement indiquée. Lors de la génération de cette spécification, la version la plus récente {0} a été utilisée"
 
 # VS_VERSION_NONE
 #: VS_VERSION_NONE
-msgid "Version is not explicity stated, and the target {0} has no stated version either"
+msgid "Version is not explicitly stated, and the target {0} has no stated version either"
 msgstr "La version n'est pas explicitement indiquée, et la cible {0} n'a pas non plus de version indiquée"
 
 # VS_VERSION_NOTHING
 #: VS_VERSION_NOTHING
-msgid "Version is not explicity stated. No matching {0} found"
+msgid "Version is not explicitly stated. No matching {0} found"
 msgstr "La version n'est pas explicitement indiquée. Aucun {0} correspondant trouvé"
 
 # VS_VERSION_NOTHING_TEXT

@@ -1,20 +1,20 @@
 package org.hl7.fhir.utilities.settings;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
+@Slf4j
 public class FhirSettings {
 
   
@@ -31,7 +31,7 @@ public class FhirSettings {
     }
     FhirSettings.explicitFilePath = explicitFilePath;
   }
-  private final FhirSettingsPOJO fhirSettings;
+  private final FhirSettingsPOJO fhirSettingsPOJO;
 
   public static String getFilePath() {
     getInstance();
@@ -39,88 +39,86 @@ public class FhirSettings {
   }
 
   final String filePath;
-  private FhirSettings(FhirSettingsPOJO fhirSettings, String filePath) {
+  private FhirSettings(FhirSettingsPOJO fhirSettingsPOJO, String filePath) {
 
-    this.fhirSettings = fhirSettings;
+    this.fhirSettingsPOJO = fhirSettingsPOJO;
     this.filePath = filePath;
   }
 
   public static String getApiKey(String key) {
     getInstance();
-    return instance.fhirSettings.getApiKeys() != null
-      ? instance.fhirSettings.getApiKeys().get(key)
+    return instance.fhirSettingsPOJO.getApiKeys() != null
+      ? instance.fhirSettingsPOJO.getApiKeys().get(key)
       : null;
   }
 
   public static boolean hasApiKey(String key) {
     getInstance();
-    return instance.fhirSettings.getApiKeys() != null
-      ? instance.fhirSettings.getApiKeys().get(key) != null
-      : false;
+    return instance.fhirSettingsPOJO.getApiKeys() != null && instance.fhirSettingsPOJO.getApiKeys().get(key) != null;
   }
 
   public static String getNpmPath() {
     getInstance();
-    return instance.fhirSettings.getNpmPath();
+    return instance.fhirSettingsPOJO.getNpmPath();
   }
 
   public static boolean hasNpmPath() {
     getInstance();
-    return instance.fhirSettings.getNpmPath() != null;
+    return instance.fhirSettingsPOJO.getNpmPath() != null;
   }
   public static boolean hasRubyPath() {
     getInstance();
-    return instance.fhirSettings.getRubyPath() != null;
+    return instance.fhirSettingsPOJO.getRubyPath() != null;
   }
 
   public static String getRubyPath() {
     getInstance();
-    return instance.fhirSettings.getRubyPath();
+    return instance.fhirSettingsPOJO.getRubyPath();
   }
 
   public static String getGemPath() {
     getInstance();
-    return instance.fhirSettings.getGemPath();
+    return instance.fhirSettingsPOJO.getGemPath();
   }
 
   public static boolean hasFhirTestCasesPath() {
     getInstance();
-    return instance.fhirSettings.getFhirTestCasesPath() != null;
+    return instance.fhirSettingsPOJO.getFhirTestCasesPath() != null;
   }
 
   public static String getFhirTestCasesPath() {
     getInstance();
-    return instance.fhirSettings.getFhirTestCasesPath();
+    return instance.fhirSettingsPOJO.getFhirTestCasesPath();
   }
 
   public static boolean hasDiffToolPath() {
     getInstance();
-    return instance.fhirSettings.getDiffToolPath() != null;
+    return instance.fhirSettingsPOJO.getDiffToolPath() != null;
   }
 
   public static String getDiffToolPath() {
     getInstance();
-    return instance.fhirSettings.getDiffToolPath();
+    return instance.fhirSettingsPOJO.getDiffToolPath();
   }
 
   public static boolean hasTempPath() {
     getInstance();
-    return instance.fhirSettings.getTempPath() != null;
+    return instance.fhirSettingsPOJO.getTempPath() != null;
   }
 
   public static String getTempPath() {
     getInstance();
-    return instance.fhirSettings.getTempPath();
+    return instance.fhirSettingsPOJO.getTempPath();
   }
 
   public static boolean hasTestIGsPath() {
     getInstance();
-    return instance.fhirSettings.getTestIgsPath() != null;
+    return instance.fhirSettingsPOJO.getTestIgsPath() != null;
   }
 
   public static String getTestIgsPath() {
     getInstance();
-    return instance.fhirSettings.getTestIgsPath();
+    return instance.fhirSettingsPOJO.getTestIgsPath();
   }
 
   public static boolean hasProhibitNetworkAccess() {
@@ -128,7 +126,7 @@ public class FhirSettings {
       return true;
     }
     getInstance();
-    return instance.fhirSettings.getProhibitNetworkAccess() != null; 
+    return instance.fhirSettingsPOJO.getProhibitNetworkAccess() != null;
   }
 
   public static boolean isProhibitNetworkAccess() {
@@ -136,41 +134,39 @@ public class FhirSettings {
       return prohibitNetworkAccess;
     }
     getInstance();
-    return instance.fhirSettings.getProhibitNetworkAccess() == null
-      ? false
-      : instance.fhirSettings.getProhibitNetworkAccess(); 
+    return instance.fhirSettingsPOJO.getProhibitNetworkAccess() != null && instance.fhirSettingsPOJO.getProhibitNetworkAccess();
   }
 
 
   /**
    * See ManagedWebAccess and use that to control network access
-   *
+   * @deprecated 
    * @param value
    */
-  @Deprecated
+  @Deprecated(since="2025-06-20", forRemoval = true)
   public static void setProhibitNetworkAccess(boolean value) {
     prohibitNetworkAccess = value;
   }
 
   public static String getTxFhirProduction() {
     getInstance();
-    return instance.fhirSettings.getTxFhirProduction() == null
+    return instance.fhirSettingsPOJO.getTxFhirProduction() == null
       ? FhirSettingsPOJO.TX_SERVER_PROD
-      : instance.fhirSettings.getTxFhirProduction(); 
+      : instance.fhirSettingsPOJO.getTxFhirProduction();
   }
 
   public static String getTxFhirDevelopment() {
     getInstance();
-    return instance.fhirSettings.getTxFhirDevelopment() == null
+    return instance.fhirSettingsPOJO.getTxFhirDevelopment() == null
       ? FhirSettingsPOJO.TX_SERVER_DEV
-      : instance.fhirSettings.getTxFhirDevelopment();
+      : instance.fhirSettingsPOJO.getTxFhirDevelopment();
   }
 
   public static String getTxFhirLocal() {
     getInstance();
-    return instance.fhirSettings.getTxFhirLocal() == null
+    return instance.fhirSettingsPOJO.getTxFhirLocal() == null
       ? FhirSettingsPOJO.TX_SERVER_LOCAL
-      : instance.fhirSettings.getTxFhirLocal();
+      : instance.fhirSettingsPOJO.getTxFhirLocal();
   }
   
   private static FhirSettings instance = null;
@@ -180,7 +176,7 @@ public class FhirSettings {
       try {
         instance = getInstanceFromPath(explicitFilePath);
       } catch (IOException e) {
-        e.printStackTrace();
+        log.error("Unable to load FHIR settings from path:" + explicitFilePath + ". Loading default settings instead.", e);
         instance = new FhirSettings(new FhirSettingsPOJO(), null);
       }
     }
@@ -216,9 +212,7 @@ public class FhirSettings {
     final ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     final InputStream inputStream = ManagedFileAccess.inStream(file);
-    final FhirSettingsPOJO output = objectMapper.readValue(inputStream, FhirSettingsPOJO.class);
-
-    return output;
+    return objectMapper.readValue(inputStream, FhirSettingsPOJO.class);
   }
 
   protected static String getDefaultSettingsPath() throws IOException {
@@ -227,25 +221,25 @@ public class FhirSettings {
 
   public static boolean isIgnoreDefaultPackageServers() {
     getInstance();
-    if (instance.fhirSettings.getIgnoreDefaultPackageServers() == null) {
+    if (instance.fhirSettingsPOJO.getIgnoreDefaultPackageServers() == null) {
       return false;
     }
-    return instance.fhirSettings.getIgnoreDefaultPackageServers();
+    return instance.fhirSettingsPOJO.getIgnoreDefaultPackageServers();
   }
 
   public static List<ServerDetailsPOJO> getServers() {
     getInstance();
-    if (instance.fhirSettings.getServers() == null) {
+    if (instance.fhirSettingsPOJO.getServers() == null) {
       return Collections.emptyList();
     }
-    return Arrays.asList(instance.fhirSettings.getServers().toArray(new ServerDetailsPOJO[]{}));
+    return Arrays.asList(instance.fhirSettingsPOJO.getServers().toArray(new ServerDetailsPOJO[]{}));
   }
 
   public static List<String> getCertificateSources() {
     getInstance();
-    if (instance.fhirSettings.getCertificateSources() == null) {
+    if (instance.fhirSettingsPOJO.getCertificateSources() == null) {
       return Collections.emptyList();
     }
-    return instance.fhirSettings.getCertificateSources();
+    return instance.fhirSettingsPOJO.getCertificateSources();
   }
 }

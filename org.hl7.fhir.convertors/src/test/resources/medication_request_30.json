@@ -1,0 +1,203 @@
+{
+  "resourceType": "MedicationRequest",
+  "id": "medrx0302",
+  "text": {
+    "status": "generated"
+  },
+  "contained": [
+    {
+      "resourceType": "Medication",
+      "id": "med0320",
+      "code": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "324252006",
+            "display": "Azithromycin 250mg capsule (product)"
+          }
+        ]
+      }
+    }
+  ],
+  "identifier": [
+    {
+      "use": "official",
+      "system": "http://www.bmc.nl/portal/prescriptions",
+      "value": "12345689"
+    }
+  ],
+  "definition": [
+    {
+      "reference": "ActivityDefinition/heart-valve-replacement"
+    }
+  ],
+  "basedOn": [
+    {
+      "reference": "CarePlan/gpvisit"
+    }
+  ],
+  "status": "active",
+  "intent": "order",
+  "category": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/medication-request-category",
+        "code": "inpatient",
+        "display": "Inpatient"
+      }
+    ]
+  },
+  "medicationReference": {
+    "reference": "#med0320"
+  },
+  "subject": {
+    "reference": "Patient/pat1",
+    "display": "Donald Duck"
+  },
+  "context": {
+    "reference": "Encounter/f001",
+    "display": "encounter who leads to this prescription"
+  },
+  "authoredOn": "2015-01-15",
+  "requester": {
+    "agent": {
+      "reference": "Practitioner/f007",
+      "display": "Patrick Pump"
+    },
+    "onBehalfOf": {
+      "reference": "Organization/f002"
+    }
+  },
+  "reasonCode": [
+    {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "11840006",
+          "display": "Traveller's Diarrhea (disorder)"
+        }
+      ]
+    }
+  ],
+  "note": [
+    {
+      "text": "Patient told to take with food"
+    }
+  ],
+  "dosageInstruction": [
+    {
+      "sequence": 1,
+      "text": "Two tablets at once",
+      "additionalInstruction": [
+        {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "311504000",
+              "display": "With or after food"
+            }
+          ]
+        }
+      ],
+      "timing": {
+        "repeat": {
+          "frequency": 1,
+          "period": 1,
+          "periodUnit": "d"
+        }
+      },
+      "route": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "26643006",
+            "display": "Oral Route"
+          }
+        ]
+      },
+      "method": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "421521009",
+            "display": "Swallow - dosing instruction imperative (qualifier value)"
+          }
+        ]
+      },
+      "doseQuantity": {
+        "value": 2,
+        "unit": "TAB",
+        "system": "http://hl7.org/fhir/v3/orderableDrugForm",
+        "code": "TAB"
+      }
+    },
+    {
+      "sequence": 2,
+      "text": "One tablet daily for 4 days",
+      "additionalInstruction": [
+        {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "311504000",
+              "display": "With or after food"
+            }
+          ]
+        }
+      ],
+      "timing": {
+        "repeat": {
+          "frequency": 4,
+          "period": 1,
+          "periodUnit": "d"
+        }
+      },
+      "route": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "26643006",
+            "display": "Oral Route"
+          }
+        ]
+      },
+      "doseQuantity": {
+        "value": 1,
+        "unit": "TAB",
+        "system": "http://hl7.org/fhir/v3/orderableDrugForm",
+        "code": "TAB"
+      }
+    }
+  ],
+  "dispenseRequest": {
+    "validityPeriod": {
+      "start": "2015-01-15",
+      "end": "2016-01-15"
+    },
+    "numberOfRepeatsAllowed": 1,
+    "quantity": {
+      "value": 6,
+      "unit": "TAB",
+      "system": "http://hl7.org/fhir/v3/orderableDrugForm",
+      "code": "TAB"
+    },
+    "expectedSupplyDuration": {
+      "value": 5,
+      "unit": "days",
+      "system": "http://unitsofmeasure.org",
+      "code": "d"
+    }
+  },
+  "substitution": {
+    "allowed": true,
+    "reason": {
+      "coding": [
+        {
+          "system": "http://hl7.org/fhir/v3/ActReason",
+          "code": "FP",
+          "display": "formulary policy"
+        }
+      ]
+    }
+  }
+}

@@ -714,7 +714,7 @@ public class NpmPackage {
    * @throws FileNotFoundException
    * @throws IOException
    */
-  public void indexFolder(String path, NpmPackageFolder folder) throws FileNotFoundException, IOException {
+  public void indexFolder(String path, NpmPackageFolder folder) throws IOException {
     List<String> remove = new ArrayList<>();
     NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
     indexer.start(folder.folder != null ? Utilities.path(folder.folder.getAbsolutePath(), ".index.db") : null);

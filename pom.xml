@@ -910,6 +910,8 @@
                                     <enableSeveritySummary>true</enableSeveritySummary>
                                     <consoleOutput>true</consoleOutput>
                                     <configLocation>${checkstyle_config_location}/checkstyle.xml</configLocation>
+                                    <testSourceDirectories>src/test/java</testSourceDirectories>
+                                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
                                 </configuration>
                             </execution>
                         </executions>
