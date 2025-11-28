@@ -2580,8 +2580,8 @@ msgstr "لوينك"
 # HTA_LOINC_MESSAGE
 #: HTA_LOINC_MESSAGE
 #, fuzzy
-msgid "This material contains content from <a href=\\"http://loinc.org\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\"http://loinc.org/license\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
-msgstr "!!تحتوي هذه المادة على محتوى من <a href=\\\"http://loinc.org\\\">لوينك</a>. حقوق الطبع والنشر لـ LOINC &copy؛ 1995-2020، معهد Regenstrief Institute, Inc. ولجنة أسماء ورموز معرفات الملاحظات المنطقية (LOINC) وهي متاحة مجانًا بموجب <a href=\"http://loinc.org/license\\\">LOSINC</a>. LOINC&reg؛ هي علامة تجارية مسجلة في الولايات المتحدة الأمريكية لشركة Regenstrief Institute, Inc."
+msgid "This material contains content from <a href=\"http://loinc.org\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\"http://loinc.org/license\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
+msgstr "!!تحتوي هذه المادة على محتوى من <a href=\"http://loinc.org\">لوينك</a>. حقوق الطبع والنشر لـ LOINC &copy؛ 1995-2020، معهد Regenstrief Institute, Inc. ولجنة أسماء ورموز معرفات الملاحظات المنطقية (LOINC) وهي متاحة مجانًا بموجب <a href=\"http://loinc.org/license\">LOINC</a>. LOINC&reg؛ هي علامة تجارية مسجلة في الولايات المتحدة الأمريكية لشركة Regenstrief Institute, Inc."
 
 # HTA_SCT_DESC
 #: HTA_SCT_DESC
@@ -2592,8 +2592,8 @@ msgstr "مصطلحات SNOMED السريرية&reg؛ (SNOMED CT&reg؛)"
 # HTA_SCT_MESSAGE
 #: HTA_SCT_MESSAGE
 #, fuzzy
-msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\"https://www.snomed.org/get-snomed\\">https://www.snomed.org/get-snomed</a> or <a href=\\"mailto:info@snomed.org\\">info@snomed.org</a>."
-msgstr "!!تحتوي هذه المادة على محتوى محمي بحقوق الطبع والنشر لـ SNOMED International. يجب أن يكون لدى منفذي هذه المواصفات الترخيص المناسب من الشركة التابعة لـ SNOMED CT - لمزيد من المعلومات اتصل بـ <a href=\"https://www.snomed.org/get-snomed\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed<</a> أو <a href=\"mailto:info@snomed.org\\\">info@snomed.org</a>."
+msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\"https://www.snomed.org/get-snomed\">https://www.snomed.org/get-snomed</a> or <a href=\"mailto:info@snomed.org\">info@snomed.org</a>."
+msgstr "!!تحتوي هذه المادة على محتوى محمي بحقوق الطبع والنشر لـ SNOMED International. يجب أن يكون لدى منفذي هذه المواصفات الترخيص المناسب من الشركة التابعة لـ SNOMED CT - لمزيد من المعلومات اتصل بـ <a href=\"https://www.snomed.org/get-snomed\">https://www.snomed.org/get-snomed</a> أو <a href=\"mailto:info@snomed.org\">info@snomed.org</a>."
 
 # IG_DEPENDENCY_CAN_VERSION_ALONE
 #: IG_DEPENDENCY_CAN_VERSION_ALONE

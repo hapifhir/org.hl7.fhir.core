@@ -16,6 +16,11 @@
         <!--<property name="format" value="(?i)FIXME"/>
 -->
         <module name="RegexpSinglelineJava">
+            <property name="id" value="NoHamcrestAssert"/>
+            <property name="format" value="org\.hamcrest\."/>
+            <property name="message" value="Incorrect matcher import used: The &quot;org.assertj.core.api.Assertions.assertThat&quot; import should be used for tests"/>
+        </module>
+        <module name="RegexpSinglelineJava">
             <property name="format" value="org\.jetbrains\.annotations\.NotNull"/>
         </module>
         <module name="RegexpSinglelineJava">

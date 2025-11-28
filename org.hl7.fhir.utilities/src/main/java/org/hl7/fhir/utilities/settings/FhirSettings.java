@@ -1,7 +1,6 @@
 package org.hl7.fhir.utilities.settings;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -13,7 +12,6 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 
 public class FhirSettings {
 
@@ -40,7 +38,6 @@ public class FhirSettings {
 
   final String filePath;
   private FhirSettings(FhirSettingsPOJO fhirSettings, String filePath) {
-
     this.fhirSettings = fhirSettings;
     this.filePath = filePath;
   }
