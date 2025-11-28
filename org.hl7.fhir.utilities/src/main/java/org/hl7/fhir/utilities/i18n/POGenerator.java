@@ -19,6 +19,10 @@ import org.hl7.fhir.utilities.filesystem.DirectoryVisitor;
 import org.hl7.fhir.utilities.filesystem.DirectoryVisitor.IDirectoryVisitorImplementation;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+import static org.hl7.fhir.utilities.i18n.POUtilities.isOutdated;
+import static org.hl7.fhir.utilities.i18n.POUtilities.tagAsOutdated;
+
+
 /**
  * This class checks that all the i18n constants and declarations are consistent,
  * and then generates / updates the .po source files, and then updates the .properties files
@@ -369,48 +373,48 @@ public class POGenerator {
     }
   }
 
-  private void updatePOObject(POObject poObject, PluralMode mode, String value) {
+  private void updatePOObject(POObject poObject, PluralMode mode, String originatingMsgid) {
     poObject.setOrphan(false);
     if (poObject.getComment() == null) {
       poObject.setComment(poObject.getId());
     }
     if (mode == PluralMode.NONE) {
-      if (!value.equals(poObject.getMsgid())) {
+      if (!originatingMsgid.equals(poObject.getMsgid())) {
         // the english string has changed, and the other language string is now out of date
         if (poObject.getOldMsgId() != null && !poObject.getMsgstr().isEmpty()) {
           poObject.setOldMsgId(poObject.getMsgid());
         }
-        poObject.setMsgid(value);
+        poObject.setMsgid(originatingMsgid);
         for (int i = 0; i < poObject.getMsgstr().size(); i++) {
           if (!Utilities.noString(poObject.getMsgstr().get(i))) {
-            poObject.getMsgstr().set(i, "!!"+poObject.getMsgstr().get(i));
+            poObject.getMsgstr().set(i, tagAsOutdated(poObject.getMsgstr().get(i)));
           }
         }
       } else {
         poObject.setOldMsgId(null);
       }
     } else if (mode == PluralMode.ONE) {
-      if (!value.equals(poObject.getMsgid())) {
+      if (!originatingMsgid.equals(poObject.getMsgid())) {
         // the english string has changed, and the other language string is now out of date 
         if (poObject.getOldMsgId() != null && !poObject.getMsgstr().isEmpty()) {
           poObject.setOldMsgId(poObject.getMsgid());
         }
-        poObject.setMsgid(value);
-        if (poObject.getMsgstr().size() > 0 && !Utilities.noString(poObject.getMsgstr().get(0))) {
-          poObject.getMsgstr().set(0, "!!"+poObject.getMsgstr().get(0));
+        poObject.setMsgid(originatingMsgid);
+        if (!poObject.getMsgstr().isEmpty() && !Utilities.noString(poObject.getMsgstr().get(0))) {
+          poObject.getMsgstr().set(0, tagAsOutdated(poObject.getMsgstr().get(0)));
         }
       } else {
         poObject.setOldMsgId(null);
       }
     } else if (mode == PluralMode.OTHER) {
-      if (!value.equals(poObject.getMsgidPlural())) {
+      if (!originatingMsgid.equals(poObject.getMsgidPlural())) {
         // the english string has changed, and the other language string is now out of date 
 //        if (o.oldMsgId != null) {
 //          o.oldMsgId = o.msgid;
 //        }
-        poObject.setMsgidPlural(value);
+        poObject.setMsgidPlural(originatingMsgid);
         if (poObject.getMsgstr().size() > 1 && !Utilities.noString(poObject.getMsgstr().get(1))) {
-          poObject.getMsgstr().set(1, "!!"+poObject.getMsgstr().get(1));
+          poObject.getMsgstr().set(1, tagAsOutdated(poObject.getMsgstr().get(1)));
         }
       } else {
         poObject.setOldMsgId(null);
@@ -454,7 +458,7 @@ public class POGenerator {
       if (o.getMsgidPlural() == null) {
         String v= o.getMsgstr().size() > 0 ? o.getMsgstr().get(0) : "";
         if (!Utilities.noString(v)) {
-          if (v.startsWith("!!")) {
+          if (isOutdated(v)) {
             v = v.substring(2);
           }
           b.append(o.getId()+" = "+v+"\r\n");
@@ -463,7 +467,7 @@ public class POGenerator {
         for (int i = 0; i < names.length; i++) {
           String v = (o.getMsgstr().size() > i ? o.getMsgstr().get(i) : "");
           if (!Utilities.noString(v)) {
-            if (v.startsWith("!!")) {
+            if (isOutdated(v)) {
               v = v.substring(2);
             }
             b.append(o.getId()+"_"+names[i].trim()+" = "+v+"\r\n");
