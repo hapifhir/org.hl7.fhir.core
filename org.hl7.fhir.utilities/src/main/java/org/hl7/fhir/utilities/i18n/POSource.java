@@ -12,6 +12,8 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
+import static org.hl7.fhir.utilities.i18n.POUtilities.isOutdated;
+
 @Slf4j
 public class POSource {
 
@@ -79,35 +81,35 @@ public class POSource {
         // retired use of #| because it caused problems with the tools
         String s = line.substring(2).trim();
         if (s.startsWith("msgid ")) {
-          s = trimQuotes(s.substring(6));
+          s = POUtilities.trimQuotes(s.substring(6));
         }
         while (i < lines.length-1 && lines[i+1].startsWith("\"")) {
           i++;
-          s += trimQuotes(lines[i]);
+          s += POUtilities.trimQuotes(lines[i]);
         }
         poObject.setOldMsgId(s);
       } else if (line.startsWith("msgid ")) {
-        String s = trimQuotes(line.substring(5).trim());
+        String s = POUtilities.trimQuotes(line.substring(5).trim());
         if (s.endsWith("("+poObject.getId()+")")) {
           s = s.substring(0, s.length() - (poObject.getId().length()+3));
         }
         while (i < lines.length-1 && lines[i+1].startsWith("\"")) {
           i++;
-          s += trimQuotes(lines[i]);
+          s += POUtilities.trimQuotes(lines[i]);
         }
         poObject.setMsgid(s);
       } else if (line.startsWith("msgid_plural ")) {
-        String s = trimQuotes(line.substring(12).trim());
+        String s = POUtilities.trimQuotes(line.substring(12).trim());
         while (i < lines.length-1 && lines[i+1].startsWith("\"")) {
           i++;
-          s += trimQuotes(lines[i]);
+          s += POUtilities.trimQuotes(lines[i]);
         }
         poObject.setMsgidPlural(s);
       } else if (line.startsWith("msgstr ")) {
-        String s = trimQuotes(line.substring(6).trim());
+        String s = POUtilities.trimQuotes(line.substring(6).trim());
         while (i < lines.length-1 && lines[i+1].startsWith("\"")) {
           i++;
-          s += trimQuotes(lines[i]);
+          s += POUtilities.trimQuotes(lines[i]);
         }
         poObject.getMsgstr().add(s);
       } else if (line.startsWith("msgctxt ")) {
@@ -116,12 +118,12 @@ public class POSource {
         String s = line.substring(7);
         int ii = s.indexOf("]");
         int c = Integer.valueOf(s.substring(0, ii));
-        s = trimQuotes(s.substring(ii+1).trim());
+        s = POUtilities.trimQuotes(s.substring(ii+1).trim());
         while (i < lines.length-1 && lines[i+1].startsWith("\"")) {
           i++;
-          s += trimQuotes(lines[i]);
+          s += POUtilities.trimQuotes(lines[i]);
         }
-        while (s.startsWith("!!")) {
+        while (isOutdated(s)) {
           s = s.substring(2);
         }
         if (c != poObject.getMsgstr().size()) {
@@ -135,18 +137,6 @@ public class POSource {
       i++;
     }
     return poSource;
-  }
-
-
-  private static String trimQuotes(String s) {
-    s = s.trim();
-    if (s.startsWith("\"")) {
-      s = s.substring(1);
-    }
-    if (s.endsWith("\"")) {
-      s = s.substring(0, s.length()-1);
-    }
-    return s.trim().replace("\\\"", "\"");
   }
 
 
@@ -174,9 +164,9 @@ public class POSource {
         sb.append("msgctxt \""+poObject.getId()+"\"\r\n");
       } 
       String m = Utilities.noString(poObject.getMsgid()) ? "-- no content: do not translate #"+(++noTrans )+" --" : poObject.getMsgid();
-      sb.append("msgid \""+wrapQuotes(m)+"\"\r\n");
+      sb.append("msgid \""+ POUtilities.escapeNonEscapedQuotes(m)+"\"\r\n");
       if (poObject.getMsgidPlural() != null) {
-        sb.append("msgid_plural \""+wrapQuotes(poObject.getMsgidPlural())+"\"\r\n");
+        sb.append("msgid_plural \""+ POUtilities.escapeNonEscapedQuotes(poObject.getMsgidPlural())+"\"\r\n");
         while (poObject.getMsgstr().size() < numberOfPlurals) {
           poObject.getMsgstr().add("");
         }
@@ -185,23 +175,19 @@ public class POSource {
 //          if (tfxMode && Utilities.noString(s)) {
 //            s = Utilities.noString(i == 0 ? o.msgid : o.msgidPlural) ? "-- no content: do not translate --" : "";
 //          }
-          sb.append("msgstr["+i+"] \""+wrapQuotes(s)+"\"\r\n");
+          sb.append("msgstr["+i+"] \""+ POUtilities.escapeNonEscapedQuotes(s)+"\"\r\n");
         }
       } else {
         if (poObject.getMsgstr().size() == 0) {
           sb.append("msgstr \"\"\r\n");
         } else {
-          sb.append("msgstr \""+wrapQuotes(poObject.getMsgstr().get(0))+"\"\r\n");
+          sb.append("msgstr \""+ POUtilities.escapeNonEscapedQuotes(poObject.getMsgstr().get(0))+"\"\r\n");
         }
       } 
       sb.append("\r\n");
     }
     FileUtilities.stringToFile(sb.toString(), poFilePath);
     return noTrans;
-  }
-
-  private static String wrapQuotes(String s) {
-    return s.replace("\"", "\\\"");
   }
 
 }
