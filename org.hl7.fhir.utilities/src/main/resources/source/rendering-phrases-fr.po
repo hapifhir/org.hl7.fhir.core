@@ -849,7 +849,7 @@ msgstr "Type"
 # CS_VERSION_NOTHING_TEXT
 #: CS_VERSION_NOTHING_TEXT
 msgid "Not Stated (use latest from terminology server)"
-msgstr "Non précisé (utilise la dernière version provenant du serveur de terminologie)"
+msgstr "Non Précisé(e) (utilise la dernière version provenant du serveur de terminologie)"
 
 # DATA_REND_AFTERNOON
 #: DATA_REND_AFTERNOON
@@ -3086,7 +3086,7 @@ msgstr "Tirer les Obligations et Bindings supplémentaires de ce {0}"
 # SDR_EXAMPLE
 #: SDR_EXAMPLE
 msgid "Examples for this {0}"
-msgstr "Exemples pour ce {0}"
+msgstr "Exemples pour ce/t/te {0}"
 
 # SDR_EXPERIMENTAL
 #: SDR_EXPERIMENTAL
@@ -3296,7 +3296,7 @@ msgstr "Valeur primitive {0}"
 # SDR_REFER
 #: SDR_REFER
 msgid "Refer to this {0}"
-msgstr "Référer à ce {0}"
+msgstr "Référence ce {0}"
 
 # SDR_REQUIRED
 #: SDR_REQUIRED
@@ -3341,7 +3341,7 @@ msgstr "Utilisations"
 # SDR_USE
 #: SDR_USE
 msgid "Use this {0}"
-msgstr "Utiliser ce {0}"
+msgstr "Utilise ce/t/te {0}"
 
 # SDR_VER_BEF
 #: SDR_VER_BEF
@@ -3422,7 +3422,7 @@ msgstr "Type de données"
 # SDT_DT_PROF
 #: SDT_DT_PROF
 msgid "DataType Profile"
-msgstr "Profil de type de données"
+msgstr "profil de type de données"
 
 # SDT_EXTENSION
 #: SDT_EXTENSION
@@ -3674,7 +3674,7 @@ msgstr "Il y a une slice sans discriminateur à {0}"
 # SD_XIG_LINK
 #: SD_XIG_LINK
 msgid "<p>You can also check for <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">usages in the FHIR IG Statistics</a></p>"
-msgstr ""
+msgstr "<p>Vous pouvez également vérifier <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">les usages dans le FHIR IG Statistics</a></p>"
 
 # SEARCH_PAR_ALLOWED
 #: SEARCH_PAR_ALLOWED
@@ -3755,7 +3755,7 @@ msgstr "{0}, publié par {1}. Ce guide n'est pas une publication autorisée ; c'
 # STATUS_MSG_LOCAL_BUILD
 #: STATUS_MSG_LOCAL_BUILD
 msgid "{0} - Local Development build (v{1}) built by the FHIR (HL7® FHIR® Standard) Build Tools. See the <a href=''{2}/history.html''>Directory of published versions</a>"
-msgstr "{0} - version de développement local (v{1}) construite par les outils de publication FHIR (HL7® FHIR® Standard). Voir le <a href=''{2}/history.html''>répertoire des versions publiées</a>"
+msgstr "{0} - version de développement local (intégration continue v{1}) construite par les outils de publication FHIR (HL7® FHIR® Standard). Voir le <a href=''{2}/history.html''>répertoire des versions publiées</a>"
 
 # STATUS_MSG_PUBLICATION_HOLDER
 #: STATUS_MSG_PUBLICATION_HOLDER
@@ -5669,4 +5669,5 @@ msgstr "La version est indiquée comme étant {0}, ce qui signifie qu'elle est f
 #: _NA
 msgid "n/a"
 msgstr "n/a"
+
 
