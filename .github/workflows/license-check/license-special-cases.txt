@@ -24,10 +24,10 @@
 # License name includes brackets (javax.xml.bind)
  (The Apache Software License, Version 2.0) Jackson module: Old JAXB Annotations (javax.xml.bind) (com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.17.0 - https://github.com/FasterXML/jackson-modules-base)
 # JRE11 is incorrectly parsed as a license.
-(Apache Software License 2.0) Titanium JSON-LD 1.1 (com.apicatalog:titanium-json-ld:1.6.0 - https://github.com/filip26/titanium-json-ld)
+(Apache License, Version 2.0) Titanium JSON-LD 1.1 (JRE11) (com.apicatalog:titanium-json-ld:1.6.0 - https://github.com/filip26/titanium-json-ld)
 # License string includes nested brackets, causing parser breakage, but is a valid BSD license. 
-(BSD 3-Clause "New" or "Revised" License (BSD-3-Clause))  Protocol Buffers [Core] (com.google.protobuf:protobuf-java:4.31.1 - https://developers.google.com/protocol-buffers/protobuf-java/)
+(BSD-3-Clause) Protocol Buffers [Core] (com.google.protobuf:protobuf-java:4.31.1 - https://developers.google.com/protocol-buffers/protobuf-java/)
 # Eclipse distribute the api artifact with GPLv2 w/ CPE as secondary use 
-(Dual license consisting of Eclipse Public License v2.0 and GPL2 w/ CPE) Jakarta Annotations API (jakarta.annotation:jakarta.annotation-api:2.1.1 - https://projects.eclipse.org/projects/ee4j.ca)
+(EPL 2.0) (GPL2 w/ CPE) Jakarta Annotations API (jakarta.annotation:jakarta.annotation-api:2.1.1 - https://projects.eclipse.org/projects/ee4j.ca)
 # Eclipse distribute the api artifact with GPLv2 w/ CPE as secondary use
-(Dual license consisting of Eclipse Public License v2.0 and GPL2 w/ CPE) JSON-P Default Provider (org.glassfish:jakarta.json:2.0.1 - https://github.com/eclipse-ee4j/jsonp)
+(Eclipse Public License 2.0) (GNU General Public License, version 2 with the GNU Classpath Exception) JSON-P Default Provider (org.glassfish:jakarta.json:2.0.1 - https://github.com/eclipse-ee4j/jsonp)
