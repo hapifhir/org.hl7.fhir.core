@@ -393,7 +393,10 @@
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven_surefire_version}</version>
-                    <configuration>
+                    <!-- Hapi base pom use stricter test class nameing compared to surefire default. 
+                    Disable the inheritance of this configuration with Combine.self=override
+                      -->
+                    <configuration combine.self="override">
                         <forkNode implementation="org.apache.maven.plugin.surefire.extensions.SurefireForkNodeFactory"/>
                         <forkCount>1</forkCount>
                         <reuseForks>true</reuseForks>
