@@ -1,3 +1,16 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Crowdin-Project: orghl7fhircore\n"
+"X-Crowdin-Project-ID: 792848\n"
+"X-Crowdin-Language: fr\n"
+"X-Crowdin-File: /org.hl7.fhir.utilities/src/main/resources/source/rendering-phrases-en.po\n"
+"X-Crowdin-File-ID: 236\n"
+"Project-Id-Version: orghl7fhircore\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: French\n"
+"Language: fr_FR\n"
+"PO-Revision-Date: 2025-11-28 03:55\n"
 
 # ACTOR_DEF_ACT
 #: ACTOR_DEF_ACT
@@ -744,7 +757,7 @@ msgstr "Cette ressource de terminologie de référence (CodeSystem) est un suppl
 # CODE_SYS_SUPP_CODE_NOT_HERE
 #: CODE_SYS_SUPP_CODE_NOT_HERE
 msgid "This CodeSystem Supplement is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr "Ce supplément de terminologie de référence (CodeSystem) n\'est pas utilisé ici; il peut être utilisé ailleurs (par exemple spécifications et/ou implémentations qui utilisent ce contenu)"
+msgstr "Ce supplément de terminologie de référence (CodeSystem) n'est pas utilisé ici; il peut être utilisé ailleurs (par exemple spécifications et/ou implémentations qui utilisent ce contenu)"
 
 # CODE_SYS_THE_VALUE_SET
 #: CODE_SYS_THE_VALUE_SET
@@ -1739,7 +1752,7 @@ msgstr "Label de sécurité"
 #: GENERAL_SOURCE
 msgctxt "GENERAL_SOURCE"
 msgid "Source"
-msgstr "Source"
+msgstr ""
 
 # GENERAL_SRC
 #: GENERAL_SRC
@@ -2114,7 +2127,7 @@ msgstr "Sévérité"
 #: OP_OUT_SRC
 msgctxt "OP_OUT_SRC"
 msgid "Source"
-msgstr "Source"
+msgstr ""
 
 # OP_OUT_SUMM
 #: OP_OUT_SUMM
@@ -2355,7 +2368,7 @@ msgstr "Impossible de trouver la définition pour {0}"
 # PROF_DRIV_GEN_NARR
 #: PROF_DRIV_GEN_NARR
 msgid "{0} {1}"
-msgstr "{0} {1}"
+msgstr ""
 
 # PROF_DRIV_GEN_NARR_TECH
 #: PROF_DRIV_GEN_NARR_TECH
@@ -2371,7 +2384,7 @@ msgstr "{0} : {1}"
 # PROF_DRIV_SUMM_PROP
 #: PROF_DRIV_SUMM_PROP
 msgid "{0} = {1}"
-msgstr "{0} = {1}"
+msgstr ""
 
 # PROV_ACT
 #: PROV_ACT
@@ -2381,7 +2394,7 @@ msgstr "Activité"
 # PROV_AGE
 #: PROV_AGE
 msgid "Agents"
-msgstr "Agents"
+msgstr ""
 
 # PROV_BEHALF
 #: PROV_BEHALF
@@ -2396,7 +2409,7 @@ msgstr "Provenance pour {0}"
 # PROV_OCC
 #: PROV_OCC
 msgid "Occurrence"
-msgstr "Occurrence"
+msgstr ""
 
 # PROV_POL
 #: PROV_POL
@@ -2587,7 +2600,7 @@ msgstr "Est lié à une observation"
 # QUEST_LINKID
 #: QUEST_LINKID
 msgid "LinkID"
-msgstr "LinkID"
+msgstr ""
 
 # QUEST_MAND
 #: QUEST_MAND
@@ -2642,7 +2655,7 @@ msgstr "Date de publication"
 # QUEST_QUEST
 #: QUEST_QUEST
 msgid "Questionnaire"
-msgstr "Questionnaire"
+msgstr ""
 
 # QUEST_QUESTION
 #: QUEST_QUESTION
@@ -2667,7 +2680,7 @@ msgstr "Se répète"
 # QUEST_RESP_ROOT
 #: QUEST_RESP_ROOT
 msgid "QuestionnaireResponseRoot"
-msgstr "QuestionnaireResponseRoot"
+msgstr ""
 
 # QUEST_REV_DATE
 #: QUEST_REV_DATE
@@ -2677,12 +2690,12 @@ msgstr "Date de dernière révision"
 # QUEST_ROOT
 #: QUEST_ROOT
 msgid "QuestionnaireRoot"
-msgstr "QuestionnaireRoot"
+msgstr ""
 
 # QUEST_STRUCT
 #: QUEST_STRUCT
 msgid "Structure"
-msgstr "Structure"
+msgstr ""
 
 # QUEST_SUBJECT
 #: QUEST_SUBJECT
@@ -3142,7 +3155,7 @@ msgstr "ID d'élément"
 #: SDR_EXT_EXT
 msgctxt "SDR_EXT_EXT"
 msgid "Extension"
-msgstr "Extension"
+msgstr ""
 
 # SDR_EXT_MOD
 #: SDR_EXT_MOD
@@ -3168,7 +3181,7 @@ msgstr "Cette extension est autorisée pour une utilisation avec"
 # SDR_EXT_VER_SFX
 #: SDR_EXT_VER_SFX
 msgid "."
-msgstr "."
+msgstr ""
 
 # SDR_FIXED_VALUE
 #: SDR_FIXED_VALUE
@@ -3199,7 +3212,7 @@ msgstr "Des conseils sur l'interprétation du contenu de ce tableau peuvent êtr
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
-msgid "-- no content: do not translate #53 --"
+msgid "-- no content: do not translate #1 --"
 msgstr ""
 
 # SDR_IMPOSE
@@ -3389,7 +3402,7 @@ msgstr "Versions FHIR"
 # SDR_VER_RANGE_SFX
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
-msgid "-- no content: do not translate #54 --"
+msgid "-- no content: do not translate #2 --"
 msgstr ""
 
 # SDR_VER_TO_PFX
@@ -3400,7 +3413,7 @@ msgstr "Versions FHIR jusqu'à"
 # SDR_VER_TO_SFX
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
-msgid "-- no content: do not translate #55 --"
+msgid "-- no content: do not translate #3 --"
 msgstr ""
 
 # SDR_VER_UNK
@@ -3428,7 +3441,7 @@ msgstr "Profil de type de données"
 #: SDT_EXTENSION
 msgctxt "SDT_EXTENSION"
 msgid "Extension"
-msgstr "Extension"
+msgstr ""
 
 # SDT_LM
 #: SDT_LM
@@ -3689,12 +3702,12 @@ msgstr "Chaînes"
 # SEARCH_PAR_EXP
 #: SEARCH_PAR_EXP
 msgid "Expression"
-msgstr "Expression"
+msgstr ""
 
 # SEARCH_PAR_MULTIPLES
 #: SEARCH_PAR_MULTIPLES
 msgid "Multiples"
-msgstr "Multiples"
+msgstr ""
 
 # SEARCH_PAR_MULTIPLE_AND_APPEAR
 #: SEARCH_PAR_MULTIPLE_AND_APPEAR
@@ -4038,7 +4051,7 @@ msgstr "Description du profil"
 # STRUC_DEF_DISCUSSION
 #: STRUC_DEF_DISCUSSION
 msgid "discussion"
-msgstr "discussion"
+msgstr ""
 
 # STRUC_DEF_ELE
 #: STRUC_DEF_ELE
@@ -4104,7 +4117,7 @@ msgstr "extensible"
 # STRUC_DEF_EXTENSIONS
 #: STRUC_DEF_EXTENSIONS
 msgid "Extensions"
-msgstr "Extensions"
+msgstr ""
 
 # STRUC_DEF_EXT_JSON
 #: STRUC_DEF_EXT_JSON
@@ -4174,12 +4187,12 @@ msgstr "pour plus d'informations sur l'utilisation de [x]"
 # STRUC_DEF_GRADE
 #: STRUC_DEF_GRADE
 msgid "Grade"
-msgstr "Grade"
+msgstr ""
 
 # STRUC_DEF_ID
 #: STRUC_DEF_ID
 msgid "Id"
-msgstr "Id"
+msgstr ""
 
 # STRUC_DEF_ID_EXPECT
 #: STRUC_DEF_ID_EXPECT
@@ -4224,7 +4237,7 @@ msgstr "Le type de cet élément est déduit du type JSON dans l'instance"
 # STRUC_DEF_INVAR
 #: STRUC_DEF_INVAR
 msgid "Invariants"
-msgstr "Invariants"
+msgstr ""
 
 # STRUC_DEF_INVARIANT
 #: STRUC_DEF_INVARIANT
@@ -4350,7 +4363,7 @@ msgstr "code LOINC"
 # STRUC_DEF_MAX
 #: STRUC_DEF_MAX
 msgid "Maximum"
-msgstr "Maximum"
+msgstr ""
 
 # STRUC_DEF_MAX_MIN
 #: STRUC_DEF_MAX_MIN
@@ -4371,7 +4384,7 @@ msgstr "Signification si manquant"
 # STRUC_DEF_MIN
 #: STRUC_DEF_MIN
 msgid "Minimum"
-msgstr "Minimum"
+msgstr ""
 
 # STRUC_DEF_MIN_VALUE
 #: STRUC_DEF_MIN_VALUE
@@ -4677,12 +4690,12 @@ msgstr "JSON : Représenté comme un objet JSON unique avec des propriétés nom
 # STRUC_DEF_SLIC
 #: STRUC_DEF_SLIC
 msgid "Slices"
-msgstr "Slices"
+msgstr ""
 
 # STRUC_DEF_SLICE
 #: STRUC_DEF_SLICE
 msgid "Slice"
-msgstr "Slice"
+msgstr ""
 
 # STRUC_DEF_SLICES
 #: STRUC_DEF_SLICES
@@ -4702,12 +4715,12 @@ msgstr "Nom de la slice"
 # STRUC_DEF_SLICE_PAR
 #: STRUC_DEF_SLICE_PAR
 msgid "Slice {0}"
-msgstr "Slice {0}"
+msgstr ""
 
 # STRUC_DEF_SNOMED
 #: STRUC_DEF_SNOMED
 msgid "SNOMED-CT"
-msgstr "SNOMED-CT"
+msgstr ""
 
 # STRUC_DEF_SNOMED_CODE
 #: STRUC_DEF_SNOMED_CODE
@@ -4732,7 +4745,7 @@ msgstr "Format de chaîne de caractère (String)"
 # STRUC_DEF_STRUCTURES
 #: STRUC_DEF_STRUCTURES
 msgid "Structures"
-msgstr "Structures"
+msgstr ""
 
 # STRUC_DEF_SUIT_SHALL_CODE
 #: STRUC_DEF_SUIT_SHALL_CODE
@@ -4843,7 +4856,7 @@ msgstr "URL :"
 # STRUC_DEF_VALID
 #: STRUC_DEF_VALID
 msgid "Validation"
-msgstr "Validation"
+msgstr ""
 
 # STRUC_DEF_VALUESET
 #: STRUC_DEF_VALUESET
@@ -4948,7 +4961,7 @@ msgstr "Inclut"
 # SUB_TOPIC_INT
 #: SUB_TOPIC_INT
 msgid "Interactions"
-msgstr "Interactions"
+msgstr ""
 
 # SUB_TOPIC_PREV
 #: SUB_TOPIC_PREV
@@ -4983,12 +4996,12 @@ msgstr "Copier le format {0} dans le presse-papiers"
 # TEST_PLAN_ASS
 #: TEST_PLAN_ASS
 msgid "Assertion"
-msgstr "Assertion"
+msgstr ""
 
 # TEST_PLAN_ASSERTION
 #: TEST_PLAN_ASSERTION
 msgid "Assertion {0}"
-msgstr "Assertion {0}"
+msgstr ""
 
 # TEST_PLAN_CASE
 #: TEST_PLAN_CASE
@@ -5053,7 +5066,7 @@ msgstr "Portées du plan de test :"
 # TEST_PLAN_SOURCE
 #: TEST_PLAN_SOURCE
 msgid "Source[x]"
-msgstr "Source[x]"
+msgstr ""
 
 # TEST_PLAN_TEST_DATA
 #: TEST_PLAN_TEST_DATA
@@ -5174,7 +5187,7 @@ msgstr "Édition autrichienne"
 # VALUE_SET_AUS
 #: VALUE_SET_AUS
 msgid "Australian Edition"
-msgstr "Edition Australienne"
+msgstr "!!Australien"
 
 # VALUE_SET_BE
 #: VALUE_SET_BE
@@ -5401,7 +5414,7 @@ msgstr "Inclus dans"
 # VALUE_SET_INT
 #: VALUE_SET_INT
 msgid "International"
-msgstr "International"
+msgstr ""
 
 # VALUE_SET_ISA
 #: VALUE_SET_ISA
@@ -5426,7 +5439,7 @@ msgstr "Niveau"
 # VALUE_SET_LOINCV
 #: VALUE_SET_LOINCV
 msgid "Loinc v"
-msgstr "Loinc v"
+msgstr ""
 
 # VALUE_SET_NEEDS_SUPPL
 #: VALUE_SET_NEEDS_SUPPL
@@ -5473,12 +5486,12 @@ msgstr "(pas de version) ("
 # VALUE_SET_NULL
 #: VALUE_SET_NULL
 msgid "null"
-msgstr "null"
+msgstr ""
 
 # VALUE_SET_NULLS
 #: VALUE_SET_NULLS
 msgid "?ngen-13?"
-msgstr "?ngen-13?"
+msgstr ""
 
 # VALUE_SET_NUMBER_CONCEPTS
 #: VALUE_SET_NUMBER_CONCEPTS
