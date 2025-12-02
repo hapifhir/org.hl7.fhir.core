@@ -7,6 +7,7 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyType;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
@@ -28,7 +29,7 @@ public class PropertyFilter extends ConceptFilter {
   public boolean includeConcept(CodeSystem cs, ConceptDefinitionComponent def) {
     ConceptPropertyComponent pc = getPropertyForConcept(def);
     if (pc != null) {
-      String v = pc.getValue().isPrimitive() ? pc.getValue().primitiveValue() : null;
+      String v = pc.getValue().isPrimitive() ? pc.getValue().primitiveValue() : pc.getValue() instanceof Coding ? ((Coding) pc.getValue()).getSystem()+"#"+((Coding) pc.getValue()).getCode() : null;
       switch (filter.getOp()) {
       case DESCENDENTOF: throw fail("not supported yet: "+filter.getOp().toCode());
       case EQUAL: return filter.getValue().equals(v);
