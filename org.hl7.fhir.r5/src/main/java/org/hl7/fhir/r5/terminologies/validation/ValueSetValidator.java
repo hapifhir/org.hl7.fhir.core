@@ -1892,7 +1892,12 @@ public class ValueSetValidator extends ValueSetProcessBase {
         return false;
       }
       DataType d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
-      return d != null && f.getValue().equals(d.primitiveValue());
+      if (d instanceof Coding) {
+        Coding c = (Coding) d;
+        return (""+c.getSystem()+"#"+c.getCode()).equals(f.getValue());
+      } else {
+        return d != null && f.getValue().equals(d.primitiveValue());
+      }
     case EXISTS: 
       return CodeSystemUtilities.getProperty(cs, code, f.getProperty()) != null;
     case REGEX:
@@ -1900,7 +1905,12 @@ public class ValueSetValidator extends ValueSetProcessBase {
         return false;
       }
       d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
-      return d != null && d.primitiveValue() != null && d.primitiveValue().matches(f.getValue());
+      if (d instanceof Coding) {
+        Coding c = (Coding) d;
+        return (""+c.getSystem()+"#"+c.getCode()).matches(f.getValue());
+      } else {
+        return d != null && d.primitiveValue() != null && d.primitiveValue().matches(f.getValue());
+      }
     case IN:
       if (f.getValue() == null) {
         return false;
