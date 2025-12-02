@@ -1030,7 +1030,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   public List<StructureDefinition> getImpliedProfilesForResource(IResourceValidator validator, Object appContext,
                                                                  String stackPath, ElementDefinition definition, StructureDefinition structure, Element resource, boolean valid,
                                                                  IMessagingServices msgServices, List<ValidationMessage> messages) {
-    return new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID).getImpliedProfilesForResource(validator, appContext, stackPath,
+    return new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID, null).getImpliedProfilesForResource(validator, appContext, stackPath,
       definition, structure, resource, valid, msgServices, messages);
   }
 
@@ -1051,6 +1051,11 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   @Override
   public ReferenceValidationPolicy getReferencePolicy() {
     return ReferenceValidationPolicy.IGNORE;
+  }
+
+  @Override
+  public Set<String> getCheckReferencesTo() {
+    return Set.of();
   }
 
   public IValidationPolicyAdvisor getPolicyAdvisor() {

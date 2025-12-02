@@ -19,6 +19,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import lombok.Getter;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -71,13 +72,12 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   private IValidationPolicyAdvisor policyAdvisor;
   private String resolutionContext;
   private Map<String, String> knownFiles = new HashMap<>();
-  
-  
+
   public StandAloneValidatorFetcher(FilesystemPackageCacheManager pcm, IWorkerContext context, IPackageInstaller installer) {
     this.pcm = pcm;
     this.context = context;
     this.installer = installer;
-    this.policyAdvisor = new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.IGNORE);
+    this.policyAdvisor = new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.IGNORE, null);
   }
 
   @Override
@@ -441,6 +441,12 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
       IMessagingServices msgServices, List<ValidationMessage> messages) {
     return policyAdvisor.getImpliedProfilesForResource(validator, appContext, stackPath, definition, structure, resource, valid, msgServices, messages);
   }
+
+
+  public Set<String> getCheckReferencesTo() {
+    return policyAdvisor.getCheckReferencesTo();
+  }
+
 
   @Override
   public ReferenceValidationPolicy getReferencePolicy() {
