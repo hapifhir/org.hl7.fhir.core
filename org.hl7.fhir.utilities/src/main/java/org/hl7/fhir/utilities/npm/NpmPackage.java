@@ -685,7 +685,7 @@ public class NpmPackage {
   public boolean isIndexed() throws IOException {
     for (NpmPackageFolder folder : folders.values()) {
       JsonObject index = folder.index();
-      if (folder.index() == null || index.forceArray("files").size() == 0) {
+      if (folder.index() == null) {
         return false;
       }
     }
