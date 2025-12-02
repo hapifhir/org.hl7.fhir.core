@@ -67,7 +67,23 @@ public class ValidationResult {
     if (issues != null) {
       this.issues.addAll(issues);
       for (OperationOutcomeIssueComponent issue : issues) {
-        if (issue.getSeverity() == OperationOutcome.IssueSeverity.ERROR || message == null) {
+        if (issue.getSeverity() == OperationOutcome.IssueSeverity.ERROR) {
+          String msg = issue.getDetails().getText();
+          if (!this.messages.contains(msg)) {
+            this.messages.add(msg);
+          }
+        }
+      }
+      for (OperationOutcomeIssueComponent issue : issues) {
+        if (issue.getSeverity() == OperationOutcome.IssueSeverity.WARNING && messages.isEmpty()) {
+          String msg = issue.getDetails().getText();
+          if (!this.messages.contains(msg)) {
+            this.messages.add(msg);
+          }
+        }
+      }
+      for (OperationOutcomeIssueComponent issue : issues) {
+        if (messages.isEmpty()) {
           String msg = issue.getDetails().getText();
           if (!this.messages.contains(msg)) {
             this.messages.add(msg);
