@@ -28,30 +28,63 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 package org.hl7.fhir.dstu2.test;
 
-import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
-import org.junit.jupiter.api.Test;
-
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import org.hl7.fhir.dstu2.formats.IParser;
+import org.hl7.fhir.dstu2.formats.IParser.OutputStyle;
+import org.hl7.fhir.dstu2.formats.JsonParser;
+import org.hl7.fhir.dstu2.formats.XmlParser;
+import org.hl7.fhir.dstu2.model.Resource;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
-public class ResourceTestTest {
+public class ResourceTester {
 
-  @Test
-  public void test() throws IOException {
+  private File source;
+  private boolean json;
 
-    final File tempDir = Files.createTempDirectory("terminology-cache-manager").toFile();
-    final File newFile = ManagedFileAccess.file(tempDir ,"patient-example.xml");
-    FileUtilities.copyFile(ManagedFileAccess.file("src/test/resources/patient-example.xml"), newFile);
+  public File getSource() {
+    return source;
+  }
 
-    assertDoesNotThrow(()->{
-      ResourceTest r = new ResourceTest();
-      r.setSource(newFile);
-      r.test();
-    });
+  public void setSource(File source) {
+    this.source = source;
+  }
+
+  public void test() throws FHIRFormatError, IOException {
+
+    IParser parser;
+    if (isJson())
+      parser = new JsonParser();
+    else
+      parser = new XmlParser(false);
+    Resource resource = parser.parse(ManagedFileAccess.inStream(source));
+
+    FileOutputStream out = ManagedFileAccess.outStream(source.getAbsoluteFile() + ".out.json");
+    JsonParser jsonPrettyParser = new JsonParser();
+    jsonPrettyParser.setOutputStyle(OutputStyle.PRETTY);
+    jsonPrettyParser.compose(out, resource);
+    out.close();
+
+    JsonParser jsonParser = new JsonParser();
+    resource = jsonParser.parse(ManagedFileAccess.inStream(source.getAbsoluteFile() + ".out.json"));
+
+    out = ManagedFileAccess.outStream(source.getAbsoluteFile() + ".out.xml");
+    XmlParser xmlParser = new XmlParser();
+    xmlParser.setOutputStyle(OutputStyle.PRETTY);
+    xmlParser.compose(out, resource, true);
+    out.close();
+
+  }
+
+  public boolean isJson() {
+    return json;
+  }
+
+  public void setJson(boolean json) {
+    this.json = json;
   }
 
 }
