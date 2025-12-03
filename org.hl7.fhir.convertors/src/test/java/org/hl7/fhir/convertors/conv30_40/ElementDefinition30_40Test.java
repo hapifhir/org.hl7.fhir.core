@@ -10,9 +10,7 @@ import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ElementDefinition30_40Test {
@@ -33,7 +31,7 @@ public class ElementDefinition30_40Test {
 
     assertNotNull(result);
     assertTrue(result.hasExtension(VersionConvertorConstants.EXT_MODIFIER_REASON_EXTENSION));
-    assertThat(result.getExtensionString(VersionConvertorConstants.EXT_MODIFIER_REASON_EXTENSION), is("My Modifier"));
+    assertThat(result.getExtensionString(VersionConvertorConstants.EXT_MODIFIER_REASON_EXTENSION)).isEqualTo("My Modifier");
   }
 
   @ParameterizedTest
@@ -47,7 +45,7 @@ public class ElementDefinition30_40Test {
     org.hl7.fhir.dstu3.model.ElementDefinition result = (org.hl7.fhir.dstu3.model.ElementDefinition) VersionConvertorFactory_30_40.convertType(input);
 
     assertNotNull(result);
-    assertThat(result.getId(), is("id"));
+    assertThat(result.getId()).isEqualTo("id");
     assertFalse(result.hasExtension(VersionConvertorConstants.EXT_MODIFIER_REASON_EXTENSION));
   }
 
@@ -69,7 +67,7 @@ public class ElementDefinition30_40Test {
 
     assertNotNull(result);
     assertTrue(result.getIsModifier());
-    assertThat(result.getIsModifierReason(), is("my Modifier"));
+    assertThat(result.getIsModifierReason()).isEqualTo("my Modifier");
     assertFalse(result.hasExtension(VersionConvertorConstants.EXT_MODIFIER_REASON_EXTENSION));
   }
 
@@ -82,7 +80,7 @@ public class ElementDefinition30_40Test {
 
     assertNotNull(result);
     assertFalse(result.getIsModifier());
-    assertThat(result.getIsModifierReason(), is(nullValue()));
+    assertThat(result.getIsModifierReason()).isNull();
     assertFalse(result.hasExtension(VersionConvertorConstants.EXT_MODIFIER_REASON_EXTENSION));
   }
 
@@ -97,7 +95,7 @@ public class ElementDefinition30_40Test {
 
     assertNotNull(result);
     assertTrue(result.getIsModifier());
-    assertThat(result.getIsModifierReason(), is(VersionConvertorConstants.EXT_MODIFIER_REASON_LEGACY));
+    assertThat(result.getIsModifierReason()).isEqualTo(VersionConvertorConstants.EXT_MODIFIER_REASON_LEGACY);
     assertFalse(result.hasExtension(VersionConvertorConstants.EXT_MODIFIER_REASON_EXTENSION));
   }
 

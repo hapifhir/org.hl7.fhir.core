@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledOnOs;
@@ -51,7 +52,7 @@ public class FilesystemPackageManagerTests {
   );
 
   @Test
-  public void testDefaultServers() throws IOException {
+  void testDefaultServers() throws IOException {
     FilesystemPackageCacheManager filesystemPackageCacheManager = getFilesystemPackageCacheManager(false);
 
     assertEquals(4, filesystemPackageCacheManager.myPackageServers.size());
@@ -62,7 +63,7 @@ public class FilesystemPackageManagerTests {
   }
 
   @Test
-  public void testIgnoreDefaultServers() throws IOException {
+  void testIgnoreDefaultServers() throws IOException {
     FilesystemPackageCacheManager filesystemPackageCacheManager = getFilesystemPackageCacheManager(true);
 
     assertEquals(2, filesystemPackageCacheManager.myPackageServers.size());
@@ -74,15 +75,18 @@ public class FilesystemPackageManagerTests {
   private FilesystemPackageCacheManager getFilesystemPackageCacheManager(final boolean ignoreDefaultPackageServers) throws IOException {
 
     FilesystemPackageCacheManager.Builder builder = new FilesystemPackageCacheManager.Builder() {
+      @Override
       protected boolean isIgnoreDefaultPackageServers() {
         return ignoreDefaultPackageServers;
       }
 
+      @Override
       @Nonnull
       protected List<PackageServer> getDefaultServers() {
         return dummyDefaultServers;
       }
 
+      @Override
       protected List<PackageServer> getConfiguredServers() {
         return dummyPrivateServers;
       }
@@ -93,7 +97,7 @@ public class FilesystemPackageManagerTests {
   }
 
   @Test
-  public void testUserCacheDirectory() throws IOException {
+  void testUserCacheDirectory() throws IOException {
     FilesystemPackageCacheManager filesystemPackageCacheManager = new FilesystemPackageCacheManager.Builder().build();
     assertEquals(System.getProperty("user.home") + File.separator + ".fhir" + File.separator + "packages", filesystemPackageCacheManager.getFolder());
   }
@@ -103,20 +107,20 @@ public class FilesystemPackageManagerTests {
    */
   @Test
   @DisabledOnOs(OS.WINDOWS)
-  public void testSystemCacheDirectory() throws IOException {
+  void testSystemCacheDirectory() throws IOException {
     File folder = new FilesystemPackageCacheManager.Builder().withSystemCacheFolder().getCacheFolder();
     assertEquals( "/var/lib/.fhir/packages", folder.getAbsolutePath());
   }
 
   @Test
   @EnabledOnOs(OS.WINDOWS)
-  public void testSystemCacheDirectoryWin() throws IOException {
+  void testSystemCacheDirectoryWin() throws IOException {
     File folder = new FilesystemPackageCacheManager.Builder().withSystemCacheFolder().getCacheFolder();
     assertEquals( System.getenv("ProgramData") + "\\.fhir\\packages", folder.getAbsolutePath());
   }
 
   @Test
-  public void testCorruptPackageCleanup() throws IOException {
+  void testCorruptPackageCleanup() throws IOException {
     File cacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest"));
 
     File dummyPackage = createDummyPackage(cacheDirectory, "example.fhir.uv.myig", "1.2.3");
@@ -133,7 +137,7 @@ public class FilesystemPackageManagerTests {
   }
 
   @Test
-  public void testLockedPackageIsntCleanedUp() throws IOException, InterruptedException, TimeoutException {
+  void testLockedPackageIsntCleanedUp() throws IOException, InterruptedException, TimeoutException {
     File cacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest"));
 
     File dummyPackage = createDummyPackage(cacheDirectory, "example.fhir.uv.myig", "1.2.3");
@@ -156,7 +160,7 @@ public class FilesystemPackageManagerTests {
   }
 
   @Test
-  public void testTimeoutForLockedPackageRead() throws IOException, InterruptedException, TimeoutException {
+  void testTimeoutForLockedPackageRead() throws IOException, InterruptedException, TimeoutException {
     String pcmPath = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest")).getAbsolutePath();
 
     final FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder()
@@ -180,7 +184,7 @@ public class FilesystemPackageManagerTests {
   }
 
   @Test
-  public void testReadFromCacheOnlyWaitsForLockDelete() throws IOException, InterruptedException, TimeoutException {
+  void testReadFromCacheOnlyWaitsForLockDelete() throws IOException, InterruptedException, TimeoutException {
     String pcmPath = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest")).getAbsolutePath();
 
     final FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(pcmPath).build();
@@ -258,7 +262,7 @@ public class FilesystemPackageManagerTests {
   }
 
   @Test
-  public void testCreatesIniIfDoesntExistAndCacheStaysIntact() throws IOException {
+  void testCreatesIniIfDoesntExistAndCacheStaysIntact() throws IOException {
     File cacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest"));
     File cacheIni = ManagedFileAccess.file(cacheDirectory.getAbsolutePath(), "packages.ini");
 
@@ -276,7 +280,7 @@ public class FilesystemPackageManagerTests {
 
 
   @Test
-  public void testClearsCacheIfVersionIsWrong() throws IOException {
+  void testClearsCacheIfVersionIsWrong() throws IOException {
     File cacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest"));
     File cacheIni = ManagedFileAccess.file(cacheDirectory.getAbsolutePath(), "packages.ini");
 
@@ -296,7 +300,7 @@ public class FilesystemPackageManagerTests {
   }
 
   @Test
-  public void testCacheStaysIntactIfVersionIsTheSame() throws IOException {
+  void testCacheStaysIntactIfVersionIsTheSame() throws IOException {
     File cacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest"));
     File cacheIni = ManagedFileAccess.file(cacheDirectory.getAbsolutePath(), "packages.ini");
 
@@ -340,7 +344,7 @@ public class FilesystemPackageManagerTests {
   }
 
   @Test
-  public void generatesIndexWhenMissing() throws IOException {
+  void generatesIndexWhenMissing() throws IOException {
     String pcmPath = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest")).getAbsolutePath();
 
     final FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(pcmPath).build();
@@ -348,13 +352,15 @@ public class FilesystemPackageManagerTests {
     Assertions.assertTrue(pcm.listPackages().isEmpty());
 
     NpmPackage npmPackage = pcm.addPackageToCache("example.fhir.uv.myig", "1.2.3", this.getClass().getResourceAsStream("/npm/dummy-package-no-index.tgz"), "https://packages.fhir.org/example.fhir.uv.myig/1.2.3");
+    /*FIXME this is not correct. If this is switched to assertThat(...).isTrue, the assert works correctly, but proves
+      that isIndexed is in fact broken.
+    */
     assertThat(npmPackage.isIndexed());
-
   }
 
   @MethodSource("packageCacheMultiThreadTestParams")
   @ParameterizedTest
-  public void packageCacheMultiThreadTest(final int threadTotal, final int packageCacheManagerTotal) throws IOException {
+  void packageCacheMultiThreadTest(final int threadTotal, final int packageCacheManagerTotal) throws IOException {
     String pcmPath = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest")).getAbsolutePath();
     System.out.println("Using temp pcm path: " + pcmPath);
     FilesystemPackageCacheManager[] packageCacheManagers = new FilesystemPackageCacheManager[packageCacheManagerTotal];
@@ -412,7 +418,7 @@ public class FilesystemPackageManagerTests {
 
   }
 
-  private void printUnsuccessfulThreads(final ConcurrentHashMap successfulThreads, List<Thread> threads) {
+  private void printUnsuccessfulThreads(final ConcurrentHashMap<Long, Integer> successfulThreads, List<Thread> threads) {
     for (Thread t : threads) {
       if (!successfulThreads.containsKey(t.getId())) {
         System.out.println("Thread #" + t.getId() + " failed");

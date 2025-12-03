@@ -1113,7 +1113,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public ValidationEngine setSnomedExtension(String sct) {
-    getContext().getExpansionParameters().addParameter("system-version", new CanonicalType("http://snomed.info/sct|http://snomed.info/sct/" + sct));
+    Parameters p = getContext().getExpansionParameters();
+    p.getParameter().removeIf(pp -> "system-version".equals(pp.getName()) && pp.hasValueCanonicalType() && pp.getValueCanonicalType().primitiveValue().startsWith("http://snomed.info/sct|"));
+    p.addParameter("system-version", new CanonicalType("http://snomed.info/sct|http://snomed.info/sct/" + sct));
+    getContext().setExpansionParameters(p);
     return this;
   }
 

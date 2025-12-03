@@ -5454,7 +5454,7 @@ public class JurisdictionUtilities {
     case "TR": return "Turkey";
     case "TT": return "Trinidad and Tobago";
     case "TV": return "Tuvalu";
-    case "TW": return "Taiwan, Province of China";
+    case "TW": return "Taiwan, Republic of China";
     case "TZ": return "Tanzania, United Republic of";
     case "UA": return "Ukraine";
     case "UG": return "Uganda";

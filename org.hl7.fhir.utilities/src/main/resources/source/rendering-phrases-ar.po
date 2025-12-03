@@ -3352,8 +3352,8 @@ msgstr "الموارد التالية موجودة في إصدار {0} فقط ف
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
 #, fuzzy
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
-msgstr "!!تتوفر حزم لكل من <a href=\"{0}\">R4 ({1}.r4)</a> و <a href=\"{2} \\\">R4B ({3}.r4b)</a>."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\"{2}\">R4B ({3}.r4b)</a> are available."
+msgstr "!!تتوفر حزم لكل من <a href=\"{0}\">R4 ({1}.r4)</a> و <a href=\"{2}\">R4B ({3}.r4b)</a>."
 
 # R44B_PROBLEMS
 #: R44B_PROBLEMS
@@ -3843,7 +3843,7 @@ msgstr "يمكن الاطلاع على إرشادات حول كيفية تفسي
 #, fuzzy
 msgctxt "SDR_GUIDANCE_SFX"
 msgid "-- no content: do not translate #118 --"
-msgstr "!!!!!!!!!!!!-- لا يوجد محتوى: لا تترجم #121 ---"
+msgstr "!!-- لا يوجد محتوى: لا تترجم #121 ---"
 
 # SDR_IMPOSE
 #: SDR_IMPOSE
@@ -4070,7 +4070,7 @@ msgstr "إصدارات FHIR"
 #, fuzzy
 msgctxt "SDR_VER_RANGE_SFX"
 msgid "-- no content: do not translate #119 --"
-msgstr "!!!!!!!!!!!!-- لا يوجد محتوى: لا تترجم #122 --"
+msgstr "!!-- لا يوجد محتوى: لا تترجم #122 --"
 
 # SDR_VER_TO_PFX
 #: SDR_VER_TO_PFX
@@ -4083,7 +4083,7 @@ msgstr "إصدارات FHIR حتى"
 #, fuzzy
 msgctxt "SDR_VER_TO_SFX"
 msgid "-- no content: do not translate #120 --"
-msgstr "!!!!!!!!!!!!-- لا يوجد محتوى: لا تترجم #123 --"
+msgstr "!!-- لا يوجد محتوى: لا تترجم #123 --"
 
 # SDR_VER_UNK
 #: SDR_VER_UNK
@@ -6756,17 +6756,17 @@ msgstr ""
 
 # VS_VERSION_FOUND
 #: VS_VERSION_FOUND
-msgid "Version is not explicity stated. When building this specification, the most recent version {0} has been used"
+msgid "Version is not explicitly stated. When building this specification, the most recent version {0} has been used"
 msgstr ""
 
 # VS_VERSION_NONE
 #: VS_VERSION_NONE
-msgid "Version is not explicity stated, and the target {0} has no stated version either"
+msgid "Version is not explicitly stated, and the target {0} has no stated version either"
 msgstr ""
 
 # VS_VERSION_NOTHING
 #: VS_VERSION_NOTHING
-msgid "Version is not explicity stated. No matching {0} found"
+msgid "Version is not explicitly stated. No matching {0} found"
 msgstr ""
 
 # VS_VERSION_NOTHING_TEXT
