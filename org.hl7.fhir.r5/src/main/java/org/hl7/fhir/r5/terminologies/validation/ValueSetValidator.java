@@ -68,6 +68,7 @@ import org.hl7.fhir.r5.terminologies.providers.SpecialCodeSystem;
 import org.hl7.fhir.r5.terminologies.providers.URICodeSystem;
 import org.hl7.fhir.r5.terminologies.utilities.*;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
+import org.hl7.fhir.r5.utils.CodingUtilities;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 
 import org.hl7.fhir.r5.utils.UserDataNames;
@@ -1893,8 +1894,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
       DataType d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
       if (d instanceof Coding) {
-        Coding c = (Coding) d;
-        return (""+c.getSystem()+"#"+c.getCode()).equals(f.getValue());
+        return CodingUtilities.filterEquals((Coding) d, f.getValue());
       } else {
         return d != null && f.getValue().equals(d.primitiveValue());
       }
@@ -1906,8 +1906,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
       d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
       if (d instanceof Coding) {
-        Coding c = (Coding) d;
-        return (""+c.getSystem()+"#"+c.getCode()).matches(f.getValue());
+        return CodingUtilities.filterMatches((Coding) d, f.getValue());
       } else {
         return d != null && d.primitiveValue() != null && d.primitiveValue().matches(f.getValue());
       }
