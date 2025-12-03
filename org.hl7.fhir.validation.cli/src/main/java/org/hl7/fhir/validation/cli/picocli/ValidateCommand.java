@@ -41,8 +41,6 @@ class ValidateCommand implements Callable<Integer> {
   @CommandLine.ArgGroup(validate = false, heading = "Validation Engine%n")
   ValidationEngineOptions validationEngineOptions = new ValidationEngineOptions();
 
-
-
   //Needed to allow Help Command.
   @CommandLine.Option(names = { "-h", "-help", "-?"}, usageHelp = true, description = "Display this help and exit")
   private boolean help;
