@@ -858,7 +858,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     synchronized (lock) {
       String vurl = CanonicalType.urlWithVersion(system, version);
       if (codeSystems.has(vurl) && codeSystems.get(vurl).getContent() != CodeSystemContentMode.NOTPRESENT) {
-        return new SystemSupportInformation(true, "internal", TerminologyClientContext.LATEST_VERSION, "Content is not present");
+        return new SystemSupportInformation(true, "internal", TerminologyClientContext.LATEST_VERSION, null);
       } else if (supportedCodeSystems.containsKey(vurl)) {
         return supportedCodeSystems.get(vurl);
       } else if (system.startsWith("http://example.org") || system.startsWith("http://acme.com") || system.startsWith("http://hl7.org/fhir/valueset-") || system.startsWith("urn:oid:")) {

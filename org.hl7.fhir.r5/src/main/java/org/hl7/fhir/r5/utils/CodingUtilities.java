@@ -46,4 +46,47 @@ public class CodingUtilities {
     return coding.getSystem()+"::"+coding.getCode();
   }
 
+  /**
+   * @param c the coding to compare
+   * @param fmt the format is [system](|[version])#[code], no display
+   * @return whether the code conforms to the filter
+   */
+  public static boolean filterEquals(Coding c, String fmt) {
+    if (fmt == null) {
+      return false;
+    }
+    if (fmt.contains("|")) {
+      return fmt.equals(""+c.getSystem()+"|"+c.getVersion()+"#"+c.getCode());
+    } else {
+      return fmt.equals(""+c.getSystem()+"#"+c.getCode());
+    }
+  }
+
+  /**
+   * @param c the coding to compare
+   * @param fmt the format is [system](|[version])#[code], no display
+   * @return whether the code conforms to the filter using regex
+   */
+  public static boolean filterMatches(Coding c, String fmt) {
+    if (fmt.contains("|")) {
+      return (""+c.getSystem()+"|"+c.getVersion()+"#"+c.getCode()).matches(fmt);
+    } else {
+      return (""+c.getSystem()+"#"+c.getCode()).matches(fmt);
+    }
+  }
+
+  /**
+   * @param c the coding to compare
+   * @param values a list of values, the format is [system](|[version])#[code], no display
+   * @return whether the code conforms to the filter using regex
+   */
+  public static boolean filterInList(Coding c, String[] values) {
+    for (String v : values) {
+      if (filterEquals(c, v)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 }
