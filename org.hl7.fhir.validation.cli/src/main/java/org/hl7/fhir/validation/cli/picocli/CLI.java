@@ -16,7 +16,7 @@ import java.util.Map;
 @Slf4j
 public class CLI {
 
-  private final static GlobalOptions[] GLOBAL_OPTIONS =  {
+  private static final GlobalOptions[] GLOBAL_OPTIONS =  {
     new LocaleOptions(),
     new DebugOptions(),
     new ProxyOptions()
