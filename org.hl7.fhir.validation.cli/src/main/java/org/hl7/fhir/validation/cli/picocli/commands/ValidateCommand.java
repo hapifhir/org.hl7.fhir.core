@@ -1,6 +1,8 @@
-package org.hl7.fhir.validation.cli.picocli;
+package org.hl7.fhir.validation.cli.picocli.commands;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.validation.cli.picocli.options.*;
+import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
 import picocli.CommandLine;
 
 import java.util.concurrent.Callable;
@@ -22,18 +24,10 @@ import java.util.concurrent.Callable;
     CommandLine.HelpCommand.class,
     ServerCommand.class
   })
-class ValidateCommand implements Callable<Integer> {
+@Slf4j
+public class ValidateCommand extends ValidationEngineCommand implements Callable<Integer> {
   @CommandLine.Spec
   CommandLine.Model.CommandSpec spec;
-
-  @CommandLine.ArgGroup(validate = false, heading = "Debug Options%n")
-  DebugOptions debugOptions = new DebugOptions();
-
-  @CommandLine.ArgGroup(validate = false, heading = "Locale Options%n")
-  LocaleOptions localeOptions = new LocaleOptions();
-
-  @CommandLine.ArgGroup(validate = false, heading = "Proxy Options%n")
-  ProxyOptions proxyOptions = new ProxyOptions();
 
   @CommandLine.ArgGroup(validate = false, heading = "Terminology Client Options%n")
   TerminologyClientOptions terminologyClientOptions = new TerminologyClientOptions();
@@ -51,7 +45,15 @@ class ValidateCommand implements Callable<Integer> {
 
   @Override
   public Integer call() throws Exception { // your business logic goes here...
-    System.out.println("Validating " + String.join("", whatToValidate )+ " with FHIR version " + validationEngineOptions.fhirVersion );
-    return (Integer) 0;
+    ValidationEngineOptionsConvertor convertor = new ValidationEngineOptionsConvertor();
+    ValidationEngineParameters validationEngineParameters = convertor.convert(validationEngineOptions);
+    log.info(validationEngineParameters.toString().replace(", ", ", \n"));
+    log.info("Sources to validate: " + String.join("", whatToValidate ));
+    return 0;
+  }
+
+  @Override
+  public boolean usesInstanceValidatorParameters() {
+    return true;
   }
 }

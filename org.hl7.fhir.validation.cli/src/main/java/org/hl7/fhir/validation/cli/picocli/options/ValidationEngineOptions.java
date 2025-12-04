@@ -81,16 +81,13 @@ public class ValidationEngineOptions {
   @With
   public boolean doDebug = false;
 
-  @With
-  public boolean noEcosystem = false;
-
   @CommandLine.Option(names = {"-sct"},
     description = """
-    SNOMED CT edition code. Valid choices: intl | us | uk | au | nl | ca | se | dk | es
-    Default is ${DEFAULT-VALUE}
+    Specify the edition of SNOMED CT to use. Valid choices: intl | us | uk | au | nl | ca | se | dk | es
+    tx.fhir.org only supports a subset. To add to this list or tx.fhir.org, ask on https://chat.fhir.org/#narrow/stream/179202-terminology
     """)
   @With
-  public String snomedCT = "900000000000207008";
+  public String snomedCT = null;
 
   @CommandLine.Option(names = {"-resolution-context"},
     description = "Resolution context for package resolution")
@@ -105,10 +102,10 @@ public class ValidationEngineOptions {
   @CommandLine.Option(names = {"-tx"},
     description = """
     Terminology server URL. To run without terminology, specify 'n/a' as the URL
-    Default is ${DEFAULT-VALUE}
+    By default 'http://tx.fhir.org' will be used.
     """)
   @With
-  public String txServer = "http://tx.fhir.org";
+  public String txServer = null;
 
   @CommandLine.Option(names = {"-txLog"},
     description = """

@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation.cli.picocli;
+package org.hl7.fhir.validation.cli.picocli.commands;
 
 import org.hl7.fhir.validation.cli.picocli.options.ValidationEngineOptions;
 import picocli.CommandLine;
@@ -7,7 +7,7 @@ import java.util.concurrent.Callable;
 
 @CommandLine.Command(name = "server",
   description = "Start a fhir server.")
-class ServerCommand implements Callable<Integer> {
+public class ServerCommand implements Callable<Integer> {
 
   @CommandLine.Option(names = {"-p", "--port"}, description = "The port to run the server on", required = true)
   private String port = null;
