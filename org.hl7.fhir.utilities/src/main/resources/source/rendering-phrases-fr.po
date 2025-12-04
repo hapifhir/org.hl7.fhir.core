@@ -44,12 +44,12 @@ msgstr "Toutes les répétitions"
 # ADD_BIND_ANY
 #: ADD_BIND_ANY
 msgid "Any"
-msgstr "N'importe lequel"
+msgstr "N''importe lequel"
 
 # ADD_BIND_ANY_REP
 #: ADD_BIND_ANY_REP
 msgid "any repeat"
-msgstr "n'importe quelle répétition"
+msgstr "N''importe quelle répétition"
 
 # ADD_BIND_CURR_BIND
 #: ADD_BIND_CURR_BIND
@@ -76,7 +76,7 @@ msgstr "Extensible"
 # ADD_BIND_GIVEN_CONT
 #: ADD_BIND_GIVEN_CONT
 msgid "This value set is provided to user look up in a given context"
-msgstr "Ce jeu de valeurs (ValueSet) est fourni à l'utilisateur pour rechercher dans un contexte donné"
+msgstr "Ce jeu de valeurs (ValueSet) est fourni à l''utilisateur pour rechercher dans un contexte donné"
 
 # ADD_BIND_MAX
 #: ADD_BIND_MAX
@@ -91,7 +91,7 @@ msgstr "Binding Min"
 # ADD_BIND_NEW_REC
 #: ADD_BIND_NEW_REC
 msgid "New records are required to use this value set, but legacy records may use other codes"
-msgstr "Les nouveaux enregistrements doivent utilise ce jeu de valeurs (ValueSet), mais les enregistrements existants peuvent utiliser d'autres codes"
+msgstr "Les nouveaux enregistrements doivent utilise ce jeu de valeurs (ValueSet), mais les enregistrements existants peuvent utiliser d''autres codes"
 
 # ADD_BIND_PREF_BIND
 #: ADD_BIND_PREF_BIND
@@ -102,7 +102,7 @@ msgstr "Préféré"
 # ADD_BIND_RECOM_VALUE_SET
 #: ADD_BIND_RECOM_VALUE_SET
 msgid "This is the value set that is recommended (documentation should explain why)"
-msgstr "C'est le jeu de valeur (ValueSet) recommandé (la documentation doit expliquer pourquoi)"
+msgstr "C''est le jeu de valeur (ValueSet) recommandé (la documentation doit expliquer pourquoi)"
 
 # ADD_BIND_REQ_BIND
 #: ADD_BIND_REQ_BIND
@@ -124,7 +124,7 @@ msgstr "Binding UI"
 # ADD_BIND_UNKNOWN_PUR
 #: ADD_BIND_UNKNOWN_PUR
 msgid "Unknown code for purpose"
-msgstr "Code inconnu pour l'objectif"
+msgstr "Code inconnu pour l''objectif"
 
 # ADD_BIND_VALID_EXT
 #: ADD_BIND_VALID_EXT
@@ -249,7 +249,7 @@ msgstr "Bundle {0}, {1} entrées"
 # BUND_REND_INVALID_DOC
 #: BUND_REND_INVALID_DOC
 msgid "Invalid document ''{0}'' - first entry is not a Composition ({0})"
-msgstr "Document invalide ''{0}'' - la première entrée n'est pas une Composition ({0})"
+msgstr "Document invalide ''{0}'' - la première entrée n''est pas une Composition ({0})"
 
 # CANON_REND_COMMITTEE
 #: CANON_REND_COMMITTEE
@@ -309,12 +309,12 @@ msgstr "Activer CORS : oui"
 # CAPABILITY_CREATE_INT
 #: CAPABILITY_CREATE_INT
 msgid "POST a new resource (create interaction)"
-msgstr "POST d'une nouvelle ressource (interaction create)"
+msgstr "POST d''une nouvelle ressource (interaction create)"
 
 # CAPABILITY_DELETE_INT
 #: CAPABILITY_DELETE_INT
 msgid "DELETE a resource (delete interaction)"
-msgstr "DELETE d'une nouvelle ressource (interaction delete)"
+msgstr "DELETE d''une nouvelle ressource (interaction delete)"
 
 # CAPABILITY_DOCUMENT_CAPS
 #: CAPABILITY_DOCUMENT_CAPS
@@ -324,7 +324,7 @@ msgstr "Capacités des documents FHIR"
 # CAPABILITY_ENDPOINTS
 #: CAPABILITY_ENDPOINTS
 msgid "Endpoint(s)"
-msgstr "Point(s) d'accès"
+msgstr "Point(s) d''accès"
 
 # CAPABILITY_ERR_DET
 #: CAPABILITY_ERR_DET
@@ -349,7 +349,7 @@ msgstr "Version de FHIR : {0}"
 # CAPABILITY_HISTORY_INT
 #: CAPABILITY_HISTORY_INT
 msgid "GET changes to a resource (history interaction on instance)"
-msgstr "GET des changements d'une ressource (interaction history sur l'instance)"
+msgstr "GET des changements d''une ressource (interaction history sur l''instance)"
 
 # CAPABILITY_HISTORY_TYPE
 #: CAPABILITY_HISTORY_TYPE
@@ -359,7 +359,7 @@ msgstr "GET des changements pour toutes les ressources du type (interaction hist
 # CAPABILITY_IMP_VER
 #: CAPABILITY_IMP_VER
 msgid "Implementation Guide Version: {0}"
-msgstr "Version du guide d'implémentation : {0}"
+msgstr "Version du guide d''implémentation : {0}"
 
 # CAPABILITY_INT
 #: CAPABILITY_INT
@@ -384,7 +384,7 @@ msgstr "Résumé des interactions"
 # CAPABILITY_MAY_SUPP
 #: CAPABILITY_MAY_SUPP
 msgid "MAY Support the Following Implementation Guides"
-msgstr "PEUT prendre en charge les guides d'implémentation suivants"
+msgstr "PEUT prendre en charge les guides d''implémentation suivants"
 
 # CAPABILITY_MESSAGING_CAP
 #: CAPABILITY_MESSAGING_CAP
@@ -399,7 +399,7 @@ msgstr "FHIR Messaging Capabilities"
 # CAPABILITY_MULT_EXT
 #: CAPABILITY_MULT_EXT
 msgid "this mark indicates that there are more than one expectation extensions present"
-msgstr "Cette marque indique qu'il y a plus d'une extension présente attendue"
+msgstr "Cette marque indique qu''il y a plus d''une extension présente attendue"
 
 # CAPABILITY_NOTE_CAP
 #: CAPABILITY_NOTE_CAP
@@ -424,7 +424,7 @@ msgstr "Les autres ressources activées pour"
 # CAPABILITY_PATCH_INT
 #: CAPABILITY_PATCH_INT
 msgid "PATCH a new resource version (patch interaction)"
-msgstr "PATCH d'une nouvelle version de ressource (interaction patch)"
+msgstr "PATCH d''une nouvelle version de ressource (interaction patch)"
 
 # CAPABILITY_PROF_CONF
 #: CAPABILITY_PROF_CONF
@@ -454,7 +454,7 @@ msgstr "Publié sur : {0}"
 # CAPABILITY_READ_INT
 #: CAPABILITY_READ_INT
 msgid "GET a resource (read interaction)"
-msgstr "GET d'une ressource (interaction read)"
+msgstr "GET d''une ressource (interaction read)"
 
 # CAPABILITY_REF_PROF
 #: CAPABILITY_REF_PROF
@@ -514,7 +514,7 @@ msgstr "Recherches"
 # CAPABILITY_SEARCH_INT
 #: CAPABILITY_SEARCH_INT
 msgid "GET all set of resources of the type (search interaction)"
-msgstr "GET de l'ensemble des ressources du type (interaction search)"
+msgstr "GET de l''ensemble des ressources du type (interaction search)"
 
 # CAPABILITY_SEARCH_PAR
 #: CAPABILITY_SEARCH_PAR
@@ -529,7 +529,7 @@ msgstr "Paramètres de recherche"
 # CAPABILITY_SHOULD_SUPP
 #: CAPABILITY_SHOULD_SUPP
 msgid "SHOULD Support the Following Implementation Guides"
-msgstr "Doit (SHOULD) supporter les guides d'implémentation suivants"
+msgstr "Doit (SHOULD) supporter les guides d''implémentation suivants"
 
 # CAPABILITY_SUMM_RES
 #: CAPABILITY_SUMM_RES
@@ -599,12 +599,12 @@ msgstr "Types"
 # CAPABILITY_TYP_PRES
 #: CAPABILITY_TYP_PRES
 msgid "ype are only present if at least one of the resources has support for them."
-msgstr "!!les types sont seulement présents si au moins une des ressources les prend en charge."
+msgstr "les types sont seulement présents si au moins une des ressources les prend en charge."
 
 # CAPABILITY_UPDATE_INT
 #: CAPABILITY_UPDATE_INT
 msgid "PUT a new resource version (update interaction)"
-msgstr "PUT d'une nouvelle version de ressource (interaction update)"
+msgstr "PUT d''une nouvelle version de ressource (interaction update)"
 
 # CAPABILITY_VREAD_INT
 #: CAPABILITY_VREAD_INT
@@ -614,7 +614,7 @@ msgstr "GET des versions passées des ressources (interaction vread)"
 # CAPABILTY_ALLOW_CAP
 #: CAPABILTY_ALLOW_CAP
 msgid "Any FHIR capability may be ''allowed'' by the system unless explicitly marked as ''SHALL NOT''. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case."
-msgstr "Toute capacité FHIR peut être ''autorisée'' par le système sauf si elle est explicitement marquée comme ''SHALL NOT''. Quelques éléments sont marqués comme MAY dans le guide d'implémentation pour souligner leur pertinence potentielle pour le cas d'usage."
+msgstr "Toute capacité FHIR peut être ''autorisée'' par le système sauf si elle est explicitement marquée comme ''SHALL NOT''. Quelques éléments sont marqués comme MAY dans le guide d''implémentation pour souligner leur pertinence potentielle pour le cas d''usage."
 
 # CAPABILTY_SHALL_SUPP
 #: CAPABILTY_SHALL_SUPP
@@ -674,7 +674,7 @@ msgstr "Cette terminologie de référence (CodeSystem) définit les propriétés
 # CODE_SYS_CODE_NOT_HERE
 #: CODE_SYS_CODE_NOT_HERE
 msgid "This CodeSystem is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr "Cette terminologie de référence (CodeSystem) n'est pas utilisée ici; elle peut être utilisée ailleurs (par exemple spécifications et/ou implémentations qui utilisent ce contenu)"
+msgstr "Cette terminologie de référence (CodeSystem) n''est pas utilisée ici; elle peut être utilisée ailleurs (par exemple spécifications et/ou implémentations qui utilisent ce contenu)"
 
 # CODE_SYS_COMPLETE
 #: CODE_SYS_COMPLETE
@@ -724,7 +724,7 @@ msgstr "dans une hiérarchie {0}"
 # CODE_SYS_NOTPRESENT
 #: CODE_SYS_NOTPRESENT
 msgid "None of the concepts defined by the code system are included in the code system resource"
-msgstr "Aucun des concepts définis par la terminologie de référence (CodeSystem) n'est inclus dans la ressource CodeSystem"
+msgstr "Aucun des concepts définis par la terminologie de référence (CodeSystem) n''est inclus dans la ressource CodeSystem"
 
 # CODE_SYS_PROP
 #: CODE_SYS_PROP
@@ -859,12 +859,12 @@ msgstr "Après-midi"
 # DATA_REND_AFTERNOON_EARLY
 #: DATA_REND_AFTERNOON_EARLY
 msgid "Early Afternoon"
-msgstr "Début d'après-midi"
+msgstr "Début d''après-midi"
 
 # DATA_REND_AFTERNOON_LATE
 #: DATA_REND_AFTERNOON_LATE
 msgid "Late Afternoon"
-msgstr "Fin d'après-midi"
+msgstr "Fin d''après-midi"
 
 # DATA_REND_AFTER_SLEEP
 #: DATA_REND_AFTER_SLEEP
@@ -1095,7 +1095,7 @@ msgstr "aux repas"
 # DATA_REND_MKDWN_LNK
 #: DATA_REND_MKDWN_LNK
 msgid "Unable to resolve markdown link ''{0}''"
-msgstr "!!Impossible de résoudre le lien markdown"
+msgstr "Impossible de résoudre le lien markdown ''{0}''"
 
 # DATA_REND_MORNING
 #: DATA_REND_MORNING
@@ -1130,7 +1130,7 @@ msgstr "[non précisé]"
 # DATA_REND_NO_DISP
 #: DATA_REND_NO_DISP
 msgid "No display for {0}"
-msgstr "Pas d'affichage pour {0}"
+msgstr "Pas d''affichage pour {0}"
 
 # DATA_REND_ONCE
 #: DATA_REND_ONCE
@@ -1220,7 +1220,7 @@ msgstr "ATTENTION : Modifier Extension non affichable !"
 # DATA_REND_UNTIL
 #: DATA_REND_UNTIL
 msgid "Until {0}"
-msgstr "Jusqu'à {0}"
+msgstr "Jusqu''à {0}"
 
 # DATA_REND_UP
 #: DATA_REND_UP
@@ -1270,7 +1270,7 @@ msgstr "Identifiant"
 # DIAG_REP_REND_NOTRES
 #: DIAG_REP_REND_NOTRES
 msgid "The observation ''{0}'' could not be resolved"
-msgstr "L'observation  ''{0}'' n'a pas pu être résolue"
+msgstr "L'observation  ''{0}'' n''a pas pu être résolue"
 
 # DIAG_REP_REND_OBS
 #: DIAG_REP_REND_OBS
@@ -1300,7 +1300,7 @@ msgstr "Détails du rapport"
 # DIAG_REP_REND_UNABLE
 #: DIAG_REP_REND_UNABLE
 msgid "Unable to get Patient Details"
-msgstr "Impossible d'obtenir les détails du patient"
+msgstr "Impossible d''obtenir les détails du patient"
 
 # DIAG_REP_REND_WHEN
 #: DIAG_REP_REND_WHEN
@@ -1351,7 +1351,7 @@ msgstr "Contient :"
 # EX_SCEN_ERR_REN
 #: EX_SCEN_ERR_REN
 msgid "Error rendering ExampleScenario {0}"
-msgstr "Erreur lors de l'affichage de ExampleScenario {0}"
+msgstr "Erreur lors de l''affichage de ExampleScenario {0}"
 
 # EX_SCEN_FVER
 #: EX_SCEN_FVER
@@ -1416,7 +1416,7 @@ msgstr "Mode de rendu ExampleScenario inconnu {0}"
 # EX_SCEN_UN_ACT
 #: EX_SCEN_UN_ACT
 msgid "Unable to find referenced actor {0}"
-msgstr "Impossible de trouver l'acteur référencé {0}"
+msgstr "Impossible de trouver l''acteur référencé {0}"
 
 # FMM_TABLE
 #: FMM_TABLE
@@ -1611,7 +1611,7 @@ msgstr "Localisation"
 # GENERAL_LOGICAL_NAME
 #: GENERAL_LOGICAL_NAME
 msgid "The logical name of the element"
-msgstr "Le nom logique de l'élément"
+msgstr "Le nom logique de l''élément"
 
 # GENERAL_MAX_LENGTH
 #: GENERAL_MAX_LENGTH
@@ -1856,7 +1856,7 @@ msgstr "XML"
 # IMP_GUIDE_URL
 #: IMP_GUIDE_URL
 msgid "The official URL for this implementation guide is:"
-msgstr "L'URL officielle pour ce guide d'implémentation est :"
+msgstr "L''URL officielle pour ce guide d''implémentation est :"
 
 # IP_INTRO
 #: IP_INTRO
@@ -1866,12 +1866,12 @@ msgstr "Certaines ressources sémantiques de ce guide sont protégées par des d
 # IP_NONE
 #: IP_NONE
 msgid "No use of external IP"
-msgstr "Pas d'usage de PI externe"
+msgstr "Pas d''usage de PI externe"
 
 # IP_NONE_EXT
 #: IP_NONE_EXT
 msgid "No use of external IP (other than from the FHIR specification)"
-msgstr "Pas d'usage de PI externe (autre que celles de la spécification FHIR)"
+msgstr "Pas d''usage de PI externe (autre que celles de la spécification FHIR)"
 
 # KIND_EXTENSION
 #: KIND_EXTENSION
@@ -2017,7 +2017,7 @@ msgstr "Sujet Non Soécifié"
 # MAP_DEFAULT_COMMENT
 #: MAP_DEFAULT_COMMENT
 msgid "This element was not defined prior to R5"
-msgstr "Cet élément n'était pas défini avant R5"
+msgstr "Cet élément n''était pas défini avant R5"
 
 # MATURITY_MATURITY
 #: MATURITY_MATURITY
@@ -2068,12 +2068,12 @@ msgstr "Elements"
 # OP_DEF_INPAR
 #: OP_DEF_INPAR
 msgid "Input parameters Profile:"
-msgstr "Profil des paramètres d'entrée :"
+msgstr "Profil des paramètres d''entrée :"
 
 # OP_DEF_OFFIC
 #: OP_DEF_OFFIC
 msgid "The official URL for this operation definition is:"
-msgstr "L'URL officielle pour cette operation definition est :"
+msgstr "L''URL officielle pour cette operation definition est :"
 
 # OP_DEF_OUTPAR
 #: OP_DEF_OUTPAR
@@ -2119,17 +2119,17 @@ msgstr "Source"
 # OP_OUT_SUMM
 #: OP_OUT_SUMM
 msgid "OperationOutcome ({0} Error(s), {1} Warning(s), {2} Hint(s))"
-msgstr "Résultat d'opération ({0} Erreur(s), {1} Avertissement(s), {2} Information(s))"
+msgstr "Résultat d''opération ({0} Erreur(s), {1} Avertissement(s), {2} Information(s))"
 
 # OP_OUT_SUMM_ALL_OK
 #: OP_OUT_SUMM_ALL_OK
 msgid "OperationOutcome (ALL OK)"
-msgstr "Résultat d'opération (TOUT EST OK)"
+msgstr "Résultat d''opération (TOUT EST OK)"
 
 # OP_OUT_SUMM_NOHINT
 #: OP_OUT_SUMM_NOHINT
 msgid "OperationOutcome ({0} Error(s), {1} Warning(s))"
-msgstr "Résultat d'opération ({0} Erreur(s), {1} Avertissement(s))"
+msgstr "Résultat d''opération ({0} Erreur(s), {1} Avertissement(s))"
 
 # PARS_SUMMARY_LIST
 #: PARS_SUMMARY_LIST
@@ -2149,7 +2149,7 @@ msgstr "Actif :"
 # PAT_ACTIVE_HINT
 #: PAT_ACTIVE_HINT
 msgid "Record is active"
-msgstr "L'enregistrement est actif"
+msgstr "L''enregistrement est actif"
 
 # PAT_ALT_NAME
 #: PAT_ALT_NAME
@@ -2431,7 +2431,7 @@ msgstr "qui"
 # QUEST_ADD_INFO
 #: QUEST_ADD_INFO
 msgid "Additional information about the item"
-msgstr "Informations supplémentaires sur l'élément"
+msgstr "Informations supplémentaires sur l''élément"
 
 # QUEST_ALLOWED
 #: QUEST_ALLOWED
@@ -2456,7 +2456,7 @@ msgstr "Réponses"
 # QUEST_APP
 #: QUEST_APP
 msgid "Approval Date"
-msgstr "Date d'approbation"
+msgstr "Date d''approbation"
 
 # QUEST_ARE_TRUE
 #: QUEST_ARE_TRUE
@@ -2466,7 +2466,7 @@ msgstr "?? sont vrais :"
 # QUEST_ATTRIBUTES
 #: QUEST_ATTRIBUTES
 msgid "Other attributes of the item"
-msgstr "Autres attributs de l'élément"
+msgstr "Autres attributs de l''élément"
 
 # QUEST_CALC
 #: QUEST_CALC
@@ -2497,17 +2497,17 @@ msgstr "Dérivé de"
 # QUEST_DISPLAY
 #: QUEST_DISPLAY
 msgid "Is optional to display"
-msgstr "L'affichage est optionnel"
+msgstr "l''affichage est optionnel"
 
 # QUEST_DISPLAY_CAT
 #: QUEST_DISPLAY_CAT
 msgid "Display Category"
-msgstr "Catégorie d'affichage"
+msgstr "Catégorie d''affichage"
 
 # QUEST_EFF_PERIOD
 #: QUEST_EFF_PERIOD
 msgid "Effective Period"
-msgstr "Période d'application"
+msgstr "Période d''application"
 
 # QUEST_EN
 #: QUEST_EN
@@ -2572,12 +2572,12 @@ msgstr "Élément"
 # QUEST_ITEM_CONT
 #: QUEST_ITEM_CONT
 msgid "Item Context"
-msgstr "Contexte de l'élément"
+msgstr "Contexte de l''élément"
 
 # QUEST_LINK
 #: QUEST_LINK
 msgid "The linkID for the item"
-msgstr "Le linkID de l'élément"
+msgstr "Le linkID de l''élément"
 
 # QUEST_LINKED
 #: QUEST_LINKED
@@ -2612,12 +2612,12 @@ msgstr "Aucun spécifié"
 # QUEST_OBSERVATION
 #: QUEST_OBSERVATION
 msgid "Observation Link Period"
-msgstr "Période de lien d'observation"
+msgstr "Période de lien d''observation"
 
 # QUEST_OPT
 #: QUEST_OPT
 msgid "Options Sets"
-msgstr "Ensembles d'options"
+msgstr "Ensembles d''options"
 
 # QUEST_OPTIONS
 #: QUEST_OPTIONS
@@ -2707,12 +2707,12 @@ msgstr "Texte"
 # QUEST_TEXTFOR
 #: QUEST_TEXTFOR
 msgid "Text for the item"
-msgstr "Texte de l'élément"
+msgstr "Texte de l''élément"
 
 # QUEST_TIMES
 #: QUEST_TIMES
 msgid "Minimum and Maximum # of times the item can appear in the instance"
-msgstr "Nombre minimum et maximum de fois que l'élément peut apparaître dans l'instance"
+msgstr "Nombre minimum et maximum de fois que l''élément peut apparaître dans l''instance"
 
 # QUEST_TRUE
 #: QUEST_TRUE
@@ -2732,7 +2732,7 @@ msgstr "Essayer cette QuestionnaireResponse :"
 # QUEST_TYPE_ITEM
 #: QUEST_TYPE_ITEM
 msgid "The type of the item"
-msgstr "Le type de l'élément"
+msgstr "Le type de l''élément"
 
 # QUEST_UNKNOWN_MODE
 #: QUEST_UNKNOWN_MODE
@@ -2773,7 +2773,7 @@ msgstr "a pour type"
 # R44B_NOT_COMP
 #: R44B_NOT_COMP
 msgid "This is an {0} IG that is not compatible with {1}\" because"
-msgstr "Ceci est un IG {0} qui n'est pas compatible avec {1}\" car"
+msgstr "Ceci est un IG {0} qui n''est pas compatible avec {1}\" car"
 
 # R44B_NOT_IN
 #: R44B_NOT_IN
@@ -2803,12 +2803,12 @@ msgstr "<a href=\"{0}\">{1}}</a> fait référence au type canonique à {2}"
 # R44B_USE_OK
 #: R44B_USE_OK
 msgid "This is an {0} IG. None of the features it uses are changed in {1}, so it can be used as is with {1} systems."
-msgstr "Ceci est un IG {0}. Aucune des fonctionnalités qu'il utilise n'est modifiée dans {1}, il peut donc être utilisé tel quel avec les systèmes {1}."
+msgstr "Ceci est un IG {0}. Aucune des fonctionnalités qu''il utilise n''est modifiée dans {1}, il peut donc être utilisé tel quel avec les systèmes {1}."
 
 # R44B_WRONG_MSG
 #: R44B_WRONG_MSG
 msgid "Something went wrong with the cross-version analysis because"
-msgstr "Une erreur s'est produite lors de l'analyse inter-versions car"
+msgstr "Une erreur s''est produite lors de l''analyse inter-versions car"
 
 # REND_ADDED
 #: REND_ADDED
@@ -2858,7 +2858,7 @@ msgstr "Statut de standard = {0}"
 # REQ_ACTOR
 #: REQ_ACTOR
 msgid "These requirements apply to the actor"
-msgstr "Ces exigences s'appliquent à l'acteur"
+msgstr "Ces exigences s''appliquent à l''acteur"
 
 # REQ_DERIVE
 #: REQ_DERIVE
@@ -2873,7 +2873,7 @@ msgstr "Dérive de :"
 # REQ_FOLLOWING_ACTOR
 #: REQ_FOLLOWING_ACTOR
 msgid "These requirements apply to the following actors:"
-msgstr "Ces exigences s'appliquent aux acteurs suivants :"
+msgstr "Ces exigences s''appliquent aux acteurs suivants :"
 
 # REQ_FOLLOWING_REQ
 #: REQ_FOLLOWING_REQ
@@ -2984,7 +2984,7 @@ msgstr "**TOUTES** les extensions"
 # SDR_ANY_ORDER
 #: SDR_ANY_ORDER
 msgid "// sliced by {0} in any order"
-msgstr "// découpé (slicé) par {0} dans n'importe quel ordre"
+msgstr "// découpé (slicé) par {0} dans n''importe quel ordre"
 
 # SDR_BP
 #: SDR_BP
@@ -3009,7 +3009,7 @@ msgstr "Aucun changement"
 # SDR_CLICK_COPY
 #: SDR_CLICK_COPY
 msgid "Click to copy URL"
-msgstr "Cliquer pour copier l'URL"
+msgstr "Cliquer pour copier l''URL"
 
 # SDR_CODE_FROM
 #: SDR_CODE_FROM
@@ -3044,7 +3044,7 @@ msgstr "La définition logique du jeu de valeurs a changé"
 # SDR_CONT_CH_NO
 #: SDR_CONT_CH_NO
 msgid "Unable to evaluate changes to content"
-msgstr "Impossible d'évaluer les changements de contenu"
+msgstr "Impossible d''évaluer les changements de contenu"
 
 # SDR_DEFN_CH_DET_CS
 #: SDR_DEFN_CH_DET_CS
@@ -3066,7 +3066,7 @@ msgstr "Une ou plusieurs définitions/affichages textuels ont changé"
 # SDR_DEFN_CH_NO
 #: SDR_DEFN_CH_NO
 msgid "Unable to evaluate changes to definitions"
-msgstr "Impossible d'évaluer les changements de définitions"
+msgstr "Impossible d''évaluer les changements de définitions"
 
 # SDR_DERIVED
 #: SDR_DERIVED
@@ -3076,7 +3076,7 @@ msgstr "Dérivé de ce {0}"
 # SDR_DRAFT
 #: SDR_DRAFT
 msgid "This is an draft extension definition; the committee is seeking implementation feedback, and the definition or contents of the extension may change in future versions"
-msgstr "Ceci est une définition d'extension en ébauche ; le comité recherche des retours d'implémentation, et la définition ou le contenu de l'extension peut changer dans les versions futures"
+msgstr "Ceci est une définition d''extension en ébauche ; le comité recherche des retours d''implémentation, et la définition ou le contenu de l''extension peut changer dans les versions futures"
 
 # SDR_DRAW_IN
 #: SDR_DRAW_IN
@@ -3091,7 +3091,7 @@ msgstr "Exemples pour ce/t/te {0}"
 # SDR_EXPERIMENTAL
 #: SDR_EXPERIMENTAL
 msgid "This is an experimental extension definition; the definition is intended for testing purposes, education or evaluation, and the definition is not anticipated to be matured to a point where it is intended for genuine usage."
-msgstr "Ceci est une définition d'extension expérimentale ; la définition est destinée à des fins de test, d'éducation ou d'évaluation, et ne devrait pas atteindre un niveau de maturité permettant une utilisation réelle."
+msgstr "Ceci est une définition d''extension expérimentale ; la définition est destinée à des fins de test, d''éducation ou d''évaluation, et ne devrait pas atteindre un niveau de maturité permettant une utilisation réelle."
 
 # SDR_EXTENSION_SUMMARY
 #: SDR_EXTENSION_SUMMARY
@@ -3111,17 +3111,17 @@ msgstr "Cette extension ne précise pas sur quels éléments elle doit être uti
 # SDR_EXT_CHANGED
 #: SDR_EXT_CHANGED
 msgid "The extension is represented a little differently in {0}"
-msgstr "L'extension est représentée un peu différemment dans {0}"
+msgstr "L''extension est représentée un peu différemment dans {0}"
 
 # SDR_EXT_CTXT_PATH
 #: SDR_EXT_CTXT_PATH
 msgid "In addition, the extension can only be used when this FHIRPath expression is true"
-msgstr "De plus, l'extension ne peut être utilisée que lorsque cette expression FHIRPath est vraie"
+msgstr "De plus, l''extension ne peut être utilisée que lorsque cette expression FHIRPath est vraie"
 
 # SDR_EXT_CTXT_PATHS
 #: SDR_EXT_CTXT_PATHS
 msgid "In addition, the extension can only be used when these FHIRPath expressions are true"
-msgstr "De plus, l'extension ne peut être utilisée que lorsque ces expressions FHIRPath sont vraies"
+msgstr "De plus, l''extension ne peut être utilisée que lorsque ces expressions FHIRPath sont vraies"
 
 # SDR_EXT_DEPR
 #: SDR_EXT_DEPR
@@ -3136,7 +3136,7 @@ msgstr "Cette extension peut être utilisée sur les éléments suivants"
 # SDR_EXT_ELEM_ID
 #: SDR_EXT_ELEM_ID
 msgid "Element ID"
-msgstr "ID d'élément"
+msgstr "ID d''élément"
 
 # SDR_EXT_EXT
 #: SDR_EXT_EXT
@@ -3158,7 +3158,7 @@ msgstr "Chemin"
 # SDR_EXT_UNCHANGED
 #: SDR_EXT_UNCHANGED
 msgid "The extension is unchanged in {0}"
-msgstr "L'extension est inchangée dans {0}"
+msgstr "L''extension est inchangée dans {0}"
 
 # SDR_EXT_VER_PFX
 #: SDR_EXT_VER_PFX
@@ -3194,7 +3194,7 @@ msgstr "ici"
 # SDR_GUIDANCE_PFX
 #: SDR_GUIDANCE_PFX
 msgid "Guidance on how to interpret the contents of this table can be found"
-msgstr "Des conseils sur l'interprétation du contenu de ce tableau peuvent être trouvés"
+msgstr "Des conseils sur l''interprétation du contenu de ce tableau peuvent être trouvés"
 
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
@@ -3210,17 +3210,17 @@ msgstr "Imposer ce profil {0}"
 # SDR_INTRP_CH_DET_VS
 #: SDR_INTRP_CH_DET_VS
 msgid "The expansion has changed"
-msgstr "L'expansion a changé"
+msgstr "L''expansion a changé"
 
 # SDR_INTRP_CH_NO_VS
 #: SDR_INTRP_CH_NO_VS
 msgid "Unable to evaluate changes to the expansion"
-msgstr "Impossible d'évaluer les changements de l'expansion"
+msgstr "Impossible d''évaluer les changements de l''expansion"
 
 # SDR_LIMITED_ONE
 #: SDR_LIMITED_ONE
 msgid "This element is an array in the base standard, but the profile only allows one element"
-msgstr "Cet élément est un tableau dans le standard de base, mais le profil n'autorise qu'un seul élément"
+msgstr "Cet élément est un tableau dans le standard de base, mais le profil n''autorise qu''un seul élément"
 
 # SDR_META_CH_DET
 #: SDR_META_CH_DET
@@ -3230,17 +3230,17 @@ msgstr "Les métadonnées de la ressource ont changé ({0})"
 # SDR_META_CH_NO
 #: SDR_META_CH_NO
 msgid "Unable to evaluate changes to metadata"
-msgstr "Impossible d'évaluer les changements de métadonnées"
+msgstr "Impossible d''évaluer les changements de métadonnées"
 
 # SDR_MOD
 #: SDR_MOD
 msgid "(this element modifies the meaning of other elements)"
-msgstr "(cet élément modifie la signification d'autres éléments)"
+msgstr "(cet élément modifie la signification d''autres éléments)"
 
 # SDR_MOD_SUPP
 #: SDR_MOD_SUPP
 msgid "(this element modifies the meaning of other elements, and must be supported)"
-msgstr "(cet élément modifie la signification d'autres éléments, et doit être pris en charge)"
+msgstr "(cet élément modifie la signification d''autres éléments, et doit être pris en charge)"
 
 # SDR_MULTIPLE_PROFILES
 #: SDR_MULTIPLE_PROFILES
@@ -3265,12 +3265,12 @@ msgstr "Pas encore géré : extension complexe ''{0}''"
 # SDR_NOT_USED
 #: SDR_NOT_USED
 msgid "This {0} is not used by any profiles in this Implementation Guide"
-msgstr "Ce {0} n'est utilisé par aucun autre profil dans ce guide d'implémentation"
+msgstr "Ce {0} n''est utilisé par aucun autre profil dans ce guide d''implémentation"
 
 # SDR_OFF_URL
 #: SDR_OFF_URL
 msgid "The official URL for this profile is"
-msgstr "L'URL officielle de ce profil est"
+msgstr "L''URL officielle de ce profil est"
 
 # SDR_ONE_OF
 #: SDR_ONE_OF
@@ -3311,7 +3311,7 @@ msgstr "Paramètres de recherche utilisant ce {0}"
 # SDR_SORTED
 #: SDR_SORTED
 msgid "// sliced by {0} in the specified order {1}"
-msgstr "// découpé par {0} dans l'ordre spécifié {1}"
+msgstr "// découpé par {0} dans l''ordre spécifié {1}"
 
 # SDR_SRC_FHIR
 #: SDR_SRC_FHIR
@@ -3346,7 +3346,7 @@ msgstr "Utilise ce/t/te {0}"
 # SDR_VER_BEF
 #: SDR_VER_BEF
 msgid "For versions until {0}"
-msgstr "Pour les versions jusqu'à {0}"
+msgstr "Pour les versions jusqu''à {0}"
 
 # SDR_VER_FOR
 #: SDR_VER_FOR
@@ -3395,7 +3395,7 @@ msgstr ""
 # SDR_VER_TO_PFX
 #: SDR_VER_TO_PFX
 msgid "FHIR versions up to"
-msgstr "Versions FHIR jusqu'à"
+msgstr "Versions FHIR jusqu''à"
 
 # SDR_VER_TO_SFX
 #: SDR_VER_TO_SFX
@@ -3444,7 +3444,7 @@ msgstr "Profil de modèle logique"
 # SDT_OBLIGATION_PROFILE
 #: SDT_OBLIGATION_PROFILE
 msgid "Obligation Profile"
-msgstr "Profil d'Obligation"
+msgstr "Profil d''obligation"
 
 # SDT_ORIGINAL_SOURCE
 #: SDT_ORIGINAL_SOURCE
@@ -3481,7 +3481,7 @@ msgstr "Card. G"
 # SD_COMP_HEAD_CARD_L_DESC
 #: SD_COMP_HEAD_CARD_L_DESC
 msgid "Minimum and Maximum # of times the element can appear in the instance - Left Structure"
-msgstr "Nombre minimum et maximum de fois que l'élément peut apparaître dans l'instance - Structure de gauche"
+msgstr "Nombre minimum et maximum de fois que l''élément peut apparaître dans l''instance - Structure de gauche"
 
 # SD_COMP_HEAD_CARD_R
 #: SD_COMP_HEAD_CARD_R
@@ -3491,7 +3491,7 @@ msgstr "Card. D"
 # SD_COMP_HEAD_CARD_R_DESC
 #: SD_COMP_HEAD_CARD_R_DESC
 msgid "Minimum and Maximum # of times the element can appear in the instance - Right Structure"
-msgstr "Nombre minimum et maximum de fois que l'élément peut apparaître dans l'instance - Structure de droite"
+msgstr "Nombre minimum et maximum de fois que l''élément peut apparaître dans l''instance - Structure de droite"
 
 # SD_COMP_HEAD_COMP_DESC
 #: SD_COMP_HEAD_COMP_DESC
@@ -3506,7 +3506,7 @@ msgstr "Description et contraintes G"
 # SD_COMP_HEAD_DESC_L_DESC
 #: SD_COMP_HEAD_DESC_L_DESC
 msgid "Additional information about the element - Left Structure"
-msgstr "Informations supplémentaires sur l'élément - Structure de gauche"
+msgstr "Informations supplémentaires sur l''élément - Structure de gauche"
 
 # SD_COMP_HEAD_DESC_R
 #: SD_COMP_HEAD_DESC_R
@@ -3516,7 +3516,7 @@ msgstr "Description et contraintes D"
 # SD_COMP_HEAD_DESC_R_DESC
 #: SD_COMP_HEAD_DESC_R_DESC
 msgid "Additional information about the element - Right Structure"
-msgstr "Informations supplémentaires sur l'élément - Structure de droite"
+msgstr "Informations supplémentaires sur l''élément - Structure de droite"
 
 # SD_COMP_HEAD_FLAGS_L
 #: SD_COMP_HEAD_FLAGS_L
@@ -3526,7 +3526,7 @@ msgstr "Flags G"
 # SD_COMP_HEAD_FLAGS_L_DESC
 #: SD_COMP_HEAD_FLAGS_L_DESC
 msgid "Information about the use of the element - Left Structure"
-msgstr "Informations sur l'utilisation de l'élément - Structure de gauche"
+msgstr "Informations sur l''utilisation de l''élément - Structure de gauche"
 
 # SD_COMP_HEAD_FLAGS_R
 #: SD_COMP_HEAD_FLAGS_R
@@ -3536,7 +3536,7 @@ msgstr "Flags D"
 # SD_COMP_HEAD_FLAGS_R_DESC
 #: SD_COMP_HEAD_FLAGS_R_DESC
 msgid "Information about the use of the element - Right Structure"
-msgstr "Informations sur l'utilisation de l'élément - Structure de droite"
+msgstr "Informations sur l''utilisation de l''élément - Structure de droite"
 
 # SD_COMP_HEAD_TYPE_L
 #: SD_COMP_HEAD_TYPE_L
@@ -3546,7 +3546,7 @@ msgstr "Type G"
 # SD_COMP_HEAD_TYPE_L_DESC
 #: SD_COMP_HEAD_TYPE_L_DESC
 msgid "Reference to the type of the element - Left Structure"
-msgstr "Référence au type de l'élément - Structure de gauche"
+msgstr "Référence au type de l''élément - Structure de gauche"
 
 # SD_COMP_HEAD_TYPE_R
 #: SD_COMP_HEAD_TYPE_R
@@ -3556,7 +3556,7 @@ msgstr "Type D"
 # SD_COMP_HEAD_TYPE_R_DESC
 #: SD_COMP_HEAD_TYPE_R_DESC
 msgid "Reference to the type of the element - Right Structure"
-msgstr "Référence au type de l'élément - Structure de droite"
+msgstr "Référence au type de l''élément - Structure de droite"
 
 # SD_DOCO
 #: SD_DOCO
@@ -3566,7 +3566,7 @@ msgstr "Documentation pour ce format"
 # SD_GRID_HEAD_CARD_DESC
 #: SD_GRID_HEAD_CARD_DESC
 msgid "Minimum and Maximum # of times the element can appear in the instance. Super-scripts indicate additional constraints on appearance"
-msgstr "Nombre minimum et maximum de fois que l'élément peut apparaître dans l'instance. Les exposants indiquent des contraintes supplémentaires sur l'apparence"
+msgstr "Nombre minimum et maximum de fois que l''élément peut apparaître dans l''instance. Les exposants indiquent des contraintes supplémentaires sur l''apparence"
 
 # SD_GRID_HEAD_DESC
 #: SD_GRID_HEAD_DESC
@@ -3576,33 +3576,33 @@ msgstr "Contraintes et utilisation"
 # SD_GRID_HEAD_DESC_DESC
 #: SD_GRID_HEAD_DESC_DESC
 msgid "Fixed values, length limits, vocabulary bindings and other usage notes"
-msgstr "Valeurs fixes, limites de longueur, liaisons (bindings) de vocabulaire et autres notes d'utilisation"
+msgstr "Valeurs fixes, limites de longueur, liaisons (bindings) de vocabulaire et autres notes d''utilisation"
 
 # SD_GRID_HEAD_NAME_DESC
 #: SD_GRID_HEAD_NAME_DESC
 msgid "The name of the element (Slice name in brackets).  Mouse-over provides definition"
-msgstr "Le nom de l'élément (nom de slice entre crochets). Le survol fournit la définition"
+msgstr "Le nom de l''élément (nom de slice entre crochets). Le survol fournit la définition"
 
 # SD_GRID_HEAD_TYPE_DESC
 #: SD_GRID_HEAD_TYPE_DESC
 msgid "Reference to the type of the element"
-msgstr "Référence au type de l'élément"
+msgstr "Référence au type de l''élément"
 
 # SD_HEAD_CARD_DESC
 #: SD_HEAD_CARD_DESC
 msgctxt "SD_HEAD_CARD_DESC"
 msgid "Minimum and Maximum # of times the element can appear in the instance"
-msgstr "Nombre minimum et maximum de fois que l'élément peut apparaître dans l'instance"
+msgstr "Nombre minimum et maximum de fois que l''élément peut apparaître dans l''instance"
 
 # SD_HEAD_DESC_DESC
 #: SD_HEAD_DESC_DESC
 msgid "Additional information about the element"
-msgstr "Informations supplémentaires sur l'élément"
+msgstr "Informations supplémentaires sur l''élément"
 
 # SD_HEAD_FLAGS_DESC
 #: SD_HEAD_FLAGS_DESC
 msgid "Information about the use of the element"
-msgstr "Informations sur l'utilisation de l'élément"
+msgstr "Informations sur l''utilisation de l''élément"
 
 # SD_LEGEND
 #: SD_LEGEND
@@ -3627,7 +3627,7 @@ msgstr "Obligatoire : {0} {1}"
 # SD_SUMMARY_MISSING_EXTENSION
 #: SD_SUMMARY_MISSING_EXTENSION
 msgid "Unable to summarise extension {0} (no extension found)"
-msgstr "Impossible de résumer l'extension {0} (extension non trouvée)"
+msgstr "Impossible de résumer l''extension {0} (extension non trouvée)"
 
 # SD_SUMMARY_MISSING_PROFILE
 #: SD_SUMMARY_MISSING_PROFILE
@@ -3699,7 +3699,7 @@ msgstr "Multiples"
 # SEARCH_PAR_MULTIPLE_AND_APPEAR
 #: SEARCH_PAR_MULTIPLE_AND_APPEAR
 msgid "multipleAnd: The parameter may only appear once"
-msgstr "multipleAnd : Le paramètre ne peut apparaître qu'une fois"
+msgstr "multipleAnd : Le paramètre ne peut apparaître qu''une fois"
 
 # SEARCH_PAR_MULTIPLE_AND_REPEAT
 #: SEARCH_PAR_MULTIPLE_AND_REPEAT
@@ -3709,7 +3709,7 @@ msgstr "multipleAnd : Le paramètre peut se répéter pour spécifier plusieurs 
 # SEARCH_PAR_MULTIPLE_AND_SERVER
 #: SEARCH_PAR_MULTIPLE_AND_SERVER
 msgid "multipleAnd: It''s up to the server whether the parameter may repeat in order to specify multiple values that must all be true"
-msgstr "multipleAnd : C'est au serveur de décider si le paramètre peut se répéter pour spécifier plusieurs valeurs qui doivent toutes être vraies"
+msgstr "multipleAnd : C''est au serveur de décider si le paramètre peut se répéter pour spécifier plusieurs valeurs qui doivent toutes être vraies"
 
 # SEARCH_PAR_MULTIPLE_OR_MULTIPLE
 #: SEARCH_PAR_MULTIPLE_OR_MULTIPLE
@@ -3719,12 +3719,12 @@ msgstr "multipleOr : Le paramètre peut avoir plusieurs valeurs (séparées par 
 # SEARCH_PAR_MULTIPLE_OR_ONE
 #: SEARCH_PAR_MULTIPLE_OR_ONE
 msgid "multipleOr: The parameter may only have one value (no comma separators)"
-msgstr "multipleOr : Le paramètre ne peut avoir qu'une seule valeur (pas de séparateurs virgules)"
+msgstr "multipleOr : Le paramètre ne peut avoir qu''une seule valeur (pas de séparateurs virgules)"
 
 # SEARCH_PAR_MULTIPLE_OR_SERVER
 #: SEARCH_PAR_MULTIPLE_OR_SERVER
 msgid "multipleOr: It''s up to the server whether the parameter can have multiple values (separated by comma) where at least one must be true"
-msgstr "multipleOr : C'est au serveur de décider si le paramètre peut avoir plusieurs valeurs (séparées par des virgules) dont au moins une doit être vraie"
+msgstr "multipleOr : C''est au serveur de décider si le paramètre peut avoir plusieurs valeurs (séparées par des virgules) dont au moins une doit être vraie"
 
 # SEARCH_PAR_NONE
 #: SEARCH_PAR_NONE
@@ -3750,7 +3750,7 @@ msgstr "Toutes les ressources"
 # STATUS_MSG_AUTOBUILD
 #: STATUS_MSG_AUTOBUILD
 msgid "{0}, published by {1}. This guide is not an authorized publication; it is the continuous build for version {2}  built by the FHIR (HL7&reg; FHIR&reg; Standard) CI Build. This version is based on the current content of <a href=''{3}''>{3}</a> and changes regularly. See the <a href=''{4}/history.html''>Directory of published versions</a>"
-msgstr "{0}, publié par {1}. Ce guide n'est pas une publication autorisée ; c'est la version en intégration continue pour la version {2} construite par le CI Build FHIR (HL7® FHIR® Standard). Cette version est basée sur le contenu actuel de <a href=''{3}''>{3}</a> et change régulièrement. Voir le <a href=''{4}/history.html''>répertoire des versions publiées</a>"
+msgstr "{0}, publié par {1}. Ce guide n''est pas une publication autorisée ; C''est la version en intégration continue pour la version {2} construite par le CI Build FHIR (HL7® FHIR® Standard). Cette version est basée sur le contenu actuel de <a href=''{3}''>{3}</a> et change régulièrement. Voir le <a href=''{4}/history.html''>répertoire des versions publiées</a>"
 
 # STATUS_MSG_LOCAL_BUILD
 #: STATUS_MSG_LOCAL_BUILD
@@ -3760,7 +3760,7 @@ msgstr "{0} - version de développement local (intégration continue v{1}) const
 # STATUS_MSG_PUBLICATION_HOLDER
 #: STATUS_MSG_PUBLICATION_HOLDER
 msgid "Publication Build: This will be filled in by the publication tooling"
-msgstr "Publication Build : Ceci sera rempli par l'outil de publication"
+msgstr "Publication Build : Ceci sera rempli par l''outil de publication"
 
 # STRUC_DEF_ABSTRACT
 #: STRUC_DEF_ABSTRACT
@@ -3770,7 +3770,7 @@ msgstr "Ceci est un élément abstrait"
 # STRUC_DEF_ACT
 #: STRUC_DEF_ACT
 msgid "Obligations that apply to the actor {0}"
-msgstr "Obligations qui s'appliquent à l'acteur {0}"
+msgstr "Obligations qui s''appliquent à l''acteur {0}"
 
 # STRUC_DEF_AFFECT_CONSTRAINTS
 #: STRUC_DEF_AFFECT_CONSTRAINTS
@@ -3861,7 +3861,7 @@ msgstr "Ce jeu de valeurs est un candidat pour remplacer le jeu de valeurs de co
 # STRUC_DEF_CANNOT_TARGET
 #: STRUC_DEF_CANNOT_TARGET
 msgid "Instances of this logical model cannot be the target of a Reference"
-msgstr "Les instances de ce modèle logique ne peuvent pas être la cible d'une référence"
+msgstr "Les instances de ce modèle logique ne peuvent pas être la cible d''une référence"
 
 # STRUC_DEF_CANT_FIND
 #: STRUC_DEF_CANT_FIND
@@ -3871,7 +3871,7 @@ msgstr "getElementByName : impossible de trouver {0} dans {1} depuis {2}"
 # STRUC_DEF_CAN_TARGET
 #: STRUC_DEF_CAN_TARGET
 msgid "Instances of this logical model can be the target of a Reference"
-msgstr "Les instances de ce modèle logique peuvent être la cible d'une référence"
+msgstr "Les instances de ce modèle logique peuvent être la cible d''une référence"
 
 # STRUC_DEF_CAP
 #: STRUC_DEF_CAP
@@ -3891,7 +3891,7 @@ msgstr "Enfant"
 # STRUC_DEF_CHOICE
 #: STRUC_DEF_CHOICE
 msgid "(Choice of one)"
-msgstr "(Choix d'un)"
+msgstr "(Choix d''un)"
 
 # STRUC_DEF_CHOICE_DATA_TYPE
 #: STRUC_DEF_CHOICE_DATA_TYPE
@@ -3931,7 +3931,7 @@ msgstr "(Complexe)"
 # STRUC_DEF_COMP_DOC
 #: STRUC_DEF_COMP_DOC
 msgid "This value set is a component of the base value set. Usually this is called out so that documentation can be written about a portion of the value set"
-msgstr "Ce jeu de valeurs est un composant du jeu de valeurs de base. Cela est généralement indiqué pour qu'une documentation puisse être écrite sur une portion du jeu de valeurs"
+msgstr "Ce jeu de valeurs est un composant du jeu de valeurs de base. Cela est généralement indiqué pour qu''une documentation puisse être écrite sur une portion du jeu de valeurs"
 
 # STRUC_DEF_COMP_EX
 #: STRUC_DEF_COMP_EX
@@ -3982,7 +3982,7 @@ msgstr "Cliquer pour copier en tant que Coding"
 # STRUC_DEF_COPY_URL
 #: STRUC_DEF_COPY_URL
 msgid "Click to Copy URL"
-msgstr "Cliquer pour copier l'URL"
+msgstr "Cliquer pour copier l''URL"
 
 # STRUC_DEF_CURR
 #: STRUC_DEF_CURR
@@ -3993,7 +3993,7 @@ msgstr "Actuel"
 # STRUC_DEF_CURR_RULE
 #: STRUC_DEF_CURR_RULE
 msgid "New records are required to use this value set, but legacy records may use other codes. The definition of ''new record'' is difficult, since systems often create new records based on pre-existing data. Usually ''current'' bindings are mandated by an external authority that makes clear rules around this"
-msgstr "Les nouveaux enregistrements doivent utiliser ce jeu de valeurs, mais les enregistrements existants peuvent utiliser d'autres codes. La définition de ''nouvel enregistrement'' est difficile, car les systèmes créent souvent de nouveaux enregistrements basés sur des données préexistantes. Généralement, les bindings ''actuels'' sont imposées par une autorité externe qui établit des règles claires à ce sujet"
+msgstr "Les nouveaux enregistrements doivent utiliser ce jeu de valeurs, mais les enregistrements existants peuvent utiliser d''autres codes. La définition de ''nouvel enregistrement'' est difficile, car les systèmes créent souvent de nouveaux enregistrements basés sur des données préexistantes. Généralement, les bindings ''actuels'' sont imposées par une autorité externe qui établit des règles claires à ce sujet"
 
 # STRUC_DEF_DATE
 #: STRUC_DEF_DATE
@@ -4114,7 +4114,7 @@ msgstr "Cet élément peut être étendu par des éléments JSON nommés"
 # STRUC_DEF_EXT_STYLE
 #: STRUC_DEF_EXT_STYLE
 msgid "Extension Style"
-msgstr "Style d'extension"
+msgstr "Style d''extension"
 
 # STRUC_DEF_EX_CODE
 #: STRUC_DEF_EX_CODE
@@ -4124,17 +4124,17 @@ msgstr "Pour des exemples de codes, voir"
 # STRUC_DEF_EX_DESC
 #: STRUC_DEF_EX_DESC
 msgid "Instances are not expected or even encouraged to draw from the specified value set. The value set merely provides examples of the types of concepts intended to be included."
-msgstr "Il n'est pas attendu, ni même encouragé, que les instances s'appuient sur les jeux de valeurs spécifiés. Le jeu de valeurs fournit simplement des exemples des types de concepts destinés à être inclus"
+msgstr "Il n''est pas attendu, ni même encouragé, que les instances s''appuient sur les jeux de valeurs spécifiés. Le jeu de valeurs fournit simplement des exemples des types de concepts destinés à être inclus"
 
 # STRUC_DEF_EX_TYPE
 #: STRUC_DEF_EX_TYPE
 msgid "(Extension Type:"
-msgstr "(Type d'extension :"
+msgstr "(Type d''extension :"
 
 # STRUC_DEF_EX_URL
 #: STRUC_DEF_EX_URL
 msgid "Extension URL = {0}"
-msgstr "URL d'extension = {0}"
+msgstr "URL d''extension = {0}"
 
 # STRUC_DEF_FHIR
 #: STRUC_DEF_FHIR
@@ -4144,12 +4144,12 @@ msgstr "FHIR de base {0}"
 # STRUC_DEF_FHIR_EXCEP
 #: STRUC_DEF_FHIR_EXCEP
 msgid "Unable to retrieve StructureDefinition with URL {0}"
-msgstr "Impossible de récupérer la StructureDefinition avec l'URL {0}"
+msgstr "Impossible de récupérer la StructureDefinition avec l''URL {0}"
 
 # STRUC_DEF_FII
 #: STRUC_DEF_FII
 msgid "Formal Invariant Identifier"
-msgstr "Identifiant d'invariant formel"
+msgstr "Identifiant d''invariant formel"
 
 # STRUC_DEF_FIXED
 #: STRUC_DEF_FIXED
@@ -4169,7 +4169,7 @@ msgstr "Pour les codes, voir"
 # STRUC_DEF_FURTHER_INFO
 #: STRUC_DEF_FURTHER_INFO
 msgid "for further information about how to use [x]"
-msgstr "pour plus d'informations sur l'utilisation de [x]"
+msgstr "pour plus d''informations sur l''utilisation de [x]"
 
 # STRUC_DEF_GRADE
 #: STRUC_DEF_GRADE
@@ -4189,17 +4189,17 @@ msgstr "Attente d'ID"
 # STRUC_DEF_ID_IS
 #: STRUC_DEF_ID_IS
 msgid "Id may or not be present (this is the default for elements but not resources)"
-msgstr "L'id peut être présent ou non (c'est la pratique par défaut pour les éléments mais pas les ressources)"
+msgstr "l''id peut être présent ou non (C''est la pratique par défaut pour les éléments mais pas les ressources)"
 
 # STRUC_DEF_ID_MAY
 #: STRUC_DEF_ID_MAY
 msgid "Id is required to be present (this is the default for resources but not elements)"
-msgstr "L'id doit être présent (c'est la pratique par défaut pour les ressources mais pas les éléments)"
+msgstr "l''id doit être présent (C''est la pratique par défaut pour les ressources mais pas les éléments)"
 
 # STRUC_DEF_ID_NOT_ALLOW
 #: STRUC_DEF_ID_NOT_ALLOW
 msgid "An id is not allowed in this context"
-msgstr "Un id n'est pas autorisé dans ce contexte"
+msgstr "Un id n''est pas autorisé dans ce contexte"
 
 # STRUC_DEF_IF
 #: STRUC_DEF_IF
@@ -4219,7 +4219,7 @@ msgstr "Impose le profil"
 # STRUC_DEF_INFERRED_JSON
 #: STRUC_DEF_INFERRED_JSON
 msgid "The type of this element is inferred from the JSON type in the instance"
-msgstr "Le type de cet élément est déduit du type JSON dans l'instance"
+msgstr "Le type de cet élément est déduit du type JSON dans l''instance"
 
 # STRUC_DEF_INVAR
 #: STRUC_DEF_INVAR
@@ -4234,7 +4234,7 @@ msgstr "Cet élément est affecté par les invariants suivants :"
 # STRUC_DEF_JSON_ARRAY
 #: STRUC_DEF_JSON_ARRAY
 msgid "JSON: This element may be present as a JSON Array even when there are no items in the instance"
-msgstr "JSON : Cet élément peut être présent comme tableau JSON même lorsqu'il n'y a aucun élément dans l'instance"
+msgstr "JSON : Cet élément peut être présent comme tableau JSON même lorsqu''il n''y a aucun élément dans l''instance"
 
 # STRUC_DEF_JSON_CAN_NAME
 #: STRUC_DEF_JSON_CAN_NAME
@@ -4264,22 +4264,22 @@ msgstr "JSON : Si"
 # STRUC_DEF_JSON_INFERRED
 #: STRUC_DEF_JSON_INFERRED
 msgid "JSON: The type of this element is inferred from the JSON type in the instance"
-msgstr "JSON : Le type de cet élément est déduit du type JSON dans l'instance"
+msgstr "JSON : Le type de cet élément est déduit du type JSON dans l''instance"
 
 # STRUC_DEF_JSON_IS
 #: STRUC_DEF_JSON_IS
 msgid "This element is present as a JSON Array even when there are no items in the instance"
-msgstr "Cet élément est présent comme tableau JSON même lorsqu'il n'y a aucun élément dans l'instance"
+msgstr "Cet élément est présent comme tableau JSON même lorsqu''il n''y a aucun élément dans l''instance"
 
 # STRUC_DEF_JSON_MAY
 #: STRUC_DEF_JSON_MAY
 msgid "This element may be present as a JSON Array even when there are no items in the instance"
-msgstr "Cet élément peut être présent comme tableau JSON même lorsqu'il n'y a aucun élément dans l'instance"
+msgstr "Cet élément peut être présent comme tableau JSON même lorsqu''il n''y a aucun élément dans l''instance"
 
 # STRUC_DEF_JSON_MAY_PRESENT
 #: STRUC_DEF_JSON_MAY_PRESENT
 msgid "The JSON Array for this property may be present even when there are no items in the instance (e.g. may be present as an empty array)"
-msgstr "Le tableau JSON pour cette propriété peut être présent même lorsqu'il n'y a aucun élément dans l'instance (par ex. peut être présent comme tableau vide)"
+msgstr "Le tableau JSON pour cette propriété peut être présent même lorsqu''il n''y a aucun élément dans l''instance (par ex. peut être présent comme tableau vide)"
 
 # STRUC_DEF_JSON_NAME
 #: STRUC_DEF_JSON_NAME
@@ -4289,7 +4289,7 @@ msgstr "Nom de propriété JSON"
 # STRUC_DEF_JSON_NOT_PRESENT
 #: STRUC_DEF_JSON_NOT_PRESENT
 msgid "The JSON Array for this property is not present when there are no items in the instance (e.g. never as an empty array)"
-msgstr "Le tableau JSON pour cette propriété n'est pas présent lorsqu'il n'y a aucun élément dans l'instance (par ex. jamais comme tableau vide)"
+msgstr "Le tableau JSON pour cette propriété n''est pas présent lorsqu''il n''y a aucun élément dans l''instance (par ex. jamais comme tableau vide)"
 
 # STRUC_DEF_JSON_NULL
 #: STRUC_DEF_JSON_NULL
@@ -4299,7 +4299,7 @@ msgstr "JSON : Cet objet peut être représenté comme null dans la structure JS
 # STRUC_DEF_JSON_PRESENT
 #: STRUC_DEF_JSON_PRESENT
 msgid "The JSON Array for this property is present even when there are no items in the instance (e.g. as an empty array)"
-msgstr "Le tableau JSON pour cette propriété est présent même lorsqu'il n'y a aucun élément dans l'instance (par ex. comme tableau vide)"
+msgstr "Le tableau JSON pour cette propriété est présent même lorsqu''il n''y a aucun élément dans l''instance (par ex. comme tableau vide)"
 
 # STRUC_DEF_JSON_PROPERTY_NAME
 #: STRUC_DEF_JSON_PROPERTY_NAME
@@ -4356,7 +4356,7 @@ msgstr "Maximum"
 #: STRUC_DEF_MAX_MIN
 msgctxt "STRUC_DEF_MAX_MIN"
 msgid "Minimum and Maximum # of times the element can appear in the instance"
-msgstr "Nombre minimum et maximum de fois que l'élément peut apparaître dans l'instance"
+msgstr "Nombre minimum et maximum de fois que l''élément peut apparaître dans l''instance"
 
 # STRUC_DEF_MAX_VALUE
 #: STRUC_DEF_MAX_VALUE
@@ -4416,7 +4416,7 @@ msgstr "Types qui doivent être pris en charge (Must Support)"
 # STRUC_DEF_NAMESPACE
 #: STRUC_DEF_NAMESPACE
 msgid "In the XML format, this property has the namespace"
-msgstr "Dans le format XML, cette propriété a l'espace de noms (namespace)"
+msgstr "Dans le format XML, cette propriété a l''espace de noms (namespace)"
 
 # STRUC_DEF_NOTE_X
 #: STRUC_DEF_NOTE_X
@@ -4426,7 +4426,7 @@ msgstr "Note [x]"
 # STRUC_DEF_NOT_MARK
 #: STRUC_DEF_NOT_MARK
 msgid "Instances of this logical model are not marked to be the target of a Reference"
-msgstr "Les instances de ce modèle logique ne sont pas marquées pour être la cible d'une référence"
+msgstr "Les instances de ce modèle logique ne sont pas marquées pour être la cible d''une référence"
 
 # STRUC_DEF_NO_DESCRIM
 #: STRUC_DEF_NO_DESCRIM
@@ -4446,7 +4446,7 @@ msgstr "Aucune règle de prise en charge obligatoire concernant le choix des typ
 # STRUC_DEF_NO_SUMMARY
 #: STRUC_DEF_NO_SUMMARY
 msgid "No Summary, as this profile has no differential"
-msgstr "Pas de résumé, car ce profil n'a pas de différentiel"
+msgstr "Pas de résumé, car ce profil n''a pas de différentiel"
 
 # STRUC_DEF_NULL_JSON
 #: STRUC_DEF_NULL_JSON
@@ -4461,12 +4461,12 @@ msgstr "Cet élément a des obligations"
 # STRUC_DEF_OBLIG_ADD
 #: STRUC_DEF_OBLIG_ADD
 msgid "This is an obligation profile that only contains obligations and additional bindings"
-msgstr "Ceci est un profil d'obligation qui ne contient que des obligations et des bindings supplémentaires"
+msgstr "Ceci est un profil d''obligation qui ne contient que des obligations et des bindings supplémentaires"
 
 # STRUC_DEF_OBLIG_ALL
 #: STRUC_DEF_OBLIG_ALL
 msgid "Obligations that apply to all actors"
-msgstr "Obligations qui s'appliquent à tous les acteurs"
+msgstr "Obligations qui s''appliquent à tous les acteurs"
 
 # STRUC_DEF_OBLIG_FROM
 #: STRUC_DEF_OBLIG_FROM
@@ -4481,7 +4481,7 @@ msgstr "Cet élément a des obligations et doit être pris en charge (Must Suppo
 # STRUC_DEF_ONE_OF
 #: STRUC_DEF_ONE_OF
 msgid "One of:"
-msgstr "L'un de :"
+msgstr "L''un de :"
 
 # STRUC_DEF_OPEN
 #: STRUC_DEF_OPEN
@@ -4542,7 +4542,7 @@ msgstr "Cet élément primitif peut être présent, absent ou remplacé par une 
 # STRUC_DEF_PRIM_TYPE_PRESENT
 #: STRUC_DEF_PRIM_TYPE_PRESENT
 msgid "This primitive type may be present, or absent if replaced by one of the following extensions:"
-msgstr "Ce type primitif peut être présent ou absent s'il est remplacé par l'une des extensions suivantes :"
+msgstr "Ce type primitif peut être présent ou absent s'il est remplacé par l''une des extensions suivantes :"
 
 # STRUC_DEF_PRIM_TYPE_VALUE
 #: STRUC_DEF_PRIM_TYPE_VALUE
@@ -4557,7 +4557,7 @@ msgstr "profilé par"
 # STRUC_DEF_PROFILE_BUILDS
 #: STRUC_DEF_PROFILE_BUILDS
 msgid "This profile builds on"
-msgstr "Ce profil s'appuie sur"
+msgstr "Ce profil s''appuie sur"
 
 # STRUC_DEF_PROF_COMP
 #: STRUC_DEF_PROF_COMP
@@ -4567,7 +4567,7 @@ msgstr "Ce profil est conforme au profil"
 # STRUC_DEF_PROF_REQ
 #: STRUC_DEF_PROF_REQ
 msgid "This profile also requires that the instance also conform this additional profile:"
-msgstr "Ce profil exige également que l'instance soit également conforme à ce profil supplémentaire :"
+msgstr "Ce profil exige également que l''instance soit également conforme à ce profil supplémentaire :"
 
 # STRUC_DEF_PROF_RES
 #: STRUC_DEF_PROF_RES
@@ -4592,7 +4592,7 @@ msgstr "Cette structure fait référence à ces extensions"
 # STRUC_DEF_REFER_PROFILE
 #: STRUC_DEF_REFER_PROFILE
 msgid "In this IG, the following structures refer to this profile:"
-msgstr "Dans ce guide d'implémentation, les structures suivantes font référence à ce profil :"
+msgstr "Dans ce guide d''implémentation, les structures suivantes font référence à ce profil :"
 
 # STRUC_DEF_REND_UNABLE_RES
 #: STRUC_DEF_REND_UNABLE_RES
@@ -4602,7 +4602,7 @@ msgstr "Impossible de résoudre la StructureDefinition {0} lors de la résolutio
 # STRUC_DEF_REPEAT
 #: STRUC_DEF_REPEAT
 msgid "This is a repeating choice group that does not appear directly in the instance"
-msgstr "Ceci est un groupe de choix répétitif qui n'apparaît pas directement dans l'instance"
+msgstr "Ceci est un groupe de choix répétitif qui n''apparaît pas directement dans l''instance"
 
 # STRUC_DEF_REPEAT_ELE
 #: STRUC_DEF_REPEAT_ELE
@@ -4672,7 +4672,7 @@ msgstr "Les codes DEVRAIENT (SHOULD) être pris de"
 # STRUC_DEF_SINGLE_JSON_OBJECTS
 #: STRUC_DEF_SINGLE_JSON_OBJECTS
 msgid "JSON: Represented as a single JSON Object with named properties using the value of the {0} child as the key"
-msgstr "JSON : Représenté comme un objet JSON unique avec des propriétés nommées utilisant la valeur de l'enfant {0} comme clé"
+msgstr "JSON : Représenté comme un objet JSON unique avec des propriétés nommées utilisant la valeur de l''enfant {0} comme clé"
 
 # STRUC_DEF_SLIC
 #: STRUC_DEF_SLIC
@@ -4803,7 +4803,7 @@ msgstr "IU"
 # STRUC_DEF_UI_CONT
 #: STRUC_DEF_UI_CONT
 msgid "This value set is provided for user look up in a given context. Typically, these valuesets only include a subset of codes relevant for input in a context"
-msgstr "Ce jeu de valeurs est fourni pour la consultation utilisateur dans un contexte donné. Typiquement, ces jeux de valeurs n'incluent qu'un sous-ensemble de codes pertinents pour la saisie dans un contexte"
+msgstr "Ce jeu de valeurs est fourni pour la consultation utilisateur dans un contexte donné. Typiquement, ces jeux de valeurs n'incluent qu''un sous-ensemble de codes pertinents pour la saisie dans un contexte"
 
 # STRUC_DEF_UNADORNED
 #: STRUC_DEF_UNADORNED
@@ -4813,7 +4813,7 @@ msgstr "Dans le format XML, cette propriété est représentée comme texte simp
 # STRUC_DEF_UNDEF_ACT
 #: STRUC_DEF_UNDEF_ACT
 msgid "Obligations that apply to the undefined actor {0}"
-msgstr "Obligations qui s'appliquent à l'acteur non défini {0}"
+msgstr "Obligations qui s''appliquent à l''acteur non défini {0}"
 
 # STRUC_DEF_UNKNOWN_APPROACH
 #: STRUC_DEF_UNKNOWN_APPROACH
@@ -4888,7 +4888,7 @@ msgstr "Dans le format XML, cette propriété est représentée comme attribut."
 # STRUC_DEF_XML_ELE
 #: STRUC_DEF_XML_ELE
 msgid "XML Element Name"
-msgstr "Nom d'élément XML"
+msgstr "Nom d''élément XML"
 
 # STRUC_DEF_XML_FORM
 #: STRUC_DEF_XML_FORM
@@ -5204,12 +5204,12 @@ msgstr "codes provenant de"
 # VALUE_SET_CODE_ITEM
 #: VALUE_SET_CODE_ITEM
 msgid "The code for the item"
-msgstr "Le code pour l'object"
+msgstr "Le code pour l''object"
 
 # VALUE_SET_CODE_SELEC
 #: VALUE_SET_CODE_SELEC
 msgid "This value set cannot be fully expanded, but a selection ({0} codes) of the whole set of codes is shown here."
-msgstr "Ce jeu de valeur (ValueSet) ne peut pas être totalement étendu, mais une sélection ({0} codes) de l'ensemble des codes est affiché ici."
+msgstr "Ce jeu de valeur (ValueSet) ne peut pas être totalement étendu, mais une sélection ({0} codes) de l''ensemble des codes est affiché ici."
 
 # VALUE_SET_COMMA
 #: VALUE_SET_COMMA
@@ -5234,7 +5234,7 @@ msgstr "Ce jeu de valeur (ValueSet) contient au moins {0} concepts"
 # VALUE_SET_CONT_STRUC
 #: VALUE_SET_CONT_STRUC
 msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure:"
-msgstr "Cette inclusion spécifie une hiérarchie pour lorsque les jeux de valeurs sont générés pour une utilisation dans une interface utilisateur. L'expansion contient cette structure :"
+msgstr "Cette inclusion spécifie une hiérarchie pour lorsque les jeux de valeurs sont générés pour une utilisation dans une interface utilisateur. L''expansion contient cette structure :"
 
 # VALUE_SET_DANISH
 #: VALUE_SET_DANISH
@@ -5259,7 +5259,7 @@ msgstr "Désignations supplémentaires"
 # VALUE_SET_DISPLAY_ITEM
 #: VALUE_SET_DISPLAY_ITEM
 msgid "The display for the item"
-msgstr "Le display de l'objet"
+msgstr "Le display de l''objet"
 
 # VALUE_SET_DOESNT_EXIST
 #: VALUE_SET_DOESNT_EXIST
@@ -5284,7 +5284,7 @@ msgstr "="
 # VALUE_SET_ERROR
 #: VALUE_SET_ERROR
 msgid "Error Expanding ValueSet: {0}"
-msgstr "Erreur lors de l'expansion du jeu de valeurs : {0}"
+msgstr "Erreur lors de l''expansion du jeu de valeurs : {0}"
 
 # VALUE_SET_EXCL
 #: VALUE_SET_EXCL
@@ -5354,12 +5354,12 @@ msgstr "généralise"
 # VALUE_SET_HAS
 #: VALUE_SET_HAS
 msgid "This value set has {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
-msgstr "Ce jeu de valeurs (ValueSet) a {0} codes. Pour garder la publication gérable, seulement une selection ({1} codes) de l'ensemble des codes est affiché."
+msgstr "Ce jeu de valeurs (ValueSet) a {0} codes. Pour garder la publication gérable, seulement une selection ({1} codes) de l''ensemble des codes est affiché."
 
 # VALUE_SET_HAS_AT_LEAST
 #: VALUE_SET_HAS_AT_LEAST
 msgid "This value set has at least {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
-msgstr "Ce jeu de valeurs (ValueSet) a au moins {0} codes. Pour garder la publication gérable, seulement une selection ({1} codes) de l'ensemble des codes est affiché."
+msgstr "Ce jeu de valeurs (ValueSet) a au moins {0} codes. Pour garder la publication gérable, seulement une selection ({1} codes) de l''ensemble des codes est affiché."
 
 # VALUE_SET_IE
 #: VALUE_SET_IE
@@ -5371,7 +5371,7 @@ msgstr "Édition irlandaise"
 msgid "Import all the codes that are contained in"
 msgid_plural "Import all the codes that are contained in the intersection of"
 msgstr[0] "Importe tous les codes contenu dans"
-msgstr[1] "Importe tous les codes contenus dans l'intersection de"
+msgstr[1] "Importe tous les codes contenus dans l''intersection de"
 
 # VALUE_SET_IN
 #: VALUE_SET_IN
@@ -5411,7 +5411,7 @@ msgstr "est-un"
 # VALUE_SET_ISNOTA
 #: VALUE_SET_ISNOTA
 msgid "is-not-a"
-msgstr "n'est-pas-un"
+msgstr "n''est-pas-un"
 
 # VALUE_SET_KR
 #: VALUE_SET_KR
@@ -5458,7 +5458,7 @@ msgstr "Cette inclusion spécifie une hiérarchie pour lorsque les jeux de valeu
 # VALUE_SET_NOT_FOUND
 #: VALUE_SET_NOT_FOUND
 msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure, and any codes not found in the structure:"
-msgstr "Cette inclusion spécifie une hiérarchie pour lorsque les jeux de valeurs sont générés pour une utilisation dans une interface utilisateur. L'expansion contient cette structure, et tous les codes non trouvés dans la structure :"
+msgstr "Cette inclusion spécifie une hiérarchie pour lorsque les jeux de valeurs sont générés pour une utilisation dans une interface utilisateur. L''expansion contient cette structure, et tous les codes non trouvés dans la structure :"
 
 # VALUE_SET_NO_VER
 #: VALUE_SET_NO_VER
@@ -5483,7 +5483,7 @@ msgstr "?ngen-13?"
 # VALUE_SET_NUMBER_CONCEPTS
 #: VALUE_SET_NUMBER_CONCEPTS
 msgid "This value set expansion contains {0} concepts."
-msgstr "L'expension de ce jeu de valeurs (ValueSet) contient {0} concepts."
+msgstr "L''expension de ce jeu de valeurs (ValueSet) contient {0} concepts."
 
 # VALUE_SET_NZ
 #: VALUE_SET_NZ
@@ -5513,7 +5513,7 @@ msgstr "Ce jeu de valeur (ValueSet) inclut les codes selon les règles suivantes
 # VALUE_SET_SEL
 #: VALUE_SET_SEL
 msgid "This value set has >1000 codes in it. In order to keep the publication size manageable, only a selection (1000 codes) of the whole set of codes is shown"
-msgstr "Ce jeu de valeur (ValueSet) est composé de plus de 1000 codes. Dans le but de garder la publication gérable, seulement une sélection (1000 codes) de l'ensemble des concepts est affiché"
+msgstr "Ce jeu de valeur (ValueSet) est composé de plus de 1000 codes. Dans le but de garder la publication gérable, seulement une sélection (1000 codes) de l''ensemble des concepts est affiché"
 
 # VALUE_SET_SNOMED
 #: VALUE_SET_SNOMED
@@ -5553,7 +5553,7 @@ msgstr "Système"
 # VALUE_SET_THESE_CODES_DEF
 #: VALUE_SET_THESE_CODES_DEF
 msgid "these codes as defined in"
-msgstr "ce(s) code(s) tel qu'il(s) est (sont) défini(s) dans"
+msgstr "ce(s) code(s) tel qu''il(s) est (sont) défini(s) dans"
 
 # VALUE_SET_TOO_COSTLY
 #: VALUE_SET_TOO_COSTLY
@@ -5578,7 +5578,7 @@ msgstr "Etats-Unis"
 # VALUE_SET_USED_ELSEWHERE
 #: VALUE_SET_USED_ELSEWHERE
 msgid "This value set is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr "Ce jeu de valeurs n'est pas utilisé ici ; il peut être utilisé autre part (par exemple dans les spécifications et / ou implémentations qui utilisent ce contenu)"
+msgstr "Ce jeu de valeurs n''est pas utilisé ici ; il peut être utilisé autre part (par exemple dans les spécifications et / ou implémentations qui utilisent ce contenu)"
 
 # VALUE_SET_US_ICD10CM
 #: VALUE_SET_US_ICD10CM
@@ -5618,27 +5618,27 @@ msgstr "Utilisé comme critère de déclenchement dans"
 # VS_ABSTRACT_CODE_HINT
 #: VS_ABSTRACT_CODE_HINT
 msgid "This code is not selectable (''Abstract'')"
-msgstr "Ce code n'est pas sélectionnable (\"Abstrait\")"
+msgstr "Ce code n''est pas sélectionnable (\"Abstrait\")"
 
 # VS_VERSION_BY_PACKAGE
 #: VS_VERSION_BY_PACKAGE
 msgid "Version is not explicitly stated, which means it is fixed to {0}, the version found through the package references"
-msgstr "La version n'est pas explicitement indiquée, ce qui signifie qu'elle est fixée à {0}, la version trouvée via les références de package"
+msgstr "La version n''est pas explicitement indiquée, ce qui signifie qu'elle est fixée à {0}, la version trouvée via les références de package"
 
 # VS_VERSION_FOUND
 #: VS_VERSION_FOUND
 msgid "Version is not explicitly stated. When building this specification, the most recent version {0} has been used"
-msgstr "La version n'est pas explicitement indiquée. Lors de la génération de cette spécification, la version la plus récente {0} a été utilisée"
+msgstr "La version n''est pas explicitement indiquée. Lors de la génération de cette spécification, la version la plus récente {0} a été utilisée"
 
 # VS_VERSION_NONE
 #: VS_VERSION_NONE
 msgid "Version is not explicitly stated, and the target {0} has no stated version either"
-msgstr "La version n'est pas explicitement indiquée, et la cible {0} n'a pas non plus de version indiquée"
+msgstr "La version n''est pas explicitement indiquée, et la cible {0} n''a pas non plus de version indiquée"
 
 # VS_VERSION_NOTHING
 #: VS_VERSION_NOTHING
 msgid "Version is not explicitly stated. No matching {0} found"
-msgstr "La version n'est pas explicitement indiquée. Aucun {0} correspondant trouvé"
+msgstr "La version n''est pas explicitement indiquée. Aucun {0} correspondant trouvé"
 
 # VS_VERSION_NOTHING_TEXT
 #: VS_VERSION_NOTHING_TEXT
@@ -5653,7 +5653,7 @@ msgstr "La version est explicitement indiquée comme étant {0}"
 # VS_VERSION_THIS_PACKAGE
 #: VS_VERSION_THIS_PACKAGE
 msgid "Version is not explicitly stated, which means it is fixed to the version provided in this specification"
-msgstr "La version n'est pas explicitement indiquée, ce qui signifie qu'elle est fixée à la version fournie dans cette spécification"
+msgstr "La version n''est pas explicitement indiquée, ce qui signifie qu'elle est fixée à la version fournie dans cette spécification"
 
 # VS_VERSION_WILDCARD
 #: VS_VERSION_WILDCARD
@@ -5669,6 +5669,7 @@ msgstr "La version est indiquée comme étant {0}, ce qui signifie qu'elle est f
 #: _NA
 msgid "n/a"
 msgstr "n/a"
+
 
 
 
