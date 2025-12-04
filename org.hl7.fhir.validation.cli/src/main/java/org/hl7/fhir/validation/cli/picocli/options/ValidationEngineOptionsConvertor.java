@@ -57,6 +57,7 @@ public class ValidationEngineOptionsConvertor {
       validationEngineParameters.setLang(options.lang);
     }
     if (options.mapLog != null) {
+      checkFileAccess(options.mapLog, false, "-log");
       validationEngineParameters.setMapLog(options.mapLog);
     }
 
@@ -73,8 +74,7 @@ public class ValidationEngineOptionsConvertor {
     }
     if (options.matchetypes != null) {
       for (String matchetype : options.matchetypes) {
-        final String optionName = "matchetype";
-        checkIfFileIsAccessibleAndWarnIfNot(matchetype, optionName);
+        checkFileAccess(matchetype, true, "-matchetype");
         validationEngineParameters.addMatchetype(matchetype);
       }
     }
@@ -82,15 +82,17 @@ public class ValidationEngineOptionsConvertor {
     return validationEngineParameters;
   }
 
-  private static void checkIfFileIsAccessibleAndWarnIfNot(String matchetype, String optionName) {
+  private static void checkFileAccess(String filePath, boolean checkExists, String optionName) {
     try {
-      File file = ManagedFileAccess.file(matchetype);
+      File file = ManagedFileAccess.file(filePath);
+      if (!checkExists)
+        return;
       if (file.exists()) {
         return;
       }
-      throw new Error("File does not exist at path '" + matchetype + "' specified by option " + optionName);
+      throw new Error("File does not exist at path '" + filePath + "' specified by option " + optionName);
     } catch (IOException e) {
-      throw new Error("Exception accessing file at path '" + matchetype + "' specified by option " + optionName, e);
+      throw new Error("Exception accessing file at path '" + filePath + "' specified by option " + optionName, e);
     }
   }
 }

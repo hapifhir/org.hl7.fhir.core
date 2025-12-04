@@ -151,13 +151,13 @@ public class ValidationEngineOptions {
   public List<String> igs = new ArrayList<>();
 
   @CommandLine.Option(names = {"-cert"},
-    description = "Certificate source file (can repeat)",
+    description = "Certificate source file",
     arity = "0..*")
   @With
   public List<String> certSources = new ArrayList<>();
 
   @CommandLine.Option(names = {"-matchetype"},
-    description = "File path for match type configuration (can repeat)",
+    description = "File path for match type configuration",
     arity = "0..*")
   @With
   public List<String> matchetypes = new ArrayList<>();
