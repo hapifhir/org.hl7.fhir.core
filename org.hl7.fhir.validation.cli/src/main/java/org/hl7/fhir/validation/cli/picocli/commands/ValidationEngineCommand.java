@@ -1,13 +1,10 @@
-package org.hl7.fhir.validation.cli.picocli;
+package org.hl7.fhir.validation.cli.picocli.commands;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.validation.cli.picocli.options.DebugOptions;
 import org.hl7.fhir.validation.cli.picocli.options.LocaleOptions;
 import org.hl7.fhir.validation.cli.picocli.options.ProxyOptions;
-import org.hl7.fhir.validation.service.ValidationService;
 import picocli.CommandLine;
-
-import javax.annotation.Nonnull;
 
 @Slf4j
 public abstract class ValidationEngineCommand {
@@ -37,13 +34,14 @@ public abstract class ValidationEngineCommand {
     validationEngineTaskInstance.executeTask(validationService, validationEngine);
     log.info("Done. " + timeTracker.report()+". Max Memory = "+ Utilities.describeSize(Runtime.getRuntime().maxMemory()));
   }
-
+*/
   public boolean inferFhirVersion() {
     return false;
   }
 
   public abstract boolean usesInstanceValidatorParameters();
 
+  /*
   private ValidationEngine getValidationEngine(ValidationService validationService, ValidationEngineTaskInstance validationEngineTaskInstance, TimeTracker timeTracker) throws Exception {
     if (inferFhirVersion()) {
       validationEngineTaskInstance.validationEngineParameters.setInferFhirVersion(Boolean.TRUE);

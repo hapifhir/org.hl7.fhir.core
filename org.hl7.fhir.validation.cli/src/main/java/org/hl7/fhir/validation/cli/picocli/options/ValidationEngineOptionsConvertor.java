@@ -1,13 +1,20 @@
 package org.hl7.fhir.validation.cli.picocli.options;
 
+import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
 
+import java.io.File;
+import java.io.IOException;
+
+@Slf4j
 public class ValidationEngineOptionsConvertor {
   public ValidationEngineParameters convert(ValidationEngineOptions options) {
     ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
 
     // FHIR Version
-    validationEngineParameters.setSv(options.fhirVersion);
+    validationEngineParameters.setSv(VersionUtilities.getCurrentPackageVersion(options.fhirVersion));
 
     // Boolean flags
     validationEngineParameters.setDoNative(options.doNative);
@@ -31,10 +38,12 @@ public class ValidationEngineOptionsConvertor {
     if (options.aiService != null) {
       validationEngineParameters.setAIService(options.aiService);
     }
-    // txServer has a default, so always set it
-    validationEngineParameters.setTxServer(options.txServer);
-    // noEcosystem is set when txServer differs from default, but we handle this explicitly
-    validationEngineParameters.setNoEcosystem(options.noEcosystem);
+
+    if (options.txServer != null) {
+      validationEngineParameters.setTxServer("n/a".equals(options.txServer) ? null : options.txServer);
+      validationEngineParameters.setNoEcosystem(true);
+    }
+
     if (options.txLog != null) {
       validationEngineParameters.setTxLog(options.txLog);
     }
@@ -64,10 +73,24 @@ public class ValidationEngineOptionsConvertor {
     }
     if (options.matchetypes != null) {
       for (String matchetype : options.matchetypes) {
+        final String optionName = "matchetype";
+        checkIfFileIsAccessibleAndWarnIfNot(matchetype, optionName);
         validationEngineParameters.addMatchetype(matchetype);
       }
     }
 
     return validationEngineParameters;
+  }
+
+  private static void checkIfFileIsAccessibleAndWarnIfNot(String matchetype, String optionName) {
+    try {
+      File file = ManagedFileAccess.file(matchetype);
+      if (file.exists()) {
+        return;
+      }
+      throw new Error("File does not exist at path '" + matchetype + "' specified by option " + optionName);
+    } catch (IOException e) {
+      throw new Error("Exception accessing file at path '" + matchetype + "' specified by option " + optionName, e);
+    }
   }
 }

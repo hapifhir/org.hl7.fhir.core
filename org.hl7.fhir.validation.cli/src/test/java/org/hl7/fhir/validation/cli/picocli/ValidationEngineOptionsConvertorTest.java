@@ -18,7 +18,7 @@ public class ValidationEngineOptionsConvertorTest {
     return Stream.of(
       // Existing FHIR version tests
       Arguments.arguments(new ValidationEngineOptions().withFhirVersion("5.0"), new ValidationEngineParameters().setSv("5.0")),
-      Arguments.arguments(new ValidationEngineOptions().withFhirVersion("4.0.1"), new ValidationEngineParameters().setSv("4.0.1")),
+      Arguments.arguments(new ValidationEngineOptions().withFhirVersion("4.0.1"), new ValidationEngineParameters().setSv("4.0")),
 
       // Boolean field tests - individual (note: default fhirVersion="5.0" is always set)
       Arguments.arguments(
@@ -61,10 +61,6 @@ public class ValidationEngineOptionsConvertorTest {
         new ValidationEngineOptions().withDoDebug(true),
         new ValidationEngineParameters().setSv("5.0").setDoDebug(true)
       ),
-      Arguments.arguments(
-        new ValidationEngineOptions().withNoEcosystem(true),
-        new ValidationEngineParameters().setSv("5.0").setNoEcosystem(true)
-      ),
 
       // Boolean combined test
       Arguments.arguments(
@@ -94,7 +90,7 @@ public class ValidationEngineOptionsConvertorTest {
       ),
       Arguments.arguments(
         new ValidationEngineOptions().withTxServer("http://custom-tx.org"),
-        new ValidationEngineParameters().setSv("5.0").setTxServer("http://custom-tx.org")
+        new ValidationEngineParameters().setSv("5.0").setTxServer("http://custom-tx.org").setNoEcosystem(true)
       ),
       Arguments.arguments(
         new ValidationEngineOptions().withTxLog("/path/to/tx.log"),
@@ -158,7 +154,7 @@ public class ValidationEngineOptionsConvertorTest {
           .withSnomedCT("us")
           .withIgs(List.of("hl7.fhir.r4.core", "hl7.fhir.us.core")),
         new ValidationEngineParameters()
-          .setSv("4.0.1")
+          .setSv("4.0")
           .setDoNative(true)
           .setSnomedCT("us")
           .addIg("hl7.fhir.r4.core")
@@ -181,22 +177,11 @@ public class ValidationEngineOptionsConvertorTest {
           .setLocale("en")
       ),
 
-      // Edge case: combining noEcosystem with other fields
-      Arguments.arguments(
-        new ValidationEngineOptions()
-          .withNoEcosystem(true)
-          .withRecursive(true),
-        new ValidationEngineParameters()
-          .setSv("5.0")
-          .setNoEcosystem(true)
-          .setRecursive(true)
-      ),
 
       // Edge case: txServer with noEcosystem both set
       Arguments.arguments(
         new ValidationEngineOptions()
-          .withTxServer("http://custom-tx.org")
-          .withNoEcosystem(true),
+          .withTxServer("http://custom-tx.org"),
         new ValidationEngineParameters()
           .setSv("5.0")
           .setTxServer("http://custom-tx.org")
