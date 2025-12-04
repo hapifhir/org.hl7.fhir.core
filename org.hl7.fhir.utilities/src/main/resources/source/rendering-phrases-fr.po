@@ -3265,7 +3265,7 @@ msgstr "Pas encore géré : extension complexe ''{0}''"
 # SDR_NOT_USED
 #: SDR_NOT_USED
 msgid "This {0} is not used by any profiles in this Implementation Guide"
-msgstr "Ce {0} n'est utilisé par aucun profil dans ce guide d'implémentation"
+msgstr "Ce {0} n'est utilisé par aucun autre profil dans ce guide d'implémentation"
 
 # SDR_OFF_URL
 #: SDR_OFF_URL
@@ -5669,5 +5669,6 @@ msgstr "La version est indiquée comme étant {0}, ce qui signifie qu'elle est f
 #: _NA
 msgid "n/a"
 msgstr "n/a"
+
 
 
