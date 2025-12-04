@@ -49,7 +49,7 @@ msgstr "N''importe lequel"
 # ADD_BIND_ANY_REP
 #: ADD_BIND_ANY_REP
 msgid "any repeat"
-msgstr "N''importe quelle répétition"
+msgstr "n''importe quelle répétition"
 
 # ADD_BIND_CURR_BIND
 #: ADD_BIND_CURR_BIND
@@ -5669,6 +5669,7 @@ msgstr "La version est indiquée comme étant {0}, ce qui signifie qu'elle est f
 #: _NA
 msgid "n/a"
 msgstr "n/a"
+
 
 
 
