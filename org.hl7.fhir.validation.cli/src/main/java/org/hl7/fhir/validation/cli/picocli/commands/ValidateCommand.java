@@ -5,6 +5,7 @@ import org.hl7.fhir.validation.cli.picocli.options.*;
 import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
 import picocli.CommandLine;
 
+import java.util.Locale;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(
@@ -32,8 +33,6 @@ public class ValidateCommand extends ValidationEngineCommand implements Callable
   @CommandLine.ArgGroup(validate = false, heading = "Terminology Client Options%n")
   TerminologyClientOptions terminologyClientOptions = new TerminologyClientOptions();
 
-  @CommandLine.ArgGroup(validate = false, heading = "Validation Engine%n")
-  ValidationEngineOptions validationEngineOptions = new ValidationEngineOptions();
 
   //Needed to allow Help Command.
   @CommandLine.Option(names = { "-h", "-help", "-?"}, usageHelp = true, description = "Display this help and exit")
@@ -44,10 +43,9 @@ public class ValidateCommand extends ValidationEngineCommand implements Callable
   private String[] whatToValidate;
 
   @Override
-  public Integer call() throws Exception { // your business logic goes here...
-    ValidationEngineOptionsConvertor convertor = new ValidationEngineOptionsConvertor();
-    ValidationEngineParameters validationEngineParameters = convertor.convert(validationEngineOptions);
-    log.info(validationEngineParameters.toString().replace(", ", ", \n"));
+  public Integer call() { // your business logic goes here...
+    getValidationEngineParameters();
+    log.info("Locale: " + Locale.getDefault());
     log.info("Sources to validate: " + String.join("", whatToValidate ));
     return 0;
   }

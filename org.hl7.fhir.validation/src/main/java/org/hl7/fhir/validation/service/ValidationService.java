@@ -599,7 +599,7 @@ public class ValidationService {
 
     public void compile(ValidationEngine validationEngine, String map, String mapLog, List<String> sources, String output) throws Exception {
     if (sources.size() > 0)
-      throw new Exception("Cannot specify sources when compling transform (found " + sources + ")");
+      throw new Exception("Cannot specify sources when compiling transform (found " + sources + ")");
     if (map == null)
       throw new Exception("Must provide a map when compiling a transform");
     if (output == null)

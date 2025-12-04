@@ -1,10 +1,11 @@
 package org.hl7.fhir.validation.cli.picocli.commands;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.validation.cli.picocli.options.DebugOptions;
-import org.hl7.fhir.validation.cli.picocli.options.LocaleOptions;
-import org.hl7.fhir.validation.cli.picocli.options.ProxyOptions;
+import org.hl7.fhir.validation.cli.picocli.options.*;
+import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
 import picocli.CommandLine;
+
+import java.util.Locale;
 
 @Slf4j
 public abstract class ValidationEngineCommand {
@@ -17,6 +18,21 @@ public abstract class ValidationEngineCommand {
 
   @CommandLine.ArgGroup(validate = false, heading = "Proxy Options%n")
   ProxyOptions proxyOptions = new ProxyOptions();
+
+  @CommandLine.ArgGroup(validate = false, heading = "Validation Engine%n")
+  ValidationEngineOptions validationEngineOptions = new ValidationEngineOptions();
+
+
+  protected ValidationEngineParameters getValidationEngineParameters() {
+    ValidationEngineOptionsConvertor convertor = new ValidationEngineOptionsConvertor();
+    ValidationEngineParameters validationEngineParameters = convertor.convert(validationEngineOptions);
+    if (localeOptions.locale != null) {
+      validationEngineParameters.setLocale(Locale.forLanguageTag(localeOptions.locale));
+    }
+    log.info(validationEngineParameters.toString().replace(", ", ", \n"));
+
+    return validationEngineParameters;
+  }
 /*
   public void call(@Nonnull ValidationService validationService) throws Exception {
 
