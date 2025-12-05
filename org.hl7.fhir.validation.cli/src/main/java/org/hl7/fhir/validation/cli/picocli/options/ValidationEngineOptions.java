@@ -32,7 +32,12 @@ public class ValidationEngineOptions {
   public String fhirVersion = null;
 
   @CommandLine.Option(names = {"-native"},
-    description = "Use native validation (XML: W3C schema+schematron, JSON: json.schema, RDF: SHEX)")
+    description = """
+    Use native validation:
+     * XML: W3C schema+schematron
+     * JSON: json.schema
+     * RDF: SHEX
+    """)
   @With
   public boolean doNative = false;
 
@@ -109,17 +114,17 @@ public class ValidationEngineOptions {
 
   @CommandLine.Option(names = {"-txLog"},
     description = """
-      Produce a log of the terminology server operations in [file]
-      If not set, no log will be produced.
-      """)
+     Produce a log of the terminology server operations in [file]
+     If not set, no log will be produced.
+     """)
   @With
   public String txLog = null;
 
   @CommandLine.Option(names = {"-txCache"},
     description = """
-      Path to a directory to be used to cache terminology server responses. The validator will attempt to create the folder if it needs to.
-      To run without a terminology case, specify 'n/a' as the value
-      """)
+    Path to a directory to be used to cache terminology server responses. The validator will attempt to create the folder if it needs to.
+    To run without a terminology case, specify 'n/a' as the value
+    """)
   @With
   public String txCache = null;
 
@@ -130,10 +135,10 @@ public class ValidationEngineOptions {
 
   @CommandLine.Option(names = {"-language"},
     description = """
-      The language to use when validating coding displays - same value as for xml:lang
-      Not used if the resource specifies language
-      Default: no specified language
-      """)
+    The language to use when validating coding displays - same value as for xml:lang
+    Not used if the resource specifies language
+    Default: no specified language
+    """)
   @With
   public String lang = null;
 
@@ -144,11 +149,11 @@ public class ValidationEngineOptions {
 
   @CommandLine.Option(names = {"-ig", "-defn"},
     description = """
-      [package|file|folder|url]: an IG or profile definition to load.
-        Can be the URL of an implementation guide or a package ([id]-[ver]) for a built implementation guide or a local folder that contains a set of conformance resources.
-        If you would like to load the latest unreleased version of the implementation guide or package, please define the version as '#current'.
-        If no version is provided, the latest version in the package cache will be used, or if no such cached package is available, the PackageCacheManager will load the latest from the the online package repo.
-        If you want the implementation guide to be loaded for a specific version of FHIR, you can prefix the IG with the appropriate version in square brackets ([[fhirVer]][id]-[igVer]).
+    [package|file|folder|url]: an IG or profile definition to load.
+    Can be the URL of an implementation guide or a package ([id]-[ver]) for a built implementation guide or a local folder that contains a set of conformance resources.
+    If you would like to load the latest unreleased version of the implementation guide or package, please define the version as '#current'.
+    If no version is provided, the latest version in the package cache will be used, or if no such cached package is available, the PackageCacheManager will load the latest from the the online package repo.
+    If you want the implementation guide to be loaded for a specific version of FHIR, you can prefix the IG with the appropriate version in square brackets ([[fhirVer]][id]-[igVer]).
     """,
     arity = "0..*")
   @With
