@@ -3,6 +3,7 @@ package org.hl7.fhir.validation.cli.picocli.options;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
 
 import java.io.File;
@@ -64,7 +65,17 @@ public class ValidationEngineOptionsConvertor {
     // List fields - use addX() methods
     if (options.igs != null) {
       for (String ig : options.igs) {
-        validationEngineParameters.addIg(ig);
+        String igVersion = getVersionFromIGName(null, ig);
+        if (igVersion == null) {
+          validationEngineParameters.addIg(ig);
+        } else {
+         if (validationEngineParameters.getSv() != null && !igVersion.equals(validationEngineParameters.getSv())) {
+            throw new Error("Parameters are inconsistent: multiple -ig parameters implying differetion versions ("+ validationEngineParameters.getSv()+","+igVersion+")");
+          } else {
+            validationEngineParameters.setSv(igVersion);
+          }
+        }
+
       }
     }
     if (options.certSources != null) {
@@ -94,5 +105,26 @@ public class ValidationEngineOptionsConvertor {
     } catch (IOException e) {
       throw new Error("Exception accessing file at path '" + filePath + "' specified by option " + optionName, e);
     }
+  }
+
+  public static String getVersionFromIGName(String defaultValue, String igFileName) {
+    if (igFileName.equals("hl7.fhir.core")) {
+      defaultValue = "5.0";
+    } else if (igFileName.startsWith("hl7.fhir.core#")) {
+      defaultValue = VersionUtilities.getCurrentPackageVersion(igFileName.substring(14));
+    } else if (igFileName.startsWith("hl7.fhir.r2.core#") || igFileName.equals("hl7.fhir.r2.core")) {
+      defaultValue = "1.0";
+    } else if (igFileName.startsWith("hl7.fhir.r2b.core#") || igFileName.equals("hl7.fhir.r2b.core")) {
+      defaultValue = "1.4";
+    } else if (igFileName.startsWith("hl7.fhir.r3.core#") || igFileName.equals("hl7.fhir.r3.core")) {
+      defaultValue = "3.0";
+    } else if (igFileName.startsWith("hl7.fhir.r4.core#") || igFileName.equals("hl7.fhir.r4.core")) {
+      defaultValue = "4.0";
+    } else if (igFileName.startsWith("hl7.fhir.r5.core#") || igFileName.equals("hl7.fhir.r5.core")) {
+      defaultValue = "5.0";
+    } else if (igFileName.startsWith("hl7.fhir.r6.core#") || igFileName.equals("hl7.fhir.r6.core")) {
+      defaultValue = "6.0";
+    }
+    return defaultValue;
   }
 }
