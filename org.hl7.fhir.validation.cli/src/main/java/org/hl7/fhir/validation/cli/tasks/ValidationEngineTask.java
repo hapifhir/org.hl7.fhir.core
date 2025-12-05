@@ -90,13 +90,14 @@ public abstract class ValidationEngineTask extends ValidationServiceTask{
 
 
     if (usesInstanceValidatorParameters()) {
-    log.info("  Locale: "+ Locale.getDefault().getDisplayCountry()+"/"+Locale.getDefault().getCountry());
-    if (validationEngineTaskInstance.instanceValidatorParameters.getJurisdiction() == null) {
-      log.info("  Jurisdiction: None specified (locale = "+Locale.getDefault().getCountry()+")");
-      log.info("  Note that exceptions and validation failures may happen in the absence of a locale");
-    } else {
-      log.info("  Jurisdiction: "+ JurisdictionUtilities.displayJurisdiction(validationEngineTaskInstance.instanceValidatorParameters.getJurisdiction()));
-    }}
+      log.info("  Locale: " + Locale.getDefault().getDisplayCountry() + "/" + Locale.getDefault().getCountry());
+      if (validationEngineTaskInstance.instanceValidatorParameters.getJurisdiction() == null) {
+        log.info("  Jurisdiction: None specified (locale = " + Locale.getDefault().getCountry() + ")");
+        log.info("  Note that exceptions and validation failures may happen in the absence of a locale");
+      } else {
+        log.info("  Jurisdiction: " + JurisdictionUtilities.displayJurisdiction(validationEngineTaskInstance.instanceValidatorParameters.getJurisdiction()));
+      }
+    }
 
     log.info("Loading");
     String definitions = "dev".equals(validationEngineTaskInstance.validationEngineParameters.getSv()) ? "hl7.fhir.r5.core#current" : VersionUtilities.packageForVersion(validationEngineTaskInstance.validationEngineParameters.getSv()) + "#" + VersionUtilities.getCurrentVersion(validationEngineTaskInstance.validationEngineParameters.getSv());

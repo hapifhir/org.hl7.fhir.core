@@ -1,14 +1,24 @@
 package org.hl7.fhir.validation.cli.picocli.commands;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
+import org.hl7.fhir.utilities.TimeTracker;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.picocli.options.*;
+import org.hl7.fhir.validation.service.ValidationService;
+import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
 import picocli.CommandLine;
 
+import javax.annotation.Nonnull;
+import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 
 @Slf4j
-public abstract class ValidationEngineCommand {
+public abstract class ValidationEngineCommand extends ValidationServiceCommand {
 
   @CommandLine.ArgGroup(validate = false, heading = "Debug Options%n")
   DebugOptions debugOptions = new DebugOptions();
@@ -22,6 +32,9 @@ public abstract class ValidationEngineCommand {
   @CommandLine.ArgGroup(validate = false, heading = "Validation Engine%n")
   ValidationEngineOptions validationEngineOptions = new ValidationEngineOptions();
 
+  public ValidationEngineCommand(ValidationService validationService) {
+    super(validationService);
+  }
 
   protected ValidationEngineParameters getValidationEngineParameters() {
     ValidationEngineOptionsConvertor convertor = new ValidationEngineOptionsConvertor();
@@ -33,52 +46,64 @@ public abstract class ValidationEngineCommand {
 
     return validationEngineParameters;
   }
-/*
-  public void call(@Nonnull ValidationService validationService) throws Exception {
 
-
-    GlobalParametersParser globalParametersParser = new GlobalParametersParser();
-    globalParametersParser.parseArgs(args);
-
+  @Override
+  public Integer call() { // your business logic goes here...
+    ValidationEngineParameters validationEngineParameters = getValidationEngineParameters();
     TimeTracker timeTracker = new TimeTracker();
     TimeTracker.Session timeTrackerSession = timeTracker.start("Loading");
 
-    ValidationEngineTaskInstance validationEngineTaskInstance = getValidationEngineTaskInstance(args);
-
-    ValidationEngine validationEngine = getValidationEngine(validationService, validationEngineTaskInstance, timeTracker);
+    ValidationEngine validationEngine = null;
+    try {
+      validationEngine = getValidationEngine(timeTracker);
+    } catch (Exception e) {
+      log.error("Unable to load validationEngine.", e);
+      return 1;
+    }
     timeTrackerSession.end();
-    validationEngineTaskInstance.executeTask(validationService, validationEngine);
+    Integer result = call(validationService, validationEngine);
     log.info("Done. " + timeTracker.report()+". Max Memory = "+ Utilities.describeSize(Runtime.getRuntime().maxMemory()));
+    return result;
   }
-*/
+
   public boolean inferFhirVersion() {
     return false;
   }
 
-  public abstract boolean usesInstanceValidatorParameters();
+  public abstract InstanceValidatorOptions getInstanceValidatorOptions();
 
-  /*
-  private ValidationEngine getValidationEngine(ValidationService validationService, ValidationEngineTaskInstance validationEngineTaskInstance, TimeTracker timeTracker) throws Exception {
+  public abstract List<String> getSources();
+
+  protected abstract Integer call(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine);
+
+  private ValidationEngine getValidationEngine(TimeTracker timeTracker) throws Exception {
+    ValidationEngineParameters validationEngineParameters = getValidationEngineParameters();
     if (inferFhirVersion()) {
-      validationEngineTaskInstance.validationEngineParameters.setInferFhirVersion(Boolean.TRUE);
+      validationEngineParameters.setInferFhirVersion(Boolean.TRUE);
     }
 
-    if (validationEngineTaskInstance.validationEngineParameters.getSv() == null) {
-      validationEngineTaskInstance.validationEngineParameters.setSv(validationService.determineVersion(validationEngineTaskInstance.validationEngineParameters.getIgs(), validationEngineTaskInstance.sources, validationEngineTaskInstance.validationEngineParameters.isRecursive(), validationEngineTaskInstance.validationEngineParameters.isInferFhirVersion()));
+    List<String> sources = getSources();
+    if (validationEngineParameters.getSv() == null) {
+      validationEngineParameters.setSv(validationService.determineVersion(validationEngineParameters.getIgs(), sources, validationEngineParameters.isRecursive(), validationEngineParameters.isInferFhirVersion()));
     }
 
-
-    if (usesInstanceValidatorParameters()) {
+    InstanceValidatorOptions instanceValidatorOptions = getInstanceValidatorOptions();
+    if (instanceValidatorOptions != null) {
       log.info("  Locale: "+ Locale.getDefault().getDisplayCountry()+"/"+Locale.getDefault().getCountry());
-      if (validationEngineTaskInstance.instanceValidatorParameters.getJurisdiction() == null) {
+      if (instanceValidatorOptions.jurisdiction == null) {
         log.info("  Jurisdiction: None specified (locale = "+Locale.getDefault().getCountry()+")");
         log.info("  Note that exceptions and validation failures may happen in the absence of a locale");
       } else {
-        log.info("  Jurisdiction: "+ JurisdictionUtilities.displayJurisdiction(validationEngineTaskInstance.instanceValidatorParameters.getJurisdiction()));
-      }}
+        log.info("  Jurisdiction: "+ JurisdictionUtilities.displayJurisdiction(instanceValidatorOptions.jurisdiction));
+      }
+    }
+
+    //FIXME convert CLI options to parameters
+    InstanceValidatorParameters instanceValidatorParameters = null;
 
     log.info("Loading");
-    String definitions = "dev".equals(validationEngineTaskInstance.validationEngineParameters.getSv()) ? "hl7.fhir.r5.core#current" : VersionUtilities.packageForVersion(validationEngineTaskInstance.validationEngineParameters.getSv()) + "#" + VersionUtilities.getCurrentVersion(validationEngineTaskInstance.validationEngineParameters.getSv());
-    return validationService.initializeValidator(validationEngineTaskInstance.validationEngineParameters, validationEngineTaskInstance.instanceValidatorParameters, definitions, timeTracker, validationEngineTaskInstance.sources);
-  }*/
+    String definitions = "dev".equals(validationEngineParameters.getSv()) ? "hl7.fhir.r5.core#current" : VersionUtilities.packageForVersion(validationEngineParameters.getSv()) + "#" + VersionUtilities.getCurrentVersion(validationEngineParameters.getSv());
+
+    return validationService.initializeValidator(validationEngineParameters, instanceValidatorParameters, definitions, timeTracker, sources);
+  }
 }
