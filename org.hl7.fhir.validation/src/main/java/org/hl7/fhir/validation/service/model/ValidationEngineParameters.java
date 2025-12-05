@@ -550,7 +550,7 @@ public class ValidationEngineParameters {
       && doNative == that.doNative
       && recursive == that.recursive
       && snomedCT.equals(that.snomedCT)
-      && sv.equals(that.sv)
+      && Objects.equals(sv, that.sv)
       && isInferFhirVersion() == that.isInferFhirVersion()
       && noEcosystem == that.noEcosystem
       && clearTxCache == that.clearTxCache

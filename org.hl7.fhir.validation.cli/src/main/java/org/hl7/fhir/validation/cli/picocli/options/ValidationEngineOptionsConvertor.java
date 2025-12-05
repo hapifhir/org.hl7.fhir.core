@@ -3,7 +3,6 @@ package org.hl7.fhir.validation.cli.picocli.options;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
-import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
 
 import java.io.File;
@@ -15,8 +14,9 @@ public class ValidationEngineOptionsConvertor {
     ValidationEngineParameters validationEngineParameters = new ValidationEngineParameters();
 
     // FHIR Version
-    validationEngineParameters.setSv(VersionUtilities.getCurrentPackageVersion(options.fhirVersion));
-
+    if (options.fhirVersion != null) {
+      validationEngineParameters.setSv(VersionUtilities.getCurrentPackageVersion(options.fhirVersion));
+    }
     // Boolean flags
     validationEngineParameters.setDoNative(options.doNative);
     validationEngineParameters.setRecursive(options.recursive);
@@ -65,15 +65,17 @@ public class ValidationEngineOptionsConvertor {
     // List fields - use addX() methods
     if (options.igs != null) {
       for (String ig : options.igs) {
-        String igVersion = getVersionFromIGName(null, ig);
-        if (igVersion == null) {
+        String fhirVersionForCorePackage = corePackageVersion(ig);
+        if (fhirVersionForCorePackage == null) {
           validationEngineParameters.addIg(ig);
         } else {
-         if (validationEngineParameters.getSv() != null && !igVersion.equals(validationEngineParameters.getSv())) {
-            throw new Error("Parameters are inconsistent: multiple -ig parameters implying differetion versions ("+ validationEngineParameters.getSv()+","+igVersion+")");
-          } else {
-            validationEngineParameters.setSv(igVersion);
-          }
+         if (options.fhirVersion != null && !VersionUtilities.getCurrentPackageVersion(options.fhirVersion).equals(fhirVersionForCorePackage)) {
+           throw new IllegalArgumentException("Parameters are inconsistent: version specified by -version is '"+options.fhirVersion+"' but -ig parameter '"+ig+"' implies '"+fhirVersionForCorePackage+"'");
+         }
+         if (validationEngineParameters.getSv() != null && !fhirVersionForCorePackage.equals(validationEngineParameters.getSv())) {
+           throw new IllegalArgumentException("Parameters are inconsistent: another IG has set the version to '"+ validationEngineParameters.getSv()+"' but -ig parameter '"+ig+"' implies '"+fhirVersionForCorePackage+"'");
+         }
+         validationEngineParameters.setSv(fhirVersionForCorePackage);
         }
 
       }
@@ -101,30 +103,36 @@ public class ValidationEngineOptionsConvertor {
       if (file.exists()) {
         return;
       }
-      throw new Error("File does not exist at path '" + filePath + "' specified by option " + optionName);
+      throw new IllegalArgumentException("File does not exist at path '" + filePath + "' specified by option " + optionName);
     } catch (IOException e) {
-      throw new Error("Exception accessing file at path '" + filePath + "' specified by option " + optionName, e);
+      throw new IllegalArgumentException("Exception accessing file at path '" + filePath + "' specified by option " + optionName, e);
     }
   }
 
-  public static String getVersionFromIGName(String defaultValue, String igFileName) {
+  /**
+   * If this is a core package, return the appropriate FHIR version, otherwise return null
+   *
+   * @param igFileName the IG file name
+   * @return FHIR version, or null if not a core IG
+   */
+  public static String corePackageVersion(String igFileName) {
     if (igFileName.equals("hl7.fhir.core")) {
-      defaultValue = "5.0";
+      return "5.0";
     } else if (igFileName.startsWith("hl7.fhir.core#")) {
-      defaultValue = VersionUtilities.getCurrentPackageVersion(igFileName.substring(14));
+      return VersionUtilities.getCurrentPackageVersion(igFileName.substring(14));
     } else if (igFileName.startsWith("hl7.fhir.r2.core#") || igFileName.equals("hl7.fhir.r2.core")) {
-      defaultValue = "1.0";
+      return "1.0";
     } else if (igFileName.startsWith("hl7.fhir.r2b.core#") || igFileName.equals("hl7.fhir.r2b.core")) {
-      defaultValue = "1.4";
+      return "1.4";
     } else if (igFileName.startsWith("hl7.fhir.r3.core#") || igFileName.equals("hl7.fhir.r3.core")) {
-      defaultValue = "3.0";
+      return "3.0";
     } else if (igFileName.startsWith("hl7.fhir.r4.core#") || igFileName.equals("hl7.fhir.r4.core")) {
-      defaultValue = "4.0";
+      return "4.0";
     } else if (igFileName.startsWith("hl7.fhir.r5.core#") || igFileName.equals("hl7.fhir.r5.core")) {
-      defaultValue = "5.0";
+      return "5.0";
     } else if (igFileName.startsWith("hl7.fhir.r6.core#") || igFileName.equals("hl7.fhir.r6.core")) {
-      defaultValue = "6.0";
+      return "6.0";
     }
-    return defaultValue;
+    return null;
   }
 }
