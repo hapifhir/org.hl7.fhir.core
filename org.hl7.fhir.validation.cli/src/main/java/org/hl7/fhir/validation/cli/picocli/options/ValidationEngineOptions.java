@@ -26,10 +26,10 @@ public class ValidationEngineOptions {
     description = """
     Version of FHIR.
     Valid values are: ${COMPLETION-CANDIDATES}
-    Default is ${DEFAULT-VALUE}
+    Default is 5.0
     """)
   @With
-  public String fhirVersion = "5.0";
+  public String fhirVersion = null;
 
   @CommandLine.Option(names = {"-native"},
     description = "Use native validation (XML: W3C schema+schematron, JSON: json.schema, RDF: SHEX)")
@@ -129,7 +129,11 @@ public class ValidationEngineOptions {
   public String advisorFile = null;
 
   @CommandLine.Option(names = {"-language"},
-    description = "Language to use when validating coding displays (e.g., en, de)")
+    description = """
+      The language to use when validating coding displays - same value as for xml:lang
+      Not used if the resource specifies language
+      Default: no specified language
+      """)
   @With
   public String lang = null;
 
