@@ -52,7 +52,7 @@ public class ValidationEngineOptions {
   public boolean clearTxCache = false;
 
   @CommandLine.Option(names = {"-check-references"},
-    description = "Check references when validating")
+    description = "Check references to other resources when validating")
   @With
   public boolean checkReferences = false;
 
@@ -100,7 +100,12 @@ public class ValidationEngineOptions {
   public String resolutionContext = null;
 
   @CommandLine.Option(names = {"-ai-service"},
-    description = "AI service URL for enhanced validation")
+    description = """
+    An AI service to use to inspect code/text pairs. Available options: claude, chatgpt, and ollama
+     * claude: Anthropic's Claude-AI. You need to provide your own API key sourced from anthropic in the fhir-settings.json file using a header with the name 'x-api-key'
+     * chatgpt: OpenAI's ChatGPT. You need to provide your own API key sourced from anthropic in the fhir-settings.json file using a standard token
+     * ollama: Open Source Ollama. With ollama, you can choose where you host the service. If it's running locally on the default port, just use 'ollama'. If you are running locally on a different port, use 'ollama:{port}'. If the service is anywhere else, use 'ollama:{url}'. You can append #{model} to any of those if the model is different to llama3.2
+    """)
   @With
   public String aiService = null;
 
@@ -160,7 +165,10 @@ public class ValidationEngineOptions {
   public List<String> igs = new ArrayList<>();
 
   @CommandLine.Option(names = {"-cert"},
-    description = "Certificate source file",
+    description = """
+    A file that contains a public key, or a folder full of public keys to be used for validating digital signatures.
+    Supports the formats jwks, PEM, and der
+    """,
     arity = "0..*")
   @With
   public List<String> certSources = new ArrayList<>();

@@ -1,7 +1,6 @@
 package org.hl7.fhir.validation.cli.picocli.options;
 
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
-import org.hl7.fhir.validation.cli.param.Params;
 import picocli.CommandLine;
 
 public class HttpAccessOptions implements GlobalOptions{
