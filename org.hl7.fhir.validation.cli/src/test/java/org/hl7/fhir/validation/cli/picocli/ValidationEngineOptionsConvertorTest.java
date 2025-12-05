@@ -123,8 +123,8 @@ public class ValidationEngineOptionsConvertorTest {
         new ValidationEngineParameters().setTxCache("/path/to/cache")
       ),
       Arguments.arguments(
-        new ValidationEngineOptions().withAdvisorFile("/path/to/advisor.json"),
-        new ValidationEngineParameters().setAdvisorFile("/path/to/advisor.json")
+        new ValidationEngineOptions().withAdvisorFile(dummyFileAPath),
+        new ValidationEngineParameters().setAdvisorFile(dummyFileAPath)
       ),
       Arguments.arguments(
         new ValidationEngineOptions().withLang("de"),
@@ -250,6 +250,20 @@ public class ValidationEngineOptionsConvertorTest {
         new ValidationEngineOptions()
           .withMatchetypes(List.of("/nonexistent/path/to/matchetype.conf")),
         "File does not exist at path '/nonexistent/path/to/matchetype.conf' specified by option -matchetype"
+      ),
+
+      // File does not exist for -cert option
+      Arguments.arguments(
+        new ValidationEngineOptions()
+          .withCertSources(List.of("/nonexistent/path/to/certificate.pem")),
+        "File does not exist at path '/nonexistent/path/to/certificate.pem' specified by option -cert"
+      ),
+
+      // File does not exist for -advisor-file option
+      Arguments.arguments(
+        new ValidationEngineOptions()
+          .withAdvisorFile("/nonexistent/path/to/advisor.json"),
+        "File does not exist at path '/nonexistent/path/to/advisor.json' specified by option -advisor-file"
       )
     );
   }

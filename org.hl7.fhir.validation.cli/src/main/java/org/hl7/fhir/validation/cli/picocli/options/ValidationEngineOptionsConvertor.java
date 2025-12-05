@@ -1,6 +1,7 @@
 package org.hl7.fhir.validation.cli.picocli.options;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
@@ -52,6 +53,10 @@ public class ValidationEngineOptionsConvertor {
       validationEngineParameters.setTxCache(options.txCache);
     }
     if (options.advisorFile != null) {
+      checkFileAccess(options.advisorFile, true, "-advisor-file");
+      if (!Utilities.existsInList(Utilities.getFileExtension(options.advisorFile), "json", "txt")) {
+        throw new IllegalArgumentException("Advisor file " + options.advisorFile + " must be a .json or a .txt file");
+      }
       validationEngineParameters.setAdvisorFile(options.advisorFile);
     }
     if (options.lang != null) {
@@ -81,8 +86,9 @@ public class ValidationEngineOptionsConvertor {
       }
     }
     if (options.certSources != null) {
-      for (String cert : options.certSources) {
-        validationEngineParameters.addCertSource(cert);
+      for (String certSource : options.certSources) {
+        checkFileAccess(certSource, true, "-cert");
+        validationEngineParameters.addCertSource(certSource);
       }
     }
     if (options.matchetypes != null) {
