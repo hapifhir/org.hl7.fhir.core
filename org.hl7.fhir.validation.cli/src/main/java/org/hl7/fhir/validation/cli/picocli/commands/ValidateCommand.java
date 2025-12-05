@@ -1,10 +1,16 @@
 package org.hl7.fhir.validation.cli.picocli.commands;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.picocli.options.*;
+import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
 import picocli.CommandLine;
 
+import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Callable;
 
@@ -33,7 +39,6 @@ public class ValidateCommand extends ValidationEngineCommand implements Callable
   @CommandLine.ArgGroup(validate = false, heading = "Terminology Client Options%n")
   TerminologyClientOptions terminologyClientOptions = new TerminologyClientOptions();
 
-
   //Needed to allow Help Command.
   @CommandLine.Option(names = { "-h", "-help", "-?"}, usageHelp = true, description = "Display this help and exit")
   private boolean help;
@@ -42,16 +47,24 @@ public class ValidateCommand extends ValidationEngineCommand implements Callable
     description = "The input file(s) to validate.")
   private String[] whatToValidate;
 
-  @Override
-  public Integer call() { // your business logic goes here...
-    getValidationEngineParameters();
-    log.info("Locale: " + Locale.getDefault());
-    log.info("Sources to validate: " + String.join("", whatToValidate ));
-    return 0;
+  public ValidateCommand(ValidationService validationService) {
+    super(validationService);
   }
 
   @Override
-  public boolean usesInstanceValidatorParameters() {
-    return true;
+  public InstanceValidatorOptions getInstanceValidatorOptions() {
+    return null;
+  }
+
+  @Override
+  public List<String> getSources() {
+    return whatToValidate == null ? Collections.emptyList() : Arrays.asList(whatToValidate);
+  }
+
+  @Override
+  protected Integer call(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine) {
+    log.info("Locale: " + Locale.getDefault());
+    log.info("Sources to validate: " + String.join("", getSources()));
+    return 0;
   }
 }

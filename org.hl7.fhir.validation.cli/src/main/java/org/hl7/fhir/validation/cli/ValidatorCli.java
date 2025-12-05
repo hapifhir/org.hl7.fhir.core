@@ -106,7 +106,7 @@ import org.hl7.fhir.validation.cli.param.Params;
 public class ValidatorCli {
 
   public static final String HELP = "help";
-  private final static ValidationService validationService = new ValidationService();
+  private static final ValidationService validationService = new ValidationService();
   
   protected ValidationService myValidationService;
 

@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli.picocli;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.FileFormat;
 import org.hl7.fhir.validation.cli.Display;
@@ -8,6 +9,7 @@ import org.hl7.fhir.validation.cli.picocli.options.DebugOptions;
 import org.hl7.fhir.validation.cli.picocli.options.GlobalOptions;
 import org.hl7.fhir.validation.cli.picocli.options.LocaleOptions;
 import org.hl7.fhir.validation.cli.picocli.options.ProxyOptions;
+import org.hl7.fhir.validation.service.ValidationService;
 import org.slf4j.event.Level;
 import picocli.CommandLine;
 
@@ -17,11 +19,41 @@ import java.util.Map;
 @Slf4j
 public class CLI {
 
+  protected ValidationService myValidationService;
+
   private static final GlobalOptions[] GLOBAL_OPTIONS =  {
     new LocaleOptions(),
     new DebugOptions(),
     new ProxyOptions()
   };
+
+  protected CLI(ValidationService validationService) {
+    this.myValidationService = validationService;
+  }
+
+  protected int parseArgsAndExecuteCommand(String[] args) {
+    String[] backwardCompatibleArgs = getBackwardCompatibleArgs(args);
+    CommandLine commandLine = new CommandLine(new ValidateCommand(myValidationService));
+
+    CommandLine.ParseResult parseResult = commandLine.parseArgs(backwardCompatibleArgs);
+
+    for (GlobalOptions globalOption : GLOBAL_OPTIONS) {
+      int exitCode = globalOption.apply(parseResult);
+      if (exitCode != 0) {
+        System.exit(exitCode);
+      }
+    }
+
+    Display.displayVersion(log);
+    Display.displaySystemInfo(log);
+
+    checkCharsetAndWarnIfNotUTF8();
+
+    commandLine
+      .setOut(new PrintWriter(new CLIToSlf4jLoggerWriter(log, Level.INFO)))
+      .setErr(new PrintWriter(new CLIToSlf4jLoggerWriter(log, Level.ERROR)));
+    return commandLine.execute(backwardCompatibleArgs);
+  }
 
   private static String[] getBackwardCompatibleArgs(String[] args) {
       Map<String, String> argMap = Map.of(
@@ -42,27 +74,8 @@ public class CLI {
   }
 
     public static void main(String[] args) {
-      String[] backwardCompatibleArgs = getBackwardCompatibleArgs(args);
-      CommandLine commandLine = new CommandLine(new ValidateCommand());
-
-      CommandLine.ParseResult parseResult = commandLine.parseArgs(backwardCompatibleArgs);
-
-      for (GlobalOptions globalOption : GLOBAL_OPTIONS) {
-        int exitCode = globalOption.apply(parseResult);
-        if (exitCode != 0) {
-          System.exit(exitCode);
-        }
-      }
-
-      Display.displayVersion(log);
-      Display.displaySystemInfo(log);
-
-      checkCharsetAndWarnIfNotUTF8();
-
-      commandLine
-        .setOut(new PrintWriter(new CLIToSlf4jLoggerWriter(log, Level.INFO)))
-        .setErr(new PrintWriter(new CLIToSlf4jLoggerWriter(log, Level.ERROR)));
-      int exitCode = commandLine.execute(backwardCompatibleArgs);
+      CLI cli = new CLI(new ValidationService());
+      int exitCode = cli.parseArgsAndExecuteCommand(args);
       System.exit(exitCode);
     }
 

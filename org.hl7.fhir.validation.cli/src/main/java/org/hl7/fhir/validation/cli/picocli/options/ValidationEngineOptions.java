@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@CommandLine.Command
+//@CommandLine.Command
 @AllArgsConstructor
 public class ValidationEngineOptions {
 

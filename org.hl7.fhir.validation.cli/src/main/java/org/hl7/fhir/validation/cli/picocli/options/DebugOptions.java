@@ -2,7 +2,6 @@ package org.hl7.fhir.validation.cli.picocli.options;
 
 import org.hl7.fhir.validation.cli.logging.Level;
 import org.hl7.fhir.validation.cli.logging.LogbackUtilities;
-import org.hl7.fhir.validation.cli.param.Params;
 import picocli.CommandLine;
 
 public class DebugOptions implements GlobalOptions {
