@@ -1192,7 +1192,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean checkCode(List<ValidationMessage> errors, Element element, String path, String code, String system, String version, String display, boolean checkDisplay, NodeStack stack) throws TerminologyServiceException {
     boolean ok = true;
     long t = System.nanoTime();
-    boolean ss = context.getTxSupportInfo(system, version).isSupported();
+    IWorkerContext.SystemSupportInformation txSupportInfo = context.getTxSupportInfo(system, version);
+    boolean ss = txSupportInfo.isSupported();
     timeTracker.tx(t, "ss " + system);
     if (ss) {
       t = System.nanoTime();
@@ -1246,6 +1247,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_INVALID, system);
       return false;
     } else if (ValueSetUtilities.isServerSide(system)) {
+      warning(errors, "2025-11-28", IssueType.BUSINESSRULE, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_UNSUPPORTED, system, version, txSupportInfo.reason());
       return ok;
     } else {
       try {
