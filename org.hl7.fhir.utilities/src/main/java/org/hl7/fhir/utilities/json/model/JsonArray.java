@@ -52,13 +52,18 @@ public class JsonArray extends JsonElement implements Iterable<JsonElement> {
     items.add(i, node);
     return this;
   }
-  
+
   public JsonArray add(String value) throws JsonException {
     check(value != null, "null value in JsonArray.add()");
     items.add(new JsonString(value));
     return this;
   }
-  
+
+  public JsonArray add(int value) throws JsonException {
+    items.add(new JsonNumber(value));
+    return this;
+  }
+
   public JsonObject addObject() {
     JsonObject res = new JsonObject();
     add(res);

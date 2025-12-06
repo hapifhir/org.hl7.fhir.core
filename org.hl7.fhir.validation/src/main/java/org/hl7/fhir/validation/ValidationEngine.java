@@ -1297,12 +1297,12 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   @Override
-  public Set<String> fetchCanonicalResourceVersions(IResourceValidator validator, Object appContext, String url) {
-    Set<String> res = new HashSet<>();
+  public Set<ResourceVersionInformation> fetchCanonicalResourceVersions(IResourceValidator validator, Object appContext, String url) {
+    Set<ResourceVersionInformation> res = new HashSet<>();
     for (Resource r : context.fetchResourceVersions(Resource.class, url)) {
       if (r instanceof CanonicalResource) {
         CanonicalResource cr = (CanonicalResource) r;
-        res.add(cr.hasVersion() ? cr.getVersion() : "{{unversioned}}");
+        res.add(new ResourceVersionInformation(cr.hasVersion() ? cr.getVersion() : "{{unversioned}}", cr.getSourcePackage()));
       }
     }
     if (fetcher != null) {

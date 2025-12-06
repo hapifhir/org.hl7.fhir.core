@@ -9,10 +9,7 @@ import org.hl7.fhir.r5.fhirpath.FHIRPathFunctionDefinition;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.DateTimeType;
-import org.hl7.fhir.r5.model.IntegerType;
-import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
@@ -21,11 +18,13 @@ import org.hl7.fhir.utilities.Utilities;
 public class GlobalObject extends Base {
 
   private DateTimeType dt;
+  private DateType dtD;
   private StringType pathToSpec;
   
-  public GlobalObject(DateTimeType td, StringType pathToSpec) {
+  public GlobalObject(DateTimeType td, DateType dtD, StringType pathToSpec) {
     super();
     this.dt = td;
+    this.dtD = dtD;
     this.pathToSpec = pathToSpec;
   }
 
@@ -57,6 +56,8 @@ public class GlobalObject extends Base {
   public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
     if ("dateTime".equals(name)) {
       return wrap(dt);
+    } else if ("date".equals(name)) {
+        return wrap(dtD);
     } else if ("path".equals(name)) {
       return wrap(pathToSpec);
     } else {
