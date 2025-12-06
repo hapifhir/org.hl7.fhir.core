@@ -456,7 +456,7 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
   }
 
   @Override
-  public Set<String> fetchCanonicalResourceVersions(IResourceValidator validator, Object appContext, String url) {
+  public Set<ResourceVersionInformation> fetchCanonicalResourceVersions(IResourceValidator validator, Object appContext, String url) {
     return new HashSet<>();
   }
 

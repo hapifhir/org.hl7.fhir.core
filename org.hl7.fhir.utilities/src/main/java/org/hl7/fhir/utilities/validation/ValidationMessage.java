@@ -724,6 +724,16 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   public String getLocation() {
     return location;
   }
+
+  public String getStrippedLocation() {
+    String loc = location;
+    while (loc.contains("/*")) {
+      int b = loc.indexOf("/*");
+      int e = loc.indexOf("*/");
+      loc = loc.substring(0, b) + loc.substring(e + 2);
+    }
+    return loc;
+  }
   public ValidationMessage setLocation(String location) {
     this.location = location;
     return this;
@@ -1030,11 +1040,6 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
       return false;
     }
 
-    // Compare location
-    if (!Objects.equals(this.location, other.location)) {
-      return false;
-    }
-
     // Compare message
     if (!Objects.equals(this.message, other.message)) {
       return false;
@@ -1067,6 +1072,11 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
 
     // Compare txLink
     if (!Objects.equals(this.txLink, other.txLink)) {
+      return false;
+    }
+
+    // Compare location
+    if (!Objects.equals(this.getStrippedLocation(), other.getStrippedLocation())) {
       return false;
     }
 
