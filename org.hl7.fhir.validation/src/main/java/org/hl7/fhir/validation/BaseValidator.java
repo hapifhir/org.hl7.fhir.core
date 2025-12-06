@@ -664,7 +664,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return validationMessage;
   }
 
-  private boolean hasMessage(List<ValidationMessage> errors, ValidationMessage newMsg) {
+  protected boolean hasMessage(List<ValidationMessage> errors, ValidationMessage newMsg) {
     for (ValidationMessage m : errors) {
       if (m.preciseMatch(newMsg)) {
         return true;

@@ -1843,7 +1843,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (!isIgnoredTxIssueType(issue, ignoreCantInfer)) {
         OperationOutcomeIssueComponent issueWithCalculatedSeverity = getTxIssueWithCalculatedSeverity(issue, bindingStrength);
         var validationMessage = buildValidationMessage(validationResult.getTxLink(), validationResult.getDiagnostics(), element.line(), element.col(), path, issueWithCalculatedSeverity);
-        if (!isSuppressedValidationMessage(validationMessage.getLocation(), validationMessage.getMessageId())) {
+        if (!isSuppressedValidationMessage(validationMessage.getLocation(), validationMessage.getMessageId()) && !hasMessage(errors, validationMessage)) {
           errors.add(validationMessage);
           if (validationMessage.isError()) {
             noErrorsFound = false;
@@ -6529,7 +6529,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     for (int i = 0; i < messages.size(); i++) {
       ValidationMessage iMessage = messages.get(i);
       if (message.getMessage() != null && message.getMessage().equals(iMessage.getMessage())
-        && message.getLocation() != null && message.getLocation().equals(iMessage.getLocation())) {
+        && message.getLocation() != null && message.getStrippedLocation().equals(iMessage.getStrippedLocation())) {
         return i;
       }
     }
