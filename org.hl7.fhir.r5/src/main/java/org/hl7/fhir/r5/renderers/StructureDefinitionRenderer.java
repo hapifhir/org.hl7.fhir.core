@@ -155,7 +155,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         XhtmlNode node = generateTable(status, context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false,
           context.getLink(KnownLinkType.SPEC, false), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, context.withUniqueLocalPrefix(null), "r", r, "X");
         if (node == null) {
-          System.out.println("This shouldn't happen?");
+//          log("This shouldn't happen?");
         } else {
           x.addChildNode(node);
         }
