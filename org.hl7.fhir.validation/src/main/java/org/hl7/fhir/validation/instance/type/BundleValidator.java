@@ -1389,10 +1389,10 @@ public class BundleValidator extends BaseValidator {
 
     switch (keyType) {
     case "RSA":
-      verifier = new RSASSAVerifier(key.toRSAKey());
+      verifier = new RSASSAVerifier(key.toRSAKey().toRSAPublicKey(), settings.getJwtHeaderList());
       break;
     case "EC":
-      verifier = new ECDSAVerifier(key.toECKey());
+      verifier = new ECDSAVerifier(key.toECKey().toECPublicKey(), settings.getJwtHeaderList());
       break;
     case "oct":
       verifier = new MACVerifier(key.toOctetSequenceKey());
