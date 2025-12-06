@@ -865,7 +865,7 @@ public class NpmPackage {
   public List<PackagedResourceFile> listAllResources() throws IOException {
     List<PackagedResourceFile> res = new ArrayList<PackagedResourceFile>();
     for (NpmPackageFolder folder : folders.values()) {
-      if (!folder.getFolderName().startsWith("tests")) {
+      if (!folder.getFolderName().startsWith("tests") && !folder.getFolderName().startsWith("data")) {
         for (String s : folder.types.keySet()) {
           if (folder.types.containsKey(s)) {
             for (String n : folder.types.get(s)) {
