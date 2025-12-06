@@ -100,13 +100,7 @@ import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.PublicationHacker;
 
 import org.hl7.fhir.r5.utils.UserDataNames;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
-import org.hl7.fhir.utilities.StandardsStatus;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.json.JsonException;
@@ -157,9 +151,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       genSummaryTable(status, x, sd);
       if (context.getStructureMode() == StructureDefinitionRendererMode.DATA_DICT) { 
         renderDict(status, sd, sd.getDifferential().getElement(), x.table("dict", false).markGenerated(!context.forValidResource()), false, GEN_MODE_DIFF, "", r);
-      } else { 
-        x.addChildNode(generateTable(status, context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false,  
-            context.getLink(KnownLinkType.SPEC, false), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, context.withUniqueLocalPrefix(null), "r", r, "X")); 
+      } else {
+        XhtmlNode node = generateTable(status, context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false,
+          context.getLink(KnownLinkType.SPEC, false), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, context.withUniqueLocalPrefix(null), "r", r, "X");
+        if (node == null) {
+          System.out.println("This shouldn't happen?");
+        } else {
+          x.addChildNode(node);
+        }
       } 
       status.setExtensions(true); 
     }
