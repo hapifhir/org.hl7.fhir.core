@@ -38,7 +38,7 @@ public class DigitalSignatureSupport {
   public static final String JWT_HEADER_X5C = "x5c";
   public static final String JWT_HEADER_SIGD = "sigD";
   public static final String JWT_HEADER_SRCMS = "srCms";
-  public static final String JWT_HEADER_VER = "version"; // custom for Eeva Turka
+  public static final String JWT_HEADER_VER = "version"; // custom for Eeva Turka (see Zulip)
   public static final String JWT_HEADER_COMM_ID = "commId";
   public static final String JWT_HEADER_ID = "id";
   public static final String JWT_HEADER_DESC = "desc";
