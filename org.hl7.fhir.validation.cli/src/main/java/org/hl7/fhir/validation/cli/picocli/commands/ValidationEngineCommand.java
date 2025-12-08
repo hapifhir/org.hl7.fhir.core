@@ -13,7 +13,6 @@ import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
 import picocli.CommandLine;
 
 import javax.annotation.Nonnull;
-import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
@@ -49,7 +48,7 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
 
   @Override
   public Integer call() { // your business logic goes here...
-    ValidationEngineParameters validationEngineParameters = getValidationEngineParameters();
+
     TimeTracker timeTracker = new TimeTracker();
     TimeTracker.Session timeTrackerSession = timeTracker.start("Loading");
 
@@ -70,7 +69,7 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
     return false;
   }
 
-  public abstract InstanceValidatorOptions getInstanceValidatorOptions();
+  public abstract InstanceValidatorParameters getInstanceValidatorParameters();
 
   public abstract List<String> getSources();
 
@@ -87,19 +86,17 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
       validationEngineParameters.setSv(validationService.determineVersion(validationEngineParameters.getIgs(), sources, validationEngineParameters.isRecursive(), validationEngineParameters.isInferFhirVersion()));
     }
 
-    InstanceValidatorOptions instanceValidatorOptions = getInstanceValidatorOptions();
-    if (instanceValidatorOptions != null) {
+    InstanceValidatorParameters instanceValidatorParameters =
+      getInstanceValidatorParameters();
+    if (instanceValidatorParameters != null) {
       log.info("  Locale: "+ Locale.getDefault().getDisplayCountry()+"/"+Locale.getDefault().getCountry());
-      if (instanceValidatorOptions.jurisdiction == null) {
+      if (instanceValidatorParameters.getJurisdiction() == null) {
         log.info("  Jurisdiction: None specified (locale = "+Locale.getDefault().getCountry()+")");
         log.info("  Note that exceptions and validation failures may happen in the absence of a locale");
       } else {
-        log.info("  Jurisdiction: "+ JurisdictionUtilities.displayJurisdiction(instanceValidatorOptions.jurisdiction));
+        log.info("  Jurisdiction: "+ JurisdictionUtilities.displayJurisdiction(instanceValidatorParameters.getJurisdiction()));
       }
     }
-
-    //FIXME convert CLI options to parameters
-    InstanceValidatorParameters instanceValidatorParameters = null;
 
     log.info("Loading");
     String definitions = "dev".equals(validationEngineParameters.getSv()) ? "hl7.fhir.r5.core#current" : VersionUtilities.packageForVersion(validationEngineParameters.getSv()) + "#" + VersionUtilities.getCurrentVersion(validationEngineParameters.getSv());
