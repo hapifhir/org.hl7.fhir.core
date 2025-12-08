@@ -9,7 +9,6 @@ import org.hl7.fhir.validation.service.ValidateSourceParameters;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.service.model.OutputParameters;
-import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
 import org.hl7.fhir.validation.service.model.WatchParameters;
 import picocli.CommandLine;
 
