@@ -14,10 +14,7 @@ import picocli.CommandLine;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(
@@ -35,7 +32,8 @@ import java.util.concurrent.Callable;
     """,
   subcommands = {
     CommandLine.HelpCommand.class,
-    ServerCommand.class
+    ServerCommand.class,
+    InstallCommand.class
   })
 @Slf4j
 public class ValidateCommand extends ValidationEngineCommand implements Callable<Integer> {
@@ -55,10 +53,6 @@ public class ValidateCommand extends ValidationEngineCommand implements Callable
   @CommandLine.Parameters(
     description = "The input file(s) to validate.")
   private String[] whatToValidate;
-
-  public ValidateCommand(ValidationService validationService) {
-    super(validationService);
-  }
 
   @Override
   public InstanceValidatorParameters getInstanceValidatorParameters() {

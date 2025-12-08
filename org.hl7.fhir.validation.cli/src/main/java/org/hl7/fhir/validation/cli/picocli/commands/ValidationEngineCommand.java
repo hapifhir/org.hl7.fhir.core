@@ -31,10 +31,6 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
   @CommandLine.ArgGroup(validate = false, heading = "Validation Engine%n")
   ValidationEngineOptions validationEngineOptions = new ValidationEngineOptions();
 
-  public ValidationEngineCommand(ValidationService validationService) {
-    super(validationService);
-  }
-
   protected ValidationEngineParameters getValidationEngineParameters() {
     ValidationEngineOptionsConvertor convertor = new ValidationEngineOptionsConvertor();
     ValidationEngineParameters validationEngineParameters = convertor.convert(validationEngineOptions);
@@ -60,7 +56,7 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
       return 1;
     }
     timeTrackerSession.end();
-    Integer result = call(validationService, validationEngine);
+    Integer result = call(getValidationService(), validationEngine);
     log.info("Done. " + timeTracker.report()+". Max Memory = "+ Utilities.describeSize(Runtime.getRuntime().maxMemory()));
     return result;
   }
@@ -83,7 +79,7 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
 
     List<String> sources = getSources();
     if (validationEngineParameters.getSv() == null) {
-      validationEngineParameters.setSv(validationService.determineVersion(validationEngineParameters.getIgs(), sources, validationEngineParameters.isRecursive(), validationEngineParameters.isInferFhirVersion()));
+      validationEngineParameters.setSv(getValidationService().determineVersion(validationEngineParameters.getIgs(), sources, validationEngineParameters.isRecursive(), validationEngineParameters.isInferFhirVersion()));
     }
 
     InstanceValidatorParameters instanceValidatorParameters =
@@ -101,6 +97,6 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
     log.info("Loading");
     String definitions = "dev".equals(validationEngineParameters.getSv()) ? "hl7.fhir.r5.core#current" : VersionUtilities.packageForVersion(validationEngineParameters.getSv()) + "#" + VersionUtilities.getCurrentVersion(validationEngineParameters.getSv());
 
-    return validationService.initializeValidator(validationEngineParameters, instanceValidatorParameters, definitions, timeTracker, sources);
+    return getValidationService().initializeValidator(validationEngineParameters, instanceValidatorParameters, definitions, timeTracker, sources);
   }
 }

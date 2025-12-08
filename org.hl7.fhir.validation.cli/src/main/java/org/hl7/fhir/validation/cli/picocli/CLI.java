@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.FileFormat;
 import org.hl7.fhir.validation.cli.Display;
 import org.hl7.fhir.validation.cli.picocli.commands.ValidateCommand;
+import org.hl7.fhir.validation.cli.picocli.commands.ValidationEngineCommand;
+import org.hl7.fhir.validation.cli.picocli.commands.ValidationServiceCommand;
 import org.hl7.fhir.validation.cli.picocli.options.DebugOptions;
 import org.hl7.fhir.validation.cli.picocli.options.GlobalOptions;
 import org.hl7.fhir.validation.cli.picocli.options.LocaleOptions;
@@ -33,7 +35,17 @@ public class CLI {
 
   protected int parseArgsAndExecuteCommand(String[] args) {
     String[] backwardCompatibleArgs = getBackwardCompatibleArgs(args);
-    CommandLine commandLine = new CommandLine(new ValidateCommand(myValidationService));
+    ValidateCommand parentCommand = new ValidateCommand();
+    parentCommand.setValidationService(myValidationService);
+
+
+    CommandLine commandLine = new CommandLine(parentCommand);
+    for (Map.Entry<String, CommandLine> subcommand : commandLine.getCommandSpec().subcommands().entrySet()) {
+      Object subcommandObject = subcommand.getValue().getCommand();
+      if (subcommandObject instanceof ValidationServiceCommand validationServiceCommand) {
+        validationServiceCommand.setValidationService(myValidationService);
+      }
+    }
 
     CommandLine.ParseResult parseResult = commandLine.parseArgs(backwardCompatibleArgs);
 
