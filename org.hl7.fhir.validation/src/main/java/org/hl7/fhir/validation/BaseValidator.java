@@ -212,7 +212,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
       this.xverManager = XVerExtensionManagerFactory.createExtensionManager(context);
     }
     this.settings = settings;
-    policyAdvisor = new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID);
+    policyAdvisor = new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID, null);
     urlRegex = Constants.URI_REGEX_XVER.replace("$$", CommaSeparatedStringBuilder.join("|", context.getResourceNames()));
   }
   
@@ -664,7 +664,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return validationMessage;
   }
 
-  private boolean hasMessage(List<ValidationMessage> errors, ValidationMessage newMsg) {
+  protected boolean hasMessage(List<ValidationMessage> errors, ValidationMessage newMsg) {
     for (ValidationMessage m : errors) {
       if (m.preciseMatch(newMsg)) {
         return true;

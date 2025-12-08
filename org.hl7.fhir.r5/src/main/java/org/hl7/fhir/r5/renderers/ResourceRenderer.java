@@ -90,6 +90,9 @@ public abstract class ResourceRenderer extends DataRenderer {
    */
   public XhtmlNode buildNarrative(ResourceWrapper dr) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    if (context.getRules() == RenderingContext.GenerationRules.IG_PUBLISHER) {
+      x.attribute("data-fhir", "generated");
+    }
     buildNarrative(new RenderingStatus(), x, dr);
     checkForDuplicateIds(x);
     return x;
@@ -138,6 +141,9 @@ public abstract class ResourceRenderer extends DataRenderer {
    */
   public void renderResource(ResourceWrapper r) throws IOException, FHIRException, EOperationOutcome {  
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    if (context.getRules() == RenderingContext.GenerationRules.IG_PUBLISHER) {
+      x.attribute("data-fhir", "generated");
+    }
     RenderingStatus status = new RenderingStatus();
     buildNarrative(status, x, r);
     String an = r.fhirType()+"_"+r.getId();
