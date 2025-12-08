@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.instance.advisor;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
@@ -19,8 +20,8 @@ public class JsonDrivenPolicyAdvisor extends RulesDrivenPolicyAdvisor {
     load(JsonParser.parseObject(source, true));
   }
 
-  public JsonDrivenPolicyAdvisor(ReferenceValidationPolicy refpol, File source) throws JsonException, IOException {
-    super(refpol);
+  public JsonDrivenPolicyAdvisor(ReferenceValidationPolicy refpol, File source, Set<String> referencesTo) throws JsonException, IOException {
+    super(refpol, referencesTo);
     load(JsonParser.parseObject(source));
   }
 

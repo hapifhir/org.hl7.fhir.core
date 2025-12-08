@@ -37,6 +37,7 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
+import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
@@ -248,6 +249,11 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       val.getSettings().getCertificates().put(content.get("certificate").getAsString(), TestingUtilities.loadTestResourceBytes("validator", content.get("certificate").getAsString()));
     }
 
+    if (content.has("sct")) {
+      vCurr.setSnomedExtension(SnomedUtilities.getCodeFromAlias(content.get("sct").getAsString()));
+    } else {
+      vCurr.setSnomedExtension(null);
+    }
     if (content.has("fetcher") && "standalone".equals(JsonUtilities.str(content, "fetcher"))) {
       val.setFetcher(vCurr);
       vCurr.setFetcher(new StandAloneValidatorFetcher(vCurr.getPcm(), vCurr.getContext(), vCurr));
@@ -1016,7 +1022,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   }
 
   @Override
-  public Set<String> fetchCanonicalResourceVersions(IResourceValidator validator, Object appContext, String url) {
+  public Set<ResourceVersionInformation> fetchCanonicalResourceVersions(IResourceValidator validator, Object appContext, String url) {
     return new HashSet<>();
   }
 
@@ -1024,7 +1030,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   public List<StructureDefinition> getImpliedProfilesForResource(IResourceValidator validator, Object appContext,
                                                                  String stackPath, ElementDefinition definition, StructureDefinition structure, Element resource, boolean valid,
                                                                  IMessagingServices msgServices, List<ValidationMessage> messages) {
-    return new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID).getImpliedProfilesForResource(validator, appContext, stackPath,
+    return new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID, null).getImpliedProfilesForResource(validator, appContext, stackPath,
       definition, structure, resource, valid, msgServices, messages);
   }
 
@@ -1045,6 +1051,11 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   @Override
   public ReferenceValidationPolicy getReferencePolicy() {
     return ReferenceValidationPolicy.IGNORE;
+  }
+
+  @Override
+  public Set<String> getCheckReferencesTo() {
+    return Set.of();
   }
 
   public IValidationPolicyAdvisor getPolicyAdvisor() {

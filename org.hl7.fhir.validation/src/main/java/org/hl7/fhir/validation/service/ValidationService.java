@@ -38,17 +38,7 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.liquid.BaseTableWrapper;
 import org.hl7.fhir.r5.liquid.GlobalObject.GlobalObjectRandomFunction;
 import org.hl7.fhir.r5.liquid.LiquidEngine;
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.ConceptMap;
-import org.hl7.fhir.r5.model.DateTimeType;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.StructureMap;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.profilemodel.gen.PECodeGenerator;
 import org.hl7.fhir.r5.profilemodel.gen.PECodeGenerator.ExtensionPolicy;
 import org.hl7.fhir.r5.renderers.spreadsheets.CodeSystemSpreadsheetGenerator;
@@ -785,6 +775,7 @@ public class ValidationService {
       } else {
         fetcher.setReferencePolicy(ReferenceValidationPolicy.IGNORE);        
       }
+      fetcher.getCheckReferencesTo().addAll(validationEngineParameters.getCheckReferencesTo());
       fetcher.setResolutionContext(validationEngineParameters.getResolutionContext());
     } else {
       DisabledValidationPolicyAdvisor fetcher = new DisabledValidationPolicyAdvisor();
@@ -798,7 +789,8 @@ public class ValidationService {
         validationEngine.getPolicyAdvisor().setPolicyAdvisor(new TextDrivenPolicyAdvisor(validationEngine.getPolicyAdvisor().getPolicyAdvisor(), ManagedFileAccess.file(validationEngineParameters.getAdvisorFile())));
       }
     } else {
-      validationEngine.getPolicyAdvisor().setPolicyAdvisor(new BasePolicyAdvisorForFullValidation(validationEngine.getPolicyAdvisor() == null ? refpol : validationEngine.getPolicyAdvisor().getReferencePolicy()));
+      validationEngine.getPolicyAdvisor().setPolicyAdvisor(new BasePolicyAdvisorForFullValidation(validationEngine.getPolicyAdvisor() == null ? refpol : validationEngine.getPolicyAdvisor().getReferencePolicy(),
+        validationEngine.getCheckReferencesTo()));
     }
     TerminologyCache.setNoCaching(validationEngineParameters.isNoInternalCaching());
 
@@ -1128,7 +1120,10 @@ public class ValidationService {
       log.info("Preparing to execute");
               
       FHIRPathEngine fpe = new FHIRPathEngine(validationEngine.getContext());
-      TestDataHostServices hs = new TestDataHostServices(validationEngine.getContext(), new DateTimeType(new Date()), new StringType(VersionUtilities.getSpecUrl(validationEngine.getContext().getVersion())));
+      TestDataHostServices hs = new TestDataHostServices(validationEngine.getContext(),
+        new DateTimeType(new Date()),
+        new DateType(new Date()),
+        new StringType(VersionUtilities.getSpecUrl(validationEngine.getContext().getVersion())));
       hs.registerFunction(new GlobalObjectRandomFunction());
       hs.registerFunction(new BaseTableWrapper.TableColumnFunction());
       hs.registerFunction(new BaseTableWrapper.TableDateColumnFunction());

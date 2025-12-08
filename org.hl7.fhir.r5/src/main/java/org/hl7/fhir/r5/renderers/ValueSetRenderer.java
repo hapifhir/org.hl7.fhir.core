@@ -90,6 +90,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     } else {
       renderResourceTechDetails(r, x);
       ValueSet vs = (ValueSet) r.getBase();
+
       genSummaryTable(status, x, vs);
       List<UsedConceptMap> maps = findReleventMaps(vs);
 
@@ -344,13 +345,12 @@ public class ValueSetRenderer extends TerminologyRenderer {
         }
       }
     }
+    addMapHeaders(tr, maps);
     if (context.forPublisher()) {
       tr.td().b().tx(context.formatPhrase(RenderingI18nContext.CANON_REND_JSON));
       tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_XML));
     }
 
-    
-    addMapHeaders(tr, maps);
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
       addExpansionRowToTable(t, vs, c, 1, doLevel, doDefinition, doInactive, doVersion, maps, langs, designations, doDesignations, properties, res);
     }

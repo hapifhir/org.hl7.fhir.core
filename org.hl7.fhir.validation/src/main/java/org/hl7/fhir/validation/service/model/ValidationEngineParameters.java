@@ -353,6 +353,11 @@ public class ValidationEngineParameters {
   private
   boolean checkReferences = false;
 
+  @JsonProperty("checkReferencesTo")
+  @SerializedName("checkReferencesTo")
+  private
+  Set<String> checkReferencesTo = new HashSet<>();
+
   @SerializedName("checkReferences")
   @JsonProperty("checkReferences")
   public boolean isCheckReferences() {
@@ -365,6 +370,13 @@ public class ValidationEngineParameters {
     this.checkReferences = checkReferences;
     return this;
   }
+
+  @SerializedName("checkReferences")
+  @JsonProperty("checkReferences")
+  public Set<String> getCheckReferencesTo() {
+    return checkReferencesTo;
+  }
+
 
   @JsonProperty("noInternalCaching")
   @SerializedName("noInternalCaching")
