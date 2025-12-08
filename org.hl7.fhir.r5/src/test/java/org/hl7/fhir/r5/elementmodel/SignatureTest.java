@@ -26,6 +26,8 @@ import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.util.Base64URL;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 
 
 public class SignatureTest {
@@ -46,21 +48,23 @@ public class SignatureTest {
       + "}";
 
   @Test
-  public void testSignature() throws FileNotFoundException, IOException, JOSEException, ParseException {
-    IWorkerContext context = TestingUtilities.getSharedWorkerContext();
-    Element bnd = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("r5", "bundle-resource-element-test.json"), FhirFormat.JSON);
-    ByteArrayOutputStream ba = new ByteArrayOutputStream();
-    Manager.compose(context, bnd, ba, FhirFormat.JSON, OutputStyle.CANONICAL, null);
-    byte[] toSign = ba.toByteArray();
+  void testSignature() {
+    assertDoesNotThrow(() -> {
+      IWorkerContext context = TestingUtilities.getSharedWorkerContext();
+      Element bnd = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("r5", "bundle-resource-element-test.json"), FhirFormat.JSON);
+      ByteArrayOutputStream ba = new ByteArrayOutputStream();
+      Manager.compose(context, bnd, ba, FhirFormat.JSON, OutputStyle.CANONICAL, null);
+      byte[] toSign = ba.toByteArray();
 
-    Element sig = bnd.addElement("signature");
-    sig.setChildValue("targetFormat", "application/fhir+json");
-    sig.setChildValue("sigFormat", "application/jose");
-    sig.setChildValue("data", createJWSWithNimbus(toSign, loadJWKFromJWKS(JWKS_JSON), "http://hl7.org/fhir/canonicalization/json"));
-    
-    FileOutputStream f = new FileOutputStream(ManagedFileAccess.file(Utilities.path("[tmp]", "signed-bundle.json")));
-    Manager.compose(context, bnd, f, FhirFormat.JSON, OutputStyle.PRETTY, null);
-    f.close();
+      Element sig = bnd.addElement("signature");
+      sig.setChildValue("targetFormat", "application/fhir+json");
+      sig.setChildValue("sigFormat", "application/jose");
+      sig.setChildValue("data", createJWSWithNimbus(toSign, loadJWKFromJWKS(JWKS_JSON), "http://hl7.org/fhir/canonicalization/json"));
+
+      FileOutputStream f = new FileOutputStream(ManagedFileAccess.file(Utilities.path("[tmp]", "signed-bundle.json")));
+      Manager.compose(context, bnd, f, FhirFormat.JSON, OutputStyle.PRETTY, null);
+      f.close();
+    });
   }
 
   public JWK loadJWKFromJWKS(String jwksJson) throws ParseException{

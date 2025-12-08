@@ -7,6 +7,8 @@ import org.hl7.fhir.utilities.turtle.Turtle;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 public class TurtleTests {
 
   private void doTest(String s, boolean ok) throws Exception {
@@ -1931,8 +1933,10 @@ public class TurtleTests {
 //
 
   @Test
-  public void test_bundle_example() throws FileNotFoundException, IOException, Exception {
-    new Turtle().parse(BaseTestingUtilities.loadTestResource("r5", "bundle-example.ttl"));
+  void test_bundle_example() {
+    assertDoesNotThrow(() -> {
+      new Turtle().parse(BaseTestingUtilities.loadTestResource("r5", "bundle-example.ttl"));
+    });
   }
 
 }

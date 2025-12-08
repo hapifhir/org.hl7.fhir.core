@@ -23,6 +23,8 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 @Disabled
 public class ProfileUtilitiesTests {
 
@@ -34,41 +36,42 @@ public class ProfileUtilitiesTests {
 //   * @throws EOperationOutcome 
 //   */
   @Test
-  public void testSimple() throws FHIRException, FileNotFoundException, IOException, UcumException {
+  void testSimple() throws FHIRException {
+    assertDoesNotThrow(() -> {
+      StructureDefinition focus = new StructureDefinition();
+      StructureDefinition base = TestingUtilities.context()
+          .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
+      focus.setUrl(UUIDUtilities.makeUuidUrn());
+      focus.setBaseDefinition(base.getUrl());
+      focus.setType("Patient");
+      focus.setDerivation(TypeDerivationRule.CONSTRAINT);
+      List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
+      new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(),
+          "http://hl7.org/fhir/R4", "Simple Test");
 
-    StructureDefinition focus = new StructureDefinition();
-    StructureDefinition base = TestingUtilities.context()
-        .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
-    focus.setUrl(UUIDUtilities.makeUuidUrn());
-    focus.setBaseDefinition(base.getUrl());
-    focus.setType("Patient");
-    focus.setDerivation(TypeDerivationRule.CONSTRAINT);
-    List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(),
-        "http://hl7.org/fhir/R4", "Simple Test");
-
-    boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
-    for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
-      ElementDefinition b = base.getSnapshot().getElement().get(i);
-      ElementDefinition f = focus.getSnapshot().getElement().get(i);
-      if (ok) {
-        if (!f.hasBase())
-          ok = false;
-        else if (!b.getPath().equals(f.getPath()))
-          ok = false;
-        else {
-          b.setBase(null);
-          f.setBase(null);
-          ok = Base.compareDeep(b, f, true);
+      boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
+      for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
+        ElementDefinition b = base.getSnapshot().getElement().get(i);
+        ElementDefinition f = focus.getSnapshot().getElement().get(i);
+        if (ok) {
+          if (!f.hasBase())
+            ok = false;
+          else if (!b.getPath().equals(f.getPath()))
+            ok = false;
+          else {
+            b.setBase(null);
+            f.setBase(null);
+            ok = Base.compareDeep(b, f, true);
+          }
         }
       }
-    }
 
-    if (!ok) {
-      compareXml(base, focus);
-      throw new FHIRException("Snap shot generation simple test failed");
-    } else
-      System.out.println("Snap shot generation simple test passed");
+      if (!ok) {
+        compareXml(base, focus);
+        throw new FHIRException("Snap shot generation simple test failed");
+      } else
+        System.out.println("Snap shot generation simple test passed");
+    });
   }
 
   //
@@ -80,38 +83,40 @@ public class ProfileUtilitiesTests {
 //   * @throws EOperationOutcome 
 //   */
   @Test
-  public void testSimple2() throws EOperationOutcome, Exception {
-    StructureDefinition base = TestingUtilities.context()
-        .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/ValueSet").copy();
-    StructureDefinition focus = base.copy();
-    focus.setUrl(UUIDUtilities.makeUuidUrn());
-    focus.setSnapshot(null);
-    focus.setDifferential(null);
-    List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(),
-        "http://hl7.org/fhir/R4", "Simple Test");
+  void testSimple2() {
+    assertDoesNotThrow(() -> {
+      StructureDefinition base = TestingUtilities.context()
+          .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/ValueSet").copy();
+      StructureDefinition focus = base.copy();
+      focus.setUrl(UUIDUtilities.makeUuidUrn());
+      focus.setSnapshot(null);
+      focus.setDifferential(null);
+      List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
+      new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(),
+          "http://hl7.org/fhir/R4", "Simple Test");
 
-    boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
-    for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
-      if (ok) {
-        ElementDefinition b = base.getSnapshot().getElement().get(i);
-        ElementDefinition f = focus.getSnapshot().getElement().get(i);
-        if (!f.hasBase() || !b.getPath().equals(f.getPath()))
-          ok = false;
-        else {
-          f.setBase(null);
-          b.setBase(null);
-          ok = Base.compareDeep(b, f, true);
+      boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
+      for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
+        if (ok) {
+          ElementDefinition b = base.getSnapshot().getElement().get(i);
+          ElementDefinition f = focus.getSnapshot().getElement().get(i);
+          if (!f.hasBase() || !b.getPath().equals(f.getPath()))
+            ok = false;
+          else {
+            f.setBase(null);
+            b.setBase(null);
+            ok = Base.compareDeep(b, f, true);
+          }
         }
       }
-    }
 
-    if (!ok) {
-      compareXml(base, focus);
-      System.out.println("Snap shot generation simple test failed");
-      throw new FHIRException("Snap shot generation simple test failed");
-    } else
-      System.out.println("Snap shot generation simple test passed");
+      if (!ok) {
+        compareXml(base, focus);
+        System.out.println("Snap shot generation simple test failed");
+        throw new FHIRException("Snap shot generation simple test failed");
+      } else
+        System.out.println("Snap shot generation simple test passed");
+    });
   }
 
 //  /**

@@ -28,6 +28,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @Slf4j
 public class ShexGeneratorTests {
@@ -57,7 +58,8 @@ public class ShexGeneratorTests {
   }
 
   @Test
-  public void testCompleteModel() throws FHIRException, IOException, UcumException {
+  void testCompleteModel() {
+    assertDoesNotThrow(() -> {
       var workerContext = TestingUtilities.getSharedWorkerContext();
       ShExGenerator shgen = new ShExGenerator(workerContext);
       shgen.completeModel = true;
@@ -74,6 +76,7 @@ public class ShexGeneratorTests {
       }
       System.out.println("Generating Complete FHIR ShEx to " + outPath.toString());
       FileUtilities.stringToFile(shgen.generate(HTMLLinkPolicy.NONE, list), outPath.toString());
+    });
   }
 
   @Test

@@ -10,26 +10,30 @@ import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 
 public class GeneralTests {
 
   @Test
-  void testXMLParse() throws IOException {
-    System.out.println(System.getProperty("java.vm.name"));
-    InputStream stream = TestingUtilities.loadTestResourceStream("validator",
-      "xml_v10.xml");
-    org.hl7.fhir.r5.elementmodel.XmlParser xp = new org.hl7.fhir.r5.elementmodel.XmlParser(TestingUtilities.getSharedWorkerContext());
-    xp.setAllowXsiLocation(true);
-    List<ValidationMessage> errorList = new ArrayList<>();
-    xp.setupValidation(ValidationPolicy.EVERYTHING);
-    try {
-      xp.parseSingle(stream, errorList);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    for (ValidationMessage message : errorList) {
-      System.out.println(message.getMessage());
-    }
+  void testXMLParse() {
+    assertDoesNotThrow(() -> {
+      System.out.println(System.getProperty("java.vm.name"));
+      InputStream stream = TestingUtilities.loadTestResourceStream("validator",
+        "xml_v10.xml");
+      org.hl7.fhir.r5.elementmodel.XmlParser xp = new org.hl7.fhir.r5.elementmodel.XmlParser(TestingUtilities.getSharedWorkerContext());
+      xp.setAllowXsiLocation(true);
+      List<ValidationMessage> errorList = new ArrayList<>();
+      xp.setupValidation(ValidationPolicy.EVERYTHING);
+      try {
+        xp.parseSingle(stream, errorList);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      for (ValidationMessage message : errorList) {
+        System.out.println(message.getMessage());
+      }
+    });
   }
   
 }
