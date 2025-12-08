@@ -3,6 +3,12 @@ package org.hl7.fhir.validation.cli.picocli.options;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.With;
+import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
+import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
+import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
+import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
+import org.hl7.fhir.validation.service.utils.ValidationLevel;
 import picocli.CommandLine;
 
 import java.util.ArrayList;
@@ -26,4 +32,157 @@ public class InstanceValidatorOptions {
     arity = "0..*")
   @With
   public List<String> profiles = new ArrayList<>();
+
+  // Boolean flags
+  @CommandLine.Option(names = {"-assumeValidRestReferences"},
+    description = "If present, assume that URLs that reference resources follow the RESTful URI pattern and it is safe to infer the type from the URL",
+    arity = "0")
+  @With
+  public boolean assumeValidRestReferences = false;
+
+  @CommandLine.Option(names = {"-hintAboutNonMustSupport"},
+    description = "If present, raise hints if the instance contains data elements that are not marked as mustSupport=true. Useful to identify elements included that may be ignored by recipients",
+    arity = "0")
+  @With
+  public boolean hintAboutNonMustSupport = false;
+
+  @CommandLine.Option(names = {"-want-invariants-in-messages"},
+    description = "Controls whether the FHIRPath for invariants is included in the message",
+    arity = "0")
+  @With
+  public boolean wantInvariantsInMessages = false;
+
+  @CommandLine.Option(names = {"-no-invariants"},
+    description = "Tell the validator to ignore all invariants",
+    arity = "0")
+  @With
+  public boolean noInvariants = false;
+
+  @CommandLine.Option(names = {"-unknown-codesystems-cause-errors"},
+    description = "If present, unknown code systems associated with required bindings will create an error not a warning",
+    arity = "0")
+  @With
+  public boolean unknownCodeSystemsCauseErrors = false;
+
+  @CommandLine.Option(names = {"-forPublication"},
+    description = "Setting this flag means that the validator automatically checks conformance with the Shareable* profiles",
+    arity = "0")
+  @With
+  public boolean forPublication = false;
+
+  @CommandLine.Option(names = {"-no_unicode_bidi_control_chars"},
+    description = "Make the validator produce an error for any bidi control character at all",
+    arity = "0")
+  @With
+  public boolean noUnicodeBiDiControlChars = false;
+
+  @CommandLine.Option(names = {"-crumb-trails", "-verbose"},
+    description = "When set, the validator will create hints against the resources to explain which profiles it has validated the resource against",
+    arity = "0")
+  @With
+  public boolean crumbTrails = false;
+
+  @CommandLine.Option(names = {"-show-message-ids"},
+    description = "Show message IDs in the validation output",
+    arity = "0")
+  @With
+  public boolean showMessageIds = false;
+
+  @CommandLine.Option(names = {"-allow-example-urls"},
+    description = "Allow references to example.org URLs in resources",
+    arity = "0")
+  @With
+  public boolean allowExampleUrls = false;
+
+  @CommandLine.Option(names = {"-showReferenceMessages"},
+    description = "Includes validation messages resulting from validating target resources against profiles defined on a reference",
+    arity = "0")
+  @With
+  public boolean showMessagesFromReferences = false;
+
+  @CommandLine.Option(names = {"-security-checks"},
+    description = "If present, check that string content doesn't include any html-like tags that might create problems downstream",
+    arity = "0")
+  @With
+  public boolean securityChecks = false;
+
+  @CommandLine.Option(names = {"-no-experimental-content"},
+    description = "Reject experimental content in validation",
+    arity = "0")
+  @With
+  public boolean noExperimentalContent = false;
+
+  @CommandLine.Option(names = {"-tx-routing"},
+    description = "Generate extra output that summarizes which terminology server was used for a particular validation",
+    arity = "0")
+  @With
+  public boolean showTerminologyRouting = false;
+
+  @CommandLine.Option(names = {"-implicit-fhirpath-string-conversions"},
+    description = "Restore pre-5.6.48 FHIRPath behavior with automatic string conversions",
+    arity = "0")
+  @With
+  public boolean doImplicitFHIRPathStringConversion = false;
+
+  @CommandLine.Option(names = {"-allow-double-quotes-in-fhirpath"},
+    description = "Support legacy FHIRPath statements that include double quotes",
+    arity = "0")
+  @With
+  public boolean allowDoubleQuotesInFHIRPath = false;
+
+  @CommandLine.Option(names = {"-check-ips-codes"},
+    description = "Report SNOMED CT codes not part of the IPS free set",
+    arity = "0")
+  @With
+  public boolean checkIPSCodes = false;
+
+  // String fields
+  @CommandLine.Option(names = {"-html-output"},
+    description = "A filename for the HTML output with validation results")
+  @With
+  public String htmlOutput;
+
+  @CommandLine.Option(names = {"-output-style"},
+    description = "Output style format (eslint-compact, csv, xml, json, compact, compact-split)")
+  @With
+  public String outputStyle;
+
+  // Enum fields
+  @CommandLine.Option(names = {"-r5-bundle-relative-reference-policy"},
+    description = "Control R5 bundle resolution policy (always, never, default)")
+  @With
+  public R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy;
+
+  @CommandLine.Option(names = {"-questionnaire"},
+    description = "What to do when validating QuestionnaireResponse resources (none, check, required)")
+  @With
+  public QuestionnaireMode questionnaireMode = QuestionnaireMode.CHECK;
+
+  @CommandLine.Option(names = {"-level"},
+    description = "Minimum level for validation messages (hints, warnings, errors)")
+  @With
+  public ValidationLevel level = ValidationLevel.HINTS;
+
+  @CommandLine.Option(names = {"-best-practice"},
+    description = "How to treat best practice constraints (ignore, hint, warning, error)")
+  @With
+  public BestPracticeWarningLevel bestPracticeLevel = BestPracticeWarningLevel.Warning;
+
+  @CommandLine.Option(names = {"-html-in-markdown"},
+    description = "Check for embedded HTML in markdown (ignore, warning, error)")
+  @With
+  public HtmlInMarkdownCheck htmlInMarkdownCheck = HtmlInMarkdownCheck.WARNING;
+
+  // List fields
+  @CommandLine.Option(names = {"-extension"},
+    description = "URL domain from which extensions will be allowed, or 'any' for all. Can repeat multiple times.",
+    arity = "0..*")
+  @With
+  public List<String> extensions = new ArrayList<>();
+
+  @CommandLine.Option(names = {"-bundle"},
+    description = "Validate specific resources in a bundle against profiles",
+    arity = "0..*")
+  @With
+  public List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
 }
