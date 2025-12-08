@@ -14,6 +14,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class IniFileTest {
@@ -36,9 +37,10 @@ public class IniFileTest {
 
   @Test
   public void testZonedDateTime() {
-    DateTimeFormatter dtFmt = DateTimeFormatter.ofPattern(INTEGER_ONLY_DATE_TIME_FORMAT);
-    LocalDateTime dateTime = LocalDateTime.parse(INTEGER_ONLY_DATETIME_STRING,dtFmt);
-
+    assertDoesNotThrow(() -> {
+      DateTimeFormatter dtFmt = DateTimeFormatter.ofPattern(INTEGER_ONLY_DATE_TIME_FORMAT);
+      LocalDateTime dateTime = LocalDateTime.parse(INTEGER_ONLY_DATETIME_STRING,dtFmt);
+    });
   }
   @Test
   public void testSetTimestampPropertyDefaultFormat() throws IOException, ParseException {

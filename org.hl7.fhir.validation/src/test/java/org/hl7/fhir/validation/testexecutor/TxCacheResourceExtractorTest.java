@@ -6,6 +6,8 @@ import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 public class TxCacheResourceExtractorTest {
 
   /**
@@ -17,15 +19,16 @@ public class TxCacheResourceExtractorTest {
   }
 
   @Test
-  public void testTxCacheExtraction() throws IOException {
-    if (isCliRun()) {
-      return;
-    }
+  public void testTxCacheExtraction() {
+    assertDoesNotThrow(() -> {
+      if (isCliRun()) {
+        return;
+      }
 
-    Path path = Files.createTempDirectory("txCacheExtractionTest");
+      Path path = Files.createTempDirectory("txCacheExtractionTest");
 
-    TxCacheResourceExtractor.extractTxCacheResources(path.toString());
-
+      TxCacheResourceExtractor.extractTxCacheResources(path.toString());
+    });
   }
 
 }
