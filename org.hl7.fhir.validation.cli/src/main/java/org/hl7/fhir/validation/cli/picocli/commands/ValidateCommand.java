@@ -1,13 +1,20 @@
 package org.hl7.fhir.validation.cli.picocli.commands;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.r5.model.ImplementationGuide;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.picocli.options.*;
+import org.hl7.fhir.validation.service.ValidateSourceParameters;
 import org.hl7.fhir.validation.service.ValidationService;
+import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
+import org.hl7.fhir.validation.service.model.OutputParameters;
 import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
+import org.hl7.fhir.validation.service.model.WatchParameters;
 import picocli.CommandLine;
 
 import javax.annotation.Nonnull;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -39,6 +46,9 @@ public class ValidateCommand extends ValidationEngineCommand implements Callable
   @CommandLine.ArgGroup(validate = false, heading = "Terminology Client Options%n")
   TerminologyClientOptions terminologyClientOptions = new TerminologyClientOptions();
 
+  @CommandLine.ArgGroup(validate = false, heading = "Instance Validator Options%n")
+  InstanceValidatorOptions instanceValidatorOptions = new InstanceValidatorOptions();
+
   //Needed to allow Help Command.
   @CommandLine.Option(names = { "-h", "-help", "-?"}, usageHelp = true, description = "Display this help and exit")
   private boolean help;
@@ -52,8 +62,9 @@ public class ValidateCommand extends ValidationEngineCommand implements Callable
   }
 
   @Override
-  public InstanceValidatorOptions getInstanceValidatorOptions() {
-    return null;
+  public InstanceValidatorParameters getInstanceValidatorParameters() {
+    InstanceValidatorOptionsConvertor convertor = new InstanceValidatorOptionsConvertor();
+    return convertor.convert(instanceValidatorOptions);
   }
 
   @Override
@@ -63,6 +74,41 @@ public class ValidateCommand extends ValidationEngineCommand implements Callable
 
   @Override
   protected Integer call(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine) {
+    InstanceValidatorParameters instanceValidatorParameters = getInstanceValidatorParameters();
+    if (instanceValidatorParameters.getExpansionParameters() != null) {
+      validationEngine.loadExpansionParameters(instanceValidatorParameters.getExpansionParameters());
+    }
+
+    for (String s : instanceValidatorOptions.profiles) {
+      if (
+        !validationEngine.getContext().hasResource(StructureDefinition.class, s)
+          && !validationEngine.getContext().hasResource(ImplementationGuide.class, s)) {
+        log.info("  Fetch Profile from " + s);
+        try {
+          validationEngine.loadProfile(s);
+        } catch (IOException e) {
+          log.error("Error loading profile: " + s, e);
+          return 1;
+        }
+
+      }
+    }
+
+    //FIXME add output and watch parameters
+    OutputParameters outputParameters = new OutputParameters();
+    WatchParameters watchParameters = new WatchParameters();
+
+    log.info("Validating");
+    try {
+      validationService.validateSources(validationEngine, new ValidateSourceParameters(instanceValidatorParameters, List.of(whatToValidate), outputParameters.getOutput(), watchParameters));
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+
+    if (validationEngineOptions.advisorFile != null) {
+      log.info("Note: Some validation issues might be hidden by the advisor settings in the file "+ validationEngineOptions.advisorFile);
+    }
+
     log.info("Locale: " + Locale.getDefault());
     log.info("Sources to validate: " + String.join("", getSources()));
     return 0;
