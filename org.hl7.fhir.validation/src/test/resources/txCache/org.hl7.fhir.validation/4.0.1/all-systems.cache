@@ -7586,6 +7586,86 @@ v: {
   "code" : "en-AU",
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "59284-0",
+    "display" : "Patient Consent"
+  }]
+}, "url": "http://hl7.org/fhir/ValueSet/consent-category", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Consent Document",
+  "code" : "59284-0",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "severity" : "error",
+  "error" : "Wrong whitespace in Display Name 'Patient Consent' for http://loinc.org#59284-0. Valid display is one of 4 choices: 'Consent Document' (en-US), 'Consent Document' (en-US), 'Consent' (en-US) or 'Patient Consent' (for the language(s) 'en-US')",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n1672 1672: 0ms  : Analysing http://hl7.org/fhir/ValueSet/consent-category|4.0.1 for validation purposes\r\n1672 0  : 0ms  : Parameters: disp-lang=en-US\r\n1672 0  : 0ms  : Prepare include: \"(http://terminology.hl7.org/CodeSystem/consentcategorycodes)\"\r\n1672 0  : 0ms  : CodeSystem found: \"http://terminology.hl7.org/CodeSystem/consentcategorycodes|1.0.1\"\r\n1672 0  : 0ms  : Prepare include: \"(^http://terminology.hl7.org/ValueSet/v3-ActConsentType)\"\r\n1672 0  : 0ms    : Analysing http://terminology.hl7.org/ValueSet/v3-ActConsentType|3.0.0 for validation purposes\r\n1672 0  : 0ms    : Prepare include: \"(http://terminology.hl7.org/CodeSystem/v3-ActCode)(concept<<_ActConsentType)\"\r\n1703 31 : 31ms   : CodeSystem found: \"http://terminology.hl7.org/CodeSystem/v3-ActCode|9.0.0\"\r\n1703 0  : 31ms : Prepare include: \"(http://loinc.org)(59284-0,57016-8,57017-6,64292-6)\"\r\n1703 0  : 31ms : CodeSystem found: \"http://loinc.org|2.81\"\r\n1703 0  : 31ms : Validate \"[http://loinc.org#59284-0 (\"Patient Consent\")]\"\r\n1703 0  : 31ms : Check \"http://loinc.org#59284-0\"\r\n1703 0  : 31ms : Check included value set http://terminology.hl7.org/ValueSet/v3-ActConsentType\r\n1703 0  : 31ms   : Check \"http://loinc.org#59284-0\"\r\n1703 0  : 31ms : CodeSystem found: http://loinc.org|2.81 for http://loinc.org\r\n1703 0  : 31ms : check code in (http://loinc.org)(59284-0,57016-8,57017-6,64292-6) at CodeableConcept.coding[0]\r\n1703 0  : 31ms : Code \"59284-0\" found in http://loinc.org|2.81\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Display_Name_WS_for__should_be_one_of__instead_of"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong whitespace in Display Name 'Patient Consent' for http://loinc.org#59284-0. Valid display is one of 4 choices: 'Consent Document' (en-US), 'Consent Document' (en-US), 'Consent' (en-US) or 'Patient Consent' (for the language(s) 'en-US')"
+    },
+    "location" : ["CodeableConcept.coding[0].display"],
+    "expression" : ["CodeableConcept.coding[0].display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "fi"
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"fi", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Finnish",
+  "code" : "fi",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n79 79   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/languages|4.0.1 for validation purposes\r\n79 0    : 0ms  : Parameters: disp-lang=fi\r\n79 0    : 0ms  : Prepare include: \"(urn:ietf:bcp:47)(ar,bn,cs,da,de,de-AT,de-CH,de-DE,el,en,en-AU,en-CA,en-GB,en-IN,en-NZ,en-SG,en-US,es,es-AR,es-ES,es-UY,fi,fr,fr-BE,fr-CH,fr-FR,fy,fy-NL,hi,hr,it,it-CH,it-IT,ja,ko,nl,nl-BE,nl-NL,no,no-NO,pa,pl,pt,pt-BR,ru,ru-RU,sr,sr-RS,sv,sv-SE,te,zh,zh-CN,zh-HK,zh-SG,zh-TW)\"\r\n79 0    : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n79 0    : 0ms  : Validate \"[#fi (\"\")]\" and infer system\r\n79 0    : 0ms  : Check \"#fi\"\r\n79 0    : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n79 0    : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n79 0    : 0ms  : check code in (urn:ietf:bcp:47)(ar,bn,cs,da,de,de-AT,de-CH,de-DE,el,en,en-AU,en-CA,en-GB,en-IN,en-NZ,en-SG,en-US,es,es-AR,es-ES,es-UY,fi,fr,fr-BE,fr-CH,fr-FR,fy,fy-NL,hi,hr,it,it-CH,it-IT,ja,ko,nl,nl-BE,nl-NL,no,no-NO,pa,pl,pt,pt-BR,ru,ru-RU,sr,sr-RS,sv,sv-SE,te,zh,zh-CN,zh-HK,zh-SG,zh-TW) at \r\n79 0    : 0ms  : Code \"fi\" found in urn:ietf:bcp:47|\r\n",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

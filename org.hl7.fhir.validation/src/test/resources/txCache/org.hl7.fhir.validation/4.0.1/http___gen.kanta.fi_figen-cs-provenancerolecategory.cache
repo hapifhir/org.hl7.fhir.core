@@ -1,0 +1,52 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://gen.kanta.fi/figen-cs-provenancerolecategory",
+  "code" : "1",
+  "display" : "Resurssin rekisterinpitäjä"
+}, "valueSet" :null, "langs":"fi", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "1",
+  "system" : "http://gen.kanta.fi/figen-cs-provenancerolecategory",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://gen.kanta.fi/figen-cs-provenancerolecategory' could not be found, so the code cannot be validated",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=fi\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://gen.kanta.fi/figen-cs-provenancerolecategory#1 (\"Resurssin rekisterinpitäjä\")]\"\r\n0 0     : 0ms  : Check \"http://gen.kanta.fi/figen-cs-provenancerolecategory#1\"\r\n0 0     : 0ms  : Didn't find CodeSystem \"http://gen.kanta.fi/figen-cs-provenancerolecategory\"\r\n",
+  "unknown-systems" : "http://gen.kanta.fi/figen-cs-provenancerolecategory",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://gen.kanta.fi/figen-cs-provenancerolecategory' could not be found, so the code cannot be validated"
+    },
+    "location" : ["Coding.system"],
+    "expression" : ["Coding.system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------

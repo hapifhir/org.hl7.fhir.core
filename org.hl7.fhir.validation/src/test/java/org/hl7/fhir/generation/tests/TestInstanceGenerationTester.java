@@ -18,6 +18,7 @@ import org.hl7.fhir.r5.liquid.BaseTableWrapper;
 import org.hl7.fhir.r5.liquid.GlobalObject.GlobalObjectRandomFunction;
 import org.hl7.fhir.r5.liquid.LiquidEngine;
 import org.hl7.fhir.r5.model.DateTimeType;
+import org.hl7.fhir.r5.model.DateType;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
@@ -47,7 +48,8 @@ public class TestInstanceGenerationTester {
         new NullLoaderKnowledgeProviderR5(), context.getVersion()));
             
     FHIRPathEngine fpe = new FHIRPathEngine(context);
-    TestDataHostServices hs = new TestDataHostServices(context, new DateTimeType("2024-12-24T09:01:00+11:00"), new StringType("http://hl7.org/fhir"));
+    TestDataHostServices hs = new TestDataHostServices(context, new DateTimeType("2024-12-24T09:01:00+11:00"),
+      new DateType("2024-12-24"), new StringType("http://hl7.org/fhir"));
     hs.registerFunction(new GlobalObjectRandomFunction());
     hs.registerFunction(new BaseTableWrapper.TableColumnFunction());
     hs.registerFunction(new BaseTableWrapper.TableDateColumnFunction());

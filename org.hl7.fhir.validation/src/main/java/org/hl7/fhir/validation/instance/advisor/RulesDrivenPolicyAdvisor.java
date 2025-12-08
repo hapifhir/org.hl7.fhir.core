@@ -3,6 +3,7 @@ package org.hl7.fhir.validation.instance.advisor;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
@@ -14,7 +15,6 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ReferenceDestinationType;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
@@ -25,13 +25,13 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
 
   private IValidationPolicyAdvisor base;
   
-  public RulesDrivenPolicyAdvisor(ReferenceValidationPolicy refpol) {
-    super(refpol);
+  public RulesDrivenPolicyAdvisor(ReferenceValidationPolicy refpol, Set<String> referencesTo) {
+    super(refpol, referencesTo);
     base = null;
   }
 
   public RulesDrivenPolicyAdvisor(IValidationPolicyAdvisor base) {
-    super(base.getReferencePolicy());
+    super(base.getReferencePolicy(), base.getCheckReferencesTo());
     this.base = base;
   }
 

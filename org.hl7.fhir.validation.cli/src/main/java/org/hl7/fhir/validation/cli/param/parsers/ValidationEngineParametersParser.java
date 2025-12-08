@@ -30,6 +30,7 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
   public static final String LOCALE = "-locale";
   public static final String LANGUAGE = "-language";
   public static final String CHECK_REFERENCES = "-check-references";
+  public static final String CHECK_REFERENCES_TO = "-check-references-to";
   public static final String ALT_VERSION = "-alt-version";
   public static final String NO_INTERNAL_CACHING = "-no-internal-caching";
   public static final String DISABLE_DEFAULT_RESOURCE_FETCHER = "-disable-default-resource-fetcher";
@@ -170,6 +171,14 @@ public class ValidationEngineParametersParser implements IParamParser<Validation
       } else if (args[i].getValue().equals(CHECK_REFERENCES)) {
         validationEngineParameters.setCheckReferences(true);
         args[i].setProcessed(true);
+      } else if (args[i].getValue().equals(CHECK_REFERENCES_TO)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified " + args[i] + " without indicating server");
+        else {
+          String s = args[i + 1].getValue();
+          validationEngineParameters.getCheckReferencesTo().add(s.replace("https://", "http://"));
+          Arg.setProcessed(args, i, 2, true);
+        }
       } else if (args[i].getValue().equals(ALT_VERSION)) {
         if (i + 1 == args.length)
           throw new Error("Specified " + args[i] + " without indicating version");

@@ -27,6 +27,8 @@ import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.MarkdownType;
 import org.hl7.fhir.r5.model.PrimitiveType;
@@ -232,6 +234,11 @@ public class LanguageUtils {
     }
     r = r + checkForTranslations(translations, usedUnits, resource, "StructureDefinition.purpose", "purpose");
     r = r + checkForTranslations(translations, usedUnits, resource, "StructureDefinition.copyright", "copyright");
+    for (Element map : resource.getChildrenByName("mapping")) {
+      String identity = map.getNamedChildValue("identity");
+      r = r + checkForTranslations(translations, usedUnits, map, "StructureDefinition.mapping."+identity+"/name", "name");
+      r = r + checkForTranslations(translations, usedUnits, map, "StructureDefinition.mapping."+identity+"/comment", "comment");
+    }
     Element diff = resource.getNamedChild("differential");
     if (diff != null) {
       for (Element ed : diff.getChildrenByName("element")) {
@@ -243,6 +250,11 @@ public class LanguageUtils {
         r = r + checkForTranslations(translations, usedUnits, ed, "StructureDefinition.element."+id+"/requirements", "requirements");
         r = r + checkForTranslations(translations, usedUnits, ed, "StructureDefinition.element."+id+"/meaningWhenMissing", "meaningWhenMissing");
         r = r + checkForTranslations(translations, usedUnits, ed, "StructureDefinition.element."+id+"/orderMeaning", "orderMeaning");
+        for (Element map : ed.getChildrenByName("mapping")) {
+          String identity = map.getNamedChildValue("identity");
+          r = r + checkForTranslations(translations, usedUnits, map, "StructureDefinition.element."+id+"/mapping/"+identity+"/map", "map");
+          r = r + checkForTranslations(translations, usedUnits, map, "StructureDefinition.element."+id+"/mapping/"+identity+"/comment", "comment");
+        }
         //      for (ElementDefinitionConstraintComponent con : ed.getConstraint()) {
         //        addToList(list, lang, con, ed.getId()+"/constraint", "human", con.getHumanElement());
         //      }
@@ -596,6 +608,10 @@ public class LanguageUtils {
     }
     addToList(list, lang, sd, "StructureDefinition.purpose", "purpose", sd.getPurposeElement());
     addToList(list, lang, sd, "StructureDefinition.copyright", "copyright", sd.getCopyrightElement());
+    for (StructureDefinitionMappingComponent map : sd.getMapping()) {
+      addToList(list, lang, map, "StructureDefinition.mapping."+map.getIdentity()+"/name", "name", map.getNameElement());
+      addToList(list, lang, map, "StructureDefinition.mapping."+map.getIdentity()+"/comment", "comment", map.getCommentElement());
+    }
     for (ElementDefinition ed : sd.getDifferential().getElement()) {
       addToList(list, lang, ed, "StructureDefinition.element."+ed.getId()+"/label", "label", ed.getLabelElement());
       addToList(list, lang, ed, "StructureDefinition.element."+ed.getId()+"/short", "short", ed.getShortElement());
@@ -606,6 +622,10 @@ public class LanguageUtils {
       addToList(list, lang, ed, "StructureDefinition.element."+ed.getId()+"/orderMeaning", "orderMeaning", ed.getOrderMeaningElement());
       for (ElementDefinitionConstraintComponent con : ed.getConstraint()) {
         addToList(list, lang, con, "StructureDefinition.element."+ed.getId()+"/constraint", "human", con.getHumanElement());
+      }
+      for (ElementDefinitionMappingComponent map : ed.getMapping()) {
+        addToList(list, lang, map, "StructureDefinition.element."+ed.getId()+"/mapping/"+map.getIdentity()+"/map", "map", map.getMapElement());
+        addToList(list, lang, map, "StructureDefinition.element."+ed.getId()+"/mapping/"+map.getIdentity()+"/comment", "comment", map.getCommentElement());
       }
       if (ed.hasBinding()) {
         addToList(list, lang, ed.getBinding(), "StructureDefinition.element."+ed.getId()+"/b/desc", "description", ed.getBinding().getDescriptionElement());

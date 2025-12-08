@@ -35,6 +35,7 @@ public class ValidationContextUtilities {
     validationContext.setLocale(validationEngineParameters.getLanguageCode());
     validationContext.setLang(validationEngineParameters.getLang());
     validationContext.setCheckReferences(validationEngineParameters.isCheckReferences());
+    validationContext.getCheckReferencesTo().addAll(validationEngineParameters.getCheckReferencesTo());
     validationContext.setNoInternalCaching(validationEngineParameters.isNoInternalCaching());
     validationContext.setDisableDefaultResourceFetcher(validationEngineParameters.isDisableDefaultResourceFetcher());
     validationContext.setMapLog(validationEngineParameters.getMapLog());
@@ -171,6 +172,7 @@ public class ValidationContextUtilities {
     validationEngineParameters.setLocale(validationContext.getLanguageCode());
     validationEngineParameters.setLang(validationContext.getLang());
     validationEngineParameters.setCheckReferences(validationContext.isCheckReferences());
+    validationEngineParameters.getCheckReferencesTo().addAll(validationContext.getCheckReferencesTo());
     validationEngineParameters.setNoInternalCaching(validationContext.isNoInternalCaching());
     validationEngineParameters.setDisableDefaultResourceFetcher(validationContext.isDisableDefaultResourceFetcher());
     validationEngineParameters.setMapLog(validationContext.getMapLog());

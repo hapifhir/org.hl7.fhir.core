@@ -1,15 +1,18 @@
 {
   "http://www.genenames.org/geneId" : null,
+  "urn:oid:1.2.246.537.6.3300.202201" : null,
   "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9" : {
     "server" : "http://tx-dev.fhir.org/r4",
     "filename" : "cs-88577e40-8d6a-48b2-adac-3e9bff8365ff.json"
   },
   "#c1" : null,
   "urn:oid:2.16.756.5.30.2.6.1" : null,
+  "urn:oid:1.2.246.537.5.40193.2013" : null,
   "http://fhir.whatever.com/codes/AllergyClinicalStatus" : null,
   "http://hl7.org/fhir/measure-scoring" : null,
   "http://hl7.org/fhir/test/CodeSystem/imaginary" : null,
   "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode" : null,
+  "urn:oid:1.2.246.537.6.1221.201601" : null,
   "http://acme.org/obs-codes" : null,
   "https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/hsloc.html" : {
     "server" : "http://tx-dev.fhir.org/r4",
@@ -33,6 +36,7 @@
   "http://hl7.org/fhir/test/CodeSystem/other" : null,
   "#f3b2bd36-199b-4591-b4db-f49db0912b62" : null,
   "http://example.org/fhir/us/spl/CodeSystem/codesystem-organizationTypes" : null,
+  "http://shark.kanta.fi/fishark-cs-auditeventrolecategory" : null,
   "urn:ietf:bcp:13" : null,
   "http://hl7.org/fhir/ValueSet/icd-10" : null,
   "https://mednet.swiss/fhir/productNumber" : null,
@@ -59,6 +63,7 @@
   "http://terminology.hl7.org/CodeSystem/condition-clinical" : null,
   "https://hl7.fi/fhir/finnish-base-profiles/CodeSystem/SecurityLabelCS" : null,
   "http://hl7.org/fhir/ValueSet/participant-role" : null,
+  "http://gen.kanta.fi/figen-cs-provenancerolecategory" : null,
   "http://example.org/profile2" : null,
   "http://example.org/profile3" : null,
   "http://snomed.info/sct" : {

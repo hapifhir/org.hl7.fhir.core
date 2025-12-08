@@ -1,7 +1,9 @@
 package org.hl7.fhir.validation.service;
 
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
@@ -23,6 +25,11 @@ public class DisabledValidationPolicyAdvisor implements IValidationPolicyAdvisor
   @Override
   public ReferenceValidationPolicy getReferencePolicy() {
     return ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS;
+  }
+
+  @Override
+  public Set<String> getCheckReferencesTo() {
+    return new HashSet<>();
   }
 
   @Override

@@ -1,9 +1,8 @@
 package org.hl7.fhir.validation.instance.advisor;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
 
+import lombok.Getter;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
@@ -26,6 +25,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvisor {
   
   private ReferenceValidationPolicy refpol = ReferenceValidationPolicy.CHECK_VALID;
+  @Getter private Set<String> checkReferencesTo = new HashSet<>();
 
   public IValidationPolicyAdvisor getPolicyAdvisor() {
     return null;
@@ -35,9 +35,12 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
     throw new Error("This policy advisor is the end of the chain");
   }
   
-  public BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy refpol) {
+  public BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy refpol, Set<String> referencesTo) {
     super();
     this.refpol = refpol;
+    if (referencesTo != null) {
+      this.checkReferencesTo.addAll(referencesTo);
+    }
   }
 
   public ReferenceValidationPolicy getRefpol() {
@@ -51,7 +54,15 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
   @Override
   public ReferenceValidationPolicy policyForReference(IResourceValidator validator, Object appContext, String path, String url,
       ReferenceDestinationType destinationType) {
-    return refpol;
+    boolean inList = false;
+    String urls = url.replace("https://", "http://");
+    for (String u : checkReferencesTo) {
+      if (urls.startsWith(u)) {
+        inList = true;
+        break;
+      }
+    }
+    return inList ? ReferenceValidationPolicy.CHECK_VALID : refpol;
   }
 
   @Override

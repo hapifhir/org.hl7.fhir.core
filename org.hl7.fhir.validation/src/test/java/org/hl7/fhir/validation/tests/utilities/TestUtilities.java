@@ -94,7 +94,7 @@ public class TestUtilities {
     }
     validationEngine.setLanguage("en-US");
     validationEngine.setLocale(Locale.US);
-    validationEngine.setPolicyAdvisor(new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.IGNORE));
+    validationEngine.setPolicyAdvisor(new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.IGNORE, null));
     return validationEngine;
   }
 

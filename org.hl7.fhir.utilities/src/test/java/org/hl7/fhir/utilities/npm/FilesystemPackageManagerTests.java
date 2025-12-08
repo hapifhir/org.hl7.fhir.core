@@ -355,7 +355,7 @@ public class FilesystemPackageManagerTests {
     /*FIXME this is not correct. If this is switched to assertThat(...).isTrue, the assert works correctly, but proves
       that isIndexed is in fact broken.
     */
-    assertThat(npmPackage.isIndexed());
+    Assertions.assertTrue(npmPackage.isIndexed());
   }
 
   @MethodSource("packageCacheMultiThreadTestParams")

@@ -685,7 +685,7 @@ public class NpmPackage {
   public boolean isIndexed() throws IOException {
     for (NpmPackageFolder folder : folders.values()) {
       JsonObject index = folder.index();
-      if (folder.index() == null || index.forceArray("files").size() == 0) {
+      if (folder.index() == null) {
         return false;
       }
     }
@@ -696,7 +696,7 @@ public class NpmPackage {
   public void checkIndexed(String path) throws IOException {
     for (NpmPackageFolder folder : folders.values()) {
       JsonObject index = folder.index();
-      if (index == null || index.forceArray("files").size() == 0) {
+      if (index == null) {
         indexFolder(path, folder);
       }  
     }
@@ -865,7 +865,7 @@ public class NpmPackage {
   public List<PackagedResourceFile> listAllResources() throws IOException {
     List<PackagedResourceFile> res = new ArrayList<PackagedResourceFile>();
     for (NpmPackageFolder folder : folders.values()) {
-      if (!folder.getFolderName().startsWith("tests")) {
+      if (!folder.getFolderName().startsWith("tests") && !folder.getFolderName().startsWith("data")) {
         for (String s : folder.types.keySet()) {
           if (folder.types.containsKey(s)) {
             for (String n : folder.types.get(s)) {

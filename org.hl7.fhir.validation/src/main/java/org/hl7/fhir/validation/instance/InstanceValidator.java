@@ -1192,7 +1192,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean checkCode(List<ValidationMessage> errors, Element element, String path, String code, String system, String version, String display, boolean checkDisplay, NodeStack stack) throws TerminologyServiceException {
     boolean ok = true;
     long t = System.nanoTime();
-    boolean ss = context.getTxSupportInfo(system, version).isSupported();
+    IWorkerContext.SystemSupportInformation txSupportInfo = context.getTxSupportInfo(system, version);
+    boolean ss = txSupportInfo.isSupported();
     timeTracker.tx(t, "ss " + system);
     if (ss) {
       t = System.nanoTime();
@@ -1234,7 +1235,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         CodeSystem cs = getCodeSystem(system);
         if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs != null, I18nConstants.TERMINOLOGY_TX_SYSTEM_UNKNOWN, system)) {
           ConceptDefinitionComponent def = getCodeDefinition(cs, code);
-          if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, def != null, I18nConstants.UNKNOWN_CODESYSTEM, system, code))
+          if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path+".system", def != null, I18nConstants.UNKNOWN_CODESYSTEM, system, code))
             return warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, display == null || display.equals(def.getDisplay()), I18nConstants.TERMINOLOGY_TX_DISPLAY_WRONG, def.getDisplay()) && ok;
         }
         return false;
@@ -1246,6 +1247,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_INVALID, system);
       return false;
     } else if (ValueSetUtilities.isServerSide(system)) {
+      warning(errors, "2025-11-28", IssueType.BUSINESSRULE, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_UNSUPPORTED, system, version, txSupportInfo.reason());
       return ok;
     } else {
       try {
@@ -1265,7 +1267,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (!isAllowExamples() || !Utilities.startsWithInList(system, "http://example.org", "https://example.org")) {
           CodeSystem cs = context.fetchCodeSystem(system);
           if (cs == null) {
-            hint(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path, done, I18nConstants.UNKNOWN_CODESYSTEM, system);
+            hint(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path+".system", done, I18nConstants.UNKNOWN_CODESYSTEM, system);
           } else {
             if (hint(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path, cs.getContent() != CodeSystemContentMode.NOTPRESENT, I18nConstants.TERMINOLOGY_TX_SYSTEM_NOT_USABLE, system)) {
               ok = rule(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path, false, "Unexpected internal condition - unsupported code system could be supported? (url = {0})", cs.getVersionedUrl()) && ok;
@@ -1841,7 +1843,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (!isIgnoredTxIssueType(issue, ignoreCantInfer)) {
         OperationOutcomeIssueComponent issueWithCalculatedSeverity = getTxIssueWithCalculatedSeverity(issue, bindingStrength);
         var validationMessage = buildValidationMessage(validationResult.getTxLink(), validationResult.getDiagnostics(), element.line(), element.col(), path, issueWithCalculatedSeverity);
-        if (!isSuppressedValidationMessage(validationMessage.getLocation(), validationMessage.getMessageId())) {
+        if (!isSuppressedValidationMessage(validationMessage.getLocation(), validationMessage.getMessageId()) && !hasMessage(errors, validationMessage)) {
           errors.add(validationMessage);
           if (validationMessage.isError()) {
             noErrorsFound = false;
@@ -3693,9 +3695,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
                   if (!Utilities.existsInList(context.getBase().getPath(), "ImplementationGuide.dependsOn.uri", "ConceptMap.group.source", "ConceptMap.group.target")) {
                     // ImplementationGuide.dependsOn.version is mandatory, and ConceptMap is checked in the ConceptMap validator
-                    Set<String> possibleVersions = fetcher.fetchCanonicalResourceVersions(this, valContext.getAppContext(), url);
+                    Set<IValidatorResourceFetcher.ResourceVersionInformation> possibleVersions = fetcher.fetchCanonicalResourceVersions(this, valContext.getAppContext(), url);
                     warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, possibleVersions.size() <= 1, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS, 
-                        url, ((CanonicalResource) r).getVersion(), CommaSeparatedStringBuilder.join(", ", Utilities.sorted(possibleVersions)));
+                        url, ((CanonicalResource) r).getVersion(), CommaSeparatedStringBuilder.join(", ", Utilities.sorted(IValidatorResourceFetcher.ResourceVersionInformation.toStrings(possibleVersions))));
                   }
                 }
               } else {
@@ -6527,7 +6529,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     for (int i = 0; i < messages.size(); i++) {
       ValidationMessage iMessage = messages.get(i);
       if (message.getMessage() != null && message.getMessage().equals(iMessage.getMessage())
-        && message.getLocation() != null && message.getLocation().equals(iMessage.getLocation())) {
+        && message.getLocation() != null && message.getStrippedLocation().equals(iMessage.getStrippedLocation())) {
         return i;
       }
     }
