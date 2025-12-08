@@ -70,6 +70,7 @@ public class CLI {
   private static String[] getBackwardCompatibleArgs(String[] args) {
       Map<String, String> argMap = Map.of(
           "-server", "server",
+          "-install", "install",
           "-?", "-help",
           "/?", "-help"
       );
