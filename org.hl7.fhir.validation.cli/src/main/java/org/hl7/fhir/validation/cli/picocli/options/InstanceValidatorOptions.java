@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class InstanceValidatorOptions {
   @CommandLine.Option(names = {"-jurisdiction"},
-    description = "Specifies the jurisdiction to validate in ")
+    description = "Specifies the jurisdiction to validate in. If you want to use no specific jurisdiction, use the values 'uv' or 'global'")
   @With
   public String jurisdiction;
 
@@ -136,7 +136,7 @@ public class InstanceValidatorOptions {
 
   // String fields
   @CommandLine.Option(names = {"-html-output"},
-    description = "A filename for the HTML output with validation results")
+    description = "A filename for the HTML presentation of the outcomes of the validation")
   @With
   public String htmlOutput;
 

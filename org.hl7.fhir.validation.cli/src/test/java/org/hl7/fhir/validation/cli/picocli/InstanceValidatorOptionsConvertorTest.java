@@ -24,8 +24,8 @@ public class InstanceValidatorOptionsConvertorTest {
     return Stream.of(
       // jurisdiction only (existing field)
       Arguments.arguments(
-        new InstanceValidatorOptions().withJurisdiction("US"),
-        new InstanceValidatorParameters().setJurisdiction("US")
+        new InstanceValidatorOptions().withJurisdiction("de"),
+        new InstanceValidatorParameters().setJurisdiction("urn:iso:std:iso:3166#DE")
       ),
 
       // expansionParameters only
@@ -60,11 +60,11 @@ public class InstanceValidatorOptionsConvertorTest {
       // All fields combined
       Arguments.arguments(
         new InstanceValidatorOptions()
-          .withJurisdiction("US")
+          .withJurisdiction("de")
           .withExpansionParameters("version=4.0.1")
           .withProfiles(List.of("http://hl7.org/fhir/StructureDefinition/Patient")),
         new InstanceValidatorParameters()
-          .setJurisdiction("US")
+          .setJurisdiction("urn:iso:std:iso:3166#DE")
           .setExpansionParameters("version=4.0.1")
           .addProfile("http://hl7.org/fhir/StructureDefinition/Patient")
       ),
@@ -285,7 +285,7 @@ public class InstanceValidatorOptionsConvertorTest {
       // Combined test with all field types
       Arguments.arguments(
         new InstanceValidatorOptions()
-          .withJurisdiction("US")
+          .withJurisdiction("de")
           .withExpansionParameters("version=4.0.1")
           .withProfiles(List.of("http://hl7.org/fhir/StructureDefinition/Patient"))
           .withAssumeValidRestReferences(true)
@@ -303,7 +303,7 @@ public class InstanceValidatorOptionsConvertorTest {
             "Patient:0","http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient")
           ),
         new InstanceValidatorParameters()
-          .setJurisdiction("US")
+          .setJurisdiction("urn:iso:std:iso:3166#DE")
           .setExpansionParameters("version=4.0.1")
           .addProfile("http://hl7.org/fhir/StructureDefinition/Patient")
           .setAssumeValidRestReferences(true)
