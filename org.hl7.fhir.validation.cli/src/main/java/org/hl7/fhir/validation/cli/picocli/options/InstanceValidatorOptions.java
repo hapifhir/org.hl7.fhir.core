@@ -3,8 +3,6 @@ package org.hl7.fhir.validation.cli.picocli.options;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.With;
-import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
-import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
@@ -76,11 +74,11 @@ public class InstanceValidatorOptions {
   @With
   public boolean noUnicodeBiDiControlChars = false;
 
-  @CommandLine.Option(names = {"-crumb-trails", "-verbose"},
+  @CommandLine.Option(names = {"-verbose"},
     description = "When set, the validator will create hints against the resources to explain which profiles it has validated the resource against",
     arity = "0")
   @With
-  public boolean crumbTrails = false;
+  public boolean verbose = false;
 
   @CommandLine.Option(names = {"-show-message-ids"},
     description = "Show message IDs in the validation output",
@@ -184,8 +182,12 @@ public class InstanceValidatorOptions {
   public List<String> extensions = new ArrayList<>();
 
   @CommandLine.Option(names = {"-bundle"},
-    description = "Validate specific resources in a bundle against profiles",
-    arity = "0..*")
+    description = """
+      Validate a specific resource in a bundle against a profile. This option accepts two arguments: -bundle <rule> <profile>
+      * <rule> either a Resource name, a integer index, or both
+      * <profile> the canonical URL of the profile
+      """,
+    arity = "2")
   @With
-  public List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
+  public List<String> bundleValidationRules = null;
 }

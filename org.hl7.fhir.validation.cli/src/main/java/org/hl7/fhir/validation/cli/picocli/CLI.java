@@ -44,9 +44,14 @@ public class CLI {
         validationServiceCommand.setValidationService(myValidationService);
       }
     }
-
-    CommandLine.ParseResult parseResult = commandLine.parseArgs(modifiedArgs);
-
+    CommandLine.ParseResult parseResult = null;
+    try {
+      parseResult = commandLine.parseArgs(modifiedArgs);
+    } catch(CommandLine.PicocliException e) {
+      log.error("Unable to parse command line arguments: " + e.getMessage());
+      log.debug("", e);
+      System.exit(1);
+    }
     for (GlobalOptions globalOption : GLOBAL_OPTIONS) {
       int exitCode = globalOption.apply(parseResult);
       if (exitCode != 0) {
@@ -69,6 +74,8 @@ public class CLI {
       Map<String, String> argMap = Map.of(
           "-server", "server",
           "-install", "install",
+          "-crumb-trails", "-verbose",
+          "-show-message-ids", "-verbose",
           "-?", "-help",
           "/?", "-help"
       );
@@ -76,7 +83,9 @@ public class CLI {
       String[] newArgs = new String[args.length];
       for (int i = 0; i < args.length; i++) {
           if (argMap.containsKey(args[i])) {
-              newArgs[i] = argMap.get(args[i]);
+            final String newArg = argMap.get(args[i]);
+            log.warn("The option '{}' is no longer in use. Using '{}' ", args[i], newArg);
+              newArgs[i] = newArg;
           } else {
               newArgs[i] = args[i];
           }

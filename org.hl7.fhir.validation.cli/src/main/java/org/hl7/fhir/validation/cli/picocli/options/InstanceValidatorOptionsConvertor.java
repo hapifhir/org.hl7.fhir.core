@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli.picocli.options;
 
+import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 
@@ -32,8 +33,11 @@ public class InstanceValidatorOptionsConvertor {
     instanceValidatorParameters.setUnknownCodeSystemsCauseErrors(options.unknownCodeSystemsCauseErrors);
     instanceValidatorParameters.setForPublication(options.forPublication);
     instanceValidatorParameters.setNoUnicodeBiDiControlChars(options.noUnicodeBiDiControlChars);
-    instanceValidatorParameters.setCrumbTrails(options.crumbTrails);
     instanceValidatorParameters.setShowMessageIds(options.showMessageIds);
+    if (options.verbose) {
+      instanceValidatorParameters.setCrumbTrails(true);
+      instanceValidatorParameters.setShowMessageIds(true);
+    }
     instanceValidatorParameters.setAllowExampleUrls(options.allowExampleUrls);
     instanceValidatorParameters.setShowMessagesFromReferences(options.showMessagesFromReferences);
     instanceValidatorParameters.setSecurityChecks(options.securityChecks);
@@ -78,9 +82,15 @@ public class InstanceValidatorOptionsConvertor {
     }
 
     if (options.bundleValidationRules != null && !options.bundleValidationRules.isEmpty()) {
-      for (var rule : options.bundleValidationRules) {
-        instanceValidatorParameters.addBundleValidationRule(rule);
+      if(options.bundleValidationRules.size() % 2 != 0) {
+        throw new IllegalArgumentException("bundleValidationRule accepts 2 arguments: rule and profile");
       }
+      for (int i =0; i < options.bundleValidationRules.size(); i = i + 2) {
+        final String rule = options.bundleValidationRules.get(i);
+        final String profile = options.bundleValidationRules.get(i+1);
+        instanceValidatorParameters.addBundleValidationRule(new BundleValidationRule().setRule(rule).setProfile(profile));
+      }
+
     }
 
     return instanceValidatorParameters;
