@@ -19,6 +19,7 @@ import java.util.concurrent.Callable;
 
 @CommandLine.Command(
   description = """
+    
     The FHIR validation tool validates a FHIR resource or bundle.
     
     The validation tool compares a resource against the base definitions and any profiles declared in the resource (Resource.meta.profile) or specified on the command line

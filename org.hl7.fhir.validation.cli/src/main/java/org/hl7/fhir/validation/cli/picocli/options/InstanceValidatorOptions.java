@@ -89,7 +89,7 @@ public class InstanceValidatorOptions {
   public boolean showMessageIds = false;
 
   @CommandLine.Option(names = {"-allow-example-urls"},
-    description = "Allow references to example.org URLs in resources",
+    description = "Allow references to example.org URLs in resources to be treated as valid",
     arity = "0")
   @With
   public boolean allowExampleUrls = false;
@@ -125,7 +125,7 @@ public class InstanceValidatorOptions {
   public boolean doImplicitFHIRPathStringConversion = false;
 
   @CommandLine.Option(names = {"-allow-double-quotes-in-fhirpath"},
-    description = "Support legacy FHIRPath statements that include double quotes",
+    description = "Support legacy FHIRPath statements that include double quotes: \"\"",
     arity = "0")
   @With
   public boolean allowDoubleQuotesInFHIRPath = false;
@@ -164,9 +164,12 @@ public class InstanceValidatorOptions {
   public ValidationLevel level = ValidationLevel.HINTS;
 
   @CommandLine.Option(names = {"-best-practice"},
-    description = "How to treat best practice constraints (ignore, hint, warning, error)")
+    description = """
+      How to treat best practice constraints (ignore, hint, warning, error)
+      Default is warning
+    """)
   @With
-  public BestPracticeWarningLevel bestPracticeLevel = BestPracticeWarningLevel.Warning;
+  public String bestPracticeLevel = null;
 
   @CommandLine.Option(names = {"-html-in-markdown"},
     description = "Check for embedded HTML in markdown (ignore, warning, error)")

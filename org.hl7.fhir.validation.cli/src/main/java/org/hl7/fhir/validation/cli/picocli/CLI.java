@@ -1,11 +1,9 @@
 package org.hl7.fhir.validation.cli.picocli;
 
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.FileFormat;
 import org.hl7.fhir.validation.cli.Display;
 import org.hl7.fhir.validation.cli.picocli.commands.ValidateCommand;
-import org.hl7.fhir.validation.cli.picocli.commands.ValidationEngineCommand;
 import org.hl7.fhir.validation.cli.picocli.commands.ValidationServiceCommand;
 import org.hl7.fhir.validation.cli.picocli.options.DebugOptions;
 import org.hl7.fhir.validation.cli.picocli.options.GlobalOptions;
@@ -34,7 +32,7 @@ public class CLI {
   }
 
   protected int parseArgsAndExecuteCommand(String[] args) {
-    String[] backwardCompatibleArgs = getBackwardCompatibleArgs(args);
+    final String[] modifiedArgs = replaceDeprecatedArgs(args);
     ValidateCommand parentCommand = new ValidateCommand();
     parentCommand.setValidationService(myValidationService);
 
@@ -47,7 +45,7 @@ public class CLI {
       }
     }
 
-    CommandLine.ParseResult parseResult = commandLine.parseArgs(backwardCompatibleArgs);
+    CommandLine.ParseResult parseResult = commandLine.parseArgs(modifiedArgs);
 
     for (GlobalOptions globalOption : GLOBAL_OPTIONS) {
       int exitCode = globalOption.apply(parseResult);
@@ -64,10 +62,10 @@ public class CLI {
     commandLine
       .setOut(new PrintWriter(new CLIToSlf4jLoggerWriter(log, Level.INFO)))
       .setErr(new PrintWriter(new CLIToSlf4jLoggerWriter(log, Level.ERROR)));
-    return commandLine.execute(backwardCompatibleArgs);
+    return commandLine.execute(modifiedArgs);
   }
 
-  private static String[] getBackwardCompatibleArgs(String[] args) {
+  private static String[] replaceDeprecatedArgs(String[] args) {
       Map<String, String> argMap = Map.of(
           "-server", "server",
           "-install", "install",

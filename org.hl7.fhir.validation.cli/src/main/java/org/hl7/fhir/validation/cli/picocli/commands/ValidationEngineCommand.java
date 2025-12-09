@@ -28,7 +28,7 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
   @CommandLine.ArgGroup(validate = false, heading = "Proxy Options%n")
   ProxyOptions proxyOptions = new ProxyOptions();
 
-  @CommandLine.ArgGroup(validate = false, heading = "Validation Engine%n")
+  @CommandLine.ArgGroup(validate = false, heading = "Validation Engine Options%n")
   ValidationEngineOptions validationEngineOptions = new ValidationEngineOptions();
 
   protected ValidationEngineParameters getValidationEngineParameters() {
@@ -43,7 +43,7 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
   }
 
   @Override
-  public Integer call() { // your business logic goes here...
+  public Integer call() {
 
     TimeTracker timeTracker = new TimeTracker();
     TimeTracker.Session timeTrackerSession = timeTracker.start("Loading");
