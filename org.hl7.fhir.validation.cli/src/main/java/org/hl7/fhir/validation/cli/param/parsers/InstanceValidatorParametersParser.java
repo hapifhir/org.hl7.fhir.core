@@ -134,7 +134,7 @@ public class InstanceValidatorParametersParser implements IParamParser<InstanceV
         } else {
           String q = args[i + 1].getValue();
           if (!HtmlInMarkdownCheck.isValidCode(q)) {
-            throw new Error("Specified " + HTML_IN_MARKDOWN + " with na invalid code - must be ignore, warning, or error");
+            throw new Error("Specified " + HTML_IN_MARKDOWN + " with an invalid code - must be ignore, warning, or error");
           } else {
             instanceValidatorParameters.setHtmlInMarkdownCheck(HtmlInMarkdownCheck.fromCode(q));
           }
