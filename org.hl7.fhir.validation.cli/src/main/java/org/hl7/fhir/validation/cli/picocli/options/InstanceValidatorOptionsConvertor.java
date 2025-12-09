@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.cli.picocli.options;
 
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 
 public class InstanceValidatorOptionsConvertor {
@@ -65,7 +66,11 @@ public class InstanceValidatorOptionsConvertor {
     }
 
     if (options.htmlInMarkdownCheck != null) {
-      instanceValidatorParameters.setHtmlInMarkdownCheck(options.htmlInMarkdownCheck);
+      if (!HtmlInMarkdownCheck.isValidCode(options.htmlInMarkdownCheck)) {
+        throw new IllegalArgumentException("Specified -html-in-markdown with an invalid code - must be ignore, warning, or error");
+      } else {
+        instanceValidatorParameters.setHtmlInMarkdownCheck(HtmlInMarkdownCheck.fromCode(options.htmlInMarkdownCheck));
+      }
     }
 
     // List fields - null/empty check, loop with addX() methods

@@ -117,7 +117,7 @@ public class InstanceValidatorOptions {
   public boolean showTerminologyRouting = false;
 
   @CommandLine.Option(names = {"-implicit-fhirpath-string-conversions"},
-    description = "Restore pre-5.6.48 FHIRPath behavior with automatic string conversions",
+    description = "Restore pre-5.6.48 FHIRPath behavior regarding automatic string conversions",
     arity = "0")
   @With
   public boolean doImplicitFHIRPathStringConversion = false;
@@ -170,14 +170,14 @@ public class InstanceValidatorOptions {
   public String bestPracticeLevel = null;
 
   @CommandLine.Option(names = {"-html-in-markdown"},
-    description = "Check for embedded HTML in markdown (ignore, warning, error)")
+    description = "Issue level reported for embedded HTML in resource markdown (ignore, warning, error)")
   @With
-  public HtmlInMarkdownCheck htmlInMarkdownCheck = HtmlInMarkdownCheck.WARNING;
+  public String htmlInMarkdownCheck = null;
 
   // List fields
   @CommandLine.Option(names = {"-extension"},
     description = "URL domain from which extensions will be allowed, or 'any' for all. Can repeat multiple times.",
-    arity = "0..*")
+    arity = "1")
   @With
   public List<String> extensions = new ArrayList<>();
 

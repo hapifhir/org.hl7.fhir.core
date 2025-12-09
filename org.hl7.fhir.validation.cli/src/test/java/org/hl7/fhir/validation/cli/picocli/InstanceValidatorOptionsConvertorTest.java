@@ -221,7 +221,7 @@ public class InstanceValidatorOptionsConvertorTest {
 
       // Enum fields - htmlInMarkdownCheck
       Arguments.arguments(
-        new InstanceValidatorOptions().withHtmlInMarkdownCheck(HtmlInMarkdownCheck.ERROR),
+        new InstanceValidatorOptions().withHtmlInMarkdownCheck("error"),
         new InstanceValidatorParameters().setHtmlInMarkdownCheck(HtmlInMarkdownCheck.ERROR)
       ),
 
@@ -297,7 +297,7 @@ public class InstanceValidatorOptionsConvertorTest {
           .withQuestionnaireMode(QuestionnaireMode.NONE)
           .withLevel(ValidationLevel.HINTS)
           .withBestPracticeLevel("ignore")
-          .withHtmlInMarkdownCheck(HtmlInMarkdownCheck.NONE)
+          .withHtmlInMarkdownCheck("ignore")
           .withExtensions(List.of("http://example.org"))
           .withBundleValidationRules(List.of(
             "Patient:0","http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient")

@@ -37,7 +37,7 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
     if (localeOptions.locale != null) {
       validationEngineParameters.setLocale(Locale.forLanguageTag(localeOptions.locale));
     }
-    log.info(validationEngineParameters.toString().replace(", ", ", \n"));
+    log.trace(validationEngineParameters.toString().replace(", ", ", \n"));
 
     return validationEngineParameters;
   }
@@ -92,6 +92,7 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
       } else {
         log.info("  Jurisdiction: "+ JurisdictionUtilities.displayJurisdiction(instanceValidatorParameters.getJurisdiction()));
       }
+      log.trace(instanceValidatorParameters.toString().replace(", ", ", \n"));
     }
 
     log.info("Loading");
