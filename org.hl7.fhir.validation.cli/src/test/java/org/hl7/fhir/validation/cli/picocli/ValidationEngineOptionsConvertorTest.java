@@ -39,11 +39,9 @@ public class ValidationEngineOptionsConvertorTest {
 
   public static Stream<Arguments> validOptions() {
     return Stream.of(
-      // Existing FHIR version tests
       Arguments.of("FHIR version 5.0", new ValidationEngineOptions().withFhirVersion("5.0"), new ValidationEngineParameters().setSv("5.0")),
       Arguments.of("FHIR version 4.0.1 normalized to 4.0", new ValidationEngineOptions().withFhirVersion("4.0.1"), new ValidationEngineParameters().setSv("4.0")),
 
-      // Boolean field tests - individual (note: default fhirVersion="5.0" is always set)
       Arguments.of("doNative flag",
         new ValidationEngineOptions().withDoNative(true),
         new ValidationEngineParameters().setDoNative(true)
@@ -85,7 +83,6 @@ public class ValidationEngineOptionsConvertorTest {
         new ValidationEngineParameters().setDoDebug(true)
       ),
 
-      // Boolean combined test
       Arguments.of("multiple boolean flags combined",
         new ValidationEngineOptions()
           .withDoNative(true)
@@ -97,7 +94,6 @@ public class ValidationEngineOptionsConvertorTest {
           .setShowTimes(true)
       ),
 
-      // String field tests - individual
       Arguments.of("snomedCT edition US",
         new ValidationEngineOptions().withSnomedCT("us"),
         new ValidationEngineParameters().setSnomedCT("us")
@@ -135,7 +131,6 @@ public class ValidationEngineOptionsConvertorTest {
         new ValidationEngineParameters().setMapLog("/path/to/map.log")
       ),
 
-      // String combined test
       Arguments.of("multiple string fields combined",
         new ValidationEngineOptions()
           .withSnomedCT("uk")
@@ -145,7 +140,6 @@ public class ValidationEngineOptionsConvertorTest {
           .setLang("en")
       ),
 
-      // List field tests - individual
       Arguments.of("single IG infers FHIR version",
         new ValidationEngineOptions().withIgs(List.of("hl7.fhir.r4.core")),
         new ValidationEngineParameters().setSv("4.0").addIg("hl7.fhir.r4.core")
@@ -167,7 +161,6 @@ public class ValidationEngineOptionsConvertorTest {
         new ValidationEngineParameters().addMatchetype(dummyFileAPath)
       ),
 
-      // List combined test - all types together
       Arguments.of("complex combination of all field types",
         new ValidationEngineOptions()
           .withFhirVersion("4.0.1")
@@ -182,13 +175,11 @@ public class ValidationEngineOptionsConvertorTest {
           .addIg("hl7.fhir.us.core")
       ),
 
-      // Edge case: empty list
       Arguments.of("empty IG list",
         new ValidationEngineOptions().withIgs(List.of()),
         new ValidationEngineParameters()
       ),
 
-      // Edge case: default ValidationEngineOptions (all defaults should be set)
       Arguments.of("default options apply expected defaults",
         new ValidationEngineOptions(),
         new ValidationEngineParameters()
