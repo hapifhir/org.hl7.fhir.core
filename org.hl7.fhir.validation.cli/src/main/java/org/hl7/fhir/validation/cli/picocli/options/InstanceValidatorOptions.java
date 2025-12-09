@@ -69,7 +69,7 @@ public class InstanceValidatorOptions {
   public boolean forPublication = false;
 
   @CommandLine.Option(names = {"-no_unicode_bidi_control_chars"},
-    description = "Make the validator produce an error for any bidi control character at all",
+    description = "Make the validator produce an error for any BiDi control characters",
     arity = "0")
   @With
   public boolean noUnicodeBiDiControlChars = false;
@@ -159,7 +159,7 @@ public class InstanceValidatorOptions {
   @CommandLine.Option(names = {"-level"},
     description = "Minimum level for validation messages (hints, warnings, errors)")
   @With
-  public ValidationLevel level = ValidationLevel.HINTS;
+  public String level = null;
 
   @CommandLine.Option(names = {"-best-practice"},
     description = """

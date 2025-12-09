@@ -6,6 +6,7 @@ import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
+import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
 public class InstanceValidatorOptionsConvertor {
   public InstanceValidatorParameters convert(InstanceValidatorOptions options) {
@@ -60,7 +61,7 @@ public class InstanceValidatorOptionsConvertor {
     }
 
     if (options.level != null) {
-      instanceValidatorParameters.setLevel(options.level);
+      instanceValidatorParameters.setLevel(ValidationLevel.fromCode(options.level));
     }
 
     if (options.bestPracticeLevel != null) {
