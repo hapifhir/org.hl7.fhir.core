@@ -40,53 +40,53 @@ public class ValidationEngineOptionsConvertorTest {
   public static Stream<Arguments> validOptions() {
     return Stream.of(
       // Existing FHIR version tests
-      Arguments.arguments(new ValidationEngineOptions().withFhirVersion("5.0"), new ValidationEngineParameters().setSv("5.0")),
-      Arguments.arguments(new ValidationEngineOptions().withFhirVersion("4.0.1"), new ValidationEngineParameters().setSv("4.0")),
+      Arguments.of("FHIR version 5.0", new ValidationEngineOptions().withFhirVersion("5.0"), new ValidationEngineParameters().setSv("5.0")),
+      Arguments.of("FHIR version 4.0.1 normalized to 4.0", new ValidationEngineOptions().withFhirVersion("4.0.1"), new ValidationEngineParameters().setSv("4.0")),
 
       // Boolean field tests - individual (note: default fhirVersion="5.0" is always set)
-      Arguments.arguments(
+      Arguments.of("doNative flag",
         new ValidationEngineOptions().withDoNative(true),
         new ValidationEngineParameters().setDoNative(true)
       ),
-      Arguments.arguments(
+      Arguments.of("recursive flag",
         new ValidationEngineOptions().withRecursive(true),
         new ValidationEngineParameters().setRecursive(true)
       ),
-      Arguments.arguments(
+      Arguments.of("clearTxCache flag",
         new ValidationEngineOptions().withClearTxCache(true),
         new ValidationEngineParameters().setClearTxCache(true)
       ),
-      Arguments.arguments(
+      Arguments.of("checkReferences flag",
         new ValidationEngineOptions().withCheckReferences(true),
         new ValidationEngineParameters().setCheckReferences(true)
       ),
-      Arguments.arguments(
+      Arguments.of("noInternalCaching flag",
         new ValidationEngineOptions().withNoInternalCaching(true),
         new ValidationEngineParameters().setNoInternalCaching(true)
       ),
-      Arguments.arguments(
+      Arguments.of("disableDefaultResourceFetcher flag",
         new ValidationEngineOptions().withDisableDefaultResourceFetcher(true),
         new ValidationEngineParameters().setDisableDefaultResourceFetcher(true)
       ),
-      Arguments.arguments(
+      Arguments.of("displayWarnings flag",
         new ValidationEngineOptions().withDisplayWarnings(true),
         new ValidationEngineParameters().setDisplayWarnings(true)
       ),
-      Arguments.arguments(
+      Arguments.of("noExtensibleBindingMessages flag",
         new ValidationEngineOptions().withNoExtensibleBindingMessages(true),
         new ValidationEngineParameters().setNoExtensibleBindingMessages(true)
       ),
-      Arguments.arguments(
+      Arguments.of("showTimes flag",
         new ValidationEngineOptions().withShowTimes(true),
         new ValidationEngineParameters().setShowTimes(true)
       ),
-      Arguments.arguments(
+      Arguments.of("doDebug flag",
         new ValidationEngineOptions().withDoDebug(true),
         new ValidationEngineParameters().setDoDebug(true)
       ),
 
       // Boolean combined test
-      Arguments.arguments(
+      Arguments.of("multiple boolean flags combined",
         new ValidationEngineOptions()
           .withDoNative(true)
           .withRecursive(true)
@@ -98,45 +98,45 @@ public class ValidationEngineOptionsConvertorTest {
       ),
 
       // String field tests - individual
-      Arguments.arguments(
+      Arguments.of("snomedCT edition US",
         new ValidationEngineOptions().withSnomedCT("us"),
         new ValidationEngineParameters().setSnomedCT("us")
       ),
-      Arguments.arguments(
+      Arguments.of("resolutionContext",
         new ValidationEngineOptions().withResolutionContext("test-context"),
         new ValidationEngineParameters().setResolutionContext("test-context")
       ),
-      Arguments.arguments(
+      Arguments.of("aiService URL",
         new ValidationEngineOptions().withAiService("http://ai.example.com"),
         new ValidationEngineParameters().setAIService("http://ai.example.com")
       ),
-      Arguments.arguments(
+      Arguments.of("custom txServer sets noEcosystem",
         new ValidationEngineOptions().withTxServer("http://custom-tx.org"),
         new ValidationEngineParameters().setTxServer("http://custom-tx.org").setNoEcosystem(true)
       ),
-      Arguments.arguments(
+      Arguments.of("txLog path",
         new ValidationEngineOptions().withTxLog("/path/to/tx.log"),
         new ValidationEngineParameters().setTxLog("/path/to/tx.log")
       ),
-      Arguments.arguments(
+      Arguments.of("txCache path",
         new ValidationEngineOptions().withTxCache("/path/to/cache"),
         new ValidationEngineParameters().setTxCache("/path/to/cache")
       ),
-      Arguments.arguments(
+      Arguments.of("advisorFile path",
         new ValidationEngineOptions().withAdvisorFile(dummyFileAPath),
         new ValidationEngineParameters().setAdvisorFile(dummyFileAPath)
       ),
-      Arguments.arguments(
+      Arguments.of("language German",
         new ValidationEngineOptions().withLang("de"),
         new ValidationEngineParameters().setLang("de")
       ),
-      Arguments.arguments(
+      Arguments.of("mapLog path",
         new ValidationEngineOptions().withMapLog("/path/to/map.log"),
         new ValidationEngineParameters().setMapLog("/path/to/map.log")
       ),
 
       // String combined test
-      Arguments.arguments(
+      Arguments.of("multiple string fields combined",
         new ValidationEngineOptions()
           .withSnomedCT("uk")
           .withLang("en"),
@@ -146,29 +146,29 @@ public class ValidationEngineOptionsConvertorTest {
       ),
 
       // List field tests - individual
-      Arguments.arguments(
+      Arguments.of("single IG infers FHIR version",
         new ValidationEngineOptions().withIgs(List.of("hl7.fhir.r4.core")),
         new ValidationEngineParameters().setSv("4.0").addIg("hl7.fhir.r4.core")
       ),
-      Arguments.arguments(
+      Arguments.of("multiple IGs",
         new ValidationEngineOptions().withIgs(List.of("hl7.fhir.r4.core", "hl7.fhir.us.core")),
         new ValidationEngineParameters().setSv("4.0").addIg("hl7.fhir.r4.core").addIg("hl7.fhir.us.core")
       ),
-      Arguments.arguments(
+      Arguments.of("single certSource",
         new ValidationEngineOptions().withCertSources(List.of(dummyFileAPath)),
         new ValidationEngineParameters().addCertSource(dummyFileAPath)
       ),
-      Arguments.arguments(
+      Arguments.of("multiple certSources",
         new ValidationEngineOptions().withCertSources(List.of(dummyFileAPath, dummyFileBPath)),
         new ValidationEngineParameters().addCertSource(dummyFileAPath).addCertSource(dummyFileBPath)
       ),
-      Arguments.arguments(
+      Arguments.of("single matchetype",
         new ValidationEngineOptions().withMatchetypes(List.of(dummyFileAPath)),
         new ValidationEngineParameters().addMatchetype(dummyFileAPath)
       ),
 
       // List combined test - all types together
-      Arguments.arguments(
+      Arguments.of("complex combination of all field types",
         new ValidationEngineOptions()
           .withFhirVersion("4.0.1")
           .withDoNative(true)
@@ -183,13 +183,13 @@ public class ValidationEngineOptionsConvertorTest {
       ),
 
       // Edge case: empty list
-      Arguments.arguments(
+      Arguments.of("empty IG list",
         new ValidationEngineOptions().withIgs(List.of()),
         new ValidationEngineParameters()
       ),
 
       // Edge case: default ValidationEngineOptions (all defaults should be set)
-      Arguments.arguments(
+      Arguments.of("default options apply expected defaults",
         new ValidationEngineOptions(),
         new ValidationEngineParameters()
           .setSnomedCT("900000000000207008")
@@ -199,7 +199,7 @@ public class ValidationEngineOptionsConvertorTest {
 
 
       // Edge case: txServer with noEcosystem both set
-      Arguments.arguments(
+      Arguments.of("custom txServer sets noEcosystem flag",
         new ValidationEngineOptions()
           .withTxServer("http://custom-tx.org"),
         new ValidationEngineParameters()
@@ -209,9 +209,9 @@ public class ValidationEngineOptionsConvertorTest {
     );
   }
 
-  @ParameterizedTest()
+  @ParameterizedTest(name = "{0}")
   @MethodSource("validOptions")
-  void validOptionsTest(ValidationEngineOptions options, ValidationEngineParameters expectedParameters) {
+  void validOptionsTest(String testName, ValidationEngineOptions options, ValidationEngineParameters expectedParameters) {
     ValidationEngineOptionsConvertor convertor = new ValidationEngineOptionsConvertor();
     ValidationEngineParameters actualParameters = convertor.convert(options);
     assertThat(actualParameters).isEqualTo(expectedParameters);
