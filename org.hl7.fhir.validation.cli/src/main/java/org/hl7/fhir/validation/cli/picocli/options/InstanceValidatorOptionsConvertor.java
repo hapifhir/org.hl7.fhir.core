@@ -1,5 +1,7 @@
 package org.hl7.fhir.validation.cli.picocli.options;
 
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
@@ -11,7 +13,7 @@ public class InstanceValidatorOptionsConvertor {
 
     // String fields - null check then setter
     if (options.jurisdiction != null) {
-      instanceValidatorParameters.setJurisdiction(options.jurisdiction);
+      instanceValidatorParameters.setJurisdiction(processJurisdiction(options.jurisdiction));
     }
 
     if (options.expansionParameters != null) {
@@ -116,5 +118,18 @@ public class InstanceValidatorOptionsConvertor {
       case "i" : return BestPracticeWarningLevel.Ignore;
     }
     throw new Error("The best-practice level ''" + s + "'' is not valid");
+  }
+
+  private static String processJurisdiction(String s) {
+    if (s.startsWith("urn:iso:std:iso:3166#") || s.startsWith("urn:iso:std:iso:3166:-2#") || s.startsWith("http://unstats.un.org/unsd/methods/m49/m49.htm#")) {
+      return s;
+    } else {
+      String v = JurisdictionUtilities.getJurisdictionFromLocale(s);
+      if (v != null) {
+        return v;
+      } else {
+        throw new FHIRException("Unable to understand Jurisdiction '"+s+"'");
+      }
+    }
   }
 }
