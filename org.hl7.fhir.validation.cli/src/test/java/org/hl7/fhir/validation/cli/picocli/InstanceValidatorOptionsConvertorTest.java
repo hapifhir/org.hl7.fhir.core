@@ -117,10 +117,10 @@ public class InstanceValidatorOptionsConvertorTest {
         new InstanceValidatorParameters().setNoUnicodeBiDiControlChars(true)
       ),
 
-      // Boolean flags - crumbTrails
+      // Boolean flags - verbose
       Arguments.arguments(
-        new InstanceValidatorOptions().withCrumbTrails(true),
-        new InstanceValidatorParameters().setCrumbTrails(true)
+        new InstanceValidatorOptions().withVerbose(true),
+        new InstanceValidatorParameters().setCrumbTrails(true).setShowMessageIds(true)
       ),
 
       // Boolean flags - showMessageIds
@@ -242,7 +242,7 @@ public class InstanceValidatorOptionsConvertorTest {
       // List fields - bundleValidationRules (single)
       Arguments.arguments(
         new InstanceValidatorOptions().withBundleValidationRules(
-          List.of(new BundleValidationRule().setRule("Patient").setProfile("http://hl7.org/fhir/StructureDefinition/Patient"))
+          List.of("Patient","http://hl7.org/fhir/StructureDefinition/Patient")
         ),
         new InstanceValidatorParameters().addBundleValidationRule(
           new BundleValidationRule().setRule("Patient").setProfile("http://hl7.org/fhir/StructureDefinition/Patient")
@@ -253,9 +253,8 @@ public class InstanceValidatorOptionsConvertorTest {
       Arguments.arguments(
         new InstanceValidatorOptions().withBundleValidationRules(
           List.of(
-            new BundleValidationRule().setRule("Patient").setProfile("http://hl7.org/fhir/StructureDefinition/Patient"),
-            new BundleValidationRule().setRule("Observation").setProfile("http://hl7.org/fhir/StructureDefinition/Observation")
-          )
+            "Patient","http://hl7.org/fhir/StructureDefinition/Patient",
+            "Observation","http://hl7.org/fhir/StructureDefinition/Observation")
         ),
         new InstanceValidatorParameters()
           .addBundleValidationRule(new BundleValidationRule().setRule("Patient").setProfile("http://hl7.org/fhir/StructureDefinition/Patient"))
@@ -291,7 +290,7 @@ public class InstanceValidatorOptionsConvertorTest {
           .withProfiles(List.of("http://hl7.org/fhir/StructureDefinition/Patient"))
           .withAssumeValidRestReferences(true)
           .withForPublication(true)
-          .withCrumbTrails(true)
+          .withVerbose(true)
           .withHtmlOutput("/tmp/output.html")
           .withOutputStyle("json")
           .withR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.NEVER)
@@ -301,8 +300,8 @@ public class InstanceValidatorOptionsConvertorTest {
           .withHtmlInMarkdownCheck(HtmlInMarkdownCheck.NONE)
           .withExtensions(List.of("http://example.org"))
           .withBundleValidationRules(List.of(
-            new BundleValidationRule().setRule("Patient:0").setProfile("http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient")
-          )),
+            "Patient:0","http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient")
+          ),
         new InstanceValidatorParameters()
           .setJurisdiction("US")
           .setExpansionParameters("version=4.0.1")
@@ -310,6 +309,7 @@ public class InstanceValidatorOptionsConvertorTest {
           .setAssumeValidRestReferences(true)
           .setForPublication(true)
           .setCrumbTrails(true)
+          .setShowMessageIds(true)
           .setHtmlOutput("/tmp/output.html")
           .setOutputStyle("json")
           .setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.NEVER)

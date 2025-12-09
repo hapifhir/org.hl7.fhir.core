@@ -5,10 +5,10 @@ import org.hl7.fhir.r4.utils.SnomedExpressions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class SnomedExpressionsTests {
+class SnomedExpressionsTests {
 
   @Test
-  public void test() throws FHIRException {
+  void test() throws FHIRException {
     p("116680003");
     p("128045006:{363698007=56459004}");
     p("128045006|cellulitis (disorder)|:{363698007|finding site|=56459004|foot structure|}");
@@ -49,7 +49,7 @@ public class SnomedExpressionsTests {
     p("28012007 |Closed fracture of shaft of tibia| : 363698007 |Finding site| = (52687003 |Bone structure of shaft of tibia| : 272741003 |Laterality|= 7771000 |Left|)");
     p("28012007 |Closed fracture of shaft of tibia| : 272741003 |Laterality|= 7771000 |Left|"); // Close to user form
                                                                                                 // omits restatement of
-                                                                                                // finding site");
+                                                                                                // finding site
     p("64572001 |Disease| : {363698007 |Finding site| = (52687003 |Bone structure of shaft of tibia| : 272741003 |Laterality|= 7771000 |Left|), 116676008 |Associated morphology| = 20946005 |Fracture, closed | }");
     p("28012007 |Closed fracture of shaft of tibia| : 363698007 |Finding site| = 31156008 |Structure of left half of body|");
   }
