@@ -209,7 +209,13 @@ public class InstanceValidatorOptionsConvertorTest {
 
       // Enum fields - bestPracticeLevel
       Arguments.arguments(
-        new InstanceValidatorOptions().withBestPracticeLevel(BestPracticeWarningLevel.Error),
+        new InstanceValidatorOptions().withBestPracticeLevel("error"),
+        new InstanceValidatorParameters().setBestPracticeLevel(BestPracticeWarningLevel.Error)
+      ),
+
+      // Enum fields - bestPracticeLevel
+      Arguments.arguments(
+        new InstanceValidatorOptions().withBestPracticeLevel("e"),
         new InstanceValidatorParameters().setBestPracticeLevel(BestPracticeWarningLevel.Error)
       ),
 
@@ -291,7 +297,7 @@ public class InstanceValidatorOptionsConvertorTest {
           .withR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.NEVER)
           .withQuestionnaireMode(QuestionnaireMode.NONE)
           .withLevel(ValidationLevel.HINTS)
-          .withBestPracticeLevel(BestPracticeWarningLevel.Ignore)
+          .withBestPracticeLevel("ignore")
           .withHtmlInMarkdownCheck(HtmlInMarkdownCheck.NONE)
           .withExtensions(List.of("http://example.org"))
           .withBundleValidationRules(List.of(

@@ -26,10 +26,10 @@ This java project provides:
 * A Java library containing object handling code for the FHIR specification.
 * Useful FHIR utilities, including the FHIR Validator
 
-This code is used in all [HAPI](https://github.com/hapifhir/hapi-fhir) servers and clients. It also provides the HL7 maintained 
-FHIR Validator, both as a library and as a standalone CLI application. In addition, this 
+This code is used in all [HAPI](https://github.com/hapifhir/hapi-fhir) servers and clients. It also provides the HL7 maintained
+FHIR Validator, both as a library and as a standalone CLI application. In addition, this
 is the core code for the HL7 maintained [IG publisher]((https://github.com/HL7/fhir-ig-publisher/))
-and FHIR [main build publisher](https://github.com/HL7/kindling). As such, this code is considered an authoritatively 
+and FHIR [main build publisher](https://github.com/HL7/kindling). As such, this code is considered an authoritatively
 correct implementation of the core FHIR specification that it implements.
 
 The following is an overview of modules used in this project:
@@ -43,13 +43,13 @@ The following is an overview of modules used in this project:
 * **org.fhir.fhir.dstu2016may**: Object models and utilities for an early STU3 candidate still used by some implementers
 * **org.fhir.fhir.convertors**: Code to convert between versions, and other version independence code - uses all the above projects
 * **org.fhir.fhir.validation**: The FHIR Java validator (note: based on R5 internally, but validates all the above versions)
-* **org.fhir.fhir.validation.cli**: Holder project for releasing the FHIR validator as a single fat jar 
+* **org.fhir.fhir.validation.cli**: Holder project for releasing the FHIR validator as a single fat jar
 
 ## Internationalization
 
 This project implements internationalization for its user tools and utilities for several locales using a combination of [GNU PO](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) and [Java Properties](https://docs.oracle.com/javase/tutorial/i18n/resbundle/propfile.html) files.
 
-Translation from the core library's original English locale to other supported locales is an ongoing process. 
+Translation from the core library's original English locale to other supported locales is an ongoing process.
 See [Translation Status](https://fhir.github.io/translation-utils/) for current details.
 
 
@@ -74,13 +74,13 @@ mvn -Dmaven.test.skip install
 > **Note:** If you're on Windows and use PowerShell, The `-` needs to be escaped with a backtick (`)
 > ```
 > mvn `-Dmaven.test.skip install
-> ``` 
+> ```
 
 To clean and rebuild the terminology server caches:
 
 _clean_
 ```
-mvn clean -Dfhir.txcache.clean=true   
+mvn clean -Dfhir.txcache.clean=true
 ```
 
 _rebuild_
@@ -88,8 +88,8 @@ _rebuild_
 mvn test -Dfhir.txcache.rebuild=true
 ```
 
-_The source contains cached terminology server responses for testing. If the expected responses have changed in any way, 
-this cache should be cleaned and rebuilt with the above so that subsequent `mvn test` calls will have the most current 
+_The source contains cached terminology server responses for testing. If the expected responses have changed in any way,
+this cache should be cleaned and rebuilt with the above so that subsequent `mvn test` calls will have the most current
 responses cached._
 
 To build only the validator_cli jar locally:
@@ -104,9 +104,9 @@ _This will produce `./validator_cli.jar` in the project root directory._
 
 The built binary for the FHIR command-line validator is released through [GitHub releases][Link-GithubReleases] and can be downloaded directly [here][Link-GithubZipRelease]. For instructions on using this validator visit the [FHIR Validator Confluence page][Link-ConfluenceValidator].
 
-All build artifacts are published on [Maven Central][Link-MavenCentral]. 
+All build artifacts are published on [Maven Central][Link-MavenCentral].
 
-### Current Versions 
+### Current Versions
 
 |          Artifact           |                                  Release                                   |                Snapshot                |
 |:---------------------------:|:--------------------------------------------------------------------------:|:--------------------------------------:|
@@ -148,7 +148,7 @@ repositories {
     maven {
         name = "Central Portal Snapshots"
         url = URI("https://central.sonatype.com/repository/maven-snapshots/")
-        
+
         content {
             includeModule("ca.uhn.hapi.fhir", "org.hl7.fhir.utilities")
             includeModule("ca.uhn.hapi.fhir", "org.hl7.fhir.dstu2")
@@ -329,4 +329,3 @@ This project is maintained by [Grahame Grieve][Link-grahameGithub], [James Agnew
 [Badge-maven-snapshot-support]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.support%2Fmaven-metadata.xml
 [Badge-maven-snapshot-utilities]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.utilities%2Fmaven-metadata.xml
 [Badge-maven-snapshot-validation]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fca%2Fuhn%2Fhapi%2Ffhir%2Forg.hl7.fhir.validation%2Fmaven-metadata.xml
-

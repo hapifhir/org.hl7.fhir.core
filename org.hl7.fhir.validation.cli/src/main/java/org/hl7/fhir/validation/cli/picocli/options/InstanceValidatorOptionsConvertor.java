@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli.picocli.options;
 
+import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 
 public class InstanceValidatorOptionsConvertor {
@@ -56,7 +57,7 @@ public class InstanceValidatorOptionsConvertor {
     }
 
     if (options.bestPracticeLevel != null) {
-      instanceValidatorParameters.setBestPracticeLevel(options.bestPracticeLevel);
+      instanceValidatorParameters.setBestPracticeLevel(readBestPractice(options.bestPracticeLevel));
     }
 
     if (options.htmlInMarkdownCheck != null) {
@@ -83,5 +84,22 @@ public class InstanceValidatorOptionsConvertor {
     }
 
     return instanceValidatorParameters;
+  }
+
+  static BestPracticeWarningLevel readBestPractice(String s) {
+    if (s == null) {
+      return BestPracticeWarningLevel.Warning;
+    }
+    switch (s.toLowerCase()) {
+      case "warning" : return BestPracticeWarningLevel.Warning;
+      case "error" : return BestPracticeWarningLevel.Error;
+      case "hint" : return BestPracticeWarningLevel.Hint;
+      case "ignore" : return BestPracticeWarningLevel.Ignore;
+      case "w" : return BestPracticeWarningLevel.Warning;
+      case "e" : return BestPracticeWarningLevel.Error;
+      case "h" : return BestPracticeWarningLevel.Hint;
+      case "i" : return BestPracticeWarningLevel.Ignore;
+    }
+    throw new Error("The best-practice level ''" + s + "'' is not valid");
   }
 }

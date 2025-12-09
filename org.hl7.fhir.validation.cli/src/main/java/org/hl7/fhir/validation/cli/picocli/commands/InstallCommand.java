@@ -13,7 +13,7 @@ import java.util.concurrent.Callable;
 
 @Slf4j
 @CommandLine.Command(name = "install",
-  description = "Start a fhir server.")
+  description = "Initializes the FHIR validator and installs any specified IGs to the package cache.")
 public class InstallCommand extends ValidationEngineCommand implements Callable<Integer> {
 
   @Override
