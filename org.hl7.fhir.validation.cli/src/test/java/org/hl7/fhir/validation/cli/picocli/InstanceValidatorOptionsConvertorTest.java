@@ -59,6 +59,16 @@ public class InstanceValidatorOptionsConvertorTest {
       ),
 
       Arguments.arguments(
+        "compact profiles",
+        new InstanceValidatorOptions().withCompactProfiles(List.of(
+          "http://hl7.org/fhir/StructureDefinition/Patient,http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient"
+        )),
+        new InstanceValidatorParameters()
+          .addProfile("http://hl7.org/fhir/StructureDefinition/Patient")
+          .addProfile("http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient")
+      ),
+
+      Arguments.arguments(
         "empty profiles list",
         new InstanceValidatorOptions().withProfiles(List.of()),
         new InstanceValidatorParameters()
@@ -198,13 +208,13 @@ public class InstanceValidatorOptionsConvertorTest {
 
       Arguments.arguments(
         "r5BundleRelativeReferencePolicy ALWAYS",
-        new InstanceValidatorOptions().withR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.ALWAYS),
+        new InstanceValidatorOptions().withR5BundleRelativeReferencePolicy("always"),
         new InstanceValidatorParameters().setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.ALWAYS)
       ),
 
       Arguments.arguments(
         "questionnaireMode REQUIRED",
-        new InstanceValidatorOptions().withQuestionnaireMode(QuestionnaireMode.REQUIRED),
+        new InstanceValidatorOptions().withQuestionnaireMode("required"),
         new InstanceValidatorParameters().setQuestionnaireMode(QuestionnaireMode.REQUIRED)
       ),
 
@@ -275,7 +285,7 @@ public class InstanceValidatorOptionsConvertorTest {
           .withHintAboutNonMustSupport(true)
           .withHtmlOutput("/tmp/validation.html")
           .withOutputStyle("eslint-compact")
-          .withQuestionnaireMode(QuestionnaireMode.CHECK)
+          .withQuestionnaireMode("check")
           .withLevel("warning")
           .withExtensions(List.of("http://example.org", "any")),
         new InstanceValidatorParameters()
@@ -300,8 +310,8 @@ public class InstanceValidatorOptionsConvertorTest {
           .withVerbose(true)
           .withHtmlOutput("/tmp/output.html")
           .withOutputStyle("json")
-          .withR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.NEVER)
-          .withQuestionnaireMode(QuestionnaireMode.NONE)
+          .withR5BundleRelativeReferencePolicy("never")
+          .withQuestionnaireMode("none")
           .withLevel("info")
           .withBestPracticeLevel("ignore")
           .withHtmlInMarkdownCheck("ignore")

@@ -26,10 +26,22 @@ public class InstanceValidatorOptions {
   public String expansionParameters;
 
   @CommandLine.Option(names = {"-profile"},
-    description = "The canonical URL to validate against (same as if it was specified in Resource.meta.profile). If no profile is specified, the resource is validated against the base specification. This parameter can appear any number of times.",
-    arity = "0..*")
+    description = """
+      A canonical URL to validate against (same as if it was specified in Resource.meta.profile). If no profile is specified, the resource is validated against the base specification. Multiple profiles can be used.
+      Note: a profile (and it's dependencies) have to be made available through one of the -ig parameters. Package dependencies will automatically be resolved
+      """,
+    arity = "1")
   @With
   public List<String> profiles = new ArrayList<>();
+
+  @CommandLine.Option(names = {"-profiles"},
+    hidden = true,
+    description = """
+      Convenience argument for adding a comma-delimited list of profile URLs
+      """,
+    arity = "1")
+  @With
+  public List<String> compactProfiles = new ArrayList<>();
 
   // Boolean flags
   @CommandLine.Option(names = {"-assumeValidRestReferences"},
@@ -93,13 +105,19 @@ public class InstanceValidatorOptions {
   public boolean allowExampleUrls = false;
 
   @CommandLine.Option(names = {"-showReferenceMessages"},
-    description = "Includes validation messages resulting from validating target resources against profiles defined on a reference",
+    description = """
+    Includes validation messages resulting from validating target resources against profiles defined on a reference
+    This increases the volume of validation messages, but may allow easier debugging.  If not specified, then only a high-level message indicating that the referenced item wasn't valid against the listed profile(s) will be provided.
+    """,
     arity = "0")
   @With
   public boolean showMessagesFromReferences = false;
 
   @CommandLine.Option(names = {"-security-checks"},
-    description = "If present, check that string content doesn't include any html-like tags that might create problems downstream",
+    description = """
+    If present, check that string content doesn't include any html-like tags that might create problems downstream
+    Note that all external input must always be sanitized by escaping for either html or sql.
+    """,
     arity = "0")
   @With
   public boolean securityChecks = false;
@@ -147,14 +165,29 @@ public class InstanceValidatorOptions {
 
   // Enum fields
   @CommandLine.Option(names = {"-r5-bundle-relative-reference-policy"},
-    description = "Control R5 bundle resolution policy (always, never, default)")
+    description = """
+  Control R5 bundle resolution policy (always, never, default)
+      * always - always apply the rule irrespective of version
+      * never - never apply this rule irrespective of version
+      * default - the default behaviour: apply this rule in R5 and later
+  """)
   @With
-  public R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy;
+  public String r5BundleRelativeReferencePolicy;
 
   @CommandLine.Option(names = {"-questionnaire"},
-    description = "What to do when validating QuestionnaireResponse resources (none, check, required)")
+    description = """
+    What to do when validating QuestionnaireResponse resources (none, check, required)
+       * none (default): just ignore the questionnaire reference
+       * required: check that the QuestionnaireResponse has a questionnaire and
+         validate against it
+       * check: if the QuestionnaireResponse has a questionnaire, validate
+         against it
+    The questionnaire must be loaded using the -ig parameter which specifies the location of a questionnaire. If provided, then the validator will validate any QuestionnaireResponse that claims to match the Questionnaire against it no default value.
+    """,
+    arity="1"
+  )
   @With
-  public QuestionnaireMode questionnaireMode = QuestionnaireMode.CHECK;
+  public String questionnaireMode = null;
 
   @CommandLine.Option(names = {"-level"},
     description = "Minimum level for validation messages (hints, warnings, errors)")

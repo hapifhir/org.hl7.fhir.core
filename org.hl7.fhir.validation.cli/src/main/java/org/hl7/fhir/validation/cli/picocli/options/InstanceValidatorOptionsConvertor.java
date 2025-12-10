@@ -4,8 +4,10 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
+import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
 public class InstanceValidatorOptionsConvertor {
@@ -53,11 +55,11 @@ public class InstanceValidatorOptionsConvertor {
 
     // Enum fields - null check then setter
     if (options.r5BundleRelativeReferencePolicy != null) {
-      instanceValidatorParameters.setR5BundleRelativeReferencePolicy(options.r5BundleRelativeReferencePolicy);
+      instanceValidatorParameters.setR5BundleRelativeReferencePolicy(ValidationOptions.R5BundleRelativeReferencePolicy.fromCode(options.r5BundleRelativeReferencePolicy));
     }
 
     if (options.questionnaireMode != null) {
-      instanceValidatorParameters.setQuestionnaireMode(options.questionnaireMode);
+      instanceValidatorParameters.setQuestionnaireMode(QuestionnaireMode.fromCode(options.questionnaireMode));
     }
 
     if (options.level != null) {
@@ -80,6 +82,14 @@ public class InstanceValidatorOptionsConvertor {
     if (options.profiles != null && !options.profiles.isEmpty()) {
       for (String profile : options.profiles) {
         instanceValidatorParameters.addProfile(profile);
+      }
+    }
+
+    if (options.compactProfiles != null && !options.compactProfiles.isEmpty()) {
+      for (String compactProfile : options.compactProfiles) {
+        for (String profile : compactProfile.split("\\,")) {
+          instanceValidatorParameters.addProfile(profile);
+        }
       }
     }
 
