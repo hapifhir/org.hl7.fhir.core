@@ -12,6 +12,7 @@ import org.hl7.fhir.validation.cli.param.parsers.WatchParametersParser;
 import org.hl7.fhir.validation.service.ValidateSourceParameters;
 import org.hl7.fhir.validation.service.model.*;
 import org.hl7.fhir.validation.service.ValidationService;
+import org.hl7.fhir.validation.service.WatchParameters;
 import org.hl7.fhir.validation.cli.Display;
 import org.slf4j.Logger;
 

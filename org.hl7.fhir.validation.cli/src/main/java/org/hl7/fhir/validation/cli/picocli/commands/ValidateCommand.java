@@ -9,7 +9,7 @@ import org.hl7.fhir.validation.service.ValidateSourceParameters;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.service.ValidatorWatchMode;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
-import org.hl7.fhir.validation.service.model.WatchParameters;
+import org.hl7.fhir.validation.service.WatchParameters;
 import picocli.CommandLine;
 
 import javax.annotation.Nonnull;
@@ -117,11 +117,11 @@ public class ValidateCommand extends ValidationEngineCommand implements Callable
   }
 
   private WatchParameters getWatchParameters() {
-    WatchParameters watchParameters = new WatchParameters();
-    watchParameters.setWatchMode(readWatchMode(watchOptions.watchMode));
-    watchParameters.setWatchSettleTime(watchOptions.watchSettleTime);
-    watchParameters.setWatchScanDelay(watchOptions.watchScanDelay);
-    return watchParameters;
+    return WatchParameters.builder()
+    .watchMode(readWatchMode(watchOptions.watchMode))
+    .watchSettleTime(watchOptions.watchSettleTime)
+    .watchScanDelay(watchOptions.watchScanDelay)
+    .build();
   }
 
   private static ValidatorWatchMode readWatchMode(String s) {
