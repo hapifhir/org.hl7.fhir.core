@@ -34,6 +34,7 @@ import java.util.concurrent.Callable;
   subcommands = {
     CommandLine.HelpCommand.class,
     CompareCommand.class,
+    CompileCommand.class,
     ServerCommand.class,
     InstallCommand.class
   })
