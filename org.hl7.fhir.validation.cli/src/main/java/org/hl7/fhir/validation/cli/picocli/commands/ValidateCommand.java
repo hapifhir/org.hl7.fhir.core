@@ -8,7 +8,6 @@ import org.hl7.fhir.validation.cli.picocli.options.*;
 import org.hl7.fhir.validation.service.ValidateSourceParameters;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
-import org.hl7.fhir.validation.service.model.OutputParameters;
 import org.hl7.fhir.validation.service.model.WatchParameters;
 import picocli.CommandLine;
 
@@ -40,6 +39,13 @@ import java.util.concurrent.Callable;
 public class ValidateCommand extends ValidationEngineCommand implements Callable<Integer> {
   @CommandLine.Spec
   CommandLine.Model.CommandSpec spec;
+
+  @CommandLine.Option(names = "-output",
+    description = """
+    An output file for the results. Results will be represented as an OperationOutcome. +
+    By default results are sent to the std out.
+    """)
+  String output;
 
   @CommandLine.ArgGroup(validate = false, heading = "Terminology Client Options%n")
   TerminologyClientOptions terminologyClientOptions = new TerminologyClientOptions();
@@ -88,13 +94,12 @@ public class ValidateCommand extends ValidationEngineCommand implements Callable
       }
     }
 
-    //FIXME add output and watch parameters
-    OutputParameters outputParameters = new OutputParameters();
+    //FIXME add watch parameters
     WatchParameters watchParameters = new WatchParameters();
 
     log.info("Validating");
     try {
-      validationService.validateSources(validationEngine, new ValidateSourceParameters(instanceValidatorParameters, List.of(whatToValidate), outputParameters.getOutput(), watchParameters));
+      validationService.validateSources(validationEngine, new ValidateSourceParameters(instanceValidatorParameters, List.of(whatToValidate), output, watchParameters));
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
