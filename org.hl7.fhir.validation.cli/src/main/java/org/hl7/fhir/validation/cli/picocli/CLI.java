@@ -74,6 +74,7 @@ public class CLI {
       Map<String, String> argMap = Map.of(
           "-server", "server",
           "-install", "install",
+          "-compare", "compare",
           "-crumb-trails", "-verbose",
           "-show-message-ids", "-verbose",
           "-?", "-help",
