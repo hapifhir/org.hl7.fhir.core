@@ -35,6 +35,7 @@ import java.util.concurrent.Callable;
     CommandLine.HelpCommand.class,
     CompareCommand.class,
     CompileCommand.class,
+    TransformCommand.class,
     ServerCommand.class,
     InstallCommand.class
   })

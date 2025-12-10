@@ -3,6 +3,7 @@ package org.hl7.fhir.validation.cli.picocli.commands;
 import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.service.TransformParameters;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import picocli.CommandLine;
@@ -13,16 +14,25 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 @Slf4j
-@CommandLine.Command(name = "compile",
+@CommandLine.Command(name = "transform",
   description = """
-  Compile a structure map
+  Execute a transformation as described by a structure map
   """)
-public class CompileCommand extends ValidationEngineCommand implements Callable<Integer> {
+public class TransformCommand extends ValidationEngineCommand implements Callable<Integer> {
+
 
   @CommandLine.Parameters(
-    description = "A structure map file"
+    description = "A structure map file",
+    index = "0"
   )
   private String map;
+
+  @CommandLine.Parameters(
+    description = "Source file(s) to transform",
+    index = "1..*"
+  )
+  private List<String> sources = new ArrayList<>();
+
 
   @CommandLine.Option(
     names = {"-map"},
@@ -42,7 +52,7 @@ public class CompileCommand extends ValidationEngineCommand implements Callable<
 
   @Override
   public List<String> getSources() {
-    return Collections.emptyList();
+    return sources;
   }
 
   @Override
@@ -51,13 +61,22 @@ public class CompileCommand extends ValidationEngineCommand implements Callable<
     validateParameters(resolvedMap);
 
     String mapLog = validationEngineOptions != null ? validationEngineOptions.mapLog : null;
+    String txServer = validationEngineOptions != null ? validationEngineOptions.txServer : null;
+
+    TransformParameters transformParameters = TransformParameters.builder()
+      .map(resolvedMap)
+      .mapLog(mapLog)
+      .txServer(txServer)
+      .sources(sources)
+      .output(output)
+      .build();
 
     try {
-      validationService.compile(validationEngine, resolvedMap, mapLog, getSources(), output);
-      log.info("Successfully compiled map from {} to {}", resolvedMap, output);
+      validationService.transform(validationEngine, transformParameters);
+      log.info("Successfully transformed source(s) using map {} to {}", resolvedMap, output);
       return 0;
     } catch (Exception e) {
-      log.error("Error compiling map.", e);
+      log.error("Error transforming source(s).", e);
       return 1;
     }
   }
@@ -78,11 +97,15 @@ public class CompileCommand extends ValidationEngineCommand implements Callable<
 
   private void validateParameters(String map) {
     if (map == null) {
-      log.error("Must provide a map when compiling a transform");
+      log.error("Must provide a map when performing a transform");
       System.exit(1);
     }
     if (output == null) {
-      log.error("Must provide an output file when compiling a transform");
+      log.error("Must provide an output file when performing a transform");
+      System.exit(1);
+    }
+    if (sources == null || sources.isEmpty()) {
+      log.error("Must provide at least one source file when performing a transform");
       System.exit(1);
     }
   }
