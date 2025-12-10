@@ -90,6 +90,7 @@ public class CLI {
               newArgs[i] = args[i];
           }
       }
+
       return newArgs;
   }
 
