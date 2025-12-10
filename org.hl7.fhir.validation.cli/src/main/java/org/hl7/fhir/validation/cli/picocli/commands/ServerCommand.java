@@ -1,10 +1,12 @@
 package org.hl7.fhir.validation.cli.picocli.commands;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.validation.cli.picocli.options.ValidationEngineOptions;
 import picocli.CommandLine;
 
 import java.util.concurrent.Callable;
 
+@Slf4j
 @CommandLine.Command(name = "server",
   description = "Start a fhir server.")
 public class ServerCommand implements Callable<Integer> {
@@ -18,7 +20,7 @@ public class ServerCommand implements Callable<Integer> {
 
   @Override
   public Integer call() throws Exception { // your business logic goes here...
-    System.out.println("Running server on port " + port + " with FHIR version " + validationEngineOptions.fhirVersion);
-    return (Integer) 0;
+    log.info("Running server on port " + port + " with FHIR version " + validationEngineOptions.fhirVersion);
+    return 0;
   }
 }
