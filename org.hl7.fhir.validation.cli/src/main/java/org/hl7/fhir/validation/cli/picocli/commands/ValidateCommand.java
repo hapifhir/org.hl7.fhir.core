@@ -7,6 +7,7 @@ import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.picocli.options.*;
 import org.hl7.fhir.validation.service.ValidateSourceParameters;
 import org.hl7.fhir.validation.service.ValidationService;
+import org.hl7.fhir.validation.service.ValidatorWatchMode;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.service.model.WatchParameters;
 import picocli.CommandLine;
@@ -46,6 +47,9 @@ public class ValidateCommand extends ValidationEngineCommand implements Callable
     By default results are sent to the std out.
     """)
   String output;
+
+  @CommandLine.ArgGroup(validate = false, heading = "Watch Mode Options%n")
+  WatchOptions watchOptions = new WatchOptions();
 
   @CommandLine.ArgGroup(validate = false, heading = "Terminology Client Options%n")
   TerminologyClientOptions terminologyClientOptions = new TerminologyClientOptions();
@@ -94,8 +98,7 @@ public class ValidateCommand extends ValidationEngineCommand implements Callable
       }
     }
 
-    //FIXME add watch parameters
-    WatchParameters watchParameters = new WatchParameters();
+    WatchParameters watchParameters = getWatchParameters();
 
     log.info("Validating");
     try {
@@ -111,5 +114,28 @@ public class ValidateCommand extends ValidationEngineCommand implements Callable
     log.info("Locale: " + Locale.getDefault());
     log.info("Sources to validate: " + String.join("", getSources()));
     return 0;
+  }
+
+  private WatchParameters getWatchParameters() {
+    WatchParameters watchParameters = new WatchParameters();
+    watchParameters.setWatchMode(readWatchMode(watchOptions.watchMode));
+    watchParameters.setWatchSettleTime(watchOptions.watchSettleTime);
+    watchParameters.setWatchScanDelay(watchOptions.watchScanDelay);
+    return watchParameters;
+  }
+
+  private static ValidatorWatchMode readWatchMode(String s) {
+    if (s == null) {
+      return ValidatorWatchMode.NONE;
+    }
+    switch (s.toLowerCase()) {
+      case "all" : return ValidatorWatchMode.ALL;
+      case "none" : return ValidatorWatchMode.NONE;
+      case "single" : return ValidatorWatchMode.SINGLE;
+      case "a" : return ValidatorWatchMode.ALL;
+      case "n" : return ValidatorWatchMode.NONE;
+      case "s" : return ValidatorWatchMode.SINGLE;
+    }
+    throw new IllegalArgumentException("The watch mode ''"+s+"'' is not valid");
   }
 }
