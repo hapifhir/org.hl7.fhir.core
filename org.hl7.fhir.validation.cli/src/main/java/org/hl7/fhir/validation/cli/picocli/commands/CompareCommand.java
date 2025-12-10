@@ -81,10 +81,10 @@ public class CompareCommand extends ValidationEngineCommand implements Callable<
 
     try {
       if (!ManagedFileAccess.file(destinationDirectory).isDirectory()) {
-        log.error("Specified destination (-dest parameter) is not a directory: \"" + destinationDirectory + "\")");
+        log.error("Specified destination (-dest parameter) is not a directory: \"{}\")", destinationDirectory);
         System.exit(1);
       } else {
-        log.info("Using destination directory: \"" + destinationDirectory + "\")");
+        log.info("Using destination directory: \"{}\")", destinationDirectory);
       }
     } catch (IOException e) {
       log.error("Error accessing destination directory: " + destinationDirectory, e);
