@@ -702,6 +702,11 @@ public class NpmPackage {
     }
   }
 
+  public void buildIndexes(String path) throws IOException {
+    for (NpmPackageFolder folder : folders.values()) {
+      indexFolder(path, folder);
+    }
+  }
 
   /**
    * Create a package .index.json file for a package folder.
