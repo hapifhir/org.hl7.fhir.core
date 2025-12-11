@@ -76,6 +76,7 @@ public class CLI {
           "-install", "install",
           "-compare", "compare",
           "-compile", "compile",
+          "-convert", "convert",
           "-crumb-trails", "-verbose",
           "-show-message-ids", "-verbose",
           "-?", "-help",
