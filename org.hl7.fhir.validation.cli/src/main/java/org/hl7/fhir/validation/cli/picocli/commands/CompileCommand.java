@@ -19,6 +19,7 @@ import java.util.concurrent.Callable;
   """)
 public class CompileCommand extends ValidationEngineCommand implements Callable<Integer> {
 
+  // The first parameter is given special treatment as a result of legacy CLI implementation
   @CommandLine.Parameters(
     description = "A structure map file"
   )

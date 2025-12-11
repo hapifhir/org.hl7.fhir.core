@@ -9,7 +9,6 @@ import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import picocli.CommandLine;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -20,20 +19,20 @@ import java.util.concurrent.Callable;
   """)
 public class TransformCommand extends ValidationEngineCommand implements Callable<Integer> {
 
-
+  // The first parameter is given special treatment as a result of legacy CLI implementation
   @CommandLine.Parameters(
     description = "A structure map file",
     index = "0"
   )
   private String map;
 
+  // The remaining parameters are processed as sources
   @CommandLine.Parameters(
     description = "Source file(s) to transform",
     index = "1..*"
   )
-  private List<String> sources = new ArrayList<>();
-
-
+  private List<String> sources;
+  
   @CommandLine.Option(
     names = {"-map"},
     description = "A structure map file")
