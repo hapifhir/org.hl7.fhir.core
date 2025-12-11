@@ -1,16 +1,15 @@
 package org.hl7.fhir.validation.cli.picocli.commands;
 
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import picocli.CommandLine;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
+import javax.annotation.Nonnull;
 
 @Slf4j
 @CommandLine.Command(name = "fhirpath",
@@ -47,7 +46,7 @@ public class FhirpathCommand extends ValidationEngineCommand implements Callable
   }
 
   @Override
-  protected Integer call(@NonNull ValidationService validationService, @NonNull ValidationEngine validationEngine) {
+  protected Integer call(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine) {
     if (fhirpath == null || fhirpath.isEmpty()) {
       log.error("No FHIRPath expression provided (-fhirpath parameter)");
       return 1;
