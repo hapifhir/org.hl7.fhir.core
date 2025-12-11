@@ -44,17 +44,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -685,23 +675,31 @@ public class NpmPackage {
   public boolean isIndexed() throws IOException {
     for (NpmPackageFolder folder : folders.values()) {
       JsonObject index = folder.index();
-      if (folder.index() == null) {
+      if (index == null || indexCountDoesNotMatchFileCount(index, folder)) {
         return false;
       }
     }
     return true;
   }
 
-
   public void checkIndexed(String path) throws IOException {
     for (NpmPackageFolder folder : folders.values()) {
       JsonObject index = folder.index();
-      if (index == null) {
+      if (index == null || indexCountDoesNotMatchFileCount(index, folder)) {
         indexFolder(path, folder);
       }  
     }
   }
 
+  protected boolean indexCountDoesNotMatchFileCount(@Nonnull JsonObject index, NpmPackageFolder folder) {
+    int fileCount = 0;
+    for (File file : Objects.requireNonNull(folder.folder.listFiles())) {
+      if (NpmPackageIndexBuilder.isIndexEntryCandidate(file.getName())) {
+        fileCount++;
+      }
+    }
+    return fileCount != index.forceArray("files").size();
+  }
 
   /**
    * Create a package .index.json file for a package folder.
