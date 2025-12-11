@@ -1,7 +1,6 @@
 package org.hl7.fhir.validation.cli.picocli.commands;
 
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.CommonPackages;
@@ -11,6 +10,7 @@ import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import picocli.CommandLine;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -55,7 +55,7 @@ public class CompareCommand extends ValidationEngineCommand implements Callable<
   }
 
   @Override
-  protected Integer call(@NonNull ValidationService validationService, @NonNull ValidationEngine validationEngine) {
+  protected Integer call(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine) {
     checkDestinationDirectoryValid();
 
     try {
