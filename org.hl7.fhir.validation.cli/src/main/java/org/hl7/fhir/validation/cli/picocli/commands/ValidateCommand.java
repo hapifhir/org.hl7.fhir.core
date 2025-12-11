@@ -36,6 +36,7 @@ import java.util.concurrent.Callable;
     CompareCommand.class,
     CompileCommand.class,
     ConvertCommand.class,
+    FhirpathCommand.class,
     TransformCommand.class,
     ServerCommand.class,
     InstallCommand.class
