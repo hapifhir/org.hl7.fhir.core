@@ -5,7 +5,7 @@ import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.service.*;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
-import org.hl7.fhir.validation.service.model.WatchParameters;
+import org.hl7.fhir.validation.service.WatchParameters;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -206,7 +206,7 @@ class ValidationEngineTaskTests {
         new InstanceValidatorParameters(),
         List.of("meh"),
         null,
-        new WatchParameters()
+        new WatchParameters(ValidatorWatchMode.NONE, 1000, 100)
       )
     ));
 

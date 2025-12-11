@@ -72,7 +72,6 @@ public class CompareTask extends ValidationEngineTask {
 
     @Override
     protected void executeTask(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine) throws Exception {
-     
       if (!destinationDirectoryValid(destinationDirectory)) {
         return;
       }

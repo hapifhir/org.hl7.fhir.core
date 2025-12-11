@@ -4,14 +4,14 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.IParamParser;
 import org.hl7.fhir.validation.service.ValidatorWatchMode;
-import org.hl7.fhir.validation.service.model.WatchParameters;
+import org.hl7.fhir.validation.service.WatchParameters;
 
 public class WatchParametersParser implements IParamParser<WatchParameters> {
 
   public static final String WATCH_MODE_PARAM = "-watch-mode";
   public static final String WATCH_SCAN_DELAY = "-watch-scan-delay";
   public static final String WATCH_SETTLE_TIME = "-watch-settle-time";
-  private final WatchParameters watchParameters = new WatchParameters();
+  private WatchParameters watchParameters = new WatchParameters(ValidatorWatchMode.NONE, 1000, 100);
 
   @Override
   public WatchParameters getParameterObject() {
@@ -25,21 +25,21 @@ public class WatchParametersParser implements IParamParser<WatchParameters> {
         if (i + 1 == args.length) {
           throw new Error("Specified -watch-mode without indicating mode value");
         } else {
-          watchParameters.setWatchMode(readWatchMode(args[i+1].getValue()));
+          watchParameters = watchParameters.toBuilder().watchMode(readWatchMode(args[i+1].getValue())).build();
           Arg.setProcessed(args, i, 2, true);
         }
       } else if (args[i].getValue().equals(WATCH_SCAN_DELAY)) {
         if (i + 1 == args.length) {
           throw new Error("Specified -watch-scan-delay without indicating mode value");
         } else {
-          watchParameters.setWatchScanDelay(readInteger(WATCH_SCAN_DELAY, args[i+1].getValue()));
+          watchParameters = watchParameters.toBuilder().watchScanDelay(readInteger(WATCH_SCAN_DELAY, args[i+1].getValue())).build();
           Arg.setProcessed(args, i, 2, true);
         }
       } else if (args[i].getValue().equals(WATCH_SETTLE_TIME)) {
         if (i + 1 == args.length) {
           throw new Error("Specified -watch-mode without indicating mode value");
         } else {
-          watchParameters.setWatchSettleTime(readInteger(WATCH_SETTLE_TIME, args[i+1].getValue()));
+          watchParameters = watchParameters.toBuilder().watchSettleTime(readInteger(WATCH_SETTLE_TIME, args[i+1].getValue())).build();
           Arg.setProcessed(args, i, 2, true);
         }
       }
