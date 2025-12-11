@@ -62,8 +62,14 @@ public class NpmPackageIndexBuilder {
     }
   }
 
-  public boolean seeFile(String name, byte[] content) {
-    if (name.endsWith(".json")) {
+  public static boolean isIndexEntryCandidate(String fileName) {
+    return !".index.json".equals(fileName)
+      && !"package.json".equals(fileName)
+      && fileName.endsWith(".json");
+  }
+
+  public boolean seeFile(String fileName, byte[] content) {
+    if (isIndexEntryCandidate(fileName)) {
       /* We are only interested in some string fields on the first level of the JSON file.
        * We can then use a streaming parser to get the values of these fields instead of parsing the whole file and
        * allocating memory for everything in it.
@@ -87,7 +93,7 @@ public class NpmPackageIndexBuilder {
           if ("resourceType".equals(fieldName)) {
             parser.nextToken();
             files.add(fi);
-            fi.add("filename", name);
+            fi.add("filename", fileName);
             fi.add(fieldName, parser.getText());
           }
 
@@ -111,10 +117,10 @@ public class NpmPackageIndexBuilder {
         }
 
         if (extension != null) {
-          extension.seeFile(name, fi);
+          extension.seeFile(fileName, fi);
         }
       } catch (Exception e) {
-        if (name.contains("openapi")) {
+        if (fileName.contains("openapi")) {
           return false;
         }
       }
@@ -131,10 +137,6 @@ public class NpmPackageIndexBuilder {
     files = null;
     return res;
   }
-  
-//  private Map<String, List<String>> types = new HashMap<>();
-//  private Map<String, String> canonicalMap = new HashMap<>();
-
 
   public void executeWithStatus(String folder) throws IOException {
     log.info("Indexing Package "+folder+" ... ");
