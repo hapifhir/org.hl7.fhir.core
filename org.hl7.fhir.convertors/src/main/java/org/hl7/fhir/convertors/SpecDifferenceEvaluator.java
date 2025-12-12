@@ -456,7 +456,7 @@ public class SpecDifferenceEvaluator {
     }
   }
 
-  private String getDiffAsHtml(TypeLinkProvider linker2, StructureDefinition rev, CompareFhirVersion version) throws IOException {
+  public String getDiffAsHtml(TypeLinkProvider linker2, StructureDefinition rev, CompareFhirVersion version) throws IOException {
     StructureDefinition orig = getOriginalDefinition(rev, version);
     if (orig == null)
       return "<p>This " + rev.getKind().toCode() + " did not exist in Release "+version.toString()+"</p>";
@@ -468,7 +468,10 @@ public class SpecDifferenceEvaluator {
   }
 
   public String getDiffAsHtml(TypeLinkProvider linker) throws IOException {
-    return getDiffAsHtml(linker, CompareFhirVersion.R5) + getDiffAsHtml(linker, CompareFhirVersion.R4B) + getDiffAsHtml(linker, CompareFhirVersion.R4);  
+    // also inject headings in between
+    return "<h3>Differences between R5 and R6</h3>\n" + getDiffAsHtml(linker, CompareFhirVersion.R5)
+     + "<h3>Differences between R4B and R6</h3>\n" + getDiffAsHtml(linker, CompareFhirVersion.R4B)
+     + "<h3>Differences between R4 and R6</h3>\n" + getDiffAsHtml(linker, CompareFhirVersion.R4);  
   }
   
   public String getDiffAsHtml(TypeLinkProvider linker, CompareFhirVersion version) throws IOException {
