@@ -102,7 +102,7 @@ public class RePackageTask extends ValidationEngineTask {
         .setJson(json)
         .setModes(rePackageParameters.getModeParams())
         .setNpmId(packageNameParameters.getPackageName())
-        .addPackages(validationEngineParameters.getIgs());
+        .addPackages(rePackageParameters.getPackages());
 
 
       if (rePackageParameters.getScope() != null) {
