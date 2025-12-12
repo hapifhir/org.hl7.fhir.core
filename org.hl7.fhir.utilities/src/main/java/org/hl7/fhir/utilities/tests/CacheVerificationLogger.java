@@ -3,10 +3,12 @@ package org.hl7.fhir.utilities.tests;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 
 import lombok.Getter;
 
+@Slf4j
 public class CacheVerificationLogger implements ToolingClientLogger {
 
   @Getter
@@ -15,18 +17,26 @@ public class CacheVerificationLogger implements ToolingClientLogger {
   @Override
   public void logRequest(String method, String url, List<String> headers, byte[] body) {
     if (!TestConfig.getInstance().isRebuildCache()) {
-      System.err.println("Unexpected request to server");
-      System.err.println(method);
-      System.err.println(url);
+      log.warn("Unexpected request to server");
+      log.warn(method);
+      log.warn(url);
       if (headers != null) {
         for (String header : headers) {
-          System.err.println("Header: " + header);
+          if (header.toLowerCase().startsWith("accept")
+            || header.toLowerCase().startsWith("content-type")
+            || header.toLowerCase().startsWith("user-agent")
+            || header.toLowerCase().startsWith("language")
+            ) {
+            log.warn("Header: " + header);
+          } else {
+            log.warn("Header: " + header.substring(0, header.indexOf(":")) + ": [hidden]");
+          }
         }
       }
       if (body != null) {
-        System.err.println("Body");
-        System.err.println("----");
-        System.err.println(new String(body, StandardCharsets.UTF_8));
+        log.warn("Body");
+        log.warn("----");
+        log.warn(new String(body, StandardCharsets.UTF_8));
       }
     }
     requests++;
