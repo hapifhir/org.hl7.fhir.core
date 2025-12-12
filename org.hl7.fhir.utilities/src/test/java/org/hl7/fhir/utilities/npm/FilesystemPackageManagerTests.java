@@ -26,6 +26,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Assertions;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -41,6 +42,7 @@ public class FilesystemPackageManagerTests {
   private static final String DUMMY_URL_3 = "https://dummy3.org";
 
   private static final String DUMMY_URL_4 = "https://dummy4.org";
+  public static final String CURRENT_PACKAGE_CACHE_VERSION = "3";
   private final List<PackageServer> dummyPrivateServers = List.of(
      new PackageServer(DUMMY_URL_1),
      new PackageServer(DUMMY_URL_2)
@@ -311,7 +313,7 @@ public class FilesystemPackageManagerTests {
 
 
     IniFile ini = new IniFile(cacheIni.getAbsolutePath());
-    ini.setStringProperty("cache", "version", "3", null);
+    ini.setStringProperty("cache", "version", CURRENT_PACKAGE_CACHE_VERSION, null);
     ini.save();
 
     assertThat(cacheIni).exists();
@@ -325,7 +327,7 @@ public class FilesystemPackageManagerTests {
     assertThat(ManagedFileAccess.file(cacheDirectory.getAbsolutePath(), "packages.ini")).exists();
     IniFile ini = new IniFile(iniFile.getAbsolutePath());
     String version = ini.getStringProperty("cache", "version");
-    assertThat(version).isEqualTo("3");
+    assertThat(version).isEqualTo(CURRENT_PACKAGE_CACHE_VERSION);
 
     File[] files = cacheDirectory.listFiles();
     if (dummyPackageShouldExist) {
@@ -360,6 +362,7 @@ public class FilesystemPackageManagerTests {
 
   @MethodSource("packageCacheMultiThreadTestParams")
   @ParameterizedTest
+  @Timeout(120)
   void packageCacheMultiThreadTest(final int threadTotal, final int packageCacheManagerTotal) throws IOException {
     String pcmPath = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest")).getAbsolutePath();
     System.out.println("Using temp pcm path: " + pcmPath);
