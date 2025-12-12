@@ -5,12 +5,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
@@ -38,6 +33,8 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
+import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 @MarkedToMoveToAdjunctPackage
 public class TerminologyClientManager {
@@ -197,54 +194,54 @@ public class TerminologyClientManager {
       return serverList.get(0);
     }
     
-    List<ServerOptionList> choices = new ArrayList<>();
-    for (String s : systems) {
-      choices.add(findServerForSystem(s, expand));
+    List<ServerOptionList> serverLists = new ArrayList<>();
+    for (String system : systems) {
+      serverLists.add(findServerForSystem(system, expand));
     }    
     
     // first we look for a server that's authoritative for all of them
-    for (ServerOptionList ol : choices) {
-      for (String s : ol.authoritative) {
+    for (ServerOptionList serverOptionList : serverLists) {
+      for (String authoritativeServers : serverOptionList.authoritative) {
         boolean ok = true;
-        for (ServerOptionList t : choices) {
-          if (!t.authoritative.contains(s)) {
+        for (ServerOptionList t : serverLists) {
+          if (!t.authoritative.contains(authoritativeServers)) {
             ok = false;
           }
         }
         if (ok) {
-          log(vs, s, systems, choices, "Found authoritative server "+s);
-          return findClient(s, systems, expand);
+          log(vs, authoritativeServers, systems, serverLists, "Found authoritative server "+authoritativeServers);
+          return findClient(authoritativeServers, systems, expand);
         }
       }
     }
     
     // now we look for a server that's authoritative for one of them and a candidate for the others
-    for (ServerOptionList ol : choices) {
+    for (ServerOptionList ol : serverLists) {
       for (String s : ol.authoritative) {
         boolean ok = true;
-        for (ServerOptionList t : choices) {
+        for (ServerOptionList t : serverLists) {
           if (!t.authoritative.contains(s) && !t.candidates.contains(s)) {
             ok = false;
           }
         }
         if (ok) {
-          log(vs, s, systems, choices, "Found partially authoritative server "+s);
+          log(vs, s, systems, serverLists, "Found partially authoritative server "+s);
           return findClient(s, systems, expand);
         }
       }
     }
 
     // now we look for a server that's a candidate for all of them
-    for (ServerOptionList ol : choices) {
+    for (ServerOptionList ol : serverLists) {
       for (String s : ol.candidates) {
         boolean ok = true;
-        for (ServerOptionList t : choices) {
+        for (ServerOptionList t : serverLists) {
           if (!t.candidates.contains(s)) {
             ok = false;
           }
         }
         if (ok) {
-          log(vs, s, systems, choices, "Found candidate server " + s);
+          log(vs, s, systems, serverLists, "Found candidate server " + s);
           return findClient(s, systems, expand);
         }
       }
@@ -259,7 +256,7 @@ public class TerminologyClientManager {
           "urn:ietf:rfc:3986", "http://www.ama-assn.org/go/cpt", "urn:oid:1.2.36.1.2001.1005.17", "urn:iso:std:iso:3166", 
           "http://varnomen.hgvs.org", "http://unstats.un.org/unsd/methods/m49/m49.htm", "urn:iso:std:iso:4217", 
           "http://hl7.org/fhir/sid/ndc", "http://fhir.ohdsi.org/CodeSystem/concepts", "http://fdasis.nlm.nih.gov", "https://www.usps.com/")) {
-        log(vs, serverList.get(0).getAddress(), systems, choices, "Use primary server for "+uri);
+        log(vs, serverList.get(0).getAddress(), systems, serverLists, "Use primary server for "+uri);
         return serverList.get(0);
       }
     }
@@ -267,7 +264,7 @@ public class TerminologyClientManager {
 
     // no agreement - take the one that is must authoritative
     Map<String, Integer> counts = new HashMap<>();
-    for (ServerOptionList ol : choices) {
+    for (ServerOptionList ol : serverLists) {
       for (String s : ol.authoritative) {
         counts.put(s, counts.getOrDefault(s, 0) + 1);
       }
@@ -278,7 +275,7 @@ public class TerminologyClientManager {
         .map(Map.Entry::getKey)
         .orElse(null);
     if (max != null) {
-      log(vs, max, systems, choices, "Found most authoritative server "+max);
+      log(vs, max, systems, serverLists, "Found most authoritative server "+max);
       return findClient(max, systems, expand);
     }
 
@@ -290,26 +287,26 @@ public class TerminologyClientManager {
           el = getMaster().getAddress();
         }
         if (systems.size() == 1) {
-          log(vs, el, systems, choices, "Not handled by any servers. Using source @ '"+el+"'");
+          log(vs, el, systems, serverLists, "Not handled by any servers. Using source @ '"+el+"'");
         } else {
-          log(vs, el, systems, choices, "Handled by multiple servers. Using source @ '"+el+"'");
+          log(vs, el, systems, serverLists, "Handled by multiple servers. Using source @ '"+el+"'");
         }        
         return findClient(el, systems, expand);
       } else {
         if (systems.size() == 1) {
-          log(vs, serverList.get(0).getAddress(), systems, choices, "System not handled by any servers. Using primary server");
+          log(vs, serverList.get(0).getAddress(), systems, serverLists, "System not handled by any servers. Using primary server");
         } else {
-          log(vs, serverList.get(0).getAddress(), systems, choices, "Systems handled by multiple servers. Using primary server");
+          log(vs, serverList.get(0).getAddress(), systems, serverLists, "Systems handled by multiple servers. Using primary server");
         }
         return findClient(serverList.get(0).getAddress(), systems, expand);
       }      
     } else {
       if (systems.size() == 1) {
-        log(vs, serverList.get(0).getAddress(), systems, choices, "System not handled by any servers. Using primary server");
+        log(vs, serverList.get(0).getAddress(), systems, serverLists, "System not handled by any servers. Using primary server");
       } else {
-        log(vs, serverList.get(0).getAddress(), systems, choices, "Systems handled by multiple servers. Using primary server");
+        log(vs, serverList.get(0).getAddress(), systems, serverLists, "Systems handled by multiple servers. Using primary server");
       }
-      log(vs, serverList.get(0).getAddress(), systems, choices, "Fallback: primary server");
+      log(vs, serverList.get(0).getAddress(), systems, serverLists, "Fallback: primary server");
       return findClient(serverList.get(0).getAddress(), systems, expand);
     }
   }
@@ -419,11 +416,12 @@ public class TerminologyClientManager {
     try {
       ServerOptionList ret = new ServerOptionList();
       JsonObject json = JsonParser.parseObjectFromUrl(request);
+
       for (JsonObject item : json.getJsonObjects("authoritative")) {
-        ret.authoritative.add(item.asString("url"));
+       addToServerListIfAccessible(ret.authoritative, item);
       }
       for (JsonObject item : json.getJsonObjects("candidates")) {
-        ret.candidates.add(item.asString("url"));
+        addToServerListIfAccessible(ret.candidates, item);
       }
       return ret;
     } catch (Exception e) {
@@ -434,7 +432,25 @@ public class TerminologyClientManager {
       logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
     }
     return new ServerOptionList( getMasterClient().getAddress());
-    
+  }
+
+  public void addToServerListIfAccessible(List<String> serverList, JsonObject item){
+    String url =  item.asString("url");
+    if ("api-key".equals(item.asString("security"))) {
+      boolean apiKeyAvailable = false;
+      for (ServerDetailsPOJO serverDetails : FhirSettings.getServers()) {
+        if (serverDetails.getUrl().equals(url)) {
+          if (serverDetails.getApikey() != null) {
+            apiKeyAvailable = true;
+          }
+        }
+      }
+      if (!apiKeyAvailable) {
+        return;
+      }
+    }
+
+    serverList.add(url);
   }
 
   private boolean hasMessage(String msg) {
