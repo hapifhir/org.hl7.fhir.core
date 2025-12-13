@@ -95,7 +95,7 @@ public class RePackageTask extends ValidationEngineTask {
       boolean json = rePackageParameters.getFormat() != FhirFormat.XML;
       String output = outputParameters.getOutput();
 
-      PackageReGenerator packageReGenerator = new PackageReGenerator()
+      PackageReGenerator packageReGenerator = createPackageReGenerator()
         .setContext(validationEngine.getContext())
         .setOutput(output)
         .setOutputType(getExpansionPackageGeneratorOutputType(output))
@@ -171,6 +171,12 @@ public class RePackageTask extends ValidationEngineTask {
     return ExpansionPackageGeneratorOutputType.FOLDER;
   }
 
+  /**
+   * Factory method to allow tests to supply a custom {@link PackageReGenerator}.
+   */
+  protected PackageReGenerator createPackageReGenerator() {
+    return new PackageReGenerator();
+  }
 
 
   private static CanonicalResource getCanonicalResource(String canonical, NpmPackage npmPackage) throws Exception {
