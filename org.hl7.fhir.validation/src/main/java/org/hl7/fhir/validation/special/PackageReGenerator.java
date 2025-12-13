@@ -100,8 +100,9 @@ public class PackageReGenerator {
     super();
   }
 
-  public void setIncludeConformsTo(boolean includeConformsTo) {
+  public PackageReGenerator setIncludeConformsTo(boolean includeConformsTo) {
     this.includeConformsTo = includeConformsTo;
+    return this;
   }
 
 
