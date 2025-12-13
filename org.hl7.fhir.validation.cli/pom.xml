@@ -181,12 +181,6 @@
             <version>${mockito_version}</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-inline</artifactId>
-            <version>${mockito_version}</version>
-            <scope>compile</scope>
-        </dependency>
 
         <dependency>
             <groupId>org.commonmark</groupId>
