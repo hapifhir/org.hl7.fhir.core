@@ -15,7 +15,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.StringType;
 
-class CanonicalVersionComparator implements Comparator<CanonicalResource> {
+public class CanonicalVersionComparator implements Comparator<CanonicalResource> {
   NaturalOrderComparator natComp = new NaturalOrderComparator();
   final Collator stringComp = Collator.getInstance();
 
@@ -37,7 +37,7 @@ class CanonicalVersionComparator implements Comparator<CanonicalResource> {
   public static final String PATTERN_MAJMIN = "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$";
   public static final String PATTERN_SCT = "^http\\:\\/\\/snomed\\.info\\/sct\\/(\\d+)(\\/version\\/(\\d{8}))?$";
 
-  CanonicalVersionComparator() {
+  public CanonicalVersionComparator() {
     // This strategy mean it'll ignore the accents and the case
     stringComp.setStrength(Collator.PRIMARY);  
   }
