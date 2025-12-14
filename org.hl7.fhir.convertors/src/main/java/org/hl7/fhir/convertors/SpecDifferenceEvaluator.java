@@ -104,6 +104,9 @@ public class SpecDifferenceEvaluator {
   /** Comments added to new properties - indexed by new name (optional "o-n-" version prefix) */
   private final Map<String, String> additionComments = new HashMap<String, String>();
 
+  /** Comments added to changed properties - indexed by new name (optional "o-n-" version prefix) */
+  private final Map<String, String> changeComments = new HashMap<String, String>();
+
   /** Comments added to deleted properties - indexed by old name (optional "o-n-" version prefix) */
   private final Map<String, String> deletionComments = new HashMap<String, String>();
   
@@ -229,6 +232,8 @@ public class SpecDifferenceEvaluator {
             }
           } else if (v.startsWith("+")) {
             additionComments.put(ruleVersionMapPrefix + n, v.substring(1));
+          } else if (v.startsWith("*")) {
+            changeComments.put(ruleVersionMapPrefix + n, v.substring(1));
           } else {
             deletionComments.put(ruleVersionMapPrefix + n, v);
           }
@@ -791,6 +796,18 @@ public class SpecDifferenceEvaluator {
         ul.li().tx("Now marked as Modifier");
       else
         ul.li().tx("No longer marked as Modifier");
+    }
+
+    // Check if there are any changed comments to include
+    String comm = null;
+    var versionPrefix = origMajorVer + "-" + revMajorVer + "-";
+    var name = rev.getPath();
+    if (changeComments.containsKey(name))
+      comm = changeComments.get(name);
+    if (changeComments.containsKey(versionPrefix+name))
+      comm = changeComments.get(versionPrefix+name);
+    if (comm != null && !comm.isEmpty()) {
+      ul.li().tx(comm);
     }
 
     if (ul.hasChildren()) {
