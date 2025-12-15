@@ -26,5 +26,7 @@
   "http://snomed.info/sct/32506021000036107/version/20170403" : null,
   "http://build.fhir.org/assert-response-code-types" : null,
   "http://snomed.info/sct" : null,
+  "http://acme.com/config/fhir/codesystems/internal" : null,
+  "http://terminology.hl7.org/CodeSystem/v2-0360|2.7" : null,
   "http://hl7.org/fhir/uv/phd/CodeSystem/PhdObservationCategories" : null
 }

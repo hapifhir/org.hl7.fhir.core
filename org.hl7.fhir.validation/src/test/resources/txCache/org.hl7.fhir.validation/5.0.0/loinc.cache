@@ -22,7 +22,6 @@ v: {
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://loinc.org#100066-0 (\"\")]\"\r\n16 0    : 0ms  : Check \"http://loinc.org#100066-0\"\r\n16 0    : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -52,7 +51,6 @@ v: {
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://hl7.org/fhir/test/StructureDefinition/additional-bindings-vs1|1.0.0 for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"(http://loinc.org)(100065-2)\"\r\n15 0    : 0ms  : CodeSystem found: \"http://loinc.org|2.81\"\r\n15 0    : 0ms  : Validate \"[http://loinc.org#100066-0 (\"\")]\"\r\n15 0    : 0ms  : Check \"http://loinc.org#100066-0\"\r\n15 0    : 0ms  : CodeSystem found: http://loinc.org|2.81 for http://loinc.org\r\n15 0    : 0ms  : check code in (http://loinc.org)(100065-2) at CodeableConcept.coding[0]\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -124,7 +122,6 @@ v: {
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://loinc.org#85354-9 (\"Blood pressure panel with all children optional\")]\"\r\n16 0    : 0ms  : Check \"http://loinc.org#85354-9\"\r\n16 0    : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -155,7 +152,6 @@ v: {
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://loinc.org#8462-4 (\"Diastolic blood pressure\")]\"\r\n16 0    : 0ms  : Check \"http://loinc.org#8462-4\"\r\n16 0    : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -187,7 +183,6 @@ v: {
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0)\"\r\n0 0     : 0ms  : CodeSystem found: \"http://loinc.org|2.81\"\r\n0 0     : 0ms  : Validate \"[http://loinc.org#85354-9 (\"Blood pressure panel with all children optional\")]\"\r\n0 0     : 0ms  : Check \"http://loinc.org#85354-9\"\r\n0 0     : 0ms  : CodeSystem found: http://loinc.org|2.81 for http://loinc.org\r\n0 0     : 0ms  : check code in (http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0) at CodeableConcept.coding[0]\r\n0 0     : 0ms  : Code \"85354-9\" found in http://loinc.org|2.81\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -218,7 +213,6 @@ v: {
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0)\"\r\n0 0     : 0ms  : CodeSystem found: \"http://loinc.org|2.81\"\r\n0 0     : 0ms  : Validate \"[http://loinc.org#8462-4 (\"Diastolic blood pressure\")]\"\r\n0 0     : 0ms  : Check \"http://loinc.org#8462-4\"\r\n0 0     : 0ms  : CodeSystem found: http://loinc.org|2.81 for http://loinc.org\r\n0 0     : 0ms  : check code in (http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0) at CodeableConcept.coding[0]\r\n0 0     : 0ms  : Code \"8462-4\" found in http://loinc.org|2.81\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -245,7 +239,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -272,7 +265,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -299,7 +291,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -326,7 +317,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -357,7 +347,6 @@ v: {
   "error" : "Wrong Display Name 'CodeSystem' for http://loinc.org#LL5251-5. Valid display is 'Coding system' (en-US) (for the language(s) 'en, en-US')",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en, en-US, default-to-latest, display-warning\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://loinc.org#LL5251-5 (\"CodeSystem\")]\"\r\n16 0    : 0ms  : Check \"http://loinc.org#LL5251-5\"\r\n16 0    : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -406,7 +395,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -436,7 +424,6 @@ v: {
   "severity" : "warning",
   "error" : "Wrong Display Name 'R-R.Std-dev' for http://loinc.org#80404-7. Valid display is one of 3 choices: 'R-R interval.standard deviation (Heart rate variability)' (en-US), 'R-R interval.standard deviation (Heart rate variability)' (en-US) or 'RR.sd (HR var)' (en-US) (for the language(s) 'en, en-US')",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -485,7 +472,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -518,7 +504,6 @@ v: {
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/doc-typecodes|5.0.0 for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"(http://loinc.org)(SCALE_TYP=Doc)\"\r\n16 0    : 0ms  : CodeSystem found: \"http://loinc.org|2.81\"\r\n16 0    : 0ms  : Validate \"[http://loinc.org|2.81#56445-0 (\"Medication summary Doc\")]\"\r\n16 0    : 0ms  : Check \"http://loinc.org|2.81#56445-0\"\r\n16 0    : 0ms  : CodeSystem found: http://loinc.org|2.81 for http://loinc.org\r\n16 0    : 0ms  : check code in (http://loinc.org)(SCALE_TYP=Doc) at CodeableConcept.coding[0]\r\n109 93  : 93ms : Filter \"SCALE_TYP=Doc\": Code \"56445-0\" found in http://loinc.org|2.81\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -554,7 +539,6 @@ v: {
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://loinc.org|2.81#48765-2 (\"Allergies and adverse reactions\")]\"\r\n16 0    : 0ms  : Check \"http://loinc.org|2.81#48765-2\"\r\n16 0    : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -608,7 +592,6 @@ v: {
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/doc-typecodes|5.0.0 for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n16 0    : 0ms  : Prepare include: \"(http://loinc.org)(SCALE_TYP=Doc)\"\r\n16 0    : 0ms  : CodeSystem found: \"http://loinc.org|2.81\"\r\n16 0    : 0ms  : Validate \"[http://loinc.org|current#56445-0 (\"Medication summary Doc\")]\"\r\n16 0    : 0ms  : Check \"http://loinc.org|current#56445-0\"\r\n16 0    : 0ms  : CodeSystem found: http://loinc.org|2.81 for http://loinc.org\r\n16 0    : 0ms  : check code in (http://loinc.org)(SCALE_TYP=Doc) at CodeableConcept.coding[0]\r\n94 78   : 78ms : Filter \"SCALE_TYP=Doc\": Code \"56445-0\" found in http://loinc.org|2.81\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -665,7 +648,6 @@ v: {
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n15 0    : 0ms  : Prepare include: \"()\"\r\n15 0    : 0ms  : Validate \"[http://loinc.org|current#48765-2 (\"Allergies and adverse reactions\")]\"\r\n15 0    : 0ms  : Check \"http://loinc.org|current#48765-2\"\r\n15 0    : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -716,7 +698,6 @@ v: {
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/doc-typecodes|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(http://loinc.org)(SCALE_TYP=Doc)\"\r\n0 0     : 0ms  : CodeSystem found: \"http://loinc.org|2.81\"\r\n0 0     : 0ms  : Validate \"[http://loinc.org#55107-7 (\"\")]\"\r\n0 0     : 0ms  : Check \"http://loinc.org#55107-7\"\r\n0 0     : 0ms  : CodeSystem found: http://loinc.org|2.81 for http://loinc.org\r\n0 0     : 0ms  : check code in (http://loinc.org)(SCALE_TYP=Doc) at CodeableConcept.coding[0]\r\n63 63   : 63ms : Filter \"SCALE_TYP=Doc\": Code \"55107-7\" found in http://loinc.org|2.81\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -746,7 +727,6 @@ v: {
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"()\"\r\n15 0    : 0ms  : Validate \"[http://loinc.org#11369-6 (\"\")]\"\r\n15 0    : 0ms  : Check \"http://loinc.org#11369-6\"\r\n15 0    : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -780,7 +760,6 @@ v: {
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://loinc.org#3151-8 (\"Ingeademde zuurstof [volume/tijd] in geïnhaleerd gas\")]\"\r\n0 0     : 0ms  : Check \"http://loinc.org#3151-8\"\r\n0 0     : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -832,7 +811,6 @@ v: {
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=nl-NL\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://loinc.org#3151-8 (\"Ingeademde zuurstof [volume/tijd] in geïnhaleerd gas\")]\"\r\n0 0     : 0ms  : Check \"http://loinc.org#3151-8\"\r\n16 16   : 16ms : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -863,7 +841,6 @@ v: {
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://loinc.org#11524-6 (\"EKG study\")]\"\r\n0 0     : 0ms  : Check \"http://loinc.org#11524-6\"\r\n0 0     : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -899,7 +876,6 @@ v: {
   "server" : "https://tx-dev.fhir.org/r5",
   "inactive" : true,
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://loinc.org#35200-5 (\"Cholesterol [Moles/​volume] in Serum or Plasma\")]\"\r\n0 0     : 0ms  : Check \"http://loinc.org#35200-5\"\r\n0 0     : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -978,7 +954,6 @@ v: {
   "server" : "https://tx-dev.fhir.org/r5",
   "inactive" : true,
   "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"()\"\r\n15 0    : 0ms  : Validate \"[http://loinc.org#35200-5 (\"Cholesterol [Moles/​volume] in Serum or Plasma\")]\"\r\n15 0    : 0ms  : Check \"http://loinc.org#35200-5\"\r\n15 0    : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1052,7 +1027,6 @@ v: {
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://loinc.org#13457-7 (\"Cholesterol in LDL [Mass/volume] in Serum or Plasma by calculation\")]\"\r\n16 0    : 0ms  : Check \"http://loinc.org#13457-7\"\r\n16 0    : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1083,7 +1057,6 @@ v: {
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://loinc.org#29463-7 (\"Body Weight\")]\"\r\n0 0     : 0ms  : Check \"http://loinc.org#29463-7\"\r\n0 0     : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1114,7 +1087,6 @@ v: {
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0)\"\r\n0 0     : 0ms  : CodeSystem found: \"http://loinc.org|2.81\"\r\n0 0     : 0ms  : Validate \"[http://loinc.org#29463-7 (\"Body Weight\")]\"\r\n0 0     : 0ms  : Check \"http://loinc.org#29463-7\"\r\n0 0     : 0ms  : CodeSystem found: http://loinc.org|2.81 for http://loinc.org\r\n0 0     : 0ms  : check code in (http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0) at CodeableConcept.coding[0]\r\n0 0     : 0ms  : Code \"29463-7\" found in http://loinc.org|2.81\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1144,7 +1116,6 @@ v: {
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://loinc.org#104207-6 (\"\")]\"\r\n0 0     : 0ms  : Check \"http://loinc.org#104207-6\"\r\n0 0     : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1174,9 +1145,58 @@ v: {
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://loinc.org#104207-6 (\"\")]\"\r\n16 0    : 0ms  : Check \"http://loinc.org#104207-6\"\r\n16 0    : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP43571-6"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "LP43571-6",
+  "system" : "http://loinc.org",
+  "severity" : "error",
+  "error" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.81'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://loinc.org#LP43571-6 (\"\")]\"\r\n0 0     : 0ms  : Check \"http://loinc.org#LP43571-6\"\r\n0 0     : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Unknown_Code_in_Version"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.81'"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
+  }]
 }
 
 }
