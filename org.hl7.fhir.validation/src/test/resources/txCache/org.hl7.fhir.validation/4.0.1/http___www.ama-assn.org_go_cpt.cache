@@ -22,6 +22,7 @@ v: {
   "system" : "http://www.ama-assn.org/go/cpt",
   "version" : "2023",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://www.ama-assn.org/go/cpt#99234 (\"\")]\"\r\n0 0     : 0ms  : Check \"http://www.ama-assn.org/go/cpt#99234\"\r\n0 0     : 0ms  : Using CodeSystem \"http://www.ama-assn.org/go/cpt|2023\" (content = complete)\r\n",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

@@ -21,6 +21,7 @@ v: {
   "error" : "A definition for CodeSystem 'http://fhir.de/CodeSystem/ifa/pzn' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://fhir.de/CodeSystem/ifa/pzn#07115663 (\"Octaplex 500 Pulver und Lösungsmittel zur Herstellung einer i.v. Infusionslösung\")]\"\r\n16 0    : 0ms  : Check \"http://fhir.de/CodeSystem/ifa/pzn#07115663\"\r\n16 0    : 0ms  : Didn't find CodeSystem \"http://fhir.de/CodeSystem/ifa/pzn\"\r\n",
   "unknown-systems" : "http://fhir.de/CodeSystem/ifa/pzn",
   "issues" : {
   "resourceType" : "OperationOutcome",

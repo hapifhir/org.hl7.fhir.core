@@ -22,6 +22,7 @@ v: {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1000990 (\"oxymetazoline hydrochloride 0.5 MG/ML Nasal Spray\")]\"\r\n0 0     : 0ms  : Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1000990\"\r\n0 0     : 0ms  : Using CodeSystem \"http://www.nlm.nih.gov/research/umls/rxnorm|??\" (content = complete)\r\n",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -52,6 +53,7 @@ v: {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1010603 (\"Suboxone 2 MG / 0.5 MG Sublingual Film\")]\"\r\n0 0     : 0ms  : Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1010603\"\r\n0 0     : 0ms  : Using CodeSystem \"http://www.nlm.nih.gov/research/umls/rxnorm|??\" (content = complete)\r\n",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -82,6 +84,7 @@ v: {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1298088 (\"Flurazepam Hydrochloride 15 MG Oral Capsule\")]\"\r\n0 0     : 0ms  : Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1298088\"\r\n0 0     : 0ms  : Using CodeSystem \"http://www.nlm.nih.gov/research/umls/rxnorm|??\" (content = complete)\r\n",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -112,6 +115,7 @@ v: {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1010600 (\"buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film\")]\"\r\n0 0     : 0ms  : Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1010600\"\r\n0 0     : 0ms  : Using CodeSystem \"http://www.nlm.nih.gov/research/umls/rxnorm|??\" (content = complete)\r\n",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -142,6 +146,7 @@ v: {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#428759 (\"metformin 250 MG Oral Tablet\")]\"\r\n16 0    : 0ms  : Check \"http://www.nlm.nih.gov/research/umls/rxnorm#428759\"\r\n16 0    : 0ms  : Using CodeSystem \"http://www.nlm.nih.gov/research/umls/rxnorm|??\" (content = complete)\r\n",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -172,6 +177,7 @@ v: {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#428759 (\"metformin 250 MG Oral Tablet\")]\"\r\n16 0    : 0ms  : Check \"http://www.nlm.nih.gov/research/umls/rxnorm#428759\"\r\n16 0    : 0ms  : Using CodeSystem \"http://www.nlm.nih.gov/research/umls/rxnorm|??\" (content = complete)\r\n",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

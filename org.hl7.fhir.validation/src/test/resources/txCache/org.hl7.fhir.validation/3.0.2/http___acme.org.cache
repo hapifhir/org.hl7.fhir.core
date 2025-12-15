@@ -21,6 +21,7 @@ v: {
   "error" : "A definition for CodeSystem 'http://acme.org' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://acme.org#example (\"Example of Use\")]\"\r\n0 0     : 0ms  : Check \"http://acme.org#example\"\r\n0 0     : 0ms  : Didn't find CodeSystem \"http://acme.org\"\r\n",
   "unknown-systems" : "http://acme.org",
   "issues" : {
   "resourceType" : "OperationOutcome",

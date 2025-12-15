@@ -10,32 +10,23 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
-import org.hl7.fhir.r5.model.ContactDetail;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.DomainResource;
-import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
-import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.MarkdownType;
-import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Property;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.UserDataNames;
@@ -87,6 +78,7 @@ public class LanguageUtils {
   }
   IWorkerContext context;
   private List<String> crlist;
+  @Getter @Setter private boolean keepTranslationsWhenTranslating;
   
   
   public LanguageUtils(IWorkerContext context) {
@@ -786,34 +778,71 @@ public class LanguageUtils {
     }
     for (Element ext : e.getChildren()) {
       if ("Extension".equals(ext.fhirType()) && "http://hl7.org/fhir/StructureDefinition/translation".equals(ext.getNamedChildValue("url"))) {
-        String l = null;
-        String v = null;
+        String childLang = null;
+        String childContent = null;
         for (Element subExt : ext.getChildren()) {
           if ("Extension".equals(subExt.fhirType()) && "lang".equals(subExt.getNamedChildValue("url"))) {
-            l = subExt.getNamedChildValue("value");
+            childLang = subExt.getNamedChildValue("value");
           }
           if ("Extension".equals(subExt.fhirType()) && "content".equals(subExt.getNamedChildValue("url"))) {
-            v = subExt.getNamedChildValue("value");
+            childContent = subExt.getNamedChildValue("value");
           }
         }
-        if (lang.equals(l)) {
-          return v;
+        if (lang.equals(childLang)) {
+          return childContent;
         }
       }
     }
     return null;
   }
- 
+
+  private Element getTranslationExtension(Element e, String lang) {
+    if (!e.hasChildren()) {
+      return null;
+    }
+    for (Element ext : e.getChildren()) {
+      if ("Extension".equals(ext.fhirType()) && "http://hl7.org/fhir/StructureDefinition/translation".equals(ext.getNamedChildValue("url"))) {
+        String l = null;
+        Element v = null;
+        for (Element subExt : ext.getChildren()) {
+          if ("Extension".equals(subExt.fhirType()) && "lang".equals(subExt.getNamedChildValue("url"))) {
+            l = subExt.getNamedChildValue("value");
+          }
+          if ("Extension".equals(subExt.fhirType()) && "content".equals(subExt.getNamedChildValue("url"))) {
+            v = subExt;
+          }
+        }
+        if (lang.equals(l) && v != null) {
+          return ext;
+        }
+      }
+    }
+    return null;
+  }
+
   public boolean switchLanguage(Base r, String lang, boolean markLanguage, boolean contained, String resourceLang, String defaultLang, List<ValidationMessage> errors) {
     boolean changed = false;
     if (r.isPrimitive()) {
-
       PrimitiveType<?> dt = (PrimitiveType<?>) r;
-      String cnt = ExtensionUtilities.getLanguageTranslation(dt, lang); 
-      dt.removeExtension(ExtensionDefinitions.EXT_TRANSLATION);
-      if (cnt != null) {
-        dt.setValueAsString(cnt);
-        changed = true;
+      if (keepTranslationsWhenTranslating) {
+        if (langsMatch(lang, resourceLang)) {
+          // we don't do anything
+        } else {
+          Extension ext = ExtensionUtilities.getLanguageExtension(dt, lang);
+          if (ext != null && ext.hasExtension("lang") && ext.hasExtension("content")) {
+            ext.getExtensionByUrl("lang").setValue(new CodeType(resourceLang));
+            String v = ext.getExtensionByUrl("content").primitiveValue();
+            ext.getExtensionByUrl("content").setValue(new StringType(r.primitiveValue()));
+            ((PrimitiveType<?>) r).setValueAsString(v);
+          }
+        }
+      } else {
+        String cnt = ExtensionUtilities.getLanguageTranslation(dt, lang);
+        dt.removeExtension(ExtensionDefinitions.EXT_TRANSLATION);
+        if (cnt != null) {
+          dt.setValueAsString(cnt);
+          changed = true;
+        }
       }
     }
 
@@ -935,11 +964,23 @@ public class LanguageUtils {
   public boolean switchLanguage(Element e, String lang, boolean markLanguage, String resourceLang, String defaultLang, List<ValidationMessage> errors) throws IOException {
     boolean changed = false;
     if (e.getProperty().isTranslatable()) {
-      String cnt = getTranslation(e, lang);
-      e.removeExtension(ExtensionDefinitions.EXT_TRANSLATION);
-      if (cnt != null) {
-        e.setValue(cnt);
-        changed = true;
+      if (keepTranslationsWhenTranslating) {
+        Element ext = getTranslationExtension(e, lang);
+        if (ext != null && ext.hasExtension("lang") && ext.hasExtension("content")) {
+          Element extLang = ext.getExtension("lang");
+          Element extCont = ext.getExtension("content");
+          extLang.getNamedChild("value").setValue(resourceLang);
+          String v = extCont.getNamedChildValue("value");
+          extCont.getNamedChild("value").setValue(e.getValue());
+          e.setValue(v);
+        }
+      } else {
+        String cnt = getTranslation(e, lang);
+        e.removeExtension(ExtensionDefinitions.EXT_TRANSLATION);
+        if (cnt != null) {
+          e.setValue(cnt);
+          changed = true;
+        }
       }
     }
     if (e.fhirType().equals("Narrative") && e.hasChild("div")) {
