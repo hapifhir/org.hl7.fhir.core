@@ -20,6 +20,7 @@ v: {
   "error" : "A definition for CodeSystem 'urn:oid:2.51.1.1' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[urn:oid:2.51.1.1#7680336700282 (\"\")]\"\r\n0 0     : 0ms  : Check \"urn:oid:2.51.1.1#7680336700282\"\r\n0 0     : 0ms  : Didn't find CodeSystem \"urn:oid:2.51.1.1\"\r\n",
   "unknown-systems" : "urn:oid:2.51.1.1",
   "issues" : {
   "resourceType" : "OperationOutcome",

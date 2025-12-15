@@ -19,6 +19,7 @@ v: {
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[urn:ietf:bcp:47#de-CH (\"German (Region=Switzerland)\")]\"\r\n16 0    : 0ms  : Check \"urn:ietf:bcp:47#de-CH\"\r\n16 0    : 0ms  : Using CodeSystem \"urn:ietf:bcp:47|\" (content = complete)\r\n",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -45,6 +46,7 @@ v: {
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n62 62   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/languages--0|4.0.1 for validation purposes\r\n62 0    : 0ms  : Parameters: disp-lang=en-US\r\n62 0    : 0ms  : Prepare include: \"(urn:ietf:bcp:47)(ar,bn,cs,da,de,de-AT,de-CH,de-DE,el,en,en-AU,en-CA,en-GB,en-IN,en-NZ,en-SG,en-US,es,es-AR,es-ES,es-UY,fi,fr,fr-BE,fr-CH,fr-FR,fy,fy-NL,hi,hr,it,it-CH,it-IT,ja,ko,nl,nl-BE,nl-NL,no,no-NO,pa,pl,pt,pt-BR,ru,ru-RU,sr,sr-RS,sv,sv-SE,te,zh,zh-CN,zh-HK,zh-SG,zh-TW)\"\r\n62 0    : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n62 0    : 0ms  : Validate \"[urn:ietf:bcp:47#de-CH (\"\")]\"\r\n62 0    : 0ms  : Check \"urn:ietf:bcp:47#de-CH\"\r\n62 0    : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n62 0    : 0ms  : check code in (urn:ietf:bcp:47)(ar,bn,cs,da,de,de-AT,de-CH,de-DE,el,en,en-AU,en-CA,en-GB,en-IN,en-NZ,en-SG,en-US,es,es-AR,es-ES,es-UY,fi,fr,fr-BE,fr-CH,fr-FR,fy,fy-NL,hi,hr,it,it-CH,it-IT,ja,ko,nl,nl-BE,nl-NL,no,no-NO,pa,pl,pt,pt-BR,ru,ru-RU,sr,sr-RS,sv,sv-SE,te,zh,zh-CN,zh-HK,zh-SG,zh-TW) at Coding\r\n62 0    : 0ms  : Code \"de-CH\" found in urn:ietf:bcp:47|\r\n",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -72,6 +74,7 @@ v: {
   "code" : "fr",
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[urn:ietf:bcp:47#fr (\"French\")]\"\r\n16 0    : 0ms  : Check \"urn:ietf:bcp:47#fr\"\r\n16 0    : 0ms  : Using CodeSystem \"urn:ietf:bcp:47|\" (content = complete)\r\n",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -98,138 +101,7 @@ v: {
   "code" : "fr",
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "urn:ietf:bcp:47",
-  "code" : "en",
-  "display" : "English"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "English",
-  "code" : "en",
-  "system" : "urn:ietf:bcp:47",
-  "server" : "https://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "urn:ietf:bcp:47",
-  "code" : "en"
-}, "url": "http://hl7.org/fhir/ValueSet/languages--0", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "English",
-  "code" : "en",
-  "system" : "urn:ietf:bcp:47",
-  "server" : "https://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "urn:ietf:bcp:47",
-  "code" : "es",
-  "display" : "Spanish"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Spanish",
-  "code" : "es",
-  "system" : "urn:ietf:bcp:47",
-  "server" : "https://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "urn:ietf:bcp:47",
-  "code" : "es"
-}, "url": "http://hl7.org/fhir/ValueSet/languages--0", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Spanish",
-  "code" : "es",
-  "system" : "urn:ietf:bcp:47",
-  "server" : "https://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "urn:ietf:bcp:47",
-  "code" : "es"
-}, "url": "http://terminology.hl7.org/ValueSet/Languages--0", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "Spanish",
-  "code" : "es",
-  "system" : "urn:ietf:bcp:47",
-  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n62 62   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/languages--0|4.0.1 for validation purposes\r\n62 0    : 0ms  : Parameters: disp-lang=en-US\r\n62 0    : 0ms  : Prepare include: \"(urn:ietf:bcp:47)(ar,bn,cs,da,de,de-AT,de-CH,de-DE,el,en,en-AU,en-CA,en-GB,en-IN,en-NZ,en-SG,en-US,es,es-AR,es-ES,es-UY,fi,fr,fr-BE,fr-CH,fr-FR,fy,fy-NL,hi,hr,it,it-CH,it-IT,ja,ko,nl,nl-BE,nl-NL,no,no-NO,pa,pl,pt,pt-BR,ru,ru-RU,sr,sr-RS,sv,sv-SE,te,zh,zh-CN,zh-HK,zh-SG,zh-TW)\"\r\n62 0    : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n62 0    : 0ms  : Validate \"[urn:ietf:bcp:47#fr (\"\")]\"\r\n62 0    : 0ms  : Check \"urn:ietf:bcp:47#fr\"\r\n62 0    : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n62 0    : 0ms  : check code in (urn:ietf:bcp:47)(ar,bn,cs,da,de,de-AT,de-CH,de-DE,el,en,en-AU,en-CA,en-GB,en-IN,en-NZ,en-SG,en-US,es,es-AR,es-ES,es-UY,fi,fr,fr-BE,fr-CH,fr-FR,fy,fy-NL,hi,hr,it,it-CH,it-IT,ja,ko,nl,nl-BE,nl-NL,no,no-NO,pa,pl,pt,pt-BR,ru,ru-RU,sr,sr-RS,sv,sv-SE,te,zh,zh-CN,zh-HK,zh-SG,zh-TW) at Coding\r\n62 0    : 0ms  : Code \"fr\" found in urn:ietf:bcp:47|\r\n",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

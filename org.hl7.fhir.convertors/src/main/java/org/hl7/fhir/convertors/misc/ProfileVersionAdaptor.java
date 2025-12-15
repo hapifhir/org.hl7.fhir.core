@@ -19,6 +19,7 @@ import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -247,9 +248,10 @@ public class ProfileVersionAdaptor {
     Map<String, ElementDefinition> children = new HashMap<>();
     String pathPrefix = ved.getPath();
     i++;
-    while (i < differential.getElement().size() && differential.getElement().get(i).getPath().startsWith(pathPrefix)) {
+    while (i < differential.getElement().size() && !differential.getElement().get(i).getPath().equals(pathPrefix) && differential.getElement().get(i).getPath().startsWith(pathPrefix)) {
       ElementDefinition ed = differential.getElement().get(i);
-      children.put(ed.getPath().substring(pathPrefix.length()+1), ed);
+      String substring = ed.getPath().substring(pathPrefix.length() + 1);
+      children.put(substring, ed);
       differential.getElement().remove(i);
     }
     return children;
@@ -425,7 +427,7 @@ public class ProfileVersionAdaptor {
     }
     if (VersionUtilities.isR4Plus(tCtxt.getVersion())) {
       switch (code) {
-      case "integer64" : return "version";
+      case "integer64" : return "string";
       default:
         return null;
       }
