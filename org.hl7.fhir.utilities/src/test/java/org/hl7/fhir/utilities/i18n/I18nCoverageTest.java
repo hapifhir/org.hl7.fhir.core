@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.i18n;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -36,13 +37,14 @@ public class I18nCoverageTest {
   final Locale sourceLocale = Locale.ENGLISH;
 
   @Test
-  public void testPhraseCoverage() throws IOException {
+  public void testPhraseCoverage() {
+    assertDoesNotThrow(() -> {
+      I18nCoverage messages = getI18nCoverage("Messages");
+      I18nCoverage renderingPhrases = getI18nCoverage("rendering-phrases");
 
-    I18nCoverage messages = getI18nCoverage("Messages");
-    I18nCoverage renderingPhrases = getI18nCoverage("rendering-phrases");
-
-    PrintStream out = getCSVOutputStream();
-    printPhraseCoverageCSV(out, List.of(messages, renderingPhrases));
+      PrintStream out = getCSVOutputStream();
+      printPhraseCoverageCSV(out, List.of(messages, renderingPhrases));
+    });
   }
 
   private I18nCoverage getI18nCoverage(String messageFilePrefix) throws IOException {

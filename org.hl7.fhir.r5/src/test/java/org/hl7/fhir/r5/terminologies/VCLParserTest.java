@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.model.ValueSet.*;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 /**
  * Comprehensive test suite for VCL (ValueSet Composition Language) Parser
@@ -443,14 +444,16 @@ public class VCLParserTest {
 
   @Test
   @DisplayName("Complex multi-part expression")
-  public void testComplexExpression() throws VCLParser.VCLParseException {
-    VCLParser.parse("(http://example.com/cs/meds) (" +
-        "     {concept<<Panadol}.container," +
-        "     {Panadol_500mg_24.unit_of_use}.active_ingredient," +
-        "     concept<<12345," +
-        "     concept^{12346,6374673,9234983,38924839,212,43243}," +
-        "     ingredient^{parent=98765, concept<<Panadol}" +
-        "   )");
+  void testComplexExpression() {
+    assertDoesNotThrow(() -> {
+      VCLParser.parse("(http://example.com/cs/meds) (" +
+          "     {concept<<Panadol}.container," +
+          "     {Panadol_500mg_24.unit_of_use}.active_ingredient," +
+          "     concept<<12345," +
+          "     concept^{12346,6374673,9234983,38924839,212,43243}," +
+          "     ingredient^{parent=98765, concept<<Panadol}" +
+          "   )");
+    });
   }
 
   /**
