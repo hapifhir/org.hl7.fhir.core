@@ -42,7 +42,7 @@ public class FilesystemPackageManagerTests {
   private static final String DUMMY_URL_3 = "https://dummy3.org";
 
   private static final String DUMMY_URL_4 = "https://dummy4.org";
-  public static final String CURRENT_PACKAGE_CACHE_VERSION = "3";
+  public static final String CURRENT_PACKAGE_CACHE_VERSION = "4";
   private final List<PackageServer> dummyPrivateServers = List.of(
      new PackageServer(DUMMY_URL_1),
      new PackageServer(DUMMY_URL_2)
