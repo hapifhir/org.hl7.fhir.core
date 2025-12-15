@@ -18,6 +18,7 @@ BSD-Style License
 BSD License 3
 New BSD License
 BSD 3 Clause
+BSD-3-Clause
 The JSON License
 Eclipse Public License 1.0
 Eclipse Public License - v 1.0
