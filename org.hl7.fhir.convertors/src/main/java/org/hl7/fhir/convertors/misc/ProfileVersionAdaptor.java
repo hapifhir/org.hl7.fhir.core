@@ -249,8 +249,8 @@ public class ProfileVersionAdaptor {
     i++;
     while (i < differential.getElement().size() && !differential.getElement().get(i).getPath().equals(pathPrefix) && differential.getElement().get(i).getPath().startsWith(pathPrefix)) {
       ElementDefinition ed = differential.getElement().get(i);
-      String substring = ed.getPath().substring(pathPrefix.length() + 1);
-      children.put(substring, ed);
+      String childpath = ed.getPath().substring(pathPrefix.length() + 1);
+      children.put(childpath, ed);
       differential.getElement().remove(i);
     }
     return children;

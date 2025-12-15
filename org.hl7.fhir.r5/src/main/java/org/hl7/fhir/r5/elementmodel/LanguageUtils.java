@@ -778,18 +778,18 @@ public class LanguageUtils {
     }
     for (Element ext : e.getChildren()) {
       if ("Extension".equals(ext.fhirType()) && "http://hl7.org/fhir/StructureDefinition/translation".equals(ext.getNamedChildValue("url"))) {
-        String l = null;
-        String v = null;
+        String childLang = null;
+        String childContent = null;
         for (Element subExt : ext.getChildren()) {
           if ("Extension".equals(subExt.fhirType()) && "lang".equals(subExt.getNamedChildValue("url"))) {
-            l = subExt.getNamedChildValue("value");
+            childLang = subExt.getNamedChildValue("value");
           }
           if ("Extension".equals(subExt.fhirType()) && "content".equals(subExt.getNamedChildValue("url"))) {
-            v = subExt.getNamedChildValue("value");
+            childContent = subExt.getNamedChildValue("value");
           }
         }
-        if (lang.equals(l)) {
-          return v;
+        if (lang.equals(childLang)) {
+          return childContent;
         }
       }
     }
