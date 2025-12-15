@@ -1,0 +1,30 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/hsloc.html",
+  "code" : "1258-3",
+  "display" : "Long Term Care Facility General Nursing Unit"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Long Term Care Facility General Nursing Unit",
+  "code" : "1258-3",
+  "system" : "https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/hsloc.html",
+  "version" : "2022",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"()\"\r\n15 0    : 0ms  : Validate \"[https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/hsloc.html#1258-3 (\"Long Term Care Facility General Nursing Unit\")]\"\r\n15 0    : 0ms  : Check \"https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/hsloc.html#1258-3\"\r\n15 0    : 0ms  : Using CodeSystem \"https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/hsloc.html|2022 (from us.nlm.vsac#0.24.0)\" (content = complete)\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

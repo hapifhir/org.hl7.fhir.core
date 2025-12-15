@@ -282,7 +282,14 @@ public class TerminologyClientContext {
             if (system.equals(CanonicalType.urlWithVersion(tccs.getUri(), v.getCode()))) {
               return true;
             }
+          }
+          for (TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersion()) {
             if (system.startsWith("http://snomed.info/sct") && CanonicalType.urlWithVersion(tccs.getUri(), v.getCode()).startsWith(system) && v.getIsDefault()) {
+              return true;
+            }
+          }
+          for (TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersion()) {
+            if (system.startsWith("http://snomed.info/sct") && CanonicalType.urlWithVersion(tccs.getUri(), v.getCode()).startsWith(system)) {
               return true;
             }
           }

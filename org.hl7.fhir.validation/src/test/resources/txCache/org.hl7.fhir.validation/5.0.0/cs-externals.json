@@ -1,0 +1,30 @@
+{
+  "http://unstats.un.org/unsd/methods/m49/m49.htm" : null,
+  "http://hl7.org/fhir/ValueSet/FHIR-version" : null,
+  "http://hl7.org/fhir/R4/codesystem-assert-response-code-types.html" : null,
+  "http://example.org/obs-code" : null,
+  "http://hl7.org/fhir/ValueSet/account-type" : null,
+  "http://something" : null,
+  "http://hl7.org/fhir/animal-species" : null,
+  "http://dicom.nema.org/resources/ontology/DCM" : {
+    "server" : "http://tx-dev.fhir.org/r5",
+    "filename" : "cs-cb7ba907-b893-4749-945c-fae219f7d380.json"
+  },
+  "#cs1" : null,
+  "http://test.org" : null,
+  "http://fhir.ch/whateversysstem" : null,
+  "https://api-v8-r4.hspconsortium.org/DrugFormulary0/open/CodeSystem/usdrugformulary-DrugTierCS" : null,
+  "urn:iso:std:iso:6710:2017" : null,
+  "http://hl7.org/fhir/test/CodeSystem/profile-slicing-codes" : null,
+  "urn:ietf:bcp:13" : null,
+  "#cs" : null,
+  "http://foo" : null,
+  "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode" : {
+    "server" : "http://tx-dev.fhir.org/r5",
+    "filename" : "cs-e9872828-50bf-4aa4-846b-64fc0df28324.json"
+  },
+  "http://snomed.info/sct/32506021000036107/version/20170403" : null,
+  "http://build.fhir.org/assert-response-code-types" : null,
+  "http://snomed.info/sct" : null,
+  "http://hl7.org/fhir/uv/phd/CodeSystem/PhdObservationCategories" : null
+}
