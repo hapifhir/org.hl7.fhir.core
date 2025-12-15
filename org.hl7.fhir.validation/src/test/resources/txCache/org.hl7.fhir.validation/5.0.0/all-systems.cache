@@ -25,7 +25,6 @@ v: {
   "system" : "urn:ietf:bcp:13",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing urn:uuid:2d3cc9f5-cb15-4ee0-9f2d-070a2d4fceba for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"(urn:ietf:bcp:13)\"\r\n16 0    : 0ms  : CodeSystem found: \"urn:ietf:bcp:13|\"\r\n16 0    : 0ms  : Validate \"[#text/plain (\"\")]\" and infer system\r\n16 0    : 0ms  : Check \"#text/plain\"\r\n16 0    : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:13\"\r\n16 0    : 0ms  : CodeSystem found: urn:ietf:bcp:13| for urn:ietf:bcp:13\r\n16 0    : 0ms  : check code in (urn:ietf:bcp:13) at \r\n16 0    : 0ms  : Code \"text/plain\" found in urn:ietf:bcp:13|\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -51,7 +50,6 @@ v: {
   "system" : "urn:ietf:bcp:13",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/mimetypes|5.0.0 for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"(urn:ietf:bcp:13)\"\r\n15 0    : 0ms  : CodeSystem found: \"urn:ietf:bcp:13|\"\r\n15 0    : 0ms  : Validate \"[#text/plain (\"\")]\" and infer system\r\n15 0    : 0ms  : Check \"#text/plain\"\r\n15 0    : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:13\"\r\n15 0    : 0ms  : CodeSystem found: urn:ietf:bcp:13| for urn:ietf:bcp:13\r\n15 0    : 0ms  : check code in (urn:ietf:bcp:13) at \r\n15 0    : 0ms  : Code \"text/plain\" found in urn:ietf:bcp:13|\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -256,7 +254,6 @@ v: {
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing urn:uuid:31a3a526-7665-44a4-b895-78446e32094b for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(urn:ietf:bcp:47)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n0 0     : 0ms  : Validate \"[#en-US (\"\")]\" and infer system\r\n0 0     : 0ms  : Check \"#en-US\"\r\n0 0     : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n0 0     : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n0 0     : 0ms  : check code in (urn:ietf:bcp:47) at \r\n0 0     : 0ms  : Code \"en-US\" found in urn:ietf:bcp:47|\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -282,7 +279,6 @@ v: {
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/all-languages|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(urn:ietf:bcp:47)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n0 0     : 0ms  : Validate \"[#en-US (\"\")]\" and infer system\r\n0 0     : 0ms  : Check \"#en-US\"\r\n0 0     : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n0 0     : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n0 0     : 0ms  : check code in (urn:ietf:bcp:47) at \r\n0 0     : 0ms  : Code \"en-US\" found in urn:ietf:bcp:47|\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -315,7 +311,6 @@ v: {
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing urn:uuid:3dd7699f-6e88-4f6b-9ed6-9fecf2387361 for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"(urn:ietf:bcp:47)\"\r\n16 0    : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n16 0    : 0ms  : Validate \"[#de (\"\")]\" and infer system\r\n16 0    : 0ms  : Check \"#de\"\r\n16 0    : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n16 0    : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n16 0    : 0ms  : check code in (urn:ietf:bcp:47) at \r\n16 0    : 0ms  : Code \"de\" found in urn:ietf:bcp:47|\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -341,7 +336,6 @@ v: {
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/all-languages|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(urn:ietf:bcp:47)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n0 0     : 0ms  : Validate \"[#de (\"\")]\" and infer system\r\n0 0     : 0ms  : Check \"#de\"\r\n0 0     : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n0 0     : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n0 0     : 0ms  : check code in (urn:ietf:bcp:47) at \r\n0 0     : 0ms  : Code \"de\" found in urn:ietf:bcp:47|\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -374,7 +368,6 @@ v: {
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing urn:uuid:c29eb1fd-8d9c-4310-a9ef-ea39bbae3e79 for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"(urn:ietf:bcp:47)\"\r\n15 0    : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n15 0    : 0ms  : Validate \"[#en (\"\")]\" and infer system\r\n15 0    : 0ms  : Check \"#en\"\r\n15 0    : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n15 0    : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n15 0    : 0ms  : check code in (urn:ietf:bcp:47) at \r\n15 0    : 0ms  : Code \"en\" found in urn:ietf:bcp:47|\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -400,7 +393,6 @@ v: {
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/all-languages|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(urn:ietf:bcp:47)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n0 0     : 0ms  : Validate \"[#en (\"\")]\" and infer system\r\n0 0     : 0ms  : Check \"#en\"\r\n0 0     : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n0 0     : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n0 0     : 0ms  : check code in (urn:ietf:bcp:47) at \r\n0 0     : 0ms  : Code \"en\" found in urn:ietf:bcp:47|\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -429,7 +421,6 @@ v: {
   "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(urn:iso:std:iso:3166)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:iso:std:iso:3166|2018\"\r\n0 0     : 0ms  : Prepare include: \"(urn:iso:std:iso:3166:-2)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:iso:std:iso:3166:-2|2021 (from fhir.tx.support.r4#0.32.0)\"\r\n0 0     : 0ms  : Prepare include: \"(http://unstats.un.org/unsd/methods/m49/m49.htm)(class=region)\"\r\n0 0     : 0ms  : CodeSystem found: \"http://unstats.un.org/unsd/methods/m49/m49.htm|\"\r\n0 0     : 0ms  : Validate \"[http://unstats.un.org/unsd/methods/m49/m49.htm#001 (\"\")]\"\r\n0 0     : 0ms  : Check \"http://unstats.un.org/unsd/methods/m49/m49.htm#001\"\r\n0 0     : 0ms  : CodeSystem found: http://unstats.un.org/unsd/methods/m49/m49.htm| for http://unstats.un.org/unsd/methods/m49/m49.htm\r\n0 0     : 0ms  : check code in (http://unstats.un.org/unsd/methods/m49/m49.htm)(class=region) at CodeableConcept.coding[0]\r\n0 0     : 0ms  : Filter \"class=region\": Code \"001\" found in http://unstats.un.org/unsd/methods/m49/m49.htm|\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -481,7 +472,6 @@ v: {
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing urn:uuid:0cd37233-94a9-485c-bc35-4b00e1128f0d for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=nl-NL\r\n0 0     : 0ms  : Prepare include: \"(urn:ietf:bcp:47)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n0 0     : 0ms  : Validate \"[#nl-NL (\"\")]\" and infer system\r\n0 0     : 0ms  : Check \"#nl-NL\"\r\n0 0     : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n0 0     : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n0 0     : 0ms  : check code in (urn:ietf:bcp:47) at \r\n0 0     : 0ms  : Code \"nl-NL\" found in urn:ietf:bcp:47|\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -507,7 +497,6 @@ v: {
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/all-languages|5.0.0 for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=nl-NL\r\n16 0    : 0ms  : Prepare include: \"(urn:ietf:bcp:47)\"\r\n16 0    : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n16 0    : 0ms  : Validate \"[#nl-NL (\"\")]\" and infer system\r\n16 0    : 0ms  : Check \"#nl-NL\"\r\n16 0    : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n16 0    : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n16 0    : 0ms  : check code in (urn:ietf:bcp:47) at \r\n16 0    : 0ms  : Code \"nl-NL\" found in urn:ietf:bcp:47|\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -540,7 +529,6 @@ v: {
   "system" : "urn:ietf:bcp:13",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing urn:uuid:ff55c0c9-c24d-4b17-8b22-8c82fcf34a56 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(urn:ietf:bcp:13)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:ietf:bcp:13|\"\r\n0 0     : 0ms  : Validate \"[#image/gif (\"\")]\" and infer system\r\n0 0     : 0ms  : Check \"#image/gif\"\r\n0 0     : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:13\"\r\n0 0     : 0ms  : CodeSystem found: urn:ietf:bcp:13| for urn:ietf:bcp:13\r\n0 0     : 0ms  : check code in (urn:ietf:bcp:13) at \r\n0 0     : 0ms  : Code \"image/gif\" found in urn:ietf:bcp:13|\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -566,7 +554,6 @@ v: {
   "system" : "urn:ietf:bcp:13",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/mimetypes|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(urn:ietf:bcp:13)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:ietf:bcp:13|\"\r\n0 0     : 0ms  : Validate \"[#image/gif (\"\")]\" and infer system\r\n0 0     : 0ms  : Check \"#image/gif\"\r\n0 0     : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:13\"\r\n0 0     : 0ms  : CodeSystem found: urn:ietf:bcp:13| for urn:ietf:bcp:13\r\n0 0     : 0ms  : check code in (urn:ietf:bcp:13) at \r\n0 0     : 0ms  : Code \"image/gif\" found in urn:ietf:bcp:13|\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -600,7 +587,6 @@ v: {
   "version" : "2.2",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing urn:uuid:938fa63f-781e-42a5-b219-b50dabc53f0b for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"(http://unitsofmeasure.org)\"\r\n15 0    : 0ms  : CodeSystem found: \"http://unitsofmeasure.org|2.2\"\r\n15 0    : 0ms  : Validate \"[#ms (\"\")]\" and infer system\r\n15 0    : 0ms  : Check \"#ms\"\r\n15 0    : 0ms  : Inferred CodeSystem = \"http://unitsofmeasure.org\"\r\n15 0    : 0ms  : CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org\r\n15 0    : 0ms  : check code in (http://unitsofmeasure.org) at \r\n15 0    : 0ms  : Code \"ms\" found in http://unitsofmeasure.org|2.2\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -627,7 +613,6 @@ v: {
   "version" : "2.2",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/ucum-units|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(http://unitsofmeasure.org)\"\r\n0 0     : 0ms  : CodeSystem found: \"http://unitsofmeasure.org|2.2\"\r\n0 0     : 0ms  : Validate \"[#ms (\"\")]\" and infer system\r\n0 0     : 0ms  : Check \"#ms\"\r\n0 0     : 0ms  : Inferred CodeSystem = \"http://unitsofmeasure.org\"\r\n0 0     : 0ms  : CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org\r\n0 0     : 0ms  : check code in (http://unitsofmeasure.org) at \r\n0 0     : 0ms  : Code \"ms\" found in http://unitsofmeasure.org|2.2\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -662,7 +647,6 @@ v: {
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[urn:iso:std:iso:11073:10101#149530 (\"\"), http://loinc.org#8867-4 (\"\")]\"\r\n0 0     : 0ms  : Check \"urn:iso:std:iso:11073:10101#149530\"\r\n16 16   : 16ms : Using CodeSystem \"urn:iso:std:iso:11073:10101|2024-12-05 (from fhir.tx.support.r4#0.32.0)\" (content = complete)\r\n16 0    : 16ms : Check \"http://loinc.org#8867-4\"\r\n16 0    : 16ms : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -716,7 +700,6 @@ v: {
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0)\"\r\n0 0     : 0ms  : CodeSystem found: \"http://loinc.org|2.81\"\r\n0 0     : 0ms  : Validate \"[urn:iso:std:iso:11073:10101#149530 (\"\"), http://loinc.org#8867-4 (\"\")]\"\r\n0 0     : 0ms  : Check \"urn:iso:std:iso:11073:10101#149530\"\r\n16 16   : 16ms : Check \"http://loinc.org#8867-4\"\r\n16 0    : 16ms : CodeSystem found: http://loinc.org|2.81 for http://loinc.org\r\n16 0    : 16ms : check code in (http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0) at CodeableConcept.coding[1]\r\n16 0    : 16ms : Code \"8867-4\" found in http://loinc.org|2.81\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1415,7 +1398,6 @@ v: {
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/clinical-findings|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(http://snomed.info/sct)(concept<<404684003)\"\r\n16 16   : 16ms : CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\"\r\n16 0    : 16ms : Validate \"[http://loinc.org#29463-7 (\"Body Weight\")]\"\r\n16 0    : 16ms : Check \"http://loinc.org#29463-7\"\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1493,7 +1475,6 @@ v: {
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://snomed.info/sct?fhir_vs for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"(http://snomed.info/sct)\"\r\n15 0    : 0ms  : CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\"\r\n15 0    : 0ms  : Validate \"[http://loinc.org#29463-7 (\"Body Weight\")]\"\r\n15 0    : 0ms  : Check \"http://loinc.org#29463-7\"\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1570,7 +1551,6 @@ v: {
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://loinc.org#35200-5 (\"Cholest SerPl-msCnc\"), http://snomed.info/sct#85600001 (\"Triacylglycerol\")]\"\r\n0 0     : 0ms  : Check \"http://loinc.org#35200-5\"\r\n0 0     : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n219 219 : 219ms : Check \"http://snomed.info/sct#85600001\"\r\n219 0   : 219ms : Using CodeSystem \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\" (content = complete)\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1610,7 +1590,6 @@ v: {
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://loinc.org#35217-9 (\"Triglyceride [Moles/​volume] in Serum or Plasma\"), http://snomed.info/sct#85600001 (\"Triacylglycerol\")]\"\r\n16 0    : 0ms  : Check \"http://loinc.org#35217-9\"\r\n16 0    : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n203 187 : 187ms : Check \"http://snomed.info/sct#85600001\"\r\n203 0   : 187ms : Using CodeSystem \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\" (content = complete)\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1676,7 +1655,6 @@ v: {
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://snomed.info/sct#85600001 (\"Triacylglycerol\"), http://loinc.org#35217-9 (\"Triglyceride [Moles/​volume] in Serum or Plasma\"), http://snomed.info/sct#85600001 (\"Triacylglycerol\")]\"\r\n16 0    : 0ms  : Check \"http://snomed.info/sct#85600001\"\r\n16 0    : 0ms  : Using CodeSystem \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\" (content = complete)\r\n16 0    : 0ms  : Check \"http://loinc.org#35217-9\"\r\n16 0    : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n203 187 : 187ms : Check \"http://snomed.info/sct#85600001\"\r\n203 0   : 187ms : Using CodeSystem \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\" (content = complete)\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1812,7 +1790,6 @@ v: {
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing urn:uuid:14ec9009-965e-4c11-96b2-e04c5cb89316 for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-AU\r\n15 0    : 0ms  : Prepare include: \"(urn:ietf:bcp:47)\"\r\n15 0    : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n15 0    : 0ms  : Validate \"[#en-AU (\"\")]\" and infer system\r\n15 0    : 0ms  : Check \"#en-AU\"\r\n15 0    : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n15 0    : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n15 0    : 0ms  : check code in (urn:ietf:bcp:47) at \r\n15 0    : 0ms  : Code \"en-AU\" found in urn:ietf:bcp:47|\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1838,7 +1815,6 @@ v: {
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/all-languages|5.0.0 for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-AU\r\n16 0    : 0ms  : Prepare include: \"(urn:ietf:bcp:47)\"\r\n16 0    : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n16 0    : 0ms  : Validate \"[#en-AU (\"\")]\" and infer system\r\n16 0    : 0ms  : Check \"#en-AU\"\r\n16 0    : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n16 0    : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n16 0    : 0ms  : check code in (urn:ietf:bcp:47) at \r\n16 0    : 0ms  : Code \"en-AU\" found in urn:ietf:bcp:47|\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1868,7 +1844,6 @@ v: {
   "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(urn:iso:std:iso:3166)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:iso:std:iso:3166|2018\"\r\n0 0     : 0ms  : Prepare include: \"(urn:iso:std:iso:3166:-2)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:iso:std:iso:3166:-2|2021 (from fhir.tx.support.r4#0.32.0)\"\r\n0 0     : 0ms  : Prepare include: \"(http://unstats.un.org/unsd/methods/m49/m49.htm)(class=region)\"\r\n0 0     : 0ms  : CodeSystem found: \"http://unstats.un.org/unsd/methods/m49/m49.htm|\"\r\n0 0     : 0ms  : Validate \"[http://unstats.un.org/unsd/methods/m49/m49.htm#001 (\"World\")]\"\r\n0 0     : 0ms  : Check \"http://unstats.un.org/unsd/methods/m49/m49.htm#001\"\r\n0 0     : 0ms  : CodeSystem found: http://unstats.un.org/unsd/methods/m49/m49.htm| for http://unstats.un.org/unsd/methods/m49/m49.htm\r\n0 0     : 0ms  : check code in (http://unstats.un.org/unsd/methods/m49/m49.htm)(class=region) at CodeableConcept.coding[0]\r\n0 0     : 0ms  : Filter \"class=region\": Code \"001\" found in http://unstats.un.org/unsd/methods/m49/m49.htm|\r\n",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1890,6 +1865,759 @@ v: {
       "text" : "Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0"
     }
   }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://acme.com/config/fhir/codesystems/internal",
+  "code" : "internal-label"
+}, "url": "http://hl7.org/fhir/ValueSet/designation-use", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "internal-label",
+  "system" : "http://acme.com/config/fhir/codesystems/internal",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://acme.com/config/fhir/codesystems/internal' could not be found, so the code cannot be validated; The provided code 'http://acme.com/config/fhir/codesystems/internal#internal-label' was not found in the value set 'http://hl7.org/fhir/ValueSet/designation-use|5.0.0'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "Local Error: The local terminology server cannot handle this request. Server Error: A definition for CodeSystem 'http://acme.com/config/fhir/codesystems/internal' could not be found, so the code cannot be validated; The provided code 'http://acme.com/config/fhir/codesystems/internal#internal-label' was not found in the value set 'http://hl7.org/fhir/ValueSet/designation-use|5.0.0'",
+  "unknown-systems" : "http://acme.com/config/fhir/codesystems/internal",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://acme.com/config/fhir/codesystems/internal' could not be found, so the code cannot be validated"
+    },
+    "location" : ["Coding.system"],
+    "expression" : ["Coding.system"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code 'http://acme.com/config/fhir/codesystems/internal#internal-label' was not found in the value set 'http://hl7.org/fhir/ValueSet/designation-use|5.0.0'"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "29463-7",
+    "display" : "Body Weight"
+  },
+  {
+    "system" : "http://loinc.org",
+    "code" : "3141-9",
+    "display" : "Body weight Measured"
+  },
+  {
+    "system" : "http://snomed.info/sct",
+    "code" : "27113001",
+    "display" : "Body weight"
+  },
+  {
+    "system" : "http://acme.org/devices/clinical-codes",
+    "code" : "body-weight",
+    "display" : "Body Weight"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Body weight",
+  "code" : "27113001",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://loinc.org#29463-7 (\"Body Weight\"), http://loinc.org#3141-9 (\"Body weight Measured\"), http://snomed.info/sct#27113001 (\"Body weight\"), http://acme.org/devices/clinical-codes#body-weight (\"Body Weight\")]\"\r\n16 0    : 0ms  : Check \"http://loinc.org#29463-7\"\r\n16 0    : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n313 297 : 297ms : Check \"http://loinc.org#3141-9\"\r\n313 0   : 297ms : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n625 312 : 609ms : Check \"http://snomed.info/sct#27113001\"\r\n625 0   : 609ms : Using CodeSystem \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\" (content = complete)\r\n625 0   : 609ms : Check \"http://acme.org/devices/clinical-codes#body-weight\"\r\n625 0   : 609ms : Didn't find CodeSystem \"http://acme.org/devices/clinical-codes\"\r\n",
+  "unknown-systems" : "http://acme.org/devices/clinical-codes",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated"
+    },
+    "location" : ["CodeableConcept.coding[3].system"],
+    "expression" : ["CodeableConcept.coding[3].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "29463-7",
+    "display" : "Body Weight"
+  },
+  {
+    "system" : "http://loinc.org",
+    "code" : "3141-9",
+    "display" : "Body weight Measured"
+  },
+  {
+    "system" : "http://snomed.info/sct",
+    "code" : "27113001",
+    "display" : "Body weight"
+  },
+  {
+    "system" : "http://acme.org/devices/clinical-codes",
+    "code" : "body-weight",
+    "display" : "Body Weight"
+  }]
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Body weight",
+  "code" : "29463-7",
+  "system" : "http://loinc.org",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n0 0     : 0ms  : Prepare include: \"(http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0)\"\r\n0 0     : 0ms  : CodeSystem found: \"http://loinc.org|2.81\"\r\n0 0     : 0ms  : Validate \"[http://loinc.org#29463-7 (\"Body Weight\"), http://loinc.org#3141-9 (\"Body weight Measured\"), http://snomed.info/sct#27113001 (\"Body weight\"), http://acme.org/devices/clinical-codes#body-weight (\"Body Weight\")]\"\r\n0 0     : 0ms  : Check \"http://loinc.org#29463-7\"\r\n0 0     : 0ms  : CodeSystem found: http://loinc.org|2.81 for http://loinc.org\r\n0 0     : 0ms  : check code in (http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0) at CodeableConcept.coding[0]\r\n0 0     : 0ms  : Code \"29463-7\" found in http://loinc.org|2.81\r\n0 0     : 0ms  : Check \"http://loinc.org#3141-9\"\r\n0 0     : 0ms  : CodeSystem found: http://loinc.org|2.81 for http://loinc.org\r\n0 0     : 0ms  : check code in (http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0) at CodeableConcept.coding[1]\r\n0 0     : 0ms  : Check \"http://snomed.info/sct#27113001\"\r\n0 0     : 0ms  : Check \"http://acme.org/devices/clinical-codes#body-weight\"\r\n",
+  "unknown-systems" : "http://acme.org/devices/clinical-codes",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://loinc.org#3141-9 ('Body weight Measured')' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0'"
+    },
+    "location" : ["CodeableConcept.coding[1].code"],
+    "expression" : ["CodeableConcept.coding[1].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://snomed.info/sct#27113001 ('Body weight')' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0'"
+    },
+    "location" : ["CodeableConcept.coding[2].code"],
+    "expression" : ["CodeableConcept.coding[2].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://acme.org/devices/clinical-codes#body-weight ('Body Weight')' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0'"
+    },
+    "location" : ["CodeableConcept.coding[3].code"],
+    "expression" : ["CodeableConcept.coding[3].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated"
+    },
+    "location" : ["CodeableConcept.coding[3].system"],
+    "expression" : ["CodeableConcept.coding[3].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "[lb_av]"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "[lb_av]",
+  "code" : "[lb_av]",
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.2",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/ucum-bodyweight|5.0.0 for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n16 0    : 0ms  : Prepare include: \"(http://unitsofmeasure.org)(kg,[lb_av],g)\"\r\n16 0    : 0ms  : CodeSystem found: \"http://unitsofmeasure.org|2.2\"\r\n16 0    : 0ms  : Validate \"[#[lb_av] (\"\")]\" and infer system\r\n16 0    : 0ms  : Check \"#[lb_av]\"\r\n16 0    : 0ms  : Inferred CodeSystem = \"http://unitsofmeasure.org\"\r\n16 0    : 0ms  : CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org\r\n16 0    : 0ms  : check code in (http://unitsofmeasure.org)(kg,[lb_av],g) at \r\n16 0    : 0ms  : Code \"[lb_av]\" found in http://unitsofmeasure.org|2.2\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "fr-CA"
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "French (Canada)",
+  "code" : "fr-CA",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n63 63   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/languages|5.0.0 for validation purposes\r\n63 0    : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n78 15   : 15ms : Prepare include: \"(urn:ietf:bcp:47)(ar,bg,bg-BG,bn,cs,cs-CZ,bs,bs-BA,da,da-DK,de,de-AT,de-CH,de-DE,el,el-GR,en,en-AU,en-CA,en-GB,en-IN,en-NZ,en-SG,en-US,es,es-AR,es-ES,es-UY,et,et-EE,fi,fr,fr-BE,fr-CH,fr-FR,fi-FI,fr-CA,fy,fy-NL,hi,hr,hr-HR,is,is-IS,it,it-CH,it-IT,ja,ko,lt,lt-LT,lv,lv-LV,nl,nl-BE,nl-NL,no,no-NO,pa,pl,pl-PL,pt,pt-PT,pt-BR,ro,ro-RO,ru,ru-RU,sk,sk-SK,sl,sl-SI,sr,sr-RS,sv,sv-SE,te,zh,zh-CN,zh-HK,zh-SG,zh-TW)\"\r\n78 0    : 15ms : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n78 0    : 15ms : Validate \"[#fr-CA (\"\")]\" and infer system\r\n78 0    : 15ms : Check \"#fr-CA\"\r\n78 0    : 15ms : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n78 0    : 15ms : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n78 0    : 15ms : check code in (urn:ietf:bcp:47)(ar,bg,bg-BG,bn,cs,cs-CZ,bs,bs-BA,da,da-DK,de,de-AT,de-CH,de-DE,el,el-GR,en,en-AU,en-CA,en-GB,en-IN,en-NZ,en-SG,en-US,es,es-AR,es-ES,es-UY,et,et-EE,fi,fr,fr-BE,fr-CH,fr-FR,fi-FI,fr-CA,fy,fy-NL,hi,hr,hr-HR,is,is-IS,it,it-CH,it-IT,ja,ko,lt,lt-LT,lv,lv-LV,nl,nl-BE,nl-NL,no,no-NO,pa,pl,pl-PL,pt,pt-PT,pt-BR,ro,ro-RO,ru,ru-RU,sk,sk-SK,sl,sl-SI,sr,sr-RS,sv,sv-SE,te,zh,zh-CN,zh-HK,zh-SG,zh-TW) at \r\n78 0    : 15ms : Code \"fr-CA\" found in urn:ietf:bcp:47|\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://terminology.hl7.org/CodeSystem/condition-category",
+    "code" : "encounter-diagnosis",
+    "display" : "Encounter Diagnosis"
+  },
+  {
+    "system" : "http://snomed.info/sct",
+    "code" : "439401001",
+    "display" : "Diagnosis"
+  }]
+}, "url": "http://hl7.org/fhir/ValueSet/condition-category", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Diagnosis (observable entity)",
+  "code" : "encounter-diagnosis",
+  "system" : "http://terminology.hl7.org/CodeSystem/condition-category",
+  "version" : "1.0.1",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/condition-category|5.0.0 for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n16 0    : 0ms  : Prepare include: \"(http://terminology.hl7.org/CodeSystem/condition-category)\"\r\n16 0    : 0ms  : CodeSystem found: \"http://terminology.hl7.org/CodeSystem/condition-category|1.0.1\"\r\n16 0    : 0ms  : Validate \"[http://terminology.hl7.org/CodeSystem/condition-category#encounter-diagnosis (\"Encounter Diagnosis\"), http://snomed.info/sct#439401001 (\"Diagnosis\")]\"\r\n16 0    : 0ms  : Check \"http://terminology.hl7.org/CodeSystem/condition-category#encounter-diagnosis\"\r\n16 0    : 0ms  : CodeSystem found: http://terminology.hl7.org/CodeSystem/condition-category|1.0.1 for http://terminology.hl7.org/CodeSystem/condition-category\r\n16 0    : 0ms  : check code in (http://terminology.hl7.org/CodeSystem/condition-category) at CodeableConcept.coding[0]\r\n16 0    : 0ms  : Code \"encounter-diagnosis\" found in http://terminology.hl7.org/CodeSystem/condition-category|1.0.1\r\n16 0    : 0ms  : Check \"http://snomed.info/sct#439401001\"\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://snomed.info/sct#439401001 ('Diagnosis')' was not found in the value set 'http://hl7.org/fhir/ValueSet/condition-category|5.0.0'"
+    },
+    "location" : ["CodeableConcept.coding[1].code"],
+    "expression" : ["CodeableConcept.coding[1].code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "LA6724-4",
+    "display" : "Good color all over"
+  },
+  {
+    "system" : "http://acme.ped/apgarcolor",
+    "code" : "2"
+  }],
+  "text" : "2. Good color all over"
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Good color all over",
+  "code" : "LA6724-4",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://acme.ped/apgarcolor' could not be found, so the code cannot be validated",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://loinc.org#LA6724-4 (\"Good color all over\"), http://acme.ped/apgarcolor#2 (\"\")]\"\r\n0 0     : 0ms  : Check \"http://loinc.org#LA6724-4\"\r\n0 0     : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n281 281 : 281ms : Check \"http://acme.ped/apgarcolor#2\"\r\n281 0   : 281ms : Didn't find CodeSystem \"http://acme.ped/apgarcolor\"\r\n",
+  "unknown-systems" : "http://acme.ped/apgarcolor",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://acme.ped/apgarcolor' could not be found, so the code cannot be validated"
+    },
+    "location" : ["CodeableConcept.coding[1].system"],
+    "expression" : ["CodeableConcept.coding[1].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "LA6718-6",
+    "display" : "At least 100 beats per minute"
+  },
+  {
+    "system" : "http://acme.ped/apgarheartrate",
+    "code" : "2"
+  }],
+  "text" : "2. At least 100 beats per minute"
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "At least 100 beats per minute",
+  "code" : "LA6718-6",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://acme.ped/apgarheartrate' could not be found, so the code cannot be validated",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://loinc.org#LA6718-6 (\"At least 100 beats per minute\"), http://acme.ped/apgarheartrate#2 (\"\")]\"\r\n16 0    : 0ms  : Check \"http://loinc.org#LA6718-6\"\r\n16 0    : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n266 250 : 250ms : Check \"http://acme.ped/apgarheartrate#2\"\r\n266 0   : 250ms : Didn't find CodeSystem \"http://acme.ped/apgarheartrate\"\r\n",
+  "unknown-systems" : "http://acme.ped/apgarheartrate",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://acme.ped/apgarheartrate' could not be found, so the code cannot be validated"
+    },
+    "location" : ["CodeableConcept.coding[1].system"],
+    "expression" : ["CodeableConcept.coding[1].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "LA6721-0",
+    "display" : "Grimace and pulling away, cough, or sneeze during suctioning"
+  },
+  {
+    "system" : "http://acme.ped/apgarreflexirritability",
+    "code" : "2"
+  }],
+  "text" : "2. Grimace and pulling away, cough, or sneeze during suctioning"
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Grimace and pulling away, cough, or sneeze during suctioning",
+  "code" : "LA6721-0",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://acme.ped/apgarreflexirritability' could not be found, so the code cannot be validated",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://loinc.org#LA6721-0 (\"Grimace and pulling away, cough, or sneeze during suctioning\"), http://acme.ped/apgarreflexirritability#2 (\"\")]\"\r\n0 0     : 0ms  : Check \"http://loinc.org#LA6721-0\"\r\n0 0     : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n313 313 : 313ms : Check \"http://acme.ped/apgarreflexirritability#2\"\r\n313 0   : 313ms : Didn't find CodeSystem \"http://acme.ped/apgarreflexirritability\"\r\n",
+  "unknown-systems" : "http://acme.ped/apgarreflexirritability",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://acme.ped/apgarreflexirritability' could not be found, so the code cannot be validated"
+    },
+    "location" : ["CodeableConcept.coding[1].system"],
+    "expression" : ["CodeableConcept.coding[1].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "LA6715-2",
+    "display" : "Active motion "
+  },
+  {
+    "system" : "http://acme.ped/apgarmuscletone",
+    "code" : "2"
+  }],
+  "text" : "2. Active motion"
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Active motion",
+  "code" : "LA6715-2",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://acme.ped/apgarmuscletone' could not be found, so the code cannot be validated; Wrong whitespace in Display Name 'Active motion ' for http://loinc.org#LA6715-2. Valid display is 'Active motion' (en-US) (for the language(s) 'en-US')",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://loinc.org#LA6715-2 (\"Active motion \"), http://acme.ped/apgarmuscletone#2 (\"\")]\"\r\n0 0     : 0ms  : Check \"http://loinc.org#LA6715-2\"\r\n0 0     : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n297 297 : 297ms : Check \"http://acme.ped/apgarmuscletone#2\"\r\n297 0   : 297ms : Didn't find CodeSystem \"http://acme.ped/apgarmuscletone\"\r\n",
+  "unknown-systems" : "http://acme.ped/apgarmuscletone",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Display_Name_WS_for__should_be_one_of__instead_of"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong whitespace in Display Name 'Active motion ' for http://loinc.org#LA6715-2. Valid display is 'Active motion' (en-US) (for the language(s) 'en-US')"
+    },
+    "location" : ["CodeableConcept.coding[0].display"],
+    "expression" : ["CodeableConcept.coding[0].display"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://acme.ped/apgarmuscletone' could not be found, so the code cannot be validated"
+    },
+    "location" : ["CodeableConcept.coding[1].system"],
+    "expression" : ["CodeableConcept.coding[1].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "LA6727-7",
+    "display" : "Good, strong cry; normal rate and effort of breathing    "
+  },
+  {
+    "system" : "http://acme.ped/apgarrespiratoryeffort",
+    "code" : "2"
+  }],
+  "text" : "2. Good, strong cry; normal rate and effort of breathing"
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Good, strong cry; normal rate and effort of breathing",
+  "code" : "LA6727-7",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://acme.ped/apgarrespiratoryeffort' could not be found, so the code cannot be validated; Wrong whitespace in Display Name 'Good, strong cry; normal rate and effort of breathing    ' for http://loinc.org#LA6727-7. Valid display is 'Good, strong cry; normal rate and effort of breathing' (en-US) (for the language(s) 'en-US')",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://loinc.org#LA6727-7 (\"Good, strong cry; normal rate and effort of breathing    \"), http://acme.ped/apgarrespiratoryeffort#2 (\"\")]\"\r\n0 0     : 0ms  : Check \"http://loinc.org#LA6727-7\"\r\n0 0     : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n250 250 : 250ms : Check \"http://acme.ped/apgarrespiratoryeffort#2\"\r\n250 0   : 250ms : Didn't find CodeSystem \"http://acme.ped/apgarrespiratoryeffort\"\r\n",
+  "unknown-systems" : "http://acme.ped/apgarrespiratoryeffort",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Display_Name_WS_for__should_be_one_of__instead_of"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong whitespace in Display Name 'Good, strong cry; normal rate and effort of breathing    ' for http://loinc.org#LA6727-7. Valid display is 'Good, strong cry; normal rate and effort of breathing' (en-US) (for the language(s) 'en-US')"
+    },
+    "location" : ["CodeableConcept.coding[0].display"],
+    "expression" : ["CodeableConcept.coding[0].display"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://acme.ped/apgarrespiratoryeffort' could not be found, so the code cannot be validated"
+    },
+    "location" : ["CodeableConcept.coding[1].system"],
+    "expression" : ["CodeableConcept.coding[1].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "d"
+}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "d",
+  "code" : "d",
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.2",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/units-of-time|5.0.0 for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n15 0    : 0ms  : Prepare include: \"(http://unitsofmeasure.org)(s,min,h,d,wk,mo,a)\"\r\n15 0    : 0ms  : CodeSystem found: \"http://unitsofmeasure.org|2.2\"\r\n15 0    : 0ms  : Validate \"[#d (\"\")]\" and infer system\r\n15 0    : 0ms  : Check \"#d\"\r\n15 0    : 0ms  : Inferred CodeSystem = \"http://unitsofmeasure.org\"\r\n15 0    : 0ms  : CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org\r\n15 0    : 0ms  : check code in (http://unitsofmeasure.org)(s,min,h,d,wk,mo,a) at \r\n15 0    : 0ms  : Code \"d\" found in http://unitsofmeasure.org|2.2\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
 }
 
 }
