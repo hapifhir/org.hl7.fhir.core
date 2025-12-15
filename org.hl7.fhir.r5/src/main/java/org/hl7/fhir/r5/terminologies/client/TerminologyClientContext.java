@@ -282,7 +282,7 @@ public class TerminologyClientContext {
             if (system.equals(CanonicalType.urlWithVersion(tccs.getUri(), v.getCode()))) {
               return true;
             }
-            if (system.startsWith("http://snomed.info/sct") && CanonicalType.urlWithVersion(tccs.getUri(), v.getCode()).startsWith(system)) {
+            if (system.startsWith("http://snomed.info/sct") && CanonicalType.urlWithVersion(tccs.getUri(), v.getCode()).startsWith(system) && v.getIsDefault()) {
               return true;
             }
           }
