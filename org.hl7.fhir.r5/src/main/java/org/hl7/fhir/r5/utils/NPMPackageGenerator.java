@@ -32,10 +32,14 @@ package org.hl7.fhir.r5.utils;
 
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,11 +52,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
+import org.eclipse.jgit.ignore.IgnoreNode;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ContactDetail;
@@ -74,10 +81,8 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import org.hl7.fhir.utilities.npm.ToolsVersion;
+
 
 @MarkedToMoveToAdjunctPackage
 @Slf4j
@@ -469,31 +474,138 @@ public class NPMPackageGenerator {
   }
 
   public void loadDir(String rootDir, String name) throws IOException {
-    loadFiles(rootDir, ManagedFileAccess.file(Utilities.path(rootDir, name)));
+    loadFiles(rootDir, null, ManagedFileAccess.file(Utilities.path(rootDir, name)));
   }
 
-  public void loadFiles(String root, File dir, String... noload) throws IOException {
-    for (File f : dir.listFiles()) {
-      if (!Utilities.existsInList(f.getName(), noload)) {
-        if (f.isDirectory()) {
-          loadFiles(root, f);
-        } else {
-          String path = f.getAbsolutePath().substring(root.length()+1);
-          byte[] content = FileUtilities.fileToBytes(f);
-          if (created.contains(path)) 
-            log.warn("Duplicate package file "+path);
-          else {
-            created.add(path);
-            TarArchiveEntry entry = new TarArchiveEntry(path);
-            entry.setSize(content.length);
-            tar.putArchiveEntry(entry);
-            tar.write(content);
-            tar.closeArchiveEntry();
-          }
+    public void loadFiles(String root, String ignoreFile, File dir, String... noload) throws IOException {
+        Path rootPath = Paths.get(root);
+        Path dirPath = dir == null ? rootPath : dir.toPath();
+        // Ensure the directory to scan is inside the root
+        Path normalizedRoot = rootPath.toAbsolutePath().normalize();
+        Path normalizedDir = dirPath.toAbsolutePath().normalize();
+        if (!normalizedDir.startsWith(normalizedRoot)) {
+            throw new IllegalArgumentException("dir must be root or a subdirectory of root");
         }
-      }
+        String ignoreFileName = null;
+        IgnoreNode rootIgnoreNode = new IgnoreNode();
+
+        if (ignoreFile != null && !ignoreFile.isEmpty()) {
+            if (!Paths.get(ignoreFile).getFileName().toString().equals(ignoreFile)) {
+                throw new IllegalArgumentException("ignoreFile must be a simple filename without any path separators");
+            }
+            ignoreFileName = ignoreFile;
+        }
+
+        if (ignoreFileName != null) {
+            loadAllIgnorePatternsRecursive(rootPath, rootPath, ignoreFileName, rootIgnoreNode);
+            String ignoreFilePattern = "**/" + ignoreFileName + "\n" + ignoreFileName;
+            rootIgnoreNode.parse(new ByteArrayInputStream(ignoreFilePattern.getBytes()));
+        }
+
+        for (String pattern : noload) {
+            String anchoredPattern = pattern.startsWith("/") ? pattern : "/" + pattern;
+            rootIgnoreNode.parse(new ByteArrayInputStream(anchoredPattern.getBytes()));
+        }
+
+        scanAndFilterFiles(rootPath, dirPath, ignoreFileName, rootIgnoreNode);
     }
-  }
+
+    private void loadAllIgnorePatternsRecursive(Path root, Path directory, String ignoreFileName, IgnoreNode rootIgnoreNode) throws IOException {
+        Path ignorePath = directory.resolve(ignoreFileName);
+        if (Files.exists(ignorePath)) {
+            try (var in = Files.newInputStream(ignorePath)) {
+                rootIgnoreNode.parse(in);
+            }
+        }
+
+        try (Stream<Path> paths = Files.list(directory)) {
+            paths.filter(Files::isDirectory)
+                .filter(p -> !p.getFileName().toString().startsWith("."))
+                .forEach(subDir -> {
+                    try {
+                        loadAllIgnorePatternsRecursive(root, subDir, ignoreFileName, rootIgnoreNode);
+                    } catch (IOException e) {
+                        // ignore and continue
+                    }
+                });
+        }
+    }
+
+    private void scanAndFilterFiles(Path root, Path startDir, String ignoreFileName, IgnoreNode rootIgnoreNode) throws IOException {
+        java.util.Map<String, Boolean> directoryIgnoreCache = new java.util.HashMap<>();
+        try (Stream<Path> paths = Files.walk(startDir)) {
+            paths.filter(Files::isRegularFile).forEach(f -> {
+                try {
+                    if (isNotIgnored(f, root, rootIgnoreNode, directoryIgnoreCache)) {
+                        Path rel = root.relativize(f);
+                        String path = rel.toString();
+                        if (created.contains(path))
+                            log.warn("Duplicate package file "+path);
+                        else {
+                            byte[] content = FileUtilities.fileToBytes(f.toFile());
+                            created.add(path);
+                            TarArchiveEntry entry = new TarArchiveEntry(path);
+                            entry.setSize(content.length);
+                            tar.putArchiveEntry(entry);
+                            tar.write(content);
+                            tar.closeArchiveEntry();
+                        }
+                    }
+                } catch (IOException e) {
+                    // ignore and continue
+                }
+            });
+        }
+    }
+
+    private boolean isNotIgnored(Path file, Path root, IgnoreNode rootIgnoreNode, java.util.Map<String, Boolean> directoryIgnoreCache) throws IOException {
+        Path relativePath = root.relativize(file);
+        String pathString = relativePath.toString().replace(File.separator, "/");
+
+        if (rootIgnoreNode.isIgnored(pathString, false) == IgnoreNode.MatchResult.IGNORED) {
+            return false;
+        }
+
+        Path parent = relativePath.getParent();
+        while (parent != null) {
+            String parentPath = parent.toString().replace(File.separator, "/");
+            Boolean cached = directoryIgnoreCache.get(parentPath);
+            if (cached != null) {
+                if (cached) return false;
+            } else {
+                boolean isIgnored = rootIgnoreNode.isIgnored(parentPath, true) == IgnoreNode.MatchResult.IGNORED;
+                directoryIgnoreCache.put(parentPath, isIgnored);
+                if (isIgnored) return false;
+            }
+            parent = parent.getParent();
+        }
+
+        return true;
+    }
+
+
+  // public void loadFiles(String root, File dir, String... noload) throws IOException {
+  //   for (File f : dir.listFiles()) {
+  //     if (!Utilities.existsInList(f.getName(), noload)) {
+  //       if (f.isDirectory()) {
+  //         loadFiles(root, f);
+  //       } else {
+  //         String path = f.getAbsolutePath().substring(root.length()+1);
+  //         byte[] content = FileUtilities.fileToBytes(f);
+  //         if (created.contains(path)) 
+  //           log.warn("Duplicate package file "+path);
+  //         else {
+  //           created.add(path);
+  //           TarArchiveEntry entry = new TarArchiveEntry(path);
+  //           entry.setSize(content.length);
+  //           tar.putArchiveEntry(entry);
+  //           tar.write(content);
+  //           tar.closeArchiveEntry();
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 
   public String version() {
     return igVersion;
