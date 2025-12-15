@@ -1,0 +1,109 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
+  "code" : "C73330",
+  "display" : "Foreign Facility's United States Agent"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "UNITED STATES AGENT",
+  "code" : "C73330",
+  "system" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Foreign Facility's United States Agent' for http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C73330. Valid display is 'UNITED STATES AGENT' (for the language(s) 'en-US')",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"()\"\r\n15 0    : 0ms  : Validate \"[http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C73330 (\"Foreign Facility's United States Agent\")]\"\r\n15 0    : 0ms  : Check \"http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C73330\"\r\n15 0    : 0ms  : Using CodeSystem \"http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl| (from fhir.tx.support.r4#0.32.0)\" (content = fragment)\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Display_Name_for__should_be_one_of__instead_of"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Foreign Facility's United States Agent' for http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C73330. Valid display is 'UNITED STATES AGENT' (for the language(s) 'en-US')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
+  "code" : "C43360",
+  "display" : "manufacture"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "MANUFACTURE",
+  "code" : "C43360",
+  "system" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C43360 (\"manufacture\")]\"\r\n0 0     : 0ms  : Check \"http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C43360\"\r\n0 0     : 0ms  : Using CodeSystem \"http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl| (from fhir.tx.support.r4#0.32.0)\" (content = fragment)\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
+  "code" : "C106643",
+  "display" : "Manufactures human prescription drug products"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Manufactures human prescription drug products",
+  "code" : "C106643",
+  "system" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C106643 (\"Manufactures human prescription drug products\")]\"\r\n0 0     : 0ms  : Check \"http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C106643\"\r\n0 0     : 0ms  : Using CodeSystem \"http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl| (from fhir.tx.support.r4#0.32.0)\" (content = fragment)\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

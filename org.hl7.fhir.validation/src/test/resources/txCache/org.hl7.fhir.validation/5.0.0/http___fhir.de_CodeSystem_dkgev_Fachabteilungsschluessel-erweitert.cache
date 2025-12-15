@@ -1,0 +1,29 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert",
+  "code" : "3600"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Intensivmedizin",
+  "code" : "3600",
+  "system" : "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert",
+  "version" : "1.5.0",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"()\"\r\n15 0    : 0ms  : Validate \"[http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert#3600 (\"\")]\"\r\n15 0    : 0ms  : Check \"http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert#3600\"\r\n15 0    : 0ms  : Using CodeSystem \"http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert|1.5.0\" (content = fragment)\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

@@ -1,0 +1,51 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://example.org/profile3",
+  "code" : "code3"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "code3",
+  "system" : "http://example.org/profile3",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://example.org/profile3' could not be found, so the code cannot be validated",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://example.org/profile3#code3 (\"\")]\"\r\n16 0    : 0ms  : Check \"http://example.org/profile3#code3\"\r\n16 0    : 0ms  : Didn't find CodeSystem \"http://example.org/profile3\"\r\n",
+  "unknown-systems" : "http://example.org/profile3",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://example.org/profile3' could not be found, so the code cannot be validated"
+    },
+    "location" : ["Coding.system"],
+    "expression" : ["Coding.system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------

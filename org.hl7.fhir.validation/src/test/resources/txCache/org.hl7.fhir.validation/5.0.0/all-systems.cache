@@ -1,0 +1,1896 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "text/plain"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:13"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "text/plain",
+  "code" : "text/plain",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing urn:uuid:2d3cc9f5-cb15-4ee0-9f2d-070a2d4fceba for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"(urn:ietf:bcp:13)\"\r\n16 0    : 0ms  : CodeSystem found: \"urn:ietf:bcp:13|\"\r\n16 0    : 0ms  : Validate \"[#text/plain (\"\")]\" and infer system\r\n16 0    : 0ms  : Check \"#text/plain\"\r\n16 0    : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:13\"\r\n16 0    : 0ms  : CodeSystem found: urn:ietf:bcp:13| for urn:ietf:bcp:13\r\n16 0    : 0ms  : check code in (urn:ietf:bcp:13) at \r\n16 0    : 0ms  : Code \"text/plain\" found in urn:ietf:bcp:13|\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "text/plain"
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "text/plain",
+  "code" : "text/plain",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/mimetypes|5.0.0 for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"(urn:ietf:bcp:13)\"\r\n15 0    : 0ms  : CodeSystem found: \"urn:ietf:bcp:13|\"\r\n15 0    : 0ms  : Validate \"[#text/plain (\"\")]\" and infer system\r\n15 0    : 0ms  : Check \"#text/plain\"\r\n15 0    : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:13\"\r\n15 0    : 0ms  : CodeSystem found: urn:ietf:bcp:13| for urn:ietf:bcp:13\r\n15 0    : 0ms  : check code in (urn:ietf:bcp:13) at \r\n15 0    : 0ms  : Code \"text/plain\" found in urn:ietf:bcp:13|\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "8480-6",
+    "display" : "Systolic blood pressure"
+  },
+  {
+    "system" : "http://snomed.info/sct",
+    "code" : "271649006",
+    "display" : "Systolic blood pressure"
+  },
+  {
+    "system" : "http://acme.org/devices/clinical-codes",
+    "code" : "bp-s",
+    "display" : "Systolic Blood pressure"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Systolic blood pressure",
+  "code" : "271649006",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://loinc.org#8480-6 (\"Systolic blood pressure\"), http://snomed.info/sct#271649006 (\"Systolic blood pressure\"), http://acme.org/devices/clinical-codes#bp-s (\"Systolic Blood pressure\")]\"\r\n16 0    : 0ms  : Check \"http://loinc.org#8480-6\"\r\n16 0    : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n312 296 : 296ms : Check \"http://snomed.info/sct#271649006\"\r\n312 0   : 296ms : Using CodeSystem \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\" (content = complete)\r\n312 0   : 296ms : Check \"http://acme.org/devices/clinical-codes#bp-s\"\r\n312 0   : 296ms : Didn't find CodeSystem \"http://acme.org/devices/clinical-codes\"\r\n",
+  "unknown-systems" : "http://acme.org/devices/clinical-codes",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated"
+    },
+    "location" : ["CodeableConcept.coding[2].system"],
+    "expression" : ["CodeableConcept.coding[2].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "8480-6",
+    "display" : "Systolic blood pressure"
+  },
+  {
+    "system" : "http://snomed.info/sct",
+    "code" : "271649006",
+    "display" : "Systolic blood pressure"
+  },
+  {
+    "system" : "http://acme.org/devices/clinical-codes",
+    "code" : "bp-s",
+    "display" : "Systolic Blood pressure"
+  }]
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Systolic blood pressure",
+  "code" : "8480-6",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0)\"\r\n0 0     : 0ms  : CodeSystem found: \"http://loinc.org|2.81\"\r\n0 0     : 0ms  : Validate \"[http://loinc.org#8480-6 (\"Systolic blood pressure\"), http://snomed.info/sct#271649006 (\"Systolic blood pressure\"), http://acme.org/devices/clinical-codes#bp-s (\"Systolic Blood pressure\")]\"\r\n0 0     : 0ms  : Check \"http://loinc.org#8480-6\"\r\n0 0     : 0ms  : CodeSystem found: http://loinc.org|2.81 for http://loinc.org\r\n0 0     : 0ms  : check code in (http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0) at CodeableConcept.coding[0]\r\n0 0     : 0ms  : Code \"8480-6\" found in http://loinc.org|2.81\r\n0 0     : 0ms  : Check \"http://snomed.info/sct#271649006\"\r\n0 0     : 0ms  : Check \"http://acme.org/devices/clinical-codes#bp-s\"\r\n",
+  "unknown-systems" : "http://acme.org/devices/clinical-codes",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://snomed.info/sct#271649006 ('Systolic blood pressure')' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0'"
+    },
+    "location" : ["CodeableConcept.coding[1].code"],
+    "expression" : ["CodeableConcept.coding[1].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://acme.org/devices/clinical-codes#bp-s ('Systolic Blood pressure')' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0'"
+    },
+    "location" : ["CodeableConcept.coding[2].code"],
+    "expression" : ["CodeableConcept.coding[2].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated"
+    },
+    "location" : ["CodeableConcept.coding[2].system"],
+    "expression" : ["CodeableConcept.coding[2].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en-US"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:47"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "English (Region=United States)",
+  "code" : "en-US",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing urn:uuid:31a3a526-7665-44a4-b895-78446e32094b for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(urn:ietf:bcp:47)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n0 0     : 0ms  : Validate \"[#en-US (\"\")]\" and infer system\r\n0 0     : 0ms  : Check \"#en-US\"\r\n0 0     : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n0 0     : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n0 0     : 0ms  : check code in (urn:ietf:bcp:47) at \r\n0 0     : 0ms  : Code \"en-US\" found in urn:ietf:bcp:47|\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en-US"
+}, "url": "http://hl7.org/fhir/ValueSet/all-languages", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "English (Region=United States)",
+  "code" : "en-US",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/all-languages|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(urn:ietf:bcp:47)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n0 0     : 0ms  : Validate \"[#en-US (\"\")]\" and infer system\r\n0 0     : 0ms  : Check \"#en-US\"\r\n0 0     : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n0 0     : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n0 0     : 0ms  : check code in (urn:ietf:bcp:47) at \r\n0 0     : 0ms  : Code \"en-US\" found in urn:ietf:bcp:47|\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "de"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:47"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "German",
+  "code" : "de",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing urn:uuid:3dd7699f-6e88-4f6b-9ed6-9fecf2387361 for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"(urn:ietf:bcp:47)\"\r\n16 0    : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n16 0    : 0ms  : Validate \"[#de (\"\")]\" and infer system\r\n16 0    : 0ms  : Check \"#de\"\r\n16 0    : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n16 0    : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n16 0    : 0ms  : check code in (urn:ietf:bcp:47) at \r\n16 0    : 0ms  : Code \"de\" found in urn:ietf:bcp:47|\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "de"
+}, "url": "http://hl7.org/fhir/ValueSet/all-languages", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "German",
+  "code" : "de",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/all-languages|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(urn:ietf:bcp:47)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n0 0     : 0ms  : Validate \"[#de (\"\")]\" and infer system\r\n0 0     : 0ms  : Check \"#de\"\r\n0 0     : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n0 0     : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n0 0     : 0ms  : check code in (urn:ietf:bcp:47) at \r\n0 0     : 0ms  : Code \"de\" found in urn:ietf:bcp:47|\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:47"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "English",
+  "code" : "en",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing urn:uuid:c29eb1fd-8d9c-4310-a9ef-ea39bbae3e79 for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"(urn:ietf:bcp:47)\"\r\n15 0    : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n15 0    : 0ms  : Validate \"[#en (\"\")]\" and infer system\r\n15 0    : 0ms  : Check \"#en\"\r\n15 0    : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n15 0    : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n15 0    : 0ms  : check code in (urn:ietf:bcp:47) at \r\n15 0    : 0ms  : Code \"en\" found in urn:ietf:bcp:47|\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en"
+}, "url": "http://hl7.org/fhir/ValueSet/all-languages", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "English",
+  "code" : "en",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/all-languages|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(urn:ietf:bcp:47)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n0 0     : 0ms  : Validate \"[#en (\"\")]\" and infer system\r\n0 0     : 0ms  : Check \"#en\"\r\n0 0     : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n0 0     : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n0 0     : 0ms  : check code in (urn:ietf:bcp:47) at \r\n0 0     : 0ms  : Code \"en\" found in urn:ietf:bcp:47|\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+    "code" : "001"
+  }]
+}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "World",
+  "code" : "001",
+  "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(urn:iso:std:iso:3166)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:iso:std:iso:3166|2018\"\r\n0 0     : 0ms  : Prepare include: \"(urn:iso:std:iso:3166:-2)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:iso:std:iso:3166:-2|2021 (from fhir.tx.support.r4#0.32.0)\"\r\n0 0     : 0ms  : Prepare include: \"(http://unstats.un.org/unsd/methods/m49/m49.htm)(class=region)\"\r\n0 0     : 0ms  : CodeSystem found: \"http://unstats.un.org/unsd/methods/m49/m49.htm|\"\r\n0 0     : 0ms  : Validate \"[http://unstats.un.org/unsd/methods/m49/m49.htm#001 (\"\")]\"\r\n0 0     : 0ms  : Check \"http://unstats.un.org/unsd/methods/m49/m49.htm#001\"\r\n0 0     : 0ms  : CodeSystem found: http://unstats.un.org/unsd/methods/m49/m49.htm| for http://unstats.un.org/unsd/methods/m49/m49.htm\r\n0 0     : 0ms  : check code in (http://unstats.un.org/unsd/methods/m49/m49.htm)(class=region) at CodeableConcept.coding[0]\r\n0 0     : 0ms  : Filter \"class=region\": Code \"001\" found in http://unstats.un.org/unsd/methods/m49/m49.htm|\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "MSG_DEPRECATED"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "status-check"
+      }],
+      "text" : "Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "nl-NL"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:47"
+    }]
+  }
+}, "langs":"nl-NL", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Dutch (Region=Netherlands)",
+  "code" : "nl-NL",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing urn:uuid:0cd37233-94a9-485c-bc35-4b00e1128f0d for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=nl-NL\r\n0 0     : 0ms  : Prepare include: \"(urn:ietf:bcp:47)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n0 0     : 0ms  : Validate \"[#nl-NL (\"\")]\" and infer system\r\n0 0     : 0ms  : Check \"#nl-NL\"\r\n0 0     : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n0 0     : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n0 0     : 0ms  : check code in (urn:ietf:bcp:47) at \r\n0 0     : 0ms  : Code \"nl-NL\" found in urn:ietf:bcp:47|\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "nl-NL"
+}, "url": "http://hl7.org/fhir/ValueSet/all-languages", "version": "5.0.0", "langs":"nl-NL", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Dutch (Region=Netherlands)",
+  "code" : "nl-NL",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/all-languages|5.0.0 for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=nl-NL\r\n16 0    : 0ms  : Prepare include: \"(urn:ietf:bcp:47)\"\r\n16 0    : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n16 0    : 0ms  : Validate \"[#nl-NL (\"\")]\" and infer system\r\n16 0    : 0ms  : Check \"#nl-NL\"\r\n16 0    : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n16 0    : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n16 0    : 0ms  : check code in (urn:ietf:bcp:47) at \r\n16 0    : 0ms  : Code \"nl-NL\" found in urn:ietf:bcp:47|\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "image/gif"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:13"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "image/gif",
+  "code" : "image/gif",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing urn:uuid:ff55c0c9-c24d-4b17-8b22-8c82fcf34a56 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(urn:ietf:bcp:13)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:ietf:bcp:13|\"\r\n0 0     : 0ms  : Validate \"[#image/gif (\"\")]\" and infer system\r\n0 0     : 0ms  : Check \"#image/gif\"\r\n0 0     : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:13\"\r\n0 0     : 0ms  : CodeSystem found: urn:ietf:bcp:13| for urn:ietf:bcp:13\r\n0 0     : 0ms  : check code in (urn:ietf:bcp:13) at \r\n0 0     : 0ms  : Code \"image/gif\" found in urn:ietf:bcp:13|\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "image/gif"
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "image/gif",
+  "code" : "image/gif",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/mimetypes|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(urn:ietf:bcp:13)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:ietf:bcp:13|\"\r\n0 0     : 0ms  : Validate \"[#image/gif (\"\")]\" and infer system\r\n0 0     : 0ms  : Check \"#image/gif\"\r\n0 0     : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:13\"\r\n0 0     : 0ms  : CodeSystem found: urn:ietf:bcp:13| for urn:ietf:bcp:13\r\n0 0     : 0ms  : check code in (urn:ietf:bcp:13) at \r\n0 0     : 0ms  : Code \"image/gif\" found in urn:ietf:bcp:13|\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "ms"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://unitsofmeasure.org"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "ms",
+  "code" : "ms",
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.2",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing urn:uuid:938fa63f-781e-42a5-b219-b50dabc53f0b for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"(http://unitsofmeasure.org)\"\r\n15 0    : 0ms  : CodeSystem found: \"http://unitsofmeasure.org|2.2\"\r\n15 0    : 0ms  : Validate \"[#ms (\"\")]\" and infer system\r\n15 0    : 0ms  : Check \"#ms\"\r\n15 0    : 0ms  : Inferred CodeSystem = \"http://unitsofmeasure.org\"\r\n15 0    : 0ms  : CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org\r\n15 0    : 0ms  : check code in (http://unitsofmeasure.org) at \r\n15 0    : 0ms  : Code \"ms\" found in http://unitsofmeasure.org|2.2\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "ms"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "ms",
+  "code" : "ms",
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.2",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/ucum-units|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(http://unitsofmeasure.org)\"\r\n0 0     : 0ms  : CodeSystem found: \"http://unitsofmeasure.org|2.2\"\r\n0 0     : 0ms  : Validate \"[#ms (\"\")]\" and infer system\r\n0 0     : 0ms  : Check \"#ms\"\r\n0 0     : 0ms  : Inferred CodeSystem = \"http://unitsofmeasure.org\"\r\n0 0     : 0ms  : CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org\r\n0 0     : 0ms  : check code in (http://unitsofmeasure.org) at \r\n0 0     : 0ms  : Code \"ms\" found in http://unitsofmeasure.org|2.2\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "urn:iso:std:iso:11073:10101",
+    "code" : "149530"
+  },
+  {
+    "system" : "http://loinc.org",
+    "code" : "8867-4"
+  }],
+  "text" : "MDC_PULS_OXIM_PULS_RATE"
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Heart rate",
+  "code" : "8867-4",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[urn:iso:std:iso:11073:10101#149530 (\"\"), http://loinc.org#8867-4 (\"\")]\"\r\n0 0     : 0ms  : Check \"urn:iso:std:iso:11073:10101#149530\"\r\n16 16   : 16ms : Using CodeSystem \"urn:iso:std:iso:11073:10101|2024-12-05 (from fhir.tx.support.r4#0.32.0)\" (content = complete)\r\n16 0    : 16ms : Check \"http://loinc.org#8867-4\"\r\n16 0    : 16ms : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "MSG_DRAFT"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "status-check"
+      }],
+      "text" : "Reference to draft CodeSystem urn:iso:std:iso:11073:10101|2024-12-05 from fhir.tx.support.r4#0.32.0"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "urn:iso:std:iso:11073:10101",
+    "code" : "149530"
+  },
+  {
+    "system" : "http://loinc.org",
+    "code" : "8867-4"
+  }],
+  "text" : "MDC_PULS_OXIM_PULS_RATE"
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Heart rate",
+  "code" : "8867-4",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0)\"\r\n0 0     : 0ms  : CodeSystem found: \"http://loinc.org|2.81\"\r\n0 0     : 0ms  : Validate \"[urn:iso:std:iso:11073:10101#149530 (\"\"), http://loinc.org#8867-4 (\"\")]\"\r\n0 0     : 0ms  : Check \"urn:iso:std:iso:11073:10101#149530\"\r\n16 16   : 16ms : Check \"http://loinc.org#8867-4\"\r\n16 0    : 16ms : CodeSystem found: http://loinc.org|2.81 for http://loinc.org\r\n16 0    : 16ms : check code in (http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0) at CodeableConcept.coding[1]\r\n16 0    : 16ms : Code \"8867-4\" found in http://loinc.org|2.81\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'urn:iso:std:iso:11073:10101#149530' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0'"
+    },
+    "location" : ["CodeableConcept.coding[0].code"],
+    "expression" : ["CodeableConcept.coding[0].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "MSG_DRAFT"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "status-check"
+      }],
+      "text" : "Reference to draft CodeSystem urn:iso:std:iso:11073:10101|2024-12-05 from fhir.tx.support.r4#0.32.0"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "271649006",
+    "display" : "Systolic blood pressure"
+  },
+  {
+    "system" : "http://acme.org/devices/clinical-codes",
+    "code" : "bp-s",
+    "display" : "Systolic Blood pressure"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Systolic blood pressure",
+  "code" : "271649006",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://snomed.info/sct#271649006 (\"Systolic blood pressure\"), http://acme.org/devices/clinical-codes#bp-s (\"Systolic Blood pressure\")]\"\r\n0 0     : 0ms  : Check \"http://snomed.info/sct#271649006\"\r\n0 0     : 0ms  : Using CodeSystem \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\" (content = complete)\r\n0 0     : 0ms  : Check \"http://acme.org/devices/clinical-codes#bp-s\"\r\n0 0     : 0ms  : Didn't find CodeSystem \"http://acme.org/devices/clinical-codes\"\r\n",
+  "unknown-systems" : "http://acme.org/devices/clinical-codes",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated"
+    },
+    "location" : ["CodeableConcept.coding[1].system"],
+    "expression" : ["CodeableConcept.coding[1].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "271649006",
+    "display" : "Systolic blood pressure"
+  },
+  {
+    "system" : "http://acme.org/devices/clinical-codes",
+    "code" : "bp-s",
+    "display" : "Systolic Blood pressure"
+  }]
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated; No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0 for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"(http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0)\"\r\n16 0    : 0ms  : CodeSystem found: \"http://loinc.org|2.81\"\r\n16 0    : 0ms  : Validate \"[http://snomed.info/sct#271649006 (\"Systolic blood pressure\"), http://acme.org/devices/clinical-codes#bp-s (\"Systolic Blood pressure\")]\"\r\n16 0    : 0ms  : Check \"http://snomed.info/sct#271649006\"\r\n16 0    : 0ms  : Check \"http://acme.org/devices/clinical-codes#bp-s\"\r\n",
+  "unknown-systems" : "http://acme.org/devices/clinical-codes",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://snomed.info/sct#271649006 ('Systolic blood pressure')' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0'"
+    },
+    "location" : ["CodeableConcept.coding[0].code"],
+    "expression" : ["CodeableConcept.coding[0].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://acme.org/devices/clinical-codes#bp-s ('Systolic Blood pressure')' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0'"
+    },
+    "location" : ["CodeableConcept.coding[1].code"],
+    "expression" : ["CodeableConcept.coding[1].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated"
+    },
+    "location" : ["CodeableConcept.coding[1].system"],
+    "expression" : ["CodeableConcept.coding[1].system"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "TX_GENERAL_CC_ERROR_MESSAGE"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0'"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "85354-9",
+    "display" : "Blood pressure panel with all children optional"
+  },
+  {
+    "system" : "http://fhir.ch/ig/local",
+    "code" : "1234"
+  }],
+  "text" : "Blood pressure systolic & diastolic"
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Blood pressure panel with all children optional",
+  "code" : "85354-9",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://fhir.ch/ig/local' could not be found, so the code cannot be validated",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"()\"\r\n15 0    : 0ms  : Validate \"[http://loinc.org#85354-9 (\"Blood pressure panel with all children optional\"), http://fhir.ch/ig/local#1234 (\"\")]\"\r\n15 0    : 0ms  : Check \"http://loinc.org#85354-9\"\r\n15 0    : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n218 203 : 203ms : Check \"http://fhir.ch/ig/local#1234\"\r\n218 0   : 203ms : Didn't find CodeSystem \"http://fhir.ch/ig/local\"\r\n",
+  "unknown-systems" : "http://fhir.ch/ig/local",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://fhir.ch/ig/local' could not be found, so the code cannot be validated"
+    },
+    "location" : ["CodeableConcept.coding[1].system"],
+    "expression" : ["CodeableConcept.coding[1].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "8480-6",
+    "display" : "Systolic blood pressure"
+  },
+  {
+    "system" : "http://snomed.info/sct",
+    "code" : "271649006",
+    "display" : "Systolic blood pressure"
+  },
+  {
+    "system" : "http://fhir.ch/ig/local",
+    "code" : "3456"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Systolic blood pressure",
+  "code" : "271649006",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://fhir.ch/ig/local' could not be found, so the code cannot be validated",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://loinc.org#8480-6 (\"Systolic blood pressure\"), http://snomed.info/sct#271649006 (\"Systolic blood pressure\"), http://fhir.ch/ig/local#3456 (\"\")]\"\r\n16 0    : 0ms  : Check \"http://loinc.org#8480-6\"\r\n16 0    : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n204 188 : 188ms : Check \"http://snomed.info/sct#271649006\"\r\n204 0   : 188ms : Using CodeSystem \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\" (content = complete)\r\n204 0   : 188ms : Check \"http://fhir.ch/ig/local#3456\"\r\n204 0   : 188ms : Didn't find CodeSystem \"http://fhir.ch/ig/local\"\r\n",
+  "unknown-systems" : "http://fhir.ch/ig/local",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://fhir.ch/ig/local' could not be found, so the code cannot be validated"
+    },
+    "location" : ["CodeableConcept.coding[2].system"],
+    "expression" : ["CodeableConcept.coding[2].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "8462-4",
+    "display" : "Diastolic blood pressure"
+  },
+  {
+    "system" : "http://fhir.ch/ig/local",
+    "code" : "7890"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Diastolic blood pressure",
+  "code" : "8462-4",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://fhir.ch/ig/local' could not be found, so the code cannot be validated",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://loinc.org#8462-4 (\"Diastolic blood pressure\"), http://fhir.ch/ig/local#7890 (\"\")]\"\r\n0 0     : 0ms  : Check \"http://loinc.org#8462-4\"\r\n0 0     : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n250 250 : 250ms : Check \"http://fhir.ch/ig/local#7890\"\r\n250 0   : 250ms : Didn't find CodeSystem \"http://fhir.ch/ig/local\"\r\n",
+  "unknown-systems" : "http://fhir.ch/ig/local",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://fhir.ch/ig/local' could not be found, so the code cannot be validated"
+    },
+    "location" : ["CodeableConcept.coding[1].system"],
+    "expression" : ["CodeableConcept.coding[1].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "85354-9",
+    "display" : "Blood pressure panel with all children optional"
+  },
+  {
+    "system" : "http://fhir.ch/ig/local",
+    "code" : "1234"
+  }],
+  "text" : "Blood pressure systolic & diastolic"
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Blood pressure panel with all children optional",
+  "code" : "85354-9",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://fhir.ch/ig/local' could not be found, so the code cannot be validated",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0 for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"(http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0)\"\r\n16 0    : 0ms  : CodeSystem found: \"http://loinc.org|2.81\"\r\n16 0    : 0ms  : Validate \"[http://loinc.org#85354-9 (\"Blood pressure panel with all children optional\"), http://fhir.ch/ig/local#1234 (\"\")]\"\r\n16 0    : 0ms  : Check \"http://loinc.org#85354-9\"\r\n16 0    : 0ms  : CodeSystem found: http://loinc.org|2.81 for http://loinc.org\r\n16 0    : 0ms  : check code in (http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0) at CodeableConcept.coding[0]\r\n16 0    : 0ms  : Code \"85354-9\" found in http://loinc.org|2.81\r\n16 0    : 0ms  : Check \"http://fhir.ch/ig/local#1234\"\r\n",
+  "unknown-systems" : "http://fhir.ch/ig/local",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://fhir.ch/ig/local#1234' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0'"
+    },
+    "location" : ["CodeableConcept.coding[1].code"],
+    "expression" : ["CodeableConcept.coding[1].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://fhir.ch/ig/local' could not be found, so the code cannot be validated"
+    },
+    "location" : ["CodeableConcept.coding[1].system"],
+    "expression" : ["CodeableConcept.coding[1].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "8480-6",
+    "display" : "Systolic blood pressure"
+  },
+  {
+    "system" : "http://snomed.info/sct",
+    "code" : "271649006",
+    "display" : "Systolic blood pressure"
+  },
+  {
+    "system" : "http://fhir.ch/ig/local",
+    "code" : "3456"
+  }]
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Systolic blood pressure",
+  "code" : "8480-6",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://fhir.ch/ig/local' could not be found, so the code cannot be validated",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0 for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"(http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0)\"\r\n16 0    : 0ms  : CodeSystem found: \"http://loinc.org|2.81\"\r\n16 0    : 0ms  : Validate \"[http://loinc.org#8480-6 (\"Systolic blood pressure\"), http://snomed.info/sct#271649006 (\"Systolic blood pressure\"), http://fhir.ch/ig/local#3456 (\"\")]\"\r\n16 0    : 0ms  : Check \"http://loinc.org#8480-6\"\r\n16 0    : 0ms  : CodeSystem found: http://loinc.org|2.81 for http://loinc.org\r\n16 0    : 0ms  : check code in (http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0) at CodeableConcept.coding[0]\r\n16 0    : 0ms  : Code \"8480-6\" found in http://loinc.org|2.81\r\n16 0    : 0ms  : Check \"http://snomed.info/sct#271649006\"\r\n16 0    : 0ms  : Check \"http://fhir.ch/ig/local#3456\"\r\n",
+  "unknown-systems" : "http://fhir.ch/ig/local",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://snomed.info/sct#271649006 ('Systolic blood pressure')' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0'"
+    },
+    "location" : ["CodeableConcept.coding[1].code"],
+    "expression" : ["CodeableConcept.coding[1].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://fhir.ch/ig/local#3456' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0'"
+    },
+    "location" : ["CodeableConcept.coding[2].code"],
+    "expression" : ["CodeableConcept.coding[2].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://fhir.ch/ig/local' could not be found, so the code cannot be validated"
+    },
+    "location" : ["CodeableConcept.coding[2].system"],
+    "expression" : ["CodeableConcept.coding[2].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "8462-4",
+    "display" : "Diastolic blood pressure"
+  },
+  {
+    "system" : "http://fhir.ch/ig/local",
+    "code" : "7890"
+  }]
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Diastolic blood pressure",
+  "code" : "8462-4",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://fhir.ch/ig/local' could not be found, so the code cannot be validated",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0)\"\r\n0 0     : 0ms  : CodeSystem found: \"http://loinc.org|2.81\"\r\n0 0     : 0ms  : Validate \"[http://loinc.org#8462-4 (\"Diastolic blood pressure\"), http://fhir.ch/ig/local#7890 (\"\")]\"\r\n0 0     : 0ms  : Check \"http://loinc.org#8462-4\"\r\n0 0     : 0ms  : CodeSystem found: http://loinc.org|2.81 for http://loinc.org\r\n0 0     : 0ms  : check code in (http://loinc.org)(85353-1,9279-1,8867-4,2708-6,8310-5,8302-2,9843-4,29463-7,39156-5,85354-9,8480-6,8462-4,8478-0) at CodeableConcept.coding[0]\r\n0 0     : 0ms  : Code \"8462-4\" found in http://loinc.org|2.81\r\n0 0     : 0ms  : Check \"http://fhir.ch/ig/local#7890\"\r\n",
+  "unknown-systems" : "http://fhir.ch/ig/local",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://fhir.ch/ig/local#7890' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0'"
+    },
+    "location" : ["CodeableConcept.coding[1].code"],
+    "expression" : ["CodeableConcept.coding[1].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://fhir.ch/ig/local' could not be found, so the code cannot be validated"
+    },
+    "location" : ["CodeableConcept.coding[1].system"],
+    "expression" : ["CodeableConcept.coding[1].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "29463-7",
+    "display" : "Body Weight"
+  }]
+}, "url": "http://hl7.org/fhir/ValueSet/clinical-findings", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "version" : "2.81",
+  "severity" : "error",
+  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/clinical-findings|5.0.0'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/clinical-findings|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(http://snomed.info/sct)(concept<<404684003)\"\r\n16 16   : 16ms : CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\"\r\n16 0    : 16ms : Validate \"[http://loinc.org#29463-7 (\"Body Weight\")]\"\r\n16 0    : 16ms : Check \"http://loinc.org#29463-7\"\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://loinc.org#29463-7 ('Body Weight')' was not found in the value set 'http://hl7.org/fhir/ValueSet/clinical-findings|5.0.0'"
+    },
+    "location" : ["CodeableConcept.coding[0].code"],
+    "expression" : ["CodeableConcept.coding[0].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "TX_GENERAL_CC_ERROR_MESSAGE"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/clinical-findings|5.0.0'"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "29463-7",
+    "display" : "Body Weight"
+  }]
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://snomed.info/sct"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "version" : "2.81",
+  "severity" : "error",
+  "error" : "No valid coding was found for the value set 'http://snomed.info/sct?fhir_vs'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://snomed.info/sct?fhir_vs for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"(http://snomed.info/sct)\"\r\n15 0    : 0ms  : CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\"\r\n15 0    : 0ms  : Validate \"[http://loinc.org#29463-7 (\"Body Weight\")]\"\r\n15 0    : 0ms  : Check \"http://loinc.org#29463-7\"\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://loinc.org#29463-7 ('Body Weight')' was not found in the value set 'http://snomed.info/sct?fhir_vs'"
+    },
+    "location" : ["CodeableConcept.coding[0].code"],
+    "expression" : ["CodeableConcept.coding[0].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "TX_GENERAL_CC_ERROR_MESSAGE"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "No valid coding was found for the value set 'http://snomed.info/sct?fhir_vs'"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "35200-5",
+    "display" : "Cholest SerPl-msCnc"
+  },
+  {
+    "system" : "http://snomed.info/sct",
+    "code" : "85600001",
+    "display" : "Triacylglycerol"
+  }],
+  "text" : "Cholesterol"
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Triacylglycerol",
+  "code" : "85600001",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://loinc.org#35200-5 (\"Cholest SerPl-msCnc\"), http://snomed.info/sct#85600001 (\"Triacylglycerol\")]\"\r\n0 0     : 0ms  : Check \"http://loinc.org#35200-5\"\r\n0 0     : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n219 219 : 219ms : Check \"http://snomed.info/sct#85600001\"\r\n219 0   : 219ms : Using CodeSystem \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\" (content = complete)\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "35217-9",
+    "display" : "Triglyceride [Moles/​volume] in Serum or Plasma"
+  },
+  {
+    "system" : "http://snomed.info/sct",
+    "code" : "85600001",
+    "display" : "Triacylglycerol"
+  }],
+  "text" : "Triglyceride"
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Triacylglycerol",
+  "code" : "85600001",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Triglyceride [Moles/​volume] in Serum or Plasma' for http://loinc.org#35217-9. Valid display is one of 4 choices: 'Triglyceride [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Triglyceride [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Trigl SerPl-msCnc' (en-US) or 'Triglyceride, Blood' (en-US) (for the language(s) 'en-US')",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://loinc.org#35217-9 (\"Triglyceride [Moles/​volume] in Serum or Plasma\"), http://snomed.info/sct#85600001 (\"Triacylglycerol\")]\"\r\n16 0    : 0ms  : Check \"http://loinc.org#35217-9\"\r\n16 0    : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n203 187 : 187ms : Check \"http://snomed.info/sct#85600001\"\r\n203 0   : 187ms : Using CodeSystem \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\" (content = complete)\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Display_Name_for__should_be_one_of__instead_of"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Triglyceride [Moles/​volume] in Serum or Plasma' for http://loinc.org#35217-9. Valid display is one of 4 choices: 'Triglyceride [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Triglyceride [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Trigl SerPl-msCnc' (en-US) or 'Triglyceride, Blood' (en-US) (for the language(s) 'en-US')"
+    },
+    "location" : ["CodeableConcept.coding[0].display"],
+    "expression" : ["CodeableConcept.coding[0].display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "85600001",
+    "display" : "Triacylglycerol"
+  },
+  {
+    "system" : "http://loinc.org",
+    "code" : "35217-9",
+    "display" : "Triglyceride [Moles/​volume] in Serum or Plasma"
+  },
+  {
+    "system" : "http://snomed.info/sct",
+    "code" : "85600001",
+    "display" : "Triacylglycerol"
+  }],
+  "text" : "Triglyceride"
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Triacylglycerol",
+  "code" : "85600001",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Triglyceride [Moles/​volume] in Serum or Plasma' for http://loinc.org#35217-9. Valid display is one of 4 choices: 'Triglyceride [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Triglyceride [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Trigl SerPl-msCnc' (en-US) or 'Triglyceride, Blood' (en-US) (for the language(s) 'en-US')",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://snomed.info/sct#85600001 (\"Triacylglycerol\"), http://loinc.org#35217-9 (\"Triglyceride [Moles/​volume] in Serum or Plasma\"), http://snomed.info/sct#85600001 (\"Triacylglycerol\")]\"\r\n16 0    : 0ms  : Check \"http://snomed.info/sct#85600001\"\r\n16 0    : 0ms  : Using CodeSystem \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\" (content = complete)\r\n16 0    : 0ms  : Check \"http://loinc.org#35217-9\"\r\n16 0    : 0ms  : Using CodeSystem \"http://loinc.org|2.81\" (content = complete)\r\n203 187 : 187ms : Check \"http://snomed.info/sct#85600001\"\r\n203 0   : 187ms : Using CodeSystem \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\" (content = complete)\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Display_Name_for__should_be_one_of__instead_of"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Triglyceride [Moles/​volume] in Serum or Plasma' for http://loinc.org#35217-9. Valid display is one of 4 choices: 'Triglyceride [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Triglyceride [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Trigl SerPl-msCnc' (en-US) or 'Triglyceride, Blood' (en-US) (for the language(s) 'en-US')"
+    },
+    "location" : ["CodeableConcept.coding[1].display"],
+    "expression" : ["CodeableConcept.coding[1].display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "58108001",
+    "display" : "Golden retriever"
+  },
+  {
+    "system" : "http://example.org/fhir/animal-breed",
+    "code" : "gret",
+    "display" : "Golden Retriever"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Golden retriever",
+  "code" : "58108001",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://example.org/fhir/animal-breed' could not be found, so the code cannot be validated; The concept '58108001' has a status of inactive and its use should be reviewed",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "inactive" : true,
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://snomed.info/sct#58108001 (\"Golden retriever\"), http://example.org/fhir/animal-breed#gret (\"Golden Retriever\")]\"\r\n0 0     : 0ms  : Check \"http://snomed.info/sct#58108001\"\r\n0 0     : 0ms  : Using CodeSystem \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\" (content = complete)\r\n0 0     : 0ms  : Check \"http://example.org/fhir/animal-breed#gret\"\r\n0 0     : 0ms  : Didn't find CodeSystem \"http://example.org/fhir/animal-breed\"\r\n",
+  "unknown-systems" : "http://example.org/fhir/animal-breed",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://example.org/fhir/animal-breed' could not be found, so the code cannot be validated"
+    },
+    "location" : ["CodeableConcept.coding[1].system"],
+    "expression" : ["CodeableConcept.coding[1].system"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "INACTIVE_CONCEPT_FOUND"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "warning",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "code-comment"
+      }],
+      "text" : "The concept '58108001' has a status of inactive and its use should be reviewed"
+    },
+    "location" : ["CodeableConcept.coding[1]"],
+    "expression" : ["CodeableConcept.coding[1]"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en-AU"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:47"
+    }]
+  }
+}, "langs":"en-AU", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "English (Region=Australia)",
+  "code" : "en-AU",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing urn:uuid:14ec9009-965e-4c11-96b2-e04c5cb89316 for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-AU\r\n15 0    : 0ms  : Prepare include: \"(urn:ietf:bcp:47)\"\r\n15 0    : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n15 0    : 0ms  : Validate \"[#en-AU (\"\")]\" and infer system\r\n15 0    : 0ms  : Check \"#en-AU\"\r\n15 0    : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n15 0    : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n15 0    : 0ms  : check code in (urn:ietf:bcp:47) at \r\n15 0    : 0ms  : Code \"en-AU\" found in urn:ietf:bcp:47|\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en-AU"
+}, "url": "http://hl7.org/fhir/ValueSet/all-languages", "version": "5.0.0", "langs":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "English (Region=Australia)",
+  "code" : "en-AU",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/all-languages|5.0.0 for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-AU\r\n16 0    : 0ms  : Prepare include: \"(urn:ietf:bcp:47)\"\r\n16 0    : 0ms  : CodeSystem found: \"urn:ietf:bcp:47|\"\r\n16 0    : 0ms  : Validate \"[#en-AU (\"\")]\" and infer system\r\n16 0    : 0ms  : Check \"#en-AU\"\r\n16 0    : 0ms  : Inferred CodeSystem = \"urn:ietf:bcp:47\"\r\n16 0    : 0ms  : CodeSystem found: urn:ietf:bcp:47| for urn:ietf:bcp:47\r\n16 0    : 0ms  : check code in (urn:ietf:bcp:47) at \r\n16 0    : 0ms  : Code \"en-AU\" found in urn:ietf:bcp:47|\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+    "code" : "001",
+    "display" : "World"
+  }]
+}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "World",
+  "code" : "001",
+  "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(urn:iso:std:iso:3166)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:iso:std:iso:3166|2018\"\r\n0 0     : 0ms  : Prepare include: \"(urn:iso:std:iso:3166:-2)\"\r\n0 0     : 0ms  : CodeSystem found: \"urn:iso:std:iso:3166:-2|2021 (from fhir.tx.support.r4#0.32.0)\"\r\n0 0     : 0ms  : Prepare include: \"(http://unstats.un.org/unsd/methods/m49/m49.htm)(class=region)\"\r\n0 0     : 0ms  : CodeSystem found: \"http://unstats.un.org/unsd/methods/m49/m49.htm|\"\r\n0 0     : 0ms  : Validate \"[http://unstats.un.org/unsd/methods/m49/m49.htm#001 (\"World\")]\"\r\n0 0     : 0ms  : Check \"http://unstats.un.org/unsd/methods/m49/m49.htm#001\"\r\n0 0     : 0ms  : CodeSystem found: http://unstats.un.org/unsd/methods/m49/m49.htm| for http://unstats.un.org/unsd/methods/m49/m49.htm\r\n0 0     : 0ms  : check code in (http://unstats.un.org/unsd/methods/m49/m49.htm)(class=region) at CodeableConcept.coding[0]\r\n0 0     : 0ms  : Filter \"class=region\": Code \"001\" found in http://unstats.un.org/unsd/methods/m49/m49.htm|\r\n",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "MSG_DEPRECATED"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "status-check"
+      }],
+      "text" : "Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
