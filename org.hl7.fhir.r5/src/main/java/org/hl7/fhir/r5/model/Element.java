@@ -549,7 +549,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
 
   public void copyNewExtensions(org.hl7.fhir.r5.model.Element src, String... urls) {
     for (Extension e : src.getExtension()) {
-      if (Utilities.existsInList(e.getUrl(), urls) && !!hasExtension(e.getUrl())) {
+      if (Utilities.existsInList(e.getUrl(), urls) && !hasExtension(e.getUrl())) {
         addExtension(e.copy());
       }
     }    

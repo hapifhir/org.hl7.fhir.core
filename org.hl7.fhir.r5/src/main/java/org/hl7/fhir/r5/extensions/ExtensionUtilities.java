@@ -646,6 +646,22 @@ public class ExtensionUtilities {
     return null;
   }
 
+  public static Extension getLanguageExtension(Element element, String lang) {
+    for (Extension e : element.getExtension()) {
+      if (e.getUrl().equals(ExtensionDefinitions.EXT_TRANSLATION)) {
+        Extension e1 = ExtensionHelper.getExtension(e, "lang");
+
+        if (e1 != null && e1.getValue() != null && e1.getValue() instanceof CodeType && ((CodeType) e1.getValue()).getValue().equals(lang)) {
+          e1 = ExtensionHelper.getExtension(e, "content");
+          if (e1 != null && e1.hasValue()) {
+            return e1;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
   public static StringType getLanguageTranslationElement(Element element, String lang) {
     for (Extension e : element.getExtension()) {
       if (e.getUrl().equals(ExtensionDefinitions.EXT_TRANSLATION)) {

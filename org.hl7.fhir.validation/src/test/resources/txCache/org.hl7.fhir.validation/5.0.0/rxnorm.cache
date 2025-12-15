@@ -22,6 +22,7 @@ v: {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
   "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1049640 (\"Acetaminophen 325 MG / Oxycodone Hydrochloride 5 MG Oral Tablet [Percocet]\")]\"\r\n0 0     : 0ms  : Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1049640\"\r\n0 0     : 0ms  : Using CodeSystem \"http://www.nlm.nih.gov/research/umls/rxnorm|??\" (content = complete)\r\n",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -52,6 +53,7 @@ v: {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
   "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#428759 (\"metformin 250 MG Oral Tablet\")]\"\r\n0 0     : 0ms  : Check \"http://www.nlm.nih.gov/research/umls/rxnorm#428759\"\r\n0 0     : 0ms  : Using CodeSystem \"http://www.nlm.nih.gov/research/umls/rxnorm|??\" (content = complete)\r\n",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -82,6 +84,7 @@ v: {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
   "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"()\"\r\n15 0    : 0ms  : Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#428759 (\"metformin 250 MG Oral Tablet\")]\"\r\n15 0    : 0ms  : Check \"http://www.nlm.nih.gov/research/umls/rxnorm#428759\"\r\n15 0    : 0ms  : Using CodeSystem \"http://www.nlm.nih.gov/research/umls/rxnorm|??\" (content = complete)\r\n",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

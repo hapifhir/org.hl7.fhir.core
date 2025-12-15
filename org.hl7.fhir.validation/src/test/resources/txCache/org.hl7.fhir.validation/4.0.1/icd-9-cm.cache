@@ -21,6 +21,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/icd-9-cm",
   "version" : "2015",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://hl7.org/fhir/sid/icd-9-cm#99.00 (\"\")]\"\r\n0 0     : 0ms  : Check \"http://hl7.org/fhir/sid/icd-9-cm#99.00\"\r\n0 0     : 0ms  : Using CodeSystem \"http://hl7.org/fhir/sid/icd-9-cm|2015 (from fhir.tx.support.r4#0.32.0)\" (content = fragment)\r\n",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

@@ -2306,4 +2306,71 @@ public class DataRenderer extends Renderer implements CodeResolver {
         "https://www.hl7.org/fhir", "https://www.fhir.org/guides", "https://www.ihe.net/fhir"
        );
   }
+
+  public String displayDosage(ResourceWrapper dosage) {
+    String txt = dosage.primitiveValue("text");
+    String details = null;
+    if (VersionUtilities.isR6Plus(context.getContext().getVersion())) {
+      details = displayDosageR6(dosage);
+    } else if (VersionUtilities.isR5Plus(context.getContext().getVersion())) {
+      details = displayDosageR5(dosage);
+    } else if (VersionUtilities.isR4Plus(context.getContext().getVersion())) {
+      details = displayDosageR4(dosage);
+    } else {
+      details = displayDosageR3(dosage);
+    }
+    if (txt == null && details == null) {
+      return "";
+    } else if (txt == null ) {
+      return txt;
+    } else if (details == null) {
+      return details;
+    } else {
+      return txt+" (details: "+details + ")";
+    }
+  }
+
+  public void renderDosage(ResourceWrapper dosage, XhtmlNode x) {
+    if (VersionUtilities.isR6Plus(context.getContext().getVersion())) {
+      renderDosageR6(dosage, x);
+    } else if (VersionUtilities.isR5Plus(context.getContext().getVersion())) {
+      renderDosageR6(dosage, x);
+    } else if (VersionUtilities.isR4Plus(context.getContext().getVersion())) {
+      renderDosageR6(dosage, x);
+    } else {
+      renderDosageR6(dosage, x);
+    }
+  }
+
+  public String displayDosageR3(ResourceWrapper dosage) {
+    return null;
+  }
+
+  public void renderDosageR3(ResourceWrapper dosage, XhtmlNode x) {
+  }
+  public String displayDosageR4(ResourceWrapper dosage) {
+    return null;
+
+  }
+
+  public void renderDosageR4(ResourceWrapper dosage, XhtmlNode x) {
+
+  }
+  public String displayDosageR5(ResourceWrapper dosage) {
+    return null;
+
+  }
+
+  public void renderDosageR5(ResourceWrapper dosage, XhtmlNode x) {
+
+  }
+  public String displayDosageR6(ResourceWrapper dosage) {
+    return null;
+
+  }
+
+  public void renderDosageR6(ResourceWrapper dosage, XhtmlNode x) {
+
+  }
+
 }

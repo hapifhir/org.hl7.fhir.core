@@ -21,6 +21,7 @@ v: {
   "error" : "A definition for CodeSystem 'http://myownsystem.info/sct' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://myownsystem.info/sct#104 (\"Laboratory test finding (finding)\")]\"\r\n16 0    : 0ms  : Check \"http://myownsystem.info/sct#104\"\r\n16 0    : 0ms  : Didn't find CodeSystem \"http://myownsystem.info/sct\"\r\n",
   "unknown-systems" : "http://myownsystem.info/sct",
   "issues" : {
   "resourceType" : "OperationOutcome",

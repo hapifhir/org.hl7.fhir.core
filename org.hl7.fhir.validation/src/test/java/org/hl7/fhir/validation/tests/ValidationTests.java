@@ -96,7 +96,7 @@ import com.google.common.base.Charsets;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
+import org.junit.BeforeClass;
 
 @RunWith(Parameterized.class)
 public class ValidationTests implements IHostApplicationServices, IValidatorResourceFetcher, IValidationPolicyAdvisor, IDigitalSignatureServices, IDirectPackageProvider {
@@ -164,6 +164,11 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     this.content = content;
     this.outputFolder = Utilities.path("[tmp]", "validator", "validation-output");
     FileUtilities.createDirectory(outputFolder);
+  }
+
+  @BeforeClass
+  public static void beforeClass() {
+    ManagedWebAccess.loadFromFHIRSettings();
   }
 
   @AfterAll
