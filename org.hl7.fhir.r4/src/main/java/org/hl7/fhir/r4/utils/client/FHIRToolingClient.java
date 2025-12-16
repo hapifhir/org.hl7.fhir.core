@@ -117,7 +117,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       capabilities = (TerminologyCapabilities) client.issueGetResourceRequest(resourceAddress.resolveMetadataTxCaps(),
           withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(false), "TerminologyCapabilities", timeoutNormal).getReference();
     } catch (Exception e) {
-      throw new FHIRException("Error fetching the server's terminology capabilities", e);
+      throw new FHIRException("Error fetching the server's terminology capabilities: "+e.getMessage(), e);
     }
     return capabilities;
   }
