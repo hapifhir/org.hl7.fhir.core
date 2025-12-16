@@ -85,6 +85,7 @@ public class CLI {
     argMap.put("-lang-regen", "lang-regen");
     argMap.put("-narrative", "narrative");
     argMap.put("-preloadCache", "preloadCache");
+    argMap.put("-scan", "scan");
     argMap.put("-?", "-help");
     argMap.put("/?", "-help");
 
