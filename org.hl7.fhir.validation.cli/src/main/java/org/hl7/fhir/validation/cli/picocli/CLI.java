@@ -72,7 +72,7 @@ public class CLI {
   }
 
   private static String[] replaceDeprecatedArgs(String[] args) {
-      Map<String, String> argMap = new HashMap<>();
+    Map<String, String> argMap = new HashMap<>();
     argMap.put("-server", "server");
     argMap.put("-install", "install");
     argMap.put("-compare", "compare");
@@ -82,6 +82,7 @@ public class CLI {
     argMap.put("-crumb-trails", "-verbose");
     argMap.put("-show-message-ids", "-verbose");
     argMap.put("-lang-transform", "lang-transform");
+    argMap.put("-lang-regen", "lang-regen");
     argMap.put("-?", "-help");
     argMap.put("/?", "-help");
 

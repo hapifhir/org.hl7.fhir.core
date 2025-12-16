@@ -7,7 +7,6 @@ import org.hl7.fhir.validation.cli.param.Arg;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.cli.param.parsers.GlobalParametersParser;
 import org.hl7.fhir.validation.cli.param.parsers.LangRegenParametersParser;
-import org.hl7.fhir.validation.service.model.LangRegenParameters;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
