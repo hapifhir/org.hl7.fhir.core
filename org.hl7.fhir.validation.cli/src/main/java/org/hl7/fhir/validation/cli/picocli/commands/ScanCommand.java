@@ -36,7 +36,7 @@ import java.util.concurrent.Callable;
 
     Requires -version (or -ig) and -tx parameters, plus -output directory.
     """,
-  hidden = false
+  hidden = true
 )
 public class ScanCommand extends ValidationEngineCommand implements Callable<Integer> {
 
