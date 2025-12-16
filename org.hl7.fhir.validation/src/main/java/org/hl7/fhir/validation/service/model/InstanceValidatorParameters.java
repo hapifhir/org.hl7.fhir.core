@@ -189,7 +189,7 @@ public class InstanceValidatorParameters {
 
   @JsonProperty("questionnaire")
   @SerializedName("questionnaire")
-  private QuestionnaireMode questionnaireMode = QuestionnaireMode.NONE;
+  private QuestionnaireMode questionnaireMode = QuestionnaireMode.CHECK;
 
   @SerializedName("questionnaire")
   @JsonProperty("questionnaire")
