@@ -53,7 +53,7 @@ public class LangTransformCommand extends ValidationEngineCommand implements Cal
 
   @CommandLine.Parameters(
     description = "Source files to transform",
-    index = "0..*"
+    index = "1..*"
   )
   private String[] sources;
 
@@ -72,7 +72,7 @@ public class LangTransformCommand extends ValidationEngineCommand implements Cal
     try {
       TransformLangParameters transformLangParameters = new TransformLangParameters(
         langTransform,
-        inputs != null ? inputs : new ArrayList<>(),
+        inputs != null ? inputs : List.of(),
         srcLang,
         tgtLang,
         getSources(),
