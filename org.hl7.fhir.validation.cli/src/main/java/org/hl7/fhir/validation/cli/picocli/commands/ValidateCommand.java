@@ -45,6 +45,7 @@ import java.util.concurrent.Callable;
     ScanCommand.class,
     SnapshotCommand.class,
     SpecialCommand.class,
+    SpreadsheetCommand.class,
     ServerCommand.class,
     InstallCommand.class
   })
