@@ -27,8 +27,7 @@ import java.util.concurrent.Callable;
 
     Reads a FHIR resource file and generates human-readable narrative content.
 
-    Requires -version (or -ig) and -tx parameters for proper narrative generation.
-    Optionally use -output to save the resource with generated narrative.
+    Requires -version (or -ig) and -tx parameters for proper narrative generation, and -output to save the resource with generated narrative.
     """
 )
 public class NarrativeCommand extends ValidationEngineCommand implements Callable<Integer> {
