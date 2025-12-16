@@ -18,6 +18,8 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 /**
  * The files in org.hl7.fhir.r5.test.profiles.codegen are generated 
  * by running the validator with these parameters:
@@ -50,10 +52,12 @@ public class PECodeGenTests {
 
 
   @Test
-  public void testConstruct1() throws IOException {
-    load();
-    var patient = new DkCorePatient(ctxt).setDEcpr(new DkCoreDeCprIdentifier().setSystem(DkCoreDeCprIdentifier.DkCoreDeCPRValueSet.URNOID122081761613).setValue(UUID.randomUUID().toString()));
-    var pat = patient.build(ctxt);
+  void testConstruct1() {
+    assertDoesNotThrow(() -> {
+      load();
+      var patient = new DkCorePatient(ctxt).setDEcpr(new DkCoreDeCprIdentifier().setSystem(DkCoreDeCprIdentifier.DkCoreDeCPRValueSet.URNOID122081761613).setValue(UUID.randomUUID().toString()));
+      var pat = patient.build(ctxt);
+    });
   }
   
   @Test

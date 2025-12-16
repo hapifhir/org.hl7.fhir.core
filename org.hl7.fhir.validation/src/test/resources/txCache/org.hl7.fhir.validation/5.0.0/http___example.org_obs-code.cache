@@ -20,6 +20,7 @@ v: {
   "error" : "A definition for CodeSystem 'http://example.org/obs-code' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://example.org/obs-code#obs1 (\"\")]\"\r\n16 0    : 0ms  : Check \"http://example.org/obs-code#obs1\"\r\n16 0    : 0ms  : Didn't find CodeSystem \"http://example.org/obs-code\"\r\n",
   "unknown-systems" : "http://example.org/obs-code",
   "issues" : {
   "resourceType" : "OperationOutcome",

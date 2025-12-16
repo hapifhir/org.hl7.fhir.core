@@ -22,21 +22,25 @@ import org.junit.jupiter.api.Test;
 
 import junit.framework.Assert;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 public class JsonDirectTests {
 
   @Test
   @Disabled // Hard coded path here
-  public void test() throws FHIRFormatError, FileNotFoundException, IOException {
-    File src = ManagedFileAccess.file(Utilities.path("[tmp]", "obs.xml"));
-    File xml = ManagedFileAccess.file(Utilities.path("[tmp]", "xml.xml"));
-    File json = ManagedFileAccess.file(Utilities.path("[tmp]", "json.json"));
-    File json2 = ManagedFileAccess.file(Utilities.path("[tmp]", "json2.json"));
-    FileUtils.copyFile(ManagedFileAccess.file("C:\\work\\org.hl7.fhir\\build\\publish\\observation-decimal.xml"), src);
-    Observation obs = (Observation) new XmlParser().parse(ManagedFileAccess.inStream(src));
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(json), obs);
-    obs = (Observation) new JsonParser().parse(ManagedFileAccess.inStream(json));
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(json2), obs);
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(xml), obs);
+  void test() throws FHIRFormatError {
+    assertDoesNotThrow(() -> {
+      File src = ManagedFileAccess.file(Utilities.path("[tmp]", "obs.xml"));
+      File xml = ManagedFileAccess.file(Utilities.path("[tmp]", "xml.xml"));
+      File json = ManagedFileAccess.file(Utilities.path("[tmp]", "json.json"));
+      File json2 = ManagedFileAccess.file(Utilities.path("[tmp]", "json2.json"));
+      FileUtils.copyFile(ManagedFileAccess.file("C:\\work\\org.hl7.fhir\\build\\publish\\observation-decimal.xml"), src);
+      Observation obs = (Observation) new XmlParser().parse(ManagedFileAccess.inStream(src));
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(json), obs);
+      obs = (Observation) new JsonParser().parse(ManagedFileAccess.inStream(json));
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(json2), obs);
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(xml), obs);
+    });
   }
 
   @Test

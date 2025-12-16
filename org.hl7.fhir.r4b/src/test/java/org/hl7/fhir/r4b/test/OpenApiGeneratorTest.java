@@ -14,20 +14,26 @@ import org.hl7.fhir.r4b.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 public class OpenApiGeneratorTest {
 
   @Test
-  public void testBase1() throws IOException, FHIRFormatError {
-    InputStream sfn = TestingUtilities.loadTestResourceStream("r5", "openapi", "cs-base.json");
-    String dfn = TestingUtilities.tempFile("openapi", "swagger-base.json");
-    run(sfn, dfn);
+  void testBase1() {
+    assertDoesNotThrow(() -> {
+      InputStream sfn = TestingUtilities.loadTestResourceStream("r5", "openapi", "cs-base.json");
+      String dfn = TestingUtilities.tempFile("openapi", "swagger-base.json");
+      run(sfn, dfn);
+    });
   }
 
   @Test
-  public void testBase2() throws FHIRFormatError, FileNotFoundException, IOException {
-    InputStream sfn = TestingUtilities.loadTestResourceStream("r5", "openapi", "cs-base2.json");
-    String dfn = TestingUtilities.tempFile("openapi", "swagger-base2.json");
-    run(sfn, dfn);
+  void testBase2() {
+    assertDoesNotThrow(() -> {
+      InputStream sfn = TestingUtilities.loadTestResourceStream("r5", "openapi", "cs-base2.json");
+      String dfn = TestingUtilities.tempFile("openapi", "swagger-base2.json");
+      run(sfn, dfn);
+    });
   }
 
   public void run(InputStream sfn, String dfn) throws IOException, FHIRFormatError, FileNotFoundException {

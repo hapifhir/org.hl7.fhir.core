@@ -22,6 +22,7 @@ v: {
   "error" : "A definition for CodeSystem 'http://terminology.hl7.org/CodeSystem/v2-0360|2.7' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED_VERSION",
   "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n31 31   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n31 0    : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n31 0    : 0ms  : Prepare include: \"()\"\r\n31 0    : 0ms  : Validate \"[http://terminology.hl7.org/CodeSystem/v2-0360|2.7#BS (\"Bachelor of Science\")]\"\r\n31 0    : 0ms  : Check \"http://terminology.hl7.org/CodeSystem/v2-0360|2.7#BS\"\r\n31 0    : 0ms  : Didn't find CodeSystem \"http://terminology.hl7.org/CodeSystem/v2-0360|2.7\"\r\n",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",

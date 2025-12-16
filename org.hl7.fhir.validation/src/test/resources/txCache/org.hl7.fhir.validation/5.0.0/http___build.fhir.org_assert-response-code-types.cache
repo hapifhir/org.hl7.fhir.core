@@ -23,6 +23,7 @@ v: {
   "error" : "A definition for CodeSystem 'http://build.fhir.org/assert-response-code-types' version '4.4.0' could not be found, so the code cannot be validated. No versions of this code system are known",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"()\"\r\n15 0    : 0ms  : Validate \"[http://build.fhir.org/assert-response-code-types|4.4.0#population (\"Population\")]\"\r\n15 0    : 0ms  : Check \"http://build.fhir.org/assert-response-code-types|4.4.0#population\"\r\n15 0    : 0ms  : Didn't find CodeSystem \"http://build.fhir.org/assert-response-code-types|4.4.0\"\r\n",
   "unknown-systems" : "http://build.fhir.org/assert-response-code-types",
   "issues" : {
   "resourceType" : "OperationOutcome",

@@ -87,7 +87,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public static final String PACKAGE_VERSION_REGEX = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+\\#[A-Za-z0-9\\-\\_\\$]+(\\.[A-Za-z0-9\\-\\_\\$]+)*$";
   public static final String PACKAGE_VERSION_REGEX_OPT = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+(\\#[A-Za-z0-9\\-\\_]+(\\.[A-Za-z0-9\\-\\_]+)*)?$";
   private static final Logger ourLog = LoggerFactory.getLogger(FilesystemPackageCacheManager.class);
-  private static final String CACHE_VERSION = "3"; // second version - see wiki page
+  private static final String CACHE_VERSION = "4"; // second version - see wiki page
 
   @Getter
   private final CIBuildClient ciBuildClient;
@@ -615,9 +615,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         }
 
         final NpmPackage tempPackage = loadPackageInfo(tempDir);
-        if (tempPackage != null && !tempPackage.isIndexed()) {
-          tempPackage.checkIndexed(packageRoot);
-        }
+        tempPackage.buildIndexes(packageRoot);
 
         if (!ManagedFileAccess.file(packageRoot).exists() || Utilities.existsInList(version, "current", "dev")) {
           FileUtilities.createDirectory(packageRoot);
