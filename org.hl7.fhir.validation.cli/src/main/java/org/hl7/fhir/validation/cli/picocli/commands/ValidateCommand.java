@@ -44,6 +44,7 @@ import java.util.concurrent.Callable;
     PreloadCacheCommand.class,
     ScanCommand.class,
     SnapshotCommand.class,
+    SpecialCommand.class,
     ServerCommand.class,
     InstallCommand.class
   })
