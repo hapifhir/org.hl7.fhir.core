@@ -43,6 +43,7 @@ import java.util.concurrent.Callable;
     NarrativeCommand.class,
     PreloadCacheCommand.class,
     ScanCommand.class,
+    SnapshotCommand.class,
     ServerCommand.class,
     InstallCommand.class
   })
