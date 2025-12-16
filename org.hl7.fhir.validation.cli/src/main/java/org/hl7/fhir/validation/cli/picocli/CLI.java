@@ -83,6 +83,7 @@ public class CLI {
     argMap.put("-show-message-ids", "-verbose");
     argMap.put("-lang-transform", "lang-transform");
     argMap.put("-lang-regen", "lang-regen");
+    argMap.put("-narrative", "narrative");
     argMap.put("-?", "-help");
     argMap.put("/?", "-help");
 
