@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 public class TurtleTests {
 
   private void doTest(String filename, boolean ok) throws Exception {
@@ -1947,10 +1949,12 @@ public class TurtleTests {
 //
 
   @Test
-  public void test_bundle_example() throws FileNotFoundException, IOException, Exception {
-    if (!TestingUtilities.silent)
-      System.out.println("bundle-example.ttl");
-    new Turtle().parse(FileUtilities.fileToString(TestingUtilities.resourceNameToFile("bundle-example.ttl")));
+  void test_bundle_example() {
+    assertDoesNotThrow(() -> {
+      if (!TestingUtilities.silent)
+        System.out.println("bundle-example.ttl");
+      new Turtle().parse(FileUtilities.fileToString(TestingUtilities.resourceNameToFile("bundle-example.ttl")));
+    });
   }
 
 }

@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 public class CanonicalJsonTest {
 
 
@@ -104,12 +106,10 @@ public class CanonicalJsonTest {
       "0.000000000000000000000000001,1e-27"
     })
   void testCanonicalJsonNumbers(String testInput, String expectedOutput)  {
-          try {
-              String result = JsonNumberCanonicalizer.toCanonicalJson(testInput);
-              String status = result.equals(expectedOutput) ? "✓" : "✗";
-              System.out.println(testInput + " -> " + result + " (expected: " + expectedOutput + ") " + status);
-          } catch (Exception e) {
-              System.out.println(testInput + " -> ERROR: " + e.getMessage());
-          }
+    assertDoesNotThrow(() -> {
+          String result = JsonNumberCanonicalizer.toCanonicalJson(testInput);
+          String status = result.equals(expectedOutput) ? "✓" : "✗";
+          System.out.println(testInput + " -> " + result + " (expected: " + expectedOutput + ") " + status);
+    });
   }
 }

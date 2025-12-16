@@ -21,6 +21,7 @@ v: {
   "error" : "Unknown code '2501-813-16' in the CodeSystem 'http://hl7.org/fhir/sid/ndc' version ''",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://hl7.org/fhir/sid/ndc#2501-813-16 (\"Timoptic 5mg/ml solution\")]\"\r\n0 0     : 0ms  : Check \"http://hl7.org/fhir/sid/ndc#2501-813-16\"\r\n0 0     : 0ms  : Using CodeSystem \"http://hl7.org/fhir/sid/ndc|\" (content = complete)\r\n",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
