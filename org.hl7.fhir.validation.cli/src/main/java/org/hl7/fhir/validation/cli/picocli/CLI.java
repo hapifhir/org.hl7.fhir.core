@@ -84,6 +84,7 @@ public class CLI {
     argMap.put("-lang-transform", "lang-transform");
     argMap.put("-lang-regen", "lang-regen");
     argMap.put("-narrative", "narrative");
+    argMap.put("-preloadCache", "preloadCache");
     argMap.put("-?", "-help");
     argMap.put("/?", "-help");
 
