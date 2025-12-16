@@ -87,6 +87,7 @@ public class CLI {
     argMap.put("-preloadCache", "preloadCache");
     argMap.put("-scan", "scan");
     argMap.put("-snapshot", "snapshot");
+    argMap.put("-special", "special");
     argMap.put("-?", "-help");
     argMap.put("/?", "-help");
 
