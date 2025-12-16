@@ -19,7 +19,7 @@ public class PreloadCacheCommandTest {
   public void testCommandName() {
     // Verify the command has the correct name
     CommandLine commandLine = new CommandLine(new PreloadCacheCommand());
-    assertThat(commandLine.getCommandName()).isEqualTo("preload-cache");
+    assertThat(commandLine.getCommandName()).isEqualTo("preloadCache");
   }
 
   @Test
