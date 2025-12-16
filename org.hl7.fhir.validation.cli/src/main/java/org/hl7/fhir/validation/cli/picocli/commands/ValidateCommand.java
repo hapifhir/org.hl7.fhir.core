@@ -48,6 +48,7 @@ import java.util.concurrent.Callable;
     SpreadsheetCommand.class,
     ServerCommand.class,
     TestsCommand.class,
+    TxTestsCommand.class,
     InstallCommand.class
   })
 @Slf4j
