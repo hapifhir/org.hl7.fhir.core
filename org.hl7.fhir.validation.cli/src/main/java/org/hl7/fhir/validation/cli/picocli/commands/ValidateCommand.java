@@ -40,6 +40,7 @@ import java.util.concurrent.Callable;
     TransformCommand.class,
     LangTransformCommand.class,
     LangRegenerateCommand.class,
+    NarrativeCommand.class,
     ServerCommand.class,
     InstallCommand.class
   })
