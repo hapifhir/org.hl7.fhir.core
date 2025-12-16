@@ -49,6 +49,7 @@ import java.util.concurrent.Callable;
     ServerCommand.class,
     TestsCommand.class,
     TxTestsCommand.class,
+    AiTestsCommand.class,
     InstallCommand.class
   })
 @Slf4j

@@ -91,6 +91,7 @@ public class CLI {
     argMap.put("-spreadsheet", "spreadsheet");
     argMap.put("-tests", "tests");
     argMap.put("-txTests", "txTests");
+    argMap.put("-aiTests", "aiTests");
     argMap.put("-?", "-help");
     argMap.put("/?", "-help");
 
