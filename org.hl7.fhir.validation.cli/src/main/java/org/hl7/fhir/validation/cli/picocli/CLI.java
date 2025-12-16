@@ -14,6 +14,7 @@ import org.slf4j.event.Level;
 import picocli.CommandLine;
 
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -71,18 +72,18 @@ public class CLI {
   }
 
   private static String[] replaceDeprecatedArgs(String[] args) {
-      Map<String, String> argMap = Map.of(
-          "-server", "server",
-          "-install", "install",
-          "-compare", "compare",
-          "-compile", "compile",
-          "-fhirpath", "fhirpath",
-          "-convert", "convert",
-          "-crumb-trails", "-verbose",
-          "-show-message-ids", "-verbose",
-          "-?", "-help",
-          "/?", "-help"
-      );
+      Map<String, String> argMap = new HashMap<>();
+    argMap.put("-server", "server");
+    argMap.put("-install", "install");
+    argMap.put("-compare", "compare");
+    argMap.put("-compile", "compile");
+    argMap.put("-fhirpath", "fhirpath");
+    argMap.put("-convert", "convert");
+    argMap.put("-crumb-trails", "-verbose");
+    argMap.put("-show-message-ids", "-verbose");
+    argMap.put("-lang-transform", "lang-transform");
+    argMap.put("-?", "-help");
+    argMap.put("/?", "-help");
 
       String[] newArgs = new String[args.length];
       for (int i = 0; i < args.length; i++) {
