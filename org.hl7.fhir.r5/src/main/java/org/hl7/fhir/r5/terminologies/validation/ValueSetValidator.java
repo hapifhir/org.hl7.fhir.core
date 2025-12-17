@@ -68,6 +68,7 @@ import org.hl7.fhir.r5.terminologies.providers.SpecialCodeSystem;
 import org.hl7.fhir.r5.terminologies.providers.URICodeSystem;
 import org.hl7.fhir.r5.terminologies.utilities.*;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
+import org.hl7.fhir.r5.utils.CodingUtilities;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 
 import org.hl7.fhir.r5.utils.UserDataNames;
@@ -1574,7 +1575,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         }
         if (cs != null && !(versionCoding.equals(cs.getVersion()) || versionIsMoreDetailed(va, versionCoding, cs.getVersion()))) {
           if (result == null) {
-            issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, Utilities.noString(path) ? "version" : path + "." + "version",
+            issues.addAll(makeIssue(cs.getVersionNeeded() ? IssueSeverity.ERROR : IssueSeverity.WARNING, IssueType.INVALID, Utilities.noString(path) ? "version" : path + "." + "version",
               context.formatMessage(I18nConstants.VALUESET_VALUE_MISMATCH_DEFAULT, system, cs.getVersion(), notNull(versionVS), notNull(versionCoding)), OpIssueCode.VSProcessing, null, I18nConstants.VALUESET_VALUE_MISMATCH_DEFAULT));
           } else if (!result.equals(versionVS)) {
             issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, Utilities.noString(path) ? "version" : path + "." + "version",
@@ -1869,6 +1870,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return codeInConceptFilter(cs, f, code);
     else if ("code".equals(f.getProperty()) && f.getOp() == FilterOperator.REGEX)
       return codeInRegexFilter(cs, f, code);
+    else if ("code".equals(f.getProperty()) && f.getOp() == FilterOperator.EQUAL)
+      return codeInCodeEquals(cs, f, code);
     else if (CodeSystemUtilities.isDefinedProperty(cs, f.getProperty())) {
       return codeInPropertyFilter(cs, f, code);
     } else if (isKnownProperty(f.getProperty())) {
@@ -1890,7 +1893,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
         return false;
       }
       DataType d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
-      return d != null && f.getValue().equals(d.primitiveValue());
+      if (d instanceof Coding) {
+        return CodingUtilities.filterEquals((Coding) d, f.getValue());
+      } else {
+        return d != null && f.getValue().equals(d.primitiveValue());
+      }
     case EXISTS: 
       return CodeSystemUtilities.getProperty(cs, code, f.getProperty()) != null;
     case REGEX:
@@ -1898,7 +1905,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
         return false;
       }
       d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
-      return d != null && d.primitiveValue() != null && d.primitiveValue().matches(f.getValue());
+      if (d instanceof Coding) {
+        return CodingUtilities.filterMatches((Coding) d, f.getValue());
+      } else {
+        return d != null && d.primitiveValue() != null && d.primitiveValue().matches(f.getValue());
+      }
     case IN:
       if (f.getValue() == null) {
         return false;
@@ -1977,6 +1988,14 @@ public class ValueSetValidator extends ValueSetProcessBase {
       log.error("todo: handle concept filters with op = "+f.getOp());
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__CONCEPT_FILTER_WITH_OP__, cs.getUrl(), f.getOp()));
     }
+  }
+
+  private boolean codeInCodeEquals(CodeSystem cs, ConceptSetFilterComponent f, String code) throws FHIRException {
+      if (f.getValue() == null) {
+        return false;
+      }
+      DataType d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
+      return d != null && f.getValue().equals(d.primitiveValue());
   }
 
   private boolean codeInConceptIsAFilter(CodeSystem cs, ConceptSetFilterComponent f, String code, boolean excludeRoot) {

@@ -19,6 +19,7 @@ v: {
   "system" : "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert",
   "version" : "1.5.0",
   "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"()\"\r\n15 0    : 0ms  : Validate \"[http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert#3600 (\"\")]\"\r\n15 0    : 0ms  : Check \"http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert#3600\"\r\n15 0    : 0ms  : Using CodeSystem \"http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert|1.5.0\" (content = fragment)\r\n",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

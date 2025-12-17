@@ -87,7 +87,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public static final String PACKAGE_VERSION_REGEX = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+\\#[A-Za-z0-9\\-\\_\\$]+(\\.[A-Za-z0-9\\-\\_\\$]+)*$";
   public static final String PACKAGE_VERSION_REGEX_OPT = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+(\\#[A-Za-z0-9\\-\\_]+(\\.[A-Za-z0-9\\-\\_]+)*)?$";
   private static final Logger ourLog = LoggerFactory.getLogger(FilesystemPackageCacheManager.class);
-  private static final String CACHE_VERSION = "3"; // second version - see wiki page
+  private static final String CACHE_VERSION = "4"; // second version - see wiki page
 
   @Getter
   private final CIBuildClient ciBuildClient;
@@ -243,7 +243,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    */
   protected void cleanUpCorruptPackages() throws IOException {
     for (File file : Objects.requireNonNull(cacheFolder.listFiles())) {
-      if (file.getName().endsWith(".lock")) {
+      if (FilesystemPackageCacheManagerLocks.isLockFile(file.getName())) {
         if (locks.getCacheLock().canLockFileBeHeldByThisProcess(file)) {
           String packageDirectoryName = file.getName().substring(0, file.getName().length() - 5);
           log.info("Detected potential incomplete package installed in cache: " + packageDirectoryName + ". Attempting to delete");
@@ -294,9 +294,14 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     for (File f : Objects.requireNonNull(cacheFolder.listFiles())) {
       if (f.isDirectory()) {
         FileUtilities.atomicDeleteDirectory(f.getAbsolutePath());
-
-      } else if (!f.getName().equals("packages.ini")) {
-        FileUtils.forceDelete(f);
+      } else if (!f.getName().equals("packages.ini")
+        // These files are package locks. They could interfere with running processes.
+        ) {
+        if (FilesystemPackageCacheManagerLocks.isLockFile(f.getName())) {
+          log.warn("Encountered package lock while clearing cache: {} It is possible that another process is modifying this cache. Lock-file deletion was not attempted.", f.getAbsolutePath());
+        } else {
+          FileUtils.forceDelete(f);
+        }
       }
 
     }
@@ -610,9 +615,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         }
 
         final NpmPackage tempPackage = loadPackageInfo(tempDir);
-        if (tempPackage != null && !tempPackage.isIndexed()) {
-          tempPackage.checkIndexed(packageRoot);
-        }
+        tempPackage.buildIndexes(packageRoot);
 
         if (!ManagedFileAccess.file(packageRoot).exists() || Utilities.existsInList(version, "current", "dev")) {
           FileUtilities.createDirectory(packageRoot);

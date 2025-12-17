@@ -858,7 +858,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     synchronized (lock) {
       String vurl = CanonicalType.urlWithVersion(system, version);
       if (codeSystems.has(vurl) && codeSystems.get(vurl).getContent() != CodeSystemContentMode.NOTPRESENT) {
-        return new SystemSupportInformation(true, "internal", TerminologyClientContext.LATEST_VERSION);
+        return new SystemSupportInformation(true, "internal", TerminologyClientContext.LATEST_VERSION, null);
       } else if (supportedCodeSystems.containsKey(vurl)) {
         return supportedCodeSystems.get(vurl);
       } else if (system.startsWith("http://example.org") || system.startsWith("http://acme.com") || system.startsWith("http://hl7.org/fhir/valueset-") || system.startsWith("urn:oid:")) {
@@ -870,7 +870,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (terminologyClientManager != null) {
           try {
             TerminologyClientContext client = terminologyClientManager.chooseServer(null, Set.of(vurl), false);
-            supportedCodeSystems.put(vurl, new SystemSupportInformation(client.supportsSystem(vurl), client.getAddress(), client.getTxTestVersion()));
+            supportedCodeSystems.put(vurl, new SystemSupportInformation(client.supportsSystem(vurl), client.getAddress(), client.getTxTestVersion(), client.supportsSystem(vurl) ? null : "The server does not support this code system"));
           } catch (Exception e) {
             if (canRunWithoutTerminology) {
               noTerminologyServer = true;
@@ -1869,6 +1869,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       ValueSet vs = fetchResource(ValueSet.class, u.getValue());
       if (vs != null) {
         findRelevantSystems(set, vs);
+      } else if (u.getValue() != null && u.getValue().startsWith("http://snomed.info/sct")) {
+        set.add("http://snomed.info/sct");
+      } else if (u.getValue() != null && u.getValue().startsWith("http://loinc.org")) {
+        set.add("http://loinc.org");
       } else {
         set.add(TerminologyClientManager.UNRESOLVED_VALUESET);
       }
@@ -2110,6 +2114,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     String version = null;
     boolean inactive = false;
     String status = null;
+    String diagnostics = null;
     List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
     Set<String> unknownSystems = new HashSet<>();
 
@@ -2128,6 +2133,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           version = ((PrimitiveType<?>) p.getValue()).asStringValue();
         } else if (p.getName().equals("code")) {
           code = ((PrimitiveType<?>) p.getValue()).asStringValue();
+        } else if (p.getName().equals("diagnostics")) {
+          diagnostics = ((PrimitiveType<?>) p.getValue()).asStringValue();
         } else if (p.getName().equals("inactive")) {
           inactive = "true".equals(((PrimitiveType<?>) p.getValue()).asStringValue());
         } else if (p.getName().equals("status")) {
@@ -2221,6 +2228,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     res.setUnknownSystems(unknownSystems);
     res.setServer(server);
     res.setParameters(pOut);
+    res.setDiagnostics(diagnostics);
     return res;
   }
 

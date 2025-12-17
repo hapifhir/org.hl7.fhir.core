@@ -1,0 +1,52 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:oid:1.2.246.537.5.40193.2013",
+  "code" : "1",
+  "display" : "Sähköinen suostumus"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "1",
+  "system" : "urn:oid:1.2.246.537.5.40193.2013",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'urn:oid:1.2.246.537.5.40193.2013' could not be found, so the code cannot be validated",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"()\"\r\n15 0    : 0ms  : Validate \"[urn:oid:1.2.246.537.5.40193.2013#1 (\"Sähköinen suostumus\")]\"\r\n15 0    : 0ms  : Check \"urn:oid:1.2.246.537.5.40193.2013#1\"\r\n15 0    : 0ms  : Didn't find CodeSystem \"urn:oid:1.2.246.537.5.40193.2013\"\r\n",
+  "unknown-systems" : "urn:oid:1.2.246.537.5.40193.2013",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'urn:oid:1.2.246.537.5.40193.2013' could not be found, so the code cannot be validated"
+    },
+    "location" : ["Coding.system"],
+    "expression" : ["Coding.system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------

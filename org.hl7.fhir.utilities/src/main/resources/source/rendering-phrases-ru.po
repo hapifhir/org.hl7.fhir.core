@@ -642,27 +642,27 @@ msgstr "Концепции"
 # CODESYSTEM_CONTENT_COMPLETE
 #: CODESYSTEM_CONTENT_COMPLETE
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines the following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr "!!Данная система кодов <param name=\\\"cs\\\"/> <param name=\\\"cased\\\"/> определяет следующи<if test=\\\"code-count != 1\\\">е коды</if><if test=\\\"code-count = 1\\\">й код</if><param name=\\\"h\\\"/>:"
+msgstr "!!Данная система кодов <param name=\"cs\"/> <param name=\"cased\"/> определяет следующи<if test=\"code-count != 1\">е коды</if><if test=\"code-count = 1\">й код</if><param name=\"h\"/>:"
 
 # CODESYSTEM_CONTENT_EXAMPLE
 #: CODESYSTEM_CONTENT_EXAMPLE
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides some code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>that are example only</b>:"
-msgstr "!!Данная система кодов <param name=\\\"cs\\\"/> предоставляет некоторые коды<if test=\\\"code-count != 1\\\">ы</if><param name=\\\"h\\\"/> <b>которые являются только примерами</b>:"
+msgstr "!!Данная система кодов <param name=\"cs\"/> предоставляет некоторые коды<if test=\"code-count != 1\">ы</if><param name=\"h\"/> <b>которые являются только примерами</b>:"
 
 # CODESYSTEM_CONTENT_FRAGMENT
 #: CODESYSTEM_CONTENT_FRAGMENT
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides <b>a fragment</b> that includes following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr "!!Данная система кодирования <param name=\\\"cs\\\"/> с учетом регистра <param name=\\\"cased\\\"/> предоставляет <b>фрагмент</b>, который включает следующий код<if test=\\\"code-count != 1\\\">ы</if><param name=\\\"h\\\"/>:"
+msgstr "!!Данная система кодирования <param name=\"cs\"/> с учетом регистра <param name=\"cased\"/> предоставляет <b>фрагмент</b>, который включает следующий код<if test=\"code-count != 1\">ы</if><param name=\"h\"/>:"
 
 # CODESYSTEM_CONTENT_NOTPRESENT
 #: CODESYSTEM_CONTENT_NOTPRESENT
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines codes<param name=\"h\"/>, but no codes are represented here"
-msgstr "!!Данная система кодов <param name=\\\"cs\\\"/> с учетом регистра <param name=\\\"cased\\\"/> определяет коды<param name=\\\"h\\\"/>, но здесь коды не представлены"
+msgstr "!!Данная система кодов <param name=\"cs\"/> с учетом регистра <param name=\"cased\"/> определяет коды<param name=\"h\"/>, но здесь коды не представлены"
 
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
 msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
-msgstr "!!Эта кодовая система дополняет <param name=\\\"cs\\\"/> определяет {0} по следующему коду<if test=\\\"code-count != 1\\\">с</if>:"
+msgstr "!!Эта кодовая система дополняет <param name=\"cs\"/> определяет {0} по следующему коду<if test=\"code-count != 1\">с</if>:"
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
@@ -857,6 +857,11 @@ msgstr "Подробности Целевого Концепции"
 #: CONC_MAP_TRGT_TYPE
 msgctxt "CONC_MAP_TRGT_TYPE"
 msgid "Type"
+msgstr ""
+
+# CS_VERSION_NOTHING_TEXT
+#: CS_VERSION_NOTHING_TEXT
+msgid "Not Stated (use latest from terminology server)"
 msgstr ""
 
 # DATA_REND_AFTERNOON
@@ -1334,7 +1339,7 @@ msgstr "Неуказанная тема"
 # DOCUMENT_SUMMARY
 #: DOCUMENT_SUMMARY
 msgid "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
-msgstr "!!<param name=\\\"status\\\"/> Document at <param name=\\\"date\\\"/> by <param name=\\\"author\\\"/> for <param name=\\\"subject\\\"/> <if test=\\\"has-encounter = true\\\"> in encounter <param name=\\\"encounter\\\"/></if>"
+msgstr "!!<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
 
 # EXAMPLE_SCEN_STEP_SCEN
 #: EXAMPLE_SCEN_STEP_SCEN
@@ -1428,8 +1433,8 @@ msgstr "Не удалось найти ссылающегося актера {0}
 
 # FMM_TABLE
 #: FMM_TABLE
-msgid "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
-msgstr "!!<table class=\\\"cols\\\"><tbody><tr><td><a href=\\\"http://hl7.org/fhir/versions.html#maturity\\\">Уровень зрелости</a>: {0}</td><td>&nbsp;<a href=\\\"{1}versions.html#std-process\\\" title=\\\"Standard Status\\\">{2}</a></td></tr></tbody></table>"
+msgid "<table class=\"cols\" data-fhir=\"generated\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
+msgstr "!!<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Уровень зрелости</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
 
 # GENERAL_ADDITIONAL_BINDING
 #: GENERAL_ADDITIONAL_BINDING
@@ -1486,6 +1491,11 @@ msgstr "Кардинальность"
 #: GENERAL_CODE
 msgid "Code"
 msgstr "Код"
+
+# GENERAL_CODESYSTEM
+#: GENERAL_CODESYSTEM
+msgid "Code System"
+msgstr ""
 
 # GENERAL_COMMENT
 #: GENERAL_COMMENT
@@ -2800,7 +2810,7 @@ msgstr ""
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\"{2}\">R4B ({3}.r4b)</a> are available."
 msgstr ""
 
 # R44B_PROBLEMS
@@ -2815,7 +2825,7 @@ msgstr ""
 
 # R44B_USE_OK
 #: R44B_USE_OK
-msgid "This is an {0} IG. None of the features it uses are changed in {1}, so it can be used as is with {1}} systems."
+msgid "This is an {0} IG. None of the features it uses are changed in {1}, so it can be used as is with {1} systems."
 msgstr ""
 
 # R44B_WRONG_MSG
@@ -2937,7 +2947,7 @@ msgstr "Ошибка визуализации: {0}"
 # RES_REND_INFO_SOURCE
 #: RES_REND_INFO_SOURCE
 msgid "Information Source: <param name=\"source\"/>"
-msgstr "!!Источник информации: <param name=\\\"source\\\"/>"
+msgstr "!!Источник информации: <param name=\"source\"/>"
 
 # RES_REND_LANGUAGE
 #: RES_REND_LANGUAGE
@@ -3197,7 +3207,7 @@ msgstr "От {0}"
 # SDR_FROM_ELEM
 #: SDR_FROM_ELEM
 msgid "// from Element: <a href=\"{0}\">extension</a>"
-msgstr "!!// от элемента: <a href=\\\"{0}\\\">extension</a>"
+msgstr "!!// от элемента: <a href=\"{0}\">extension</a>"
 
 # SDR_GUIDANCE_HERE
 #: SDR_GUIDANCE_HERE
@@ -3213,7 +3223,7 @@ msgstr "Рекомендации по толкованию содержимог�
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
 msgid "-- no content: do not translate #92 --"
-msgstr "!!!!!!!!!!!!!!!!!!-- no content: do not translate #97 --"
+msgstr "!!-- no content: do not translate #97 --"
 
 # SDR_IMPOSE
 #: SDR_IMPOSE
@@ -3328,18 +3338,13 @@ msgstr "нарезка по {0} в указанном порядке {1}"
 
 # SDR_SRC_FHIR
 #: SDR_SRC_FHIR
-msgid "the FHIR Standard"
-msgstr "Стандарт FHIR"
+msgid "FHIR Std."
+msgstr "!!Стандарт FHIR"
 
 # SDR_SRC_IG
 #: SDR_SRC_IG
-msgid "this IG"
-msgstr "этот IG"
-
-# SDR_SRC_PACK
-#: SDR_SRC_PACK
-msgid "Package: {0}"
-msgstr "Пакет: {0}"
+msgid "This IG"
+msgstr "!!этот IG"
 
 # SDR_SUPP
 #: SDR_SUPP
@@ -3375,7 +3380,7 @@ msgstr "Для версии {0}"
 #: SDR_VER_FROM_PFX
 msgctxt "SDR_VER_FROM_PFX"
 msgid "FHIR versions"
-msgstr "!!\\\"Версии FHIR"
+msgstr "!!\"Версии FHIR"
 
 # SDR_VER_FROM_SFX
 #: SDR_VER_FROM_SFX
@@ -3408,7 +3413,7 @@ msgstr "Версии FHIR"
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
 msgid "-- no content: do not translate #93 --"
-msgstr "!!!!!!!!!!!!!!!!!!-- no content: do not translate #98 --"
+msgstr "!!-- no content: do not translate #98 --"
 
 # SDR_VER_TO_PFX
 #: SDR_VER_TO_PFX
@@ -3419,7 +3424,7 @@ msgstr "Версии FHIR до"
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
 msgid "-- no content: do not translate #94 --"
-msgstr "!!!!!!!!!!!!!!!!!!-- no content: do not translate #99 --"
+msgstr "!!-- no content: do not translate #99 --"
 
 # SDR_VER_UNK
 #: SDR_VER_UNK
@@ -3994,6 +3999,11 @@ msgstr "Содержимое/правила для всех разрезов"
 msgid "Content/Rules for all Types"
 msgstr "Содержимое/правила для всех типов"
 
+# STRUC_DEF_COPY_CODING
+#: STRUC_DEF_COPY_CODING
+msgid "Click to Copy as Coding"
+msgstr ""
+
 # STRUC_DEF_COPY_URL
 #: STRUC_DEF_COPY_URL
 msgid "Click to Copy URL"
@@ -4008,7 +4018,7 @@ msgstr "Текущее"
 # STRUC_DEF_CURR_RULE
 #: STRUC_DEF_CURR_RULE
 msgid "New records are required to use this value set, but legacy records may use other codes. The definition of ''new record'' is difficult, since systems often create new records based on pre-existing data. Usually ''current'' bindings are mandated by an external authority that makes clear rules around this"
-msgstr "Новые записи необходимы для использования этого набора значений, но старые записи могут использовать другие коды. Определение \\\"новой записи\\\" является сложным, поскольку системы часто создают новые записи, основанные на уже имеющихся данных. Обычно привязки ''текущее'' разрешены внешним органом, который четко определяет эти правила"
+msgstr "Новые записи необходимы для использования этого набора значений, но старые записи могут использовать другие коды. Определение \"новой записи\" является сложным, поскольку системы часто создают новые записи, основанные на уже имеющихся данных. Обычно привязки ''текущее'' разрешены внешним органом, который четко определяет эти правила"
 
 # STRUC_DEF_DATE
 #: STRUC_DEF_DATE
@@ -4220,6 +4230,11 @@ msgstr "Идентификатор в этом контексте не допу�
 #: STRUC_DEF_IF
 msgid "If"
 msgstr "Если"
+
+# STRUC_DEF_IMPLEMENTS
+#: STRUC_DEF_IMPLEMENTS
+msgid "Interfaces Implemented"
+msgstr ""
 
 # STRUC_DEF_IMPOSE_PROFILE
 #: STRUC_DEF_IMPOSE_PROFILE
@@ -5632,6 +5647,51 @@ msgstr "Используется в качестве критерия тригг
 #: VS_ABSTRACT_CODE_HINT
 msgid "This code is not selectable (''Abstract'')"
 msgstr "Этот код нельзя выбрать (''Abstract'')"
+
+# VS_VERSION_BY_PACKAGE
+#: VS_VERSION_BY_PACKAGE
+msgid "Version is not explicitly stated, which means it is fixed to {0}, the version found through the package references"
+msgstr ""
+
+# VS_VERSION_FOUND
+#: VS_VERSION_FOUND
+msgid "Version is not explicitly stated. When building this specification, the most recent version {0} has been used"
+msgstr ""
+
+# VS_VERSION_NONE
+#: VS_VERSION_NONE
+msgid "Version is not explicitly stated, and the target {0} has no stated version either"
+msgstr ""
+
+# VS_VERSION_NOTHING
+#: VS_VERSION_NOTHING
+msgid "Version is not explicitly stated. No matching {0} found"
+msgstr ""
+
+# VS_VERSION_NOTHING_TEXT
+#: VS_VERSION_NOTHING_TEXT
+msgid "Not State"
+msgstr ""
+
+# VS_VERSION_STATED
+#: VS_VERSION_STATED
+msgid "Version is explicitly stated to be {0}"
+msgstr ""
+
+# VS_VERSION_THIS_PACKAGE
+#: VS_VERSION_THIS_PACKAGE
+msgid "Version is not explicitly stated, which means it is fixed to the version provided in this specification"
+msgstr ""
+
+# VS_VERSION_WILDCARD
+#: VS_VERSION_WILDCARD
+msgid "Version is stated to be {0}. When building this specification, the most recent matching version {1} has been used"
+msgstr ""
+
+# VS_VERSION_WILDCARD_BY_PACKAGE
+#: VS_VERSION_WILDCARD_BY_PACKAGE
+msgid "Version is stated to be {0}, which means it is fixed to {1}, the version found through the package references"
+msgstr ""
 
 # _NA
 #: _NA

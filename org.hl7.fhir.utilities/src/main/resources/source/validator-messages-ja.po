@@ -1173,12 +1173,12 @@ msgstr ""
 # CONCEPTMAP_VS_INVALID_CONCEPT_CODE
 #: CONCEPTMAP_VS_INVALID_CONCEPT_CODE
 msgid "The code ''{1}'' in the system {0} is not valid in the value set ''{2}''"
-msgstr "システム {0}におけるcode \\\"{1}\\\"は value set \\\"{2}\\\"で有効ではありません"
+msgstr "システム {0}におけるcode \"{1}\"は value set \"{2}\"で有効ではありません"
 
 # CONCEPTMAP_VS_INVALID_CONCEPT_CODE_VER
 #: CONCEPTMAP_VS_INVALID_CONCEPT_CODE_VER
 msgid "The code ''{2}'' in the system {0} version {1} is not valid in the value set ''{3}''"
-msgstr "バージョン {1}のシステム {0}におけるcode \\\"{2}\\\"は value set \\\"{3}\\\"で有効ではありません"
+msgstr "バージョン {1}のシステム {0}におけるcode \"{2}\"は value set \"{3}\"で有効ではありません"
 
 # CONCEPTMAP_VS_NOT_A_VS
 #: CONCEPTMAP_VS_NOT_A_VS
@@ -1193,6 +1193,11 @@ msgstr "concept mapに大量のcodeが含まれるため、バリデーション
 # CONCEPT_DEPRECATED_IN_VALUESET
 #: CONCEPT_DEPRECATED_IN_VALUESET
 msgid "The presence of the concept ''{1}'' in the system ''{0}'' in the value set {3} is marked with a status of {2} and its use should be reviewed"
+msgstr ""
+
+# CONFORMANCE_STATEMENT_WORD
+#: CONFORMANCE_STATEMENT_WORD
+msgid "The html source contains the word ''{0}'' but it is not in a text phrase marked as a conformance clause"
 msgstr ""
 
 # CONTAINED_ORPHAN_DOM3
@@ -1261,6 +1266,11 @@ msgid "Could not match discriminator ({1}) for slice {2} in profile {3} - the di
 msgid_plural "Could not match any of the {0} discriminators for slice {2} in profile {3} - None of the {1} discriminators {4} have fixed value, binding or existence assertions"
 msgstr[0] "スライス {1} のdiscriminator ({0}) をプロファイル {2} に一致させることができませんでした - discriminator {3} は固定値、バインディング、存在アサーションを持っていません"
 msgstr[1] "スライス {2} のいずれのdiscriminator ({1}) もプロファイル {3} に一致させることができませんでした - {0} discriminator {4} のいずれも固定値、バインディング、存在アサーションを持っていません"
+
+# DEPRECATED_CONCEPT_FOUND
+#: DEPRECATED_CONCEPT_FOUND
+msgid "The concept ''{1}'' is deprecated and its use should be reviewed"
+msgstr ""
 
 # DISCRIMINATOR_BAD_PATH
 #: DISCRIMINATOR_BAD_PATH
@@ -2103,7 +2113,7 @@ msgstr ""
 
 # HTA_LOINC_MESSAGE
 #: HTA_LOINC_MESSAGE
-msgid "This material contains content from <a href=\\"http://loinc.org\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\"http://loinc.org/license\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
+msgid "This material contains content from <a href=\"http://loinc.org\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\"http://loinc.org/license\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
 msgstr ""
 
 # HTA_SCT_DESC
@@ -2113,7 +2123,7 @@ msgstr ""
 
 # HTA_SCT_MESSAGE
 #: HTA_SCT_MESSAGE
-msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\"https://www.snomed.org/get-snomed\\">https://www.snomed.org/get-snomed</a> or <a href=\\"mailto:info@snomed.org\\">info@snomed.org</a>."
+msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\"https://www.snomed.org/get-snomed\">https://www.snomed.org/get-snomed</a> or <a href=\"mailto:info@snomed.org\">info@snomed.org</a>."
 msgstr ""
 
 # IG_DEPENDENCY_CAN_VERSION_ALONE
@@ -2244,12 +2254,12 @@ msgstr ""
 
 # INV_FAILED
 #: INV_FAILED
-msgid "Constraint failed: {0}"
+msgid "Constraint failed: {0}: ''{1}''"
 msgstr "!!ルール {0} が失敗しました"
 
 # INV_FAILED_SOURCE
 #: INV_FAILED_SOURCE
-msgid "Constraint failed: {0} (defined in {1})"
+msgid "Constraint failed: {0}: ''{1}'' (defined in {2})"
 msgstr ""
 
 # Illegal_path__in_differential_in__illegal_character_
@@ -2860,6 +2870,11 @@ msgstr ""
 msgid "The element {0} is not marked as ''mustSupport'' in the profile {1}. Consider not using the element, or marking the element as must-Support in the profile"
 msgstr ""
 
+# NARRATIVE_NOT_TRANSLATED
+#: NARRATIVE_NOT_TRANSLATED
+msgid "\"The narrative includes custom content for the default language ({0}), but does not include translated content for the {1} language, so the default language has been used"
+msgstr ""
+
 # NDJSON_EMPTY_LINE_WARNING
 #: NDJSON_EMPTY_LINE_WARNING
 msgid "The NDJSON source contains an empty line. This may not be accepted by some processors"
@@ -3172,7 +3187,7 @@ msgstr ""
 
 # PROFILE_COMPLIES_WITH_SLICING_NO_SLICE
 #: PROFILE_COMPLIES_WITH_SLICING_NO_SLICE
-msgid "Mismatch in slicing at {0}: no slice found for the discriminators {1} with the values {2}"
+msgid "Mismatch in slicing at {0}: no slice found for the discriminator {1} with the values {2}"
 msgstr ""
 
 # PROFILE_COMPLIES_WITH_SLICING_ORDER
@@ -3820,6 +3835,16 @@ msgstr ""
 msgid "Request took too long to process (>{0}sec)"
 msgstr ""
 
+# RESOURCEDEFINITION_PROPERTY_UNKNOWN
+#: RESOURCEDEFINITION_PROPERTY_UNKNOWN
+msgid "The ''resourceDefinition'' is ''{0}'', but no additional resource is known for that reference"
+msgstr ""
+
+# RESOURCEDEFINITION_PROPERTY_WRONG_TYPE
+#: RESOURCEDEFINITION_PROPERTY_WRONG_TYPE
+msgid "The JSON element for ''resourceDefinition'' has the wrong JSON type: {0}"
+msgstr ""
+
 # RESOURCETYPE_PROPERTY_WRONG_TYPE
 #: RESOURCETYPE_PROPERTY_WRONG_TYPE
 msgid "The JSON element ''resourceType'' has the wrong JSON type: {0}"
@@ -4123,7 +4148,7 @@ msgstr "プロファイル {0} はmodifier extensionのためのものですが�
 # SD_ED_TYPE_PROFILE_UNKNOWN
 #: SD_ED_TYPE_PROFILE_UNKNOWN
 msgid "Unable to resolve profile {0}"
-msgstr "!!!!!!!!!!!!!!!!プロファイル {0} を解決できません"
+msgstr "!!プロファイル {0} を解決できません"
 
 # SD_ED_TYPE_PROFILE_WRONG
 #: SD_ED_TYPE_PROFILE_WRONG
@@ -4132,8 +4157,8 @@ msgstr "プロファイル {0} はタイプ {1} のためのものですが、 {
 
 # SD_ED_TYPE_PROFILE_WRONG_TARGET
 #: SD_ED_TYPE_PROFILE_WRONG_TARGET
-msgid "Profile {0} is for type {1}, which is not a {4} (which is required because the {3} element has type {2})"
-msgstr "プロファイル {0} はタイプ {1} のためのもので、これは {4} ではありません（これは必要です、なぜなら {3} 要素はタイプ {2} だからです）"
+msgid "Profile {0} is for type {1}, which is not a {4} (which is required because the {3} element has the type {2})"
+msgstr "!!プロファイル {0} はタイプ {1} のためのもので、これは {4} ではありません（これは必要です、なぜなら {3} 要素はタイプ {2} だからです）"
 
 # SD_ED_TYPE_PROFILE_WRONG_TYPE
 #: SD_ED_TYPE_PROFILE_WRONG_TYPE
@@ -4295,7 +4320,7 @@ msgstr "!!要素 ''{0}'' のパス値 ''{1}'' は、基本パス ''{2}'' と一�
 # SD_OBGLIGATION_PROFILE_UKNOWN
 #: SD_OBGLIGATION_PROFILE_UKNOWN
 msgid "The profile is marked as an obligation profile, but its correctness cannot be checked since the base profile ''{0}'' is not known"
-msgstr "!!!!プロファイルはobligationプロファイルとしてマークされていますが、基本プロファイル ''{0}'' が不明なため、その正確さを確認することはできません"
+msgstr "!!プロファイルはobligationプロファイルとしてマークされていますが、基本プロファイル ''{0}'' が不明なため、その正確さを確認することはできません"
 
 # SD_OBGLIGATION_PROFILE_UNMATCHED
 #: SD_OBGLIGATION_PROFILE_UNMATCHED
@@ -4770,12 +4795,22 @@ msgstr "生成されたsnapshotには、元の提供されたsnapshot{0}と要�
 # SNAPSHOT_IS_EMPTY
 #: SNAPSHOT_IS_EMPTY
 msgid "The snapshot for the profile ''{0}'' is empty. This is usually due to a processing error logged elsewhere"
-msgstr "!!!!プロファイル''{0}''のsnapshotが空です（これは起こるべきではありません）"
+msgstr "!!プロファイル''{0}''のsnapshotが空です（これは起こるべきではありません）"
 
 # STATUS_CODE_WARNING_CODE
 #: STATUS_CODE_WARNING_CODE
-msgid "The code ''{1}'' is valid but is {0}"
-msgstr "The code ''{1}'' is valid but is {0}"
+msgid "The concept ''{1}'' is valid but is {0}"
+msgstr "!!The code ''{1}'' is valid but is {0}"
+
+# SYSTEM_VERSION_MULTIPLE_DEFAULT
+#: SYSTEM_VERSION_MULTIPLE_DEFAULT
+msgid "Multiple default versions found for system {0}: ''{1}'', ''{2}'');"
+msgstr ""
+
+# SYSTEM_VERSION_MULTIPLE_OVERRIDE
+#: SYSTEM_VERSION_MULTIPLE_OVERRIDE
+msgid "Multiple version overrides found for system {0}: ''{1}'', ''{2}'');"
+msgstr ""
 
 # Same_id_on_multiple_elements__in_
 #: Same_id_on_multiple_elements__in_
@@ -4816,6 +4851,11 @@ msgstr "提供されたコードが拡張可能なValueSet {0}からであるこ
 #: TERMINOLOGY_TX_NOSVC_BOUND_REQ
 msgid "Could not confirm that the codes provided are from the required value set {0} because there is no terminology service"
 msgstr "提供されたコードが必要なValueSet {0}からであることを確認できませんでした。用語サービスがないためです"
+
+# TERMINOLOGY_TX_NO_OID_SERVICES
+#: TERMINOLOGY_TX_NO_OID_SERVICES
+msgid "OIDs cannot be verified because the context of use does not provide OID services"
+msgstr ""
 
 # TERMINOLOGY_TX_OID_MULTIPLE_MATCHES
 #: TERMINOLOGY_TX_OID_MULTIPLE_MATCHES
@@ -4905,22 +4945,22 @@ msgstr "サーバーはバッチ検証リクエストからnullを返しまし�
 # TYPE_CHECKS_FIXED_CC
 #: TYPE_CHECKS_FIXED_CC
 msgid "The fixed value [system {0}, code {1}, and display ''{2}''] defined in the profile {3} not found. Issues: {4}"
-msgstr "!!!!!!!!!!!!!!!!!!プロファイル{3}で定義されたパターン[system {0}、code {1}、およびdisplay ''{2}'']が見つかりません。問題: {4}"
+msgstr "!!プロファイル{3}で定義されたパターン[system {0}、code {1}、およびdisplay ''{2}'']が見つかりません。問題: {4}"
 
 # TYPE_CHECKS_FIXED_CC_US
 #: TYPE_CHECKS_FIXED_CC_US
 msgid "The fixed value [system {0}, code {1}, display ''{2}'' and userSelected {5}] defined in the profile {3} not found. Issues: {4}"
-msgstr "!!!!!!!!!!!!!!!!!!プロファイル{3}で定義されたパターン[system {0}、code {1}、display ''{2}''およびuserSelected {5}]が見つかりません。問題: {4}"
+msgstr "!!プロファイル{3}で定義されたパターン[system {0}、code {1}、display ''{2}''およびuserSelected {5}]が見つかりません。問題: {4}"
 
 # TYPE_CHECKS_PATTERN_CC
 #: TYPE_CHECKS_PATTERN_CC
 msgid "The pattern [system {0}, code {1}, and display ''{2}''] defined in the profile {3} not found. Issues: {4}"
-msgstr "!!!!!!!!!!!!!!!!!!プロファイル{3}で定義されたパターン[system {0}、code {1}、およびdisplay ''{2}'']が見つかりません。問題: {4}"
+msgstr "!!プロファイル{3}で定義されたパターン[system {0}、code {1}、およびdisplay ''{2}'']が見つかりません。問題: {4}"
 
 # TYPE_CHECKS_PATTERN_CC_US
 #: TYPE_CHECKS_PATTERN_CC_US
 msgid "The pattern [system {0}, code {1}, display ''{2}'' and userSelected {5}] defined in the profile {3} not found. Issues: {4}"
-msgstr "!!!!!!!!!!!!!!!!!!プロファイル{3}で定義されたパターン[system {0}、code {1}、display ''{2}''およびuserSelected {5}]が見つかりません。問題: {4}"
+msgstr "!!プロファイル{3}で定義されたパターン[system {0}、code {1}、display ''{2}''およびuserSelected {5}]が見つかりません。問題: {4}"
 
 # TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE
 #: TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE
@@ -5212,6 +5252,11 @@ msgstr ""
 msgid "The URL value ''{0}'' might be wrong because it appears to point to an internal target, but there is no matching target"
 msgstr ""
 
+# TYPE_SPECIFIC_CHECKS_DT_URL_WRONG_HTTPS
+#: TYPE_SPECIFIC_CHECKS_DT_URL_WRONG_HTTPS
+msgid "A definition could not be found for Canonical URL ''{0}'' but a definition can be found for ''{1}'' - change from https: to http:"
+msgstr ""
+
 # TYPE_SPECIFIC_CHECKS_DT_XHTML_ACTIVE_HREF
 #: TYPE_SPECIFIC_CHECKS_DT_XHTML_ACTIVE_HREF
 msgid "Hyperlink scheme ''{3}'' in ''{0}'' at ''{1}'' for ''{2}'' has active content, which is a security risk and not allowed"
@@ -5284,13 +5329,8 @@ msgstr "用語サーバーが存在しないため、提供された値（[{0}]�
 
 # Terminology_TX_Binding_NoSource
 #: Terminology_TX_Binding_NoSource
-msgid "Binding for path {0} has no source, so can''t be checked"
-msgstr "パス{0}のバインディングにはソースがないため、チェックできません"
-
-# Terminology_TX_Binding_NoSource2
-#: Terminology_TX_Binding_NoSource2
-msgid "Binding has no source, so can''t be checked"
-msgstr "バインディングにソースがないため、チェックできません"
+msgid "Binding for path {0} in profile {1} has no source, so can''t be checked"
+msgstr "!!パス{0}のバインディングにはソースがないため、チェックできません"
 
 # Terminology_TX_Code_ValueSet
 #: Terminology_TX_Code_ValueSet
@@ -5340,12 +5380,12 @@ msgstr "!!提供されたcode（{2}）がValueSet{0}に含まれていません�
 # Terminology_TX_Confirm_5
 #: Terminology_TX_Confirm_5
 msgid "The code provided ({1}) is not in the value set {0}, and a code should come from this value set unless it has no suitable code (the validator cannot judge what is suitable)"
-msgstr "!!!!提供されたcodeがValueSet{0}に含まれていることを確認できませんでした。適切なコードがない場合を除き、このValueSetからのcodeが必要です（バリデータは何が適切か判断できません）"
+msgstr "!!提供されたcodeがValueSet{0}に含まれていることを確認できませんでした。適切なコードがない場合を除き、このValueSetからのcodeが必要です（バリデータは何が適切か判断できません）"
 
 # Terminology_TX_Confirm_6
 #: Terminology_TX_Confirm_6
 msgid "The code provided ({1}) is not in the value set {0}, and a code is recommended to come from this value set"
-msgstr "!!!!提供されたcodeがValueSet {0}に含まれていることを確認できませんでした。このValueSetからのcodeが推奨されています"
+msgstr "!!提供されたcodeがValueSet {0}に含まれていることを確認できませんでした。このValueSetからのcodeが推奨されています"
 
 # Terminology_TX_Display_Wrong
 #: Terminology_TX_Display_Wrong
@@ -5415,7 +5455,7 @@ msgstr "!!提供された値（''{0}''）はValueSet {1}に含まれていませ
 # Terminology_TX_NoValid_18
 #: Terminology_TX_NoValid_18
 msgid "The value provided (''{0}'') was not found in the value set {1}, and a code is recommended to come from this value set{2}"
-msgstr "!!!!提供された値（''{0}''）はValueSet{1}に含まれていません。このValueSetからのcodeが推奨されています）{2}"
+msgstr "!!提供された値（''{0}''）はValueSet{1}に含まれていません。このValueSetからのcodeが推奨されています）{2}"
 
 # Terminology_TX_NoValid_1_CC
 #: Terminology_TX_NoValid_1_CC
@@ -5610,12 +5650,12 @@ msgstr "!!有効な日付ではありません ({0})"
 # Type_Specific_Checks_DT_Decimal_GT
 #: Type_Specific_Checks_DT_Decimal_GT
 msgid "decimal value is greater than permitted maximum value of {0}"
-msgstr "!!!!!!値は許可された最大値 {0} を超えています"
+msgstr "!!値は許可された最大値 {0} を超えています"
 
 # Type_Specific_Checks_DT_Decimal_LT
 #: Type_Specific_Checks_DT_Decimal_LT
 msgid "decimal value is less than permitted minimum value of {0}"
-msgstr "!!!!!!値は許可された最小値 {0} を下回っています"
+msgstr "!!値は許可された最小値 {0} を下回っています"
 
 # Type_Specific_Checks_DT_Decimal_Range
 #: Type_Specific_Checks_DT_Decimal_Range
@@ -5650,12 +5690,12 @@ msgstr "値 ''{0}'' は有効なinteger64ではありません"
 # Type_Specific_Checks_DT_Integer_GT
 #: Type_Specific_Checks_DT_Integer_GT
 msgid "integer value is greater than permitted maximum value of {0}"
-msgstr "!!!!!!値は許可された最大値 {0} を超えています"
+msgstr "!!値は許可された最大値 {0} を超えています"
 
 # Type_Specific_Checks_DT_Integer_LT
 #: Type_Specific_Checks_DT_Integer_LT
 msgid "integer value is less than permitted minimum value of {0}"
-msgstr "!!!!!!値は許可された最小値 {0} を下回っています"
+msgstr "!!値は許可された最小値 {0} を下回っています"
 
 # Type_Specific_Checks_DT_Integer_LT0
 #: Type_Specific_Checks_DT_Integer_LT0
@@ -5805,7 +5845,7 @@ msgstr "system {0}のプロパティフィルターをop = {1}で処理するこ
 # UNABLE_TO_INFER_CODESYSTEM
 #: UNABLE_TO_INFER_CODESYSTEM
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}''"
-msgstr "!!!!!!!!!!!!!!!!ValueSet {1}内のコード{0}のシステムURIを決定できませんでした"
+msgstr "!!ValueSet {1}内のコード{0}のシステムURIを決定できませんでした"
 
 # UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT
 #: UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT
@@ -5837,12 +5877,27 @@ msgstr[1] "この内容には文字{1}（16進数値）が含まれています�
 # UNKNOWN_CODESYSTEM
 #: UNKNOWN_CODESYSTEM
 msgid "A definition for CodeSystem ''{0}'' could not be found, so the code cannot be validated"
-msgstr "!!!!!!!!CodeSystem {0}は未知です"
+msgstr "!!CodeSystem {0}は未知です"
+
+# UNKNOWN_CODESYSTEM_EXP
+#: UNKNOWN_CODESYSTEM_EXP
+msgid "A definition for CodeSystem ''{0}'' could not be found, so the value set cannot be expanded"
+msgstr ""
 
 # UNKNOWN_CODESYSTEM_VERSION
 #: UNKNOWN_CODESYSTEM_VERSION
 msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the code cannot be validated. Valid versions: {2}"
 msgstr "!!CodeSystem {0}のバージョン{1}は未知です。有効なバージョン: {2}"
+
+# UNKNOWN_CODESYSTEM_VERSION_EXP
+#: UNKNOWN_CODESYSTEM_VERSION_EXP
+msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the value set cannot be expanded. Valid versions: {2}"
+msgstr ""
+
+# UNKNOWN_CODESYSTEM_VERSION_EXP_NONE
+#: UNKNOWN_CODESYSTEM_VERSION_EXP_NONE
+msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the value set cannot be expanded. No versions of this code system are known"
+msgstr ""
 
 # UNKNOWN_CODESYSTEM_VERSION_NONE
 #: UNKNOWN_CODESYSTEM_VERSION_NONE
@@ -6017,7 +6072,7 @@ msgstr "!!systemを解決できません - ValueSetにインポートがあり�
 # Unable_to_resolve_system__value_set_has_include_with_filter
 #: Unable_to_resolve_system__value_set_has_include_with_filter
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': include #{2} has a filter on system {3}: {4}"
-msgstr "!!!!systemを解決できません - ValueSet {0}のインクルード#{1}にsystem {2}のフィルターがあります"
+msgstr "!!systemを解決できません - ValueSet {0}のインクルード#{1}にsystem {2}のフィルターがあります"
 
 # Unable_to_resolve_system__value_set_has_include_with_no_system
 #: Unable_to_resolve_system__value_set_has_include_with_no_system
@@ -6173,6 +6228,26 @@ msgstr "サポートされていないバージョンR2B"
 #: Unxpected_internal_condition__no_source_on_diff_element
 msgid "Unexpected internal condition - no source on diff element"
 msgstr "予期しない内部状態 - differantial要素にソースがありません"
+
+# VALIDATION_ADDITIONAL_RESOURCE_ABSENT
+#: VALIDATION_ADDITIONAL_RESOURCE_ABSENT
+msgid "This resource is an additional resource, so must have a resourceDefinition of ''{0}''"
+msgstr ""
+
+# VALIDATION_ADDITIONAL_RESOURCE_NO
+#: VALIDATION_ADDITIONAL_RESOURCE_NO
+msgid "This resource is not an additional resource, so should not have a resourceDefinition of ''{0}''"
+msgstr ""
+
+# VALIDATION_ADDITIONAL_RESOURCE_NO_WRONG
+#: VALIDATION_ADDITIONAL_RESOURCE_NO_WRONG
+msgid "The value for resourceDefinition of ''{0}'' does not match the required value of ''{1}''. In addition, this is not an additional resource, and shouldn''t have a resourceDefinition at all"
+msgstr ""
+
+# VALIDATION_ADDITIONAL_RESOURCE_WRONG
+#: VALIDATION_ADDITIONAL_RESOURCE_WRONG
+msgid "The value for resourceDefinition of ''{0}'' must be ''{1}''"
+msgstr ""
 
 # VALIDATION_AI_FAILED
 #: VALIDATION_AI_FAILED
@@ -6337,12 +6412,12 @@ msgstr "!!プロファイル参照''{0}''は未知のため、確認されてい
 # VALIDATION_VAL_STATUS_INCONSISTENT
 #: VALIDATION_VAL_STATUS_INCONSISTENT
 msgid "The resource status ''{0}'' and the standards status ''{1}'' are not consistent"
-msgstr "リソースのステータス \\\"{0}\\\"は標準のステータス \\\"{1}\\\"と一貫していません"
+msgstr "リソースのステータス \"{0}\"は標準のステータス \"{1}\"と一貫していません"
 
 # VALIDATION_VAL_STATUS_INCONSISTENT_HINT
 #: VALIDATION_VAL_STATUS_INCONSISTENT_HINT
 msgid "The resource status ''{0}'' and the standards status ''{1}'' may not be consistent and should be reviewed"
-msgstr "リソースのステータス \\\"{0}\\\"は標準のステータス \\\"{1}\\\"と一貫しないため、確認すべきです"
+msgstr "リソースのステータス \"{0}\"は標準のステータス \"{1}\"と一貫しないため、確認すべきです"
 
 # VALIDATION_VAL_VERSION_NOHASH
 #: VALIDATION_VAL_VERSION_NOHASH
@@ -6464,6 +6539,18 @@ msgstr ""
 msgid "Found a circularity pointing to {0} processing ValueSet with pathway {1}"
 msgstr "ValuSetのpathway {1}を処理中に{0}への循環参照が見つかりました"
 
+# VALUESET_CODE_CONCEPT_HINT
+#: VALUESET_CODE_CONCEPT_HINT
+msgctxt "VALUESET_CODE_CONCEPT_HINT"
+msgid "{3}. Note that the display in the ValueSet does not have to match; this check exists to help check that it''s not accidentally the wrong code"
+msgstr ""
+
+# VALUESET_CODE_CONCEPT_HINT_VER
+#: VALUESET_CODE_CONCEPT_HINT_VER
+msgctxt "VALUESET_CODE_CONCEPT_HINT_VER"
+msgid "{3}. Note that the display in the ValueSet does not have to match; this check exists to help check that it''s not accidentally the wrong code"
+msgstr ""
+
 # VALUESET_CONCEPT_DISPLAY_PRESENCE_MIXED
 #: VALUESET_CONCEPT_DISPLAY_PRESENCE_MIXED
 msgid "This include has some concepts with displays and some without - check that this is what is intended"
@@ -6472,7 +6559,7 @@ msgstr "この含有物には表示ありのconceptと表示なしのconceptが�
 # VALUESET_CONCEPT_DISPLAY_SCT_TAG_MIXED
 #: VALUESET_CONCEPT_DISPLAY_SCT_TAG_MIXED
 msgid "This SNOMED-CT based include has some concepts with semantic tags (FSN terms) and some without (preferred terms) - check that this is what is intended (examples for FSN: {0} and examples for no FSN: {1})"
-msgstr "!!!!このSNOMED-CTベースの含有物には、セマンティックタグ（FSN用語）付きのconceptとそれ無し（優先用語）のconceptが混在しています - 意図した通りか確認してください"
+msgstr "!!このSNOMED-CTベースの含有物には、セマンティックタグ（FSN用語）付きのconceptとそれ無し（優先用語）のconceptが混在しています - 意図した通りか確認してください"
 
 # VALUESET_EXAMPLE_SYSTEM_ERROR
 #: VALUESET_EXAMPLE_SYSTEM_ERROR
@@ -6579,6 +6666,11 @@ msgstr ""
 msgid "The system ''{0}'' is actually a value set, which itself refers to the systems {1}"
 msgstr ""
 
+# VALUESET_INC_CS_NO_SUPPORT
+#: VALUESET_INC_CS_NO_SUPPORT
+msgid "The concepts in the value set include have not been validated because the code system is not known, and no terminology service supports it"
+msgstr ""
+
 # VALUESET_INC_NOT_VALIDATING
 #: VALUESET_INC_NOT_VALIDATING
 msgid "The concepts in the value set include have not been validated because the validator is configured not to check them"
@@ -6597,7 +6689,7 @@ msgstr ""
 # VALUESET_INC_TOO_MANY_CODES
 #: VALUESET_INC_TOO_MANY_CODES
 msgid "The value set include has too many concepts to validate ({0}), so each individual code has not been checked"
-msgstr "!!!!value setに大量のcodeが含まれるため、バリデーションできません: {0}"
+msgstr "!!value setに大量のcodeが含まれるため、バリデーションできません: {0}"
 
 # VALUESET_NO_SYSTEM_WARNING
 #: VALUESET_NO_SYSTEM_WARNING
@@ -6701,7 +6793,7 @@ msgstr ""
 # VALUESET_TOO_COSTLY_TIME
 #: VALUESET_TOO_COSTLY_TIME
 msgid "The value set ''{0}'' {2} took too long to process (>{1}sec)"
-msgstr "!!!!ValueSet {0}の処理に時間がかかっています (>{1}sec)"
+msgstr "!!ValueSet {0}の処理に時間がかかっています (>{1}sec)"
 
 # VALUESET_TXVER_BATCH_NOT_SUPPORTED
 #: VALUESET_TXVER_BATCH_NOT_SUPPORTED
@@ -6726,6 +6818,26 @@ msgstr ""
 # VALUESET_UNKNOWN_FILTER_PROPERTY_NO_CS
 #: VALUESET_UNKNOWN_FILTER_PROPERTY_NO_CS
 msgid "No definition can be found for the system {1}, and the property ''{0}'' is not a generally known property, so the property might not be valid, or understood by the terminology ecosystem. In case it''s useful, the list of generally known properties for all systems is {2}"
+msgstr ""
+
+# VALUESET_VALUE_MISMATCH
+#: VALUESET_VALUE_MISMATCH
+msgid "The code system ''{0}'' version ''{1}'' in the ValueSet include is different to the one in the value (''{2}'')"
+msgstr ""
+
+# VALUESET_VALUE_MISMATCH_CHANGED
+#: VALUESET_VALUE_MISMATCH_CHANGED
+msgid "The code system ''{0}'' version ''{1}'' resulting from the version ''{2}'' in the ValueSet include is different to the one in the value (''{3}'')"
+msgstr ""
+
+# VALUESET_VALUE_MISMATCH_DEFAULT
+#: VALUESET_VALUE_MISMATCH_DEFAULT
+msgid "The code system ''{0}'' version ''{1}'' for the versionless include in the ValueSet include is different to the one in the value (''{3}'')"
+msgstr ""
+
+# VALUESET_VERSION_CHECK
+#: VALUESET_VERSION_CHECK
+msgid "The version ''{1}'' is not allowed for system ''{0}'': required to be ''{2}'' by a version-check parameter"
 msgstr ""
 
 # VIEWDEFINITION_COLLECTION_NEEDED1
@@ -7207,7 +7319,7 @@ msgstr ""
 # _DT_Fixed_Wrong
 #: _DT_Fixed_Wrong
 msgid "Value is ''{0}'' but is fixed to ''{1}'' in the profile {2}"
-msgstr "!!!!値は ''{0}'' ですが、 ''{1}'' でなければなりません"
+msgstr "!!値は ''{0}'' ですが、 ''{1}'' でなければなりません"
 
 # _has_children__and_multiple_types__in_profile_
 #: _has_children__and_multiple_types__in_profile_

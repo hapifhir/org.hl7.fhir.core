@@ -90,6 +90,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     } else {
       renderResourceTechDetails(r, x);
       ValueSet vs = (ValueSet) r.getBase();
+
       genSummaryTable(status, x, vs);
       List<UsedConceptMap> maps = findReleventMaps(vs);
 
@@ -344,13 +345,12 @@ public class ValueSetRenderer extends TerminologyRenderer {
         }
       }
     }
+    addMapHeaders(tr, maps);
     if (context.forPublisher()) {
       tr.td().b().tx(context.formatPhrase(RenderingI18nContext.CANON_REND_JSON));
       tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_XML));
     }
 
-    
-    addMapHeaders(tr, maps);
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
       addExpansionRowToTable(t, vs, c, 1, doLevel, doDefinition, doInactive, doVersion, maps, langs, designations, doDesignations, properties, res);
     }
@@ -576,19 +576,6 @@ public class ValueSetRenderer extends TerminologyRenderer {
       }
     }
     return count;
-  }
-
-
-  private void addCSRef(XhtmlNode x, String url, String version, ValueSet vs) {
-    CodeSystem cs = getFetchedCodeSystem(url, version, vs);
-    if (cs == null) {
-      x.code(url);
-    } else if (cs.hasWebPath()) {
-      x.ah(context.prefixLocalHref(cs.getWebPath())).tx(cs.present());
-    } else {
-      x.code(url);
-      x.tx(" ("+cs.present()+")");
-    }
   }
 
   @SuppressWarnings("rawtypes")
@@ -864,7 +851,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       CodeSystem cs = getFetchedCodeSystem(c.getSystem(), c.getVersion(), source);
       if (cs != null) {
         ConceptDefinitionComponent cd = CodeSystemUtilities.getCode(cs, c.getCode());
-        if (cd != null && !cd.hasDefinition()) {
+        if (cd != null && cd.hasDefinition()) {
           return true;
         }
       }

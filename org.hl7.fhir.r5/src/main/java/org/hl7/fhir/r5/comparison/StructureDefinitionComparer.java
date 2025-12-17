@@ -1368,7 +1368,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
         row.setIcon("icon_primitive.png", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_PRIMITIVE));
       else if (hasTarget(combined))
         row.setIcon("icon_reference.png", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_REFERENCE));
-      else if (isDataType(combined))
+      else if (isDatatype(combined))
         row.setIcon("icon_datatype.gif", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_DATATYPE));
       else
         row.setIcon("icon_resource.png", session.getI18n().formatPhrase(RenderingContext.GENERAL_RESOURCE));
@@ -1433,7 +1433,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     return null;
   }
 
-  private boolean isDataType(StructuralMatch<ElementDefinitionNode> combined) {
+  private boolean isDatatype(StructuralMatch<ElementDefinitionNode> combined) {
     // TODO Auto-generated method stub
     return false;
   }

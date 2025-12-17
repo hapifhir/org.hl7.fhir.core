@@ -69,13 +69,14 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import lombok.Getter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 
-public class ValidationMessage implements Comparator<ValidationMessage>, Comparable<ValidationMessage>
-{
+public class ValidationMessage implements Comparator<ValidationMessage>, Comparable<ValidationMessage> {
+
   public enum Source {
     ExampleValidator, 
     ProfileValidator, 
@@ -558,6 +559,8 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   private List<ValidationMessage> sliceInfo;
   private int count;
 
+  @Getter private String diagnostics;
+
   /**
    * Constructor
    */
@@ -720,6 +723,16 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
 
   public String getLocation() {
     return location;
+  }
+
+  public String getStrippedLocation() {
+    String loc = location;
+    while (loc.contains("/*")) {
+      int b = loc.indexOf("/*");
+      int e = loc.indexOf("*/");
+      loc = loc.substring(0, b) + loc.substring(e + 2);
+    }
+    return loc;
   }
   public ValidationMessage setLocation(String location) {
     this.location = location;
@@ -1027,11 +1040,6 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
       return false;
     }
 
-    // Compare location
-    if (!Objects.equals(this.location, other.location)) {
-      return false;
-    }
-
     // Compare message
     if (!Objects.equals(this.message, other.message)) {
       return false;
@@ -1064,6 +1072,11 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
 
     // Compare txLink
     if (!Objects.equals(this.txLink, other.txLink)) {
+      return false;
+    }
+
+    // Compare location
+    if (!Objects.equals(this.getStrippedLocation(), other.getStrippedLocation())) {
       return false;
     }
 
@@ -1119,5 +1132,10 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
 
 
     return true;
+  }
+
+  public ValidationMessage setDiagnostics(String diagnostics) {
+    this.diagnostics = diagnostics;
+    return this;
   }
 }

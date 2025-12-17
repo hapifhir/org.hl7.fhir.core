@@ -4,16 +4,20 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import lombok.extern.slf4j.Slf4j;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.conformance.ShExGenerator;
 import org.hl7.fhir.r5.conformance.ShExGenerator.HTMLLinkPolicy;
 
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.FileUtilities;
 
@@ -24,6 +28,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @Slf4j
 public class ShexGeneratorTests {
@@ -50,6 +55,28 @@ public class ShexGeneratorTests {
     //    this.doTestSingleSD(name.toLowerCase(), cat, name,
     //      false, ShExGenerator.ConstraintTranslationPolicy.ALL,
     //      true, true, false, processConstraints);
+  }
+
+  @Test
+  void testCompleteModel() {
+    assertDoesNotThrow(() -> {
+      var workerContext = TestingUtilities.getSharedWorkerContext();
+      ShExGenerator shgen = new ShExGenerator(workerContext);
+      shgen.completeModel = true;
+      shgen.withComments = false;
+      Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), "fhir.shex");
+      List<StructureDefinition> list = new ArrayList<StructureDefinition>();
+      for (StructureDefinition sd : new ContextUtilities(workerContext).allStructures()) {
+        if (sd.getKind() == StructureDefinition.StructureDefinitionKind.LOGICAL)
+          // Skip logical models
+          continue;
+        // Include <Base> which has no derivation
+        if (sd.getDerivation() == null || sd.getDerivation() == TypeDerivationRule.SPECIALIZATION)
+          list.add(sd);
+      }
+      System.out.println("Generating Complete FHIR ShEx to " + outPath.toString());
+      FileUtilities.stringToFile(shgen.generate(HTMLLinkPolicy.NONE, list), outPath.toString());
+    });
   }
 
   @Test

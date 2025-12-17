@@ -722,7 +722,7 @@ msgstr "OBTER versões anteriores de recursos (interação vread)"
 #: CAPABILTY_ALLOW_CAP
 #, fuzzy
 msgid "Any FHIR capability may be ''allowed'' by the system unless explicitly marked as ''SHALL NOT''. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case."
-msgstr "Qualquer capacidade FHIR pode ser \\\"permitida\\\" pelo sistema, exceto se for explicitamente assinalada como \\\"NÃO DEVE\\\". Alguns itens são marcados como MAY no Guia de Implementação para destacar a sua potencial relevância para o caso de utilização."
+msgstr "Qualquer capacidade FHIR pode ser \"permitida\" pelo sistema, exceto se for explicitamente assinalada como \"NÃO DEVE\". Alguns itens são marcados como MAY no Guia de Implementação para destacar a sua potencial relevância para o caso de utilização."
 
 # CAPABILTY_SHALL_SUPP
 #: CAPABILTY_SHALL_SUPP
@@ -740,31 +740,31 @@ msgstr "Conceitos"
 #: CODESYSTEM_CONTENT_COMPLETE
 #, fuzzy
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines the following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr "!!Este <param name=\\\"cased\\\"/> sistema de código <param name=\\\"cs\\\"/> define o seguinte código<if test=\\\"code-count != 1\\\">s</if><param name=\\\"h\\\"/>:"
+msgstr "!!Este <param name=\"cased\"/> sistema de código <param name=\"cs\"/> define o seguinte código<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
 
 # CODESYSTEM_CONTENT_EXAMPLE
 #: CODESYSTEM_CONTENT_EXAMPLE
 #, fuzzy
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides some code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>that are example only</b>:"
-msgstr "!!Este <param name=\\\"cased\\\"/> sistema de código <param name=\\\"cs\\\"/> fornece alguns códigos<if test=\\\"code-count != 1\\\">s</if><param name=\\\"h\\\"/> <b>que são apenas exemplos</b>:"
+msgstr "!!Este <param name=\"cased\"/> sistema de código <param name=\"cs\"/> fornece alguns códigos<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>que são apenas exemplos</b>:"
 
 # CODESYSTEM_CONTENT_FRAGMENT
 #: CODESYSTEM_CONTENT_FRAGMENT
 #, fuzzy
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides <b>a fragment</b> that includes following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr "!!Este <param name=\\\"cased\\\"/> sistema de código <param name=\\\"cs\\\"/> fornece <b>um fragmento</b> que inclui o seguinte código<if test=\\\"code-count != 1\\\">s</if><param name=\\\"h\\\"/>:"
+msgstr "!!Este <param name=\"cased\"/> sistema de código <param name=\"cs\"/> fornece <b>um fragmento</b> que inclui o seguinte código<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
 
 # CODESYSTEM_CONTENT_NOTPRESENT
 #: CODESYSTEM_CONTENT_NOTPRESENT
 #, fuzzy
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines codes<param name=\"h\"/>, but no codes are represented here"
-msgstr "!!Este <param name=\\\"cased\\\"/> sistema de código <param name=\\\"cs\\\"/> define códigos<param name=\\\"h\\\"/>, mas nenhum código é representado aqui"
+msgstr "!!Este <param name=\"cased\"/> sistema de código <param name=\"cs\"/> define códigos<param name=\"h\"/>, mas nenhum código é representado aqui"
 
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
 #, fuzzy
 msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
-msgstr "!!Este suplemento do sistema de código <param name=\\\"cs\\\"/> define {0} no seguinte código<if test=\\\"code-count != 1\\\">s</if>:"
+msgstr "!!Este suplemento do sistema de código <param name=\"cs\"/> define {0} no seguinte código<if test=\"code-count != 1\">s</if>:"
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
@@ -992,6 +992,11 @@ msgstr "Detalhes do conceito-alvo"
 #: CONC_MAP_TRGT_TYPE
 msgctxt "CONC_MAP_TRGT_TYPE"
 msgid "Type"
+msgstr ""
+
+# CS_VERSION_NOTHING_TEXT
+#: CS_VERSION_NOTHING_TEXT
+msgid "Not Stated (use latest from terminology server)"
 msgstr ""
 
 # DATA_REND_AFTERNOON
@@ -1564,7 +1569,7 @@ msgstr "Assunto não especificado"
 #: DOCUMENT_SUMMARY
 #, fuzzy
 msgid "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
-msgstr "!!<param name=\\\"status\\\"/> Documento em <param name=\\\"date\\\"/> por <param name=\\\"author\\\"/> para <param name=\\\"subject\\\"/> <if test=\\\"has-encounter = true\\\"> no encontro <param name=\\\"encounter\\\"/></if>"
+msgstr "!!<param name=\"status\"/> Documento em <param name=\"date\"/> por <param name=\"author\"/> para <param name=\"subject\"/> <if test=\"has-encounter = true\"> no encontro <param name=\"encounter\"/></if>"
 
 # EXAMPLE_SCEN_STEP_SCEN
 #: EXAMPLE_SCEN_STEP_SCEN
@@ -1677,8 +1682,8 @@ msgstr "Não foi possível encontrar o ator referenciado {0}"
 # FMM_TABLE
 #: FMM_TABLE
 #, fuzzy
-msgid "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
-msgstr "!!<table class=\\\"cols\\\"><tbody><tr><td><a href=\\\"http://hl7.org/fhir/versions.html#maturity\\\">Nível de maturidade</a>: {0}</td><td>&nbsp;<a href=\\\"{1}versions.html#std-process\\\" title=\\\"Estado normalizado\\\">{2}</a></td></tr></tbody></table>"
+msgid "<table class=\"cols\" data-fhir=\"generated\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
+msgstr "!!<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Nível de maturidade</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Estado normalizado\">{2}</a></td></tr></tbody></table>"
 
 # GENERAL_ADDITIONAL_BINDING
 #: GENERAL_ADDITIONAL_BINDING
@@ -1745,6 +1750,11 @@ msgstr "Cardinalidade"
 #, fuzzy
 msgid "Code"
 msgstr "Código"
+
+# GENERAL_CODESYSTEM
+#: GENERAL_CODESYSTEM
+msgid "Code System"
+msgstr ""
 
 # GENERAL_COMMENT
 #: GENERAL_COMMENT
@@ -3285,7 +3295,7 @@ msgstr ""
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\"{2}\">R4B ({3}.r4b)</a> are available."
 msgstr ""
 
 # R44B_PROBLEMS
@@ -3300,7 +3310,7 @@ msgstr ""
 
 # R44B_USE_OK
 #: R44B_USE_OK
-msgid "This is an {0} IG. None of the features it uses are changed in {1}, so it can be used as is with {1}} systems."
+msgid "This is an {0} IG. None of the features it uses are changed in {1}, so it can be used as is with {1} systems."
 msgstr ""
 
 # R44B_WRONG_MSG
@@ -3445,7 +3455,7 @@ msgstr "Erro de renderização: {0}"
 #: RES_REND_INFO_SOURCE
 #, fuzzy
 msgid "Information Source: <param name=\"source\"/>"
-msgstr "!!Fonte de informação: <param name=\\\"source\\\"/>"
+msgstr "!!Fonte de informação: <param name=\"source\"/>"
 
 # RES_REND_LANGUAGE
 #: RES_REND_LANGUAGE
@@ -3855,18 +3865,13 @@ msgstr ""
 
 # SDR_SRC_FHIR
 #: SDR_SRC_FHIR
-msgid "the FHIR Standard"
-msgstr "a norma FHIR"
+msgid "FHIR Std."
+msgstr "!!a norma FHIR"
 
 # SDR_SRC_IG
 #: SDR_SRC_IG
-msgid "this IG"
-msgstr "este IG"
-
-# SDR_SRC_PACK
-#: SDR_SRC_PACK
-msgid "Package: {0}"
-msgstr ""
+msgid "This IG"
+msgstr "!!este IG"
 
 # SDR_SUPP
 #: SDR_SUPP
@@ -4625,6 +4630,11 @@ msgstr "Conteúdo/regras para todas as fatias"
 msgid "Content/Rules for all Types"
 msgstr "Conteúdo/regras para todos os tipos"
 
+# STRUC_DEF_COPY_CODING
+#: STRUC_DEF_COPY_CODING
+msgid "Click to Copy as Coding"
+msgstr ""
+
 # STRUC_DEF_COPY_URL
 #: STRUC_DEF_COPY_URL
 #, fuzzy
@@ -4642,7 +4652,7 @@ msgstr "Atual"
 #: STRUC_DEF_CURR_RULE
 #, fuzzy
 msgid "New records are required to use this value set, but legacy records may use other codes. The definition of ''new record'' is difficult, since systems often create new records based on pre-existing data. Usually ''current'' bindings are mandated by an external authority that makes clear rules around this"
-msgstr "Os novos registos têm de utilizar este conjunto de valores, mas os registos antigos podem utilizar outros códigos. A definição de \\\"novo registo\\\" é difícil, uma vez que os sistemas criam frequentemente novos registos com base em dados pré-existentes. Normalmente, as ligações \\\"actuais\\\" são impostas por uma autoridade externa que estabelece regras claras sobre esta matéria"
+msgstr "Os novos registos têm de utilizar este conjunto de valores, mas os registos antigos podem utilizar outros códigos. A definição de \"novo registo\" é difícil, uma vez que os sistemas criam frequentemente novos registos com base em dados pré-existentes. Normalmente, as ligações \"actuais\" são impostas por uma autoridade externa que estabelece regras claras sobre esta matéria"
 
 # STRUC_DEF_DATE
 #: STRUC_DEF_DATE
@@ -4897,6 +4907,11 @@ msgstr "Não é permitido um id neste contexto"
 msgid "If"
 msgstr "Se"
 
+# STRUC_DEF_IMPLEMENTS
+#: STRUC_DEF_IMPLEMENTS
+msgid "Interfaces Implemented"
+msgstr ""
+
 # STRUC_DEF_IMPOSE_PROFILE
 #: STRUC_DEF_IMPOSE_PROFILE
 #, fuzzy
@@ -4997,7 +5012,7 @@ msgstr "A matriz JSON para esta propriedade não está presente quando não exis
 #: STRUC_DEF_JSON_NULL
 #, fuzzy
 msgid "JSON: This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
-msgstr "JSON: Este objeto pode ser representado como nulo na estrutura JSON (que conta como \\\"presente\\\" para efeitos de cardinalidade)"
+msgstr "JSON: Este objeto pode ser representado como nulo na estrutura JSON (que conta como \"presente\" para efeitos de cardinalidade)"
 
 # STRUC_DEF_JSON_PRESENT
 #: STRUC_DEF_JSON_PRESENT
@@ -5184,7 +5199,7 @@ msgstr "Não há Resumo, pois este perfil não tem diferencial"
 #: STRUC_DEF_NULL_JSON
 #, fuzzy
 msgid "This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
-msgstr "Este objeto pode ser representado como nulo na estrutura JSON (que conta como \\\"presente\\\" para efeitos de cardinalidade)"
+msgstr "Este objeto pode ser representado como nulo na estrutura JSON (que conta como \"presente\" para efeitos de cardinalidade)"
 
 # STRUC_DEF_OBLIG
 #: STRUC_DEF_OBLIG
@@ -5395,7 +5410,7 @@ msgstr "Requisitos"
 #: STRUC_DEF_REQ_BIND
 #, fuzzy
 msgid "A required binding for additional codes, for us when the binding strength is ''extensible'' or ''preferred''"
-msgstr "Uma ligação necessária para códigos adicionais, por exemplo, quando a força da ligação é \\\"extensível\\\" ou \\\"preferida"
+msgstr "Uma ligação necessária para códigos adicionais, por exemplo, quando a força da ligação é \"extensível\" ou \"preferida\""
 
 # STRUC_DEF_REQ_PATT
 #: STRUC_DEF_REQ_PATT
@@ -6576,6 +6591,51 @@ msgstr ""
 #, fuzzy
 msgid "This code is not selectable (''Abstract'')"
 msgstr "Este código não é selecionável (''Abstrato'')"
+
+# VS_VERSION_BY_PACKAGE
+#: VS_VERSION_BY_PACKAGE
+msgid "Version is not explicitly stated, which means it is fixed to {0}, the version found through the package references"
+msgstr ""
+
+# VS_VERSION_FOUND
+#: VS_VERSION_FOUND
+msgid "Version is not explicitly stated. When building this specification, the most recent version {0} has been used"
+msgstr ""
+
+# VS_VERSION_NONE
+#: VS_VERSION_NONE
+msgid "Version is not explicitly stated, and the target {0} has no stated version either"
+msgstr ""
+
+# VS_VERSION_NOTHING
+#: VS_VERSION_NOTHING
+msgid "Version is not explicitly stated. No matching {0} found"
+msgstr ""
+
+# VS_VERSION_NOTHING_TEXT
+#: VS_VERSION_NOTHING_TEXT
+msgid "Not State"
+msgstr ""
+
+# VS_VERSION_STATED
+#: VS_VERSION_STATED
+msgid "Version is explicitly stated to be {0}"
+msgstr ""
+
+# VS_VERSION_THIS_PACKAGE
+#: VS_VERSION_THIS_PACKAGE
+msgid "Version is not explicitly stated, which means it is fixed to the version provided in this specification"
+msgstr ""
+
+# VS_VERSION_WILDCARD
+#: VS_VERSION_WILDCARD
+msgid "Version is stated to be {0}. When building this specification, the most recent matching version {1} has been used"
+msgstr ""
+
+# VS_VERSION_WILDCARD_BY_PACKAGE
+#: VS_VERSION_WILDCARD_BY_PACKAGE
+msgid "Version is stated to be {0}, which means it is fixed to {1}, the version found through the package references"
+msgstr ""
 
 # _NA
 #: _NA

@@ -1198,6 +1198,11 @@ msgstr "De conceptmap heeft teveel codes om te valideren ({0})"
 msgid "The presence of the concept ''{1}'' in the system ''{0}'' in the value set {3} is marked with a status of {2} and its use should be reviewed"
 msgstr ""
 
+# CONFORMANCE_STATEMENT_WORD
+#: CONFORMANCE_STATEMENT_WORD
+msgid "The html source contains the word ''{0}'' but it is not in a text phrase marked as a conformance clause"
+msgstr ""
+
 # CONTAINED_ORPHAN_DOM3
 #: CONTAINED_ORPHAN_DOM3
 msgid "The contained resource ''{0}'' is not referenced to from elsewhere in the containing resource nor does it refer to the containing resource (dom-3)"
@@ -1264,6 +1269,11 @@ msgid "Could not match discriminator ({1}) for slice {2} in profile {3} - the di
 msgid_plural "Could not match any of the {0} discriminators for slice {2} in profile {3} - None of the {1} discriminators {4} have fixed value, binding or existence assertions"
 msgstr[0] "Kan geen overeenkomende discriminator ({1}) bepalen voor slice {2} in profiel {3} - de discriminator {4} heeft geen vaste waarde, binding of aanwezigheidverplichtingen"
 msgstr[1] "Kan geen overeenkomende discriminators ({0}) bepalen voor slice {2} in profiel {3} - geen van de {1} discriminators {4} heeft een vaste waarde, binding of aanwezigheidverplichtingen"
+
+# DEPRECATED_CONCEPT_FOUND
+#: DEPRECATED_CONCEPT_FOUND
+msgid "The concept ''{1}'' is deprecated and its use should be reviewed"
+msgstr ""
 
 # DISCRIMINATOR_BAD_PATH
 #: DISCRIMINATOR_BAD_PATH
@@ -2113,8 +2123,8 @@ msgstr "LOINC"
 # HTA_LOINC_MESSAGE
 #: HTA_LOINC_MESSAGE
 #, fuzzy
-msgid "This material contains content from <a href=\\"http://loinc.org\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\"http://loinc.org/license\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
-msgstr "Dit materiaal bevat content uit <a href=\\"http://loinc.org\\">LOINC</a>. Op LOINC rust kopierecht &copy; 1995-2020, Regenstrief Institute, Inc. en de Logical Observation Identifiers Names and Codes (LOINC) Committee. Deze is kosteloos beschikbaar onder de <a href=\\"http://loinc.org/license\\">licentie</a> (Engels). LOINC&reg; is een in de Verenigde Staten geregistreerd handelsmerk van Regenstrief Institute, Inc."
+msgid "This material contains content from <a href=\"http://loinc.org\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\"http://loinc.org/license\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
+msgstr "Dit materiaal bevat content uit <a href=\"http://loinc.org\">LOINC</a>. Op LOINC rust kopierecht &copy; 1995-2020, Regenstrief Institute, Inc. en de Logical Observation Identifiers Names and Codes (LOINC) Committee. Deze is kosteloos beschikbaar onder de <a href=\"http://loinc.org/license\">licentie</a> (Engels). LOINC&reg; is een in de Verenigde Staten geregistreerd handelsmerk van Regenstrief Institute, Inc."
 
 # HTA_SCT_DESC
 #: HTA_SCT_DESC
@@ -2124,8 +2134,8 @@ msgstr "SNOMED Clinical Terms&reg; (SNOMED CT&reg;)"
 # HTA_SCT_MESSAGE
 #: HTA_SCT_MESSAGE
 #, fuzzy
-msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\"https://www.snomed.org/get-snomed\\">https://www.snomed.org/get-snomed</a> or <a href=\\"mailto:info@snomed.org\\">info@snomed.org</a>."
-msgstr "Dit materiaal bevat content waarop kopierecht van SNOMED International rust. Implementers van deze specificaties moeten de juiste SNOMED CT Affiliate licentie hebben - neem voor meer informatie contact op via <a href=\\"https://www.snomed.org/get-snomed\\">https://www.snomed.org/get-snomed</a> of <a href=\\"mailto:info@snomed.org\\">info@snomed.org</a>."
+msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\"https://www.snomed.org/get-snomed\">https://www.snomed.org/get-snomed</a> or <a href=\"mailto:info@snomed.org\">info@snomed.org</a>."
+msgstr "Dit materiaal bevat content waarop kopierecht van SNOMED International rust. Implementers van deze specificaties moeten de juiste SNOMED CT Affiliate licentie hebben - neem voor meer informatie contact op via <a href=\"https://www.snomed.org/get-snomed\">https://www.snomed.org/get-snomed</a> of <a href=\"mailto:info@snomed.org\">info@snomed.org</a>."
 
 # IG_DEPENDENCY_CAN_VERSION_ALONE
 #: IG_DEPENDENCY_CAN_VERSION_ALONE
@@ -2260,13 +2270,13 @@ msgstr "Ongeldige displayLanguage: ''{0}''"
 
 # INV_FAILED
 #: INV_FAILED
-msgid "Constraint failed: {0}"
-msgstr "Fout bij constraint: {0}"
+msgid "Constraint failed: {0}: ''{1}''"
+msgstr "!!Fout bij constraint: {0}"
 
 # INV_FAILED_SOURCE
 #: INV_FAILED_SOURCE
-msgid "Constraint failed: {0} (defined in {1})"
-msgstr "Constraint faalde: {0} (gedefinieerd in {1})"
+msgid "Constraint failed: {0}: ''{1}'' (defined in {2})"
+msgstr "!!Constraint faalde: {0} (gedefinieerd in {1})"
 
 # Illegal_path__in_differential_in__illegal_character_
 #: Illegal_path__in_differential_in__illegal_character_
@@ -2876,6 +2886,11 @@ msgstr "Duplicaat security label {0}"
 msgid "The element {0} is not marked as ''mustSupport'' in the profile {1}. Consider not using the element, or marking the element as must-Support in the profile"
 msgstr "Het element {0} is niet gemarkeerd als ''mustSupport'' in het profiel {1}. Overweeg het element niet gebruiken, of om het element als mustSupport te markeren in het profiel"
 
+# NARRATIVE_NOT_TRANSLATED
+#: NARRATIVE_NOT_TRANSLATED
+msgid "\"The narrative includes custom content for the default language ({0}), but does not include translated content for the {1} language, so the default language has been used"
+msgstr ""
+
 # NDJSON_EMPTY_LINE_WARNING
 #: NDJSON_EMPTY_LINE_WARNING
 msgid "The NDJSON source contains an empty line. This may not be accepted by some processors"
@@ -3170,7 +3185,7 @@ msgstr "De {0} ''{1}'' is gedefinieerd in het geclaimde profiel, maar ontbreekt"
 # PROFILE_COMPLIES_WITH_NOT_VALID
 #: PROFILE_COMPLIES_WITH_NOT_VALID
 msgid "The {0} value of ''{2}'' on the path {3} does not comply with the value ''{1}'' from the claimed profile"
-msgstr "!!!!De {0} waarde van ''{2}'' komt niet overeen met de waarde ''{1}''"
+msgstr "!!De {0} waarde van ''{2}'' komt niet overeen met de waarde ''{1}''"
 
 # PROFILE_COMPLIES_WITH_NO_VS
 #: PROFILE_COMPLIES_WITH_NO_VS
@@ -3202,8 +3217,8 @@ msgstr "Mismatch in slicing op {0}: extra slice ''{1}'' niet gevonden in het gec
 # PROFILE_COMPLIES_WITH_SLICING_NO_SLICE
 #: PROFILE_COMPLIES_WITH_SLICING_NO_SLICE
 #, fuzzy
-msgid "Mismatch in slicing at {0}: no slice found for the discriminators {1} with the values {2}"
-msgstr "Mismatch in slicing bij {0}: geen slice gevonden voor de discriminatoren {1} met de waarden {2}"
+msgid "Mismatch in slicing at {0}: no slice found for the discriminator {1} with the values {2}"
+msgstr "!!Mismatch in slicing bij {0}: geen slice gevonden voor de discriminatoren {1} met de waarden {2}"
 
 # PROFILE_COMPLIES_WITH_SLICING_ORDER
 #: PROFILE_COMPLIES_WITH_SLICING_ORDER
@@ -3901,6 +3916,16 @@ msgstr "Ophalen van ''{0}'' mislukt. Systeemdetails: {1}: {2}"
 msgid "Request took too long to process (>{0}sec)"
 msgstr "Request duurde te lang om te verwerken (>{0}sec)"
 
+# RESOURCEDEFINITION_PROPERTY_UNKNOWN
+#: RESOURCEDEFINITION_PROPERTY_UNKNOWN
+msgid "The ''resourceDefinition'' is ''{0}'', but no additional resource is known for that reference"
+msgstr ""
+
+# RESOURCEDEFINITION_PROPERTY_WRONG_TYPE
+#: RESOURCEDEFINITION_PROPERTY_WRONG_TYPE
+msgid "The JSON element for ''resourceDefinition'' has the wrong JSON type: {0}"
+msgstr ""
+
 # RESOURCETYPE_PROPERTY_WRONG_TYPE
 #: RESOURCETYPE_PROPERTY_WRONG_TYPE
 msgid "The JSON element ''resourceType'' has the wrong JSON type: {0}"
@@ -4216,8 +4241,8 @@ msgstr "Profiel {0} is voor type {1}, met het {3} element heeft type {2}"
 
 # SD_ED_TYPE_PROFILE_WRONG_TARGET
 #: SD_ED_TYPE_PROFILE_WRONG_TARGET
-msgid "Profile {0} is for type {1}, which is not a {4} (which is required because the {3} element has type {2})"
-msgstr "Profiel {0} is voor type {1}, wat geen {4} is (welke wordt vereist om het {3} element type {2} heeft)"
+msgid "Profile {0} is for type {1}, which is not a {4} (which is required because the {3} element has the type {2})"
+msgstr "!!Profiel {0} is voor type {1}, wat geen {4} is (welke wordt vereist om het {3} element type {2} heeft)"
 
 # SD_ED_TYPE_PROFILE_WRONG_TYPE
 #: SD_ED_TYPE_PROFILE_WRONG_TYPE
@@ -4860,8 +4885,18 @@ msgstr "De snapshot voor profiel ''{0}'' is leeg. Meestal ligt dat aan een verwe
 
 # STATUS_CODE_WARNING_CODE
 #: STATUS_CODE_WARNING_CODE
-msgid "The code ''{1}'' is valid but is {0}"
-msgstr "De code ''{1}'' is geldig maar is {0}"
+msgid "The concept ''{1}'' is valid but is {0}"
+msgstr "!!De code ''{1}'' is geldig maar is {0}"
+
+# SYSTEM_VERSION_MULTIPLE_DEFAULT
+#: SYSTEM_VERSION_MULTIPLE_DEFAULT
+msgid "Multiple default versions found for system {0}: ''{1}'', ''{2}'');"
+msgstr ""
+
+# SYSTEM_VERSION_MULTIPLE_OVERRIDE
+#: SYSTEM_VERSION_MULTIPLE_OVERRIDE
+msgid "Multiple version overrides found for system {0}: ''{1}'', ''{2}'');"
+msgstr ""
 
 # Same_id_on_multiple_elements__in_
 #: Same_id_on_multiple_elements__in_
@@ -4902,6 +4937,11 @@ msgstr "Kan niet bevestigen dat de gevonden codes bestaan in de uitbreidbare waa
 #: TERMINOLOGY_TX_NOSVC_BOUND_REQ
 msgid "Could not confirm that the codes provided are from the required value set {0} because there is no terminology service"
 msgstr "Kan niet bevestigen dat de gevonden codes bestaan in de verplichte waardelijst {0} omdat er geen terminologieservice is"
+
+# TERMINOLOGY_TX_NO_OID_SERVICES
+#: TERMINOLOGY_TX_NO_OID_SERVICES
+msgid "OIDs cannot be verified because the context of use does not provide OID services"
+msgstr ""
 
 # TERMINOLOGY_TX_OID_MULTIPLE_MATCHES
 #: TERMINOLOGY_TX_OID_MULTIPLE_MATCHES
@@ -5301,6 +5341,11 @@ msgstr ""
 msgid "The URL value ''{0}'' might be wrong because it appears to point to an internal target, but there is no matching target"
 msgstr ""
 
+# TYPE_SPECIFIC_CHECKS_DT_URL_WRONG_HTTPS
+#: TYPE_SPECIFIC_CHECKS_DT_URL_WRONG_HTTPS
+msgid "A definition could not be found for Canonical URL ''{0}'' but a definition can be found for ''{1}'' - change from https: to http:"
+msgstr ""
+
 # TYPE_SPECIFIC_CHECKS_DT_XHTML_ACTIVE_HREF
 #: TYPE_SPECIFIC_CHECKS_DT_XHTML_ACTIVE_HREF
 msgid "Hyperlink scheme ''{3}'' in ''{0}'' at ''{1}'' for ''{2}'' has active content, which is a security risk and not allowed"
@@ -5373,13 +5418,8 @@ msgstr "De waarde ([{0}]) kan niet worden gevalideerd zonder een terminologieser
 
 # Terminology_TX_Binding_NoSource
 #: Terminology_TX_Binding_NoSource
-msgid "Binding for path {0} has no source, so can''t be checked"
-msgstr "Binding voor pad {0} heeft geen bron, dus kan niet worden gevalideerd"
-
-# Terminology_TX_Binding_NoSource2
-#: Terminology_TX_Binding_NoSource2
-msgid "Binding has no source, so can''t be checked"
-msgstr "Binding heeft geen bron, dus kan niet worden gevalideerd"
+msgid "Binding for path {0} in profile {1} has no source, so can''t be checked"
+msgstr "!!Binding voor pad {0} heeft geen bron, dus kan niet worden gevalideerd"
 
 # Terminology_TX_Code_ValueSet
 #: Terminology_TX_Code_ValueSet
@@ -5928,10 +5968,25 @@ msgstr[1] "Deze content bevat de tekens {1} (hex-waarden). Dit zijn een ongeldig
 msgid "A definition for CodeSystem ''{0}'' could not be found, so the code cannot be validated"
 msgstr "De definitie voor CodeSystem ''{0}'' is niet gevonden, dus kan de code niet worden gevalideerd"
 
+# UNKNOWN_CODESYSTEM_EXP
+#: UNKNOWN_CODESYSTEM_EXP
+msgid "A definition for CodeSystem ''{0}'' could not be found, so the value set cannot be expanded"
+msgstr ""
+
 # UNKNOWN_CODE_IN_FRAGMENT
 #: UNKNOWN_CODESYSTEM_VERSION
 msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the code cannot be validated. Valid versions: {2}"
 msgstr "De definitie voor CodeSystem {0} versie {1} is niet gevonden,  dus kan de code niet worden gevalideerd. Geldige versies: {2}"
+
+# UNKNOWN_CODESYSTEM_VERSION_EXP
+#: UNKNOWN_CODESYSTEM_VERSION_EXP
+msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the value set cannot be expanded. Valid versions: {2}"
+msgstr ""
+
+# UNKNOWN_CODESYSTEM_VERSION_EXP_NONE
+#: UNKNOWN_CODESYSTEM_VERSION_EXP_NONE
+msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the value set cannot be expanded. No versions of this code system are known"
+msgstr ""
 
 # UNKNOWN_CODESYSTEM_VERSION_NONE
 #: UNKNOWN_CODESYSTEM_VERSION_NONE
@@ -6263,6 +6318,26 @@ msgstr "Niet-ondersteunde versie R2B"
 msgid "Unexpected internal condition - no source on diff element"
 msgstr "Onverwachte interne conditie - geen bron op diff element"
 
+# VALIDATION_ADDITIONAL_RESOURCE_ABSENT
+#: VALIDATION_ADDITIONAL_RESOURCE_ABSENT
+msgid "This resource is an additional resource, so must have a resourceDefinition of ''{0}''"
+msgstr ""
+
+# VALIDATION_ADDITIONAL_RESOURCE_NO
+#: VALIDATION_ADDITIONAL_RESOURCE_NO
+msgid "This resource is not an additional resource, so should not have a resourceDefinition of ''{0}''"
+msgstr ""
+
+# VALIDATION_ADDITIONAL_RESOURCE_NO_WRONG
+#: VALIDATION_ADDITIONAL_RESOURCE_NO_WRONG
+msgid "The value for resourceDefinition of ''{0}'' does not match the required value of ''{1}''. In addition, this is not an additional resource, and shouldn''t have a resourceDefinition at all"
+msgstr ""
+
+# VALIDATION_ADDITIONAL_RESOURCE_WRONG
+#: VALIDATION_ADDITIONAL_RESOURCE_WRONG
+msgid "The value for resourceDefinition of ''{0}'' must be ''{1}''"
+msgstr ""
+
 # VALIDATION_AI_FAILED
 #: VALIDATION_AI_FAILED
 msgid "Consulting AI failed: {0}"
@@ -6557,6 +6632,18 @@ msgstr "Kan geen regex filter op eigenschap ''{0}'' toepassen (regex filters wer
 msgid "Found a circularity pointing to {0} processing ValueSet with pathway {1}"
 msgstr "Recursieve verwijzing {0} gevonden bij verwerking van ValueSet met pathway {1}"
 
+# VALUESET_CODE_CONCEPT_HINT
+#: VALUESET_CODE_CONCEPT_HINT
+msgctxt "VALUESET_CODE_CONCEPT_HINT"
+msgid "{3}. Note that the display in the ValueSet does not have to match; this check exists to help check that it''s not accidentally the wrong code"
+msgstr ""
+
+# VALUESET_CODE_CONCEPT_HINT_VER
+#: VALUESET_CODE_CONCEPT_HINT_VER
+msgctxt "VALUESET_CODE_CONCEPT_HINT_VER"
+msgid "{3}. Note that the display in the ValueSet does not have to match; this check exists to help check that it''s not accidentally the wrong code"
+msgstr ""
+
 # VALUESET_CONCEPT_DISPLAY_SCT_TAG_MIXED
 #: VALUESET_CONCEPT_DISPLAY_PRESENCE_MIXED
 msgid "This include has some concepts with displays and some without - check that this is what is intended"
@@ -6671,6 +6758,11 @@ msgstr "Het systeem ''{0}'' is een waardelijst, die zelf verwijst naar systeem '
 #: VALUESET_INCLUDE_WRONG_VS_MANY
 msgid "The system ''{0}'' is actually a value set, which itself refers to the systems {1}"
 msgstr "Het systeem ''{0}'' is een waardelijst, die zelf verwijst naar systemen {1}"
+
+# VALUESET_INC_CS_NO_SUPPORT
+#: VALUESET_INC_CS_NO_SUPPORT
+msgid "The concepts in the value set include have not been validated because the code system is not known, and no terminology service supports it"
+msgstr ""
 
 # VALUESET_INC_NOT_VALIDATING
 #: VALUESET_INC_NOT_VALIDATING
@@ -6824,6 +6916,26 @@ msgstr "De eigenschap ''{0}'' is niet bekend voor system ''{1}'', dus wordt moge
 #: VALUESET_UNKNOWN_FILTER_PROPERTY_NO_CS
 msgid "No definition can be found for the system {1}, and the property ''{0}'' is not a generally known property, so the property might not be valid, or understood by the terminology ecosystem. In case it''s useful, the list of generally known properties for all systems is {2}"
 msgstr "Er is geen definitie gevonden voor het systeem {1} en de eigenschap ''{0}'' is geen algemeen bekende eigenschap, dus mogelijk is de eigenschap niet geldig en/of wordt deze niet begrepen door het terminologie-ecosysteem. Misschien nuttig: de lijst met algemeen bekende eigenschappen voor alle systemen is {2}"
+
+# VALUESET_VALUE_MISMATCH
+#: VALUESET_VALUE_MISMATCH
+msgid "The code system ''{0}'' version ''{1}'' in the ValueSet include is different to the one in the value (''{2}'')"
+msgstr ""
+
+# VALUESET_VALUE_MISMATCH_CHANGED
+#: VALUESET_VALUE_MISMATCH_CHANGED
+msgid "The code system ''{0}'' version ''{1}'' resulting from the version ''{2}'' in the ValueSet include is different to the one in the value (''{3}'')"
+msgstr ""
+
+# VALUESET_VALUE_MISMATCH_DEFAULT
+#: VALUESET_VALUE_MISMATCH_DEFAULT
+msgid "The code system ''{0}'' version ''{1}'' for the versionless include in the ValueSet include is different to the one in the value (''{3}'')"
+msgstr ""
+
+# VALUESET_VERSION_CHECK
+#: VALUESET_VERSION_CHECK
+msgid "The version ''{1}'' is not allowed for system ''{0}'': required to be ''{2}'' by a version-check parameter"
+msgstr ""
 
 # VIEWDEFINITION_COLLECTION_NEEDED1
 #: VIEWDEFINITION_COLLECTION_NEEDED1
@@ -7209,7 +7321,7 @@ msgstr[1] "URL bevat {0} ongeldige tekens ({1})"
 # XHTML_XHTML_ATTRIBUTE_XML_SPACE
 #: XHTML_XHTML_ATTRIBUTE_XML_SPACE
 msgid "The attribute ''xml:space'' is legal but has a fixed value of ''preserve''. Its use is discouraged"
-msgstr "!!!!Het attribuut ''xml:space'' is geldig maar heeft vaste waarde ''preserve''. Dit gebruik wordt afgeraden"
+msgstr "!!Het attribuut ''xml:space'' is geldig maar heeft vaste waarde ''preserve''. Dit gebruik wordt afgeraden"
 
 # XHTML_XHTML_DOCTYPE_ILLEGAL
 #: XHTML_XHTML_Attribute_Illegal

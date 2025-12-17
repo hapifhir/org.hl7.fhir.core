@@ -212,7 +212,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
       this.xverManager = XVerExtensionManagerFactory.createExtensionManager(context);
     }
     this.settings = settings;
-    policyAdvisor = new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID);
+    policyAdvisor = new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID, null);
     urlRegex = Constants.URI_REGEX_XVER.replace("$$", CommaSeparatedStringBuilder.join("|", context.getResourceNames()));
   }
   
@@ -381,10 +381,10 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return addValidationMessage(errors, ruleDate, type, line, col, path, message, IssueSeverity.INFORMATION, theMessage).setSignpost(true);
   }
 
-  protected boolean txHint(List<ValidationMessage> errors, String ruleDate, String txLink, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
+  protected boolean txHint(List<ValidationMessage> errors, String ruleDate, String txLink, String diagnostics, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingHints() && !isSuppressedValidationMessage(path, theMessage)) {
       String message = context.formatMessage(theMessage, theMessageArguments);
-      addValidationMessage(errors, ruleDate, type, line, col, path, message, IssueSeverity.INFORMATION, Source.TerminologyEngine, theMessage).setTxLink(txLink);
+      addValidationMessage(errors, ruleDate, type, line, col, path, message, IssueSeverity.INFORMATION, Source.TerminologyEngine, theMessage).setTxLink(txLink).setDiagnostics(diagnostics);
     }
     return thePass;
   }
@@ -463,13 +463,13 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return thePass;
   }
 
-  protected boolean txRule(List<ValidationMessage> errors, String ruleDate, String txLink, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
+  protected boolean txRule(List<ValidationMessage> errors, String ruleDate, String txLink, String diagnostics, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingErrors() && !isSuppressedValidationMessage(path, theMessage)) {
       String message = context.formatMessage(theMessage, theMessageArguments);
       ValidationMessage vm = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, message, IssueSeverity.ERROR).setMessageId(idForMessage(theMessage, message));
       vm.setRuleDate(ruleDate);
       if (checkMsgId(theMessage, vm)) {
-        errors.add(vm.setTxLink(txLink));
+        errors.add(vm.setTxLink(txLink).setDiagnostics(diagnostics));
       }
     }
     return thePass;
@@ -664,7 +664,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return validationMessage;
   }
 
-  private boolean hasMessage(List<ValidationMessage> errors, ValidationMessage newMsg) {
+  protected boolean hasMessage(List<ValidationMessage> errors, ValidationMessage newMsg) {
     for (ValidationMessage m : errors) {
       if (m.preciseMatch(newMsg)) {
         return true;
@@ -691,10 +691,10 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean txWarning(List<ValidationMessage> errors, String ruleDate, String txLink, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
+  protected boolean txWarning(List<ValidationMessage> errors, String ruleDate, String txLink, String diagnostics, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg)) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
-      ValidationMessage vmsg = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, nmsg, IssueSeverity.WARNING).setTxLink(txLink).setMessageId(idForMessage(msg, nmsg));
+      ValidationMessage vmsg = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, nmsg, IssueSeverity.WARNING).setTxLink(txLink).setMessageId(idForMessage(msg, nmsg)).setDiagnostics(diagnostics);
       vmsg.setRuleDate(ruleDate);
       if (checkMsgId(msg, vmsg)) {
         errors.add(vmsg);
@@ -708,18 +708,21 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    * @param thePass Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected ValidationMessage buildValidationMessage(String txLink, int line, int col, String path, OperationOutcomeIssueComponent issue) {
+  protected ValidationMessage buildValidationMessage(String txLink, String diagnostics, int line, int col, String path, OperationOutcomeIssueComponent issue) {
     if (issue.hasLocation() && issue.getExpressionOrLocation().get(0).getValue().contains(".")) {
       path = path + dropHead(issue.getExpressionOrLocation().get(0).getValue());
     }
     IssueType code = IssueType.fromCode(issue.getCode().toCode());
     IssueSeverity severity = IssueSeverity.fromCode(issue.getSeverity().toCode());
-    ValidationMessage validationMessage = new ValidationMessage(Source.TerminologyEngine, code, line, col, path, issue.getDetails().getText(), severity).setTxLink(txLink);
+    ValidationMessage validationMessage = new ValidationMessage(Source.TerminologyEngine, code, line, col, path, issue.getDetails().getText(), severity).setTxLink(txLink).setDiagnostics(diagnostics);
     if (issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_SERVER) != null) {
       validationMessage.setServer(issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_SERVER).replace("http://local.fhir.org", "https://tx-dev.fhir.org"));
     }
     if (issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_ID) != null) {
       validationMessage.setMessageId(issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_ID));
+    }
+    if (issue.hasDiagnostics()) {
+      validationMessage.setDiagnostics(issue.getDiagnostics());
     }
     return validationMessage;
   }
@@ -735,10 +738,10 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean txWarningForLaterRemoval(Object location, List<ValidationMessage> errors, String ruleDate, String txLink, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
+  protected boolean txWarningForLaterRemoval(Object location, List<ValidationMessage> errors, String ruleDate, String txLink, String diagnostics, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg)) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
-      ValidationMessage vmsg = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, nmsg, IssueSeverity.WARNING).setTxLink(txLink).setMessageId(msg);
+      ValidationMessage vmsg = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, nmsg, IssueSeverity.WARNING).setTxLink(txLink).setDiagnostics(diagnostics).setMessageId(msg);
       vmsg.setRuleDate(ruleDate);
       if (checkMsgId(msg, vmsg)) {
         errors.add(vmsg);

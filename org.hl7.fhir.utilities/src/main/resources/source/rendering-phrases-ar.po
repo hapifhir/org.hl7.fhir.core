@@ -1011,6 +1011,11 @@ msgctxt "CONC_MAP_TRGT_TYPE"
 msgid "Type"
 msgstr "النوع"
 
+# CS_VERSION_NOTHING_TEXT
+#: CS_VERSION_NOTHING_TEXT
+msgid "Not Stated (use latest from terminology server)"
+msgstr ""
+
 # DATA_REND_AFTERNOON
 #: DATA_REND_AFTERNOON
 #, fuzzy
@@ -1694,8 +1699,8 @@ msgstr "تعذر العثور على الممثل المشار إليه {0}"
 # FMM_TABLE
 #: FMM_TABLE
 #, fuzzy
-msgid "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
-msgstr "<table class=\"cols\"><<tbody><tr><tr><td><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">مستوى النضج</>: {0}</td><td><td>&nbsp;<a href=\"{1} الإصدارات.html#std-process\" العنوان=\"الحالة القياسية\">{2}</td></td></tr></tr></tbody></tbody></table>"
+msgid "<table class=\"cols\" data-fhir=\"generated\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
+msgstr "!!<table class=\"cols\"><<tbody><tr><tr><td><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">مستوى النضج</>: {0}</td><td><td>&nbsp;<a href=\"{1} الإصدارات.html#std-process\" العنوان=\"الحالة القياسية\">{2}</td></td></tr></tr></tbody></tbody></table>"
 
 # GENERAL_ADDITIONAL_BINDING
 #: GENERAL_ADDITIONAL_BINDING
@@ -1763,6 +1768,11 @@ msgstr "الكاردينالية"
 #, fuzzy
 msgid "Code"
 msgstr "الكود"
+
+# GENERAL_CODESYSTEM
+#: GENERAL_CODESYSTEM
+msgid "Code System"
+msgstr ""
 
 # GENERAL_COMMENT
 #: GENERAL_COMMENT
@@ -3342,8 +3352,8 @@ msgstr "الموارد التالية موجودة في إصدار {0} فقط ف
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
 #, fuzzy
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
-msgstr "!!تتوفر حزم لكل من <a href=\"{0}\">R4 ({1}.r4)</a> و <a href=\"{2} \\\">R4B ({3}.r4b)</a>."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\"{2}\">R4B ({3}.r4b)</a> are available."
+msgstr "!!تتوفر حزم لكل من <a href=\"{0}\">R4 ({1}.r4)</a> و <a href=\"{2}\">R4B ({3}.r4b)</a>."
 
 # R44B_PROBLEMS
 #: R44B_PROBLEMS
@@ -3360,8 +3370,8 @@ msgstr "يشير <a href=\"{0}\">{1}}</a> إلى النوع الأساسي في 
 # R44B_USE_OK
 #: R44B_USE_OK
 #, fuzzy
-msgid "This is an {0} IG. None of the features it uses are changed in {1}, so it can be used as is with {1}} systems."
-msgstr "هذا هو {0} IG. لا يتم تغيير أي من الميزات التي يستخدمها في {1}، لذلك يمكن استخدامه كما هو مع أنظمة {1}."
+msgid "This is an {0} IG. None of the features it uses are changed in {1}, so it can be used as is with {1} systems."
+msgstr "!!هذا هو {0} IG. لا يتم تغيير أي من الميزات التي يستخدمها في {1}، لذلك يمكن استخدامه كما هو مع أنظمة {1}."
 
 # R44B_WRONG_MSG
 #: R44B_WRONG_MSG
@@ -3833,7 +3843,7 @@ msgstr "يمكن الاطلاع على إرشادات حول كيفية تفسي
 #, fuzzy
 msgctxt "SDR_GUIDANCE_SFX"
 msgid "-- no content: do not translate #118 --"
-msgstr "!!!!!!!!-- لا يوجد محتوى: لا تترجم #121 ---"
+msgstr "!!-- لا يوجد محتوى: لا تترجم #121 ---"
 
 # SDR_IMPOSE
 #: SDR_IMPOSE
@@ -3971,20 +3981,14 @@ msgstr "// مقطعة حسب {0} بالترتيب المحدد {1}"
 # SDR_SRC_FHIR
 #: SDR_SRC_FHIR
 #, fuzzy
-msgid "the FHIR Standard"
-msgstr "معيار FHIR"
+msgid "FHIR Std."
+msgstr "!!معيار FHIR"
 
 # SDR_SRC_IG
 #: SDR_SRC_IG
 #, fuzzy
-msgid "this IG"
-msgstr "هذا IG"
-
-# SDR_SRC_PACK
-#: SDR_SRC_PACK
-#, fuzzy
-msgid "Package: {0}"
-msgstr "الحزمة: {0}"
+msgid "This IG"
+msgstr "!!هذا IG"
 
 # SDR_SUPP
 #: SDR_SUPP
@@ -4066,7 +4070,7 @@ msgstr "إصدارات FHIR"
 #, fuzzy
 msgctxt "SDR_VER_RANGE_SFX"
 msgid "-- no content: do not translate #119 --"
-msgstr "!!!!!!!!-- لا يوجد محتوى: لا تترجم #122 --"
+msgstr "!!-- لا يوجد محتوى: لا تترجم #122 --"
 
 # SDR_VER_TO_PFX
 #: SDR_VER_TO_PFX
@@ -4079,7 +4083,7 @@ msgstr "إصدارات FHIR حتى"
 #, fuzzy
 msgctxt "SDR_VER_TO_SFX"
 msgid "-- no content: do not translate #120 --"
-msgstr "!!!!!!!!-- لا يوجد محتوى: لا تترجم #123 --"
+msgstr "!!-- لا يوجد محتوى: لا تترجم #123 --"
 
 # SDR_VER_UNK
 #: SDR_VER_UNK
@@ -4767,6 +4771,11 @@ msgstr "المحتوى/القواعد لجميع الشرائح"
 msgid "Content/Rules for all Types"
 msgstr "المحتوى/القواعد لجميع الأنواع"
 
+# STRUC_DEF_COPY_CODING
+#: STRUC_DEF_COPY_CODING
+msgid "Click to Copy as Coding"
+msgstr ""
+
 # STRUC_DEF_COPY_URL
 #: STRUC_DEF_COPY_URL
 #, fuzzy
@@ -5038,6 +5047,11 @@ msgstr "المعرف غير مسموح به في هذا السياق"
 #, fuzzy
 msgid "If"
 msgstr "إذا كان"
+
+# STRUC_DEF_IMPLEMENTS
+#: STRUC_DEF_IMPLEMENTS
+msgid "Interfaces Implemented"
+msgstr ""
 
 # STRUC_DEF_IMPOSE_PROFILE
 #: STRUC_DEF_IMPOSE_PROFILE
@@ -6734,6 +6748,51 @@ msgstr "يُستخدم كمعيار للتشغيل في"
 #, fuzzy
 msgid "This code is not selectable (''Abstract'')"
 msgstr "هذا الرمز غير قابل للتحديد (''ملخص'')"
+
+# VS_VERSION_BY_PACKAGE
+#: VS_VERSION_BY_PACKAGE
+msgid "Version is not explicitly stated, which means it is fixed to {0}, the version found through the package references"
+msgstr ""
+
+# VS_VERSION_FOUND
+#: VS_VERSION_FOUND
+msgid "Version is not explicitly stated. When building this specification, the most recent version {0} has been used"
+msgstr ""
+
+# VS_VERSION_NONE
+#: VS_VERSION_NONE
+msgid "Version is not explicitly stated, and the target {0} has no stated version either"
+msgstr ""
+
+# VS_VERSION_NOTHING
+#: VS_VERSION_NOTHING
+msgid "Version is not explicitly stated. No matching {0} found"
+msgstr ""
+
+# VS_VERSION_NOTHING_TEXT
+#: VS_VERSION_NOTHING_TEXT
+msgid "Not State"
+msgstr ""
+
+# VS_VERSION_STATED
+#: VS_VERSION_STATED
+msgid "Version is explicitly stated to be {0}"
+msgstr ""
+
+# VS_VERSION_THIS_PACKAGE
+#: VS_VERSION_THIS_PACKAGE
+msgid "Version is not explicitly stated, which means it is fixed to the version provided in this specification"
+msgstr ""
+
+# VS_VERSION_WILDCARD
+#: VS_VERSION_WILDCARD
+msgid "Version is stated to be {0}. When building this specification, the most recent matching version {1} has been used"
+msgstr ""
+
+# VS_VERSION_WILDCARD_BY_PACKAGE
+#: VS_VERSION_WILDCARD_BY_PACKAGE
+msgid "Version is stated to be {0}, which means it is fixed to {1}, the version found through the package references"
+msgstr ""
 
 # _NA
 #: _NA

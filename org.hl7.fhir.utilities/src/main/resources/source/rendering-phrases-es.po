@@ -846,6 +846,11 @@ msgctxt "CONC_MAP_TRGT_TYPE"
 msgid "Type"
 msgstr ""
 
+# CS_VERSION_NOTHING_TEXT
+#: CS_VERSION_NOTHING_TEXT
+msgid "Not Stated (use latest from terminology server)"
+msgstr ""
+
 # DATA_REND_AFTERNOON
 #: DATA_REND_AFTERNOON
 msgid "Afternoon"
@@ -1415,7 +1420,7 @@ msgstr ""
 
 # FMM_TABLE
 #: FMM_TABLE
-msgid "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
+msgid "<table class=\"cols\" data-fhir=\"generated\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
 msgstr ""
 
 # GENERAL_ADDITIONAL_BINDING
@@ -1472,6 +1477,11 @@ msgstr ""
 # GENERAL_CODE
 #: GENERAL_CODE
 msgid "Code"
+msgstr ""
+
+# GENERAL_CODESYSTEM
+#: GENERAL_CODESYSTEM
+msgid "Code System"
 msgstr ""
 
 # GENERAL_COMMENT
@@ -2782,7 +2792,7 @@ msgstr ""
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\"{2}\">R4B ({3}.r4b)</a> are available."
 msgstr ""
 
 # R44B_PROBLEMS
@@ -2797,7 +2807,7 @@ msgstr ""
 
 # R44B_USE_OK
 #: R44B_USE_OK
-msgid "This is an {0} IG. None of the features it uses are changed in {1}, so it can be used as is with {1}} systems."
+msgid "This is an {0} IG. None of the features it uses are changed in {1}, so it can be used as is with {1} systems."
 msgstr ""
 
 # R44B_WRONG_MSG
@@ -3310,17 +3320,12 @@ msgstr ""
 
 # SDR_SRC_FHIR
 #: SDR_SRC_FHIR
-msgid "the FHIR Standard"
+msgid "FHIR Std."
 msgstr ""
 
 # SDR_SRC_IG
 #: SDR_SRC_IG
-msgid "this IG"
-msgstr ""
-
-# SDR_SRC_PACK
-#: SDR_SRC_PACK
-msgid "Package: {0}"
+msgid "This IG"
 msgstr ""
 
 # SDR_SUPP
@@ -3975,6 +3980,11 @@ msgstr ""
 msgid "Content/Rules for all Types"
 msgstr ""
 
+# STRUC_DEF_COPY_CODING
+#: STRUC_DEF_COPY_CODING
+msgid "Click to Copy as Coding"
+msgstr ""
+
 # STRUC_DEF_COPY_URL
 #: STRUC_DEF_COPY_URL
 msgid "Click to Copy URL"
@@ -4200,6 +4210,11 @@ msgstr ""
 # STRUC_DEF_IF
 #: STRUC_DEF_IF
 msgid "If"
+msgstr ""
+
+# STRUC_DEF_IMPLEMENTS
+#: STRUC_DEF_IMPLEMENTS
+msgid "Interfaces Implemented"
 msgstr ""
 
 # STRUC_DEF_IMPOSE_PROFILE
@@ -5611,6 +5626,51 @@ msgstr ""
 # VS_ABSTRACT_CODE_HINT
 #: VS_ABSTRACT_CODE_HINT
 msgid "This code is not selectable (''Abstract'')"
+msgstr ""
+
+# VS_VERSION_BY_PACKAGE
+#: VS_VERSION_BY_PACKAGE
+msgid "Version is not explicitly stated, which means it is fixed to {0}, the version found through the package references"
+msgstr ""
+
+# VS_VERSION_FOUND
+#: VS_VERSION_FOUND
+msgid "Version is not explicitly stated. When building this specification, the most recent version {0} has been used"
+msgstr ""
+
+# VS_VERSION_NONE
+#: VS_VERSION_NONE
+msgid "Version is not explicitly stated, and the target {0} has no stated version either"
+msgstr ""
+
+# VS_VERSION_NOTHING
+#: VS_VERSION_NOTHING
+msgid "Version is not explicitly stated. No matching {0} found"
+msgstr ""
+
+# VS_VERSION_NOTHING_TEXT
+#: VS_VERSION_NOTHING_TEXT
+msgid "Not State"
+msgstr ""
+
+# VS_VERSION_STATED
+#: VS_VERSION_STATED
+msgid "Version is explicitly stated to be {0}"
+msgstr ""
+
+# VS_VERSION_THIS_PACKAGE
+#: VS_VERSION_THIS_PACKAGE
+msgid "Version is not explicitly stated, which means it is fixed to the version provided in this specification"
+msgstr ""
+
+# VS_VERSION_WILDCARD
+#: VS_VERSION_WILDCARD
+msgid "Version is stated to be {0}. When building this specification, the most recent matching version {1} has been used"
+msgstr ""
+
+# VS_VERSION_WILDCARD_BY_PACKAGE
+#: VS_VERSION_WILDCARD_BY_PACKAGE
+msgid "Version is stated to be {0}, which means it is fixed to {1}, the version found through the package references"
 msgstr ""
 
 # _NA

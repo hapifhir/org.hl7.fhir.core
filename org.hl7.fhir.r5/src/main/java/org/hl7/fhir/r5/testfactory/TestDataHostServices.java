@@ -12,10 +12,7 @@ import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.liquid.GlobalObject;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.DateTimeType;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 
@@ -23,11 +20,13 @@ import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 public class TestDataHostServices extends BaseHostServices {
 
   private DateTimeType dt;
+  private DateType dtD;
   private StringType pathToSpec;
   
-  public TestDataHostServices(SimpleWorkerContext context, DateTimeType dt, StringType pathToSpec) {
+  public TestDataHostServices(SimpleWorkerContext context, DateTimeType dt, DateType dtD, StringType pathToSpec) {
     super(context);
     this.dt = dt;
+    this.dtD = dtD;
     this.pathToSpec = pathToSpec;
   }
 
@@ -36,7 +35,7 @@ public class TestDataHostServices extends BaseHostServices {
   public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     if ("Globals".equals(name)) {
       List<Base> list = new ArrayList<Base>();
-      list.add(new GlobalObject(dt, pathToSpec));
+      list.add(new GlobalObject(dt, dtD, pathToSpec));
       return list;
     } else {
       return new ArrayList<>();
@@ -77,4 +76,7 @@ public class TestDataHostServices extends BaseHostServices {
     throw new NotImplementedException("Not done yet (TestDataHostServices.resolveValueSet)"); // cause I don't know when we 'd need to do this
   }
 
+  public Base findContainingResource(Object appContext, Base item) {
+    return null;
+  }
 }

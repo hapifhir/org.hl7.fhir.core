@@ -1193,6 +1193,11 @@ msgstr ""
 msgid "The presence of the concept ''{1}'' in the system ''{0}'' in the value set {3} is marked with a status of {2} and its use should be reviewed"
 msgstr ""
 
+# CONFORMANCE_STATEMENT_WORD
+#: CONFORMANCE_STATEMENT_WORD
+msgid "The html source contains the word ''{0}'' but it is not in a text phrase marked as a conformance clause"
+msgstr ""
+
 # CONTAINED_ORPHAN_DOM3
 #: CONTAINED_ORPHAN_DOM3
 msgid "The contained resource ''{0}'' is not referenced to from elsewhere in the containing resource nor does it refer to the containing resource (dom-3)"
@@ -1258,6 +1263,11 @@ msgstr ""
 msgid "Could not match discriminator ({1}) for slice {2} in profile {3} - the discriminator {4} does not have fixed value, binding or existence assertions"
 msgid_plural "Could not match any of the {0} discriminators for slice {2} in profile {3} - None of the {1} discriminators {4} have fixed value, binding or existence assertions"
 msgstr[0] ""
+
+# DEPRECATED_CONCEPT_FOUND
+#: DEPRECATED_CONCEPT_FOUND
+msgid "The concept ''{1}'' is deprecated and its use should be reviewed"
+msgstr ""
 
 # DISCRIMINATOR_BAD_PATH
 #: DISCRIMINATOR_BAD_PATH
@@ -2091,7 +2101,7 @@ msgstr ""
 
 # HTA_LOINC_MESSAGE
 #: HTA_LOINC_MESSAGE
-msgid "This material contains content from <a href=\\"http://loinc.org\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\"http://loinc.org/license\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
+msgid "This material contains content from <a href=\"http://loinc.org\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\"http://loinc.org/license\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
 msgstr ""
 
 # HTA_SCT_DESC
@@ -2101,7 +2111,7 @@ msgstr ""
 
 # HTA_SCT_MESSAGE
 #: HTA_SCT_MESSAGE
-msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\"https://www.snomed.org/get-snomed\\">https://www.snomed.org/get-snomed</a> or <a href=\\"mailto:info@snomed.org\\">info@snomed.org</a>."
+msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\"https://www.snomed.org/get-snomed\">https://www.snomed.org/get-snomed</a> or <a href=\"mailto:info@snomed.org\">info@snomed.org</a>."
 msgstr ""
 
 # IG_DEPENDENCY_CAN_VERSION_ALONE
@@ -2232,12 +2242,12 @@ msgstr ""
 
 # INV_FAILED
 #: INV_FAILED
-msgid "Constraint failed: {0}"
+msgid "Constraint failed: {0}: ''{1}''"
 msgstr ""
 
 # INV_FAILED_SOURCE
 #: INV_FAILED_SOURCE
-msgid "Constraint failed: {0} (defined in {1})"
+msgid "Constraint failed: {0}: ''{1}'' (defined in {2})"
 msgstr ""
 
 # Illegal_path__in_differential_in__illegal_character_
@@ -2847,6 +2857,11 @@ msgstr ""
 msgid "The element {0} is not marked as ''mustSupport'' in the profile {1}. Consider not using the element, or marking the element as must-Support in the profile"
 msgstr ""
 
+# NARRATIVE_NOT_TRANSLATED
+#: NARRATIVE_NOT_TRANSLATED
+msgid "\"The narrative includes custom content for the default language ({0}), but does not include translated content for the {1} language, so the default language has been used"
+msgstr ""
+
 # NDJSON_EMPTY_LINE_WARNING
 #: NDJSON_EMPTY_LINE_WARNING
 msgid "The NDJSON source contains an empty line. This may not be accepted by some processors"
@@ -3154,7 +3169,7 @@ msgstr ""
 
 # PROFILE_COMPLIES_WITH_SLICING_NO_SLICE
 #: PROFILE_COMPLIES_WITH_SLICING_NO_SLICE
-msgid "Mismatch in slicing at {0}: no slice found for the discriminators {1} with the values {2}"
+msgid "Mismatch in slicing at {0}: no slice found for the discriminator {1} with the values {2}"
 msgstr ""
 
 # PROFILE_COMPLIES_WITH_SLICING_ORDER
@@ -3800,6 +3815,16 @@ msgstr ""
 msgid "Request took too long to process (>{0}sec)"
 msgstr ""
 
+# RESOURCEDEFINITION_PROPERTY_UNKNOWN
+#: RESOURCEDEFINITION_PROPERTY_UNKNOWN
+msgid "The ''resourceDefinition'' is ''{0}'', but no additional resource is known for that reference"
+msgstr ""
+
+# RESOURCEDEFINITION_PROPERTY_WRONG_TYPE
+#: RESOURCEDEFINITION_PROPERTY_WRONG_TYPE
+msgid "The JSON element for ''resourceDefinition'' has the wrong JSON type: {0}"
+msgstr ""
+
 # RESOURCETYPE_PROPERTY_WRONG_TYPE
 #: RESOURCETYPE_PROPERTY_WRONG_TYPE
 msgid "The JSON element ''resourceType'' has the wrong JSON type: {0}"
@@ -4112,7 +4137,7 @@ msgstr ""
 
 # SD_ED_TYPE_PROFILE_WRONG_TARGET
 #: SD_ED_TYPE_PROFILE_WRONG_TARGET
-msgid "Profile {0} is for type {1}, which is not a {4} (which is required because the {3} element has type {2})"
+msgid "Profile {0} is for type {1}, which is not a {4} (which is required because the {3} element has the type {2})"
 msgstr ""
 
 # SD_ED_TYPE_PROFILE_WRONG_TYPE
@@ -4753,7 +4778,17 @@ msgstr ""
 
 # STATUS_CODE_WARNING_CODE
 #: STATUS_CODE_WARNING_CODE
-msgid "The code ''{1}'' is valid but is {0}"
+msgid "The concept ''{1}'' is valid but is {0}"
+msgstr ""
+
+# SYSTEM_VERSION_MULTIPLE_DEFAULT
+#: SYSTEM_VERSION_MULTIPLE_DEFAULT
+msgid "Multiple default versions found for system {0}: ''{1}'', ''{2}'');"
+msgstr ""
+
+# SYSTEM_VERSION_MULTIPLE_OVERRIDE
+#: SYSTEM_VERSION_MULTIPLE_OVERRIDE
+msgid "Multiple version overrides found for system {0}: ''{1}'', ''{2}'');"
 msgstr ""
 
 # Same_id_on_multiple_elements__in_
@@ -4794,6 +4829,11 @@ msgstr ""
 # TERMINOLOGY_TX_NOSVC_BOUND_REQ
 #: TERMINOLOGY_TX_NOSVC_BOUND_REQ
 msgid "Could not confirm that the codes provided are from the required value set {0} because there is no terminology service"
+msgstr ""
+
+# TERMINOLOGY_TX_NO_OID_SERVICES
+#: TERMINOLOGY_TX_NO_OID_SERVICES
+msgid "OIDs cannot be verified because the context of use does not provide OID services"
 msgstr ""
 
 # TERMINOLOGY_TX_OID_MULTIPLE_MATCHES
@@ -5191,6 +5231,11 @@ msgstr ""
 msgid "The URL value ''{0}'' might be wrong because it appears to point to an internal target, but there is no matching target"
 msgstr ""
 
+# TYPE_SPECIFIC_CHECKS_DT_URL_WRONG_HTTPS
+#: TYPE_SPECIFIC_CHECKS_DT_URL_WRONG_HTTPS
+msgid "A definition could not be found for Canonical URL ''{0}'' but a definition can be found for ''{1}'' - change from https: to http:"
+msgstr ""
+
 # TYPE_SPECIFIC_CHECKS_DT_XHTML_ACTIVE_HREF
 #: TYPE_SPECIFIC_CHECKS_DT_XHTML_ACTIVE_HREF
 msgid "Hyperlink scheme ''{3}'' in ''{0}'' at ''{1}'' for ''{2}'' has active content, which is a security risk and not allowed"
@@ -5263,12 +5308,7 @@ msgstr ""
 
 # Terminology_TX_Binding_NoSource
 #: Terminology_TX_Binding_NoSource
-msgid "Binding for path {0} has no source, so can''t be checked"
-msgstr ""
-
-# Terminology_TX_Binding_NoSource2
-#: Terminology_TX_Binding_NoSource2
-msgid "Binding has no source, so can''t be checked"
+msgid "Binding for path {0} in profile {1} has no source, so can''t be checked"
 msgstr ""
 
 # Terminology_TX_Code_ValueSet
@@ -5817,9 +5857,24 @@ msgstr[0] ""
 msgid "A definition for CodeSystem ''{0}'' could not be found, so the code cannot be validated"
 msgstr ""
 
+# UNKNOWN_CODESYSTEM_EXP
+#: UNKNOWN_CODESYSTEM_EXP
+msgid "A definition for CodeSystem ''{0}'' could not be found, so the value set cannot be expanded"
+msgstr ""
+
 # UNKNOWN_CODESYSTEM_VERSION
 #: UNKNOWN_CODESYSTEM_VERSION
 msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the code cannot be validated. Valid versions: {2}"
+msgstr ""
+
+# UNKNOWN_CODESYSTEM_VERSION_EXP
+#: UNKNOWN_CODESYSTEM_VERSION_EXP
+msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the value set cannot be expanded. Valid versions: {2}"
+msgstr ""
+
+# UNKNOWN_CODESYSTEM_VERSION_EXP_NONE
+#: UNKNOWN_CODESYSTEM_VERSION_EXP_NONE
+msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the value set cannot be expanded. No versions of this code system are known"
 msgstr ""
 
 # UNKNOWN_CODESYSTEM_VERSION_NONE
@@ -6152,6 +6207,26 @@ msgstr ""
 msgid "Unexpected internal condition - no source on diff element"
 msgstr ""
 
+# VALIDATION_ADDITIONAL_RESOURCE_ABSENT
+#: VALIDATION_ADDITIONAL_RESOURCE_ABSENT
+msgid "This resource is an additional resource, so must have a resourceDefinition of ''{0}''"
+msgstr ""
+
+# VALIDATION_ADDITIONAL_RESOURCE_NO
+#: VALIDATION_ADDITIONAL_RESOURCE_NO
+msgid "This resource is not an additional resource, so should not have a resourceDefinition of ''{0}''"
+msgstr ""
+
+# VALIDATION_ADDITIONAL_RESOURCE_NO_WRONG
+#: VALIDATION_ADDITIONAL_RESOURCE_NO_WRONG
+msgid "The value for resourceDefinition of ''{0}'' does not match the required value of ''{1}''. In addition, this is not an additional resource, and shouldn''t have a resourceDefinition at all"
+msgstr ""
+
+# VALIDATION_ADDITIONAL_RESOURCE_WRONG
+#: VALIDATION_ADDITIONAL_RESOURCE_WRONG
+msgid "The value for resourceDefinition of ''{0}'' must be ''{1}''"
+msgstr ""
+
 # VALIDATION_AI_FAILED
 #: VALIDATION_AI_FAILED
 msgid "Consulting AI failed: {0}"
@@ -6442,6 +6517,18 @@ msgstr ""
 msgid "Found a circularity pointing to {0} processing ValueSet with pathway {1}"
 msgstr ""
 
+# VALUESET_CODE_CONCEPT_HINT
+#: VALUESET_CODE_CONCEPT_HINT
+msgctxt "VALUESET_CODE_CONCEPT_HINT"
+msgid "{3}. Note that the display in the ValueSet does not have to match; this check exists to help check that it''s not accidentally the wrong code"
+msgstr ""
+
+# VALUESET_CODE_CONCEPT_HINT_VER
+#: VALUESET_CODE_CONCEPT_HINT_VER
+msgctxt "VALUESET_CODE_CONCEPT_HINT_VER"
+msgid "{3}. Note that the display in the ValueSet does not have to match; this check exists to help check that it''s not accidentally the wrong code"
+msgstr ""
+
 # VALUESET_CONCEPT_DISPLAY_PRESENCE_MIXED
 #: VALUESET_CONCEPT_DISPLAY_PRESENCE_MIXED
 msgid "This include has some concepts with displays and some without - check that this is what is intended"
@@ -6555,6 +6642,11 @@ msgstr ""
 # VALUESET_INCLUDE_WRONG_VS_MANY
 #: VALUESET_INCLUDE_WRONG_VS_MANY
 msgid "The system ''{0}'' is actually a value set, which itself refers to the systems {1}"
+msgstr ""
+
+# VALUESET_INC_CS_NO_SUPPORT
+#: VALUESET_INC_CS_NO_SUPPORT
+msgid "The concepts in the value set include have not been validated because the code system is not known, and no terminology service supports it"
 msgstr ""
 
 # VALUESET_INC_NOT_VALIDATING
@@ -6703,6 +6795,26 @@ msgstr ""
 # VALUESET_UNKNOWN_FILTER_PROPERTY_NO_CS
 #: VALUESET_UNKNOWN_FILTER_PROPERTY_NO_CS
 msgid "No definition can be found for the system {1}, and the property ''{0}'' is not a generally known property, so the property might not be valid, or understood by the terminology ecosystem. In case it''s useful, the list of generally known properties for all systems is {2}"
+msgstr ""
+
+# VALUESET_VALUE_MISMATCH
+#: VALUESET_VALUE_MISMATCH
+msgid "The code system ''{0}'' version ''{1}'' in the ValueSet include is different to the one in the value (''{2}'')"
+msgstr ""
+
+# VALUESET_VALUE_MISMATCH_CHANGED
+#: VALUESET_VALUE_MISMATCH_CHANGED
+msgid "The code system ''{0}'' version ''{1}'' resulting from the version ''{2}'' in the ValueSet include is different to the one in the value (''{3}'')"
+msgstr ""
+
+# VALUESET_VALUE_MISMATCH_DEFAULT
+#: VALUESET_VALUE_MISMATCH_DEFAULT
+msgid "The code system ''{0}'' version ''{1}'' for the versionless include in the ValueSet include is different to the one in the value (''{3}'')"
+msgstr ""
+
+# VALUESET_VERSION_CHECK
+#: VALUESET_VERSION_CHECK
+msgid "The version ''{1}'' is not allowed for system ''{0}'': required to be ''{2}'' by a version-check parameter"
 msgstr ""
 
 # VIEWDEFINITION_COLLECTION_NEEDED1
