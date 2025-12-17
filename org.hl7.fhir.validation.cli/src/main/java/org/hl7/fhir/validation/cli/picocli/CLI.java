@@ -100,6 +100,7 @@ public class CLI {
     argMap.put("-tests", "tests");
     argMap.put("-txTests", "txTests");
     argMap.put("-aiTests", "aiTests");
+    argMap.put("-factory", "factory");
     argMap.put("-?", "-help");
     argMap.put("/?", "-help");
 

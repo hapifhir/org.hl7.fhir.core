@@ -48,11 +48,11 @@ import java.util.concurrent.Callable;
     SnapshotCommand.class,
     SpecialCommand.class,
     SpreadsheetCommand.class,
-    ServerCommand.class,
     TestsCommand.class,
     TxTestsCommand.class,
     AiTestsCommand.class,
-    InstallCommand.class
+    InstallCommand.class,
+    InstanceFactoryCommand.class
   })
 @Slf4j
 public class ValidateCommand extends ValidationEngineCommand implements Callable<Integer> {
