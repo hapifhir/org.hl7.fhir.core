@@ -2418,6 +2418,11 @@ msgstr ""
 msgid "Recorded"
 msgstr ""
 
+# PROV_REFERENCE
+#: PROV_REFERENCE
+msgid "This {0} is referenced from the following provenance resources:"
+msgstr ""
+
 # PROV_ROLE
 #: PROV_ROLE
 msgid "Role"
@@ -3199,7 +3204,7 @@ msgstr ""
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
-msgid "-- no content: do not translate #131 --"
+msgid "-- no content: do not translate #144 --"
 msgstr ""
 
 # SDR_IMPOSE
@@ -3389,7 +3394,7 @@ msgstr ""
 # SDR_VER_RANGE_SFX
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
-msgid "-- no content: do not translate #132 --"
+msgid "-- no content: do not translate #145 --"
 msgstr ""
 
 # SDR_VER_TO_PFX
@@ -3400,7 +3405,7 @@ msgstr ""
 # SDR_VER_TO_SFX
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
-msgid "-- no content: do not translate #133 --"
+msgid "-- no content: do not translate #146 --"
 msgstr ""
 
 # SDR_VER_UNK

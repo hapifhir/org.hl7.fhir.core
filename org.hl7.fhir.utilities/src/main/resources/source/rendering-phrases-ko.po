@@ -2413,6 +2413,11 @@ msgstr ""
 msgid "Recorded"
 msgstr ""
 
+# PROV_REFERENCE
+#: PROV_REFERENCE
+msgid "This {0} is referenced from the following provenance resources:"
+msgstr ""
+
 # PROV_ROLE
 #: PROV_ROLE
 msgid "Role"
@@ -2782,7 +2787,7 @@ msgstr ""
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\"{2}\">R4B ({3}.r4b)</a> are available."
 msgstr ""
 
 # R44B_PROBLEMS
@@ -4200,6 +4205,11 @@ msgstr ""
 msgid "If"
 msgstr ""
 
+# STRUC_DEF_IMPLEMENTS
+#: STRUC_DEF_IMPLEMENTS
+msgid "Interfaces Implemented"
+msgstr ""
+
 # STRUC_DEF_IMPOSE_PROFILE
 #: STRUC_DEF_IMPOSE_PROFILE
 msgid "Impose Profile"
@@ -5614,22 +5624,22 @@ msgstr ""
 
 # VS_VERSION_FOUND
 #: VS_VERSION_FOUND
-msgid "Version is not explicity stated. When building this specification, the most recent version {0} has been used"
+msgid "Version is not explicitly stated. When building this specification, the most recent version {0} has been used"
 msgstr ""
 
 # VS_VERSION_NONE
 #: VS_VERSION_NONE
-msgid "Version is not explicity stated, and the target {0} has no stated version either"
+msgid "Version is not explicitly stated, and the target {0} has no stated version either"
 msgstr ""
 
 # VS_VERSION_NOTHING
 #: VS_VERSION_NOTHING
-msgid "Version is not explicity stated. No matching {0} found"
+msgid "Version is not explicitly stated. No matching {0} found"
 msgstr ""
 
 # VS_VERSION_NOTHING_TEXT
 #: VS_VERSION_NOTHING_TEXT
-msgid "Not Stated"
+msgid "Not State"
 msgstr ""
 
 # VS_VERSION_STATED
