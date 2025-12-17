@@ -79,6 +79,7 @@ public class CLI {
     argMap.put("-compile", "compile");
     argMap.put("-fhirpath", "fhirpath");
     argMap.put("-convert", "convert");
+    argMap.put("-to-version", "to-version");
     argMap.put("-crumb-trails", "-verbose");
     argMap.put("-show-message-ids", "-verbose");
     argMap.put("-lang-transform", "lang-transform");
