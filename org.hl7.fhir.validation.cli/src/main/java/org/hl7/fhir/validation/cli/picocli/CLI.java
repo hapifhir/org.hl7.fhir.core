@@ -13,6 +13,7 @@ import org.hl7.fhir.validation.service.ValidationService;
 import org.slf4j.event.Level;
 import picocli.CommandLine;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +34,7 @@ public class CLI {
   }
 
   protected int parseArgsAndExecuteCommand(String[] args) {
+    Display.displayVersion(log);
     final String[] modifiedArgs = replaceDeprecatedArgs(args);
     ValidateCommand parentCommand = new ValidateCommand();
     parentCommand.setValidationService(myValidationService);
@@ -60,8 +62,12 @@ public class CLI {
       }
     }
 
-    Display.displayVersion(log);
     Display.displaySystemInfo(log);
+    try {
+      Display.printCliParamsAndInfo(log, modifiedArgs);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
 
     checkCharsetAndWarnIfNotUTF8();
 
@@ -85,6 +91,7 @@ public class CLI {
     argMap.put("-lang-transform", "lang-transform");
     argMap.put("-lang-regen", "lang-regen");
     argMap.put("-narrative", "narrative");
+    argMap.put("-codegen", "codegen");
     argMap.put("-preloadCache", "preloadCache");
     argMap.put("-scan", "scan");
     argMap.put("-snapshot", "snapshot");
@@ -96,21 +103,54 @@ public class CLI {
     argMap.put("-?", "-help");
     argMap.put("/?", "-help");
 
-      String[] newArgs = new String[args.length];
-      for (int i = 0; i < args.length; i++) {
-          if (argMap.containsKey(args[i])) {
-            final String newArg = argMap.get(args[i]);
-            log.warn("The option '{}' is no longer in use. Using '{}' ", args[i], newArg);
-              newArgs[i] = newArg;
-          } else {
-              newArgs[i] = args[i];
-          }
+    String[] newArgs = new String[args.length];
+    for (int i = 0; i < args.length; i++) {
+      if (argMap.containsKey(args[i])) {
+        final String newArg = argMap.get(args[i]);
+        log.warn("The option '{}' is no longer in use. Using '{}' ", args[i], newArg);
+        newArgs[i] = newArg;
+      } else {
+        newArgs[i] = args[i];
       }
+    }
 
-      return newArgs;
+    newArgs = insertCodeGenIfNecessary(newArgs);
+
+    return newArgs;
   }
 
-    public static void main(String[] args) {
+  /**
+   * This is a legacy behavior in which the presence of a -package-name and no explicit use of -re-package results in
+   * the execution of the codegen command.
+   * @param args Command-line args (with deprecated args already replaced with their Picocli versions)
+   * @return new args with the codegen option included if necessary
+   */
+  protected static String[] insertCodeGenIfNecessary(String[] args) {
+    boolean hasPackageParam = false;
+    boolean hasRePackageParam = false;
+    for (String arg : args) {
+      if ("-package-name".equals(arg)) {
+        hasPackageParam = true;
+      }
+      if ("-re-package".equals(arg)) {
+        hasRePackageParam = true;
+      }
+      if ("codegen".equals(arg)) {
+        return args;
+      }
+    }
+
+    if (hasPackageParam && !hasRePackageParam) {
+      log.warn("Detected -package-name parameter use; switching to codegen command");
+      String[] argsWithCodeGen = new String[args.length + 1];
+      System.arraycopy(args, 0, argsWithCodeGen, 1, args.length);
+      argsWithCodeGen[0] = "codegen";
+      return argsWithCodeGen;
+    }
+    return args;
+  }
+
+  public static void main(String[] args) {
       CLI cli = new CLI(new ValidationService());
       int exitCode = cli.parseArgsAndExecuteCommand(args);
       System.exit(exitCode);

@@ -42,6 +42,7 @@ import java.util.concurrent.Callable;
     LangTransformCommand.class,
     LangRegenerateCommand.class,
     NarrativeCommand.class,
+    CodeGenCommand.class,
     PreloadCacheCommand.class,
     ScanCommand.class,
     SnapshotCommand.class,
