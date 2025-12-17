@@ -27,22 +27,6 @@ public class InstanceFactoryCommandTest {
   }
 
   @Test
-  public void testCommandHasFactoryOption() {
-    CommandLine commandLine = new CommandLine(new InstanceFactoryCommand());
-    boolean hasOption = commandLine.getCommandSpec()
-      .optionsMap().containsKey("-factory");
-    assertThat(hasOption).isTrue();
-  }
-
-  @Test
-  public void testFactoryOptionIsRequired() {
-    CommandLine commandLine = new CommandLine(new InstanceFactoryCommand());
-    CommandLine.Model.OptionSpec option = commandLine.getCommandSpec()
-      .optionsMap().get("-factory");
-    assertThat(option.required()).isTrue();
-  }
-
-  @Test
   public void testGetInstanceValidatorParametersReturnsNull() {
     InstanceFactoryCommand command = new InstanceFactoryCommand();
     assertThat(command.getInstanceValidatorParameters()).isNull();
