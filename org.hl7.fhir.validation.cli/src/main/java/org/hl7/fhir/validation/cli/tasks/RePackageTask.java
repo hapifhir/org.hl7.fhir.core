@@ -48,7 +48,7 @@ public class RePackageTask extends ValidationEngineTask {
 
   @Override
   public boolean shouldExecuteTask(@Nonnull String[] args) {
-    return Params.hasParam(args, RePackageParametersParser.TX_PACK) || Params.hasParam(args, RePackageParametersParser.RE_PACK);
+    return Params.hasParam(args, RePackageParametersParser.RE_PACK);
   }
 
   @Override
