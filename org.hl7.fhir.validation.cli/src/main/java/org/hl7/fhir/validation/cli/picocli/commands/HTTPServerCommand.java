@@ -62,7 +62,7 @@ public class HTTPServerCommand extends ValidationEngineCommand implements Callab
 
   @CommandLine.Parameters(
     index = "0",
-    description = "Special mode to execute (e.g., 'r4r5tests')"
+    description = "Port Number to use"
   )
   private int port;
 
