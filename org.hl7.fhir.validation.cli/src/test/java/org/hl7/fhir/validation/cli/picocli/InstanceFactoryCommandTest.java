@@ -17,7 +17,7 @@ public class InstanceFactoryCommandTest {
   @Test
   public void testCommandName() {
     CommandLine commandLine = new CommandLine(new InstanceFactoryCommand());
-    assertThat(commandLine.getCommandName()).isEqualTo("instance-factory");
+    assertThat(commandLine.getCommandName()).isEqualTo("factory");
   }
 
   @Test

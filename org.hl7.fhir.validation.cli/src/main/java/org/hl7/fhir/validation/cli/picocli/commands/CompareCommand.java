@@ -51,7 +51,7 @@ public class CompareCommand extends ValidationEngineCommand implements Callable<
 
   @Override
   public List<String> getSources() {
-    return List.of();
+    return List.of(sources);
   }
 
   @Override

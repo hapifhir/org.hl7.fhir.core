@@ -11,17 +11,13 @@ import java.util.concurrent.Callable;
 
 /**
  * Internal development command for Java internationalization (i18n) regeneration.
- *
+ * <p/>
  * This hidden command manages translation files across three FHIR-related repositories,
  * validates and synchronizes i18n constants across Java properties files and code constants,
  * and generates/updates .po (Portable Object) translation source files.
  *
- * @deprecated This is an internal development tool, not meant for general CLI usage.
- *             Use at your own risk. Marked as deprecated to discourage external use.
- * @since 2025-12-16
  */
 @Slf4j
-@Deprecated(since = "2025-12-16")
 @CommandLine.Command(
   name = "lang-regen",
   description = """

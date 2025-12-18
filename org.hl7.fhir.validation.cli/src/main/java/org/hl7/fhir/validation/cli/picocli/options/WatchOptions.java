@@ -1,6 +1,5 @@
 package org.hl7.fhir.validation.cli.picocli.options;
 
-import org.hl7.fhir.validation.service.ValidatorWatchMode;
 import picocli.CommandLine;
 
 public class WatchOptions {
