@@ -44,18 +44,27 @@ class ValidationEngineCommandTests {
     @BeforeEach
     void setUp() throws Exception {
       when(validationService.determineVersion(anyList(), anyList(), anyBoolean(), anyBoolean())).thenReturn("5.0.1");
-     //when(validationService.initializeValidator(any(ValidationEngineParameters.class), any(InstanceValidatorParameters.class), anyString(), any(TimeTracker.class), anyList())).thenReturn(validationEngine);
-      when(validationService.initializeValidator(any(ValidationEngineParameters.class), isNull(), anyString(), any(TimeTracker.class), anyList())).thenReturn(validationEngine);
+
+    // when(validationService.initializeValidator(any(ValidationEngineParameters.class), isNull(), anyString(), any(TimeTracker.class), anyList())).thenReturn(validationEngine);
+    }
+
+    public void mockGetValidator(boolean useInstanceValidatorParameters) throws Exception {
+      if (useInstanceValidatorParameters) {
+        when(validationService.initializeValidator(any(ValidationEngineParameters.class), any(InstanceValidatorParameters.class), anyString(), any(TimeTracker.class), anyList())).thenReturn(validationEngine);
+      } else {
+        when(validationService.initializeValidator(any(ValidationEngineParameters.class), isNull(), anyString(), any(TimeTracker.class), anyList())).thenReturn(validationEngine);
+      }
     }
 
     @Test
     void codeGenTest() throws Exception {
+      mockGetValidator(true);
       String[] args = {"codegen", "-package-name", "test.pkg", "-output", "/tmp/output", "-profile", "http://example.com/profile"};
       new CLI(validationService).parseArgsAndExecuteCommand(args);
       verify(validationService).codeGen(same(validationEngine),
         eq(new CodeGenParameters(
           "5.0.1",
-          Collections.emptyList(),
+          List.of("http://example.com/profile"),
           Collections.emptyList(),
           "test.pkg",
           "/tmp/output"
@@ -64,6 +73,7 @@ class ValidationEngineCommandTests {
 
     @Test
     void compileTest() throws Exception {
+      mockGetValidator(false);
       String[] args = {"compile", "dummyMap.map", "-output", "/tmp/output.map"};
       new CLI(validationService).parseArgsAndExecuteCommand(args);
       verify(validationService).compile(same(validationEngine), eq("dummyMap.map"), isNull(), anyList(), eq("/tmp/output.map"));
@@ -71,6 +81,7 @@ class ValidationEngineCommandTests {
 
     @Test
     void convertTest() throws Exception {
+      mockGetValidator(false);
       String[] args = {"convert", "source.xml", "-output", "/tmp/output.json"};
       new CLI(validationService).parseArgsAndExecuteCommand(args);
       verify(validationService).convertSources(same(validationEngine), eq(List.of("source.xml")), eq("/tmp/output.json"), isNull());
@@ -78,6 +89,7 @@ class ValidationEngineCommandTests {
 
     @Test
     void fhirpathTest() throws Exception {
+      mockGetValidator(false);
       String[] args = {"fhirpath", "dummyExpression", "source.json"};
       new CLI(validationService).parseArgsAndExecuteCommand(args);
       verify(validationService).evaluateFhirpath(same(validationEngine), eq("dummyExpression"), eq(List.of("source.json")));
@@ -85,6 +97,7 @@ class ValidationEngineCommandTests {
 
     @Test
     void instanceFactoryTaskTest() throws Exception {
+      mockGetValidator(false);
       String[] args = {"factory", "arg1"};
       new CLI(validationService).parseArgsAndExecuteCommand(args);
       verify(validationService).instanceFactory(same(validationEngine), eq("arg1"));
@@ -92,6 +105,7 @@ class ValidationEngineCommandTests {
 
     @Test
     void installTest() throws Exception {
+      mockGetValidator(false);
       String[] args = {"install"};
       new CLI(validationService).parseArgsAndExecuteCommand(args);
       verify(validationService).install(eq(Collections.emptyList()), same(validationEngine));
@@ -99,6 +113,7 @@ class ValidationEngineCommandTests {
 
     @Test
     void langTransformTest() throws Exception {
+      mockGetValidator(false);
       String[] args = {"lang-transform", "dummyLang", "source.xml"};
       new CLI(validationService).parseArgsAndExecuteCommand(args);
       verify(validationService).transformLang(same(validationEngine), eq(new TransformLangParameters("dummyLang", Collections.emptyList(), null, null, List.of("source.xml"), null)));
@@ -106,6 +121,7 @@ class ValidationEngineCommandTests {
 
     @Test
     void narrativeTest() throws Exception {
+      mockGetValidator(false);
       String[] args = {"narrative", "source.xml"};
       new CLI(validationService).parseArgsAndExecuteCommand(args);
       verify(validationService).generateNarrative(same(validationEngine), eq("5.0.1"), eq(List.of("source.xml")), isNull());
@@ -113,6 +129,7 @@ class ValidationEngineCommandTests {
 
     @Test
     void snapshotTest() throws Exception {
+      mockGetValidator(false);
       String[] args = {"snapshot", "source.xml", "-output", "/tmp/output.xml"};
       new CLI(validationService).parseArgsAndExecuteCommand(args);
       verify(validationService).generateSnapshot(same(validationEngine),
@@ -121,15 +138,21 @@ class ValidationEngineCommandTests {
 
     @Test
     void spreadsheetTest() throws Exception {
+      mockGetValidator(false);
       String[] args = {"spreadsheet", "source.xml"};
       new CLI(validationService).parseArgsAndExecuteCommand(args);
-      verify(validationService).generateSpreadsheet(same(validationEngine), eq("5.0.1"), eq(List.of("source.xml")), isNull());
+
+      verify(validationService).generateSpreadsheet(same(validationEngine),
+        eq("5.0.1"),
+        eq(List.of("source.xml")), isNull());
     }
 
     @Test
     void transformTest() throws Exception {
+      mockGetValidator(false);
       String[] args = {"transform", "dummyFile.map", "dummySource.json", "-output", "/tmp/output.json"};
       new CLI(validationService).parseArgsAndExecuteCommand(args);
+
       verify(validationService).transform(same(validationEngine), eq(
         new TransformParameters("dummyFile.map", null, "http://tx.fhir.org", List.of("dummySource.json"), "/tmp/output.json")
       ));
@@ -137,6 +160,7 @@ class ValidationEngineCommandTests {
 
     @Test
     void versionTest() throws Exception {
+      mockGetValidator(false);
       String[] args = {"to-version", "1.2.3", "source.xml", "-output", "/tmp/output.xml"};
       new CLI(validationService).parseArgsAndExecuteCommand(args);
       verify(validationService).transformVersion(same(validationEngine),
@@ -145,6 +169,7 @@ class ValidationEngineCommandTests {
 
     @Test
     void validateTest() throws Exception {
+      mockGetValidator(true);
       String[] args = {"meh"};
       new CLI(validationService).parseArgsAndExecuteCommand(args);
       verify(validationService).validateSources(same(validationEngine), eq(

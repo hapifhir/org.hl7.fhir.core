@@ -84,7 +84,7 @@ public class SnapshotCommand extends ValidationEngineCommand implements Callable
       validationService.generateSnapshot(
         validationEngine,
         new GenerateSnapshotParameters(
-          validationEngine.getVersion(),
+          validationEngineOptions.fhirVersion,
           getSources(),
           output,
           outputSuffix

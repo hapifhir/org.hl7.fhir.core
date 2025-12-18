@@ -78,12 +78,13 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
     }
 
     List<String> sources = getSources();
-    if (validationEngineParameters.getSv() == null) {
-      validationEngineParameters.setSv(getValidationService().determineVersion(validationEngineParameters.getIgs(), sources, validationEngineParameters.isRecursive(), validationEngineParameters.isInferFhirVersion()));
+    if (validationEngineOptions.fhirVersion == null) {
+      validationEngineOptions.fhirVersion = getValidationService().determineVersion(validationEngineParameters.getIgs(), sources, validationEngineParameters.isRecursive(), validationEngineParameters.isInferFhirVersion());
     }
 
-    InstanceValidatorParameters instanceValidatorParameters =
-      getInstanceValidatorParameters();
+    validationEngineParameters.setSv(validationEngineOptions.fhirVersion);
+
+    InstanceValidatorParameters instanceValidatorParameters = getInstanceValidatorParameters();
     if (instanceValidatorParameters != null) {
       log.info("  Locale: "+ Locale.getDefault().getDisplayCountry()+"/"+Locale.getDefault().getCountry());
       if (instanceValidatorParameters.getJurisdiction() == null) {
@@ -96,7 +97,7 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
     }
 
     log.info("Loading");
-    String definitions = "dev".equals(validationEngineParameters.getSv()) ? "hl7.fhir.r5.core#current" : VersionUtilities.packageForVersion(validationEngineParameters.getSv()) + "#" + VersionUtilities.getCurrentVersion(validationEngineParameters.getSv());
+    final String definitions = "dev".equals(validationEngineOptions.fhirVersion) ? "hl7.fhir.r5.core#current" : VersionUtilities.packageForVersion(validationEngineOptions.fhirVersion) + "#" + VersionUtilities.getCurrentVersion(validationEngineOptions.fhirVersion);
 
     return getValidationService().initializeValidator(validationEngineParameters, instanceValidatorParameters, definitions, timeTracker, sources);
   }

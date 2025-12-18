@@ -59,8 +59,11 @@ public class TransformCommand extends ValidationEngineCommand implements Callabl
     final String resolvedMap = resolveMap();
     validateParameters(resolvedMap);
 
-    String mapLog = validationEngineOptions != null ? validationEngineOptions.mapLog : null;
-    String txServer = validationEngineOptions != null ? validationEngineOptions.txServer : null;
+    String mapLog = validationEngineOptions != null
+      ? validationEngineOptions.mapLog
+
+      : null;
+    String txServer = validationEngineOptions != null ? validationEngineOptions.txServer : "http://tx.fhir.org";
 
     TransformParameters transformParameters = TransformParameters.builder()
       .map(resolvedMap)

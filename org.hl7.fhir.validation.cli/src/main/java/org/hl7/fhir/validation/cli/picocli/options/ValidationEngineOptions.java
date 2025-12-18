@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.With;
 import org.apache.commons.lang3.ArrayUtils;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import picocli.CommandLine;
 
 import java.util.ArrayList;
@@ -92,7 +93,7 @@ public class ValidationEngineOptions {
     tx.fhir.org only supports a subset. To add to this list or tx.fhir.org, ask on https://chat.fhir.org/#narrow/stream/179202-terminology
     """)
   @With
-  public String snomedCT = null;
+  public String snomedCT = "900000000000207008";
 
   @CommandLine.Option(names = {"-resolution-context"},
     description = "Resolution context for package resolution")
@@ -115,7 +116,7 @@ public class ValidationEngineOptions {
     By default 'http://tx.fhir.org' will be used.
     """)
   @With
-  public String txServer = null;
+  public String txServer = FhirSettings.getTxFhirProduction();
 
   @CommandLine.Option(names = {"-txLog"},
     description = """

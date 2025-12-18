@@ -65,7 +65,7 @@ public class SpreadsheetCommand extends ValidationEngineCommand implements Calla
 
       validationService.generateSpreadsheet(
         validationEngine,
-        validationEngine.getVersion(),
+        validationEngineOptions.fhirVersion,
         getSources(),
         output
       );
