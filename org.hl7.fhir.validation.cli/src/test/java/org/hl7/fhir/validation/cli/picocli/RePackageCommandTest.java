@@ -3,7 +3,6 @@ package org.hl7.fhir.validation.cli.picocli;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.picocli.commands.RePackageCommand;
-import org.hl7.fhir.validation.cli.tasks.RePackageTask;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
@@ -36,7 +35,7 @@ public class RePackageCommandTest {
 
   @Nested
   @DisplayName("Tests with mocked services")
-  class MyMethodATests {
+  class MockedServiceTests {
     @Mock
     ValidationService validationService;
 
