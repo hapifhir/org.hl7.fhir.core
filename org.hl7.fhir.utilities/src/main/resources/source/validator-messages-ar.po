@@ -2208,7 +2208,7 @@ msgstr "تعذّر حلّ المميز ''{0}'' على ''{2}'' الموجود ف�
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 #, fuzzy
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES"
-msgid "-- no content: do not translate #121 --"
+msgid "-- no content: do not translate #134 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} type profiles"
 msgstr[0] ""
 msgstr[1] ""
@@ -2221,7 +2221,7 @@ msgstr[5] ""
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 #, fuzzy
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES"
-msgid "-- no content: do not translate #122 --"
+msgid "-- no content: do not translate #135 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} types"
 msgstr[0] ""
 msgstr[1] ""
@@ -2252,7 +2252,7 @@ msgstr "استخدام غير صحيح لـ ofType() في المميّز - ال�
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 #, fuzzy
 msgctxt "FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES"
-msgid "-- no content: do not translate #123 --"
+msgid "-- no content: do not translate #136 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] ""
@@ -2283,7 +2283,7 @@ msgstr "استخدام غير صحيح لـ ofType() في المميّز - لا 
 #: FHIRPATH_FOCUS
 #, fuzzy
 msgctxt "FHIRPATH_FOCUS"
-msgid "-- no content: do not translate #124 --"
+msgid "-- no content: do not translate #137 --"
 msgid_plural "Error evaluating FHIRPath expression: focus for {1} can only have one value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
@@ -2308,7 +2308,7 @@ msgstr "النوع {0} غير صالح"
 #: FHIRPATH_LEFT_VALUE
 #, fuzzy
 msgctxt "FHIRPATH_LEFT_VALUE"
-msgid "-- no content: do not translate #125 --"
+msgid "-- no content: do not translate #138 --"
 msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values ({2})"
 msgstr[0] ""
 msgstr[1] ""
@@ -2398,7 +2398,7 @@ msgstr "خطأ في تقييم تعبير FHIRPath: يمكن استخدام ال
 # FHIRPATH_PARAMETER_CARD
 #: FHIRPATH_PARAMETER_CARD
 msgctxt "FHIRPATH_PARAMETER_CARD"
-msgid "-- no content: do not translate #126 --"
+msgid "-- no content: do not translate #139 --"
 msgid_plural "Error evaluating FHIRPath expression: parameter {1} can only have one value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
@@ -2441,7 +2441,7 @@ msgstr "مشكلة في استخدام حل () - تعذر حل ملف التعر
 #: FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 #, fuzzy
 msgctxt "FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET"
-msgid "-- no content: do not translate #127 --"
+msgid "-- no content: do not translate #140 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] ""
@@ -2454,7 +2454,7 @@ msgstr[5] ""
 #: FHIRPATH_RIGHT_VALUE
 #, fuzzy
 msgctxt "FHIRPATH_RIGHT_VALUE"
-msgid "-- no content: do not translate #128 --"
+msgid "-- no content: do not translate #141 --"
 msgid_plural "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
@@ -3461,7 +3461,7 @@ msgstr "الإشارة إلى {2} المسحوبة {2} {0} من {1}"
 #: MULTIPLE_LOGICAL_MODELS
 #, fuzzy
 msgctxt "MULTIPLE_LOGICAL_MODELS"
-msgid "-- no content: do not translate #129 --"
+msgid "-- no content: do not translate #142 --"
 msgid_plural "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
 msgstr[0] ""
 msgstr[1] ""
@@ -4543,7 +4543,7 @@ msgstr "يُسمح فقط بعنصر إجابة إجابة واحدة فقط م�
 #: Questionnaire_QR_Item_OnlyOneI
 #, fuzzy
 msgctxt "Questionnaire_QR_Item_OnlyOneI"
-msgid "-- no content: do not translate #130 --"
+msgid "-- no content: do not translate #143 --"
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
 msgstr[0] ""
 msgstr[1] ""
@@ -5925,6 +5925,11 @@ msgstr "لا يوفر تعريف نظام الرمز مع URI ''{0}'' أي رم�
 msgid "A code with no system has no defined meaning, and it cannot be validated. A system should be provided"
 msgstr "الرمز بدون نظام ليس له معنى محدد، ولا يمكن التحقق من صحته. يجب توفير نظام"
 
+# TERMINOLOGY_TX_SYSTEM_UNSUPPORTED
+#: TERMINOLOGY_TX_SYSTEM_UNSUPPORTED
+msgid "The code cannot be checked because codeSystem ''{0}'' version ''{1}'' is not supported ({2})"
+msgstr ""
+
 # TERMINOLOGY_TX_SYSTEM_WRONG_BUILD
 #: TERMINOLOGY_TX_SYSTEM_WRONG_BUILD
 #, fuzzy
@@ -7158,8 +7163,8 @@ msgstr "كود غير معروف ''{0}'' في نظام الكود ''{1}'' نسخ
 # UNKNOWN_PROPERTY
 #: UNKNOWN_PROPERTY
 #, fuzzy
-msgid "Unknown property name {0} in path {1}2"
-msgstr "اسم خاصية غير معروف {0} في المسار {1}2"
+msgid "Unknown property name {0} in path {1}"
+msgstr "!!اسم خاصية غير معروف {0} في المسار {1}2"
 
 # UNRECOGNISED_PROPERTY_TYPE
 #: UNRECOGNISED_PROPERTY_TYPE
@@ -7436,6 +7441,11 @@ msgstr "رمز غير معروف ''{0}'' في نظام الترميز ''{1}''"
 #, fuzzy
 msgid "Unknown code ''{0}'' in the CodeSystem ''{1}'' version ''{2}''"
 msgstr "رمز غير معروف ''{0}'' في نظام الترميز ''{1}'' نسخة ''{2}''"
+
+# Unknown_Code_in_Version_SCT
+#: Unknown_Code_in_Version_SCT
+msgid "Unknown code ''{0}'' in the CodeSystem ''{1}'' version ''{2}'' ({3})"
+msgstr ""
 
 # Unknown_Data_format_
 #: Unknown_Data_format_

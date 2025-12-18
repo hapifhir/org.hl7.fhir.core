@@ -5741,6 +5741,11 @@ msgstr "A definição do sistema de códigos com o URI ''{0}'' não fornece quai
 msgid "A code with no system has no defined meaning, and it cannot be validated. A system should be provided"
 msgstr "Um código sem sistema não tem um significado definido e não pode ser validado. Deve ser fornecido um sistema"
 
+# TERMINOLOGY_TX_SYSTEM_UNSUPPORTED
+#: TERMINOLOGY_TX_SYSTEM_UNSUPPORTED
+msgid "The code cannot be checked because codeSystem ''{0}'' version ''{1}'' is not supported ({2})"
+msgstr ""
+
 # TERMINOLOGY_TX_SYSTEM_WRONG_BUILD
 #: TERMINOLOGY_TX_SYSTEM_WRONG_BUILD
 #, fuzzy
@@ -6961,8 +6966,8 @@ msgstr "Código desconhecido ''{0}'' no CodeSystem ''{1}'' versão ''{2}'' - not
 # UNKNOWN_PROPERTY
 #: UNKNOWN_PROPERTY
 #, fuzzy
-msgid "Unknown property name {0} in path {1}2"
-msgstr "Nome de propriedade desconhecido {0} no caminho {1}2"
+msgid "Unknown property name {0} in path {1}"
+msgstr "!!Nome de propriedade desconhecido {0} no caminho {1}2"
 
 # UNRECOGNISED_PROPERTY_TYPE
 #: UNRECOGNISED_PROPERTY_TYPE
@@ -7239,6 +7244,11 @@ msgstr "Código desconhecido ''{0}'' no CodeSystem ''{1}''"
 #, fuzzy
 msgid "Unknown code ''{0}'' in the CodeSystem ''{1}'' version ''{2}''"
 msgstr "Código desconhecido ''{0}'' no CodeSystem ''{1}'' versão ''{2}''"
+
+# Unknown_Code_in_Version_SCT
+#: Unknown_Code_in_Version_SCT
+msgid "Unknown code ''{0}'' in the CodeSystem ''{1}'' version ''{2}'' ({3})"
+msgstr ""
 
 # Unknown_Data_format_
 #: Unknown_Data_format_
