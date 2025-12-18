@@ -15,7 +15,7 @@ public class RePackageParametersParser implements IParamParser<RePackageParamete
   public static final String PIN = "-pin";
   public static final String EXPAND = "-expand";
   public static final String FORMAT = "-format";
-  public static final String TX_PACK = "-tx-pack";
+
   public static final String SCOPE = "-scope";
   public static final String MODE = "-mode";
 
@@ -45,21 +45,7 @@ public class RePackageParametersParser implements IParamParser<RePackageParamete
         }
         Arg.setProcessed(args, i, 2, true);
       }
-      else if (args[i].getValue().equals(TX_PACK)) {
-        String packageArg = args[i + 1].getValue();
-        if (packageArg != null) {
-          if (packageArg.contains(",")) {
-            for (String packageName : packageArg.split("\\,")) {
-              rePackageParameters.addPackage(packageName);
-            }
-          } else {
-            rePackageParameters.addPackage(packageArg);
-          }
-        }
-        rePackageParameters.addModeParam("tx");
-        rePackageParameters.addModeParam("expansions");
-        Arg.setProcessed(args, i, 2, true);
-      } else if (args[i].getValue().equals(RE_PACK)) {
+      else if (args[i].getValue().equals(RE_PACK)) {
         if (i + 1 == args.length) {
           throw new Error("Specified -re-package without indicating package");
         } else {
