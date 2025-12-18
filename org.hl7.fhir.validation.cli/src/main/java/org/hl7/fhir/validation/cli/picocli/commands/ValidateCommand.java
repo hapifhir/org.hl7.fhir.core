@@ -54,7 +54,8 @@ import java.util.concurrent.Callable;
     InstallCommand.class,
     InstanceFactoryCommand.class,
     HTTPServerCommand.class,
-    HTTPClientCommand.class
+    HTTPClientCommand.class,
+    RePackageCommand.class
   })
 @Slf4j
 public class ValidateCommand extends ValidationEngineCommand implements Callable<Integer> {

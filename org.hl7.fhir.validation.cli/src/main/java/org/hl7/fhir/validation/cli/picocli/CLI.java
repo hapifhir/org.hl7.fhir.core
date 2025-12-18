@@ -102,6 +102,7 @@ public class CLI {
     argMap.put("-aiTests", "aiTests");
     argMap.put("-factory", "factory");
     argMap.put("-server", "server");
+    argMap.put("-re-package", "re-package");
     argMap.put("-?", "-help");
     argMap.put("/?", "-help");
 
@@ -134,7 +135,7 @@ public class CLI {
       if ("-package-name".equals(arg)) {
         hasPackageParam = true;
       }
-      if ("-re-package".equals(arg)) {
+      if ("re-package".equals(arg)) {
         hasRePackageParam = true;
       }
       if ("codegen".equals(arg)) {
