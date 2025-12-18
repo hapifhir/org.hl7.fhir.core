@@ -61,7 +61,7 @@ public class NarrativeCommand extends ValidationEngineCommand implements Callabl
 
       validationService.generateNarrative(
         validationEngine,
-        validationEngine.getVersion(),
+        validationEngineOptions.fhirVersion,
         getSources(),
         output
       );

@@ -44,6 +44,8 @@ public class ValidationEngineOptionsConvertor {
     if (options.txServer != null) {
       validationEngineParameters.setTxServer("n/a".equals(options.txServer) ? null : options.txServer);
       validationEngineParameters.setNoEcosystem(true);
+    } else {
+      validationEngineParameters.setTxServer("");
     }
 
     if (options.txLog != null) {

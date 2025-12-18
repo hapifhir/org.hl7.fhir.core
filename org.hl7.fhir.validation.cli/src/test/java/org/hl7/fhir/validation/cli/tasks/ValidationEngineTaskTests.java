@@ -84,7 +84,6 @@ class ValidationEngineTaskTests {
     } else {
       when(validationService.initializeValidator(any(ValidationEngineParameters.class), isNull(), anyString(), any(TimeTracker.class), anyList())).thenReturn(validationEngine);
     }
-
   }
 
   @Test
