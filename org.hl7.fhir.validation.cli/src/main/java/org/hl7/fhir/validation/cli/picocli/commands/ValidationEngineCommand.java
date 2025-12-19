@@ -33,10 +33,10 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
 
     ValidationEngineOptionsConvertor convertor = new ValidationEngineOptionsConvertor();
     ValidationEngineParameters validationEngineParameters = convertor.convert(validationEngineOptions);
-    /*
-    if (localeOptions.locale != null) {
-      validationEngineParameters.setLocale(Locale.forLanguageTag(localeOptions.locale));
-    }*/
+
+    // See LocaleOptions. This is set globally
+    validationEngineParameters.setLocale(Locale.getDefault());
+
     log.trace(validationEngineParameters.toString().replace(", ", ", \n"));
 
     return validationEngineParameters;
