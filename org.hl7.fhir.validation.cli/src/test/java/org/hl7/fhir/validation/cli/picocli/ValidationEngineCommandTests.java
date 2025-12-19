@@ -44,8 +44,6 @@ class ValidationEngineCommandTests {
     @BeforeEach
     void setUp() throws Exception {
       when(validationService.determineVersion(anyList(), anyList(), anyBoolean(), anyBoolean())).thenReturn("5.0.1");
-
-    // when(validationService.initializeValidator(any(ValidationEngineParameters.class), isNull(), anyString(), any(TimeTracker.class), anyList())).thenReturn(validationEngine);
     }
 
     public void mockGetValidator(boolean useInstanceValidatorParameters) throws Exception {
