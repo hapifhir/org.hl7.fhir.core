@@ -59,6 +59,7 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.utilities.ENoDump;
 import org.hl7.fhir.validation.cli.picocli.CLI;
 import org.hl7.fhir.validation.service.ValidationService;
 
@@ -85,6 +86,7 @@ import org.hl7.fhir.validation.service.ValidationService;
 public class ValidatorCli {
 
   public static void main(String[] args) {
+    System.setProperty("slf4j.internal.verbosity", "WARN");
     CLI cli = new CLI(new ValidationService());
     try {
       int exitCode = cli.parseArgsAndExecuteCommand(args);
@@ -92,6 +94,8 @@ public class ValidatorCli {
     } catch (IllegalArgumentException e) {
       log.error("Encountered Illegal Argument", e);
       System.exit(1);
+    } catch (ENoDump e) {
+      log.info(e.getMessage());
     }
   }
 }
