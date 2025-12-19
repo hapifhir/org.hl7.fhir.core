@@ -27,10 +27,6 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
 
   protected ValidationEngineParameters getValidationEngineParameters() {
 
-    if (validationEngineOptions.txServer == null) {
-      validationEngineOptions.txServer = FhirSettings.getTxFhirProduction();
-    }
-
     ValidationEngineOptionsConvertor convertor = new ValidationEngineOptionsConvertor();
     ValidationEngineParameters validationEngineParameters = convertor.convert(validationEngineOptions);
 
