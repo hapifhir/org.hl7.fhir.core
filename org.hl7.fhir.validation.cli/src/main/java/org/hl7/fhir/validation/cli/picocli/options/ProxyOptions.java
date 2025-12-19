@@ -1,8 +1,5 @@
 package org.hl7.fhir.validation.cli.picocli.options;
 
-import org.hl7.fhir.validation.cli.JavaSystemProxyParamSetter;
-import org.hl7.fhir.validation.cli.param.Params;
-import org.hl7.fhir.validation.cli.param.parsers.GlobalParametersParser;
 import picocli.CommandLine;
 
 import java.net.Authenticator;
