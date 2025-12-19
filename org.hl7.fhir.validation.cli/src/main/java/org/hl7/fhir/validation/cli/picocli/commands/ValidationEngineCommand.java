@@ -5,6 +5,7 @@ import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.picocli.options.*;
 import org.hl7.fhir.validation.service.ValidationService;
@@ -19,24 +20,23 @@ import java.util.Locale;
 @Slf4j
 public abstract class ValidationEngineCommand extends ValidationServiceCommand {
 
-  @CommandLine.ArgGroup(validate = false, heading = "Debug Options%n")
-  DebugOptions debugOptions = new DebugOptions();
 
-  @CommandLine.ArgGroup(validate = false, heading = "Locale Options%n")
-  LocaleOptions localeOptions = new LocaleOptions();
-
-  @CommandLine.ArgGroup(validate = false, heading = "Proxy Options%n")
-  ProxyOptions proxyOptions = new ProxyOptions();
 
   @CommandLine.ArgGroup(validate = false, heading = "Validation Engine Options%n")
   ValidationEngineOptions validationEngineOptions = new ValidationEngineOptions();
 
   protected ValidationEngineParameters getValidationEngineParameters() {
+
+    if (validationEngineOptions.txServer == null) {
+      validationEngineOptions.txServer = FhirSettings.getTxFhirProduction();
+    }
+
     ValidationEngineOptionsConvertor convertor = new ValidationEngineOptionsConvertor();
     ValidationEngineParameters validationEngineParameters = convertor.convert(validationEngineOptions);
+    /*
     if (localeOptions.locale != null) {
       validationEngineParameters.setLocale(Locale.forLanguageTag(localeOptions.locale));
-    }
+    }*/
     log.trace(validationEngineParameters.toString().replace(", ", ", \n"));
 
     return validationEngineParameters;

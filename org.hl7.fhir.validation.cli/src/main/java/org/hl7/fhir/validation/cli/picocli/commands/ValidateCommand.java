@@ -15,7 +15,6 @@ import picocli.CommandLine;
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.Callable;
 
 @CommandLine.Command(
   description = """
@@ -58,7 +57,7 @@ import java.util.concurrent.Callable;
     RePackageCommand.class
   })
 @Slf4j
-public class ValidateCommand extends ValidationEngineCommand implements Callable<Integer> {
+public class ValidateCommand extends ValidationEngineCommand {
   @CommandLine.Spec
   CommandLine.Model.CommandSpec spec;
 
@@ -85,6 +84,24 @@ public class ValidateCommand extends ValidationEngineCommand implements Callable
   @CommandLine.Parameters(
     description = "The input file(s) to validate.")
   private String[] whatToValidate;
+
+  /**
+   * Inherited options. These options are inherited by all subcommands of this one. They are set via setter methods
+   * prior to execution of any command call method.
+   * <p/>
+   * see: <a href="https://picocli.info/#_inherited_options">Picocli Documentation</a>
+   */
+  @CommandLine.ArgGroup(validate = false, heading = "Locale Options%n")
+  LocaleOptions localeOptions = new LocaleOptions();
+
+  @CommandLine.ArgGroup(validate = false, heading = "Debug Options%n")
+  FHIRSettingsOptions fhirSettingsOptions = new FHIRSettingsOptions();
+
+  @CommandLine.ArgGroup(validate = false, heading = "FHIR Settings Options%n")
+  DebugOptions debugOptions = new DebugOptions();
+
+  @CommandLine.ArgGroup(validate = false, heading = "Proxy Options%n")
+  ProxyOptions proxyOptions = new ProxyOptions();
 
   @Override
   public InstanceValidatorParameters getInstanceValidatorParameters() {
@@ -123,7 +140,7 @@ public class ValidateCommand extends ValidationEngineCommand implements Callable
 
     log.info("Validating");
     try {
-      validationService.validateSources(validationEngine, new ValidateSourceParameters(instanceValidatorParameters, List.of(whatToValidate), output, watchParameters));
+      validationService.validateSources(validationEngine, new ValidateSourceParameters(instanceValidatorParameters, getSources(), output, watchParameters));
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

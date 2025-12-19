@@ -9,28 +9,23 @@ import picocli.CommandLine;
 import java.io.IOException;
 
 @Slf4j
-public class FHIRSettingsOptions implements GlobalOptions {
+public class FHIRSettingsOptions {
   private static final String FHIR_SETTINGS = "-fhir-settings";
-  @CommandLine.Option(names = (FHIR_SETTINGS))
-  public String fhirSettingsFile;
 
-  @Override
-  public int apply(CommandLine.ParseResult parseResult) {
-    final String fhirSettingsFilePath = parseResult.matchedOptionValue(FHIR_SETTINGS, null);
 
+
+  @CommandLine.Option(names = (FHIR_SETTINGS) , scope = CommandLine.ScopeType.INHERIT)
+  public void setFhirSettingsFile(String fhirSettingsFilePath) {
     if (fhirSettingsFilePath != null) {
       try {
         if (!ManagedFileAccess.file(fhirSettingsFilePath).exists()) {
-          log.error("Cannot find fhir-settings file: " + fhirSettingsFilePath);
-          return 1;
+          throw new IllegalArgumentException("Cannot find fhir-settings file: " + fhirSettingsFilePath);
         }
       } catch (IOException e) {
-        log.error("Error reading fhir-settings file: " + fhirSettingsFilePath);
-        return 1;
+        throw new IllegalArgumentException("Error reading fhir-settings file: " + fhirSettingsFilePath);
       }
       FhirSettings.setExplicitFilePath(fhirSettingsFilePath);
     }
     ManagedWebAccess.loadFromFHIRSettings();
-    return 0;
   }
 }

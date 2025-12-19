@@ -5,25 +5,61 @@ import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.cli.param.parsers.GlobalParametersParser;
 import picocli.CommandLine;
 
-public class ProxyOptions implements GlobalOptions{
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 
-  @CommandLine.Option(names = {"-proxy"}, description = "An http proxy address [address]:[port]")
-  String proxy;
+import static org.hl7.fhir.validation.cli.JavaSystemProxyParamSetter.*;
 
-  @CommandLine.Option(names = {"-https-proxy"}, description = "An https proxy address [address]:[port]")
-  String httpsProxy;
+public class ProxyOptions {
 
-  @CommandLine.Option(names = {"-auth"}, description = "Basic proxy authentication using [username]:[password]")
-  String proxyAuth;
+  @CommandLine.Option(names = {"-proxy"}, description = "An http proxy address [address]:[port]", scope = CommandLine.ScopeType.INHERIT)
 
-  @Override
-  public int apply(CommandLine.ParseResult parseResult) {
-    final String proxy = parseResult.matchedOptionValue(GlobalParametersParser.PROXY, null);
-    final String httpsProxy = parseResult.matchedOptionValue(GlobalParametersParser.HTTPS_PROXY, null);
-    final String proxyAuth = parseResult.matchedOptionValue(GlobalParametersParser.PROXY_AUTH, null);
+  private String proxy = null;
+  public void setProxy(String proxy) {
+    if (proxy != null) {
+      setProxyHostSystemProperties(proxy, HTTP_PROXY_HOST, HTTP_PROXY_PORT);
+    }
+  }
 
-    JavaSystemProxyParamSetter.setJavaSystemProxyParams(proxy, httpsProxy, proxyAuth);
+  private String httpsProxy = null;
+  @CommandLine.Option(names = {"-https-proxy"}, description = "An https proxy address [address]:[port]", scope = CommandLine.ScopeType.INHERIT)
+  public void setHttpsProxy(String httpsProxy) {
+    if (httpsProxy != null) {
+      setProxyHostSystemProperties(httpsProxy, HTTPS_PROXY_HOST, HTTPS_PROXY_PORT);
+    }
+  }
 
-    return 0;
+  @CommandLine.Option(names = {"-auth"}, description = "Basic proxy authentication using [username]:[password]", scope = CommandLine.ScopeType.INHERIT)
+  public void setProxyAuth(String proxyAuth) {
+    if (proxyAuth != null) {
+      String[] p = proxyAuth.split(":");
+      String authUser = p[0];
+      String authPass = p[1];
+
+      /*
+       * For authentication, use java.net.Authenticator to set proxy's configuration and set the system properties
+       * http.proxyUser and http.proxyPassword
+       */
+      Authenticator.setDefault(
+        new Authenticator() {
+          @Override
+          public PasswordAuthentication getPasswordAuthentication() {
+            return new PasswordAuthentication(authUser, authPass.toCharArray());
+          }
+        }
+      );
+
+      System.setProperty(HTTP_PROXY_USER, authUser);
+      System.setProperty(HTTP_PROXY_PASS, authPass);
+      System.setProperty(JAVA_USE_SYSTEM_PROXIES, "true");
+
+      /*
+       * For Java 1.8 and higher you must set
+       * -Djdk.http.auth.tunneling.disabledSchemes=
+       * to make proxies with Basic Authorization working with https along with Authenticator
+       */
+      System.setProperty(JAVA_DISABLED_TUNNELING_SCHEMES, "");
+      System.setProperty(JAVA_DISABLED_PROXY_SCHEMES, "");
+    }
   }
 }

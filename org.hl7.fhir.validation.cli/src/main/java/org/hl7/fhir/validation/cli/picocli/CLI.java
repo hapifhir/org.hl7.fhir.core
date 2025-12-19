@@ -5,10 +5,7 @@ import org.hl7.fhir.utilities.FileFormat;
 import org.hl7.fhir.validation.cli.Display;
 import org.hl7.fhir.validation.cli.picocli.commands.ValidateCommand;
 import org.hl7.fhir.validation.cli.picocli.commands.ValidationServiceCommand;
-import org.hl7.fhir.validation.cli.picocli.options.DebugOptions;
-import org.hl7.fhir.validation.cli.picocli.options.GlobalOptions;
-import org.hl7.fhir.validation.cli.picocli.options.LocaleOptions;
-import org.hl7.fhir.validation.cli.picocli.options.ProxyOptions;
+import org.hl7.fhir.validation.cli.picocli.options.*;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.slf4j.event.Level;
 import picocli.CommandLine;
@@ -18,27 +15,22 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.hl7.fhir.validation.cli.JavaSystemProxyParamSetter.verifyProxySystemProperties;
+
 @Slf4j
 public class CLI {
 
   protected ValidationService myValidationService;
 
-  private static final GlobalOptions[] GLOBAL_OPTIONS =  {
-    new LocaleOptions(),
-    new DebugOptions(),
-    new ProxyOptions()
-  };
-
   protected CLI(ValidationService validationService) {
     this.myValidationService = validationService;
   }
 
-  protected int parseArgsAndExecuteCommand(String[] args) {
+  protected int parseArgsAndExecuteCommand(String[] args) throws IllegalArgumentException{
     Display.displayVersion(log);
     final String[] modifiedArgs = replaceDeprecatedArgs(args);
     ValidateCommand parentCommand = new ValidateCommand();
     parentCommand.setValidationService(myValidationService);
-
 
     CommandLine commandLine = new CommandLine(parentCommand);
     for (Map.Entry<String, CommandLine> subcommand : commandLine.getCommandSpec().subcommands().entrySet()) {
@@ -47,20 +39,16 @@ public class CLI {
         validationServiceCommand.setValidationService(myValidationService);
       }
     }
-    CommandLine.ParseResult parseResult = null;
+
+    CommandLine.ParseResult parseResult;
     try {
-      parseResult = commandLine.parseArgs(modifiedArgs);
+       parseResult = commandLine.parseArgs(modifiedArgs);
     } catch(CommandLine.PicocliException e) {
       log.error("Unable to parse command line arguments: " + e.getMessage());
-      log.debug("", e);
-      System.exit(1);
+      throw new IllegalArgumentException(e);
     }
-    for (GlobalOptions globalOption : GLOBAL_OPTIONS) {
-      int exitCode = globalOption.apply(parseResult);
-      if (exitCode != 0) {
-        System.exit(exitCode);
-      }
-    }
+
+    verifyProxySystemProperties();
 
     Display.displaySystemInfo(log);
     try {
@@ -74,12 +62,11 @@ public class CLI {
     commandLine
       .setOut(new PrintWriter(new CLIToSlf4jLoggerWriter(log, Level.INFO)))
       .setErr(new PrintWriter(new CLIToSlf4jLoggerWriter(log, Level.ERROR)));
-    return commandLine.execute(modifiedArgs);
+    return commandLine.getExecutionStrategy().execute(parseResult);
   }
 
   private static String[] replaceDeprecatedArgs(String[] args) {
     Map<String, String> argMap = new HashMap<>();
-    argMap.put("-server", "server");
     argMap.put("-install", "install");
     argMap.put("-compare", "compare");
     argMap.put("-compile", "compile");
@@ -155,8 +142,13 @@ public class CLI {
 
   public static void main(String[] args) {
       CLI cli = new CLI(new ValidationService());
-      int exitCode = cli.parseArgsAndExecuteCommand(args);
-      System.exit(exitCode);
+      try {
+        int exitCode = cli.parseArgsAndExecuteCommand(args);
+        System.exit(exitCode);
+      } catch (IllegalArgumentException e) {
+        log.error("Encountered Illegal Argument", e);
+        System.exit(1);
+      }
     }
 
   @SuppressWarnings("checkstyle:systemout")

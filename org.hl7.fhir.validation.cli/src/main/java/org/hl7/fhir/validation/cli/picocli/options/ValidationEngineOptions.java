@@ -116,7 +116,7 @@ public class ValidationEngineOptions {
     By default 'http://tx.fhir.org' will be used.
     """)
   @With
-  public String txServer = FhirSettings.getTxFhirProduction();
+  public String txServer = null;
 
   @CommandLine.Option(names = {"-txLog"},
     description = """
