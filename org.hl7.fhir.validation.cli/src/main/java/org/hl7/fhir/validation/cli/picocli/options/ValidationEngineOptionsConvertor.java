@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.service.model.ValidationEngineParameters;
 
 import java.io.File;
@@ -18,6 +19,7 @@ public class ValidationEngineOptionsConvertor {
     if (options.fhirVersion != null) {
       validationEngineParameters.setSv(VersionUtilities.getCurrentPackageVersion(options.fhirVersion));
     }
+
     // Boolean flags
     validationEngineParameters.setDoNative(options.doNative);
     validationEngineParameters.setRecursive(options.recursive);
@@ -41,11 +43,10 @@ public class ValidationEngineOptionsConvertor {
       validationEngineParameters.setAIService(options.aiService);
     }
 
+    String txServer = getTxServerFromOption(options);
+    validationEngineParameters.setTxServer(txServer);
     if (options.txServer != null) {
-      validationEngineParameters.setTxServer("n/a".equals(options.txServer) ? null : options.txServer);
       validationEngineParameters.setNoEcosystem(true);
-    } else {
-      validationEngineParameters.setTxServer("");
     }
 
     if (options.txLog != null) {
@@ -101,6 +102,14 @@ public class ValidationEngineOptionsConvertor {
     }
 
     return validationEngineParameters;
+  }
+
+  public static String getTxServerFromOption(ValidationEngineOptions options) {
+    if (options != null && options.txServer != null) {
+      return "n/a".equals(options.txServer) ? null : options.txServer;
+    } else {
+      return FhirSettings.getTxFhirProduction();
+    }
   }
 
   private static void checkFileAccess(String filePath, boolean checkExists, String optionName) {

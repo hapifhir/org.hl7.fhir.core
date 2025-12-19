@@ -184,7 +184,6 @@ public class ValidationEngineOptionsConvertorTest {
         new ValidationEngineOptions(),
         new ValidationEngineParameters()
           .setSnomedCT("900000000000207008")
-          .setTxServer("http://tx.fhir.org")
           .setLocale("en")
       ),
 

@@ -12,6 +12,8 @@ import java.util.concurrent.Callable;
 
 import javax.annotation.Nonnull;
 
+import static org.hl7.fhir.validation.cli.picocli.options.ValidationEngineOptionsConvertor.getTxServerFromOption;
+
 @Slf4j
 @CommandLine.Command(name = "transform",
   description = """
@@ -63,7 +65,11 @@ public class TransformCommand extends ValidationEngineCommand implements Callabl
       ? validationEngineOptions.mapLog
 
       : null;
-    String txServer = validationEngineOptions != null ? validationEngineOptions.txServer : "http://tx.fhir.org";
+
+
+    //TODO this is a hacky bit that replicates the logic of ValidationEngineOptionsConvertor. I suspect the transform
+    // method should just be getting this version directly from the ValidationEngine instead. -dotasek
+    String txServer = getTxServerFromOption(validationEngineOptions);
 
     TransformParameters transformParameters = TransformParameters.builder()
       .map(resolvedMap)
