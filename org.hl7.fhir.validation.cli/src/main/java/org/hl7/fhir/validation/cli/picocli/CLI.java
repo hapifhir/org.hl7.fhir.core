@@ -12,7 +12,9 @@ import picocli.CommandLine;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.hl7.fhir.validation.cli.JavaSystemProxyParamSetter.verifyProxySystemProperties;
@@ -22,11 +24,11 @@ public class CLI {
 
   protected ValidationService myValidationService;
 
-  protected CLI(ValidationService validationService) {
+  public CLI(ValidationService validationService) {
     this.myValidationService = validationService;
   }
 
-  protected int parseArgsAndExecuteCommand(String[] args) throws IllegalArgumentException{
+  public int parseArgsAndExecuteCommand(String[] args) throws IllegalArgumentException{
     Display.displayVersion(log);
     final String[] modifiedArgs = replaceDeprecatedArgs(args);
     ValidateCommand parentCommand = new ValidateCommand();
@@ -105,8 +107,89 @@ public class CLI {
     }
 
     newArgs = insertCodeGenIfNecessary(newArgs);
-
+    newArgs = addAdditionalParamsForIpsParam(newArgs);
     return newArgs;
+  }
+
+  private static String[] addAdditionalParamsForIpsParam(String[] args) {
+    List<String> res = new ArrayList<>();
+    for (String a : args) {
+      if (a.equals("-ips")) {
+        res.add("-version");
+        res.add("4.0");
+        res.add("-check-ips-codes");
+        res.add("-ig");
+        res.add("hl7.fhir.uv.ips#2.0.0-ballot");
+        res.add("-profile");
+        res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips");
+        res.add("-extension");
+        res.add("any");
+        res.add("-bundle");
+        res.add("Composition:0");
+        res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips");
+      } else if (a.equals("-ips:au")) {
+        res.add("-version");
+        res.add("4.0");
+        res.add("-check-ips-codes");
+        res.add("-ig");
+        res.add("hl7.fhir.au.ps#current");
+        res.add("-profile");
+        res.add("http://hl7.org.au/fhir/ps/StructureDefinition/au-ps-bundle");
+        res.add("-extension");
+        res.add("any");
+        res.add("-bundle");
+        res.add("Composition:0");
+        res.add("http://hl7.org.au/fhir/ps/StructureDefinition/au-ps-composition");
+      } else if (a.startsWith("-ips#")) {
+        res.add("-version");
+        res.add("4.0");
+        res.add("-check-ips-codes");
+        res.add("-ig");
+        res.add("hl7.fhir.uv.ips#"+a.substring(5));
+        res.add("-profile");
+        res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips");
+        res.add("-extension");
+        res.add("any");
+        res.add("-bundle");
+        res.add("Composition:0");
+        res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips");
+      } else if (a.startsWith("-ips$")) {
+        res.add("-version");
+        res.add("4.0");
+        res.add("-check-ips-codes");
+        res.add("-ig");
+        res.add("hl7.fhir.uv.ips#current$"+a.substring(5));
+        res.add("-profile");
+        res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips");
+        res.add("-extension");
+        res.add("any");
+        res.add("-bundle");
+        res.add("Composition:0");
+        res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips");
+      } else if (a.equals("-cda")) {
+        res.add("-version");
+        res.add("5.0");
+        res.add("-ig");
+        res.add("hl7.cda.uv.core#2.0.1-sd");
+      } else if (a.equals("-ccda")) {
+        res.add("-version");
+        res.add("5.0");
+        res.add("-ig");
+        res.add("hl7.cda.us.ccda#4.0.0");
+      } else if (a.equals("-view-definition")) {
+        res.add("-version");
+        res.add("5.0");
+        res.add("-ig");
+        res.add("org.sql-on-fhir.ig#current");
+      } else {
+        res.add(a);
+      }
+    }
+    String[] r = new String[res.size()];
+    for (int i = 0; i < res.size(); i++) {
+      r[i] = res.get(i);
+    }
+    return r;
   }
 
   /**
@@ -140,16 +223,7 @@ public class CLI {
     return args;
   }
 
-  public static void main(String[] args) {
-      CLI cli = new CLI(new ValidationService());
-      try {
-        int exitCode = cli.parseArgsAndExecuteCommand(args);
-        System.exit(exitCode);
-      } catch (IllegalArgumentException e) {
-        log.error("Encountered Illegal Argument", e);
-        System.exit(1);
-      }
-    }
+
 
   @SuppressWarnings("checkstyle:systemout")
   private static void checkCharsetAndWarnIfNotUTF8() {
