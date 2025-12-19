@@ -138,19 +138,20 @@ public class ValidateCommand extends ValidationEngineCommand {
 
     WatchParameters watchParameters = getWatchParameters();
 
+    log.info("Sources to validate: " + String.join("", getSources()));
+
     log.info("Validating");
     try {
       validationService.validateSources(validationEngine, new ValidateSourceParameters(instanceValidatorParameters, getSources(), output, watchParameters));
     } catch (Exception e) {
-      throw new RuntimeException(e);
+      log.error("Encountered an exception during validation", e);
+      return 1;
     }
 
     if (validationEngineOptions.advisorFile != null) {
       log.info("Note: Some validation issues might be hidden by the advisor settings in the file "+ validationEngineOptions.advisorFile);
     }
 
-    log.info("Locale: " + Locale.getDefault());
-    log.info("Sources to validate: " + String.join("", getSources()));
     return 0;
   }
 
