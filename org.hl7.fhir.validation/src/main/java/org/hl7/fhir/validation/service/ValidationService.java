@@ -305,7 +305,7 @@ public class ValidationService {
         : validateSourceParameters.instanceValidatorParameters();
 
     WatchParameters watchParameters = validateSourceParameters.watchParameters() == null
-        ? new WatchParameters()
+        ? new WatchParameters(ValidatorWatchMode.NONE, 1000, 100)
       : validateSourceParameters.watchParameters();
 
     if (!instanceValidatorParameters.getProfiles().isEmpty()) {
@@ -321,7 +321,7 @@ public class ValidationService {
 
     do {
       long start = System.currentTimeMillis();
-      Resource resource = validationEngine.validate(validateSourceParameters.sources(), instanceValidatorParameters.getProfiles(), refs, records, igLoader, watchParameters.getWatchMode() == ValidatorWatchMode.ALL, watchParameters.getWatchSettleTime(), first);
+      Resource resource = validationEngine.validate(validateSourceParameters.sources(), instanceValidatorParameters.getProfiles(), refs, records, igLoader, watchParameters.watchMode() == ValidatorWatchMode.ALL, watchParameters.watchSettleTime(), first);
       first = false;
       boolean statusNeeded = false;
       if (resource != null) {
@@ -396,13 +396,13 @@ public class ValidationService {
           validationEngine.getContext().getTxClientManager().getInternalLog().clear();
         }
       }
-      if (watchParameters.getWatchMode() != ValidatorWatchMode.NONE) {
+      if (watchParameters.watchMode() != ValidatorWatchMode.NONE) {
         if (statusNeeded) {
-          log.info("Watching for changes (" + Integer.toString(watchParameters.getWatchScanDelay()) + "ms cycle)");
+          log.info("Watching for changes (" + Integer.toString(watchParameters.watchScanDelay()) + "ms cycle)");
         }
-        Thread.sleep(watchParameters.getWatchScanDelay());
+        Thread.sleep(watchParameters.watchScanDelay());
       }
-    } while (watchParameters.getWatchMode() != ValidatorWatchMode.NONE);
+    } while (watchParameters.watchMode() != ValidatorWatchMode.NONE);
     
     if (ec > 0) {
       SystemExitManager.setError(1);
@@ -589,7 +589,7 @@ public class ValidationService {
 
     public void compile(ValidationEngine validationEngine, String map, String mapLog, List<String> sources, String output) throws Exception {
     if (sources.size() > 0)
-      throw new Exception("Cannot specify sources when compling transform (found " + sources + ")");
+      throw new Exception("Cannot specify sources when compiling transform (found " + sources + ")");
     if (map == null)
       throw new Exception("Must provide a map when compiling a transform");
     if (output == null)
