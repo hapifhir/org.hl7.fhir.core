@@ -260,7 +260,7 @@ public class GraphQLSchemaGenerator {
   }
 
   public void generateConnectionAccessQuery(Writer writer, List<SearchParameter> parameters, String name) throws IOException {
-    writer.write(name + "Conection(");
+    writer.write(name + "Connection(");
     param(writer, "_filter", "String", false, false);
     for (SearchParameter sp : parameters)
       param(writer, sp.getName().replace("-", "_"), getGqlname(requireNonNull(sp.getType().toCode())), true, true);
