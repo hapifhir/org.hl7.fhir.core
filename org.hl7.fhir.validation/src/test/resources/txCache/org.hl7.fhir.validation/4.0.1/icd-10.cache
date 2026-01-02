@@ -22,6 +22,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/icd-10",
   "version" : "2019-covid-expanded",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://hl7.org/fhir/sid/icd-10#C18.0 (\"Malignant neoplasm: Caecum\")]\"\r\n0 0     : 0ms  : Check \"http://hl7.org/fhir/sid/icd-10#C18.0\"\r\n15 15   : 15ms : Using CodeSystem \"http://hl7.org/fhir/sid/icd-10|2019-covid-expanded (from fhir.tx.support.r4#0.32.0)\" (content = complete)\r\n",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -55,6 +56,7 @@ v: {
   "error" : "Wrong Display Name 'Malignant neoplasm of pyriform sinus' for http://hl7.org/fhir/sid/icd-10#C12. Valid display is 'Malignant neoplasm of piriform sinus' (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"()\"\r\n15 0    : 0ms  : Validate \"[http://hl7.org/fhir/sid/icd-10#C12 (\"Malignant neoplasm of pyriform sinus\")]\"\r\n15 0    : 0ms  : Check \"http://hl7.org/fhir/sid/icd-10#C12\"\r\n15 0    : 0ms  : Using CodeSystem \"http://hl7.org/fhir/sid/icd-10|2019-covid-expanded (from fhir.tx.support.r4#0.32.0)\" (content = complete)\r\n",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",

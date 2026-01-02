@@ -19,6 +19,7 @@ v: {
   "error" : "A definition for CodeSystem 'http://fhir.mimic.mit.edu/CodeSystem/admit-source' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://fhir.mimic.mit.edu/CodeSystem/admit-source# (\"EMERGENCY ROOM\")]\"\r\n0 0     : 0ms  : Check \"http://fhir.mimic.mit.edu/CodeSystem/admit-source#\"\r\n0 0     : 0ms  : Didn't find CodeSystem \"http://fhir.mimic.mit.edu/CodeSystem/admit-source\"\r\n",
   "unknown-systems" : "http://fhir.mimic.mit.edu/CodeSystem/admit-source",
   "issues" : {
   "resourceType" : "OperationOutcome",

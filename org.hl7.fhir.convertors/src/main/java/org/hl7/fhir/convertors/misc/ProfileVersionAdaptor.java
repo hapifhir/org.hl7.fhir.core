@@ -247,9 +247,10 @@ public class ProfileVersionAdaptor {
     Map<String, ElementDefinition> children = new HashMap<>();
     String pathPrefix = ved.getPath();
     i++;
-    while (i < differential.getElement().size() && differential.getElement().get(i).getPath().startsWith(pathPrefix)) {
+    while (i < differential.getElement().size() && !differential.getElement().get(i).getPath().equals(pathPrefix) && differential.getElement().get(i).getPath().startsWith(pathPrefix)) {
       ElementDefinition ed = differential.getElement().get(i);
-      children.put(ed.getPath().substring(pathPrefix.length()+1), ed);
+      String childpath = ed.getPath().substring(pathPrefix.length() + 1);
+      children.put(childpath, ed);
       differential.getElement().remove(i);
     }
     return children;
@@ -425,7 +426,7 @@ public class ProfileVersionAdaptor {
     }
     if (VersionUtilities.isR4Plus(tCtxt.getVersion())) {
       switch (code) {
-      case "integer64" : return "version";
+      case "integer64" : return "string";
       default:
         return null;
       }

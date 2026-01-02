@@ -57,6 +57,8 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 public class PETests {
 
 
@@ -299,11 +301,13 @@ public class PETests {
   }
 
   @Test
-  public void dumpUSPatientCore() throws IOException {
-    load();
-    
-    PEDefinition pe = new PEBuilder(ctxt, PEElementPropertiesPolicy.NONE, false).buildPEDefinition("http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient");
-    dump(pe, "");
+  void dumpUSPatientCore() {
+    assertDoesNotThrow(() -> {
+      load();
+
+      PEDefinition pe = new PEBuilder(ctxt, PEElementPropertiesPolicy.NONE, false).buildPEDefinition("http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient");
+      dump(pe, "");
+    });
   }
 
 

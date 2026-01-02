@@ -14,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class ManagedWebAccessAuthTests {
 
@@ -210,7 +211,9 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
 
   @Test
   public void verifyAllowedPaths() {
-    //TODO the allowed paths cannot be set for now, meaning all will be allowed.
-    ManagedWebAccess.inAllowedPaths("http://www.anywhere.com");
+    assertDoesNotThrow(() -> {
+      //TODO the allowed paths cannot be set for now, meaning all will be allowed.
+      ManagedWebAccess.inAllowedPaths("http://www.anywhere.com");
+    });
   }
 }

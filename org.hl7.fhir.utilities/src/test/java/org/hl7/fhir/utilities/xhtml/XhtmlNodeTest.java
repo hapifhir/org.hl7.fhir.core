@@ -12,6 +12,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 public class XhtmlNodeTest {
 
   private static final Logger ourLog = LoggerFactory.getLogger(XhtmlNodeTest.class);
@@ -77,28 +79,36 @@ public class XhtmlNodeTest {
 
   @Test
   public void testParseXXE() {
-    XhtmlNode dt = new XhtmlNode();
-    dt.setValueAsString("<div xmlns=\"http://www.w3.org/1999/xhtml\">\n      <!DOCTYPE foo [ <!ENTITY xxe SYSTEM \"file://xxe.txt\">]>\n <p>This is some narrative  &xxe;</p>\n    </div>");
+    assertDoesNotThrow(() -> {
+      XhtmlNode dt = new XhtmlNode();
+      dt.setValueAsString("<div xmlns=\"http://www.w3.org/1999/xhtml\">\n      <!DOCTYPE foo [ <!ENTITY xxe SYSTEM \"file://xxe.txt\">]>\n <p>This is some narrative  &xxe;</p>\n    </div>");
+    });
   }
   
   @Test
-  public void testSerializable() throws IOException {
-    XhtmlNode node = new XhtmlNode();
-    node.setValueAsString("<?xml version=\"1.0\" encoding=\"UTF-8\"?><div xmlns=\"http://www.w3.org/1999/xhtml\">Test</div>");
+  public void testSerializable() {
+    assertDoesNotThrow(() -> {
+      XhtmlNode node = new XhtmlNode();
+      node.setValueAsString("<?xml version=\"1.0\" encoding=\"UTF-8\"?><div xmlns=\"http://www.w3.org/1999/xhtml\">Test</div>");
 
-    ByteArrayOutputStream bout = new ByteArrayOutputStream();
-    ObjectOutputStream oout = new ObjectOutputStream(bout);
-    oout.writeObject(node);
+      ByteArrayOutputStream bout = new ByteArrayOutputStream();
+      ObjectOutputStream oout = new ObjectOutputStream(bout);
+      oout.writeObject(node);
+    });
   }
   
   @Test
-  public void testParseBadChars() throws FHIRFormatError, IOException {
-    XhtmlNode x = new XhtmlParser().parse(BaseTestingUtilities.loadTestResource("xhtml", "bad-chars.html"), "div");
+  public void testParseBadChars() throws FHIRFormatError {
+    assertDoesNotThrow(() -> {
+      XhtmlNode x = new XhtmlParser().parse(BaseTestingUtilities.loadTestResource("xhtml", "bad-chars.html"), "div");
+    });
   }  
   
   @Test
-  public void testParseBadLink1() throws FHIRFormatError, IOException {
-    XhtmlNode x = new XhtmlParser().setMustBeWellFormed(false).parse(BaseTestingUtilities.loadTestResource("xhtml", "bad-link.html"), "div");
+  public void testParseBadLink1() throws FHIRFormatError {
+    assertDoesNotThrow(() -> {
+      XhtmlNode x = new XhtmlParser().setMustBeWellFormed(false).parse(BaseTestingUtilities.loadTestResource("xhtml", "bad-link.html"), "div");
+    });
   }
     
   @Test
@@ -107,9 +117,10 @@ public class XhtmlNodeTest {
   }
 
   @Test
-  public void testParseEntities() throws FHIRFormatError, IOException {
-    XhtmlNode x = new XhtmlParser().parse(BaseTestingUtilities.loadTestResource("xhtml", "entities.html"), "div");
-
+  public void testParseEntities() throws FHIRFormatError {
+    assertDoesNotThrow(() -> {
+      XhtmlNode x = new XhtmlParser().parse(BaseTestingUtilities.loadTestResource("xhtml", "entities.html"), "div");
+    });
   }
 
   @Test

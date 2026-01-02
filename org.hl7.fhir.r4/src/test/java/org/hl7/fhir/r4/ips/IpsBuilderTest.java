@@ -17,16 +17,19 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 public class IpsBuilderTest {
 
   @Test
   @Tag("excludedInSurefire")
   @DisplayName("Test IPS Generation")
-  void testIpsGeneration() throws URISyntaxException, FileNotFoundException, IOException {
-    FHIRToolingClient server = new FHIRToolingClient("https://hl7auconnectathon.salessbx.smiledigitalhealth.com/fhir-request", "FHIR-Validator");
-    Bundle bnd = IPSBuilder.generateIPS(server, "wang-li");
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "ips-gen.json")), bnd);
-    
+  void testIpsGeneration() throws URISyntaxException {
+    assertDoesNotThrow(() -> {
+      FHIRToolingClient server = new FHIRToolingClient("https://hl7auconnectathon.salessbx.smiledigitalhealth.com/fhir-request", "FHIR-Validator");
+      Bundle bnd = IPSBuilder.generateIPS(server, "wang-li");
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "ips-gen.json")), bnd);
+    });
   }
 
 }

@@ -21,6 +21,7 @@ v: {
   "error" : "A definition for CodeSystem 'http://fkcfhir.org/fhir/CodeSystem/FMCOrderSubType' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://fkcfhir.org/fhir/CodeSystem/FMCOrderSubType#Anemia (\"Anemia\")]\"\r\n16 16   : 16ms : Check \"http://fkcfhir.org/fhir/CodeSystem/FMCOrderSubType#Anemia\"\r\n16 0    : 16ms : Didn't find CodeSystem \"http://fkcfhir.org/fhir/CodeSystem/FMCOrderSubType\"\r\n",
   "unknown-systems" : "http://fkcfhir.org/fhir/CodeSystem/FMCOrderSubType",
   "issues" : {
   "resourceType" : "OperationOutcome",

@@ -102,7 +102,7 @@ public class RePackageTask extends ValidationEngineTask {
         .setJson(json)
         .setModes(rePackageParameters.getModeParams())
         .setNpmId(packageNameParameters.getPackageName())
-        .addPackages(validationEngineParameters.getIgs());
+        .addPackages(rePackageParameters.getPackages());
 
 
       if (rePackageParameters.getScope() != null) {
@@ -170,7 +170,6 @@ public class RePackageTask extends ValidationEngineTask {
     }
     return ExpansionPackageGeneratorOutputType.FOLDER;
   }
-
 
 
   private static CanonicalResource getCanonicalResource(String canonical, NpmPackage npmPackage) throws Exception {
