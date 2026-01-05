@@ -408,11 +408,16 @@ public class FilesystemPackageManagerTests {
       t.start();
       threads.add(t);
     }
+    final int threadTimeout = 6250;
     threads.forEach(t -> {
       try {
-        t.join();
+        t.join(threadTimeout);
       } catch (InterruptedException e) {
-
+        System.err.println("Thread " + t + " timed out after " + threadTimeout + " milliseconds. Printing stack");
+        for (StackTraceElement element : t.getStackTrace()) {
+          // Using the StackTraceElement's toString() method for formatted output
+          System.err.println(element.toString());
+        }
       }
     });
 
