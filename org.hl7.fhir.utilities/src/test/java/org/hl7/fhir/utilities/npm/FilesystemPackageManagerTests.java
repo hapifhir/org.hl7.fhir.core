@@ -413,10 +413,12 @@ public class FilesystemPackageManagerTests {
       try {
         t.join(threadTimeout);
       } catch (InterruptedException e) {
-        System.err.println("Thread " + t + " timed out after " + threadTimeout + " milliseconds. Printing stack");
+        e.printStackTrace();
+      }
+      if (t.isAlive()) {
+        System.err.println("Thread " + t + " alive after " + threadTimeout + " milliseconds. Printing stack");
         for (StackTraceElement element : t.getStackTrace()) {
-          // Using the StackTraceElement's toString() method for formatted output
-          System.err.println(element.toString());
+          System.err.println(element);
         }
       }
     });
