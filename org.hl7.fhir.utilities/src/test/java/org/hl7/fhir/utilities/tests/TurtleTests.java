@@ -1,10 +1,8 @@
 package org.hl7.fhir.utilities.tests;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import org.hl7.fhir.utilities.turtle.Turtle;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -46,11 +44,13 @@ public class TurtleTests {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "first.nt"), true);
   }
 
-  //  @Test
-//  public void test_first2() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "first.ttl"), true);
-//  }
-//  @Test
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_first2() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "first.ttl"), true);
+  }
+
+  @Test
   public void test_HYPHEN_MINUS_in_localNameNT() throws Exception {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "HYPHEN_MINUS_in_localName.nt"), true);
   }
@@ -350,10 +350,12 @@ public class TurtleTests {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "literal_with_escaped_LINE_FEED.ttl"), true);
   }
 
-  //  @Test
-//  public void test_literal_with_FORM_FEEDNT() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "literal_with_FORM_FEED.nt"), true);
-//  }
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_literal_with_FORM_FEEDNT() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "literal_with_FORM_FEED.nt"), true);
+  }
+
   @Test
   public void test_literal_with_FORM_FEED() throws Exception {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "literal_with_FORM_FEED.ttl"), true);
@@ -429,10 +431,12 @@ public class TurtleTests {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "LITERAL1_all_punctuation.ttl"), true);
   }
 
-  //  @Test
-//  public void test_LITERAL1_ascii_boundariesNT() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "LITERAL1_ascii_boundaries.nt"), true);
-//  }
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_LITERAL1_ascii_boundariesNT() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "LITERAL1_ascii_boundaries.nt"), true);
+  }
+
   @Test
   public void test_LITERAL1_ascii_boundaries() throws Exception {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "LITERAL1_ascii_boundaries.ttl"), true);
@@ -483,15 +487,18 @@ public class TurtleTests {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "localName_with_assigned_nfc_PN_CHARS_BASE_character_boundaries.ttl"), true);
   }
 
-  // don't need to support property names with ':'
-//  @Test
-//  public void test_localname_with_COLONNT() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "localname_with_COLON.nt"), true);
-//  }
-//  @Test
-//  public void test_localname_with_COLON() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "localname_with_COLON.ttl"), true);
-//  }
+  @Test
+  @Disabled("Disabled in initial repository commit. don't need to support property names with ':' ")
+  public void test_localname_with_COLONNT() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "localname_with_COLON.nt"), true);
+  }
+
+  @Test
+  @Disabled("Disabled in initial repository commit. don't need to support property names with ':' ")
+  public void test_localname_with_COLON() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "localname_with_COLON.ttl"), true);
+  }
+
   @Test
   public void test_localName_with_leading_digitNT() throws Exception {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "localName_with_leading_digit.nt"), true);
@@ -568,8 +575,9 @@ public class TurtleTests {
   }
 
   @Test
+  @Disabled("Disabled in initial repository commit")
   public void test_number_sign_following_localName() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "number_sign_following_localName.ttl"), true);
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "number_sign_following_localName.ttl"), true);
   }
 
   @Test
@@ -577,10 +585,12 @@ public class TurtleTests {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "number_sign_following_PNAME_NS.nt"), true);
   }
 
-  //  @Test
-//  public void test_number_sign_following_PNAME_NS() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "number_sign_following_PNAME_NS.ttl"), true);
-//  }
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_number_sign_following_PNAME_NS() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "number_sign_following_PNAME_NS.ttl"), true);
+  }
+
   @Test
   public void test_numeric_with_leading_0NT() throws Exception {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "numeric_with_leading_0.nt"), true);
@@ -616,10 +626,12 @@ public class TurtleTests {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "percent_escaped_localName.nt"), true);
   }
 
-  //  @Test
-//  public void test_percent_escaped_localName() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "percent_escaped_localName.ttl"), true);
-//  }
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_percent_escaped_localName() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "percent_escaped_localName.ttl"), true);
+  }
+
   @Test
   public void test_positive_numericNT() throws Exception {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "positive_numeric.nt"), true);
@@ -640,10 +652,12 @@ public class TurtleTests {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "predicateObjectList_with_two_objectLists.ttl"), true);
   }
 
-  //  @Test
-//  public void test_prefix_only_IRI() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "prefix_only_IRI.ttl"), true);
-//  }
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_prefix_only_IRI() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "prefix_only_IRI.ttl"), true);
+  }
+
   @Test
   public void test_prefix_reassigned_and_usedNT() throws Exception {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "prefix_reassigned_and_used.nt"), true);
@@ -699,10 +713,12 @@ public class TurtleTests {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "reserved_escaped_localName.nt"), true);
   }
 
-  //  @Test
-//  public void test_reserved_escaped_localName() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "reserved_escaped_localName.ttl"), true);
-//  }
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_reserved_escaped_localName() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "reserved_escaped_localName.ttl"), true);
+  }
+
   @Test
   public void test_sole_blankNodePropertyList() throws Exception {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "sole_blankNodePropertyList.ttl"), true);
@@ -733,10 +749,12 @@ public class TurtleTests {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-eval-bad-03.ttl"), false);
   }
 
-  //  @Test
-//  public void test_turtle_eval_bad_04() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-eval-bad-04.ttl"), false);
-//  }
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_turtle_eval_bad_04() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-eval-bad-04.ttl"), false);
+  }
+
   @Test
   public void test_turtle_eval_struct_01NT() throws Exception {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-eval-struct-01.nt"), true);
@@ -1042,10 +1060,12 @@ public class TurtleTests {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-bad-base-03.ttl"), false);
   }
 
-  //  @Test
-//  public void test_turtle_syntax_bad_blank_label_dot_end() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-bad-blank-label-dot-end.ttl"), false);
-//  }
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_turtle_syntax_bad_blank_label_dot_end() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-bad-blank-label-dot-end.ttl"), false);
+  }
+
   @Test
   public void test_turtle_syntax_bad_esc_01() throws Exception {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-bad-esc-01.ttl"), false);
@@ -1151,10 +1171,12 @@ public class TurtleTests {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-bad-n3-extras-05.ttl"), false);
   }
 
-  //  @Test
-//  public void test_turtle_syntax_bad_n3_extras_06() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-bad-n3-extras-06.ttl"), false);
-//  }
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_turtle_syntax_bad_n3_extras_06() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-bad-n3-extras-06.ttl"), false);
+  }
+
   @Test
   public void test_turtle_syntax_bad_n3_extras_07() throws Exception {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-bad-n3-extras-07.ttl"), false);
@@ -1240,10 +1262,12 @@ public class TurtleTests {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-bad-pname-02.ttl"), false);
   }
 
-  //  @Test
-//  public void test_turtle_syntax_bad_pname_03() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-bad-pname-03.ttl"), false);
-//  }
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_turtle_syntax_bad_pname_03() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-bad-pname-03.ttl"), false);
+  }
+
   @Test
   public void test_turtle_syntax_bad_prefix_01() throws Exception {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-bad-prefix-01.ttl"), false);
@@ -1389,10 +1413,12 @@ public class TurtleTests {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-bad-struct-17.ttl"), true);
   }
 
-  //  @Test
-//  public void test_turtle_syntax_bad_uri_01() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-bad-uri-01.ttl"), false);
-//  }
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_turtle_syntax_bad_uri_01() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-bad-uri-01.ttl"), false);
+  }
+
   @Test
   public void test_turtle_syntax_bad_uri_02() throws Exception {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-bad-uri-02.ttl"), false);
@@ -1403,14 +1429,18 @@ public class TurtleTests {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-bad-uri-03.ttl"), false);
   }
 
-  //  @Test
-//  public void test_turtle_syntax_bad_uri_04() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-bad-uri-04.ttl"), false);
-//  }
-//  @Test
-//  public void test_turtle_syntax_bad_uri_05() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-bad-uri-05.ttl"), false);
-//  }
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_turtle_syntax_bad_uri_04() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-bad-uri-04.ttl"), false);
+  }
+
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_turtle_syntax_bad_uri_05() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-bad-uri-05.ttl"), false);
+  }
+
   @Test
   public void test_turtle_syntax_base_01() throws Exception {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-base-01.ttl"), true);
@@ -1536,22 +1566,30 @@ public class TurtleTests {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-lists-02.ttl"), true);
   }
 
-  //  @Test
-//  public void test_turtle_syntax_lists_03() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-lists-03.ttl"), true);
-//  }
-//  @Test
-//  public void test_turtle_syntax_lists_04() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-lists-04.ttl"), true);
-//  }
-//  @Test
-//  public void test_turtle_syntax_lists_05() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-lists-05.ttl"), true);
-//  }
-//  @Test
-//  public void test_turtle_syntax_ln_colons() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-ln-colons.ttl"), true);
-//  }
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_turtle_syntax_lists_03() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-lists-03.ttl"), true);
+  }
+
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_turtle_syntax_lists_04() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-lists-04.ttl"), true);
+  }
+
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_turtle_syntax_lists_05() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-lists-05.ttl"), true);
+  }
+
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_turtle_syntax_ln_colons() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-ln-colons.ttl"), true);
+  }
+
   @Test
   public void test_turtle_syntax_ln_dots() throws Exception {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-ln-dots.ttl"), false);
@@ -1582,10 +1620,12 @@ public class TurtleTests {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-number-04.ttl"), true);
   }
 
-  //  @Test
-//  public void test_turtle_syntax_number_05() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-number-05.ttl"), true);
-//  }
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_turtle_syntax_number_05() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-number-05.ttl"), true);
+  }
+
   @Test
   public void test_turtle_syntax_number_06() throws Exception {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-number-06.ttl"), true);
@@ -1596,10 +1636,12 @@ public class TurtleTests {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-number-07.ttl"), true);
   }
 
-  //  @Test
-//  public void test_turtle_syntax_number_08() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-number-08.ttl"), true);
-//  }
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_turtle_syntax_number_08() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-number-08.ttl"), true);
+  }
+
   @Test
   public void test_turtle_syntax_number_09() throws Exception {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-number-09.ttl"), true);
@@ -1635,10 +1677,12 @@ public class TurtleTests {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-prefix-01.ttl"), true);
   }
 
-  //  @Test
-//  public void test_turtle_syntax_prefix_02() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-prefix-02.ttl"), true);
-//  }
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_turtle_syntax_prefix_02() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-prefix-02.ttl"), true);
+  }
+
   @Test
   public void test_turtle_syntax_prefix_03() throws Exception {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-prefix-03.ttl"), true);
@@ -1649,14 +1693,18 @@ public class TurtleTests {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-prefix-04.ttl"), true);
   }
 
-  //  @Test
-//  public void test_turtle_syntax_prefix_05() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-prefix-05.ttl"), true);
-//  }
-//  @Test
-//  public void test_turtle_syntax_prefix_06() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-prefix-06.ttl"), true);
-//  }
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_turtle_syntax_prefix_05() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-prefix-05.ttl"), true);
+  }
+
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_turtle_syntax_prefix_06() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-prefix-06.ttl"), true);
+  }
+
   @Test
   public void test_turtle_syntax_prefix_07() throws Exception {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "turtle-syntax-prefix-07.ttl"), true);
@@ -1866,10 +1914,12 @@ public class TurtleTests {
   public void test_blankNodePropertyList_as_subjectNT() throws Exception {
     doTest(BaseTestingUtilities.loadTestResource("turtle", "blankNodePropertyList_as_subject.nt"), true);
   }
-//  @Test
-//  public void test_blankNodePropertyList_as_subject() throws Exception {
-//    doTest(BaseTestingUtilities.loadTestResource("turtle", "blankNodePropertyList_as_subject.ttl"), true);
-//  }
+
+  @Test
+  @Disabled("Disabled in initial repository commit")
+  public void test_blankNodePropertyList_as_subject() throws Exception {
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "blankNodePropertyList_as_subject.ttl"), true);
+  }
 
   @Test
   public void test_blankNodePropertyList_containing_collectionNT() throws Exception {
