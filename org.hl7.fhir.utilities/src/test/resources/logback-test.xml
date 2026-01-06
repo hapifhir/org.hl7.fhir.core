@@ -5,7 +5,7 @@
 
 	<appender name="CONSOLE_APPENDER" class="ch.qos.logback.core.ConsoleAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>INFO</level>
+			<level>DEBUG</level> <!--FIXME switch back to INFO after fixing issues -->
 		</filter>
 		<encoder>
 			<pattern>%msg%n</pattern>
@@ -13,7 +13,7 @@
 		<immediateFlush>true</immediateFlush>
 	</appender>
 
-	<root level="info">
+	<root level="debug"> <!--FIXME switch back to info after fixing issues -->
 		<appender-ref ref="CONSOLE_APPENDER" />
 	</root>
 </configuration>

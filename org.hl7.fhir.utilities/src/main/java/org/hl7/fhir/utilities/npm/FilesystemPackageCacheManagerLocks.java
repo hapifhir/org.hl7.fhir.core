@@ -107,11 +107,11 @@ public class FilesystemPackageCacheManagerLocks {
       return lock;
     }
 
-    public <T> T doWriteWithLock(FilesystemPackageCacheManager.CacheLockFunction<T> f) throws IOException {
+    public <T> T doWriteWithLock(FilesystemPackageCacheManager.CacheLockFunction<T> function) throws IOException {
       lock.writeLock().lock();
       T result = null;
       try {
-        result = f.get();
+        result = function.get();
       } finally {
         lock.writeLock().unlock();
       }
@@ -146,6 +146,7 @@ public class FilesystemPackageCacheManagerLocks {
 
     private void checkForLockFileWaitForDeleteIfExists(File lockFile, @Nonnull LockParameters lockParameters) throws IOException {
       if (!lockFile.exists()) {
+        log.debug("checked for lockFile: does not exist");
         return;
       }
 
@@ -177,25 +178,33 @@ public class FilesystemPackageCacheManagerLocks {
      interrupted, an IOException is thrown.
      */
     private void waitForLockFileDeletion(File lockFile, @Nonnull LockParameters lockParameters) throws IOException, InterruptedException {
-
+      log.debug("waiting for lockFile deletion: " + lockFile.getName());
       try (WatchService watchService = FileSystems.getDefault().newWatchService()) {
         Path dir = lockFile.getParentFile().toPath();
         dir.register(watchService, StandardWatchEventKinds.ENTRY_DELETE);
 
         WatchKey key = watchService.poll(lockParameters.lockTimeoutTime, lockParameters.lockTimeoutTimeUnit);
         if (key == null) {
+          log.debug("watch key is null for lockFile: " + lockFile.getName());
           // It is possible that the lock file is deleted before the watch service is registered, so if we timeout at
           // this point, we should check if the lock file still exists.
           if (lockFile.exists()) {
             throw new TimeoutException("Timeout waiting for lock file deletion: " + lockFile.getName());
           }
         } else {
+          log.debug("watch key is watching for lockFile deletion: " + lockFile.getName());
+
           for (WatchEvent<?> event : key.pollEvents()) {
             WatchEvent.Kind<?> kind = event.kind();
             if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
+              log.debug("watch saw lockFile deletion: " + lockFile.getName());
+
               Path deletedFilePath = (Path) event.context();
               if (deletedFilePath.toString().equals(lockFile.getName())) {
+                key.cancel();
                 return;
+              } else {
+                log.error("watch saw lockFile deletion for " +deletedFilePath + " which does not match " + lockFile.getName());
               }
             }
             key.reset();
@@ -204,6 +213,7 @@ public class FilesystemPackageCacheManagerLocks {
       } catch (TimeoutException e) {
         throw new IOException("Package cache timed out waiting for lock.", e);
       }
+      log.error("waiting for lockFile deletion ended in uncertain state: " + lockFile.getName());
     }
 
 

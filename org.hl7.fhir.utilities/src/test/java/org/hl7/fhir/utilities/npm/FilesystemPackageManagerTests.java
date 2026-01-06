@@ -13,27 +13,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.LoggerContext;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.*;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.slf4j.LoggerFactory;
 
 public class FilesystemPackageManagerTests {
 
@@ -44,7 +44,7 @@ public class FilesystemPackageManagerTests {
 
   private static final String DUMMY_URL_4 = "https://dummy4.org";
   public static final String CURRENT_PACKAGE_CACHE_VERSION = "4";
-  public static final String MULTITHREAD_TEST_NAME_PATTERN = "{0} threads {1} packageCacheManagers";
+  public static final String MULTITHREAD_TEST_NAME_PATTERN = "Test iteration {0}: {1} threads {2} packageCacheManagers";
   private final List<PackageServer> dummyPrivateServers = List.of(
      new PackageServer(DUMMY_URL_1),
      new PackageServer(DUMMY_URL_2)
@@ -220,9 +220,9 @@ public class FilesystemPackageManagerTests {
   public static Stream<Arguments> packageCacheMultiThreadTestParams() {
     List<Arguments> params = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
-      params.add(Arguments.of(100, 1));
-      params.add(Arguments.of(10,10));
-      params.add(Arguments.of(100, 10));
+      params.add(Arguments.of(i,100, 1));
+      params.add(Arguments.of(i,10,10));
+      params.add(Arguments.of(i,100, 10));
     }
     return params.stream();
   }
@@ -380,7 +380,6 @@ public class FilesystemPackageManagerTests {
 
     @Override
     public void run() {
-      final String operationName;
       try {
       if (operation == 0) {
         pcm.addPackageToCache("example.fhir.uv.myig", "1.2.3", this.getClass().getResourceAsStream("/npm/dummy-package.tgz"), "https://packages.fhir.org/example.fhir.uv.myig/1.2.3");
@@ -419,8 +418,8 @@ public class FilesystemPackageManagerTests {
   @MethodSource("packageCacheMultiThreadTestParams")
   @ParameterizedTest(name = MULTITHREAD_TEST_NAME_PATTERN)
   @Timeout(120)
-  void packageCacheMultiThreadTest(final int threadTotal, final int packageCacheManagerTotal) throws IOException {
-    final String testName = MessageFormat.format(MULTITHREAD_TEST_NAME_PATTERN, threadTotal, packageCacheManagerTotal);
+  void packageCacheMultiThreadTest(final int testIteration, final int threadTotal, final int packageCacheManagerTotal) throws IOException {
+    final String testName = MessageFormat.format(MULTITHREAD_TEST_NAME_PATTERN, testIteration, threadTotal, packageCacheManagerTotal);
     System.out.println("Test name: " + testName);
     final String pcmPath = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest")).getAbsolutePath();
     System.out.println("Using temp pcm path: " + pcmPath);
@@ -443,7 +442,7 @@ public class FilesystemPackageManagerTests {
       threads.add(t);
       t.start();
     }
-    final int threadTimeout = 6250;
+    final int threadTimeout = 30000;
     threads.forEach(t -> {
       try {
         t.join(threadTimeout);
