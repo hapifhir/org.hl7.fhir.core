@@ -355,7 +355,7 @@ public class FilesystemPackageCacheManagerLocks {
 
   private static void logSystemSpecificFileNotFoundException(FileNotFoundException e) {
     if (SystemUtils.IS_OS_WINDOWS && e.getMessage().contains("The process cannot access the file because it is being used by another process")) {
-      log.trace("Windows reported a FileNotFoundException whose actual cause is that the file is locked by another process: {}", String.valueOf(e));
+      log.debug("Windows reported a FileNotFoundException whose actual cause is that the file is locked by another process: {}", String.valueOf(e));
     } else {
       log.warn("Unexpected FileNotFoundException while evaluating is a lock file: ", e);
     }
