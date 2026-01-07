@@ -291,13 +291,16 @@ public class FilesystemPackageCacheManagerLocks {
           final File toDelete;
 
           // Windows based file systems do not allow renames for 'open' files so we cannot do this.
+          //FIXME remove this log once this PR is complete.
+          log.debug("In finally block. Is this windows?: " + SystemUtils.IS_OS_WINDOWS);
           if (!SystemUtils.IS_OS_WINDOWS) {
             log.debug("Attempting lockFile removal by move: " + lockFile.toPath());
             toDelete = ManagedFileAccess.file(File.createTempFile(lockFile.getName(), LOCK_DELETION_EXTENSION, lockFile.getParentFile()).getAbsolutePath());
             Files.move(lockFile.toPath(), toDelete.toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
             log.debug("Removed lockFile by moving from: " + lockFile.toPath() + " to " + toDelete.toPath());
           } else {
-            toDelete = null;
+            //toDelete = null;
+            toDelete = lockFile;
           }
 
           fileLock.release();
@@ -305,9 +308,9 @@ public class FilesystemPackageCacheManagerLocks {
           // Non-Windows file systems will have atomically renamed the file at this point, so we should clean it up.
           if (toDelete != null) {
             try {
-              log.debug("Attempting lockFile removal (Windows): " + toDelete.toPath());
+              log.debug("Attempting lockFile deletion " + toDelete.toPath());
               Files.delete(toDelete.toPath());
-              log.debug("Removed lockFile by deleting (Windows): " + toDelete.toPath());
+              log.debug("Removed lockFile by deleting " + toDelete.toPath());
             } catch (IOException e) {
               log.warn("Error while deleting lock file: {} File will be set to delete on exit", toDelete.getAbsolutePath(), e);
               toDelete.deleteOnExit();
