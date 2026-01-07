@@ -290,7 +290,8 @@ public class FilesystemPackageCacheManagerLocks {
         } finally {
           final File toDelete;
 
-          // Windows based file systems do not allow renames for 'open' files so we cannot do this.
+          // Windows based file systems do not allow renames for 'open' files, but others do, and it is atomic. So do a
+          // rename if we can before releasing our lock.
           //FIXME remove this log once this PR is complete.
           log.debug("In finally block. Is this windows?: " + SystemUtils.IS_OS_WINDOWS);
           if (!SystemUtils.IS_OS_WINDOWS) {
@@ -299,22 +300,20 @@ public class FilesystemPackageCacheManagerLocks {
             Files.move(lockFile.toPath(), toDelete.toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
             log.debug("Removed lockFile by moving from: " + lockFile.toPath() + " to " + toDelete.toPath());
           } else {
-            //toDelete = null;
             toDelete = lockFile;
           }
 
           fileLock.release();
 
-          // Non-Windows file systems will have atomically renamed the file at this point, so we should clean it up.
-          if (toDelete != null) {
-            try {
-              log.debug("Attempting lockFile deletion " + toDelete.toPath());
-              Files.delete(toDelete.toPath());
-              log.debug("Removed lockFile by deleting " + toDelete.toPath());
-            } catch (IOException e) {
-              log.warn("Error while deleting lock file: {} File will be set to delete on exit", toDelete.getAbsolutePath(), e);
-              toDelete.deleteOnExit();
-            }
+          // Non-Windows file systems will have atomically renamed the file at this point, so we should delete the file it was named to.
+          // Windows file systems will have to delete the original file itself.
+          try {
+            log.debug("Attempting lockFile deletion " + toDelete.toPath());
+            Files.delete(toDelete.toPath());
+            log.debug("Removed lockFile by deleting " + toDelete.toPath());
+          } catch (IOException e) {
+            log.warn("Error while deleting lock file: {} File will be set to delete on exit", toDelete.getAbsolutePath(), e);
+            toDelete.deleteOnExit();
           }
 
           lock.writeLock().unlock();
