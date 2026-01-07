@@ -9,19 +9,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
-import ch.qos.logback.classic.LoggerContext;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -33,7 +27,6 @@ import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.slf4j.LoggerFactory;
 
 public class FilesystemPackageManagerTests {
 
@@ -426,8 +419,8 @@ public class FilesystemPackageManagerTests {
     FilesystemPackageCacheManager[] packageCacheManagers = new FilesystemPackageCacheManager[packageCacheManagerTotal];
     Random rand = new Random();
 
-    List<Thread> threads = new ArrayList<>();
-    List<MultiThreadTestRunnable> runnables = new ArrayList<>();
+    Map<Thread, MultiThreadTestRunnable> threads = new HashMap<>();
+
     for (int i = 0; i < threadTotal; i++) {
       final int randomPCM = rand.nextInt(packageCacheManagerTotal);
       if (packageCacheManagers[randomPCM] == null) {
@@ -437,32 +430,32 @@ public class FilesystemPackageManagerTests {
 
       final int randomOperation = rand.nextInt(4);
       MultiThreadTestRunnable runnable = new MultiThreadTestRunnable(pcm, testName, i, randomOperation);
-      runnables.add(runnable);
+
       Thread t = new Thread(runnable);
-      threads.add(t);
+      threads.put(t, runnable);
       t.start();
     }
     final int threadTimeout = 30000;
-    threads.forEach(t -> {
+    threads.forEach((thread, aliveRunnable) -> {
       try {
-        t.join(threadTimeout);
+        thread.join(threadTimeout);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      if (t.isAlive()) {
-        System.err.println("Thread " + t + " alive after " + threadTimeout + " milliseconds. Printing stack");
-        for (StackTraceElement element : t.getStackTrace()) {
+      if (thread.isAlive()) {
+        System.err.println("Thread with Runnable " + aliveRunnable.getRunnableName() + " alive after " + threadTimeout + " milliseconds. Printing stack");
+        for (StackTraceElement element : thread.getStackTrace()) {
           System.err.println(element);
         }
         System.err.println("State of other threads:");
-        for (MultiThreadTestRunnable runnable : runnables) {
+        for (MultiThreadTestRunnable runnable : threads.values()) {
           System.err.println("  " + runnable.getRunnableName() + ": " + runnable.successful);
         }
         fail();
       }
     });
 
-    for (MultiThreadTestRunnable runnable : runnables) {
+    for (MultiThreadTestRunnable runnable : threads.values()) {
       assertThat(runnable.successful).isTrue();
     }
   }
