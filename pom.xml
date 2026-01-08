@@ -21,6 +21,7 @@
         <commons_lang3_version>3.18.0</commons_lang3_version>
         <commons_compress_version>1.27.1</commons_compress_version>
         <commons_io_version>2.17.0</commons_io_version>
+        <commons_text_version>1.15.0</commons_text_version>
         <guava_version>32.0.1-jre</guava_version>
         <gson_version>2.13.1</gson_version>
         <hapi_fhir_version>8.4.0</hapi_fhir_version>
@@ -157,7 +158,6 @@
                 <version>0.21.0</version>
             </dependency>
             <dependency>
-
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons_lang3_version}</version>
@@ -171,6 +171,11 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons_io_version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-text</artifactId>
+                <version>${commons_text_version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.rjeschke</groupId>
