@@ -292,9 +292,7 @@ public class FilesystemPackageCacheManagerLocks {
 
           // Windows based file systems do not allow renames for 'open' files, but others do, and it is atomic. So do a
           // rename if we can before releasing our lock.
-          //FIXME remove this log once this PR is complete.
-          log.debug("In finally block. Is this windows?: " + SystemUtils.IS_OS_WINDOWS);
-          if (!SystemUtils.IS_OS_WINDOWS) {
+         if (!SystemUtils.IS_OS_WINDOWS) {
             log.debug("Attempting lockFile removal by move: " + lockFile.toPath());
             toDelete = ManagedFileAccess.file(File.createTempFile(lockFile.getName(), LOCK_DELETION_EXTENSION, lockFile.getParentFile()).getAbsolutePath());
             Files.move(lockFile.toPath(), toDelete.toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
