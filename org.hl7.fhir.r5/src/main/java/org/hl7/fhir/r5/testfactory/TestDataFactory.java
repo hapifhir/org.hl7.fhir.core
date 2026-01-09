@@ -409,11 +409,11 @@ public class TestDataFactory {
       
       logStrings("columns", dt.columns);
       if ("true".equals(details.asString( "bundle"))) {
-        byte[] data = runBundle(template, dt);
+        byte[] data = runBundle(template, dt, tables);
         FileUtilities.bytesToFile(data, Utilities.path(rootFolder, details.asString( "filename")));
       } else {
         for (List<String> row : dt.rows) { 
-          byte[] data = runInstance(template, dt.columns, row);
+          byte[] data = runInstance(template, dt.columns, row, tables);
           FileUtilities.bytesToFile(data, Utilities.path(rootFolder, getFileName(details.asString( "filename"), dt.columns, row)));
         }
       }
@@ -436,9 +436,10 @@ public class TestDataFactory {
     return name;
   }
 
-  private byte[] runInstance(LiquidDocument template, List<String> columns, List<String> row) throws JsonException, IOException {
+  private byte[] runInstance(LiquidDocument template, List<String> columns, List<String> row, Map<String, DataTable> tables) throws JsonException, IOException {
     logStrings("row", row);
-    BaseTableWrapper base = BaseTableWrapper.forRow(columns, row);
+    BaseTableWrapper base = BaseTableWrapper.forRow(columns, row).setTables(tables);
+    
     String cnt = liquid.evaluate(template, base, this).trim();
     if (format == FhirFormat.JSON) {
       JsonObject j = JsonParser.parseObject(cnt, true);
@@ -448,12 +449,12 @@ public class TestDataFactory {
     }
   }
 
-  private byte[] runBundle(LiquidDocument template, DataTable dt) throws JsonException, IOException {
+  private byte[] runBundle(LiquidDocument template, DataTable dt, Map<String, DataTable> tables) throws JsonException, IOException {
     Element bundle = Manager.parse(context, bundleShell(), FhirFormat.JSON).get(0).getElement();
     bundle.makeElement("id").setValue(UUID.randomUUID().toString().toLowerCase());
     
     for (List<String> row : dt.rows) { 
-      byte[] data = runInstance(template, dt.columns, row);
+      byte[] data = runInstance(template, dt.columns, row, tables);
       Element resource = Manager.parse(context, new ByteArrayInputStream(data), format).get(0).getElement();
       Element be = bundle.makeElement("entry");
       be.makeElement("fullUrl").setValue(Utilities.pathURL(canonical, "test", resource.fhirType(), resource.getIdBase()));
