@@ -782,7 +782,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       for (String pf : listPackages()) {
         if (ManagedFileAccess.file(Utilities.path(cacheFolder, pf, "package", "package.json")).exists()) {
           JsonObject npm = JsonParser.parseObjectFromFile(Utilities.path(cacheFolder, pf, "package", "package.json"));
-          if (canonicalUrl.equals(npm.asString("canonical"))) {
+          if (canonicalUrl.contains(npm.asString("canonical"))) {
             return npm.asString("name");
           }
         }
