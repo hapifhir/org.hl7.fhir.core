@@ -2423,6 +2423,11 @@ msgstr ""
 msgid "Recorded"
 msgstr ""
 
+# PROV_REFERENCE
+#: PROV_REFERENCE
+msgid "This {0} is referenced from the following provenance resources:"
+msgstr ""
+
 # PROV_ROLE
 #: PROV_ROLE
 msgid "Role"
