@@ -739,7 +739,7 @@ public class XhtmlToMarkdownConverter {
   private void process(StringBuilder b, XhtmlNode x, boolean trim, boolean allowParagraphs, boolean inPara) {
     for (XhtmlNode c : x.getChildNodes()) {
       if (c.getNodeType() == NodeType.Text) {
-        addText(b, true, c.getContent());
+        addText(b, false, c.getContent());
       } else if (c.getName() != null) {
         part(b, c, trim, allowParagraphs, inPara);
       }
