@@ -5,6 +5,7 @@ import java.util.*;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
@@ -75,7 +76,7 @@ public class ValidationResult {
         }
       }
       for (OperationOutcomeIssueComponent issue : issues) {
-        if (issue.getSeverity() == OperationOutcome.IssueSeverity.WARNING && messages.isEmpty()) {
+        if (issue.getSeverity() == OperationOutcome.IssueSeverity.WARNING && messages.isEmpty() && !issue.hasUserData(UserDataNames.NO_MESSAGE)) {
           String msg = issue.getDetails().getText();
           if (!this.messages.contains(msg)) {
             this.messages.add(msg);
@@ -83,7 +84,7 @@ public class ValidationResult {
         }
       }
       for (OperationOutcomeIssueComponent issue : issues) {
-        if (messages.isEmpty()) {
+        if (messages.isEmpty() && !issue.hasUserData(UserDataNames.NO_MESSAGE)) {
           String msg = issue.getDetails().getText();
           if (!this.messages.contains(msg)) {
             this.messages.add(msg);
@@ -190,8 +191,9 @@ public class ValidationResult {
     this.system = system;
   }
 
-  public void setVersion(String version) {
+  public ValidationResult setVersion(String version) {
     this.version = version;
+    return this;
   }
 
   public String getCode() {
