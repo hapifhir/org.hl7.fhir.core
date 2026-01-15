@@ -18,10 +18,9 @@ v: {
   "system" : "http://hl7.org/fhir/ValueSet/participant-role",
   "severity" : "error",
   "error" : "The Coding references a value set, not a code system ('http://hl7.org/fhir/ValueSet/participant-role')",
-  "class" : "CODESYSTEM_UNSUPPORTED",
+  "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"()\"\r\n15 0    : 0ms  : Validate \"[http://hl7.org/fhir/ValueSet/participant-role#394733009 (\"\")]\"\r\n15 0    : 0ms  : Check \"http://hl7.org/fhir/ValueSet/participant-role#394733009\"\r\n15 0    : 0ms  : Didn't find CodeSystem \"http://hl7.org/fhir/ValueSet/participant-role\"\r\n",
-  "unknown-systems" : "http://hl7.org/fhir/ValueSet/participant-role",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
