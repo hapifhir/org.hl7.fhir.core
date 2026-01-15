@@ -232,7 +232,7 @@ public class PackageClient {
       String v = null;
       for (PackageInfo p : list) {
         String version = p.getVersion();
-        if (VersionUtilities.isSemVer(version) && VersionUtilities.versionMatches(specVersion, version)) {
+        if (VersionUtilities.isSemVer(version, true) && VersionUtilities.versionMatches(specVersion, version)) {
           v = version;
         }
       }
@@ -242,7 +242,7 @@ public class PackageClient {
           while (version.contains(".00")) {
             version = version.replace(".00", ".0");
           }
-          if (VersionUtilities.isSemVer(version) && VersionUtilities.versionMatches(specVersion, version)) {
+          if (VersionUtilities.isSemVer(version, true) && VersionUtilities.versionMatches(specVersion, version)) {
             v = version;
           }
         }
@@ -273,7 +273,7 @@ public class PackageClient {
         for (JsonObject edition : o.getJsonObjects("editions")) {
           if (fhirVersion == null || fhirVersion.equals(edition.asString("fhir-version"))) {
             String igVersion = edition.asString("ig-version");
-              if (!VersionUtilities.isSemVer(igVersion))
+              if (!VersionUtilities.isSemVer(igVersion, true))
               {
                 log.error("Non-semver version \"{}\" encountered while getting package info for {}", igVersion, edition.asString("package"));
                 continue;

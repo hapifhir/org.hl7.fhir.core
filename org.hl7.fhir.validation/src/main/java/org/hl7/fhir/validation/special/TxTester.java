@@ -32,6 +32,7 @@ import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient.ITerminologyConversionLogger;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
+import org.hl7.fhir.r5.utils.client.ResourceFormat;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -405,6 +406,7 @@ public class TxTester {
     } else {
       throw new FHIRException("unsupported FHIR Version for terminology tests: "+fhirVersion);
     }
+    client.setFormat(ResourceFormat.RESOURCE_XML);
     return client;  
   }
 
@@ -520,11 +522,11 @@ public class TxTester {
         } else if (test.asString("operation").equals("expand")) {
           msg = expand(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("validate-code")) {
-          msg = validate(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);      
+          msg = validate(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("cs-validate-code")) {
-          msg = validateCS(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);      
+          msg = validateCS(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("lookup")) {
-          msg = lookup(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);      
+          msg = lookup(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("translate")) {
           msg = translate(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("batch")) {
@@ -712,9 +714,13 @@ public class TxTester {
       code = 200;
     } catch (EFhirClientException e) {
       code = e.getCode();
-      OperationOutcome oo = e.getServerError(); 
-      TxTesterScrubbers.scrubOO(oo, tight);
-      vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+      OperationOutcome oo = e.getServerError();
+      if (oo != null) {
+        TxTesterScrubbers.scrubOO(oo, tight);
+        vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+      } else {
+        throw e;
+      }
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, vsj, false);
     if (diff != null) {
@@ -790,10 +796,14 @@ public class TxTester {
       code = 200;
     } catch (EFhirClientException e) {
       code = e.getCode();
-      OperationOutcome oo = e.getServerError(); 
-      TxTesterScrubbers.scrubOO(oo, tight);
-      oo.setText(null);
-      pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+      OperationOutcome oo = e.getServerError();
+      if (oo != null) {
+        TxTesterScrubbers.scrubOO(oo, tight);
+        oo.setText(null);
+        pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+      } else {
+        throw e;
+      }
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {

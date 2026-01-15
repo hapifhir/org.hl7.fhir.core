@@ -80,9 +80,11 @@ public class TxTesterScrubbers {
   }
   
   public static void scrubDR(DomainResource dr, boolean tight) {
-    dr.setText(null);
-    dr.setMeta(null);  
-    new ElementVisitor(new TxTesterScrubberVisitor(tight)).visit(null, dr);
+    if (dr != null) {
+      dr.setText(null);
+      dr.setMeta(null);
+      new ElementVisitor(new TxTesterScrubberVisitor(tight)).visit(null, dr);
+    }
   }
 
   public static void scrubVS(ValueSet vs, boolean tight) {
@@ -107,11 +109,13 @@ public class TxTesterScrubbers {
   }
 
   public static void scrubOO(OperationOutcome po, boolean tight) {
-    scrubDR(po, tight);
-    po.getIssue().removeIf(i -> i.hasDiagnostics() & !i.hasDetails());
-    for (OperationOutcomeIssueComponent iss : po.getIssue()) {
-      if (iss.hasDiagnostics() && !iss.getDiagnostics().toLowerCase().contains("x-request-id")) {
-        iss.setDiagnostics(null);
+    if (po != null) {
+      scrubDR(po, tight);
+      po.getIssue().removeIf(i -> i.hasDiagnostics() & !i.hasDetails());
+      for (OperationOutcomeIssueComponent iss : po.getIssue()) {
+        if (iss.hasDiagnostics() && !iss.getDiagnostics().toLowerCase().contains("x-request-id")) {
+          iss.setDiagnostics(null);
+        }
       }
     }
   }
