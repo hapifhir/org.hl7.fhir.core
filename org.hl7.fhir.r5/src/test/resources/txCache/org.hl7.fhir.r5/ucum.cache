@@ -1,0 +1,21 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
+  "code" : "a"
+}, "valueSet" :null, "langs":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters"
+}}####
+v: {
+  "display" : "(year)",
+  "code" : "a",
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.2",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n0ms http://unitsofmeasure.org/vs|2.2: Validate \"[undefined|undefined#a (\"undefined\")]\"\n0ms http://unitsofmeasure.org/vs|2.2: Check \"http://unitsofmeasure.org|undefined#a\"\n0ms http://unitsofmeasure.org/vs|2.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|2.2\n0ms http://unitsofmeasure.org/vs|2.2: check code in (undefined) at Coding\n1ms http://unitsofmeasure.org/vs|2.2: Code \"a\" found in http://unitsofmeasure.org|2.2",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
