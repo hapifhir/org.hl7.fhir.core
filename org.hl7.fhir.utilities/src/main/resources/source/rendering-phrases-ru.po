@@ -4,13 +4,13 @@ msgstr ""
 "X-Crowdin-Project: orghl7fhircore\n"
 "X-Crowdin-Project-ID: 792848\n"
 "X-Crowdin-Language: ru\n"
-"X-Crowdin-File: rendering-phrases.po\n"
-"X-Crowdin-File-ID: 222\n"
+"X-Crowdin-File: /org.hl7.fhir.utilities/src/main/resources/source/rendering-phrases-en.po\n"
+"X-Crowdin-File-ID: 236\n"
 "Project-Id-Version: orghl7fhircore\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2025-05-28 15:28\n"
+"PO-Revision-Date: 2025-10-30 18:26\n"
 
 # ACTOR_DEF_ACT
 #: ACTOR_DEF_ACT
@@ -36,13 +36,13 @@ msgstr "Тип: {0}"
 #: ACTOR_DERIVED_FROM
 msgctxt "ACTOR_DERIVED_FROM"
 msgid "Derived From"
-msgstr ""
+msgstr "Задуманный от"
 
 # ACTOR_DERIVED_FROM_NONE
 #: ACTOR_DERIVED_FROM_NONE
 msgctxt "ACTOR_DERIVED_FROM_NONE"
 msgid "(none)"
-msgstr ""
+msgstr "(нет)"
 
 # ADD_BIND_ADD_BIND
 #: ADD_BIND_ADD_BIND
@@ -157,12 +157,12 @@ msgstr "Этот набор значений является компонент
 # BUNDLE_DOCUMENT_CONTENT
 #: BUNDLE_DOCUMENT_CONTENT
 msgid "Document Content"
-msgstr ""
+msgstr "Содержание документа"
 
 # BUNDLE_DOCUMENT_DETAILS
 #: BUNDLE_DOCUMENT_DETAILS
 msgid "Document Details"
-msgstr ""
+msgstr "Сведения о документе"
 
 # BUNDLE_ETAG
 #: BUNDLE_ETAG
@@ -642,27 +642,27 @@ msgstr "Концепции"
 # CODESYSTEM_CONTENT_COMPLETE
 #: CODESYSTEM_CONTENT_COMPLETE
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines the following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr "!!Данная система кодов <param name=\\\"cs\\\"/> <param name=\\\"cased\\\"/> определяет следующи<if test=\\\"code-count != 1\\\">е коды</if><if test=\\\"code-count = 1\\\">й код</if><param name=\\\"h\\\"/>:"
+msgstr "Данная система кодов <param name=\\\"cs\\\"/> <param name=\\\"cased\\\"/> определяет следующи<if test=\\\"code-count != 1\\\">е коды</if><if test=\\\"code-count = 1\\\">й код</if><param name=\\\"h\\\"/>:"
 
 # CODESYSTEM_CONTENT_EXAMPLE
 #: CODESYSTEM_CONTENT_EXAMPLE
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides some code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>that are example only</b>:"
-msgstr "!!Данная система кодов <param name=\\\"cs\\\"/> предоставляет некоторые коды<if test=\\\"code-count != 1\\\">ы</if><param name=\\\"h\\\"/> <b>которые являются только примерами</b>:"
+msgstr "Данная система кодов <param name=\\\"cs\\\"/> предоставляет некоторые коды<if test=\\\"code-count != 1\\\">ы</if><param name=\\\"h\\\"/> <b>которые являются только примерами</b>:"
 
 # CODESYSTEM_CONTENT_FRAGMENT
 #: CODESYSTEM_CONTENT_FRAGMENT
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides <b>a fragment</b> that includes following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr "!!Данная система кодирования <param name=\\\"cs\\\"/> с учетом регистра <param name=\\\"cased\\\"/> предоставляет <b>фрагмент</b>, который включает следующий код<if test=\\\"code-count != 1\\\">ы</if><param name=\\\"h\\\"/>:"
+msgstr "Данная система кодирования <param name=\\\"cs\\\"/> с учетом регистра <param name=\\\"cased\\\"/> предоставляет <b>фрагмент</b>, который включает следующий код<if test=\\\"code-count != 1\\\">ы</if><param name=\\\"h\\\"/>:"
 
 # CODESYSTEM_CONTENT_NOTPRESENT
 #: CODESYSTEM_CONTENT_NOTPRESENT
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines codes<param name=\"h\"/>, but no codes are represented here"
-msgstr "!!Данная система кодов <param name=\\\"cs\\\"/> с учетом регистра <param name=\\\"cased\\\"/> определяет коды<param name=\\\"h\\\"/>, но здесь коды не представлены"
+msgstr "Данная система кодов <param name=\\\"cs\\\"/> с учетом регистра <param name=\\\"cased\\\"/> определяет коды<param name=\\\"h\\\"/>, но здесь коды не представлены"
 
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
 msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
-msgstr "!!Эта кодовая система дополняет <param name=\\\"cs\\\"/> определяет {0} по следующему коду<if test=\\\"code-count != 1\\\">с</if>:"
+msgstr "Эта кодовая система дополняет <param name=\\\"cs\\\"/> определяет {0} по следующему коду<if test=\\\"code-count != 1\\\">с</if>:"
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
@@ -757,7 +757,7 @@ msgstr "Этот кодовый системный ресурс является
 # CODE_SYS_SUPP_CODE_NOT_HERE
 #: CODE_SYS_SUPP_CODE_NOT_HERE
 msgid "This CodeSystem Supplement is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr ""
+msgstr "Это дополнение не используется здесь; оно может использоваться в других местах (например, спецификации и/или реализации, использующие этот контент)"
 
 # CODE_SYS_THE_VALUE_SET
 #: CODE_SYS_THE_VALUE_SET
@@ -818,13 +818,13 @@ msgstr "Исходный код"
 #: CONC_MAP_SOURCE_CARD
 msgctxt "CONC_MAP_SOURCE_CARD"
 msgid "Card."
-msgstr ""
+msgstr "Кард."
 
 # CONC_MAP_SOURCE_TYPE
 #: CONC_MAP_SOURCE_TYPE
 msgctxt "CONC_MAP_SOURCE_TYPE"
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 # CONC_MAP_SRC_DET
 #: CONC_MAP_SRC_DET
@@ -846,7 +846,7 @@ msgstr "Целевой код"
 #: CONC_MAP_TRGT_CARD
 msgctxt "CONC_MAP_TRGT_CARD"
 msgid "Card."
-msgstr ""
+msgstr "Кард."
 
 # CONC_MAP_TRGT_DET
 #: CONC_MAP_TRGT_DET
@@ -857,7 +857,7 @@ msgstr "Подробности Целевого Концепции"
 #: CONC_MAP_TRGT_TYPE
 msgctxt "CONC_MAP_TRGT_TYPE"
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 # CS_VERSION_NOTHING_TEXT
 #: CS_VERSION_NOTHING_TEXT
@@ -1108,7 +1108,7 @@ msgstr "во время еды"
 # DATA_REND_MKDWN_LNK
 #: DATA_REND_MKDWN_LNK
 msgid "Unable to resolve markdown link ''{0}''"
-msgstr "!!Не удалось определить ссылку markdown"
+msgstr "Не удалось определить ссылку markdown"
 
 # DATA_REND_MORNING
 #: DATA_REND_MORNING
@@ -1339,7 +1339,7 @@ msgstr "Неуказанная тема"
 # DOCUMENT_SUMMARY
 #: DOCUMENT_SUMMARY
 msgid "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
-msgstr "!!<param name=\\\"status\\\"/> Document at <param name=\\\"date\\\"/> by <param name=\\\"author\\\"/> for <param name=\\\"subject\\\"/> <if test=\\\"has-encounter = true\\\"> in encounter <param name=\\\"encounter\\\"/></if>"
+msgstr "<param name=\\\"status\\\"/> Document at <param name=\\\"date\\\"/> by <param name=\\\"author\\\"/> for <param name=\\\"subject\\\"/> <if test=\\\"has-encounter = true\\\"> in encounter <param name=\\\"encounter\\\"/></if>"
 
 # EXAMPLE_SCEN_STEP_SCEN
 #: EXAMPLE_SCEN_STEP_SCEN
@@ -1434,7 +1434,7 @@ msgstr "Не удалось найти ссылающегося актера {0}
 # FMM_TABLE
 #: FMM_TABLE
 msgid "<table class=\"cols\" data-fhir=\"generated\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
-msgstr "!!!!<table class=\\\"cols\\\"><tbody><tr><td><a href=\\\"http://hl7.org/fhir/versions.html#maturity\\\">Уровень зрелости</a>: {0}</td><td>&nbsp;<a href=\\\"{1}versions.html#std-process\\\" title=\\\"Standard Status\\\">{2}</a></td></tr></tbody></table>"
+msgstr "<table class=\\\"cols\\\"><tbody><tr><td><a href=\\\"http://hl7.org/fhir/versions.html#maturity\\\">Уровень зрелости</a>: {0}</td><td>&nbsp;<a href=\\\"{1}versions.html#std-process\\\" title=\\\"Standard Status\\\">{2}</a></td></tr></tbody></table>"
 
 # GENERAL_ADDITIONAL_BINDING
 #: GENERAL_ADDITIONAL_BINDING
@@ -1699,7 +1699,7 @@ msgstr "Предпочтение"
 #: GENERAL_PROF
 msgctxt "GENERAL_PROF"
 msgid "Profile"
-msgstr "Профиль"
+msgstr "Профиля"
 
 # GENERAL_PROPS
 #: GENERAL_PROPS
@@ -2781,47 +2781,47 @@ msgstr "Набор значений:"
 # R44B_DERIVES_FROM
 #: R44B_DERIVES_FROM
 msgid "derives from"
-msgstr ""
+msgstr "происходит от"
 
 # R44B_HAS_TARGET
 #: R44B_HAS_TARGET
 msgid "has target"
-msgstr ""
+msgstr "имеет цель"
 
 # R44B_HAS_TYPE
 #: R44B_HAS_TYPE
 msgid "has type"
-msgstr ""
+msgstr "имеет тип"
 
 # R44B_NOT_COMP
 #: R44B_NOT_COMP
 msgid "This is an {0} IG that is not compatible with {1}\" because"
-msgstr ""
+msgstr "Это IG {0} несовместимый с {1}потому что"
 
 # R44B_NOT_IN
 #: R44B_NOT_IN
 msgid "The following resources are not in the {0} version"
-msgstr ""
+msgstr "Следующие ресурсы не в версии {0}"
 
 # R44B_ONLY_IN
 #: R44B_ONLY_IN
 msgid "The following resources are only in the {0} version"
-msgstr ""
+msgstr "Эти ресурсы только в версии {0}"
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
-msgstr ""
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\\"{2}\\\">R4B ({3}.r4b)</a> are available."
+msgstr "Доступны пакеты для <a href=\"{0}\">R4 ({1}.r4)</a> и <a href=\\\"{2}\\\">R4B ({3}.r4b)</a>."
 
 # R44B_PROBLEMS
 #: R44B_PROBLEMS
 msgid "While checking for {0} compatibility, the following {1} problems were found"
-msgstr ""
+msgstr "При проверке совместимости {0} были найдены следующие проблемы {1}"
 
 # R44B_REFERS_TO
 #: R44B_REFERS_TO
 msgid "<a href=\"{0}\">{1}}</a> refers to the canonical type at {2}"
-msgstr ""
+msgstr "<a href=\"{0}\">{1}}</a> относится к каноническому типу {2}"
 
 # R44B_USE_OK
 #: R44B_USE_OK
@@ -2831,7 +2831,7 @@ msgstr ""
 # R44B_WRONG_MSG
 #: R44B_WRONG_MSG
 msgid "Something went wrong with the cross-version analysis because"
-msgstr ""
+msgstr "Что-то пошло не так с кросс-версионным анализом, потому что"
 
 # REND_ADDED
 #: REND_ADDED
@@ -2947,7 +2947,7 @@ msgstr "Ошибка визуализации: {0}"
 # RES_REND_INFO_SOURCE
 #: RES_REND_INFO_SOURCE
 msgid "Information Source: <param name=\"source\"/>"
-msgstr "!!Источник информации: <param name=\\\"source\\\"/>"
+msgstr "Источник информации: <param name=\\\"source\\\"/>"
 
 # RES_REND_LANGUAGE
 #: RES_REND_LANGUAGE
@@ -3099,7 +3099,7 @@ msgstr "Исходя из этого {0}"
 # SDR_DRAFT
 #: SDR_DRAFT
 msgid "This is an draft extension definition; the committee is seeking implementation feedback, and the definition or contents of the extension may change in future versions"
-msgstr ""
+msgstr "Это определение расширения; комитет ищет обратную связь по осуществлению, и определение или содержание расширения могут измениться в будущих версиях"
 
 # SDR_DRAW_IN
 #: SDR_DRAW_IN
@@ -3114,7 +3114,7 @@ msgstr "Примеры для {0}"
 # SDR_EXPERIMENTAL
 #: SDR_EXPERIMENTAL
 msgid "This is an experimental extension definition; the definition is intended for testing purposes, education or evaluation, and the definition is not anticipated to be matured to a point where it is intended for genuine usage."
-msgstr "!!Это экспериментальное определение расширения; комитет ожидает комментариев по реализации, и определение или содержание расширения может измениться в будущих версиях"
+msgstr "Это экспериментальное определение расширения; комитет ожидает комментариев по реализации, и определение или содержание расширения может измениться в будущих версиях"
 
 # SDR_EXTENSION_SUMMARY
 #: SDR_EXTENSION_SUMMARY
@@ -3124,7 +3124,7 @@ msgstr "Простое расширение с типом {0}: {1}"
 # SDR_EXTENSION_SUMMARY_MODIFIER
 #: SDR_EXTENSION_SUMMARY_MODIFIER
 msgid "Simple <b>Modifier</b> Extension with the type {0}: {1}"
-msgstr ""
+msgstr "Простое расширение <b>модификатора</b> с типом {0}: {1}"
 
 # SDR_EXT_ANY
 #: SDR_EXT_ANY
@@ -3170,7 +3170,7 @@ msgstr "Расширение"
 # SDR_EXT_MOD
 #: SDR_EXT_MOD
 msgid "This extension is a modifier extension."
-msgstr ""
+msgstr "Это расширение является модификатором расширения."
 
 # SDR_EXT_PATH
 #: SDR_EXT_PATH
@@ -3207,7 +3207,7 @@ msgstr "От {0}"
 # SDR_FROM_ELEM
 #: SDR_FROM_ELEM
 msgid "// from Element: <a href=\"{0}\">extension</a>"
-msgstr "!!// от элемента: <a href=\\\"{0}\\\">extension</a>"
+msgstr "// от элемента: <a href=\\\"{0}\\\">extension</a>"
 
 # SDR_GUIDANCE_HERE
 #: SDR_GUIDANCE_HERE
@@ -3222,8 +3222,8 @@ msgstr "Рекомендации по толкованию содержимог�
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
-msgid "-- no content: do not translate #92 --"
-msgstr "!!!!!!!!!!!!!!!!!!!!-- no content: do not translate #97 --"
+msgid "-- no content: do not translate #1 --"
+msgstr "-- no content: do not translate #1 --"
 
 # SDR_IMPOSE
 #: SDR_IMPOSE
@@ -3339,12 +3339,12 @@ msgstr "нарезка по {0} в указанном порядке {1}"
 # SDR_SRC_FHIR
 #: SDR_SRC_FHIR
 msgid "FHIR Std."
-msgstr "!!Стандарт FHIR"
+msgstr "Стандарт FHIR"
 
 # SDR_SRC_IG
 #: SDR_SRC_IG
 msgid "This IG"
-msgstr "!!этот IG"
+msgstr "этот IG"
 
 # SDR_SUPP
 #: SDR_SUPP
@@ -3380,7 +3380,7 @@ msgstr "Для версии {0}"
 #: SDR_VER_FROM_PFX
 msgctxt "SDR_VER_FROM_PFX"
 msgid "FHIR versions"
-msgstr "!!\\\"Версии FHIR"
+msgstr "FHIR версии"
 
 # SDR_VER_FROM_SFX
 #: SDR_VER_FROM_SFX
@@ -3412,8 +3412,8 @@ msgstr "Версии FHIR"
 # SDR_VER_RANGE_SFX
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
-msgid "-- no content: do not translate #93 --"
-msgstr "!!!!!!!!!!!!!!!!!!!!-- no content: do not translate #98 --"
+msgid "-- no content: do not translate #2 --"
+msgstr "-- no content: do not translate #2 --"
 
 # SDR_VER_TO_PFX
 #: SDR_VER_TO_PFX
@@ -3423,8 +3423,8 @@ msgstr "Версии FHIR до"
 # SDR_VER_TO_SFX
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
-msgid "-- no content: do not translate #94 --"
-msgstr "!!!!!!!!!!!!!!!!!!!!-- no content: do not translate #99 --"
+msgid "-- no content: do not translate #3 --"
+msgstr "-- no content: do not translate #3 --"
 
 # SDR_VER_UNK
 #: SDR_VER_UNK
@@ -3775,12 +3775,12 @@ msgstr "Все ресурсы"
 # STATUS_MSG_AUTOBUILD
 #: STATUS_MSG_AUTOBUILD
 msgid "{0}, published by {1}. This guide is not an authorized publication; it is the continuous build for version {2}  built by the FHIR (HL7&reg; FHIR&reg; Standard) CI Build. This version is based on the current content of <a href=''{3}''>{3}</a> and changes regularly. See the <a href=''{4}/history.html''>Directory of published versions</a>"
-msgstr "{0}, опубликовано {1}. Это руководство не является санкционированной публикацией; это непрерывная сборка для версии {2}, созданной FHIR (HL7&reg; FHIR&reg; Standard) CI Build. Эта версия основана на нынешнем содержании <a href=''{3}''>{3}</a> и регулярно изменяется. Смотрите <a href=''{4}/history.html''>каталог опубликованных версий</a>"
+msgstr "{0}, опубликовано {1}. Это руководство не является официальной публикацией; это непрерывная сборка для версии {2}, созданной FHIR (HL7&reg; FHIR&reg; Standard) CI Build. Эта версия основана на нынешнем содержании <a href=''{3}''>{3}</a> и регулярно изменяется. Смотрите <a href=''{4}/history.html''>каталог опубликованных версий</a>"
 
 # STATUS_MSG_LOCAL_BUILD
 #: STATUS_MSG_LOCAL_BUILD
 msgid "{0} - Local Development build (v{1}) built by the FHIR (HL7® FHIR® Standard) Build Tools. See the <a href=''{2}/history.html''>Directory of published versions</a>"
-msgstr "!!{0} - Локальная сборка (v{1}), построенная FHIR (HL7&reg; FHIR&reg; Стандартные инструменты сборки. Смотрите каталог <a href=''{2}/history.html''>опубликованных версий</a>"
+msgstr "{0} - Локальная сборка (v{1}), построенная FHIR (HL7&reg; FHIR&reg;) стандартным инструментам сборки. Смотрите каталог <a href=''{2}/history.html''>опубликованных версий</a>"
 
 # STATUS_MSG_PUBLICATION_HOLDER
 #: STATUS_MSG_PUBLICATION_HOLDER
@@ -3951,7 +3951,7 @@ msgstr "Комплекс"
 # STRUC_DEF_COMPLEXBRACK
 #: STRUC_DEF_COMPLEXBRACK
 msgid "(Complex)"
-msgstr "!!(комплексный)"
+msgstr "(комплексный)"
 
 # STRUC_DEF_COMP_DOC
 #: STRUC_DEF_COMP_DOC
@@ -4018,7 +4018,7 @@ msgstr "Текущее"
 # STRUC_DEF_CURR_RULE
 #: STRUC_DEF_CURR_RULE
 msgid "New records are required to use this value set, but legacy records may use other codes. The definition of ''new record'' is difficult, since systems often create new records based on pre-existing data. Usually ''current'' bindings are mandated by an external authority that makes clear rules around this"
-msgstr "Новые записи необходимы для использования этого набора значений, но старые записи могут использовать другие коды. Определение \\\"новой записи\\\" является сложным, поскольку системы часто создают новые записи, основанные на уже имеющихся данных. Обычно привязки ''текущее'' разрешены внешним органом, который четко определяет эти правила"
+msgstr "Новые записи необходимы для использования этого набора значений, но старые записи могут использовать другие коды. Определение \"новой записи\" является сложным, поскольку системы часто создают новые записи, основанные на уже имеющихся данных. Обычно привязки ''текущее'' разрешены внешним органом, который четко определяет эти правила"
 
 # STRUC_DEF_DATE
 #: STRUC_DEF_DATE
@@ -4421,7 +4421,7 @@ msgstr "Модификатор"
 # STRUC_DEF_MODIFIER_EXT
 #: STRUC_DEF_MODIFIER_EXT
 msgid "This is a modifier extension"
-msgstr ""
+msgstr "Это расширение модификатора"
 
 # STRUC_DEF_MUST_SUPPORT
 #: STRUC_DEF_MUST_SUPPORT
@@ -5454,9 +5454,10 @@ msgstr "Loinc v"
 #: VALUE_SET_NEEDS_SUPPL
 msgid "This ValueSet requires the Code system Supplement"
 msgid_plural "This ValueSet requires the Code system Supplements"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Этот набор значений требует дополнения системы кода"
+msgstr[1] "Этот набор значений требует дополнения системы кода"
+msgstr[2] "Этот набор значений требует дополнения системы кода"
+msgstr[3] "Этот набор значений требует дополнения системы кода"
 
 # VALUE_SET_NO
 #: VALUE_SET_NO
