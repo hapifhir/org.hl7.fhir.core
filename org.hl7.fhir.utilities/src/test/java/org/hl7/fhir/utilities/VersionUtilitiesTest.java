@@ -865,9 +865,12 @@ public class VersionUtilitiesTest {
   @Test
   public void testisSemVer() {
     // According to semver: X.Y.Z-prerelease+build but we accept major.minor
-    test_isSemVer("1.0", true, false);
-    test_isSemVer("0.0", true, false);
-    test_isSemVer("0.1", true, false);
+    test_isSemVer("1.0", false, false);
+    test_isSemVer("0.0", false, false);
+    test_isSemVer("0.1", false, false);
+    test_isSemVer("1.0", true, true);
+    test_isSemVer("0.0", true, true);
+    test_isSemVer("0.1", true, true);
     test_isSemVer("1", false, false);
     test_isSemVer("0", false, false);
     test_isSemVer("2.80", false, false);
@@ -880,7 +883,8 @@ public class VersionUtilitiesTest {
     test_isSemVer("0.1-label", true, true);
     test_isSemVer("1-label", false, false);
     test_isSemVer("0-label", false, false);
-    test_isSemVer("2.80-label", true, false);
+    test_isSemVer("2.80-label", true, true);
+    test_isSemVer("2.80-label", false, false);
   }
 
   @Test
