@@ -2859,6 +2859,11 @@ msgstr "Proveniência de:"
 msgid "Recorded"
 msgstr "Gravado"
 
+# PROV_REFERENCE
+#: PROV_REFERENCE
+msgid "This {0} is referenced from the following provenance resources:"
+msgstr ""
+
 # PROV_ROLE
 #: PROV_ROLE
 #, fuzzy

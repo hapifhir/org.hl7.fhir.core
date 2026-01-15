@@ -2418,6 +2418,11 @@ msgstr "Provenance pour :"
 msgid "Recorded"
 msgstr "Enregistré"
 
+# PROV_REFERENCE
+#: PROV_REFERENCE
+msgid "This {0} is referenced from the following provenance resources:"
+msgstr ""
+
 # PROV_ROLE
 #: PROV_ROLE
 msgid "Role"
@@ -5669,8 +5674,4 @@ msgstr "La version est indiquée comme étant {0}, ce qui signifie qu'elle est f
 #: _NA
 msgid "n/a"
 msgstr "n/a"
-
-
-
-
 

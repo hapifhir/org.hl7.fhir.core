@@ -4968,6 +4968,11 @@ msgstr "De definitie voor het CodeSystem met uri ''{0}'' heeft geen codes dus de
 msgid "A code with no system has no defined meaning, and it cannot be validated. A system should be provided"
 msgstr "Een code zonder system heeft geen gedefinieerde betekenis en kan niet worden gevalideerd. Er zou een system moeten zijn"
 
+# TERMINOLOGY_TX_SYSTEM_UNSUPPORTED
+#: TERMINOLOGY_TX_SYSTEM_UNSUPPORTED
+msgid "The code cannot be checked because codeSystem ''{0}'' version ''{1}'' is not supported ({2})"
+msgstr ""
+
 # TERMINOLOGY_TX_SYSTEM_WRONG_BUILD
 #: TERMINOLOGY_TX_SYSTEM_WRONG_BUILD
 msgid "The code system reference {0} is wrong - the code system reference cannot be a reference to build.fhir.org. This may be the correct reference: {1}"
@@ -6000,8 +6005,8 @@ msgstr "Onbekende code ‘’{0}’’ in codesysteem ‘’{1}’’ versie ‘
 
 # UNKNOWN_PROPERTY
 #: UNKNOWN_PROPERTY
-msgid "Unknown property name {0} in path {1}2"
-msgstr "Onbekende propertynaam {0} in pad {1}2"
+msgid "Unknown property name {0} in path {1}"
+msgstr "!!Onbekende propertynaam {0} in pad {1}2"
 
 # UNRECOGNISED_PROPERTY_TYPE_WRONG
 #: UNRECOGNISED_PROPERTY_TYPE
@@ -6232,6 +6237,11 @@ msgstr "Onbekende code ''{0}'' in codesysteem ''{1}''"
 #: Unknown_Code_in_Version
 msgid "Unknown code ''{0}'' in the CodeSystem ''{1}'' version ''{2}''"
 msgstr "Onbekende code ''{0}'' in codesysteem ''{1}'' versie ''{2}''"
+
+# Unknown_Code_in_Version_SCT
+#: Unknown_Code_in_Version_SCT
+msgid "Unknown code ''{0}'' in the CodeSystem ''{1}'' version ''{2}'' ({3})"
+msgstr ""
 
 # Unknown_Date_format_
 #: Unknown_Data_format_
