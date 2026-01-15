@@ -58,6 +58,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.exceptions.TimeoutException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.ContextUtilities;
@@ -567,6 +568,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean suppressLoincSnomedMessages;
 
   // time tracking
+  @Getter @Setter private long timeout = 0L; // Default validation time out equal to 0 seconds (disabled)
   private boolean noBindingMsgSuppressed;
   private Map<String, Element> fetchCache = new HashMap<>();
   private HashMap<Element, ResourceValidationTracker> resourceTracker = new HashMap<>();
@@ -1007,79 +1009,89 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     executionId = UUID.randomUUID().toString();
     baseOnly = profiles.isEmpty();
     setParents(element);
+    // Start validation time out tracker; set timeout to global setting (default 0 disabled if not set)
+    timeTracker.initializeValidationTimeout(timeout);
 
-    long t = System.nanoTime();
-    NodeStack stack = new NodeStack(context, null, element, validationLanguage);
-    if (profiles == null || profiles.isEmpty()) {
-      validateResource(new ValidationContext(appContext, element), errors, element, element, null, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.BaseDefinition), false, false);
-    } else {
-      int i = 0;
-      while (i < profiles.size()) {
-        StructureDefinition sd = profiles.get(i);
-        if (sd.hasExtension(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE)) {
-          for (Extension ext : sd.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE)) {
-            StructureDefinition dep = context.fetchResource( StructureDefinition.class, ext.getValue().primitiveValue(), null, sd);
-            if (dep == null) {
-              warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED, ext.getValue().primitiveValue(), sd.getVersionedUrl());                
-            } else if (!profiles.contains(dep)) {
-              profiles.add(dep);
+    try {
+      long t = System.nanoTime();
+      NodeStack stack = new NodeStack(context, null, element, validationLanguage);
+      if (profiles == null || profiles.isEmpty()) {
+        validateResource(new ValidationContext(appContext, element), errors, element, element, null, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.BaseDefinition), false, false);
+      } else {
+        int i = 0;
+        while (i < profiles.size()) {
+          StructureDefinition sd = profiles.get(i);
+          if (sd.hasExtension(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE)) {
+            for (Extension ext : sd.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE)) {
+              StructureDefinition dep = context.fetchResource( StructureDefinition.class, ext.getValue().primitiveValue(), null, sd);
+              if (dep == null) {
+                warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED, ext.getValue().primitiveValue(), sd.getVersionedUrl());                
+              } else if (!profiles.contains(dep)) {
+                profiles.add(dep);
+              }
+            }
+          }
+          i++;
+        }
+        for (StructureDefinition defn : profiles) {
+          stack.getIds().clear();
+          validateResource(new ValidationContext(appContext, element), errors, element, element, defn, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.ConfigProfile), false, false);
+        }
+      }
+      if (hintAboutNonMustSupport && !profiles.isEmpty()) {
+        checkElementUsage(errors, element, stack);
+      }
+      codingObserver.finish(errors, stack);
+      errors.removeAll(messagesToRemove);
+      timeTracker.overall(t);
+      if (aiService != null && !textsToCheck.isEmpty()) {
+        t = System.nanoTime();
+        List<CodeAndTextValidationRequest> list = new ArrayList<>();
+        for (CodeAndTextValidationRequest tt : textsToCheck) {
+          ValidationResult vr = context.validateCode(settings.setDisplayWarningMode(false).setLanguages(tt.getLang()), tt.getSystem(), null, tt.getCode(), tt.getText());
+          if (!vr.isOk()) {
+            list.add(tt);          
+          }
+        }
+        if (!list.isEmpty()) {
+          CodeAndTextValidator ctv = new CodeAndTextValidator(cacheFolder, aiService);
+          List<CodeAndTextValidationResult> results = null;
+          try {
+            results = ctv.validateCodings(list);
+          } catch (Exception e) {
+            if (e.getCause() != null && e.getCause() instanceof HTTPResultException) {
+              warning(errors, "2025-01-14", IssueType.EXCEPTION, stack, false,
+                  I18nConstants.VALIDATION_AI_FAILED_LOG, e.getMessage(), ((HTTPResultException)e.getCause()).logPath);   
+            } else {
+              warning(errors, "2025-01-14", IssueType.EXCEPTION, stack, false,
+                  I18nConstants.VALIDATION_AI_FAILED, e.getMessage()); 
+            }
+          }
+          if (results != null) {
+            for (CodeAndTextValidationResult vr : results) {
+              if (!vr.isValid()) {
+                warning(errors, "2025-01-14", IssueType.BUSINESSRULE, vr.getRequest().getLocation().line(), vr.getRequest().getLocation().col(), vr.getRequest().getLocation().getLiteralPath(), false,
+                    I18nConstants.VALIDATION_AI_TEXT_CODE, vr.getRequest().getCode(), vr.getRequest().getText(), vr.getConfidence(), vr.getExplanation());                
+              }
             }
           }
         }
-        i++;
+        timeTracker.ai(t);
       }
-      for (StructureDefinition defn : profiles) {
-        stack.getIds().clear();
-        validateResource(new ValidationContext(appContext, element), errors, element, element, defn, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.ConfigProfile), false, false);
-      }
-    }
-    if (hintAboutNonMustSupport && !profiles.isEmpty()) {
-      checkElementUsage(errors, element, stack);
-    }
-    codingObserver.finish(errors, stack);
-    errors.removeAll(messagesToRemove);
-    timeTracker.overall(t);
-    if (aiService != null && !textsToCheck.isEmpty()) {
-      t = System.nanoTime();
-      List<CodeAndTextValidationRequest> list = new ArrayList<>();
-      for (CodeAndTextValidationRequest tt : textsToCheck) {
-        ValidationResult vr = context.validateCode(settings.setDisplayWarningMode(false).setLanguages(tt.getLang()), tt.getSystem(), null, tt.getCode(), tt.getText());
-        if (!vr.isOk()) {
-          list.add(tt);          
-        }
-      }
-      if (!list.isEmpty()) {
-        CodeAndTextValidator ctv = new CodeAndTextValidator(cacheFolder, aiService);
-        List<CodeAndTextValidationResult> results = null;
+      
+      if (settings.isDebug()) {
         try {
-          results = ctv.validateCodings(list);
-        } catch (Exception e) {
-          if (e.getCause() != null && e.getCause() instanceof HTTPResultException) {
-            warning(errors, "2025-01-14", IssueType.EXCEPTION, stack, false,
-                I18nConstants.VALIDATION_AI_FAILED_LOG, e.getMessage(), ((HTTPResultException)e.getCause()).logPath);   
-          } else {
-            warning(errors, "2025-01-14", IssueType.EXCEPTION, stack, false,
-                I18nConstants.VALIDATION_AI_FAILED, e.getMessage()); 
-          }
-        }
-        if (results != null) {
-          for (CodeAndTextValidationResult vr : results) {
-            if (!vr.isValid()) {
-              warning(errors, "2025-01-14", IssueType.BUSINESSRULE, vr.getRequest().getLocation().line(), vr.getRequest().getLocation().col(), vr.getRequest().getLocation().getLiteralPath(), false,
-                  I18nConstants.VALIDATION_AI_TEXT_CODE, vr.getRequest().getCode(), vr.getRequest().getText(), vr.getConfidence(), vr.getExplanation());                
-            }
-          }
+          debugElement(element, log);
+        } catch (IOException e) {
+         log.error(e.getMessage(), e);
         }
       }
-      timeTracker.ai(t);
     }
-    
-    if (settings.isDebug()) {
-      try {
-        debugElement(element, log);
-      } catch (IOException e) {
-       log.error(e.getMessage(), e);
-      }
+    catch (TimeoutException te) {
+      // Validation time out exceeded
+      ValidationMessage validationMessage = new ValidationMessage(Source.InstanceValidator, IssueType.PROCESSING, element.line(), element.col(), element.getName(),
+          te.getMessage() + " Validation could potentially return additional conformance information.", IssueSeverity.WARNING);
+      errors.add(validationMessage);
     }
   }
 
@@ -1090,7 +1102,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     element.printToOutput(printStream);
     log.debug(outputStream.toString());
   }
-  private void checkElementUsage(List<ValidationMessage> errors, Element element, NodeStack stack) {
+  private void checkElementUsage(List<ValidationMessage> errors, Element element, NodeStack stack) throws TimeoutException {
+
+    timeTracker.checkValidationTimeoutExceeded();
+
     if (element.getPath()==null
       || (element.getName().equals("id")  && !element.getPath().substring(0, element.getPath().length()-3).contains("."))
       || (element.getName().equals("text")  && !element.getPath().substring(0, element.getPath().length()-5).contains(".")))
@@ -6275,7 +6290,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   // checkSpecials = we're only going to run these tests if we are actually validating this content (as opposed to we looked it up)
-  private boolean start(ValidationContext valContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack, ResourcePercentageLogger pct, ValidationMode mode, boolean fromContained) throws FHIRException {
+  private boolean start(ValidationContext valContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack, ResourcePercentageLogger pct, ValidationMode mode, boolean fromContained) throws FHIRException, TimeoutException {
+
+    timeTracker.checkValidationTimeoutExceeded();
+
     boolean ok = !hasErrors(errors);
 
     if (ExtensionUtilities.readBoolExtension(defn, ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE) && defn.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
@@ -6464,7 +6482,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return sd;
   }
 
-  private void resolveBundleReferences(Element element, List<Element> bundles) {
+  private void resolveBundleReferences(Element element, List<Element> bundles) throws TimeoutException {
+
+    timeTracker.checkValidationTimeoutExceeded();
+
     if (!element.hasUserData(UserDataNames.validator_bundle_resolved)) {
       element.setUserData(UserDataNames.validator_bundle_resolved, true);
       List<Element> list = new ArrayList<Element>();
@@ -6481,7 +6502,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private void resolveBundleReferencesInResource(List<Element> bundles, Element r, String fu) {
+  private void resolveBundleReferencesInResource(List<Element> bundles, Element r, String fu) throws TimeoutException {
+
+    timeTracker.checkValidationTimeoutExceeded();
+
     if (BUNDLE.equals(r.fhirType())) {
       resolveBundleReferences(r, bundles);
     } else {
@@ -6536,9 +6560,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return -1;
   }
 
-  public boolean startInner(ValidationContext valContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack, boolean checkSpecials, ResourcePercentageLogger pct, ValidationMode mode, boolean fromContained) {
+  public boolean startInner(ValidationContext valContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack, boolean checkSpecials, ResourcePercentageLogger pct, ValidationMode mode, boolean fromContained) throws TimeoutException {
     // the first piece of business is to see if we've validated this resource against this profile before.
     // if we have (*or if we still are*), then we'll just return our existing errors
+
+    timeTracker.checkValidationTimeoutExceeded();
+
     boolean ok = true;
     ResourceValidationTracker resTracker = getResourceTracker(element);
     List<ValidationMessage> cachedErrors = resTracker.getOutcomes(defn);
@@ -7080,7 +7107,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
 
   private boolean validateElement(ValidationContext valContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition, StructureDefinition cprofile, ElementDefinition context,
-                                  Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, String extensionUrl, ResourcePercentageLogger pct, ValidationMode mode) throws FHIRException {
+                                  Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, String extensionUrl, ResourcePercentageLogger pct, ValidationMode mode) throws FHIRException, TimeoutException {
+
+    timeTracker.checkValidationTimeoutExceeded();
+
     boolean ok = true;
     
     pct.seeElement(element);
@@ -7231,7 +7261,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public boolean checkChildByDefinition(ValidationContext valContext, List<ValidationMessage> errors, StructureDefinition profile,
                                         ElementDefinition definition, Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept,
-                                        boolean checkDisplayInContext, ElementInfo ei, String extensionUrl, ElementDefinition checkDefn, boolean isSlice, ResourcePercentageLogger pct, ValidationMode mode) {
+                                        boolean checkDisplayInContext, ElementInfo ei, String extensionUrl, ElementDefinition checkDefn, boolean isSlice, ResourcePercentageLogger pct, ValidationMode mode) throws TimeoutException {
+
+    timeTracker.checkValidationTimeoutExceeded();
+
     boolean ok = true;
     List<String> profiles = new ArrayList<String>();
     String type = null;
@@ -7695,7 +7728,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public boolean checkCardinalities(List<ValidationMessage> errors, StructureDefinition profile, Element element, NodeStack stack,
-      SourcedChildDefinitions childDefinitions, List<ElementInfo> children, List<String> problematicPaths) throws DefinitionException {
+      SourcedChildDefinitions childDefinitions, List<ElementInfo> children, List<String> problematicPaths) throws DefinitionException, TimeoutException {
+
+    timeTracker.checkValidationTimeoutExceeded();
+
     boolean ok = true;
     // 3. report any definitions that have a cardinality problem
     for (ElementDefinition ed : childDefinitions.getList()) {
@@ -8154,7 +8190,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private boolean checkInvariants(ValidationContext valContext, List<ValidationMessage> errors, String path, StructureDefinition profile, ElementDefinition ed, String typename, String typeProfile, Element resource, Element element, boolean onlyNonInherited) throws FHIRException, FHIRException {
+  private boolean checkInvariants(ValidationContext valContext, List<ValidationMessage> errors, String path, StructureDefinition profile, ElementDefinition ed, String typename, String typeProfile, Element resource, Element element, boolean onlyNonInherited) throws FHIRException, TimeoutException {
+
+    timeTracker.checkValidationTimeoutExceeded();
+
     if (noInvariantChecks) {
       return true;
     }
@@ -8219,7 +8258,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return false;
   }
 
-  public boolean checkInvariant(ValidationContext valContext, List<ValidationMessage> errors, String path, StructureDefinition profile, Element resource, Element element, ElementDefinitionConstraintComponent inv) throws FHIRException {
+  public boolean checkInvariant(ValidationContext valContext, List<ValidationMessage> errors, String path, StructureDefinition profile, Element resource, Element element, ElementDefinitionConstraintComponent inv) throws FHIRException, TimeoutException {
+
+    timeTracker.checkValidationTimeoutExceeded();
+
     if (IsExemptInvariant(path, element, inv)) {
       return true;
     }
@@ -8307,7 +8349,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
    * The actual base entry point for internal use (re-entrant)
    */
   private boolean validateResource(ValidationContext valContext, List<ValidationMessage> errors, Element resource,
-                                   Element element, StructureDefinition defn, IdStatus idstatus, NodeStack stack, ResourcePercentageLogger pct, ValidationMode mode, boolean forReference, boolean fromContained) throws FHIRException {
+                                   Element element, StructureDefinition defn, IdStatus idstatus, NodeStack stack, ResourcePercentageLogger pct, ValidationMode mode, boolean forReference, boolean fromContained) throws FHIRException, TimeoutException {
+
+    timeTracker.checkValidationTimeoutExceeded();
+
     boolean ok = true;    
     // check here if we call validation policy here, and then change it to the new interface
     assert stack != null;
