@@ -41,10 +41,8 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.r5.context.BaseWorkerContext;
 import org.hl7.fhir.r5.context.ContextUtilities;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.LanguageUtils;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
@@ -1066,7 +1064,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
         String msg = context.formatMessage(I18nConstants.UNKNOWN_CODE_IN_FRAGMENT, code.getCode(), cs.getUrl(), cs.getVersion());
         List<OperationOutcomeIssueComponent> issues = makeIssue(IssueSeverity.WARNING, IssueType.CODEINVALID, path + ".code", msg, OpIssueCode.InvalidCode, null, I18nConstants.UNKNOWN_CODE_IN_FRAGMENT);
-        issues.get(0).setUserData(UserDataNames.NO_MESSAGE, true);
+        issues.get(0).setUserData(UserDataNames.IGNORE_ISSUE_MESSAGE, true);
         return new ValidationResult(IssueSeverity.WARNING, null, issues).setVersion(cs.getVersion());
       } else {
         String msg = context.formatMessage(I18nConstants.UNKNOWN_CODE_IN_VERSION, code.getCode(), cs.getUrl(), cs.getVersion());
