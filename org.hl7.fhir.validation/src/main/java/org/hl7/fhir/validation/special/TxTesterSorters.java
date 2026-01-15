@@ -237,7 +237,7 @@ public class TxTesterSorters {
         String v2 = o2.getPart("value") != null && o2.getPart("value").getValue().hasPrimitiveValue() ? o2.getPart("value").getValue().primitiveValue().toLowerCase() : null;
         if (v1 != null && v2 != null && !v1.equals(v2)) {
           return v1.compareTo(v2);          
-        }           
+        }
       }
       if (o1.getName().equals(o2.getName()) && o1.getName().equals("designation")) {
         String code1 = o1.hasPart("language") && o1.getPart("language").hasValue() && o1.getPart("language").getValue().primitiveValue() != null ? o1.getPart("language").getValue().primitiveValue().toLowerCase() : "";
