@@ -14,12 +14,12 @@
   }]
 }}####
 v: {
-  "display" : "mm[Hg]",
+  "display" : "(millimeter of mercury column)",
   "code" : "mm[Hg]",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"()\"\r\n15 0    : 0ms  : Validate \"[http://unitsofmeasure.org#mm[Hg] (\"\")]\"\r\n15 0    : 0ms  : Check \"http://unitsofmeasure.org#mm[Hg]\"\r\n15 0    : 0ms  : Using CodeSystem \"http://unitsofmeasure.org|2.2\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://unitsofmeasure.org/vs|2.2: Validate \"[undefined|undefined#mm[Hg] (\"undefined\")]\"\n0ms http://unitsofmeasure.org/vs|2.2: Check \"http://unitsofmeasure.org|undefined#mm[Hg]\"\n0ms http://unitsofmeasure.org/vs|2.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|2.2\n0ms http://unitsofmeasure.org/vs|2.2: check code in (undefined) at Coding\n0ms http://unitsofmeasure.org/vs|2.2: Code \"mm[Hg]\" found in http://unitsofmeasure.org|2.2",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -41,12 +41,12 @@ v: {
   }]
 }}####
 v: {
-  "display" : "mm[Hg]",
+  "display" : "(millimeter of mercury column)",
   "code" : "mm[Hg]",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/ucum-vitals-common|5.0.0 for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"(http://unitsofmeasure.org)(%,cm,[in_i],kg,g,[lb_av],Cel,[degF],mm[Hg],/min,kg/m2,m2)\"\r\n0 0     : 0ms  : CodeSystem found: \"http://unitsofmeasure.org|2.2\"\r\n0 0     : 0ms  : Validate \"[http://unitsofmeasure.org#mm[Hg] (\"\")]\"\r\n0 0     : 0ms  : Check \"http://unitsofmeasure.org#mm[Hg]\"\r\n0 0     : 0ms  : CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org\r\n0 0     : 0ms  : check code in (http://unitsofmeasure.org)(%,cm,[in_i],kg,g,[lb_av],Cel,[degF],mm[Hg],/min,kg/m2,m2) at Coding\r\n0 0     : 0ms  : Code \"mm[Hg]\" found in http://unitsofmeasure.org|2.2\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/ValueSet/ucum-vitals-common|5.0.0: Analysing http://hl7.org/fhir/ValueSet/ucum-vitals-common|5.0.0 for validation purposes\n0ms http://hl7.org/fhir/ValueSet/ucum-vitals-common|5.0.0: Prepare include[0]: \"(undefined)\"\n1ms http://hl7.org/fhir/ValueSet/ucum-vitals-common|5.0.0: CodeSystem found: \"http://unitsofmeasure.org|2.2\"\n1ms http://hl7.org/fhir/ValueSet/ucum-vitals-common|5.0.0: Validate \"[undefined|undefined#mm[Hg] (\"undefined\")]\"\n1ms http://hl7.org/fhir/ValueSet/ucum-vitals-common|5.0.0: Check \"http://unitsofmeasure.org|undefined#mm[Hg]\"\n1ms http://hl7.org/fhir/ValueSet/ucum-vitals-common|5.0.0: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|undefined\n1ms http://hl7.org/fhir/ValueSet/ucum-vitals-common|5.0.0: check code in (undefined) at Coding\n1ms http://hl7.org/fhir/ValueSet/ucum-vitals-common|5.0.0: Code \"mm[Hg]\" found in http://unitsofmeasure.org|2.2",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -68,12 +68,12 @@ v: {
   }]
 }}####
 v: {
-  "display" : "cm",
+  "display" : "(centimeter)",
   "code" : "cm",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://unitsofmeasure.org#cm (\"\")]\"\r\n16 0    : 0ms  : Check \"http://unitsofmeasure.org#cm\"\r\n16 0    : 0ms  : Using CodeSystem \"http://unitsofmeasure.org|2.2\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://unitsofmeasure.org/vs|2.2: Validate \"[undefined|undefined#cm (\"undefined\")]\"\n0ms http://unitsofmeasure.org/vs|2.2: Check \"http://unitsofmeasure.org|undefined#cm\"\n0ms http://unitsofmeasure.org/vs|2.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|2.2\n0ms http://unitsofmeasure.org/vs|2.2: check code in (undefined) at Coding\n0ms http://unitsofmeasure.org/vs|2.2: Code \"cm\" found in http://unitsofmeasure.org|2.2",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -95,12 +95,12 @@ v: {
   }]
 }}####
 v: {
-  "display" : "uV",
+  "display" : "(microvolt)",
   "code" : "uV",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://unitsofmeasure.org#uV (\"\")]\"\r\n16 0    : 0ms  : Check \"http://unitsofmeasure.org#uV\"\r\n16 0    : 0ms  : Using CodeSystem \"http://unitsofmeasure.org|2.2\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://unitsofmeasure.org/vs|2.2: Validate \"[undefined|undefined#uV (\"undefined\")]\"\n0ms http://unitsofmeasure.org/vs|2.2: Check \"http://unitsofmeasure.org|undefined#uV\"\n0ms http://unitsofmeasure.org/vs|2.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|2.2\n0ms http://unitsofmeasure.org/vs|2.2: check code in (undefined) at Coding\n0ms http://unitsofmeasure.org/vs|2.2: Code \"uV\" found in http://unitsofmeasure.org|2.2",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -122,12 +122,12 @@ v: {
   }]
 }}####
 v: {
-  "display" : "/min",
+  "display" : "/ (minute)",
   "code" : "/min",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://unitsofmeasure.org#/min (\"\")]\"\r\n0 0     : 0ms  : Check \"http://unitsofmeasure.org#/min\"\r\n0 0     : 0ms  : Using CodeSystem \"http://unitsofmeasure.org|2.2\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://unitsofmeasure.org/vs|2.2: Validate \"[undefined|undefined#/min (\"undefined\")]\"\n0ms http://unitsofmeasure.org/vs|2.2: Check \"http://unitsofmeasure.org|undefined#/min\"\n0ms http://unitsofmeasure.org/vs|2.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|2.2\n0ms http://unitsofmeasure.org/vs|2.2: check code in (undefined) at Coding\n0ms http://unitsofmeasure.org/vs|2.2: Code \"/min\" found in http://unitsofmeasure.org|2.2",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -149,12 +149,12 @@ v: {
   }]
 }}####
 v: {
-  "display" : "mmol/L",
+  "display" : "(millimole) / (liter)",
   "code" : "mmol/L",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://unitsofmeasure.org#mmol/L (\"\")]\"\r\n0 0     : 0ms  : Check \"http://unitsofmeasure.org#mmol/L\"\r\n0 0     : 0ms  : Using CodeSystem \"http://unitsofmeasure.org|2.2\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://unitsofmeasure.org/vs|2.2: Validate \"[undefined|undefined#mmol/L (\"undefined\")]\"\n0ms http://unitsofmeasure.org/vs|2.2: Check \"http://unitsofmeasure.org|undefined#mmol/L\"\n0ms http://unitsofmeasure.org/vs|2.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|2.2\n0ms http://unitsofmeasure.org/vs|2.2: check code in (undefined) at Coding\n0ms http://unitsofmeasure.org/vs|2.2: Code \"mmol/L\" found in http://unitsofmeasure.org|2.2",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -176,12 +176,12 @@ v: {
   }]
 }}####
 v: {
-  "display" : "mL",
+  "display" : "(milliliter)",
   "code" : "mL",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://unitsofmeasure.org#mL (\"\")]\"\r\n15 15   : 15ms : Check \"http://unitsofmeasure.org#mL\"\r\n15 0    : 15ms : Using CodeSystem \"http://unitsofmeasure.org|2.2\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://unitsofmeasure.org/vs|2.2: Validate \"[undefined|undefined#mL (\"undefined\")]\"\n0ms http://unitsofmeasure.org/vs|2.2: Check \"http://unitsofmeasure.org|undefined#mL\"\n0ms http://unitsofmeasure.org/vs|2.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|2.2\n0ms http://unitsofmeasure.org/vs|2.2: check code in (undefined) at Coding\n0ms http://unitsofmeasure.org/vs|2.2: Code \"mL\" found in http://unitsofmeasure.org|2.2",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -203,12 +203,12 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Cel",
+  "display" : "(degree Celsius)",
   "code" : "Cel",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://unitsofmeasure.org#Cel (\"\")]\"\r\n0 0     : 0ms  : Check \"http://unitsofmeasure.org#Cel\"\r\n0 0     : 0ms  : Using CodeSystem \"http://unitsofmeasure.org|2.2\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://unitsofmeasure.org/vs|2.2: Validate \"[undefined|undefined#Cel (\"undefined\")]\"\n0ms http://unitsofmeasure.org/vs|2.2: Check \"http://unitsofmeasure.org|undefined#Cel\"\n0ms http://unitsofmeasure.org/vs|2.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|2.2\n0ms http://unitsofmeasure.org/vs|2.2: check code in (undefined) at Coding\n0ms http://unitsofmeasure.org/vs|2.2: Code \"Cel\" found in http://unitsofmeasure.org|2.2",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -230,12 +230,12 @@ v: {
   }]
 }}####
 v: {
-  "display" : "[lb_av]",
+  "display" : "(pound)",
   "code" : "[lb_av]",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://unitsofmeasure.org#[lb_av] (\"\")]\"\r\n0 0     : 0ms  : Check \"http://unitsofmeasure.org#[lb_av]\"\r\n0 0     : 0ms  : Using CodeSystem \"http://unitsofmeasure.org|2.2\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://unitsofmeasure.org/vs|2.2: Validate \"[undefined|undefined#[lb_av] (\"undefined\")]\"\n0ms http://unitsofmeasure.org/vs|2.2: Check \"http://unitsofmeasure.org|undefined#[lb_av]\"\n0ms http://unitsofmeasure.org/vs|2.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|2.2\n0ms http://unitsofmeasure.org/vs|2.2: check code in (undefined) at Coding\n0ms http://unitsofmeasure.org/vs|2.2: Code \"[lb_av]\" found in http://unitsofmeasure.org|2.2",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -258,12 +258,12 @@ v: {
   }]
 }}####
 v: {
-  "display" : "{score}",
+  "display" : "1",
   "code" : "{score}",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://unitsofmeasure.org#{score} (\"\")]\"\r\n0 0     : 0ms  : Check \"http://unitsofmeasure.org#{score}\"\r\n0 0     : 0ms  : Using CodeSystem \"http://unitsofmeasure.org|2.2\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://unitsofmeasure.org/vs|2.2: Validate \"[undefined|undefined#{score} (\"undefined\")]\"\n0ms http://unitsofmeasure.org/vs|2.2: Check \"http://unitsofmeasure.org|undefined#{score}\"\n0ms http://unitsofmeasure.org/vs|2.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|2.2\n0ms http://unitsofmeasure.org/vs|2.2: check code in (undefined) at Coding\n0ms http://unitsofmeasure.org/vs|2.2: Code \"{score}\" found in http://unitsofmeasure.org|2.2",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -286,12 +286,12 @@ v: {
   }]
 }}####
 v: {
-  "display" : "mL",
+  "display" : "(milliliter)",
   "code" : "mL",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://unitsofmeasure.org#mL (\"\")]\"\r\n0 0     : 0ms  : Check \"http://unitsofmeasure.org#mL\"\r\n0 0     : 0ms  : Using CodeSystem \"http://unitsofmeasure.org|2.2\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://unitsofmeasure.org/vs|2.2: Validate \"[undefined|undefined#mL (\"undefined\")]\"\n0ms http://unitsofmeasure.org/vs|2.2: Check \"http://unitsofmeasure.org|undefined#mL\"\n0ms http://unitsofmeasure.org/vs|2.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|2.2\n0ms http://unitsofmeasure.org/vs|2.2: check code in (undefined) at Coding\n0ms http://unitsofmeasure.org/vs|2.2: Code \"mL\" found in http://unitsofmeasure.org|2.2",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -314,12 +314,12 @@ v: {
   }]
 }}####
 v: {
-  "display" : "d",
+  "display" : "(day)",
   "code" : "d",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://unitsofmeasure.org#d (\"\")]\"\r\n0 0     : 0ms  : Check \"http://unitsofmeasure.org#d\"\r\n0 0     : 0ms  : Using CodeSystem \"http://unitsofmeasure.org|2.2\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://unitsofmeasure.org/vs|2.2: Validate \"[undefined|undefined#d (\"undefined\")]\"\n0ms http://unitsofmeasure.org/vs|2.2: Check \"http://unitsofmeasure.org|undefined#d\"\n0ms http://unitsofmeasure.org/vs|2.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|2.2\n0ms http://unitsofmeasure.org/vs|2.2: check code in (undefined) at Coding\n0ms http://unitsofmeasure.org/vs|2.2: Code \"d\" found in http://unitsofmeasure.org|2.2",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
