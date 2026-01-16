@@ -642,14 +642,14 @@ public class TxTester {
     String pj;
     try {
       Parameters po = terminologyClient.lookupCode(p);
-      TxTesterScrubbers.scrubParams(po, tight);
+      TxTesterScrubbers.scrubParameters(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
     } catch (EFhirClientException e) {
       code = e.getCode();
       OperationOutcome oo = e.getServerError(); 
-      TxTesterScrubbers.scrubOO(oo, tight);
+      TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
@@ -675,14 +675,14 @@ public class TxTester {
     String pj;
     try {
       Parameters po = terminologyClient.translate(p);
-      TxTesterScrubbers.scrubParams(po, tight);
+      TxTesterScrubbers.scrubParameters(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
     } catch (EFhirClientException e) {
       code = e.getCode();
       OperationOutcome oo = e.getServerError(); 
-      TxTesterScrubbers.scrubOO(oo, tight);
+      TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
@@ -708,7 +708,7 @@ public class TxTester {
     String vsj;
     try {
       ValueSet vs = terminologyClient.expandValueset(null, p);
-      TxTesterScrubbers.scrubVS(vs, tight);
+      TxTesterScrubbers.scrubValueSet(vs, tight);
       TxTesterSorters.sortValueSet(vs);
       vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vs);
       code = 200;
@@ -716,7 +716,7 @@ public class TxTester {
       code = e.getCode();
       OperationOutcome oo = e.getServerError();
       if (oo != null) {
-        TxTesterScrubbers.scrubOO(oo, tight);
+        TxTesterScrubbers.scrubOperationOutcome(oo, tight);
         vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
       } else {
         throw e;
@@ -756,14 +756,14 @@ public class TxTester {
     String pj;
     try {
       Parameters po = terminologyClient.batchValidateVS(p);
-      TxTesterScrubbers.scrubParams(po, tight);
+      TxTesterScrubbers.scrubParameters(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
     } catch (EFhirClientException e) {
       code = e.getCode();
       OperationOutcome oo = e.getServerError();
-      TxTesterScrubbers.scrubOO(oo, tight);
+      TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
@@ -790,7 +790,7 @@ public class TxTester {
     String pj;
     try {
       Parameters po = terminologyClient.validateVS(p);
-      TxTesterScrubbers.scrubParams(po, tight);
+      TxTesterScrubbers.scrubParameters(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
@@ -798,7 +798,7 @@ public class TxTester {
       code = e.getCode();
       OperationOutcome oo = e.getServerError();
       if (oo != null) {
-        TxTesterScrubbers.scrubOO(oo, tight);
+        TxTesterScrubbers.scrubOperationOutcome(oo, tight);
         oo.setText(null);
         pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
       } else {
@@ -828,7 +828,7 @@ public class TxTester {
     String pj;
     try {
       Parameters po = terminologyClient.validateCS(p);
-      TxTesterScrubbers.scrubParams(po, tight);
+      TxTesterScrubbers.scrubParameters(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
@@ -867,12 +867,12 @@ public class TxTester {
       for (BundleEntryComponent be : bo.getEntry()) {
         if (be.getResource() instanceof Parameters) {
           Parameters po = ((Parameters) be.getResource());
-          TxTesterScrubbers.scrubParams(po, tight);
+          TxTesterScrubbers.scrubParameters(po, tight);
           TxTesterSorters.sortParameters(po);
         }
         if (be.getResource() instanceof OperationOutcome) {
           OperationOutcome oo = ((OperationOutcome) be.getResource());
-          TxTesterScrubbers.scrubOO(oo, tight);          
+          TxTesterScrubbers.scrubOperationOutcome(oo, tight);
         }
       }
       bj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(bo);
@@ -880,7 +880,7 @@ public class TxTester {
     } catch (EFhirClientException e) {
       code = e.getCode();
       OperationOutcome oo = e.getServerError(); 
-      TxTesterScrubbers.scrubOO(oo, tight);
+      TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       bj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, bj, false);

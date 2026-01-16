@@ -808,7 +808,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (dwc.isNoTotal()) {
         throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)));
       } else {
-        throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY/*_COUNT*/, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize), MessageFormat.format("{0,number,#}", dwc.getCount())));
+        throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY/*_COUNT*/, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)/*, MessageFormat.format("{0,number,#}", dwc.getCount())*/));
       }
     } else if (dwc.isCanBeHierarchy() && ((dwc.getCountParam() == 0) || dwc.getCountParam() > dwc.getCodes().size())) {
       for (ValueSetExpansionContainsComponent c : dwc.getRoots()) {
@@ -880,9 +880,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     if (Utilities.existsInList(name, "includeDesignations", "excludeNested", "activeOnly", "offset", "count")) {
       focus.getExpansion().getParameter().removeIf(p -> p.getName().equals(name));
-      focus.getExpansion().addParameter().setName(name).setValue(value);
       if (value instanceof CanonicalType) {
         focus.getExpansion().addParameter().setName(name).setValue(new UriType(value.primitiveValue()));
+      } else {
+        focus.getExpansion().addParameter().setName(name).setValue(value);
       }
     }
     if ("displayLanguage".equals(name)) {
@@ -954,7 +955,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (dwc.isNoTotal()) {
         throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)));
       } else {
-        throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY/*_COUNT*/, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize), MessageFormat.format("{0,number,#}", dwc.getCount())));
+        throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY/*_COUNT*/, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)/*, MessageFormat.format("{0,number,#}", dwc.getCount())*/));
       }
     } else if (dwc.isCanBeHierarchy() && ((dwc.getCountParam() == 0) || dwc.getCountParam() > dwc.getCodes().size())) {
       for (ValueSetExpansionContainsComponent c : dwc.getRoots()) {
