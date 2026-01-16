@@ -18,9 +18,9 @@ import org.hl7.fhir.utilities.Utilities;
 /**
  * this class removes the things we don't want to control in the tests from the content prior
  * to performing the comparisons.
- *
+ * <p/>
  * e.g. we are not interested in the content of OperationOutcome.issue.diagnostics, nor resource.meta
- * nor resource.text. And there's a set of extensions that we check, but otheres are ok
+ * nor resource.text. And there's a set of extensions that we check, but others are ok
  *
  */
 public class TxTesterScrubbers {
