@@ -1,6 +1,6 @@
 ## Validator Changes
 
-* The command line interface has been rewritten. This is a backward compatible change detailed [here](https://github.com/hapifhir/org.hl7.fhir.core/pull/2254) for changes
+* The command line interface has been rewritten. This is a backward compatible change detailed [here](https://github.com/hapifhir/org.hl7.fhir.core/pull/2254)
 
 ## Other code changes
 
